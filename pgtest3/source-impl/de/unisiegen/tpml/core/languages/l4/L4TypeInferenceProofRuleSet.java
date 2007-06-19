@@ -95,9 +95,10 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet
 	      TypeCheckerProofNode pNode ) throws UnifyException
 	  {
 	    // convert in needed types
-	    TypeInferenceProofContext context = ( TypeInferenceProofContext ) pContext ;
+	    TypeInferenceProofContext context = ( DefaultTypeInferenceProofContext ) pContext ;
 	    TypeEquationProofNode node = ( TypeEquationProofNode ) pNode ;
 	    TypeEquationTypeInference eqn = node.getEquation ( ) ;
+	   
 	    unify ( context , node , eqn ) ;
 	  }
 

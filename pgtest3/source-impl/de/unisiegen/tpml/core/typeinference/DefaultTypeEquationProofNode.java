@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  */
 public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
 
-		implements TypeEquationProofNode, TypeCheckerProofNode {
+		implements TypeEquationProofNode {
 
   //
   // Attributes

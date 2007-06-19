@@ -32,6 +32,7 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule ;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeUtilities ;
 import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.BooleanType ;
@@ -56,7 +57,7 @@ import de.unisiegen.tpml.core.types.UnitType ;
  * @see TypeCheckerProofContext
  */
 public class DefaultTypeInferenceProofContext implements
-    TypeCheckerProofContext
+    TypeInferenceProofContext
 {
   //
   // Attributes
@@ -359,9 +360,10 @@ public class DefaultTypeInferenceProofContext implements
    * 
    * @param s the new found substitution
    */
-  public void addSubstitution ( final DefaultTypeSubstitution s )
+  public void addSubstitution ( TypeSubstitution s )
   {
-    this.substitution.add ( s ) ;
+	  DefaultTypeSubstitution sub = (DefaultTypeSubstitution) s;
+    this.substitution.add ( sub ) ;
   }
 
 
@@ -397,9 +399,11 @@ public class DefaultTypeInferenceProofContext implements
           formula.getExpression ( ) , formula.getType ( ) ) ;
     }
     else if ( rule.toString ( ).equals ( "UNIFY" ) ) { //$NON-NLS-1$
+   	 
       typeNode = new DefaultTypeEquationProofNode ( formula.getEnvironment ( ) ,
           new Unify ( ) , formula.getType ( ) ,
           ( TypeEquationTypeInference ) formula , mode ) ;
+     
     }
     else
     {
@@ -635,4 +639,7 @@ public class DefaultTypeInferenceProofContext implements
   {
     return this.seenTypes ;
   }
+
+
+
 }

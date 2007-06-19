@@ -6,6 +6,8 @@ import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
+import de.unisiegen.tpml.core.typeinference.DefaultTypeEquationProofNode;
+import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext;
 import de.unisiegen.tpml.core.typeinference.TypeEquationProofNode;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofContext;
@@ -72,8 +74,9 @@ public class L1TypeInferenceProofRuleSet extends L1TypeCheckerProofRuleSet
   public void applyUnify ( TypeCheckerProofContext pContext ,
       TypeCheckerProofNode pNode ) throws UnifyException
   {
+	  System.out.println("applyunify");
     // convert in needed types
-    TypeInferenceProofContext context = ( TypeInferenceProofContext ) pContext ;
+    TypeInferenceProofContext context = (TypeInferenceProofContext ) pContext ;
     TypeEquationProofNode node = ( TypeEquationProofNode ) pNode ;
     TypeEquationTypeInference eqn = node.getEquation ( ) ;
     unify ( context , node , eqn ) ;
@@ -94,6 +97,7 @@ public class L1TypeInferenceProofRuleSet extends L1TypeCheckerProofRuleSet
       TypeEquationProofNode node , TypeEquationTypeInference eqn )
       throws UnifyException
   {
+	  System.out.println("unify");
     // empty equation is not longer possible so this rule is not implemented
     MonoType left = eqn.getLeft ( ) ;
     MonoType right = eqn.getRight ( ) ;

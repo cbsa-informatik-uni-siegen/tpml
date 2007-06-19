@@ -2,21 +2,19 @@ package de.unisiegen.tpml.core.languages.l2 ;
 
 
 
-import de.unisiegen.tpml.core.languages.l1.L1Language ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
-import de.unisiegen.tpml.core.typeinference.DefaultTypeEquationProofNode ;
-import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext ;
+import de.unisiegen.tpml.core.languages.l1.L1Language;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typeinference.TypeEquationProofNode;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofContext;
-import de.unisiegen.tpml.core.typeinference.UnifyException ;
-import de.unisiegen.tpml.core.types.ArrowType ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.RecType ;
-import de.unisiegen.tpml.core.types.TypeVariable ;
-import de.unisiegen.tpml.core.util.Debug ;
+import de.unisiegen.tpml.core.typeinference.UnifyException;
+import de.unisiegen.tpml.core.types.ArrowType;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.RecType;
+import de.unisiegen.tpml.core.types.TypeVariable;
+import de.unisiegen.tpml.core.util.Debug;
 
 /**
  * The type proof rules for the <code>L2</code> language.
