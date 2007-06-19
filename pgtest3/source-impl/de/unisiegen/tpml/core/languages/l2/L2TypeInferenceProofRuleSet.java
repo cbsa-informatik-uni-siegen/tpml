@@ -1,20 +1,22 @@
 package de.unisiegen.tpml.core.languages.l2 ;
 
 
+
 import de.unisiegen.tpml.core.languages.l1.L1Language ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeEquationProofNode ;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext ;
+import de.unisiegen.tpml.core.typeinference.TypeEquationProofNode;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofContext;
 import de.unisiegen.tpml.core.typeinference.UnifyException ;
 import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.RecType ;
 import de.unisiegen.tpml.core.types.TypeVariable ;
 import de.unisiegen.tpml.core.util.Debug ;
-
 
 /**
  * The type proof rules for the <code>L2</code> language.
@@ -61,39 +63,42 @@ public class L2TypeInferenceProofRuleSet extends L2TypeCheckerProofRuleSet
   }
 
 
-  /**
-   * Applies the <b>(UNIFY)</b> rule to the <code>node</code> using the
-   * <code>context</code>.
-   * 
-   * @param pContext the type inference proof context.
-   * @param pNode the type inference proof node.
-   * @throws UnifyException
-   */
-  public void applyUnify ( TypeCheckerProofContext pContext ,
-      TypeCheckerProofNode pNode ) throws UnifyException
-  {
-    // convert in needed types
-    DefaultTypeInferenceProofContext context = ( DefaultTypeInferenceProofContext ) pContext ;
-    DefaultTypeEquationProofNode node = ( DefaultTypeEquationProofNode ) pNode ;
-    TypeEquationTypeInference eqn = node.getEquation ( ) ;
-    unify ( context , node , eqn ) ;
-  }
+
+	  /**
+	   * Applies the <b>(UNIFY)</b> rule to the <code>node</code> using the
+	   * <code>context</code>.
+	   * 
+	   * @param pContext the type inference proof context.
+	   * @param pNode the type inference proof node.
+	   * @throws UnifyException
+	   */
+	  public void applyUnify ( TypeCheckerProofContext pContext ,
+	      TypeCheckerProofNode pNode ) throws UnifyException
+	  {
+	    // convert in needed types
+	    TypeInferenceProofContext context = ( TypeInferenceProofContext ) pContext ;
+	    TypeEquationProofNode node = ( TypeEquationProofNode ) pNode ;
+	    TypeEquationTypeInference eqn = node.getEquation ( ) ;
+	    unify ( context , node , eqn ) ;
+	  }
 
 
-  /**
-   * internal implementation of the unify rule now we are able to call unify
-   * recursive if needed so we get different handling for beginner or advanced
-   * user
-   * 
-   * @param context the casted default type inference proof context.
-   * @param node the casted type equation proof node.
-   * @param eqn the actual type equation
-   * @throws UnifyException
-   */
-  public void unify ( DefaultTypeInferenceProofContext context ,
-      DefaultTypeEquationProofNode node , TypeEquationTypeInference eqn )
-      throws UnifyException
-  {
+
+
+	  /**
+	   * internal implementation of the unify rule now we are able to call unify
+	   * recursive if needed so we get different handling for beginner or advanced
+	   * user 
+	   * 
+	   * @param context the casted default type inference proof context.
+	   * @param node the casted type equation proof node.
+	   * @param eqn the actual type equation
+	   * @throws UnifyException
+	   */
+	  public void unify ( TypeInferenceProofContext context ,
+	      TypeEquationProofNode node , TypeEquationTypeInference eqn )
+	      throws UnifyException
+	  {
     // empty equation is not longer possible so this rule is not implemented
     MonoType left = eqn.getLeft ( ) ;
     MonoType right = eqn.getRight ( ) ;

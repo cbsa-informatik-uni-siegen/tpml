@@ -59,6 +59,10 @@ public class L2MinimalTypingProofRuleSet extends
 		if ( node.getChildCount ( ) == 1 && node.getFirstChild ( ).isFinished ( ) ) {
 			context.addProofNode ( node, node.getFirstChild ( ).getType ( ), rec.getTau ( ) );
 		}
+		
+		if ( node.getChildCount ( ) == 2 && node.isFinished ( ) ) {
+			context.setNodeType ( node, rec.getTau ( ) );
+		}
 	}
 
 }

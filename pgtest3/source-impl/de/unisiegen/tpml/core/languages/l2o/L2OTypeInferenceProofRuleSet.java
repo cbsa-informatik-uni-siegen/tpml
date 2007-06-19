@@ -12,7 +12,9 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeEquationProofNode ;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext ;
+import de.unisiegen.tpml.core.typeinference.TypeEquationProofNode;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofContext;
 import de.unisiegen.tpml.core.typeinference.UnifyException ;
 import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.MonoType ;
@@ -21,6 +23,7 @@ import de.unisiegen.tpml.core.types.RecType ;
 import de.unisiegen.tpml.core.types.RowType ;
 import de.unisiegen.tpml.core.types.TypeVariable ;
 import de.unisiegen.tpml.core.util.Debug ;
+
 
 
 /**
@@ -87,8 +90,8 @@ public class L2OTypeInferenceProofRuleSet extends L2OTypeCheckerProofRuleSet
       TypeCheckerProofNode pNode ) throws UnifyException
   {
     // convert in needed types
-    DefaultTypeInferenceProofContext context = ( DefaultTypeInferenceProofContext ) pContext ;
-    DefaultTypeEquationProofNode node = ( DefaultTypeEquationProofNode ) pNode ;
+    TypeInferenceProofContext context = ( TypeInferenceProofContext ) pContext ;
+    TypeEquationProofNode node = ( TypeEquationProofNode ) pNode ;
     TypeEquationTypeInference eqn = node.getEquation ( ) ;
     unify ( context , node , eqn ) ;
   }
@@ -104,8 +107,8 @@ public class L2OTypeInferenceProofRuleSet extends L2OTypeCheckerProofRuleSet
    * @param eqn the actual type equation
    * @throws UnifyException
    */
-  public void unify ( DefaultTypeInferenceProofContext context ,
-      DefaultTypeEquationProofNode node , TypeEquationTypeInference eqn )
+  public void unify ( TypeInferenceProofContext context ,
+      TypeEquationProofNode node , TypeEquationTypeInference eqn )
       throws UnifyException
   {
     // empty equation is not longer possible so this rule is not implemented

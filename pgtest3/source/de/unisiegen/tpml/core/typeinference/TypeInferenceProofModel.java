@@ -64,6 +64,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel
   private int index = 1 ;
 
 
+
   //
   // Constructor
   //

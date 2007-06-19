@@ -14,6 +14,8 @@ import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.languages.LanguageTypeScanner;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
+import de.unisiegen.tpml.core.languages.l2.L2MinimalTypingProofRuleSet;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
@@ -179,6 +181,17 @@ public class L3Language extends L2Language
   {
     return new RecSubTypingProofModel (type, type2, 
         new L3RecSubTypingProofRuleSet ( this, mode ), mode ) ;
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeCheckerProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   */
+  @ Override
+  public MinimalTypingProofModel newMinimalTypingProofModel ( Expression expression )
+  {
+    return new MinimalTypingProofModel ( expression , new L3MinimalTypingProofRuleSet(this));
   }
 
 

@@ -18,8 +18,9 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @author Christian Fehler
  */
 public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
-    implements TypeCheckerProofNode
-{
+
+		implements TypeEquationProofNode, TypeCheckerProofNode {
+
   //
   // Attributes
   //
@@ -27,6 +28,7 @@ public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
    * list of collected type substitutions initialised with empty list
    */
   private final TypeSubstitutionList substitutions = TypeSubstitutionList.EMPTY_LIST ;
+
 
 
   /**
