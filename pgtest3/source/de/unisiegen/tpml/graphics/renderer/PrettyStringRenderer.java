@@ -745,13 +745,45 @@ public class PrettyStringRenderer extends AbstractRenderer
       }
       catch ( IndexOutOfBoundsException e )
       {
+        System.out.println("Die sollte nicht mehr fliegen können!");
       }
     }
 
     // add the width of the chars till the mousepointer is reached an dcount the
-    // chars
-    for ( char c = it.setIndex ( Math.max ( charIndex , 0 ) ) ; c != CharacterIterator.DONE ; c = it.next ( ) , charIndex ++ )
+    // chars. charIdenx will be the index where the mousePointer is over
+    for ( char c = it.setIndex ( Math.max ( charIndex , 0 ) ) ; c != CharacterIterator.DONE ; c = it.next ( ) , charIndex++ )
     {
+      switch ( it.getStyle ( ) )
+      {
+        case KEYWORD :
+          gc.setFont ( AbstractRenderer.keywordFont ) ;
+          gc.setColor ( AbstractRenderer.keywordColor ) ;
+           fm = AbstractRenderer.keywordFontMetrics;
+          break ;
+        case IDENTIFIER :
+          gc.setFont ( AbstractRenderer.identifierFont ) ;
+          gc.setColor ( AbstractRenderer.identifierColor ) ;
+           fm = AbstractRenderer.identifierFontMetrics;
+          break ;
+        case NONE :
+          gc.setFont ( AbstractRenderer.expFont ) ;
+          gc.setColor ( AbstractRenderer.expColor ) ;
+          fm = AbstractRenderer.expFontMetrics;
+          break ;
+        case CONSTANT :
+          gc.setFont ( AbstractRenderer.constantFont ) ;
+          gc.setColor ( AbstractRenderer.constantColor ) ;
+           fm = AbstractRenderer.constantFontMetrics;
+          break ;
+        case COMMENT :
+          continue ;
+        case TYPE :
+          gc.setFont ( AbstractRenderer.typeFont ) ;
+          gc.setColor ( AbstractRenderer.typeColor ) ;
+           fm = AbstractRenderer.typeFontMetrics;
+          break ;
+      } 
+
       int charWidth = fm.stringWidth ( "" + c ) ;
       
       // System.out.print(c);
@@ -779,11 +811,10 @@ public class PrettyStringRenderer extends AbstractRenderer
       // System.out.println("Ich rufe die getA auf! ");
       annotationsList = bound.getAnnotations ( ) ;
     }
-    // this will be the annotation to underline, if -1 there is no underlining
+    //check if the mouse stands on a char which is to highlight
+    //rightAnnotationList will be the annotation to underline, if -1 there is no underlining
     int rightAnnotationList = isInList ( charIndex , annotationsList ) ;
-    
-   
-    
+
     // get the starting offsets x is just the left border
     // y will be the center of the space available minus the
     // propper amount of rows
@@ -883,29 +914,29 @@ public class PrettyStringRenderer extends AbstractRenderer
           case KEYWORD :
             gc.setFont ( AbstractRenderer.keywordFont ) ;
             gc.setColor ( AbstractRenderer.keywordColor ) ;
-            // fm = AbstractRenderer.keywordFontMetrics;
+             fm = AbstractRenderer.keywordFontMetrics;
             break ;
           case IDENTIFIER :
             gc.setFont ( AbstractRenderer.identifierFont ) ;
             gc.setColor ( AbstractRenderer.identifierColor ) ;
-            // fm = AbstractRenderer.identifierFontMetrics;
+             fm = AbstractRenderer.identifierFontMetrics;
             break ;
           case NONE :
             gc.setFont ( AbstractRenderer.expFont ) ;
             gc.setColor ( AbstractRenderer.expColor ) ;
-            // fm = AbstractRenderer.expFontMetrics;
+            fm = AbstractRenderer.expFontMetrics;
             break ;
           case CONSTANT :
             gc.setFont ( AbstractRenderer.constantFont ) ;
             gc.setColor ( AbstractRenderer.constantColor ) ;
-            // fm = AbstractRenderer.constantFontMetrics;
+             fm = AbstractRenderer.constantFontMetrics;
             break ;
           case COMMENT :
             continue ;
           case TYPE :
             gc.setFont ( AbstractRenderer.typeFont ) ;
             gc.setColor ( AbstractRenderer.typeColor ) ;
-            // fm = AbstractRenderer.typeFontMetrics;
+             fm = AbstractRenderer.typeFontMetrics;
             break ;
         }
       }
