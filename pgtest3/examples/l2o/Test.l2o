@@ -1,5 +1,4 @@
 (object (self)
-  method a = true ;
   method a = 1 ;
-  method a = () ;
-end) # a 
+  method a = true ;
+end) # a
