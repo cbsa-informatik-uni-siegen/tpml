@@ -745,7 +745,7 @@ public class PrettyStringRenderer extends AbstractRenderer
       }
       catch ( IndexOutOfBoundsException e )
       {
-        System.out.println("Die sollte nicht mehr fliegen können!");
+        
       }
     }
 
