@@ -11,7 +11,6 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.UnifyType ;
 
 
 /**
@@ -209,7 +208,7 @@ public final class TypeEquationTypeInference implements TypeFormula ,
    */
   public MonoType getType ( )
   {
-    return new UnifyType ( ) ;
+    throw new RuntimeException ( "Do not use me!" ) ; //$NON-NLS-1$
   }
 
 
