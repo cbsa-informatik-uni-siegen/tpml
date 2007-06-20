@@ -21,9 +21,13 @@ import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingTypesProofNode;
 import de.unisiegen.tpml.core.minimaltyping.TypeEnvironment;
+import de.unisiegen.tpml.core.subtyping.SubTypingException;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofContext;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.RecType;
 import de.unisiegen.tpml.core.types.TupleType;
 
 /**
@@ -40,19 +44,28 @@ public class L1MinimalTypingProofRuleSet extends
 	 * <code>language</code>.
 	 * 
 	 * @param language the <code>L1</code> or a derived language.
+	 * @param mode the actual choosen mode
 	 * @throws NullPointerException if <code>language</code> is
 	 *           <code>null</code>.
 	 */
-	public L1MinimalTypingProofRuleSet ( L1Language language ) {
+	public L1MinimalTypingProofRuleSet ( L1Language language, boolean mode ) {
 		super ( language );
 		// register the type rules
-		registerByMethodName ( L1Language.L1, "SUBTYPE", "applySubtype" ); //$NON-NLS-1$ //$NON-NLS-2$
+		if ( mode ) // advanced mode
+			registerByMethodName ( L1Language.L1, "SUBTYPE", "applySubtype" ); //$NON-NLS-1$ //$NON-NLS-2$
+		else { // beginner mode 
+			registerByMethodName ( L1Language.L1, "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
+			registerByMethodName ( L1Language.L1, "S-MU-LEFT", "applyMuLeft" ); //$NON-NLS-1$ //$NON-NLS-2$
+			registerByMethodName ( L1Language.L1, "S-MU-RIGHT", "applyMuRight" ); //$NON-NLS-1$ //$NON-NLS-2$
+			registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
+			registerByMethodName ( L1Language.L1, "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 		registerByMethodName ( L1Language.L1, "LET", "applyLet", "updateLet" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		registerByMethodName ( L1Language.L1,
 				"APP-SUBSUME", "applyAppSubsume", "updateAppSubsume" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		registerByMethodName ( L1Language.L1,
 				"COND-SUBSUME", "applyCondSubsume", "updateCondSubsume" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		registerByMethodName ( L1Language.L1, "ABSTR", "applyAbstr",  //$NON-NLS-1$//$NON-NLS-2$
+		registerByMethodName ( L1Language.L1, "ABSTR", "applyAbstr", //$NON-NLS-1$//$NON-NLS-2$
 				"updateAbstr" ); //$NON-NLS-1$
 		registerByMethodName ( L1Language.L1, "AND", "applyAnd", "updateAnd" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		registerByMethodName ( L1Language.L1, "OR", "applyOr", "updateOr" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -71,8 +84,9 @@ public class L1MinimalTypingProofRuleSet extends
 	public void applyId ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
-		MonoType type = ( MonoType ) node.getEnvironment ( ).get (
-				( ( Identifier ) node.getExpression ( ) ) );
+		Identifier id = (Identifier) node.getExpression ( );
+		TypeEnvironment environment = node.getEnvironment ( );
+		MonoType type = ( MonoType ) environment.get( id );
 
 		context.setNodeType ( node, type );
 	}
@@ -109,13 +123,13 @@ public class L1MinimalTypingProofRuleSet extends
 
 	}
 
-	  /**
-	   * Updates the <code>node</code> to which <b>(AND)</b> was applied
-	   * previously.
-	   * 
-	   * @param context the minimal typing proof context.
-	   * @param pNode the node to update according to <b>(AND)</b>.
-	   */
+	/**
+	 * Updates the <code>node</code> to which <b>(AND)</b> was applied
+	 * previously.
+	 * 
+	 * @param context the minimal typing proof context.
+	 * @param pNode the node to update according to <b>(AND)</b>.
+	 */
 	public void updateAnd ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
@@ -149,13 +163,13 @@ public class L1MinimalTypingProofRuleSet extends
 
 	}
 
-	 /**
-	   * Updates the <code>node</code> to which <b>(OR)</b> was applied
-	   * previously.
-	   * 
-	   * @param context the minimal typing proof context.
-	   * @param pNode the node to update according to <b>(OR)</b>.
-	   */
+	/**
+	 * Updates the <code>node</code> to which <b>(OR)</b> was applied
+	 * previously.
+	 * 
+	 * @param context the minimal typing proof context.
+	 * @param pNode the node to update according to <b>(OR)</b>.
+	 */
 	public void updateOr ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
@@ -197,13 +211,13 @@ public class L1MinimalTypingProofRuleSet extends
 		}
 	}
 
-	 /**
-	   * Updates the <code>node</code> to which <b>(APP-SUBSUME)</b> was applied
-	   * previously.
-	   * 
-	   * @param context the minimal typing proof context.
-	   * @param pNode the node to update according to <b>(APP-SUBSUME)</b>.
-	   */
+	/**
+	 * Updates the <code>node</code> to which <b>(APP-SUBSUME)</b> was applied
+	 * previously.
+	 * 
+	 * @param context the minimal typing proof context.
+	 * @param pNode the node to update according to <b>(APP-SUBSUME)</b>.
+	 */
 	public void updateAppSubsume ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
@@ -260,47 +274,47 @@ public class L1MinimalTypingProofRuleSet extends
 			context.addProofNode ( node, environment.extend ( lambda.getId ( ),
 					lambda.getTau ( ) ), lambda.getE ( ) );
 		} else {
-	      // determine the type for the parameter
-	      MultiLambda multiLambda = ( MultiLambda ) expression ;
-	      Identifier [ ] identifiers = multiLambda.getIdentifiers ( ) ;
-	      TupleType type = (TupleType) multiLambda.getTau ( );
-	      MonoType [] types = type.getTypes ( );
-	      
-	      TypeEnvironment environment = node.getEnvironment ( );
-	      
-	      for (int i=0; i< identifiers.length; i++){
-	      	if (types[i]== null)
-	      		throw new RuntimeException("Please enter type for "+identifiers[i]);
-	      	environment = environment.extend ( identifiers[i], types[i] );
-	      }
-	      
-	      context.addProofNode ( node, environment, multiLambda.getE ( ) );
+			// determine the type for the parameter
+			MultiLambda multiLambda = ( MultiLambda ) expression;
+			Identifier[] identifiers = multiLambda.getIdentifiers ( );
+			TupleType type = ( TupleType ) multiLambda.getTau ( );
+			MonoType[] types = type.getTypes ( );
+
+			TypeEnvironment environment = node.getEnvironment ( );
+
+			for ( int i = 0; i < identifiers.length; i++ ) {
+				if ( types[i] == null )
+					throw new RuntimeException ( "Please enter type for "
+							+ identifiers[i] );
+				environment = environment.extend ( identifiers[i], types[i] );
+			}
+
+			context.addProofNode ( node, environment, multiLambda.getE ( ) );
 		}
 
 	}
 
-	 /**
-	   * Updates the <code>node</code> to which <b>(ABSTR)</b> was applied
-	   * previously.
-	   * 
-	   * @param context the minimal typing proof context.
-	   * @param pNode the node to update according to <b>(ABSTR)</b>.
-	   */
+	/**
+	 * Updates the <code>node</code> to which <b>(ABSTR)</b> was applied
+	 * previously.
+	 * 
+	 * @param context the minimal typing proof context.
+	 * @param pNode the node to update according to <b>(ABSTR)</b>.
+	 */
 	public void updateAbstr ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
 		Expression expression = node.getExpression ( );
-		
-		
+
 		if ( node.getFirstChild ( ).isFinished ( ) ) {
-			
-			if (expression instanceof Lambda){
+
+			if ( expression instanceof Lambda ) {
 				Lambda lambda = ( Lambda ) expression;
-			MonoType type = node.getFirstChild ( ).getType ( );
-			ArrowType arrow = new ArrowType ( lambda.getTau ( ), type );
-			context.setNodeType ( node, arrow );
+				MonoType type = node.getFirstChild ( ).getType ( );
+				ArrowType arrow = new ArrowType ( lambda.getTau ( ), type );
+				context.setNodeType ( node, arrow );
 			}
-			
+
 			else {
 				MultiLambda lambda = ( MultiLambda ) expression;
 				MonoType type = node.getFirstChild ( ).getType ( );
@@ -324,13 +338,13 @@ public class L1MinimalTypingProofRuleSet extends
 		context.addProofNode ( node, node.getEnvironment ( ), cond.getE0 ( ) );
 	}
 
-	 /**
-	   * Updates the <code>node</code> to which <b>(COND-SUBSUME)</b> was applied
-	   * previously.
-	   * 
-	   * @param context the minimal typing proof context.
-	   * @param pNode the node to update according to <b>(COND-SUBSUME)</b>.
-	   */
+	/**
+	 * Updates the <code>node</code> to which <b>(COND-SUBSUME)</b> was applied
+	 * previously.
+	 * 
+	 * @param context the minimal typing proof context.
+	 * @param pNode the node to update according to <b>(COND-SUBSUME)</b>.
+	 */
 	public void updateCondSubsume ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
@@ -399,13 +413,13 @@ public class L1MinimalTypingProofRuleSet extends
 		}
 	}
 
-	 /**
-	   * Updates the <code>node</code> to which <b>(LET)</b> was applied
-	   * previously.
-	   * 
-	   * @param context the minimal typing proof context.
-	   * @param pNode the node to update according to <b>(LET)</b>.
-	   */
+	/**
+	 * Updates the <code>node</code> to which <b>(LET)</b> was applied
+	 * previously.
+	 * 
+	 * @param context the minimal typing proof context.
+	 * @param pNode the node to update according to <b>(LET)</b>.
+	 */
 	public void updateLet ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
@@ -457,9 +471,8 @@ public class L1MinimalTypingProofRuleSet extends
 	 * @param context the minimal typing proof context.
 	 * @param pNode the minimal typing proof node.
 	 */
-	public void applySubtype ( 
-			@SuppressWarnings("unused") MinimalTypingProofContext context,
-			MinimalTypingProofNode pNode ) {
+	public void applySubtype ( @SuppressWarnings ( "unused" )
+	MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
 		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
 		MonoType type = node.getType ( );
 		MonoType type2 = node.getType2 ( );
@@ -520,6 +533,107 @@ public class L1MinimalTypingProofRuleSet extends
 		}
 
 		throw new RuntimeException ( "infimum type error" );
+	}
+	
+	/**
+	 * Applies the <b>(REFL)</b> rule to the <code>node</code> using the
+	 * <code>context</code>.
+	 * 
+	 * @param context the minimal typing proof context.
+	 * @param pNode the minimal typing proof node.
+	 */
+	public void applyRefl ( @SuppressWarnings("unused")
+			MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
+		MonoType type;
+		MonoType type2;
+
+		type = node.getType ( );
+		type2 = node.getType2 ( );
+
+		if ( type.equals ( type2 ) )
+			return;
+
+		throw new RuntimeException ( "Types are not equal " ); //$NON-NLS-1$
+
+	}
+
+	/**
+	 * Applies the <b>(ARROW)</b> rule to the <code>node</code> using the
+	 * <code>context</code>.
+	 * 
+	 * @param context the minimal typing proof context.
+	 * @param pNode the minimal typing proof node.
+	 */
+	public void applyArrow ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
+		ArrowType type;
+		ArrowType type2;
+		type = ( ArrowType ) node.getType ( );
+		type2 = ( ArrowType ) node.getType2 ( );
+
+		MonoType taul = type.getTau1 ( );
+		MonoType taur = type.getTau2 ( );
+
+		MonoType tau2l = type2.getTau1 ( );
+		MonoType tau2r = type2.getTau2 ( );
+
+		context.addProofNode ( node, tau2l, taul );
+		context.addProofNode ( node, taur, tau2r );
+
+		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+	}
+
+	/**
+	 * Applies the <b>(S-ASSUME)</b> rule to the <code>node</code> using the
+	 * <code>context</code>.
+	 * 
+	 * @param context the minimal typing proof context.
+	 * @param pNode the minimal typing proof node.
+	 */
+	public void applyAssume ( @SuppressWarnings("unused")
+			MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
+		if ( node.getSeenTypes ( ).contains ( node.getSubType ( ) ) )
+			return;
+		throw new RuntimeException ( "Types not seen before" ); //$NON-NLS-1$
+	}
+
+	/**
+	 * Applies the <b>(S-MU-LEFT)</b> rule to the <code>node</code> using the
+	 * <code>context</code>.
+	 * 
+	 * @param context the minimal typing proof context.
+	 * @param 
+	 * pNode the minimal typing proof node.
+	 */
+	public void applyMuLeft ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
+		RecType rec = ( RecType ) node.getType ( );
+
+		context.addProofNode ( node,
+				rec.getTau ( ).substitute ( rec.getTypeName ( ), rec ), node.getType2 ( ) );
+		
+		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+
+	}
+
+	/**
+	 * Applies the <b>(S-MU-RIGHT)</b> rule to the <code>node</code> using the
+	 * <code>context</code>.
+	 * 
+	 * @param context the minimal typing proof context.
+	 * @param pNode the minimal typing  proof node.
+	 */
+	public void applyMuRight ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
+		RecType rec = ( RecType ) node.getType2 ( );
+
+		context.addProofNode ( node, node.getType ( ), rec.getTau ( ).substitute ( rec
+				.getTypeName ( ), rec ) );
+		
+		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+
 	}
 
 }

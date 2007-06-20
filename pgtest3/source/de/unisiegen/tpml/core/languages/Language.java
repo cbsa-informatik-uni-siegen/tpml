@@ -109,7 +109,8 @@ public interface Language {
    * Allocates a new {@link MinimalTypingProofModel} for the <code>expression</code> in this language, which
    * is used to prove that <code>expression</code> is well-typed using the rules from this language.
    * 
-   * @param expression the {@link Expression} for the type checker proof model.
+   * @param expression the {@link Expression} for the minimal typing proof model.
+   * @param mode the actual choosen mode
    * 
    * @return the newly allocated minimal typing proof model.
    * 
@@ -118,7 +119,7 @@ public interface Language {
    * 
    * @see MinimalTypingProofModel
    */
-  public MinimalTypingProofModel newMinimalTypingProofModel(Expression expression);
+  public MinimalTypingProofModel newMinimalTypingProofModel(Expression expression, boolean mode);
   
   /**
    * Allocates a new {@link TypeInferenceProofModel} for the <code>expression</code> in this language, which

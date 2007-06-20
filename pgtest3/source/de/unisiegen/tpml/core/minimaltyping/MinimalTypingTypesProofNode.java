@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.core.minimaltyping;
 
+import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
+import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.types.MonoType;
 
 public interface MinimalTypingTypesProofNode extends MinimalTypingProofNode {
@@ -11,5 +13,11 @@ public interface MinimalTypingTypesProofNode extends MinimalTypingProofNode {
 	 * @return type second type of the node
 	 */
 	public MonoType getType2();
+
+	public SeenTypes < DefaultSubType > getSeenTypes ( );
+
+	public DefaultSubType getSubType ( );
+
+	
 
 }

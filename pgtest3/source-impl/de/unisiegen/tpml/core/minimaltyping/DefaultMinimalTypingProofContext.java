@@ -22,6 +22,8 @@ import de.unisiegen.tpml.core.expressions.RelationalOperator ;
 import de.unisiegen.tpml.core.expressions.Tl ;
 import de.unisiegen.tpml.core.expressions.UnaryCons ;
 import de.unisiegen.tpml.core.expressions.UnitConstant ;
+import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
+import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.BooleanType ;
 import de.unisiegen.tpml.core.types.IntegerType ;
@@ -72,6 +74,8 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
    * @see #getUndoActions()
    */
   private LinkedList < Runnable > undoActions = new LinkedList < Runnable > ( ) ;
+  
+  private SeenTypes < DefaultSubType > seenTypes = new SeenTypes < DefaultSubType > ( );
 
 
   //
@@ -431,5 +435,16 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
       }
     } ;
   }
+
+
+	/**
+	 *{@inheritDoc}
+	 * 
+	 * @see de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofContext#addSeenType(de.unisiegen.tpml.core.types.MonoType, de.unisiegen.tpml.core.types.MonoType)
+	 */
+	public void addSeenType ( MonoType type, MonoType type2 ) {
+		DefaultSubType subtype = new DefaultSubType ( type, type2 );
+		seenTypes.add ( subtype );
+	}
 
 }

@@ -25,8 +25,8 @@ public class L2MinimalTypingProofRuleSet extends
 	 * @throws NullPointerException if <code>language</code> is
 	 *           <code>null</code>.
 	 */
-	public L2MinimalTypingProofRuleSet ( L1Language language ) {
-		super ( language );
+	public L2MinimalTypingProofRuleSet ( L1Language language, boolean mode ) {
+		super ( language, mode );
 		// register the type rules
 		registerByMethodName ( L2Language.L2,"REC", "applyRec", "updateRec" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 

@@ -182,9 +182,9 @@ public class L1Language extends L0Language
    * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newMinimalTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
   @ Override
-  public MinimalTypingProofModel newMinimalTypingProofModel ( Expression expression )
+  public MinimalTypingProofModel newMinimalTypingProofModel ( Expression expression, boolean mode )
   {
-    return new MinimalTypingProofModel ( expression , new L1MinimalTypingProofRuleSet(this));
+    return new MinimalTypingProofModel ( expression , new L1MinimalTypingProofRuleSet(this, mode));
   }
      
 

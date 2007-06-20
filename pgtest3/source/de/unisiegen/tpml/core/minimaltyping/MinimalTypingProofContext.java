@@ -53,6 +53,8 @@ public interface MinimalTypingProofContext {
    * @throws NullPointerException if <code>expression</code> is <code>null</code>.
    */
   public Type getTypeForExpression(Expression expression);
+
+public void addSeenType ( MonoType type, MonoType type2 );
   
   
 }

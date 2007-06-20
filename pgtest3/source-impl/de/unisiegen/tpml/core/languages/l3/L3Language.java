@@ -185,12 +185,12 @@ public class L3Language extends L2Language
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeCheckerProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newMinimalTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
   @ Override
-  public MinimalTypingProofModel newMinimalTypingProofModel ( Expression expression )
+  public MinimalTypingProofModel newMinimalTypingProofModel ( Expression expression, boolean mode )
   {
-    return new MinimalTypingProofModel ( expression , new L3MinimalTypingProofRuleSet(this));
+    return new MinimalTypingProofModel ( expression , new L3MinimalTypingProofRuleSet(this, mode));
   }
 
 

@@ -41,10 +41,10 @@ public final class MinimalTypingProofModelTest extends JFrame {
 	/**
 	 * Simple test expression.
 	 */
-	//private static final String SIMPLE = "(object (self:<add:int;sub:int;>) method add = 1 ; end) # add";
+	private static final String SIMPLE = "(object (self:<add:int;sub:int;>) method add = 1 ; method sub = 2; end) # sub";
 	//private static final String SIMPLE = "let rec fact (x:int):int = if x = 0 then 1 else x * fact (x-1)  in fact 3";
 	//private static final String SIMPLE = "let function (x:int) (y:int):int = x + y in function 3 4";
-	private static final String SIMPLE = "(lambda (x,y):(int*int).x+y) (1,2)";
+	//private static final String SIMPLE = "(lambda (x,y):(int*int).x+y) (1,2)";
 	
 	ProofRule choosen = null;
 
@@ -93,7 +93,6 @@ public final class MinimalTypingProofModelTest extends JFrame {
 				}
 
 				catch ( Exception e ) {
-					System.err.println(e.getMessage ( ).toString ( ));
 					e.getCause ( ).printStackTrace ( );
 					JOptionPane.showMessageDialog ( MinimalTypingProofModelTest.this, e
 							.getMessage ( ), "Error", JOptionPane.ERROR_MESSAGE );
@@ -269,11 +268,11 @@ public final class MinimalTypingProofModelTest extends JFrame {
 		try {
 			// parse the program (using L4)
 			LanguageFactory factory = LanguageFactory.newInstance ( );
-			Language language = factory.getLanguageById ( "l4" );
+			Language language = factory.getLanguageById ( "l2o" );
 			Expression expression = language.newParser ( new StringReader ( SIMPLE ) )
 					.parse ( );
 			MinimalTypingProofModel model = language
-					.newMinimalTypingProofModel ( expression );
+					.newMinimalTypingProofModel ( expression, false );
 
 			// evaluate the resulting small step expression
 			MinimalTypingProofModelTest window = new MinimalTypingProofModelTest (

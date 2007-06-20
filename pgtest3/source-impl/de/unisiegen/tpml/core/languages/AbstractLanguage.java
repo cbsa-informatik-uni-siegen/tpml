@@ -53,7 +53,8 @@ public abstract class AbstractLanguage implements Language
    */
   public MinimalTypingProofModel newMinimalTypingProofModel (
       @ SuppressWarnings ( "unused" )
-      Expression expression )
+      Expression expression, @SuppressWarnings("unused")
+		boolean mode )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
         .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$
