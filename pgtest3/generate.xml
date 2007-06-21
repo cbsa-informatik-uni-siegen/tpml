@@ -90,7 +90,7 @@
 			symbols="L0Terminals"
 			interface="yes"
 			debug="no"
-			expect="0"
+			expect="10"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
