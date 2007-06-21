@@ -478,7 +478,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			//Render the solve {
 			//save the einrückung
 			int einrücken=posX;
-			int höhe = 0;
+			int spaceToNexEntry = 0;
 			
 			gc.setFont(AbstractRenderer.keywordFont);
 			gc.setColor(this.alternativeColor != null ? this.alternativeColor : AbstractRenderer.keywordColor); //if then else
@@ -492,7 +492,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			gc.drawString("{", posX, posY);
 			posX += AbstractRenderer.expFontMetrics.stringWidth("{");
 
-			höhe = Math.max(( keywordFontMetrics.getHeight()), expFontMetrics.getHeight());
+			spaceToNexEntry = Math.max(( keywordFontMetrics.getHeight()), expFontMetrics.getHeight());
 			
 			
 			//calculate the einrückung
@@ -587,7 +587,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					testAusgabe("Noich nutzbar nach der Environment: "+nochNutzbar);
 					
 					//höhe = Math.max(höhe,  environmentRenderer.getNeededSize().height);
-					höhe = Math.max(0,  environmentRenderer.getNeededSize().height);
+					spaceToNexEntry = Math.max(0,  environmentRenderer.getNeededSize().height);
 					//TODO Umsetzen des Highlightextes...
 					String envCollapsedString = environmentRenderer.getCollapsedString();
 					if (envCollapsedString != null)
@@ -620,7 +620,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						testAusgabe("Noich nutzbar in der neuen Zeile nachedem einrücken abgezogen ist...: "+nochNutzbar);
 						
 						expressionSize = expressionRenderer.getNeededSize(nochNutzbar);
-						höhe = Math.max(höhe, expressionSize.height);
+						spaceToNexEntry = Math.max(spaceToNexEntry, expressionSize.height);
 						posY += environmentSize.height;
 						//TODO ???
 						expressionRenderer.render(posX, posY-AbstractRenderer.fontHeight, expressionSize.width, expressionSize.height, gc, bound, toListenForM);
@@ -668,14 +668,27 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						
 						//posY += Math.max(höhe, expressionSize.height);
 						posY += expressionSize.height;
+            
+            typeRenderer.render(posX, posY-(typeSize.height / 2) - fontAscent / 2, typeSize.width ,typeSize.height, gc, bondType, toListenForM);
+            posX += typeSize.width;
+
+            this.typeFprmularPostitions.add(new Rectangle(oldPosX, posY, posX-oldPosX, spaceToNexEntry));
+            this.typeEquations.add(i);
+            
+            spaceToNexEntry = typeSize.height;
 						
 					}
+          else
+          {
+            typeRenderer.render(posX, posY-(typeSize.height / 2) - fontAscent / 2, typeSize.width ,typeSize.height, gc, bondType, toListenForM);
+            posX += typeSize.width;
 
-					typeRenderer.render(posX, posY-(typeSize.height / 2) - fontAscent / 2, typeSize.width ,typeSize.height, gc, bondType, toListenForM);
-					posX += typeSize.width;
+            this.typeFprmularPostitions.add(new Rectangle(oldPosX, posY, posX-oldPosX, spaceToNexEntry));
+            this.typeEquations.add(i);
+            
+          }
 
-					this.typeFprmularPostitions.add(new Rectangle(oldPosX, posY, posX-oldPosX, höhe));
-					this.typeEquations.add(i);
+					
 					
 					//everey line but the last needs a line braek
 					if (i<(typeFormulaList.size()-1))
@@ -689,7 +702,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						//TODO vielleicht einen Fallunterscheidung: Wenn die Expression schon umgebrochen hat, dann muss hier 
 						//nur noch die TypeSize.hight addiert werden, sonst auch noch die ExpressionSize.heigth
 						//posY += typeSize.height;
-						posY += höhe;
+						posY += spaceToNexEntry;
+            //posY += expressionSize.height;
+            
 						
 //					TODO test einen extrazeiel frei lassen
 						posY += spaceBetweenLines;
