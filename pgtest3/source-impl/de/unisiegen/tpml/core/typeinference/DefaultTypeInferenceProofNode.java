@@ -286,22 +286,11 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   /**
    * {@inheritDoc}
    * 
-   * @see TypeCheckerProofNode#isFinished()
+   * @see TypeInferenceProofNode#isFinished()
    */
   public boolean isFinished ( )
   {
-    if ( ! isProven ( ) )
-    {
-      return false ;
-    }
-    for ( int n = 0 ; n < getChildCount ( ) ; ++ n )
-    {
-      if ( ! ( getChildAt ( n ) ).isFinished ( ) )
-      {
-        return false ;
-      }
-    }
-    return true ;
+	  return getLastLeaf ( ).getFormula ( ).size ( )<1;
   }
 
 

@@ -190,33 +190,6 @@ public class DefaultTypeInferenceProofContext implements
   }
 
 
-  //
-  // Context action handling
-  //
-  /**
-   * Adds the specified <code>redoAction</code> to the internal list of
-   * redoable actions, and runs the <code>redoAction</code>. This method
-   * should be called before adding the matching undo action via
-   * {@link #addUndoAction(Runnable)}.
-   * 
-   * @param redoAction the redoable action.
-   * @see #addUndoAction(Runnable)
-   * @see #getRedoActions()
-   * @throws NullPointerException if <code>redoAction</code> is
-   *           <code>null</code>.
-   */
-  void addRedoAction ( final Runnable redoAction )
-  {
-    if ( redoAction == null )
-    {
-      throw new NullPointerException ( "undoAction is null" ) ; //$NON-NLS-1$
-    }
-    // perform the action
-    redoAction.run ( ) ;
-    // record the action
-    this.redoActions.add ( redoAction ) ;
-  }
-
 
   /**
    * Extend a new Substitution to the SubstitutionList
@@ -229,28 +202,6 @@ public class DefaultTypeInferenceProofContext implements
     this.substitution.add ( sub ) ;
   }
 
-
-  /**
-   * Adds the specified <code>undoAction</code> to the internal list of
-   * undoable actions, and runs the <code>undoActions</code>. This method
-   * should be called after adding the matching redo action via
-   * {@link #addRedoAction(Runnable)}.
-   * 
-   * @param undoAction the undoable action.
-   * @see #addRedoAction(Runnable)
-   * @see #getUndoActions()
-   * @throws NullPointerException if <code>undoAction</code> is
-   *           <code>null</code>.
-   */
-  void addUndoAction ( final Runnable undoAction )
-  {
-    if ( undoAction == null )
-    {
-      throw new NullPointerException ( "undoAction is null" ) ; //$NON-NLS-1$
-    }
-    // record the action
-    this.undoActions.add ( 0 , undoAction ) ;
-  }
 
 
   //
@@ -356,37 +307,12 @@ public class DefaultTypeInferenceProofContext implements
       if ( ! formulas.contains ( actual ) ) formulas.add ( actual ) ;
     }
     // create the new node
-    this.model.contextAddProofNode ( this , node , formulas , newSubstitutions ,
-        rule , formula ) ;
-    if ( formulas.size ( ) < 1 )
-    {
-      this.model.setFinished ( ) ;
-    }
+    this.model.contextAddProofNode (formulas , newSubstitutions  ) ;
+    
   }
 
 
-  /**
-   * Returns a <code>Runnable</code>, which performs all the previously
-   * recorded redoable actions, added via {@link #addRedoAction(Runnable)}.
-   * 
-   * @return a <code>Runnable</code> for all recorded redoable actions.
-   * @see #addRedoAction(Runnable)
-   * @see #getUndoActions()
-   */
-  Runnable getRedoActions ( )
-  {
-    return new Runnable ( )
-    {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
-      {
-        for ( final Runnable redoAction : DefaultTypeInferenceProofContext.this.redoActions )
-        {
-          redoAction.run ( ) ;
-        }
-      }
-    } ;
-  }
+
 
 
   /**
@@ -515,28 +441,6 @@ public class DefaultTypeInferenceProofContext implements
   }
 
 
-  /**
-   * Returns a <code>Runnable</code>, which performs all the previously
-   * recorded undoable actions, added via {@link #addUndoAction(Runnable)}.
-   * 
-   * @return a <code>Runnable</code> for all recorded undoable actions.
-   * @see #addUndoAction(Runnable)
-   * @see #getRedoActions()
-   */
-  Runnable getUndoActions ( )
-  {
-    return new Runnable ( )
-    {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
-      {
-        for ( final Runnable undoAction : DefaultTypeInferenceProofContext.this.undoActions )
-        {
-          undoAction.run ( ) ;
-        }
-      }
-    } ;
-  }
 
 
   /**
@@ -607,5 +511,86 @@ public class DefaultTypeInferenceProofContext implements
       final ArrayList < DefaultTypeSubstitution > subs )
   {
     this.substitutions = subs ;
+  }
+  
+  //
+  // Context action handling
+  //
+  
+  /**
+   * Appends the <code>redoAction</code> to the list of redoable actions and runs the <code>redoAction</code>.
+   * 
+   * @param redoAction the redo action to add.
+   * 
+   * @throws NullPointerException if <code>redoAction</code> is <code>null</code>.
+   * 
+   * @see #addUndoAction(Runnable)
+   * @see #getRedoActions()
+   */
+  void addRedoAction(Runnable redoAction) {
+    if (redoAction == null) {
+      throw new NullPointerException("redoAction is null");
+    }
+    
+    // perform the action
+    redoAction.run();
+    
+    // record the action
+    this.redoActions.add(redoAction);
+  }
+  
+  /**
+   * Prepends the <code>undoAction</code> to the list of undoable actions.
+   * 
+   * @param undoAction the undo action to add.
+   * 
+   * @throws NullPointerException if <code>undoAction</code> is <code>null</code>.
+   * 
+   * @see #addRedoAction(Runnable)
+   * @see #getUndoActions()
+   */
+  void addUndoAction(Runnable undoAction) {
+    if (undoAction == null) {
+      throw new NullPointerException("undoAction is null");
+    }
+    
+    // record the action
+    this.undoActions.add(0, undoAction);
+  }
+  
+  /**
+   * Returns a single <code>Runnable</code> that runs all previously registered redo actions.
+   * 
+   * @return a single <code>Runnable</code> to run all redo actions.
+   * 
+   * @see #addRedoAction(Runnable)
+   * @see #getUndoActions()
+   */
+  Runnable getRedoActions() {
+    return new Runnable() {
+      public void run() {
+        for (Runnable redoAction : DefaultTypeInferenceProofContext.this.redoActions) {
+          redoAction.run();
+        }
+      }
+    };
+  }
+  
+  /**
+   * Returns a single <code>Runnable</code> that runs all previously registered undo actions.
+   * 
+   * @return a single <code>Runnable</code> to run all undo actions.
+   * 
+   * @see #addUndoAction(Runnable)
+   * @see #getRedoActions()
+   */
+  Runnable getUndoActions() {
+    return new Runnable() {
+      public void run() {
+        for (Runnable undoAction : DefaultTypeInferenceProofContext.this.undoActions) {
+          undoAction.run();
+        }
+      }
+    };
   }
 }

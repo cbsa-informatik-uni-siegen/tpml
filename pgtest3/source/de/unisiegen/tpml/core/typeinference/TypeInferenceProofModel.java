@@ -61,6 +61,8 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @see TypeVariable
    */
   private int index = 1 ;
+  
+  DefaultTypeInferenceProofNode child;
 
 
   //
@@ -483,6 +485,12 @@ public final class TypeInferenceProofModel extends AbstractProofModel
         // try to apply the rule to the specified node
         context.setSubstitutions ( node.getSubstitution ( ) ) ;
         context.apply ( rule , form , type , mode , node ) ;
+        
+        ProofStep [] newSteps = new ProofStep [1];
+   	  newSteps[0] = new ProofStep ( new IsEmpty ( ) , rule )   ;
+        
+        setUndoActions ( node, child, context, rule, form, newSteps );
+        
         return ;
       }
       catch ( UnifyException e1 )
@@ -501,6 +509,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel
         // try to apply the rule to the specified node
         context.setSubstitutions ( node.getSubstitution ( ) ) ;
         context.apply ( rule , formula , type , mode , node ) ;
+        
+        ProofStep [] newSteps = new ProofStep [1];
+   	  newSteps[0] = new ProofStep ( new IsEmpty ( ) , rule )   ;
+        setUndoActions ( node, child, context, rule, form, newSteps );
         return ;
       }
       catch ( ProofRuleException e1 )
@@ -624,46 +636,13 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    *           tree.
    * @throws NullPointerException if any of the parameters is <code>null</code>.
    */
-  void contextAddProofNode ( final DefaultTypeInferenceProofContext context ,
-      final DefaultTypeInferenceProofNode pNode ,
-      final ArrayList < TypeFormula > formulas ,
-      final ArrayList < DefaultTypeSubstitution > subs ,
-      final TypeCheckerProofRule rule , final TypeFormula formula )
+  void contextAddProofNode ( final ArrayList < TypeFormula > formulas ,
+      final ArrayList < DefaultTypeSubstitution > subs  )
   {
-    final DefaultTypeInferenceProofNode child = new DefaultTypeInferenceProofNode (
+     this.child = new DefaultTypeInferenceProofNode (
         formulas , subs ) ;
-    final ProofStep [ ] oldSteps = pNode.getSteps ( ) ;
-    // add redo and undo options
-    addUndoableTreeEdit ( new UndoableTreeEdit ( )
-    {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void redo ( )
-      {
-        setFinished ( ( ( DefaultTypeInferenceProofNode ) TypeInferenceProofModel.this.root )
-            .isFinished ( ) ) ;
-        pNode.add ( child ) ;
-        contextSetProofNodeRule ( context , pNode , rule , formula ) ;
-        nodesWereInserted ( pNode , new int [ ]
-        { pNode.getIndex ( child ) } ) ;
-        nodeChanged ( pNode ) ;
-      }
-
-
-      @ SuppressWarnings ( "synthetic-access" )
-      public void undo ( )
-      {
-        // update the "finished" state
-        setFinished ( false ) ;
-        // remove the child and revert the steps
-        int [ ] indices =
-        { pNode.getIndex ( child ) } ;
-        pNode.removeAllChildren ( ) ;
-        nodesWereRemoved ( pNode , indices , new Object [ ]
-        { child } ) ;
-        pNode.setSteps ( oldSteps ) ;
-        nodeChanged ( pNode ) ;
-      }
-    } ) ;
+    
+   
   }
 
 
@@ -686,6 +665,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel
     node.setSteps ( new ProofStep [ ]
     { new ProofStep ( new IsEmpty ( ) , rule ) } ) ;
     nodeChanged ( node ) ;
+    
   }
 
 
@@ -746,14 +726,49 @@ public final class TypeInferenceProofModel extends AbstractProofModel
   }
 
 
-  /**
-   * Sets the finished status.
-   * 
-   * @see de.unisiegen.tpml.core.AbstractProofModel#setFinished(boolean)
-   */
-  public void setFinished ( )
-  {
-    this.setFinished ( true ) ;
+  private void setUndoActions(final DefaultTypeInferenceProofNode pNode, 
+		  final DefaultTypeInferenceProofNode pChild, 
+		  final DefaultTypeInferenceProofContext context ,
+	     final TypeCheckerProofRule rule , final TypeFormula formula,
+	     final ProofStep [] newSteps){
+	  
+	  final ProofStep [ ] oldSteps = pNode.getSteps ( ) ;
+	 
+	  
+	  // add redo and undo options
+	    addUndoableTreeEdit ( new UndoableTreeEdit ( )
+	    {
+	      @ SuppressWarnings ( "synthetic-access" )
+	      public void redo ( )
+	      {
+	        
+	        pNode.add ( pChild ) ;
+	       // contextSetProofNodeRule ( context , pNode , rule , formula ) ;
+	        pNode.setSteps ( newSteps );
+	        nodesWereInserted ( pNode , new int [ ]
+	        { pNode.getIndex ( pChild ) } ) ;
+	        setFinished ( ( ( DefaultTypeInferenceProofNode ) TypeInferenceProofModel.this.root )
+		            .isFinished ( ) ) ;
+	        nodeChanged ( pNode ) ;
+	      }
+
+
+	      @ SuppressWarnings ( "synthetic-access" )
+	      public void undo ( )
+	      {
+	        // update the "finished" state
+	        setFinished ( false ) ;
+	        
+	        // remove the child and revert the steps
+	        int [ ] indices =
+	        { pNode.getIndex ( pChild ) } ;
+	        pNode.removeAllChildren ( ) ;
+	        nodesWereRemoved ( pNode , indices , new Object [ ]
+	        { pChild } ) ;
+	        pNode.setSteps ( oldSteps ) ;
+	        nodeChanged ( pNode ) ;
+	      }
+	    } ) ;
   }
   /*
    * public ArrayList < MonoType > getSubstitudedTypesForSubstitutions (
