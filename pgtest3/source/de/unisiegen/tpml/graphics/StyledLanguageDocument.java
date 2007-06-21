@@ -17,6 +17,7 @@ import javax.swing.text.SimpleAttributeSet ;
 import javax.swing.text.StyleConstants ;
 import org.apache.log4j.Logger ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
+import de.unisiegen.tpml.core.exceptions.LanguageParserWarningException ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.languages.AbstractLanguageScanner ;
@@ -66,6 +67,12 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * The unique serialization identifier of this class.
    */
   protected static final long serialVersionUID = 5866657214159718809L ;
+
+
+  /**
+   * The warning color.
+   */
+  private static Color warningColor = new Color ( 232 , 242 , 254 ) ;
 
 
   //
@@ -189,50 +196,125 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
 
 
   //
-  // Initialization
+  // Listener registration
   //
   /**
-   * Initializes the attributes to use the fonts from the current theme.
+   * Adds a {@link PropertyChangeListener} to the listener list. The listener is
+   * registered for all bound properties of the derived class. If
+   * <code>listener</code> is <code>null</code>, no exception is thrown and
+   * no action is performed.
+   * 
+   * @param listener the {@link PropertyChangeListener} to be added.
+   * @see #getPropertyChangeListeners()
+   * @see #removePropertyChangeListener(PropertyChangeListener)
    */
-  protected void initAttributes ( )
+  public synchronized void addPropertyChangeListener (
+      PropertyChangeListener listener )
   {
-    // determine the current font family and size
-    String fontFamily = this.theme.getFont ( ).getFamily ( ) ;
-    int fontSize = this.theme.getFont ( ).getSize ( ) ;
-    // use the colors and font from the current theme
-    StyleConstants.setFontFamily ( this.normalSet , fontFamily ) ;
-    StyleConstants.setFontSize ( this.normalSet , fontSize ) ;
-    StyleConstants.setForeground ( this.attributes.get ( PrettyStyle.COMMENT ) ,
-        this.theme.getCommentColor ( ) ) ;
-    StyleConstants.setFontFamily ( this.attributes.get ( PrettyStyle.COMMENT ) ,
-        fontFamily ) ;
-    StyleConstants.setFontSize ( this.attributes.get ( PrettyStyle.COMMENT ) ,
-        fontSize ) ;
-    StyleConstants.setForeground (
-        this.attributes.get ( PrettyStyle.CONSTANT ) , this.theme
-            .getConstantColor ( ) ) ;
-    StyleConstants.setFontFamily (
-        this.attributes.get ( PrettyStyle.CONSTANT ) , fontFamily ) ;
-    StyleConstants.setFontSize ( this.attributes.get ( PrettyStyle.CONSTANT ) ,
-        fontSize ) ;
-    StyleConstants.setForeground ( this.attributes.get ( PrettyStyle.KEYWORD ) ,
-        this.theme.getKeywordColor ( ) ) ;
-    StyleConstants.setFontFamily ( this.attributes.get ( PrettyStyle.KEYWORD ) ,
-        fontFamily ) ;
-    StyleConstants.setFontSize ( this.attributes.get ( PrettyStyle.KEYWORD ) ,
-        fontSize ) ;
-    StyleConstants.setForeground ( this.attributes
-        .get ( PrettyStyle.IDENTIFIER ) , this.theme.getIdentifierColor ( ) ) ;
-    StyleConstants.setFontFamily ( this.attributes
-        .get ( PrettyStyle.IDENTIFIER ) , fontFamily ) ;
-    StyleConstants.setFontSize (
-        this.attributes.get ( PrettyStyle.IDENTIFIER ) , fontSize ) ;
-    StyleConstants.setForeground ( this.attributes.get ( PrettyStyle.TYPE ) ,
-        this.theme.getTypeColor ( ) ) ;
-    StyleConstants.setFontFamily ( this.attributes.get ( PrettyStyle.TYPE ) ,
-        fontFamily ) ;
-    StyleConstants.setFontSize ( this.attributes.get ( PrettyStyle.TYPE ) ,
-        fontSize ) ;
+    if ( listener == null )
+    {
+      return ;
+    }
+    if ( this.changeSupport == null )
+    {
+      this.changeSupport = new PropertyChangeSupport ( this ) ;
+    }
+    this.changeSupport.addPropertyChangeListener ( listener ) ;
+  }
+
+
+  /**
+   * Adds a {@link PropertyChangeListener} to the listener list for a specific
+   * property. The specified property may be user-defined, or one of the
+   * properties provided by the object. If <code>listener</code> is
+   * <code>null</code>, no exception is thrown and no action is performed.
+   * 
+   * @param propertyName one of the property names of the object.
+   * @param listener the {@link PropertyChangeListener} to be added.
+   * @see #removePropertyChangeListener(String, PropertyChangeListener)
+   * @see #getPropertyChangeListeners(String)
+   */
+  public synchronized void addPropertyChangeListener ( String propertyName ,
+      PropertyChangeListener listener )
+  {
+    if ( listener == null )
+    {
+      return ;
+    }
+    if ( this.changeSupport == null )
+    {
+      this.changeSupport = new PropertyChangeSupport ( this ) ;
+    }
+    this.changeSupport.addPropertyChangeListener ( propertyName , listener ) ;
+  }
+
+
+  /**
+   * Support for reporting bound property changes for boolean properties. This
+   * method can be called when a bound property has changed and it will send the
+   * appropriate {@link PropertyChangeEvent} to any registered
+   * {@link PropertyChangeListener}s.
+   * 
+   * @param propertyName the propery whose value has changed.
+   * @param oldValue the property's previous value.
+   * @param newValue the property's new value.
+   */
+  protected void firePropertyChange ( String propertyName , boolean oldValue ,
+      boolean newValue )
+  {
+    PropertyChangeSupport tmpChangeSupport = this.changeSupport ;
+    if ( tmpChangeSupport == null )
+    {
+      return ;
+    }
+    tmpChangeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
+  }
+
+
+  /**
+   * Support for reporting bound property changes for boolean properties. This
+   * method can be called when a bound property has changed and it will send the
+   * appropriate {@link PropertyChangeEvent} to any registered
+   * {@link PropertyChangeListener}s.
+   * 
+   * @param propertyName the propery whose value has changed.
+   * @param oldValue the property's previous value.
+   * @param newValue the property's new value.
+   */
+  protected void firePropertyChange ( String propertyName , int oldValue ,
+      int newValue )
+  {
+    PropertyChangeSupport tmpChangeSupport = this.changeSupport ;
+    if ( tmpChangeSupport == null )
+    {
+      return ;
+    }
+    tmpChangeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
+  }
+
+
+  //
+  // Listener invocation
+  //
+  /**
+   * Support for reporting bound property changes for Object properties. This
+   * method can be called when a bound property has changed and it will send the
+   * appropriate {@link PropertyChangeEvent} to any registered
+   * {@link PropertyChangeListener}s.
+   * 
+   * @param propertyName the property whose value has changed.
+   * @param oldValue the property's previous value.
+   * @param newValue the property's new value.
+   */
+  protected void firePropertyChange ( String propertyName , Object oldValue ,
+      Object newValue )
+  {
+    PropertyChangeSupport tmpChangeSupport = this.changeSupport ;
+    if ( tmpChangeSupport == null )
+    {
+      return ;
+    }
+    tmpChangeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
   }
 
 
@@ -284,6 +366,92 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
   }
 
 
+  /**
+   * Returns an array of all the property change listeners registered on this
+   * object.
+   * 
+   * @return all of this object's {@link PropertyChangeListener}s or an empty
+   *         array if no property change listeners are currently registered.
+   * @see #addPropertyChangeListener(PropertyChangeListener)
+   * @see #removePropertyChangeListener(PropertyChangeListener)
+   */
+  public synchronized PropertyChangeListener [ ] getPropertyChangeListeners ( )
+  {
+    if ( this.changeSupport == null )
+    {
+      return new PropertyChangeListener [ 0 ] ;
+    }
+    return this.changeSupport.getPropertyChangeListeners ( ) ;
+  }
+
+
+  /**
+   * Returns an array of all the listeners which have been associated with the
+   * named property.
+   * 
+   * @param propertyName a valid property name.
+   * @return all of the {@link PropertyChangeListener}s associated with the
+   *         named property or an empty array if no listeners have been added
+   */
+  public synchronized PropertyChangeListener [ ] getPropertyChangeListeners (
+      String propertyName )
+  {
+    if ( this.changeSupport == null )
+    {
+      return new PropertyChangeListener [ 0 ] ;
+    }
+    return this.changeSupport.getPropertyChangeListeners ( propertyName ) ;
+  }
+
+
+  //
+  // Initialization
+  //
+  /**
+   * Initializes the attributes to use the fonts from the current theme.
+   */
+  protected void initAttributes ( )
+  {
+    // determine the current font family and size
+    String fontFamily = this.theme.getFont ( ).getFamily ( ) ;
+    int fontSize = this.theme.getFont ( ).getSize ( ) ;
+    // use the colors and font from the current theme
+    StyleConstants.setFontFamily ( this.normalSet , fontFamily ) ;
+    StyleConstants.setFontSize ( this.normalSet , fontSize ) ;
+    StyleConstants.setForeground ( this.attributes.get ( PrettyStyle.COMMENT ) ,
+        this.theme.getCommentColor ( ) ) ;
+    StyleConstants.setFontFamily ( this.attributes.get ( PrettyStyle.COMMENT ) ,
+        fontFamily ) ;
+    StyleConstants.setFontSize ( this.attributes.get ( PrettyStyle.COMMENT ) ,
+        fontSize ) ;
+    StyleConstants.setForeground (
+        this.attributes.get ( PrettyStyle.CONSTANT ) , this.theme
+            .getConstantColor ( ) ) ;
+    StyleConstants.setFontFamily (
+        this.attributes.get ( PrettyStyle.CONSTANT ) , fontFamily ) ;
+    StyleConstants.setFontSize ( this.attributes.get ( PrettyStyle.CONSTANT ) ,
+        fontSize ) ;
+    StyleConstants.setForeground ( this.attributes.get ( PrettyStyle.KEYWORD ) ,
+        this.theme.getKeywordColor ( ) ) ;
+    StyleConstants.setFontFamily ( this.attributes.get ( PrettyStyle.KEYWORD ) ,
+        fontFamily ) ;
+    StyleConstants.setFontSize ( this.attributes.get ( PrettyStyle.KEYWORD ) ,
+        fontSize ) ;
+    StyleConstants.setForeground ( this.attributes
+        .get ( PrettyStyle.IDENTIFIER ) , this.theme.getIdentifierColor ( ) ) ;
+    StyleConstants.setFontFamily ( this.attributes
+        .get ( PrettyStyle.IDENTIFIER ) , fontFamily ) ;
+    StyleConstants.setFontSize (
+        this.attributes.get ( PrettyStyle.IDENTIFIER ) , fontSize ) ;
+    StyleConstants.setForeground ( this.attributes.get ( PrettyStyle.TYPE ) ,
+        this.theme.getTypeColor ( ) ) ;
+    StyleConstants.setFontFamily ( this.attributes.get ( PrettyStyle.TYPE ) ,
+        fontFamily ) ;
+    StyleConstants.setFontSize ( this.attributes.get ( PrettyStyle.TYPE ) ,
+        fontSize ) ;
+  }
+
+
   //
   // Change handling
   //
@@ -298,19 +466,6 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
       throws BadLocationException
   {
     super.insertString ( offset , str , set ) ;
-    processChanged ( ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see javax.swing.text.Document#remove(int, int)
-   */
-  @ Override
-  public void remove ( int offset , int length ) throws BadLocationException
-  {
-    super.remove ( offset , length ) ;
     processChanged ( ) ;
   }
 
@@ -470,6 +625,30 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
               - startOffset [ i ] , errorSet , false ) ;
         }
       }
+      catch ( LanguageParserWarningException e )
+      {
+        // setup the warning attribute set
+        SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
+        StyleConstants.setBackground ( errorSet , warningColor ) ;
+        errorSet.addAttribute ( "warning" , e ) ; //$NON-NLS-1$
+        // check if this is unexpected end of file
+        if ( e.getLeft ( ) < 0 && e.getRight ( ) < 0 )
+        {
+          setCharacterAttributes ( getLength ( ) , getLength ( ) , errorSet ,
+              false ) ;
+        }
+        else
+        {
+          // apply the error character attribute set to indicate the syntax
+          // error
+          setCharacterAttributes ( e.getLeft ( ) , e.getRight ( )
+              - e.getLeft ( ) , errorSet , false ) ;
+        }
+        // add the exception to our list
+        tmpExceptions = new LanguageScannerException [ ]
+        { new LanguageParserWarningException ( e.getMessage ( ) ,
+            e.getRight ( ) , e.getRight ( ) ) } ;
+      }
       catch ( LanguageParserException e )
       {
         // setup the error attribute set
@@ -510,31 +689,16 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
   }
 
 
-  //
-  // Listener registration
-  //
   /**
-   * Adds a {@link PropertyChangeListener} to the listener list. The listener is
-   * registered for all bound properties of the derived class. If
-   * <code>listener</code> is <code>null</code>, no exception is thrown and
-   * no action is performed.
+   * {@inheritDoc}
    * 
-   * @param listener the {@link PropertyChangeListener} to be added.
-   * @see #getPropertyChangeListeners()
-   * @see #removePropertyChangeListener(PropertyChangeListener)
+   * @see javax.swing.text.Document#remove(int, int)
    */
-  public synchronized void addPropertyChangeListener (
-      PropertyChangeListener listener )
+  @ Override
+  public void remove ( int offset , int length ) throws BadLocationException
   {
-    if ( listener == null )
-    {
-      return ;
-    }
-    if ( this.changeSupport == null )
-    {
-      this.changeSupport = new PropertyChangeSupport ( this ) ;
-    }
-    this.changeSupport.addPropertyChangeListener ( listener ) ;
+    super.remove ( offset , length ) ;
+    processChanged ( ) ;
   }
 
 
@@ -560,51 +724,6 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
 
 
   /**
-   * Returns an array of all the property change listeners registered on this
-   * object.
-   * 
-   * @return all of this object's {@link PropertyChangeListener}s or an empty
-   *         array if no property change listeners are currently registered.
-   * @see #addPropertyChangeListener(PropertyChangeListener)
-   * @see #removePropertyChangeListener(PropertyChangeListener)
-   */
-  public synchronized PropertyChangeListener [ ] getPropertyChangeListeners ( )
-  {
-    if ( this.changeSupport == null )
-    {
-      return new PropertyChangeListener [ 0 ] ;
-    }
-    return this.changeSupport.getPropertyChangeListeners ( ) ;
-  }
-
-
-  /**
-   * Adds a {@link PropertyChangeListener} to the listener list for a specific
-   * property. The specified property may be user-defined, or one of the
-   * properties provided by the object. If <code>listener</code> is
-   * <code>null</code>, no exception is thrown and no action is performed.
-   * 
-   * @param propertyName one of the property names of the object.
-   * @param listener the {@link PropertyChangeListener} to be added.
-   * @see #removePropertyChangeListener(String, PropertyChangeListener)
-   * @see #getPropertyChangeListeners(String)
-   */
-  public synchronized void addPropertyChangeListener ( String propertyName ,
-      PropertyChangeListener listener )
-  {
-    if ( listener == null )
-    {
-      return ;
-    }
-    if ( this.changeSupport == null )
-    {
-      this.changeSupport = new PropertyChangeSupport ( this ) ;
-    }
-    this.changeSupport.addPropertyChangeListener ( propertyName , listener ) ;
-  }
-
-
-  /**
    * Removes a {@link PropertyChangeListener} from the listener list for a
    * specific property. This method should be used to remove
    * {@link PropertyChangeListener}s that were registered for a specific bound
@@ -624,93 +743,5 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
       return ;
     }
     this.changeSupport.removePropertyChangeListener ( propertyName , listener ) ;
-  }
-
-
-  /**
-   * Returns an array of all the listeners which have been associated with the
-   * named property.
-   * 
-   * @param propertyName a valid property name.
-   * @return all of the {@link PropertyChangeListener}s associated with the
-   *         named property or an empty array if no listeners have been added
-   */
-  public synchronized PropertyChangeListener [ ] getPropertyChangeListeners (
-      String propertyName )
-  {
-    if ( this.changeSupport == null )
-    {
-      return new PropertyChangeListener [ 0 ] ;
-    }
-    return this.changeSupport.getPropertyChangeListeners ( propertyName ) ;
-  }
-
-
-  //
-  // Listener invocation
-  //
-  /**
-   * Support for reporting bound property changes for Object properties. This
-   * method can be called when a bound property has changed and it will send the
-   * appropriate {@link PropertyChangeEvent} to any registered
-   * {@link PropertyChangeListener}s.
-   * 
-   * @param propertyName the property whose value has changed.
-   * @param oldValue the property's previous value.
-   * @param newValue the property's new value.
-   */
-  protected void firePropertyChange ( String propertyName , Object oldValue ,
-      Object newValue )
-  {
-    PropertyChangeSupport tmpChangeSupport = this.changeSupport ;
-    if ( tmpChangeSupport == null )
-    {
-      return ;
-    }
-    tmpChangeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
-  }
-
-
-  /**
-   * Support for reporting bound property changes for boolean properties. This
-   * method can be called when a bound property has changed and it will send the
-   * appropriate {@link PropertyChangeEvent} to any registered
-   * {@link PropertyChangeListener}s.
-   * 
-   * @param propertyName the propery whose value has changed.
-   * @param oldValue the property's previous value.
-   * @param newValue the property's new value.
-   */
-  protected void firePropertyChange ( String propertyName , boolean oldValue ,
-      boolean newValue )
-  {
-    PropertyChangeSupport tmpChangeSupport = this.changeSupport ;
-    if ( tmpChangeSupport == null )
-    {
-      return ;
-    }
-    tmpChangeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
-  }
-
-
-  /**
-   * Support for reporting bound property changes for boolean properties. This
-   * method can be called when a bound property has changed and it will send the
-   * appropriate {@link PropertyChangeEvent} to any registered
-   * {@link PropertyChangeListener}s.
-   * 
-   * @param propertyName the propery whose value has changed.
-   * @param oldValue the property's previous value.
-   * @param newValue the property's new value.
-   */
-  protected void firePropertyChange ( String propertyName , int oldValue ,
-      int newValue )
-  {
-    PropertyChangeSupport tmpChangeSupport = this.changeSupport ;
-    if ( tmpChangeSupport == null )
-    {
-      return ;
-    }
-    tmpChangeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
   }
 }

@@ -2,6 +2,7 @@ import de.unisiegen.tpml.core.types.*;
 import de.unisiegen.tpml.core.expressions.*;
 import java.util.ArrayList;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+import de.unisiegen.tpml.core.exceptions.LanguageParserWarningException;
 import de.unisiegen.tpml.core.languages.LanguageParserException;
 import de.unisiegen.tpml.core.Messages ;
 import java.text.MessageFormat;
@@ -36,11 +37,6 @@ action code
  
   private static class Error
   {
-    public static void expect(String pSymbol, String ... pTokenSequence)
-    {
-      expect (0, 0, pSymbol, pTokenSequence);
-    }
-    
     public static void expect(int pLeft, int pRight, String pSymbol, String ... pTokenSequence)
     {
       String or = Messages.getString ( "Parser.15" ) ;
@@ -60,7 +56,7 @@ action code
           result += ", \"" + pTokenSequence [i]+ "\"";
         }
       }
-      throw new LanguageParserException (  
+      throw new LanguageParserWarningException (  
         MessageFormat.format ( "<html>" + Messages.getString ( "Parser.14" ) + "</html>", 
           result, pSymbol), pLeft, pRight);
     }
@@ -167,6 +163,7 @@ non terminal TypeName				type_name;
 non terminal RecType				rec_type;
 
 /* Error non terminals */
+non terminal 		epsilon;
 non terminal 		simple_type_error;
 non terminal 		arrow_type_error;
 non terminal 		object_type_error;
@@ -191,8 +188,6 @@ type							::=	simple_type:t
 
 simple_type						::=	LPAREN:l type:t RPAREN:r
 									{: RESULT = t; :}
-								|	LPAREN type simple_type_error
-									{: :}
 								|	boolean_type:b
 									{: RESULT = b; :}
 								|	integer_type:i
@@ -207,20 +202,24 @@ simple_type						::=	LPAREN:l type:t RPAREN:r
 									{: RESULT = r; :}
 								|	object_type:t
 									{: RESULT = t; :}
+								|	simple_type_error
+									{: :}
 								;
 
-simple_type_error				::= /* epsilon */
-									{: Error.expect("Type", ")"); :}
+simple_type_error				::= LPAREN:l epsilon
+									{: Error.expect(lleft, lright, "Type", "\u03C4)"); :}
+								|	LPAREN:l type:t epsilon
+									{: Error.expect(lleft, tright, "Type", ")"); :}
 								;
 
 arrow_type						::= type:t1 ARROW type:t2
 									{: RESULT = new ArrowType(t1, t2, t1left, t2right); :}
-								|	type ARROW arrow_type_error
+								|	arrow_type_error
 									{: :}
 								;
 
-arrow_type_error				::= /* epsilon */
-									{: Error.expect("Arrow-Type", "\u03C4<sub>2</sub>"); :}
+arrow_type_error				::= type:t ARROW:a epsilon 
+									{: Error.expect(tleft, aright, "Arrow-Type", "\u03C4<sub>2</sub>"); :}
 								;
 
 boolean_type					::= BOOL:b
@@ -245,16 +244,16 @@ type_name						::= IDENTIFIER:id
 
 rec_type						::= MU:m IDENTIFIER:id DOT type:t
 									{: RESULT = new RecType(new TypeName(id, idleft, idright), t, mleft, tright); :}
-								|	MU rec_type_error
+								|	rec_type_error
 									{: :}								
 								;
 
-rec_type_error					::= /* epsilon */
-									{: Error.expect("Rec-Type", "t.\u03C4"); :}
-								|	IDENTIFIER
-									{: Error.expect("Rec-Type", ".\u03C4"); :}
-								|	IDENTIFIER DOT
-									{: Error.expect("Rec-Type", "\u03C4"); :}
+rec_type_error					::= MU:m epsilon
+									{: Error.expect(mleft, mright, "Rec-Type", "t.\u03C4"); :}
+								|	MU:m IDENTIFIER:i epsilon
+									{: Error.expect(mleft, iright, "Rec-Type", ".\u03C4"); :}
+								|	MU:m IDENTIFIER DOT:d epsilon
+									{: Error.expect(mleft, dright, "Rec-Type", "\u03C4"); :}
 								;
 
 object_type						::= LESS:l row_type:r GREATER:g
@@ -268,14 +267,14 @@ object_type						::= LESS:l row_type:r GREATER:g
 									   MonoType [] types = new MonoType [0];
 									   RESULT = new ObjectType ( new RowType (m, types), lleft, gright);
 									:}
-								|	LESS object_type_error
+								|	object_type_error
 									{: :}
 								;
 
-object_type_error				::= /* epsilon */
-									{: Error.expect("Object-Type", "m<sub>1</sub>: \u03C4; ... m<sub>n</sub>: \u03C4; >"); :}
-								|	row_type
-									{: Error.expect("Object-Type", "... m<sub>n</sub>: \u03C4; >"); :}
+object_type_error				::= LESS:l epsilon
+									{: Error.expect(lleft, lright, "Object-Type", "m<sub>1</sub>: \u03C4; ... m<sub>n</sub>: \u03C4; >"); :}
+								|	LESS:l row_type:r epsilon
+									{: Error.expect(lleft, rright, "Object-Type", "... m<sub>n</sub>: \u03C4; >"); :}
 								;
 
 row_type						::= IDENTIFIER:id COLON type:tau SEMI:s
@@ -296,14 +295,18 @@ row_type						::= IDENTIFIER:id COLON type:tau SEMI:s
 									   System.arraycopy ( r.getTypes() , 0 , types , 1 , r.getTypes().length );
 									   RESULT = new RowType (m, types, idleft, rright) ;
 									:}
-								|	IDENTIFIER row_type_error
+								|	row_type_error
 									{: :}
 								;
 
-row_type_error					::= /* epsilon */
-									{: Error.expect("Object-Type", ": \u03C4 ; ... m<sub>n</sub>: \u03C4; >"); :}
-								|	COLON
-									{: Error.expect("Object-Type", "\u03C4 ; ... m<sub>n</sub>: \u03C4; >"); :}
-								|	COLON type
-									{: Error.expect("Object-Type", "; ... m<sub>n</sub>: \u03C4; >"); :}
+row_type_error					::= IDENTIFIER:i epsilon
+									{: Error.expect(ileft, iright, "Row-Type", ": \u03C4 ; ... m<sub>n</sub>: \u03C4;"); :}
+								|	IDENTIFIER:i COLON:c epsilon
+									{: Error.expect(ileft, cright, "Row-Type", "\u03C4 ; ... m<sub>n</sub>: \u03C4;"); :}
+								|	IDENTIFIER:i COLON type:t epsilon
+									{: Error.expect(ileft, tright, "Row-Type", "; ... m<sub>n</sub>: \u03C4;"); :}
+								;
+
+epsilon							::= /* epsilon */
+									{: :}	
 								;

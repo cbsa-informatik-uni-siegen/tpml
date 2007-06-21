@@ -11,6 +11,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+import de.unisiegen.tpml.core.exceptions.LanguageParserWarningException;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.AbstractLanguageTypeScanner;
 import de.unisiegen.tpml.core.languages.Language;
@@ -40,6 +41,11 @@ public class StyledTypeEnterField extends StyledLanguageDocument {
 	 */
 	private static final long serialVersionUID = 4465272372914939214L;
 
+  /**
+   * The warning color.
+   */
+  private static Color warningColor = new Color ( 232 , 242 , 254 ) ;
+  
 	/**
 	 * Allocates a new <code>StyledTypeEnterDocument</code> for the given
 	 * <code>language</code>, where the <code>language</code> is used to
@@ -196,7 +202,31 @@ public class StyledTypeEnterField extends StyledLanguageDocument {
 						setCharacterAttributes ( startOffset[i], endOffset[i]
 								- startOffset[i], errorSet, false );
 					}
-				} catch (LanguageParserException e) {
+          
+				}       catch ( LanguageParserWarningException e )
+        {
+          // setup the warning attribute set
+          SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
+          StyleConstants.setBackground ( errorSet , warningColor ) ;
+          errorSet.addAttribute ( "warning" , e ) ; //$NON-NLS-1$
+          // check if this is unexpected end of file
+          if ( e.getLeft ( ) < 0 && e.getRight ( ) < 0 )
+          {
+            setCharacterAttributes ( getLength ( ) , getLength ( ) , errorSet ,
+                false ) ;
+          }
+          else
+          {
+            // apply the error character attribute set to indicate the syntax
+            // error
+            setCharacterAttributes ( e.getLeft ( ) , e.getRight ( )
+                - e.getLeft ( ) , errorSet , false ) ;
+          }
+          // add the exception to our list
+          exceptions = new LanguageScannerException [ ]
+          { new LanguageParserWarningException ( e.getMessage ( ) ,
+              e.getRight ( ) , e.getRight ( ) ) } ;
+        }catch (LanguageParserException e) {
 					// setup the error attribute set
 					SimpleAttributeSet errorSet = new SimpleAttributeSet ( );
 					StyleConstants.setForeground ( errorSet, Color.RED );

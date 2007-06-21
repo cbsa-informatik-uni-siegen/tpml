@@ -1,6 +1,7 @@
 import de.unisiegen.tpml.core.expressions.*;
 import de.unisiegen.tpml.core.types.*;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+import de.unisiegen.tpml.core.exceptions.LanguageParserWarningException;
 import de.unisiegen.tpml.core.languages.LanguageParserException;
 import de.unisiegen.tpml.core.Messages ;
 import java.text.MessageFormat;
@@ -36,11 +37,6 @@ action code
  
   private static class Error
   {
-    public static void expect(String pSymbol, String ... pTokenSequence)
-    {
-      expect (0, 0, pSymbol, pTokenSequence);
-    }
-    
     public static void expect(int pLeft, int pRight, String pSymbol, String ... pTokenSequence)
     {
       String or = Messages.getString ( "Parser.15" ) ;
@@ -60,7 +56,7 @@ action code
           result += ", \"" + pTokenSequence [i]+ "\"";
         }
       }
-      throw new LanguageParserException (  
+      throw new LanguageParserWarningException (  
         MessageFormat.format ( "<html>" + Messages.getString ( "Parser.14" ) + "</html>", 
           result, pSymbol), pLeft, pRight);
     }
@@ -156,12 +152,12 @@ non terminal Expression				simple_expr;
 non terminal Expression[]			simple_expr_list;
 non terminal Identifier				identifier;
 non terminal Expression				application;
-non terminal Lambda					lambda;
+non terminal Lambda					lambda_l1;
 
 /* Error non terminals */
-non terminal 		lambda_error;
-non terminal 		simple_expr_error_1;
-non terminal 		simple_expr_error_2;
+non terminal 		epsilon;
+non terminal 		lambda_l1_error;
+non terminal 		simple_expr_error;
 
 				
 /***************
@@ -173,7 +169,7 @@ expr							::=	simple_expr:e
 									{: RESULT = e; :}
 								|   application:a
 									{: RESULT = a; :}
-								|	lambda:l
+								|	lambda_l1:l
 									{: RESULT = l; :}
 								;
 
@@ -193,36 +189,32 @@ application						::= simple_expr:e simple_expr_list:l
 						   			:}
 								;
 
-lambda							::= LAMBDA:l IDENTIFIER:id DOT expr:e
+lambda_l1						::= LAMBDA:l IDENTIFIER:id DOT expr:e
 									{: RESULT = new Lambda(new Identifier (id,idleft,idright), null, e, lleft, eright); :}
-								|	LAMBDA lambda_error
+								|	lambda_l1_error
 									{: :}
 								;
 
-lambda_error					::= /* epsilon */
-									{: Error.expect("Lambda", "id.e" ); :}
-								|	IDENTIFIER
-									{: Error.expect("Lambda", ".e" ); :}
-								|	IDENTIFIER DOT
-									{: Error.expect("Lambda", "e" ); :}
+lambda_l1_error					::= LAMBDA:l epsilon
+									{: Error.expect(lleft, lright, "Lambda", "id.e" ); :}
+								|	LAMBDA:l IDENTIFIER:i epsilon
+									{: Error.expect(lleft, iright, "Lambda", ".e" ); :}
+								|	LAMBDA:l IDENTIFIER DOT:d epsilon
+									{: Error.expect(lleft, dright, "Lambda", "e" ); :}
 								;
 
 simple_expr						::=	identifier:id
 									{: RESULT = id; :}
 								|	LPAREN expr:e RPAREN
 									{: RESULT = e; :}
-								|	LPAREN expr simple_expr_error_1
-									{: :}
-								|	LPAREN simple_expr_error_2
+								|	simple_expr_error
 									{: :}
 								;
 
-simple_expr_error_1				::= /* epsilon */
-									{: Error.expect("Expression", ")"); :}
-								;
-
-simple_expr_error_2				::= /* epsilon */
-									{: Error.expect("Expression", "... )"); :}
+simple_expr_error				::= LPAREN:l expr:e epsilon
+									{: Error.expect(lleft, eright, "Expression", ")"); :}
+								|	LPAREN:l epsilon
+									{: Error.expect(lleft, lright, "Expression", "... )"); :}
 								;
 
 simple_expr_list				::=	simple_expr:e
