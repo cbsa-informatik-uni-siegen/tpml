@@ -211,10 +211,10 @@ simple_expr						::=	identifier:id
 									{: :}
 								;
 
-simple_expr_error				::= LPAREN:l expr:e epsilon
-									{: Error.expect(lleft, eright, "Expression", ")"); :}
-								|	LPAREN:l epsilon
+simple_expr_error				::= LPAREN:l epsilon
 									{: Error.expect(lleft, lright, "Expression", "... )"); :}
+ 								|	LPAREN:l expr:e epsilon
+									{: Error.expect(lleft, eright, "Expression", ")"); :}
 								;
 
 simple_expr_list				::=	simple_expr:e
@@ -225,4 +225,8 @@ simple_expr_list				::=	simple_expr:e
 									   System.arraycopy(l, 0, RESULT, 0, l.length);
 									   RESULT[l.length] = e;
 									:}
+								;
+
+epsilon							::= /* epsilon */
+									{: :}	
 								;
