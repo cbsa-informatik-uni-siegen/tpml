@@ -84,11 +84,11 @@ public class SubstitutionRenderer extends AbstractRenderer {
 		this.collapsedString = null;
 		if (defaultTypeSubstitutionList.size() > 0) {
 			
-			this.collapsedString = defaultTypeSubstitutionList.get(0).toString();
+			this.collapsedString = "<html>" + defaultTypeSubstitutionList.get(0).toString();
 			
 			for (int i = 1 ; i < defaultTypeSubstitutionList.size(); i++)
 			{				
-				this.collapsedString += ", " + defaultTypeSubstitutionList.get(i).toString();
+				this.collapsedString += " <br> " + defaultTypeSubstitutionList.get(i).toString();
 			}
 		}
 	}
