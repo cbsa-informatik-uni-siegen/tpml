@@ -753,6 +753,8 @@ public final class DefaultOutline implements Outline
     // Sorted children
     else
     {
+      ArrayList < PrettyPrintable > notFound = new ArrayList < PrettyPrintable > (
+          sortedChildren.length ) ;
       for ( int i = 0 ; i < sortedChildren.length ; i ++ )
       {
         PrettyPrintable current = sortedChildren [ i ] ;
@@ -812,6 +814,37 @@ public final class DefaultOutline implements Outline
               found = true ;
               break ;
             }
+          }
+        }
+        if ( ! found )
+        {
+          notFound.add ( current ) ;
+        }
+      }
+      // Not found PrettyPrintables
+      if ( notFound.size ( ) > 0 )
+      {
+        for ( PrettyPrintable current : notFound )
+        {
+          if ( current instanceof Identifier )
+          {
+            outlineNodeId = new OutlineNode ( ( Identifier ) current , - 1 ,
+                null ) ;
+            pOutlineNode.add ( outlineNodeId ) ;
+          }
+          else if ( current instanceof Type )
+          {
+            outlineNodeType = new OutlineNode ( ( Type ) current ,
+                this.outlineUnbound , - 1 ) ;
+            createType ( ( Type ) current , outlineNodeType ) ;
+            pOutlineNode.add ( outlineNodeType ) ;
+          }
+          else if ( current instanceof Expression )
+          {
+            outlineNodeE = new OutlineNode ( ( Expression ) current ,
+                this.outlineUnbound , - 1 ) ;
+            createExpression ( ( Expression ) current , outlineNodeE ) ;
+            pOutlineNode.add ( outlineNodeE ) ;
           }
         }
       }
@@ -874,8 +907,9 @@ public final class DefaultOutline implements Outline
         typeNamesBound = getTypeNamesBound ( pType ) ;
       }
     }
-    OutlineNode outlineNodeId ;
     OutlineNode outlineNodeType ;
+    OutlineNode outlineNodeTypeName ;
+    OutlineNode outlineNodeId ;
     OutlineBinding < TypeName > outlineBinding ;
     // No sorted children
     if ( sortedChildren == null )
@@ -904,9 +938,9 @@ public final class DefaultOutline implements Outline
             outlineBinding = new OutlineBinding < TypeName > ( typeNamesBound
                 .get ( i ) ) ;
           }
-          outlineNodeId = new OutlineNode ( typeNames [ i ] ,
+          outlineNodeTypeName = new OutlineNode ( typeNames [ i ] ,
               typeNamesIndex [ i ] , outlineBinding ) ;
-          pOutlineNode.add ( outlineNodeId ) ;
+          pOutlineNode.add ( outlineNodeTypeName ) ;
         }
       }
       // Type
@@ -924,6 +958,8 @@ public final class DefaultOutline implements Outline
     // Sorted children
     else
     {
+      ArrayList < PrettyPrintable > notFound = new ArrayList < PrettyPrintable > (
+          sortedChildren.length ) ;
       for ( int i = 0 ; i < sortedChildren.length ; i ++ )
       {
         PrettyPrintable current = sortedChildren [ i ] ;
@@ -948,18 +984,21 @@ public final class DefaultOutline implements Outline
         {
           for ( int j = 0 ; j < typeNames.length ; j ++ )
           {
-            if ( typeNamesBound == null )
+            if ( current == typeNames [ j ] )
             {
-              outlineBinding = null ;
+              if ( typeNamesBound == null )
+              {
+                outlineBinding = null ;
+              }
+              else
+              {
+                outlineBinding = new OutlineBinding < TypeName > (
+                    typeNamesBound.get ( j ) ) ;
+              }
+              outlineNodeTypeName = new OutlineNode ( typeNames [ j ] ,
+                  typeNamesIndex [ j ] , outlineBinding ) ;
+              pOutlineNode.add ( outlineNodeTypeName ) ;
             }
-            else
-            {
-              outlineBinding = new OutlineBinding < TypeName > ( typeNamesBound
-                  .get ( j ) ) ;
-            }
-            outlineNodeId = new OutlineNode ( typeNames [ j ] ,
-                typeNamesIndex [ j ] , outlineBinding ) ;
-            pOutlineNode.add ( outlineNodeId ) ;
           }
         }
         // Type
@@ -976,6 +1015,35 @@ public final class DefaultOutline implements Outline
               found = true ;
               break ;
             }
+          }
+        }
+        if ( ! found )
+        {
+          notFound.add ( current ) ;
+        }
+      }
+      // Not found PrettyPrintables
+      if ( notFound.size ( ) > 0 )
+      {
+        for ( PrettyPrintable current : notFound )
+        {
+          if ( current instanceof Identifier )
+          {
+            outlineNodeId = new OutlineNode ( ( Identifier ) current , - 1 ,
+                null ) ;
+            pOutlineNode.add ( outlineNodeId ) ;
+          }
+          else if ( current instanceof TypeName )
+          {
+            outlineNodeId = new OutlineNode ( ( TypeName ) current , - 1 , null ) ;
+            pOutlineNode.add ( outlineNodeId ) ;
+          }
+          else if ( current instanceof Type )
+          {
+            outlineNodeType = new OutlineNode ( ( Type ) current ,
+                this.outlineUnbound , - 1 ) ;
+            createType ( ( Type ) current , outlineNodeType ) ;
+            pOutlineNode.add ( outlineNodeType ) ;
           }
         }
       }

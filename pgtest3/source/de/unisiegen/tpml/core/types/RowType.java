@@ -452,8 +452,17 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    */
   public PrettyPrintable [ ] getSortedChildren ( )
   {
-    PrettyPrintable [ ] result = new PrettyPrintable [ this.identifiers.length
-        + this.types.length ] ;
+    PrettyPrintable [ ] result ;
+    if ( this.remainingRowType == null )
+    {
+      result = new PrettyPrintable [ this.identifiers.length
+          + this.types.length ] ;
+    }
+    else
+    {
+      result = new PrettyPrintable [ this.identifiers.length
+          + this.types.length + 1 ] ;
+    }
     for ( int i = 0 ; i < this.identifiers.length + this.types.length ; i ++ )
     {
       if ( i % 2 == 0 )
@@ -464,6 +473,10 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
       {
         result [ i ] = this.types [ i / 2 ] ;
       }
+    }
+    if ( this.remainingRowType != null )
+    {
+      result [ result.length - 1 ] = this.remainingRowType ;
     }
     return result ;
   }
