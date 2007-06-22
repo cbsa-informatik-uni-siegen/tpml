@@ -6,9 +6,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Enumeration;
-
 import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.interfaces.BoundTypeNames;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.TypeFormula;
@@ -91,26 +89,14 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 * Can be used to determin where a ToolTip should be displayed.
 	 */
 	private Rectangle						collapsedArea;
-	
+
 	/**
-	 * Containing all the informations that are not shown. When
-	 * the environment is collpased.
-	 */
-	private String							collapsedString;
-	
-	/**
-	 * 
-	 */
-	//private static final String	collapsString = ", ...";
-	
-	
-	/**
-	 * 
+	 * The Arrow renderd between typeenvironment and the expression
 	 */
 	private static final String	arrowString = "\u22b3";
 	
 	/**
-	 * 
+	 * constructor
 	 *
 	 */
 	public TypeFormularRenderer() {
@@ -132,31 +118,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	public void setTypeFormulaList (ArrayList <TypeFormula> typeFormulaListP ) 
 	{
 		this.typeFormulaList = typeFormulaListP ;
-		
-		
-		// create the string that can be shown in an tooltip 
-		// on level above in the CompoundExpression
-		//Enumeration<S> env = environment.symbols();
-		
-		this.collapsedString = null;
-		
-		//TODO das wird kompliziert, da viele collapsedStrings nötig werden...
-		//get every item from list, check if enviroment...
-		//int countEnviroments...
-		//for (int i = 0; i>typeFormulaList.size(); i++)
-		//{
-//			
-//		}
-//		
-//		if (typeFormulaList.size() > 0) {
-//			
-//			this.collapsedString = typeFormulaList.get(0).toString();
-//			
-//			for (int i = 1 ; i < typeFormulaList.size(); i++)
-//			{				
-//				this.collapsedString += ", " + typeFormulaList.get(i).toString();
-//			}
-//		}
+    
+
 	}
 	
 	/**
@@ -169,22 +132,22 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		this.toListenForM = tlfmcP;
 	}
 	
-	
+	//TODO wech
 	/**
 	 * Returns whether the environment was collapsed.
 	 * @return
 	 */
-	public boolean isCollapsed () {
-		return this.collapsed;
-	}
+	//public boolean isCollapsed () {
+//		return this.collapsed;
+//	}
 	
 	/**
 	 * Returns the area whre the ", ..." is diplayed.
 	 * @return
 	 */
-	public Rectangle getCollapsedArea () {
-		return this.collapsedArea;
-	}
+//	public Rectangle getCollapsedArea () {
+//		return this.collapsedArea;
+//	}
 	
 	/**
 	 * returns a list of areas where the tooltips should be come the 1.
@@ -198,20 +161,10 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	}
 	
 	/**
-	 * Returns the information of the environment that 
-	 * are not displayed.
-	 * 
-	 * @return
-	 */
-	public String getCollapsedString () {
-		return this.collapsedString;
-	}
-	
-	/**
 	 * get the Strings for tooltips. the 1. string corresponds to the first 
 	 * element of the list of rectangles
 	 *
-	 * @return
+	 * @return the collapsedStrings
 	 */
 	public ArrayList <String> getCollapsedStrings ()
 	{
@@ -426,10 +379,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
       
       //we also need the space between the Elements
       result.height += ((typeFormulaList.size()-1) * SPACEBETWEENELEMENTS);
-      
-			//TODO nur zum testen, damit man sieht, wenn er wieder etwas zu tief verschiebt...
-			//result.height += AbstractRenderer.getAbsoluteHeight();
-			
+
 			return result;
 		}
 
@@ -535,8 +485,6 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					Dimension typeEquationSize = typeEquationStringrenderer.getNeededSize(Integer.MAX_VALUE);
 					//ShowBonds bound = new ShowBonds();
 				
-					//TODO wir wollen hier den haben, den auch die Compoundexpression hat
-					//ToListenForMouseContainer toListenForM = new ToListenForMouseContainer();
 					typeEquationStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.width, typeEquationSize.height, gc, bondTypeEquation, toListenForM);
 					
 					this.typeFprmularPostitions.add(new Rectangle(posX, posY+AbstractRenderer.fontDescent, typeEquationSize.width, typeEquationSize.height));
@@ -568,9 +516,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					TypeEnvironment environment = t.getEnvironment();
 					Expression expression = t.getExpression();
 					Type type = t.getType();
-					
-					//TODO die entsprechendne Renderer einbinden
-					
+
 					environment.symbols();
 					environment.identifiers();
 					environmentRenderer = new EnvironmentRenderer<Enumeration, Enumeration>();
@@ -592,7 +538,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					
 					//höhe = Math.max(höhe,  environmentRenderer.getNeededSize().height);
 					spaceToNexEntry = Math.max(0,  environmentRenderer.getNeededSize().height);
-					//TODO Umsetzen des Highlightextes...
+
 					String envCollapsedString = environmentRenderer.getCollapsedString();
 					if (envCollapsedString != null)
 					{
@@ -626,13 +572,12 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						expressionSize = expressionRenderer.getNeededSize(nochNutzbar);
 						spaceToNexEntry = Math.max(spaceToNexEntry, expressionSize.height);
 						posY += environmentSize.height;
-						//TODO ???
+				
 						expressionRenderer.render(posX, posY-AbstractRenderer.fontHeight, expressionSize.width, expressionSize.height, gc, bound, toListenForM);
 						
 					}
 					else
 					{
-						//TODO ???
 						expressionRenderer.render(posX, posY-AbstractRenderer.fontHeight / 2 - AbstractRenderer.fontAscent / 2, expressionSize.width ,expressionSize.height, gc, bound, toListenForM);
 					}
 					//prettyStringrenderer.render(posX, posY-(expressionSize.height / 2) - fontAscent / 2, expressionSize.height, gc, bound, toListenForM);
@@ -708,9 +653,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						//posY += typeSize.height;
 						posY += spaceToNexEntry;
             //posY += expressionSize.height;
-            
-						
-//					TODO test einen extrazeiel frei lassen
+
 						posY += SPACEBETWEENELEMENTS;
 					}
 
@@ -726,11 +669,13 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			{
 				gc.drawRect(markedArea.x, markedArea.y, markedArea.width, markedArea.height);
 			}
-			
-		}
-		
+		}		
 	}
 	
+	/**
+	 * @param vals
+	 * @return the max of all given vals;
+	 */
 	private static int realMax (int ... vals)
 	{
 		int result = vals[0];
