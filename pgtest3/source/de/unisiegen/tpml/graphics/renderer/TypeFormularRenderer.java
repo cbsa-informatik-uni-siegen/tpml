@@ -28,7 +28,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	/**
 	 * the space between two elements of the typeformulalist
 	 */
-	private static final int spaceBetweenLines = AbstractRenderer.getAbsoluteHeight() / 3;
+	private static final int SPACEBETWEENELEMENTS = AbstractRenderer.getAbsoluteHeight() /3;
 	
 	/**
 	 * the Renderer for the environments
@@ -335,9 +335,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						
 						//width of envireonment
 						lineWidthEnvironment += AbstractRenderer.keywordFontMetrics.stringWidth(environment.toString());
-						lineWidthEnvironment += AbstractRenderer.keywordFontMetrics.stringWidth(arrowString);
+						lineWidthEnvironment += AbstractRenderer.keywordFontMetrics.stringWidth("  "+arrowString+"  ");
 						restOfWidth -= AbstractRenderer.keywordFontMetrics.stringWidth(environment.toString());
-						restOfWidth -=AbstractRenderer.keywordFontMetrics.stringWidth(arrowString);
+						restOfWidth -=AbstractRenderer.keywordFontMetrics.stringWidth("  "+arrowString+"  ");
 						
 						//height of the environment
 						lineHeightEnvironment = AbstractRenderer.getAbsoluteHeight();
@@ -359,7 +359,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 							//Wenn der in der nächsten Zeile gerendert werden soll, dann hat er mehr Platz
 							expressionSize = prettyStringrenderer.getNeededSize(restOfWidth);
 							lineWidthExpression = insertSpace + expressionSize.width;
-							lineWidthExpression += AbstractRenderer.keywordFontMetrics.stringWidth(" :: ");
+							lineWidthExpression += AbstractRenderer.keywordFontMetrics.stringWidth("  ::  ");
 							restOfWidth -= lineWidthExpression;
 							lineHeightExpression = expressionSize.height;
 						}
@@ -411,7 +411,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						lineHeightTypeFormula += AbstractRenderer.getAbsoluteHeight();
 					}
 					
-					result.height += lineHeightEnvironment+lineHeightExpression+lineHeightType+lineHeightTypeFormula+spaceBetweenLines;
+					result.height += lineHeightEnvironment+lineHeightExpression+lineHeightType+lineHeightTypeFormula;
 					
 					int lineWidthMax = realMax(lineWidthEnvironment, lineWidthExpression, lineWidthType, lineWidthTypeFormula);
 					
@@ -423,8 +423,12 @@ public class TypeFormularRenderer extends AbstractRenderer {
 				}
 	
 			}
+      
+      //we also need the space between the Elements
+      result.height += ((typeFormulaList.size()-1) * SPACEBETWEENELEMENTS);
+      
 			//TODO nur zum testen, damit man sieht, wenn er wieder etwas zu tief verschiebt...
-			result.height += AbstractRenderer.getAbsoluteHeight();
+			//result.height += AbstractRenderer.getAbsoluteHeight();
 			
 			return result;
 		}
@@ -547,7 +551,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						posX = x+einrücken;
 						//posY += AbstractRenderer.fontHeight;
 						posY += typeEquationSize.height;
-						posY += spaceBetweenLines;
+						posY += SPACEBETWEENELEMENTS;
 					}
 				}
 				else if (t instanceof TypeJudgement)
@@ -598,9 +602,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					}
 					
 					gc.setColor(AbstractRenderer.expColor);
-					gc.drawString(arrowString, posX, posY);
-					posX += AbstractRenderer.expFontMetrics.stringWidth(arrowString);
-					nochNutzbar -= AbstractRenderer.expFontMetrics.stringWidth(arrowString);
+					gc.drawString("  "+arrowString+"  ", posX, posY);
+					posX += AbstractRenderer.expFontMetrics.stringWidth("  "+arrowString+"  ");
+					nochNutzbar -= AbstractRenderer.expFontMetrics.stringWidth("  "+arrowString+"  ");
 					
 					testAusgabe("Noich nutzbar nach Arrow: "+nochNutzbar);
 			
@@ -640,9 +644,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					
 					gc.setColor(AbstractRenderer.expColor);
 					gc.setFont(expFont);
-					gc.drawString("::", posX, posY);
-					posX += AbstractRenderer.expFontMetrics.stringWidth("::");
-					nochNutzbar -= AbstractRenderer.expFontMetrics.stringWidth("::");
+					gc.drawString("  ::  ", posX, posY);
+					posX += AbstractRenderer.expFontMetrics.stringWidth("  ::  ");
+					nochNutzbar -= AbstractRenderer.expFontMetrics.stringWidth("  ::  ");
 					
 					testAusgabe("Noich nutzbar nach :: : "+nochNutzbar);
 					
@@ -707,7 +711,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
             
 						
 //					TODO test einen extrazeiel frei lassen
-						posY += spaceBetweenLines;
+						posY += SPACEBETWEENELEMENTS;
 					}
 
 				}
