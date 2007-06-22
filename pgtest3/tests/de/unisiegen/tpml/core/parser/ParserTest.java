@@ -1266,6 +1266,14 @@ public class ParserTest
   public static void main ( String [ ] pArguments )
   {
     max ( ) ;
+    int countNormal = L0_NORMAL.length + L1_NORMAL.length + L2_NORMAL.length
+        + L2O_NORMAL.length + L3_NORMAL.length + L4_NORMAL.length ;
+    int countNormalType = L1TYPE_NORMAL.length + L2TYPE_NORMAL.length
+        + L2OTYPE_NORMAL.length + L3TYPE_NORMAL.length + L4TYPE_NORMAL.length ;
+    int countError = L0_ERROR.length + L1_ERROR.length + L2_ERROR.length
+        + L2O_ERROR.length + L3_ERROR.length + L4_ERROR.length ;
+    int countErrorType = L1TYPE_ERROR.length + L2TYPE_ERROR.length
+        + L2OTYPE_ERROR.length + L3TYPE_ERROR.length + L4TYPE_ERROR.length ;
     boolean l0Okay = test_L0 ( ) ;
     boolean l1Okay = test_L1 ( ) ;
     boolean l2Okay = test_L2 ( ) ;
@@ -1273,6 +1281,17 @@ public class ParserTest
     boolean l3Okay = test_L3 ( ) ;
     boolean l4Okay = test_L4 ( ) ;
     System.out.println ( "*** Overview ***" ) ;
+    System.out.flush ( ) ;
+    System.out.println ( "Count Normal:      " + countNormal ) ;
+    System.out.flush ( ) ;
+    System.out.println ( "Count Normal Type: " + countNormalType ) ;
+    System.out.flush ( ) ;
+    System.out.println ( "Count Error:       " + countError ) ;
+    System.out.flush ( ) ;
+    System.out.println ( "Count Error Type:  " + countErrorType ) ;
+    System.out.flush ( ) ;
+    System.out.println ( "Count           :  "
+        + ( countNormal + countNormalType + countError + countErrorType ) ) ;
     System.out.flush ( ) ;
     if ( l0Okay && l1Okay && l2Okay && l2OOkay && l3Okay && l4Okay )
     {
