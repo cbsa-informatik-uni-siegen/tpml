@@ -270,13 +270,13 @@ tuple_type_list					::= tuple_type_list:tl STAR type:t
 									:}
 								|	type:t1 STAR type:t2
 									{: RESULT = new MonoType[] { t1, t2 }; :}
-								|	tuple_type_list STAR tuple_type_list_error
-									{: :}
 								|	tuple_type_list_error
 									{: :}
 								;
 
-tuple_type_list_error			::= type:t STAR:s epsilon
+tuple_type_list_error			::= tuple_type_list:t STAR:s epsilon
+									{: Error.expect(tleft, sright, "Tuple-Type", "\u03C4"); :}
+								|	type:t STAR:s epsilon
 									{: Error.expect(tleft, sright, "Tuple-Type", "\u03C4"); :}
 								;
 
