@@ -404,7 +404,7 @@ public final class TypeEquationListTypeChecker
         }
         return eqns.unify ( ) ;
       }
-      // First remaining RowType
+      // Only first remaining RowType
       if ( tau1RemainingRow != null )
       {
         if ( tau2Identifiers.size ( ) > 0 )
@@ -427,7 +427,7 @@ public final class TypeEquationListTypeChecker
               newRowType , seenTypes ) ) ;
         }
       }
-      // Second remaining RowType
+      // Only second remaining RowType
       if ( tau2RemainingRow != null )
       {
         if ( tau1Identifiers.size ( ) > 0 )
@@ -450,6 +450,7 @@ public final class TypeEquationListTypeChecker
               tau2RemainingRow , seenTypes ) ) ;
         }
       }
+      // Cannot unify, because of the different methods
       if ( ( tau1Identifiers.size ( ) > 0 ) || ( tau2Identifiers.size ( ) > 0 ) )
       {
         throw new RuntimeException ( MessageFormat.format ( Messages
