@@ -7,7 +7,7 @@
 
 \section{"Uberblick}
 
-Das Menu {\bf Datei} enth"alt Funktionen zur Dateiverwaltung, wie
+Das Men"u {\bf Datei} enth"alt Funktionen zur Dateiverwaltung, wie
 beispielsweise "offnen und Schliessen. Weiterhin kann unter {\bf
 Zuletzt benutzt} schnell auf die aktuellsten Dateien zugegriffen
 werden. Unter {\bf Bearbeiten} sind Editorfunktionen enthalten. Die
@@ -16,7 +16,7 @@ und~\ref{Beweiswerkzeuge} genauer betrachtet. Mit {\bf
 Einstellungen...} kann die Schriftart und Gr"o"se global f"ur alle
 Editorkomponenten gesetzt werden. Weiterhin stellt man hier die
 Einf"arbung von Schl"usselworten im
-Quelltexteditor~\ref{Qelltexteditor} ein. Das Menu {\bf Beweis}
+Quelltexteditor~\ref{Qelltexteditor} ein. Das Men"u {\bf Beweis}
 enth"alt die einzelnen Beweiswerkzeuge und dient dazu zwischen dem
 {\bf Beginner} und {\bf Fortgeschrittener} Modus zu wechseln. Diese
 Modi beeintr"achtigen die bei den Beweisschritten zur Verf"ugung
@@ -28,17 +28,17 @@ angezeigt, der den Dateinamen angibt. Zwischen den Tabs kann mit
 {\bf Strg + Bildhoch/Bildrunter} und {\bf Alt + Rechts/Links}
 gewechselt werden.
 
-
 Jeder Datei ist eine Sprache fest zugeordnet. M"ochte man einen
 Ausdruck in einer anderen Sprache beweisen, so kann man hierf"ur
 einen neuen Editor "offnen und der Ausdruck kopieren. Alternativ
 kann auch die Dateiendung einer gespeicherten Datei ge"andert
-werden. Ist ein eigegebener Ausdruck, so wird dies links von der
-betroffenen Zeile durch ein Error-Icon markiert. Zus"atzlich wird
-der fehlerhafte Teil rot unterstrichen. Bewegt man den Mauszeiger
-"uber den markierten Text oder das Error-Icon, so erscheint ein
-Popup, das den Fehler genauer beschreibt. Ein Klick auf das
-Error-Icon bewirkt, dass der Textcursor an den fehlerhalfen Text
+werden. Ist ein eingegebener Ausdruck fehlerhaft, so wird dies links
+von der betroffenen Zeile durch ein Error-Icon markiert. Zus"atzlich 
+wird der fehlerhafte Teil rot unterstrichen.
+
+Bewegt man den Mauszeiger "uber den markierten Text oder das Error-Icon,
+so erscheint ein Tooltip, der den Fehler genauer beschreibt. Ein Klick
+auf das Error-Icon bewirkt, dass der Textcursor an den fehlerhalfen Text
 springt.
 
 \section {Beweiswerkzeuge}
@@ -51,14 +51,13 @@ Beweiswerkzeug erneut gestartet, so ersetzt der neue Beweis ein ggf.
 schon aktives Beweiswerkzeug des selben Typs. M"ochte man also zum
 Beispiel einen Small Step Beweis neu starten oder f"ur einen leicht
 ge"anderten Ausdruck erneut ausf"uhren, so kann dies "uber eine
-erneute Anwahl der Small Step Funktion im Menu {\bf Beweis}
+erneute Anwahl der Small Step Funktion im Men"u {\bf Beweis}
 geschehen. Dabei wird jedoch der aktive Small Step Interpreter durch
 den neuen ersetzt.
 
 Jedes Beweiswerkzeug verf"ugt "uber einen {\bf Beginner} und einen
 {\bf Fortgeschrittener} Modus. Diese Modi unterscheiden sich in den
-Regeln, zum Beweis des Ausdrucks zur Verf"ugung stehen. Zur Zeit
-betrifft diese Einstellung jedoch nur den Small Step Interpreter
+Regeln, zum Beweis des Ausdrucks zur Verf"ugung stehen.
 
 \section {Tutorials}
 Im folgenden wird anhand von einigen Beispielen in die
@@ -98,32 +97,32 @@ Small Step Interpreter.
 \end{center}
 \end{figure}
 
-Bewegt man nun den Mauscursor "uber den Buttons des Regelmenus
+Bewegt man nun den Mauscursor "uber den Buttons des Regelmen"us
 oberhalb des Pfeils f"ur den ersten Ableitungsschritt wird der Teil
 des Ausdrucks rot unterstrichen, der als n"achstes Abgeleitet werden
 soll, wie in Abbildung~\ref{FigureSmallStep} gezeigt.
 In unserem Falle ist dies der gesamte Ausdruck. Der n"achste
 Ableitungsschritt muss {\bf BETA-V} sein, um die 4 f"ur das x zu
 substituieren. Wir klicken also auf den Button und w"ahlen in dem
-erscheinenden Regelmenu den entsprechenden Eintrag aus. Alternativ
+erscheinenden Regelmen"u den entsprechenden Eintrag aus. Alternativ
 kann man auch einzelne Schritte oder den kompletten Beweis
 automatisch ausf"uhren lassen. F"ur einzelne Schritte klickt man
 entweder auf den gr"unen Pfeil oberhalb des Small Step Interpreters
-oder w"ahlt {\bf Raten} im Regelmenu. Eine komplette Beweisf"uhrung
-wird mittels {\bf Vervollst"andigen} im selben Menu vorgenommen.
+oder w"ahlt {\bf Raten} im Regelmen"u. Eine komplette Beweisf"uhrung
+wird mittels {\bf Vervollst"andigen} im selben Men"u vorgenommen.
 
 Ist man mit den Regeln vertraut, so kann man "uber {\bf Beweis}
 $\rightarrow$ {\bf Fortgeschrittener} einige Regeln ausblenden. Das
-Regelmenu enth"alt nun nur noch Regeln die spezifizieren was getan
+Regelmen"u enth"alt nun nur noch Regeln die spezifizieren was getan
 werden soll und nicht mehr genau wo. So muss zum Beispiel eine
 Bedingung nicht mehr mit {\bf COND-EVAL} ausgewertet werden. Man
 gibt w"ahlt lediglich {\bf COND-TRUE} bzw. {\bf COND-FALSE} aus.
 
 \subsection{Big Step Interpreter}
-Der Big Step Interpreter kann auch "uber das {\bf Beweis} Menu oder
+Der Big Step Interpreter kann auch "uber das {\bf Beweis} Men"u oder
 mit der Taste F11 gestartet werden. Zu beachten ist, dass man sich
 hierf"ur nicht zwingend im Quelltexteditor befinden muss. Auch beim
-Big Step Interpreter k"onnen Regeln "uber das Regelmenu ausgew"ahlt
+Big Step Interpreter k"onnen Regeln "uber das Regelmen"u ausgew"ahlt
 werden. Ist ein Unterbaum vollst"andig ausgewertet, so wird das
 ermittelte Ergebnis f"ur h"ohere Knoten "ubernommen. Da unser
 Beispiel lediglich einen Unterbaum f"ur die Regel {\bf BETA-VALUE}
@@ -145,7 +144,7 @@ Vervollst"andigen Funktion genau wie der Big Step Interpreter. Das
 Anf"ugen von Typvariablen geschieht bei Regelanwendung automatisch.
 
 Alternativ kann man mit der Funktion {\bf Typ eingeben} in dem
-Regelmenu selbst einen Typ f"ur den entsprechenden Teilbaum
+Regelmen"u selbst einen Typ f"ur den entsprechenden Teilbaum
 eingeben, wie in Abbildung~\ref{FigureTypeChecker} gezeigt.
 Der Typinferenzalgorithmus versucht dann den Unterbaum zu
 diesem Typ auszuwerten.
@@ -188,20 +187,52 @@ noch die Regel {\bf UNIFY} hinzugenommen. Die sich aus folgenden Ableitungsschri
 zusammensetzt:\\[4mm] 
 
 \begin{tabular}{ll}
-  (EMPTY)\  & $\unify(\emp) = [\,]$ \\[3mm]
-  (TRIV)\   & $\unify(\{\tau = \tau\} \cup E) = \unify(E)$\\[3mm]
-  (ARROW)\  & $\unify(\{\tau_1 \to \tau_2 = \tau'_1 \to \tau'_2\} \cup E)$\\[1mm]
-            & \quad $= \unify(\{\tau_1 = \tau'_1,\,\tau_2 = \tau'_2\} \cup E)$\\[3mm]
-  (VAR)\    & $\unify(\{\alpha = \tau\} \cup E) = \unify(\{\tau = \alpha\} \cup E)$\\[2mm]
-            & $\ =\, \bcase 
-                      [\tau/\alpha] \circ s & \mbox{falls } \alpha \notin \var{\tau} \mbox{ und } \unify(E[\tau/\alpha]) = s \\[2mm]
-                      \fail         & \mbox{falls } \alpha \notin \var{\tau} \mbox{ und } \unify(E[\tau/\alpha]) = \fail\\[1mm]
-                                    & \mbox{oder } \alpha \in \var{\tau} \mbox{ und } \alpha \neq \tau
-                     \ecase\vspace{3mm}$\\
-  (STRUCT)\ & $\unify(\{\tau_1 = \tau_2\} \cup E) = \fail$\\[1mm]
-            & \ in  allen anderen F\"allen
+  (EMPTY)\    & $\unify(A,\emp) = [\,]$ \\[3mm]
+  (ASSUME)\   & $\unify(A,\{\tau = \tau'\} \cup E) = \unify(A,E) \mbox{  falls } (\tau = \tau') \in A $\\[3mm]
+  (TRIV)\     & $\unify(A,\{\tau = \tau\} \cup E) = \unify(A,E)$\\[3mm]
+  (MU-LEFT)\  & $\unify(A,\{\rectype{t}{\tau} = \tau'\} \cup E) = 
+                 \unify(A,\{\tau [\rectype{t}{\tau}/t] = \tau'\} \cup E)$\\[3mm]
+  (MU-RIGHT)\ & $\unify(A,\{\tau = \rectype{t}{\tau'}\} \cup E) = 
+                 \unify(A,\{\tau = \tau' [\rectype{t}{\tau'}/t]\} \cup E)$\\[3mm]
+  (VAR)\      & $\unify(A,\{\alpha = \tau\} \cup E) = \unify(A,\{\tau = \alpha\} \cup E)$\\[2mm]
+              & $\ =\, \bcase 
+                        [\tau/\alpha] \circ s & 
+                        \mbox{falls } \alpha \notin \var{\tau} \mbox{ und } 
+                        \unify(E[\tau/\alpha]) = s \\[2mm]
+                        \fail         & \mbox{falls } \alpha \notin \var{\tau} \mbox{ und }\\&
+                        \unify(E[\tau/\alpha]) = \fail\\[1mm]
+                        & \mbox{oder } \alpha \in \var{\tau} \mbox{ und } \alpha \neq \tau
+                        \ecase\vspace{3mm}$\\
+  (ARROW)\    & $\unify(A,\{\tau_1 \to \tau_2 = \tau'_1 \to \tau'_2\} \cup E)$\\[1mm]
+              & \quad $= \unify(A \cup \{\tau_1 \to \tau_2 = \tau'_1 \to \tau'_2\},
+                \{\tau_1 = \tau'_1,\,\tau_2 = \tau'_2\} \cup E)$\\[3mm]
+  (TUPLE)\    & $\unify(A,\{\tau_1 *\ \ldots\ * \tau_n = \tau_1' *\ \ldots\ * \tau_n'\} \cup E)$\\[1mm]
+              & \quad $= \unify(A \cup \{\tau_1 *\ \ldots\ * \tau_n = \tau_1' *\ \ldots\ * \tau_n'\},$\\
+              & \quad \quad $\{\tau_1 = \tau_1',\ \ldots\ , \tau_n = \tau_n'\} \cup E)$\\[3mm]
+  (LIST)\     & $\unify(A,\{\listtype{\tau} = \listtype{\tau'} \} \cup E)$\\[1mm]
+              & \quad $= \unify(A \cup \{\listtype{\tau} = \listtype{\tau'} \},
+                         \{\tau = \tau' \} \cup E)$\\[3mm]
+  (REF)\      & $\unify(A,\{\reftype{\tau} = \reftype{\tau'} \} \cup E)$\\[1mm]
+              & \quad $= \unify(A \cup \{\reftype{\tau} = \reftype{\tau'} \},
+                         \{\tau = \tau' \} \cup E)$\\[3mm]
+  (OBJECT)\   & $\unify(A,\{\objecttype{\phi}\ =\ \objecttype{\phi'} \} \cup E)$\\[1mm]
+              & \quad $= \unify(A \cup \{\objecttype{\phi}\ =\ \objecttype{\phi'} \},
+                         \{\phi = \phi' \} \cup E)$\\[3mm]
+  (ROW)\      & $\unify(A,\{ (m_1 = \tau_1\ ;\ \ldots\ ;\ m_n = \tau_n;\ \phi)$\\
+              & \quad $= (m_1 = \tau_1'\ ;\ \ldots\ ;\ m_n = \tau_n';\ \phi') \} \cup E)$\\[1mm]
+              & \quad $= \unify(A \cup \{ (m_1 = \tau_1\ ;\ \ldots\ ;\ m_n = \tau_n;\ \phi)$\\
+              & \quad \quad $= (m_1 = \tau_1'\ ;\ \ldots\ ;\ m_n = \tau_n';\ \phi') \},$\\
+              & \quad \quad \quad $\{\tau_1 = \tau_1', \ \ldots\ ,\tau_n = \tau_n',
+                \phi = \phi' \} \cup E)$\\[3mm]
+  (STRUCT)\   & $\unify(A,\{\tau_1 = \tau_2\} \cup E) = \fail$\\[1mm]
+              & in  allen anderen F\"allen
 \end{tabular}\\[6mm]
- 
+Bei der Regel {\bf ROW} ist darauf zu achten, dass die Methodennamen nicht in der gleichen Reihenfolge
+vorkommen m"ussen. Ebenfalls m"ussen die Methodennamen nicht in beiden Reihen vorkommen, da f"ur den Fall, 
+dass $\phi$ nicht gleich $\epsilon$ ist, $\unify$ auch mit $\phi$ und den restlichen Methoden von $\tau'$ 
+aufgerufen werden kann. Zum Beispiel f"uhrt $\unify (A,\{ (b: \alpha_1 ; \alpha_2) = (a: int ; b: int ;)\}
+\cup E)$ zu dem Aufruf von $\unify (A \cup \{ (b: \alpha_1 ; \alpha_2) = (a: int ; b: int ;)\},
+\{\alpha_1 = int, \alpha_2 = a: int\} \cup E)$.
 
 
 % vi:set syntax=tex ts=2 sw=2 et encoding=UTF-8:

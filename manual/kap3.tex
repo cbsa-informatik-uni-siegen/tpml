@@ -574,7 +574,7 @@ Ein \notation{Typurteil} hei"st g"ultig f"ur \LTWOO, wenn es sich mit den Typreg
   \mbox{(SEND)\   } & $\regel{\Tj{\Gamma}{e}{<m:\tau;\phi>}}
                            {\Tj{\Gamma}{\send{e}{m}}{\tau}}$\\[5mm]
   \mbox{(OBJECT)\ } & $\regel{\Tj{\Gamma^*[\tau/self]}{r}{\phi}
-                             \quad \tau = <\phi>}
+                             \quad \tau =\ \objecttype{\phi}}
                              {\Tj{\Gamma}{\object{self:\tau}{r}}{\tau}}$\\[5mm]
   \mbox{(DUPL)\   } & $\regel{\Tj{\Gamma}{self}{\tau}
                               \quad \forall i = 1 \ldots n :
@@ -645,7 +645,7 @@ Die Menge der monomorphen Typen \notation{$\Type$} wird erweitert durch Produkti
 Typvariablen $\alpha\ldots\omega$.
 \bgram
 \tau \is \tau_1 * \ldots * \tau_n \qquad (n \ge 2)
-     \al \ltype{\tau'}
+     \al \listtype{\tau'}
      \al \alpha \mid \ldots \mid \omega
 \egram
 
@@ -707,12 +707,12 @@ Konstanten jetzt von der Form $\tj{c}{\pi}$ sind. F"ur die Konstanten der Sprach
 einfach der bisherige monomorphe Typ $\tau$, f"ur die mit \LTHREE\ neu hinzukommenden Konstanten sei es der
 polymorphe Typ, wie im Folgenden dargestellt.
 \begin{eqnarray*}
- [\,]         & :: & \forall\alpha.\,\ltype{\alpha} \\
-\Cons         & :: & \forall\alpha.\,\alpha * \ltype{\alpha}\to \ltype{\alpha}\\
-  \Hd         & :: & \forall\alpha.\,\ltype{\alpha} \to \alpha \\
-  \Tl         & :: & \forall\alpha.\,\ltype{\alpha} \to \ltype{\alpha}\\
-\Empty        & :: & \forall\alpha.\,\ltype{\alpha} \to \bool\\
- \coloncolon  & :: & \forall\alpha.\,\alpha \to \ltype{\alpha} \to \ltype{\alpha}\\
+ [\,]         & :: & \forall\alpha.\,\listtype{\alpha} \\
+\Cons         & :: & \forall\alpha.\,\alpha * \listtype{\alpha}\to \listtype{\alpha}\\
+  \Hd         & :: & \forall\alpha.\,\listtype{\alpha} \to \alpha \\
+  \Tl         & :: & \forall\alpha.\,\listtype{\alpha} \to \listtype{\alpha}\\
+\Empty        & :: & \forall\alpha.\,\listtype{\alpha} \to \bool\\
+ \coloncolon  & :: & \forall\alpha.\,\alpha \to \listtype{\alpha} \to \listtype{\alpha}\\
  \Fst         & :: & \forall\alpha_1,\alpha_2.\,\alpha_1 * \alpha_2 \to \alpha_1\\
  \Snd         & :: & \forall\alpha_1,\alpha_2.\,\alpha_1 * \alpha_2 \to \alpha_2\\
  \#n\_i       & :: & \forall\alpha_1,\ldots,\alpha_n.\,\alpha_1 * \ldots * \alpha_n \to \alpha_i \quad (1 \le i \le n)
@@ -744,7 +744,7 @@ es f"ur die Wohlgetyptheit nicht erforderlich ist, dass f"ur $\id$ ein polymorph
 F"ur Listen und Tupel werden die Regeln\\[3mm]
 \begin{tabular}{ll}
   \mbox{(LIST)\ } & $\regel{\Tj{\Gamma}{e_1}{\tau} \quad \ldots \quad \Tj{\Gamma}{e_n}{\tau}}
-                           {\Tj{\Gamma}{[e_1;\ldots;e_n]}{\ltype{\tau}}}$ \\[5mm]
+                           {\Tj{\Gamma}{[e_1;\ldots;e_n]}{\listtype{\tau}}}$ \\[5mm]
   \mbox{(TUPLE)\ }& $\regel{\Tj{\Gamma}{e_1}{\tau_1} \quad \ldots \quad \Tj{\Gamma}{e_n}{\tau_n}}
                            {\Tj{\Gamma}{(e_1,\ldots,e_n)}{\tau_1 * \ldots * \tau_n}}$
 \end{tabular}\\[7mm]
@@ -900,8 +900,10 @@ wobei $\id \not\in free(e_1) \cup free(e_2)$.
 \section{Konkrete Syntax}
 
 Da es mitunter nicht mit jeder herk"ommlichen Tastatur m"oglich ist $\lambda$ zu tippen kann stattdessen das
-Schl"usselwort $\textbf{lambda}$ benutzt werden. Typvariablen $\alpha,\beta,\ldots$ werden in der "ublichen
-OCaml-Schreibweise $\texttt{'a}, \texttt{'b},\ldots$ geschrieben, und f"ur Funktionstypen wird der Pfeil
+Schl"usselwort $\textbf{lambda}$ benutzt werden. Gleiches gilt f"ur das bei RecType verwendete $\mu$, 
+stattdessen kann das Schl"usselwort $\textbf{mu}$ benutzt werden.
+Typvariablen $\alpha,\beta,\ldots$ werden in der "ublichen OCaml-Schreibweise $\texttt{'a},
+\texttt{'b},\ldots$ geschrieben, und f"ur Funktionstypen wird der Pfeil
 $\to$ als $\texttt{->}$ notiert.
 
 
