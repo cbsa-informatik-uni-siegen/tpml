@@ -436,8 +436,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
     //ShowBonds sb = new ShowBonds();
     //sb.setType (this.proofNode.getType() );
     //ToListenForMouseContainer tlfmc = new ToListenForMouseContainer();
-    
-    System.out.println ("Scheiße!");
+   
     typePosition = posX;
     this.typeC.setBounds (posX, 0, typeSize.width, typeSize.height);
     //typeRenderer.render (typePosition, 0,typeRenderer.getNeededSize (maxWidth).width ,typeRenderer.getNeededSize (maxWidth).height, this.getGraphics (), sb, tlfmc);
