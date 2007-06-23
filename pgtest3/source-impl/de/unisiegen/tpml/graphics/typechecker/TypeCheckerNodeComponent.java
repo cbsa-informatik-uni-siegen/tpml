@@ -141,7 +141,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
    * The typeComponent containing the type of this node
    * 
    */
-  private TypeComponent typeC ;
+  private TypeComponent typeComponent ;
 
 
   /**
@@ -225,9 +225,9 @@ public class TypeCheckerNodeComponent extends JComponent implements
     this.compoundExpression
         .addMouseListener ( new OutlineMouseListener ( this ) ) ;
     add ( this.compoundExpression ) ;
-    this.typeC = new TypeComponent ();
-    this.typeC.addMouseListener ( new OutlineMouseListener (this));
-    add (this.typeC);
+    this.typeComponent = new TypeComponent ();
+    this.typeComponent.addMouseListener ( new OutlineMouseListener (this));
+    add (this.typeComponent);
     changeNode ( ) ;
     /*
      * Create both, the ruleButton for selecting the rule and the label, that
@@ -342,7 +342,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
   public void reset ( )
   {
     this.compoundExpression.reset ( ) ;
-    this.typeC.reset ();
+    this.typeComponent.reset ();
   }
 
 
@@ -365,7 +365,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
   {
     this.compoundExpression.setExpression ( this.proofNode.getExpression ( ) ) ;
     this.compoundExpression.setEnvironment ( this.proofNode.getEnvironment ( ) ) ;
-    this.typeC.setType (this.proofNode.getType ());
+    this.typeComponent.setType (this.proofNode.getType ());
   }
 
 
@@ -417,8 +417,8 @@ public class TypeCheckerNodeComponent extends JComponent implements
       this.typeLabel.setText(" :: "); //$NON-NLS-1$
     }
     //Dimension typeSize = this.typeLabel.getPreferredSize ( ) ;
-    Dimension typeSize = typeC.getNeededSize (maxWidth);
-    System.out.println("Die breite für die Type: "+typeSize.width);
+    Dimension typeSize = typeComponent.getNeededSize (maxWidth);
+
     this.dimension.width += typeSize.width ;
     this.dimension.height = Math.max ( typeSize.height , this.dimension.height ) ;
     // now place the components
@@ -438,7 +438,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
     //ToListenForMouseContainer tlfmc = new ToListenForMouseContainer();
    
     typePosition = posX;
-    this.typeC.setBounds (posX, 0, typeSize.width, typeSize.height);
+    this.typeComponent.setBounds (posX, 0, typeSize.width, typeSize.height);
     //typeRenderer.render (typePosition, 0,typeRenderer.getNeededSize (maxWidth).width ,typeRenderer.getNeededSize (maxWidth).height, this.getGraphics (), sb, tlfmc);
    
     posX += typeSize.width ;
@@ -784,7 +784,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
    */
   public TypeComponent getTypeComponent ( )
   {
-    return this.typeC ;
+    return this.typeComponent ;
   }
 
 

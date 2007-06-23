@@ -206,7 +206,7 @@ public class PrettyStringRenderer extends AbstractRenderer
       }
       if ( r.sizeOfResult.width < maxWidth )
       {
-        if ( biggestResult == null || biggestResult.sizeOfResult.width < r.sizeOfResult.width )
+        if ( biggestResult == null || biggestResult.sizeOfResult.width < r.sizeOfResult.width || biggestResult.sizeOfResult.height > r.sizeOfResult.height)
         {
           biggestResult = r ;
         }
