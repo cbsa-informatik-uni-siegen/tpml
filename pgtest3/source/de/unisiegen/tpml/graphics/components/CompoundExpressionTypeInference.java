@@ -461,7 +461,8 @@ public class CompoundExpressionTypeInference extends JComponent
     }
     
     //TOOLTIPText für die einzelnen Dinger...
-    if (this.typeFormularRenderer != null && this.typeFormularRenderer.isCollapsed ( ) )
+    //if (this.typeFormularRenderer != null && this.typeFormularRenderer.isCollapsed ( ) )
+    if (this.typeFormularRenderer != null  )
     {
     	setToolTipText ( null ) ;
         	
