@@ -6,6 +6,8 @@ import java.awt.Container ;
 import java.awt.Cursor ;
 import java.awt.Dimension ;
 import java.awt.FontMetrics ;
+import java.awt.Graphics;
+import java.awt.PaintContext;
 import java.awt.Point ;
 import java.io.StringReader ;
 import java.text.MessageFormat ;
@@ -36,8 +38,12 @@ import de.unisiegen.tpml.graphics.components.MenuGuessItem ;
 import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem ;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem ;
 import de.unisiegen.tpml.graphics.components.MenuTranslateItem ;
+import de.unisiegen.tpml.graphics.components.ShowBonds;
+import de.unisiegen.tpml.graphics.components.TypeComponent;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener ;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer ;
+import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
+import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
 import de.unisiegen.tpml.graphics.tree.TreeNodeComponent ;
 
 
@@ -130,6 +136,12 @@ public class TypeCheckerNodeComponent extends JComponent implements
    * The {@link CompoundExpression} containing the expression of this node.
    */
   private CompoundExpression < Identifier , Type > compoundExpression ;
+  
+  /**
+   * The typeComponent containing the type of this node
+   * 
+   */
+  private TypeComponent typeC ;
 
 
   /**
@@ -143,6 +155,14 @@ public class TypeCheckerNodeComponent extends JComponent implements
    * has been evaluated.
    */
   private JLabel typeLabel ;
+  
+  /**
+   * The {@link PrettyStringRenderer} showing the resulting type of this node, once the node
+   * has been evaluated.
+   */
+  private PrettyStringRenderer typeRenderer ;
+  
+  
 
 
   /**
@@ -174,6 +194,9 @@ public class TypeCheckerNodeComponent extends JComponent implements
   private LanguageTranslator translator ;
 
 
+  private int typePosition;
+
+
   /**
    * Constructor for a TypeCheckerNode<br>
    * <br>
@@ -202,6 +225,9 @@ public class TypeCheckerNodeComponent extends JComponent implements
     this.compoundExpression
         .addMouseListener ( new OutlineMouseListener ( this ) ) ;
     add ( this.compoundExpression ) ;
+    this.typeC = new TypeComponent ();
+    this.typeC.addMouseListener ( new OutlineMouseListener (this));
+    add (this.typeC);
     changeNode ( ) ;
     /*
      * Create both, the ruleButton for selecting the rule and the label, that
@@ -316,6 +342,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
   public void reset ( )
   {
     this.compoundExpression.reset ( ) ;
+    this.typeC.reset ();
   }
 
 
@@ -338,6 +365,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
   {
     this.compoundExpression.setExpression ( this.proofNode.getExpression ( ) ) ;
     this.compoundExpression.setEnvironment ( this.proofNode.getEnvironment ( ) ) ;
+    this.typeC.setType (this.proofNode.getType ());
   }
 
 
@@ -375,15 +403,22 @@ public class TypeCheckerNodeComponent extends JComponent implements
     // get the neede size for the type
     // changes benjamin to see the type in typechecker
     // TODO insert second condition
-    if ( this.proofNode.getType ( ) != null /* && this.proofNode.isFinished() */)
-    {
-      this.typeLabel.setText ( " :: " + this.proofNode.getType ( ) ) ; //$NON-NLS-1$
+    //typeRenderer = new PrettyStringRenderer();
+    if (this.proofNode.getType () != null /*&& this.proofNode.isFinished()*/) {
+      
+      
+      //typeRenderer.setPrettyString (this.proofNode.getType ().toPrettyString ());
+      //FontMetrics fm = AbstractRenderer.getTextFontMetrics ();
+      
+      this.proofNode.getType ().toPrettyString ();
+      this.typeLabel.setText(" :: " + this.proofNode.getType()); //$NON-NLS-1$
     }
-    else
-    {
-      this.typeLabel.setText ( " :: " ) ; //$NON-NLS-1$
+    else {
+      this.typeLabel.setText(" :: "); //$NON-NLS-1$
     }
-    Dimension typeSize = this.typeLabel.getPreferredSize ( ) ;
+    //Dimension typeSize = this.typeLabel.getPreferredSize ( ) ;
+    Dimension typeSize = typeC.getNeededSize (maxWidth);
+    System.out.println("Die breite für die Type: "+typeSize.width);
     this.dimension.width += typeSize.width ;
     this.dimension.height = Math.max ( typeSize.height , this.dimension.height ) ;
     // now place the components
@@ -394,9 +429,23 @@ public class TypeCheckerNodeComponent extends JComponent implements
     this.compoundExpression.setBounds ( posX , 0 , expSize.width ,
         this.dimension.height ) ;
     posX += expSize.width ;
-    this.typeLabel.setBounds ( posX , 0 , typeSize.width ,
-        this.dimension.height ) ;
+    //this.typeLabel.setBounds ( posX , 0 , typeSize.width , this.dimension.height ) ;
+    //
+    
+    //this.typeLabel.setBounds(posX, 0, typeSize.width, this.dimension.height);
+    //ShowBonds sb = new ShowBonds();
+    //sb.setType (this.proofNode.getType() );
+    //ToListenForMouseContainer tlfmc = new ToListenForMouseContainer();
+    
+    System.out.println ("Scheiße!");
+    typePosition = posX;
+    this.typeC.setBounds (posX, 0, typeSize.width, typeSize.height);
+    //typeRenderer.render (typePosition, 0,typeRenderer.getNeededSize (maxWidth).width ,typeRenderer.getNeededSize (maxWidth).height, this.getGraphics (), sb, tlfmc);
+   
     posX += typeSize.width ;
+    //posX += typeSize.width;
+    
+    
     /*
      * Check whether this is node is evaluated. If it is evaluated only the
      * Label needs to get placed, if it is not evaluated yet the MenuButton
@@ -447,7 +496,9 @@ public class TypeCheckerNodeComponent extends JComponent implements
         this.ruleButton.setVisible ( false ) ;
         this.typeEnter.setVisible ( true ) ;
       }
+      
     }
+   
   }
 
 
@@ -732,9 +783,9 @@ public class TypeCheckerNodeComponent extends JComponent implements
    * @return The typeLabel.
    * @see #typeLabel
    */
-  public JLabel getTypeLabel ( )
+  public TypeComponent getTypeComponent ( )
   {
-    return this.typeLabel ;
+    return this.typeC ;
   }
 
 
@@ -772,4 +823,19 @@ public class TypeCheckerNodeComponent extends JComponent implements
   {
     return this.compoundExpression ;
   }
+//  
+//  public void paintComponent (Graphics gc)
+//  {
+//    super.paintComponent (gc);
+//    System.out.println("Auch Scheiße!!!");
+//    ShowBonds sb = new ShowBonds();
+//    sb.setType (this.proofNode.getType() );
+//    ToListenForMouseContainer tlfmc = new ToListenForMouseContainer();
+//    
+//    //System.out.println ("Scheiße!");
+//   
+//    typeRenderer.render (typePosition, 0,typeRenderer.getNeededSize (Integer.MAX_VALUE).width ,typeRenderer.getNeededSize (Integer.MAX_VALUE).height, this.getGraphics (), sb, tlfmc);
+//   
+//    
+//  }
 }
