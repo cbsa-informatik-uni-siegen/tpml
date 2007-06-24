@@ -4,29 +4,11 @@ package de.unisiegen.tpml.graphics.components ;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Panel;
-import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.StringReader;
-import java.util.ArrayList;
-
 import javax.swing.JComponent;
-
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.interpreters.Store;
-import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.languages.LanguageFactory;
-import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModelTest;
 import de.unisiegen.tpml.core.types.Type;
-//import de.unisiegen.tpml.core.util.Debug;
-import de.unisiegen.tpml.core.util.Environment;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
@@ -35,10 +17,7 @@ import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
 
 /**
  * this class renders the coumpoundexpression
- *
- *
- * @param <S>
- * @param <E>
+
  */
 public class TypeComponent extends JComponent
 {
@@ -73,14 +52,6 @@ public class TypeComponent extends JComponent
    * ignored and only this color is used.
    */
   private Color alternativeColor ;
-
-
-  /**
-   * The arrow symbol that is used between the environment and the expression
-   * when used within the
-   * {@link de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent}
-   */
-  private static String arrowStr = " \u22b3 " ;
 
 
   /**
@@ -120,28 +91,17 @@ public class TypeComponent extends JComponent
         handleMouseMoved ( event ) ;
       }
     } ) ;
-    this.addMouseListener ( new MouseAdapter ( )
+    this.addMouseListener (new MouseAdapter ()
     {
-      @ Override
-      public void mouseExited ( MouseEvent e )
+      @Override
+      public void mouseExited (MouseEvent e)
       {
-        // TODO hier sollte eigentlich das Ereignis sein, dass die Maus den
-        // Ausdruck verl�sst, und der dann neu gemalt wird, funktioniert aber
-        // nicht
-        // System.err.println("Ladidal");
-        // ToListenForMouseContainer.getInstanceOf().reset();
-        //if ( ! toListenForMouse.setExpression ( expression ) )
-        //{
-        //  Debug.out.print ( "Schei�e, es ist ein anderer Ausdruck: "
-        //      + expression.toPrettyString ( ).toString ( ) , "Feivel" ) ;
-        //}
-        
-        toListenForMouse.reset();
-          toListenForMouse.setRightList(-1);
-        toListenForMouse.setMark ( false ) ;
-        TypeComponent.this.repaint ( ) ;
+        toListenForMouse.reset ();
+        toListenForMouse.setRightList (-1);
+        toListenForMouse.setMark (false);
+        TypeComponent.this.repaint ();
       }
-    } ) ;
+    });
   }
 
 
@@ -237,7 +197,8 @@ public class TypeComponent extends JComponent
 
 
   /**
-   * Sets the expression that should rendered.
+   * Sets the type that should rendered.
+   * @param typeP the type to render
    * 
    * @param expression
    */
@@ -274,7 +235,6 @@ public class TypeComponent extends JComponent
         }
         this.typeRenderer.setPrettyString ( this.type
             .toPrettyString ( ) ) ;
-        // reset the underlineExpression
       }
       // be sure to schedule a repaint
       repaint ( ) ;
@@ -283,10 +243,13 @@ public class TypeComponent extends JComponent
 
 
   /**
-   * Calculates the size needed to propperly render the compoundExpression
+   * Calculates the size needed to propperly render the typeComponent
+   * Note: Till now the types are never wraped so the maxWidth is ignored 
+   * Ther is no way to print the typechecker
+   * TODO getNeededSizeAll einbauen
    * 
    * @param maxWidth
-   * @return
+   * @return the Dimension needed to render the type
    */
   public Dimension getNeededSize ( int maxWidth )
   {
