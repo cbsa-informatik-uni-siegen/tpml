@@ -87,6 +87,8 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent ;
  * method {@link #placeElements(int)}.<br>
  * 
  * @author marcell
+ * @author michael
+ * 
  * @see de.unisiegen.tpml.graphics.typechecker.TypeCheckerView
  * @see de.unisiegen.tpml.graphics.typechecker.TypeCheckerComponent
  * @see de.unisiegen.tpml.graphics.tree.TreeNodeComponent
@@ -156,14 +158,6 @@ public class TypeCheckerNodeComponent extends JComponent implements
    */
   private JLabel typeLabel ;
   
-  /**
-   * The {@link PrettyStringRenderer} showing the resulting type of this node, once the node
-   * has been evaluated.
-   */
-  private PrettyStringRenderer typeRenderer ;
-  
-  
-
 
   /**
    * The {@link JLabel} showing the information about the rule, once the rule
@@ -192,9 +186,6 @@ public class TypeCheckerNodeComponent extends JComponent implements
    * syntactical sugor.
    */
   private LanguageTranslator translator ;
-
-
-  private int typePosition;
 
 
   /**
@@ -437,7 +428,6 @@ public class TypeCheckerNodeComponent extends JComponent implements
     //sb.setType (this.proofNode.getType() );
     //ToListenForMouseContainer tlfmc = new ToListenForMouseContainer();
    
-    typePosition = posX;
     this.typeComponent.setBounds (posX, 0, typeSize.width, typeSize.height);
     //typeRenderer.render (typePosition, 0,typeRenderer.getNeededSize (maxWidth).width ,typeRenderer.getNeededSize (maxWidth).height, this.getGraphics (), sb, tlfmc);
    
