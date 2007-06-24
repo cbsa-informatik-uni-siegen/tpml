@@ -36,7 +36,7 @@ public class Pong extends JComponent {
 	 */
 	private static final long serialVersionUID = 6688203129068640177L;
 
-	private static final int WINPOINTS = 0;
+	private static final int WINPOINTS = 5;
 	
 	private class Bat {
 		
@@ -351,7 +351,7 @@ public class Pong extends JComponent {
 		if (this.ball.posX <= 0.0f) {
 			this.gameState = GameState.GameStateHold; 
 			this.pcBat.points++;
-			if (this.pcBat.points >= WINPOINTS && this.pcBat.points >= this.pcBat.points + 2 )
+			if (this.pcBat.points >= WINPOINTS && this.pcBat.points >= this.npcBat.points + 2 )
 			{
 				String message = "Congratulations! You win!";
 				String title = "You win!";
