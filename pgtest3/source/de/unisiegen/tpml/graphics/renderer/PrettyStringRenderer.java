@@ -201,13 +201,17 @@ public class PrettyStringRenderer extends AbstractRenderer
     CheckerResult biggestResult = null ;
     for ( CheckerResult r : this.results )
     {
+      //as long as the actual result is smaller than the smallesResul update it
       if ( smallestResult == null || smallestResult.sizeOfResult.width > r.sizeOfResult.width )
       {
         smallestResult = r ;
       }
-      if ( r.sizeOfResult.width < maxWidth )
+      //let only the results in that are smaller than the maxwidht or equal
+      if ( r.sizeOfResult.width <= maxWidth )
       {
-        if ( biggestResult == null || biggestResult.sizeOfResult.width < r.sizeOfResult.width || biggestResult.sizeOfResult.height > r.sizeOfResult.height)
+        //the best one will be the one with the smallest heigh. everyone with the same height the best one will be the smallest
+        //if ( biggestResult == null || biggestResult.sizeOfResult.width < r.sizeOfResult.width || biggestResult.sizeOfResult.height > r.sizeOfResult.height)
+        if ( biggestResult == null || biggestResult.sizeOfResult.height > r.sizeOfResult.height || (biggestResult.sizeOfResult.height == r.sizeOfResult.height && biggestResult.sizeOfResult.width > r.sizeOfResult.width) )
         {
           biggestResult = r ;
         }
@@ -620,6 +624,12 @@ public class PrettyStringRenderer extends AbstractRenderer
     }
     // return false if for was alway wrong
     return result ;
+  }
+  
+  
+  public void renderBase ( int x , int y ,int width , int height,  Graphics gc , ShowBonds bound , ToListenForMouseContainer toListenForM )
+  {
+    render (x, y-(height / 2) - fontAscent / 2, width, height, gc, bound, toListenForM); 
   }
 
 

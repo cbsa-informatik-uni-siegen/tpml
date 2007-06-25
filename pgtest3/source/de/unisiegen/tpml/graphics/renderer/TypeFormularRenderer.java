@@ -93,7 +93,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	/**
 	 * The Arrow renderd between typeenvironment and the expression
 	 */
-	private static final String	arrowString = "\u22b3";
+	private static final String	arrowString = "  "+"\u22b3"+"  ";
+  
+  private static final String doubleColon = "  "+"::"+"  ";
 	
 	/**
 	 * constructor
@@ -285,21 +287,28 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						TypeEnvironment environment = t.getEnvironment();
 						Expression expression = t.getExpression();
 						Type type = t.getType();
+            
+            environmentRenderer = new EnvironmentRenderer <Enumeration, Enumeration>();
+            environmentRenderer.setEnvironment (environment);
+            Dimension environmentDim = environmentRenderer.getNeededSize ();
 						
 						//width of envireonment
-						lineWidthEnvironment += AbstractRenderer.keywordFontMetrics.stringWidth(environment.toString());
-						lineWidthEnvironment += AbstractRenderer.keywordFontMetrics.stringWidth("  "+arrowString+"  ");
+						//lineWidthEnvironment += AbstractRenderer.keywordFontMetrics.stringWidth(environment.toString());
+            lineWidthEnvironment += environmentDim.width;
+						lineWidthEnvironment += AbstractRenderer.keywordFontMetrics.stringWidth(arrowString);
 						restOfWidth -= AbstractRenderer.keywordFontMetrics.stringWidth(environment.toString());
-						restOfWidth -=AbstractRenderer.keywordFontMetrics.stringWidth("  "+arrowString+"  ");
+						restOfWidth -=AbstractRenderer.keywordFontMetrics.stringWidth(arrowString);
 						
 						//height of the environment
-						lineHeightEnvironment = AbstractRenderer.getAbsoluteHeight();
+						//lineHeightEnvironment = AbstractRenderer.getAbsoluteHeight();
+            lineHeightEnvironment = environmentDim.height;
 						
 						//width of expression
 						prettyStringrenderer = new PrettyStringRenderer();
 						prettyStringrenderer.setPrettyString(expression.toPrettyString());
 						//prüfe man die Breite, wenn wir alles hätten
 						Dimension expressionSize = prettyStringrenderer.getNeededSize(maxWidth-insertSpace);
+            expressionSize.width += AbstractRenderer.keywordFontMetrics.stringWidth(doubleColon);
 						testAusgabe("Die Breite: "+expressionSize.width+", "+(maxWidth-insertSpace));
 						//Dimension expressionSize = prettyStringrenderer.getNeededSize(Integer.MAX_VALUE);
 						testAusgabe("Wenn für die Expression nicht umgebrochen werden muss: "+expressionSize.width);
@@ -312,7 +321,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 							//Wenn der in der nächsten Zeile gerendert werden soll, dann hat er mehr Platz
 							expressionSize = prettyStringrenderer.getNeededSize(restOfWidth);
 							lineWidthExpression = insertSpace + expressionSize.width;
-							lineWidthExpression += AbstractRenderer.keywordFontMetrics.stringWidth("  ::  ");
+							lineWidthExpression += AbstractRenderer.keywordFontMetrics.stringWidth(doubleColon);
 							restOfWidth -= lineWidthExpression;
 							lineHeightExpression = expressionSize.height;
 						}
@@ -360,17 +369,26 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					}
 					else if (t instanceof TypeEquationTypeInference)
 					{
-						lineWidthTypeFormula += AbstractRenderer.keywordFontMetrics.stringWidth(t.toString());
-						lineHeightTypeFormula += AbstractRenderer.getAbsoluteHeight();
+            prettyStringrenderer = new PrettyStringRenderer();
+            prettyStringrenderer.setPrettyString (((TypeEquationTypeInference)t).toPrettyString ());
+            
+            lineWidthEnvironment += prettyStringrenderer.getNeededSize (Integer.MAX_VALUE).width;
+						//lineWidthTypeFormula += AbstractRenderer.keywordFontMetrics.stringWidth(t.toString());
+            testAusgabe (t.toString ());
+						//lineHeightTypeFormula += AbstractRenderer.getAbsoluteHeight();
+            lineHeightTypeFormula += prettyStringrenderer.getNeededSize (Integer.MAX_VALUE).height;
 					}
 					
 					result.height += lineHeightEnvironment+lineHeightExpression+lineHeightType+lineHeightTypeFormula;
+          
+          
 					
 					int lineWidthMax = realMax(lineWidthEnvironment, lineWidthExpression, lineWidthType, lineWidthTypeFormula);
 					
 					lineWidthMaxAll = Math.max(lineWidthMax, lineWidthMaxAll);
 					
 					testAusgabe("Die Maximale Breite ist: "+lineWidthMax+" ("+lineWidthEnvironment+", "+lineWidthExpression+", "+lineWidthType+", "+lineWidthTypeFormula+")");
+          testAusgabe("Maximale Breite aller Zeilen dieses Ausdrucks: "+lineWidthMaxAll);
 					
 					result.width = lineWidthMaxAll;
 				}
@@ -485,7 +503,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					Dimension typeEquationSize = typeEquationStringrenderer.getNeededSize(Integer.MAX_VALUE);
 					//ShowBonds bound = new ShowBonds();
 				
-					typeEquationStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.width, typeEquationSize.height, gc, bondTypeEquation, toListenForM);
+					//typeEquationStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.width, typeEquationSize.height, gc, bondTypeEquation, toListenForM);
+          typeEquationStringrenderer.renderBase(posX, posY, typeEquationSize.width, typeEquationSize.height, gc, bondTypeEquation, toListenForM);
 					
 					this.typeFprmularPostitions.add(new Rectangle(posX, posY+AbstractRenderer.fontDescent, typeEquationSize.width, typeEquationSize.height));
 					this.typeEquations.add(i);
@@ -529,7 +548,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					
 					//testAusgabe("Die Größe: "+environmentRenderer.getNeededSize().width); 
 					Dimension environmentSize = environmentRenderer.getNeededSize() ;
-					environmentRenderer.renderer(posX, posY-(environmentRenderer.getNeededSize().height / 2) - fontAscent / 2, environmentRenderer.getNeededSize().width, environmentRenderer.getNeededSize().height, gc);
+					//environmentRenderer.renderer(posX, posY-(environmentRenderer.getNeededSize().height / 2) - fontAscent / 2, environmentRenderer.getNeededSize().width, environmentRenderer.getNeededSize().height, gc);
+          environmentRenderer.renderBase(posX, posY, environmentRenderer.getNeededSize().width, environmentRenderer.getNeededSize().height, gc);
 				
 					posX += environmentRenderer.getNeededSize().width;
 					nochNutzbar -= environmentRenderer.getNeededSize().width;
@@ -548,9 +568,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					}
 					
 					gc.setColor(AbstractRenderer.expColor);
-					gc.drawString("  "+arrowString+"  ", posX, posY);
-					posX += AbstractRenderer.expFontMetrics.stringWidth("  "+arrowString+"  ");
-					nochNutzbar -= AbstractRenderer.expFontMetrics.stringWidth("  "+arrowString+"  ");
+					gc.drawString(arrowString, posX, posY);
+					posX += AbstractRenderer.expFontMetrics.stringWidth(arrowString);
+					nochNutzbar -= AbstractRenderer.expFontMetrics.stringWidth(arrowString);
 					
 					testAusgabe("Noich nutzbar nach Arrow: "+nochNutzbar);
 			
@@ -573,12 +593,14 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						spaceToNexEntry = Math.max(spaceToNexEntry, expressionSize.height);
 						posY += environmentSize.height;
 				
-						expressionRenderer.render(posX, posY-AbstractRenderer.fontHeight, expressionSize.width, expressionSize.height, gc, bound, toListenForM);
+						//expressionRenderer.render(posX, posY-AbstractRenderer.fontHeight, expressionSize.width, expressionSize.height, gc, bound, toListenForM);
+            expressionRenderer.renderBase(posX, posY, expressionSize.width, expressionSize.height, gc, bound, toListenForM);
 						
 					}
 					else
 					{
 						expressionRenderer.render(posX, posY-AbstractRenderer.fontHeight / 2 - AbstractRenderer.fontAscent / 2, expressionSize.width ,expressionSize.height, gc, bound, toListenForM);
+            //expressionRenderer.renderBase(posX, posY, expressionSize.width ,expressionSize.height, gc, bound, toListenForM);
 					}
 					//prettyStringrenderer.render(posX, posY-(expressionSize.height / 2) - fontAscent / 2, expressionSize.height, gc, bound, toListenForM);
 					//posX += AbstractRenderer.keywordFontMetrics.stringWidth(expression.toString());
@@ -589,9 +611,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					
 					gc.setColor(AbstractRenderer.expColor);
 					gc.setFont(expFont);
-					gc.drawString("  ::  ", posX, posY);
-					posX += AbstractRenderer.expFontMetrics.stringWidth("  ::  ");
-					nochNutzbar -= AbstractRenderer.expFontMetrics.stringWidth("  ::  ");
+					gc.drawString(doubleColon, posX, posY);
+					posX += AbstractRenderer.expFontMetrics.stringWidth(doubleColon);
+					nochNutzbar -= AbstractRenderer.expFontMetrics.stringWidth(doubleColon);
 					
 					testAusgabe("Noich nutzbar nach :: : "+nochNutzbar);
 					
@@ -618,7 +640,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						//posY += Math.max(höhe, expressionSize.height);
 						posY += expressionSize.height;
             
-            typeRenderer.render(posX, posY-(typeSize.height / 2) - fontAscent / 2, typeSize.width ,typeSize.height, gc, bondType, toListenForM);
+            //typeRenderer.render(posX, posY-(typeSize.height / 2) - fontAscent / 2, typeSize.width ,typeSize.height, gc, bondType, toListenForM);
+            typeRenderer.renderBase(posX, posY , typeSize.width ,typeSize.height, gc, bondType, toListenForM);
             posX += typeSize.width;
 
             this.typeFprmularPostitions.add(new Rectangle(oldPosX, posY, posX-oldPosX, spaceToNexEntry));
@@ -629,7 +652,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					}
           else
           {
-            typeRenderer.render(posX, posY-(typeSize.height / 2) - fontAscent / 2, typeSize.width ,typeSize.height, gc, bondType, toListenForM);
+            //typeRenderer.render(posX, posY-(typeSize.height / 2) - fontAscent / 2, typeSize.width ,typeSize.height, gc, bondType, toListenForM);
+            typeRenderer.renderBase(posX, posY , typeSize.width ,typeSize.height, gc, bondType, toListenForM);
+            
             posX += typeSize.width;
 
             this.typeFprmularPostitions.add(new Rectangle(oldPosX, posY, posX-oldPosX, spaceToNexEntry));

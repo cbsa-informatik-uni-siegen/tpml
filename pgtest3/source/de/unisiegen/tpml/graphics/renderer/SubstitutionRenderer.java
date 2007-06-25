@@ -95,44 +95,6 @@ public class SubstitutionRenderer extends AbstractRenderer {
 	
 	
 	/**
-	 * Calculates the size, that is needed to propperly render
-	 * the environment.
-	 * 
-	 * @return The size needed to render the environment.
-	 */
-	public Dimension getNeededSize () {
-		Dimension result = new Dimension (0, 0);
-		
-		//Enumeration<S> env = this.environment.symbols();
-		
-		if  ( defaultTypeSubstitutionList.size() == 0 ) 
-		{
-			// secure some space between the two brackets when
-			// no content is there to be shown
-			result.width += this.bracketSize;
-		}
-		else 
-		{
-			result.height = AbstractRenderer.fontHeight+AbstractRenderer.fontLeading;
-			// get the first element
-			DefaultTypeSubstitution s = defaultTypeSubstitutionList.get(0);
-			
-			result.width += AbstractRenderer.keywordFontMetrics.stringWidth(s.toString());
-			
-			if (defaultTypeSubstitutionList.size() > 1) {
-				// if there is more then only one element in the environment
-				// the rest will only be displayed ass three dots
-				result.width += AbstractRenderer.expFontMetrics.stringWidth(SubstitutionRenderer.collapsString);
-			}
-			result.width += AbstractRenderer.expFontMetrics.stringWidth("[");
-			result.width += AbstractRenderer.expFontMetrics.stringWidth("]");
-		}
-		
-		
-		return result;
-	}
-	
-	/**
 	 * Returns whether the environment was collapsed.
 	 * @return
 	 */
@@ -160,6 +122,50 @@ public class SubstitutionRenderer extends AbstractRenderer {
 	
 	
 	/**
+   * Calculates the size, that is needed to propperly render
+   * the environment.
+   * 
+   * @return The size needed to render the environment.
+   */
+  public Dimension getNeededSize () {
+  	Dimension result = new Dimension (0, 0);
+  	
+  	//Enumeration<S> env = this.environment.symbols();
+  	
+  	if  ( defaultTypeSubstitutionList.size() == 0 ) 
+  	{
+  		// secure some space between the two brackets when
+  		// no content is there to be shown
+  		result.width += this.bracketSize;
+      result.height = AbstractRenderer.getAbsoluteHeight ();
+  	}
+  	else 
+  	{
+      result.height = AbstractRenderer.getAbsoluteHeight ();
+  		// get the first element
+  		DefaultTypeSubstitution s = defaultTypeSubstitutionList.get(0);
+  		
+  		result.width += AbstractRenderer.keywordFontMetrics.stringWidth(s.toString());
+  		
+  		if (defaultTypeSubstitutionList.size() > 1) {
+  			// if there is more then only one element in the environment
+  			// the rest will only be displayed ass three dots
+  			result.width += AbstractRenderer.expFontMetrics.stringWidth(SubstitutionRenderer.collapsString);
+  		}
+  		result.width += AbstractRenderer.expFontMetrics.stringWidth("[");
+  		result.width += AbstractRenderer.expFontMetrics.stringWidth("]");
+  	}
+  	
+  	
+  	return result;
+  }
+  
+  public void renderBase (int x, int y, int width, int height, Graphics gc )
+  {
+    renderer (x, y-(AbstractRenderer.getAbsoluteHeight () /2), width, height, gc); 
+  }
+
+  /**
 	 * Renders the environment.<br>
 	 * <br>
 	 * The environment is always rendered as a single line. It will appear
@@ -192,8 +198,9 @@ public class SubstitutionRenderer extends AbstractRenderer {
 //		int posX = x + this.bracketSize;
 		int posX = x;
 		//int posY = y + height / 2;
-		int posY = y+(AbstractRenderer.fontHeight+AbstractRenderer.fontLeading)/2;
-		posY += AbstractRenderer.fontAscent  / 2;
+		//int posY = y+(AbstractRenderer.fontHeight+AbstractRenderer.fontLeading)/2;
+    int posY = y+(AbstractRenderer.getAbsoluteHeight ())/2;
+		//posY += AbstractRenderer.fontAscent  / 2;
 		
 		// find the first element in the enumeration if there is one
 		

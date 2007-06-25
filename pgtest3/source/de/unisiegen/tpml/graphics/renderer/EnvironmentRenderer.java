@@ -99,41 +99,6 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 	
 	
 	/**
-	 * Calculates the size, that is needed to propperly render
-	 * the environment.
-	 * 
-	 * @return The size needed to render the environment.
-	 */
-	public Dimension getNeededSize () {
-		Dimension result = new Dimension (2 * this.bracketSize, AbstractRenderer.getAbsoluteHeight ( ));
-		
-		Enumeration<S> env = this.environment.symbols();
-		
-		if (!env.hasMoreElements()) {
-			// secure some space between the two brackets when
-			// no content is there to be shown
-			result.width += this.bracketSize;
-		}
-		else {
-			// get the first element
-			S s = env.nextElement();
-			E e = this.environment.get(s);
-			
-			result.width += AbstractRenderer.keywordFontMetrics.stringWidth(s.toString() + ": ");
-			result.width += AbstractRenderer.envFontMetrics.stringWidth(e.toString());
-			
-			if (env.hasMoreElements()) {
-				// if there is more then only one element in the environment
-				// the rest will only be displayed ass three dots
-				result.width += AbstractRenderer.expFontMetrics.stringWidth(EnvironmentRenderer.collapsString);
-			}
-		}
-		
-		
-		return result;
-	}
-	
-	/**
 	 * Returns whether the environment was collapsed.
 	 * @return
 	 */
@@ -158,6 +123,46 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 	public String getCollapsedString () {
 		return this.collapsedString;
 	}
+  
+  /**
+   * Calculates the size, that is needed to propperly render
+   * the environment.
+   * 
+   * @return The size needed to render the environment.
+   */
+  public Dimension getNeededSize () {
+  	Dimension result = new Dimension (2 * this.bracketSize, AbstractRenderer.getAbsoluteHeight ( ));
+  	
+  	Enumeration<S> env = this.environment.symbols();
+  	
+  	if (!env.hasMoreElements()) {
+  		// secure some space between the two brackets when
+  		// no content is there to be shown
+  		result.width += this.bracketSize;
+  	}
+  	else {
+  		// get the first element
+  		S s = env.nextElement();
+  		E e = this.environment.get(s);
+  		
+  		result.width += AbstractRenderer.keywordFontMetrics.stringWidth(s.toString() + ": ");
+  		result.width += AbstractRenderer.envFontMetrics.stringWidth(e.toString());
+  		
+  		if (env.hasMoreElements()) {
+  			// if there is more then only one element in the environment
+  			// the rest will only be displayed ass three dots
+  			result.width += AbstractRenderer.expFontMetrics.stringWidth(EnvironmentRenderer.collapsString);
+  		}
+  	}
+  	
+  	
+  	return result;
+  }
+
+  public void renderBase (int x, int y, int width, int height, Graphics gc )
+  {
+    renderer (x, y-(height / 2) - fontAscent / 2, width, height, gc); 
+  }
 	
 	
 	/**
