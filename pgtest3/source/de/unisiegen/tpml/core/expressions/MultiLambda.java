@@ -104,10 +104,6 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
     this.indicesId = new int [ this.identifiers.length ] ;
     for ( int i = 0 ; i < this.identifiers.length ; i ++ )
     {
-      if ( this.identifiers [ i ].getParent ( ) != null )
-      {
-        // this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
-      }
       this.identifiers [ i ].setParent ( this ) ;
       this.indicesId [ i ] = i + 1 ;
     }
@@ -116,19 +112,11 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
     this.types [ 0 ] = pTau ;
     if ( this.types [ 0 ] != null )
     {
-      if ( this.types [ 0 ].getParent ( ) != null )
-      {
-        // this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
-      }
       this.types [ 0 ].setParent ( this ) ;
     }
     // Expression
-    this.expressions = new Expression [ 1 ] ;
-    this.expressions [ 0 ] = pExpression ;
-    if ( this.expressions [ 0 ].getParent ( ) != null )
-    {
-      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
-    }
+    this.expressions = new Expression [ ]
+    { pExpression } ;
     this.expressions [ 0 ].setParent ( this ) ;
     checkDisjunction ( ) ;
   }

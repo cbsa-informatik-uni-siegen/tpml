@@ -76,22 +76,15 @@ public final class Duplication extends Expression implements
     // Identifier
     this.identifiers = pIdentifiers ;
     this.indicesId = new int [ this.identifiers.length ] ;
+    // Expression
     this.expressions = pExpressions ;
     this.indicesE = new int [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       // Identifier
-      if ( this.identifiers [ i ].getParent ( ) != null )
-      {
-        // this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
-      }
       this.identifiers [ i ].setParent ( this ) ;
       this.indicesId [ i ] = i + 1 ;
       // Expression
-      if ( this.expressions [ i ].getParent ( ) != null )
-      {
-        // this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
-      }
       this.expressions [ i ].setParent ( this ) ;
       this.indicesE [ i ] = i + 1 ;
     }

@@ -52,18 +52,9 @@ public final class Condition1 extends Expression implements DefaultExpressions
     {
       throw new NullPointerException ( "e1 is null" ) ; //$NON-NLS-1$
     }
-    this.expressions = new Expression [ 2 ] ;
-    this.expressions [ 0 ] = pExpression0 ;
-    if ( this.expressions [ 0 ].getParent ( ) != null )
-    {
-      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
-    }
+    this.expressions = new Expression [ ]
+    { pExpression0 , pExpression1 } ;
     this.expressions [ 0 ].setParent ( this ) ;
-    this.expressions [ 1 ] = pExpression1 ;
-    if ( this.expressions [ 1 ].getParent ( ) != null )
-    {
-      // this.expressions [ 1 ] = this.expressions [ 1 ].clone ( ) ;
-    }
     this.expressions [ 1 ].setParent ( this ) ;
   }
 

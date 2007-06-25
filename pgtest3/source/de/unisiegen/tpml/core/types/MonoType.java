@@ -19,7 +19,7 @@ public abstract class MonoType extends Type
    */
   protected MonoType ( )
   {
-    // nothing to do here...
+    // Nothing to do here...
   }
 
 

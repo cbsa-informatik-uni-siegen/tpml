@@ -74,18 +74,10 @@ public final class RecType extends MonoType implements DefaultTypes ,
     // TypeName
     this.typeNames = new TypeName [ ]
     { pTypeName } ;
-    if ( this.typeNames [ 0 ].getParent ( ) != null )
-    {
-      // this.typeNames [ 0 ] = this.typeNames [ 0 ].clone ( ) ;
-    }
     this.typeNames [ 0 ].setParent ( this ) ;
     // Type
-    this.types = new MonoType [ 1 ] ;
-    this.types [ 0 ] = pTau ;
-    if ( this.types [ 0 ].getParent ( ) != null )
-    {
-      // this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
-    }
+    this.types = new MonoType [ ]
+    { pTau } ;
     this.types [ 0 ].setParent ( this ) ;
   }
 

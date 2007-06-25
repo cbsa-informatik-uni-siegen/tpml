@@ -63,10 +63,6 @@ public final class TupleType extends MonoType implements DefaultTypes
     this.indicesType = new int [ this.types.length ] ;
     for ( int i = 0 ; i < this.indicesType.length ; i ++ )
     {
-      if ( this.types [ i ].getParent ( ) != null )
-      {
-        // this.types [ i ] = this.types [ i ].clone ( ) ;
-      }
       this.types [ i ].setParent ( this ) ;
       this.indicesType [ i ] = i + 1 ;
     }

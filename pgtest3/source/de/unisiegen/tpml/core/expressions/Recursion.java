@@ -93,31 +93,19 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
       throw new NullPointerException ( "e is null" ) ; //$NON-NLS-1$
     }
     // Identifier
-    this.identifiers = new Identifier [ 1 ] ;
-    this.identifiers [ 0 ] = pIdentifier ;
-    if ( this.identifiers [ 0 ].getParent ( ) != null )
-    {
-      // this.identifiers [ 0 ] = this.identifiers [ 0 ].clone ( ) ;
-    }
+    this.identifiers = new Identifier [ ]
+    { pIdentifier } ;
     this.identifiers [ 0 ].setParent ( this ) ;
     // Type
-    this.types = new MonoType [ 1 ] ;
-    this.types [ 0 ] = pTau ;
+    this.types = new MonoType [ ]
+    { pTau } ;
     if ( this.types [ 0 ] != null )
     {
-      if ( this.types [ 0 ].getParent ( ) != null )
-      {
-        // this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
-      }
       this.types [ 0 ].setParent ( this ) ;
     }
     // Expression
-    this.expressions = new Expression [ 1 ] ;
-    this.expressions [ 0 ] = pExpression ;
-    if ( this.expressions [ 0 ].getParent ( ) != null )
-    {
-      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
-    }
+    this.expressions = new Expression [ ]
+    { pExpression } ;
     this.expressions [ 0 ].setParent ( this ) ;
     checkDisjunction ( ) ;
   }

@@ -60,21 +60,17 @@ public final class Send extends Expression implements DefaultIdentifiers ,
     {
       throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
     }
-    // Expression
-    this.expressions = new Expression [ 1 ] ;
-    this.expressions [ 0 ] = pExpression ;
-    if ( this.expressions [ 0 ].getParent ( ) != null )
+    if ( pIdentifier == null )
     {
-      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+      throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
     }
+    // Expression
+    this.expressions = new Expression [ ]
+    { pExpression } ;
     this.expressions [ 0 ].setParent ( this ) ;
     // Identifier
-    this.identifiers = new Identifier [ 1 ] ;
-    this.identifiers [ 0 ] = pIdentifier ;
-    if ( this.identifiers [ 0 ].getParent ( ) != null )
-    {
-      // this.identifiers [ 0 ] = this.identifiers [ 0 ].clone ( ) ;
-    }
+    this.identifiers = new Identifier [ ]
+    { pIdentifier } ;
     this.identifiers [ 0 ].setParent ( this ) ;
   }
 

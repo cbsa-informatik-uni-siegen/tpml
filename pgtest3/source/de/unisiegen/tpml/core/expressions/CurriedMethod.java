@@ -102,44 +102,31 @@ public final class CurriedMethod extends Expression implements
     this.identifiers = pIdentifiers ;
     this.indicesId = new int [ this.identifiers.length ] ;
     this.indicesId [ 0 ] = - 1 ;
+    this.identifiers [ 0 ].setParent ( this ) ;
     for ( int i = 1 ; i < this.identifiers.length ; i ++ )
     {
-      this.indicesId [ i ] = i ;
-    }
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
-    {
-      if ( this.identifiers [ i ].getParent ( ) != null )
-      {
-        // this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
-      }
       this.identifiers [ i ].setParent ( this ) ;
+      this.indicesId [ i ] = i ;
     }
     // Type
     this.types = pTypes ;
     this.indicesType = new int [ this.types.length ] ;
     this.indicesType [ 0 ] = - 1 ;
-    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    if ( this.types [ 0 ] != null )
     {
-      this.indicesType [ i ] = i ;
+      this.types [ 0 ].setParent ( this ) ;
     }
-    for ( int i = 0 ; i < this.types.length ; i ++ )
+    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
     {
       if ( this.types [ i ] != null )
       {
-        if ( this.types [ i ].getParent ( ) != null )
-        {
-          // this.types [ i ] = this.types [ i ].clone ( ) ;
-        }
         this.types [ i ].setParent ( this ) ;
       }
+      this.indicesType [ i ] = i ;
     }
     // Expression
-    this.expressions = new Expression [ 1 ] ;
-    this.expressions [ 0 ] = pExpression ;
-    if ( this.expressions [ 0 ].getParent ( ) != null )
-    {
-      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
-    }
+    this.expressions = new Expression [ ]
+    { pExpression } ;
     this.expressions [ 0 ].setParent ( this ) ;
     checkDisjunction ( ) ;
   }

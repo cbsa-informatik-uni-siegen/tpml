@@ -175,10 +175,6 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     this.indicesId = new int [ this.identifiers.length ] ;
     for ( int i = 0 ; i < this.identifiers.length ; i ++ )
     {
-      if ( this.identifiers [ i ].getParent ( ) != null )
-      {
-        // this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
-      }
       this.identifiers [ i ].setParent ( this ) ;
       this.indicesId [ i ] = i + 1 ;
     }
@@ -187,10 +183,6 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     this.indicesType = new int [ this.types.length ] ;
     for ( int i = 0 ; i < this.types.length ; i ++ )
     {
-      if ( this.types [ i ].getParent ( ) != null )
-      {
-        // this.types [ i ] = this.types [ i ].clone ( ) ;
-      }
       this.types [ i ].setParent ( this ) ;
       this.indicesType [ i ] = i + 1 ;
     }

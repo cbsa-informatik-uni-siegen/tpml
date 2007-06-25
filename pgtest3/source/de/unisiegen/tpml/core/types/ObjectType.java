@@ -42,12 +42,8 @@ public final class ObjectType extends MonoType implements DefaultTypes
     {
       throw new NullPointerException ( "Phi is null" ) ; //$NON-NLS-1$
     }
-    this.types = new MonoType [ 1 ] ;
-    this.types [ 0 ] = pPhi ;
-    if ( this.types [ 0 ].getParent ( ) != null )
-    {
-      // this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
-    }
+    this.types = new MonoType [ ]
+    { pPhi } ;
     this.types [ 0 ].setParent ( this ) ;
   }
 

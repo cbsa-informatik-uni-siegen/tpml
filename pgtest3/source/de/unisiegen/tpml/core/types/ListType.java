@@ -52,12 +52,8 @@ public final class ListType extends MonoType implements DefaultTypes
     {
       throw new NullPointerException ( "Tau is null" ) ; //$NON-NLS-1$
     }
-    this.types = new MonoType [ 1 ] ;
-    this.types [ 0 ] = pTau ;
-    if ( this.types [ 0 ].getParent ( ) != null )
-    {
-      // this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
-    }
+    this.types = new MonoType [ ]
+    { pTau } ;
     this.types [ 0 ].setParent ( this ) ;
   }
 

@@ -90,20 +90,13 @@ public final class List extends Expression implements DefaultExpressions
       // and add the list items to our expressions
       newExpressions.addAll ( Arrays.asList ( list.getExpressions ( ) ) ) ;
     }
-    // jep, we have our expression list
+    // Expression
     this.expressions = newExpressions.toArray ( new Expression [ 0 ] ) ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
-    {
-      if ( this.expressions [ i ].getParent ( ) != null )
-      {
-        // this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
-      }
-      this.expressions [ i ].setParent ( this ) ;
-    }
     this.indicesE = new int [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       this.indicesE [ i ] = i + 1 ;
+      this.expressions [ i ].setParent ( this ) ;
     }
   }
 
@@ -128,18 +121,11 @@ public final class List extends Expression implements DefaultExpressions
       throw new IllegalArgumentException ( "expressions is empty" ) ; //$NON-NLS-1$
     }
     this.expressions = pExpressions ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
-    {
-      if ( this.expressions [ i ].getParent ( ) != null )
-      {
-        // this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
-      }
-      this.expressions [ i ].setParent ( this ) ;
-    }
     this.indicesE = new int [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       this.indicesE [ i ] = i + 1 ;
+      this.expressions [ i ].setParent ( this ) ;
     }
   }
 

@@ -48,12 +48,8 @@ public final class Row extends Expression implements DefaultExpressions
     this.indicesE = new int [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
-      this.indicesE [ i ] = i + 1 ;
-      if ( this.expressions [ i ].getParent ( ) != null )
-      {
-        // this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
-      }
       this.expressions [ i ].setParent ( this ) ;
+      this.indicesE [ i ] = i + 1 ;
     }
   }
 

@@ -62,24 +62,10 @@ public final class InfixOperation extends Expression implements
     {
       throw new NullPointerException ( "e2 is null" ) ; //$NON-NLS-1$
     }
-    this.expressions = new Expression [ 3 ] ;
-    this.expressions [ 0 ] = pExpression1 ;
-    if ( this.expressions [ 0 ].getParent ( ) != null )
-    {
-      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
-    }
+    this.expressions = new Expression [ ]
+    { pExpression1 , pBinaryOperator , pExpression2 } ;
     this.expressions [ 0 ].setParent ( this ) ;
-    this.expressions [ 1 ] = pBinaryOperator ;
-    if ( this.expressions [ 1 ].getParent ( ) != null )
-    {
-      // this.expressions [ 1 ] = this.expressions [ 1 ].clone ( ) ;
-    }
     this.expressions [ 1 ].setParent ( this ) ;
-    this.expressions [ 2 ] = pExpression2 ;
-    if ( this.expressions [ 2 ].getParent ( ) != null )
-    {
-      // this.expressions [ 2 ] = this.expressions [ 2 ].clone ( ) ;
-    }
     this.expressions [ 2 ].setParent ( this ) ;
   }
 
