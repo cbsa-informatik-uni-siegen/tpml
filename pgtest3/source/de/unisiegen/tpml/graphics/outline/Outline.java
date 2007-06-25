@@ -44,6 +44,10 @@ public interface Outline
      */
     INIT_SUBTYPING ,
     /**
+     * Initialized from the <code>MinimalTyping</code>.
+     */
+    INIT_MINIMALTYPING ,
+    /**
      * Change by mouse cick from the <code>Editor</code>.
      */
     MOUSE_CLICK_EDITOR ,
@@ -64,6 +68,10 @@ public interface Outline
      */
     MOUSE_CLICK_SUBTYPING ,
     /**
+     * Change by mouse cick from the <code>MinimalTyping</code>.
+     */
+    MOUSE_CLICK_MINIMALTYPING ,
+    /**
      * Auto change from the <code>Editor</code>.
      */
     AUTO_CHANGE_EDITOR ,
@@ -82,7 +90,11 @@ public interface Outline
     /**
      * Auto change from the <code>Subtyping</code>.
      */
-    AUTO_CHANGE_SUBTYPING
+    AUTO_CHANGE_SUBTYPING ,
+    /**
+     * Auto change from the <code>MinimalTyping</code>.
+     */
+    AUTO_CHANGE_MINIMALTYPING
   }
 
 

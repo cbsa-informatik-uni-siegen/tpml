@@ -10,6 +10,8 @@ import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.graphics.StyledLanguageEditor ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepNodeComponent ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
+import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingNodeComponent ;
+import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingView ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
@@ -64,6 +66,12 @@ public final class OutlineMouseListener implements MouseListener
 
 
   /**
+   * The {@link MinimalTypingNodeComponent}.
+   */
+  private MinimalTypingNodeComponent minimalTypingNodeComponent ;
+
+
+  /**
    * The {@link BigStepNodeComponent}.
    */
   private BigStepNodeComponent bigStepNodeComponent ;
@@ -87,6 +95,7 @@ public final class OutlineMouseListener implements MouseListener
     this.textEditorPanel = null ;
     this.typeCheckerNodeComponent = null ;
     this.bigStepNodeComponent = pBigStepNodeComponent ;
+    this.minimalTypingNodeComponent = null ;
     this.smallStepNodeComponent = null ;
     this.styledLanguageEditor = null ;
   }
@@ -104,6 +113,7 @@ public final class OutlineMouseListener implements MouseListener
     this.textEditorPanel = null ;
     this.typeCheckerNodeComponent = null ;
     this.bigStepNodeComponent = null ;
+    this.minimalTypingNodeComponent = null ;
     this.smallStepNodeComponent = null ;
     this.styledLanguageEditor = null ;
   }
@@ -121,6 +131,7 @@ public final class OutlineMouseListener implements MouseListener
     this.textEditorPanel = null ;
     this.typeCheckerNodeComponent = null ;
     this.bigStepNodeComponent = null ;
+    this.minimalTypingNodeComponent = null ;
     this.smallStepNodeComponent = pSmallStepNodeComponent ;
     this.styledLanguageEditor = null ;
   }
@@ -140,6 +151,7 @@ public final class OutlineMouseListener implements MouseListener
     this.textEditorPanel = null ;
     this.typeCheckerNodeComponent = null ;
     this.bigStepNodeComponent = null ;
+    this.minimalTypingNodeComponent = null ;
     this.smallStepNodeComponent = null ;
     this.styledLanguageEditor = pStyledLanguageEditor ;
   }
@@ -157,6 +169,7 @@ public final class OutlineMouseListener implements MouseListener
     this.textEditorPanel = pTextEditorPanel ;
     this.typeCheckerNodeComponent = null ;
     this.bigStepNodeComponent = null ;
+    this.minimalTypingNodeComponent = null ;
     this.smallStepNodeComponent = null ;
     this.styledLanguageEditor = null ;
   }
@@ -175,6 +188,26 @@ public final class OutlineMouseListener implements MouseListener
     this.textEditorPanel = null ;
     this.typeCheckerNodeComponent = pTypeCheckerNodeComponent ;
     this.bigStepNodeComponent = null ;
+    this.minimalTypingNodeComponent = null ;
+    this.smallStepNodeComponent = null ;
+    this.styledLanguageEditor = null ;
+  }
+
+
+  /**
+   * Initializes the {@link OutlineMouseListener} with the given
+   * {@link MinimalTypingNodeComponent}.
+   * 
+   * @param pMinimalTypingNodeComponent The {@link MinimalTypingNodeComponent}.
+   */
+  public OutlineMouseListener (
+      MinimalTypingNodeComponent pMinimalTypingNodeComponent )
+  {
+    this.defaultOutline = null ;
+    this.textEditorPanel = null ;
+    this.typeCheckerNodeComponent = null ;
+    this.bigStepNodeComponent = null ;
+    this.minimalTypingNodeComponent = pMinimalTypingNodeComponent ;
     this.smallStepNodeComponent = null ;
     this.styledLanguageEditor = null ;
   }
@@ -331,6 +364,50 @@ public final class OutlineMouseListener implements MouseListener
               .loadPrettyPrintable (
                   this.typeCheckerNodeComponent.getTypeComponent ( ).getType ( ) ,
                   Outline.Execute.MOUSE_CLICK_TYPECHECKER ) ;
+        }
+      }
+      /*
+       * Type checker.
+       */
+      if ( this.minimalTypingNodeComponent != null )
+      {
+        /*
+         * Index label.
+         */
+        if ( pMouseEvent.getSource ( ).equals (
+            this.minimalTypingNodeComponent.getIndexLabel ( ) ) )
+        {
+          ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline ( ).loadPrettyPrintable (
+                  this.minimalTypingNodeComponent.getCompoundExpression ( )
+                      .getExpression ( ) ,
+                  Outline.Execute.MOUSE_CLICK_MINIMALTYPING ) ;
+        }
+        /*
+         * Compound expression.
+         */
+        else if ( pMouseEvent.getSource ( ).equals (
+            this.minimalTypingNodeComponent.getCompoundExpression ( ) ) )
+        {
+          ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline ( ).loadPrettyPrintable (
+                  this.minimalTypingNodeComponent.getCompoundExpression ( )
+                      .getExpression ( ) ,
+                  Outline.Execute.MOUSE_CLICK_MINIMALTYPING ) ;
+        }
+        /*
+         * Type label.
+         */
+        else if ( pMouseEvent.getSource ( ).equals (
+            this.minimalTypingNodeComponent.getTypeComponent ( ) ) )
+        {
+          ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline ( ).loadPrettyPrintable (
+                  this.minimalTypingNodeComponent.getTypeComponent ( )
+                      .getType ( ) , Outline.Execute.MOUSE_CLICK_MINIMALTYPING ) ;
         }
       }
       /*

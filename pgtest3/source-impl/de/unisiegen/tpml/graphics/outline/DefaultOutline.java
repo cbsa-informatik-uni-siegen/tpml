@@ -1643,11 +1643,13 @@ public final class DefaultOutline implements Outline
       case INIT_BIGSTEP :
       case INIT_TYPECHECKER :
       case INIT_SUBTYPING :
+      case INIT_MINIMALTYPING :
       case MOUSE_CLICK_EDITOR :
       case MOUSE_CLICK_SMALLSTEP :
       case MOUSE_CLICK_BIGSTEP :
       case MOUSE_CLICK_TYPECHECKER :
       case MOUSE_CLICK_SUBTYPING :
+      case MOUSE_CLICK_MINIMALTYPING :
       {
         execute ( ) ;
         break ;
@@ -1673,6 +1675,11 @@ public final class DefaultOutline implements Outline
         break ;
       }
       case AUTO_CHANGE_SUBTYPING :
+      {
+        executeTimerStart ( 250 ) ;
+        break ;
+      }
+      case AUTO_CHANGE_MINIMALTYPING :
       {
         executeTimerStart ( 250 ) ;
         break ;

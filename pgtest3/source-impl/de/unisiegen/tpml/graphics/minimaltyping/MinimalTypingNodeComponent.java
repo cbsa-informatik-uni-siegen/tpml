@@ -195,14 +195,14 @@ public class MinimalTypingNodeComponent extends JComponent implements
     this.dimension = new Dimension ( 0 , 0 ) ;
     this.spacing = 10 ;
     this.indexLabel = new JLabel ( ) ;
-    //this.indexLabel.addMouseListener ( new OutlineMouseListener ( this ) ) ;
+    this.indexLabel.addMouseListener ( new OutlineMouseListener ( this ) ) ;
     add ( this.indexLabel ) ;
     this.compoundExpression = new CompoundExpression < Identifier , Type > ( ) ;
-    //this.compoundExpression
-      //  .addMouseListener ( new OutlineMouseListener ( this ) ) ;
+    this.compoundExpression
+        .addMouseListener ( new OutlineMouseListener ( this ) ) ;
     add ( this.compoundExpression ) ;
     this.typeComponent = new TypeComponent ();
-    //this.typeComponent.addMouseListener ( new OutlineMouseListener (this));
+    this.typeComponent.addMouseListener ( new OutlineMouseListener (this));
     add (this.typeComponent);
     changeNode ( ) ;
     /*
