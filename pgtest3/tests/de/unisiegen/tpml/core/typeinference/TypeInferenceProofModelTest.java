@@ -40,7 +40,7 @@ import de.unisiegen.tpml.core.languages.LanguageFactory;
  *
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel
  */
-@SuppressWarnings ( "serial" )
+@SuppressWarnings( "all" )
 public final class TypeInferenceProofModelTest extends JFrame {
 	/**
 	 * Simple test expression.

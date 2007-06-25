@@ -58,8 +58,12 @@ public class DefaultMinimalTypingTypesProofNode extends
 		return this.seenTypes;
 	}
 
-public DefaultSubType getSubType ( ) {
+	public DefaultSubType getSubType ( ) {
 	return this.subtype;
 }
+
+	public DefaultTypeEnvironment getEnvironment(){
+		return new DefaultTypeEnvironment();
+	}
 
 }

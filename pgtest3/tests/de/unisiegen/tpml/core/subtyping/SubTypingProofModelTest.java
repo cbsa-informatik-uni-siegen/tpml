@@ -30,6 +30,7 @@ import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
 
+@SuppressWarnings( "all" )
 public class SubTypingProofModelTest extends JFrame {
 	private static final String TYPE = "<add: int; sub: bool;>";
 

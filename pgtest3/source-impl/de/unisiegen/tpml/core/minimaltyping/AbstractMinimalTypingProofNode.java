@@ -205,7 +205,7 @@ abstract class AbstractMinimalTypingProofNode extends AbstractExpressionProofNod
     return (AbstractMinimalTypingProofNode)super.getLastLeaf();
   }
   
-  
+  abstract public String toString();
   
 
 }

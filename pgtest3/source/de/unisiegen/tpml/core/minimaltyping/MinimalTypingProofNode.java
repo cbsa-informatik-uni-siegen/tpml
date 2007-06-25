@@ -136,4 +136,6 @@ public interface MinimalTypingProofNode extends ExpressionProofNode {
    * @see de.unisiegen.tpml.core.ProofNode#getLastLeaf()
    */
   public MinimalTypingProofNode getLastLeaf();
+  
+  public TypeEnvironment getEnvironment();
 }

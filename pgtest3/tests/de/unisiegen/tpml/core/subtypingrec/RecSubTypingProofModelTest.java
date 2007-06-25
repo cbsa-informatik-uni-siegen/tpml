@@ -28,6 +28,7 @@ import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.types.MonoType;
 
+@SuppressWarnings( "all" )
 public class RecSubTypingProofModelTest extends JFrame {
 	private static final String TYPE = "mu t.t->t->t";
 

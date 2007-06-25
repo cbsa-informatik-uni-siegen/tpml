@@ -21,13 +21,14 @@ import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingTypesProofNode;
 import de.unisiegen.tpml.core.minimaltyping.TypeEnvironment;
-import de.unisiegen.tpml.core.subtyping.SubTypingException;
-import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofContext;
-import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
+import de.unisiegen.tpml.core.types.ListType;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.ObjectType;
 import de.unisiegen.tpml.core.types.RecType;
+import de.unisiegen.tpml.core.types.RefType;
+import de.unisiegen.tpml.core.types.RowType;
 import de.unisiegen.tpml.core.types.TupleType;
 
 /**
@@ -84,9 +85,9 @@ public class L1MinimalTypingProofRuleSet extends
 	public void applyId ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
-		Identifier id = (Identifier) node.getExpression ( );
+		Identifier id = ( Identifier ) node.getExpression ( );
 		TypeEnvironment environment = node.getEnvironment ( );
-		MonoType type = ( MonoType ) environment.get( id );
+		MonoType type = ( MonoType ) environment.get ( id );
 
 		context.setNodeType ( node, type );
 	}
@@ -503,7 +504,65 @@ public class L1MinimalTypingProofRuleSet extends
 			subtypeInternal ( taul, tau2l );
 			subtypeInternal ( taur, tau2r );
 			return;
+		} else if ( type instanceof RefType && type2 instanceof RefType ) {
+			RefType ref = ( RefType ) type;
+			RefType ref2 = ( RefType ) type2;
+
+			subtypeInternal ( ref.getTau ( ), ref2.getTau ( ) );
+		} else if ( type instanceof TupleType && type2 instanceof TupleType ) {
+			TupleType tuple = ( TupleType ) type;
+			TupleType tuple2 = ( TupleType ) type2;
+
+			MonoType[] types = tuple.getTypes ( );
+			MonoType[] types2 = tuple2.getTypes ( );
+			for ( int i = 0; i < types.length; i++ ) {
+				subtypeInternal ( types[i], types2[i] );
+			}
+		} else if ( type instanceof ListType && type2 instanceof ListType ) {
+			ListType list = ( ListType ) type;
+			ListType list2 = ( ListType ) type2;
+
+			subtypeInternal ( list.getTau ( ), list2.getTau ( ) );
 		}
+		else if (type instanceof ObjectType && type2 instanceof ObjectType){
+			ObjectType object = (ObjectType) type;
+			ObjectType object2 = (ObjectType) type2;
+			subtypeInternal ( object.getPhi ( ), object2.getPhi ( ) );
+		}
+		else if (type instanceof RowType && type2 instanceof RowType){
+			RowType row = (RowType)type;
+			RowType row2 = (RowType) type2;
+			
+			Identifier [] ids = row.getIdentifiers ( );
+			Identifier [] ids2 = row2.getIdentifiers ( );
+			MonoType [] types = row.getTypes ( );
+			MonoType [] types2 = row2.getTypes ( );
+			
+			if (ids.length != ids2.length)
+				throw new RuntimeException ("lenght not equal");
+			for (int i = 0; i < ids.length; i++){
+				for (int j = 0; j < ids2.length; j++){
+					if (ids[i].equals ( ids[j] )){
+						subtypeInternal ( types[i], types2[j] );
+						break;
+					}
+					if (j == ids.length-1)
+						throw new RuntimeException("No Subtype");
+				}
+			}
+		}
+		
+		else if (type instanceof RecType ){
+			RecType rec = (RecType)type;
+			
+			subtypeInternal ( rec.substitute ( rec.getTypeName ( ), rec.getTau ( ) ), type2 );
+		}
+		else if (type2 instanceof RecType){
+			RecType rec = (RecType)type2;
+			
+			subtypeInternal ( type, rec.substitute ( rec.getTypeName ( ), rec.getTau ( ) ) );
+		}
+
 		throw new RuntimeException ( "No Subtype" );
 	}
 
@@ -534,7 +593,7 @@ public class L1MinimalTypingProofRuleSet extends
 
 		throw new RuntimeException ( "infimum type error" );
 	}
-	
+
 	/**
 	 * Applies the <b>(REFL)</b> rule to the <code>node</code> using the
 	 * <code>context</code>.
@@ -542,8 +601,8 @@ public class L1MinimalTypingProofRuleSet extends
 	 * @param context the minimal typing proof context.
 	 * @param pNode the minimal typing proof node.
 	 */
-	public void applyRefl ( @SuppressWarnings("unused")
-			MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+	public void applyRefl ( @SuppressWarnings ( "unused" )
+	MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
 		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
 		MonoType type;
 		MonoType type2;
@@ -565,7 +624,8 @@ public class L1MinimalTypingProofRuleSet extends
 	 * @param context the minimal typing proof context.
 	 * @param pNode the minimal typing proof node.
 	 */
-	public void applyArrow ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+	public void applyArrow ( MinimalTypingProofContext context,
+			MinimalTypingProofNode pNode ) {
 		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
 		ArrowType type;
 		ArrowType type2;
@@ -591,8 +651,8 @@ public class L1MinimalTypingProofRuleSet extends
 	 * @param context the minimal typing proof context.
 	 * @param pNode the minimal typing proof node.
 	 */
-	public void applyAssume ( @SuppressWarnings("unused")
-			MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+	public void applyAssume ( @SuppressWarnings ( "unused" )
+	MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
 		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
 		if ( node.getSeenTypes ( ).contains ( node.getSubType ( ) ) )
 			return;
@@ -607,13 +667,14 @@ public class L1MinimalTypingProofRuleSet extends
 	 * @param 
 	 * pNode the minimal typing proof node.
 	 */
-	public void applyMuLeft ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+	public void applyMuLeft ( MinimalTypingProofContext context,
+			MinimalTypingProofNode pNode ) {
 		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
 		RecType rec = ( RecType ) node.getType ( );
 
-		context.addProofNode ( node,
-				rec.getTau ( ).substitute ( rec.getTypeName ( ), rec ), node.getType2 ( ) );
-		
+		context.addProofNode ( node, rec.getTau ( ).substitute (
+				rec.getTypeName ( ), rec ), node.getType2 ( ) );
+
 		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
 
 	}
@@ -625,13 +686,14 @@ public class L1MinimalTypingProofRuleSet extends
 	 * @param context the minimal typing proof context.
 	 * @param pNode the minimal typing  proof node.
 	 */
-	public void applyMuRight ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+	public void applyMuRight ( MinimalTypingProofContext context,
+			MinimalTypingProofNode pNode ) {
 		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
 		RecType rec = ( RecType ) node.getType2 ( );
 
-		context.addProofNode ( node, node.getType ( ), rec.getTau ( ).substitute ( rec
-				.getTypeName ( ), rec ) );
-		
+		context.addProofNode ( node, node.getType ( ), rec.getTau ( ).substitute (
+				rec.getTypeName ( ), rec ) );
+
 		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
 
 	}

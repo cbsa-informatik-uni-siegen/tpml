@@ -1,13 +1,13 @@
 package de.unisiegen.tpml.core.languages.l2o;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 
-import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.expressions.Attribute;
+import de.unisiegen.tpml.core.expressions.CurriedMethod;
 import de.unisiegen.tpml.core.expressions.Duplication;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Method;
 import de.unisiegen.tpml.core.expressions.ObjectExpr;
 import de.unisiegen.tpml.core.expressions.Row;
@@ -19,15 +19,12 @@ import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingTypesProofNode;
 import de.unisiegen.tpml.core.minimaltyping.TypeEnvironment;
-import de.unisiegen.tpml.core.subtyping.SubTypingException;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
-import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofContext;
-import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode;
+import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.ObjectType;
 import de.unisiegen.tpml.core.types.PrimitiveType;
 import de.unisiegen.tpml.core.types.RowType;
-import de.unisiegen.tpml.core.util.Debug;
 
 /**
  * The minimal type proof rules for the <code>L1</code> language.
@@ -48,22 +45,26 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 */
 	public L2OMinimalTypingProofRuleSet ( L1Language language, boolean mode ) {
 		super ( language, mode );
+		unregister("REFL"); //$NON-NLS-1$
 		// register the type rules
-		if (!mode ) { // beginner mode
+		if ( !mode ) { // beginner mode
 			registerByMethodName ( L2OLanguage.L2O, "TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
 			registerByMethodName ( L2OLanguage.L2O,
 					"OBJECT-WIDTH", "applyObjectWidth" ); //$NON-NLS-1$ //$NON-NLS-2$
 			registerByMethodName ( L2OLanguage.L2O,
 					"OBJECT-DEPTH", "applyObjectDepth" ); //$NON-NLS-1$ //$NON-NLS-2$
+			registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
 		}
+
 		registerByMethodName ( L2OLanguage.L2O, "EMPTY", "applyEmpty" );//$NON-NLS-1$ //$NON-NLS-2$
 		registerByMethodName ( L2OLanguage.L2O, "SEND", "applySend", "updateSend" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		registerByMethodName ( L2OLanguage.L2O,
 				"OBJECT", "applyObject", "updateObject" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		//registerByMethodName ( L2OLanguage.L2O, "DUPL-SUBSUME", "applyDuplSubsume", "updateDuplSubsume" );//$NON-NLS-1$ //$NON-NLS-2$
+		registerByMethodName ( L2OLanguage.L2O,
+				"DUPL-SUBSUME", "applyDuplSubsume", "updateDuplSubsume" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		registerByMethodName ( L2OLanguage.L2O,
 				"METHOD-SUBSUME", "applyMethodSubsume", "updateMethodSubsume" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
+		registerByMethodName ( L2OLanguage.L2O, "ATTR", "applyAttr", "updateAttr" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	/**
@@ -126,8 +127,9 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
 		ObjectExpr object = ( ObjectExpr ) node.getExpression ( );
 		MonoType tau = object.getTau ( );
-		if ( tau == null )
+		if ( tau == null ) {
 			throw new RuntimeException ( "You have to enter type for self" );
+		}
 		TypeEnvironment environment = node.getEnvironment ( );
 		environment = environment.star ( );
 		context.addProofNode ( node,
@@ -145,13 +147,15 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
 		if ( node.getFirstChild ( ).isFinished ( ) ) {
-			MinimalTypingExpressionProofNode child = ( MinimalTypingExpressionProofNode ) node.getFirstChild ( );
+			MinimalTypingExpressionProofNode child = ( MinimalTypingExpressionProofNode ) node
+					.getFirstChild ( );
 			TypeEnvironment environment = child.getEnvironment ( );
-			Identifier self = new Identifier("self"); //$NON-NLS-1$
-			ObjectType objectType = ( ObjectType)environment.get ( self);
-			RowType type = (RowType) objectType.getPhi ( );
+			Identifier self = new Identifier ( "self" ); //$NON-NLS-1$
+			ObjectType objectType = ( ObjectType ) environment.get ( self );
+			RowType type = ( RowType ) objectType.getPhi ( );
 			RowType type2 = ( RowType ) child.getType ( );
 
+			/*
 			Identifier[] ids = type.getIdentifiers ( );
 			Identifier[] ids2 = type2.getIdentifiers ( );
 
@@ -170,7 +174,13 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 					}
 					if ( j == ids.length - 1 )
 						throw new RuntimeException ( "Identifier not found" );
-				}
+				}*/
+			try{
+			subtypeInternal ( type, type2 );
+			subtypeInternal (type2, type);
+			}
+			catch (Exception e){
+				throw new RuntimeException ("Types not equal");
 			}
 
 			context.setNodeType ( node, type );
@@ -233,12 +243,14 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	public void applyMethodSubsume ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
-		Row row = (Row) node.getExpression ( );
-		Method method = ( Method ) row.getExpressions ( )[0];
-		
-		Identifier self = new Identifier("self");
-		context.addProofNode ( node, node.getEnvironment ( ), self );
-		
+		Row row = ( Row ) node.getExpression ( );
+		if ( row.getExpressions ( ).length > 0 && ((row.getExpressions ( )[0] instanceof Method)
+				|| (row.getExpressions ( )[0] instanceof CurriedMethod)) ) {
+			Identifier self = new Identifier ( "self" ); //$NON-NLS-1$
+			context.addProofNode ( node, node.getEnvironment ( ), self );
+			return;
+		}
+		throw new ClassCastException();
 	}
 
 	/**
@@ -251,13 +263,40 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	public void updateMethodSubsume ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
-		Row row = (Row) node.getExpression ( );
-		Method method = ( Method ) row.getExpressions ( )[0];
-		
+		Row row = ( Row ) node.getExpression ( );
+
 		if ( node.getChildCount ( ) == 1 && node.getFirstChild ( ).isFinished ( ) ) {
-			context.addProofNode ( node, node.getEnvironment ( ), method.getE ( ) );
-		}
-		else if ( node.getChildCount ( ) == 2 && node.getChildAt ( 1 ).isFinished ( ) ) {
+			if ( row.getExpressions ( )[0] instanceof Method ) {
+				Method method = ( Method ) row.getExpressions ( )[0];
+				context.addProofNode ( node, node.getEnvironment ( ), method
+						.getE ( ) );
+			} else {
+				CurriedMethod curriedMethod = ( CurriedMethod ) row
+						.getExpressions ( )[0];
+				Expression curriedMethodE = curriedMethod.getE ( );
+				MonoType[] types = curriedMethod.getTypes ( );
+				Identifier[] identifiers = curriedMethod.getIdentifiers ( );
+				for ( int n = identifiers.length - 1; n > 0; --n ) {
+					curriedMethodE = new Lambda ( identifiers[n], types[n],
+							curriedMethodE );
+				}
+				MonoType curriedMethodTau = types[0];
+				if ( curriedMethodTau == null ) {
+					throw new RuntimeException ( "type of this method is null " );
+				}
+				for ( int n = types.length - 1; n > 0; --n ) {
+					if ( types[n] == null )
+						throw new RuntimeException ( "type of " + identifiers[n]
+								+ " is null" );
+					curriedMethodTau = new ArrowType ( types[n], curriedMethodTau );
+				}
+
+				context.addProofNode ( pNode, node.getEnvironment ( ),
+						curriedMethodE );
+
+			}
+		} else if ( node.getChildCount ( ) == 2
+				&& node.getChildAt ( 1 ).isFinished ( ) ) {
 
 			// Create the tailRow and add it as Expression of a new Child
 			Expression[] expressions = ( ( Row ) node.getExpression ( ) )
@@ -268,15 +307,19 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 			}
 			Row newRow = new Row ( tailRow );
 			context.addProofNode ( node, node.getEnvironment ( ), newRow );
-		}
-		else if ( node.getChildCount ( ) == 3 && node.getChildAt ( 2 ).isFinished ( ) ) {
+		} else if ( node.getChildCount ( ) == 3
+				&& node.getChildAt ( 2 ).isFinished ( ) ) {
+			Expression expression = row.getExpressions ( )[0];
+
 			TypeEnvironment environment = node.getEnvironment ( );
 			ObjectType type = ( ObjectType ) environment.get ( new Identifier (
 					"self" ) ); //$NON-NLS-1$
 			RowType rowType = ( RowType ) type.getPhi ( );
 			Identifier[] identifiers = rowType.getIdentifiers ( );
 			MonoType[] types = rowType.getTypes ( );
-			Identifier m = method.getId ( );
+			Identifier m = ( expression instanceof Method ? ( ( Method ) expression )
+					.getId ( )
+					: ( ( CurriedMethod ) expression ).getIdentifiers ( )[0] );
 			MonoType tau = null;
 
 			for ( int i = 0; i < identifiers.length; i++ ) {
@@ -287,15 +330,20 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 			}
 			if ( tau == null )
 				throw new RuntimeException ( "Type of Method not found" );
-			context.addProofNode ( node, tau, node.getChildAt (1 ).getType ( ) );
-		}
-		else if ( node.getChildCount ( ) == 4 && node.getChildAt ( 3 ).isFinished ( ) ) {
-			Identifier [] ids = {method.getIdentifiers ( )[0]};
-			MonoType [] types = {node.getChildAt ( 1 ).getType ( )};
-			
-			RowType rowType = new RowType(ids, types);
-			RowType phi = (RowType) node.getChildAt ( 2 ).getType ( );
-			rowType = RowType.union ( rowType, phi  );
+			context.addProofNode ( node, tau, node.getChildAt ( 1 ).getType ( ) );
+		} else if ( node.getChildCount ( ) == 4
+				&& node.getChildAt ( 3 ).isFinished ( ) ) {
+
+			Identifier[] ids = new Identifier[1];
+			Expression expression = row.getExpressions ( )[0];
+			ids[0] = ( expression instanceof Method ? ( ( Method ) expression )
+					.getIdentifiers ( )[0] : ( ( CurriedMethod ) expression )
+					.getIdentifiers ( )[0] );
+			MonoType[] types = { node.getChildAt ( 1 ).getType ( ) };
+
+			RowType rowType = new RowType ( ids, types );
+			RowType phi = ( RowType ) node.getChildAt ( 2 ).getType ( );
+			rowType = RowType.union ( rowType, phi );
 			context.setNodeType ( node, rowType );
 		}
 
@@ -311,9 +359,17 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	public void applyAttr ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
-		Attribute attr = ( Attribute ) node.getExpression ( );
-		TypeEnvironment environment = node.getEnvironment ( );
-		context.addProofNode ( node, environment, attr.getE ( ) );
+		Row row = ( Row ) node.getExpression ( );
+		if ( row.getExpressions ( ).length > 0
+				&& row.getExpressions ( )[0] instanceof Attribute ) {
+			System.out.println("false");
+			Attribute attr = ( Attribute ) row.getExpressions ( )[0];
+			TypeEnvironment environment = node.getEnvironment ( );
+			context.addProofNode ( node, environment, attr.getE ( ) );
+			return;
+		}
+		throw new ClassCastException ( );
+
 	}
 
 	/**
@@ -327,7 +383,8 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
 		if ( node.getChildCount ( ) == 1 && node.getFirstChild ( ).isFinished ( ) ) {
-			Attribute attr = ( Attribute ) node.getExpression ( );
+			Row rowExpression = ( Row ) node.getExpression ( );
+			Attribute attr = ( Attribute ) rowExpression.getExpressions ( )[0];
 			TypeEnvironment environment = node.getEnvironment ( );
 
 			// Create the tailRow and add it as Expression of a new Child
@@ -358,9 +415,9 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
 		Row row = ( Row ) node.getExpression ( );
 		Expression[] expressions = row.getExpressions ( );
-		if ( expressions.length == 0 ){
-			context.setNodeType ( node, new RowType (
-			        new Identifier [ 0 ] , new MonoType [ 0 ] ) );
+		if ( expressions.length == 0 ) {
+			context.setNodeType ( node, new RowType ( new Identifier[0],
+					new MonoType[0] ) );
 			return;
 		}
 		throw new RuntimeException ( "type is not empty" );
@@ -374,7 +431,8 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 * @param pNode the minimal typing proof node.
 	 * @throws PrimitiveTypeException 
 	 */
-	public void applyTrans ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+	public void applyTrans ( MinimalTypingProofContext context,
+			MinimalTypingProofNode pNode ) {
 		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
 		try {
 			ObjectType type = ( ObjectType ) node.getType2 ( );
@@ -407,8 +465,8 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 				if ( goOn )
 					continue;
 				//throw new SubTypingException ( MessageFormat.format ( Messages
-					//	.getString ( "SubTypingException.0" ), type, type2 ), node ); //$NON-NLS-1$
-				throw new RuntimeException("types not equal");
+				//	.getString ( "SubTypingException.0" ), type, type2 ), node ); //$NON-NLS-1$
+				throw new RuntimeException ( "types not equal" );
 			}
 
 			Identifier[] tmpIds = new Identifier[newIds.size ( )];
@@ -431,9 +489,9 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 			MonoType type2 = node.getType2 ( );
 			// if both types instance of Primitive Type throw Exception
 			if ( type instanceof PrimitiveType && type2 instanceof PrimitiveType ) {
-			//	throw new SubTypingException ( Messages
+				//	throw new SubTypingException ( Messages
 				//		.getString ( "SubTypingException.1" ), node ); //$NON-NLS-1$
-				throw new RuntimeException ("types not equal");
+				throw new RuntimeException ( "types not equal" );
 			}
 			context.addProofNode ( node, type, type );
 			context.addProofNode ( node, type, type2 );
@@ -449,9 +507,9 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 			}
 
 			if ( count >= 15 )
-			//	throw new SubTypingException ( Messages
+				//	throw new SubTypingException ( Messages
 				//		.getString ( "SubTypingException.2" ), node ); //$NON-NLS-1$
-				throw new RuntimeException("to often applied the trans rule");
+				throw new RuntimeException ( "to often applied the trans rule" );
 
 		}
 
@@ -464,7 +522,8 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 * @param context the minimal typing proof context.
 	 * @param pNode the minimal typing proof node.
 	 */
-	public void applyObjectWidth ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+	public void applyObjectWidth ( MinimalTypingProofContext context,
+			MinimalTypingProofNode pNode ) {
 		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
 		boolean goOn;
 		ObjectType type = ( ObjectType ) node.getType ( );
@@ -485,20 +544,20 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 				if ( ids2[i].equals ( ids1[j] ) ) {
 					if ( ! ( types2[i].equals ( types[j] ) ) ) {
 						/*throw new SubTypingException (
-								MessageFormat
-										.format (
-												Messages
-														.getString ( "SubTypingException.3" ), type, type2 ), node ); //$NON-NLS-1$*/
-						throw new RuntimeException("types not equal");
+						 MessageFormat
+						 .format (
+						 Messages
+						 .getString ( "SubTypingException.3" ), type, type2 ), node ); //$NON-NLS-1$*/
+						throw new RuntimeException ( "types not equal" );
 					}
 					goOn = true;
 					break;
 				}
 			}
 			if ( !goOn ) {
-			//	throw new SubTypingException ( MessageFormat.format ( Messages
+				//	throw new SubTypingException ( MessageFormat.format ( Messages
 				//		.getString ( "SubTypingException.4" ), type, type2 ), node ); //$NON-NLS-1$
-				throw new RuntimeException("types not equal");
+				throw new RuntimeException ( "types not equal" );
 			}
 			context.addSeenType ( node.getType ( ), node.getType2 ( ) );
 		}
@@ -511,7 +570,8 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 * @param context the minimal typing proof context.
 	 * @param node the minimal typing proof node.
 	 */
-	public void applyObjectDepth ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+	public void applyObjectDepth ( MinimalTypingProofContext context,
+			MinimalTypingProofNode pNode ) {
 		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
 
 		boolean goOn;
@@ -543,8 +603,8 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 			}
 		} else
 			//throw new SubTypingException ( MessageFormat.format ( Messages
-				//	.getString ( "SubTypingException.0" ), type, type2 ), node ); //$NON-NLS-1$
-			throw new RuntimeException("types not equal");
+			//	.getString ( "SubTypingException.0" ), type, type2 ), node ); //$NON-NLS-1$
+			throw new RuntimeException ( "types not equal" );
 		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
 	}
 
