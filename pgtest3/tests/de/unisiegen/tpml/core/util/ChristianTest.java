@@ -15,6 +15,8 @@ import de.unisiegen.tpml.core.types.TypeVariable ;
 import de.unisiegen.tpml.graphics.components.ShowBonds ;
 
 
+@ SuppressWarnings ( value =
+{ "all" } )
 public class ChristianTest
 {
   public static void main ( String [ ] pArguments )

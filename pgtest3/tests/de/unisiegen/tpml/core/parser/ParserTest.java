@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.types.Type ;
 
 
 @ SuppressWarnings ( value =
-{ "nls" } )
+{ "all" } )
 public class ParserTest
 {
   private static String IDENTIFIER = "id" ;
@@ -271,7 +271,7 @@ public class ParserTest
   private static String OPERATOR_2 = "(-)" ;
 
 
-  // TODO Unable to parse because of comment
+  // TODO Unable to parse because of the comment exception in the scanner
   private static String OPERATOR_3 = "6 * 7" ; // "(*)" ;
 
 

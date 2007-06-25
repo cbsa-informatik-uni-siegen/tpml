@@ -5,6 +5,8 @@ import java.util.LinkedList ;
 import java.util.Properties ;
 
 
+@ SuppressWarnings ( value =
+{ "all" } )
 public class Debug
 {
   public static class DebugErrPrint
