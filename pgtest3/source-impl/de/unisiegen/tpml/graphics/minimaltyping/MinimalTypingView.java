@@ -57,7 +57,7 @@ public class MinimalTypingView extends AbstractProofView
    * 
    * @see #getOutline()
    */
- // private Outline outline ;
+  private Outline outline ;
 
 
   /**
@@ -95,13 +95,14 @@ public class MinimalTypingView extends AbstractProofView
                 .getWidth ( ) ) ;
       }
     } ) ;
-  //  this.outline = new DefaultOutline ( this ) ;
-   // this.outline.loadPrettyPrintable ( this.MinimalTypingProofModel.getRoot ( )
-   //     .getLastLeaf ( ).getExpression ( ) , Outline.Execute.INIT_MinimalTyping ) ;
-    //JPanel jPanelOutline = this.outline.getJPanelOutline ( ) ;
-   // jPanelOutline.getPreferredSize ( ).getHeight ( ) ;
+    this.outline = new DefaultOutline ( this ) ;
+    // TODO change from init_typechecker to init_minimaltyping
+    this.outline.loadPrettyPrintable ( this.MinimalTypingProofModel.getRoot ( )
+        .getLastLeaf ( ).getExpression ( ) , Outline.Execute.INIT_TYPECHECKER ) ;
+    JPanel jPanelOutline = this.outline.getJPanelOutline ( ) ;
+    jPanelOutline.getPreferredSize ( ).getHeight ( ) ;
     this.jSplitPane.setLeftComponent ( this.scrollPane ) ;
-   // this.jSplitPane.setRightComponent ( jPanelOutline ) ;
+    this.jSplitPane.setRightComponent ( jPanelOutline ) ;
     this.jSplitPane.setOneTouchExpandable ( true ) ;
     this.jSplitPane.setResizeWeight ( 0.5 ) ;
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
@@ -131,10 +132,10 @@ public class MinimalTypingView extends AbstractProofView
    * 
    * @return The {@link Outline} of this view.
    */
- /* public Outline getOutline ( )
+  public Outline getOutline ( )
   {
     return this.outline ;
-  }*/
+  }
 
 
   /**

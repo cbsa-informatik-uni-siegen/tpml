@@ -7,7 +7,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Point;
-import java.io.StringReader;
 import java.text.MessageFormat;
 
 import javax.swing.JComponent;
@@ -21,13 +20,9 @@ import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.expressions.Identifier;
-import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
-import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
-import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
@@ -200,14 +195,14 @@ public class MinimalTypingNodeComponent extends JComponent implements
     this.dimension = new Dimension ( 0 , 0 ) ;
     this.spacing = 10 ;
     this.indexLabel = new JLabel ( ) ;
-   // this.indexLabel.addMouseListener ( new OutlineMouseListener ( this ) ) ;
+    //this.indexLabel.addMouseListener ( new OutlineMouseListener ( this ) ) ;
     add ( this.indexLabel ) ;
     this.compoundExpression = new CompoundExpression < Identifier , Type > ( ) ;
-  //  this.compoundExpression
-    //    .addMouseListener ( new OutlineMouseListener ( this ) ) ;
+    //this.compoundExpression
+      //  .addMouseListener ( new OutlineMouseListener ( this ) ) ;
     add ( this.compoundExpression ) ;
     this.typeComponent = new TypeComponent ();
- //   this.typeComponent.addMouseListener ( new OutlineMouseListener (this));
+    //this.typeComponent.addMouseListener ( new OutlineMouseListener (this));
     add (this.typeComponent);
     changeNode ( ) ;
     /*

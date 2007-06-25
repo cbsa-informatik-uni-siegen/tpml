@@ -4,6 +4,7 @@ import javax.swing.tree.TreeNode;
 
 import de.unisiegen.tpml.core.ExpressionProofNode;
 import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**

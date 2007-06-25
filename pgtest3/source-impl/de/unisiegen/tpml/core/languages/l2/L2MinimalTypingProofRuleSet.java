@@ -6,7 +6,7 @@ import de.unisiegen.tpml.core.languages.l1.L1MinimalTypingProofRuleSet;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingExpressionProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
-import de.unisiegen.tpml.core.minimaltyping.TypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 
 /**
  * The minimal type proof rules for the <code>L1</code> language.

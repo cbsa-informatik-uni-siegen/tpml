@@ -2,9 +2,9 @@ package de.unisiegen.tpml.core.minimaltyping;
 
 import de.unisiegen.tpml.core.expressions.Unify;
 import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.types.UnifyType;
 
 public class DefaultMinimalTypingTypesProofNode extends
 		AbstractMinimalTypingProofNode implements MinimalTypingTypesProofNode{

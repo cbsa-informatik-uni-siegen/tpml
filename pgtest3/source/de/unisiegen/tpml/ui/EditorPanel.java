@@ -28,6 +28,7 @@ import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
@@ -43,7 +44,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
  * 
  * @author Christoph Fehling
  */
-public class EditorPanel extends javax.swing.JPanel {
+@SuppressWarnings( "all" )   public class EditorPanel extends javax.swing.JPanel {
 
 	/**
 	 * The serial version UID
@@ -63,6 +64,7 @@ public class EditorPanel extends javax.swing.JPanel {
 		bigstepButton.setVisible(false);
 		typecheckerButton.setVisible(false);
 		typeinferenceButton.setVisible(false);
+		minimalTypingButton.setVisible ( false );
 		//There will be no Subtypingbutton because it has no sourcecode
 		//finished setting the default states
 
@@ -72,6 +74,7 @@ public class EditorPanel extends javax.swing.JPanel {
                 bigstepButton.setPreferredSize(new Dimension(bigstepButton.getPreferredSize().width, pongButton.getPreferredSize().height));
                 typecheckerButton.setPreferredSize(new Dimension(typecheckerButton.getPreferredSize().width, pongButton.getPreferredSize().height));
                 typeinferenceButton.setPreferredSize(new Dimension(typeinferenceButton.getPreferredSize().width, pongButton.getPreferredSize().height));
+                minimalTypingButton.setPreferredSize(new Dimension(minimalTypingButton.getPreferredSize().width, pongButton.getPreferredSize().height));
                 //There will be no SubTypingButton
                 //TODO vielleicht auch machen müssen
 		
@@ -124,6 +127,7 @@ public class EditorPanel extends javax.swing.JPanel {
         bigstepButton = new javax.swing.JToggleButton();
         typecheckerButton = new javax.swing.JToggleButton();
         typeinferenceButton = new javax.swing.JToggleButton();
+        minimalTypingButton = new javax.swing.JToggleButton();
         actionToolBar = new javax.swing.JToolBar();
         nextButton = new javax.swing.JButton();
         pongButton = new javax.swing.JButton();
@@ -187,6 +191,16 @@ public class EditorPanel extends javax.swing.JPanel {
         });
 
         editorToolBar.add(typeinferenceButton);
+        
+
+        minimalTypingButton.setText("Minimal Typing");
+        minimalTypingButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                minimalTypingButtonActionPerformed(evt);
+            }
+        });
+
+        editorToolBar.add(minimalTypingButton);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -269,6 +283,13 @@ public class EditorPanel extends javax.swing.JPanel {
 		bigstepButton.setSelected(true);
 	}// GEN-LAST:event_bigstepButtonActionPerformed
 	
+	private void minimalTypingButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_bigstepButtonActionPerformed
+		setTexteditor(false);
+		setComponent(minimaltyping);
+		deselectButtons();
+		minimalTypingButton.setSelected(true);
+	}// GEN-LAST:event_bigstepButtonActionPerformed
+	
 	//TODO Brauchen wir den auch für den Subtyping
 
 	private void smallstepButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_smallstepButtonActionPerformed
@@ -298,6 +319,7 @@ public class EditorPanel extends javax.swing.JPanel {
     private javax.swing.JToggleButton smallstepButton;
     private javax.swing.JToggleButton typecheckerButton;
     private javax.swing.JToggleButton typeinferenceButton;
+    private javax.swing.JToggleButton minimalTypingButton;
     // End of variables declaration//GEN-END:variables
 
 	private static final Logger logger = Logger.getLogger(EditorPanel.class);
@@ -318,6 +340,8 @@ public class EditorPanel extends javax.swing.JPanel {
 	private EditorComponent typeinference;
 	
 	private EditorComponent subtyping;
+	
+	private EditorComponent minimaltyping;
 
 	private EditorComponent activeEditorComponent;
 
@@ -571,6 +595,32 @@ public class EditorPanel extends javax.swing.JPanel {
 					"TypeChecker", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+	/**
+	 * Starts the MinimalTyping Interpreter.
+	 */
+	public void handleMinimalTyping() {
+		setTexteditor(false);
+		try {
+			MinimalTypingProofModel model = language.newMinimalTypingProofModel(code
+					.getDocument().getExpression(), isAdvaced ( ));
+			minimaltyping = new ProofViewComponent(ProofViewFactory
+					.newMinimalTypingView(model), model);
+			editorPanel.removeAll();
+			activateFunction(minimalTypingButton, minimaltyping);
+			minimaltyping.setAdvanced(this.advanced);
+			paintAll(getGraphics());
+			
+
+		} catch (Exception e) {
+			e.printStackTrace ( );
+			logger.error("Could not create new MinimalTypingView", e);
+			JOptionPane.showMessageDialog(this,
+					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotBigStep")+
+					"\n"+e.getMessage()+".", "Minimal Typing",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
 
 	public void handleCut() {
 		this.code.handleCut();
@@ -619,6 +669,7 @@ public class EditorPanel extends javax.swing.JPanel {
 		bigstepButton.setSelected(false);
 		typecheckerButton.setSelected(false);
 		typeinferenceButton.setSelected(false);
+		minimalTypingButton.setSelected ( false );
 	}
 
 	/**
@@ -768,6 +819,7 @@ public class EditorPanel extends javax.swing.JPanel {
 		if (typechecker != null) typechecker.setAdvanced(state);
 		if (typeinference != null) typeinference.setAdvanced(state);
 		if (subtyping != null) subtyping.setAdvanced(state);
+		if (minimaltyping != null) minimaltyping.setAdvanced(state);
 		this.advanced = state;
 	}
 	

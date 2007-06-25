@@ -1,40 +1,43 @@
 package de.unisiegen.tpml.core.minimaltyping ;
 
 
-import java.util.Collections ;
-import java.util.LinkedList ;
-import java.util.TreeSet ;
-import de.unisiegen.tpml.core.ProofRuleException ;
-import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
-import de.unisiegen.tpml.core.expressions.Assign ;
-import de.unisiegen.tpml.core.expressions.BinaryCons ;
-import de.unisiegen.tpml.core.expressions.BooleanConstant ;
-import de.unisiegen.tpml.core.expressions.Deref ;
-import de.unisiegen.tpml.core.expressions.EmptyList ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Hd ;
-import de.unisiegen.tpml.core.expressions.IntegerConstant ;
-import de.unisiegen.tpml.core.expressions.IsEmpty ;
-import de.unisiegen.tpml.core.expressions.Not ;
-import de.unisiegen.tpml.core.expressions.Projection ;
-import de.unisiegen.tpml.core.expressions.Ref ;
-import de.unisiegen.tpml.core.expressions.RelationalOperator ;
-import de.unisiegen.tpml.core.expressions.Tl ;
-import de.unisiegen.tpml.core.expressions.UnaryCons ;
-import de.unisiegen.tpml.core.expressions.UnitConstant ;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.TreeSet;
+
+import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
+import de.unisiegen.tpml.core.expressions.Assign;
+import de.unisiegen.tpml.core.expressions.BinaryCons;
+import de.unisiegen.tpml.core.expressions.BooleanConstant;
+import de.unisiegen.tpml.core.expressions.Deref;
+import de.unisiegen.tpml.core.expressions.EmptyList;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Hd;
+import de.unisiegen.tpml.core.expressions.IntegerConstant;
+import de.unisiegen.tpml.core.expressions.IsEmpty;
+import de.unisiegen.tpml.core.expressions.Not;
+import de.unisiegen.tpml.core.expressions.Projection;
+import de.unisiegen.tpml.core.expressions.Ref;
+import de.unisiegen.tpml.core.expressions.RelationalOperator;
+import de.unisiegen.tpml.core.expressions.Tl;
+import de.unisiegen.tpml.core.expressions.UnaryCons;
+import de.unisiegen.tpml.core.expressions.UnitConstant;
 import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;
-import de.unisiegen.tpml.core.types.ArrowType ;
-import de.unisiegen.tpml.core.types.BooleanType ;
-import de.unisiegen.tpml.core.types.IntegerType ;
-import de.unisiegen.tpml.core.types.ListType ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.PolyType ;
-import de.unisiegen.tpml.core.types.RefType ;
-import de.unisiegen.tpml.core.types.TupleType ;
-import de.unisiegen.tpml.core.types.Type ;
-import de.unisiegen.tpml.core.types.TypeVariable ;
-import de.unisiegen.tpml.core.types.UnitType ;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+import de.unisiegen.tpml.core.types.ArrowType;
+import de.unisiegen.tpml.core.types.BooleanType;
+import de.unisiegen.tpml.core.types.IntegerType;
+import de.unisiegen.tpml.core.types.ListType;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.PolyType;
+import de.unisiegen.tpml.core.types.RefType;
+import de.unisiegen.tpml.core.types.TupleType;
+import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.core.types.TypeVariable;
+import de.unisiegen.tpml.core.types.UnitType;
 
 
 /**

@@ -38,7 +38,7 @@ import de.unisiegen.tpml.core.languages.NoSuchLanguageException ;
  * @version $Rev:499 $
  * @see de.unisiegen.tpml.ui.Main
  */
-public class MainWindow extends javax.swing.JFrame
+@SuppressWarnings("all") public class MainWindow extends javax.swing.JFrame
 {
   //
   // Constants
@@ -238,6 +238,7 @@ public class MainWindow extends javax.swing.JFrame
     typecheckerItem = new javax.swing.JMenuItem ( ) ;
     typeInference = new javax.swing.JMenuItem ( ) ;
     subtyping = new javax.swing.JMenuItem ( ) ;
+    minimalTyping = new javax.swing.JMenuItem ( ) ;
     runMenuSeparator1 = new javax.swing.JSeparator ( ) ;
     beginnerRadioButton = new javax.swing.JRadioButtonMenuItem ( ) ;
     advancedRadioButton = new javax.swing.JRadioButtonMenuItem ( ) ;
@@ -675,6 +676,23 @@ public class MainWindow extends javax.swing.JFrame
     } ) ;
     runMenu.add ( typecheckerItem ) ;
     
+// changes benjamin
+    
+      minimalTyping.setMnemonic ( java.util.ResourceBundle.getBundle (
+          "de/unisiegen/tpml/ui/ui" ).getString ( "MinimalTypingMnemonic" ).charAt (
+          0 ) ) ;
+      minimalTyping.setText ( "Minimal Typing") ;
+      minimalTyping.addActionListener ( new java.awt.event.ActionListener ( )
+      {
+        public void actionPerformed ( java.awt.event.ActionEvent evt )
+        {
+          minimalTypingItemActionPerformed ( evt ) ;
+        }
+      } ) ;
+      runMenu.add ( minimalTyping ) ;
+      
+      // changes end
+    
     
     
     
@@ -932,6 +950,11 @@ public class MainWindow extends javax.swing.JFrame
     ( getActiveEditor ( ) ).handleSubtyping() ;
   }// GEN-LAST:event_typecheckerItemActionPerformed
   
+  private void minimalTypingItemActionPerformed ( java.awt.event.ActionEvent evt )
+  {// GEN-FIRST:event_minimalTypingItemActionPerformed
+    // 
+    ( getActiveEditor ( ) ).handleMinimalTyping ( ) ;
+  }// GEN-LAST:event_minimalTypingItemActionPerformed
   
 
 
@@ -1096,6 +1119,8 @@ public class MainWindow extends javax.swing.JFrame
   private javax.swing.JMenuItem typeInference;
   
   private javax.swing.JMenuItem subtyping;
+  
+  private javax.swing.JMenuItem minimalTyping;
 
 
   private javax.swing.JButton undoButton ;
@@ -1199,6 +1224,7 @@ public class MainWindow extends javax.swing.JFrame
     smallstepItem.setEnabled ( state ) ;
     bigstepItem.setEnabled ( state ) ;
     typecheckerItem.setEnabled ( state ) ;
+    minimalTyping.setEnabled ( state ) ;
     typeInference.setEnabled( state );
     subtyping.setEnabled( state );
     saveAsItem.setEnabled ( state ) ;

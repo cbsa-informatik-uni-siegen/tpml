@@ -1,11 +1,13 @@
 package de.unisiegen.tpml.graphics;
 
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView;
+import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingView;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView;
 import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView;
@@ -36,6 +38,10 @@ public class ProofViewFactory {
 	
 	public static ProofView newSubtypingView (SubTypingProofModel model) {
 		return new SubTypingEnterTypes ( model );
+	}
+	
+	public static ProofView newMinimalTypingView (MinimalTypingProofModel model) {
+		return new MinimalTypingView ( model );
 	}
 	
 }

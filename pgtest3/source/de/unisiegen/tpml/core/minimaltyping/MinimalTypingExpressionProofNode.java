@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.core.minimaltyping;
 
+import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+
 
 public interface MinimalTypingExpressionProofNode extends
 		MinimalTypingProofNode {
