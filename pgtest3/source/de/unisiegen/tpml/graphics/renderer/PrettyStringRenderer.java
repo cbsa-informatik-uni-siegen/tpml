@@ -6,6 +6,7 @@ import java.awt.Dimension ;
 import java.awt.Font ;
 import java.awt.FontMetrics ;
 import java.awt.Graphics ;
+import java.awt.Point;
 import java.security.SecureRandom;
 import java.text.CharacterIterator ;
 import java.util.ArrayList ;
@@ -644,7 +645,7 @@ public class PrettyStringRenderer extends AbstractRenderer
   	
     toListenForMouse = toListenForM ;
     // get The MousePosition
-    int [ ] mousePosition = toListenForMouse.getHereIam ( ) ;
+    Point mousePosition = toListenForMouse.getHereIam ( ) ;
     
     //TODO Testausgae
     //System.out.println("Mouseposition: "+mousePosition[0] + ", "+mousePosition[1]);
@@ -653,7 +654,7 @@ public class PrettyStringRenderer extends AbstractRenderer
     
     // System.out.println("mousePostition: "+mousePosition[0]+", "+mousePosition[1]);
     
-    if ( mousePosition [ 0 ] == 0 && mousePosition [ 1 ] == 0 )
+    if ( mousePosition.x == 0 && mousePosition.y == 0 )
     {
       mouseOver = false ;
     }
@@ -720,7 +721,7 @@ public class PrettyStringRenderer extends AbstractRenderer
     
     // mousePosition[1] is the x-coordinate, start to count at 1
     //lineCount = ( ( mousePosition [ 1 ] - ( posY_ - AbstractRenderer.getAbsoluteHeight() ) ) / fm.getHeight ( ) ) + 1 ;
-    lineCount = ( ( mousePosition [ 1 ] - ( posY_ - AbstractRenderer.getAbsoluteHeight() ) ) / AbstractRenderer.getAbsoluteHeight ( ) ) + 1 ;
+    lineCount = ( ( mousePosition.y - ( posY_ - AbstractRenderer.getAbsoluteHeight() ) ) / AbstractRenderer.getAbsoluteHeight ( ) ) + 1 ;
     
     //System.out.println("Linecount: "+lineCount);
     
@@ -728,7 +729,7 @@ public class PrettyStringRenderer extends AbstractRenderer
     boolean highlight = false;
     if ( lineCount >= 1 && lineCount <= height / AbstractRenderer.getAbsoluteHeight() ) //schon mal die richtige Zeile
     {
-    	if ( (mousePosition[0] > x) && (mousePosition[0] <= x + width) && (mousePosition[1] > y) && (mousePosition[1] <= y + height) )
+    	if ( (mousePosition.x > x) && (mousePosition.x <= x + width) && (mousePosition.y > y) && (mousePosition.y <= y + height) )
     	{
     		highlight = true;
     	}
@@ -789,7 +790,7 @@ public class PrettyStringRenderer extends AbstractRenderer
       // System.out.print(c);
       
       charPosition = charPosition + charWidth ;
-      if ( charPosition > mousePosition [ 0 ] )
+      if ( charPosition > mousePosition.x )
       {
         break ;
       }
@@ -861,13 +862,10 @@ public class PrettyStringRenderer extends AbstractRenderer
         // tell mouselistener in CompoundExpression to react at these positions
         // posY dose not stand for the baseline but for the center, so we have
         // to use corrected values for posY
-        toListenForMouse.add ( posX - 1 ) ;
-        toListenForMouse.add ( posX + charWidth + 1 ) ;
-        // toListenForMouse.add(posY-fm.getDescent());
-        // he will just react from baseline to upper corner of char, not to
+//      he will just react from baseline to upper corner of char, not to
         // lower corner of char
-        toListenForMouse.add ( posYC ) ;
-        toListenForMouse.add ( posYC + fm.getAscent ( ) ) ;
+        toListenForMouse.add ( posX - 1,posYC, posX + charWidth + 1,posYC + fm.getAscent ( ) ) ;
+
       }
       // Wenn gemalt werden soll, also die Maus �ber einem Buchstaben steht
       // Damit die Liste mit jeder neuen Expression neu gesetzt wird, wird in

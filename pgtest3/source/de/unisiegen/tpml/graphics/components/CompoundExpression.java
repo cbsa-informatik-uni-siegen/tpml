@@ -172,7 +172,7 @@ public class CompoundExpression < S , E > extends JComponent
         //}
         
         toListenForMouse.reset();
-          toListenForMouse.setRightList(-1);
+//          toListenForMouse.setRightList(-1);
         toListenForMouse.setMark ( false ) ;
         CompoundExpression.this.repaint ( ) ;
       }
@@ -261,13 +261,14 @@ public class CompoundExpression < S , E > extends JComponent
     boolean mark = false;
     
     //walk throu the postions where to mark
-    for ( int t = 0 ; t < toListenForMouse.size ( ) ; t = t + 4 )
+    for ( int t = 0 ; t < toListenForMouse.size ( ) ; t++)
     {
       //get position of pointer, these are rectangles. These positions are made by the PrettyStringRenderer
-      int pX = toListenForMouse.get ( t ) ;
-      int pX1 = toListenForMouse.get ( t + 1 ) ;
-      int pY = toListenForMouse.get(t+2);
-      int pY1 = toListenForMouse.get(t+3);
+      Rectangle r =  toListenForMouse.get ( t ) ;
+      int pX = r.x;
+      int pX1 = r.x+r.width ;
+      int pY = r.y;
+      int pY1 = r.y+r.height;
     
       // fnde out if pointer is on one of the chars to mark
       if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY) && (event.getY() <= pY1)) 
@@ -290,7 +291,7 @@ public class CompoundExpression < S , E > extends JComponent
       //we do not want to see anything marked
      toListenForMouse.setMark ( false ) ;
      toListenForMouse.reset();
-     toListenForMouse.setRightList(-1);
+ //    toListenForMouse.setRightList(-1);
      toListenForMouse.reset();
      CompoundExpression.this.repaint ( ) ;
     }
