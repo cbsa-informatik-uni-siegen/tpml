@@ -319,28 +319,19 @@ public final class OutlineMouseListener implements MouseListener
                       .getExpression ( ) ,
                   Outline.Execute.MOUSE_CLICK_TYPECHECKER ) ;
         }
-        else if ( pMouseEvent.getSource ( ).equals (
-            this.typeCheckerNodeComponent.getTypeComponent  ( ) ) )
-        {
-          ( ( TypeCheckerView ) this.typeCheckerNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).loadPrettyPrintable (
-                  this.typeCheckerNodeComponent.getTypeComponent ()
-                      .getType ( ) ,
-                  Outline.Execute.MOUSE_CLICK_TYPECHECKER ) ;
-        }
         /*
          * Type label.
          */
-//        else if ( pMouseEvent.getSource ( ).equals (
-//            this.typeCheckerNodeComponent.getTypeLabel ( ) ) )
-//        {
-//          ( ( TypeCheckerView ) this.typeCheckerNodeComponent.getParent ( )
-//              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-//              .getOutline ( ).loadPrettyPrintable (
-//                  this.typeCheckerNodeComponent.getProofNode ( ).getType ( ) ,
-//                  Outline.Execute.MOUSE_CLICK_TYPECHECKER ) ;
-//        }
+        else if ( pMouseEvent.getSource ( ).equals (
+            this.typeCheckerNodeComponent.getTypeComponent ( ) ) )
+        {
+          ( ( TypeCheckerView ) this.typeCheckerNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline ( )
+              .loadPrettyPrintable (
+                  this.typeCheckerNodeComponent.getTypeComponent ( ).getType ( ) ,
+                  Outline.Execute.MOUSE_CLICK_TYPECHECKER ) ;
+        }
       }
       /*
        * Big step.
