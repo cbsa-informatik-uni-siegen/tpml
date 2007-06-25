@@ -98,7 +98,7 @@ public class TypeCheckerView extends AbstractProofView
     this.outline = new DefaultOutline ( this ) ;
     this.outline.loadPrettyPrintable ( this.typeCheckerProofModel.getRoot ( )
         .getLastLeaf ( ).getExpression ( ) , Outline.Execute.INIT_TYPECHECKER ) ;
-    JPanel jPanelOutline = this.outline.getJPanelOutline ( ) ;
+    JPanel jPanelOutline = this.outline.getPanel ( ) ;
     jPanelOutline.getPreferredSize ( ).getHeight ( ) ;
     this.jSplitPane.setLeftComponent ( this.scrollPane ) ;
     this.jSplitPane.setRightComponent ( jPanelOutline ) ;

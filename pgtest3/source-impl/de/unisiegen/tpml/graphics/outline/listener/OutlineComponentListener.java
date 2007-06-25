@@ -97,14 +97,14 @@ public final class OutlineComponentListener implements ComponentListener
   public final void componentResized ( ComponentEvent pComponentEvent )
   {
     if ( ( pComponentEvent.getSource ( ).equals ( this.defaultOutline
-        .getJPanelOutline ( ) ) )
+        .getPanel ( ) ) )
         && ( this.jSplitPane != null ) )
     {
       this.defaultOutline.getOutlinePreferences ( ).setDividerLocation (
           this.jSplitPane.getDividerLocation ( ) ) ;
     }
     else if ( pComponentEvent.getSource ( ).equals (
-        this.defaultOutline.getJPanelOutline ( ) ) )
+        this.defaultOutline.getPanel ( ) ) )
     {
       this.defaultOutline.updateBreaks ( ) ;
     }

@@ -99,19 +99,19 @@ public interface Outline
 
 
   /**
-   * Returns the <code>JPanel</code> of the {@link OutlineUI}.
-   * 
-   * @return The <code>JPanel</code> of the {@link OutlineUI}.
-   */
-  public JPanel getJPanelOutline ( ) ;
-
-
-  /**
    * Returns the {@link OutlinePreferences}.
    * 
    * @return The {@link OutlinePreferences}.
    */
   public OutlinePreferences getOutlinePreferences ( ) ;
+
+
+  /**
+   * Returns the <code>JPanel</code> of the {@link OutlineUI}.
+   * 
+   * @return The <code>JPanel</code> of the {@link OutlineUI}.
+   */
+  public JPanel getPanel ( ) ;
 
 
   /**

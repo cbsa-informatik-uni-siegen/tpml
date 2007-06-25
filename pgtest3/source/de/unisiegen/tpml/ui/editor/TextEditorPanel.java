@@ -452,7 +452,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
     this.editor.setAutoscrolls ( false ) ;
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
     this.outline = new DefaultOutline ( this ) ;
-    JPanel jPanelOutline = this.outline.getJPanelOutline ( ) ;
+    JPanel jPanelOutline = this.outline.getPanel ( ) ;
     this.jSplitPane.setLeftComponent ( compoundPanel ) ;
     this.jSplitPane.setRightComponent ( jPanelOutline ) ;
     this.jSplitPane.setOneTouchExpandable ( true ) ;

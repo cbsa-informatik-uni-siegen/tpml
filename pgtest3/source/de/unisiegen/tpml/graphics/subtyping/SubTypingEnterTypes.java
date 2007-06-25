@@ -659,7 +659,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		outline.setLayout ( new GridBagLayout ( ) );
 		outline.setBorder ( border );
 
-		JPanel jPanelOutline1 = this.outline1.getJPanelOutline ( );
+		JPanel jPanelOutline1 = this.outline1.getPanel ( );
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.weightx = 1;
@@ -669,7 +669,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		this.outline.add ( jPanelOutline1, constraints );
 		this.outline.setVisible ( false );
 
-		JPanel jPanelOutline2 = this.outline2.getJPanelOutline ( );
+		JPanel jPanelOutline2 = this.outline2.getPanel ( );
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		constraints.weighty = 5;
