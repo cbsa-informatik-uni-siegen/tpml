@@ -44,6 +44,26 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	private ArrayList <Rectangle> typeFprmularPostitions;
 	
 	/**
+	 * the List of alle Elements of the TypeFormularRenderer with its areas
+	 */
+	private ArrayList <Rectangle> expressionPostitions;
+	
+	/**
+	 * the List of alle Elements of the TypeFormularRenderer with its areas
+	 */
+	private ArrayList <Rectangle> typePostitions;
+	
+	/**
+	 * the List of alle Elements of the TypeFormularRenderer with its areas
+	 */
+	private ArrayList <Rectangle> leftTypePostitions;
+	
+	/**
+	 * the List of alle Elements of the TypeFormularRenderer with its areas
+	 */
+	private ArrayList <Rectangle> rightTypePostitions;
+	
+	/**
 	 * the typeequations
 	 */
 	private ArrayList <Integer> typeEquations;
@@ -107,7 +127,11 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		this.collapsedArea	= new Rectangle ();
 		
 		this.collapsedAreas = new ArrayList<Rectangle>();
-		this.typeFprmularPostitions = new ArrayList <Rectangle>(); 
+		this.typeFprmularPostitions = new ArrayList <Rectangle>();
+		this.expressionPostitions = new ArrayList<Rectangle>();
+		this.typePostitions = new ArrayList<Rectangle>();
+		this.leftTypePostitions = new ArrayList<Rectangle>();
+		this.rightTypePostitions = new ArrayList<Rectangle>();
 		this.typeEquations = new ArrayList <Integer> ();
 		this.collapsedStrings = new ArrayList<String>();
 	}
@@ -181,6 +205,45 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	public ArrayList <Rectangle> getTypeFprmularPostitions ()
 	{
 		return this.typeFprmularPostitions;
+	}
+	/**
+	 * returns a list of areas where typeFormulars are
+	 *
+	 * @return the list of rectangles with areas
+	 */
+	public ArrayList <Rectangle> getExpressionPositions ()
+	{
+		return this.expressionPostitions;
+	}
+	
+	/**
+	 * returns a list of areas where typeFormulars are
+	 *
+	 * @return the list of rectangles with areas
+	 */
+	public ArrayList <Rectangle> getTypePositions ()
+	{
+		return this.typePostitions;
+	}
+	
+	/**
+	 * returns a list of areas where typeFormulars are
+	 *
+	 * @return the list of rectangles with areas
+	 */
+	public ArrayList <Rectangle> getLeftTypePostitions ()
+	{
+		return this.leftTypePostitions;
+	}
+	
+	/**
+	 * returns a list of areas where typeFormulars are
+	 *
+	 * @return the list of rectangles with areas
+	 */
+	public ArrayList <Rectangle> getRightTypeostitions ()
+	{
+		return this.rightTypePostitions;
 	}
 	
 	/**
@@ -479,6 +542,11 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			typeEquations = new ArrayList <Integer> ();
 			for (int i = 0; i < typeFormulaList.size(); i++)
 			{
+				expressionPostitions.add(new Rectangle(0,0,0,0));
+				typePostitions.add(new Rectangle(0,0,0,0));
+				leftTypePostitions.add(new Rectangle(0,0,0,0));
+				rightTypePostitions.add(new Rectangle(0,0,0,0));
+				
 				nochNutzbar = width - einrücken;
 				testAusgabe("Noich nutzbar wenn das Einrücken abgezogen ist: "+nochNutzbar);
 				t = typeFormulaList.get(i);
@@ -507,6 +575,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
           typeEquationStringrenderer.renderBase(posX, posY, typeEquationSize.width, typeEquationSize.height, gc, bondTypeEquation, toListenForM);
 					
 					this.typeFprmularPostitions.add(new Rectangle(posX, posY+AbstractRenderer.fontDescent, typeEquationSize.width, typeEquationSize.height));
+					this.leftTypePostitions.set(i, new Rectangle (posX, posY+AbstractRenderer.fontAscent, typeEquationSize.width/2, typeEquationSize.height ));
+					this.rightTypePostitions.set(i, new Rectangle (posX+typeEquationSize.width/2, posY+AbstractRenderer.fontAscent, typeEquationSize.width/2, typeEquationSize.height ));
 					this.typeEquations.add(i);
 					posX += typeEquationSize.width;
 					
@@ -595,11 +665,13 @@ public class TypeFormularRenderer extends AbstractRenderer {
 				
 						//expressionRenderer.render(posX, posY-AbstractRenderer.fontHeight, expressionSize.width, expressionSize.height, gc, bound, toListenForM);
             expressionRenderer.renderBase(posX, posY, expressionSize.width, expressionSize.height, gc, bound, toListenForM);
+            expressionPostitions.set(i, new Rectangle (posX, posY+AbstractRenderer.fontAscent, expressionSize.width, expressionSize.height ) );
 						
 					}
 					else
 					{
 						expressionRenderer.render(posX, posY-AbstractRenderer.fontHeight / 2 - AbstractRenderer.fontAscent / 2, expressionSize.width ,expressionSize.height, gc, bound, toListenForM);
+						expressionPostitions.set(i, new Rectangle (posX, posY+AbstractRenderer.fontAscent, expressionSize.width, expressionSize.height ) );
             //expressionRenderer.renderBase(posX, posY, expressionSize.width ,expressionSize.height, gc, bound, toListenForM);
 					}
 					//prettyStringrenderer.render(posX, posY-(expressionSize.height / 2) - fontAscent / 2, expressionSize.height, gc, bound, toListenForM);
@@ -642,6 +714,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
             
             //typeRenderer.render(posX, posY-(typeSize.height / 2) - fontAscent / 2, typeSize.width ,typeSize.height, gc, bondType, toListenForM);
             typeRenderer.renderBase(posX, posY , typeSize.width ,typeSize.height, gc, bondType, toListenForM);
+            typePostitions.set(i, new Rectangle (posX, posY+AbstractRenderer.fontAscent, typeSize.width, typeSize.height ) );
             posX += typeSize.width;
 
             this.typeFprmularPostitions.add(new Rectangle(oldPosX, posY, posX-oldPosX, spaceToNexEntry));
@@ -654,6 +727,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
           {
             //typeRenderer.render(posX, posY-(typeSize.height / 2) - fontAscent / 2, typeSize.width ,typeSize.height, gc, bondType, toListenForM);
             typeRenderer.renderBase(posX, posY , typeSize.width ,typeSize.height, gc, bondType, toListenForM);
+            typePostitions.set(i, new Rectangle (posX, posY+AbstractRenderer.fontAscent, typeSize.width, typeSize.height ) );
             
             posX += typeSize.width;
 
