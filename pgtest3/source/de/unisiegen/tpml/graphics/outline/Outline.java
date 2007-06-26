@@ -17,11 +17,60 @@ import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 public interface Outline
 {
   /**
-   * Indicates who loads the new Expression.
+   * An interface for all execute enums.
    * 
    * @author Christian Fehler
    */
-  public enum Execute
+  public interface Execute
+  {
+    // Nothing to do here.
+  }
+
+
+  /**
+   * Indicates who loads the new Expression or Type.
+   * 
+   * @author Christian Fehler
+   */
+  public enum ExecuteAutoChange implements Execute
+  {
+    /**
+     * Auto change from the <code>Editor</code>.
+     */
+    EDITOR ,
+    /**
+     * Auto change from the <code>SmallStep</code>.
+     */
+    SMALLSTEP ,
+    /**
+     * Auto change from the <code>BigStep</code>.
+     */
+    AUTO_CHANGE_BIGSTEP ,
+    /**
+     * Auto change from the <code>TypeChecker</code>.
+     */
+    AUTO_CHANGE_TYPECHECKER ,
+    /**
+     * Auto change from the <code>TypeInference</code>.
+     */
+    AUTO_CHANGE_TYPEINFERENCE ,
+    /**
+     * Auto change from the <code>Subtyping</code>.
+     */
+    AUTO_CHANGE_SUBTYPING ,
+    /**
+     * Auto change from the <code>MinimalTyping</code>.
+     */
+    AUTO_CHANGE_MINIMALTYPING
+  }
+
+
+  /**
+   * Indicates who loads the new Expression or Type.
+   * 
+   * @author Christian Fehler
+   */
+  public enum ExecuteInit implements Execute
   {
     /**
      * Initialized from the <code>Editor</code>.
@@ -40,13 +89,27 @@ public interface Outline
      */
     INIT_TYPECHECKER ,
     /**
+     * Initialized from the <code>TypeInference</code>.
+     */
+    INIT_TYPEINFERENCE ,
+    /**
      * Initialized from the <code>Subtyping</code>.
      */
     INIT_SUBTYPING ,
     /**
      * Initialized from the <code>MinimalTyping</code>.
      */
-    INIT_MINIMALTYPING ,
+    INIT_MINIMALTYPING
+  }
+
+
+  /**
+   * Indicates who loads the new Expression or Type.
+   * 
+   * @author Christian Fehler
+   */
+  public enum ExecuteMouse implements Execute
+  {
     /**
      * Change by mouse cick from the <code>Editor</code>.
      */
@@ -64,37 +127,17 @@ public interface Outline
      */
     MOUSE_CLICK_TYPECHECKER ,
     /**
+     * Change by mouse cick from the <code>TypeInference</code>.
+     */
+    MOUSE_CLICK_TYPEINFERENCE ,
+    /**
      * Change by mouse cick from the <code>Subtyping</code>.
      */
     MOUSE_CLICK_SUBTYPING ,
     /**
      * Change by mouse cick from the <code>MinimalTyping</code>.
      */
-    MOUSE_CLICK_MINIMALTYPING ,
-    /**
-     * Auto change from the <code>Editor</code>.
-     */
-    AUTO_CHANGE_EDITOR ,
-    /**
-     * Auto change from the <code>SmallStep</code>.
-     */
-    AUTO_CHANGE_SMALLSTEP ,
-    /**
-     * Auto change from the <code>BigStep</code>.
-     */
-    AUTO_CHANGE_BIGSTEP ,
-    /**
-     * Auto change from the <code>TypeChecker</code>.
-     */
-    AUTO_CHANGE_TYPECHECKER ,
-    /**
-     * Auto change from the <code>Subtyping</code>.
-     */
-    AUTO_CHANGE_SUBTYPING ,
-    /**
-     * Auto change from the <code>MinimalTyping</code>.
-     */
-    AUTO_CHANGE_MINIMALTYPING
+    MOUSE_CLICK_MINIMALTYPING
   }
 
 

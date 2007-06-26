@@ -785,13 +785,13 @@ public class SubTypingEnterTypes extends AbstractProofView {
 			type = parser.parse ( );
 
 			outline
-					.loadPrettyPrintable ( type, Outline.Execute.AUTO_CHANGE_SUBTYPING );
+					.loadPrettyPrintable ( type, Outline.ExecuteAutoChange.AUTO_CHANGE_SUBTYPING );
 			return type;
 
 		} catch (Exception e) {
 			
 			outline
-					.loadPrettyPrintable ( null, Outline.Execute.AUTO_CHANGE_SUBTYPING );
+					.loadPrettyPrintable ( null, Outline.ExecuteAutoChange.AUTO_CHANGE_SUBTYPING );
 			if (editor.getText ( ).length ( ) == 0)
 				outline.setError ( false );
 			return null;

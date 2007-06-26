@@ -91,13 +91,14 @@ public class MinimalTypingView extends AbstractProofView
       ComponentEvent event )
       {
         MinimalTypingView.this.component
-            .setAvailableWidth ( MinimalTypingView.this.scrollPane.getViewport ( )
-                .getWidth ( ) ) ;
+            .setAvailableWidth ( MinimalTypingView.this.scrollPane
+                .getViewport ( ).getWidth ( ) ) ;
       }
     } ) ;
     this.outline = new DefaultOutline ( this ) ;
     this.outline.loadPrettyPrintable ( this.MinimalTypingProofModel.getRoot ( )
-        .getLastLeaf ( ).getExpression ( ) , Outline.Execute.INIT_MINIMALTYPING ) ;
+        .getLastLeaf ( ).getExpression ( ) ,
+        Outline.ExecuteInit.INIT_MINIMALTYPING ) ;
     JPanel jPanelOutline = this.outline.getPanel ( ) ;
     jPanelOutline.getPreferredSize ( ).getHeight ( ) ;
     this.jSplitPane.setLeftComponent ( this.scrollPane ) ;

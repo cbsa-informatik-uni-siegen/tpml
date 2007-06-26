@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 
@@ -16,13 +17,18 @@ import javax.swing.JComponent;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.TypeFormula;
+import de.unisiegen.tpml.core.typeinference.TypeJudgement;
+import de.unisiegen.tpml.graphics.outline.Outline;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 import de.unisiegen.tpml.graphics.renderer.SubstitutionRenderer;
 import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
 import de.unisiegen.tpml.graphics.renderer.TypeFormularRenderer;
+import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView;
+import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView;
 
 
 /**
@@ -216,6 +222,62 @@ public class CompoundExpressionTypeInference extends JComponent
 	      }
 	    }
     );
+    this.addMouseListener ( 
+        new MouseAdapter()
+        {
+        public final void mouseClicked ( MouseEvent pMouseEvent )
+        {
+          int posX = pMouseEvent.getX();
+          int posY = pMouseEvent.getY();
+          ArrayList <Rectangle> rects = typeFormularRenderer.getTypeFprmularPostitions();
+          
+          if ( rects.size() == 1 )
+          {
+            Outline outline = (( TypeInferenceView ) 
+                CompoundExpressionTypeInference.this.getParent ( )
+            .getParent ( ).getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+            .getOutline ( ) ;
+            TypeFormula t = CompoundExpressionTypeInference.this.typeFormulaList.get ( 0 );
+            if ( t instanceof TypeJudgement )
+            {
+              TypeJudgement typeJudgement = ( TypeJudgement ) t ;
+              outline.loadPrettyPrintable (typeJudgement.getExpression ( ) ,  Outline.ExecuteMouse.MOUSE_CLICK_TYPEINFERENCE ) ;
+            }
+            
+          }
+          
+          for (int i = 0; i<rects.size(); i++)
+          {
+            if (posX >= rects.get(i).x && 
+                posX <= rects.get(i).x+rects.get(i).width 
+                && posY >= rects.get(i).y-rects.get(i).height 
+                && posY <= rects.get(i).y)
+            {
+              Outline outline = (( TypeInferenceView ) 
+                  CompoundExpressionTypeInference.this.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline ( ) ;
+              TypeFormula t = CompoundExpressionTypeInference.this.typeFormulaList.get ( i );
+              if ( t instanceof TypeJudgement )
+              {
+                TypeJudgement typeJudgement = ( TypeJudgement ) t ;
+                outline.loadPrettyPrintable (typeJudgement.getExpression ( ) ,  Outline.ExecuteMouse.MOUSE_CLICK_TYPEINFERENCE ) ;
+              }
+              else if ( t instanceof TypeEquationTypeInference )
+              {
+                TypeEquationTypeInference typeEquation = ( TypeEquationTypeInference ) t ;
+                outline.loadPrettyPrintable (
+                    typeEquation.getLeft ( ) ,  Outline.ExecuteMouse.MOUSE_CLICK_TYPEINFERENCE ) ;
+              }
+            }
+
+          } 
+        }
+        }
+    );
+    
+    
+    
     
     this.addMouseListener 
     ( 

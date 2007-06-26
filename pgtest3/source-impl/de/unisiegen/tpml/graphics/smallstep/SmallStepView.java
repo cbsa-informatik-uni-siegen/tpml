@@ -104,8 +104,10 @@ public class SmallStepView extends AbstractProofView
       }
     } ) ;
     this.outline = new DefaultOutline ( this ) ;
-    this.outline.loadPrettyPrintable ( this.smallStepProofModel.getRoot ( )
-        .getLastLeaf ( ).getExpression ( ) , Outline.Execute.INIT_SMALLSTEP ) ;
+    this.outline
+        .loadPrettyPrintable ( this.smallStepProofModel.getRoot ( )
+            .getLastLeaf ( ).getExpression ( ) ,
+            Outline.ExecuteInit.INIT_SMALLSTEP ) ;
     JPanel jPanelOutline = this.outline.getPanel ( ) ;
     jPanelOutline.getPreferredSize ( ).getHeight ( ) ;
     this.jSplitPane.setLeftComponent ( this.scrollPane ) ;

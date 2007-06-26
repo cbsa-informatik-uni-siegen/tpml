@@ -1,13 +1,20 @@
 package de.unisiegen.tpml.graphics.outline.listener ;
 
 
+import java.util.ArrayList ;
 import javax.swing.event.TreeModelEvent ;
 import javax.swing.event.TreeModelListener ;
 import de.unisiegen.tpml.core.ExpressionProofModel ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeFormula ;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel ;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode ;
+import de.unisiegen.tpml.core.typeinference.TypeJudgement ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 
@@ -35,7 +42,13 @@ public final class OutlineTreeModelListener implements TreeModelListener
   /**
    * The {@link ExpressionProofModel}.
    */
-  public ExpressionProofModel expressionProofModel ;
+  public ExpressionProofModel expressionProofModel = null ;
+
+
+  /**
+   * The {@link TypeInferenceProofModel}.
+   */
+  public TypeInferenceProofModel typeInferenceProofModel = null ;
 
 
   /**
@@ -54,6 +67,21 @@ public final class OutlineTreeModelListener implements TreeModelListener
 
 
   /**
+   * Initializes the {@link OutlineTreeModelListener} with the given
+   * {@link Outline} and the {@link TypeInferenceProofModel}.
+   * 
+   * @param pDefaultOutline The {@link DefaultOutline}.
+   * @param pTypeInferenceProofModel The {@link TypeInferenceProofModel}.
+   */
+  public OutlineTreeModelListener ( DefaultOutline pDefaultOutline ,
+      TypeInferenceProofModel pTypeInferenceProofModel )
+  {
+    this.defaultOutline = pDefaultOutline ;
+    this.typeInferenceProofModel = pTypeInferenceProofModel ;
+  }
+
+
+  /**
    * Sets the new {@link Expression} in the {@link Outline}, if a node changed.
    * 
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
@@ -63,21 +91,49 @@ public final class OutlineTreeModelListener implements TreeModelListener
     Object source = pTreeModelEvent.getSource ( ) ;
     if ( source instanceof SmallStepProofModel )
     {
-      this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) ,
-          Outline.Execute.AUTO_CHANGE_SMALLSTEP ) ;
+      // TODO Add more cases
+      this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel
+          .getRoot ( ).getLastLeaf ( ).getExpression ( ) ,
+          Outline.ExecuteAutoChange.SMALLSTEP ) ;
     }
     else if ( source instanceof BigStepProofModel )
     {
-      this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) ,
-          Outline.Execute.AUTO_CHANGE_BIGSTEP ) ;
+      this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel
+          .getRoot ( ).getLastLeaf ( ).getExpression ( ) ,
+          Outline.ExecuteAutoChange.AUTO_CHANGE_BIGSTEP ) ;
     }
     else if ( source instanceof TypeCheckerProofModel )
     {
-      this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) ,
-          Outline.Execute.AUTO_CHANGE_TYPECHECKER ) ;
+      this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel
+          .getRoot ( ).getLastLeaf ( ).getExpression ( ) ,
+          Outline.ExecuteAutoChange.AUTO_CHANGE_TYPECHECKER ) ;
+    }
+    else if ( source instanceof MinimalTypingProofModel )
+    {
+      this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel
+          .getRoot ( ).getLastLeaf ( ).getExpression ( ) ,
+          Outline.ExecuteAutoChange.AUTO_CHANGE_MINIMALTYPING ) ;
+    }
+    else if ( source instanceof TypeInferenceProofModel )
+    {
+      ArrayList < TypeFormula > list = ( ( TypeInferenceProofNode ) this.typeInferenceProofModel
+          .getRoot ( ).getLastLeaf ( ) ).getAllFormulas ( ) ;
+      if ( list.size ( ) > 0 )
+      {
+        TypeFormula typeFormula = list.get ( 0 ) ;
+        if ( typeFormula instanceof TypeJudgement )
+        {
+          this.defaultOutline.loadPrettyPrintable (
+              ( ( TypeJudgement ) typeFormula ).getExpression ( ) ,
+              Outline.ExecuteAutoChange.AUTO_CHANGE_TYPEINFERENCE ) ;
+        }
+        else if ( typeFormula instanceof TypeEquationTypeInference )
+        {
+          this.defaultOutline.loadPrettyPrintable (
+              ( ( TypeEquationTypeInference ) typeFormula ).getLeft ( ) ,
+              Outline.ExecuteAutoChange.AUTO_CHANGE_TYPEINFERENCE ) ;
+        }
+      }
     }
   }
 

@@ -131,7 +131,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
         setRedoStatus ( false ) ;
         TextEditorPanel.this.redohistory.clear ( ) ;
         TextEditorPanel.this.currentContent = doctext ;
-        loadOutlineExpression ( Outline.Execute.AUTO_CHANGE_EDITOR ) ;
+        loadOutlineExpression ( Outline.ExecuteAutoChange.EDITOR ) ;
       }
       catch ( BadLocationException e )
       {
@@ -152,7 +152,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
         TextEditorPanel.this.redohistory.clear ( ) ;
         TextEditorPanel.this.currentContent = arg0.getDocument ( ).getText ( 0 ,
             arg0.getDocument ( ).getLength ( ) ) ;
-        loadOutlineExpression ( Outline.Execute.AUTO_CHANGE_EDITOR ) ;
+        loadOutlineExpression ( Outline.ExecuteAutoChange.EDITOR ) ;
       }
       catch ( BadLocationException e )
       {
@@ -385,7 +385,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
       this.document.insertString ( 0 , this.redohistory.pop ( ) , null ) ;
       setUndoStatus ( true ) ;
       this.document.addDocumentListener ( this.doclistener ) ;
-      loadOutlineExpression ( Outline.Execute.AUTO_CHANGE_EDITOR ) ;
+      loadOutlineExpression ( Outline.ExecuteAutoChange.EDITOR ) ;
       if ( this.redohistory.size ( ) == 0 )
       {
         setRedoStatus ( false ) ;
@@ -419,7 +419,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
       this.redohistory.add ( doctext ) ;
       setRedoStatus ( true ) ;
       this.document.addDocumentListener ( this.doclistener ) ;
-      loadOutlineExpression ( Outline.Execute.AUTO_CHANGE_EDITOR ) ;
+      loadOutlineExpression ( Outline.ExecuteAutoChange.EDITOR ) ;
     }
     catch ( BadLocationException e )
     {
@@ -661,7 +661,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
       this.undohistory.clear ( ) ;
       this.undohistory.push ( text ) ;
       this.document.addDocumentListener ( this.doclistener ) ;
-      loadOutlineExpression ( Outline.Execute.INIT_EDITOR ) ;
+      loadOutlineExpression ( Outline.ExecuteInit.INIT_EDITOR ) ;
     }
     catch ( BadLocationException e )
     {
