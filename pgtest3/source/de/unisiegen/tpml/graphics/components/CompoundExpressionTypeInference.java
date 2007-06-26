@@ -231,6 +231,13 @@ public class CompoundExpressionTypeInference extends JComponent
           int posY = pMouseEvent.getY();
           ArrayList <Rectangle> rects = typeFormularRenderer.getTypeFprmularPostitions();
           
+          ArrayList <Rectangle> leftType = typeFormularRenderer.getLeftTypePostitions ( ) ;
+          ArrayList <Rectangle> rightType = typeFormularRenderer.getRightTypeostitions ( ) ;
+          ArrayList <Rectangle> expressionPositions = typeFormularRenderer.getExpressionPositions ( ) ;
+          ArrayList <Rectangle> typePositions = typeFormularRenderer.getTypePositions ( ) ;
+         
+          
+          
           if ( rects.size() == 1 )
           {
             Outline outline = (( TypeInferenceView ) 
@@ -238,6 +245,8 @@ public class CompoundExpressionTypeInference extends JComponent
             .getParent ( ).getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
             .getOutline ( ) ;
             TypeFormula t = CompoundExpressionTypeInference.this.typeFormulaList.get ( 0 );
+            
+            
             if ( t instanceof TypeJudgement )
             {
               TypeJudgement typeJudgement = ( TypeJudgement ) t ;
@@ -261,13 +270,33 @@ public class CompoundExpressionTypeInference extends JComponent
               if ( t instanceof TypeJudgement )
               {
                 TypeJudgement typeJudgement = ( TypeJudgement ) t ;
-                outline.loadPrettyPrintable (typeJudgement.getExpression ( ) ,  Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
+                 
+                if (posX >= expressionPositions.get(i).x && 
+                    posX <= expressionPositions.get(i).x+expressionPositions.get(i).width)
+                {
+                  outline.loadPrettyPrintable (typeJudgement.getExpression ( ) ,  Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
+                }
+                if (posX >= typePositions.get(i).x && 
+                    posX <= typePositions.get(i).x+typePositions.get(i).width)
+                {
+                  outline.loadPrettyPrintable (typeJudgement.getType ( ),  Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
+                }
               }
               else if ( t instanceof TypeEquationTypeInference )
               {
                 TypeEquationTypeInference typeEquation = ( TypeEquationTypeInference ) t ;
-                outline.loadPrettyPrintable (
+                if (posX >= leftType.get(i).x && 
+                    posX <= leftType.get(i).x+leftType.get(i).width)
+                {
+                  outline.loadPrettyPrintable (
                     typeEquation.getLeft ( ) ,  Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
+                }
+                if (posX >= rightType.get(i).x && 
+                    posX <= rightType.get(i).x+rightType.get(i).width)
+                {
+                  outline.loadPrettyPrintable (
+                    typeEquation.getRight ( ) ,  Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
+                }
               }
             }
 
