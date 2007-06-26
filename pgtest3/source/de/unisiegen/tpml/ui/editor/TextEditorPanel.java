@@ -661,7 +661,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
       this.undohistory.clear ( ) ;
       this.undohistory.push ( text ) ;
       this.document.addDocumentListener ( this.doclistener ) ;
-      loadOutlineExpression ( Outline.ExecuteInit.INIT_EDITOR ) ;
+      loadOutlineExpression ( Outline.ExecuteInit.EDITOR ) ;
     }
     catch ( BadLocationException e )
     {

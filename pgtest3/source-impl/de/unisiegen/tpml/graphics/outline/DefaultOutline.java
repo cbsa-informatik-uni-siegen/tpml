@@ -1676,7 +1676,7 @@ public final class DefaultOutline implements Outline
     {
       executeTimerCancel ( ) ;
       if ( ( this.outlinePreferences.isAutoUpdate ( ) )
-          || ( pExecute.equals ( Outline.ExecuteMouse.MOUSE_CLICK_EDITOR ) ) )
+          || ( pExecute.equals ( Outline.ExecuteMouseClick.EDITOR ) ) )
       {
         setError ( true ) ;
       }
@@ -1689,7 +1689,7 @@ public final class DefaultOutline implements Outline
       {
         case EDITOR :
         case SMALLSTEP :
-        case AUTO_CHANGE_SUBTYPING :
+        case SUBTYPING :
         {
           if ( ! this.outlinePreferences.isAutoUpdate ( ) )
           {
@@ -1697,10 +1697,10 @@ public final class DefaultOutline implements Outline
           }
           break ;
         }
-        case AUTO_CHANGE_BIGSTEP :
-        case AUTO_CHANGE_TYPECHECKER :
-        case AUTO_CHANGE_TYPEINFERENCE :
-        case AUTO_CHANGE_MINIMALTYPING :
+        case BIGSTEP :
+        case TYPECHECKER :
+        case TYPEINFERENCE :
+        case MINIMALTYPING :
         {
           return ;
         }
@@ -1718,31 +1718,31 @@ public final class DefaultOutline implements Outline
       Outline.ExecuteInit execute = ( Outline.ExecuteInit ) pExecute ;
       switch ( execute )
       {
-        case INIT_EDITOR :
-        case INIT_SMALLSTEP :
-        case INIT_BIGSTEP :
-        case INIT_TYPECHECKER :
-        case INIT_TYPEINFERENCE :
-        case INIT_SUBTYPING :
-        case INIT_MINIMALTYPING :
+        case EDITOR :
+        case SMALLSTEP :
+        case BIGSTEP :
+        case TYPECHECKER :
+        case TYPEINFERENCE :
+        case SUBTYPING :
+        case MINIMALTYPING :
         {
           execute ( ) ;
           break ;
         }
       }
     }
-    else if ( pExecute instanceof Outline.ExecuteMouse )
+    else if ( pExecute instanceof Outline.ExecuteMouseClick )
     {
-      Outline.ExecuteMouse execute = ( Outline.ExecuteMouse ) pExecute ;
+      Outline.ExecuteMouseClick execute = ( Outline.ExecuteMouseClick ) pExecute ;
       switch ( execute )
       {
-        case MOUSE_CLICK_EDITOR :
-        case MOUSE_CLICK_SMALLSTEP :
-        case MOUSE_CLICK_BIGSTEP :
-        case MOUSE_CLICK_TYPECHECKER :
-        case MOUSE_CLICK_TYPEINFERENCE :
-        case MOUSE_CLICK_SUBTYPING :
-        case MOUSE_CLICK_MINIMALTYPING :
+        case EDITOR :
+        case SMALLSTEP :
+        case BIGSTEP :
+        case TYPECHECKER :
+        case TYPEINFERENCE :
+        case SUBTYPING :
+        case MINIMALTYPING :
         {
           execute ( ) ;
           break ;
@@ -1760,11 +1760,11 @@ public final class DefaultOutline implements Outline
           break ;
         }
         case SMALLSTEP :
-        case AUTO_CHANGE_BIGSTEP :
-        case AUTO_CHANGE_TYPECHECKER :
-        case AUTO_CHANGE_TYPEINFERENCE :
-        case AUTO_CHANGE_SUBTYPING :
-        case AUTO_CHANGE_MINIMALTYPING :
+        case BIGSTEP :
+        case TYPECHECKER :
+        case TYPEINFERENCE :
+        case SUBTYPING :
+        case MINIMALTYPING :
         {
           executeTimerStart ( 250 ) ;
           break ;

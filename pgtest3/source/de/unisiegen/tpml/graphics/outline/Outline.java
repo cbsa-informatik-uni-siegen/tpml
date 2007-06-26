@@ -45,23 +45,23 @@ public interface Outline
     /**
      * Auto change from the <code>BigStep</code>.
      */
-    AUTO_CHANGE_BIGSTEP ,
+    BIGSTEP ,
     /**
      * Auto change from the <code>TypeChecker</code>.
      */
-    AUTO_CHANGE_TYPECHECKER ,
+    TYPECHECKER ,
     /**
      * Auto change from the <code>TypeInference</code>.
      */
-    AUTO_CHANGE_TYPEINFERENCE ,
+    TYPEINFERENCE ,
     /**
      * Auto change from the <code>Subtyping</code>.
      */
-    AUTO_CHANGE_SUBTYPING ,
+    SUBTYPING ,
     /**
      * Auto change from the <code>MinimalTyping</code>.
      */
-    AUTO_CHANGE_MINIMALTYPING
+    MINIMALTYPING
   }
 
 
@@ -75,31 +75,31 @@ public interface Outline
     /**
      * Initialized from the <code>Editor</code>.
      */
-    INIT_EDITOR ,
+    EDITOR ,
     /**
      * Initialized from the <code>SmallStep</code>.
      */
-    INIT_SMALLSTEP ,
+    SMALLSTEP ,
     /**
      * Initialized from the <code>BigStep</code>.
      */
-    INIT_BIGSTEP ,
+    BIGSTEP ,
     /**
      * Initialized from the <code>TypeChecker</code>.
      */
-    INIT_TYPECHECKER ,
+    TYPECHECKER ,
     /**
      * Initialized from the <code>TypeInference</code>.
      */
-    INIT_TYPEINFERENCE ,
+    TYPEINFERENCE ,
     /**
      * Initialized from the <code>Subtyping</code>.
      */
-    INIT_SUBTYPING ,
+    SUBTYPING ,
     /**
      * Initialized from the <code>MinimalTyping</code>.
      */
-    INIT_MINIMALTYPING
+    MINIMALTYPING
   }
 
 
@@ -108,36 +108,36 @@ public interface Outline
    * 
    * @author Christian Fehler
    */
-  public enum ExecuteMouse implements Execute
+  public enum ExecuteMouseClick implements Execute
   {
     /**
      * Change by mouse cick from the <code>Editor</code>.
      */
-    MOUSE_CLICK_EDITOR ,
+    EDITOR ,
     /**
      * Change by mouse cick from the <code>SmallStep</code>.
      */
-    MOUSE_CLICK_SMALLSTEP ,
+    SMALLSTEP ,
     /**
      * Change by mouse cick from the <code>BigStep</code>.
      */
-    MOUSE_CLICK_BIGSTEP ,
+    BIGSTEP ,
     /**
      * Change by mouse cick from the <code>TypeChecker</code>.
      */
-    MOUSE_CLICK_TYPECHECKER ,
+    TYPECHECKER ,
     /**
      * Change by mouse cick from the <code>TypeInference</code>.
      */
-    MOUSE_CLICK_TYPEINFERENCE ,
+    TYPEINFERENCE ,
     /**
      * Change by mouse cick from the <code>Subtyping</code>.
      */
-    MOUSE_CLICK_SUBTYPING ,
+    SUBTYPING ,
     /**
      * Change by mouse cick from the <code>MinimalTyping</code>.
      */
-    MOUSE_CLICK_MINIMALTYPING
+    MINIMALTYPING
   }
 
 

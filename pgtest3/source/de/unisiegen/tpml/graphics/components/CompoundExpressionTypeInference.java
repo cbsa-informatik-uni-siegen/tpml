@@ -241,7 +241,7 @@ public class CompoundExpressionTypeInference extends JComponent
             if ( t instanceof TypeJudgement )
             {
               TypeJudgement typeJudgement = ( TypeJudgement ) t ;
-              outline.loadPrettyPrintable (typeJudgement.getExpression ( ) ,  Outline.ExecuteMouse.MOUSE_CLICK_TYPEINFERENCE ) ;
+              outline.loadPrettyPrintable (typeJudgement.getExpression ( ) ,  Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
             }
             
           }
@@ -261,13 +261,13 @@ public class CompoundExpressionTypeInference extends JComponent
               if ( t instanceof TypeJudgement )
               {
                 TypeJudgement typeJudgement = ( TypeJudgement ) t ;
-                outline.loadPrettyPrintable (typeJudgement.getExpression ( ) ,  Outline.ExecuteMouse.MOUSE_CLICK_TYPEINFERENCE ) ;
+                outline.loadPrettyPrintable (typeJudgement.getExpression ( ) ,  Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
               }
               else if ( t instanceof TypeEquationTypeInference )
               {
                 TypeEquationTypeInference typeEquation = ( TypeEquationTypeInference ) t ;
                 outline.loadPrettyPrintable (
-                    typeEquation.getLeft ( ) ,  Outline.ExecuteMouse.MOUSE_CLICK_TYPEINFERENCE ) ;
+                    typeEquation.getLeft ( ) ,  Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
               }
             }
 

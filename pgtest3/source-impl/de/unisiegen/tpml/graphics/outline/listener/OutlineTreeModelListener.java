@@ -100,19 +100,19 @@ public final class OutlineTreeModelListener implements TreeModelListener
     {
       this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel
           .getRoot ( ).getLastLeaf ( ).getExpression ( ) ,
-          Outline.ExecuteAutoChange.AUTO_CHANGE_BIGSTEP ) ;
+          Outline.ExecuteAutoChange.BIGSTEP ) ;
     }
     else if ( source instanceof TypeCheckerProofModel )
     {
       this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel
           .getRoot ( ).getLastLeaf ( ).getExpression ( ) ,
-          Outline.ExecuteAutoChange.AUTO_CHANGE_TYPECHECKER ) ;
+          Outline.ExecuteAutoChange.TYPECHECKER ) ;
     }
     else if ( source instanceof MinimalTypingProofModel )
     {
       this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel
           .getRoot ( ).getLastLeaf ( ).getExpression ( ) ,
-          Outline.ExecuteAutoChange.AUTO_CHANGE_MINIMALTYPING ) ;
+          Outline.ExecuteAutoChange.MINIMALTYPING ) ;
     }
     else if ( source instanceof TypeInferenceProofModel )
     {
@@ -125,13 +125,13 @@ public final class OutlineTreeModelListener implements TreeModelListener
         {
           this.defaultOutline.loadPrettyPrintable (
               ( ( TypeJudgement ) typeFormula ).getExpression ( ) ,
-              Outline.ExecuteAutoChange.AUTO_CHANGE_TYPEINFERENCE ) ;
+              Outline.ExecuteAutoChange.TYPEINFERENCE ) ;
         }
         else if ( typeFormula instanceof TypeEquationTypeInference )
         {
           this.defaultOutline.loadPrettyPrintable (
               ( ( TypeEquationTypeInference ) typeFormula ).getLeft ( ) ,
-              Outline.ExecuteAutoChange.AUTO_CHANGE_TYPEINFERENCE ) ;
+              Outline.ExecuteAutoChange.TYPEINFERENCE ) ;
         }
       }
     }

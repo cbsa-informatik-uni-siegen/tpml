@@ -297,7 +297,7 @@ public final class OutlineMouseListener implements MouseListener
             // Do nothing
           }
           this.defaultOutline.loadPrettyPrintable ( type ,
-              Outline.ExecuteMouse.MOUSE_CLICK_EDITOR ) ;
+              Outline.ExecuteMouseClick.EDITOR ) ;
         }
       }
       /*
@@ -318,7 +318,7 @@ public final class OutlineMouseListener implements MouseListener
             // Do nothing
           }
           this.textEditorPanel.getOutline ( ).loadPrettyPrintable ( expression ,
-              Outline.ExecuteMouse.MOUSE_CLICK_EDITOR ) ;
+              Outline.ExecuteMouseClick.EDITOR ) ;
         }
       }
       /*
@@ -337,7 +337,7 @@ public final class OutlineMouseListener implements MouseListener
               .getOutline ( ).loadPrettyPrintable (
                   this.typeCheckerNodeComponent.getCompoundExpression ( )
                       .getExpression ( ) ,
-                  Outline.ExecuteMouse.MOUSE_CLICK_TYPECHECKER ) ;
+                  Outline.ExecuteMouseClick.TYPECHECKER ) ;
         }
         /*
          * Compound expression.
@@ -350,7 +350,7 @@ public final class OutlineMouseListener implements MouseListener
               .getOutline ( ).loadPrettyPrintable (
                   this.typeCheckerNodeComponent.getCompoundExpression ( )
                       .getExpression ( ) ,
-                  Outline.ExecuteMouse.MOUSE_CLICK_TYPECHECKER ) ;
+                  Outline.ExecuteMouseClick.TYPECHECKER ) ;
         }
         /*
          * Type label.
@@ -363,7 +363,7 @@ public final class OutlineMouseListener implements MouseListener
               .getOutline ( )
               .loadPrettyPrintable (
                   this.typeCheckerNodeComponent.getTypeComponent ( ).getType ( ) ,
-                  Outline.ExecuteMouse.MOUSE_CLICK_TYPECHECKER ) ;
+                  Outline.ExecuteMouseClick.TYPECHECKER ) ;
         }
       }
       /*
@@ -382,7 +382,7 @@ public final class OutlineMouseListener implements MouseListener
               .getOutline ( ).loadPrettyPrintable (
                   this.minimalTypingNodeComponent.getCompoundExpression ( )
                       .getExpression ( ) ,
-                  Outline.ExecuteMouse.MOUSE_CLICK_MINIMALTYPING ) ;
+                  Outline.ExecuteMouseClick.MINIMALTYPING ) ;
         }
         /*
          * Compound expression.
@@ -395,7 +395,7 @@ public final class OutlineMouseListener implements MouseListener
               .getOutline ( ).loadPrettyPrintable (
                   this.minimalTypingNodeComponent.getCompoundExpression ( )
                       .getExpression ( ) ,
-                  Outline.ExecuteMouse.MOUSE_CLICK_MINIMALTYPING ) ;
+                  Outline.ExecuteMouseClick.MINIMALTYPING ) ;
         }
         /*
          * Type label.
@@ -408,7 +408,7 @@ public final class OutlineMouseListener implements MouseListener
               .getOutline ( ).loadPrettyPrintable (
                   this.minimalTypingNodeComponent.getTypeComponent ( )
                       .getType ( ) ,
-                  Outline.ExecuteMouse.MOUSE_CLICK_MINIMALTYPING ) ;
+                  Outline.ExecuteMouseClick.MINIMALTYPING ) ;
         }
       }
       /*
@@ -427,7 +427,7 @@ public final class OutlineMouseListener implements MouseListener
               .getOutline ( ).loadPrettyPrintable (
                   this.bigStepNodeComponent.getCompoundExpression ( )
                       .getExpression ( ) ,
-                  Outline.ExecuteMouse.MOUSE_CLICK_BIGSTEP ) ;
+                  Outline.ExecuteMouseClick.BIGSTEP ) ;
         }
         /*
          * Compound expression.
@@ -440,7 +440,7 @@ public final class OutlineMouseListener implements MouseListener
               .getOutline ( ).loadPrettyPrintable (
                   this.bigStepNodeComponent.getCompoundExpression ( )
                       .getExpression ( ) ,
-                  Outline.ExecuteMouse.MOUSE_CLICK_BIGSTEP ) ;
+                  Outline.ExecuteMouseClick.BIGSTEP ) ;
         }
         /*
          * Result compound expression.
@@ -453,7 +453,7 @@ public final class OutlineMouseListener implements MouseListener
               .getOutline ( ).loadPrettyPrintable (
                   this.bigStepNodeComponent.getResultCompoundExpression ( )
                       .getExpression ( ) ,
-                  Outline.ExecuteMouse.MOUSE_CLICK_BIGSTEP ) ;
+                  Outline.ExecuteMouseClick.BIGSTEP ) ;
         }
       }
       /*
@@ -472,7 +472,7 @@ public final class OutlineMouseListener implements MouseListener
               .getOutline ( ).loadPrettyPrintable (
                   this.smallStepNodeComponent.getCompoundExpression ( )
                       .getExpression ( ) ,
-                  Outline.ExecuteMouse.MOUSE_CLICK_SMALLSTEP ) ;
+                  Outline.ExecuteMouseClick.SMALLSTEP ) ;
         }
       }
     }

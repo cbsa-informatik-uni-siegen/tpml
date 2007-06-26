@@ -97,7 +97,7 @@ public class BigStepView extends AbstractProofView
     } ) ;
     this.outline = new DefaultOutline ( this ) ;
     this.outline.loadPrettyPrintable ( this.bigStepProofModel.getRoot ( )
-        .getLastLeaf ( ).getExpression ( ) , Outline.ExecuteInit.INIT_BIGSTEP ) ;
+        .getLastLeaf ( ).getExpression ( ) , Outline.ExecuteInit.BIGSTEP ) ;
     JPanel jPanelOutline = this.outline.getPanel ( ) ;
     jPanelOutline.getPreferredSize ( ).getHeight ( ) ;
     this.jSplitPane.setLeftComponent ( this.scrollPane ) ;
