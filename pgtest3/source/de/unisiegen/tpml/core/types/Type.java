@@ -203,6 +203,15 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Object#equals(Object)
+   */
+  @ Override
+  public abstract boolean equals ( Object pObject ) ;
+
+
+  /**
    * Returns the caption of this {@link Type}.
    * 
    * @return The caption of this {@link Type}.

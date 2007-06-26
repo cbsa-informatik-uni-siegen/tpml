@@ -34,6 +34,15 @@ public abstract class MonoType extends Type
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Object#equals(Object)
+   */
+  @ Override
+  public abstract boolean equals ( Object pObject ) ;
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public abstract String getCaption ( ) ;
