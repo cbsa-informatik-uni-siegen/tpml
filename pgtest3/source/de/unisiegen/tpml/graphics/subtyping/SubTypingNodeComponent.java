@@ -78,13 +78,13 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
   /**
    * Component containing the expression and the store.
    */
-  private CompoundExpressionSubTyping							   expression;
+  private CompoundExpressionSubTyping							   compoundExpression;
   
   
   /**
    * Component containing the result-expression and the result-store.
    */
-  private CompoundExpression<Location, Expression>    resultExpression;
+  private CompoundExpression<Location, Expression>    resultCompoundExpression;
   
   /**
    * The Button with its DropDownMenu used to perform the userinteraction.
@@ -125,15 +125,21 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
      * Create and add the components needed to render this node
      */
     this.indexLabel         = new JLabel ();
+    this.indexLabel.addMouseListener ( new OutlineMouseListener (
+        this ) ) ;
+    
+    
     add (this.indexLabel);
     
-    this.expression         = new CompoundExpressionSubTyping ();
-    add (this.expression);
+    this.compoundExpression         = new CompoundExpressionSubTyping ();
+    this.compoundExpression.addMouseListener ( new OutlineMouseListener (
+        this ) ) ;
+    add (this.compoundExpression);
 
     
-    this.resultExpression   = new CompoundExpression<Location, Expression>();
-    add (this.resultExpression);
-    this.resultExpression.setAlternativeColor(Color.LIGHT_GRAY);
+    this.resultCompoundExpression   = new CompoundExpression<Location, Expression>();
+    add (this.resultCompoundExpression);
+    this.resultCompoundExpression.setAlternativeColor(Color.LIGHT_GRAY);
     
     this.ruleButton         = new MenuButton ();
     add (this.ruleButton);
@@ -207,8 +213,8 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
    *
    */
   public void reset () {
-    this.expression.reset();
-    this.resultExpression.reset();
+    this.compoundExpression.reset();
+    this.resultCompoundExpression.reset();
   }
   
   /**
@@ -341,8 +347,8 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
    */
   public void changeNode () {
     
-    this.expression.setType1 (this.proofNode.getType());
-    this.expression.setType2 (this.proofNode.getType2());
+    this.compoundExpression.setType1 (this.proofNode.getType());
+    this.compoundExpression.setType2 (this.proofNode.getType2());
     
 
 //    if (this.proofNode.getResult() != null) {
@@ -386,13 +392,13 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
     maxWidth -= labelSize.width;
     
     //  get the needed size for the expression
-    Dimension expSize = this.expression.getNeededSize(maxWidth);
+    Dimension expSize = this.compoundExpression.getNeededSize(maxWidth);
     this.dimension.width += expSize.width;
     this.dimension.height = Math.max(expSize.height, this.dimension.height);
 
     // the result should never be wrapped so we use 
     // the Integer.MAX_VALUE to prevent linewrapping
-    Dimension resultSize = this.resultExpression.getNeededSize(Integer.MAX_VALUE);
+    Dimension resultSize = this.resultCompoundExpression.getNeededSize(Integer.MAX_VALUE);
     this.dimension.width += resultSize.width;
     this.dimension.height = Math.max(resultSize.height, this.dimension.height);
         
@@ -402,11 +408,11 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
     this.indexLabel.setBounds(posX, 0, labelSize.width, this.dimension.height);
     posX += labelSize.width + this.spacing;
     
-    this.expression.setBounds(posX, 0, expSize.width, this.dimension.height);
+    this.compoundExpression.setBounds(posX, 0, expSize.width, this.dimension.height);
     posX += expSize.width;
     
     
-    this.resultExpression.setBounds(posX, 0, resultSize.width, this.dimension.height);
+    this.resultCompoundExpression.setBounds(posX, 0, resultSize.width, this.dimension.height);
     
     
     /*
@@ -528,6 +534,39 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
     menu.add (new MenuGuessTreeItem ());
     
     this.ruleButton.setMenu(menu);
+  }
+
+  /**
+   * Returns the indexLabel.
+   *
+   * @return The indexLabel.
+   * @see #indexLabel
+   */
+  public JLabel getIndexLabel ( )
+  {
+    return this.indexLabel ;
+  }
+
+  /**
+   * Returns the compoundExpression.
+   *
+   * @return The compoundExpression.
+   * @see #compoundExpression
+   */
+  public CompoundExpressionSubTyping getCompoundExpression ( )
+  {
+    return this.compoundExpression ;
+  }
+
+  /**
+   * Returns the resultExpression.
+   *
+   * @return The resultExpression.
+   * @see #resultCompoundExpression
+   */
+  public CompoundExpression < Location , Expression > getResultCompoundExpression ( )
+  {
+    return this.resultCompoundExpression ;
   }
 
 

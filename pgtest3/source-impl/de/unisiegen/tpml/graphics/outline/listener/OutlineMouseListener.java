@@ -18,6 +18,8 @@ import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent ;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
 import de.unisiegen.tpml.graphics.subtyping.StyledTypeEnterField ;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes ;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingNodeComponent ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
 import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
@@ -44,43 +46,49 @@ public final class OutlineMouseListener implements MouseListener
   /**
    * The {@link DefaultOutline}.
    */
-  private DefaultOutline defaultOutline ;
+  private DefaultOutline defaultOutline = null ;
 
 
   /**
    * The {@link TextEditorPanel}.
    */
-  private TextEditorPanel textEditorPanel ;
+  private TextEditorPanel textEditorPanel = null ;
 
 
   /**
    * The {@link StyledLanguageEditor}
    */
-  private StyledLanguageEditor styledLanguageEditor ;
+  private StyledLanguageEditor styledLanguageEditor = null ;
 
 
   /**
    * The {@link TypeCheckerNodeComponent}.
    */
-  private TypeCheckerNodeComponent typeCheckerNodeComponent ;
+  private TypeCheckerNodeComponent typeCheckerNodeComponent = null ;
 
 
   /**
    * The {@link MinimalTypingNodeComponent}.
    */
-  private MinimalTypingNodeComponent minimalTypingNodeComponent ;
+  private MinimalTypingNodeComponent minimalTypingNodeComponent = null ;
 
 
   /**
    * The {@link BigStepNodeComponent}.
    */
-  private BigStepNodeComponent bigStepNodeComponent ;
+  private BigStepNodeComponent bigStepNodeComponent = null ;
+
+
+  /**
+   * The {@link SubTypingNodeComponent}.
+   */
+  private SubTypingNodeComponent subTypingNodeComponent = null ;
 
 
   /**
    * The {@link SmallStepNodeComponent}.
    */
-  private SmallStepNodeComponent smallStepNodeComponent ;
+  private SmallStepNodeComponent smallStepNodeComponent = null ;
 
 
   /**
@@ -91,13 +99,19 @@ public final class OutlineMouseListener implements MouseListener
    */
   public OutlineMouseListener ( BigStepNodeComponent pBigStepNodeComponent )
   {
-    this.defaultOutline = null ;
-    this.textEditorPanel = null ;
-    this.typeCheckerNodeComponent = null ;
     this.bigStepNodeComponent = pBigStepNodeComponent ;
-    this.minimalTypingNodeComponent = null ;
-    this.smallStepNodeComponent = null ;
-    this.styledLanguageEditor = null ;
+  }
+
+
+  /**
+   * Initializes the {@link OutlineMouseListener} with the given
+   * {@link SubTypingNodeComponent}.
+   * 
+   * @param pSubTypingNodeComponent The {@link SubTypingNodeComponent}.
+   */
+  public OutlineMouseListener ( SubTypingNodeComponent pSubTypingNodeComponent )
+  {
+    this.subTypingNodeComponent = pSubTypingNodeComponent ;
   }
 
 
@@ -110,12 +124,6 @@ public final class OutlineMouseListener implements MouseListener
   public OutlineMouseListener ( DefaultOutline pDefaultOutline )
   {
     this.defaultOutline = pDefaultOutline ;
-    this.textEditorPanel = null ;
-    this.typeCheckerNodeComponent = null ;
-    this.bigStepNodeComponent = null ;
-    this.minimalTypingNodeComponent = null ;
-    this.smallStepNodeComponent = null ;
-    this.styledLanguageEditor = null ;
   }
 
 
@@ -127,13 +135,7 @@ public final class OutlineMouseListener implements MouseListener
    */
   public OutlineMouseListener ( SmallStepNodeComponent pSmallStepNodeComponent )
   {
-    this.defaultOutline = null ;
-    this.textEditorPanel = null ;
-    this.typeCheckerNodeComponent = null ;
-    this.bigStepNodeComponent = null ;
-    this.minimalTypingNodeComponent = null ;
     this.smallStepNodeComponent = pSmallStepNodeComponent ;
-    this.styledLanguageEditor = null ;
   }
 
 
@@ -148,11 +150,6 @@ public final class OutlineMouseListener implements MouseListener
       DefaultOutline pDefaultOutline )
   {
     this.defaultOutline = pDefaultOutline ;
-    this.textEditorPanel = null ;
-    this.typeCheckerNodeComponent = null ;
-    this.bigStepNodeComponent = null ;
-    this.minimalTypingNodeComponent = null ;
-    this.smallStepNodeComponent = null ;
     this.styledLanguageEditor = pStyledLanguageEditor ;
   }
 
@@ -165,13 +162,7 @@ public final class OutlineMouseListener implements MouseListener
    */
   public OutlineMouseListener ( TextEditorPanel pTextEditorPanel )
   {
-    this.defaultOutline = null ;
     this.textEditorPanel = pTextEditorPanel ;
-    this.typeCheckerNodeComponent = null ;
-    this.bigStepNodeComponent = null ;
-    this.minimalTypingNodeComponent = null ;
-    this.smallStepNodeComponent = null ;
-    this.styledLanguageEditor = null ;
   }
 
 
@@ -184,13 +175,7 @@ public final class OutlineMouseListener implements MouseListener
   public OutlineMouseListener (
       TypeCheckerNodeComponent pTypeCheckerNodeComponent )
   {
-    this.defaultOutline = null ;
-    this.textEditorPanel = null ;
     this.typeCheckerNodeComponent = pTypeCheckerNodeComponent ;
-    this.bigStepNodeComponent = null ;
-    this.minimalTypingNodeComponent = null ;
-    this.smallStepNodeComponent = null ;
-    this.styledLanguageEditor = null ;
   }
 
 
@@ -203,13 +188,7 @@ public final class OutlineMouseListener implements MouseListener
   public OutlineMouseListener (
       MinimalTypingNodeComponent pMinimalTypingNodeComponent )
   {
-    this.defaultOutline = null ;
-    this.textEditorPanel = null ;
-    this.typeCheckerNodeComponent = null ;
-    this.bigStepNodeComponent = null ;
     this.minimalTypingNodeComponent = pMinimalTypingNodeComponent ;
-    this.smallStepNodeComponent = null ;
-    this.styledLanguageEditor = null ;
   }
 
 
@@ -322,7 +301,7 @@ public final class OutlineMouseListener implements MouseListener
         }
       }
       /*
-       * Type checker.
+       * TypeChecker.
        */
       if ( this.typeCheckerNodeComponent != null )
       {
@@ -367,7 +346,7 @@ public final class OutlineMouseListener implements MouseListener
         }
       }
       /*
-       * Type checker.
+       * MinimalTyping
        */
       if ( this.minimalTypingNodeComponent != null )
       {
@@ -407,8 +386,47 @@ public final class OutlineMouseListener implements MouseListener
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
               .getOutline ( ).loadPrettyPrintable (
                   this.minimalTypingNodeComponent.getTypeComponent ( )
-                      .getType ( ) ,
-                  Outline.ExecuteMouseClick.MINIMALTYPING ) ;
+                      .getType ( ) , Outline.ExecuteMouseClick.MINIMALTYPING ) ;
+        }
+      }
+      /*
+       * SubTyping
+       */
+      if ( this.subTypingNodeComponent != null )
+      {
+        /*
+         * Index label.
+         */
+        if ( pMouseEvent.getSource ( ).equals (
+            this.subTypingNodeComponent.getIndexLabel ( ) ) )
+        {
+          ( ( SubTypingEnterTypes ) this.subTypingNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline1 ( ).loadPrettyPrintable (
+                  this.subTypingNodeComponent.getCompoundExpression ( )
+                      .getType1 ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
+          ( ( SubTypingEnterTypes ) this.subTypingNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline2 ( ).loadPrettyPrintable (
+                  this.subTypingNodeComponent.getCompoundExpression ( )
+                      .getType2 ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
+        }
+        /*
+         * Compound expression.
+         */
+        else if ( pMouseEvent.getSource ( ).equals (
+            this.subTypingNodeComponent.getCompoundExpression ( ) ) )
+        {
+          ( ( SubTypingEnterTypes ) this.subTypingNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline1 ( ).loadPrettyPrintable (
+                  this.subTypingNodeComponent.getCompoundExpression ( )
+                      .getType1 ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
+          ( ( SubTypingEnterTypes ) this.subTypingNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline2 ( ).loadPrettyPrintable (
+                  this.subTypingNodeComponent.getCompoundExpression ( )
+                      .getType2 ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
         }
       }
       /*
@@ -426,8 +444,7 @@ public final class OutlineMouseListener implements MouseListener
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
               .getOutline ( ).loadPrettyPrintable (
                   this.bigStepNodeComponent.getCompoundExpression ( )
-                      .getExpression ( ) ,
-                  Outline.ExecuteMouseClick.BIGSTEP ) ;
+                      .getExpression ( ) , Outline.ExecuteMouseClick.BIGSTEP ) ;
         }
         /*
          * Compound expression.
@@ -439,8 +456,7 @@ public final class OutlineMouseListener implements MouseListener
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
               .getOutline ( ).loadPrettyPrintable (
                   this.bigStepNodeComponent.getCompoundExpression ( )
-                      .getExpression ( ) ,
-                  Outline.ExecuteMouseClick.BIGSTEP ) ;
+                      .getExpression ( ) , Outline.ExecuteMouseClick.BIGSTEP ) ;
         }
         /*
          * Result compound expression.
@@ -452,8 +468,7 @@ public final class OutlineMouseListener implements MouseListener
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
               .getOutline ( ).loadPrettyPrintable (
                   this.bigStepNodeComponent.getResultCompoundExpression ( )
-                      .getExpression ( ) ,
-                  Outline.ExecuteMouseClick.BIGSTEP ) ;
+                      .getExpression ( ) , Outline.ExecuteMouseClick.BIGSTEP ) ;
         }
       }
       /*
@@ -471,8 +486,7 @@ public final class OutlineMouseListener implements MouseListener
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
               .getOutline ( ).loadPrettyPrintable (
                   this.smallStepNodeComponent.getCompoundExpression ( )
-                      .getExpression ( ) ,
-                  Outline.ExecuteMouseClick.SMALLSTEP ) ;
+                      .getExpression ( ) , Outline.ExecuteMouseClick.SMALLSTEP ) ;
         }
       }
     }

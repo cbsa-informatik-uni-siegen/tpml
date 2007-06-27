@@ -36,19 +36,19 @@ public final class OutlineTreeModelListener implements TreeModelListener
   /**
    * The {@link DefaultOutline}.
    */
-  public DefaultOutline defaultOutline ;
+  private DefaultOutline defaultOutline = null ;
 
 
   /**
    * The {@link ExpressionProofModel}.
    */
-  public ExpressionProofModel expressionProofModel = null ;
+  private ExpressionProofModel expressionProofModel = null ;
 
 
   /**
    * The {@link TypeInferenceProofModel}.
    */
-  public TypeInferenceProofModel typeInferenceProofModel = null ;
+  private TypeInferenceProofModel typeInferenceProofModel = null ;
 
 
   /**
@@ -91,7 +91,6 @@ public final class OutlineTreeModelListener implements TreeModelListener
     Object source = pTreeModelEvent.getSource ( ) ;
     if ( source instanceof SmallStepProofModel )
     {
-      // TODO Add more cases
       this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel
           .getRoot ( ).getLastLeaf ( ).getExpression ( ) ,
           Outline.ExecuteAutoChange.SMALLSTEP ) ;
