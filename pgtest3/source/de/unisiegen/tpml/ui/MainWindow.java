@@ -38,7 +38,7 @@ import de.unisiegen.tpml.core.languages.NoSuchLanguageException ;
  * @version $Rev:499 $
  * @see de.unisiegen.tpml.ui.Main
  */
-@SuppressWarnings("all") public class MainWindow extends javax.swing.JFrame
+public class MainWindow extends javax.swing.JFrame
 {
   //
   // Constants

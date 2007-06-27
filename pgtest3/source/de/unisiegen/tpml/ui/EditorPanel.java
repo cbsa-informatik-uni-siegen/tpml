@@ -44,7 +44,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
  * 
  * @author Christoph Fehling
  */
-@SuppressWarnings( "all" )   public class EditorPanel extends javax.swing.JPanel {
+  public class EditorPanel extends javax.swing.JPanel {
 
 	/**
 	 * The serial version UID

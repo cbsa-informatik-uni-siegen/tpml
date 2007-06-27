@@ -15,6 +15,7 @@ public class DefaultMinimalTypingTypesProofNode extends
 			MonoType pType2 ) {
 		super ( new Unify() );
 		subtype = new DefaultSubType(pType, pType2);
+		seenTypes = new SeenTypes <DefaultSubType>();
 		
 	}
 
@@ -63,7 +64,7 @@ public class DefaultMinimalTypingTypesProofNode extends
 }
 
 	public DefaultTypeEnvironment getEnvironment(){
-		return new DefaultTypeEnvironment();
+		return null;
 	}
 
 }

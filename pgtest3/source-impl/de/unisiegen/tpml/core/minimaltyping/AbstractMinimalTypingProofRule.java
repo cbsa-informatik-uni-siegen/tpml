@@ -60,10 +60,15 @@ public abstract class AbstractMinimalTypingProofRule extends AbstractProofRule
 						.getString ( "ProofRuleException.0" ), this, node ), node, //$NON-NLS-1$
 						this, e.getTargetException ( ) );
 			}
-			if ( e.getTargetException ( ) instanceof RuntimeException ) {
-				throw new RuntimeException ( e.getTargetException ( ) );
+			else if ( e.getTargetException ( ) instanceof IllegalArgumentException ) {
+				throw new ProofRuleException ( MessageFormat.format ( Messages
+						.getString ( "ProofRuleException.0" ), this, node ), node, //$NON-NLS-1$
+						this, e.getTargetException ( ) );
+		}
+			else if ( e.getCause ( ) instanceof RuntimeException ) {
+				throw new RuntimeException ( e.getTargetException ( ).getMessage ( ) );
 			}
-			if ( e.getTargetException ( ).getMessage ( ) == null ) {
+			else if ( e.getTargetException ( ).getMessage ( ) == null ) {
 				throw new ProofRuleException ( node, this, e.getTargetException ( ) );
 			}
 			throw new ProofRuleException (

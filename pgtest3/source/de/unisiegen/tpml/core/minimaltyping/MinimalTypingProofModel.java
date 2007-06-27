@@ -273,6 +273,9 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
         logger.debug("Failed to apply (" + rule + ") to " + node, e); //$NON-NLS-1$ //$NON-NLS-2$
         continue;
       }
+      catch (RuntimeException e){
+      	throw new ProofGuessException(e.getMessage ( ),node);
+      }
     }
     
     // unable to guess next step

@@ -312,6 +312,9 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
         logger.debug("Failed to apply (" + rule + ") to " + node, e);
         continue;
       }
+      catch (RuntimeException e){
+      	throw new ProofGuessException(e.getMessage ( ),node);
+      }
     }
     
     // unable to guess next step

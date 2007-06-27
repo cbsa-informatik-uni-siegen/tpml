@@ -20,6 +20,8 @@ import de.unisiegen.tpml.core.minimaltyping.MinimalTypingExpressionProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingTypesProofNode;
+import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
+import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
@@ -241,13 +243,29 @@ public class L1MinimalTypingProofRuleSet extends
 		} else if ( node.getChildCount ( ) == 2
 				&& node.getChildAt ( 1 ).isFinished ( ) ) {
 			MonoType type = ( node.getChildAt ( 1 ) ).getType ( );
-			ArrowType arrow = ( ArrowType ) node.getChildAt ( 0 ).getType ( );
+			MonoType childType = node.getChildAt ( 0 ).getType ( );
+			if (childType instanceof RecType){
+				RecType rec = (RecType) childType;
+				childType = rec.getTau ( ).substitute ( rec.getTypeName ( ), rec );
+			}
+			if (childType instanceof ArrowType){
+			ArrowType arrow = ( ArrowType ) childType;
 			MonoType type2 = arrow.getTau1 ( );
 			context.addProofNode ( node, type, type2 );
+			return;
+			}
+			throw new RuntimeException ("e1 must be instance of ArrowType");
 		} else if ( node.getChildCount ( ) == 3 && node.isFinished ( ) ) {
-			ArrowType arrow = ( ArrowType ) node.getChildAt ( 0 ).getType ( );
+			MonoType childType = node.getChildAt ( 0 ).getType ( );
+			if (childType instanceof RecType){
+				RecType rec = (RecType) childType;
+				childType = rec.getTau ( ).substitute ( rec.getTypeName ( ), rec );
+			}
+			if (childType instanceof ArrowType){
+			ArrowType arrow = ( ArrowType ) childType;;
 			MonoType type = arrow.getTau2 ( );
 			context.setNodeType ( node, type );
+			}
 		}
 	}
 
@@ -489,8 +507,9 @@ public class L1MinimalTypingProofRuleSet extends
 	 * @param type2 MonoType general type
 	 */
 	public void subtypeInternal ( MonoType type, MonoType type2 ) {
-		if ( type.equals ( type2 ) )
+		if ( type.equals ( type2 ) ){
 			return;
+		}
 		else if ( type instanceof ArrowType && type2 instanceof ArrowType ) {
 			ArrowType arrow = ( ArrowType ) type;
 			ArrowType arrow2 = ( ArrowType ) type2;
@@ -555,12 +574,12 @@ public class L1MinimalTypingProofRuleSet extends
 		else if (type instanceof RecType ){
 			RecType rec = (RecType)type;
 			
-			subtypeInternal ( rec.substitute ( rec.getTypeName ( ), rec.getTau ( ) ), type2 );
+			subtypeInternal ( rec.getTau ( ).substitute ( rec.getTypeName ( ), rec ), type2 );
 		}
 		else if (type2 instanceof RecType){
 			RecType rec = (RecType)type2;
 			
-			subtypeInternal ( type, rec.substitute ( rec.getTypeName ( ), rec.getTau ( ) ) );
+			subtypeInternal ( type, rec.getTau ( ).substitute ( rec.getTypeName ( ), rec ) );
 		}
 
 		throw new RuntimeException ( "No Subtype" );
@@ -613,7 +632,7 @@ public class L1MinimalTypingProofRuleSet extends
 		if ( type.equals ( type2 ) )
 			return;
 
-		throw new RuntimeException ( "Types are not equal " ); //$NON-NLS-1$
+		throw new IllegalArgumentException ( "Types are not equal " ); //$NON-NLS-1$
 
 	}
 
@@ -656,7 +675,8 @@ public class L1MinimalTypingProofRuleSet extends
 		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
 		if ( node.getSeenTypes ( ).contains ( node.getSubType ( ) ) )
 			return;
-		throw new RuntimeException ( "Types not seen before" ); //$NON-NLS-1$
+		// change to Exception which makes more sense
+		throw new IllegalArgumentException ( "Types not seen before" ); //$NON-NLS-1$
 	}
 
 	/**
