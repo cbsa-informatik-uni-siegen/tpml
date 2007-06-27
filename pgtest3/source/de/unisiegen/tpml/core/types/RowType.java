@@ -409,6 +409,27 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
+   * Returns the index of the given {@link Identifier}, if this {@link RowType}
+   * contains an {@link Identifier} with the same name, otherwise -1.
+   * 
+   * @param pIdentifier The given {@link Identifier}.
+   * @return The index of the given {@link Identifier}, if this {@link RowType}
+   *         contains an {@link Identifier} with the same name, otherwise -1.
+   */
+  public int getIndexOfIdentifier ( Identifier pIdentifier )
+  {
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    {
+      if ( pIdentifier.equals ( this.identifiers [ i ] ) )
+      {
+        return i ;
+      }
+    }
+    return - 1 ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#getPrefix()
