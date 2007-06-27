@@ -388,6 +388,18 @@ public final class OutlineMouseListener implements MouseListener
                   this.minimalTypingNodeComponent.getTypeComponent ( )
                       .getType ( ) , Outline.ExecuteMouseClick.MINIMALTYPING ) ;
         }
+        /*
+         * Type label2.
+         */
+        else if ( pMouseEvent.getSource ( ).equals (
+            this.minimalTypingNodeComponent.getTypeComponent2 ( ) ) )
+        {
+          ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline ( ).loadPrettyPrintable (
+                  this.minimalTypingNodeComponent.getTypeComponent2 ( )
+                      .getType ( ) , Outline.ExecuteMouseClick.MINIMALTYPING ) ;
+        }
       }
       /*
        * SubTyping
@@ -428,6 +440,20 @@ public final class OutlineMouseListener implements MouseListener
                   this.subTypingNodeComponent.getCompoundExpression ( )
                       .getType2 ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
         }
+        
+        /*
+         * Type label 2.
+         */
+        else if ( pMouseEvent.getSource ( ).equals (
+              this.minimalTypingNodeComponent.getTypeComponent2 ( ) ) )
+          {
+            ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
+                .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+                .getOutline ( ).loadPrettyPrintable (
+                    this.minimalTypingNodeComponent.getTypeComponent2 ( )
+                        .getType ( ) ,
+                    Outline.ExecuteMouseClick.MINIMALTYPING ) ;
+          }
       }
       /*
        * Big step.

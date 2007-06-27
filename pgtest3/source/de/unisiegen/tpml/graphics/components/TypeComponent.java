@@ -70,6 +70,11 @@ public class TypeComponent extends JComponent
    * the list of points where the mouseovereffect will be react
    */
   private ToListenForMouseContainer toListenForMouse ;
+  
+  /**
+   * can be :: or <:
+   */
+  private String text;
 
 
   /**
@@ -83,6 +88,7 @@ public class TypeComponent extends JComponent
     this.bonds = new ShowBonds ( ) ;
     this.toListenForMouse = new ToListenForMouseContainer ( ) ;
     this.alternativeColor = null ;
+    this.text = " :: "; //$NON-NLS-1$
 
     this.addMouseMotionListener ( new MouseMotionAdapter ( )
     {
@@ -332,9 +338,9 @@ public class TypeComponent extends JComponent
       centerV += AbstractRenderer.getTextFontMetrics ( ).getAscent ( ) / 2 ;
       gc.setFont ( AbstractRenderer.getTextFont ( ) ) ;
       gc.setColor ( AbstractRenderer.getTextColor ( ) ) ;
-      gc.drawString ( " :: " , posX , centerV ) ;
+      gc.drawString ( text , posX , centerV ) ;
       posX += AbstractRenderer.getTextFontMetrics ( ).stringWidth (
-          " :: ") ;
+          text) ;
       // draw the expression at the last position.
       //TODO Testausgabe
       //System.out.println(getHeight());
@@ -352,5 +358,10 @@ public class TypeComponent extends JComponent
   {
     return type ;
   }
+
+
+public void setText ( String text ) {
+	this.text = text;
+}
  
 }

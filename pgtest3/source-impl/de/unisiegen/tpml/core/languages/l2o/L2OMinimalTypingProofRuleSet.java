@@ -111,7 +111,7 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 					return;
 				}
 			}
-			throw new RuntimeException ( "type of m is not in phi" );
+			throw new RuntimeException ( "type of m is not in phi. Could not update " + node.getExpression ( ).toString ( ) );
 		}
 	}
 
@@ -183,10 +183,11 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 				subtypeInternal ( type, type2 );
 				subtypeInternal ( type2, type );
 			} catch ( Exception e ) {
-				throw new RuntimeException ( "Types not equal" );
+				throw new RuntimeException ( "Types not equal. Could not update " + node.getExpression ( ).toString ( ) );
 			}
-
-			context.setNodeType ( node, type );
+			
+			ObjectType object = new ObjectType(type);
+			context.setNodeType ( node, object );
 
 		}
 	}
@@ -232,12 +233,12 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 			MonoType tau = ( MonoType ) environment.get ( id );
 			MonoType tau2 = node.getLastChild ( ).getType ( );
 			if ( tau == null || tau2 == null )
-				throw new RuntimeException ( "tau and tau' not equal" );
+				throw new RuntimeException ( "tau and tau' not equal. Can not update "+ node.getExpression ( ).toString ( ) );
 			try {
 				subtypeInternal ( tau, tau2 );
 				subtypeInternal ( tau2, tau );
 			} catch ( Exception e ) {
-				throw new RuntimeException ( "tau and tau' not equal" );
+				throw new RuntimeException ( "tau and tau' not equal. Can not update "+ node.getExpression ( ).toString ( )  );
 			}
 		}
 		if ( node.getChildCount ( ) == duplication.getIdentifiers ( ).length +1 ) {
@@ -301,12 +302,12 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 				}
 				MonoType curriedMethodTau = types[0];
 				if ( curriedMethodTau == null ) {
-					throw new RuntimeException ( "type of this method is null " );
+					throw new RuntimeException ( "type of this method is null. Could not update " + node.getExpression ( ).toString ( ) );
 				}
 				for ( int n = types.length - 1; n > 0; --n ) {
 					if ( types[n] == null )
 						throw new RuntimeException ( "type of " + identifiers[n]
-								+ " is null" );
+								+ " is null. Could not update " + node.getExpression ( ).toString ( ) );
 					curriedMethodTau = new ArrowType ( types[n], curriedMethodTau );
 				}
 
@@ -353,7 +354,7 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 				}
 			}
 			if ( tau == null )
-				throw new RuntimeException ( "Type of Method not found" );
+				throw new RuntimeException ( "Type of Method not found. Could not update " + node.getExpression ( ).toString ( ) );
 			context.addProofNode ( node, tau, node.getChildAt ( 1 ).getType ( ) );
 		} else if ( node.getChildCount ( ) == 4
 				&& node.getChildAt ( 3 ).isFinished ( ) ) {

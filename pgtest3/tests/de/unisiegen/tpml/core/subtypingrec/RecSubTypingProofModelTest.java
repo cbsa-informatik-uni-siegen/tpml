@@ -30,13 +30,13 @@ import de.unisiegen.tpml.core.types.MonoType;
 
 @SuppressWarnings( "all" )
 public class RecSubTypingProofModelTest extends JFrame {
-	private static final String TYPE = "mu t.t->t->t";
+	//private static final String TYPE = "mu t.t->t->t";
 
-	private static final String TYPE2 = "mu t.t->t";
+	//private static final String TYPE2 = "mu t.t->t";
 
-	//private static final String TYPE = "mu t.int->t";
+	private static final String TYPE2 = "mu t.int->t";
 
-	//private static final String TYPE2 = "mu t.int->t";
+	private static final String TYPE = "int -> mu t.int->t";
 
 	ProofRule choosen = null;
 

@@ -145,7 +145,7 @@ public class L1MinimalTypingProofRuleSet extends
 					&& node.getChildAt ( 1 ).getType ( ) instanceof BooleanType )
 				context.setNodeType ( node, new BooleanType ( ) );
 			else
-				throw new RuntimeException ( "types of children not boolean" );
+				throw new RuntimeException ( "types of children not boolean. Can not update "+ and.toString ( ) );
 		}
 
 	}
@@ -185,7 +185,7 @@ public class L1MinimalTypingProofRuleSet extends
 					&& node.getChildAt ( 1 ).getType ( ) instanceof BooleanType )
 				context.setNodeType ( node, new BooleanType ( ) );
 			else
-				throw new RuntimeException ( "types of children not boolean" );
+				throw new RuntimeException ( "types of children not boolean. Can not update " +or.toString ( ) );
 		}
 
 	}
@@ -254,7 +254,7 @@ public class L1MinimalTypingProofRuleSet extends
 			context.addProofNode ( node, type, type2 );
 			return;
 			}
-			throw new RuntimeException ("e1 must be instance of ArrowType");
+			throw new RuntimeException ("e1 must be instance of ArrowType. Can not update " +node.getExpression ( ).toString ( ));
 		} else if ( node.getChildCount ( ) == 3 && node.isFinished ( ) ) {
 			MonoType childType = node.getChildAt ( 0 ).getType ( );
 			if (childType instanceof RecType){
@@ -371,7 +371,7 @@ public class L1MinimalTypingProofRuleSet extends
 		if ( node.getChildCount ( ) == 1 && node.getChildAt ( 0 ).isFinished ( ) ) {
 			if ( ! ( node.getChildAt ( 0 ).getType ( ) instanceof BooleanType ) )
 				throw new RuntimeException (
-						"first type not instance of BooleanType" );
+						"first type not instance of Boolean. Can not update " + node.getExpression ( ).toString ( ) );
 			context.addProofNode ( node, node.getEnvironment ( ), cond.getE1 ( ) );
 		} else if ( node.getChildCount ( ) == 2
 				&& node.getChildAt ( 1 ).isFinished ( ) ) {
@@ -528,6 +528,7 @@ public class L1MinimalTypingProofRuleSet extends
 			RefType ref2 = ( RefType ) type2;
 
 			subtypeInternal ( ref.getTau ( ), ref2.getTau ( ) );
+			return;
 		} else if ( type instanceof TupleType && type2 instanceof TupleType ) {
 			TupleType tuple = ( TupleType ) type;
 			TupleType tuple2 = ( TupleType ) type2;
@@ -536,17 +537,20 @@ public class L1MinimalTypingProofRuleSet extends
 			MonoType[] types2 = tuple2.getTypes ( );
 			for ( int i = 0; i < types.length; i++ ) {
 				subtypeInternal ( types[i], types2[i] );
+				return;
 			}
 		} else if ( type instanceof ListType && type2 instanceof ListType ) {
 			ListType list = ( ListType ) type;
 			ListType list2 = ( ListType ) type2;
 
 			subtypeInternal ( list.getTau ( ), list2.getTau ( ) );
+			return;
 		}
 		else if (type instanceof ObjectType && type2 instanceof ObjectType){
 			ObjectType object = (ObjectType) type;
 			ObjectType object2 = (ObjectType) type2;
 			subtypeInternal ( object.getPhi ( ), object2.getPhi ( ) );
+			return;
 		}
 		else if (type instanceof RowType && type2 instanceof RowType){
 			RowType row = (RowType)type;
@@ -569,17 +573,20 @@ public class L1MinimalTypingProofRuleSet extends
 						throw new RuntimeException("No Subtype");
 				}
 			}
+			return;
 		}
 		
 		else if (type instanceof RecType ){
 			RecType rec = (RecType)type;
 			
 			subtypeInternal ( rec.getTau ( ).substitute ( rec.getTypeName ( ), rec ), type2 );
+			return;
 		}
 		else if (type2 instanceof RecType){
 			RecType rec = (RecType)type2;
 			
 			subtypeInternal ( type, rec.getTau ( ).substitute ( rec.getTypeName ( ), rec ) );
+			return;
 		}
 
 		throw new RuntimeException ( "No Subtype" );
@@ -632,7 +639,7 @@ public class L1MinimalTypingProofRuleSet extends
 		if ( type.equals ( type2 ) )
 			return;
 
-		throw new IllegalArgumentException ( "Types are not equal " ); //$NON-NLS-1$
+		throw new IllegalArgumentException ( "Types are not equal. Could not apply REFL " ); //$NON-NLS-1$
 
 	}
 
