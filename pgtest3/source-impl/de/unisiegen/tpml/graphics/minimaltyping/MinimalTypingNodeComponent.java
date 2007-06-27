@@ -621,7 +621,7 @@ public class MinimalTypingNodeComponent extends JComponent implements
 				this.proofModel.complete ( this.proofNode );
 			} catch ( final ProofGuessException e ) {
 				//e.printStackTrace ( );
-				e.getCause ( ).printStackTrace ( );
+				//e.getCause ( ).printStackTrace ( );
 				fireRequestJumpToNode ( e.getNode ( ) );
 				SwingUtilities.invokeLater ( new Runnable ( ) {
 					public void run ( ) {
