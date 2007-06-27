@@ -100,7 +100,6 @@ public class MinimalTypingView extends AbstractProofView
         .getLastLeaf ( ).getExpression ( ) ,
         Outline.ExecuteInit.MINIMALTYPING ) ;
     JPanel jPanelOutline = this.outline.getPanel ( ) ;
-    jPanelOutline.getPreferredSize ( ).getHeight ( ) ;
     this.jSplitPane.setLeftComponent ( this.scrollPane ) ;
     this.jSplitPane.setRightComponent ( jPanelOutline ) ;
     this.jSplitPane.setOneTouchExpandable ( true ) ;

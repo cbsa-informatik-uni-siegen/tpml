@@ -109,7 +109,6 @@ public class SmallStepView extends AbstractProofView
             .getLastLeaf ( ).getExpression ( ) ,
             Outline.ExecuteInit.SMALLSTEP ) ;
     JPanel jPanelOutline = this.outline.getPanel ( ) ;
-    jPanelOutline.getPreferredSize ( ).getHeight ( ) ;
     this.jSplitPane.setLeftComponent ( this.scrollPane ) ;
     this.jSplitPane.setRightComponent ( jPanelOutline ) ;
     this.jSplitPane.setOneTouchExpandable ( true ) ;
