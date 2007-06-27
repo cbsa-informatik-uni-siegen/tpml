@@ -190,7 +190,7 @@ public class L3Language extends L2Language
   @ Override
   public MinimalTypingProofModel newMinimalTypingProofModel ( Expression expression, boolean mode )
   {
-    return new MinimalTypingProofModel ( expression , new L3MinimalTypingProofRuleSet(this, mode));
+    return new MinimalTypingProofModel ( expression , new L3MinimalTypingProofRuleSet(this, mode), mode);
   }
 
 

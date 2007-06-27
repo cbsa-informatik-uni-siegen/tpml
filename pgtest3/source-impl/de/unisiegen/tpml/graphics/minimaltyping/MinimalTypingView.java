@@ -7,14 +7,21 @@ import java.awt.GridBagLayout ;
 import java.awt.Insets ;
 import java.awt.event.ComponentAdapter ;
 import java.awt.event.ComponentEvent ;
+import java.util.Enumeration;
+
 import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
 import javax.swing.JSplitPane ;
 import de.unisiegen.tpml.core.ProofGuessException ;
+import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel ;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
+import de.unisiegen.tpml.core.util.Debug;
 import de.unisiegen.tpml.graphics.AbstractProofView ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
+import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent;
 
 
 /**
@@ -63,7 +70,7 @@ public class MinimalTypingView extends AbstractProofView
   /**
    * The {@link MinimalTypingProofModel}.
    */
-  private MinimalTypingProofModel MinimalTypingProofModel ;
+  private MinimalTypingProofModel proofModel ;
 
 
   /**
@@ -76,12 +83,12 @@ public class MinimalTypingView extends AbstractProofView
   public MinimalTypingView ( MinimalTypingProofModel pMinimalTypingProofModel )
   {
     super ( ) ;
-    this.MinimalTypingProofModel = pMinimalTypingProofModel ;
+    this.proofModel = pMinimalTypingProofModel ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
     this.setLayout ( new GridBagLayout ( ) ) ;
     this.scrollPane = new JScrollPane ( ) ;
-    this.component = new MinimalTypingComponent ( this.MinimalTypingProofModel ) ;
+    this.component = new MinimalTypingComponent ( this.proofModel ) ;
     this.scrollPane.setViewportView ( this.component ) ;
     this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
     this.scrollPane.addComponentListener ( new ComponentAdapter ( )
@@ -96,7 +103,7 @@ public class MinimalTypingView extends AbstractProofView
       }
     } ) ;
     this.outline = new DefaultOutline ( this ) ;
-    this.outline.loadPrettyPrintable ( this.MinimalTypingProofModel.getRoot ( )
+    this.outline.loadPrettyPrintable ( this.proofModel.getRoot ( )
         .getLastLeaf ( ).getExpression ( ) ,
         Outline.ExecuteInit.MINIMALTYPING ) ;
     JPanel jPanelOutline = this.outline.getPanel ( ) ;
@@ -145,7 +152,7 @@ public class MinimalTypingView extends AbstractProofView
    */
   public MinimalTypingProofModel getMinimalTypingProofModel ( )
   {
-    return this.MinimalTypingProofModel ;
+    return this.proofModel ;
   }
 
 
@@ -157,5 +164,24 @@ public class MinimalTypingView extends AbstractProofView
   public void guess ( ) throws IllegalStateException , ProofGuessException
   {
     this.component.guess ( ) ;
+  }
+  
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.graphics.ProofView#setAdvanced(boolean)
+	 */
+  @Override
+	public void setAdvanced(boolean advanced) {
+	  super.setAdvanced ( advanced );
+	  proofModel.setMode(advanced);
+	  
+	  Enumeration<ProofNode> enumeration = this.proofModel.getRoot().postorderEnumeration();
+		while (enumeration.hasMoreElements()) {
+			// tell the component belonging to this node, that we have a new advanced state
+			MinimalTypingProofNode node = (MinimalTypingProofNode)enumeration.nextElement();
+			MinimalTypingNodeComponent component = (MinimalTypingNodeComponent)node.getUserObject();
+			component.setAdvanced(advanced);
+		}
   }
 }

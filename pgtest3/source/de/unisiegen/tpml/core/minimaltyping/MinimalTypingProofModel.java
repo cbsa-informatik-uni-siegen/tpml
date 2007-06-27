@@ -12,6 +12,9 @@ import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.languages.l1.L1Language;
+import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
+import de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.types.MonoType;
@@ -57,7 +60,9 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
    */
   private int index = 1;
   
+  AbstractMinimalTypingProofRuleSet ruleSet;
   
+  private boolean mode;
   
   
   //
@@ -76,8 +81,10 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
    *
    * @see AbstractProofModel#AbstractProofModel(AbstractProofNode, AbstractProofRuleSet)
    */
-  public MinimalTypingProofModel(Expression expression, AbstractMinimalTypingProofRuleSet ruleSet) {
+  public MinimalTypingProofModel(Expression expression, AbstractMinimalTypingProofRuleSet ruleSet, boolean pMode) {
     super(new DefaultMinimalTypingExpressionProofNode(new DefaultTypeEnvironment(), expression), ruleSet);
+    this.mode = pMode;
+    this .ruleSet = ruleSet;
   }
   
 
@@ -444,6 +451,34 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
   }
 
 
+	/**
+	 * 
+	 * Set the mode (Beginner, Advanced) of choosen by the user
+	 *
+	 * @param mode boolean, true means advanced, false beginner mode
+	 */
+	public void setMode ( boolean mode ) {
+		if ( this.mode != mode ) {
+			this.mode = mode;
 
+				if ( mode ) {
+					this.ruleSet.unregister ( "ARROW" ); //$NON-NLS-1$
+					this.ruleSet.unregister ( "S-MU-LEFT" ); //$NON-NLS-1$
+					this.ruleSet.unregister ( "S-MU-RIGHT" ); //$NON-NLS-1$
+					this.ruleSet.unregister ( "REFL" ); //$NON-NLS-1$
+					this.ruleSet.unregister ( "S-ASSUME" ); //$NON-NLS-1$
+
+					this.ruleSet.registerByMethodName ( L1Language.L1, "SUBTYPE", "applySubtype" ); //$NON-NLS-1$ //$NON-NLS-2$
+				} else {
+					this.ruleSet.unregister ( "SUBTYPE" ); //$NON-NLS-1$
+
+					this.ruleSet.registerByMethodName ( L1Language.L1, "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L1Language.L1, "S-MU-LEFT", "applyMuLeft" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L1Language.L1, "S-MU-RIGHT", "applyMuRight" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L1Language.L1, "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+			}
+	}
 
 }

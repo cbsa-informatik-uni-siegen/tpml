@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Point;
 import java.text.MessageFormat;
+import java.util.Enumeration;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -26,6 +27,8 @@ import de.unisiegen.tpml.core.minimaltyping.MinimalTypingExpressionProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingTypesProofNode;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofRule;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
@@ -40,6 +43,7 @@ import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
 import de.unisiegen.tpml.graphics.components.TypeComponent;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingNodeComponent;
 import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
 /**
@@ -136,8 +140,9 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	 * 
 	 */
 	private TypeComponent typeComponent;
+
 	private TypeComponent typeComponent2;
-	
+
 	/**
 	 * The {@link MenuButton} the user can use to do the actions.
 	 */
@@ -192,8 +197,7 @@ public class MinimalTypingNodeComponent extends JComponent implements
 		this.indexLabel.addMouseListener ( new OutlineMouseListener ( this ) );
 		add ( this.indexLabel );
 		if ( proofNode.getEnvironment ( ) != null ) { // proofnode is an expression proof node
-			
-			
+
 			this.compoundExpression = new CompoundExpression < Identifier, Type > ( );
 			this.compoundExpression.addMouseListener ( new OutlineMouseListener (
 					this ) );
@@ -202,36 +206,32 @@ public class MinimalTypingNodeComponent extends JComponent implements
 			this.typeComponent
 					.addMouseListener ( new OutlineMouseListener ( this ) );
 			add ( this.typeComponent );
-			
+
 			this.typeLabel = new JLabel ( );
 			add ( this.typeLabel );
 			this.typeLabel.setText ( " :: " ); //$NON-NLS-1$
-			
-			
-		} else { // proof node is a type proof node
-			
-			
-			/*this.expression = new CompoundExpressionSubTyping ( );
-			add ( this.expression );
 
-			this.resultExpression = new CompoundExpression < Location, Expression > ( );
-			add ( this.resultExpression );
-			this.resultExpression.setAlternativeColor ( Color.LIGHT_GRAY );*/
-			
+		} else { // proof node is a type proof node
+
+			/*this.expression = new CompoundExpressionSubTyping ( );
+			 add ( this.expression );
+
+			 this.resultExpression = new CompoundExpression < Location, Expression > ( );
+			 add ( this.resultExpression );
+			 this.resultExpression.setAlternativeColor ( Color.LIGHT_GRAY );*/
+
 			this.typeComponent = new TypeComponent ( );
 			this.typeComponent
 					.addMouseListener ( new OutlineMouseListener ( this ) );
 			add ( this.typeComponent );
 			this.typeComponent.setText ( "" );
-			
-			
 
-		    this.typeComponent2 = new TypeComponent ( );
-				this.typeComponent2
-						.addMouseListener ( new OutlineMouseListener ( this ) );
-				add ( this.typeComponent2 );
-			    this.typeComponent2.setText ( "<:   " );
-				
+			this.typeComponent2 = new TypeComponent ( );
+			this.typeComponent2
+					.addMouseListener ( new OutlineMouseListener ( this ) );
+			add ( this.typeComponent2 );
+			this.typeComponent2.setText ( "<:   " );
+
 		}
 		changeNode ( );
 		/*
@@ -244,8 +244,6 @@ public class MinimalTypingNodeComponent extends JComponent implements
 		this.ruleLabel = new JLabel ( );
 		add ( this.ruleLabel );
 		this.ruleLabel.setVisible ( false );
-		
-		
 
 		// this.typeLabel.addMouseListener ( new OutlineMouseListener ( this ) ) ;
 		/*
@@ -332,10 +330,10 @@ public class MinimalTypingNodeComponent extends JComponent implements
 			MinimalTypingTypesProofNode typeNode = ( MinimalTypingTypesProofNode ) proofNode;
 			//this.expression.setType1 ( typeNode.getType ( ) );
 			//this.expression.setType2 ( typeNode.getType2 ( ) );
-			
+
 			this.typeComponent.setType ( typeNode.getType ( ) );
 			this.typeComponent2.setType ( typeNode.getType2 ( ) );
-			
+
 		}
 
 	}
@@ -463,11 +461,9 @@ public class MinimalTypingNodeComponent extends JComponent implements
 				this.ruleButton.setVisible ( true );
 
 			}
-			
-			
+
 		} else { // proofNode instance of type proof node
-			
-			
+
 			//		 get the size for the index at the beginning: (x)
 			FontMetrics fm = AbstractRenderer.getTextFontMetrics ( );
 			Dimension labelSize = new Dimension ( fm.stringWidth ( this.indexLabel
@@ -507,7 +503,6 @@ public class MinimalTypingNodeComponent extends JComponent implements
 
 			this.typeComponent2.setBounds ( posX, 0, resultSize.width,
 					this.dimension.height );
-			
 
 			/*
 			 * Check whether this is node is evaluated.
@@ -765,6 +760,7 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	public CompoundExpression < Identifier, Type > getCompoundExpression ( ) {
 		return this.compoundExpression;
 	}
+
 	//  
 	//  public void paintComponent (Graphics gc)
 	//  {
@@ -783,5 +779,30 @@ public class MinimalTypingNodeComponent extends JComponent implements
 
 	public TypeComponent getTypeComponent2 ( ) {
 		return this.typeComponent2;
+	}
+
+	public void setAdvanced ( boolean advanced ) {
+
+		/*
+		 * Create the PopupMenu for the menu button
+		 */
+		JPopupMenu menu = new JPopupMenu ( );
+
+		ProofRule[] rules = this.proofModel.getRules ( );
+		if ( rules.length > 0 ) {
+			int group = rules[0].getGroup ( );
+			for ( ProofRule r : rules ) {
+				if ( r.getGroup ( ) != group ) {
+					menu.addSeparator ( );
+				}
+				menu.add ( new MenuRuleItem ( r ) );
+				group = r.getGroup ( );
+			}
+		}
+		menu.addSeparator ( );
+		menu.add ( new MenuGuessItem ( ) );
+		menu.add ( new MenuGuessTreeItem ( ) );
+
+		this.ruleButton.setMenu ( menu );
 	}
 }

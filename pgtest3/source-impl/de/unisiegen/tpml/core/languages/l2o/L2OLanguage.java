@@ -227,7 +227,7 @@ public class L2OLanguage extends L2Language
   @ Override
   public MinimalTypingProofModel newMinimalTypingProofModel ( Expression expression, boolean mode )
   {
-    return new MinimalTypingProofModel ( expression , new L2OMinimalTypingProofRuleSet(this, mode));
+    return new MinimalTypingProofModel ( expression , new L2OMinimalTypingProofRuleSet(this, mode), mode);
   }
 
 
