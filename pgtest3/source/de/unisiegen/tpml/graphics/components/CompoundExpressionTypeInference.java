@@ -235,25 +235,6 @@ public class CompoundExpressionTypeInference extends JComponent
           ArrayList <Rectangle> rightType = typeFormularRenderer.getRightTypeostitions ( ) ;
           ArrayList <Rectangle> expressionPositions = typeFormularRenderer.getExpressionPositions ( ) ;
           ArrayList <Rectangle> typePositions = typeFormularRenderer.getTypePositions ( ) ;
-         
-          
-          
-          if ( rects.size() == 1 )
-          {
-            Outline outline = (( TypeInferenceView ) 
-                CompoundExpressionTypeInference.this.getParent ( )
-            .getParent ( ).getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-            .getOutline ( ) ;
-            TypeFormula t = CompoundExpressionTypeInference.this.typeFormulaList.get ( 0 );
-            
-            
-            if ( t instanceof TypeJudgement )
-            {
-              TypeJudgement typeJudgement = ( TypeJudgement ) t ;
-              outline.loadPrettyPrintable (typeJudgement.getExpression ( ) ,  Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
-            }
-            
-          }
           
           for (int i = 0; i<rects.size(); i++)
           {
