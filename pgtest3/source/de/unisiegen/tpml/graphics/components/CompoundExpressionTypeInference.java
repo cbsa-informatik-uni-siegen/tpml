@@ -232,11 +232,11 @@ public class CompoundExpressionTypeInference extends JComponent
         int posX = pMouseEvent.getX ( ) ;
         int posY = pMouseEvent.getY ( ) ;
         ArrayList < Rectangle > rects = typeFormularRenderer
-            .getTypeFprmularPostitions ( ) ;
+            .getTypeFormularPositions ( ) ;
         ArrayList < Rectangle > leftType = typeFormularRenderer
-            .getLeftTypePostitions ( ) ;
+            .getLeftTypePositions ( ) ;
         ArrayList < Rectangle > rightType = typeFormularRenderer
-            .getRightTypeostitions ( ) ;
+            .getRightTypePositions ( ) ;
         ArrayList < Rectangle > expressionPositions = typeFormularRenderer
             .getExpressionPositions ( ) ;
         ArrayList < Rectangle > typePositions = typeFormularRenderer
@@ -360,7 +360,7 @@ public class CompoundExpressionTypeInference extends JComponent
         // look up if there is a typeformula at the point mousePosition.
         // if ther is no typformular, ther will be no dragg'n'drop
         ArrayList < Rectangle > rects = typeFormularRenderer
-            .getTypeFprmularPostitions ( ) ;
+            .getTypeFormularPositions ( ) ;
         for ( int i = 0 ; i < rects.size ( ) ; i ++ )
         {
           if ( mousePositionX >= rects.get ( i ).x
@@ -392,7 +392,7 @@ public class CompoundExpressionTypeInference extends JComponent
         if ( posX == mousePositionX && posY == mousePositionY )
         {
           ArrayList < Rectangle > rects = typeFormularRenderer
-              .getTypeFprmularPostitions ( ) ;
+              .getTypeFormularPositions ( ) ;
           for ( int i = 0 ; i < rects.size ( ) ; i ++ )
           {
             testAusgabe ( "" + i + ". Bereicht: " + rects.get ( i ).toString ( ) ) ;
@@ -420,7 +420,7 @@ public class CompoundExpressionTypeInference extends JComponent
           // resetten
           testAusgabe ( "Dragg and Drop implementieren" ) ;
           ArrayList < Rectangle > rects = typeFormularRenderer
-              .getTypeFprmularPostitions ( ) ;
+              .getTypeFormularPositions ( ) ;
           for ( int i = 0 ; i < rects.size ( ) ; i ++ )
           {
             if ( posX >= rects.get ( i ).x
