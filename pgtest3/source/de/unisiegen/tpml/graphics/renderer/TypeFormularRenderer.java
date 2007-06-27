@@ -268,7 +268,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	}
 	
 	/**
-	 * mars an entry and remebers it to swapp it with the second marked one
+	 * mars an entry and remebers it to swapp it with the second marked one. This Method 
+	 * is only fpr testing. Use the draggNDropp method.
 	 *
 	 * @param x				discribes the rect to draw
 	 * @param y				discribes the rect to draw
@@ -305,9 +306,44 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			typeFormulaList.add(toChange, firstElement);
 			remebmberToSwapp = -1;
 			markedArea = null;
-			
-			
 		}	
+	}
+	
+	/**
+	 * another implementation for the dragg'n'dropp. Instead of inserting the element and 
+	 * adding 1 to the index of all following it swapps the elements
+	 *
+	 * @param x index of the first element
+	 * @param y	index of the second element
+	 */
+	public void swapp (int x, int y)
+	{
+		TypeFormula firstElement = typeFormulaList.get(x);
+		TypeFormula secondElement = typeFormulaList.get(y);
+		
+		typeFormulaList.set(y, firstElement);
+		typeFormulaList.set(x, secondElement);
+	}
+	
+	/**
+	 * Implementation of the dragg'n'dropp. The second elemnt will be inserted into
+	 * the list at the position of the first one and deleted from its old position. 
+	 * Everey index of the following elements will increase by 1
+	 * @param x index of the first element
+	 * @param y	index of the second element
+	 */
+	public void draggNDropp (int x, int y)
+	{
+		//remember the second element
+		TypeFormula secondElement = typeFormulaList.get(y);
+		
+		//remove it
+		typeFormulaList.remove(y);
+		
+		//Inserts it at the position of the first element in the list. Shifts the element
+		//currently at that position and any subsequent elements. (adds one to their indices). 
+		typeFormulaList.add(x, secondElement);
+		
 	}
 	
 	
@@ -606,7 +642,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					gc.setColor(AbstractRenderer.expColor);
 					gc.setFont(AbstractRenderer.keywordFont);
 					gc.drawString("A |- ", posX, posY);
-					this.aPositions.set(i, new Rectangle(posX, posY-fontAscent, AbstractRenderer.expFontMetrics.stringWidth("A "), AbstractRenderer.getAbsoluteHeight()));
+					this.aPositions.set(i, new Rectangle(posX, posY-fontDescent, AbstractRenderer.expFontMetrics.stringWidth("A "), AbstractRenderer.getAbsoluteHeight()));
 					
 					//get the seentyps and provide the String for the Tooltip
 					SeenTypes<TypeEquationTypeInference> typeEquSeenTypes = ((TypeEquationTypeInference)t).getSeenTypes();
@@ -629,8 +665,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
           
           
 					this.typeFormularPositions.add(new Rectangle(posX, posY+AbstractRenderer.fontDescent, typeEquationSize.width, typeEquationSize.height));
-					this.leftTypePositions.set(i, new Rectangle (posX, posY+AbstractRenderer.fontAscent, leftDim.width, leftDim.height ));
-					this.rightTypePositions.set(i, new Rectangle ((posX+typeEquationSize.width)-rightDim.width, posY+AbstractRenderer.fontAscent, rightDim.width, rightDim.height ));
+					this.leftTypePositions.set(i, new Rectangle (posX, posY+AbstractRenderer.fontDescent, leftDim.width, leftDim.height ));
+					this.rightTypePositions.set(i, new Rectangle ((posX+typeEquationSize.width)-rightDim.width, posY+AbstractRenderer.fontDescent, rightDim.width, rightDim.height ));
 					
 					this.typeEquations.add(i);
 					posX += typeEquationSize.width;
@@ -743,7 +779,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						expressionRenderer.render(posX, posY-AbstractRenderer.fontHeight / 2 - AbstractRenderer.fontAscent / 2, expressionSize.width ,expressionSize.height, gc, bound, toListenForM);
 						startWidht += expressionSize.width;
 						startHeight = Math.max(startHeight, expressionSize.height);
-						expressionPostitions.set(i, new Rectangle (posX, posY+AbstractRenderer.fontAscent, expressionSize.width, expressionSize.height ) );
+						expressionPostitions.set(i, new Rectangle (posX, posY+AbstractRenderer.fontDescent, expressionSize.width, expressionSize.height ) );
             //expressionRenderer.renderBase(posX, posY, expressionSize.width ,expressionSize.height, gc, bound, toListenForM);
 					}
 					//prettyStringrenderer.render(posX, posY-(expressionSize.height / 2) - fontAscent / 2, expressionSize.height, gc, bound, toListenForM);
@@ -791,7 +827,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
             typeRenderer.renderBase(posX, posY , typeSize.width ,typeSize.height, gc, bondType, toListenForM);
             startWidht = Math.max(startWidht, typeSize.width);
             startHeight += typeSize.height;
-            typePositions.set(i, new Rectangle (posX, posY+AbstractRenderer.fontAscent, typeSize.width, typeSize.height ) );
+            typePositions.set(i, new Rectangle (posX, posY+AbstractRenderer.fontDescent, typeSize.width, typeSize.height ) );
             posX += typeSize.width;
 
             //this.typeFprmularPostitions.add(new Rectangle(oldPosX, posY, posX-oldPosX, spaceToNexEntry));
@@ -810,7 +846,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
             typeRenderer.renderBase(posX, posY , typeSize.width ,typeSize.height, gc, bondType, toListenForM);
             startWidht += typeSize.width;
             startHeight = Math.max(startHeight, typeSize.height);
-            typePositions.set(i, new Rectangle (posX, posY+AbstractRenderer.fontAscent, typeSize.width, typeSize.height ) );
+            typePositions.set(i, new Rectangle (posX, posY+AbstractRenderer.fontDescent, typeSize.width, typeSize.height ) );
             
             posX += typeSize.width;
 

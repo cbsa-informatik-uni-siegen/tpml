@@ -1,32 +1,31 @@
 package de.unisiegen.tpml.graphics.components ;
 
 
-import java.awt.Color ;
-import java.awt.Cursor ;
-import java.awt.Dimension ;
-import java.awt.Graphics ;
-import java.awt.Rectangle ;
-import java.awt.event.MouseAdapter ;
-import java.awt.event.MouseEvent ;
-import java.awt.event.MouseListener ;
-import java.awt.event.MouseMotionAdapter ;
-import java.util.ArrayList ;
-import javax.swing.JComponent ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
-import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
-import de.unisiegen.tpml.core.typeinference.TypeFormula ;
-import de.unisiegen.tpml.core.typeinference.TypeJudgement ;
-import de.unisiegen.tpml.graphics.outline.Outline ;
-import de.unisiegen.tpml.graphics.renderer.AbstractRenderer ;
-import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer ;
-import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer ;
-import de.unisiegen.tpml.graphics.renderer.SubstitutionRenderer ;
-import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer ;
-import de.unisiegen.tpml.graphics.renderer.TypeFormularRenderer ;
-import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
-import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView ;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
+
+import javax.swing.JComponent;
+
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
+import de.unisiegen.tpml.core.typeinference.TypeFormula;
+import de.unisiegen.tpml.core.typeinference.TypeJudgement;
+import de.unisiegen.tpml.graphics.outline.Outline;
+import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
+import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
+import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
+import de.unisiegen.tpml.graphics.renderer.SubstitutionRenderer;
+import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
+import de.unisiegen.tpml.graphics.renderer.TypeFormularRenderer;
+import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView;
 
 
 /**
@@ -55,7 +54,7 @@ public class CompoundExpressionTypeInference extends JComponent
   /**
    * The expression that will be underlined during the rendering. TODO löschen
    */
-  private Expression underlineExpression ;
+  //private Expression underlineExpression ;
 
 
   /**
@@ -73,13 +72,13 @@ public class CompoundExpressionTypeInference extends JComponent
   /**
    * saves the position where the mouse starts the dragging
    */
-  private int mousePositionX ;
+  private int mousePositionPressedX ;
 
 
   /**
    * saves the position where the mouse starts the dragging
    */
-  private int mousePositionY ;
+  private int mousePositionPressedY ;
 
 
   /**
@@ -180,7 +179,7 @@ public class CompoundExpressionTypeInference extends JComponent
     this.toListenForMouse = new ToListenForMouseContainer ( ) ;
     this.alternativeColor = null ;
     this.braceSize = 10 ;
-    this.underlineExpression = null ;
+    //this.underlineExpression = null ;
     CompoundExpressionTypeInference.this.setDoubleBuffered ( true ) ;
     this.addMouseMotionListener ( new MouseMotionAdapter ( )
     {
@@ -206,8 +205,6 @@ public class CompoundExpressionTypeInference extends JComponent
           // draggedString
           repaint ( ) ;
           // change the Cursor to the Hand
-          // TODO eventuell einen eingenen Cursor einbinden, oder so, auf jeden
-          // Fall unter jeden System testen...
           Cursor c = new Cursor ( Cursor.HAND_CURSOR ) ;
           getParent ( ).getParent ( ).setCursor ( c ) ;
           // tell the renderer where the draggedString will be renderd
@@ -330,19 +327,12 @@ public class CompoundExpressionTypeInference extends JComponent
     } ) ;
     this.addMouseListener ( new MouseAdapter ( )
     {
+    	int rectPressed;
+    	int rectReleased;
       @ Override
       public void mouseExited ( MouseEvent e )
       {
-        // TODO hier sollte eigentlich das Ereignis sein, dass die Maus den
-        // Ausdruck verl�sst, und der dann neu gemalt wird, funktioniert aber
-        // nicht
-        // System.err.println("Ladidal");
-        // ToListenForMouseContainer.getInstanceOf().reset();
-        // if ( ! toListenForMouse.setExpression ( expression ) )
-        // {
-        // Debug.out.print ( "Schei�e, es ist ein anderer Ausdruck: "
-        // + expression.toPrettyString ( ).toString ( ) , "Feivel" ) ;
-        // }
+      	//tell the toListenForMouse that the mose is gone
         toListenForMouse.reset ( ) ;
         toListenForMouse.setMark ( false ) ;
         CompoundExpressionTypeInference.this.repaint ( ) ;
@@ -355,20 +345,20 @@ public class CompoundExpressionTypeInference extends JComponent
         testAusgabe ( "Die Maus wurde gedrückt..." ) ;
         // remember the position. If the user dragges thes point to another,
         // they will be switched
-        mousePositionX = event.getX ( ) ;
-        mousePositionY = event.getY ( ) ;
+        mousePositionPressedX = event.getX ( ) ;
+        mousePositionPressedY = event.getY ( ) ;
         // look up if there is a typeformula at the point mousePosition.
         // if ther is no typformular, ther will be no dragg'n'drop
-        ArrayList < Rectangle > rects = typeFormularRenderer
-            .getTypeFormularPositions ( ) ;
+        ArrayList < Rectangle > rects = typeFormularRenderer.getTypeFormularPositions ( ) ;
         for ( int i = 0 ; i < rects.size ( ) ; i ++ )
         {
-          if ( mousePositionX >= rects.get ( i ).x
-              && mousePositionX <= rects.get ( i ).x + rects.get ( i ).width
-              && mousePositionY >= rects.get ( i ).y - rects.get ( i ).height
-              && mousePositionY <= rects.get ( i ).y )
+          if ( mousePositionPressedX >= rects.get ( i ).x
+              && mousePositionPressedX <= rects.get ( i ).x + rects.get ( i ).width
+              && mousePositionPressedY >= rects.get ( i ).y - rects.get ( i ).height
+              && mousePositionPressedY <= rects.get ( i ).y )
           {
             testAusgabe ( "" + i + ". Bereicht: " + rects.get ( i ).toString ( ) ) ;
+            rectPressed=i;
             draggedString = typeFormulaList.get ( i ).toString ( ) ;
             if ( draggedString.length ( ) > 13 )
             {
@@ -384,70 +374,69 @@ public class CompoundExpressionTypeInference extends JComponent
       public void mouseReleased ( MouseEvent event )
       {
         testAusgabe ( "Die Maus wurde losgelassen..." ) ;
-        int posX = event.getX ( ) ;
-        int posY = event.getY ( ) ;
+        int mousePositionReleasedX = event.getX ( ) ;
+        int mousePositionReleasedY = event.getY ( ) ;
         // if the point there the mouse was pressed is the same the mouse was
         // released, ther is no dragg and dropp and the typeformula will only be
         // marked
-        if ( posX == mousePositionX && posY == mousePositionY )
-        {
-          ArrayList < Rectangle > rects = typeFormularRenderer
-              .getTypeFormularPositions ( ) ;
-          for ( int i = 0 ; i < rects.size ( ) ; i ++ )
-          {
-            testAusgabe ( "" + i + ". Bereicht: " + rects.get ( i ).toString ( ) ) ;
-          }
-          for ( int i = 0 ; i < rects.size ( ) ; i ++ )
-          {
-            if ( posX >= rects.get ( i ).x
-                && posX <= rects.get ( i ).x + rects.get ( i ).width
-                && posY >= rects.get ( i ).y - rects.get ( i ).height
-                && posY <= rects.get ( i ).y )
-            {
-              testAusgabe ( "" + i + ". Bereicht: "
-                  + rects.get ( i ).toString ( ) ) ;
-              Graphics gc = getGraphics ( ) ;
-              typeFormularRenderer.markArea ( rects.get ( i ).x , rects
-                  .get ( i ).y , rects.get ( i ).width ,
-                  rects.get ( i ).height , gc , i ) ;
-            }
-          }
-        }
+//        if ( mousePositionReleasedX == mousePositionPressedX && mousePositionReleasedY == mousePositionPressedY )
+//        {
+//          ArrayList < Rectangle > rects = typeFormularRenderer
+//              .getTypeFormularPositions ( ) ;
+//          for ( int i = 0 ; i < rects.size ( ) ; i ++ )
+//          {
+//            testAusgabe ( "" + i + ". Bereicht: " + rects.get ( i ).toString ( ) ) ;
+//          }
+//          for ( int i = 0 ; i < rects.size ( ) ; i ++ )
+//          {
+//            if ( mousePositionReleasedX >= rects.get ( i ).x
+//                && mousePositionReleasedX <= rects.get ( i ).x + rects.get ( i ).width
+//                && mousePositionReleasedY >= rects.get ( i ).y - rects.get ( i ).height
+//                && mousePositionReleasedY <= rects.get ( i ).y )
+//            {
+//            	//TODO test: These lines drwa a rect arround the single Elements 
+//              //Graphics gc = getGraphics ( ) ;
+//              //typeFormularRenderer.markArea ( rects.get ( i ).x , rects.get ( i ).y , rects.get ( i ).width , rects.get ( i ).height , gc , i ) ;
+//            }
+//          }
+//        }
         // if the point of pressed and released are unequal
         // the typformulas at the two points will be switched
-        else
+//        else
         {
           // resetten
           testAusgabe ( "Dragg and Drop implementieren" ) ;
-          ArrayList < Rectangle > rects = typeFormularRenderer
-              .getTypeFormularPositions ( ) ;
+          ArrayList < Rectangle > rects = typeFormularRenderer.getTypeFormularPositions ( ) ;
           for ( int i = 0 ; i < rects.size ( ) ; i ++ )
           {
-            if ( posX >= rects.get ( i ).x
-                && posX <= rects.get ( i ).x + rects.get ( i ).width
-                && posY >= rects.get ( i ).y - rects.get ( i ).height
-                && posY <= rects.get ( i ).y )
+            if ( mousePositionReleasedX >= rects.get ( i ).x
+                && mousePositionReleasedX <= rects.get ( i ).x + rects.get ( i ).width
+                && mousePositionReleasedY >= rects.get ( i ).y - rects.get ( i ).height
+                && mousePositionReleasedY <= rects.get ( i ).y )
             {
-              testAusgabe ( "" + i + ". Bereicht: "
-                  + rects.get ( i ).toString ( ) ) ;
-              Graphics gc = getGraphics ( ) ;
-              typeFormularRenderer.markArea ( rects.get ( i ).x , rects
-                  .get ( i ).y , rects.get ( i ).width ,
-                  rects.get ( i ).height , gc , i ) ;
+              testAusgabe ( "" + i + ". Bereicht: "+ rects.get ( i ).toString ( ) ) ;
+              //Graphics gc = getGraphics ( ) ;
+              rectReleased=i;
+              //typeFormularRenderer.markArea ( rects.get ( i ).x , rects.get ( i ).y , rects.get ( i ).width ,rects.get ( i ).height , gc , i ) ;
             }
-            else if ( mousePositionX >= rects.get ( i ).x
-                && mousePositionX <= rects.get ( i ).x + rects.get ( i ).width
-                && mousePositionY >= rects.get ( i ).y - rects.get ( i ).height
-                && mousePositionY <= rects.get ( i ).y )
-            {
-              System.out.println ( "" + i + ". Bereicht: "
-                  + rects.get ( i ).toString ( ) ) ;
-              Graphics gc = getGraphics ( ) ;
-              typeFormularRenderer.markArea ( rects.get ( i ).x , rects
-                  .get ( i ).y , rects.get ( i ).width ,
-                  rects.get ( i ).height , gc , i ) ;
-            }
+//            else if ( mousePositionPressedX >= rects.get ( i ).x
+//                && mousePositionPressedX <= rects.get ( i ).x + rects.get ( i ).width
+//                && mousePositionPressedY >= rects.get ( i ).y - rects.get ( i ).height
+//                && mousePositionPressedY <= rects.get ( i ).y )
+//            {
+//              System.out.println ( "" + i + ". Bereicht: "
+//                  + rects.get ( i ).toString ( ) ) ;
+//              Graphics gc = getGraphics ( ) ;
+//              //typeFormularRenderer.markArea ( rects.get ( i ).x , rects.get ( i ).y , rects.get ( i ).width , rects.get ( i ).height , gc , i ) ;
+//            }
           }
+        }
+        
+        ArrayList < Rectangle > rects = typeFormularRenderer.getTypeFormularPositions ( ) ;
+        if (rectPressed != rectReleased)
+        {
+        	typeFormularRenderer.draggNDropp (rectReleased, rectPressed) ;
+        	
         }
         dragged = false ;
         repaint ( ) ;
@@ -478,25 +467,25 @@ public class CompoundExpressionTypeInference extends JComponent
   }
 
 
-  /**
-   * Sets the expression, that should be underlined.
-   * 
-   * @param underlineExpression
-   */
-  public void setUnderlineExpression_alt ( Expression underlineExpression )
-  {
-    boolean needsRepaint = this.underlineExpression != underlineExpression ;
-    this.underlineExpression = underlineExpression ;
-    if ( this.expressionRenderer != null )
-    {
-      this.expressionRenderer
-          .setUndelinePrettyPrintable ( this.underlineExpression ) ;
-    }
-    if ( needsRepaint )
-    {
-      repaint ( ) ;
-    }
-  }
+//  /**
+//   * Sets the expression, that should be underlined.
+//   * 
+//   * @param underlineExpression
+//   */
+//  public void setUnderlineExpression_alt ( Expression underlineExpression )
+//  {
+//    boolean needsRepaint = this.underlineExpression != underlineExpression ;
+//    this.underlineExpression = underlineExpression ;
+//    if ( this.expressionRenderer != null )
+//    {
+//      this.expressionRenderer
+//          .setUndelinePrettyPrintable ( this.underlineExpression ) ;
+//    }
+//    if ( needsRepaint )
+//    {
+//      repaint ( ) ;
+//    }
+//  }
 
 
   /**
@@ -828,7 +817,6 @@ public class CompoundExpressionTypeInference extends JComponent
     else if ( this.defaultTypeSubstitutionList instanceof TypeEnvironment )
     {
       // draw the environment first
-      // TODO
       this.substitutionRenderer.renderer ( posX , posY ,
           this.substitutionSize.width , getHeight ( ) , gc ) ;
       posX += this.substitutionSize.width ;
