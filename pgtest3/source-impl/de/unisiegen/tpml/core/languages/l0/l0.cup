@@ -1,137 +1,8 @@
-import de.unisiegen.tpml.core.expressions.*;
-import de.unisiegen.tpml.core.types.*;
-import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
-import de.unisiegen.tpml.core.exceptions.LanguageParserWarningException;
-import de.unisiegen.tpml.core.languages.LanguageParserException;
-import de.unisiegen.tpml.core.Messages ;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-
-
-/* Helper classes */
-action code 
-{:
-  private static class IdTypePair 
-  {
-    Identifier id;
-    MonoType type;
-    
-    public IdTypePair(Identifier pId, MonoType pType) 
-    { 
-      this.id = pId;
-      this.type = pType; 
-    }
-  }
-  
-  private static class IdExprPair 
-  {
-    Identifier id;
-    Expression expression;
-    
-    public IdExprPair(Identifier pId, Expression pExpression)
-    { 
-      this.id = pId; 
-      this.expression = pExpression;
-    }
-  }
- 
-  private static class Error
-  {
-    public static void expect(int pLeft, int pRight, String pSymbol, String ... pTokenSequence)
-    {
-      String or = Messages.getString ( "Parser.15" ) ;
-      String result = "" ;
-      for ( int i = 0; i < pTokenSequence.length ; i++)
-      {
-        if ( i == 0 )
-        {
-          result += "\"" + pTokenSequence [i] + "\"" ;
-        }
-        else if ( i == pTokenSequence.length - 1 )
-        {
-          result += " " + or + " \"" + pTokenSequence [i]+ "\"";
-        }
-        else
-        {
-          result += ", \"" + pTokenSequence [i]+ "\"";
-        }
-      }
-      throw new LanguageParserWarningException (  
-        MessageFormat.format ( "<html>" + Messages.getString ( "Parser.14" ) + "</html>", 
-          result, pSymbol), pLeft, pRight);
-    }
-  }
-  
-  private static class Duplicated
-  {
-    public static void check(Row pRow)
-    {
-	  ArrayList <Identifier> negativeIdentifiers = new ArrayList <Identifier> ();
-	  Expression [ ] rowExpressions = pRow.getExpressions ( ) ;
-      for ( int i = 0 ; i < rowExpressions.length ; i ++ )
-      {
-        if ( rowExpressions[i] instanceof Attribute )
-        {
-          negativeIdentifiers.clear();
-          Attribute attribute1 = (Attribute) rowExpressions[i] ;
-          for ( int j = i+1 ; j < rowExpressions.length ; j++ )
-          {
-            if ( rowExpressions[j] instanceof Attribute )
-    	    {
-    	      Attribute attribute2 = (Attribute) rowExpressions[j] ;
-    	      if ( attribute1.getId().equals(attribute2.getId()))
-    	      {
-    	        negativeIdentifiers.add(attribute2.getId());
-    	      }
-    	    }
-    	  }
-    	  negativeIdentifiers.add ( attribute1.getId() ) ;
-    	  LanguageParserMultiException.throwExceptionRow ( negativeIdentifiers ) ;
-        }
-      }
-    }
-    
-    
-    public static void check(Duplication pDuplication)
-    {
-	  ArrayList <Identifier> negativeIdentifiers = new ArrayList <Identifier> ();
-	  Identifier [] identifier = pDuplication.getIdentifiers() ;
-      for ( int i = 0 ; i < identifier.length ; i ++ )
-      {
-        negativeIdentifiers.clear();
-        for ( int j = i+1 ; j < identifier.length ; j++ )
-        {
-          if ( identifier [i].equals(identifier[j]) )
-    	  {
-  	        negativeIdentifiers.add(identifier[j]);
-    	  }
-    	}
-    	negativeIdentifiers.add ( identifier [i] ) ;
-    	LanguageParserMultiException.throwExceptionDuplication ( negativeIdentifiers ) ;
-      }
-    }
-    
-    
-    public static void check(RowType pRowType)
-    {
-	  ArrayList <Identifier> negativeIdentifiers = new ArrayList <Identifier> ();
-	  Identifier [] identifier = pRowType.getIdentifiers() ;
-      for ( int i = 0 ; i < identifier.length ; i ++ )
-      {
-        negativeIdentifiers.clear();
-        for ( int j = i+1 ; j < identifier.length ; j++ )
-        {
-          if ( identifier [i].equals(identifier[j]) )
-    	  {
-  	        negativeIdentifiers.add(identifier[j]);
-    	  }
-    	}
-    	negativeIdentifiers.add ( identifier [i] ) ;
-    	LanguageParserMultiException.throwExceptionRowType ( negativeIdentifiers ) ;
-      }
-    }
-  }
-:}
+import de.unisiegen.tpml.core.expressions.Application ;
+import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.Lambda ;
+import de.unisiegen.tpml.core.languages.Error ;
 
 
 /* Syntactic tokens */
@@ -196,11 +67,11 @@ lambda_l1						::= LAMBDA:l IDENTIFIER:id DOT expr:e
 								;
 
 lambda_l1_error					::= LAMBDA:l epsilon
-									{: Error.expect(lleft, lright, "Lambda", "id.e" ); :}
+									{: Error.expect("Lambda", lleft, lright, "id.e" ); :}
 								|	LAMBDA:l IDENTIFIER:i epsilon
-									{: Error.expect(lleft, iright, "Lambda", ".e" ); :}
+									{: Error.expect("Lambda", lleft, iright, ".e" ); :}
 								|	LAMBDA:l IDENTIFIER DOT:d epsilon
-									{: Error.expect(lleft, dright, "Lambda", "e" ); :}
+									{: Error.expect("Lambda", lleft, dright, "e" ); :}
 								;
 
 simple_expr						::=	identifier:id
@@ -211,10 +82,10 @@ simple_expr						::=	identifier:id
 									{: :}
 								;
 
-simple_expr_error				::= LPAREN:l epsilon
-									{: Error.expect(lleft, lright, "Expression", "... )"); :}
- 								|	LPAREN:l expr:e epsilon
-									{: Error.expect(lleft, eright, "Expression", ")"); :}
+simple_expr_error				::= LPAREN:l expr:e epsilon
+									{: Error.expect("Expression", lleft, eright, ")"); :}
+								|	LPAREN:l epsilon
+									{: Error.expect("Expression", "e)", lleft, lright, "... )"); :}
 								;
 
 simple_expr_list				::=	simple_expr:e

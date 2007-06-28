@@ -647,7 +647,7 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
         // add the exception to our list
         tmpExceptions = new LanguageScannerException [ ]
         { new LanguageParserWarningException ( e.getMessage ( ) ,
-            e.getRight ( ) , e.getRight ( ) ) } ;
+            e.getRight ( ) , e.getRight ( ) , e.getInsertText ( ) ) } ;
       }
       catch ( LanguageParserException e )
       {

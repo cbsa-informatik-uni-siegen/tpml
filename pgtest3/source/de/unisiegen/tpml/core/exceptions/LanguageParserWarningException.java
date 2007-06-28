@@ -23,6 +23,12 @@ public final class LanguageParserWarningException extends
 
 
   /**
+   * The text, which should be inserted.
+   */
+  private String insertText ;
+
+
+  /**
    * Initializes the exception.
    * 
    * @param pMessages The message.
@@ -32,6 +38,34 @@ public final class LanguageParserWarningException extends
   public LanguageParserWarningException ( String pMessages ,
       int pParserStartOffset , int pParserEndOffset )
   {
+    this ( pMessages , pParserStartOffset , pParserEndOffset , "" ) ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * Initializes the exception.
+   * 
+   * @param pMessages The message.
+   * @param pParserStartOffset The parser start offset.
+   * @param pParserEndOffset The parser end offset.
+   * @param pInsertText The text, which should be inserted.
+   */
+  public LanguageParserWarningException ( String pMessages ,
+      int pParserStartOffset , int pParserEndOffset , String pInsertText )
+  {
     super ( pMessages , pParserStartOffset , pParserEndOffset ) ;
+    this.insertText = pInsertText ;
+  }
+
+
+  /**
+   * Returns the insertText.
+   * 
+   * @return The insertText.
+   * @see #insertText
+   */
+  public String getInsertText ( )
+  {
+    return this.insertText ;
   }
 }

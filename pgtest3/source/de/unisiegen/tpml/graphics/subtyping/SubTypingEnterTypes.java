@@ -45,6 +45,7 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 import de.unisiegen.tpml.ui.SideBar ;
 import de.unisiegen.tpml.ui.SideBarListener ;
+import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
 import de.unisiegen.tpml.ui.proofview.ProofViewComponent ;
 
 
@@ -430,12 +431,44 @@ public class SubTypingEnterTypes extends AbstractProofView
     this.scrollpane = new JScrollPane ( ) ;
     this.sideBar = new SideBar ( this.scrollpane , this.document1 ,
         this.editor1 ) ;
-    this.sideBar.addSibeBarListener ( new SideBarListener ( )
+    this.sideBar.addSideBarListener ( new SideBarListener ( )
     {
       @ SuppressWarnings ( "synthetic-access" )
       public void markText ( int left , int right )
       {
         SubTypingEnterTypes.this.selectErrorText ( left , right ) ;
+      }
+
+
+      public void insertText ( int pIndex , String pText )
+      {
+        String lastChar = "" ;
+        try
+        {
+          lastChar = SubTypingEnterTypes.this.document1.getText ( pIndex , 1 ) ;
+        }
+        catch ( BadLocationException e )
+        {
+          // Do nothing
+        }
+        try
+        {
+          if ( lastChar.equals ( " " ) //$NON-NLS-1$
+              && pText.substring ( 0 , 1 ).equals ( " " ) ) //$NON-NLS-1$
+          {
+            SubTypingEnterTypes.this.document1.insertString ( pIndex + 1 ,
+                pText.substring ( 1 ) , null ) ;
+          }
+          else
+          {
+            SubTypingEnterTypes.this.document1.insertString ( pIndex , pText ,
+                null ) ;
+          }
+        }
+        catch ( BadLocationException e )
+        {
+          // Do nothing
+        }
       }
     } ) ;
     this.editor1.setDocument ( this.document1 ) ;
@@ -547,12 +580,44 @@ public class SubTypingEnterTypes extends AbstractProofView
     this.scrollpane2 = new JScrollPane ( ) ;
     this.sideBar2 = new SideBar ( this.scrollpane2 , this.document2 ,
         this.editor2 ) ;
-    this.sideBar2.addSibeBarListener ( new SideBarListener ( )
+    this.sideBar2.addSideBarListener ( new SideBarListener ( )
     {
       @ SuppressWarnings ( "synthetic-access" )
       public void markText ( int left , int right )
       {
         SubTypingEnterTypes.this.selectErrorText ( left , right ) ;
+      }
+
+
+      public void insertText ( int pIndex , String pText )
+      {
+        String lastChar = "" ;
+        try
+        {
+          lastChar = SubTypingEnterTypes.this.document2.getText ( pIndex , 1 ) ;
+        }
+        catch ( BadLocationException e )
+        {
+          // Do nothing
+        }
+        try
+        {
+          if ( lastChar.equals ( " " ) //$NON-NLS-1$
+              && pText.substring ( 0 , 1 ).equals ( " " ) ) //$NON-NLS-1$
+          {
+            SubTypingEnterTypes.this.document2.insertString ( pIndex + 1 ,
+                pText.substring ( 1 ) , null ) ;
+          }
+          else
+          {
+            SubTypingEnterTypes.this.document2.insertString ( pIndex , pText ,
+                null ) ;
+          }
+        }
+        catch ( BadLocationException e )
+        {
+          // Do nothing
+        }
       }
     } ) ;
     this.outline2 = new DefaultOutline ( this , editor2 ) ;

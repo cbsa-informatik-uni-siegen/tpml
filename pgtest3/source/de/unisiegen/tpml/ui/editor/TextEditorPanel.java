@@ -437,11 +437,42 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
     this.scrollpane = new JScrollPane ( ) ;
     compoundPanel.add ( this.scrollpane , BorderLayout.CENTER ) ;
     this.sideBar = new SideBar ( this.scrollpane , this.document , this.editor ) ;
-    this.sideBar.addSibeBarListener ( new SideBarListener ( )
+    this.sideBar.addSideBarListener ( new SideBarListener ( )
     {
       public void markText ( int left , int right )
       {
         TextEditorPanel.this.selectErrorText ( left , right ) ;
+      }
+
+
+      public void insertText ( int pIndex , String pText )
+      {
+        String lastChar = "" ;
+        try
+        {
+          lastChar = TextEditorPanel.this.document.getText ( pIndex , 1 ) ;
+        }
+        catch ( BadLocationException e )
+        {
+          // Do nothing
+        }
+        try
+        {
+          if ( lastChar.equals ( " " ) //$NON-NLS-1$
+              && pText.substring ( 0 , 1 ).equals ( " " ) ) //$NON-NLS-1$
+          {
+            TextEditorPanel.this.document.insertString ( pIndex + 1 , pText
+                .substring ( 1 ) , null ) ;
+          }
+          else
+          {
+            TextEditorPanel.this.document.insertString ( pIndex , pText , null ) ;
+          }
+        }
+        catch ( BadLocationException e )
+        {
+          // Do nothing
+        }
       }
     } ) ;
     compoundPanel.add ( this.sideBar , BorderLayout.WEST ) ;
