@@ -67,11 +67,11 @@ lambda_l1						::= LAMBDA:l IDENTIFIER:id DOT expr:e
 								;
 
 lambda_l1_error					::= LAMBDA:l epsilon
-									{: Error.expect("Lambda", lleft, lright, "id.e" ); :}
+									{: Error.expect("Lambda", " id.e", lleft, lright, "id.e" ); :}
 								|	LAMBDA:l IDENTIFIER:i epsilon
-									{: Error.expect("Lambda", lleft, iright, ".e" ); :}
+									{: Error.expect("Lambda", ".e", lleft, iright, ".e" ); :}
 								|	LAMBDA:l IDENTIFIER DOT:d epsilon
-									{: Error.expect("Lambda", lleft, dright, "e" ); :}
+									{: Error.expect("Lambda", "e", lleft, dright, "e" ); :}
 								;
 
 simple_expr						::=	identifier:id
@@ -82,10 +82,10 @@ simple_expr						::=	identifier:id
 									{: :}
 								;
 
-simple_expr_error				::= LPAREN:l expr:e epsilon
-									{: Error.expect("Expression", lleft, eright, ")"); :}
-								|	LPAREN:l epsilon
+simple_expr_error				::= LPAREN:l epsilon
 									{: Error.expect("Expression", "e)", lleft, lright, "... )"); :}
+								|   LPAREN:l expr:e epsilon
+									{: Error.expect("Expression", ")", lleft, eright, ")"); :}
 								;
 
 simple_expr_list				::=	simple_expr:e

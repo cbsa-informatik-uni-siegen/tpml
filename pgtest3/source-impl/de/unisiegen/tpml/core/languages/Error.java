@@ -17,23 +17,6 @@ public class Error
    * Throws an {@link LanguageParserWarningException}.
    * 
    * @param pSymbol The symbol which should be completed.
-   * @param pLeft The left position in the source code.
-   * @param pRight The right position in the source code.
-   * @param pTokenSequence The token sequence which should be added.
-   */
-  public static void expect ( String pSymbol , int pLeft , int pRight ,
-      String ... pTokenSequence )
-  {
-    expect ( pSymbol , " " //$NON-NLS-1$
-        + pTokenSequence [ 0 ].replaceAll ( "<sub>" , "" ).replaceAll ( //$NON-NLS-1$//$NON-NLS-2$
-            "</sub>" , "" ) , pLeft , pRight , pTokenSequence ) ; //$NON-NLS-1$//$NON-NLS-2$
-  }
-
-
-  /**
-   * Throws an {@link LanguageParserWarningException}.
-   * 
-   * @param pSymbol The symbol which should be completed.
    * @param pInsertText The text which should be inserted to complete the source
    *          code.
    * @param pLeft The left position in the source code.

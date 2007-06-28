@@ -295,7 +295,7 @@ infix_operation_plus			::= expr:e1 PLUS:op expr:e2
 								;
 
 infix_operation_plus_error		::= expr:e1 PLUS:p epsilon
-									{: Error.expect("Infix-Operation", e1left, pright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Infix-Operation", " e2", e1left, pright, "e<sub>2</sub>" ); :}
 								;
 
 infix_operation_minus			::= expr:e1 MINUS:op expr:e2
@@ -305,7 +305,7 @@ infix_operation_minus			::= expr:e1 MINUS:op expr:e2
 								;
 
 infix_operation_minus_error		::= expr:e1 MINUS:m epsilon
-									{: Error.expect("Infix-Operation", e1left, mright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Infix-Operation", " e2", e1left, mright, "e<sub>2</sub>" ); :}
 								;
 
 infix_operation_mult			::=	expr:e1 STAR:op expr:e2
@@ -315,7 +315,7 @@ infix_operation_mult			::=	expr:e1 STAR:op expr:e2
 								;
 
 infix_operation_mult_error		::= expr:e1 STAR:s epsilon
-									{: Error.expect("Infix-Operation", e1left, sright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Infix-Operation", " e2", e1left, sright, "e<sub>2</sub>" ); :}
 								;
 
 infix_operation_div				::=	expr:e1 SLASH:op expr:e2
@@ -325,7 +325,7 @@ infix_operation_div				::=	expr:e1 SLASH:op expr:e2
 								;
 
 infix_operation_div_error		::= expr:e1 SLASH:s epsilon
-									{: Error.expect("Infix-Operation", e1left, sright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Infix-Operation", " e2", e1left, sright, "e<sub>2</sub>" ); :}
 								;
 
 infix_operation_mod				::=	expr:e1 MOD:op expr:e2
@@ -335,7 +335,7 @@ infix_operation_mod				::=	expr:e1 MOD:op expr:e2
 								;
 
 infix_operation_mod_error		::= expr:e1 MOD:m epsilon
-									{: Error.expect("Infix-Operation", e1left, mright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Infix-Operation", " e2", e1left, mright, "e<sub>2</sub>" ); :}
 								;
 
 infix_operation_equal			::=	expr:e1 EQUAL:op expr:e2
@@ -345,7 +345,7 @@ infix_operation_equal			::=	expr:e1 EQUAL:op expr:e2
 								;
 
 infix_operation_equal_error		::= expr:e1 EQUAL:e epsilon
-									{: Error.expect("Infix-Operation", e1left, eright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Infix-Operation", " e2", e1left, eright, "e<sub>2</sub>" ); :}
 								;
 
 infix_operation_less			::=	expr:e1 LESS:op expr:e2
@@ -355,7 +355,7 @@ infix_operation_less			::=	expr:e1 LESS:op expr:e2
 								;
 
 infix_operation_less_error		::= expr:e1 LESS:l epsilon
-									{: Error.expect("Infix-Operation", e1left, lright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Infix-Operation", " e2", e1left, lright, "e<sub>2</sub>" ); :}
 								;
 						
 infix_operation_greater			::=	expr:e1 GREATER:op expr:e2
@@ -365,7 +365,7 @@ infix_operation_greater			::=	expr:e1 GREATER:op expr:e2
 								;
 
 infix_operation_greater_error	::= expr:e1 GREATER:g epsilon
-									{: Error.expect("Infix-Operation", e1left, gright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Infix-Operation", " e2", e1left, gright, "e<sub>2</sub>" ); :}
 								;
 
 infix_operation_less_equal		::=	expr:e1 LESSEQUAL:op expr:e2
@@ -375,7 +375,7 @@ infix_operation_less_equal		::=	expr:e1 LESSEQUAL:op expr:e2
 								;
 
 infix_operation_less_equal_error	::= expr:e1 LESSEQUAL:l epsilon
-									{: Error.expect("Infix-Operation", e1left, lright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Infix-Operation", " e2", e1left, lright, "e<sub>2</sub>" ); :}
 								;
 
 infix_operation_greater_equal	::=	expr:e1 GREATEREQUAL:op expr:e2
@@ -385,7 +385,7 @@ infix_operation_greater_equal	::=	expr:e1 GREATEREQUAL:op expr:e2
 								;
 
 infix_operation_greater_equal_error	::= expr:e1 GREATEREQUAL:g epsilon
-									{: Error.expect("Infix-Operation", e1left, gright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Infix-Operation", " e2", e1left, gright, "e<sub>2</sub>" ); :}
 								;
 
 and								::= expr:e1 AMPERAMPER expr:e2
@@ -395,7 +395,7 @@ and								::= expr:e1 AMPERAMPER expr:e2
 								;
 
 and_error						::= expr:e1 AMPERAMPER:a epsilon
-									{: Error.expect("And", e1left, aright, "e<sub>2</sub>" ); :}
+									{: Error.expect("And", " e2", e1left, aright, "e<sub>2</sub>" ); :}
 								;
 
 or								::= expr:e1 BARBAR expr:e2
@@ -405,7 +405,7 @@ or								::= expr:e1 BARBAR expr:e2
 								;
 
 or_error						::= expr:e1 BARBAR:b epsilon
-									{: Error.expect("Or", e1left, bright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Or", " e2", e1left, bright, "e<sub>2</sub>" ); :}
 								;
 
 condition						::= IF:i expr:e0 THEN expr:e1 ELSE expr:e2
@@ -415,15 +415,15 @@ condition						::= IF:i expr:e0 THEN expr:e1 ELSE expr:e2
 								;
 
 condition_error					::= IF:i epsilon
-									{: Error.expect("Condition", ileft, iright, "e<sub>0</sub> then e<sub>1</sub> else e<sub>2</sub>" ); :}
+									{: Error.expect("Condition", " e0 then e1 else e2", ileft, iright, "e<sub>0</sub> then e<sub>1</sub> else e<sub>2</sub>" ); :}
 								|	IF:i expr:e epsilon
-									{: Error.expect("Condition", ileft, eright, "then e<sub>1</sub> else e<sub>2</sub>" ); :}
+									{: Error.expect("Condition", " then e1 else e2", ileft, eright, "then e<sub>1</sub> else e<sub>2</sub>" ); :}
 								|	IF:i expr THEN:t epsilon
-									{: Error.expect("Condition", ileft, tright, "e<sub>1</sub> else e<sub>2</sub>" ); :}
+									{: Error.expect("Condition", " e1 else e2", ileft, tright, "e<sub>1</sub> else e<sub>2</sub>" ); :}
 								|	IF:i expr THEN expr:e epsilon
-									{: Error.expect("Condition", ileft, eright, "else e<sub>2</sub>" ); :}
+									{: Error.expect("Condition", " else e2", ileft, eright, "else e<sub>2</sub>" ); :}
 								|	IF:i expr THEN expr ELSE:e epsilon
-									{: Error.expect("Condition", ileft, eright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Condition", " e2", ileft, eright, "e<sub>2</sub>" ); :}
 								;
 
 lambda							::= LAMBDA:l IDENTIFIER:id DOT expr:e
@@ -435,17 +435,17 @@ lambda							::= LAMBDA:l IDENTIFIER:id DOT expr:e
 								;
 
 lambda_error					::= LAMBDA:l epsilon
-									{: Error.expect("Lambda", lleft, lright, "id.e", "id: \u03C4.e" ); :}
+									{: Error.expect("Lambda", " id.e", lleft, lright, "id.e", "id: \u03C4.e" ); :}
 								|	LAMBDA:l IDENTIFIER:i epsilon
-									{: Error.expect("Lambda", lleft, iright, ".e", ": \u03C4.e" ); :}
+									{: Error.expect("Lambda", ".e", lleft, iright, ".e", ": \u03C4.e" ); :}
 								|	LAMBDA:l IDENTIFIER DOT:d epsilon
-									{: Error.expect("Lambda", lleft, dright, "e" ); :}
+									{: Error.expect("Lambda", "e", lleft, dright, "e" ); :}
 								|	LAMBDA:l IDENTIFIER COLON:c epsilon
-									{: Error.expect("Lambda", lleft, cright, "\u03C4.e" ); :}
+									{: Error.expect("Lambda", " \u03C4.e", lleft, cright, "\u03C4.e" ); :}
 								|	LAMBDA:l IDENTIFIER COLON type:t epsilon
-									{: Error.expect("Lambda", lleft, tright, ".e" ); :}
+									{: Error.expect("Lambda", ".e", lleft, tright, ".e" ); :}
 								|	LAMBDA:l IDENTIFIER COLON type DOT:d epsilon
-									{: Error.expect("Lambda", lleft, dright, "e" ); :}
+									{: Error.expect("Lambda", "e", lleft, dright, "e" ); :}
 								;
 
 let								::= LET:l IDENTIFIER:id EQUAL expr:e1 IN expr:e2
@@ -457,25 +457,25 @@ let								::= LET:l IDENTIFIER:id EQUAL expr:e1 IN expr:e2
 								;
 
 let_error						::= LET:l epsilon
-									{: Error.expect("Let", lleft, lright, "id = e<sub>1</sub> in e<sub>2</sub>", "id: \u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}
+									{: Error.expect("Let", " id = e1 in e2", lleft, lright, "id = e<sub>1</sub> in e<sub>2</sub>", "id: \u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER:i epsilon
-									{: Error.expect("Let", lleft, iright, "= e<sub>1</sub> in e<sub>2</sub>", ": \u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}			
+									{: Error.expect("Let", " = e1 in e2", lleft, iright, "= e<sub>1</sub> in e<sub>2</sub>", ": \u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}			
 								|	LET:l IDENTIFIER COLON:c epsilon
-									{: Error.expect("Let", lleft, cright, "\u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}	
+									{: Error.expect("Let", " \u03C4 = e1 in e2", lleft, cright, "\u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}	
 								|	LET:l IDENTIFIER COLON type:t epsilon
-									{: Error.expect("Let", lleft, tright, "= e<sub>1</sub> in e<sub>2</sub>" ); :}			
+									{: Error.expect("Let", " = e1 in e2", lleft, tright, "= e<sub>1</sub> in e<sub>2</sub>" ); :}			
 								|	LET:l IDENTIFIER COLON type EQUAL:e epsilon
-									{: Error.expect("Let", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
+									{: Error.expect("Let", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER COLON type EQUAL expr:e epsilon
-									{: Error.expect("Let", lleft, eright, "in e<sub>2</sub>" ); :}
+									{: Error.expect("Let", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER COLON type EQUAL expr IN:i epsilon
-									{: Error.expect("Let", lleft, iright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Let", " e2", lleft, iright, "e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER EQUAL:e epsilon
-									{: Error.expect("Let", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
+									{: Error.expect("Let", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER EQUAL expr:e epsilon
-									{: Error.expect("Let", lleft, eright, "in e<sub>2</sub>" ); :}
+									{: Error.expect("Let", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER EQUAL expr IN:i epsilon
-									{: Error.expect("Let", lleft, iright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Let", " e2", lleft, iright, "e<sub>2</sub>" ); :}
 								;
 
 curried_let						::= LET:l IDENTIFIER:id curried_let_list:itl EQUAL expr:e1 IN expr:e2
@@ -508,23 +508,23 @@ curried_let						::= LET:l IDENTIFIER:id curried_let_list:itl EQUAL expr:e1 IN e
 								;
 
 curried_let_error				::= LET:l IDENTIFIER curried_let_list:c epsilon
-									{: Error.expect("Curried-Let", lleft, cright, "= e<sub>1</sub> in e<sub>2</sub>", ": \u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let", " = e1 in e2", lleft, cright, "= e<sub>1</sub> in e<sub>2</sub>", ": \u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER curried_let_list COLON:c epsilon
-									{: Error.expect("Curried-Let", lleft, cright, "\u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let", " \u03C4 = e1 in e2", lleft, cright, "\u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER curried_let_list COLON type:t epsilon
-									{: Error.expect("Curried-Let", lleft, tright, "= e<sub>1</sub> in e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let", " = e1 in e2", lleft, tright, "= e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER curried_let_list COLON type EQUAL:e epsilon
-									{: Error.expect("Curried-Let", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER curried_let_list COLON type EQUAL expr:e epsilon
-									{: Error.expect("Curried-Let", lleft, eright, "in e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER curried_let_list COLON type EQUAL expr IN:i epsilon
-									{: Error.expect("Curried-Let", lleft, iright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let", " e2", lleft, iright, "e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER curried_let_list EQUAL:e epsilon
-									{: Error.expect("Curried-Let", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER curried_let_list EQUAL expr:e epsilon
-									{: Error.expect("Curried-Let", lleft, eright, "in e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER curried_let_list EQUAL expr IN:i epsilon
-									{: Error.expect("Curried-Let", lleft, iright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let", " e2", lleft, iright, "e<sub>2</sub>" ); :}
 								;
 
 curried_let_list				::= curried_let_list:l curried_let_pair:p
@@ -546,13 +546,13 @@ curried_let_pair				::= LPAREN IDENTIFIER:id COLON type:tau RPAREN
 								;
 
 curried_let_pair_error			::= LPAREN:l epsilon
-									{: Error.expect("Curried-Let", lleft, lright, "id: \u03C4) = e<sub>1</sub> in e<sub>2</sub>", "id: \u03C4): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
+									{: Error.expect("Curried-Let", "id: \u03C4) = e1 in e2", lleft, lright, "id: \u03C4) = e<sub>1</sub> in e<sub>2</sub>", "id: \u03C4): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
 								|	LPAREN:l IDENTIFIER:i epsilon
-									{: Error.expect("Curried-Let", lleft, iright, ": \u03C4) = e<sub>1</sub> in e<sub>2</sub>", ": \u03C4): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
+									{: Error.expect("Curried-Let", ": \u03C4) = e1 in e2", lleft, iright, ": \u03C4) = e<sub>1</sub> in e<sub>2</sub>", ": \u03C4): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
 								|	LPAREN:l IDENTIFIER COLON:c epsilon
-									{: Error.expect("Curried-Let", lleft, cright, "\u03C4) = e<sub>1</sub> in e<sub>2</sub>", "\u03C4): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
+									{: Error.expect("Curried-Let", "\u03C4) = e1 in e2", lleft, cright, "\u03C4) = e<sub>1</sub> in e<sub>2</sub>", "\u03C4): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
 								|	LPAREN:l IDENTIFIER COLON type:t epsilon
-									{: Error.expect("Curried-Let", lleft, tright, ") = e<sub>1</sub> in e<sub>2</sub>", "): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
+									{: Error.expect("Curried-Let", ") = e1 in e2", lleft, tright, ") = e<sub>1</sub> in e<sub>2</sub>", "): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
 								;
 
 recursion						::= REC:r IDENTIFIER:id DOT expr:e
@@ -564,17 +564,17 @@ recursion						::= REC:r IDENTIFIER:id DOT expr:e
 								;
 
 recursion_error					::= REC:r epsilon
-									{: Error.expect("Recursion", rleft, rright, "id.e", "id: \u03C4.e" ); :}
+									{: Error.expect("Recursion", " id.e", rleft, rright, "id.e", "id: \u03C4.e" ); :}
 								|	REC:r IDENTIFIER:i epsilon
-									{: Error.expect("Recursion", rleft, iright, ".e", ": \u03C4.e" ); :}
+									{: Error.expect("Recursion", ".e", rleft, iright, ".e", ": \u03C4.e" ); :}
 								|	REC:r IDENTIFIER COLON:c epsilon
-									{: Error.expect("Recursion", rleft, cright, "\u03C4.e" ); :}
+									{: Error.expect("Recursion", " \u03C4.e", rleft, cright, "\u03C4.e" ); :}
 								|	REC:r IDENTIFIER COLON type:t epsilon
-									{: Error.expect("Recursion", rleft, tright, ".e" ); :}
+									{: Error.expect("Recursion", ".e", rleft, tright, ".e" ); :}
 								|	REC:r IDENTIFIER COLON type DOT:d epsilon
-									{: Error.expect("Recursion", rleft, dright, "e" ); :}
+									{: Error.expect("Recursion", "e", rleft, dright, "e" ); :}
 								|	REC:r IDENTIFIER DOT:d epsilon
-									{: Error.expect("Recursion", rleft, dright, "e" ); :}
+									{: Error.expect("Recursion", "e", rleft, dright, "e" ); :}
 								;
 
 let_rec							::= LET:l REC IDENTIFIER:id EQUAL expr:e1 IN expr:e2
@@ -586,25 +586,25 @@ let_rec							::= LET:l REC IDENTIFIER:id EQUAL expr:e1 IN expr:e2
 								;
 
 let_rec_error					::= LET:l REC:r epsilon
-									{: Error.expect("Let-Rec", lleft, rright, "id = e<sub>1</sub> in e<sub>2</sub>", "id: \u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}
+									{: Error.expect("Let-Rec", " id = e1 in e2", lleft, rright, "id = e<sub>1</sub> in e<sub>2</sub>", "id: \u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER:i epsilon
-									{: Error.expect("Let-Rec", lleft, iright, "= e<sub>1</sub> in e<sub>2</sub>", ": \u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}			
+									{: Error.expect("Let-Rec", " = e1 in e2", lleft, iright, "= e<sub>1</sub> in e<sub>2</sub>", ": \u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}			
 								|	LET:l REC IDENTIFIER COLON:c epsilon
-									{: Error.expect("Let-Rec", lleft, cright, "\u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}	
+									{: Error.expect("Let-Rec", " \u03C4 = e1 in e2", lleft, cright, "\u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}	
 								|	LET:l REC IDENTIFIER COLON type:t epsilon
-									{: Error.expect("Let-Rec", lleft, tright, "= e<sub>1</sub> in e<sub>2</sub>" ); :}			
+									{: Error.expect("Let-Rec", " = e<sub>1</sub> in e<sub>2</sub>", lleft, tright, "= e<sub>1</sub> in e<sub>2</sub>" ); :}			
 								|	LET:l REC IDENTIFIER COLON type EQUAL:e epsilon
-									{: Error.expect("Let-Rec", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
+									{: Error.expect("Let-Rec", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER COLON type EQUAL expr:e epsilon
-									{: Error.expect("Let-Rec", lleft, eright, "in e<sub>2</sub>" ); :}
+									{: Error.expect("Let-Rec", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER COLON type EQUAL expr IN:i epsilon
-									{: Error.expect("Let-Rec", lleft, iright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Let-Rec", " e2", lleft, iright, "e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER EQUAL:e epsilon
-									{: Error.expect("Let-Rec", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
+									{: Error.expect("Let-Rec", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER EQUAL expr:e epsilon
-									{: Error.expect("Let-Rec", lleft, eright, "in e<sub>2</sub>" ); :}
+									{: Error.expect("Let-Rec", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER EQUAL expr IN:i epsilon
-									{: Error.expect("Let-Rec", lleft, iright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Let-Rec", " e2", lleft, iright, "e<sub>2</sub>" ); :}
 								;
 
 curried_let_rec					::=	LET:l REC IDENTIFIER:id curried_let_rec_list:itl EQUAL expr:e1 IN expr:e2
@@ -637,23 +637,23 @@ curried_let_rec					::=	LET:l REC IDENTIFIER:id curried_let_rec_list:itl EQUAL e
 								;
 
 curried_let_rec_error			::= LET:l REC IDENTIFIER curried_let_rec_list:c epsilon
-									{: Error.expect("Curried-Let-Rec", lleft, cright, "= e<sub>1</sub> in e<sub>2</sub>", ": \u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let-Rec", " = e1 in e2", lleft, cright, "= e<sub>1</sub> in e<sub>2</sub>", ": \u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER curried_let_rec_list COLON:c epsilon
-									{: Error.expect("Curried-Let-Rec", lleft, cright, "\u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let-Rec", " \u03C4 = e1 in e2", lleft, cright, "\u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER curried_let_rec_list COLON type:t epsilon
-									{: Error.expect("Curried-Let-Rec", lleft, tright, "= e<sub>1</sub> in e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let-Rec", " = e1 in e2", lleft, tright, "= e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER curried_let_rec_list COLON type EQUAL:e epsilon
-									{: Error.expect("Curried-Let-Rec", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let-Rec", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER curried_let_rec_list COLON type EQUAL expr:e epsilon
-									{: Error.expect("Curried-Let-Rec", lleft, eright, "in e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let-Rec", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER curried_let_rec_list COLON type EQUAL expr IN:i epsilon
-									{: Error.expect("Curried-Let-Rec", lleft, iright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let-Rec", " e2", lleft, iright, "e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER curried_let_rec_list EQUAL:e epsilon
-									{: Error.expect("Curried-Let-Rec", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let-Rec", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER curried_let_rec_list EQUAL expr:e epsilon
-									{: Error.expect("Curried-Let-Rec", lleft, eright, "in e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let-Rec", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER curried_let_rec_list EQUAL expr IN:i epsilon
-									{: Error.expect("Curried-Let-Rec", lleft, iright, "e<sub>2</sub>" ); :}
+									{: Error.expect("Curried-Let-Rec", " e2", lleft, iright, "e<sub>2</sub>" ); :}
 								;
 
 curried_let_rec_list			::= curried_let_rec_list:l curried_let_rec_pair:p
@@ -675,13 +675,13 @@ curried_let_rec_pair			::= LPAREN IDENTIFIER:id COLON type:tau RPAREN
 								;
 
 curried_let_rec_pair_error		::= LPAREN:l epsilon
-									{: Error.expect("Curried-Let-Rec", lleft, lright, "id: \u03C4) = e<sub>1</sub> in e<sub>2</sub>", "id: \u03C4): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
+									{: Error.expect("Curried-Let-Rec", " id: \u03C4) = e1 in e2", lleft, lright, "id: \u03C4) = e<sub>1</sub> in e<sub>2</sub>", "id: \u03C4): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
 								|	LPAREN:l IDENTIFIER:i epsilon
-									{: Error.expect("Curried-Let-Rec", lleft, iright, ": \u03C4) = e<sub>1</sub> in e<sub>2</sub>", ": \u03C4): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
+									{: Error.expect("Curried-Let-Rec", ": \u03C4) = e1 in e2", lleft, iright, ": \u03C4) = e<sub>1</sub> in e<sub>2</sub>", ": \u03C4): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
 								|	LPAREN:l IDENTIFIER COLON:c epsilon
-									{: Error.expect("Curried-Let-Rec", lleft, cright, "\u03C4) = e<sub>1</sub> in e<sub>2</sub>", "\u03C4): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
+									{: Error.expect("Curried-Let-Rec", " \u03C4) = e1 in e2", lleft, cright, "\u03C4) = e<sub>1</sub> in e<sub>2</sub>", "\u03C4): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
 								|	LPAREN:l IDENTIFIER COLON type:t epsilon
-									{: Error.expect("Curried-Let-Rec", lleft, tright, ") = e<sub>1</sub> in e<sub>2</sub>", "): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
+									{: Error.expect("Curried-Let-Rec", ") = e1 in e2", lleft, tright, ") = e<sub>1</sub> in e<sub>2</sub>", "): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
 								;
 
 object_expr						::= OBJECT:o LPAREN SELF:id RPAREN END:end
@@ -715,7 +715,7 @@ object_expr_error				::= OBJECT:o epsilon
 								|	OBJECT:o LPAREN SELF:s epsilon
 									{: Error.expect("Object", ") end", oleft, sright, ") r end", ": \u03C4) r end"); :}
 								|	OBJECT:o LPAREN SELF COLON:c epsilon
-									{: Error.expect("Object", "\u03C4) end", oleft, cright, "\u03C4) r end"); :}
+									{: Error.expect("Object", " \u03C4) end", oleft, cright, "\u03C4) r end"); :}
 								|	OBJECT:o LPAREN SELF COLON type:t epsilon
 									{: Error.expect("Object", ") end", oleft, tright, ") r end"); :}
 								|	OBJECT:o LPAREN SELF COLON type RPAREN:r epsilon
@@ -753,9 +753,9 @@ duplication						::= DUPLBEGIN:b duplication_list:l DUPLEND:e
 								;
 
 duplication_error				::= DUPLBEGIN:d epsilon
-									{: Error.expect("Duplication", " a1 = e1 >}", dleft, dright , "a<sub>1</sub> = e<sub>1</sub>; ... ; a<sub>n</sub> = e<sub>n</sub> >}"); :}
+									{: Error.expect("Duplication", " a = e >}", dleft, dright , "a<sub>1</sub> = e<sub>1</sub>; ... ; a<sub>n</sub> = e<sub>n</sub> >}"); :}
 								|	DUPLBEGIN:d duplication_list:dl epsilon
-									{: Error.expect("Duplication", dleft, dlright , ">}"); :}	
+									{: Error.expect("Duplication", " >}", dleft, dlright , ">}"); :}	
 								;
 
 duplication_list				::= duplication_list:l SEMI duplication_pair:p
@@ -776,7 +776,7 @@ duplication_list				::= duplication_list:l SEMI duplication_pair:p
 								;
 
 duplication_list_error			::= duplication_list:d SEMI:s epsilon
-									{: Error.expect("Duplication", " an = en >}", dleft, sright, "... a<sub>n</sub> = e<sub>n</sub> >}"); :}
+									{: Error.expect("Duplication", " a = e >}", dleft, sright, "... a<sub>n</sub> = e<sub>n</sub> >}"); :}
 								;
 
 duplication_pair				::= IDENTIFIER:id EQUAL expr:e
@@ -802,7 +802,7 @@ send							::= simple_expr:e HASHKEY IDENTIFIER:id
 								;
 
 send_error						::= simple_expr:s HASHKEY:h epsilon
-									{: Error.expect("Send", sleft, hright, "m"); :}	
+									{: Error.expect("Send", " m", sleft, hright, "m"); :}	
 								;
 
 row								::= attribute:a
@@ -857,13 +857,13 @@ attribute						::=	ATTRIBUTE:a IDENTIFIER:id EQUAL expr:e SEMI:s
 								;
 
 attribute_error					::= ATTRIBUTE:a epsilon
-									{: Error.expect("Attribute", aleft, aright, "a = e ;"); :}
+									{: Error.expect("Attribute", " a = e ;", aleft, aright, "a = e ;"); :}
 								|	ATTRIBUTE:a IDENTIFIER:i epsilon
-									{: Error.expect("Attribute", aleft, iright, "= e ;"); :}
+									{: Error.expect("Attribute", " = e ;", aleft, iright, "= e ;"); :}
 								|	ATTRIBUTE:a IDENTIFIER EQUAL:e epsilon
-									{: Error.expect("Attribute", aleft, eright, "e ;"); :}
+									{: Error.expect("Attribute", " e ;", aleft, eright, "e ;"); :}
 								|	ATTRIBUTE:a IDENTIFIER EQUAL expr:e epsilon
-									{: Error.expect("Attribute", aleft, eright, ";"); :}
+									{: Error.expect("Attribute", " ;", aleft, eright, ";"); :}
 								;
 
 method							::=	METHOD:m IDENTIFIER:id EQUAL expr:e SEMI:s
@@ -883,21 +883,21 @@ method							::=	METHOD:m IDENTIFIER:id EQUAL expr:e SEMI:s
 								;
 
 method_error					::=	METHOD:m epsilon
-									{: Error.expect("Method", mleft, mright, "m = e ;", "m: \u03C4 = e ;"); :}
+									{: Error.expect("Method", " m = e ;", mleft, mright, "m = e ;", "m: \u03C4 = e ;"); :}
 								|	METHOD:m IDENTIFIER:i epsilon
-									{: Error.expect("Method", mleft, iright, "= e ;", ": \u03C4 = e ;"); :}
+									{: Error.expect("Method", " = e ;", mleft, iright, "= e ;", ": \u03C4 = e ;"); :}
 								|	METHOD:m IDENTIFIER COLON:c epsilon
-									{: Error.expect("Method", mleft, cright, "\u03C4 = e ;"); :}
+									{: Error.expect("Method", " \u03C4 = e ;", mleft, cright, "\u03C4 = e ;"); :}
 								|	METHOD:m IDENTIFIER COLON type:t epsilon
-									{: Error.expect("Method", mleft, tright, "= e ;"); :}
+									{: Error.expect("Method", " = e ;", mleft, tright, "= e ;"); :}
 								|	METHOD:m IDENTIFIER COLON type EQUAL:e epsilon
-									{: Error.expect("Method", mleft, eright, "e ;"); :}
+									{: Error.expect("Method", " e ;", mleft, eright, "e ;"); :}
 								|	METHOD:m IDENTIFIER COLON type EQUAL expr:e epsilon
-									{: Error.expect("Method", mleft, eright, ";"); :}
+									{: Error.expect("Method", " ;", mleft, eright, ";"); :}
 								|	METHOD:m IDENTIFIER EQUAL:e epsilon
-									{: Error.expect("Method", mleft, eright, "e ;"); :}
+									{: Error.expect("Method", " e ;", mleft, eright, "e ;"); :}
 								|	METHOD:m IDENTIFIER EQUAL expr:e epsilon
-									{: Error.expect("Method", mleft, eright, ";"); :}
+									{: Error.expect("Method", " ;", mleft, eright, ";"); :}
 								;
 
 curried_method					::=	METHOD:m IDENTIFIER:id curried_method_list:l EQUAL expr:e SEMI:s
@@ -935,19 +935,19 @@ curried_method					::=	METHOD:m IDENTIFIER:id curried_method_list:l EQUAL expr:e
 								;	   
 
 curried_method_error			::= METHOD:m IDENTIFIER curried_method_list:c epsilon
-									{: Error.expect("Curried-Method", mleft, cright, "= e ;", ": \u03C4 = e ;"); :}
+									{: Error.expect("Curried-Method", " = e ;", mleft, cright, "= e ;", ": \u03C4 = e ;"); :}
 								|	METHOD:m IDENTIFIER curried_method_list  COLON:c epsilon
-									{: Error.expect("Curried-Method", mleft, cright, "\u03C4 = e ;"); :}
+									{: Error.expect("Curried-Method", " \u03C4 = e ;", mleft, cright, "\u03C4 = e ;"); :}
 								|	METHOD:m IDENTIFIER curried_method_list  COLON type:t epsilon
-									{: Error.expect("Curried-Method", mleft, tright, "= e ;"); :}
+									{: Error.expect("Curried-Method", " = e ;", mleft, tright, "= e ;"); :}
 								|	METHOD:m IDENTIFIER curried_method_list  COLON type EQUAL:e epsilon
-									{: Error.expect("Curried-Method", mleft, eright, "e ;"); :}
+									{: Error.expect("Curried-Method", " e ;", mleft, eright, "e ;"); :}
 								|	METHOD:m IDENTIFIER curried_method_list  COLON type EQUAL expr:e epsilon
-									{: Error.expect("Curried-Method", mleft, eright, ";"); :}
+									{: Error.expect("Curried-Method", " ;", mleft, eright, ";"); :}
 								|	METHOD:m IDENTIFIER curried_method_list  EQUAL:e epsilon
-									{: Error.expect("Curried-Method", mleft, eright, "e ;"); :}
+									{: Error.expect("Curried-Method", " e ;", mleft, eright, "e ;"); :}
 								|	METHOD:m IDENTIFIER curried_method_list  EQUAL expr:e epsilon
-									{: Error.expect("Curried-Method", mleft, eright, ";"); :}									
+									{: Error.expect("Curried-Method", " ;", mleft, eright, ";"); :}									
 								;
 
 curried_method_list				::= curried_method_list:l curried_method_pair:p
@@ -969,13 +969,13 @@ curried_method_pair				::= LPAREN IDENTIFIER:id COLON type:tau RPAREN
 								;
 
 curried_method_pair_error		::= LPAREN:l
-									{: Error.expect("Curried-Method", lleft, lright, "id: \u03C4) = e", "id: \u03C4): \u03C4 = e"); :}
+									{: Error.expect("Curried-Method", " id: \u03C4) = e", lleft, lright, "id: \u03C4) = e", "id: \u03C4): \u03C4 = e"); :}
 								|	LPAREN:l IDENTIFIER:i
-									{: Error.expect("Curried-Method", lleft, iright, ": \u03C4) = e", ": \u03C4): \u03C4 = e"); :}
+									{: Error.expect("Curried-Method", ": \u03C4) = e", lleft, iright, ": \u03C4) = e", ": \u03C4): \u03C4 = e"); :}
 								|	LPAREN:l IDENTIFIER COLON:c
-									{: Error.expect("Curried-Method", lleft, cright, "\u03C4) = e", "\u03C4): \u03C4 = e"); :}
+									{: Error.expect("Curried-Method", " \u03C4) = e", lleft, cright, "\u03C4) = e", "\u03C4): \u03C4 = e"); :}
 								|	LPAREN:l IDENTIFIER COLON type:t
-									{: Error.expect("Curried-Method", lleft, tright, ") = e", "): \u03C4 = e"); :}
+									{: Error.expect("Curried-Method", ") = e", lleft, tright, ") = e", "): \u03C4 = e"); :}
 								;
 
 constant						::=	unit_constant:u
@@ -1051,9 +1051,9 @@ simple_expr						::=	constant:c
 								;
 
 simple_expr_error				::= LPAREN:l expr:e epsilon
-									{: Error.expect("Expression", lleft, eright, ")"); :}
+									{: Error.expect("Expression", ")", lleft, eright, ")"); :}
 								|	LPAREN:l operator:o epsilon
-									{: Error.expect("Operator", lleft, oright, ")"); :}
+									{: Error.expect("Operator", ")", lleft, oright, ")"); :}
 								|	LPAREN:l epsilon
 									{: Error.expect("Expression", "e)", lleft, lright, "... )"); :}
 								;
@@ -1105,9 +1105,9 @@ simple_type						::=	LPAREN:l type:t RPAREN:r
 								;
 
 simple_type_error				::= LPAREN:l epsilon
-									{: Error.expect("Type", lleft, lright, "\u03C4)"); :}
+									{: Error.expect("Type", "\u03C4)", lleft, lright, "\u03C4)"); :}
 								|	LPAREN:l type:t epsilon
-									{: Error.expect("Type", lleft, tright, ")"); :}
+									{: Error.expect("Type", ")", lleft, tright, ")"); :}
 								;
 
 arrow_type						::= type:t1 ARROW type:t2
@@ -1147,11 +1147,11 @@ rec_type						::= MU:m IDENTIFIER:id DOT type:t
 								;
 
 rec_type_error					::= MU:m epsilon
-									{: Error.expect("Rec-Type", mleft, mright, "t.\u03C4"); :}
+									{: Error.expect("Rec-Type", " t.\u03C4", mleft, mright, "t.\u03C4"); :}
 								|	MU:m IDENTIFIER:i epsilon
-									{: Error.expect("Rec-Type", mleft, iright, ".\u03C4"); :}
+									{: Error.expect("Rec-Type", ".\u03C4", mleft, iright, ".\u03C4"); :}
 								|	MU:m IDENTIFIER DOT:d epsilon
-									{: Error.expect("Rec-Type", mleft, dright, "\u03C4"); :}
+									{: Error.expect("Rec-Type", "\u03C4", mleft, dright, "\u03C4"); :}
 								;
 
 object_type						::= LESS:l row_type:r GREATER:g
@@ -1198,9 +1198,9 @@ row_type						::= IDENTIFIER:id COLON type:tau SEMI:s
 								;
 
 row_type_error					::= IDENTIFIER:i epsilon
-									{: Error.expect("Row-Type", ": \u03C4;", ileft, iright, ": \u03C4 ; ... m<sub>n</sub>: \u03C4;"); :}
+									{: Error.expect("Row-Type", ": \u03C4 ;", ileft, iright, ": \u03C4 ; ... m<sub>n</sub>: \u03C4 ;"); :}
 								|	IDENTIFIER:i COLON:c epsilon
-									{: Error.expect("Row-Type", " \u03C4;", ileft, cright, "\u03C4 ; ... m<sub>n</sub>: \u03C4;"); :}
+									{: Error.expect("Row-Type", " \u03C4 ;", ileft, cright, "\u03C4 ; ... m<sub>n</sub>: \u03C4 ;"); :}
 								|	IDENTIFIER:i COLON type:t epsilon
-									{: Error.expect("Row-Type", ";", ileft, tright, "; ... m<sub>n</sub>: \u03C4;"); :}
+									{: Error.expect("Row-Type", " ;", ileft, tright, "; ... m<sub>n</sub>: \u03C4 ;"); :}
 								;

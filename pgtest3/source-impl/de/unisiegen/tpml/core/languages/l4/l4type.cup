@@ -91,9 +91,9 @@ simple_type						::=	LPAREN:l type:t RPAREN:r
 								;
 
 simple_type_error				::= LPAREN:l epsilon
-									{: Error.expect("Type", lleft, lright, "\u03C4)"); :}
+									{: Error.expect("Type", "\u03C4)", lleft, lright, "\u03C4)"); :}
 								|	LPAREN:l type:t epsilon
-									{: Error.expect("Type", lleft, tright, ")"); :}
+									{: Error.expect("Type", ")", lleft, tright, ")"); :}
 								;
 
 arrow_type						::= type:t1 ARROW type:t2
@@ -133,11 +133,11 @@ rec_type						::= MU:m IDENTIFIER:id DOT type:t
 								;
 
 rec_type_error					::= MU:m epsilon
-									{: Error.expect("Rec-Type", mleft, mright, "t.\u03C4"); :}
+									{: Error.expect("Rec-Type", " t.\u03C4", mleft, mright, "t.\u03C4"); :}
 								|	MU:m IDENTIFIER:i epsilon
-									{: Error.expect("Rec-Type", mleft, iright, ".\u03C4"); :}
+									{: Error.expect("Rec-Type", ".\u03C4", mleft, iright, ".\u03C4"); :}
 								|	MU:m IDENTIFIER DOT:d epsilon
-									{: Error.expect("Rec-Type", mleft, dright, "\u03C4"); :}
+									{: Error.expect("Rec-Type", "\u03C4", mleft, dright, "\u03C4"); :}
 								;
 
 tuple_type						::= tuple_type_list:t
@@ -157,9 +157,9 @@ tuple_type_list					::= tuple_type_list:tl STAR type:t
 								;
 
 tuple_type_list_error			::= tuple_type_list:t STAR:s epsilon
-									{: Error.expect("Tuple-Type", tleft, sright, "\u03C4"); :}
+									{: Error.expect("Tuple-Type", " \u03C4", tleft, sright, "\u03C4"); :}
 								|	type:t STAR:s epsilon
-									{: Error.expect("Tuple-Type", tleft, sright, "\u03C4"); :}
+									{: Error.expect("Tuple-Type", " \u03C4", tleft, sright, "\u03C4"); :}
 								;
 
 list_type						::=	type:t LIST:l

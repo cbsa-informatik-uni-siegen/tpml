@@ -532,37 +532,40 @@ public class ParserTest
   private static String MULTI_LET_2 = "let (x,y):int = (1,2) in x+y" ;
 
 
-  private static String MULTI_LET_ERROR_1 = "let (x,y" ;
+  private static String MULTI_LET_ERROR_1 = "let (" ;
 
 
-  private static String MULTI_LET_ERROR_2 = "let (x,y)" ;
+  private static String MULTI_LET_ERROR_2 = "let (x,y" ;
 
 
-  private static String MULTI_LET_ERROR_3 = "let (x,y):" ;
+  private static String MULTI_LET_ERROR_3 = "let (x,y)" ;
 
 
-  private static String MULTI_LET_ERROR_4 = "let (x,y):int" ;
+  private static String MULTI_LET_ERROR_4 = "let (x,y):" ;
 
 
-  private static String MULTI_LET_ERROR_5 = "let (x,y):int =" ;
+  private static String MULTI_LET_ERROR_5 = "let (x,y):int" ;
 
 
-  private static String MULTI_LET_ERROR_6 = "let (x,y):int = (1,2)" ;
+  private static String MULTI_LET_ERROR_6 = "let (x,y):int =" ;
 
 
-  private static String MULTI_LET_ERROR_7 = "let (x,y):int = (1,2) in" ;
+  private static String MULTI_LET_ERROR_7 = "let (x,y):int = (1,2)" ;
 
 
-  private static String MULTI_LET_ERROR_8 = "let (x,y) =" ;
+  private static String MULTI_LET_ERROR_8 = "let (x,y):int = (1,2) in" ;
 
 
-  private static String MULTI_LET_ERROR_9 = "let (x,y) = (1,2)" ;
+  private static String MULTI_LET_ERROR_9 = "let (x,y) =" ;
 
 
-  private static String MULTI_LET_ERROR_10 = "let (x,y) = (1,2) in" ;
+  private static String MULTI_LET_ERROR_10 = "let (x,y) = (1,2)" ;
 
 
-  private static String MULTI_LET_ERROR_11 = "let (x," ;
+  private static String MULTI_LET_ERROR_11 = "let (x,y) = (1,2) in" ;
+
+
+  private static String MULTI_LET_ERROR_12 = "let (x," ;
 
 
   private static String FST = "fst" ;
@@ -1039,10 +1042,11 @@ public class ParserTest
       MULTI_LET_ERROR_1 , MULTI_LET_ERROR_2 , MULTI_LET_ERROR_3 ,
       MULTI_LET_ERROR_4 , MULTI_LET_ERROR_5 , MULTI_LET_ERROR_6 ,
       MULTI_LET_ERROR_7 , MULTI_LET_ERROR_8 , MULTI_LET_ERROR_9 ,
-      MULTI_LET_ERROR_10 , MULTI_LET_ERROR_11 , TUPLE_ERROR_1 , TUPLE_ERROR_2 ,
-      TUPLE_ERROR_3 , LIST_ERROR_1 , LIST_ERROR_2 , LIST_ERROR_3 ,
-      EXPR_TUPLE_TYPE_ERROR_1 , EXPR_TUPLE_TYPE_ERROR_2 ,
-      INFIX_OPERATION_ERROR_12 , WHILE_ERROR_1 , WHILE_ERROR_2 , WHILE_ERROR_3 } ;
+      MULTI_LET_ERROR_10 , MULTI_LET_ERROR_11 , MULTI_LET_ERROR_12 ,
+      TUPLE_ERROR_1 , TUPLE_ERROR_2 , TUPLE_ERROR_3 , LIST_ERROR_1 ,
+      LIST_ERROR_2 , LIST_ERROR_3 , EXPR_TUPLE_TYPE_ERROR_1 ,
+      EXPR_TUPLE_TYPE_ERROR_2 , INFIX_OPERATION_ERROR_12 , WHILE_ERROR_1 ,
+      WHILE_ERROR_2 , WHILE_ERROR_3 } ;
 
 
   private static String [ ] L4TYPE_NORMAL = new String [ ]
@@ -1111,9 +1115,10 @@ public class ParserTest
       MULTI_LET_ERROR_1 , MULTI_LET_ERROR_2 , MULTI_LET_ERROR_3 ,
       MULTI_LET_ERROR_4 , MULTI_LET_ERROR_5 , MULTI_LET_ERROR_6 ,
       MULTI_LET_ERROR_7 , MULTI_LET_ERROR_8 , MULTI_LET_ERROR_9 ,
-      MULTI_LET_ERROR_10 , MULTI_LET_ERROR_11 , TUPLE_ERROR_1 , TUPLE_ERROR_2 ,
-      TUPLE_ERROR_3 , LIST_ERROR_1 , LIST_ERROR_2 , LIST_ERROR_3 ,
-      EXPR_TUPLE_TYPE_ERROR_1 , EXPR_TUPLE_TYPE_ERROR_2 } ;
+      MULTI_LET_ERROR_10 , MULTI_LET_ERROR_11 , MULTI_LET_ERROR_12 ,
+      TUPLE_ERROR_1 , TUPLE_ERROR_2 , TUPLE_ERROR_3 , LIST_ERROR_1 ,
+      LIST_ERROR_2 , LIST_ERROR_3 , EXPR_TUPLE_TYPE_ERROR_1 ,
+      EXPR_TUPLE_TYPE_ERROR_2 } ;
 
 
   private static String [ ] L3TYPE_NORMAL = new String [ ]
