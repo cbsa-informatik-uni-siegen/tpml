@@ -116,7 +116,7 @@ Identifier		= [a-zA-Z] [a-zA-Z0-9_]* '*
 LetterAX		= [a-x]
 LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 
-%state YYCOMMENT, YYCOMMENTEOF
+%state YYCOMMENT, YYCOMMENTEOF, YYCOMMENTINIT, YYCOMMENTMULT
 
 %%
 
@@ -202,9 +202,16 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 							
 	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
 
-	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENT); }
+	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENTINIT); }
 	
 	{WhiteSpace}		{ /* ignore */ }
+}
+
+<YYCOMMENTINIT> 
+{
+	<<EOF>>				{ yybegin(YYCOMMENTEOF); return symbol("COMMENT", COMMENT, yycommentChar, yychar, null); }
+	")"				    { yybegin(YYCOMMENTMULT); return symbol("COMMENT", COMMENT, yycommentChar, yychar, null); }
+	.|\n				{ yybegin(YYCOMMENT); return symbol("COMMENT", COMMENT, yycommentChar, yychar, null); }
 }
 
 <YYCOMMENT> 
@@ -214,14 +221,15 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	.|\n				{ /* ignore */ }
 }
 
-<YYCOMMENTEOF> 
+<YYCOMMENTMULT>
 {
-	<<EOF>>				{ 
-						  throw new LanguageScannerException(yycommentChar, yychar, 
-							Messages.getString ( "Parser.7" ));
-						}
+	<<EOF>>			    { throw new LanguageScannerException(yycommentChar, yychar, Messages.getString ( "Scanner.0" ) ); }
+	.|\n				{ yybegin(YYCOMMENT); return symbol("COMMENT", COMMENT, yycommentChar, yychar, null); }
 }
 
-.|\n					{ 
-						  throw new LanguageScannerException(yychar, yychar + yylength(), MessageFormat.format ( Messages.getString ( "Parser.1" ), yytext() ) );
-						}
+<YYCOMMENTEOF> 
+{
+	<<EOF>>				{ throw new LanguageScannerException(yycommentChar, yychar, Messages.getString ( "Parser.7" )); }
+}
+
+.|\n					{ throw new LanguageScannerException(yychar, yychar + yylength(), MessageFormat.format ( Messages.getString ( "Parser.1" ), yytext() ) ); }
