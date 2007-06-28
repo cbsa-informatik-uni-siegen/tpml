@@ -645,9 +645,22 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
               - e.getLeft ( ) , errorSet , false ) ;
         }
         // add the exception to our list
-        tmpExceptions = new LanguageScannerException [ ]
-        { new LanguageParserWarningException ( e.getMessage ( ) ,
-            e.getRight ( ) , e.getRight ( ) , e.getInsertText ( ) ) } ;
+        if ( tmpExceptions == null )
+        {
+          tmpExceptions = new LanguageScannerException [ ]
+          { new LanguageParserWarningException ( e.getMessage ( ) , e
+              .getRight ( ) , e.getRight ( ) , e.getInsertText ( ) ) } ;
+        }
+        else
+        {
+          LanguageScannerException [ ] newExceptions = new LanguageScannerException [ tmpExceptions.length + 1 ] ;
+          System.arraycopy ( tmpExceptions , 0 , newExceptions , 0 ,
+              tmpExceptions.length ) ;
+          newExceptions [ tmpExceptions.length ] = new LanguageParserWarningException (
+              e.getMessage ( ) , e.getRight ( ) , e.getRight ( ) , e
+                  .getInsertText ( ) ) ;
+          tmpExceptions = newExceptions ;
+        }
       }
       catch ( LanguageParserException e )
       {
@@ -670,8 +683,19 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
               - e.getLeft ( ) , errorSet , false ) ;
         }
         // add the exception to our list
-        tmpExceptions = new LanguageScannerException [ ]
-        { e } ;
+        if ( tmpExceptions == null )
+        {
+          tmpExceptions = new LanguageScannerException [ ]
+          { e } ;
+        }
+        else
+        {
+          LanguageScannerException [ ] newExceptions = new LanguageScannerException [ tmpExceptions.length + 1 ] ;
+          System.arraycopy ( tmpExceptions , 0 , newExceptions , 0 ,
+              tmpExceptions.length ) ;
+          newExceptions [ tmpExceptions.length ] = e ;
+          tmpExceptions = newExceptions ;
+        }
       }
     }
     catch ( Exception e )

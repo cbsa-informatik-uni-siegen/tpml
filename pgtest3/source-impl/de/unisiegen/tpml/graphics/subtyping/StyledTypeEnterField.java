@@ -54,13 +54,13 @@ public class StyledTypeEnterField extends StyledLanguageDocument
    * determine the scanner (aka lexer) for the documents content and thereby
    * dictates the syntax highlighting.
    * 
-   * @param language the {@link Language} for which to allocate a document.
+   * @param pLanguage the {@link Language} for which to allocate a document.
    * @throws NullPointerException if the <code>language</code> is
    *           <code>null</code>.
    */
-  public StyledTypeEnterField ( Language language )
+  public StyledTypeEnterField ( Language pLanguage )
   {
-    super ( language ) ;
+    super ( pLanguage ) ;
   }
 
 
@@ -86,13 +86,15 @@ public class StyledTypeEnterField extends StyledLanguageDocument
    * 
    * @throws BadLocationException if the processing failed.
    */
-  @ SuppressWarnings ( "null" )
+  @ Override
+  @ SuppressWarnings (
+  { "null" , "unused" } )
   public void processChanged ( ) throws BadLocationException
   {
     // reset the character attributes
     setCharacterAttributes ( 0 , getLength ( ) , this.normalSet , true ) ;
     // allocate a list to collect the exceptions
-    LanguageScannerException [ ] exceptions = null ;
+    LanguageScannerException [ ] tmpExceptions = null ;
     try
     {
       // start with first character
@@ -150,23 +152,23 @@ public class StyledTypeEnterField extends StyledLanguageDocument
           // restart the scanner after the error
           scanner.restart ( new StringReader ( content ) ) ;
           // add the exception to our list
-          if ( exceptions == null )
+          if ( tmpExceptions == null )
           {
-            exceptions = new LanguageScannerException [ ]
+            tmpExceptions = new LanguageScannerException [ ]
             { e } ;
           }
           else
           {
-            LanguageScannerException [ ] newExceptions = new LanguageScannerException [ exceptions.length + 1 ] ;
-            System.arraycopy ( exceptions , 0 , newExceptions , 0 ,
-                exceptions.length ) ;
-            newExceptions [ exceptions.length ] = e ;
-            exceptions = newExceptions ;
+            LanguageScannerException [ ] newExceptions = new LanguageScannerException [ tmpExceptions.length + 1 ] ;
+            System.arraycopy ( tmpExceptions , 0 , newExceptions , 0 ,
+                tmpExceptions.length ) ;
+            newExceptions [ tmpExceptions.length ] = e ;
+            tmpExceptions = newExceptions ;
           }
         }
       }
       // check if the scanner is happy
-      if ( exceptions == null )
+      if ( tmpExceptions == null )
       {
         // allocate a parser based on a scanner that operates on the previously
         // collected
@@ -215,15 +217,15 @@ public class StyledTypeEnterField extends StyledLanguageDocument
           String [ ] message = e.getMessages ( ) ;
           int [ ] startOffset = e.getParserStartOffset ( ) ;
           int [ ] endOffset = e.getParserEndOffset ( ) ;
-          exceptions = new LanguageParserException [ startOffset.length ] ;
+          tmpExceptions = new LanguageParserException [ startOffset.length ] ;
           for ( int i = 0 ; i < startOffset.length ; i ++ )
           {
-            exceptions [ i ] = new LanguageParserException ( message [ i ] ,
+            tmpExceptions [ i ] = new LanguageParserException ( message [ i ] ,
                 startOffset [ i ] , endOffset [ i ] ) ;
             SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
             StyleConstants.setForeground ( errorSet , Color.RED ) ;
             StyleConstants.setUnderline ( errorSet , true ) ;
-            errorSet.addAttribute ( "exception" , exceptions [ i ] ) ; //$NON-NLS-1$
+            errorSet.addAttribute ( "exception" , tmpExceptions [ i ] ) ; //$NON-NLS-1$
             setCharacterAttributes ( startOffset [ i ] , endOffset [ i ]
                 - startOffset [ i ] , errorSet , false ) ;
           }
@@ -248,9 +250,22 @@ public class StyledTypeEnterField extends StyledLanguageDocument
                 - e.getLeft ( ) , errorSet , false ) ;
           }
           // add the exception to our list
-          exceptions = new LanguageScannerException [ ]
-          { new LanguageParserWarningException ( e.getMessage ( ) , e
-              .getRight ( ) , e.getRight ( ) , e.getInsertText ( ) ) } ;
+          if ( tmpExceptions == null )
+          {
+            tmpExceptions = new LanguageScannerException [ ]
+            { new LanguageParserWarningException ( e.getMessage ( ) , e
+                .getRight ( ) , e.getRight ( ) , e.getInsertText ( ) ) } ;
+          }
+          else
+          {
+            LanguageScannerException [ ] newExceptions = new LanguageScannerException [ tmpExceptions.length + 1 ] ;
+            System.arraycopy ( tmpExceptions , 0 , newExceptions , 0 ,
+                tmpExceptions.length ) ;
+            newExceptions [ tmpExceptions.length ] = new LanguageParserWarningException (
+                e.getMessage ( ) , e.getRight ( ) , e.getRight ( ) , e
+                    .getInsertText ( ) ) ;
+            tmpExceptions = newExceptions ;
+          }
         }
         catch ( LanguageParserException e )
         {
@@ -273,8 +288,19 @@ public class StyledTypeEnterField extends StyledLanguageDocument
                 - e.getLeft ( ) , errorSet , false ) ;
           }
           // add the exception to our list
-          exceptions = new LanguageScannerException [ ]
-          { e } ;
+          if ( tmpExceptions == null )
+          {
+            tmpExceptions = new LanguageScannerException [ ]
+            { e } ;
+          }
+          else
+          {
+            LanguageScannerException [ ] newExceptions = new LanguageScannerException [ tmpExceptions.length + 1 ] ;
+            System.arraycopy ( tmpExceptions , 0 , newExceptions , 0 ,
+                tmpExceptions.length ) ;
+            newExceptions [ tmpExceptions.length ] = e ;
+            tmpExceptions = newExceptions ;
+          }
         }
       }
     }
@@ -284,10 +310,10 @@ public class StyledTypeEnterField extends StyledLanguageDocument
           "Failed to process changes in the styled language document" , e ) ; //$NON-NLS-1$
     }
     // update the exceptions property if necessary
-    if ( this.exceptions != exceptions )
+    if ( this.exceptions != tmpExceptions )
     {
       LanguageScannerException [ ] oldExceptions = this.exceptions ;
-      this.exceptions = exceptions ;
+      this.exceptions = tmpExceptions ;
       firePropertyChange ( "exceptions" , oldExceptions , this.exceptions ) ; //$NON-NLS-1$
     }
   }
@@ -296,10 +322,10 @@ public class StyledTypeEnterField extends StyledLanguageDocument
   /**
    * set the actual language for this styled document
    * 
-   * @param language Language
+   * @param pLanguage Language
    */
-  public void setLanguage ( Language language )
+  public void setLanguage ( Language pLanguage )
   {
-    this.language = language ;
+    this.language = pLanguage ;
   }
 }
