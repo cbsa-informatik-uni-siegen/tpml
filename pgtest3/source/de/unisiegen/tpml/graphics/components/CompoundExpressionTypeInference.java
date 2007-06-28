@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,7 +13,9 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
@@ -22,6 +25,7 @@ import de.unisiegen.tpml.graphics.outline.Outline;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
+import de.unisiegen.tpml.graphics.renderer.PrettyStringToHTML;
 import de.unisiegen.tpml.graphics.renderer.SubstitutionRenderer;
 import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
 import de.unisiegen.tpml.graphics.renderer.TypeFormularRenderer;
@@ -49,13 +53,6 @@ public class CompoundExpressionTypeInference extends JComponent
    * Renderer that is used to render the TypeFormulars
    */
   private TypeFormularRenderer typeFormularRenderer ;
-
-
-  /**
-   * The expression that will be underlined during the rendering. TODO löschen
-   */
-  //private Expression underlineExpression ;
-
 
   /**
    * The size of the Typformulars.
@@ -432,7 +429,7 @@ public class CompoundExpressionTypeInference extends JComponent
           }
         }
         
-        ArrayList < Rectangle > rects = typeFormularRenderer.getTypeFormularPositions ( ) ;
+//        ArrayList < Rectangle > rects = typeFormularRenderer.getTypeFormularPositions ( ) ;
         if (rectPressed != rectReleased)
         {
         	typeFormularRenderer.draggNDropp (rectReleased, rectPressed) ;
@@ -508,94 +505,131 @@ public class CompoundExpressionTypeInference extends JComponent
    */
   private void handleMouseMoved ( MouseEvent event )
   {
-    testAusgabe ( "MouseAction wird bearbeitet..." ) ;
-    // tell the PrettyStringRenderer where the mouse pointer is
-    toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
-    // first, we do not want to mark anything, we are waiting for mouse pointer
-    // is over one bounded id
-    toListenForMouse.setMark ( false ) ;
-    CompoundExpressionTypeInference.this.repaint ( ) ;
-    // note if to mark or not to mark
-    boolean mark = false ;
-    // walk throu the postions where to mark
-    for ( int t = 0 ; t < toListenForMouse.size ( ) ; t ++ )
+    //first, we do not want to have an tooltip
+    setToolTipText ( null ) ;
+
+    //find out if the mosue is over an A
+    ArrayList <Rectangle> rs = typeFormularRenderer.getAPositions();
+    
+    for (int i = 0; i < rs.size(); i++)
     {
-      // get position of pointer, these are rectangles. These positions are made
-      // by the PrettyStringRenderer
-      Rectangle r = toListenForMouse.get ( t ) ;
-      int pX = r.x ;
-      int pX1 = r.x + r.width ;
-      int pY = r.y ;
-      int pY1 = r.y + r.height ;
-      // fnde out if pointer is on one of the chars to mark
-      if ( ( event.getX ( ) >= pX ) && ( event.getX ( ) <= pX1 )
-          && ( event.getY ( ) >= pY ) && ( event.getY ( ) <= pY1 ) )
-      // if ( ( event.getX ( ) >= pX ) && ( event.getX ( ) <= pX1 ) )
+      Rectangle r = rs.get(i);
+      //the simple unfoprmatted version
+      //      Point p = event.getPoint();
+      //      if (isIn (r, p))
+      //      {
+      //        setToolTipText(typeFormularRenderer.getAStrings().get(i));
+      //      }
+      Point p = event.getPoint();
+      if (isIn(r, p)) //if (x >= r.x && x <= r.x+r.width && y >= r.y && y <= r.y+r.width)
       {
-        // just note it
-        mark = true ;
+        //genereate the TooltioText
+        String genreateTooltip = "";
+
+        //get the Infos about the tooltip from the typeFormularRenderer
+        ArrayList <ArrayList> list = typeFormularRenderer.getAPrettyStrings();
+        ArrayList <PrettyString> prettyStrings = list.get(i);
+
+        //build up the html
+        genreateTooltip += ("<html> [  ");
+
+        for (int l = 0; l < prettyStrings.size(); l++)
+        {
+          genreateTooltip += PrettyStringToHTML.toHTMLString(prettyStrings.get(l));
+          if (l < (prettyStrings.size() - 1))
+          {
+            genreateTooltip += " <br> ";
+          }
+        }
+
+        genreateTooltip += ("  ] </html>");
+        setToolTipText(genreateTooltip);
       }
     }
-    // if the pointer is on one of the bounded chars
-    if ( mark )
+    
+    //tell the PrettyStringRenderer where the mouse pointer is
+    toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
+
+    //first, we do not want to mark anything, we are waiting for mouse pointer is over one bounded id
+    toListenForMouse.setMark ( false ) ;
+    CompoundExpressionTypeInference.this.repaint ( ) ;
+    
+    //note if to mark or not to mark
+    boolean mark = false;
+    
+    //walk throu the postions where to mark
+    for ( int t = 0 ; t < toListenForMouse.size ( ) ; t++)
     {
-      // we want to habe marked
+      //get position of pointer, these are rectangles. These positions are made by the PrettyStringRenderer
+      Rectangle r =  toListenForMouse.get ( t ) ;
+      int pX = r.x;
+      int pX1 = r.x+r.width ;
+      int pY = r.y;
+      int pY1 = r.y+r.height;
+    
+      // fnde out if pointer is on one of the chars to mark
+      if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY) && (event.getY() <= pY1)) 
+      //if ( ( event.getX ( ) >= pX ) && ( event.getX ( ) <= pX1 ) )
+      {
+        //just note it
+        mark = true;
+      }
+    }
+    
+    //if the pointer is on one of the bounded chars
+    if (mark)
+    {
+      //we want to habe marked
       toListenForMouse.setMark ( true ) ;
       CompoundExpressionTypeInference.this.repaint ( ) ;
     }
     else
     {
-      // we do not want to see anything marked
-      toListenForMouse.setMark ( false ) ;
-      toListenForMouse.reset ( ) ;
-      CompoundExpressionTypeInference.this.repaint ( ) ;
+      //we do not want to see anything marked
+     toListenForMouse.setMark ( false ) ;
+     toListenForMouse.reset();
+     CompoundExpressionTypeInference.this.repaint ( ) ;
     }
-    {
-      setToolTipText ( null ) ;
-    }
-    if ( this.substitutionRenderer != null
-        && this.substitutionRenderer.isCollapsed ( ) )
+
+    if ( this.substitutionRenderer != null && this.substitutionRenderer.isCollapsed ( ) )
     {
       Rectangle r = this.substitutionRenderer.getCollapsedArea ( ) ;
-      testAusgabe ( "Die Grenzen r: " + r.x + " - " + ( r.x + r.width ) + ", "
-          + r.y + "-" + ( r.y + r.height ) ) ;
-      testAusgabe ( "Die Maus:" + event.getX ( ) + ", " + event.getY ( ) ) ;
-      if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width
-          && event.getY ( ) >= r.y && event.getY ( ) <= r.y + r.height )
+      testAusgabe("Die Grenzen r: "+ r.x+" - "+(r.x+r.width)+", "+r.y+"-"+(r.y+r.height));
+      testAusgabe("Die Maus:"+event.getX ( )+", "+event.getY ( ));
+      if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width && event.getY() >= r.y && event.getY() <= r.y+r.height )
       {
         setToolTipText ( this.substitutionRenderer.getCollapsedString ( ) ) ;
-        testAusgabe ( this.substitutionRenderer.getCollapsedString ( ) ) ;
+        testAusgabe(this.substitutionRenderer.getCollapsedString ( ));
       }
       else
       {
-        setToolTipText ( null ) ;
+        //setToolTipText ( null ) ;
       }
     }
-    // TOOLTIPText für die einzelnen Dinger...
-    // if (this.typeFormularRenderer != null &&
-    // this.typeFormularRenderer.isCollapsed ( ) )
-    if ( this.typeFormularRenderer != null )
+    
+    //TOOLTIPText für die einzelnen Dinger...
+    //if (this.typeFormularRenderer != null && this.typeFormularRenderer.isCollapsed ( ) )
+    if (this.typeFormularRenderer != null  )
     {
-      setToolTipText ( null ) ;
-      ArrayList < Rectangle > rs = this.typeFormularRenderer
-          .getCollapsedAreas ( ) ;
-      for ( int i = 0 ; i < rs.size ( ) ; i ++ )
+      //setToolTipText ( null ) ;
+          
+      rs = this.typeFormularRenderer.getCollapsedAreas();
+      
+      for (int i = 0; i<rs.size(); i++)
       {
-        Rectangle r = rs.get ( i ) ;
-        testAusgabe ( "Die Grenzen r: " + r.x + " - " + ( r.x + r.width )
-            + ", " + r.y + "-" + ( r.y + r.height ) ) ;
-        testAusgabe ( "Die Maus:" + event.getX ( ) + ", " + event.getY ( ) ) ;
-        // if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width )
-        if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width
-            && event.getY ( ) >= r.y && event.getY ( ) <= r.y + r.height )
+        Rectangle r = rs.get(i);
+        testAusgabe("Die Grenzen r: "+ r.x+" - "+(r.x+r.width)+", "+r.y+"-"+(r.y+r.height));
+        testAusgabe("Die Maus:"+event.getX ( )+", "+event.getY ( ));
+        //if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width )
+        if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width && event.getY() >= r.y && event.getY() <= r.y+r.height )
         {
-          testAusgabe ( "ja, diesen hier!" + i ) ;
-          setToolTipText ( this.typeFormularRenderer.getCollapsedStrings ( )
-              .get ( i ) ) ;
-          testAusgabe ( getToolTipText ( ) ) ;
-        }
-      }
-    }
+          testAusgabe("ja, diesen hier!"+i);
+          setToolTipText ( this.typeFormularRenderer.getCollapsedStrings().get(i) ) ;
+          testAusgabe(getToolTipText());
+        } 
+      }   
+    }    
+
   }
 
 
@@ -851,6 +885,30 @@ public class CompoundExpressionTypeInference extends JComponent
       // setSize(getWidth()+100, getHeight()+100);
       gc.drawString ( draggedString , draggedX , draggedY ) ;
     }
+  }
+  
+  
+  /**
+   * 
+   * checs if the point is in the Rectangle
+   *
+   * @param r the Rectangle
+   * @param p the Point
+   * @return
+   */
+  private static boolean isIn (Rectangle r, Point p)
+  {
+    int x = p.x;
+    int y = p.y;
+    if (x >= r.x && x <= r.x+r.width && y >= r.y && y <= r.y+r.width)
+    {
+      return true;      
+    }
+    else
+    {
+      return false;
+    }
+  
   }
 
 
