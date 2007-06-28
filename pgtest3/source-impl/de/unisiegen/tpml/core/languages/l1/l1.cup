@@ -28,7 +28,7 @@ import de.unisiegen.tpml.core.types.TypeVariable ;
 import de.unisiegen.tpml.core.types.UnitType ;
 
 
-/* Binary operators */
+/* Terminals */
 terminal			PLUS;
 terminal			MINUS;
 terminal			STAR;
@@ -39,13 +39,11 @@ terminal			LESS;
 terminal			GREATER;
 terminal			LESSEQUAL;
 terminal			GREATEREQUAL;
-
-/* Logical operators */
 terminal			AMPERAMPER;
 terminal			BARBAR;
 terminal			NOT;
 
-/* Syntactic tokens */
+/* Syntactic */
 terminal			ARROW;
 terminal			COLON;
 terminal			DOT;
@@ -69,13 +67,13 @@ terminal			INT;
 terminal			UNIT;
 terminal			MU;
 
-/* Special tokens */
+/* Special */
 terminal Integer	NUMBER;
 terminal Integer	TYPEVARIABLE;
 terminal String		IDENTIFIER;
 terminal			COMMENT;
 
-/* Expression non terminals */
+/* Non terminals - Expression */
 non terminal Expression				expr;
 non terminal Expression				simple_expr;
 non terminal Expression[]			simple_expr_list;
@@ -107,7 +105,7 @@ non terminal BooleanConstant		boolean_constant;
 non terminal IntegerConstant		integer_constant;
 non terminal Not					not;
 
-/* Type non terminals */
+/* Non terminal - Type */
 non terminal MonoType				type;
 non terminal MonoType				simple_type;
 non terminal BooleanType			boolean_type;
@@ -118,11 +116,11 @@ non terminal ArrowType				arrow_type;
 non terminal TypeName				type_name;
 non terminal RecType				rec_type;
 
-/* Helper non terminals */
+/* Non terminal - Helper */
 non terminal IdentifierTypePair[]			curried_let_list;
 non terminal IdentifierTypePair				curried_let_pair;
 
-/* Error non terminals */
+/* Non terminal - Error */
 non terminal 		epsilon;
 non terminal 		and_error;
 non terminal 		or_error;

@@ -46,7 +46,7 @@ import de.unisiegen.tpml.core.types.TypeVariable ;
 import de.unisiegen.tpml.core.types.UnitType ;
 
 
-/* Binary operators */
+/* Terminals */
 terminal			PLUS;
 terminal			MINUS;
 terminal			STAR;
@@ -57,24 +57,18 @@ terminal			LESS;
 terminal			GREATER;
 terminal			LESSEQUAL;
 terminal			GREATEREQUAL;
-
-/* Tuple operators */
 terminal			FST;
 terminal			SND;
-
-/* List operators */
 terminal			CONS;
 terminal			IS_EMPTY;
 terminal			HD;
 terminal			TL;
 terminal			COLONCOLON;
-
-/* Logical operators */
 terminal			AMPERAMPER;
 terminal			BARBAR;
 terminal			NOT;
 
-/* Syntactic tokens */
+/* Syntactic */
 terminal			ARROW;
 terminal			COLON;
 terminal			DOT;
@@ -105,14 +99,14 @@ terminal			UNIT;
 terminal			MU;
 terminal			LIST;
 
-/* Special tokens */
+/* Special */
 terminal Integer	NUMBER;
 terminal Integer	TYPEVARIABLE;
 terminal String		IDENTIFIER;
 terminal			COMMENT;
 terminal Integer[]	PROJECTION;
 
-/* Expression non terminals */
+/* Non terminals - Expression */
 non terminal Expression				expr;
 non terminal Expression				simple_expr;
 non terminal Expression[]			simple_expr_list;
@@ -161,7 +155,7 @@ non terminal List					list;
 non terminal MultiLambda			multi_lambda;
 non terminal MultiLet				multi_let;
 
-/* Type non terminals */
+/* Non terminal - Type */
 non terminal MonoType				type;
 non terminal MonoType				simple_type;
 non terminal BooleanType			boolean_type;
@@ -174,7 +168,7 @@ non terminal ListType				list_type;
 non terminal TypeName				type_name;
 non terminal RecType				rec_type;
 
-/* Helper non terminals */
+/* Non terminal - Helper */
 non terminal IdentifierTypePair[]			curried_let_list;
 non terminal IdentifierTypePair				curried_let_pair;
 non terminal IdentifierTypePair[]			curried_let_rec_list;
@@ -185,7 +179,7 @@ non terminal Identifier[]					multi_lambda_list;
 non terminal Identifier[]					multi_let_list;
 non terminal MonoType[]						tuple_type_list;
 
-/* Error non terminals */
+/* Non terminal - Error */
 non terminal 		epsilon;
 non terminal 		and_error;
 non terminal 		or_error;

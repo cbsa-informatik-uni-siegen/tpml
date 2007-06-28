@@ -186,7 +186,7 @@
 			symbols="L2OTerminals"
 			interface="yes"
 			debug="no"
-			expect="463"
+			expect="462"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -224,7 +224,7 @@
 			symbols="L3Terminals"
 			interface="yes"
 			debug="no"
-			expect="934"
+			expect="854"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -242,7 +242,7 @@
 			symbols="L3TypeTerminals"
 			interface="yes"
 			debug="no"
-			expect="14"
+			expect="3"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -262,7 +262,7 @@
 			symbols="L4Terminals"
 			interface="yes"
 			debug="no"
-			expect="1105"
+			expect="1100"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -280,7 +280,7 @@
 			symbols="L4TypeTerminals"
 			interface="yes"
 			debug="no"
-			expect="18"
+			expect="5"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />

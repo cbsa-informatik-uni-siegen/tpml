@@ -5,7 +5,7 @@ import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.languages.Error ;
 
 
-/* Syntactic tokens */
+/* Syntactic */
 terminal			DOT;
 terminal			LPAREN;
 terminal			RPAREN;
@@ -13,11 +13,11 @@ terminal			RPAREN;
 /* Keywords */
 terminal			LAMBDA;
 
-/* Special tokens */
+/* Special */
 terminal String		IDENTIFIER;
 terminal			COMMENT;
 
-/* Expression non terminals */
+/* Non terminals - Expression */
 non terminal Expression				expr;
 non terminal Expression				simple_expr;
 non terminal Expression[]			simple_expr_list;
@@ -25,7 +25,7 @@ non terminal Identifier				identifier;
 non terminal Expression				application;
 non terminal Lambda					lambda_l1;
 
-/* Error non terminals */
+/* Non terminal - Error */
 non terminal 		epsilon;
 non terminal 		lambda_l1_error;
 non terminal 		simple_expr_error;

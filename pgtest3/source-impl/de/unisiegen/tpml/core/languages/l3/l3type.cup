@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.types.TypeVariable ;
 import de.unisiegen.tpml.core.types.UnitType ;
 
 
-/* Syntactic tokens */
+/* Syntactic */
 terminal			ARROW;
 terminal			LPAREN, RPAREN;
 terminal			DOT;
@@ -22,11 +22,11 @@ terminal			BOOL, INT, UNIT;
 terminal			MU;
 terminal			LIST;
 
-/* Special tokens */
+/* Special */
 terminal Integer	TYPEVARIABLE;
 terminal String		IDENTIFIER;
 
-/* Non terminals */
+/* Non terminal - Type */
 non terminal MonoType				type;
 non terminal MonoType				simple_type;
 non terminal BooleanType			boolean_type;
@@ -40,7 +40,7 @@ non terminal TupleType				tuple_type;
 non terminal ListType				list_type;
 non terminal MonoType[]				tuple_type_list;
 
-/* Error non terminals */
+/* Non terminal - Error */
 non terminal 		epsilon;
 non terminal 		simple_type_error;
 non terminal 		arrow_type_error;
