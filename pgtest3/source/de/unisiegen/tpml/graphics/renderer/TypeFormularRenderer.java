@@ -4,10 +4,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
@@ -15,7 +15,6 @@ import de.unisiegen.tpml.core.typeinference.TypeFormula;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.Type;
-import de.unisiegen.tpml.core.util.Debug;
 import de.unisiegen.tpml.graphics.components.ShowBonds;
 
 /**
@@ -42,33 +41,44 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 */
 	private ArrayList <String> collapsedStrings;
 	
+  /**
+   * the List of Strings for the tooltip of the A (not used)
+   */
 	private ArrayList <String> aStrings;
+  
+  /**
+   * the List of List of ArrayStrings for the tooltip of the As
+   */
+  private ArrayList <ArrayList> aPrettyStrings;
 	
 	/**
 	 * the List of alle Elements of the TypeFormularRenderer with its areas
 	 */
 	private ArrayList <Rectangle> typeFormularPositions;
 	
-	/**
-	 * the List of alle Elements of the TypeFormularRenderer with its areas
-	 */
+  /**
+   * the List of Areas where the Expressions are (to be found by the outline)
+   */
 	private ArrayList <Rectangle> expressionPostitions;
 	
-	/**
-	 * the List of alle Elements of the TypeFormularRenderer with its areas
-	 */
+  /**
+   * the List of Areas where the Types are (to be found by the outline)
+   */
 	private ArrayList <Rectangle> typePositions;
 	
-	/**
-	 * the List of alle Elements of the TypeFormularRenderer with its areas
-	 */
+  /**
+   * the List of Areas where the leftTypes are (to be found by the outline)
+   */
 	private ArrayList <Rectangle> leftTypePositions;
 	
 	/**
-	 * the List of alle Elements of the TypeFormularRenderer with its areas
+	 * the List of Areas where the rightTypes are (to be found by the outline)
 	 */
 	private ArrayList <Rectangle> rightTypePositions;
 	
+  /**
+   * the List of Areas where the As are (to be found by the outline)
+   */
 	private ArrayList <Rectangle> aPositions;
 	
 	/**
@@ -123,7 +133,16 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 */
 	private static final String	arrowString = "  "+"\u22b3"+"  ";
   
+  /**
+   * The String renderd between the expressions and the Types
+   */
   private static final String doubleColon = "  "+"::"+"  ";
+  
+  /**
+   * The String renderd for the As
+   */
+  private static final String As =  "A |- ";
+ 
 	
 	/**
 	 * constructor
@@ -144,6 +163,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		this.typeEquations = new ArrayList <Integer> ();
 		this.collapsedStrings = new ArrayList<String>();
 		this.aStrings = new ArrayList<String>();
+    this.aPrettyStrings = new ArrayList<ArrayList>();
 	}
 
 	/**
@@ -217,6 +237,17 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	{
 		return aStrings;
 	}
+  
+  /**
+   * get the Strings for tooltips. the 1. string corresponds to the first 
+   * element of the list of rectangles
+   *
+   * @return the collapsedStrings
+   */
+  public ArrayList <ArrayList> getAPrettyStrings ()
+  {
+    return aPrettyStrings;
+  }
 	
 	/**
 	 * returns a list of areas where typeFormulars are
@@ -352,7 +383,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	/**
 		 * Calculates the size, that is needed to propperly render
 		 * the TypeFormula.
-		 * @param maxWidth //TODOwir brauchen es..
+		 * @param maxWidth
 		 * 
 		 * @return The size needed to render the environment.
 		 */
@@ -500,7 +531,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
             prettyStringrenderer.setPrettyString (((TypeEquationTypeInference)t).toPrettyString ());
             
             lineWidthEnvironment += prettyStringrenderer.getNeededSize (Integer.MAX_VALUE).width;
-            lineWidthEnvironment += keywordFontMetrics.stringWidth("A |- ");
+            lineWidthEnvironment += keywordFontMetrics.stringWidth(As);
 						//lineWidthTypeFormula += AbstractRenderer.keywordFontMetrics.stringWidth(t.toString());
             testAusgabe (t.toString ());
 						//lineHeightTypeFormula += AbstractRenderer.getAbsoluteHeight();
@@ -613,6 +644,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 				rightTypePositions.add(new Rectangle(0,0,0,0));
 				aPositions.add(new Rectangle(0,0,0,0));
 				aStrings.add("");
+        aPrettyStrings.add(new ArrayList());
+        
 				
 				nochNutzbar = width - einrücken;
 				testAusgabe("Noich nutzbar wenn das Einrücken abgezogen ist: "+nochNutzbar);
@@ -625,7 +658,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					
 					//Typeequations werden einfach hingerendert...
           TypeEquationTypeInference s = (TypeEquationTypeInference)t;
-          
+                    
           //get the highlightinfos
           ShowBonds bondTypeEquation = new ShowBonds();
 					bondTypeEquation.setTypeEquationTypeInference(s);
@@ -641,15 +674,27 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//TODO TEST: Lass uns mal ein A rendern
 					gc.setColor(AbstractRenderer.expColor);
 					gc.setFont(AbstractRenderer.keywordFont);
-					gc.drawString("A |- ", posX, posY);
-					this.aPositions.set(i, new Rectangle(posX, posY-fontDescent, AbstractRenderer.expFontMetrics.stringWidth("A "), AbstractRenderer.getAbsoluteHeight()));
+					gc.drawString(As, posX, posY);
+					this.aPositions.set(i, new Rectangle(posX, posY-AbstractRenderer.getAbsoluteHeight(), AbstractRenderer.expFontMetrics.stringWidth(As), AbstractRenderer.getAbsoluteHeight()));
 					
 					//get the seentyps and provide the String for the Tooltip
 					SeenTypes<TypeEquationTypeInference> typeEquSeenTypes = ((TypeEquationTypeInference)t).getSeenTypes();
 					aStrings.set(i, typeEquSeenTypes.toString());
+          
+          ArrayList <PrettyString> tmp = new ArrayList <PrettyString> ();
+          
+          for (int z = 0; z<typeEquSeenTypes.size (); z++)
+          {
+            TypeEquationTypeInference tqti = typeEquSeenTypes.get (z);
+            PrettyString ps = tqti.toPrettyString ();
+            
+            tmp.add (ps);
+          }
+          //aPrettyStrings.add(tmp);
+          aPrettyStrings.set(i, tmp);
 					
 					//Renter the A nail
-					posX += AbstractRenderer.expFontMetrics.stringWidth("A |- ");
+					posX += AbstractRenderer.expFontMetrics.stringWidth(As);
 					
 					//render the typeFormula
 					//typeEquationStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.width, typeEquationSize.height, gc, bondTypeEquation, toListenForM);
@@ -861,19 +906,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//everey line but the last needs a line braek
 					if (i<(typeFormulaList.size()-1))
 					{
-						//testAusgabe("Liste hat Elemente: "+typeFormulaList.size());
-						//testAusgabe("Wir sind bei Element: "+i);
 						posX = x+einrücken;
-						
-						//posY += Math.max(AbstractRenderer.fontHeight, expressionSize.height);
-						//posY += Math.max(höhe, expressionSize.height);
-						//TODO vielleicht einen Fallunterscheidung: Wenn die Expression schon umgebrochen hat, dann muss hier 
-						//nur noch die TypeSize.hight addiert werden, sonst auch noch die ExpressionSize.heigth
-						//posY += typeSize.height;
 						posY += spaceToNexEntry;
-            //posY += expressionSize.height;
-
-						posY += SPACEBETWEENELEMENTS;
+     				posY += SPACEBETWEENELEMENTS;
 					}
 
 				}
