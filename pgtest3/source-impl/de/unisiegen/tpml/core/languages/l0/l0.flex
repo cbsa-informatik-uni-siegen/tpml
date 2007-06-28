@@ -1,13 +1,12 @@
 package de.unisiegen.tpml.core.languages.l0;
 
-import java.io.Reader;
-
-import de.unisiegen.tpml.core.prettyprinter.PrettyStyle;
-import de.unisiegen.tpml.core.languages.AbstractLanguageScanner;
-import de.unisiegen.tpml.core.languages.LanguageScannerException;
-import de.unisiegen.tpml.core.languages.LanguageSymbol;
-import java.text.MessageFormat;
-import de.unisiegen.tpml.core.Messages;
+import java.io.Reader ;
+import java.text.MessageFormat ;
+import de.unisiegen.tpml.core.Messages ;
+import de.unisiegen.tpml.core.languages.AbstractLanguageScanner ;
+import de.unisiegen.tpml.core.languages.LanguageScannerException ;
+import de.unisiegen.tpml.core.languages.LanguageSymbol ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 
 /**
  * This is the lexer class for L0.
@@ -32,71 +31,61 @@ import de.unisiegen.tpml.core.Messages;
 %char
 
 %{
-	/** The starting character position of the comment. */
 	private int yycommentChar = 0;
 	
 	private LanguageSymbol symbol(String name, int id)
 	{
-		return symbol(name, id, yychar, yychar + yylength(), yytext());
+	  return symbol(name, id, yychar, yychar + yylength(), yytext());
 	}
 	
 	private LanguageSymbol symbol(String name, int id, Object value)
 	{
-		return symbol(name, id, yychar, yychar + yylength(), value);
+	  return symbol(name, id, yychar, yychar + yylength(), value);
 	}
 
 	@Override
-	public PrettyStyle getStyleBySymbolId(int id)
+	public PrettyStyle getStyleBySymbolId(int pId)
 	{
-		switch (id)
-		{
-		case COMMENT:
-			return PrettyStyle.COMMENT;
-
+	  switch (pId)
+	  {
+	    case COMMENT:
+		  return PrettyStyle.COMMENT;
 		case LAMBDA:
-			return PrettyStyle.KEYWORD;
-		
+		  return PrettyStyle.KEYWORD;
 		case IDENTIFIER:
-			return PrettyStyle.IDENTIFIER;
-			
+		  return PrettyStyle.IDENTIFIER;
 		default:
-			return PrettyStyle.NONE;
-		}
+		  return PrettyStyle.NONE;
+	  }
 	}
 	
-	public void restart(Reader reader)
+	public void restart(Reader pReader)
 	{
-		if (reader == null)
-		{
-			throw new NullPointerException("reader is null");
-		}
-		yyreset(reader);
+	  if (pReader == null)
+	  {
+		throw new NullPointerException("Reader is null");
+	  }
+	  yyreset(pReader);
 	}
 %}
 
 LineTerminator	= \r|\n|\r\n
 WhiteSpace		= {LineTerminator} | [ \t\f]
-
 Identifier		= [a-zA-Z] [a-zA-Z0-9_]* '*
 
-%state YYCOMMENT, YYCOMMENTEOF, YYCOMMENTINIT, YYCOMMENTMULT
+%state YYCOMMENTINIT, YYCOMMENT, YYCOMMENTMULT, YYCOMMENTEOF
 
 %%
 
 <YYINITIAL>
 {
-	// syntactic tokens
 	"."					{ return symbol("DOT", DOT); }
 	"("					{ return symbol("LPAREN", LPAREN); }
 	")"					{ return symbol("RPAREN", RPAREN); }
 	"lambda"|"\u03bb"	{ return symbol("LAMBDA", LAMBDA); }
 	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
-	
-	// comments
 	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENTINIT); }
-	
-	// whitespace
-	{WhiteSpace}		{ /* ignore */ }
+	{WhiteSpace}		{ /* Ignore */ }
 }
 
 <YYCOMMENTINIT> 
@@ -110,7 +99,7 @@ Identifier		= [a-zA-Z] [a-zA-Z0-9_]* '*
 {
 	<<EOF>>				{ yybegin(YYCOMMENTEOF); return symbol("COMMENT", COMMENT, yycommentChar, yychar, null); }
 	"*)"				{ yybegin(YYINITIAL); return symbol("COMMENT", COMMENT, yycommentChar, yychar + yylength(), null); }
-	.|\n				{ /* ignore */ }
+	.|\n				{ /* Ignore */ }
 }
 
 <YYCOMMENTMULT>
@@ -124,6 +113,4 @@ Identifier		= [a-zA-Z] [a-zA-Z0-9_]* '*
 	<<EOF>>				{ throw new LanguageScannerException(yycommentChar, yychar, Messages.getString ( "Parser.7" )); }
 }
 
-.|\n					{ 
-						  throw new LanguageScannerException(yychar, yychar + yylength(), MessageFormat.format ( Messages.getString ( "Parser.1" ), yytext() ) );
-						}
+.|\n					{ throw new LanguageScannerException(yychar, yychar + yylength(), MessageFormat.format ( Messages.getString ( "Parser.1" ), yytext() ) ); }
