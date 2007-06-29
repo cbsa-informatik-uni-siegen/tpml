@@ -49,7 +49,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
   /**
    * the List of List of ArrayStrings for the tooltip of the As
    */
-  private ArrayList <ArrayList> aPrettyStrings;
+  private ArrayList <ArrayList<PrettyString>> aPrettyStrings;
 	
 	/**
 	 * the List of alle Elements of the TypeFormularRenderer with its areas
@@ -163,7 +163,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		this.typeEquations = new ArrayList <Integer> ();
 		this.collapsedStrings = new ArrayList<String>();
 		this.aStrings = new ArrayList<String>();
-    this.aPrettyStrings = new ArrayList<ArrayList>();
+    this.aPrettyStrings = new ArrayList<ArrayList<PrettyString>>();
 	}
 
 	/**
@@ -244,7 +244,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
    *
    * @return the collapsedStrings
    */
-  public ArrayList <ArrayList> getAPrettyStrings ()
+  public ArrayList <ArrayList<PrettyString>> getAPrettyStrings ()
   {
     return aPrettyStrings;
   }

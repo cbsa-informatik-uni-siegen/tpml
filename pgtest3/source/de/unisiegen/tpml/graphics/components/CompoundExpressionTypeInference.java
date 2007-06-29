@@ -13,7 +13,6 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
@@ -225,8 +224,6 @@ public class CompoundExpressionTypeInference extends JComponent
       {
         int posX = pMouseEvent.getX ( ) ;
         int posY = pMouseEvent.getY ( ) ;
-        ArrayList < Rectangle > rects = typeFormularRenderer
-            .getTypeFormularPositions ( ) ;
         ArrayList < Rectangle > leftType = typeFormularRenderer
             .getLeftTypePositions ( ) ;
         ArrayList < Rectangle > rightType = typeFormularRenderer
@@ -292,34 +289,6 @@ public class CompoundExpressionTypeInference extends JComponent
             }
           }
         }
-        /*
-         * for (int i = 0; i<rects.size(); i++) { if (posX >= rects.get(i).x &&
-         * posX <= rects.get(i).x+rects.get(i).width && posY >=
-         * rects.get(i).y-rects.get(i).height && posY <= rects.get(i).y) {
-         * Outline outline = (( TypeInferenceView )
-         * CompoundExpressionTypeInference.this.getParent ( ) .getParent (
-         * ).getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-         * .getOutline ( ) ; TypeFormula t =
-         * CompoundExpressionTypeInference.this.typeFormulaList.get ( i ); if (
-         * t instanceof TypeJudgement ) { TypeJudgement typeJudgement = (
-         * TypeJudgement ) t ; if (posX >= expressionPositions.get(i).x && posX <=
-         * expressionPositions.get(i).x+expressionPositions.get(i).width) {
-         * outline.loadPrettyPrintable (typeJudgement.getExpression ( ) ,
-         * Outline.ExecuteMouseClick.TYPEINFERENCE ) ; } if (posX >=
-         * typePositions.get(i).x && posX <=
-         * typePositions.get(i).x+typePositions.get(i).width) {
-         * outline.loadPrettyPrintable (typeJudgement.getType ( ),
-         * Outline.ExecuteMouseClick.TYPEINFERENCE ) ; } } else if ( t
-         * instanceof TypeEquationTypeInference ) { TypeEquationTypeInference
-         * typeEquation = ( TypeEquationTypeInference ) t ; if (posX >=
-         * leftType.get(i).x && posX <= leftType.get(i).x+leftType.get(i).width) {
-         * outline.loadPrettyPrintable ( typeEquation.getLeft ( ) ,
-         * Outline.ExecuteMouseClick.TYPEINFERENCE ) ; } if (posX >=
-         * rightType.get(i).x && posX <=
-         * rightType.get(i).x+rightType.get(i).width) {
-         * outline.loadPrettyPrintable ( typeEquation.getRight ( ) ,
-         * Outline.ExecuteMouseClick.TYPEINFERENCE ) ; } } } }
-         */
       }
     } ) ;
     this.addMouseListener ( new MouseAdapter ( )
@@ -527,7 +496,7 @@ public class CompoundExpressionTypeInference extends JComponent
         String genreateTooltip = "";
 
         //get the Infos about the tooltip from the typeFormularRenderer
-        ArrayList <ArrayList> list = typeFormularRenderer.getAPrettyStrings();
+        ArrayList <ArrayList<PrettyString>> list = typeFormularRenderer.getAPrettyStrings();
         ArrayList <PrettyString> prettyStrings = list.get(i);
 
         //build up the html
@@ -775,13 +744,6 @@ public class CompoundExpressionTypeInference extends JComponent
       result.height = this.typeFormulaSize.height
           + this.substitutionSize.height ;
     }
-    // testAusgabe("Größe der Substitutions: "+substitutionSize.height + ",
-    // "+substitutionSize.width );
-    // testAusgabe("Größe der Typeformulas: "+typeFormulaSize.height+ ",
-    // "+typeFormulaSize.width);
-    // System.out.println("Wir adsdieren einfach mal 33");
-    // TODO dreckiger Workaround...
-    // result.height *= 2;
     return result ;
   }
 
