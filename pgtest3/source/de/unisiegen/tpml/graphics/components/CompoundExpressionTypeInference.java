@@ -531,7 +531,7 @@ public class CompoundExpressionTypeInference extends JComponent
         ArrayList <PrettyString> prettyStrings = list.get(i);
 
         //build up the html
-        genreateTooltip += ("<html> [  ");
+        genreateTooltip += ("<html>");
 
         for (int l = 0; l < prettyStrings.size(); l++)
         {
@@ -541,8 +541,13 @@ public class CompoundExpressionTypeInference extends JComponent
             genreateTooltip += " <br> ";
           }
         }
+        
+        if (prettyStrings.size() == 0)
+        {
+        	genreateTooltip += ("<font size=+1>\u00D8</font>");
+        }
 
-        genreateTooltip += ("  ] </html>");
+        genreateTooltip += ("</html>");
         setToolTipText(genreateTooltip);
       }
     }

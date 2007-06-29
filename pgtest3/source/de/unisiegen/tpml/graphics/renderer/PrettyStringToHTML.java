@@ -26,6 +26,21 @@ public class PrettyStringToHTML
   { "0" , "1" , "2" , "3" , "4" , "5" , "6" , "7" , "8" , "9" , "A" , "B" , //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
       "C" , "D" , "E" , "F" , "00" } ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
   
+  /**
+   * Ampersand replace.
+   */
+  private static final String AMPERSAND_THAN_REPLACE = "&amp" ; //$NON-NLS-1$
+  
+  /**
+   * Lower than replace.
+   */
+  private static final String LOWER_THAN_REPLACE = "&lt" ; //$NON-NLS-1$
+  
+  /**
+   * Greater than replace.
+   */
+  private static final String GREATER_THAN_REPLACE = "&gt" ; //$NON-NLS-1$
+  
   
   /**
    * translates the given PrettyString to a HTML-Coded String
@@ -65,7 +80,7 @@ public class PrettyStringToHTML
           if (lastStyle == it.getStyle ())
           {
             //add the actual char, surrounded with <b> and </b> if needed
-            rb.append (boldAnte+c+boldPost);
+            rb.append (boldAnte+getHTMLCode(c)+boldPost);
           }
           //if the style changed, setup the new one
           else
@@ -89,14 +104,15 @@ public class PrettyStringToHTML
               boldAnte="";
               boldPost="";
             }
-            rb.append (boldAnte+c+boldPost);
+            rb.append (boldAnte+getHTMLCode(c)+boldPost);
+            
           }
           break ;
           //The same preseture with ervery style...
         case IDENTIFIER :
           if (lastStyle == it.getStyle ())
           {
-            rb.append (boldAnte+c+boldPost);
+            rb.append (boldAnte+getHTMLCode(c)+boldPost);
           }
           else
           {
@@ -115,13 +131,13 @@ public class PrettyStringToHTML
               boldAnte="";
               boldPost="";
             }
-            rb.append (boldAnte+c+boldPost);
+            rb.append (boldAnte+getHTMLCode(c)+boldPost);
           }
           break ;
         case NONE :
           if (lastStyle == it.getStyle ())
           {
-            rb.append (boldAnte+c+boldPost);
+            rb.append (boldAnte+getHTMLCode(c)+boldPost);
           }
           else
           {
@@ -140,13 +156,13 @@ public class PrettyStringToHTML
               boldAnte="";
               boldPost="";
             }
-            rb.append (boldAnte+c+boldPost);
+            rb.append (boldAnte+getHTMLCode(c)+boldPost);
           }
           break ;
         case CONSTANT :
           if (lastStyle == it.getStyle ())
           {
-            rb.append (boldAnte+c+boldPost);
+            rb.append (boldAnte+getHTMLCode(c)+boldPost);
           }
           else
           {
@@ -165,7 +181,7 @@ public class PrettyStringToHTML
               boldAnte="";
               boldPost="";
             }
-            rb.append (boldAnte+c+boldPost);
+            rb.append (boldAnte+getHTMLCode(c)+boldPost);
           }
           break ;
         case COMMENT :
@@ -173,7 +189,7 @@ public class PrettyStringToHTML
         case TYPE :
           if (lastStyle == it.getStyle ())
           {
-            rb.append (boldAnte+c+boldPost);
+            rb.append (boldAnte+getHTMLCode(c)+boldPost);
           }
           else
           {
@@ -192,7 +208,7 @@ public class PrettyStringToHTML
               boldAnte="";
               boldPost="";
             }
-            rb.append (boldAnte+c+boldPost);
+            rb.append (boldAnte+getHTMLCode(c)+boldPost);
           }
           break ;
       } 
@@ -245,5 +261,28 @@ public class PrettyStringToHTML
       return HEX_VALUES [ 16 ] ;
     }
     return result.toString ( ) ;
+  }
+  
+  /**
+   * Returns the replaced <code>char</code>.
+   * 
+   * @param pChar Input <code>char</code>.
+   * @return The replaced <code>char</code>.
+   */
+  private static final String getHTMLCode ( char pChar )
+  {
+    if ( pChar == '&' )
+    {
+      return AMPERSAND_THAN_REPLACE ;
+    }
+    if ( pChar == '<' )
+    {
+      return LOWER_THAN_REPLACE ;
+    }
+    if ( pChar == '>' )
+    {
+      return GREATER_THAN_REPLACE ;
+    }
+    return String.valueOf ( pChar ) ;
   }
 }
