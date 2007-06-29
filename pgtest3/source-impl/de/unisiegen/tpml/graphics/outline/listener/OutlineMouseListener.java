@@ -275,7 +275,7 @@ public final class OutlineMouseListener implements MouseListener
           {
             // Do nothing
           }
-          this.defaultOutline.loadPrettyPrintable ( type ,
+          this.defaultOutline.loadType ( type ,
               Outline.ExecuteMouseClick.EDITOR ) ;
         }
       }
@@ -296,7 +296,7 @@ public final class OutlineMouseListener implements MouseListener
           {
             // Do nothing
           }
-          this.textEditorPanel.getOutline ( ).loadPrettyPrintable ( expression ,
+          this.textEditorPanel.getOutline ( ).loadExpression ( expression ,
               Outline.ExecuteMouseClick.EDITOR ) ;
         }
       }
@@ -313,7 +313,7 @@ public final class OutlineMouseListener implements MouseListener
         {
           ( ( TypeCheckerView ) this.typeCheckerNodeComponent.getParent ( )
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).loadPrettyPrintable (
+              .getOutline ( ).loadExpression (
                   this.typeCheckerNodeComponent.getCompoundExpression ( )
                       .getExpression ( ) ,
                   Outline.ExecuteMouseClick.TYPECHECKER ) ;
@@ -326,7 +326,7 @@ public final class OutlineMouseListener implements MouseListener
         {
           ( ( TypeCheckerView ) this.typeCheckerNodeComponent.getParent ( )
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).loadPrettyPrintable (
+              .getOutline ( ).loadExpression (
                   this.typeCheckerNodeComponent.getCompoundExpression ( )
                       .getExpression ( ) ,
                   Outline.ExecuteMouseClick.TYPECHECKER ) ;
@@ -340,7 +340,7 @@ public final class OutlineMouseListener implements MouseListener
           ( ( TypeCheckerView ) this.typeCheckerNodeComponent.getParent ( )
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
               .getOutline ( )
-              .loadPrettyPrintable (
+              .loadType (
                   this.typeCheckerNodeComponent.getTypeComponent ( ).getType ( ) ,
                   Outline.ExecuteMouseClick.TYPECHECKER ) ;
         }
@@ -358,7 +358,7 @@ public final class OutlineMouseListener implements MouseListener
         {
           ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).loadPrettyPrintable (
+              .getOutline ( ).loadExpression (
                   this.minimalTypingNodeComponent.getCompoundExpression ( )
                       .getExpression ( ) ,
                   Outline.ExecuteMouseClick.MINIMALTYPING ) ;
@@ -371,7 +371,7 @@ public final class OutlineMouseListener implements MouseListener
         {
           ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).loadPrettyPrintable (
+              .getOutline ( ).loadExpression (
                   this.minimalTypingNodeComponent.getCompoundExpression ( )
                       .getExpression ( ) ,
                   Outline.ExecuteMouseClick.MINIMALTYPING ) ;
@@ -384,7 +384,7 @@ public final class OutlineMouseListener implements MouseListener
         {
           ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).loadPrettyPrintable (
+              .getOutline ( ).loadType (
                   this.minimalTypingNodeComponent.getTypeComponent ( )
                       .getType ( ) , Outline.ExecuteMouseClick.MINIMALTYPING ) ;
         }
@@ -396,7 +396,7 @@ public final class OutlineMouseListener implements MouseListener
         {
           ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).loadPrettyPrintable (
+              .getOutline ( ).loadType (
                   this.minimalTypingNodeComponent.getTypeComponent2 ( )
                       .getType ( ) , Outline.ExecuteMouseClick.MINIMALTYPING ) ;
         }
@@ -414,12 +414,12 @@ public final class OutlineMouseListener implements MouseListener
         {
           ( ( SubTypingEnterTypes ) this.subTypingNodeComponent.getParent ( )
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline1 ( ).loadPrettyPrintable (
+              .getOutline1 ( ).loadType (
                   this.subTypingNodeComponent.getCompoundExpression ( )
                       .getType1 ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
           ( ( SubTypingEnterTypes ) this.subTypingNodeComponent.getParent ( )
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline2 ( ).loadPrettyPrintable (
+              .getOutline2 ( ).loadType (
                   this.subTypingNodeComponent.getCompoundExpression ( )
                       .getType2 ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
         }
@@ -431,29 +431,27 @@ public final class OutlineMouseListener implements MouseListener
         {
           ( ( SubTypingEnterTypes ) this.subTypingNodeComponent.getParent ( )
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline1 ( ).loadPrettyPrintable (
+              .getOutline1 ( ).loadType (
                   this.subTypingNodeComponent.getCompoundExpression ( )
                       .getType1 ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
           ( ( SubTypingEnterTypes ) this.subTypingNodeComponent.getParent ( )
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline2 ( ).loadPrettyPrintable (
+              .getOutline2 ( ).loadType (
                   this.subTypingNodeComponent.getCompoundExpression ( )
                       .getType2 ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
         }
-        
         /*
          * Type label 2.
          */
         else if ( pMouseEvent.getSource ( ).equals (
-              this.minimalTypingNodeComponent.getTypeComponent2 ( ) ) )
-          {
-            ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
-                .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-                .getOutline ( ).loadPrettyPrintable (
-                    this.minimalTypingNodeComponent.getTypeComponent2 ( )
-                        .getType ( ) ,
-                    Outline.ExecuteMouseClick.MINIMALTYPING ) ;
-          }
+            this.minimalTypingNodeComponent.getTypeComponent2 ( ) ) )
+        {
+          ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline ( ).loadType (
+                  this.minimalTypingNodeComponent.getTypeComponent2 ( )
+                      .getType ( ) , Outline.ExecuteMouseClick.MINIMALTYPING ) ;
+        }
       }
       /*
        * Big step.
@@ -468,7 +466,7 @@ public final class OutlineMouseListener implements MouseListener
         {
           ( ( BigStepView ) this.bigStepNodeComponent.getParent ( )
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).loadPrettyPrintable (
+              .getOutline ( ).loadExpression (
                   this.bigStepNodeComponent.getCompoundExpression ( )
                       .getExpression ( ) , Outline.ExecuteMouseClick.BIGSTEP ) ;
         }
@@ -480,7 +478,7 @@ public final class OutlineMouseListener implements MouseListener
         {
           ( ( BigStepView ) this.bigStepNodeComponent.getParent ( )
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).loadPrettyPrintable (
+              .getOutline ( ).loadExpression (
                   this.bigStepNodeComponent.getCompoundExpression ( )
                       .getExpression ( ) , Outline.ExecuteMouseClick.BIGSTEP ) ;
         }
@@ -492,7 +490,7 @@ public final class OutlineMouseListener implements MouseListener
         {
           ( ( BigStepView ) this.bigStepNodeComponent.getParent ( )
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).loadPrettyPrintable (
+              .getOutline ( ).loadExpression (
                   this.bigStepNodeComponent.getResultCompoundExpression ( )
                       .getExpression ( ) , Outline.ExecuteMouseClick.BIGSTEP ) ;
         }
@@ -510,7 +508,7 @@ public final class OutlineMouseListener implements MouseListener
         {
           ( ( SmallStepView ) this.smallStepNodeComponent.getParent ( )
               .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).loadPrettyPrintable (
+              .getOutline ( ).loadExpression (
                   this.smallStepNodeComponent.getCompoundExpression ( )
                       .getExpression ( ) , Outline.ExecuteMouseClick.SMALLSTEP ) ;
         }

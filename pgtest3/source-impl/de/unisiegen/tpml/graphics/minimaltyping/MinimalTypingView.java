@@ -103,7 +103,7 @@ public class MinimalTypingView extends AbstractProofView
       }
     } ) ;
     this.outline = new DefaultOutline ( this ) ;
-    this.outline.loadPrettyPrintable ( this.proofModel.getRoot ( )
+    this.outline.loadExpression ( this.proofModel.getRoot ( )
         .getLastLeaf ( ).getExpression ( ) ,
         Outline.ExecuteInit.MINIMALTYPING ) ;
     JPanel jPanelOutline = this.outline.getPanel ( ) ;

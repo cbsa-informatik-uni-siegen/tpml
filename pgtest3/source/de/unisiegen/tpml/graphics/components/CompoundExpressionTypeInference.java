@@ -251,7 +251,7 @@ public class CompoundExpressionTypeInference extends JComponent
                     - expressionPositions.get ( i ).height
                 && posY <= expressionPositions.get ( i ).y )
             {
-              outline.loadPrettyPrintable ( typeJudgement.getExpression ( ) ,
+              outline.loadExpression ( typeJudgement.getExpression ( ) ,
                   Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
             }
             // Type
@@ -262,7 +262,7 @@ public class CompoundExpressionTypeInference extends JComponent
                     - typePositions.get ( i ).height
                 && posY <= typePositions.get ( i ).y )
             {
-              outline.loadPrettyPrintable ( typeJudgement.getType ( ) ,
+              outline.loadType ( typeJudgement.getType ( ) ,
                   Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
             }
           }
@@ -275,7 +275,7 @@ public class CompoundExpressionTypeInference extends JComponent
                 && posY >= leftType.get ( i ).y - leftType.get ( i ).height
                 && posY <= leftType.get ( i ).y )
             {
-              outline.loadPrettyPrintable ( typeEquation.getLeft ( ) ,
+              outline.loadType ( typeEquation.getLeft ( ) ,
                   Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
             }
             // Right type
@@ -284,7 +284,7 @@ public class CompoundExpressionTypeInference extends JComponent
                 && posY >= rightType.get ( i ).y - rightType.get ( i ).height
                 && posY <= rightType.get ( i ).y )
             {
-              outline.loadPrettyPrintable ( typeEquation.getRight ( ) ,
+              outline.loadType ( typeEquation.getRight ( ) ,
                   Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
             }
           }

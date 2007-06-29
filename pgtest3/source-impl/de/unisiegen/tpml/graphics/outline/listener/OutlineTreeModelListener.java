@@ -91,26 +91,26 @@ public final class OutlineTreeModelListener implements TreeModelListener
     Object source = pTreeModelEvent.getSource ( ) ;
     if ( source instanceof SmallStepProofModel )
     {
-      this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel
-          .getRoot ( ).getLastLeaf ( ).getExpression ( ) ,
+      this.defaultOutline.loadExpression ( this.expressionProofModel.getRoot ( )
+          .getLastLeaf ( ).getExpression ( ) ,
           Outline.ExecuteAutoChange.SMALLSTEP ) ;
     }
     else if ( source instanceof BigStepProofModel )
     {
-      this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel
-          .getRoot ( ).getLastLeaf ( ).getExpression ( ) ,
+      this.defaultOutline.loadExpression ( this.expressionProofModel.getRoot ( )
+          .getLastLeaf ( ).getExpression ( ) ,
           Outline.ExecuteAutoChange.BIGSTEP ) ;
     }
     else if ( source instanceof TypeCheckerProofModel )
     {
-      this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel
-          .getRoot ( ).getLastLeaf ( ).getExpression ( ) ,
+      this.defaultOutline.loadExpression ( this.expressionProofModel.getRoot ( )
+          .getLastLeaf ( ).getExpression ( ) ,
           Outline.ExecuteAutoChange.TYPECHECKER ) ;
     }
     else if ( source instanceof MinimalTypingProofModel )
     {
-      this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel
-          .getRoot ( ).getLastLeaf ( ).getExpression ( ) ,
+      this.defaultOutline.loadExpression ( this.expressionProofModel.getRoot ( )
+          .getLastLeaf ( ).getExpression ( ) ,
           Outline.ExecuteAutoChange.MINIMALTYPING ) ;
     }
     else if ( source instanceof TypeInferenceProofModel )
@@ -122,13 +122,12 @@ public final class OutlineTreeModelListener implements TreeModelListener
         TypeFormula typeFormula = list.get ( 0 ) ;
         if ( typeFormula instanceof TypeJudgement )
         {
-          this.defaultOutline.loadPrettyPrintable (
-              ( ( TypeJudgement ) typeFormula ).getExpression ( ) ,
-              Outline.ExecuteAutoChange.TYPEINFERENCE ) ;
+          this.defaultOutline.loadExpression ( ( ( TypeJudgement ) typeFormula )
+              .getExpression ( ) , Outline.ExecuteAutoChange.TYPEINFERENCE ) ;
         }
         else if ( typeFormula instanceof TypeEquationTypeInference )
         {
-          this.defaultOutline.loadPrettyPrintable (
+          this.defaultOutline.loadType (
               ( ( TypeEquationTypeInference ) typeFormula ).getLeft ( ) ,
               Outline.ExecuteAutoChange.TYPEINFERENCE ) ;
         }

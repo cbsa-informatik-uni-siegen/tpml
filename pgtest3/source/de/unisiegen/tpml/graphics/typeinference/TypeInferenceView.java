@@ -122,7 +122,7 @@ public class TypeInferenceView extends AbstractProofView
     if ( t instanceof TypeJudgement )
     {
       TypeJudgement typeJudgement = ( TypeJudgement ) t ;
-      this.outline.loadPrettyPrintable ( typeJudgement.getExpression ( ) ,
+      this.outline.loadExpression ( typeJudgement.getExpression ( ) ,
           Outline.ExecuteInit.TYPEINFERENCE ) ;
     }
     JPanel jPanelOutline = this.outline.getPanel ( ) ;
