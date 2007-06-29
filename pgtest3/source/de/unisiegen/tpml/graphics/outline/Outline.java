@@ -3,9 +3,8 @@ package de.unisiegen.tpml.graphics.outline ;
 
 import javax.swing.JPanel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
-import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 
 
 /**
@@ -142,14 +141,6 @@ public interface Outline
 
 
   /**
-   * Returns the {@link OutlinePreferences}.
-   * 
-   * @return The {@link OutlinePreferences}.
-   */
-  public OutlinePreferences getOutlinePreferences ( ) ;
-
-
-  /**
    * Returns the <code>JPanel</code> of the {@link OutlineUI}.
    * 
    * @return The <code>JPanel</code> of the {@link OutlineUI}.
@@ -159,22 +150,22 @@ public interface Outline
 
   /**
    * This method loads a new {@link Expression} into the {@link Outline}. It
-   * checks if the new {@link Expression} is different to the current loaded
-   * {@link Expression}, if not it does nothing and returns. It does also
-   * nothing if the auto update is disabled and the change does not come from a
-   * <code>MouseEvent</code>. In the <code>BigStep</code> and the
-   * <code>TypeChecker</code> view it does also nothing if the change does not
-   * come from a <code>MouseEvent</code>.
+   * does nothing if the auto update is disabled and the change does not come
+   * from a <code>MouseEvent</code>.
    * 
-   * @param pPrettyPrintable The new {@link PrettyPrintable}.
+   * @param pExpression The new {@link Expression}.
    * @param pExecute The {@link Outline.Execute}.
    */
-  public void loadPrettyPrintable ( PrettyPrintable pPrettyPrintable ,
-      Outline.Execute pExecute ) ;
+  public void loadExpression ( Expression pExpression , Outline.Execute pExecute ) ;
 
 
   /**
-   * Repaints the root node and all of its children.
+   * This method loads a new {@link Type} into the {@link Outline}. It does
+   * nothing if the auto update is disabled and the change does not come from a
+   * <code>MouseEvent</code>.
+   * 
+   * @param pType The new {@link Type}.
+   * @param pExecute The {@link Outline.Execute}.
    */
-  public void propertyChanged ( ) ;
+  public void loadType ( Type pType , Outline.Execute pExecute ) ;
 }

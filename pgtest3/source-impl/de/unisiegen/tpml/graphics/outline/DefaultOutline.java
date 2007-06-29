@@ -140,10 +140,9 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * The loaded {@link Expression} to check if the {@link Expression} has
-   * changed.
+   * The loaded input.
    */
-  private PrettyPrintable loadedPrettyPrintable ;
+  private Object loadedInput ;
 
 
   /**
@@ -196,7 +195,7 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( BigStepView pBigStepView )
   {
-    this.loadedPrettyPrintable = null ;
+    this.loadedInput = null ;
     this.rootOutlineNode = null ;
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
@@ -284,7 +283,7 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( MinimalTypingView pMinimalTypingView )
   {
-    this.loadedPrettyPrintable = null ;
+    this.loadedInput = null ;
     this.rootOutlineNode = null ;
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
@@ -374,7 +373,7 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( SmallStepView pSmallStepView )
   {
-    this.loadedPrettyPrintable = null ;
+    this.loadedInput = null ;
     this.rootOutlineNode = null ;
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
@@ -467,7 +466,7 @@ public final class DefaultOutline implements Outline
   public DefaultOutline ( SubTypingEnterTypes pSubTypingEnterTypes ,
       StyledLanguageEditor pStyledLanguageEditor )
   {
-    this.loadedPrettyPrintable = null ;
+    this.loadedInput = null ;
     this.rootOutlineNode = null ;
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
@@ -545,7 +544,7 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( TextEditorPanel pTextEditorPanel )
   {
-    this.loadedPrettyPrintable = null ;
+    this.loadedInput = null ;
     this.rootOutlineNode = null ;
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
@@ -633,7 +632,7 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( TypeCheckerView pTypeCheckerView )
   {
-    this.loadedPrettyPrintable = null ;
+    this.loadedInput = null ;
     this.rootOutlineNode = null ;
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
@@ -723,7 +722,7 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( TypeInferenceView pTypeInferenceView )
   {
-    this.loadedPrettyPrintable = null ;
+    this.loadedInput = null ;
     this.rootOutlineNode = null ;
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
@@ -1237,25 +1236,30 @@ public final class DefaultOutline implements Outline
    */
   public final void execute ( )
   {
-    if ( this.loadedPrettyPrintable == null )
+    if ( this.loadedInput == null )
     {
       return ;
     }
-    if ( this.loadedPrettyPrintable instanceof Expression )
+    if ( this.loadedInput instanceof Expression )
     {
-      Expression expression = ( Expression ) this.loadedPrettyPrintable ;
+      Expression expression = ( Expression ) this.loadedInput ;
       this.outlineUnbound = new OutlineUnbound ( expression ) ;
       this.rootOutlineNode = new OutlineNode ( expression ,
           this.outlineUnbound , OutlineNode.NO_CHILD_INDEX ) ;
       createExpression ( expression , this.rootOutlineNode ) ;
     }
-    else if ( this.loadedPrettyPrintable instanceof Type )
+    else if ( this.loadedInput instanceof Type )
     {
-      Type type = ( Type ) this.loadedPrettyPrintable ;
+      Type type = ( Type ) this.loadedInput ;
       this.outlineUnbound = new OutlineUnbound ( type ) ;
       this.rootOutlineNode = new OutlineNode ( type , this.outlineUnbound ,
           OutlineNode.NO_CHILD_INDEX ) ;
       createType ( type , this.rootOutlineNode ) ;
+    }
+    else
+    {
+      throw new IllegalArgumentException (
+          "Outline: The input is not an Expression or Type!" ) ; //$NON-NLS-1$
     }
     repaint ( this.rootOutlineNode ) ;
     setError ( false ) ;
@@ -1654,25 +1658,35 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * This method loads a new {@link Expression} or {@link Type} into the
-   * {@link Outline}. It checks if the new {@link Expression} is different to
-   * the current loaded {@link Expression}, if not it does nothing and returns.
-   * It does also nothing if the auto update is disabled and the change does not
-   * come from a <code>MouseEvent</code>. In the <code>BigStep</code> and
-   * the <code>TypeChecker</code> view it does also nothing if the change does
-   * not come from a <code>MouseEvent</code>.
+   * This method loads a new {@link Expression} into the {@link Outline}. It
+   * does nothing if the auto update is disabled and the change does not come
+   * from a <code>MouseEvent</code>.
    * 
-   * @param pPrettyPrintable The new {@link PrettyPrintable}.
+   * @param pExpression The new {@link Expression}.
    * @param pExecute The {@link Outline.Execute}.
    */
-  public final void loadPrettyPrintable ( PrettyPrintable pPrettyPrintable ,
+  public final synchronized void loadExpression ( Expression pExpression ,
       Outline.Execute pExecute )
+  {
+    loadInput ( pExpression , pExecute ) ;
+  }
+
+
+  /**
+   * This method loads a new input into the {@link Outline}. It does nothing if
+   * the auto update is disabled and the change does not come from a
+   * <code>MouseEvent</code>.
+   * 
+   * @param pInput The new input.
+   * @param pExecute The {@link Outline.Execute}.
+   */
+  private final void loadInput ( Object pInput , Outline.Execute pExecute )
   {
     /*
      * If the invoke comes from a mouse click on the editor or the auto change
      * is active, the error is set and nothing is loaded.
      */
-    if ( pPrettyPrintable == null )
+    if ( pInput == null )
     {
       executeTimerCancel ( ) ;
       if ( ( this.outlinePreferences.isAutoUpdate ( ) )
@@ -1707,7 +1721,7 @@ public final class DefaultOutline implements Outline
       }
     }
     setError ( false ) ;
-    this.loadedPrettyPrintable = pPrettyPrintable ;
+    this.loadedInput = pInput ;
     executeTimerCancel ( ) ;
     /*
      * Execute the new load of the Expression or the Type immediately, if the
@@ -1771,6 +1785,21 @@ public final class DefaultOutline implements Outline
         }
       }
     }
+  }
+
+
+  /**
+   * This method loads a new {@link Type} into the {@link Outline}. It does
+   * nothing if the auto update is disabled and the change does not come from a
+   * <code>MouseEvent</code>.
+   * 
+   * @param pType The new {@link Type}.
+   * @param pExecute The {@link Outline.Execute}.
+   */
+  public final synchronized void loadType ( Type pType ,
+      Outline.Execute pExecute )
+  {
+    loadInput ( pType , pExecute ) ;
   }
 
 
