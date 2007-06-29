@@ -167,7 +167,7 @@ public class StyledTypeEnterField extends StyledLanguageDocument
           }
         }
       }
-      // check if the scanner is happy
+      // Parse only if the scanner is happy
       if ( tmpExceptions == null )
       {
         // allocate a parser based on a scanner that operates on the previously

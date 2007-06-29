@@ -475,7 +475,8 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * 
    * @throws BadLocationException if the processing failed.
    */
-  @ SuppressWarnings ( "unused" )
+  @ SuppressWarnings (
+  { "unused" , "null" } )
   public void processChanged ( ) throws BadLocationException
   {
     // reset the character attributes
@@ -494,19 +495,25 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
       // collect the tokens returned by the scanner
       final LinkedList < LanguageSymbol > symbols = new LinkedList < LanguageSymbol > ( ) ;
       // determine the tokens for the content
-      for ( ; ; )
+      while ( true )
       {
         try
         {
           // read the next token from the scanner
           LanguageSymbol symbol = scanner.nextSymbol ( ) ;
-          if ( symbol == null ) break ;
+          if ( symbol == null )
+          {
+            break ;
+          }
           // add the token to our list
           symbols.add ( symbol ) ;
           // check if we have an attribute set for the token
           SimpleAttributeSet set = this.attributes.get ( scanner
               .getStyleBySymbol ( symbol ) ) ;
-          if ( set == null ) set = this.normalSet ;
+          if ( set == null )
+          {
+            set = this.normalSet ;
+          }
           // apply the character attribute set
           setCharacterAttributes ( offset + symbol.getLeft ( ) , symbol
               .getRight ( )
@@ -554,147 +561,151 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
           }
         }
       }
-      // allocate a parser based on a scanner that operates on the previously
-      // collected
-      // tokens from the scanner step above...
-      LanguageParser parser = this.language
-          .newParser ( new AbstractLanguageScanner ( )
+      // Parse only if the scanner is happy
+      if ( tmpExceptions == null )
+      {
+        // allocate a parser based on a scanner that operates on the previously
+        // collected
+        // tokens from the scanner step above...
+        LanguageParser parser = this.language
+            .newParser ( new AbstractLanguageScanner ( )
+            {
+              public void restart ( Reader reader )
+              {
+                throw new UnsupportedOperationException ( ) ;
+              }
+
+
+              public LanguageSymbol nextSymbol ( ) throws IOException ,
+                  LanguageScannerException
+              {
+                return ( ! symbols.isEmpty ( ) ) ? symbols.poll ( ) : null ;
+              }
+
+
+              @ Override
+              public PrettyStyle getStyleBySymbolId ( int id )
+              {
+                return ( ( AbstractLanguageScanner ) scanner )
+                    .getStyleBySymbolId ( id ) ;
+              }
+            } ) ;
+        // ...and try to parse the token stream
+        try
+        {
+          Expression expression = parser.parse ( ) ;
+          for ( Identifier id : expression.getIdentifiersFree ( ) )
           {
-            public void restart ( Reader reader )
-            {
-              throw new UnsupportedOperationException ( ) ;
-            }
-
-
-            public LanguageSymbol nextSymbol ( ) throws IOException ,
-                LanguageScannerException
-            {
-              return ( ! symbols.isEmpty ( ) ) ? symbols.poll ( ) : null ;
-            }
-
-
-            @ Override
-            public PrettyStyle getStyleBySymbolId ( int id )
-            {
-              return ( ( AbstractLanguageScanner ) scanner )
-                  .getStyleBySymbolId ( id ) ;
-            }
-          } ) ;
-      // ...and try to parse the token stream
-      try
-      {
-        Expression expression = parser.parse ( ) ;
-        for ( Identifier id : expression.getIdentifiersFree ( ) )
-        {
-          SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
-          StyleConstants.setForeground ( freeSet , Theme.currentTheme ( )
-              .getFreeIdColor ( ) ) ;
-          StyleConstants.setBold ( freeSet , true ) ;
-          freeSet.addAttribute ( "Free Identifier" , "Free Identifier" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-          setCharacterAttributes ( id.getParserStartOffset ( ) , id
-              .getParserEndOffset ( )
-              - id.getParserStartOffset ( ) , freeSet , false ) ;
+            SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
+            StyleConstants.setForeground ( freeSet , Theme.currentTheme ( )
+                .getFreeIdColor ( ) ) ;
+            StyleConstants.setBold ( freeSet , true ) ;
+            freeSet.addAttribute ( "Free Identifier" , "Free Identifier" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+            setCharacterAttributes ( id.getParserStartOffset ( ) , id
+                .getParserEndOffset ( )
+                - id.getParserStartOffset ( ) , freeSet , false ) ;
+          }
+          for ( TypeName typeName : expression.getTypeNamesFree ( ) )
+          {
+            SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
+            StyleConstants.setForeground ( freeSet , Theme.currentTheme ( )
+                .getFreeIdColor ( ) ) ;
+            StyleConstants.setBold ( freeSet , true ) ;
+            freeSet.addAttribute ( "Free TypeName" , "Free TypeName" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+            setCharacterAttributes ( typeName.getParserStartOffset ( ) ,
+                typeName.getParserEndOffset ( )
+                    - typeName.getParserStartOffset ( ) , freeSet , false ) ;
+          }
         }
-        for ( TypeName typeName : expression.getTypeNamesFree ( ) )
+        catch ( LanguageParserMultiException e )
         {
-          SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
-          StyleConstants.setForeground ( freeSet , Theme.currentTheme ( )
-              .getFreeIdColor ( ) ) ;
-          StyleConstants.setBold ( freeSet , true ) ;
-          freeSet.addAttribute ( "Free TypeName" , "Free TypeName" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-          setCharacterAttributes ( typeName.getParserStartOffset ( ) , typeName
-              .getParserEndOffset ( )
-              - typeName.getParserStartOffset ( ) , freeSet , false ) ;
+          String [ ] message = e.getMessages ( ) ;
+          int [ ] startOffset = e.getParserStartOffset ( ) ;
+          int [ ] endOffset = e.getParserEndOffset ( ) ;
+          tmpExceptions = new LanguageParserException [ startOffset.length ] ;
+          for ( int i = 0 ; i < startOffset.length ; i ++ )
+          {
+            tmpExceptions [ i ] = new LanguageParserException ( message [ i ] ,
+                startOffset [ i ] , endOffset [ i ] ) ;
+            SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
+            StyleConstants.setForeground ( errorSet , Color.RED ) ;
+            StyleConstants.setUnderline ( errorSet , true ) ;
+            errorSet.addAttribute ( "exception" , tmpExceptions [ i ] ) ; //$NON-NLS-1$
+            setCharacterAttributes ( startOffset [ i ] , endOffset [ i ]
+                - startOffset [ i ] , errorSet , false ) ;
+          }
         }
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        String [ ] message = e.getMessages ( ) ;
-        int [ ] startOffset = e.getParserStartOffset ( ) ;
-        int [ ] endOffset = e.getParserEndOffset ( ) ;
-        tmpExceptions = new LanguageParserException [ startOffset.length ] ;
-        for ( int i = 0 ; i < startOffset.length ; i ++ )
+        catch ( LanguageParserWarningException e )
         {
-          tmpExceptions [ i ] = new LanguageParserException ( message [ i ] ,
-              startOffset [ i ] , endOffset [ i ] ) ;
+          // setup the warning attribute set
+          SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
+          StyleConstants.setBackground ( errorSet , warningColor ) ;
+          errorSet.addAttribute ( "warning" , e ) ; //$NON-NLS-1$
+          // check if this is unexpected end of file
+          if ( e.getLeft ( ) < 0 && e.getRight ( ) < 0 )
+          {
+            setCharacterAttributes ( getLength ( ) , getLength ( ) , errorSet ,
+                false ) ;
+          }
+          else
+          {
+            // apply the error character attribute set to indicate the syntax
+            // error
+            setCharacterAttributes ( e.getLeft ( ) , e.getRight ( )
+                - e.getLeft ( ) , errorSet , false ) ;
+          }
+          // add the exception to our list
+          if ( tmpExceptions == null )
+          {
+            tmpExceptions = new LanguageScannerException [ ]
+            { new LanguageParserWarningException ( e.getMessage ( ) , e
+                .getRight ( ) , e.getRight ( ) , e.getInsertText ( ) ) } ;
+          }
+          else
+          {
+            LanguageScannerException [ ] newExceptions = new LanguageScannerException [ tmpExceptions.length + 1 ] ;
+            System.arraycopy ( tmpExceptions , 0 , newExceptions , 0 ,
+                tmpExceptions.length ) ;
+            newExceptions [ tmpExceptions.length ] = new LanguageParserWarningException (
+                e.getMessage ( ) , e.getRight ( ) , e.getRight ( ) , e
+                    .getInsertText ( ) ) ;
+            tmpExceptions = newExceptions ;
+          }
+        }
+        catch ( LanguageParserException e )
+        {
+          // setup the error attribute set
           SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
           StyleConstants.setForeground ( errorSet , Color.RED ) ;
           StyleConstants.setUnderline ( errorSet , true ) ;
-          errorSet.addAttribute ( "exception" , tmpExceptions [ i ] ) ; //$NON-NLS-1$
-          setCharacterAttributes ( startOffset [ i ] , endOffset [ i ]
-              - startOffset [ i ] , errorSet , false ) ;
-        }
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        // setup the warning attribute set
-        SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
-        StyleConstants.setBackground ( errorSet , warningColor ) ;
-        errorSet.addAttribute ( "warning" , e ) ; //$NON-NLS-1$
-        // check if this is unexpected end of file
-        if ( e.getLeft ( ) < 0 && e.getRight ( ) < 0 )
-        {
-          setCharacterAttributes ( getLength ( ) , getLength ( ) , errorSet ,
-              false ) ;
-        }
-        else
-        {
-          // apply the error character attribute set to indicate the syntax
-          // error
-          setCharacterAttributes ( e.getLeft ( ) , e.getRight ( )
-              - e.getLeft ( ) , errorSet , false ) ;
-        }
-        // add the exception to our list
-        if ( tmpExceptions == null )
-        {
-          tmpExceptions = new LanguageScannerException [ ]
-          { new LanguageParserWarningException ( e.getMessage ( ) , e
-              .getRight ( ) , e.getRight ( ) , e.getInsertText ( ) ) } ;
-        }
-        else
-        {
-          LanguageScannerException [ ] newExceptions = new LanguageScannerException [ tmpExceptions.length + 1 ] ;
-          System.arraycopy ( tmpExceptions , 0 , newExceptions , 0 ,
-              tmpExceptions.length ) ;
-          newExceptions [ tmpExceptions.length ] = new LanguageParserWarningException (
-              e.getMessage ( ) , e.getRight ( ) , e.getRight ( ) , e
-                  .getInsertText ( ) ) ;
-          tmpExceptions = newExceptions ;
-        }
-      }
-      catch ( LanguageParserException e )
-      {
-        // setup the error attribute set
-        SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
-        StyleConstants.setForeground ( errorSet , Color.RED ) ;
-        StyleConstants.setUnderline ( errorSet , true ) ;
-        errorSet.addAttribute ( "exception" , e ) ; //$NON-NLS-1$
-        // check if this is unexpected end of file
-        if ( e.getLeft ( ) < 0 && e.getRight ( ) < 0 )
-        {
-          setCharacterAttributes ( getLength ( ) , getLength ( ) , errorSet ,
-              false ) ;
-        }
-        else
-        {
-          // apply the error character attribute set to indicate the syntax
-          // error
-          setCharacterAttributes ( e.getLeft ( ) , e.getRight ( )
-              - e.getLeft ( ) , errorSet , false ) ;
-        }
-        // add the exception to our list
-        if ( tmpExceptions == null )
-        {
-          tmpExceptions = new LanguageScannerException [ ]
-          { e } ;
-        }
-        else
-        {
-          LanguageScannerException [ ] newExceptions = new LanguageScannerException [ tmpExceptions.length + 1 ] ;
-          System.arraycopy ( tmpExceptions , 0 , newExceptions , 0 ,
-              tmpExceptions.length ) ;
-          newExceptions [ tmpExceptions.length ] = e ;
-          tmpExceptions = newExceptions ;
+          errorSet.addAttribute ( "exception" , e ) ; //$NON-NLS-1$
+          // check if this is unexpected end of file
+          if ( e.getLeft ( ) < 0 && e.getRight ( ) < 0 )
+          {
+            setCharacterAttributes ( getLength ( ) , getLength ( ) , errorSet ,
+                false ) ;
+          }
+          else
+          {
+            // apply the error character attribute set to indicate the syntax
+            // error
+            setCharacterAttributes ( e.getLeft ( ) , e.getRight ( )
+                - e.getLeft ( ) , errorSet , false ) ;
+          }
+          // add the exception to our list
+          if ( tmpExceptions == null )
+          {
+            tmpExceptions = new LanguageScannerException [ ]
+            { e } ;
+          }
+          else
+          {
+            LanguageScannerException [ ] newExceptions = new LanguageScannerException [ tmpExceptions.length + 1 ] ;
+            System.arraycopy ( tmpExceptions , 0 , newExceptions , 0 ,
+                tmpExceptions.length ) ;
+            newExceptions [ tmpExceptions.length ] = e ;
+            tmpExceptions = newExceptions ;
+          }
         }
       }
     }
