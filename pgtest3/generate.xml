@@ -48,7 +48,7 @@
 		public static final String UI = "${de.unisiegen.tpml.ui.version}";
 		
 		/** The string for a testing project. */
-		public static final String TEST = " (PGTest3)";
+		public static final String TEST = "";
 	};
 		</echo>
 	</target>
