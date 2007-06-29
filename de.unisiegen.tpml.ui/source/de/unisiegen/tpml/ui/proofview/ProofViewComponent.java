@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
+import sun.font.AdvanceCache;
+
 import de.unisiegen.tpml.core.CannotRedoException;
 import de.unisiegen.tpml.core.CannotUndoException;
 import de.unisiegen.tpml.core.ProofModel;
@@ -90,6 +92,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 		}
 		setLayout(new BorderLayout());
 		this.view = view;
+		//TODO Testaugabe System.out.println("View ist: "+view.toString());
 		this.model = model;
 
 		this.model.addPropertyChangeListener(new ModelChangeListener());
@@ -304,6 +307,8 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * @see de.unisiegen.tpml.ui.EditorComponent#setAdvanced(boolean)
 	 */
 	public void setAdvanced(boolean status) {
+		//TODO testaugabe System.out.println("ProofViewComponent bekommt den Advancedwert"+status);
+//	TODO testaugabe System.out.println("an diesen View wird der Advanced-Wert weitergegeben: "+view.toString());
 		this.view.setAdvanced(status);
 	}
 }
