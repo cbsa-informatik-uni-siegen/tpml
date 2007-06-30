@@ -620,7 +620,7 @@ let_rec_error					::= LET:l REC:r epsilon
 								|	LET:l REC IDENTIFIER COLON:c epsilon
 									{: Error.expect("Let-Rec", " \u03C4 = e1 in e2", lleft, cright, "\u03C4 = e<sub>1</sub> in e<sub>2</sub>" ); :}	
 								|	LET:l REC IDENTIFIER COLON type:t epsilon
-									{: Error.expect("Let-Rec", " = e<sub>1</sub> in e<sub>2</sub>", lleft, tright, "= e<sub>1</sub> in e<sub>2</sub>" ); :}			
+									{: Error.expect("Let-Rec", " = e1 in e2", lleft, tright, "= e<sub>1</sub> in e<sub>2</sub>" ); :}			
 								|	LET:l REC IDENTIFIER COLON type EQUAL:e epsilon
 									{: Error.expect("Let-Rec", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER COLON type EQUAL expr:e epsilon

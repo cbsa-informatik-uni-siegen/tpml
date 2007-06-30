@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.parser ;
 
 
 import java.io.StringReader ;
+import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserWarningException ;
 import de.unisiegen.tpml.core.expressions.Expression ;
@@ -1410,6 +1411,293 @@ public class ParserTest
   }
 
 
+  public static boolean parseErrorExpression ( Language pLanguage , String pText )
+  {
+    String text = pText ;
+    try
+    {
+      Expression expression = pLanguage.newParser ( new StringReader ( text ) )
+          .parse ( ) ;
+      System.err.println ( "Successful: \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + expression.getClass ( ).getSimpleName ( ) ) ;
+      System.err.flush ( ) ;
+      return false ;
+    }
+    catch ( LanguageParserMultiException e1 )
+    {
+      System.err.println ( "Multi:      \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + delete ( e1.getMessage ( ) ) ) ;
+      System.err.flush ( ) ;
+      return false ;
+    }
+    catch ( LanguageParserWarningException e1 )
+    {
+      System.out.println ( "Warning:    \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + delete ( e1.getMessage ( ) ) ) ;
+      System.out.flush ( ) ;
+      text = text + e1.getInsertText ( ) ;
+      try
+      {
+        Expression expression = pLanguage
+            .newParser ( new StringReader ( text ) ).parse ( ) ;
+        System.out.println ( "Inserted:   \""
+            + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+            + expression.getClass ( ).getSimpleName ( ) ) ;
+        System.out.flush ( ) ;
+      }
+      catch ( LanguageParserWarningException e2 )
+      {
+        text = text + e2.getInsertText ( ) ;
+        try
+        {
+          Expression expression = pLanguage.newParser (
+              new StringReader ( text ) ).parse ( ) ;
+        }
+        catch ( LanguageParserWarningException e3 )
+        {
+          text = text + e3.getInsertText ( ) ;
+          try
+          {
+            Expression expression = pLanguage.newParser (
+                new StringReader ( text ) ).parse ( ) ;
+            System.out.println ( "Inserted:   \""
+                + fillString ( text + "\"" , max - text.length ( ) + 1 )
+                + "   " + expression.getClass ( ).getSimpleName ( ) ) ;
+            System.out.flush ( ) ;
+          }
+          catch ( Exception e4 )
+          {
+            System.err.println ( "Inserted:   \""
+                + fillString ( text + "\"" , max - text.length ( ) + 1 )
+                + "   " + delete ( e4.getMessage ( ) ) ) ;
+            System.err.flush ( ) ;
+            return false ;
+          }
+        }
+        catch ( Exception e3 )
+        {
+          System.err.println ( "Inserted:   \""
+              + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+              + delete ( e3.getMessage ( ) ) ) ;
+          System.err.flush ( ) ;
+          return false ;
+        }
+      }
+      catch ( Exception e2 )
+      {
+        System.err.println ( "Inserted:   \""
+            + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+            + delete ( e2.getMessage ( ) ) ) ;
+        System.err.flush ( ) ;
+        return false ;
+      }
+    }
+    catch ( LanguageParserException e1 )
+    {
+      System.err.println ( "Parser:     \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + delete ( e1.getMessage ( ) ) ) ;
+      System.err.flush ( ) ;
+      return false ;
+    }
+    catch ( Exception e1 )
+    {
+      System.err.println ( "Exception:  \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + delete ( e1.getMessage ( ) ) ) ;
+      System.err.flush ( ) ;
+      return false ;
+    }
+    return true ;
+  }
+
+
+  public static boolean parseErrorType ( Language pLanguage , String pText )
+  {
+    String text = pText ;
+    try
+    {
+      Type type = pLanguage.newTypeParser ( new StringReader ( text ) )
+          .parse ( ) ;
+      System.err.println ( "Successful: \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + type.getClass ( ).getSimpleName ( ) ) ;
+      System.err.flush ( ) ;
+      return false ;
+    }
+    catch ( LanguageParserMultiException e1 )
+    {
+      System.err.println ( "Multi:      \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + delete ( e1.getMessage ( ) ) ) ;
+      System.err.flush ( ) ;
+      return false ;
+    }
+    catch ( LanguageParserWarningException e1 )
+    {
+      System.out.println ( "Warning:    \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + delete ( e1.getMessage ( ) ) ) ;
+      System.out.flush ( ) ;
+      text = text + e1.getInsertText ( ) ;
+      try
+      {
+        Type type = pLanguage.newTypeParser ( new StringReader ( text ) )
+            .parse ( ) ;
+        System.out.println ( "Inserted:   \""
+            + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+            + type.getClass ( ).getSimpleName ( ) ) ;
+        System.out.flush ( ) ;
+      }
+      catch ( LanguageParserWarningException e2 )
+      {
+        text = text + e2.getInsertText ( ) ;
+        try
+        {
+          Type type = pLanguage.newTypeParser ( new StringReader ( text ) )
+              .parse ( ) ;
+          System.out.println ( "Inserted:   \""
+              + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+              + type.getClass ( ).getSimpleName ( ) ) ;
+          System.out.flush ( ) ;
+        }
+        catch ( Exception e3 )
+        {
+          System.err.println ( "Inserted:   \""
+              + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+              + delete ( e3.getMessage ( ) ) ) ;
+          System.err.flush ( ) ;
+          return false ;
+        }
+      }
+      catch ( Exception e2 )
+      {
+        System.err.println ( "Inserted:   \""
+            + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+            + delete ( e2.getMessage ( ) ) ) ;
+        System.err.flush ( ) ;
+        return false ;
+      }
+    }
+    catch ( LanguageParserException e1 )
+    {
+      System.err.println ( "Parser:     \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + delete ( e1.getMessage ( ) ) ) ;
+      System.err.flush ( ) ;
+      return false ;
+    }
+    catch ( Exception e1 )
+    {
+      System.err.println ( "Exception:  \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + delete ( e1.getMessage ( ) ) ) ;
+      System.err.flush ( ) ;
+      return false ;
+    }
+    return true ;
+  }
+
+
+  public static boolean parseNormalExpression ( Language pLanguage ,
+      String pText )
+  {
+    String text = pText ;
+    try
+    {
+      Expression e = pLanguage.newParser ( new StringReader ( text ) ).parse ( ) ;
+      System.out.println ( "Successful: \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + e.getClass ( ).getSimpleName ( ) ) ;
+      System.out.flush ( ) ;
+    }
+    catch ( LanguageParserMultiException e )
+    {
+      System.err.println ( "Multi:      \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + delete ( e.getMessage ( ) ) ) ;
+      System.err.flush ( ) ;
+      return false ;
+    }
+    catch ( LanguageParserWarningException e )
+    {
+      System.err.println ( "Warning:    \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + delete ( e.getMessage ( ) ) ) ;
+      System.err.flush ( ) ;
+      return false ;
+    }
+    catch ( LanguageParserException e )
+    {
+      System.err.println ( "Parser:     \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + delete ( e.getMessage ( ) ) ) ;
+      System.err.flush ( ) ;
+      return false ;
+    }
+    catch ( Exception e )
+    {
+      System.err.println ( "Exception:  \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + delete ( e.getMessage ( ) ) ) ;
+      System.err.flush ( ) ;
+      return false ;
+    }
+    return true ;
+  }
+
+
+  public static boolean parseNormalType ( Language pLanguage , String pText )
+  {
+    String text = pText ;
+    try
+    {
+      Type type = pLanguage.newTypeParser ( new StringReader ( text ) )
+          .parse ( ) ;
+      System.out.println ( "Successful: \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + type.getClass ( ).getSimpleName ( ) ) ;
+      System.out.flush ( ) ;
+    }
+    catch ( LanguageParserMultiException e )
+    {
+      System.err.println ( "Multi:      \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + delete ( e.getMessage ( ) ) ) ;
+      System.err.flush ( ) ;
+      return false ;
+    }
+    catch ( LanguageParserWarningException e )
+    {
+      System.err.println ( "Warning:    \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + delete ( e.getMessage ( ) ) ) ;
+      System.err.flush ( ) ;
+      return false ;
+    }
+    catch ( LanguageParserException e )
+    {
+      System.err.println ( "Parser:     \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + delete ( e.getMessage ( ) ) ) ;
+      System.err.flush ( ) ;
+      return false ;
+    }
+    catch ( Exception e )
+    {
+      System.err.println ( "Exception:  \""
+          + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+          + delete ( e.getMessage ( ) ) ) ;
+      System.err.flush ( ) ;
+      return false ;
+    }
+    return true ;
+  }
+
+
   public static boolean test_L0 ( )
   {
     boolean l0NormalOkay = test_L0_Normal ( ) ;
@@ -1473,48 +1761,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L0_ERROR )
+    for ( String text : L0_ERROR )
     {
-      try
-      {
-        Expression e = language.newParser ( new StringReader ( s ) ).parse ( ) ;
-        System.err.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + e.getClass ( ).getSimpleName ( ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.out.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseErrorExpression ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -1549,48 +1798,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L0_NORMAL )
+    for ( String text : L0_NORMAL )
     {
-      try
-      {
-        Expression e = language.newParser ( new StringReader ( s ) ).parse ( ) ;
-        System.out.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + e.getClass ( ).getSimpleName ( ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.err.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseNormalExpression ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -1697,48 +1907,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L1_ERROR )
+    for ( String text : L1_ERROR )
     {
-      try
-      {
-        Expression e = language.newParser ( new StringReader ( s ) ).parse ( ) ;
-        System.err.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + e.getClass ( ).getSimpleName ( ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.out.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseErrorExpression ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -1773,48 +1944,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L1_NORMAL )
+    for ( String text : L1_NORMAL )
     {
-      try
-      {
-        Expression e = language.newParser ( new StringReader ( s ) ).parse ( ) ;
-        System.out.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + e.getClass ( ).getSimpleName ( ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.err.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseNormalExpression ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -1849,48 +1981,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L1TYPE_ERROR )
+    for ( String text : L1TYPE_ERROR )
     {
-      try
-      {
-        Type t = language.newTypeParser ( new StringReader ( s ) ).parse ( ) ;
-        System.err.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + t.getClass ( ).getSimpleName ( ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.out.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseErrorType ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -1925,48 +2018,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L1TYPE_NORMAL )
+    for ( String text : L1TYPE_NORMAL )
     {
-      try
-      {
-        Type t = language.newTypeParser ( new StringReader ( s ) ).parse ( ) ;
-        System.out.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + t.getClass ( ).getSimpleName ( ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.err.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseNormalType ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -2073,48 +2127,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L2_ERROR )
+    for ( String text : L2_ERROR )
     {
-      try
-      {
-        Expression e = language.newParser ( new StringReader ( s ) ).parse ( ) ;
-        System.err.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + e.getClass ( ).getSimpleName ( ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.out.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseErrorExpression ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -2149,48 +2164,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L2_NORMAL )
+    for ( String text : L2_NORMAL )
     {
-      try
-      {
-        Expression e = language.newParser ( new StringReader ( s ) ).parse ( ) ;
-        System.out.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + e.getClass ( ).getSimpleName ( ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.err.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseNormalExpression ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -2225,48 +2201,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L2TYPE_ERROR )
+    for ( String text : L2TYPE_ERROR )
     {
-      try
-      {
-        Type t = language.newTypeParser ( new StringReader ( s ) ).parse ( ) ;
-        System.err.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + t.getClass ( ).getSimpleName ( ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.out.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseErrorType ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -2301,48 +2238,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L2TYPE_NORMAL )
+    for ( String text : L2TYPE_NORMAL )
     {
-      try
-      {
-        Type t = language.newTypeParser ( new StringReader ( s ) ).parse ( ) ;
-        System.out.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + t.getClass ( ).getSimpleName ( ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.err.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseNormalType ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -2450,48 +2348,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L2O_ERROR )
+    for ( String text : L2O_ERROR )
     {
-      try
-      {
-        Expression e = language.newParser ( new StringReader ( s ) ).parse ( ) ;
-        System.err.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + e.getClass ( ).getSimpleName ( ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.out.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseErrorExpression ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -2526,48 +2385,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L2O_NORMAL )
+    for ( String text : L2O_NORMAL )
     {
-      try
-      {
-        Expression e = language.newParser ( new StringReader ( s ) ).parse ( ) ;
-        System.out.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + e.getClass ( ).getSimpleName ( ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.err.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseNormalExpression ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -2602,48 +2422,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L2OTYPE_ERROR )
+    for ( String text : L2OTYPE_ERROR )
     {
-      try
-      {
-        Type t = language.newTypeParser ( new StringReader ( s ) ).parse ( ) ;
-        System.err.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + t.getClass ( ).getSimpleName ( ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.out.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseErrorType ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -2678,48 +2459,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L2OTYPE_NORMAL )
+    for ( String text : L2OTYPE_NORMAL )
     {
-      try
-      {
-        Type t = language.newTypeParser ( new StringReader ( s ) ).parse ( ) ;
-        System.out.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + t.getClass ( ).getSimpleName ( ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.err.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseNormalType ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -2826,48 +2568,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L3_ERROR )
+    for ( String text : L3_ERROR )
     {
-      try
-      {
-        Expression e = language.newParser ( new StringReader ( s ) ).parse ( ) ;
-        System.err.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + e.getClass ( ).getSimpleName ( ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.out.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseErrorExpression ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -2902,48 +2605,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L3_NORMAL )
+    for ( String text : L3_NORMAL )
     {
-      try
-      {
-        Expression e = language.newParser ( new StringReader ( s ) ).parse ( ) ;
-        System.out.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + e.getClass ( ).getSimpleName ( ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.err.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseNormalExpression ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -2978,48 +2642,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L3TYPE_ERROR )
+    for ( String text : L3TYPE_ERROR )
     {
-      try
-      {
-        Type t = language.newTypeParser ( new StringReader ( s ) ).parse ( ) ;
-        System.err.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + t.getClass ( ).getSimpleName ( ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.out.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseErrorType ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -3054,48 +2679,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L3TYPE_NORMAL )
+    for ( String text : L3TYPE_NORMAL )
     {
-      try
-      {
-        Type t = language.newTypeParser ( new StringReader ( s ) ).parse ( ) ;
-        System.out.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + t.getClass ( ).getSimpleName ( ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.err.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseNormalType ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -3202,48 +2788,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L4_ERROR )
+    for ( String text : L4_ERROR )
     {
-      try
-      {
-        Expression e = language.newParser ( new StringReader ( s ) ).parse ( ) ;
-        System.err.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + e.getClass ( ).getSimpleName ( ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.out.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseErrorExpression ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -3278,48 +2825,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L4_NORMAL )
+    for ( String text : L4_NORMAL )
     {
-      try
-      {
-        Expression e = language.newParser ( new StringReader ( s ) ).parse ( ) ;
-        System.out.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + e.getClass ( ).getSimpleName ( ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.err.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseNormalExpression ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -3354,48 +2862,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L4TYPE_ERROR )
+    for ( String text : L4TYPE_ERROR )
     {
-      try
-      {
-        Type t = language.newTypeParser ( new StringReader ( s ) ).parse ( ) ;
-        System.err.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + t.getClass ( ).getSimpleName ( ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.out.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseErrorType ( language , text ) && okay ;
     }
     if ( okay )
     {
@@ -3430,48 +2899,9 @@ public class ParserTest
       return false ;
     }
     boolean okay = true ;
-    for ( String s : L4TYPE_NORMAL )
+    for ( String text : L4TYPE_NORMAL )
     {
-      try
-      {
-        Type t = language.newTypeParser ( new StringReader ( s ) ).parse ( ) ;
-        System.out.println ( "Successful: \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + t.getClass ( ).getSimpleName ( ) ) ;
-        System.out.flush ( ) ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        System.err.println ( "Multi:      \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserWarningException e )
-      {
-        System.err.println ( "Warning:    \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( LanguageParserException e )
-      {
-        System.err.println ( "Parser:     \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
-      catch ( Exception e )
-      {
-        System.err.println ( "Exception:  \""
-            + fillString ( s + "\"" , max - s.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
-        okay = false ;
-      }
+      okay = parseNormalType ( language , text ) && okay ;
     }
     if ( okay )
     {
