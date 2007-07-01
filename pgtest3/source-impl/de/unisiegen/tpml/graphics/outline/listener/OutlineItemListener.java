@@ -105,7 +105,7 @@ public final class OutlineItemListener implements ItemListener
    */
   private final void highlightSourceCode ( boolean pSelected )
   {
-    this.defaultOutline.updateHighlighSourceCode ( ) ;
+    this.defaultOutline.updateHighlighSourceCode ( pSelected ) ;
     this.defaultOutline.getOutlinePreferences ( ).setHighlightSourceCode (
         pSelected ) ;
     this.defaultOutline.getOutlineUI ( ).getJCheckBoxHighlightSourceCode ( )

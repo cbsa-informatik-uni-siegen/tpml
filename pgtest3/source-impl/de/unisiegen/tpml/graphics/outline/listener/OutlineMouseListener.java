@@ -254,7 +254,7 @@ public final class OutlineMouseListener implements MouseListener
               && ( ( pMouseEvent.getClickCount ( ) >= 2 ) || ( this.defaultOutline
                   .getOutlinePreferences ( ).isHighlightSourceCode ( ) ) ) )
           {
-            this.defaultOutline.updateHighlighSourceCode ( ) ;
+            this.defaultOutline.updateHighlighSourceCode ( true ) ;
           }
         }
       }

@@ -2191,15 +2191,12 @@ public final class DefaultOutline implements Outline
 
   /**
    * Updates the highlighting of the source code.
+   * 
+   * @param pSelected The selection of the <code>JCheckBox</code> selection or
+   *          the <code>JCheckBoxMenuItem</code> selection.
    */
-  public final void updateHighlighSourceCode ( )
+  public final void updateHighlighSourceCode ( boolean pSelected )
   {
-    TreePath treePath = this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ;
-    if ( treePath == null )
-    {
-      return ;
-    }
-    OutlineNode outlineNode = ( OutlineNode ) treePath.getLastPathComponent ( ) ;
     StyledLanguageDocument document ;
     if ( this.textEditorPanel != null )
     {
@@ -2214,41 +2211,45 @@ public final class DefaultOutline implements Outline
     {
       return ;
     }
-    if ( outlineNode.getPrettyPrintable ( ) instanceof Expression )
+    try
     {
-      try
-      {
-        document.processChanged ( ) ;
-      }
-      catch ( BadLocationException e )
-      {
-        // Do nothing
-      }
-      Expression expression = ( Expression ) outlineNode.getPrettyPrintable ( ) ;
-      SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
-      StyleConstants.setBackground ( freeSet , Color.YELLOW ) ;
-      freeSet.addAttribute ( "selected" , "selected" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-      document.setCharacterAttributes ( expression.getParserStartOffset ( ) ,
-          expression.getParserEndOffset ( )
-              - expression.getParserStartOffset ( ) , freeSet , false ) ;
+      document.processChanged ( ) ;
     }
-    else if ( outlineNode.getPrettyPrintable ( ) instanceof Type )
+    catch ( BadLocationException e )
     {
-      try
+      // Do nothing
+    }
+    if ( pSelected )
+    {
+      TreePath treePath = this.outlineUI.getJTreeOutline ( )
+          .getSelectionPath ( ) ;
+      if ( treePath == null )
       {
-        document.processChanged ( ) ;
+        return ;
       }
-      catch ( BadLocationException e )
+      OutlineNode outlineNode = ( OutlineNode ) treePath
+          .getLastPathComponent ( ) ;
+      if ( outlineNode.getPrettyPrintable ( ) instanceof Expression )
       {
-        // Do nothing
+        Expression expression = ( Expression ) outlineNode
+            .getPrettyPrintable ( ) ;
+        SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
+        StyleConstants.setBackground ( freeSet , Color.YELLOW ) ;
+        freeSet.addAttribute ( "selected" , "selected" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        document.setCharacterAttributes ( expression.getParserStartOffset ( ) ,
+            expression.getParserEndOffset ( )
+                - expression.getParserStartOffset ( ) , freeSet , false ) ;
       }
-      Type type = ( Type ) outlineNode.getPrettyPrintable ( ) ;
-      SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
-      StyleConstants.setBackground ( freeSet , Color.YELLOW ) ;
-      freeSet.addAttribute ( "selected" , "selected" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-      document.setCharacterAttributes ( type.getParserStartOffset ( ) , type
-          .getParserEndOffset ( )
-          - type.getParserStartOffset ( ) , freeSet , false ) ;
+      else if ( outlineNode.getPrettyPrintable ( ) instanceof Type )
+      {
+        Type type = ( Type ) outlineNode.getPrettyPrintable ( ) ;
+        SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
+        StyleConstants.setBackground ( freeSet , Color.YELLOW ) ;
+        freeSet.addAttribute ( "selected" , "selected" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        document.setCharacterAttributes ( type.getParserStartOffset ( ) , type
+            .getParserEndOffset ( )
+            - type.getParserStartOffset ( ) , freeSet , false ) ;
+      }
     }
   }
 
