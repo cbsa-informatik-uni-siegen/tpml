@@ -105,7 +105,7 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       if ( objectExpr.getE ( ) instanceof Row )
       {
         Row row = ( Row ) objectExpr.getE ( ) ;
-        if ( row.getNumberOfMethods ( ) != rowType.getTypes ( ).length )
+        if ( row.getNumberOfDifferentMethods ( ) != rowType.getTypes ( ).length )
         {
           throw new RuntimeException (
               MessageFormat

@@ -273,6 +273,40 @@ public final class Row extends Expression implements DefaultExpressions
 
 
   /**
+   * Returns the number of child {@link Method}s or {@link CurriedMethod}s.
+   * 
+   * @return The number of child {@link Method}s or {@link CurriedMethod}s.
+   */
+  public int getNumberOfDifferentMethods ( )
+  {
+    int count = 0 ;
+    ArrayList < Identifier > list = new ArrayList < Identifier > ( ) ;
+    for ( Expression expression : this.expressions )
+    {
+      if ( expression instanceof Method )
+      {
+        Method method = ( Method ) expression ;
+        if ( ! list.contains ( method.getId ( ) ) )
+        {
+          list.add ( method.getId ( ) ) ;
+          count ++ ;
+        }
+      }
+      else if ( expression instanceof CurriedMethod )
+      {
+        CurriedMethod curriedMethod = ( CurriedMethod ) expression ;
+        if ( ! list.contains ( curriedMethod.getIdentifiers ( ) [ 0 ] ) )
+        {
+          list.add ( curriedMethod.getIdentifiers ( ) [ 0 ] ) ;
+          count ++ ;
+        }
+      }
+    }
+    return count ;
+  }
+
+
+  /**
    * Returns the prefix of this {@link Expression}.
    * 
    * @return The prefix of this {@link Expression}.
