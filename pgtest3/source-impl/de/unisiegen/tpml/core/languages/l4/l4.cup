@@ -76,13 +76,19 @@ terminal			BARBAR;
 terminal			NOT;
 
 /* Syntactic */
-terminal			ARROW, COLON, COMMA, DOT;
-terminal			SEMI;
-terminal			LPAREN, RPAREN;
-terminal			LBRACKET, RBRACKET;
+terminal			ARROW;
+terminal			COLON;
+terminal			DOT;
+terminal			LPAREN;
+terminal			RPAREN;
 terminal			PARENPAREN;
+terminal			COMMA;
+terminal			SEMI;
+terminal			LBRACKET;
+terminal			RBRACKET;
 terminal			BRACKETBRACKET;
-terminal			COLONEQUAL, EXCLAMATION;
+terminal			COLONEQUAL;
+terminal			EXCLAMATION;
 
 /* Keywords */
 terminal			LAMBDA;
@@ -801,12 +807,12 @@ multi_lambda_list				::=	multi_lambda_list:l COMMA IDENTIFIER:id
 						   			:}
 								|	IDENTIFIER:id
 									{: RESULT = new Identifier[] { new Identifier(id,idleft,idright) }; :}
-						   		|	multi_lambda_list_error
+								|	multi_lambda_list_error
 						   			{: :}
 								;
 
 multi_lambda_list_error			::=	multi_lambda_list:m COMMA:c epsilon
-									{: Error.expect("Multi-Lambda", "id).e", mleft, cright, "id<sub>i</sub>, ... ,id<sub>n</sub>).e", "id<sub>i</sub>, ... ,id<sub>n</sub>): \u03C4.e"); :}
+									{: Error.expect("Multi-Lambda", " id).e", mleft, cright, "id<sub>i</sub>, ... ,id<sub>n</sub>).e", "id<sub>i</sub>, ... ,id<sub>n</sub>): \u03C4.e"); :}
 								;
 
 multi_let						::= LET:l LPAREN multi_let_list:il RPAREN EQUAL expr:e1 IN expr:e2
@@ -1070,7 +1076,7 @@ simple_expr						::=	constant:c
 								|	list:l
 									{: RESULT = l; :}
 								|	simple_expr_error
-									{: :}								
+									{: :}
 								;
 
 simple_expr_error				::= LPAREN:l expr:e epsilon

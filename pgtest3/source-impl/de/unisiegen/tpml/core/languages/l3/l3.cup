@@ -106,7 +106,7 @@ terminal String		IDENTIFIER;
 terminal			COMMENT;
 terminal Integer[]	PROJECTION;
 
-/* Non terminals - Expression */
+/* Non terminal - Expression */
 non terminal Expression				expr;
 non terminal Expression				simple_expr;
 non terminal Expression[]			simple_expr_list;

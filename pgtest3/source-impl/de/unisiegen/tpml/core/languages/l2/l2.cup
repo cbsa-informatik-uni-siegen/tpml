@@ -77,7 +77,7 @@ terminal Integer	TYPEVARIABLE;
 terminal String		IDENTIFIER;
 terminal			COMMENT;
 
-/* Non terminals - Expression */
+/* Non terminal - Expression */
 non terminal Expression				expr;
 non terminal Expression				simple_expr;
 non terminal Expression[]			simple_expr_list;
