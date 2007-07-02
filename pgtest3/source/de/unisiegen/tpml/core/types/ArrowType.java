@@ -263,6 +263,7 @@ public final class ArrowType extends MonoType implements DefaultTypes
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_ARROW_TAU1 ) ;
       this.prettyStringBuilder.addText ( " \u2192 " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_ARROW_TAU2 ) ;

@@ -254,6 +254,10 @@ public final class TupleType extends MonoType implements DefaultTypes
         this.prettyStringBuilder.addBuilder ( this.types [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_TUPLE_TAU ) ;
+        if ( i != this.types.length - 1 )
+        {
+          this.prettyStringBuilder.addBreak ( ) ;
+        }
       }
     }
     return this.prettyStringBuilder ;

@@ -383,6 +383,7 @@ public final class RecType extends MonoType implements DefaultTypes ,
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_REC_TYPE_TYPE_NAME ) ;
       this.prettyStringBuilder.addText ( "." ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_REC_TYPE_TAU ) ;

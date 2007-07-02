@@ -678,6 +678,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
       }
       if ( this.remainingRowType != null )
       {
+        this.prettyStringBuilder.addBreak ( ) ;
         this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
         this.prettyStringBuilder.addBuilder ( this.remainingRowType
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
