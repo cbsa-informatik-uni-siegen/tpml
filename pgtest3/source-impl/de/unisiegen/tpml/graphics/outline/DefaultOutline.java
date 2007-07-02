@@ -20,6 +20,13 @@ import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Method ;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.BoundTypeNames ;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypeNames ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.interfaces.SortedChildren ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes ;
@@ -828,39 +835,32 @@ public final class DefaultOutline implements Outline
     int [ ] typesIndex = null ;
     // Sorted Children
     PrettyPrintable [ ] sortedChildren = null ;
-    // Invoke methods
-    for ( Class < ? > currentInterface : pExpression.getClass ( )
-        .getInterfaces ( ) )
+    // The Expression has one or more child Expressions
+    if ( pExpression instanceof DefaultExpressions )
     {
-      if ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.DefaultExpressions.class ) )
-      {
-        expressionsIndex = getIndex ( pExpression , GET_EXPRESSIONS_INDEX ) ;
-      }
-      else if ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.DefaultIdentifiers.class ) )
-      {
-        identifiersIndex = getIndex ( pExpression , GET_IDENTIFIERS_INDEX ) ;
-        identifiers = getIdentifiers ( pExpression ) ;
-      }
-      else if ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.BoundIdentifiers.class ) )
-      {
-        identifiersIndex = getIndex ( pExpression , GET_IDENTIFIERS_INDEX ) ;
-        identifiers = getIdentifiers ( pExpression ) ;
-        identifiersBound = getIdentifiersBound ( pExpression ) ;
-      }
-      else if ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypes.class ) )
-      {
-        typesIndex = getIndex ( pExpression , GET_TYPES_INDEX ) ;
-        types = getTypes ( pExpression ) ;
-      }
-      else if ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.SortedChildren.class ) )
-      {
-        sortedChildren = getSortedChildren ( pExpression ) ;
-      }
+      expressionsIndex = invokeExpressionsIndex ( ( DefaultExpressions ) pExpression ) ;
+    }
+    // The Expresion has one or more Identifiers
+    if ( pExpression instanceof DefaultIdentifiers )
+    {
+      identifiersIndex = invokeIdentifiersIndex ( ( DefaultIdentifiers ) pExpression ) ;
+      identifiers = invokeIdentifiers ( ( DefaultIdentifiers ) pExpression ) ;
+    }
+    // The Expression has one or more Identifiers which bind other Identifiers
+    if ( pExpression instanceof BoundIdentifiers )
+    {
+      identifiersBound = invokeIdentifiersBound ( ( BoundIdentifiers ) pExpression ) ;
+    }
+    // The Expression has one or more Types.
+    if ( pExpression instanceof DefaultTypes )
+    {
+      typesIndex = invokeTypesIndex ( ( DefaultTypes ) pExpression ) ;
+      types = invokeTypes ( ( DefaultTypes ) pExpression ) ;
+    }
+    // The Expression has sorted children.
+    if ( pExpression instanceof SortedChildren )
+    {
+      sortedChildren = invokeSortedChildren ( ( SortedChildren ) pExpression ) ;
     }
     OutlineNode outlineNodeId ;
     OutlineNode outlineNodeType ;
@@ -1054,38 +1054,33 @@ public final class DefaultOutline implements Outline
     int [ ] typeNamesIndex = null ;
     // Bound TypeName
     ArrayList < ArrayList < TypeName >> typeNamesBound = null ;
-    for ( Class < ? > currentInterface : pType.getClass ( ).getInterfaces ( ) )
+    // The Type has one or more Types.
+    if ( pType instanceof DefaultTypes )
     {
-      if ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypes.class ) )
-      {
-        typesIndex = getIndex ( pType , GET_TYPES_INDEX ) ;
-        types = getTypes ( pType ) ;
-      }
-      else if ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.DefaultIdentifiers.class ) )
-      {
-        identifiersIndex = getIndex ( pType , GET_IDENTIFIERS_INDEX ) ;
-        identifiers = getIdentifiers ( pType ) ;
-      }
-      else if ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.SortedChildren.class ) )
-      {
-        sortedChildren = getSortedChildren ( pType ) ;
-      }
-      else if ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypeNames.class ) )
-      {
-        typeNamesIndex = getIndex ( pType , GET_TYPE_NAMES_INDEX ) ;
-        typeNames = getTypeNames ( pType ) ;
-      }
-      else if ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.BoundTypeNames.class ) )
-      {
-        typeNamesIndex = getIndex ( pType , GET_TYPE_NAMES_INDEX ) ;
-        typeNames = getTypeNames ( pType ) ;
-        typeNamesBound = getTypeNamesBound ( pType ) ;
-      }
+      typesIndex = invokeTypesIndex ( ( DefaultTypes ) pType ) ;
+      types = invokeTypes ( ( DefaultTypes ) pType ) ;
+    }
+    // The Type has one or more Identifiers
+    if ( pType instanceof DefaultIdentifiers )
+    {
+      identifiersIndex = invokeIdentifiersIndex ( ( DefaultIdentifiers ) pType ) ;
+      identifiers = invokeIdentifiers ( ( DefaultIdentifiers ) pType ) ;
+    }
+    // The Type has one or more TypeNames
+    if ( pType instanceof DefaultTypeNames )
+    {
+      typeNamesIndex = invokeTypeNamesIndex ( ( DefaultTypeNames ) pType ) ;
+      typeNames = invokeTypeNames ( ( DefaultTypeNames ) pType ) ;
+    }
+    // The Type has one or more TypeNames which bind other TypeNames
+    if ( pType instanceof BoundTypeNames )
+    {
+      typeNamesBound = invokeTypeNamesBound ( ( BoundTypeNames ) pType ) ;
+    }
+    // The Type has sorted children.
+    if ( pType instanceof SortedChildren )
+    {
+      sortedChildren = invokeSortedChildren ( ( SortedChildren ) pType ) ;
     }
     OutlineNode outlineNodeType ;
     OutlineNode outlineNodeTypeName ;
@@ -1234,12 +1229,14 @@ public final class DefaultOutline implements Outline
   /**
    * Execute the rebuild of a new tree in the {@link Outline}.
    */
-  public final void execute ( )
+  public final synchronized void execute ( )
   {
+    // If nothing is loaded, nothing is done
     if ( this.loadedInput == null )
     {
       return ;
     }
+    // Load a new Expression into the outline
     if ( this.loadedInput instanceof Expression )
     {
       Expression expression = ( Expression ) this.loadedInput ;
@@ -1248,6 +1245,7 @@ public final class DefaultOutline implements Outline
           this.outlineUnbound , OutlineNode.NO_CHILD_INDEX ) ;
       createExpression ( expression , this.rootOutlineNode ) ;
     }
+    // Load a new Type into the outline
     else if ( this.loadedInput instanceof Type )
     {
       Type type = ( Type ) this.loadedInput ;
@@ -1256,6 +1254,7 @@ public final class DefaultOutline implements Outline
           OutlineNode.NO_CHILD_INDEX ) ;
       createType ( type , this.rootOutlineNode ) ;
     }
+    // Throw an exception if something different should be loaded.
     else
     {
       throw new IllegalArgumentException (
@@ -1270,7 +1269,7 @@ public final class DefaultOutline implements Outline
   /**
    * Cancels the execute <code>Timer</code>.
    */
-  private final void executeTimerCancel ( )
+  private final synchronized void executeTimerCancel ( )
   {
     if ( this.outlineTimer != null )
     {
@@ -1287,133 +1286,14 @@ public final class DefaultOutline implements Outline
    * 
    * @param pDelay Delay in milliseconds before task is to be executed.
    */
-  private final void executeTimerStart ( int pDelay )
+  private final synchronized void executeTimerStart ( int pDelay )
   {
     if ( pDelay < 0 )
     {
-      throw new RuntimeException ( "Delay is smaller than 0" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "Delay is smaller than 0" ) ; //$NON-NLS-1$
     }
     this.outlineTimer = new Timer ( ) ;
     this.outlineTimer.schedule ( new OutlineTimerTask ( this ) , pDelay ) ;
-  }
-
-
-  /**
-   * Returns the array of {@link Identifier}s from the given {@link Expression}
-   * or {@link Type}.
-   * 
-   * @param pInvokedFrom The {@link Expression} or {@link Type}.
-   * @return The array of {@link Identifier}s.
-   */
-  private final Identifier [ ] getIdentifiers ( Object pInvokedFrom )
-  {
-    try
-    {
-      return ( Identifier [ ] ) pInvokedFrom.getClass ( ).getMethod (
-          GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( pInvokedFrom ,
-          new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
-  }
-
-
-  /**
-   * Returns the array of bound {@link Identifier}s from the given
-   * {@link Expression} or {@link Type}.
-   * 
-   * @param pInvokedFrom The {@link Expression} or {@link Type}.
-   * @return The array of bound {@link Identifier}s.
-   */
-  @ SuppressWarnings ( "unchecked" )
-  private final ArrayList < ArrayList < Identifier >> getIdentifiersBound (
-      Object pInvokedFrom )
-  {
-    try
-    {
-      return ( ArrayList < ArrayList < Identifier >> ) pInvokedFrom.getClass ( )
-          .getMethod ( GET_IDENTIFIERS_BOUND , new Class [ 0 ] ).invoke (
-              pInvokedFrom , new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
-  }
-
-
-  /**
-   * Returns the array of indices from the given {@link Expression} or
-   * {@link Type}.
-   * 
-   * @param pInvokedFrom The {@link Expression} or {@link Type}.
-   * @param pMethod The name of the method which should be invoked.
-   * @return The array of indices.
-   */
-  private final int [ ] getIndex ( Object pInvokedFrom , String pMethod )
-  {
-    try
-    {
-      return ( int [ ] ) pInvokedFrom.getClass ( ).getMethod ( pMethod ,
-          new Class [ 0 ] ).invoke ( pInvokedFrom , new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
   }
 
 
@@ -1466,45 +1346,6 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * Returns the array of the sorted children from the given {@link Expression}
-   * or {@link Type}.
-   * 
-   * @param pInvokedFrom The {@link Expression} or {@link Type}.
-   * @return The array of the sorted children.
-   */
-  private final PrettyPrintable [ ] getSortedChildren ( Object pInvokedFrom )
-  {
-    try
-    {
-      return ( PrettyPrintable [ ] ) pInvokedFrom.getClass ( ).getMethod (
-          GET_SORTED_CHILDREN , new Class [ 0 ] ).invoke ( pInvokedFrom ,
-          new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
-  }
-
-
-  /**
    * Returns the styledLanguageEditor.
    * 
    * @return The styledLanguageEditor.
@@ -1541,18 +1382,58 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * Returns the array of {@link TypeName}s from the given {@link Expression}
-   * or {@link Type}.
+   * Returns the array of indices from the given {@link DefaultExpressions}.
    * 
-   * @param pInvokedFrom The {@link Expression} or {@link Type}.
-   * @return The array of {@link TypeName}s.
+   * @param pDefaultExpressions The {@link DefaultExpressions}.
+   * @return The array of indices.
    */
-  private final TypeName [ ] getTypeNames ( Object pInvokedFrom )
+  private final int [ ] invokeExpressionsIndex (
+      DefaultExpressions pDefaultExpressions )
   {
     try
     {
-      return ( TypeName [ ] ) pInvokedFrom.getClass ( ).getMethod (
-          GET_TYPE_NAMES , new Class [ 0 ] ).invoke ( pInvokedFrom ,
+      return ( int [ ] ) pDefaultExpressions.getClass ( ).getMethod (
+          GET_EXPRESSIONS_INDEX , new Class [ 0 ] ).invoke (
+          pDefaultExpressions , new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
+  }
+
+
+  /**
+   * Returns the array of {@link Identifier}s from the given
+   * {@link DefaultIdentifiers}.
+   * 
+   * @param pDefaultIdentifiers The {@link DefaultIdentifiers}.
+   * @return The array of {@link Identifier}s.
+   */
+  private final Identifier [ ] invokeIdentifiers (
+      DefaultIdentifiers pDefaultIdentifiers )
+  {
+    try
+    {
+      return ( Identifier [ ] ) pDefaultIdentifiers.getClass ( ).getMethod (
+          GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( pDefaultIdentifiers ,
           new Object [ 0 ] ) ;
     }
     catch ( IllegalArgumentException e )
@@ -1580,20 +1461,21 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * Returns the array of bound {@link TypeName}s from the given {@link Type}.
+   * Returns a list of lists of bound {@link Identifier}s from the given
+   * {@link BoundIdentifiers}.
    * 
-   * @param pInvokedFrom The {@link Type}.
-   * @return The array of bound {@link TypeName}s.
+   * @param pBoundIdentifiers The {@link BoundIdentifiers}.
+   * @return A list of list of bound {@link Identifier}s.
    */
   @ SuppressWarnings ( "unchecked" )
-  private final ArrayList < ArrayList < TypeName >> getTypeNamesBound (
-      Object pInvokedFrom )
+  private final ArrayList < ArrayList < Identifier >> invokeIdentifiersBound (
+      BoundIdentifiers pBoundIdentifiers )
   {
     try
     {
-      return ( ArrayList < ArrayList < TypeName >> ) pInvokedFrom.getClass ( )
-          .getMethod ( GET_TYPE_NAMES_BOUND , new Class [ 0 ] ).invoke (
-              pInvokedFrom , new Object [ 0 ] ) ;
+      return ( ArrayList < ArrayList < Identifier >> ) pBoundIdentifiers
+          .getClass ( ).getMethod ( GET_IDENTIFIERS_BOUND , new Class [ 0 ] )
+          .invoke ( pBoundIdentifiers , new Object [ 0 ] ) ;
     }
     catch ( IllegalArgumentException e )
     {
@@ -1620,18 +1502,254 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * Returns the array of the types from the given {@link Expression} or
-   * {@link Type}.
+   * Returns the array of indices from the given {@link DefaultIdentifiers}.
    * 
-   * @param pInvokedFrom The {@link Expression} or {@link Type}.
-   * @return The array of the types.
+   * @param pDefaultIdentifiers The {@link DefaultIdentifiers}.
+   * @return The array of indices.
    */
-  private final MonoType [ ] getTypes ( Object pInvokedFrom )
+  private final int [ ] invokeIdentifiersIndex (
+      DefaultIdentifiers pDefaultIdentifiers )
   {
     try
     {
-      return ( MonoType [ ] ) pInvokedFrom.getClass ( ).getMethod ( GET_TYPES ,
-          new Class [ 0 ] ).invoke ( pInvokedFrom , new Object [ 0 ] ) ;
+      return ( int [ ] ) pDefaultIdentifiers.getClass ( ).getMethod (
+          GET_IDENTIFIERS_INDEX , new Class [ 0 ] ).invoke (
+          pDefaultIdentifiers , new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
+  }
+
+
+  /**
+   * Returns the array of the sorted children from the given
+   * {@link SortedChildren}.
+   * 
+   * @param pSortedChildren The {@link SortedChildren}.
+   * @return The array of the sorted children.
+   */
+  private final PrettyPrintable [ ] invokeSortedChildren (
+      SortedChildren pSortedChildren )
+  {
+    try
+    {
+      return ( PrettyPrintable [ ] ) pSortedChildren.getClass ( ).getMethod (
+          GET_SORTED_CHILDREN , new Class [ 0 ] ).invoke ( pSortedChildren ,
+          new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
+  }
+
+
+  /**
+   * Returns the array of {@link TypeName}s from the given
+   * {@link DefaultTypeNames}.
+   * 
+   * @param pDefaultTypeNames The {@link DefaultTypeNames}.
+   * @return The array of {@link TypeName}s.
+   */
+  private final TypeName [ ] invokeTypeNames (
+      DefaultTypeNames pDefaultTypeNames )
+  {
+    try
+    {
+      return ( TypeName [ ] ) pDefaultTypeNames.getClass ( ).getMethod (
+          GET_TYPE_NAMES , new Class [ 0 ] ).invoke ( pDefaultTypeNames ,
+          new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
+  }
+
+
+  /**
+   * Returns the array of bound {@link TypeName}s from the given
+   * {@link BoundTypeNames}.
+   * 
+   * @param pBoundTypeNames The {@link BoundTypeNames}.
+   * @return The array of bound {@link TypeName}s.
+   */
+  @ SuppressWarnings ( "unchecked" )
+  private final ArrayList < ArrayList < TypeName >> invokeTypeNamesBound (
+      BoundTypeNames pBoundTypeNames )
+  {
+    try
+    {
+      return ( ArrayList < ArrayList < TypeName >> ) pBoundTypeNames
+          .getClass ( ).getMethod ( GET_TYPE_NAMES_BOUND , new Class [ 0 ] )
+          .invoke ( pBoundTypeNames , new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
+  }
+
+
+  /**
+   * Returns the array of indices from the given {@link DefaultTypeNames}.
+   * 
+   * @param pDefaultTypeNames The {@link DefaultTypeNames}.
+   * @return The array of indices.
+   */
+  private final int [ ] invokeTypeNamesIndex (
+      DefaultTypeNames pDefaultTypeNames )
+  {
+    try
+    {
+      return ( int [ ] ) pDefaultTypeNames.getClass ( ).getMethod (
+          GET_TYPE_NAMES_INDEX , new Class [ 0 ] ).invoke ( pDefaultTypeNames ,
+          new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
+  }
+
+
+  /**
+   * Returns the array of the types from the given {@link DefaultTypes}.
+   * 
+   * @param pDefaultTypes The {@linkDefaultTypes}.
+   * @return The array of the types.
+   */
+  private final MonoType [ ] invokeTypes ( DefaultTypes pDefaultTypes )
+  {
+    try
+    {
+      return ( MonoType [ ] ) pDefaultTypes.getClass ( ).getMethod ( GET_TYPES ,
+          new Class [ 0 ] ).invoke ( pDefaultTypes , new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
+  }
+
+
+  /**
+   * Returns the array of indices from the given {@link DefaultTypes}.
+   * 
+   * @param pDefaultTypes The {@link DefaultTypes}.
+   * @return The array of indices.
+   */
+  private final int [ ] invokeTypesIndex ( DefaultTypes pDefaultTypes )
+  {
+    try
+    {
+      return ( int [ ] ) pDefaultTypes.getClass ( ).getMethod (
+          GET_TYPES_INDEX , new Class [ 0 ] ).invoke ( pDefaultTypes ,
+          new Object [ 0 ] ) ;
     }
     catch ( IllegalArgumentException e )
     {
@@ -1696,6 +1814,13 @@ public final class DefaultOutline implements Outline
       }
       return ;
     }
+    // Throw an exception if something different should be loaded.
+    if ( ( ! ( pInput instanceof Expression ) )
+        && ( ! ( pInput instanceof Type ) ) )
+    {
+      throw new IllegalArgumentException (
+          "Outline: The input is not an Expression or Type!" ) ; //$NON-NLS-1$
+    }
     if ( pExecute instanceof Outline.ExecuteAutoChange )
     {
       Outline.ExecuteAutoChange execute = ( Outline.ExecuteAutoChange ) pExecute ;
@@ -1720,9 +1845,10 @@ public final class DefaultOutline implements Outline
         }
       }
     }
+    // Cancel the maybe running timer
+    executeTimerCancel ( ) ;
     setError ( false ) ;
     this.loadedInput = pInput ;
-    executeTimerCancel ( ) ;
     /*
      * Execute the new load of the Expression or the Type immediately, if the
      * change is an init change or a change because of a mouse click.
@@ -1971,7 +2097,7 @@ public final class DefaultOutline implements Outline
     {
       updateExpression ( list , pTreePath ) ;
     }
-    // Expression
+    // Identifier
     else if ( selectedNode.isIdentifier ( ) )
     {
       updateIdentifier ( list , pTreePath ) ;
@@ -1981,7 +2107,7 @@ public final class DefaultOutline implements Outline
     {
       updateType ( list , pTreePath ) ;
     }
-    // Type
+    // TypeName
     else if ( selectedNode.isTypeName ( ) )
     {
       updateTypeName ( list , pTreePath ) ;

@@ -5,6 +5,9 @@ import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.BoundTypeNames ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
 import de.unisiegen.tpml.core.types.MonoType ;
@@ -82,158 +85,149 @@ public final class ShowBonds
   @ SuppressWarnings ( "unchecked" )
   private final void check ( Expression pExpression )
   {
-    for ( Class < ? > currentInterface : pExpression.getClass ( )
-        .getInterfaces ( ) )
+    if ( pExpression instanceof BoundIdentifiers )
     {
-      if ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.BoundIdentifiers.class ) )
+      try
       {
-        try
+        // Invoke getIdentifiers
+        Identifier [ ] id = ( Identifier [ ] ) pExpression.getClass ( )
+            .getMethod ( GET_IDENTIFIERS , new Class [ 0 ] ).invoke (
+                pExpression , new Object [ 0 ] ) ;
+        // Invoke getIdentifiersBound
+        ArrayList < ArrayList < Identifier >> bound = ( ArrayList < ArrayList < Identifier >> ) pExpression
+            .getClass ( ).getMethod ( GET_IDENTIFIERS_BOUND , new Class [ 0 ] )
+            .invoke ( pExpression , new Object [ 0 ] ) ;
+        // Create Bonds
+        if ( bound == null )
         {
-          // Invoke getIdentifiers
-          Identifier [ ] id = ( Identifier [ ] ) pExpression.getClass ( )
-              .getMethod ( GET_IDENTIFIERS , new Class [ 0 ] ).invoke (
-                  pExpression , new Object [ 0 ] ) ;
-          // Invoke getIdentifiersBound
-          ArrayList < ArrayList < Identifier >> bound = ( ArrayList < ArrayList < Identifier >> ) pExpression
-              .getClass ( )
-              .getMethod ( GET_IDENTIFIERS_BOUND , new Class [ 0 ] ).invoke (
-                  pExpression , new Object [ 0 ] ) ;
-          // Create Bonds
-          if ( bound == null )
+          return ;
+        }
+        PrettyAnnotation current ;
+        for ( int i = 0 ; i < bound.size ( ) ; i ++ )
+        {
+          if ( bound.get ( i ) == null )
+          {
+            continue ;
+          }
+          if ( this.expression != null )
+          {
+            current = this.expression.toPrettyString ( )
+                .getAnnotationForPrintable ( id [ i ] ) ;
+          }
+          else if ( this.type != null )
+          {
+            current = this.type.toPrettyString ( ).getAnnotationForPrintable (
+                id [ i ] ) ;
+          }
+          else if ( this.typeEquationTypeInference != null )
+          {
+            current = this.typeEquationTypeInference.toPrettyString ( )
+                .getAnnotationForPrintable ( id [ i ] ) ;
+          }
+          else
           {
             return ;
           }
-          PrettyAnnotation current ;
-          for ( int i = 0 ; i < bound.size ( ) ; i ++ )
+          Bonds bonds = new Bonds ( current.getStartOffset ( ) , current
+              .getEndOffset ( ) ) ;
+          for ( Identifier boundId : bound.get ( i ) )
           {
-            if ( bound.get ( i ) == null )
+            try
             {
-              continue ;
-            }
-            if ( this.expression != null )
-            {
-              current = this.expression.toPrettyString ( )
-                  .getAnnotationForPrintable ( id [ i ] ) ;
-            }
-            else if ( this.type != null )
-            {
-              current = this.type.toPrettyString ( ).getAnnotationForPrintable (
-                  id [ i ] ) ;
-            }
-            else if ( this.typeEquationTypeInference != null )
-            {
-              current = this.typeEquationTypeInference.toPrettyString ( )
-                  .getAnnotationForPrintable ( id [ i ] ) ;
-            }
-            else
-            {
-              return ;
-            }
-            Bonds bonds = new Bonds ( current.getStartOffset ( ) , current
-                .getEndOffset ( ) ) ;
-            for ( Identifier boundId : bound.get ( i ) )
-            {
-              try
+              if ( this.expression != null )
               {
-                if ( this.expression != null )
-                {
-                  bonds.addPrettyAnnotation ( this.expression.toPrettyString ( )
-                      .getAnnotationForPrintable ( boundId ) ) ;
-                }
-                else if ( this.type != null )
-                {
-                  bonds.addPrettyAnnotation ( this.type.toPrettyString ( )
-                      .getAnnotationForPrintable ( boundId ) ) ;
-                }
-                else if ( this.typeEquationTypeInference != null )
-                {
-                  bonds
-                      .addPrettyAnnotation ( this.typeEquationTypeInference
-                          .toPrettyString ( ).getAnnotationForPrintable (
-                              boundId ) ) ;
-                }
-                else
-                {
-                  return ;
-                }
+                bonds.addPrettyAnnotation ( this.expression.toPrettyString ( )
+                    .getAnnotationForPrintable ( boundId ) ) ;
               }
-              catch ( IllegalArgumentException e )
+              else if ( this.type != null )
               {
-                /*
-                 * Happens if a bound Identifier is not in the PrettyString. For
-                 * example "object (self) val a = 0 ; method move = {< a = 2 >} ;
-                 * end". The "self" binds the free Identifier "self" in the
-                 * Duplication (method free in Duplication), but the free "self"
-                 * in the Duplication is not present in the PrettyString.
-                 */
+                bonds.addPrettyAnnotation ( this.type.toPrettyString ( )
+                    .getAnnotationForPrintable ( boundId ) ) ;
+              }
+              else if ( this.typeEquationTypeInference != null )
+              {
+                bonds.addPrettyAnnotation ( this.typeEquationTypeInference
+                    .toPrettyString ( ).getAnnotationForPrintable ( boundId ) ) ;
+              }
+              else
+              {
+                return ;
               }
             }
-            this.result.add ( bonds ) ;
+            catch ( IllegalArgumentException e )
+            {
+              /*
+               * Happens if a bound Identifier is not in the PrettyString. For
+               * example "object (self) val a = 0 ; method move = {< a = 2 >} ;
+               * end". The "self" binds the free Identifier "self" in the
+               * Duplication (method free in Duplication), but the free "self"
+               * in the Duplication is not present in the PrettyString.
+               */
+            }
           }
-        }
-        catch ( IllegalArgumentException e )
-        {
-          System.err.println ( "ShowBonds: IllegalArgumentException" ) ; //$NON-NLS-1$
-        }
-        catch ( IllegalAccessException e )
-        {
-          System.err.println ( "ShowBonds: IllegalAccessException" ) ; //$NON-NLS-1$
-        }
-        catch ( InvocationTargetException e )
-        {
-          System.err.println ( "ShowBonds: InvocationTargetException" ) ; //$NON-NLS-1$
-        }
-        catch ( SecurityException e )
-        {
-          System.err.println ( "ShowBonds: SecurityException" ) ; //$NON-NLS-1$
-        }
-        catch ( NoSuchMethodException e )
-        {
-          System.err.println ( "ShowBonds: NoSuchMethodException" ) ; //$NON-NLS-1$
+          this.result.add ( bonds ) ;
         }
       }
-      else if ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypes.class ) )
+      catch ( IllegalArgumentException e )
       {
-        try
-        {
-          MonoType [ ] types = ( MonoType [ ] ) pExpression.getClass ( )
-              .getMethod ( GET_TYPES , new Class [ 0 ] ).invoke ( pExpression ,
-                  new Object [ 0 ] ) ;
-          for ( MonoType tau : types )
-          {
-            if ( tau != null )
-            {
-              check ( tau ) ;
-            }
-          }
-        }
-        catch ( IllegalArgumentException e )
-        {
-          System.err.println ( "ShowBonds: IllegalArgumentException" ) ; //$NON-NLS-1$
-        }
-        catch ( SecurityException e )
-        {
-          System.err.println ( "ShowBonds: SecurityException" ) ; //$NON-NLS-1$
-        }
-        catch ( IllegalAccessException e )
-        {
-          System.err.println ( "ShowBonds: IllegalAccessException" ) ; //$NON-NLS-1$
-        }
-        catch ( InvocationTargetException e )
-        {
-          System.err.println ( "ShowBonds: InvocationTargetException" ) ; //$NON-NLS-1$
-        }
-        catch ( NoSuchMethodException e )
-        {
-          System.err.println ( "ShowBonds: NoSuchMethodException" ) ; //$NON-NLS-1$
-        }
+        System.err.println ( "ShowBonds: IllegalArgumentException" ) ; //$NON-NLS-1$
+      }
+      catch ( IllegalAccessException e )
+      {
+        System.err.println ( "ShowBonds: IllegalAccessException" ) ; //$NON-NLS-1$
+      }
+      catch ( InvocationTargetException e )
+      {
+        System.err.println ( "ShowBonds: InvocationTargetException" ) ; //$NON-NLS-1$
+      }
+      catch ( SecurityException e )
+      {
+        System.err.println ( "ShowBonds: SecurityException" ) ; //$NON-NLS-1$
+      }
+      catch ( NoSuchMethodException e )
+      {
+        System.err.println ( "ShowBonds: NoSuchMethodException" ) ; //$NON-NLS-1$
       }
     }
-    for ( Expression e : pExpression.children ( ) )
+    if ( pExpression instanceof DefaultTypes )
     {
-      check ( e ) ;
+      try
+      {
+        MonoType [ ] types = ( MonoType [ ] ) pExpression.getClass ( )
+            .getMethod ( GET_TYPES , new Class [ 0 ] ).invoke ( pExpression ,
+                new Object [ 0 ] ) ;
+        for ( MonoType tau : types )
+        {
+          if ( tau != null )
+          {
+            check ( tau ) ;
+          }
+        }
+      }
+      catch ( IllegalArgumentException e )
+      {
+        System.err.println ( "ShowBonds: IllegalArgumentException" ) ; //$NON-NLS-1$
+      }
+      catch ( SecurityException e )
+      {
+        System.err.println ( "ShowBonds: SecurityException" ) ; //$NON-NLS-1$
+      }
+      catch ( IllegalAccessException e )
+      {
+        System.err.println ( "ShowBonds: IllegalAccessException" ) ; //$NON-NLS-1$
+      }
+      catch ( InvocationTargetException e )
+      {
+        System.err.println ( "ShowBonds: InvocationTargetException" ) ; //$NON-NLS-1$
+      }
+      catch ( NoSuchMethodException e )
+      {
+        System.err.println ( "ShowBonds: NoSuchMethodException" ) ; //$NON-NLS-1$
+      }
+    }
+    for ( Expression expr : pExpression.children ( ) )
+    {
+      check ( expr ) ;
     }
   }
 
@@ -246,114 +240,110 @@ public final class ShowBonds
   @ SuppressWarnings ( "unchecked" )
   private final void check ( Type pType )
   {
-    for ( Class < ? > currentInterface : pType.getClass ( ).getInterfaces ( ) )
+    if ( pType instanceof BoundTypeNames )
     {
-      if ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.BoundTypeNames.class ) )
+      try
       {
-        try
+        // Invoke getTypeNames
+        TypeName [ ] typeNames = ( TypeName [ ] ) pType.getClass ( ).getMethod (
+            GET_TYPE_NAMES , new Class [ 0 ] )
+            .invoke ( pType , new Object [ 0 ] ) ;
+        // Invoke getTypeNamesBound
+        ArrayList < ArrayList < TypeName >> bound = ( ArrayList < ArrayList < TypeName >> ) pType
+            .getClass ( ).getMethod ( GET_TYPE_NAMES_BOUND , new Class [ 0 ] )
+            .invoke ( pType , new Object [ 0 ] ) ;
+        // Create Bonds
+        if ( bound == null )
         {
-          // Invoke getTypeNames
-          TypeName [ ] typeNames = ( TypeName [ ] ) pType.getClass ( )
-              .getMethod ( GET_TYPE_NAMES , new Class [ 0 ] ).invoke ( pType ,
-                  new Object [ 0 ] ) ;
-          // Invoke getTypeNamesBound
-          ArrayList < ArrayList < TypeName >> bound = ( ArrayList < ArrayList < TypeName >> ) pType
-              .getClass ( ).getMethod ( GET_TYPE_NAMES_BOUND , new Class [ 0 ] )
-              .invoke ( pType , new Object [ 0 ] ) ;
-          // Create Bonds
-          if ( bound == null )
+          return ;
+        }
+        PrettyAnnotation current ;
+        for ( int i = 0 ; i < bound.size ( ) ; i ++ )
+        {
+          if ( bound.get ( i ) == null )
+          {
+            continue ;
+          }
+          if ( this.expression != null )
+          {
+            current = this.expression.toPrettyString ( )
+                .getAnnotationForPrintable ( typeNames [ i ] ) ;
+          }
+          else if ( this.type != null )
+          {
+            current = this.type.toPrettyString ( ).getAnnotationForPrintable (
+                typeNames [ i ] ) ;
+          }
+          else if ( this.typeEquationTypeInference != null )
+          {
+            current = this.typeEquationTypeInference.toPrettyString ( )
+                .getAnnotationForPrintable ( typeNames [ i ] ) ;
+          }
+          else
           {
             return ;
           }
-          PrettyAnnotation current ;
-          for ( int i = 0 ; i < bound.size ( ) ; i ++ )
+          Bonds bonds = new Bonds ( current.getStartOffset ( ) , current
+              .getEndOffset ( ) ) ;
+          for ( TypeName boundTypeNames : bound.get ( i ) )
           {
-            if ( bound.get ( i ) == null )
+            try
             {
-              continue ;
-            }
-            if ( this.expression != null )
-            {
-              current = this.expression.toPrettyString ( )
-                  .getAnnotationForPrintable ( typeNames [ i ] ) ;
-            }
-            else if ( this.type != null )
-            {
-              current = this.type.toPrettyString ( ).getAnnotationForPrintable (
-                  typeNames [ i ] ) ;
-            }
-            else if ( this.typeEquationTypeInference != null )
-            {
-              current = this.typeEquationTypeInference.toPrettyString ( )
-                  .getAnnotationForPrintable ( typeNames [ i ] ) ;
-            }
-            else
-            {
-              return ;
-            }
-            Bonds bonds = new Bonds ( current.getStartOffset ( ) , current
-                .getEndOffset ( ) ) ;
-            for ( TypeName boundTypeNames : bound.get ( i ) )
-            {
-              try
+              if ( this.expression != null )
               {
-                if ( this.expression != null )
-                {
-                  bonds.addPrettyAnnotation ( this.expression.toPrettyString ( )
-                      .getAnnotationForPrintable ( boundTypeNames ) ) ;
-                }
-                else if ( this.type != null )
-                {
-                  bonds.addPrettyAnnotation ( this.type.toPrettyString ( )
-                      .getAnnotationForPrintable ( boundTypeNames ) ) ;
-                }
-                else if ( this.typeEquationTypeInference != null )
-                {
-                  bonds.addPrettyAnnotation ( this.typeEquationTypeInference
-                      .toPrettyString ( ).getAnnotationForPrintable (
-                          boundTypeNames ) ) ;
-                }
-                else
-                {
-                  return ;
-                }
+                bonds.addPrettyAnnotation ( this.expression.toPrettyString ( )
+                    .getAnnotationForPrintable ( boundTypeNames ) ) ;
               }
-              catch ( IllegalArgumentException e )
+              else if ( this.type != null )
               {
-                /*
-                 * Happens if a bound TypeName is not in the PrettyString.
-                 */
+                bonds.addPrettyAnnotation ( this.type.toPrettyString ( )
+                    .getAnnotationForPrintable ( boundTypeNames ) ) ;
+              }
+              else if ( this.typeEquationTypeInference != null )
+              {
+                bonds.addPrettyAnnotation ( this.typeEquationTypeInference
+                    .toPrettyString ( ).getAnnotationForPrintable (
+                        boundTypeNames ) ) ;
+              }
+              else
+              {
+                return ;
               }
             }
-            this.result.add ( bonds ) ;
+            catch ( IllegalArgumentException e )
+            {
+              /*
+               * Happens if a bound TypeName is not in the PrettyString.
+               */
+            }
           }
-        }
-        catch ( IllegalArgumentException e )
-        {
-          System.err.println ( "ShowBonds: IllegalArgumentException" ) ; //$NON-NLS-1$
-        }
-        catch ( IllegalAccessException e )
-        {
-          System.err.println ( "ShowBonds: IllegalAccessException" ) ; //$NON-NLS-1$
-        }
-        catch ( InvocationTargetException e )
-        {
-          System.err.println ( "ShowBonds: InvocationTargetException" ) ; //$NON-NLS-1$
-        }
-        catch ( SecurityException e )
-        {
-          System.err.println ( "ShowBonds: SecurityException" ) ; //$NON-NLS-1$
-        }
-        catch ( NoSuchMethodException e )
-        {
-          System.err.println ( "ShowBonds: NoSuchMethodException" ) ; //$NON-NLS-1$
+          this.result.add ( bonds ) ;
         }
       }
+      catch ( IllegalArgumentException e )
+      {
+        System.err.println ( "ShowBonds: IllegalArgumentException" ) ; //$NON-NLS-1$
+      }
+      catch ( IllegalAccessException e )
+      {
+        System.err.println ( "ShowBonds: IllegalAccessException" ) ; //$NON-NLS-1$
+      }
+      catch ( InvocationTargetException e )
+      {
+        System.err.println ( "ShowBonds: InvocationTargetException" ) ; //$NON-NLS-1$
+      }
+      catch ( SecurityException e )
+      {
+        System.err.println ( "ShowBonds: SecurityException" ) ; //$NON-NLS-1$
+      }
+      catch ( NoSuchMethodException e )
+      {
+        System.err.println ( "ShowBonds: NoSuchMethodException" ) ; //$NON-NLS-1$
+      }
     }
-    for ( Type t : pType.children ( ) )
+    for ( Type tau : pType.children ( ) )
     {
-      check ( t ) ;
+      check ( tau ) ;
     }
   }
 
@@ -394,6 +384,8 @@ public final class ShowBonds
   public final void setExpression ( Expression pExpression )
   {
     this.expression = pExpression ;
+    this.type = null ;
+    this.typeEquationTypeInference = null ;
   }
 
 
@@ -404,7 +396,9 @@ public final class ShowBonds
    */
   public final void setType ( Type pType )
   {
+    this.expression = null ;
     this.type = pType ;
+    this.typeEquationTypeInference = null ;
   }
 
 
@@ -417,10 +411,12 @@ public final class ShowBonds
   public final void setTypeEquationTypeInference (
       TypeEquationTypeInference pTypeEquationTypeInference )
   {
+    this.expression = null ;
+    this.type = null ;
     this.typeEquationTypeInference = pTypeEquationTypeInference ;
   }
-  
-  
+
+
   /**
    * {@inheritDoc} Mainly useful for debugging purposes.
    * 
@@ -429,14 +425,14 @@ public final class ShowBonds
   @ Override
   public String toString ( )
   {
-    if ( this.result == null)
+    if ( this.result == null )
     {
       return "" ; //$NON-NLS-1$
     }
     String s = "" ; //$NON-NLS-1$
     for ( Bonds item : this.result )
     {
-      s += item + "\n";  //$NON-NLS-1$
+      s += item + "\n" ; //$NON-NLS-1$
     }
     return s ;
   }
