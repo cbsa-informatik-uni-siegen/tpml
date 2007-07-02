@@ -376,10 +376,12 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns true if the given {@link RowType} is equals to this {@link RowType}
+   * ignoring the order of the method names. Otherwise false.
    * 
-   * @param pRowType
-   * @return TODO
+   * @param pRowType The given {@link RowType}.
+   * @return True if the given {@link RowType} is equals to this {@link RowType}
+   *         ignoring the order of the method names. Otherwise false.
    */
   public boolean equalsIgnoreOrder ( RowType pRowType )
   {
@@ -678,8 +680,8 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
       }
       if ( this.remainingRowType != null )
       {
-        this.prettyStringBuilder.addBreak ( ) ;
         this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addBreak ( ) ;
         this.prettyStringBuilder.addBuilder ( this.remainingRowType
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
       }
