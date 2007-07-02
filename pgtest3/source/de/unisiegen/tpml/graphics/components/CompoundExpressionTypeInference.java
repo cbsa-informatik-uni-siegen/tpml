@@ -68,13 +68,13 @@ public class CompoundExpressionTypeInference extends JComponent
   /**
    * saves the position where the mouse starts the dragging
    */
-  private int mousePositionPressedX ;
+  //private int mousePositionPressedX ;
 
 
   /**
    * saves the position where the mouse starts the dragging
    */
-  private int mousePositionPressedY ;
+  //private int mousePositionPressedY ;
 
 
   /**
@@ -193,7 +193,7 @@ public class CompoundExpressionTypeInference extends JComponent
       @ Override
       public void mouseDragged ( MouseEvent event )
       {
-        testAusgabe ( "Die Maus wurde gedragged..." ) ;
+        //testAusgabe ( "Die Maus wurde gedragged..." ) ;
         // if the User started dragging on an Typformula
         if ( dragged )
         {
@@ -224,81 +224,60 @@ public class CompoundExpressionTypeInference extends JComponent
       {
         int posX = pMouseEvent.getX ( ) ;
         int posY = pMouseEvent.getY ( ) ;
-        ArrayList < Rectangle > leftType = typeFormularRenderer
-            .getLeftTypePositions ( ) ;
-        ArrayList < Rectangle > rightType = typeFormularRenderer
-            .getRightTypePositions ( ) ;
-        ArrayList < Rectangle > expressionPositions = typeFormularRenderer
-            .getExpressionPositions ( ) ;
-        ArrayList < Rectangle > typePositions = typeFormularRenderer
-            .getTypePositions ( ) ;
-        Outline outline = ( ( TypeInferenceView ) CompoundExpressionTypeInference.this
-            .getParent ( ).getParent ( ).getParent ( ).getParent ( )
-            .getParent ( ).getParent ( ) ).getOutline ( ) ;
-        for ( int i = 0 ; i < CompoundExpressionTypeInference.this.typeFormulaList
-            .size ( ) ; i ++ )
-        {
-          TypeFormula t = CompoundExpressionTypeInference.this.typeFormulaList
-              .get ( i ) ;
-          if ( t instanceof TypeJudgement )
-          {
-            TypeJudgement typeJudgement = ( TypeJudgement ) t ;
-            // Expression
-            if ( posX >= expressionPositions.get ( i ).x
-                && posX <= expressionPositions.get ( i ).x
-                    + expressionPositions.get ( i ).width
-                && posY >= expressionPositions.get ( i ).y
-                    - expressionPositions.get ( i ).height
-                && posY <= expressionPositions.get ( i ).y )
-            {
-              outline.loadExpression ( typeJudgement.getExpression ( ) ,
-                  Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
-            }
-            // Type
-            else if ( posX >= typePositions.get ( i ).x
-                && posX <= typePositions.get ( i ).x
-                    + typePositions.get ( i ).width
-                && posY >= typePositions.get ( i ).y
-                    - typePositions.get ( i ).height
-                && posY <= typePositions.get ( i ).y )
-            {
-              outline.loadType ( typeJudgement.getType ( ) ,
-                  Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
-            }
-          }
-          else if ( t instanceof TypeEquationTypeInference )
-          {
-            TypeEquationTypeInference typeEquation = ( TypeEquationTypeInference ) t ;
-            // Left type
-            if ( posX >= leftType.get ( i ).x
-                && posX <= leftType.get ( i ).x + leftType.get ( i ).width
-                && posY >= leftType.get ( i ).y - leftType.get ( i ).height
-                && posY <= leftType.get ( i ).y )
-            {
-              outline.loadType ( typeEquation.getLeft ( ) ,
-                  Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
-            }
-            // Right type
-            else if ( posX >= rightType.get ( i ).x
-                && posX <= rightType.get ( i ).x + rightType.get ( i ).width
-                && posY >= rightType.get ( i ).y - rightType.get ( i ).height
-                && posY <= rightType.get ( i ).y )
-            {
-              outline.loadType ( typeEquation.getRight ( ) ,
-                  Outline.ExecuteMouseClick.TYPEINFERENCE ) ;
-            }
-          }
-        }
-      }
-    } ) ;
+        
+        Point pos = pMouseEvent.getPoint();
+        
+        ArrayList<Rectangle> leftType = typeFormularRenderer.getLeftTypePositions();
+				ArrayList<Rectangle> rightType = typeFormularRenderer.getRightTypePositions();
+				ArrayList<Rectangle> expressionPositions = typeFormularRenderer.getExpressionPositions();
+				ArrayList<Rectangle> typePositions = typeFormularRenderer.getTypePositions();
+				Outline outline = ((TypeInferenceView) CompoundExpressionTypeInference.this.getParent().getParent()
+						.getParent().getParent().getParent().getParent()).getOutline();
+				for (int i = 0; i < CompoundExpressionTypeInference.this.typeFormulaList.size(); i++)
+				{
+					TypeFormula t = CompoundExpressionTypeInference.this.typeFormulaList.get(i);
+					if (t instanceof TypeJudgement)
+					{
+						TypeJudgement typeJudgement = (TypeJudgement) t;
+						// Expression
+						if (isIn(expressionPositions.get(i), pos))
+						{
+							outline.loadExpression(typeJudgement.getExpression(), Outline.ExecuteMouseClick.TYPEINFERENCE);
+						}
+						// Type
+						else
+							if (isIn(typePositions.get(i), pos))
+							{
+								outline.loadType(typeJudgement.getType(), Outline.ExecuteMouseClick.TYPEINFERENCE);
+							}
+					}
+					else
+						if (t instanceof TypeEquationTypeInference)
+						{
+							TypeEquationTypeInference typeEquation = (TypeEquationTypeInference) t;
+							// Left type
+							if (isIn(leftType.get(i), pos))
+							{
+								outline.loadType(typeEquation.getLeft(), Outline.ExecuteMouseClick.TYPEINFERENCE);
+							}
+							// Right type
+							else
+								if (isIn(rightType.get(i), pos))
+								{
+									outline.loadType(typeEquation.getRight(), Outline.ExecuteMouseClick.TYPEINFERENCE);
+								}
+						}
+				}
+			}
+		});
     this.addMouseListener ( new MouseAdapter ( )
     {
-    	int rectPressed;
-    	int rectReleased;
+    	int rectPressed=-1;
+    	int rectReleased=-1;
       @ Override
       public void mouseExited ( MouseEvent e )
       {
-      	//tell the toListenForMouse that the mose is gone
+      	// tell the toListenForMouse that the mose is gone
         toListenForMouse.reset ( ) ;
         toListenForMouse.setMark ( false ) ;
         CompoundExpressionTypeInference.this.repaint ( ) ;
@@ -308,23 +287,28 @@ public class CompoundExpressionTypeInference extends JComponent
       @ Override
       public void mousePressed ( MouseEvent event )
       {
-        testAusgabe ( "Die Maus wurde gedrückt..." ) ;
+        
         // remember the position. If the user dragges thes point to another,
         // they will be switched
-        mousePositionPressedX = event.getX ( ) ;
-        mousePositionPressedY = event.getY ( ) ;
+        // mousePositionPressedX = event.getX ( ) ;
+        // mousePositionPressedY = event.getY ( ) ;
+        Point mousePosititonPressex = event.getPoint();
+        testAusgabe ( "Die Maus wurde gedrückt..." +mousePosititonPressex ) ;
         // look up if there is a typeformula at the point mousePosition.
         // if ther is no typformular, ther will be no dragg'n'drop
         ArrayList < Rectangle > rects = typeFormularRenderer.getTypeFormularPositions ( ) ;
         for ( int i = 0 ; i < rects.size ( ) ; i ++ )
         {
-          if ( mousePositionPressedX >= rects.get ( i ).x
-              && mousePositionPressedX <= rects.get ( i ).x + rects.get ( i ).width
-              && mousePositionPressedY >= rects.get ( i ).y - rects.get ( i ).height
-              && mousePositionPressedY <= rects.get ( i ).y )
+        	testAusgabe("Rect: "+rects.get(i));
+//          if ( mousePositionPressedX >= rects.get ( i ).x
+//              && mousePositionPressedX <= rects.get ( i ).x + rects.get ( i ).width
+//              && mousePositionPressedY >= rects.get ( i ).y - rects.get ( i ).height
+//              && mousePositionPressedY <= rects.get ( i ).y )
+        	if (isIn(rects.get(i), mousePosititonPressex))
           {
             testAusgabe ( "" + i + ". Bereicht: " + rects.get ( i ).toString ( ) ) ;
             rectPressed=i;
+            testAusgabe("Die Maus wurde in Rect gedrückt: "+i);
             draggedString = typeFormulaList.get ( i ).toString ( ) ;
             if ( draggedString.length ( ) > 13 )
             {
@@ -339,9 +323,8 @@ public class CompoundExpressionTypeInference extends JComponent
       @ Override
       public void mouseReleased ( MouseEvent event )
       {
-        testAusgabe ( "Die Maus wurde losgelassen..." ) ;
-        int mousePositionReleasedX = event.getX ( ) ;
-        int mousePositionReleasedY = event.getY ( ) ;
+        //int mousePositionReleasedX = event.getX ( ) ;
+        //int mousePositionReleasedY = event.getY ( ) ;
         // if the point there the mouse was pressed is the same the mouse was
         // released, ther is no dragg and dropp and the typeformula will only be
         // marked
@@ -369,16 +352,20 @@ public class CompoundExpressionTypeInference extends JComponent
         // if the point of pressed and released are unequal
         // the typformulas at the two points will be switched
 //        else
+        Point mouseReleased = event.getPoint();
+        testAusgabe ( "Die Maus wurde losgelassen..."+mouseReleased ) ;
         {
           // resetten
           testAusgabe ( "Dragg and Drop implementieren" ) ;
           ArrayList < Rectangle > rects = typeFormularRenderer.getTypeFormularPositions ( ) ;
           for ( int i = 0 ; i < rects.size ( ) ; i ++ )
           {
-            if ( mousePositionReleasedX >= rects.get ( i ).x
-                && mousePositionReleasedX <= rects.get ( i ).x + rects.get ( i ).width
-                && mousePositionReleasedY >= rects.get ( i ).y - rects.get ( i ).height
-                && mousePositionReleasedY <= rects.get ( i ).y )
+          	testAusgabe("Rects: "+rects.get(i));
+            //if ( mousePositionReleasedX >= rects.get ( i ).x
+            //    && mousePositionReleasedX <= rects.get ( i ).x + rects.get ( i ).width
+            //    && mousePositionReleasedY >= rects.get ( i ).y - rects.get ( i ).height
+            //    && mousePositionReleasedY <= rects.get ( i ).y )
+          	if (isIn(rects.get(i), mouseReleased))
             {
               testAusgabe ( "" + i + ". Bereicht: "+ rects.get ( i ).toString ( ) ) ;
               //Graphics gc = getGraphics ( ) ;
@@ -399,8 +386,9 @@ public class CompoundExpressionTypeInference extends JComponent
         }
         
 //        ArrayList < Rectangle > rects = typeFormularRenderer.getTypeFormularPositions ( ) ;
-        if (rectPressed != rectReleased)
+        if (dragged && rectPressed != rectReleased && rectPressed != -1 && rectReleased != -1)
         {
+        	testAusgabe("Wir tauschen: "+rectReleased +" mit "+ rectPressed);
         	typeFormularRenderer.draggNDropp (rectReleased, rectPressed) ;
         	
         }
@@ -568,8 +556,8 @@ public class CompoundExpressionTypeInference extends JComponent
     if ( this.substitutionRenderer != null && this.substitutionRenderer.isCollapsed ( ) )
     {
       Rectangle r = this.substitutionRenderer.getCollapsedArea ( ) ;
-      testAusgabe("Die Grenzen r: "+ r.x+" - "+(r.x+r.width)+", "+r.y+"-"+(r.y+r.height));
-      testAusgabe("Die Maus:"+event.getX ( )+", "+event.getY ( ));
+      //testAusgabe("Die Grenzen r: "+ r.x+" - "+(r.x+r.width)+", "+r.y+"-"+(r.y+r.height));
+      //testAusgabe("Die Maus:"+event.getX ( )+", "+event.getY ( ));
       if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width && event.getY() >= r.y && event.getY() <= r.y+r.height )
       {
         setToolTipText ( this.substitutionRenderer.getCollapsedString ( ) ) ;
@@ -592,8 +580,8 @@ public class CompoundExpressionTypeInference extends JComponent
       for (int i = 0; i<rs.size(); i++)
       {
         Rectangle r = rs.get(i);
-        testAusgabe("Die Grenzen r: "+ r.x+" - "+(r.x+r.width)+", "+r.y+"-"+(r.y+r.height));
-        testAusgabe("Die Maus:"+event.getX ( )+", "+event.getY ( ));
+        //testAusgabe("Die Grenzen r: "+ r.x+" - "+(r.x+r.width)+", "+r.y+"-"+(r.y+r.height));
+        //testAusgabe("Die Maus:"+event.getX ( )+", "+event.getY ( ));
         //if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width )
         if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width && event.getY() >= r.y && event.getY() <= r.y+r.height )
         {
@@ -723,7 +711,7 @@ public class CompoundExpressionTypeInference extends JComponent
       result.width += 2 * this.braceSize ;
     }
     // check whether there are typformulars...
-    testAusgabe ( "wad soll das?" + ( typeFormulaList != null ) ) ;
+    //testAusgabe ( "wad soll das?" + ( typeFormulaList != null ) ) ;
     if ( this.typeFormulaList != null )
     {
       // now check the size still available for the expression
@@ -756,7 +744,39 @@ public class CompoundExpressionTypeInference extends JComponent
   @ Override
   protected void paintComponent ( Graphics gc )
   {
-    testAusgabe ( "paintComponent wurde aufgerufen..." ) ;
+  	//TODO test the different coponents of the renderer:
+  	gc.setColor(Color.RED);
+  	for (int i=0; i<typeFormularRenderer.getTypeFormularPositions().size(); i++)
+  	{
+  		drawRectAngle(typeFormularRenderer.getTypeFormularPositions().get(i), gc);
+  	}
+  	
+  	gc.setColor(Color.GREEN);
+  	for (int i=0; i<typeFormularRenderer.getLeftTypePositions().size(); i++)
+  	{
+  		drawRectAngle(typeFormularRenderer.getLeftTypePositions().get(i), gc);
+  	}
+  	
+  	gc.setColor(Color.GREEN);
+  	for (int i=0; i<typeFormularRenderer.getRightTypePositions().size(); i++)
+  	{
+  		drawRectAngle(typeFormularRenderer.getRightTypePositions().get(i), gc);
+  	}
+  	
+  	gc.setColor(Color.YELLOW);
+  	for (int i=0; i<typeFormularRenderer.getTypePositions().size(); i++)
+  	{
+  		drawRectAngle(typeFormularRenderer.getTypePositions().get(i), gc);
+  	}
+  	
+  	gc.setColor(Color.BLUE);
+  	for (int i=0; i<typeFormularRenderer.getExpressionPositions().size(); i++)
+  	{
+  		drawRectAngle(typeFormularRenderer.getExpressionPositions().get(i), gc);
+  	}
+  	
+  	
+    //testAusgabe ( "paintComponent wurde aufgerufen..." ) ;
     // TODO Only for test to make yompoundexpression visible
     // it also displays how often the exptresso is rednerd while srolling...
     // gc.setColor (Color.yellow);
@@ -867,17 +887,25 @@ public class CompoundExpressionTypeInference extends JComponent
   {
     int x = p.x;
     int y = p.y;
-    if (x >= r.x && x <= r.x+r.width && y >= r.y && y <= r.y+r.width)
+    if (x >= r.x && x <= r.x+r.width && y >= r.y && y <= r.y+r.height)
     {
+    	//System.out.println("der Punkg ist in dem Rect: "+r+ " - "+p);
       return true;      
     }
     else
     {
+    	//System.out.println("der Punkg ist in nicht drin: "+r+ " - "+p);
       return false;
     }
   
   }
 
+  //TODO testMEthode...
+  public void drawRectAngle (Rectangle r, Graphics g)
+  {
+  	g.drawRect(r.x, r.y, r.width, r.height);
+  	//Rectangle rect = new Rectangle()
+  }
 
   /**
    * @return the list of TypeFormulas
@@ -890,7 +918,7 @@ public class CompoundExpressionTypeInference extends JComponent
 
   private static void testAusgabe ( String s )
   {
-    // System.out.println(s);
+     //System.out.println(s);
   }
 
 
