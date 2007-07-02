@@ -133,17 +133,17 @@ public final class DefaultOutline implements Outline
   /**
    * The {@link OutlineUI}.
    * 
-   * @see #getOutlineUI()
+   * @see #getUI()
    */
-  private OutlineUI outlineUI ;
+  private OutlineUI uI ;
 
 
   /**
    * The {@link OutlinePreferences}.
    * 
-   * @see #getOutlinePreferences()
+   * @see #getPreferences()
    */
-  private OutlinePreferences outlinePreferences ;
+  private OutlinePreferences preferences ;
 
 
   /**
@@ -192,7 +192,7 @@ public final class DefaultOutline implements Outline
   /**
    * The {@link OutlineItemListener}.
    */
-  private OutlineItemListener outlineItemListener ;
+  private OutlineItemListener itemListener ;
 
 
   /**
@@ -204,20 +204,20 @@ public final class DefaultOutline implements Outline
   {
     this.loadedInput = null ;
     this.rootOutlineNode = null ;
-    this.outlinePreferences = new OutlinePreferences ( ) ;
-    this.outlineUI = new OutlineUI ( this ) ;
+    this.preferences = new OutlinePreferences ( ) ;
+    this.uI = new OutlineUI ( this ) ;
     this.textEditorPanel = null ;
     this.subTypingEnterTypes = null ;
-    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
-    this.outlineUI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.outlineUI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
-    this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
-    this.outlineUI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
-    this.outlineUI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
-    this.outlineUI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
+    this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
+    this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.uI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
+    this.uI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
+    this.uI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
+    this.uI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
+    this.uI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
     // ComponentListener
-    this.outlineUI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( pBigStepView.getJSplitPane ( ) , this ) ) ;
     // PropertyChangeListener
     pBigStepView.addPropertyChangeListener ( new OutlinePropertyChangeListener (
@@ -229,57 +229,44 @@ public final class DefaultOutline implements Outline
         new OutlineTreeModelListener ( this , pBigStepView
             .getBigStepProofModel ( ) ) ) ;
     // MouseListener
-    this.outlineUI.getJTreeOutline ( ).addMouseListener (
+    this.uI.getJTreeOutline ( ).addMouseListener (
         new OutlineMouseListener ( this ) ) ;
     // ActionListener
     OutlineActionListener outlineActionListener = new OutlineActionListener (
         this ) ;
-    this.outlineUI.getJMenuItemExpand ( ).addActionListener (
+    this.uI.getJMenuItemExpand ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemExpandAll ( )
+        .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCollapse ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCollapseAll ( ).addActionListener (
         outlineActionListener ) ;
-    this.outlineUI.getJMenuItemExpandAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCollapse ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCollapseAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemClose ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCloseAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCopy ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuPreferences ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemSelection ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemBinding ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemFree ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemReplace ( ).addActionListener (
-        outlineActionListener ) ;
+    this.uI.getJMenuItemClose ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCloseAll ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuPreferences ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemSelection ( )
+        .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemBinding ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemFree ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemReplace ( ).addActionListener ( outlineActionListener ) ;
     // ComponentListener
-    this.outlineUI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( this ) ) ;
     // ItemListener
-    this.outlineItemListener = new OutlineItemListener ( this ) ;
-    this.outlineUI.getJCheckBoxSelection ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxBinding ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxFree ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxReplace ( ).addItemListener (
-        this.outlineItemListener ) ;
+    this.itemListener = new OutlineItemListener ( this ) ;
+    this.uI.getJCheckBoxSelection ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxBinding ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxFree ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxReplace ( ).addItemListener ( this.itemListener ) ;
     // KeyListener
-    this.outlineUI.getJTreeOutline ( ).addKeyListener (
-        new OutlineKeyListener ( this ) ) ;
+    this.uI.getJTreeOutline ( )
+        .addKeyListener ( new OutlineKeyListener ( this ) ) ;
     // TreeExpansionListener
-    this.outlineUI.getJTreeOutline ( ).addTreeExpansionListener (
+    this.uI.getJTreeOutline ( ).addTreeExpansionListener (
         new OutlineTreeExpansionListener ( this ) ) ;
     // TreeSelectionListener
-    this.outlineUI.getJTreeOutline ( ).getSelectionModel ( )
-        .addTreeSelectionListener ( new OutlineTreeSelectionListener ( this ) ) ;
+    this.uI.getJTreeOutline ( ).getSelectionModel ( ).addTreeSelectionListener (
+        new OutlineTreeSelectionListener ( this ) ) ;
   }
 
 
@@ -292,20 +279,20 @@ public final class DefaultOutline implements Outline
   {
     this.loadedInput = null ;
     this.rootOutlineNode = null ;
-    this.outlinePreferences = new OutlinePreferences ( ) ;
-    this.outlineUI = new OutlineUI ( this ) ;
+    this.preferences = new OutlinePreferences ( ) ;
+    this.uI = new OutlineUI ( this ) ;
     this.textEditorPanel = null ;
     this.subTypingEnterTypes = null ;
-    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
-    this.outlineUI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.outlineUI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
-    this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
-    this.outlineUI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
-    this.outlineUI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
-    this.outlineUI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
+    this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
+    this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.uI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
+    this.uI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
+    this.uI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
+    this.uI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
+    this.uI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
     // ComponentListener
-    this.outlineUI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( pMinimalTypingView.getJSplitPane ( ) ,
             this ) ) ;
     // PropertyChangeListener
@@ -319,57 +306,44 @@ public final class DefaultOutline implements Outline
         new OutlineTreeModelListener ( this , pMinimalTypingView
             .getMinimalTypingProofModel ( ) ) ) ;
     // MouseListener
-    this.outlineUI.getJTreeOutline ( ).addMouseListener (
+    this.uI.getJTreeOutline ( ).addMouseListener (
         new OutlineMouseListener ( this ) ) ;
     // ActionListener
     OutlineActionListener outlineActionListener = new OutlineActionListener (
         this ) ;
-    this.outlineUI.getJMenuItemExpand ( ).addActionListener (
+    this.uI.getJMenuItemExpand ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemExpandAll ( )
+        .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCollapse ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCollapseAll ( ).addActionListener (
         outlineActionListener ) ;
-    this.outlineUI.getJMenuItemExpandAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCollapse ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCollapseAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemClose ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCloseAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCopy ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuPreferences ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemSelection ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemBinding ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemFree ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemReplace ( ).addActionListener (
-        outlineActionListener ) ;
+    this.uI.getJMenuItemClose ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCloseAll ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuPreferences ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemSelection ( )
+        .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemBinding ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemFree ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemReplace ( ).addActionListener ( outlineActionListener ) ;
     // ComponentListener
-    this.outlineUI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( this ) ) ;
     // ItemListener
-    this.outlineItemListener = new OutlineItemListener ( this ) ;
-    this.outlineUI.getJCheckBoxSelection ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxBinding ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxFree ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxReplace ( ).addItemListener (
-        this.outlineItemListener ) ;
+    this.itemListener = new OutlineItemListener ( this ) ;
+    this.uI.getJCheckBoxSelection ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxBinding ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxFree ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxReplace ( ).addItemListener ( this.itemListener ) ;
     // KeyListener
-    this.outlineUI.getJTreeOutline ( ).addKeyListener (
-        new OutlineKeyListener ( this ) ) ;
+    this.uI.getJTreeOutline ( )
+        .addKeyListener ( new OutlineKeyListener ( this ) ) ;
     // TreeExpansionListener
-    this.outlineUI.getJTreeOutline ( ).addTreeExpansionListener (
+    this.uI.getJTreeOutline ( ).addTreeExpansionListener (
         new OutlineTreeExpansionListener ( this ) ) ;
     // TreeSelectionListener
-    this.outlineUI.getJTreeOutline ( ).getSelectionModel ( )
-        .addTreeSelectionListener ( new OutlineTreeSelectionListener ( this ) ) ;
+    this.uI.getJTreeOutline ( ).getSelectionModel ( ).addTreeSelectionListener (
+        new OutlineTreeSelectionListener ( this ) ) ;
   }
 
 
@@ -382,16 +356,16 @@ public final class DefaultOutline implements Outline
   {
     this.loadedInput = null ;
     this.rootOutlineNode = null ;
-    this.outlinePreferences = new OutlinePreferences ( ) ;
-    this.outlineUI = new OutlineUI ( this ) ;
+    this.preferences = new OutlinePreferences ( ) ;
+    this.uI = new OutlineUI ( this ) ;
     this.textEditorPanel = null ;
     this.subTypingEnterTypes = null ;
-    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
-    this.outlineUI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.outlineUI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
+    this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
+    this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.uI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
     // ComponentListener
-    this.outlineUI.getJPanelMain ( )
+    this.uI.getJPanelMain ( )
         .addComponentListener (
             new OutlineComponentListener ( pSmallStepView.getJSplitPane ( ) ,
                 this ) ) ;
@@ -406,61 +380,47 @@ public final class DefaultOutline implements Outline
         new OutlineTreeModelListener ( this , pSmallStepView
             .getSmallStepProofModel ( ) ) ) ;
     // MouseListener
-    this.outlineUI.getJTreeOutline ( ).addMouseListener (
+    this.uI.getJTreeOutline ( ).addMouseListener (
         new OutlineMouseListener ( this ) ) ;
     // ActionListener
     OutlineActionListener outlineActionListener = new OutlineActionListener (
         this ) ;
-    this.outlineUI.getJMenuItemExpand ( ).addActionListener (
+    this.uI.getJMenuItemExpand ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemExpandAll ( )
+        .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCollapse ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCollapseAll ( ).addActionListener (
         outlineActionListener ) ;
-    this.outlineUI.getJMenuItemExpandAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCollapse ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCollapseAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemClose ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCloseAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCopy ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuPreferences ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemSelection ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemBinding ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemFree ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemReplace ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemAutoUpdate ( ).addActionListener (
+    this.uI.getJMenuItemClose ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCloseAll ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuPreferences ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemSelection ( )
+        .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemBinding ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemFree ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemReplace ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemAutoUpdate ( ).addActionListener (
         outlineActionListener ) ;
     // ComponentListener
-    this.outlineUI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( this ) ) ;
     // ItemListener
-    this.outlineItemListener = new OutlineItemListener ( this ) ;
-    this.outlineUI.getJCheckBoxSelection ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxBinding ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxFree ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxReplace ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxAutoUpdate ( ).addItemListener (
-        this.outlineItemListener ) ;
+    this.itemListener = new OutlineItemListener ( this ) ;
+    this.uI.getJCheckBoxSelection ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxBinding ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxFree ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxReplace ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxAutoUpdate ( ).addItemListener ( this.itemListener ) ;
     // KeyListener
-    this.outlineUI.getJTreeOutline ( ).addKeyListener (
-        new OutlineKeyListener ( this ) ) ;
+    this.uI.getJTreeOutline ( )
+        .addKeyListener ( new OutlineKeyListener ( this ) ) ;
     // TreeExpansionListener
-    this.outlineUI.getJTreeOutline ( ).addTreeExpansionListener (
+    this.uI.getJTreeOutline ( ).addTreeExpansionListener (
         new OutlineTreeExpansionListener ( this ) ) ;
     // TreeSelectionListener
-    this.outlineUI.getJTreeOutline ( ).getSelectionModel ( )
-        .addTreeSelectionListener ( new OutlineTreeSelectionListener ( this ) ) ;
+    this.uI.getJTreeOutline ( ).getSelectionModel ( ).addTreeSelectionListener (
+        new OutlineTreeSelectionListener ( this ) ) ;
   }
 
 
@@ -475,72 +435,62 @@ public final class DefaultOutline implements Outline
   {
     this.loadedInput = null ;
     this.rootOutlineNode = null ;
-    this.outlinePreferences = new OutlinePreferences ( ) ;
-    this.outlineUI = new OutlineUI ( this ) ;
+    this.preferences = new OutlinePreferences ( ) ;
+    this.uI = new OutlineUI ( this ) ;
     this.textEditorPanel = null ;
     this.subTypingEnterTypes = pSubTypingEnterTypes ;
     this.styledLanguageEditor = pStyledLanguageEditor ;
-    this.outlineUI.getJCheckBoxBinding ( ).setVisible ( false ) ;
-    this.outlineUI.getJCheckBoxFree ( ).setVisible ( false ) ;
-    this.outlineUI.getJMenuItemBinding ( ).setVisible ( false ) ;
-    this.outlineUI.getJMenuItemFree ( ).setVisible ( false ) ;
+    this.uI.getJCheckBoxBinding ( ).setVisible ( false ) ;
+    this.uI.getJCheckBoxFree ( ).setVisible ( false ) ;
+    this.uI.getJMenuItemBinding ( ).setVisible ( false ) ;
+    this.uI.getJMenuItemFree ( ).setVisible ( false ) ;
     // PropertyChangeListener
     Theme.currentTheme ( ).addPropertyChangeListener (
         new OutlinePropertyChangeListener ( this ) ) ;
     // MouseListener
     pStyledLanguageEditor.addMouseListener ( new OutlineMouseListener (
         pStyledLanguageEditor , this ) ) ;
-    this.outlineUI.getJTreeOutline ( ).addMouseListener (
+    this.uI.getJTreeOutline ( ).addMouseListener (
         new OutlineMouseListener ( this ) ) ;
     // ActionListener
     OutlineActionListener outlineActionListener = new OutlineActionListener (
         this ) ;
-    this.outlineUI.getJMenuItemExpand ( ).addActionListener (
+    this.uI.getJMenuItemExpand ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemExpandAll ( )
+        .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCollapse ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCollapseAll ( ).addActionListener (
         outlineActionListener ) ;
-    this.outlineUI.getJMenuItemExpandAll ( ).addActionListener (
+    this.uI.getJMenuItemClose ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCloseAll ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuPreferences ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemSelection ( )
+        .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemReplace ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemHighlightSourceCode ( ).addActionListener (
         outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCollapse ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCollapseAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemClose ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCloseAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCopy ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuPreferences ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemSelection ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemReplace ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemHighlightSourceCode ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemAutoUpdate ( ).addActionListener (
+    this.uI.getJMenuItemAutoUpdate ( ).addActionListener (
         outlineActionListener ) ;
     // ComponentListener
-    this.outlineUI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( this ) ) ;
     // ItemListener
-    this.outlineItemListener = new OutlineItemListener ( this ) ;
-    this.outlineUI.getJCheckBoxSelection ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxReplace ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxAutoUpdate ( ).addItemListener (
-        this.outlineItemListener ) ;
+    this.itemListener = new OutlineItemListener ( this ) ;
+    this.uI.getJCheckBoxSelection ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxReplace ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxHighlightSourceCode ( ).addItemListener (
+        this.itemListener ) ;
+    this.uI.getJCheckBoxAutoUpdate ( ).addItemListener ( this.itemListener ) ;
     // KeyListener
-    this.outlineUI.getJTreeOutline ( ).addKeyListener (
-        new OutlineKeyListener ( this ) ) ;
+    this.uI.getJTreeOutline ( )
+        .addKeyListener ( new OutlineKeyListener ( this ) ) ;
     // TreeExpansionListener
-    this.outlineUI.getJTreeOutline ( ).addTreeExpansionListener (
+    this.uI.getJTreeOutline ( ).addTreeExpansionListener (
         new OutlineTreeExpansionListener ( this ) ) ;
     // TreeSelectionListener
-    this.outlineUI.getJTreeOutline ( ).getSelectionModel ( )
-        .addTreeSelectionListener ( new OutlineTreeSelectionListener ( this ) ) ;
+    this.uI.getJTreeOutline ( ).getSelectionModel ( ).addTreeSelectionListener (
+        new OutlineTreeSelectionListener ( this ) ) ;
   }
 
 
@@ -553,18 +503,18 @@ public final class DefaultOutline implements Outline
   {
     this.loadedInput = null ;
     this.rootOutlineNode = null ;
-    this.outlinePreferences = new OutlinePreferences ( ) ;
-    this.outlineUI = new OutlineUI ( this ) ;
+    this.preferences = new OutlinePreferences ( ) ;
+    this.uI = new OutlineUI ( this ) ;
     this.textEditorPanel = pTextEditorPanel ;
     this.subTypingEnterTypes = null ;
     // ComponentListener
-    this.outlineUI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( pTextEditorPanel.getJSplitPane ( ) ,
             this ) ) ;
     // MouseListener
     this.textEditorPanel.getEditor ( ).addMouseListener (
         new OutlineMouseListener ( pTextEditorPanel ) ) ;
-    this.outlineUI.getJTreeOutline ( ).addMouseListener (
+    this.uI.getJTreeOutline ( ).addMouseListener (
         new OutlineMouseListener ( this ) ) ;
     // PropertyChangeListener
     this.textEditorPanel
@@ -575,60 +525,46 @@ public final class DefaultOutline implements Outline
     // ActionListener
     OutlineActionListener outlineActionListener = new OutlineActionListener (
         this ) ;
-    this.outlineUI.getJMenuItemExpand ( ).addActionListener (
+    this.uI.getJMenuItemExpand ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemExpandAll ( )
+        .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCollapse ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCollapseAll ( ).addActionListener (
         outlineActionListener ) ;
-    this.outlineUI.getJMenuItemExpandAll ( ).addActionListener (
+    this.uI.getJMenuItemClose ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCloseAll ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuPreferences ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemSelection ( )
+        .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemBinding ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemFree ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemReplace ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemHighlightSourceCode ( ).addActionListener (
         outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCollapse ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCollapseAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemClose ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCloseAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCopy ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuPreferences ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemSelection ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemBinding ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemFree ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemReplace ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemHighlightSourceCode ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemAutoUpdate ( ).addActionListener (
+    this.uI.getJMenuItemAutoUpdate ( ).addActionListener (
         outlineActionListener ) ;
     // ComponentListener
-    this.outlineUI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( this ) ) ;
     // ItemListener
-    this.outlineItemListener = new OutlineItemListener ( this ) ;
-    this.outlineUI.getJCheckBoxSelection ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxBinding ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxFree ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxReplace ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxAutoUpdate ( ).addItemListener (
-        this.outlineItemListener ) ;
+    this.itemListener = new OutlineItemListener ( this ) ;
+    this.uI.getJCheckBoxSelection ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxBinding ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxFree ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxReplace ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxHighlightSourceCode ( ).addItemListener (
+        this.itemListener ) ;
+    this.uI.getJCheckBoxAutoUpdate ( ).addItemListener ( this.itemListener ) ;
     // KeyListener
-    this.outlineUI.getJTreeOutline ( ).addKeyListener (
-        new OutlineKeyListener ( this ) ) ;
+    this.uI.getJTreeOutline ( )
+        .addKeyListener ( new OutlineKeyListener ( this ) ) ;
     // TreeExpansionListener
-    this.outlineUI.getJTreeOutline ( ).addTreeExpansionListener (
+    this.uI.getJTreeOutline ( ).addTreeExpansionListener (
         new OutlineTreeExpansionListener ( this ) ) ;
     // TreeSelectionListener
-    this.outlineUI.getJTreeOutline ( ).getSelectionModel ( )
-        .addTreeSelectionListener ( new OutlineTreeSelectionListener ( this ) ) ;
+    this.uI.getJTreeOutline ( ).getSelectionModel ( ).addTreeSelectionListener (
+        new OutlineTreeSelectionListener ( this ) ) ;
   }
 
 
@@ -641,20 +577,20 @@ public final class DefaultOutline implements Outline
   {
     this.loadedInput = null ;
     this.rootOutlineNode = null ;
-    this.outlinePreferences = new OutlinePreferences ( ) ;
-    this.outlineUI = new OutlineUI ( this ) ;
+    this.preferences = new OutlinePreferences ( ) ;
+    this.uI = new OutlineUI ( this ) ;
     this.textEditorPanel = null ;
     this.subTypingEnterTypes = null ;
-    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
-    this.outlineUI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.outlineUI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
-    this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
-    this.outlineUI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
-    this.outlineUI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
-    this.outlineUI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
+    this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
+    this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.uI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
+    this.uI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
+    this.uI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
+    this.uI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
+    this.uI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
     // ComponentListener
-    this.outlineUI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( pTypeCheckerView.getJSplitPane ( ) ,
             this ) ) ;
     // PropertyChangeListener
@@ -668,57 +604,44 @@ public final class DefaultOutline implements Outline
         new OutlineTreeModelListener ( this , pTypeCheckerView
             .getTypeCheckerProofModel ( ) ) ) ;
     // MouseListener
-    this.outlineUI.getJTreeOutline ( ).addMouseListener (
+    this.uI.getJTreeOutline ( ).addMouseListener (
         new OutlineMouseListener ( this ) ) ;
     // ActionListener
     OutlineActionListener outlineActionListener = new OutlineActionListener (
         this ) ;
-    this.outlineUI.getJMenuItemExpand ( ).addActionListener (
+    this.uI.getJMenuItemExpand ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemExpandAll ( )
+        .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCollapse ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCollapseAll ( ).addActionListener (
         outlineActionListener ) ;
-    this.outlineUI.getJMenuItemExpandAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCollapse ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCollapseAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemClose ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCloseAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCopy ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuPreferences ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemSelection ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemBinding ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemFree ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemReplace ( ).addActionListener (
-        outlineActionListener ) ;
+    this.uI.getJMenuItemClose ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCloseAll ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuPreferences ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemSelection ( )
+        .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemBinding ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemFree ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemReplace ( ).addActionListener ( outlineActionListener ) ;
     // ComponentListener
-    this.outlineUI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( this ) ) ;
     // ItemListener
-    this.outlineItemListener = new OutlineItemListener ( this ) ;
-    this.outlineUI.getJCheckBoxSelection ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxBinding ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxFree ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxReplace ( ).addItemListener (
-        this.outlineItemListener ) ;
+    this.itemListener = new OutlineItemListener ( this ) ;
+    this.uI.getJCheckBoxSelection ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxBinding ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxFree ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxReplace ( ).addItemListener ( this.itemListener ) ;
     // KeyListener
-    this.outlineUI.getJTreeOutline ( ).addKeyListener (
-        new OutlineKeyListener ( this ) ) ;
+    this.uI.getJTreeOutline ( )
+        .addKeyListener ( new OutlineKeyListener ( this ) ) ;
     // TreeExpansionListener
-    this.outlineUI.getJTreeOutline ( ).addTreeExpansionListener (
+    this.uI.getJTreeOutline ( ).addTreeExpansionListener (
         new OutlineTreeExpansionListener ( this ) ) ;
     // TreeSelectionListener
-    this.outlineUI.getJTreeOutline ( ).getSelectionModel ( )
-        .addTreeSelectionListener ( new OutlineTreeSelectionListener ( this ) ) ;
+    this.uI.getJTreeOutline ( ).getSelectionModel ( ).addTreeSelectionListener (
+        new OutlineTreeSelectionListener ( this ) ) ;
   }
 
 
@@ -731,20 +654,20 @@ public final class DefaultOutline implements Outline
   {
     this.loadedInput = null ;
     this.rootOutlineNode = null ;
-    this.outlinePreferences = new OutlinePreferences ( ) ;
-    this.outlineUI = new OutlineUI ( this ) ;
+    this.preferences = new OutlinePreferences ( ) ;
+    this.uI = new OutlineUI ( this ) ;
     this.textEditorPanel = null ;
     this.subTypingEnterTypes = null ;
-    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
-    this.outlineUI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.outlineUI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
-    this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
-    this.outlineUI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
-    this.outlineUI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
-    this.outlineUI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
+    this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
+    this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.uI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
+    this.uI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
+    this.uI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
+    this.uI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
+    this.uI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
     // ComponentListener
-    this.outlineUI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( pTypeInferenceView.getJSplitPane ( ) ,
             this ) ) ;
     // PropertyChangeListener
@@ -757,57 +680,44 @@ public final class DefaultOutline implements Outline
     pTypeInferenceView.getTypeInferenceProofModel ( ).addTreeModelListener (
         new OutlineTreeModelListener ( this , pTypeInferenceView
             .getTypeInferenceProofModel ( ) ) ) ;
-    this.outlineUI.getJTreeOutline ( ).addMouseListener (
+    this.uI.getJTreeOutline ( ).addMouseListener (
         new OutlineMouseListener ( this ) ) ;
     // ActionListener
     OutlineActionListener outlineActionListener = new OutlineActionListener (
         this ) ;
-    this.outlineUI.getJMenuItemExpand ( ).addActionListener (
+    this.uI.getJMenuItemExpand ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemExpandAll ( )
+        .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCollapse ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCollapseAll ( ).addActionListener (
         outlineActionListener ) ;
-    this.outlineUI.getJMenuItemExpandAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCollapse ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCollapseAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemClose ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCloseAll ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemCopy ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuPreferences ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemSelection ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemBinding ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemFree ( ).addActionListener (
-        outlineActionListener ) ;
-    this.outlineUI.getJMenuItemReplace ( ).addActionListener (
-        outlineActionListener ) ;
+    this.uI.getJMenuItemClose ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCloseAll ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuPreferences ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemSelection ( )
+        .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemBinding ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemFree ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemReplace ( ).addActionListener ( outlineActionListener ) ;
     // ComponentListener
-    this.outlineUI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( this ) ) ;
     // ItemListener
-    this.outlineItemListener = new OutlineItemListener ( this ) ;
-    this.outlineUI.getJCheckBoxSelection ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxBinding ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxFree ( ).addItemListener (
-        this.outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxReplace ( ).addItemListener (
-        this.outlineItemListener ) ;
+    this.itemListener = new OutlineItemListener ( this ) ;
+    this.uI.getJCheckBoxSelection ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxBinding ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxFree ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxReplace ( ).addItemListener ( this.itemListener ) ;
     // KeyListener
-    this.outlineUI.getJTreeOutline ( ).addKeyListener (
-        new OutlineKeyListener ( this ) ) ;
+    this.uI.getJTreeOutline ( )
+        .addKeyListener ( new OutlineKeyListener ( this ) ) ;
     // TreeExpansionListener
-    this.outlineUI.getJTreeOutline ( ).addTreeExpansionListener (
+    this.uI.getJTreeOutline ( ).addTreeExpansionListener (
         new OutlineTreeExpansionListener ( this ) ) ;
     // TreeSelectionListener
-    this.outlineUI.getJTreeOutline ( ).getSelectionModel ( )
-        .addTreeSelectionListener ( new OutlineTreeSelectionListener ( this ) ) ;
+    this.uI.getJTreeOutline ( ).getSelectionModel ( ).addTreeSelectionListener (
+        new OutlineTreeSelectionListener ( this ) ) ;
   }
 
 
@@ -1301,11 +1211,11 @@ public final class DefaultOutline implements Outline
    * Returns the outlineItemListener.
    * 
    * @return The outlineItemListener.
-   * @see #outlineItemListener
+   * @see #itemListener
    */
-  public OutlineItemListener getOutlineItemListener ( )
+  public OutlineItemListener getItemListener ( )
   {
-    return this.outlineItemListener ;
+    return this.itemListener ;
   }
 
 
@@ -1313,11 +1223,11 @@ public final class DefaultOutline implements Outline
    * Returns the {@link OutlinePreferences}.
    * 
    * @return The {@link OutlinePreferences}.
-   * @see #outlinePreferences
+   * @see #preferences
    */
-  public final OutlinePreferences getOutlinePreferences ( )
+  public final OutlinePreferences getPreferences ( )
   {
-    return this.outlinePreferences ;
+    return this.preferences ;
   }
 
 
@@ -1325,11 +1235,11 @@ public final class DefaultOutline implements Outline
    * Returns the {@link OutlineUI}.
    * 
    * @return The {@link OutlineUI}.
-   * @see #outlineUI
+   * @see #uI
    */
-  public final OutlineUI getOutlineUI ( )
+  public final OutlineUI getUI ( )
   {
-    return this.outlineUI ;
+    return this.uI ;
   }
 
 
@@ -1341,7 +1251,7 @@ public final class DefaultOutline implements Outline
    */
   public final JPanel getPanel ( )
   {
-    return this.outlineUI.getJPanelMain ( ) ;
+    return this.uI.getJPanelMain ( ) ;
   }
 
 
@@ -1807,7 +1717,7 @@ public final class DefaultOutline implements Outline
     if ( pInput == null )
     {
       executeTimerCancel ( ) ;
-      if ( ( this.outlinePreferences.isAutoUpdate ( ) )
+      if ( ( this.preferences.isAutoUpdate ( ) )
           || ( pExecute.equals ( Outline.ExecuteMouseClick.EDITOR ) ) )
       {
         setError ( true ) ;
@@ -1830,7 +1740,7 @@ public final class DefaultOutline implements Outline
         case SMALLSTEP :
         case SUBTYPING :
         {
-          if ( ! this.outlinePreferences.isAutoUpdate ( ) )
+          if ( ! this.preferences.isAutoUpdate ( ) )
           {
             return ;
           }
@@ -1934,8 +1844,7 @@ public final class DefaultOutline implements Outline
    */
   public final void propertyChanged ( )
   {
-    propertyChanged ( ( OutlineNode ) this.outlineUI.getTreeModel ( )
-        .getRoot ( ) ) ;
+    propertyChanged ( ( OutlineNode ) this.uI.getTreeModel ( ).getRoot ( ) ) ;
   }
 
 
@@ -1953,7 +1862,7 @@ public final class DefaultOutline implements Outline
     }
     pOutlineNode.propertyChanged ( ) ;
     pOutlineNode.updateCaption ( ) ;
-    this.outlineUI.getTreeModel ( ).nodeChanged ( pOutlineNode ) ;
+    this.uI.getTreeModel ( ).nodeChanged ( pOutlineNode ) ;
     for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
     {
       propertyChanged ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
@@ -1969,7 +1878,7 @@ public final class DefaultOutline implements Outline
   private final void repaint ( OutlineNode pOutlineNode )
   {
     pOutlineNode.updateCaption ( ) ;
-    this.outlineUI.getTreeModel ( ).nodeChanged ( pOutlineNode ) ;
+    this.uI.getTreeModel ( ).nodeChanged ( pOutlineNode ) ;
     for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
     {
       repaint ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
@@ -1982,8 +1891,7 @@ public final class DefaultOutline implements Outline
    */
   private final void repaintNode ( )
   {
-    OutlineNode rootNode = ( OutlineNode ) this.outlineUI.getTreeModel ( )
-        .getRoot ( ) ;
+    OutlineNode rootNode = ( OutlineNode ) this.uI.getTreeModel ( ).getRoot ( ) ;
     repaintNode ( rootNode ) ;
   }
 
@@ -1995,7 +1903,7 @@ public final class DefaultOutline implements Outline
    */
   private final void repaintNode ( OutlineNode pOutlineNode )
   {
-    this.outlineUI.getTreeModel ( ).nodeChanged ( pOutlineNode ) ;
+    this.uI.getTreeModel ( ).nodeChanged ( pOutlineNode ) ;
     for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
     {
       repaintNode ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
@@ -2008,7 +1916,7 @@ public final class DefaultOutline implements Outline
    */
   public final void resetNode ( )
   {
-    OutlineNode outlineNode = ( OutlineNode ) this.outlineUI.getTreeModel ( )
+    OutlineNode outlineNode = ( OutlineNode ) this.uI.getTreeModel ( )
         .getRoot ( ) ;
     if ( outlineNode == null )
     {
@@ -2045,12 +1953,12 @@ public final class DefaultOutline implements Outline
   {
     if ( pStatus )
     {
-      this.outlineUI.getJScrollPaneOutline ( ).setBorder (
+      this.uI.getJScrollPaneOutline ( ).setBorder (
           new LineBorder ( Color.RED , 3 ) ) ;
     }
     else
     {
-      this.outlineUI.getJScrollPaneOutline ( ).setBorder (
+      this.uI.getJScrollPaneOutline ( ).setBorder (
           new LineBorder ( Color.WHITE , 3 ) ) ;
     }
   }
@@ -2059,9 +1967,9 @@ public final class DefaultOutline implements Outline
   /**
    * Sets the root node in the {@link OutlineUI}.
    */
-  public final void setRootNode ( )
+  public final synchronized void setRootNode ( )
   {
-    this.outlineUI.setRootNode ( this.rootOutlineNode ) ;
+    this.uI.setRootNode ( this.rootOutlineNode ) ;
     updateBreaks ( ) ;
   }
 
@@ -2073,8 +1981,7 @@ public final class DefaultOutline implements Outline
    */
   public final void update ( TreePath pTreePath )
   {
-    OutlineNode rootNode = ( OutlineNode ) this.outlineUI.getTreeModel ( )
-        .getRoot ( ) ;
+    OutlineNode rootNode = ( OutlineNode ) this.uI.getTreeModel ( ).getRoot ( ) ;
     if ( rootNode == null )
     {
       return ;
@@ -2126,7 +2033,7 @@ public final class DefaultOutline implements Outline
       return ;
     }
     final int distance = 20 ;
-    JScrollPane jScrollPaneOutline = this.outlineUI.getJScrollPaneOutline ( ) ;
+    JScrollPane jScrollPaneOutline = this.uI.getJScrollPaneOutline ( ) ;
     OutlineNode currentNode ;
     TreePath currentTreePath ;
     Rectangle rectangle ;
@@ -2136,8 +2043,7 @@ public final class DefaultOutline implements Outline
     {
       currentNode = ( OutlineNode ) enumeration.nextElement ( ) ;
       currentTreePath = new TreePath ( currentNode.getPath ( ) ) ;
-      rectangle = this.outlineUI.getJTreeOutline ( ).getPathBounds (
-          currentTreePath ) ;
+      rectangle = this.uI.getJTreeOutline ( ).getPathBounds ( currentTreePath ) ;
       if ( rectangle != null )
       {
         /*
@@ -2150,8 +2056,8 @@ public final class DefaultOutline implements Outline
                 .getSize ( ).width - distance ) ) )
         {
           currentNode.breakCountRemove ( ) ;
-          this.outlineUI.getTreeModel ( ).nodeChanged ( currentNode ) ;
-          rectangle = this.outlineUI.getJTreeOutline ( ).getPathBounds (
+          this.uI.getTreeModel ( ).nodeChanged ( currentNode ) ;
+          rectangle = this.uI.getJTreeOutline ( ).getPathBounds (
               currentTreePath ) ;
           /*
            * If the node is after the remove to big, a break is added.
@@ -2160,8 +2066,8 @@ public final class DefaultOutline implements Outline
               .getSize ( ).width - distance ) )
           {
             currentNode.breakCountAdd ( ) ;
-            this.outlineUI.getTreeModel ( ).nodeChanged ( currentNode ) ;
-            rectangle = this.outlineUI.getJTreeOutline ( ).getPathBounds (
+            this.uI.getTreeModel ( ).nodeChanged ( currentNode ) ;
+            rectangle = this.uI.getJTreeOutline ( ).getPathBounds (
                 currentTreePath ) ;
             break ;
           }
@@ -2177,8 +2083,8 @@ public final class DefaultOutline implements Outline
                 .getSize ( ).width - distance ) ) )
         {
           currentNode.breakCountAdd ( ) ;
-          this.outlineUI.getTreeModel ( ).nodeChanged ( currentNode ) ;
-          rectangle = this.outlineUI.getJTreeOutline ( ).getPathBounds (
+          this.uI.getTreeModel ( ).nodeChanged ( currentNode ) ;
+          rectangle = this.uI.getJTreeOutline ( ).getPathBounds (
               currentTreePath ) ;
         }
       }
@@ -2309,7 +2215,7 @@ public final class DefaultOutline implements Outline
       /*
        * Node has changed and can be repainted
        */
-      this.outlineUI.getTreeModel ( ).nodeChanged (
+      this.uI.getTreeModel ( ).nodeChanged (
           ( ( OutlineNode ) pTreePath.getPath ( ) [ i ] ) ) ;
     }
   }
@@ -2347,8 +2253,7 @@ public final class DefaultOutline implements Outline
     }
     if ( pSelected )
     {
-      TreePath treePath = this.outlineUI.getJTreeOutline ( )
-          .getSelectionPath ( ) ;
+      TreePath treePath = this.uI.getJTreeOutline ( ).getSelectionPath ( ) ;
       if ( treePath == null )
       {
         return ;
@@ -2433,7 +2338,7 @@ public final class DefaultOutline implements Outline
       /*
        * Node has changed and can be repainted
        */
-      this.outlineUI.getTreeModel ( ).nodeChanged (
+      this.uI.getTreeModel ( ).nodeChanged (
           ( ( OutlineNode ) pTreePath.getPath ( ) [ i ] ) ) ;
     }
   }
@@ -2519,7 +2424,7 @@ public final class DefaultOutline implements Outline
       /*
        * Node has changed and can be repainted
        */
-      this.outlineUI.getTreeModel ( ).nodeChanged (
+      this.uI.getTreeModel ( ).nodeChanged (
           ( ( OutlineNode ) pTreePath.getPath ( ) [ i ] ) ) ;
     }
   }
@@ -2562,7 +2467,7 @@ public final class DefaultOutline implements Outline
       /*
        * Node has changed and can be repainted
        */
-      this.outlineUI.getTreeModel ( ).nodeChanged (
+      this.uI.getTreeModel ( ).nodeChanged (
           ( ( OutlineNode ) pTreePath.getPath ( ) [ i ] ) ) ;
     }
   }

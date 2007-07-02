@@ -42,7 +42,7 @@ public final class OutlineTreeExpansionListener implements
   public final void treeCollapsed ( TreeExpansionEvent pTreeExpansionEvent )
   {
     if ( pTreeExpansionEvent.getSource ( ).equals (
-        this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )
+        this.defaultOutline.getUI ( ).getJTreeOutline ( ) ) )
     {
       this.defaultOutline.updateBreaks ( ) ;
     }
@@ -58,7 +58,7 @@ public final class OutlineTreeExpansionListener implements
   public final void treeExpanded ( TreeExpansionEvent pTreeExpansionEvent )
   {
     if ( pTreeExpansionEvent.getSource ( ).equals (
-        this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )
+        this.defaultOutline.getUI ( ).getJTreeOutline ( ) ) )
     {
       this.defaultOutline.updateBreaks ( ) ;
     }

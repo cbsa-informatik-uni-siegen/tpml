@@ -85,7 +85,7 @@ public final class OutlinePropertyChangeListener implements
       {
         this.setDivider = true ;
         this.jSplitPane.setDividerLocation ( this.defaultOutline
-            .getOutlinePreferences ( ).getDividerLocation ( ) ) ;
+            .getPreferences ( ).getDividerLocation ( ) ) ;
       }
     }
     else if ( pPropertyChangeEvent.getSource ( ) instanceof Theme )

@@ -100,7 +100,7 @@ public final class OutlineComponentListener implements ComponentListener
         .getPanel ( ) ) )
         && ( this.jSplitPane != null ) )
     {
-      this.defaultOutline.getOutlinePreferences ( ).setDividerLocation (
+      this.defaultOutline.getPreferences ( ).setDividerLocation (
           this.jSplitPane.getDividerLocation ( ) ) ;
     }
     else if ( pComponentEvent.getSource ( ).equals (

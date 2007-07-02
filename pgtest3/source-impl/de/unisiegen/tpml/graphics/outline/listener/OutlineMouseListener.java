@@ -212,7 +212,7 @@ public final class OutlineMouseListener implements MouseListener
     for ( int i = 0 ; i < count ; i ++ )
     {
       if ( ! this.defaultOutline
-          .getOutlineUI ( )
+          .getUI ( )
           .getJTreeOutline ( )
           .isVisible ( pTreePath.pathByAddingChild ( lastNode.getChildAt ( i ) ) ) )
       {
@@ -244,7 +244,7 @@ public final class OutlineMouseListener implements MouseListener
       if ( this.defaultOutline != null )
       {
         if ( pMouseEvent.getSource ( ).equals (
-            this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )
+            this.defaultOutline.getUI ( ).getJTreeOutline ( ) ) )
         {
           /*
            * Highlight the source code
@@ -252,7 +252,7 @@ public final class OutlineMouseListener implements MouseListener
           if ( ( ( this.defaultOutline.getTextEditorPanel ( ) != null ) || ( this.defaultOutline
               .getSubTypingEnterTypes ( ) != null ) )
               && ( ( pMouseEvent.getClickCount ( ) >= 2 ) || ( this.defaultOutline
-                  .getOutlinePreferences ( ).isHighlightSourceCode ( ) ) ) )
+                  .getPreferences ( ).isHighlightSourceCode ( ) ) ) )
           {
             this.defaultOutline.updateHighlighSourceCode ( true ) ;
           }
@@ -525,20 +525,20 @@ public final class OutlineMouseListener implements MouseListener
          * Popupmenu
          */
         if ( pMouseEvent.getSource ( ).equals (
-            this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )
+            this.defaultOutline.getUI ( ).getJTreeOutline ( ) ) )
         {
           int x = pMouseEvent.getX ( ) ;
           int y = pMouseEvent.getY ( ) ;
-          TreePath treePath = this.defaultOutline.getOutlineUI ( )
+          TreePath treePath = this.defaultOutline.getUI ( )
               .getJTreeOutline ( ).getPathForLocation ( x , y ) ;
           if ( treePath == null )
           {
             return ;
           }
-          this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( )
+          this.defaultOutline.getUI ( ).getJTreeOutline ( )
               .setSelectionPath ( treePath ) ;
           setStatus ( ) ;
-          this.defaultOutline.getOutlineUI ( ).getJPopupMenu ( ).show (
+          this.defaultOutline.getUI ( ).getJPopupMenu ( ).show (
               pMouseEvent.getComponent ( ) , x , y ) ;
         }
       }
@@ -619,7 +619,7 @@ public final class OutlineMouseListener implements MouseListener
    */
   private final void setStatus ( )
   {
-    TreePath treePath = this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( )
+    TreePath treePath = this.defaultOutline.getUI ( ).getJTreeOutline ( )
         .getSelectionPath ( ) ;
     if ( treePath == null )
     {
@@ -627,60 +627,60 @@ public final class OutlineMouseListener implements MouseListener
       return ;
     }
     OutlineNode selectedNode = ( OutlineNode ) treePath.getLastPathComponent ( ) ;
-    this.defaultOutline.getOutlineUI ( ).getJMenuItemExpand ( ).setEnabled (
+    this.defaultOutline.getUI ( ).getJMenuItemExpand ( ).setEnabled (
         true ) ;
-    this.defaultOutline.getOutlineUI ( ).getJMenuItemExpandAll ( ).setEnabled (
+    this.defaultOutline.getUI ( ).getJMenuItemExpandAll ( ).setEnabled (
         true ) ;
-    this.defaultOutline.getOutlineUI ( ).getJMenuItemCollapse ( ).setEnabled (
+    this.defaultOutline.getUI ( ).getJMenuItemCollapse ( ).setEnabled (
         true ) ;
-    this.defaultOutline.getOutlineUI ( ).getJMenuItemCollapseAll ( )
+    this.defaultOutline.getUI ( ).getJMenuItemCollapseAll ( )
         .setEnabled ( true ) ;
-    this.defaultOutline.getOutlineUI ( ).getJMenuItemClose ( ).setEnabled (
+    this.defaultOutline.getUI ( ).getJMenuItemClose ( ).setEnabled (
         true ) ;
-    this.defaultOutline.getOutlineUI ( ).getJMenuItemCloseAll ( ).setEnabled (
+    this.defaultOutline.getUI ( ).getJMenuItemCloseAll ( ).setEnabled (
         true ) ;
     boolean allVisible = allChildrenVisible ( this.defaultOutline
-        .getOutlineUI ( ).getJTreeOutline ( ).getPathForRow ( 0 ) ) ;
-    this.defaultOutline.getOutlineUI ( ).getJMenuItemExpandAll ( ).setEnabled (
+        .getUI ( ).getJTreeOutline ( ).getPathForRow ( 0 ) ) ;
+    this.defaultOutline.getUI ( ).getJMenuItemExpandAll ( ).setEnabled (
         ! allVisible ) ;
     // Selected node is not a leaf
     if ( selectedNode.getChildCount ( ) > 0 )
     {
       boolean allChildrenVisible = allChildrenVisible ( treePath ) ;
-      boolean selectedChildVisible = this.defaultOutline.getOutlineUI ( )
+      boolean selectedChildVisible = this.defaultOutline.getUI ( )
           .getJTreeOutline ( ).isVisible (
               treePath.pathByAddingChild ( selectedNode.getChildAt ( 0 ) ) ) ;
-      boolean rootChildVisible = this.defaultOutline.getOutlineUI ( )
+      boolean rootChildVisible = this.defaultOutline.getUI ( )
           .getJTreeOutline ( ).isVisible (
-              this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( )
+              this.defaultOutline.getUI ( ).getJTreeOutline ( )
                   .getPathForRow ( 0 ).pathByAddingChild (
                       selectedNode.getChildAt ( 0 ) ) ) ;
-      this.defaultOutline.getOutlineUI ( ).getJMenuItemExpand ( ).setEnabled (
+      this.defaultOutline.getUI ( ).getJMenuItemExpand ( ).setEnabled (
           ! allChildrenVisible ) ;
-      this.defaultOutline.getOutlineUI ( ).getJMenuItemCollapse ( ).setEnabled (
+      this.defaultOutline.getUI ( ).getJMenuItemCollapse ( ).setEnabled (
           selectedChildVisible ) ;
-      this.defaultOutline.getOutlineUI ( ).getJMenuItemCollapseAll ( )
+      this.defaultOutline.getUI ( ).getJMenuItemCollapseAll ( )
           .setEnabled ( rootChildVisible ) ;
-      this.defaultOutline.getOutlineUI ( ).getJMenuItemClose ( ).setEnabled (
+      this.defaultOutline.getUI ( ).getJMenuItemClose ( ).setEnabled (
           selectedChildVisible ) ;
-      this.defaultOutline.getOutlineUI ( ).getJMenuItemCloseAll ( ).setEnabled (
+      this.defaultOutline.getUI ( ).getJMenuItemCloseAll ( ).setEnabled (
           rootChildVisible ) ;
     }
     // Selected node is a leaf
     else
     {
-      this.defaultOutline.getOutlineUI ( ).getJMenuItemExpand ( ).setEnabled (
+      this.defaultOutline.getUI ( ).getJMenuItemExpand ( ).setEnabled (
           false ) ;
-      this.defaultOutline.getOutlineUI ( ).getJMenuItemCollapse ( ).setEnabled (
+      this.defaultOutline.getUI ( ).getJMenuItemCollapse ( ).setEnabled (
           false ) ;
-      this.defaultOutline.getOutlineUI ( ).getJMenuItemClose ( ).setEnabled (
+      this.defaultOutline.getUI ( ).getJMenuItemClose ( ).setEnabled (
           false ) ;
       // If the root is the only node, disable items
-      OutlineNode root = ( OutlineNode ) this.defaultOutline.getOutlineUI ( )
+      OutlineNode root = ( OutlineNode ) this.defaultOutline.getUI ( )
           .getTreeModel ( ).getRoot ( ) ;
-      this.defaultOutline.getOutlineUI ( ).getJMenuItemCloseAll ( ).setEnabled (
+      this.defaultOutline.getUI ( ).getJMenuItemCloseAll ( ).setEnabled (
           ! root.isLeaf ( ) ) ;
-      this.defaultOutline.getOutlineUI ( ).getJMenuItemCollapseAll ( )
+      this.defaultOutline.getUI ( ).getJMenuItemCollapseAll ( )
           .setEnabled ( ! root.isLeaf ( ) ) ;
     }
   }

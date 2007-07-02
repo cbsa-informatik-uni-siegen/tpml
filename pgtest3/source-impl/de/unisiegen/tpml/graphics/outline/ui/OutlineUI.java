@@ -521,7 +521,7 @@ public final class OutlineUI
         .getString ( SELECTION + TOOLTIP ) ) ;
     this.jMenuItemSelection.setActionCommand ( SELECTION ) ;
     this.jMenuItemSelection.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isSelection ( ) ) ;
+        .getPreferences ( ).isSelection ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemSelection ) ;
     // MenuItem Binding
     this.jMenuItemBinding = new JCheckBoxMenuItem ( this.resourceBundle
@@ -532,7 +532,7 @@ public final class OutlineUI
         .getString ( BINDING + TOOLTIP ) ) ;
     this.jMenuItemBinding.setActionCommand ( BINDING ) ;
     this.jMenuItemBinding.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isBinding ( ) ) ;
+        .getPreferences ( ).isBinding ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemBinding ) ;
     // MenuItem Unbound
     this.jMenuItemFree = new JCheckBoxMenuItem ( this.resourceBundle
@@ -543,7 +543,7 @@ public final class OutlineUI
         + TOOLTIP ) ) ;
     this.jMenuItemFree.setActionCommand ( FREE ) ;
     this.jMenuItemFree.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isFree ( ) ) ;
+        .getPreferences ( ).isFree ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemFree ) ;
     // MenuItem Replace
     this.jMenuItemReplace = new JCheckBoxMenuItem ( this.resourceBundle
@@ -554,7 +554,7 @@ public final class OutlineUI
         .getString ( REPLACE + TOOLTIP ) ) ;
     this.jMenuItemReplace.setActionCommand ( REPLACE ) ;
     this.jMenuItemReplace.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isReplace ( ) ) ;
+        .getPreferences ( ).isReplace ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemReplace ) ;
     // MenuItem HighlightSourceCode
     this.jMenuItemHighlightSourceCode = new JCheckBoxMenuItem (
@@ -565,7 +565,7 @@ public final class OutlineUI
         .getString ( HIGHLIGHTSOURCECODE + TOOLTIP ) ) ;
     this.jMenuItemHighlightSourceCode.setActionCommand ( HIGHLIGHTSOURCECODE ) ;
     this.jMenuItemHighlightSourceCode.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isHighlightSourceCode ( ) ) ;
+        .getPreferences ( ).isHighlightSourceCode ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemHighlightSourceCode ) ;
     // MenuItem AutoUpdate
     this.jMenuItemAutoUpdate = new JCheckBoxMenuItem ( this.resourceBundle
@@ -576,7 +576,7 @@ public final class OutlineUI
         .getString ( AUTOUPDATE + TOOLTIP ) ) ;
     this.jMenuItemAutoUpdate.setActionCommand ( AUTOUPDATE ) ;
     this.jMenuItemAutoUpdate.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isAutoUpdate ( ) ) ;
+        .getPreferences ( ).isAutoUpdate ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemAutoUpdate ) ;
     // Layout
     this.gridBagLayout = new GridBagLayout ( ) ;
@@ -592,7 +592,7 @@ public final class OutlineUI
     this.jCheckBoxSelection.setToolTipText ( this.resourceBundle
         .getString ( SELECTION + TOOLTIP ) ) ;
     this.jCheckBoxSelection.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isSelection ( ) ) ;
+        .getPreferences ( ).isSelection ( ) ) ;
     this.jCheckBoxSelection.setFocusable ( false ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
@@ -611,7 +611,7 @@ public final class OutlineUI
     this.jCheckBoxBinding.setToolTipText ( this.resourceBundle
         .getString ( BINDING + TOOLTIP ) ) ;
     this.jCheckBoxBinding.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isBinding ( ) ) ;
+        .getPreferences ( ).isBinding ( ) ) ;
     this.jCheckBoxBinding.setFocusable ( false ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
@@ -629,7 +629,7 @@ public final class OutlineUI
     this.jCheckBoxFree.setToolTipText ( this.resourceBundle.getString ( FREE
         + TOOLTIP ) ) ;
     this.jCheckBoxFree.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isFree ( ) ) ;
+        .getPreferences ( ).isFree ( ) ) ;
     this.jCheckBoxFree.setFocusable ( false ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
@@ -647,7 +647,7 @@ public final class OutlineUI
     this.jCheckBoxReplace.setToolTipText ( this.resourceBundle
         .getString ( REPLACE + TOOLTIP ) ) ;
     this.jCheckBoxReplace.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isReplace ( ) ) ;
+        .getPreferences ( ).isReplace ( ) ) ;
     this.jCheckBoxReplace.setFocusable ( false ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
@@ -666,7 +666,7 @@ public final class OutlineUI
     this.jCheckBoxHighlightSourceCode.setToolTipText ( this.resourceBundle
         .getString ( HIGHLIGHTSOURCECODE + TOOLTIP ) ) ;
     this.jCheckBoxHighlightSourceCode.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isHighlightSourceCode ( ) ) ;
+        .getPreferences ( ).isHighlightSourceCode ( ) ) ;
     this.jCheckBoxHighlightSourceCode.setFocusable ( false ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
@@ -685,7 +685,7 @@ public final class OutlineUI
     this.jCheckBoxAutoUpdate.setToolTipText ( this.resourceBundle
         .getString ( AUTOUPDATE + TOOLTIP ) ) ;
     this.jCheckBoxAutoUpdate.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isAutoUpdate ( ) ) ;
+        .getPreferences ( ).isAutoUpdate ( ) ) ;
     this.jCheckBoxAutoUpdate.setFocusable ( false ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
