@@ -1,5 +1,8 @@
 package de.unisiegen.tpml.core.languages.l2;
 
+import java.text.MessageFormat;
+
+import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l1.L1MinimalTypingProofRuleSet;
@@ -22,6 +25,7 @@ public class L2MinimalTypingProofRuleSet extends
 	 * <code>language</code>.
 	 * 
 	 * @param language the <code>L1</code> or a derived language.
+	 * @param mode the actual choosen mode
 	 * @throws NullPointerException if <code>language</code> is
 	 *           <code>null</code>.
 	 */
@@ -47,7 +51,8 @@ public class L2MinimalTypingProofRuleSet extends
 		// check if the user entered a type
 		
 		if (rec.getTau ( )== null)
-			throw new RuntimeException("Please enter type for " +rec.toString ( ));
+			throw new RuntimeException ( MessageFormat.format ( Messages
+					.getString ( "MinimalTypingException.2" ), rec.getIdentifiers ( )[0].toString ( ) ) ); //$NON-NLS-1$
 		context.addProofNode ( node, environment.extend ( rec.getId ( ), rec.getTau ( ) ), rec.getE ( ) );
 	}
 	

@@ -259,7 +259,7 @@ public class TypeComponent extends JComponent
   public Dimension getNeededSize ( int maxWidth )
   {
     Dimension result = new Dimension ( 0 , 0 ) ;
-    result.width += AbstractRenderer.getTextFontMetrics ( ).stringWidth(" :: ");
+    result.width += AbstractRenderer.getTextFontMetrics ( ).stringWidth(text);
     if (true ) //no linwraping
     {
       // to guaranty that no line wrapping should be performed
@@ -337,7 +337,7 @@ public class TypeComponent extends JComponent
       int centerV = getHeight ( ) / 2 ;
       centerV += AbstractRenderer.getTextFontMetrics ( ).getAscent ( ) / 2 ;
       gc.setFont ( AbstractRenderer.getTextFont ( ) ) ;
-      gc.setColor ( AbstractRenderer.getTextColor ( ) ) ;
+      gc.setColor ( Color.pink ) ;
       gc.drawString ( text , posX , centerV ) ;
       posX += AbstractRenderer.getTextFontMetrics ( ).stringWidth (
           text) ;

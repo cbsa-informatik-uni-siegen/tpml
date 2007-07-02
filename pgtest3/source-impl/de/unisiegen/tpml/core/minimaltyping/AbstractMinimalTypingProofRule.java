@@ -107,7 +107,8 @@ public abstract class AbstractMinimalTypingProofRule extends AbstractProofRule
 		} catch ( RuntimeException e ) {
 			throw e;
 		} catch ( InvocationTargetException e ) {
-			throw new RuntimeException ( e.getTargetException ( ) );
+			System.out.println(node.toString ( ));
+			throw new RuntimeException ( e.getTargetException ( ).getMessage ( ) );
 		} catch ( Exception e ) {
 			throw new RuntimeException ( e );
 

@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.languages.l3;
 
 import java.text.MessageFormat;
 
+import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.expressions.Tuple;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
@@ -102,7 +103,7 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 * <code>context</code>.
 	 * 
 	 * @param context the minimal typing proof context.
-	 * @param node the minimal typing proof node.
+	 * @param pNode the minimal typing proof node.
 	 */
 	public void applyProduct ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
 		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
@@ -121,8 +122,8 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 				context.addSeenType ( node.getType ( ), node.getType2 ( ) );
 			}
 		} else
-			//throw new SubTypingException (MessageFormat.format ( "SubTypingException.6", node.getType ( ), node.getType2 ( ) ), node ); //$NON-NLS-1$
-			throw new RuntimeException("Types not equal");
+			throw new RuntimeException (Messages
+					.getString ( "SubTypeException.5" ) ); //$NON-NLS-1$
 	}
 
 	/**
@@ -130,7 +131,7 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 * <code>context</code>.
 	 * 
 	 * @param context the minimal typing proof context.
-	 * @param node the minimal typing proof node.
+	 * @param pNode the minimal typing proof node.
 	 */
 	public void applyList ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
 		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;

@@ -1,32 +1,30 @@
 package de.unisiegen.tpml.graphics.minimaltyping ;
 
 
-import java.awt.Color ;
-import java.awt.GridBagConstraints ;
-import java.awt.GridBagLayout ;
-import java.awt.Insets ;
-import java.awt.event.ComponentAdapter ;
-import java.awt.event.ComponentEvent ;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.Enumeration;
 
-import javax.swing.JPanel ;
-import javax.swing.JScrollPane ;
-import javax.swing.JSplitPane ;
-import de.unisiegen.tpml.core.ProofGuessException ;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+
+import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
-import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel ;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
-import de.unisiegen.tpml.core.util.Debug;
-import de.unisiegen.tpml.graphics.AbstractProofView ;
-import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
-import de.unisiegen.tpml.graphics.outline.Outline ;
-import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent;
+import de.unisiegen.tpml.graphics.AbstractProofView;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline;
+import de.unisiegen.tpml.graphics.outline.Outline;
 
 
 /**
  * The implementation of the {@link de.unisiegen.tpml.graphics.ProofView}
- * interface for the type checker interpreter user interface.
+ * interface for the minimal typing interpreter user interface.
  * 
  * @author Marcell Fischbach
  * @author Christian Fehler
@@ -174,7 +172,7 @@ public class MinimalTypingView extends AbstractProofView
   @Override
 	public void setAdvanced(boolean advanced) {
 	  super.setAdvanced ( advanced );
-	  proofModel.setMode(advanced);
+	  this.proofModel.setMode(advanced);
 	  
 	  Enumeration<ProofNode> enumeration = this.proofModel.getRoot().postorderEnumeration();
 		while (enumeration.hasMoreElements()) {
