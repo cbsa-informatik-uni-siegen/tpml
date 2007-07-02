@@ -376,6 +376,42 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
+   * TODO
+   * 
+   * @param pRowType
+   * @return TODO
+   */
+  public boolean equalsIgnoreOrder ( RowType pRowType )
+  {
+    if ( this.identifiers.length != pRowType.identifiers.length )
+    {
+      return false ;
+    }
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    {
+      boolean found = false ;
+      for ( int j = 0 ; j < pRowType.identifiers.length ; j ++ )
+      {
+        if ( this.identifiers [ i ].equals ( pRowType.identifiers [ j ] ) )
+        {
+          found = true ;
+          if ( ! this.types [ i ].equals ( pRowType.types [ j ] ) )
+          {
+            return false ;
+          }
+          break ;
+        }
+      }
+      if ( ! found )
+      {
+        return false ;
+      }
+    }
+    return true ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override
