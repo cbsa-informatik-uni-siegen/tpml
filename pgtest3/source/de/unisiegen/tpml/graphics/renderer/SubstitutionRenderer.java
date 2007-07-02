@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.util.Environment;
 
@@ -82,14 +83,37 @@ public class SubstitutionRenderer extends AbstractRenderer {
 		//Enumeration<S> env = environment.symbols();
 		
 		this.collapsedString = null;
-		if (defaultTypeSubstitutionList.size() > 0) {
-			
-			this.collapsedString = "<html>" + defaultTypeSubstitutionList.get(0).toString();
-			
-			for (int i = 1 ; i < defaultTypeSubstitutionList.size(); i++)
-			{				
-				this.collapsedString += " <br> " + defaultTypeSubstitutionList.get(i).toString();
+//		if (defaultTypeSubstitutionList.size() > 0) 
+//		{
+//			
+//			this.collapsedString = "<html>" + defaultTypeSubstitutionList.get(0).toString();
+//			
+//			for (int i = 1 ; i < defaultTypeSubstitutionList.size(); i++)
+//			{				
+//				this.collapsedString += " <br> " + defaultTypeSubstitutionList.get(i).toString();
+//			}
+//		}
+		
+		if (defaultTypeSubstitutionList.size() > 0)
+		{
+			int count = 0;
+			this.collapsedString = "<html>";
+			for (int i = 0; i<defaultTypeSubstitutionList.size(); i++)
+			{
+				
+				DefaultTypeSubstitution dts = defaultTypeSubstitutionList.get(i);
+				String tmp = dts.toString();
+				count += tmp.length();
+				PrettyString ps = dts.toPrettyString();
+				this.collapsedString += PrettyStringToHTML.toHTMLString(ps);
+				if (count >= 100)
+				{
+					this.collapsedString += "<br>";
+					this.collapsedString += "<br>";
+					count = 0;
+				}
 			}
+			this.collapsedString += "</html>";
 		}
 	}
 	
