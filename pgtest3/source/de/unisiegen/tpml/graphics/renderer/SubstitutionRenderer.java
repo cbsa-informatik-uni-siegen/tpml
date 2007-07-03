@@ -60,6 +60,8 @@ public class SubstitutionRenderer extends AbstractRenderer {
 	 */
 	private static final String	collapsString = ", ...";
 	
+	private static final String betweenTypSubstitutions = ",  ";
+	
 	/**
 	 * 
 	 *
@@ -106,6 +108,8 @@ public class SubstitutionRenderer extends AbstractRenderer {
 				count += tmp.length();
 				PrettyString ps = dts.toPrettyString();
 				this.collapsedString += PrettyStringToHTML.toHTMLString(ps);
+				this.collapsedString += betweenTypSubstitutions;
+				count += betweenTypSubstitutions.length();
 				if (count >= 100)
 				{
 					this.collapsedString += "<br>";
