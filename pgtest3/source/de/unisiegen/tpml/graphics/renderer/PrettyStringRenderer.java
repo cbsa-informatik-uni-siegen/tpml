@@ -342,7 +342,16 @@ public class PrettyStringRenderer extends AbstractRenderer
           // umgebrochen haben...");
           useBreakPoints.add ( j - 1 ) ;
           j -- ;
-          it.setIndex ( ( j - 1 ) ) ;
+          //TODO mal ausprobieren...
+          if (j>=1)
+          {
+          	it.setIndex ( ( j - 1 ) ) ;
+          }
+          else
+          {
+          	//it.setIndex(0);
+          }
+          
         }
         else
         {

@@ -451,6 +451,11 @@ public class CompoundExpression < S , E > extends JComponent
    */
   public Dimension getNeededSize ( int maxWidth )
   {
+  	if (maxWidth < 0)
+  	{
+  		return new Dimension(0,0);
+  	}
+  	
     Dimension result = new Dimension ( 0 , 0 ) ;
     if ( this.noLineWrapping )
     {
