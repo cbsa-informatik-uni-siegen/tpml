@@ -302,7 +302,7 @@ expr							::=	simple_expr:e
 									{: RESULT = w; :}
 								;
 
-sequence						::= expr:e1 SEMI expr:e2
+sequence						::= expr:e1 SEMI seq_expr:e2
 									{: RESULT = new Sequence(e1, e2, e1left, e2right); :}
 								|   sequence_error
 									{: :}
@@ -537,6 +537,8 @@ lambda_error					::= LAMBDA:l epsilon
 									{: Error.expect("Lambda", ".e", lleft, tright, ".e" ); :}
 								|	LAMBDA:l IDENTIFIER COLON type DOT:d epsilon
 									{: Error.expect("Lambda", "e", lleft, dright, "e" ); :}
+								|	LAMBDA:l IDENTIFIER COLON:c DOT expr
+									{: Error.expect("Lambda", " \u03C4", lleft, cright, "\u03C4" ); :}
 								;
 
 let								::= LET:l IDENTIFIER:id EQUAL expr:e1 IN expr:e2
