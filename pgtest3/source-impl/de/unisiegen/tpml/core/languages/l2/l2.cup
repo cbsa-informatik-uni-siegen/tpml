@@ -47,23 +47,23 @@ terminal			BARBAR;
 terminal			NOT;
 
 /* Syntactic */
-terminal			ARROW;
-terminal			COLON;
 terminal			DOT;
 terminal			LPAREN;
 terminal			RPAREN;
+terminal			ARROW;
+terminal			COLON;
 terminal			PARENPAREN;
 
 /* Keywords */
 terminal			LAMBDA;
 terminal			LET;
-terminal			REC;
 terminal			IN;
 terminal			IF;
 terminal			THEN;
 terminal			ELSE;
 terminal			TRUE;
 terminal			FALSE;
+terminal			REC;
 
 /* Types */
 terminal			BOOL;
@@ -72,21 +72,23 @@ terminal			UNIT;
 terminal			MU;
 
 /* Special */
-terminal Integer	NUMBER;
-terminal Integer	TYPEVARIABLE;
 terminal String		IDENTIFIER;
 terminal			COMMENT;
+terminal Integer	NUMBER;
+terminal Integer	TYPEVARIABLE;
 
 /* Non terminal - Expression */
+non terminal Expression				seq_expr;
 non terminal Expression				expr;
 non terminal Expression				simple_expr;
 non terminal Expression[]			simple_expr_list;
+non terminal Identifier				identifier;
+non terminal Expression				application;
+non terminal Lambda					lambda;
 non terminal Constant				constant;
 non terminal BinaryOperator			operator;
 non terminal ArithmeticOperator		arithmetic_operator;
 non terminal RelationalOperator		relational_operator;
-non terminal Identifier				identifier;
-non terminal Expression				application;
 non terminal InfixOperation 		infix_operation;
 non terminal InfixOperation 		infix_operation_plus;
 non terminal InfixOperation 		infix_operation_minus;
@@ -101,16 +103,15 @@ non terminal InfixOperation 		infix_operation_greater_equal;
 non terminal And					and;
 non terminal Or						or;
 non terminal Condition				condition;
-non terminal Lambda					lambda;
 non terminal Let					let;
 non terminal CurriedLet				curried_let;
-non terminal Recursion				recursion;
-non terminal LetRec					let_rec;
-non terminal CurriedLetRec			curried_let_rec;
 non terminal UnitConstant			unit_constant;
 non terminal BooleanConstant		boolean_constant;
 non terminal IntegerConstant		integer_constant;
 non terminal Not					not;
+non terminal Recursion				recursion;
+non terminal LetRec					let_rec;
+non terminal CurriedLetRec			curried_let_rec;
 
 /* Non terminal - Type */
 non terminal MonoType				type;
@@ -131,18 +132,14 @@ non terminal IdentifierTypePair				curried_let_rec_pair;
 
 /* Non terminal - Error */
 non terminal 		epsilon;
+non terminal 		simple_expr_error;
+non terminal 		lambda_error;
 non terminal 		and_error;
 non terminal 		or_error;
 non terminal 		condition_error;
 non terminal 		let_error;
-non terminal 		recursion_error;
-non terminal 		let_rec_error;
 non terminal 		curried_let_error;
 non terminal 		curried_let_pair_error;
-non terminal 		curried_let_rec_error;
-non terminal 		curried_let_rec_pair_error;
-non terminal 		lambda_error;
-non terminal 		simple_expr_error;
 non terminal 		infix_operation_plus_error;
 non terminal  		infix_operation_minus_error;
 non terminal  		infix_operation_mult_error;
@@ -156,6 +153,10 @@ non terminal  		infix_operation_greater_equal_error;
 non terminal 		simple_type_error;
 non terminal 		arrow_type_error;
 non terminal		rec_type_error;
+non terminal 		recursion_error;
+non terminal 		let_rec_error;
+non terminal 		curried_let_rec_error;
+non terminal 		curried_let_rec_pair_error;
 
 /* Precedences */
 precedence right	ARROW;
@@ -171,10 +172,16 @@ precedence left		STAR, SLASH, MOD;
  ***************/
 
 
+seq_expr						::= expr:e
+									{: RESULT = e; :}
+								;
+
 expr							::=	simple_expr:e
 									{: RESULT = e; :}
 								|   application:a
 									{: RESULT = a; :}
+								|	lambda:l
+									{: RESULT = l; :}
 								|   infix_operation:i
 									{: RESULT = i; :}
 								|	and:a
@@ -183,8 +190,6 @@ expr							::=	simple_expr:e
 									{: RESULT = o; :}
 								|	condition:c
 									{: RESULT = c; :}
-								|	lambda:l
-									{: RESULT = l; :}
 								|	let:l
 									{: RESULT = l; :}
 								|	curried_let:c
@@ -355,7 +360,7 @@ or_error						::= expr:e1 BARBAR:b epsilon
 									{: Error.expect("Or", " e2", e1left, bright, "e<sub>2</sub>" ); :}
 								;
 
-condition						::= IF:i expr:e0 THEN expr:e1 ELSE expr:e2
+condition						::= IF:i seq_expr:e0 THEN seq_expr:e1 ELSE seq_expr:e2
 									{: RESULT = new Condition(e0, e1, e2, ileft, e2right); :}
 								|	condition_error
 									{: :}
@@ -363,19 +368,19 @@ condition						::= IF:i expr:e0 THEN expr:e1 ELSE expr:e2
 
 condition_error					::= IF:i epsilon
 									{: Error.expect("Condition", " e0 then e1 else e2", ileft, iright, "e<sub>0</sub> then e<sub>1</sub> else e<sub>2</sub>" ); :}
-								|	IF:i expr:e epsilon
+								|	IF:i seq_expr:e epsilon
 									{: Error.expect("Condition", " then e1 else e2", ileft, eright, "then e<sub>1</sub> else e<sub>2</sub>" ); :}
-								|	IF:i expr THEN:t epsilon
+								|	IF:i seq_expr THEN:t epsilon
 									{: Error.expect("Condition", " e1 else e2", ileft, tright, "e<sub>1</sub> else e<sub>2</sub>" ); :}
-								|	IF:i expr THEN expr:e epsilon
+								|	IF:i seq_expr THEN seq_expr:e epsilon
 									{: Error.expect("Condition", " else e2", ileft, eright, "else e<sub>2</sub>" ); :}
-								|	IF:i expr THEN expr ELSE:e epsilon
+								|	IF:i seq_expr THEN seq_expr ELSE:e epsilon
 									{: Error.expect("Condition", " e2", ileft, eright, "e<sub>2</sub>" ); :}
 								;
 
-lambda							::= LAMBDA:l IDENTIFIER:id DOT expr:e
+lambda							::= LAMBDA:l IDENTIFIER:id DOT seq_expr:e
 									{: RESULT = new Lambda(new Identifier (id,idleft,idright), null, e, lleft, eright); :}
-								|	LAMBDA:l IDENTIFIER:id COLON type:tau DOT expr:e
+								|	LAMBDA:l IDENTIFIER:id COLON type:tau DOT seq_expr:e
 									{: RESULT = new Lambda(new Identifier (id,idleft,idright), tau, e, lleft, eright); :}
 								|	lambda_error
 									{: :}
@@ -393,11 +398,13 @@ lambda_error					::= LAMBDA:l epsilon
 									{: Error.expect("Lambda", ".e", lleft, tright, ".e" ); :}
 								|	LAMBDA:l IDENTIFIER COLON type DOT:d epsilon
 									{: Error.expect("Lambda", "e", lleft, dright, "e" ); :}
+								|	LAMBDA:l IDENTIFIER COLON:c DOT seq_expr:e
+									{: Error.expect("Lambda", " \u03C4", lleft, cright, "\u03C4" ); :}
 								;
 
-let								::= LET:l IDENTIFIER:id EQUAL expr:e1 IN expr:e2
+let								::= LET:l IDENTIFIER:id EQUAL seq_expr:e1 IN seq_expr:e2
 									{: RESULT = new Let(new Identifier (id,idleft,idright), null, e1, e2, lleft, e2right); :}
-								|	LET:l IDENTIFIER:id COLON type:tau EQUAL expr:e1 IN expr:e2
+								|	LET:l IDENTIFIER:id COLON type:tau EQUAL seq_expr:e1 IN seq_expr:e2
 									{: RESULT = new Let(new Identifier (id,idleft,idright), tau, e1, e2, lleft, e2right); :}
 								|	let_error
 									{: :}
@@ -413,19 +420,21 @@ let_error						::= LET:l epsilon
 									{: Error.expect("Let", " = e1 in e2", lleft, tright, "= e<sub>1</sub> in e<sub>2</sub>" ); :}			
 								|	LET:l IDENTIFIER COLON type EQUAL:e epsilon
 									{: Error.expect("Let", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
-								|	LET:l IDENTIFIER COLON type EQUAL expr:e epsilon
+								|	LET:l IDENTIFIER COLON type EQUAL seq_expr:e epsilon
 									{: Error.expect("Let", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
-								|	LET:l IDENTIFIER COLON type EQUAL expr IN:i epsilon
+								|	LET:l IDENTIFIER COLON type EQUAL seq_expr IN:i epsilon
 									{: Error.expect("Let", " e2", lleft, iright, "e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER EQUAL:e epsilon
 									{: Error.expect("Let", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
-								|	LET:l IDENTIFIER EQUAL expr:e epsilon
+								|	LET:l IDENTIFIER EQUAL seq_expr:e epsilon
 									{: Error.expect("Let", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
-								|	LET:l IDENTIFIER EQUAL expr IN:i epsilon
+								|	LET:l IDENTIFIER EQUAL seq_expr IN:i epsilon
 									{: Error.expect("Let", " e2", lleft, iright, "e<sub>2</sub>" ); :}
+								|	LET:l IDENTIFIER COLON:c EQUAL seq_expr IN seq_expr
+									{: Error.expect("Let", " \u03C4 ", lleft, cright, "\u03C4" ); :}
 								;
 
-curried_let						::= LET:l IDENTIFIER:id curried_let_list:itl EQUAL expr:e1 IN expr:e2
+curried_let						::= LET:l IDENTIFIER:id curried_let_list:itl EQUAL seq_expr:e1 IN seq_expr:e2
 									{:
 									   Identifier[] identifiers = new Identifier[itl.length + 1];
 									   MonoType[] types = new MonoType[itl.length + 1];
@@ -437,7 +446,7 @@ curried_let						::= LET:l IDENTIFIER:id curried_let_list:itl EQUAL expr:e1 IN e
 									   identifiers[0] = new Identifier (id,idleft,idright);
 									   RESULT = new CurriedLet(identifiers, types, e1, e2, lleft, e2right);
 									:}
-								|	LET:l IDENTIFIER:id curried_let_list:itl COLON type:tau EQUAL expr:e1 IN expr:e2
+								|	LET:l IDENTIFIER:id curried_let_list:itl COLON type:tau EQUAL seq_expr:e1 IN seq_expr:e2
 									{:
 									   Identifier[] identifiers = new Identifier[itl.length + 1];
 									   MonoType[] types = new MonoType[itl.length + 1];
@@ -462,16 +471,18 @@ curried_let_error				::= LET:l IDENTIFIER curried_let_list:c epsilon
 									{: Error.expect("Curried-Let", " = e1 in e2", lleft, tright, "= e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER curried_let_list COLON type EQUAL:e epsilon
 									{: Error.expect("Curried-Let", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
-								|	LET:l IDENTIFIER curried_let_list COLON type EQUAL expr:e epsilon
+								|	LET:l IDENTIFIER curried_let_list COLON type EQUAL seq_expr:e epsilon
 									{: Error.expect("Curried-Let", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
-								|	LET:l IDENTIFIER curried_let_list COLON type EQUAL expr IN:i epsilon
+								|	LET:l IDENTIFIER curried_let_list COLON type EQUAL seq_expr IN:i epsilon
 									{: Error.expect("Curried-Let", " e2", lleft, iright, "e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER curried_let_list EQUAL:e epsilon
 									{: Error.expect("Curried-Let", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
-								|	LET:l IDENTIFIER curried_let_list EQUAL expr:e epsilon
+								|	LET:l IDENTIFIER curried_let_list EQUAL seq_expr:e epsilon
 									{: Error.expect("Curried-Let", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
-								|	LET:l IDENTIFIER curried_let_list EQUAL expr IN:i epsilon
+								|	LET:l IDENTIFIER curried_let_list EQUAL seq_expr IN:i epsilon
 									{: Error.expect("Curried-Let", " e2", lleft, iright, "e<sub>2</sub>" ); :}
+								|	LET:l IDENTIFIER curried_let_list COLON:c  EQUAL seq_expr IN seq_expr
+									{: Error.expect("Curried-Let", " \u03C4 ", lleft, cright, "\u03C4" ); :}
 								;
 
 curried_let_list				::= curried_let_list:l curried_let_pair:p
@@ -502,9 +513,9 @@ curried_let_pair_error			::= LPAREN:l epsilon
 									{: Error.expect("Curried-Let", ") = e1 in e2", lleft, tright, ") = e<sub>1</sub> in e<sub>2</sub>", "): \u03C4 = e<sub>1</sub> in e<sub>2</sub>"); :}
 								;
 
-recursion						::= REC:r IDENTIFIER:id DOT expr:e
+recursion						::= REC:r IDENTIFIER:id DOT seq_expr:e
 									{: RESULT = new Recursion(new Identifier (id,idleft,idright), null, e, rleft, eright); :}
-								|	REC:r IDENTIFIER:id COLON type:tau DOT expr:e
+								|	REC:r IDENTIFIER:id COLON type:tau DOT seq_expr:e
 									{: RESULT = new Recursion(new Identifier (id,idleft,idright), tau, e, rleft, eright); :}
 								|	recursion_error
 									{: :}					
@@ -522,11 +533,13 @@ recursion_error					::= REC:r epsilon
 									{: Error.expect("Recursion", "e", rleft, dright, "e" ); :}
 								|	REC:r IDENTIFIER DOT:d epsilon
 									{: Error.expect("Recursion", "e", rleft, dright, "e" ); :}
+								|	REC:r IDENTIFIER COLON:c DOT seq_expr
+									{: Error.expect("Recursion", " \u03C4", rleft, cright, "\u03C4" ); :}
 								;
 
-let_rec							::= LET:l REC IDENTIFIER:id EQUAL expr:e1 IN expr:e2
+let_rec							::= LET:l REC IDENTIFIER:id EQUAL seq_expr:e1 IN seq_expr:e2
 									{: RESULT = new LetRec(new Identifier (id,idleft,idright), null, e1, e2, lleft, e2right); :}
-								|	LET:l REC IDENTIFIER:id COLON type:tau EQUAL expr:e1 IN expr:e2
+								|	LET:l REC IDENTIFIER:id COLON type:tau EQUAL seq_expr:e1 IN seq_expr:e2
 									{: RESULT = new LetRec(new Identifier (id,idleft,idright), tau, e1, e2, lleft, e2right); :}
 								|	let_rec_error
 									{: :}				
@@ -542,19 +555,21 @@ let_rec_error					::= LET:l REC:r epsilon
 									{: Error.expect("Let-Rec", " = e1 in e2", lleft, tright, "= e<sub>1</sub> in e<sub>2</sub>" ); :}			
 								|	LET:l REC IDENTIFIER COLON type EQUAL:e epsilon
 									{: Error.expect("Let-Rec", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
-								|	LET:l REC IDENTIFIER COLON type EQUAL expr:e epsilon
+								|	LET:l REC IDENTIFIER COLON type EQUAL seq_expr:e epsilon
 									{: Error.expect("Let-Rec", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
-								|	LET:l REC IDENTIFIER COLON type EQUAL expr IN:i epsilon
+								|	LET:l REC IDENTIFIER COLON type EQUAL seq_expr IN:i epsilon
 									{: Error.expect("Let-Rec", " e2", lleft, iright, "e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER EQUAL:e epsilon
 									{: Error.expect("Let-Rec", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
-								|	LET:l REC IDENTIFIER EQUAL expr:e epsilon
+								|	LET:l REC IDENTIFIER EQUAL seq_expr:e epsilon
 									{: Error.expect("Let-Rec", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
-								|	LET:l REC IDENTIFIER EQUAL expr IN:i epsilon
+								|	LET:l REC IDENTIFIER EQUAL seq_expr IN:i epsilon
 									{: Error.expect("Let-Rec", " e2", lleft, iright, "e<sub>2</sub>" ); :}
+								|	LET:l REC IDENTIFIER COLON:c EQUAL seq_expr IN seq_expr
+									{: Error.expect("Let-Rec", " \u03C4", lleft, cright, "\u03C4" ); :}
 								;
 
-curried_let_rec					::=	LET:l REC IDENTIFIER:id curried_let_rec_list:itl EQUAL expr:e1 IN expr:e2
+curried_let_rec					::=	LET:l REC IDENTIFIER:id curried_let_rec_list:itl EQUAL seq_expr:e1 IN seq_expr:e2
 									{:
 									   Identifier[] identifiers = new Identifier[itl.length + 1];
 									   MonoType[] types = new MonoType[itl.length + 1];
@@ -566,7 +581,7 @@ curried_let_rec					::=	LET:l REC IDENTIFIER:id curried_let_rec_list:itl EQUAL e
 									   identifiers[0] = new Identifier (id,idleft,idright);
 									   RESULT = new CurriedLetRec(identifiers, types, e1, e2, lleft, e2right);
 									:}
-								|	LET:l REC IDENTIFIER:id curried_let_rec_list:itl COLON type:tau EQUAL expr:e1 IN expr:e2
+								|	LET:l REC IDENTIFIER:id curried_let_rec_list:itl COLON type:tau EQUAL seq_expr:e1 IN seq_expr:e2
 									{:
 									   Identifier[] identifiers = new Identifier[itl.length + 1];
 									   MonoType[] types = new MonoType[itl.length + 1];
@@ -591,16 +606,18 @@ curried_let_rec_error			::= LET:l REC IDENTIFIER curried_let_rec_list:c epsilon
 									{: Error.expect("Curried-Let-Rec", " = e1 in e2", lleft, tright, "= e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER curried_let_rec_list COLON type EQUAL:e epsilon
 									{: Error.expect("Curried-Let-Rec", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
-								|	LET:l REC IDENTIFIER curried_let_rec_list COLON type EQUAL expr:e epsilon
+								|	LET:l REC IDENTIFIER curried_let_rec_list COLON type EQUAL seq_expr:e epsilon
 									{: Error.expect("Curried-Let-Rec", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
-								|	LET:l REC IDENTIFIER curried_let_rec_list COLON type EQUAL expr IN:i epsilon
+								|	LET:l REC IDENTIFIER curried_let_rec_list COLON type EQUAL seq_expr IN:i epsilon
 									{: Error.expect("Curried-Let-Rec", " e2", lleft, iright, "e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER curried_let_rec_list EQUAL:e epsilon
 									{: Error.expect("Curried-Let-Rec", " e1 in e2", lleft, eright, "e<sub>1</sub> in e<sub>2</sub>" ); :}
-								|	LET:l REC IDENTIFIER curried_let_rec_list EQUAL expr:e epsilon
+								|	LET:l REC IDENTIFIER curried_let_rec_list EQUAL seq_expr:e epsilon
 									{: Error.expect("Curried-Let-Rec", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
-								|	LET:l REC IDENTIFIER curried_let_rec_list EQUAL expr IN:i epsilon
+								|	LET:l REC IDENTIFIER curried_let_rec_list EQUAL seq_expr IN:i epsilon
 									{: Error.expect("Curried-Let-Rec", " e2", lleft, iright, "e<sub>2</sub>" ); :}
+								|	LET:l REC IDENTIFIER curried_let_rec_list:itl COLON:c EQUAL seq_expr IN seq_expr
+									{: Error.expect("Curried-Let-Rec", " \u03C4 ", lleft, cright, "\u03C4" ); :}
 								;
 
 curried_let_rec_list			::= curried_let_rec_list:l curried_let_rec_pair:p
@@ -695,13 +712,13 @@ simple_expr						::=	constant:c
 									{: RESULT = id; :}
 								|	LPAREN operator:o RPAREN
 									{: RESULT = o; :}
-								|	LPAREN expr:e RPAREN
+								|	LPAREN seq_expr:e RPAREN
 									{: RESULT = e; :}
 								|	simple_expr_error
 									{: :}
 								;
 
-simple_expr_error				::= LPAREN:l expr:e epsilon
+simple_expr_error				::= LPAREN:l seq_expr:e epsilon
 									{: Error.expect("Expression", ")", lleft, eright, ")"); :}
 								|	LPAREN:l operator:o epsilon
 									{: Error.expect("Operator", ")", lleft, oright, ")"); :}

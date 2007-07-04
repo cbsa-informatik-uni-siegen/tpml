@@ -6,6 +6,7 @@ import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserWarningException ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.List ;
 import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageFactory ;
 import de.unisiegen.tpml.core.languages.LanguageParserException ;
@@ -17,6 +18,12 @@ import de.unisiegen.tpml.core.types.Type ;
 { "all" } )
 public class ParserTest
 {
+  private enum Output
+  {
+    NORMAL , ERROR
+  }
+
+
   private static String IDENTIFIER = "id" ;
 
 
@@ -45,6 +52,9 @@ public class ParserTest
 
 
   private static String LAMBDA_ERROR_6 = "lambda id:int." ;
+
+
+  private static String LAMBDA_ERROR_7 = "lambda id:.e" ;
 
 
   private static String SIMPLE_EXPR_1 = "(id)" ;
@@ -200,6 +210,9 @@ public class ParserTest
   private static String LET_ERROR_10 = "let id = 0 in" ;
 
 
+  private static String LET_ERROR_11 = "let id: = 0 in id" ;
+
+
   private static String CURRIED_LET_1 = "let f a b = a + b in f" ;
 
 
@@ -249,6 +262,9 @@ public class ParserTest
 
 
   private static String CURRIED_LET_ERROR_13 = "let f (a:int" ;
+
+
+  private static String CURRIED_LET_ERROR_14 = "let f a b: = a + b in f" ;
 
 
   private static String UNIT = "()" ;
@@ -410,6 +426,9 @@ public class ParserTest
   private static String REC_ERROR_6 = "rec x." ;
 
 
+  private static String REC_ERROR_7 = "rec x:.x" ;
+
+
   private static String LET_REC_1 = "let rec id = 0 in id" ;
 
 
@@ -444,6 +463,9 @@ public class ParserTest
 
 
   private static String LET_REC_ERROR_10 = "let rec id = 0 in" ;
+
+
+  private static String LET_REC_ERROR_11 = "let rec id: = 0 in id" ;
 
 
   private static String CURRIED_REC_LET_1 = "let rec f a b = a + b in f" ;
@@ -497,6 +519,9 @@ public class ParserTest
   private static String CURRIED_REC_LET_ERROR_13 = "let rec f (a:int" ;
 
 
+  private static String CURRIED_REC_LET_ERROR_14 = "let rec f a b: = a + b in f" ;
+
+
   private static String MULTI_LAMBDA_1 = "lambda (x,y).x + y" ;
 
 
@@ -525,6 +550,9 @@ public class ParserTest
 
 
   private static String MULTI_LAMBDA_ERROR_8 = "lambda (x," ;
+
+
+  private static String MULTI_LAMBDA_ERROR_9 = "lambda (x,y):.x + y" ;
 
 
   private static String MULTI_LET_1 = "let (x,y) = (1,2) in x+y" ;
@@ -567,6 +595,9 @@ public class ParserTest
 
 
   private static String MULTI_LET_ERROR_12 = "let (x," ;
+
+
+  private static String MULTI_LET_ERROR_13 = "let (x,y): = (1,2) in x+y" ;
 
 
   private static String FST = "fst" ;
@@ -617,10 +648,16 @@ public class ParserTest
   private static String LIST_ERROR_3 = "[1;2;" ;
 
 
-  private static String SEQUENCE = "1+1;2+2" ;
+  private static String SEQUENCE_1 = "1+1;2+2" ;
 
 
-  private static String SEQUENCE_ERROR = "1+1;" ;
+  private static String SEQUENCE_2 = "1+1;2+2;3+3" ;
+
+
+  private static String SEQUENCE_ERROR_1 = "1+1;" ;
+
+
+  private static String SEQUENCE_ERROR_2 = "1+1;2+2;" ;
 
 
   private static String EXPR_TUPLE_TYPE_1 = "lambda x:int*int*int.x" ;
@@ -722,6 +759,12 @@ public class ParserTest
   private static String OBJECT_ERROR_9 = "object (self) method add = 1 ;" ;
 
 
+  private static String OBJECT_ERROR_10 = "object (self:) end" ;
+
+
+  private static String OBJECT_ERROR_11 = "object (self:) method add = 0 ; end" ;
+
+
   private static String DUPLICATION_1 = "{< a = 0 >}" ;
 
 
@@ -815,6 +858,9 @@ public class ParserTest
   private static String METHOD_ERROR_8 = "object (self) method m = 0" ;
 
 
+  private static String METHOD_ERROR_9 = "object (self) method m: = 0 ; end" ;
+
+
   private static String CURRIED_METHOD_1 = "object (self) method m x y = 0 ; end" ;
 
 
@@ -858,6 +904,9 @@ public class ParserTest
 
 
   private static String CURRIED_METHOD_ERROR_11 = "object (self) method m (x:int" ;
+
+
+  private static String CURRIED_METHOD_ERROR_12 = "object (self) method m x y: = 0 ; end" ;
 
 
   private static String EXPR_OBJECT_TYPE_1 = "lambda x:< add: int ; >.x" ;
@@ -946,16 +995,17 @@ public class ParserTest
       OR_ERROR , CONDITION_ERROR_1 , CONDITION_ERROR_2 , CONDITION_ERROR_3 ,
       CONDITION_ERROR_4 , CONDITION_ERROR_5 , LAMBDA_ERROR_1 , LAMBDA_ERROR_2 ,
       LAMBDA_ERROR_3 , LAMBDA_ERROR_4 , LAMBDA_ERROR_5 , LAMBDA_ERROR_6 ,
-      LET_ERROR_1 , LET_ERROR_2 , LET_ERROR_3 , LET_ERROR_4 , LET_ERROR_5 ,
-      LET_ERROR_6 , LET_ERROR_7 , LET_ERROR_8 , LET_ERROR_9 , LET_ERROR_10 ,
-      CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 , CURRIED_LET_ERROR_3 ,
-      CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 , CURRIED_LET_ERROR_6 ,
-      CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 , CURRIED_LET_ERROR_9 ,
-      CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 , CURRIED_LET_ERROR_12 ,
-      CURRIED_LET_ERROR_13 , SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 ,
-      SIMPLE_EXPR_ERROR_3 , EXPR_SIMPLE_TYPE_ERROR_1 ,
-      EXPR_SIMPLE_TYPE_ERROR_2 , EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 ,
-      EXPR_REC_TYPE_ERROR_2 , EXPR_REC_TYPE_ERROR_3 } ;
+      LAMBDA_ERROR_7 , LET_ERROR_1 , LET_ERROR_2 , LET_ERROR_3 , LET_ERROR_4 ,
+      LET_ERROR_5 , LET_ERROR_6 , LET_ERROR_7 , LET_ERROR_8 , LET_ERROR_9 ,
+      LET_ERROR_10 , LET_ERROR_11 , CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 ,
+      CURRIED_LET_ERROR_3 , CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 ,
+      CURRIED_LET_ERROR_6 , CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 ,
+      CURRIED_LET_ERROR_9 , CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 ,
+      CURRIED_LET_ERROR_12 , CURRIED_LET_ERROR_13 , CURRIED_LET_ERROR_14 ,
+      SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 , SIMPLE_EXPR_ERROR_3 ,
+      EXPR_SIMPLE_TYPE_ERROR_1 , EXPR_SIMPLE_TYPE_ERROR_2 ,
+      EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 , EXPR_REC_TYPE_ERROR_2 ,
+      EXPR_REC_TYPE_ERROR_3 } ;
 
 
   private static String [ ] L1TYPE_NORMAL = new String [ ]
@@ -993,26 +1043,28 @@ public class ParserTest
       OR_ERROR , CONDITION_ERROR_1 , CONDITION_ERROR_2 , CONDITION_ERROR_3 ,
       CONDITION_ERROR_4 , CONDITION_ERROR_5 , LAMBDA_ERROR_1 , LAMBDA_ERROR_2 ,
       LAMBDA_ERROR_3 , LAMBDA_ERROR_4 , LAMBDA_ERROR_5 , LAMBDA_ERROR_6 ,
-      LET_ERROR_1 , LET_ERROR_2 , LET_ERROR_3 , LET_ERROR_4 , LET_ERROR_5 ,
-      LET_ERROR_6 , LET_ERROR_7 , LET_ERROR_8 , LET_ERROR_9 , LET_ERROR_10 ,
-      CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 , CURRIED_LET_ERROR_3 ,
-      CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 , CURRIED_LET_ERROR_6 ,
-      CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 , CURRIED_LET_ERROR_9 ,
-      CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 , CURRIED_LET_ERROR_12 ,
-      CURRIED_LET_ERROR_13 , SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 ,
-      SIMPLE_EXPR_ERROR_3 , EXPR_SIMPLE_TYPE_ERROR_1 ,
-      EXPR_SIMPLE_TYPE_ERROR_2 , EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 ,
-      EXPR_REC_TYPE_ERROR_2 , EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 ,
-      REC_ERROR_2 , REC_ERROR_3 , REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 ,
-      LET_REC_ERROR_1 , LET_REC_ERROR_2 , LET_REC_ERROR_3 , LET_REC_ERROR_4 ,
-      LET_REC_ERROR_5 , LET_REC_ERROR_6 , LET_REC_ERROR_7 , LET_REC_ERROR_8 ,
-      LET_REC_ERROR_9 , LET_REC_ERROR_10 , CURRIED_REC_LET_ERROR_1 ,
+      LAMBDA_ERROR_7 , LET_ERROR_1 , LET_ERROR_2 , LET_ERROR_3 , LET_ERROR_4 ,
+      LET_ERROR_5 , LET_ERROR_6 , LET_ERROR_7 , LET_ERROR_8 , LET_ERROR_9 ,
+      LET_ERROR_10 , LET_ERROR_11 , CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 ,
+      CURRIED_LET_ERROR_3 , CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 ,
+      CURRIED_LET_ERROR_6 , CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 ,
+      CURRIED_LET_ERROR_9 , CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 ,
+      CURRIED_LET_ERROR_12 , CURRIED_LET_ERROR_13 , CURRIED_LET_ERROR_14 ,
+      SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 , SIMPLE_EXPR_ERROR_3 ,
+      EXPR_SIMPLE_TYPE_ERROR_1 , EXPR_SIMPLE_TYPE_ERROR_2 ,
+      EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 , EXPR_REC_TYPE_ERROR_2 ,
+      EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 , REC_ERROR_2 , REC_ERROR_3 ,
+      REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 , REC_ERROR_7 , LET_REC_ERROR_1 ,
+      LET_REC_ERROR_2 , LET_REC_ERROR_3 , LET_REC_ERROR_4 , LET_REC_ERROR_5 ,
+      LET_REC_ERROR_6 , LET_REC_ERROR_7 , LET_REC_ERROR_8 , LET_REC_ERROR_9 ,
+      LET_REC_ERROR_10 , LET_REC_ERROR_11 , CURRIED_REC_LET_ERROR_1 ,
       CURRIED_REC_LET_ERROR_2 , CURRIED_REC_LET_ERROR_3 ,
       CURRIED_REC_LET_ERROR_4 , CURRIED_REC_LET_ERROR_5 ,
       CURRIED_REC_LET_ERROR_6 , CURRIED_REC_LET_ERROR_7 ,
       CURRIED_REC_LET_ERROR_8 , CURRIED_REC_LET_ERROR_9 ,
       CURRIED_REC_LET_ERROR_10 , CURRIED_REC_LET_ERROR_11 ,
-      CURRIED_REC_LET_ERROR_12 , CURRIED_REC_LET_ERROR_13 } ;
+      CURRIED_REC_LET_ERROR_12 , CURRIED_REC_LET_ERROR_13 ,
+      CURRIED_REC_LET_ERROR_14 } ;
 
 
   private static String [ ] L2TYPE_NORMAL = new String [ ]
@@ -1055,38 +1107,41 @@ public class ParserTest
       OR_ERROR , CONDITION_ERROR_1 , CONDITION_ERROR_2 , CONDITION_ERROR_3 ,
       CONDITION_ERROR_4 , CONDITION_ERROR_5 , LAMBDA_ERROR_1 , LAMBDA_ERROR_2 ,
       LAMBDA_ERROR_3 , LAMBDA_ERROR_4 , LAMBDA_ERROR_5 , LAMBDA_ERROR_6 ,
-      LET_ERROR_1 , LET_ERROR_2 , LET_ERROR_3 , LET_ERROR_4 , LET_ERROR_5 ,
-      LET_ERROR_6 , LET_ERROR_7 , LET_ERROR_8 , LET_ERROR_9 , LET_ERROR_10 ,
-      CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 , CURRIED_LET_ERROR_3 ,
-      CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 , CURRIED_LET_ERROR_6 ,
-      CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 , CURRIED_LET_ERROR_9 ,
-      CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 , CURRIED_LET_ERROR_12 ,
-      CURRIED_LET_ERROR_13 , SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 ,
-      SIMPLE_EXPR_ERROR_3 , EXPR_SIMPLE_TYPE_ERROR_1 ,
-      EXPR_SIMPLE_TYPE_ERROR_2 , EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 ,
-      EXPR_REC_TYPE_ERROR_2 , EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 ,
-      REC_ERROR_2 , REC_ERROR_3 , REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 ,
-      LET_REC_ERROR_1 , LET_REC_ERROR_2 , LET_REC_ERROR_3 , LET_REC_ERROR_4 ,
-      LET_REC_ERROR_5 , LET_REC_ERROR_6 , LET_REC_ERROR_7 , LET_REC_ERROR_8 ,
-      LET_REC_ERROR_9 , LET_REC_ERROR_10 , CURRIED_REC_LET_ERROR_1 ,
+      LAMBDA_ERROR_7 , LET_ERROR_1 , LET_ERROR_2 , LET_ERROR_3 , LET_ERROR_4 ,
+      LET_ERROR_5 , LET_ERROR_6 , LET_ERROR_7 , LET_ERROR_8 , LET_ERROR_9 ,
+      LET_ERROR_10 , LET_ERROR_11 , CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 ,
+      CURRIED_LET_ERROR_3 , CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 ,
+      CURRIED_LET_ERROR_6 , CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 ,
+      CURRIED_LET_ERROR_9 , CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 ,
+      CURRIED_LET_ERROR_12 , CURRIED_LET_ERROR_13 , CURRIED_LET_ERROR_14 ,
+      SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 , SIMPLE_EXPR_ERROR_3 ,
+      EXPR_SIMPLE_TYPE_ERROR_1 , EXPR_SIMPLE_TYPE_ERROR_2 ,
+      EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 , EXPR_REC_TYPE_ERROR_2 ,
+      EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 , REC_ERROR_2 , REC_ERROR_3 ,
+      REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 , REC_ERROR_7 , LET_REC_ERROR_1 ,
+      LET_REC_ERROR_2 , LET_REC_ERROR_3 , LET_REC_ERROR_4 , LET_REC_ERROR_5 ,
+      LET_REC_ERROR_6 , LET_REC_ERROR_7 , LET_REC_ERROR_8 , LET_REC_ERROR_9 ,
+      LET_REC_ERROR_10 , LET_REC_ERROR_11 , CURRIED_REC_LET_ERROR_1 ,
       CURRIED_REC_LET_ERROR_2 , CURRIED_REC_LET_ERROR_3 ,
       CURRIED_REC_LET_ERROR_4 , CURRIED_REC_LET_ERROR_5 ,
       CURRIED_REC_LET_ERROR_6 , CURRIED_REC_LET_ERROR_7 ,
       CURRIED_REC_LET_ERROR_8 , CURRIED_REC_LET_ERROR_9 ,
       CURRIED_REC_LET_ERROR_10 , CURRIED_REC_LET_ERROR_11 ,
-      CURRIED_REC_LET_ERROR_12 , CURRIED_REC_LET_ERROR_13 , OBJECT_ERROR_1 ,
-      OBJECT_ERROR_2 , OBJECT_ERROR_3 , OBJECT_ERROR_4 , OBJECT_ERROR_5 ,
-      OBJECT_ERROR_6 , OBJECT_ERROR_7 , OBJECT_ERROR_8 , OBJECT_ERROR_9 ,
-      DUPLICATION_ERROR_1 , DUPLICATION_ERROR_2 , DUPLICATION_ERROR_3 ,
-      DUPLICATION_ERROR_4 , DUPLICATION_ERROR_5 , SEND_ERROR ,
-      ATTRIBUTE_ERROR_1 , ATTRIBUTE_ERROR_2 , ATTRIBUTE_ERROR_3 ,
+      CURRIED_REC_LET_ERROR_12 , CURRIED_REC_LET_ERROR_13 ,
+      CURRIED_REC_LET_ERROR_14 , OBJECT_ERROR_1 , OBJECT_ERROR_2 ,
+      OBJECT_ERROR_3 , OBJECT_ERROR_4 , OBJECT_ERROR_5 , OBJECT_ERROR_6 ,
+      OBJECT_ERROR_7 , OBJECT_ERROR_8 , OBJECT_ERROR_9 , OBJECT_ERROR_10 ,
+      OBJECT_ERROR_11 , DUPLICATION_ERROR_1 , DUPLICATION_ERROR_2 ,
+      DUPLICATION_ERROR_3 , DUPLICATION_ERROR_4 , DUPLICATION_ERROR_5 ,
+      SEND_ERROR , ATTRIBUTE_ERROR_1 , ATTRIBUTE_ERROR_2 , ATTRIBUTE_ERROR_3 ,
       ATTRIBUTE_ERROR_4 , METHOD_ERROR_1 , METHOD_ERROR_2 , METHOD_ERROR_3 ,
       METHOD_ERROR_4 , METHOD_ERROR_5 , METHOD_ERROR_6 , METHOD_ERROR_7 ,
-      METHOD_ERROR_8 , CURRIED_METHOD_ERROR_1 , CURRIED_METHOD_ERROR_2 ,
-      CURRIED_METHOD_ERROR_3 , CURRIED_METHOD_ERROR_4 , CURRIED_METHOD_ERROR_5 ,
-      CURRIED_METHOD_ERROR_6 , CURRIED_METHOD_ERROR_7 , CURRIED_METHOD_ERROR_8 ,
-      CURRIED_METHOD_ERROR_9 , CURRIED_METHOD_ERROR_10 ,
-      CURRIED_METHOD_ERROR_11 , EXPR_OBJECT_TYPE_ERROR_1 ,
+      METHOD_ERROR_8 , METHOD_ERROR_9 , CURRIED_METHOD_ERROR_1 ,
+      CURRIED_METHOD_ERROR_2 , CURRIED_METHOD_ERROR_3 , CURRIED_METHOD_ERROR_4 ,
+      CURRIED_METHOD_ERROR_5 , CURRIED_METHOD_ERROR_6 , CURRIED_METHOD_ERROR_7 ,
+      CURRIED_METHOD_ERROR_8 , CURRIED_METHOD_ERROR_9 ,
+      CURRIED_METHOD_ERROR_10 , CURRIED_METHOD_ERROR_11 ,
+      CURRIED_METHOD_ERROR_12 , EXPR_OBJECT_TYPE_ERROR_1 ,
       EXPR_OBJECT_TYPE_ERROR_2 , EXPR_ROW_TYPE_ERROR_1 , EXPR_ROW_TYPE_ERROR_2 ,
       EXPR_ROW_TYPE_ERROR_3 } ;
 
@@ -1132,35 +1187,37 @@ public class ParserTest
       OR_ERROR , CONDITION_ERROR_1 , CONDITION_ERROR_2 , CONDITION_ERROR_3 ,
       CONDITION_ERROR_4 , CONDITION_ERROR_5 , LAMBDA_ERROR_1 , LAMBDA_ERROR_2 ,
       LAMBDA_ERROR_3 , LAMBDA_ERROR_4 , LAMBDA_ERROR_5 , LAMBDA_ERROR_6 ,
-      LET_ERROR_1 , LET_ERROR_2 , LET_ERROR_3 , LET_ERROR_4 , LET_ERROR_5 ,
-      LET_ERROR_6 , LET_ERROR_7 , LET_ERROR_8 , LET_ERROR_9 , LET_ERROR_10 ,
-      CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 , CURRIED_LET_ERROR_3 ,
-      CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 , CURRIED_LET_ERROR_6 ,
-      CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 , CURRIED_LET_ERROR_9 ,
-      CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 , CURRIED_LET_ERROR_12 ,
-      CURRIED_LET_ERROR_13 , SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 ,
-      SIMPLE_EXPR_ERROR_3 , EXPR_SIMPLE_TYPE_ERROR_1 ,
-      EXPR_SIMPLE_TYPE_ERROR_2 , EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 ,
-      EXPR_REC_TYPE_ERROR_2 , EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 ,
-      REC_ERROR_2 , REC_ERROR_3 , REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 ,
-      LET_REC_ERROR_1 , LET_REC_ERROR_2 , LET_REC_ERROR_3 , LET_REC_ERROR_4 ,
-      LET_REC_ERROR_5 , LET_REC_ERROR_6 , LET_REC_ERROR_7 , LET_REC_ERROR_8 ,
-      LET_REC_ERROR_9 , LET_REC_ERROR_10 , CURRIED_REC_LET_ERROR_1 ,
+      LAMBDA_ERROR_7 , LET_ERROR_1 , LET_ERROR_2 , LET_ERROR_3 , LET_ERROR_4 ,
+      LET_ERROR_5 , LET_ERROR_6 , LET_ERROR_7 , LET_ERROR_8 , LET_ERROR_9 ,
+      LET_ERROR_10 , LET_ERROR_11 , CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 ,
+      CURRIED_LET_ERROR_3 , CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 ,
+      CURRIED_LET_ERROR_6 , CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 ,
+      CURRIED_LET_ERROR_9 , CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 ,
+      CURRIED_LET_ERROR_12 , CURRIED_LET_ERROR_13 , CURRIED_LET_ERROR_14 ,
+      SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 , SIMPLE_EXPR_ERROR_3 ,
+      EXPR_SIMPLE_TYPE_ERROR_1 , EXPR_SIMPLE_TYPE_ERROR_2 ,
+      EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 , EXPR_REC_TYPE_ERROR_2 ,
+      EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 , REC_ERROR_2 , REC_ERROR_3 ,
+      REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 , REC_ERROR_7 , LET_REC_ERROR_1 ,
+      LET_REC_ERROR_2 , LET_REC_ERROR_3 , LET_REC_ERROR_4 , LET_REC_ERROR_5 ,
+      LET_REC_ERROR_6 , LET_REC_ERROR_7 , LET_REC_ERROR_8 , LET_REC_ERROR_9 ,
+      LET_REC_ERROR_10 , LET_REC_ERROR_11 , CURRIED_REC_LET_ERROR_1 ,
       CURRIED_REC_LET_ERROR_2 , CURRIED_REC_LET_ERROR_3 ,
       CURRIED_REC_LET_ERROR_4 , CURRIED_REC_LET_ERROR_5 ,
       CURRIED_REC_LET_ERROR_6 , CURRIED_REC_LET_ERROR_7 ,
       CURRIED_REC_LET_ERROR_8 , CURRIED_REC_LET_ERROR_9 ,
       CURRIED_REC_LET_ERROR_10 , CURRIED_REC_LET_ERROR_11 ,
       CURRIED_REC_LET_ERROR_12 , CURRIED_REC_LET_ERROR_13 ,
-      INFIX_OPERATION_ERROR_11 , MULTI_LAMBDA_ERROR_1 , MULTI_LAMBDA_ERROR_2 ,
-      MULTI_LAMBDA_ERROR_3 , MULTI_LAMBDA_ERROR_4 , MULTI_LAMBDA_ERROR_5 ,
-      MULTI_LAMBDA_ERROR_6 , MULTI_LAMBDA_ERROR_7 , MULTI_LAMBDA_ERROR_8 ,
+      CURRIED_REC_LET_ERROR_14 , INFIX_OPERATION_ERROR_11 ,
+      MULTI_LAMBDA_ERROR_1 , MULTI_LAMBDA_ERROR_2 , MULTI_LAMBDA_ERROR_3 ,
+      MULTI_LAMBDA_ERROR_4 , MULTI_LAMBDA_ERROR_5 , MULTI_LAMBDA_ERROR_6 ,
+      MULTI_LAMBDA_ERROR_7 , MULTI_LAMBDA_ERROR_8 , MULTI_LAMBDA_ERROR_9 ,
       MULTI_LET_ERROR_1 , MULTI_LET_ERROR_2 , MULTI_LET_ERROR_3 ,
       MULTI_LET_ERROR_4 , MULTI_LET_ERROR_5 , MULTI_LET_ERROR_6 ,
       MULTI_LET_ERROR_7 , MULTI_LET_ERROR_8 , MULTI_LET_ERROR_9 ,
       MULTI_LET_ERROR_10 , MULTI_LET_ERROR_11 , MULTI_LET_ERROR_12 ,
-      TUPLE_ERROR_1 , TUPLE_ERROR_2 , TUPLE_ERROR_3 , LIST_ERROR_1 ,
-      LIST_ERROR_2 , LIST_ERROR_3 , EXPR_TUPLE_TYPE_ERROR_1 ,
+      MULTI_LET_ERROR_13 , TUPLE_ERROR_1 , TUPLE_ERROR_2 , TUPLE_ERROR_3 ,
+      LIST_ERROR_1 , LIST_ERROR_2 , LIST_ERROR_3 , EXPR_TUPLE_TYPE_ERROR_1 ,
       EXPR_TUPLE_TYPE_ERROR_2 } ;
 
 
@@ -1194,7 +1251,7 @@ public class ParserTest
       CONS , IS_EMPTY , HD , TL , OPERATOR_11 , EMPTY_LIST , PROJECTION ,
       TUPLE , LIST , EXPR_TUPLE_TYPE_1 , EXPR_TUPLE_TYPE_2 , EXPR_LIST_TYPE ,
       INFIX_OPERATION_12 , CONDITION1 , WHILE , REF , DEREF , OPERATOR_12 ,
-      EXPR_REF_TYPE , SEQUENCE } ;
+      EXPR_REF_TYPE , SEQUENCE_1 , SEQUENCE_2 } ;
 
 
   private static String [ ] L4_ERROR = new String [ ]
@@ -1206,37 +1263,39 @@ public class ParserTest
       OR_ERROR , CONDITION_ERROR_1 , CONDITION_ERROR_2 , CONDITION_ERROR_3 ,
       CONDITION_ERROR_5 , LAMBDA_ERROR_1 , LAMBDA_ERROR_2 , LAMBDA_ERROR_3 ,
       LAMBDA_ERROR_4 , LAMBDA_ERROR_5 , LAMBDA_ERROR_6 , LET_ERROR_1 ,
-      LET_ERROR_2 , LET_ERROR_3 , LET_ERROR_4 , LET_ERROR_5 , LET_ERROR_6 ,
-      LET_ERROR_7 , LET_ERROR_8 , LET_ERROR_9 , LET_ERROR_10 ,
-      CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 , CURRIED_LET_ERROR_3 ,
-      CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 , CURRIED_LET_ERROR_6 ,
-      CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 , CURRIED_LET_ERROR_9 ,
-      CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 , CURRIED_LET_ERROR_12 ,
-      CURRIED_LET_ERROR_13 , SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 ,
-      SIMPLE_EXPR_ERROR_3 , EXPR_SIMPLE_TYPE_ERROR_1 ,
-      EXPR_SIMPLE_TYPE_ERROR_2 , EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 ,
-      EXPR_REC_TYPE_ERROR_2 , EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 ,
-      REC_ERROR_2 , REC_ERROR_3 , REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 ,
-      LET_REC_ERROR_1 , LET_REC_ERROR_2 , LET_REC_ERROR_3 , LET_REC_ERROR_4 ,
-      LET_REC_ERROR_5 , LET_REC_ERROR_6 , LET_REC_ERROR_7 , LET_REC_ERROR_8 ,
-      LET_REC_ERROR_9 , LET_REC_ERROR_10 , CURRIED_REC_LET_ERROR_1 ,
+      LAMBDA_ERROR_7 , LET_ERROR_2 , LET_ERROR_3 , LET_ERROR_4 , LET_ERROR_5 ,
+      LET_ERROR_6 , LET_ERROR_7 , LET_ERROR_8 , LET_ERROR_9 , LET_ERROR_10 ,
+      LET_ERROR_11 , CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 ,
+      CURRIED_LET_ERROR_3 , CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 ,
+      CURRIED_LET_ERROR_6 , CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 ,
+      CURRIED_LET_ERROR_9 , CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 ,
+      CURRIED_LET_ERROR_12 , CURRIED_LET_ERROR_13 , CURRIED_LET_ERROR_14 ,
+      SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 , SIMPLE_EXPR_ERROR_3 ,
+      EXPR_SIMPLE_TYPE_ERROR_1 , EXPR_SIMPLE_TYPE_ERROR_2 ,
+      EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 , EXPR_REC_TYPE_ERROR_2 ,
+      EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 , REC_ERROR_2 , REC_ERROR_3 ,
+      REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 , REC_ERROR_7 , LET_REC_ERROR_1 ,
+      LET_REC_ERROR_2 , LET_REC_ERROR_3 , LET_REC_ERROR_4 , LET_REC_ERROR_5 ,
+      LET_REC_ERROR_6 , LET_REC_ERROR_7 , LET_REC_ERROR_8 , LET_REC_ERROR_9 ,
+      LET_REC_ERROR_10 , LET_REC_ERROR_11 , CURRIED_REC_LET_ERROR_1 ,
       CURRIED_REC_LET_ERROR_2 , CURRIED_REC_LET_ERROR_3 ,
       CURRIED_REC_LET_ERROR_4 , CURRIED_REC_LET_ERROR_5 ,
       CURRIED_REC_LET_ERROR_6 , CURRIED_REC_LET_ERROR_7 ,
       CURRIED_REC_LET_ERROR_8 , CURRIED_REC_LET_ERROR_9 ,
       CURRIED_REC_LET_ERROR_10 , CURRIED_REC_LET_ERROR_11 ,
       CURRIED_REC_LET_ERROR_12 , CURRIED_REC_LET_ERROR_13 ,
-      INFIX_OPERATION_ERROR_11 , MULTI_LAMBDA_ERROR_1 , MULTI_LAMBDA_ERROR_2 ,
-      MULTI_LAMBDA_ERROR_3 , MULTI_LAMBDA_ERROR_4 , MULTI_LAMBDA_ERROR_5 ,
-      MULTI_LAMBDA_ERROR_6 , MULTI_LAMBDA_ERROR_7 , MULTI_LAMBDA_ERROR_8 ,
+      CURRIED_REC_LET_ERROR_14 , INFIX_OPERATION_ERROR_11 ,
+      MULTI_LAMBDA_ERROR_1 , MULTI_LAMBDA_ERROR_2 , MULTI_LAMBDA_ERROR_3 ,
+      MULTI_LAMBDA_ERROR_4 , MULTI_LAMBDA_ERROR_5 , MULTI_LAMBDA_ERROR_6 ,
+      MULTI_LAMBDA_ERROR_7 , MULTI_LAMBDA_ERROR_8 , MULTI_LAMBDA_ERROR_9 ,
       MULTI_LET_ERROR_1 , MULTI_LET_ERROR_2 , MULTI_LET_ERROR_3 ,
       MULTI_LET_ERROR_4 , MULTI_LET_ERROR_5 , MULTI_LET_ERROR_6 ,
       MULTI_LET_ERROR_7 , MULTI_LET_ERROR_8 , MULTI_LET_ERROR_9 ,
       MULTI_LET_ERROR_10 , MULTI_LET_ERROR_11 , MULTI_LET_ERROR_12 ,
-      TUPLE_ERROR_1 , TUPLE_ERROR_2 , TUPLE_ERROR_3 , LIST_ERROR_1 ,
-      LIST_ERROR_2 , LIST_ERROR_3 , EXPR_TUPLE_TYPE_ERROR_1 ,
+      MULTI_LET_ERROR_13 , TUPLE_ERROR_1 , TUPLE_ERROR_2 , TUPLE_ERROR_3 ,
+      LIST_ERROR_1 , LIST_ERROR_2 , LIST_ERROR_3 , EXPR_TUPLE_TYPE_ERROR_1 ,
       EXPR_TUPLE_TYPE_ERROR_2 , INFIX_OPERATION_ERROR_12 , WHILE_ERROR_1 ,
-      WHILE_ERROR_2 , WHILE_ERROR_3 , SEQUENCE_ERROR } ;
+      WHILE_ERROR_2 , WHILE_ERROR_3 , SEQUENCE_ERROR_1 , SEQUENCE_ERROR_2 } ;
 
 
   private static String [ ] L4TYPE_NORMAL = new String [ ]
@@ -1252,6 +1311,23 @@ public class ParserTest
 
 
   private static int max = 0 ;
+
+
+  static int countNormal = L0_NORMAL.length + L1_NORMAL.length
+      + L2_NORMAL.length + L2O_NORMAL.length + L3_NORMAL.length
+      + L4_NORMAL.length ;
+
+
+  static int countNormalType = L1TYPE_NORMAL.length + L2TYPE_NORMAL.length
+      + L2OTYPE_NORMAL.length + L3TYPE_NORMAL.length + L4TYPE_NORMAL.length ;
+
+
+  static int countError = L0_ERROR.length + L1_ERROR.length + L2_ERROR.length
+      + L2O_ERROR.length + L3_ERROR.length + L4_ERROR.length ;
+
+
+  static int countErrorType = L1TYPE_ERROR.length + L2TYPE_ERROR.length
+      + L2OTYPE_ERROR.length + L3TYPE_ERROR.length + L4TYPE_ERROR.length ;
 
 
   public static String delete ( String s )
@@ -1278,42 +1354,27 @@ public class ParserTest
   public static void main ( String [ ] pArguments )
   {
     max ( ) ;
-    int countNormal = L0_NORMAL.length + L1_NORMAL.length + L2_NORMAL.length
-        + L2O_NORMAL.length + L3_NORMAL.length + L4_NORMAL.length ;
-    int countNormalType = L1TYPE_NORMAL.length + L2TYPE_NORMAL.length
-        + L2OTYPE_NORMAL.length + L3TYPE_NORMAL.length + L4TYPE_NORMAL.length ;
-    int countError = L0_ERROR.length + L1_ERROR.length + L2_ERROR.length
-        + L2O_ERROR.length + L3_ERROR.length + L4_ERROR.length ;
-    int countErrorType = L1TYPE_ERROR.length + L2TYPE_ERROR.length
-        + L2OTYPE_ERROR.length + L3TYPE_ERROR.length + L4TYPE_ERROR.length ;
     boolean l0Okay = test_L0 ( ) ;
     boolean l1Okay = test_L1 ( ) ;
     boolean l2Okay = test_L2 ( ) ;
     boolean l2OOkay = test_L2O ( ) ;
     boolean l3Okay = test_L3 ( ) ;
     boolean l4Okay = test_L4 ( ) ;
-    System.out.println ( "*** Overview ***" ) ;
-    System.out.flush ( ) ;
-    System.out.println ( "Count Normal:      " + countNormal ) ;
-    System.out.flush ( ) ;
-    System.out.println ( "Count Normal Type: " + countNormalType ) ;
-    System.out.flush ( ) ;
-    System.out.println ( "Count Error:       " + countError ) ;
-    System.out.flush ( ) ;
-    System.out.println ( "Count Error Type:  " + countErrorType ) ;
-    System.out.flush ( ) ;
-    System.out.println ( "Count           :  "
-        + ( countNormal + countNormalType + countError + countErrorType ) ) ;
-    System.out.flush ( ) ;
+    output ( "*** Overview ***" , Output.NORMAL ) ;
+    output ( "Count Normal:      " + countNormal , Output.NORMAL ) ;
+    output ( "Count Normal Type: " + countNormalType , Output.NORMAL ) ;
+    output ( "Count Error:       " + countError , Output.NORMAL ) ;
+    output ( "Count Error Type:  " + countErrorType , Output.NORMAL ) ;
+    output ( "Count           :  "
+        + ( countNormal + countNormalType + countError + countErrorType ) ,
+        Output.NORMAL ) ;
     if ( l0Okay && l1Okay && l2Okay && l2OOkay && l3Okay && l4Okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
   }
 
@@ -1411,104 +1472,146 @@ public class ParserTest
   }
 
 
+  public static synchronized void output ( String s , Output pOutput )
+  {
+    switch ( pOutput )
+    {
+      case NORMAL :
+      {
+        System.out.println ( s ) ;
+        System.out.flush ( ) ;
+        break ;
+      }
+      case ERROR :
+      {
+        System.err.println ( s ) ;
+        System.err.flush ( ) ;
+        break ;
+      }
+    }
+  }
+
+
   public static boolean parseErrorExpression ( Language pLanguage , String pText )
   {
-    String text = pText ;
+    StringBuilder text = new StringBuilder ( pText ) ;
     try
     {
-      Expression expression = pLanguage.newParser ( new StringReader ( text ) )
-          .parse ( ) ;
-      System.err.println ( "Successful: \""
+      Expression expression = pLanguage.newParser (
+          new StringReader ( text.toString ( ) ) ).parse ( ) ;
+      output ( "Successful: \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + expression.getClass ( ).getSimpleName ( ) ) ;
-      System.err.flush ( ) ;
+          + expression.getClass ( ).getSimpleName ( ) , Output.ERROR ) ;
       return false ;
     }
     catch ( LanguageParserMultiException e1 )
     {
-      System.err.println ( "Multi:      \""
+      output ( "Multi:      \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e1.getMessage ( ) ) ) ;
-      System.err.flush ( ) ;
+          + delete ( e1.getMessage ( ) ) , Output.ERROR ) ;
       return false ;
     }
     catch ( LanguageParserWarningException e1 )
     {
-      System.out.println ( "Warning:    \""
+      output ( "Warning:    \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e1.getMessage ( ) ) ) ;
-      System.out.flush ( ) ;
-      text = text + e1.getInsertText ( ) ;
+          + delete ( e1.getMessage ( ) ) , Output.NORMAL ) ;
+      // Insert the first time
+      text.insert ( e1.getRight ( ) , e1.getInsertText ( ) ) ;
       try
       {
-        Expression expression = pLanguage
-            .newParser ( new StringReader ( text ) ).parse ( ) ;
-        System.out.println ( "Inserted:   \""
+        countError ++ ;
+        Expression expression = pLanguage.newParser (
+            new StringReader ( text.toString ( ) ) ).parse ( ) ;
+        output ( "Inserted:   \""
             + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-            + expression.getClass ( ).getSimpleName ( ) ) ;
-        System.out.flush ( ) ;
+            + expression.getClass ( ).getSimpleName ( ) , Output.NORMAL ) ;
       }
       catch ( LanguageParserWarningException e2 )
       {
-        text = text + e2.getInsertText ( ) ;
+        // Insert the second time
+        text.insert ( e2.getRight ( ) , e2.getInsertText ( ) ) ;
         try
         {
+          countError ++ ;
           Expression expression = pLanguage.newParser (
-              new StringReader ( text ) ).parse ( ) ;
+              new StringReader ( text.toString ( ) ) ).parse ( ) ;
+          output ( "Inserted:   \""
+              + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+              + expression.getClass ( ).getSimpleName ( ) , Output.NORMAL ) ;
         }
         catch ( LanguageParserWarningException e3 )
         {
-          text = text + e3.getInsertText ( ) ;
+          // Insert the third time
+          text.insert ( e3.getRight ( ) , e3.getInsertText ( ) ) ;
           try
           {
+            countError ++ ;
             Expression expression = pLanguage.newParser (
-                new StringReader ( text ) ).parse ( ) ;
-            System.out.println ( "Inserted:   \""
+                new StringReader ( text.toString ( ) ) ).parse ( ) ;
+            output ( "Inserted:   \""
                 + fillString ( text + "\"" , max - text.length ( ) + 1 )
-                + "   " + expression.getClass ( ).getSimpleName ( ) ) ;
-            System.out.flush ( ) ;
+                + "   " + expression.getClass ( ).getSimpleName ( ) ,
+                Output.NORMAL ) ;
+          }
+          catch ( LanguageParserWarningException e4 )
+          {
+            // Insert the fourth time
+            text.insert ( e4.getRight ( ) , e4.getInsertText ( ) ) ;
+            try
+            {
+              countError ++ ;
+              Expression expression = pLanguage.newParser (
+                  new StringReader ( text.toString ( ) ) ).parse ( ) ;
+              output ( "Inserted:   \""
+                  + fillString ( text + "\"" , max - text.length ( ) + 1 )
+                  + "   " + expression.getClass ( ).getSimpleName ( ) ,
+                  Output.NORMAL ) ;
+            }
+            catch ( Exception e5 )
+            {
+              output ( "Inserted:   \""
+                  + fillString ( text + "\"" , max - text.length ( ) + 1 )
+                  + "   " + delete ( e5.getMessage ( ) ) , Output.ERROR ) ;
+              return false ;
+            }
           }
           catch ( Exception e4 )
           {
-            System.err.println ( "Inserted:   \""
+            output ( "Inserted:   \""
                 + fillString ( text + "\"" , max - text.length ( ) + 1 )
-                + "   " + delete ( e4.getMessage ( ) ) ) ;
-            System.err.flush ( ) ;
+                + "   " + delete ( e4.getMessage ( ) ) , Output.ERROR ) ;
             return false ;
           }
         }
         catch ( Exception e3 )
         {
-          System.err.println ( "Inserted:   \""
+          output ( "Inserted:   \""
               + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-              + delete ( e3.getMessage ( ) ) ) ;
-          System.err.flush ( ) ;
+              + delete ( e3.getMessage ( ) ) , Output.ERROR ) ;
           return false ;
         }
       }
       catch ( Exception e2 )
       {
-        System.err.println ( "Inserted:   \""
+        output ( "Inserted:   \""
             + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-            + delete ( e2.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
+            + delete ( e2.getMessage ( ) ) , Output.ERROR ) ;
         return false ;
       }
     }
     catch ( LanguageParserException e1 )
     {
-      System.err.println ( "Parser:     \""
+      output ( "Parser:     \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e1.getMessage ( ) ) ) ;
-      System.err.flush ( ) ;
+          + delete ( e1.getMessage ( ) ) , Output.ERROR ) ;
       return false ;
     }
     catch ( Exception e1 )
     {
-      System.err.println ( "Exception:  \""
+      output ( "Exception:  \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e1.getMessage ( ) ) ) ;
-      System.err.flush ( ) ;
+          + delete ( e1.getMessage ( ) ) , Output.ERROR ) ;
       return false ;
     }
     return true ;
@@ -1517,85 +1620,122 @@ public class ParserTest
 
   public static boolean parseErrorType ( Language pLanguage , String pText )
   {
-    String text = pText ;
+    StringBuilder text = new StringBuilder ( pText ) ;
     try
     {
-      Type type = pLanguage.newTypeParser ( new StringReader ( text ) )
-          .parse ( ) ;
-      System.err.println ( "Successful: \""
+      Type type = pLanguage.newTypeParser (
+          new StringReader ( text.toString ( ) ) ).parse ( ) ;
+      output ( "Successful: \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + type.getClass ( ).getSimpleName ( ) ) ;
-      System.err.flush ( ) ;
+          + type.getClass ( ).getSimpleName ( ) , Output.ERROR ) ;
       return false ;
     }
     catch ( LanguageParserMultiException e1 )
     {
-      System.err.println ( "Multi:      \""
+      output ( "Multi:      \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e1.getMessage ( ) ) ) ;
-      System.err.flush ( ) ;
+          + delete ( e1.getMessage ( ) ) , Output.ERROR ) ;
       return false ;
     }
     catch ( LanguageParserWarningException e1 )
     {
-      System.out.println ( "Warning:    \""
+      output ( "Warning:    \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e1.getMessage ( ) ) ) ;
-      System.out.flush ( ) ;
-      text = text + e1.getInsertText ( ) ;
+          + delete ( e1.getMessage ( ) ) , Output.NORMAL ) ;
+      // Insert the first time
+      text.insert ( e1.getRight ( ) , e1.getInsertText ( ) ) ;
       try
       {
-        Type type = pLanguage.newTypeParser ( new StringReader ( text ) )
-            .parse ( ) ;
-        System.out.println ( "Inserted:   \""
+        countErrorType ++ ;
+        Type type = pLanguage.newTypeParser (
+            new StringReader ( text.toString ( ) ) ).parse ( ) ;
+        output ( "Inserted:   \""
             + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-            + type.getClass ( ).getSimpleName ( ) ) ;
-        System.out.flush ( ) ;
+            + type.getClass ( ).getSimpleName ( ) , Output.NORMAL ) ;
       }
       catch ( LanguageParserWarningException e2 )
       {
-        text = text + e2.getInsertText ( ) ;
+        // Insert the second time
+        text.insert ( e2.getRight ( ) , e2.getInsertText ( ) ) ;
         try
         {
-          Type type = pLanguage.newTypeParser ( new StringReader ( text ) )
-              .parse ( ) ;
-          System.out.println ( "Inserted:   \""
+          countErrorType ++ ;
+          Type type = pLanguage.newTypeParser (
+              new StringReader ( text.toString ( ) ) ).parse ( ) ;
+          output ( "Inserted:   \""
               + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-              + type.getClass ( ).getSimpleName ( ) ) ;
-          System.out.flush ( ) ;
+              + type.getClass ( ).getSimpleName ( ) , Output.NORMAL ) ;
+        }
+        catch ( LanguageParserWarningException e3 )
+        {
+          // Insert the third time
+          text.insert ( e3.getRight ( ) , e3.getInsertText ( ) ) ;
+          try
+          {
+            countErrorType ++ ;
+            Type type = pLanguage.newTypeParser (
+                new StringReader ( text.toString ( ) ) ).parse ( ) ;
+            output ( "Inserted:   \""
+                + fillString ( text + "\"" , max - text.length ( ) + 1 )
+                + "   " + type.getClass ( ).getSimpleName ( ) , Output.NORMAL ) ;
+          }
+          catch ( LanguageParserWarningException e4 )
+          {
+            // Insert the fourth time
+            text.insert ( e4.getRight ( ) , e4.getInsertText ( ) ) ;
+            try
+            {
+              countErrorType ++ ;
+              Type type = pLanguage.newTypeParser (
+                  new StringReader ( text.toString ( ) ) ).parse ( ) ;
+              output ( "Inserted:   \""
+                  + fillString ( text + "\"" , max - text.length ( ) + 1 )
+                  + "   " + type.getClass ( ).getSimpleName ( ) , Output.NORMAL ) ;
+            }
+            catch ( Exception e5 )
+            {
+              output ( "Inserted:   \""
+                  + fillString ( text + "\"" , max - text.length ( ) + 1 )
+                  + "   " + delete ( e5.getMessage ( ) ) , Output.ERROR ) ;
+              return false ;
+            }
+          }
+          catch ( Exception e4 )
+          {
+            output ( "Inserted:   \""
+                + fillString ( text + "\"" , max - text.length ( ) + 1 )
+                + "   " + delete ( e4.getMessage ( ) ) , Output.ERROR ) ;
+            return false ;
+          }
         }
         catch ( Exception e3 )
         {
-          System.err.println ( "Inserted:   \""
+          output ( "Inserted:   \""
               + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-              + delete ( e3.getMessage ( ) ) ) ;
-          System.err.flush ( ) ;
+              + delete ( e3.getMessage ( ) ) , Output.ERROR ) ;
           return false ;
         }
       }
       catch ( Exception e2 )
       {
-        System.err.println ( "Inserted:   \""
+        output ( "Inserted:   \""
             + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-            + delete ( e2.getMessage ( ) ) ) ;
-        System.err.flush ( ) ;
+            + delete ( e2.getMessage ( ) ) , Output.ERROR ) ;
         return false ;
       }
     }
     catch ( LanguageParserException e1 )
     {
-      System.err.println ( "Parser:     \""
+      output ( "Parser:     \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e1.getMessage ( ) ) ) ;
-      System.err.flush ( ) ;
+          + delete ( e1.getMessage ( ) ) , Output.ERROR ) ;
       return false ;
     }
     catch ( Exception e1 )
     {
-      System.err.println ( "Exception:  \""
+      output ( "Exception:  \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e1.getMessage ( ) ) ) ;
-      System.err.flush ( ) ;
+          + delete ( e1.getMessage ( ) ) , Output.ERROR ) ;
       return false ;
     }
     return true ;
@@ -1609,41 +1749,36 @@ public class ParserTest
     try
     {
       Expression e = pLanguage.newParser ( new StringReader ( text ) ).parse ( ) ;
-      System.out.println ( "Successful: \""
+      output ( "Successful: \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + e.getClass ( ).getSimpleName ( ) ) ;
-      System.out.flush ( ) ;
+          + e.getClass ( ).getSimpleName ( ) , Output.NORMAL ) ;
     }
     catch ( LanguageParserMultiException e )
     {
-      System.err.println ( "Multi:      \""
+      output ( "Multi:      \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e.getMessage ( ) ) ) ;
-      System.err.flush ( ) ;
+          + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
       return false ;
     }
     catch ( LanguageParserWarningException e )
     {
-      System.err.println ( "Warning:    \""
+      output ( "Warning:    \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e.getMessage ( ) ) ) ;
-      System.err.flush ( ) ;
+          + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
       return false ;
     }
     catch ( LanguageParserException e )
     {
-      System.err.println ( "Parser:     \""
+      output ( "Parser:     \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e.getMessage ( ) ) ) ;
-      System.err.flush ( ) ;
+          + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
       return false ;
     }
     catch ( Exception e )
     {
-      System.err.println ( "Exception:  \""
+      output ( "Exception:  \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e.getMessage ( ) ) ) ;
-      System.err.flush ( ) ;
+          + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
       return false ;
     }
     return true ;
@@ -1657,41 +1792,36 @@ public class ParserTest
     {
       Type type = pLanguage.newTypeParser ( new StringReader ( text ) )
           .parse ( ) ;
-      System.out.println ( "Successful: \""
+      output ( "Successful: \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + type.getClass ( ).getSimpleName ( ) ) ;
-      System.out.flush ( ) ;
+          + type.getClass ( ).getSimpleName ( ) , Output.NORMAL ) ;
     }
     catch ( LanguageParserMultiException e )
     {
-      System.err.println ( "Multi:      \""
+      output ( "Multi:      \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e.getMessage ( ) ) ) ;
-      System.err.flush ( ) ;
+          + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
       return false ;
     }
     catch ( LanguageParserWarningException e )
     {
-      System.err.println ( "Warning:    \""
+      output ( "Warning:    \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e.getMessage ( ) ) ) ;
-      System.err.flush ( ) ;
+          + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
       return false ;
     }
     catch ( LanguageParserException e )
     {
-      System.err.println ( "Parser:     \""
+      output ( "Parser:     \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e.getMessage ( ) ) ) ;
-      System.err.flush ( ) ;
+          + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
       return false ;
     }
     catch ( Exception e )
     {
-      System.err.println ( "Exception:  \""
+      output ( "Exception:  \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e.getMessage ( ) ) ) ;
-      System.err.flush ( ) ;
+          + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
       return false ;
     }
     return true ;
@@ -1702,52 +1832,43 @@ public class ParserTest
   {
     boolean l0NormalOkay = test_L0_Normal ( ) ;
     boolean l0ErrorOkay = test_L0_Error ( ) ;
-    System.out.println ( "*** L0 ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L0 ***" , Output.NORMAL ) ;
     if ( l0NormalOkay )
     {
-      System.out.println ( "L0 Normal:        " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L0 Normal:        " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L0 Normal:        " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L0 Normal:        " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l0ErrorOkay )
     {
-      System.out.println ( "L0 Error:         " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L0 Error:         " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L0 Error:         " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L0 Error:         " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l0NormalOkay && l0ErrorOkay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return l0NormalOkay && l0ErrorOkay ;
   }
 
 
   public static boolean test_L0_Error ( )
   {
-    System.out.println ( "*** L0 Error ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L0 Error ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -1756,8 +1877,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -1767,24 +1887,20 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
 
   public static boolean test_L0_Normal ( )
   {
-    System.out.println ( "*** L0 Normal ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L0 Normal ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -1793,8 +1909,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -1804,16 +1919,13 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
@@ -1824,76 +1936,63 @@ public class ParserTest
     boolean l1ErrorOkay = test_L1_Error ( ) ;
     boolean l1TypeNormalOkay = test_L1_Type_Normal ( ) ;
     boolean l1TypeErrorOkay = test_L1_Type_Error ( ) ;
-    System.out.println ( "*** L1 ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L1 ***" , Output.NORMAL ) ;
     if ( l1NormalOkay )
     {
-      System.out.println ( "L1 Normal:        " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L1 Normal:        " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L1 Normal:        " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L1 Normal:        " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l1ErrorOkay )
     {
-      System.out.println ( "L1 Error:         " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L1 Error:         " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L1 Error:         " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L1 Error:         " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l1TypeNormalOkay )
     {
-      System.out.println ( "L1Type Normal:    " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L1Type Normal:    " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L1Type Normal:    " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L1Type Normal:    " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l1TypeErrorOkay )
     {
-      System.out.println ( "L1Type Error:     " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L1Type Error:     " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L1Type Error:     " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L1Type Error:     " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l1NormalOkay && l1ErrorOkay && l1TypeNormalOkay && l1TypeErrorOkay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return l1NormalOkay && l1ErrorOkay && l1TypeNormalOkay && l1TypeErrorOkay ;
   }
 
 
   public static boolean test_L1_Error ( )
   {
-    System.out.println ( "*** L1 Error ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L1 Error ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -1902,8 +2001,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -1913,24 +2011,20 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
 
   public static boolean test_L1_Normal ( )
   {
-    System.out.println ( "*** L1 Normal ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L1 Normal ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -1939,8 +2033,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -1950,24 +2043,20 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
 
   public static boolean test_L1_Type_Error ( )
   {
-    System.out.println ( "*** L1Type Error ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L1Type Error ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -1976,8 +2065,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -1987,24 +2075,20 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
 
   public static boolean test_L1_Type_Normal ( )
   {
-    System.out.println ( "*** L1Type Normal ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L1Type Normal ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2013,8 +2097,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2024,16 +2107,13 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
@@ -2044,76 +2124,63 @@ public class ParserTest
     boolean l2ErrorOkay = test_L2_Error ( ) ;
     boolean l2TypeNormalOkay = test_L2_Type_Normal ( ) ;
     boolean l2TypeErrorOkay = test_L2_Type_Error ( ) ;
-    System.out.println ( "*** L2 ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L2 ***" , Output.NORMAL ) ;
     if ( l2NormalOkay )
     {
-      System.out.println ( "L2 Normal:        " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L2 Normal:        " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L2 Normal:        " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L2 Normal:        " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l2ErrorOkay )
     {
-      System.out.println ( "L2 Error:         " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L2 Error:         " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L2 Error:         " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L2 Error:         " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l2TypeNormalOkay )
     {
-      System.out.println ( "L2Type Normal:    " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L2Type Normal:    " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L2Type Normal:    " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L2Type Normal:    " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l2TypeErrorOkay )
     {
-      System.out.println ( "L2Type Error:     " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L2Type Error:     " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L2Type Error:     " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L2Type Error:     " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l2NormalOkay && l2ErrorOkay && l2TypeNormalOkay && l2TypeErrorOkay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return l2NormalOkay && l2ErrorOkay && l2TypeNormalOkay && l2TypeErrorOkay ;
   }
 
 
   public static boolean test_L2_Error ( )
   {
-    System.out.println ( "*** L2 Error ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L2 Error ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2122,8 +2189,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2133,24 +2199,20 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
 
   public static boolean test_L2_Normal ( )
   {
-    System.out.println ( "*** L2 Normal ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L2 Normal ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2159,8 +2221,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2170,24 +2231,20 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
 
   public static boolean test_L2_Type_Error ( )
   {
-    System.out.println ( "*** L2Type Error ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L2Type Error ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2196,8 +2253,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2207,24 +2263,20 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
 
   public static boolean test_L2_Type_Normal ( )
   {
-    System.out.println ( "*** L2Type Normal ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L2Type Normal ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2233,8 +2285,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2244,16 +2295,13 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
@@ -2264,68 +2312,56 @@ public class ParserTest
     boolean l2OErrorOkay = test_L2O_Error ( ) ;
     boolean l2OTypeNormalOkay = test_L2O_Type_Normal ( ) ;
     boolean l2OTypeErrorOkay = test_L2O_Type_Error ( ) ;
-    System.out.println ( "*** L2O ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L2O ***" , Output.NORMAL ) ;
     if ( l2ONormalOkay )
     {
-      System.out.println ( "L2O Normal:       " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L2O Normal:       " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L2O Normal:       " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L2O Normal:       " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l2OErrorOkay )
     {
-      System.out.println ( "L2O Error:        " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L2O Error:        " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L2O Error:        " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L2O Error:        " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l2OTypeNormalOkay )
     {
-      System.out.println ( "L2OType Normal:   " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L2OType Normal:   " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L2OType Normal:   " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L2OType Normal:   " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l2OTypeErrorOkay )
     {
-      System.out.println ( "L2OType Error:    " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L2OType Error:    " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L2OType Error:    " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L2OType Error:    " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l2ONormalOkay && l2OErrorOkay && l2OTypeNormalOkay && l2OTypeErrorOkay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return l2ONormalOkay && l2OErrorOkay && l2OTypeNormalOkay
         && l2OTypeErrorOkay ;
   }
@@ -2333,8 +2369,7 @@ public class ParserTest
 
   public static boolean test_L2O_Error ( )
   {
-    System.out.println ( "*** L2O Error ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L2O Error ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2343,8 +2378,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2354,24 +2388,20 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
 
   public static boolean test_L2O_Normal ( )
   {
-    System.out.println ( "*** L2O Normal ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L2O Normal ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2380,8 +2410,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2391,24 +2420,20 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
 
   public static boolean test_L2O_Type_Error ( )
   {
-    System.out.println ( "*** L2OType Error ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L2OType Error ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2417,8 +2442,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2428,24 +2452,20 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
 
   public static boolean test_L2O_Type_Normal ( )
   {
-    System.out.println ( "*** L2OType Normal ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L2OType Normal ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2454,8 +2474,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2465,16 +2484,13 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
@@ -2485,76 +2501,63 @@ public class ParserTest
     boolean l3ErrorOkay = test_L3_Error ( ) ;
     boolean l3TypeNormalOkay = test_L3_Type_Normal ( ) ;
     boolean l3TypeErrorOkay = test_L3_Type_Error ( ) ;
-    System.out.println ( "*** L3 ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L3 ***" , Output.NORMAL ) ;
     if ( l3NormalOkay )
     {
-      System.out.println ( "L3 Normal:        " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L3 Normal:        " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L3 Normal:        " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L3 Normal:        " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l3ErrorOkay )
     {
-      System.out.println ( "L3 Error:         " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L3 Error:         " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L3 Error:         " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L3 Error:         " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.NORMAL ) ;
     }
     if ( l3TypeNormalOkay )
     {
-      System.out.println ( "L3Type Normal:    " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L3Type Normal:    " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L3Type Normal:    " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L3Type Normal:    " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l3TypeErrorOkay )
     {
-      System.out.println ( "L3Type Error:     " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L3Type Error:     " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L3Type Error:     " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L3Type Error:     " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l3NormalOkay && l3ErrorOkay && l3TypeNormalOkay && l3TypeErrorOkay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return l3NormalOkay && l3ErrorOkay && l3TypeNormalOkay && l3TypeErrorOkay ;
   }
 
 
   public static boolean test_L3_Error ( )
   {
-    System.out.println ( "*** L3 Error ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L3 Error ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2563,8 +2566,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2574,24 +2576,20 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
 
   public static boolean test_L3_Normal ( )
   {
-    System.out.println ( "*** L3 Normal ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L3 Normal ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2600,8 +2598,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2611,24 +2608,20 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
 
   public static boolean test_L3_Type_Error ( )
   {
-    System.out.println ( "*** L3Type Error ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L3Type Error ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2637,8 +2630,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2648,24 +2640,20 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
 
   public static boolean test_L3_Type_Normal ( )
   {
-    System.out.println ( "*** L3Type Normal ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L3Type Normal ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2674,8 +2662,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2685,16 +2672,13 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
@@ -2705,76 +2689,63 @@ public class ParserTest
     boolean l4ErrorOkay = test_L4_Error ( ) ;
     boolean l4TypeNormalOkay = test_L4_Type_Normal ( ) ;
     boolean l4TypeErrorOkay = test_L4_Type_Error ( ) ;
-    System.out.println ( "*** L4 ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L4 ***" , Output.NORMAL ) ;
     if ( l4NormalOkay )
     {
-      System.out.println ( "L4 Normal:        " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L4 Normal:        " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L4 Normal:        " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L4 Normal:        " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l4ErrorOkay )
     {
-      System.out.println ( "L4 Error:         " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L4 Error:         " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L4 Error:         " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L4 Error:         " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l4TypeNormalOkay )
     {
-      System.out.println ( "L4Type Normal:    " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L4Type Normal:    " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L4Type Normal:    " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L4Type Normal:    " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l4TypeErrorOkay )
     {
-      System.out.println ( "L4Type Error:     " + fillString ( "" , max )
-          + "SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "L4Type Error:     " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "L4Type Error:     " + fillString ( "" , max )
-          + "NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "L4Type Error:     " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
     }
     if ( l4NormalOkay && l4ErrorOkay && l4TypeNormalOkay && l4TypeErrorOkay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return l4NormalOkay && l4ErrorOkay && l4TypeNormalOkay && l4TypeErrorOkay ;
   }
 
 
   public static boolean test_L4_Error ( )
   {
-    System.out.println ( "*** L4 Error ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L4 Error ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2783,8 +2754,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2794,24 +2764,20 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
 
   public static boolean test_L4_Normal ( )
   {
-    System.out.println ( "*** L4 Normal ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L4 Normal ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2820,8 +2786,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2829,26 +2794,58 @@ public class ParserTest
     {
       okay = parseNormalExpression ( language , text ) && okay ;
     }
+    String [ ] l4_list =
+    { "[1;if true then 2;3 else 4;5]" , "[1;if true then 2;3]" ,
+        "[1;lambda x.2;3]" , "[1;let x = 2;3 in 4;5]" ,
+        "[1;let x y = 2;3 in 4;5]" , "[1;rec x.2;3]" ,
+        "[1;let rec x y = 2;3 in 4;5]" , "[1;let rec x y = 2;3 in 4;5]" ,
+        "[1;lambda (a,b).2;3]" , "[1;let (a,b) = 2;3 in 4;5]" ,
+        "[1;while 2;3 do 4;5]" } ;
+    for ( String text : l4_list )
+    {
+      try
+      {
+        countNormal ++ ;
+        List l = ( List ) language.newParser ( new StringReader ( text ) )
+            .parse ( ) ;
+        if ( l.getExpressions ( ).length == 2 )
+        {
+          output ( "Successful: \""
+              + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+              + l.getClass ( ).getSimpleName ( ) , Output.NORMAL ) ;
+        }
+        else
+        {
+          output ( "Not 2 child.\""
+              + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+              + l.getClass ( ).getSimpleName ( ) , Output.ERROR ) ;
+          okay = false ;
+        }
+      }
+      catch ( Exception e )
+      {
+        output ( "Exception:  \""
+            + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
+            + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
+        okay = false ;
+      }
+    }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
 
   public static boolean test_L4_Type_Error ( )
   {
-    System.out.println ( "*** L4Type Error ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L4Type Error ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2857,8 +2854,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2868,24 +2864,20 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 
 
   public static boolean test_L4_Type_Normal ( )
   {
-    System.out.println ( "*** L4Type Normal ***" ) ;
-    System.out.flush ( ) ;
+    output ( "*** L4Type Normal ***" , Output.NORMAL ) ;
     LanguageFactory factory = LanguageFactory.newInstance ( ) ;
     Language language ;
     try
@@ -2894,8 +2886,7 @@ public class ParserTest
     }
     catch ( NoSuchLanguageException e )
     {
-      System.err.println ( "NoSuchLanguageException" ) ;
-      System.err.flush ( ) ;
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
       return false ;
     }
     boolean okay = true ;
@@ -2905,16 +2896,13 @@ public class ParserTest
     }
     if ( okay )
     {
-      System.out.println ( "-> SUCCESSFUL" ) ;
-      System.out.flush ( ) ;
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
     else
     {
-      System.err.println ( "-> NOT SUCCESSFUL" ) ;
-      System.err.flush ( ) ;
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
     }
-    System.out.println ( ) ;
-    System.out.flush ( ) ;
+    output ( "" , Output.NORMAL ) ;
     return okay ;
   }
 }

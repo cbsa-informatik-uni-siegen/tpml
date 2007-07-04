@@ -12,7 +12,7 @@
 	<property name="libdir" value="${basedir}/lib" />
 
     <target name="generate" depends="version,l0,l1,l2,l2o,l3,l4" description="Generate parsers and lexers" />
-	
+
 	<property name="impldir" value="${basedir}/source-impl" />
 	<property name="generateddir" value="${basedir}/source-generated" />
 	
@@ -186,7 +186,7 @@
 			symbols="L2OTerminals"
 			interface="yes"
 			debug="no"
-			expect="462"
+			expect="463"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -262,7 +262,7 @@
 			symbols="L4Terminals"
 			interface="yes"
 			debug="no"
-			expect="1100"
+			expect="1118"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
