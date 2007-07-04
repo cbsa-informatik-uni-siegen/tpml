@@ -442,7 +442,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						prettyStringrenderer = new PrettyStringRenderer();
 						prettyStringrenderer.setPrettyString(expression.toPrettyString());
 						//prüfe man die Breite, wenn wir alles hätten
-						Dimension expressionSize = prettyStringrenderer.getNeededSize(maxWidth-insertSpace);
+						Dimension expressionSize = prettyStringrenderer.getNeededSizeAll_(maxWidth-insertSpace);
             expressionSize.width += AbstractRenderer.keywordFontMetrics.stringWidth(doubleColon);
 						testAusgabe("Die Breite: "+expressionSize.width+", "+(maxWidth-insertSpace));
 						//Dimension expressionSize = prettyStringrenderer.getNeededSize(Integer.MAX_VALUE);
@@ -455,7 +455,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 							restOfWidth = maxWidth - insertSpace;
 							//result.height += AbstractRenderer.getAbsoluteHeight();
 							//Wenn der in der nächsten Zeile gerendert werden soll, dann hat er mehr Platz
-							expressionSize = prettyStringrenderer.getNeededSize(restOfWidth);
+							expressionSize = prettyStringrenderer.getNeededSizeAll_(restOfWidth);
 							debug("Die Expression hat die Größe: "+expressionSize);
 							lineWidthExpression = insertSpace + expressionSize.width;
 							lineWidthExpression += AbstractRenderer.keywordFontMetrics.stringWidth(doubleColon);
@@ -796,7 +796,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					bound.setExpression(expression);
 					//ToListenForMouseContainer toListenForM = new ToListenForMouseContainer();
 					expressionRenderer.setPrettyString(expression.toPrettyString());
-					Dimension expressionSize = expressionRenderer.getNeededSize(width-einrücken);
+					Dimension expressionSize = expressionRenderer.getNeededSizeAll_(width-einrücken);
 					//expressionSize.width += AbstractRenderer.expFontMetrics.stringWidth(doubleColon);
 					//prettyStringrenderer.render(x, y, height, gc, bound, toListenForM)
 					if (nochNutzbar < expressionSize.width +AbstractRenderer.expFontMetrics.stringWidth(doubleColon) ) //Wenn Expression nicht mehr in die Zeile passt, also gebrochen wird...
@@ -807,7 +807,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						
 						testAusgabe("Noich nutzbar in der neuen Zeile nachedem einrücken abgezogen ist...: "+nochNutzbar);
 						
-						expressionSize = expressionRenderer.getNeededSize(nochNutzbar);
+						expressionSize = expressionRenderer.getNeededSizeAll_(nochNutzbar);
 						//expressionSize.width += AbstractRenderer.expFontMetrics.stringWidth(doubleColon);
 						spaceToNexEntry = Math.max(spaceToNexEntry, expressionSize.height);
 						posY += environmentSize.height;
