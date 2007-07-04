@@ -43,7 +43,7 @@ non terminal 		simple_type_error;
 non terminal 		arrow_type_error;
 non terminal		rec_type_error;
 
-/* Precedences */
+/* Precedence */
 precedence right	ARROW;
 
 

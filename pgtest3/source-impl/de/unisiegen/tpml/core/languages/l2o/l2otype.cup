@@ -55,7 +55,7 @@ non terminal		rec_type_error;
 non terminal 		object_type_error;
 non terminal		row_type_error;
 
-/* Precedences */
+/* Precedence */
 precedence right	ARROW;
 
 

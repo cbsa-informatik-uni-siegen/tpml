@@ -242,22 +242,29 @@ non terminal		infix_operation_assign_error;
 non terminal		while_error;
 non terminal		sequence_error;
 
-/* Precedences */
+/* Precedence */
 precedence nonassoc	IN;
 precedence nonassoc	BELOW_SEMI;
-precedence nonassoc	SEMI;				/* below EQUAL ({lbl = ...; lbl = ...}) */
-precedence nonassoc LET, REC;			/* above SEMI (...; let ... in ...) */
-precedence nonassoc DO;					/* below THEN (while ... do ...) */
-precedence nonassoc THEN;				/* below ELSE (if ... then ...) */
-precedence nonassoc ELSE;				/* (if ... then ... else ...) */
-precedence right	COLONEQUAL;			/* expr (e := e := e) */
+precedence nonassoc	SEMI;
+precedence nonassoc LET, REC;
+precedence nonassoc DO;
+precedence nonassoc THEN;
+precedence nonassoc ELSE;
+precedence right	COLONEQUAL;
 precedence right	ARROW;
-precedence right	BARBAR;					/* expr (e || e || e) */
-precedence right	AMPERAMPER;				/* expr (e && e && e) */
-precedence left		EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
-precedence right	COLONCOLON;				/* expr (e :: e :: e) */
-precedence left		PLUS, MINUS;
-precedence left		STAR, SLASH, MOD;
+precedence right	BARBAR;
+precedence right	AMPERAMPER;
+precedence left		EQUAL;
+precedence left		LESS;
+precedence left		GREATER;
+precedence left		LESSEQUAL;
+precedence left		GREATEREQUAL;
+precedence right	COLONCOLON;
+precedence left		PLUS;
+precedence left		MINUS;
+precedence left		STAR;
+precedence left		SLASH;
+precedence left		MOD;
 
 
 /***************

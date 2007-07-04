@@ -158,13 +158,20 @@ non terminal 		let_rec_error;
 non terminal 		curried_let_rec_error;
 non terminal 		curried_let_rec_pair_error;
 
-/* Precedences */
+/* Precedence */
 precedence right	ARROW;
-precedence right	BARBAR;					/* expr (e || e || e) */
-precedence right	AMPERAMPER;				/* expr (e && e && e) */
-precedence left		EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
-precedence left		PLUS, MINUS;
-precedence left		STAR, SLASH, MOD;
+precedence right	BARBAR;
+precedence right	AMPERAMPER;
+precedence left		EQUAL;
+precedence left		LESS;
+precedence left		GREATER;
+precedence left		LESSEQUAL;
+precedence left		GREATEREQUAL;
+precedence left		PLUS;
+precedence left		MINUS;
+precedence left		STAR;
+precedence left		SLASH;
+precedence left		MOD;
 
 
 /***************
