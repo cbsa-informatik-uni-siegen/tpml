@@ -576,20 +576,10 @@ public class L1MinimalTypingProofRuleSet extends
 			MonoType[] types = row.getTypes ( );
 			MonoType[] types2 = row2.getTypes ( );
 
-			if ( ids.length != ids2.length )
+			if ( !row.equalsIgnoreOrder ( row2 ) ){
 
-				throw new RuntimeException ( MessageFormat.format ( Messages
-						.getString ( "MinimalTypingException.3" ), type, type2 ) ); //$NON-NLS-1$
-			for ( int i = 0; i < ids.length; i++ ) {
-				for ( int j = 0; j < ids2.length; j++ ) {
-					if ( ids[i].equals ( ids[j] ) ) {
-						subtypeInternal ( types[i], types2[j] );
-						break;
-					}
-					if ( j == ids.length - 1 )
-						throw new RuntimeException ( MessageFormat.format ( Messages
-								.getString ( "MinimalTypingException.3" ), type, type2 ) ); //$NON-NLS-1$
-				}
+					throw new RuntimeException ( MessageFormat.format ( Messages
+							.getString ( "MinimalTypingException.3" ), type, type2 ) ); //$NON-NLS-1$
 			}
 			return;
 		}
