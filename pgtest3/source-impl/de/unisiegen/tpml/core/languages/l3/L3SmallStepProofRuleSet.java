@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.languages.l3 ;
 
 
+import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.expressions.Application ;
 import de.unisiegen.tpml.core.expressions.BinaryCons ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
@@ -270,6 +271,11 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
           .getTau ( ) == null ? null : multiLet.getTau ( ) , e1 , e2 ) ;
     }
     // arity of the tuple must match
+    if ( ! ( e1 instanceof Tuple ) )
+    {
+      throw new IllegalArgumentException ( Messages
+          .getString ( "L3SmallStepProofRuleSet.0" ) ) ; //$NON-NLS-1$
+    }
     Expression [ ] expressions = ( ( Tuple ) e1 ).getExpressions ( ) ;
     if ( expressions.length != identifiers.length )
     {
