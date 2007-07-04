@@ -3,6 +3,7 @@ package de.unisiegen.tpml.graphics.renderer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -15,7 +16,6 @@ import de.unisiegen.tpml.core.typeinference.TypeFormula;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.Type;
-import de.unisiegen.tpml.core.util.Debug;
 import de.unisiegen.tpml.graphics.components.ShowBonds;
 
 /**
@@ -142,8 +142,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
   /**
    * The String renderd for the As "A |- "
    */
+  private static final String As =  "A";
   //private static final String As =  "A |- ";
-  private static final String As =  "A \u0485 ";
+  //private static final String As =  "A \u0485 ";
   //private static final String As =  "A \u093E ";
   //private static final String As =  "A \u0B94 ";
  
@@ -513,7 +514,13 @@ public class TypeFormularRenderer extends AbstractRenderer {
             prettyStringrenderer.setPrettyString (((TypeEquationTypeInference)t).toPrettyString ());
             
             lineWidthEnvironment += prettyStringrenderer.getNeededSize (Integer.MAX_VALUE).width;
+            //The width for the A
             lineWidthEnvironment += keywordFontMetrics.stringWidth(As);
+            //The width for the nail + the space arround it (The width of the nail will be as big as the width
+            //of the String "--"
+            lineWidthEnvironment += keywordFontMetrics.stringWidth(" ");
+            lineWidthEnvironment += keywordFontMetrics.stringWidth("--");
+            lineWidthEnvironment += keywordFontMetrics.stringWidth(" ");
 						//lineWidthTypeFormula += AbstractRenderer.keywordFontMetrics.stringWidth(t.toString());
             testAusgabe (t.toString ());
 						//lineHeightTypeFormula += AbstractRenderer.getAbsoluteHeight();
@@ -631,7 +638,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 				rightTypePositions.add(new Rectangle(0,0,0,0));
 				aPositions.add(new Rectangle(0,0,0,0));
 				aStrings.add("");
-	      aPrettyStrings.add(new ArrayList());
+	      aPrettyStrings.add(new ArrayList<PrettyString>());
 			}
 			
 			//for (int i = typeFormulaList.size()-1; i>=0; i--)
@@ -651,9 +658,10 @@ public class TypeFormularRenderer extends AbstractRenderer {
 				t = typeFormulaList.get(i);
 				if (t instanceof TypeEquationTypeInference)
 				{
+					//save the pos X where the render starts to render to find out the size later
+					int oldX = posX;
 					//Renderer, damit die einzel gerendert werden...
 					PrettyStringRenderer typeEquationStringrenderer = new PrettyStringRenderer();
-					
 					
 					//Typeequations werden einfach hingerendert...
           TypeEquationTypeInference s = (TypeEquationTypeInference)t;
@@ -662,20 +670,34 @@ public class TypeFormularRenderer extends AbstractRenderer {
           ShowBonds bondTypeEquation = new ShowBonds();
 					bondTypeEquation.setTypeEquationTypeInference(s);
 					bondTypeEquation.getAnnotations();
-
-					//gc.drawString(t.toString(), posX, posY);
-					//posX += AbstractRenderer.expFontMetrics.stringWidth(t.toString());
-					typeEquationStringrenderer.setPrettyString(s.toPrettyString());
-					//Wir wollen nicht, dass er hier umbricht, das wäre doof
-					Dimension typeEquationSize = typeEquationStringrenderer.getNeededSize(Integer.MAX_VALUE);
-					//ShowBonds bound = new ShowBonds();
 					
-					//TODO TEST: Lass uns mal ein A rendern
+					
+					
+					//Render the A with the nail. It will be renderd in expColor and keyword Font
 					gc.setColor(AbstractRenderer.expColor);
 					gc.setFont(AbstractRenderer.keywordFont);
-					gc.drawString(As, posX, posY);
+					//gc.drawString(As, posX, posY);
+					gc.drawString (As, posX, posY);
 					this.aPositions.set(i, new Rectangle(posX, posY-AbstractRenderer.getAbsoluteHeight(), AbstractRenderer.expFontMetrics.stringWidth(As), AbstractRenderer.getAbsoluteHeight()));
+				  //render the A
+					posX += AbstractRenderer.keywordFontMetrics.stringWidth(As);
+					//render the nail and the space arround the nail
+					posX += AbstractRenderer.keywordFontMetrics.stringWidth(" ");
+
+					//The nail as Polygon
+					Polygon polygon = new Polygon ();
+					polygon.addPoint(posX, (posY - AbstractRenderer.fontHeight / 2 + fontDescent) + AbstractRenderer.fontHeight / 5 );
+					polygon.addPoint(posX, (posY - AbstractRenderer.fontHeight / 2 + fontDescent) - AbstractRenderer.fontHeight / 5  );
+					polygon.addPoint(posX, posY - AbstractRenderer.fontHeight / 2 + fontDescent );
+					polygon.addPoint(posX+AbstractRenderer.keywordFontMetrics.stringWidth("--"), posY - AbstractRenderer.fontHeight / 2 + fontDescent );
+					polygon.addPoint(posX, posY - AbstractRenderer.fontHeight / 2 + fontDescent );
 					
+					//render it
+					gc.drawPolygon(polygon);
+					
+					posX += polygon.getBounds().width;
+					posX += AbstractRenderer.keywordFontMetrics.stringWidth(" ");
+									
 					//get the seentyps and provide the String for the Tooltip
 					SeenTypes<TypeEquationTypeInference> typeEquSeenTypes = ((TypeEquationTypeInference)t).getSeenTypes();
 					aStrings.set(i, typeEquSeenTypes.toString());
@@ -691,9 +713,12 @@ public class TypeFormularRenderer extends AbstractRenderer {
           }
           //aPrettyStrings.add(tmp);
           aPrettyStrings.set(i, tmp);
-					
-					//Renter the A nail
-					posX += AbstractRenderer.expFontMetrics.stringWidth(As);
+          
+          //tell the Rendere the PrettyString
+					typeEquationStringrenderer.setPrettyString(s.toPrettyString());
+					//TODO prevent the renderer from linewraping. printig?
+					//Dimension typeEquationSize = typeEquationStringrenderer.getNeededSize(width - (posX - oldX));
+					Dimension typeEquationSize = typeEquationStringrenderer.getNeededSize(Integer.MAX_VALUE);
 					
 					//render the typeFormula
 					//typeEquationStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.width, typeEquationSize.height, gc, bondTypeEquation, toListenForM);
@@ -709,7 +734,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
           
           
 					//this.typeFormularPositions.add(new Rectangle(posX, posY+AbstractRenderer.fontDescent, typeEquationSize.width, typeEquationSize.height));
-          this.typeFormularPositions.add(new Rectangle(posX, posY-AbstractRenderer.fontHeight+AbstractRenderer.fontDescent, typeEquationSize.width, typeEquationSize.height));
+          this.typeFormularPositions.add(new Rectangle(oldX, posY-AbstractRenderer.fontHeight+AbstractRenderer.fontDescent, width, typeEquationSize.height));
 					this.leftTypePositions.set(i, new Rectangle (posX, posY-AbstractRenderer.fontHeight+AbstractRenderer.fontDescent, leftDim.width, leftDim.height ));
 					this.rightTypePositions.set(i, new Rectangle ((posX+typeEquationSize.width)-rightDim.width, posY-AbstractRenderer.fontHeight+AbstractRenderer.fontDescent, rightDim.width, rightDim.height ));
 					debug("Folgende sollten die gleiche Y-Koordinate haben, und die gleiche Höhe, sonst ist Unfug!"+typeFormularPositions.get(i)+" - "+leftTypePositions.get(i));
@@ -718,12 +743,11 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					posX += typeEquationSize.width;
 					
 					gc.setColor(expColor);
-					//posX += AbstractRenderer.expFontMetrics.stringWidth(t.toString());
+
 					//every but the last line needs an linebreak
 					if (i<(typeFormulaList.size()-1))
 					{
 						posX = x+einrücken;
-						//posY += AbstractRenderer.fontHeight;
 						posY += typeEquationSize.height;
 						posY += SPACEBETWEENELEMENTS;
 					}
@@ -848,10 +872,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					nochNutzbar -= AbstractRenderer.expFontMetrics.stringWidth(doubleColon);
 					
 					testAusgabe("Noich nutzbar nach :: : "+nochNutzbar);
-					
-					
-					
-					
+
 					//gc.drawString(type.toString(), posX, posY);
 					//posX += AbstractRenderer.expFontMetrics.stringWidth(type.toString());
 					typeRenderer.setPrettyString(type.toPrettyString());
@@ -888,9 +909,6 @@ public class TypeFormularRenderer extends AbstractRenderer {
             this.typeEquations.add(i);
             
             spaceToNexEntry = typeSize.height;
-            
-            
-						
 					}
           else
           {
@@ -907,11 +925,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
             //debug("Das rectangle für den Quatsch: "+new Rectangle(oldPosX, posY, startWidht, startHeight));
             //debug("Anzahl der Einträge in der List: "+typeFormularPositions.size());
             this.typeEquations.add(i);
-            
           }
 
-					
-					
 					//everey line but the last needs a line braek
 					if (i<(typeFormulaList.size()-1))
 					{
@@ -919,7 +934,6 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						posY += spaceToNexEntry;
      				posY += SPACEBETWEENELEMENTS;
 					}
-
 				}
 			}
 			
