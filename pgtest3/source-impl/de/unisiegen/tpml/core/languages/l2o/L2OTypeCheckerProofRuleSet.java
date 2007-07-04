@@ -130,7 +130,7 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       if ( objectExpr.getE ( ) instanceof Row )
       {
         Row row = ( Row ) objectExpr.getE ( ) ;
-        if ( row.getNumberOfMethods ( ) != rowType.getTypes ( ).length )
+        if ( row.getNumberOfDifferentMethods ( ) != rowType.getTypes ( ).length )
         {
           throw new RuntimeException (
               MessageFormat
@@ -269,16 +269,98 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       MonoType nodeType = pNode.getType ( ) ;
       TypeEnvironment environment = pNode.getEnvironment ( ) ;
       pContext.addProofNode ( pNode , environment , methodE , methodTau ) ;
-      if ( ( nodeType instanceof TypeVariable )
-          || ( ( nodeType instanceof RowType ) && ( method.getId ( )
-              .equals ( ( ( RowType ) nodeType ).getIdentifiers ( ) [ 0 ] ) ) ) )
+      boolean foundInTailRow = false ;
+      for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
       {
-        pContext.addProofNode ( pNode , environment , row.tailRow ( ) , tauRow ) ;
-        RowType union = new RowType ( new Identifier [ ]
-        { method.getId ( ) } , new MonoType [ ]
-        { methodTau } , tauRow ) ;
-        pContext.addEquation ( pNode.getType ( ) , union ) ;
+        if ( row.getExpressions ( ) [ i ] instanceof Method )
+        {
+          Identifier id = ( ( Method ) row.getExpressions ( ) [ i ] ).getId ( ) ;
+          if ( method.getId ( ).equals ( id ) )
+          {
+            foundInTailRow = true ;
+            break ;
+          }
+        }
+        else if ( row.getExpressions ( ) [ i ] instanceof CurriedMethod )
+        {
+          Identifier id = ( ( CurriedMethod ) row.getExpressions ( ) [ i ] )
+              .getIdentifiers ( ) [ 0 ] ;
+          if ( method.getId ( ).equals ( id ) )
+          {
+            foundInTailRow = true ;
+            break ;
+          }
+        }
       }
+      /*
+       * The Type of the node is a TypeVariable
+       */
+      if ( nodeType instanceof TypeVariable )
+      {
+        /*
+         * In the rest of the Row exists a Method with the same Identifier as
+         * the Identifier of the Method.
+         */
+        if ( foundInTailRow )
+        {
+          RowType newRowType = new RowType ( new Identifier [ ]
+          { method.getId ( ) } , new MonoType [ ]
+          { methodTau } , tauRow ) ;
+          pContext.addProofNode ( pNode , environment , row.tailRow ( ) ,
+              newRowType ) ;
+          RowType union = new RowType ( new Identifier [ ]
+          { method.getId ( ) } , new MonoType [ ]
+          { methodTau } , tauRow ) ;
+          pContext.addEquation ( pNode.getType ( ) , union ) ;
+        }
+        else
+        {
+          pContext.addProofNode ( pNode , environment , row.tailRow ( ) ,
+              tauRow ) ;
+          RowType union = new RowType ( new Identifier [ ]
+          { method.getId ( ) } , new MonoType [ ]
+          { methodTau } , tauRow ) ;
+          pContext.addEquation ( pNode.getType ( ) , union ) ;
+        }
+      }
+      /*
+       * The Type of the node is a RowType and the first Identifier of the
+       * RowType is equals to the Identifier of the method.
+       */
+      else if ( ( nodeType instanceof RowType )
+          && ( method.getId ( ).equals ( ( ( RowType ) nodeType )
+              .getIdentifiers ( ) [ 0 ] ) ) )
+      {
+        /*
+         * In the rest of the Row exists a Method with the same Identifier as
+         * the Identifier of the Method.
+         */
+        if ( foundInTailRow )
+        {
+          RowType newRowType = new RowType ( new Identifier [ ]
+          { method.getId ( ) } , new MonoType [ ]
+          { methodTau } , tauRow ) ;
+          pContext.addProofNode ( pNode , environment , row.tailRow ( ) ,
+              newRowType ) ;
+          RowType union = new RowType ( new Identifier [ ]
+          { method.getId ( ) } , new MonoType [ ]
+          { methodTau } , tauRow ) ;
+          pContext.addEquation ( pNode.getType ( ) , union ) ;
+        }
+        else
+        {
+          pContext.addProofNode ( pNode , environment , row.tailRow ( ) ,
+              tauRow ) ;
+          RowType union = new RowType ( new Identifier [ ]
+          { method.getId ( ) } , new MonoType [ ]
+          { methodTau } , tauRow ) ;
+          pContext.addEquation ( pNode.getType ( ) , union ) ;
+        }
+      }
+      /*
+       * The Type of the node is a RowType and the first Identifier of the
+       * RowType is not equals to the Identifier of the method.
+       */
       else
       {
         RowType rowType = ( RowType ) nodeType ;
@@ -323,16 +405,98 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       TypeEnvironment environment = pNode.getEnvironment ( ) ;
       pContext.addProofNode ( pNode , environment , curriedMethodE ,
           curriedMethodTau ) ;
-      if ( ( nodeType instanceof TypeVariable )
-          || ( ( nodeType instanceof RowType ) && ( identifiers [ 0 ]
-              .equals ( ( ( RowType ) nodeType ).getIdentifiers ( ) [ 0 ] ) ) ) )
+      boolean foundInTailRow = false ;
+      for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
       {
-        pContext.addProofNode ( pNode , environment , row.tailRow ( ) , tauRow ) ;
-        RowType union = new RowType ( new Identifier [ ]
-        { identifiers [ 0 ] } , new MonoType [ ]
-        { curriedMethodTau } , tauRow ) ;
-        pContext.addEquation ( pNode.getType ( ) , union ) ;
+        if ( row.getExpressions ( ) [ i ] instanceof Method )
+        {
+          Identifier id = ( ( Method ) row.getExpressions ( ) [ i ] ).getId ( ) ;
+          if ( identifiers [ 0 ].equals ( id ) )
+          {
+            foundInTailRow = true ;
+            break ;
+          }
+        }
+        else if ( row.getExpressions ( ) [ i ] instanceof CurriedMethod )
+        {
+          Identifier id = ( ( CurriedMethod ) row.getExpressions ( ) [ i ] )
+              .getIdentifiers ( ) [ 0 ] ;
+          if ( identifiers [ 0 ].equals ( id ) )
+          {
+            foundInTailRow = true ;
+            break ;
+          }
+        }
       }
+      /*
+       * The Type of the node is a TypeVariable
+       */
+      if ( nodeType instanceof TypeVariable )
+      {
+        /*
+         * In the rest of the Row exists a Method with the same Identifier as
+         * the Identifier of the Method.
+         */
+        if ( foundInTailRow )
+        {
+          RowType newRowType = new RowType ( new Identifier [ ]
+          { identifiers [ 0 ] } , new MonoType [ ]
+          { curriedMethodTau } , tauRow ) ;
+          pContext.addProofNode ( pNode , environment , row.tailRow ( ) ,
+              newRowType ) ;
+          RowType union = new RowType ( new Identifier [ ]
+          { identifiers [ 0 ] } , new MonoType [ ]
+          { curriedMethodTau } , tauRow ) ;
+          pContext.addEquation ( pNode.getType ( ) , union ) ;
+        }
+        else
+        {
+          pContext.addProofNode ( pNode , environment , row.tailRow ( ) ,
+              tauRow ) ;
+          RowType union = new RowType ( new Identifier [ ]
+          { identifiers [ 0 ] } , new MonoType [ ]
+          { curriedMethodTau } , tauRow ) ;
+          pContext.addEquation ( pNode.getType ( ) , union ) ;
+        }
+      }
+      /*
+       * The Type of the node is a RowType and the first Identifier of the
+       * RowType is equals to the Identifier of the method.
+       */
+      else if ( ( nodeType instanceof RowType )
+          && ( identifiers [ 0 ].equals ( ( ( RowType ) nodeType )
+              .getIdentifiers ( ) [ 0 ] ) ) )
+      {
+        /*
+         * In the rest of the Row exists a Method with the same Identifier as
+         * the Identifier of the Method.
+         */
+        if ( foundInTailRow )
+        {
+          RowType newRowType = new RowType ( new Identifier [ ]
+          { identifiers [ 0 ] } , new MonoType [ ]
+          { curriedMethodTau } , tauRow ) ;
+          pContext.addProofNode ( pNode , environment , row.tailRow ( ) ,
+              newRowType ) ;
+          RowType union = new RowType ( new Identifier [ ]
+          { identifiers [ 0 ] } , new MonoType [ ]
+          { curriedMethodTau } , tauRow ) ;
+          pContext.addEquation ( pNode.getType ( ) , union ) ;
+        }
+        else
+        {
+          pContext.addProofNode ( pNode , environment , row.tailRow ( ) ,
+              tauRow ) ;
+          RowType union = new RowType ( new Identifier [ ]
+          { identifiers [ 0 ] } , new MonoType [ ]
+          { curriedMethodTau } , tauRow ) ;
+          pContext.addEquation ( pNode.getType ( ) , union ) ;
+        }
+      }
+      /*
+       * The Type of the node is a RowType and the first Identifier of the
+       * RowType is not equals to the Identifier of the method.
+       */
       else
       {
         RowType rowType = ( RowType ) nodeType ;

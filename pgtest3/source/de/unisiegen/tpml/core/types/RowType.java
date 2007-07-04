@@ -1,11 +1,9 @@
 package de.unisiegen.tpml.core.types ;
 
 
-import java.text.MessageFormat ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.TreeSet ;
-import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
@@ -257,76 +255,6 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     else
     {
       this.remainingRowType = pRemainingRowType ;
-    }
-    checkDifferentTypes ( ) ;
-    // Delete double Identifiers with the same Type
-    ArrayList < Identifier > newIdentifiers = new ArrayList < Identifier > (
-        this.identifiers.length ) ;
-    for ( Identifier id : this.identifiers )
-    {
-      newIdentifiers.add ( id ) ;
-    }
-    ArrayList < MonoType > newTypes = new ArrayList < MonoType > (
-        this.types.length ) ;
-    for ( MonoType tau : this.types )
-    {
-      newTypes.add ( tau ) ;
-    }
-    for ( int i = newIdentifiers.size ( ) - 1 ; i >= 0 ; i -- )
-    {
-      for ( int j = i - 1 ; j >= 0 ; j -- )
-      {
-        if ( ( ! ( newTypes.get ( i ) instanceof TypeVariable ) )
-            && ( ! ( newTypes.get ( j ) instanceof TypeVariable ) )
-            && ( newIdentifiers.get ( i ).equals ( newIdentifiers.get ( j ) ) ) )
-        {
-          newIdentifiers.remove ( i ) ;
-          newTypes.remove ( i ) ;
-          break ;
-        }
-      }
-    }
-    if ( newIdentifiers.size ( ) != this.identifiers.length )
-    {
-      this.identifiers = new Identifier [ newIdentifiers.size ( ) ] ;
-      this.indicesId = new int [ newIdentifiers.size ( ) ] ;
-      for ( int i = 0 ; i < newIdentifiers.size ( ) ; i ++ )
-      {
-        this.identifiers [ i ] = newIdentifiers.get ( i ) ;
-        this.indicesId [ i ] = i + 1 ;
-      }
-      this.types = new MonoType [ newTypes.size ( ) ] ;
-      this.indicesType = new int [ newTypes.size ( ) ] ;
-      for ( int i = 0 ; i < newTypes.size ( ) ; i ++ )
-      {
-        this.types [ i ] = newTypes.get ( i ) ;
-        this.indicesType [ i ] = i + 1 ;
-      }
-    }
-  }
-
-
-  /**
-   * Checks if this {@link RowType} has methods with the same name, but
-   * different types.
-   */
-  public void checkDifferentTypes ( )
-  {
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
-    {
-      for ( int j = i + 1 ; j < this.identifiers.length ; j ++ )
-      {
-        if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
-        {
-          if ( ( ! ( this.types [ i ] instanceof TypeVariable ) )
-              && ( ! ( this.types [ j ] instanceof TypeVariable ) )
-              && ( ! this.types [ i ].equals ( this.types [ j ] ) ) )
-          {
-            throw new RuntimeException ( MessageFormat.format ( Messages
-                .getString ( "ProofRuleException.6" ) , this ) ) ; //$NON-NLS-1$
-          }
-        }
-      }
     }
   }
 
