@@ -15,12 +15,19 @@ import de.unisiegen.tpml.core.types.UnitType ;
 
 /* Syntactic */
 terminal			ARROW;
-terminal			LPAREN, RPAREN;
+terminal			LPAREN;
+terminal			RPAREN;
 terminal			DOT;
 
 /* Types */
-terminal			BOOL, INT, UNIT, LESS, GREATER, COLON, SEMI;
+terminal			BOOL;
+terminal			INT;
+terminal			UNIT;
 terminal			MU;
+terminal			LESS;
+terminal			GREATER;
+terminal			COLON;
+terminal			SEMI;
 
 /* Special */
 terminal Integer	TYPEVARIABLE;
@@ -35,18 +42,18 @@ non terminal IntegerType			integer_type;
 non terminal UnitType				unit_type;
 non terminal TypeVariable			type_variable;
 non terminal ArrowType				arrow_type;
-non terminal ObjectType				object_type;
-non terminal RowType				row_type;
 non terminal TypeName				type_name;
 non terminal RecType				rec_type;
+non terminal ObjectType				object_type;
+non terminal RowType				row_type;
 
 /* Non terminal - Error */
 non terminal 		epsilon;
 non terminal 		simple_type_error;
 non terminal 		arrow_type_error;
+non terminal		rec_type_error;
 non terminal 		object_type_error;
 non terminal		row_type_error;
-non terminal		rec_type_error;
 
 /* Precedences */
 precedence right	ARROW;

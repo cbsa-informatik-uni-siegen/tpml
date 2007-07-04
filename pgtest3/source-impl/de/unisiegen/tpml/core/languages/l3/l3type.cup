@@ -13,12 +13,15 @@ import de.unisiegen.tpml.core.types.UnitType ;
 
 /* Syntactic */
 terminal			ARROW;
-terminal			LPAREN, RPAREN;
+terminal			LPAREN;
+terminal			RPAREN;
 terminal			DOT;
 terminal			STAR;
 
 /* Types */
-terminal			BOOL, INT, UNIT;
+terminal			BOOL;
+terminal			INT;
+terminal			UNIT;
 terminal			MU;
 terminal			LIST;
 
