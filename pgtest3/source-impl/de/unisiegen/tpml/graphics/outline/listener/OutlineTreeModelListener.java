@@ -91,25 +91,25 @@ public final class OutlineTreeModelListener implements TreeModelListener
     Object source = pTreeModelEvent.getSource ( ) ;
     if ( source instanceof SmallStepProofModel )
     {
-      this.defaultOutline.loadExpression ( this.expressionProofModel.getRoot ( )
+      this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
           .getLastLeaf ( ).getExpression ( ) ,
           Outline.ExecuteAutoChange.SMALLSTEP ) ;
     }
     else if ( source instanceof BigStepProofModel )
     {
-      this.defaultOutline.loadExpression ( this.expressionProofModel.getRoot ( )
+      this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
           .getLastLeaf ( ).getExpression ( ) ,
           Outline.ExecuteAutoChange.BIGSTEP ) ;
     }
     else if ( source instanceof TypeCheckerProofModel )
     {
-      this.defaultOutline.loadExpression ( this.expressionProofModel.getRoot ( )
+      this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
           .getLastLeaf ( ).getExpression ( ) ,
           Outline.ExecuteAutoChange.TYPECHECKER ) ;
     }
     else if ( source instanceof MinimalTypingProofModel )
     {
-      this.defaultOutline.loadExpression ( this.expressionProofModel.getRoot ( )
+      this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
           .getLastLeaf ( ).getExpression ( ) ,
           Outline.ExecuteAutoChange.MINIMALTYPING ) ;
     }
@@ -122,12 +122,12 @@ public final class OutlineTreeModelListener implements TreeModelListener
         TypeFormula typeFormula = list.get ( 0 ) ;
         if ( typeFormula instanceof TypeJudgement )
         {
-          this.defaultOutline.loadExpression ( ( ( TypeJudgement ) typeFormula )
+          this.defaultOutline.load ( ( ( TypeJudgement ) typeFormula )
               .getExpression ( ) , Outline.ExecuteAutoChange.TYPEINFERENCE ) ;
         }
         else if ( typeFormula instanceof TypeEquationTypeInference )
         {
-          this.defaultOutline.loadType (
+          this.defaultOutline.load (
               ( ( TypeEquationTypeInference ) typeFormula ).getLeft ( ) ,
               Outline.ExecuteAutoChange.TYPEINFERENCE ) ;
         }

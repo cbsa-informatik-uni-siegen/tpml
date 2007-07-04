@@ -431,7 +431,7 @@ public class CompoundExpressionSubTyping extends JComponent
     ShowBonds bound2 = new ShowBonds();
     
 		//bound.setExpression(null);
-    bound1.setType(type1);
+    bound1.load(type1);
 		
     //type1Renderer.render(posX, posY -(type1Size.height / 2) - AbstractRenderer.getFontAscent() / 2, type1Size.height, gc, bound, new ToListenForMouseContainer());
 		type1Renderer.render(posX, posY, type1Size.width , type1Size.height, gc, bound1, toListenForMouse );
@@ -452,7 +452,7 @@ public class CompoundExpressionSubTyping extends JComponent
     
     //posX += AbstractRenderer.getTextFontMetrics().stringWidth(" <: ");
     //type2Renderer.render(posX, posY-(type2Size.height / 2) - AbstractRenderer.getFontAscent() / 2, type2Size.height, gc, bound, new ToListenForMouseContainer());
-    bound2.setType(type2);
+    bound2.load(type2);
     type2Renderer.render(posX, posY, type2Size.width, type2Size.height, gc, bound2, toListenForMouse);
     // if there is an environment and it is of type Store
     // draw the braces around the entire expression with environment

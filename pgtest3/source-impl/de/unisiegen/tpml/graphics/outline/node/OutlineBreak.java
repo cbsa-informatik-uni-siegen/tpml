@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.Type ;
@@ -46,28 +47,22 @@ public final class OutlineBreak
 
 
   /**
-   * Initilizes the {@link OutlineBreak} with the given {@link Expression}.
+   * Initilizes the {@link OutlineBreak} with the given {@link ExpressionOrType}.
    * 
-   * @param pExpression The input {@link Expression}.
+   * @param pExpressionOrType The input {@link ExpressionOrType}.
    */
-  public OutlineBreak ( Expression pExpression )
+  public OutlineBreak ( ExpressionOrType pExpressionOrType )
   {
     this.breakList = new ArrayList < Integer > ( ) ;
     this.outlineBreakList = new ArrayList < OutlineBreak > ( ) ;
-    calculate ( pExpression ) ;
-  }
-
-
-  /**
-   * Initilizes the {@link OutlineBreak} with the given {@link Type}.
-   * 
-   * @param pType The input {@link Type}.
-   */
-  public OutlineBreak ( Type pType )
-  {
-    this.breakList = new ArrayList < Integer > ( ) ;
-    this.outlineBreakList = new ArrayList < OutlineBreak > ( ) ;
-    calculate ( pType ) ;
+    if ( pExpressionOrType instanceof Expression )
+    {
+      calculate ( ( Expression ) pExpressionOrType ) ;
+    }
+    else if ( pExpressionOrType instanceof Type )
+    {
+      calculate ( ( Type ) pExpressionOrType ) ;
+    }
   }
 
 

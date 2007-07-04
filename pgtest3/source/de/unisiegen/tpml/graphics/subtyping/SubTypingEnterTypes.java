@@ -856,12 +856,12 @@ public class SubTypingEnterTypes extends AbstractProofView
       LanguageTypeParser parser = this.language
           .newTypeParser ( new StringReader ( editor.getText ( ) ) ) ;
       type = parser.parse ( ) ;
-      outline.loadType ( type , Outline.ExecuteAutoChange.SUBTYPING ) ;
+      outline.load ( type , Outline.ExecuteAutoChange.SUBTYPING ) ;
       return type ;
     }
     catch ( Exception e )
     {
-      outline.loadType ( null , Outline.ExecuteAutoChange.SUBTYPING ) ;
+      outline.load ( null , Outline.ExecuteAutoChange.SUBTYPING ) ;
       if ( editor.getText ( ).length ( ) == 0 ) outline.setError ( false ) ;
       return null ;
     }

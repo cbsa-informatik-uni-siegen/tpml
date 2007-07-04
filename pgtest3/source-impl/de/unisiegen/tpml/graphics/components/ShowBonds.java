@@ -8,6 +8,7 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.BoundTypeNames ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrTypeOrTypeEquationTypeInference ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
 import de.unisiegen.tpml.core.types.MonoType ;
@@ -54,21 +55,9 @@ public final class ShowBonds
 
 
   /**
-   * The current loaded {@link Expression}.
+   * The loaded {@link ExpressionOrTypeOrTypeEquationTypeInference}.
    */
-  private Expression expression = null ;
-
-
-  /**
-   * The current loaded {@link Type}.
-   */
-  private Type type = null ;
-
-
-  /**
-   * The current loaded {@link TypeEquationTypeInference}.
-   */
-  private TypeEquationTypeInference typeEquationTypeInference = null ;
+  private ExpressionOrTypeOrTypeEquationTypeInference loaded = null ;
 
 
   /**
@@ -109,50 +98,16 @@ public final class ShowBonds
           {
             continue ;
           }
-          if ( this.expression != null )
-          {
-            current = this.expression.toPrettyString ( )
-                .getAnnotationForPrintable ( id [ i ] ) ;
-          }
-          else if ( this.type != null )
-          {
-            current = this.type.toPrettyString ( ).getAnnotationForPrintable (
-                id [ i ] ) ;
-          }
-          else if ( this.typeEquationTypeInference != null )
-          {
-            current = this.typeEquationTypeInference.toPrettyString ( )
-                .getAnnotationForPrintable ( id [ i ] ) ;
-          }
-          else
-          {
-            return ;
-          }
+          current = this.loaded.toPrettyString ( ).getAnnotationForPrintable (
+              id [ i ] ) ;
           Bonds bonds = new Bonds ( current.getStartOffset ( ) , current
               .getEndOffset ( ) ) ;
           for ( Identifier boundId : bound.get ( i ) )
           {
             try
             {
-              if ( this.expression != null )
-              {
-                bonds.addPrettyAnnotation ( this.expression.toPrettyString ( )
-                    .getAnnotationForPrintable ( boundId ) ) ;
-              }
-              else if ( this.type != null )
-              {
-                bonds.addPrettyAnnotation ( this.type.toPrettyString ( )
-                    .getAnnotationForPrintable ( boundId ) ) ;
-              }
-              else if ( this.typeEquationTypeInference != null )
-              {
-                bonds.addPrettyAnnotation ( this.typeEquationTypeInference
-                    .toPrettyString ( ).getAnnotationForPrintable ( boundId ) ) ;
-              }
-              else
-              {
-                return ;
-              }
+              bonds.addPrettyAnnotation ( this.loaded.toPrettyString ( )
+                  .getAnnotationForPrintable ( boundId ) ) ;
             }
             catch ( IllegalArgumentException e )
             {
@@ -264,51 +219,16 @@ public final class ShowBonds
           {
             continue ;
           }
-          if ( this.expression != null )
-          {
-            current = this.expression.toPrettyString ( )
-                .getAnnotationForPrintable ( typeNames [ i ] ) ;
-          }
-          else if ( this.type != null )
-          {
-            current = this.type.toPrettyString ( ).getAnnotationForPrintable (
-                typeNames [ i ] ) ;
-          }
-          else if ( this.typeEquationTypeInference != null )
-          {
-            current = this.typeEquationTypeInference.toPrettyString ( )
-                .getAnnotationForPrintable ( typeNames [ i ] ) ;
-          }
-          else
-          {
-            return ;
-          }
+          current = this.loaded.toPrettyString ( ).getAnnotationForPrintable (
+              typeNames [ i ] ) ;
           Bonds bonds = new Bonds ( current.getStartOffset ( ) , current
               .getEndOffset ( ) ) ;
           for ( TypeName boundTypeNames : bound.get ( i ) )
           {
             try
             {
-              if ( this.expression != null )
-              {
-                bonds.addPrettyAnnotation ( this.expression.toPrettyString ( )
-                    .getAnnotationForPrintable ( boundTypeNames ) ) ;
-              }
-              else if ( this.type != null )
-              {
-                bonds.addPrettyAnnotation ( this.type.toPrettyString ( )
-                    .getAnnotationForPrintable ( boundTypeNames ) ) ;
-              }
-              else if ( this.typeEquationTypeInference != null )
-              {
-                bonds.addPrettyAnnotation ( this.typeEquationTypeInference
-                    .toPrettyString ( ).getAnnotationForPrintable (
-                        boundTypeNames ) ) ;
-              }
-              else
-              {
-                return ;
-              }
+              bonds.addPrettyAnnotation ( this.loaded.toPrettyString ( )
+                  .getAnnotationForPrintable ( boundTypeNames ) ) ;
             }
             catch ( IllegalArgumentException e )
             {
@@ -358,18 +278,21 @@ public final class ShowBonds
     if ( this.result == null )
     {
       this.result = new ArrayList < Bonds > ( ) ;
-      if ( this.expression != null )
+      if ( this.loaded != null )
       {
-        check ( this.expression ) ;
-      }
-      else if ( this.type != null )
-      {
-        check ( this.type ) ;
-      }
-      else if ( this.typeEquationTypeInference != null )
-      {
-        check ( this.typeEquationTypeInference.getLeft ( ) ) ;
-        check ( this.typeEquationTypeInference.getRight ( ) ) ;
+        if ( this.loaded instanceof Expression )
+        {
+          check ( ( Expression ) this.loaded ) ;
+        }
+        else if ( this.loaded instanceof Type )
+        {
+          check ( ( Type ) this.loaded ) ;
+        }
+        else if ( this.loaded instanceof TypeEquationTypeInference )
+        {
+          check ( ( ( TypeEquationTypeInference ) this.loaded ).getLeft ( ) ) ;
+          check ( ( ( TypeEquationTypeInference ) this.loaded ).getRight ( ) ) ;
+        }
       }
     }
     return this.result ;
@@ -377,43 +300,15 @@ public final class ShowBonds
 
 
   /**
-   * Set the {@link Expression} to get the bonds.
+   * Loads the {@link ExpressionOrTypeOrTypeEquationTypeInference} to get the
+   * bonds.
    * 
-   * @param pExpression The input {@link Expression}.
+   * @param pLoaded The input
+   *          {@link ExpressionOrTypeOrTypeEquationTypeInference}.
    */
-  public final void setExpression ( Expression pExpression )
+  public final void load ( ExpressionOrTypeOrTypeEquationTypeInference pLoaded )
   {
-    this.expression = pExpression ;
-    this.type = null ;
-    this.typeEquationTypeInference = null ;
-  }
-
-
-  /**
-   * Set the {@link Type} to get the bonds.
-   * 
-   * @param pType The input {@link Type}.
-   */
-  public final void setType ( Type pType )
-  {
-    this.expression = null ;
-    this.type = pType ;
-    this.typeEquationTypeInference = null ;
-  }
-
-
-  /**
-   * Set the {@link TypeEquationTypeInference} to get the bonds.
-   * 
-   * @param pTypeEquationTypeInference The input
-   *          {@link TypeEquationTypeInference}.
-   */
-  public final void setTypeEquationTypeInference (
-      TypeEquationTypeInference pTypeEquationTypeInference )
-  {
-    this.expression = null ;
-    this.type = null ;
-    this.typeEquationTypeInference = pTypeEquationTypeInference ;
+    this.loaded = pLoaded ;
   }
 
 

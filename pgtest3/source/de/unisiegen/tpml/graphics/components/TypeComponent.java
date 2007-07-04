@@ -216,7 +216,7 @@ public class TypeComponent extends JComponent
       this.type = typeP ;
 
      bonds = new ShowBonds(); 
-     bonds.setType ( this.type ) ;
+     bonds.load ( this.type ) ;
       
       // check what to do with the renderer
       if ( this.type == null )

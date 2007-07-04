@@ -26,10 +26,9 @@ import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypeNames ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
 import de.unisiegen.tpml.core.interfaces.SortedChildren ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.core.types.TypeName ;
@@ -55,6 +54,7 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
 import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView ;
 import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
@@ -147,9 +147,9 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * The loaded input.
+   * The loaded {@link ExpressionOrType}.
    */
-  private Object loadedInput ;
+  private ExpressionOrType loadedExpressionOrType ;
 
 
   /**
@@ -202,7 +202,7 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( BigStepView pBigStepView )
   {
-    this.loadedInput = null ;
+    this.loadedExpressionOrType = null ;
     this.rootOutlineNode = null ;
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
@@ -277,7 +277,7 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( MinimalTypingView pMinimalTypingView )
   {
-    this.loadedInput = null ;
+    this.loadedExpressionOrType = null ;
     this.rootOutlineNode = null ;
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
@@ -354,7 +354,7 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( SmallStepView pSmallStepView )
   {
-    this.loadedInput = null ;
+    this.loadedExpressionOrType = null ;
     this.rootOutlineNode = null ;
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
@@ -433,7 +433,7 @@ public final class DefaultOutline implements Outline
   public DefaultOutline ( SubTypingEnterTypes pSubTypingEnterTypes ,
       StyledLanguageEditor pStyledLanguageEditor )
   {
-    this.loadedInput = null ;
+    this.loadedExpressionOrType = null ;
     this.rootOutlineNode = null ;
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
@@ -501,7 +501,7 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( TextEditorPanel pTextEditorPanel )
   {
-    this.loadedInput = null ;
+    this.loadedExpressionOrType = null ;
     this.rootOutlineNode = null ;
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
@@ -575,7 +575,7 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( TypeCheckerView pTypeCheckerView )
   {
-    this.loadedInput = null ;
+    this.loadedExpressionOrType = null ;
     this.rootOutlineNode = null ;
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
@@ -652,7 +652,7 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( TypeInferenceView pTypeInferenceView )
   {
-    this.loadedInput = null ;
+    this.loadedExpressionOrType = null ;
     this.rootOutlineNode = null ;
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
@@ -744,7 +744,7 @@ public final class DefaultOutline implements Outline
     MonoType [ ] types = null ;
     int [ ] typesIndex = null ;
     // Sorted Children
-    PrettyPrintable [ ] sortedChildren = null ;
+    ExpressionOrType [ ] sortedChildren = null ;
     // The Expression has one or more child Expressions
     if ( pExpression instanceof DefaultExpressions )
     {
@@ -843,11 +843,11 @@ public final class DefaultOutline implements Outline
     // Sorted children
     else
     {
-      ArrayList < PrettyPrintable > notFound = new ArrayList < PrettyPrintable > (
+      ArrayList < ExpressionOrType > notFound = new ArrayList < ExpressionOrType > (
           sortedChildren.length ) ;
       for ( int i = 0 ; i < sortedChildren.length ; i ++ )
       {
-        PrettyPrintable current = sortedChildren [ i ] ;
+        ExpressionOrType current = sortedChildren [ i ] ;
         boolean found = false ;
         // Identifier
         if ( ( identifiers != null ) && ( identifiersIndex != null ) )
@@ -914,7 +914,7 @@ public final class DefaultOutline implements Outline
       // Not found PrettyPrintables
       if ( notFound.size ( ) > 0 )
       {
-        for ( PrettyPrintable current : notFound )
+        for ( ExpressionOrType current : notFound )
         {
           if ( current instanceof Identifier )
           {
@@ -958,7 +958,7 @@ public final class DefaultOutline implements Outline
     Identifier [ ] identifiers = null ;
     int [ ] identifiersIndex = null ;
     // Sorted children
-    PrettyPrintable [ ] sortedChildren = null ;
+    ExpressionOrType [ ] sortedChildren = null ;
     // TypeName
     TypeName [ ] typeNames = null ;
     int [ ] typeNamesIndex = null ;
@@ -1043,11 +1043,11 @@ public final class DefaultOutline implements Outline
     // Sorted children
     else
     {
-      ArrayList < PrettyPrintable > notFound = new ArrayList < PrettyPrintable > (
+      ArrayList < ExpressionOrType > notFound = new ArrayList < ExpressionOrType > (
           sortedChildren.length ) ;
       for ( int i = 0 ; i < sortedChildren.length ; i ++ )
       {
-        PrettyPrintable current = sortedChildren [ i ] ;
+        ExpressionOrType current = sortedChildren [ i ] ;
         boolean found = false ;
         // Identifier
         if ( ( identifiers != null ) && ( identifiersIndex != null ) )
@@ -1110,7 +1110,7 @@ public final class DefaultOutline implements Outline
       // Not found PrettyPrintables
       if ( notFound.size ( ) > 0 )
       {
-        for ( PrettyPrintable current : notFound )
+        for ( ExpressionOrType current : notFound )
         {
           if ( current instanceof Identifier )
           {
@@ -1142,23 +1142,23 @@ public final class DefaultOutline implements Outline
   public final synchronized void execute ( )
   {
     // If nothing is loaded, nothing is done
-    if ( this.loadedInput == null )
+    if ( this.loadedExpressionOrType == null )
     {
       return ;
     }
     // Load a new Expression into the outline
-    if ( this.loadedInput instanceof Expression )
+    if ( this.loadedExpressionOrType instanceof Expression )
     {
-      Expression expression = ( Expression ) this.loadedInput ;
+      Expression expression = ( Expression ) this.loadedExpressionOrType ;
       this.outlineUnbound = new OutlineUnbound ( expression ) ;
       this.rootOutlineNode = new OutlineNode ( expression ,
           this.outlineUnbound , OutlineNode.NO_CHILD_INDEX ) ;
       createExpression ( expression , this.rootOutlineNode ) ;
     }
     // Load a new Type into the outline
-    else if ( this.loadedInput instanceof Type )
+    else if ( this.loadedExpressionOrType instanceof Type )
     {
-      Type type = ( Type ) this.loadedInput ;
+      Type type = ( Type ) this.loadedExpressionOrType ;
       this.outlineUnbound = new OutlineUnbound ( type ) ;
       this.rootOutlineNode = new OutlineNode ( type , this.outlineUnbound ,
           OutlineNode.NO_CHILD_INDEX ) ;
@@ -1457,12 +1457,12 @@ public final class DefaultOutline implements Outline
    * @param pSortedChildren The {@link SortedChildren}.
    * @return The array of the sorted children.
    */
-  private final PrettyPrintable [ ] invokeSortedChildren (
+  private final ExpressionOrType [ ] invokeSortedChildren (
       SortedChildren pSortedChildren )
   {
     try
     {
-      return ( PrettyPrintable [ ] ) pSortedChildren.getClass ( ).getMethod (
+      return ( ExpressionOrType [ ] ) pSortedChildren.getClass ( ).getMethod (
           GET_SORTED_CHILDREN , new Class [ 0 ] ).invoke ( pSortedChildren ,
           new Object [ 0 ] ) ;
     }
@@ -1686,35 +1686,21 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * This method loads a new {@link Expression} into the {@link Outline}. It
-   * does nothing if the auto update is disabled and the change does not come
+   * This method loads a new {@link ExpressionOrType} into the {@link Outline}.
+   * It does nothing if the auto update is disabled and the change does not come
    * from a <code>MouseEvent</code>.
    * 
-   * @param pExpression The new {@link Expression}.
+   * @param pExpressionOrType The new {@link ExpressionOrType}.
    * @param pExecute The {@link Outline.Execute}.
    */
-  public final synchronized void loadExpression ( Expression pExpression ,
+  public final void load ( ExpressionOrType pExpressionOrType ,
       Outline.Execute pExecute )
-  {
-    loadInput ( pExpression , pExecute ) ;
-  }
-
-
-  /**
-   * This method loads a new input into the {@link Outline}. It does nothing if
-   * the auto update is disabled and the change does not come from a
-   * <code>MouseEvent</code>.
-   * 
-   * @param pInput The new input.
-   * @param pExecute The {@link Outline.Execute}.
-   */
-  private final void loadInput ( Object pInput , Outline.Execute pExecute )
   {
     /*
      * If the invoke comes from a mouse click on the editor or the auto change
      * is active, the error is set and nothing is loaded.
      */
-    if ( pInput == null )
+    if ( pExpressionOrType == null )
     {
       executeTimerCancel ( ) ;
       if ( ( this.preferences.isAutoUpdate ( ) )
@@ -1725,8 +1711,8 @@ public final class DefaultOutline implements Outline
       return ;
     }
     // Throw an exception if something different should be loaded.
-    if ( ( ! ( pInput instanceof Expression ) )
-        && ( ! ( pInput instanceof Type ) ) )
+    if ( ( ! ( pExpressionOrType instanceof Expression ) )
+        && ( ! ( pExpressionOrType instanceof Type ) ) )
     {
       throw new IllegalArgumentException (
           "Outline: The input is not an Expression or Type!" ) ; //$NON-NLS-1$
@@ -1758,7 +1744,7 @@ public final class DefaultOutline implements Outline
     // Cancel the maybe running timer
     executeTimerCancel ( ) ;
     setError ( false ) ;
-    this.loadedInput = pInput ;
+    this.loadedExpressionOrType = pExpressionOrType ;
     /*
      * Execute the new load of the Expression or the Type immediately, if the
      * change is an init change or a change because of a mouse click.
@@ -1821,21 +1807,6 @@ public final class DefaultOutline implements Outline
         }
       }
     }
-  }
-
-
-  /**
-   * This method loads a new {@link Type} into the {@link Outline}. It does
-   * nothing if the auto update is disabled and the change does not come from a
-   * <code>MouseEvent</code>.
-   * 
-   * @param pType The new {@link Type}.
-   * @param pExecute The {@link Outline.Execute}.
-   */
-  public final synchronized void loadType ( Type pType ,
-      Outline.Execute pExecute )
-  {
-    loadInput ( pType , pExecute ) ;
   }
 
 
@@ -2104,22 +2075,22 @@ public final class DefaultOutline implements Outline
     OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
     for ( int i = 0 ; i < pList.size ( ) ; i ++ )
     {
-      if ( ( selectedNode.getPrettyPrintable ( ) instanceof Identifier )
+      if ( ( selectedNode.getExpressionOrType ( ) instanceof Identifier )
           && ( i < pList.size ( ) - 1 )
-          && ( ( ( Identifier ) selectedNode.getPrettyPrintable ( ) )
+          && ( ( ( Identifier ) selectedNode.getExpressionOrType ( ) )
               .getBoundToExpression ( ) != null ) )
       {
         try
         {
           Identifier identifier = ( Identifier ) selectedNode
-              .getPrettyPrintable ( ) ;
+              .getExpressionOrType ( ) ;
           /*
            * Highlight the bound Identifiers in the other childs of a parent
            * row.
            */
-          if ( ( pList.get ( i ).getPrettyPrintable ( ) instanceof Attribute )
-              || ( pList.get ( i ).getPrettyPrintable ( ) instanceof Method )
-              || ( pList.get ( i ).getPrettyPrintable ( ) instanceof CurriedMethod ) )
+          if ( ( pList.get ( i ).getExpressionOrType ( ) instanceof Attribute )
+              || ( pList.get ( i ).getExpressionOrType ( ) instanceof Method )
+              || ( pList.get ( i ).getExpressionOrType ( ) instanceof CurriedMethod ) )
           {
             OutlineNode nodeRowChild = ( OutlineNode ) pTreePath.getPath ( ) [ i ] ;
             OutlineNode nodeRow = ( OutlineNode ) pTreePath.getPath ( ) [ i - 1 ] ;
@@ -2127,7 +2098,7 @@ public final class DefaultOutline implements Outline
             {
               OutlineNode currentOutlineNode = ( OutlineNode ) nodeRow
                   .getChildAt ( j ) ;
-              if ( currentOutlineNode.getPrettyPrintable ( ) == identifier
+              if ( currentOutlineNode.getExpressionOrType ( ) == identifier
                   .getBoundToExpression ( ) )
               {
                 /*
@@ -2143,7 +2114,7 @@ public final class DefaultOutline implements Outline
                 {
                   OutlineNode nodeId = ( OutlineNode ) currentOutlineNode
                       .getChildAt ( k ) ;
-                  if ( nodeId.getPrettyPrintable ( ) == identifier
+                  if ( nodeId.getExpressionOrType ( ) == identifier
                       .getBoundToIdentifier ( ) )
                   {
                     nodeId.setBindingIdentifier ( identifier
@@ -2161,14 +2132,14 @@ public final class DefaultOutline implements Outline
              * Highlight the Identifier in the child node with the bound
              * Identifier index.
              */
-            if ( pList.get ( i ).getPrettyPrintable ( ) == identifier
+            if ( pList.get ( i ).getExpressionOrType ( ) == identifier
                 .getBoundToExpression ( ) )
             {
               for ( int j = 0 ; j < pList.get ( i ).getChildCount ( ) ; j ++ )
               {
                 OutlineNode nodeId = ( OutlineNode ) pList.get ( i )
                     .getChildAt ( j ) ;
-                if ( nodeId.getPrettyPrintable ( ) == identifier
+                if ( nodeId.getExpressionOrType ( ) == identifier
                     .getBoundToIdentifier ( ) )
                 {
                   nodeId.setBindingIdentifier ( identifier
@@ -2207,9 +2178,9 @@ public final class DefaultOutline implements Outline
       /*
        * Update the caption of the node
        */
-      PrettyAnnotation prettyAnnotation = pList.get ( i ).getPrettyPrintable ( )
-          .toPrettyString ( ).getAnnotationForPrintable (
-              selectedNode.getPrettyPrintable ( ) ) ;
+      PrettyAnnotation prettyAnnotation = pList.get ( i )
+          .getExpressionOrType ( ).toPrettyString ( )
+          .getAnnotationForPrintable ( selectedNode.getExpressionOrType ( ) ) ;
       pList.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
           prettyAnnotation.getEndOffset ( ) ) ;
       /*
@@ -2260,10 +2231,10 @@ public final class DefaultOutline implements Outline
       }
       OutlineNode outlineNode = ( OutlineNode ) treePath
           .getLastPathComponent ( ) ;
-      if ( outlineNode.getPrettyPrintable ( ) instanceof Expression )
+      if ( outlineNode.getExpressionOrType ( ) instanceof Expression )
       {
         Expression expression = ( Expression ) outlineNode
-            .getPrettyPrintable ( ) ;
+            .getExpressionOrType ( ) ;
         SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
         StyleConstants.setBackground ( freeSet , Color.YELLOW ) ;
         freeSet.addAttribute ( "selected" , "selected" ) ; //$NON-NLS-1$ //$NON-NLS-2$
@@ -2271,9 +2242,9 @@ public final class DefaultOutline implements Outline
             expression.getParserEndOffset ( )
                 - expression.getParserStartOffset ( ) , freeSet , false ) ;
       }
-      else if ( outlineNode.getPrettyPrintable ( ) instanceof Type )
+      else if ( outlineNode.getExpressionOrType ( ) instanceof Type )
       {
-        Type type = ( Type ) outlineNode.getPrettyPrintable ( ) ;
+        Type type = ( Type ) outlineNode.getExpressionOrType ( ) ;
         SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
         StyleConstants.setBackground ( freeSet , Color.YELLOW ) ;
         freeSet.addAttribute ( "selected" , "selected" ) ; //$NON-NLS-1$ //$NON-NLS-2$
@@ -2300,7 +2271,7 @@ public final class DefaultOutline implements Outline
      * Highlight the bound Identifiers of an Attribute in the other childs of
      * the parent row.
      */
-    if ( nodeAttribute.getPrettyPrintable ( ) instanceof Attribute )
+    if ( nodeAttribute.getExpressionOrType ( ) instanceof Attribute )
     {
       OutlineNode nodeRow = pList.get ( pList.size ( ) - 3 ) ;
       for ( int i = nodeRow.getIndex ( nodeAttribute ) + 1 ; i < nodeRow
@@ -2321,7 +2292,7 @@ public final class DefaultOutline implements Outline
        * Sets the BoundToIdentifier value.
        */
       pList.get ( i ).setBindingIdentifier (
-          ( ( Identifier ) selectedNode.getPrettyPrintable ( ) )
+          ( ( Identifier ) selectedNode.getExpressionOrType ( ) )
               .getBoundToIdentifier ( ) ) ;
       /*
        * It should be replaced in higher nodes
@@ -2330,9 +2301,9 @@ public final class DefaultOutline implements Outline
       /*
        * Update the caption of the node
        */
-      PrettyAnnotation prettyAnnotation = pList.get ( i ).getPrettyPrintable ( )
-          .toPrettyString ( ).getAnnotationForPrintable (
-              selectedNode.getPrettyPrintable ( ) ) ;
+      PrettyAnnotation prettyAnnotation = pList.get ( i )
+          .getExpressionOrType ( ).toPrettyString ( )
+          .getAnnotationForPrintable ( selectedNode.getExpressionOrType ( ) ) ;
       pList.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
           prettyAnnotation.getEndOffset ( ) ) ;
       /*
@@ -2356,26 +2327,26 @@ public final class DefaultOutline implements Outline
     OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
     for ( int i = 0 ; i < pList.size ( ) ; i ++ )
     {
-      if ( ( selectedNode.getPrettyPrintable ( ) instanceof TypeName )
+      if ( ( selectedNode.getExpressionOrType ( ) instanceof TypeName )
           && ( i < pList.size ( ) - 1 )
-          && ( ( ( TypeName ) selectedNode.getPrettyPrintable ( ) )
+          && ( ( ( TypeName ) selectedNode.getExpressionOrType ( ) )
               .getBoundToType ( ) != null ) )
       {
         try
         {
-          TypeName typeName = ( TypeName ) selectedNode.getPrettyPrintable ( ) ;
+          TypeName typeName = ( TypeName ) selectedNode.getExpressionOrType ( ) ;
           /*
            * Highlight the TypeName in the child node with the bound TypeName
            * index.
            */
-          if ( pList.get ( i ).getPrettyPrintable ( ) == typeName
+          if ( pList.get ( i ).getExpressionOrType ( ) == typeName
               .getBoundToType ( ) )
           {
             for ( int j = 0 ; j < pList.get ( i ).getChildCount ( ) ; j ++ )
             {
               OutlineNode nodeTypeName = ( OutlineNode ) pList.get ( i )
                   .getChildAt ( j ) ;
-              if ( nodeTypeName.getPrettyPrintable ( ) == typeName
+              if ( nodeTypeName.getExpressionOrType ( ) == typeName
                   .getBoundToTypeName ( ) )
               {
                 nodeTypeName.setBindingTypeName ( typeName
@@ -2416,9 +2387,9 @@ public final class DefaultOutline implements Outline
       {
         continue ;
       }
-      PrettyAnnotation prettyAnnotation = pList.get ( i ).getPrettyPrintable ( )
-          .toPrettyString ( ).getAnnotationForPrintable (
-              selectedNode.getPrettyPrintable ( ) ) ;
+      PrettyAnnotation prettyAnnotation = pList.get ( i )
+          .getExpressionOrType ( ).toPrettyString ( )
+          .getAnnotationForPrintable ( selectedNode.getExpressionOrType ( ) ) ;
       pList.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
           prettyAnnotation.getEndOffset ( ) ) ;
       /*
@@ -2450,7 +2421,7 @@ public final class DefaultOutline implements Outline
        * Sets the setBindingTypeName value.
        */
       pList.get ( i ).setBindingTypeName (
-          ( ( TypeName ) selectedNode.getPrettyPrintable ( ) )
+          ( ( TypeName ) selectedNode.getExpressionOrType ( ) )
               .getBoundToTypeName ( ) ) ;
       /*
        * It should be replaced in higher nodes
@@ -2459,9 +2430,9 @@ public final class DefaultOutline implements Outline
       /*
        * Update the caption of the node
        */
-      PrettyAnnotation prettyAnnotation = pList.get ( i ).getPrettyPrintable ( )
-          .toPrettyString ( ).getAnnotationForPrintable (
-              selectedNode.getPrettyPrintable ( ) ) ;
+      PrettyAnnotation prettyAnnotation = pList.get ( i )
+          .getExpressionOrType ( ).toPrettyString ( )
+          .getAnnotationForPrintable ( selectedNode.getExpressionOrType ( ) ) ;
       pList.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
           prettyAnnotation.getEndOffset ( ) ) ;
       /*

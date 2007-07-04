@@ -6,8 +6,8 @@ import java.util.Arrays ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
 import de.unisiegen.tpml.core.interfaces.SortedChildren ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -231,9 +231,9 @@ public final class Duplication extends Expression implements
    *         sorting.
    * @see SortedChildren#getSortedChildren()
    */
-  public PrettyPrintable [ ] getSortedChildren ( )
+  public ExpressionOrType [ ] getSortedChildren ( )
   {
-    PrettyPrintable [ ] result = new PrettyPrintable [ this.identifiers.length
+    ExpressionOrType [ ] result = new ExpressionOrType [ this.identifiers.length
         + this.expressions.length ] ;
     for ( int i = 0 ; i < this.identifiers.length + this.expressions.length ; i ++ )
     {

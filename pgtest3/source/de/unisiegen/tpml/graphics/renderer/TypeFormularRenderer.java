@@ -668,7 +668,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
                     
           //get the highlightinfos
           ShowBonds bondTypeEquation = new ShowBonds();
-					bondTypeEquation.setTypeEquationTypeInference(s);
+					bondTypeEquation.load(s);
 					bondTypeEquation.getAnnotations();
 					
 					
@@ -817,7 +817,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			
 					//gc.drawString(expression.toString(), posX, posY);
 					ShowBonds bound = new ShowBonds();
-					bound.setExpression(expression);
+					bound.load(expression);
 					//ToListenForMouseContainer toListenForM = new ToListenForMouseContainer();
 					expressionRenderer.setPrettyString(expression.toPrettyString());
 					Dimension expressionSize = expressionRenderer.getNeededSizeAll_(width-einrücken);
@@ -877,7 +877,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//posX += AbstractRenderer.expFontMetrics.stringWidth(type.toString());
 					typeRenderer.setPrettyString(type.toPrettyString());
 					ShowBonds bondType = new ShowBonds();
-					bondType.setType(type);
+					bondType.load(type);
 					
 					//Dimension typeSize = prettyStringrenderer.getNeededSize(Integer.MAX_VALUE);
 					Dimension typeSize = typeRenderer.getNeededSize(width - einrücken);

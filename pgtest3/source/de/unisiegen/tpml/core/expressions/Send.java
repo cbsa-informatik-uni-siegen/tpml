@@ -4,8 +4,8 @@ package de.unisiegen.tpml.core.expressions ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
 import de.unisiegen.tpml.core.interfaces.SortedChildren ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -205,9 +205,9 @@ public final class Send extends Expression implements DefaultIdentifiers ,
    *         sorting.
    * @see SortedChildren#getSortedChildren()
    */
-  public PrettyPrintable [ ] getSortedChildren ( )
+  public ExpressionOrType [ ] getSortedChildren ( )
   {
-    PrettyPrintable [ ] result = new PrettyPrintable [ 2 ] ;
+    ExpressionOrType [ ] result = new ExpressionOrType [ 2 ] ;
     result [ 0 ] = this.expressions [ 0 ] ;
     result [ 1 ] = this.identifiers [ 0 ] ;
     return result ;

@@ -3,12 +3,12 @@ package de.unisiegen.tpml.graphics.outline.binding ;
 
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
 import de.unisiegen.tpml.core.types.Type ;
 
 
 /**
- * Finds the unbound {@link PrettyPrintable}s in a given {@link Expression}.
+ * Finds the unbound {@link ExpressionOrType}s in a given {@link Expression}.
  * 
  * @author Christian Fehler
  * @version $Rev: 995 $
@@ -16,17 +16,17 @@ import de.unisiegen.tpml.core.types.Type ;
 public final class OutlineUnbound
 {
   /**
-   * The list of unbound {@link PrettyPrintable}s.
+   * The list of unbound {@link ExpressionOrType}s.
    */
-  private ArrayList < PrettyPrintable > list ;
+  private ArrayList < ExpressionOrType > list ;
 
 
   /**
    * Initilizes the list with the given list.
    * 
-   * @param pList The given {@link PrettyPrintable}s list.
+   * @param pList The given {@link ExpressionOrType}s list.
    */
-  private OutlineUnbound ( ArrayList < PrettyPrintable > pList )
+  private OutlineUnbound ( ArrayList < ExpressionOrType > pList )
   {
     this.list = pList ;
   }
@@ -39,7 +39,7 @@ public final class OutlineUnbound
    */
   public OutlineUnbound ( Expression pExpression )
   {
-    this.list = new ArrayList < PrettyPrintable > ( ) ;
+    this.list = new ArrayList < ExpressionOrType > ( ) ;
     this.list.addAll ( pExpression.getIdentifiersFree ( ) ) ;
     this.list.addAll ( pExpression.getTypeNamesFree ( ) ) ;
   }
@@ -52,18 +52,18 @@ public final class OutlineUnbound
    */
   public OutlineUnbound ( Type pType )
   {
-    this.list = new ArrayList < PrettyPrintable > ( ) ;
+    this.list = new ArrayList < ExpressionOrType > ( ) ;
     this.list.addAll ( pType.getTypeNamesFree ( ) ) ;
   }
 
 
   /**
-   * Returns the unbound {@link PrettyPrintable}.
+   * Returns the unbound {@link ExpressionOrType}.
    * 
-   * @param pIndex The index of the unbound {@link PrettyPrintable}.
-   * @return The unbound {@link PrettyPrintable}.
+   * @param pIndex The index of the unbound {@link ExpressionOrType}.
+   * @return The unbound {@link ExpressionOrType}.
    */
-  public final PrettyPrintable get ( int pIndex )
+  public final ExpressionOrType get ( int pIndex )
   {
     return this.list.get ( pIndex ) ;
   }
@@ -71,23 +71,23 @@ public final class OutlineUnbound
 
   /**
    * Returns a reduced {@link OutlineUnbound}, which contains only the
-   * {@link PrettyPrintable}s which are present in the given
-   * {@link PrettyPrintable}.
+   * {@link ExpressionOrType}s which are present in the given
+   * {@link ExpressionOrType}.
    * 
-   * @param pPrettyPrintable The input {@link PrettyPrintable}.
+   * @param pExpressionOrType The input {@link ExpressionOrType}.
    * @return A reduced {@link OutlineUnbound}, which contains only the
-   *         {@link PrettyPrintable}s which are present in the given
-   *         {@link PrettyPrintable}.
+   *         {@link ExpressionOrType}s which are present in the given
+   *         {@link ExpressionOrType}.
    */
-  public OutlineUnbound reduce ( PrettyPrintable pPrettyPrintable )
+  public OutlineUnbound reduce ( ExpressionOrType pExpressionOrType )
   {
     OutlineUnbound result = new OutlineUnbound (
-        new ArrayList < PrettyPrintable > ( this.list ) ) ;
+        new ArrayList < ExpressionOrType > ( this.list ) ) ;
     for ( int i = result.list.size ( ) - 1 ; i >= 0 ; i -- )
     {
       try
       {
-        pPrettyPrintable.toPrettyString ( ).getAnnotationForPrintable (
+        pExpressionOrType.toPrettyString ( ).getAnnotationForPrintable (
             result.list.get ( i ) ) ;
       }
       catch ( IllegalArgumentException e )
@@ -103,10 +103,10 @@ public final class OutlineUnbound
 
 
   /**
-   * Returns the size of the {@link PrettyPrintable} list. The size is equal to
-   * the number of unbound {@link PrettyPrintable}s.
+   * Returns the size of the {@link ExpressionOrType} list. The size is equal to
+   * the number of unbound {@link ExpressionOrType}s.
    * 
-   * @return The number of unbound {@link PrettyPrintable}s.
+   * @return The number of unbound {@link ExpressionOrType}s.
    */
   public final int size ( )
   {

@@ -34,7 +34,7 @@ public class ChristianTest
         new SeenTypes < TypeEquationTypeInference > ( ) ) ;
     System.out.println ( t ) ;
     ShowBonds s = new ShowBonds ( ) ;
-    s.setTypeEquationTypeInference ( t ) ;
+    s.load ( t ) ;
     s.getAnnotations ( ) ;
     System.out.println ( s ) ;
   }

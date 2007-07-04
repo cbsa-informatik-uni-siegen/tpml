@@ -8,6 +8,7 @@ import java.util.Collections ;
 import java.util.Enumeration ;
 import java.util.Set ;
 import java.util.TreeSet ;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrTypeOrTypeEquationTypeInference ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -24,7 +25,8 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @version $Rev:296 $
  * @see PrettyPrintable
  */
-public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
+public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
+    ExpressionOrTypeOrTypeEquationTypeInference
 {
   /**
    * Shared empty set, returned by {@link #getTypeVariablesFree()} if the type

@@ -242,13 +242,13 @@ public class CompoundExpressionTypeInference extends JComponent
 						// Expression
 						if (isIn(expressionPositions.get(i), pos))
 						{
-							outline.loadExpression(typeJudgement.getExpression(), Outline.ExecuteMouseClick.TYPEINFERENCE);
+							outline.load (typeJudgement.getExpression(), Outline.ExecuteMouseClick.TYPEINFERENCE);
 						}
 						// Type
 						else
 							if (isIn(typePositions.get(i), pos))
 							{
-								outline.loadType(typeJudgement.getType(), Outline.ExecuteMouseClick.TYPEINFERENCE);
+								outline.load(typeJudgement.getType(), Outline.ExecuteMouseClick.TYPEINFERENCE);
 							}
 					}
 					else
@@ -258,13 +258,13 @@ public class CompoundExpressionTypeInference extends JComponent
 							// Left type
 							if (isIn(leftType.get(i), pos))
 							{
-								outline.loadType(typeEquation.getLeft(), Outline.ExecuteMouseClick.TYPEINFERENCE);
+								outline.load(typeEquation.getLeft(), Outline.ExecuteMouseClick.TYPEINFERENCE);
 							}
 							// Right type
 							else
 								if (isIn(rightType.get(i), pos))
 								{
-									outline.loadType(typeEquation.getRight(), Outline.ExecuteMouseClick.TYPEINFERENCE);
+									outline.load(typeEquation.getRight(), Outline.ExecuteMouseClick.TYPEINFERENCE);
 								}
 						}
 				}

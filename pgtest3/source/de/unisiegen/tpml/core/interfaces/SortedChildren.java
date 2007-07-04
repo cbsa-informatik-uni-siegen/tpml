@@ -2,11 +2,10 @@ package de.unisiegen.tpml.core.interfaces ;
 
 
 import de.unisiegen.tpml.core.expressions.Duplication ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 
 
 /**
- * Interface for classes whose instances have sorted {@link PrettyPrintable}s.
+ * Interface for classes whose instances have sorted {@link ExpressionOrType}s.
  * For example {@link Duplication}.
  * 
  * @author Christian Fehler
@@ -15,9 +14,9 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 public interface SortedChildren
 {
   /**
-   * Returns the sorted sub {@link PrettyPrintable}s.
+   * Returns the sorted sub {@link ExpressionOrType}s.
    * 
-   * @return the sorted sub {@link PrettyPrintable}s.
+   * @return the sorted sub {@link ExpressionOrType}s.
    */
-  public PrettyPrintable [ ] getSortedChildren ( ) ;
+  public ExpressionOrType [ ] getSortedChildren ( ) ;
 }

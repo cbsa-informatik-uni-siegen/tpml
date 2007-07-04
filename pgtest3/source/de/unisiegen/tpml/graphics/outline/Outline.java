@@ -2,8 +2,7 @@ package de.unisiegen.tpml.graphics.outline ;
 
 
 import javax.swing.JPanel ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 
 
@@ -149,23 +148,13 @@ public interface Outline
 
 
   /**
-   * This method loads a new {@link Expression} into the {@link Outline}. It
-   * does nothing if the auto update is disabled and the change does not come
+   * This method loads a new {@link ExpressionOrType} into the {@link Outline}.
+   * It does nothing if the auto update is disabled and the change does not come
    * from a <code>MouseEvent</code>.
    * 
-   * @param pExpression The new {@link Expression}.
+   * @param pExpressionOrType The new {@link ExpressionOrType}.
    * @param pExecute The {@link Outline.Execute}.
    */
-  public void loadExpression ( Expression pExpression , Outline.Execute pExecute ) ;
-
-
-  /**
-   * This method loads a new {@link Type} into the {@link Outline}. It does
-   * nothing if the auto update is disabled and the change does not come from a
-   * <code>MouseEvent</code>.
-   * 
-   * @param pType The new {@link Type}.
-   * @param pExecute The {@link Outline.Execute}.
-   */
-  public void loadType ( Type pType , Outline.Execute pExecute ) ;
+  public void load ( ExpressionOrType pExpressionOrType ,
+      Outline.Execute pExecute ) ;
 }

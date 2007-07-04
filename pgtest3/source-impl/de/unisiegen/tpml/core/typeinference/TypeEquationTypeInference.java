@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.typeinference ;
 
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrTypeOrTypeEquationTypeInference ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -22,7 +23,8 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @author Christian Fehler
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker
  */
-public final class TypeEquationTypeInference implements TypeFormula ,
+public final class TypeEquationTypeInference implements
+    ExpressionOrTypeOrTypeEquationTypeInference , TypeFormula ,
     PrettyPrintable , PrettyPrintPriorities
 {
   //
