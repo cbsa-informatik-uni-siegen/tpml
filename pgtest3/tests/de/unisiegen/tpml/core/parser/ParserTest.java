@@ -1365,7 +1365,7 @@ public class ParserTest
     output ( "Count Normal Type: " + countNormalType , Output.NORMAL ) ;
     output ( "Count Error:       " + countError , Output.NORMAL ) ;
     output ( "Count Error Type:  " + countErrorType , Output.NORMAL ) ;
-    output ( "Count           :  "
+    output ( "Count:             "
         + ( countNormal + countNormalType + countError + countErrorType ) ,
         Output.NORMAL ) ;
     if ( l0Okay && l1Okay && l2Okay && l2OOkay && l3Okay && l4Okay )
