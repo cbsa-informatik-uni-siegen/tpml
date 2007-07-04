@@ -747,10 +747,34 @@ object_expr_error				::= OBJECT:o epsilon
 									{: Error.expect("Object", " end", oleft, rright, "r end"); :}	
 								|	OBJECT:o LPAREN SELF RPAREN row:r epsilon
 									{: Error.expect("Object", " end", oleft, rright, "end", "r end"); :}
+								// Missing type
 								|   OBJECT:o LPAREN SELF COLON:c RPAREN END
 									{: Error.expect("Object", " \u03C4", oleft, cright, "\u03C4" ); :}
 								|	OBJECT:o LPAREN SELF COLON:c RPAREN row END
 									{: Error.expect("Object", " \u03C4", oleft, cright, "\u03C4" ); :}
+								// Missing left bracket
+								|	OBJECT:o SELF COLON type RPAREN END
+									{: Error.expect("Object", " (", oleft, oright, "(" ); :}
+								|	OBJECT:o SELF COLON type RPAREN row END
+									{: Error.expect("Object", " (", oleft, oright, "(" ); :}
+								|	OBJECT:o SELF RPAREN END
+									{: Error.expect("Object", " (", oleft, oright, "(" ); :}
+								|	OBJECT:o SELF RPAREN row END
+									{: Error.expect("Object", " (", oleft, oright, "(" ); :}
+								// Missing right bracket
+								|	OBJECT:o LPAREN SELF COLON type:t END
+									{: Error.expect("Object", ") ", oleft, tright, ")" ); :}
+								|	OBJECT:o LPAREN SELF COLON type:t row END
+									{: Error.expect("Object", ") ", oleft, tright, ")" ); :}
+								|	OBJECT:o LPAREN SELF:s END
+									{: Error.expect("Object", ") ", oleft, sright, ")" ); :}
+								|	OBJECT:o LPAREN SELF:s row END
+									{: Error.expect("Object", ") ", oleft, sright, ")" ); :}
+								// Missing self
+								|	OBJECT:o LPAREN:l RPAREN END
+									{: Error.expect("Object", "self", oleft, lright, "self" ); :}
+								|	OBJECT:o LPAREN:l RPAREN row END
+									{: Error.expect("Object", "self", oleft, lright, "self" ); :}
 								;
 
 duplication						::= DUPLBEGIN:b duplication_list:l DUPLEND:e

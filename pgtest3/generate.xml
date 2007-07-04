@@ -186,7 +186,7 @@
 			symbols="L2OTerminals"
 			interface="yes"
 			debug="no"
-			expect="463"
+			expect="471"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
