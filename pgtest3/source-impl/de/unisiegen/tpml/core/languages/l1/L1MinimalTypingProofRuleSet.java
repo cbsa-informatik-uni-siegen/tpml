@@ -435,14 +435,27 @@ public class L1MinimalTypingProofRuleSet extends
 			for ( int n = identifiers.length - 1; n > 0; --n ) {
 				e1 = new Lambda ( identifiers[n], types[n], e1 );
 			}
-			// generate the type of the function
-			MonoType tau1 = types[0];
-
-			for ( int n = types.length - 1; n > 0; --n ) {
-				tau1 = new ArrowType ( types[n], tau1 );
-			}
+			
 			// add the recursion for let rec
 			if ( expression instanceof CurriedLetRec ) {
+				CurriedLetRec letRec = (CurriedLetRec) expression;
+				//	generate the type of the function
+				MonoType tau1 = types[0];
+				if (tau1 == null)
+					throw new RuntimeException (
+							MessageFormat
+									.format (
+											Messages.getString ( "MinimalTypingException.2" ), letRec.getIdentifiers ( )[0].toString ( ) ) ); //$NON-NLS-1$
+
+				for ( int n = types.length - 1; n > 0; --n ) {
+					if (types[n] == null)
+						throw new RuntimeException (
+								MessageFormat
+										.format (
+												Messages.getString ( "MinimalTypingException.2" ), letRec.getIdentifiers ( )[n].toString ( ) ) ); //$NON-NLS-1$
+
+					tau1 = new ArrowType ( types[n], tau1 );
+				}
 				// add the recursion
 				e1 = new Recursion ( identifiers[0], tau1, e1 );
 			}
@@ -483,19 +496,38 @@ public class L1MinimalTypingProofRuleSet extends
 				CurriedLet let = ( CurriedLet ) expression;
 				TypeEnvironment environment = node.getEnvironment ( );
 
-				MonoType[] types = let.getTypes ( );
+				
 				Identifier[] identifiers = let.getIdentifiers ( );
 
+				/*MonoType[] types = let.getTypes ( );
 				MonoType tau1 = types[0];
 				for ( int n = types.length - 1; n > 0; --n ) {
 					tau1 = new ArrowType ( types[n], tau1 );
-				}
-				environment = environment.extend ( identifiers[0], tau1 );
+				}*/
+				environment = environment.extend ( identifiers[0], node.getFirstChild ( ).getType ( ) );
 
 				context.addProofNode ( node, environment, let.getE2 ( ) );
 			}
 		} else if ( node.getChildCount ( ) == 2
 				&& node.getChildAt ( 1 ).isFinished ( ) ) {
+			if (expression instanceof Let || expression instanceof CurriedLetRec){
+			MonoType type = node.getChildAt ( 1 ).getType ( );
+			context.setNodeType ( node, type );
+			}
+			else {
+				CurriedLet let = (CurriedLet) expression;
+				MonoType type = node.getChildAt ( 1 ).getType ( );
+				MonoType type2 = let.getTypes ( )[0];
+				if (type2 == null){
+					
+					context.setNodeType ( node, type );
+				}
+				else {
+					context.addProofNode ( node, type, type2 );
+				}
+			}
+		} else if ( node.getChildCount ( ) == 3
+				&& node.getChildAt ( 2 ).isFinished ( ) ) {
 			MonoType type = node.getChildAt ( 1 ).getType ( );
 			context.setNodeType ( node, type );
 		}
@@ -570,11 +602,6 @@ public class L1MinimalTypingProofRuleSet extends
 		} else if ( type instanceof RowType && type2 instanceof RowType ) {
 			RowType row = ( RowType ) type;
 			RowType row2 = ( RowType ) type2;
-
-			Identifier[] ids = row.getIdentifiers ( );
-			Identifier[] ids2 = row2.getIdentifiers ( );
-			MonoType[] types = row.getTypes ( );
-			MonoType[] types2 = row2.getTypes ( );
 
 			if ( !row.equalsIgnoreOrder ( row2 ) ){
 

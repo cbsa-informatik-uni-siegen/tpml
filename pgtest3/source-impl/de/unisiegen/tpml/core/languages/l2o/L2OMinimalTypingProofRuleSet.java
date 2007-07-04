@@ -306,18 +306,6 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 		} else if ( node.getChildCount ( ) == 3
 				&& node.getChildAt ( 2 ).isFinished ( ) ) {
 			Expression expression = row.getExpressions ( )[0];
-			MonoType type = node.getChildAt ( 1 ).getType ( );
-			while (type instanceof ArrowType){
-				type = ((ArrowType) type).getTau2 ( );
-			}
-			
-			MonoType type2 = (expression instanceof Method ? ((Method)expression).getTau ( ):  ((CurriedMethod)expression).getTypes ( )[0]);
-		
-			context.addProofNode ( node, type, type2 );
-		
-		} else if ( node.getChildCount ( ) == 4
-				&& node.getChildAt ( 3 ).isFinished ( ) ) {
-			Expression expression = row.getExpressions ( )[0];
 			MonoType type = node.getFirstChild ( ).getType ( );
 			if ( type instanceof RecType ) {
 				RecType rec = ( RecType ) type;
@@ -367,6 +355,34 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 					}
 					context.addProofNode ( node, arrow, type );
 				}
+			
+			
+			
+			
+		
+		} else if ( node.getChildCount ( ) == 4
+				&& node.getChildAt ( 3 ).isFinished ( ) ) {
+			Expression expression = row.getExpressions ( )[0];
+			MonoType type = node.getChildAt ( 1 ).getType ( );
+			while (type instanceof ArrowType){
+				type = ((ArrowType) type).getTau2 ( );
+			}
+			
+			MonoType type2 = (expression instanceof Method ? ((Method)expression).getTau ( ):  ((CurriedMethod)expression).getTypes ( )[0]);
+		
+			if (type2 != null)
+			context.addProofNode ( node, type, type2 );
+			else{
+				Identifier[] ids = new Identifier[1];
+				
+				ids[0] = (expression instanceof Method ? (( Method ) expression )	.getIdentifiers ( )[0]:  (( CurriedMethod ) expression )	.getIdentifiers ( )[0] ) ;
+				MonoType[] types = { node.getChildAt ( 1 ).getType ( ) };
+
+				RowType rowType = new RowType ( ids, types );
+				RowType phi = ( RowType ) node.getChildAt ( 2 ).getType ( );
+				rowType = RowType.union ( rowType, phi );
+				context.setNodeType ( node, rowType );
+			}
 
 		} else if ( node.getChildCount ( ) == 5
 				&& node.getChildAt ( 4 ).isFinished ( ) ) {
