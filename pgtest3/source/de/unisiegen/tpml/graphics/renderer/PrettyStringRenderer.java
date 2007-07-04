@@ -1,24 +1,24 @@
 package de.unisiegen.tpml.graphics.renderer ;
 
 
-import java.awt.Color ;
-import java.awt.Dimension ;
-import java.awt.Font ;
-import java.awt.FontMetrics ;
-import java.awt.Graphics ;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Point;
-import java.security.SecureRandom;
-import java.text.CharacterIterator ;
-import java.util.ArrayList ;
-import java.util.Collections ;
-import java.util.LinkedList ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.graphics.Theme ;
-import de.unisiegen.tpml.graphics.components.Bonds ;
-import de.unisiegen.tpml.graphics.components.ShowBonds ;
+import java.text.CharacterIterator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+
+import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
+import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.graphics.Theme;
+import de.unisiegen.tpml.graphics.components.Bonds;
+import de.unisiegen.tpml.graphics.components.ShowBonds;
 
 
 /**
@@ -36,24 +36,12 @@ public class PrettyStringRenderer extends AbstractRenderer
    * @author marcell
    * @author michael
    */
-  // private class CheckerResult_old {
-  // / The annotation used for the linewrapping
-  // public PrettyAnnotation annotation;
-  // /// The rows used to
-  // public int rows;
-  // public Dimension size;
-  // public CheckerResult_old() {
-  // this.size = new Dimension ();
-  //      
-  // }
-  // }
   private class CheckerResult
   {
     /**
      * list of break Offsets
      */
     // / The annotation used for the linewrapping
-    // public PrettyAnnotation annotation;
     public ArrayList < Integer > breakOffsets ;
 
 
@@ -280,8 +268,6 @@ public class PrettyStringRenderer extends AbstractRenderer
     int w = 0 ;
     for ( char c = it.first ( ) ; c != CharacterIterator.DONE ; c = it.next ( ) , j ++ )
     {
-      // TODO Testausgabe
-      // System.out.print(c);
       // Find out the width of the actual char
       w = 0 ;
       switch ( it.getStyle ( ) )
@@ -306,78 +292,57 @@ public class PrettyStringRenderer extends AbstractRenderer
       }
       // width of the expression is
       actualWidth = actualWidth + w ;
-      // TODO Testausgabe
-      // System.out.println(","+j+" => "+w + " Gesamtbreite: "+actualWidth);
       actualMaxNeededWidth = Math.max ( actualWidth , actualMaxNeededWidth ) ;
+      
       // The expression has grwon to big
       // the programm will find the very next brakepoint to the actual position
       // being smaller then it. If there is no possible breakpoint, it will
-      // force to
-      // break at this position
+      // force to break at this position
       if ( actualWidth > maxWidth )
       {
-        // TODO Testausgabe
-        // System.out.println("Jetzt ist die Breite größer der Maxbreite:
-        // "+actualWidth+", "+maxWidth);
-        // System.out.println("Die Position ist: "+j);
-        // wir brauchen den Breakpoint, der am nähsten an dieser stelle liegt,
-        // und kleiner ist
-        // gibt es keinen, dann brechen wir einfach hart hier um.
-        if ( allBreakPoints.size ( ) < 1 )
+      	if (j < 2)
+      	{
+      		//TODO Der Fall, dass die Größe kleiner ist als die Ziechen, dann klappt das nicht...
+      		return new Dimension (0,0);
+      	}
+      	// use the next breakpoint bevor the actual position. If there is no breakpoint
+      	// a breakpoint will be inserted
+        if ( allBreakPoints.size ( ) == 0 )  //no brakpoint available
         {
-          // TODO Testausgabe
-          // System.out.println("###################### KEINE BREAKPOINTS
-          // #####################");
-          useBreakPoints.add ( j - 1 ) ;
+        	//use the actual position -1
+          //useBreakPoints.add (Math.max(0, j - 1) ) ;
+        	useBreakPoints.add (j - 1);
           j -- ;
-          it.setIndex ( ( j - 1 ) ) ;
+          it.setIndex(j - 1);
         }
-        else if ( allBreakPoints.get ( 0 ) > j - 1 )
-        {
-          // TODO Testausgabe
-          // System.out.println("********************** komische Sache
-          // *********************");
-          // System.out.println("Der erste Umbruchpunkt liegt bei:
-          // "+allBreakPoints.get(0) + ", wir müssen aber bis "+(j-1)+"bereits
-          // umgebrochen haben...");
-          useBreakPoints.add ( j - 1 ) ;
-          j -- ;
-          //TODO mal ausprobieren...
-          if (j>=1)
-          {
-          	it.setIndex ( ( j - 1 ) ) ;
-          }
-          else
-          {
-          	//it.setIndex(0);
-          }
-          
-        }
+        else if (allBreakPoints.get(0) > j - 1) // The first breakpoint is after the actual position
+				{
+					// TODO Das muss noch ausgibig getestet werden...
+					// Vergleich mit der Repository-Version!!!
+					//System.out.println("So, das ist scheiße bis hier...");
+					
+					useBreakPoints.add(j - 1);
+					j--;
+					it.setIndex((j - 1));
+				}
         else
         {
           for ( int i = 1 ; i < allBreakPoints.size ( ) ; i ++ )
           {
-            // System.out.println("Der Vergleiche:
-            // "+allBreakPoints.get(i).intValue()+ " > " +j + " = "+
-            // (allBreakPoints.get(i).intValue() > j));
             if ( allBreakPoints.get ( i ).intValue ( ) > j )
             {
+            	//i is after the actual position, check, if i-1 is already used
               if ( ! useBreakPoints.contains ( allBreakPoints.get ( i - 1 ) ) )
               {
-                // TODO Testausgabe
-                // System.out.println("Es wird folgende Stelle verwendet:
-                // "+allBreakPoints.get(i-1));
+                //so use it
                 useBreakPoints.add ( allBreakPoints.get ( i - 1 ) ) ;
-                // Wir wollen da weiter machen, wo wir umbrechen
+                //go back to the breakpoint
                 it.setIndex ( allBreakPoints.get ( i - 1 ) ) ;
                 j = allBreakPoints.get ( i - 1 ) ;
               }
+              // i is allready in use, so ther will be a breakpoint
               else
               {
-                // TODO Testausgabe
-                // System.out.println("Dieser Umbruchpunkt wird leider schon
-                // verwendet... jetzt müssen wir auch zwangsweise
-                // umbrehcen!!!");
                 useBreakPoints.add ( j - 1 ) ;
                 j -- ;
                 it.setIndex ( ( j - 1 ) ) ;
@@ -390,55 +355,17 @@ public class PrettyStringRenderer extends AbstractRenderer
         actualWidth = 0 ;
       }
     }
-    // for (int i = 0; i<results.size(); i++)
-    // {
-    // System.out.println("Breite: "+results.get(i).size.width + ", bis her sind
-    // wie bei "+actualWidth);
-    // actualWidth = actualWidth + results.get(i).breakOffsets.get(0);
-    // if (actualWidth >maxWidth)
-    // {
-    // resultsForPrinting.add(results.get(i));
-    // actualWidth = 0;
-    // }
-    //    	
-    // }
-    // for (CheckerResult r : this.results) {
-    // if (smallestResult == null || smallestResult.size.width > r.size.width) {
-    // smallestResult = r;
-    // }
-    //
-    // if (r.size.width < maxWidth) {
-    // if (biggestResult == null || biggestResult.size.width < r.size.width) {
-    // biggestResult = r;
-    // }
-    // }
-    // }
-    // if (biggestResult != null) {
-    // this.result = biggestResult;
-    // }
-    // else {
-    // this.result = smallestResult;
-    // }
+
     this.result = new CheckerResult ( ) ;
     this.result.rows = 0 ;
     this.result.sizeOfResult.height = 0 ;
-    // this.result.size.width = results.get(0).size.width;
     this.result.sizeOfResult.width = actualMaxNeededWidth ;
-    // this.result.size.width = maxWidth;
-    // for (CheckerResult r : this.resultsForPrinting) {
-    // TODO Testausgabe
-    // System.out.print("Es werden die Umbrüche verwendet: ");
+
     for ( Integer i : useBreakPoints )
-    // if (r.breakOffsets.size()>0)
     {
-      // System.out.println(r.breakOffsets.size());
-      // System.out.println(this.result.breakOffsets.size());
-      // System.out.print(i+", " );
       this.result.breakOffsets.add ( i ) ;
-      // this.result.size.height=result.size.height+r.size.height;
-      // this.result.rows = this.result.rows+r.rows;
     }
-    // this.result.size.height=this.result.size.height/2;
+    
     this.result.sizeOfResult.height = AbstractRenderer.getAbsoluteHeight() * ( result.breakOffsets.size ( ) + 2 ) ;
     this.result.rows = result.breakOffsets.size ( ) + 1 ;
     return ( this.result.sizeOfResult ) ;
@@ -456,9 +383,6 @@ public class PrettyStringRenderer extends AbstractRenderer
     {
       this.results.add ( checkLinewrap ( annotation ) ) ;
     }
-    // TODO Nur ein Test
-    // resultsWillBeUsed.clear();
-    // resultsWillBeUsed.addAll(results);
   }
 
 
@@ -473,26 +397,17 @@ public class PrettyStringRenderer extends AbstractRenderer
   {
     CheckerResult result = new CheckerResult ( ) ;
     result.rows = 1 ;
-    // int[] breakOffsets = null;
-    // Wir wollen ja alle haben...
-    // if (annotation != null) {
-    // breakOffsets = annotation.getBreakOffsets();
-    // }
-    // else {
-    // breakOffsets = new int[0];
-    // }
-    // result.annotation = annotation;
+
     if ( annotation != null )
     {
-      for ( int i = 0 ; i < annotation.getBreakOffsets ( ).length ; i ++ )
+      //for ( int i = 0 ; i < annotation.getBreakOffsets ( ).length ; i ++ )
+      	for (int anno : annotation.getBreakOffsets() )
       {
-        result.breakOffsets.add ( annotation.getBreakOffsets ( ) [ i ] ) ;
+        //result.breakOffsets.add ( annotation.getBreakOffsets ( ) [ i ] ) ;
+      		result.breakOffsets.add(anno);
       }
     }
-    //result.size.height = AbstractRenderer.fontHeight ;
-    //TODO geht so nicht, muss man sich etwas anderes ausdenken...
-    //result.size.height = AbstractRenderer.fontDescent + AbstractRenderer.fontAscent + AbstractRenderer.fontLeading ;
-    //result.sizeOfResult.height = AbstractRenderer.fontHeight;
+
     result.sizeOfResult.height = AbstractRenderer.getAbsoluteHeight();
     
     //System.out.println("Größe: "+AbstractRenderer.fontHeight + ", Leading"+AbstractRenderer.fontLeading);
@@ -636,6 +551,18 @@ public class PrettyStringRenderer extends AbstractRenderer
   }
   
   
+  /**
+   * Dose the same as the render mathode, but corrects the y value to render the prettystring 
+   * to the the baseline
+   *
+   * @param x
+   * @param y
+   * @param width
+   * @param height
+   * @param gc
+   * @param bound
+   * @param toListenForM
+   */
   public void renderBase ( int x , int y ,int width , int height,  Graphics gc , ShowBonds bound , ToListenForMouseContainer toListenForM )
   {
     render (x, y-(height / 2) - fontAscent / 2, width, height, gc, bound, toListenForM); 
@@ -659,15 +586,9 @@ public class PrettyStringRenderer extends AbstractRenderer
    */
   public void render ( int x , int y ,int width , int height,  Graphics gc , ShowBonds bound , ToListenForMouseContainer toListenForM )
   {
-  	//check if the mouse is over the expression an over wich symbol (-1) the mosue is not their
-  	int pos = getSymbolUnderMouse();
-  	
-    toListenForMouse = toListenForM ;
+  	toListenForMouse = toListenForM ;
     // get The MousePosition
     Point mousePosition = toListenForMouse.getHereIam ( ) ;
-    
-    //TODO Testausgae
-    //System.out.println("Mouseposition: "+mousePosition[0] + ", "+mousePosition[1]);
     
     boolean mouseOver = true ;
     
@@ -694,22 +615,14 @@ public class PrettyStringRenderer extends AbstractRenderer
     }
     else 
     {
-    	//TODO patchendieses Fehlerfalls
+    	//The expression has no breakpoint!
     	result = new CheckerResult ();
     }
     int [ ] breakOffsets = new int [ arraySize ] ;
-    
-    // TODO Testausgabe
-    // System.out.println("----------------------------------------------"+result.breakOffsets.size());
-    // System.out.print("Umbruchstellen: ");
-    
+
     for ( int i = 0 ; i < result.breakOffsets.size ( ) ; i ++ )
     {
       breakOffsets [ i ] = result.breakOffsets.get ( i ).intValue ( ) ;
-      
-      // TODO Testausgabe
-      // System.out.print(+breakOffsets[i]+", ");
-      
     }
     
     // System.out.println();
@@ -724,10 +637,6 @@ public class PrettyStringRenderer extends AbstractRenderer
     fm = AbstractRenderer.expFontMetrics ;
     // if the cahr is not in the first line the startvalue must be different
     int lineCount = 0 ;
-    
-    // TODO das mit der Höhe der Ausrücke funktioniert noch nicht richtig...
-    // System.out.println("Zeile: "+lineCount);
-    // System.out.println("breakOffsets: "+breakOffsets.length);
     
     int posY_ = y + height / 2 ;
     //int posY_ = y + AbstractRenderer.getAbsoluteHeight()/2;
@@ -814,15 +723,6 @@ public class PrettyStringRenderer extends AbstractRenderer
         break ;
       }
     }
-    
-    // System.out.println("die Maus: "+mousePosition[0]);
-    // System.out.println("Position: "+charIndex);
-    // TODO Testausgabe
-    // for ( int i = 0; i < annotationsList.size(); i++)
-    // {
-    // System.out.println(annotationsList.get(i).getStartOffset());
-    // System.out.println(annotationsList.get(i).getEndOffset());
-    // }
     
     // get the annotations
     ArrayList < Bonds > annotationsList = new ArrayList < Bonds > ( ) ;
@@ -979,65 +879,6 @@ public class PrettyStringRenderer extends AbstractRenderer
       posX += fm.stringWidth ( "" + c ) ;
       // go on to the next character
     }
-    // Rendering without the MousePositioListene dose not work:
-    /*
-     * // get the starting offsets x is just the left border // y will be the
-     * center of the space available minus the // propper amount of rows int i =
-     * 0; int posX = x; int posY = y + height / 2; posY +=
-     * AbstractRenderer.fontAscent / 2; // start and end position for the
-     * underlining int underlineStart = -1; int underlineEnd = -1; if
-     * (this.underlineAnnotation != null) { underlineStart =
-     * this.underlineAnnotation.getStartOffset(); underlineEnd =
-     * this.underlineAnnotation.getEndOffset(); } // now we can start to render
-     * the expression PrettyCharIterator it =
-     * this.prettyString.toCharacterIterator(); for (char c = it.first(); c !=
-     * CharacterIterator.DONE; c = it.next(), i++) { for (int j=0; j<breakOffsets_.length;
-     * j++) { if (breakOffsets_ [j] == i) { posY += AbstractRenderer.fontHeight;
-     * posX = x; } } FontMetrics fm = null; fm =
-     * AbstractRenderer.expFontMetrics; int charWidth = fm.stringWidth("" + c);
-     * //Debug.out.println("lasss mal die H�he der Schrift sehen:
-     * "+(fm.getHeight()-fm.getDescent()), "feivel"); //just corrects the posY
-     * to start at baseline instead of the middel int posYC = posY -
-     * (fm.getHeight()-fm.getDescent()); if (toListenForMouse.getMark() &&
-     * isInList(it.getIndex(),
-     * annotationsList)==richtigeListe&&richtigeListe>=0) {
-     * System.out.println("Bitte untersctreichen"); if (isFirstInListe (i,
-     * annotationsList)) { gc.setColor(Theme.currentTheme().getIdColor()); }
-     * else { gc.setColor(Theme.currentTheme().getBindingColor()); } //underline
-     * the actual char gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1); }
-     * else { //select the proppert font and color for the character switch
-     * (it.getStyle()) { case KEYWORD: gc.setFont(AbstractRenderer.keywordFont);
-     * gc.setColor(AbstractRenderer.keywordColor); //fm =
-     * AbstractRenderer.keywordFontMetrics; break; case IDENTIFIER:
-     * gc.setFont(AbstractRenderer.expFont);
-     * gc.setColor(AbstractRenderer.expColor); //fm =
-     * AbstractRenderer.expFontMetrics; break; case NONE:
-     * gc.setFont(AbstractRenderer.expFont);
-     * gc.setColor(AbstractRenderer.expColor); //fm =
-     * AbstractRenderer.expFontMetrics; break; case CONSTANT:
-     * gc.setFont(AbstractRenderer.constantFont);
-     * gc.setColor(AbstractRenderer.constantColor); //fm =
-     * AbstractRenderer.constantFontMetrics; break; case COMMENT: continue; case
-     * TYPE: gc.setFont(AbstractRenderer.typeFont);
-     * gc.setColor(AbstractRenderer.typeColor); //fm =
-     * AbstractRenderer.typeFontMetrics; break; } } if (i >= underlineStart && i <=
-     * underlineEnd) { // the current character is in the range, where
-     * underlining // should happen // save the current color, it will become
-     * resetted later Color color = gc.getColor();
-     * gc.setColor(AbstractRenderer.underlineColor); // draw the line below the
-     * character //int charWidth = fm.stringWidth("" + c); gc.drawLine(posX,
-     * posY + 1, posX + charWidth, posY + 1); // reset the color for the
-     * characters gc.setColor(color); } if (this.alternativeColor != null) {
-     * gc.setColor(this.alternativeColor); } // draw the character and move the
-     * position gc.drawString("" + c, posX, posY); posX += fm.stringWidth("" +
-     * c); // go on to the next character }
-     */
   }
 
-
-	private int getSymbolUnderMouse()
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }
