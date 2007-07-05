@@ -447,10 +447,11 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
 
       public void insertText ( int pIndex , String pText )
       {
-        String lastChar = "" ;
+        String nextChar = "" ;
+        String secondNextChar = "" ;
         try
         {
-          lastChar = TextEditorPanel.this.document.getText ( pIndex , 1 ) ;
+          nextChar = TextEditorPanel.this.document.getText ( pIndex , 1 ) ;
         }
         catch ( BadLocationException e )
         {
@@ -458,11 +459,29 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
         }
         try
         {
-          if ( lastChar.equals ( " " ) //$NON-NLS-1$
-              && pText.substring ( 0 , 1 ).equals ( " " ) ) //$NON-NLS-1$
+          secondNextChar = TextEditorPanel.this.document.getText ( pIndex + 1 ,
+              1 ) ;
+        }
+        catch ( BadLocationException e )
+        {
+          // Do nothing
+        }
+        try
+        {
+          if ( ( nextChar.equals ( " " ) )
+              && ( pText.substring ( 0 , 1 ).equals ( " " ) ) )
           {
-            TextEditorPanel.this.document.insertString ( pIndex + 1 , pText
-                .substring ( 1 ) , null ) ;
+            if ( ( secondNextChar.equals ( " " ) )
+                && ( pText.substring ( pText.length ( ) - 1 ).equals ( " " ) ) )
+            {
+              TextEditorPanel.this.document.insertString ( pIndex + 1 , pText
+                  .substring ( 1 , pText.length ( ) - 1 ) , null ) ;
+            }
+            else
+            {
+              TextEditorPanel.this.document.insertString ( pIndex + 1 , pText
+                  .substring ( 1 ) , null ) ;
+            }
           }
           else
           {
@@ -595,8 +614,8 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
   {
     try
     {
-      TextEditorPanel.this.outline.load (
-          TextEditorPanel.this.document.getExpression ( ) , pExecute ) ;
+      TextEditorPanel.this.outline.load ( TextEditorPanel.this.document
+          .getExpression ( ) , pExecute ) ;
     }
     catch ( Exception e )
     {

@@ -442,10 +442,11 @@ public class SubTypingEnterTypes extends AbstractProofView
 
       public void insertText ( int pIndex , String pText )
       {
-        String lastChar = "" ;
+        String nextChar = "" ;
+        String secondNextChar = "" ;
         try
         {
-          lastChar = SubTypingEnterTypes.this.document1.getText ( pIndex , 1 ) ;
+          nextChar = SubTypingEnterTypes.this.document1.getText ( pIndex , 1 ) ;
         }
         catch ( BadLocationException e )
         {
@@ -453,11 +454,29 @@ public class SubTypingEnterTypes extends AbstractProofView
         }
         try
         {
-          if ( lastChar.equals ( " " ) //$NON-NLS-1$
-              && pText.substring ( 0 , 1 ).equals ( " " ) ) //$NON-NLS-1$
+          secondNextChar = SubTypingEnterTypes.this.document1.getText (
+              pIndex + 1 , 1 ) ;
+        }
+        catch ( BadLocationException e )
+        {
+          // Do nothing
+        }
+        try
+        {
+          if ( ( nextChar.equals ( " " ) )
+              && ( pText.substring ( 0 , 1 ).equals ( " " ) ) )
           {
-            SubTypingEnterTypes.this.document1.insertString ( pIndex + 1 ,
-                pText.substring ( 1 ) , null ) ;
+            if ( ( secondNextChar.equals ( " " ) )
+                && ( pText.substring ( pText.length ( ) - 1 ).equals ( " " ) ) )
+            {
+              SubTypingEnterTypes.this.document1.insertString ( pIndex + 1 ,
+                  pText.substring ( 1 , pText.length ( ) - 1 ) , null ) ;
+            }
+            else
+            {
+              SubTypingEnterTypes.this.document1.insertString ( pIndex + 1 ,
+                  pText.substring ( 1 ) , null ) ;
+            }
           }
           else
           {
@@ -591,10 +610,11 @@ public class SubTypingEnterTypes extends AbstractProofView
 
       public void insertText ( int pIndex , String pText )
       {
-        String lastChar = "" ;
+        String nextChar = "" ;
+        String secondNextChar = "" ;
         try
         {
-          lastChar = SubTypingEnterTypes.this.document2.getText ( pIndex , 1 ) ;
+          nextChar = SubTypingEnterTypes.this.document2.getText ( pIndex , 1 ) ;
         }
         catch ( BadLocationException e )
         {
@@ -602,11 +622,29 @@ public class SubTypingEnterTypes extends AbstractProofView
         }
         try
         {
-          if ( lastChar.equals ( " " ) //$NON-NLS-1$
-              && pText.substring ( 0 , 1 ).equals ( " " ) ) //$NON-NLS-1$
+          secondNextChar = SubTypingEnterTypes.this.document2.getText (
+              pIndex + 1 , 1 ) ;
+        }
+        catch ( BadLocationException e )
+        {
+          // Do nothing
+        }
+        try
+        {
+          if ( ( nextChar.equals ( " " ) )
+              && ( pText.substring ( 0 , 1 ).equals ( " " ) ) )
           {
-            SubTypingEnterTypes.this.document2.insertString ( pIndex + 1 ,
-                pText.substring ( 1 ) , null ) ;
+            if ( ( secondNextChar.equals ( " " ) )
+                && ( pText.substring ( pText.length ( ) - 1 ).equals ( " " ) ) )
+            {
+              SubTypingEnterTypes.this.document2.insertString ( pIndex + 1 ,
+                  pText.substring ( 1 , pText.length ( ) - 1 ) , null ) ;
+            }
+            else
+            {
+              SubTypingEnterTypes.this.document2.insertString ( pIndex + 1 ,
+                  pText.substring ( 1 ) , null ) ;
+            }
           }
           else
           {
