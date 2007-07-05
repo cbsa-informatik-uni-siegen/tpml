@@ -39,7 +39,7 @@ public class SideBar extends JComponent
   private ImageIcon errorIcon = null ;
 
 
-  private ImageIcon errorIcon2 = null ;
+  private ImageIcon warningIcon = null ;
 
 
   private int [ ] verticalPositions ;
@@ -72,19 +72,19 @@ public class SideBar extends JComponent
   private int currentRight ;
 
 
-  public SideBar ( JScrollPane scrollPane , StyledLanguageDocument document ,
-      JTextComponent textComponent )
+  public SideBar ( JScrollPane pScrollPane , StyledLanguageDocument pDocument ,
+      JTextComponent pTextComponent )
   {
     super ( ) ;
     this.currentLeft = - 1 ;
     this.currentRight = - 1 ;
-    this.scrollPane = scrollPane ;
-    this.document = document ;
-    this.textComponent = textComponent ;
+    this.scrollPane = pScrollPane ;
+    this.document = pDocument ;
+    this.textComponent = pTextComponent ;
     this.errorIcon = new ImageIcon ( getClass ( ).getResource (
         "/de/unisiegen/tpml/ui/icons/error.gif" ) ) ;
-    this.errorIcon2 = new ImageIcon ( getClass ( ).getResource (
-        "/de/unisiegen/tpml/ui/icons/error_yellow.gif" ) ) ;
+    this.warningIcon = new ImageIcon ( getClass ( ).getResource (
+        "/de/unisiegen/tpml/ui/icons/warning.gif" ) ) ;
     int imageWidth = this.errorIcon.getIconWidth ( ) ;
     this.proppertyChanged = false ;
     setMinimumSize ( new Dimension ( imageWidth , imageWidth ) ) ;
@@ -92,7 +92,8 @@ public class SideBar extends JComponent
     this.hScrollBar = this.scrollPane.getHorizontalScrollBar ( ) ;
     this.vScrollBar.addAdjustmentListener ( new AdjustmentListener ( )
     {
-      public void adjustmentValueChanged ( AdjustmentEvent event )
+      public void adjustmentValueChanged ( @ SuppressWarnings ( "unused" )
+      AdjustmentEvent event )
       {
         repaint ( ) ;
       }
@@ -100,7 +101,9 @@ public class SideBar extends JComponent
     this.document.addPropertyChangeListener ( "exceptions" ,
         new PropertyChangeListener ( )
         {
-          public void propertyChange ( PropertyChangeEvent event )
+          @ SuppressWarnings ( "synthetic-access" )
+          public void propertyChange ( @ SuppressWarnings ( "unused" )
+          PropertyChangeEvent event )
           {
             SideBar.this.proppertyChanged = true ;
             repaint ( ) ;
@@ -108,6 +111,7 @@ public class SideBar extends JComponent
         } ) ;
     this.addMouseMotionListener ( new MouseMotionAdapter ( )
     {
+      @ SuppressWarnings ( "synthetic-access" )
       @ Override
       public void mouseMoved ( MouseEvent event )
       {
@@ -181,10 +185,7 @@ public class SideBar extends JComponent
     }
     gc.setColor ( getBackground ( ) ) ;
     gc.fillRect ( 0 , 0 , getWidth ( ) , getHeight ( ) ) ;
-    if ( this.verticalPositions == null )
-    {
-      return ;
-    }
+    if ( this.verticalPositions == null ) { return ; }
     for ( int i = 0 ; i < this.verticalPositions.length ; i ++ )
     {
       if ( this.verticalPositions [ i ] == - 1 )
@@ -200,7 +201,7 @@ public class SideBar extends JComponent
       }
       if ( this.exceptions [ i ] instanceof LanguageParserWarningException )
       {
-        gc.drawImage ( this.errorIcon2.getImage ( ) , 0 , y0 , this ) ;
+        gc.drawImage ( this.warningIcon.getImage ( ) , 0 , y0 , this ) ;
       }
       else
       {
@@ -223,10 +224,7 @@ public class SideBar extends JComponent
         this.verticalPositions [ i ] = - 1 ;
         Rectangle rect = this.textComponent.modelToView ( this.exceptions [ i ]
             .getLeft ( ) ) ;
-        if ( rect == null )
-        {
-          return ;
-        }
+        if ( rect == null ) { return ; }
         this.verticalPositions [ i ] = rect.y + rect.height / 2 ;
       }
       catch ( Exception e )
@@ -240,10 +238,7 @@ public class SideBar extends JComponent
 
   private void mouseMoved ( MouseEvent event )
   {
-    if ( this.verticalPositions == null )
-    {
-      return ;
-    }
+    if ( this.verticalPositions == null ) { return ; }
     int y = event.getY ( ) + this.vScrollBar.getValue ( ) ;
     int hh = this.errorIcon.getIconHeight ( ) / 2 ;
     for ( int i = 0 ; i < this.verticalPositions.length ; i ++ )
@@ -267,10 +262,7 @@ public class SideBar extends JComponent
 
   public void mouseSelected ( MouseEvent event )
   {
-    if ( this.currentLeft == - 1 || this.currentRight == - 1 )
-    {
-      return ;
-    }
+    if ( this.currentLeft == - 1 || this.currentRight == - 1 ) { return ; }
     int y = event.getY ( ) + this.vScrollBar.getValue ( ) ;
     int hh = this.errorIcon.getIconHeight ( ) / 2 ;
     for ( int i = 0 ; i < this.verticalPositions.length ; i ++ )
