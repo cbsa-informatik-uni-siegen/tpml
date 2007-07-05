@@ -79,6 +79,23 @@ lambda_no_type_error			::= LAMBDA:l epsilon
 									{: Error.expect("Lambda", "e", lleft, dright, "e" ); :}
 								;
 
+lambda_no_type_error			::= LAMBDA:l epsilon
+									{: Error.expect("Lambda", " id.e", lleft, lright, "id.e" ); :}
+								|	LAMBDA:l IDENTIFIER:i epsilon
+									{: Error.expect("Lambda", ".e", lleft, iright, ".e" ); :}
+								|	LAMBDA:l IDENTIFIER DOT:d epsilon
+									{: Error.expect("Lambda", "e", lleft, dright, "e" ); :}
+								// Missing identifier
+								|	LAMBDA:l DOT epsilon
+									{: Error.expect("Lambda", " id", lleft, lright, "id" ); :}
+								|	LAMBDA:l DOT seq_expr
+									{: Error.expect("Lambda", " id", lleft, lright, "id" ); :}
+								// Missing dot
+								|	LAMBDA:l IDENTIFIER:id seq_expr
+									{: Error.expect("Lambda", ".", lleft, idright, "." ); :}
+								;
+
+
 simple_expr						::=	identifier:id
 									{: RESULT = id; :}
 								|	LPAREN seq_expr:e RPAREN

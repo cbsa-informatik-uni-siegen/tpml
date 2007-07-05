@@ -90,7 +90,7 @@
 			symbols="L0Terminals"
 			interface="yes"
 			debug="no"
-			expect="10"
+			expect="10000"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -110,7 +110,7 @@
 			symbols="L1Terminals"
 			interface="yes"
 			debug="no"
-			expect="230"
+			expect="10000"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -128,7 +128,7 @@
 			symbols="L1TypeTerminals"
 			interface="yes"
 			debug="no"
-			expect="1"
+			expect="10000"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -148,7 +148,7 @@
 			symbols="L2Terminals"
 			interface="yes"
 			debug="no"
-			expect="321"
+			expect="10000"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -166,7 +166,7 @@
 			symbols="L2TypeTerminals"
 			interface="yes"
 			debug="no"
-			expect="1"
+			expect="10000"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -186,7 +186,7 @@
 			symbols="L2OTerminals"
 			interface="yes"
 			debug="no"
-			expect="471"
+			expect="10000"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -204,7 +204,7 @@
 			symbols="L2OTypeTerminals"
 			interface="yes"
 			debug="no"
-			expect="4"
+			expect="10000"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -224,7 +224,7 @@
 			symbols="L3Terminals"
 			interface="yes"
 			debug="no"
-			expect="854"
+			expect="10000"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -242,7 +242,7 @@
 			symbols="L3TypeTerminals"
 			interface="yes"
 			debug="no"
-			expect="3"
+			expect="10000"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -262,7 +262,7 @@
 			symbols="L4Terminals"
 			interface="yes"
 			debug="no"
-			expect="1118"
+			expect="10000"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -280,7 +280,7 @@
 			symbols="L4TypeTerminals"
 			interface="yes"
 			debug="no"
-			expect="5"
+			expect="10000"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
