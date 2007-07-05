@@ -409,16 +409,29 @@ public class TypeCheckerNodeComponent extends JComponent implements
     }
     //Dimension typeSize = this.typeLabel.getPreferredSize ( ) ;
     Dimension typeSize = typeComponent.getNeededSize (maxWidth);
+    
+    //TODO: Fallunterscheidung: Wenn es noch hinter die Expression passt, dann da hinrendern, sonst in die nächste Zeile...
+    boolean broke=false;
+    if ( (this.dimension.width + typeSize.width) > maxWidth) //passt nicht mehr
+    {
+    	this.dimension.width = Math.max(dimension.width, expSize.width);
+    	this.dimension.height += typeSize.height;
+    	this.dimension.height += AbstractRenderer.getAbsoluteHeight();
+    	broke = true;
+    }
+    else
+    {
+    	this.dimension.width += typeSize.width ;
+      this.dimension.height = Math.max ( typeSize.height , this.dimension.height ) ;
+    }
 
-    this.dimension.width += typeSize.width ;
-    this.dimension.height = Math.max ( typeSize.height , this.dimension.height ) ;
+    
     // now place the components
     int posX = 0 ;
-    this.indexLabel.setBounds ( posX , 0 , labelSize.width ,
-        this.dimension.height ) ;
+    this.indexLabel.setBounds ( posX , 0 , labelSize.width , this.dimension.height ) ;
     posX += labelSize.width + this.spacing ;
-    this.compoundExpression.setBounds ( posX , 0 , expSize.width ,
-        this.dimension.height ) ;
+    this.compoundExpression.setBounds ( posX , 0 , expSize.width , this.dimension.height ) ;
+    int posXfront = posX;
     posX += expSize.width ;
     //this.typeLabel.setBounds ( posX , 0 , typeSize.width , this.dimension.height ) ;
     //
@@ -427,8 +440,15 @@ public class TypeCheckerNodeComponent extends JComponent implements
     //ShowBonds sb = new ShowBonds();
     //sb.setType (this.proofNode.getType() );
     //ToListenForMouseContainer tlfmc = new ToListenForMouseContainer();
-   
-    this.typeComponent.setBounds (posX, 0, typeSize.width, typeSize.height);
+   if (broke)
+   {
+  	 this.typeComponent.setBounds (posXfront, 0+expSize.height + AbstractRenderer.getAbsoluteHeight(), typeSize.width, typeSize.height);
+   }
+   else
+   {
+  	 this.typeComponent.setBounds (posX, 0, typeSize.width, typeSize.height); 
+   }
+    
     //typeRenderer.render (typePosition, 0,typeRenderer.getNeededSize (maxWidth).width ,typeRenderer.getNeededSize (maxWidth).height, this.getGraphics (), sb, tlfmc);
    
     posX += typeSize.width ;

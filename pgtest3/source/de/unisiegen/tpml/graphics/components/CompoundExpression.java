@@ -585,8 +585,8 @@ public class CompoundExpression < S , E > extends JComponent
     else if ( this.environment instanceof TypeEnvironment )
     {
       // draw the environment first
-      this.environmentRenderer.renderer ( posX , posY ,
-          this.environmentSize.width , getHeight ( ) , gc ) ;
+      this.environmentRenderer.renderer ( posX , posY , this.environmentSize.width , getHeight ( ) , gc ) ;
+    	//this.environmentRenderer.renderer ( posX , posY , this.environmentSize.width , environmentSize.height , gc ) ;
       posX += this.environmentSize.width ;
       // draw the arrow character in the vertical center
       int centerV = getHeight ( ) / 2 ;

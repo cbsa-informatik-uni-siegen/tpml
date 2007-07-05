@@ -108,7 +108,12 @@ public class SubstitutionRenderer extends AbstractRenderer {
 				count += tmp.length();
 				PrettyString ps = dts.toPrettyString();
 				this.collapsedString += PrettyStringToHTML.toHTMLString(ps);
-				this.collapsedString += betweenTypSubstitutions;
+				//every but the last gets a ,
+				if (i < defaultTypeSubstitutionList.size() - 1)
+				{
+					this.collapsedString += betweenTypSubstitutions;	
+				}
+				
 				count += betweenTypSubstitutions.length();
 				if (count >= 100)
 				{

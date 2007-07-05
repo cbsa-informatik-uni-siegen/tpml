@@ -190,7 +190,9 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 		posY += AbstractRenderer.fontAscent  / 2;
 		//if the hight is not bigger then the fonhight normal [ ] are used
 		//or else the bracket will bew renderd manually
-		if (height <= AbstractRenderer.getAbsoluteHeight())
+		//TODO test: Die Environment wird nie umgebrochen, wozu dann der Quatsch???
+		//if (height <= AbstractRenderer.getAbsoluteHeight())
+		if (true)
 		{
 			gc.setFont(expFont);
 			gc.drawString("[", x, posY);
