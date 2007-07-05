@@ -14,10 +14,13 @@ import java.awt.event.WindowAdapter ;
 import java.awt.event.WindowEvent ;
 import java.beans.PropertyChangeEvent ;
 import java.beans.PropertyChangeListener ;
+import java.io.BufferedReader ;
 import java.io.File ;
 import java.io.FileInputStream ;
 import java.io.FileNotFoundException ;
 import java.io.IOException ;
+import java.io.InputStreamReader ;
+import java.io.UnsupportedEncodingException ;
 import java.util.LinkedList ;
 import java.util.ResourceBundle ;
 import javax.swing.JFileChooser ;
@@ -675,59 +678,48 @@ public class MainWindow extends javax.swing.JFrame
       }
     } ) ;
     runMenu.add ( typecheckerItem ) ;
-    
-// changes benjamin
-    
-      minimalTyping.setMnemonic ( java.util.ResourceBundle.getBundle (
-          "de/unisiegen/tpml/ui/ui" ).getString ( "MinimalTypingMnemonic" ).charAt (
-          0 ) ) ;
-      minimalTyping.setText ( "Minimal Typing") ;
-      minimalTyping.addActionListener ( new java.awt.event.ActionListener ( )
+    // changes benjamin
+    minimalTyping.setMnemonic ( java.util.ResourceBundle.getBundle (
+        "de/unisiegen/tpml/ui/ui" ).getString ( "MinimalTypingMnemonic" )
+        .charAt ( 0 ) ) ;
+    minimalTyping.setText ( "Minimal Typing" ) ;
+    minimalTyping.addActionListener ( new java.awt.event.ActionListener ( )
+    {
+      public void actionPerformed ( java.awt.event.ActionEvent evt )
       {
-        public void actionPerformed ( java.awt.event.ActionEvent evt )
-        {
-          minimalTypingItemActionPerformed ( evt ) ;
-        }
-      } ) ;
-      runMenu.add ( minimalTyping ) ;
-      
-      // changes end
-    
-    
-    
-    
-    
-//  CAHNGE MICHAEL
-		typeInference.setAccelerator ( javax.swing.KeyStroke.getKeyStroke (java.awt.event.KeyEvent.VK_F12, 2));
-    //TODO Wieder in die Resources einbaeun
-		
-    typeInference.setText("Type Inference");
-		
-		typeInference.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				typeInferenceActionPerformed(evt);
-			}
-		});
-		//TODO Erst hochladen, wenn es geht...
-		runMenu.add ( typeInference );
-		
-		subtyping.setAccelerator ( javax.swing.KeyStroke.getKeyStroke (java.awt.event.KeyEvent.VK_F12, 3));
-    //TODO Wieder in die Resources einbaeun
-		
-    subtyping.setText("Subtyping");
-		
-		subtyping.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				subtypingActionPerformed(evt);
-			}
-		});
-		//TODO Erst hochladen, wenn es geht...
-		runMenu.add ( subtyping );
-		
-		
-		
-		//CHANGME NMICHAEL EMND
-		
+        minimalTypingItemActionPerformed ( evt ) ;
+      }
+    } ) ;
+    runMenu.add ( minimalTyping ) ;
+    // changes end
+    // CAHNGE MICHAEL
+    typeInference.setAccelerator ( javax.swing.KeyStroke.getKeyStroke (
+        java.awt.event.KeyEvent.VK_F12 , 2 ) ) ;
+    // TODO Wieder in die Resources einbaeun
+    typeInference.setText ( "Type Inference" ) ;
+    typeInference.addActionListener ( new java.awt.event.ActionListener ( )
+    {
+      public void actionPerformed ( java.awt.event.ActionEvent evt )
+      {
+        typeInferenceActionPerformed ( evt ) ;
+      }
+    } ) ;
+    // TODO Erst hochladen, wenn es geht...
+    runMenu.add ( typeInference ) ;
+    subtyping.setAccelerator ( javax.swing.KeyStroke.getKeyStroke (
+        java.awt.event.KeyEvent.VK_F12 , 3 ) ) ;
+    // TODO Wieder in die Resources einbaeun
+    subtyping.setText ( "Subtyping" ) ;
+    subtyping.addActionListener ( new java.awt.event.ActionListener ( )
+    {
+      public void actionPerformed ( java.awt.event.ActionEvent evt )
+      {
+        subtypingActionPerformed ( evt ) ;
+      }
+    } ) ;
+    // TODO Erst hochladen, wenn es geht...
+    runMenu.add ( subtyping ) ;
+    // CHANGME NMICHAEL EMND
     runMenu.add ( runMenuSeparator1 ) ;
     modeSettingsGroup.add ( beginnerRadioButton ) ;
     beginnerRadioButton.setMnemonic ( java.util.ResourceBundle.getBundle (
@@ -936,26 +928,27 @@ public class MainWindow extends javax.swing.JFrame
     // 
     ( getActiveEditor ( ) ).handleTypeChecker ( ) ;
   }// GEN-LAST:event_typecheckerItemActionPerformed
-  
+
+
   private void typeInferenceActionPerformed ( java.awt.event.ActionEvent evt )
   {// GEN-FIRST:event_typecheckerItemActionPerformed
     // 
-    ( getActiveEditor ( ) ).handleTypInference() ;
+    ( getActiveEditor ( ) ).handleTypInference ( ) ;
   }// GEN-LAST:event_typecheckerItemActionPerformed
-  
-  
+
+
   private void subtypingActionPerformed ( java.awt.event.ActionEvent evt )
   {// GEN-FIRST:event_typecheckerItemActionPerformed
     // 
-    ( getActiveEditor ( ) ).handleSubtyping() ;
+    ( getActiveEditor ( ) ).handleSubtyping ( ) ;
   }// GEN-LAST:event_typecheckerItemActionPerformed
-  
+
+
   private void minimalTypingItemActionPerformed ( java.awt.event.ActionEvent evt )
   {// GEN-FIRST:event_minimalTypingItemActionPerformed
     // 
     ( getActiveEditor ( ) ).handleMinimalTyping ( ) ;
   }// GEN-LAST:event_minimalTypingItemActionPerformed
-  
 
 
   private void bigstepItemActionPerformed ( java.awt.event.ActionEvent evt )
@@ -1115,12 +1108,15 @@ public class MainWindow extends javax.swing.JFrame
 
 
   private javax.swing.JMenuItem typecheckerItem ;
-  
-  private javax.swing.JMenuItem typeInference;
-  
-  private javax.swing.JMenuItem subtyping;
-  
-  private javax.swing.JMenuItem minimalTyping;
+
+
+  private javax.swing.JMenuItem typeInference ;
+
+
+  private javax.swing.JMenuItem subtyping ;
+
+
+  private javax.swing.JMenuItem minimalTyping ;
 
 
   private javax.swing.JButton undoButton ;
@@ -1168,14 +1164,23 @@ public class MainWindow extends javax.swing.JFrame
       {
         LanguageFactory langfactory = LanguageFactory.newInstance ( ) ;
         Language language = langfactory.getLanguageByFile ( file ) ;
+        String str = null ;
         StringBuilder buffer = new StringBuilder ( ) ;
-        FileInputStream in = new FileInputStream ( file ) ;
         int onechar ;
-        while ( ( onechar = in.read ( ) ) != - 1 )
+        try
         {
-          buffer.append ( ( char ) onechar ) ;
+          BufferedReader in = new BufferedReader ( new InputStreamReader (
+              new FileInputStream ( file ) , "UTF8" ) ) ;
+          while ( ( onechar = in.read ( ) ) != - 1 )
+          {
+            buffer.append ( ( char ) onechar ) ;
+          }
+          in.close ( ) ;
         }
-        in.close ( ) ;
+        catch ( UnsupportedEncodingException e )
+        {
+          System.err.println ( "UnsupportedEncodingException" ) ;
+        }
         editorPanel = new EditorPanel ( language , this ) ;
         tabbedPane.add ( editorPanel ) ;
         editorPanel.setAdvanced ( this.advancedRadioButton.isSelected ( ) ) ;
@@ -1225,8 +1230,8 @@ public class MainWindow extends javax.swing.JFrame
     bigstepItem.setEnabled ( state ) ;
     typecheckerItem.setEnabled ( state ) ;
     minimalTyping.setEnabled ( state ) ;
-    typeInference.setEnabled( state );
-    subtyping.setEnabled( state );
+    typeInference.setEnabled ( state ) ;
+    subtyping.setEnabled ( state ) ;
     saveAsItem.setEnabled ( state ) ;
     saveAsButton.setEnabled ( state ) ;
     saveAllItem.setEnabled ( state ) ;

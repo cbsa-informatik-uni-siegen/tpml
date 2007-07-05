@@ -11,9 +11,12 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -955,28 +958,43 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 		}
 	}
 
-	/**
-	 * Writes content of the source panel to a specified file.
-	 * 
-	 * @return true if the file could be written
-	 */
-	private boolean writeFile() {
-		try {
-			FileOutputStream out = new FileOutputStream(file);
-			out.write(code.getText().getBytes());
-			out.flush();
-			out.close();
-
-			// TODO: Christoph, what about this one?
-      code.clearHistory();
-                        
-			return true;
-		} catch (IOException e) {
-			logger.error("Could not write to file", e);
-			JOptionPane.showMessageDialog(this, java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotWriteToFile"),
-					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("WriteFile"), JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-	}
+  /**
+   * Writes content of the source panel to a specified file.
+   * 
+   * @return true if the file could be written
+   */
+  private boolean writeFile ( )
+  {
+    try
+    {
+      BufferedWriter out = new BufferedWriter ( new OutputStreamWriter (
+          new FileOutputStream ( file ) , "UTF8" ) ) ; //$NON-NLS-1$
+      out.write ( code.getText ( ) ) ;
+      out.close ( ) ;
+      // TODO: Christoph, what about this one?
+      code.clearHistory ( ) ;
+      return true ;
+    }
+    catch ( UnsupportedEncodingException e )
+    {
+      logger.error ( "Could not write to file" , e ) ;
+      JOptionPane.showMessageDialog ( this , java.util.ResourceBundle
+          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
+              "CouldNotWriteToFile" ) , java.util.ResourceBundle.getBundle (
+          "de/unisiegen/tpml/ui/ui" ).getString ( "WriteFile" ) ,
+          JOptionPane.ERROR_MESSAGE ) ;
+      return false ;
+    }
+    catch ( IOException e )
+    {
+      logger.error ( "Could not write to file" , e ) ;
+      JOptionPane.showMessageDialog ( this , java.util.ResourceBundle
+          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
+              "CouldNotWriteToFile" ) , java.util.ResourceBundle.getBundle (
+          "de/unisiegen/tpml/ui/ui" ).getString ( "WriteFile" ) ,
+          JOptionPane.ERROR_MESSAGE ) ;
+      return false ;
+    }
+  }
 
 }
