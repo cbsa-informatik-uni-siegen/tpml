@@ -8,23 +8,13 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.StringReader;
-import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.Store;
-import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModelTest;
-//import de.unisiegen.tpml.core.util.Debug;
 import de.unisiegen.tpml.core.util.Environment;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
@@ -126,9 +116,6 @@ public class CompoundExpression < S , E > extends JComponent
    */
   private ShowBonds bonds ;
 
-
-  // private ToListenForMouseContainer toListenForMouse = new
-  // ToListenForMouseContainer();
   /**
    * the list of points where the mouseovereffect will be react
    */
@@ -160,19 +147,7 @@ public class CompoundExpression < S , E > extends JComponent
       @ Override
       public void mouseExited ( MouseEvent e )
       {
-        // TODO hier sollte eigentlich das Ereignis sein, dass die Maus den
-        // Ausdruck verl�sst, und der dann neu gemalt wird, funktioniert aber
-        // nicht
-        // System.err.println("Ladidal");
-        // ToListenForMouseContainer.getInstanceOf().reset();
-        //if ( ! toListenForMouse.setExpression ( expression ) )
-        //{
-        //  Debug.out.print ( "Schei�e, es ist ein anderer Ausdruck: "
-        //      + expression.toPrettyString ( ).toString ( ) , "Feivel" ) ;
-        //}
-        
         toListenForMouse.reset();
-//          toListenForMouse.setRightList(-1);
         toListenForMouse.setMark ( false ) ;
         CompoundExpression.this.repaint ( ) ;
       }
@@ -246,12 +221,6 @@ public class CompoundExpression < S , E > extends JComponent
     
     //tell the PrettyStringRenderer where the mouse pointer is
     toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
-    
-    
-    //TODO das brauchen wir hier nicht...
-    //if the mouse is over the expression, let the showbound know it
-    //bonds.setExpression(this.expression);
-   
 
     //first, we do not want to mark anything, we are waiting for mouse pointer is over one bounded id
     toListenForMouse.setMark ( false ) ;
@@ -291,11 +260,8 @@ public class CompoundExpression < S , E > extends JComponent
       //we do not want to see anything marked
      toListenForMouse.setMark ( false ) ;
      toListenForMouse.reset();
- //    toListenForMouse.setRightList(-1);
-     toListenForMouse.reset();
      CompoundExpression.this.repaint ( ) ;
     }
-    
     
     if ( this.environmentRenderer != null
         && this.environmentRenderer.isCollapsed ( ) )
@@ -335,87 +301,45 @@ public class CompoundExpression < S , E > extends JComponent
    */
   public void setExpression ( Expression expression )
   {
-    // check if we have a new expression
-    if ( this.expression != expression )
-    {
-      // update to the new expression
-      this.expression = expression ;
-      
-      // CHANGE BENJAMIN
-      /*
-      
-      
-      
-      // TypeInferenceTest
-       
-      try {
-        // parse the program (using L4)
-        LanguageFactory factory = LanguageFactory.newInstance();
-        Language language = factory.getLanguageById("l4");
-        TypeInferenceProofModel model = language.newTypeInferenceProofModel(expression);
-        
-        
-        // evaluate the resulting small step expression
-        TypeInferenceProofModelTest window = new TypeInferenceProofModelTest(model);
-        //window.typechecker= language.newTypeCheckerProofModel(expression);
-        window.addWindowListener(new WindowAdapter() {
-          @Override
-          public void windowClosing(WindowEvent e) {
-           // System.exit(0);
-          }
-        });
-        window.setVisible(true);
-      }
-      catch (Exception e) {
-        e.printStackTrace();
-      }
-    
-      
-      
-      */
-     //because of the bounds are cached we need a new one. The expression
-      //might change by translating in coresyntax
-     bonds = new ShowBonds(); 
-     bonds.load ( this.expression ) ;
-      
-      // CHANGE BENJAMIN END
-      
-      // check what to do with the renderer
-      if ( this.expression == null )
-      {
-        this.expressionRenderer = null ;
-      }
-      else
-      {
-        if ( this.expressionRenderer == null )
-        {
-          
-          // bound = new ShowBonds();
-          // CHANGE MICHAEL
-          // with ervery new expression renderd by the PrettyStringRenderer the
-          // elements listen by mouse will be resetet
-          // toListenForMouse.reset();
-          // CHANGE MICHAEL
-          
-          this.expressionRenderer = new PrettyStringRenderer ( ) ;
-          this.expressionRenderer.setAlternativeColor ( this.alternativeColor ) ;
-        }
-        this.expressionRenderer.setPrettyString ( this.expression
-            .toPrettyString ( ) ) ;
-        // reset the underlineExpression
-        setUnderlineExpression ( this.underlineExpression ) ;
-      }
-      // be sure to schedule a repaint
-      repaint ( ) ;
-    }
-  }
+		// check if we have a new expression
+		if (this.expression != expression)
+		{
+			// update to the new expression
+			this.expression = expression;
+
+			// because of the bounds are cached we need a new one. The expression
+			// might change by translating in coresyntax
+			bonds = new ShowBonds();
+			bonds.load(this.expression);
+
+			// check what to do with the renderer
+			if (this.expression == null)
+			{
+				this.expressionRenderer = null;
+			}
+			else
+			{
+				if (this.expressionRenderer == null)
+				{
+
+					this.expressionRenderer = new PrettyStringRenderer();
+					this.expressionRenderer.setAlternativeColor(this.alternativeColor);
+				}
+				this.expressionRenderer.setPrettyString(this.expression.toPrettyString());
+				// reset the underlineExpression
+				setUnderlineExpression(this.underlineExpression);
+			}
+			// be sure to schedule a repaint
+			repaint();
+		}
+	}
 
 
   /**
-   * Sets the environment taht should be rendered.
-   * 
-   * @param environment
-   */
+	 * Sets the environment taht should be rendered.
+	 * 
+	 * @param environment
+	 */
   public void setEnvironment ( Environment < S , E > environment )
   {
     // check if we have a new environment
@@ -602,12 +526,17 @@ public class CompoundExpression < S , E > extends JComponent
       //this.expressionRenderer.render ( posX , posY , getWidth() ,AbstractRenderer.getAbsoluteHeight (), gc , bonds , toListenForMouse ) ;
     }
     
-    //TODO nur testen
+    //TODO DEbugging
     //gc.setColor (Color.YELLOW);
     //gc.drawRect(0, 0, getWidth () - 1, getHeight () - 1);
   }
 
 
+  /**
+   * returns the current expression.
+   *
+   * @return the expression
+   */
   public Expression getExpression ( )
   {
     return expression ;
