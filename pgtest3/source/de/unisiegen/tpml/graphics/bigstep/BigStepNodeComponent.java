@@ -1,48 +1,42 @@
 package de.unisiegen.tpml.graphics.bigstep ;
 
 
-import java.awt.Color ;
-import java.awt.Container ;
-import java.awt.Cursor ;
-import java.awt.Dimension ;
-import java.awt.FontMetrics ;
-import java.awt.Point ;
-import java.awt.event.ActionEvent ;
-import java.awt.event.ActionListener ;
-import java.text.MessageFormat ;
-import java.util.ArrayList ;
-import java.util.HashMap ;
-import java.util.prefs.Preferences ;
-import javax.swing.JComponent ;
-import javax.swing.JLabel ;
-import javax.swing.JMenu ;
-import javax.swing.JMenuItem ;
-import javax.swing.JOptionPane ;
-import javax.swing.JPopupMenu ;
-import javax.swing.SwingUtilities ;
-import de.unisiegen.tpml.core.ProofGuessException ;
-import de.unisiegen.tpml.core.ProofNode ;
-import de.unisiegen.tpml.core.ProofRule ;
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
-import de.unisiegen.tpml.core.bigstep.BigStepProofNode ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Location ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.core.languages.LanguageTranslator ;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofRule ;
-import de.unisiegen.tpml.graphics.Messages ;
-import de.unisiegen.tpml.graphics.components.CompoundExpression ;
-import de.unisiegen.tpml.graphics.components.MenuButton ;
-import de.unisiegen.tpml.graphics.components.MenuButtonListener ;
-import de.unisiegen.tpml.graphics.components.MenuGuessItem ;
-import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem ;
-import de.unisiegen.tpml.graphics.components.MenuRuleItem ;
-import de.unisiegen.tpml.graphics.components.MenuTranslateItem ;
-import de.unisiegen.tpml.graphics.components.RulesMenu ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener ;
-import de.unisiegen.tpml.graphics.renderer.AbstractRenderer ;
-import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent ;
-import de.unisiegen.tpml.graphics.tree.TreeNodeComponent ;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Point;
+import java.text.MessageFormat;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
+
+import de.unisiegen.tpml.core.ProofGuessException;
+import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Location;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageTranslator;
+import de.unisiegen.tpml.graphics.Messages;
+import de.unisiegen.tpml.graphics.components.CompoundExpression;
+import de.unisiegen.tpml.graphics.components.MenuButton;
+import de.unisiegen.tpml.graphics.components.MenuButtonListener;
+import de.unisiegen.tpml.graphics.components.MenuGuessItem;
+import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
+import de.unisiegen.tpml.graphics.components.MenuRuleItem;
+import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
+import de.unisiegen.tpml.graphics.components.RulesMenu;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
+import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
+import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
 
 /**
@@ -122,6 +116,11 @@ public class BigStepNodeComponent extends JComponent implements
    * Amount of pixels that will be left free between the elements of the node.
    */
   private int spacing ;
+  
+  /**
+   * Amount of pixels that will be left free between the elements of the node.
+   */
+  private int meshPix = 50;
 
 
   /**
@@ -232,22 +231,11 @@ public class BigStepNodeComponent extends JComponent implements
     ProofRule [ ] rules = this.proofModel.getRules ( ) ;
     Language lang = proofModel.getLanguage ( ) ;
     menu = new JPopupMenu ( ) ;
-    // TODO test der neuen klasse
+    
     menu = rm.getMenu ( rules , rules , lang , this , "bigstep" , false ) ;
-    // ProofRule[] rules = this.proofModel.getRules();
-    // if (rules.length > 0) {
-    // int group = rules[0].getGroup();
-    // for (ProofRule r : rules) {
-    // if (r.getGroup() != group) {
-    // menu.addSeparator();
-    // }
-    // menu.add(new MenuRuleItem(r));
-    // group = r.getGroup();
-    // }
-    // }
+
     menu.addSeparator ( ) ;
-    // menu.add (new MenuGuessItem ());
-    // menu.add (new MenuGuessTreeItem ());
+    
     menu.add ( this.menuTranslateItem = new MenuTranslateItem ( ) ) ;
     this.ruleButton.setMenu ( menu ) ;
     /*
@@ -522,167 +510,125 @@ public class BigStepNodeComponent extends JComponent implements
 
 
   /**
-   * Places all elements of the current node.<br>
-   * Just places one element after the other. 1st the index, 2nd the
-   * compoundExpression 3rd the double-sidded-down-directed arrow. When the node
-   * is proven (that is if there is already an evaluated result, it will be
-   * placed behind the arrow.<br>
-   * <br>
-   * If the the nodes is evaluated the ruleLabel is placed with a bit spacing
-   * below the expression. If the node is not evaluated the menuButton is placed
-   * at the same size.<br>
-   * <br>
-   * After the placing is done the {@link #dimension} contains the needed size
-   * of this node.
-   * 
-   * @param maxWidth The maximum width that is available for the current node.
-   */
-  private void placeElements ( int maxWidth )
-  {
-    // get the size for the index at the beginning: (x)
-    FontMetrics fm = AbstractRenderer.getTextFontMetrics ( ) ;
-    Dimension labelSize = new Dimension ( fm.stringWidth ( this.indexLabel
-        .getText ( ) ) , fm.getHeight ( ) ) ;
-    this.dimension.setSize ( labelSize.width , labelSize.height ) ;
-    // there will be a bit spacing between the index label and the expression
-    this.dimension.width += this.spacing ;
-    // the index shrinkens the max size for the expression
-    maxWidth -= labelSize.width ;
-    // get the needed size for the expression
-    // Dimension expSize = this.expression.getNeededSize(maxWidth);
-    Dimension expSize = this.compoundExpression.getNeededSize ( maxWidth
-        - this.dimension.width ) ;
-    this.dimension.width += expSize.width ;
-    this.dimension.height = Math.max ( expSize.height , this.dimension.height ) ;
-    Dimension arrowSize = this.downArrowLabel.getPreferredSize ( ) ;
-    this.dimension.width += arrowSize.width ;
-    this.dimension.height = Math
-        .max ( arrowSize.height , this.dimension.height ) ;
-    // the result should never be wrapped so we use
-    // the Integer.MAX_VALUE to prevent linewrapping
-    // wenn die von maxWidht jetzt nicht mehr übrig ist, dann muss umgebrochen
-    // werden...
-    boolean breakNeeded = false ;
-    // if the expression is braken the result will be meshed mesPix pixels
-    int meshPix = 50 ;
-    if ( maxWidth - this.dimension.width < 10 )
-    {
-      breakNeeded = true ;
-    }
-    Dimension resultSize = new Dimension ( 0 , 0 ) ;
-    if ( ! breakNeeded )
-    {
-      resultSize = this.resultCompoundExpression.getNeededSize ( maxWidth
-          - this.dimension.width ) ;
-      // if the result is higher than the hight of one line the result will be
-      // in the next line
-      if ( resultSize.height > fm.getHeight ( ) )
-      {
-        breakNeeded = true ;
-        // TODO Testausgabe
-        // System.out.println("hier");
-      }
-    }
-    if ( breakNeeded )
-    {
-      // TODO Testausgabe
-      // System.out.println("Er bircht um!");
-      // we have to calculate the new size
-      // -meshPix gives the pixels to mesh in the new line
-      // TODO Testausgabe
-      // System.out.println("Bisherige GEsamthöhe: "+this.dimension.height);
-      // System.out.println("Höhe des Ausdrucks: "+expSize.height);
-      resultSize = this.resultCompoundExpression.getNeededSize ( maxWidth
-          - meshPix ) ;
-      // TODO Testausgabe
-      // System.out.println("result hat die Höhe:"+resultSize.height);
-      // if the renderer breaks the expression will be higher
-      this.dimension.height = Math.max ( this.dimension.height ,
-          ( expSize.height + resultSize.height ) ) ;
-      // TODO Testausgabe
-      // System.out.println("nun ist die Gesamthöhe: "+this.dimension.height);
-    }
-    // this.dimension.width += resultSize.width;
-    if ( ! breakNeeded )
-    {
-      this.dimension.width += resultSize.width ;
-      this.dimension.height = Math.max ( resultSize.height ,
-          this.dimension.height ) ;
-    }
-    else
-    {
-      this.dimension.width = Math.max ( ( resultSize.width + meshPix ) ,
-          dimension.width ) ;
-    }
-    // now place the elements
-    int posX = 0 ;
-    this.indexLabel.setBounds ( posX , 0 , labelSize.width ,
-        this.dimension.height ) ;
-    posX += labelSize.width + this.spacing ;
-    // this.expression.setBounds(posX, 0, expSize.width, this.dimension.height);
-    this.compoundExpression.setBounds ( posX , 0 , expSize.width ,
-        expSize.height ) ;
-    posX += expSize.width ;
-    // this.downArrowLabel.setBounds (posX, 0, arrowSize.width,
-    // this.dimension.height);
-    this.downArrowLabel
-        .setBounds ( posX , 0 , arrowSize.width , expSize.height ) ;
-    posX += arrowSize.width ;
-    if ( ! breakNeeded )
-    {
-      // this.resultExpression.setBounds(posX, 0, resultSize.width,
-      // this.dimension.height);
-      this.resultCompoundExpression.setBounds ( posX , 0 , resultSize.width ,
-          resultSize.height ) ;
-    }
-    else
-    {
-      // TODO Testausgabe
-      // System.out.println("Der Umbruch wird vollzogen, das Ergebnis beginnt
-      // jetzt: "+(this.dimension.height-resultSize.height)+", die Gesamtgröße
-      // ist jetzt: "+this.dimension.height);
-      this.resultCompoundExpression.setBounds ( meshPix ,
-          ( this.dimension.height - resultSize.height ) , resultSize.width ,
-          resultSize.height ) ;
-    }
-    /*
-     * Check whether this is node is evaluated. If it is evaluated only the
-     * Label needs to get placed, if it is not evaluated yet the MenuButton
-     * needs to get placed.
-     */
-    posX = labelSize.width + this.spacing ;
-    if ( this.proofNode.getRule ( ) != null )
-    {
-      this.ruleLabel.setText ( "(" + this.proofNode.getRule ( ) + ")" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-      Dimension ruleLabelSize = this.ruleLabel.getPreferredSize ( ) ;
-      this.ruleLabel.setBounds ( posX , this.dimension.height + this.spacing ,
-          ruleLabelSize.width , ruleLabelSize.height ) ;
-      this.dimension.height += this.spacing + ruleLabelSize.height ;
-      this.dimension.width = Math.max ( this.dimension.width ,
-          ruleLabelSize.width + posX ) ;
-      // display only the label not the button
-      this.ruleLabel.setVisible ( true ) ;
-      this.ruleButton.setVisible ( false ) ;
-    }
-    else
-    {
-      // place the menu button
-      Dimension buttonSize = this.ruleButton.getNeededSize ( ) ;
-      this.ruleButton.setBounds ( posX , this.dimension.height + this.spacing ,
-          buttonSize.width , buttonSize.height ) ;
-      this.dimension.height += this.spacing + buttonSize.height ;
-      this.dimension.width = Math.max ( this.dimension.width , buttonSize.width
-          + posX ) ;
-      // display only the button not the label
-      this.ruleLabel.setVisible ( false ) ;
-      this.ruleButton.setVisible ( true ) ;
-    }
-  }
+	 * Places all elements of the current node.<br>
+	 * Just places one element after the other. 1st the index, 2nd the compoundExpression 3rd the
+	 * double-sidded-down-directed arrow. When the node is proven (that is if there is already an evaluated result, it
+	 * will be placed behind the arrow.<br>
+	 * <br>
+	 * If the the nodes is evaluated the ruleLabel is placed with a bit spacing below the expression. If the node is
+	 * not evaluated the menuButton is placed at the same size.<br>
+	 * <br>
+	 * After the placing is done the {@link #dimension} contains the needed size of this node.
+	 * 
+	 * @param maxWidth
+	 *          The maximum width that is available for the current node.
+	 */
+	private void placeElements(int maxWidth)
+	{
+		// get the size for the index at the beginning: (x)
+		FontMetrics fm = AbstractRenderer.getTextFontMetrics();
+		Dimension labelSize = new Dimension(fm.stringWidth(this.indexLabel.getText()), fm.getHeight());
+		this.dimension.setSize(labelSize.width, labelSize.height);
+		// there will be a bit spacing between the index label and the expression
+		this.dimension.width += this.spacing;
+		// the index shrinkens the max size for the expression
+		maxWidth -= labelSize.width;
+		// get the needed size for the expression
+		Dimension expSize = this.compoundExpression.getNeededSize(maxWidth - this.dimension.width);
+		this.dimension.width += expSize.width;
+		this.dimension.height = Math.max(expSize.height, this.dimension.height);
+		Dimension arrowSize = this.downArrowLabel.getPreferredSize();
+		this.dimension.width += arrowSize.width;
+		this.dimension.height = Math.max(arrowSize.height, this.dimension.height);
+		Dimension resultSize = new Dimension(0, 0);
+		//get the size of the Result if there is no linebrake
+		resultSize = this.resultCompoundExpression.getNeededSize(maxWidth - this.dimension.width);
+		
+		boolean breakNeeded = false;
+		// if the expression is braken the result will be meshed mesPix pixels
+		//break if the result dose not fit
+		if ((maxWidth - this.dimension.width) < resultSize.width)
+		{
+			breakNeeded = true;
+		}
+		
+		if (!breakNeeded)
+		{			
+			// if the result is higher than the hight of one line the result will be
+			// in the next line
+			if (resultSize.height > AbstractRenderer.getAbsoluteHeight())
+			{
+				breakNeeded = true;
+			}
+		}
+		if (breakNeeded)
+		{
+			//get the new resultsiz in the next line
+			resultSize = this.resultCompoundExpression.getNeededSize(maxWidth - meshPix);
+			//the hight will be lager
+			this.dimension.height = expSize.height + resultSize.height;
+		}
+		if (!breakNeeded)
+		{
+			this.dimension.width += resultSize.width;
+			this.dimension.height = Math.max(resultSize.height, this.dimension.height);
+		}
+		else
+		{
+			this.dimension.width = Math.max((resultSize.width + meshPix), dimension.width);
+		}
+		
+		// now place the elements
+		int posX = 0;
+		this.indexLabel.setBounds(posX, 0, labelSize.width, this.dimension.height);
+		posX += labelSize.width + this.spacing;
+		this.compoundExpression.setBounds(posX, 0, expSize.width, expSize.height);
+		posX += expSize.width;
+		this.downArrowLabel.setBounds(posX, 0, arrowSize.width, expSize.height);
+		posX += arrowSize.width;
+		if (!breakNeeded)
+		{
+			this.resultCompoundExpression.setBounds(posX, 0, resultSize.width, resultSize.height);
+		}
+		else
+		{
+			this.resultCompoundExpression.setBounds(meshPix, (this.dimension.height - resultSize.height),
+					resultSize.width, resultSize.height);
+		}
+		/*
+		 * Check whether this is node is evaluated. If it is evaluated only the Label needs to get placed, if it is not
+		 * evaluated yet the MenuButton needs to get placed.
+		 */
+		posX = labelSize.width + this.spacing;
+		if (this.proofNode.getRule() != null)
+		{
+			this.ruleLabel.setText("(" + this.proofNode.getRule() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+			Dimension ruleLabelSize = this.ruleLabel.getPreferredSize();
+			this.ruleLabel.setBounds(posX, this.dimension.height + this.spacing, ruleLabelSize.width,
+					ruleLabelSize.height);
+			this.dimension.height += this.spacing + ruleLabelSize.height;
+			this.dimension.width = Math.max(this.dimension.width, ruleLabelSize.width + posX);
+			// display only the label not the button
+			this.ruleLabel.setVisible(true);
+			this.ruleButton.setVisible(false);
+		}
+		else
+		{
+			// place the menu button
+			Dimension buttonSize = this.ruleButton.getNeededSize();
+			this.ruleButton.setBounds(posX, this.dimension.height + this.spacing, buttonSize.width, buttonSize.height);
+			this.dimension.height += this.spacing + buttonSize.height;
+			this.dimension.width = Math.max(this.dimension.width, buttonSize.width + posX);
+			// display only the button not the label
+			this.ruleLabel.setVisible(false);
+			this.ruleButton.setVisible(true);
+		}
+	}
 
 
   /*
-   * Implementation of the TreeNodeComponent interface
-   */
+	 * Implementation of the TreeNodeComponent interface
+	 */
   public Dimension update ( int maxWidth )
   {
     placeElements ( maxWidth ) ;
@@ -691,25 +637,17 @@ public class BigStepNodeComponent extends JComponent implements
     return this.dimension ;
   }
 
+  /**
+	 * Returns the point at the bottom of the node where the layout should attach the arrow.
+	 */
+	public Point getBottomArrowConnection()
+	{
+		return new Point(this.getX() + this.indexLabel.getWidth() / 2, this.getY() + (this.dimension.height / 2));
+	}
 
   /**
-   * Returns the point at the bottom of the node where the layout should attach
-   * the arrow.
-   */
-  public Point getBottomArrowConnection ( )
-  {
-    // return new Point (this.getX() + this.indexLabel.getWidth() / 2,
-    // this.getY() + this.indexLabel.getHeight());
-    return new Point ( this.getX ( ) + this.indexLabel.getWidth ( ) / 2 , this
-        .getY ( )
-        + ( this.dimension.height / 2 ) ) ;
-  }
-
-
-  /**
-   * Returns the point at the left of the node where the layout should attach
-   * the line to its parent.
-   */
+	 * Returns the point at the left of the node where the layout should attach the line to its parent.
+	 */
   public Point getLeftArrowConnection ( )
   {
     return new Point ( this.getX ( ) , this.getY ( ) + this.indexLabel.getY ( )
