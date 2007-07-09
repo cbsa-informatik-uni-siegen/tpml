@@ -314,7 +314,7 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 				}
 				if ( tau == null )
 					throw new RuntimeException ( MessageFormat.format (
-							Messages.getString ( "MinimalTypingException.4" ), node.getExpression ( ).toString ( ) ) ); //$NON-NLS-1$
+							Messages.getString ( "MinimalTypingException.2" ), m.toString ( ) ) ); //$NON-NLS-1$
 				// generate new child node
 				context.addProofNode ( node, tau, node.getChildAt ( 1 ).getType ( ) );
 			} else {

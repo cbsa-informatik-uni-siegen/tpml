@@ -585,10 +585,19 @@ public class L1MinimalTypingProofRuleSet extends AbstractMinimalTypingProofRuleS
 			RowType row = ( RowType ) type;
 			RowType row2 = ( RowType ) type2;
 
-			if ( !row.equalsIgnoreOrder ( row2 ) ) {
+			Identifier[] ids = row.getIdentifiers ( );
+			MonoType[] types = row.getTypes ( );
+			MonoType[] types2 = row2.getTypes ( );
 
-				throw new RuntimeException ( MessageFormat.format (
-						Messages.getString ( "MinimalTypingException.3" ), type, type2 ) ); //$NON-NLS-1$
+			int index;
+			for ( int i = 0; i < ids.length; i++ ) {
+				index = row2.getIndexOfIdentifier ( ids[i] );
+				if ( index >= 0 )
+					subtypeInternal ( types[i], types2[index] );
+				else
+					throw new RuntimeException ( MessageFormat.format (
+							Messages.getString ( "MinimalTypingException.3" ), type, type2 ) ); //$NON-NLS-1$
+
 			}
 			return;
 		}
