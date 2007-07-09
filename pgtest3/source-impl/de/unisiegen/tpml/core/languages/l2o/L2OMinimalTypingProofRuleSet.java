@@ -205,7 +205,13 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 			// check if a:tau und e:tau' tau'<: tau
 			TypeEnvironment environment = node.getEnvironment ( );
 			Identifier id = duplication.getIdentifiers ( )[node.getChildCount ( ) - 2];
-			MonoType tau = ( MonoType ) environment.get ( id );
+			MonoType tau = null;
+			try{
+			tau = ( MonoType ) environment.get ( id );
+			} catch (Exception e){
+				throw new RuntimeException ( MessageFormat.format (
+						Messages.getString ( "MinimalTypingException.9" ), id.toString ( ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
+			}
 			MonoType tau2 = node.getLastChild ( ).getType ( );
 			if ( tau == null || tau2 == null )
 				throw new RuntimeException ( MessageFormat.format (
