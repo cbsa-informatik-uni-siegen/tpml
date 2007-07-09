@@ -113,15 +113,15 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 		MonoType[] types2 = type2.getTypes ( );
 
 		if ( types.length == types2.length ) {
-		//	for ( int i = 0; i < types.length; i++ ) {
-				// generate new child node
-				context.addProofNode ( node, types[0], types2[0] );
-				context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+			//	for ( int i = 0; i < types.length; i++ ) {
+			// generate new child node
+			context.addProofNode ( node, types[0], types2[0] );
+			context.addSeenType ( node.getType ( ), node.getType2 ( ) );
 			//}
 		} else
 			throw new RuntimeException ( Messages.getString ( "SubTypingException.5" ) ); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * Updates the <code>node</code> to which <b>(PRODUCT)</b> was applied
 	 * previously.
@@ -139,8 +139,8 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 
 		MonoType[] types = type.getTypes ( );
 		MonoType[] types2 = type2.getTypes ( );
-		
-		if (node.isFinished ( ) && node.getChildCount ( ) < types.length){
+
+		if ( node.isFinished ( ) && node.getChildCount ( ) < types.length ) {
 			// generate new child node
 			context.addProofNode ( node, types[node.getChildCount ( )], types2[node.getChildCount ( )] );
 		}

@@ -516,8 +516,7 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 			MonoType type2 = node.getType2 ( );
 			// if both types instance of Primitive Type throw Exception
 			if ( type instanceof PrimitiveType && type2 instanceof PrimitiveType ) {
-					throw new IllegalArgumentException ( Messages
-						.getString ( "SubTypingException.1" ) ); //$NON-NLS-1$
+				throw new IllegalArgumentException ( Messages.getString ( "SubTypingException.1" ) ); //$NON-NLS-1$
 
 			}
 			// generate new child node
@@ -596,12 +595,11 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 		ObjectType type = ( ObjectType ) node.getType ( );
 		ObjectType type2 = ( ObjectType ) node.getType2 ( );
 
-		
 		RowType r1 = ( RowType ) ( type ).getPhi ( );
 		RowType r2 = ( RowType ) ( type2 ).getPhi ( );
-		
+
 		//boolean goOn;
-		
+
 		Identifier[] ids1 = r1.getIdentifiers ( );
 		Identifier[] ids2 = r2.getIdentifiers ( );
 
@@ -611,20 +609,20 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 
 		if ( ids1.length == ids2.length && index > -1 ) {
 
-		/*	for ( int i = 0; i < ids1.length; i++ ) {
-				goOn = false;
-				for ( int j = 0; j < ids2.length; j++ ) {
-					if ( ids1[i].equals ( ids2[j] ) ) {
-						// generate new child node
-						context.addProofNode ( node, types[i], types2[j] );
-						goOn = true;
-					}
-				}
-				if ( goOn )
-					continue;
-				break;
-			}*/
-			
+			/*	for ( int i = 0; i < ids1.length; i++ ) {
+			 goOn = false;
+			 for ( int j = 0; j < ids2.length; j++ ) {
+			 if ( ids1[i].equals ( ids2[j] ) ) {
+			 // generate new child node
+			 context.addProofNode ( node, types[i], types2[j] );
+			 goOn = true;
+			 }
+			 }
+			 if ( goOn )
+			 continue;
+			 break;
+			 }*/
+
 			context.addProofNode ( node, types[0], types2[index] );
 		} else
 			throw new RuntimeException ( Messages.getString ( "SubTypingException.5" ) ); //$NON-NLS-1$
@@ -643,18 +641,18 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 
 		ObjectType type = ( ObjectType ) node.getType ( );
 		ObjectType type2 = ( ObjectType ) node.getType2 ( );
-		
+
 		RowType r1 = ( RowType ) ( type ).getPhi ( );
 		RowType r2 = ( RowType ) ( type2 ).getPhi ( );
-		
+
 		Identifier[] ids1 = r1.getIdentifiers ( );
 
 		MonoType[] types = r1.getTypes ( );
 		MonoType[] types2 = r2.getTypes ( );
-		
-		if (node.isFinished ( ) && node.getChildCount ( ) < ids1.length){
+
+		if ( node.isFinished ( ) && node.getChildCount ( ) < ids1.length ) {
 			int index = r2.getIndexOfIdentifier ( ids1[node.getChildCount ( )] );
-			if (index <0)
+			if ( index < 0 )
 				throw new RuntimeException ( Messages.getString ( "SubTypingException.5" ) ); //$NON-NLS-1$
 			context.addProofNode ( node, types[node.getChildCount ( )], types2[index] );
 		}
