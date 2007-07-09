@@ -754,21 +754,17 @@ public class TypeCheckerNodeComponent extends JComponent implements
 
 
   /**
-   * Returns the point at the bottom of the node where the layout should attach
-   * the arrow.
-   */
-  public Point getBottomArrowConnection ( )
-  {
-    return new Point ( this.getX ( ) + this.indexLabel.getWidth ( ) / 2 , this
-        .getY ( )
-        + this.indexLabel.getHeight ( ) ) ;
-  }
+	 * Returns the point at the bottom of the node where the layout should attach the arrow.
+	 */
+	public Point getBottomArrowConnection()
+	{
+		return new Point(this.getX() + this.indexLabel.getWidth() / 2, this.getY() + (this.dimension.height / 2));
+	}
 
 
   /**
-   * Returns the point at the left of the node where the layout should attach
-   * the line to its parent.
-   */
+	 * Returns the point at the left of the node where the layout should attach the line to its parent.
+	 */
   public Point getLeftArrowConnection ( )
   {
     return new Point ( this.getX ( ) , this.getY ( ) + this.indexLabel.getY ( )
