@@ -38,18 +38,17 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	public L3MinimalTypingProofRuleSet ( L1Language language, boolean mode ) {
 		super ( language, mode );
 		// register the type rules
-		if (!mode){ // beginner mode
+		if ( !mode ) { // beginner mode
 			unregister ( "REFL" ); //$NON-NLS-1$
 			unregister ( "S-ASSUME" ); //$NON-NLS-1$
-			
+
 			// register the type rules
-			registerByMethodName ( L3Language.L3, "PODUCT", "applyProduct" ); //$NON-NLS-1$ //$NON-NLS-2$
+			registerByMethodName ( L3Language.L3, "PODUCT", "applyProduct", "updateProduct" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			registerByMethodName ( L3Language.L3, "LIST", "applyList" ); //$NON-NLS-1$ //$NON-NLS-2$
 			registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
 			registerByMethodName ( L1Language.L1, "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		registerByMethodName ( L2Language.L2,
-				"TUPLE", "applyTuple", "updateTuple" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		registerByMethodName ( L2Language.L2, "TUPLE", "applyTuple", "updateTuple" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	}
 
@@ -60,44 +59,41 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 * @param context the minimal typing proof context.
 	 * @param pNode the minimal typing proof node.
 	 */
-	public void applyTuple ( MinimalTypingProofContext context,
-			MinimalTypingProofNode pNode ) {
+	public void applyTuple ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
 		Tuple tuple = ( Tuple ) node.getExpression ( );
-
-		context.addProofNode ( node, node.getEnvironment ( ), tuple
-				.getExpressions ( )[0] );
+		// generate new child node
+		context.addProofNode ( node, node.getEnvironment ( ), tuple.getExpressions ( )[0] );
 	}
 
-	  /**
-	   * Updates the <code>node</code> to which <b>(TUPLE)</b> was applied
-	   * previously.
-	   * 
-	   * @param context the minimal typing proof context.
-	   * @param pNode the node to update according to <b>(TUPLE)</b>.
-	   */
-	public void updateTuple ( MinimalTypingProofContext context,
-			MinimalTypingProofNode pNode ) {
+	/**
+	 * Updates the <code>node</code> to which <b>(TUPLE)</b> was applied
+	 * previously.
+	 * 
+	 * @param context the minimal typing proof context.
+	 * @param pNode the node to update according to <b>(TUPLE)</b>.
+	 */
+	public void updateTuple ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
 		Tuple tuple = ( Tuple ) node.getExpression ( );
 
 		if ( node.getLastChild ( ).isFinished ( ) ) {
 
 			if ( node.getChildCount ( ) == tuple.getExpressions ( ).length ) {
-				MonoType [] types = new MonoType[node.getChildCount ( )];
-				for (int i = 0; i< node.getChildCount ( ); i++){
-					types[i]= node.getChildAt ( i ).getType ( );
+				MonoType[] types = new MonoType[node.getChildCount ( )];
+				for ( int i = 0; i < node.getChildCount ( ); i++ ) {
+					types[i] = node.getChildAt ( i ).getType ( );
 				}
-				TupleType type = new TupleType(types);
+				TupleType type = new TupleType ( types );
+				// set the type of this node
 				context.setNodeType ( node, type );
 				return;
 			}
-				// add next child
-				context.addProofNode ( node, node.getEnvironment ( ), tuple
-						.getExpressions ( )[node.getChildCount ( )] );
+			// generate new child node
+			context.addProofNode ( node, node.getEnvironment ( ), tuple.getExpressions ( )[node.getChildCount ( )] );
 		}
 	}
-	
+
 	/**
 	 * Applies the <b>(PRODUCT)</b> rule to the <code>node</code> using the
 	 * <code>context</code>.
@@ -117,13 +113,37 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 		MonoType[] types2 = type2.getTypes ( );
 
 		if ( types.length == types2.length ) {
-			for ( int i = 0; i < types.length; i++ ) {
-				context.addProofNode ( node, types[i], types2[i] );
+		//	for ( int i = 0; i < types.length; i++ ) {
+				// generate new child node
+				context.addProofNode ( node, types[0], types2[0] );
 				context.addSeenType ( node.getType ( ), node.getType2 ( ) );
-			}
+			//}
 		} else
-			throw new RuntimeException (Messages
-					.getString ( "SubTypeException.5" ) ); //$NON-NLS-1$
+			throw new RuntimeException ( Messages.getString ( "SubTypingException.5" ) ); //$NON-NLS-1$
+	}
+	
+	/**
+	 * Updates the <code>node</code> to which <b>(PRODUCT)</b> was applied
+	 * previously.
+	 * 
+	 * @param context the minimal typing proof context.
+	 * @param pNode the node to update according to <b>(ATTR)</b>.
+	 */
+	public void updateProduct ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
+		TupleType type;
+		TupleType type2;
+
+		type = ( TupleType ) node.getType ( );
+		type2 = ( TupleType ) node.getType2 ( );
+
+		MonoType[] types = type.getTypes ( );
+		MonoType[] types2 = type2.getTypes ( );
+		
+		if (node.isFinished ( ) && node.getChildCount ( ) < types.length){
+			// generate new child node
+			context.addProofNode ( node, types[node.getChildCount ( )], types2[node.getChildCount ( )] );
+		}
 	}
 
 	/**
@@ -144,9 +164,10 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 		MonoType tau = type.getTau ( );
 		MonoType tau2 = type2.getTau ( );
 
+		// generate new child node
 		context.addProofNode ( node, tau, tau2 );
 		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
-		
+
 	}
 
 }

@@ -18,8 +18,7 @@ import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
  * 
  * @see de.unisiegen.tpml.core.minimaltyping.AbstractMinimalTypingProofRuleSet
  */
-public class L2MinimalTypingProofRuleSet extends
- L1MinimalTypingProofRuleSet {
+public class L2MinimalTypingProofRuleSet extends L1MinimalTypingProofRuleSet {
 	/**
 	 * Allocates a new <code>L1MinimalTypingProofRuleSet</code> for the specified
 	 * <code>language</code>.
@@ -32,7 +31,7 @@ public class L2MinimalTypingProofRuleSet extends
 	public L2MinimalTypingProofRuleSet ( L1Language language, boolean mode ) {
 		super ( language, mode );
 		// register the type rules
-		registerByMethodName ( L2Language.L2,"REC", "applyRec", "updateRec" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		registerByMethodName ( L2Language.L2, "REC", "applyRec", "updateRec" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	}
 
@@ -43,36 +42,37 @@ public class L2MinimalTypingProofRuleSet extends
 	 * @param context the minimal typing proof context.
 	 * @param pNode the minimal typing proof node.
 	 */
-	public void applyRec ( MinimalTypingProofContext context,
-			MinimalTypingProofNode pNode ) {
-		MinimalTypingExpressionProofNode node = (MinimalTypingExpressionProofNode) pNode;
-		Recursion rec = (Recursion) node.getExpression ( );
+	public void applyRec ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
+		Recursion rec = ( Recursion ) node.getExpression ( );
 		TypeEnvironment environment = node.getEnvironment ( );
 		// check if the user entered a type
-		
-		if (rec.getTau ( )== null)
-			throw new RuntimeException ( MessageFormat.format ( Messages
-					.getString ( "MinimalTypingException.2" ), rec.getIdentifiers ( )[0].toString ( ) ) ); //$NON-NLS-1$
+
+		if ( rec.getTau ( ) == null )
+			throw new RuntimeException ( MessageFormat.format (
+					Messages.getString ( "MinimalTypingException.2" ), rec.getIdentifiers ( )[0].toString ( ) ) ); //$NON-NLS-1$
+		// generate new child node
 		context.addProofNode ( node, environment.extend ( rec.getId ( ), rec.getTau ( ) ), rec.getE ( ) );
 	}
-	
-	  /**
-	   * Updates the <code>node</code> to which <b>(REC)</b> was applied
-	   * previously.
-	   * 
-	   * @param context the minimal typing proof context.
-	   * @param pNode the node to update according to <b>(REC)</b>.
-	   */
-	public void updateRec ( MinimalTypingProofContext context,
-			MinimalTypingProofNode pNode ) {
-		MinimalTypingExpressionProofNode node = (MinimalTypingExpressionProofNode) pNode;
-		Recursion rec = (Recursion) node.getExpression ( );
-	
+
+	/**
+	 * Updates the <code>node</code> to which <b>(REC)</b> was applied
+	 * previously.
+	 * 
+	 * @param context the minimal typing proof context.
+	 * @param pNode the node to update according to <b>(REC)</b>.
+	 */
+	public void updateRec ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
+		Recursion rec = ( Recursion ) node.getExpression ( );
+
 		if ( node.getChildCount ( ) == 1 && node.getFirstChild ( ).isFinished ( ) ) {
+			// generate new child node
 			context.addProofNode ( node, node.getFirstChild ( ).getType ( ), rec.getTau ( ) );
 		}
-		
+
 		if ( node.getChildCount ( ) == 2 && node.isFinished ( ) ) {
+			// set the type of this node
 			context.setNodeType ( node, rec.getTau ( ) );
 		}
 	}
