@@ -507,11 +507,11 @@ lambda_error					::= LAMBDA:l epsilon
 									{: Error.expect("Lambda", ".", lleft, tauright, "." ); :}
 								// Missing colon
 								|	LAMBDA:l IDENTIFIER:id type epsilon
-									{: Error.expect("Lambda", ":", lleft, idright, ":" ); :}
+									{: Error.expect("Lambda", ": ", lleft, idright, ":" ); :}
 								|	LAMBDA:l IDENTIFIER:id type DOT epsilon
-									{: Error.expect("Lambda", ":", lleft, idright, ":" ); :}
+									{: Error.expect("Lambda", ": ", lleft, idright, ":" ); :}
 								|	LAMBDA:l IDENTIFIER:id type DOT seq_expr
-									{: Error.expect("Lambda", ":", lleft, idright, ":" ); :}
+									{: Error.expect("Lambda", ": ", lleft, idright, ":" ); :}
 								// Missing type
 								|	LAMBDA:l IDENTIFIER COLON:c DOT epsilon
 									{: Error.expect("Lambda", " \u03C4", lleft, cright, "\u03C4" ); :}
@@ -519,11 +519,11 @@ lambda_error					::= LAMBDA:l epsilon
 									{: Error.expect("Lambda", " \u03C4", lleft, cright, "\u03C4" ); :}
 								// Missing identifier and colon
 								|	LAMBDA:l type epsilon
-									{: Error.expect("Lambda", " id:", lleft, lright, "id:" ); :}
+									{: Error.expect("Lambda", " id: ", lleft, lright, "id:" ); :}
 								|	LAMBDA:l type DOT epsilon
-									{: Error.expect("Lambda", " id:", lleft, lright, "id:" ); :}
+									{: Error.expect("Lambda", " id: ", lleft, lright, "id:" ); :}
 								|	LAMBDA:l type DOT seq_expr
-									{: Error.expect("Lambda", " id:", lleft, lright, "id:" ); :}
+									{: Error.expect("Lambda", " id: ", lleft, lright, "id:" ); :}
 								// Missing type and dot
 								|	LAMBDA:l IDENTIFIER COLON:c seq_expr:e
 									{: Error.expect("Lambda", " \u03C4.", lleft, cright, "\u03C4." ); :}
@@ -700,7 +700,7 @@ let_rec_error					::= LET:l REC:r epsilon
 									{: Error.expect("Let-Rec", " e2", lleft, iright, "e<sub>2</sub>" ); :}
 								// Missing type
 								|	LET:l REC IDENTIFIER COLON:c EQUAL seq_expr IN seq_expr
-									{: Error.expect("Let-Rec", " \u03C4", lleft, cright, "\u03C4" ); :}
+									{: Error.expect("Let-Rec", " \u03C4 ", lleft, cright, "\u03C4" ); :}
 								;
 
 curried_let_rec					::=	LET:l REC IDENTIFIER:id curried_let_rec_list:itl EQUAL seq_expr:e1 IN seq_expr:e2

@@ -189,6 +189,7 @@
 			expect="10000"
 			nonterms="no"
 			nopositions="no"
+			compact_red="yes"
 			dump_grammar="no" />
 		
 		<!-- Types -->

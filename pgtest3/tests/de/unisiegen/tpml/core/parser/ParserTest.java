@@ -916,6 +916,36 @@ public class ParserTest
   private static String ATTRIBUTE_ERROR_4 = "object (self) val a = 0" ;
 
 
+  private static String ATTRIBUTE_ERROR_5 = "object (self) val =" ;
+
+
+  private static String ATTRIBUTE_ERROR_6 = "object (self) val = 0" ;
+
+
+  private static String ATTRIBUTE_ERROR_7 = "object (self) val = 0 ;" ;
+
+
+  private static String ATTRIBUTE_ERROR_8 = "object (self) val a 0" ;
+
+
+  private static String ATTRIBUTE_ERROR_9 = "object (self) val a 0 ;" ;
+
+
+  private static String ATTRIBUTE_ERROR_10 = "object (self) val a = ;" ;
+
+
+  private static String ATTRIBUTE_ERROR_11 = "object (self) val 0" ;
+
+
+  private static String ATTRIBUTE_ERROR_12 = "object (self) val 0 ;" ;
+
+
+  private static String ATTRIBUTE_ERROR_13 = "object (self) val a ;" ;
+
+
+  private static String ATTRIBUTE_ERROR_14 = "object (self) val ;" ;
+
+
   private static String METHOD_1 = "object (self) method m = 0 ; end" ;
 
 
@@ -946,7 +976,94 @@ public class ParserTest
   private static String METHOD_ERROR_8 = "object (self) method m = 0" ;
 
 
-  private static String METHOD_ERROR_9 = "object (self) method m: = 0 ; end" ;
+  private static String METHOD_ERROR_9 = "object (self) method = end" ;
+
+
+  private static String METHOD_ERROR_10 = "object (self) method = 0 end" ;
+
+
+  private static String METHOD_ERROR_11 = "object (self) method = 0 ; end" ;
+
+
+  private static String METHOD_ERROR_12 = "object (self) method : end" ;
+
+
+  private static String METHOD_ERROR_13 = "object (self) method : int end" ;
+
+
+  private static String METHOD_ERROR_14 = "object (self) method : int = end" ;
+
+
+  private static String METHOD_ERROR_15 = "object (self) method : int = 0 end" ;
+
+
+  private static String METHOD_ERROR_16 = "object (self) method : int = 0 ; end" ;
+
+
+  private static String METHOD_ERROR_17 = "object (self) method m int end" ;
+
+
+  private static String METHOD_ERROR_18 = "object (self) method m int = end" ;
+
+
+  private static String METHOD_ERROR_19 = "object (self) method m int = 0 end" ;
+
+
+  private static String METHOD_ERROR_20 = "object (self) method m int = 0 ; end" ;
+
+
+  private static String METHOD_ERROR_21 = "object (self) method m: = end" ;
+
+
+  private static String METHOD_ERROR_22 = "object (self) method m: = 0 end" ;
+
+
+  private static String METHOD_ERROR_23 = "object (self) method m: = 0 ; end" ;
+
+
+  private static String METHOD_ERROR_24 = "object (self) method m: int 0 end" ;
+
+
+  private static String METHOD_ERROR_25 = "object (self) method m: int 0 ; end" ;
+
+
+  private static String METHOD_ERROR_26 = "object (self) method m = ; end" ;
+
+
+  private static String METHOD_ERROR_27 = "object (self) method m: int = ; end" ;
+
+
+  private static String METHOD_ERROR_28 = "object (self) method 0 ; end" ;
+
+
+  private static String METHOD_ERROR_29 = "object (self) method m ; end" ;
+
+
+  private static String METHOD_ERROR_30 = "object (self) method ; end" ;
+
+
+  private static String METHOD_ERROR_31 = "object (self) method int end" ;
+
+
+  private static String METHOD_ERROR_32 = "object (self) method int = end" ;
+
+
+  private static String METHOD_ERROR_33 = "object (self) method int = 0 end" ;
+
+
+  private static String METHOD_ERROR_34 = "object (self) method int = 0 ; end" ;
+
+
+  private static String METHOD_ERROR_35 = "object (self) method m: 0 end" ;
+
+
+  private static String METHOD_ERROR_36 = "object (self) method m: 0 ; end" ;
+
+
+  private static String METHOD_ERROR_37 = "object (self) method m: int ; end" ;
+
+
+  private static String METHOD_ERROR_38 = "object (self) method m ; end" ;
 
 
   private static String CURRIED_METHOD_1 = "object (self) method m x y = 0 ; end" ;
@@ -1243,16 +1360,27 @@ public class ParserTest
       DUPLICATION_ERROR_1 , DUPLICATION_ERROR_2 , DUPLICATION_ERROR_3 ,
       DUPLICATION_ERROR_4 , DUPLICATION_ERROR_5 , SEND_ERROR ,
       ATTRIBUTE_ERROR_1 , ATTRIBUTE_ERROR_2 , ATTRIBUTE_ERROR_3 ,
-      ATTRIBUTE_ERROR_4 , METHOD_ERROR_1 , METHOD_ERROR_2 , METHOD_ERROR_3 ,
-      METHOD_ERROR_4 , METHOD_ERROR_5 , METHOD_ERROR_6 , METHOD_ERROR_7 ,
-      METHOD_ERROR_8 , METHOD_ERROR_9 , CURRIED_METHOD_ERROR_1 ,
-      CURRIED_METHOD_ERROR_2 , CURRIED_METHOD_ERROR_3 , CURRIED_METHOD_ERROR_4 ,
-      CURRIED_METHOD_ERROR_5 , CURRIED_METHOD_ERROR_6 , CURRIED_METHOD_ERROR_7 ,
-      CURRIED_METHOD_ERROR_8 , CURRIED_METHOD_ERROR_9 ,
-      CURRIED_METHOD_ERROR_10 , CURRIED_METHOD_ERROR_11 ,
-      CURRIED_METHOD_ERROR_12 , CURRIED_METHOD_ERROR_13 ,
-      EXPR_OBJECT_TYPE_ERROR_1 , EXPR_OBJECT_TYPE_ERROR_2 ,
-      EXPR_ROW_TYPE_ERROR_1 , EXPR_ROW_TYPE_ERROR_2 , EXPR_ROW_TYPE_ERROR_3 } ;
+      ATTRIBUTE_ERROR_4 , ATTRIBUTE_ERROR_5 , ATTRIBUTE_ERROR_6 ,
+      ATTRIBUTE_ERROR_7 , ATTRIBUTE_ERROR_8 , ATTRIBUTE_ERROR_9 ,
+      ATTRIBUTE_ERROR_10 , ATTRIBUTE_ERROR_11 , ATTRIBUTE_ERROR_12 ,
+      ATTRIBUTE_ERROR_13 , ATTRIBUTE_ERROR_14 , METHOD_ERROR_1 ,
+      METHOD_ERROR_2 , METHOD_ERROR_3 , METHOD_ERROR_4 , METHOD_ERROR_5 ,
+      METHOD_ERROR_6 , METHOD_ERROR_7 , METHOD_ERROR_8 , METHOD_ERROR_9 ,
+      METHOD_ERROR_10 , METHOD_ERROR_11 , METHOD_ERROR_12 , METHOD_ERROR_13 ,
+      METHOD_ERROR_14 , METHOD_ERROR_15 , METHOD_ERROR_16 , METHOD_ERROR_17 ,
+      METHOD_ERROR_18 , METHOD_ERROR_19 , METHOD_ERROR_20 , METHOD_ERROR_21 ,
+      METHOD_ERROR_22 , METHOD_ERROR_23 , METHOD_ERROR_24 , METHOD_ERROR_25 ,
+      METHOD_ERROR_26 , METHOD_ERROR_27 , METHOD_ERROR_28 , METHOD_ERROR_29 ,
+      METHOD_ERROR_30 , METHOD_ERROR_31 , METHOD_ERROR_32 , METHOD_ERROR_33 ,
+      METHOD_ERROR_34 , METHOD_ERROR_35 , METHOD_ERROR_36 , METHOD_ERROR_37 ,
+      METHOD_ERROR_38 , CURRIED_METHOD_ERROR_1 , CURRIED_METHOD_ERROR_2 ,
+      CURRIED_METHOD_ERROR_3 , CURRIED_METHOD_ERROR_4 , CURRIED_METHOD_ERROR_5 ,
+      CURRIED_METHOD_ERROR_6 , CURRIED_METHOD_ERROR_7 , CURRIED_METHOD_ERROR_8 ,
+      CURRIED_METHOD_ERROR_9 , CURRIED_METHOD_ERROR_10 ,
+      CURRIED_METHOD_ERROR_11 , CURRIED_METHOD_ERROR_12 ,
+      CURRIED_METHOD_ERROR_13 , EXPR_OBJECT_TYPE_ERROR_1 ,
+      EXPR_OBJECT_TYPE_ERROR_2 , EXPR_ROW_TYPE_ERROR_1 , EXPR_ROW_TYPE_ERROR_2 ,
+      EXPR_ROW_TYPE_ERROR_3 } ;
 
 
   private static String [ ] L2OTYPE_NORMAL = new String [ ]

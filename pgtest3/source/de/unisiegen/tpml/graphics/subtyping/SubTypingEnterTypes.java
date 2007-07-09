@@ -440,13 +440,17 @@ public class SubTypingEnterTypes extends AbstractProofView
       }
 
 
+      @ SuppressWarnings ( "synthetic-access" )
       public void insertText ( int pIndex , String pText )
       {
-        String nextChar = "" ;
-        String secondNextChar = "" ;
+        int countSpaces = 0 ;
         try
         {
-          nextChar = SubTypingEnterTypes.this.document1.getText ( pIndex , 1 ) ;
+          while ( SubTypingEnterTypes.this.document1.getText ( pIndex + countSpaces ,
+              1 ).equals ( " " ) ) //$NON-NLS-1$
+          {
+            countSpaces ++ ;
+          }
         }
         catch ( BadLocationException e )
         {
@@ -454,35 +458,22 @@ public class SubTypingEnterTypes extends AbstractProofView
         }
         try
         {
-          secondNextChar = SubTypingEnterTypes.this.document1.getText (
-              pIndex + 1 , 1 ) ;
-        }
-        catch ( BadLocationException e )
-        {
-          // Do nothing
-        }
-        try
-        {
-          if ( ( nextChar.equals ( " " ) )
-              && ( pText.substring ( 0 , 1 ).equals ( " " ) ) )
+          int offset = 0 ;
+          String text = pText ;
+          if ( ( countSpaces >= 1 )
+              && ( text.substring ( 0 , 1 ).equals ( " " ) ) ) //$NON-NLS-1$
           {
-            if ( ( secondNextChar.equals ( " " ) )
-                && ( pText.substring ( pText.length ( ) - 1 ).equals ( " " ) ) )
-            {
-              SubTypingEnterTypes.this.document1.insertString ( pIndex + 1 ,
-                  pText.substring ( 1 , pText.length ( ) - 1 ) , null ) ;
-            }
-            else
-            {
-              SubTypingEnterTypes.this.document1.insertString ( pIndex + 1 ,
-                  pText.substring ( 1 ) , null ) ;
-            }
+            text = text.substring ( 1 ) ;
+            offset ++ ;
+            countSpaces -- ;
           }
-          else
+          if ( ( countSpaces >= 1 )
+              && ( text.substring ( text.length ( ) - 1 ).equals ( " " ) ) ) //$NON-NLS-1$
           {
-            SubTypingEnterTypes.this.document1.insertString ( pIndex , pText ,
-                null ) ;
+            text = text.substring ( 0 , text.length ( ) - 1 ) ;
           }
+          SubTypingEnterTypes.this.document1.insertString ( pIndex + offset , text ,
+              null ) ;
         }
         catch ( BadLocationException e )
         {
@@ -608,13 +599,17 @@ public class SubTypingEnterTypes extends AbstractProofView
       }
 
 
+      @ SuppressWarnings ( "synthetic-access" )
       public void insertText ( int pIndex , String pText )
       {
-        String nextChar = "" ;
-        String secondNextChar = "" ;
+        int countSpaces = 0 ;
         try
         {
-          nextChar = SubTypingEnterTypes.this.document2.getText ( pIndex , 1 ) ;
+          while ( SubTypingEnterTypes.this.document2.getText ( pIndex + countSpaces ,
+              1 ).equals ( " " ) ) //$NON-NLS-1$
+          {
+            countSpaces ++ ;
+          }
         }
         catch ( BadLocationException e )
         {
@@ -622,35 +617,22 @@ public class SubTypingEnterTypes extends AbstractProofView
         }
         try
         {
-          secondNextChar = SubTypingEnterTypes.this.document2.getText (
-              pIndex + 1 , 1 ) ;
-        }
-        catch ( BadLocationException e )
-        {
-          // Do nothing
-        }
-        try
-        {
-          if ( ( nextChar.equals ( " " ) )
-              && ( pText.substring ( 0 , 1 ).equals ( " " ) ) )
+          int offset = 0 ;
+          String text = pText ;
+          if ( ( countSpaces >= 1 )
+              && ( text.substring ( 0 , 1 ).equals ( " " ) ) ) //$NON-NLS-1$
           {
-            if ( ( secondNextChar.equals ( " " ) )
-                && ( pText.substring ( pText.length ( ) - 1 ).equals ( " " ) ) )
-            {
-              SubTypingEnterTypes.this.document2.insertString ( pIndex + 1 ,
-                  pText.substring ( 1 , pText.length ( ) - 1 ) , null ) ;
-            }
-            else
-            {
-              SubTypingEnterTypes.this.document2.insertString ( pIndex + 1 ,
-                  pText.substring ( 1 ) , null ) ;
-            }
+            text = text.substring ( 1 ) ;
+            offset ++ ;
+            countSpaces -- ;
           }
-          else
+          if ( ( countSpaces >= 1 )
+              && ( text.substring ( text.length ( ) - 1 ).equals ( " " ) ) ) //$NON-NLS-1$
           {
-            SubTypingEnterTypes.this.document2.insertString ( pIndex , pText ,
-                null ) ;
+            text = text.substring ( 0 , text.length ( ) - 1 ) ;
           }
+          SubTypingEnterTypes.this.document2.insertString ( pIndex + offset , text ,
+              null ) ;
         }
         catch ( BadLocationException e )
         {
