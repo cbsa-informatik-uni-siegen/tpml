@@ -9,6 +9,8 @@ import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView;
 import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingView;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView;
+import de.unisiegen.tpml.graphics.subtyping.NewSubTypingComponent;
+import de.unisiegen.tpml.graphics.subtyping.NewSubTypingView;
 import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView;
 import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView;
@@ -37,7 +39,9 @@ public class ProofViewFactory {
 	}
 	
 	public static ProofView newSubtypingView (SubTypingProofModel model) {
+		// changes benjamin
 		return new SubTypingEnterTypes ( model );
+		//return new NewSubTypingView(model);
 	}
 	
 	public static ProofView newMinimalTypingView (MinimalTypingProofModel model) {

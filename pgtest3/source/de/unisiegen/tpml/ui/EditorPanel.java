@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 
 import javax.swing.JComponent;
@@ -36,6 +37,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
+import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.graphics.ProofViewFactory;
 import de.unisiegen.tpml.graphics.pong.PongView;
 import de.unisiegen.tpml.ui.editor.TextEditorPanel;
@@ -578,6 +580,15 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 		setTexteditor(false);
 		
 		try {
+			/*// changes benjamin
+			String sztype = "int";
+			String sztype2 = "bool";
+			
+			MonoType type = (MonoType) language.newTypeParser ( new StringReader(sztype) ).parse();
+			MonoType type2 = (MonoType) language.newTypeParser ( new StringReader(sztype2) ).parse();
+			SubTypingProofModel model = language.newSubTypingProofModel(type, type2, this.advanced);
+			*/
+			//changes benjamin end
 			SubTypingProofModel model = language.newSubTypingProofModel(null, null, this.advanced);
 			//typechecker = new ProofViewComponent(ProofViewFactory
 			//		.newTypeCheckerView(model), model);

@@ -337,6 +337,11 @@ public class SubTypingProofModel extends AbstractProofModel {
 	public ProofRule[] getRules ( ) {
 		return this.ruleSet.getRules ( );
 	}
+	
+	@Override
+	public DefaultSubTypingProofNode getRoot(){
+		return (DefaultSubTypingProofNode)super.getRoot ( );
+	}
 
 	/**
 	 * 

@@ -166,4 +166,8 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 		return null;
 	}
 
+	public DefaultSubTypingProofNode getLastLeaf ( ) {
+		return (DefaultSubTypingProofNode) super.getLastLeaf ( );
+	}
+
 }

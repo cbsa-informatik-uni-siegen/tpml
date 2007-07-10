@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.subtypingrec;
 import java.util.ArrayList;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode;
 import de.unisiegen.tpml.core.subtyping.ProofStep;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofRule;
@@ -210,5 +211,10 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
 	public SeenTypes < DefaultSubType > getSeenTypes ( ) {
 		return this.seenTypes;
 	}
+	
+	public DefaultSubTypingProofNode getLastLeaf ( ) {
+		return (DefaultSubTypingProofNode) super.getLastLeaf ( );
+	}
+
 
 }

@@ -43,7 +43,15 @@ public interface SubTypingProofNode extends ProofNode {
 	 *
 	 * @see de.unisiegen.tpml.core.ProofNode#getChildAt(int)
 	 */
-	public ProofNode getChildAt ( int childIndex );
+	public SubTypingProofNode getChildAt ( int childIndex );
+	
+	
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.ProofNode#getLastLeaf()
+	 */
+	public SubTypingProofNode getLastLeaf ( );
 
 	/**
 	 * Convenience wrapper for the {@link ProofNode#getSteps()} method, which returns the
@@ -56,5 +64,6 @@ public interface SubTypingProofNode extends ProofNode {
 	 * @see de.unisiegen.tpml.core.ProofStep
 	 */
 	public ProofRule getRule ( );
+	
 
 }
