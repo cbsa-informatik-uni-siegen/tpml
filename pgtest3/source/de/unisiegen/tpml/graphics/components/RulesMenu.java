@@ -97,7 +97,7 @@ public class RulesMenu
 	 *
 	 * @param rules			an array containing the rules
 	 * @param allRules	an array containing all rules 
-	 * @param lang			the language: with this information, the menucrator will find out wich submenus are needed
+	 * @param lang			the language: with this information, the menu crator will find out wich submenus are needed
 	 * @param tnc				the jcomponent from wich the method is called
 	 * @param callBy		a string "samllstep" or "bigstep"
 	 * @param advanced	needed to decide wich rules must be included in the menu
