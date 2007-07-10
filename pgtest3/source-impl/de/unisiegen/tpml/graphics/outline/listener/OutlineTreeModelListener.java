@@ -9,7 +9,6 @@ import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
-import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode ;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
@@ -115,95 +114,43 @@ public final class OutlineTreeModelListener implements TreeModelListener
     Object source = pTreeModelEvent.getSource ( ) ;
     if ( source instanceof SmallStepProofModel )
     {
-      if ( this.expressionProofModel.getRoot ( ).getChildCount ( ) > 0 )
-      {
-        this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
-            .getLastChild ( ).getExpression ( ) ,
-            Outline.ExecuteAutoChange.SMALLSTEP ) ;
-      }
-      else
-      {
-        this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
-            .getExpression ( ) , Outline.ExecuteAutoChange.SMALLSTEP ) ;
-      }
+      this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
+          .getLastLeaf ( ).getExpression ( ) ,
+          Outline.ExecuteAutoChange.SMALLSTEP ) ;
     }
     else if ( source instanceof BigStepProofModel )
     {
-      if ( this.expressionProofModel.getRoot ( ).getChildCount ( ) > 0 )
-      {
-        this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
-            .getLastChild ( ).getExpression ( ) ,
-            Outline.ExecuteAutoChange.BIGSTEP ) ;
-      }
-      else
-      {
-        this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
-            .getExpression ( ) , Outline.ExecuteAutoChange.BIGSTEP ) ;
-      }
+      this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
+          .getLastLeaf ( ).getExpression ( ) ,
+          Outline.ExecuteAutoChange.BIGSTEP ) ;
     }
     else if ( source instanceof TypeCheckerProofModel )
     {
-      if ( this.expressionProofModel.getRoot ( ).getChildCount ( ) > 0 )
-      {
-        this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
-            .getLastChild ( ).getExpression ( ) ,
-            Outline.ExecuteAutoChange.TYPECHECKER ) ;
-      }
-      else
-      {
-        this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
-            .getExpression ( ) , Outline.ExecuteAutoChange.TYPECHECKER ) ;
-      }
+      this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
+          .getLastLeaf ( ).getExpression ( ) ,
+          Outline.ExecuteAutoChange.TYPECHECKER ) ;
     }
     else if ( source instanceof MinimalTypingProofModel )
     {
-      if ( this.expressionProofModel.getRoot ( ).getChildCount ( ) > 0 )
-      {
-        this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
-            .getLastChild ( ).getExpression ( ) ,
-            Outline.ExecuteAutoChange.MINIMALTYPING ) ;
-      }
-      else
-      {
-        this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
-            .getExpression ( ) , Outline.ExecuteAutoChange.MINIMALTYPING ) ;
-      }
+      this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
+          .getLastLeaf ( ).getExpression ( ) ,
+          Outline.ExecuteAutoChange.MINIMALTYPING ) ;
     }
     else if ( source instanceof SubTypingProofModel )
     {
       if ( this.defaultOutline == this.newSubTypingView.getOutline1 ( ) )
       {
-        if ( this.newSubTypingView.getSubTypingProofModel ( ).getRoot ( )
-            .getChildCount ( ) > 0 )
-        {
-          this.defaultOutline.load (
-              ( ( DefaultSubTypingProofNode ) this.newSubTypingView
-                  .getSubTypingProofModel ( ).getRoot ( ).getLastChild ( ) )
-                  .getType ( ) , Outline.ExecuteAutoChange.SUBTYPING ) ;
-        }
-        else
-        {
-          this.defaultOutline.load ( this.newSubTypingView
-              .getSubTypingProofModel ( ).getRoot ( ).getType ( ) ,
-              Outline.ExecuteAutoChange.SUBTYPING ) ;
-        }
+        this.defaultOutline.load (
+            this.newSubTypingView.getSubTypingProofModel ( ).getRoot ( )
+                .getLastLeaf ( ).getType ( ) ,
+            Outline.ExecuteAutoChange.SUBTYPING ) ;
       }
       else
       {
-        if ( this.newSubTypingView.getSubTypingProofModel ( ).getRoot ( )
-            .getChildCount ( ) > 0 )
-        {
-          this.defaultOutline.load (
-              ( ( DefaultSubTypingProofNode ) this.newSubTypingView
-                  .getSubTypingProofModel ( ).getRoot ( ).getLastChild ( ) )
-                  .getType2 ( ) , Outline.ExecuteAutoChange.SUBTYPING ) ;
-        }
-        else
-        {
-          this.defaultOutline.load ( this.newSubTypingView
-              .getSubTypingProofModel ( ).getRoot ( ).getType2 ( ) ,
-              Outline.ExecuteAutoChange.SUBTYPING ) ;
-        }
+        this.defaultOutline.load (
+            this.newSubTypingView.getSubTypingProofModel ( ).getRoot ( )
+                .getLastLeaf ( ).getType2 ( ) ,
+            Outline.ExecuteAutoChange.SUBTYPING ) ;
       }
     }
     else if ( source instanceof TypeInferenceProofModel )
