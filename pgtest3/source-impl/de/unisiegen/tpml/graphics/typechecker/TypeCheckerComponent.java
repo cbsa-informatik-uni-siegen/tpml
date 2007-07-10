@@ -13,12 +13,14 @@ import javax.swing.event.TreeModelEvent;
 
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 import de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer;
+import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent;
 import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
 
 /**
@@ -85,11 +87,14 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	 * an new node will be inserted.
 	 */
 	private ProofNode										jumpNode;
+	
+	private boolean advanced;
 
 	
-	public TypeCheckerComponent (TypeCheckerProofModel model) {
+	public TypeCheckerComponent (TypeCheckerProofModel model, boolean advanced) {
 		super (model);
 		
+		this.advanced = advanced;
 		this.treeNodeLayout			= new TreeNodeLayout (10);
 		this.jumpNode						= null;
 		
@@ -186,7 +191,7 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 			// if the node has no userobject it may be new in the
 			// tree, so a new TypeCheckerNodeComponent will be created
 			// and added to the TypeCheckerProofNode  
-			nodeComponent = new TypeCheckerNodeComponent (node, (TypeCheckerProofModel)this.proofModel, this.translator);
+			nodeComponent = new TypeCheckerNodeComponent (node, (TypeCheckerProofModel)this.proofModel, this.translator, this.advanced);
 			node.setUserObject(nodeComponent);
 			
 			// the newly created nodeComponent is a gui-element so
@@ -417,5 +422,20 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	public int getScrollableUnitIncrement (Rectangle visibleRect, int orientation, int direction) {
 		//  XXX: Dynamic unit increment
 		return 10;
+	}
+	
+	public void setAdvanced (boolean advancedP)
+	{
+		this.advanced = advancedP;
+		//TODO vielleicht wollen wir alles neue malen....
+		//this.repaint();
+//	 update all active nodes
+		Enumeration<ProofNode> enumeration = this.proofModel.getRoot().postorderEnumeration();
+		while (enumeration.hasMoreElements()) {
+			// tell the component belonging to this node, that we have a new advanced state
+			TypeCheckerProofNode node = (TypeCheckerProofNode)enumeration.nextElement();
+			TypeCheckerNodeComponent component = (TypeCheckerNodeComponent)node.getUserObject();
+			component.setAdvanced(advanced);
+		}
 	}
 }

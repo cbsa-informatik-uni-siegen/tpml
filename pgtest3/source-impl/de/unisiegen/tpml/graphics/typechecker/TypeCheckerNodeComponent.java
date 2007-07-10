@@ -28,6 +28,7 @@ import de.unisiegen.tpml.core.languages.LanguageTypeParser ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.RowType;
 import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.graphics.Messages ;
 import de.unisiegen.tpml.graphics.components.CompoundExpression ;
@@ -156,7 +157,11 @@ public class TypeCheckerNodeComponent extends JComponent implements
    * The {@link JLabel} showing the resulting type of this node, once the node
    * has been evaluated.
    */
-  private JLabel typeLabel ;
+  //private JLabel typeLabel ;
+  
+  private JLabel typeLabel0;
+  
+  private JLabel typeLabel1;
   
 
   /**
@@ -186,6 +191,17 @@ public class TypeCheckerNodeComponent extends JComponent implements
    * syntactical sugor.
    */
   private LanguageTranslator translator ;
+  
+  /**
+   * the advaced mode
+   */
+  private boolean advanced;
+
+
+	/**
+	 * saves the last used MaxWidth
+	 */
+	private int lastMaxWidth;
 
 
   /**
@@ -201,9 +217,10 @@ public class TypeCheckerNodeComponent extends JComponent implements
    * @param translator The translator of the model for the selected language
    */
   public TypeCheckerNodeComponent ( TypeCheckerProofNode node ,
-      TypeCheckerProofModel model , LanguageTranslator translator )
+      TypeCheckerProofModel model , LanguageTranslator translator, boolean advanced )
   {
     super ( ) ;
+    this.advanced = advanced;
     this.proofNode = node ;
     this.proofModel = model ;
     this.translator = translator ;
@@ -230,10 +247,21 @@ public class TypeCheckerNodeComponent extends JComponent implements
     this.ruleLabel = new JLabel ( ) ;
     add ( this.ruleLabel ) ;
     this.ruleLabel.setVisible ( false ) ;
-    this.typeLabel = new JLabel ( ) ;
-    add ( this.typeLabel ) ;
-    this.typeLabel.setText ( " :: " ) ; //$NON-NLS-1$
-    this.typeLabel.addMouseListener ( new OutlineMouseListener ( this ) ) ;
+    //this.typeLabel = new JLabel ( ) ;
+    //add ( this.typeLabel ) ;
+    //this.typeLabel.setText ( " !! " ) ; //$NON-NLS-1$
+    //this.typeLabel.addMouseListener ( new OutlineMouseListener ( this ) ) ;
+    
+    this.typeLabel0 = new JLabel ( ) ;
+    add ( this.typeLabel0 ) ;
+    this.typeLabel0.setText ( "  (" ) ; //$NON-NLS-1$
+    
+    this.typeLabel1 = new JLabel ( ) ;
+    add ( this.typeLabel1 ) ;
+    this.typeLabel1.setText ( " )" ) ; //$NON-NLS-1$
+    
+    
+   
     this.typeEnter = new TypeCheckerEnterType ( ) ;
     add ( this.typeEnter ) ;
     /*
@@ -378,10 +406,21 @@ public class TypeCheckerNodeComponent extends JComponent implements
    */
   private void placeElements ( int maxWidth )
   {
+  	//will save if the type is shown or not
+  	boolean showType = false;
+  	//will save if type is Rowtype or not to render ( ) or not
+  	boolean rowType = false;
+  	if (this.proofNode.getType () instanceof RowType)
+  	{
+  		rowType = true;
+  	}
+  	//save the maxWidht
+  	lastMaxWidth = maxWidth;
     // get the size for the index at the beginning: (x)
     FontMetrics fm = AbstractRenderer.getTextFontMetrics ( ) ;
     Dimension labelSize = new Dimension ( fm.stringWidth ( this.indexLabel
         .getText ( ) ) , fm.getHeight ( ) ) ;
+    Dimension braceSize = new Dimension ( fm.stringWidth(typeLabel0.getText()), AbstractRenderer.getAbsoluteHeight());
     this.dimension.setSize ( labelSize.width , labelSize.height ) ;
     // there will be a bit spacing between the index label and the expression
     this.dimension.width += this.spacing ;
@@ -391,24 +430,34 @@ public class TypeCheckerNodeComponent extends JComponent implements
     Dimension expSize = this.compoundExpression.getNeededSize ( maxWidth ) ;
     this.dimension.width += expSize.width ;
     this.dimension.height = Math.max ( expSize.height , this.dimension.height ) ;
+    
+    Dimension typeSize = typeComponent.getNeededSize (maxWidth);
+    
+    if (rowType)
+    {
+    	//TODO nur Test, damit genug Platz ist...
+    	//typeSize.width += AbstractRenderer.getTextFontMetrics().stringWidth("   )  ");
+    	this.dimension.width += AbstractRenderer.getTextFontMetrics().stringWidth("   )  ");
+    }
+    
     // get the neede size for the type
-    // changes benjamin to see the type in typechecker
-    // TODO insert second condition
-    //typeRenderer = new PrettyStringRenderer();
-    if (this.proofNode.getType () != null /*&& this.proofNode.isFinished()*/) {
-      
+    if (this.proofNode.getType () != null && (this.proofNode.isFinished() || this.advanced) )
+    {
+    	//ok, we want to see the type
+    	showType=true;
       
       //typeRenderer.setPrettyString (this.proofNode.getType ().toPrettyString ());
       //FontMetrics fm = AbstractRenderer.getTextFontMetrics ();
       
-      this.proofNode.getType ().toPrettyString ();
-      this.typeLabel.setText(" :: " + this.proofNode.getType()); //$NON-NLS-1$
+      //this.proofNode.getType ().toPrettyString ();
+      //this.typeLabel.setText(" :: " + this.proofNode.getType()); //$NON-NLS-1$
     }
     else {
-      this.typeLabel.setText(" :: "); //$NON-NLS-1$
+      //hide the type
+    	showType=false;
     }
     //Dimension typeSize = this.typeLabel.getPreferredSize ( ) ;
-    Dimension typeSize = typeComponent.getNeededSize (maxWidth);
+    
     
     //TODO: Fallunterscheidung: Wenn es noch hinter die Expression passt, dann da hinrendern, sonst in die nächste Zeile...
     boolean broke=false;
@@ -430,10 +479,11 @@ public class TypeCheckerNodeComponent extends JComponent implements
     int posX = 0 ;
     this.indexLabel.setBounds ( posX , 0 , labelSize.width , this.dimension.height ) ;
     posX += labelSize.width + this.spacing ;
-    this.compoundExpression.setBounds ( posX , 0 , expSize.width , this.dimension.height ) ;
+    //this.compoundExpression.setBounds ( posX , 0 , expSize.width , this.dimension.height ) ;
+    this.compoundExpression.setBounds ( posX , 0 , expSize.width , expSize.height ) ;
     int posXfront = posX;
     posX += expSize.width ;
-    //this.typeLabel.setBounds ( posX , 0 , typeSize.width , this.dimension.height ) ;
+    //this.typeLabel.setBounds ( posX , 0 , braceSize.width , braceSize.height ) ;
     //
     
     //this.typeLabel.setBounds(posX, 0, typeSize.width, this.dimension.height);
@@ -442,16 +492,72 @@ public class TypeCheckerNodeComponent extends JComponent implements
     //ToListenForMouseContainer tlfmc = new ToListenForMouseContainer();
    if (broke)
    {
-  	 this.typeComponent.setBounds (posXfront, 0+expSize.height + AbstractRenderer.getAbsoluteHeight(), typeSize.width, typeSize.height);
+  	 //this.typeComponent.setBounds (posXfront, 0+expSize.height + AbstractRenderer.getAbsoluteHeight(), typeSize.width, typeSize.height);
+  	 if (showType)
+  	 {
+  		 if (rowType)
+  			 {
+  			 System.out.println("Rowtype!");
+  			 	//fm = AbstractRenderer.getTextFontMetrics();
+  			 	//Graphics g = this.getGraphics();
+  			 	//g.setColor(Color.BLACK);
+  			 	//g.setFont(AbstractRenderer.getExponentFont());
+  			 	//g.drawString("(", posX, 5);
+  			 //this.typeLabel.setText("(");
+  			 //this.typeLabel.setBounds(0, 0, 10, 10);
+  			 	posX += AbstractRenderer.getTextFontMetrics().stringWidth("(");
+  			 	this.typeComponent.setBounds (posXfront, 0+expSize.height, typeSize.width, typeSize.height);
+  			 	posX += typeSize.width ;
+  			 	
+  			 	//g.drawString(")", posX, 5);
+  			 	posX += AbstractRenderer.getTextFontMetrics().stringWidth(")");
+  			 }
+  		 else
+  		 {
+  			 this.typeComponent.setBounds (posXfront, 0+expSize.height, typeSize.width, typeSize.height);
+  			 posX += typeSize.width ;
+  		 }   
+  	 }
+  	 else
+  	 {
+  		 this.typeComponent.setBounds(0,0,0,0);
+  	 }
    }
    else
    {
-  	 this.typeComponent.setBounds (posX, 0, typeSize.width, typeSize.height); 
+  	 if (showType)
+  	 {
+  		 if (rowType)
+			 {
+  			 System.out.println("Rowtype!");
+  			 //this.typeLabel.setText("(");
+  			 //this.typeLabel.setBounds(posX, 0, AbstractRenderer.getTextFontMetrics().stringWidth("("), AbstractRenderer.getAbsoluteHeight());
+  			 //TODO warum 2???
+  			 this.typeLabel0.setBounds(posX, 2, braceSize.width, braceSize.height);
+  			 posX += typeLabel0.getSize().width;
+			 	this.typeComponent.setBounds (posX, 0, typeSize.width, typeSize.height);
+			 	posX += typeSize.width ;
+			 	//TODO warum 2???
+ 			 typeLabel1.setBounds(posX, 2, braceSize.width, braceSize.height);
+ 			 posX += typeLabel1.getSize().width;
+			 }
+  		 else
+  		 {
+  			 this.typeComponent.setBounds (posX, 0, typeSize.width, typeSize.height);
+  			 posX += typeSize.width ;
+  		 }
+			 	
+  	   
+  	 }
+  	 else
+  	 {
+  		 this.typeComponent.setBounds(0,0,0,0);
+  	 }
    }
     
     //typeRenderer.render (typePosition, 0,typeRenderer.getNeededSize (maxWidth).width ,typeRenderer.getNeededSize (maxWidth).height, this.getGraphics (), sb, tlfmc);
    
-    posX += typeSize.width ;
+    //posX += typeSize.width ;
     //posX += typeSize.width;
     
     
@@ -828,6 +934,11 @@ public class TypeCheckerNodeComponent extends JComponent implements
   {
     return this.compoundExpression ;
   }
+/**
+ * TODO
+ *
+ * @param advancedP
+ */
 //  
 //  public void paintComponent (Graphics gc)
 //  {
@@ -843,4 +954,15 @@ public class TypeCheckerNodeComponent extends JComponent implements
 //   
 //    
 //  }
+
+/**
+ * sets the advanced
+ * @param advancedP the advanced
+ */
+	public void setAdvanced(boolean advancedP)
+	{
+		this.advanced = advancedP;
+		this.placeElements(lastMaxWidth);
+		
+	}
 }

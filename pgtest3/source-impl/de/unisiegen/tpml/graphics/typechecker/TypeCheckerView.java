@@ -81,7 +81,7 @@ public class TypeCheckerView extends AbstractProofView
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
     this.setLayout ( new GridBagLayout ( ) ) ;
     this.scrollPane = new JScrollPane ( ) ;
-    this.component = new TypeCheckerComponent ( this.typeCheckerProofModel ) ;
+    this.component = new TypeCheckerComponent ( this.typeCheckerProofModel, isAdvanced() ) ;
     this.scrollPane.setViewportView ( this.component ) ;
     this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
     this.scrollPane.addComponentListener ( new ComponentAdapter ( )
@@ -156,5 +156,17 @@ public class TypeCheckerView extends AbstractProofView
   public void guess ( ) throws IllegalStateException , ProofGuessException
   {
     this.component.guess ( ) ;
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.graphics.AbstractProofView#setAdvanced(boolean)
+   */
+  @ Override
+  public void setAdvanced ( boolean advanced )
+  {
+    super.setAdvanced ( advanced ) ;
+    this.component.setAdvanced ( isAdvanced ( ) ) ;
   }
 }
