@@ -1,66 +1,64 @@
 package de.unisiegen.tpml.graphics.outline ;
 
 
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Timer;
-
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
-import javax.swing.border.LineBorder;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.tree.TreePath;
-
-import de.unisiegen.tpml.core.expressions.Attribute;
-import de.unisiegen.tpml.core.expressions.CurriedMethod;
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.expressions.Identifier;
-import de.unisiegen.tpml.core.expressions.Method;
-import de.unisiegen.tpml.core.interfaces.BoundIdentifiers;
-import de.unisiegen.tpml.core.interfaces.BoundTypeNames;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
-import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers;
-import de.unisiegen.tpml.core.interfaces.DefaultTypeNames;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes;
-import de.unisiegen.tpml.core.interfaces.ExpressionOrType;
-import de.unisiegen.tpml.core.interfaces.SortedChildren;
-import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
-import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.types.Type;
-import de.unisiegen.tpml.core.types.TypeName;
-import de.unisiegen.tpml.graphics.StyledLanguageDocument;
-import de.unisiegen.tpml.graphics.StyledLanguageEditor;
-import de.unisiegen.tpml.graphics.Theme;
-import de.unisiegen.tpml.graphics.bigstep.BigStepView;
-import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingView;
-import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding;
-import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineActionListener;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineItemListener;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineKeyListener;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
-import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeExpansionListener;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeModelListener;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeSelectionListener;
-import de.unisiegen.tpml.graphics.outline.node.OutlineNode;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineDisplayTree;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
-import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences;
-import de.unisiegen.tpml.graphics.smallstep.SmallStepView;
-import de.unisiegen.tpml.graphics.subtyping.NewSubTypingView;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes;
-import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView;
-import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView;
-import de.unisiegen.tpml.ui.editor.TextEditorPanel;
+import java.awt.Color ;
+import java.awt.Rectangle ;
+import java.lang.reflect.InvocationTargetException ;
+import java.util.ArrayList ;
+import java.util.Enumeration ;
+import java.util.Timer ;
+import javax.swing.JPanel ;
+import javax.swing.JScrollPane ;
+import javax.swing.SwingUtilities ;
+import javax.swing.border.LineBorder ;
+import javax.swing.text.BadLocationException ;
+import javax.swing.text.SimpleAttributeSet ;
+import javax.swing.text.StyleConstants ;
+import javax.swing.tree.TreePath ;
+import de.unisiegen.tpml.core.expressions.Attribute ;
+import de.unisiegen.tpml.core.expressions.CurriedMethod ;
+import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.Method ;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.BoundTypeNames ;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypeNames ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
+import de.unisiegen.tpml.core.interfaces.SortedChildren ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
+import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.core.types.TypeName ;
+import de.unisiegen.tpml.graphics.StyledLanguageDocument ;
+import de.unisiegen.tpml.graphics.StyledLanguageEditor ;
+import de.unisiegen.tpml.graphics.Theme ;
+import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
+import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingView ;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineActionListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineItemListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineKeyListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeExpansionListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeModelListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeSelectionListener ;
+import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineDisplayTree ;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask ;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
+import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
+import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
+import de.unisiegen.tpml.graphics.subtyping.NewSubTypingView ;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes ;
+import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
+import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView ;
+import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
 
 
 /**
@@ -138,7 +136,7 @@ public final class DefaultOutline implements Outline
    * 
    * @see #getUI()
    */
-  private OutlineUI uI ;
+  private OutlineUI uI = null ;
 
 
   /**
@@ -146,56 +144,62 @@ public final class DefaultOutline implements Outline
    * 
    * @see #getPreferences()
    */
-  private OutlinePreferences preferences ;
+  private OutlinePreferences preferences = null ;
 
 
   /**
    * The loaded {@link ExpressionOrType}.
    */
-  private ExpressionOrType loadedExpressionOrType ;
+  private ExpressionOrType loadedExpressionOrType = null ;
 
 
   /**
    * The {@link OutlineUnbound}, in which the unbound {@link Identifier}s in
    * the given {@link Expression} are saved.
    */
-  private OutlineUnbound outlineUnbound ;
+  private OutlineUnbound outlineUnbound = null ;
 
 
   /**
    * The <code>Timer</code> for the executing.
    */
-  private Timer outlineTimer ;
+  private Timer outlineTimer = null ;
 
 
   /**
-   * The root node.
+   * The root {@link OutlineNode}.
    */
-  private OutlineNode rootOutlineNode ;
+  private OutlineNode rootOutlineNode = null ;
 
 
   /**
-   * The source code editor.
+   * The {@link TextEditorPanel}.
    */
-  private TextEditorPanel textEditorPanel ;
+  private TextEditorPanel textEditorPanel = null ;
 
 
   /**
-   * The subTypingEnterTypes
+   * The {@link NewSubTypingView}.
    */
-  private SubTypingEnterTypes subTypingEnterTypes ;
+  private NewSubTypingView subTypingView = null ;
+
+
+  /**
+   * The {@link SubTypingEnterTypes}.
+   */
+  private SubTypingEnterTypes subTypingEnterTypes = null ;
 
 
   /**
    * The {@link StyledLanguageEditor}.
    */
-  private StyledLanguageEditor styledLanguageEditor ;
+  private StyledLanguageEditor styledLanguageEditor = null ;
 
 
   /**
    * The {@link OutlineItemListener}.
    */
-  private OutlineItemListener itemListener ;
+  private OutlineItemListener itemListener = null ;
 
 
   /**
@@ -205,12 +209,8 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( BigStepView pBigStepView )
   {
-    this.loadedExpressionOrType = null ;
-    this.rootOutlineNode = null ;
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
-    this.textEditorPanel = null ;
-    this.subTypingEnterTypes = null ;
     this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
     this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
     this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
@@ -280,12 +280,8 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( MinimalTypingView pMinimalTypingView )
   {
-    this.loadedExpressionOrType = null ;
-    this.rootOutlineNode = null ;
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
-    this.textEditorPanel = null ;
-    this.subTypingEnterTypes = null ;
     this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
     this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
     this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
@@ -353,16 +349,91 @@ public final class DefaultOutline implements Outline
   /**
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    * 
+   * @param pSubTypingView The {@link NewSubTypingView}.
+   */
+  public DefaultOutline ( NewSubTypingView pSubTypingView )
+  {
+    this.preferences = new OutlinePreferences ( ) ;
+    this.uI = new OutlineUI ( this ) ;
+    this.subTypingView = pSubTypingView ;
+    this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
+    this.uI.getJCheckBoxHighlightSourceCode ( ).setVisible ( false ) ;
+    this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.uI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
+    this.uI.getJMenuItemHighlightSourceCode ( ).setVisible ( false ) ;
+    this.uI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
+    this.uI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
+    this.uI.getJCheckBoxAutoUpdate ( ).setVisible ( false ) ;
+    this.uI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
+    this.uI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
+    this.uI.getJMenuItemAutoUpdate ( ).setVisible ( false ) ;
+    // ComponentListener
+    this.uI.getJPanelMain ( )
+        .addComponentListener (
+            new OutlineComponentListener ( pSubTypingView.getJSplitPane ( ) ,
+                this ) ) ;
+    // PropertyChangeListener
+    pSubTypingView
+        .addPropertyChangeListener ( new OutlinePropertyChangeListener (
+            pSubTypingView.getJSplitPane ( ) , this ) ) ;
+    Theme.currentTheme ( ).addPropertyChangeListener (
+        new OutlinePropertyChangeListener ( this ) ) ;
+    // TreeModelListener
+    pSubTypingView.getSubTypingProofModel ( ).addTreeModelListener (
+        new OutlineTreeModelListener ( this , pSubTypingView
+            ) ) ;
+    // MouseListener
+    this.uI.getJTreeOutline ( ).addMouseListener (
+        new OutlineMouseListener ( this ) ) ;
+    // ActionListener
+    OutlineActionListener outlineActionListener = new OutlineActionListener (
+        this ) ;
+    this.uI.getJMenuItemExpand ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemExpandAll ( )
+        .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCollapse ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCollapseAll ( ).addActionListener (
+        outlineActionListener ) ;
+    this.uI.getJMenuItemClose ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCloseAll ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuPreferences ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemSelection ( )
+        .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemBinding ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemFree ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemReplace ( ).addActionListener ( outlineActionListener ) ;
+    // ComponentListener
+    this.uI.getJPanelMain ( ).addComponentListener (
+        new OutlineComponentListener ( this ) ) ;
+    // ItemListener
+    this.itemListener = new OutlineItemListener ( this ) ;
+    this.uI.getJCheckBoxSelection ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxBinding ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxFree ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxReplace ( ).addItemListener ( this.itemListener ) ;
+    // KeyListener
+    this.uI.getJTreeOutline ( )
+        .addKeyListener ( new OutlineKeyListener ( this ) ) ;
+    // TreeExpansionListener
+    this.uI.getJTreeOutline ( ).addTreeExpansionListener (
+        new OutlineTreeExpansionListener ( this ) ) ;
+    // TreeSelectionListener
+    this.uI.getJTreeOutline ( ).getSelectionModel ( ).addTreeSelectionListener (
+        new OutlineTreeSelectionListener ( this ) ) ;
+  }
+
+
+  /**
+   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
+   * 
    * @param pSmallStepView {@link SmallStepView}.
    */
   public DefaultOutline ( SmallStepView pSmallStepView )
   {
-    this.loadedExpressionOrType = null ;
-    this.rootOutlineNode = null ;
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
-    this.textEditorPanel = null ;
-    this.subTypingEnterTypes = null ;
     this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
     this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
     this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
@@ -436,11 +507,8 @@ public final class DefaultOutline implements Outline
   public DefaultOutline ( SubTypingEnterTypes pSubTypingEnterTypes ,
       StyledLanguageEditor pStyledLanguageEditor )
   {
-    this.loadedExpressionOrType = null ;
-    this.rootOutlineNode = null ;
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
-    this.textEditorPanel = null ;
     this.subTypingEnterTypes = pSubTypingEnterTypes ;
     this.styledLanguageEditor = pStyledLanguageEditor ;
     this.uI.getJCheckBoxBinding ( ).setVisible ( false ) ;
@@ -495,26 +563,6 @@ public final class DefaultOutline implements Outline
     this.uI.getJTreeOutline ( ).getSelectionModel ( ).addTreeSelectionListener (
         new OutlineTreeSelectionListener ( this ) ) ;
   }
-  
-  /**
-   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
-   * 
-   * @param pSubTypingEnterTypes The {@link SubTypingEnterTypes}.
-   * @param pStyledLanguageEditor The {@link StyledLanguageEditor}.
-   */
-  public DefaultOutline ( NewSubTypingView pSubTypingView){
-	  this.loadedExpressionOrType = null ;
-	    this.rootOutlineNode = null ;
-	    this.preferences = new OutlinePreferences ( ) ;
-	    this.uI = new OutlineUI ( this ) ;
-	    this.textEditorPanel = null ;
-	    //this.subTypingEnterTypes = pSubTypingEnterTypes ;
-	    //this.styledLanguageEditor = pStyledLanguageEditor ;
-	    this.uI.getJCheckBoxBinding ( ).setVisible ( false ) ;
-	    this.uI.getJCheckBoxFree ( ).setVisible ( false ) ;
-	    this.uI.getJMenuItemBinding ( ).setVisible ( false ) ;
-	    this.uI.getJMenuItemFree ( ).setVisible ( false ) ;
-  }
 
 
   /**
@@ -524,12 +572,9 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( TextEditorPanel pTextEditorPanel )
   {
-    this.loadedExpressionOrType = null ;
-    this.rootOutlineNode = null ;
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
     this.textEditorPanel = pTextEditorPanel ;
-    this.subTypingEnterTypes = null ;
     // ComponentListener
     this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( pTextEditorPanel.getJSplitPane ( ) ,
@@ -598,12 +643,8 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( TypeCheckerView pTypeCheckerView )
   {
-    this.loadedExpressionOrType = null ;
-    this.rootOutlineNode = null ;
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
-    this.textEditorPanel = null ;
-    this.subTypingEnterTypes = null ;
     this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
     this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
     this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
@@ -675,12 +716,8 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( TypeInferenceView pTypeInferenceView )
   {
-    this.loadedExpressionOrType = null ;
-    this.rootOutlineNode = null ;
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
-    this.textEditorPanel = null ;
-    this.subTypingEnterTypes = null ;
     this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
     this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
     this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
@@ -1243,30 +1280,6 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * Returns the {@link OutlinePreferences}.
-   * 
-   * @return The {@link OutlinePreferences}.
-   * @see #preferences
-   */
-  public final OutlinePreferences getPreferences ( )
-  {
-    return this.preferences ;
-  }
-
-
-  /**
-   * Returns the {@link OutlineUI}.
-   * 
-   * @return The {@link OutlineUI}.
-   * @see #uI
-   */
-  public final OutlineUI getUI ( )
-  {
-    return this.uI ;
-  }
-
-
-  /**
    * Returns the <code>JPanel</code> of the {@link OutlineUI}.
    * 
    * @return The <code>JPanel</code> of the {@link OutlineUI}.
@@ -1275,6 +1288,18 @@ public final class DefaultOutline implements Outline
   public final JPanel getPanel ( )
   {
     return this.uI.getJPanelMain ( ) ;
+  }
+
+
+  /**
+   * Returns the {@link OutlinePreferences}.
+   * 
+   * @return The {@link OutlinePreferences}.
+   * @see #preferences
+   */
+  public final OutlinePreferences getPreferences ( )
+  {
+    return this.preferences ;
   }
 
 
@@ -1303,6 +1328,18 @@ public final class DefaultOutline implements Outline
 
 
   /**
+   * Returns the subTypingView.
+   * 
+   * @return The subTypingView.
+   * @see #subTypingView
+   */
+  public NewSubTypingView getSubTypingView ( )
+  {
+    return this.subTypingView ;
+  }
+
+
+  /**
    * Returns the textEditorPanel.
    * 
    * @return The textEditorPanel.
@@ -1311,6 +1348,18 @@ public final class DefaultOutline implements Outline
   public TextEditorPanel getTextEditorPanel ( )
   {
     return this.textEditorPanel ;
+  }
+
+
+  /**
+   * Returns the {@link OutlineUI}.
+   * 
+   * @return The {@link OutlineUI}.
+   * @see #uI
+   */
+  public final OutlineUI getUI ( )
+  {
+    return this.uI ;
   }
 
 
@@ -1732,13 +1781,6 @@ public final class DefaultOutline implements Outline
         setError ( true ) ;
       }
       return ;
-    }
-    // Throw an exception if something different should be loaded.
-    if ( ( ! ( pExpressionOrType instanceof Expression ) )
-        && ( ! ( pExpressionOrType instanceof Type ) ) )
-    {
-      throw new IllegalArgumentException (
-          "Outline: The input is not an Expression or Type!" ) ; //$NON-NLS-1$
     }
     if ( pExecute instanceof Outline.ExecuteAutoChange )
     {

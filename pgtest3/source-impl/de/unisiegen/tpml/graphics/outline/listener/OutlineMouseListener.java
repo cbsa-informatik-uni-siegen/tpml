@@ -1,31 +1,30 @@
 package de.unisiegen.tpml.graphics.outline.listener ;
 
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.tree.TreePath;
-
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
-import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.graphics.StyledLanguageEditor;
-import de.unisiegen.tpml.graphics.bigstep.BigStepNodeComponent;
-import de.unisiegen.tpml.graphics.bigstep.BigStepView;
-import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingNodeComponent;
-import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingView;
-import de.unisiegen.tpml.graphics.outline.DefaultOutline;
-import de.unisiegen.tpml.graphics.outline.Outline;
-import de.unisiegen.tpml.graphics.outline.node.OutlineNode;
-import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent;
-import de.unisiegen.tpml.graphics.smallstep.SmallStepView;
-import de.unisiegen.tpml.graphics.subtyping.NewSubTypingNodeComponent;
-import de.unisiegen.tpml.graphics.subtyping.StyledTypeEnterField;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingNodeComponent;
-import de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent;
-import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView;
-import de.unisiegen.tpml.ui.editor.TextEditorPanel;
+import java.awt.event.MouseEvent ;
+import java.awt.event.MouseListener ;
+import javax.swing.tree.TreePath ;
+import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
+import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.graphics.StyledLanguageEditor ;
+import de.unisiegen.tpml.graphics.bigstep.BigStepNodeComponent ;
+import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
+import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingNodeComponent ;
+import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingView ;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
+import de.unisiegen.tpml.graphics.outline.Outline ;
+import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
+import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent ;
+import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
+import de.unisiegen.tpml.graphics.subtyping.NewSubTypingNodeComponent ;
+import de.unisiegen.tpml.graphics.subtyping.NewSubTypingView ;
+import de.unisiegen.tpml.graphics.subtyping.StyledTypeEnterField ;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes ;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingNodeComponent ;
+import de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent ;
+import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
+import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
 
 
 /**
@@ -86,7 +85,11 @@ public final class OutlineMouseListener implements MouseListener
    * The {@link SubTypingNodeComponent}.
    */
   private SubTypingNodeComponent subTypingNodeComponent = null ;
-  
+
+
+  /**
+   * The {@link NewSubTypingNodeComponent}.
+   */
   private NewSubTypingNodeComponent newSubTypingNodeComponent = null ;
 
 
@@ -110,23 +113,6 @@ public final class OutlineMouseListener implements MouseListener
 
   /**
    * Initializes the {@link OutlineMouseListener} with the given
-   * {@link SubTypingNodeComponent}.
-   * 
-   * @param pSubTypingNodeComponent The {@link SubTypingNodeComponent}.
-   */
-  public OutlineMouseListener ( SubTypingNodeComponent pSubTypingNodeComponent )
-  {
-    this.subTypingNodeComponent = pSubTypingNodeComponent ;
-  }
-  
-  public OutlineMouseListener ( NewSubTypingNodeComponent pNewSubTypingNodeComponent )
-  {
-    this.newSubTypingNodeComponent = pNewSubTypingNodeComponent ;
-  }
-
-
-  /**
-   * Initializes the {@link OutlineMouseListener} with the given
    * {@link DefaultOutline}.
    * 
    * @param pDefaultOutline The {@link DefaultOutline}.
@@ -134,6 +120,32 @@ public final class OutlineMouseListener implements MouseListener
   public OutlineMouseListener ( DefaultOutline pDefaultOutline )
   {
     this.defaultOutline = pDefaultOutline ;
+  }
+
+
+  /**
+   * Initializes the {@link OutlineMouseListener} with the given
+   * {@link MinimalTypingNodeComponent}.
+   * 
+   * @param pMinimalTypingNodeComponent The {@link MinimalTypingNodeComponent}.
+   */
+  public OutlineMouseListener (
+      MinimalTypingNodeComponent pMinimalTypingNodeComponent )
+  {
+    this.minimalTypingNodeComponent = pMinimalTypingNodeComponent ;
+  }
+
+
+  /**
+   * Initializes the {@link OutlineMouseListener} with the given
+   * {@link NewSubTypingNodeComponent}.
+   * 
+   * @param pSubTypingNodeComponent The {@link NewSubTypingNodeComponent}.
+   */
+  public OutlineMouseListener (
+      NewSubTypingNodeComponent pSubTypingNodeComponent )
+  {
+    this.newSubTypingNodeComponent = pSubTypingNodeComponent ;
   }
 
 
@@ -166,6 +178,18 @@ public final class OutlineMouseListener implements MouseListener
 
   /**
    * Initializes the {@link OutlineMouseListener} with the given
+   * {@link SubTypingNodeComponent}.
+   * 
+   * @param pSubTypingNodeComponent The {@link SubTypingNodeComponent}.
+   */
+  public OutlineMouseListener ( SubTypingNodeComponent pSubTypingNodeComponent )
+  {
+    this.subTypingNodeComponent = pSubTypingNodeComponent ;
+  }
+
+
+  /**
+   * Initializes the {@link OutlineMouseListener} with the given
    * {@link TextEditorPanel}.
    * 
    * @param pTextEditorPanel The {@link TextEditorPanel}.
@@ -186,19 +210,6 @@ public final class OutlineMouseListener implements MouseListener
       TypeCheckerNodeComponent pTypeCheckerNodeComponent )
   {
     this.typeCheckerNodeComponent = pTypeCheckerNodeComponent ;
-  }
-
-
-  /**
-   * Initializes the {@link OutlineMouseListener} with the given
-   * {@link MinimalTypingNodeComponent}.
-   * 
-   * @param pMinimalTypingNodeComponent The {@link MinimalTypingNodeComponent}.
-   */
-  public OutlineMouseListener (
-      MinimalTypingNodeComponent pMinimalTypingNodeComponent )
-  {
-    this.minimalTypingNodeComponent = pMinimalTypingNodeComponent ;
   }
 
 
@@ -458,6 +469,63 @@ public final class OutlineMouseListener implements MouseListener
               .getOutline ( ).load (
                   this.minimalTypingNodeComponent.getTypeComponent2 ( )
                       .getType ( ) , Outline.ExecuteMouseClick.MINIMALTYPING ) ;
+        }
+      }
+      /*
+       * new SubTyping
+       */
+      if ( this.newSubTypingNodeComponent != null )
+      {
+        /*
+         * Index label.
+         */
+        if ( pMouseEvent.getSource ( ).equals (
+            this.newSubTypingNodeComponent.getIndexLabel ( ) ) )
+        {
+          ( ( NewSubTypingView ) this.newSubTypingNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline1 ( ).load (
+                  this.newSubTypingNodeComponent.getTypeComponent ( )
+                      .getType ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
+          ( ( NewSubTypingView ) this.newSubTypingNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline2 ( ).load (
+                  this.newSubTypingNodeComponent.getTypeComponent2 ( )
+                      .getType ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
+        }
+        /*
+         * Type component 1.
+         */
+        else if ( pMouseEvent.getSource ( ).equals (
+            this.newSubTypingNodeComponent.getTypeComponent ( ) ) )
+        {
+          ( ( NewSubTypingView ) this.newSubTypingNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline1 ( ).load (
+                  this.newSubTypingNodeComponent.getTypeComponent ( )
+                      .getType ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
+          ( ( NewSubTypingView ) this.newSubTypingNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline2 ( ).load (
+                  this.newSubTypingNodeComponent.getTypeComponent2 ( )
+                      .getType ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
+        }
+        /*
+         * Type component 2.
+         */
+        else if ( pMouseEvent.getSource ( ).equals (
+            this.newSubTypingNodeComponent.getTypeComponent2 ( ) ) )
+        {
+          ( ( NewSubTypingView ) this.newSubTypingNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline1 ( ).load (
+                  this.newSubTypingNodeComponent.getTypeComponent ( )
+                      .getType ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
+          ( ( NewSubTypingView ) this.newSubTypingNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline2 ( ).load (
+                  this.newSubTypingNodeComponent.getTypeComponent2 ( )
+                      .getType ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
         }
       }
       /*

@@ -9,6 +9,8 @@ import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
+import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode ;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
 import de.unisiegen.tpml.core.typeinference.TypeFormula ;
@@ -17,6 +19,7 @@ import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode ;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
+import de.unisiegen.tpml.graphics.subtyping.NewSubTypingView ;
 
 
 /**
@@ -52,6 +55,12 @@ public final class OutlineTreeModelListener implements TreeModelListener
 
 
   /**
+   * The {@link NewSubTypingView}.
+   */
+  private NewSubTypingView newSubTypingView = null ;
+
+
+  /**
    * Initializes the {@link OutlineTreeModelListener} with the given
    * {@link Outline} and the {@link ExpressionProofModel}.
    * 
@@ -63,6 +72,21 @@ public final class OutlineTreeModelListener implements TreeModelListener
   {
     this.defaultOutline = pDefaultOutline ;
     this.expressionProofModel = pExpressionProofModel ;
+  }
+
+
+  /**
+   * Initializes the {@link OutlineTreeModelListener} with the given
+   * {@link Outline} and the {@link NewSubTypingView}.
+   * 
+   * @param pDefaultOutline The {@link DefaultOutline}.
+   * @param pNewSubTypingView The {@link NewSubTypingView}.
+   */
+  public OutlineTreeModelListener ( DefaultOutline pDefaultOutline ,
+      NewSubTypingView pNewSubTypingView )
+  {
+    this.defaultOutline = pDefaultOutline ;
+    this.newSubTypingView = pNewSubTypingView ;
   }
 
 
@@ -91,27 +115,96 @@ public final class OutlineTreeModelListener implements TreeModelListener
     Object source = pTreeModelEvent.getSource ( ) ;
     if ( source instanceof SmallStepProofModel )
     {
-      this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) ,
-          Outline.ExecuteAutoChange.SMALLSTEP ) ;
+      if ( this.expressionProofModel.getRoot ( ).getChildCount ( ) > 0 )
+      {
+        this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
+            .getLastChild ( ).getExpression ( ) ,
+            Outline.ExecuteAutoChange.SMALLSTEP ) ;
+      }
+      else
+      {
+        this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
+            .getExpression ( ) , Outline.ExecuteAutoChange.SMALLSTEP ) ;
+      }
     }
     else if ( source instanceof BigStepProofModel )
     {
-      this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) ,
-          Outline.ExecuteAutoChange.BIGSTEP ) ;
+      if ( this.expressionProofModel.getRoot ( ).getChildCount ( ) > 0 )
+      {
+        this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
+            .getLastChild ( ).getExpression ( ) ,
+            Outline.ExecuteAutoChange.BIGSTEP ) ;
+      }
+      else
+      {
+        this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
+            .getExpression ( ) , Outline.ExecuteAutoChange.BIGSTEP ) ;
+      }
     }
     else if ( source instanceof TypeCheckerProofModel )
     {
-      this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) ,
-          Outline.ExecuteAutoChange.TYPECHECKER ) ;
+      if ( this.expressionProofModel.getRoot ( ).getChildCount ( ) > 0 )
+      {
+        this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
+            .getLastChild ( ).getExpression ( ) ,
+            Outline.ExecuteAutoChange.TYPECHECKER ) ;
+      }
+      else
+      {
+        this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
+            .getExpression ( ) , Outline.ExecuteAutoChange.TYPECHECKER ) ;
+      }
     }
     else if ( source instanceof MinimalTypingProofModel )
     {
-      this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) ,
-          Outline.ExecuteAutoChange.MINIMALTYPING ) ;
+      if ( this.expressionProofModel.getRoot ( ).getChildCount ( ) > 0 )
+      {
+        this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
+            .getLastChild ( ).getExpression ( ) ,
+            Outline.ExecuteAutoChange.MINIMALTYPING ) ;
+      }
+      else
+      {
+        this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
+            .getExpression ( ) , Outline.ExecuteAutoChange.MINIMALTYPING ) ;
+      }
+    }
+    else if ( source instanceof SubTypingProofModel )
+    {
+      if ( this.defaultOutline == this.newSubTypingView.getOutline1 ( ) )
+      {
+        if ( this.newSubTypingView.getSubTypingProofModel ( ).getRoot ( )
+            .getChildCount ( ) > 0 )
+        {
+          this.defaultOutline.load (
+              ( ( DefaultSubTypingProofNode ) this.newSubTypingView
+                  .getSubTypingProofModel ( ).getRoot ( ).getLastChild ( ) )
+                  .getType ( ) , Outline.ExecuteAutoChange.SUBTYPING ) ;
+        }
+        else
+        {
+          this.defaultOutline.load ( this.newSubTypingView
+              .getSubTypingProofModel ( ).getRoot ( ).getType ( ) ,
+              Outline.ExecuteAutoChange.SUBTYPING ) ;
+        }
+      }
+      else
+      {
+        if ( this.newSubTypingView.getSubTypingProofModel ( ).getRoot ( )
+            .getChildCount ( ) > 0 )
+        {
+          this.defaultOutline.load (
+              ( ( DefaultSubTypingProofNode ) this.newSubTypingView
+                  .getSubTypingProofModel ( ).getRoot ( ).getLastChild ( ) )
+                  .getType2 ( ) , Outline.ExecuteAutoChange.SUBTYPING ) ;
+        }
+        else
+        {
+          this.defaultOutline.load ( this.newSubTypingView
+              .getSubTypingProofModel ( ).getRoot ( ).getType2 ( ) ,
+              Outline.ExecuteAutoChange.SUBTYPING ) ;
+        }
+      }
     }
     else if ( source instanceof TypeInferenceProofModel )
     {

@@ -10,6 +10,7 @@ import java.awt.event.ComponentEvent ;
 import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
 import javax.swing.JSplitPane ;
+import javax.swing.border.LineBorder ;
 import de.unisiegen.tpml.core.ProofGuessException ;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel ;
 import de.unisiegen.tpml.graphics.AbstractProofView ;
@@ -50,17 +51,24 @@ public class NewSubTypingView extends AbstractProofView
    * The <code>JSplitPane</code> for the <code>component</code>.
    */
   private JSplitPane jSplitPane ;
-  
+
+
   private JPanel outlinePanel ;
 
 
   /**
-   * The {@link Outline} of this view.
+   * The first {@link Outline} of this view.
    * 
-   * @see #getOutline()
+   * @see #getOutline1()
    */
-  private Outline outline ;
-  
+  private Outline outline1 ;
+
+
+  /**
+   * The second {@link Outline} of this view.
+   * 
+   * @see #getOutline1()
+   */
   private Outline outline2 ;
 
 
@@ -95,43 +103,35 @@ public class NewSubTypingView extends AbstractProofView
       ComponentEvent event )
       {
         NewSubTypingView.this.component
-            .setAvailableWidth ( NewSubTypingView.this.scrollPane.getViewport ( )
-                .getWidth ( ) ) ;
+            .setAvailableWidth ( NewSubTypingView.this.scrollPane
+                .getViewport ( ).getWidth ( ) ) ;
       }
     } ) ;
-    
-    this.outlinePanel = new JPanel(new GridBagLayout());
-    
-    this.outline = new DefaultOutline ( this ) ;
-   // this.outline.load ( this.SubTypingProofModel.getRoot ( )
-     //   .getLastLeaf ( ).getType ( ) , Outline.ExecuteInit.SUBTYPING ) ;
-    JPanel jPanelOutline = this.outline.getPanel ( ) ;
-    
+    this.outlinePanel = new JPanel ( new GridBagLayout ( ) ) ;
+    this.outline1 = new DefaultOutline ( this ) ;
+    this.outline1.load ( this.SubTypingProofModel.getRoot ( ).getLastLeaf ( )
+        .getType ( ) , Outline.ExecuteInit.SUBTYPING ) ;
+    JPanel jPanelOutline1 = this.outline1.getPanel ( ) ;
+    jPanelOutline1.setBorder ( new LineBorder ( Color.BLACK , 1 ) ) ;
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
+    gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 2 ) ;
     gridBagConstraints.gridx = 0 ;
     gridBagConstraints.gridy = 0 ;
     gridBagConstraints.weightx = 10 ;
     gridBagConstraints.weighty = 10 ;
-    
-    this.outlinePanel.add ( jPanelOutline, gridBagConstraints );
-    
-    
-    
+    this.outlinePanel.add ( jPanelOutline1 , gridBagConstraints ) ;
     this.outline2 = new DefaultOutline ( this ) ;
-  //  this.outline2.load ( this.SubTypingProofModel.getRoot ( )
-    //    .getLastLeaf ( ).getType2 ( ) , Outline.ExecuteInit.SUBTYPING ) ;
+    this.outline2.load ( this.SubTypingProofModel.getRoot ( ).getLastLeaf ( )
+        .getType2 ( ) , Outline.ExecuteInit.SUBTYPING ) ;
     JPanel jPanelOutline2 = this.outline2.getPanel ( ) ;
-    
+    jPanelOutline2.setBorder ( new LineBorder ( Color.BLACK , 1 ) ) ;
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
+    gridBagConstraints.insets = new Insets ( 0 , 2 , 0 , 0 ) ;
     gridBagConstraints.gridx = 1 ;
     gridBagConstraints.gridy = 0 ;
     gridBagConstraints.weightx = 10 ;
     gridBagConstraints.weighty = 10 ;
-    
-    this.outlinePanel.add ( jPanelOutline2, gridBagConstraints );
-    
+    this.outlinePanel.add ( jPanelOutline2 , gridBagConstraints ) ;
     this.jSplitPane.setLeftComponent ( this.scrollPane ) ;
     this.jSplitPane.setRightComponent ( this.outlinePanel ) ;
     this.jSplitPane.setOneTouchExpandable ( true ) ;
@@ -159,13 +159,24 @@ public class NewSubTypingView extends AbstractProofView
 
 
   /**
-   * Returns the {@link Outline} of this view.
+   * Returns the first {@link Outline} of this view.
    * 
-   * @return The {@link Outline} of this view.
+   * @return The first {@link Outline} of this view.
    */
-  public Outline getOutline ( )
+  public Outline getOutline1 ( )
   {
-    return this.outline ;
+    return this.outline1 ;
+  }
+
+
+  /**
+   * Returns the second {@link Outline} of this view.
+   * 
+   * @return The second {@link Outline} of this view.
+   */
+  public Outline getOutline2 ( )
+  {
+    return this.outline2 ;
   }
 
 

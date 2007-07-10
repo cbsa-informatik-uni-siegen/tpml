@@ -536,15 +536,25 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 	}
 
 	/**
-	 * Returns the typeLabel.
+	 * Returns the typeComponent.
 	 * 
-	 * @return The typeLabel.
-	 * @see #typeLabel
+	 * @return The typeComponent.
+	 * @see #typeComponent
 	 */
 	public TypeComponent getTypeComponent ( ) {
 		return this.typeComponent;
 	}
 
+  /**
+   * Returns the typeComponent2.
+   * 
+   * @return The typeComponent2.
+   * @see #typeComponent2
+   */
+  public TypeComponent getTypeComponent2 ( ) {
+    return this.typeComponent2;
+  }
+  
 	/**
 	 * Returns the proofNode.
 	 * 
