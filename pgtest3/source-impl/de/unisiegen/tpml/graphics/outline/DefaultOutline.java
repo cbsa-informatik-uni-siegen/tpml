@@ -1,64 +1,67 @@
 package de.unisiegen.tpml.graphics.outline ;
 
 
-import java.awt.Color ;
-import java.awt.Rectangle ;
-import java.lang.reflect.InvocationTargetException ;
-import java.util.ArrayList ;
-import java.util.Enumeration ;
-import java.util.Timer ;
-import javax.swing.JPanel ;
-import javax.swing.JScrollPane ;
-import javax.swing.SwingUtilities ;
-import javax.swing.border.LineBorder ;
-import javax.swing.text.BadLocationException ;
-import javax.swing.text.SimpleAttributeSet ;
-import javax.swing.text.StyleConstants ;
-import javax.swing.tree.TreePath ;
-import de.unisiegen.tpml.core.expressions.Attribute ;
-import de.unisiegen.tpml.core.expressions.CurriedMethod ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.Method ;
-import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.BoundTypeNames ;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
-import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypeNames ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
-import de.unisiegen.tpml.core.interfaces.SortedChildren ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.Type ;
-import de.unisiegen.tpml.core.types.TypeName ;
-import de.unisiegen.tpml.graphics.StyledLanguageDocument ;
-import de.unisiegen.tpml.graphics.StyledLanguageEditor ;
-import de.unisiegen.tpml.graphics.Theme ;
-import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
-import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingView ;
-import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
-import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineActionListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineItemListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineKeyListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeExpansionListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeModelListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeSelectionListener ;
-import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineDisplayTree ;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask ;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
-import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
-import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
-import de.unisiegen.tpml.graphics.subtyping.NewSubTypingView ;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes ;
-import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
-import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView ;
-import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Timer;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+import javax.swing.border.LineBorder;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.tree.TreePath;
+
+import de.unisiegen.tpml.core.expressions.Attribute;
+import de.unisiegen.tpml.core.expressions.CurriedMethod;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.Method;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers;
+import de.unisiegen.tpml.core.interfaces.BoundTypeNames;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers;
+import de.unisiegen.tpml.core.interfaces.DefaultTypeNames;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType;
+import de.unisiegen.tpml.core.interfaces.SortedChildren;
+import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.core.types.TypeName;
+import de.unisiegen.tpml.graphics.StyledLanguageDocument;
+import de.unisiegen.tpml.graphics.StyledLanguageEditor;
+import de.unisiegen.tpml.graphics.Theme;
+import de.unisiegen.tpml.graphics.bigstep.BigStepView;
+import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingView;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineActionListener;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineItemListener;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineKeyListener;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
+import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeExpansionListener;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeModelListener;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeSelectionListener;
+import de.unisiegen.tpml.graphics.outline.node.OutlineNode;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineDisplayTree;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
+import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences;
+import de.unisiegen.tpml.graphics.smallstep.SmallStepView;
+import de.unisiegen.tpml.graphics.subtyping.NewSubTypingView;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingSourceView;
+import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView;
+import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView;
+import de.unisiegen.tpml.ui.editor.TextEditorPanel;
 
 
 /**
@@ -778,6 +781,17 @@ public final class DefaultOutline implements Outline
     // TreeSelectionListener
     this.uI.getJTreeOutline ( ).getSelectionModel ( ).addTreeSelectionListener (
         new OutlineTreeSelectionListener ( this ) ) ;
+  }
+  
+  /**
+   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
+   * 
+   * @param pTextEditorPanel The {@link TextEditorPanel}.
+   */
+  public DefaultOutline ( SubTypingSourceView pSubTypingSourceView )
+  {
+    this.preferences = new OutlinePreferences ( ) ;
+    this.uI = new OutlineUI ( this ) ;
   }
 
 
