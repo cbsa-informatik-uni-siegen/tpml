@@ -467,6 +467,8 @@ let_error						::= LET:l epsilon
 								// Missing e1
 								|	LET:l IDENTIFIER EQUAL:e IN
 									{: Error.expect("Let", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
+								|	LET:l IDENTIFIER COLON type EQUAL:e IN
+									{: Error.expect("Let", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
 								// Missing equal and e1
 								|	LET:l IDENTIFIER:id IN
 									{: Error.expect("Let", " = e1 ", lleft, idright, "= e<sub>1</sub>" ); :}

@@ -568,6 +568,8 @@ let_error						::= LET:l epsilon
 								// Missing e1
 								|	LET:l IDENTIFIER EQUAL:e IN
 									{: Error.expect("Let", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
+								|	LET:l IDENTIFIER COLON type EQUAL:e IN
+									{: Error.expect("Let", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
 								// Missing equal and e1
 								|	LET:l IDENTIFIER:id IN
 									{: Error.expect("Let", " = e1 ", lleft, idright, "= e<sub>1</sub>" ); :}
@@ -784,9 +786,8 @@ let_rec_error					::= LET:l REC:r epsilon
 								// Missing e1
 								|	LET:l REC IDENTIFIER EQUAL:e IN
 									{: Error.expect("Let-Rec", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
-								// Missing identifier and equal
-								|	LET:l REC:r seq_expr
-									{: Error.expect("Let-Rec", " id = ", lleft, rright, "id =" ); :}
+								|	LET:l REC IDENTIFIER COLON type EQUAL:e IN
+									{: Error.expect("Let-Rec", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
 								// Missing equal and e1
 								|	LET:l REC IDENTIFIER:id IN
 									{: Error.expect("Let-Rec", " = e1 ", lleft, idright, "= e<sub>1</sub>" ); :}
@@ -804,6 +805,9 @@ let_rec_error					::= LET:l REC:r epsilon
 								// Missing type, equal and e1
 								|	LET:l REC IDENTIFIER COLON:c IN
 									{: Error.expect("Let-Rec", " \u03C4 = e1 ", lleft, cright, "\u03C4 = e<sub>1</sub>" ); :}
+								// Missing identifier and equal
+								|	LET:l REC:r seq_expr
+									{: Error.expect("Let-Rec", " id = ", lleft, rright, "id =" ); :}
 								;
 
 curried_let_rec					::=	LET:l REC IDENTIFIER:id curried_let_rec_list:itl EQUAL seq_expr:e1 IN seq_expr:e2
@@ -933,9 +937,36 @@ multi_lambda_error				::=	LAMBDA:l LPAREN:lp epsilon
 									{: Error.expect("Multi-Lambda", "e", lleft, dright, "e" ); :}
 								|	LAMBDA:l LPAREN multi_lambda_list RPAREN DOT:d epsilon
 									{: Error.expect("Multi-Lambda", "e", lleft, dright, "e" ); :}
+								// Missing right paren
+								|	LAMBDA:l LPAREN multi_lambda_list:mll DOT
+									{: Error.expect("Multi-Lambda", ")", lleft, mllright, ")" ); :}
+								|	LAMBDA:l LPAREN multi_lambda_list:mll COLON
+									{: Error.expect("Multi-Lambda", ")", lleft, mllright, ")" ); :}							
+								// Missing dot
+								|	LAMBDA:l LPAREN multi_lambda_list RPAREN:r seq_expr
+									{: Error.expect("Multi-Lambda", ".", lleft, rright, "." ); :}
+								|	LAMBDA:l LPAREN multi_lambda_list RPAREN COLON type:tau seq_expr
+									{: Error.expect("Multi-Lambda", ".", lleft, tauright, "." ); :}									
+								// Missing colon
+								|	LAMBDA:l LPAREN multi_lambda_list RPAREN:r type
+									{: Error.expect("Multi-Lambda", ": ", lleft, rright, ":" ); :}									
 								// Missing type
-								|	LAMBDA:l LPAREN multi_lambda_list RPAREN COLON:c DOT seq_expr
+								|	LAMBDA:l LPAREN multi_lambda_list RPAREN COLON:c DOT
 									{: Error.expect("Multi-Lambda", " \u03C4", lleft, cright, "\u03C4" ); :}
+								// Missing list and right paren
+								|	LAMBDA:l LPAREN:lb DOT
+									{: Error.expect("Multi-Lambda", "id1, idn)", lleft, lbright, "id<sub>1</sub>, ... ,id<sub>n</sub>)" ); :}
+								|	LAMBDA:l LPAREN:lb COLON
+									{: Error.expect("Multi-Lambda", "id1, idn)", lleft, lbright, "id<sub>1</sub>, ... ,id<sub>n</sub>)" ); :}								
+								// Missing right paren and colon
+								|	LAMBDA:l LPAREN multi_lambda_list:mll type
+									{: Error.expect("Multi-Lambda", "): ", lleft, mllright, "):" ); :}
+								// Missing type and dot
+								|	LAMBDA:l LPAREN multi_lambda_list RPAREN COLON:c seq_expr
+									{: Error.expect("Multi-Lambda", " \u03C4.", lleft, cright, "\u03C4." ); :}
+								// Missing list, right paren and colon
+								|	LAMBDA:l LPAREN:lb type
+									{: Error.expect("Multi-Lambda", "id1, idn): ", lleft, lbright, "id<sub>1</sub>, ... ,id<sub>n</sub>):" ); :}								
 								;
 
 multi_lambda_list				::=	multi_lambda_list:l COMMA IDENTIFIER:id
@@ -954,10 +985,10 @@ multi_lambda_list_error			::=	multi_lambda_list:m COMMA:c epsilon
 									{: Error.expect("Multi-Lambda", " id).e", mleft, cright, "id<sub>i</sub>, ... ,id<sub>n</sub>).e", "id<sub>i</sub>, ... ,id<sub>n</sub>): \u03C4.e"); :}
 								;
 
-multi_let						::= LET:l LPAREN multi_let_list:il RPAREN EQUAL seq_expr:e1 IN seq_expr:e2
-									{: RESULT = new MultiLet(il, null, e1, e2, lleft, e2right); :}
-								|	LET:l LPAREN multi_let_list:il RPAREN COLON type:tau EQUAL seq_expr:e1 IN seq_expr:e2
-									{: RESULT = new MultiLet(il, tau, e1, e2, lleft, e2right); :}
+multi_let						::= LET:l LPAREN multi_let_list:mll RPAREN EQUAL seq_expr:e1 IN seq_expr:e2
+									{: RESULT = new MultiLet(mll, null, e1, e2, lleft, e2right); :}
+								|	LET:l LPAREN multi_let_list:mll RPAREN COLON type:tau EQUAL seq_expr:e1 IN seq_expr:e2
+									{: RESULT = new MultiLet(mll, tau, e1, e2, lleft, e2right); :}
 								|	multi_let_error
 									{: :}
 								;
@@ -984,9 +1015,52 @@ multi_let_error					::= LET:l LPAREN:lp epsilon
 									{: Error.expect("Multi-Let", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}	
 								|	LET:l LPAREN multi_let_list RPAREN EQUAL seq_expr IN:i epsilon
 									{: Error.expect("Multi-Let", " e2", lleft, iright, "e<sub>2</sub>" ); :}
+								// Missing right paren
+								|	LET:l LPAREN multi_let_list:mll EQUAL
+									{: Error.expect("Multi-Let", ") ", lleft, mllright, ")" ); :}								
+								|	LET:l LPAREN multi_let_list:mll COLON
+									{: Error.expect("Multi-Let", ")", lleft, mllright, ")" ); :}	
+								// Missing equal
+								|	LET:l LPAREN multi_let_list RPAREN:r seq_expr
+									{: Error.expect("Multi-Let", " = ", lleft, rright, "=" ); :}
+								|	LET:l LPAREN multi_let_list RPAREN COLON type:tau seq_expr
+									{: Error.expect("Multi-Let", " = ", lleft, tauright, "=" ); :}
+								// Missing e1
+								|	LET:l LPAREN multi_let_list RPAREN EQUAL:e IN
+									{: Error.expect("Multi-Let", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
+								|	LET:l LPAREN multi_let_list RPAREN COLON type EQUAL:e IN
+									{: Error.expect("Multi-Let", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}							
+								// Missing colon
+								|	LET:l LPAREN multi_let_list RPAREN:r type
+									{: Error.expect("Multi-Let", ": ", lleft, rright, ":" ); :}								
 								// Missing type
-								|	LET:l LPAREN multi_let_list RPAREN COLON:c EQUAL seq_expr IN seq_expr
+								|	LET:l LPAREN multi_let_list RPAREN COLON:c EQUAL
 									{: Error.expect("Multi-Let", " \u03C4 ", lleft, cright, "\u03C4" ); :}
+								// Missing list and right paren
+								|	LET:l LPAREN:lp EQUAL
+									{: Error.expect("Multi-Let", "id1, idn) ", lleft, lpright, "id<sub>1</sub>, ... ,id<sub>n</sub>)" ); :}	
+								|	LET:l LPAREN:lp COLON
+									{: Error.expect("Multi-Let", "id1, idn)", lleft, lpright, "id<sub>1</sub>, ... ,id<sub>n</sub>)" ); :}	
+								// Missing equal and e1
+								|	LET:l LPAREN multi_let_list RPAREN:r IN
+									{: Error.expect("Multi-Let", " = e1 ", lleft, rright, "= e<sub>1</sub>" ); :}
+								|	LET:l LPAREN multi_let_list RPAREN COLON type:tau IN
+									{: Error.expect("Multi-Let", " = e1 ", lleft, tauright, "= e<sub>1</sub>" ); :}								
+								// Missing right paren and colon
+								|	LET:l LPAREN multi_let_list:mll type
+									{: Error.expect("Multi-Let", "): ", lleft, mllright, "):" ); :}	
+								// Missing type and equal
+								|	LET:l LPAREN multi_let_list RPAREN COLON:c seq_expr
+									{: Error.expect("Multi-Let", " \u03C4 = ", lleft, cright, "\u03C4 =" ); :}
+								// Missing right paren, equal and e1
+								|	LET:l LPAREN multi_let_list:mll IN
+									{: Error.expect("Multi-Let", ") = e1 ", lleft, mllright, ") = e<sub>1</sub>" ); :}
+								// Missing list, right paren and colon
+								|	LET:l LPAREN:lp type
+									{: Error.expect("Multi-Let", "id1, idn): ", lleft, lpright, "id<sub>1</sub>, ... ,id<sub>n</sub>):" ); :}
+								// Missing type, equal and e1
+								|	LET:l LPAREN multi_let_list RPAREN COLON:c IN
+									{: Error.expect("Multi-Let", " \u03C4 = e1 ", lleft, cright, "\u03C4 = e<sub>1</sub>" ); :}
 								;
 
 multi_let_list					::=	multi_let_list:l COMMA IDENTIFIER:id

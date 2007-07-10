@@ -536,6 +536,8 @@ let_error						::= LET:l epsilon
 								// Missing e1
 								|	LET:l IDENTIFIER EQUAL:e IN
 									{: Error.expect("Let", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
+								|	LET:l IDENTIFIER COLON type EQUAL:e IN
+									{: Error.expect("Let", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
 								// Missing equal and e1
 								|	LET:l IDENTIFIER:id IN
 									{: Error.expect("Let", " = e1 ", lleft, idright, "= e<sub>1</sub>" ); :}
@@ -752,9 +754,8 @@ let_rec_error					::= LET:l REC:r epsilon
 								// Missing e1
 								|	LET:l REC IDENTIFIER EQUAL:e IN
 									{: Error.expect("Let-Rec", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
-								// Missing identifier and equal
-								|	LET:l REC:r seq_expr
-									{: Error.expect("Let-Rec", " id = ", lleft, rright, "id =" ); :}
+								|	LET:l REC IDENTIFIER COLON type EQUAL:e IN
+									{: Error.expect("Let-Rec", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
 								// Missing equal and e1
 								|	LET:l REC IDENTIFIER:id IN
 									{: Error.expect("Let-Rec", " = e1 ", lleft, idright, "= e<sub>1</sub>" ); :}
@@ -772,6 +773,9 @@ let_rec_error					::= LET:l REC:r epsilon
 								// Missing type, equal and e1
 								|	LET:l REC IDENTIFIER COLON:c IN
 									{: Error.expect("Let-Rec", " \u03C4 = e1 ", lleft, cright, "\u03C4 = e<sub>1</sub>" ); :}
+								// Missing identifier and equal
+								|	LET:l REC:r seq_expr
+									{: Error.expect("Let-Rec", " id = ", lleft, rright, "id =" ); :}
 								;
 
 curried_let_rec					::=	LET:l REC IDENTIFIER:id curried_let_rec_list:itl EQUAL seq_expr:e1 IN seq_expr:e2
@@ -1218,9 +1222,6 @@ curried_method_error			::= METHOD:m IDENTIFIER curried_method_list:c epsilon
 									{: Error.expect("Curried-Method", " e ;", mleft, eright, "e ;"); :}
 								|	METHOD:m IDENTIFIER curried_method_list EQUAL expr:e epsilon
 									{: Error.expect("Curried-Method", " ;", mleft, eright, ";"); :}
-								// Missing e
-								|	METHOD:m IDENTIFIER curried_method_list EQUAL:e SEMI
-									{: Error.expect("Curried-Method", " e ", mleft, eright, "e"); :}
 								// Missing colon
 								|	METHOD:m IDENTIFIER curried_method_list:l type
 									{: Error.expect("Curried-Method", ": ", mleft, lright, ":"); :}									
@@ -1243,7 +1244,7 @@ curried_method_error			::= METHOD:m IDENTIFIER curried_method_list:c epsilon
 								|	METHOD:m IDENTIFIER curried_method_list COLON type:tau SEMI
 									{: Error.expect("Curried-Method", " = e ", mleft, tauright, "= e" ); :}
 								// Missing type and equal
-								|	METHOD:m IDENTIFIER: curried_method_list COLON:c expr
+								|	METHOD:m IDENTIFIER curried_method_list COLON:c expr
 									{: Error.expect("Curried-Method", " \u03C4 = ", mleft, cright, "\u03C4 =" ); :}
 								// Missing type, equal and expression
 								|	METHOD:m IDENTIFIER curried_method_list COLON:c SEMI

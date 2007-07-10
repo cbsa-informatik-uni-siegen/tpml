@@ -486,6 +486,8 @@ let_error						::= LET:l epsilon
 								// Missing e1
 								|	LET:l IDENTIFIER EQUAL:e IN
 									{: Error.expect("Let", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
+								|	LET:l IDENTIFIER COLON type EQUAL:e IN
+									{: Error.expect("Let", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
 								// Missing equal and e1
 								|	LET:l IDENTIFIER:id IN
 									{: Error.expect("Let", " = e1 ", lleft, idright, "= e<sub>1</sub>" ); :}
@@ -702,9 +704,8 @@ let_rec_error					::= LET:l REC:r epsilon
 								// Missing e1
 								|	LET:l REC IDENTIFIER EQUAL:e IN
 									{: Error.expect("Let-Rec", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
-								// Missing identifier and equal
-								|	LET:l REC:r seq_expr
-									{: Error.expect("Let-Rec", " id = ", lleft, rright, "id =" ); :}
+								|	LET:l REC IDENTIFIER COLON type EQUAL:e IN
+									{: Error.expect("Let-Rec", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
 								// Missing equal and e1
 								|	LET:l REC IDENTIFIER:id IN
 									{: Error.expect("Let-Rec", " = e1 ", lleft, idright, "= e<sub>1</sub>" ); :}
@@ -722,6 +723,9 @@ let_rec_error					::= LET:l REC:r epsilon
 								// Missing type, equal and e1
 								|	LET:l REC IDENTIFIER COLON:c IN
 									{: Error.expect("Let-Rec", " \u03C4 = e1 ", lleft, cright, "\u03C4 = e<sub>1</sub>" ); :}
+								// Missing identifier and equal
+								|	LET:l REC:r seq_expr
+									{: Error.expect("Let-Rec", " id = ", lleft, rright, "id =" ); :}
 								;
 
 curried_let_rec					::=	LET:l REC IDENTIFIER:id curried_let_rec_list:itl EQUAL seq_expr:e1 IN seq_expr:e2

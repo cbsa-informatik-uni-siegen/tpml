@@ -292,7 +292,130 @@ public class ParserTest
   private static String LET_ERROR_10 = "let id = 0 in" ;
 
 
-  private static String LET_ERROR_11 = "let id: = 0 in id" ;
+  private static String LET_ERROR_11 = "let =" ;
+
+
+  private static String LET_ERROR_12 = "let = 0" ;
+
+
+  private static String LET_ERROR_13 = "let = 0 in" ;
+
+
+  private static String LET_ERROR_14 = "let = 0 in id" ;
+
+
+  private static String LET_ERROR_15 = "let :" ;
+
+
+  private static String LET_ERROR_16 = "let : int" ;
+
+
+  private static String LET_ERROR_17 = "let : int =" ;
+
+
+  private static String LET_ERROR_18 = "let : int = 0" ;
+
+
+  private static String LET_ERROR_19 = "let : int = 0 in" ;
+
+
+  private static String LET_ERROR_20 = "let : int = 0 in id" ;
+
+
+  private static String LET_ERROR_21 = "let id: int 0" ;
+
+
+  private static String LET_ERROR_22 = "let id: int 0 in" ;
+
+
+  private static String LET_ERROR_23 = "let id: int 0 in id" ;
+
+
+  private static String LET_ERROR_24 = "let id int" ;
+
+
+  private static String LET_ERROR_25 = "let id int =" ;
+
+
+  private static String LET_ERROR_26 = "let id int = 0" ;
+
+
+  private static String LET_ERROR_27 = "let id int = 0 in" ;
+
+
+  private static String LET_ERROR_28 = "let id int = 0 in id" ;
+
+
+  private static String LET_ERROR_29 = "let id: =" ;
+
+
+  private static String LET_ERROR_30 = "let id: = 0" ;
+
+
+  private static String LET_ERROR_31 = "let id: = 0 in" ;
+
+
+  private static String LET_ERROR_32 = "let id: = 0 in id" ;
+
+
+  private static String LET_ERROR_33 = "let id = in" ;
+
+
+  private static String LET_ERROR_34 = "let id = in id" ;
+
+
+  private static String LET_ERROR_35 = "let id: int = in" ;
+
+
+  private static String LET_ERROR_36 = "let id: int = in id" ;
+
+
+  private static String LET_ERROR_37 = "let id in" ;
+
+
+  private static String LET_ERROR_38 = "let id in id" ;
+
+
+  private static String LET_ERROR_39 = "let id: int in" ;
+
+
+  private static String LET_ERROR_40 = "let id: int in id" ;
+
+
+  private static String LET_ERROR_41 = "let int" ;
+
+
+  private static String LET_ERROR_42 = "let int =" ;
+
+
+  private static String LET_ERROR_43 = "let int = 0" ;
+
+
+  private static String LET_ERROR_44 = "let int = 0 in" ;
+
+
+  private static String LET_ERROR_45 = "let int = 0 in id" ;
+
+
+  private static String LET_ERROR_46 = "let id: 0" ;
+
+
+  private static String LET_ERROR_47 = "let id: 0 in" ;
+
+
+  private static String LET_ERROR_48 = "let id: 0 in id" ;
+
+
+  private static String LET_ERROR_49 = "let in" ;
+
+
+  private static String LET_ERROR_50 = "let in id" ;
+
+
+  private static String LET_ERROR_51 = "let id: in" ;
+
+
+  private static String LET_ERROR_52 = "let id: in id" ;
 
 
   private static String CURRIED_LET_1 = "let f a b = a + b in f" ;
@@ -350,6 +473,81 @@ public class ParserTest
 
 
   private static String CURRIED_LET_ERROR_15 = "let f (a:) b = a + b in f" ;
+
+
+  private static String CURRIED_LET_ERROR_16 = "let f a b = in" ;
+
+
+  private static String CURRIED_LET_ERROR_17 = "let f a b = in f" ;
+
+
+  private static String CURRIED_LET_ERROR_18 = "let f a b: int = in" ;
+
+
+  private static String CURRIED_LET_ERROR_19 = "let f a b: int = in f" ;
+
+
+  private static String CURRIED_LET_ERROR_20 = "let f a b int" ;
+
+
+  private static String CURRIED_LET_ERROR_21 = "let f a b int =" ;
+
+
+  private static String CURRIED_LET_ERROR_22 = "let f a b int = a + b" ;
+
+
+  private static String CURRIED_LET_ERROR_23 = "let f a b int = a + b in" ;
+
+
+  private static String CURRIED_LET_ERROR_24 = "let f a b int = a + b in f" ;
+
+
+  private static String CURRIED_LET_ERROR_25 = "let f a b: =" ;
+
+
+  private static String CURRIED_LET_ERROR_26 = "let f a b: = a + b" ;
+
+
+  private static String CURRIED_LET_ERROR_27 = "let f a b: = a + b in" ;
+
+
+  private static String CURRIED_LET_ERROR_28 = "let f a b: = a + b in f" ;
+
+
+  private static String CURRIED_LET_ERROR_29 = "let f a b: int a + b" ;
+
+
+  private static String CURRIED_LET_ERROR_30 = "let f a b: int a + b in" ;
+
+
+  private static String CURRIED_LET_ERROR_31 = "let f a b: int a + b in f" ;
+
+
+  private static String CURRIED_LET_ERROR_32 = "let f a b in" ;
+
+
+  private static String CURRIED_LET_ERROR_33 = "let f a b in f" ;
+
+
+  private static String CURRIED_LET_ERROR_34 = "let f a b: int in" ;
+
+
+  private static String CURRIED_LET_ERROR_35 = "let f a b: int in f" ;
+
+
+  private static String CURRIED_LET_ERROR_36 = "let f a b: a + b" ;
+
+
+  private static String CURRIED_LET_ERROR_37 = "let f a b: a + b in" ;
+
+
+  private static String CURRIED_LET_ERROR_38 = "let f a b: a + b in f" ;
+
+
+  private static String CURRIED_LET_ERROR_39 = "let f a b: in f" ;
+
+
+  private static String CURRIED_LET_ERROR_40 = "let f a b: in f" ;
 
 
   private static String UNIT = "()" ;
@@ -487,31 +685,76 @@ public class ParserTest
   private static String REC_TYPE_ERROR_3 = "mu t." ;
 
 
-  private static String REC_1 = "rec x.x" ;
+  private static String REC_1 = "rec id.id" ;
 
 
-  private static String REC_2 = "rec x:int.x" ;
+  private static String REC_2 = "rec id:int.id" ;
 
 
   private static String REC_ERROR_1 = "rec" ;
 
 
-  private static String REC_ERROR_2 = "rec x" ;
+  private static String REC_ERROR_2 = "rec id" ;
 
 
-  private static String REC_ERROR_3 = "rec x:" ;
+  private static String REC_ERROR_3 = "rec id:" ;
 
 
-  private static String REC_ERROR_4 = "rec x:int" ;
+  private static String REC_ERROR_4 = "rec id:int" ;
 
 
-  private static String REC_ERROR_5 = "rec x:int." ;
+  private static String REC_ERROR_5 = "rec id:int." ;
 
 
-  private static String REC_ERROR_6 = "rec x." ;
+  private static String REC_ERROR_6 = "rec id." ;
 
 
-  private static String REC_ERROR_7 = "rec x:.x" ;
+  private static String REC_ERROR_7 = "rec ." ;
+
+
+  private static String REC_ERROR_8 = "rec .1" ;
+
+
+  private static String REC_ERROR_9 = "rec : int." ;
+
+
+  private static String REC_ERROR_10 = "rec : int.1" ;
+
+
+  private static String REC_ERROR_11 = "rec id 1" ;
+
+
+  private static String REC_ERROR_12 = "rec id: int 1" ;
+
+
+  private static String REC_ERROR_13 = "rec id int" ;
+
+
+  private static String REC_ERROR_14 = "rec id int." ;
+
+
+  private static String REC_ERROR_15 = "rec id int.1" ;
+
+
+  private static String REC_ERROR_16 = "rec id: ." ;
+
+
+  private static String REC_ERROR_17 = "rec id: .1" ;
+
+
+  private static String REC_ERROR_18 = "rec 1" ;
+
+
+  private static String REC_ERROR_19 = "rec int" ;
+
+
+  private static String REC_ERROR_20 = "rec int." ;
+
+
+  private static String REC_ERROR_21 = "rec int.1" ;
+
+
+  private static String REC_ERROR_22 = "rec id: 1" ;
 
 
   private static String LET_REC_1 = "let rec id = 0 in id" ;
@@ -550,64 +793,271 @@ public class ParserTest
   private static String LET_REC_ERROR_10 = "let rec id = 0 in" ;
 
 
-  private static String LET_REC_ERROR_11 = "let rec id: = 0 in id" ;
+  private static String LET_REC_ERROR_11 = "let rec =" ;
 
 
-  private static String CURRIED_REC_LET_1 = "let rec f a b = a + b in f" ;
+  private static String LET_REC_ERROR_12 = "let rec = 0" ;
 
 
-  private static String CURRIED_REC_LET_2 = "let rec f (a:int) (b:int) = a + b in f" ;
+  private static String LET_REC_ERROR_13 = "let rec = 0 in" ;
 
 
-  private static String CURRIED_REC_LET_3 = "let rec f a b:int = a + b in f" ;
+  private static String LET_REC_ERROR_14 = "let rec = 0 in id" ;
 
 
-  private static String CURRIED_REC_LET_4 = "let rec f (a:int) (b:int):int = a + b in f" ;
+  private static String LET_REC_ERROR_15 = "let rec :" ;
 
 
-  private static String CURRIED_REC_LET_ERROR_1 = "let rec f a b" ;
+  private static String LET_REC_ERROR_16 = "let rec : int" ;
 
 
-  private static String CURRIED_REC_LET_ERROR_2 = "let rec f a b:" ;
+  private static String LET_REC_ERROR_17 = "let rec : int =" ;
 
 
-  private static String CURRIED_REC_LET_ERROR_3 = "let rec f a b:int" ;
+  private static String LET_REC_ERROR_18 = "let rec : int = 0" ;
 
 
-  private static String CURRIED_REC_LET_ERROR_4 = "let rec f a b:int = " ;
+  private static String LET_REC_ERROR_19 = "let rec : int = 0 in" ;
 
 
-  private static String CURRIED_REC_LET_ERROR_5 = "let rec f a b:int = a + b" ;
+  private static String LET_REC_ERROR_20 = "let rec : int = 0 in id" ;
 
 
-  private static String CURRIED_REC_LET_ERROR_6 = "let rec f a b:int = a + b in" ;
+  private static String LET_REC_ERROR_21 = "let rec id: int 0" ;
 
 
-  private static String CURRIED_REC_LET_ERROR_7 = "let rec f a b =" ;
+  private static String LET_REC_ERROR_22 = "let rec id: int 0 in" ;
 
 
-  private static String CURRIED_REC_LET_ERROR_8 = "let rec f a b = a + b" ;
+  private static String LET_REC_ERROR_23 = "let rec id: int 0 in id" ;
 
 
-  private static String CURRIED_REC_LET_ERROR_9 = "let rec f a b = a + b in" ;
+  private static String LET_REC_ERROR_24 = "let rec id int" ;
 
 
-  private static String CURRIED_REC_LET_ERROR_10 = "let rec f (" ;
+  private static String LET_REC_ERROR_25 = "let rec id int =" ;
 
 
-  private static String CURRIED_REC_LET_ERROR_11 = "let rec f (a" ;
+  private static String LET_REC_ERROR_26 = "let rec id int = 0" ;
 
 
-  private static String CURRIED_REC_LET_ERROR_12 = "let rec f (a:" ;
+  private static String LET_REC_ERROR_27 = "let rec id int = 0 in" ;
 
 
-  private static String CURRIED_REC_LET_ERROR_13 = "let rec f (a:int" ;
+  private static String LET_REC_ERROR_28 = "let rec id int = 0 in id" ;
 
 
-  private static String CURRIED_REC_LET_ERROR_14 = "let rec f a b: = a + b in f" ;
+  private static String LET_REC_ERROR_29 = "let rec id: =" ;
 
 
-  private static String CURRIED_REC_LET_ERROR_15 = "let rec f (a:) b = a + b in f" ;
+  private static String LET_REC_ERROR_30 = "let rec id: = 0" ;
+
+
+  private static String LET_REC_ERROR_31 = "let rec id: = 0 in" ;
+
+
+  private static String LET_REC_ERROR_32 = "let rec id: = 0 in id" ;
+
+
+  private static String LET_REC_ERROR_33 = "let rec id = in" ;
+
+
+  private static String LET_REC_ERROR_34 = "let rec id = in id" ;
+
+
+  private static String LET_REC_ERROR_35 = "let rec id: int = in" ;
+
+
+  private static String LET_REC_ERROR_36 = "let rec id: int = in id" ;
+
+
+  private static String LET_REC_ERROR_37 = "let rec id in" ;
+
+
+  private static String LET_REC_ERROR_38 = "let rec id in id" ;
+
+
+  private static String LET_REC_ERROR_39 = "let rec id: int in" ;
+
+
+  private static String LET_REC_ERROR_40 = "let rec id: int in id" ;
+
+
+  private static String LET_REC_ERROR_41 = "let rec int" ;
+
+
+  private static String LET_REC_ERROR_42 = "let rec int =" ;
+
+
+  private static String LET_REC_ERROR_43 = "let rec int = 0" ;
+
+
+  private static String LET_REC_ERROR_44 = "let rec int = 0 in" ;
+
+
+  private static String LET_REC_ERROR_45 = "let rec int = 0 in id" ;
+
+
+  private static String LET_REC_ERROR_46 = "let rec id: 0" ;
+
+
+  private static String LET_REC_ERROR_47 = "let rec id: 0 in" ;
+
+
+  private static String LET_REC_ERROR_48 = "let rec id: 0 in id" ;
+
+
+  private static String LET_REC_ERROR_49 = "let rec in" ;
+
+
+  private static String LET_REC_ERROR_50 = "let rec in id" ;
+
+
+  private static String LET_REC_ERROR_51 = "let rec id: in" ;
+
+
+  private static String LET_REC_ERROR_52 = "let rec id: in id" ;
+
+
+  private static String LET_REC_ERROR_53 = "let rec 0" ;
+
+
+  private static String LET_REC_ERROR_54 = "let rec 0 in" ;
+
+
+  private static String LET_REC_ERROR_55 = "let rec 0 in id" ;
+
+
+  private static String CURRIED_LET_REC_1 = "let rec f a b = a + b in f" ;
+
+
+  private static String CURRIED_LET_REC_2 = "let rec f (a:int) (b:int) = a + b in f" ;
+
+
+  private static String CURRIED_LET_REC_3 = "let rec f a b:int = a + b in f" ;
+
+
+  private static String CURRIED_LET_REC_4 = "let rec f (a:int) (b:int):int = a + b in f" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_1 = "let rec f a b" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_2 = "let rec f a b:" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_3 = "let rec f a b:int" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_4 = "let rec f a b:int = " ;
+
+
+  private static String CURRIED_LET_REC_ERROR_5 = "let rec f a b:int = a + b" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_6 = "let rec f a b:int = a + b in" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_7 = "let rec f a b =" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_8 = "let rec f a b = a + b" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_9 = "let rec f a b = a + b in" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_10 = "let rec f (" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_11 = "let rec f (a" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_12 = "let rec f (a:" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_13 = "let rec f (a:int" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_14 = "let rec f a b: = a + b in f" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_15 = "let rec f (a:) b = a + b in f" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_16 = "let rec f a b = in" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_17 = "let rec f a b = in f" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_18 = "let rec f a b: int = in" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_19 = "let rec f a b: int = in f" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_20 = "let rec f a b int" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_21 = "let rec f a b int =" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_22 = "let rec f a b int = a + b" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_23 = "let rec f a b int = a + b in" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_24 = "let rec f a b int = a + b in f" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_25 = "let rec f a b: =" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_26 = "let rec f a b: = a + b" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_27 = "let rec f a b: = a + b in" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_28 = "let rec f a b: = a + b in f" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_29 = "let rec f a b: int a + b" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_30 = "let rec f a b: int a + b in" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_31 = "let rec f a b: int a + b in f" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_32 = "let rec f a b in" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_33 = "let rec f a b in f" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_34 = "let rec f a b: int in" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_35 = "let rec f a b: int in f" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_36 = "let rec f a b: a + b" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_37 = "let rec f a b: a + b in" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_38 = "let rec f a b: a + b in f" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_39 = "let rec f a b: in f" ;
+
+
+  private static String CURRIED_LET_REC_ERROR_40 = "let rec f a b: in f" ;
 
 
   private static String MULTI_LAMBDA_1 = "lambda (x,y).x + y" ;
@@ -640,7 +1090,85 @@ public class ParserTest
   private static String MULTI_LAMBDA_ERROR_8 = "lambda (x," ;
 
 
-  private static String MULTI_LAMBDA_ERROR_9 = "lambda (x,y):.x + y" ;
+  private static String MULTI_LAMBDA_ERROR_9 = "lambda (x,y ." ;
+
+
+  private static String MULTI_LAMBDA_ERROR_10 = "lambda (x,y .x + y" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_11 = "lambda (x,y :" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_12 = "lambda (x,y : int" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_13 = "lambda (x,y : int." ;
+
+
+  private static String MULTI_LAMBDA_ERROR_14 = "lambda (x,y : int.x + y" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_15 = "lambda (x,y) x + y" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_16 = "lambda (x,y): int x + y" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_17 = "lambda (x,y) int" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_18 = "lambda (x,y) int." ;
+
+
+  private static String MULTI_LAMBDA_ERROR_19 = "lambda (x,y) int.x + y" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_20 = "lambda (x,y): ." ;
+
+
+  private static String MULTI_LAMBDA_ERROR_21 = "lambda (x,y): .x + y" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_22 = "lambda ( ." ;
+
+
+  private static String MULTI_LAMBDA_ERROR_23 = "lambda ( .x + y" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_24 = "lambda ( :" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_25 = "lambda ( : int" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_26 = "lambda ( : int." ;
+
+
+  private static String MULTI_LAMBDA_ERROR_27 = "lambda ( : int.x + y" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_28 = "lambda (x,y int" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_29 = "lambda (x,y int." ;
+
+
+  private static String MULTI_LAMBDA_ERROR_30 = "lambda (x,y int.x + y" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_31 = "lambda (x,y): x + y" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_32 = "lambda ( x + y" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_33 = "lambda ( int" ;
+
+
+  private static String MULTI_LAMBDA_ERROR_34 = "lambda ( int." ;
+
+
+  private static String MULTI_LAMBDA_ERROR_35 = "lambda ( int.x + y" ;
 
 
   private static String MULTI_LET_1 = "let (x,y) = (1,2) in x+y" ;
@@ -685,7 +1213,184 @@ public class ParserTest
   private static String MULTI_LET_ERROR_12 = "let (x," ;
 
 
-  private static String MULTI_LET_ERROR_13 = "let (x,y): = (1,2) in x+y" ;
+  private static String MULTI_LET_ERROR_13 = "let (x,y =" ;
+
+
+  private static String MULTI_LET_ERROR_14 = "let (x,y = 1" ;
+
+
+  private static String MULTI_LET_ERROR_15 = "let (x,y = 1 in" ;
+
+
+  private static String MULTI_LET_ERROR_16 = "let (x,y = 1 in 2" ;
+
+
+  private static String MULTI_LET_ERROR_17 = "let (x,y :" ;
+
+
+  private static String MULTI_LET_ERROR_18 = "let (x,y : int" ;
+
+
+  private static String MULTI_LET_ERROR_19 = "let (x,y : int =" ;
+
+
+  private static String MULTI_LET_ERROR_20 = "let (x,y : int = 1" ;
+
+
+  private static String MULTI_LET_ERROR_21 = "let (x,y : int = 1 in" ;
+
+
+  private static String MULTI_LET_ERROR_22 = "let (x,y : int = 1 in 2" ;
+
+
+  private static String MULTI_LET_ERROR_23 = "let (x,y) 1" ;
+
+
+  private static String MULTI_LET_ERROR_24 = "let (x,y) 1 in" ;
+
+
+  private static String MULTI_LET_ERROR_25 = "let (x,y) 1 in 2" ;
+
+
+  private static String MULTI_LET_ERROR_26 = "let (x,y): int 1" ;
+
+
+  private static String MULTI_LET_ERROR_27 = "let (x,y): int 1 in" ;
+
+
+  private static String MULTI_LET_ERROR_28 = "let (x,y): int 1 in 2" ;
+
+
+  private static String MULTI_LET_ERROR_29 = "let (x,y) = in" ;
+
+
+  private static String MULTI_LET_ERROR_30 = "let (x,y) = in 2" ;
+
+
+  private static String MULTI_LET_ERROR_31 = "let (x,y): int = in" ;
+
+
+  private static String MULTI_LET_ERROR_32 = "let (x,y): int = in 2" ;
+
+
+  private static String MULTI_LET_ERROR_33 = "let (x,y) int" ;
+
+
+  private static String MULTI_LET_ERROR_34 = "let (x,y) int =" ;
+
+
+  private static String MULTI_LET_ERROR_35 = "let (x,y) int = 1" ;
+
+
+  private static String MULTI_LET_ERROR_36 = "let (x,y) int = 1 in" ;
+
+
+  private static String MULTI_LET_ERROR_37 = "let (x,y) int = 1 in 2" ;
+
+
+  private static String MULTI_LET_ERROR_38 = "let (x,y): =" ;
+
+
+  private static String MULTI_LET_ERROR_39 = "let (x,y): = 1" ;
+
+
+  private static String MULTI_LET_ERROR_40 = "let (x,y): = 1 in" ;
+
+
+  private static String MULTI_LET_ERROR_41 = "let (x,y): = 1 in 2" ;
+
+
+  private static String MULTI_LET_ERROR_42 = "let ( =" ;
+
+
+  private static String MULTI_LET_ERROR_43 = "let ( = 1" ;
+
+
+  private static String MULTI_LET_ERROR_44 = "let ( = 1 in" ;
+
+
+  private static String MULTI_LET_ERROR_45 = "let ( = 1 in 2" ;
+
+
+  private static String MULTI_LET_ERROR_46 = "let ( :" ;
+
+
+  private static String MULTI_LET_ERROR_47 = "let ( : int" ;
+
+
+  private static String MULTI_LET_ERROR_48 = "let ( : int =" ;
+
+
+  private static String MULTI_LET_ERROR_49 = "let ( : int = 1" ;
+
+
+  private static String MULTI_LET_ERROR_50 = "let ( : int = 1 in" ;
+
+
+  private static String MULTI_LET_ERROR_51 = "let ( : int = 1 in 2" ;
+
+
+  private static String MULTI_LET_ERROR_52 = "let (x,y) in" ;
+
+
+  private static String MULTI_LET_ERROR_53 = "let (x,y) in 2" ;
+
+
+  private static String MULTI_LET_ERROR_54 = "let (x,y): int in" ;
+
+
+  private static String MULTI_LET_ERROR_55 = "let (x,y): int in 2" ;
+
+
+  private static String MULTI_LET_ERROR_56 = "let (x,y int" ;
+
+
+  private static String MULTI_LET_ERROR_57 = "let (x,y int =" ;
+
+
+  private static String MULTI_LET_ERROR_58 = "let (x,y int = 1" ;
+
+
+  private static String MULTI_LET_ERROR_59 = "let (x,y int = 1 in" ;
+
+
+  private static String MULTI_LET_ERROR_60 = "let (x,y int = 1 in 2" ;
+
+
+  private static String MULTI_LET_ERROR_61 = "let (x,y): 1" ;
+
+
+  private static String MULTI_LET_ERROR_62 = "let (x,y): 1 in" ;
+
+
+  private static String MULTI_LET_ERROR_63 = "let (x,y): 1 in 2" ;
+
+
+  private static String MULTI_LET_ERROR_64 = "let (x,y in" ;
+
+
+  private static String MULTI_LET_ERROR_65 = "let (x,y in 2" ;
+
+
+  private static String MULTI_LET_ERROR_66 = "let ( int" ;
+
+
+  private static String MULTI_LET_ERROR_67 = "let ( int =" ;
+
+
+  private static String MULTI_LET_ERROR_68 = "let ( int = 1" ;
+
+
+  private static String MULTI_LET_ERROR_69 = "let ( int = 1 in" ;
+
+
+  private static String MULTI_LET_ERROR_70 = "let ( int = 1 in 2" ;
+
+
+  private static String MULTI_LET_ERROR_71 = "let (x,y): in" ;
+
+
+  private static String MULTI_LET_ERROR_72 = "let (x,y): in 2" ;
 
 
   private static String FST = "fst" ;
@@ -1147,6 +1852,90 @@ public class ParserTest
   private static String CURRIED_METHOD_ERROR_13 = "object (self) method m (x:) y = 0 ; end" ;
 
 
+  private static String CURRIED_METHOD_ERROR_14 = "object (self) method m x y int" ;
+
+
+  private static String CURRIED_METHOD_ERROR_15 = "object (self) method m x y int =" ;
+
+
+  private static String CURRIED_METHOD_ERROR_16 = "object (self) method m x y int = 0" ;
+
+
+  private static String CURRIED_METHOD_ERROR_17 = "object (self) method m x y int = 0 ;" ;
+
+
+  private static String CURRIED_METHOD_ERROR_18 = "object (self) method m x y int = 0 ; end" ;
+
+
+  private static String CURRIED_METHOD_ERROR_19 = "object (self) method m x y: =" ;
+
+
+  private static String CURRIED_METHOD_ERROR_20 = "object (self) method m x y: = 0" ;
+
+
+  private static String CURRIED_METHOD_ERROR_21 = "object (self) method m x y: = 0 ;" ;
+
+
+  private static String CURRIED_METHOD_ERROR_22 = "object (self) method m x y: = 0 ; end" ;
+
+
+  private static String CURRIED_METHOD_ERROR_23 = "object (self) method m x y 0" ;
+
+
+  private static String CURRIED_METHOD_ERROR_24 = "object (self) method m x y 0 ;" ;
+
+
+  private static String CURRIED_METHOD_ERROR_25 = "object (self) method m x y 0 ; end" ;
+
+
+  private static String CURRIED_METHOD_ERROR_26 = "object (self) method m x y: int 0" ;
+
+
+  private static String CURRIED_METHOD_ERROR_27 = "object (self) method m x y: int 0 ;" ;
+
+
+  private static String CURRIED_METHOD_ERROR_28 = "object (self) method m x y: int 0 ; end" ;
+
+
+  private static String CURRIED_METHOD_ERROR_29 = "object (self) method m x y = ;" ;
+
+
+  private static String CURRIED_METHOD_ERROR_30 = "object (self) method m x y = ; end" ;
+
+
+  private static String CURRIED_METHOD_ERROR_31 = "object (self) method m x y: int = ;" ;
+
+
+  private static String CURRIED_METHOD_ERROR_32 = "object (self) method m x y: int = ; end" ;
+
+
+  private static String CURRIED_METHOD_ERROR_33 = "object (self) method m x y ;" ;
+
+
+  private static String CURRIED_METHOD_ERROR_34 = "object (self) method m x y ; end" ;
+
+
+  private static String CURRIED_METHOD_ERROR_35 = "object (self) method m x y: int ;" ;
+
+
+  private static String CURRIED_METHOD_ERROR_36 = "object (self) method m x y: int ; end" ;
+
+
+  private static String CURRIED_METHOD_ERROR_37 = "object (self) method m x y: 0" ;
+
+
+  private static String CURRIED_METHOD_ERROR_38 = "object (self) method m x y: 0 ;" ;
+
+
+  private static String CURRIED_METHOD_ERROR_39 = "object (self) method m x y: 0 ; end" ;
+
+
+  private static String CURRIED_METHOD_ERROR_40 = "object (self) method m x y: ;" ;
+
+
+  private static String CURRIED_METHOD_ERROR_41 = "object (self) method m x y: ; end" ;
+
+
   private static String EXPR_OBJECT_TYPE_1 = "lambda x:< add: int ; >.x" ;
 
 
@@ -1244,15 +2033,31 @@ public class ParserTest
       LAMBDA_ERROR_21 , LAMBDA_ERROR_22 , LAMBDA_ERROR_23 , LET_ERROR_1 ,
       LET_ERROR_2 , LET_ERROR_3 , LET_ERROR_4 , LET_ERROR_5 , LET_ERROR_6 ,
       LET_ERROR_7 , LET_ERROR_8 , LET_ERROR_9 , LET_ERROR_10 , LET_ERROR_11 ,
-      CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 , CURRIED_LET_ERROR_3 ,
-      CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 , CURRIED_LET_ERROR_6 ,
-      CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 , CURRIED_LET_ERROR_9 ,
-      CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 , CURRIED_LET_ERROR_12 ,
-      CURRIED_LET_ERROR_13 , CURRIED_LET_ERROR_14 , CURRIED_LET_ERROR_15 ,
-      SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 , SIMPLE_EXPR_ERROR_3 ,
-      EXPR_SIMPLE_TYPE_ERROR_1 , EXPR_SIMPLE_TYPE_ERROR_2 ,
-      EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 , EXPR_REC_TYPE_ERROR_2 ,
-      EXPR_REC_TYPE_ERROR_3 } ;
+      LET_ERROR_12 , LET_ERROR_13 , LET_ERROR_14 , LET_ERROR_15 , LET_ERROR_16 ,
+      LET_ERROR_17 , LET_ERROR_18 , LET_ERROR_19 , LET_ERROR_20 , LET_ERROR_21 ,
+      LET_ERROR_22 , LET_ERROR_23 , LET_ERROR_24 , LET_ERROR_25 , LET_ERROR_26 ,
+      LET_ERROR_27 , LET_ERROR_28 , LET_ERROR_29 , LET_ERROR_30 , LET_ERROR_31 ,
+      LET_ERROR_32 , LET_ERROR_33 , LET_ERROR_34 , LET_ERROR_35 , LET_ERROR_36 ,
+      LET_ERROR_37 , LET_ERROR_38 , LET_ERROR_39 , LET_ERROR_40 , LET_ERROR_41 ,
+      LET_ERROR_42 , LET_ERROR_43 , LET_ERROR_44 , LET_ERROR_45 , LET_ERROR_46 ,
+      LET_ERROR_47 , LET_ERROR_48 , LET_ERROR_49 , LET_ERROR_50 , LET_ERROR_51 ,
+      LET_ERROR_52 , CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 ,
+      CURRIED_LET_ERROR_3 , CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 ,
+      CURRIED_LET_ERROR_6 , CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 ,
+      CURRIED_LET_ERROR_9 , CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 ,
+      CURRIED_LET_ERROR_12 , CURRIED_LET_ERROR_13 , CURRIED_LET_ERROR_14 ,
+      CURRIED_LET_ERROR_15 , CURRIED_LET_ERROR_16 , CURRIED_LET_ERROR_17 ,
+      CURRIED_LET_ERROR_18 , CURRIED_LET_ERROR_19 , CURRIED_LET_ERROR_20 ,
+      CURRIED_LET_ERROR_21 , CURRIED_LET_ERROR_22 , CURRIED_LET_ERROR_23 ,
+      CURRIED_LET_ERROR_24 , CURRIED_LET_ERROR_25 , CURRIED_LET_ERROR_26 ,
+      CURRIED_LET_ERROR_27 , CURRIED_LET_ERROR_28 , CURRIED_LET_ERROR_29 ,
+      CURRIED_LET_ERROR_30 , CURRIED_LET_ERROR_31 , CURRIED_LET_ERROR_32 ,
+      CURRIED_LET_ERROR_33 , CURRIED_LET_ERROR_34 , CURRIED_LET_ERROR_35 ,
+      CURRIED_LET_ERROR_36 , CURRIED_LET_ERROR_37 , CURRIED_LET_ERROR_38 ,
+      CURRIED_LET_ERROR_39 , CURRIED_LET_ERROR_40 , SIMPLE_EXPR_ERROR_1 ,
+      SIMPLE_EXPR_ERROR_2 , SIMPLE_EXPR_ERROR_3 , EXPR_SIMPLE_TYPE_ERROR_1 ,
+      EXPR_SIMPLE_TYPE_ERROR_2 , EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 ,
+      EXPR_REC_TYPE_ERROR_2 , EXPR_REC_TYPE_ERROR_3 } ;
 
 
   private static String [ ] L1TYPE_NORMAL = new String [ ]
@@ -1277,8 +2082,8 @@ public class ParserTest
       SIMPLE_EXPR_1 , SIMPLE_EXPR_2 , EXPR_SIMPLE_TYPE , EXPR_BOOLEAN_TYPE ,
       EXPR_INTEGER_TYPE , EXPR_UNIT_TYPE , EXPR_ARROW_TYPE ,
       EXPR_TYPE_VARIABLE , EXPR_TYPE_NAME , EXPR_REC_TYPE , REC_1 , REC_2 ,
-      LET_REC_1 , LET_REC_2 , CURRIED_REC_LET_1 , CURRIED_REC_LET_2 ,
-      CURRIED_REC_LET_3 , CURRIED_REC_LET_4 } ;
+      LET_REC_1 , LET_REC_2 , CURRIED_LET_REC_1 , CURRIED_LET_REC_2 ,
+      CURRIED_LET_REC_3 , CURRIED_LET_REC_4 } ;
 
 
   private static String [ ] L2_ERROR = new String [ ]
@@ -1300,26 +2105,73 @@ public class ParserTest
       LAMBDA_ERROR_21 , LAMBDA_ERROR_22 , LAMBDA_ERROR_23 , LET_ERROR_1 ,
       LET_ERROR_2 , LET_ERROR_3 , LET_ERROR_4 , LET_ERROR_5 , LET_ERROR_6 ,
       LET_ERROR_7 , LET_ERROR_8 , LET_ERROR_9 , LET_ERROR_10 , LET_ERROR_11 ,
-      CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 , CURRIED_LET_ERROR_3 ,
-      CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 , CURRIED_LET_ERROR_6 ,
-      CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 , CURRIED_LET_ERROR_9 ,
-      CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 , CURRIED_LET_ERROR_12 ,
-      CURRIED_LET_ERROR_13 , CURRIED_LET_ERROR_14 , CURRIED_LET_ERROR_15 ,
-      SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 , SIMPLE_EXPR_ERROR_3 ,
-      EXPR_SIMPLE_TYPE_ERROR_1 , EXPR_SIMPLE_TYPE_ERROR_2 ,
-      EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 , EXPR_REC_TYPE_ERROR_2 ,
-      EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 , REC_ERROR_2 , REC_ERROR_3 ,
-      REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 , REC_ERROR_7 , LET_REC_ERROR_1 ,
-      LET_REC_ERROR_2 , LET_REC_ERROR_3 , LET_REC_ERROR_4 , LET_REC_ERROR_5 ,
-      LET_REC_ERROR_6 , LET_REC_ERROR_7 , LET_REC_ERROR_8 , LET_REC_ERROR_9 ,
-      LET_REC_ERROR_10 , LET_REC_ERROR_11 , CURRIED_REC_LET_ERROR_1 ,
-      CURRIED_REC_LET_ERROR_2 , CURRIED_REC_LET_ERROR_3 ,
-      CURRIED_REC_LET_ERROR_4 , CURRIED_REC_LET_ERROR_5 ,
-      CURRIED_REC_LET_ERROR_6 , CURRIED_REC_LET_ERROR_7 ,
-      CURRIED_REC_LET_ERROR_8 , CURRIED_REC_LET_ERROR_9 ,
-      CURRIED_REC_LET_ERROR_10 , CURRIED_REC_LET_ERROR_11 ,
-      CURRIED_REC_LET_ERROR_12 , CURRIED_REC_LET_ERROR_13 ,
-      CURRIED_REC_LET_ERROR_14 , CURRIED_REC_LET_ERROR_15 } ;
+      LET_ERROR_12 , LET_ERROR_13 , LET_ERROR_14 , LET_ERROR_15 , LET_ERROR_16 ,
+      LET_ERROR_17 , LET_ERROR_18 , LET_ERROR_19 , LET_ERROR_20 , LET_ERROR_21 ,
+      LET_ERROR_22 , LET_ERROR_23 , LET_ERROR_24 , LET_ERROR_25 , LET_ERROR_26 ,
+      LET_ERROR_27 , LET_ERROR_28 , LET_ERROR_29 , LET_ERROR_30 , LET_ERROR_31 ,
+      LET_ERROR_32 , LET_ERROR_33 , LET_ERROR_34 , LET_ERROR_35 , LET_ERROR_36 ,
+      LET_ERROR_37 , LET_ERROR_38 , LET_ERROR_39 , LET_ERROR_40 , LET_ERROR_41 ,
+      LET_ERROR_42 , LET_ERROR_43 , LET_ERROR_44 , LET_ERROR_45 , LET_ERROR_46 ,
+      LET_ERROR_47 , LET_ERROR_48 , LET_ERROR_49 , LET_ERROR_50 , LET_ERROR_51 ,
+      LET_ERROR_52 , CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 ,
+      CURRIED_LET_ERROR_3 , CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 ,
+      CURRIED_LET_ERROR_6 , CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 ,
+      CURRIED_LET_ERROR_9 , CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 ,
+      CURRIED_LET_ERROR_12 , CURRIED_LET_ERROR_13 , CURRIED_LET_ERROR_14 ,
+      CURRIED_LET_ERROR_15 , CURRIED_LET_ERROR_16 , CURRIED_LET_ERROR_17 ,
+      CURRIED_LET_ERROR_18 , CURRIED_LET_ERROR_19 , CURRIED_LET_ERROR_20 ,
+      CURRIED_LET_ERROR_21 , CURRIED_LET_ERROR_22 , CURRIED_LET_ERROR_23 ,
+      CURRIED_LET_ERROR_24 , CURRIED_LET_ERROR_25 , CURRIED_LET_ERROR_26 ,
+      CURRIED_LET_ERROR_27 , CURRIED_LET_ERROR_28 , CURRIED_LET_ERROR_29 ,
+      CURRIED_LET_ERROR_30 , CURRIED_LET_ERROR_31 , CURRIED_LET_ERROR_32 ,
+      CURRIED_LET_ERROR_33 , CURRIED_LET_ERROR_34 , CURRIED_LET_ERROR_35 ,
+      CURRIED_LET_ERROR_36 , CURRIED_LET_ERROR_37 , CURRIED_LET_ERROR_38 ,
+      CURRIED_LET_ERROR_39 , CURRIED_LET_ERROR_40 , SIMPLE_EXPR_ERROR_1 ,
+      SIMPLE_EXPR_ERROR_2 , SIMPLE_EXPR_ERROR_3 , EXPR_SIMPLE_TYPE_ERROR_1 ,
+      EXPR_SIMPLE_TYPE_ERROR_2 , EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 ,
+      EXPR_REC_TYPE_ERROR_2 , EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 ,
+      REC_ERROR_2 , REC_ERROR_3 , REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 ,
+      REC_ERROR_7 , REC_ERROR_8 , REC_ERROR_9 , REC_ERROR_10 , REC_ERROR_11 ,
+      REC_ERROR_12 , REC_ERROR_13 , REC_ERROR_14 , REC_ERROR_15 , REC_ERROR_16 ,
+      REC_ERROR_17 , REC_ERROR_18 , REC_ERROR_19 , REC_ERROR_20 , REC_ERROR_21 ,
+      REC_ERROR_22 , LET_REC_ERROR_1 , LET_REC_ERROR_2 , LET_REC_ERROR_3 ,
+      LET_REC_ERROR_4 , LET_REC_ERROR_5 , LET_REC_ERROR_6 , LET_REC_ERROR_7 ,
+      LET_REC_ERROR_8 , LET_REC_ERROR_9 , LET_REC_ERROR_10 , LET_REC_ERROR_11 ,
+      LET_REC_ERROR_12 , LET_REC_ERROR_13 , LET_REC_ERROR_14 ,
+      LET_REC_ERROR_15 , LET_REC_ERROR_16 , LET_REC_ERROR_17 ,
+      LET_REC_ERROR_18 , LET_REC_ERROR_19 , LET_REC_ERROR_20 ,
+      LET_REC_ERROR_21 , LET_REC_ERROR_22 , LET_REC_ERROR_23 ,
+      LET_REC_ERROR_24 , LET_REC_ERROR_25 , LET_REC_ERROR_26 ,
+      LET_REC_ERROR_27 , LET_REC_ERROR_28 , LET_REC_ERROR_29 ,
+      LET_REC_ERROR_30 , LET_REC_ERROR_31 , LET_REC_ERROR_32 ,
+      LET_REC_ERROR_33 , LET_REC_ERROR_34 , LET_REC_ERROR_35 ,
+      LET_REC_ERROR_36 , LET_REC_ERROR_37 , LET_REC_ERROR_38 ,
+      LET_REC_ERROR_39 , LET_REC_ERROR_40 , LET_REC_ERROR_41 ,
+      LET_REC_ERROR_42 , LET_REC_ERROR_43 , LET_REC_ERROR_44 ,
+      LET_REC_ERROR_45 , LET_REC_ERROR_46 , LET_REC_ERROR_47 ,
+      LET_REC_ERROR_48 , LET_REC_ERROR_49 , LET_REC_ERROR_50 ,
+      LET_REC_ERROR_51 , LET_REC_ERROR_52 , LET_REC_ERROR_53 ,
+      LET_REC_ERROR_54 , LET_REC_ERROR_55 , CURRIED_LET_REC_ERROR_1 ,
+      CURRIED_LET_REC_ERROR_2 , CURRIED_LET_REC_ERROR_3 ,
+      CURRIED_LET_REC_ERROR_4 , CURRIED_LET_REC_ERROR_5 ,
+      CURRIED_LET_REC_ERROR_6 , CURRIED_LET_REC_ERROR_7 ,
+      CURRIED_LET_REC_ERROR_8 , CURRIED_LET_REC_ERROR_9 ,
+      CURRIED_LET_REC_ERROR_10 , CURRIED_LET_REC_ERROR_11 ,
+      CURRIED_LET_REC_ERROR_12 , CURRIED_LET_REC_ERROR_13 ,
+      CURRIED_LET_REC_ERROR_14 , CURRIED_LET_REC_ERROR_15 ,
+      CURRIED_LET_REC_ERROR_16 , CURRIED_LET_REC_ERROR_17 ,
+      CURRIED_LET_REC_ERROR_18 , CURRIED_LET_REC_ERROR_19 ,
+      CURRIED_LET_REC_ERROR_20 , CURRIED_LET_REC_ERROR_21 ,
+      CURRIED_LET_REC_ERROR_22 , CURRIED_LET_REC_ERROR_23 ,
+      CURRIED_LET_REC_ERROR_24 , CURRIED_LET_REC_ERROR_25 ,
+      CURRIED_LET_REC_ERROR_26 , CURRIED_LET_REC_ERROR_27 ,
+      CURRIED_LET_REC_ERROR_28 , CURRIED_LET_REC_ERROR_29 ,
+      CURRIED_LET_REC_ERROR_30 , CURRIED_LET_REC_ERROR_31 ,
+      CURRIED_LET_REC_ERROR_32 , CURRIED_LET_REC_ERROR_33 ,
+      CURRIED_LET_REC_ERROR_34 , CURRIED_LET_REC_ERROR_35 ,
+      CURRIED_LET_REC_ERROR_36 , CURRIED_LET_REC_ERROR_37 ,
+      CURRIED_LET_REC_ERROR_38 , CURRIED_LET_REC_ERROR_39 ,
+      CURRIED_LET_REC_ERROR_40 } ;
 
 
   private static String [ ] L2TYPE_NORMAL = new String [ ]
@@ -1344,8 +2196,8 @@ public class ParserTest
       SIMPLE_EXPR_1 , SIMPLE_EXPR_2 , EXPR_SIMPLE_TYPE , EXPR_BOOLEAN_TYPE ,
       EXPR_INTEGER_TYPE , EXPR_UNIT_TYPE , EXPR_ARROW_TYPE ,
       EXPR_TYPE_VARIABLE , EXPR_TYPE_NAME , EXPR_REC_TYPE , REC_1 , REC_2 ,
-      LET_REC_1 , LET_REC_2 , CURRIED_REC_LET_1 , CURRIED_REC_LET_2 ,
-      CURRIED_REC_LET_3 , CURRIED_REC_LET_4 , SELF , OBJECT_1 , OBJECT_2 ,
+      LET_REC_1 , LET_REC_2 , CURRIED_LET_REC_1 , CURRIED_LET_REC_2 ,
+      CURRIED_LET_REC_3 , CURRIED_LET_REC_4 , SELF , OBJECT_1 , OBJECT_2 ,
       OBJECT_3 , OBJECT_4 , DUPLICATION_1 , DUPLICATION_2 , DUPLICATION_3 ,
       SEND , ROW_1 , ROW_2 , ROW_3 , ROW_4 , ROW_5 , ROW_6 , ATTRIBUTE ,
       METHOD_1 , METHOD_2 , CURRIED_METHOD_1 , CURRIED_METHOD_2 ,
@@ -1372,31 +2224,78 @@ public class ParserTest
       LAMBDA_ERROR_21 , LAMBDA_ERROR_22 , LAMBDA_ERROR_23 , LET_ERROR_1 ,
       LET_ERROR_2 , LET_ERROR_3 , LET_ERROR_4 , LET_ERROR_5 , LET_ERROR_6 ,
       LET_ERROR_7 , LET_ERROR_8 , LET_ERROR_9 , LET_ERROR_10 , LET_ERROR_11 ,
-      CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 , CURRIED_LET_ERROR_3 ,
-      CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 , CURRIED_LET_ERROR_6 ,
-      CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 , CURRIED_LET_ERROR_9 ,
-      CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 , CURRIED_LET_ERROR_12 ,
-      CURRIED_LET_ERROR_13 , CURRIED_LET_ERROR_14 , CURRIED_LET_ERROR_15 ,
-      SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 , SIMPLE_EXPR_ERROR_3 ,
-      EXPR_SIMPLE_TYPE_ERROR_1 , EXPR_SIMPLE_TYPE_ERROR_2 ,
-      EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 , EXPR_REC_TYPE_ERROR_2 ,
-      EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 , REC_ERROR_2 , REC_ERROR_3 ,
-      REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 , REC_ERROR_7 , LET_REC_ERROR_1 ,
-      LET_REC_ERROR_2 , LET_REC_ERROR_3 , LET_REC_ERROR_4 , LET_REC_ERROR_5 ,
-      LET_REC_ERROR_6 , LET_REC_ERROR_7 , LET_REC_ERROR_8 , LET_REC_ERROR_9 ,
-      LET_REC_ERROR_10 , LET_REC_ERROR_11 , CURRIED_REC_LET_ERROR_1 ,
-      CURRIED_REC_LET_ERROR_2 , CURRIED_REC_LET_ERROR_3 ,
-      CURRIED_REC_LET_ERROR_4 , CURRIED_REC_LET_ERROR_5 ,
-      CURRIED_REC_LET_ERROR_6 , CURRIED_REC_LET_ERROR_7 ,
-      CURRIED_REC_LET_ERROR_8 , CURRIED_REC_LET_ERROR_9 ,
-      CURRIED_REC_LET_ERROR_10 , CURRIED_REC_LET_ERROR_11 ,
-      CURRIED_REC_LET_ERROR_12 , CURRIED_REC_LET_ERROR_13 ,
-      CURRIED_REC_LET_ERROR_14 , CURRIED_REC_LET_ERROR_15 , OBJECT_ERROR_1 ,
-      OBJECT_ERROR_2 , OBJECT_ERROR_3 , OBJECT_ERROR_4 , OBJECT_ERROR_5 ,
-      OBJECT_ERROR_6 , OBJECT_ERROR_7 , OBJECT_ERROR_8 , OBJECT_ERROR_9 ,
-      OBJECT_ERROR_10 , OBJECT_ERROR_11 , OBJECT_ERROR_12 , OBJECT_ERROR_13 ,
-      OBJECT_ERROR_14 , OBJECT_ERROR_15 , OBJECT_ERROR_16 , OBJECT_ERROR_17 ,
-      OBJECT_ERROR_18 , OBJECT_ERROR_19 , OBJECT_ERROR_20 , OBJECT_ERROR_21 ,
+      LET_ERROR_12 , LET_ERROR_13 , LET_ERROR_14 , LET_ERROR_15 , LET_ERROR_16 ,
+      LET_ERROR_17 , LET_ERROR_18 , LET_ERROR_19 , LET_ERROR_20 , LET_ERROR_21 ,
+      LET_ERROR_22 , LET_ERROR_23 , LET_ERROR_24 , LET_ERROR_25 , LET_ERROR_26 ,
+      LET_ERROR_27 , LET_ERROR_28 , LET_ERROR_29 , LET_ERROR_30 , LET_ERROR_31 ,
+      LET_ERROR_32 , LET_ERROR_33 , LET_ERROR_34 , LET_ERROR_35 , LET_ERROR_36 ,
+      LET_ERROR_37 , LET_ERROR_38 , LET_ERROR_39 , LET_ERROR_40 , LET_ERROR_41 ,
+      LET_ERROR_42 , LET_ERROR_43 , LET_ERROR_44 , LET_ERROR_45 , LET_ERROR_46 ,
+      LET_ERROR_47 , LET_ERROR_48 , LET_ERROR_49 , LET_ERROR_50 , LET_ERROR_51 ,
+      LET_ERROR_52 , CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 ,
+      CURRIED_LET_ERROR_3 , CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 ,
+      CURRIED_LET_ERROR_6 , CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 ,
+      CURRIED_LET_ERROR_9 , CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 ,
+      CURRIED_LET_ERROR_12 , CURRIED_LET_ERROR_13 , CURRIED_LET_ERROR_14 ,
+      CURRIED_LET_ERROR_15 , CURRIED_LET_ERROR_16 , CURRIED_LET_ERROR_17 ,
+      CURRIED_LET_ERROR_18 , CURRIED_LET_ERROR_19 , CURRIED_LET_ERROR_20 ,
+      CURRIED_LET_ERROR_21 , CURRIED_LET_ERROR_22 , CURRIED_LET_ERROR_23 ,
+      CURRIED_LET_ERROR_24 , CURRIED_LET_ERROR_25 , CURRIED_LET_ERROR_26 ,
+      CURRIED_LET_ERROR_27 , CURRIED_LET_ERROR_28 , CURRIED_LET_ERROR_29 ,
+      CURRIED_LET_ERROR_30 , CURRIED_LET_ERROR_31 , CURRIED_LET_ERROR_32 ,
+      CURRIED_LET_ERROR_33 , CURRIED_LET_ERROR_34 , CURRIED_LET_ERROR_35 ,
+      CURRIED_LET_ERROR_36 , CURRIED_LET_ERROR_37 , CURRIED_LET_ERROR_38 ,
+      CURRIED_LET_ERROR_39 , CURRIED_LET_ERROR_40 , SIMPLE_EXPR_ERROR_1 ,
+      SIMPLE_EXPR_ERROR_2 , SIMPLE_EXPR_ERROR_3 , EXPR_SIMPLE_TYPE_ERROR_1 ,
+      EXPR_SIMPLE_TYPE_ERROR_2 , EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 ,
+      EXPR_REC_TYPE_ERROR_2 , EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 ,
+      REC_ERROR_2 , REC_ERROR_3 , REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 ,
+      REC_ERROR_7 , REC_ERROR_8 , REC_ERROR_9 , REC_ERROR_10 , REC_ERROR_11 ,
+      REC_ERROR_12 , REC_ERROR_13 , REC_ERROR_14 , REC_ERROR_15 , REC_ERROR_16 ,
+      REC_ERROR_17 , REC_ERROR_18 , REC_ERROR_19 , REC_ERROR_20 , REC_ERROR_21 ,
+      REC_ERROR_22 , LET_REC_ERROR_1 , LET_REC_ERROR_2 , LET_REC_ERROR_3 ,
+      LET_REC_ERROR_4 , LET_REC_ERROR_5 , LET_REC_ERROR_6 , LET_REC_ERROR_7 ,
+      LET_REC_ERROR_8 , LET_REC_ERROR_9 , LET_REC_ERROR_10 , LET_REC_ERROR_11 ,
+      LET_REC_ERROR_12 , LET_REC_ERROR_13 , LET_REC_ERROR_14 ,
+      LET_REC_ERROR_15 , LET_REC_ERROR_16 , LET_REC_ERROR_17 ,
+      LET_REC_ERROR_18 , LET_REC_ERROR_19 , LET_REC_ERROR_20 ,
+      LET_REC_ERROR_21 , LET_REC_ERROR_22 , LET_REC_ERROR_23 ,
+      LET_REC_ERROR_24 , LET_REC_ERROR_25 , LET_REC_ERROR_26 ,
+      LET_REC_ERROR_27 , LET_REC_ERROR_28 , LET_REC_ERROR_29 ,
+      LET_REC_ERROR_30 , LET_REC_ERROR_31 , LET_REC_ERROR_32 ,
+      LET_REC_ERROR_33 , LET_REC_ERROR_34 , LET_REC_ERROR_35 ,
+      LET_REC_ERROR_36 , LET_REC_ERROR_37 , LET_REC_ERROR_38 ,
+      LET_REC_ERROR_39 , LET_REC_ERROR_40 , LET_REC_ERROR_41 ,
+      LET_REC_ERROR_42 , LET_REC_ERROR_43 , LET_REC_ERROR_44 ,
+      LET_REC_ERROR_45 , LET_REC_ERROR_46 , LET_REC_ERROR_47 ,
+      LET_REC_ERROR_48 , LET_REC_ERROR_49 , LET_REC_ERROR_50 ,
+      LET_REC_ERROR_51 , LET_REC_ERROR_52 , LET_REC_ERROR_53 ,
+      LET_REC_ERROR_54 , LET_REC_ERROR_55 , CURRIED_LET_REC_ERROR_1 ,
+      CURRIED_LET_REC_ERROR_2 , CURRIED_LET_REC_ERROR_3 ,
+      CURRIED_LET_REC_ERROR_4 , CURRIED_LET_REC_ERROR_5 ,
+      CURRIED_LET_REC_ERROR_6 , CURRIED_LET_REC_ERROR_7 ,
+      CURRIED_LET_REC_ERROR_8 , CURRIED_LET_REC_ERROR_9 ,
+      CURRIED_LET_REC_ERROR_10 , CURRIED_LET_REC_ERROR_11 ,
+      CURRIED_LET_REC_ERROR_12 , CURRIED_LET_REC_ERROR_13 ,
+      CURRIED_LET_REC_ERROR_14 , CURRIED_LET_REC_ERROR_15 ,
+      CURRIED_LET_REC_ERROR_16 , CURRIED_LET_REC_ERROR_17 ,
+      CURRIED_LET_REC_ERROR_18 , CURRIED_LET_REC_ERROR_19 ,
+      CURRIED_LET_REC_ERROR_20 , CURRIED_LET_REC_ERROR_21 ,
+      CURRIED_LET_REC_ERROR_22 , CURRIED_LET_REC_ERROR_23 ,
+      CURRIED_LET_REC_ERROR_24 , CURRIED_LET_REC_ERROR_25 ,
+      CURRIED_LET_REC_ERROR_26 , CURRIED_LET_REC_ERROR_27 ,
+      CURRIED_LET_REC_ERROR_28 , CURRIED_LET_REC_ERROR_29 ,
+      CURRIED_LET_REC_ERROR_30 , CURRIED_LET_REC_ERROR_31 ,
+      CURRIED_LET_REC_ERROR_32 , CURRIED_LET_REC_ERROR_33 ,
+      CURRIED_LET_REC_ERROR_34 , CURRIED_LET_REC_ERROR_35 ,
+      CURRIED_LET_REC_ERROR_36 , CURRIED_LET_REC_ERROR_37 ,
+      CURRIED_LET_REC_ERROR_38 , CURRIED_LET_REC_ERROR_39 ,
+      CURRIED_LET_REC_ERROR_40 , OBJECT_ERROR_1 , OBJECT_ERROR_2 ,
+      OBJECT_ERROR_3 , OBJECT_ERROR_4 , OBJECT_ERROR_5 , OBJECT_ERROR_6 ,
+      OBJECT_ERROR_7 , OBJECT_ERROR_8 , OBJECT_ERROR_9 , OBJECT_ERROR_10 ,
+      OBJECT_ERROR_11 , OBJECT_ERROR_12 , OBJECT_ERROR_13 , OBJECT_ERROR_14 ,
+      OBJECT_ERROR_15 , OBJECT_ERROR_16 , OBJECT_ERROR_17 , OBJECT_ERROR_18 ,
+      OBJECT_ERROR_19 , OBJECT_ERROR_20 , OBJECT_ERROR_21 ,
       DUPLICATION_ERROR_1 , DUPLICATION_ERROR_2 , DUPLICATION_ERROR_3 ,
       DUPLICATION_ERROR_4 , DUPLICATION_ERROR_5 , SEND_ERROR ,
       ATTRIBUTE_ERROR_1 , ATTRIBUTE_ERROR_2 , ATTRIBUTE_ERROR_3 ,
@@ -1418,7 +2317,21 @@ public class ParserTest
       CURRIED_METHOD_ERROR_6 , CURRIED_METHOD_ERROR_7 , CURRIED_METHOD_ERROR_8 ,
       CURRIED_METHOD_ERROR_9 , CURRIED_METHOD_ERROR_10 ,
       CURRIED_METHOD_ERROR_11 , CURRIED_METHOD_ERROR_12 ,
-      CURRIED_METHOD_ERROR_13 , EXPR_OBJECT_TYPE_ERROR_1 ,
+      CURRIED_METHOD_ERROR_13 , CURRIED_METHOD_ERROR_14 ,
+      CURRIED_METHOD_ERROR_15 , CURRIED_METHOD_ERROR_16 ,
+      CURRIED_METHOD_ERROR_17 , CURRIED_METHOD_ERROR_18 ,
+      CURRIED_METHOD_ERROR_19 , CURRIED_METHOD_ERROR_20 ,
+      CURRIED_METHOD_ERROR_21 , CURRIED_METHOD_ERROR_22 ,
+      CURRIED_METHOD_ERROR_23 , CURRIED_METHOD_ERROR_24 ,
+      CURRIED_METHOD_ERROR_25 , CURRIED_METHOD_ERROR_26 ,
+      CURRIED_METHOD_ERROR_27 , CURRIED_METHOD_ERROR_28 ,
+      CURRIED_METHOD_ERROR_29 , CURRIED_METHOD_ERROR_30 ,
+      CURRIED_METHOD_ERROR_31 , CURRIED_METHOD_ERROR_32 ,
+      CURRIED_METHOD_ERROR_33 , CURRIED_METHOD_ERROR_34 ,
+      CURRIED_METHOD_ERROR_35 , CURRIED_METHOD_ERROR_36 ,
+      CURRIED_METHOD_ERROR_37 , CURRIED_METHOD_ERROR_38 ,
+      CURRIED_METHOD_ERROR_39 , CURRIED_METHOD_ERROR_40 ,
+      CURRIED_METHOD_ERROR_41 , EXPR_OBJECT_TYPE_ERROR_1 ,
       EXPR_OBJECT_TYPE_ERROR_2 , EXPR_ROW_TYPE_ERROR_1 , EXPR_ROW_TYPE_ERROR_2 ,
       EXPR_ROW_TYPE_ERROR_3 } ;
 
@@ -1448,8 +2361,8 @@ public class ParserTest
       SIMPLE_EXPR_1 , SIMPLE_EXPR_2 , EXPR_SIMPLE_TYPE , EXPR_BOOLEAN_TYPE ,
       EXPR_INTEGER_TYPE , EXPR_UNIT_TYPE , EXPR_ARROW_TYPE ,
       EXPR_TYPE_VARIABLE , EXPR_TYPE_NAME , EXPR_REC_TYPE , REC_1 , REC_2 ,
-      LET_REC_1 , LET_REC_2 , CURRIED_REC_LET_1 , CURRIED_REC_LET_2 ,
-      CURRIED_REC_LET_3 , CURRIED_REC_LET_4 , INFIX_OPERATION_11 ,
+      LET_REC_1 , LET_REC_2 , CURRIED_LET_REC_1 , CURRIED_LET_REC_2 ,
+      CURRIED_LET_REC_3 , CURRIED_LET_REC_4 , INFIX_OPERATION_11 ,
       MULTI_LAMBDA_1 , MULTI_LAMBDA_2 , MULTI_LET_1 , MULTI_LET_2 , FST , SND ,
       CONS , IS_EMPTY , HD , TL , OPERATOR_11 , EMPTY_LIST , PROJECTION ,
       TUPLE , LIST , EXPR_TUPLE_TYPE_1 , EXPR_TUPLE_TYPE_2 , EXPR_LIST_TYPE } ;
@@ -1474,34 +2387,109 @@ public class ParserTest
       LAMBDA_ERROR_21 , LAMBDA_ERROR_22 , LAMBDA_ERROR_23 , LET_ERROR_1 ,
       LET_ERROR_2 , LET_ERROR_3 , LET_ERROR_4 , LET_ERROR_5 , LET_ERROR_6 ,
       LET_ERROR_7 , LET_ERROR_8 , LET_ERROR_9 , LET_ERROR_10 , LET_ERROR_11 ,
-      CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 , CURRIED_LET_ERROR_3 ,
-      CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 , CURRIED_LET_ERROR_6 ,
-      CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 , CURRIED_LET_ERROR_9 ,
-      CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 , CURRIED_LET_ERROR_12 ,
-      CURRIED_LET_ERROR_13 , CURRIED_LET_ERROR_14 , CURRIED_LET_ERROR_15 ,
-      SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 , SIMPLE_EXPR_ERROR_3 ,
-      EXPR_SIMPLE_TYPE_ERROR_1 , EXPR_SIMPLE_TYPE_ERROR_2 ,
-      EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 , EXPR_REC_TYPE_ERROR_2 ,
-      EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 , REC_ERROR_2 , REC_ERROR_3 ,
-      REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 , REC_ERROR_7 , LET_REC_ERROR_1 ,
-      LET_REC_ERROR_2 , LET_REC_ERROR_3 , LET_REC_ERROR_4 , LET_REC_ERROR_5 ,
-      LET_REC_ERROR_6 , LET_REC_ERROR_7 , LET_REC_ERROR_8 , LET_REC_ERROR_9 ,
-      LET_REC_ERROR_10 , LET_REC_ERROR_11 , CURRIED_REC_LET_ERROR_1 ,
-      CURRIED_REC_LET_ERROR_2 , CURRIED_REC_LET_ERROR_3 ,
-      CURRIED_REC_LET_ERROR_4 , CURRIED_REC_LET_ERROR_5 ,
-      CURRIED_REC_LET_ERROR_6 , CURRIED_REC_LET_ERROR_7 ,
-      CURRIED_REC_LET_ERROR_8 , CURRIED_REC_LET_ERROR_9 ,
-      CURRIED_REC_LET_ERROR_10 , CURRIED_REC_LET_ERROR_11 ,
-      CURRIED_REC_LET_ERROR_12 , CURRIED_REC_LET_ERROR_13 ,
-      CURRIED_REC_LET_ERROR_14 , CURRIED_REC_LET_ERROR_15 ,
-      INFIX_OPERATION_ERROR_11 , MULTI_LAMBDA_ERROR_1 , MULTI_LAMBDA_ERROR_2 ,
-      MULTI_LAMBDA_ERROR_3 , MULTI_LAMBDA_ERROR_4 , MULTI_LAMBDA_ERROR_5 ,
-      MULTI_LAMBDA_ERROR_6 , MULTI_LAMBDA_ERROR_7 , MULTI_LAMBDA_ERROR_8 ,
-      MULTI_LAMBDA_ERROR_9 , MULTI_LET_ERROR_1 , MULTI_LET_ERROR_2 ,
-      MULTI_LET_ERROR_3 , MULTI_LET_ERROR_4 , MULTI_LET_ERROR_5 ,
-      MULTI_LET_ERROR_6 , MULTI_LET_ERROR_7 , MULTI_LET_ERROR_8 ,
-      MULTI_LET_ERROR_9 , MULTI_LET_ERROR_10 , MULTI_LET_ERROR_11 ,
-      MULTI_LET_ERROR_12 , MULTI_LET_ERROR_13 , TUPLE_ERROR_1 , TUPLE_ERROR_2 ,
+      LET_ERROR_12 , LET_ERROR_13 , LET_ERROR_14 , LET_ERROR_15 , LET_ERROR_16 ,
+      LET_ERROR_17 , LET_ERROR_18 , LET_ERROR_19 , LET_ERROR_20 , LET_ERROR_21 ,
+      LET_ERROR_22 , LET_ERROR_23 , LET_ERROR_24 , LET_ERROR_25 , LET_ERROR_26 ,
+      LET_ERROR_27 , LET_ERROR_28 , LET_ERROR_29 , LET_ERROR_30 , LET_ERROR_31 ,
+      LET_ERROR_32 , LET_ERROR_33 , LET_ERROR_34 , LET_ERROR_35 , LET_ERROR_36 ,
+      LET_ERROR_37 , LET_ERROR_38 , LET_ERROR_39 , LET_ERROR_40 , LET_ERROR_41 ,
+      LET_ERROR_42 , LET_ERROR_43 , LET_ERROR_44 , LET_ERROR_45 , LET_ERROR_46 ,
+      LET_ERROR_47 , LET_ERROR_48 , LET_ERROR_49 , LET_ERROR_50 , LET_ERROR_51 ,
+      LET_ERROR_52 , CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 ,
+      CURRIED_LET_ERROR_3 , CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 ,
+      CURRIED_LET_ERROR_6 , CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 ,
+      CURRIED_LET_ERROR_9 , CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 ,
+      CURRIED_LET_ERROR_12 , CURRIED_LET_ERROR_13 , CURRIED_LET_ERROR_14 ,
+      CURRIED_LET_ERROR_15 , CURRIED_LET_ERROR_16 , CURRIED_LET_ERROR_17 ,
+      CURRIED_LET_ERROR_18 , CURRIED_LET_ERROR_19 , CURRIED_LET_ERROR_20 ,
+      CURRIED_LET_ERROR_21 , CURRIED_LET_ERROR_22 , CURRIED_LET_ERROR_23 ,
+      CURRIED_LET_ERROR_24 , CURRIED_LET_ERROR_25 , CURRIED_LET_ERROR_26 ,
+      CURRIED_LET_ERROR_27 , CURRIED_LET_ERROR_28 , CURRIED_LET_ERROR_29 ,
+      CURRIED_LET_ERROR_30 , CURRIED_LET_ERROR_31 , CURRIED_LET_ERROR_32 ,
+      CURRIED_LET_ERROR_33 , CURRIED_LET_ERROR_34 , CURRIED_LET_ERROR_35 ,
+      CURRIED_LET_ERROR_36 , CURRIED_LET_ERROR_37 , CURRIED_LET_ERROR_38 ,
+      CURRIED_LET_ERROR_39 , CURRIED_LET_ERROR_40 , SIMPLE_EXPR_ERROR_1 ,
+      SIMPLE_EXPR_ERROR_2 , SIMPLE_EXPR_ERROR_3 , EXPR_SIMPLE_TYPE_ERROR_1 ,
+      EXPR_SIMPLE_TYPE_ERROR_2 , EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 ,
+      EXPR_REC_TYPE_ERROR_2 , EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 ,
+      REC_ERROR_2 , REC_ERROR_3 , REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 ,
+      REC_ERROR_7 , REC_ERROR_8 , REC_ERROR_9 , REC_ERROR_10 , REC_ERROR_11 ,
+      REC_ERROR_12 , REC_ERROR_13 , REC_ERROR_14 , REC_ERROR_15 , REC_ERROR_16 ,
+      REC_ERROR_17 , REC_ERROR_18 , REC_ERROR_19 , REC_ERROR_20 , REC_ERROR_21 ,
+      REC_ERROR_22 , LET_REC_ERROR_1 , LET_REC_ERROR_2 , LET_REC_ERROR_3 ,
+      LET_REC_ERROR_4 , LET_REC_ERROR_5 , LET_REC_ERROR_6 , LET_REC_ERROR_7 ,
+      LET_REC_ERROR_8 , LET_REC_ERROR_9 , LET_REC_ERROR_10 , LET_REC_ERROR_11 ,
+      LET_REC_ERROR_12 , LET_REC_ERROR_13 , LET_REC_ERROR_14 ,
+      LET_REC_ERROR_15 , LET_REC_ERROR_16 , LET_REC_ERROR_17 ,
+      LET_REC_ERROR_18 , LET_REC_ERROR_19 , LET_REC_ERROR_20 ,
+      LET_REC_ERROR_21 , LET_REC_ERROR_22 , LET_REC_ERROR_23 ,
+      LET_REC_ERROR_24 , LET_REC_ERROR_25 , LET_REC_ERROR_26 ,
+      LET_REC_ERROR_27 , LET_REC_ERROR_28 , LET_REC_ERROR_29 ,
+      LET_REC_ERROR_30 , LET_REC_ERROR_31 , LET_REC_ERROR_32 ,
+      LET_REC_ERROR_33 , LET_REC_ERROR_34 , LET_REC_ERROR_35 ,
+      LET_REC_ERROR_36 , LET_REC_ERROR_37 , LET_REC_ERROR_38 ,
+      LET_REC_ERROR_39 , LET_REC_ERROR_40 , LET_REC_ERROR_41 ,
+      LET_REC_ERROR_42 , LET_REC_ERROR_43 , LET_REC_ERROR_44 ,
+      LET_REC_ERROR_45 , LET_REC_ERROR_46 , LET_REC_ERROR_47 ,
+      LET_REC_ERROR_48 , LET_REC_ERROR_49 , LET_REC_ERROR_50 ,
+      LET_REC_ERROR_51 , LET_REC_ERROR_52 , LET_REC_ERROR_53 ,
+      LET_REC_ERROR_54 , LET_REC_ERROR_55 , CURRIED_LET_REC_ERROR_1 ,
+      CURRIED_LET_REC_ERROR_2 , CURRIED_LET_REC_ERROR_3 ,
+      CURRIED_LET_REC_ERROR_4 , CURRIED_LET_REC_ERROR_5 ,
+      CURRIED_LET_REC_ERROR_6 , CURRIED_LET_REC_ERROR_7 ,
+      CURRIED_LET_REC_ERROR_8 , CURRIED_LET_REC_ERROR_9 ,
+      CURRIED_LET_REC_ERROR_10 , CURRIED_LET_REC_ERROR_11 ,
+      CURRIED_LET_REC_ERROR_12 , CURRIED_LET_REC_ERROR_13 ,
+      CURRIED_LET_REC_ERROR_14 , CURRIED_LET_REC_ERROR_15 ,
+      CURRIED_LET_REC_ERROR_16 , CURRIED_LET_REC_ERROR_17 ,
+      CURRIED_LET_REC_ERROR_18 , CURRIED_LET_REC_ERROR_19 ,
+      CURRIED_LET_REC_ERROR_20 , CURRIED_LET_REC_ERROR_21 ,
+      CURRIED_LET_REC_ERROR_22 , CURRIED_LET_REC_ERROR_23 ,
+      CURRIED_LET_REC_ERROR_24 , CURRIED_LET_REC_ERROR_25 ,
+      CURRIED_LET_REC_ERROR_26 , CURRIED_LET_REC_ERROR_27 ,
+      CURRIED_LET_REC_ERROR_28 , CURRIED_LET_REC_ERROR_29 ,
+      CURRIED_LET_REC_ERROR_30 , CURRIED_LET_REC_ERROR_31 ,
+      CURRIED_LET_REC_ERROR_32 , CURRIED_LET_REC_ERROR_33 ,
+      CURRIED_LET_REC_ERROR_34 , CURRIED_LET_REC_ERROR_35 ,
+      CURRIED_LET_REC_ERROR_36 , CURRIED_LET_REC_ERROR_37 ,
+      CURRIED_LET_REC_ERROR_38 , CURRIED_LET_REC_ERROR_39 ,
+      CURRIED_LET_REC_ERROR_40 , INFIX_OPERATION_ERROR_11 ,
+      MULTI_LAMBDA_ERROR_1 , MULTI_LAMBDA_ERROR_2 , MULTI_LAMBDA_ERROR_3 ,
+      MULTI_LAMBDA_ERROR_4 , MULTI_LAMBDA_ERROR_5 , MULTI_LAMBDA_ERROR_6 ,
+      MULTI_LAMBDA_ERROR_7 , MULTI_LAMBDA_ERROR_8 , MULTI_LAMBDA_ERROR_9 ,
+      MULTI_LAMBDA_ERROR_10 , MULTI_LAMBDA_ERROR_11 , MULTI_LAMBDA_ERROR_12 ,
+      MULTI_LAMBDA_ERROR_13 , MULTI_LAMBDA_ERROR_14 , MULTI_LAMBDA_ERROR_15 ,
+      MULTI_LAMBDA_ERROR_16 , MULTI_LAMBDA_ERROR_17 , MULTI_LAMBDA_ERROR_18 ,
+      MULTI_LAMBDA_ERROR_19 , MULTI_LAMBDA_ERROR_20 , MULTI_LAMBDA_ERROR_21 ,
+      MULTI_LAMBDA_ERROR_22 , MULTI_LAMBDA_ERROR_23 , MULTI_LAMBDA_ERROR_24 ,
+      MULTI_LAMBDA_ERROR_25 , MULTI_LAMBDA_ERROR_26 , MULTI_LAMBDA_ERROR_27 ,
+      MULTI_LAMBDA_ERROR_28 , MULTI_LAMBDA_ERROR_29 , MULTI_LAMBDA_ERROR_30 ,
+      MULTI_LAMBDA_ERROR_31 , MULTI_LAMBDA_ERROR_32 , MULTI_LAMBDA_ERROR_33 ,
+      MULTI_LAMBDA_ERROR_34 , MULTI_LAMBDA_ERROR_35 , MULTI_LET_ERROR_1 ,
+      MULTI_LET_ERROR_2 , MULTI_LET_ERROR_3 , MULTI_LET_ERROR_4 ,
+      MULTI_LET_ERROR_5 , MULTI_LET_ERROR_6 , MULTI_LET_ERROR_7 ,
+      MULTI_LET_ERROR_8 , MULTI_LET_ERROR_9 , MULTI_LET_ERROR_10 ,
+      MULTI_LET_ERROR_11 , MULTI_LET_ERROR_12 , MULTI_LET_ERROR_13 ,
+      MULTI_LET_ERROR_14 , MULTI_LET_ERROR_15 , MULTI_LET_ERROR_16 ,
+      MULTI_LET_ERROR_17 , MULTI_LET_ERROR_18 , MULTI_LET_ERROR_19 ,
+      MULTI_LET_ERROR_20 , MULTI_LET_ERROR_21 , MULTI_LET_ERROR_22 ,
+      MULTI_LET_ERROR_23 , MULTI_LET_ERROR_24 , MULTI_LET_ERROR_25 ,
+      MULTI_LET_ERROR_26 , MULTI_LET_ERROR_27 , MULTI_LET_ERROR_28 ,
+      MULTI_LET_ERROR_29 , MULTI_LET_ERROR_30 , MULTI_LET_ERROR_31 ,
+      MULTI_LET_ERROR_32 , MULTI_LET_ERROR_33 , MULTI_LET_ERROR_34 ,
+      MULTI_LET_ERROR_35 , MULTI_LET_ERROR_36 , MULTI_LET_ERROR_37 ,
+      MULTI_LET_ERROR_38 , MULTI_LET_ERROR_39 , MULTI_LET_ERROR_40 ,
+      MULTI_LET_ERROR_41 , MULTI_LET_ERROR_42 , MULTI_LET_ERROR_43 ,
+      MULTI_LET_ERROR_44 , MULTI_LET_ERROR_45 , MULTI_LET_ERROR_46 ,
+      MULTI_LET_ERROR_47 , MULTI_LET_ERROR_48 , MULTI_LET_ERROR_49 ,
+      MULTI_LET_ERROR_50 , MULTI_LET_ERROR_51 , MULTI_LET_ERROR_52 ,
+      MULTI_LET_ERROR_53 , MULTI_LET_ERROR_54 , MULTI_LET_ERROR_55 ,
+      MULTI_LET_ERROR_56 , MULTI_LET_ERROR_57 , MULTI_LET_ERROR_58 ,
+      MULTI_LET_ERROR_59 , MULTI_LET_ERROR_60 , MULTI_LET_ERROR_61 ,
+      MULTI_LET_ERROR_62 , MULTI_LET_ERROR_63 , MULTI_LET_ERROR_64 ,
+      MULTI_LET_ERROR_65 , MULTI_LET_ERROR_66 , MULTI_LET_ERROR_67 ,
+      MULTI_LET_ERROR_68 , MULTI_LET_ERROR_69 , MULTI_LET_ERROR_70 ,
+      MULTI_LET_ERROR_71 , MULTI_LET_ERROR_72 , TUPLE_ERROR_1 , TUPLE_ERROR_2 ,
       TUPLE_ERROR_3 , LIST_ERROR_1 , LIST_ERROR_2 , LIST_ERROR_3 ,
       EXPR_TUPLE_TYPE_ERROR_1 , EXPR_TUPLE_TYPE_ERROR_2 } ;
 
@@ -1530,8 +2518,8 @@ public class ParserTest
       SIMPLE_EXPR_1 , SIMPLE_EXPR_2 , EXPR_SIMPLE_TYPE , EXPR_BOOLEAN_TYPE ,
       EXPR_INTEGER_TYPE , EXPR_UNIT_TYPE , EXPR_ARROW_TYPE ,
       EXPR_TYPE_VARIABLE , EXPR_TYPE_NAME , EXPR_REC_TYPE , REC_1 , REC_2 ,
-      LET_REC_1 , LET_REC_2 , CURRIED_REC_LET_1 , CURRIED_REC_LET_2 ,
-      CURRIED_REC_LET_3 , CURRIED_REC_LET_4 , INFIX_OPERATION_11 ,
+      LET_REC_1 , LET_REC_2 , CURRIED_LET_REC_1 , CURRIED_LET_REC_2 ,
+      CURRIED_LET_REC_3 , CURRIED_LET_REC_4 , INFIX_OPERATION_11 ,
       MULTI_LAMBDA_1 , MULTI_LAMBDA_2 , MULTI_LET_1 , MULTI_LET_2 , FST , SND ,
       CONS , IS_EMPTY , HD , TL , OPERATOR_11 , EMPTY_LIST , PROJECTION ,
       TUPLE , LIST , EXPR_TUPLE_TYPE_1 , EXPR_TUPLE_TYPE_2 , EXPR_LIST_TYPE ,
@@ -1557,35 +2545,110 @@ public class ParserTest
       LAMBDA_ERROR_17 , LAMBDA_ERROR_18 , LAMBDA_ERROR_19 , LAMBDA_ERROR_20 ,
       LAMBDA_ERROR_21 , LAMBDA_ERROR_22 , LAMBDA_ERROR_23 , LET_ERROR_2 ,
       LET_ERROR_3 , LET_ERROR_4 , LET_ERROR_5 , LET_ERROR_6 , LET_ERROR_7 ,
-      LET_ERROR_8 , LET_ERROR_9 , LET_ERROR_10 , LET_ERROR_11 ,
+      LET_ERROR_8 , LET_ERROR_9 , LET_ERROR_10 , LET_ERROR_11 , LET_ERROR_12 ,
+      LET_ERROR_13 , LET_ERROR_14 , LET_ERROR_15 , LET_ERROR_16 , LET_ERROR_17 ,
+      LET_ERROR_18 , LET_ERROR_19 , LET_ERROR_20 , LET_ERROR_21 , LET_ERROR_22 ,
+      LET_ERROR_23 , LET_ERROR_24 , LET_ERROR_25 , LET_ERROR_26 , LET_ERROR_27 ,
+      LET_ERROR_28 , LET_ERROR_29 , LET_ERROR_30 , LET_ERROR_31 , LET_ERROR_32 ,
+      LET_ERROR_33 , LET_ERROR_34 , LET_ERROR_35 , LET_ERROR_36 , LET_ERROR_37 ,
+      LET_ERROR_38 , LET_ERROR_39 , LET_ERROR_40 , LET_ERROR_41 , LET_ERROR_42 ,
+      LET_ERROR_43 , LET_ERROR_44 , LET_ERROR_45 , LET_ERROR_46 , LET_ERROR_47 ,
+      LET_ERROR_48 , LET_ERROR_49 , LET_ERROR_50 , LET_ERROR_51 , LET_ERROR_52 ,
       CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 , CURRIED_LET_ERROR_3 ,
       CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 , CURRIED_LET_ERROR_6 ,
       CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 , CURRIED_LET_ERROR_9 ,
       CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 , CURRIED_LET_ERROR_12 ,
       CURRIED_LET_ERROR_13 , CURRIED_LET_ERROR_14 , CURRIED_LET_ERROR_15 ,
-      SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 , SIMPLE_EXPR_ERROR_3 ,
-      EXPR_SIMPLE_TYPE_ERROR_1 , EXPR_SIMPLE_TYPE_ERROR_2 ,
-      EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 , EXPR_REC_TYPE_ERROR_2 ,
-      EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 , REC_ERROR_2 , REC_ERROR_3 ,
-      REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 , REC_ERROR_7 , LET_REC_ERROR_1 ,
-      LET_REC_ERROR_2 , LET_REC_ERROR_3 , LET_REC_ERROR_4 , LET_REC_ERROR_5 ,
-      LET_REC_ERROR_6 , LET_REC_ERROR_7 , LET_REC_ERROR_8 , LET_REC_ERROR_9 ,
-      LET_REC_ERROR_10 , LET_REC_ERROR_11 , CURRIED_REC_LET_ERROR_1 ,
-      CURRIED_REC_LET_ERROR_2 , CURRIED_REC_LET_ERROR_3 ,
-      CURRIED_REC_LET_ERROR_4 , CURRIED_REC_LET_ERROR_5 ,
-      CURRIED_REC_LET_ERROR_6 , CURRIED_REC_LET_ERROR_7 ,
-      CURRIED_REC_LET_ERROR_8 , CURRIED_REC_LET_ERROR_9 ,
-      CURRIED_REC_LET_ERROR_10 , CURRIED_REC_LET_ERROR_11 ,
-      CURRIED_REC_LET_ERROR_12 , CURRIED_REC_LET_ERROR_13 ,
-      CURRIED_REC_LET_ERROR_14 , CURRIED_REC_LET_ERROR_15 ,
-      INFIX_OPERATION_ERROR_11 , MULTI_LAMBDA_ERROR_1 , MULTI_LAMBDA_ERROR_2 ,
-      MULTI_LAMBDA_ERROR_3 , MULTI_LAMBDA_ERROR_4 , MULTI_LAMBDA_ERROR_5 ,
-      MULTI_LAMBDA_ERROR_6 , MULTI_LAMBDA_ERROR_7 , MULTI_LAMBDA_ERROR_8 ,
-      MULTI_LAMBDA_ERROR_9 , MULTI_LET_ERROR_1 , MULTI_LET_ERROR_2 ,
-      MULTI_LET_ERROR_3 , MULTI_LET_ERROR_4 , MULTI_LET_ERROR_5 ,
-      MULTI_LET_ERROR_6 , MULTI_LET_ERROR_7 , MULTI_LET_ERROR_8 ,
-      MULTI_LET_ERROR_9 , MULTI_LET_ERROR_10 , MULTI_LET_ERROR_11 ,
-      MULTI_LET_ERROR_12 , MULTI_LET_ERROR_13 , TUPLE_ERROR_1 , TUPLE_ERROR_2 ,
+      CURRIED_LET_ERROR_16 , CURRIED_LET_ERROR_17 , CURRIED_LET_ERROR_18 ,
+      CURRIED_LET_ERROR_19 , CURRIED_LET_ERROR_20 , CURRIED_LET_ERROR_21 ,
+      CURRIED_LET_ERROR_22 , CURRIED_LET_ERROR_23 , CURRIED_LET_ERROR_24 ,
+      CURRIED_LET_ERROR_25 , CURRIED_LET_ERROR_26 , CURRIED_LET_ERROR_27 ,
+      CURRIED_LET_ERROR_28 , CURRIED_LET_ERROR_29 , CURRIED_LET_ERROR_30 ,
+      CURRIED_LET_ERROR_31 , CURRIED_LET_ERROR_32 , CURRIED_LET_ERROR_33 ,
+      CURRIED_LET_ERROR_34 , CURRIED_LET_ERROR_35 , CURRIED_LET_ERROR_36 ,
+      CURRIED_LET_ERROR_37 , CURRIED_LET_ERROR_38 , CURRIED_LET_ERROR_39 ,
+      CURRIED_LET_ERROR_40 , SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 ,
+      SIMPLE_EXPR_ERROR_3 , EXPR_SIMPLE_TYPE_ERROR_1 ,
+      EXPR_SIMPLE_TYPE_ERROR_2 , EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 ,
+      EXPR_REC_TYPE_ERROR_2 , EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 ,
+      REC_ERROR_2 , REC_ERROR_3 , REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 ,
+      REC_ERROR_7 , REC_ERROR_8 , REC_ERROR_9 , REC_ERROR_10 , REC_ERROR_11 ,
+      REC_ERROR_12 , REC_ERROR_13 , REC_ERROR_14 , REC_ERROR_15 , REC_ERROR_16 ,
+      REC_ERROR_17 , REC_ERROR_18 , REC_ERROR_19 , REC_ERROR_20 , REC_ERROR_21 ,
+      REC_ERROR_22 , LET_REC_ERROR_1 , LET_REC_ERROR_2 , LET_REC_ERROR_3 ,
+      LET_REC_ERROR_4 , LET_REC_ERROR_5 , LET_REC_ERROR_6 , LET_REC_ERROR_7 ,
+      LET_REC_ERROR_8 , LET_REC_ERROR_9 , LET_REC_ERROR_10 , LET_REC_ERROR_11 ,
+      LET_REC_ERROR_12 , LET_REC_ERROR_13 , LET_REC_ERROR_14 ,
+      LET_REC_ERROR_15 , LET_REC_ERROR_16 , LET_REC_ERROR_17 ,
+      LET_REC_ERROR_18 , LET_REC_ERROR_19 , LET_REC_ERROR_20 ,
+      LET_REC_ERROR_21 , LET_REC_ERROR_22 , LET_REC_ERROR_23 ,
+      LET_REC_ERROR_24 , LET_REC_ERROR_25 , LET_REC_ERROR_26 ,
+      LET_REC_ERROR_27 , LET_REC_ERROR_28 , LET_REC_ERROR_29 ,
+      LET_REC_ERROR_30 , LET_REC_ERROR_31 , LET_REC_ERROR_32 ,
+      LET_REC_ERROR_33 , LET_REC_ERROR_34 , LET_REC_ERROR_35 ,
+      LET_REC_ERROR_36 , LET_REC_ERROR_37 , LET_REC_ERROR_38 ,
+      LET_REC_ERROR_39 , LET_REC_ERROR_40 , LET_REC_ERROR_41 ,
+      LET_REC_ERROR_42 , LET_REC_ERROR_43 , LET_REC_ERROR_44 ,
+      LET_REC_ERROR_45 , LET_REC_ERROR_46 , LET_REC_ERROR_47 ,
+      LET_REC_ERROR_48 , LET_REC_ERROR_49 , LET_REC_ERROR_50 ,
+      LET_REC_ERROR_51 , LET_REC_ERROR_52 , LET_REC_ERROR_53 ,
+      LET_REC_ERROR_54 , LET_REC_ERROR_55 , CURRIED_LET_REC_ERROR_1 ,
+      CURRIED_LET_REC_ERROR_2 , CURRIED_LET_REC_ERROR_3 ,
+      CURRIED_LET_REC_ERROR_4 , CURRIED_LET_REC_ERROR_5 ,
+      CURRIED_LET_REC_ERROR_6 , CURRIED_LET_REC_ERROR_7 ,
+      CURRIED_LET_REC_ERROR_8 , CURRIED_LET_REC_ERROR_9 ,
+      CURRIED_LET_REC_ERROR_10 , CURRIED_LET_REC_ERROR_11 ,
+      CURRIED_LET_REC_ERROR_12 , CURRIED_LET_REC_ERROR_13 ,
+      CURRIED_LET_REC_ERROR_14 , CURRIED_LET_REC_ERROR_15 ,
+      CURRIED_LET_REC_ERROR_16 , CURRIED_LET_REC_ERROR_17 ,
+      CURRIED_LET_REC_ERROR_18 , CURRIED_LET_REC_ERROR_19 ,
+      CURRIED_LET_REC_ERROR_20 , CURRIED_LET_REC_ERROR_21 ,
+      CURRIED_LET_REC_ERROR_22 , CURRIED_LET_REC_ERROR_23 ,
+      CURRIED_LET_REC_ERROR_24 , CURRIED_LET_REC_ERROR_25 ,
+      CURRIED_LET_REC_ERROR_26 , CURRIED_LET_REC_ERROR_27 ,
+      CURRIED_LET_REC_ERROR_28 , CURRIED_LET_REC_ERROR_29 ,
+      CURRIED_LET_REC_ERROR_30 , CURRIED_LET_REC_ERROR_31 ,
+      CURRIED_LET_REC_ERROR_32 , CURRIED_LET_REC_ERROR_33 ,
+      CURRIED_LET_REC_ERROR_34 , CURRIED_LET_REC_ERROR_35 ,
+      CURRIED_LET_REC_ERROR_36 , CURRIED_LET_REC_ERROR_37 ,
+      CURRIED_LET_REC_ERROR_38 , CURRIED_LET_REC_ERROR_39 ,
+      CURRIED_LET_REC_ERROR_40 , INFIX_OPERATION_ERROR_11 ,
+      MULTI_LAMBDA_ERROR_1 , MULTI_LAMBDA_ERROR_2 , MULTI_LAMBDA_ERROR_3 ,
+      MULTI_LAMBDA_ERROR_4 , MULTI_LAMBDA_ERROR_5 , MULTI_LAMBDA_ERROR_6 ,
+      MULTI_LAMBDA_ERROR_7 , MULTI_LAMBDA_ERROR_8 , MULTI_LAMBDA_ERROR_9 ,
+      MULTI_LAMBDA_ERROR_10 , MULTI_LAMBDA_ERROR_11 , MULTI_LAMBDA_ERROR_12 ,
+      MULTI_LAMBDA_ERROR_13 , MULTI_LAMBDA_ERROR_14 , MULTI_LAMBDA_ERROR_15 ,
+      MULTI_LAMBDA_ERROR_16 , MULTI_LAMBDA_ERROR_17 , MULTI_LAMBDA_ERROR_18 ,
+      MULTI_LAMBDA_ERROR_19 , MULTI_LAMBDA_ERROR_20 , MULTI_LAMBDA_ERROR_21 ,
+      MULTI_LAMBDA_ERROR_22 , MULTI_LAMBDA_ERROR_23 , MULTI_LAMBDA_ERROR_24 ,
+      MULTI_LAMBDA_ERROR_25 , MULTI_LAMBDA_ERROR_26 , MULTI_LAMBDA_ERROR_27 ,
+      MULTI_LAMBDA_ERROR_28 , MULTI_LAMBDA_ERROR_29 , MULTI_LAMBDA_ERROR_30 ,
+      MULTI_LAMBDA_ERROR_31 , MULTI_LAMBDA_ERROR_32 , MULTI_LAMBDA_ERROR_33 ,
+      MULTI_LAMBDA_ERROR_34 , MULTI_LAMBDA_ERROR_35 , MULTI_LET_ERROR_1 ,
+      MULTI_LET_ERROR_2 , MULTI_LET_ERROR_3 , MULTI_LET_ERROR_4 ,
+      MULTI_LET_ERROR_5 , MULTI_LET_ERROR_6 , MULTI_LET_ERROR_7 ,
+      MULTI_LET_ERROR_8 , MULTI_LET_ERROR_9 , MULTI_LET_ERROR_10 ,
+      MULTI_LET_ERROR_11 , MULTI_LET_ERROR_12 , MULTI_LET_ERROR_13 ,
+      MULTI_LET_ERROR_14 , MULTI_LET_ERROR_15 , MULTI_LET_ERROR_16 ,
+      MULTI_LET_ERROR_17 , MULTI_LET_ERROR_18 , MULTI_LET_ERROR_19 ,
+      MULTI_LET_ERROR_20 , MULTI_LET_ERROR_21 , MULTI_LET_ERROR_22 ,
+      MULTI_LET_ERROR_23 , MULTI_LET_ERROR_24 , MULTI_LET_ERROR_25 ,
+      MULTI_LET_ERROR_26 , MULTI_LET_ERROR_27 , MULTI_LET_ERROR_28 ,
+      MULTI_LET_ERROR_29 , MULTI_LET_ERROR_30 , MULTI_LET_ERROR_31 ,
+      MULTI_LET_ERROR_32 , MULTI_LET_ERROR_33 , MULTI_LET_ERROR_34 ,
+      MULTI_LET_ERROR_35 , MULTI_LET_ERROR_36 , MULTI_LET_ERROR_37 ,
+      MULTI_LET_ERROR_38 , MULTI_LET_ERROR_39 , MULTI_LET_ERROR_40 ,
+      MULTI_LET_ERROR_41 , MULTI_LET_ERROR_42 , MULTI_LET_ERROR_43 ,
+      MULTI_LET_ERROR_44 , MULTI_LET_ERROR_45 , MULTI_LET_ERROR_46 ,
+      MULTI_LET_ERROR_47 , MULTI_LET_ERROR_48 , MULTI_LET_ERROR_49 ,
+      MULTI_LET_ERROR_50 , MULTI_LET_ERROR_51 , MULTI_LET_ERROR_52 ,
+      MULTI_LET_ERROR_53 , MULTI_LET_ERROR_54 , MULTI_LET_ERROR_55 ,
+      MULTI_LET_ERROR_56 , MULTI_LET_ERROR_57 , MULTI_LET_ERROR_58 ,
+      MULTI_LET_ERROR_59 , MULTI_LET_ERROR_60 , MULTI_LET_ERROR_61 ,
+      MULTI_LET_ERROR_62 , MULTI_LET_ERROR_63 , MULTI_LET_ERROR_64 ,
+      MULTI_LET_ERROR_65 , MULTI_LET_ERROR_66 , MULTI_LET_ERROR_67 ,
+      MULTI_LET_ERROR_68 , MULTI_LET_ERROR_69 , MULTI_LET_ERROR_70 ,
+      MULTI_LET_ERROR_71 , MULTI_LET_ERROR_72 , TUPLE_ERROR_1 , TUPLE_ERROR_2 ,
       TUPLE_ERROR_3 , LIST_ERROR_1 , LIST_ERROR_2 , LIST_ERROR_3 ,
       EXPR_TUPLE_TYPE_ERROR_1 , EXPR_TUPLE_TYPE_ERROR_2 ,
       INFIX_OPERATION_ERROR_12 , WHILE_ERROR_1 , WHILE_ERROR_2 , WHILE_ERROR_3 ,
