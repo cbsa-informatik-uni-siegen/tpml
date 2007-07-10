@@ -9,7 +9,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.JComponent;
+
+import de.unisiegen.tpml.core.types.ArrowType;
+import de.unisiegen.tpml.core.types.RowType;
 import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.graphics.Theme;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
@@ -260,12 +264,19 @@ public class TypeComponent extends JComponent
   {
     Dimension result = new Dimension ( 0 , 0 ) ;
     result.width += AbstractRenderer.getTextFontMetrics ( ).stringWidth(text);
-    if (true ) //no linwraping
+    if (type instanceof RowType)
     {
-      // to guaranty that no line wrapping should be performed
-      // set the maxWidth = MAX_INT
-      maxWidth = Integer.MAX_VALUE ;
+    	result.width += AbstractRenderer.getTextFontMetrics ( ).stringWidth("(");
+    	result.width += AbstractRenderer.getTextFontMetrics ( ).stringWidth(")");
     }
+    
+    //TODO Testen
+//    if (true ) //no linwraping
+//    {
+//      // to guaranty that no line wrapping should be performed
+//      // set the maxWidth = MAX_INT
+//      maxWidth = Integer.MAX_VALUE ;
+//    }
     // check whether there is an environment.
   
     if ( this.type != null && this.typeRenderer != null )
@@ -337,15 +348,35 @@ public class TypeComponent extends JComponent
       int centerV = getHeight ( ) / 2 ;
       centerV += AbstractRenderer.getTextFontMetrics ( ).getAscent ( ) / 2 ;
       gc.setFont ( AbstractRenderer.getTextFont ( ) ) ;
-      gc.setColor ( Color.pink ) ;
+      //TODO anpassen....
+      //gc.setColor ( AbstractRenderer.getTextColor() ) ;
+      gc.setColor ( Theme.currentTheme().getExpressionColor());
       gc.drawString ( text , posX , centerV ) ;
       posX += AbstractRenderer.getTextFontMetrics ( ).stringWidth (
           text) ;
       // draw the expression at the last position.
       //TODO Testausgabe
       //System.out.println(getHeight());
-      this.typeRenderer.render ( posX , posY , getWidth() ,getHeight ( ) , gc ,
-          bonds , toListenForMouse ) ;
+      if (type instanceof RowType)
+      	{
+      	gc.setFont ( AbstractRenderer.getTextFont ( ) ) ;
+        //TODO anpassen....
+        //gc.setColor ( AbstractRenderer.getTextColor() ) ;
+      	gc.setColor ( Theme.currentTheme().getExpressionColor());
+        gc.drawString ( "(" , posX , centerV ) ;
+        posX += AbstractRenderer.getTextFontMetrics ( ).stringWidth ("(") ;
+      	}
+      this.typeRenderer.render ( posX , posY , getWidth() ,getHeight ( ) , gc , bonds , toListenForMouse ) ;
+      posX += typeSize.width;
+      if (type instanceof RowType)
+    	{
+    	gc.setFont ( AbstractRenderer.getTextFont ( ) ) ;
+      //TODO anpassen....
+      //gc.setColor ( AbstractRenderer.getTextColor() ) ;
+      gc.setColor ( Theme.currentTheme().getExpressionColor());
+      gc.drawString ( ")" , posX , centerV ) ;
+      posX += AbstractRenderer.getTextFontMetrics ( ).stringWidth (")") ;
+    	}
     
     
     //TODO nur testen

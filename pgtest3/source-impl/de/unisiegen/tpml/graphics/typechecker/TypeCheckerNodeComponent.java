@@ -159,9 +159,9 @@ public class TypeCheckerNodeComponent extends JComponent implements
    */
   //private JLabel typeLabel ;
   
-  private JLabel typeLabel0;
+  //private JLabel typeLabel0;
   
-  private JLabel typeLabel1;
+  //private JLabel typeLabel1;
   
 
   /**
@@ -251,17 +251,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
     //add ( this.typeLabel ) ;
     //this.typeLabel.setText ( " !! " ) ; //$NON-NLS-1$
     //this.typeLabel.addMouseListener ( new OutlineMouseListener ( this ) ) ;
-    
-    this.typeLabel0 = new JLabel ( ) ;
-    add ( this.typeLabel0 ) ;
-    this.typeLabel0.setText ( "  (" ) ; //$NON-NLS-1$
-    
-    this.typeLabel1 = new JLabel ( ) ;
-    add ( this.typeLabel1 ) ;
-    this.typeLabel1.setText ( " )" ) ; //$NON-NLS-1$
-    
-    
-   
+
     this.typeEnter = new TypeCheckerEnterType ( ) ;
     add ( this.typeEnter ) ;
     /*
@@ -408,19 +398,12 @@ public class TypeCheckerNodeComponent extends JComponent implements
   {
   	//will save if the type is shown or not
   	boolean showType = false;
-  	//will save if type is Rowtype or not to render ( ) or not
-  	boolean rowType = false;
-  	if (this.proofNode.getType () instanceof RowType)
-  	{
-  		rowType = true;
-  	}
   	//save the maxWidht
   	lastMaxWidth = maxWidth;
     // get the size for the index at the beginning: (x)
     FontMetrics fm = AbstractRenderer.getTextFontMetrics ( ) ;
     Dimension labelSize = new Dimension ( fm.stringWidth ( this.indexLabel
         .getText ( ) ) , fm.getHeight ( ) ) ;
-    Dimension braceSize = new Dimension ( fm.stringWidth(typeLabel0.getText()), AbstractRenderer.getAbsoluteHeight());
     this.dimension.setSize ( labelSize.width , labelSize.height ) ;
     // there will be a bit spacing between the index label and the expression
     this.dimension.width += this.spacing ;
@@ -432,13 +415,6 @@ public class TypeCheckerNodeComponent extends JComponent implements
     this.dimension.height = Math.max ( expSize.height , this.dimension.height ) ;
     
     Dimension typeSize = typeComponent.getNeededSize (maxWidth);
-    
-    if (rowType)
-    {
-    	//TODO nur Test, damit genug Platz ist...
-    	//typeSize.width += AbstractRenderer.getTextFontMetrics().stringWidth("   )  ");
-    	this.dimension.width += AbstractRenderer.getTextFontMetrics().stringWidth("   )  ");
-    }
     
     // get the neede size for the type
     if (this.proofNode.getType () != null && (this.proofNode.isFinished() || this.advanced) )
@@ -495,28 +471,8 @@ public class TypeCheckerNodeComponent extends JComponent implements
   	 //this.typeComponent.setBounds (posXfront, 0+expSize.height + AbstractRenderer.getAbsoluteHeight(), typeSize.width, typeSize.height);
   	 if (showType)
   	 {
-  		 if (rowType)
-  			 {
-  			 System.out.println("Rowtype!");
-  			 	//fm = AbstractRenderer.getTextFontMetrics();
-  			 	//Graphics g = this.getGraphics();
-  			 	//g.setColor(Color.BLACK);
-  			 	//g.setFont(AbstractRenderer.getExponentFont());
-  			 	//g.drawString("(", posX, 5);
-  			 //this.typeLabel.setText("(");
-  			 //this.typeLabel.setBounds(0, 0, 10, 10);
-  			 	posX += AbstractRenderer.getTextFontMetrics().stringWidth("(");
-  			 	this.typeComponent.setBounds (posXfront, 0+expSize.height, typeSize.width, typeSize.height);
-  			 	posX += typeSize.width ;
-  			 	
-  			 	//g.drawString(")", posX, 5);
-  			 	posX += AbstractRenderer.getTextFontMetrics().stringWidth(")");
-  			 }
-  		 else
-  		 {
   			 this.typeComponent.setBounds (posXfront, 0+expSize.height, typeSize.width, typeSize.height);
-  			 posX += typeSize.width ;
-  		 }   
+  			 posX += typeSize.width ; 
   	 }
   	 else
   	 {
@@ -527,27 +483,8 @@ public class TypeCheckerNodeComponent extends JComponent implements
    {
   	 if (showType)
   	 {
-  		 if (rowType)
-			 {
-  			 System.out.println("Rowtype!");
-  			 //this.typeLabel.setText("(");
-  			 //this.typeLabel.setBounds(posX, 0, AbstractRenderer.getTextFontMetrics().stringWidth("("), AbstractRenderer.getAbsoluteHeight());
-  			 //TODO warum 2???
-  			 this.typeLabel0.setBounds(posX, 2, braceSize.width, braceSize.height);
-  			 posX += typeLabel0.getSize().width;
-			 	this.typeComponent.setBounds (posX, 0, typeSize.width, typeSize.height);
-			 	posX += typeSize.width ;
-			 	//TODO warum 2???
- 			 typeLabel1.setBounds(posX, 2, braceSize.width, braceSize.height);
- 			 posX += typeLabel1.getSize().width;
-			 }
-  		 else
-  		 {
   			 this.typeComponent.setBounds (posX, 0, typeSize.width, typeSize.height);
-  			 posX += typeSize.width ;
-  		 }
-			 	
-  	   
+  			 posX += typeSize.width ; 
   	 }
   	 else
   	 {
