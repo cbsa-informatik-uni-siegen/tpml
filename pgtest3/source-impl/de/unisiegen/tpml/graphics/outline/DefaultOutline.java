@@ -1,67 +1,65 @@
 package de.unisiegen.tpml.graphics.outline ;
 
 
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Timer;
-
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
-import javax.swing.border.LineBorder;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.tree.TreePath;
-
-import de.unisiegen.tpml.core.expressions.Attribute;
-import de.unisiegen.tpml.core.expressions.CurriedMethod;
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.expressions.Identifier;
-import de.unisiegen.tpml.core.expressions.Method;
-import de.unisiegen.tpml.core.interfaces.BoundIdentifiers;
-import de.unisiegen.tpml.core.interfaces.BoundTypeNames;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
-import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers;
-import de.unisiegen.tpml.core.interfaces.DefaultTypeNames;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes;
-import de.unisiegen.tpml.core.interfaces.ExpressionOrType;
-import de.unisiegen.tpml.core.interfaces.SortedChildren;
-import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
-import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.types.Type;
-import de.unisiegen.tpml.core.types.TypeName;
-import de.unisiegen.tpml.graphics.StyledLanguageDocument;
-import de.unisiegen.tpml.graphics.StyledLanguageEditor;
-import de.unisiegen.tpml.graphics.Theme;
-import de.unisiegen.tpml.graphics.bigstep.BigStepView;
-import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingView;
-import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding;
-import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineActionListener;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineItemListener;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineKeyListener;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
-import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeExpansionListener;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeModelListener;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeSelectionListener;
-import de.unisiegen.tpml.graphics.outline.node.OutlineNode;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineDisplayTree;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
-import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences;
-import de.unisiegen.tpml.graphics.smallstep.SmallStepView;
-import de.unisiegen.tpml.graphics.subtyping.NewSubTypingView;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingSourceView;
-import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView;
-import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView;
-import de.unisiegen.tpml.ui.editor.TextEditorPanel;
+import java.awt.Color ;
+import java.awt.Rectangle ;
+import java.lang.reflect.InvocationTargetException ;
+import java.util.ArrayList ;
+import java.util.Enumeration ;
+import java.util.Timer ;
+import javax.swing.JPanel ;
+import javax.swing.JScrollPane ;
+import javax.swing.SwingUtilities ;
+import javax.swing.border.LineBorder ;
+import javax.swing.text.BadLocationException ;
+import javax.swing.text.SimpleAttributeSet ;
+import javax.swing.text.StyleConstants ;
+import javax.swing.tree.TreePath ;
+import de.unisiegen.tpml.core.expressions.Attribute ;
+import de.unisiegen.tpml.core.expressions.CurriedMethod ;
+import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.Method ;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.BoundTypeNames ;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypeNames ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
+import de.unisiegen.tpml.core.interfaces.SortedChildren ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
+import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.core.types.TypeName ;
+import de.unisiegen.tpml.graphics.StyledLanguageDocument ;
+import de.unisiegen.tpml.graphics.StyledLanguageEditor ;
+import de.unisiegen.tpml.graphics.Theme ;
+import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
+import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingView ;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineActionListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineItemListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineKeyListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeExpansionListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeModelListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeSelectionListener ;
+import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineDisplayTree ;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask ;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
+import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
+import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
+import de.unisiegen.tpml.graphics.subtyping.NewSubTypingView ;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes ;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingSourceView ;
+import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
+import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView ;
+import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
 
 
 /**
@@ -214,14 +212,8 @@ public final class DefaultOutline implements Outline
   {
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
-    this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
-    this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.uI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
-    this.uI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
-    this.uI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
-    this.uI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
-    this.uI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
+    this.uI.deactivateAutoUpdate ( ) ;
+    this.uI.deactivateHighlightSourceCode ( ) ;
     // ComponentListener
     this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( pBigStepView.getJSplitPane ( ) , this ) ) ;
@@ -249,7 +241,6 @@ public final class DefaultOutline implements Outline
     this.uI.getJMenuItemClose ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemCloseAll ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
-    this.uI.getJMenuPreferences ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemSelection ( )
         .addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemBinding ( ).addActionListener ( outlineActionListener ) ;
@@ -285,14 +276,8 @@ public final class DefaultOutline implements Outline
   {
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
-    this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
-    this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.uI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
-    this.uI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
-    this.uI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
-    this.uI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
-    this.uI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
+    this.uI.deactivateAutoUpdate ( ) ;
+    this.uI.deactivateHighlightSourceCode ( ) ;
     // ComponentListener
     this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( pMinimalTypingView.getJSplitPane ( ) ,
@@ -322,7 +307,6 @@ public final class DefaultOutline implements Outline
     this.uI.getJMenuItemClose ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemCloseAll ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
-    this.uI.getJMenuPreferences ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemSelection ( )
         .addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemBinding ( ).addActionListener ( outlineActionListener ) ;
@@ -359,18 +343,8 @@ public final class DefaultOutline implements Outline
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
     this.subTypingView = pSubTypingView ;
-    this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
-    this.uI.getJCheckBoxHighlightSourceCode ( ).setVisible ( false ) ;
-    this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.uI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
-    this.uI.getJMenuItemHighlightSourceCode ( ).setVisible ( false ) ;
-    this.uI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
-    this.uI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
-    this.uI.getJCheckBoxAutoUpdate ( ).setVisible ( false ) ;
-    this.uI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
-    this.uI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
-    this.uI.getJMenuItemAutoUpdate ( ).setVisible ( false ) ;
+    this.uI.deactivateAutoUpdate ( ) ;
+    this.uI.deactivateHighlightSourceCode ( ) ;
     // ComponentListener
     this.uI.getJPanelMain ( )
         .addComponentListener (
@@ -384,8 +358,7 @@ public final class DefaultOutline implements Outline
         new OutlinePropertyChangeListener ( this ) ) ;
     // TreeModelListener
     pSubTypingView.getSubTypingProofModel ( ).addTreeModelListener (
-        new OutlineTreeModelListener ( this , pSubTypingView
-            ) ) ;
+        new OutlineTreeModelListener ( this , pSubTypingView ) ) ;
     // MouseListener
     this.uI.getJTreeOutline ( ).addMouseListener (
         new OutlineMouseListener ( this ) ) ;
@@ -401,7 +374,6 @@ public final class DefaultOutline implements Outline
     this.uI.getJMenuItemClose ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemCloseAll ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
-    this.uI.getJMenuPreferences ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemSelection ( )
         .addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemBinding ( ).addActionListener ( outlineActionListener ) ;
@@ -437,10 +409,7 @@ public final class DefaultOutline implements Outline
   {
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
-    this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
-    this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.uI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
+    this.uI.deactivateHighlightSourceCode ( ) ;
     // ComponentListener
     this.uI.getJPanelMain ( )
         .addComponentListener (
@@ -471,7 +440,6 @@ public final class DefaultOutline implements Outline
     this.uI.getJMenuItemClose ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemCloseAll ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
-    this.uI.getJMenuPreferences ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemSelection ( )
         .addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemBinding ( ).addActionListener ( outlineActionListener ) ;
@@ -510,6 +478,7 @@ public final class DefaultOutline implements Outline
   public DefaultOutline ( SubTypingEnterTypes pSubTypingEnterTypes ,
       StyledLanguageEditor pStyledLanguageEditor )
   {
+    // TODO remove
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
     this.subTypingEnterTypes = pSubTypingEnterTypes ;
@@ -538,7 +507,6 @@ public final class DefaultOutline implements Outline
     this.uI.getJMenuItemClose ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemCloseAll ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
-    this.uI.getJMenuPreferences ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemSelection ( )
         .addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemReplace ( ).addActionListener ( outlineActionListener ) ;
@@ -605,7 +573,6 @@ public final class DefaultOutline implements Outline
     this.uI.getJMenuItemClose ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemCloseAll ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
-    this.uI.getJMenuPreferences ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemSelection ( )
         .addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemBinding ( ).addActionListener ( outlineActionListener ) ;
@@ -648,14 +615,8 @@ public final class DefaultOutline implements Outline
   {
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
-    this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
-    this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.uI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
-    this.uI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
-    this.uI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
-    this.uI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
-    this.uI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
+    this.uI.deactivateAutoUpdate ( ) ;
+    this.uI.deactivateHighlightSourceCode ( ) ;
     // ComponentListener
     this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( pTypeCheckerView.getJSplitPane ( ) ,
@@ -685,7 +646,6 @@ public final class DefaultOutline implements Outline
     this.uI.getJMenuItemClose ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemCloseAll ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
-    this.uI.getJMenuPreferences ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemSelection ( )
         .addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemBinding ( ).addActionListener ( outlineActionListener ) ;
@@ -721,14 +681,8 @@ public final class DefaultOutline implements Outline
   {
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
-    this.uI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.uI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
-    this.uI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
-    this.uI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
-    this.uI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
-    this.uI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
-    this.uI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
-    this.uI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
+    this.uI.deactivateAutoUpdate ( ) ;
+    this.uI.deactivateHighlightSourceCode ( ) ;
     // ComponentListener
     this.uI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( pTypeInferenceView.getJSplitPane ( ) ,
@@ -757,7 +711,6 @@ public final class DefaultOutline implements Outline
     this.uI.getJMenuItemClose ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemCloseAll ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
-    this.uI.getJMenuPreferences ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemSelection ( )
         .addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemBinding ( ).addActionListener ( outlineActionListener ) ;
@@ -782,11 +735,12 @@ public final class DefaultOutline implements Outline
     this.uI.getJTreeOutline ( ).getSelectionModel ( ).addTreeSelectionListener (
         new OutlineTreeSelectionListener ( this ) ) ;
   }
-  
+
+
   /**
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    * 
-   * @param pTextEditorPanel The {@link TextEditorPanel}.
+   * @param pSubTypingSourceView The {@link SubTypingSourceView}.
    */
   public DefaultOutline ( SubTypingSourceView pSubTypingSourceView )
   {

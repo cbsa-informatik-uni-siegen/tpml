@@ -520,8 +520,8 @@ public final class OutlineUI
     this.jMenuItemSelection.setToolTipText ( this.resourceBundle
         .getString ( SELECTION + TOOLTIP ) ) ;
     this.jMenuItemSelection.setActionCommand ( SELECTION ) ;
-    this.jMenuItemSelection.setSelected ( this.defaultOutline
-        .getPreferences ( ).isSelection ( ) ) ;
+    this.jMenuItemSelection.setSelected ( this.defaultOutline.getPreferences ( )
+        .isSelection ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemSelection ) ;
     // MenuItem Binding
     this.jMenuItemBinding = new JCheckBoxMenuItem ( this.resourceBundle
@@ -531,8 +531,8 @@ public final class OutlineUI
     this.jMenuItemBinding.setToolTipText ( this.resourceBundle
         .getString ( BINDING + TOOLTIP ) ) ;
     this.jMenuItemBinding.setActionCommand ( BINDING ) ;
-    this.jMenuItemBinding.setSelected ( this.defaultOutline
-        .getPreferences ( ).isBinding ( ) ) ;
+    this.jMenuItemBinding.setSelected ( this.defaultOutline.getPreferences ( )
+        .isBinding ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemBinding ) ;
     // MenuItem Unbound
     this.jMenuItemFree = new JCheckBoxMenuItem ( this.resourceBundle
@@ -542,8 +542,8 @@ public final class OutlineUI
     this.jMenuItemFree.setToolTipText ( this.resourceBundle.getString ( FREE
         + TOOLTIP ) ) ;
     this.jMenuItemFree.setActionCommand ( FREE ) ;
-    this.jMenuItemFree.setSelected ( this.defaultOutline
-        .getPreferences ( ).isFree ( ) ) ;
+    this.jMenuItemFree.setSelected ( this.defaultOutline.getPreferences ( )
+        .isFree ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemFree ) ;
     // MenuItem Replace
     this.jMenuItemReplace = new JCheckBoxMenuItem ( this.resourceBundle
@@ -553,8 +553,8 @@ public final class OutlineUI
     this.jMenuItemReplace.setToolTipText ( this.resourceBundle
         .getString ( REPLACE + TOOLTIP ) ) ;
     this.jMenuItemReplace.setActionCommand ( REPLACE ) ;
-    this.jMenuItemReplace.setSelected ( this.defaultOutline
-        .getPreferences ( ).isReplace ( ) ) ;
+    this.jMenuItemReplace.setSelected ( this.defaultOutline.getPreferences ( )
+        .isReplace ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemReplace ) ;
     // MenuItem HighlightSourceCode
     this.jMenuItemHighlightSourceCode = new JCheckBoxMenuItem (
@@ -591,8 +591,8 @@ public final class OutlineUI
         SELECTION + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxSelection.setToolTipText ( this.resourceBundle
         .getString ( SELECTION + TOOLTIP ) ) ;
-    this.jCheckBoxSelection.setSelected ( this.defaultOutline
-        .getPreferences ( ).isSelection ( ) ) ;
+    this.jCheckBoxSelection.setSelected ( this.defaultOutline.getPreferences ( )
+        .isSelection ( ) ) ;
     this.jCheckBoxSelection.setFocusable ( false ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
@@ -610,8 +610,8 @@ public final class OutlineUI
         BINDING + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxBinding.setToolTipText ( this.resourceBundle
         .getString ( BINDING + TOOLTIP ) ) ;
-    this.jCheckBoxBinding.setSelected ( this.defaultOutline
-        .getPreferences ( ).isBinding ( ) ) ;
+    this.jCheckBoxBinding.setSelected ( this.defaultOutline.getPreferences ( )
+        .isBinding ( ) ) ;
     this.jCheckBoxBinding.setFocusable ( false ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
@@ -628,8 +628,8 @@ public final class OutlineUI
         FREE + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxFree.setToolTipText ( this.resourceBundle.getString ( FREE
         + TOOLTIP ) ) ;
-    this.jCheckBoxFree.setSelected ( this.defaultOutline
-        .getPreferences ( ).isFree ( ) ) ;
+    this.jCheckBoxFree.setSelected ( this.defaultOutline.getPreferences ( )
+        .isFree ( ) ) ;
     this.jCheckBoxFree.setFocusable ( false ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
@@ -646,8 +646,8 @@ public final class OutlineUI
         REPLACE + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxReplace.setToolTipText ( this.resourceBundle
         .getString ( REPLACE + TOOLTIP ) ) ;
-    this.jCheckBoxReplace.setSelected ( this.defaultOutline
-        .getPreferences ( ).isReplace ( ) ) ;
+    this.jCheckBoxReplace.setSelected ( this.defaultOutline.getPreferences ( )
+        .isReplace ( ) ) ;
     this.jCheckBoxReplace.setFocusable ( false ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
@@ -729,6 +729,233 @@ public final class OutlineUI
 
 
   /**
+   * Deactivates the auto update.
+   */
+  public void deactivateAutoUpdate ( )
+  {
+    this.jCheckBoxAutoUpdate.setEnabled ( false ) ;
+    this.jCheckBoxAutoUpdate.setSelected ( false ) ;
+    this.jCheckBoxAutoUpdate.setVisible ( false ) ;
+    this.jMenuItemAutoUpdate.setEnabled ( false ) ;
+    this.jMenuItemAutoUpdate.setSelected ( false ) ;
+    this.jMenuItemAutoUpdate.setVisible ( false ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.insets.set ( 0 , 4 , 0 , 4 ) ;
+    this.gridBagConstraints.insets = this.insets ;
+    this.gridBagConstraints.gridx = 5 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weighty = 10 ;
+    if ( this.jCheckBoxHighlightSourceCode.isEnabled ( ) )
+    {
+      this.jPanelPreferences.remove ( this.jCheckBoxHighlightSourceCode ) ;
+      this.jPanelPreferences.add ( this.jCheckBoxHighlightSourceCode ,
+          this.gridBagConstraints ) ;
+    }
+    else if ( this.jCheckBoxReplace.isEnabled ( ) )
+    {
+      this.jPanelPreferences.remove ( this.jCheckBoxReplace ) ;
+      this.jPanelPreferences.add ( this.jCheckBoxReplace ,
+          this.gridBagConstraints ) ;
+    }
+    else if ( this.jCheckBoxFree.isEnabled ( ) )
+    {
+      this.jPanelPreferences.remove ( this.jCheckBoxFree ) ;
+      this.jPanelPreferences
+          .add ( this.jCheckBoxFree , this.gridBagConstraints ) ;
+    }
+    else if ( this.jCheckBoxBinding.isEnabled ( ) )
+    {
+      this.jPanelPreferences.remove ( this.jCheckBoxBinding ) ;
+      this.jPanelPreferences.add ( this.jCheckBoxBinding ,
+          this.gridBagConstraints ) ;
+    }
+    else if ( this.jCheckBoxSelection.isEnabled ( ) )
+    {
+      this.jPanelPreferences.remove ( this.jCheckBoxSelection ) ;
+      this.jPanelPreferences.add ( this.jCheckBoxSelection ,
+          this.gridBagConstraints ) ;
+    }
+  }
+
+
+  /**
+   * Deactivates the binding.
+   */
+  public void deactivateBinding ( )
+  {
+    this.jCheckBoxBinding.setEnabled ( false ) ;
+    this.jCheckBoxBinding.setSelected ( false ) ;
+    this.jCheckBoxBinding.setVisible ( false ) ;
+    this.jMenuItemBinding.setEnabled ( false ) ;
+    this.jMenuItemBinding.setSelected ( false ) ;
+    this.jMenuItemBinding.setVisible ( false ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.insets.set ( 0 , 4 , 0 , 4 ) ;
+    this.gridBagConstraints.insets = this.insets ;
+    this.gridBagConstraints.gridx = 5 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weighty = 10 ;
+    if ( ( ! this.jCheckBoxAutoUpdate.isEnabled ( ) )
+        && ( ! this.jCheckBoxHighlightSourceCode.isEnabled ( ) )
+        && ( ! this.jCheckBoxReplace.isEnabled ( ) )
+        && ( ! this.jCheckBoxFree.isEnabled ( ) ) )
+    {
+      if ( this.jCheckBoxSelection.isEnabled ( ) )
+      {
+        this.jPanelPreferences.remove ( this.jCheckBoxSelection ) ;
+        this.jPanelPreferences.add ( this.jCheckBoxSelection ,
+            this.gridBagConstraints ) ;
+      }
+    }
+  }
+
+
+  /**
+   * Deactivates the free.
+   */
+  public void deactivateFree ( )
+  {
+    this.jCheckBoxFree.setEnabled ( false ) ;
+    this.jCheckBoxFree.setSelected ( false ) ;
+    this.jCheckBoxFree.setVisible ( false ) ;
+    this.jMenuItemFree.setEnabled ( false ) ;
+    this.jMenuItemFree.setSelected ( false ) ;
+    this.jMenuItemFree.setVisible ( false ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.insets.set ( 0 , 4 , 0 , 4 ) ;
+    this.gridBagConstraints.insets = this.insets ;
+    this.gridBagConstraints.gridx = 5 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weighty = 10 ;
+    if ( ( ! this.jCheckBoxAutoUpdate.isEnabled ( ) )
+        && ( ! this.jCheckBoxHighlightSourceCode.isEnabled ( ) )
+        && ( ! this.jCheckBoxReplace.isEnabled ( ) ) )
+    {
+      if ( this.jCheckBoxBinding.isEnabled ( ) )
+      {
+        this.jPanelPreferences.remove ( this.jCheckBoxBinding ) ;
+        this.jPanelPreferences.add ( this.jCheckBoxBinding ,
+            this.gridBagConstraints ) ;
+      }
+      else if ( this.jCheckBoxSelection.isEnabled ( ) )
+      {
+        this.jPanelPreferences.remove ( this.jCheckBoxSelection ) ;
+        this.jPanelPreferences.add ( this.jCheckBoxSelection ,
+            this.gridBagConstraints ) ;
+      }
+    }
+  }
+
+
+  /**
+   * Deactivates the highlight source code.
+   */
+  public void deactivateHighlightSourceCode ( )
+  {
+    this.jCheckBoxHighlightSourceCode.setEnabled ( false ) ;
+    this.jCheckBoxHighlightSourceCode.setSelected ( false ) ;
+    this.jCheckBoxHighlightSourceCode.setVisible ( false ) ;
+    this.jMenuItemHighlightSourceCode.setEnabled ( false ) ;
+    this.jMenuItemHighlightSourceCode.setSelected ( false ) ;
+    this.jMenuItemHighlightSourceCode.setVisible ( false ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.insets.set ( 0 , 4 , 0 , 4 ) ;
+    this.gridBagConstraints.insets = this.insets ;
+    this.gridBagConstraints.gridx = 5 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weighty = 10 ;
+    if ( ! this.jCheckBoxAutoUpdate.isEnabled ( ) )
+    {
+      if ( this.jCheckBoxReplace.isEnabled ( ) )
+      {
+        this.jPanelPreferences.remove ( this.jCheckBoxReplace ) ;
+        this.jPanelPreferences.add ( this.jCheckBoxReplace ,
+            this.gridBagConstraints ) ;
+      }
+      else if ( this.jCheckBoxFree.isEnabled ( ) )
+      {
+        this.jPanelPreferences.remove ( this.jCheckBoxFree ) ;
+        this.jPanelPreferences.add ( this.jCheckBoxFree ,
+            this.gridBagConstraints ) ;
+      }
+      else if ( this.jCheckBoxBinding.isEnabled ( ) )
+      {
+        this.jPanelPreferences.remove ( this.jCheckBoxBinding ) ;
+        this.jPanelPreferences.add ( this.jCheckBoxBinding ,
+            this.gridBagConstraints ) ;
+      }
+      else if ( this.jCheckBoxSelection.isEnabled ( ) )
+      {
+        this.jPanelPreferences.remove ( this.jCheckBoxSelection ) ;
+        this.jPanelPreferences.add ( this.jCheckBoxSelection ,
+            this.gridBagConstraints ) ;
+      }
+    }
+  }
+
+
+  /**
+   * Deactivates the highlight source code.
+   */
+  public void deactivateReplace ( )
+  {
+    this.jCheckBoxReplace.setEnabled ( false ) ;
+    this.jCheckBoxReplace.setSelected ( false ) ;
+    this.jCheckBoxReplace.setVisible ( false ) ;
+    this.jMenuItemReplace.setEnabled ( false ) ;
+    this.jMenuItemReplace.setSelected ( false ) ;
+    this.jMenuItemReplace.setVisible ( false ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.insets.set ( 0 , 4 , 0 , 4 ) ;
+    this.gridBagConstraints.insets = this.insets ;
+    this.gridBagConstraints.gridx = 5 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weighty = 10 ;
+    if ( ( ! this.jCheckBoxAutoUpdate.isEnabled ( ) )
+        && ( ! this.jCheckBoxHighlightSourceCode.isEnabled ( ) ) )
+    {
+      if ( this.jCheckBoxFree.isEnabled ( ) )
+      {
+        this.jPanelPreferences.remove ( this.jCheckBoxFree ) ;
+        this.jPanelPreferences.add ( this.jCheckBoxFree ,
+            this.gridBagConstraints ) ;
+      }
+      else if ( this.jCheckBoxBinding.isEnabled ( ) )
+      {
+        this.jPanelPreferences.remove ( this.jCheckBoxBinding ) ;
+        this.jPanelPreferences.add ( this.jCheckBoxBinding ,
+            this.gridBagConstraints ) ;
+      }
+      else if ( this.jCheckBoxSelection.isEnabled ( ) )
+      {
+        this.jPanelPreferences.remove ( this.jCheckBoxSelection ) ;
+        this.jPanelPreferences.add ( this.jCheckBoxSelection ,
+            this.gridBagConstraints ) ;
+      }
+    }
+  }
+
+
+  /**
+   * Deactivates the selection.
+   */
+  public void deactivateSelection ( )
+  {
+    this.jCheckBoxSelection.setEnabled ( false ) ;
+    this.jCheckBoxSelection.setSelected ( false ) ;
+    this.jCheckBoxSelection.setVisible ( false ) ;
+    this.jMenuItemSelection.setEnabled ( false ) ;
+    this.jMenuItemSelection.setSelected ( false ) ;
+    this.jMenuItemSelection.setVisible ( false ) ;
+  }
+
+
+  /**
    * Returns the <code>jCheckBoxAutoUpdate</code>.
    * 
    * @return The <code>jCheckBoxAutoUpdate</code>.
@@ -765,6 +992,18 @@ public final class OutlineUI
 
 
   /**
+   * Returns the <code>jCheckBoxHighlightSourceCode</code>.
+   * 
+   * @return The <code>jCheckBoxHighlightSourceCode</code>.
+   * @see #jCheckBoxHighlightSourceCode
+   */
+  public final JCheckBox getJCheckBoxHighlightSourceCode ( )
+  {
+    return this.jCheckBoxHighlightSourceCode ;
+  }
+
+
+  /**
    * Returns the <code>jCheckBoxReplace</code>.
    * 
    * @return The <code>jCheckBoxReplace</code>.
@@ -785,18 +1024,6 @@ public final class OutlineUI
   public final JCheckBox getJCheckBoxSelection ( )
   {
     return this.jCheckBoxSelection ;
-  }
-
-
-  /**
-   * Returns the <code>jCheckBoxHighlightSourceCode</code>.
-   * 
-   * @return The <code>jCheckBoxHighlightSourceCode</code>.
-   * @see #jCheckBoxHighlightSourceCode
-   */
-  public final JCheckBox getJCheckBoxHighlightSourceCode ( )
-  {
-    return this.jCheckBoxHighlightSourceCode ;
   }
 
 
@@ -953,18 +1180,6 @@ public final class OutlineUI
   public final JCheckBoxMenuItem getJMenuItemSelection ( )
   {
     return this.jMenuItemSelection ;
-  }
-
-
-  /**
-   * Returns the <code>jMenuPreferences</code>.
-   * 
-   * @return The <code>jMenuPreferences</code>.
-   * @see #jMenuPreferences
-   */
-  public JMenu getJMenuPreferences ( )
-  {
-    return this.jMenuPreferences ;
   }
 
 
