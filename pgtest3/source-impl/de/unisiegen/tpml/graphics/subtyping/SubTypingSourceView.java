@@ -5,9 +5,7 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.KeyboardFocusManager;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.io.StringReader;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,9 +16,10 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
 import de.unisiegen.tpml.core.ProofGuessException;
-import de.unisiegen.tpml.core.ProofModel;
 import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
+import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.graphics.AbstractProofView;
 import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.StyledLanguageEditor;
@@ -28,7 +27,6 @@ import de.unisiegen.tpml.graphics.outline.DefaultOutline;
 import de.unisiegen.tpml.graphics.outline.Outline;
 import de.unisiegen.tpml.ui.SideBar;
 import de.unisiegen.tpml.ui.SideBarListener;
-import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 
 
 /**
@@ -74,6 +72,12 @@ public class SubTypingSourceView extends AbstractProofView //JComponent
   SideBar sidebar;
   
   SideBar sidebar2;
+  
+  MonoType type;
+  MonoType oldType;
+  
+  MonoType type2;
+  MonoType oldType2;
 
 
   /**
@@ -95,9 +99,9 @@ public class SubTypingSourceView extends AbstractProofView //JComponent
    * 
    * @see #getOutline()
    */
-  private Outline outline ;
+  private DefaultOutline outline ;
   
-  private Outline outline2 ;
+  private DefaultOutline outline2 ;
 
 
   /**
@@ -221,16 +225,16 @@ public class SubTypingSourceView extends AbstractProofView //JComponent
 
 			@SuppressWarnings("synthetic-access")
 			public void insertUpdate(DocumentEvent e) {
-				/*type1 = eventHandling ( editor1, type1, oldType1, outline1 );
-				if (type1 != oldType1) {
+				type = eventHandling ( editor, type, oldType, outline );
+				/*if (type1 != oldType1) {
 					check ( );
 				}*/
 			}
 
 			@SuppressWarnings("synthetic-access")
 			public void removeUpdate(DocumentEvent e) {
-			/*	type1 = eventHandling ( editor1, type1, oldType1, outline1 );
-				if (type1 != oldType1)
+				type = eventHandling ( editor, type, oldType, outline );
+			/*	if (type1 != oldType1)
 					check ( );*/
 			}
 		} );
@@ -328,16 +332,16 @@ this.editor2 = new StyledLanguageEditor ( );
 
 			@SuppressWarnings("synthetic-access")
 			public void insertUpdate(DocumentEvent e) {
-				/*type1 = eventHandling ( editor1, type1, oldType1, outline1 );
-				if (type1 != oldType1) {
+				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
+				/*if (type1 != oldType1) {
 					check ( );
 				}*/
 			}
 
 			@SuppressWarnings("synthetic-access")
 			public void removeUpdate(DocumentEvent e) {
-			/*	type1 = eventHandling ( editor1, type1, oldType1, outline1 );
-				if (type1 != oldType1)
+				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
+				/*if (type1 != oldType1)
 					check ( );*/
 			}
 		} );
@@ -451,6 +455,27 @@ this.editor2 = new StyledLanguageEditor ( );
   
 	private void selectErrorText (int left, int right) {
 		this.editor.select(left, right);
+	}
+	
+	public MonoType eventHandling(StyledLanguageEditor editor, MonoType pType,
+			MonoType oldType, DefaultOutline outline) {
+		MonoType type;
+		try {
+			LanguageTypeParser parser = this.language
+					.newTypeParser ( new StringReader ( editor.getText ( ) ) );
+			type = parser.parse ( );
+
+			outline
+					.load ( type, Outline.ExecuteAutoChange.SUBTYPING );
+			return type;
+
+		} catch (Exception e) {
+			
+			outline.load ( null , Outline.ExecuteAutoChange.SUBTYPING ) ;
+	      if ( editor.getText ( ).length ( ) == 0 ) outline.setError ( false ) ;
+	      return null ;
+		}
+
 	}
 
 
