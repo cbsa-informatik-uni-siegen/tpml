@@ -383,6 +383,18 @@ condition_error					::= IF:i epsilon
 									{: Error.expect("Condition", " else e2", ileft, eright, "else e<sub>2</sub>" ); :}
 								|	IF:i seq_expr THEN seq_expr ELSE:e epsilon
 									{: Error.expect("Condition", " e2", ileft, eright, "e<sub>2</sub>" ); :}
+								// Missing e0
+								|	IF:i THEN
+									{: Error.expect("Condition", " e0 ", ileft, iright, "e<sub>0</sub>" ); :}
+								// Missing e1
+								|	IF:i seq_expr THEN:t ELSE
+									{: Error.expect("Condition", " e1 ", ileft, tright, "e1" ); :}
+								// Missing e0 and then
+								|	IF:i seq_expr ELSE
+									{: Error.expect("Condition", " e0 then ", ileft, iright, "e0 then" ); :}
+								// Missing e0, then and e1
+								|	IF:i ELSE
+									{: Error.expect("Condition", " e0 then e1 ", ileft, iright, "e0 then e1" ); :}
 								;
 
 lambda							::= LAMBDA:l IDENTIFIER:id DOT seq_expr:e
@@ -406,17 +418,9 @@ lambda_error					::= LAMBDA:l epsilon
 								|	LAMBDA:l IDENTIFIER COLON type DOT:d epsilon
 									{: Error.expect("Lambda", "e", lleft, dright, "e" ); :}
 								// Missing identifier
-								|	LAMBDA:l DOT epsilon
+								|	LAMBDA:l DOT
 									{: Error.expect("Lambda", " id", lleft, lright, "id" ); :}
-								|	LAMBDA:l DOT seq_expr
-									{: Error.expect("Lambda", " id", lleft, lright, "id" ); :}
-								|	LAMBDA:l COLON epsilon
-									{: Error.expect("Lambda", " id", lleft, lright, "id" ); :}
-								|	LAMBDA:l COLON type epsilon
-									{: Error.expect("Lambda", " id", lleft, lright, "id" ); :}
-								|	LAMBDA:l COLON type DOT epsilon
-									{: Error.expect("Lambda", " id", lleft, lright, "id" ); :}									
-								|	LAMBDA:l COLON type DOT seq_expr
+								|	LAMBDA:l COLON
 									{: Error.expect("Lambda", " id", lleft, lright, "id" ); :}
 								// Missing dot
 								|	LAMBDA:l IDENTIFIER:id seq_expr
@@ -424,23 +428,13 @@ lambda_error					::= LAMBDA:l epsilon
 								|	LAMBDA:l IDENTIFIER COLON type:tau seq_expr
 									{: Error.expect("Lambda", ".", lleft, tauright, "." ); :}
 								// Missing colon
-								|	LAMBDA:l IDENTIFIER:id type epsilon
-									{: Error.expect("Lambda", ": ", lleft, idright, ":" ); :}
-								|	LAMBDA:l IDENTIFIER:id type DOT epsilon
-									{: Error.expect("Lambda", ": ", lleft, idright, ":" ); :}
-								|	LAMBDA:l IDENTIFIER:id type DOT seq_expr
+								|	LAMBDA:l IDENTIFIER:id type
 									{: Error.expect("Lambda", ": ", lleft, idright, ":" ); :}
 								// Missing type
-								|	LAMBDA:l IDENTIFIER COLON:c DOT epsilon
-									{: Error.expect("Lambda", " \u03C4", lleft, cright, "\u03C4" ); :}
-								|	LAMBDA:l IDENTIFIER COLON:c DOT seq_expr
+								|	LAMBDA:l IDENTIFIER COLON:c DOT
 									{: Error.expect("Lambda", " \u03C4", lleft, cright, "\u03C4" ); :}
 								// Missing identifier and colon
-								|	LAMBDA:l type epsilon
-									{: Error.expect("Lambda", " id: ", lleft, lright, "id:" ); :}
-								|	LAMBDA:l type DOT epsilon
-									{: Error.expect("Lambda", " id: ", lleft, lright, "id:" ); :}
-								|	LAMBDA:l type DOT seq_expr
+								|	LAMBDA:l type
 									{: Error.expect("Lambda", " id: ", lleft, lright, "id:" ); :}
 								// Missing type and dot
 								|	LAMBDA:l IDENTIFIER COLON:c seq_expr:e
@@ -475,9 +469,40 @@ let_error						::= LET:l epsilon
 									{: Error.expect("Let", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER EQUAL seq_expr IN:i epsilon
 									{: Error.expect("Let", " e2", lleft, iright, "e<sub>2</sub>" ); :}
+								// Missing identifier
+								|	LET:l EQUAL
+									{: Error.expect("Let", " id ", lleft, lright, "id" ); :}
+								|	LET:l COLON
+									{: Error.expect("Let", " id ", lleft, lright, "id" ); :}
+								// Missing equal							
+								|	LET:l IDENTIFIER COLON type:tau seq_expr
+									{: Error.expect("Let", " = ", lleft, tauright, "=" ); :}
+								// Missing colon
+								|	LET:l IDENTIFIER:id type
+									{: Error.expect("Let", ": ", lleft, idright, ":" ); :}
 								// Missing type
-								|	LET:l IDENTIFIER COLON:c EQUAL seq_expr IN seq_expr
+								|	LET:l IDENTIFIER COLON:c EQUAL
 									{: Error.expect("Let", " \u03C4 ", lleft, cright, "\u03C4" ); :}
+								// Missing e1
+								|	LET:l IDENTIFIER EQUAL:e IN
+									{: Error.expect("Let", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
+								// Missing equal and e1
+								|	LET:l IDENTIFIER:id IN
+									{: Error.expect("Let", " = e1 ", lleft, idright, "= e<sub>1</sub>" ); :}
+								|	LET:l IDENTIFIER COLON type:tau IN
+									{: Error.expect("Let", " = e1 ", lleft, tauright, "= e<sub>1</sub>" ); :}
+								// Missing identifier and colon
+								|	LET:l type
+									{: Error.expect("Let", " id: ", lleft, lright, "id:" ); :}
+								// Missing type and equal
+								|	LET:l IDENTIFIER COLON:c seq_expr
+									{: Error.expect("Let", " \u03C4 = ", lleft, cright, "\u03C4 =" ); :}
+								// Missing identifier, equal and e1
+								|	LET:l IN
+									{: Error.expect("Let", " id = e1 ", lleft, lright, "id = e<sub>1</sub>" ); :}
+								// Missing type, equal and e1
+								|	LET:l IDENTIFIER COLON:c IN
+									{: Error.expect("Let", " \u03C4 = e1 ", lleft, cright, "\u03C4 = e<sub>1</sub>" ); :}
 								;
 
 curried_let						::= LET:l IDENTIFIER:id curried_let_list:itl EQUAL seq_expr:e1 IN seq_expr:e2
@@ -527,9 +552,31 @@ curried_let_error				::= LET:l IDENTIFIER curried_let_list:c epsilon
 									{: Error.expect("Curried-Let", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
 								|	LET:l IDENTIFIER curried_let_list EQUAL seq_expr IN:i epsilon
 									{: Error.expect("Curried-Let", " e2", lleft, iright, "e<sub>2</sub>" ); :}
+								// Missing e1
+								|	LET:l IDENTIFIER curried_let_list EQUAL:e IN
+									{: Error.expect("Curried-Let", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
+								|	LET:l IDENTIFIER curried_let_list COLON type EQUAL:e IN
+									{: Error.expect("Curried-Let", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}									
+								// Missing colon
+								|	LET:l IDENTIFIER curried_let_list:cll type
+									{: Error.expect("Curried-Let", ": ", lleft, cllright, ":" ); :}								
 								// Missing type
-								|	LET:l IDENTIFIER curried_let_list COLON:c  EQUAL seq_expr IN seq_expr
+								|	LET:l IDENTIFIER curried_let_list COLON:c EQUAL
 									{: Error.expect("Curried-Let", " \u03C4 ", lleft, cright, "\u03C4" ); :}
+								// Missing equal
+								|	LET:l IDENTIFIER curried_let_list COLON type:tau seq_expr
+									{: Error.expect("Curried-Let", " = ", lleft, tauright, "=" ); :}
+								// Missing equal and e1
+								|	LET:l IDENTIFIER curried_let_list:cll IN
+									{: Error.expect("Curried-Let", " = e1 ", lleft, cllright, "= e<sub>1</sub>" ); :}
+								|	LET:l IDENTIFIER curried_let_list COLON type:tau IN
+									{: Error.expect("Curried-Let", " = e1 ", lleft, tauright, "= e<sub>1</sub>" ); :}
+								// Missing type and equal
+								|	LET:l IDENTIFIER curried_let_list COLON:c seq_expr
+									{: Error.expect("Curried-Let", " \u03C4 = ", lleft, cright, "\u03C4 =" ); :}
+								// Missing type, equal and e1	
+								|	LET:l IDENTIFIER curried_let_list COLON:c IN
+									{: Error.expect("Curried-Let", " \u03C4 = e1 ", lleft, cright, "\u03C4 = e<sub>1</sub>" ); :}
 								;
 
 curried_let_list				::= curried_let_list:l curried_let_pair:p
@@ -583,9 +630,31 @@ recursion_error					::= REC:r epsilon
 									{: Error.expect("Recursion", "e", rleft, dright, "e" ); :}
 								|	REC:r IDENTIFIER DOT:d epsilon
 									{: Error.expect("Recursion", "e", rleft, dright, "e" ); :}
+								// Missing identifier
+								|	REC:r DOT
+									{: Error.expect("Recursion", " id", rleft, rright, "id" ); :}
+								|	REC:r COLON
+									{: Error.expect("Recursion", " id", rleft, rright, "id" ); :}
+								// Missing dot
+								|	REC:r IDENTIFIER:id seq_expr
+									{: Error.expect("Recursion", ".", rleft, idright, "." ); :}
+								|	REC:r IDENTIFIER COLON type:tau seq_expr
+									{: Error.expect("Recursion", ".", rleft, tauright, "." ); :}
+								// Missing colon
+								|	REC:r IDENTIFIER:id type
+									{: Error.expect("Recursion", ": ", rleft, idright, ":" ); :}
 								// Missing type
-								|	REC:r IDENTIFIER COLON:c DOT seq_expr
+								|	REC:r IDENTIFIER COLON:c DOT
 									{: Error.expect("Recursion", " \u03C4", rleft, cright, "\u03C4" ); :}
+								// Missing identifier and dot
+								|	REC:r seq_expr:e
+									{: Error.expect("Recursion", " id.", rleft, rright, "id." ); :}
+								// Missing identifier and colon
+								|	REC:r type
+									{: Error.expect("Recursion", " id: ", rleft, rright, "id:" ); :}
+								// Missing type and dot
+								|	REC:r IDENTIFIER COLON:c seq_expr:e
+									{: Error.expect("Recursion", " \u03C4.", rleft, cright, "\u03C4." ); :}			
 								;
 
 let_rec							::= LET:l REC IDENTIFIER:id EQUAL seq_expr:e1 IN seq_expr:e2
@@ -616,9 +685,43 @@ let_rec_error					::= LET:l REC:r epsilon
 									{: Error.expect("Let-Rec", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER EQUAL seq_expr IN:i epsilon
 									{: Error.expect("Let-Rec", " e2", lleft, iright, "e<sub>2</sub>" ); :}
+								// Missing identifier
+								|	LET:l REC:r EQUAL
+									{: Error.expect("Let-Rec", " id ", lleft, rright, "id" ); :}
+								|	LET:l REC:r COLON
+									{: Error.expect("Let-Rec", " id ", lleft, rright, "id" ); :}
+								// Missing equal							
+								|	LET:l REC IDENTIFIER COLON type:tau seq_expr
+									{: Error.expect("Let-Rec", " = ", lleft, tauright, "=" ); :}
+								// Missing colon
+								|	LET:l REC IDENTIFIER:id type
+									{: Error.expect("Let-Rec", ": ", lleft, idright, ":" ); :}
 								// Missing type
-								|	LET:l REC IDENTIFIER COLON:c EQUAL seq_expr IN seq_expr
+								|	LET:l REC IDENTIFIER COLON:c EQUAL
 									{: Error.expect("Let-Rec", " \u03C4 ", lleft, cright, "\u03C4" ); :}
+								// Missing e1
+								|	LET:l REC IDENTIFIER EQUAL:e IN
+									{: Error.expect("Let-Rec", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
+								// Missing identifier and equal
+								|	LET:l REC:r seq_expr
+									{: Error.expect("Let-Rec", " id = ", lleft, rright, "id =" ); :}
+								// Missing equal and e1
+								|	LET:l REC IDENTIFIER:id IN
+									{: Error.expect("Let-Rec", " = e1 ", lleft, idright, "= e<sub>1</sub>" ); :}
+								|	LET:l REC IDENTIFIER COLON type:tau IN
+									{: Error.expect("Let-Rec", " = e1 ", lleft, tauright, "= e<sub>1</sub>" ); :}
+								// Missing identifier and colon
+								|	LET:l REC:r type
+									{: Error.expect("Let-Rec", " id: ", lleft, rright, "id:" ); :}
+								// Missing type and equal
+								|	LET:l REC IDENTIFIER COLON:c seq_expr
+									{: Error.expect("Let-Rec", " \u03C4 = ", lleft, cright, "\u03C4 =" ); :}
+								// Missing identifier, equal and e1
+								|	LET:l REC:r IN
+									{: Error.expect("Let-Rec", " id = e1 ", lleft, rright, "id = e<sub>1</sub>" ); :}
+								// Missing type, equal and e1
+								|	LET:l REC IDENTIFIER COLON:c IN
+									{: Error.expect("Let-Rec", " \u03C4 = e1 ", lleft, cright, "\u03C4 = e<sub>1</sub>" ); :}
 								;
 
 curried_let_rec					::=	LET:l REC IDENTIFIER:id curried_let_rec_list:itl EQUAL seq_expr:e1 IN seq_expr:e2
@@ -668,9 +771,31 @@ curried_let_rec_error			::= LET:l REC IDENTIFIER curried_let_rec_list:c epsilon
 									{: Error.expect("Curried-Let-Rec", " in e2", lleft, eright, "in e<sub>2</sub>" ); :}
 								|	LET:l REC IDENTIFIER curried_let_rec_list EQUAL seq_expr IN:i epsilon
 									{: Error.expect("Curried-Let-Rec", " e2", lleft, iright, "e<sub>2</sub>" ); :}
+								// Missing e1
+								|	LET:l REC IDENTIFIER curried_let_rec_list EQUAL:e IN
+									{: Error.expect("Curried-Let-Rec", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}
+								|	LET:l REC IDENTIFIER curried_let_rec_list COLON type EQUAL:e IN
+									{: Error.expect("Curried-Let-Rec", " e1 ", lleft, eright, "e<sub>1</sub>" ); :}									
+								// Missing colon
+								|	LET:l REC IDENTIFIER curried_let_rec_list:cll type
+									{: Error.expect("Curried-Let-Rec", ": ", lleft, cllright, ":" ); :}								
 								// Missing type
-								|	LET:l REC IDENTIFIER curried_let_rec_list:itl COLON:c EQUAL seq_expr IN seq_expr
+								|	LET:l REC IDENTIFIER curried_let_rec_list COLON:c EQUAL
 									{: Error.expect("Curried-Let-Rec", " \u03C4 ", lleft, cright, "\u03C4" ); :}
+								// Missing equal
+								|	LET:l REC IDENTIFIER curried_let_rec_list COLON type:tau seq_expr
+									{: Error.expect("Curried-Let-Rec", " = ", lleft, tauright, "=" ); :}
+								// Missing equal and e1
+								|	LET:l REC IDENTIFIER curried_let_rec_list:cll IN
+									{: Error.expect("Curried-Let-Rec", " = e1 ", lleft, cllright, "= e<sub>1</sub>" ); :}
+								|	LET:l REC IDENTIFIER curried_let_rec_list COLON type:tau IN
+									{: Error.expect("Curried-Let-Rec", " = e1 ", lleft, tauright, "= e<sub>1</sub>" ); :}
+								// Missing type and equal
+								|	LET:l REC IDENTIFIER curried_let_rec_list COLON:c seq_expr
+									{: Error.expect("Curried-Let-Rec", " \u03C4 = ", lleft, cright, "\u03C4 =" ); :}
+								// Missing type, equal and e1	
+								|	LET:l REC IDENTIFIER curried_let_rec_list COLON:c IN
+									{: Error.expect("Curried-Let-Rec", " \u03C4 = e1 ", lleft, cright, "\u03C4 = e<sub>1</sub>" ); :}
 								;
 
 curried_let_rec_list			::= curried_let_rec_list:l curried_let_rec_pair:p

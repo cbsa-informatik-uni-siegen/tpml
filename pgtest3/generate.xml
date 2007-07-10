@@ -93,6 +93,7 @@
 			expect="10000"
 			nonterms="no"
 			nopositions="no"
+			compact_red="yes"
 			dump_grammar="no" />
 	</target>
 	
@@ -113,6 +114,7 @@
 			expect="10000"
 			nonterms="no"
 			nopositions="no"
+			compact_red="yes"
 			dump_grammar="no" />
 		
 		<!-- Types -->
@@ -151,6 +153,7 @@
 			expect="10000"
 			nonterms="no"
 			nopositions="no"
+			compact_red="yes"
 			dump_grammar="no" />
 		
 		<!-- Types -->
@@ -228,6 +231,7 @@
 			expect="10000"
 			nonterms="no"
 			nopositions="no"
+			compact_red="yes"
 			dump_grammar="no" />
 
 		<!-- Types -->
@@ -266,6 +270,7 @@
 			expect="10000"
 			nonterms="no"
 			nopositions="no"
+			compact_red="yes"
 			dump_grammar="no" />
 
 		<!-- Types -->

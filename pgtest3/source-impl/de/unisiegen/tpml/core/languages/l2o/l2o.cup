@@ -483,9 +483,6 @@ lambda_error					::= LAMBDA:l epsilon
 								// Missing type
 								|	LAMBDA:l IDENTIFIER COLON:c DOT
 									{: Error.expect("Lambda", " \u03C4", lleft, cright, "\u03C4" ); :}
-								// Missing identifier and dot
-								|	LAMBDA:l seq_expr:e
-									{: Error.expect("Lambda", " id.", lleft, lright, "id." ); :}
 								// Missing identifier and colon
 								|	LAMBDA:l type
 									{: Error.expect("Lambda", " id: ", lleft, lright, "id:" ); :}
