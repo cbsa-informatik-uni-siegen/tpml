@@ -130,24 +130,24 @@ public class SubTypingSourceView extends AbstractProofView //JComponent
     this.source = new JPanel(new GridBagLayout()) ;
     
     this.sourceLabel = new JLabel ( Messages.getString ( "firstType" ) ) ; //$NON-NLS-1$
-    gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
+    gridBagConstraints.insets = new Insets ( 5 , 21 , 0 , 10 )  ;
+    gridBagConstraints.fill = GridBagConstraints.BOTH;
     gridBagConstraints.gridx = 0 ;
     gridBagConstraints.gridy = 0 ;
-    gridBagConstraints.weightx = 1 ;
+    gridBagConstraints.weightx = 10 ;
     gridBagConstraints.weighty = 0 ;
     gridBagConstraints.gridwidth = 2 ;
-    gridBagConstraints.insets = new Insets ( 5 , 10 , 5 , 10 ) ;
     this.source.add ( this.sourceLabel, gridBagConstraints );
     
     
     this.sourceLabel2 = new JLabel ( Messages.getString ( "secondType" ) ) ; //$NON-NLS-1$
-    gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
+    gridBagConstraints.insets = new Insets ( 5 , 21 , 0 , 10 )  ;
+    gridBagConstraints.fill = GridBagConstraints.BOTH;
     gridBagConstraints.gridx = 0 ;
     gridBagConstraints.gridy = 2 ;
-    gridBagConstraints.weightx = 1 ;
+    gridBagConstraints.weightx = 10 ;
     gridBagConstraints.weighty = 0 ;
     gridBagConstraints.gridwidth = 2 ;
-    gridBagConstraints.insets = new Insets ( 5 , 10 , 5 , 10 ) ;
     this.source.add ( this.sourceLabel2, gridBagConstraints );
     
     
@@ -242,21 +242,22 @@ public class SubTypingSourceView extends AbstractProofView //JComponent
 		this.scrollPane1.setViewportView(this.editor);
 		this.scrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
-		 gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
-		 gridBagConstraints.fill = GridBagConstraints.NONE;
+		 gridBagConstraints.insets = new Insets ( 5 , 0 , 0 , 0 ) ;
+		 gridBagConstraints.fill = GridBagConstraints.BOTH;
 	    gridBagConstraints.gridx = 0 ;
 	    gridBagConstraints.gridy = 1 ;
-	    gridBagConstraints.weightx = 1 ;
+	    gridBagConstraints.weightx = 0 ;
 	    gridBagConstraints.weighty = 0 ;
-	    gridBagConstraints.gridwidth = 0 ;
+	    gridBagConstraints.gridwidth = 1 ;
 		this.source.add ( this.sidebar, gridBagConstraints );
 		
-		 gridBagConstraints.insets = new Insets ( 5 , 10 , 5 , 10 ) ;
+		 gridBagConstraints.insets = new Insets ( 5 , 5 , 5 , 5 ) ;
 		 gridBagConstraints.fill = GridBagConstraints.BOTH;
 	    gridBagConstraints.gridx = 1 ;
 	    gridBagConstraints.gridy = 1 ;
 	    gridBagConstraints.weightx = 10 ;
-	    gridBagConstraints.weighty = 0 ;
+	    gridBagConstraints.weighty = 10 ;
+      gridBagConstraints.gridwidth = 1 ;
 		this.source.add ( this.scrollPane1, gridBagConstraints );
     
     
@@ -349,21 +350,22 @@ this.editor2 = new StyledLanguageEditor ( );
 		this.scrollPane2.setViewportView(this.editor2);
 		this.scrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
-		 gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
-		 gridBagConstraints.fill = GridBagConstraints.NONE;
+		 gridBagConstraints.insets = new Insets ( 5 , 0 , 0 , 0 ) ;
+		 gridBagConstraints.fill = GridBagConstraints.BOTH;
 	    gridBagConstraints.gridx = 0 ;
 	    gridBagConstraints.gridy = 3 ;
-	    gridBagConstraints.weightx = 1 ;
+	    gridBagConstraints.weightx = 0 ;
 	    gridBagConstraints.weighty = 0 ;
-	    gridBagConstraints.gridwidth = 0 ;
+	    gridBagConstraints.gridwidth = 1 ;
 		this.source.add ( this.sidebar2, gridBagConstraints );
 		
-		 gridBagConstraints.insets = new Insets ( 5 , 10 , 5 , 10 ) ;
+		 gridBagConstraints.insets = new Insets ( 5 , 5 , 5 , 5 ) ;
 		 gridBagConstraints.fill = GridBagConstraints.BOTH;
 	    gridBagConstraints.gridx = 1 ;
 	    gridBagConstraints.gridy = 3 ;
 	    gridBagConstraints.weightx = 10 ;
-	    gridBagConstraints.weighty = 0 ;
+	    gridBagConstraints.weighty = 10 ;
+      gridBagConstraints.gridwidth = 1 ;
 		this.source.add ( this.scrollPane2, gridBagConstraints );
     
     
@@ -444,13 +446,23 @@ this.editor2 = new StyledLanguageEditor ( );
 
 
   /**
-   * Returns the {@link Outline} of this view.
+   * Returns the first {@link Outline} of this view.
    * 
-   * @return The {@link Outline} of this view.
+   * @return The first {@link Outline} of this view.
    */
-  public Outline getOutline ( )
+  public Outline getOutline1 ( )
   {
     return this.outline ;
+  }
+  
+  /**
+   * Returns the second {@link Outline} of this view.
+   * 
+   * @return The second {@link Outline} of this view.
+   */
+  public Outline getOutline2 ( )
+  {
+    return this.outline2 ;
   }
   
 	private void selectErrorText (int left, int right) {
@@ -483,6 +495,30 @@ this.editor2 = new StyledLanguageEditor ( );
 public void guess ( ) throws IllegalStateException, ProofGuessException {
 	// TODO Auto-generated method stub
 	
+}
+
+
+/**
+ * Returns the editor.
+ *
+ * @return The editor.
+ * @see #editor
+ */
+public StyledLanguageEditor getEditor1 ( )
+{
+  return this.editor ;
+}
+
+
+/**
+ * Returns the editor2.
+ *
+ * @return The editor2.
+ * @see #editor2
+ */
+public StyledLanguageEditor getEditor2 ( )
+{
+  return this.editor2 ;
 }
 
 
