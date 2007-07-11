@@ -292,20 +292,22 @@ public final class Coercion extends Expression implements DefaultTypes ,
   PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    // TODO Priorities
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          0 ) ;
+          PrettyPrintPriorities.PRIO_COERCION ) ;
       this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_COERCION_E ) ;
       this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_COERCION_TAU1 ) ;
       this.prettyStringBuilder.addText ( " <: " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.types [ 1 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_COERCION_TAU2 ) ;
       this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
     }
     return this.prettyStringBuilder ;

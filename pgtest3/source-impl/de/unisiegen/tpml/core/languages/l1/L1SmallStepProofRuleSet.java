@@ -6,6 +6,7 @@ import de.unisiegen.tpml.core.expressions.Application ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.BinaryOperatorException ;
 import de.unisiegen.tpml.core.expressions.BooleanConstant ;
+import de.unisiegen.tpml.core.expressions.Coercion ;
 import de.unisiegen.tpml.core.expressions.Condition ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
@@ -63,6 +64,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
     register ( L1Language.L1 , "OR-EVAL" , false ) ; //$NON-NLS-1$
     register ( L1Language.L1 , "OR-FALSE" , true ) ; //$NON-NLS-1$
     register ( L1Language.L1 , "OR-TRUE" , true ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "COERCE" , true ) ; //$NON-NLS-1$
   }
 
 
@@ -181,42 +183,18 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
 
 
   /**
-   * Evaluates the <code>infixOperation</code> using the <code>context</code>.
+   * Evaluates the <code>coercion</code> expression using the
+   * <code>context</code>.
    * 
    * @param context the small step proof context.
-   * @param infixOperation the infix operation to evaluate.
-   * @return the resulting expression.
+   * @param pCoercion The {@link Coercion} expression to evaluate.
+   * @return The resulting expression.
    */
-  public Expression evaluateInfixOperation ( SmallStepProofContext context ,
-      InfixOperation infixOperation )
+  public Expression evaluateCoercion ( @ SuppressWarnings ( "unused" )
+  SmallStepProofContext context , Coercion pCoercion )
   {
-    // determine the sub expressions and the operator
-    Expression e1 = infixOperation.getE1 ( ) ;
-    Expression e2 = infixOperation.getE2 ( ) ;
-    BinaryOperator op = infixOperation.getOp ( ) ;
-    // check if e1 is not already an integer constant
-    if ( ! e1.isValue ( ) )
-    {
-      // we're about to perform (APP-LEFT) and (APP-RIGHT)
-      context.addProofStep ( getRuleByName ( "APP-LEFT" ) , infixOperation ) ; //$NON-NLS-1$
-      context.addProofStep ( getRuleByName ( "APP-RIGHT" ) , infixOperation ) ; //$NON-NLS-1$
-      // try to evaluate e1
-      e1 = evaluate ( context , e1 ) ;
-      // exceptions need special handling
-      return e1.isException ( ) ? e1 : new InfixOperation ( op , e1 , e2 ) ;
-    }
-    // check if e2 is not already a value
-    if ( ! e2.isValue ( ) )
-    {
-      // we're about to perform (APP-RIGHT)
-      context.addProofStep ( getRuleByName ( "APP-RIGHT" ) , infixOperation ) ; //$NON-NLS-1$
-      // try to evaluate e2
-      e2 = evaluate ( context , e2 ) ;
-      // exceptions need special handling
-      return e2.isException ( ) ? e2 : new InfixOperation ( op , e1 , e2 ) ;
-    }
-    // try to perform the application
-    return applyBinaryOperator ( context , infixOperation , op , e1 , e2 ) ;
+    context.addProofStep ( getRuleByName ( "COERCE" ) , pCoercion ) ; //$NON-NLS-1$
+    return pCoercion.getE ( ) ;
   }
 
 
@@ -283,6 +261,46 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
     context.addProofStep ( getRuleByName ( "LET-EXEC" ) , curriedLet ) ; //$NON-NLS-1$
     // and perform the substitution
     return result ;
+  }
+
+
+  /**
+   * Evaluates the <code>infixOperation</code> using the <code>context</code>.
+   * 
+   * @param context the small step proof context.
+   * @param infixOperation the infix operation to evaluate.
+   * @return the resulting expression.
+   */
+  public Expression evaluateInfixOperation ( SmallStepProofContext context ,
+      InfixOperation infixOperation )
+  {
+    // determine the sub expressions and the operator
+    Expression e1 = infixOperation.getE1 ( ) ;
+    Expression e2 = infixOperation.getE2 ( ) ;
+    BinaryOperator op = infixOperation.getOp ( ) ;
+    // check if e1 is not already an integer constant
+    if ( ! e1.isValue ( ) )
+    {
+      // we're about to perform (APP-LEFT) and (APP-RIGHT)
+      context.addProofStep ( getRuleByName ( "APP-LEFT" ) , infixOperation ) ; //$NON-NLS-1$
+      context.addProofStep ( getRuleByName ( "APP-RIGHT" ) , infixOperation ) ; //$NON-NLS-1$
+      // try to evaluate e1
+      e1 = evaluate ( context , e1 ) ;
+      // exceptions need special handling
+      return e1.isException ( ) ? e1 : new InfixOperation ( op , e1 , e2 ) ;
+    }
+    // check if e2 is not already a value
+    if ( ! e2.isValue ( ) )
+    {
+      // we're about to perform (APP-RIGHT)
+      context.addProofStep ( getRuleByName ( "APP-RIGHT" ) , infixOperation ) ; //$NON-NLS-1$
+      // try to evaluate e2
+      e2 = evaluate ( context , e2 ) ;
+      // exceptions need special handling
+      return e2.isException ( ) ? e2 : new InfixOperation ( op , e1 , e2 ) ;
+    }
+    // try to perform the application
+    return applyBinaryOperator ( context , infixOperation , op , e1 , e2 ) ;
   }
 
 

@@ -76,6 +76,8 @@ public class L2CBNSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     register ( L1Language.L1 , "OR-FALSE" , true ) ; //$NON-NLS-1$
     unregister ( "OR-TRUE" ) ; //$NON-NLS-1$
     register ( L1Language.L1 , "OR-TRUE" , true ) ; //$NON-NLS-1$
+    unregister ( "COERCE" ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "COERCE" , true ) ; //$NON-NLS-1$
     unregister ( "UNFOLD" ) ; //$NON-NLS-1$
     register ( L2Language.L2 , "UNFOLD" , true ) ; //$NON-NLS-1$
   }

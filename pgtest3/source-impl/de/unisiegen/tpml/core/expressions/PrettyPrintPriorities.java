@@ -89,6 +89,30 @@ interface PrettyPrintPriorities
 
 
   /**
+   * The pretty print priority for coercion expressions.
+   */
+  public static final int PRIO_COERCION = 6 ;
+
+
+  /**
+   * The pretty print priority for the body of the coercion expression
+   */
+  public static final int PRIO_COERCION_E = 0 ;
+
+
+  /**
+   * The pretty print priority for the first type of the coercion expressions.
+   */
+  public static final int PRIO_COERCION_TAU1 = 0 ;
+
+
+  /**
+   * The pretty print priority for the second type of the coercion expressions.
+   */
+  public static final int PRIO_COERCION_TAU2 = 0 ;
+
+
+  /**
    * The pretty print priority for lambda expressions.
    */
   public static final int PRIO_LAMBDA = 0 ;

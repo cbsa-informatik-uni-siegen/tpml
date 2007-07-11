@@ -67,6 +67,8 @@ public class L1CBNSmallStepProofRuleSet extends L1SmallStepProofRuleSet
     register ( L1Language.L1 , "OR-FALSE" , true ) ; //$NON-NLS-1$
     unregister ( "OR-TRUE" ) ; //$NON-NLS-1$
     register ( L1Language.L1 , "OR-TRUE" , true ) ; //$NON-NLS-1$
+    unregister ( "COERCE" ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "COERCE" , true ) ; //$NON-NLS-1$
   }
 
 

@@ -301,8 +301,6 @@ expr							::=	simple_expr:e
 									{: RESULT = l; :}
 								|	curried_let:c
 									{: RESULT = c; :}
-								|	coercion:c
-									{: RESULT = c; :}
 								|	recursion:r
 									{: RESULT = r; :}
 								|	let_rec:l
@@ -1394,6 +1392,8 @@ simple_expr						::=	constant:c
 									{: RESULT = o; :}
 								|	LPAREN seq_expr:e RPAREN
 									{: RESULT = e; :}
+								|	coercion:c
+									{: RESULT = c; :}
 								|	tuple:t
 									{: RESULT = t; :}									
 								|	list:l
