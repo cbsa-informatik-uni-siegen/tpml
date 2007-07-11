@@ -3,7 +3,6 @@ package de.unisiegen.tpml.graphics.outline ;
 
 import java.awt.Color ;
 import java.awt.Rectangle ;
-import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
 import java.util.Enumeration ;
 import java.util.Timer ;
@@ -72,66 +71,6 @@ import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
  */
 public final class DefaultOutline implements Outline
 {
-  /**
-   * Method name for getExpressionsIndex
-   */
-  private static final String GET_EXPRESSIONS_INDEX = "getExpressionsIndex" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getIdentifiers
-   */
-  private static final String GET_IDENTIFIERS = "getIdentifiers" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getTypeNames
-   */
-  private static final String GET_TYPE_NAMES = "getTypeNames" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getTypeNamesBound
-   */
-  private static final String GET_TYPE_NAMES_BOUND = "getTypeNamesBound" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getTypeNamesIndex
-   */
-  private static final String GET_TYPE_NAMES_INDEX = "getTypeNamesIndex" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getIdentifiersIndex
-   */
-  private static final String GET_IDENTIFIERS_INDEX = "getIdentifiersIndex" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getIdentifiersBound
-   */
-  private static final String GET_IDENTIFIERS_BOUND = "getIdentifiersBound" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getTypes
-   */
-  private static final String GET_TYPES = "getTypes" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getTypesIndex
-   */
-  private static final String GET_TYPES_INDEX = "getTypesIndex" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getSortedChildren
-   */
-  private static final String GET_SORTED_CHILDREN = "getSortedChildren" ; //$NON-NLS-1$
-
-
   /**
    * The {@link OutlineUI}.
    * 
@@ -744,6 +683,7 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( SubTypingSourceView pSubTypingSourceView )
   {
+    // TODO implement
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
   }
@@ -776,29 +716,32 @@ public final class DefaultOutline implements Outline
     // The Expression has one or more child Expressions
     if ( pExpression instanceof DefaultExpressions )
     {
-      expressionsIndex = invokeExpressionsIndex ( ( DefaultExpressions ) pExpression ) ;
+      expressionsIndex = ( ( DefaultExpressions ) pExpression )
+          .getExpressionsIndex ( ) ;
     }
     // The Expresion has one or more Identifiers
     if ( pExpression instanceof DefaultIdentifiers )
     {
-      identifiersIndex = invokeIdentifiersIndex ( ( DefaultIdentifiers ) pExpression ) ;
-      identifiers = invokeIdentifiers ( ( DefaultIdentifiers ) pExpression ) ;
+      identifiersIndex = ( ( DefaultIdentifiers ) pExpression )
+          .getIdentifiersIndex ( ) ;
+      identifiers = ( ( DefaultIdentifiers ) pExpression ).getIdentifiers ( ) ;
     }
     // The Expression has one or more Identifiers which bind other Identifiers
     if ( pExpression instanceof BoundIdentifiers )
     {
-      identifiersBound = invokeIdentifiersBound ( ( BoundIdentifiers ) pExpression ) ;
+      identifiersBound = ( ( BoundIdentifiers ) pExpression )
+          .getIdentifiersBound ( ) ;
     }
     // The Expression has one or more Types.
     if ( pExpression instanceof DefaultTypes )
     {
-      typesIndex = invokeTypesIndex ( ( DefaultTypes ) pExpression ) ;
-      types = invokeTypes ( ( DefaultTypes ) pExpression ) ;
+      typesIndex = ( ( DefaultTypes ) pExpression ).getTypesIndex ( ) ;
+      types = ( ( DefaultTypes ) pExpression ).getTypes ( ) ;
     }
     // The Expression has sorted children.
     if ( pExpression instanceof SortedChildren )
     {
-      sortedChildren = invokeSortedChildren ( ( SortedChildren ) pExpression ) ;
+      sortedChildren = ( ( SortedChildren ) pExpression ).getSortedChildren ( ) ;
     }
     OutlineNode outlineNodeId ;
     OutlineNode outlineNodeType ;
@@ -995,30 +938,31 @@ public final class DefaultOutline implements Outline
     // The Type has one or more Types.
     if ( pType instanceof DefaultTypes )
     {
-      typesIndex = invokeTypesIndex ( ( DefaultTypes ) pType ) ;
-      types = invokeTypes ( ( DefaultTypes ) pType ) ;
+      typesIndex = ( ( DefaultTypes ) pType ).getTypesIndex ( ) ;
+      types = ( ( DefaultTypes ) pType ).getTypes ( ) ;
     }
     // The Type has one or more Identifiers
     if ( pType instanceof DefaultIdentifiers )
     {
-      identifiersIndex = invokeIdentifiersIndex ( ( DefaultIdentifiers ) pType ) ;
-      identifiers = invokeIdentifiers ( ( DefaultIdentifiers ) pType ) ;
+      identifiersIndex = ( ( DefaultIdentifiers ) pType )
+          .getIdentifiersIndex ( ) ;
+      identifiers = ( ( DefaultIdentifiers ) pType ).getIdentifiers ( ) ;
     }
     // The Type has one or more TypeNames
     if ( pType instanceof DefaultTypeNames )
     {
-      typeNamesIndex = invokeTypeNamesIndex ( ( DefaultTypeNames ) pType ) ;
-      typeNames = invokeTypeNames ( ( DefaultTypeNames ) pType ) ;
+      typeNamesIndex = ( ( DefaultTypeNames ) pType ).getTypeNamesIndex ( ) ;
+      typeNames = ( ( DefaultTypeNames ) pType ).getTypeNames ( ) ;
     }
     // The Type has one or more TypeNames which bind other TypeNames
     if ( pType instanceof BoundTypeNames )
     {
-      typeNamesBound = invokeTypeNamesBound ( ( BoundTypeNames ) pType ) ;
+      typeNamesBound = ( ( BoundTypeNames ) pType ).getTypeNamesBound ( ) ;
     }
     // The Type has sorted children.
     if ( pType instanceof SortedChildren )
     {
-      sortedChildren = invokeSortedChildren ( ( SortedChildren ) pType ) ;
+      sortedChildren = ( ( SortedChildren ) pType ).getSortedChildren ( ) ;
     }
     OutlineNode outlineNodeType ;
     OutlineNode outlineNodeTypeName ;
@@ -1328,400 +1272,6 @@ public final class DefaultOutline implements Outline
   public final OutlineUI getUI ( )
   {
     return this.uI ;
-  }
-
-
-  /**
-   * Returns the array of indices from the given {@link DefaultExpressions}.
-   * 
-   * @param pDefaultExpressions The {@link DefaultExpressions}.
-   * @return The array of indices.
-   */
-  private final int [ ] invokeExpressionsIndex (
-      DefaultExpressions pDefaultExpressions )
-  {
-    try
-    {
-      return ( int [ ] ) pDefaultExpressions.getClass ( ).getMethod (
-          GET_EXPRESSIONS_INDEX , new Class [ 0 ] ).invoke (
-          pDefaultExpressions , new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
-  }
-
-
-  /**
-   * Returns the array of {@link Identifier}s from the given
-   * {@link DefaultIdentifiers}.
-   * 
-   * @param pDefaultIdentifiers The {@link DefaultIdentifiers}.
-   * @return The array of {@link Identifier}s.
-   */
-  private final Identifier [ ] invokeIdentifiers (
-      DefaultIdentifiers pDefaultIdentifiers )
-  {
-    try
-    {
-      return ( Identifier [ ] ) pDefaultIdentifiers.getClass ( ).getMethod (
-          GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( pDefaultIdentifiers ,
-          new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
-  }
-
-
-  /**
-   * Returns a list of lists of bound {@link Identifier}s from the given
-   * {@link BoundIdentifiers}.
-   * 
-   * @param pBoundIdentifiers The {@link BoundIdentifiers}.
-   * @return A list of list of bound {@link Identifier}s.
-   */
-  @ SuppressWarnings ( "unchecked" )
-  private final ArrayList < ArrayList < Identifier >> invokeIdentifiersBound (
-      BoundIdentifiers pBoundIdentifiers )
-  {
-    try
-    {
-      return ( ArrayList < ArrayList < Identifier >> ) pBoundIdentifiers
-          .getClass ( ).getMethod ( GET_IDENTIFIERS_BOUND , new Class [ 0 ] )
-          .invoke ( pBoundIdentifiers , new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
-  }
-
-
-  /**
-   * Returns the array of indices from the given {@link DefaultIdentifiers}.
-   * 
-   * @param pDefaultIdentifiers The {@link DefaultIdentifiers}.
-   * @return The array of indices.
-   */
-  private final int [ ] invokeIdentifiersIndex (
-      DefaultIdentifiers pDefaultIdentifiers )
-  {
-    try
-    {
-      return ( int [ ] ) pDefaultIdentifiers.getClass ( ).getMethod (
-          GET_IDENTIFIERS_INDEX , new Class [ 0 ] ).invoke (
-          pDefaultIdentifiers , new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
-  }
-
-
-  /**
-   * Returns the array of the sorted children from the given
-   * {@link SortedChildren}.
-   * 
-   * @param pSortedChildren The {@link SortedChildren}.
-   * @return The array of the sorted children.
-   */
-  private final ExpressionOrType [ ] invokeSortedChildren (
-      SortedChildren pSortedChildren )
-  {
-    try
-    {
-      return ( ExpressionOrType [ ] ) pSortedChildren.getClass ( ).getMethod (
-          GET_SORTED_CHILDREN , new Class [ 0 ] ).invoke ( pSortedChildren ,
-          new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
-  }
-
-
-  /**
-   * Returns the array of {@link TypeName}s from the given
-   * {@link DefaultTypeNames}.
-   * 
-   * @param pDefaultTypeNames The {@link DefaultTypeNames}.
-   * @return The array of {@link TypeName}s.
-   */
-  private final TypeName [ ] invokeTypeNames (
-      DefaultTypeNames pDefaultTypeNames )
-  {
-    try
-    {
-      return ( TypeName [ ] ) pDefaultTypeNames.getClass ( ).getMethod (
-          GET_TYPE_NAMES , new Class [ 0 ] ).invoke ( pDefaultTypeNames ,
-          new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
-  }
-
-
-  /**
-   * Returns the array of bound {@link TypeName}s from the given
-   * {@link BoundTypeNames}.
-   * 
-   * @param pBoundTypeNames The {@link BoundTypeNames}.
-   * @return The array of bound {@link TypeName}s.
-   */
-  @ SuppressWarnings ( "unchecked" )
-  private final ArrayList < ArrayList < TypeName >> invokeTypeNamesBound (
-      BoundTypeNames pBoundTypeNames )
-  {
-    try
-    {
-      return ( ArrayList < ArrayList < TypeName >> ) pBoundTypeNames
-          .getClass ( ).getMethod ( GET_TYPE_NAMES_BOUND , new Class [ 0 ] )
-          .invoke ( pBoundTypeNames , new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
-  }
-
-
-  /**
-   * Returns the array of indices from the given {@link DefaultTypeNames}.
-   * 
-   * @param pDefaultTypeNames The {@link DefaultTypeNames}.
-   * @return The array of indices.
-   */
-  private final int [ ] invokeTypeNamesIndex (
-      DefaultTypeNames pDefaultTypeNames )
-  {
-    try
-    {
-      return ( int [ ] ) pDefaultTypeNames.getClass ( ).getMethod (
-          GET_TYPE_NAMES_INDEX , new Class [ 0 ] ).invoke ( pDefaultTypeNames ,
-          new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
-  }
-
-
-  /**
-   * Returns the array of the types from the given {@link DefaultTypes}.
-   * 
-   * @param pDefaultTypes The {@linkDefaultTypes}.
-   * @return The array of the types.
-   */
-  private final MonoType [ ] invokeTypes ( DefaultTypes pDefaultTypes )
-  {
-    try
-    {
-      return ( MonoType [ ] ) pDefaultTypes.getClass ( ).getMethod ( GET_TYPES ,
-          new Class [ 0 ] ).invoke ( pDefaultTypes , new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
-  }
-
-
-  /**
-   * Returns the array of indices from the given {@link DefaultTypes}.
-   * 
-   * @param pDefaultTypes The {@link DefaultTypes}.
-   * @return The array of indices.
-   */
-  private final int [ ] invokeTypesIndex ( DefaultTypes pDefaultTypes )
-  {
-    try
-    {
-      return ( int [ ] ) pDefaultTypes.getClass ( ).getMethod (
-          GET_TYPES_INDEX , new Class [ 0 ] ).invoke ( pDefaultTypes ,
-          new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
   }
 
 

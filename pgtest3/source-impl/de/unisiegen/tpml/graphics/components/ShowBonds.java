@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.graphics.components ;
 
 
-import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
@@ -25,36 +24,6 @@ import de.unisiegen.tpml.core.types.TypeName ;
 public final class ShowBonds
 {
   /**
-   * Method name for getIdentifiers
-   */
-  private static final String GET_IDENTIFIERS = "getIdentifiers" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getIdentifiersBound
-   */
-  private static final String GET_IDENTIFIERS_BOUND = "getIdentifiersBound" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getTypeNames
-   */
-  private static final String GET_TYPE_NAMES = "getTypeNames" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getTypeNamesBound
-   */
-  private static final String GET_TYPE_NAMES_BOUND = "getTypeNamesBound" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getTypes
-   */
-  private static final String GET_TYPES = "getTypes" ; //$NON-NLS-1$
-
-
-  /**
    * The loaded {@link ExpressionOrTypeOrTypeEquationTypeInference}.
    */
   private ExpressionOrTypeOrTypeEquationTypeInference loaded = null ;
@@ -76,108 +45,56 @@ public final class ShowBonds
   {
     if ( pExpression instanceof BoundIdentifiers )
     {
-      try
+      Identifier [ ] id = ( ( BoundIdentifiers ) pExpression )
+          .getIdentifiers ( ) ;
+      ArrayList < ArrayList < Identifier >> bound = ( ( BoundIdentifiers ) pExpression )
+          .getIdentifiersBound ( ) ;
+      // Create Bonds
+      if ( bound == null )
       {
-        // Invoke getIdentifiers
-        Identifier [ ] id = ( Identifier [ ] ) pExpression.getClass ( )
-            .getMethod ( GET_IDENTIFIERS , new Class [ 0 ] ).invoke (
-                pExpression , new Object [ 0 ] ) ;
-        // Invoke getIdentifiersBound
-        ArrayList < ArrayList < Identifier >> bound = ( ArrayList < ArrayList < Identifier >> ) pExpression
-            .getClass ( ).getMethod ( GET_IDENTIFIERS_BOUND , new Class [ 0 ] )
-            .invoke ( pExpression , new Object [ 0 ] ) ;
-        // Create Bonds
-        if ( bound == null )
+        return ;
+      }
+      PrettyAnnotation current ;
+      for ( int i = 0 ; i < bound.size ( ) ; i ++ )
+      {
+        if ( bound.get ( i ) == null )
         {
-          return ;
+          continue ;
         }
-        PrettyAnnotation current ;
-        for ( int i = 0 ; i < bound.size ( ) ; i ++ )
+        current = this.loaded.toPrettyString ( ).getAnnotationForPrintable (
+            id [ i ] ) ;
+        Bonds bonds = new Bonds ( current.getStartOffset ( ) , current
+            .getEndOffset ( ) ) ;
+        for ( Identifier boundId : bound.get ( i ) )
         {
-          if ( bound.get ( i ) == null )
+          try
           {
-            continue ;
+            bonds.addPrettyAnnotation ( this.loaded.toPrettyString ( )
+                .getAnnotationForPrintable ( boundId ) ) ;
           }
-          current = this.loaded.toPrettyString ( ).getAnnotationForPrintable (
-              id [ i ] ) ;
-          Bonds bonds = new Bonds ( current.getStartOffset ( ) , current
-              .getEndOffset ( ) ) ;
-          for ( Identifier boundId : bound.get ( i ) )
+          catch ( IllegalArgumentException e )
           {
-            try
-            {
-              bonds.addPrettyAnnotation ( this.loaded.toPrettyString ( )
-                  .getAnnotationForPrintable ( boundId ) ) ;
-            }
-            catch ( IllegalArgumentException e )
-            {
-              /*
-               * Happens if a bound Identifier is not in the PrettyString. For
-               * example "object (self) val a = 0 ; method move = {< a = 2 >} ;
-               * end". The "self" binds the free Identifier "self" in the
-               * Duplication (method free in Duplication), but the free "self"
-               * in the Duplication is not present in the PrettyString.
-               */
-            }
+            /*
+             * Happens if a bound Identifier is not in the PrettyString. For
+             * example "object (self) val a = 0 ; method move = {< a = 2 >} ;
+             * end". The "self" binds the free Identifier "self" in the
+             * Duplication (method free in Duplication), but the free "self" in
+             * the Duplication is not present in the PrettyString.
+             */
           }
-          this.result.add ( bonds ) ;
         }
-      }
-      catch ( IllegalArgumentException e )
-      {
-        System.err.println ( "ShowBonds: IllegalArgumentException" ) ; //$NON-NLS-1$
-      }
-      catch ( IllegalAccessException e )
-      {
-        System.err.println ( "ShowBonds: IllegalAccessException" ) ; //$NON-NLS-1$
-      }
-      catch ( InvocationTargetException e )
-      {
-        System.err.println ( "ShowBonds: InvocationTargetException" ) ; //$NON-NLS-1$
-      }
-      catch ( SecurityException e )
-      {
-        System.err.println ( "ShowBonds: SecurityException" ) ; //$NON-NLS-1$
-      }
-      catch ( NoSuchMethodException e )
-      {
-        System.err.println ( "ShowBonds: NoSuchMethodException" ) ; //$NON-NLS-1$
+        this.result.add ( bonds ) ;
       }
     }
     if ( pExpression instanceof DefaultTypes )
     {
-      try
+      MonoType [ ] types = ( ( DefaultTypes ) pExpression ).getTypes ( ) ;
+      for ( MonoType tau : types )
       {
-        MonoType [ ] types = ( MonoType [ ] ) pExpression.getClass ( )
-            .getMethod ( GET_TYPES , new Class [ 0 ] ).invoke ( pExpression ,
-                new Object [ 0 ] ) ;
-        for ( MonoType tau : types )
+        if ( tau != null )
         {
-          if ( tau != null )
-          {
-            check ( tau ) ;
-          }
+          check ( tau ) ;
         }
-      }
-      catch ( IllegalArgumentException e )
-      {
-        System.err.println ( "ShowBonds: IllegalArgumentException" ) ; //$NON-NLS-1$
-      }
-      catch ( SecurityException e )
-      {
-        System.err.println ( "ShowBonds: SecurityException" ) ; //$NON-NLS-1$
-      }
-      catch ( IllegalAccessException e )
-      {
-        System.err.println ( "ShowBonds: IllegalAccessException" ) ; //$NON-NLS-1$
-      }
-      catch ( InvocationTargetException e )
-      {
-        System.err.println ( "ShowBonds: InvocationTargetException" ) ; //$NON-NLS-1$
-      }
-      catch ( NoSuchMethodException e )
-      {
-        System.err.println ( "ShowBonds: NoSuchMethodException" ) ; //$NON-NLS-1$
       }
     }
     for ( Expression expr : pExpression.children ( ) )
@@ -197,68 +114,40 @@ public final class ShowBonds
   {
     if ( pType instanceof BoundTypeNames )
     {
-      try
+      TypeName [ ] typeNames = ( ( BoundTypeNames ) pType ).getTypeNames ( ) ;
+      ArrayList < ArrayList < TypeName >> bound = ( ( BoundTypeNames ) pType )
+          .getTypeNamesBound ( ) ;
+      // Create Bonds
+      if ( bound == null )
       {
-        // Invoke getTypeNames
-        TypeName [ ] typeNames = ( TypeName [ ] ) pType.getClass ( ).getMethod (
-            GET_TYPE_NAMES , new Class [ 0 ] )
-            .invoke ( pType , new Object [ 0 ] ) ;
-        // Invoke getTypeNamesBound
-        ArrayList < ArrayList < TypeName >> bound = ( ArrayList < ArrayList < TypeName >> ) pType
-            .getClass ( ).getMethod ( GET_TYPE_NAMES_BOUND , new Class [ 0 ] )
-            .invoke ( pType , new Object [ 0 ] ) ;
-        // Create Bonds
-        if ( bound == null )
+        return ;
+      }
+      PrettyAnnotation current ;
+      for ( int i = 0 ; i < bound.size ( ) ; i ++ )
+      {
+        if ( bound.get ( i ) == null )
         {
-          return ;
+          continue ;
         }
-        PrettyAnnotation current ;
-        for ( int i = 0 ; i < bound.size ( ) ; i ++ )
+        current = this.loaded.toPrettyString ( ).getAnnotationForPrintable (
+            typeNames [ i ] ) ;
+        Bonds bonds = new Bonds ( current.getStartOffset ( ) , current
+            .getEndOffset ( ) ) ;
+        for ( TypeName boundTypeNames : bound.get ( i ) )
         {
-          if ( bound.get ( i ) == null )
+          try
           {
-            continue ;
+            bonds.addPrettyAnnotation ( this.loaded.toPrettyString ( )
+                .getAnnotationForPrintable ( boundTypeNames ) ) ;
           }
-          current = this.loaded.toPrettyString ( ).getAnnotationForPrintable (
-              typeNames [ i ] ) ;
-          Bonds bonds = new Bonds ( current.getStartOffset ( ) , current
-              .getEndOffset ( ) ) ;
-          for ( TypeName boundTypeNames : bound.get ( i ) )
+          catch ( IllegalArgumentException e )
           {
-            try
-            {
-              bonds.addPrettyAnnotation ( this.loaded.toPrettyString ( )
-                  .getAnnotationForPrintable ( boundTypeNames ) ) ;
-            }
-            catch ( IllegalArgumentException e )
-            {
-              /*
-               * Happens if a bound TypeName is not in the PrettyString.
-               */
-            }
+            /*
+             * Happens if a bound TypeName is not in the PrettyString.
+             */
           }
-          this.result.add ( bonds ) ;
         }
-      }
-      catch ( IllegalArgumentException e )
-      {
-        System.err.println ( "ShowBonds: IllegalArgumentException" ) ; //$NON-NLS-1$
-      }
-      catch ( IllegalAccessException e )
-      {
-        System.err.println ( "ShowBonds: IllegalAccessException" ) ; //$NON-NLS-1$
-      }
-      catch ( InvocationTargetException e )
-      {
-        System.err.println ( "ShowBonds: InvocationTargetException" ) ; //$NON-NLS-1$
-      }
-      catch ( SecurityException e )
-      {
-        System.err.println ( "ShowBonds: SecurityException" ) ; //$NON-NLS-1$
-      }
-      catch ( NoSuchMethodException e )
-      {
-        System.err.println ( "ShowBonds: NoSuchMethodException" ) ; //$NON-NLS-1$
+        this.result.add ( bonds ) ;
       }
     }
     for ( Type tau : pType.children ( ) )
@@ -315,7 +204,7 @@ public final class ShowBonds
   /**
    * {@inheritDoc} Mainly useful for debugging purposes.
    * 
-   * @see java.lang.Object#toString()
+   * @see Object#toString()
    */
   @ Override
   public String toString ( )
