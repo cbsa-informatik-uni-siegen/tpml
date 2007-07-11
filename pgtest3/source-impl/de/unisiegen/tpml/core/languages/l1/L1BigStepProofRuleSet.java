@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.expressions.BinaryCons ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.BinaryOperatorException ;
 import de.unisiegen.tpml.core.expressions.BooleanConstant ;
+import de.unisiegen.tpml.core.expressions.Coercion ;
 import de.unisiegen.tpml.core.expressions.Condition ;
 import de.unisiegen.tpml.core.expressions.Condition1 ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
@@ -72,6 +73,8 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
         "OR-FALSE" , "applyOr" , "updateOrFalse" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     registerByMethodName ( L1Language.L1 ,
         "OR-TRUE" , "applyOr" , "updateOrTrue" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName ( L1Language.L1 , "COERCE" , "applyCoercion" , //$NON-NLS-1$ //$NON-NLS-2$
+        "updateCoercion" ) ; //$NON-NLS-1$
   }
 
 
@@ -87,6 +90,178 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
   {
     // add the first proof node
     context.addProofNode ( node , ( ( And ) node.getExpression ( ) ).getE1 ( ) ) ;
+  }
+
+
+  /**
+   * Applies the <b>(COERCE)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the big step proof context.
+   * @param node the node to apply the <b>(COERCE)</b> rule to.
+   */
+  public void applyCoercion ( BigStepProofContext context ,
+      BigStepProofNode node )
+  {
+    // add the first proof node
+    context.addProofNode ( node , ( ( Coercion ) node.getExpression ( ) )
+        .getE ( ) ) ;
+  }
+
+
+  /**
+   * Applies the <b>(COND-FALSE)</b> or <b>(COND-TRUE)</b> rule to the
+   * <code>node</code> using the <code>context</code>.
+   * 
+   * @param context the big step proof context.
+   * @param node the node to apply the <b>(COND-FALSE)</b> or <b>(COND-TRUE)</b>
+   *          rule to.
+   */
+  public void applyCond ( BigStepProofContext context , BigStepProofNode node )
+  {
+    // can be applied to Condition and Condition1
+    Expression e = node.getExpression ( ) ;
+    if ( e instanceof Condition )
+    {
+      // add the first child node
+      context.addProofNode ( node , ( ( Condition ) e ).getE0 ( ) ) ;
+    }
+    else
+    {
+      // add the first child node
+      context.addProofNode ( node , ( ( Condition1 ) e ).getE0 ( ) ) ;
+    }
+  }
+
+
+  /**
+   * Applies the <b>(LET)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the big step proof context.
+   * @param node the node to apply the <b>(LET)</b> rule to.
+   */
+  public void applyLet ( BigStepProofContext context , BigStepProofNode node )
+  {
+    Expression e = node.getExpression ( ) ;
+    if ( e instanceof CurriedLet || e instanceof CurriedLetRec )
+    {
+      // determine the first sub expression
+      CurriedLet curriedLet = ( CurriedLet ) e ;
+      Expression e1 = curriedLet.getE1 ( ) ;
+      // generate the appropriate lambda abstractions
+      Identifier [ ] identifiers = curriedLet.getIdentifiers ( ) ;
+      MonoType [ ] types = curriedLet.getTypes ( ) ;
+      for ( int n = identifiers.length - 1 ; n > 0 ; -- n )
+      {
+        e1 = new Lambda ( identifiers [ n ] , types [ n ] , e1 ) ;
+      }
+      // add the recursion for letrec
+      if ( e instanceof CurriedLetRec )
+      {
+        e1 = new Recursion ( identifiers [ 0 ] , types [ 0 ] , e1 ) ;
+      }
+      // add the proof node
+      context.addProofNode ( node , e1 ) ;
+    }
+    else if ( e instanceof MultiLet )
+    {
+      // prove the first sub expression
+      context.addProofNode ( node , ( ( MultiLet ) e ).getE1 ( ) ) ;
+    }
+    else
+    {
+      // determine the first sub expression
+      Let let = ( Let ) e ;
+      Expression e1 = let.getE1 ( ) ;
+      // add the recursion for letrec
+      if ( e instanceof LetRec )
+      {
+        LetRec letRec = ( LetRec ) e ;
+        e1 = new Recursion ( letRec.getId ( ) , letRec.getTau ( ) , e1 ) ;
+      }
+      // add the proof node
+      context.addProofNode ( node , e1 ) ;
+    }
+  }
+
+
+  /**
+   * Applies the <b>(NOT)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the big step proof context.
+   * @param node the node to apply the <b>(NOT)</b> rule to.
+   * @throws UnaryOperatorException if the <b>(NOT)</b> rule cannot be applied
+   *           here.
+   */
+  public void applyNot ( BigStepProofContext context , BigStepProofNode node )
+      throws UnaryOperatorException
+  {
+    Application application = ( Application ) node.getExpression ( ) ;
+    Not e1 = ( Not ) application.getE1 ( ) ;
+    context.setProofNodeResult ( node , e1.applyTo ( application.getE2 ( ) ) ) ;
+  }
+
+
+  /**
+   * Applies the <b>(OP)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the big step proof context.
+   * @param node the node to apply the <b>(OP)</b> rule to.
+   * @throws BinaryOperatorException if the <b>(OP)</b> rule cannot be applied
+   *           here.
+   */
+  public void applyOp ( BigStepProofContext context , BigStepProofNode node )
+      throws BinaryOperatorException
+  {
+    // depends on whether we have an Application or InfixOperation
+    BinaryOperator op ;
+    Expression e1 ;
+    Expression e2 ;
+    // check if Application or InfixOperation
+    Expression e = node.getExpression ( ) ;
+    if ( e instanceof Application )
+    {
+      // Application: (op e1) e2
+      Application a1 = ( Application ) e ;
+      Application a2 = ( Application ) a1.getE1 ( ) ;
+      op = ( BinaryOperator ) a2.getE1 ( ) ;
+      e1 = a2.getE2 ( ) ;
+      e2 = a1.getE2 ( ) ;
+    }
+    else
+    {
+      // otherwise must be an InfixOperation
+      InfixOperation infixOperation = ( InfixOperation ) e ;
+      op = infixOperation.getOp ( ) ;
+      e1 = infixOperation.getE1 ( ) ;
+      e2 = infixOperation.getE2 ( ) ;
+    }
+    // we must not handle BinaryCons here
+    if ( op instanceof BinaryCons )
+    {
+      throw new IllegalArgumentException ( Messages
+          .getString ( "L1BigStepProofRuleSet.0" ) ) ; //$NON-NLS-1$
+    }
+    // perform the application
+    context.setProofNodeResult ( node , op.applyTo ( e1 , e2 ) ) ;
+  }
+
+
+  /**
+   * Applies the <b>(OR-FALSE)</b> or <b>(OR-TRUE)</b> rule to the
+   * <code>node</code> using the <code>context</code>.
+   * 
+   * @param context the big step proof context.
+   * @param node the node to apply the <b>(OR-FALSE)</b> or <b>(OR-TRUE)</b>
+   *          rule to.
+   */
+  public void applyOr ( BigStepProofContext context , BigStepProofNode node )
+  {
+    // add the first proof node
+    context.addProofNode ( node , ( ( Or ) node.getExpression ( ) ).getE1 ( ) ) ;
   }
 
 
@@ -184,26 +359,20 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
 
 
   /**
-   * Applies the <b>(COND-FALSE)</b> or <b>(COND-TRUE)</b> rule to the
-   * <code>node</code> using the <code>context</code>.
+   * Updates the <code>node</code> to which <b>(COERCE)</b> was applied
+   * previously.
    * 
    * @param context the big step proof context.
-   * @param node the node to apply the <b>(COND-FALSE)</b> or <b>(COND-TRUE)</b>
-   *          rule to.
+   * @param node the node to update according to <b>(COERCE)</b>.
    */
-  public void applyCond ( BigStepProofContext context , BigStepProofNode node )
+  public void updateCoercion ( BigStepProofContext context ,
+      BigStepProofNode node )
   {
-    // can be applied to Condition and Condition1
-    Expression e = node.getExpression ( ) ;
-    if ( e instanceof Condition )
+    // check if we have exactly one proven child node
+    if ( node.getChildCount ( ) == 1 && node.getChildAt ( 0 ).isProven ( ) )
     {
-      // add the first child node
-      context.addProofNode ( node , ( ( Condition ) e ).getE0 ( ) ) ;
-    }
-    else
-    {
-      // add the first child node
-      context.addProofNode ( node , ( ( Condition1 ) e ).getE0 ( ) ) ;
+      // forward the result of the second child node
+      context.setProofNodeResult ( node , node.getChildAt ( 0 ).getResult ( ) ) ;
     }
   }
 
@@ -321,58 +490,6 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
 
 
   /**
-   * Applies the <b>(LET)</b> rule to the <code>node</code> using the
-   * <code>context</code>.
-   * 
-   * @param context the big step proof context.
-   * @param node the node to apply the <b>(LET)</b> rule to.
-   */
-  public void applyLet ( BigStepProofContext context , BigStepProofNode node )
-  {
-    Expression e = node.getExpression ( ) ;
-    if ( e instanceof CurriedLet || e instanceof CurriedLetRec )
-    {
-      // determine the first sub expression
-      CurriedLet curriedLet = ( CurriedLet ) e ;
-      Expression e1 = curriedLet.getE1 ( ) ;
-      // generate the appropriate lambda abstractions
-      Identifier [ ] identifiers = curriedLet.getIdentifiers ( ) ;
-      MonoType [ ] types = curriedLet.getTypes ( ) ;
-      for ( int n = identifiers.length - 1 ; n > 0 ; -- n )
-      {
-        e1 = new Lambda ( identifiers [ n ] , types [ n ] , e1 ) ;
-      }
-      // add the recursion for letrec
-      if ( e instanceof CurriedLetRec )
-      {
-        e1 = new Recursion ( identifiers [ 0 ] , types [ 0 ] , e1 ) ;
-      }
-      // add the proof node
-      context.addProofNode ( node , e1 ) ;
-    }
-    else if ( e instanceof MultiLet )
-    {
-      // prove the first sub expression
-      context.addProofNode ( node , ( ( MultiLet ) e ).getE1 ( ) ) ;
-    }
-    else
-    {
-      // determine the first sub expression
-      Let let = ( Let ) e ;
-      Expression e1 = let.getE1 ( ) ;
-      // add the recursion for letrec
-      if ( e instanceof LetRec )
-      {
-        LetRec letRec = ( LetRec ) e ;
-        e1 = new Recursion ( letRec.getId ( ) , letRec.getTau ( ) , e1 ) ;
-      }
-      // add the proof node
-      context.addProofNode ( node , e1 ) ;
-    }
-  }
-
-
-  /**
    * Updates the <code>node</code> to which <b>(LET)</b> was applied
    * previously.
    * 
@@ -425,85 +542,6 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
       // forward the result of the second child node
       context.setProofNodeResult ( node , node.getChildAt ( 1 ).getResult ( ) ) ;
     }
-  }
-
-
-  /**
-   * Applies the <b>(NOT)</b> rule to the <code>node</code> using the
-   * <code>context</code>.
-   * 
-   * @param context the big step proof context.
-   * @param node the node to apply the <b>(NOT)</b> rule to.
-   * @throws UnaryOperatorException if the <b>(NOT)</b> rule cannot be applied
-   *           here.
-   */
-  public void applyNot ( BigStepProofContext context , BigStepProofNode node )
-      throws UnaryOperatorException
-  {
-    Application application = ( Application ) node.getExpression ( ) ;
-    Not e1 = ( Not ) application.getE1 ( ) ;
-    context.setProofNodeResult ( node , e1.applyTo ( application.getE2 ( ) ) ) ;
-  }
-
-
-  /**
-   * Applies the <b>(OP)</b> rule to the <code>node</code> using the
-   * <code>context</code>.
-   * 
-   * @param context the big step proof context.
-   * @param node the node to apply the <b>(OP)</b> rule to.
-   * @throws BinaryOperatorException if the <b>(OP)</b> rule cannot be applied
-   *           here.
-   */
-  public void applyOp ( BigStepProofContext context , BigStepProofNode node )
-      throws BinaryOperatorException
-  {
-    // depends on whether we have an Application or InfixOperation
-    BinaryOperator op ;
-    Expression e1 ;
-    Expression e2 ;
-    // check if Application or InfixOperation
-    Expression e = node.getExpression ( ) ;
-    if ( e instanceof Application )
-    {
-      // Application: (op e1) e2
-      Application a1 = ( Application ) e ;
-      Application a2 = ( Application ) a1.getE1 ( ) ;
-      op = ( BinaryOperator ) a2.getE1 ( ) ;
-      e1 = a2.getE2 ( ) ;
-      e2 = a1.getE2 ( ) ;
-    }
-    else
-    {
-      // otherwise must be an InfixOperation
-      InfixOperation infixOperation = ( InfixOperation ) e ;
-      op = infixOperation.getOp ( ) ;
-      e1 = infixOperation.getE1 ( ) ;
-      e2 = infixOperation.getE2 ( ) ;
-    }
-    // we must not handle BinaryCons here
-    if ( op instanceof BinaryCons )
-    {
-      throw new IllegalArgumentException ( Messages
-          .getString ( "L1BigStepProofRuleSet.0" ) ) ; //$NON-NLS-1$
-    }
-    // perform the application
-    context.setProofNodeResult ( node , op.applyTo ( e1 , e2 ) ) ;
-  }
-
-
-  /**
-   * Applies the <b>(OR-FALSE)</b> or <b>(OR-TRUE)</b> rule to the
-   * <code>node</code> using the <code>context</code>.
-   * 
-   * @param context the big step proof context.
-   * @param node the node to apply the <b>(OR-FALSE)</b> or <b>(OR-TRUE)</b>
-   *          rule to.
-   */
-  public void applyOr ( BigStepProofContext context , BigStepProofNode node )
-  {
-    // add the first proof node
-    context.addProofNode ( node , ( ( Or ) node.getExpression ( ) ).getE1 ( ) ) ;
   }
 
 

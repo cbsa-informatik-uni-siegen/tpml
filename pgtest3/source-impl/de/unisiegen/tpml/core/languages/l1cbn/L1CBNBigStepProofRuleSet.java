@@ -81,6 +81,9 @@ public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
     unregister ( "OR-TRUE" ) ; //$NON-NLS-1$
     registerByMethodName ( L1Language.L1 ,
         "OR-TRUE" , "applyOr" , "updateOrTrue" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    unregister ( "COERCE" ) ; //$NON-NLS-1$
+    registerByMethodName ( L1Language.L1 , "COERCE" , "applyCoercion" , //$NON-NLS-1$ //$NON-NLS-2$
+        "updateCoercion" ) ; //$NON-NLS-1$
   }
 
 

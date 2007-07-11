@@ -87,6 +87,9 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
     unregister ( "UNFOLD" ) ; //$NON-NLS-1$
     registerByMethodName ( L2Language.L2 , "UNFOLD" , "applyUnfold" , //$NON-NLS-1$ //$NON-NLS-2$
         "updateUnfold" ) ; //$NON-NLS-1$
+    unregister ( "COERCE" ) ; //$NON-NLS-1$
+    registerByMethodName ( L1Language.L1 , "COERCE" , "applyCoercion" , //$NON-NLS-1$ //$NON-NLS-2$
+        "updateCoercion" ) ; //$NON-NLS-1$
   }
 
 
