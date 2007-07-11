@@ -348,8 +348,7 @@ public final class Duplication extends Expression implements
           PRIO_DUPLICATION ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( "{<" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( "{< " ) ; //$NON-NLS-1$
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
@@ -369,7 +368,7 @@ public final class Duplication extends Expression implements
       {
         this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       }
-      this.prettyStringBuilder.addKeyword ( ">}" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( ">}" ) ; //$NON-NLS-1$
     }
     return this.prettyStringBuilder ;
   }

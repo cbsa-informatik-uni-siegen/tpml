@@ -266,9 +266,7 @@ public final class Send extends Expression implements DefaultIdentifiers ,
           PRIO_SEND ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_SEND_E ) ;
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addKeyword ( "#" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( " # " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
     }

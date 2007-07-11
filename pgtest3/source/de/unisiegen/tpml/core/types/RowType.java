@@ -599,8 +599,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
         this.prettyStringBuilder.addBuilder ( this.types [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_ROW_TAU ) ;
-        this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-        this.prettyStringBuilder.addKeyword ( ";" ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( " ;" ) ; //$NON-NLS-1$
         if ( i != this.types.length - 1 )
         {
           this.prettyStringBuilder.addBreak ( ) ;

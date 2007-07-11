@@ -336,8 +336,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_METHOD_E ) ;
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addKeyword ( ";" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( " ;" ) ; //$NON-NLS-1$
     }
     return this.prettyStringBuilder ;
   }
