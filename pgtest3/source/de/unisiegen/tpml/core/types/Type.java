@@ -4,10 +4,7 @@ package de.unisiegen.tpml.core.types ;
 import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import java.util.Collections ;
 import java.util.Enumeration ;
-import java.util.Set ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.interfaces.ExpressionOrTypeOrTypeEquationTypeInference ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
@@ -28,14 +25,6 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
     ExpressionOrTypeOrTypeEquationTypeInference
 {
-  /**
-   * Shared empty set, returned by {@link #getTypeVariablesFree()} if the type
-   * does not contain any free type variables.
-   */
-  protected static final Set < TypeVariable > EMPTY_SET = Collections
-      .unmodifiableSet ( Collections. < TypeVariable > emptySet ( ) ) ;
-
-
   /**
    * The <code>String</code> for an array of children.
    */
@@ -70,13 +59,13 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
 
 
   /**
-   * Cached <code>TreeSet</code> of the free {@link TypeVariable}s, so the
+   * Cached <code>ArrayList</code> of the free {@link TypeVariable}s, so the
    * free {@link TypeVariable} do not need to be determined on every invocation
    * of {@link #getTypeVariablesFree()}.
    * 
    * @see #getTypeVariablesFree()
    */
-  protected TreeSet < TypeVariable > free = null ;
+  protected ArrayList < TypeVariable > typeVariablesFree = null ;
 
 
   /**
@@ -294,17 +283,21 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
 
 
   /**
-   * Returns the set of free type variables present within this type. The
-   * default implementation simply returns the empty set, and derived classes
-   * will need to override this method to return the set of free type variables.
-   * The returned set should be considered read-only by the caller and must not
-   * be modified.
+   * Returns a list of the free {@link TypeVariable}s in this {@link Type}.
    * 
-   * @return the set of free type variables within this type.
+   * @return A list of the free {@link TypeVariable}s in this {@link Type}.
    */
-  public Set < TypeVariable > getTypeVariablesFree ( )
+  public ArrayList < TypeVariable > getTypeVariablesFree ( )
   {
-    return EMPTY_SET ;
+    if ( this.typeVariablesFree == null )
+    {
+      this.typeVariablesFree = new ArrayList < TypeVariable > ( ) ;
+      for ( Type child : children ( ) )
+      {
+        this.typeVariablesFree.addAll ( child.getTypeVariablesFree ( ) ) ;
+      }
+    }
+    return this.typeVariablesFree ;
   }
 
 

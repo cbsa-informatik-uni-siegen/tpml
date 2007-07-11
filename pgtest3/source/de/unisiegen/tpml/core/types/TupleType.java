@@ -2,7 +2,6 @@ package de.unisiegen.tpml.core.types ;
 
 
 import java.util.Arrays ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -154,26 +153,6 @@ public final class TupleType extends MonoType implements DefaultTypes
   public int [ ] getTypesIndex ( )
   {
     return this.indicesType ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Type#getTypeVariablesFree()
-   */
-  @ Override
-  public TreeSet < TypeVariable > getTypeVariablesFree ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new TreeSet < TypeVariable > ( ) ;
-      for ( MonoType type : this.types )
-      {
-        this.free.addAll ( type.getTypeVariablesFree ( ) ) ;
-      }
-    }
-    return this.free ;
   }
 
 

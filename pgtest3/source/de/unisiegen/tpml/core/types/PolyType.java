@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.types ;
 
 
+import java.util.ArrayList ;
 import java.util.Iterator ;
 import java.util.Set ;
 import java.util.TreeSet ;
@@ -168,15 +169,22 @@ public final class PolyType extends Type implements DefaultTypes
    * @see Type#getTypeVariablesFree()
    */
   @ Override
-  public TreeSet < TypeVariable > getTypeVariablesFree ( )
+  public ArrayList < TypeVariable > getTypeVariablesFree ( )
   {
-    if ( this.free == null )
+    if ( this.typeVariablesFree == null )
     {
-      this.free = new TreeSet < TypeVariable > ( ) ;
-      this.free.addAll ( this.types [ 0 ].getTypeVariablesFree ( ) ) ;
-      this.free.removeAll ( this.quantifiedVariables ) ;
+      this.typeVariablesFree = new ArrayList < TypeVariable > ( ) ;
+      this.typeVariablesFree
+          .addAll ( this.types [ 0 ].getTypeVariablesFree ( ) ) ;
+      for ( TypeVariable tvar : this.quantifiedVariables )
+      {
+        while ( this.typeVariablesFree.remove ( tvar ) )
+        {
+          // Remove all TypeVariables
+        }
+      }
     }
-    return this.free ;
+    return this.typeVariablesFree ;
   }
 
 

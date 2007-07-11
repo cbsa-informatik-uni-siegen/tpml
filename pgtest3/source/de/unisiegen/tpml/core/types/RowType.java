@@ -3,7 +3,6 @@ package de.unisiegen.tpml.core.types ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
@@ -462,6 +461,30 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Type#getTypeNamesFree()
+   */
+  @ Override
+  public ArrayList < TypeName > getTypeNamesFree ( )
+  {
+    if ( this.typeNamesFree == null )
+    {
+      this.typeNamesFree = new ArrayList < TypeName > ( ) ;
+      for ( MonoType type : this.types )
+      {
+        this.typeNamesFree.addAll ( type.getTypeNamesFree ( ) ) ;
+      }
+      if ( this.remainingRowType != null )
+      {
+        this.typeNamesFree.addAll ( this.remainingRowType.getTypeNamesFree ( ) ) ;
+      }
+    }
+    return this.typeNamesFree ;
+  }
+
+
+  /**
    * Returns the sub {@link Type}s.
    * 
    * @return the sub {@link Type}s.
@@ -489,21 +512,22 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * @see Type#getTypeVariablesFree()
    */
   @ Override
-  public TreeSet < TypeVariable > getTypeVariablesFree ( )
+  public ArrayList < TypeVariable > getTypeVariablesFree ( )
   {
-    if ( this.free == null )
+    if ( this.typeVariablesFree == null )
     {
-      this.free = new TreeSet < TypeVariable > ( ) ;
+      this.typeVariablesFree = new ArrayList < TypeVariable > ( ) ;
       for ( MonoType type : this.types )
       {
-        this.free.addAll ( type.getTypeVariablesFree ( ) ) ;
+        this.typeVariablesFree.addAll ( type.getTypeVariablesFree ( ) ) ;
       }
       if ( this.remainingRowType != null )
       {
-        this.free.addAll ( this.remainingRowType.getTypeVariablesFree ( ) ) ;
+        this.typeVariablesFree.addAll ( this.remainingRowType
+            .getTypeVariablesFree ( ) ) ;
       }
     }
-    return this.free ;
+    return this.typeVariablesFree ;
   }
 
 

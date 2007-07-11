@@ -1,8 +1,7 @@
 package de.unisiegen.tpml.core.types ;
 
 
-import java.util.Set ;
-import java.util.TreeSet ;
+import java.util.ArrayList ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -301,14 +300,14 @@ public final class TypeVariable extends MonoType implements
    * @see Type#getTypeVariablesFree()
    */
   @ Override
-  public Set < TypeVariable > getTypeVariablesFree ( )
+  public ArrayList < TypeVariable > getTypeVariablesFree ( )
   {
-    if ( this.free == null )
+    if ( this.typeVariablesFree == null )
     {
-      this.free = new TreeSet < TypeVariable > ( ) ;
-      this.free.add ( this ) ;
+      this.typeVariablesFree = new ArrayList < TypeVariable > ( ) ;
+      this.typeVariablesFree.add ( this ) ;
     }
-    return this.free ;
+    return this.typeVariablesFree ;
   }
 
 

@@ -1,8 +1,6 @@
 package de.unisiegen.tpml.core.types ;
 
 
-import java.util.Set ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.EmptyList ;
 import de.unisiegen.tpml.core.expressions.List ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -149,23 +147,6 @@ public final class ListType extends MonoType implements DefaultTypes
   public int [ ] getTypesIndex ( )
   {
     return INDICES_TYPE ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Type#getTypeVariablesFree()
-   */
-  @ Override
-  public Set < TypeVariable > getTypeVariablesFree ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new TreeSet < TypeVariable > ( ) ;
-      this.free.addAll ( this.types [ 0 ].getTypeVariablesFree ( ) ) ;
-    }
-    return this.free ;
   }
 
 

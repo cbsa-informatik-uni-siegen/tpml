@@ -1,6 +1,9 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.util.ArrayList ;
+import de.unisiegen.tpml.core.Messages ;
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -11,6 +14,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.core.types.TypeVariable ;
 
 
 /**
@@ -82,6 +86,7 @@ public final class Coercion extends Expression implements DefaultTypes ,
     { pTau1 , pTau2 } ;
     this.types [ 0 ].setParent ( this ) ;
     this.types [ 1 ].setParent ( this ) ;
+    checkTypeVariables ( ) ;
   }
 
 
@@ -103,6 +108,31 @@ public final class Coercion extends Expression implements DefaultTypes ,
     this ( pExpression , pTau1 , pTau2 ) ;
     this.parserStartOffset = pParserStartOffset ;
     this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
+   * Checks if a child type contains {@link TypeVariable}s.
+   */
+  public void checkTypeVariables ( )
+  {
+    ArrayList < TypeVariable > list = new ArrayList < TypeVariable > ( ) ;
+    list.addAll ( this.types [ 0 ].getTypeVariablesFree ( ) ) ;
+    list.addAll ( this.types [ 1 ].getTypeVariablesFree ( ) ) ;
+    if ( list.size ( ) > 0 )
+    {
+      String [ ] message = new String [ list.size ( ) ] ;
+      int [ ] startOffset = new int [ list.size ( ) ] ;
+      int [ ] endOffset = new int [ list.size ( ) ] ;
+      for ( int i = 0 ; i < list.size ( ) ; i ++ )
+      {
+        message [ i ] = Messages.getString ( "Parser.18" ) ; //$NON-NLS-1$
+        startOffset [ i ] = list.get ( i ).getParserStartOffset ( ) ;
+        endOffset [ i ] = list.get ( i ).getParserEndOffset ( ) ;
+      }
+      throw new LanguageParserMultiException ( message , startOffset ,
+          endOffset ) ;
+    }
   }
 
 

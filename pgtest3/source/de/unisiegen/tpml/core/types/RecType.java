@@ -3,8 +3,6 @@ package de.unisiegen.tpml.core.types ;
 
 import java.text.MessageFormat ;
 import java.util.ArrayList ;
-import java.util.Set ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.interfaces.BoundTypeNames ;
@@ -271,23 +269,6 @@ public final class RecType extends MonoType implements DefaultTypes ,
   public int [ ] getTypesIndex ( )
   {
     return INDICES_TYPE ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Type#getTypeVariablesFree()
-   */
-  @ Override
-  public Set < TypeVariable > getTypeVariablesFree ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new TreeSet < TypeVariable > ( ) ;
-      this.free.addAll ( this.types [ 0 ].getTypeVariablesFree ( ) ) ;
-    }
-    return this.free ;
   }
 
 
