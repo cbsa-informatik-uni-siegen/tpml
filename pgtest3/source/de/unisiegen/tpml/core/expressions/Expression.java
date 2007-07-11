@@ -6,6 +6,7 @@ import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.Enumeration ;
 import java.util.LinkedList ;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.ExpressionOrTypeOrTypeEquationTypeInference ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
@@ -77,12 +78,6 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
       return e ;
     }
   }
-
-
-  /**
-   * The <code>String</code> for an array of children.
-   */
-  private static final String GET_EXPRESSIONS = "getExpressions" ; //$NON-NLS-1$
 
 
   /**
@@ -236,55 +231,27 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * Returns an enumeration for the direct ancestor expressions, the direct
-   * children, of this expression. The enumeration is generated using the bean
-   * properties for every {@link Expression} derived class. For example,
-   * {@link Application} provides <code>getE1()</code> and
-   * <code>getE2()</code>, and thereby the sub expressions <code>e1</code>
-   * and <code>e2</code>. It also supports arrays of expressions, as used in
-   * the {@link Tuple} expression class.
+   * Returns an {@link ArrayList} of the child {@link Expression}s.
    * 
-   * @return an {@link Enumeration} for the direct ancestor expressions of this
-   *         expression.
+   * @return An {@link ArrayList} of the child {@link Expression}s.
    */
   public final ArrayList < Expression > children ( )
   {
     if ( this.children == null )
     {
-      this.children = new ArrayList < Expression > ( ) ;
-      for ( Class < ? > currentInterface : this.getClass ( ).getInterfaces ( ) )
+      if ( this instanceof DefaultExpressions )
       {
-        if ( currentInterface
-            .equals ( de.unisiegen.tpml.core.interfaces.DefaultExpressions.class ) )
+        Expression [ ] expressions = ( ( DefaultExpressions ) this )
+            .getExpressions ( ) ;
+        this.children = new ArrayList < Expression > ( expressions.length ) ;
+        for ( Expression expression : expressions )
         {
-          try
-          {
-            Expression [ ] expressions = ( Expression [ ] ) this.getClass ( )
-                .getMethod ( GET_EXPRESSIONS , new Class [ 0 ] ).invoke ( this ,
-                    new Object [ 0 ] ) ;
-            this.children.addAll ( Arrays.asList ( expressions ) ) ;
-          }
-          catch ( IllegalArgumentException e )
-          {
-            System.err.println ( "Expression: IllegalArgumentException" ) ; //$NON-NLS-1$
-          }
-          catch ( SecurityException e )
-          {
-            System.err.println ( "Expression: SecurityException" ) ; //$NON-NLS-1$
-          }
-          catch ( IllegalAccessException e )
-          {
-            System.err.println ( "Expression: IllegalAccessException" ) ; //$NON-NLS-1$
-          }
-          catch ( InvocationTargetException e )
-          {
-            System.err.println ( "Expression: InvocationTargetException" ) ; //$NON-NLS-1$
-          }
-          catch ( NoSuchMethodException e )
-          {
-            System.err.println ( "Expression: NoSuchMethodException" ) ; //$NON-NLS-1$
-          }
+          this.children.add ( expression ) ;
         }
+      }
+      else
+      {
+        this.children = new ArrayList < Expression > ( 0 ) ;
       }
     }
     return this.children ;

@@ -1,10 +1,8 @@
 package de.unisiegen.tpml.core.types ;
 
 
-import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
-import java.util.Arrays ;
-import java.util.Enumeration ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ExpressionOrTypeOrTypeEquationTypeInference ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
@@ -25,12 +23,6 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
     ExpressionOrTypeOrTypeEquationTypeInference
 {
-  /**
-   * The <code>String</code> for an array of children.
-   */
-  private static final String GET_TYPES = "getTypes" ; //$NON-NLS-1$
-
-
   /**
    * Prefix of tau {@link Type}s.
    */
@@ -56,6 +48,12 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @see #children()
    */
   private ArrayList < Type > children = null ;
+
+
+  /**
+   * The list of the free {@link TypeName}s in this {@link Type}.
+   */
+  protected ArrayList < TypeName > typeNamesFree = null ;
 
 
   /**
@@ -108,12 +106,6 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
 
 
   /**
-   * The list of the free {@link TypeName}s in this {@link Type}.
-   */
-  protected ArrayList < TypeName > typeNamesFree = null ;
-
-
-  /**
    * A list of lists of bound {@link TypeName}s in this {@link Type}.
    */
   protected ArrayList < ArrayList < TypeName >> boundTypeNames = null ;
@@ -129,51 +121,26 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
 
 
   /**
-   * Returns an enumeration for the direct ancestor types, the direct children,
-   * of this type. The enumeration is generated using the bean properties for
-   * every {@link Type} derived class. For example, {@link ArrowType} provides
-   * <code>getTau1()</code> and <code>getTau2()</code>. It also supports
-   * arrays of types, as used in the {@link TupleType} class.
+   * Returns an {@link ArrayList} of the child {@link Type}s.
    * 
-   * @return an {@link Enumeration} for the direct ancestor types of this type.
+   * @return An {@link ArrayList} of the child {@link Type}s.
    */
   public final ArrayList < Type > children ( )
   {
     if ( this.children == null )
     {
-      this.children = new ArrayList < Type > ( ) ;
-      for ( Class < ? > currentInterface : this.getClass ( ).getInterfaces ( ) )
+      if ( this instanceof DefaultTypes )
       {
-        if ( currentInterface
-            .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypes.class ) )
+        Type [ ] types = ( ( DefaultTypes ) this ).getTypes ( ) ;
+        this.children = new ArrayList < Type > ( types.length ) ;
+        for ( Type type : types )
         {
-          try
-          {
-            Type [ ] types = ( Type [ ] ) this.getClass ( ).getMethod (
-                GET_TYPES , new Class [ 0 ] ).invoke ( this , new Object [ 0 ] ) ;
-            this.children.addAll ( Arrays.asList ( types ) ) ;
-          }
-          catch ( IllegalArgumentException e )
-          {
-            System.err.println ( "Type: IllegalArgumentException" ) ; //$NON-NLS-1$
-          }
-          catch ( SecurityException e )
-          {
-            System.err.println ( "Type: SecurityException" ) ; //$NON-NLS-1$
-          }
-          catch ( IllegalAccessException e )
-          {
-            System.err.println ( "Type: IllegalAccessException" ) ; //$NON-NLS-1$
-          }
-          catch ( InvocationTargetException e )
-          {
-            System.err.println ( "Type: InvocationTargetException" ) ; //$NON-NLS-1$
-          }
-          catch ( NoSuchMethodException e )
-          {
-            System.err.println ( "Type: NoSuchMethodException" ) ; //$NON-NLS-1$
-          }
+          this.children.add ( type ) ;
         }
+      }
+      else
+      {
+        this.children = new ArrayList < Type > ( 0 ) ;
       }
     }
     return this.children ;
