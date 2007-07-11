@@ -80,6 +80,12 @@ public final class DefaultOutline implements Outline
 
 
   /**
+   * The {@link OutlineItemListener}.
+   */
+  private OutlineItemListener itemListener = null ;
+
+
+  /**
    * The {@link OutlinePreferences}.
    * 
    * @see #getPreferences()
@@ -109,37 +115,19 @@ public final class DefaultOutline implements Outline
   /**
    * The root {@link OutlineNode}.
    */
-  private OutlineNode rootOutlineNode = null ;
+  private OutlineNode rootNode = null ;
 
 
   /**
    * The {@link TextEditorPanel}.
    */
-  private TextEditorPanel textEditorPanel = null ;
+  private TextEditorPanel sourceView = null ;
 
 
   /**
-   * The {@link NewSubTypingView}.
+   * The {@link SubTypingSourceView}.
    */
-  private NewSubTypingView subTypingView = null ;
-
-
-  /**
-   * The {@link SubTypingEnterTypes}.
-   */
-  private SubTypingEnterTypes subTypingEnterTypes = null ;
-
-
-  /**
-   * The {@link StyledLanguageEditor}.
-   */
-  private StyledLanguageEditor styledLanguageEditor = null ;
-
-
-  /**
-   * The {@link OutlineItemListener}.
-   */
-  private OutlineItemListener itemListener = null ;
+  private SubTypingSourceView subTypingSourceView = null ;
 
 
   /**
@@ -281,7 +269,6 @@ public final class DefaultOutline implements Outline
   {
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
-    this.subTypingView = pSubTypingView ;
     this.uI.deactivateAutoUpdate ( ) ;
     this.uI.deactivateHighlightSourceCode ( ) ;
     // ComponentListener
@@ -420,20 +407,43 @@ public final class DefaultOutline implements Outline
     // TODO remove
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
-    this.subTypingEnterTypes = pSubTypingEnterTypes ;
-    this.styledLanguageEditor = pStyledLanguageEditor ;
-    this.uI.getJCheckBoxBinding ( ).setVisible ( false ) ;
-    this.uI.getJCheckBoxFree ( ).setVisible ( false ) ;
-    this.uI.getJMenuItemBinding ( ).setVisible ( false ) ;
-    this.uI.getJMenuItemFree ( ).setVisible ( false ) ;
-    // PropertyChangeListener
-    Theme.currentTheme ( ).addPropertyChangeListener (
-        new OutlinePropertyChangeListener ( this ) ) ;
+  }
+
+
+  /**
+   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
+   * 
+   * @param pSubTypingSourceView The {@link SubTypingSourceView}.
+   */
+  public DefaultOutline ( SubTypingSourceView pSubTypingSourceView )
+  {
+    // TODO implement
+    this.preferences = new OutlinePreferences ( ) ;
+    this.uI = new OutlineUI ( this ) ;
+    this.subTypingSourceView = pSubTypingSourceView ;
+    // ComponentListener
+    this.uI.getJPanelMain ( ).addComponentListener (
+        new OutlineComponentListener ( pSubTypingSourceView.getJSplitPane ( ) ,
+            this ) ) ;
     // MouseListener
-    pStyledLanguageEditor.addMouseListener ( new OutlineMouseListener ( this ,
-        pStyledLanguageEditor ) ) ;
+    if ( pSubTypingSourceView.getEditor1 ( ) != null )
+    {
+      pSubTypingSourceView.getEditor1 ( ).addMouseListener (
+          new OutlineMouseListener ( this , pSubTypingSourceView ) ) ;
+    }
+    if ( pSubTypingSourceView.getEditor2 ( ) != null )
+    {
+      pSubTypingSourceView.getEditor2 ( ).addMouseListener (
+          new OutlineMouseListener ( this , pSubTypingSourceView ) ) ;
+    }
     this.uI.getJTreeOutline ( ).addMouseListener (
         new OutlineMouseListener ( this ) ) ;
+    // PropertyChangeListener
+    pSubTypingSourceView
+        .addPropertyChangeListener ( new OutlinePropertyChangeListener (
+            pSubTypingSourceView.getJSplitPane ( ) , this ) ) ;
+    Theme.currentTheme ( ).addPropertyChangeListener (
+        new OutlinePropertyChangeListener ( this ) ) ;
     // ActionListener
     OutlineActionListener outlineActionListener = new OutlineActionListener (
         this ) ;
@@ -448,6 +458,8 @@ public final class DefaultOutline implements Outline
     this.uI.getJMenuItemCopy ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemSelection ( )
         .addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemBinding ( ).addActionListener ( outlineActionListener ) ;
+    this.uI.getJMenuItemFree ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemReplace ( ).addActionListener ( outlineActionListener ) ;
     this.uI.getJMenuItemHighlightSourceCode ( ).addActionListener (
         outlineActionListener ) ;
@@ -459,6 +471,8 @@ public final class DefaultOutline implements Outline
     // ItemListener
     this.itemListener = new OutlineItemListener ( this ) ;
     this.uI.getJCheckBoxSelection ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxBinding ( ).addItemListener ( this.itemListener ) ;
+    this.uI.getJCheckBoxFree ( ).addItemListener ( this.itemListener ) ;
     this.uI.getJCheckBoxReplace ( ).addItemListener ( this.itemListener ) ;
     this.uI.getJCheckBoxHighlightSourceCode ( ).addItemListener (
         this.itemListener ) ;
@@ -478,26 +492,25 @@ public final class DefaultOutline implements Outline
   /**
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    * 
-   * @param pTextEditorPanel The {@link TextEditorPanel}.
+   * @param pSourceView The {@link TextEditorPanel}.
    */
-  public DefaultOutline ( TextEditorPanel pTextEditorPanel )
+  public DefaultOutline ( TextEditorPanel pSourceView )
   {
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
-    this.textEditorPanel = pTextEditorPanel ;
+    this.sourceView = pSourceView ;
     // ComponentListener
     this.uI.getJPanelMain ( ).addComponentListener (
-        new OutlineComponentListener ( pTextEditorPanel.getJSplitPane ( ) ,
-            this ) ) ;
+        new OutlineComponentListener ( pSourceView.getJSplitPane ( ) , this ) ) ;
     // MouseListener
-    this.textEditorPanel.getEditor ( ).addMouseListener (
-        new OutlineMouseListener ( this , pTextEditorPanel ) ) ;
+    this.sourceView.getEditor ( ).addMouseListener (
+        new OutlineMouseListener ( this , pSourceView ) ) ;
     this.uI.getJTreeOutline ( ).addMouseListener (
         new OutlineMouseListener ( this ) ) ;
     // PropertyChangeListener
-    this.textEditorPanel
+    this.sourceView
         .addPropertyChangeListener ( new OutlinePropertyChangeListener (
-            this.textEditorPanel.getJSplitPane ( ) , this ) ) ;
+            this.sourceView.getJSplitPane ( ) , this ) ) ;
     Theme.currentTheme ( ).addPropertyChangeListener (
         new OutlinePropertyChangeListener ( this ) ) ;
     // ActionListener
@@ -673,19 +686,6 @@ public final class DefaultOutline implements Outline
     // TreeSelectionListener
     this.uI.getJTreeOutline ( ).getSelectionModel ( ).addTreeSelectionListener (
         new OutlineTreeSelectionListener ( this ) ) ;
-  }
-
-
-  /**
-   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
-   * 
-   * @param pSubTypingSourceView The {@link SubTypingSourceView}.
-   */
-  public DefaultOutline ( SubTypingSourceView pSubTypingSourceView )
-  {
-    // TODO implement
-    this.preferences = new OutlinePreferences ( ) ;
-    this.uI = new OutlineUI ( this ) ;
   }
 
 
@@ -1123,18 +1123,18 @@ public final class DefaultOutline implements Outline
     {
       Expression expression = ( Expression ) this.loadedExpressionOrType ;
       this.outlineUnbound = new OutlineUnbound ( expression ) ;
-      this.rootOutlineNode = new OutlineNode ( expression ,
-          this.outlineUnbound , OutlineNode.NO_CHILD_INDEX ) ;
-      createExpression ( expression , this.rootOutlineNode ) ;
+      this.rootNode = new OutlineNode ( expression , this.outlineUnbound ,
+          OutlineNode.NO_CHILD_INDEX ) ;
+      createExpression ( expression , this.rootNode ) ;
     }
     // Load a new Type into the outline
     else if ( this.loadedExpressionOrType instanceof Type )
     {
       Type type = ( Type ) this.loadedExpressionOrType ;
       this.outlineUnbound = new OutlineUnbound ( type ) ;
-      this.rootOutlineNode = new OutlineNode ( type , this.outlineUnbound ,
+      this.rootNode = new OutlineNode ( type , this.outlineUnbound ,
           OutlineNode.NO_CHILD_INDEX ) ;
-      createType ( type , this.rootOutlineNode ) ;
+      createType ( type , this.rootNode ) ;
     }
     // Throw an exception if something different should be loaded.
     else
@@ -1142,7 +1142,7 @@ public final class DefaultOutline implements Outline
       throw new IllegalArgumentException (
           "Outline: The input is not an Expression or Type!" ) ; //$NON-NLS-1$
     }
-    repaint ( this.rootOutlineNode ) ;
+    repaint ( this.rootNode ) ;
     setError ( false ) ;
     SwingUtilities.invokeLater ( new OutlineDisplayTree ( this ) ) ;
   }
@@ -1212,54 +1212,6 @@ public final class DefaultOutline implements Outline
   public final OutlinePreferences getPreferences ( )
   {
     return this.preferences ;
-  }
-
-
-  /**
-   * Returns the styledLanguageEditor.
-   * 
-   * @return The styledLanguageEditor.
-   * @see #styledLanguageEditor
-   */
-  public StyledLanguageEditor getStyledLanguageEditor ( )
-  {
-    return this.styledLanguageEditor ;
-  }
-
-
-  /**
-   * Returns the subTypingEnterTypes.
-   * 
-   * @return The subTypingEnterTypes.
-   * @see #subTypingEnterTypes
-   */
-  public SubTypingEnterTypes getSubTypingEnterTypes ( )
-  {
-    return this.subTypingEnterTypes ;
-  }
-
-
-  /**
-   * Returns the subTypingView.
-   * 
-   * @return The subTypingView.
-   * @see #subTypingView
-   */
-  public NewSubTypingView getSubTypingView ( )
-  {
-    return this.subTypingView ;
-  }
-
-
-  /**
-   * Returns the textEditorPanel.
-   * 
-   * @return The textEditorPanel.
-   * @see #textEditorPanel
-   */
-  public TextEditorPanel getTextEditorPanel ( )
-  {
-    return this.textEditorPanel ;
   }
 
 
@@ -1398,7 +1350,7 @@ public final class DefaultOutline implements Outline
    */
   public final void propertyChanged ( )
   {
-    propertyChanged ( ( OutlineNode ) this.uI.getTreeModel ( ).getRoot ( ) ) ;
+    propertyChanged ( this.rootNode ) ;
   }
 
 
@@ -1442,16 +1394,6 @@ public final class DefaultOutline implements Outline
 
   /**
    * Repaints the given node and all its children.
-   */
-  private final void repaintNode ( )
-  {
-    OutlineNode rootNode = ( OutlineNode ) this.uI.getTreeModel ( ).getRoot ( ) ;
-    repaintNode ( rootNode ) ;
-  }
-
-
-  /**
-   * Repaints the given node and all its children.
    * 
    * @param pOutlineNode The node, which should be repainted.
    */
@@ -1470,13 +1412,11 @@ public final class DefaultOutline implements Outline
    */
   public final void resetNode ( )
   {
-    OutlineNode outlineNode = ( OutlineNode ) this.uI.getTreeModel ( )
-        .getRoot ( ) ;
-    if ( outlineNode == null )
+    if ( this.rootNode == null )
     {
       return ;
     }
-    resetNode ( outlineNode ) ;
+    resetNode ( this.rootNode ) ;
   }
 
 
@@ -1523,7 +1463,7 @@ public final class DefaultOutline implements Outline
    */
   public final synchronized void setRootNode ( )
   {
-    this.uI.setRootNode ( this.rootOutlineNode ) ;
+    this.uI.setRootNode ( this.rootNode ) ;
     updateBreaks ( ) ;
   }
 
@@ -1535,15 +1475,14 @@ public final class DefaultOutline implements Outline
    */
   public final void update ( TreePath pTreePath )
   {
-    OutlineNode rootNode = ( OutlineNode ) this.uI.getTreeModel ( ).getRoot ( ) ;
-    if ( rootNode == null )
+    if ( this.rootNode == null )
     {
       return ;
     }
     resetNode ( ) ;
     if ( pTreePath == null )
     {
-      repaintNode ( ) ;
+      repaintNode ( this.rootNode ) ;
       return ;
     }
     ArrayList < OutlineNode > list = new ArrayList < OutlineNode > ( ) ;
@@ -1582,7 +1521,7 @@ public final class DefaultOutline implements Outline
    */
   public final void updateBreaks ( )
   {
-    if ( this.rootOutlineNode == null )
+    if ( this.rootNode == null )
     {
       return ;
     }
@@ -1591,8 +1530,7 @@ public final class DefaultOutline implements Outline
     OutlineNode currentNode ;
     TreePath currentTreePath ;
     Rectangle rectangle ;
-    Enumeration < ? > enumeration = this.rootOutlineNode
-        .breadthFirstEnumeration ( ) ;
+    Enumeration < ? > enumeration = this.rootNode.breadthFirstEnumeration ( ) ;
     while ( enumeration.hasMoreElements ( ) )
     {
       currentNode = ( OutlineNode ) enumeration.nextElement ( ) ;
@@ -1784,14 +1722,22 @@ public final class DefaultOutline implements Outline
   public final void updateHighlighSourceCode ( boolean pSelected )
   {
     StyledLanguageDocument document ;
-    if ( this.textEditorPanel != null )
+    if ( this.sourceView != null )
     {
-      document = this.textEditorPanel.getDocument ( ) ;
+      document = this.sourceView.getDocument ( ) ;
     }
-    else if ( this.styledLanguageEditor != null )
+    else if ( this.subTypingSourceView != null )
     {
-      document = ( StyledLanguageDocument ) this.styledLanguageEditor
-          .getDocument ( ) ;
+      if ( this.subTypingSourceView.getOutline1 ( ) == this )
+      {
+        document = ( StyledLanguageDocument ) this.subTypingSourceView
+            .getEditor1 ( ).getDocument ( ) ;
+      }
+      else
+      {
+        document = ( StyledLanguageDocument ) this.subTypingSourceView
+            .getEditor2 ( ).getDocument ( ) ;
+      }
     }
     else
     {

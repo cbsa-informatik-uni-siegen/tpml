@@ -6,8 +6,7 @@ import java.awt.event.MouseListener ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.graphics.StyledLanguageEditor ;
+import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepNodeComponent ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
 import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingNodeComponent ;
@@ -20,8 +19,7 @@ import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
 import de.unisiegen.tpml.graphics.subtyping.NewSubTypingNodeComponent ;
 import de.unisiegen.tpml.graphics.subtyping.NewSubTypingView ;
 import de.unisiegen.tpml.graphics.subtyping.StyledTypeEnterField ;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes ;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingNodeComponent ;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingSourceView ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
 import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
@@ -30,8 +28,10 @@ import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
 /**
  * This class listens for <code>MouseEvents</code>. It handles
  * <code>MouseEvents</code> on the components {@link Outline},
- * {@link SmallStepView}, {@link BigStepView} and {@link TypeCheckerView}.
- * Sets a new {@link Expression} in the {@link Outline}. It views the
+ * {@link SmallStepView}, {@link BigStepView}, {@link TypeCheckerView}
+ * {@link TextEditorPanel}, {@link MinimalTypingNodeComponent},
+ * {@link NewSubTypingNodeComponent} and {@link SubTypingSourceView}. Sets a
+ * new {@link Expression} or {@link Type} in the {@link Outline}. It views the
  * <code>JPopupMenu</code> in the {@link Outline}.
  * 
  * @author Christian Fehler
@@ -54,13 +54,7 @@ public final class OutlineMouseListener implements MouseListener
   /**
    * The {@link TextEditorPanel}.
    */
-  private TextEditorPanel textEditorPanel = null ;
-
-
-  /**
-   * The {@link StyledLanguageEditor}
-   */
-  private StyledLanguageEditor styledLanguageEditor = null ;
+  private TextEditorPanel sourceView = null ;
 
 
   /**
@@ -82,15 +76,15 @@ public final class OutlineMouseListener implements MouseListener
 
 
   /**
-   * The {@link SubTypingNodeComponent}.
+   * The {@link NewSubTypingNodeComponent}.
    */
-  private SubTypingNodeComponent subTypingNodeComponent = null ;
+  private NewSubTypingNodeComponent subTypingNodeComponent = null ;
 
 
   /**
-   * The {@link NewSubTypingNodeComponent}.
+   * The {@link SubTypingSourceView}.
    */
-  private NewSubTypingNodeComponent newSubTypingNodeComponent = null ;
+  private SubTypingSourceView subTypingSourceView = null ;
 
 
   /**
@@ -125,16 +119,16 @@ public final class OutlineMouseListener implements MouseListener
 
   /**
    * Initializes the {@link OutlineMouseListener} with the given
-   * {@link StyledLanguageEditor}.
+   * {@link SubTypingSourceView}.
    * 
    * @param pDefaultOutline The {@link DefaultOutline}.
-   * @param pStyledLanguageEditor The {@link StyledLanguageEditor}.
+   * @param pSubTypingSourceView The {@link SubTypingSourceView}.
    */
   public OutlineMouseListener ( DefaultOutline pDefaultOutline ,
-      StyledLanguageEditor pStyledLanguageEditor )
+      SubTypingSourceView pSubTypingSourceView )
   {
     this.defaultOutline = pDefaultOutline ;
-    this.styledLanguageEditor = pStyledLanguageEditor ;
+    this.subTypingSourceView = pSubTypingSourceView ;
   }
 
 
@@ -143,13 +137,13 @@ public final class OutlineMouseListener implements MouseListener
    * {@link TextEditorPanel}.
    * 
    * @param pDefaultOutline The {@link DefaultOutline}.
-   * @param pTextEditorPanel The {@link TextEditorPanel}.
+   * @param pSourceView The {@link TextEditorPanel}.
    */
   public OutlineMouseListener ( DefaultOutline pDefaultOutline ,
-      TextEditorPanel pTextEditorPanel )
+      TextEditorPanel pSourceView )
   {
     this.defaultOutline = pDefaultOutline ;
-    this.textEditorPanel = pTextEditorPanel ;
+    this.sourceView = pSourceView ;
   }
 
 
@@ -175,7 +169,7 @@ public final class OutlineMouseListener implements MouseListener
   public OutlineMouseListener (
       NewSubTypingNodeComponent pSubTypingNodeComponent )
   {
-    this.newSubTypingNodeComponent = pSubTypingNodeComponent ;
+    this.subTypingNodeComponent = pSubTypingNodeComponent ;
   }
 
 
@@ -188,18 +182,6 @@ public final class OutlineMouseListener implements MouseListener
   public OutlineMouseListener ( SmallStepNodeComponent pSmallStepNodeComponent )
   {
     this.smallStepNodeComponent = pSmallStepNodeComponent ;
-  }
-
-
-  /**
-   * Initializes the {@link OutlineMouseListener} with the given
-   * {@link SubTypingNodeComponent}.
-   * 
-   * @param pSubTypingNodeComponent The {@link SubTypingNodeComponent}.
-   */
-  public OutlineMouseListener ( SubTypingNodeComponent pSubTypingNodeComponent )
-  {
-    this.subTypingNodeComponent = pSubTypingNodeComponent ;
   }
 
 
@@ -249,10 +231,97 @@ public final class OutlineMouseListener implements MouseListener
 
 
   /**
-   * Handles <code>MouseEvents</code> on the components {@link Outline},
-   * {@link SmallStepView}, {@link BigStepView} and {@link TypeCheckerView}.
-   * Sets a new {@link Expression} in the {@link Outline}. Views the
-   * <code>JPopupMenu</code> in the {@link Outline}.
+   * Handles <code>MouseEvents</code> on the big step view.
+   * 
+   * @param pMouseEvent The <code>MouseEvent</code>.
+   */
+  private final void handleBigStep ( MouseEvent pMouseEvent )
+  {
+    // IndexLabel
+    if ( pMouseEvent.getSource ( ).equals (
+        this.bigStepNodeComponent.getIndexLabel ( ) ) )
+    {
+      ( ( BigStepView ) this.bigStepNodeComponent.getParent ( ).getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ) ).getOutline ( )
+          .load (
+              this.bigStepNodeComponent.getCompoundExpression ( )
+                  .getExpression ( ) , Outline.ExecuteMouseClick.BIGSTEP ) ;
+    }
+    // CompoundExpression
+    else if ( pMouseEvent.getSource ( ).equals (
+        this.bigStepNodeComponent.getCompoundExpression ( ) ) )
+    {
+      ( ( BigStepView ) this.bigStepNodeComponent.getParent ( ).getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ) ).getOutline ( )
+          .load (
+              this.bigStepNodeComponent.getCompoundExpression ( )
+                  .getExpression ( ) , Outline.ExecuteMouseClick.BIGSTEP ) ;
+    }
+    // ResultCompoundExpression
+    else if ( pMouseEvent.getSource ( ).equals (
+        this.bigStepNodeComponent.getResultCompoundExpression ( ) ) )
+    {
+      ( ( BigStepView ) this.bigStepNodeComponent.getParent ( ).getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ) ).getOutline ( ).load (
+          this.bigStepNodeComponent.getResultCompoundExpression ( )
+              .getExpression ( ) , Outline.ExecuteMouseClick.BIGSTEP ) ;
+    }
+  }
+
+
+  /**
+   * Handles <code>MouseEvents</code> on the minimal typing view.
+   * 
+   * @param pMouseEvent The <code>MouseEvent</code>.
+   */
+  private final void handleMinimalTyping ( MouseEvent pMouseEvent )
+  {
+    // IndexLabel
+    if ( pMouseEvent.getSource ( ).equals (
+        this.minimalTypingNodeComponent.getIndexLabel ( ) ) )
+    {
+      ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+          .getOutline ( ).load (
+              this.minimalTypingNodeComponent.getCompoundExpression ( )
+                  .getExpression ( ) , Outline.ExecuteMouseClick.MINIMALTYPING ) ;
+    }
+    // CompoundExpression.
+    else if ( pMouseEvent.getSource ( ).equals (
+        this.minimalTypingNodeComponent.getCompoundExpression ( ) ) )
+    {
+      ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+          .getOutline ( ).load (
+              this.minimalTypingNodeComponent.getCompoundExpression ( )
+                  .getExpression ( ) , Outline.ExecuteMouseClick.MINIMALTYPING ) ;
+    }
+    // TypeComponent
+    else if ( pMouseEvent.getSource ( ).equals (
+        this.minimalTypingNodeComponent.getTypeComponent ( ) ) )
+    {
+      ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+          .getOutline ( ).load (
+              this.minimalTypingNodeComponent.getTypeComponent ( ).getType ( ) ,
+              Outline.ExecuteMouseClick.MINIMALTYPING ) ;
+    }
+    // TypeComponent2
+    else if ( pMouseEvent.getSource ( ).equals (
+        this.minimalTypingNodeComponent.getTypeComponent2 ( ) ) )
+    {
+      ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+          .getOutline ( )
+          .load (
+              this.minimalTypingNodeComponent.getTypeComponent2 ( ).getType ( ) ,
+              Outline.ExecuteMouseClick.MINIMALTYPING ) ;
+    }
+  }
+
+
+  /**
+   * Handles <code>MouseEvents</code> on the different components.
    * 
    * @param pMouseEvent The <code>MouseEvent</code>.
    */
@@ -260,368 +329,269 @@ public final class OutlineMouseListener implements MouseListener
   {
     if ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON1 )
     {
-      /*
-       * Outline.
-       */
+      // Outline
       if ( this.defaultOutline != null )
       {
-        if ( pMouseEvent.getSource ( ).equals (
-            this.defaultOutline.getUI ( ).getJTreeOutline ( ) ) )
-        {
-          /*
-           * Highlight the source code
-           */
-          if ( ( ( this.defaultOutline.getTextEditorPanel ( ) != null ) || ( this.defaultOutline
-              .getSubTypingEnterTypes ( ) != null ) )
-              && ( ( pMouseEvent.getClickCount ( ) >= 2 ) || ( this.defaultOutline
-                  .getPreferences ( ).isHighlightSourceCode ( ) ) ) )
-          {
-            this.defaultOutline.updateHighlighSourceCode ( true ) ;
-          }
-        }
+        handleOutline ( pMouseEvent ) ;
       }
-      /*
-       * StyledLanguageEditor.
-       */
-      if ( this.styledLanguageEditor != null )
+      // SourceView
+      if ( this.sourceView != null )
       {
-        if ( pMouseEvent.getSource ( ).equals ( this.styledLanguageEditor ) )
-        {
-          MonoType type = null ;
-          try
-          {
-            type = ( ( StyledTypeEnterField ) this.styledLanguageEditor
-                .getDocument ( ) ).getType ( ) ;
-          }
-          catch ( Exception e )
-          {
-            // Do nothing
-          }
-          this.defaultOutline.updateHighlighSourceCode ( false ) ;
-          this.defaultOutline.load ( type , Outline.ExecuteMouseClick.EDITOR ) ;
-        }
+        handleSourceView ( pMouseEvent ) ;
       }
-      /*
-       * Source code editor.
-       */
-      if ( this.textEditorPanel != null )
-      {
-        if ( pMouseEvent.getSource ( ).equals (
-            this.textEditorPanel.getEditor ( ) ) )
-        {
-          Expression expression = null ;
-          try
-          {
-            expression = this.textEditorPanel.getDocument ( ).getExpression ( ) ;
-          }
-          catch ( Exception e )
-          {
-            // Do nothing
-          }
-          this.defaultOutline.updateHighlighSourceCode ( false ) ;
-          this.defaultOutline.load ( expression ,
-              Outline.ExecuteMouseClick.EDITOR ) ;
-        }
-      }
-      /*
-       * TypeChecker.
-       */
+      // TypeChecker
       if ( this.typeCheckerNodeComponent != null )
       {
-        /*
-         * Index label.
-         */
-        if ( pMouseEvent.getSource ( ).equals (
-            this.typeCheckerNodeComponent.getIndexLabel ( ) ) )
-        {
-          ( ( TypeCheckerView ) this.typeCheckerNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).load (
-                  this.typeCheckerNodeComponent.getCompoundExpression ( )
-                      .getExpression ( ) ,
-                  Outline.ExecuteMouseClick.TYPECHECKER ) ;
-        }
-        /*
-         * Compound expression.
-         */
-        else if ( pMouseEvent.getSource ( ).equals (
-            this.typeCheckerNodeComponent.getCompoundExpression ( ) ) )
-        {
-          ( ( TypeCheckerView ) this.typeCheckerNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).load (
-                  this.typeCheckerNodeComponent.getCompoundExpression ( )
-                      .getExpression ( ) ,
-                  Outline.ExecuteMouseClick.TYPECHECKER ) ;
-        }
-        /*
-         * Type label.
-         */
-        else if ( pMouseEvent.getSource ( ).equals (
-            this.typeCheckerNodeComponent.getTypeComponent ( ) ) )
-        {
-          ( ( TypeCheckerView ) this.typeCheckerNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( )
-              .load (
-                  this.typeCheckerNodeComponent.getTypeComponent ( ).getType ( ) ,
-                  Outline.ExecuteMouseClick.TYPECHECKER ) ;
-        }
+        handleTypeChecker ( pMouseEvent ) ;
       }
-      /*
-       * MinimalTyping
-       */
+      // MinimalTyping
       if ( this.minimalTypingNodeComponent != null )
       {
-        /*
-         * Index label.
-         */
-        if ( pMouseEvent.getSource ( ).equals (
-            this.minimalTypingNodeComponent.getIndexLabel ( ) ) )
-        {
-          ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).load (
-                  this.minimalTypingNodeComponent.getCompoundExpression ( )
-                      .getExpression ( ) ,
-                  Outline.ExecuteMouseClick.MINIMALTYPING ) ;
-        }
-        /*
-         * Compound expression.
-         */
-        else if ( pMouseEvent.getSource ( ).equals (
-            this.minimalTypingNodeComponent.getCompoundExpression ( ) ) )
-        {
-          ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).load (
-                  this.minimalTypingNodeComponent.getCompoundExpression ( )
-                      .getExpression ( ) ,
-                  Outline.ExecuteMouseClick.MINIMALTYPING ) ;
-        }
-        /*
-         * Type label.
-         */
-        else if ( pMouseEvent.getSource ( ).equals (
-            this.minimalTypingNodeComponent.getTypeComponent ( ) ) )
-        {
-          ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).load (
-                  this.minimalTypingNodeComponent.getTypeComponent ( )
-                      .getType ( ) , Outline.ExecuteMouseClick.MINIMALTYPING ) ;
-        }
-        /*
-         * Type label2.
-         */
-        else if ( pMouseEvent.getSource ( ).equals (
-            this.minimalTypingNodeComponent.getTypeComponent2 ( ) ) )
-        {
-          ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).load (
-                  this.minimalTypingNodeComponent.getTypeComponent2 ( )
-                      .getType ( ) , Outline.ExecuteMouseClick.MINIMALTYPING ) ;
-        }
+        handleMinimalTyping ( pMouseEvent ) ;
       }
-      /*
-       * SubTyping
-       */
+      // SubTyping
       if ( this.subTypingNodeComponent != null )
       {
-        /*
-         * Index label.
-         */
-        if ( pMouseEvent.getSource ( ).equals (
-            this.subTypingNodeComponent.getIndexLabel ( ) ) )
-        {
-          ( ( SubTypingEnterTypes ) this.subTypingNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline1 ( ).load (
-                  this.subTypingNodeComponent.getCompoundExpression ( )
-                      .getType1 ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
-          ( ( SubTypingEnterTypes ) this.subTypingNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline2 ( ).load (
-                  this.subTypingNodeComponent.getCompoundExpression ( )
-                      .getType2 ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
-        }
-        /*
-         * Compound expression.
-         */
-        else if ( pMouseEvent.getSource ( ).equals (
-            this.subTypingNodeComponent.getCompoundExpression ( ) ) )
-        {
-          ( ( SubTypingEnterTypes ) this.subTypingNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline1 ( ).load (
-                  this.subTypingNodeComponent.getCompoundExpression ( )
-                      .getType1 ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
-          ( ( SubTypingEnterTypes ) this.subTypingNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline2 ( ).load (
-                  this.subTypingNodeComponent.getCompoundExpression ( )
-                      .getType2 ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
-        }
-        /*
-         * Type label 2.
-         */
-        else if ( pMouseEvent.getSource ( ).equals (
-            this.minimalTypingNodeComponent.getTypeComponent2 ( ) ) )
-        {
-          ( ( MinimalTypingView ) this.minimalTypingNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).load (
-                  this.minimalTypingNodeComponent.getTypeComponent2 ( )
-                      .getType ( ) , Outline.ExecuteMouseClick.MINIMALTYPING ) ;
-        }
+        handleSubTyping ( pMouseEvent ) ;
       }
-      /*
-       * new SubTyping
-       */
-      if ( this.newSubTypingNodeComponent != null )
+      // SubTypingSourceView
+      if ( this.subTypingSourceView != null )
       {
-        /*
-         * Index label.
-         */
-        if ( pMouseEvent.getSource ( ).equals (
-            this.newSubTypingNodeComponent.getIndexLabel ( ) ) )
-        {
-          ( ( NewSubTypingView ) this.newSubTypingNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline1 ( ).load (
-                  this.newSubTypingNodeComponent.getTypeComponent ( )
-                      .getType ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
-          ( ( NewSubTypingView ) this.newSubTypingNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline2 ( ).load (
-                  this.newSubTypingNodeComponent.getTypeComponent2 ( )
-                      .getType ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
-        }
-        /*
-         * Type component 1.
-         */
-        else if ( pMouseEvent.getSource ( ).equals (
-            this.newSubTypingNodeComponent.getTypeComponent ( ) ) )
-        {
-          ( ( NewSubTypingView ) this.newSubTypingNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline1 ( ).load (
-                  this.newSubTypingNodeComponent.getTypeComponent ( )
-                      .getType ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
-          ( ( NewSubTypingView ) this.newSubTypingNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline2 ( ).load (
-                  this.newSubTypingNodeComponent.getTypeComponent2 ( )
-                      .getType ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
-        }
-        /*
-         * Type component 2.
-         */
-        else if ( pMouseEvent.getSource ( ).equals (
-            this.newSubTypingNodeComponent.getTypeComponent2 ( ) ) )
-        {
-          ( ( NewSubTypingView ) this.newSubTypingNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline1 ( ).load (
-                  this.newSubTypingNodeComponent.getTypeComponent ( )
-                      .getType ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
-          ( ( NewSubTypingView ) this.newSubTypingNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline2 ( ).load (
-                  this.newSubTypingNodeComponent.getTypeComponent2 ( )
-                      .getType ( ) , Outline.ExecuteMouseClick.SUBTYPING ) ;
-        }
+        handleSubTypingSourceView ( pMouseEvent ) ;
       }
-      /*
-       * Big step.
-       */
+      // BigStep
       if ( this.bigStepNodeComponent != null )
       {
-        /*
-         * Index label.
-         */
-        if ( pMouseEvent.getSource ( ).equals (
-            this.bigStepNodeComponent.getIndexLabel ( ) ) )
-        {
-          ( ( BigStepView ) this.bigStepNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).load (
-                  this.bigStepNodeComponent.getCompoundExpression ( )
-                      .getExpression ( ) , Outline.ExecuteMouseClick.BIGSTEP ) ;
-        }
-        /*
-         * Compound expression.
-         */
-        else if ( pMouseEvent.getSource ( ).equals (
-            this.bigStepNodeComponent.getCompoundExpression ( ) ) )
-        {
-          ( ( BigStepView ) this.bigStepNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).load (
-                  this.bigStepNodeComponent.getCompoundExpression ( )
-                      .getExpression ( ) , Outline.ExecuteMouseClick.BIGSTEP ) ;
-        }
-        /*
-         * Result compound expression.
-         */
-        else if ( pMouseEvent.getSource ( ).equals (
-            this.bigStepNodeComponent.getResultCompoundExpression ( ) ) )
-        {
-          ( ( BigStepView ) this.bigStepNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).load (
-                  this.bigStepNodeComponent.getResultCompoundExpression ( )
-                      .getExpression ( ) , Outline.ExecuteMouseClick.BIGSTEP ) ;
-        }
+        handleBigStep ( pMouseEvent ) ;
       }
-      /*
-       * Small step.
-       */
+      // SmallStep
       if ( this.smallStepNodeComponent != null )
       {
-        /*
-         * Compound expression.
-         */
-        if ( pMouseEvent.getSource ( ).equals (
-            this.smallStepNodeComponent.getCompoundExpression ( ) ) )
-        {
-          ( ( SmallStepView ) this.smallStepNodeComponent.getParent ( )
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
-              .getOutline ( ).load (
-                  this.smallStepNodeComponent.getCompoundExpression ( )
-                      .getExpression ( ) , Outline.ExecuteMouseClick.SMALLSTEP ) ;
-        }
+        handleSmallStep ( pMouseEvent ) ;
       }
     }
     else if ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON3 )
     {
-      /*
-       * Outline.
-       */
+      // Outline
       if ( this.defaultOutline != null )
       {
-        /*
-         * Popupmenu
-         */
-        if ( pMouseEvent.getSource ( ).equals (
-            this.defaultOutline.getUI ( ).getJTreeOutline ( ) ) )
-        {
-          int x = pMouseEvent.getX ( ) ;
-          int y = pMouseEvent.getY ( ) ;
-          TreePath treePath = this.defaultOutline.getUI ( ).getJTreeOutline ( )
-              .getPathForLocation ( x , y ) ;
-          if ( treePath == null )
-          {
-            return ;
-          }
-          this.defaultOutline.getUI ( ).getJTreeOutline ( ).setSelectionPath (
-              treePath ) ;
-          setStatus ( ) ;
-          this.defaultOutline.getUI ( ).getJPopupMenu ( ).show (
-              pMouseEvent.getComponent ( ) , x , y ) ;
-        }
+        handleOutlinePopup ( pMouseEvent ) ;
       }
+    }
+  }
+
+
+  /**
+   * Handles <code>MouseEvents</code> on the outline.
+   * 
+   * @param pMouseEvent The <code>MouseEvent</code>.
+   */
+  private final void handleOutline ( MouseEvent pMouseEvent )
+  {
+    if ( pMouseEvent.getSource ( ).equals (
+        this.defaultOutline.getUI ( ).getJTreeOutline ( ) ) )
+    {
+      if ( ( pMouseEvent.getClickCount ( ) >= 2 )
+          || ( this.defaultOutline.getPreferences ( ).isHighlightSourceCode ( ) ) )
+      {
+        this.defaultOutline.updateHighlighSourceCode ( true ) ;
+      }
+    }
+  }
+
+
+  /**
+   * Handles <code>MouseEvents</code> on the outline.
+   * 
+   * @param pMouseEvent The <code>MouseEvent</code>.
+   */
+  private final void handleOutlinePopup ( MouseEvent pMouseEvent )
+  {
+    // TreeOutline
+    if ( pMouseEvent.getSource ( ).equals (
+        this.defaultOutline.getUI ( ).getJTreeOutline ( ) ) )
+    {
+      int x = pMouseEvent.getX ( ) ;
+      int y = pMouseEvent.getY ( ) ;
+      TreePath treePath = this.defaultOutline.getUI ( ).getJTreeOutline ( )
+          .getPathForLocation ( x , y ) ;
+      if ( treePath == null )
+      {
+        return ;
+      }
+      this.defaultOutline.getUI ( ).getJTreeOutline ( ).setSelectionPath (
+          treePath ) ;
+      setStatus ( ) ;
+      this.defaultOutline.getUI ( ).getJPopupMenu ( ).show (
+          pMouseEvent.getComponent ( ) , x , y ) ;
+    }
+  }
+
+
+  /**
+   * Handles <code>MouseEvents</code> on the small step view.
+   * 
+   * @param pMouseEvent The <code>MouseEvent</code>.
+   */
+  private final void handleSmallStep ( MouseEvent pMouseEvent )
+  {
+    // CompoundExpression
+    if ( pMouseEvent.getSource ( ).equals (
+        this.smallStepNodeComponent.getCompoundExpression ( ) ) )
+    {
+      ( ( SmallStepView ) this.smallStepNodeComponent.getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+          .getOutline ( ).load (
+              this.smallStepNodeComponent.getCompoundExpression ( )
+                  .getExpression ( ) , Outline.ExecuteMouseClick.SMALLSTEP ) ;
+    }
+  }
+
+
+  /**
+   * Handles <code>MouseEvents</code> on the source code view.
+   * 
+   * @param pMouseEvent The <code>MouseEvent</code>.
+   */
+  private final void handleSourceView ( @ SuppressWarnings ( "unused" )
+  MouseEvent pMouseEvent )
+  {
+    Expression expression = null ;
+    try
+    {
+      expression = this.sourceView.getDocument ( ).getExpression ( ) ;
+    }
+    catch ( Exception e )
+    {
+      // Do nothing
+    }
+    this.defaultOutline.updateHighlighSourceCode ( false ) ;
+    this.defaultOutline.load ( expression , Outline.ExecuteMouseClick.EDITOR ) ;
+  }
+
+
+  /**
+   * Handles <code>MouseEvents</code> on the subtyping view.
+   * 
+   * @param pMouseEvent The <code>MouseEvent</code>.
+   */
+  private final void handleSubTyping ( MouseEvent pMouseEvent )
+  {
+    // IndexLabel
+    if ( pMouseEvent.getSource ( ).equals (
+        this.subTypingNodeComponent.getIndexLabel ( ) ) )
+    {
+      ( ( NewSubTypingView ) this.subTypingNodeComponent.getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+          .getOutline1 ( ).load (
+              this.subTypingNodeComponent.getTypeComponent ( ).getType ( ) ,
+              Outline.ExecuteMouseClick.SUBTYPING ) ;
+      ( ( NewSubTypingView ) this.subTypingNodeComponent.getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+          .getOutline2 ( ).load (
+              this.subTypingNodeComponent.getTypeComponent2 ( ).getType ( ) ,
+              Outline.ExecuteMouseClick.SUBTYPING ) ;
+    }
+    // TypeComponent
+    else if ( pMouseEvent.getSource ( ).equals (
+        this.subTypingNodeComponent.getTypeComponent ( ) ) )
+    {
+      ( ( NewSubTypingView ) this.subTypingNodeComponent.getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+          .getOutline1 ( ).load (
+              this.subTypingNodeComponent.getTypeComponent ( ).getType ( ) ,
+              Outline.ExecuteMouseClick.SUBTYPING ) ;
+      ( ( NewSubTypingView ) this.subTypingNodeComponent.getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+          .getOutline2 ( ).load (
+              this.subTypingNodeComponent.getTypeComponent2 ( ).getType ( ) ,
+              Outline.ExecuteMouseClick.SUBTYPING ) ;
+    }
+    // TypeComponent2
+    else if ( pMouseEvent.getSource ( ).equals (
+        this.subTypingNodeComponent.getTypeComponent2 ( ) ) )
+    {
+      ( ( NewSubTypingView ) this.subTypingNodeComponent.getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+          .getOutline1 ( ).load (
+              this.subTypingNodeComponent.getTypeComponent ( ).getType ( ) ,
+              Outline.ExecuteMouseClick.SUBTYPING ) ;
+      ( ( NewSubTypingView ) this.subTypingNodeComponent.getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+          .getOutline2 ( ).load (
+              this.subTypingNodeComponent.getTypeComponent2 ( ).getType ( ) ,
+              Outline.ExecuteMouseClick.SUBTYPING ) ;
+    }
+  }
+
+
+  /**
+   * Handles <code>MouseEvents</code> on the source code view.
+   * 
+   * @param pMouseEvent The <code>MouseEvent</code>.
+   */
+  private final void handleSubTypingSourceView ( @ SuppressWarnings ( "unused" )
+  MouseEvent pMouseEvent )
+  {
+    Type type = null ;
+    try
+    {
+      if ( this.defaultOutline == this.subTypingSourceView.getOutline1 ( ) )
+      {
+        type = ( ( StyledTypeEnterField ) this.subTypingSourceView
+            .getEditor1 ( ).getDocument ( ) ).getType ( ) ;
+      }
+      else
+      {
+        type = ( ( StyledTypeEnterField ) this.subTypingSourceView
+            .getEditor2 ( ).getDocument ( ) ).getType ( ) ;
+      }
+    }
+    catch ( Exception e )
+    {
+      // Do nothing
+    }
+    this.defaultOutline.updateHighlighSourceCode ( false ) ;
+    this.defaultOutline.load ( type , Outline.ExecuteMouseClick.SUBTYPING ) ;
+  }
+
+
+  /**
+   * Handles <code>MouseEvents</code> on the type checker view.
+   * 
+   * @param pMouseEvent The <code>MouseEvent</code>.
+   */
+  private final void handleTypeChecker ( MouseEvent pMouseEvent )
+  {
+    // IndexLabel
+    if ( pMouseEvent.getSource ( ).equals (
+        this.typeCheckerNodeComponent.getIndexLabel ( ) ) )
+    {
+      ( ( TypeCheckerView ) this.typeCheckerNodeComponent.getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+          .getOutline ( ).load (
+              this.typeCheckerNodeComponent.getCompoundExpression ( )
+                  .getExpression ( ) , Outline.ExecuteMouseClick.TYPECHECKER ) ;
+    }
+    // CompoundExpression
+    else if ( pMouseEvent.getSource ( ).equals (
+        this.typeCheckerNodeComponent.getCompoundExpression ( ) ) )
+    {
+      ( ( TypeCheckerView ) this.typeCheckerNodeComponent.getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+          .getOutline ( ).load (
+              this.typeCheckerNodeComponent.getCompoundExpression ( )
+                  .getExpression ( ) , Outline.ExecuteMouseClick.TYPECHECKER ) ;
+    }
+    // TypeComponent
+    else if ( pMouseEvent.getSource ( ).equals (
+        this.typeCheckerNodeComponent.getTypeComponent ( ) ) )
+    {
+      ( ( TypeCheckerView ) this.typeCheckerNodeComponent.getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+          .getOutline ( ).load (
+              this.typeCheckerNodeComponent.getTypeComponent ( ).getType ( ) ,
+              Outline.ExecuteMouseClick.TYPECHECKER ) ;
     }
   }
 
