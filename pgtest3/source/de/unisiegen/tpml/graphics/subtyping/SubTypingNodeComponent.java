@@ -125,15 +125,13 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
      * Create and add the components needed to render this node
      */
     this.indexLabel         = new JLabel ();
-    this.indexLabel.addMouseListener ( new OutlineMouseListener (
-        this ) ) ;
+    //this.indexLabel.addMouseListener ( new OutlineMouseListener (this ) ) ;
     
     
     add (this.indexLabel);
     
     this.compoundExpression         = new CompoundExpressionSubTyping ();
-    this.compoundExpression.addMouseListener ( new OutlineMouseListener (
-        this ) ) ;
+    //this.compoundExpression.addMouseListener ( new OutlineMouseListener (this ) ) ;
     add (this.compoundExpression);
 
     
