@@ -319,7 +319,6 @@ public class PrettyStringRenderer extends AbstractRenderer
 				{
 					// TODO Das muss noch ausgibig getestet werden...
 					// Vergleich mit der Repository-Version!!!
-					//System.out.println("So, das ist scheiße bis hier...");
 					
 					useBreakPoints.add(j - 1);
 					j--;
