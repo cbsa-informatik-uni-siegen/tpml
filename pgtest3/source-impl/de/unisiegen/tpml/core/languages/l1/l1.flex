@@ -76,14 +76,14 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 		  return PrettyStyle.IDENTIFIER;
 		default:
 		  return PrettyStyle.NONE;
-		}
+	  }
 	}
 	
 	public void restart(Reader pReader)
 	{
 	  if (pReader == null)
 	  {
-	    throw new NullPointerException("Reader is null");
+		throw new NullPointerException("Reader is null");
 	  }
 	  yyreset(pReader);
 	}
@@ -119,6 +119,7 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	":"					{ return symbol("COLON", COLON); }
 	"("					{ return symbol("LPAREN", LPAREN); }
 	")"					{ return symbol("RPAREN", RPAREN); }
+	"<:"				{ return symbol("SUBTYPE", SUBTYPE); }
 	"->"|"\u2192"		{ return symbol("ARROW", ARROW); }
 	"lambda"|"\u03bb"	{ return symbol("LAMBDA", LAMBDA); }
 	"let"				{ return symbol("LET", LET); }

@@ -35,12 +35,12 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 	
 	private LanguageSymbol symbol(String name, int id)
 	{
-		return symbol(name, id, yychar, yychar + yylength(), yytext());
+	  return symbol(name, id, yychar, yychar + yylength(), yytext());
 	}
 	
 	private LanguageSymbol symbol(String name, int id, Object value)
 	{
-		return symbol(name, id, yychar, yychar + yylength(), value);
+	  return symbol(name, id, yychar, yychar + yylength(), value);
 	}
 
 	@Override
@@ -59,7 +59,6 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 		  return PrettyStyle.CONSTANT;
 		case LAMBDA:
 		case LET:
-		case REC:
 		case IN:
 		case IF:
 		case THEN:
@@ -67,6 +66,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 		case AMPERAMPER:
 		case BARBAR:
 		case MU:
+		case REC:
 		  return PrettyStyle.KEYWORD;
 		case BOOL:
 		case INT:
@@ -103,7 +103,6 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 
 <YYINITIAL>
 {
-	// arithmetic binary operators
 	"+"					{ return symbol("PLUS", PLUS); }
 	"-"					{ return symbol("MINUS", MINUS); }
 	"*"					{ return symbol("STAR", STAR); }
@@ -121,10 +120,10 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	":"					{ return symbol("COLON", COLON); }
 	"("					{ return symbol("LPAREN", LPAREN); }
 	")"					{ return symbol("RPAREN", RPAREN); }
+	"<:"				{ return symbol("SUBTYPE", SUBTYPE); }
 	"->"|"\u2192"		{ return symbol("ARROW", ARROW); }
 	"lambda"|"\u03bb"	{ return symbol("LAMBDA", LAMBDA); }
 	"let"				{ return symbol("LET", LET); }
-	"rec"				{ return symbol("REC", REC); }
 	"in"				{ return symbol("IN", IN); }
 	"if"				{ return symbol("IF", IF); }
 	"then"				{ return symbol("THEN", THEN); }
@@ -132,6 +131,7 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"()"				{ return symbol("PARENPAREN", PARENPAREN); }
 	"true"				{ return symbol("TRUE", TRUE); }
 	"false"				{ return symbol("FALSE", FALSE); }
+	"rec"				{ return symbol("REC", REC); }
 	"bool"				{ return symbol("BOOL", BOOL); }
 	"int"				{ return symbol("INT", INT); }
 	"unit"				{ return symbol("UNIT", UNIT); }

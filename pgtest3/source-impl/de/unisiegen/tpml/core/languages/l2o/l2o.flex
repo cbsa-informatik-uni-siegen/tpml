@@ -35,18 +35,18 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 	
 	private LanguageSymbol symbol(String name, int id)
 	{
-		return symbol(name, id, yychar, yychar + yylength(), yytext());
+	  return symbol(name, id, yychar, yychar + yylength(), yytext());
 	}
 	
 	private LanguageSymbol symbol(String name, int id, Object value)
 	{
-		return symbol(name, id, yychar, yychar + yylength(), value);
+	  return symbol(name, id, yychar, yychar + yylength(), value);
 	}
 
 	@Override
-	public PrettyStyle getStyleBySymbolId(int pId) 
+	public PrettyStyle getStyleBySymbolId(int pId)
 	{
-	  switch (pId) 
+	  switch (pId)
 	  {
 		case COMMENT:
 		  return PrettyStyle.COMMENT;
@@ -59,22 +59,18 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 		  return PrettyStyle.CONSTANT;
 		case LAMBDA:
 		case LET:
-		case REC:
 		case IN:
 		case IF:
 		case THEN:
 		case ELSE:
 		case AMPERAMPER:
 		case BARBAR:
+		case MU:
+		case REC:
 		case OBJECT:
 		case END:
-		case HASHKEY:
 		case ATTRIBUTE:
 		case METHOD:
-		case SEMI:
-		case DUPLBEGIN:
-		case DUPLEND:
-		case MU:
 		  return PrettyStyle.KEYWORD;
 		case BOOL:
 		case INT:
@@ -89,11 +85,11 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 	  }
 	}
 	
-	public void restart(Reader pReader) 
+	public void restart(Reader pReader)
 	{
-	  if (pReader == null) 
+	  if (pReader == null)
 	  {
-	    throw new NullPointerException("Reader is null");
+		throw new NullPointerException("Reader is null");
 	  }
 	  yyreset(pReader);
 	}
@@ -101,7 +97,6 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 
 LineTerminator	= \r|\n|\r\n
 WhiteSpace		= {LineTerminator} | [ \t\f]
-
 Number			= [:digit:]+
 Identifier		= [a-zA-Z] [a-zA-Z0-9_]* '*
 LetterAX		= [a-x]
@@ -130,15 +125,20 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	":"					{ return symbol("COLON", COLON); }
 	"("					{ return symbol("LPAREN", LPAREN); }
 	")"					{ return symbol("RPAREN", RPAREN); }
+	"<:"				{ return symbol("SUBTYPE", SUBTYPE); }
 	"->"|"\u2192"		{ return symbol("ARROW", ARROW); }
 	"lambda"|"\u03bb"	{ return symbol("LAMBDA", LAMBDA); }
 	"let"				{ return symbol("LET", LET); }
-	"rec"				{ return symbol("REC", REC); }
 	"in"				{ return symbol("IN", IN); }
 	"if"				{ return symbol("IF", IF); }
 	"then"				{ return symbol("THEN", THEN); }
 	"else"				{ return symbol("ELSE", ELSE); }
+	"()"				{ return symbol("PARENPAREN", PARENPAREN); }
+	"true"				{ return symbol("TRUE", TRUE); }
+	"false"				{ return symbol("FALSE", FALSE); }
+	"rec"				{ return symbol("REC", REC); }
 	"object"			{ return symbol("OBJECT", OBJECT); }
+	"self"				{ return symbol("SELF", SELF, yytext()); }
 	"end"				{ return symbol("END", END); }
 	"#"					{ return symbol("HASHKEY", HASHKEY); }
 	"val"				{ return symbol("ATTRIBUTE", ATTRIBUTE); }
@@ -146,9 +146,6 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	";"					{ return symbol("SEMI", SEMI); }
 	"{<"				{ return symbol("DUPLBEGIN", DUPLBEGIN); }
 	">}"				{ return symbol("DUPLEND", DUPLEND); }
-	"()"				{ return symbol("PARENPAREN", PARENPAREN); }
-	"true"				{ return symbol("TRUE", TRUE); }
-	"false"				{ return symbol("FALSE", FALSE); }
 	"bool"				{ return symbol("BOOL", BOOL); }
 	"int"				{ return symbol("INT", INT); }
 	"unit"				{ return symbol("UNIT", UNIT); }
@@ -175,7 +172,6 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 							  MessageFormat.format ( Messages.getString ( "Parser.6" ) , yytext() ) , e);
 						  }
 						}
-	"self"				{ return symbol("SELF", SELF, yytext()); }
 	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
 	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENTINIT); }
 	{WhiteSpace}		{ /* Ignore */ }

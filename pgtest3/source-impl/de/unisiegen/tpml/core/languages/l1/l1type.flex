@@ -68,7 +68,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 	{
 	  if (pReader == null)
 	  {
-	    throw new NullPointerException("Reader is null");
+  	    throw new NullPointerException("Reader is null");
 	  }
 	  yyreset(pReader);
 	}

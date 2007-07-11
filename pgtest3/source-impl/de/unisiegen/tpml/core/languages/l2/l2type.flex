@@ -32,7 +32,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 
 %{
 	private int yycommentChar = 0;
-	
+
 	private LanguageSymbol symbol(String name, int id)
 	{
 	  return symbol(name, id, yychar, yychar + yylength(), yytext());

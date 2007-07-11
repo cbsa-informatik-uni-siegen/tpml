@@ -4,6 +4,7 @@ import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
 import de.unisiegen.tpml.core.expressions.BinaryCons ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.BooleanConstant ;
+import de.unisiegen.tpml.core.expressions.Coercion;
 import de.unisiegen.tpml.core.expressions.Condition ;
 import de.unisiegen.tpml.core.expressions.Constant ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
@@ -75,6 +76,7 @@ terminal			RPAREN;
 terminal			ARROW;
 terminal			COLON;
 terminal			PARENPAREN;
+terminal			SUBTYPE;
 terminal			COMMA;
 terminal			SEMI;
 terminal			LBRACKET;
@@ -138,6 +140,7 @@ non terminal UnitConstant			unit_constant;
 non terminal BooleanConstant		boolean_constant;
 non terminal IntegerConstant		integer_constant;
 non terminal Not					not;
+non terminal Coercion				coercion;
 non terminal Recursion				recursion;
 non terminal LetRec					let_rec;
 non terminal CurriedLetRec			curried_let_rec;
@@ -200,6 +203,7 @@ non terminal  		infix_operation_less_error;
 non terminal  		infix_operation_greater_error;
 non terminal  		infix_operation_less_equal_error;
 non terminal  		infix_operation_greater_equal_error;
+non terminal		coercion_error;
 non terminal 		simple_type_error;
 non terminal 		arrow_type_error;
 non terminal		rec_type_error;
@@ -266,6 +270,8 @@ expr							::=	simple_expr:e
 								|	let:l
 									{: RESULT = l; :}
 								|	curried_let:c
+									{: RESULT = c; :}
+								|	coercion:c
 									{: RESULT = c; :}
 								|	recursion:r
 									{: RESULT = r; :}
@@ -692,6 +698,43 @@ curried_let_pair_error			::= LPAREN:l epsilon
 								// Missing type
 								|	LPAREN:l IDENTIFIER COLON:c RPAREN
 									{: Error.expect("Curried-Let", " \u03C4", lleft, cright, "\u03C4" ); :}
+								;
+
+coercion						::= LPAREN:l seq_expr:e COLON type:tau1 SUBTYPE type:tau2 RPAREN:r
+									{: RESULT = new Coercion (e, tau1, tau2, lleft, rright); :}
+								|	coercion_error
+									{: :}
+								;
+
+coercion_error					::= LPAREN:l seq_expr COLON:c
+									{: Error.expect("Coercion", " \u03C4 <: \u03C4)", lleft, cright, "\u03C4 &lt: \u03C4)" ); :}
+								|	LPAREN:l seq_expr COLON type:tau1
+									{: Error.expect("Coercion", " <: \u03C4)", lleft, tau1right, "&lt: \u03C4)" ); :}
+								|	LPAREN:l seq_expr COLON type SUBTYPE:s
+									{: Error.expect("Coercion", " \u03C4)", lleft, sright, "\u03C4)" ); :}
+								|	LPAREN:l seq_expr COLON type SUBTYPE type:tau2
+									{: Error.expect("Coercion", ")", lleft, tau2right, ")" ); :}
+								// Missing colon
+								|	LPAREN:l seq_expr:e type
+									{: Error.expect("Coercion", ": ", lleft, eright, ":" ); :}
+								// Missing type 1
+								|	LPAREN:l seq_expr COLON:c SUBTYPE
+									{: Error.expect("Coercion", " \u03C4 ", lleft, cright, "\u03C4" ); :}
+								// Missing subtype
+								|	LPAREN:l seq_expr COLON type:tau1 type
+									{: Error.expect("Coercion", " <: ", lleft, tau1right, "&lt:" ); :}
+								// Missing type 2
+								|	LPAREN:l seq_expr COLON type SUBTYPE:s RPAREN
+									{: Error.expect("Coercion", " \u03C4", lleft, sright, "\u03C4" ); :}
+								// Missing colon and type 1
+								|	LPAREN:l seq_expr:e SUBTYPE
+									{: Error.expect("Coercion", ": \u03C4 ", lleft, eright, ": \u03C4" ); :}
+								// Missing subtyping and type 2
+								|	LPAREN:l seq_expr COLON type:tau1 RPAREN
+									{: Error.expect("Coercion", " <: \u03C4", lleft, tau1right, "&lt: \u03C4" ); :}
+								// Missing type 1, subtyping and type 2
+								|	LPAREN:l seq_expr COLON:c RPAREN
+									{: Error.expect("Coercion", " \u03C4 <: \u03C4", lleft, cright, "\u03C4 &lt: \u03C4" ); :}
 								;
 
 recursion						::= REC:r IDENTIFIER:id DOT seq_expr:e

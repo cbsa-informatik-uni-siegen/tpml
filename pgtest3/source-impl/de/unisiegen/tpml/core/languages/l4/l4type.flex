@@ -44,9 +44,9 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 	}
 
 	@Override
-	public PrettyStyle getStyleBySymbolId(int id)
+	public PrettyStyle getStyleBySymbolId(int pId)
 	{
-	  switch (id)
+	  switch (pId)
 	  {
 	  	case COMMENT:
 		  return PrettyStyle.COMMENT;
@@ -63,7 +63,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 		  return PrettyStyle.IDENTIFIER;
 		default:
 		  return PrettyStyle.NONE;
-		}
+	  }
 	}
 	
 	public void restart(Reader pReader)
@@ -90,9 +90,9 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 {
 	"("					{ return symbol("LPAREN", LPAREN); }
 	")"					{ return symbol("RPAREN", RPAREN); }
-	"*"					{ return symbol("STAR", STAR); }
 	"->"|"\u2192"		{ return symbol("ARROW", ARROW); }
 	"."					{ return symbol("DOT", DOT); }
+	"*"					{ return symbol("STAR", STAR); }
 	"bool"				{ return symbol("BOOL", BOOL); }
 	"int"				{ return symbol("INT", INT); }
 	"unit"				{ return symbol("UNIT", UNIT); }
@@ -112,7 +112,7 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 						}
 	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
 	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENTINIT); }
-	{WhiteSpace}		{ /* ignore */ }
+	{WhiteSpace}		{ /* Ignore */ }
 }
 
 <YYCOMMENTINIT> 

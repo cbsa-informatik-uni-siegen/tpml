@@ -41,42 +41,62 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 
 	private LanguageSymbol symbol(String name, int id)
 	{
-		return symbol(name, id, yychar, yychar + yylength(), yytext());
+	  return symbol(name, id, yychar, yychar + yylength(), yytext());
 	}
 	
 	private LanguageSymbol symbol(String name, int id, Object value)
 	{
-		return symbol(name, id, yychar, yychar + yylength(), value);
+	  return symbol(name, id, yychar, yychar + yylength(), value);
 	}
 
 	@Override
 	public PrettyStyle getStyleBySymbolId(int pId)
 	{
-		switch (pId)
-		{
+	  switch (pId)
+	  {
 		case COMMENT:
-			return PrettyStyle.COMMENT;
-
-		case TRUE: case FALSE: case NUMBER: case PARENPAREN: case MOD:
-		case COLONEQUAL: case REF: case FST: case SND: case PROJECTION:
-		case CONS: case IS_EMPTY: case HD: case TL: case BRACKETBRACKET:
+		  return PrettyStyle.COMMENT;
+		case TRUE:
+		case FALSE:
+		case NUMBER:
+		case PARENPAREN:
+		case MOD:
 		case NOT:
-			return PrettyStyle.CONSTANT;
-
-		case LAMBDA: case LET: case REC: case IN: case IF: case THEN:
-		case ELSE: case WHILE: case DO: case AMPERAMPER: case BARBAR:
+		case FST:
+		case SND:
+		case PROJECTION:
+		case CONS:
+		case IS_EMPTY:
+		case HD:
+		case TL:
+		case BRACKETBRACKET:
+		case COLONEQUAL:
+		case REF:
+		  return PrettyStyle.CONSTANT;
+		case LAMBDA:
+		case LET:
+		case IN:
+		case IF:
+		case THEN:
+		case ELSE:
+		case AMPERAMPER:
+		case BARBAR:
 		case MU:
-			return PrettyStyle.KEYWORD;
-			
-		case BOOL: case INT: case UNIT: case TYPEVARIABLE: case LIST:
-			return PrettyStyle.TYPE;
-		
+		case REC:
+		case WHILE:
+		case DO:
+		  return PrettyStyle.KEYWORD;
+		case BOOL:
+		case INT:
+		case UNIT:
+		case TYPEVARIABLE:
+		case LIST:
+		  return PrettyStyle.TYPE;
 		case IDENTIFIER:
-			return PrettyStyle.IDENTIFIER;
-			
+		  return PrettyStyle.IDENTIFIER;
 		default:
-			return PrettyStyle.NONE;
-		}
+		  return PrettyStyle.NONE;
+	  }
 	}
 	
 	public void restart(Reader pReader)
@@ -113,6 +133,25 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	">"					{ return symbol("GREATER", GREATER); }
 	"<="				{ return symbol("LESSEQUAL", LESSEQUAL); }
 	">="				{ return symbol("GREATEREQUAL", GREATEREQUAL); }
+	"&&"				{ return symbol("AMPERAMPER", AMPERAMPER); }
+	"||"				{ return symbol("BARBAR", BARBAR); }
+	"not"				{ return symbol("NOT", NOT); }
+	"."					{ return symbol("DOT", DOT); }
+	":"					{ return symbol("COLON", COLON); }
+	"("					{ return symbol("LPAREN", LPAREN); }
+	")"					{ return symbol("RPAREN", RPAREN); }
+	"<:"				{ return symbol("SUBTYPE", SUBTYPE); }
+	"->"|"\u2192"		{ return symbol("ARROW", ARROW); }
+	"lambda"|"\u03bb"	{ return symbol("LAMBDA", LAMBDA); }
+	"let"				{ return symbol("LET", LET); }
+	"in"				{ return symbol("IN", IN); }
+	"if"				{ return symbol("IF", IF); }
+	"then"				{ return symbol("THEN", THEN); }
+	"else"				{ return symbol("ELSE", ELSE); }
+	"()"				{ return symbol("PARENPAREN", PARENPAREN); }
+	"true"				{ return symbol("TRUE", TRUE); }
+	"false"				{ return symbol("FALSE", FALSE); }
+	"rec"				{ return symbol("REC", REC); }
 	"fst"				{ return symbol("FST", FST); }
 	"snd"				{ return symbol("SND", SND); }
 	"cons"				{ return symbol("CONS", CONS); }
@@ -120,34 +159,16 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"hd"				{ return symbol("HD", HD); }
 	"tl"				{ return symbol("TL", TL); }
 	"::"				{ return symbol("COLONCOLON", COLONCOLON); }
-	"&&"				{ return symbol("AMPERAMPER", AMPERAMPER); }
-	"||"				{ return symbol("BARBAR", BARBAR); }
-	"not"				{ return symbol("NOT", NOT); }
-	"."					{ return symbol("DOT", DOT); }
+	"[]"				{ return symbol("BRACKETBRACKET", BRACKETBRACKET); }
 	","					{ return symbol("COMMA", COMMA); }
 	";"					{ return symbol("SEMI", SEMI); }
-	":"					{ return symbol("COLON", COLON); }
-	":="				{ return symbol("COLONEQUAL", COLONEQUAL); }
-	"("					{ return symbol("LPAREN", LPAREN); }
-	")"					{ return symbol("RPAREN", RPAREN); }
 	"["					{ return symbol("LBRACKET", LBRACKET); }
 	"]"					{ return symbol("RBRACKET", RBRACKET); }
 	"!"					{ return symbol("EXCLAMATION", EXCLAMATION); }
-	"->"|"\u2192"		{ return symbol("ARROW", ARROW); }
-	"lambda"|"\u03bb"	{ return symbol("LAMBDA", LAMBDA); }
-	"let"				{ return symbol("LET", LET); }
-	"rec"				{ return symbol("REC", REC); }
+	":="				{ return symbol("COLONEQUAL", COLONEQUAL); }
 	"ref"				{ return symbol("REF", REF); }
-	"in"				{ return symbol("IN", IN); }
-	"if"				{ return symbol("IF", IF); }
-	"then"				{ return symbol("THEN", THEN); }
-	"else"				{ return symbol("ELSE", ELSE); }
 	"while"				{ return symbol("WHILE", WHILE); }
 	"do"				{ return symbol("DO", DO); }
-	"()"				{ return symbol("PARENPAREN", PARENPAREN); }
-	"[]"				{ return symbol("BRACKETBRACKET", BRACKETBRACKET); }
-	"true"				{ return symbol("TRUE", TRUE); }
-	"false"				{ return symbol("FALSE", FALSE); }
 	"bool"				{ return symbol("BOOL", BOOL); }
 	"int"				{ return symbol("INT", INT); }
 	"unit"				{ return symbol("UNIT", UNIT); }
@@ -176,8 +197,8 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 						  }
 						}
 	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
-	"#"					{ yyprojChar = yychar; yybegin(YYPROJARITY); }
 	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENTINIT); }
+	"#"					{ yyprojChar = yychar; yybegin(YYPROJARITY); }
 	{WhiteSpace}		{ /* Ignore */ }
 }
 
@@ -208,14 +229,18 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 
 <YYPROJARITY> 
 {
-	{Number}			{ yyprojArity = Integer.valueOf(yytext());
+	{Number}			{ 
+						  yyprojArity = Integer.valueOf(yytext()); 
 						  yyprojArityStartOffset = yychar ;
 						  yyprojArityEndOffset = yychar + yylength() ;
-						  yybegin(YYPROJUNDERLINE); }
+						  yybegin(YYPROJUNDERLINE);
+						}
 	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, Messages.getString ( "Parser.8" )); }
 	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, Messages.getString ( "Parser.8" )); }
-	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), 
-						    MessageFormat.format ( Messages.getString ( "Parser.11" ), yytext() )); }
+	.					{ 
+						  throw new LanguageScannerException(yyprojChar, yychar + yylength(), 
+						    MessageFormat.format ( Messages.getString ( "Parser.11" ), yytext() ));
+						}
 }
 
 <YYPROJUNDERLINE> 
@@ -223,8 +248,10 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"_"					{ yybegin(YYPROJINDEX); }
 	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, Messages.getString ( "Parser.9" )); }
 	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, Messages.getString ( "Parser.9" )); }
-	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), 
-						    MessageFormat.format ( Messages.getString ( "Parser.12" ), yytext() )); }
+	.					{ 
+						  throw new LanguageScannerException(yyprojChar, yychar + yylength(), 
+						    MessageFormat.format ( Messages.getString ( "Parser.12" ), yytext() ));
+						}
 }
 
 <YYPROJINDEX> 
