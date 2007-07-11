@@ -1,4 +1,1 @@
-(object (self)
-  method a = 1 ;
-  method a = true ;
-end) # a
+(1+1: int <: bool)
