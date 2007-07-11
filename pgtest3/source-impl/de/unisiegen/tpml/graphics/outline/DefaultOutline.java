@@ -430,8 +430,8 @@ public final class DefaultOutline implements Outline
     Theme.currentTheme ( ).addPropertyChangeListener (
         new OutlinePropertyChangeListener ( this ) ) ;
     // MouseListener
-    pStyledLanguageEditor.addMouseListener ( new OutlineMouseListener (
-        pStyledLanguageEditor , this ) ) ;
+    pStyledLanguageEditor.addMouseListener ( new OutlineMouseListener ( this ,
+        pStyledLanguageEditor ) ) ;
     this.uI.getJTreeOutline ( ).addMouseListener (
         new OutlineMouseListener ( this ) ) ;
     // ActionListener
@@ -491,7 +491,7 @@ public final class DefaultOutline implements Outline
             this ) ) ;
     // MouseListener
     this.textEditorPanel.getEditor ( ).addMouseListener (
-        new OutlineMouseListener ( pTextEditorPanel ) ) ;
+        new OutlineMouseListener ( this , pTextEditorPanel ) ) ;
     this.uI.getJTreeOutline ( ).addMouseListener (
         new OutlineMouseListener ( this ) ) ;
     // PropertyChangeListener

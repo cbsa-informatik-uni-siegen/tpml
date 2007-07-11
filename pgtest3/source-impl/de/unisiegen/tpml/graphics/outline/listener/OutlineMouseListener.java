@@ -125,6 +125,36 @@ public final class OutlineMouseListener implements MouseListener
 
   /**
    * Initializes the {@link OutlineMouseListener} with the given
+   * {@link StyledLanguageEditor}.
+   * 
+   * @param pDefaultOutline The {@link DefaultOutline}.
+   * @param pStyledLanguageEditor The {@link StyledLanguageEditor}.
+   */
+  public OutlineMouseListener ( DefaultOutline pDefaultOutline ,
+      StyledLanguageEditor pStyledLanguageEditor )
+  {
+    this.defaultOutline = pDefaultOutline ;
+    this.styledLanguageEditor = pStyledLanguageEditor ;
+  }
+
+
+  /**
+   * Initializes the {@link OutlineMouseListener} with the given
+   * {@link TextEditorPanel}.
+   * 
+   * @param pDefaultOutline The {@link DefaultOutline}.
+   * @param pTextEditorPanel The {@link TextEditorPanel}.
+   */
+  public OutlineMouseListener ( DefaultOutline pDefaultOutline ,
+      TextEditorPanel pTextEditorPanel )
+  {
+    this.defaultOutline = pDefaultOutline ;
+    this.textEditorPanel = pTextEditorPanel ;
+  }
+
+
+  /**
+   * Initializes the {@link OutlineMouseListener} with the given
    * {@link MinimalTypingNodeComponent}.
    * 
    * @param pMinimalTypingNodeComponent The {@link MinimalTypingNodeComponent}.
@@ -163,21 +193,6 @@ public final class OutlineMouseListener implements MouseListener
 
   /**
    * Initializes the {@link OutlineMouseListener} with the given
-   * {@link StyledLanguageEditor}.
-   * 
-   * @param pStyledLanguageEditor The {@link StyledLanguageEditor}.
-   * @param pDefaultOutline The {@link DefaultOutline}.
-   */
-  public OutlineMouseListener ( StyledLanguageEditor pStyledLanguageEditor ,
-      DefaultOutline pDefaultOutline )
-  {
-    this.defaultOutline = pDefaultOutline ;
-    this.styledLanguageEditor = pStyledLanguageEditor ;
-  }
-
-
-  /**
-   * Initializes the {@link OutlineMouseListener} with the given
    * {@link SubTypingNodeComponent}.
    * 
    * @param pSubTypingNodeComponent The {@link SubTypingNodeComponent}.
@@ -185,18 +200,6 @@ public final class OutlineMouseListener implements MouseListener
   public OutlineMouseListener ( SubTypingNodeComponent pSubTypingNodeComponent )
   {
     this.subTypingNodeComponent = pSubTypingNodeComponent ;
-  }
-
-
-  /**
-   * Initializes the {@link OutlineMouseListener} with the given
-   * {@link TextEditorPanel}.
-   * 
-   * @param pTextEditorPanel The {@link TextEditorPanel}.
-   */
-  public OutlineMouseListener ( TextEditorPanel pTextEditorPanel )
-  {
-    this.textEditorPanel = pTextEditorPanel ;
   }
 
 
@@ -294,6 +297,7 @@ public final class OutlineMouseListener implements MouseListener
           {
             // Do nothing
           }
+          this.defaultOutline.updateHighlighSourceCode ( false ) ;
           this.defaultOutline.load ( type , Outline.ExecuteMouseClick.EDITOR ) ;
         }
       }
@@ -314,7 +318,8 @@ public final class OutlineMouseListener implements MouseListener
           {
             // Do nothing
           }
-          this.textEditorPanel.getOutline ( ).load ( expression ,
+          this.defaultOutline.updateHighlighSourceCode ( false ) ;
+          this.defaultOutline.load ( expression ,
               Outline.ExecuteMouseClick.EDITOR ) ;
         }
       }
