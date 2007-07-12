@@ -13,14 +13,12 @@ import javax.swing.event.TreeModelEvent;
 
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 import de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer;
-import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent;
 import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
 
 /**
@@ -59,6 +57,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * 
  * 
  * @author marcell
+ * @author michael
  * 
  * @see de.unisiegen.tpml.graphics.typechecker.TypeCheckerView
  * @see de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent
@@ -88,9 +87,18 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	 */
 	private ProofNode										jumpNode;
 	
+	/**
+	 * the advaced state
+	 */
 	private boolean advanced;
 
 	
+	/**
+   * the constructor
+   * 
+	 * @param model      the model
+	 * @param advanced   the adcanced mode
+	 */
 	public TypeCheckerComponent (TypeCheckerProofModel model, boolean advanced) {
 		super (model);
 		
@@ -104,6 +112,10 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		treeContentChanged();
 	}
 	
+	/**
+   * sets the spacing of the treeNodeLayout
+	 * @param spacing  the spacing in pixels
+	 */
 	public void setSpacing (int spacing) {
 		this.treeNodeLayout.setSpacing(spacing);
 	}
@@ -232,6 +244,7 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	 * <br>
 	 * Resetting means that every {@link PrettyStringRenderer} and 
 	 * {@link EnvironmentRenderer} recalculates their needed font sizes.
+	 * @param node the TypeCheckerProofNode
 	 */
 	private void resetUserObject (TypeCheckerProofNode node) {
 		if (node == null) {
@@ -424,11 +437,14 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		return 10;
 	}
 	
+	/**
+   * sets the advance mode and updates all active nodes!
+	 * @param advancedP the advanced mode
+	 */
 	public void setAdvanced (boolean advancedP)
 	{
 		this.advanced = advancedP;
-		//TODO vielleicht wollen wir alles neue malen....
-		//this.repaint();
+
 //	 update all active nodes
 		Enumeration<ProofNode> enumeration = this.proofModel.getRoot().postorderEnumeration();
 		while (enumeration.hasMoreElements()) {
