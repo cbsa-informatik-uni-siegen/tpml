@@ -75,6 +75,10 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   public ObjectExpr ( Identifier pIdentifier , MonoType pTau ,
       Expression pExpression )
   {
+    if ( pIdentifier == null )
+    {
+      throw new NullPointerException ( "Id is null" ) ; //$NON-NLS-1$
+    }
     if ( pExpression == null )
     {
       throw new NullPointerException ( "Row is null" ) ; //$NON-NLS-1$
