@@ -1,12 +1,12 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
-import java.util.Arrays ;
 import java.util.Enumeration ;
 import java.util.LinkedList ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ExpressionOrTypeOrTypeEquationTypeInference ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
@@ -138,18 +138,6 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * Prefix of the {@link BinaryOperator}.
    */
   protected static final String PREFIX_BINARYOPERATOR = "op" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getIdentifiers
-   */
-  private static final String GET_IDENTIFIERS = "getIdentifiers" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getTypes
-   */
-  private static final String GET_TYPES = "getTypes" ; //$NON-NLS-1$
 
 
   /**
@@ -360,40 +348,13 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
         this.identifiersAll.add ( ( Identifier ) this ) ;
         return this.identifiersAll ;
       }
-      for ( Class < ? > currentInterface : this.getClass ( ).getInterfaces ( ) )
+      if ( this instanceof DefaultIdentifiers )
       {
-        if ( ( currentInterface
-            .equals ( de.unisiegen.tpml.core.interfaces.DefaultIdentifiers.class ) )
-            || ( currentInterface
-                .equals ( de.unisiegen.tpml.core.interfaces.BoundIdentifiers.class ) ) )
+        Identifier [ ] identifiers = ( ( DefaultIdentifiers ) this )
+            .getIdentifiers ( ) ;
+        for ( Identifier id : identifiers )
         {
-          try
-          {
-            Identifier [ ] identifiers = ( Identifier [ ] ) this.getClass ( )
-                .getMethod ( GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( this ,
-                    new Object [ 0 ] ) ;
-            this.identifiersAll.addAll ( Arrays.asList ( identifiers ) ) ;
-          }
-          catch ( IllegalArgumentException e )
-          {
-            System.err.println ( "Expression: IllegalArgumentException" ) ; //$NON-NLS-1$
-          }
-          catch ( SecurityException e )
-          {
-            System.err.println ( "Expression: SecurityException" ) ; //$NON-NLS-1$
-          }
-          catch ( IllegalAccessException e )
-          {
-            System.err.println ( "Expression: IllegalAccessException" ) ; //$NON-NLS-1$
-          }
-          catch ( InvocationTargetException e )
-          {
-            System.err.println ( "Expression: InvocationTargetException" ) ; //$NON-NLS-1$
-          }
-          catch ( NoSuchMethodException e )
-          {
-            System.err.println ( "Expression: NoSuchMethodException" ) ; //$NON-NLS-1$
-          }
+          this.identifiersAll.add ( id ) ;
         }
       }
       for ( Expression child : children ( ) )
@@ -503,51 +464,23 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
     {
       this.typeNamesFree = new ArrayList < TypeName > ( ) ;
       MonoType [ ] types = null ;
-      for ( Class < ? > currentInterface : this.getClass ( ).getInterfaces ( ) )
+      if ( this instanceof DefaultTypes )
       {
-        if ( currentInterface
-            .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypes.class ) )
+        types = ( ( DefaultTypes ) this ).getTypes ( ) ;
+      }
+      if ( types != null )
+      {
+        for ( MonoType type : types )
         {
-          try
+          if ( type != null )
           {
-            types = ( MonoType [ ] ) this.getClass ( ).getMethod ( GET_TYPES ,
-                new Class [ 0 ] ).invoke ( this , new Object [ 0 ] ) ;
-          }
-          catch ( IllegalArgumentException e )
-          {
-            System.err.println ( "Expression: IllegalArgumentException" ) ; //$NON-NLS-1$
-          }
-          catch ( SecurityException e )
-          {
-            System.err.println ( "Expression: SecurityException" ) ; //$NON-NLS-1$
-          }
-          catch ( IllegalAccessException e )
-          {
-            System.err.println ( "Expression: IllegalAccessException" ) ; //$NON-NLS-1$
-          }
-          catch ( InvocationTargetException e )
-          {
-            System.err.println ( "Expression: InvocationTargetException" ) ; //$NON-NLS-1$
-          }
-          catch ( NoSuchMethodException e )
-          {
-            System.err.println ( "Expression: NoSuchMethodException" ) ; //$NON-NLS-1$
+            this.typeNamesFree.addAll ( type.getTypeNamesFree ( ) ) ;
           }
         }
-        if ( types != null )
-        {
-          for ( MonoType type : types )
-          {
-            if ( type != null )
-            {
-              this.typeNamesFree.addAll ( type.getTypeNamesFree ( ) ) ;
-            }
-          }
-        }
-        for ( Expression child : children ( ) )
-        {
-          this.typeNamesFree.addAll ( child.getTypeNamesFree ( ) ) ;
-        }
+      }
+      for ( Expression child : children ( ) )
+      {
+        this.typeNamesFree.addAll ( child.getTypeNamesFree ( ) ) ;
       }
     }
     return this.typeNamesFree ;

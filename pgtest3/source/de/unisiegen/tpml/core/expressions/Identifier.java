@@ -1,9 +1,9 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultName ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -44,12 +44,6 @@ public final class Identifier extends Value implements DefaultName
      */
     SELF
   }
-
-
-  /**
-   * Method name for getIdentifiers
-   */
-  private static final String GET_IDENTIFIERS = "getIdentifiers" ; //$NON-NLS-1$
 
 
   /**
@@ -223,44 +217,6 @@ public final class Identifier extends Value implements DefaultName
 
 
   /**
-   * Returns the array of {@link Identifier}s from the parent.
-   * 
-   * @param pInvokedFrom The parent.
-   * @return The array of {@link Identifier}s from the parent.
-   */
-  private final Identifier [ ] getParentIdentifiers ( Object pInvokedFrom )
-  {
-    try
-    {
-      return ( Identifier [ ] ) pInvokedFrom.getClass ( ).getMethod (
-          GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( pInvokedFrom ,
-          new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "Identifier: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "Identifier: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "Identifier: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "Identifier: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "Identifier: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
-  }
-
-
-  /**
    * Returns the prefix of this {@link Expression}.
    * 
    * @return The prefix of this {@link Expression}.
@@ -271,43 +227,36 @@ public final class Identifier extends Value implements DefaultName
   {
     if ( this.prefix == null )
     {
-      if ( this.parent != null )
+      if ( ( this.parent != null )
+          && ( this.parent instanceof DefaultIdentifiers ) )
       {
-        for ( Class < ? > currentInterface : this.parent.getClass ( )
-            .getInterfaces ( ) )
+        Identifier [ ] identifiers = ( ( DefaultIdentifiers ) this.parent )
+            .getIdentifiers ( ) ;
+        for ( Identifier id : identifiers )
         {
-          if ( ( currentInterface
-              .equals ( de.unisiegen.tpml.core.interfaces.DefaultIdentifiers.class ) )
-              || ( currentInterface
-                  .equals ( de.unisiegen.tpml.core.interfaces.BoundIdentifiers.class ) ) )
+          if ( id == this )
           {
-            for ( Identifier id : getParentIdentifiers ( this.parent ) )
+            switch ( this.set )
             {
-              if ( id == this )
+              case VARIABLE :
               {
-                switch ( this.set )
-                {
-                  case VARIABLE :
-                  {
-                    this.prefix = PREFIX_ID ;
-                    return this.prefix ;
-                  }
-                  case ATTRIBUTE :
-                  {
-                    this.prefix = PREFIX_ID_A ;
-                    return this.prefix ;
-                  }
-                  case MESSAGE :
-                  {
-                    this.prefix = PREFIX_ID_M ;
-                    return this.prefix ;
-                  }
-                  case SELF :
-                  {
-                    this.prefix = PREFIX_ID_S ;
-                    return this.prefix ;
-                  }
-                }
+                this.prefix = PREFIX_ID ;
+                return this.prefix ;
+              }
+              case ATTRIBUTE :
+              {
+                this.prefix = PREFIX_ID_A ;
+                return this.prefix ;
+              }
+              case MESSAGE :
+              {
+                this.prefix = PREFIX_ID_M ;
+                return this.prefix ;
+              }
+              case SELF :
+              {
+                this.prefix = PREFIX_ID_S ;
+                return this.prefix ;
               }
             }
           }
