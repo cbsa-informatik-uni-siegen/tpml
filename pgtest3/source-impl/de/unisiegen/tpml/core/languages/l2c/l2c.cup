@@ -3,6 +3,7 @@ import de.unisiegen.tpml.core.expressions.Application ;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
+import de.unisiegen.tpml.core.expressions.Body ;
 import de.unisiegen.tpml.core.expressions.BooleanConstant ;
 import de.unisiegen.tpml.core.expressions.Class;
 import de.unisiegen.tpml.core.expressions.Coercion;
@@ -72,6 +73,7 @@ terminal			SEMI ;
 terminal			DUPLBEGIN ;
 terminal			DUPLEND ;
 terminal			HASHKEY ;
+terminal			COMMA;
 
 /* Keywords */
 terminal			LAMBDA;
@@ -151,6 +153,7 @@ non terminal Method					method;
 non terminal CurriedMethod			curried_method;
 non terminal Class					class;
 non terminal New					new;
+non terminal Expression				body;
 
 /* Non terminal - Type */
 non terminal MonoType				type;
@@ -174,6 +177,8 @@ non terminal IdentifierTypePair[]			curried_method_list;
 non terminal IdentifierTypePair				curried_method_pair;
 non terminal IdentifierExpressionPair[]		duplication_list;
 non terminal IdentifierExpressionPair		duplication_pair;
+non terminal Identifier[]					body_attribute_list;
+non terminal Identifier[]					body_method_list;
 
 /* Non terminal - Error */
 non terminal 		epsilon;
@@ -215,6 +220,10 @@ non terminal 		duplication_list_error;
 non terminal 		object_type_error;
 non terminal		row_type_error;
 non terminal		class_error;
+non terminal		new_error;
+non terminal		body_error;
+non terminal		body_attribute_list_error;
+non terminal		body_method_list_error;
 
 /* Precedence */
 precedence right	ARROW;
@@ -938,17 +947,7 @@ curried_let_rec_pair_error		::= LPAREN:l epsilon
 									{: Error.expect("Curried-Let-Rec", " \u03C4", lleft, cright, "\u03C4" ); :}
 								;
 
-object_expr						::= OBJECT:o LPAREN SELF:id RPAREN END:end
-									{:
-									   Expression [] e = new Expression [0];
-						  			   RESULT = new ObjectExpr (new Identifier (id,idleft,idright), null, new Row (e), oleft, endright);
-						  			:}
-								|   OBJECT:o LPAREN SELF:id COLON type:tau RPAREN END:end
-									{: 
-									   Expression [] e = new Expression [0];
-								       RESULT = new ObjectExpr (new Identifier (id,idleft,idright), tau, new Row (e), oleft, endright);
-								    :}
-								|	OBJECT:o LPAREN SELF:id RPAREN row:r END:end
+object_expr						::= OBJECT:o LPAREN SELF:id RPAREN row:r END:end
 									{:
 									   MultipleIdentifier.check(r);
 						   			   RESULT = new ObjectExpr (new Identifier (id,idleft,idright), null, r, oleft, endright);
@@ -972,14 +971,10 @@ object_expr_error				::= OBJECT:o epsilon
 									{: Error.expect("Object", " \u03C4) end", oleft, cright, "\u03C4) r end"); :}
 								|	OBJECT:o LPAREN SELF COLON type:t epsilon
 									{: Error.expect("Object", ") end", oleft, tright, ") r end"); :}
-								|	OBJECT:o LPAREN SELF COLON type RPAREN:r epsilon
-									{: Error.expect("Object", " end", oleft, rright, "r end"); :}
 								|	OBJECT:o LPAREN SELF COLON type RPAREN row:r epsilon
-									{: Error.expect("Object", " end", oleft, rright, "end", "r end"); :}	
-								|	OBJECT:o LPAREN SELF RPAREN:r epsilon
-									{: Error.expect("Object", " end", oleft, rright, "r end"); :}	
+									{: Error.expect("Object", " end", oleft, rright, "end"); :}	
 								|	OBJECT:o LPAREN SELF RPAREN row:r epsilon
-									{: Error.expect("Object", " end", oleft, rright, "end", "r end"); :}
+									{: Error.expect("Object", " end", oleft, rright, "end"); :}
 								// Missing type
 								|   OBJECT:o LPAREN SELF COLON:c RPAREN
 									{: Error.expect("Object", " \u03C4", oleft, cright, "\u03C4" ); :}
@@ -1077,12 +1072,8 @@ send_error						::= simple_expr:s HASHKEY:h epsilon
 									{: Error.expect("Send", " m", sleft, hright, "m"); :}	
 								;
 
-row								::= attribute:a
-									{:
-									   Expression [] e = new Expression [1];
-									   e [0] = a;
-									   RESULT = new Row (e, aleft, aright);
-									:}
+row								::= epsilon
+									{: RESULT = new Row (new Expression[0]); :}
 								|	attribute:a row:r
 									{:
 									   Expression [ ] e = new Expression [ r.getExpressions().length + 1 ] ;
@@ -1090,24 +1081,12 @@ row								::= attribute:a
     								   e [0] = a ;
 									   RESULT = new Row (e, aleft, rright);
 									:}
-								|	method:m
-									{:
-									   Expression [] e = new Expression [1];
-									   e [0] = m;
-									   RESULT = new Row (e, mleft, mright);
-									:}
 								|	method:m row:r
 									{:
 									   Expression [ ] e = new Expression [ r.getExpressions().length + 1 ] ;
     								   System.arraycopy ( r.getExpressions() , 0 , e , 1 , r.getExpressions().length ) ;
     								   e [0] = m ;
 									   RESULT = new Row (e, mleft, rright);
-									:}
-								|	curried_method:cm
-									{:
-									   Expression [] e = new Expression [1];
-									   e [0] = cm;
-									   RESULT = new Row (e, cmleft, cmright);
 									:}
 								|	curried_method:cm row:r
 									{:
@@ -1337,8 +1316,55 @@ curried_method_pair_error		::= LPAREN:l epsilon
 									{: Error.expect("Curried-Method", " \u03C4", lleft, cright, "\u03C4" ); :}
 								;
 
-class							::= CLASS:c LPAREN SELF:id RPAREN expr:e END:end
-									{: RESULT = new Class (new Identifier (id,idleft,idright), e, cleft, endright); :}
+class							::= CLASS:c LPAREN SELF:id RPAREN body:b END:end
+									{: RESULT = new Class (new Identifier (id,idleft,idright), b, cleft, endright); :}
+								;
+
+body							::= INHERIT:i body_attribute_list:bal SEMI body_method_list:bml FROM expr:e AS IDENTIFIER:z SEMI body:b
+									{: RESULT = new Body (bal, bml, e, new Identifier (z,zleft,zright), b, ileft, bright); :}
+								|	row:r
+									{: RESULT = r ; :}
+								;
+
+
+body_attribute_list				::=	IDENTIFIER:id COMMA body_attribute_list:bal
+									{:
+									   RESULT = new Identifier[bal.length + 1];
+						   			   System.arraycopy(bal, 0, RESULT, 1, bal.length);
+						   			   RESULT[0] = new Identifier(id,idleft,idright);
+						   			   RESULT[0].setSet (Identifier.Set.ATTRIBUTE );
+						   			:}
+								|	IDENTIFIER:id
+									{: 
+									   RESULT = new Identifier[] { new Identifier(id,idleft,idright) };
+									   RESULT[0].setSet (Identifier.Set.ATTRIBUTE );
+									:}
+								|	body_attribute_list_error
+						   			{: :}
+								;
+
+body_attribute_list_error		::=	IDENTIFIER:id COMMA:c epsilon
+									{: Error.expect("Body", " an ", idleft, cright, " an "); :}
+								;
+
+body_method_list				::=	IDENTIFIER:id COMMA body_method_list:bml
+									{:
+									   RESULT = new Identifier[bml.length + 1];
+						   			   System.arraycopy(bml, 0, RESULT, 1, bml.length);
+						   			   RESULT[0] = new Identifier(id,idleft,idright);
+						   			   RESULT[0].setSet (Identifier.Set.MESSAGE );
+						   			:}
+								|	IDENTIFIER:id
+									{: 
+									   RESULT = new Identifier[] { new Identifier(id,idleft,idright) };
+									   RESULT[0].setSet (Identifier.Set.MESSAGE );
+									:}
+								|	body_attribute_list_error
+						   			{: :}
+								;
+
+body_method_list_error			::=	IDENTIFIER:id COMMA:c epsilon
+									{: Error.expect("Body", " mn ", idleft, cright, " mn "); :}
 								;
 
 new								::= NEW:n expr:e
@@ -1528,30 +1554,16 @@ object_type						::= LESS:l row_type:r GREATER:g
 									   MultipleIdentifier.check(r);
 									   RESULT = new ObjectType ( r, lleft, gright);
 									:}
-								|	LESS:l GREATER:g
-									{:
-									   Identifier [] m = new Identifier [0];
-									   MonoType [] types = new MonoType [0];
-									   RESULT = new ObjectType ( new RowType (m, types), lleft, gright);
-									:}
 								|	object_type_error
 									{: :}
 								;
 
-object_type_error				::= LESS:l epsilon
-									{: Error.expect("Object-Type", " m: \u03C4; >", lleft, lright, "m<sub>1</sub>: \u03C4; ... m<sub>n</sub>: \u03C4; >"); :}
-								|	LESS:l row_type:r epsilon
+object_type_error				::= LESS:l row_type:r epsilon
 									{: Error.expect("Object-Type", " >", lleft, rright, "... m<sub>n</sub>: \u03C4; >"); :}
 								;
 
-row_type						::= IDENTIFIER:id COLON type:tau SEMI:s
-									{:
-									   Identifier [] m = new Identifier [1];
-									   m [0] = new Identifier (id,idleft,idright);
-									   MonoType [] types = new MonoType [1];
-									   types [0] = tau;
-									   RESULT = new RowType (m, types, idleft, sright) ;
-									:}
+row_type						::= epsilon
+									{: RESULT = new RowType (new Identifier[0], new MonoType[0]) ; :}
 								|	IDENTIFIER:id COLON type:tau SEMI row_type:r
 									{:
 									   Identifier [] m = new Identifier [r.getIdentifiers().length + 1];

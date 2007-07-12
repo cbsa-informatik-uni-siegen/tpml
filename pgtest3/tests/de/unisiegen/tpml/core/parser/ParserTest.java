@@ -2050,7 +2050,7 @@ public class ParserTest
   private static String ROW_TYPE_ERROR_3 = "< add: int" ;
 
 
-  private static String CLASS = "class (self) e end" ;
+  private static String CLASS = "class (self) method m = 0 ; end" ;
 
 
   private static String NEW = "new e" ;
@@ -2980,8 +2980,18 @@ public class ParserTest
   }
 
 
+  private static boolean onlyError = false ;
+
+
   public static void main ( String [ ] pArguments )
   {
+    if ( pArguments.length > 0 )
+    {
+      if ( pArguments [ 0 ].equals ( "error" ) )
+      {
+        onlyError = true ;
+      }
+    }
     max ( ) ;
     boolean l0Okay = test_L0 ( ) ;
     boolean l1Okay = test_L1 ( ) ;
@@ -3124,8 +3134,11 @@ public class ParserTest
     {
       case NORMAL :
       {
-        System.out.println ( s ) ;
-        System.out.flush ( ) ;
+        if ( ! onlyError )
+        {
+          System.out.println ( s ) ;
+          System.out.flush ( ) ;
+        }
         break ;
       }
       case ERROR :

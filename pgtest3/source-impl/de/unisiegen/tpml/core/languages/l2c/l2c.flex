@@ -151,6 +151,7 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	";"					{ return symbol("SEMI", SEMI); }
 	"{<"				{ return symbol("DUPLBEGIN", DUPLBEGIN); }
 	">}"				{ return symbol("DUPLEND", DUPLEND); }
+	","					{ return symbol("COMMA", COMMA); }
 	"class"				{ return symbol("CLASS", CLASS); }
 	"new"				{ return symbol("NEW", NEW); }
 	"inherit"			{ return symbol("INHERIT", INHERIT); }
