@@ -23,6 +23,7 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
  * 
  * @author Marcell Fischbach
  * @author Christian Fehler
+ * @author michael
  * @version $Rev: 995 $
  * @see de.unisiegen.tpml.graphics.AbstractProofView
  */
