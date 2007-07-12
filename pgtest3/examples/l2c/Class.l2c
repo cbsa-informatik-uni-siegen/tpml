@@ -1,1 +1,1 @@
-class (self) e end
+class (self) method m = 0 ; end
