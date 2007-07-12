@@ -8,6 +8,7 @@ import de.unisiegen.tpml.core.languages.l0cbn.L0CBNLanguage ;
 import de.unisiegen.tpml.core.languages.l1.L1Language ;
 import de.unisiegen.tpml.core.languages.l1cbn.L1CBNLanguage ;
 import de.unisiegen.tpml.core.languages.l2.L2Language ;
+import de.unisiegen.tpml.core.languages.l2c.L2CLanguage ;
 import de.unisiegen.tpml.core.languages.l2cbn.L2CBNLanguage ;
 import de.unisiegen.tpml.core.languages.l2o.L2OLanguage ;
 import de.unisiegen.tpml.core.languages.l3.L3Language ;
@@ -64,7 +65,8 @@ public final class LanguageFactory
     return new Language [ ]
     { new L0Language ( ) , new L0CBNLanguage ( ) , new L1Language ( ) ,
         new L1CBNLanguage ( ) , new L2Language ( ) , new L2CBNLanguage ( ) ,
-        new L2OLanguage ( ) , new L3Language ( ) , new L4Language ( ) } ;
+        new L2OLanguage ( ) , new L2CLanguage ( ) , new L3Language ( ) ,
+        new L4Language ( ) } ;
   }
 
 

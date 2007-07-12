@@ -11,7 +11,7 @@
 	
 	<property name="libdir" value="${basedir}/lib" />
 
-    <target name="generate" depends="version,l0,l1,l2,l2o,l3,l4" description="Generate parsers and lexers" />
+    <target name="generate" depends="version,l0,l1,l2,l2o,l2c,l3,l4" description="Generate parsers and lexers" />
 
 	<property name="impldir" value="${basedir}/source-impl" />
 	<property name="generateddir" value="${basedir}/source-generated" />
@@ -64,9 +64,13 @@
 	<target name="clean-l2">
 		<delete dir="${generateddir}/de/unisiegen/tpml/core/languages/l2" />
 	</target>
-			
+
 	<target name="clean-l2o">
 		<delete dir="${generateddir}/de/unisiegen/tpml/core/languages/l2o" />
+	</target>
+		
+	<target name="clean-l2c">
+		<delete dir="${generateddir}/de/unisiegen/tpml/core/languages/l2c" />
 	</target>
 
 	<target name="clean-l3">
@@ -206,6 +210,45 @@
 			package="de.unisiegen.tpml.core.languages.l2o"
 			parser="L2OAbstractTypeParser"
 			symbols="L2OTypeTerminals"
+			interface="yes"
+			debug="no"
+			expect="10000"
+			nonterms="no"
+			nopositions="no"
+			dump_grammar="no" />
+	</target>
+	
+	<target name="l2c" description="Generates lexer and parser for L2C">
+		<!-- Expressions -->
+		<jflex 
+		    file="${impldir}/de/unisiegen/tpml/core/languages/l2c/l2c.flex"
+		    destdir="${generateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l2c/l2c.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l2c"
+			package="de.unisiegen.tpml.core.languages.l2c"
+			parser="L2CAbstractParser"
+			symbols="L2CTerminals"
+			interface="yes"
+			debug="no"
+			expect="10000"
+			nonterms="no"
+			nopositions="no"
+			compact_red="yes"
+			dump_grammar="no" />
+			
+		<!-- Types -->
+		<jflex 
+	    	file="${impldir}/de/unisiegen/tpml/core/languages/l2c/l2ctype.flex"
+	    	destdir="${generateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l2c/l2ctype.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l2c"
+			package="de.unisiegen.tpml.core.languages.l2c"
+			parser="L2CAbstractTypeParser"
+			symbols="L2CTypeTerminals"
 			interface="yes"
 			debug="no"
 			expect="10000"
