@@ -2050,6 +2050,12 @@ public class ParserTest
   private static String ROW_TYPE_ERROR_3 = "< add: int" ;
 
 
+  private static String CLASS = "class (self) e end" ;
+
+
+  private static String NEW = "new e" ;
+
+
   private static String [ ] L0_NORMAL = new String [ ]
   { IDENTIFIER , APPLICATION , LAMBDA_1 , SIMPLE_EXPR_1 } ;
 
@@ -2428,6 +2434,177 @@ public class ParserTest
       ROW_TYPE_ERROR_2 , ROW_TYPE_ERROR_3 } ;
 
 
+  private static String [ ] L2C_NORMAL = new String [ ]
+  { IDENTIFIER , APPLICATION , INFIX_OPERATION_1 , INFIX_OPERATION_2 ,
+      INFIX_OPERATION_3 , INFIX_OPERATION_4 , INFIX_OPERATION_5 ,
+      INFIX_OPERATION_6 , INFIX_OPERATION_7 , INFIX_OPERATION_8 ,
+      INFIX_OPERATION_9 , INFIX_OPERATION_10 , AND , OR , CONDITION , LAMBDA_1 ,
+      LAMBDA_2 , LET_1 , CURRIED_LET_1 , CURRIED_LET_2 , CURRIED_LET_3 ,
+      CURRIED_LET_4 , COERCION , UNIT , BOOLEAN_1 , BOOLEAN_2 , INTEGER , NOT ,
+      OPERATOR_1 , OPERATOR_2 , OPERATOR_3 , OPERATOR_4 , OPERATOR_5 ,
+      OPERATOR_6 , OPERATOR_7 , OPERATOR_8 , OPERATOR_9 , OPERATOR_10 ,
+      SIMPLE_EXPR_1 , SIMPLE_EXPR_2 , EXPR_SIMPLE_TYPE , EXPR_BOOLEAN_TYPE ,
+      EXPR_INTEGER_TYPE , EXPR_UNIT_TYPE , EXPR_ARROW_TYPE ,
+      EXPR_TYPE_VARIABLE , EXPR_TYPE_NAME , EXPR_REC_TYPE , REC_1 , REC_2 ,
+      LET_REC_1 , LET_REC_2 , CURRIED_LET_REC_1 , CURRIED_LET_REC_2 ,
+      CURRIED_LET_REC_3 , CURRIED_LET_REC_4 , SELF , OBJECT_1 , OBJECT_2 ,
+      OBJECT_3 , OBJECT_4 , DUPLICATION_1 , DUPLICATION_2 , DUPLICATION_3 ,
+      SEND , ROW_1 , ROW_2 , ROW_3 , ROW_4 , ROW_5 , ROW_6 , ATTRIBUTE ,
+      METHOD_1 , METHOD_2 , CURRIED_METHOD_1 , CURRIED_METHOD_2 ,
+      CURRIED_METHOD_3 , CURRIED_METHOD_4 , EXPR_OBJECT_TYPE_1 ,
+      EXPR_OBJECT_TYPE_2 , EXPR_ROW_TYPE_1 , EXPR_ROW_TYPE_2 , CLASS , NEW } ;
+
+
+  private static String [ ] L2C_ERROR = new String [ ]
+  { INFIX_OPERATION_ERROR_1 , INFIX_OPERATION_ERROR_2 ,
+      INFIX_OPERATION_ERROR_3 , INFIX_OPERATION_ERROR_4 ,
+      INFIX_OPERATION_ERROR_5 , INFIX_OPERATION_ERROR_6 ,
+      INFIX_OPERATION_ERROR_7 , INFIX_OPERATION_ERROR_8 ,
+      INFIX_OPERATION_ERROR_9 , INFIX_OPERATION_ERROR_10 , AND_ERROR ,
+      OR_ERROR , CONDITION_ERROR_1 , CONDITION_ERROR_2 , CONDITION_ERROR_3 ,
+      CONDITION_ERROR_4 , CONDITION_ERROR_5 , CONDITION_ERROR_6 ,
+      CONDITION_ERROR_7 , CONDITION_ERROR_8 , CONDITION_ERROR_9 ,
+      CONDITION_ERROR_10 , CONDITION_ERROR_11 , CONDITION_ERROR_12 ,
+      CONDITION_ERROR_13 , CONDITION_ERROR_14 , CONDITION_ERROR_15 ,
+      LAMBDA_ERROR_1 , LAMBDA_ERROR_2 , LAMBDA_ERROR_3 , LAMBDA_ERROR_4 ,
+      LAMBDA_ERROR_5 , LAMBDA_ERROR_6 , LAMBDA_ERROR_7 , LAMBDA_ERROR_8 ,
+      LAMBDA_ERROR_9 , LAMBDA_ERROR_10 , LAMBDA_ERROR_11 , LAMBDA_ERROR_12 ,
+      LAMBDA_ERROR_13 , LAMBDA_ERROR_14 , LAMBDA_ERROR_15 , LAMBDA_ERROR_16 ,
+      LAMBDA_ERROR_17 , LAMBDA_ERROR_18 , LAMBDA_ERROR_19 , LAMBDA_ERROR_20 ,
+      LAMBDA_ERROR_21 , LAMBDA_ERROR_22 , LAMBDA_ERROR_23 , LET_ERROR_1 ,
+      LET_ERROR_2 , LET_ERROR_3 , LET_ERROR_4 , LET_ERROR_5 , LET_ERROR_6 ,
+      LET_ERROR_7 , LET_ERROR_8 , LET_ERROR_9 , LET_ERROR_10 , LET_ERROR_11 ,
+      LET_ERROR_12 , LET_ERROR_13 , LET_ERROR_14 , LET_ERROR_15 , LET_ERROR_16 ,
+      LET_ERROR_17 , LET_ERROR_18 , LET_ERROR_19 , LET_ERROR_20 , LET_ERROR_21 ,
+      LET_ERROR_22 , LET_ERROR_23 , LET_ERROR_24 , LET_ERROR_25 , LET_ERROR_26 ,
+      LET_ERROR_27 , LET_ERROR_28 , LET_ERROR_29 , LET_ERROR_30 , LET_ERROR_31 ,
+      LET_ERROR_32 , LET_ERROR_33 , LET_ERROR_34 , LET_ERROR_35 , LET_ERROR_36 ,
+      LET_ERROR_37 , LET_ERROR_38 , LET_ERROR_39 , LET_ERROR_40 , LET_ERROR_41 ,
+      LET_ERROR_42 , LET_ERROR_43 , LET_ERROR_44 , LET_ERROR_45 , LET_ERROR_46 ,
+      LET_ERROR_47 , LET_ERROR_48 , LET_ERROR_49 , LET_ERROR_50 , LET_ERROR_51 ,
+      LET_ERROR_52 , CURRIED_LET_ERROR_1 , CURRIED_LET_ERROR_2 ,
+      CURRIED_LET_ERROR_3 , CURRIED_LET_ERROR_4 , CURRIED_LET_ERROR_5 ,
+      CURRIED_LET_ERROR_6 , CURRIED_LET_ERROR_7 , CURRIED_LET_ERROR_8 ,
+      CURRIED_LET_ERROR_9 , CURRIED_LET_ERROR_10 , CURRIED_LET_ERROR_11 ,
+      CURRIED_LET_ERROR_12 , CURRIED_LET_ERROR_13 , CURRIED_LET_ERROR_14 ,
+      CURRIED_LET_ERROR_15 , CURRIED_LET_ERROR_16 , CURRIED_LET_ERROR_17 ,
+      CURRIED_LET_ERROR_18 , CURRIED_LET_ERROR_19 , CURRIED_LET_ERROR_20 ,
+      CURRIED_LET_ERROR_21 , CURRIED_LET_ERROR_22 , CURRIED_LET_ERROR_23 ,
+      CURRIED_LET_ERROR_24 , CURRIED_LET_ERROR_25 , CURRIED_LET_ERROR_26 ,
+      CURRIED_LET_ERROR_27 , CURRIED_LET_ERROR_28 , CURRIED_LET_ERROR_29 ,
+      CURRIED_LET_ERROR_30 , CURRIED_LET_ERROR_31 , CURRIED_LET_ERROR_32 ,
+      CURRIED_LET_ERROR_33 , CURRIED_LET_ERROR_34 , CURRIED_LET_ERROR_35 ,
+      CURRIED_LET_ERROR_36 , CURRIED_LET_ERROR_37 , CURRIED_LET_ERROR_38 ,
+      CURRIED_LET_ERROR_39 , CURRIED_LET_ERROR_40 , COERCION_ERROR_1 ,
+      COERCION_ERROR_2 , COERCION_ERROR_3 , COERCION_ERROR_4 ,
+      COERCION_ERROR_5 , COERCION_ERROR_6 , COERCION_ERROR_7 ,
+      COERCION_ERROR_8 , COERCION_ERROR_9 , COERCION_ERROR_10 ,
+      COERCION_ERROR_11 , COERCION_ERROR_12 , COERCION_ERROR_13 ,
+      COERCION_ERROR_14 , COERCION_ERROR_15 , COERCION_ERROR_16 ,
+      COERCION_ERROR_17 , COERCION_ERROR_18 , COERCION_ERROR_19 ,
+      SIMPLE_EXPR_ERROR_1 , SIMPLE_EXPR_ERROR_2 , SIMPLE_EXPR_ERROR_3 ,
+      EXPR_SIMPLE_TYPE_ERROR_1 , EXPR_SIMPLE_TYPE_ERROR_2 ,
+      EXPR_ARROW_TYPE_ERROR , EXPR_REC_TYPE_ERROR_1 , EXPR_REC_TYPE_ERROR_2 ,
+      EXPR_REC_TYPE_ERROR_3 , REC_ERROR_1 , REC_ERROR_2 , REC_ERROR_3 ,
+      REC_ERROR_4 , REC_ERROR_5 , REC_ERROR_6 , REC_ERROR_7 , REC_ERROR_8 ,
+      REC_ERROR_9 , REC_ERROR_10 , REC_ERROR_11 , REC_ERROR_12 , REC_ERROR_13 ,
+      REC_ERROR_14 , REC_ERROR_15 , REC_ERROR_16 , REC_ERROR_17 , REC_ERROR_18 ,
+      REC_ERROR_19 , REC_ERROR_20 , REC_ERROR_21 , REC_ERROR_22 ,
+      LET_REC_ERROR_1 , LET_REC_ERROR_2 , LET_REC_ERROR_3 , LET_REC_ERROR_4 ,
+      LET_REC_ERROR_5 , LET_REC_ERROR_6 , LET_REC_ERROR_7 , LET_REC_ERROR_8 ,
+      LET_REC_ERROR_9 , LET_REC_ERROR_10 , LET_REC_ERROR_11 , LET_REC_ERROR_12 ,
+      LET_REC_ERROR_13 , LET_REC_ERROR_14 , LET_REC_ERROR_15 ,
+      LET_REC_ERROR_16 , LET_REC_ERROR_17 , LET_REC_ERROR_18 ,
+      LET_REC_ERROR_19 , LET_REC_ERROR_20 , LET_REC_ERROR_21 ,
+      LET_REC_ERROR_22 , LET_REC_ERROR_23 , LET_REC_ERROR_24 ,
+      LET_REC_ERROR_25 , LET_REC_ERROR_26 , LET_REC_ERROR_27 ,
+      LET_REC_ERROR_28 , LET_REC_ERROR_29 , LET_REC_ERROR_30 ,
+      LET_REC_ERROR_31 , LET_REC_ERROR_32 , LET_REC_ERROR_33 ,
+      LET_REC_ERROR_34 , LET_REC_ERROR_35 , LET_REC_ERROR_36 ,
+      LET_REC_ERROR_37 , LET_REC_ERROR_38 , LET_REC_ERROR_39 ,
+      LET_REC_ERROR_40 , LET_REC_ERROR_41 , LET_REC_ERROR_42 ,
+      LET_REC_ERROR_43 , LET_REC_ERROR_44 , LET_REC_ERROR_45 ,
+      LET_REC_ERROR_46 , LET_REC_ERROR_47 , LET_REC_ERROR_48 ,
+      LET_REC_ERROR_49 , LET_REC_ERROR_50 , LET_REC_ERROR_51 ,
+      LET_REC_ERROR_52 , LET_REC_ERROR_53 , LET_REC_ERROR_54 ,
+      LET_REC_ERROR_55 , CURRIED_LET_REC_ERROR_1 , CURRIED_LET_REC_ERROR_2 ,
+      CURRIED_LET_REC_ERROR_3 , CURRIED_LET_REC_ERROR_4 ,
+      CURRIED_LET_REC_ERROR_5 , CURRIED_LET_REC_ERROR_6 ,
+      CURRIED_LET_REC_ERROR_7 , CURRIED_LET_REC_ERROR_8 ,
+      CURRIED_LET_REC_ERROR_9 , CURRIED_LET_REC_ERROR_10 ,
+      CURRIED_LET_REC_ERROR_11 , CURRIED_LET_REC_ERROR_12 ,
+      CURRIED_LET_REC_ERROR_13 , CURRIED_LET_REC_ERROR_14 ,
+      CURRIED_LET_REC_ERROR_15 , CURRIED_LET_REC_ERROR_16 ,
+      CURRIED_LET_REC_ERROR_17 , CURRIED_LET_REC_ERROR_18 ,
+      CURRIED_LET_REC_ERROR_19 , CURRIED_LET_REC_ERROR_20 ,
+      CURRIED_LET_REC_ERROR_21 , CURRIED_LET_REC_ERROR_22 ,
+      CURRIED_LET_REC_ERROR_23 , CURRIED_LET_REC_ERROR_24 ,
+      CURRIED_LET_REC_ERROR_25 , CURRIED_LET_REC_ERROR_26 ,
+      CURRIED_LET_REC_ERROR_27 , CURRIED_LET_REC_ERROR_28 ,
+      CURRIED_LET_REC_ERROR_29 , CURRIED_LET_REC_ERROR_30 ,
+      CURRIED_LET_REC_ERROR_31 , CURRIED_LET_REC_ERROR_32 ,
+      CURRIED_LET_REC_ERROR_33 , CURRIED_LET_REC_ERROR_34 ,
+      CURRIED_LET_REC_ERROR_35 , CURRIED_LET_REC_ERROR_36 ,
+      CURRIED_LET_REC_ERROR_37 , CURRIED_LET_REC_ERROR_38 ,
+      CURRIED_LET_REC_ERROR_39 , CURRIED_LET_REC_ERROR_40 , OBJECT_ERROR_1 ,
+      OBJECT_ERROR_2 , OBJECT_ERROR_3 , OBJECT_ERROR_4 , OBJECT_ERROR_5 ,
+      OBJECT_ERROR_6 , OBJECT_ERROR_7 , OBJECT_ERROR_8 , OBJECT_ERROR_9 ,
+      OBJECT_ERROR_10 , OBJECT_ERROR_11 , OBJECT_ERROR_12 , OBJECT_ERROR_13 ,
+      OBJECT_ERROR_14 , OBJECT_ERROR_15 , OBJECT_ERROR_16 , OBJECT_ERROR_17 ,
+      OBJECT_ERROR_18 , OBJECT_ERROR_19 , OBJECT_ERROR_20 , OBJECT_ERROR_21 ,
+      DUPLICATION_ERROR_1 , DUPLICATION_ERROR_2 , DUPLICATION_ERROR_3 ,
+      DUPLICATION_ERROR_4 , DUPLICATION_ERROR_5 , SEND_ERROR ,
+      ATTRIBUTE_ERROR_1 , ATTRIBUTE_ERROR_2 , ATTRIBUTE_ERROR_3 ,
+      ATTRIBUTE_ERROR_4 , ATTRIBUTE_ERROR_5 , ATTRIBUTE_ERROR_6 ,
+      ATTRIBUTE_ERROR_7 , ATTRIBUTE_ERROR_8 , ATTRIBUTE_ERROR_9 ,
+      ATTRIBUTE_ERROR_10 , ATTRIBUTE_ERROR_11 , ATTRIBUTE_ERROR_12 ,
+      ATTRIBUTE_ERROR_13 , ATTRIBUTE_ERROR_14 , METHOD_ERROR_1 ,
+      METHOD_ERROR_2 , METHOD_ERROR_3 , METHOD_ERROR_4 , METHOD_ERROR_5 ,
+      METHOD_ERROR_6 , METHOD_ERROR_7 , METHOD_ERROR_8 , METHOD_ERROR_9 ,
+      METHOD_ERROR_10 , METHOD_ERROR_11 , METHOD_ERROR_12 , METHOD_ERROR_13 ,
+      METHOD_ERROR_14 , METHOD_ERROR_15 , METHOD_ERROR_16 , METHOD_ERROR_17 ,
+      METHOD_ERROR_18 , METHOD_ERROR_19 , METHOD_ERROR_20 , METHOD_ERROR_21 ,
+      METHOD_ERROR_22 , METHOD_ERROR_23 , METHOD_ERROR_24 , METHOD_ERROR_25 ,
+      METHOD_ERROR_26 , METHOD_ERROR_27 , METHOD_ERROR_28 , METHOD_ERROR_29 ,
+      METHOD_ERROR_30 , METHOD_ERROR_31 , METHOD_ERROR_32 , METHOD_ERROR_33 ,
+      METHOD_ERROR_34 , METHOD_ERROR_35 , METHOD_ERROR_36 , METHOD_ERROR_37 ,
+      METHOD_ERROR_38 , CURRIED_METHOD_ERROR_1 , CURRIED_METHOD_ERROR_2 ,
+      CURRIED_METHOD_ERROR_3 , CURRIED_METHOD_ERROR_4 , CURRIED_METHOD_ERROR_5 ,
+      CURRIED_METHOD_ERROR_6 , CURRIED_METHOD_ERROR_7 , CURRIED_METHOD_ERROR_8 ,
+      CURRIED_METHOD_ERROR_9 , CURRIED_METHOD_ERROR_10 ,
+      CURRIED_METHOD_ERROR_11 , CURRIED_METHOD_ERROR_12 ,
+      CURRIED_METHOD_ERROR_13 , CURRIED_METHOD_ERROR_14 ,
+      CURRIED_METHOD_ERROR_15 , CURRIED_METHOD_ERROR_16 ,
+      CURRIED_METHOD_ERROR_17 , CURRIED_METHOD_ERROR_18 ,
+      CURRIED_METHOD_ERROR_19 , CURRIED_METHOD_ERROR_20 ,
+      CURRIED_METHOD_ERROR_21 , CURRIED_METHOD_ERROR_22 ,
+      CURRIED_METHOD_ERROR_23 , CURRIED_METHOD_ERROR_24 ,
+      CURRIED_METHOD_ERROR_25 , CURRIED_METHOD_ERROR_26 ,
+      CURRIED_METHOD_ERROR_27 , CURRIED_METHOD_ERROR_28 ,
+      CURRIED_METHOD_ERROR_29 , CURRIED_METHOD_ERROR_30 ,
+      CURRIED_METHOD_ERROR_31 , CURRIED_METHOD_ERROR_32 ,
+      CURRIED_METHOD_ERROR_33 , CURRIED_METHOD_ERROR_34 ,
+      CURRIED_METHOD_ERROR_35 , CURRIED_METHOD_ERROR_36 ,
+      CURRIED_METHOD_ERROR_37 , CURRIED_METHOD_ERROR_38 ,
+      CURRIED_METHOD_ERROR_39 , CURRIED_METHOD_ERROR_40 ,
+      CURRIED_METHOD_ERROR_41 , EXPR_OBJECT_TYPE_ERROR_1 ,
+      EXPR_OBJECT_TYPE_ERROR_2 , EXPR_ROW_TYPE_ERROR_1 , EXPR_ROW_TYPE_ERROR_2 ,
+      EXPR_ROW_TYPE_ERROR_3 } ;
+
+
+  private static String [ ] L2CTYPE_NORMAL = new String [ ]
+  { SIMPLE_TYPE , BOOLEAN_TYPE , INTEGER_TYPE , UNIT_TYPE , TYPE_VARIABLE ,
+      TYPE_NAME , REC_TYPE , ARROW_TYPE , OBJECT_TYPE_1 , OBJECT_TYPE_2 ,
+      ROW_TYPE_1 , ROW_TYPE_2 } ;
+
+
+  private static String [ ] L2CTYPE_ERROR = new String [ ]
+  { SIMPLE_TYPE_ERROR_1 , SIMPLE_TYPE_ERROR_2 , ARROW_TYPE_ERROR ,
+      REC_TYPE_ERROR_1 , REC_TYPE_ERROR_2 , REC_TYPE_ERROR_3 ,
+      OBJECT_TYPE_ERROR_1 , OBJECT_TYPE_ERROR_2 , ROW_TYPE_ERROR_1 ,
+      ROW_TYPE_ERROR_2 , ROW_TYPE_ERROR_3 } ;
+
+
   private static String [ ] L3_NORMAL = new String [ ]
   { IDENTIFIER , APPLICATION , INFIX_OPERATION_1 , INFIX_OPERATION_2 ,
       INFIX_OPERATION_3 , INFIX_OPERATION_4 , INFIX_OPERATION_5 ,
@@ -2763,27 +2940,30 @@ public class ParserTest
 
 
   static int countNormal = L0_NORMAL.length + L1_NORMAL.length
-      + L2_NORMAL.length + L2O_NORMAL.length + L3_NORMAL.length
-      + L4_NORMAL.length ;
+      + L2_NORMAL.length + L2O_NORMAL.length + L2C_NORMAL.length
+      + L3_NORMAL.length + L4_NORMAL.length ;
 
 
   static int countNormalType = L1TYPE_NORMAL.length + L2TYPE_NORMAL.length
-      + L2OTYPE_NORMAL.length + L3TYPE_NORMAL.length + L4TYPE_NORMAL.length ;
+      + L2OTYPE_NORMAL.length + L2CTYPE_NORMAL.length + L3TYPE_NORMAL.length
+      + L4TYPE_NORMAL.length ;
 
 
   static int countError = L0_ERROR.length + L1_ERROR.length + L2_ERROR.length
-      + L2O_ERROR.length + L3_ERROR.length + L4_ERROR.length ;
+      + L2O_ERROR.length + L2C_ERROR.length + L3_ERROR.length + L4_ERROR.length ;
 
 
   static int countErrorType = L1TYPE_ERROR.length + L2TYPE_ERROR.length
-      + L2OTYPE_ERROR.length + L3TYPE_ERROR.length + L4TYPE_ERROR.length ;
+      + L2OTYPE_ERROR.length + L2CTYPE_ERROR.length + L3TYPE_ERROR.length
+      + L4TYPE_ERROR.length ;
 
 
   public static String delete ( String s )
   {
     return s.replaceAll ( "<html>" , "" ).replaceAll ( "</html>" , "" )
         .replaceAll ( "<sub>" , "" ).replaceAll ( "</sub>" , "" ).replaceAll (
-            "<br>" , "  -  " ) ;
+            "&lt" , "<" ).replaceAll ( "&gt" , ">" ).replaceAll ( "&amp" , "&" )
+        .replaceAll ( "<br>" , "  -  " ) ;
   }
 
 
@@ -2807,6 +2987,7 @@ public class ParserTest
     boolean l1Okay = test_L1 ( ) ;
     boolean l2Okay = test_L2 ( ) ;
     boolean l2OOkay = test_L2O ( ) ;
+    boolean l2COkay = test_L2C ( ) ;
     boolean l3Okay = test_L3 ( ) ;
     boolean l4Okay = test_L4 ( ) ;
     output ( "*** Overview ***" , Output.NORMAL ) ;
@@ -2817,7 +2998,7 @@ public class ParserTest
     output ( "Count:             "
         + ( countNormal + countNormalType + countError + countErrorType ) ,
         Output.NORMAL ) ;
-    if ( l0Okay && l1Okay && l2Okay && l2OOkay && l3Okay && l4Okay )
+    if ( l0Okay && l1Okay && l2Okay && l2COkay && l2OOkay && l3Okay && l4Okay )
     {
       output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
     }
@@ -2883,6 +3064,22 @@ public class ParserTest
       max = s.length ( ) > max ? s.length ( ) : max ;
     }
     for ( String s : L2OTYPE_ERROR )
+    {
+      max = s.length ( ) > max ? s.length ( ) : max ;
+    }
+    for ( String s : L2C_NORMAL )
+    {
+      max = s.length ( ) > max ? s.length ( ) : max ;
+    }
+    for ( String s : L2C_ERROR )
+    {
+      max = s.length ( ) > max ? s.length ( ) : max ;
+    }
+    for ( String s : L2CTYPE_NORMAL )
+    {
+      max = s.length ( ) > max ? s.length ( ) : max ;
+    }
+    for ( String s : L2CTYPE_ERROR )
     {
       max = s.length ( ) > max ? s.length ( ) : max ;
     }
@@ -3739,6 +3936,195 @@ public class ParserTest
     }
     boolean okay = true ;
     for ( String text : L2TYPE_NORMAL )
+    {
+      okay = parseNormalType ( language , text ) && okay ;
+    }
+    if ( okay )
+    {
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
+    }
+    else
+    {
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
+    }
+    output ( "" , Output.NORMAL ) ;
+    return okay ;
+  }
+
+
+  public static boolean test_L2C ( )
+  {
+    boolean l2CNormalOkay = test_L2C_Normal ( ) ;
+    boolean l2CErrorOkay = test_L2C_Error ( ) ;
+    boolean l2CTypeNormalOkay = test_L2C_Type_Normal ( ) ;
+    boolean l2CTypeErrorOkay = test_L2C_Type_Error ( ) ;
+    output ( "*** L2C ***" , Output.NORMAL ) ;
+    if ( l2CNormalOkay )
+    {
+      output ( "L2C Normal:       " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
+    }
+    else
+    {
+      output ( "L2C Normal:       " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
+    }
+    if ( l2CErrorOkay )
+    {
+      output ( "L2C Error:        " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
+    }
+    else
+    {
+      output ( "L2C Error:        " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
+    }
+    if ( l2CTypeNormalOkay )
+    {
+      output ( "L2CType Normal:   " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
+    }
+    else
+    {
+      output ( "L2CType Normal:   " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
+    }
+    if ( l2CTypeErrorOkay )
+    {
+      output ( "L2CType Error:    " + fillString ( "" , max ) + "SUCCESSFUL" ,
+          Output.NORMAL ) ;
+    }
+    else
+    {
+      output ( "L2CType Error:    " + fillString ( "" , max )
+          + "NOT SUCCESSFUL" , Output.ERROR ) ;
+    }
+    if ( l2CNormalOkay && l2CErrorOkay && l2CTypeNormalOkay && l2CTypeErrorOkay )
+    {
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
+    }
+    else
+    {
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
+    }
+    output ( "" , Output.NORMAL ) ;
+    return l2CNormalOkay && l2CErrorOkay && l2CTypeNormalOkay
+        && l2CTypeErrorOkay ;
+  }
+
+
+  public static boolean test_L2C_Error ( )
+  {
+    output ( "*** L2C Error ***" , Output.NORMAL ) ;
+    LanguageFactory factory = LanguageFactory.newInstance ( ) ;
+    Language language ;
+    try
+    {
+      language = factory.getLanguageById ( "l2C" ) ;
+    }
+    catch ( NoSuchLanguageException e )
+    {
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
+      return false ;
+    }
+    boolean okay = true ;
+    for ( String text : L2C_ERROR )
+    {
+      okay = parseErrorExpression ( language , text ) && okay ;
+    }
+    if ( okay )
+    {
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
+    }
+    else
+    {
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
+    }
+    output ( "" , Output.NORMAL ) ;
+    return okay ;
+  }
+
+
+  public static boolean test_L2C_Normal ( )
+  {
+    output ( "*** L2C Normal ***" , Output.NORMAL ) ;
+    LanguageFactory factory = LanguageFactory.newInstance ( ) ;
+    Language language ;
+    try
+    {
+      language = factory.getLanguageById ( "l2C" ) ;
+    }
+    catch ( NoSuchLanguageException e )
+    {
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
+      return false ;
+    }
+    boolean okay = true ;
+    for ( String text : L2C_NORMAL )
+    {
+      okay = parseNormalExpression ( language , text ) && okay ;
+    }
+    if ( okay )
+    {
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
+    }
+    else
+    {
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
+    }
+    output ( "" , Output.NORMAL ) ;
+    return okay ;
+  }
+
+
+  public static boolean test_L2C_Type_Error ( )
+  {
+    output ( "*** L2CType Error ***" , Output.NORMAL ) ;
+    LanguageFactory factory = LanguageFactory.newInstance ( ) ;
+    Language language ;
+    try
+    {
+      language = factory.getLanguageById ( "l2C" ) ;
+    }
+    catch ( NoSuchLanguageException e )
+    {
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
+      return false ;
+    }
+    boolean okay = true ;
+    for ( String text : L2CTYPE_ERROR )
+    {
+      okay = parseErrorType ( language , text ) && okay ;
+    }
+    if ( okay )
+    {
+      output ( "-> SUCCESSFUL" , Output.NORMAL ) ;
+    }
+    else
+    {
+      output ( "-> NOT SUCCESSFUL" , Output.ERROR ) ;
+    }
+    output ( "" , Output.NORMAL ) ;
+    return okay ;
+  }
+
+
+  public static boolean test_L2C_Type_Normal ( )
+  {
+    output ( "*** L2CType Normal ***" , Output.NORMAL ) ;
+    LanguageFactory factory = LanguageFactory.newInstance ( ) ;
+    Language language ;
+    try
+    {
+      language = factory.getLanguageById ( "l2C" ) ;
+    }
+    catch ( NoSuchLanguageException e )
+    {
+      output ( "NoSuchLanguageException" , Output.ERROR ) ;
+      return false ;
+    }
+    boolean okay = true ;
+    for ( String text : L2CTYPE_NORMAL )
     {
       okay = parseNormalType ( language , text ) && okay ;
     }
