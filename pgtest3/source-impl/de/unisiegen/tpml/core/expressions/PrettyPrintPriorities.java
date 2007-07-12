@@ -282,6 +282,18 @@ interface PrettyPrintPriorities
 
 
   /**
+   * The pretty print priority for new expressions.
+   */
+  public static final int PRIO_NEW = 0 ;
+
+
+  /**
+   * The pretty print priority for the e of new expressions.
+   */
+  public static final int PRIO_NEW_E = 0 ;
+
+
+  /**
    * The pretty print priority for and expressions.
    */
   public static final int PRIO_AND = 1 ;
@@ -315,6 +327,18 @@ interface PrettyPrintPriorities
    * The pretty print priority for the e2 of or expressions.
    */
   public static final int PRIO_OR_E2 = PRIO_OR_E1 + 1 ;
+
+
+  /**
+   * The pretty print priority for {@link Class}s.
+   */
+  public static final int PRIO_CLASS = 0 ;
+
+
+  /**
+   * The pretty print priority for sub expressions of {@link Class}s.
+   */
+  public static final int PRIO_CLASS_E = 0 ;
 
 
   /**

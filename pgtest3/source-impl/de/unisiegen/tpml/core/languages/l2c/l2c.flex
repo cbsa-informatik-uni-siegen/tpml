@@ -71,6 +71,11 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 		case END:
 		case ATTRIBUTE:
 		case METHOD:
+		case CLASS:
+		case NEW:
+		case INHERIT:
+		case FROM:
+		case AS:
 		  return PrettyStyle.KEYWORD;
 		case BOOL:
 		case INT:
@@ -146,6 +151,11 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	";"					{ return symbol("SEMI", SEMI); }
 	"{<"				{ return symbol("DUPLBEGIN", DUPLBEGIN); }
 	">}"				{ return symbol("DUPLEND", DUPLEND); }
+	"class"				{ return symbol("CLASS", CLASS); }
+	"new"				{ return symbol("NEW", NEW); }
+	"inherit"			{ return symbol("INHERIT", INHERIT); }
+	"from"				{ return symbol("FROM", FROM); }
+	"as"				{ return symbol("AS", AS); }
 	"bool"				{ return symbol("BOOL", BOOL); }
 	"int"				{ return symbol("INT", INT); }
 	"unit"				{ return symbol("UNIT", UNIT); }

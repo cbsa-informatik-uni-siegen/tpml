@@ -4,6 +4,7 @@ import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.BooleanConstant ;
+import de.unisiegen.tpml.core.expressions.Class;
 import de.unisiegen.tpml.core.expressions.Coercion;
 import de.unisiegen.tpml.core.expressions.Condition ;
 import de.unisiegen.tpml.core.expressions.Constant ;
@@ -19,6 +20,7 @@ import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
 import de.unisiegen.tpml.core.expressions.Method ;
+import de.unisiegen.tpml.core.expressions.New ;
 import de.unisiegen.tpml.core.expressions.Not ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Or ;
@@ -81,11 +83,16 @@ terminal			ELSE;
 terminal			TRUE;
 terminal			FALSE;
 terminal			REC;
-terminal			OBJECT ;
-terminal			END ;
-terminal			ATTRIBUTE ;
-terminal			METHOD ;
-
+terminal			OBJECT;
+terminal			END;
+terminal			ATTRIBUTE;
+terminal			METHOD;
+terminal			CLASS;
+terminal			NEW;
+terminal			INHERIT;
+terminal			FROM;
+terminal			AS;
+		
 /* Types */
 terminal			BOOL;
 terminal			INT;
@@ -142,6 +149,8 @@ non terminal Row					row;
 non terminal Attribute				attribute;
 non terminal Method					method;
 non terminal CurriedMethod			curried_method;
+non terminal Class					class;
+non terminal New					new;
 
 /* Non terminal - Type */
 non terminal MonoType				type;
@@ -205,6 +214,7 @@ non terminal 		duplication_pair_error;
 non terminal 		duplication_list_error;
 non terminal 		object_type_error;
 non terminal		row_type_error;
+non terminal		class_error;
 
 /* Precedence */
 precedence right	ARROW;
@@ -259,6 +269,10 @@ expr							::=	simple_expr:e
 									{: RESULT = o; :}
 								|   duplication:d
 									{: RESULT = d; :}
+								|   class:c
+									{: RESULT = c; :}
+								|   new:n
+									{: RESULT = n; :}
 								;
 
 identifier						::= IDENTIFIER:id
@@ -1321,6 +1335,14 @@ curried_method_pair_error		::= LPAREN:l epsilon
 								// Missing type
 								|	LPAREN:l IDENTIFIER COLON:c RPAREN
 									{: Error.expect("Curried-Method", " \u03C4", lleft, cright, "\u03C4" ); :}
+								;
+
+class							::= CLASS:c LPAREN SELF:id RPAREN expr:e END:end
+									{: RESULT = new Class (new Identifier (id,idleft,idright), e, cleft, endright); :}
+								;
+
+new								::= NEW:n expr:e
+									{: RESULT = new New (e, nleft, eright); :}
 								;
 
 constant						::=	unit_constant:u
