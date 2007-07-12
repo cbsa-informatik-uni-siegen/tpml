@@ -1,52 +1,48 @@
 package de.unisiegen.tpml.graphics.typechecker ;
 
 
-import java.awt.Color ;
-import java.awt.Container ;
-import java.awt.Cursor ;
-import java.awt.Dimension ;
-import java.awt.FontMetrics ;
-import java.awt.Graphics;
-import java.awt.PaintContext;
-import java.awt.Point ;
-import java.io.StringReader ;
-import java.text.MessageFormat ;
-import javax.swing.JComponent ;
-import javax.swing.JLabel ;
-import javax.swing.JMenuItem ;
-import javax.swing.JOptionPane ;
-import javax.swing.JPopupMenu ;
-import javax.swing.SwingUtilities ;
-import de.unisiegen.tpml.core.ProofGuessException ;
-import de.unisiegen.tpml.core.ProofNode ;
-import de.unisiegen.tpml.core.ProofRule ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.core.languages.LanguageParser ;
-import de.unisiegen.tpml.core.languages.LanguageTranslator ;
-import de.unisiegen.tpml.core.languages.LanguageTypeParser ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.RowType;
-import de.unisiegen.tpml.core.types.Type ;
-import de.unisiegen.tpml.graphics.Messages ;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Point;
+import java.io.StringReader;
+import java.text.MessageFormat;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
+
+import de.unisiegen.tpml.core.ProofGuessException;
+import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageParser;
+import de.unisiegen.tpml.core.languages.LanguageTranslator;
+import de.unisiegen.tpml.core.languages.LanguageTypeParser;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.Theme;
-import de.unisiegen.tpml.graphics.components.CompoundExpression ;
-import de.unisiegen.tpml.graphics.components.MenuButton ;
-import de.unisiegen.tpml.graphics.components.MenuButtonListener ;
-import de.unisiegen.tpml.graphics.components.MenuEnterTypeItem ;
-import de.unisiegen.tpml.graphics.components.MenuGuessItem ;
-import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem ;
-import de.unisiegen.tpml.graphics.components.MenuRuleItem ;
-import de.unisiegen.tpml.graphics.components.MenuTranslateItem ;
-import de.unisiegen.tpml.graphics.components.ShowBonds;
+import de.unisiegen.tpml.graphics.components.CompoundExpression;
+import de.unisiegen.tpml.graphics.components.MenuButton;
+import de.unisiegen.tpml.graphics.components.MenuButtonListener;
+import de.unisiegen.tpml.graphics.components.MenuEnterTypeItem;
+import de.unisiegen.tpml.graphics.components.MenuGuessItem;
+import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
+import de.unisiegen.tpml.graphics.components.MenuRuleItem;
+import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
 import de.unisiegen.tpml.graphics.components.TypeComponent;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener ;
-import de.unisiegen.tpml.graphics.renderer.AbstractRenderer ;
-import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
-import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
-import de.unisiegen.tpml.graphics.tree.TreeNodeComponent ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
+import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
+import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
 
 /**
@@ -63,9 +59,10 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent ;
  * <br>
  * The first rectangle represents the {@link #indexLabel} The second rectanle
  * represents the entire {@link #compoundExpression} including the
- * typeenvironment. The last element in the first row is the {@link #typeLabel}
- * containing the resulting type, it also is containing the <code>" :: "</code>.
- * If the node is not completly evaluated only the four dots are drawn.<br>
+ * typeenvironment. Then ther will be the {@link #doubleColonLabel} containing the <code>"  ::  "</code>. 
+ * The last element in the first row is the {@link #typeComponent}
+ * containing the resulting type.
+ * If the node is not completly evaluated or the view is not in advanced mode only the four dots are drawn.<br>
  * In the next row there is only one rectangle containing the rule. In the case
  * of the previous image the {@link #ruleLabel} is shown, but as long as the
  * node has not been evaluated with a rule there would be located the
@@ -131,7 +128,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
 
 
   /**
-   * The label containing the <i>(x)</i> text at the beginning.
+   * The label containing the <i>(x)</i> (the number of step) text at the beginning.
    */
   private JLabel indexLabel ;
 
@@ -142,8 +139,8 @@ public class TypeCheckerNodeComponent extends JComponent implements
   private CompoundExpression < Identifier , Type > compoundExpression ;
   
   /**
-   * The typeComponent containing the type of this node
-   * 
+   * The {@link JLabel} showing the resulting type of this node, once the node
+   * has been evaluated or the view is in advaced mode. Otherwise the componet will not be shown.
    */
   private TypeComponent typeComponent ;
 
@@ -153,19 +150,18 @@ public class TypeCheckerNodeComponent extends JComponent implements
    */
   private MenuButton ruleButton ;
 
-
-  /**
-   * The {@link JLabel} showing the resulting type of this node, once the node
-   * has been evaluated.
-   */
-  //private JLabel typeLabel ;
   
+  /**
+   * The Label shown between the type and the expression. It will be
+   * " :: "
+   */
   private JLabel doubleColonLabel;
   
-  //private JLabel typeLabel0;
-  
-  //private JLabel typeLabel1;
-  
+  /**
+   * The String for the label
+   */
+  private static final String  doubleColonString = "  ::  ";
+
 
   /**
    * The {@link JLabel} showing the information about the rule, once the rule
@@ -218,6 +214,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
    * @param node The origin ProofNode
    * @param model The model
    * @param translator The translator of the model for the selected language
+   * @param advanced The advanced value
    */
   public TypeCheckerNodeComponent ( TypeCheckerProofNode node ,
       TypeCheckerProofModel model , LanguageTranslator translator, boolean advanced )
@@ -254,7 +251,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
     add (this.doubleColonLabel);
     this.doubleColonLabel.setFont(Theme.currentTheme().getFont());
     this.doubleColonLabel.setForeground(Theme.currentTheme().getExpressionColor());
-    this.doubleColonLabel.setText ("  ::  "); //$NON-NLS-1$
+    this.doubleColonLabel.setText (doubleColonString); //$NON-NLS-1$
     //this.typeLabel = new JLabel ( ) ;
     //add ( this.typeLabel ) ;
     //this.typeLabel.setText ( " !! " ) ; //$NON-NLS-1$
@@ -404,108 +401,108 @@ public class TypeCheckerNodeComponent extends JComponent implements
    */
   private void placeElements ( int maxWidth )
   {
-  	//will save if the type is shown or not
-  	boolean showType = false;
-  	//save the maxWidht
-  	lastMaxWidth = maxWidth;
+  	// will save if the type is shown or not
+    boolean showType = false;
+    // save the maxWidht so the setAdvaced() is able to replace the elements
+    lastMaxWidth = maxWidth;
     // get the size for the index at the beginning: (x)
-    FontMetrics fm = AbstractRenderer.getTextFontMetrics ( ) ;
-    Dimension labelSize = new Dimension ( fm.stringWidth ( this.indexLabel
-        .getText ( ) ) , fm.getHeight ( ) ) ;
-    this.dimension.setSize ( labelSize.width , labelSize.height ) ;
+    FontMetrics fm = AbstractRenderer.getTextFontMetrics();
+    Dimension labelSize = new Dimension(fm.stringWidth(this.indexLabel.getText()), fm.getHeight());
+    this.dimension.setSize(labelSize.width, labelSize.height);
     // there will be a bit spacing between the index label and the expression
-    this.dimension.width += this.spacing ;
+    this.dimension.width += this.spacing;
     // the index shrinkens the max size for the expression
-    maxWidth -= labelSize.width ;
+    maxWidth -= labelSize.width;
     // get the needed size for the expression
-    Dimension expSize = this.compoundExpression.getNeededSize ( maxWidth ) ;
-    this.dimension.width += expSize.width ;
-    this.dimension.height = Math.max ( expSize.height , this.dimension.height ) ;
-    
-    Dimension typeSize = typeComponent.getNeededSize (maxWidth);
-    
+    Dimension expSize = this.compoundExpression.getNeededSize(maxWidth
+        - AbstractRenderer.getTextFontMetrics().stringWidth(doubleColonString));
+    this.dimension.width += expSize.width;
+    this.dimension.width += AbstractRenderer.getTextFontMetrics().stringWidth(doubleColonString);
+    this.dimension.height = Math.max(expSize.height, this.dimension.height);
+
+    Dimension typeSize = typeComponent.getNeededSize(maxWidth);
+
     // get the neede size for the type
-    if (this.proofNode.getType () != null && (this.proofNode.isFinished() || this.advanced) )
+    if (this.proofNode.getType() != null && (this.proofNode.isFinished() || this.advanced))
     {
-    	//ok, we want to see the type
-    	showType=true;
-      
-      //typeRenderer.setPrettyString (this.proofNode.getType ().toPrettyString ());
-      //FontMetrics fm = AbstractRenderer.getTextFontMetrics ();
-      
-      //this.proofNode.getType ().toPrettyString ();
-      //this.typeLabel.setText(" :: " + this.proofNode.getType()); //$NON-NLS-1$
+      // ok, we want to see the type
+      showType = true;
     }
-    else {
-      //hide the type
-    	showType=false;
-    }
-    //Dimension typeSize = this.typeLabel.getPreferredSize ( ) ;
-    
-    
-    //TODO: Fallunterscheidung: Wenn es noch hinter die Expression passt, dann da hinrendern, sonst in die nächste Zeile...
-    boolean broke=false;
-    if ( (this.dimension.width + typeSize.width) > maxWidth) //passt nicht mehr
+    else
     {
-    	this.dimension.width = Math.max(dimension.width +AbstractRenderer.getTextFontMetrics().stringWidth("  ::  "), expSize.width);
+      // hide the type
+      showType = false;
+    }
+    // Dimension typeSize = this.typeLabel.getPreferredSize ( ) ;
+
+    // the type will be renderd behind the expression if ther is enough space available
+    // remember if it is neccessary to break
+    boolean broke = false;
+    if ( (this.dimension.width + typeSize.width) > maxWidth) //dose not fit
+    {
+      //update the dimension
+    	this.dimension.width = Math.max(dimension.width, typeSize.width);
     	this.dimension.height += typeSize.height;
     	this.dimension.height += AbstractRenderer.getAbsoluteHeight();
+      //remember to break
     	broke = true;
     }
     else
     {
+      //update the dimension
     	this.dimension.width += typeSize.width ;
-    	this.dimension.width += AbstractRenderer.getTextFontMetrics().stringWidth("  ::  ");
       this.dimension.height = Math.max ( typeSize.height , this.dimension.height ) ;
     }
+ 
+    // now place the components, every component will be placed at posX, posY
+    int posX = 0;
+    this.indexLabel.setBounds(posX, 0, labelSize.width, this.dimension.height);
+    posX += labelSize.width + this.spacing;
 
-    
-    // now place the components
-    int posX = 0 ;
-    this.indexLabel.setBounds ( posX , 0 , labelSize.width , this.dimension.height ) ;
-    posX += labelSize.width + this.spacing ;
-    //this.compoundExpression.setBounds ( posX , 0 , expSize.width , this.dimension.height ) ;
-    this.compoundExpression.setBounds ( posX , 0 , expSize.width , expSize.height ) ;
+    // save the psoition of the front wher the expression starts. Wher will also the type start.
     int posXfront = posX;
-    posX += expSize.width ;
-    this.doubleColonLabel.setBounds ( posX , AbstractRenderer.getFontLeading(), AbstractRenderer.getTextFontMetrics().stringWidth("  ::  "), expSize.height ) ;
+
+    // set the expression position
+    this.compoundExpression.setBounds(posX, 0, expSize.width, expSize.height);
+    posX += expSize.width;
+
+    // set the ::
+    this.doubleColonLabel.setBounds(posX, AbstractRenderer.getFontLeading(), AbstractRenderer.getTextFontMetrics()
+        .stringWidth(doubleColonString), expSize.height);
     posX += doubleColonLabel.getSize().width;
    
-    //this.typeLabel.setBounds(posX, 0, typeSize.width, this.dimension.height);
-    //ShowBonds sb = new ShowBonds();
-    //sb.setType (this.proofNode.getType() );
-    //ToListenForMouseContainer tlfmc = new ToListenForMouseContainer();
-   if (broke)
-   {
-  	 //this.typeComponent.setBounds (posXfront, 0+expSize.height + AbstractRenderer.getAbsoluteHeight(), typeSize.width, typeSize.height);
-  	 if (showType)
-  	 {
-  			 this.typeComponent.setBounds (posXfront, 0+expSize.height, typeSize.width, typeSize.height);
-  			 posX += typeSize.width ; 
-  	 }
-  	 else
-  	 {
-  		 this.typeComponent.setBounds(0,0,0,0);
-  	 }
-   }
-   else
-   {
-  	 if (showType)
-  	 {
-  			 this.typeComponent.setBounds (posX, 0, typeSize.width, typeSize.height);
-  			 posX += typeSize.width ; 
-  	 }
-  	 else
-  	 {
-  		 this.typeComponent.setBounds(0,0,0,0);
-  	 }
-   }
-    
-    //typeRenderer.render (typePosition, 0,typeRenderer.getNeededSize (maxWidth).width ,typeRenderer.getNeededSize (maxWidth).height, this.getGraphics (), sb, tlfmc);
-   
-    //posX += typeSize.width ;
-    //posX += typeSize.width;
-    
+
+    // if the expression and type are not in the same line the type will be placed in the next line
+    // under the expression at the beginning og posXfront
+    if (broke)
+    {
+      if (showType)
+      {
+        this.typeComponent.setBounds(posXfront, 0 + expSize.height, typeSize.width, typeSize.height);
+        posX += typeSize.width;
+      }
+      else
+      // do net shoe thy type
+      {
+        // siply hide it.
+        this.typeComponent.setBounds(0, 0, 0, 0);
+      }
+    }
+    else
+    // place the Type behind the expression
+    {
+      if (showType)
+      {
+        this.typeComponent.setBounds(posX, 0, typeSize.width, typeSize.height);
+        posX += typeSize.width;
+      }
+      else
+      // do net shoe thy type
+      {
+        // siply hide it.
+        this.typeComponent.setBounds(0, 0, 0, 0);
+      }
+    }
     
     /*
      * Check whether this is node is evaluated. If it is evaluated only the
@@ -556,10 +553,8 @@ public class TypeCheckerNodeComponent extends JComponent implements
         this.ruleLabel.setVisible ( false ) ;
         this.ruleButton.setVisible ( false ) ;
         this.typeEnter.setVisible ( true ) ;
-      }
-      
+      }    
     }
-   
   }
 
 
@@ -880,26 +875,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
   {
     return this.compoundExpression ;
   }
-/**
- * TODO
- *
- * @param advancedP
- */
-//  
-//  public void paintComponent (Graphics gc)
-//  {
-//    super.paintComponent (gc);
-//    System.out.println("Auch Scheiße!!!");
-//    ShowBonds sb = new ShowBonds();
-//    sb.setType (this.proofNode.getType() );
-//    ToListenForMouseContainer tlfmc = new ToListenForMouseContainer();
-//    
-//    //System.out.println ("Scheiße!");
-//   
-//    typeRenderer.render (typePosition, 0,typeRenderer.getNeededSize (Integer.MAX_VALUE).width ,typeRenderer.getNeededSize (Integer.MAX_VALUE).height, this.getGraphics (), sb, tlfmc);
-//   
-//    
-//  }
+
 
 /**
  * sets the advanced
