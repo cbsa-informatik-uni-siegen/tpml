@@ -687,11 +687,11 @@ coercion						::= LPAREN:l seq_expr:e COLON type:tau1 SUBTYPE type:tau2 RPAREN:r
 								;
 
 coercion_error					::= LPAREN:l seq_expr COLON:c
-									{: Error.expect("Coercion", " \u03C4 <: \u03C4)", lleft, cright, "\u03C4 &lt: \u03C4)" ); :}
+									{: Error.expect("Coercion", " int <: int)", lleft, cright, "\u03C4 &lt: \u03C4)" ); :}
 								|	LPAREN:l seq_expr COLON type:tau1
-									{: Error.expect("Coercion", " <: \u03C4)", lleft, tau1right, "&lt: \u03C4)" ); :}
+									{: Error.expect("Coercion", " <: int)", lleft, tau1right, "&lt: \u03C4)" ); :}
 								|	LPAREN:l seq_expr COLON type SUBTYPE:s
-									{: Error.expect("Coercion", " \u03C4)", lleft, sright, "\u03C4)" ); :}
+									{: Error.expect("Coercion", " int)", lleft, sright, "\u03C4)" ); :}
 								|	LPAREN:l seq_expr COLON type SUBTYPE type:tau2
 									{: Error.expect("Coercion", ")", lleft, tau2right, ")" ); :}
 								// Missing colon
@@ -699,22 +699,22 @@ coercion_error					::= LPAREN:l seq_expr COLON:c
 									{: Error.expect("Coercion", ": ", lleft, eright, ":" ); :}
 								// Missing type 1
 								|	LPAREN:l seq_expr COLON:c SUBTYPE
-									{: Error.expect("Coercion", " \u03C4 ", lleft, cright, "\u03C4" ); :}
+									{: Error.expect("Coercion", " int ", lleft, cright, "\u03C4" ); :}
 								// Missing subtype
 								|	LPAREN:l seq_expr COLON type:tau1 type
 									{: Error.expect("Coercion", " <: ", lleft, tau1right, "&lt:" ); :}
 								// Missing type 2
 								|	LPAREN:l seq_expr COLON type SUBTYPE:s RPAREN
-									{: Error.expect("Coercion", " \u03C4", lleft, sright, "\u03C4" ); :}
+									{: Error.expect("Coercion", " int", lleft, sright, "\u03C4" ); :}
 								// Missing colon and type 1
 								|	LPAREN:l seq_expr:e SUBTYPE
-									{: Error.expect("Coercion", ": \u03C4 ", lleft, eright, ": \u03C4" ); :}
+									{: Error.expect("Coercion", ": int ", lleft, eright, ": \u03C4" ); :}
 								// Missing subtyping and type 2
 								|	LPAREN:l seq_expr COLON type:tau1 RPAREN
-									{: Error.expect("Coercion", " <: \u03C4", lleft, tau1right, "&lt: \u03C4" ); :}
+									{: Error.expect("Coercion", " <: int", lleft, tau1right, "&lt: \u03C4" ); :}
 								// Missing type 1, subtyping and type 2
 								|	LPAREN:l seq_expr COLON:c RPAREN
-									{: Error.expect("Coercion", " \u03C4 <: \u03C4", lleft, cright, "\u03C4 &lt: \u03C4" ); :}
+									{: Error.expect("Coercion", " int <: int", lleft, cright, "\u03C4 &lt: \u03C4" ); :}
 								;
 
 recursion						::= REC:r IDENTIFIER:id DOT seq_expr:e
