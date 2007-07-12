@@ -81,10 +81,10 @@ terminal			ELSE;
 terminal			TRUE;
 terminal			FALSE;
 terminal			REC;
-terminal			OBJECT ;
-terminal			END ;
-terminal			ATTRIBUTE ;
-terminal			METHOD ;
+terminal			OBJECT;
+terminal			END;
+terminal			ATTRIBUTE;
+terminal			METHOD;
 
 /* Types */
 terminal			BOOL;
