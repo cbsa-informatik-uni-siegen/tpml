@@ -6,7 +6,6 @@ import java_cup.runtime.Symbol ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.languages.LanguageParserException ;
 import de.unisiegen.tpml.core.languages.LanguageScanner ;
-import de.unisiegen.tpml.core.languages.l2o.L2OAbstractParser ;
 
 
 /**
@@ -14,9 +13,9 @@ import de.unisiegen.tpml.core.languages.l2o.L2OAbstractParser ;
  * 
  * @author Christian Fehler
  * @version $Rev: 1081 $
- * @see de.unisiegen.tpml.core.languages.l2o.L2OAbstractParser
+ * @see de.unisiegen.tpml.core.languages.l2c.L2CAbstractParser
  */
-final class L2CParser extends L2OAbstractParser
+final class L2CParser extends L2CAbstractParser
 {
   /**
    * Allocates a new <code>L2OParser</code> that operates on tokens from the
