@@ -470,9 +470,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
     posX += expSize.width ;
     this.doubleColonLabel.setBounds ( posX , AbstractRenderer.getFontLeading(), AbstractRenderer.getTextFontMetrics().stringWidth("  ::  "), expSize.height ) ;
     posX += doubleColonLabel.getSize().width;
-    System.out.println(doubleColonLabel.getSize().width);
-    //
-    
+   
     //this.typeLabel.setBounds(posX, 0, typeSize.width, this.dimension.height);
     //ShowBonds sb = new ShowBonds();
     //sb.setType (this.proofNode.getType() );
