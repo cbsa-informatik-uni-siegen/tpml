@@ -857,8 +857,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//prettyStringrenderer.render(posX, posY-(expressionSize.height / 2) - fontAscent / 2, expressionSize.height, gc, bound, toListenForM);
 					//posX += AbstractRenderer.keywordFontMetrics.stringWidth(expression.toString());
 					posX += expressionSize.width;
-					//TODO test
-					//posX -= AbstractRenderer.expFontMetrics.stringWidth(doubleColon);
+
 					startWidht += expressionSize.width;
 					nochNutzbar -= expressionSize.width;
 					

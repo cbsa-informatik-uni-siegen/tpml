@@ -21,8 +21,7 @@ import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
 
 
 /**
- * this class renders the coumpoundexpression
-
+ * this class renders the types in the TypeChecker
  */
 public class TypeComponent extends JComponent
 {
@@ -92,7 +91,8 @@ public class TypeComponent extends JComponent
     this.bonds = new ShowBonds ( ) ;
     this.toListenForMouse = new ToListenForMouseContainer ( ) ;
     this.alternativeColor = null ;
-    this.text = " :: "; //$NON-NLS-1$
+    //this.text = " :: "; //$NON-NLS-1$
+    this.text = "";
 
     this.addMouseMotionListener ( new MouseMotionAdapter ( )
     {
@@ -156,12 +156,6 @@ public class TypeComponent extends JComponent
     //tell the PrettyStringRenderer where the mouse pointer is
     toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
     
-    
-    //TODO das brauchen wir hier nicht...
-    //if the mouse is over the expression, let the showbound know it
-    //bonds.setExpression(this.expression);
-   
-
     //first, we do not want to mark anything, we are waiting for mouse pointer is over one bounded id
     toListenForMouse.setMark ( false ) ;
     TypeComponent.this.repaint ( ) ;

@@ -247,13 +247,20 @@ public abstract class AbstractRenderer
 	/**
 	 * @return the fontAscent
 	 */
-	public static int getFontAscent()
-	{
-		return fontAscent;
-	}
+	//public static int getFontAscent()
+	//{
+	//	return fontAscent;
+	//}
 	
 	public static int getAbsoluteHeight()
 	{
 		return fontHeight + fontLeading;
 	}
+	
+	public static int getFontLeading()
+	{
+		return fontLeading;
+	}
+
+
 }

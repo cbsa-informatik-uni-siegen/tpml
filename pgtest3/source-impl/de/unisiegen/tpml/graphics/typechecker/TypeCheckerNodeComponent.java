@@ -31,6 +31,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.RowType;
 import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.graphics.Messages ;
+import de.unisiegen.tpml.graphics.Theme;
 import de.unisiegen.tpml.graphics.components.CompoundExpression ;
 import de.unisiegen.tpml.graphics.components.MenuButton ;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener ;
@@ -159,6 +160,8 @@ public class TypeCheckerNodeComponent extends JComponent implements
    */
   //private JLabel typeLabel ;
   
+  private JLabel doubleColonLabel;
+  
   //private JLabel typeLabel0;
   
   //private JLabel typeLabel1;
@@ -247,6 +250,11 @@ public class TypeCheckerNodeComponent extends JComponent implements
     this.ruleLabel = new JLabel ( ) ;
     add ( this.ruleLabel ) ;
     this.ruleLabel.setVisible ( false ) ;
+    this.doubleColonLabel = new JLabel();
+    add (this.doubleColonLabel);
+    this.doubleColonLabel.setFont(Theme.currentTheme().getFont());
+    this.doubleColonLabel.setForeground(Theme.currentTheme().getExpressionColor());
+    this.doubleColonLabel.setText ("  ::  "); //$NON-NLS-1$
     //this.typeLabel = new JLabel ( ) ;
     //add ( this.typeLabel ) ;
     //this.typeLabel.setText ( " !! " ) ; //$NON-NLS-1$
@@ -439,7 +447,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
     boolean broke=false;
     if ( (this.dimension.width + typeSize.width) > maxWidth) //passt nicht mehr
     {
-    	this.dimension.width = Math.max(dimension.width, expSize.width);
+    	this.dimension.width = Math.max(dimension.width +AbstractRenderer.getTextFontMetrics().stringWidth("  ::  "), expSize.width);
     	this.dimension.height += typeSize.height;
     	this.dimension.height += AbstractRenderer.getAbsoluteHeight();
     	broke = true;
@@ -447,6 +455,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
     else
     {
     	this.dimension.width += typeSize.width ;
+    	this.dimension.width += AbstractRenderer.getTextFontMetrics().stringWidth("  ::  ");
       this.dimension.height = Math.max ( typeSize.height , this.dimension.height ) ;
     }
 
@@ -459,7 +468,9 @@ public class TypeCheckerNodeComponent extends JComponent implements
     this.compoundExpression.setBounds ( posX , 0 , expSize.width , expSize.height ) ;
     int posXfront = posX;
     posX += expSize.width ;
-    //this.typeLabel.setBounds ( posX , 0 , braceSize.width , braceSize.height ) ;
+    this.doubleColonLabel.setBounds ( posX , AbstractRenderer.getFontLeading(), AbstractRenderer.getTextFontMetrics().stringWidth("  ::  "), expSize.height ) ;
+    posX += doubleColonLabel.getSize().width;
+    System.out.println(doubleColonLabel.getSize().width);
     //
     
     //this.typeLabel.setBounds(posX, 0, typeSize.width, this.dimension.height);
