@@ -6,6 +6,8 @@ import java.util.Arrays ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
+import de.unisiegen.tpml.core.interfaces.SortedChildren ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -18,13 +20,13 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @version $Rev: 1066 $
  */
 public final class Body extends Expression implements BoundIdentifiers ,
-    DefaultExpressions
+    DefaultExpressions , SortedChildren
 {
   /**
    * Indeces of the child {@link Expression}s.
    */
   private static final int [ ] INDICES_E = new int [ ]
-  { - 1 , -1 } ;
+  { - 1 , - 1 } ;
 
 
   /**
@@ -134,7 +136,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
       this.indicesId [ this.attributeIdentifiers.length + i ] = i + 1 ;
     }
     this.baseClassNameIdentifier.setParent ( this ) ;
-    this.identifiers [ this.indicesId.length - 1 ] = this.baseClassNameIdentifier ;
+    this.identifiers [ this.identifiers.length - 1 ] = this.baseClassNameIdentifier ;
     this.indicesId [ this.indicesId.length - 1 ] = - 1 ;
     // Expression
     this.expressions = new Expression [ ]
@@ -212,6 +214,28 @@ public final class Body extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * Returns the sub {@link Body}.
+   * 
+   * @return the sub {@link Body}.
+   */
+  public Expression getB ( )
+  {
+    return this.expressions [ 1 ] ;
+  }
+
+
+  /**
+   * Returns the base class name.
+   * 
+   * @return The base class name.
+   */
+  public Identifier getBaseClassName ( )
+  {
+    return this.baseClassNameIdentifier ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override
@@ -229,17 +253,6 @@ public final class Body extends Expression implements BoundIdentifiers ,
   public Expression getE ( )
   {
     return this.expressions [ 0 ] ;
-  }
-
-
-  /**
-   * Returns the sub {@link Body}.
-   * 
-   * @return the sub {@link Body}.
-   */
-  public Expression getB ( )
-  {
-    return this.expressions [ 1 ] ;
   }
 
 
@@ -266,17 +279,6 @@ public final class Body extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * Returns the base class name.
-   * 
-   * @return The base class name.
-   */
-  public Identifier getBaseClassName ( )
-  {
-    return this.baseClassNameIdentifier ;
-  }
-
-
-  /**
    * Returns the {@link Identifier}s of this {@link Expression}.
    * 
    * @return The {@link Identifier}s of this {@link Expression}.
@@ -297,7 +299,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
     if ( this.boundIdentifiers == null )
     {
       this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> (
-          this.identifiers.length ) ;
+          this.identifiers.length + 1 ) ;
       ArrayList < Identifier > boundExpressionBody = new ArrayList < Identifier > ( ) ;
       boundExpressionBody
           .addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
@@ -316,7 +318,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
         }
         this.boundIdentifiers.add ( boundIdList ) ;
       }
-      for ( int i = this.attributeIdentifiers.length ; i < this.identifiers.length ; i ++ )
+      for ( int i = this.attributeIdentifiers.length ; i < this.identifiers.length + 1 ; i ++ )
       {
         this.boundIdentifiers.add ( null ) ;
       }
@@ -361,6 +363,32 @@ public final class Body extends Expression implements BoundIdentifiers ,
   public int [ ] getIdentifiersIndex ( )
   {
     return this.indicesId ;
+  }
+
+
+  /**
+   * Returns the {@link Identifier}s and {@link Expression}s in the right
+   * sorting.
+   * 
+   * @return The {@link Identifier}s and {@link Expression}s in the right
+   *         sorting.
+   * @see SortedChildren#getSortedChildren()
+   */
+  public ExpressionOrType [ ] getSortedChildren ( )
+  {
+    ExpressionOrType [ ] result = new ExpressionOrType [ this.identifiers.length + 2 ] ;
+    for ( int i = 0 ; i < this.attributeIdentifiers.length ; i ++ )
+    {
+      result [ i ] = this.attributeIdentifiers [ i ] ;
+    }
+    for ( int i = 0 ; i < this.methodIdentifiers.length ; i ++ )
+    {
+      result [ this.attributeIdentifiers.length + i ] = this.methodIdentifiers [ i ] ;
+    }
+    result [ result.length - 3 ] = this.expressions [ 0 ] ;
+    result [ result.length - 2 ] = this.baseClassNameIdentifier ;
+    result [ result.length - 1 ] = this.expressions [ 1 ] ;
+    return result ;
   }
 
 
@@ -439,7 +467,6 @@ public final class Body extends Expression implements BoundIdentifiers ,
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    // TODO Priorities
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
