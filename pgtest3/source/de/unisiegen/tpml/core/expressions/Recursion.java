@@ -145,7 +145,8 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
     for ( Identifier allId : allIdentifiers )
     {
       if ( ( this.identifiers [ 0 ].equals ( allId ) )
-          && ( allId.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) ) )
+          && ( ! ( ( allId.getSet ( ).equals ( Identifier.Set.VARIABLE ) || ( allId
+              .getSet ( ).equals ( Identifier.Set.MESSAGE ) ) ) ) ) )
       {
         negativeIdentifiers.add ( allId ) ;
       }
