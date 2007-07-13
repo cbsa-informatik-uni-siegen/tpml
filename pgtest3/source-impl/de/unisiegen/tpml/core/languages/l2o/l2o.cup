@@ -635,11 +635,11 @@ curried_let_error				::= LET:l IDENTIFIER curried_let_list:c epsilon
 									{: Error.expect("Curried-Let", " \u03C4 = e1 ", lleft, cright, "\u03C4 = e<sub>1</sub>" ); :}
 								;
 
-curried_let_list				::= curried_let_list:l curried_let_pair:p
+curried_let_list				::= curried_let_pair:p curried_let_list:l 
 									{: 
 									   RESULT = new IdentifierTypePair[l.length + 1];
-									   System.arraycopy(l, 0, RESULT, 0, l.length);
-									   RESULT[l.length] = p;
+									   System.arraycopy(l, 0, RESULT, 1, l.length);
+									   RESULT[0] = p;
 									:}
 								|	curried_let_pair:p
 									{: RESULT = new IdentifierTypePair[] { p }; :}
@@ -893,11 +893,11 @@ curried_let_rec_error			::= LET:l REC IDENTIFIER curried_let_rec_list:c epsilon
 									{: Error.expect("Curried-Let-Rec", " \u03C4 = e1 ", lleft, cright, "\u03C4 = e<sub>1</sub>" ); :}
 								;
 
-curried_let_rec_list			::= curried_let_rec_list:l curried_let_rec_pair:p
+curried_let_rec_list			::= curried_let_rec_pair:p curried_let_rec_list:l
 									{: 
 									   RESULT = new IdentifierTypePair[l.length + 1];
-									   System.arraycopy(l, 0, RESULT, 0, l.length);
-									   RESULT[l.length] = p;
+									   System.arraycopy(l, 0, RESULT, 1, l.length);
+									   RESULT[0] = p;
 									:}
 								|	curried_let_rec_pair:p
 									{: RESULT = new IdentifierTypePair[] { p }; :}
@@ -974,19 +974,19 @@ object_expr_error				::= OBJECT:o epsilon
 									{: Error.expect("Object", "self", oleft, lright, "self" ); :}
 								;
 
-duplication						::= DUPLBEGIN:b duplication_list:l DUPLEND:e
+duplication						::= DUPLBEGIN:b duplication_list:d DUPLEND:e
 									{: 
-									   Expression [] tmpE = new Expression [l.length];
-									   Identifier [] tmpI = new Identifier [l.length];
-									   for ( int i = 0 ; i < l.length ; i++ )
+									   Expression [] tmpE = new Expression [d.length];
+									   Identifier [] tmpI = new Identifier [d.length];
+									   for ( int i = 0 ; i < d.length ; i++ )
 									   {
-									     tmpE [i] = l [i].getE();
-									     tmpI [i] = l [i].getId();
+									     tmpE [i] = d[i].getE();
+									     tmpI [i] = d[i].getId();
 									     tmpI [i].setSet (Identifier.Set.ATTRIBUTE );
 									   }
-									   Duplication d = new Duplication (tmpI, tmpE, bleft, eright);
-									   MultipleIdentifier.check(d);
-									   RESULT = d;
+									   Duplication duplication = new Duplication (tmpI, tmpE, bleft, eright);
+									   MultipleIdentifier.check(duplication);
+									   RESULT = duplication;
 									:}
 								|	DUPLBEGIN:b DUPLEND:e
 									{: 
@@ -998,24 +998,22 @@ duplication						::= DUPLBEGIN:b duplication_list:l DUPLEND:e
 									{: :}
 								;
 
-duplication_error				::= DUPLBEGIN:d epsilon
-									{: Error.expect("Duplication", " a = e >}", dleft, dright , "a<sub>1</sub> = e<sub>1</sub>; ... ; a<sub>n</sub> = e<sub>n</sub> >}"); :}
-								|	DUPLBEGIN:d duplication_list:dl epsilon
-									{: Error.expect("Duplication", " >}", dleft, dlright , ">}"); :}	
+duplication_error				::= DUPLBEGIN:b epsilon
+									{: Error.expect("Duplication", " a = e >}", bleft, bright , "a<sub>1</sub> = e<sub>1</sub>; ... ; a<sub>n</sub> = e<sub>n</sub> >}"); :}
+								|	DUPLBEGIN:b duplication_list:d epsilon
+									{: Error.expect("Duplication", " >}", bleft, dright , ">}"); :}	
 								;
 
-duplication_list				::= duplication_list:l SEMI duplication_pair:p
+duplication_list				::= duplication_pair:p SEMI duplication_list:d 
 									{: 
-									   IdentifierExpressionPair [] list = new IdentifierExpressionPair [l.length+1];
-									   System.arraycopy(l, 0, list, 0, l.length);
-									   list [l.length] = p;
-									   RESULT = list;
+									   RESULT = new IdentifierExpressionPair [d.length+1];
+									   System.arraycopy(d, 0, RESULT, 1, d.length);
+									   RESULT [0] = p;
 									:}
 								|	duplication_pair:p
 									{: 
-									   IdentifierExpressionPair [] list = new IdentifierExpressionPair [1];
-									   list [0] = p;
-									   RESULT = list;
+									   RESULT = new IdentifierExpressionPair [1];
+									   RESULT [0] = p;
 									:}
 								|	duplication_list_error
 									{: :}
@@ -1023,6 +1021,8 @@ duplication_list				::= duplication_list:l SEMI duplication_pair:p
 
 duplication_list_error			::= duplication_list:d SEMI:s epsilon
 									{: Error.expect("Duplication", " an = en >}", dleft, sright, "... a<sub>n</sub> = e<sub>n</sub> >}"); :}
+								|	duplication_pair:p SEMI:s epsilon
+									{: Error.expect("Duplication", " an = en >}", pleft, sright, "... a<sub>n</sub> = e<sub>n</sub> >}"); :}
 								;
 
 duplication_pair				::= IDENTIFIER:id EQUAL expr:e
@@ -1264,11 +1264,11 @@ curried_method_error			::= METHOD:m IDENTIFIER curried_method_list:c epsilon
 									{: Error.expect("Curried-Method", " \u03C4 = e ", mleft, cright, "\u03C4 = e"); :}																							
 								;
 
-curried_method_list				::= curried_method_list:l curried_method_pair:p
+curried_method_list				::= curried_method_pair:p curried_method_list:l 
 									{: 
 									   RESULT = new IdentifierTypePair[l.length + 1];
-									   System.arraycopy(l, 0, RESULT, 0, l.length);
-									   RESULT[l.length] = p;
+									   System.arraycopy(l, 0, RESULT, 1, l.length);
+									   RESULT[0] = p;
 									:}
 								|	curried_method_pair:p
 									{: RESULT = new IdentifierTypePair[] { p }; :}
@@ -1377,14 +1377,14 @@ simple_expr_error				::= LPAREN:l seq_expr:e epsilon
 									{: Error.expect("Expression", "e)", lleft, lright, "... )"); :}
 								;
 
-simple_expr_list				::=	simple_expr:e
-									{: RESULT = new Expression[] { e }; :}
-								|	simple_expr_list:l simple_expr:e
+simple_expr_list				::=	simple_expr:e simple_expr_list:l 
 									{:
 									   RESULT = new Expression[l.length + 1];
-									   System.arraycopy(l, 0, RESULT, 0, l.length);
-									   RESULT[l.length] = e;
+									   System.arraycopy(l, 0, RESULT, 1, l.length);
+									   RESULT[0] = e;
 									:}
+								|	simple_expr:e
+									{: RESULT = new Expression[] { e }; :}
 								;
 
 epsilon							::= /* epsilon */

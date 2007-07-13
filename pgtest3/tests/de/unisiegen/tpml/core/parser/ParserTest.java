@@ -1453,6 +1453,12 @@ public class ParserTest
   private static String MULTI_LET_ERROR_72 = "let (x,y): in 2" ;
 
 
+  private static String MULTI_LET_ERROR_73 = "let (x,): in 2" ;
+
+
+  private static String MULTI_LET_ERROR_74 = "let (x,y,): in 2" ;
+
+
   private static String FST = "fst" ;
 
 
@@ -1489,6 +1495,12 @@ public class ParserTest
   private static String TUPLE_ERROR_3 = "(1,2," ;
 
 
+  private static String TUPLE_ERROR_4 = "(1,)" ;
+
+
+  private static String TUPLE_ERROR_5 = "(1,2,)" ;
+
+
   private static String LIST = "[1;2;3]" ;
 
 
@@ -1499,6 +1511,12 @@ public class ParserTest
 
 
   private static String LIST_ERROR_3 = "[1;2;" ;
+
+
+  private static String LIST_ERROR_4 = "[1;]" ;
+
+
+  private static String LIST_ERROR_5 = "[1;2;]" ;
 
 
   private static String SEQUENCE_1 = "1+1;2+2" ;
@@ -2752,9 +2770,10 @@ public class ParserTest
       MULTI_LET_ERROR_64 , MULTI_LET_ERROR_65 , MULTI_LET_ERROR_66 ,
       MULTI_LET_ERROR_67 , MULTI_LET_ERROR_68 , MULTI_LET_ERROR_69 ,
       MULTI_LET_ERROR_70 , MULTI_LET_ERROR_71 , MULTI_LET_ERROR_72 ,
-      TUPLE_ERROR_1 , TUPLE_ERROR_2 , TUPLE_ERROR_3 , LIST_ERROR_1 ,
-      LIST_ERROR_2 , LIST_ERROR_3 , EXPR_TUPLE_TYPE_ERROR_1 ,
-      EXPR_TUPLE_TYPE_ERROR_2 } ;
+      MULTI_LET_ERROR_73 , MULTI_LET_ERROR_74 , TUPLE_ERROR_1 , TUPLE_ERROR_2 ,
+      TUPLE_ERROR_3 , TUPLE_ERROR_4 , TUPLE_ERROR_5 , LIST_ERROR_1 ,
+      LIST_ERROR_2 , LIST_ERROR_3 , LIST_ERROR_4 , LIST_ERROR_5 ,
+      EXPR_TUPLE_TYPE_ERROR_1 , EXPR_TUPLE_TYPE_ERROR_2 } ;
 
 
   private static String [ ] L3TYPE_NORMAL = new String [ ]
@@ -2917,11 +2936,12 @@ public class ParserTest
       MULTI_LET_ERROR_62 , MULTI_LET_ERROR_63 , MULTI_LET_ERROR_64 ,
       MULTI_LET_ERROR_65 , MULTI_LET_ERROR_66 , MULTI_LET_ERROR_67 ,
       MULTI_LET_ERROR_68 , MULTI_LET_ERROR_69 , MULTI_LET_ERROR_70 ,
-      MULTI_LET_ERROR_71 , MULTI_LET_ERROR_72 , TUPLE_ERROR_1 , TUPLE_ERROR_2 ,
-      TUPLE_ERROR_3 , LIST_ERROR_1 , LIST_ERROR_2 , LIST_ERROR_3 ,
-      EXPR_TUPLE_TYPE_ERROR_1 , EXPR_TUPLE_TYPE_ERROR_2 ,
-      INFIX_OPERATION_ERROR_12 , WHILE_ERROR_1 , WHILE_ERROR_2 , WHILE_ERROR_3 ,
-      SEQUENCE_ERROR_1 , SEQUENCE_ERROR_2 } ;
+      MULTI_LET_ERROR_71 , MULTI_LET_ERROR_72 , MULTI_LET_ERROR_73 ,
+      MULTI_LET_ERROR_74 , TUPLE_ERROR_1 , TUPLE_ERROR_2 , TUPLE_ERROR_3 ,
+      TUPLE_ERROR_4 , TUPLE_ERROR_5 , LIST_ERROR_1 , LIST_ERROR_2 ,
+      LIST_ERROR_3 , LIST_ERROR_4 , LIST_ERROR_5 , EXPR_TUPLE_TYPE_ERROR_1 ,
+      EXPR_TUPLE_TYPE_ERROR_2 , INFIX_OPERATION_ERROR_12 , WHILE_ERROR_1 ,
+      WHILE_ERROR_2 , WHILE_ERROR_3 , SEQUENCE_ERROR_1 , SEQUENCE_ERROR_2 } ;
 
 
   private static String [ ] L4TYPE_NORMAL = new String [ ]
