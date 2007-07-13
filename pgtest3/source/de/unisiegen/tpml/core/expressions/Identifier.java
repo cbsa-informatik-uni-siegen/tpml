@@ -37,9 +37,9 @@ public final class Identifier extends Value implements DefaultName
      */
     ATTRIBUTE ,
     /**
-     * The set of message {@link Identifier}s.
+     * The set of method {@link Identifier}s.
      */
-    MESSAGE ,
+    METHOD ,
     /**
      * The set of self {@link Identifier}s.
      */
@@ -249,7 +249,7 @@ public final class Identifier extends Value implements DefaultName
                 this.prefix = PREFIX_ID_A ;
                 return this.prefix ;
               }
-              case MESSAGE :
+              case METHOD :
               {
                 this.prefix = PREFIX_ID_M ;
                 return this.prefix ;
@@ -298,7 +298,7 @@ public final class Identifier extends Value implements DefaultName
         return "V" ; //$NON-NLS-1$
       case ATTRIBUTE :
         return "A" ; //$NON-NLS-1$
-      case MESSAGE :
+      case METHOD :
         return "M" ; //$NON-NLS-1$
       case SELF :
         return "S" ; //$NON-NLS-1$

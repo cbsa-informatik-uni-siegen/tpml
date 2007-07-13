@@ -174,7 +174,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
       {
         if ( ( current.equals ( allId ) )
             && ( ! ( ( allId.getSet ( ).equals ( Identifier.Set.VARIABLE ) || ( allId
-                .getSet ( ).equals ( Identifier.Set.MESSAGE ) ) ) ) ) )
+                .getSet ( ).equals ( Identifier.Set.METHOD ) ) ) ) ) )
         {
           negativeIdentifiers.add ( allId ) ;
         }

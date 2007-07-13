@@ -71,7 +71,7 @@ public final class LanguageParserMultiException extends LanguageParserException
       {
         return ATTRIBUTE ;
       }
-      case MESSAGE :
+      case METHOD :
       {
         return MESSAGE ;
       }

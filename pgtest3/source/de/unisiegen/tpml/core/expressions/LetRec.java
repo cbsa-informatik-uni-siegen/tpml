@@ -84,7 +84,7 @@ public final class LetRec extends Let implements BoundIdentifiers ,
     {
       if ( ( this.identifiers [ 0 ].equals ( allId ) )
           && ( ! ( ( allId.getSet ( ).equals ( Identifier.Set.VARIABLE ) || ( allId
-              .getSet ( ).equals ( Identifier.Set.MESSAGE ) ) ) ) ) )
+              .getSet ( ).equals ( Identifier.Set.METHOD ) ) ) ) ) )
       {
         negativeIdentifiers.add ( allId ) ;
       }
