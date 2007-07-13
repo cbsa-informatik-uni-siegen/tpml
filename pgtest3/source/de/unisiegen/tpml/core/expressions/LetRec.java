@@ -76,8 +76,8 @@ public final class LetRec extends Let implements BoundIdentifiers ,
   @ Override
   protected void checkDisjunction ( )
   {
-    ArrayList < Identifier > allIdentifiers = this.expressions [ 0 ]
-        .getIdentifiersAll ( ) ;
+    ArrayList < Identifier > allIdentifiers = new ArrayList < Identifier > ( ) ;
+    allIdentifiers.addAll ( this.expressions [ 0 ].getIdentifiersAll ( ) ) ;
     allIdentifiers.addAll ( this.expressions [ 1 ].getIdentifiersAll ( ) ) ;
     ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
     for ( Identifier allId : allIdentifiers )
