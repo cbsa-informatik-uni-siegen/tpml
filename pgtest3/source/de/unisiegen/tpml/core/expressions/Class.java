@@ -71,19 +71,6 @@ public final class Class extends Expression implements BoundIdentifiers ,
     this.expressions = new Expression [ ]
     { pExpression } ;
     this.expressions [ 0 ].setParent ( this ) ;
-    if ( this.expressions [ 0 ] instanceof Row )
-    {
-      Row row = ( Row ) this.expressions [ 0 ] ;
-      // Calculate the bound Identifiers
-      for ( Expression child : row.getExpressions ( ) )
-      {
-        if ( child instanceof Attribute )
-        {
-          ( ( Attribute ) child ).getIdentifiersBound ( ) ;
-        }
-      }
-      row.checkDisjunction ( ) ;
-    }
   }
 
 

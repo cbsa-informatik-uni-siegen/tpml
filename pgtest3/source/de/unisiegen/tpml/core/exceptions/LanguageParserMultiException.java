@@ -93,22 +93,18 @@ public final class LanguageParserMultiException extends LanguageParserException
   public static void throwExceptionBody (
       ArrayList < Identifier > pNegativeIdentifiers )
   {
-    if ( pNegativeIdentifiers.size ( ) > 1 )
+    String [ ] message = new String [ pNegativeIdentifiers.size ( ) ] ;
+    int [ ] startOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
+    int [ ] endOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
+    for ( int j = 0 ; j < pNegativeIdentifiers.size ( ) ; j ++ )
     {
-      String [ ] message = new String [ pNegativeIdentifiers.size ( ) ] ;
-      int [ ] startOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
-      int [ ] endOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
-      for ( int j = 0 ; j < pNegativeIdentifiers.size ( ) ; j ++ )
-      {
-        message [ j ] = MessageFormat.format ( Messages
-            .getString ( "Parser.19" ) , pNegativeIdentifiers.get ( j ) ) ; //$NON-NLS-1$
-        startOffset [ j ] = pNegativeIdentifiers.get ( j )
-            .getParserStartOffset ( ) ;
-        endOffset [ j ] = pNegativeIdentifiers.get ( j ).getParserEndOffset ( ) ;
-      }
-      throw new LanguageParserMultiException ( message , startOffset ,
-          endOffset ) ;
+      message [ j ] = MessageFormat.format (
+          Messages.getString ( "Parser.19" ) , pNegativeIdentifiers.get ( j ) ) ; //$NON-NLS-1$
+      startOffset [ j ] = pNegativeIdentifiers.get ( j )
+          .getParserStartOffset ( ) ;
+      endOffset [ j ] = pNegativeIdentifiers.get ( j ).getParserEndOffset ( ) ;
     }
+    throw new LanguageParserMultiException ( message , startOffset , endOffset ) ;
   }
 
 
@@ -121,23 +117,19 @@ public final class LanguageParserMultiException extends LanguageParserException
   public static void throwExceptionDisjunction (
       ArrayList < Identifier > pNegativeIdentifiers )
   {
-    if ( pNegativeIdentifiers.size ( ) > 1 )
+    String [ ] message = new String [ pNegativeIdentifiers.size ( ) ] ;
+    int [ ] startOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
+    int [ ] endOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
+    for ( int j = 0 ; j < pNegativeIdentifiers.size ( ) ; j ++ )
     {
-      String [ ] message = new String [ pNegativeIdentifiers.size ( ) ] ;
-      int [ ] startOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
-      int [ ] endOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
-      for ( int j = 0 ; j < pNegativeIdentifiers.size ( ) ; j ++ )
-      {
-        message [ j ] = MessageFormat.format (
-            Messages.getString ( "Parser.3" ) , getIdSet ( pNegativeIdentifiers //$NON-NLS-1$
-                .get ( j ) ) , pNegativeIdentifiers.get ( j ) ) ;
-        startOffset [ j ] = pNegativeIdentifiers.get ( j )
-            .getParserStartOffset ( ) ;
-        endOffset [ j ] = pNegativeIdentifiers.get ( j ).getParserEndOffset ( ) ;
-      }
-      throw new LanguageParserMultiException ( message , startOffset ,
-          endOffset ) ;
+      message [ j ] = MessageFormat.format (
+          Messages.getString ( "Parser.3" ) , getIdSet ( pNegativeIdentifiers //$NON-NLS-1$
+              .get ( j ) ) , pNegativeIdentifiers.get ( j ) ) ;
+      startOffset [ j ] = pNegativeIdentifiers.get ( j )
+          .getParserStartOffset ( ) ;
+      endOffset [ j ] = pNegativeIdentifiers.get ( j ).getParserEndOffset ( ) ;
     }
+    throw new LanguageParserMultiException ( message , startOffset , endOffset ) ;
   }
 
 
@@ -150,22 +142,18 @@ public final class LanguageParserMultiException extends LanguageParserException
   public static void throwExceptionDuplication (
       ArrayList < Identifier > pNegativeIdentifiers )
   {
-    if ( pNegativeIdentifiers.size ( ) > 1 )
+    String [ ] message = new String [ pNegativeIdentifiers.size ( ) ] ;
+    int [ ] startOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
+    int [ ] endOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
+    for ( int j = 0 ; j < pNegativeIdentifiers.size ( ) ; j ++ )
     {
-      String [ ] message = new String [ pNegativeIdentifiers.size ( ) ] ;
-      int [ ] startOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
-      int [ ] endOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
-      for ( int j = 0 ; j < pNegativeIdentifiers.size ( ) ; j ++ )
-      {
-        message [ j ] = MessageFormat.format (
-            Messages.getString ( "Parser.4" ) , pNegativeIdentifiers.get ( j ) ) ; //$NON-NLS-1$
-        startOffset [ j ] = pNegativeIdentifiers.get ( j )
-            .getParserStartOffset ( ) ;
-        endOffset [ j ] = pNegativeIdentifiers.get ( j ).getParserEndOffset ( ) ;
-      }
-      throw new LanguageParserMultiException ( message , startOffset ,
-          endOffset ) ;
+      message [ j ] = MessageFormat.format (
+          Messages.getString ( "Parser.4" ) , pNegativeIdentifiers.get ( j ) ) ; //$NON-NLS-1$
+      startOffset [ j ] = pNegativeIdentifiers.get ( j )
+          .getParserStartOffset ( ) ;
+      endOffset [ j ] = pNegativeIdentifiers.get ( j ).getParserEndOffset ( ) ;
     }
+    throw new LanguageParserMultiException ( message , startOffset , endOffset ) ;
   }
 
 
@@ -178,22 +166,18 @@ public final class LanguageParserMultiException extends LanguageParserException
   public static void throwExceptionRow (
       ArrayList < Identifier > pNegativeIdentifiers )
   {
-    if ( pNegativeIdentifiers.size ( ) > 1 )
+    String [ ] message = new String [ pNegativeIdentifiers.size ( ) ] ;
+    int [ ] startOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
+    int [ ] endOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
+    for ( int j = 0 ; j < pNegativeIdentifiers.size ( ) ; j ++ )
     {
-      String [ ] message = new String [ pNegativeIdentifiers.size ( ) ] ;
-      int [ ] startOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
-      int [ ] endOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
-      for ( int j = 0 ; j < pNegativeIdentifiers.size ( ) ; j ++ )
-      {
-        message [ j ] = MessageFormat.format (
-            Messages.getString ( "Parser.2" ) , pNegativeIdentifiers.get ( j ) ) ; //$NON-NLS-1$
-        startOffset [ j ] = pNegativeIdentifiers.get ( j )
-            .getParserStartOffset ( ) ;
-        endOffset [ j ] = pNegativeIdentifiers.get ( j ).getParserEndOffset ( ) ;
-      }
-      throw new LanguageParserMultiException ( message , startOffset ,
-          endOffset ) ;
+      message [ j ] = MessageFormat.format (
+          Messages.getString ( "Parser.2" ) , pNegativeIdentifiers.get ( j ) ) ; //$NON-NLS-1$
+      startOffset [ j ] = pNegativeIdentifiers.get ( j )
+          .getParserStartOffset ( ) ;
+      endOffset [ j ] = pNegativeIdentifiers.get ( j ).getParserEndOffset ( ) ;
     }
+    throw new LanguageParserMultiException ( message , startOffset , endOffset ) ;
   }
 
 
@@ -206,22 +190,18 @@ public final class LanguageParserMultiException extends LanguageParserException
   public static void throwExceptionRowType (
       ArrayList < Identifier > pNegativeIdentifiers )
   {
-    if ( pNegativeIdentifiers.size ( ) > 1 )
+    String [ ] message = new String [ pNegativeIdentifiers.size ( ) ] ;
+    int [ ] startOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
+    int [ ] endOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
+    for ( int j = 0 ; j < pNegativeIdentifiers.size ( ) ; j ++ )
     {
-      String [ ] message = new String [ pNegativeIdentifiers.size ( ) ] ;
-      int [ ] startOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
-      int [ ] endOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
-      for ( int j = 0 ; j < pNegativeIdentifiers.size ( ) ; j ++ )
-      {
-        message [ j ] = MessageFormat.format (
-            Messages.getString ( "Parser.5" ) , pNegativeIdentifiers.get ( j ) ) ; //$NON-NLS-1$
-        startOffset [ j ] = pNegativeIdentifiers.get ( j )
-            .getParserStartOffset ( ) ;
-        endOffset [ j ] = pNegativeIdentifiers.get ( j ).getParserEndOffset ( ) ;
-      }
-      throw new LanguageParserMultiException ( message , startOffset ,
-          endOffset ) ;
+      message [ j ] = MessageFormat.format (
+          Messages.getString ( "Parser.5" ) , pNegativeIdentifiers.get ( j ) ) ; //$NON-NLS-1$
+      startOffset [ j ] = pNegativeIdentifiers.get ( j )
+          .getParserStartOffset ( ) ;
+      endOffset [ j ] = pNegativeIdentifiers.get ( j ).getParserEndOffset ( ) ;
     }
+    throw new LanguageParserMultiException ( message , startOffset , endOffset ) ;
   }
 
 

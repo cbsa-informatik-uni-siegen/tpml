@@ -51,6 +51,14 @@ public final class Row extends Expression implements DefaultExpressions
       this.expressions [ i ].setParent ( this ) ;
       this.indicesE [ i ] = i + 1 ;
     }
+    for ( Expression child : this.expressions )
+    {
+      if ( child instanceof Attribute )
+      {
+        ( ( Attribute ) child ).getIdentifiersBound ( ) ;
+      }
+    }
+    checkDisjunction ( ) ;
   }
 
 
@@ -75,7 +83,7 @@ public final class Row extends Expression implements DefaultExpressions
   /**
    * Checks the disjunction of the {@link Identifier} sets.
    */
-  public void checkDisjunction ( )
+  private void checkDisjunction ( )
   {
     ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
     ArrayList < Identifier > allIdentifiers = new ArrayList < Identifier > ( ) ;
@@ -98,9 +106,24 @@ public final class Row extends Expression implements DefaultExpressions
             negativeIdentifiers.add ( allId ) ;
           }
         }
-        negativeIdentifiers.add ( attribute.getId ( ) ) ;
-        LanguageParserMultiException
-            .throwExceptionDisjunction ( negativeIdentifiers ) ;
+        /*
+         * Throw an exception, if the negative identifier list contains one or
+         * more identifiers. If this happens, all Identifiers are added.
+         */
+        if ( negativeIdentifiers.size ( ) > 0 )
+        {
+          negativeIdentifiers.clear ( ) ;
+          for ( Identifier allId : allIdentifiers )
+          {
+            if ( attribute.getId ( ).equals ( allId ) )
+            {
+              negativeIdentifiers.add ( allId ) ;
+            }
+          }
+          negativeIdentifiers.add ( attribute.getId ( ) ) ;
+          LanguageParserMultiException
+              .throwExceptionDisjunction ( negativeIdentifiers ) ;
+        }
       }
     }
   }
@@ -174,7 +197,7 @@ public final class Row extends Expression implements DefaultExpressions
    * @param pAttribute The input {@link Attribute}.
    * @return A list of to the given {@link Attribute} bound {@link Identifier}s.
    */
-  public ArrayList < Identifier > getIdentifiersBound ( Attribute pAttribute )
+  protected ArrayList < Identifier > getIdentifiersBound ( Attribute pAttribute )
   {
     ArrayList < Identifier > boundId = new ArrayList < Identifier > ( ) ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )

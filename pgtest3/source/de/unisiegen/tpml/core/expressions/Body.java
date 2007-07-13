@@ -192,9 +192,24 @@ public final class Body extends Expression implements BoundIdentifiers ,
         }
       }
     }
-    negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
-    LanguageParserMultiException
-        .throwExceptionDisjunction ( negativeIdentifiers ) ;
+    /*
+     * Throw an exception, if the negative identifier list contains one or more
+     * identifiers. If this happens, all Identifiers are added.
+     */
+    if ( negativeIdentifiers.size ( ) > 0 )
+    {
+      negativeIdentifiers.clear ( ) ;
+      for ( Identifier allId : allIdentifiers )
+      {
+        if ( this.identifiers [ 0 ].equals ( allId ) )
+        {
+          negativeIdentifiers.add ( allId ) ;
+        }
+      }
+      negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
+      LanguageParserMultiException
+          .throwExceptionDisjunction ( negativeIdentifiers ) ;
+    }
   }
 
 

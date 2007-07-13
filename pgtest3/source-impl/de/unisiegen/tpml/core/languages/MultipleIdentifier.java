@@ -39,8 +39,11 @@ public class MultipleIdentifier
           negativeIdentifiers.add ( attributeIdentifiers [ j ] ) ;
         }
       }
-      negativeIdentifiers.add ( attributeIdentifiers [ i ] ) ;
-      LanguageParserMultiException.throwExceptionBody ( negativeIdentifiers ) ;
+      if ( negativeIdentifiers.size ( ) > 0 )
+      {
+        negativeIdentifiers.add ( attributeIdentifiers [ i ] ) ;
+        LanguageParserMultiException.throwExceptionBody ( negativeIdentifiers ) ;
+      }
     }
   }
 
@@ -72,8 +75,11 @@ public class MultipleIdentifier
             }
           }
         }
-        negativeIdentifiers.add ( attribute1.getId ( ) ) ;
-        LanguageParserMultiException.throwExceptionRow ( negativeIdentifiers ) ;
+        if ( negativeIdentifiers.size ( ) > 0 )
+        {
+          negativeIdentifiers.add ( attribute1.getId ( ) ) ;
+          LanguageParserMultiException.throwExceptionRow ( negativeIdentifiers ) ;
+        }
       }
     }
   }
@@ -99,9 +105,12 @@ public class MultipleIdentifier
           negativeIdentifiers.add ( identifier [ j ] ) ;
         }
       }
-      negativeIdentifiers.add ( identifier [ i ] ) ;
-      LanguageParserMultiException
-          .throwExceptionDuplication ( negativeIdentifiers ) ;
+      if ( negativeIdentifiers.size ( ) > 0 )
+      {
+        negativeIdentifiers.add ( identifier [ i ] ) ;
+        LanguageParserMultiException
+            .throwExceptionDuplication ( negativeIdentifiers ) ;
+      }
     }
   }
 
@@ -126,8 +135,12 @@ public class MultipleIdentifier
           negativeIdentifiers.add ( identifier [ j ] ) ;
         }
       }
-      negativeIdentifiers.add ( identifier [ i ] ) ;
-      LanguageParserMultiException.throwExceptionRowType ( negativeIdentifiers ) ;
+      if ( negativeIdentifiers.size ( ) > 0 )
+      {
+        negativeIdentifiers.add ( identifier [ i ] ) ;
+        LanguageParserMultiException
+            .throwExceptionRowType ( negativeIdentifiers ) ;
+      }
     }
   }
 }

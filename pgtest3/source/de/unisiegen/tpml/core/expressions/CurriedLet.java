@@ -189,7 +189,7 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
   /**
    * Checks the disjunction of the {@link Identifier} sets.
    */
-  public void checkDisjunction ( )
+  protected void checkDisjunction ( )
   {
     // Identifier 0
     ArrayList < Identifier > allIdentifiers = this.expressions [ 1 ]
@@ -203,9 +203,24 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
         negativeIdentifiers.add ( allId ) ;
       }
     }
-    negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
-    LanguageParserMultiException
-        .throwExceptionDisjunction ( negativeIdentifiers ) ;
+    /*
+     * Throw an exception, if the negative identifier list contains one or more
+     * identifiers. If this happens, all Identifiers are added.
+     */
+    if ( negativeIdentifiers.size ( ) > 0 )
+    {
+      negativeIdentifiers.clear ( ) ;
+      for ( Identifier allId : allIdentifiers )
+      {
+        if ( this.identifiers [ 0 ].equals ( allId ) )
+        {
+          negativeIdentifiers.add ( allId ) ;
+        }
+      }
+      negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
+      LanguageParserMultiException
+          .throwExceptionDisjunction ( negativeIdentifiers ) ;
+    }
     // Identifier 1-n
     allIdentifiers = this.expressions [ 0 ].getIdentifiersAll ( ) ;
     for ( int i = 1 ; i < this.identifiers.length ; i ++ )
@@ -219,9 +234,24 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
           negativeIdentifiers.add ( allId ) ;
         }
       }
-      negativeIdentifiers.add ( this.identifiers [ i ] ) ;
-      LanguageParserMultiException
-          .throwExceptionDisjunction ( negativeIdentifiers ) ;
+      /*
+       * Throw an exception, if the negative identifier list contains one or
+       * more identifiers. If this happens, all Identifiers are added.
+       */
+      if ( negativeIdentifiers.size ( ) > 0 )
+      {
+        negativeIdentifiers.clear ( ) ;
+        for ( Identifier allId : allIdentifiers )
+        {
+          if ( this.identifiers [ i ].equals ( allId ) )
+          {
+            negativeIdentifiers.add ( allId ) ;
+          }
+        }
+        negativeIdentifiers.add ( this.identifiers [ i ] ) ;
+        LanguageParserMultiException
+            .throwExceptionDisjunction ( negativeIdentifiers ) ;
+      }
     }
   }
 

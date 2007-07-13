@@ -162,7 +162,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
   /**
    * Checks the disjunction of the {@link Identifier} sets.
    */
-  public void checkDisjunction ( )
+  private void checkDisjunction ( )
   {
     ArrayList < Identifier > allIdentifiers = this.expressions [ 1 ]
         .getIdentifiersAll ( ) ;
@@ -178,9 +178,24 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
           negativeIdentifiers.add ( allId ) ;
         }
       }
-      negativeIdentifiers.add ( current ) ;
-      LanguageParserMultiException
-          .throwExceptionDisjunction ( negativeIdentifiers ) ;
+      /*
+       * Throw an exception, if the negative identifier list contains one or
+       * more identifiers. If this happens, all Identifiers are added.
+       */
+      if ( negativeIdentifiers.size ( ) > 0 )
+      {
+        negativeIdentifiers.clear ( ) ;
+        for ( Identifier allId : allIdentifiers )
+        {
+          if ( current.equals ( allId ) )
+          {
+            negativeIdentifiers.add ( allId ) ;
+          }
+        }
+        negativeIdentifiers.add ( current ) ;
+        LanguageParserMultiException
+            .throwExceptionDisjunction ( negativeIdentifiers ) ;
+      }
     }
   }
 

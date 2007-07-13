@@ -147,7 +147,6 @@ non terminal CurriedLetRec			curried_let_rec;
 non terminal ObjectExpr				object_expr;
 non terminal Duplication			duplication;
 non terminal Send					send;
-non terminal Row					row;
 non terminal Attribute				attribute;
 non terminal Method					method;
 non terminal CurriedMethod			curried_method;
@@ -175,6 +174,7 @@ non terminal IdentifierTypePair[]			curried_let_rec_list;
 non terminal IdentifierTypePair				curried_let_rec_pair;
 non terminal IdentifierTypePair[]			curried_method_list;
 non terminal IdentifierTypePair				curried_method_pair;
+non terminal Expression[]					row;
 non terminal IdentifierExpressionPair[]		duplication_list;
 non terminal IdentifierExpressionPair		duplication_pair;
 non terminal Identifier[]					body_attribute_list;
@@ -949,13 +949,15 @@ curried_let_rec_pair_error		::= LPAREN:l epsilon
 
 object_expr						::= OBJECT:o LPAREN SELF:id RPAREN row:r END:end
 									{:
-									   MultipleIdentifier.check(r);
-						   			   RESULT = new ObjectExpr (new Identifier (id,idleft,idright), null, r, oleft, endright);
+									   Row row = new Row(r, rleft, rright);
+									   MultipleIdentifier.check(row);
+						   			   RESULT = new ObjectExpr (new Identifier (id,idleft,idright), null, row, oleft, endright);
 						   			:}
 								|	OBJECT:o LPAREN SELF:id COLON type:tau RPAREN row:r END:end
 									{:
-									   MultipleIdentifier.check(r);
-						   			   RESULT = new ObjectExpr (new Identifier (id,idleft,idright), tau, r, oleft, endright);
+									   Row row = new Row(r, rleft, rright);
+									   MultipleIdentifier.check(row);
+						   			   RESULT = new ObjectExpr (new Identifier (id,idleft,idright), tau, row, oleft, endright);
 						   			:}
 								|	object_expr_error
 									{: :}
@@ -1073,27 +1075,27 @@ send_error						::= simple_expr:s HASHKEY:h epsilon
 								;
 
 row								::= epsilon
-									{: RESULT = new Row (new Expression[0]); :}
+									{: RESULT = new Expression[0]; :}
 								|	attribute:a row:r
 									{:
-									   Expression [ ] e = new Expression [ r.getExpressions().length + 1 ] ;
-									   System.arraycopy ( r.getExpressions() , 0 , e , 1 , r.getExpressions().length ) ;
-    								   e [0] = a ;
-									   RESULT = new Row (e, aleft, rright);
+									   Expression [ ] e = new Expression [ r.length + 1 ] ;
+									   System.arraycopy ( r , 0 , e , 1 , r.length ) ;
+    								   e [0] = a;
+									   RESULT = e;
 									:}
 								|	method:m row:r
 									{:
-									   Expression [ ] e = new Expression [ r.getExpressions().length + 1 ] ;
-    								   System.arraycopy ( r.getExpressions() , 0 , e , 1 , r.getExpressions().length ) ;
-    								   e [0] = m ;
-									   RESULT = new Row (e, mleft, rright);
+									   Expression [ ] e = new Expression [ r.length + 1 ] ;
+									   System.arraycopy ( r , 0 , e , 1 , r.length ) ;
+    								   e [0] = m;
+									   RESULT = e;
 									:}
-								|	curried_method:cm row:r
+								|	curried_method:c row:r
 									{:
-									   Expression [ ] e = new Expression [ r.getExpressions().length + 1 ] ;
-    								   System.arraycopy ( r.getExpressions() , 0 , e , 1 , r.getExpressions().length ) ;
-    								   e [0] = cm ;
-									   RESULT = new Row (e, cmleft, rright);
+									   Expression [ ] e = new Expression [ r.length + 1 ] ;
+									   System.arraycopy ( r , 0 , e , 1 , r.length ) ;
+    								   e [0] = c;
+									   RESULT = e;
 									:}
 								;
 
@@ -1327,7 +1329,7 @@ body							::= INHERIT:i body_attribute_list:bal SEMI body_method_list:bml FROM 
 									   RESULT = body ;
 									:}
 								|	row:r
-									{: RESULT = r ; :}
+									{: RESULT = new Row(r, rleft, rright) ; :}
 								;
 
 

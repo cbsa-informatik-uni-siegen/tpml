@@ -155,7 +155,7 @@ public final class CurriedMethod extends Expression implements
   /**
    * Checks the disjunction of the {@link Identifier} sets.
    */
-  public void checkDisjunction ( )
+  private void checkDisjunction ( )
   {
     // Identifier 0
     ArrayList < Identifier > allIdentifiers = this.expressions [ 0 ]
@@ -172,9 +172,24 @@ public final class CurriedMethod extends Expression implements
           negativeIdentifiers.add ( allId ) ;
         }
       }
-      negativeIdentifiers.add ( this.identifiers [ i ] ) ;
-      LanguageParserMultiException
-          .throwExceptionDisjunction ( negativeIdentifiers ) ;
+      /*
+       * Throw an exception, if the negative identifier list contains one or
+       * more identifiers. If this happens, all Identifiers are added.
+       */
+      if ( negativeIdentifiers.size ( ) > 0 )
+      {
+        negativeIdentifiers.clear ( ) ;
+        for ( Identifier allId : allIdentifiers )
+        {
+          if ( this.identifiers [ i ].equals ( allId ) )
+          {
+            negativeIdentifiers.add ( allId ) ;
+          }
+        }
+        negativeIdentifiers.add ( this.identifiers [ i ] ) ;
+        LanguageParserMultiException
+            .throwExceptionDisjunction ( negativeIdentifiers ) ;
+      }
     }
   }
 
