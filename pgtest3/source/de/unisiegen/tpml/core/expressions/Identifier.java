@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultName ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.util.Debug ;
 
 
 /**
@@ -282,6 +283,31 @@ public final class Identifier extends Value implements DefaultName
 
 
   /**
+   * Returns the set of this {@link Identifier} as a debug string.
+   * 
+   * @return The set of this {@link Identifier} as a debug string.
+   * @see #set
+   * @see #getSet()
+   * @see #setSet(Set)
+   */
+  public String getSetDebug ( )
+  {
+    switch ( this.set )
+    {
+      case VARIABLE :
+        return "V" ; //$NON-NLS-1$
+      case ATTRIBUTE :
+        return "A" ; //$NON-NLS-1$
+      case MESSAGE :
+        return "M" ; //$NON-NLS-1$
+      case SELF :
+        return "S" ; //$NON-NLS-1$
+    }
+    return "" ; //$NON-NLS-1$
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#hashCode()
@@ -374,8 +400,17 @@ public final class Identifier extends Value implements DefaultName
   {
     if ( this.prettyStringBuilder == null )
     {
+      // TODO Only for debugging
       this.prettyStringBuilder = factory.newBuilder ( this , PRIO_IDENTIFIER ) ;
+      if ( Debug.isUserName ( "christian" ) ) //$NON-NLS-1$
+      {
+        this.prettyStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      }
       this.prettyStringBuilder.addIdentifier ( this.name ) ;
+      if ( Debug.isUserName ( "christian" ) ) //$NON-NLS-1$
+      {
+        this.prettyStringBuilder.addText ( " | " + getSetDebug ( ) + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+      }
     }
     return this.prettyStringBuilder ;
   }

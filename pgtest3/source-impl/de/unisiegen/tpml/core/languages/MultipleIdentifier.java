@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.languages ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
+import de.unisiegen.tpml.core.expressions.Body ;
 import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
@@ -18,6 +19,32 @@ import de.unisiegen.tpml.core.types.RowType ;
  */
 public class MultipleIdentifier
 {
+  /**
+   * Throws a {@link LanguageParserMultiException} if the {@link Body} has two
+   * or more {@link Attribute} with the same {@link Identifier}.
+   * 
+   * @param pBody The {@link Body} which should be checked.
+   */
+  public static void check ( Body pBody )
+  {
+    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
+    Identifier [ ] attributeIdentifiers = pBody.getIdentifiersAttribute ( ) ;
+    for ( int i = 0 ; i < attributeIdentifiers.length ; i ++ )
+    {
+      negativeIdentifiers.clear ( ) ;
+      for ( int j = i + 1 ; j < attributeIdentifiers.length ; j ++ )
+      {
+        if ( attributeIdentifiers [ i ].equals ( attributeIdentifiers [ j ] ) )
+        {
+          negativeIdentifiers.add ( attributeIdentifiers [ j ] ) ;
+        }
+      }
+      negativeIdentifiers.add ( attributeIdentifiers [ i ] ) ;
+      LanguageParserMultiException.throwExceptionBody ( negativeIdentifiers ) ;
+    }
+  }
+
+
   /**
    * Throws a {@link LanguageParserMultiException} if the {@link Row} has two or
    * more {@link Attribute}s with the same {@link Identifier}.

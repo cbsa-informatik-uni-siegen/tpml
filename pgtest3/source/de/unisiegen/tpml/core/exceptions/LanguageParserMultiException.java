@@ -5,6 +5,7 @@ import java.text.MessageFormat ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
+import de.unisiegen.tpml.core.expressions.Body ;
 import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Method ;
@@ -80,6 +81,34 @@ public final class LanguageParserMultiException extends LanguageParserException
       }
     }
     return null ;
+  }
+
+
+  /**
+   * Throws a <code>LanguageParserMultiException</code> if the {@link Body}
+   * consist of {@link Attribute}s with the same {@link Identifier}.
+   * 
+   * @param pNegativeIdentifiers The input list of {@link Identifier}s.
+   */
+  public static void throwExceptionBody (
+      ArrayList < Identifier > pNegativeIdentifiers )
+  {
+    if ( pNegativeIdentifiers.size ( ) > 1 )
+    {
+      String [ ] message = new String [ pNegativeIdentifiers.size ( ) ] ;
+      int [ ] startOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
+      int [ ] endOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
+      for ( int j = 0 ; j < pNegativeIdentifiers.size ( ) ; j ++ )
+      {
+        message [ j ] = MessageFormat.format ( Messages
+            .getString ( "Parser.19" ) , pNegativeIdentifiers.get ( j ) ) ; //$NON-NLS-1$
+        startOffset [ j ] = pNegativeIdentifiers.get ( j )
+            .getParserStartOffset ( ) ;
+        endOffset [ j ] = pNegativeIdentifiers.get ( j ).getParserEndOffset ( ) ;
+      }
+      throw new LanguageParserMultiException ( message , startOffset ,
+          endOffset ) ;
+    }
   }
 
 

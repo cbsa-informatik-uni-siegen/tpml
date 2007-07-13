@@ -1321,7 +1321,11 @@ class							::= CLASS:c LPAREN SELF:id RPAREN body:b END:end
 								;
 
 body							::= INHERIT:i body_attribute_list:bal SEMI body_method_list:bml FROM expr:e AS IDENTIFIER:z SEMI body:b
-									{: RESULT = new Body (bal, bml, e, new Identifier (z,zleft,zright), b, ileft, bright); :}
+									{:
+									   Body body = new Body (bal, bml, e, new Identifier (z,zleft,zright), b, ileft, bright); 
+									   MultipleIdentifier.check(body);
+									   RESULT = body ;
+									:}
 								|	row:r
 									{: RESULT = r ; :}
 								;

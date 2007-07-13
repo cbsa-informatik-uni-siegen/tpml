@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
@@ -54,7 +55,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
    * 
    * @see #getIdentifiers()
    */
-  private Identifier [ ] attributeIdentifiers ;
+  private Identifier [ ] identifiersAttribute ;
 
 
   /**
@@ -62,7 +63,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
    * 
    * @see #getIdentifiers()
    */
-  private Identifier [ ] methodIdentifiers ;
+  private Identifier [ ] identifiersMethod ;
 
 
   /**
@@ -70,7 +71,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
    * 
    * @see #getIdentifiers()
    */
-  private Identifier baseClassNameIdentifier ;
+  private Identifier identifierBaseClassName ;
 
 
   /**
@@ -116,33 +117,36 @@ public final class Body extends Expression implements BoundIdentifiers ,
       throw new NullPointerException ( "Base class name is null" ) ; //$NON-NLS-1$
     }
     // Identifier
-    this.attributeIdentifiers = pAttributes ;
-    this.methodIdentifiers = pMethods ;
-    this.baseClassNameIdentifier = pBaseClassName ;
-    this.identifiers = new Identifier [ this.attributeIdentifiers.length
-        + this.methodIdentifiers.length + 1 ] ;
-    this.indicesId = new int [ this.attributeIdentifiers.length
-        + this.methodIdentifiers.length + 1 ] ;
-    for ( int i = 0 ; i < this.attributeIdentifiers.length ; i ++ )
+    this.identifiersAttribute = pAttributes ;
+    this.identifiersMethod = pMethods ;
+    this.identifierBaseClassName = pBaseClassName ;
+    this.identifiers = new Identifier [ this.identifiersAttribute.length
+        + this.identifiersMethod.length + 1 ] ;
+    this.indicesId = new int [ this.identifiersAttribute.length
+        + this.identifiersMethod.length + 1 ] ;
+    for ( int i = 0 ; i < this.identifiersAttribute.length ; i ++ )
     {
-      this.attributeIdentifiers [ i ].setParent ( this ) ;
-      this.identifiers [ i ] = this.attributeIdentifiers [ i ] ;
+      this.identifiersAttribute [ i ].setParent ( this ) ;
+      this.identifiers [ i ] = this.identifiersAttribute [ i ] ;
       this.indicesId [ i ] = i + 1 ;
     }
-    for ( int i = 0 ; i < this.methodIdentifiers.length ; i ++ )
+    for ( int i = 0 ; i < this.identifiersMethod.length ; i ++ )
     {
-      this.methodIdentifiers [ i ].setParent ( this ) ;
-      this.identifiers [ this.attributeIdentifiers.length + i ] = this.methodIdentifiers [ i ] ;
-      this.indicesId [ this.attributeIdentifiers.length + i ] = i + 1 ;
+      this.identifiersMethod [ i ].setParent ( this ) ;
+      this.identifiers [ this.identifiersAttribute.length + i ] = this.identifiersMethod [ i ] ;
+      this.indicesId [ this.identifiersAttribute.length + i ] = i + 1 ;
     }
-    this.baseClassNameIdentifier.setParent ( this ) ;
-    this.identifiers [ this.identifiers.length - 1 ] = this.baseClassNameIdentifier ;
+    this.identifierBaseClassName.setParent ( this ) ;
+    this.identifiers [ this.identifiers.length - 1 ] = this.identifierBaseClassName ;
     this.indicesId [ this.indicesId.length - 1 ] = - 1 ;
     // Expression
     this.expressions = new Expression [ ]
     { pExpression , pBody } ;
     this.expressions [ 0 ].setParent ( this ) ;
     this.expressions [ 1 ].setParent ( this ) ;
+    // Check the disjunction
+    getIdentifiersBound ( ) ;
+    checkDisjunction ( ) ;
   }
 
 
@@ -170,23 +174,48 @@ public final class Body extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * Checks the disjunction of the {@link Identifier} sets.
+   */
+  public void checkDisjunction ( )
+  {
+    ArrayList < Identifier > allIdentifiers = this.expressions [ 1 ]
+        .getIdentifiersAll ( ) ;
+    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
+    for ( Identifier allId : allIdentifiers )
+    {
+      for ( Identifier idAttribute : this.identifiersAttribute )
+      {
+        if ( ( idAttribute.equals ( allId ) )
+            && ( ! allId.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) ) )
+        {
+          negativeIdentifiers.add ( allId ) ;
+        }
+      }
+    }
+    negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
+    LanguageParserMultiException
+        .throwExceptionDisjunction ( negativeIdentifiers ) ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override
   public Body clone ( )
   {
-    Identifier [ ] newAttributeIdentifiers = new Identifier [ this.attributeIdentifiers.length ] ;
+    Identifier [ ] newAttributeIdentifiers = new Identifier [ this.identifiersAttribute.length ] ;
     for ( int i = 0 ; i < newAttributeIdentifiers.length ; i ++ )
     {
-      newAttributeIdentifiers [ i ] = this.attributeIdentifiers [ i ].clone ( ) ;
+      newAttributeIdentifiers [ i ] = this.identifiersAttribute [ i ].clone ( ) ;
     }
-    Identifier [ ] newMethodIdentifiers = new Identifier [ this.methodIdentifiers.length ] ;
+    Identifier [ ] newMethodIdentifiers = new Identifier [ this.identifiersMethod.length ] ;
     for ( int i = 0 ; i < newMethodIdentifiers.length ; i ++ )
     {
-      newMethodIdentifiers [ i ] = this.methodIdentifiers [ i ].clone ( ) ;
+      newMethodIdentifiers [ i ] = this.identifiersMethod [ i ].clone ( ) ;
     }
     return new Body ( newAttributeIdentifiers , newMethodIdentifiers ,
-        this.expressions [ 0 ].clone ( ) , this.baseClassNameIdentifier
+        this.expressions [ 0 ].clone ( ) , this.identifierBaseClassName
             .clone ( ) , this.expressions [ 1 ].clone ( ) ) ;
   }
 
@@ -200,13 +229,13 @@ public final class Body extends Expression implements BoundIdentifiers ,
     if ( pObject instanceof Body )
     {
       Body other = ( Body ) pObject ;
-      return ( ( Arrays.equals ( this.attributeIdentifiers ,
-          other.attributeIdentifiers ) )
+      return ( ( Arrays.equals ( this.identifiersAttribute ,
+          other.identifiersAttribute ) )
           && ( Arrays
-              .equals ( this.methodIdentifiers , other.methodIdentifiers ) )
+              .equals ( this.identifiersMethod , other.identifiersMethod ) )
           && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) )
-          && ( this.baseClassNameIdentifier
-              .equals ( other.baseClassNameIdentifier ) ) && ( this.expressions [ 1 ]
+          && ( this.identifierBaseClassName
+              .equals ( other.identifierBaseClassName ) ) && ( this.expressions [ 1 ]
           .equals ( other.expressions [ 1 ] ) ) ) ;
     }
     return false ;
@@ -221,17 +250,6 @@ public final class Body extends Expression implements BoundIdentifiers ,
   public Expression getB ( )
   {
     return this.expressions [ 1 ] ;
-  }
-
-
-  /**
-   * Returns the base class name.
-   * 
-   * @return The base class name.
-   */
-  public Identifier getBaseClassName ( )
-  {
-    return this.baseClassNameIdentifier ;
   }
 
 
@@ -279,6 +297,17 @@ public final class Body extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * Returns the base class name.
+   * 
+   * @return The base class name.
+   */
+  public Identifier getIdentifierBaseClass ( )
+  {
+    return this.identifierBaseClassName ;
+  }
+
+
+  /**
    * Returns the {@link Identifier}s of this {@link Expression}.
    * 
    * @return The {@link Identifier}s of this {@link Expression}.
@@ -286,6 +315,19 @@ public final class Body extends Expression implements BoundIdentifiers ,
   public Identifier [ ] getIdentifiers ( )
   {
     return this.identifiers ;
+  }
+
+
+  /**
+   * Returns the {@link Attribute} {@link Identifier}s of this
+   * {@link Expression}.
+   * 
+   * @return The {@link Attribute} {@link Identifier}s of this
+   *         {@link Expression}.
+   */
+  public Identifier [ ] getIdentifiersAttribute ( )
+  {
+    return this.identifiersAttribute ;
   }
 
 
@@ -302,23 +344,22 @@ public final class Body extends Expression implements BoundIdentifiers ,
           this.identifiers.length + 1 ) ;
       ArrayList < Identifier > boundExpressionBody = new ArrayList < Identifier > ( ) ;
       boundExpressionBody
-          .addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
-      boundExpressionBody
           .addAll ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
-      for ( int i = 0 ; i < this.attributeIdentifiers.length ; i ++ )
+      for ( int i = 0 ; i < this.identifiersAttribute.length ; i ++ )
       {
         ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
         for ( Identifier freeId : boundExpressionBody )
         {
-          if ( this.attributeIdentifiers [ i ].equals ( freeId ) )
+          if ( this.identifiersAttribute [ i ].equals ( freeId ) )
           {
-            freeId.setBoundTo ( this , this.attributeIdentifiers [ i ] ) ;
+            freeId.setBoundTo ( this , this.identifiersAttribute [ i ] ) ;
+            freeId.setSet ( Identifier.Set.ATTRIBUTE ) ;
             boundIdList.add ( freeId ) ;
           }
         }
         this.boundIdentifiers.add ( boundIdList ) ;
       }
-      for ( int i = this.attributeIdentifiers.length ; i < this.identifiers.length + 1 ; i ++ )
+      for ( int i = this.identifiersAttribute.length ; i < this.identifiers.length + 1 ; i ++ )
       {
         this.boundIdentifiers.add ( null ) ;
       }
@@ -341,10 +382,10 @@ public final class Body extends Expression implements BoundIdentifiers ,
           .getIdentifiersFree ( ) ) ;
       ArrayList < Identifier > freeB = new ArrayList < Identifier > ( ) ;
       freeB.addAll ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
-      // TODO remove z#m | m in methodIdentifiers
-      for ( int i = 0 ; i < this.attributeIdentifiers.length ; i ++ )
+      // TODO remove z#m | m in identifiersMethod
+      for ( int i = 0 ; i < this.identifiersAttribute.length ; i ++ )
       {
-        while ( freeB.remove ( this.attributeIdentifiers [ i ] ) )
+        while ( freeB.remove ( this.identifiersAttribute [ i ] ) )
         {
           // Remove all Identifiers with the same name
         }
@@ -367,6 +408,17 @@ public final class Body extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * Returns the {@link Method} {@link Identifier}s of this {@link Expression}.
+   * 
+   * @return The {@link Method} {@link Identifier}s of this {@link Expression}.
+   */
+  public Identifier [ ] getIdentifiersMethod ( )
+  {
+    return this.identifiersMethod ;
+  }
+
+
+  /**
    * Returns the {@link Identifier}s and {@link Expression}s in the right
    * sorting.
    * 
@@ -377,16 +429,16 @@ public final class Body extends Expression implements BoundIdentifiers ,
   public ExpressionOrType [ ] getSortedChildren ( )
   {
     ExpressionOrType [ ] result = new ExpressionOrType [ this.identifiers.length + 2 ] ;
-    for ( int i = 0 ; i < this.attributeIdentifiers.length ; i ++ )
+    for ( int i = 0 ; i < this.identifiersAttribute.length ; i ++ )
     {
-      result [ i ] = this.attributeIdentifiers [ i ] ;
+      result [ i ] = this.identifiersAttribute [ i ] ;
     }
-    for ( int i = 0 ; i < this.methodIdentifiers.length ; i ++ )
+    for ( int i = 0 ; i < this.identifiersMethod.length ; i ++ )
     {
-      result [ this.attributeIdentifiers.length + i ] = this.methodIdentifiers [ i ] ;
+      result [ this.identifiersAttribute.length + i ] = this.identifiersMethod [ i ] ;
     }
     result [ result.length - 3 ] = this.expressions [ 0 ] ;
-    result [ result.length - 2 ] = this.baseClassNameIdentifier ;
+    result [ result.length - 2 ] = this.identifierBaseClassName ;
     result [ result.length - 1 ] = this.expressions [ 1 ] ;
     return result ;
   }
@@ -398,9 +450,9 @@ public final class Body extends Expression implements BoundIdentifiers ,
   @ Override
   public int hashCode ( )
   {
-    return this.attributeIdentifiers.hashCode ( )
-        + this.methodIdentifiers.hashCode ( ) + this.expressions.hashCode ( )
-        + this.baseClassNameIdentifier.hashCode ( ) ;
+    return this.identifiersAttribute.hashCode ( )
+        + this.identifiersMethod.hashCode ( ) + this.expressions.hashCode ( )
+        + this.identifierBaseClassName.hashCode ( ) ;
   }
 
 
@@ -417,9 +469,9 @@ public final class Body extends Expression implements BoundIdentifiers ,
     /*
      * Do not substitute, if the Identifiers are equal.
      */
-    // TODO z#m | m in methodIdentifiers
+    // TODO z#m | m in identifiersMethod
     boolean substituteBody = true ;
-    for ( Identifier id : this.attributeIdentifiers )
+    for ( Identifier id : this.identifiersAttribute )
     {
       if ( pId.equals ( id ) )
       {
@@ -440,8 +492,8 @@ public final class Body extends Expression implements BoundIdentifiers ,
     {
       newBody = this.expressions [ 1 ] ;
     }
-    return new Body ( this.attributeIdentifiers , this.methodIdentifiers ,
-        newE , this.baseClassNameIdentifier , newBody ) ;
+    return new Body ( this.identifiersAttribute , this.identifiersMethod ,
+        newE , this.identifierBaseClassName , newBody ) ;
   }
 
 
@@ -455,8 +507,8 @@ public final class Body extends Expression implements BoundIdentifiers ,
   {
     Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
     Expression newBody = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
-    return new Body ( this.attributeIdentifiers , this.methodIdentifiers ,
-        newE , this.baseClassNameIdentifier , newBody ) ;
+    return new Body ( this.identifiersAttribute , this.identifiersMethod ,
+        newE , this.identifierBaseClassName , newBody ) ;
   }
 
 
@@ -473,22 +525,22 @@ public final class Body extends Expression implements BoundIdentifiers ,
           0 ) ;
       this.prettyStringBuilder.addKeyword ( "inherit" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      for ( int i = 0 ; i < this.attributeIdentifiers.length ; i ++ )
+      for ( int i = 0 ; i < this.identifiersAttribute.length ; i ++ )
       {
-        this.prettyStringBuilder.addBuilder ( this.attributeIdentifiers [ i ]
+        this.prettyStringBuilder.addBuilder ( this.identifiersAttribute [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
-        if ( i != this.attributeIdentifiers.length - 1 )
+        if ( i != this.identifiersAttribute.length - 1 )
         {
           this.prettyStringBuilder.addText ( ", " ) ; //$NON-NLS-1$
         }
       }
       this.prettyStringBuilder.addText ( " ; " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
-      for ( int i = 0 ; i < this.methodIdentifiers.length ; i ++ )
+      for ( int i = 0 ; i < this.identifiersMethod.length ; i ++ )
       {
-        this.prettyStringBuilder.addBuilder ( this.methodIdentifiers [ i ]
+        this.prettyStringBuilder.addBuilder ( this.identifiersMethod [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
-        if ( i != this.methodIdentifiers.length - 1 )
+        if ( i != this.identifiersMethod.length - 1 )
         {
           this.prettyStringBuilder.addText ( ", " ) ; //$NON-NLS-1$
         }
@@ -503,7 +555,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "as" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBuilder ( this.baseClassNameIdentifier
+      this.prettyStringBuilder.addBuilder ( this.identifierBaseClassName
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       this.prettyStringBuilder.addText ( " ; " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
