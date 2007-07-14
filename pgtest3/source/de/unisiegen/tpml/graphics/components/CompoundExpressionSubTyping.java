@@ -3,7 +3,6 @@ package de.unisiegen.tpml.graphics.components;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -126,19 +125,7 @@ public class CompoundExpressionSubTyping extends JComponent
       @ Override
       public void mouseExited ( MouseEvent e )
       {
-        // TODO hier sollte eigentlich das Ereignis sein, dass die Maus den
-        // Ausdruck verl�sst, und der dann neu gemalt wird, funktioniert aber
-        // nicht
-        // System.err.println("Ladidal");
-        // ToListenForMouseContainer.getInstanceOf().reset();
-        //if ( ! toListenForMouse.setExpression ( expression ) )
-        //{
-        //  Debug.out.print ( "Schei�e, es ist ein anderer Ausdruck: "
-        //      + expression.toPrettyString ( ).toString ( ) , "Feivel" ) ;
-        //}
-        
         toListenForMouse.reset();
- //         toListenForMouse.setRightList(-1);
         toListenForMouse.setMark ( false ) ;
         CompoundExpressionSubTyping.this.repaint();
         
