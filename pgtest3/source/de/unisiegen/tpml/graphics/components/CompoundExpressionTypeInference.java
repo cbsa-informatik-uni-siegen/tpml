@@ -222,9 +222,7 @@ public class CompoundExpressionTypeInference extends JComponent
     {
       public final void mouseClicked ( MouseEvent pMouseEvent )
       {
-        int posX = pMouseEvent.getX ( ) ;
-        int posY = pMouseEvent.getY ( ) ;
-        
+
         Point pos = pMouseEvent.getPoint();
         
         ArrayList<Rectangle> leftType = typeFormularRenderer.getLeftTypePositions();
@@ -272,8 +270,15 @@ public class CompoundExpressionTypeInference extends JComponent
 		});
     this.addMouseListener ( new MouseAdapter ( )
     {
-    	int rectPressed=-1;
-    	int rectReleased=-1;
+      /**
+       * the element where the mouse starts dragging
+       */
+    	private int rectPressed=-1;
+    	/**
+       * the element where the mouse ends dragging 
+    	 */
+    	private int rectReleased=-1;
+      
       @ Override
       public void mouseExited ( MouseEvent e )
       {
@@ -287,29 +292,24 @@ public class CompoundExpressionTypeInference extends JComponent
       @ Override
       public void mousePressed ( MouseEvent event )
       {
-        
         // remember the position. If the user dragges thes point to another,
         // they will be switched
-        // mousePositionPressedX = event.getX ( ) ;
-        // mousePositionPressedY = event.getY ( ) ;
         Point mousePosititonPressex = event.getPoint();
-        testAusgabe ( "Die Maus wurde gedrückt..." +mousePosititonPressex ) ;
+      
         // look up if there is a typeformula at the point mousePosition.
         // if ther is no typformular, ther will be no dragg'n'drop
         ArrayList < Rectangle > rects = typeFormularRenderer.getTypeFormularPositions ( ) ;
         for ( int i = 0 ; i < rects.size ( ) ; i ++ )
         {
-        	testAusgabe("Rect: "+rects.get(i));
-//          if ( mousePositionPressedX >= rects.get ( i ).x
-//              && mousePositionPressedX <= rects.get ( i ).x + rects.get ( i ).width
-//              && mousePositionPressedY >= rects.get ( i ).y - rects.get ( i ).height
-//              && mousePositionPressedY <= rects.get ( i ).y )
         	if (isIn(rects.get(i), mousePosititonPressex))
           {
-            testAusgabe ( "" + i + ". Bereicht: " + rects.get ( i ).toString ( ) ) ;
+            // set the rectPressed
             rectPressed=i;
-            testAusgabe("Die Maus wurde in Rect gedrückt: "+i);
+            
+            // set the String shown next to the mouse while dragging
             draggedString = typeFormulaList.get ( i ).toString ( ) ;
+            
+            //if the String is to large shorter it
             if ( draggedString.length ( ) > 13 )
             {
               draggedString = draggedString.substring ( 0 , 10 ) + "..." ;
@@ -320,80 +320,30 @@ public class CompoundExpressionTypeInference extends JComponent
       }
 
 
-      @ Override
-      public void mouseReleased ( MouseEvent event )
+      @Override
+      public void mouseReleased (MouseEvent event)
       {
-        //int mousePositionReleasedX = event.getX ( ) ;
-        //int mousePositionReleasedY = event.getY ( ) ;
-        // if the point there the mouse was pressed is the same the mouse was
-        // released, ther is no dragg and dropp and the typeformula will only be
-        // marked
-//        if ( mousePositionReleasedX == mousePositionPressedX && mousePositionReleasedY == mousePositionPressedY )
-//        {
-//          ArrayList < Rectangle > rects = typeFormularRenderer
-//              .getTypeFormularPositions ( ) ;
-//          for ( int i = 0 ; i < rects.size ( ) ; i ++ )
-//          {
-//            testAusgabe ( "" + i + ". Bereicht: " + rects.get ( i ).toString ( ) ) ;
-//          }
-//          for ( int i = 0 ; i < rects.size ( ) ; i ++ )
-//          {
-//            if ( mousePositionReleasedX >= rects.get ( i ).x
-//                && mousePositionReleasedX <= rects.get ( i ).x + rects.get ( i ).width
-//                && mousePositionReleasedY >= rects.get ( i ).y - rects.get ( i ).height
-//                && mousePositionReleasedY <= rects.get ( i ).y )
-//            {
-//            	//TODO test: These lines drwa a rect arround the single Elements 
-//              //Graphics gc = getGraphics ( ) ;
-//              //typeFormularRenderer.markArea ( rects.get ( i ).x , rects.get ( i ).y , rects.get ( i ).width , rects.get ( i ).height , gc , i ) ;
-//            }
-//          }
-//        }
-        // if the point of pressed and released are unequal
-        // the typformulas at the two points will be switched
-//        else
+        // 
         Point mouseReleased = event.getPoint();
-        testAusgabe ( "Die Maus wurde losgelassen..."+mouseReleased ) ;
+
+        // resette
+        ArrayList <Rectangle> rects = typeFormularRenderer.getTypeFormularPositions();
+        for (int i = 0; i < rects.size(); i++)
         {
-          // resetten
-          testAusgabe ( "Dragg and Drop implementieren" ) ;
-          ArrayList < Rectangle > rects = typeFormularRenderer.getTypeFormularPositions ( ) ;
-          for ( int i = 0 ; i < rects.size ( ) ; i ++ )
+          if (isIn(rects.get(i), mouseReleased))
           {
-          	testAusgabe("Rects: "+rects.get(i));
-            //if ( mousePositionReleasedX >= rects.get ( i ).x
-            //    && mousePositionReleasedX <= rects.get ( i ).x + rects.get ( i ).width
-            //    && mousePositionReleasedY >= rects.get ( i ).y - rects.get ( i ).height
-            //    && mousePositionReleasedY <= rects.get ( i ).y )
-          	if (isIn(rects.get(i), mouseReleased))
-            {
-              testAusgabe ( "" + i + ". Bereicht: "+ rects.get ( i ).toString ( ) ) ;
-              //Graphics gc = getGraphics ( ) ;
-              rectReleased=i;
-              //typeFormularRenderer.markArea ( rects.get ( i ).x , rects.get ( i ).y , rects.get ( i ).width ,rects.get ( i ).height , gc , i ) ;
-            }
-//            else if ( mousePositionPressedX >= rects.get ( i ).x
-//                && mousePositionPressedX <= rects.get ( i ).x + rects.get ( i ).width
-//                && mousePositionPressedY >= rects.get ( i ).y - rects.get ( i ).height
-//                && mousePositionPressedY <= rects.get ( i ).y )
-//            {
-//              System.out.println ( "" + i + ". Bereicht: "
-//                  + rects.get ( i ).toString ( ) ) ;
-//              Graphics gc = getGraphics ( ) ;
-//              //typeFormularRenderer.markArea ( rects.get ( i ).x , rects.get ( i ).y , rects.get ( i ).width , rects.get ( i ).height , gc , i ) ;
-//            }
+            // set the rectReleased
+            rectReleased = i;
           }
         }
-        
-//        ArrayList < Rectangle > rects = typeFormularRenderer.getTypeFormularPositions ( ) ;
+
+        // if we have a dragg'n'drop
         if (dragged && rectPressed != rectReleased && rectPressed != -1 && rectReleased != -1)
         {
-        	testAusgabe("Wir tauschen: "+rectReleased +" mit "+ rectPressed);
-        	typeFormularRenderer.draggNDropp (rectReleased, rectPressed) ;
-        	
+          typeFormularRenderer.draggNDropp(rectReleased, rectPressed);
         }
-        dragged = false ;
-        repaint ( ) ;
+        dragged = false;
+        repaint();
       }
     } ) ;
   }
@@ -402,10 +352,10 @@ public class CompoundExpressionTypeInference extends JComponent
   /**
    * Sets an alternative color.<br>
    * <br>
-   * Both renderers, the {@link PrettyStringRenderer} and the
-   * {@link EnvironmentRenderer}, are updated with this color.
+   * Both renderers, the {@link PrettyStringRenderer} and the {@link EnvironmentRenderer}, are updated with this color.
    * 
-   * @param color The alternative color.
+   * @param color
+   *          The alternative color.
    */
   public void setAlternativeColor ( Color color )
   {
@@ -462,23 +412,20 @@ public class CompoundExpressionTypeInference extends JComponent
    */
   private void handleMouseMoved ( MouseEvent event )
   {
+    // the point where the mosue is
+    Point pointMousePosition = event.getPoint();
+    
     //first, we do not want to have an tooltip
     setToolTipText ( null ) ;
 
     //find out if the mosue is over an A
-    ArrayList <Rectangle> rs = typeFormularRenderer.getAPositions();
+    ArrayList <Rectangle> rectsOfAPositions = typeFormularRenderer.getAPositions();
     
-    for (int i = 0; i < rs.size(); i++)
+    for (int i = 0; i < rectsOfAPositions.size(); i++)
     {
-      Rectangle r = rs.get(i);
-      //the simple unfoprmatted version
-      //      Point p = event.getPoint();
-      //      if (isIn (r, p))
-      //      {
-      //        setToolTipText(typeFormularRenderer.getAStrings().get(i));
-      //      }
-      Point p = event.getPoint();
-      if (isIn(r, p)) //if (x >= r.x && x <= r.x+r.width && y >= r.y && y <= r.y+r.width)
+      Rectangle rectOfActualA = rectsOfAPositions.get(i);
+
+      if (isIn(rectOfActualA, pointMousePosition)) //if (x >= r.x && x <= r.x+r.width && y >= r.y && y <= r.y+r.width)
       {
         //genereate the TooltioText
         String genreateTooltip = "";
@@ -510,7 +457,7 @@ public class CompoundExpressionTypeInference extends JComponent
     }
     
     //tell the PrettyStringRenderer where the mouse pointer is
-    toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
+    toListenForMouse.setHereIam ( pointMousePosition ) ;
 
     //first, we do not want to mark anything, we are waiting for mouse pointer is over one bounded id
     toListenForMouse.setMark ( false ) ;
@@ -556,38 +503,25 @@ public class CompoundExpressionTypeInference extends JComponent
     if ( this.substitutionRenderer != null && this.substitutionRenderer.isCollapsed ( ) )
     {
       Rectangle r = this.substitutionRenderer.getCollapsedArea ( ) ;
-      //testAusgabe("Die Grenzen r: "+ r.x+" - "+(r.x+r.width)+", "+r.y+"-"+(r.y+r.height));
-      //testAusgabe("Die Maus:"+event.getX ( )+", "+event.getY ( ));
-      if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width && event.getY() >= r.y && event.getY() <= r.y+r.height )
+
+      if (isIn(r, pointMousePosition))
       {
         setToolTipText ( this.substitutionRenderer.getCollapsedString ( ) ) ;
         testAusgabe(this.substitutionRenderer.getCollapsedString ( ));
       }
-      else
-      {
-        //setToolTipText ( null ) ;
-      }
     }
     
-    //TOOLTIPText für die einzelnen Dinger...
-    //if (this.typeFormularRenderer != null && this.typeFormularRenderer.isCollapsed ( ) )
+    // tooltip for the single typeenvironments of every item 
     if (this.typeFormularRenderer != null  )
     {
-      //setToolTipText ( null ) ;
-          
-      rs = this.typeFormularRenderer.getCollapsedAreas();
+      ArrayList <Rectangle> rectsOfCollapsedAreasPositions = this.typeFormularRenderer.getCollapsedAreas();
       
-      for (int i = 0; i<rs.size(); i++)
+      for (int i = 0; i<rectsOfCollapsedAreasPositions.size(); i++)
       {
-        Rectangle r = rs.get(i);
-        //testAusgabe("Die Grenzen r: "+ r.x+" - "+(r.x+r.width)+", "+r.y+"-"+(r.y+r.height));
-        //testAusgabe("Die Maus:"+event.getX ( )+", "+event.getY ( ));
-        //if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width )
-        if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width && event.getY() >= r.y && event.getY() <= r.y+r.height )
+        Rectangle r = rectsOfCollapsedAreasPositions.get(i);
+        if (isIn(r, pointMousePosition))
         {
-          testAusgabe("ja, diesen hier!"+i);
           setToolTipText ( this.typeFormularRenderer.getCollapsedStrings().get(i) ) ;
-          testAusgabe(getToolTipText());
         } 
       }   
     }    
@@ -614,7 +548,6 @@ public class CompoundExpressionTypeInference extends JComponent
   public void setDefaultTypeSubstitutionList (
       ArrayList < DefaultTypeSubstitution > defaultTypeSubstitutionListP )
   {
-    // testAusgabe("neue Liste gesetzt: "+ defaultTypeSubstitutionListP.size());
     // check if we have a new environment
     if ( this.defaultTypeSubstitutionList != defaultTypeSubstitutionListP )
     {
@@ -649,7 +582,6 @@ public class CompoundExpressionTypeInference extends JComponent
    */
   public void setTypeFormulaList ( ArrayList < TypeFormula > typeFormulaListP )
   {
-    // testAusgabe("neue Liste gesetzt: "+ typeFormulaListP.size());
     // check if we have a new environment
     if ( this.typeFormulaList != typeFormulaListP )
     {
@@ -700,13 +632,6 @@ public class CompoundExpressionTypeInference extends JComponent
       this.substitutionSize = this.substitutionRenderer.getNeededSize ( ) ;
       // The higth is simpel
       result.height = this.substitutionSize.height ;
-      // The
-      // for (int i = 0; i<defaultTypeSubstitutionList.size(); i++)
-      // {
-      // int add = AbstractRenderer.getTextFontMetrics ( ).stringWidth
-      // (defaultTypeSubstitutionList.get(i).toString());
-      // result.width = result.width + add;
-      // }
       // TODO wozu eigentlich das?
       result.width += 2 * this.braceSize ;
     }
@@ -722,11 +647,6 @@ public class CompoundExpressionTypeInference extends JComponent
       // ) ;
       this.typeFormulaSize = this.typeFormularRenderer
           .getNeededSize ( maxWidth ) ;
-      // this.typeFormulaSize = this.typeFormularRenderer.getNeededSize(
-      // Integer.MAX_VALUE ) ;
-      // testAusgabe("Die gebrauchte Größe der typeFormulaSize:
-      // "+typeFormulaSize.height + ", "+ typeFormulaSize.width);
-      // this.typeFormulaSize = this.typeFormularRenderer.getNeededSize ( ) ;
       result.width += Math.max ( this.typeFormulaSize.width ,
           this.substitutionSize.width ) ;
       result.height = this.typeFormulaSize.height
@@ -774,6 +694,12 @@ public class CompoundExpressionTypeInference extends JComponent
   	{
   		drawRectAngle(typeFormularRenderer.getExpressionPositions().get(i), gc);
   	}
+    
+    gc.setColor(Color.PINK);
+    for (int i=0; i<typeFormularRenderer.getCollapsedAreas().size(); i++)
+    {
+      drawRectAngle(typeFormularRenderer.getCollapsedAreas().get(i), gc);
+    }
   	
   	
     //testAusgabe ( "paintComponent wurde aufgerufen..." ) ;
@@ -827,8 +753,7 @@ public class CompoundExpressionTypeInference extends JComponent
       if ( this.defaultTypeSubstitutionList != null
           && defaultTypeSubstitutionList.size ( ) > 0 )
       {
-        // testAusgabe ("hier sollte er ankommen und das sollte er auch
-        // rendern...!");
+
         posX += this.braceSize ;
         this.substitutionRenderer.renderer ( posX , posY ,
             this.substitutionSize.width , getHeight ( ) , gc ) ;
