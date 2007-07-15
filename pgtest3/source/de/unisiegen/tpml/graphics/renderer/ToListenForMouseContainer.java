@@ -145,10 +145,19 @@ public class ToListenForMouseContainer
 	{
 		hereIam = new Point(x,y);
 	}
+  
+  /**
+   * sets the position where the pointer is
+   * @param p the Point
+   */
+  public void setHereIam(Point p)
+  {
+    hereIam = p;
+  }
 	
 	/**
 	 * returns the position where the pointer is
-	 * @return
+	 * @return the saved position where the mouse is
 	 */
 	public Point getHereIam ()
 	{
