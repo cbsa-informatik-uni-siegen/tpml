@@ -12,7 +12,8 @@ import de.unisiegen.tpml.graphics.Theme;
 /**
  * This class provides the translation of PrettyStrings into HTML-Code
  * This is used by the @link CompoundExpressionTypeInference to provide the tooltip of
- * the A.
+ * the A. This calss realy only translats the prettystring into html, the <html> and
+ * </html> are missing and must be added. 
  * @author Feivel
  *
  */
@@ -44,6 +45,7 @@ public class PrettyStringToHTML
   
   /**
    * translates the given PrettyString to a HTML-Coded String
+   * 
    * @param s The PrettyString to translate
    * @return hte HTML-coded Sring
    */
@@ -54,9 +56,7 @@ public class PrettyStringToHTML
     
     //for performance, use the Stringbuilder
     StringBuilder rb = new StringBuilder ( ) ;
-    
-    //start the HTML
-    //rb.append ("<html>");
+
     //the first font will be clesed directly 
     rb.append ("<font color=\"#FFFFFF\">");
     
@@ -215,13 +215,10 @@ public class PrettyStringToHTML
     }
     
     rb.append ("</font>");
-      //end the HTML
-      //rb.append ("</html>");
       
       result = rb.toString ();
       
-      return result;  
-      
+      return result;     
   }
   
   /**
