@@ -245,6 +245,11 @@ public final class Identifier extends Value implements DefaultName
    */
   public String getBaseClass ( )
   {
+    if ( ! this.set.equals ( Set.BASEMETHOD ) )
+    {
+      throw new IllegalArgumentException (
+          "The Identifier is not a base method Identifier" ) ; //$NON-NLS-1$
+    }
     return this.baseClass ;
   }
 
@@ -313,6 +318,11 @@ public final class Identifier extends Value implements DefaultName
    */
   public String getMethod ( )
   {
+    if ( ! this.set.equals ( Set.BASEMETHOD ) )
+    {
+      throw new IllegalArgumentException (
+          "The Identifier is not a base method Identifier" ) ; //$NON-NLS-1$
+    }
     return this.method ;
   }
 
