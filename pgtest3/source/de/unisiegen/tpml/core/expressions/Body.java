@@ -316,7 +316,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
    * 
    * @return The base class name.
    */
-  public Identifier getIdentifierBaseClass ( )
+  public Identifier getIdentifierBaseClassName ( )
   {
     return this.identifierBaseClassName ;
   }

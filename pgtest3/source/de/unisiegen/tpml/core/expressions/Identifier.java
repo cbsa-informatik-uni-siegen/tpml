@@ -7,7 +7,6 @@ import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultName ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.util.Debug ;
 
 
 /**
@@ -537,15 +536,16 @@ public final class Identifier extends Value implements DefaultName
     {
       // TODO Only for debugging
       this.prettyStringBuilder = factory.newBuilder ( this , PRIO_IDENTIFIER ) ;
-      if ( Debug.isUserName ( "christian" ) ) //$NON-NLS-1$
-      {
-        this.prettyStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
-      }
+      /*
+       * if ( Debug.isUserName ( "christian" ) ) //$NON-NLS-1$ {
+       * this.prettyStringBuilder.addText ( "{" ) ; //$NON-NLS-1$ }
+       */
       this.prettyStringBuilder.addIdentifier ( this.name ) ;
-      if ( Debug.isUserName ( "christian" ) ) //$NON-NLS-1$
-      {
-        this.prettyStringBuilder.addText ( " | " + getSetDebug ( ) + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-      }
+      /*
+       * if ( Debug.isUserName ( "christian" ) ) //$NON-NLS-1$ {
+       * this.prettyStringBuilder.addText ( " | " + getSetDebug ( ) + "}" ) ;
+       * //$NON-NLS-1$ //$NON-NLS-2$ }
+       */
     }
     return this.prettyStringBuilder ;
   }

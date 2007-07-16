@@ -1,16 +1,19 @@
 package de.unisiegen.tpml.core.languages.l2c ;
 
 
-import de.unisiegen.tpml.core.expressions.Body ;
-import de.unisiegen.tpml.core.expressions.Class ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.New ;
-import de.unisiegen.tpml.core.expressions.ObjectExpr ;
-import de.unisiegen.tpml.core.expressions.Row ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.core.languages.l2o.L2OLanguage ;
-import de.unisiegen.tpml.core.languages.l2o.L2OSmallStepProofRuleSet ;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
+import de.unisiegen.tpml.core.expressions.Body;
+import de.unisiegen.tpml.core.expressions.Class;
+import de.unisiegen.tpml.core.expressions.CurriedMethod;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.Method;
+import de.unisiegen.tpml.core.expressions.New;
+import de.unisiegen.tpml.core.expressions.ObjectExpr;
+import de.unisiegen.tpml.core.expressions.Row;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
+import de.unisiegen.tpml.core.languages.l2o.L2OSmallStepProofRuleSet;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofContext;
 
 
 /**
@@ -168,7 +171,7 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
       }
       return new Body ( pBody.getIdentifiersAttribute ( ) , pBody
           .getIdentifiersMethod ( ) , pBody.getE ( ) , pBody
-          .getIdentifierBaseClass ( ) , body ) ;
+          .getIdentifierBaseClassName ( ) , body ) ;
     }
     /*
      * If the Expression is a Body and the body of the Body is a Row and the e
@@ -184,7 +187,7 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
         return e ;
       }
       return new Body ( pBody.getIdentifiersAttribute ( ) , pBody
-          .getIdentifiersMethod ( ) , e , pBody.getIdentifierBaseClass ( ) ,
+          .getIdentifiersMethod ( ) , e , pBody.getIdentifierBaseClassName ( ) ,
           pBody.getBody ( ) ) ;
     }
     /*
@@ -196,8 +199,39 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
         && ( ( ( Class ) pBody.getE ( ) ).getE ( ) instanceof Row )
         && ( pBody.getBody ( ) instanceof Row ) )
     {
+      // TODO Ask if it is correct
       pContext.addProofStep ( getRuleByName ( INHERIT_EXEC ) , pBody ) ;
-      // TODO
+      Class c = ( Class ) pBody.getE ( ) ;
+      Row r1 = ( Row ) c.getE ( ) ;
+      Row r2 = ( Row ) pBody.getBody ( ) ;
+      for ( Identifier m : pBody.getIdentifiersMethod ( ) )
+      {
+        Identifier baseMethod = new Identifier ( pBody
+            .getIdentifierBaseClassName ( ).getName ( ) , m.getName ( ) ) ;
+        for ( int i = 0 ; i < r1.getExpressions ( ).length ; i ++ )
+        {
+          if ( r1.getExpressions ( ) [ i ] instanceof Method )
+          {
+            Method method = ( Method ) r1.getExpressions ( ) [ i ] ;
+            if ( m.equals ( method.getId ( ) ) )
+            {
+              r2 = r2.substitute ( baseMethod , method.getE ( ) ) ;
+              break ;
+            }
+          }
+          else if ( r1.getExpressions ( ) [ i ] instanceof CurriedMethod )
+          {
+            CurriedMethod curriedMethod = ( CurriedMethod ) r1
+                .getExpressions ( ) [ i ] ;
+            if ( m.equals ( curriedMethod.getIdentifiers ( ) [ 0 ] ) )
+            {
+              r2 = r2.substitute ( baseMethod , curriedMethod.getE ( ) ) ;
+              break ;
+            }
+          }
+        }
+      }
+      return Row.union ( r1 , r2 ) ;
     }
     return pBody ;
   }

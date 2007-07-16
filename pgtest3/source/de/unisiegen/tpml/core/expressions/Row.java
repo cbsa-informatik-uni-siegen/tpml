@@ -22,6 +22,31 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
 public final class Row extends Expression implements DefaultExpressions
 {
   /**
+   * Returns the union of the given first and second {@link Row}.
+   * 
+   * @param pR1 The first {@link Row}.
+   * @param pR2 The second {@link Row}.
+   * @return The union of the given first and second {@link Row}.
+   */
+  public static Row union ( Row pR1 , Row pR2 )
+  {
+    // TODO Ask if it is correct
+    Expression [ ] newExpressions = new Expression [ pR1.getExpressions ( ).length
+        + pR2.getExpressions ( ).length ] ;
+    for ( int i = 0 ; i < pR1.getExpressions ( ).length ; i ++ )
+    {
+      newExpressions [ i ] = pR1.getExpressions ( ) [ i ] ;
+    }
+    for ( int i = 0 ; i < pR2.getExpressions ( ).length ; i ++ )
+    {
+      newExpressions [ pR1.getExpressions ( ).length + i ] = pR2
+          .getExpressions ( ) [ i ] ;
+    }
+    return new Row ( newExpressions ) ;
+  }
+
+
+  /**
    * Indeces of the child {@link Expression}s.
    */
   private int [ ] indicesE ;
@@ -280,26 +305,6 @@ public final class Row extends Expression implements DefaultExpressions
    * 
    * @return The number of child {@link Method}s or {@link CurriedMethod}s.
    */
-  public int getNumberOfMethods ( )
-  {
-    int count = 0 ;
-    for ( Expression expression : this.expressions )
-    {
-      if ( ( expression instanceof Method )
-          || ( expression instanceof CurriedMethod ) )
-      {
-        count ++ ;
-      }
-    }
-    return count ;
-  }
-
-
-  /**
-   * Returns the number of child {@link Method}s or {@link CurriedMethod}s.
-   * 
-   * @return The number of child {@link Method}s or {@link CurriedMethod}s.
-   */
   public int getNumberOfDifferentMethods ( )
   {
     int count = 0 ;
@@ -323,6 +328,26 @@ public final class Row extends Expression implements DefaultExpressions
           list.add ( curriedMethod.getIdentifiers ( ) [ 0 ] ) ;
           count ++ ;
         }
+      }
+    }
+    return count ;
+  }
+
+
+  /**
+   * Returns the number of child {@link Method}s or {@link CurriedMethod}s.
+   * 
+   * @return The number of child {@link Method}s or {@link CurriedMethod}s.
+   */
+  public int getNumberOfMethods ( )
+  {
+    int count = 0 ;
+    for ( Expression expression : this.expressions )
+    {
+      if ( ( expression instanceof Method )
+          || ( expression instanceof CurriedMethod ) )
+      {
+        count ++ ;
       }
     }
     return count ;
