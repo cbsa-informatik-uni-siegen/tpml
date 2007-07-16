@@ -1,1 +1,1 @@
-object (self) end
+new class (self) val a = 1 + 1 ; end

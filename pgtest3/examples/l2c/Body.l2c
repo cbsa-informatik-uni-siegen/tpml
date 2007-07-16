@@ -1,1 +1,1 @@
-class (self) inherit a, b ; m, n from e as z ; method p = 1 ; end
+class (self) inherit a, b ; m, n from 2+2 as z ; val p = 1+1 ; end
