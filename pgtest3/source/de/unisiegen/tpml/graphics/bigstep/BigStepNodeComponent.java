@@ -189,15 +189,15 @@ public class BigStepNodeComponent extends JComponent implements
   /**
    * @param node The node that should be represented
    * @param model The model
-   * @param translator The translator from the model
+   * @param pTranslator The translator from the model
    */
   public BigStepNodeComponent ( BigStepProofNode node ,
-      BigStepProofModel model , LanguageTranslator translator )
+      BigStepProofModel model , LanguageTranslator pTranslator )
   {
     super ( ) ;
     this.proofNode = node ;
     this.proofModel = model ;
-    this.translator = translator ;
+    this.translator = pTranslator ;
     this.dimension = new Dimension ( 0 , 0 ) ;
     this.spacing = 10 ;
     /*
@@ -229,15 +229,15 @@ public class BigStepNodeComponent extends JComponent implements
      */
     // Fill the menu with menuitems
     ProofRule [ ] rules = this.proofModel.getRules ( ) ;
-    Language lang = proofModel.getLanguage ( ) ;
-    menu = new JPopupMenu ( ) ;
+    Language lang = this.proofModel.getLanguage ( ) ;
+    this.menu = new JPopupMenu ( ) ;
     
-    menu = rm.getMenu ( rules , rules , lang , this , "bigstep" , false ) ;
+    this.menu = this.rm.getMenu ( rules , rules , lang , this , "bigstep" , false ) ;
 
-    menu.addSeparator ( ) ;
+    this.menu.addSeparator ( ) ;
     
-    menu.add ( this.menuTranslateItem = new MenuTranslateItem ( ) ) ;
-    this.ruleButton.setMenu ( menu ) ;
+    this.menu.add ( this.menuTranslateItem = new MenuTranslateItem ( ) ) ;
+    this.ruleButton.setMenu ( this.menu ) ;
     /*
      * Connect the handling of the ruleButton
      */
@@ -245,6 +245,7 @@ public class BigStepNodeComponent extends JComponent implements
     {
       public void menuClosed ( MenuButton button )
       {
+      	//empty block
       }
 
 
@@ -372,7 +373,7 @@ public class BigStepNodeComponent extends JComponent implements
       catch ( Throwable e )
       {
         // revert the menu
-        rm.revertMenu ( ) ;
+        this.rm.revertMenu ( ) ;
         // when the node could not be prooven with the selected
         // rule the menu button gets labeled with the given rule
         // and will be displayed in red
@@ -523,8 +524,9 @@ public class BigStepNodeComponent extends JComponent implements
 	 * @param maxWidth
 	 *          The maximum width that is available for the current node.
 	 */
-	private void placeElements(int maxWidth)
+	private void placeElements(int pMaxWidth)
 	{
+		int maxWidth = pMaxWidth;
 		// get the size for the index at the beginning: (x)
 		FontMetrics fm = AbstractRenderer.getTextFontMetrics();
 		Dimension labelSize = new Dimension(fm.stringWidth(this.indexLabel.getText()), fm.getHeight());
@@ -564,7 +566,7 @@ public class BigStepNodeComponent extends JComponent implements
 		if (breakNeeded)
 		{
 			//get the new resultsiz in the next line
-			resultSize = this.resultCompoundExpression.getNeededSize(maxWidth - meshPix);
+			resultSize = this.resultCompoundExpression.getNeededSize(maxWidth - this.meshPix);
 			//the hight will be lager
 			this.dimension.height = expSize.height + resultSize.height;
 		}
@@ -575,7 +577,7 @@ public class BigStepNodeComponent extends JComponent implements
 		}
 		else
 		{
-			this.dimension.width = Math.max((resultSize.width + meshPix), dimension.width);
+			this.dimension.width = Math.max((resultSize.width + this.meshPix), this.dimension.width);
 		}
 		
 		// now place the elements
@@ -592,7 +594,7 @@ public class BigStepNodeComponent extends JComponent implements
 		}
 		else
 		{
-			this.resultCompoundExpression.setBounds(meshPix, (this.dimension.height - resultSize.height),
+			this.resultCompoundExpression.setBounds(this.meshPix, (this.dimension.height - resultSize.height),
 					resultSize.width, resultSize.height);
 		}
 		/*
