@@ -119,7 +119,7 @@ public class CompoundExpression < S , E > extends JComponent
   /**
    * the list of points where the mouseovereffect will be react
    */
-  ToListenForMouseContainer toListenForMouse ;
+  private ToListenForMouseContainer toListenForMouse ;
 
 
   /**
@@ -147,8 +147,8 @@ public class CompoundExpression < S , E > extends JComponent
       @ Override
       public void mouseExited ( MouseEvent e )
       {
-        CompoundExpression.this.toListenForMouse.reset();
-        CompoundExpression.this.toListenForMouse.setMark ( false ) ;
+        CompoundExpression.this.getToListenForMouse().reset();
+        CompoundExpression.this.getToListenForMouse().setMark ( false ) ;
         CompoundExpression.this.repaint ( ) ;
       }
     } ) ;
@@ -542,5 +542,14 @@ public class CompoundExpression < S , E > extends JComponent
   {
     return this.expression ;
   }
+
+
+	/**
+	 * @return the toListenForMouse
+	 */
+	public ToListenForMouseContainer getToListenForMouse()
+	{
+		return this.toListenForMouse;
+	}
  
 }
