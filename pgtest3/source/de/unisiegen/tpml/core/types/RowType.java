@@ -64,7 +64,6 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
         {
           if ( ! ( phi1Types [ i ].equals ( phi2Types [ j ] ) ) )
           {
-            System.err.println ( "RowType union not defined" ) ; //$NON-NLS-1$
             throw new RuntimeException ( "RowType union not defined" ) ; //$NON-NLS-1$
           }
           resultIdentifiers.add ( 0 , phi1Identifiers.get ( i ) ) ;
