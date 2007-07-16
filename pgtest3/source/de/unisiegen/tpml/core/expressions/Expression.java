@@ -117,6 +117,18 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
+   * Prefix of base class {@link Identifier}s.
+   */
+  public static final String PREFIX_ID_Z = "z" ; //$NON-NLS-1$
+
+
+  /**
+   * Prefix of base method {@link Identifier}s.
+   */
+  public static final String PREFIX_ID_B = "b" ; //$NON-NLS-1$
+
+
+  /**
    * Prefix of the first {@link Identifier} of {@link Attribute}s.
    */
   public static final String PREFIX_ID_A = "a" ; //$NON-NLS-1$
@@ -312,18 +324,18 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * Returns true, if a free Identifier is a attribute or self
+   * Returns true, if a free Identifier is not a variable and not a method
    * {@link Identifier}, otherwise false.
    * 
-   * @return True, if a free Identifier is a attribute or self
+   * @return True, if a free Identifier is not a variable and not a method
    *         {@link Identifier}, otherwise false.
    */
-  public boolean getIdentifierFreeNotOnlyVariable ( )
+  public final boolean getIdentifierFreeNotOnlyVariable ( )
   {
     for ( Identifier id : getIdentifiersFree ( ) )
     {
-      if ( ( id.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) )
-          || ( id.getSet ( ).equals ( Identifier.Set.SELF ) ) )
+      if ( ! ( ( id.getSet ( ).equals ( Identifier.Set.VARIABLE ) ) || ( id
+          .getSet ( ).equals ( Identifier.Set.METHOD ) ) ) )
       {
         return true ;
       }

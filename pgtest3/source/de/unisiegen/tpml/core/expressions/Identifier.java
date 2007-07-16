@@ -41,6 +41,14 @@ public final class Identifier extends Value implements DefaultName
      */
     METHOD ,
     /**
+     * The set of base class {@link Identifier}s.
+     */
+    BASECLASS ,
+    /**
+     * The set of base method {@link Identifier}s.
+     */
+    BASEMETHOD ,
+    /**
      * The set of self {@link Identifier}s.
      */
     SELF
@@ -83,6 +91,18 @@ public final class Identifier extends Value implements DefaultName
 
 
   /**
+   * The base class name of the identifier.
+   */
+  private String baseClass = null ;
+
+
+  /**
+   * The method name of the identifier.
+   */
+  private String method = null ;
+
+
+  /**
    * Allocates a new {@link Identifier} with the given <code>name</code>.
    * 
    * @param pName the name of the identifier.
@@ -122,6 +142,73 @@ public final class Identifier extends Value implements DefaultName
 
 
   /**
+   * Allocates a new {@link Identifier} with the given <code>name</code>.
+   * 
+   * @param pName the name of the identifier.
+   * @param pSet The set of this {@link Identifier}.
+   */
+  public Identifier ( String pName , Set pSet )
+  {
+    this ( pName ) ;
+    this.set = pSet ;
+  }
+
+
+  /**
+   * Allocates a new {@link Identifier} with the given <code>name</code>.
+   * 
+   * @param pName the name of the identifier.
+   * @param pSet The set of this {@link Identifier}.
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
+   */
+  public Identifier ( String pName , Set pSet , int pParserStartOffset ,
+      int pParserEndOffset )
+  {
+    this ( pName , pSet ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
+   * Allocates a new {@link Identifier} with the given <code>name</code>.
+   * 
+   * @param pBaseClass The base class name of the identifier.
+   * @param pMethod The method name of the identifier.
+   */
+  public Identifier ( String pBaseClass , String pMethod )
+  {
+    this ( pBaseClass + "#" + pMethod ) ; //$NON-NLS-1$
+    this.baseClass = pBaseClass ;
+    this.method = pMethod ;
+    this.set = Set.BASEMETHOD ;
+  }
+
+
+  /**
+   * Allocates a new {@link Identifier} with the given <code>name</code>.
+   * 
+   * @param pBaseClass The base class name of the identifier.
+   * @param pMethod The method name of the identifier.
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
+   */
+  public Identifier ( String pBaseClass , String pMethod ,
+      int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pBaseClass + "#" + pMethod , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
+    this.baseClass = pBaseClass ;
+    this.method = pMethod ;
+    this.set = Set.BASEMETHOD ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#clone()
@@ -147,6 +234,18 @@ public final class Identifier extends Value implements DefaultName
       return this.name.equals ( other.name ) ;
     }
     return false ;
+  }
+
+
+  /**
+   * Returns the base class name of the identifier.
+   * 
+   * @return The base class name of the identifier.
+   * @see #baseClass
+   */
+  public String getBaseClass ( )
+  {
+    return this.baseClass ;
   }
 
 
@@ -207,6 +306,18 @@ public final class Identifier extends Value implements DefaultName
 
 
   /**
+   * Returns the method name of the identifier.
+   * 
+   * @return the method name of the identifier.
+   * @see #method
+   */
+  public String getMethod ( )
+  {
+    return this.method ;
+  }
+
+
+  /**
    * Returns the name of the identifier.
    * 
    * @return the name of the identifier.
@@ -252,6 +363,16 @@ public final class Identifier extends Value implements DefaultName
               case METHOD :
               {
                 this.prefix = PREFIX_ID_M ;
+                return this.prefix ;
+              }
+              case BASECLASS :
+              {
+                this.prefix = PREFIX_ID_Z ;
+                return this.prefix ;
+              }
+              case BASEMETHOD :
+              {
+                this.prefix = PREFIX_ID_B ;
                 return this.prefix ;
               }
               case SELF :
@@ -300,6 +421,10 @@ public final class Identifier extends Value implements DefaultName
         return "A" ; //$NON-NLS-1$
       case METHOD :
         return "M" ; //$NON-NLS-1$
+      case BASECLASS :
+        return "Z" ; //$NON-NLS-1$
+      case BASEMETHOD :
+        return "B" ; //$NON-NLS-1$
       case SELF :
         return "S" ; //$NON-NLS-1$
     }

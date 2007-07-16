@@ -262,7 +262,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
    * 
    * @return the sub {@link Body}.
    */
-  public Expression getB ( )
+  public Expression getBody ( )
   {
     return this.expressions [ 1 ] ;
   }
@@ -397,10 +397,19 @@ public final class Body extends Expression implements BoundIdentifiers ,
           .getIdentifiersFree ( ) ) ;
       ArrayList < Identifier > freeB = new ArrayList < Identifier > ( ) ;
       freeB.addAll ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
-      // TODO remove z#m | m in identifiersMethod
-      for ( int i = 0 ; i < this.identifiersAttribute.length ; i ++ )
+      for ( Identifier a : this.identifiersAttribute )
       {
-        while ( freeB.remove ( this.identifiersAttribute [ i ] ) )
+        while ( freeB.remove ( a ) )
+        {
+          // Remove all Identifiers with the same name
+        }
+      }
+      // Remove {z#m | m in M}
+      for ( Identifier m : this.identifiersMethod )
+      {
+        Identifier baseMethod = new Identifier ( this.identifierBaseClassName
+            .getName ( ) , m.getName ( ) ) ;
+        while ( freeB.remove ( baseMethod ) )
         {
           // Remove all Identifiers with the same name
         }
@@ -484,7 +493,6 @@ public final class Body extends Expression implements BoundIdentifiers ,
     /*
      * Do not substitute, if the Identifiers are equal.
      */
-    // TODO z#m | m in identifiersMethod
     boolean substituteBody = true ;
     for ( Identifier id : this.identifiersAttribute )
     {
@@ -492,6 +500,19 @@ public final class Body extends Expression implements BoundIdentifiers ,
       {
         substituteBody = false ;
         break ;
+      }
+    }
+    if ( substituteBody )
+    {
+      for ( Identifier m : this.identifiersMethod )
+      {
+        Identifier baseMethod = new Identifier ( this.identifierBaseClassName
+            .getName ( ) , m.getName ( ) ) ;
+        if ( pId.equals ( baseMethod ) )
+        {
+          substituteBody = false ;
+          break ;
+        }
       }
     }
     /*

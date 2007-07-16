@@ -1038,11 +1038,7 @@ duplication_pair_error			::= IDENTIFIER:i epsilon
 								;
 
 send							::= simple_expr:e HASHKEY IDENTIFIER:id
-									{:
-									   Identifier idM = new Identifier (id,idleft,idright) ;
-									   idM.setSet (Identifier.Set.METHOD );
-									   RESULT = new Send ( e, idM, eleft, idright) ;
-									:}
+									{: RESULT = new Send ( e, new Identifier (id,Identifier.Set.METHOD,idleft,idright), eleft, idright) ; :}
 								|	send_error
 									{: :}
 								;
@@ -1077,11 +1073,7 @@ row								::= epsilon
 								;
 
 attribute						::=	ATTRIBUTE:a IDENTIFIER:id EQUAL expr:e SEMI:s
-									{:
-									   Identifier idA = new Identifier (id,idleft,idright) ;
-									   idA.setSet (Identifier.Set.ATTRIBUTE );
-									   RESULT = new Attribute (idA, e, aleft, sright);
-									:}
+									{: RESULT = new Attribute (new Identifier (id,Identifier.Set.ATTRIBUTE,idleft,idright), e, aleft, sright); :}
 								|	attribute_error
 									{: :}
 								;
@@ -1115,17 +1107,9 @@ attribute_error					::= ATTRIBUTE:a epsilon
 								;
 
 method							::=	METHOD:m IDENTIFIER:id EQUAL expr:e SEMI:s
-									{:
-									   Identifier idM = new Identifier (id,idleft,idright) ;
-									   idM.setSet (Identifier.Set.METHOD );
-									   RESULT = new Method (idM, null, e, mleft, sright);
-									:}
+									{: RESULT = new Method (new Identifier (id,Identifier.Set.METHOD,idleft,idright), null, e, mleft, sright); :}
 								|	METHOD:m IDENTIFIER:id COLON type:tau EQUAL expr:e SEMI:s
-									{:
-									   Identifier idM = new Identifier (id,idleft,idright) ;
-									   idM.setSet (Identifier.Set.METHOD );
-									   RESULT = new Method (idM, tau, e, mleft, sright);
-									:}
+									{: RESULT = new Method (new Identifier (id,Identifier.Set.METHOD,idleft,idright), tau, e, mleft, sright); :}
 								|	method_error
 									{: :}
 								;
@@ -1196,9 +1180,7 @@ curried_method					::=	METHOD:m IDENTIFIER:id curried_method_list:l EQUAL expr:e
 									     identifiers[n + 1] = l[n].getId();
 									     types[n + 1] = l[n].getTau();
 									   }
-									   Identifier idM = new Identifier (id,idleft,idright) ;
-									   idM.setSet (Identifier.Set.METHOD );
-									   identifiers [0] = idM ;
+									   identifiers [0] = new Identifier (id,Identifier.Set.METHOD,idleft,idright) ;
 									   types [0] = null ;
 									   RESULT = new CurriedMethod(identifiers, types, e, mleft, sright);
 									:}
@@ -1211,9 +1193,7 @@ curried_method					::=	METHOD:m IDENTIFIER:id curried_method_list:l EQUAL expr:e
 									     identifiers[n + 1] = l[n].getId();
 									     types[n + 1] = l[n].getTau();
 									   }
-									   Identifier idM = new Identifier (id,idleft,idright) ;
-									   idM.setSet (Identifier.Set.METHOD );
-									   identifiers [0] = idM ;
+									   identifiers [0] = new Identifier (id,Identifier.Set.METHOD,idleft,idright) ;
 									   types [0] = tau ;
 									   RESULT = new CurriedMethod (identifiers, types, e, mleft, sright);
 									:}
@@ -1491,7 +1471,7 @@ row_type						::= epsilon
 								|	IDENTIFIER:id COLON type:tau SEMI row_type:r
 									{:
 									   Identifier [] m = new Identifier [r.getIdentifiers().length + 1];
-									   m [0] = new Identifier (id,idleft,idright);
+									   m [0] = new Identifier (id,Identifier.Set.METHOD,idleft,idright);
 									   System.arraycopy ( r.getIdentifiers() , 0 , m , 1 , r.getIdentifiers().length );
 									   MonoType [] types = new MonoType [r.getTypes().length + 1];
 									   types [0] = tau;

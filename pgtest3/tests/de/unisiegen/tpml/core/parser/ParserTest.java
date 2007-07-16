@@ -2074,6 +2074,9 @@ public class ParserTest
   private static String NEW = "new e" ;
 
 
+  private static String NEW_ERROR = "new" ;
+
+
   private static String [ ] L0_NORMAL = new String [ ]
   { IDENTIFIER , APPLICATION , LAMBDA_1 , SIMPLE_EXPR_1 } ;
 
@@ -2607,7 +2610,7 @@ public class ParserTest
       CURRIED_METHOD_ERROR_39 , CURRIED_METHOD_ERROR_40 ,
       CURRIED_METHOD_ERROR_41 , EXPR_OBJECT_TYPE_ERROR_1 ,
       EXPR_OBJECT_TYPE_ERROR_2 , EXPR_ROW_TYPE_ERROR_1 , EXPR_ROW_TYPE_ERROR_2 ,
-      EXPR_ROW_TYPE_ERROR_3 } ;
+      EXPR_ROW_TYPE_ERROR_3 , NEW_ERROR } ;
 
 
   private static String [ ] L2CTYPE_NORMAL = new String [ ]
