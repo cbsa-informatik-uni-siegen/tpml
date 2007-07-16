@@ -119,7 +119,7 @@ public class CompoundExpression < S , E > extends JComponent
   /**
    * the list of points where the mouseovereffect will be react
    */
-  private ToListenForMouseContainer toListenForMouse ;
+  ToListenForMouseContainer toListenForMouse ;
 
 
   /**
@@ -147,8 +147,8 @@ public class CompoundExpression < S , E > extends JComponent
       @ Override
       public void mouseExited ( MouseEvent e )
       {
-        toListenForMouse.reset();
-        toListenForMouse.setMark ( false ) ;
+        CompoundExpression.this.toListenForMouse.reset();
+        CompoundExpression.this.toListenForMouse.setMark ( false ) ;
         CompoundExpression.this.repaint ( ) ;
       }
     } ) ;
@@ -180,12 +180,12 @@ public class CompoundExpression < S , E > extends JComponent
   /**
    * Sets the expression, that should be underlined.
    * 
-   * @param underlineExpression
+   * @param pUnderlineExpression
    */
-  public void setUnderlineExpression ( Expression underlineExpression )
+  public void setUnderlineExpression ( Expression pUnderlineExpression )
   {
-    boolean needsRepaint = this.underlineExpression != underlineExpression ;
-    this.underlineExpression = underlineExpression ;
+    boolean needsRepaint = this.underlineExpression != pUnderlineExpression ;
+    this.underlineExpression = pUnderlineExpression ;
     if ( this.expressionRenderer != null )
     {
       this.expressionRenderer
@@ -216,24 +216,24 @@ public class CompoundExpression < S , E > extends JComponent
    * 
    * @param event
    */
-  private void handleMouseMoved ( MouseEvent event )
+  void handleMouseMoved ( MouseEvent event )
   {
     
     //tell the PrettyStringRenderer where the mouse pointer is
-    toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
+    this.toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
 
     //first, we do not want to mark anything, we are waiting for mouse pointer is over one bounded id
-    toListenForMouse.setMark ( false ) ;
+    this.toListenForMouse.setMark ( false ) ;
     CompoundExpression.this.repaint ( ) ;
     
     //note if to mark or not to mark
     boolean mark = false;
     
     //walk throu the postions where to mark
-    for ( int t = 0 ; t < toListenForMouse.size ( ) ; t++)
+    for ( int t = 0 ; t < this.toListenForMouse.size ( ) ; t++)
     {
       //get position of pointer, these are rectangles. These positions are made by the PrettyStringRenderer
-      Rectangle r =  toListenForMouse.get ( t ) ;
+      Rectangle r =  this.toListenForMouse.get ( t ) ;
       int pX = r.x;
       int pX1 = r.x+r.width ;
       int pY = r.y;
@@ -252,14 +252,14 @@ public class CompoundExpression < S , E > extends JComponent
     if (mark)
     {
       //we want to habe marked
-      toListenForMouse.setMark ( true ) ;
+      this.toListenForMouse.setMark ( true ) ;
       CompoundExpression.this.repaint ( ) ;
     }
     else
     {
       //we do not want to see anything marked
-     toListenForMouse.setMark ( false ) ;
-     toListenForMouse.reset();
+     this.toListenForMouse.setMark ( false ) ;
+     this.toListenForMouse.reset();
      CompoundExpression.this.repaint ( ) ;
     }
     
@@ -286,31 +286,31 @@ public class CompoundExpression < S , E > extends JComponent
   /**
    * Sets whether the expression should be wrapped or not.
    * 
-   * @param noLineWrapping
+   * @param pNoLineWrapping
    */
-  public void setNoLineWrapping ( boolean noLineWrapping )
+  public void setNoLineWrapping ( boolean pNoLineWrapping )
   {
-    this.noLineWrapping = noLineWrapping ;
+    this.noLineWrapping = pNoLineWrapping ;
   }
 
 
   /**
    * Sets the expression that should rendered.
    * 
-   * @param expression
+   * @param pExpression
    */
-  public void setExpression ( Expression expression )
+  public void setExpression ( Expression pExpression )
   {
 		// check if we have a new expression
-		if (this.expression != expression)
+		if (this.expression != pExpression)
 		{
 			// update to the new expression
-			this.expression = expression;
+			this.expression = pExpression;
 
 			// because of the bounds are cached we need a new one. The expression
 			// might change by translating in coresyntax
-			bonds = new ShowBonds();
-			bonds.load(this.expression);
+			this.bonds = new ShowBonds();
+			this.bonds.load(this.expression);
 
 			// check what to do with the renderer
 			if (this.expression == null)
@@ -338,15 +338,15 @@ public class CompoundExpression < S , E > extends JComponent
   /**
 	 * Sets the environment taht should be rendered.
 	 * 
-	 * @param environment
+	 * @param pEnvironment
 	 */
-  public void setEnvironment ( Environment < S , E > environment )
+  public void setEnvironment ( Environment < S , E > pEnvironment )
   {
     // check if we have a new environment
-    if ( this.environment != environment )
+    if ( this.environment != pEnvironment )
     {
       // update to the new environment
-      this.environment = environment ;
+      this.environment = pEnvironment ;
       // check what to do with the renderer
       if ( this.environment == null )
       {
@@ -370,11 +370,12 @@ public class CompoundExpression < S , E > extends JComponent
   /**
    * Calculates the size needed to propperly render the compoundExpression
    * 
-   * @param maxWidth
+   * @param pMaxWidth
    * @return
    */
-  public Dimension getNeededSize ( int maxWidth )
+  public Dimension getNeededSize ( int pMaxWidth )
   {
+  	int maxWidth = pMaxWidth;
   	if (maxWidth < 0)
   	{
   		return new Dimension(0,0);
@@ -496,7 +497,7 @@ public class CompoundExpression < S , E > extends JComponent
       //this.expressionRenderer.render ( posX , posY , getHeight ( ) , gc ,
       //    bonds , toListenForMouse ) ;
     	
-    	this.expressionRenderer.render ( posX , posY , getWidth(), getHeight () , gc , bonds , toListenForMouse ) ;
+    	this.expressionRenderer.render ( posX , posY , getWidth(), getHeight () , gc , this.bonds , this.toListenForMouse ) ;
       posX += this.expressionSize.width ;
       // if there is an environment render it now
       if ( this.environment != null )
@@ -522,7 +523,7 @@ public class CompoundExpression < S , E > extends JComponent
           CompoundExpression.arrowStr ) ;
       // draw the expression at the last position.
 
-      this.expressionRenderer.render ( posX , posY , getWidth() ,getHeight ( ) , gc , bonds , toListenForMouse ) ;
+      this.expressionRenderer.render ( posX , posY , getWidth() ,getHeight ( ) , gc , this.bonds , this.toListenForMouse ) ;
       //this.expressionRenderer.render ( posX , posY , getWidth() ,AbstractRenderer.getAbsoluteHeight (), gc , bonds , toListenForMouse ) ;
     }
     
@@ -539,7 +540,7 @@ public class CompoundExpression < S , E > extends JComponent
    */
   public Expression getExpression ( )
   {
-    return expression ;
+    return this.expression ;
   }
  
 }
