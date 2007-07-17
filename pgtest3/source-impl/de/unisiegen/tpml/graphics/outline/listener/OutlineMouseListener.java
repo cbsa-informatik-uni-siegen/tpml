@@ -539,7 +539,7 @@ public final class OutlineMouseListener implements MouseListener
       if ( this.defaultOutline == this.subTypingSourceView.getOutline1 ( ) )
       {
         type = ( ( StyledTypeEnterField ) this.subTypingSourceView
-            .getEditor1 ( ).getDocument ( ) ).getType ( ) ;
+            .getEditor ( ).getDocument ( ) ).getType ( ) ;
       }
       else
       {

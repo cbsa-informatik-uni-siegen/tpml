@@ -426,9 +426,9 @@ public final class DefaultOutline implements Outline
         new OutlineComponentListener ( pSubTypingSourceView.getJSplitPane ( ) ,
             this ) ) ;
     // MouseListener
-    if ( pSubTypingSourceView.getEditor1 ( ) != null )
+    if ( pSubTypingSourceView.getEditor ( ) != null )
     {
-      pSubTypingSourceView.getEditor1 ( ).addMouseListener (
+      pSubTypingSourceView.getEditor ( ).addMouseListener (
           new OutlineMouseListener ( this , pSubTypingSourceView ) ) ;
     }
     if ( pSubTypingSourceView.getEditor2 ( ) != null )
@@ -1731,7 +1731,7 @@ public final class DefaultOutline implements Outline
       if ( this.subTypingSourceView.getOutline1 ( ) == this )
       {
         document = ( StyledLanguageDocument ) this.subTypingSourceView
-            .getEditor1 ( ).getDocument ( ) ;
+            .getEditor ( ).getDocument ( ) ;
       }
       else
       {
