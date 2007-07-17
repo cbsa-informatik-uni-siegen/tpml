@@ -327,6 +327,7 @@ this.editor2 = new StyledLanguageEditor ( );
 		this.editor2.setDocument ( this.sourceField2 );
 
 		this.outline2 = new DefaultOutline ( this , Outline.Modus.SECOND );
+    this.outline.setSyncOutline ( this.outline2 );
 		this.sourceField2.addDocumentListener ( new DocumentListener ( ) {
 
 			public void changedUpdate(DocumentEvent e) {

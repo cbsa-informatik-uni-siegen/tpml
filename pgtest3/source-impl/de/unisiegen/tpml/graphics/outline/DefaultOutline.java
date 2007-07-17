@@ -131,6 +131,12 @@ public final class DefaultOutline implements Outline
 
 
   /**
+   * The sync outline.
+   */
+  private DefaultOutline syncOutline = null ;
+
+
+  /**
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    * 
    * @param pBigStepView The {@link BigStepView}.
@@ -419,7 +425,6 @@ public final class DefaultOutline implements Outline
   public DefaultOutline ( SubTypingSourceView pSubTypingSourceView ,
       Outline.Modus pModus )
   {
-    // TODO implement
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
     this.subTypingSourceView = pSubTypingSourceView ;
@@ -1211,6 +1216,17 @@ public final class DefaultOutline implements Outline
 
 
   /**
+   * Returns the <code>JPanel</code> of the {@link OutlineUI} preferences.
+   * 
+   * @return The <code>JPanel</code> of the {@link OutlineUI} preferences.
+   */
+  public final JPanel getPanelPreferences ( )
+  {
+    return this.uI.getJPanelPreferences ( ) ;
+  }
+
+
+  /**
    * Returns the {@link OutlinePreferences}.
    * 
    * @return The {@link OutlinePreferences}.
@@ -1219,6 +1235,29 @@ public final class DefaultOutline implements Outline
   public final OutlinePreferences getPreferences ( )
   {
     return this.preferences ;
+  }
+
+
+  /**
+   * Returns the syncOutline.
+   * 
+   * @return The syncOutline.
+   * @see #syncOutline
+   */
+  public DefaultOutline getSyncOutline ( )
+  {
+    return this.syncOutline ;
+  }
+
+
+  /**
+   * Returns the <code>JScrollPane</code> of the {@link OutlineUI} tree.
+   * 
+   * @return The <code>JScrollPane</code> of the {@link OutlineUI} tree.
+   */
+  public final JScrollPane getTree ( )
+  {
+    return this.uI.getJScrollPaneOutline ( ) ;
   }
 
 
@@ -1472,6 +1511,26 @@ public final class DefaultOutline implements Outline
   {
     this.uI.setRootNode ( this.rootNode ) ;
     updateBreaks ( ) ;
+  }
+
+
+  /**
+   * Sets the sync outline.
+   * 
+   * @param pSyncOutline The sync outline.
+   */
+  public void setSyncOutline ( DefaultOutline pSyncOutline )
+  {
+    if ( pSyncOutline == null )
+    {
+      throw new IllegalArgumentException (
+          "The sync outline should not be null" ) ; //$NON-NLS-1$
+    }
+    if ( this.syncOutline != pSyncOutline )
+    {
+      this.syncOutline = pSyncOutline ;
+      this.syncOutline.setSyncOutline ( this ) ;
+    }
   }
 
 
