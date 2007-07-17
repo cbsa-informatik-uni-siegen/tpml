@@ -25,6 +25,7 @@ import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.StyledLanguageEditor;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline;
 import de.unisiegen.tpml.graphics.outline.Outline;
+import de.unisiegen.tpml.ui.EditorComponent;
 import de.unisiegen.tpml.ui.SideBar;
 import de.unisiegen.tpml.ui.SideBarListener;
 
@@ -38,7 +39,8 @@ import de.unisiegen.tpml.ui.SideBarListener;
  * @version $Rev: 995 $
  * @see de.unisiegen.tpml.graphics.AbstractProofView
  */
-public class SubTypingSourceView extends AbstractProofView //JComponent
+public class SubTypingSourceView extends JPanel //AbstractProofView //JComponent
+		implements EditorComponent
 {
   /**
    * The unique serialization identifier for this class.
@@ -388,9 +390,6 @@ this.editor2 = new StyledLanguageEditor ( );
     
     this.outlinePanel = new JPanel(new GridBagLayout());
     
-    this.outline = new DefaultOutline ( this ) ;
-   // this.outline.load ( this.SubTypingProofModel.getRoot ( )
-     //   .getLastLeaf ( ).getType ( ) , Outline.ExecuteInit.SUBTYPING ) ;
     JPanel jPanelOutline = this.outline.getPanel ( ) ;
     
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
@@ -405,9 +404,6 @@ this.editor2 = new StyledLanguageEditor ( );
     
     
     
-    this.outline2 = new DefaultOutline ( this ) ;
-  //  this.outline2.load ( this.SubTypingProofModel.getRoot ( )
-    //    .getLastLeaf ( ).getType2 ( ) , Outline.ExecuteInit.SUBTYPING ) ;
     JPanel jPanelOutline2 = this.outline2.getPanel ( ) ;
     
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
@@ -504,7 +500,7 @@ public void guess ( ) throws IllegalStateException, ProofGuessException {
  * @return The editor.
  * @see #editor
  */
-public StyledLanguageEditor getEditor1 ( )
+public StyledLanguageEditor getEditor ( )
 {
   return this.editor ;
 }
@@ -519,6 +515,70 @@ public StyledLanguageEditor getEditor1 ( )
 public StyledLanguageEditor getEditor2 ( )
 {
   return this.editor2 ;
+}
+
+
+public void handleNext ( ) {
+	// TODO Auto-generated method stub
+	
+}
+
+
+public void handleRedo ( ) {
+	// TODO Auto-generated method stub
+	
+}
+
+
+public void handleUndo ( ) {
+	// TODO Auto-generated method stub
+	
+}
+
+
+public boolean isNextStatus ( ) {
+	// TODO Auto-generated method stub
+	return false;
+}
+
+
+public boolean isPongStatus ( ) {
+	// TODO Auto-generated method stub
+	return false;
+}
+
+
+public boolean isRedoStatus ( ) {
+	// TODO Auto-generated method stub
+	return false;
+}
+
+
+public boolean isUndoStatus ( ) {
+	// TODO Auto-generated method stub
+	return false;
+}
+
+
+public void setAdvanced ( boolean status ) {
+	// TODO Auto-generated method stub
+	
+}
+
+
+public void setDefaultStates ( ) {
+	// TODO Auto-generated method stub
+	
+}
+
+
+public MonoType getType ( ) {
+	return this.type;
+}
+
+
+public MonoType getType2 ( ) {
+	return this.type2;
 }
 
 
