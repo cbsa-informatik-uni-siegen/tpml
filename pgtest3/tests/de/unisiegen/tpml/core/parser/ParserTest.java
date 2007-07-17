@@ -1597,7 +1597,7 @@ public class ParserTest
   private static String OBJECT_2 = "object (self:<>) end" ;
 
 
-  private static String OBJECT_3 = "object (self) end" ;
+  private static String OBJECT_3 = "object (self) method add = 0 ; end" ;
 
 
   private static String OBJECT_4 = "object (self:<add:int;>) method add = 0 ; end" ;
@@ -1630,40 +1630,207 @@ public class ParserTest
   private static String OBJECT_ERROR_9 = "object (self) method add = 1 ;" ;
 
 
-  private static String OBJECT_ERROR_10 = "object (self:) end" ;
+  // left paren
+  private static String OBJECT_ERROR_10 = "object self" ;
 
 
-  private static String OBJECT_ERROR_11 = "object (self:) method add = 0 ; end" ;
+  private static String OBJECT_ERROR_11 = "object self)" ;
 
 
-  private static String OBJECT_ERROR_12 = "object self:<add:int;>) end" ;
+  private static String OBJECT_ERROR_12 = "object self) end" ;
 
 
-  private static String OBJECT_ERROR_13 = "object self:<add:int;>) method add = 0 ; end" ;
+  private static String OBJECT_ERROR_13 = "object self) method add = 1 ;" ;
 
 
-  private static String OBJECT_ERROR_14 = "object self) end" ;
+  private static String OBJECT_ERROR_14 = "object self) method add = 1 ; end" ;
 
 
-  private static String OBJECT_ERROR_15 = "object self) method add = 0 ; end" ;
+  private static String OBJECT_ERROR_15 = "object self:" ;
 
 
-  private static String OBJECT_ERROR_16 = "object (self:<add:int;> end" ;
+  private static String OBJECT_ERROR_16 = "object self: <add:int;>" ;
 
 
-  private static String OBJECT_ERROR_17 = "object (self:<add:int;> method add = 0 ; end" ;
+  private static String OBJECT_ERROR_17 = "object self: <add:int;>)" ;
 
 
-  private static String OBJECT_ERROR_18 = "object (self end" ;
+  private static String OBJECT_ERROR_18 = "object self: <add:int;>) end" ;
 
 
-  private static String OBJECT_ERROR_19 = "object (self method add = 0 ; end" ;
+  private static String OBJECT_ERROR_19 = "object self: <add:int;>) method add = 1 ;" ;
 
 
-  private static String OBJECT_ERROR_20 = "object ( ) end" ;
+  private static String OBJECT_ERROR_20 = "object self: <add:int;>) method add = 1 ; end" ;
 
 
-  private static String OBJECT_ERROR_21 = "object ( ) method add = 0 ; end" ;
+  // self
+  private static String OBJECT_ERROR_21 = "object ( )" ;
+
+
+  private static String OBJECT_ERROR_22 = "object ( ) end" ;
+
+
+  private static String OBJECT_ERROR_23 = "object ( ) method add = 1 ;" ;
+
+
+  private static String OBJECT_ERROR_24 = "object ( ) method add = 1 ; end" ;
+
+
+  private static String OBJECT_ERROR_25 = "object ( :" ;
+
+
+  private static String OBJECT_ERROR_26 = "object ( : <add:int;>" ;
+
+
+  private static String OBJECT_ERROR_27 = "object ( : <add:int;>)" ;
+
+
+  private static String OBJECT_ERROR_28 = "object ( : <add:int;>) end" ;
+
+
+  private static String OBJECT_ERROR_29 = "object ( : <add:int;>) method add = 1 ;" ;
+
+
+  private static String OBJECT_ERROR_30 = "object ( : <add:int;>) method add = 1 ; end" ;
+
+
+  // right paren
+  private static String OBJECT_ERROR_31 = "object (self end" ;
+
+
+  private static String OBJECT_ERROR_32 = "object (self method add = 1 ;" ;
+
+
+  private static String OBJECT_ERROR_33 = "object (self method add = 1 ; end" ;
+
+
+  private static String OBJECT_ERROR_34 = "object (self: <add:int;> end" ;
+
+
+  private static String OBJECT_ERROR_35 = "object (self: <add:int;> method add = 1" ;
+
+
+  private static String OBJECT_ERROR_36 = "object (self: <add:int;> method add = 1 end" ;
+
+
+  // colon
+  private static String OBJECT_ERROR_37 = "object (self <add:int;>" ;
+
+
+  private static String OBJECT_ERROR_38 = "object (self <add:int;>)" ;
+
+
+  private static String OBJECT_ERROR_39 = "object (self <add:int;>) end" ;
+
+
+  private static String OBJECT_ERROR_40 = "object (self <add:int;>) method add = 1 ;" ;
+
+
+  private static String OBJECT_ERROR_41 = "object (self <add:int;>) method add = 1 ; end" ;
+
+
+  // type
+  private static String OBJECT_ERROR_42 = "object (self: )" ;
+
+
+  private static String OBJECT_ERROR_43 = "object (self: ) end" ;
+
+
+  private static String OBJECT_ERROR_44 = "object (self: ) method add = 1 ;" ;
+
+
+  private static String OBJECT_ERROR_45 = "object (self: ) method add = 1 ; end" ;
+
+
+  // left paren and self
+  private static String OBJECT_ERROR_46 = "object )" ;
+
+
+  private static String OBJECT_ERROR_47 = "object ) method add = 1 ;" ;
+
+
+  private static String OBJECT_ERROR_48 = "object ) method add = 1 ; end" ;
+
+
+  private static String OBJECT_ERROR_49 = "object :" ;
+
+
+  private static String OBJECT_ERROR_50 = "object :<add:int;>" ;
+
+
+  private static String OBJECT_ERROR_51 = "object :<add:int;>)" ;
+
+
+  private static String OBJECT_ERROR_52 = "object :<add:int;>) end" ;
+
+
+  private static String OBJECT_ERROR_53 = "object :<add:int;>) method add = 1 ;" ;
+
+
+  private static String OBJECT_ERROR_54 = "object :<add:int;>) method add = 1 ; end" ;
+
+
+  // self and right paren
+  private static String OBJECT_ERROR_55 = "object ( end" ;
+
+
+  private static String OBJECT_ERROR_56 = "object ( method add = 1 ;" ;
+
+
+  private static String OBJECT_ERROR_57 = "object ( method add = 1 ; end" ;
+
+
+  // self and colon
+  private static String OBJECT_ERROR_58 = "object ( <add:int;>" ;
+
+
+  private static String OBJECT_ERROR_59 = "object ( <add:int;>)" ;
+
+
+  private static String OBJECT_ERROR_60 = "object ( <add:int;>) end" ;
+
+
+  private static String OBJECT_ERROR_61 = "object ( <add:int;>) method add = 1 ;" ;
+
+
+  private static String OBJECT_ERROR_62 = "object ( <add:int;>) method add = 1 ; end" ;
+
+
+  // type and right paren
+  private static String OBJECT_ERROR_63 = "object (self end" ;
+
+
+  private static String OBJECT_ERROR_64 = "object (self method add = 1 ;" ;
+
+
+  private static String OBJECT_ERROR_65 = "object (self method add = 1 ; end" ;
+
+
+  // left paren, self and right paren
+  private static String OBJECT_ERROR_66 = "object end" ;
+
+
+  private static String OBJECT_ERROR_67 = "object method add = 1 ;" ;
+
+
+  private static String OBJECT_ERROR_68 = "object method add = 1 ; end" ;
+
+
+  // Missing left paren, self and colon
+  private static String OBJECT_ERROR_69 = "object <add:int;>" ;
+
+
+  private static String OBJECT_ERROR_70 = "object <add:int;>)" ;
+
+
+  private static String OBJECT_ERROR_71 = "object <add:int;>) end" ;
+
+
+  private static String OBJECT_ERROR_72 = "object <add:int;>) method add = 1 ;" ;
+
+
+  private static String OBJECT_ERROR_73 = "object <add:int;>) method add = 1 ; end" ;
 
 
   private static String DUPLICATION_1 = "{< a = 0 >}" ;
@@ -2441,6 +2608,19 @@ public class ParserTest
       OBJECT_ERROR_10 , OBJECT_ERROR_11 , OBJECT_ERROR_12 , OBJECT_ERROR_13 ,
       OBJECT_ERROR_14 , OBJECT_ERROR_15 , OBJECT_ERROR_16 , OBJECT_ERROR_17 ,
       OBJECT_ERROR_18 , OBJECT_ERROR_19 , OBJECT_ERROR_20 , OBJECT_ERROR_21 ,
+      OBJECT_ERROR_22 , OBJECT_ERROR_23 , OBJECT_ERROR_24 , OBJECT_ERROR_25 ,
+      OBJECT_ERROR_26 , OBJECT_ERROR_27 , OBJECT_ERROR_28 , OBJECT_ERROR_29 ,
+      OBJECT_ERROR_30 , OBJECT_ERROR_31 , OBJECT_ERROR_32 , OBJECT_ERROR_33 ,
+      OBJECT_ERROR_34 , OBJECT_ERROR_35 , OBJECT_ERROR_36 , OBJECT_ERROR_37 ,
+      OBJECT_ERROR_38 , OBJECT_ERROR_39 , OBJECT_ERROR_40 , OBJECT_ERROR_41 ,
+      OBJECT_ERROR_42 , OBJECT_ERROR_43 , OBJECT_ERROR_44 , OBJECT_ERROR_45 ,
+      OBJECT_ERROR_46 , OBJECT_ERROR_47 , OBJECT_ERROR_48 , OBJECT_ERROR_49 ,
+      OBJECT_ERROR_50 , OBJECT_ERROR_51 , OBJECT_ERROR_52 , OBJECT_ERROR_53 ,
+      OBJECT_ERROR_54 , OBJECT_ERROR_55 , OBJECT_ERROR_56 , OBJECT_ERROR_57 ,
+      OBJECT_ERROR_58 , OBJECT_ERROR_59 , OBJECT_ERROR_60 , OBJECT_ERROR_61 ,
+      OBJECT_ERROR_62 , OBJECT_ERROR_63 , OBJECT_ERROR_64 , OBJECT_ERROR_65 ,
+      OBJECT_ERROR_66 , OBJECT_ERROR_67 , OBJECT_ERROR_68 , OBJECT_ERROR_69 ,
+      OBJECT_ERROR_70 , OBJECT_ERROR_71 , OBJECT_ERROR_72 , OBJECT_ERROR_73 ,
       DUPLICATION_ERROR_1 , DUPLICATION_ERROR_2 , DUPLICATION_ERROR_3 ,
       DUPLICATION_ERROR_4 , DUPLICATION_ERROR_5 , SEND_ERROR ,
       ATTRIBUTE_ERROR_1 , ATTRIBUTE_ERROR_2 , ATTRIBUTE_ERROR_3 ,
@@ -2613,6 +2793,19 @@ public class ParserTest
       OBJECT_ERROR_10 , OBJECT_ERROR_11 , OBJECT_ERROR_12 , OBJECT_ERROR_13 ,
       OBJECT_ERROR_14 , OBJECT_ERROR_15 , OBJECT_ERROR_16 , OBJECT_ERROR_17 ,
       OBJECT_ERROR_18 , OBJECT_ERROR_19 , OBJECT_ERROR_20 , OBJECT_ERROR_21 ,
+      OBJECT_ERROR_22 , OBJECT_ERROR_23 , OBJECT_ERROR_24 , OBJECT_ERROR_25 ,
+      OBJECT_ERROR_26 , OBJECT_ERROR_27 , OBJECT_ERROR_28 , OBJECT_ERROR_29 ,
+      OBJECT_ERROR_30 , OBJECT_ERROR_31 , OBJECT_ERROR_32 , OBJECT_ERROR_33 ,
+      OBJECT_ERROR_34 , OBJECT_ERROR_35 , OBJECT_ERROR_36 , OBJECT_ERROR_37 ,
+      OBJECT_ERROR_38 , OBJECT_ERROR_39 , OBJECT_ERROR_40 , OBJECT_ERROR_41 ,
+      OBJECT_ERROR_42 , OBJECT_ERROR_43 , OBJECT_ERROR_44 , OBJECT_ERROR_45 ,
+      OBJECT_ERROR_46 , OBJECT_ERROR_47 , OBJECT_ERROR_48 , OBJECT_ERROR_49 ,
+      OBJECT_ERROR_50 , OBJECT_ERROR_51 , OBJECT_ERROR_52 , OBJECT_ERROR_53 ,
+      OBJECT_ERROR_54 , OBJECT_ERROR_55 , OBJECT_ERROR_56 , OBJECT_ERROR_57 ,
+      OBJECT_ERROR_58 , OBJECT_ERROR_59 , OBJECT_ERROR_60 , OBJECT_ERROR_61 ,
+      OBJECT_ERROR_62 , OBJECT_ERROR_63 , OBJECT_ERROR_64 , OBJECT_ERROR_65 ,
+      OBJECT_ERROR_66 , OBJECT_ERROR_67 , OBJECT_ERROR_68 , OBJECT_ERROR_69 ,
+      OBJECT_ERROR_70 , OBJECT_ERROR_71 , OBJECT_ERROR_72 , OBJECT_ERROR_73 ,
       DUPLICATION_ERROR_1 , DUPLICATION_ERROR_2 , DUPLICATION_ERROR_3 ,
       DUPLICATION_ERROR_4 , DUPLICATION_ERROR_5 , SEND_ERROR ,
       ATTRIBUTE_ERROR_1 , ATTRIBUTE_ERROR_2 , ATTRIBUTE_ERROR_3 ,

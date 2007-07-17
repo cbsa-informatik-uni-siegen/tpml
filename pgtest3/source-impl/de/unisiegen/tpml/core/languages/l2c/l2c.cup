@@ -979,24 +979,55 @@ object_expr_error				::= OBJECT:o epsilon
 									{: Error.expect("Object", " end", oleft, rright, "end"); :}	
 								|	OBJECT:o LPAREN SELF RPAREN row:r epsilon
 									{: Error.expect("Object", " end", oleft, rright, "end"); :}
-								// Missing type
-								|   OBJECT:o LPAREN SELF COLON:c RPAREN
-									{: Error.expect("Object", " \u03C4", oleft, cright, "\u03C4" ); :}
 								// Missing left bracket
 								|	OBJECT:o SELF
 									{: Error.expect("Object", " (", oleft, oright, "(" ); :}
+								// Missing self
+								|	OBJECT:o LPAREN:l RPAREN
+									{: Error.expect("Object", "self", oleft, lright, "self" ); :}
+								|	OBJECT:o LPAREN:l COLON
+									{: Error.expect("Object", "self", oleft, lright, "self" ); :}
 								// Missing right bracket
-								|	OBJECT:o LPAREN SELF COLON type:t END
-									{: Error.expect("Object", ") ", oleft, tright, ")" ); :}
-								|	OBJECT:o LPAREN SELF COLON type:t row
-									{: Error.expect("Object", ") ", oleft, tright, ")" ); :}
 								|	OBJECT:o LPAREN SELF:s END
 									{: Error.expect("Object", ") ", oleft, sright, ")" ); :}
 								|	OBJECT:o LPAREN SELF:s row
 									{: Error.expect("Object", ") ", oleft, sright, ")" ); :}
-								// Missing self
-								|	OBJECT:o LPAREN:l RPAREN
-									{: Error.expect("Object", "self", oleft, lright, "self" ); :}
+								|	OBJECT:o LPAREN SELF COLON type:t END
+									{: Error.expect("Object", ") ", oleft, tright, ")" ); :}
+								|	OBJECT:o LPAREN SELF COLON type:t row
+									{: Error.expect("Object", ") ", oleft, tright, ")" ); :}
+								// Missing colon
+								|   OBJECT:o LPAREN SELF:s type
+									{: Error.expect("Object", ": ", oleft, sright, ":" ); :}																	
+								// Missing type
+								|   OBJECT:o LPAREN SELF COLON:c RPAREN
+									{: Error.expect("Object", " \u03C4", oleft, cright, "\u03C4" ); :}
+								// Missing left paren and self
+								|   OBJECT:o RPAREN
+									{: Error.expect("Object", " (self", oleft, oright, "(self" ); :}
+								|   OBJECT:o COLON
+									{: Error.expect("Object", " (self", oleft, oright, "(self" ); :}
+								// Missing self and right paren
+								|	OBJECT:o LPAREN:l END
+									{: Error.expect("Object", "self) ", oleft, lright, "self)" ); :}
+								|	OBJECT:o LPAREN:l row
+									{: Error.expect("Object", "self) ", oleft, lright, "self)" ); :}
+								// Missing self and colon
+								|	OBJECT:o LPAREN:l type
+									{: Error.expect("Object", "self: ", oleft, lright, "self:" ); :}									
+								// Missing type and right paren
+								|	OBJECT:o LPAREN SELF COLON:c END
+									{: Error.expect("Object", " \u03C4) ", oleft, cright, "\u03C4)" ); :}
+								|	OBJECT:o LPAREN SELF COLON:c row
+									{: Error.expect("Object", " \u03C4) ", oleft, cright, "\u03C4)" ); :}
+								// Missing left paren, self and right paren
+								|	OBJECT:o END
+									{: Error.expect("Object", " (self) ", oleft, oright, "(self)" ); :}
+								|	OBJECT:o row
+									{: Error.expect("Object", " (self) ", oleft, oright, "(self)" ); :}								
+								// Missing left paren, self and colon
+								|	OBJECT:o type
+									{: Error.expect("Object", " (self: ", oleft, oright, "(self:" ); :}
 								;
 
 row								::= epsilon
