@@ -1302,6 +1302,29 @@ send_error						::= simple_expr:s HASHKEY:h epsilon
 
 class							::= CLASS:c LPAREN SELF:id RPAREN body:b END:end
 									{: RESULT = new Class (new Identifier (id,idleft,idright), b, cleft, endright); :}
+								|	class_error
+									{: :}
+								;
+
+class_error						::= CLASS:c epsilon
+									{: Error.expect("Class", " (self) end", cleft, cright, "(self) b end"); :}
+								|	CLASS:c LPAREN:l epsilon
+									{: Error.expect("Class", "self) end", cleft, lright, "self) b end"); :}
+								|	CLASS:c LPAREN SELF:s epsilon
+									{: Error.expect("Class", ") end", cleft, sright, ") b end"); :}
+								|	CLASS:c LPAREN SELF RPAREN body:b epsilon
+									{: Error.expect("Class", " end", cleft, bright, "end"); :}
+								// Missing left bracket
+								|	CLASS:c SELF
+									{: Error.expect("Class", " (", cleft, cright, "(" ); :}
+								// Missing right bracket
+								|	CLASS:c LPAREN SELF:s END
+									{: Error.expect("Class", ") ", cleft, sright, ")" ); :}
+								|	CLASS:c LPAREN SELF:s body END
+									{: Error.expect("Class", ") ", cleft, sright, ")" ); :}
+								// Missing self
+								|	CLASS:c LPAREN:l RPAREN
+									{: Error.expect("Class", "self", cleft, lright, "self" ); :}
 								;
 
 body							::= INHERIT:i body_attribute_list:bal SEMI body_method_list:bml FROM expr:e AS IDENTIFIER:z SEMI body:b
@@ -1312,14 +1335,34 @@ body							::= INHERIT:i body_attribute_list:bal SEMI body_method_list:bml FROM 
 									:}
 								|	row:r
 									{: RESULT = new Row(r, rleft, rright) ; :}
+								|	body_error
+						   			{: :}
 								;
 
+body_error						::= INHERIT:i epsilon
+									{: Error.expect("Body", " a1, ak ; m1, ml from e as z ; method m = 0 ;", ileft, iright, "a<sub>1</sub>, ... ,a<sub>k</sub> ; m<sub>1</sub>, ... ,m<sub>l</sub> from e as z ; b<sub>1</sub>"); :}
+								|	INHERIT:i body_attribute_list:bal epsilon
+									{: Error.expect("Body", " ; m1, ml from e as z ; method m = 0 ;", ileft, balright, "; m<sub>1</sub>, ... ,m<sub>l</sub> from e as z ; b<sub>1</sub>"); :}
+								|	INHERIT:i body_attribute_list SEMI:s epsilon
+									{: Error.expect("Body", " m1, ml from e as z ; method m = 0 ;", ileft, sright, "m<sub>1</sub>, ... ,m<sub>l</sub> from e as z ; b<sub>1</sub>"); :}
+								|	INHERIT:i body_attribute_list SEMI body_method_list:bml epsilon
+									{: Error.expect("Body", " from e as z ; method m = 0 ;", ileft, bmlright, "from e as z ; b<sub>1</sub>"); :}
+								|	INHERIT:i body_attribute_list SEMI body_method_list FROM:f epsilon
+									{: Error.expect("Body", " e as z ; method m = 0 ;", ileft, fright, "e as z ; b<sub>1</sub>"); :}
+								|	INHERIT:i body_attribute_list SEMI body_method_list FROM expr:e epsilon
+									{: Error.expect("Body", " as z ; method m = 0 ;", ileft, eright, "as z ; b<sub>1</sub>"); :}
+								|	INHERIT:i body_attribute_list SEMI body_method_list FROM expr AS:a epsilon
+									{: Error.expect("Body", " z ; method m = 0 ;", ileft, aright, "z ; b<sub>1</sub>"); :}
+								|	INHERIT:i body_attribute_list SEMI body_method_list FROM expr AS IDENTIFIER:z epsilon
+									{: Error.expect("Body", " ; method m = 0 ;", ileft, zright, "; b<sub>1</sub>"); :}
+								
+								;
 
-body_attribute_list				::=	IDENTIFIER:id COMMA body_attribute_list:bal
+body_attribute_list				::=	body_attribute_list:bal COMMA IDENTIFIER:id
 									{:
 									   RESULT = new Identifier[bal.length + 1];
-						   			   System.arraycopy(bal, 0, RESULT, 1, bal.length);
-						   			   RESULT[0] = new Identifier(id,Identifier.Set.ATTRIBUTE,idleft,idright);
+						   			   System.arraycopy(bal, 0, RESULT, 0, bal.length);
+						   			   RESULT[bal.length] = new Identifier(id,Identifier.Set.ATTRIBUTE,idleft,idright);
 						   			:}
 								|	IDENTIFIER:id
 									{: RESULT = new Identifier[] { new Identifier(id,Identifier.Set.ATTRIBUTE,idleft,idright) }; :}
@@ -1327,24 +1370,24 @@ body_attribute_list				::=	IDENTIFIER:id COMMA body_attribute_list:bal
 						   			{: :}
 								;
 
-body_attribute_list_error		::=	IDENTIFIER:id COMMA:c epsilon
-									{: Error.expect("Body", " an ", idleft, cright, " an "); :}
+body_attribute_list_error		::=	body_attribute_list:bal COMMA:c epsilon
+									{: Error.expect("Body", " an ", balleft, cright, "a<sub>i</sub>, ... ,a<sub>n</sub>"); :}
 								;
 
-body_method_list				::=	IDENTIFIER:id COMMA body_method_list:bml
+body_method_list				::=	body_method_list:bml COMMA IDENTIFIER:id
 									{:
 									   RESULT = new Identifier[bml.length + 1];
-						   			   System.arraycopy(bml, 0, RESULT, 1, bml.length);
-						   			   RESULT[0] = new Identifier(id,Identifier.Set.METHOD,idleft,idright);
+						   			   System.arraycopy(bml, 0, RESULT, 0, bml.length);
+						   			   RESULT[bml.length] = new Identifier(id,Identifier.Set.METHOD,idleft,idright);
 						   			:}
 								|	IDENTIFIER:id
 									{: RESULT = new Identifier[] { new Identifier(id,Identifier.Set.METHOD,idleft,idright) }; :}
-								|	body_attribute_list_error
+								|	body_method_list_error
 						   			{: :}
 								;
 
-body_method_list_error			::=	IDENTIFIER:id COMMA:c epsilon
-									{: Error.expect("Body", " mn ", idleft, cright, " mn "); :}
+body_method_list_error			::=	body_method_list:bml COMMA:c epsilon
+									{: Error.expect("Body", " mn ", bmlleft, cright, "m<sub>i</sub>, ... ,m<sub>n</sub>"); :}
 								;
 
 new								::= NEW:n expr:e
@@ -1353,7 +1396,7 @@ new								::= NEW:n expr:e
 									{: :}
 								;
 
-new_error						::= NEW:n
+new_error						::= NEW:n epsilon
 									{: Error.expect("New", " e", nleft, nright, "e"); :}
 								;
 

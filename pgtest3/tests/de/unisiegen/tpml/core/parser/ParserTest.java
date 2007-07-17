@@ -2068,7 +2068,46 @@ public class ParserTest
   private static String ROW_TYPE_ERROR_3 = "< add: int" ;
 
 
-  private static String CLASS = "class (self) method m = 0 ; end" ;
+  private static String CLASS_1 = "class (self) end" ;
+
+
+  private static String CLASS_2 = "class (self) method m = 0 ; end" ;
+
+
+  private static String CLASS_3 = "class (self) inherit a, b ; m, n from e as z ; method add = 0 ; end" ;
+
+
+  private static String CLASS_ERROR_1 = "class" ;
+
+
+  private static String CLASS_ERROR_2 = "class (" ;
+
+
+  private static String CLASS_ERROR_3 = "class (self" ;
+
+
+  private static String CLASS_ERROR_4 = "class (self)" ;
+
+
+  private static String CLASS_ERROR_5 = "class (self) method add = 1 ;" ;
+
+
+  private static String CLASS_ERROR_6 = "class self) end" ;
+
+
+  private static String CLASS_ERROR_7 = "class self) method add = 0 ; end" ;
+
+
+  private static String CLASS_ERROR_8 = "class (self end" ;
+
+
+  private static String CLASS_ERROR_9 = "class (self method add = 0 ; end" ;
+
+
+  private static String CLASS_ERROR_10 = "class ( ) end" ;
+
+
+  private static String CLASS_ERROR_11 = "class ( ) method add = 0 ; end" ;
 
 
   private static String NEW = "new e" ;
@@ -2473,7 +2512,8 @@ public class ParserTest
       SEND , ROW_1 , ROW_2 , ROW_3 , ROW_4 , ROW_5 , ROW_6 , ATTRIBUTE ,
       METHOD_1 , METHOD_2 , CURRIED_METHOD_1 , CURRIED_METHOD_2 ,
       CURRIED_METHOD_3 , CURRIED_METHOD_4 , EXPR_OBJECT_TYPE_1 ,
-      EXPR_OBJECT_TYPE_2 , EXPR_ROW_TYPE_1 , EXPR_ROW_TYPE_2 , CLASS , NEW } ;
+      EXPR_OBJECT_TYPE_2 , EXPR_ROW_TYPE_1 , EXPR_ROW_TYPE_2 , CLASS_1 ,
+      CLASS_2 , CLASS_3 , NEW } ;
 
 
   private static String [ ] L2C_ERROR = new String [ ]
@@ -2610,7 +2650,10 @@ public class ParserTest
       CURRIED_METHOD_ERROR_39 , CURRIED_METHOD_ERROR_40 ,
       CURRIED_METHOD_ERROR_41 , EXPR_OBJECT_TYPE_ERROR_1 ,
       EXPR_OBJECT_TYPE_ERROR_2 , EXPR_ROW_TYPE_ERROR_1 , EXPR_ROW_TYPE_ERROR_2 ,
-      EXPR_ROW_TYPE_ERROR_3 , NEW_ERROR } ;
+      EXPR_ROW_TYPE_ERROR_3 , CLASS_ERROR_1 , CLASS_ERROR_2 , CLASS_ERROR_3 ,
+      CLASS_ERROR_4 , CLASS_ERROR_5 , CLASS_ERROR_6 , CLASS_ERROR_7 ,
+      CLASS_ERROR_8 , CLASS_ERROR_9 , CLASS_ERROR_10 , CLASS_ERROR_11 ,
+      NEW_ERROR } ;
 
 
   private static String [ ] L2CTYPE_NORMAL = new String [ ]
