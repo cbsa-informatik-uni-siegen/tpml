@@ -39,7 +39,7 @@ import de.unisiegen.tpml.ui.SideBarListener;
  * @version $Rev: 995 $
  * @see de.unisiegen.tpml.graphics.AbstractProofView
  */
-public class SubTypingSourceView extends AbstractProofView //JComponent
+public class SubTypingSourceView extends JPanel // AbstractProofView //JComponent
 		implements EditorComponent
 {
   /**

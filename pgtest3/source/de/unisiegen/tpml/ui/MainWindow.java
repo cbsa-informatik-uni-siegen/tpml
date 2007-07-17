@@ -41,7 +41,7 @@ import de.unisiegen.tpml.core.languages.NoSuchLanguageException ;
  * @version $Rev:499 $
  * @see de.unisiegen.tpml.ui.Main
  */
-public class MainWindow extends javax.swing.JFrame
+@SuppressWarnings("all")public class MainWindow extends javax.swing.JFrame
 {
   //
   // Constants
@@ -242,6 +242,8 @@ public class MainWindow extends javax.swing.JFrame
     typeInference = new javax.swing.JMenuItem ( ) ;
     subtyping = new javax.swing.JMenuItem ( ) ;
     minimalTyping = new javax.swing.JMenuItem ( ) ;
+    subTyping = new javax.swing.JMenuItem ( ) ;
+    subTypingRec =  new javax.swing.JMenuItem ( ) ;
     runMenuSeparator1 = new javax.swing.JSeparator ( ) ;
     beginnerRadioButton = new javax.swing.JRadioButtonMenuItem ( ) ;
     advancedRadioButton = new javax.swing.JRadioButtonMenuItem ( ) ;
@@ -691,6 +693,32 @@ public class MainWindow extends javax.swing.JFrame
       }
     } ) ;
     runMenu.add ( minimalTyping ) ;
+    
+    subTyping.setMnemonic ( java.util.ResourceBundle.getBundle (
+    "de/unisiegen/tpml/ui/ui" ).getString ( "MinimalTypingMnemonic" )
+    .charAt ( 0 ) ) ;
+    subTyping.setText ( "Sub Typing" ) ;
+subTyping.addActionListener ( new java.awt.event.ActionListener ( )
+{
+  public void actionPerformed ( java.awt.event.ActionEvent evt )
+  {
+    subTypingItemActionPerformed ( evt ) ;
+  }
+} ) ;
+runMenu.add ( subTyping ) ;
+
+subTypingRec.setMnemonic ( java.util.ResourceBundle.getBundle (
+"de/unisiegen/tpml/ui/ui" ).getString ( "MinimalTypingMnemonic" )
+.charAt ( 0 ) ) ;
+subTypingRec.setText ( "Sub Typing Rec" ) ;
+subTypingRec.addActionListener ( new java.awt.event.ActionListener ( )
+{
+public void actionPerformed ( java.awt.event.ActionEvent evt )
+{
+subTypingRecItemActionPerformed ( evt ) ;
+}
+} ) ;
+runMenu.add ( subTypingRec ) ;
     // changes end
     // CAHNGE MICHAEL
     typeInference.setAccelerator ( javax.swing.KeyStroke.getKeyStroke (
@@ -926,42 +954,54 @@ public class MainWindow extends javax.swing.JFrame
   private void typecheckerItemActionPerformed ( java.awt.event.ActionEvent evt )
   {// GEN-FIRST:event_typecheckerItemActionPerformed
     // 
-    ( getActiveEditor ( ) ).handleTypeChecker ( ) ;
+    ( ( EditorPanelExpression ) getActiveEditor ( ) ).handleTypeChecker ( ) ;
   }// GEN-LAST:event_typecheckerItemActionPerformed
 
 
   private void typeInferenceActionPerformed ( java.awt.event.ActionEvent evt )
   {// GEN-FIRST:event_typecheckerItemActionPerformed
     // 
-    ( getActiveEditor ( ) ).handleTypInference ( ) ;
+    ( ( EditorPanelExpression ) getActiveEditor ( ) ).handleTypInference ( ) ;
   }// GEN-LAST:event_typecheckerItemActionPerformed
 
 
   private void subtypingActionPerformed ( java.awt.event.ActionEvent evt )
   {// GEN-FIRST:event_typecheckerItemActionPerformed
     // 
-    ( getActiveEditor ( ) ).handleSubtyping ( ) ;
+    ( ( EditorPanelExpression ) getActiveEditor ( ) ).handleSubtyping ( ) ;
   }// GEN-LAST:event_typecheckerItemActionPerformed
 
 
   private void minimalTypingItemActionPerformed ( java.awt.event.ActionEvent evt )
   {// GEN-FIRST:event_minimalTypingItemActionPerformed
     // 
-    ( getActiveEditor ( ) ).handleMinimalTyping ( ) ;
+    ( ( EditorPanelExpression ) getActiveEditor ( ) ).handleMinimalTyping ( ) ;
+  }// GEN-LAST:event_minimalTypingItemActionPerformed
+  
+  private void subTypingItemActionPerformed ( java.awt.event.ActionEvent evt )
+  {// GEN-FIRST:event_subTypingItemActionPerformed
+    // 
+    ( ( EditorPanelTypes ) getActiveEditor ( ) ).handleSubTyping ( ) ;
+  }// GEN-LAST:event_minimalTypingItemActionPerformed
+  
+  private void subTypingRecItemActionPerformed ( java.awt.event.ActionEvent evt )
+  {// GEN-FIRST:event_subTypingRecItemActionPerformed
+    // 
+    ( ( EditorPanelTypes ) getActiveEditor ( ) ).handleSubTypingRec ( ) ;
   }// GEN-LAST:event_minimalTypingItemActionPerformed
 
 
   private void bigstepItemActionPerformed ( java.awt.event.ActionEvent evt )
   {// GEN-FIRST:event_bigstepItemActionPerformed
     // 
-    ( getActiveEditor ( ) ).handleBigStep ( ) ;
+    ( ( EditorPanelExpression ) getActiveEditor ( ) ).handleBigStep ( ) ;
   }// GEN-LAST:event_bigstepItemActionPerformed
 
 
   private void smallstepItemActionPerformed ( java.awt.event.ActionEvent evt )
   {// GEN-FIRST:event_smallstepItemActionPerformed
     // 
-    ( getActiveEditor ( ) ).handleSmallStep ( ) ;
+    ( ( EditorPanelExpression ) getActiveEditor ( ) ).handleSmallStep ( ) ;
   }// GEN-LAST:event_smallstepItemActionPerformed
 
 
@@ -1117,6 +1157,10 @@ public class MainWindow extends javax.swing.JFrame
 
 
   private javax.swing.JMenuItem minimalTyping ;
+  
+  private javax.swing.JMenuItem subTyping ;
+  
+  private javax.swing.JMenuItem subTypingRec ;
 
 
   private javax.swing.JButton undoButton ;
@@ -1181,8 +1225,8 @@ public class MainWindow extends javax.swing.JFrame
         {
           System.err.println ( "UnsupportedEncodingException" ) ;
         }
-        editorPanel = new EditorPanel ( language , this ) ;
-        tabbedPane.add ( editorPanel ) ;
+        editorPanel = new EditorPanelExpression ( language , this ) ;
+        tabbedPane.add ( ( Component ) editorPanel ) ;
         editorPanel.setAdvanced ( this.advancedRadioButton.isSelected ( ) ) ;
         editorPanel.setFileName ( file.getName ( ) ) ;
         editorPanel.setEditorText ( buffer.toString ( ) ) ;
@@ -1190,7 +1234,7 @@ public class MainWindow extends javax.swing.JFrame
         editorPanel.addPropertyChangeListener ( editorPanelListener ) ;
         editorPanel.setTexteditor ( true ) ;
       }
-      this.tabbedPane.setSelectedComponent ( editorPanel ) ;
+      this.tabbedPane.setSelectedComponent ( ( Component ) editorPanel ) ;
       setGeneralStates ( true ) ;
       updateEditorStates ( editorPanel ) ;
     }
@@ -1232,6 +1276,8 @@ public class MainWindow extends javax.swing.JFrame
     minimalTyping.setEnabled ( state ) ;
     typeInference.setEnabled ( state ) ;
     subtyping.setEnabled ( state ) ;
+    subTyping.setEnabled ( state ) ;
+    subTypingRec.setEnabled ( state );
     saveAsItem.setEnabled ( state ) ;
     saveAsButton.setEnabled ( state ) ;
     saveAllItem.setEnabled ( state ) ;
@@ -1438,10 +1484,16 @@ public class MainWindow extends javax.swing.JFrame
     wizard.setVisible ( true ) ;
     Language language = wizard.getLanguage ( ) ;
     if ( language == null ) return ;
-    EditorPanel newEditorPanel = new EditorPanel ( language , this ) ;
-    tabbedPane.add ( newEditorPanel ) ;
+    
+    EditorPanel newEditorPanel = new EditorPanelExpression ( language , this ) ;
+    setExpressionMode();
+    
+    //EditorPanel newEditorPanel = new EditorPanelTypes ( language , this ) ;
+    //setTypeMode();
+    
+    tabbedPane.add ( ( Component ) newEditorPanel ) ;
     newEditorPanel.setAdvanced ( this.advancedRadioButton.isSelected ( ) ) ;
-    tabbedPane.setSelectedComponent ( newEditorPanel ) ;
+    tabbedPane.setSelectedComponent ( ( Component ) newEditorPanel ) ;
     newEditorPanel.addPropertyChangeListener ( editorPanelListener ) ;
     newEditorPanel.setTexteditor ( true ) ;
     setGeneralStates ( true ) ;
@@ -1449,7 +1501,55 @@ public class MainWindow extends javax.swing.JFrame
   }
 
 
-  private void handleOpen ( )
+  private void setTypeMode ( ) {
+	  smallstepItem.setVisible ( false ) ;
+	   bigstepItem.setVisible ( false ) ;
+	   typecheckerItem.setVisible ( false ) ;
+	   minimalTyping.setVisible ( false ) ;
+	   typeInference.setVisible ( false ) ;
+	   subtyping.setVisible ( false ) ;
+	   subTyping.setVisible ( true ) ;
+	   subTypingRec.setVisible ( true );
+	   saveAsItem.setVisible ( true ) ;
+	   saveAsButton.setVisible ( true ) ;
+	   saveAllItem.setVisible ( true ) ;
+	   closeItem.setVisible ( true ) ;
+	   cutItem.setVisible ( false ) ;
+	   cutButton.setVisible ( false ) ;
+	   copyItem.setVisible ( false ) ;
+	   copyButton.setVisible ( false ) ;
+	   pasteItem.setVisible ( false ) ;
+	   pasteButton.setVisible ( false ) ;
+	
+}
+
+
+private void setExpressionMode ( ) {
+
+   smallstepItem.setVisible  ( true ) ;
+   bigstepItem.setVisible ( true ) ;
+   typecheckerItem.setVisible ( true ) ;
+   minimalTyping.setVisible ( true ) ;
+   typeInference.setVisible ( true ) ;
+   subtyping.setVisible ( true ) ;
+   subTyping.setVisible ( false ) ;
+   subTypingRec.setVisible ( false );
+   saveAsItem.setVisible ( true ) ;
+   saveAsButton.setVisible ( true ) ;
+   saveAllItem.setVisible ( true ) ;
+   closeItem.setVisible ( true ) ;
+   cutItem.setVisible ( true ) ;
+   cutButton.setVisible ( true ) ;
+   copyItem.setVisible ( true ) ;
+   copyButton.setVisible ( true ) ;
+   pasteItem.setVisible ( true ) ;
+   pasteButton.setVisible ( true ) ;
+	
+	
+}
+
+
+private void handleOpen ( )
   {
     PreferenceManager prefmanager = PreferenceManager.get ( ) ;
     JFileChooser chooser = new JFileChooser ( prefmanager.getWorkingPath ( ) ) ;
