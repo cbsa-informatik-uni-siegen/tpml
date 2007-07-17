@@ -1,1 +1,3 @@
-new class (self) val a = 1 + 1 ; end
+class (self)
+  inherit a ; m from e as z ; method add = 0 ;
+end

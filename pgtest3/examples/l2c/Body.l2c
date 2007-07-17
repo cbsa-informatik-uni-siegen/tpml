@@ -1,1 +1,6 @@
-class (self) inherit a, b ; m, n from 2+2 as z ; val p = 1+1 ; end
+class (self)
+  inherit a, b ; m, n from 
+  (class (self) val a = 0 ; val b = 1 ; method m = a ; method n = b ; end) 
+  as z ; 
+  method o = z#m + z#n ;
+end
