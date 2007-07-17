@@ -2259,22 +2259,73 @@ public class ParserTest
   private static String CLASS_ERROR_5 = "class (self) method add = 1 ;" ;
 
 
-  private static String CLASS_ERROR_6 = "class self) end" ;
+  // left bracket
+  private static String CLASS_ERROR_6 = "class self" ;
 
 
-  private static String CLASS_ERROR_7 = "class self) method add = 0 ; end" ;
+  private static String CLASS_ERROR_7 = "class self)" ;
 
 
-  private static String CLASS_ERROR_8 = "class (self end" ;
+  private static String CLASS_ERROR_8 = "class self) end" ;
 
 
-  private static String CLASS_ERROR_9 = "class (self method add = 0 ; end" ;
+  private static String CLASS_ERROR_9 = "class self) method add = 0 ;" ;
 
 
-  private static String CLASS_ERROR_10 = "class ( ) end" ;
+  private static String CLASS_ERROR_10 = "class self) method add = 0 ; end" ;
 
 
-  private static String CLASS_ERROR_11 = "class ( ) method add = 0 ; end" ;
+  // self
+  private static String CLASS_ERROR_11 = "class ( )" ;
+
+
+  private static String CLASS_ERROR_12 = "class ( ) end" ;
+
+
+  private static String CLASS_ERROR_13 = "class ( ) method add = 0 ;" ;
+
+
+  private static String CLASS_ERROR_14 = "class ( ) method add = 0 ; end" ;
+
+
+  // right bracket
+  private static String CLASS_ERROR_15 = "class (self end" ;
+
+
+  private static String CLASS_ERROR_16 = "class (self method add = 0 ;" ;
+
+
+  private static String CLASS_ERROR_17 = "class (self method add = 0 ; end" ;
+
+
+  // left paren and self
+  private static String CLASS_ERROR_18 = "class ) end" ;
+
+
+  private static String CLASS_ERROR_19 = "class ) method add = 0 ;" ;
+
+
+  private static String CLASS_ERROR_20 = "class ) method add = 0 ; end" ;
+
+
+  // self and right paren
+  private static String CLASS_ERROR_21 = "class ( end" ;
+
+
+  private static String CLASS_ERROR_22 = "class ( method add = 0 ;" ;
+
+
+  private static String CLASS_ERROR_23 = "class ( method add = 0 ; end" ;
+
+
+  // left paren, self and right paren
+  private static String CLASS_ERROR_24 = "class end" ;
+
+
+  private static String CLASS_ERROR_25 = "class method add = 0 ;" ;
+
+
+  private static String CLASS_ERROR_26 = "class method add = 0 ; end" ;
 
 
   private static String NEW = "new e" ;
@@ -2846,7 +2897,10 @@ public class ParserTest
       EXPR_ROW_TYPE_ERROR_3 , CLASS_ERROR_1 , CLASS_ERROR_2 , CLASS_ERROR_3 ,
       CLASS_ERROR_4 , CLASS_ERROR_5 , CLASS_ERROR_6 , CLASS_ERROR_7 ,
       CLASS_ERROR_8 , CLASS_ERROR_9 , CLASS_ERROR_10 , CLASS_ERROR_11 ,
-      NEW_ERROR } ;
+      CLASS_ERROR_12 , CLASS_ERROR_13 , CLASS_ERROR_14 , CLASS_ERROR_15 ,
+      CLASS_ERROR_16 , CLASS_ERROR_17 , CLASS_ERROR_18 , CLASS_ERROR_19 ,
+      CLASS_ERROR_20 , CLASS_ERROR_21 , CLASS_ERROR_22 , CLASS_ERROR_23 ,
+      CLASS_ERROR_24 , CLASS_ERROR_25 , CLASS_ERROR_26 , NEW_ERROR } ;
 
 
   private static String [ ] L2CTYPE_NORMAL = new String [ ]

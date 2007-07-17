@@ -1337,25 +1337,32 @@ class							::= CLASS:c LPAREN SELF:id RPAREN body:b END:end
 									{: :}
 								;
 
-class_error						::= CLASS:c epsilon
-									{: Error.expect("Class", " (self) end", cleft, cright, "(self) b end"); :}
-								|	CLASS:c LPAREN:l epsilon
-									{: Error.expect("Class", "self) end", cleft, lright, "self) b end"); :}
-								|	CLASS:c LPAREN SELF:s epsilon
-									{: Error.expect("Class", ") end", cleft, sright, ") b end"); :}
-								|	CLASS:c LPAREN SELF RPAREN body:b epsilon
+class_error						::= CLASS:c LPAREN SELF RPAREN body:b epsilon
 									{: Error.expect("Class", " end", cleft, bright, "end"); :}
 								// Missing left bracket
 								|	CLASS:c SELF
 									{: Error.expect("Class", " (", cleft, cright, "(" ); :}
-								// Missing right bracket
-								|	CLASS:c LPAREN SELF:s END
-									{: Error.expect("Class", ") ", cleft, sright, ")" ); :}
-								|	CLASS:c LPAREN SELF:s body END
-									{: Error.expect("Class", ") ", cleft, sright, ")" ); :}
 								// Missing self
 								|	CLASS:c LPAREN:l RPAREN
 									{: Error.expect("Class", "self", cleft, lright, "self" ); :}
+								// Missing right bracket
+								|	CLASS:c LPAREN SELF:s END
+									{: Error.expect("Class", ") ", cleft, sright, ")" ); :}
+								|	CLASS:c LPAREN SELF:s body
+									{: Error.expect("Class", ") ", cleft, sright, ")" ); :}
+								// Missing left paren and self
+								|	CLASS:c RPAREN
+									{: Error.expect("Class", " (self", cleft, cright, "(self" ); :}
+								// Missing self and right paren
+								|	CLASS:c LPAREN:l END
+									{: Error.expect("Class", "self) ", cleft, lright, "self)" ); :}
+								|	CLASS:c LPAREN:l body
+									{: Error.expect("Class", "self) ", cleft, lright, "self)" ); :}
+								// Missing left paren, self and right paren
+								|	CLASS:c END
+									{: Error.expect("Class", " (self) ", cleft, cright, "(self)" ); :}
+								|	CLASS:c body 
+									{: Error.expect("Class", " (self) ", cleft, cright, "(self)" ); :}
 								;
 
 body							::= INHERIT:i body_attribute_list:bal SEMI body_method_list:bml FROM expr:e AS IDENTIFIER:z SEMI body:b
