@@ -10,7 +10,7 @@
   <property name="cup"       location="cup"       />
 
   <!-- initialize the workspace -->
-  <target name="init">
+  <target name="init" depends="clean">
     <tstamp />
     <mkdir dir="${src}" />
     <mkdir dir="${java}" />
