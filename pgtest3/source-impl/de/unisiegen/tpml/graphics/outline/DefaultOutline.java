@@ -1292,7 +1292,9 @@ public final class DefaultOutline implements Outline
     {
       executeTimerCancel ( ) ;
       if ( ( this.preferences.isAutoUpdate ( ) )
-          || ( pExecute.equals ( Outline.ExecuteMouseClick.EDITOR ) ) )
+          || ( pExecute.equals ( Outline.ExecuteMouseClick.EDITOR ) )
+          || ( pExecute.equals ( Outline.ExecuteMouseClick.SUBTYPING_SOURCE ) )
+          || ( pExecute.equals ( Outline.ExecuteMouseClick.RECSUBTYPING_SOURCE ) ) )
       {
         setError ( true ) ;
       }
@@ -1305,7 +1307,8 @@ public final class DefaultOutline implements Outline
       {
         case EDITOR :
         case SMALLSTEP :
-        case SUBTYPING :
+        case SUBTYPING_SOURCE :
+        case RECSUBTYPING_SOURCE :
         {
           if ( ! this.preferences.isAutoUpdate ( ) )
           {
@@ -1317,6 +1320,8 @@ public final class DefaultOutline implements Outline
         case TYPECHECKER :
         case TYPEINFERENCE :
         case MINIMALTYPING :
+        case SUBTYPING :
+        case RECSUBTYPING :
         {
           return ;
         }
@@ -1340,8 +1345,11 @@ public final class DefaultOutline implements Outline
         case BIGSTEP :
         case TYPECHECKER :
         case TYPEINFERENCE :
-        case SUBTYPING :
         case MINIMALTYPING :
+        case SUBTYPING_SOURCE :
+        case SUBTYPING :
+        case RECSUBTYPING_SOURCE :
+        case RECSUBTYPING :
         {
           execute ( ) ;
           break ;
@@ -1358,8 +1366,11 @@ public final class DefaultOutline implements Outline
         case BIGSTEP :
         case TYPECHECKER :
         case TYPEINFERENCE :
-        case SUBTYPING :
         case MINIMALTYPING :
+        case SUBTYPING_SOURCE :
+        case SUBTYPING :
+        case RECSUBTYPING_SOURCE :
+        case RECSUBTYPING :
         {
           execute ( ) ;
           break ;
@@ -1372,6 +1383,8 @@ public final class DefaultOutline implements Outline
       switch ( execute )
       {
         case EDITOR :
+        case SUBTYPING_SOURCE :
+        case RECSUBTYPING_SOURCE :
         {
           executeTimerStart ( 500 ) ;
           break ;
@@ -1380,8 +1393,9 @@ public final class DefaultOutline implements Outline
         case BIGSTEP :
         case TYPECHECKER :
         case TYPEINFERENCE :
-        case SUBTYPING :
         case MINIMALTYPING :
+        case SUBTYPING :
+        case RECSUBTYPING :
         {
           executeTimerStart ( 250 ) ;
           break ;
@@ -1489,7 +1503,7 @@ public final class DefaultOutline implements Outline
    * 
    * @param pStatus True, if the error should be set.
    */
-  public final void setError ( boolean pStatus )
+  private final void setError ( boolean pStatus )
   {
     if ( pStatus )
     {

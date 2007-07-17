@@ -475,13 +475,12 @@ this.editor2 = new StyledLanguageEditor ( );
 			type = parser.parse ( );
 
 			outline
-					.load ( type, Outline.ExecuteAutoChange.SUBTYPING );
+					.load ( type, Outline.ExecuteAutoChange.SUBTYPING_SOURCE );
 			return type;
 
 		} catch (Exception e) {
 			
-			outline.load ( null , Outline.ExecuteAutoChange.SUBTYPING ) ;
-	      if ( editor.getText ( ).length ( ) == 0 ) outline.setError ( false ) ;
+			outline.load ( null , Outline.ExecuteAutoChange.SUBTYPING_SOURCE ) ;
 	      return null ;
 		}
 

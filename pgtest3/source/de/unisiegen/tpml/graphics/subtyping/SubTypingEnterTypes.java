@@ -882,7 +882,6 @@ public class SubTypingEnterTypes extends AbstractProofView
     catch ( Exception e )
     {
       outline.load ( null , Outline.ExecuteAutoChange.SUBTYPING ) ;
-      if ( editor.getText ( ).length ( ) == 0 ) outline.setError ( false ) ;
       return null ;
     }
   }

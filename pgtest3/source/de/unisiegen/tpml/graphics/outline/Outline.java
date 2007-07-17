@@ -57,6 +57,18 @@ public interface Outline
      */
     SUBTYPING ,
     /**
+     * Auto change from the <code>Subtyping source</code>.
+     */
+    SUBTYPING_SOURCE ,
+    /**
+     * Auto change from the <code>RecSubtyping</code>.
+     */
+    RECSUBTYPING ,
+    /**
+     * Auto change from the <code>RecSubtyping source</code>.
+     */
+    RECSUBTYPING_SOURCE ,
+    /**
      * Auto change from the <code>MinimalTyping</code>.
      */
     MINIMALTYPING
@@ -95,6 +107,18 @@ public interface Outline
      */
     SUBTYPING ,
     /**
+     * Initialized from the <code>Subtyping source</code>.
+     */
+    SUBTYPING_SOURCE ,
+    /**
+     * Initialized from the <code>RecSubtyping</code>.
+     */
+    RECSUBTYPING ,
+    /**
+     * Initialized from the <code>RecSubtyping source</code>.
+     */
+    RECSUBTYPING_SOURCE ,
+    /**
      * Initialized from the <code>MinimalTyping</code>.
      */
     MINIMALTYPING
@@ -132,6 +156,18 @@ public interface Outline
      * Change by mouse cick from the <code>Subtyping</code>.
      */
     SUBTYPING ,
+    /**
+     * Change by mouse cick from the <code>Subtyping source</code>.
+     */
+    SUBTYPING_SOURCE ,
+    /**
+     * Change by mouse cick from the <code>RecSubtyping</code>.
+     */
+    RECSUBTYPING ,
+    /**
+     * Change by mouse cick from the <code>RecSubtyping source</code>.
+     */
+    RECSUBTYPING_SOURCE ,
     /**
      * Change by mouse cick from the <code>MinimalTyping</code>.
      */
