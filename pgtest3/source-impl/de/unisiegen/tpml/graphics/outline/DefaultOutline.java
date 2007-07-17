@@ -414,8 +414,10 @@ public final class DefaultOutline implements Outline
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    * 
    * @param pSubTypingSourceView The {@link SubTypingSourceView}.
+   * @param pModus The {@link Modus} of this {@link Outline}.
    */
-  public DefaultOutline ( SubTypingSourceView pSubTypingSourceView )
+  public DefaultOutline ( SubTypingSourceView pSubTypingSourceView ,
+      Outline.Modus pModus )
   {
     // TODO implement
     this.preferences = new OutlinePreferences ( ) ;
@@ -426,15 +428,20 @@ public final class DefaultOutline implements Outline
         new OutlineComponentListener ( pSubTypingSourceView.getJSplitPane ( ) ,
             this ) ) ;
     // MouseListener
-    if ( pSubTypingSourceView.getEditor ( ) != null )
+    switch ( pModus )
     {
-      pSubTypingSourceView.getEditor ( ).addMouseListener (
-          new OutlineMouseListener ( this , pSubTypingSourceView ) ) ;
-    }
-    if ( pSubTypingSourceView.getEditor2 ( ) != null )
-    {
-      pSubTypingSourceView.getEditor2 ( ).addMouseListener (
-          new OutlineMouseListener ( this , pSubTypingSourceView ) ) ;
+      case FIRST :
+      {
+        pSubTypingSourceView.getEditor ( ).addMouseListener (
+            new OutlineMouseListener ( this , pSubTypingSourceView ) ) ;
+        break ;
+      }
+      case SECOND :
+      {
+        pSubTypingSourceView.getEditor2 ( ).addMouseListener (
+            new OutlineMouseListener ( this , pSubTypingSourceView ) ) ;
+        break ;
+      }
     }
     this.uI.getJTreeOutline ( ).addMouseListener (
         new OutlineMouseListener ( this ) ) ;

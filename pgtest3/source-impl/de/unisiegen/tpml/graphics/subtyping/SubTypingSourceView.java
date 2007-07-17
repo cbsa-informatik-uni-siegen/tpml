@@ -39,7 +39,7 @@ import de.unisiegen.tpml.ui.SideBarListener;
  * @version $Rev: 995 $
  * @see de.unisiegen.tpml.graphics.AbstractProofView
  */
-public class SubTypingSourceView extends JPanel //AbstractProofView //JComponent
+public class SubTypingSourceView extends AbstractProofView //JComponent
 		implements EditorComponent
 {
   /**
@@ -218,7 +218,7 @@ public class SubTypingSourceView extends JPanel //AbstractProofView //JComponent
 
 		this.editor.setDocument ( this.sourceField );
 
-		this.outline = new DefaultOutline ( this );
+		this.outline = new DefaultOutline ( this , Outline.Modus.FIRST);
 		this.sourceField.addDocumentListener ( new DocumentListener ( ) {
 
 			public void changedUpdate(DocumentEvent e) {
@@ -326,7 +326,7 @@ this.editor2 = new StyledLanguageEditor ( );
 
 		this.editor2.setDocument ( this.sourceField2 );
 
-		this.outline2 = new DefaultOutline ( this );
+		this.outline2 = new DefaultOutline ( this , Outline.Modus.SECOND );
 		this.sourceField2.addDocumentListener ( new DocumentListener ( ) {
 
 			public void changedUpdate(DocumentEvent e) {

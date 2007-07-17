@@ -140,6 +140,24 @@ public interface Outline
 
 
   /**
+   * Indicates if the outline is the first or the second outline.
+   * 
+   * @author Christian Fehler
+   */
+  public enum Modus
+  {
+    /**
+     * The outline is the first outline.
+     */
+    FIRST ,
+    /**
+     * The outline is the second outline.
+     */
+    SECOND
+  }
+
+
+  /**
    * Returns the <code>JPanel</code> of the {@link OutlineUI}.
    * 
    * @return The <code>JPanel</code> of the {@link OutlineUI}.

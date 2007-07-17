@@ -533,26 +533,38 @@ public final class OutlineMouseListener implements MouseListener
   private final void handleSubTypingSourceView ( @ SuppressWarnings ( "unused" )
   MouseEvent pMouseEvent )
   {
-    Type type = null ;
-    try
+    if ( pMouseEvent.getSource ( ).equals (
+        this.subTypingSourceView.getEditor ( ) ) )
     {
-      if ( this.defaultOutline == this.subTypingSourceView.getOutline1 ( ) )
+      Type type = null ;
+      try
       {
-        type = ( ( StyledTypeEnterField ) this.subTypingSourceView
-            .getEditor ( ).getDocument ( ) ).getType ( ) ;
+        type = ( ( StyledTypeEnterField ) this.subTypingSourceView.getEditor ( )
+            .getDocument ( ) ).getType ( ) ;
       }
-      else
+      catch ( Exception e )
+      {
+        // Do nothing
+      }
+      this.defaultOutline.updateHighlighSourceCode ( false ) ;
+      this.defaultOutline.load ( type , Outline.ExecuteMouseClick.SUBTYPING ) ;
+    }
+    else if ( pMouseEvent.getSource ( ).equals (
+        this.subTypingSourceView.getEditor2 ( ) ) )
+    {
+      Type type = null ;
+      try
       {
         type = ( ( StyledTypeEnterField ) this.subTypingSourceView
             .getEditor2 ( ).getDocument ( ) ).getType ( ) ;
       }
+      catch ( Exception e )
+      {
+        // Do nothing
+      }
+      this.defaultOutline.updateHighlighSourceCode ( false ) ;
+      this.defaultOutline.load ( type , Outline.ExecuteMouseClick.SUBTYPING ) ;
     }
-    catch ( Exception e )
-    {
-      // Do nothing
-    }
-    this.defaultOutline.updateHighlighSourceCode ( false ) ;
-    this.defaultOutline.load ( type , Outline.ExecuteMouseClick.SUBTYPING ) ;
   }
 
 
