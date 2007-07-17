@@ -185,10 +185,10 @@ public class SubstitutionRenderer extends AbstractRenderer {
    * @param height  The Height the renderer is given to render the substitution.
    * @param gc  The Graphics used to render 
    */
-  public void renderBase (int x, int y, int width, int height, Graphics gc )
-  {
-    renderer (x, y-(AbstractRenderer.getAbsoluteHeight () /2), width, height, gc); 
-  }
+  //public void renderBase (int x, int y, int width, int height, Graphics gc )
+  //{
+   // renderer (x, y-(AbstractRenderer.getAbsoluteHeight () /2), width, height, gc); 
+ // }
 
   /**
 	 * Renders the substitution.<br>

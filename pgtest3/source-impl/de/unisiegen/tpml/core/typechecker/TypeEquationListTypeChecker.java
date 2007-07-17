@@ -169,6 +169,7 @@ public final class TypeEquationListTypeChecker
    */
   public DefaultTypeSubstitution unify ( ) throws UnificationException
   {
+	  
     // EMPTY
     if ( this == EMPTY_LIST )
     {
@@ -176,6 +177,7 @@ public final class TypeEquationListTypeChecker
     }
     MonoType left = this.first.getLeft ( ) ;
     MonoType right = this.first.getRight ( ) ;
+	 
     // ASSUME
     if ( this.first.getSeenTypes ( ).contains ( this.first ) )
     {

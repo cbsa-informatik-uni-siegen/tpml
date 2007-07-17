@@ -7,7 +7,7 @@ import java.util.LinkedList ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.interfaces.ExpressionOrTypeOrTypeEquationTypeInference ;
+import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -26,7 +26,7 @@ import de.unisiegen.tpml.core.types.TypeName ;
  * @see PrettyPrintable
  */
 public abstract class Expression implements Cloneable , PrettyPrintable ,
-    PrettyPrintPriorities , ExpressionOrTypeOrTypeEquationTypeInference
+    PrettyPrintPriorities , ShowBondsInput
 {
   /**
    * A level-order enumeration of the expressions within a given expression.

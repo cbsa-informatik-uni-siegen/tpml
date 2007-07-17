@@ -1,18 +1,20 @@
 package de.unisiegen.tpml.graphics.components ;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.BoundTypeNames ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.interfaces.ExpressionOrTypeOrTypeEquationTypeInference ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.Type ;
-import de.unisiegen.tpml.core.types.TypeName ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers;
+import de.unisiegen.tpml.core.interfaces.BoundTypeNames;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.interfaces.ShowBondsInput;
+import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
+import de.unisiegen.tpml.core.typeinference.TypeSubType;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.core.types.TypeName;
 
 
 /**
@@ -24,9 +26,9 @@ import de.unisiegen.tpml.core.types.TypeName ;
 public final class ShowBonds
 {
   /**
-   * The loaded {@link ExpressionOrTypeOrTypeEquationTypeInference}.
+   * The loaded {@link ShowBondsInput}.
    */
-  private ExpressionOrTypeOrTypeEquationTypeInference loaded = null ;
+  private ShowBondsInput loaded = null ;
 
 
   /**
@@ -182,6 +184,11 @@ public final class ShowBonds
           check ( ( ( TypeEquationTypeInference ) this.loaded ).getLeft ( ) ) ;
           check ( ( ( TypeEquationTypeInference ) this.loaded ).getRight ( ) ) ;
         }
+        else if ( this.loaded instanceof TypeSubType )
+        {
+          check ( ( ( TypeSubType ) this.loaded ).getType ( ) ) ;
+          check ( ( ( TypeSubType ) this.loaded ).getType2 ( ) ) ;
+        }
       }
     }
     return this.result ;
@@ -189,13 +196,13 @@ public final class ShowBonds
 
 
   /**
-   * Loads the {@link ExpressionOrTypeOrTypeEquationTypeInference} to get the
+   * Loads the {@link ShowBondsInput} to get the
    * bonds.
    * 
    * @param pLoaded The input
-   *          {@link ExpressionOrTypeOrTypeEquationTypeInference}.
+   *          {@link ShowBondsInput}.
    */
-  public final void load ( ExpressionOrTypeOrTypeEquationTypeInference pLoaded )
+  public final void load ( ShowBondsInput pLoaded )
   {
     this.loaded = pLoaded ;
   }

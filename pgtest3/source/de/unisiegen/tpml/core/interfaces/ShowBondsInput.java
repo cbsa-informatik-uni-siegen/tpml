@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.types.Type ;
  * @author Christian Fehler
  * @version $Rev:1350 $
  */
-public interface ExpressionOrTypeOrTypeEquationTypeInference extends
+public interface ShowBondsInput extends
     ExpressionOrType
 {
   /*

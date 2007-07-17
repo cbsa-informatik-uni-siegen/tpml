@@ -156,8 +156,15 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
       TypeEnvironment environment , Expression expression , MonoType type )
   {
     this.model.contextAddProofNode ( this ,
-        ( DefaultTypeCheckerProofNode ) node , environment , expression , type ) ;
+        ( AbstractTypeCheckerProofNode ) node , environment , expression , type ) ;
   }
+  
+  public void addProofNode ( TypeCheckerProofNode node ,
+	      MonoType type, MonoType type2 )
+	  {
+	    this.model.contextAddProofNode ( this ,
+	        ( AbstractTypeCheckerProofNode ) node , type, type2 ) ;
+	  }
 
 
   /**
@@ -334,7 +341,7 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
     TypeCheckerProofNode tmpNode = node ;
     // record the proof step for the node
     this.model.contextSetProofNodeRule ( this ,
-        ( DefaultTypeCheckerProofNode ) tmpNode , rule ) ;
+        ( AbstractTypeCheckerProofNode ) tmpNode , rule ) ;
     // try to apply the rule to the node
     rule.apply ( this , tmpNode ) ;
     // check if the user specified a type

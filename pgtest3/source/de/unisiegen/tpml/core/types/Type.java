@@ -3,7 +3,7 @@ package de.unisiegen.tpml.core.types ;
 
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.interfaces.ExpressionOrTypeOrTypeEquationTypeInference ;
+import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -21,7 +21,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @see PrettyPrintable
  */
 public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
-    ExpressionOrTypeOrTypeEquationTypeInference
+    ShowBondsInput
 {
   /**
    * Prefix of tau {@link Type}s.

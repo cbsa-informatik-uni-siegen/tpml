@@ -49,7 +49,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
  * 
  * @author Christoph Fehling
  */
-  public class EditorPanel extends javax.swing.JPanel {
+  @SuppressWarnings("all")public class EditorPanel extends javax.swing.JPanel {
 
 	/**
 	 * The serial version UID
@@ -580,19 +580,24 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 		setTexteditor(false);
 		
 		try {
-			/*// changes benjamin
+			// changes benjamin
+			//String sztype = "<add:int;sub:bool;>";
+			//String sztype2 = "<sub:bool;add:int;>";
+			/*
 			String sztype = "int";
-			String sztype2 = "bool";
+			String sztype2 = "int";
 			
 			MonoType type = (MonoType) language.newTypeParser ( new StringReader(sztype) ).parse();
 			MonoType type2 = (MonoType) language.newTypeParser ( new StringReader(sztype2) ).parse();
 			SubTypingProofModel model = language.newSubTypingProofModel(type, type2, this.advanced);
-			*/
-			//changes benjamin end
+			subtyping = new ProofViewComponent(ProofViewFactory.newSubtypingView(language), model);*/
 			SubTypingProofModel model = language.newSubTypingProofModel(null, null, this.advanced);
+			subtyping = new ProofViewComponent(ProofViewFactory.newSubtypingView(model), model);
+			//changes benjamin end
+			
 			//typechecker = new ProofViewComponent(ProofViewFactory
 			//		.newTypeCheckerView(model), model);
-			subtyping = new ProofViewComponent(ProofViewFactory.newSubtypingView(model), model);
+			
 			editorPanel.removeAll();
 			//activateFunction(typecheckerButton, typechecker);
 			//

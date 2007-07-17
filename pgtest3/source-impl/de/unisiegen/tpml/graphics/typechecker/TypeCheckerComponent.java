@@ -13,6 +13,7 @@ import javax.swing.event.TreeModelEvent;
 
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerExpressionProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;

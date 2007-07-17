@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.languages.l2 ;
 
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.languages.l1.L1TypeCheckerProofRuleSet ;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerExpressionProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
@@ -42,8 +43,9 @@ public class L2TypeCheckerProofRuleSet extends L1TypeCheckerProofRuleSet
    * @param node the type checker proof node.
    */
   public void applyRec ( TypeCheckerProofContext context ,
-      TypeCheckerProofNode node )
+      TypeCheckerProofNode pNode )
   {
+	  TypeCheckerExpressionProofNode node = (TypeCheckerExpressionProofNode) pNode;
     // determine the type for the identifier
     Recursion recursion = ( Recursion ) node.getExpression ( ) ;
     MonoType tau1 = recursion.getTau ( ) ;

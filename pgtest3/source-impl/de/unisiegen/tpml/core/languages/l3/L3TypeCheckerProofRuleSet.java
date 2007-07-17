@@ -1,29 +1,30 @@
 package de.unisiegen.tpml.core.languages.l3 ;
 
 
-import de.unisiegen.tpml.core.expressions.Constant ;
-import de.unisiegen.tpml.core.expressions.CurriedLet ;
-import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.Lambda ;
-import de.unisiegen.tpml.core.expressions.Let ;
-import de.unisiegen.tpml.core.expressions.LetRec ;
-import de.unisiegen.tpml.core.expressions.List ;
-import de.unisiegen.tpml.core.expressions.MultiLet ;
-import de.unisiegen.tpml.core.expressions.Recursion ;
-import de.unisiegen.tpml.core.expressions.Tuple ;
-import de.unisiegen.tpml.core.languages.l2.L2Language ;
-import de.unisiegen.tpml.core.languages.l2.L2TypeCheckerProofRuleSet ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
-import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
-import de.unisiegen.tpml.core.types.ArrowType ;
-import de.unisiegen.tpml.core.types.ListType ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.TupleType ;
-import de.unisiegen.tpml.core.types.Type ;
-import de.unisiegen.tpml.core.types.TypeVariable ;
+import de.unisiegen.tpml.core.expressions.Constant;
+import de.unisiegen.tpml.core.expressions.CurriedLet;
+import de.unisiegen.tpml.core.expressions.CurriedLetRec;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.Lambda;
+import de.unisiegen.tpml.core.expressions.Let;
+import de.unisiegen.tpml.core.expressions.LetRec;
+import de.unisiegen.tpml.core.expressions.List;
+import de.unisiegen.tpml.core.expressions.MultiLet;
+import de.unisiegen.tpml.core.expressions.Recursion;
+import de.unisiegen.tpml.core.expressions.Tuple;
+import de.unisiegen.tpml.core.languages.l2.L2Language;
+import de.unisiegen.tpml.core.languages.l2.L2TypeCheckerProofRuleSet;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerExpressionProofNode;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
+import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+import de.unisiegen.tpml.core.types.ArrowType;
+import de.unisiegen.tpml.core.types.ListType;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.TupleType;
+import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.core.types.TypeVariable;
 
 
 /**
@@ -74,8 +75,9 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    * @param node the type checker proof node.
    */
   public void applyList ( TypeCheckerProofContext context ,
-      TypeCheckerProofNode node )
+		  TypeCheckerProofNode pNode )
   {
+	  TypeCheckerExpressionProofNode node = (TypeCheckerExpressionProofNode) pNode;
     Expression [ ] expressions = ( ( List ) node.getExpression ( ) )
         .getExpressions ( ) ;
     TypeVariable tau = context.newTypeVariable ( ) ;
@@ -118,8 +120,9 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    * @param node the type checker proof node.
    */
   public void applyPId ( TypeCheckerProofContext context ,
-      TypeCheckerProofNode node )
+		  TypeCheckerProofNode pNode )
   {
+	  TypeCheckerExpressionProofNode node = (TypeCheckerExpressionProofNode) pNode;
     Type type = node.getEnvironment ( ).get (
         ( Identifier ) node.getExpression ( ) ) ;
     context.addEquation ( node.getType ( ) , context.instantiate ( type ) ) ;
@@ -137,8 +140,9 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    * @param node the type checker proof node.
    */
   public void applyPLet ( TypeCheckerProofContext context ,
-      TypeCheckerProofNode node )
+		  TypeCheckerProofNode pNode )
   {
+	  TypeCheckerExpressionProofNode node = (TypeCheckerExpressionProofNode) pNode;
     // determine the type environment
     TypeEnvironment environment = node.getEnvironment ( ) ;
     // can be applied to LetRec, Let, MultiLet, CurriedLetRec and CurriedLet
@@ -229,8 +233,9 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    * @param node the type checker proof node.
    */
   public void updatePLet ( TypeCheckerProofContext context ,
-      TypeCheckerProofNode node )
+		  TypeCheckerProofNode pNode )
   {
+	  TypeCheckerExpressionProofNode node = (TypeCheckerExpressionProofNode) pNode;
     // check if the sub tree of the first child is finished now
     if ( node.getChildCount ( ) == 1 && node.getChildAt ( 0 ).isFinished ( ) )
     {
@@ -287,8 +292,9 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    * @param node the type checker proof node.
    */
   public void applyTuple ( TypeCheckerProofContext context ,
-      TypeCheckerProofNode node )
+		  TypeCheckerProofNode pNode )
   {
+	  TypeCheckerExpressionProofNode node = (TypeCheckerExpressionProofNode) pNode;
     Expression [ ] expressions = ( ( Tuple ) node.getExpression ( ) )
         .getExpressions ( ) ;
     TypeVariable [ ] typeVariables = new TypeVariable [ expressions.length ] ;

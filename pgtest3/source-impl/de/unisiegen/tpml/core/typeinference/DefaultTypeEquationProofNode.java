@@ -2,7 +2,7 @@ package de.unisiegen.tpml.core.typeinference ;
 
 
 import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofNode;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.types.MonoType;
@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @author Benjamin Mies
  * @author Christian Fehler
  */
-public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
+public class DefaultTypeEquationProofNode extends DefaultTypeCheckerExpressionProofNode
 
 		implements TypeEquationProofNode {
 

@@ -17,18 +17,12 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @see de.unisiegen.tpml.core.AbstractExpressionProofNode
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode
  */
-public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode implements TypeCheckerProofNode {
+public abstract class AbstractTypeCheckerProofNode extends AbstractExpressionProofNode implements TypeCheckerProofNode {
   //
   // Attributes
   //
   
-  /**
-   * The type environment for this type checker proof node.
-   * 
-   * @see #getEnvironment()
-   * @see #setEnvironment(TypeEnvironment)
-   */
-  protected TypeEnvironment environment;
+
   
   /**
    * The type for this type node, which is either a type variable or a monorphic type.
@@ -55,10 +49,9 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
    * @throws NullPointerException if <code>environment</code>, <code>expression</code> or <code>type</code>
    *                              is <code>null</code>.
    */
-  public DefaultTypeCheckerProofNode(TypeEnvironment environment, Expression expression, MonoType type) {
+  public AbstractTypeCheckerProofNode( Expression expression) {
     super(expression);
-    setEnvironment(environment);
-    setType(type);
+    //setType(type);
   }
   
   
@@ -67,30 +60,7 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
   // Accessors
   //
   
-  /**
-   * {@inheritDoc}
-   *
-   * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode#getEnvironment()
-   */
-  public TypeEnvironment getEnvironment() {
-    return this.environment;
-  }
-  
-  /**
-   * Sets the type environment for this proof node to <code>environment</code>.
-   * 
-   * @param environment the new type environment for this node.
-   * 
-   * @throws NullPointerException if <code>environment</code> is <code>null</code>.
-   * 
-   * @see #getEnvironment()
-   */
-  void setEnvironment(TypeEnvironment environment) {
-    if (environment == null) {
-      throw new NullPointerException("environment is null"); //$NON-NLS-1$
-    }
-    this.environment = environment;
-  }
+
   
   /**
    * {@inheritDoc}
@@ -168,8 +138,8 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildAt(int)
    */
   @Override
-  public DefaultTypeCheckerProofNode getChildAt(int childIndex) {
-    return (DefaultTypeCheckerProofNode)super.getChildAt(childIndex);
+  public AbstractTypeCheckerProofNode getChildAt(int childIndex) {
+    return (AbstractTypeCheckerProofNode)super.getChildAt(childIndex);
   }
   
   /**
@@ -178,8 +148,8 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getParent()
    */
   @Override
-  public DefaultTypeCheckerProofNode getParent() {
-    return (DefaultTypeCheckerProofNode)super.getParent();
+  public AbstractTypeCheckerProofNode getParent() {
+    return (AbstractTypeCheckerProofNode)super.getParent();
   }
   
   
@@ -194,8 +164,8 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getRoot()
    */
   @Override
-  public DefaultTypeCheckerProofNode getRoot() {
-    return (DefaultTypeCheckerProofNode)super.getRoot();
+  public AbstractTypeCheckerProofNode getRoot() {
+    return (AbstractTypeCheckerProofNode)super.getRoot();
   }
   
   
@@ -210,8 +180,8 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getFirstChild()
    */
   @Override
-  public DefaultTypeCheckerProofNode getFirstChild() {
-    return (DefaultTypeCheckerProofNode)super.getFirstChild();
+  public AbstractTypeCheckerProofNode getFirstChild() {
+    return (AbstractTypeCheckerProofNode)super.getFirstChild();
   }
   
   /**
@@ -220,8 +190,8 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getLastChild()
    */
   @Override
-  public DefaultTypeCheckerProofNode getLastChild() {
-    return (DefaultTypeCheckerProofNode)super.getLastChild();
+  public AbstractTypeCheckerProofNode getLastChild() {
+    return (AbstractTypeCheckerProofNode)super.getLastChild();
   }
   
   /**
@@ -230,8 +200,8 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildAfter(javax.swing.tree.TreeNode)
    */
   @Override
-  public DefaultTypeCheckerProofNode getChildAfter(TreeNode aChild) {
-    return (DefaultTypeCheckerProofNode)super.getChildAfter(aChild);
+  public AbstractTypeCheckerProofNode getChildAfter(TreeNode aChild) {
+    return (AbstractTypeCheckerProofNode)super.getChildAfter(aChild);
   }
   
   /**
@@ -240,8 +210,8 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildBefore(javax.swing.tree.TreeNode)
    */
   @Override
-  public DefaultTypeCheckerProofNode getChildBefore(TreeNode aChild) {
-    return (DefaultTypeCheckerProofNode)super.getChildBefore(aChild);
+  public AbstractTypeCheckerProofNode getChildBefore(TreeNode aChild) {
+    return (AbstractTypeCheckerProofNode)super.getChildBefore(aChild);
   }
   
   
@@ -256,8 +226,8 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getFirstLeaf()
    */
   @Override
-  public DefaultTypeCheckerProofNode getFirstLeaf() {
-    return (DefaultTypeCheckerProofNode)super.getFirstLeaf();
+  public AbstractTypeCheckerProofNode getFirstLeaf() {
+    return (AbstractTypeCheckerProofNode)super.getFirstLeaf();
   }
   
   /**
@@ -266,8 +236,8 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getLastLeaf()
    */
   @Override
-  public DefaultTypeCheckerProofNode getLastLeaf() {
-    return (DefaultTypeCheckerProofNode)super.getLastLeaf();
+  public AbstractTypeCheckerProofNode getLastLeaf() {
+    return (AbstractTypeCheckerProofNode)super.getLastLeaf();
   }
   
   
@@ -284,7 +254,8 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
    * @see java.lang.Object#toString()
    */
   @Override
-  public String toString() {
+  public abstract String toString() ;
+/* {
     StringBuilder builder = new StringBuilder();
     builder.append(this.environment);
     builder.append(" \u22b3 "); //$NON-NLS-1$
@@ -295,5 +266,5 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
       builder.append(" (" + getRule() + ")");  //$NON-NLS-1$//$NON-NLS-2$
     }
     return builder.toString();
-  }
+  }*/
 }

@@ -3,8 +3,11 @@ package de.unisiegen.tpml.core.languages.l1;
 import java.text.MessageFormat;
 
 import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.bigstep.BigStepProofContext;
+import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.expressions.And;
 import de.unisiegen.tpml.core.expressions.Application;
+import de.unisiegen.tpml.core.expressions.Coercion;
 import de.unisiegen.tpml.core.expressions.Condition;
 import de.unisiegen.tpml.core.expressions.Constant;
 import de.unisiegen.tpml.core.expressions.CurriedLet;
@@ -72,6 +75,7 @@ public class L1MinimalTypingProofRuleSet extends AbstractMinimalTypingProofRuleS
 		registerByMethodName ( L1Language.L1, "OR", "applyOr", "updateOr" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		registerByMethodName ( L1Language.L1, "CONST", "applyConst" );//$NON-NLS-1$ //$NON-NLS-2$
 		registerByMethodName ( L1Language.L1, "ID", "applyId" );//$NON-NLS-1$ //$NON-NLS-2$
+		registerByMethodName ( L1Language.L1, "COERCION", "applyCoercion", "updateCoercion" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	}
 
@@ -745,5 +749,44 @@ public class L1MinimalTypingProofRuleSet extends AbstractMinimalTypingProofRuleS
 		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
 
 	}
-
+	
+	  /**
+	   * Applies the <b>(COERCE)</b> rule to the <code>node</code> using the
+	   * <code>context</code>.
+	   * 
+	   * @param context the minimal typing proof context.
+	   * @param node the node to apply the <b>(COERCE)</b> rule to.
+	   */
+	  public void applyCoercion ( MinimalTypingProofContext context ,
+	      MinimalTypingProofNode node )
+	  {
+	    // add the first proof node
+	    context.addProofNode ( node , node.getEnvironment ( ), ( ( Coercion ) node.getExpression ( ) )
+	        .getE ( ) ) ;
+	  }
+	  
+		/**
+		 * Updates the <code>node</code> to which <b>(COERCE)</b> was applied
+		 * previously.
+		 * 
+		 * @param context the minimal typing proof context.
+		 * @param pNode the node to update according to <b>(COERCE)</b>.
+		 */
+	  	public void updateCoercion ( MinimalTypingProofContext context ,
+		      MinimalTypingProofNode node )
+		  {
+	  			if (node.getChildCount ( ) == 1 && node.getFirstChild ( ).isFinished ( )){
+	  				Coercion coercion = (Coercion) node.getExpression ( );
+	  				try {
+	  					MonoType type = node.getFirstChild ( ).getType ( );
+	  					MonoType type2 = coercion.getTau1 ( );
+	  					subtypeInternal ( type, type2 );
+	  					subtypeInternal ( type2, type );
+	  				}
+	  				catch (Exception e){
+	  					throw new RuntimeException("type of e not equal the given type");
+	  				}
+	  				context.addProofNode ( node, coercion.getTau1 ( ), coercion.getTau2 ( ) );
+	  			}
+		  }
 }

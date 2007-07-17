@@ -20,6 +20,7 @@ import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.TypeFormula;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement;
+import de.unisiegen.tpml.core.typeinference.TypeSubType;
 import de.unisiegen.tpml.graphics.outline.Outline;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
@@ -250,7 +251,7 @@ public class CompoundExpressionTypeInference extends JComponent
 							}
 					}
 					else
-						if (t instanceof TypeEquationTypeInference)
+						if (t instanceof TypeEquationTypeInference )
 						{
 							TypeEquationTypeInference typeEquation = (TypeEquationTypeInference) t;
 							// Left type
@@ -265,6 +266,22 @@ public class CompoundExpressionTypeInference extends JComponent
 									outline.load(typeEquation.getRight(), Outline.ExecuteMouseClick.TYPEINFERENCE);
 								}
 						}
+						else
+							if (t instanceof TypeSubType )
+							{
+								TypeSubType subType = (TypeSubType) t;
+								// Left type
+								if (isIn(leftType.get(i), pos))
+								{
+									outline.load(subType.getType(), Outline.ExecuteMouseClick.TYPEINFERENCE);
+								}
+								// Right type
+								else
+									if (isIn(rightType.get(i), pos))
+									{
+										outline.load(subType.getType2(), Outline.ExecuteMouseClick.TYPEINFERENCE);
+									}
+							}
 				}
 			}
 		});

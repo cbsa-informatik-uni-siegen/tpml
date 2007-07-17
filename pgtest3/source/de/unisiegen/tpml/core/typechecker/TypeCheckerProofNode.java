@@ -20,13 +20,12 @@ public interface TypeCheckerProofNode extends ExpressionProofNode {
   // Accessors
   //
   
-  /**
-   * Returns the type environment for this type node, that is, the environment in which the type
-   * of the expression was determined.
-   * 
-   * @return the type environment for this type node.
-   */
-  public TypeEnvironment getEnvironment();
+	  /**
+	   * Returns the type for this type node, which is either a type variable or a concrete type.
+	   * 
+	   * @return the monomorphic type for this type node.
+	   */
+	  public MonoType getType();
   
   /**
    * Returns <code>true</code> if this node and all subnodes are finished. A node is finished if
@@ -36,12 +35,7 @@ public interface TypeCheckerProofNode extends ExpressionProofNode {
    */
   public boolean isFinished();
   
-  /**
-   * Returns the type for this type node, which is either a type variable or a concrete type.
-   * 
-   * @return the monomorphic type for this type node.
-   */
-  public MonoType getType();
+
   
   /**
    * Convenience wrapper for the {@link ProofNode#getSteps()} method, which returns the
