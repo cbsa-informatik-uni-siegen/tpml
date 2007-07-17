@@ -61,7 +61,7 @@ public class NewSubTypingView extends AbstractProofView
    * 
    * @see #getOutline1()
    */
-  private Outline outline1 ;
+  private DefaultOutline outline1 ;
 
 
   /**
@@ -69,7 +69,7 @@ public class NewSubTypingView extends AbstractProofView
    * 
    * @see #getOutline1()
    */
-  private Outline outline2 ;
+  private DefaultOutline outline2 ;
 
 
   /**
@@ -112,7 +112,6 @@ public class NewSubTypingView extends AbstractProofView
     this.outline1.load ( this.SubTypingProofModel.getRoot ( ).getLastLeaf ( )
         .getType ( ) , Outline.ExecuteInit.SUBTYPING ) ;
     JPanel jPanelOutline1 = this.outline1.getPanel ( ) ;
-    jPanelOutline1.setBorder ( new LineBorder ( Color.BLACK , 1 ) ) ;
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
     gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 2 ) ;
     gridBagConstraints.gridx = 0 ;
@@ -121,10 +120,10 @@ public class NewSubTypingView extends AbstractProofView
     gridBagConstraints.weighty = 10 ;
     this.outlinePanel.add ( jPanelOutline1 , gridBagConstraints ) ;
     this.outline2 = new DefaultOutline ( this ) ;
+    this.outline1.setSyncOutline ( this.outline2 ) ;
     this.outline2.load ( this.SubTypingProofModel.getRoot ( ).getLastLeaf ( )
         .getType2 ( ) , Outline.ExecuteInit.SUBTYPING ) ;
     JPanel jPanelOutline2 = this.outline2.getPanel ( ) ;
-    jPanelOutline2.setBorder ( new LineBorder ( Color.BLACK , 1 ) ) ;
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
     gridBagConstraints.insets = new Insets ( 0 , 2 , 0 , 0 ) ;
     gridBagConstraints.gridx = 1 ;
