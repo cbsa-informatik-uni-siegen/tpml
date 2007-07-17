@@ -547,7 +547,8 @@ public final class OutlineMouseListener implements MouseListener
         // Do nothing
       }
       this.defaultOutline.updateHighlighSourceCode ( false ) ;
-      this.defaultOutline.load ( type , Outline.ExecuteMouseClick.SUBTYPING ) ;
+      this.defaultOutline.load ( type ,
+          Outline.ExecuteMouseClick.SUBTYPING_SOURCE ) ;
     }
     else if ( pMouseEvent.getSource ( ).equals (
         this.subTypingSourceView.getEditor2 ( ) ) )
@@ -563,7 +564,8 @@ public final class OutlineMouseListener implements MouseListener
         // Do nothing
       }
       this.defaultOutline.updateHighlighSourceCode ( false ) ;
-      this.defaultOutline.load ( type , Outline.ExecuteMouseClick.SUBTYPING ) ;
+      this.defaultOutline.load ( type ,
+          Outline.ExecuteMouseClick.SUBTYPING_SOURCE ) ;
     }
   }
 
