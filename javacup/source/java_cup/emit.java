@@ -54,6 +54,7 @@ import java.util.Stack ;
  * @see java_cup.main
  * @version last update: 11/25/95
  * @author Scott Hudson
+ * @author Christian Fehler
  */
 /*
  * Major externally callable routines here include: symbols - emit the symbol
@@ -359,13 +360,13 @@ public class emit
   protected static void emit_action_code ( PrintWriter out ,
       production start_prod ) throws internal_error
   {
-    // TODO Reimplement
     long start_time = System.currentTimeMillis ( ) ;
     /* class header */
     out.println ( ) ;
     out
         .println ( "/** Cup generated class to encapsulate user supplied action code.*/" ) ;
     /* TUM changes; proposed by Henning Niss 20050628: added type arguement */
+    out.println ( "@ SuppressWarnings ( value = { \"all\" } )" ) ;
     out.println ( "class " + pre ( "actions" ) + typeArgument ( ) + " {" ) ;
     /* user supplied code */
     if ( action_code != null )
@@ -401,7 +402,6 @@ public class emit
      * New declaration!! now return Symbol 6/13/96 frankf
      */
     out.println ( "      /* Symbol object for return from actions */" ) ;
-    out.println ( "      java_cup.runtime.Symbol " + pre ( "result" ) + ";" ) ;
     out.println ( ) ;
     /* switch top */
     out.println ( "      /* select the action based on the action number */" ) ;
@@ -423,7 +423,6 @@ public class emit
       out.println ( "            return " + pre ( "do_action" ) + prod.index ( )
           + " (" + pre ( "act_num," ) + pre ( "parser," ) + pre ( "stack," )
           + pre ( "top" ) + ") ;" ) ;
-      // TODO End of for
     }
     /* end of switch */
     out.println ( "          /* . . . . . .*/" ) ;
@@ -435,6 +434,151 @@ public class emit
     out.println ( "        }" ) ;
     /* end of method */
     out.println ( "    }" ) ;
+    for ( production prod : list )
+    {
+      out.println ( ) ;
+      out.println ( ) ;
+      out.println ( "  // " + prod.to_simple_string ( ) ) ;
+      out.println ( "  public final java_cup.runtime.Symbol "
+          + pre ( "do_action" ) + + prod.index ( ) + "(" ) ;
+      out.println ( "    int                        " + pre ( "act_num," ) ) ;
+      out.println ( "    java_cup.runtime.lr_parser " + pre ( "parser," ) ) ;
+      out.println ( "    java.util.Stack            " + pre ( "stack," ) ) ;
+      out.println ( "    int                        " + pre ( "top)" ) ) ;
+      out.println ( "    throws java.lang.Exception" ) ;
+      out.println ( "  {" ) ;
+      out.println ( "      java_cup.runtime.Symbol " + pre ( "result" ) + ";" ) ;
+      String result = "null" ;
+      if ( prod instanceof action_production )
+      {
+        int lastResult = ( ( action_production ) prod )
+            .getIndexOfIntermediateResult ( ) ;
+        if ( lastResult != - 1 )
+        {
+          result = "("
+              + prod.lhs ( ).the_symbol ( ).stack_type ( )
+              + ") "
+              + "((java_cup.runtime.Symbol) "
+              + emit.pre ( "stack" )
+              +
+              // TUM 20050917
+              ( ( lastResult == 1 ) ? ".peek()" : ( ".elementAt("
+                  + emit.pre ( "top" ) + "-" + ( lastResult - 1 ) + ")" ) )
+              + ").value" ;
+        }
+      }
+      /* create the result symbol */
+      /*
+       * make the variable RESULT which will point to the new Symbol (see below)
+       * and be changed by action code 6/13/96 frankf
+       */
+      out.println ( "              "
+          + prod.lhs ( ).the_symbol ( ).stack_type ( ) + " RESULT =" + result
+          + ";" ) ;
+      /*
+       * Add code to propagate RESULT assignments that occur in action code
+       * embedded in a production (ie, non-rightmost action code). 24-Mar-1998
+       * CSA
+       */
+      for ( int i = prod.rhs_length ( ) - 1 ; i >= 0 ; i -- )
+      {
+        // only interested in non-terminal symbols.
+        if ( ! ( prod.rhs ( i ) instanceof symbol_part ) ) continue ;
+        symbol s = ( ( symbol_part ) prod.rhs ( i ) ).the_symbol ( ) ;
+        if ( ! ( s instanceof non_terminal ) ) continue ;
+        // skip this non-terminal unless it corresponds to
+        // an embedded action production.
+        if ( ( ( non_terminal ) s ).is_embedded_action == false ) continue ;
+        // OK, it fits. Make a conditional assignment to RESULT.
+        int index = prod.rhs_length ( ) - i - 1 ; // last rhs is on top.
+        // set comment to inform about where the intermediate result came from
+        out.println ( "              " + "// propagate RESULT from "
+            + s.name ( ) ) ;
+        // // look out, whether the intermediate result is null or not
+        // out.println(" " + "if ( " +
+        // "((java_cup.runtime.Symbol) " + emit.pre("stack") +
+        // // TUM 20050917
+        // ((index==0)?".peek()":(".elementAt(" + emit.pre("top") + "-" + index
+        // + ")"))+
+        // ").value != null )");
+        // TUM 20060608: even when its null: who cares?
+        // store the intermediate result into RESULT
+        out.println ( "                " + "RESULT = "
+            + "("
+            + prod.lhs ( ).the_symbol ( ).stack_type ( )
+            + ") "
+            + "((java_cup.runtime.Symbol) "
+            + emit.pre ( "stack" )
+            +
+            // TUM 20050917
+            ( ( index == 0 ) ? ".peek()" : ( ".elementAt(" + emit.pre ( "top" )
+                + "-" + index + ")" ) ) + ").value;" ) ;
+        break ;
+      }
+      /* if there is an action string, emit it */
+      if ( prod.action ( ) != null && prod.action ( ).code_string ( ) != null
+          && ! prod.action ( ).equals ( "" ) )
+        out.println ( prod.action ( ).code_string ( ) ) ;
+      /*
+       * here we have the left and right values being propagated. must make this
+       * a command line option. frankf 6/18/96
+       */
+      /*
+       * Create the code that assigns the left and right values of the new
+       * Symbol that the production is reducing to
+       */
+      if ( emit.lr_values ( ) )
+      {
+        int loffset ;
+        String leftstring , rightstring ;
+        // TUM 20050917
+        // int roffset = 0;
+        rightstring = "((java_cup.runtime.Symbol)" + emit.pre ( "stack" ) +
+        // TUM 20050917
+            // ".elementAt(" + emit.pre("top") + "-" + roffset + "))"+
+            ".peek()" +
+            // TUM 20060327 removed .right
+            ")" ;
+        if ( prod.rhs_length ( ) == 0 )
+          leftstring = rightstring ;
+        else
+        {
+          loffset = prod.rhs_length ( ) - 1 ;
+          leftstring = "((java_cup.runtime.Symbol)"
+              + emit.pre ( "stack" )
+              +
+              // TUM 20050917
+              ( ( loffset == 0 ) ? ( ".peek()" ) : ( ".elementAt("
+                  + emit.pre ( "top" ) + "-" + loffset + ")" ) ) +
+              // TUM 20060327 removed .left
+              ")" ;
+        }
+        // out.println(" " + pre("result") + " = new java_cup.runtime.Symbol(" +
+        out.println ( "              " + pre ( "result" )
+            + " = parser.getSymbolFactory().newSymbol(" + "\""
+            + prod.lhs ( ).the_symbol ( ).name ( ) + "\","
+            + prod.lhs ( ).the_symbol ( ).index ( ) + ", " + leftstring + ", "
+            + rightstring + ", RESULT);" ) ;
+      }
+      else
+      {
+        // out.println(" " + pre("result") + " = new java_cup.runtime.Symbol(" +
+        out.println ( "              " + pre ( "result" )
+            + " = parser.getSymbolFactory().newSymbol(" + "\""
+            + prod.lhs ( ).the_symbol ( ).name ( ) + "\","
+            + prod.lhs ( ).the_symbol ( ).index ( ) + ", RESULT);" ) ;
+      }
+      /* if this was the start production, do action for accept */
+      if ( prod == start_prod )
+      {
+        out.println ( "          /* ACCEPT */" ) ;
+        out.println ( "          " + pre ( "parser" ) + ".done_parsing();" ) ;
+      }
+      /* code to return lhs symbol */
+      out.println ( "          return " + pre ( "result" ) + ";" ) ;
+      // End of Method
+      out.println ( "  }" ) ;
+    }
     /* end of class */
     out.println ( "}" ) ;
     out.println ( ) ;
@@ -745,6 +889,7 @@ public class emit
     out.println ( "  * @version " + new Date ( ) ) ;
     out.println ( "  */" ) ;
     /* TUM changes; proposed by Henning Niss 20050628: added typeArgument */
+    out.println ( "@ SuppressWarnings ( value = { \"all\" } )" ) ;
     out.println ( "public class " + parser_class_name + typeArgument ( )
         + " extends java_cup.runtime.lr_parser {" ) ;
     /* constructors [CSA/davidm, 24-jul-99] */
