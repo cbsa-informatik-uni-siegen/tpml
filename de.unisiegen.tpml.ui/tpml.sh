@@ -37,6 +37,9 @@ cat > "$XDG_DATA_HOME/mime/packages/tpml.xml" <<EOF
     <glob pattern="*.[Ll][012][Cc][Bb][Nn]" />
     <glob pattern="*.[Ll]2[Oo]" />
     <glob pattern="*.[Ll]2[Cc]" />
+    <glob pattern="*.[Ll][1234][Ss][Uu][Bb][Tt][Yy][Pp][Ee]" />
+    <glob pattern="*.[Ll]2[Oo][Ss][Uu][Bb][Tt][Yy][Pp][Ee]" />
+    <glob pattern="*.[Ll]2[Cc][Ss][Uu][Bb][Tt][Yy][Pp][Ee]" />
   </mime-type>
 </mime-info>
 EOF
