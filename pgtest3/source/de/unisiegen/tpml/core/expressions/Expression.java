@@ -107,7 +107,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   /**
    * Prefix of {@link Identifier}s after the first.
    */
-  public static final String PREFIX_ID = "id" ; //$NON-NLS-1$
+  public static final String PREFIX_ID_V = "id" ; //$NON-NLS-1$
 
 
   /**
@@ -117,15 +117,15 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * Prefix of base class {@link Identifier}s.
+   * Prefix of super {@link Identifier}s.
    */
   public static final String PREFIX_ID_Z = "z" ; //$NON-NLS-1$
 
 
   /**
-   * Prefix of base method {@link Identifier}s.
+   * Prefix of inherited {@link Identifier}s.
    */
-  public static final String PREFIX_ID_B = "b" ; //$NON-NLS-1$
+  public static final String PREFIX_ID_I = "z#m" ; //$NON-NLS-1$
 
 
   /**

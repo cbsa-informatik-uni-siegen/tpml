@@ -40,13 +40,13 @@ public final class Identifier extends Value implements DefaultName
      */
     METHOD ,
     /**
-     * The set of base class {@link Identifier}s.
+     * The set of super {@link Identifier}s.
      */
-    BASECLASS ,
+    SUPER ,
     /**
-     * The set of base method {@link Identifier}s.
+     * The set of inherited {@link Identifier}s.
      */
-    BASEMETHOD ,
+    INHERITED ,
     /**
      * The set of self {@link Identifier}s.
      */
@@ -183,7 +183,7 @@ public final class Identifier extends Value implements DefaultName
     this ( pBaseClass + "#" + pMethod ) ; //$NON-NLS-1$
     this.baseClass = pBaseClass ;
     this.method = pMethod ;
-    this.set = Set.BASEMETHOD ;
+    this.set = Set.INHERITED ;
   }
 
 
@@ -203,7 +203,7 @@ public final class Identifier extends Value implements DefaultName
     this ( pBaseClass + "#" + pMethod , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
     this.baseClass = pBaseClass ;
     this.method = pMethod ;
-    this.set = Set.BASEMETHOD ;
+    this.set = Set.INHERITED ;
   }
 
 
@@ -244,10 +244,10 @@ public final class Identifier extends Value implements DefaultName
    */
   public String getBaseClass ( )
   {
-    if ( ! this.set.equals ( Set.BASEMETHOD ) )
+    if ( ! this.set.equals ( Set.INHERITED ) )
     {
       throw new IllegalArgumentException (
-          "The Identifier is not a base method Identifier" ) ; //$NON-NLS-1$
+          "The Identifier is not an inherited Identifier" ) ; //$NON-NLS-1$
     }
     return this.baseClass ;
   }
@@ -317,10 +317,10 @@ public final class Identifier extends Value implements DefaultName
    */
   public String getMethod ( )
   {
-    if ( ! this.set.equals ( Set.BASEMETHOD ) )
+    if ( ! this.set.equals ( Set.INHERITED ) )
     {
       throw new IllegalArgumentException (
-          "The Identifier is not a base method Identifier" ) ; //$NON-NLS-1$
+          "The Identifier is not an inherited Identifier" ) ; //$NON-NLS-1$
     }
     return this.method ;
   }
@@ -361,7 +361,7 @@ public final class Identifier extends Value implements DefaultName
             {
               case VARIABLE :
               {
-                this.prefix = PREFIX_ID ;
+                this.prefix = PREFIX_ID_V ;
                 return this.prefix ;
               }
               case ATTRIBUTE :
@@ -374,14 +374,14 @@ public final class Identifier extends Value implements DefaultName
                 this.prefix = PREFIX_ID_M ;
                 return this.prefix ;
               }
-              case BASECLASS :
+              case SUPER :
               {
                 this.prefix = PREFIX_ID_Z ;
                 return this.prefix ;
               }
-              case BASEMETHOD :
+              case INHERITED :
               {
-                this.prefix = PREFIX_ID_B ;
+                this.prefix = PREFIX_ID_I ;
                 return this.prefix ;
               }
               case SELF :
@@ -430,10 +430,10 @@ public final class Identifier extends Value implements DefaultName
         return "A" ; //$NON-NLS-1$
       case METHOD :
         return "M" ; //$NON-NLS-1$
-      case BASECLASS :
+      case SUPER :
         return "Z" ; //$NON-NLS-1$
-      case BASEMETHOD :
-        return "B" ; //$NON-NLS-1$
+      case INHERITED :
+        return "I" ; //$NON-NLS-1$
       case SELF :
         return "S" ; //$NON-NLS-1$
     }
@@ -534,18 +534,8 @@ public final class Identifier extends Value implements DefaultName
   {
     if ( this.prettyStringBuilder == null )
     {
-      // TODO Only for debugging
       this.prettyStringBuilder = factory.newBuilder ( this , PRIO_IDENTIFIER ) ;
-      /*
-       * if ( Debug.isUserName ( "christian" ) ) //$NON-NLS-1$ {
-       * this.prettyStringBuilder.addText ( "{" ) ; //$NON-NLS-1$ }
-       */
       this.prettyStringBuilder.addIdentifier ( this.name ) ;
-      /*
-       * if ( Debug.isUserName ( "christian" ) ) //$NON-NLS-1$ {
-       * this.prettyStringBuilder.addText ( " | " + getSetDebug ( ) + "}" ) ;
-       * //$NON-NLS-1$ //$NON-NLS-2$ }
-       */
     }
     return this.prettyStringBuilder ;
   }
