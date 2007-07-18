@@ -147,7 +147,7 @@ public class NewSubTypingView extends AbstractProofView
     gridBagConstraints.gridx = 0 ;
     gridBagConstraints.gridy = 1 ;
     gridBagConstraints.weightx = 10 ;
-    gridBagConstraints.weighty = 10 ;
+    gridBagConstraints.weighty = 0 ;
     gridBagConstraints.gridwidth = 2;
     
     this.outlinePanel.add ( preferences , gridBagConstraints ) ;
