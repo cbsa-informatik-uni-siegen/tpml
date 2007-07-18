@@ -482,7 +482,7 @@ public class SubTypingEnterTypes extends AbstractProofView
       }
     } ) ;
     this.editor1.setDocument ( this.document1 ) ;
-    this.outline1 = new DefaultOutline ( this , editor1 ) ;
+    this.outline1 = null ;
     this.document1.addDocumentListener ( new DocumentListener ( )
     {
       public void changedUpdate ( DocumentEvent e )
@@ -640,7 +640,7 @@ public class SubTypingEnterTypes extends AbstractProofView
         }
       }
     } ) ;
-    this.outline2 = new DefaultOutline ( this , editor2 ) ;
+    this.outline2 = null ;
     this.document2.addDocumentListener ( new DocumentListener ( )
     {
       public void changedUpdate ( DocumentEvent e )
