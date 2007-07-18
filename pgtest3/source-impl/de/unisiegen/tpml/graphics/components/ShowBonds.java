@@ -1,20 +1,19 @@
 package de.unisiegen.tpml.graphics.components ;
 
 
-import java.util.ArrayList;
-
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.expressions.Identifier;
-import de.unisiegen.tpml.core.interfaces.BoundIdentifiers;
-import de.unisiegen.tpml.core.interfaces.BoundTypeNames;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes;
-import de.unisiegen.tpml.core.interfaces.ShowBondsInput;
-import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
-import de.unisiegen.tpml.core.typeinference.TypeSubType;
-import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.types.Type;
-import de.unisiegen.tpml.core.types.TypeName;
+import java.util.ArrayList ;
+import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.BoundTypeNames ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeSubType ;
+import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.core.types.TypeName ;
 
 
 /**
@@ -42,7 +41,6 @@ public final class ShowBonds
    * 
    * @param pExpression The input {@link Expression}.
    */
-  @ SuppressWarnings ( "unchecked" )
   private final void check ( Expression pExpression )
   {
     if ( pExpression instanceof BoundIdentifiers )
@@ -111,7 +109,6 @@ public final class ShowBonds
    * 
    * @param pType The input {@link Type}.
    */
-  @ SuppressWarnings ( "unchecked" )
   private final void check ( Type pType )
   {
     if ( pType instanceof BoundTypeNames )
@@ -196,11 +193,9 @@ public final class ShowBonds
 
 
   /**
-   * Loads the {@link ShowBondsInput} to get the
-   * bonds.
+   * Loads the {@link ShowBondsInput} to get the bonds.
    * 
-   * @param pLoaded The input
-   *          {@link ShowBondsInput}.
+   * @param pLoaded The input {@link ShowBondsInput}.
    */
   public final void load ( ShowBondsInput pLoaded )
   {
@@ -214,7 +209,7 @@ public final class ShowBonds
    * @see Object#toString()
    */
   @ Override
-  public String toString ( )
+  public final String toString ( )
   {
     if ( this.result == null )
     {

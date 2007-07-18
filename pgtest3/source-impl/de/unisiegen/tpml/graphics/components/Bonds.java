@@ -97,7 +97,7 @@ public final class Bonds
    * @see java.lang.Object#toString()
    */
   @ Override
-  public String toString ( )
+  public final String toString ( )
   {
     String result = this.startOffset + "-" + this.endOffset ; //$NON-NLS-1$
     for ( PrettyAnnotation item : this.prettyAnnotation )
