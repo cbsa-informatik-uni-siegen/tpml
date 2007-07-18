@@ -128,11 +128,11 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
     
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
     this.setLayout ( new GridBagLayout ( ) ) ;
-    this.scrollPane = new JScrollPane ( ) ;
+    //this.scrollPane = new JScrollPane ( ) ;
     
-   JPanel panel = new JPanel ( new BorderLayout() ) ;
+   //JPanel panel = new JPanel ( new BorderLayout() ) ;
     
-    panel.add(this.scrollPane, BorderLayout.CENTER);
+  //  panel.add(this.scrollPane, BorderLayout.CENTER);
     
     this.source = new JPanel(new GridBagLayout()) ;
     
@@ -247,7 +247,7 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 		} );
 		
 		this.scrollPane1.setViewportView(this.editor);
-		this.scrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		//this.scrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
 		 gridBagConstraints.insets = new Insets ( 5 , 0 , 0 , 0 ) ;
 		 gridBagConstraints.fill = GridBagConstraints.BOTH;
@@ -356,7 +356,7 @@ this.editor2 = new StyledLanguageEditor ( );
 		} );
 		
 		this.scrollPane2.setViewportView(this.editor2);
-		this.scrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		//this.scrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
 		 gridBagConstraints.insets = new Insets ( 5 , 0 , 0 , 0 ) ;
 		 gridBagConstraints.fill = GridBagConstraints.BOTH;
@@ -376,8 +376,8 @@ this.editor2 = new StyledLanguageEditor ( );
       gridBagConstraints.gridwidth = 1 ;
 		this.source.add ( this.scrollPane2, gridBagConstraints );
     
-    this.scrollPane.setViewportView ( this.source ) ;
-    this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
+    //this.scrollPane.setViewportView ( this.source ) ;
+    //this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
    /* this.scrollPane.addComponentListener ( new ComponentAdapter ( )
     {
       @ Override
@@ -427,12 +427,12 @@ this.editor2 = new StyledLanguageEditor ( );
     gridBagConstraints.gridx = 0 ;
     gridBagConstraints.gridy = 1 ;
     gridBagConstraints.weightx = 10 ;
-    gridBagConstraints.weighty = 10 ;
+    gridBagConstraints.weighty = 0 ;
     gridBagConstraints.gridwidth = 2 ;
     
     this.outlinePanel.add ( preferences, gridBagConstraints );
     
-    this.jSplitPane.setLeftComponent ( panel ) ;
+    this.jSplitPane.setLeftComponent ( this.source ) ;
     this.jSplitPane.setRightComponent ( this.outlinePanel ) ;
     this.jSplitPane.setOneTouchExpandable ( true ) ;
     this.jSplitPane.setResizeWeight ( 0.5 ) ;
