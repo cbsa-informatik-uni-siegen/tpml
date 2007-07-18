@@ -11,8 +11,12 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -642,7 +646,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 		if (file == null)
 			return handleSaveAs();
 		else
-			return false; // writeFile();
+			return writeFile();
 	};
 
 	/**
@@ -743,7 +747,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 				// save to the new file
 				setFile(outfile);
 				setFileName(outfile.getName());
-				return false ; //writeFile();
+				return writeFile();
 			} catch (IOException e) {
 				logger.error("Selected file could not be created.", e);
 				JOptionPane.showMessageDialog(this,
@@ -754,41 +758,22 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 		}
 	}
 
-	public void handleCopy ( ) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void handleCut ( ) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void handlePaste ( ) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setEditorText ( String string ) {
-		// TODO Auto-generated method stub
-		
-	}
 
   /**
    * Writes content of the source panel to a specified file.
    * 
    * @return true if the file could be written
    */
-/*  private boolean writeFile ( )
+  private boolean writeFile ( )
   {
     try
     {
       BufferedWriter out = new BufferedWriter ( new OutputStreamWriter (
           new FileOutputStream ( file ) , "UTF8" ) ) ; //$NON-NLS-1$
-      out.write ( code.getText ( ) ) ;
+      out.write ( code.getType ( ).toString ( )  ) ;
+      out.write ( "|" );
+      out.write( code.getType2 ( ).toString ( ) ) ;
       out.close ( ) ;
-      // TODO: Christoph, what about this one?
-      code.clearHistory ( ) ;
       return true ;
     }
     catch ( UnsupportedEncodingException e )
@@ -811,6 +796,25 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
           JOptionPane.ERROR_MESSAGE ) ;
       return false ;
     }
-  }*/
+  }
 
+	public void handleCopy ( ) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void handleCut ( ) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void handlePaste ( ) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setEditorText ( String string ) {
+		// TODO Auto-generated method stub
+		
+	}
 }

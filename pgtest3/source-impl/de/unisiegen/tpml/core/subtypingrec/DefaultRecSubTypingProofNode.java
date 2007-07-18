@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.subtypingrec;
 import java.util.ArrayList;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode;
 import de.unisiegen.tpml.core.subtyping.ProofStep;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
@@ -194,10 +195,10 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
 	 *
 	 * @see de.unisiegen.tpml.core.subtyping.RecSubTypingProofNode#getRule()
 	 */
-	public SubTypingProofRule getRule ( ) {
+	public RecSubTypingProofRule getRule ( ) {
 		ProofStep[] steps = getSteps ( );
 		if ( steps.length > 0 ) {
-			return ( SubTypingProofRule ) steps[0].getRule ( );
+			return ( RecSubTypingProofRule ) steps[0].getRule ( );
 		} else {
 			return null;
 		}
@@ -212,8 +213,13 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
 		return this.seenTypes;
 	}
 	
-	public DefaultSubTypingProofNode getLastLeaf ( ) {
-		return (DefaultSubTypingProofNode) super.getLastLeaf ( );
+	public DefaultRecSubTypingProofNode getLastLeaf ( ) {
+		return (DefaultRecSubTypingProofNode) super.getLastLeaf ( );
+	}
+
+	public PrettyString toPrettyString ( ) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

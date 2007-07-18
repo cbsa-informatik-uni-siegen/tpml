@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.subtypingrec;
 
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.subtyping.SubTypingNode;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.types.MonoType;
 
@@ -13,23 +14,9 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @see de.unisiegen.tpml.core.ProofNode
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofModel
  */
-public interface RecSubTypingProofNode extends ProofNode {
+public interface RecSubTypingProofNode extends  SubTypingNode {
 
-	/**
-	 * 
-	 * get the first type of this node
-	 *
-	 * @return MonoType the first type of this node
-	 */
-	public MonoType getType ( );
 
-	/**
-	 * 
-	 * get the second type of this node
-	 *
-	 * @return MonoType the second type of this node
-	 */
-	public MonoType getType2 ( );
 
 	/**
 	 * 

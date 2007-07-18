@@ -289,7 +289,7 @@ public final class DefaultOutline implements Outline
     Theme.currentTheme ( ).addPropertyChangeListener (
         new OutlinePropertyChangeListener ( this ) ) ;
     // TreeModelListener
-    pSubTypingView.getSubTypingProofModel ( ).addTreeModelListener (
+    pSubTypingView.getSubTypingModel ( ).addTreeModelListener (
         new OutlineTreeModelListener ( this , pSubTypingView ) ) ;
     // MouseListener
     this.uI.getJTreeOutline ( ).addMouseListener (

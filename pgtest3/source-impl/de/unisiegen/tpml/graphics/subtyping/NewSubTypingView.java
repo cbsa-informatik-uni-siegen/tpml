@@ -12,7 +12,7 @@ import javax.swing.JScrollPane ;
 import javax.swing.JSplitPane ;
 import javax.swing.border.LineBorder ;
 import de.unisiegen.tpml.core.ProofGuessException ;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofModel ;
+import de.unisiegen.tpml.core.subtyping.SubTypingModel ;
 import de.unisiegen.tpml.graphics.AbstractProofView ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
@@ -73,27 +73,27 @@ public class NewSubTypingView extends AbstractProofView
 
 
   /**
-   * The {@link SubTypingProofModel}.
+   * The {@link SubTypingModel}.
    */
-  private SubTypingProofModel SubTypingProofModel ;
+  private SubTypingModel subTypingModel ;
 
 
   /**
    * Allocates a new {@link NewSubTypingView} for the specified
-   * {@link SubTypingProofModel}.
+   * {@link SubTypingModel}.
    * 
-   * @param pSubTypingProofModel The {@link SubTypingProofModel} for the
+   * @param pSubTypingModel The {@link SubTypingModel} for the
    *          <code>SubTypingView</code>.
    */
-  public NewSubTypingView ( SubTypingProofModel pSubTypingProofModel )
+  public NewSubTypingView ( SubTypingModel pSubTypingModel )
   {
     super ( ) ;
-    this.SubTypingProofModel = pSubTypingProofModel ;
+    this.subTypingModel = pSubTypingModel ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
     this.setLayout ( new GridBagLayout ( ) ) ;
     this.scrollPane = new JScrollPane ( ) ;
-    this.component = new NewSubTypingComponent ( this.SubTypingProofModel ) ;
+    this.component = new NewSubTypingComponent ( this.subTypingModel ) ;
     this.scrollPane.setViewportView ( this.component ) ;
     this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
     this.scrollPane.addComponentListener ( new ComponentAdapter ( )
@@ -108,39 +108,63 @@ public class NewSubTypingView extends AbstractProofView
       }
     } ) ;
     this.outlinePanel = new JPanel ( new GridBagLayout ( ) ) ;
+    
     this.outline1 = new DefaultOutline ( this ) ;
-    this.outline1.load ( this.SubTypingProofModel.getRoot ( ).getLastLeaf ( )
+    this.outline1.load ( this.subTypingModel.getRoot ( ).getLastLeaf ( )
         .getType ( ) , Outline.ExecuteInit.SUBTYPING ) ;
-    JPanel jPanelOutline1 = this.outline1.getPanel ( ) ;
+    JScrollPane jPanelOutline1 = this.outline1.getTree ( ) ;
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
     gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 2 ) ;
     gridBagConstraints.gridx = 0 ;
     gridBagConstraints.gridy = 0 ;
     gridBagConstraints.weightx = 10 ;
     gridBagConstraints.weighty = 10 ;
+    gridBagConstraints.gridwidth = 1;
+    
     this.outlinePanel.add ( jPanelOutline1 , gridBagConstraints ) ;
+    
     this.outline2 = new DefaultOutline ( this ) ;
     this.outline1.setSyncOutline ( this.outline2 ) ;
-    this.outline2.load ( this.SubTypingProofModel.getRoot ( ).getLastLeaf ( )
+    this.outline2.load ( this.subTypingModel.getRoot ( ).getLastLeaf ( )
         .getType2 ( ) , Outline.ExecuteInit.SUBTYPING ) ;
-    JPanel jPanelOutline2 = this.outline2.getPanel ( ) ;
+    
+    JScrollPane jPanelOutline2 = this.outline2.getTree ( ) ;
+    
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
     gridBagConstraints.insets = new Insets ( 0 , 2 , 0 , 0 ) ;
     gridBagConstraints.gridx = 1 ;
     gridBagConstraints.gridy = 0 ;
     gridBagConstraints.weightx = 10 ;
     gridBagConstraints.weighty = 10 ;
+    gridBagConstraints.gridwidth = 1;
+    
     this.outlinePanel.add ( jPanelOutline2 , gridBagConstraints ) ;
+    
+    JPanel preferences = this.outline1.getPanelPreferences ( );
+    
+    gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    gridBagConstraints.insets = new Insets ( 0 , 2 , 0 , 0 ) ;
+    gridBagConstraints.gridx = 0 ;
+    gridBagConstraints.gridy = 1 ;
+    gridBagConstraints.weightx = 10 ;
+    gridBagConstraints.weighty = 10 ;
+    gridBagConstraints.gridwidth = 2;
+    
+    this.outlinePanel.add ( preferences , gridBagConstraints ) ;
+    
     this.jSplitPane.setLeftComponent ( this.scrollPane ) ;
     this.jSplitPane.setRightComponent ( this.outlinePanel ) ;
     this.jSplitPane.setOneTouchExpandable ( true ) ;
     this.jSplitPane.setResizeWeight ( 0.5 ) ;
+    
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
     gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
     gridBagConstraints.gridx = 0 ;
     gridBagConstraints.gridy = 0 ;
     gridBagConstraints.weightx = 10 ;
     gridBagConstraints.weighty = 10 ;
+    gridBagConstraints.gridwidth = 1;
+    
     this.add ( this.jSplitPane , gridBagConstraints ) ;
   }
 
@@ -180,14 +204,14 @@ public class NewSubTypingView extends AbstractProofView
 
 
   /**
-   * Returns the SubTypingProofModel.
+   * Returns the SubTypingModel.
    * 
-   * @return The SubTypingProofModel.
-   * @see #SubTypingProofModel
+   * @return The SubTypingModel.
+   * @see #SubTypingModel
    */
-  public SubTypingProofModel getSubTypingProofModel ( )
+  public SubTypingModel getSubTypingModel ( )
   {
-    return this.SubTypingProofModel ;
+    return this.subTypingModel ;
   }
 
 

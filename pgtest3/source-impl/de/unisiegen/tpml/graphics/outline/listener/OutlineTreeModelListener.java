@@ -141,14 +141,14 @@ public final class OutlineTreeModelListener implements TreeModelListener
       if ( this.defaultOutline == this.newSubTypingView.getOutline1 ( ) )
       {
         this.defaultOutline.load (
-            this.newSubTypingView.getSubTypingProofModel ( ).getRoot ( )
+            this.newSubTypingView.getSubTypingModel ( ).getRoot ( )
                 .getLastLeaf ( ).getType ( ) ,
             Outline.ExecuteAutoChange.SUBTYPING ) ;
       }
       else
       {
         this.defaultOutline.load (
-            this.newSubTypingView.getSubTypingProofModel ( ).getRoot ( )
+            this.newSubTypingView.getSubTypingModel ( ).getRoot ( )
                 .getLastLeaf ( ).getType2 ( ) ,
             Outline.ExecuteAutoChange.SUBTYPING ) ;
       }

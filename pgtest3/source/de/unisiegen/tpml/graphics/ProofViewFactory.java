@@ -51,7 +51,7 @@ public class ProofViewFactory {
 	}
 	
 	public static ProofView newSubTypingRecView (RecSubTypingProofModel model) {
-		return null; //new NewSubTypingView(model);
+		return new NewSubTypingView(model);
 		//return new SubTypingSourceView(language);
 	}
 	

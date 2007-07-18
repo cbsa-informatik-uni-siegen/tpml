@@ -12,23 +12,9 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @see de.unisiegen.tpml.core.ProofNode
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofModel
  */
-public interface SubTypingProofNode extends ProofNode {
+public interface SubTypingProofNode extends  SubTypingNode{
 
-	/**
-	 * 
-	 * get the first type of this node
-	 *
-	 * @return MonoType the first type of this node
-	 */
-	public MonoType getType ( );
 
-	/**
-	 * 
-	 * get the second type of this node
-	 *
-	 * @return MonoType the second type of this node
-	 */
-	public MonoType getType2 ( );
 
 	/**
 	 * Returns <code>true</code> if this node and all subnodes are finished. A node is finished if

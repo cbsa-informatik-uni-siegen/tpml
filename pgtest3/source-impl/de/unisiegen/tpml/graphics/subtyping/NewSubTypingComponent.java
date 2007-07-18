@@ -11,9 +11,10 @@ import javax.swing.Scrollable;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeModelEvent;
 
+import de.unisiegen.tpml.core.AbstractProofModel;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
+import de.unisiegen.tpml.core.subtyping.SubTypingModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
@@ -87,8 +88,8 @@ public class NewSubTypingComponent extends AbstractProofComponent implements Scr
 	private ProofNode										jumpNode;
 
 	
-	public NewSubTypingComponent (SubTypingProofModel model) {
-		super (model);
+	public NewSubTypingComponent (SubTypingModel model) {
+		super ((AbstractProofModel)model);
 		
 		this.treeNodeLayout			= new TreeNodeLayout (10);
 		this.jumpNode						= null;
@@ -186,7 +187,7 @@ public class NewSubTypingComponent extends AbstractProofComponent implements Scr
 			// if the node has no userobject it may be new in the
 			// tree, so a new SubTypingNodeComponent will be created
 			// and added to the SubTypingProofNode  
-			nodeComponent = new NewSubTypingNodeComponent (node, (SubTypingProofModel)this.proofModel, this.translator);
+			nodeComponent = new NewSubTypingNodeComponent (node, (SubTypingModel)this.proofModel, this.translator);
 			node.setUserObject(nodeComponent);
 			
 			// the newly created nodeComponent is a gui-element so

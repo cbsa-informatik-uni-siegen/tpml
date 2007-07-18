@@ -6,7 +6,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Point;
-import java.io.StringReader;
 import java.text.MessageFormat;
 
 import javax.swing.JComponent;
@@ -19,17 +18,11 @@ import javax.swing.SwingUtilities;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
-import de.unisiegen.tpml.core.expressions.Identifier;
-import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
-import de.unisiegen.tpml.core.languages.LanguageTypeParser;
+import de.unisiegen.tpml.core.subtyping.SubTypingModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
-import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.graphics.Messages;
-import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
 import de.unisiegen.tpml.graphics.components.MenuEnterTypeItem;
@@ -99,7 +92,7 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 	 * The Model this node can work with to guess, enter type or do Coresyntax
 	 * transaltion
 	 */
-	private SubTypingProofModel proofModel;
+	private SubTypingModel proofModel;
 
 	/**
 	 * The Origin {@link SubTypingProofNode} this node represents.
@@ -176,7 +169,7 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 	 * @param model The model
 	 * @param translator The translator of the model for the selected language
 	 */
-	public NewSubTypingNodeComponent ( SubTypingProofNode node, SubTypingProofModel model, LanguageTranslator translator ) {
+	public NewSubTypingNodeComponent ( SubTypingProofNode node, SubTypingModel model, LanguageTranslator translator ) {
 		super ( );
 		this.proofNode = node;
 		this.proofModel = model;

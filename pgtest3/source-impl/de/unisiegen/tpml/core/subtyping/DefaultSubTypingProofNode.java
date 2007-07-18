@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.subtyping;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.util.Debug;
 
@@ -168,6 +169,11 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 
 	public DefaultSubTypingProofNode getLastLeaf ( ) {
 		return (DefaultSubTypingProofNode) super.getLastLeaf ( );
+	}
+
+	public PrettyString toPrettyString ( ) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

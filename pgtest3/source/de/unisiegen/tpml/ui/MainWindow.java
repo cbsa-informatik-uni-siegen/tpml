@@ -32,6 +32,7 @@ import org.apache.log4j.Logger ;
 import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageFactory ;
 import de.unisiegen.tpml.core.languages.NoSuchLanguageException ;
+import de.unisiegen.tpml.core.languages.l1.L1Language;
 
 
 /**
@@ -1357,6 +1358,10 @@ runMenu.add ( subTypingRec ) ;
         setEditorFunctions ( true ) ;
       }
     }
+    if (this.getActiveEditor ( ) instanceof EditorPanelExpression)
+   	 setExpressionMode();
+    else
+   	 setTypeMode();
   }
 
 
@@ -1485,11 +1490,15 @@ runMenu.add ( subTypingRec ) ;
     Language language = wizard.getLanguage ( ) ;
     if ( language == null ) return ;
     
-    EditorPanel newEditorPanel = new EditorPanelExpression ( language , this ) ;
+    EditorPanel newEditorPanel = null;
+    if (true){ //language.getId ( ) != L1Language.L1){
+    newEditorPanel = new EditorPanelExpression ( language , this ) ;
     setExpressionMode();
-    
-    //EditorPanel newEditorPanel = new EditorPanelTypes ( language , this ) ;
-    //setTypeMode();
+    }
+    else {
+    newEditorPanel = new EditorPanelTypes ( language , this ) ;
+    setTypeMode();
+    }
     
     tabbedPane.add ( ( Component ) newEditorPanel ) ;
     newEditorPanel.setAdvanced ( this.advancedRadioButton.isSelected ( ) ) ;

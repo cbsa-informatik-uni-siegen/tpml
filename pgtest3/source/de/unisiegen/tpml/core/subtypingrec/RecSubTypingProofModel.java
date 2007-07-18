@@ -16,6 +16,7 @@ import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
 import de.unisiegen.tpml.core.subtyping.ProofStep;
 import de.unisiegen.tpml.core.subtyping.SubTypingException;
+import de.unisiegen.tpml.core.subtyping.SubTypingModel;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
@@ -35,7 +36,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofContext
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode
  */
-public class RecSubTypingProofModel extends AbstractProofModel {
+public class RecSubTypingProofModel extends AbstractProofModel implements SubTypingModel {
 
 	//
 	// Constants
@@ -341,6 +342,11 @@ public class RecSubTypingProofModel extends AbstractProofModel {
 	@Override
 	public ProofRule[] getRules ( ) {
 		return this.ruleSet.getRules ( );
+	}
+	
+	@Override
+	public DefaultRecSubTypingProofNode getRoot(){
+		return (DefaultRecSubTypingProofNode) super.getRoot ( );
 	}
 
 	/**
