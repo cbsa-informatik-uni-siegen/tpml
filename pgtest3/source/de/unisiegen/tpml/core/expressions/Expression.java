@@ -345,7 +345,10 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * Returns a list of all {@link Identifier}s in this {@link Expression}.
+   * Returns a list of all {@link Identifier}s in this {@link Expression}. For
+   * example "lambda id.x" will return a list with the members "id" and "x".
+   * This method should only be used to check the disjunction of the
+   * {@link Identifier}s.
    * 
    * @return A list of all {@link Identifier}s in this {@link Expression}.
    * @see #identifiersAll

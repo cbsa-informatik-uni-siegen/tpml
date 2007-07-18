@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.exceptions.RowSubstitutionException ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
+import de.unisiegen.tpml.core.languages.MultipleIdentifier ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -30,7 +31,6 @@ public final class Row extends Expression implements DefaultExpressions
    */
   public static Row union ( Row pR1 , Row pR2 )
   {
-    // TODO Ask if it is correct
     Expression [ ] newExpressions = new Expression [ pR1.getExpressions ( ).length
         + pR2.getExpressions ( ).length ] ;
     for ( int i = 0 ; i < pR1.getExpressions ( ).length ; i ++ )
@@ -42,7 +42,9 @@ public final class Row extends Expression implements DefaultExpressions
       newExpressions [ pR1.getExpressions ( ).length + i ] = pR2
           .getExpressions ( ) [ i ] ;
     }
-    return new Row ( newExpressions ) ;
+    Row row = new Row ( newExpressions ) ;
+    MultipleIdentifier.check ( row ) ;
+    return row ;
   }
 
 

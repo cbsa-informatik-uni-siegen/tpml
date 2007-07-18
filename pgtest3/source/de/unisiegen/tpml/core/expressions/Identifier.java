@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultName ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.util.Debug ;
 
 
 /**
@@ -215,7 +216,7 @@ public final class Identifier extends Value implements DefaultName
   @ Override
   public Identifier clone ( )
   {
-    return new Identifier ( this.name ) ;
+    return new Identifier ( this.name , this.set ) ;
   }
 
 
@@ -535,7 +536,15 @@ public final class Identifier extends Value implements DefaultName
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = factory.newBuilder ( this , PRIO_IDENTIFIER ) ;
+      if ( Debug.isUserName ( Debug.CHRISTIAN ) )
+      {
+        // this.prettyStringBuilder.addText ( "{" ) ;
+      }
       this.prettyStringBuilder.addIdentifier ( this.name ) ;
+      if ( Debug.isUserName ( Debug.CHRISTIAN ) )
+      {
+        // this.prettyStringBuilder.addText ( " | " + getSetDebug ( ) + "}" ) ;
+      }
     }
     return this.prettyStringBuilder ;
   }
