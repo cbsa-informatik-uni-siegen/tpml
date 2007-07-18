@@ -601,7 +601,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          0 ) ;
+          PRIO_BODY ) ;
       this.prettyStringBuilder.addKeyword ( "inherit" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       for ( int i = 0 ; i < this.identifiersAttribute.length ; i ++ )
@@ -629,7 +629,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
       this.prettyStringBuilder.addKeyword ( "from" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_BODY_E ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "as" ) ; //$NON-NLS-1$
@@ -638,7 +638,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       this.prettyStringBuilder.addText ( " ; " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_BODY_B ) ;
     }
     return this.prettyStringBuilder ;
   }

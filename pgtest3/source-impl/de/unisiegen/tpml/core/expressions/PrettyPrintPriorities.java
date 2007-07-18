@@ -342,6 +342,24 @@ interface PrettyPrintPriorities
 
 
   /**
+   * The pretty print priority for {@link Body}s.
+   */
+  public static final int PRIO_BODY = 0 ;
+
+
+  /**
+   * The pretty print priority for the expression of {@link Body}s.
+   */
+  public static final int PRIO_BODY_E = 0 ;
+
+
+  /**
+   * The pretty print priority for the body of {@link Body}s.
+   */
+  public static final int PRIO_BODY_B = 0 ;
+
+
+  /**
    * The pretty print priority for {@link ObjectExpr}s.
    */
   public static final int PRIO_OBJECTEXPR = 0 ;
