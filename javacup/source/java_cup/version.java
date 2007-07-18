@@ -47,6 +47,11 @@ public class version
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
+  /** Name of the modifier */
+  public static final String modifier = "Christian Fehler" ;
+
+
+  /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** The command name normally used to invoke this program */
   public static final String program_name = "java_cup" ;
 }

@@ -406,13 +406,14 @@ public class emit
     out.println ( "      switch (" + pre ( "act_num" ) + ")" ) ;
     out.println ( "        {" ) ;
     /* emit action code for each production as a separate case */
-    ArrayList < production > list = new ArrayList < production > ( ) ;
+    ArrayList list = new ArrayList ( ) ;
     for ( Enumeration p = production.all ( ) ; p.hasMoreElements ( ) ; )
     {
       list.add ( ( production ) p.nextElement ( ) ) ;
     }
-    for ( production prod : list )
+    for ( int j = 0 ; j < list.size ( ) ; j ++ )
     {
+      production prod = ( production ) list.get ( j ) ;
       /* case label */
       out.println ( "          /*. . . . . . . . . . . . . . . . . . . .*/" ) ;
       out.println ( "          case " + prod.index ( ) + ": // "
@@ -432,8 +433,9 @@ public class emit
     out.println ( "        }" ) ;
     /* end of method */
     out.println ( "    }" ) ;
-    for ( production prod : list )
+    for ( int j = 0 ; j < list.size ( ) ; j ++ )
     {
+      production prod = ( production ) list.get ( j ) ;
       out.println ( ) ;
       out.println ( ) ;
       out.println ( "  // " + prod.to_simple_string ( ) ) ;
