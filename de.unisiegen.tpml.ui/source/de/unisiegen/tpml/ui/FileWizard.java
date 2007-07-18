@@ -159,7 +159,7 @@ public class FileWizard extends javax.swing.JDialog {
 
         bodyPanel.setLayout(new java.awt.GridBagLayout());
 
-        descriptionScrollPane.setPreferredSize(new java.awt.Dimension(164, 200));
+        descriptionScrollPane.setPreferredSize(new java.awt.Dimension(400, 150));
         descriptionTextArea.setColumns(20);
         descriptionTextArea.setLineWrap(true);
         descriptionTextArea.setRows(5);
@@ -196,7 +196,7 @@ public class FileWizard extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 10);
         bodyPanel.add(languagesLabel, gridBagConstraints);
 
-        languagesScrollPane.setPreferredSize(new java.awt.Dimension(57, 150));
+        languagesScrollPane.setPreferredSize(new java.awt.Dimension(550, 200));
         languagesTree.setMaximumSize(new java.awt.Dimension(53, 1000));
         languagesScrollPane.setViewportView(languagesTree);
 
@@ -206,7 +206,7 @@ public class FileWizard extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 0.5;
+        gridBagConstraints.weighty = 10.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 0, 10);
         bodyPanel.add(languagesScrollPane, gridBagConstraints);
 

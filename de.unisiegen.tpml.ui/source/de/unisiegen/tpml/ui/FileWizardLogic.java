@@ -23,6 +23,7 @@ import de.unisiegen.tpml.graphics.Theme;
 
 /**
  * This organizes the logic of the {@link FileWizard} <br>
+ * It also hadels to save the expandedstaes of the tree-elements
  * 
  * @author michael
  *
@@ -54,7 +55,6 @@ public class FileWizardLogic
 	 * this methode dose the job. 
 	 * first it fills up the jTree with the languages
 	 * then handels the actionson the tree
-	 *
 	 */
 	public void getLanguages ()
 	{
@@ -72,7 +72,11 @@ public class FileWizardLogic
 	  
 	  for (Language language : available) 
 	  {
+	  	// buil up the name: "l0 (balbalba)"
 	  	String name = language.getName();
+	  	name += " (";
+	  	name += language.getTitle();
+	  	name += ")";
 	  	
 	  	// get the new Category: it will be parsed out of the 2nd digit of the name.
 	  	// if this is not a number it will crash
@@ -128,10 +132,13 @@ public class FileWizardLogic
     cr.setTextNonSelectionColor ( Color.BLACK ) ;
     cr.setBorder ( new LineBorder ( Color.WHITE ) ) ;
     
-    //this.fileWizard.languagesTree.setRootVisible(false);
-    //this.fileWizard.languagesTree.);
-    // expand all expanded...
+    // Bugfix for Linux
+    this.fileWizard.languagesTree.setRowHeight(0);
     
+    //this.fileWizard.languagesTree.setRootVisible(false);
+
+    
+    // expand all expanded last expanded. The first time the programm is started everey node will be expanded.
     int i = 0 ;
     while ( i < this.fileWizard.languagesTree.getRowCount ( ) )
     {
@@ -143,6 +150,7 @@ public class FileWizardLogic
     	}
       i ++ ;
     }
+    //this.fileWizard.languagesTree.firePropertyChange("", 4, 4);
     
     // reexpand all that are not used
     
@@ -183,6 +191,10 @@ public class FileWizardLogic
 				mouseClickHAndler(event);
 			}
 		});
+	  
+	  // set the selected element...
+    int selected = preferences.getInt("SelectedElement", 0);
+    this.fileWizard.languagesTree.setSelectionRow( selected );
 	  
 	  
 	  // TODO Sinnfreie Testoperationen...
@@ -242,6 +254,9 @@ public class FileWizardLogic
 		TreePath tp = event.getNewLeadSelectionPath();
 		if (tp != null && ((DefaultMutableTreeNode)tp.getLastPathComponent()).isLeaf())
 		{
+			// save the selceted element...
+			
+			this.preferences.putInt("SelectedElement", tp.getPathCount());
 			// TODO TESTAUSGABE System.out.println("  Selektiert: " + tp.toString());
 			// languages finden...
 			// get all availables...
