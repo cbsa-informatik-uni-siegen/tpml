@@ -150,23 +150,20 @@ public class FileWizardLogic
     	}
       i ++ ;
     }
-    //this.fileWizard.languagesTree.firePropertyChange("", 4, 4);
-    
-    // reexpand all that are not used
-    
-    
-
-	  //myfw.languagesTree = new JTree(top);
 	  
-	  this.fileWizard.languagesTree.addTreeSelectionListener(new TreeSelectionListener() {
+    // get a selectionListener on the tree
+    // teh ok-button will be enabled and the selection will be saved
+		this.fileWizard.languagesTree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent event)
 			{
 				treeSelectionHanlder(event);
 			}
 		});
 	  
-	  this.fileWizard.languagesTree.addTreeExpansionListener(new TreeExpansionListener() {
-			
+	  // get a expansionListener on the tree
+		// the expansion will be saved
+		this.fileWizard.languagesTree.addTreeExpansionListener(new TreeExpansionListener() {
+
 			public void treeCollapsed(TreeExpansionEvent event)
 			{
 				treeCollapesedHandler(event);
@@ -177,7 +174,9 @@ public class FileWizardLogic
 				treeCollapesedHandler(event);
 			}
 		});
-	  
+	 
+		// get a keyListener on the tree
+		// with ESC the windows will be disposed, with ENTER the same will happen like clicking ok
 	  this.fileWizard.languagesTree.addKeyListener(new KeyAdapter() {
 			public void keyPressed(java.awt.event.KeyEvent event)
 			{
@@ -185,26 +184,31 @@ public class FileWizardLogic
 			}
 		});
 	  
+	  // get a mouseListener on the tree
+	  // a double-click will do the same like cklicking the ok-button
 	  this.fileWizard.languagesTree.addMouseListener(new MouseAdapter() {
 			public void mouseClicked (MouseEvent event)
 			{
-				mouseClickHAndler(event);
+				mouseClickHandler(event);
 			}
 		});
 	  
-	  // set the selected element...
-    int selected = preferences.getInt("SelectedElement", 0);
+	  // set the selected element. The first time the first element will be selced.
+	  // This will only function if the collapsed state is redone
+    int selected = this.preferences.getInt("SelectedElement", 0);
     this.fileWizard.languagesTree.setSelectionRow( selected );
-	  
-	  
-	  // TODO Sinnfreie Testoperationen...
-	  // myfw.languagesTree.collapseRow(3);
-	  // myfw.setTitle("DOOFO");
+	 
 	}
 	
+	/**
+	 * The handler for the treeCollapesListener and the treeExpandedListener. <br>
+	 * Simply save the expanded states of all treeentries.
+	 *
+	 * @param event
+	 */
 	protected void treeCollapesedHandler(TreeExpansionEvent event)
 	{
-		// save the expanded valuses... TODO das muss in einen Expand Listener...
+		// save the expanded states
 		int i = 0 ;
     while ( i < this.fileWizard.languagesTree.getRowCount ( ) )
     {
@@ -214,8 +218,15 @@ public class FileWizardLogic
     	this.preferences.putBoolean ( this.fileWizard.languagesTree.getPathForRow(i).toString() , expand ) ;
       i ++ ;
     }
-		
 	}
+	
+	/**
+	 * The handler for the KeyListener. <br>
+	 * React on ENTER and ESC. If the key is Enter and a languages is selected, the window will dispose.
+	 * If the key is ESC, the selected language will be reset to null and the window will dispose. 
+	 *
+	 * @param event
+	 */
 	protected void keyPressedHandler(KeyEvent event)
 	{
 		if (event.getKeyCode() == KeyEvent.VK_ENTER)
@@ -232,7 +243,13 @@ public class FileWizardLogic
 		}
 	}
 	
-	protected void mouseClickHAndler (MouseEvent event)
+	/**
+	 * The handler for the mouseClickedListener. <br>
+	 * If a doubleclick is recognized the window will dispose if a language is selected.
+	 *
+	 * @param event
+	 */
+	protected void mouseClickHandler (MouseEvent event)
 	{
 		if (event.getClickCount() == 2) 
 		{
@@ -245,7 +262,9 @@ public class FileWizardLogic
 	
 	
 	/**
-	 * The Handler for the treeSelectionListner
+	 * The Handler for the treeSelectionListner. <br>
+	 * If a element is selected and it is a language, the language is set. The selected element of the 
+	 * tree is saved.  
 	 * 
 	 * @param event
 	 */
@@ -255,21 +274,36 @@ public class FileWizardLogic
 		if (tp != null && ((DefaultMutableTreeNode)tp.getLastPathComponent()).isLeaf())
 		{
 			// save the selceted element...
+			//this.preferences.putInt("SelectedElement", tp.getPathCount());
+			this.preferences.putInt("SelectedElement", this.fileWizard.languagesTree.getSelectionRows()[0]);
 			
-			this.preferences.putInt("SelectedElement", tp.getPathCount());
-			// TODO TESTAUSGABE System.out.println("  Selektiert: " + tp.toString());
-			// languages finden...
-			// get all availables...
+			// find the correct language
+			// get all available languages
 			Language newLanguage = null;
 			LanguageFactory factory = LanguageFactory.newInstance();
 			Language[] available = factory.getAvailableLanguages();
+			// old version
+//			for (Language language : available) 
+//			  {
+//				 	if ((tp.toString()).contains(language.getName()))
+//				 	{
+//				 		newLanguage = language;
+//				 	} 	
+//			  }
+			
 			for (Language language : available) 
-			  {
-				 	if ((tp.toString()).contains(language.getName()))
-				 	{
-				 		newLanguage = language;
-				 	} 	
-			  }
+		  {
+				String toCompare = "";
+				String [] tmp = tp.toString().split(",");
+				toCompare = tmp[2];
+				toCompare = toCompare.trim();
+			 	if (toCompare.equals(language.getName()+" ("+language.getTitle()+")]"))
+			 	{
+			 		newLanguage = language;
+			 		break;
+			 	} 	
+		  }
+
 			if (newLanguage != null)
 			{
 				this.fileWizard.language = newLanguage;
