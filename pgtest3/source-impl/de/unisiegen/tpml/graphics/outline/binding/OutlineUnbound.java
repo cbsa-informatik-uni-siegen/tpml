@@ -79,7 +79,7 @@ public final class OutlineUnbound
    *         {@link ExpressionOrType}s which are present in the given
    *         {@link ExpressionOrType}.
    */
-  public OutlineUnbound reduce ( ExpressionOrType pExpressionOrType )
+  public final OutlineUnbound reduce ( ExpressionOrType pExpressionOrType )
   {
     OutlineUnbound result = new OutlineUnbound (
         new ArrayList < ExpressionOrType > ( this.list ) ) ;

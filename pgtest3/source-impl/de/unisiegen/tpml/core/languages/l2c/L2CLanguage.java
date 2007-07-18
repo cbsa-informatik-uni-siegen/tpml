@@ -1,34 +1,32 @@
 package de.unisiegen.tpml.core.languages.l2c ;
 
 
-import java.io.Reader;
-import java.text.MessageFormat;
-
-import java_cup.runtime.lr_parser;
-import de.unisiegen.tpml.core.AbstractProofRule;
-import de.unisiegen.tpml.core.Messages;
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.expressions.Identifier;
-import de.unisiegen.tpml.core.languages.AbstractLanguage;
-import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.languages.LanguageParser;
-import de.unisiegen.tpml.core.languages.LanguageScanner;
-import de.unisiegen.tpml.core.languages.LanguageTranslator;
-import de.unisiegen.tpml.core.languages.LanguageTypeParser;
-import de.unisiegen.tpml.core.languages.LanguageTypeScanner;
-import de.unisiegen.tpml.core.languages.l0.L0Language;
-import de.unisiegen.tpml.core.languages.l1.L1Language;
-import de.unisiegen.tpml.core.languages.l2.L2Language;
-import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
-import de.unisiegen.tpml.core.languages.l2o.L2OLanguageTranslator;
-import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
-import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
-import de.unisiegen.tpml.core.types.MonoType;
+import java.io.Reader ;
+import java.text.MessageFormat ;
+import java_cup.runtime.lr_parser ;
+import de.unisiegen.tpml.core.AbstractProofRule ;
+import de.unisiegen.tpml.core.Messages ;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
+import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.languages.AbstractLanguage ;
+import de.unisiegen.tpml.core.languages.Language ;
+import de.unisiegen.tpml.core.languages.LanguageParser ;
+import de.unisiegen.tpml.core.languages.LanguageScanner ;
+import de.unisiegen.tpml.core.languages.LanguageTranslator ;
+import de.unisiegen.tpml.core.languages.LanguageTypeParser ;
+import de.unisiegen.tpml.core.languages.LanguageTypeScanner ;
+import de.unisiegen.tpml.core.languages.l0.L0Language ;
+import de.unisiegen.tpml.core.languages.l1.L1Language ;
+import de.unisiegen.tpml.core.languages.l2.L2Language ;
+import de.unisiegen.tpml.core.languages.l2o.L2OLanguage ;
+import de.unisiegen.tpml.core.languages.l2o.L2OLanguageTranslator ;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel ;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel ;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel ;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel ;
+import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
@@ -116,7 +114,7 @@ public class L2CLanguage extends L2OLanguage
       Expression pExpression )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "Exception.8" ), new Integer(getId() ) ) ) ; //$NON-NLS-1$
+        .getString ( "Exception.8" ) , new Integer ( getId ( ) ) ) ) ; //$NON-NLS-1$
   }
 
 
@@ -133,7 +131,7 @@ public class L2CLanguage extends L2OLanguage
       boolean mode )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "Exception.9" ), new Integer(getId() ) ) ) ; //$NON-NLS-1$
+        .getString ( "Exception.9" ) , new Integer ( getId ( ) ) ) ) ; //$NON-NLS-1$
   }
 
 
@@ -170,8 +168,8 @@ public class L2CLanguage extends L2OLanguage
       MonoType type2 , @ SuppressWarnings ( "unused" )
       boolean mode )
   {
-	  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-	        .getString ( "Exception.11" ), new Integer(getId() ) ) ) ;  //$NON-NLS-1$
+    throw new UnsupportedOperationException ( MessageFormat.format ( Messages
+        .getString ( "Exception.11" ) , new Integer ( getId ( ) ) ) ) ; //$NON-NLS-1$
   }
 
 
@@ -212,8 +210,8 @@ public class L2CLanguage extends L2OLanguage
       MonoType type2 , @ SuppressWarnings ( "unused" )
       boolean mode )
   {
-	  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-	        .getString ( "Exception.10" ), new Integer(getId() ) ) ) ; //$NON-NLS-1$
+    throw new UnsupportedOperationException ( MessageFormat.format ( Messages
+        .getString ( "Exception.10" ) , new Integer ( getId ( ) ) ) ) ; //$NON-NLS-1$
   }
 
 
@@ -235,8 +233,8 @@ public class L2CLanguage extends L2OLanguage
       @ SuppressWarnings ( "unused" )
       Expression pExpression )
   {
-	  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-	        .getString ( "Exception.12" ), new Integer(getId() ) ) ) ; //$NON-NLS-1
+    throw new UnsupportedOperationException ( MessageFormat.format ( Messages
+        .getString ( "Exception.12" ) , new Integer ( getId ( ) ) ) ) ; //$NON-NLS-1$
   }
 
 
@@ -248,8 +246,8 @@ public class L2CLanguage extends L2OLanguage
       @ SuppressWarnings ( "unused" )
       Expression expression )
   {
-	  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-	        .getString ( "Exception.13" ), new Integer(getId() ) ) ) ; //$NON-NLS-1
+    throw new UnsupportedOperationException ( MessageFormat.format ( Messages
+        .getString ( "Exception.13" ) , new Integer ( getId ( ) ) ) ) ; //$NON-NLS-1$
   }
 
 

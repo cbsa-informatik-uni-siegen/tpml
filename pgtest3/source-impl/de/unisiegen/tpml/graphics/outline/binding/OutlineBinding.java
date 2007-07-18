@@ -55,7 +55,7 @@ public final class OutlineBinding < E >
   {
     if ( pObject instanceof OutlineBinding )
     {
-      OutlineBinding < ? > other = ( OutlineBinding ) pObject ;
+      OutlineBinding < ? > other = ( OutlineBinding < ? > ) pObject ;
       if ( this.list.size ( ) != other.list.size ( ) )
       {
         return false ;

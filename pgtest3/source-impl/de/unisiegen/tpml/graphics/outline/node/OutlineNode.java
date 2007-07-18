@@ -986,7 +986,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pBindingIdentifier The {@link Identifier} which should be
    *          highlighted.
    */
-  public void setBindingIdentifier ( Identifier pBindingIdentifier )
+  public final void setBindingIdentifier ( Identifier pBindingIdentifier )
   {
     if ( pBindingIdentifier == null )
     {
@@ -1018,7 +1018,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * 
    * @param pBindingTypeName The {@link TypeName} which should be highlighted.
    */
-  public void setBindingTypeName ( TypeName pBindingTypeName )
+  public final void setBindingTypeName ( TypeName pBindingTypeName )
   {
     if ( pBindingTypeName == null )
     {
@@ -1050,7 +1050,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pCaption The caption of this node.
    * @see #captionHTML
    */
-  public void setCaptionHTML ( String pCaption )
+  public final void setCaptionHTML ( String pCaption )
   {
     this.captionHTML = pCaption ;
   }

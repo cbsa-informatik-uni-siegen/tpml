@@ -84,8 +84,6 @@ import java.util.Stack ;
  * symbols. _time - a series of symbols indicating how long various sub-parts of
  * code generation took (used to produce optional time reports in main).
  */
-@ SuppressWarnings ( value =
-{ "all" } )
 public class emit
 {
   /*-----------------------------------------------------------*/

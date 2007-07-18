@@ -11,7 +11,7 @@ import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
  * 
  * @author Christian Fehler
  */
-public class OutlineNodeCache
+public final class OutlineNodeCache
 {
   /**
    * The selected {@link Expression} should be highlighted in higher nodes.
@@ -126,7 +126,7 @@ public class OutlineNodeCache
    * @return The end index of the {@link Identifier}..
    * @see #boundEnd
    */
-  public int getBoundEnd ( )
+  public final int getBoundEnd ( )
   {
     return this.boundEnd ;
   }
@@ -138,7 +138,7 @@ public class OutlineNodeCache
    * @return The start index of the {@link Identifier}..
    * @see #boundStart
    */
-  public int getBoundStart ( )
+  public final int getBoundStart ( )
   {
     return this.boundStart ;
   }
@@ -150,7 +150,7 @@ public class OutlineNodeCache
    * @return The breakCount.
    * @see #breakCount
    */
-  public int getBreakCount ( )
+  public final int getBreakCount ( )
   {
     return this.breakCount ;
   }
@@ -162,7 +162,7 @@ public class OutlineNodeCache
    * @return The caption.
    * @see #caption
    */
-  public String getCaption ( )
+  public final String getCaption ( )
   {
     return this.caption ;
   }
@@ -186,7 +186,7 @@ public class OutlineNodeCache
    * @return The selectionEnd.
    * @see #selectionEnd
    */
-  public int getSelectionEnd ( )
+  public final int getSelectionEnd ( )
   {
     return this.selectionEnd ;
   }
@@ -198,7 +198,7 @@ public class OutlineNodeCache
    * @return The selectionStart.
    * @see #selectionStart
    */
-  public int getSelectionStart ( )
+  public final int getSelectionStart ( )
   {
     return this.selectionStart ;
   }
@@ -210,7 +210,7 @@ public class OutlineNodeCache
    * @return The binding.
    * @see #binding
    */
-  public boolean isBinding ( )
+  public final boolean isBinding ( )
   {
     return this.binding ;
   }
@@ -222,7 +222,7 @@ public class OutlineNodeCache
    * @return The free.
    * @see #free
    */
-  public boolean isFree ( )
+  public final boolean isFree ( )
   {
     return this.free ;
   }
@@ -234,7 +234,7 @@ public class OutlineNodeCache
    * @return The replace.
    * @see #replace
    */
-  public boolean isReplace ( )
+  public final boolean isReplace ( )
   {
     return this.replace ;
   }
@@ -246,7 +246,7 @@ public class OutlineNodeCache
    * @return The selection.
    * @see #selection
    */
-  public boolean isSelection ( )
+  public final boolean isSelection ( )
   {
     return this.selection ;
   }

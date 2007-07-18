@@ -70,6 +70,12 @@ import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
 public final class DefaultOutline implements Outline
 {
   /**
+   * The free attribute set name.
+   */
+  private static final String SELECTED = "selected" ; //$NON-NLS-1$
+
+
+  /**
    * The {@link OutlineUI}.
    * 
    * @see #getUI()
@@ -403,7 +409,7 @@ public final class DefaultOutline implements Outline
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    * 
    * @param pSubTypingSourceView The {@link SubTypingSourceView}.
-   * @param pModus The {@link Modus} of this {@link Outline}.
+   * @param pModus The {@link Outline.Modus} of this {@link Outline}.
    */
   public DefaultOutline ( SubTypingSourceView pSubTypingSourceView ,
       Outline.Modus pModus )
@@ -686,15 +692,14 @@ public final class DefaultOutline implements Outline
 
   /**
    * Creates the children with the given {@link Expression} and adds them to the
-   * given node.
+   * given {@link OutlineNode}.
    * 
    * @param pExpression The {@link Expression}, with which the children should
    *          be created.
-   * @param pOutlineNode The node where the children should be added.
+   * @param pParent The {@link OutlineNode} where the children should be added.
    */
-  @ SuppressWarnings ( "unchecked" )
   private final void createExpression ( Expression pExpression ,
-      OutlineNode pOutlineNode )
+      OutlineNode pParent )
   {
     // Child Expression
     int [ ] expressionsIndex = null ;
@@ -741,7 +746,7 @@ public final class DefaultOutline implements Outline
     OutlineNode outlineNodeId ;
     OutlineNode outlineNodeType ;
     OutlineNode outlineNodeE ;
-    OutlineBinding outlineBinding ;
+    OutlineBinding < Identifier > outlineBinding ;
     // No sorted children
     if ( sortedChildren == null )
     {
@@ -756,7 +761,8 @@ public final class DefaultOutline implements Outline
           }
           else
           {
-            outlineBinding = new OutlineBinding ( identifiersBound.get ( i ) ) ;
+            outlineBinding = new OutlineBinding < Identifier > (
+                identifiersBound.get ( i ) ) ;
           }
           outlineNodeId = new OutlineNode ( identifiers [ i ] ,
               identifiersIndex [ i ] , outlineBinding ) ;
@@ -775,7 +781,7 @@ public final class DefaultOutline implements Outline
               }
             }
           }
-          pOutlineNode.add ( outlineNodeId ) ;
+          pParent.add ( outlineNodeId ) ;
         }
       }
       // Type
@@ -788,7 +794,7 @@ public final class DefaultOutline implements Outline
             outlineNodeType = new OutlineNode ( types [ i ] ,
                 this.outlineUnbound , typesIndex [ i ] ) ;
             createType ( types [ i ] , outlineNodeType ) ;
-            pOutlineNode.add ( outlineNodeType ) ;
+            pParent.add ( outlineNodeType ) ;
           }
         }
       }
@@ -802,7 +808,7 @@ public final class DefaultOutline implements Outline
           outlineNodeE = new OutlineNode ( child , this.outlineUnbound ,
               expressionsIndex [ i ] ) ;
           createExpression ( child , outlineNodeE ) ;
-          pOutlineNode.add ( outlineNodeE ) ;
+          pParent.add ( outlineNodeE ) ;
         }
       }
     }
@@ -828,11 +834,12 @@ public final class DefaultOutline implements Outline
               }
               else
               {
-                outlineBinding = new OutlineBinding ( identifiersBound.get ( i ) ) ;
+                outlineBinding = new OutlineBinding < Identifier > (
+                    identifiersBound.get ( i ) ) ;
               }
               outlineNodeId = new OutlineNode ( identifiers [ j ] ,
                   identifiersIndex [ j ] , outlineBinding ) ;
-              pOutlineNode.add ( outlineNodeId ) ;
+              pParent.add ( outlineNodeId ) ;
               found = true ;
               break ;
             }
@@ -848,7 +855,7 @@ public final class DefaultOutline implements Outline
               outlineNodeType = new OutlineNode ( types [ j ] ,
                   this.outlineUnbound , typesIndex [ j ] ) ;
               createType ( types [ j ] , outlineNodeType ) ;
-              pOutlineNode.add ( outlineNodeType ) ;
+              pParent.add ( outlineNodeType ) ;
               found = true ;
               break ;
             }
@@ -866,7 +873,7 @@ public final class DefaultOutline implements Outline
               outlineNodeE = new OutlineNode ( child , this.outlineUnbound ,
                   expressionsIndex [ j ] ) ;
               createExpression ( child , outlineNodeE ) ;
-              pOutlineNode.add ( outlineNodeE ) ;
+              pParent.add ( outlineNodeE ) ;
               found = true ;
               break ;
             }
@@ -886,21 +893,21 @@ public final class DefaultOutline implements Outline
           {
             outlineNodeId = new OutlineNode ( ( Identifier ) current , - 1 ,
                 null ) ;
-            pOutlineNode.add ( outlineNodeId ) ;
+            pParent.add ( outlineNodeId ) ;
           }
           else if ( current instanceof Type )
           {
             outlineNodeType = new OutlineNode ( ( Type ) current ,
                 this.outlineUnbound , - 1 ) ;
             createType ( ( Type ) current , outlineNodeType ) ;
-            pOutlineNode.add ( outlineNodeType ) ;
+            pParent.add ( outlineNodeType ) ;
           }
           else if ( current instanceof Expression )
           {
             outlineNodeE = new OutlineNode ( ( Expression ) current ,
                 this.outlineUnbound , - 1 ) ;
             createExpression ( ( Expression ) current , outlineNodeE ) ;
-            pOutlineNode.add ( outlineNodeE ) ;
+            pParent.add ( outlineNodeE ) ;
           }
         }
       }
@@ -910,12 +917,12 @@ public final class DefaultOutline implements Outline
 
   /**
    * Creates the children with the given {@link Type} and adds them to the given
-   * node.
+   * {@link OutlineNode}.
    * 
    * @param pType The {@link Type}, with which the children should be created.
-   * @param pOutlineNode The node where the children should be added.
+   * @param pParent The {@link OutlineNode} where the children should be added.
    */
-  private final void createType ( Type pType , OutlineNode pOutlineNode )
+  private final void createType ( Type pType , OutlineNode pParent )
   {
     // Type
     MonoType [ ] types = null ;
@@ -973,7 +980,7 @@ public final class DefaultOutline implements Outline
         {
           outlineNodeId = new OutlineNode ( identifiers [ i ] ,
               identifiersIndex [ i ] , null ) ;
-          pOutlineNode.add ( outlineNodeId ) ;
+          pParent.add ( outlineNodeId ) ;
         }
       }
       // TypeName
@@ -992,7 +999,7 @@ public final class DefaultOutline implements Outline
           }
           outlineNodeTypeName = new OutlineNode ( typeNames [ i ] ,
               typeNamesIndex [ i ] , outlineBinding ) ;
-          pOutlineNode.add ( outlineNodeTypeName ) ;
+          pParent.add ( outlineNodeTypeName ) ;
         }
       }
       // Type
@@ -1003,7 +1010,7 @@ public final class DefaultOutline implements Outline
           outlineNodeType = new OutlineNode ( types [ i ] ,
               this.outlineUnbound , typesIndex [ i ] ) ;
           createType ( types [ i ] , outlineNodeType ) ;
-          pOutlineNode.add ( outlineNodeType ) ;
+          pParent.add ( outlineNodeType ) ;
         }
       }
     }
@@ -1025,7 +1032,7 @@ public final class DefaultOutline implements Outline
             {
               outlineNodeId = new OutlineNode ( identifiers [ j ] ,
                   identifiersIndex [ j ] , null ) ;
-              pOutlineNode.add ( outlineNodeId ) ;
+              pParent.add ( outlineNodeId ) ;
               found = true ;
               break ;
             }
@@ -1049,7 +1056,7 @@ public final class DefaultOutline implements Outline
               }
               outlineNodeTypeName = new OutlineNode ( typeNames [ j ] ,
                   typeNamesIndex [ j ] , outlineBinding ) ;
-              pOutlineNode.add ( outlineNodeTypeName ) ;
+              pParent.add ( outlineNodeTypeName ) ;
             }
           }
         }
@@ -1063,7 +1070,7 @@ public final class DefaultOutline implements Outline
               outlineNodeType = new OutlineNode ( types [ j ] ,
                   this.outlineUnbound , typesIndex [ j ] ) ;
               createType ( types [ j ] , outlineNodeType ) ;
-              pOutlineNode.add ( outlineNodeType ) ;
+              pParent.add ( outlineNodeType ) ;
               found = true ;
               break ;
             }
@@ -1083,19 +1090,19 @@ public final class DefaultOutline implements Outline
           {
             outlineNodeId = new OutlineNode ( ( Identifier ) current , - 1 ,
                 null ) ;
-            pOutlineNode.add ( outlineNodeId ) ;
+            pParent.add ( outlineNodeId ) ;
           }
           else if ( current instanceof TypeName )
           {
             outlineNodeId = new OutlineNode ( ( TypeName ) current , - 1 , null ) ;
-            pOutlineNode.add ( outlineNodeId ) ;
+            pParent.add ( outlineNodeId ) ;
           }
           else if ( current instanceof Type )
           {
             outlineNodeType = new OutlineNode ( ( Type ) current ,
                 this.outlineUnbound , - 1 ) ;
             createType ( ( Type ) current , outlineNodeType ) ;
-            pOutlineNode.add ( outlineNodeType ) ;
+            pParent.add ( outlineNodeType ) ;
           }
         }
       }
@@ -1137,7 +1144,7 @@ public final class DefaultOutline implements Outline
       throw new IllegalArgumentException (
           "Outline: The input is not an Expression or Type!" ) ; //$NON-NLS-1$
     }
-    repaint ( this.rootNode ) ;
+    updateCaption ( this.rootNode ) ;
     setError ( false ) ;
     SwingUtilities.invokeLater ( new OutlineDisplayTree ( this ) ) ;
   }
@@ -1180,7 +1187,7 @@ public final class DefaultOutline implements Outline
    * @return The outlineItemListener.
    * @see #itemListener
    */
-  public OutlineItemListener getItemListener ( )
+  public final OutlineItemListener getItemListener ( )
   {
     return this.itemListener ;
   }
@@ -1227,7 +1234,7 @@ public final class DefaultOutline implements Outline
    * @return The syncOutline.
    * @see #syncOutline
    */
-  public DefaultOutline getSyncOutline ( )
+  public final DefaultOutline getSyncOutline ( )
   {
     return this.syncOutline ;
   }
@@ -1275,8 +1282,8 @@ public final class DefaultOutline implements Outline
     {
       executeTimerCancel ( ) ;
       if ( ( this.preferences.isAutoUpdate ( ) )
-          || ( pExecute.equals ( Outline.ExecuteMouseClick.EDITOR ) )
-          || ( pExecute.equals ( Outline.ExecuteMouseClick.SUBTYPING_SOURCE ) ) )
+          || ( Outline.ExecuteMouseClick.EDITOR.equals ( pExecute ) )
+          || ( Outline.ExecuteMouseClick.SUBTYPING_SOURCE.equals ( pExecute ) ) )
       {
         setError ( true ) ;
       }
@@ -1411,22 +1418,6 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * Repaints the given node and all of its children and resets the caption.
-   * 
-   * @param pOutlineNode The node, which should be repainted.
-   */
-  private final void repaint ( OutlineNode pOutlineNode )
-  {
-    pOutlineNode.updateCaption ( ) ;
-    this.uI.getTreeModel ( ).nodeChanged ( pOutlineNode ) ;
-    for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
-    {
-      repaint ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
-    }
-  }
-
-
-  /**
    * Repaints the given node and all its children.
    * 
    * @param pOutlineNode The node, which should be repainted.
@@ -1507,7 +1498,7 @@ public final class DefaultOutline implements Outline
    * 
    * @param pSyncOutline The sync outline.
    */
-  public void setSyncOutline ( DefaultOutline pSyncOutline )
+  public final void setSyncOutline ( DefaultOutline pSyncOutline )
   {
     if ( pSyncOutline == null )
     {
@@ -1634,6 +1625,22 @@ public final class DefaultOutline implements Outline
               currentTreePath ) ;
         }
       }
+    }
+  }
+
+
+  /**
+   * Repaints the given node and all of its children and resets the caption.
+   * 
+   * @param pOutlineNode The node, which should be repainted.
+   */
+  private final void updateCaption ( OutlineNode pOutlineNode )
+  {
+    pOutlineNode.updateCaption ( ) ;
+    this.uI.getTreeModel ( ).nodeChanged ( pOutlineNode ) ;
+    for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
+    {
+      updateCaption ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
     }
   }
 
@@ -1824,7 +1831,7 @@ public final class DefaultOutline implements Outline
             .getExpressionOrType ( ) ;
         SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
         StyleConstants.setBackground ( freeSet , Color.YELLOW ) ;
-        freeSet.addAttribute ( "selected" , "selected" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        freeSet.addAttribute ( SELECTED , SELECTED ) ;
         document.setCharacterAttributes ( expression.getParserStartOffset ( ) ,
             expression.getParserEndOffset ( )
                 - expression.getParserStartOffset ( ) , freeSet , false ) ;
@@ -1834,7 +1841,7 @@ public final class DefaultOutline implements Outline
         Type type = ( Type ) outlineNode.getExpressionOrType ( ) ;
         SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
         StyleConstants.setBackground ( freeSet , Color.YELLOW ) ;
-        freeSet.addAttribute ( "selected" , "selected" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        freeSet.addAttribute ( SELECTED , SELECTED ) ;
         document.setCharacterAttributes ( type.getParserStartOffset ( ) , type
             .getParserEndOffset ( )
             - type.getParserStartOffset ( ) , freeSet , false ) ;

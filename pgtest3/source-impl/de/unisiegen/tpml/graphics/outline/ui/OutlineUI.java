@@ -734,7 +734,7 @@ public final class OutlineUI
   /**
    * Deactivates the auto update.
    */
-  public void deactivateAutoUpdate ( )
+  public final void deactivateAutoUpdate ( )
   {
     this.jCheckBoxAutoUpdate.setEnabled ( false ) ;
     this.jCheckBoxAutoUpdate.setSelected ( false ) ;
@@ -785,7 +785,7 @@ public final class OutlineUI
   /**
    * Deactivates the binding.
    */
-  public void deactivateBinding ( )
+  public final void deactivateBinding ( )
   {
     this.jCheckBoxBinding.setEnabled ( false ) ;
     this.jCheckBoxBinding.setSelected ( false ) ;
@@ -818,7 +818,7 @@ public final class OutlineUI
   /**
    * Deactivates the free.
    */
-  public void deactivateFree ( )
+  public final void deactivateFree ( )
   {
     this.jCheckBoxFree.setEnabled ( false ) ;
     this.jCheckBoxFree.setSelected ( false ) ;
@@ -856,7 +856,7 @@ public final class OutlineUI
   /**
    * Deactivates the highlight source code.
    */
-  public void deactivateHighlightSourceCode ( )
+  public final void deactivateHighlightSourceCode ( )
   {
     this.jCheckBoxHighlightSourceCode.setEnabled ( false ) ;
     this.jCheckBoxHighlightSourceCode.setSelected ( false ) ;
@@ -904,7 +904,7 @@ public final class OutlineUI
   /**
    * Deactivates the highlight source code.
    */
-  public void deactivateReplace ( )
+  public final void deactivateReplace ( )
   {
     this.jCheckBoxReplace.setEnabled ( false ) ;
     this.jCheckBoxReplace.setSelected ( false ) ;
@@ -947,7 +947,7 @@ public final class OutlineUI
   /**
    * Deactivates the selection.
    */
-  public void deactivateSelection ( )
+  public final void deactivateSelection ( )
   {
     this.jCheckBoxSelection.setEnabled ( false ) ;
     this.jCheckBoxSelection.setSelected ( false ) ;
@@ -1204,7 +1204,7 @@ public final class OutlineUI
    * @return The <code>jPanelPreferences</code>.
    * @see #jPanelPreferences
    */
-  public JPanel getJPanelPreferences ( )
+  public final JPanel getJPanelPreferences ( )
   {
     return this.jPanelPreferences ;
   }
@@ -1228,7 +1228,7 @@ public final class OutlineUI
    * @return The jScrollPaneOutline.
    * @see #jScrollPaneOutline
    */
-  public JScrollPane getJScrollPaneOutline ( )
+  public final JScrollPane getJScrollPaneOutline ( )
   {
     return this.jScrollPaneOutline ;
   }
