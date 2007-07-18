@@ -453,20 +453,23 @@ public final class OutlineMouseListener implements MouseListener
    * 
    * @param pMouseEvent The <code>MouseEvent</code>.
    */
-  private final void handleSourceView ( @ SuppressWarnings ( "unused" )
-  MouseEvent pMouseEvent )
+  private final void handleSourceView ( MouseEvent pMouseEvent )
   {
-    Expression expression = null ;
-    try
+    // Editor
+    if ( pMouseEvent.getSource ( ).equals ( this.sourceView.getEditor ( ) ) )
     {
-      expression = this.sourceView.getDocument ( ).getExpression ( ) ;
+      Expression expression = null ;
+      try
+      {
+        expression = this.sourceView.getDocument ( ).getExpression ( ) ;
+      }
+      catch ( Exception e )
+      {
+        // Do nothing
+      }
+      this.defaultOutline.updateHighlighSourceCode ( false ) ;
+      this.defaultOutline.load ( expression , Outline.ExecuteMouseClick.EDITOR ) ;
     }
-    catch ( Exception e )
-    {
-      // Do nothing
-    }
-    this.defaultOutline.updateHighlighSourceCode ( false ) ;
-    this.defaultOutline.load ( expression , Outline.ExecuteMouseClick.EDITOR ) ;
   }
 
 
@@ -530,8 +533,7 @@ public final class OutlineMouseListener implements MouseListener
    * 
    * @param pMouseEvent The <code>MouseEvent</code>.
    */
-  private final void handleSubTypingSourceView ( @ SuppressWarnings ( "unused" )
-  MouseEvent pMouseEvent )
+  private final void handleSubTypingSourceView ( MouseEvent pMouseEvent )
   {
     if ( pMouseEvent.getSource ( ).equals (
         this.subTypingSourceView.getEditor ( ) ) )

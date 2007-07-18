@@ -56,7 +56,7 @@ public final class OutlineTreeModelListener implements TreeModelListener
   /**
    * The {@link NewSubTypingView}.
    */
-  private NewSubTypingView newSubTypingView = null ;
+  private NewSubTypingView subTypingView = null ;
 
 
   /**
@@ -79,13 +79,13 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * {@link Outline} and the {@link NewSubTypingView}.
    * 
    * @param pDefaultOutline The {@link DefaultOutline}.
-   * @param pNewSubTypingView The {@link NewSubTypingView}.
+   * @param pSubTypingView The {@link NewSubTypingView}.
    */
   public OutlineTreeModelListener ( DefaultOutline pDefaultOutline ,
-      NewSubTypingView pNewSubTypingView )
+      NewSubTypingView pSubTypingView )
   {
     this.defaultOutline = pDefaultOutline ;
-    this.newSubTypingView = pNewSubTypingView ;
+    this.subTypingView = pSubTypingView ;
   }
 
 
@@ -111,49 +111,52 @@ public final class OutlineTreeModelListener implements TreeModelListener
    */
   private final void handleEvent ( TreeModelEvent pTreeModelEvent )
   {
-    Object source = pTreeModelEvent.getSource ( ) ;
-    if ( source instanceof SmallStepProofModel )
+    // SmallStepProofModel
+    if ( pTreeModelEvent.getSource ( ) instanceof SmallStepProofModel )
     {
       this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
           .getLastLeaf ( ).getExpression ( ) ,
           Outline.ExecuteAutoChange.SMALLSTEP ) ;
     }
-    else if ( source instanceof BigStepProofModel )
+    // BigStepProofModel
+    else if ( pTreeModelEvent.getSource ( ) instanceof BigStepProofModel )
     {
       this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
           .getLastLeaf ( ).getExpression ( ) ,
           Outline.ExecuteAutoChange.BIGSTEP ) ;
     }
-    else if ( source instanceof TypeCheckerProofModel )
+    // TypeChecker
+    else if ( pTreeModelEvent.getSource ( ) instanceof TypeCheckerProofModel )
     {
       this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
           .getLastLeaf ( ).getExpression ( ) ,
           Outline.ExecuteAutoChange.TYPECHECKER ) ;
     }
-    else if ( source instanceof MinimalTypingProofModel )
+    // MinimalTyping
+    else if ( pTreeModelEvent.getSource ( ) instanceof MinimalTypingProofModel )
     {
       this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
           .getLastLeaf ( ).getExpression ( ) ,
           Outline.ExecuteAutoChange.MINIMALTYPING ) ;
     }
-    else if ( source instanceof SubTypingProofModel )
+    // SubTyping
+    else if ( pTreeModelEvent.getSource ( ) instanceof SubTypingProofModel )
     {
-      if ( this.defaultOutline == this.newSubTypingView.getOutline1 ( ) )
+      if ( this.defaultOutline == this.subTypingView.getOutline1 ( ) )
       {
-        this.defaultOutline.load (
-            this.newSubTypingView.getSubTypingModel ( ).getRoot ( )
-                .getLastLeaf ( ).getType ( ) ,
+        this.defaultOutline.load ( this.subTypingView.getSubTypingModel ( )
+            .getRoot ( ).getLastLeaf ( ).getType ( ) ,
             Outline.ExecuteAutoChange.SUBTYPING ) ;
       }
       else
       {
-        this.defaultOutline.load (
-            this.newSubTypingView.getSubTypingModel ( ).getRoot ( )
-                .getLastLeaf ( ).getType2 ( ) ,
+        this.defaultOutline.load ( this.subTypingView.getSubTypingModel ( )
+            .getRoot ( ).getLastLeaf ( ).getType2 ( ) ,
             Outline.ExecuteAutoChange.SUBTYPING ) ;
       }
     }
-    else if ( source instanceof TypeInferenceProofModel )
+    // TypeInference
+    else if ( pTreeModelEvent.getSource ( ) instanceof TypeInferenceProofModel )
     {
       ArrayList < TypeFormula > list = ( ( TypeInferenceProofNode ) this.typeInferenceProofModel
           .getRoot ( ).getLastLeaf ( ) ).getAllFormulas ( ) ;

@@ -32,7 +32,6 @@ import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.core.types.TypeName ;
 import de.unisiegen.tpml.graphics.StyledLanguageDocument ;
-import de.unisiegen.tpml.graphics.StyledLanguageEditor ;
 import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
 import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingView ;
@@ -54,7 +53,6 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
 import de.unisiegen.tpml.graphics.subtyping.NewSubTypingView ;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes ;
 import de.unisiegen.tpml.graphics.subtyping.SubTypingSourceView ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
 import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView ;
@@ -148,7 +146,7 @@ public final class DefaultOutline implements Outline
     this.uI.deactivateAutoUpdate ( ) ;
     this.uI.deactivateHighlightSourceCode ( ) ;
     // ComponentListener
-    this.uI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJScrollPaneOutline ( ).addComponentListener (
         new OutlineComponentListener ( pBigStepView.getJSplitPane ( ) , this ) ) ;
     // PropertyChangeListener
     pBigStepView.addPropertyChangeListener ( new OutlinePropertyChangeListener (
@@ -212,7 +210,7 @@ public final class DefaultOutline implements Outline
     this.uI.deactivateAutoUpdate ( ) ;
     this.uI.deactivateHighlightSourceCode ( ) ;
     // ComponentListener
-    this.uI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJScrollPaneOutline ( ).addComponentListener (
         new OutlineComponentListener ( pMinimalTypingView.getJSplitPane ( ) ,
             this ) ) ;
     // PropertyChangeListener
@@ -278,7 +276,7 @@ public final class DefaultOutline implements Outline
     this.uI.deactivateAutoUpdate ( ) ;
     this.uI.deactivateHighlightSourceCode ( ) ;
     // ComponentListener
-    this.uI.getJPanelMain ( )
+    this.uI.getJScrollPaneOutline ( )
         .addComponentListener (
             new OutlineComponentListener ( pSubTypingView.getJSplitPane ( ) ,
                 this ) ) ;
@@ -343,7 +341,7 @@ public final class DefaultOutline implements Outline
     this.uI = new OutlineUI ( this ) ;
     this.uI.deactivateHighlightSourceCode ( ) ;
     // ComponentListener
-    this.uI.getJPanelMain ( )
+    this.uI.getJScrollPaneOutline ( )
         .addComponentListener (
             new OutlineComponentListener ( pSmallStepView.getJSplitPane ( ) ,
                 this ) ) ;
@@ -404,21 +402,6 @@ public final class DefaultOutline implements Outline
   /**
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    * 
-   * @param pSubTypingEnterTypes The {@link SubTypingEnterTypes}.
-   * @param pStyledLanguageEditor The {@link StyledLanguageEditor}.
-   */
-  public DefaultOutline ( SubTypingEnterTypes pSubTypingEnterTypes ,
-      StyledLanguageEditor pStyledLanguageEditor )
-  {
-    // TODO remove
-    this.preferences = new OutlinePreferences ( ) ;
-    this.uI = new OutlineUI ( this ) ;
-  }
-
-
-  /**
-   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
-   * 
    * @param pSubTypingSourceView The {@link SubTypingSourceView}.
    * @param pModus The {@link Modus} of this {@link Outline}.
    */
@@ -429,7 +412,7 @@ public final class DefaultOutline implements Outline
     this.uI = new OutlineUI ( this ) ;
     this.subTypingSourceView = pSubTypingSourceView ;
     // ComponentListener
-    this.uI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJScrollPaneOutline ( ).addComponentListener (
         new OutlineComponentListener ( pSubTypingSourceView.getJSplitPane ( ) ,
             this ) ) ;
     // MouseListener
@@ -512,7 +495,7 @@ public final class DefaultOutline implements Outline
     this.uI = new OutlineUI ( this ) ;
     this.sourceView = pSourceView ;
     // ComponentListener
-    this.uI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJScrollPaneOutline ( ).addComponentListener (
         new OutlineComponentListener ( pSourceView.getJSplitPane ( ) , this ) ) ;
     // MouseListener
     this.sourceView.getEditor ( ).addMouseListener (
@@ -582,7 +565,7 @@ public final class DefaultOutline implements Outline
     this.uI.deactivateAutoUpdate ( ) ;
     this.uI.deactivateHighlightSourceCode ( ) ;
     // ComponentListener
-    this.uI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJScrollPaneOutline ( ).addComponentListener (
         new OutlineComponentListener ( pTypeCheckerView.getJSplitPane ( ) ,
             this ) ) ;
     // PropertyChangeListener
@@ -648,7 +631,7 @@ public final class DefaultOutline implements Outline
     this.uI.deactivateAutoUpdate ( ) ;
     this.uI.deactivateHighlightSourceCode ( ) ;
     // ComponentListener
-    this.uI.getJPanelMain ( ).addComponentListener (
+    this.uI.getJScrollPaneOutline ( ).addComponentListener (
         new OutlineComponentListener ( pTypeInferenceView.getJSplitPane ( ) ,
             this ) ) ;
     // PropertyChangeListener
@@ -1293,8 +1276,7 @@ public final class DefaultOutline implements Outline
       executeTimerCancel ( ) ;
       if ( ( this.preferences.isAutoUpdate ( ) )
           || ( pExecute.equals ( Outline.ExecuteMouseClick.EDITOR ) )
-          || ( pExecute.equals ( Outline.ExecuteMouseClick.SUBTYPING_SOURCE ) )
-          || ( pExecute.equals ( Outline.ExecuteMouseClick.RECSUBTYPING_SOURCE ) ) )
+          || ( pExecute.equals ( Outline.ExecuteMouseClick.SUBTYPING_SOURCE ) ) )
       {
         setError ( true ) ;
       }
@@ -1308,7 +1290,6 @@ public final class DefaultOutline implements Outline
         case EDITOR :
         case SMALLSTEP :
         case SUBTYPING_SOURCE :
-        case RECSUBTYPING_SOURCE :
         {
           if ( ! this.preferences.isAutoUpdate ( ) )
           {
@@ -1321,7 +1302,6 @@ public final class DefaultOutline implements Outline
         case TYPEINFERENCE :
         case MINIMALTYPING :
         case SUBTYPING :
-        case RECSUBTYPING :
         {
           return ;
         }
@@ -1348,8 +1328,6 @@ public final class DefaultOutline implements Outline
         case MINIMALTYPING :
         case SUBTYPING_SOURCE :
         case SUBTYPING :
-        case RECSUBTYPING_SOURCE :
-        case RECSUBTYPING :
         {
           execute ( ) ;
           break ;
@@ -1369,8 +1347,6 @@ public final class DefaultOutline implements Outline
         case MINIMALTYPING :
         case SUBTYPING_SOURCE :
         case SUBTYPING :
-        case RECSUBTYPING_SOURCE :
-        case RECSUBTYPING :
         {
           execute ( ) ;
           break ;
@@ -1384,7 +1360,6 @@ public final class DefaultOutline implements Outline
       {
         case EDITOR :
         case SUBTYPING_SOURCE :
-        case RECSUBTYPING_SOURCE :
         {
           executeTimerStart ( 500 ) ;
           break ;
@@ -1395,7 +1370,6 @@ public final class DefaultOutline implements Outline
         case TYPEINFERENCE :
         case MINIMALTYPING :
         case SUBTYPING :
-        case RECSUBTYPING :
         {
           executeTimerStart ( 250 ) ;
           break ;
@@ -1813,10 +1787,14 @@ public final class DefaultOutline implements Outline
         document = ( StyledLanguageDocument ) this.subTypingSourceView
             .getEditor ( ).getDocument ( ) ;
       }
-      else
+      else if ( this.subTypingSourceView.getOutline2 ( ) == this )
       {
         document = ( StyledLanguageDocument ) this.subTypingSourceView
             .getEditor2 ( ).getDocument ( ) ;
+      }
+      else
+      {
+        return ;
       }
     }
     else

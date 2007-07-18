@@ -44,9 +44,11 @@ public final class OutlineTreeSelectionListener implements
    */
   public final void valueChanged ( TreeSelectionEvent pTreeSelectionEvent )
   {
-    if ( pTreeSelectionEvent.getSource ( ).equals (
-        this.defaultOutline.getUI ( ).getJTreeOutline ( )
-            .getSelectionModel ( ) ) )
+    // Outline Tree
+    if ( pTreeSelectionEvent.getSource ( )
+        .equals (
+            this.defaultOutline.getUI ( ).getJTreeOutline ( )
+                .getSelectionModel ( ) ) )
     {
       TreePath newTreePath = pTreeSelectionEvent.getPath ( ) ;
       if ( newTreePath == null )
