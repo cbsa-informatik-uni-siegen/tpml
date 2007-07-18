@@ -1491,7 +1491,7 @@ runMenu.add ( subTypingRec ) ;
     if ( language == null ) return ;
     
     EditorPanel newEditorPanel = null;
-    if (true){ //language.getId ( ) != L1Language.L1){
+    if (!language.isTypeLanguage ( ) ){
     newEditorPanel = new EditorPanelExpression ( language , this ) ;
     setExpressionMode();
     }

@@ -254,4 +254,6 @@ public interface Language {
    * @throws NullPointerException if <code>reader</code> is <code>null</code>.
    */
   public LanguageTypeScanner newTypeScanner(Reader reader);
+  
+  public boolean isTypeLanguage();
 }

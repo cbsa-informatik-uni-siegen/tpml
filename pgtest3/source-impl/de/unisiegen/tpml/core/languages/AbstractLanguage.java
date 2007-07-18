@@ -149,4 +149,8 @@ public abstract class AbstractLanguage implements Language
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
         .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$
   }
+  
+  public boolean isTypeLanguage() {
+	  return false;
+  }
 }
