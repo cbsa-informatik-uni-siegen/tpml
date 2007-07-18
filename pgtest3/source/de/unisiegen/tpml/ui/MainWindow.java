@@ -1226,7 +1226,12 @@ runMenu.add ( subTypingRec ) ;
         {
           System.err.println ( "UnsupportedEncodingException" ) ;
         }
-        editorPanel = new EditorPanelExpression ( language , this ) ;
+        if (language.isTypeLanguage ( )){
+      	  editorPanel = new EditorPanelTypes ( language , this ) ;
+        }
+        else {
+      	  editorPanel = new EditorPanelExpression ( language , this ) ;
+        }
         tabbedPane.add ( ( Component ) editorPanel ) ;
         editorPanel.setAdvanced ( this.advancedRadioButton.isSelected ( ) ) ;
         editorPanel.setFileName ( file.getName ( ) ) ;

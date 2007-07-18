@@ -1,8 +1,6 @@
 package de.unisiegen.tpml.graphics.subtyping ;
 
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -46,7 +44,7 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
    * The unique serialization identifier for this class.
    */
   private static final long serialVersionUID = - 425214200136389228L ;
-
+  
 
   /**
    * The <code>SubTyping</code> component.
@@ -396,7 +394,7 @@ this.editor2 = new StyledLanguageEditor ( );
     JScrollPane jPanelOutline =this.outline.getTree ( );
     
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
+    gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 2 ) ;
     gridBagConstraints.gridx = 0 ;
     gridBagConstraints.gridy = 0 ;
     gridBagConstraints.weightx = 10 ;
@@ -411,7 +409,7 @@ this.editor2 = new StyledLanguageEditor ( );
     JScrollPane jPanelOutline2 = this.outline2.getTree ( );
     
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
+    gridBagConstraints.insets = new Insets ( 0 , 2 , 0 , 0 ) ;
     gridBagConstraints.gridx = 1 ;
     gridBagConstraints.gridy = 0 ;
     gridBagConstraints.weightx = 10 ;
@@ -597,6 +595,32 @@ public MonoType getType ( ) {
 
 public MonoType getType2 ( ) {
 	return this.type2;
+}
+
+public void setText(String text){
+	 try
+    {
+      this.sourceField.remove ( 0 , this.sourceField.getLength ( ) ) ;
+      this.sourceField.insertString ( 0 , text , null ) ;
+    }
+    catch ( BadLocationException e )
+    {
+   	 //TODO
+      //logger.error ( "Cannot set Text of the document" , e ) ;
+    }
+}
+
+public void setText2(String text){
+	 try
+   {
+     this.sourceField2.remove ( 0 , this.sourceField2.getLength ( ) ) ;
+     this.sourceField2.insertString ( 0 , text , null ) ;
+   }
+   catch ( BadLocationException e )
+   {
+  	 //TODO
+     //logger.error ( "Cannot set Text of the document" , e ) ;
+   }
 }
 
 

@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 
 import javax.swing.JComponent;
@@ -29,6 +30,7 @@ import org.apache.log4j.Logger;
 
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
+import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
@@ -814,7 +816,9 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	}
 
 	public void setEditorText ( String string ) {
-		// TODO Auto-generated method stub
+		String[] components = string.split ( "\\|" ); //$NON-NLS-1$
+		code.setText ( components[0]);
+		code.setText2 ( components[1]);
 		
 	}
 }

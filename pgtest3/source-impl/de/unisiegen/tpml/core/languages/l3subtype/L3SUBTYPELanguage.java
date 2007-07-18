@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l2osubtype;
+package de.unisiegen.tpml.core.languages.l3subtype;
 
 import java.text.MessageFormat;
 
@@ -6,10 +6,10 @@ import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.languages.l2c.L2CLanguage;
-import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
-import de.unisiegen.tpml.core.languages.l2o.L2ORecSubTypingProofRuleSet;
-import de.unisiegen.tpml.core.languages.l2o.L2OSubTypingProofRuleSet;
+import de.unisiegen.tpml.core.languages.l2subtype.L2SUBTYPELanguage;
+import de.unisiegen.tpml.core.languages.l3.L3Language;
+import de.unisiegen.tpml.core.languages.l3.L3RecSubTypingProofRuleSet;
+import de.unisiegen.tpml.core.languages.l3.L3SubTypingProofRuleSet;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
@@ -18,16 +18,16 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
 
-public class L2OSubTypeLanguage extends L2OLanguage {
+public class L3SUBTYPELanguage extends L3Language {
 
 	/**
 	   * The group id for proof rules of this language.
 	   * 
 	   * @see de.unisiegen.tpml.core.AbstractProofRule#getGroup()
 	   */
-	  public static final int L2OSubType = L2CLanguage.L2C + 2 ;
+	  public static final int L3SubType = L3Language.L3 + 1 ;
 	  
-	public L2OSubTypeLanguage ( ) {
+	public L3SUBTYPELanguage ( ) {
 	super();
 	}
 
@@ -41,7 +41,7 @@ public class L2OSubTypeLanguage extends L2OLanguage {
 	   */
 	  public String getDescription ( )
 	  {
-	    return Messages.getString ( "L2OSubTypeLanguage.0" ) ; //$NON-NLS-1$
+	    return Messages.getString ( "L3SubTypeLanguage.0" ) ; //$NON-NLS-1$
 	  }
 
 
@@ -52,7 +52,7 @@ public class L2OSubTypeLanguage extends L2OLanguage {
 	   */
 	  public String getName ( )
 	  {
-	    return "L2OSubType" ; //$NON-NLS-1$
+	    return "L3SubType" ; //$NON-NLS-1$
 	  }
 
 
@@ -63,7 +63,7 @@ public class L2OSubTypeLanguage extends L2OLanguage {
 	   */
 	  public int getId ( )
 	  {
-	    return L2OSubTypeLanguage.L2OSubType ;
+	    return L3SUBTYPELanguage.L3SubType ;
 	  }
 
 
@@ -74,7 +74,7 @@ public class L2OSubTypeLanguage extends L2OLanguage {
 	   */
 	  public String getTitle ( )
 	  {
-	    return Messages.getString ( "L2OSubTypeLanguage.1" ) ; //$NON-NLS-1$
+	    return Messages.getString ( "L3SubTypeLanguage.1" ) ; //$NON-NLS-1$
 	  }
 	
 	@Override
@@ -124,7 +124,7 @@ public class L2OSubTypeLanguage extends L2OLanguage {
 	      MonoType type2 , @ SuppressWarnings ( "unused" )
 	      boolean mode )
 	  {
-		  return new RecSubTypingProofModel(type, type2, new L2ORecSubTypingProofRuleSet(this, mode), mode);
+		  return new RecSubTypingProofModel(type, type2, new L3RecSubTypingProofRuleSet(this, mode), mode);
 	  }
 
 
@@ -151,7 +151,7 @@ public class L2OSubTypeLanguage extends L2OLanguage {
 	      MonoType type2 , @ SuppressWarnings ( "unused" )
 	      boolean mode )
 	  {
-		  return new SubTypingProofModel(type, type2, new L2OSubTypingProofRuleSet(this, mode), mode);
+		  return new SubTypingProofModel(type, type2, new L3SubTypingProofRuleSet(this, mode), mode);
 	  }
 
 

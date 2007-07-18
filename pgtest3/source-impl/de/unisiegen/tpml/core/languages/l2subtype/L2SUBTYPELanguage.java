@@ -18,7 +18,7 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
 
-public class L2SubTypeLanguage extends L2Language {
+public class L2SUBTYPELanguage extends L2Language {
 
 	/**
 	   * The group id for proof rules of this language.
@@ -27,7 +27,7 @@ public class L2SubTypeLanguage extends L2Language {
 	   */
 	  public static final int L2SubType = L2CLanguage.L2C + 1 ;
 	  
-	public L2SubTypeLanguage ( ) {
+	public L2SUBTYPELanguage ( ) {
 	super();
 	}
 
@@ -63,7 +63,7 @@ public class L2SubTypeLanguage extends L2Language {
 	   */
 	  public int getId ( )
 	  {
-	    return L2SubTypeLanguage.L2SubType ;
+	    return L2SUBTYPELanguage.L2SubType ;
 	  }
 
 

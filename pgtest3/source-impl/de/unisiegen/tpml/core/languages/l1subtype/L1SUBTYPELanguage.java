@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l4subtype;
+package de.unisiegen.tpml.core.languages.l1subtype;
 
 import java.text.MessageFormat;
 
@@ -6,9 +6,10 @@ import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.languages.l4.L4Language;
-import de.unisiegen.tpml.core.languages.l4.L4RecSubTypingProofRuleSet;
-import de.unisiegen.tpml.core.languages.l4.L4SubTypingProofRuleSet;
+import de.unisiegen.tpml.core.languages.l1.L1Language;
+import de.unisiegen.tpml.core.languages.l1.L1RecSubTypingProofRuleSet;
+import de.unisiegen.tpml.core.languages.l1.L1SubTypingProofRuleSet;
+import de.unisiegen.tpml.core.languages.l1cbn.L1CBNLanguage;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
@@ -17,20 +18,18 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
 
-public class L4SubTypeLanguage extends L4Language {
+public class L1SUBTYPELanguage extends L1Language {
+	
 	/**
 	   * The group id for proof rules of this language.
 	   * 
 	   * @see de.unisiegen.tpml.core.AbstractProofRule#getGroup()
 	   */
-	  public static final int L4SubType = L4Language.L4 + 1 ;
-	  
-	public L4SubTypeLanguage ( ) {
+	  public static final int L1SubType = L1CBNLanguage.L1CBN + 1 ;
+
+	public L1SUBTYPELanguage ( ) {
 	super();
 	}
-
-
-
 	
 	  /**
 	   * {@inheritDoc}
@@ -39,7 +38,7 @@ public class L4SubTypeLanguage extends L4Language {
 	   */
 	  public String getDescription ( )
 	  {
-	    return Messages.getString ( "L4SubTypeLanguage.0" ) ; //$NON-NLS-1$
+	    return Messages.getString ( "L1SubTypeLanguage.0" ) ; //$NON-NLS-1$
 	  }
 
 
@@ -50,7 +49,7 @@ public class L4SubTypeLanguage extends L4Language {
 	   */
 	  public String getName ( )
 	  {
-	    return "L4SubType" ; //$NON-NLS-1$
+	    return "L1SubType" ; //$NON-NLS-1$
 	  }
 
 
@@ -61,7 +60,7 @@ public class L4SubTypeLanguage extends L4Language {
 	   */
 	  public int getId ( )
 	  {
-	    return L4SubTypeLanguage.L4SubType ;
+	    return L1SUBTYPELanguage.L1SubType ;
 	  }
 
 
@@ -72,7 +71,7 @@ public class L4SubTypeLanguage extends L4Language {
 	   */
 	  public String getTitle ( )
 	  {
-	    return Messages.getString ( "L4SubTypeLanguage.1" ) ; //$NON-NLS-1$
+	    return Messages.getString ( "L1SubTypeLanguage.1" ) ; //$NON-NLS-1$
 	  }
 	
 	@Override
@@ -122,7 +121,7 @@ public class L4SubTypeLanguage extends L4Language {
 	      MonoType type2 , @ SuppressWarnings ( "unused" )
 	      boolean mode )
 	  {
-		  return new RecSubTypingProofModel(type, type2, new L4RecSubTypingProofRuleSet(this, mode), mode);
+		  return new RecSubTypingProofModel(type, type2, new L1RecSubTypingProofRuleSet(this, mode), mode);
 	  }
 
 
@@ -149,7 +148,7 @@ public class L4SubTypeLanguage extends L4Language {
 	      MonoType type2 , @ SuppressWarnings ( "unused" )
 	      boolean mode )
 	  {
-		  return new SubTypingProofModel(type, type2, new L4SubTypingProofRuleSet(this, mode), mode);
+		  return new SubTypingProofModel(type, type2, new L1SubTypingProofRuleSet(this, mode), mode);
 	  }
 
 
@@ -177,4 +176,5 @@ public class L4SubTypeLanguage extends L4Language {
 		  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
 		        .getString ( "Exception.13" ), new Integer(getId() ) ) ) ; //$NON-NLS-1
 	  }
+
 }
