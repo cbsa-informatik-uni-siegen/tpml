@@ -1413,9 +1413,6 @@ body_error						::= INHERIT:i epsilon
 								// Missing from and e
 								|	INHERIT:i body_attribute_list SEMI body_method_list:bml AS
 									{: Error.expect("Body", " from e ", ileft, bmlright, "from e"); :}
-								// Missing e and as
-								|	INHERIT:i body_attribute_list SEMI body_method_list FROM:f IDENTIFIER
-									{: Error.expect("Body", " e as ", ileft, fright, "e as"); :}
 								// Missing as and identifier
 								|	INHERIT:i body_attribute_list SEMI body_method_list FROM expr:e SEMI	
 									{: Error.expect("Body", " as z ", ileft, eright, "as z"); :}
