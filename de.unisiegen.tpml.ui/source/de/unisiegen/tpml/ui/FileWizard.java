@@ -159,7 +159,7 @@ public class FileWizard extends javax.swing.JDialog {
 
         bodyPanel.setLayout(new java.awt.GridBagLayout());
 
-        descriptionScrollPane.setPreferredSize(new java.awt.Dimension(164, 120));
+        descriptionScrollPane.setPreferredSize(new java.awt.Dimension(164, 200));
         descriptionTextArea.setColumns(20);
         descriptionTextArea.setLineWrap(true);
         descriptionTextArea.setRows(5);

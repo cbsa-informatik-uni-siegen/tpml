@@ -5,10 +5,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.prefs.Preferences;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JTree;
 import javax.swing.border.LineBorder;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -20,53 +21,98 @@ import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.graphics.Theme;
 
+/**
+ * This organizes the logic of the {@link FileWizard} <br>
+ * 
+ * @author michael
+ *
+ */
 public class FileWizardLogic
 {
-	private FileWizard myfw;
+	/**
+	 * the instance of the {@link FileWizard}
+	 */
+	private FileWizard fileWizard;
 	
+	
+	/**
+	 * the preferences for this class saving the expand
+	 */
+	private Preferences preferences;
+	
+	/**
+	 * the vonstructor
+	 *
+	 * @param pFileWizard the actual {@link FileWizard}
+	 */
 	public FileWizardLogic (FileWizard pFileWizard)
 	{
-		myfw = pFileWizard;
+		this.fileWizard = pFileWizard;
+		this.preferences = Preferences.userNodeForPackage ( FileWizard.class ) ;
 	}
+	/**
+	 * this methode dose the job. 
+	 * first it fills up the jTree with the languages
+	 * then handels the actionson the tree
+	 *
+	 */
 	public void getLanguages ()
 	{
 		//	determine the list of available languages
 	  LanguageFactory factory = LanguageFactory.newInstance();
 	  Language[] available = factory.getAvailableLanguages();
 
-	  // setup the list model with the available languages
-	  //DefaultTreeModel languagesModel = new DefaultListModel();
-	  DefaultMutableTreeNode root = new DefaultMutableTreeNode("L");
-	  //DefaultMutableTreeNode first = new DefaultMutableTreeNode("0");
-	  //root.add(first);
-	  int aktuell=-1;
+	  // setup the tree with the available languages
+	  // every languageclass gets its own category
+	  // every class gets a leaf
+	  DefaultMutableTreeNode root = new DefaultMutableTreeNode("Languages");
+	  
+	  // save the actual category. If it changes, a new category will be created
+	  int actualCategory=-1;
 	  
 	  for (Language language : available) 
 	  {
 	  	String name = language.getName();
-	  	int newAktuell=Integer.valueOf(""+name.toCharArray()[1]);
-	  	if (aktuell!=newAktuell)
+	  	
+	  	// get the new Category: it will be parsed out of the 2nd digit of the name.
+	  	// if this is not a number it will crash
+	  	
+	  	int newCategory=-1;
+	  	try
 	  	{
-	  		DefaultMutableTreeNode next = new DefaultMutableTreeNode(""+name.toCharArray()[1]);
+	  		newCategory = Integer.valueOf(""+name.toCharArray()[1]);
+	  	}
+	  	catch (IndexOutOfBoundsException iofb)
+	  	{
+	  		System.out.println("Language Name dose not start with LX for X is a number.");
+	  	}
+	  	catch (NumberFormatException nfe)
+	  	{
+	  		System.out.println("Language Name dose not start with LX for X is a number.");
+	  	}
+	  	
+	  	// if the category is different, create a new one
+	  	if (actualCategory!=newCategory)
+	  	{
+	  		DefaultMutableTreeNode next = new DefaultMutableTreeNode("L"+name.toCharArray()[1]);
 	  		root.add(next);
-	  		aktuell=newAktuell;
+	  		actualCategory=newCategory;
 	  		DefaultMutableTreeNode add = new DefaultMutableTreeNode(name);
 		  	next.add(add);
 	  	}
-	  	else
+	  	else // if the catogory is the same as the last one only add the new entry
 	  	{
 	  		DefaultMutableTreeNode add = new DefaultMutableTreeNode(name);
 		  	// put it to the last leaf 
 		  	((DefaultMutableTreeNode)root.getLastLeaf().getParent()).add(add);
 	  	}
-	  	
-	  	
 	  }
-	  //((DefaultTreeModel) this.jTreeOutline.getModel ( )).setRoot ( root )
 	  
-	  ((DefaultTreeModel)myfw.languagesTree.getModel( ) ).setRoot(root);
-	  // schön machen
-	  DefaultTreeCellRenderer cr = ((DefaultTreeCellRenderer)myfw.languagesTree.getCellRenderer ( ));
+	  // set the build root to the root of the File Wizard
+	  ((DefaultTreeModel)this.fileWizard.languagesTree.getModel( ) ).setRoot(root);
+	  
+	  // makes the tree loooking nice
+	  DefaultTreeCellRenderer cr = ((DefaultTreeCellRenderer)this.fileWizard.languagesTree.getCellRenderer ( ));
 	  cr.setIcon ( null ) ;
 	  cr.setLeafIcon ( null ) ;
 	  cr.setOpenIcon ( null ) ;
@@ -81,24 +127,57 @@ public class FileWizardLogic
     cr.setTextSelectionColor ( Color.BLACK ) ;
     cr.setTextNonSelectionColor ( Color.BLACK ) ;
     cr.setBorder ( new LineBorder ( Color.WHITE ) ) ;
+    
+    //this.fileWizard.languagesTree.setRootVisible(false);
+    //this.fileWizard.languagesTree.);
+    // expand all expanded...
+    
+    int i = 0 ;
+    while ( i < this.fileWizard.languagesTree.getRowCount ( ) )
+    {
+    	boolean expand;
+    	expand = this.preferences.getBoolean ( this.fileWizard.languagesTree.getPathForRow(i).toString() , true ) ;
+    	if (expand)
+    	{
+    		this.fileWizard.languagesTree.expandRow ( i ) ;
+    	}
+      i ++ ;
+    }
+    
+    // reexpand all that are not used
+    
+    
 
 	  //myfw.languagesTree = new JTree(top);
 	  
-	  myfw.languagesTree.addTreeSelectionListener(new TreeSelectionListener() {
+	  this.fileWizard.languagesTree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent event)
 			{
 				treeSelectionHanlder(event);
 			}
 		});
 	  
-	  myfw.languagesTree.addKeyListener(new KeyAdapter() {
+	  this.fileWizard.languagesTree.addTreeExpansionListener(new TreeExpansionListener() {
+			
+			public void treeCollapsed(TreeExpansionEvent event)
+			{
+				treeCollapesedHandler(event);
+			}
+
+			public void treeExpanded(TreeExpansionEvent event)
+			{
+				treeCollapesedHandler(event);
+			}
+		});
+	  
+	  this.fileWizard.languagesTree.addKeyListener(new KeyAdapter() {
 			public void keyPressed(java.awt.event.KeyEvent event)
 			{
 				keyPressedHandler(event);
 			}
 		});
 	  
-	  myfw.languagesTree.addMouseListener(new MouseAdapter() {
+	  this.fileWizard.languagesTree.addMouseListener(new MouseAdapter() {
 			public void mouseClicked (MouseEvent event)
 			{
 				mouseClickHAndler(event);
@@ -107,23 +186,37 @@ public class FileWizardLogic
 	  
 	  
 	  // TODO Sinnfreie Testoperationen...
-	  myfw.languagesTree.collapseRow(3);
-	  myfw.setTitle("DOOFO");
+	  // myfw.languagesTree.collapseRow(3);
+	  // myfw.setTitle("DOOFO");
 	}
 	
+	protected void treeCollapesedHandler(TreeExpansionEvent event)
+	{
+		// save the expanded valuses... TODO das muss in einen Expand Listener...
+		int i = 0 ;
+    while ( i < this.fileWizard.languagesTree.getRowCount ( ) )
+    {
+    	boolean expand;
+    	//expand = ((DefaultMutableTreeNode) this.fileWizard.languagesTree.getPathForRow(i).getPath()).is
+    	expand = this.fileWizard.languagesTree.isExpanded(i);
+    	this.preferences.putBoolean ( this.fileWizard.languagesTree.getPathForRow(i).toString() , expand ) ;
+      i ++ ;
+    }
+		
+	}
 	protected void keyPressedHandler(KeyEvent event)
 	{
 		if (event.getKeyCode() == KeyEvent.VK_ENTER)
 		{
-			if (myfw.language != null)
+			if (this.fileWizard.language != null)
 			{
-				myfw.dispose();
+				this.fileWizard.dispose();
 			}
 		}
 		else if (event.getKeyCode() == KeyEvent.VK_ESCAPE)
 		{
-			myfw.language = null;
-			myfw.dispose();
+			this.fileWizard.language = null;
+			this.fileWizard.dispose();
 		}
 	}
 	
@@ -131,11 +224,10 @@ public class FileWizardLogic
 	{
 		if (event.getClickCount() == 2) 
 		{
-			if ( myfw.language != null)
+			if ( this.fileWizard.language != null)
 			{
-				myfw.dispose();
+				this.fileWizard.dispose();
 			}
-      
 		}
 	}
 	
@@ -148,7 +240,7 @@ public class FileWizardLogic
 	protected void treeSelectionHanlder(TreeSelectionEvent event)
 	{
 		TreePath tp = event.getNewLeadSelectionPath();
-		if (tp != null)
+		if (tp != null && ((DefaultMutableTreeNode)tp.getLastPathComponent()).isLeaf())
 		{
 			// TODO TESTAUSGABE System.out.println("  Selektiert: " + tp.toString());
 			// languages finden...
@@ -165,22 +257,22 @@ public class FileWizardLogic
 			  }
 			if (newLanguage != null)
 			{
-				myfw.language = newLanguage;
-				myfw.descriptionTextArea.setText(myfw.language.getDescription());
-				myfw.okButton.setEnabled(true);
+				this.fileWizard.language = newLanguage;
+				this.fileWizard.descriptionTextArea.setText(this.fileWizard.language.getDescription());
+				this.fileWizard.okButton.setEnabled(true);
 			}
 			else
 			{
-				myfw.language = null;
-				myfw.descriptionTextArea.setText("");
-				myfw.okButton.setEnabled(false);
+				this.fileWizard.language = null;
+				this.fileWizard.descriptionTextArea.setText("");
+				this.fileWizard.okButton.setEnabled(false);
 			}
 		}
 		else
 		{
-			myfw.language = null;
-			myfw.descriptionTextArea.setText("");
-			myfw.okButton.setEnabled(false);
+			this.fileWizard.language = null;
+			this.fileWizard.descriptionTextArea.setText("");
+			this.fileWizard.okButton.setEnabled(false);
 		}
 		
 	}
