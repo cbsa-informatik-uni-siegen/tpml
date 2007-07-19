@@ -38,8 +38,54 @@ wird der fehlerhafte Teil rot unterstrichen.
 
 Bewegt man den Mauszeiger "uber den markierten Text oder das Error-Icon,
 so erscheint ein Tooltip, der den Fehler genauer beschreibt. Ein Klick
-auf das Error-Icon bewirkt, dass der Textcursor an den fehlerhalfen Text
-springt.
+auf das Error-Icon bewirkt, dass fehlerhafte Text markiert wird. Wird
+nun noch einmal auf das Error-Icon geklickt, wird der markierte Text
+entfernt.
+
+Der Quelltexteditor hebt freie Identifier und Type-Namen in der eingestellten
+Farbe und fett hervor, da freie Identifier oder Type-Namen meist auf eine
+fehlerhafte Eingabe zur"uckzuf"uhren sind. Gibt der Anwender zum Beispiel
+\glqq{\bf let x = a in x}\grqq\ ein, ist dies nat"urlich nicht falsch, aber
+der Type Checker w"urde den Ausdruck nicht akzeptieren, da das \glqq{\bf a}\grqq\ 
+in der Expression frei vorkommend ist.
+
+\subsection{Auto-Vervollst"andigung}
+\label{Auto-Vervollstaendigung}
+\index{Auto-Vervollst""andigung}
+Der Quelltexteditor besitzt eine Auto-Vervollst"andigung. Gibt der Benutzer
+den ersten Teil einer Expression ein, erscheint in der betroffenen Zeile ein
+gelbes Dreieck mit einem Ausrufezeichen. Bewegt man den Mauszeiger "uber
+das Icon, so erscheint ein Tooltip, der einen Vorschlag angibt, was der
+Benutzer noch eingeben muss, um die Expression zu vervollst"andigen. Der
+Tooltip gibt ebenfalls an, um welche Expression es sich handelt, was
+besonders f"ur Unge"ubte eine wertvolle Information ist.
+
+Die Expression die noch vervollst"andigt werden muss, wird im Hintergrund
+hervorgehoben, so dass der Anwender genau erkennen kann, welchen Teil er
+noch vervollst"andigen muss. Gibt der Anwender \glqq{\bf 1 + let x =}\grqq\ 
+ein, wird der Teil \glqq{\bf let x =}\grqq\ hervorgehoben und der Tooltip
+verr"at dem Anwender, dass er noch \glqq{\bf e1 in e2}\grqq\ eingeben muss
+um \glqq{\bf Let}\grqq\ zu vervollst"andigen.
+
+Der Anwender hat die M"oglichkeit auf das Icon zu klicken und der Vorschlag
+wird automatisch an der richtigen Stelle eingef"ugt. Im gegebenen Beispiel
+wird der Ausdruck \glqq{\bf 1 + let x =}\grqq\ automatisch zu
+\glqq{\bf 1 + let x = e1 in e2}\grqq\ erweitert, was f"ur den Parser einen
+g"ultigen Ausdruck darstellt. Die Auto-Vervollst"andigung ist ebenfalls in
+der Lage Fehler innerhalb eines Ausdrucks zu erkennen und durch einen Klick
+auf das Icon zu beheben.
+
+
+\section {Outline}
+\label{Beweiswerkzeuge}
+\index{Outline}
+TODO Christian
+
+
+
+
+
+
 
 \section {Beweiswerkzeuge}
 \label{Beweiswerkzeuge} Wird ein Beweiswerkzeug gestartet, so wird
