@@ -89,14 +89,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * The hex values.
-   */
-  private static final String [ ] HEX_VALUES =
-  { "0" , "1" , "2" , "3" , "4" , "5" , "6" , "7" , "8" , "9" , "A" , "B" , //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
-      "C" , "D" , "E" , "F" , "00" } ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-
-
-  /**
    * Lower than replace.
    */
   private static final String LOWER_THAN_REPLACE = "&lt" ; //$NON-NLS-1$
@@ -217,43 +209,44 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * Returns the hex value of a given integer.
+   * Returns the color in hexadecimal formatting.
    * 
-   * @param pNumber The input integer value.
-   * @return The hex value of a given integer.
+   * @param pColor The color which should be returned.
+   * @return The color in hexadecimal formatting.
    */
-  private static final String getHex ( int pNumber )
+  private static final String getHexadecimalColor ( Color pColor )
   {
-    StringBuilder result = new StringBuilder ( ) ;
-    int remainder = Math.abs ( pNumber ) ;
-    int base = 0 ;
-    if ( remainder > 0 )
-    {
-      while ( remainder > 0 )
-      {
-        base = remainder % 16 ;
-        remainder = ( remainder / 16 ) ;
-        result.insert ( 0 , HEX_VALUES [ base ] ) ;
-      }
-    }
-    else
-    {
-      return HEX_VALUES [ 16 ] ;
-    }
-    return result.toString ( ) ;
+    String red = Integer.toHexString ( pColor.getRed ( ) ) ;
+    red = red.length ( ) == 1 ? red = "0" + red : red ; //$NON-NLS-1$
+    String green = Integer.toHexString ( pColor.getGreen ( ) ) ;
+    green = green.length ( ) == 1 ? green = "0" + green : green ; //$NON-NLS-1$
+    String blue = Integer.toHexString ( pColor.getBlue ( ) ) ;
+    blue = blue.length ( ) == 1 ? blue = "0" + blue : blue ; //$NON-NLS-1$
+    return red + green + blue ;
   }
 
 
   /**
-   * Returns the color in HTML formatting.
+   * Returns the replaced <code>char</code>.
    * 
-   * @param pColor The color which should be returned.
-   * @return The color in HTML formatting.
+   * @param pChar Input <code>char</code>.
+   * @return The replaced <code>char</code>.
    */
-  public static final String getHTMLColor ( Color pColor )
+  private static final String getHTMLCode ( char pChar )
   {
-    return ( getHex ( pColor.getRed ( ) ) + getHex ( pColor.getGreen ( ) ) + getHex ( pColor
-        .getBlue ( ) ) ) ;
+    if ( pChar == '&' )
+    {
+      return AMPERSAND_THAN_REPLACE ;
+    }
+    if ( pChar == '<' )
+    {
+      return LOWER_THAN_REPLACE ;
+    }
+    if ( pChar == '>' )
+    {
+      return GREATER_THAN_REPLACE ;
+    }
+    return String.valueOf ( pChar ) ;
   }
 
 
@@ -264,7 +257,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pBinding Should or should not be highlighted.
    * @see #binding
    */
-  public final static void setBinding ( boolean pBinding )
+  public static final void setBinding ( boolean pBinding )
   {
     binding = pBinding ;
   }
@@ -277,7 +270,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pFree Should or should not be highlighted.
    * @see #free
    */
-  public final static void setFree ( boolean pFree )
+  public static final void setFree ( boolean pFree )
   {
     free = pFree ;
   }
@@ -290,7 +283,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pReplace Should or should not be replaced.
    * @see #replace
    */
-  public final static void setReplace ( boolean pReplace )
+  public static final void setReplace ( boolean pReplace )
   {
     replace = pReplace ;
   }
@@ -303,7 +296,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pSelection Should or should not be highlighted.
    * @see #selection
    */
-  public final static void setSelection ( boolean pSelection )
+  public static final void setSelection ( boolean pSelection )
   {
     selection = pSelection ;
   }
@@ -824,26 +817,14 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * Returns the replaced <code>char</code>.
+   * Returns the {@link ExpressionOrType} repressented by this node.
    * 
-   * @param pChar Input <code>char</code>.
-   * @return The replaced <code>char</code>.
+   * @return The {@link ExpressionOrType} in this node.
+   * @see #expressionOrType
    */
-  private final String getHTMLCode ( char pChar )
+  public final ExpressionOrType getExpressionOrType ( )
   {
-    if ( pChar == '&' )
-    {
-      return AMPERSAND_THAN_REPLACE ;
-    }
-    if ( pChar == '<' )
-    {
-      return LOWER_THAN_REPLACE ;
-    }
-    if ( pChar == '>' )
-    {
-      return GREATER_THAN_REPLACE ;
-    }
-    return String.valueOf ( pChar ) ;
+    return this.expressionOrType ;
   }
 
 
@@ -869,18 +850,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
   public final OutlineBreak getOutlineBreak ( )
   {
     return this.outlineBreak ;
-  }
-
-
-  /**
-   * Returns the {@link ExpressionOrType} repressented by this node.
-   * 
-   * @return The {@link ExpressionOrType} in this node.
-   * @see #expressionOrType
-   */
-  public final ExpressionOrType getExpressionOrType ( )
-  {
-    return this.expressionOrType ;
   }
 
 
@@ -960,22 +929,24 @@ public final class OutlineNode extends DefaultMutableTreeNode
    */
   public final void propertyChanged ( )
   {
-    this.expressionColor = getHTMLColor ( Theme.currentTheme ( )
+    this.expressionColor = getHexadecimalColor ( Theme.currentTheme ( )
         .getExpressionColor ( ) ) ;
-    this.identifierColor = getHTMLColor ( Theme.currentTheme ( )
+    this.identifierColor = getHexadecimalColor ( Theme.currentTheme ( )
         .getIdentifierColor ( ) ) ;
-    this.keywordColor = getHTMLColor ( Theme.currentTheme ( )
+    this.keywordColor = getHexadecimalColor ( Theme.currentTheme ( )
         .getKeywordColor ( ) ) ;
-    this.constantColor = getHTMLColor ( Theme.currentTheme ( )
+    this.constantColor = getHexadecimalColor ( Theme.currentTheme ( )
         .getConstantColor ( ) ) ;
-    this.typeColor = getHTMLColor ( Theme.currentTheme ( ).getTypeColor ( ) ) ;
-    this.selectionColor = getHTMLColor ( Theme.currentTheme ( )
+    this.typeColor = getHexadecimalColor ( Theme.currentTheme ( )
+        .getTypeColor ( ) ) ;
+    this.selectionColor = getHexadecimalColor ( Theme.currentTheme ( )
         .getSelectionColor ( ) ) ;
-    this.boundIdColor = getHTMLColor ( Theme.currentTheme ( )
+    this.boundIdColor = getHexadecimalColor ( Theme.currentTheme ( )
         .getBoundIdColor ( ) ) ;
-    this.bindingIdColor = getHTMLColor ( Theme.currentTheme ( )
+    this.bindingIdColor = getHexadecimalColor ( Theme.currentTheme ( )
         .getBindingIdColor ( ) ) ;
-    this.freeIdColor = getHTMLColor ( Theme.currentTheme ( ).getFreeIdColor ( ) ) ;
+    this.freeIdColor = getHexadecimalColor ( Theme.currentTheme ( )
+        .getFreeIdColor ( ) ) ;
     this.outlineNodeCacheList.clear ( ) ;
   }
 
