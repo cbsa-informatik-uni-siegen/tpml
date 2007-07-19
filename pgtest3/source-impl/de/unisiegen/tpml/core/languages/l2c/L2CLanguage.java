@@ -114,7 +114,7 @@ public class L2CLanguage extends L2OLanguage
       Expression pExpression )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "Exception.8" ) , new Integer ( getId ( ) ) ) ) ; //$NON-NLS-1$
+        .getString ( "Exception.8" ) , getName ( ) ) ) ; //$NON-NLS-1$
   }
 
 
@@ -131,7 +131,7 @@ public class L2CLanguage extends L2OLanguage
       boolean mode )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "Exception.9" ) , new Integer ( getId ( ) ) ) ) ; //$NON-NLS-1$
+        .getString ( "Exception.9" ) , getName ( ) ) ) ; //$NON-NLS-1$
   }
 
 
@@ -169,7 +169,7 @@ public class L2CLanguage extends L2OLanguage
       boolean mode )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "Exception.11" ) , new Integer ( getId ( ) ) ) ) ; //$NON-NLS-1$
+        .getString ( "Exception.11" ) , getName ( ) ) ) ; //$NON-NLS-1$
   }
 
 
@@ -211,7 +211,7 @@ public class L2CLanguage extends L2OLanguage
       boolean mode )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "Exception.10" ) , new Integer ( getId ( ) ) ) ) ; //$NON-NLS-1$
+        .getString ( "Exception.10" ) , getName ( ) ) ) ; //$NON-NLS-1$
   }
 
 
@@ -234,7 +234,7 @@ public class L2CLanguage extends L2OLanguage
       Expression pExpression )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "Exception.12" ) , new Integer ( getId ( ) ) ) ) ; //$NON-NLS-1$
+        .getString ( "Exception.12" ) , getName ( ) ) ) ; //$NON-NLS-1$
   }
 
 
@@ -247,7 +247,7 @@ public class L2CLanguage extends L2OLanguage
       Expression expression )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "Exception.13" ) , new Integer ( getId ( ) ) ) ) ; //$NON-NLS-1$
+        .getString ( "Exception.13" ) , getName ( ) ) ) ; //$NON-NLS-1$
   }
 
 

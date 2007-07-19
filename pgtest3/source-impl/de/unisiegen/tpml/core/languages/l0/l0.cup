@@ -72,9 +72,9 @@ lambda_no_type					::= LAMBDA:l IDENTIFIER:id DOT seq_expr:e
 								;
 
 lambda_no_type_error			::= LAMBDA:l epsilon
-									{: Error.expect("Lambda", " id.e", lleft, lright, "id.e" ); :}
+									{: Error.expect("Lambda", " id.e", lleft, lright, "id",".","e" ); :}
 								|	LAMBDA:l IDENTIFIER:i epsilon
-									{: Error.expect("Lambda", ".e", lleft, iright, ".e" ); :}
+									{: Error.expect("Lambda", ".e", lleft, iright, ".","e" ); :}
 								|	LAMBDA:l IDENTIFIER DOT:d epsilon
 									{: Error.expect("Lambda", "e", lleft, dright, "e" ); :}
 								// Missing identifier

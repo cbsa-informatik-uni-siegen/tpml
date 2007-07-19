@@ -91,7 +91,7 @@ simple_type						::=	LPAREN:l type:t RPAREN:r
 								;
 
 simple_type_error				::= LPAREN:l epsilon
-									{: Error.expect("Type", "\u03C4)", lleft, lright, "\u03C4)"); :}
+									{: Error.expect("Type", "\u03C4)", lleft, lright, "\u03C4",")"); :}
 								|	LPAREN:l type:t epsilon
 									{: Error.expect("Type", ")", lleft, tright, ")"); :}
 								;
@@ -103,7 +103,7 @@ arrow_type						::= type:t1 ARROW type:t2
 								;
 
 arrow_type_error				::= type:t ARROW:a epsilon 
-									{: Error.expect("Arrow-Type", " \u03C4", tleft, aright, "\u03C4<sub>2</sub>"); :}
+									{: Error.expect("Arrow-Type", " \u03C4", tleft, aright, "\u03C4"); :}
 								;
 
 boolean_type					::= BOOL:b
@@ -133,9 +133,9 @@ rec_type						::= MU:m IDENTIFIER:id DOT type:t
 								;
 
 rec_type_error					::= MU:m epsilon
-									{: Error.expect("Rec-Type", " t.\u03C4", mleft, mright, "t.\u03C4"); :}
+									{: Error.expect("Rec-Type", " t.\u03C4", mleft, mright, "t",".","\u03C4"); :}
 								|	MU:m IDENTIFIER:i epsilon
-									{: Error.expect("Rec-Type", ".\u03C4", mleft, iright, ".\u03C4"); :}
+									{: Error.expect("Rec-Type", ".\u03C4", mleft, iright, ".","\u03C4"); :}
 								|	MU:m IDENTIFIER DOT:d epsilon
 									{: Error.expect("Rec-Type", "\u03C4", mleft, dright, "\u03C4"); :}
 								;
@@ -150,7 +150,7 @@ object_type						::= LESS:l row_type:r GREATER:g
 								;
 
 object_type_error				::= LESS:l row_type:r epsilon
-									{: Error.expect("Object-Type", " >", lleft, rright, "... m<sub>n</sub>: \u03C4; >"); :}
+									{: Error.expect("Object-Type", " >", lleft, rright, "..."," ","m_n",":"," ","\u03C4",";"," ",">"); :}
 								;
 
 row_type						::= epsilon
@@ -158,7 +158,7 @@ row_type						::= epsilon
 								|	IDENTIFIER:id COLON type:tau SEMI row_type:r
 									{:
 									   Identifier [] m = new Identifier [r.getIdentifiers().length + 1];
-									   m [0] = new Identifier (id,idleft,idright);
+									   m [0] = new Identifier (id,Identifier.Set.METHOD,idleft,idright);
 									   System.arraycopy ( r.getIdentifiers() , 0 , m , 1 , r.getIdentifiers().length );
 									   MonoType [] types = new MonoType [r.getTypes().length + 1];
 									   types [0] = tau;
@@ -170,11 +170,11 @@ row_type						::= epsilon
 								;
 
 row_type_error					::= IDENTIFIER:i epsilon
-									{: Error.expect("Row-Type", ": \u03C4 ;", ileft, iright, ": \u03C4 ; ... m<sub>n</sub>: \u03C4 ;"); :}
+									{: Error.expect("Row-Type", ": \u03C4 ;", ileft, iright, ":"," ","\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
 								|	IDENTIFIER:i COLON:c epsilon
-									{: Error.expect("Row-Type", " \u03C4 ;", ileft, cright, "\u03C4 ; ... m<sub>n</sub>: \u03C4 ;"); :}
+									{: Error.expect("Row-Type", " \u03C4 ;", ileft, cright, "\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
 								|	IDENTIFIER:i COLON type:t epsilon
-									{: Error.expect("Row-Type", " ;", ileft, tright, "; ... m<sub>n</sub>: \u03C4 ;"); :}
+									{: Error.expect("Row-Type", " ;", ileft, tright, ";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
 								;
 
 epsilon							::= /* epsilon */

@@ -2386,22 +2386,22 @@ public class ParserTest
   private static String BODY_ERROR_9 = "class (self) inherit ; m1, ml from" ;
 
 
-  private static String BODY_ERROR_10 = "class (self) inherit ; m1, ml from e" ;
+  private static String BODY_ERROR_10 = "class (self) inherit ; m1, ml from 1+1" ;
 
 
-  private static String BODY_ERROR_11 = "class (self) inherit ; m1, ml from e as" ;
+  private static String BODY_ERROR_11 = "class (self) inherit ; m1, ml from 1+1 as" ;
 
 
-  private static String BODY_ERROR_12 = "class (self) inherit ; m1, ml from e as z" ;
+  private static String BODY_ERROR_12 = "class (self) inherit ; m1, ml from 1+1 as z" ;
 
 
-  private static String BODY_ERROR_13 = "class (self) inherit ; m1, ml from e as z ;" ;
+  private static String BODY_ERROR_13 = "class (self) inherit ; m1, ml from 1+1 as z ;" ;
 
 
-  private static String BODY_ERROR_14 = "class (self) inherit ; m1, ml from e as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_14 = "class (self) inherit ; m1, ml from 1+1 as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_15 = "class (self) inherit ; m1, ml from e as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_15 = "class (self) inherit ; m1, ml from 1+1 as z ; method add = 0 ; end" ;
 
 
   // first semi
@@ -2414,22 +2414,22 @@ public class ParserTest
   private static String BODY_ERROR_18 = "class (self) inherit a1, ak m1, ml from" ;
 
 
-  private static String BODY_ERROR_19 = "class (self) inherit a1, ak m1, ml from e" ;
+  private static String BODY_ERROR_19 = "class (self) inherit a1, ak m1, ml from 1+1" ;
 
 
-  private static String BODY_ERROR_20 = "class (self) inherit a1, ak m1, ml from e as" ;
+  private static String BODY_ERROR_20 = "class (self) inherit a1, ak m1, ml from 1+1 as" ;
 
 
-  private static String BODY_ERROR_21 = "class (self) inherit a1, ak m1, ml from e as z" ;
+  private static String BODY_ERROR_21 = "class (self) inherit a1, ak m1, ml from 1+1 as z" ;
 
 
-  private static String BODY_ERROR_22 = "class (self) inherit a1, ak m1, ml from e as z ;" ;
+  private static String BODY_ERROR_22 = "class (self) inherit a1, ak m1, ml from 1+1 as z ;" ;
 
 
-  private static String BODY_ERROR_23 = "class (self) inherit a1, ak m1, ml from e as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_23 = "class (self) inherit a1, ak m1, ml from 1+1 as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_24 = "class (self) inherit a1, ak m1, ml from e as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_24 = "class (self) inherit a1, ak m1, ml from 1+1 as z ; method add = 0 ; end" ;
 
 
   private static String BODY_ERROR_25 = "class (self) inherit a1 m1" ;
@@ -2441,138 +2441,138 @@ public class ParserTest
   private static String BODY_ERROR_27 = "class (self) inherit a1 m1, ml from" ;
 
 
-  private static String BODY_ERROR_28 = "class (self) inherit a1 m1, ml from e" ;
+  private static String BODY_ERROR_28 = "class (self) inherit a1 m1, ml from 1+1" ;
 
 
-  private static String BODY_ERROR_29 = "class (self) inherit a1 m1, ml from e as" ;
+  private static String BODY_ERROR_29 = "class (self) inherit a1 m1, ml from 1+1 as" ;
 
 
-  private static String BODY_ERROR_30 = "class (self) inherit a1 m1, ml from e as z" ;
+  private static String BODY_ERROR_30 = "class (self) inherit a1 m1, ml from 1+1 as z" ;
 
 
-  private static String BODY_ERROR_31 = "class (self) inherit a1 m1, ml from e as z ;" ;
+  private static String BODY_ERROR_31 = "class (self) inherit a1 m1, ml from 1+1 as z ;" ;
 
 
-  private static String BODY_ERROR_32 = "class (self) inherit a1 m1, ml from e as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_32 = "class (self) inherit a1 m1, ml from 1+1 as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_33 = "class (self) inherit a1 m1, ml from e as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_33 = "class (self) inherit a1 m1, ml from 1+1 as z ; method add = 0 ; end" ;
 
 
   // method list
   private static String BODY_ERROR_34 = "class (self) inherit a1, ak ; from" ;
 
 
-  private static String BODY_ERROR_35 = "class (self) inherit a1, ak ; from e" ;
+  private static String BODY_ERROR_35 = "class (self) inherit a1, ak ; from 1+1" ;
 
 
-  private static String BODY_ERROR_36 = "class (self) inherit a1, ak ; from e as" ;
+  private static String BODY_ERROR_36 = "class (self) inherit a1, ak ; from 1+1 as" ;
 
 
-  private static String BODY_ERROR_37 = "class (self) inherit a1, ak ; from e as z" ;
+  private static String BODY_ERROR_37 = "class (self) inherit a1, ak ; from 1+1 as z" ;
 
 
-  private static String BODY_ERROR_38 = "class (self) inherit a1, ak ; from e as z ;" ;
+  private static String BODY_ERROR_38 = "class (self) inherit a1, ak ; from 1+1 as z ;" ;
 
 
-  private static String BODY_ERROR_39 = "class (self) inherit a1, ak ; from e as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_39 = "class (self) inherit a1, ak ; from 1+1 as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_40 = "class (self) inherit a1, ak ; from e as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_40 = "class (self) inherit a1, ak ; from 1+1 as z ; method add = 0 ; end" ;
 
 
   private static String BODY_ERROR_41 = "class (self) inherit a1 ; from" ;
 
 
-  private static String BODY_ERROR_42 = "class (self) inherit a1 ; from e" ;
+  private static String BODY_ERROR_42 = "class (self) inherit a1 ; from 1+1" ;
 
 
-  private static String BODY_ERROR_43 = "class (self) inherit a1 ; from e as" ;
+  private static String BODY_ERROR_43 = "class (self) inherit a1 ; from 1+1 as" ;
 
 
-  private static String BODY_ERROR_44 = "class (self) inherit a1 ; from e as z" ;
+  private static String BODY_ERROR_44 = "class (self) inherit a1 ; from 1+1 as z" ;
 
 
-  private static String BODY_ERROR_45 = "class (self) inherit a1 ; from e as z ;" ;
+  private static String BODY_ERROR_45 = "class (self) inherit a1 ; from 1+1 as z ;" ;
 
 
-  private static String BODY_ERROR_46 = "class (self) inherit a1 ; from e as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_46 = "class (self) inherit a1 ; from 1+1 as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_47 = "class (self) inherit a1 ; from e as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_47 = "class (self) inherit a1 ; from 1+1 as z ; method add = 0 ; end" ;
 
 
   // from
-  private static String BODY_ERROR_48 = "class (self) inherit a1, ak ; m1, ml e" ;
+  private static String BODY_ERROR_48 = "class (self) inherit a1, ak ; m1, ml 1+1" ;
 
 
-  private static String BODY_ERROR_49 = "class (self) inherit a1, ak ; m1, ml e as" ;
+  private static String BODY_ERROR_49 = "class (self) inherit a1, ak ; m1, ml 1+1 as" ;
 
 
-  private static String BODY_ERROR_50 = "class (self) inherit a1, ak ; m1, ml e as z" ;
+  private static String BODY_ERROR_50 = "class (self) inherit a1, ak ; m1, ml 1+1 as z" ;
 
 
-  private static String BODY_ERROR_51 = "class (self) inherit a1, ak ; m1, ml e as z ;" ;
+  private static String BODY_ERROR_51 = "class (self) inherit a1, ak ; m1, ml 1+1 as z ;" ;
 
 
-  private static String BODY_ERROR_52 = "class (self) inherit a1, ak ; m1, ml e as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_52 = "class (self) inherit a1, ak ; m1, ml 1+1 as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_53 = "class (self) inherit a1, ak ; m1, ml e as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_53 = "class (self) inherit a1, ak ; m1, ml 1+1 as z ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_54 = "class (self) inherit a1 ; m1, ml e" ;
+  private static String BODY_ERROR_54 = "class (self) inherit a1 ; m1, ml 1+1" ;
 
 
-  private static String BODY_ERROR_55 = "class (self) inherit a1 ; m1, ml e as" ;
+  private static String BODY_ERROR_55 = "class (self) inherit a1 ; m1, ml 1+1 as" ;
 
 
-  private static String BODY_ERROR_56 = "class (self) inherit a1 ; m1, ml e as z" ;
+  private static String BODY_ERROR_56 = "class (self) inherit a1 ; m1, ml 1+1 as z" ;
 
 
-  private static String BODY_ERROR_57 = "class (self) inherit a1 ; m1, ml e as z ;" ;
+  private static String BODY_ERROR_57 = "class (self) inherit a1 ; m1, ml 1+1 as z ;" ;
 
 
-  private static String BODY_ERROR_58 = "class (self) inherit a1 ; m1, ml e as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_58 = "class (self) inherit a1 ; m1, ml 1+1 as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_59 = "class (self) inherit a1 ; m1, ml e as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_59 = "class (self) inherit a1 ; m1, ml 1+1 as z ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_60 = "class (self) inherit a1, ak ; m1 e" ;
+  private static String BODY_ERROR_60 = "class (self) inherit a1, ak ; m1 1+1" ;
 
 
-  private static String BODY_ERROR_61 = "class (self) inherit a1, ak ; m1 e as" ;
+  private static String BODY_ERROR_61 = "class (self) inherit a1, ak ; m1 1+1 as" ;
 
 
-  private static String BODY_ERROR_62 = "class (self) inherit a1, ak ; m1 e as z" ;
+  private static String BODY_ERROR_62 = "class (self) inherit a1, ak ; m1 1+1 as z" ;
 
 
-  private static String BODY_ERROR_63 = "class (self) inherit a1, ak ; m1 e as z ;" ;
+  private static String BODY_ERROR_63 = "class (self) inherit a1, ak ; m1 1+1 as z ;" ;
 
 
-  private static String BODY_ERROR_64 = "class (self) inherit a1, ak ; m1 e as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_64 = "class (self) inherit a1, ak ; m1 1+1 as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_65 = "class (self) inherit a1, ak ; m1 e as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_65 = "class (self) inherit a1, ak ; m1 1+1 as z ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_66 = "class (self) inherit a1 ; m1 e" ;
+  private static String BODY_ERROR_66 = "class (self) inherit a1 ; m1 1+1" ;
 
 
-  private static String BODY_ERROR_67 = "class (self) inherit a1 ; m1 e as" ;
+  private static String BODY_ERROR_67 = "class (self) inherit a1 ; m1 1+1 as" ;
 
 
-  private static String BODY_ERROR_68 = "class (self) inherit a1 ; m1 e as z" ;
+  private static String BODY_ERROR_68 = "class (self) inherit a1 ; m1 1+1 as z" ;
 
 
-  private static String BODY_ERROR_69 = "class (self) inherit a1 ; m1 e as z ;" ;
+  private static String BODY_ERROR_69 = "class (self) inherit a1 ; m1 1+1 as z ;" ;
 
 
-  private static String BODY_ERROR_70 = "class (self) inherit a1 ; m1 e as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_70 = "class (self) inherit a1 ; m1 1+1 as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_71 = "class (self) inherit a1 ; m1 e as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_71 = "class (self) inherit a1 ; m1 1+1 as z ; method add = 0 ; end" ;
 
 
   // e
@@ -2636,667 +2636,457 @@ public class ParserTest
   private static String BODY_ERROR_91 = "class (self) inherit a1 ; m1 from as z ; method add = 0 ; end" ;
 
 
-  // as
-  private static String BODY_ERROR_92 = "class (self) inherit a1, ak ; m1, ml from e z" ;
-
-
-  private static String BODY_ERROR_93 = "class (self) inherit a1, ak ; m1, ml from e z ;" ;
-
-
-  private static String BODY_ERROR_94 = "class (self) inherit a1, ak ; m1, ml from e z ; method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_95 = "class (self) inherit a1, ak ; m1, ml from e z ; method add = 0 ; end" ;
-
-
-  private static String BODY_ERROR_96 = "class (self) inherit a1 ; m1, ml from e z" ;
-
-
-  private static String BODY_ERROR_97 = "class (self) inherit a1 ; m1, ml from e z ;" ;
-
-
-  private static String BODY_ERROR_98 = "class (self) inherit a1 ; m1, ml from e z ; method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_99 = "class (self) inherit a1 ; m1, ml from e z ; method add = 0 ; end" ;
-
-
-  private static String BODY_ERROR_100 = "class (self) inherit a1, ak ; m1 from e z" ;
-
-
-  private static String BODY_ERROR_101 = "class (self) inherit a1, ak ; m1 from e z ;" ;
-
-
-  private static String BODY_ERROR_102 = "class (self) inherit a1, ak ; m1 from e z ; method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_103 = "class (self) inherit a1, ak ; m1 from e z ; method add = 0 ; end" ;
-
-
-  private static String BODY_ERROR_104 = "class (self) inherit a1 ; m1 from e z" ;
-
-
-  private static String BODY_ERROR_105 = "class (self) inherit a1 ; m1 from e z ;" ;
-
-
-  private static String BODY_ERROR_106 = "class (self) inherit a1 ; m1 from e z ; method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_107 = "class (self) inherit a1 ; m1 from e z ; method add = 0 ; end" ;
-
-
   // identifier
-  private static String BODY_ERROR_108 = "class (self) inherit a1, ak ; m1, ml from e as ;" ;
+  private static String BODY_ERROR_92 = "class (self) inherit a1, ak ; m1, ml from 1+1 as ;" ;
 
 
-  private static String BODY_ERROR_109 = "class (self) inherit a1, ak ; m1, ml from e as ; method add = 0 ;" ;
+  private static String BODY_ERROR_93 = "class (self) inherit a1, ak ; m1, ml from 1+1 as ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_110 = "class (self) inherit a1, ak ; m1, ml from e as ; method add = 0 ; end" ;
+  private static String BODY_ERROR_94 = "class (self) inherit a1, ak ; m1, ml from 1+1 as ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_111 = "class (self) inherit a1 ; m1, ml from e as ;" ;
+  private static String BODY_ERROR_95 = "class (self) inherit a1 ; m1, ml from 1+1 as ;" ;
 
 
-  private static String BODY_ERROR_112 = "class (self) inherit a1 ; m1, ml from e as ; method add = 0 ;" ;
+  private static String BODY_ERROR_96 = "class (self) inherit a1 ; m1, ml from 1+1 as ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_113 = "class (self) inherit a1 ; m1, ml from e as ; method add = 0 ; end" ;
+  private static String BODY_ERROR_97 = "class (self) inherit a1 ; m1, ml from 1+1 as ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_114 = "class (self) inherit a1, ak ; m1 from e as ;" ;
+  private static String BODY_ERROR_98 = "class (self) inherit a1, ak ; m1 from 1+1 as ;" ;
 
 
-  private static String BODY_ERROR_115 = "class (self) inherit a1, ak ; m1 from e as ; method add = 0 ;" ;
+  private static String BODY_ERROR_99 = "class (self) inherit a1, ak ; m1 from 1+1 as ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_116 = "class (self) inherit a1, ak ; m1 from e as ; method add = 0 ; end" ;
+  private static String BODY_ERROR_100 = "class (self) inherit a1, ak ; m1 from 1+1 as ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_117 = "class (self) inherit a1 ; m1 from e as ;" ;
+  private static String BODY_ERROR_101 = "class (self) inherit a1 ; m1 from 1+1 as ;" ;
 
 
-  private static String BODY_ERROR_118 = "class (self) inherit a1 ; m1 from e as ; method add = 0 ;" ;
+  private static String BODY_ERROR_102 = "class (self) inherit a1 ; m1 from 1+1 as ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_119 = "class (self) inherit a1 ; m1 from e as ; method add = 0 ; end" ;
+  private static String BODY_ERROR_103 = "class (self) inherit a1 ; m1 from 1+1 as ; method add = 0 ; end" ;
 
 
   // second semi
-  private static String BODY_ERROR_120 = "class (self) inherit a1, ak ; m1, ml from e as z method add = 0 ;" ;
+  private static String BODY_ERROR_104 = "class (self) inherit a1, ak ; m1, ml from 1+1 as z method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_121 = "class (self) inherit a1, ak ; m1, ml from e as z method add = 0 ; end" ;
+  private static String BODY_ERROR_105 = "class (self) inherit a1, ak ; m1, ml from 1+1 as z method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_122 = "class (self) inherit a1 ; m1, ml from e as z method add = 0 ;" ;
+  private static String BODY_ERROR_106 = "class (self) inherit a1 ; m1, ml from 1+1 as z method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_123 = "class (self) inherit a1 ; m1, ml from e as z method add = 0 ; end" ;
+  private static String BODY_ERROR_107 = "class (self) inherit a1 ; m1, ml from 1+1 as z method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_124 = "class (self) inherit a1, ak ; m1 from e as z method add = 0 ;" ;
+  private static String BODY_ERROR_108 = "class (self) inherit a1, ak ; m1 from 1+1 as z method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_125 = "class (self) inherit a1, ak ; m1 from e as z method add = 0 ; end" ;
+  private static String BODY_ERROR_109 = "class (self) inherit a1, ak ; m1 from 1+1 as z method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_126 = "class (self) inherit a1 ; m1 from e as z method add = 0 ;" ;
+  private static String BODY_ERROR_110 = "class (self) inherit a1 ; m1 from 1+1 as z method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_127 = "class (self) inherit a1 ; m1 from e as z method add = 0 ; end" ;
+  private static String BODY_ERROR_111 = "class (self) inherit a1 ; m1 from 1+1 as z method add = 0 ; end" ;
 
 
   // first semi and method list
-  private static String BODY_ERROR_128 = "class (self) inherit a1, ak from" ;
+  private static String BODY_ERROR_112 = "class (self) inherit a1, ak from" ;
 
 
-  private static String BODY_ERROR_129 = "class (self) inherit a1, ak from e" ;
+  private static String BODY_ERROR_113 = "class (self) inherit a1, ak from 1+1" ;
 
 
-  private static String BODY_ERROR_130 = "class (self) inherit a1, ak from e as" ;
+  private static String BODY_ERROR_114 = "class (self) inherit a1, ak from 1+1 as" ;
 
 
-  private static String BODY_ERROR_131 = "class (self) inherit a1, ak from e as z" ;
+  private static String BODY_ERROR_115 = "class (self) inherit a1, ak from 1+1 as z" ;
 
 
-  private static String BODY_ERROR_132 = "class (self) inherit a1, ak from e as z ;" ;
+  private static String BODY_ERROR_116 = "class (self) inherit a1, ak from 1+1 as z ;" ;
 
 
-  private static String BODY_ERROR_133 = "class (self) inherit a1, ak from e as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_117 = "class (self) inherit a1, ak from 1+1 as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_134 = "class (self) inherit a1, ak from e as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_118 = "class (self) inherit a1, ak from 1+1 as z ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_135 = "class (self) inherit a1 from" ;
+  private static String BODY_ERROR_119 = "class (self) inherit a1 from" ;
 
 
-  private static String BODY_ERROR_136 = "class (self) inherit a1 from e" ;
+  private static String BODY_ERROR_120 = "class (self) inherit a1 from 1+1" ;
 
 
-  private static String BODY_ERROR_137 = "class (self) inherit a1 from e as" ;
+  private static String BODY_ERROR_121 = "class (self) inherit a1 from 1+1 as" ;
 
 
-  private static String BODY_ERROR_138 = "class (self) inherit a1 from e as z" ;
+  private static String BODY_ERROR_122 = "class (self) inherit a1 from 1+1 as z" ;
 
 
-  private static String BODY_ERROR_139 = "class (self) inherit a1 from e as z ;" ;
+  private static String BODY_ERROR_123 = "class (self) inherit a1 from 1+1 as z ;" ;
 
 
-  private static String BODY_ERROR_140 = "class (self) inherit a1 from e as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_124 = "class (self) inherit a1 from 1+1 as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_141 = "class (self) inherit a1 from e as z ; method add = 0 ; end" ;
-
-
-  // method list and from
-  private static String BODY_ERROR_142 = "class (self) inherit a1, ak ; e" ;
-
-
-  private static String BODY_ERROR_143 = "class (self) inherit a1, ak ; e as" ;
-
-
-  private static String BODY_ERROR_144 = "class (self) inherit a1, ak ; e as z" ;
-
-
-  private static String BODY_ERROR_145 = "class (self) inherit a1, ak ; e as z ;" ;
-
-
-  private static String BODY_ERROR_146 = "class (self) inherit a1, ak ; e as z ; method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_147 = "class (self) inherit a1, ak ; e as z ; method add = 0 ; end" ;
-
-
-  private static String BODY_ERROR_148 = "class (self) inherit a1 ; e" ;
-
-
-  private static String BODY_ERROR_149 = "class (self) inherit a1 ; e as" ;
-
-
-  private static String BODY_ERROR_150 = "class (self) inherit a1 ; e as z" ;
-
-
-  private static String BODY_ERROR_151 = "class (self) inherit a1 ; e as z ;" ;
-
-
-  private static String BODY_ERROR_152 = "class (self) inherit a1 ; e as z ; method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_153 = "class (self) inherit a1 ; e as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_125 = "class (self) inherit a1 from 1+1 as z ; method add = 0 ; end" ;
 
 
   // from and e
-  private static String BODY_ERROR_154 = "class (self) inherit a1, ak ; m1, ml as" ;
+  private static String BODY_ERROR_126 = "class (self) inherit a1, ak ; m1, ml as" ;
 
 
-  private static String BODY_ERROR_155 = "class (self) inherit a1, ak ; m1, ml as z" ;
+  private static String BODY_ERROR_127 = "class (self) inherit a1, ak ; m1, ml as z" ;
 
 
-  private static String BODY_ERROR_156 = "class (self) inherit a1, ak ; m1, ml as z ;" ;
+  private static String BODY_ERROR_128 = "class (self) inherit a1, ak ; m1, ml as z ;" ;
 
 
-  private static String BODY_ERROR_157 = "class (self) inherit a1, ak ; m1, ml as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_129 = "class (self) inherit a1, ak ; m1, ml as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_158 = "class (self) inherit a1, ak ; m1, ml as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_130 = "class (self) inherit a1, ak ; m1, ml as z ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_159 = "class (self) inherit a1 ; m1, ml as" ;
+  private static String BODY_ERROR_131 = "class (self) inherit a1 ; m1, ml as" ;
 
 
-  private static String BODY_ERROR_160 = "class (self) inherit a1 ; m1, ml as z" ;
+  private static String BODY_ERROR_132 = "class (self) inherit a1 ; m1, ml as z" ;
 
 
-  private static String BODY_ERROR_161 = "class (self) inherit a1 ; m1, ml as z ;" ;
+  private static String BODY_ERROR_133 = "class (self) inherit a1 ; m1, ml as z ;" ;
 
 
-  private static String BODY_ERROR_162 = "class (self) inherit a1 ; m1, ml as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_134 = "class (self) inherit a1 ; m1, ml as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_163 = "class (self) inherit a1 ; m1, ml as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_135 = "class (self) inherit a1 ; m1, ml as z ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_164 = "class (self) inherit a1, ak ; m1 as" ;
+  private static String BODY_ERROR_136 = "class (self) inherit a1, ak ; m1 as" ;
 
 
-  private static String BODY_ERROR_165 = "class (self) inherit a1, ak ; m1 as z" ;
+  private static String BODY_ERROR_137 = "class (self) inherit a1, ak ; m1 as z" ;
 
 
-  private static String BODY_ERROR_166 = "class (self) inherit a1, ak ; m1 as z ;" ;
+  private static String BODY_ERROR_138 = "class (self) inherit a1, ak ; m1 as z ;" ;
 
 
-  private static String BODY_ERROR_167 = "class (self) inherit a1, ak ; m1 as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_139 = "class (self) inherit a1, ak ; m1 as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_168 = "class (self) inherit a1, ak ; m1 as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_140 = "class (self) inherit a1, ak ; m1 as z ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_169 = "class (self) inherit a1 ; m1 as" ;
+  private static String BODY_ERROR_141 = "class (self) inherit a1 ; m1 as" ;
 
 
-  private static String BODY_ERROR_170 = "class (self) inherit a1 ; m1 as z" ;
+  private static String BODY_ERROR_142 = "class (self) inherit a1 ; m1 as z" ;
 
 
-  private static String BODY_ERROR_171 = "class (self) inherit a1 ; m1 as z ;" ;
+  private static String BODY_ERROR_143 = "class (self) inherit a1 ; m1 as z ;" ;
 
 
-  private static String BODY_ERROR_172 = "class (self) inherit a1 ; m1 as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_144 = "class (self) inherit a1 ; m1 as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_173 = "class (self) inherit a1 ; m1 as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_145 = "class (self) inherit a1 ; m1 as z ; method add = 0 ; end" ;
 
 
   // as and identifier
-  private static String BODY_ERROR_174 = "class (self) inherit a1, ak ; m1, ml from e ;" ;
+  private static String BODY_ERROR_146 = "class (self) inherit a1, ak ; m1, ml from 1+1 ;" ;
 
 
-  private static String BODY_ERROR_175 = "class (self) inherit a1, ak ; m1, ml from e ; method add = 0 ;" ;
+  private static String BODY_ERROR_147 = "class (self) inherit a1, ak ; m1, ml from 1+1 ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_176 = "class (self) inherit a1, ak ; m1, ml from e ; method add = 0 ; end" ;
+  private static String BODY_ERROR_148 = "class (self) inherit a1, ak ; m1, ml from 1+1 ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_177 = "class (self) inherit a1 ; m1, ml from e ;" ;
+  private static String BODY_ERROR_149 = "class (self) inherit a1 ; m1, ml from 1+1 ;" ;
 
 
-  private static String BODY_ERROR_178 = "class (self) inherit a1 ; m1, ml from e ; method add = 0 ;" ;
+  private static String BODY_ERROR_150 = "class (self) inherit a1 ; m1, ml from 1+1 ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_179 = "class (self) inherit a1 ; m1, ml from e ; method add = 0 ; end" ;
+  private static String BODY_ERROR_151 = "class (self) inherit a1 ; m1, ml from 1+1 ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_180 = "class (self) inherit a1, ak ; m1 from e ;" ;
+  private static String BODY_ERROR_152 = "class (self) inherit a1, ak ; m1 from 1+1 ;" ;
 
 
-  private static String BODY_ERROR_181 = "class (self) inherit a1, ak ; m1 from e ; method add = 0 ;" ;
+  private static String BODY_ERROR_153 = "class (self) inherit a1, ak ; m1 from 1+1 ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_182 = "class (self) inherit a1, ak ; m1 from e ; method add = 0 ; end" ;
+  private static String BODY_ERROR_154 = "class (self) inherit a1, ak ; m1 from 1+1 ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_183 = "class (self) inherit a1 ; m1 from e ;" ;
+  private static String BODY_ERROR_155 = "class (self) inherit a1 ; m1 from 1+1 ;" ;
 
 
-  private static String BODY_ERROR_184 = "class (self) inherit a1 ; m1 from e ; method add = 0 ;" ;
+  private static String BODY_ERROR_156 = "class (self) inherit a1 ; m1 from 1+1 ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_185 = "class (self) inherit a1 ; m1 from e ; method add = 0 ; end" ;
+  private static String BODY_ERROR_157 = "class (self) inherit a1 ; m1 from 1+1 ; method add = 0 ; end" ;
 
 
   // identifier and second semi
-  private static String BODY_ERROR_186 = "class (self) inherit a1, ak ; m1, ml from e as method add = 0 ;" ;
+  private static String BODY_ERROR_158 = "class (self) inherit a1, ak ; m1, ml from 1+1 as method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_187 = "class (self) inherit a1, ak ; m1, ml from e as method add = 0 ; end" ;
+  private static String BODY_ERROR_159 = "class (self) inherit a1, ak ; m1, ml from 1+1 as method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_188 = "class (self) inherit a1 ; m1, ml from e as method add = 0 ;" ;
+  private static String BODY_ERROR_160 = "class (self) inherit a1 ; m1, ml from 1+1 as method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_189 = "class (self) inherit a1 ; m1, ml from e as method add = 0 ; end" ;
+  private static String BODY_ERROR_161 = "class (self) inherit a1 ; m1, ml from 1+1 as method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_190 = "class (self) inherit a1, ak ; m1 from e as method add = 0 ;" ;
+  private static String BODY_ERROR_162 = "class (self) inherit a1, ak ; m1 from 1+1 as method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_191 = "class (self) inherit a1, ak ; m1 from e as method add = 0 ; end" ;
+  private static String BODY_ERROR_163 = "class (self) inherit a1, ak ; m1 from 1+1 as method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_192 = "class (self) inherit a1 ; m1 from e as method add = 0 ;" ;
+  private static String BODY_ERROR_164 = "class (self) inherit a1 ; m1 from 1+1 as method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_193 = "class (self) inherit a1 ; m1 from e as method add = 0 ; end" ;
+  private static String BODY_ERROR_165 = "class (self) inherit a1 ; m1 from 1+1 as method add = 0 ; end" ;
 
 
   // attribute list, first semi and method list
-  private static String BODY_ERROR_194 = "class (self) inherit from" ;
+  private static String BODY_ERROR_166 = "class (self) inherit from" ;
 
 
-  private static String BODY_ERROR_195 = "class (self) inherit from e" ;
+  private static String BODY_ERROR_167 = "class (self) inherit from 1+1" ;
 
 
-  private static String BODY_ERROR_196 = "class (self) inherit from e as" ;
+  private static String BODY_ERROR_168 = "class (self) inherit from 1+1 as" ;
 
 
-  private static String BODY_ERROR_197 = "class (self) inherit from e as z" ;
+  private static String BODY_ERROR_169 = "class (self) inherit from 1+1 as z" ;
 
 
-  private static String BODY_ERROR_198 = "class (self) inherit from e as z ;" ;
+  private static String BODY_ERROR_170 = "class (self) inherit from 1+1 as z ;" ;
 
 
-  private static String BODY_ERROR_199 = "class (self) inherit from e as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_171 = "class (self) inherit from 1+1 as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_200 = "class (self) inherit from e as z ; method add = 0 ; end" ;
-
-
-  // first semi, method list and from
-  private static String BODY_ERROR_201 = "class (self) inherit a1, ak e" ;
-
-
-  private static String BODY_ERROR_202 = "class (self) inherit a1, ak e as" ;
-
-
-  private static String BODY_ERROR_203 = "class (self) inherit a1, ak e as z" ;
-
-
-  private static String BODY_ERROR_204 = "class (self) inherit a1, ak e as z ;" ;
-
-
-  private static String BODY_ERROR_205 = "class (self) inherit a1, ak e as z ; method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_206 = "class (self) inherit a1, ak e as z ; method add = 0 ; end" ;
-
-
-  private static String BODY_ERROR_207 = "class (self) inherit a1 e" ;
-
-
-  private static String BODY_ERROR_208 = "class (self) inherit a1 e as" ;
-
-
-  private static String BODY_ERROR_209 = "class (self) inherit a1 e as z" ;
-
-
-  private static String BODY_ERROR_210 = "class (self) inherit a1 e as z ;" ;
-
-
-  private static String BODY_ERROR_211 = "class (self) inherit a1 e as z ; method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_212 = "class (self) inherit a1 e as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_172 = "class (self) inherit from 1+1 as z ; method add = 0 ; end" ;
 
 
   // method list, from and e
-  private static String BODY_ERROR_213 = "class (self) inherit a1, ak ; as" ;
+  private static String BODY_ERROR_173 = "class (self) inherit a1, ak ; as" ;
 
 
-  private static String BODY_ERROR_214 = "class (self) inherit a1, ak ; as z" ;
+  private static String BODY_ERROR_174 = "class (self) inherit a1, ak ; as z" ;
 
 
-  private static String BODY_ERROR_215 = "class (self) inherit a1, ak ; as z ;" ;
+  private static String BODY_ERROR_175 = "class (self) inherit a1, ak ; as z ;" ;
 
 
-  private static String BODY_ERROR_216 = "class (self) inherit a1, ak ; as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_176 = "class (self) inherit a1, ak ; as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_217 = "class (self) inherit a1, ak ; as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_177 = "class (self) inherit a1, ak ; as z ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_218 = "class (self) inherit a1 ; as" ;
+  private static String BODY_ERROR_178 = "class (self) inherit a1 ; as" ;
 
 
-  private static String BODY_ERROR_219 = "class (self) inherit a1 ; as z" ;
+  private static String BODY_ERROR_179 = "class (self) inherit a1 ; as z" ;
 
 
-  private static String BODY_ERROR_220 = "class (self) inherit a1 ; as z ;" ;
+  private static String BODY_ERROR_180 = "class (self) inherit a1 ; as z ;" ;
 
 
-  private static String BODY_ERROR_221 = "class (self) inherit a1 ; as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_181 = "class (self) inherit a1 ; as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_222 = "class (self) inherit a1 ; as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_182 = "class (self) inherit a1 ; as z ; method add = 0 ; end" ;
 
 
   // e, as and identifier
-  private static String BODY_ERROR_223 = "class (self) inherit a1, ak ; m1, ml from ;" ;
+  private static String BODY_ERROR_183 = "class (self) inherit a1, ak ; m1, ml from ;" ;
 
 
-  private static String BODY_ERROR_224 = "class (self) inherit a1, ak ; m1, ml from ; method add = 0 ;" ;
+  private static String BODY_ERROR_184 = "class (self) inherit a1, ak ; m1, ml from ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_225 = "class (self) inherit a1, ak ; m1, ml from ; method add = 0 ; end" ;
+  private static String BODY_ERROR_185 = "class (self) inherit a1, ak ; m1, ml from ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_226 = "class (self) inherit a1 ; m1, ml from ;" ;
+  private static String BODY_ERROR_186 = "class (self) inherit a1 ; m1, ml from ;" ;
 
 
-  private static String BODY_ERROR_227 = "class (self) inherit a1 ; m1, ml from ; method add = 0 ;" ;
+  private static String BODY_ERROR_187 = "class (self) inherit a1 ; m1, ml from ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_228 = "class (self) inherit a1 ; m1, ml from ; method add = 0 ; end" ;
+  private static String BODY_ERROR_188 = "class (self) inherit a1 ; m1, ml from ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_229 = "class (self) inherit a1, ak ; m1 from ;" ;
+  private static String BODY_ERROR_189 = "class (self) inherit a1, ak ; m1 from ;" ;
 
 
-  private static String BODY_ERROR_230 = "class (self) inherit a1, ak ; m1 from ; method add = 0 ;" ;
+  private static String BODY_ERROR_190 = "class (self) inherit a1, ak ; m1 from ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_231 = "class (self) inherit a1, ak ; m1 from ; method add = 0 ; end" ;
+  private static String BODY_ERROR_191 = "class (self) inherit a1, ak ; m1 from ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_232 = "class (self) inherit a1 ; m1 from ;" ;
+  private static String BODY_ERROR_192 = "class (self) inherit a1 ; m1 from ;" ;
 
 
-  private static String BODY_ERROR_233 = "class (self) inherit a1 ; m1 from ; method add = 0 ;" ;
+  private static String BODY_ERROR_193 = "class (self) inherit a1 ; m1 from ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_234 = "class (self) inherit a1 ; m1 from ; method add = 0 ; end" ;
+  private static String BODY_ERROR_194 = "class (self) inherit a1 ; m1 from ; method add = 0 ; end" ;
 
 
   // as, identifier and second semi
-  private static String BODY_ERROR_235 = "class (self) inherit a1, ak ; m1, ml from e method add = 0 ;" ;
+  private static String BODY_ERROR_195 = "class (self) inherit a1, ak ; m1, ml from 1+1 method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_236 = "class (self) inherit a1, ak ; m1, ml from e method add = 0 ; end" ;
+  private static String BODY_ERROR_196 = "class (self) inherit a1, ak ; m1, ml from 1+1 method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_237 = "class (self) inherit a1 ; m1, ml from e method add = 0 ;" ;
+  private static String BODY_ERROR_197 = "class (self) inherit a1 ; m1, ml from 1+1 method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_238 = "class (self) inherit a1 ; m1, ml from e method add = 0 ; end" ;
+  private static String BODY_ERROR_198 = "class (self) inherit a1 ; m1, ml from 1+1 method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_239 = "class (self) inherit a1, ak ; m1 from e method add = 0 ;" ;
+  private static String BODY_ERROR_199 = "class (self) inherit a1, ak ; m1 from 1+1 method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_240 = "class (self) inherit a1, ak ; m1 from e method add = 0 ; end" ;
+  private static String BODY_ERROR_200 = "class (self) inherit a1, ak ; m1 from 1+1 method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_241 = "class (self) inherit a1 ; m1 from e method add = 0 ;" ;
+  private static String BODY_ERROR_201 = "class (self) inherit a1 ; m1 from 1+1 method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_242 = "class (self) inherit a1 ; m1 from e method add = 0 ; end" ;
+  private static String BODY_ERROR_202 = "class (self) inherit a1 ; m1 from 1+1 method add = 0 ; end" ;
 
 
   // attribute list, first semi, method list and from
-  private static String BODY_ERROR_243 = "class (self) inherit 1" ;
+  private static String BODY_ERROR_203 = "class (self) inherit 1+1" ;
 
 
-  private static String BODY_ERROR_244 = "class (self) inherit 1 as" ;
+  private static String BODY_ERROR_204 = "class (self) inherit 1+1 as" ;
 
 
-  private static String BODY_ERROR_245 = "class (self) inherit 1 as z" ;
+  private static String BODY_ERROR_205 = "class (self) inherit 1+1 as z" ;
 
 
-  private static String BODY_ERROR_246 = "class (self) inherit 1 as z ;" ;
+  private static String BODY_ERROR_206 = "class (self) inherit 1+1 as z ;" ;
 
 
-  private static String BODY_ERROR_247 = "class (self) inherit 1 as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_207 = "class (self) inherit 1+1 as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_248 = "class (self) inherit 1 as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_208 = "class (self) inherit 1+1 as z ; method add = 0 ; end" ;
 
 
   // first semi, method list, from and e
-  private static String BODY_ERROR_249 = "class (self) inherit a1, ak as" ;
+  private static String BODY_ERROR_209 = "class (self) inherit a1, ak as" ;
 
 
-  private static String BODY_ERROR_250 = "class (self) inherit a1, ak as z" ;
+  private static String BODY_ERROR_210 = "class (self) inherit a1, ak as z" ;
 
 
-  private static String BODY_ERROR_251 = "class (self) inherit a1, ak as z ;" ;
+  private static String BODY_ERROR_211 = "class (self) inherit a1, ak as z ;" ;
 
 
-  private static String BODY_ERROR_252 = "class (self) inherit a1, ak as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_212 = "class (self) inherit a1, ak as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_253 = "class (self) inherit a1, ak as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_213 = "class (self) inherit a1, ak as z ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_254 = "class (self) inherit a1 as" ;
+  private static String BODY_ERROR_214 = "class (self) inherit a1 as" ;
 
 
-  private static String BODY_ERROR_255 = "class (self) inherit a1 as z" ;
+  private static String BODY_ERROR_215 = "class (self) inherit a1 as z" ;
 
 
-  private static String BODY_ERROR_256 = "class (self) inherit a1 as z ;" ;
+  private static String BODY_ERROR_216 = "class (self) inherit a1 as z ;" ;
 
 
-  private static String BODY_ERROR_257 = "class (self) inherit a1 as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_217 = "class (self) inherit a1 as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_258 = "class (self) inherit a1 as z ; method add = 0 ; end" ;
-
-
-  // method list, from, e and as
-  private static String BODY_ERROR_259 = "class (self) inherit a1, ak ; z" ;
-
-
-  private static String BODY_ERROR_260 = "class (self) inherit a1, ak ; z ;" ;
-
-
-  private static String BODY_ERROR_261 = "class (self) inherit a1, ak ; z ; method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_262 = "class (self) inherit a1, ak ; z ; method add = 0 ; end" ;
-
-
-  private static String BODY_ERROR_263 = "class (self) inherit a1 ; z" ;
-
-
-  private static String BODY_ERROR_264 = "class (self) inherit a1 ; z ;" ;
-
-
-  private static String BODY_ERROR_265 = "class (self) inherit a1 ; z ; method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_266 = "class (self) inherit a1 ; z ; method add = 0 ; end" ;
-
-
-  // from, e, as and identifier
-  private static String BODY_ERROR_267 = "class (self) inherit a1, ak ; m1, ml ;" ;
-
-
-  private static String BODY_ERROR_268 = "class (self) inherit a1, ak ; m1, ml ; method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_269 = "class (self) inherit a1, ak ; m1, ml ; method add = 0 ; end" ;
-
-
-  private static String BODY_ERROR_270 = "class (self) inherit a1 ; m1, ml ;" ;
-
-
-  private static String BODY_ERROR_271 = "class (self) inherit a1 ; m1, ml ; method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_272 = "class (self) inherit a1 ; m1, ml ; method add = 0 ; end" ;
-
-
-  private static String BODY_ERROR_273 = "class (self) inherit a1, ak ; m1 ;" ;
-
-
-  private static String BODY_ERROR_274 = "class (self) inherit a1, ak ; m1 ; method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_275 = "class (self) inherit a1, ak ; m1 ; method add = 0 ; end" ;
-
-
-  private static String BODY_ERROR_276 = "class (self) inherit a1 ; m1 ;" ;
-
-
-  private static String BODY_ERROR_277 = "class (self) inherit a1 ; m1 ; method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_278 = "class (self) inherit a1 ; m1 ; method add = 0 ; end" ;
+  private static String BODY_ERROR_218 = "class (self) inherit a1 as z ; method add = 0 ; end" ;
 
 
   // e, as, identifier and second semi
-  private static String BODY_ERROR_279 = "class (self) inherit a1, ak ; m1, ml from method add = 0 ;" ;
+  private static String BODY_ERROR_219 = "class (self) inherit a1, ak ; m1, ml from method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_280 = "class (self) inherit a1, ak ; m1, ml from method add = 0 ; end" ;
+  private static String BODY_ERROR_220 = "class (self) inherit a1, ak ; m1, ml from method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_281 = "class (self) inherit a1 ; m1, ml from method add = 0 ;" ;
+  private static String BODY_ERROR_221 = "class (self) inherit a1 ; m1, ml from method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_282 = "class (self) inherit a1 ; m1, ml from method add = 0 ; end" ;
+  private static String BODY_ERROR_222 = "class (self) inherit a1 ; m1, ml from method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_283 = "class (self) inherit a1, ak ; m1 from method add = 0 ;" ;
+  private static String BODY_ERROR_223 = "class (self) inherit a1, ak ; m1 from method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_284 = "class (self) inherit a1, ak ; m1 from method add = 0 ; end" ;
+  private static String BODY_ERROR_224 = "class (self) inherit a1, ak ; m1 from method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_285 = "class (self) inherit a1 ; m1 from method add = 0 ;" ;
+  private static String BODY_ERROR_225 = "class (self) inherit a1 ; m1 from method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_286 = "class (self) inherit a1 ; m1 from method add = 0 ; end" ;
+  private static String BODY_ERROR_226 = "class (self) inherit a1 ; m1 from method add = 0 ; end" ;
 
 
   // attribute list, first semi, method list, from and e
-  private static String BODY_ERROR_287 = "class (self) inherit as" ;
+  private static String BODY_ERROR_227 = "class (self) inherit as" ;
 
 
-  private static String BODY_ERROR_288 = "class (self) inherit as z" ;
+  private static String BODY_ERROR_228 = "class (self) inherit as z" ;
 
 
-  private static String BODY_ERROR_289 = "class (self) inherit as z ;" ;
+  private static String BODY_ERROR_229 = "class (self) inherit as z ;" ;
 
 
-  private static String BODY_ERROR_290 = "class (self) inherit as z ; method add = 0 ;" ;
+  private static String BODY_ERROR_230 = "class (self) inherit as z ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_291 = "class (self) inherit as z ; method add = 0 ; end" ;
+  private static String BODY_ERROR_231 = "class (self) inherit as z ; method add = 0 ; end" ;
 
 
   // method list, from, e, as and identifier
-  private static String BODY_ERROR_292 = "class (self) inherit a1, ak ; ;" ;
+  private static String BODY_ERROR_232 = "class (self) inherit a1, ak ; ;" ;
 
 
-  private static String BODY_ERROR_293 = "class (self) inherit a1, ak ; ; method add = 0 ;" ;
+  private static String BODY_ERROR_233 = "class (self) inherit a1, ak ; ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_294 = "class (self) inherit a1, ak ; ; method add = 0 ; end" ;
+  private static String BODY_ERROR_234 = "class (self) inherit a1, ak ; ; method add = 0 ; end" ;
 
 
-  private static String BODY_ERROR_295 = "class (self) inherit a1 ; ;" ;
+  private static String BODY_ERROR_235 = "class (self) inherit a1 ; ;" ;
 
 
-  private static String BODY_ERROR_296 = "class (self) inherit a1 ; ; method add = 0 ;" ;
+  private static String BODY_ERROR_236 = "class (self) inherit a1 ; ; method add = 0 ;" ;
 
 
-  private static String BODY_ERROR_297 = "class (self) inherit a1 ; ; method add = 0 ; end" ;
-
-
-  // from, e, as, identifier and second semi
-  private static String BODY_ERROR_298 = "class (self) inherit a1, ak ; m1, ml method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_299 = "class (self) inherit a1, ak ; m1, ml method add = 0 ; end" ;
-
-
-  private static String BODY_ERROR_300 = "class (self) inherit a1 ; m1, ml method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_301 = "class (self) inherit a1 ; m1, ml method add = 0 ; end" ;
-
-
-  private static String BODY_ERROR_302 = "class (self) inherit a1, ak ; m1 method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_303 = "class (self) inherit a1, ak ; m1 method add = 0 ; end" ;
-
-
-  private static String BODY_ERROR_304 = "class (self) inherit a1 ; m1 method add = 0 ;" ;
-
-
-  private static String BODY_ERROR_305 = "class (self) inherit a1 ; m1 method add = 0 ; end" ;
+  private static String BODY_ERROR_237 = "class (self) inherit a1 ; ; method add = 0 ; end" ;
 
 
   private static String NEW = "new e" ;
@@ -3931,24 +3721,7 @@ public class ParserTest
       BODY_ERROR_223 , BODY_ERROR_224 , BODY_ERROR_225 , BODY_ERROR_226 ,
       BODY_ERROR_227 , BODY_ERROR_228 , BODY_ERROR_229 , BODY_ERROR_230 ,
       BODY_ERROR_231 , BODY_ERROR_232 , BODY_ERROR_233 , BODY_ERROR_234 ,
-      BODY_ERROR_235 , BODY_ERROR_236 , BODY_ERROR_237 , BODY_ERROR_238 ,
-      BODY_ERROR_239 , BODY_ERROR_240 , BODY_ERROR_241 , BODY_ERROR_242 ,
-      BODY_ERROR_243 , BODY_ERROR_244 , BODY_ERROR_245 , BODY_ERROR_246 ,
-      BODY_ERROR_247 , BODY_ERROR_248 , BODY_ERROR_249 , BODY_ERROR_250 ,
-      BODY_ERROR_251 , BODY_ERROR_252 , BODY_ERROR_253 , BODY_ERROR_254 ,
-      BODY_ERROR_255 , BODY_ERROR_256 , BODY_ERROR_257 , BODY_ERROR_258 ,
-      BODY_ERROR_259 , BODY_ERROR_260 , BODY_ERROR_261 , BODY_ERROR_262 ,
-      BODY_ERROR_263 , BODY_ERROR_264 , BODY_ERROR_265 , BODY_ERROR_266 ,
-      BODY_ERROR_267 , BODY_ERROR_268 , BODY_ERROR_269 , BODY_ERROR_270 ,
-      BODY_ERROR_271 , BODY_ERROR_272 , BODY_ERROR_273 , BODY_ERROR_274 ,
-      BODY_ERROR_275 , BODY_ERROR_276 , BODY_ERROR_277 , BODY_ERROR_278 ,
-      BODY_ERROR_279 , BODY_ERROR_280 , BODY_ERROR_281 , BODY_ERROR_282 ,
-      BODY_ERROR_283 , BODY_ERROR_284 , BODY_ERROR_285 , BODY_ERROR_286 ,
-      BODY_ERROR_287 , BODY_ERROR_288 , BODY_ERROR_289 , BODY_ERROR_290 ,
-      BODY_ERROR_291 , BODY_ERROR_292 , BODY_ERROR_293 , BODY_ERROR_294 ,
-      BODY_ERROR_295 , BODY_ERROR_296 , BODY_ERROR_297 , BODY_ERROR_298 ,
-      BODY_ERROR_299 , BODY_ERROR_300 , BODY_ERROR_301 , BODY_ERROR_302 ,
-      BODY_ERROR_303 , BODY_ERROR_304 , BODY_ERROR_305 , NEW_ERROR } ;
+      BODY_ERROR_235 , BODY_ERROR_236 , BODY_ERROR_237 , NEW_ERROR } ;
 
 
   private static String [ ] L2CTYPE_NORMAL = new String [ ]
@@ -4319,15 +4092,6 @@ public class ParserTest
       + L4TYPE_ERROR.length ;
 
 
-  public static String delete ( String s )
-  {
-    return s.replaceAll ( "<html>" , "" ).replaceAll ( "</html>" , "" )
-        .replaceAll ( "<sub>" , "" ).replaceAll ( "</sub>" , "" ).replaceAll (
-            "&lt" , "<" ).replaceAll ( "&gt" , ">" ).replaceAll ( "&amp" , "&" )
-        .replaceAll ( "<br>" , "  -  " ) ;
-  }
-
-
   public static String fillString ( String s , int i )
   {
     StringBuilder result = new StringBuilder ( s.length ( ) + i ) ;
@@ -4528,14 +4292,14 @@ public class ParserTest
     {
       output ( "Multi:      \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e1.getMessage ( ) ) , Output.ERROR ) ;
+          + e1.getMessage ( ) , Output.ERROR ) ;
       return false ;
     }
     catch ( LanguageParserWarningException e1 )
     {
       output ( "Warning:    \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e1.getMessage ( ) ) , Output.NORMAL ) ;
+          + "Insert text: \"" + e1.getInsertText ( ) + "\"" , Output.NORMAL ) ;
       // Insert the first time
       text.insert ( e1.getRight ( ) , e1.getInsertText ( ) ) ;
       try
@@ -4592,7 +4356,7 @@ public class ParserTest
             {
               output ( "Inserted:   \""
                   + fillString ( text + "\"" , max - text.length ( ) + 1 )
-                  + "   " + delete ( e5.getMessage ( ) ) , Output.ERROR ) ;
+                  + "   " + e5.getMessage ( ) , Output.ERROR ) ;
               return false ;
             }
           }
@@ -4600,7 +4364,7 @@ public class ParserTest
           {
             output ( "Inserted:   \""
                 + fillString ( text + "\"" , max - text.length ( ) + 1 )
-                + "   " + delete ( e4.getMessage ( ) ) , Output.ERROR ) ;
+                + "   " + e4.getMessage ( ) , Output.ERROR ) ;
             return false ;
           }
         }
@@ -4608,7 +4372,7 @@ public class ParserTest
         {
           output ( "Inserted:   \""
               + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-              + delete ( e3.getMessage ( ) ) , Output.ERROR ) ;
+              + e3.getMessage ( ) , Output.ERROR ) ;
           return false ;
         }
       }
@@ -4616,7 +4380,7 @@ public class ParserTest
       {
         output ( "Inserted:   \""
             + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-            + delete ( e2.getMessage ( ) ) , Output.ERROR ) ;
+            + e2.getMessage ( ) , Output.ERROR ) ;
         return false ;
       }
     }
@@ -4624,14 +4388,14 @@ public class ParserTest
     {
       output ( "Parser:     \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e1.getMessage ( ) ) , Output.ERROR ) ;
+          + e1.getMessage ( ) , Output.ERROR ) ;
       return false ;
     }
     catch ( Exception e1 )
     {
       output ( "Exception:  \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e1.getMessage ( ) ) , Output.ERROR ) ;
+          + e1.getMessage ( ) , Output.ERROR ) ;
       return false ;
     }
     return true ;
@@ -4654,14 +4418,14 @@ public class ParserTest
     {
       output ( "Multi:      \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e1.getMessage ( ) ) , Output.ERROR ) ;
+          + e1.getMessage ( ) , Output.ERROR ) ;
       return false ;
     }
     catch ( LanguageParserWarningException e1 )
     {
       output ( "Warning:    \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e1.getMessage ( ) ) , Output.NORMAL ) ;
+          + "Insert text: \"" + e1.getInsertText ( ) + "\"" , Output.NORMAL ) ;
       // Insert the first time
       text.insert ( e1.getRight ( ) , e1.getInsertText ( ) ) ;
       try
@@ -4716,7 +4480,7 @@ public class ParserTest
             {
               output ( "Inserted:   \""
                   + fillString ( text + "\"" , max - text.length ( ) + 1 )
-                  + "   " + delete ( e5.getMessage ( ) ) , Output.ERROR ) ;
+                  + "   " + e5.getMessage ( ) , Output.ERROR ) ;
               return false ;
             }
           }
@@ -4724,7 +4488,7 @@ public class ParserTest
           {
             output ( "Inserted:   \""
                 + fillString ( text + "\"" , max - text.length ( ) + 1 )
-                + "   " + delete ( e4.getMessage ( ) ) , Output.ERROR ) ;
+                + "   " + e4.getMessage ( ) , Output.ERROR ) ;
             return false ;
           }
         }
@@ -4732,7 +4496,7 @@ public class ParserTest
         {
           output ( "Inserted:   \""
               + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-              + delete ( e3.getMessage ( ) ) , Output.ERROR ) ;
+              + e3.getMessage ( ) , Output.ERROR ) ;
           return false ;
         }
       }
@@ -4740,7 +4504,7 @@ public class ParserTest
       {
         output ( "Inserted:   \""
             + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-            + delete ( e2.getMessage ( ) ) , Output.ERROR ) ;
+            + e2.getMessage ( ) , Output.ERROR ) ;
         return false ;
       }
     }
@@ -4748,14 +4512,14 @@ public class ParserTest
     {
       output ( "Parser:     \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e1.getMessage ( ) ) , Output.ERROR ) ;
+          + e1.getMessage ( ) , Output.ERROR ) ;
       return false ;
     }
     catch ( Exception e1 )
     {
       output ( "Exception:  \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e1.getMessage ( ) ) , Output.ERROR ) ;
+          + e1.getMessage ( ) , Output.ERROR ) ;
       return false ;
     }
     return true ;
@@ -4777,28 +4541,28 @@ public class ParserTest
     {
       output ( "Multi:      \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
+          + e.getMessage ( ) , Output.ERROR ) ;
       return false ;
     }
     catch ( LanguageParserWarningException e )
     {
       output ( "Warning:    \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
+          + e.getMessage ( ) , Output.ERROR ) ;
       return false ;
     }
     catch ( LanguageParserException e )
     {
       output ( "Parser:     \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
+          + e.getMessage ( ) , Output.ERROR ) ;
       return false ;
     }
     catch ( Exception e )
     {
       output ( "Exception:  \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
+          + e.getMessage ( ) , Output.ERROR ) ;
       return false ;
     }
     return true ;
@@ -4820,28 +4584,28 @@ public class ParserTest
     {
       output ( "Multi:      \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
+          + e.getMessage ( ) , Output.ERROR ) ;
       return false ;
     }
     catch ( LanguageParserWarningException e )
     {
       output ( "Warning:    \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
+          + e.getMessage ( ) , Output.ERROR ) ;
       return false ;
     }
     catch ( LanguageParserException e )
     {
       output ( "Parser:     \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
+          + e.getMessage ( ) , Output.ERROR ) ;
       return false ;
     }
     catch ( Exception e )
     {
       output ( "Exception:  \""
           + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-          + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
+          + e.getMessage ( ) , Output.ERROR ) ;
       return false ;
     }
     return true ;
@@ -6035,7 +5799,7 @@ public class ParserTest
       {
         output ( "Exception:  \""
             + fillString ( text + "\"" , max - text.length ( ) + 1 ) + "   "
-            + delete ( e.getMessage ( ) ) , Output.ERROR ) ;
+            + e.getMessage ( ) , Output.ERROR ) ;
         okay = false ;
       }
     }
