@@ -26,6 +26,7 @@ import de.unisiegen.tpml.graphics.outline.Outline;
 import de.unisiegen.tpml.ui.EditorComponent;
 import de.unisiegen.tpml.ui.SideBar;
 import de.unisiegen.tpml.ui.SideBarListener;
+import de.unisiegen.tpml.ui.editor.TextEditorPanel;
 
 
 /**
@@ -171,7 +172,15 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 			 @ SuppressWarnings ( "synthetic-access" )
 		      public void markText ( int left , int right )
 		      {
-				 SubTypingSourceView.this.selectErrorText ( left , right ) ;
+          if ( ( SubTypingSourceView.this.editor.getSelectionStart ( ) == left )
+              && ( SubTypingSourceView.this.editor.getSelectionEnd ( ) == right ) )
+          {
+            SubTypingSourceView.this.removeSelectedText ( ) ;
+          }
+          else
+          {
+            SubTypingSourceView.this.selectErrorText ( left , right ) ;
+          }
 		      }
 
 
@@ -279,7 +288,15 @@ this.editor2 = new StyledLanguageEditor ( );
 			 @ SuppressWarnings ( "synthetic-access" )
 		      public void markText ( int left , int right )
 		      {
-				 SubTypingSourceView.this.selectErrorText ( left , right ) ;
+         if ( ( SubTypingSourceView.this.editor2.getSelectionStart ( ) == left )
+             && ( SubTypingSourceView.this.editor2.getSelectionEnd ( ) == right ) )
+         {
+           SubTypingSourceView.this.removeSelectedText2 ( ) ;
+         }
+         else
+         {
+           SubTypingSourceView.this.selectErrorText2 ( left , right ) ;
+         }
 		      }
 
 
@@ -445,7 +462,47 @@ this.editor2 = new StyledLanguageEditor ( );
     this.add ( this.jSplitPane , gridBagConstraints ) ;
   }
 
-
+  public void removeSelectedText ( )
+  {
+    int start = this.editor.getSelectionStart ( ) ;
+    int end = this.editor.getSelectionEnd ( ) ;
+    try
+    {
+      if ( start < end )
+      {
+        this.sourceField.remove ( start , ( end - start ) ) ;
+      }
+      else
+      {
+        this.sourceField.remove ( end , ( start - end ) ) ;
+      }
+    }
+    catch ( BadLocationException e )
+    {
+      // Do nothing
+    }
+  }
+  
+  public void removeSelectedText2 ( )
+  {
+    int start = this.editor2.getSelectionStart ( ) ;
+    int end = this.editor2.getSelectionEnd ( ) ;
+    try
+    {
+      if ( start < end )
+      {
+        this.sourceField2.remove ( start , ( end - start ) ) ;
+      }
+      else
+      {
+        this.sourceField2.remove ( end , ( start - end ) ) ;
+      }
+    }
+    catch ( BadLocationException e )
+    {
+      // Do nothing
+    }
+  }
   /**
    * Returns the jSplitPane.
    * 
@@ -481,7 +538,11 @@ this.editor2 = new StyledLanguageEditor ( );
 	private void selectErrorText (int left, int right) {
 		this.editor.select(left, right);
 	}
-	
+
+  private void selectErrorText2 (int left, int right) {
+    this.editor2.select(left, right);
+  }
+  
 	public MonoType eventHandling(StyledLanguageEditor editor, MonoType pType,
 			MonoType oldType, DefaultOutline outline) {
 		MonoType type;

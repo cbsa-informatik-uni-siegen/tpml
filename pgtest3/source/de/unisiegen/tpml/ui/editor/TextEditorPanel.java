@@ -43,7 +43,8 @@ import de.unisiegen.tpml.ui.SideBarListener ;
  * @version $Rev: 1249 $
  * @see de.unisiegen.tpml.ui.EditorComponent
  */
-@SuppressWarnings("all")public class TextEditorPanel extends JPanel implements EditorComponent ,
+@ SuppressWarnings ( "all" )
+public class TextEditorPanel extends JPanel implements EditorComponent ,
     ClipboardOwner
 {
   private class MenuListener implements ActionListener
@@ -441,7 +442,15 @@ import de.unisiegen.tpml.ui.SideBarListener ;
     {
       public void markText ( int left , int right )
       {
-        TextEditorPanel.this.selectErrorText ( left , right ) ;
+        if ( ( TextEditorPanel.this.editor.getSelectionStart ( ) == left )
+            && ( TextEditorPanel.this.editor.getSelectionEnd ( ) == right ) )
+        {
+          TextEditorPanel.this.removeSelectedText ( ) ;
+        }
+        else
+        {
+          TextEditorPanel.this.selectErrorText ( left , right ) ;
+        }
       }
 
 

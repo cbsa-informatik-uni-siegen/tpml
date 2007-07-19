@@ -185,7 +185,10 @@ public class SideBar extends JComponent
     }
     gc.setColor ( getBackground ( ) ) ;
     gc.fillRect ( 0 , 0 , getWidth ( ) , getHeight ( ) ) ;
-    if ( this.verticalPositions == null ) { return ; }
+    if ( this.verticalPositions == null )
+    {
+      return ;
+    }
     for ( int i = 0 ; i < this.verticalPositions.length ; i ++ )
     {
       if ( this.verticalPositions [ i ] == - 1 )
@@ -224,7 +227,10 @@ public class SideBar extends JComponent
         this.verticalPositions [ i ] = - 1 ;
         Rectangle rect = this.textComponent.modelToView ( this.exceptions [ i ]
             .getLeft ( ) ) ;
-        if ( rect == null ) { return ; }
+        if ( rect == null )
+        {
+          return ;
+        }
         this.verticalPositions [ i ] = rect.y + rect.height / 2 ;
       }
       catch ( Exception e )
@@ -238,7 +244,10 @@ public class SideBar extends JComponent
 
   private void mouseMoved ( MouseEvent event )
   {
-    if ( this.verticalPositions == null ) { return ; }
+    if ( this.verticalPositions == null )
+    {
+      return ;
+    }
     int y = event.getY ( ) + this.vScrollBar.getValue ( ) ;
     int hh = this.errorIcon.getIconHeight ( ) / 2 ;
     for ( int i = 0 ; i < this.verticalPositions.length ; i ++ )
@@ -262,7 +271,10 @@ public class SideBar extends JComponent
 
   public void mouseSelected ( MouseEvent event )
   {
-    if ( this.currentLeft == - 1 || this.currentRight == - 1 ) { return ; }
+    if ( this.currentLeft == - 1 || this.currentRight == - 1 )
+    {
+      return ;
+    }
     int y = event.getY ( ) + this.vScrollBar.getValue ( ) ;
     int hh = this.errorIcon.getIconHeight ( ) / 2 ;
     for ( int i = 0 ; i < this.verticalPositions.length ; i ++ )
@@ -276,8 +288,8 @@ public class SideBar extends JComponent
           this.currentLeft = this.exceptions [ i ].getLeft ( ) ;
           this.currentRight = this.exceptions [ i ].getRight ( ) ;
           fireInsertText ( e.getInsertText ( ) ) ;
+          return ;
         }
-        return ;
       }
     }
     fireSelectCurrentException ( ) ;
