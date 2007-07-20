@@ -79,12 +79,91 @@ auf das Icon zu beheben.
 \section {Outline}
 \label{Beweiswerkzeuge}
 \index{Outline}
-TODO Christian
+Die Outline erlaubt es dem Anwender eingegebene Ausdr"ucke und Typen
+in ihrer Baumansicht zu betrachten. Der Anwender ist somit in der Lage
+zu erkennen aus welchen Teilen ein Ausdruck oder Typ besteht. So ist zum
+Beispiel bei dem Ausdruck \glqq{\bf 1 + 1 + 1}\grqq\ nicht auf den ersten
+Blick ersichtlich, wie sich die Applikationen zusammengesetzen. In der
+Outline wird sichtbar, dass der Ausdruck wie folgt geklammert gesehen
+werden kann \glqq{\bf (1 + 1) + 1}\grqq. Dieses Resultat ist nicht
+besonders "uberraschend, betrachtet man aber den Funktions-Typen
+\glqq{\bf int} $\to$ {\bf int} $\to$ {\bf int}\grqq, so ergibt sich
+folgende Klammerung \glqq{\bf int} $\to$ ({\bf int} $\to$ {\bf int})\grqq.
+Der Anwender kann dar"uber hinaus erkennen, um welche Ausdr"ucke es sich
+handelt, da der Name in der Outline dargestellt wird. Vor dem Namen des
+Ausdrucks steht immer die Menge zu der er geh"ort, diese Menge ist zumeist
+\glqq{\bf e}\grqq\ oder \glqq{\bf v}\grqq, falls es sich um ein Value handelt.
+Es sind aber f"ur Identifier, Reihen, Typen etc. auch viele andere Mengen
+vorhanden. Neben der Menge zu der ein Ausdruck oder Typ geh"ort, wird auch
+sein Index dagestellt. Dadurch ist erkennbar, aus welchen Teilen sich ein
+Ausdruck oder Typ zusammensetzt.
 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=7cm]{images/outline.png}
+\caption{Outline}
+\end{center}
+\end{figure}
 
+\subsection {Einstellungen}
+Die Outline bietet verschiedene Einstellungsm"oglichenkeiten, die nun
+kurz angesprochen werden sollen.
 
+{\bf Hervorheben} bietet die M"oglichkeit, den aktuell in der Outline
+selektierten Knoten in h"oheren Knoten zu markieren. Ist zum Beispiel
+der Ausdruck \glqq{\bf let x = 1+1 in x}\grqq\ in der Outline geladen,
+und der Knoten \glqq{\bf 1+1}\grqq\ selektiert, wird der zweite Ausdruck
+in dem ersten hervorgehoben. Die Farbe der Hervorhebung kann, wie alle
+anderen Farben auch, in den Einstellungen von \TPML\ ver"andert werden.
 
+{\bf Gebundene} steht daf"ur, dass gebundene Identifier und Typ-Namen,
+wenn sie in der Outline selektiert werden, in h"oheren Knoten 
+hervorgehoben werden. Der Ausdruck \glqq{\bf lambda x.x+1}\grqq\ besteht
+aus einen Identifier \glqq{\bf x}\grqq\ und aus einem Kind-Ausdruck
+\glqq{\bf x+1}\grqq. Selektiert man nun den Identifier, werden bei
+aktiver Option alle Identifier hervorgehoben, die an diesen Identifier
+gebunden sind. Dieses funktioniert auch umgekehrt, wird also das
+\glqq{\bf x}\grqq\ im Ausdruck \glqq{\bf x+1}\grqq\ selektiert, wird der
+Identifier hervorgehoben, an den dieser Identifier gebunden ist. Vor allem
+bei komplizierteren Ausdr"ucken mit gleichen Identifiern wie 
+\glqq{\bf let x = 1 in x + let x = 2 in x}\grqq\ k"onnen so die Bindungen
+durch die Outline "uberpr"uft werden.
 
+Wenn {\bf Freie} aktiv ist, werden freie Identifier und Type-Namen in der
+Outline hervorgehoben. Dies ist besonders n"utzlich, da freie Identifier
+oder Type-Namen meist auf eine fehlerhafte Eingabe zur"uckzuf"uhren sind.
+Gibt der Anwender zum Beispiel \glqq{\bf let x = a in x}\grqq\ ein, ist 
+dies nat"urlich nicht falsch, aber der Type Checker w"urde den Ausdruck
+nicht akzeptieren, da das \glqq{\bf a}\grqq\ in dem Ausdruck frei 
+vorkommend ist. Es werden allerdings nur Identifier und Type-Namen
+hervorgehoben, die in dem Wurzel Knoten frei vorkommend sind und nicht
+alle, in den jeweiligen Knoten frei vorkommenden Identifier oder Typ-Namen.
+
+Die Option {\bf Ersetzen} steht daf"ur, dass der selektierte Ausdruck
+in h"oheren Knoten durch \glqq{\bf ...}\grqq\ ersetzt wird. Dadurch
+werden h"ohere Knoten kompakter dargestellt, was bei gr"o"seren Ausdr"ucken
+von Vorteil ist.
+
+Ist die Option {\bf Source Code} aktiv, wird der Source Code im jeweiligen
+Quelltexteditor hervorgehoben, der dem selektiertem Knoten in der Outline
+entspricht. Ist diese Option nicht aktiv, kann der Source Code durch einen
+Doppelklick auf den Outline Knoten ebenfalls hervorgehoben werden. Diese
+Option ist nur bei den Quelltexteditor verf"ugbar und nicht bei den
+verschiedenen Beweiswerkzeugen.
+
+{\bf Auto Update} steht daf"ur, dass die Outline automatisch geladen wird,
+wenn sich etwas "andert, dies geschieht nach einer gewollten Verz"ogerung,
+die n"otig ist, damit sich nicht zu viele "Anderungen ergeben. Diese Option
+ist nur in Ansichten aktiv, in denen "Anderungen eindeutig sind, also in den
+Quelltexteditoren und im Small Step Interpreter. In den anderen
+Beweiswerkzeugen k"onnen bei einem Schritt mehrere Knoten erzeugt werden
+und ein Laden der Outline w"are nicht eindeutig m"oglich.
+Ist die Option nicht aktiv oder gar nicht verf"ugbar, kann der Anwender auf 
+die entsprechenden Ausdr"ucke oder Typen klicken und diese werden dann geladen.
+Gleiches gilt f"ur die Quelltexteditoren, klickt man mit der Maus auf den
+Editor, wird der aktuelle Ausdruck oder Typ in die Outline geladen. Ist im
+Quelltexteditor im Moment kein g"ultiger Ausdruck geladen, wird die Outline
+rot umrandet.
 
 
 \section {Beweiswerkzeuge}
