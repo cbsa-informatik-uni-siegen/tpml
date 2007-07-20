@@ -84,7 +84,7 @@ public class FileWizardLogic
 	  	int newCategory=-1;
 	  	try
 	  	{
-	  		newCategory = Integer.valueOf(""+name.toCharArray()[1]);
+	  		newCategory = Integer.parseInt(""+name.toCharArray()[1]);
 	  	}
 	  	catch (IndexOutOfBoundsException iofb)
 	  	{
