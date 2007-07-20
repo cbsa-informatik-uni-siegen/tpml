@@ -1388,10 +1388,18 @@ simple_expr						::=	constant:c
 									{: RESULT = c; :}
 								|	identifier:id
 									{: RESULT = id; :}
-								|	LPAREN operator:o RPAREN
-									{: RESULT = o; :}
-								|	LPAREN seq_expr:e RPAREN
-									{: RESULT = e; :}
+								|	LPAREN:l operator:o RPAREN:r
+									{: 
+									   o.setParserStartOffset(lleft);
+									   o.setParserEndOffset(rright);
+									   RESULT = o;
+									:}
+								|	LPAREN:l seq_expr:e RPAREN:r
+									{: 
+									   e.setParserStartOffset(lleft);
+									   e.setParserEndOffset(rright);
+									   RESULT = e;
+									:}
 								|	coercion:c
 									{: RESULT = c; :}
 								|	tuple:t
@@ -1443,7 +1451,11 @@ type							::=	simple_type:t
 								;
 
 simple_type						::=	LPAREN:l type:t RPAREN:r
-									{: RESULT = t; :}
+									{: 
+									   t.setParserStartOffset(lleft);
+									   t.setParserEndOffset(rright);
+									   RESULT = t;
+									:}
 								|	boolean_type:b
 									{: RESULT = b; :}
 								|	integer_type:i

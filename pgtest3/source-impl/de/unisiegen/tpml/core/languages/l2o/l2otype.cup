@@ -71,7 +71,11 @@ type							::=	simple_type:t
 								;
 
 simple_type						::=	LPAREN:l type:t RPAREN:r
-									{: RESULT = t; :}
+									{: 
+									   t.setParserStartOffset(lleft);
+									   t.setParserEndOffset(rright);
+									   RESULT = t;
+									:}
 								|	boolean_type:b
 									{: RESULT = b; :}
 								|	integer_type:i

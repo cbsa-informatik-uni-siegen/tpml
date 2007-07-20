@@ -206,12 +206,18 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
   /**
    * The start offset of this {@link Expression} in the source code.
+   * 
+   * @see #getParserStartOffset()
+   * @see #setParserStartOffset(int)
    */
   protected int parserStartOffset = - 1 ;
 
 
   /**
    * The end offset of this {@link Expression} in the source code.
+   * 
+   * @see #getParserEndOffset()
+   * @see #setParserEndOffset(int)
    */
   protected int parserEndOffset = - 1 ;
 
@@ -426,6 +432,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return The parserEndOffset.
    * @see #parserEndOffset
+   * @see #setParserEndOffset(int)
    */
   public int getParserEndOffset ( )
   {
@@ -438,6 +445,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return The parserStartOffset.
    * @see #parserStartOffset
+   * @see #setParserStartOffset(int)
    */
   public int getParserStartOffset ( )
   {
@@ -570,6 +578,32 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   public final void setParent ( PrettyPrintable pParent )
   {
     this.parent = pParent ;
+  }
+
+
+  /**
+   * Sets the parser end offset.
+   * 
+   * @param pParserEndOffset The new parser end offset.
+   * @see #getParserEndOffset()
+   * @see #parserEndOffset
+   */
+  public void setParserEndOffset ( int pParserEndOffset )
+  {
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
+   * Sets the parser start offset.
+   * 
+   * @param pParserStartOffset The new parser start offset.
+   * @see #getParserStartOffset()
+   * @see #parserStartOffset
+   */
+  public void setParserStartOffset ( int pParserStartOffset )
+  {
+    this.parserStartOffset = pParserStartOffset ;
   }
 
 

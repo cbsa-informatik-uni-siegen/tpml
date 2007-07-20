@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.types ;
 
 
 import java.util.ArrayList ;
+import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
@@ -86,13 +87,19 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
 
 
   /**
-   * The start offset of this {@link Type} in the source code.
+   * The start offset of this {@link Expression} in the source code.
+   * 
+   * @see #getParserStartOffset()
+   * @see #setParserStartOffset(int)
    */
   protected int parserStartOffset = - 1 ;
 
 
   /**
-   * The end offset of this {@link Type} in the source code.
+   * The end offset of this {@link Expression} in the source code.
+   * 
+   * @see #getParserEndOffset()
+   * @see #setParserEndOffset(int)
    */
   protected int parserEndOffset = - 1 ;
 
@@ -195,6 +202,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return The parserEndOffset.
    * @see #parserEndOffset
+   * @see #setParserEndOffset(int)
    */
   public int getParserEndOffset ( )
   {
@@ -207,6 +215,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return The parserStartOffset.
    * @see #parserStartOffset
+   * @see #setParserStartOffset(int)
    */
   public int getParserStartOffset ( )
   {
@@ -278,6 +287,32 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
   public final void setParent ( PrettyPrintable pParent )
   {
     this.parent = pParent ;
+  }
+
+
+  /**
+   * Sets the parser end offset.
+   * 
+   * @param pParserEndOffset The new parser end offset.
+   * @see #getParserEndOffset()
+   * @see #parserEndOffset
+   */
+  public void setParserEndOffset ( int pParserEndOffset )
+  {
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
+   * Sets the parser start offset.
+   * 
+   * @param pParserStartOffset The new parser start offset.
+   * @see #getParserStartOffset()
+   * @see #parserStartOffset
+   */
+  public void setParserStartOffset ( int pParserStartOffset )
+  {
+    this.parserStartOffset = pParserStartOffset ;
   }
 
 
