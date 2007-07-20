@@ -69,12 +69,6 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
   protected static final long serialVersionUID = 5866657214159718809L ;
 
 
-  /**
-   * The warning color.
-   */
-  private static Color warningColor = new Color ( 232 , 242 , 254 ) ;
-
-
   //
   // Attributes
   //
@@ -639,7 +633,8 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
         {
           // setup the warning attribute set
           SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
-          StyleConstants.setBackground ( errorSet , warningColor ) ;
+          StyleConstants.setBackground ( errorSet , Theme.currentTheme ( )
+              .getParserWarningColor ( ) ) ;
           errorSet.addAttribute ( "warning" , e ) ; //$NON-NLS-1$
           // check if this is unexpected end of file
           if ( e.getLeft ( ) < 0 && e.getRight ( ) < 0 )

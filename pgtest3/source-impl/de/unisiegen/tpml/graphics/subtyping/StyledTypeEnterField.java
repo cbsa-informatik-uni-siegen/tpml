@@ -43,12 +43,6 @@ public class StyledTypeEnterField extends StyledLanguageDocument
 
 
   /**
-   * The warning color.
-   */
-  private static Color warningColor = new Color ( 232 , 242 , 254 ) ;
-
-
-  /**
    * Allocates a new <code>StyledTypeEnterDocument</code> for the given
    * <code>language</code>, where the <code>language</code> is used to
    * determine the scanner (aka lexer) for the documents content and thereby
@@ -234,7 +228,8 @@ public class StyledTypeEnterField extends StyledLanguageDocument
         {
           // setup the warning attribute set
           SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
-          StyleConstants.setBackground ( errorSet , warningColor ) ;
+          StyleConstants.setBackground ( errorSet , Theme.currentTheme ( )
+              .getParserWarningColor ( ) ) ;
           errorSet.addAttribute ( "warning" , e ) ; //$NON-NLS-1$
           // check if this is unexpected end of file
           if ( e.getLeft ( ) < 0 && e.getRight ( ) < 0 )

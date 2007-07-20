@@ -27,31 +27,24 @@ import de.unisiegen.tpml.core.util.beans.AbstractBean ;
  */
 /**
  * @author Feivel
- *
  */
 /**
  * @author Feivel
- *
  */
 /**
  * @author Feivel
- *
  */
 /**
  * @author Feivel
- *
  */
 /**
  * @author Feivel
- *
  */
 /**
  * @author Feivel
- *
  */
 /**
  * @author Feivel
- *
  */
 public final class Theme extends AbstractBean
 {
@@ -219,12 +212,30 @@ public final class Theme extends AbstractBean
 
 
   /**
-   * The {@link Color} used to binding Identifier.
+   * The {@link Color} used to render binding Identifier.
    * 
    * @see #getBindingIdColor()
    * @see #setBindingIdColor(Color)
    */
   private Color bindingIdColor ;
+
+
+  /**
+   * The {@link Color} used to render highlighted source code.
+   * 
+   * @see #getHighlightSourceCodeColor()
+   * @see #setHighlightSourceCodeColor(Color)
+   */
+  private Color highlightSourceCodeColor ;
+
+
+  /**
+   * The {@link Color} used to render parser warnings.
+   * 
+   * @see #getParserWarningColor()
+   * @see #setParserWarningColor(Color)
+   */
+  private Color parserWarningColor ;
 
 
   /**
@@ -300,6 +311,10 @@ public final class Theme extends AbstractBean
     // load the bindingIdColor setting
     this.bindingIdColor = Color.decode ( this.preferences.get (
         "bindingIdColor" , "#FF5519" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    this.highlightSourceCodeColor = Color.decode ( this.preferences.get (
+        "highlightSourceCodeColor" , "#FFFF00" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    this.parserWarningColor = Color.decode ( this.preferences.get (
+        "parserWarningColor" , "#E8F2FE" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     // load the font setting
     /*
      * FIXME: This doesn't work on Windows! (*surprise*) Font defaultFont = new
@@ -443,6 +458,19 @@ public final class Theme extends AbstractBean
 
 
   /**
+   * Returns the {@link Color} used to render highlighted source code.
+   * 
+   * @return the color for the highlighted source code.
+   * @see #setHighlightSourceCodeColor(Color)
+   * @see Color
+   */
+  public Color getHighlightSourceCodeColor ( )
+  {
+    return this.highlightSourceCodeColor ;
+  }
+
+
+  /**
    * Returns the {@link Color} used to render Identifiers in the interpreters,
    * type checker and the editor.
    * 
@@ -467,6 +495,19 @@ public final class Theme extends AbstractBean
   public Color getKeywordColor ( )
   {
     return this.keywordColor ;
+  }
+
+
+  /**
+   * Returns the {@link Color} used to render parser warnings.
+   * 
+   * @return the color for the parser warnings.
+   * @see #setParserWarningColor(Color)
+   * @see Color
+   */
+  public Color getParserWarningColor ( )
+  {
+    return this.parserWarningColor ;
   }
 
 
@@ -541,11 +582,9 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.bindingIdColor.equals ( pBindingIdColor ) )
     {
-      // update the keywordColorid
       Color oldIdColor = this.bindingIdColor ;
       this.bindingIdColor = pBindingIdColor ;
       firePropertyChange ( "bindingIdColor" , oldIdColor , pBindingIdColor ) ; //$NON-NLS-1$
-      // save the new setting
       this.preferences
           .put ( "bindingIdColor" , encodeColor ( pBindingIdColor ) ) ; //$NON-NLS-1$
     }
@@ -570,11 +609,9 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.boundIdColor.equals ( pBoundIdColor ) )
     {
-      // update the boundIdColor
       Color oldBindingColor = this.boundIdColor ;
       this.boundIdColor = pBoundIdColor ;
       firePropertyChange ( "boundIdColor" , oldBindingColor , pBoundIdColor ) ; //$NON-NLS-1$
-      // save the new setting
       this.preferences.put ( "boundIdColor" , encodeColor ( pBoundIdColor ) ) ; //$NON-NLS-1$
     }
   }
@@ -597,11 +634,9 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.commentColor.equals ( pCommentColor ) )
     {
-      // update the commentColor
       Color oldCommentColor = this.commentColor ;
       this.commentColor = pCommentColor ;
       firePropertyChange ( "commentColor" , oldCommentColor , pCommentColor ) ; //$NON-NLS-1$
-      // save the new setting
       this.preferences.put ( "commentColor" , encodeColor ( pCommentColor ) ) ; //$NON-NLS-1$
     }
   }
@@ -624,11 +659,9 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.constantColor.equals ( pConstantColor ) )
     {
-      // update the constantColor
       Color oldConstantColor = this.constantColor ;
       this.constantColor = pConstantColor ;
       firePropertyChange ( "constantColor" , oldConstantColor , pConstantColor ) ; //$NON-NLS-1$
-      // save the new setting
       this.preferences.put ( "constantColor" , encodeColor ( pConstantColor ) ) ; //$NON-NLS-1$
     }
   }
@@ -652,12 +685,10 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.environmentColor.equals ( pEnvironmentColor ) )
     {
-      // update the environmentColor
       Color oldEnvironmentColor = this.environmentColor ;
       this.environmentColor = pEnvironmentColor ;
       firePropertyChange ( "environmentColor" , oldEnvironmentColor , //$NON-NLS-1$
           pEnvironmentColor ) ;
-      // save the new setting
       this.preferences.put ( "environmentColor" , //$NON-NLS-1$
           encodeColor ( pEnvironmentColor ) ) ;
     }
@@ -682,12 +713,10 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.expressionColor.equals ( pExpressionColor ) )
     {
-      // update the expressionColor
       Color oldExpressionColor = this.expressionColor ;
       this.expressionColor = pExpressionColor ;
       firePropertyChange ( "expressionColor" , oldExpressionColor , //$NON-NLS-1$
           pExpressionColor ) ;
-      // save the new setting
       this.preferences.put (
           "expressionColor" , encodeColor ( pExpressionColor ) ) ; //$NON-NLS-1$
     }
@@ -718,16 +747,17 @@ public final class Theme extends AbstractBean
     throw new UnsupportedOperationException (
         "Setting custom fonts mess up TPML on Windows!" ) ; //$NON-NLS-1$
   }
-  
-  
+
+
   /**
-   * changes the global font-size that is used fot renders and editors to 
-   * the given size
+   * changes the global font-size that is used fot renders and editors to the
+   * given size
+   * 
    * @param size the new sizer;
    */
-  public void setFontSize (int size)
+  public void setFontSize ( int size )
   {
-  	font = font.deriveFont ( (float) size );
+    this.font = this.font.deriveFont ( ( float ) size ) ;
   }
 
 
@@ -749,12 +779,39 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.freeIdColor.equals ( pFreeIdColor ) )
     {
-      // update the freeIdColor
       Color oldUnboundColor = this.freeIdColor ;
       this.freeIdColor = pFreeIdColor ;
       firePropertyChange ( "freeIdColor" , oldUnboundColor , pFreeIdColor ) ; //$NON-NLS-1$
-      // save the new setting
       this.preferences.put ( "freeIdColor" , encodeColor ( pFreeIdColor ) ) ; //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * Sets the color that should be used to render highlighted source code to the
+   * specified <code>pHighlightSourceCodeColor</code>.
+   * 
+   * @param pHighlightSourceCodeColor the color forhighlighted source code.
+   * @see #getHighlightSourceCodeColor()
+   * @see Color
+   * @throws NullPointerException if <code>pHighlightSourceCodeColor</code> is
+   *           <code>null</code>.
+   */
+  public void setHighlightSourceCodeColor ( Color pHighlightSourceCodeColor )
+  {
+    if ( pHighlightSourceCodeColor == null )
+    {
+      throw new NullPointerException ( "highlightSourceCodeColor is null" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.highlightSourceCodeColor.equals ( pHighlightSourceCodeColor ) )
+    {
+      Color oldSourceColor = this.highlightSourceCodeColor ;
+      this.highlightSourceCodeColor = pHighlightSourceCodeColor ;
+      firePropertyChange (
+          "highlightSourceCodeColor" , oldSourceColor , pHighlightSourceCodeColor ) ; //$NON-NLS-1$
+      this.preferences
+          .put (
+              "highlightSourceCodeColor" , encodeColor ( pHighlightSourceCodeColor ) ) ; //$NON-NLS-1$
     }
   }
 
@@ -777,12 +834,10 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.identifierColor.equals ( pIdentifierColor ) )
     {
-      // update the identifierColor
       Color oldIdentifierColor = this.identifierColor ;
       this.identifierColor = pIdentifierColor ;
       firePropertyChange (
           "identifierColor" , oldIdentifierColor , pIdentifierColor ) ; //$NON-NLS-1$
-      // save the new setting
       this.preferences.put (
           "identifierColor" , encodeColor ( pIdentifierColor ) ) ; //$NON-NLS-1$
     }
@@ -807,12 +862,38 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.keywordColor.equals ( pKeywordColor ) )
     {
-      // update the keywordColor
       Color oldKeywordColor = this.keywordColor ;
       this.keywordColor = pKeywordColor ;
       firePropertyChange ( "keywordColor" , oldKeywordColor , pKeywordColor ) ; //$NON-NLS-1$
-      // save the new setting
       this.preferences.put ( "keywordColor" , encodeColor ( pKeywordColor ) ) ; //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * Sets the color that should be used to render parser warnings to the
+   * specified <code>pParserWarningColor</code>.
+   * 
+   * @param pParserWarningColor the color for parser warnings.
+   * @see #getParserWarningColor()
+   * @see Color
+   * @throws NullPointerException if <code>pParserWarningColor</code> is
+   *           <code>null</code>.
+   */
+  public void setParserWarningColor ( Color pParserWarningColor )
+  {
+    if ( pParserWarningColor == null )
+    {
+      throw new NullPointerException ( "parserWarningColor is null" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.parserWarningColor.equals ( pParserWarningColor ) )
+    {
+      Color oldParserColor = this.parserWarningColor ;
+      this.parserWarningColor = pParserWarningColor ;
+      firePropertyChange (
+          "parserWarningColor" , oldParserColor , pParserWarningColor ) ; //$NON-NLS-1$
+      this.preferences.put (
+          "parserWarningColor" , encodeColor ( pParserWarningColor ) ) ; //$NON-NLS-1$
     }
   }
 
@@ -835,11 +916,9 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.ruleColor.equals ( pRuleColor ) )
     {
-      // update the ruleColor
       Color oldRuleColor = this.ruleColor ;
       this.ruleColor = pRuleColor ;
       firePropertyChange ( "ruleColor" , oldRuleColor , pRuleColor ) ; //$NON-NLS-1$
-      // save the new setting
       this.preferences.put ( "ruleColor" , encodeColor ( pRuleColor ) ) ; //$NON-NLS-1$
     }
   }

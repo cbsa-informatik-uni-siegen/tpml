@@ -1391,6 +1391,7 @@ public final class DefaultOutline implements Outline
    */
   public final void propertyChanged ( )
   {
+    updateHighlighSourceCode ( true ) ;
     propertyChanged ( this.rootNode ) ;
   }
 
@@ -1777,10 +1778,10 @@ public final class DefaultOutline implements Outline
   /**
    * Updates the highlighting of the source code.
    * 
-   * @param pSelected The selection of the <code>JCheckBox</code> selection or
-   *          the <code>JCheckBoxMenuItem</code> selection.
+   * @param pHighlight True, if the source code should be highlighted. False, if
+   *          the source code should be reseted.
    */
-  public final void updateHighlighSourceCode ( boolean pSelected )
+  public final void updateHighlighSourceCode ( boolean pHighlight )
   {
     StyledLanguageDocument document ;
     if ( this.sourceView != null )
@@ -1816,7 +1817,7 @@ public final class DefaultOutline implements Outline
     {
       // Do nothing
     }
-    if ( pSelected )
+    if ( pHighlight )
     {
       TreePath treePath = this.uI.getJTreeOutline ( ).getSelectionPath ( ) ;
       if ( treePath == null )
@@ -1830,7 +1831,8 @@ public final class DefaultOutline implements Outline
         Expression expression = ( Expression ) outlineNode
             .getExpressionOrType ( ) ;
         SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
-        StyleConstants.setBackground ( freeSet , Color.YELLOW ) ;
+        StyleConstants.setBackground ( freeSet , Theme.currentTheme ( )
+            .getHighlightSourceCodeColor ( ) ) ;
         freeSet.addAttribute ( SELECTED , SELECTED ) ;
         document.setCharacterAttributes ( expression.getParserStartOffset ( ) ,
             expression.getParserEndOffset ( )
@@ -1840,7 +1842,8 @@ public final class DefaultOutline implements Outline
       {
         Type type = ( Type ) outlineNode.getExpressionOrType ( ) ;
         SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
-        StyleConstants.setBackground ( freeSet , Color.YELLOW ) ;
+        StyleConstants.setBackground ( freeSet , Theme.currentTheme ( )
+            .getHighlightSourceCodeColor ( ) ) ;
         freeSet.addAttribute ( SELECTED , SELECTED ) ;
         document.setCharacterAttributes ( type.getParserStartOffset ( ) , type
             .getParserEndOffset ( )
