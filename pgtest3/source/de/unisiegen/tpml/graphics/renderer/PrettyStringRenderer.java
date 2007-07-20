@@ -48,7 +48,6 @@ public class PrettyStringRenderer extends AbstractRenderer
     /**
      * row-counts
      */
-    // / The rows used to
     public int rows ;
 
 
@@ -94,8 +93,6 @@ public class PrettyStringRenderer extends AbstractRenderer
   private CheckerResult result ;
 
 
-  // private ArrayList <CheckerResult> resultsWillBeUsed = new ArrayList
-  // <CheckerResult>();
   /**
    * The pretty printable that will be underline during the rendering.
    */
@@ -224,6 +221,9 @@ public class PrettyStringRenderer extends AbstractRenderer
   /**
    * Checks which of the previously calculated results will be used to match the
    * given maxWidth.<br>
+   * If no result fits it a new one will be calculated. First every needed brakpoint will
+   * be added. If it still does not fit breakpoits will be fored. If the maxWidth is to small 
+   * to render a singel Char the Dimension (0, 0) will be returned. 
    * <br>
    * 
    * @param maxWidth The maximum available size for this expression.
@@ -237,14 +237,15 @@ public class PrettyStringRenderer extends AbstractRenderer
     {
       return new Dimension ( 0 , 0 ) ;
     }
-    // first, find out if the normal algorithem
-    // is ok for rendering, then use it
+    // first, find out if the normal algorithem (getNeededSizeAll)
+    // is ok to render it
     Dimension dimOfOne = getNeededSize ( maxWidth ) ;
     if ( dimOfOne.width <= maxWidth )
     {
+      // so use it
       return dimOfOne ;
     }
-    // else find out everey needed preakpoint
+    // else find out everey needed breakpoint
     // get all Breakpoints
     ArrayList < Integer > allBreakPoints = new ArrayList < Integer > ( ) ;
     for ( int i = 0 ; i < results.size ( ) ; i ++ )
@@ -264,34 +265,34 @@ public class PrettyStringRenderer extends AbstractRenderer
     int actualWidth = 0 ;
     // int actualPosiotion=0;
     PrettyCharIterator it = this.prettyString.toCharacterIterator ( ) ;
-    int j = 0 ;
-    int w = 0 ;
-    for ( char c = it.first ( ) ; c != CharacterIterator.DONE ; c = it.next ( ) , j ++ )
+    int indexOfActualC = 0 ;
+    int widthOfActualC = 0 ;
+    for ( char c = it.first ( ) ; c != CharacterIterator.DONE ; c = it.next ( ) , indexOfActualC ++ )
     {
       // Find out the width of the actual char
-      w = 0 ;
+      widthOfActualC = 0 ;
       switch ( it.getStyle ( ) )
       {
         case IDENTIFIER :
-          w += AbstractRenderer.identifierFontMetrics.charWidth ( c ) ;
+          widthOfActualC += AbstractRenderer.identifierFontMetrics.charWidth ( c ) ;
           break ;
         case NONE :
-          w += AbstractRenderer.expFontMetrics.charWidth ( c ) ;
+          widthOfActualC += AbstractRenderer.expFontMetrics.charWidth ( c ) ;
           break ;
         case KEYWORD :
-          w += AbstractRenderer.keywordFontMetrics.charWidth ( c ) ;
+          widthOfActualC += AbstractRenderer.keywordFontMetrics.charWidth ( c ) ;
           break ;
         case CONSTANT :
-          w += AbstractRenderer.constantFontMetrics.charWidth ( c ) ;
+          widthOfActualC += AbstractRenderer.constantFontMetrics.charWidth ( c ) ;
           break ;
         case COMMENT :
           break ;
         case TYPE :
-          w += AbstractRenderer.typeFontMetrics.charWidth ( c ) ;
+          widthOfActualC += AbstractRenderer.typeFontMetrics.charWidth ( c ) ;
           break ;
       }
       // width of the expression is
-      actualWidth = actualWidth + w ;
+      actualWidth = actualWidth + widthOfActualC ;
       actualMaxNeededWidth = Math.max ( actualWidth , actualMaxNeededWidth ) ;
       
       // The expression has grwon to big
@@ -300,9 +301,9 @@ public class PrettyStringRenderer extends AbstractRenderer
       // force to break at this position
       if ( actualWidth > maxWidth )
       {
-      	if (j < 2)
+      	if (indexOfActualC <= 1) 
       	{
-      		//TODO Der Fall, dass die Größe kleiner ist als die Ziechen, dann klappt das nicht...
+      		// the maxWidth is smaller than the first char so it will never fit in
       		return new Dimension (0,0);
       	}
       	// use the next breakpoint bevor the actual position. If there is no breakpoint
@@ -311,24 +312,21 @@ public class PrettyStringRenderer extends AbstractRenderer
         {
         	//use the actual position -1
           //useBreakPoints.add (Math.max(0, j - 1) ) ;
-        	useBreakPoints.add (j - 1);
-          j -- ;
-          it.setIndex(j - 1);
+        	useBreakPoints.add (indexOfActualC - 1);
+          indexOfActualC -- ;
+          it.setIndex(indexOfActualC - 1);
         }
-        else if (allBreakPoints.get(0) > j - 1) // The first breakpoint is after the actual position
+        else if (allBreakPoints.get(0) > indexOfActualC - 1) // The first breakpoint is after the actual position
 				{
-					// TODO Das muss noch ausgibig getestet werden...
-					// Vergleich mit der Repository-Version!!!
-					
-					useBreakPoints.add(j - 1);
-					j--;
-					it.setIndex((j - 1));
+					useBreakPoints.add(indexOfActualC - 1);
+					indexOfActualC--;
+					it.setIndex((indexOfActualC - 1));
 				}
         else
         {
           for ( int i = 1 ; i < allBreakPoints.size ( ) ; i ++ )
           {
-            if ( allBreakPoints.get ( i ).intValue ( ) > j )
+            if ( allBreakPoints.get ( i ).intValue ( ) > indexOfActualC )
             {
             	//i is after the actual position, check, if i-1 is already used
               if ( ! useBreakPoints.contains ( allBreakPoints.get ( i - 1 ) ) )
@@ -337,14 +335,14 @@ public class PrettyStringRenderer extends AbstractRenderer
                 useBreakPoints.add ( allBreakPoints.get ( i - 1 ) ) ;
                 //go back to the breakpoint
                 it.setIndex ( allBreakPoints.get ( i - 1 ) ) ;
-                j = allBreakPoints.get ( i - 1 ) ;
+                indexOfActualC = allBreakPoints.get ( i - 1 ) ;
               }
               // i is allready in use, so ther will be a breakpoint
               else
               {
-                useBreakPoints.add ( j - 1 ) ;
-                j -- ;
-                it.setIndex ( ( j - 1 ) ) ;
+                useBreakPoints.add ( indexOfActualC - 1 ) ;
+                indexOfActualC -- ;
+                it.setIndex ( ( indexOfActualC - 1 ) ) ;
               }
               break ;
             }
@@ -390,7 +388,7 @@ public class PrettyStringRenderer extends AbstractRenderer
    * using the given Annotation.
    * 
    * @param annotation
-   * @return
+   * @return CheckerResult
    */
   private CheckerResult checkLinewrap ( PrettyAnnotation annotation )
   {
@@ -457,37 +455,15 @@ public class PrettyStringRenderer extends AbstractRenderer
     return result ;
   }
 
-
-  /*
-   * public static boolean isIn (int test, LinkedList <Bonds> list) {
-   * //System.out.println("Nun wird �berpr�ft, ob die Zahl in der Liste
-   * steht..."); //System.out.println("L�nge der komischen Liste:
-   * "+list.size()); boolean result = false; //steht f�r false, positive Werte
-   * werden als Position und true missbraucht for (int i=0; i<list.size(); i++) {
-   * int min = list.get(i).getStartOffset(); int max =
-   * list.get(i).getEndOffset(); //LinkedList<PrettyAnnotation> other =
-   * list.get(i).marks; //System.out.println("alles zwischen "+min+" und "+max+ "
-   * wird makiert."); //list.get(i). //int tmp = 1;
-   * //System.out.println(""+tmp); if ((test <= max) && (test >= min)) { return
-   * true; } else { int count=0; LinkedList <PrettyAnnotation> rest =
-   * list.get(i).getMarks(); for (int j = 0 ; j<rest.size(); j++) { count++;
-   * PrettyAnnotation tmp = rest.get(j); int min1 = tmp.getStartOffset(); int
-   * max1 = tmp.getEndOffset(); if ((test <= max1) && (test >= min1)) { return
-   * true; } } } } //nur nachsehen, ob diese Methode geht, damit tats�chlich was
-   * gemalt wird return result; }
-   */
   /**
-   * checks, if the int test is in the List list and returns the position
+   * checks, if the int test is in the list of Bonds and returns the position. 
    * 
    * @param test int to finde
    * @param list list to serach in
-   * @return int - the position
+   * @return int - the position, -1 if the int is not in the List
    */
-  public static int isInList ( int test , ArrayList < Bonds > list )
+  public static int getPositionInList ( int test , ArrayList < Bonds > list )
   {
-    // System.out.println("Nun wird �berpr�ft, ob die Zahl in der Liste
-    // steht...");
-    // System.out.println("L�nge der komischen Liste: "+list.size());
     int result = - 1 ;
     for ( int i = 0 ; i < list.size ( ) ; i ++ )
     {
@@ -580,8 +556,7 @@ public class PrettyStringRenderer extends AbstractRenderer
    * @param width The width that is available for the rendering.
    * @param gc The Graphics context that will be used to render
    * @param bound
-   * @param toListenForM
-   * @return The width of the expression will get returned.
+   * @param toListenForMre
    */
   public void render ( int x , int y ,int width , int height,  Graphics gc , ShowBonds bound , ToListenForMouseContainer toListenForM )
   {
@@ -732,7 +707,7 @@ public class PrettyStringRenderer extends AbstractRenderer
     }
     //check if the mouse stands on a char which is to highlight
     //rightAnnotationList will be the annotation to underline, if -1 there is no underlining
-    int rightAnnotationList = isInList ( charIndex , annotationsList ) ;
+    int rightAnnotationList = getPositionInList ( charIndex , annotationsList ) ;
 
     // get the starting offsets x is just the left border
     // y will be the center of the space available minus the
@@ -775,7 +750,7 @@ public class PrettyStringRenderer extends AbstractRenderer
       // instanceOfShowBound.getAnnotations();
       // look for aktual char is in this list (-1 stands for false)
       if ( ! ( toListenForMouse.getMark ( ) )
-          && ( isInList ( i , annotationsList ) ) > - 1 )
+          && ( getPositionInList ( i , annotationsList ) ) > - 1 )
       {
         // tell mouselistener in CompoundExpression to react at these positions
         // posY dose not stand for the baseline but for the center, so we have
@@ -789,7 +764,7 @@ public class PrettyStringRenderer extends AbstractRenderer
       // Damit die Liste mit jeder neuen Expression neu gesetzt wird, wird in
       // CopoundExpression neu gesetz
       if ( toListenForMouse.getMark ( )
-          && isInList ( i , annotationsList ) != - 1 )
+          && getPositionInList ( i , annotationsList ) != - 1 )
       {
         // if the char will be highlited first teh font and color will be set to
         // normal
@@ -799,7 +774,7 @@ public class PrettyStringRenderer extends AbstractRenderer
         // if actual char is in the same List as the list in wich the char where
         // MousePointer is
         // the char should be highlightet
-        if ( isInList ( i , annotationsList ) == rightAnnotationList && highlight)
+        if ( getPositionInList ( i , annotationsList ) == rightAnnotationList && highlight)
         {
           // type highlighted in bold
           fm.getFont ( ).getName ( ) ;
