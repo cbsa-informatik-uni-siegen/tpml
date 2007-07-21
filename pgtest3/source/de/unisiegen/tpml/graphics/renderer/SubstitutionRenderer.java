@@ -83,21 +83,21 @@ public class SubstitutionRenderer extends AbstractRenderer {
 		// create the string that can be shown in an tooltip 
 		// on level above in the CompoundExpression
 		this.collapsedString = null;
-		if (defaultTypeSubstitutionList.size() > 0)
+		if (this.defaultTypeSubstitutionList.size() > 0)
 		{
       // count the chars to break the tooltip if it gets to wide
 			int count = 0;
       // html is needed to format the tooltip
 			this.collapsedString = "<html>";
-			for (int i = 0; i<defaultTypeSubstitutionList.size(); i++)
+			for (int i = 0; i<this.defaultTypeSubstitutionList.size(); i++)
 			{
-				DefaultTypeSubstitution thisDetaultTypeSubstitution = defaultTypeSubstitutionList.get(i);
+				DefaultTypeSubstitution thisDetaultTypeSubstitution = this.defaultTypeSubstitutionList.get(i);
 				String tmp = thisDetaultTypeSubstitution.toString();
 				count += tmp.length();
 				PrettyString ps = thisDetaultTypeSubstitution.toPrettyString();
 				this.collapsedString += PrettyStringToHTML.toHTMLString(ps);
 				//every but the last gets a ,
-				if (i < defaultTypeSubstitutionList.size() - 1)
+				if (i < this.defaultTypeSubstitutionList.size() - 1)
 				{
 					this.collapsedString += betweenTypSubstitutions;	
 				}
@@ -151,7 +151,7 @@ public class SubstitutionRenderer extends AbstractRenderer {
   public Dimension getNeededSize () {
   	Dimension result = new Dimension (0, 0);
   	
-  	if  ( defaultTypeSubstitutionList.size() == 0 ) 
+  	if  ( this.defaultTypeSubstitutionList.size() == 0 ) 
   	{
       // secure some space when no content is there to be shown
   		result.width += 10;
@@ -161,11 +161,11 @@ public class SubstitutionRenderer extends AbstractRenderer {
   	{
       result.height = AbstractRenderer.getAbsoluteHeight ();
   		// get the first element
-  		DefaultTypeSubstitution s = defaultTypeSubstitutionList.get(0);
+  		DefaultTypeSubstitution s = this.defaultTypeSubstitutionList.get(0);
   		
   		result.width += AbstractRenderer.keywordFontMetrics.stringWidth(s.toString());
   		
-  		if (defaultTypeSubstitutionList.size() > 1) {
+  		if (this.defaultTypeSubstitutionList.size() > 1) {
   			// if there is more then only one element in the substitution
   			// the rest will only be displayed ass three dots
   			result.width += AbstractRenderer.expFontMetrics.stringWidth(SubstitutionRenderer.collapsString);
@@ -185,10 +185,10 @@ public class SubstitutionRenderer extends AbstractRenderer {
    * @param height  The Height the renderer is given to render the substitution.
    * @param gc  The Graphics used to render 
    */
-  //public void renderBase (int x, int y, int width, int height, Graphics gc )
-  //{
-   // renderer (x, y-(AbstractRenderer.getAbsoluteHeight () /2), width, height, gc); 
- // }
+  public void renderBase (int x, int y, int width, int height, Graphics gc )
+  {
+   renderer (x, y-(AbstractRenderer.getAbsoluteHeight () /2), width, height, gc); 
+  }
 
   /**
 	 * Renders the substitution.<br>
@@ -208,12 +208,16 @@ public class SubstitutionRenderer extends AbstractRenderer {
 
 		int posX = x;
 
-    int posY = y+(AbstractRenderer.getAbsoluteHeight ())/2;
+		//TODO TEST!!! dieses habe ich eigentlich als richtig herausgefunden...
+    //int posY = y+(AbstractRenderer.getAbsoluteHeight ())/2;
+		//Dieses teste ich jetzt mal aus...
+		int posY = y+(AbstractRenderer.fontHeight/2);
+		posY +=(AbstractRenderer.fontAscent/2);
 
 		this.collapsed = false;
 
      // if ther is enythuing to render
-		if (defaultTypeSubstitutionList.size() > 0) 
+		if (this.defaultTypeSubstitutionList.size() > 0) 
 		{
 			gc.setColor(this.alternativeColor != null ? this.alternativeColor : AbstractRenderer.expColor); //if then else
 			gc.setFont(AbstractRenderer.expFont);
@@ -223,7 +227,7 @@ public class SubstitutionRenderer extends AbstractRenderer {
 			posX += AbstractRenderer.expFontMetrics.stringWidth("[");
 
 			// get the first element
-			DefaultTypeSubstitution s = defaultTypeSubstitutionList.get(0);
+			DefaultTypeSubstitution s = this.defaultTypeSubstitutionList.get(0);
 
 			// render the symbol
 			gc.setColor(this.alternativeColor != null ? this.alternativeColor : AbstractRenderer.expColor); //if then else
@@ -233,7 +237,7 @@ public class SubstitutionRenderer extends AbstractRenderer {
 			
       // if ther are more than one element in the list the rest will be a tooltip.
       // the tooltiptext is defined
-			if (defaultTypeSubstitutionList.size() > 1) 
+			if (this.defaultTypeSubstitutionList.size() > 1) 
 			{
 				this.collapsed = true;
 				gc.drawString(SubstitutionRenderer.collapsString, posX, posY);
@@ -241,7 +245,7 @@ public class SubstitutionRenderer extends AbstractRenderer {
 				
 				posX += AbstractRenderer.expFontMetrics.stringWidth(SubstitutionRenderer.collapsString);
 				
-				this.collapsedArea.width 	= (posX-collapsedArea.x);
+				this.collapsedArea.width 	= (posX-this.collapsedArea.x);
 				
 				this.collapsedArea.y = posY - fontHeight;
 				this.collapsedArea.height = fontHeight;
