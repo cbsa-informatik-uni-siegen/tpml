@@ -18,21 +18,23 @@ import javax.swing.SwingUtilities;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
-import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.subtyping.SubTypingModel;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
+import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode;
+import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.graphics.Messages;
+import de.unisiegen.tpml.graphics.components.LabelComponent;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
 import de.unisiegen.tpml.graphics.components.MenuEnterTypeItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
-import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
 import de.unisiegen.tpml.graphics.components.TypeComponent;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
+import de.unisiegen.tpml.graphics.renderer.PrettyStringToHTML;
 import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
 /**
@@ -48,9 +50,8 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
  * <img src="../../../../../../images/SubTypingnode_scheme.png" /><br>
  * <br>
  * The first rectangle represents the {@link #indexLabel} The second rectanle
- * represents the entire {@link #compoundExpression} including the
- * typeenvironment. The last element in the first row is the {@link #typeLabel}
- * containing the resulting type, it also is containing the <code>" :: "</code>.
+ * represents the entire {@link #typeComponent}. The last element in the first 
+ * row is the {@link #typeComponent2}.
  * If the node is not completly evaluated only the four dots are drawn.<br>
  * In the next row there is only one rectangle containing the rule. In the case
  * of the previous image the {@link #ruleLabel} is shown, but as long as the
@@ -115,16 +116,25 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 	private JLabel indexLabel;
 
 	/**
-	 * The {@link CompoundExpression} containing the expression of this node.
+	 * The label containing the A and the Nail needed for RecSubTypingNodes
 	 */
-	//private CompoundExpression < Identifier, Type > compoundExpression;
+	private JLabel subTypingRecA;
 
 	/**
-	 * The typeComponent containing the type of this node
+	 * The Component drawing the label
+	 */
+	private LabelComponent label;
+
+	/**
+	 * The {@link TypeComponent} containing the left type of this node
 	 * 
 	 */
 	private TypeComponent typeComponent;
-	
+
+	/**
+	 * The {@link TypeComponent} containing the right type of this node
+	 * 
+	 */
 	private TypeComponent typeComponent2;
 
 	/**
@@ -144,21 +154,9 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 	 */
 	private JLabel ruleLabel;
 
-	/**
-	 * The menuTranslate is one element within the menu. <br>
-	 * Needs to get handled separatly because it can be enabled and disabled
-	 * whether the expression is containing Syntactical Sugar.
-	 */
-	private MenuTranslateItem menuTranslateItem;
 
 	/**
-	 * The translator will be used to determin whether the expression contains
-	 * syntactical sugor.
-	 */
-	private LanguageTranslator translator;
-
-	/**
-	 * Constructor for a SubTypingNode<br>
+	 * Constructor for a SubTypingNodeComponent<br>
 	 * <br>
 	 * All elements needed within the node will be created and added to the
 	 * component. Some of them will be hidden at first (the {@link #typeEnter},
@@ -167,24 +165,25 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 	 * 
 	 * @param node The origin ProofNode
 	 * @param model The model
-	 * @param translator The translator of the model for the selected language
 	 */
-	public NewSubTypingNodeComponent ( SubTypingProofNode node, SubTypingModel model, LanguageTranslator translator ) {
+	public NewSubTypingNodeComponent ( SubTypingProofNode node, SubTypingModel model ) {
 		super ( );
 		this.proofNode = node;
 		this.proofModel = model;
-		this.translator = translator;
 		this.dimension = new Dimension ( 0, 0 );
 		this.spacing = 10;
 		this.indexLabel = new JLabel ( );
 		this.indexLabel.addMouseListener ( new OutlineMouseListener ( this ) );
 		add ( this.indexLabel );
+		this.subTypingRecA = new JLabel ( );
+		this.label = new LabelComponent ( );
+		add ( this.label );
 		this.typeComponent = new TypeComponent ( );
-		this.typeComponent.setText ( "" );
+		this.typeComponent.setText ( "" ); //$NON-NLS-1$
 		this.typeComponent.addMouseListener ( new OutlineMouseListener ( this ) );
 		add ( this.typeComponent );
 		this.typeComponent2 = new TypeComponent ( );
-		this.typeComponent2.setText ( " <: " );
+		this.typeComponent2.setText ( " <: " ); //$NON-NLS-1$
 		this.typeComponent2.addMouseListener ( new OutlineMouseListener ( this ) );
 		add ( this.typeComponent2 );
 		changeNode ( );
@@ -202,7 +201,7 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 		add ( this.typeLabel );
 		this.typeLabel.setText ( " <: " ); //$NON-NLS-1$
 		this.typeLabel.addMouseListener ( new OutlineMouseListener ( this ) );
-		
+
 		/*
 		 * Create the PopupMenu for the menu button
 		 */
@@ -222,21 +221,25 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 		menu.add ( new MenuEnterTypeItem ( ) );
 		menu.add ( new MenuGuessItem ( ) );
 		menu.add ( new MenuGuessTreeItem ( ) );
-		menu.add ( this.menuTranslateItem = new MenuTranslateItem ( ) );
 		this.ruleButton.setMenu ( menu );
 		/*
 		 * Connect the handling of the ruleButton
 		 */
 		this.ruleButton.addMenuButtonListener ( new MenuButtonListener ( ) {
-			public void menuClosed ( MenuButton button ) {}
+			public void menuClosed ( @SuppressWarnings("unused") MenuButton button ) 
+			{
+				// Nothing to do
+			}
 
-			public void menuItemActivated ( MenuButton button, final JMenuItem source ) {
+			public void menuItemActivated ( @SuppressWarnings("unused")
+			MenuButton button, final JMenuItem source ) {
 				// setup a wait cursor for the toplevel ancestor
 				final Container toplevel = getTopLevelAncestor ( );
 				final Cursor cursor = toplevel.getCursor ( );
 				toplevel.setCursor ( new Cursor ( Cursor.WAIT_CURSOR ) );
 				// avoid blocking the popup menu
 				SwingUtilities.invokeLater ( new Runnable ( ) {
+					@SuppressWarnings("synthetic-access")
 					public void run ( ) {
 						// handle the menu action
 						NewSubTypingNodeComponent.this.handleMenuActivated ( source );
@@ -251,11 +254,11 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 				} );
 			}
 		} );
-		
+
 	}
 
 	/**
-	 * Causes the expression and the resultexpression to recalculate their layout.
+	 * Causes the types recalculate their layout.
 	 */
 	public void reset ( ) {
 		this.typeComponent.reset ( );
@@ -276,8 +279,28 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 	 * environment.
 	 */
 	public void changeNode ( ) {
-		//this.compoundExpression.setExpression ( this.proofNode.getExpression ( ) );
-		//this.compoundExpression.setEnvironment ( this.proofNode.getEnvironment ( ) );
+		this.subTypingRecA.setText ( "" ); //$NON-NLS-1$
+		this.label.setLabel ( this.subTypingRecA );
+		
+		// if the node is RecSubTypingNode we have to render the A and set the Tooltip
+		if ( this.proofNode instanceof RecSubTypingProofNode ) {
+			this.subTypingRecA.setText ( " A\u251C " ); //$NON-NLS-1$
+			this.label.setLabel ( this.subTypingRecA );
+			RecSubTypingProofNode node = ( RecSubTypingProofNode ) this.proofNode;
+			
+			//build the tooltip
+			String tooltip = "<html>{"; //$NON-NLS-1$
+			SeenTypes < DefaultSubType > seenTypes = node.getSeenTypes ( );
+			for ( DefaultSubType s : seenTypes ) {
+				tooltip+="<font color=\"#FF0000\"> (</font>"; //$NON-NLS-1$
+				tooltip += PrettyStringToHTML.toHTMLString ( s.toPrettyString ( ) );
+				tooltip+="<font color=\"#FF0000\">) </font>"; //$NON-NLS-1$
+			}
+			tooltip += "}<html>"; //$NON-NLS-1$
+			this.label.setToolTipText ( tooltip );
+
+		}
+
 		this.typeComponent.setType ( this.proofNode.getType ( ) );
 		this.typeComponent2.setType ( this.proofNode.getType2 ( ) );
 	}
@@ -298,11 +321,14 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 	 * @param maxWidth The maximum amount of pixels available to place the
 	 *          elements.
 	 */
-	private void placeElements ( int maxWidth ) {
+	private void placeElements ( int pMaxWidth ) {
+		int maxWidth = pMaxWidth;
 		// get the size for the index at the beginning: (x)
 		FontMetrics fm = AbstractRenderer.getTextFontMetrics ( );
 		Dimension labelSize = new Dimension ( fm.stringWidth ( this.indexLabel.getText ( ) ), fm.getHeight ( ) );
 		this.dimension.setSize ( labelSize.width, labelSize.height );
+		Dimension labelComponentSize = new Dimension ( fm.stringWidth ( this.subTypingRecA.getText ( ) ), fm.getHeight ( ) );
+		this.dimension.width += labelComponentSize.width + this.spacing;
 		// there will be a bit spacing between the index label and the expression
 		this.dimension.width += this.spacing;
 		// the index shrinkens the max size for the expression
@@ -311,15 +337,14 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 		Dimension expSize = this.typeComponent.getNeededSize ( maxWidth );
 		this.dimension.width += expSize.width;
 		this.dimension.height = Math.max ( expSize.height, this.dimension.height );
-		
+
 		// get the neede size for the type
 
-			this.proofNode.getType2 ( ).toPrettyString ( );
-			this.typeLabel.setText ( " <: " + this.proofNode.getType ( ) ); //$NON-NLS-1$
+		this.proofNode.getType2 ( ).toPrettyString ( );
+		this.typeLabel.setText ( " <: " + this.proofNode.getType ( ) ); //$NON-NLS-1$
 		//Dimension typeSize = this.typeLabel.getPreferredSize ( ) ;
 		Dimension typeSize = this.typeComponent2.getNeededSize ( maxWidth );
 
-		//TODO: Fallunterscheidung: Wenn es noch hinter die Expression passt, dann da hinrendern, sonst in die nächste Zeile...
 		boolean broke = false;
 		if ( ( this.dimension.width + typeSize.width ) > maxWidth ) //passt nicht mehr
 		{
@@ -336,16 +361,13 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 		int posX = 0;
 		this.indexLabel.setBounds ( posX, 0, labelSize.width, this.dimension.height );
 		posX += labelSize.width + this.spacing;
+		if ( this.proofNode instanceof RecSubTypingProofNode ) {
+			this.label.setBounds ( posX, 0, labelComponentSize.width, this.dimension.height );
+			posX += labelComponentSize.width + this.spacing;
+		}
 		this.typeComponent.setBounds ( posX, 0, expSize.width, this.dimension.height );
 		int posXfront = posX;
 		posX += expSize.width;
-		//this.typeLabel.setBounds ( posX , 0 , typeSize.width , this.dimension.height ) ;
-		//
-
-		//this.typeLabel.setBounds(posX, 0, typeSize.width, this.dimension.height);
-		//ShowBonds sb = new ShowBonds();
-		//sb.setType (this.proofNode.getType() );
-		//ToListenForMouseContainer tlfmc = new ToListenForMouseContainer();
 		if ( broke ) {
 			this.typeComponent2.setBounds ( posXfront, 0 + expSize.height + AbstractRenderer.getAbsoluteHeight ( ),
 					typeSize.width, typeSize.height );
@@ -353,10 +375,7 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 			this.typeComponent2.setBounds ( posX, 0, typeSize.width, typeSize.height );
 		}
 
-		//typeRenderer.render (typePosition, 0,typeRenderer.getNeededSize (maxWidth).width ,typeRenderer.getNeededSize (maxWidth).height, this.getGraphics (), sb, tlfmc);
-
 		posX += typeSize.width;
-		//posX += typeSize.width;
 
 		/*
 		 * Check whether this is node is evaluated. If it is evaluated only the
@@ -375,27 +394,24 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 			// display only the label not the button
 			this.ruleLabel.setVisible ( true );
 			this.ruleButton.setVisible ( false );
-		} 
-		 else {
-		        // place the menu button
-		        Dimension buttonSize = this.ruleButton.getNeededSize();
-		        this.ruleButton.setBounds(posX, this.dimension.height + this.spacing, buttonSize.width, buttonSize.height);
-		        
-		        this.dimension.height += this.spacing + buttonSize.height;
-		        this.dimension.width = Math.max(this.dimension.width, buttonSize.width + posX);
-		        
-		        // display only the button not the label
-		        this.ruleLabel.setVisible (false);
-		        this.ruleButton.setVisible (true);
-		      }
+		} else {
+			// place the menu button
+			Dimension buttonSize = this.ruleButton.getNeededSize ( );
+			this.ruleButton.setBounds ( posX, this.dimension.height + this.spacing, buttonSize.width, buttonSize.height );
 
+			this.dimension.height += this.spacing + buttonSize.height;
+			this.dimension.width = Math.max ( this.dimension.width, buttonSize.width + posX );
+
+			// display only the button not the label
+			this.ruleLabel.setVisible ( false );
+			this.ruleButton.setVisible ( true );
+		}
 
 	}
 
 	/*
 	 * Implementation of the eventhandling
 	 */
-
 
 	public void addSubTypingNodeListener ( NewSubTypingNodeListener listener ) {
 		this.listenerList.add ( NewSubTypingNodeListener.class, listener );
@@ -480,7 +496,7 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 				} );
 			}
 			fireNodeChanged ( );
-		} 
+		}
 	}
 
 	/*
@@ -494,7 +510,7 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 	public Dimension update ( int maxWidth ) {
 		placeElements ( maxWidth );
 		//this.menuTranslateItem.setEnabled ( this.translator.containsSyntacticSugar ( this.proofNode.getExpression ( ),
-			//	true ) );
+		//	true ) );
 		return this.dimension;
 	}
 
@@ -538,16 +554,16 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 		return this.typeComponent;
 	}
 
-  /**
-   * Returns the typeComponent2.
-   * 
-   * @return The typeComponent2.
-   * @see #typeComponent2
-   */
-  public TypeComponent getTypeComponent2 ( ) {
-    return this.typeComponent2;
-  }
-  
+	/**
+	 * Returns the typeComponent2.
+	 * 
+	 * @return The typeComponent2.
+	 * @see #typeComponent2
+	 */
+	public TypeComponent getTypeComponent2 ( ) {
+		return this.typeComponent2;
+	}
+
 	/**
 	 * Returns the proofNode.
 	 * 
@@ -567,29 +583,4 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 	public JLabel getIndexLabel ( ) {
 		return this.indexLabel;
 	}
-
-	/**
-	 * Returns the compoundExpression.
-	 * 
-	 * @return The compoundExpression.
-	 * @see #compoundExpression
-	 *
-	public CompoundExpression < Identifier, Type > getCompoundExpression ( ) {
-		return this.compoundExpression;
-	}*/
-	//  
-	//  public void paintComponent (Graphics gc)
-	//  {
-	//    super.paintComponent (gc);
-	//    System.out.println("Auch Scheiße!!!");
-	//    ShowBonds sb = new ShowBonds();
-	//    sb.setType (this.proofNode.getType() );
-	//    ToListenForMouseContainer tlfmc = new ToListenForMouseContainer();
-	//    
-	//    //System.out.println ("Scheiße!");
-	//   
-	//    typeRenderer.render (typePosition, 0,typeRenderer.getNeededSize (Integer.MAX_VALUE).width ,typeRenderer.getNeededSize (Integer.MAX_VALUE).height, this.getGraphics (), sb, tlfmc);
-	//   
-	//    
-	//  }
 }

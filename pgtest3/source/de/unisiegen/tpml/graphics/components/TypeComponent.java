@@ -8,15 +8,16 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+
 import javax.swing.JComponent;
 
-import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.RowType;
 import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.graphics.Theme;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
+import de.unisiegen.tpml.graphics.renderer.PrettyStringToHTML;
 import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
 
 
@@ -93,6 +94,7 @@ public class TypeComponent extends JComponent
     this.alternativeColor = null ;
     //this.text = " :: "; //$NON-NLS-1$
     this.text = "";
+    
 
     this.addMouseMotionListener ( new MouseMotionAdapter ( )
     {

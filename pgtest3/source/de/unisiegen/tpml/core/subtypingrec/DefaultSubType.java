@@ -1,5 +1,10 @@
 package de.unisiegen.tpml.core.subtypingrec;
 
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typeinference.PrettyPrintPriorities;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -10,7 +15,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @author Benjamin Mies
  *
  */
-public class DefaultSubType {
+public class DefaultSubType implements PrettyPrintable , PrettyPrintPriorities{
 
 	private MonoType subtype;
 
@@ -81,5 +86,39 @@ public class DefaultSubType {
 		builder.append ( this.overtype );
 		return builder.toString ( );
 	}
+	
+	 //
+	  // Pretty printing
+	  //
+	  /**
+	   * {@inheritDoc}
+	   * 
+	   * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
+	   */
+	  public final PrettyString toPrettyString ( )
+	  {
+	    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+	        .toPrettyString ( ) ;
+	  }
+
+
+	  /**
+	   * Returns the {@link PrettyStringBuilder}.
+	   * 
+	   * @param factory The {@link PrettyStringBuilderFactory}.
+	   * @return The {@link PrettyStringBuilder}.
+	   */
+	  private PrettyStringBuilder toPrettyStringBuilder (
+	      PrettyStringBuilderFactory factory )
+	  {
+	    PrettyStringBuilder builder = factory.newBuilder ( this , PRIO_EQUATION ) ;
+	    builder.addBuilder ( this.overtype.toPrettyStringBuilder ( factory ) ,
+	        PRIO_EQUATION ) ;
+	    builder.addText ( " = " ) ; //$NON-NLS-1$
+	    builder.addBuilder ( this.subtype.toPrettyStringBuilder ( factory ) ,
+	        PRIO_EQUATION ) ;
+	    return builder ;
+	  }
+
 
 }

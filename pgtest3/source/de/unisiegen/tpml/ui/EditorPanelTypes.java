@@ -46,7 +46,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
  * 
  * @author Christoph Fehling
  */
-  @SuppressWarnings("all")public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel {
+public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel {
 
 	/**
 	 * The serial version UID
@@ -55,45 +55,47 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	private static final long serialVersionUID = -272175525193942130L;
 
 	/** Creates new form EditorPanelExpression */
-	public EditorPanelTypes(Language language, MainWindow window) {
-		initComponents();
-
+	public EditorPanelTypes ( Language language, MainWindow window ) {
+		initComponents ( );
+		firePropertyChange ( "changed", true, false );
 		this.window = window;
 		// setting the default button states
-		nextButton.setVisible(false);
-                pongButton.setVisible(false);
-		subTypingButton.setVisible(false);
-		subTypingRecButton.setVisible(false);
+		this.nextButton.setVisible ( false );
+		this.pongButton.setVisible ( false );
+		this.subTypingButton.setVisible ( false );
+		this.subTypingRecButton.setVisible ( false );
 		//There will be no Subtypingbutton because it has no sourcecode
 		//finished setting the default states
 
-                // hack to get consistent heights
-                codeButton.setPreferredSize(new Dimension(codeButton.getPreferredSize().width, pongButton.getPreferredSize().height));
-                subTypingButton.setPreferredSize(new Dimension(subTypingButton.getPreferredSize().width, pongButton.getPreferredSize().height));
-                subTypingRecButton.setPreferredSize(new Dimension(subTypingRecButton.getPreferredSize().width, pongButton.getPreferredSize().height));
-                //There will be no SubTypingButton
-                //TODO vielleicht auch machen müssen
-		
+		// hack to get consistent heights
+		this.codeButton.setPreferredSize ( new Dimension ( this.codeButton.getPreferredSize ( ).width, this.pongButton
+				.getPreferredSize ( ).height ) );
+		this.subTypingButton.setPreferredSize ( new Dimension ( this.subTypingButton.getPreferredSize ( ).width,
+				this.pongButton.getPreferredSize ( ).height ) );
+		this.subTypingRecButton.setPreferredSize ( new Dimension ( this.subTypingRecButton.getPreferredSize ( ).width,
+				this.pongButton.getPreferredSize ( ).height ) );
+		//There will be no SubTypingButton
+		//TODO vielleicht auch machen müssen
+
 		this.language = language;
-		
+
 		//TODO PREFERENCES get this from the preferences
-		setAdvanced(false);
-		
-		setFileName("newfile" + num + "." + language.getName());
-		num++;
-		editorComponentListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				componentStatusChanged(evt.getPropertyName(), evt.getNewValue());
+		setAdvanced ( false );
+
+		setFileName ( "newfile" + num + "." + language.getName ( ) ); //$NON-NLS-1$ //$NON-NLS-2$
+		num++ ;
+		this.editorComponentListener = new PropertyChangeListener ( ) {
+			public void propertyChange ( PropertyChangeEvent evt ) {
+				componentStatusChanged ( evt.getPropertyName ( ), evt.getNewValue ( ) );
 			}
 		};
-		initEditor();
+		initEditor ( );
 
-
-		this.addComponentListener(new java.awt.event.ComponentAdapter() {
-			public void componentShown(java.awt.event.ComponentEvent evt) {
-				code.getEditor().requestFocus();
+		this.addComponentListener ( new java.awt.event.ComponentAdapter ( ) {
+			public void componentShown ( java.awt.event.ComponentEvent evt ) {
+				code.getEditor ( ).requestFocus ( );
 			}
-		});
+		} );
 	}
 
 	/**
@@ -107,162 +109,172 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
-    // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
-    private void initComponents() {
-        javax.swing.JToolBar actionToolBar;
-        javax.swing.JToolBar editorToolBar;
-        java.awt.GridBagConstraints gridBagConstraints;
-        javax.swing.JPanel toolBarPanel;
+	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
+	private void initComponents ( ) {
+		javax.swing.JToolBar actionToolBar;
+		javax.swing.JToolBar editorToolBar;
+		java.awt.GridBagConstraints gridBagConstraints;
+		javax.swing.JPanel toolBarPanel;
 
-        jSeparator1 = new javax.swing.JSeparator();
-        editorPanel = new javax.swing.JPanel();
-        toolBarPanel = new javax.swing.JPanel();
-        editorToolBar = new javax.swing.JToolBar();
-        codeButton = new javax.swing.JToggleButton();
-        subTypingButton = new javax.swing.JToggleButton();
-        subTypingRecButton = new javax.swing.JToggleButton();
-        actionToolBar = new javax.swing.JToolBar();
-        nextButton = new javax.swing.JButton();
-        pongButton = new javax.swing.JButton();
+		this.jSeparator1 = new javax.swing.JSeparator ( );
+		this.editorPanel = new javax.swing.JPanel ( );
+		toolBarPanel = new javax.swing.JPanel ( );
+		editorToolBar = new javax.swing.JToolBar ( );
+		this.codeButton = new javax.swing.JToggleButton ( );
+		this.subTypingButton = new javax.swing.JToggleButton ( );
+		this.subTypingRecButton = new javax.swing.JToggleButton ( );
+		actionToolBar = new javax.swing.JToolBar ( );
+		this.nextButton = new javax.swing.JButton ( );
+		this.pongButton = new javax.swing.JButton ( );
 
-        setLayout(new java.awt.BorderLayout());
+		setLayout ( new java.awt.BorderLayout ( ) );
 
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                tabChange(evt);
-            }
-        });
+		addKeyListener ( new java.awt.event.KeyAdapter ( ) {
+			public void keyPressed ( java.awt.event.KeyEvent evt ) {
+				tabChange ( evt );
+			}
+		} );
 
-        editorPanel.setLayout(new java.awt.BorderLayout());
+		editorPanel.setLayout ( new java.awt.BorderLayout ( ) );
 
-        add(editorPanel, java.awt.BorderLayout.CENTER);
+		add ( editorPanel, java.awt.BorderLayout.CENTER );
 
-        toolBarPanel.setLayout(new java.awt.GridBagLayout());
+		toolBarPanel.setLayout ( new java.awt.GridBagLayout ( ) );
 
-        editorToolBar.setFloatable(false);
-        codeButton.setText("Source");
-        codeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                codeButtonActionPerformed(evt);
-            }
-        });
+		editorToolBar.setFloatable ( false );
+		codeButton.setText ( "Source" );
+		codeButton.addActionListener ( new java.awt.event.ActionListener ( ) {
+			public void actionPerformed ( java.awt.event.ActionEvent evt ) {
+				codeButtonActionPerformed ( evt );
+			}
+		} );
 
-        editorToolBar.add(codeButton);
+		editorToolBar.add ( codeButton );
 
-        subTypingButton.setText("Sub Typing");
-        subTypingButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subTypingButtonActionPerformed(evt);
-            }
-        });
+		subTypingButton.setText ( "Sub Typing" );
+		subTypingButton.addActionListener ( new java.awt.event.ActionListener ( ) {
+			public void actionPerformed ( java.awt.event.ActionEvent evt ) {
+				subTypingButtonActionPerformed ( evt );
+			}
+		} );
 
-        editorToolBar.add(subTypingButton);
+		editorToolBar.add ( subTypingButton );
 
-        subTypingRecButton.setText("Sub Typing Rec");
-        subTypingRecButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-            	subTypingRecButtonActionPerformed(evt);
-            }
-        });
+		subTypingRecButton.setText ( "Sub Typing Rec" );
+		subTypingRecButton.addActionListener ( new java.awt.event.ActionListener ( ) {
+			public void actionPerformed ( java.awt.event.ActionEvent evt ) {
+				subTypingRecButtonActionPerformed ( evt );
+			}
+		} );
 
-        editorToolBar.add(subTypingRecButton);
+		editorToolBar.add ( subTypingRecButton );
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 32;
-        gridBagConstraints.weighty = 1.0;
-        toolBarPanel.add(editorToolBar, gridBagConstraints);
+		gridBagConstraints = new java.awt.GridBagConstraints ( );
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridy = 0;
+		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+		gridBagConstraints.ipadx = 32;
+		gridBagConstraints.weighty = 1.0;
+		toolBarPanel.add ( editorToolBar, gridBagConstraints );
 
-        actionToolBar.setFloatable(false);
-        nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/next24.png")));
-        nextButton.setToolTipText("Guess");
-        nextButton.setBorderPainted(false);
-        nextButton.setOpaque(false);
-        nextButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nextButtonActionPerformed(evt);
-            }
-        });
+		actionToolBar.setFloatable ( false );
+		nextButton.setIcon ( new javax.swing.ImageIcon ( getClass ( ).getResource (
+				"/de/unisiegen/tpml/ui/icons/next24.png" ) ) );
+		nextButton.setToolTipText ( "Guess" );
+		nextButton.setBorderPainted ( false );
+		nextButton.setOpaque ( false );
+		nextButton.addActionListener ( new java.awt.event.ActionListener ( ) {
+			public void actionPerformed ( java.awt.event.ActionEvent evt ) {
+				nextButtonActionPerformed ( evt );
+			}
+		} );
 
-        actionToolBar.add(nextButton);
+		actionToolBar.add ( nextButton );
 
-        pongButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/pong16.gif")));
-        pongButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("PongTooltip"));
-        pongButton.setBorderPainted(false);
-        pongButton.setOpaque(false);
-        pongButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pongButtonActionPerformed(evt);
-            }
-        });
+		pongButton.setIcon ( new javax.swing.ImageIcon ( getClass ( ).getResource (
+				"/de/unisiegen/tpml/ui/icons/pong16.gif" ) ) );
+		pongButton.setToolTipText ( java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
+				"PongTooltip" ) );
+		pongButton.setBorderPainted ( false );
+		pongButton.setOpaque ( false );
+		pongButton.addActionListener ( new java.awt.event.ActionListener ( ) {
+			public void actionPerformed ( java.awt.event.ActionEvent evt ) {
+				pongButtonActionPerformed ( evt );
+			}
+		} );
 
-        actionToolBar.add(pongButton);
+		actionToolBar.add ( pongButton );
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        toolBarPanel.add(actionToolBar, gridBagConstraints);
+		gridBagConstraints = new java.awt.GridBagConstraints ( );
+		gridBagConstraints.gridx = 1;
+		gridBagConstraints.gridy = 0;
+		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+		gridBagConstraints.weightx = 1.0;
+		gridBagConstraints.weighty = 1.0;
+		toolBarPanel.add ( actionToolBar, gridBagConstraints );
 
-        add(toolBarPanel, java.awt.BorderLayout.NORTH);
+		add ( toolBarPanel, java.awt.BorderLayout.NORTH );
 
-    }// </editor-fold>//GEN-END:initComponents
+	}// </editor-fold>//GEN-END:initComponents
 
-    private void pongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pongButtonActionPerformed
-        PongView pongView = new PongView((Frame)getTopLevelAncestor());
-        pongView.setVisible(true);
-    }//GEN-LAST:event_pongButtonActionPerformed
+	private void pongButtonActionPerformed ( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_pongButtonActionPerformed
+		PongView pongView = new PongView ( ( Frame ) getTopLevelAncestor ( ) );
+		pongView.setVisible ( true );
+	}//GEN-LAST:event_pongButtonActionPerformed
 
-        private void tabChange(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabChange
-// TODO add your handling code here:
-        }//GEN-LAST:event_tabChange
+	private void tabChange ( java.awt.event.KeyEvent evt ) {//GEN-FIRST:event_tabChange
+	// TODO add your handling code here:
+	}//GEN-LAST:event_tabChange
 
-	private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_nextButtonActionPerformed
+	private void nextButtonActionPerformed ( java.awt.event.ActionEvent evt ) {// GEN-FIRST:event_nextButtonActionPerformed
 		// 
-		activeEditorComponent.handleNext();
+		activeEditorComponent.handleNext ( );
 	}// GEN-LAST:event_nextButtonActionPerformed
 
-	private void subTypingButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_bigstepButtonActionPerformed
-		setTexteditor(false);
-		setComponent(subTyping);
-		deselectButtons();
-		subTypingButton.setSelected(true);
+	private void subTypingButtonActionPerformed ( java.awt.event.ActionEvent evt ) {// GEN-FIRST:event_bigstepButtonActionPerformed
+		setTexteditor ( false );
+		setComponent ( subTyping );
+		deselectButtons ( );
+		subTypingButton.setSelected ( true );
 	}// GEN-LAST:event_bigstepButtonActionPerformed
-	
+
 	//TODO Brauchen wir den auch für den Subtyping
 
-	private void subTypingRecButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_smallstepButtonActionPerformed
+	private void subTypingRecButtonActionPerformed ( java.awt.event.ActionEvent evt ) {// GEN-FIRST:event_smallstepButtonActionPerformed
 		// 
-		setTexteditor(false);
-		setComponent(subTypingRec);
-		deselectButtons();
-		subTypingRecButton.setSelected(true);
+		setTexteditor ( false );
+		setComponent ( subTypingRec );
+		deselectButtons ( );
+		subTypingRecButton.setSelected ( true );
 	}// GEN-LAST:event_smallstepButtonActionPerformed
 
-	private void codeButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_codeButtonActionPerformed
+	private void codeButtonActionPerformed ( java.awt.event.ActionEvent evt ) {// GEN-FIRST:event_codeButtonActionPerformed
 		// 
-		setTexteditor(true);
-		setComponent(code);
-		deselectButtons();
-		codeButton.setSelected(true);
-		code.getEditor().requestFocus();
+		setTexteditor ( true );
+		setComponent ( code );
+		deselectButtons ( );
+		codeButton.setSelected ( true );
+		code.getEditor ( ).requestFocus ( );
 	}// GEN-LAST:event_codeButtonActionPerformed
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton codeButton;
-    private javax.swing.JPanel editorPanel;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JButton nextButton;
-    private javax.swing.JButton pongButton;
-    private javax.swing.JToggleButton subTypingButton;
-    private javax.swing.JToggleButton subTypingRecButton;
-    // End of variables declaration//GEN-END:variables
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.JToggleButton codeButton;
 
-	private static final Logger logger = Logger.getLogger(EditorPanelTypes.class);
+	private javax.swing.JPanel editorPanel;
+
+	private javax.swing.JSeparator jSeparator1;
+
+	private javax.swing.JButton nextButton;
+
+	private javax.swing.JButton pongButton;
+
+	private javax.swing.JToggleButton subTypingButton;
+
+	private javax.swing.JToggleButton subTypingRecButton;
+
+	// End of variables declaration//GEN-END:variables
+
+	private static final Logger logger = Logger.getLogger ( EditorPanelTypes.class );
 
 	private MainWindow window;
 
@@ -272,7 +284,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	private SubTypingSourceView code;
 
 	private EditorComponent subTyping;
-	
+
 	private EditorComponent subTypingRec;
 
 	private EditorComponent activeEditorComponent;
@@ -288,7 +300,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * static number counting the new files with default name.
 	 */
 	static private int num = 0;
-	
+
 	private boolean advanced;
 
 	/**
@@ -305,7 +317,6 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * Indicated if the file was changed.
 	 */
 	//private boolean changed;
-
 	/**
 	 * Indicates the status of the Undo function.
 	 */
@@ -332,30 +343,30 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * @param newValue
 	 *            new value of the status
 	 */
-	private void componentStatusChanged(String ident, Object newValue) {
-		if (ident.equals("nextStatus")) {
-			this.nextButton.setEnabled((Boolean) newValue);
-		} else if (ident.equals("pongStatus")) {
-                        this.pongButton.setVisible((Boolean) newValue);
-		} else if (ident.equals("redoStatus")) {
-			setRedoStatus((Boolean) newValue);
-		} else if (ident.equals("title")) {
-			setFileName((String) newValue);
-		} else if (ident.equals("undoStatus")) {
-			setUndoStatus((Boolean) newValue);
-		} else if (ident.equals("changed")) {
+	private void componentStatusChanged ( String ident, Object newValue ) {
+		if ( ident.equals ( "nextStatus" ) ) {
+			this.nextButton.setEnabled ( ( Boolean ) newValue );
+		} else if ( ident.equals ( "pongStatus" ) ) {
+			this.pongButton.setVisible ( ( Boolean ) newValue );
+		} else if ( ident.equals ( "redoStatus" ) ) {
+			setRedoStatus ( ( Boolean ) newValue );
+		} else if ( ident.equals ( "title" ) ) {
+			setFileName ( ( String ) newValue );
+		} else if ( ident.equals ( "undoStatus" ) ) {
+			setUndoStatus ( ( Boolean ) newValue );
+		} else if ( ident.equals ( "changed" ) ) {
 			//setChanged((Boolean) newValue);
-			setUndoStatus((Boolean) newValue);
+			setUndoStatus ( ( Boolean ) newValue );
 		}
 
 	}
 
-	private void updateComponentStates(EditorComponent comp) {
-		setRedoStatus(comp.isRedoStatus());
-		setUndoStatus(comp.isUndoStatus());
-		this.nextButton.setEnabled(comp.isNextStatus());
-                this.nextButton.setVisible(comp != this.code);
-                this.pongButton.setVisible(comp.isPongStatus());
+	private void updateComponentStates ( EditorComponent comp ) {
+		setRedoStatus ( comp.isRedoStatus ( ) );
+		setUndoStatus ( comp.isUndoStatus ( ) );
+		this.nextButton.setEnabled ( comp.isNextStatus ( ) );
+		this.nextButton.setVisible ( comp != this.code );
+		this.pongButton.setVisible ( comp.isPongStatus ( ) );
 	}
 
 	/**
@@ -363,88 +374,95 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * 
 	 * @param comp
 	 */
-	private void setComponent(EditorComponent comp) {
-		
-		editorPanel.removeAll();
-		editorPanel.add((JComponent) comp, BorderLayout.CENTER);
+	private void setComponent ( EditorComponent comp ) {
+
+		editorPanel.removeAll ( );
+		editorPanel.add ( ( JComponent ) comp, BorderLayout.CENTER );
 		activeEditorComponent = comp;
-		updateComponentStates(comp);
-		paintAll(getGraphics());
+		updateComponentStates ( comp );
+		paintAll ( getGraphics ( ) );
 	}
-	
-	private EditorComponent getComponent() {
-		return (EditorComponent) editorPanel.getComponent(0);
+
+	private EditorComponent getComponent ( ) {
+		return ( EditorComponent ) editorPanel.getComponent ( 0 );
 	}
 
 	/**
 	 * This method is called from within the constructor to initialize the
 	 * source editor.
 	 */
-	private void initEditor() {
-		code = new SubTypingSourceView(language);
+	private void initEditor ( ) {
+		code = new SubTypingSourceView ( language, window );
 
-		editorPanel.removeAll();
-		editorPanel.add((JPanel) code, BorderLayout.CENTER);
-		((JPanel) code).addPropertyChangeListener(editorComponentListener);
-		code.setDefaultStates();
-		updateComponentStates(code);
-		deselectButtons();
-		codeButton.setSelected(true);
-		codeButton.setEnabled(true);
+		editorPanel.removeAll ( );
+		editorPanel.add ( ( JPanel ) code, BorderLayout.CENTER );
+		( ( JPanel ) code ).addPropertyChangeListener ( editorComponentListener );
+		code.setDefaultStates ( );
+		updateComponentStates ( code );
+		deselectButtons ( );
+		codeButton.setSelected ( true );
+		codeButton.setEnabled ( true );
 
-		paintAll(this.getGraphics());
+		paintAll ( this.getGraphics ( ) );
 	}
 
 	/**
-	 * Starts the Small Step Interpreter.
+	 * Starts the Sub Typing Interpreter.
 	 * 
 	 */
-	public void handleSubTyping() {
-		setTexteditor(false);
+	public void handleSubTyping ( ) {
+		setTexteditor ( false );
 		try {
 			// TODO Benjamin get the types out of source
-			SubTypingProofModel model = language.newSubTypingProofModel(this.getEditorType ( ), this.getEditorType2 ( ), this.advanced);
-			subTyping = new ProofViewComponent(ProofViewFactory
-					.newSubTypingView(model), model);
-			editorPanel.removeAll();
-			activateFunction(subTypingButton, subTyping);
-			subTyping.setAdvanced(this.advanced);
-			paintAll(getGraphics());
-			
+			if ( this.getEditorType ( ) != null && this.getEditorType2 ( ) != null ) {
+				SubTypingProofModel model = language.newSubTypingProofModel ( this.getEditorType ( ), this
+						.getEditorType2 ( ), this.advanced );
+				subTyping = new ProofViewComponent ( ProofViewFactory.newSubTypingView ( model ), model );
+				editorPanel.removeAll ( );
+				activateFunction ( subTypingButton, subTyping );
+				subTyping.setAdvanced ( this.advanced );
+				paintAll ( getGraphics ( ) );
+			}
+			else {
+				JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+						.getString ( "CouldNotSubType" )
+						, "Sub Typing", JOptionPane.ERROR_MESSAGE );
+			}
 
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this,
-					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotSmallStep")+
-					"\n"+e.getMessage()+".",
-					"Small Step", JOptionPane.ERROR_MESSAGE);
+		} catch ( Exception e ) {
+			JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+					.getString ( "CouldNotSubType" )
+					+ "\n" + e.getMessage ( ) + ".", "Sub Typing", JOptionPane.ERROR_MESSAGE );
 		}
 	}
 
 	/**
-	 * Starts the Big Step Interpreter.
+	 * Starts the Sub Typing Rec Interpreter.
 	 */
-	public void handleSubTypingRec() {
-		setTexteditor(false);
+	public void handleSubTypingRec ( ) {
+		setTexteditor ( false );
 		try {
-			RecSubTypingProofModel model = language.newRecSubTypingProofModel(this.getEditorType ( ), this.getEditorType2 ( ), this.advanced);
-			subTypingRec = new ProofViewComponent(ProofViewFactory
-					.newSubTypingRecView(model), model);
-			editorPanel.removeAll();
-			activateFunction(subTypingRecButton, subTypingRec);
-			subTypingRec.setAdvanced(this.advanced);
-			paintAll(getGraphics());
-			
-
-		} catch (Exception e) {
-			logger.error("Could not create new BigStepView", e);
-			JOptionPane.showMessageDialog(this,
-					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotBigStep")+
-					"\n"+e.getMessage()+".", "Big Step",
-					JOptionPane.ERROR_MESSAGE);
+			if ( this.getEditorType ( ) != null && this.getEditorType2 ( ) != null ) {
+			RecSubTypingProofModel model = language.newRecSubTypingProofModel ( this.getEditorType ( ), this
+					.getEditorType2 ( ), this.advanced );
+			subTypingRec = new ProofViewComponent ( ProofViewFactory.newSubTypingRecView ( model ), model );
+			editorPanel.removeAll ( );
+			activateFunction ( subTypingRecButton, subTypingRec );
+			subTypingRec.setAdvanced ( this.advanced );
+			paintAll ( getGraphics ( ) );
+			}
+			else {
+				JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+						.getString ( "CouldNotSubType" )
+						, "Sub Typing", JOptionPane.ERROR_MESSAGE );
+			}
+		} catch ( Exception e ) {
+			logger.error ( "Could not create new SubTypingView", e );
+			JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+					.getString ( "CouldNotSubType" )
+					+ "\n" + e.getMessage ( ) + ".", "Sub Typing", JOptionPane.ERROR_MESSAGE );
 		}
 	}
-
-
 
 	/**
 	 * activates one of the following: smallstep, bigstep, typechecker etc.
@@ -455,19 +473,18 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * @param comp
 	 *            the component related to that button
 	 */
-	private void activateFunction(JToggleButton button, EditorComponent comp) {
-		comp.setDefaultStates();
-		((JComponent) comp).addPropertyChangeListener(editorComponentListener);
-		setComponent(comp);
-		deselectButtons();
-		if (button != null)
-		{
-			button.setSelected(true);
-			button.setVisible(true);
-	    		nextButton.setVisible(true);
-			
+	private void activateFunction ( JToggleButton button, EditorComponent comp ) {
+		comp.setDefaultStates ( );
+		( ( JComponent ) comp ).addPropertyChangeListener ( editorComponentListener );
+		setComponent ( comp );
+		deselectButtons ( );
+		if ( button != null ) {
+			button.setSelected ( true );
+			button.setVisible ( true );
+			nextButton.setVisible ( true );
+
 		}
-		
+
 	}
 
 	/**
@@ -475,10 +492,10 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * buttons to false.
 	 * 
 	 */
-	private void deselectButtons() {
-		codeButton.setSelected(false);
-		subTypingButton.setSelected(false);
-		subTypingRecButton.setSelected(false);
+	private void deselectButtons ( ) {
+		codeButton.setSelected ( false );
+		subTypingButton.setSelected ( false );
+		subTypingRecButton.setSelected ( false );
 	}
 
 	/**
@@ -486,7 +503,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * 
 	 * @return true if redo is available
 	 */
-	public boolean isRedoStatus() {
+	public boolean isRedoStatus ( ) {
 		return redoStatus;
 	}
 
@@ -496,10 +513,10 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * @param redoStatus
 	 *            redo status to be set.
 	 */
-	public void setRedoStatus(boolean redoStatus) {
+	public void setRedoStatus ( boolean redoStatus ) {
 		boolean oldRedoStatus = this.redoStatus;
 		this.redoStatus = redoStatus;
-		firePropertyChange("redoStatus", oldRedoStatus, redoStatus);
+		firePropertyChange ( "redoStatus", oldRedoStatus, redoStatus );
 	}
 
 	/**
@@ -507,7 +524,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * 
 	 * @return the file name.
 	 */
-	public String getFileName() {
+	public String getFileName ( ) {
 		return filename;
 	}
 
@@ -520,12 +537,12 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * @exception NullPointerException
 	 *                if <code>filename</code> is <code>null</code>
 	 */
-	public void setFileName(String filename) {
-		if (filename == null)
-			throw new NullPointerException("filename is null");
+	public void setFileName ( String filename ) {
+		if ( filename == null )
+			throw new NullPointerException ( "filename is null" );
 		String oldFilename = this.filename;
 		this.filename = filename;
-		firePropertyChange("filename", oldFilename, filename);
+		firePropertyChange ( "filename", oldFilename, filename );
 	}
 
 	/**
@@ -533,7 +550,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * 
 	 * @return the file name.
 	 */
-	public File getFile() {
+	public File getFile ( ) {
 		return file;
 	}
 
@@ -546,14 +563,14 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * @throws NullPointerException
 	 *             if the <code>File</code> is <code>null</code>.
 	 */
-	public void setFile(File file) {
-		if (file == null)
-			throw new NullPointerException("File is null");
+	public void setFile ( File file ) {
+		if ( file == null )
+			throw new NullPointerException ( "File is null" );
 		//if (this.file != null) window.removeRecentlyUsed(this.file);
 		this.file = file;
-		window.addRecentlyUsed(new HistoryItem (this.file));
-		setFileName(file.getName());
-		
+		window.addRecentlyUsed ( new HistoryItem ( this.file ) );
+		setFileName ( file.getName ( ) );
+
 	}
 
 	/**
@@ -561,18 +578,18 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * 
 	 * @return the language used.
 	 */
-	public Language getLanguage() {
+	public Language getLanguage ( ) {
 		return language;
 	}
 
-//	/**
-//	 *  add documentation here
-//	 * 
-//	 * @return <code>true</code> if the editor's document was changed.
-//	 */
-////	public boolean isChanged() {
-////		return this.changed;
-////	}
+	//	/**
+	//	 *  add documentation here
+	//	 * 
+	//	 * @return <code>true</code> if the editor's document was changed.
+	//	 */
+	////	public boolean isChanged() {
+	////		return this.changed;
+	////	}
 
 	/**
 	 * Sets the change status of the editor
@@ -580,27 +597,26 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * @param changed
 	 *            true if the editor's document was changed.
 	 */
-//	public void setChanged(boolean changed) {
-//		firePropertyChange("changed", this.changed, changed);
-//		this.changed = changed;
-//	}
-
-	public boolean isTexteditor() {
+	//	public void setChanged(boolean changed) {
+	//		firePropertyChange("changed", this.changed, changed);
+	//		this.changed = changed;
+	//	}
+	public boolean isTexteditor ( ) {
 		return this.texteditor;
 	}
 
-	public void setTexteditor(boolean texteditor) {
-		firePropertyChange("texteditor", this.texteditor, texteditor);
-		logger.debug("Texteditor is active");
+	public void setTexteditor ( boolean texteditor ) {
+		firePropertyChange ( "texteditor", this.texteditor, texteditor );
+		logger.debug ( "Texteditor is active" );
 		this.texteditor = texteditor;
 	}
 
-	public MonoType getEditorType() {
-		return code.getType();
+	public MonoType getEditorType ( ) {
+		return code.getType ( );
 	}
-	
-	public MonoType getEditorType2() {
-		return code.getType2();
+
+	public MonoType getEditorType2 ( ) {
+		return code.getType2 ( );
 	}
 
 	/**
@@ -608,47 +624,50 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * 
 	 * @return true if the undo function is available
 	 */
-	public boolean isUndoStatus() {
+	public boolean isUndoStatus ( ) {
 		return undoStatus;
 	}
 
-	public void setUndoStatus(boolean undoStatus) {
-		if (this.undoStatus != undoStatus) {
-			logger.debug("UndoStatus of EditorPanelExpression set to "+undoStatus);
+	public void setUndoStatus ( boolean undoStatus ) {
+		if ( this.undoStatus != undoStatus ) {
+			logger.debug ( "UndoStatus of EditorPanelExpression set to " + undoStatus );
 			boolean oldUndoStatus = this.undoStatus;
 			this.undoStatus = undoStatus;
-			firePropertyChange("undoStatus", oldUndoStatus, undoStatus);
-			if (this.isTexteditor()) firePropertyChange("changed", oldUndoStatus, undoStatus);
+			firePropertyChange ( "undoStatus", oldUndoStatus, undoStatus );
+			if ( this.isTexteditor ( ) )
+				firePropertyChange ( "changed", oldUndoStatus, undoStatus );
 		}
 	}
-	
-	public void setAdvanced(boolean state){
-		if (subTyping != null) subTyping.setAdvanced(state);
-		if (subTypingRec != null) subTypingRec.setAdvanced(state);
+
+	public void setAdvanced ( boolean state ) {
+		if ( subTyping != null )
+			subTyping.setAdvanced ( state );
+		if ( subTypingRec != null )
+			subTypingRec.setAdvanced ( state );
 		this.advanced = state;
 	}
-	
-	public boolean isAdvaced (){
+
+	public boolean isAdvaced ( ) {
 		return this.advanced;
 	}
-	
-	public boolean shouldBeSaved(){
-		return code.isUndoStatus();
+
+	public boolean shouldBeSaved ( ) {
+		return code.isSaveStatus ( );
 	}
 
-	public void handleUndo() {
-		getComponent().handleUndo();
+	public void handleUndo ( ) {
+		getComponent ( ).handleUndo ( );
 	};
 
-	public void handleRedo() {
-		getComponent().handleRedo();
+	public void handleRedo ( ) {
+		getComponent ( ).handleRedo ( );
 	};
 
-	public boolean handleSave() {
-		if (file == null)
-			return handleSaveAs();
+	public boolean handleSave ( ) {
+		if ( file == null )
+			return handleSaveAs ( );
 		else
-			return writeFile();
+			return writeFile ( );
 	};
 
 	/**
@@ -656,169 +675,179 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * 
 	 * @return true if the file could be saved.
 	 */
-	public boolean handleSaveAs() {
+	public boolean handleSaveAs ( ) {
 		// setup the file chooser
-		final LanguageFactory factory = LanguageFactory.newInstance();
-		PreferenceManager prefmanager = PreferenceManager.get();
-		JFileChooser chooser = new JFileChooser(prefmanager.getWorkingPath());
-		chooser.addChoosableFileFilter(new FileFilter() {
+		final LanguageFactory factory = LanguageFactory.newInstance ( );
+		PreferenceManager prefmanager = PreferenceManager.get ( );
+		JFileChooser chooser = new JFileChooser ( prefmanager.getWorkingPath ( ) );
+		chooser.addChoosableFileFilter ( new FileFilter ( ) {
 			@Override
-			public boolean accept(File f) {
-				if (f.isDirectory()) {
+			public boolean accept ( File f ) {
+				if ( f.isDirectory ( ) ) {
 					return true;
 				}
 				try {
-					factory.getLanguageByFile(f);
+					factory.getLanguageByFile ( f );
 					return true;
-				} catch (NoSuchLanguageException e) {
+				} catch ( NoSuchLanguageException e ) {
 					return false;
 				}
 			}
 
 			@Override
-			public String getDescription() {
-				Language[] languages = factory.getAvailableLanguages();
-				StringBuilder builder = new StringBuilder(128);
-				builder.append("Source Files (");
-				for (int n = 0; n < languages.length; ++n) {
-					if (n > 0) {
-						builder.append("; ");
+			public String getDescription ( ) {
+				Language[] languages = factory.getAvailableLanguages ( );
+				StringBuilder builder = new StringBuilder ( 128 );
+				builder.append ( "Source Files (" );
+				for ( int n = 0; n < languages.length; ++n ) {
+					if ( n > 0 ) {
+						builder.append ( "; " );
 					}
-					builder.append("*.");
-					builder.append(languages[n].getName().toLowerCase());
+					builder.append ( "*." );
+					builder.append ( languages[n].getName ( ).toLowerCase ( ) );
 				}
-				builder.append(')');
-				return builder.toString();
+				builder.append ( ')' );
+				return builder.toString ( );
 			}
-		});
-		chooser.setAcceptAllFileFilterUsed(false);
-		prefmanager.setWorkingPath(chooser.getCurrentDirectory().getAbsolutePath());
-		
+		} );
+		chooser.setAcceptAllFileFilterUsed ( false );
+		prefmanager.setWorkingPath ( chooser.getCurrentDirectory ( ).getAbsolutePath ( ) );
+
 		// determine the file name
 		File outfile;
-		for (;;) {
+		for ( ;; ) {
 			// run the dialog
-			int n = chooser.showSaveDialog(getParent());
-			
-			if (n != JFileChooser.APPROVE_OPTION) {
-				logger.debug("Save as dialog cancelled");
+			int n = chooser.showSaveDialog ( getParent ( ) );
+
+			if ( n != JFileChooser.APPROVE_OPTION ) {
+				logger.debug ( "Save as dialog cancelled" );
 				return false;
 			}
 
 			// check the extension
-			File f = chooser.getSelectedFile();
-			String name = f.getName();
-			int i = name.lastIndexOf('.');
-			if (i > 0 && i < name.length()) {
-				if (!name.substring(i + 1).equalsIgnoreCase(
-						this.language.getName())) {
-					JOptionPane.showMessageDialog(this,
-							java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("FileMustEndWith")+" \"."
-									+ this.language.getName().toLowerCase()
-									+ "\".", java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Save"), JOptionPane.ERROR_MESSAGE);
+			File f = chooser.getSelectedFile ( );
+			String name = f.getName ( );
+			int i = name.lastIndexOf ( '.' );
+			if ( i > 0 && i < name.length ( ) ) {
+				if ( !name.substring ( i + 1 ).equalsIgnoreCase ( this.language.getName ( ) ) ) {
+					JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+							.getString ( "FileMustEndWith" )
+							+ " \"." + this.language.getName ( ).toLowerCase ( ) + "\".", java.util.ResourceBundle.getBundle (
+							"de/unisiegen/tpml/ui/ui" ).getString ( "Save" ), JOptionPane.ERROR_MESSAGE );
 					continue;
 				}
 			} else {
-				name = name + "." + this.language.getName().toLowerCase();
+				name = name + "." + this.language.getName ( ).toLowerCase ( );
 			}
 
 			// try to create the new file
 			try {
-				outfile = new File(f.getParent(), name);
-				if (!outfile.createNewFile()) {
+				outfile = new File ( f.getParent ( ), name );
+				if ( !outfile.createNewFile ( ) ) {
 					// TODO: Christoph, this doesn't work propertly!
-					int j = JOptionPane
-							.showConfirmDialog(
-									this,
-									java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("The_File")+" \""
-											+ outfile.getName()
-											+ "\" " +java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("alreadyExists"),
-									java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Overwrite"),
-									JOptionPane.YES_NO_CANCEL_OPTION,
-									JOptionPane.QUESTION_MESSAGE);
-					if (j == JFileChooser.CANCEL_OPTION) {
-						logger.debug("Cancelled overwrite of \""
-								+ outfile.getName() + "\"");
+					int j = JOptionPane.showConfirmDialog ( this, java.util.ResourceBundle.getBundle (
+							"de/unisiegen/tpml/ui/ui" ).getString ( "The_File" )
+							+ " \""
+							+ outfile.getName ( )
+							+ "\" "
+							+ java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "alreadyExists" ),
+							java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "Overwrite" ),
+							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE );
+					if ( j == JFileChooser.CANCEL_OPTION ) {
+						logger.debug ( "Cancelled overwrite of \"" + outfile.getName ( ) + "\"" );
 						return false;
-					} else if (j == JOptionPane.NO_OPTION) {
+					} else if ( j == JOptionPane.NO_OPTION ) {
 						// next try
 						continue;
 					}
 				}
 
 				// save to the new file
-				setFile(outfile);
-				setFileName(outfile.getName());
-				return writeFile();
-			} catch (IOException e) {
-				logger.error("Selected file could not be created.", e);
-				JOptionPane.showMessageDialog(this,
-						java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("FileCantBeCreated"), java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Save"),
-						JOptionPane.ERROR_MESSAGE);
+				setFile ( outfile );
+				setFileName ( outfile.getName ( ) );
+				return writeFile ( );
+			} catch ( IOException e ) {
+				logger.error ( "Selected file could not be created.", e );
+				JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+						.getString ( "FileCantBeCreated" ), java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+						.getString ( "Save" ), JOptionPane.ERROR_MESSAGE );
 				return false;
 			}
 		}
 	}
 
-
-  /**
-   * Writes content of the source panel to a specified file.
-   * 
-   * @return true if the file could be written
-   */
-  private boolean writeFile ( )
-  {
-    try
-    {
-      BufferedWriter out = new BufferedWriter ( new OutputStreamWriter (
-          new FileOutputStream ( file ) , "UTF8" ) ) ; //$NON-NLS-1$
-      out.write ( code.getType ( ).toString ( )  ) ;
-      out.write ( "|" );
-      out.write( code.getType2 ( ).toString ( ) ) ;
-      out.close ( ) ;
-      return true ;
-    }
-    catch ( UnsupportedEncodingException e )
-    {
-      logger.error ( "Could not write to file" , e ) ;
-      JOptionPane.showMessageDialog ( this , java.util.ResourceBundle
-          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-              "CouldNotWriteToFile" ) , java.util.ResourceBundle.getBundle (
-          "de/unisiegen/tpml/ui/ui" ).getString ( "WriteFile" ) ,
-          JOptionPane.ERROR_MESSAGE ) ;
-      return false ;
-    }
-    catch ( IOException e )
-    {
-      logger.error ( "Could not write to file" , e ) ;
-      JOptionPane.showMessageDialog ( this , java.util.ResourceBundle
-          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-              "CouldNotWriteToFile" ) , java.util.ResourceBundle.getBundle (
-          "de/unisiegen/tpml/ui/ui" ).getString ( "WriteFile" ) ,
-          JOptionPane.ERROR_MESSAGE ) ;
-      return false ;
-    }
-  }
+	/**
+	 * Writes content of the source panel to a specified file.
+	 * 
+	 * @return true if the file could be written
+	 */
+	private boolean writeFile ( ) {
+		try {
+			BufferedWriter out = new BufferedWriter ( new OutputStreamWriter ( new FileOutputStream ( file ), "UTF8" ) ); //$NON-NLS-1$
+			if ( code.getType ( ) != null )
+				out.write ( code.getType ( ).toString ( ) );
+			out.write ( "°" );
+			if ( code.getType2 ( ) != null )
+				out.write ( code.getType2 ( ).toString ( ) );
+			out.close ( );
+			code.setSaveStatus ( false );
+			//firePropertyChange ( "changed", true, false );
+			this.window.setChangeState ( false );
+			return true;
+		} catch ( UnsupportedEncodingException e ) {
+			logger.error ( "Could not write to file", e );
+			JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+					.getString ( "CouldNotWriteToFile" ), java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+					.getString ( "WriteFile" ), JOptionPane.ERROR_MESSAGE );
+			return false;
+		} catch ( IOException e ) {
+			logger.error ( "Could not write to file", e );
+			JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+					.getString ( "CouldNotWriteToFile" ), java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+					.getString ( "WriteFile" ), JOptionPane.ERROR_MESSAGE );
+			return false;
+		}
+	}
 
 	public void handleCopy ( ) {
-		// TODO Auto-generated method stub
-		
+	// TODO Auto-generated method stub
+
 	}
 
 	public void handleCut ( ) {
-		// TODO Auto-generated method stub
-		
+	// TODO Auto-generated method stub
+
 	}
 
 	public void handlePaste ( ) {
-		// TODO Auto-generated method stub
-		
+	// TODO Auto-generated method stub
+
 	}
 
 	public void setEditorText ( String string ) {
-		String[] components = string.split ( "\\|" ); //$NON-NLS-1$
-		code.setText ( components[0]);
-		code.setText2 ( components[1]);
-		
+		String[] components = string.split ( "°" ); //$NON-NLS-1$
+		if ( components[0] != null ) {
+			code.setText ( components[0] );
+
+			try {
+				LanguageTypeParser parser = this.language.newTypeParser ( new StringReader ( components[0] ) );
+				code.setType ( parser.parse ( ) );
+			} catch ( Exception e ) {
+				// TODO Auto-generated catch block
+				e.printStackTrace ( );
+			}
+		}
+		code.setText ( components[0] );
+		if ( components.length > 1 && components[1] != null ) {
+			code.setText2 ( components[1] );
+			try {
+				LanguageTypeParser parser = this.language.newTypeParser ( new StringReader ( components[1] ) );
+				code.setType2 ( parser.parse ( ) );
+			} catch ( Exception e ) {
+				// TODO Auto-generated catch block
+				e.printStackTrace ( );
+			}
+		}
+
 	}
 }

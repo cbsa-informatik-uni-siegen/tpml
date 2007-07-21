@@ -42,7 +42,7 @@ import de.unisiegen.tpml.core.languages.l1.L1Language;
  * @version $Rev:499 $
  * @see de.unisiegen.tpml.ui.Main
  */
-@SuppressWarnings("all")public class MainWindow extends javax.swing.JFrame
+public class MainWindow extends javax.swing.JFrame
 {
   //
   // Constants
@@ -145,6 +145,7 @@ import de.unisiegen.tpml.core.languages.l1.L1Language;
     {
       public void propertyChange ( PropertyChangeEvent evt )
       {
+      	
         editorStatusChange ( evt.getPropertyName ( ) , evt.getNewValue ( ) ) ;
       }
     } ;
@@ -1457,12 +1458,12 @@ runMenu.add ( subTypingRec ) ;
 
   private void setSaveState ( Boolean state )
   {
-    saveButton.setEnabled ( state ) ;
-    saveItem.setEnabled ( state ) ;
+    saveButton.setEnabled ( true ) ; //state ) ;
+    saveItem.setEnabled ( true ) ; //state ) ;
   }
 
 
-  private void setChangeState ( Boolean state )
+  public void setChangeState ( Boolean state )
   {
     if ( state )
     {

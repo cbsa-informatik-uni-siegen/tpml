@@ -24,9 +24,9 @@ import de.unisiegen.tpml.graphics.StyledLanguageEditor;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline;
 import de.unisiegen.tpml.graphics.outline.Outline;
 import de.unisiegen.tpml.ui.EditorComponent;
+import de.unisiegen.tpml.ui.MainWindow;
 import de.unisiegen.tpml.ui.SideBar;
 import de.unisiegen.tpml.ui.SideBarListener;
-import de.unisiegen.tpml.ui.editor.TextEditorPanel;
 
 
 /**
@@ -75,10 +75,15 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
   SideBar sidebar2;
   
   MonoType type;
-  MonoType oldType;
   
   MonoType type2;
-  MonoType oldType2;
+  
+  OwnDocumentListener listener;
+  OwnDocumentListener2 listener2;
+  
+  MainWindow window;
+  
+  boolean saveStatus;
 
 
   /**
@@ -118,10 +123,11 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
    * @param pSubTypingProofModel The {@link SubTypingProofModel} for the
    *          <code>SubTypingView</code>.
    */
-  public SubTypingSourceView ( Language pLanguage )
+  public SubTypingSourceView ( Language pLanguage, MainWindow pWindow )
   {
     super ( ) ;
     this.language = pLanguage ;
+    this.window = pWindow;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
     gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
     
@@ -229,29 +235,9 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 		
 
 		this.editor.setDocument ( this.sourceField );
-
+		this.listener = new OwnDocumentListener();
 		this.outline = new DefaultOutline ( this , Outline.Modus.FIRST);
-		this.sourceField.addDocumentListener ( new DocumentListener ( ) {
-
-			public void changedUpdate(DocumentEvent e) {
-			//Nothing to do so far
-			}
-
-			@SuppressWarnings("synthetic-access")
-			public void insertUpdate(DocumentEvent e) {
-				type = eventHandling ( editor, type, oldType, outline );
-				/*if (type1 != oldType1) {
-					check ( );
-				}*/
-			}
-
-			@SuppressWarnings("synthetic-access")
-			public void removeUpdate(DocumentEvent e) {
-				type = eventHandling ( editor, type, oldType, outline );
-			/*	if (type1 != oldType1)
-					check ( );*/
-			}
-		} );
+		this.sourceField.addDocumentListener ( listener );
 		
 		this.scrollPane1.setViewportView(this.editor);
 		//this.scrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
@@ -347,28 +333,9 @@ this.editor2 = new StyledLanguageEditor ( );
 		this.editor2.setDocument ( this.sourceField2 );
 
 		this.outline2 = new DefaultOutline ( this , Outline.Modus.SECOND );
-    this.outline.setSyncOutline ( this.outline2 );
-		this.sourceField2.addDocumentListener ( new DocumentListener ( ) {
-
-			public void changedUpdate(DocumentEvent e) {
-			//Nothing to do so far
-			}
-
-			@SuppressWarnings("synthetic-access")
-			public void insertUpdate(DocumentEvent e) {
-				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
-				/*if (type1 != oldType1) {
-					check ( );
-				}*/
-			}
-
-			@SuppressWarnings("synthetic-access")
-			public void removeUpdate(DocumentEvent e) {
-				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
-				/*if (type1 != oldType1)
-					check ( );*/
-			}
-		} );
+   	this.outline.setSyncOutline ( this.outline2 );
+   	this.listener2 = new OwnDocumentListener2();
+		this.sourceField2.addDocumentListener ( this.listener2 );
 		
 		this.scrollPane2.setViewportView(this.editor2);
 		//this.scrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -544,7 +511,7 @@ this.editor2 = new StyledLanguageEditor ( );
   }
   
 	public MonoType eventHandling(StyledLanguageEditor editor, MonoType pType,
-			MonoType oldType, DefaultOutline outline) {
+			DefaultOutline outline) {
 		MonoType type;
 		try {
 			LanguageTypeParser parser = this.language
@@ -661,8 +628,10 @@ public MonoType getType2 ( ) {
 public void setText(String text){
 	 try
     {
+		 this.sourceField.removeDocumentListener ( listener );
       this.sourceField.remove ( 0 , this.sourceField.getLength ( ) ) ;
       this.sourceField.insertString ( 0 , text , null ) ;
+      this.sourceField.addDocumentListener ( listener );
     }
     catch ( BadLocationException e )
     {
@@ -674,14 +643,74 @@ public void setText(String text){
 public void setText2(String text){
 	 try
    {
+		 this.sourceField2.removeDocumentListener ( listener2 );
      this.sourceField2.remove ( 0 , this.sourceField2.getLength ( ) ) ;
      this.sourceField2.insertString ( 0 , text , null ) ;
+     this.sourceField2.addDocumentListener ( listener2 );
    }
    catch ( BadLocationException e )
    {
   	 //TODO
      //logger.error ( "Cannot set Text of the document" , e ) ;
    }
+}
+
+private class OwnDocumentListener  implements DocumentListener{
+
+	public void changedUpdate(DocumentEvent e) {
+	//Nothing to do so far
+	}
+
+	@SuppressWarnings("synthetic-access")
+	public void insertUpdate(DocumentEvent e) {
+		type = eventHandling ( editor, type, outline );
+		window.setChangeState ( true );
+		saveStatus = true;
+	}
+
+	@SuppressWarnings("synthetic-access")
+	public void removeUpdate(DocumentEvent e) {
+		type = eventHandling ( editor, type, outline );
+		window.setChangeState ( true );
+		saveStatus = true;
+	}
+}
+
+private class OwnDocumentListener2 implements DocumentListener {
+
+	public void changedUpdate(DocumentEvent e) {
+	//Nothing to do so far
+	}
+
+	@SuppressWarnings("synthetic-access")
+	public void insertUpdate(DocumentEvent e) {
+		type2 = eventHandling ( editor2, type2, outline2 );
+		window.setChangeState ( true );
+		saveStatus = true;
+	}
+
+	@SuppressWarnings("synthetic-access")
+	public void removeUpdate(DocumentEvent e) {
+		type2 = eventHandling ( editor2, type2, outline2 );
+		window.setChangeState ( true );
+		saveStatus = true;
+	}
+}
+
+public void setType ( MonoType type ) {
+	this.type = type;
+}
+
+public void setType2 ( MonoType type2 ) {
+	this.type2 = type2;
+}
+
+public boolean isSaveStatus ( ) {
+	return this.saveStatus;
+}
+
+public void setSaveStatus ( boolean saveStatus ) {
+	this.saveStatus = saveStatus;
 }
 
 

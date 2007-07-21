@@ -1,21 +1,22 @@
 package de.unisiegen.tpml.graphics.subtyping ;
 
 
-import java.awt.Color ;
-import java.awt.GridBagConstraints ;
-import java.awt.GridBagLayout ;
-import java.awt.Insets ;
-import java.awt.event.ComponentAdapter ;
-import java.awt.event.ComponentEvent ;
-import javax.swing.JPanel ;
-import javax.swing.JScrollPane ;
-import javax.swing.JSplitPane ;
-import javax.swing.border.LineBorder ;
-import de.unisiegen.tpml.core.ProofGuessException ;
-import de.unisiegen.tpml.core.subtyping.SubTypingModel ;
-import de.unisiegen.tpml.graphics.AbstractProofView ;
-import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
-import de.unisiegen.tpml.graphics.outline.Outline ;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+
+import de.unisiegen.tpml.core.ProofGuessException;
+import de.unisiegen.tpml.core.subtyping.SubTypingModel;
+import de.unisiegen.tpml.graphics.AbstractProofView;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline;
+import de.unisiegen.tpml.graphics.outline.Outline;
 
 
 /**

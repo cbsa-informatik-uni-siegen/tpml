@@ -120,7 +120,7 @@ public class NewSubTypingComponent extends AbstractProofComponent implements Scr
 				return;
 			}
 		}
-    throw new IllegalStateException("Unable to find next node");
+    throw new IllegalStateException("Unable to find next node"); //$NON-NLS-1$
 	}
 
 	/**
@@ -187,7 +187,7 @@ public class NewSubTypingComponent extends AbstractProofComponent implements Scr
 			// if the node has no userobject it may be new in the
 			// tree, so a new SubTypingNodeComponent will be created
 			// and added to the SubTypingProofNode  
-			nodeComponent = new NewSubTypingNodeComponent (node, (SubTypingModel)this.proofModel, this.translator);
+			nodeComponent = new NewSubTypingNodeComponent (node, (SubTypingModel)this.proofModel);
 			node.setUserObject(nodeComponent);
 			
 			// the newly created nodeComponent is a gui-element so

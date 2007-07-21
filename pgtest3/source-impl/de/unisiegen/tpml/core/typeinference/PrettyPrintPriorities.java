@@ -12,7 +12,7 @@ package de.unisiegen.tpml.core.typeinference;
  * @see de.unisiegen.tpml.core.expressions.Expression
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder
  */
-interface PrettyPrintPriorities {
+public interface PrettyPrintPriorities {
 
 	/**
 	 * The pretty print priority for type equations.
