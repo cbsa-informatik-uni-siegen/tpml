@@ -1,5 +1,4 @@
-package de.unisiegen.tpml.graphics.components ;
-
+package de.unisiegen.tpml.graphics.components;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,9 +16,7 @@ import de.unisiegen.tpml.graphics.Theme;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
-import de.unisiegen.tpml.graphics.renderer.PrettyStringToHTML;
 import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
-
 
 /**
  * this class renders the types in the TypeChecker
@@ -29,35 +26,28 @@ public class TypeComponent extends JComponent
   /**
    * 
    */
-  private static final long serialVersionUID = - 7653329118052555176L ;
-
+  private static final long serialVersionUID = -7653329118052555176L;
 
   /**
    * Renderer that is used to render the type
    */
-  private PrettyStringRenderer typeRenderer ;
-
+  private PrettyStringRenderer typeRenderer;
 
   /**
    * The current type.
    */
-  private Type type ;
-
-
+  private Type type;
 
   /**
    * The size of the type.
    */
-  private Dimension typeSize ;
-
-
+  private Dimension typeSize;
 
   /**
    * If this color is given all colors of the {@link AbstractRenderer} are
    * ignored and only this color is used.
    */
-  private Color alternativeColor ;
-
+  private Color alternativeColor;
 
   /**
    * Initialises the CompoundExpression with the default values.<br>
@@ -65,57 +55,52 @@ public class TypeComponent extends JComponent
    * The braces have a size of 10 pixes, no underlining and the color of the
    * {@link AbstractRenderer} are ignored.
    */
-  private ShowBonds bonds ;
-
+  private ShowBonds bonds;
 
   // private ToListenForMouseContainer toListenForMouse = new
   // ToListenForMouseContainer();
   /**
    * the list of points where the mouseovereffect will be react
    */
-  private ToListenForMouseContainer toListenForMouse ;
-  
+  private ToListenForMouseContainer toListenForMouse;
+
   /**
    * can be :: or <:
    */
   private String text;
 
-
   /**
    * the constructor
    *
    */
-  public TypeComponent ( )
+  public TypeComponent ()
   {
 
-    super ( ) ;
-    this.bonds = new ShowBonds ( ) ;
-    this.toListenForMouse = new ToListenForMouseContainer ( ) ;
-    this.alternativeColor = null ;
+    super();
+    this.bonds = new ShowBonds();
+    this.toListenForMouse = new ToListenForMouseContainer();
+    this.alternativeColor = null;
     //this.text = " :: "; //$NON-NLS-1$
     this.text = "";
-    
 
-    this.addMouseMotionListener ( new MouseMotionAdapter ( )
+    this.addMouseMotionListener(new MouseMotionAdapter()
     {
-      @ Override
-      public void mouseMoved ( MouseEvent event )
+      @Override
+      public void mouseMoved (MouseEvent event)
       {
-        handleMouseMoved ( event ) ;
+        handleMouseMoved(event);
       }
-    } ) ;
-    this.addMouseListener (new MouseAdapter ()
+    });
+    this.addMouseListener(new MouseAdapter()
     {
       @Override
       public void mouseExited (MouseEvent e)
       {
-        toListenForMouse.reset ();
-        toListenForMouse.setMark (false);
-        TypeComponent.this.repaint ();
+        resetMouseContainer();
+
       }
     });
   }
-
 
   /**
    * Sets an alternative color.<br>
@@ -125,26 +110,25 @@ public class TypeComponent extends JComponent
    * 
    * @param color The alternative color.
    */
-  public void setAlternativeColor ( Color color )
+  public void setAlternativeColor (Color color)
   {
-    this.alternativeColor = color ;
-    if ( this.typeRenderer != null )
+    this.alternativeColor = color;
+    if (this.typeRenderer != null)
     {
-      this.typeRenderer.setAlternativeColor ( color ) ;
+      this.typeRenderer.setAlternativeColor(color);
     }
   }
 
   /**
    * Causes the PrettyStringRenderer to recheck the linewraps
    */
-  public void reset ( )
+  public void reset ()
   {
-    if ( this.typeRenderer != null )
+    if (this.typeRenderer != null)
     {
-      this.typeRenderer.checkLinewraps ( ) ;
+      this.typeRenderer.checkLinewraps();
     }
   }
-
 
   /**
    * Handles whether a ToolTip should be displayed for the environment, if some
@@ -152,54 +136,52 @@ public class TypeComponent extends JComponent
    * 
    * @param event
    */
-  void handleMouseMoved ( MouseEvent event )
+  void handleMouseMoved (MouseEvent event)
   {
-    
     //tell the PrettyStringRenderer where the mouse pointer is
-    toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
-    
+    this.toListenForMouse.setHereIam(event.getX(), event.getY());
+
     //first, we do not want to mark anything, we are waiting for mouse pointer is over one bounded id
-    toListenForMouse.setMark ( false ) ;
-    TypeComponent.this.repaint ( ) ;
-    
+    this.toListenForMouse.setMark(false);
+    TypeComponent.this.repaint();
+
     //note if to mark or not to mark
     boolean mark = false;
-    
+
     //walk throu the postions where to mark
-    for ( int t = 0 ; t < toListenForMouse.size ( ) ; t++ )
+    for (int t = 0; t < this.toListenForMouse.size(); t++)
     {
       //get position of pointer, these are rectangles. These positions are made by the PrettyStringRenderer
-      Rectangle r =  toListenForMouse.get ( t ) ;
+      Rectangle r = this.toListenForMouse.get(t);
       int pX = r.x;
-      int pX1 = r.x+r.width ;
+      int pX1 = r.x + r.width;
       int pY = r.y;
-      int pY1 = r.y+r.height;
-    
+      int pY1 = r.y + r.height;
+
       // fnde out if pointer is on one of the chars to mark
-      if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY) && (event.getY() <= pY1)) 
+      if ( (event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY) && (event.getY() <= pY1))
       //if ( ( event.getX ( ) >= pX ) && ( event.getX ( ) <= pX1 ) )
       {
         //just note it
         mark = true;
       }
     }
-    
+
     //if the pointer is on one of the bounded chars
     if (mark)
     {
       //we want to habe marked
-      toListenForMouse.setMark ( true ) ;
-      TypeComponent.this.repaint ( ) ;
+      this.toListenForMouse.setMark(true);
+      TypeComponent.this.repaint();
     }
     else
     {
       //we do not want to see anything marked
-     toListenForMouse.setMark ( false ) ;
-     toListenForMouse.reset();
-     TypeComponent.this.repaint ( ) ;
+      this.toListenForMouse.setMark(false);
+      this.toListenForMouse.reset();
+      TypeComponent.this.repaint();
     }
   }
-
 
   /**
    * Sets the type that should rendered.
@@ -207,94 +189,90 @@ public class TypeComponent extends JComponent
    * 
    * @param expression
    */
-  public void setType ( Type typeP )
+  public void setType (Type typeP)
   {
     // check if we have a new expression
-    if ( this.type != typeP )
+    if (this.type != typeP)
     {
       // update to the new expression
-      this.type = typeP ;
+      this.type = typeP;
 
-     bonds = new ShowBonds(); 
-     bonds.load ( this.type ) ;
-      
+      this.bonds = new ShowBonds();
+      this.bonds.load(this.type);
+
       // check what to do with the renderer
-      if ( this.type == null )
+      if (this.type == null)
       {
-        this.typeRenderer = null ;
+        this.typeRenderer = null;
       }
       else
       {
-        if ( this.typeRenderer == null )
+        if (this.typeRenderer == null)
         {
-          
+
           // bound = new ShowBonds();
           // CHANGE MICHAEL
           // with ervery new expression renderd by the PrettyStringRenderer the
           // elements listen by mouse will be resetet
           // toListenForMouse.reset();
           // CHANGE MICHAEL
-          
-          this.typeRenderer = new PrettyStringRenderer ( ) ;
-          this.typeRenderer.setAlternativeColor ( this.alternativeColor ) ;
+
+          this.typeRenderer = new PrettyStringRenderer();
+          this.typeRenderer.setAlternativeColor(this.alternativeColor);
         }
-        this.typeRenderer.setPrettyString ( this.type
-            .toPrettyString ( ) ) ;
+        this.typeRenderer.setPrettyString(this.type.toPrettyString());
       }
       // be sure to schedule a repaint
-      repaint ( ) ;
+      repaint();
     }
   }
-
 
   /**
    * Calculates the size needed to propperly render the typeComponent
    * Note: Till now the types are never wraped so the maxWidth is ignored 
    * Ther is no way to print the typechecker
-   * TODO getNeededSizeAll einbauen
    * 
    * @param maxWidth
    * @return the Dimension needed to render the type
    */
-  public Dimension getNeededSize ( int maxWidth )
+  public Dimension getNeededSize (int maxWidth)
   {
-    Dimension result = new Dimension ( 0 , 0 ) ;
-    result.width += AbstractRenderer.getTextFontMetrics ( ).stringWidth(text);
-    if (type instanceof RowType)
+    Dimension result = new Dimension(0, 0);
+    result.width += AbstractRenderer.getTextFontMetrics().stringWidth(this.text);
+    if (this.type instanceof RowType)
     {
-    	result.width += AbstractRenderer.getTextFontMetrics ( ).stringWidth("(");
-    	result.width += AbstractRenderer.getTextFontMetrics ( ).stringWidth(")");
+      result.width += AbstractRenderer.getTextFontMetrics().stringWidth("(");
+      result.width += AbstractRenderer.getTextFontMetrics().stringWidth(")");
     }
-    
+
     //TODO Testen
-//    if (true ) //no linwraping
-//    {
-//      // to guaranty that no line wrapping should be performed
-//      // set the maxWidth = MAX_INT
-//      maxWidth = Integer.MAX_VALUE ;
-//    }
+    //    if (true ) //no linwraping
+    //    {
+    //      // to guaranty that no line wrapping should be performed
+    //      // set the maxWidth = MAX_INT
+    //      maxWidth = Integer.MAX_VALUE ;
+    //    }
     // check whether there is an environment.
-  
-    if ( this.type != null && this.typeRenderer != null )
+
+    if ((this.type != null) && (this.typeRenderer != null))
     {
       // now check the size still available for the expression
       //TODO Test for printing
-      this.typeSize = this.typeRenderer.getNeededSizeAll_ ( maxWidth ) ;
+      this.typeSize = this.typeRenderer.getNeededSizeAll_(maxWidth);
       //this.expressionSize = this.expressionRenderer.getNeededSize ( maxWidth ) ;
-      result.width += this.typeSize.width ;
-      result.height = Math.max ( result.height , this.typeSize.height ) ;
+      result.width += this.typeSize.width;
+      result.height = Math.max(result.height, this.typeSize.height);
     }
-    return result ;
+    return result;
   }
-
 
   /**
    * The actualy rendering method.
    * 
    * @param gc The Graphics object that will be used to render the stuff.
    */
-  @ Override
-  protected void paintComponent ( Graphics gc )
+  @Override
+  protected void paintComponent (Graphics gc)
   {
     //TODO Only for test to make yompoundexpression visible
     //it also displays how often the exptresso is rednerd while srolling...
@@ -311,17 +289,17 @@ public class TypeComponent extends JComponent
     //test[7] = Color.gray;
     //test[8] = Color.magenta;
     //test[9] = Color.orange;
-    
+
     //double get = Math.random();
     //int getR = (int) (get*10);
     //gc.setColor (test[getR]);
     //gc.fillRect(0, 0, getWidth () - 1, getHeight () - 1);
     //--------------------------------
-    
+
     // make sure that we have a type to renderer
-    if ( this.typeRenderer == null )
+    if (this.typeRenderer == null)
     {
-      return ;
+      return;
     }
     // assuming the size of the component will suffice, no testing
     // of any sizes will happen.
@@ -329,66 +307,63 @@ public class TypeComponent extends JComponent
      * just to get reminded: no environment: expression storeenvironment:
      * (expression [env]) typeenvironment: [env] |> expression
      */
-    int posX = 0 ;
-    int posY = 0 ;
+    int posX = 0;
+    int posY = 0;
     // if there is an environment and it is of type Store
     // draw the braces around the entire expression with environment
-  
+
     // if there is no environment or the environment is of type
     // Store, the entire expression (with environment) will begin
     // with the expression
 
+    // draw the arrow character in the vertical center
+    int centerV = getHeight() / 2;
+    centerV += AbstractRenderer.getTextFontMetrics().getAscent() / 2;
+    gc.setFont(AbstractRenderer.getTextFont());
+    gc.setColor(Theme.currentTheme().getExpressionColor());
+    gc.drawString(this.text, posX, centerV);
+    posX += AbstractRenderer.getTextFontMetrics().stringWidth(this.text);
+    if (this.type instanceof RowType)
+    {
+      gc.setFont(AbstractRenderer.getTextFont());
+      //TODO anpassen....
+      //gc.setColor ( AbstractRenderer.getTextColor() ) ;
+      gc.setColor(Theme.currentTheme().getExpressionColor());
+      gc.drawString("(", posX, centerV);
+      posX += AbstractRenderer.getTextFontMetrics().stringWidth("(");
+    }
+    this.typeRenderer.render(posX, posY, getWidth(), getHeight(), gc, this.bonds, this.toListenForMouse);
+    posX += this.typeSize.width;
+    if (this.type instanceof RowType)
+    {
+      gc.setFont(AbstractRenderer.getTextFont());
+      //TODO anpassen....
+      //gc.setColor ( AbstractRenderer.getTextColor() ) ;
+      gc.setColor(Theme.currentTheme().getExpressionColor());
+      gc.drawString(")", posX, centerV);
+      posX += AbstractRenderer.getTextFontMetrics().stringWidth(")");
+    }
 
-   
-      // draw the arrow character in the vertical center
-      int centerV = getHeight ( ) / 2 ;
-      centerV += AbstractRenderer.getTextFontMetrics ( ).getAscent ( ) / 2 ;
-      gc.setFont ( AbstractRenderer.getTextFont ( ) ) ;
-      //TODO anpassen....
-      //gc.setColor ( AbstractRenderer.getTextColor() ) ;
-      gc.setColor ( Theme.currentTheme().getExpressionColor());
-      gc.drawString ( text , posX , centerV ) ;
-      posX += AbstractRenderer.getTextFontMetrics ( ).stringWidth (
-          text) ;
-      // draw the expression at the last position.
-      //TODO Testausgabe
-      //System.out.println(getHeight());
-      if (type instanceof RowType)
-      	{
-      	gc.setFont ( AbstractRenderer.getTextFont ( ) ) ;
-        //TODO anpassen....
-        //gc.setColor ( AbstractRenderer.getTextColor() ) ;
-      	gc.setColor ( Theme.currentTheme().getExpressionColor());
-        gc.drawString ( "(" , posX , centerV ) ;
-        posX += AbstractRenderer.getTextFontMetrics ( ).stringWidth ("(") ;
-      	}
-      this.typeRenderer.render ( posX , posY , getWidth() ,getHeight ( ) , gc , bonds , toListenForMouse ) ;
-      posX += typeSize.width;
-      if (type instanceof RowType)
-    	{
-    	gc.setFont ( AbstractRenderer.getTextFont ( ) ) ;
-      //TODO anpassen....
-      //gc.setColor ( AbstractRenderer.getTextColor() ) ;
-      gc.setColor ( Theme.currentTheme().getExpressionColor());
-      gc.drawString ( ")" , posX , centerV ) ;
-      posX += AbstractRenderer.getTextFontMetrics ( ).stringWidth (")") ;
-    	}
-    
-    
     //TODO nur testen
     //gc.setColor (Color.YELLOW);
     //gc.drawRect(0, 0, getWidth () - 1, getHeight () - 1);
   }
 
-
-  public Type getType ( )
+  public Type getType ()
   {
-    return type ;
+    return this.type;
   }
 
+  public void setText (String text)
+  {
+    this.text = text;
+  }
 
-public void setText ( String text ) {
-	this.text = text;
-}
- 
+  public void resetMouseContainer ()
+  {
+    this.toListenForMouse.reset();
+    this.toListenForMouse.setMark(false);
+    TypeComponent.this.repaint();
+  }
+
 }
