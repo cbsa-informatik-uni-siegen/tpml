@@ -105,7 +105,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
       BigStepProofNode pNode )
   {
     ObjectExpr objectExpr = ( ObjectExpr ) pNode.getExpression ( ) ;
-    Row row = ( Row ) objectExpr.getE ( ) ;
+    Row row = objectExpr.getRow ( ) ;
     if ( row.isValue ( ) )
     {
       throw new IllegalArgumentException ( "Can not apply OBJECT" ) ; //$NON-NLS-1$
@@ -428,7 +428,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
       Send send = ( Send ) pNode.getExpression ( ) ;
       ObjectExpr objectExpr = ( ObjectExpr ) pNode.getChildAt ( 0 )
           .getResult ( ).getValue ( ) ;
-      Row row = ( Row ) objectExpr.getE ( ) ;
+      Row row = objectExpr.getRow ( ) ;
       Expression newRow ;
       newRow = row.substitute ( objectExpr.getId ( ) , objectExpr ) ;
       pContext.addProofNode ( pNode , new Send ( newRow , send.getId ( ) ) ) ;

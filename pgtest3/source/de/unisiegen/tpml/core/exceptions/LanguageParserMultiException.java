@@ -48,18 +48,6 @@ public final class LanguageParserMultiException extends LanguageParserException
 
 
   /**
-   * The string for super identifiers.
-   */
-  private static final String SUPER = "Super" ; //$NON-NLS-1$
-
-
-  /**
-   * The string for inherited identifiers.
-   */
-  private static final String INHERITED = "Inherited" ; //$NON-NLS-1$
-
-
-  /**
    * The string for self identifiers.
    */
   private static final String SELF = "Self" ; //$NON-NLS-1$
@@ -86,14 +74,6 @@ public final class LanguageParserMultiException extends LanguageParserException
       case METHOD :
       {
         return MESSAGE ;
-      }
-      case SUPER :
-      {
-        return SUPER ;
-      }
-      case INHERITED :
-      {
-        return INHERITED ;
       }
       case SELF :
       {

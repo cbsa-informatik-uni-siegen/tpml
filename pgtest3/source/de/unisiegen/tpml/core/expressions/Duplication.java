@@ -274,7 +274,7 @@ public final class Duplication extends Expression implements
         && ( pExpression instanceof ObjectExpr ) )
     {
       ObjectExpr objectExpr = ( ObjectExpr ) pExpression ;
-      Row row = ( Row ) objectExpr.getE ( ) ;
+      Row row = objectExpr.getRow ( ) ;
       Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
       BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
       boundRenaming.add ( row.getIdentifiersFree ( ) ) ;

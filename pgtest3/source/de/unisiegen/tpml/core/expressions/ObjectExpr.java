@@ -71,21 +71,36 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * @param pIdentifier The {@link Identifier}.
    * @param pTau The {@link Type}.
    * @param pExpression The child {@link Expression}.
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public ObjectExpr ( Identifier pIdentifier , MonoType pTau ,
-      Expression pExpression )
+      Expression pExpression , int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pIdentifier , pTau , ( Row ) pExpression ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
+   * Allocates a new {@link ObjectExpr}.
+   * 
+   * @param pIdentifier The {@link Identifier}.
+   * @param pTau The {@link Type}.
+   * @param pRow The child {@link Row}.
+   */
+  public ObjectExpr ( Identifier pIdentifier , MonoType pTau , Row pRow )
   {
     if ( pIdentifier == null )
     {
-      throw new NullPointerException ( "Id is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
     }
-    if ( pExpression == null )
+    if ( pRow == null )
     {
       throw new NullPointerException ( "Row is null" ) ; //$NON-NLS-1$
-    }
-    if ( ! ( pExpression instanceof Row ) )
-    {
-      throw new IllegalArgumentException ( "The Expression has to be a Row" ) ; //$NON-NLS-1$
     }
     // Identifier
     this.identifiers = new Identifier [ ]
@@ -100,28 +115,8 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
     }
     // Expression
     this.expressions = new Expression [ ]
-    { pExpression } ;
+    { pRow } ;
     this.expressions [ 0 ].setParent ( this ) ;
-  }
-
-
-  /**
-   * Allocates a new {@link ObjectExpr}.
-   * 
-   * @param pIdentifier The {@link Identifier}.
-   * @param pTau The {@link Type}.
-   * @param pExpression The child {@link Expression}.
-   * @param pParserStartOffset The start offset of this {@link Expression} in
-   *          the source code.
-   * @param pParserEndOffset The end offset of this {@link Expression} in the
-   *          source code.
-   */
-  public ObjectExpr ( Identifier pIdentifier , MonoType pTau ,
-      Expression pExpression , int pParserStartOffset , int pParserEndOffset )
-  {
-    this ( pIdentifier , pTau , pExpression ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
   }
 
 
@@ -133,7 +128,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   {
     return new ObjectExpr ( this.identifiers [ 0 ].clone ( ) ,
         this.types [ 0 ] == null ? null : this.types [ 0 ].clone ( ) ,
-        this.expressions [ 0 ].clone ( ) ) ;
+        ( Row ) this.expressions [ 0 ].clone ( ) ) ;
   }
 
 
@@ -162,17 +157,6 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   public String getCaption ( )
   {
     return "Object" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * Returns the sub {@link Expression}.
-   * 
-   * @return the sub {@link Expression}.
-   */
-  public Expression getE ( )
-  {
-    return this.expressions [ 0 ] ;
   }
 
 
@@ -279,6 +263,17 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * Returns the sub {@link Row}.
+   * 
+   * @return the sub {@link Row}.
+   */
+  public Row getRow ( )
+  {
+    return ( Row ) this.expressions [ 0 ] ;
+  }
+
+
+  /**
    * Returns the sub {@link Type}.
    * 
    * @return the sub {@link Type}.
@@ -346,15 +341,15 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
     /*
      * Do not substitute, if the Identifiers are equal.
      */
-    if ( pId.getName ( ).equals ( "self" ) ) //$NON-NLS-1$
+    if ( pId.getSet ( ).equals ( Identifier.Set.SELF ) )
     {
       return this ;
     }
     /*
      * Perform the substitution.
      */
-    Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
-    return new ObjectExpr ( this.identifiers [ 0 ] , this.types [ 0 ] , newE ) ;
+    Row newRow = ( Row ) this.expressions [ 0 ].substitute ( pId , pExpression ) ;
+    return new ObjectExpr ( this.identifiers [ 0 ] , this.types [ 0 ] , newRow ) ;
   }
 
 
@@ -368,8 +363,8 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   {
     MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
         .substitute ( pTypeSubstitution ) ;
-    Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    return new ObjectExpr ( this.identifiers [ 0 ] , newTau , newE ) ;
+    Row newRow = ( Row ) this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
+    return new ObjectExpr ( this.identifiers [ 0 ] , newTau , newRow ) ;
   }
 
 
@@ -399,7 +394,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_OBJECTEXPR_E ) ;
+          PRIO_OBJECTEXPR_ROW ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "end" ) ; //$NON-NLS-1$

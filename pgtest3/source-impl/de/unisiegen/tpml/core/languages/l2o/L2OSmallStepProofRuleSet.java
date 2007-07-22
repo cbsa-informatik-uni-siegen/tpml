@@ -122,7 +122,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
      * If the Expression is an ObjectExpr, we can only perform OBJECT-EVAL.
      */
     pContext.addProofStep ( getRuleByName ( OBJECT_EVAL ) , pObjectExpr ) ;
-    Expression row = evaluate ( pContext , pObjectExpr.getE ( ) ) ;
+    Row row = ( Row ) evaluate ( pContext , pObjectExpr.getRow ( ) ) ;
     if ( row.isException ( ) )
     {
       return row ;
@@ -224,7 +224,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
        */
       ObjectExpr objectExpr = ( ObjectExpr ) pSend.getE ( ) ;
       Expression newRow ;
-      newRow = objectExpr.getE ( ).substitute ( objectExpr.getId ( ) ,
+      newRow = objectExpr.getRow ( ).substitute ( objectExpr.getId ( ) ,
           objectExpr ) ;
       pContext.addProofStep ( getRuleByName ( SEND_UNFOLD ) , pSend ) ;
       return new Send ( newRow , pSend.getId ( ) ) ;

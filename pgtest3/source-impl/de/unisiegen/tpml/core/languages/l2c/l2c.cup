@@ -30,6 +30,7 @@ import de.unisiegen.tpml.core.expressions.RelationalOperator ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.expressions.UnitConstant ;
+import de.unisiegen.tpml.core.interfaces.BodyOrRow ;
 import de.unisiegen.tpml.core.languages.Error ;
 import de.unisiegen.tpml.core.languages.IdentifierExpressionPair ;
 import de.unisiegen.tpml.core.languages.IdentifierTypePair ;
@@ -93,7 +94,6 @@ terminal			CLASS;
 terminal			NEW;
 terminal			INHERIT;
 terminal			FROM;
-terminal			AS;
 		
 /* Types */
 terminal			BOOL;
@@ -152,7 +152,7 @@ non terminal Method					method;
 non terminal CurriedMethod			curried_method;
 non terminal Class					class;
 non terminal New					new;
-non terminal Expression				body;
+non terminal BodyOrRow				body;
 
 /* Non terminal - Type */
 non terminal MonoType				type;
@@ -178,7 +178,6 @@ non terminal Expression[]					row;
 non terminal IdentifierExpressionPair[]		duplication_list;
 non terminal IdentifierExpressionPair		duplication_pair;
 non terminal Identifier[]					body_attribute_list;
-non terminal Identifier[]					body_method_list;
 
 /* Non terminal - Error */
 non terminal 		epsilon;
@@ -223,7 +222,6 @@ non terminal		class_error;
 non terminal		new_error;
 non terminal		body_error;
 non terminal		body_attribute_list_error;
-non terminal		body_method_list_error;
 
 /* Precedence */
 precedence right	ARROW;
@@ -288,8 +286,6 @@ identifier						::= IDENTIFIER:id
 									{: RESULT = new Identifier (id,idleft,idright); :}
 								|	SELF:s
 									{: RESULT = new Identifier (s,sleft,sright); :}
-								|	IDENTIFIER:id1 HASHKEY IDENTIFIER:id2
-									{: RESULT = new Identifier (id1, id2, id1left, id2right); :}
 								;
 
 application						::= simple_expr:e simple_expr_list:l
@@ -1332,12 +1328,16 @@ send_error						::= simple_expr:s HASHKEY:h epsilon
 								;
 
 class							::= CLASS:c LPAREN SELF:id RPAREN body:b END:end
-									{: RESULT = new Class (new Identifier (id,idleft,idright), b, cleft, endright); :}
+									{: RESULT = new Class (new Identifier (id,idleft,idright), null, b, cleft, endright); :}
+								|	CLASS:c LPAREN SELF:id COLON type:tau RPAREN body:b END:end
+									{: RESULT = new Class (new Identifier (id,idleft,idright), tau, b, cleft, endright); :}
 								|	class_error
 									{: :}
 								;
 
-class_error						::= CLASS:c LPAREN SELF RPAREN body:b epsilon
+class_error						::= CLASS:c LPAREN SELF COLON type RPAREN body:b epsilon
+									{: Error.expect("Class", " end", cleft, bright, "end"); :}	
+								|	CLASS:c LPAREN SELF RPAREN body:b epsilon
 									{: Error.expect("Class", " end", cleft, bright, "end"); :}
 								// Missing left bracket
 								|	CLASS:c SELF
@@ -1345,29 +1345,54 @@ class_error						::= CLASS:c LPAREN SELF RPAREN body:b epsilon
 								// Missing self
 								|	CLASS:c LPAREN:l RPAREN
 									{: Error.expect("Class", "self", cleft, lright, "self" ); :}
+								|	CLASS:c LPAREN:l COLON
+									{: Error.expect("Class", "self", cleft, lright, "self" ); :}
 								// Missing right bracket
 								|	CLASS:c LPAREN SELF:s END
 									{: Error.expect("Class", ") ", cleft, sright, ")" ); :}
 								|	CLASS:c LPAREN SELF:s body
 									{: Error.expect("Class", ") ", cleft, sright, ")" ); :}
+								|	CLASS:c LPAREN SELF COLON type:t END
+									{: Error.expect("Class", ") ", cleft, tright, ")" ); :}
+								|	CLASS:c LPAREN SELF COLON type:t body
+									{: Error.expect("Class", ") ", cleft, tright, ")" ); :}
+								// Missing colon
+								|   CLASS:c LPAREN SELF:s type
+									{: Error.expect("Class", ": ", cleft, sright, ":" ); :}																	
+								// Missing type
+								|   CLASS:c LPAREN SELF COLON:co RPAREN
+									{: Error.expect("Class", " \u03C4", cleft, coright, "\u03C4" ); :}
 								// Missing left paren and self
-								|	CLASS:c RPAREN
+								|   CLASS:c RPAREN
+									{: Error.expect("Class", " (self", cleft, cright, "(","self" ); :}
+								|   CLASS:c COLON
 									{: Error.expect("Class", " (self", cleft, cright, "(","self" ); :}
 								// Missing self and right paren
 								|	CLASS:c LPAREN:l END
 									{: Error.expect("Class", "self) ", cleft, lright, "self",")" ); :}
 								|	CLASS:c LPAREN:l body
 									{: Error.expect("Class", "self) ", cleft, lright, "self",")" ); :}
+								// Missing self and colon
+								|	CLASS:c LPAREN:l type
+									{: Error.expect("Class", "self: ", cleft, lright, "self",":" ); :}									
+								// Missing type and right paren
+								|	CLASS:c LPAREN SELF COLON:co END
+									{: Error.expect("Class", " \u03C4) ", cleft, coright, "\u03C4",")" ); :}
+								|	CLASS:c LPAREN SELF COLON:co body
+									{: Error.expect("Class", " \u03C4) ", cleft, coright, "\u03C4",")" ); :}
 								// Missing left paren, self and right paren
 								|	CLASS:c END
 									{: Error.expect("Class", " (self) ", cleft, cright, "(","self",")" ); :}
-								|	CLASS:c body 
-									{: Error.expect("Class", " (self) ", cleft, cright, "(","self",")" ); :}
+								|	CLASS:c body
+									{: Error.expect("Class", " (self) ", cleft, cright, "(","self",")" ); :}								
+								// Missing left paren, self and colon
+								|	CLASS:c type
+									{: Error.expect("Class", " (self: ", cleft, cright, "(","self",":" ); :}
 								;
 
-body							::= INHERIT:i body_attribute_list:bal SEMI body_method_list:bml FROM expr:e AS IDENTIFIER:z SEMI body:b
+body							::= INHERIT:i body_attribute_list:bal FROM expr:e SEMI body:b
 									{:
-									   Body body = new Body (bal, bml, e, new Identifier (z,Identifier.Set.SUPER,zleft,zright), b, ileft, bright); 
+									   Body body = new Body (bal, e, b, ileft, bright); 
 									   MultipleIdentifier.check(body);
 									   RESULT = body ;
 									:}
@@ -1377,78 +1402,36 @@ body							::= INHERIT:i body_attribute_list:bal SEMI body_method_list:bml FROM 
 						   			{: :}
 								;
 
-body_error						::= INHERIT:i epsilon
-									{: Error.expect("Body", " a1, ak ; m1, ml from (class (self) end)  as z ; method m = 0 ;", ileft, iright, "a1",","," ","..."," ",",","a_k"," ",";"," ","m1",","," ","..."," ",",","m_l"," ","from"," ","e"," ","as"," ","z"," ",";"," ","b1"); :}
-								|	INHERIT:i body_attribute_list:bal epsilon
-									{: Error.expect("Body", " ; m1, ml from (class (self) end) as z ; method m = 0 ;", ileft, balright, ";"," ","m1",","," ","..."," ",",","m_l"," ","from"," ","e"," ","as"," ","z"," ",";"," ","b1"); :}
-								|	INHERIT:i body_attribute_list SEMI:s epsilon
-									{: Error.expect("Body", " m1, ml from (class (self) end) as z ; method m = 0 ;", ileft, sright, "m1",","," ","..."," ",",","m_l"," ","from"," ","e"," ","as"," ","z"," ",";"," ","b1"); :}
-								|	INHERIT:i body_attribute_list SEMI body_method_list:bml epsilon
-									{: Error.expect("Body", " from (class (self) end) as z ; method m = 0 ;", ileft, bmlright, "from"," ","e"," ","as"," ","z"," ",";"," ","b1"); :}
-								|	INHERIT:i body_attribute_list SEMI body_method_list FROM:f epsilon
-									{: Error.expect("Body", " (class (self) end) as z ; method m = 0 ;", ileft, fright, "e"," ","as"," ","z"," ",";"," ","b1"); :}
-								// Missing attribute list
-								|	INHERIT:i SEMI
+body_error						::= // Missing attribute list
+									INHERIT:i FROM
 									{: Error.expect("Body", " a1, ak ", ileft, iright, "a1",","," ","..."," ",",","a_k"); :}
-								// Missing first semi
-								|	INHERIT:i body_attribute_list:bal body_method_list
-									{: Error.expect("Body", " ; ", ileft, balright, ";"); :}
-								|	INHERIT:i IDENTIFIER:id body_method_list
-									{: Error.expect("Body", " ; ", ileft, idright, ";"); :}
-								// Missing method list
-								|	INHERIT:i body_attribute_list SEMI:s FROM
-									{: Error.expect("Body", " m1, ml ", ileft, sright, "m1",","," ","..."," ",",","m_l"); :}
 								// Missing from
-								|	INHERIT:i body_attribute_list SEMI body_method_list:bml expr
-									{: Error.expect("Body", " from ", ileft, bmlright, "from"); :}
+								|	INHERIT:i body_attribute_list:bal expr
+									{: Error.expect("Body", " from ", ileft, balright, "from"); :}
 								// Missing e
-								|	INHERIT:i body_attribute_list SEMI body_method_list FROM:f AS
+								|	INHERIT:i body_attribute_list FROM:f SEMI
 									{: Error.expect("Body", " (class (self) end) ", ileft, fright, "e"); :}
-								// Missing identifier
-								|	INHERIT:i body_attribute_list SEMI body_method_list FROM expr AS:a SEMI
-									{: Error.expect("Body", " z ", ileft, aright, "z"); :}	
-								// Missing second semi
-								|	INHERIT:i body_attribute_list SEMI body_method_list FROM expr AS IDENTIFIER:z body
-									{: Error.expect("Body", " ; ", ileft, zright, ";"); :}									
-								// Missing first semi and method list
-								|	INHERIT:i body_attribute_list:bal FROM
-									{: Error.expect("Body", " ; m1, ml ", ileft, balright, ";"," ","m1",","," ","..."," ",",","m_l"); :}																
-								// Missing from and e
-								|	INHERIT:i body_attribute_list SEMI body_method_list:bml AS
-									{: Error.expect("Body", " from (class (self) end) ", ileft, bmlright, "from"," ","e"); :}
-								// Missing as and identifier
-								|	INHERIT:i body_attribute_list SEMI body_method_list FROM expr:e SEMI	
-									{: Error.expect("Body", " as z ", ileft, eright, "as"," ","z"); :}
-								// Missing identifier and second semi
-								|	INHERIT:i body_attribute_list SEMI body_method_list FROM expr AS:a body
-									{: Error.expect("Body", " z ; ", ileft, aright, "z"," ",";"); :}
-								// Missing attribute list, first semi and method list
-								|	INHERIT:i FROM
-									{: Error.expect("Body", " a1, ak ; m1, ml ", ileft, iright, "a1",","," ","..."," ",",","a_k"," ",";"," ","m1",","," ","..."," ",",","m_l"); :}
-								// Missing method list, from and e
-								|	INHERIT:i body_attribute_list SEMI:s AS
-									{: Error.expect("Body", " m1, ml from (class (self) end) ", ileft, sright, "m1",","," ","..."," ",",","m_l"," ","from"," ","e"); :}
-								// Missing e, as and identifier
-								|	INHERIT:i body_attribute_list SEMI body_method_list FROM:f SEMI
-									{: Error.expect("Body", " (class (self) end) as z ", ileft, fright, "e"," ","as"," ","z"); :}
-								// Missing as, identifier and second semi
-								|	INHERIT:i body_attribute_list SEMI body_method_list FROM expr:e body
-									{: Error.expect("Body", " as z ; ", ileft, eright, "as"," ","z"," ",";"); :}
-								// Missing attribute list, first semi, method list and from
+								// Missing semi
+								|	INHERIT:i body_attribute_list FROM expr:e body
+									{: Error.expect("Body", " ; ", ileft, eright, ";"); :}								
+								// Missing attribute list and from
 								|	INHERIT:i expr
-									{: Error.expect("Body", " a1, ak ; m1, ml from ", ileft, iright, "a1",","," ","..."," ",",","a_k"," ",";"," ","m1",","," ","..."," ",",","m_l"," ","from"); :}
-								// Missing first semi, method list, from and e
-								|	INHERIT:i body_attribute_list:bal AS
-									{: Error.expect("Body", " ; m1, ml from (class (self) end) ", ileft, balright, ";"," ","m1",","," ","..."," ",",","m_l"," ","from"," ","e"); :}
-								// Missing e, as, identifier and second semi
-								|	INHERIT:i body_attribute_list SEMI body_method_list FROM:f body
-									{: Error.expect("Body", " e as z ; ", ileft, fright, "e"," ","as"," ","z"," ",";"); :}
-								// Missing attribute list, first semi, method list, from and e
-								|	INHERIT:i AS
-									{: Error.expect("Body", " a1, ak ; m1, ml from e ", ileft, iright, "a1",","," ","..."," ",",","a_k"," ",";"," ","m1",","," ","..."," ",",","m_l"," ","from"," ","e"); :}
-								// Missing method list, from, e, as and identifier
-								|	INHERIT:i body_attribute_list SEMI:s SEMI
-									{: Error.expect("Body", " m1, ml from e as z ", ileft, sright, "m1",","," ","..."," ",",","m_l"," ","from"," ","e"," ","as"," ","z"); :}
+									{: Error.expect("Body", " a1, ak from ", ileft, iright, "a1",","," ","..."," ",",","a_k"," ","from"); :}	
+								// Missing from and e
+								|	INHERIT:i body_attribute_list:bal SEMI
+									{: Error.expect("Body", " from (class (self) end) ", ileft, balright, "from"," ","e"); :}
+								// Missing e and semi
+								|	INHERIT:i body_attribute_list FROM:f body
+									{: Error.expect("Body", " (class (self) end) ; ", ileft, fright, "e"," ",";"); :}
+								// Missing attribute list, from and e
+								|	INHERIT:i SEMI
+									{: Error.expect("Body", " a1, ak from (class (self) end) ", ileft, iright, "a1",","," ","..."," ",",","a_k"," ","from"," ","e"); :}						
+								// Missing from, e and semi
+								|	INHERIT:i body_attribute_list:bal body
+									{: Error.expect("Body", " from (class (self) end) ; ", ileft, balright, "from"," ","e"," ",";"); :}
+								// Missing attribute list, from, e and semi
+								|	INHERIT:i body
+									{: Error.expect("Body", " a1, ak from (class (self) end) ; ", ileft, iright, "a1",","," ","..."," ",",","a_k"," ","from"," ","e"," ",";"); :}						
 								;
 
 body_attribute_list				::=	body_attribute_list:bal COMMA IDENTIFIER:id
@@ -1465,22 +1448,6 @@ body_attribute_list				::=	body_attribute_list:bal COMMA IDENTIFIER:id
 
 body_attribute_list_error		::=	body_attribute_list:bal COMMA:c epsilon
 									{: Error.expect("Body", " ak ", balleft, cright, "a_i",","," ","..."," ",",","a_k"); :}
-								;
-
-body_method_list				::=	body_method_list:bml COMMA IDENTIFIER:id
-									{:
-									   RESULT = new Identifier[bml.length + 1];
-						   			   System.arraycopy(bml, 0, RESULT, 0, bml.length);
-						   			   RESULT[bml.length] = new Identifier(id,Identifier.Set.METHOD,idleft,idright);
-						   			:}
-								|	IDENTIFIER:id
-									{: RESULT = new Identifier[] { new Identifier(id,Identifier.Set.METHOD,idleft,idright) }; :}
-								|	body_method_list_error
-						   			{: :}
-								;
-
-body_method_list_error			::=	body_method_list:bml COMMA:c epsilon
-									{: Error.expect("Body", " ml ", bmlleft, cright, "m_i",","," ","..."," ",",","m_l"); :}
 								;
 
 new								::= NEW:n expr:e

@@ -98,29 +98,26 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       TypeEnvironment environment = node.getEnvironment ( ) ;
       environment = environment.star ( ) ;
       environment = environment.extend ( objectExpr.getId ( ) , objectType ) ;
-      pContext.addProofNode ( node , environment , objectExpr.getE ( ) ,
+      pContext.addProofNode ( node , environment , objectExpr.getRow ( ) ,
           rowType ) ;
     }
     else if ( tau instanceof ObjectType )
     {
       ObjectType objectType = ( ObjectType ) tau ;
       RowType rowType = ( RowType ) objectType.getPhi ( ) ;
-      if ( objectExpr.getE ( ) instanceof Row )
+      Row row = objectExpr.getRow ( ) ;
+      if ( row.getNumberOfDifferentMethods ( ) != rowType.getTypes ( ).length )
       {
-        Row row = ( Row ) objectExpr.getE ( ) ;
-        if ( row.getNumberOfDifferentMethods ( ) != rowType.getTypes ( ).length )
-        {
-          throw new RuntimeException (
-              MessageFormat
-                  .format (
-                      Messages.getString ( "UnificationException.2" ) , node.getType ( ) , objectType ) ) ; //$NON-NLS-1$
-        }
+        throw new RuntimeException (
+            MessageFormat
+                .format (
+                    Messages.getString ( "UnificationException.2" ) , node.getType ( ) , objectType ) ) ; //$NON-NLS-1$
       }
       pContext.addEquation ( node.getType ( ) , objectType ) ;
       TypeEnvironment environment = node.getEnvironment ( ) ;
       environment = environment.star ( ) ;
       environment = environment.extend ( objectExpr.getId ( ) , objectType ) ;
-      pContext.addProofNode ( node , environment , objectExpr.getE ( ) ,
+      pContext.addProofNode ( node , environment , objectExpr.getRow ( ) ,
           rowType ) ;
     }
     else if ( ( tau instanceof RecType )
@@ -130,22 +127,19 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       ObjectType objectType = ( ObjectType ) recType.getTau ( ).substitute (
           recType.getTypeName ( ) , recType ) ;
       RowType rowType = ( RowType ) objectType.getPhi ( ) ;
-      if ( objectExpr.getE ( ) instanceof Row )
+      Row row = objectExpr.getRow ( ) ;
+      if ( row.getNumberOfDifferentMethods ( ) != rowType.getTypes ( ).length )
       {
-        Row row = ( Row ) objectExpr.getE ( ) ;
-        if ( row.getNumberOfDifferentMethods ( ) != rowType.getTypes ( ).length )
-        {
-          throw new RuntimeException (
-              MessageFormat
-                  .format (
-                      Messages.getString ( "UnificationException.2" ) , node.getType ( ) , objectType ) ) ; //$NON-NLS-1$
-        }
+        throw new RuntimeException (
+            MessageFormat
+                .format (
+                    Messages.getString ( "UnificationException.2" ) , node.getType ( ) , objectType ) ) ; //$NON-NLS-1$
       }
       pContext.addEquation ( node.getType ( ) , objectType ) ;
       TypeEnvironment environment = node.getEnvironment ( ) ;
       environment = environment.star ( ) ;
       environment = environment.extend ( objectExpr.getId ( ) , objectType ) ;
-      pContext.addProofNode ( node , environment , objectExpr.getE ( ) ,
+      pContext.addProofNode ( node , environment , objectExpr.getRow ( ) ,
           rowType ) ;
     }
     else

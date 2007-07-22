@@ -93,6 +93,12 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
+   * Prefix of the {@link Body}.
+   */
+  protected static final String PREFIX_BODY = "b" ; //$NON-NLS-1$
+
+
+  /**
    * Prefix of the {@link Row}.
    */
   protected static final String PREFIX_ROW = "r" ; //$NON-NLS-1$
@@ -114,18 +120,6 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * Prefix of the first {@link Identifier} of {@link Method}s.
    */
   public static final String PREFIX_ID_M = "m" ; //$NON-NLS-1$
-
-
-  /**
-   * Prefix of super {@link Identifier}s.
-   */
-  public static final String PREFIX_ID_Z = "z" ; //$NON-NLS-1$
-
-
-  /**
-   * Prefix of inherited {@link Identifier}s.
-   */
-  public static final String PREFIX_ID_I = "z#m" ; //$NON-NLS-1$
 
 
   /**

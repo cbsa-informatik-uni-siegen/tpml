@@ -3,11 +3,15 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
+import de.unisiegen.tpml.core.interfaces.BodyOrRow ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.Type ;
 
 
 /**
@@ -17,7 +21,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @version $Rev: 1066 $
  */
 public final class Class extends Expression implements BoundIdentifiers ,
-    DefaultExpressions
+    DefaultTypes , DefaultExpressions
 {
   /**
    * Indeces of the child {@link Expression}s.
@@ -30,6 +34,13 @@ public final class Class extends Expression implements BoundIdentifiers ,
    * Indeces of the child {@link Identifier}s.
    */
   private static final int [ ] INDICES_ID = new int [ ]
+  { - 1 } ;
+
+
+  /**
+   * Indeces of the child {@link Type}s.
+   */
+  private static final int [ ] INDICES_TYPE = new int [ ]
   { - 1 } ;
 
 
@@ -48,28 +59,44 @@ public final class Class extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * The types for the identifiers, where the assignment is as follows:
+   * 
+   * @see #getTypes()
+   */
+  private MonoType [ ] types ;
+
+
+  /**
    * Allocates a new {@link Class}.
    * 
    * @param pIdentifier The {@link Identifier}.
-   * @param pExpression The child {@link Expression}.
+   * @param pTau The {@link Type}.
+   * @param pBodyOrRow The child {@link BodyOrRow}.
    */
-  public Class ( Identifier pIdentifier , Expression pExpression )
+  public Class ( Identifier pIdentifier , MonoType pTau , BodyOrRow pBodyOrRow )
   {
     if ( pIdentifier == null )
     {
-      throw new NullPointerException ( "Id is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
     }
-    if ( pExpression == null )
+    if ( pBodyOrRow == null )
     {
-      throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "Body or Row is null" ) ; //$NON-NLS-1$
     }
     // Identifier
     this.identifiers = new Identifier [ ]
     { pIdentifier } ;
     this.identifiers [ 0 ].setParent ( this ) ;
+    // Type
+    this.types = new MonoType [ ]
+    { pTau } ;
+    if ( this.types [ 0 ] != null )
+    {
+      this.types [ 0 ].setParent ( this ) ;
+    }
     // Expression
     this.expressions = new Expression [ ]
-    { pExpression } ;
+    { ( Expression ) pBodyOrRow } ;
     this.expressions [ 0 ].setParent ( this ) ;
   }
 
@@ -78,16 +105,17 @@ public final class Class extends Expression implements BoundIdentifiers ,
    * Allocates a new {@link Class}.
    * 
    * @param pIdentifier The {@link Identifier}.
-   * @param pExpression The child {@link Expression}.
+   * @param pTau The {@link Type}.
+   * @param pBodyOrRow The child {@link BodyOrRow}.
    * @param pParserStartOffset The start offset of this {@link Expression} in
    *          the source code.
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Class ( Identifier pIdentifier , Expression pExpression ,
+  public Class ( Identifier pIdentifier , MonoType pTau , BodyOrRow pBodyOrRow ,
       int pParserStartOffset , int pParserEndOffset )
   {
-    this ( pIdentifier , pExpression ) ;
+    this ( pIdentifier , pTau , pBodyOrRow ) ;
     this.parserStartOffset = pParserStartOffset ;
     this.parserEndOffset = pParserEndOffset ;
   }
@@ -99,8 +127,9 @@ public final class Class extends Expression implements BoundIdentifiers ,
   @ Override
   public Class clone ( )
   {
-    return new Class ( this.identifiers [ 0 ].clone ( ) , this.expressions [ 0 ]
-        .clone ( ) ) ;
+    return new Class ( this.identifiers [ 0 ].clone ( ) ,
+        this.types [ 0 ] == null ? null : this.types [ 0 ].clone ( ) ,
+        ( BodyOrRow ) this.expressions [ 0 ].clone ( ) ) ;
   }
 
 
@@ -114,7 +143,9 @@ public final class Class extends Expression implements BoundIdentifiers ,
     {
       Class other = ( Class ) pObject ;
       return ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) )
-          && ( this.identifiers [ 0 ].equals ( other.identifiers [ 0 ] ) ) ;
+          && ( ( this.types [ 0 ] == null ) ? ( other.types [ 0 ] == null )
+              : ( this.types [ 0 ].equals ( other.types [ 0 ] ) )
+                  && ( this.identifiers [ 0 ].equals ( other.identifiers [ 0 ] ) ) ) ;
     }
     return false ;
   }
@@ -131,13 +162,13 @@ public final class Class extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * Returns the sub {@link Expression}.
+   * Returns the sub {@link BodyOrRow}.
    * 
-   * @return the sub {@link Expression}.
+   * @return the sub {@link BodyOrRow}.
    */
-  public Expression getE ( )
+  public BodyOrRow getBodyOrRow ( )
   {
-    return this.expressions [ 0 ] ;
+    return ( BodyOrRow ) this.expressions [ 0 ] ;
   }
 
 
@@ -244,13 +275,47 @@ public final class Class extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * Returns the sub {@link Type}.
+   * 
+   * @return the sub {@link Type}.
+   */
+  public MonoType getTau ( )
+  {
+    return this.types [ 0 ] ;
+  }
+
+
+  /**
+   * Returns the sub {@link Type}s.
+   * 
+   * @return the sub {@link Type}s.
+   */
+  public MonoType [ ] getTypes ( )
+  {
+    return this.types ;
+  }
+
+
+  /**
+   * Returns the indices of the child {@link Type}s.
+   * 
+   * @return The indices of the child {@link Type}s.
+   */
+  public int [ ] getTypesIndex ( )
+  {
+    return INDICES_TYPE ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override
   public int hashCode ( )
   {
     return this.identifiers [ 0 ].hashCode ( )
-        + this.expressions [ 0 ].hashCode ( ) ;
+        + this.expressions [ 0 ].hashCode ( )
+        + ( this.types [ 0 ] == null ? 0 : this.types [ 0 ].hashCode ( ) ) ;
   }
 
 
@@ -277,15 +342,16 @@ public final class Class extends Expression implements BoundIdentifiers ,
     /*
      * Do not substitute, if the Identifiers are equal.
      */
-    if ( pId.getName ( ).equals ( "self" ) ) //$NON-NLS-1$
+    if ( pId.getSet ( ).equals ( Identifier.Set.SELF ) )
     {
       return this ;
     }
     /*
      * Perform the substitution.
      */
-    Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
-    return new Class ( this.identifiers [ 0 ] , newE ) ;
+    BodyOrRow bodyOrRow = ( BodyOrRow ) this.expressions [ 0 ].substitute (
+        pId , pExpression ) ;
+    return new Class ( this.identifiers [ 0 ] , this.types [ 0 ] , bodyOrRow ) ;
   }
 
 
@@ -297,8 +363,11 @@ public final class Class extends Expression implements BoundIdentifiers ,
   @ Override
   public Class substitute ( TypeSubstitution pTypeSubstitution )
   {
-    Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    return new Class ( this.identifiers [ 0 ] , newE ) ;
+    MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
+        .substitute ( pTypeSubstitution ) ;
+    BodyOrRow bodyOrRow = ( BodyOrRow ) this.expressions [ 0 ]
+        .substitute ( pTypeSubstitution ) ;
+    return new Class ( this.identifiers [ 0 ] , newTau , bodyOrRow ) ;
   }
 
 
@@ -317,12 +386,18 @@ public final class Class extends Expression implements BoundIdentifiers ,
       this.prettyStringBuilder.addText ( " (" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
+      if ( this.types [ 0 ] != null )
+      {
+        this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PRIO_CLASS_TAU ) ;
+      }
       this.prettyStringBuilder.addText ( ") " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder
-          .addBuilder ( this.expressions [ 0 ]
-              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-              PRIO_CLASS_E ) ;
+      this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_CLASS_BODY ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "end" ) ; //$NON-NLS-1$

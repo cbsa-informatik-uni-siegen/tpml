@@ -5,10 +5,9 @@ import java.util.ArrayList ;
 import java.util.Arrays ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
+import de.unisiegen.tpml.core.interfaces.BodyOrRow ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
-import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
-import de.unisiegen.tpml.core.interfaces.SortedChildren ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -20,8 +19,8 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @author Christian Fehler
  * @version $Rev: 1066 $
  */
-public final class Body extends Expression implements BoundIdentifiers ,
-    DefaultExpressions , SortedChildren
+public final class Body extends Expression implements BodyOrRow ,
+    BoundIdentifiers , DefaultExpressions
 {
   /**
    * Indeces of the child {@link Expression}s.
@@ -51,97 +50,45 @@ public final class Body extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * The list of attribute identifiers.
-   * 
-   * @see #getIdentifiers()
-   */
-  private Identifier [ ] identifiersAttribute ;
-
-
-  /**
-   * The list of method identifiers.
-   * 
-   * @see #getIdentifiers()
-   */
-  private Identifier [ ] identifiersMethod ;
-
-
-  /**
-   * The base class name identifier.
-   * 
-   * @see #getIdentifiers()
-   */
-  private Identifier identifierSuper ;
-
-
-  /**
    * Allocates a new {@link Body}.
    * 
-   * @param pAttributes The attribute {@link Identifier}s.
-   * @param pMethods The method {@link Identifier}s.
+   * @param pIdentifiers The attribute {@link Identifier}s.
    * @param pExpression The child {@link Expression}.
-   * @param pSuper The super {@link Identifier}.
-   * @param pBody The child {@link Body}.
+   * @param pBodyOrRow The child {@link BodyOrRow}.
    */
-  public Body ( Identifier [ ] pAttributes , Identifier [ ] pMethods ,
-      Expression pExpression , Identifier pSuper , Expression pBody )
+  public Body ( Identifier [ ] pIdentifiers , Expression pExpression ,
+      BodyOrRow pBodyOrRow )
   {
-    if ( pAttributes == null )
+    if ( pIdentifiers == null )
     {
-      throw new NullPointerException ( "Attribute identifiers is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "Identifiers is null" ) ; //$NON-NLS-1$
     }
-    for ( Identifier id : pAttributes )
+    for ( Identifier id : pIdentifiers )
     {
       if ( id == null )
       {
-        throw new NullPointerException ( "One attribute identifier is null" ) ; //$NON-NLS-1$
-      }
-    }
-    if ( pMethods == null )
-    {
-      throw new NullPointerException ( "Method identifiers is null" ) ; //$NON-NLS-1$
-    }
-    for ( Identifier id : pMethods )
-    {
-      if ( id == null )
-      {
-        throw new NullPointerException ( "One method identifier is null" ) ; //$NON-NLS-1$
+        throw new NullPointerException ( "One identifier is null" ) ; //$NON-NLS-1$
       }
     }
     if ( pExpression == null )
     {
       throw new NullPointerException ( "Espression is null" ) ; //$NON-NLS-1$
     }
-    if ( pSuper == null )
+    if ( pBodyOrRow == null )
     {
-      throw new NullPointerException ( "Super Identifier is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "Body or Row is null is null" ) ; //$NON-NLS-1$
     }
     // Identifier
-    this.identifiersAttribute = pAttributes ;
-    this.identifiersMethod = pMethods ;
-    this.identifierSuper = pSuper ;
-    this.identifiers = new Identifier [ this.identifiersAttribute.length
-        + this.identifiersMethod.length + 1 ] ;
-    this.indicesId = new int [ this.identifiersAttribute.length
-        + this.identifiersMethod.length + 1 ] ;
-    for ( int i = 0 ; i < this.identifiersAttribute.length ; i ++ )
+    this.identifiers = pIdentifiers ;
+    this.indicesId = new int [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
     {
-      this.identifiersAttribute [ i ].setParent ( this ) ;
-      this.identifiers [ i ] = this.identifiersAttribute [ i ] ;
+      this.identifiers [ i ].setParent ( this ) ;
       this.indicesId [ i ] = i + 1 ;
     }
-    for ( int i = 0 ; i < this.identifiersMethod.length ; i ++ )
-    {
-      this.identifiersMethod [ i ].setParent ( this ) ;
-      this.identifiers [ this.identifiersAttribute.length + i ] = this.identifiersMethod [ i ] ;
-      this.indicesId [ this.identifiersAttribute.length + i ] = i + 1 ;
-    }
-    this.identifierSuper.setParent ( this ) ;
-    this.identifiers [ this.identifiers.length - 1 ] = this.identifierSuper ;
-    this.indicesId [ this.indicesId.length - 1 ] = - 1 ;
     // Expression
     this.expressions = new Expression [ ]
-    { pExpression , pBody } ;
+    { pExpression , ( Expression ) pBodyOrRow } ;
     this.expressions [ 0 ].setParent ( this ) ;
     this.expressions [ 1 ].setParent ( this ) ;
     // Check the disjunction
@@ -153,21 +100,18 @@ public final class Body extends Expression implements BoundIdentifiers ,
   /**
    * Allocates a new {@link Body}.
    * 
-   * @param pAttributes The attribute {@link Identifier}s.
-   * @param pMethods The method {@link Identifier}s.
+   * @param pIdentifiers The attribute {@link Identifier}s.
    * @param pExpression The child {@link Expression}.
-   * @param pSuper The super {@link Identifier}.
-   * @param pBody The child {@link Body}.
+   * @param pBodyOrRow The child {@link BodyOrRow}.
    * @param pParserStartOffset The start offset of this {@link Expression} in
    *          the source code.
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Body ( Identifier [ ] pAttributes , Identifier [ ] pMethods ,
-      Expression pExpression , Identifier pSuper , Expression pBody ,
-      int pParserStartOffset , int pParserEndOffset )
+  public Body ( Identifier [ ] pIdentifiers , Expression pExpression ,
+      BodyOrRow pBodyOrRow , int pParserStartOffset , int pParserEndOffset )
   {
-    this ( pAttributes , pMethods , pExpression , pSuper , pBody ) ;
+    this ( pIdentifiers , pExpression , pBodyOrRow ) ;
     this.parserStartOffset = pParserStartOffset ;
     this.parserEndOffset = pParserEndOffset ;
   }
@@ -184,7 +128,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
     ArrayList < Identifier > allIdentifiers = this.expressions [ 1 ]
         .getIdentifiersAll ( ) ;
     ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
-    for ( Identifier idAttribute : this.identifiersAttribute )
+    for ( Identifier idAttribute : this.identifiers )
     {
       negativeIdentifiers.clear ( ) ;
       for ( Identifier allId : allIdentifiers )
@@ -214,46 +158,6 @@ public final class Body extends Expression implements BoundIdentifiers ,
             .throwExceptionDisjunction ( negativeIdentifiers ) ;
       }
     }
-    /*
-     * Check th disjunction of the super identifier.
-     */
-    allIdentifiers = new ArrayList < Identifier > ( ) ;
-    for ( Identifier id : this.identifiersAttribute )
-    {
-      allIdentifiers.add ( id ) ;
-    }
-    for ( Identifier id : this.identifiersMethod )
-    {
-      allIdentifiers.add ( id ) ;
-    }
-    allIdentifiers.addAll ( this.expressions [ 0 ].getIdentifiersAll ( ) ) ;
-    allIdentifiers.addAll ( this.expressions [ 1 ].getIdentifiersAll ( ) ) ;
-    for ( Identifier allId : allIdentifiers )
-    {
-      if ( ( this.identifierSuper.equals ( allId ) )
-          && ( ! allId.getSet ( ).equals ( Identifier.Set.SUPER ) ) )
-      {
-        negativeIdentifiers.add ( allId ) ;
-      }
-    }
-    /*
-     * Throw an exception, if the negative identifier list contains one or more
-     * identifiers. If this happens, all Identifiers are added.
-     */
-    if ( negativeIdentifiers.size ( ) > 0 )
-    {
-      negativeIdentifiers.clear ( ) ;
-      for ( Identifier allId : allIdentifiers )
-      {
-        if ( this.identifierSuper.equals ( allId ) )
-        {
-          negativeIdentifiers.add ( allId ) ;
-        }
-      }
-      negativeIdentifiers.add ( this.identifierSuper ) ;
-      LanguageParserMultiException
-          .throwExceptionDisjunction ( negativeIdentifiers ) ;
-    }
   }
 
 
@@ -263,19 +167,13 @@ public final class Body extends Expression implements BoundIdentifiers ,
   @ Override
   public Body clone ( )
   {
-    Identifier [ ] newAttributeIdentifiers = new Identifier [ this.identifiersAttribute.length ] ;
-    for ( int i = 0 ; i < newAttributeIdentifiers.length ; i ++ )
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
-      newAttributeIdentifiers [ i ] = this.identifiersAttribute [ i ].clone ( ) ;
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
     }
-    Identifier [ ] newMethodIdentifiers = new Identifier [ this.identifiersMethod.length ] ;
-    for ( int i = 0 ; i < newMethodIdentifiers.length ; i ++ )
-    {
-      newMethodIdentifiers [ i ] = this.identifiersMethod [ i ].clone ( ) ;
-    }
-    return new Body ( newAttributeIdentifiers , newMethodIdentifiers ,
-        this.expressions [ 0 ].clone ( ) , this.identifierSuper.clone ( ) ,
-        this.expressions [ 1 ].clone ( ) ) ;
+    return new Body ( newIdentifiers , this.expressions [ 0 ].clone ( ) ,
+        ( BodyOrRow ) this.expressions [ 1 ].clone ( ) ) ;
   }
 
 
@@ -288,12 +186,8 @@ public final class Body extends Expression implements BoundIdentifiers ,
     if ( pObject instanceof Body )
     {
       Body other = ( Body ) pObject ;
-      return ( ( Arrays.equals ( this.identifiersAttribute ,
-          other.identifiersAttribute ) )
-          && ( Arrays
-              .equals ( this.identifiersMethod , other.identifiersMethod ) )
-          && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) )
-          && ( this.identifierSuper.equals ( other.identifierSuper ) ) && ( this.expressions [ 1 ]
+      return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
+          && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( this.expressions [ 1 ]
           .equals ( other.expressions [ 1 ] ) ) ) ;
     }
     return false ;
@@ -301,13 +195,13 @@ public final class Body extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * Returns the sub {@link Body}.
+   * Returns the sub {@link BodyOrRow}.
    * 
-   * @return the sub {@link Body}.
+   * @return the sub {@link BodyOrRow}.
    */
-  public Expression getBody ( )
+  public BodyOrRow getBodyOrRow ( )
   {
-    return this.expressions [ 1 ] ;
+    return ( BodyOrRow ) this.expressions [ 1 ] ;
   }
 
 
@@ -355,17 +249,6 @@ public final class Body extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * Returns the super {@link Identifier}.
-   * 
-   * @return The super {@link Identifier}.
-   */
-  public Identifier getIdentifierSuper ( )
-  {
-    return this.identifierSuper ;
-  }
-
-
-  /**
    * Returns the {@link Identifier}s of this {@link Expression}.
    * 
    * @return The {@link Identifier}s of this {@link Expression}.
@@ -373,19 +256,6 @@ public final class Body extends Expression implements BoundIdentifiers ,
   public Identifier [ ] getIdentifiers ( )
   {
     return this.identifiers ;
-  }
-
-
-  /**
-   * Returns the {@link Attribute} {@link Identifier}s of this
-   * {@link Expression}.
-   * 
-   * @return The {@link Attribute} {@link Identifier}s of this
-   *         {@link Expression}.
-   */
-  public Identifier [ ] getIdentifiersAttribute ( )
-  {
-    return this.identifiersAttribute ;
   }
 
 
@@ -403,23 +273,19 @@ public final class Body extends Expression implements BoundIdentifiers ,
       ArrayList < Identifier > boundExpressionBody = new ArrayList < Identifier > ( ) ;
       boundExpressionBody
           .addAll ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
-      for ( int i = 0 ; i < this.identifiersAttribute.length ; i ++ )
+      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
         for ( Identifier freeId : boundExpressionBody )
         {
-          if ( this.identifiersAttribute [ i ].equals ( freeId ) )
+          if ( this.identifiers [ i ].equals ( freeId ) )
           {
-            freeId.setBoundTo ( this , this.identifiersAttribute [ i ] ) ;
+            freeId.setBoundTo ( this , this.identifiers [ i ] ) ;
             freeId.setSet ( Identifier.Set.ATTRIBUTE ) ;
             boundIdList.add ( freeId ) ;
           }
         }
         this.boundIdentifiers.add ( boundIdList ) ;
-      }
-      for ( int i = this.identifiersAttribute.length ; i < this.identifiers.length + 1 ; i ++ )
-      {
-        this.boundIdentifiers.add ( null ) ;
       }
     }
     return this.boundIdentifiers ;
@@ -440,19 +306,9 @@ public final class Body extends Expression implements BoundIdentifiers ,
           .getIdentifiersFree ( ) ) ;
       ArrayList < Identifier > freeB = new ArrayList < Identifier > ( ) ;
       freeB.addAll ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
-      for ( Identifier a : this.identifiersAttribute )
+      for ( Identifier a : this.identifiers )
       {
         while ( freeB.remove ( a ) )
-        {
-          // Remove all Identifiers with the same name
-        }
-      }
-      // Remove {z#m | m in M}
-      for ( Identifier m : this.identifiersMethod )
-      {
-        Identifier inherited = new Identifier (
-            this.identifierSuper.getName ( ) , m.getName ( ) ) ;
-        while ( freeB.remove ( inherited ) )
         {
           // Remove all Identifiers with the same name
         }
@@ -475,39 +331,19 @@ public final class Body extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * Returns the {@link Method} {@link Identifier}s of this {@link Expression}.
+   * Returns the prefix of this {@link Expression}.
    * 
-   * @return The {@link Method} {@link Identifier}s of this {@link Expression}.
+   * @return The prefix of this {@link Expression}.
+   * @see #prefix
    */
-  public Identifier [ ] getIdentifiersMethod ( )
+  @ Override
+  public String getPrefix ( )
   {
-    return this.identifiersMethod ;
-  }
-
-
-  /**
-   * Returns the {@link Identifier}s and {@link Expression}s in the right
-   * sorting.
-   * 
-   * @return The {@link Identifier}s and {@link Expression}s in the right
-   *         sorting.
-   * @see SortedChildren#getSortedChildren()
-   */
-  public ExpressionOrType [ ] getSortedChildren ( )
-  {
-    ExpressionOrType [ ] result = new ExpressionOrType [ this.identifiers.length + 2 ] ;
-    for ( int i = 0 ; i < this.identifiersAttribute.length ; i ++ )
+    if ( this.prefix == null )
     {
-      result [ i ] = this.identifiersAttribute [ i ] ;
+      this.prefix = PREFIX_BODY ;
     }
-    for ( int i = 0 ; i < this.identifiersMethod.length ; i ++ )
-    {
-      result [ this.identifiersAttribute.length + i ] = this.identifiersMethod [ i ] ;
-    }
-    result [ result.length - 3 ] = this.expressions [ 0 ] ;
-    result [ result.length - 2 ] = this.identifierSuper ;
-    result [ result.length - 1 ] = this.expressions [ 1 ] ;
-    return result ;
+    return this.prefix ;
   }
 
 
@@ -517,9 +353,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
   @ Override
   public int hashCode ( )
   {
-    return this.identifiersAttribute.hashCode ( )
-        + this.identifiersMethod.hashCode ( ) + this.expressions.hashCode ( )
-        + this.identifierSuper.hashCode ( ) ;
+    return this.identifiers.hashCode ( ) + this.expressions.hashCode ( ) ;
   }
 
 
@@ -537,42 +371,29 @@ public final class Body extends Expression implements BoundIdentifiers ,
      * Do not substitute, if the Identifiers are equal.
      */
     boolean substituteBody = true ;
-    for ( Identifier id : this.identifiersAttribute )
+    for ( Identifier a : this.identifiers )
     {
-      if ( pId.equals ( id ) )
+      if ( pId.equals ( a ) )
       {
         substituteBody = false ;
         break ;
-      }
-    }
-    if ( substituteBody )
-    {
-      for ( Identifier m : this.identifiersMethod )
-      {
-        Identifier inherited = new Identifier (
-            this.identifierSuper.getName ( ) , m.getName ( ) ) ;
-        if ( pId.equals ( inherited ) )
-        {
-          substituteBody = false ;
-          break ;
-        }
       }
     }
     /*
      * Perform the substitution.
      */
     Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
-    Expression newBody ;
+    BodyOrRow newBodyOrRow ;
     if ( substituteBody )
     {
-      newBody = this.expressions [ 1 ].substitute ( pId , pExpression ) ;
+      newBodyOrRow = ( BodyOrRow ) this.expressions [ 1 ].substitute ( pId ,
+          pExpression ) ;
     }
     else
     {
-      newBody = this.expressions [ 1 ] ;
+      newBodyOrRow = ( BodyOrRow ) this.expressions [ 1 ] ;
     }
-    return new Body ( this.identifiersAttribute , this.identifiersMethod ,
-        newE , this.identifierSuper , newBody ) ;
+    return new Body ( this.identifiers , newE , newBodyOrRow ) ;
   }
 
 
@@ -585,9 +406,9 @@ public final class Body extends Expression implements BoundIdentifiers ,
   public Body substitute ( TypeSubstitution pTypeSubstitution )
   {
     Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    Expression newBody = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
-    return new Body ( this.identifiersAttribute , this.identifiersMethod ,
-        newE , this.identifierSuper , newBody ) ;
+    BodyOrRow newBodyOrRow = ( BodyOrRow ) this.expressions [ 1 ]
+        .substitute ( pTypeSubstitution ) ;
+    return new Body ( this.identifiers , newE , newBodyOrRow ) ;
   }
 
 
@@ -604,22 +425,11 @@ public final class Body extends Expression implements BoundIdentifiers ,
           PRIO_BODY ) ;
       this.prettyStringBuilder.addKeyword ( "inherit" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      for ( int i = 0 ; i < this.identifiersAttribute.length ; i ++ )
+      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
-        this.prettyStringBuilder.addBuilder ( this.identifiersAttribute [ i ]
+        this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
-        if ( i != this.identifiersAttribute.length - 1 )
-        {
-          this.prettyStringBuilder.addText ( ", " ) ; //$NON-NLS-1$
-        }
-      }
-      this.prettyStringBuilder.addText ( " ; " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBreak ( ) ;
-      for ( int i = 0 ; i < this.identifiersMethod.length ; i ++ )
-      {
-        this.prettyStringBuilder.addBuilder ( this.identifiersMethod [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
-        if ( i != this.identifiersMethod.length - 1 )
+        if ( i != this.identifiers.length - 1 )
         {
           this.prettyStringBuilder.addText ( ", " ) ; //$NON-NLS-1$
         }
@@ -628,14 +438,9 @@ public final class Body extends Expression implements BoundIdentifiers ,
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "from" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_BODY_E ) ;
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( "as" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBuilder ( this.identifierSuper
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       this.prettyStringBuilder.addText ( " ; " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_BODY_B ) ;

@@ -202,7 +202,7 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
     if ( pRecursive )
     {
       return new ObjectExpr ( pObjectExpr.getId ( ) , pObjectExpr.getTau ( ) ,
-          translateToCoreSyntax ( pObjectExpr.getE ( ) , true ) ) ;
+          ( Row ) translateToCoreSyntax ( pObjectExpr.getRow ( ) , true ) ) ;
     }
     return pObjectExpr ;
   }

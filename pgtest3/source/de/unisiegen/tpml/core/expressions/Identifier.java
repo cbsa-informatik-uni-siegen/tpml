@@ -41,14 +41,6 @@ public final class Identifier extends Value implements DefaultName
      */
     METHOD ,
     /**
-     * The set of super {@link Identifier}s.
-     */
-    SUPER ,
-    /**
-     * The set of inherited {@link Identifier}s.
-     */
-    INHERITED ,
-    /**
      * The set of self {@link Identifier}s.
      */
     SELF
@@ -88,18 +80,6 @@ public final class Identifier extends Value implements DefaultName
    * @see #setSet(Set)
    */
   private Set set ;
-
-
-  /**
-   * The base class name of the identifier.
-   */
-  private String baseClass = null ;
-
-
-  /**
-   * The method name of the identifier.
-   */
-  private String method = null ;
 
 
   /**
@@ -174,41 +154,6 @@ public final class Identifier extends Value implements DefaultName
 
 
   /**
-   * Allocates a new {@link Identifier} with the given <code>name</code>.
-   * 
-   * @param pBaseClass The base class name of the identifier.
-   * @param pMethod The method name of the identifier.
-   */
-  public Identifier ( String pBaseClass , String pMethod )
-  {
-    this ( pBaseClass + "#" + pMethod ) ; //$NON-NLS-1$
-    this.baseClass = pBaseClass ;
-    this.method = pMethod ;
-    this.set = Set.INHERITED ;
-  }
-
-
-  /**
-   * Allocates a new {@link Identifier} with the given <code>name</code>.
-   * 
-   * @param pBaseClass The base class name of the identifier.
-   * @param pMethod The method name of the identifier.
-   * @param pParserStartOffset The start offset of this {@link Expression} in
-   *          the source code.
-   * @param pParserEndOffset The end offset of this {@link Expression} in the
-   *          source code.
-   */
-  public Identifier ( String pBaseClass , String pMethod ,
-      int pParserStartOffset , int pParserEndOffset )
-  {
-    this ( pBaseClass + "#" + pMethod , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
-    this.baseClass = pBaseClass ;
-    this.method = pMethod ;
-    this.set = Set.INHERITED ;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Expression#clone()
@@ -234,23 +179,6 @@ public final class Identifier extends Value implements DefaultName
       return this.name.equals ( other.name ) ;
     }
     return false ;
-  }
-
-
-  /**
-   * Returns the base class name of the identifier.
-   * 
-   * @return The base class name of the identifier.
-   * @see #baseClass
-   */
-  public String getBaseClass ( )
-  {
-    if ( ! this.set.equals ( Set.INHERITED ) )
-    {
-      throw new IllegalArgumentException (
-          "The Identifier is not an inherited Identifier" ) ; //$NON-NLS-1$
-    }
-    return this.baseClass ;
   }
 
 
@@ -311,23 +239,6 @@ public final class Identifier extends Value implements DefaultName
 
 
   /**
-   * Returns the method name of the identifier.
-   * 
-   * @return the method name of the identifier.
-   * @see #method
-   */
-  public String getMethod ( )
-  {
-    if ( ! this.set.equals ( Set.INHERITED ) )
-    {
-      throw new IllegalArgumentException (
-          "The Identifier is not an inherited Identifier" ) ; //$NON-NLS-1$
-    }
-    return this.method ;
-  }
-
-
-  /**
    * Returns the name of the identifier.
    * 
    * @return the name of the identifier.
@@ -375,16 +286,6 @@ public final class Identifier extends Value implements DefaultName
                 this.prefix = PREFIX_ID_M ;
                 return this.prefix ;
               }
-              case SUPER :
-              {
-                this.prefix = PREFIX_ID_Z ;
-                return this.prefix ;
-              }
-              case INHERITED :
-              {
-                this.prefix = PREFIX_ID_I ;
-                return this.prefix ;
-              }
               case SELF :
               {
                 this.prefix = PREFIX_ID_S ;
@@ -426,17 +327,21 @@ public final class Identifier extends Value implements DefaultName
     switch ( this.set )
     {
       case VARIABLE :
+      {
         return "V" ; //$NON-NLS-1$
+      }
       case ATTRIBUTE :
+      {
         return "A" ; //$NON-NLS-1$
+      }
       case METHOD :
+      {
         return "M" ; //$NON-NLS-1$
-      case SUPER :
-        return "Z" ; //$NON-NLS-1$
-      case INHERITED :
-        return "I" ; //$NON-NLS-1$
+      }
       case SELF :
+      {
         return "S" ; //$NON-NLS-1$
+      }
     }
     return "" ; //$NON-NLS-1$
   }

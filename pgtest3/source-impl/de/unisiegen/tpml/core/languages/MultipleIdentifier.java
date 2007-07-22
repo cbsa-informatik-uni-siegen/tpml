@@ -28,7 +28,7 @@ public class MultipleIdentifier
   public static void check ( Body pBody )
   {
     ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
-    Identifier [ ] attributeIdentifiers = pBody.getIdentifiersAttribute ( ) ;
+    Identifier [ ] attributeIdentifiers = pBody.getIdentifiers ( ) ;
     for ( int i = 0 ; i < attributeIdentifiers.length ; i ++ )
     {
       negativeIdentifiers.clear ( ) ;

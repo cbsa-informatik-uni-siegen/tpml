@@ -336,9 +336,15 @@ interface PrettyPrintPriorities
 
 
   /**
-   * The pretty print priority for sub expressions of {@link Class}s.
+   * The pretty print priority for sub body of {@link Class}.
    */
-  public static final int PRIO_CLASS_E = 0 ;
+  public static final int PRIO_CLASS_BODY = 0 ;
+
+
+  /**
+   * The pretty print priority for the type of {@link Class}.
+   */
+  public static final int PRIO_CLASS_TAU = 0 ;
 
 
   /**
@@ -366,9 +372,9 @@ interface PrettyPrintPriorities
 
 
   /**
-   * The pretty print priority for sub expressions of {@link ObjectExpr}s.
+   * The pretty print priority for sub rows of {@link ObjectExpr}s.
    */
-  public static final int PRIO_OBJECTEXPR_E = 0 ;
+  public static final int PRIO_OBJECTEXPR_ROW = 0 ;
 
 
   /**
