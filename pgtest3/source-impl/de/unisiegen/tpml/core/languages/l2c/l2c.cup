@@ -37,6 +37,7 @@ import de.unisiegen.tpml.core.languages.IdentifierTypePair ;
 import de.unisiegen.tpml.core.languages.MultipleIdentifier ;
 import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.BooleanType ;
+import de.unisiegen.tpml.core.types.ClassType;
 import de.unisiegen.tpml.core.types.IntegerType ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.ObjectType ;
@@ -100,6 +101,7 @@ terminal			BOOL;
 terminal			INT;
 terminal			UNIT;
 terminal			MU;
+terminal			ZETA;
 
 /* Special */
 terminal String		IDENTIFIER;
@@ -166,6 +168,7 @@ non terminal TypeName				type_name;
 non terminal RecType				rec_type;
 non terminal ObjectType				object_type;
 non terminal RowType				row_type;
+non terminal ClassType				class_type;
 
 /* Non terminal - Helper */
 non terminal IdentifierTypePair[]			curried_let_list;
@@ -222,6 +225,7 @@ non terminal		class_error;
 non terminal		new_error;
 non terminal		body_error;
 non terminal		body_attribute_list_error;
+non terminal		class_type_error;
 
 /* Precedence */
 precedence right	ARROW;
@@ -1596,6 +1600,8 @@ simple_type						::=	LPAREN:l type:t RPAREN:r
 									{: RESULT = r; :}
 								|	object_type:t
 									{: RESULT = t; :}
+								|	class_type:c
+									{: RESULT = c; :}
 								|	simple_type_error
 									{: :}
 								;
@@ -1685,4 +1691,45 @@ row_type_error					::= IDENTIFIER:i epsilon
 									{: Error.expect("Row-Type", " \u03C4 ;", ileft, cright, "\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
 								|	IDENTIFIER:i COLON type:t epsilon
 									{: Error.expect("Row-Type", " ;", ileft, tright, ";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
+								;
+
+class_type						::= ZETA:z LPAREN type:t COLON row_type:row RPAREN:r
+									{: RESULT = new ClassType (t, row, zleft, rright) ; :}
+								|	class_type_error
+									{: :}
+								;
+
+class_type_error				::= ZETA:z LPAREN:l
+									{: Error.expect("Class-Type", "int : m: int ;)", zleft, lright, "\u03C4"," ",":","\u03D5",")"); :}
+								|	ZETA:z LPAREN type:t
+									{: Error.expect("Class-Type", " : m: int ;)", zleft, tright, ":","\u03D5",")"); :}
+								|	ZETA:z LPAREN type COLON row_type:row epsilon
+									{: Error.expect("Class-Type", ")", zleft, rowright, ")"); :}
+								// Missing left paren								
+								|	ZETA:z type COLON
+									{: Error.expect("Class-Type", "(", zleft, zright, "("); :}
+								// Missing type								
+								|	ZETA:z LPAREN:l COLON
+									{: Error.expect("Class-Type", "\u03C4 ", zleft, lright, "\u03C4"); :}
+								// Missing colon								
+								|	ZETA:z LPAREN type:t row_type
+									{: Error.expect("Class-Type", " : ", zleft, tright, ":"); :}									
+								// Missing left paren and type
+								|	ZETA:z COLON
+									{: Error.expect("Class-Type", "(\u03C4", zleft, zright, "(","\u03C4"); :}
+								// Missing type and colon
+								|	ZETA:z LPAREN:l row_type
+									{: Error.expect("Class-Type", "\u03C4 : ", zleft, lright, "\u03C4"," ",":"); :}																
+								// Missing colon and phi						
+								|	ZETA:z LPAREN type:t RPAREN
+									{: Error.expect("Class-Type", " : m: int ;", zleft, tright, ":"," ","\u03D5"); :}		
+								// Missing left paren, type and colon
+								|	ZETA:z row_type
+									{: Error.expect("Class-Type", "(\u03C4 : ", zleft, zright, "(","\u03C4"," ",":"); :}	
+								// Missing type, colon and phi
+								|	ZETA:z LPAREN:l RPAREN
+									{: Error.expect("Class-Type", "\u03C4 : m: int ;", zleft, lright, "\u03C4"," ",":"," ","\u03D5"); :}										
+								// Missing left paren, type, colon and phi
+								|	ZETA:z RPAREN
+									{: Error.expect("Class-Type", "(\u03C4 : m: int ;", zleft, zright, "(","\u03C4"," ",":"," ","\u03D5"); :}	
 								;

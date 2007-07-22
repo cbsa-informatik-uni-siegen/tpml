@@ -2605,6 +2605,76 @@ public class ParserTest
   private static String NEW_ERROR = "new" ;
 
 
+  // EXPR_
+  private static String CLASS_TYPE_1 = "zeta(int : m: int ;)" ;
+
+
+  private static String CLASS_TYPE_2 = "zeta(int : )" ;
+
+
+  // left paren
+  private static String CLASS_TYPE_ERROR_1 = "zeta int :" ;
+
+
+  private static String CLASS_TYPE_ERROR_2 = "zeta int : m: int ;" ;
+
+
+  private static String CLASS_TYPE_ERROR_3 = "zeta int : m: int ;)" ;
+
+
+  // type
+  private static String CLASS_TYPE_ERROR_4 = "zeta ( :" ;
+
+
+  private static String CLASS_TYPE_ERROR_5 = "zeta ( : m: int ;" ;
+
+
+  private static String CLASS_TYPE_ERROR_6 = "zeta ( : m: int ;)" ;
+
+
+  // colon
+  private static String CLASS_TYPE_ERROR_7 = "zeta (int  m: int ;" ;
+
+
+  private static String CLASS_TYPE_ERROR_8 = "zeta (int  m: int ;)" ;
+
+
+  // left paren and type
+  private static String CLASS_TYPE_ERROR_9 = "zeta :" ;
+
+
+  private static String CLASS_TYPE_ERROR_10 = "zeta : m: int ;" ;
+
+
+  private static String CLASS_TYPE_ERROR_11 = "zeta : m: int ;)" ;
+
+
+  // type and colon
+  private static String CLASS_TYPE_ERROR_12 = "zeta( m: int ;" ;
+
+
+  private static String CLASS_TYPE_ERROR_13 = "zeta( m: int ;)" ;
+
+
+  // colon and phi
+  private static String CLASS_TYPE_ERROR_14 = "zeta(int )" ;
+
+
+  // left paren, type and colon
+  private static String CLASS_TYPE_ERROR_15 = "zeta m: int ;" ;
+
+
+  private static String CLASS_TYPE_ERROR_16 = "zeta m: int ;)" ;
+
+
+  // type, colon and phi
+  private static String CLASS_TYPE_ERROR_17 = "zeta( )" ;
+
+
+  // left paren, type, colon and phi
+  private static String CLASS_TYPE_ERROR_18 = "zeta )" ;
+
+
   private static String [ ] L0_NORMAL = new String [ ]
   { IDENTIFIER , APPLICATION , LAMBDA_1 , SIMPLE_EXPR_1 } ;
 
@@ -3197,14 +3267,20 @@ public class ParserTest
   private static String [ ] L2CTYPE_NORMAL = new String [ ]
   { SIMPLE_TYPE , BOOLEAN_TYPE , INTEGER_TYPE , UNIT_TYPE , TYPE_VARIABLE ,
       TYPE_NAME , REC_TYPE , ARROW_TYPE , OBJECT_TYPE_1 , OBJECT_TYPE_2 ,
-      ROW_TYPE_1 , ROW_TYPE_2 } ;
+      ROW_TYPE_1 , ROW_TYPE_2 , CLASS_TYPE_1 , CLASS_TYPE_2 } ;
 
 
   private static String [ ] L2CTYPE_ERROR = new String [ ]
   { SIMPLE_TYPE_ERROR_1 , SIMPLE_TYPE_ERROR_2 , ARROW_TYPE_ERROR ,
       REC_TYPE_ERROR_1 , REC_TYPE_ERROR_2 , REC_TYPE_ERROR_3 ,
       OBJECT_TYPE_ERROR_1 , OBJECT_TYPE_ERROR_2 , ROW_TYPE_ERROR_1 ,
-      ROW_TYPE_ERROR_2 , ROW_TYPE_ERROR_3 } ;
+      ROW_TYPE_ERROR_2 , ROW_TYPE_ERROR_3 , CLASS_TYPE_ERROR_1 ,
+      CLASS_TYPE_ERROR_2 , CLASS_TYPE_ERROR_3 , CLASS_TYPE_ERROR_4 ,
+      CLASS_TYPE_ERROR_5 , CLASS_TYPE_ERROR_6 , CLASS_TYPE_ERROR_7 ,
+      CLASS_TYPE_ERROR_8 , CLASS_TYPE_ERROR_9 , CLASS_TYPE_ERROR_10 ,
+      CLASS_TYPE_ERROR_11 , CLASS_TYPE_ERROR_12 , CLASS_TYPE_ERROR_13 ,
+      CLASS_TYPE_ERROR_14 , CLASS_TYPE_ERROR_15 , CLASS_TYPE_ERROR_16 ,
+      CLASS_TYPE_ERROR_17 , CLASS_TYPE_ERROR_18 } ;
 
 
   private static String [ ] L3_NORMAL = new String [ ]

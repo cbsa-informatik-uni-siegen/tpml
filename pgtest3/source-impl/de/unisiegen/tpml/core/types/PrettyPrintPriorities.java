@@ -60,6 +60,24 @@ interface PrettyPrintPriorities
 
 
   /**
+   * The pretty print priority for class types.
+   */
+  public static final int PRIO_CLASS = 0 ;
+
+
+  /**
+   * The pretty print priority for the type in class types.
+   */
+  public static final int PRIO_CLASS_TAU = 0 ;
+
+
+  /**
+   * The pretty print priority for the phi in class types.
+   */
+  public static final int PRIO_CLASS_PHI = 0 ;
+
+
+  /**
    * The pretty print priority for row types.
    */
   public static final int PRIO_ROW = 0 ;

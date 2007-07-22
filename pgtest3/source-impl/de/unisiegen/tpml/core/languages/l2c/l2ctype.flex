@@ -51,6 +51,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 	  	case COMMENT:
 		  return PrettyStyle.COMMENT;
 		case MU:
+		case ZETA:
 		  return PrettyStyle.KEYWORD;
 		case BOOL:
 		case INT:
@@ -98,6 +99,7 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"int"				{ return symbol("INT", INT); }
 	"unit"				{ return symbol("UNIT", UNIT); }
 	"mu"|"\u03bc"		{ return symbol("MU", MU); }
+	"zeta"|"\u03b6"		{ return symbol("ZETA", ZETA); }
 	"'"{LetterAX}		{ return symbol("TYPEVARIABLE", TYPEVARIABLE, (int)(yycharat(1) - 'a')); }
 	{LetterGreek}		{
 						  int c = yycharat(0);
