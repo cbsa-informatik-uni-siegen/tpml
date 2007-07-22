@@ -161,13 +161,13 @@ row_type						::= epsilon
 									{: RESULT = new RowType (new Identifier[0], new MonoType[0]) ; :}
 								|	IDENTIFIER:id COLON type:tau SEMI row_type:r
 									{:
-									   Identifier [] m = new Identifier [r.getIdentifiers().length + 1];
-									   m [0] = new Identifier (id,Identifier.Set.METHOD,idleft,idright);
-									   System.arraycopy ( r.getIdentifiers() , 0 , m , 1 , r.getIdentifiers().length );
+									   Identifier [] identifiers = new Identifier [r.getIdentifiers().length + 1];
+									   identifiers [0] = new Identifier (id,Identifier.Set.METHOD,idleft,idright);
+									   System.arraycopy ( r.getIdentifiers() , 0 , identifiers , 1 , r.getIdentifiers().length );
 									   MonoType [] types = new MonoType [r.getTypes().length + 1];
 									   types [0] = tau;
 									   System.arraycopy ( r.getTypes() , 0 , types , 1 , r.getTypes().length );
-									   RESULT = new RowType (m, types, idleft, rright) ;
+									   RESULT = new RowType (identifiers, types, idleft, rright) ;
 									:}
 								|	row_type_error
 									{: :}

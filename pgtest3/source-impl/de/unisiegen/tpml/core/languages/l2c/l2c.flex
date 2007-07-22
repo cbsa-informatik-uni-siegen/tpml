@@ -76,6 +76,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 		case INHERIT:
 		case FROM:
 		case ZETA:
+		case ATTR:
 		  return PrettyStyle.KEYWORD;
 		case BOOL:
 		case INT:
@@ -156,6 +157,7 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"new"				{ return symbol("NEW", NEW); }
 	"inherit"			{ return symbol("INHERIT", INHERIT); }
 	"from"				{ return symbol("FROM", FROM); }
+	"attr"				{ return symbol("ATTR", ATTR); }
 	"bool"				{ return symbol("BOOL", BOOL); }
 	"int"				{ return symbol("INT", INT); }
 	"unit"				{ return symbol("UNIT", UNIT); }

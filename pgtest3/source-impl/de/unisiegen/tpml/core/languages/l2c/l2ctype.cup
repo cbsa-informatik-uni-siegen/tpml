@@ -20,6 +20,9 @@ terminal			LPAREN;
 terminal			RPAREN;
 terminal			DOT;
 
+/* Keywords */
+terminal			ATTR;
+
 /* Types */
 terminal			BOOL;
 terminal			INT;
@@ -47,7 +50,7 @@ non terminal ArrowType				arrow_type;
 non terminal TypeName				type_name;
 non terminal RecType				rec_type;
 non terminal ObjectType				object_type;
-non terminal RowType				row_type;
+non terminal RowType				row_type_l2c;
 non terminal ClassType				class_type;
 
 /* Non terminal - Error */
@@ -56,7 +59,7 @@ non terminal 		simple_type_error;
 non terminal 		arrow_type_error;
 non terminal		rec_type_error;
 non terminal 		object_type_error;
-non terminal		row_type_error;
+non terminal		row_type_l2c_error;
 non terminal		class_type_error;
 
 /* Precedence */
@@ -150,7 +153,7 @@ rec_type_error					::= MU:m epsilon
 									{: Error.expect("Rec-Type", "\u03C4", mleft, dright, "\u03C4"); :}
 								;
 
-object_type						::= LESS:l row_type:r GREATER:g
+object_type						::= LESS:l row_type_l2c:r GREATER:g
 									{: 
 									   MultipleIdentifier.check(r);
 									   RESULT = new ObjectType ( r, lleft, gright);
@@ -159,36 +162,57 @@ object_type						::= LESS:l row_type:r GREATER:g
 									{: :}
 								;
 
-object_type_error				::= LESS:l row_type:r epsilon
+object_type_error				::= LESS:l row_type_l2c:r epsilon
 									{: Error.expect("Object-Type", " >", lleft, rright, "..."," ","m_n",":"," ","\u03C4",";"," ",">"); :}
 								;
 
-row_type						::= epsilon
+row_type_l2c					::= epsilon
 									{: RESULT = new RowType (new Identifier[0], new MonoType[0]) ; :}
-								|	IDENTIFIER:id COLON type:tau SEMI row_type:r
+								|	IDENTIFIER:id COLON type:tau SEMI row_type_l2c:r
 									{:
-									   Identifier [] m = new Identifier [r.getIdentifiers().length + 1];
-									   m [0] = new Identifier (id,Identifier.Set.METHOD,idleft,idright);
-									   System.arraycopy ( r.getIdentifiers() , 0 , m , 1 , r.getIdentifiers().length );
+									   Identifier [] identifiers = new Identifier [r.getIdentifiers().length + 1];
+									   identifiers [0] = new Identifier (id,Identifier.Set.METHOD,idleft,idright);
+									   System.arraycopy ( r.getIdentifiers() , 0 , identifiers , 1 , r.getIdentifiers().length );
 									   MonoType [] types = new MonoType [r.getTypes().length + 1];
 									   types [0] = tau;
 									   System.arraycopy ( r.getTypes() , 0 , types , 1 , r.getTypes().length );
-									   RESULT = new RowType (m, types, idleft, rright) ;
+									   RESULT = new RowType (identifiers, types, idleft, rright) ;
 									:}
-								|	row_type_error
+								|	ATTR:a IDENTIFIER:id COLON type:tau SEMI row_type_l2c:r
+									{:
+									   Identifier [] identifiers = new Identifier [r.getIdentifiers().length + 1];
+									   identifiers [0] = new Identifier (id,Identifier.Set.ATTRIBUTE,idleft,idright);
+									   System.arraycopy ( r.getIdentifiers() , 0 , identifiers , 1 , r.getIdentifiers().length );
+									   MonoType [] types = new MonoType [r.getTypes().length + 1];
+									   types [0] = tau;
+									   System.arraycopy ( r.getTypes() , 0 , types , 1 , r.getTypes().length );
+									   RESULT = new RowType (identifiers, types, aleft, rright) ;
+									:}
+								|	row_type_l2c_error
 									{: :}
 								;
 
-row_type_error					::= IDENTIFIER:i epsilon
+row_type_l2c_error				::= IDENTIFIER:i epsilon
 									{: Error.expect("Row-Type", ": \u03C4 ;", ileft, iright, ":"," ","\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
 								|	IDENTIFIER:i COLON:c epsilon
 									{: Error.expect("Row-Type", " \u03C4 ;", ileft, cright, "\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
 								|	IDENTIFIER:i COLON type:t epsilon
 									{: Error.expect("Row-Type", " ;", ileft, tright, ";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
+								|	ATTR:a epsilon
+									{: Error.expect("Row-Type", " m: \u03C4 ;", aleft, aright, "m",":"," ","\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
+								|	ATTR:a IDENTIFIER:i epsilon
+									{: Error.expect("Row-Type", ": \u03C4 ;", aleft, iright, ":"," ","\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
+								|	ATTR:a IDENTIFIER:i COLON:c epsilon
+									{: Error.expect("Row-Type", " \u03C4 ;", aleft, cright, "\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
+								|	ATTR:a IDENTIFIER:i COLON type:t epsilon
+									{: Error.expect("Row-Type", " ;", aleft, tright, ";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
 								;
 
-class_type						::= ZETA:z LPAREN type:t COLON row_type:row RPAREN:r
-									{: RESULT = new ClassType (t, row, zleft, rright) ; :}
+class_type						::= ZETA:z LPAREN type:t COLON row_type_l2c:row RPAREN:r
+									{: 
+									   MultipleIdentifier.check(row);
+									   RESULT = new ClassType (t, row, zleft, rright) ;
+									:}
 								|	class_type_error
 									{: :}
 								;
@@ -197,7 +221,7 @@ class_type_error				::= ZETA:z LPAREN:l
 									{: Error.expect("Class-Type", "int : m: int ;)", zleft, lright, "\u03C4"," ",":","\u03D5",")"); :}
 								|	ZETA:z LPAREN type:t
 									{: Error.expect("Class-Type", " : m: int ;)", zleft, tright, ":","\u03D5",")"); :}
-								|	ZETA:z LPAREN type COLON row_type:row epsilon
+								|	ZETA:z LPAREN type COLON row_type_l2c:row epsilon
 									{: Error.expect("Class-Type", ")", zleft, rowright, ")"); :}
 								// Missing left paren								
 								|	ZETA:z type COLON
@@ -206,19 +230,19 @@ class_type_error				::= ZETA:z LPAREN:l
 								|	ZETA:z LPAREN:l COLON
 									{: Error.expect("Class-Type", "\u03C4 ", zleft, lright, "\u03C4"); :}
 								// Missing colon								
-								|	ZETA:z LPAREN type:t row_type
+								|	ZETA:z LPAREN type:t row_type_l2c
 									{: Error.expect("Class-Type", " : ", zleft, tright, ":"); :}									
 								// Missing left paren and type
 								|	ZETA:z COLON
 									{: Error.expect("Class-Type", "(\u03C4", zleft, zright, "(","\u03C4"); :}
 								// Missing type and colon
-								|	ZETA:z LPAREN:l row_type
+								|	ZETA:z LPAREN:l row_type_l2c
 									{: Error.expect("Class-Type", "\u03C4 : ", zleft, lright, "\u03C4"," ",":"); :}																
 								// Missing colon and phi						
 								|	ZETA:z LPAREN type:t RPAREN
 									{: Error.expect("Class-Type", " : m: int ;", zleft, tright, ":"," ","\u03D5"); :}		
 								// Missing left paren, type and colon
-								|	ZETA:z row_type
+								|	ZETA:z row_type_l2c
 									{: Error.expect("Class-Type", "(\u03C4 : ", zleft, zright, "(","\u03C4"," ",":"); :}	
 								// Missing type, colon and phi
 								|	ZETA:z LPAREN:l RPAREN

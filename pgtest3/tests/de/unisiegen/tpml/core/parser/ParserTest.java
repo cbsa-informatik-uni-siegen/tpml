@@ -2226,6 +2226,13 @@ public class ParserTest
   private static String ROW_TYPE_2 = "< add: int ; sub: int ; >" ;
 
 
+  private static String ROW_TYPE_3 = "< attr add: int ; sub: int ; >" ;
+
+
+  private static String ROW_TYPE_4 = "< add: int ; attr sub: int ; >" ;
+
+
+  // TODO
   private static String ROW_TYPE_ERROR_1 = "< add" ;
 
 
@@ -2605,7 +2612,6 @@ public class ParserTest
   private static String NEW_ERROR = "new" ;
 
 
-  // EXPR_
   private static String CLASS_TYPE_1 = "zeta(int : m: int ;)" ;
 
 
@@ -2673,6 +2679,75 @@ public class ParserTest
 
   // left paren, type, colon and phi
   private static String CLASS_TYPE_ERROR_18 = "zeta )" ;
+
+
+  private static String EXPR_CLASS_TYPE_1 = "class (self: zeta(int : m: int ;)) end" ;
+
+
+  private static String EXPR_CLASS_TYPE_2 = "class (self: zeta(int : )) end" ;
+
+
+  // left paren
+  private static String EXPR_CLASS_TYPE_ERROR_1 = "class (self: zeta int :) end" ;
+
+
+  private static String EXPR_CLASS_TYPE_ERROR_2 = "class (self: zeta int : m: int ;) end" ;
+
+
+  private static String EXPR_CLASS_TYPE_ERROR_3 = "class (self: zeta int : m: int ;)) end" ;
+
+
+  // type
+  private static String EXPR_CLASS_TYPE_ERROR_4 = "class (self: zeta ( :) end" ;
+
+
+  private static String EXPR_CLASS_TYPE_ERROR_5 = "class (self: zeta ( : m: int ;) end" ;
+
+
+  private static String EXPR_CLASS_TYPE_ERROR_6 = "class (self: zeta ( : m: int ;)) end" ;
+
+
+  // colon
+  private static String EXPR_CLASS_TYPE_ERROR_7 = "class (self: zeta (int  m: int ;) end" ;
+
+
+  private static String EXPR_CLASS_TYPE_ERROR_8 = "class (self: zeta (int  m: int ;)) end" ;
+
+
+  // left paren and type
+  private static String EXPR_CLASS_TYPE_ERROR_9 = "class (self: zeta :) end" ;
+
+
+  private static String EXPR_CLASS_TYPE_ERROR_10 = "class (self: zeta : m: int ;) end" ;
+
+
+  private static String EXPR_CLASS_TYPE_ERROR_11 = "class (self: zeta : m: int ;)) end" ;
+
+
+  // type and colon
+  private static String EXPR_CLASS_TYPE_ERROR_12 = "class (self: zeta( m: int ;) end" ;
+
+
+  private static String EXPR_CLASS_TYPE_ERROR_13 = "class (self: zeta( m: int ;)) end" ;
+
+
+  // colon and phi
+  private static String EXPR_CLASS_TYPE_ERROR_14 = "class (self: zeta(int )) end" ;
+
+
+  // left paren, type and colon
+  private static String EXPR_CLASS_TYPE_ERROR_15 = "class (self: zeta m: int ;) end" ;
+
+
+  private static String EXPR_CLASS_TYPE_ERROR_16 = "class (self: zeta m: int ;)) end" ;
+
+
+  // type, colon and phi
+  private static String EXPR_CLASS_TYPE_ERROR_17 = "class (self: zeta( )) end" ;
+
+
+  // left paren, type, colon and phi
+  private static String EXPR_CLASS_TYPE_ERROR_18 = "class (self: zeta )) end" ;
 
 
   private static String [ ] L0_NORMAL = new String [ ]
@@ -3086,7 +3161,8 @@ public class ParserTest
       CURRIED_METHOD_3 , CURRIED_METHOD_4 , EXPR_OBJECT_TYPE_1 ,
       EXPR_OBJECT_TYPE_2 , EXPR_ROW_TYPE_1 , EXPR_ROW_TYPE_2 , CLASS_1 ,
       CLASS_2 , CLASS_3 , CLASS_4 , CLASS_5 , CLASS_6 , BODY_1 , BODY_2 ,
-      BODY_3 , BODY_4 , BODY_5 , BODY_6 , NEW } ;
+      BODY_3 , BODY_4 , BODY_5 , BODY_6 , NEW , EXPR_CLASS_TYPE_1 ,
+      EXPR_CLASS_TYPE_2 } ;
 
 
   private static String [ ] L2C_ERROR = new String [ ]
@@ -3261,7 +3337,16 @@ public class ParserTest
       BODY_ERROR_35 , BODY_ERROR_36 , BODY_ERROR_37 , BODY_ERROR_38 ,
       BODY_ERROR_39 , BODY_ERROR_40 , BODY_ERROR_41 , BODY_ERROR_42 ,
       BODY_ERROR_43 , BODY_ERROR_44 , BODY_ERROR_45 , BODY_ERROR_46 ,
-      BODY_ERROR_47 , NEW_ERROR } ;
+      BODY_ERROR_47 , NEW_ERROR , EXPR_CLASS_TYPE_ERROR_1 ,
+      EXPR_CLASS_TYPE_ERROR_2 , EXPR_CLASS_TYPE_ERROR_3 ,
+      EXPR_CLASS_TYPE_ERROR_4 , EXPR_CLASS_TYPE_ERROR_5 ,
+      EXPR_CLASS_TYPE_ERROR_6 , EXPR_CLASS_TYPE_ERROR_7 ,
+      EXPR_CLASS_TYPE_ERROR_8 , EXPR_CLASS_TYPE_ERROR_9 ,
+      EXPR_CLASS_TYPE_ERROR_10 , EXPR_CLASS_TYPE_ERROR_11 ,
+      EXPR_CLASS_TYPE_ERROR_12 , EXPR_CLASS_TYPE_ERROR_13 ,
+      EXPR_CLASS_TYPE_ERROR_14 , EXPR_CLASS_TYPE_ERROR_15 ,
+      EXPR_CLASS_TYPE_ERROR_16 , EXPR_CLASS_TYPE_ERROR_17 ,
+      EXPR_CLASS_TYPE_ERROR_18 } ;
 
 
   private static String [ ] L2CTYPE_NORMAL = new String [ ]
