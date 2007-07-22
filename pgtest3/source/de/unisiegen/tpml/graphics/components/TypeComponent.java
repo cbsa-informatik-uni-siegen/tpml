@@ -326,8 +326,6 @@ public class TypeComponent extends JComponent
     if (this.type instanceof RowType)
     {
       gc.setFont(AbstractRenderer.getTextFont());
-      //TODO anpassen....
-      //gc.setColor ( AbstractRenderer.getTextColor() ) ;
       gc.setColor(Theme.currentTheme().getExpressionColor());
       gc.drawString("(", posX, centerV);
       posX += AbstractRenderer.getTextFontMetrics().stringWidth("(");
@@ -337,8 +335,6 @@ public class TypeComponent extends JComponent
     if (this.type instanceof RowType)
     {
       gc.setFont(AbstractRenderer.getTextFont());
-      //TODO anpassen....
-      //gc.setColor ( AbstractRenderer.getTextColor() ) ;
       gc.setColor(Theme.currentTheme().getExpressionColor());
       gc.drawString(")", posX, centerV);
       posX += AbstractRenderer.getTextFontMetrics().stringWidth(")");
@@ -349,16 +345,28 @@ public class TypeComponent extends JComponent
     //gc.drawRect(0, 0, getWidth () - 1, getHeight () - 1);
   }
 
+  /**
+   * get thy type
+   * @return the type
+   */
   public Type getType ()
   {
     return this.type;
   }
 
-  public void setText (String text)
+  /**
+   * sets the text renderd infront of the type
+   * TODO is it still needed
+   * @param pText String to render
+   */
+  public void setText (String pText)
   {
-    this.text = text;
+    this.text = pText;
   }
 
+  /**
+   * resets the Mousecontainer
+   */
   public void resetMouseContainer ()
   {
     this.toListenForMouse.reset();
