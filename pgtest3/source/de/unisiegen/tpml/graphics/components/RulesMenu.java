@@ -21,8 +21,8 @@ import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent;
 /**
  * this Class manages the Rules-Popup-Menu of the different ProofModels
  * The user gets the rules he can commit to an expression in different ways.
- * Ihe behavior is set by the int TOMANY and MAX. 
- * If there are more than TOMANY rules, the rules will be grouped by the
+ * Ihe behavior is set by the int tomany and MAX. 
+ * If there are more than tomany rules, the rules will be grouped by the
  * language they are coming from. To let the user acces directly to the rules
  * he used last there will be MAX rules he can click directly. They will appear
  * at the top of the menu. 
@@ -61,6 +61,11 @@ public class RulesMenu
    * look at revertMenu
    */
   private ArrayList<MenuRuleItem> revertLastUsedElements = new ArrayList <MenuRuleItem>();
+
+	/**
+	 * show the submenus
+	 */
+	boolean submenus;
   
   /**
    * the constructor inizailisizes the main elements
@@ -68,31 +73,33 @@ public class RulesMenu
    */
   public RulesMenu ()
   {
-  	revertLastUsedElements = new ArrayList <MenuRuleItem>();
-  	revertMenu = new  ArrayList <MenuRuleItem> ();
-  	lastUsedElements = new ArrayList<MenuRuleItem>();
-  	menu = new JPopupMenu();
-  	
-  	
-  	
+  	this.revertLastUsedElements = new ArrayList <MenuRuleItem>();
+  	this.revertMenu = new  ArrayList <MenuRuleItem> ();
+  	this.lastUsedElements = new ArrayList<MenuRuleItem>();
+  	this.menu = new JPopupMenu();
   }
+  
+  /**
+   * the default tomany value
+   */
+  private final static int TOMANY = 15; 
+  
 	
 	/**
-	 * TOMANY organisizes the number of elements wicht must be in teh rulesmenu
+	 * tomany organisizes the number of elements wicht must be in teh rulesmenu
 	 * to let the getMenu methode divide the rules into submenus by setting the 
 	 * value to Integer.MAXVALUE
-	 * until TOMANY rules are in the menu, no submenus will be crated
+	 * until tomany rules are in the menu, no submenus will be created
 	 */
-	private static int TOMANY = 15;
+	private int tomany = TOMANY;
 	
 	/**
 	 * MAX is the count of elemnts the menu will show as the last used
 	 */
 	private static final int MAX = 10;
 	
-	//public JPopupMenu getMenu (ProofRule[] rules, ProofRule[] allRules, Language lang, final TreeNodeComponent tnc, final String callBy)
 	/**
-	 * this methode crates the popupmenus containing the rules. If there are more than TOMANY elemnts, submenus for
+	 * this methode crates the popupmenus containing the rules. If there are more than tomany elemnts, submenus for
 	 * every language will be crated.  
 	 *
 	 * @param rules			an array containing the rules
@@ -105,72 +112,79 @@ public class RulesMenu
 	 */
 	public JPopupMenu getMenu (ProofRule[] rules, ProofRule[] allRules, Language lang, final JComponent tnc, final String callBy, boolean advanced )
 	{
-    //first of all load the correct preferences
+    // first of all load the correct preferences
 		if (callBy.equalsIgnoreCase("bigstep"))
     {
-    	preferences = Preferences.userNodeForPackage(BigStepNodeComponent.class);        	
+    	this.preferences = Preferences.userNodeForPackage(BigStepNodeComponent.class);        	
     }
     else if (callBy.equalsIgnoreCase("smallstep"))
     {
-    	preferences = Preferences.userNodeForPackage(SmallStepNodeComponent.class);
+    	this.preferences = Preferences.userNodeForPackage(SmallStepNodeComponent.class);
     }
 		
-		//clear everything...
-		revertLastUsedElements = new ArrayList <MenuRuleItem>();
-  	revertMenu = new  ArrayList <MenuRuleItem> ();
-  	lastUsedElements = new ArrayList<MenuRuleItem>();
-  	menu = new JPopupMenu();
+		// clear everything...
+		this.revertLastUsedElements = new ArrayList <MenuRuleItem>();
+  	this.revertMenu = new  ArrayList <MenuRuleItem> ();
+  	this.lastUsedElements = new ArrayList<MenuRuleItem>();
+  	this.menu = new JPopupMenu();
   	
-  	//now we want to have the ability to enable or dissable the subgrouping
-  	final JRadioButtonMenuItem test = new JRadioButtonMenuItem ("hallo");
-  	String submenus = preferences.get("submenu", "false");
-  	//TODO hier nur, damit die Menüs immer an sind, false_ durch false ersetzen...
-  	if (submenus.equals("false_"))
+  	// now we want to have the ability to enable or dissable the subgrouping
+  	// till now it is not implemented by prefferenc
+  	final JRadioButtonMenuItem test = new JRadioButtonMenuItem ("Submenus");
+  	this.submenus = this.preferences.getBoolean("submenu", false);
+  	//TODO till now the submenus are always enabled
+  	if (false) //if (!submenus)
   	{
   		test.setSelected(false);
-  		TOMANY = Integer.MAX_VALUE;
+  		// disable the submenus by setting the tomany to Integer.MAx_VALUE
+  		this.tomany = Integer.MAX_VALUE;
   	}
   	else
   	{
   		test.setSelected(true);
-  		TOMANY = 15;
+  		this.tomany = TOMANY;
   	}
+  	
+  	// TODO the actionlistener ist only for testing enable and disable the subgrouping..
   	ActionListener al1 = new ActionListener() {
       public void actionPerformed(ActionEvent e)
       {
         //if the Radiobutton is pressed, we will find out, if the Option was set or not
       	if (test.isSelected())
       	{
-      		TOMANY = Integer.MAX_VALUE;
-      		preferences.put("submenu", "true");
+      		RulesMenu.this.submenus=true;
+      		setTomany(Integer.MAX_VALUE);
+      		//RulesMenu.this.getPreferences().put("submenu", "true");
+      		RulesMenu.this.getPreferences().putBoolean("submenu", RulesMenu.this.submenus);
       	}
       	else
       	{
-      		TOMANY = 15;
-      		preferences.put("submenu", "false");
+      		RulesMenu.this.submenus=false;
+      		setTomany(15);
+      		RulesMenu.this.getPreferences().putBoolean("submenu", RulesMenu.this.submenus);
+      		//RulesMenu.this.getPreferences().put("submenu", "false");
       	}
       }
     };
     test.addActionListener(al1);
+    
+    // TODO test enabling and disabling the submenus...
+    // this.menu.add(test);
 		
-		//	if to many rules we will devide in menu and submenus, otherwise there will be only seperators 
-    //between the rules coming from the different languages
-    if (rules.length > TOMANY)
+		// if to many rules we will devide in menu and submenus, otherwise there will be only seperators 
+    // between the rules coming from the different languages
+    if (rules.length > this.tomany)
     {
       if (rules.length > 0)
       {
 
-        //first get the lastUsedRules of the preferences (last state of the programm)
+        // first get the lastUsedRules of the preferences (last state of the programm)
+        // get the names from the preferences, compare each with the list of all usable rules, add them
 
-        //get the names from the preferences, compare each with the list of all usable rules, add them
-
-      	
-        
-        
-        //backwards to save the ordering
+        // backwards to save the ordering
         for (int i = MAX - 1; i >= 0; i--)
         {
-          String name = preferences.get("rule" + i, "");
+          String name = this.preferences.get("rule" + i, "");
 
           if (name.equalsIgnoreCase(""))
           {
@@ -178,18 +192,17 @@ public class RulesMenu
           }
           else
           {
-            //ProofRule[] allRules = proofModel.getRules();
             for (ProofRule a : allRules)
             {
-              //if (new MenuRuleItem(a).getText().equalsIgnoreCase(name))
+             
             	if (new MenuRuleItem(a).getText().equalsIgnoreCase(name))
               {
                 //add at the beginning of the list to save the order
-            		boolean isIn=isIn(name, lastUsedElements);
+            		boolean isIn=isIn(name, this.lastUsedElements);
             		
                 if(!isIn) 
                 	{
-		                lastUsedElements.add(0, new MenuRuleItem(a));
+		                this.lastUsedElements.add(0, new MenuRuleItem(a));
 		                	
 		                MenuRuleItem tmp = new MenuRuleItem(a);
 		                //the actionlistener ist needed to be able to set the position of a selected 
@@ -209,7 +222,7 @@ public class RulesMenu
 		                //inset at the top of the meun (the preferences are walked throu
 		                if ( (callBy.equalsIgnoreCase("bigstep")) || (callBy.equalsIgnoreCase("smallstep") && (((SmallStepProofRule)a).isAxiom() || !advanced)))
 		                {
-		                	menu.insert(tmp, 0);	
+		                	this.menu.insert(tmp, 0);	
 		                }    
                 	}
               }
@@ -218,45 +231,40 @@ public class RulesMenu
         }
         save();
         //saveToRevert();
-        
 
         //build the submenu
         int group = rules[0].getGroup();
         //a seperator ist needed if there are last used elements
-        if (lastUsedElements.size() > 0)
+        if (this.lastUsedElements.size() > 0)
         {
-          menu.addSeparator();
+          this.menu.addSeparator();
         }
 
-        // JMenu Smenu=new JMenu(Messages.getString("Language.0")+ " "
-        // +rules[0].getGroup());
         JMenu subMenu;
-        //Language lang = proofModel.getLanguage();
         
-        //the hasmap contains teh names of the languages connected to the group-number
+        //the hasmap contains the names of the languages connected to the group-number
         HashMap <Number,String>names = getLanguageNames(lang);
-        subMenu = new JMenu(names.get(rules[0].getGroup()));
+        subMenu = new JMenu(names.get(new Integer(rules[0].getGroup())));
         
-        // Jede Regel
+        // evry rule
         for (final ProofRule r : rules)
         {
-          //if (((SmallStepProofRule) r).isAxiom() || !advanced)
         	if ( (callBy.equalsIgnoreCase("bigstep")) || (callBy.equalsIgnoreCase("smallstep") && (((SmallStepProofRule)r).isAxiom() || !advanced)))
           {
             if (r.getGroup() != group)
             {
               if (subMenu != null)
               {
-                menu.add(subMenu);
+                this.menu.add(subMenu);
               }              
-              subMenu = new JMenu(names.get(r.getGroup()));
+              subMenu = new JMenu(names.get(new Integer(r.getGroup())));
             }
             MenuRuleItem tmp = new MenuRuleItem(r);
             ActionListener al = new ActionListener() {
               public void actionPerformed(ActionEvent e)
               {
               	//look if the list is full
-                if (lastUsedElements.size() < MAX)
+                if (RulesMenu.this.getLastUsedElements().size() < MAX)
                 {
                 	
                   MenuRuleItem lastUsed = new MenuRuleItem(r);
@@ -273,33 +281,33 @@ public class RulesMenu
 //                      }
 //                    }
 //                  }
-                  boolean isIn = isIn (lastUsed.getText(), lastUsedElements);
+                  boolean isIn = isIn (lastUsed.getText(), RulesMenu.this.getLastUsedElements());
                   
-                  ActionListener al = new ActionListener() {
-                    public void actionPerformed(ActionEvent e)
+                  ActionListener al2 = new ActionListener() {
+                    public void actionPerformed(ActionEvent ae)
                     {
                       //move to to
-                    	moveToTop(((MenuRuleItem) e.getSource()).getText(), MAX);
+                    	moveToTop(((MenuRuleItem) ae.getSource()).getText(), MAX);
                  
                       //the action must be called manualy if the element is in a submenu
                       //menuItemActivated((JMenuItem) e.getSource());
                     	if (callBy.equals("bigstep"))
                     	{
-                    		((BigStepNodeComponent) tnc).handleMenuActivated((JMenuItem) e.getSource());	
+                    		((BigStepNodeComponent) tnc).handleMenuActivated((JMenuItem) ae.getSource());	
                     	}
                     	else if (callBy.equals("smallstep"))
                     	{
-                    		((SmallStepNodeComponent) tnc).handleMenuActivated((JMenuItem) e.getSource());	
+                    		((SmallStepNodeComponent) tnc).handleMenuActivated((JMenuItem) ae.getSource());	
                     	}
                     	
                     }
                   };
-                  lastUsed.addActionListener(al);
+                  lastUsed.addActionListener(al2);
                   if (!isIn)
                   {
                   	saveToRevert();
-                    menu.insert(lastUsed, 0);
-                    lastUsedElements.add(0, lastUsed);
+                    RulesMenu.this.getMenu().insert(lastUsed, 0);
+                    RulesMenu.this.getLastUsedElements().add(0, lastUsed);
                   }
                   //may be we want to move it to top
                   // else
@@ -317,22 +325,22 @@ public class RulesMenu
                 else
                 {
                   MenuRuleItem lastUsed = new MenuRuleItem(r);
-                  ActionListener al = new ActionListener() {
-                    public void actionPerformed(ActionEvent e)
+                  ActionListener alMove = new ActionListener() {
+                    public void actionPerformed(ActionEvent evt)
                     {
-                      moveToTop(((MenuRuleItem) e.getSource()).getText(), MAX);
+                      moveToTop(((MenuRuleItem) evt.getSource()).getText(), MAX);
                       //menuItemActivated((JMenuItem) e.getSource());
                     }
                   };
-                  lastUsed.addActionListener(al);
+                  lastUsed.addActionListener(alMove);
                   boolean isIn = false;
                   for (int i = 0; i < MAX; i++)
                   {
                     //check if it is already in the list
-                    int schleife = Math.min(MAX, lastUsedElements.size());
+                    int schleife = Math.min(MAX, RulesMenu.this.getLastUsedElements().size());
                     for (int j = 0; j < schleife; j++)
                     {
-                      if (lastUsedElements.get(j).getText().equals(lastUsed.getText()))
+                      if (RulesMenu.this.getLastUsedElements().get(j).getText().equals(lastUsed.getText()))
                       {
                         isIn = true;
                       }
@@ -342,10 +350,10 @@ public class RulesMenu
                   if (!isIn)
                   {
                   	saveToRevert();
-                    lastUsedElements.add(0, lastUsed);
-                    menu.insert(lastUsed, 0);
-                    lastUsedElements.remove(MAX);
-                    menu.remove(MAX);
+                    RulesMenu.this.getLastUsedElements().add(0, lastUsed);
+                    RulesMenu.this.getMenu().insert(lastUsed, 0);
+                    RulesMenu.this.getLastUsedElements().remove(MAX);
+                    RulesMenu.this.getMenu().remove(MAX);
                   }
                   //maybe we want to set it to the top position if it is allrady in the list
                   // else
@@ -360,7 +368,6 @@ public class RulesMenu
                 }
                 
                 //the action must be called manualy if the element is in a submenu
-                //menuItemActivated((JMenuItem) e.getSource());
                 if (callBy.equals("bigstep"))
               	{
               		((BigStepNodeComponent) tnc).handleMenuActivated((JMenuItem) e.getSource());	
@@ -369,20 +376,18 @@ public class RulesMenu
               	{
               		((SmallStepNodeComponent) tnc).handleMenuActivated((JMenuItem) e.getSource());	
               	}
-                
-
               }
             };
             tmp.addActionListener(al);
             subMenu.add(tmp);
             group = r.getGroup();
           }
-          menu.add(subMenu);
+          this.menu.add(subMenu);
         }
       }
       saveToRevert();
     }
-    //if ther are less than TOMANY rules ther will be no submenus, only seperators
+    //if ther are less than tomany rules ther will be no submenus, only seperators
     //with this variable you would also be able to disable the submenufunction
     else
     {
@@ -391,14 +396,13 @@ public class RulesMenu
         int group = rules[0].getGroup();
         for (ProofRule r : rules)
         {
-          //if (((SmallStepProofRule) r).isAxiom() || !advanced)
         	if ( (callBy.equalsIgnoreCase("bigstep")) || (callBy.equalsIgnoreCase("smallstep") && (((SmallStepProofRule)r).isAxiom() || !advanced)))
           {
             if (r.getGroup() != group)
             {
-              menu.addSeparator();
+              this.menu.addSeparator();
             }
-            menu.add(new MenuRuleItem(r));
+            this.menu.add(new MenuRuleItem(r));
             group = r.getGroup();
           }
         }
@@ -418,14 +422,22 @@ public class RulesMenu
     //    group = r.getGroup();
     //  }
     //}
-    menu.addSeparator();
-    menu.add (new MenuGuessItem ());
-    menu.add (new MenuGuessTreeItem ());
+    this.menu.addSeparator();
+    this.menu.add (new MenuGuessItem ());
+    this.menu.add (new MenuGuessTreeItem ());
     //menu.add (this.menuTranslateItem = new MenuTranslateItem ());
 
-		return menu;
+		return this.menu;
 	}
 	
+	/**
+	 * @return preferences
+	 */
+	protected Preferences getPreferences()
+	{
+		return this.preferences;
+	}
+
 	/**
    * gets the names of the languages connected to the group of all languages including the given
    * language and every extended one 
@@ -434,13 +446,14 @@ public class RulesMenu
    * 						the language of wich the group should start
    * @return		the HashMap containing the LanguageName and the group
    */
-  private HashMap<Number, String> getLanguageNames(Language language)
+  private HashMap<Number, String> getLanguageNames(Language pLanguage)
 	{
+  	Language language = pLanguage;
 		HashMap <Number,String> result = new HashMap<Number,String>();
 		while ( language.getId ( ) > 0 )
     {
       //System.out.println ( language.getId ( ) + " " + language.getName ( ) ) ;
-      result.put(language.getId ( ), language.getName ( ));
+      result.put(new Integer(language.getId ( )), language.getName ( ));
       try
       {
         language = ( Language ) language.getClass ( ).getSuperclass ( )
@@ -469,7 +482,7 @@ public class RulesMenu
       // Do nothing
     }
     //System.out.println ( language.getId ( ) + " " + language.getName ( ) ) ;
-    result.put(language.getId ( ), language.getName ( ));
+    result.put(new  Integer(language.getId ( )), language.getName ( ));
 		
 		return result;
 	}
@@ -483,35 +496,30 @@ public class RulesMenu
    * @param max
    * 					the index of the last element should be moved.
    */
-  private void moveToTop(String label, int max)
+  void moveToTop(String label, int max)
 	{
 		for (int i = 0; i < max; i++)
     {
       try
       {
-        MenuRuleItem toCompare = (MenuRuleItem) menu.getComponent(i);
-        MenuRuleItem tmp2 = lastUsedElements.get(i);
-        // vergleiche die Namen, wenn sie übereinstimmen
+        MenuRuleItem toCompare = (MenuRuleItem) this.menu.getComponent(i);
+        MenuRuleItem tmp2 = this.lastUsedElements.get(i);
+        // compair their names
         if (toCompare.getText().equals(label))
         {
-          //System.out.println("wieder nach oben!");
-          // nach oeben schieben
-          menu.add(menu.getComponent(i), 0);
-          // die anderen sind uninteressant, wenn wir einen
-          // Treffer hatten
-          //break;
+          // insert at the top
+          this.menu.add(this.menu.getComponent(i), 0);
         }
         
         if (tmp2.getText().equals(label))
         {
-        	lastUsedElements.remove(i);
-        	lastUsedElements.add(0, tmp2);        	
+        	this.lastUsedElements.remove(i);
+        	this.lastUsedElements.add(0, tmp2);        	
         } 
       }
       catch (ClassCastException ex)
       {
-        // Sollte eigentlich nie ausgeführt werden...
-      	//System.out.println("NEIN!");
+       // should never trough
       }
       save();
     }
@@ -523,9 +531,9 @@ public class RulesMenu
 	 */
 	public void save()
 	{
-		for (int i = 0; i < lastUsedElements.size(); i++)
+		for (int i = 0; i < this.lastUsedElements.size(); i++)
     {
-      preferences.put("rule" + i, lastUsedElements.get(i).getText());
+      this.preferences.put("rule" + i, this.lastUsedElements.get(i).getText());
     }
 	}
 	
@@ -533,30 +541,30 @@ public class RulesMenu
 	 * saves the state of the menu to be able to revert changes
 	 *
 	 */
-	private void saveToRevert()
+	void saveToRevert()
 	{
-		//als erstes das Menü durchlaufen und in die Liste packen
+		// get the menu into a list
 		
-		//Clear revertMenu
-		if (revertMenu.size()>0)
+		// clear revertMenu
+		if (this.revertMenu.size()>0)
 			{
-				revertMenu.clear();
+				this.revertMenu.clear();
 			}
 		
 		boolean isRuleItem = false;
 		
 		int i = 0;
 		
-		if (menu.getComponent(i) instanceof MenuRuleItem)
+		if (this.menu.getComponent(i) instanceof MenuRuleItem)
 		{
 			isRuleItem = true;
 		}
 		
 		while (isRuleItem)
 		{
-			revertMenu.add(i, (MenuRuleItem)menu.getComponent(i));
+			this.revertMenu.add(i, (MenuRuleItem)this.menu.getComponent(i));
 			i++;
-			if (menu.getComponent(i) instanceof MenuRuleItem)
+			if (this.menu.getComponent(i) instanceof MenuRuleItem)
 			{
 				isRuleItem = true;
 			}
@@ -567,8 +575,8 @@ public class RulesMenu
 		}
 		
 		//save the lastUsedElements
-		revertLastUsedElements.clear();
-		revertLastUsedElements.addAll(lastUsedElements);
+		this.revertLastUsedElements.clear();
+		this.revertLastUsedElements.addAll(this.lastUsedElements);
 	}
 	
 	/**
@@ -582,15 +590,15 @@ public class RulesMenu
 		
 		int i = 0;
 		
-		if (menu.getComponent(i) instanceof MenuRuleItem)
+		if (this.menu.getComponent(i) instanceof MenuRuleItem)
 		{
 			isRuleItem = true;
 		}
 		
 		while (isRuleItem)
 		{
-			menu.remove(i);
-			if (menu.getComponent(i) instanceof MenuRuleItem)
+			this.menu.remove(i);
+			if (this.menu.getComponent(i) instanceof MenuRuleItem)
 			{
 				isRuleItem = true;
 			}
@@ -601,14 +609,14 @@ public class RulesMenu
 		}
 		
 		//add the entries
-		for (i=0; i<revertMenu.size(); i++)
+		for (i=0; i<this.revertMenu.size(); i++)
 		{
-			menu.insert(revertMenu.get(i),i);
+			this.menu.insert(this.revertMenu.get(i),i);
 		}
 		
 		//reset the lastUsedElements
-		lastUsedElements.clear();
-		lastUsedElements.addAll(revertLastUsedElements);
+		this.lastUsedElements.clear();
+		this.lastUsedElements.addAll(this.revertLastUsedElements);
 	}
 	
 	/**
@@ -619,13 +627,13 @@ public class RulesMenu
 	 * @param list	the list contaning the item or not
 	 * @return			a boolean
 	 */
-	private boolean isIn ( String label, ArrayList list )
+	boolean isIn ( String label, ArrayList list )
 	{
 		boolean isIn = false;
 		
 		for (int l = 0; l<list.size(); l++)
 		{
-			if (label.equalsIgnoreCase(lastUsedElements.get(l).getText()))
+			if (label.equalsIgnoreCase(this.lastUsedElements.get(l).getText()))
 			{
 				isIn=true;
 			}
@@ -633,5 +641,35 @@ public class RulesMenu
 		return isIn;
 	}
 
+	/**
+	 * @return the tomany
+	 */
+	public int getTomany()
+	{
+		return this.tomany;
+	}
 
+	/**
+	 * @param pTomany the tomany to set
+	 */
+	public void setTomany(int pTomany)
+	{
+		this.tomany = pTomany;
+	}
+
+	/**
+	 * @return the lastUsedElements
+	 */
+	public ArrayList<MenuRuleItem> getLastUsedElements()
+	{
+		return this.lastUsedElements;
+	}
+
+	/**
+	 * @return the menu
+	 */
+	public JPopupMenu getMenu()
+	{
+		return this.menu;
+	}
 }
