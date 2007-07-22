@@ -64,6 +64,18 @@ public final class Duplication extends Expression implements
     {
       throw new NullPointerException ( "Identifiers is null" ) ; //$NON-NLS-1$
     }
+    for ( Identifier id : pIdentifiers )
+    {
+      if ( id == null )
+      {
+        throw new NullPointerException ( "One identifier is null" ) ; //$NON-NLS-1$
+      }
+      if ( ! id.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) )
+      {
+        throw new IllegalArgumentException (
+            "The set of the identifier has to be 'attribute'" ) ; //$NON-NLS-1$
+      }
+    }
     if ( pExpressions == null )
     {
       throw new NullPointerException ( "Expressions is null" ) ; //$NON-NLS-1$
@@ -199,7 +211,8 @@ public final class Duplication extends Expression implements
     if ( this.identifiersFree == null )
     {
       this.identifiersFree = new ArrayList < Identifier > ( ) ;
-      this.identifiersFree.add ( new Identifier ( "self" ) ) ; //$NON-NLS-1$
+      this.identifiersFree
+          .add ( new Identifier ( "self" , Identifier.Set.SELF ) ) ; //$NON-NLS-1$
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
         this.identifiersFree.addAll ( this.expressions [ i ]
@@ -270,7 +283,7 @@ public final class Duplication extends Expression implements
     {
       throw new NotOnlyFreeVariableException ( ) ;
     }
-    if ( ( pId.getName ( ).equals ( "self" ) ) //$NON-NLS-1$
+    if ( ( pId.getSet ( ).equals ( Identifier.Set.SELF ) )
         && ( pExpression instanceof ObjectExpr ) )
     {
       ObjectExpr objectExpr = ( ObjectExpr ) pExpression ;
@@ -288,8 +301,8 @@ public final class Duplication extends Expression implements
       }
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
-        Identifier newId = boundRenaming.newIdentifier ( new Identifier (
-            this.identifiers [ i ].getName ( ) ) ) ;
+        Identifier newId = boundRenaming
+            .newIdentifier ( this.identifiers [ i ] ) ;
         boundRenaming.add ( newId ) ;
         newIdentifiers [ i ] = newId ;
       }

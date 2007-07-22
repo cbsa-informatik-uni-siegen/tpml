@@ -78,6 +78,11 @@ public class Method extends Expression implements DefaultIdentifiers ,
     {
       throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
     }
+    if ( ! pIdentifier.getSet ( ).equals ( Identifier.Set.METHOD ) )
+    {
+      throw new IllegalArgumentException (
+          "The set of the identifier has to be 'method'" ) ; //$NON-NLS-1$
+    }
     if ( pExpression == null )
     {
       throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$

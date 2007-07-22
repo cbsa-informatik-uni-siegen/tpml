@@ -108,6 +108,18 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
     {
       throw new NullPointerException ( "identifiers is null" ) ; //$NON-NLS-1$
     }
+    for ( Identifier id : pIdentifiers )
+    {
+      if ( id == null )
+      {
+        throw new NullPointerException ( "One identifier is null" ) ; //$NON-NLS-1$
+      }
+      if ( ! id.getSet ( ).equals ( Identifier.Set.VARIABLE ) )
+      {
+        throw new IllegalArgumentException (
+            "The set of the identifier has to be 'variable'" ) ; //$NON-NLS-1$
+      }
+    }
     if ( pIdentifiers.length < 2 )
     {
       throw new IllegalArgumentException (

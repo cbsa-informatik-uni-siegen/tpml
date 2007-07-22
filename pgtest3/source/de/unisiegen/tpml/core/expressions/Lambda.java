@@ -90,6 +90,11 @@ public final class Lambda extends Value implements BoundIdentifiers ,
     {
       throw new NullPointerException ( "id is null" ) ; //$NON-NLS-1$
     }
+    if ( ! pIdentifier.getSet ( ).equals ( Identifier.Set.VARIABLE ) )
+    {
+      throw new IllegalArgumentException (
+          "The set of the identifier has to be 'variable'" ) ; //$NON-NLS-1$
+    }
     if ( pExpression == null )
     {
       throw new NullPointerException ( "e is null" ) ; //$NON-NLS-1$

@@ -59,6 +59,11 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
     {
       throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
     }
+    if ( ! pIdentifier.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) )
+    {
+      throw new IllegalArgumentException (
+          "The set of the identifier has to be 'attribute'" ) ; //$NON-NLS-1$
+    }
     if ( pExpression == null )
     {
       throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$

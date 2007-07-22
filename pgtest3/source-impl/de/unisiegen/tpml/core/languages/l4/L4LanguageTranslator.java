@@ -103,7 +103,8 @@ public class L4LanguageTranslator extends L3LanguageTranslator
       BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
       boundRenaming.add ( e1.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( e2.getIdentifiersFree ( ) ) ;
-      Identifier newId = boundRenaming.newIdentifier ( new Identifier ( "u" ) ) ; //$NON-NLS-1$
+      Identifier newId = boundRenaming.newIdentifier ( new Identifier ( "u" , //$NON-NLS-1$
+          Identifier.Set.VARIABLE ) ) ;
       // generate the let expression
       return new Let ( newId , null , e1 , e2 ) ;
     }
@@ -123,7 +124,8 @@ public class L4LanguageTranslator extends L3LanguageTranslator
       BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
       boundRenaming.add ( e1.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( e2.getIdentifiersFree ( ) ) ;
-      Identifier newId = boundRenaming.newIdentifier ( new Identifier ( "w" ) ) ; //$NON-NLS-1$
+      Identifier newId = boundRenaming.newIdentifier ( new Identifier ( "w" , //$NON-NLS-1$
+          Identifier.Set.VARIABLE ) ) ;
       // generate the recursion body
       Expression body = new Condition1 ( e1 , new Sequence ( e2 , newId ) ) ;
       // check if we should recurse

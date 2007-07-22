@@ -284,7 +284,7 @@ expr							::=	simple_expr:e
 								;
 
 identifier						::= IDENTIFIER:id
-									{: RESULT = new Identifier (id,idleft,idright); :}
+									{: RESULT = new Identifier (id,Identifier.Set.VARIABLE,idleft,idright); :}
 								;
 
 application						::= simple_expr:e simple_expr_list:l
@@ -484,9 +484,9 @@ condition_error					::= IF:i epsilon
 								;
 
 lambda							::= LAMBDA:l IDENTIFIER:id DOT seq_expr:e
-									{: RESULT = new Lambda(new Identifier (id,idleft,idright), null, e, lleft, eright); :}
+									{: RESULT = new Lambda(new Identifier (id,Identifier.Set.VARIABLE,idleft,idright), null, e, lleft, eright); :}
 								|	LAMBDA:l IDENTIFIER:id COLON type:tau DOT seq_expr:e
-									{: RESULT = new Lambda(new Identifier (id,idleft,idright), tau, e, lleft, eright); :}
+									{: RESULT = new Lambda(new Identifier (id,Identifier.Set.VARIABLE,idleft,idright), tau, e, lleft, eright); :}
 								|	lambda_error
 									{: :}
 								;
@@ -528,9 +528,9 @@ lambda_error					::= LAMBDA:l epsilon
 								;
 
 let								::= LET:l IDENTIFIER:id EQUAL seq_expr:e1 IN seq_expr:e2
-									{: RESULT = new Let(new Identifier (id,idleft,idright), null, e1, e2, lleft, e2right); :}
+									{: RESULT = new Let(new Identifier (id,Identifier.Set.VARIABLE,idleft,idright), null, e1, e2, lleft, e2right); :}
 								|	LET:l IDENTIFIER:id COLON type:tau EQUAL seq_expr:e1 IN seq_expr:e2
-									{: RESULT = new Let(new Identifier (id,idleft,idright), tau, e1, e2, lleft, e2right); :}
+									{: RESULT = new Let(new Identifier (id,Identifier.Set.VARIABLE,idleft,idright), tau, e1, e2, lleft, e2right); :}
 								|	let_error
 									{: :}
 								;
@@ -602,7 +602,7 @@ curried_let						::= LET:l IDENTIFIER:id curried_let_list:itl EQUAL seq_expr:e1 
 									     identifiers[n + 1] = itl[n].getId();
 									     types[n + 1] = itl[n].getTau();
 									   }
-									   identifiers[0] = new Identifier (id,idleft,idright);
+									   identifiers[0] = new Identifier (id,Identifier.Set.VARIABLE,idleft,idright);
 									   RESULT = new CurriedLet(identifiers, types, e1, e2, lleft, e2right);
 									:}
 								|	LET:l IDENTIFIER:id curried_let_list:itl COLON type:tau EQUAL seq_expr:e1 IN seq_expr:e2
@@ -614,7 +614,7 @@ curried_let						::= LET:l IDENTIFIER:id curried_let_list:itl EQUAL seq_expr:e1 
 									     identifiers[n + 1] = itl[n].getId();
 									     types[n + 1] = itl[n].getTau();
 									   }
-									   identifiers[0] = new Identifier (id,idleft,idright);
+									   identifiers[0] = new Identifier (id,Identifier.Set.VARIABLE,idleft,idright);
 									   types[0] = tau;
 									   RESULT = new CurriedLet(identifiers, types, e1, e2, lleft, e2right);
 									:}
@@ -678,9 +678,9 @@ curried_let_list				::= curried_let_pair:p curried_let_list:l
 								;
 
 curried_let_pair				::= LPAREN IDENTIFIER:id COLON type:tau RPAREN
-									{: RESULT = new IdentifierTypePair(new Identifier (id,idleft,idright), tau); :}
+									{: RESULT = new IdentifierTypePair(new Identifier (id,Identifier.Set.VARIABLE,idleft,idright), tau); :}
 								|	IDENTIFIER:id
-									{: RESULT = new IdentifierTypePair(new Identifier (id,idleft,idright), null); :}
+									{: RESULT = new IdentifierTypePair(new Identifier (id,Identifier.Set.VARIABLE,idleft,idright), null); :}
 								|	curried_let_pair_error
 									{: :}
 								;
@@ -736,9 +736,9 @@ coercion_error					::= LPAREN:l seq_expr COLON:c
 								;
 
 recursion						::= REC:r IDENTIFIER:id DOT seq_expr:e
-									{: RESULT = new Recursion(new Identifier (id,idleft,idright), null, e, rleft, eright); :}
+									{: RESULT = new Recursion(new Identifier (id,Identifier.Set.VARIABLE,idleft,idright), null, e, rleft, eright); :}
 								|	REC:r IDENTIFIER:id COLON type:tau DOT seq_expr:e
-									{: RESULT = new Recursion(new Identifier (id,idleft,idright), tau, e, rleft, eright); :}
+									{: RESULT = new Recursion(new Identifier (id,Identifier.Set.VARIABLE,idleft,idright), tau, e, rleft, eright); :}
 								|	recursion_error
 									{: :}					
 								;
@@ -783,9 +783,9 @@ recursion_error					::= REC:r epsilon
 								;
 
 let_rec							::= LET:l REC IDENTIFIER:id EQUAL seq_expr:e1 IN seq_expr:e2
-									{: RESULT = new LetRec(new Identifier (id,idleft,idright), null, e1, e2, lleft, e2right); :}
+									{: RESULT = new LetRec(new Identifier (id,Identifier.Set.VARIABLE,idleft,idright), null, e1, e2, lleft, e2right); :}
 								|	LET:l REC IDENTIFIER:id COLON type:tau EQUAL seq_expr:e1 IN seq_expr:e2
-									{: RESULT = new LetRec(new Identifier (id,idleft,idright), tau, e1, e2, lleft, e2right); :}
+									{: RESULT = new LetRec(new Identifier (id,Identifier.Set.VARIABLE,idleft,idright), tau, e1, e2, lleft, e2right); :}
 								|	let_rec_error
 									{: :}				
 								;
@@ -860,7 +860,7 @@ curried_let_rec					::=	LET:l REC IDENTIFIER:id curried_let_rec_list:itl EQUAL s
 									     identifiers[n + 1] = itl[n].getId();
 									     types[n + 1] = itl[n].getTau();
 									   }
-									   identifiers[0] = new Identifier (id,idleft,idright);
+									   identifiers[0] = new Identifier (id,Identifier.Set.VARIABLE,idleft,idright);
 									   RESULT = new CurriedLetRec(identifiers, types, e1, e2, lleft, e2right);
 									:}
 								|	LET:l REC IDENTIFIER:id curried_let_rec_list:itl COLON type:tau EQUAL seq_expr:e1 IN seq_expr:e2
@@ -872,7 +872,7 @@ curried_let_rec					::=	LET:l REC IDENTIFIER:id curried_let_rec_list:itl EQUAL s
 									     identifiers[n + 1] = itl[n].getId();
 									     types[n + 1] = itl[n].getTau();
 									   }
-									   identifiers[0] = new Identifier (id,idleft,idright);
+									   identifiers[0] = new Identifier (id,Identifier.Set.VARIABLE,idleft,idright);
 									   types[0] = tau;
 									   RESULT = new CurriedLetRec(identifiers, types, e1, e2, lleft, e2right);
 									:}
@@ -936,9 +936,9 @@ curried_let_rec_list			::= curried_let_rec_pair:p curried_let_rec_list:l
 								;
 
 curried_let_rec_pair			::= LPAREN IDENTIFIER:id COLON type:tau RPAREN
-									{: RESULT = new IdentifierTypePair(new Identifier (id,idleft,idright), tau); :}
+									{: RESULT = new IdentifierTypePair(new Identifier (id,Identifier.Set.VARIABLE,idleft,idright), tau); :}
 								|	IDENTIFIER:id
-									{: RESULT = new IdentifierTypePair(new Identifier (id,idleft,idright), null); :}
+									{: RESULT = new IdentifierTypePair(new Identifier (id,Identifier.Set.VARIABLE,idleft,idright), null); :}
 								|	curried_let_rec_pair_error
 									{: :}
 								;
@@ -1014,10 +1014,10 @@ multi_lambda_list				::=	multi_lambda_list:m COMMA IDENTIFIER:id
 									{:
 									   RESULT = new Identifier[m.length + 1];
 						   			   System.arraycopy(m, 0, RESULT, 0, m.length);
-						   			   RESULT[m.length] = new Identifier(id,idleft,idright);
+						   			   RESULT[m.length] = new Identifier(id,Identifier.Set.VARIABLE,idleft,idright);
 						   			:}
 								|	IDENTIFIER:id
-									{: RESULT = new Identifier[] { new Identifier(id,idleft,idright) }; :}
+									{: RESULT = new Identifier[] { new Identifier(id,Identifier.Set.VARIABLE,idleft,idright) }; :}
 								|	multi_lambda_list_error
 						   			{: :}
 								;
@@ -1108,10 +1108,10 @@ multi_let_list					::=	multi_let_list:m COMMA IDENTIFIER:id
 									{:
 									   RESULT = new Identifier[m.length + 1];
 						   			   System.arraycopy(m, 0, RESULT, 0, m.length);
-						   			   RESULT[m.length] = new Identifier(id,idleft,idright);
+						   			   RESULT[m.length] = new Identifier(id,Identifier.Set.VARIABLE,idleft,idright);
 						   			:}
 								|	IDENTIFIER:id
-									{: RESULT = new Identifier[] { new Identifier(id,idleft,idright) }; :}
+									{: RESULT = new Identifier[] { new Identifier(id,Identifier.Set.VARIABLE,idleft,idright) }; :}
 								|	multi_let_list_error
 						   			{: :}
 								;

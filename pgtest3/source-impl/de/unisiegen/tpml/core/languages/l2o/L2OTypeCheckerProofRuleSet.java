@@ -166,7 +166,8 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     Expression [ ] duplicationExpressions = duplication.getExpressions ( ) ;
     MonoType tauSelf = pContext.newTypeVariable ( ) ;
     TypeEnvironment environment = node.getEnvironment ( ) ;
-    pContext.addProofNode ( node , environment , new Identifier ( "self" ) , //$NON-NLS-1$
+    pContext.addProofNode ( node , environment , new Identifier (
+        "self" , Identifier.Set.SELF ) , //$NON-NLS-1$
         tauSelf ) ;
     pContext.addEquation ( node.getType ( ) , tauSelf ) ;
     for ( int i = 0 ; i < duplicationIdentifiers.length ; i ++ )

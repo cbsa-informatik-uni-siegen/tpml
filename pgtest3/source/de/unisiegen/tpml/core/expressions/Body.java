@@ -69,6 +69,11 @@ public final class Body extends Expression implements BodyOrRow ,
       {
         throw new NullPointerException ( "One identifier is null" ) ; //$NON-NLS-1$
       }
+      if ( ! id.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) )
+      {
+        throw new IllegalArgumentException (
+            "The set of the identifier has to be 'attribute'" ) ; //$NON-NLS-1$
+      }
     }
     if ( pExpression == null )
     {
@@ -301,7 +306,8 @@ public final class Body extends Expression implements BodyOrRow ,
     if ( this.identifiersFree == null )
     {
       this.identifiersFree = new ArrayList < Identifier > ( ) ;
-      this.identifiersFree.add ( new Identifier ( "self" ) ) ; //$NON-NLS-1$
+      this.identifiersFree
+          .add ( new Identifier ( "self" , Identifier.Set.SELF ) ) ; //$NON-NLS-1$
       this.identifiersFree.addAll ( this.expressions [ 0 ]
           .getIdentifiersFree ( ) ) ;
       ArrayList < Identifier > freeB = new ArrayList < Identifier > ( ) ;

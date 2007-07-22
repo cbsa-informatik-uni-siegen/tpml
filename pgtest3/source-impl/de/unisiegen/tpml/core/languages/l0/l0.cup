@@ -50,7 +50,7 @@ expr							::=	simple_expr:e
 								;
 
 identifier						::= IDENTIFIER:id
-									{: RESULT = new Identifier (id,idleft,idright); :}
+									{: RESULT = new Identifier (id,Identifier.Set.VARIABLE,idleft,idright); :}
 								;
 
 application						::= simple_expr:e simple_expr_list:l
@@ -66,7 +66,7 @@ application						::= simple_expr:e simple_expr_list:l
 								;
 
 lambda_no_type					::= LAMBDA:l IDENTIFIER:id DOT seq_expr:e
-									{: RESULT = new Lambda(new Identifier (id,idleft,idright), null, e, lleft, eright); :}
+									{: RESULT = new Lambda(new Identifier (id,Identifier.Set.VARIABLE,idleft,idright), null, e, lleft, eright); :}
 								|	lambda_no_type_error
 									{: :}
 								;

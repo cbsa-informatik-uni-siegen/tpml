@@ -90,6 +90,11 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
     {
       throw new NullPointerException ( "id is null" ) ; //$NON-NLS-1$
     }
+    if ( ! pIdentifier.getSet ( ).equals ( Identifier.Set.VARIABLE ) )
+    {
+      throw new IllegalArgumentException (
+          "The set of the identifier has to be 'variable'" ) ; //$NON-NLS-1$
+    }
     if ( pExpression1 == null )
     {
       throw new NullPointerException ( "e1 is null" ) ; //$NON-NLS-1$

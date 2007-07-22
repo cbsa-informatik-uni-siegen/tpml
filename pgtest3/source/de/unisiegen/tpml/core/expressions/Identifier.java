@@ -53,7 +53,7 @@ public final class Identifier extends Value implements DefaultName
    * @see #getBoundToExpression()
    * @see #setBoundTo(Expression,Identifier)
    */
-  private Expression boundToExpression ;
+  private Expression boundToExpression = null ;
 
 
   /**
@@ -62,7 +62,7 @@ public final class Identifier extends Value implements DefaultName
    * @see #getBoundToIdentifier()
    * @see #setBoundTo(Expression,Identifier)
    */
-  private Identifier boundToIdentifier ;
+  private Identifier boundToIdentifier = null ;
 
 
   /**
@@ -86,50 +86,11 @@ public final class Identifier extends Value implements DefaultName
    * Allocates a new {@link Identifier} with the given <code>name</code>.
    * 
    * @param pName the name of the identifier.
-   */
-  public Identifier ( String pName )
-  {
-    this.name = pName ;
-    this.boundToExpression = null ;
-    this.boundToIdentifier = null ;
-    if ( pName.equals ( "self" ) ) //$NON-NLS-1$
-    {
-      this.set = Set.SELF ;
-    }
-    else
-    {
-      this.set = Set.VARIABLE ;
-    }
-  }
-
-
-  /**
-   * Allocates a new {@link Identifier} with the given <code>name</code>.
-   * 
-   * @param pName the name of the identifier.
-   * @param pParserStartOffset The start offset of this {@link Expression} in
-   *          the source code.
-   * @param pParserEndOffset The end offset of this {@link Expression} in the
-   *          source code.
-   */
-  public Identifier ( String pName , int pParserStartOffset ,
-      int pParserEndOffset )
-  {
-    this ( pName ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
-  }
-
-
-  /**
-   * Allocates a new {@link Identifier} with the given <code>name</code>.
-   * 
-   * @param pName the name of the identifier.
    * @param pSet The set of this {@link Identifier}.
    */
   public Identifier ( String pName , Set pSet )
   {
-    this ( pName ) ;
+    this.name = pName ;
     this.set = pSet ;
   }
 

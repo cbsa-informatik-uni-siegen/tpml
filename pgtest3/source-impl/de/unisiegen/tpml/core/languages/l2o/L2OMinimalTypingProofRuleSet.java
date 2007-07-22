@@ -170,7 +170,7 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet
       MinimalTypingExpressionProofNode child = ( MinimalTypingExpressionProofNode ) node
           .getFirstChild ( ) ;
       TypeEnvironment environment = child.getEnvironment ( ) ;
-      Identifier self = new Identifier ( "self" ) ; //$NON-NLS-1$
+      Identifier self = new Identifier ( "self" , Identifier.Set.SELF ) ; //$NON-NLS-1$
       ObjectType objectType = ( ObjectType ) environment.get ( self ) ;
       RowType type = ( RowType ) objectType.getPhi ( ) ;
       RowType type2 = ( RowType ) child.getType ( ) ;
@@ -208,7 +208,7 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet
     MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode ;
     @ SuppressWarnings ( "unused" )
     Duplication duplication = ( Duplication ) node.getExpression ( ) ;
-    Identifier self = new Identifier ( "self" ) ; //$NON-NLS-1$
+    Identifier self = new Identifier ( "self" , Identifier.Set.SELF ) ; //$NON-NLS-1$
     // generate new child node
     context.addProofNode ( node , node.getEnvironment ( ) , self ) ;
   }
@@ -291,7 +291,7 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet
         && ( ( row.getExpressions ( ) [ 0 ] instanceof Method ) || ( row
             .getExpressions ( ) [ 0 ] instanceof CurriedMethod ) ) )
     {
-      Identifier self = new Identifier ( "self" ) ; //$NON-NLS-1$
+      Identifier self = new Identifier ( "self" , Identifier.Set.SELF ) ; //$NON-NLS-1$
       // generate new child node
       context.addProofNode ( node , node.getEnvironment ( ) , self ) ;
       return ;

@@ -111,7 +111,8 @@ public final class BoundRenaming < E extends DefaultName >
     Identifier newIdentifier = pOldIdentifier ;
     while ( this.negativeList.contains ( newIdentifier ) )
     {
-      newIdentifier = new Identifier ( newIdentifier.getName ( ) + "'" ) ; //$NON-NLS-1$
+      newIdentifier = new Identifier (
+          newIdentifier.getName ( ) + "'" , newIdentifier.getSet ( ) ) ; //$NON-NLS-1$
     }
     return newIdentifier ;
   }

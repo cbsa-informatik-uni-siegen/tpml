@@ -89,7 +89,8 @@ public class L3LanguageTranslator extends L2LanguageTranslator
       BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
       boundRenaming.add ( e.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( identifiers ) ;
-      Identifier newId = boundRenaming.newIdentifier ( new Identifier ( "id" ) ) ; //$NON-NLS-1$
+      Identifier newId = boundRenaming.newIdentifier ( new Identifier ( "id" , //$NON-NLS-1$
+          Identifier.Set.VARIABLE ) ) ;
       // generate the required let's
       for ( int n = identifiers.length - 1 ; n >= 0 ; -- n )
       {
@@ -117,7 +118,8 @@ public class L3LanguageTranslator extends L2LanguageTranslator
       boundRenaming.add ( e1.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( e2.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( identifiers ) ;
-      Identifier newId = boundRenaming.newIdentifier ( new Identifier ( "id" ) ) ; //$NON-NLS-1$
+      Identifier newId = boundRenaming.newIdentifier ( new Identifier ( "id" , //$NON-NLS-1$
+          Identifier.Set.VARIABLE ) ) ;
       // generate the required let's
       for ( int n = identifiers.length - 1 ; n >= 0 ; -- n )
       {

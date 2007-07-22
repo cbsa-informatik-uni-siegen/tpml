@@ -98,6 +98,18 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
     {
       throw new IllegalArgumentException ( "identifiers is empty" ) ; //$NON-NLS-1$
     }
+    for ( Identifier id : pIdentifiers )
+    {
+      if ( id == null )
+      {
+        throw new NullPointerException ( "One identifier is null" ) ; //$NON-NLS-1$
+      }
+      if ( ! id.getSet ( ).equals ( Identifier.Set.VARIABLE ) )
+      {
+        throw new IllegalArgumentException (
+            "The set of the identifier has to be 'variable'" ) ; //$NON-NLS-1$
+      }
+    }
     if ( pExpression1 == null )
     {
       throw new NullPointerException ( "e1 is null" ) ; //$NON-NLS-1$

@@ -79,6 +79,11 @@ public final class Class extends Expression implements BoundIdentifiers ,
     {
       throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
     }
+    if ( ! pIdentifier.getSet ( ).equals ( Identifier.Set.SELF ) )
+    {
+      throw new IllegalArgumentException (
+          "The set of the identifier has to be 'self'" ) ; //$NON-NLS-1$
+    }
     if ( pBodyOrRow == null )
     {
       throw new NullPointerException ( "Body or Row is null" ) ; //$NON-NLS-1$

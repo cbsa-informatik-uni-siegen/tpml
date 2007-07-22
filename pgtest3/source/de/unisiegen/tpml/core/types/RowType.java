@@ -150,6 +150,19 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     {
       throw new NullPointerException ( "Identifiers is null" ) ; //$NON-NLS-1$
     }
+    for ( Identifier id : pIdentifiers )
+    {
+      if ( id == null )
+      {
+        throw new NullPointerException ( "One identifier is null" ) ; //$NON-NLS-1$
+      }
+      if ( ( ! id.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) )
+          && ( ! id.getSet ( ).equals ( Identifier.Set.METHOD ) ) )
+      {
+        throw new IllegalArgumentException (
+            "The set of the identifier has to be 'attribute' or 'method'" ) ; //$NON-NLS-1$
+      }
+    }
     if ( pTypes == null )
     {
       throw new NullPointerException ( "Types is null" ) ; //$NON-NLS-1$

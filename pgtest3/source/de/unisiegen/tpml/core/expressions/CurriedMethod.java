@@ -80,6 +80,29 @@ public final class CurriedMethod extends Expression implements
     {
       throw new NullPointerException ( "Identifiers is null" ) ; //$NON-NLS-1$
     }
+    for ( int i = 0 ; i < pIdentifiers.length ; i ++ )
+    {
+      if ( pIdentifiers [ i ] == null )
+      {
+        throw new NullPointerException ( "One identifier is null" ) ; //$NON-NLS-1$
+      }
+      if ( i == 0 )
+      {
+        if ( ! pIdentifiers [ i ].getSet ( ).equals ( Identifier.Set.METHOD ) )
+        {
+          throw new IllegalArgumentException (
+              "The set of the identifier has to be 'method'" ) ; //$NON-NLS-1$
+        }
+      }
+      else
+      {
+        if ( ! pIdentifiers [ i ].getSet ( ).equals ( Identifier.Set.VARIABLE ) )
+        {
+          throw new IllegalArgumentException (
+              "The set of the identifier has to be 'variable'" ) ; //$NON-NLS-1$
+        }
+      }
+    }
     if ( pTypes == null )
     {
       throw new NullPointerException ( "Types is null" ) ; //$NON-NLS-1$
