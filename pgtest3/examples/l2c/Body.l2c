@@ -1,6 +1,5 @@
-class (self)
-  inherit a, b ; m, n from 
-  (class (self) val a = 0 ; val b = 1 ; method m = a ; method n = b ; end) 
-  as z ; 
-  method o = z#m + z#n ;
-end
+new (class (self)
+  inherit a, b from 
+  (class (self) val a = 0 ; val b = 1 ; method m = a ; method n = b ; end) ; 
+  method o = 1 ;
+end)
