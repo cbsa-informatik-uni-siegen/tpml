@@ -152,7 +152,7 @@ public class TypeComponent extends JComponent
    * 
    * @param event
    */
-  private void handleMouseMoved ( MouseEvent event )
+  void handleMouseMoved ( MouseEvent event )
   {
     
     //tell the PrettyStringRenderer where the mouse pointer is
