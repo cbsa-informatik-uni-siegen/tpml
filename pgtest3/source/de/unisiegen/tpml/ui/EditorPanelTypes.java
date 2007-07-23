@@ -141,7 +141,7 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 		editorToolBar.setFloatable ( false );
 		this.codeButton.setText ( "Source" ); //$NON-NLS-1$
 		this.codeButton.addActionListener ( new java.awt.event.ActionListener ( ) {
-			@SuppressWarnings("synthetic-access")
+			@SuppressWarnings ( "synthetic-access" )
 			public void actionPerformed ( java.awt.event.ActionEvent evt ) {
 				codeButtonActionPerformed ( evt );
 			}
@@ -151,7 +151,7 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 
 		this.subTypingButton.setText ( "Sub Typing" ); //$NON-NLS-1$
 		this.subTypingButton.addActionListener ( new java.awt.event.ActionListener ( ) {
-			@SuppressWarnings("synthetic-access")
+			@SuppressWarnings ( "synthetic-access" )
 			public void actionPerformed ( java.awt.event.ActionEvent evt ) {
 				subTypingButtonActionPerformed ( evt );
 			}
@@ -161,7 +161,7 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 
 		this.subTypingRecButton.setText ( "Sub Typing Rec" ); //$NON-NLS-1$
 		this.subTypingRecButton.addActionListener ( new java.awt.event.ActionListener ( ) {
-			@SuppressWarnings("synthetic-access")
+			@SuppressWarnings ( "synthetic-access" )
 			public void actionPerformed ( java.awt.event.ActionEvent evt ) {
 				subTypingRecButtonActionPerformed ( evt );
 			}
@@ -184,7 +184,7 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 		this.nextButton.setBorderPainted ( false );
 		this.nextButton.setOpaque ( false );
 		this.nextButton.addActionListener ( new java.awt.event.ActionListener ( ) {
-			@SuppressWarnings("synthetic-access")
+			@SuppressWarnings ( "synthetic-access" )
 			public void actionPerformed ( java.awt.event.ActionEvent evt ) {
 				nextButtonActionPerformed ( evt );
 			}
@@ -199,7 +199,7 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 		this.pongButton.setBorderPainted ( false );
 		this.pongButton.setOpaque ( false );
 		this.pongButton.addActionListener ( new java.awt.event.ActionListener ( ) {
-			@SuppressWarnings("synthetic-access")
+			@SuppressWarnings ( "synthetic-access" )
 			public void actionPerformed ( java.awt.event.ActionEvent evt ) {
 				pongButtonActionPerformed ( evt );
 			}
@@ -219,24 +219,24 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 
 	}// </editor-fold>//GEN-END:initComponents
 
-	private void pongButtonActionPerformed ( @SuppressWarnings("unused")
+	private void pongButtonActionPerformed ( @SuppressWarnings ( "unused" )
 	java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_pongButtonActionPerformed
 		PongView pongView = new PongView ( ( Frame ) getTopLevelAncestor ( ) );
 		pongView.setVisible ( true );
 	}//GEN-LAST:event_pongButtonActionPerformed
 
-	private void tabChange ( @SuppressWarnings("unused")
+	private void tabChange ( @SuppressWarnings ( "unused" )
 	java.awt.event.KeyEvent evt ) {//GEN-FIRST:event_tabChange
 	// TODO add your handling code here:
 	}//GEN-LAST:event_tabChange
 
-	private void nextButtonActionPerformed ( @SuppressWarnings("unused")
+	private void nextButtonActionPerformed ( @SuppressWarnings ( "unused" )
 	java.awt.event.ActionEvent evt ) {// GEN-FIRST:event_nextButtonActionPerformed
 		// 
 		this.activeEditorComponent.handleNext ( );
 	}// GEN-LAST:event_nextButtonActionPerformed
 
-	private void subTypingButtonActionPerformed ( @SuppressWarnings("unused")
+	private void subTypingButtonActionPerformed ( @SuppressWarnings ( "unused" )
 	java.awt.event.ActionEvent evt ) {// GEN-FIRST:event_bigstepButtonActionPerformed
 		setTexteditor ( false );
 		setComponent ( this.subTyping );
@@ -244,8 +244,7 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 		this.subTypingButton.setSelected ( true );
 	}// GEN-LAST:event_bigstepButtonActionPerformed
 
-
-	private void subTypingRecButtonActionPerformed ( @SuppressWarnings("unused")
+	private void subTypingRecButtonActionPerformed ( @SuppressWarnings ( "unused" )
 	java.awt.event.ActionEvent evt ) {// GEN-FIRST:event_smallstepButtonActionPerformed
 		// 
 		setTexteditor ( false );
@@ -254,7 +253,7 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 		this.subTypingRecButton.setSelected ( true );
 	}// GEN-LAST:event_smallstepButtonActionPerformed
 
-	private void codeButtonActionPerformed ( @SuppressWarnings("unused")
+	private void codeButtonActionPerformed ( @SuppressWarnings ( "unused" )
 	java.awt.event.ActionEvent evt ) {// GEN-FIRST:event_codeButtonActionPerformed
 		// 
 		setTexteditor ( true );
@@ -428,8 +427,7 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 				activateFunction ( this.subTypingButton, this.subTyping );
 				this.subTyping.setAdvanced ( this.advanced );
 				paintAll ( getGraphics ( ) );
-			}
-			else {
+			} else {
 				JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
 						.getString ( "CouldNotSubType" ) //$NON-NLS-1$
 						, "Sub Typing", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
@@ -438,7 +436,7 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 		} catch ( Exception e ) {
 			JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
 					.getString ( "CouldNotSubType" ) //$NON-NLS-1$
-					+ "\n" + e.getMessage ( ) + ".", "Sub Typing", JOptionPane.ERROR_MESSAGE );  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+					+ "\n" + e.getMessage ( ) + ".", "Sub Typing", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 
@@ -449,15 +447,14 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 		setTexteditor ( false );
 		try {
 			if ( this.getEditorType ( ) != null && this.getEditorType2 ( ) != null ) {
-			RecSubTypingProofModel model = this.language.newRecSubTypingProofModel ( this.getEditorType ( ), this
-					.getEditorType2 ( ), this.advanced );
-			this.subTypingRec = new ProofViewComponent ( ProofViewFactory.newSubTypingRecView ( model ), model );
-			this.editorPanel.removeAll ( );
-			this.activateFunction ( this.subTypingRecButton, this.subTypingRec );
-			this.subTypingRec.setAdvanced ( this.advanced );
-			paintAll ( getGraphics ( ) );
-			}
-			else {
+				RecSubTypingProofModel model = this.language.newRecSubTypingProofModel ( this.getEditorType ( ), this
+						.getEditorType2 ( ), this.advanced );
+				this.subTypingRec = new ProofViewComponent ( ProofViewFactory.newSubTypingRecView ( model ), model );
+				this.editorPanel.removeAll ( );
+				this.activateFunction ( this.subTypingRecButton, this.subTypingRec );
+				this.subTypingRec.setAdvanced ( this.advanced );
+				paintAll ( getGraphics ( ) );
+			} else {
 				JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
 						.getString ( "CouldNotSubType" ) //$NON-NLS-1$
 						, "Sub Typing", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
@@ -790,11 +787,11 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 	private boolean writeFile ( ) {
 		try {
 			BufferedWriter out = new BufferedWriter ( new OutputStreamWriter ( new FileOutputStream ( file ), "UTF8" ) ); //$NON-NLS-1$
-			if ( code.getType ( ) != null )
-				out.write ( code.getType ( ).toString ( ) );
+			//if ( code.getType() != null )
+			out.write ( code.getText ( ).toString ( ) );
 			out.write ( "°" );
-			if ( code.getType2 ( ) != null )
-				out.write ( code.getType2 ( ).toString ( ) );
+			//if ( code.getType2 ( ) != null )
+			out.write ( code.getText2 ( ).toString ( ) );
 			out.close ( );
 			code.setSaveStatus ( false );
 			//firePropertyChange ( "changed", true, false );
@@ -832,28 +829,19 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 
 	public void setEditorText ( String string ) {
 		String[] components = string.split ( "°" ); //$NON-NLS-1$
-		if ( components[0] != null ) {
+		try {
 			code.setText ( components[0] );
-
-			try {
-				LanguageTypeParser parser = this.language.newTypeParser ( new StringReader ( components[0] ) );
-				code.setType ( parser.parse ( ) );
-			} catch ( Exception e ) {
-				// TODO Auto-generated catch block
-				e.printStackTrace ( );
-			}
+			LanguageTypeParser parser = this.language.newTypeParser ( new StringReader ( components[0] ) );
+			code.setType ( parser.parse ( ) );
+		} catch ( Exception e ) {
+			//Nothing to do
 		}
-		code.setText ( components[0] );
-		if ( components.length > 1 && components[1] != null ) {
+		try {
 			code.setText2 ( components[1] );
-			try {
-				LanguageTypeParser parser = this.language.newTypeParser ( new StringReader ( components[1] ) );
-				code.setType2 ( parser.parse ( ) );
-			} catch ( Exception e ) {
-				// TODO Auto-generated catch block
-				e.printStackTrace ( );
-			}
+			LanguageTypeParser parser = this.language.newTypeParser ( new StringReader ( components[1] ) );
+			code.setType2 ( parser.parse ( ) );
+		} catch ( Exception e ) {
+			// Nothing to do
 		}
-
 	}
 }

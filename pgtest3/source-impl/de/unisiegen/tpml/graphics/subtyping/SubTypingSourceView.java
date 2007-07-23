@@ -538,6 +538,24 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 			//logger.error ( "Cannot set Text of the document" , e ) ;
 		}
 	}
+	
+	public String getText(){
+		
+		try {
+			return this.sourceField.getText ( 0, this.sourceField.getLength ( ) );
+		} catch ( BadLocationException e ) {
+			return "";
+		}
+	}
+	
+	public String getText2(){
+		
+		try {
+			return this.sourceField2.getText ( 0, this.sourceField2.getLength ( ) );
+		} catch ( BadLocationException e ) {
+			return "";
+		}
+	}
 
 	private class OwnDocumentListener implements DocumentListener {
 
