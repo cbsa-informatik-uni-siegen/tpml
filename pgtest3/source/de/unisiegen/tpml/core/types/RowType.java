@@ -629,6 +629,12 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
         {
           this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
         }
+        if ( this.identifiers [ i ].getSet ( ).equals (
+            Identifier.Set.ATTRIBUTE ) )
+        {
+          this.prettyStringBuilder.addKeyword ( "attr" ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+        }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
