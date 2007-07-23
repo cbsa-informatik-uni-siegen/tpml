@@ -953,13 +953,13 @@ curried_let_rec_pair_error		::= LPAREN:l epsilon
 
 object_expr						::= OBJECT:o LPAREN SELF:id RPAREN row:r END:end
 									{:
-									   Row row = new Row(r, rleft, rright);
+									   Row row = r.length == 0 ?  new Row(r) : new Row(r, rleft, rright);
 									   MultipleIdentifier.check(row);
 						   			   RESULT = new ObjectExpr (new Identifier (id,Identifier.Set.SELF,idleft,idright), null, row, oleft, endright);
 						   			:}
 								|	OBJECT:o LPAREN SELF:id COLON type:tau RPAREN row:r END:end
 									{:
-									   Row row = new Row(r, rleft, rright);
+									   Row row = r.length == 0 ?  new Row(r) : new Row(r, rleft, rright);
 									   MultipleIdentifier.check(row);
 						   			   RESULT = new ObjectExpr (new Identifier (id,Identifier.Set.SELF,idleft,idright), tau, row, oleft, endright);
 						   			:}
@@ -1403,7 +1403,7 @@ body							::= INHERIT:i body_attribute_list:bal FROM expr:e SEMI body:b
 									   RESULT = body ;
 									:}
 								|	row:r
-									{: RESULT = new Row(r, rleft, rright) ; :}
+									{: RESULT = new Row(r) ; :}
 								|	body_error
 						   			{: :}
 								;
