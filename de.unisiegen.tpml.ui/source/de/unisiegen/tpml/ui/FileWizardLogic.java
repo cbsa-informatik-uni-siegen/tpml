@@ -1,12 +1,14 @@
 package de.unisiegen.tpml.ui;
 
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.prefs.Preferences;
 
+import javax.sound.midi.Patch;
 import javax.swing.border.LineBorder;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
@@ -132,8 +134,11 @@ public class FileWizardLogic
     cr.setTextNonSelectionColor ( Color.BLACK ) ;
     cr.setBorder ( new LineBorder ( Color.WHITE ) ) ;
     
+    
     // Bugfix for Linux
     this.fileWizard.languagesTree.setRowHeight(0);
+    
+    ((DefaultTreeModel) this.fileWizard.languagesTree.getModel()).nodeChanged(root);
     
     //this.fileWizard.languagesTree.setRootVisible(false);
 
@@ -197,6 +202,10 @@ public class FileWizardLogic
 	  // This will only function if the collapsed state is redone
     int selected = this.preferences.getInt("SelectedElement", 0);
     this.fileWizard.languagesTree.setSelectionRow( selected );
+    
+    
+    //((DefaultTreeModel) this.fileWizard.languagesTree.getModel()).nodeChanged(root);
+    
 	 
 	}
 	

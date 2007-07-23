@@ -92,7 +92,6 @@ public class FileWizard extends javax.swing.JDialog {
         javax.swing.JLabel headerSubTitleLabel;
         javax.swing.JLabel headerTitleLabel;
         javax.swing.JLabel languagesLabel;
-        javax.swing.JScrollPane languagesScrollPane;
 
         headerPanel = new javax.swing.JPanel();
         headerTitleLabel = new javax.swing.JLabel();
@@ -266,6 +265,7 @@ public class FileWizard extends javax.swing.JDialog {
   
     // Variablendeklaration - nicht modifizieren//GEN-BEGIN:variables
     public javax.swing.JTextArea descriptionTextArea;
+    public javax.swing.JScrollPane languagesScrollPane;
     public javax.swing.JTree languagesTree;
     public javax.swing.JButton okButton;
     // Ende der Variablendeklaration//GEN-END:variables
