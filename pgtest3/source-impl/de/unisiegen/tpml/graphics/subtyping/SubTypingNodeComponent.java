@@ -62,7 +62,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
  * The bit of free space between the top and the bottom row aswell as between
  * the indexLabel and the expression is given in pixels in the {@link #spacing}.
  * <br>
- * Within the {@link NewSubTypingComponent} the
+ * Within the {@link SubTypingComponent} the
  * {@link de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer} will be used to
  * draw the lines and the arrow of the tree. The TreeArrowRenderer uses
  * {@link TreeNodeComponent}s to located the points where the lines and the
@@ -78,12 +78,12 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
  * @author marcell
  * @author michael
  * 
- * @see de.unisiegen.tpml.graphics.SubTyping.NewSubTypingView
- * @see de.unisiegen.tpml.graphics.SubTyping.NewSubTypingComponent
+ * @see de.unisiegen.tpml.graphics.SubTyping.SubTypingView
+ * @see de.unisiegen.tpml.graphics.SubTyping.SubTypingComponent
  * @see de.unisiegen.tpml.graphics.tree.TreeNodeComponent
  * @see de.unisiegen.tpml.graphics.SubTyping.SubTypingEnterType
  */
-public class NewSubTypingNodeComponent extends JComponent implements TreeNodeComponent {
+public class SubTypingNodeComponent extends JComponent implements TreeNodeComponent {
 	/**
 	 * 
 	 */
@@ -166,7 +166,7 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 	 * @param node The origin ProofNode
 	 * @param model The model
 	 */
-	public NewSubTypingNodeComponent ( SubTypingProofNode node, SubTypingModel model ) {
+	public SubTypingNodeComponent ( SubTypingProofNode node, SubTypingModel model ) {
 		super ( );
 		this.proofNode = node;
 		this.proofModel = model;
@@ -242,7 +242,7 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 					@SuppressWarnings("synthetic-access")
 					public void run ( ) {
 						// handle the menu action
-						NewSubTypingNodeComponent.this.handleMenuActivated ( source );
+						SubTypingNodeComponent.this.handleMenuActivated ( source );
 						// wait for the repaint before resetting the cursor
 						SwingUtilities.invokeLater ( new Runnable ( ) {
 							public void run ( ) {
@@ -413,21 +413,21 @@ public class NewSubTypingNodeComponent extends JComponent implements TreeNodeCom
 	 * Implementation of the eventhandling
 	 */
 
-	public void addSubTypingNodeListener ( NewSubTypingNodeListener listener ) {
-		this.listenerList.add ( NewSubTypingNodeListener.class, listener );
+	public void addSubTypingNodeListener ( SubTypingNodeListener listener ) {
+		this.listenerList.add ( SubTypingNodeListener.class, listener );
 	}
 
-	public void removeSubTypingNodeListener ( NewSubTypingNodeListener listener ) {
-		this.listenerList.remove ( NewSubTypingNodeListener.class, listener );
+	public void removeSubTypingNodeListener ( SubTypingNodeListener listener ) {
+		this.listenerList.remove ( SubTypingNodeListener.class, listener );
 	}
 
 	private void fireNodeChanged ( ) {
 		Object[] listeners = this.listenerList.getListenerList ( );
 		for ( int i = 0; i < listeners.length; i += 2 ) {
-			if ( listeners[i] != NewSubTypingNodeListener.class ) {
+			if ( listeners[i] != SubTypingNodeListener.class ) {
 				continue;
 			}
-			( ( NewSubTypingNodeListener ) listeners[i + 1] ).nodeChanged ( this );
+			( ( SubTypingNodeListener ) listeners[i + 1] ).nodeChanged ( this );
 		}
 	}
 

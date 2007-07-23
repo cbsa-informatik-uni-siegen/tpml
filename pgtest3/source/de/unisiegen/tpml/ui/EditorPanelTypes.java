@@ -45,6 +45,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
  * all {@link de.unisiegen.tpml.ui.EditorComponent}s open for that file.
  * 
  * @author Christoph Fehling
+ * @author Benjamin Mies
  */
 public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel {
 
@@ -57,14 +58,12 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 	/** Creates new form EditorPanelExpression */
 	public EditorPanelTypes ( Language language, MainWindow window ) {
 		initComponents ( );
-		firePropertyChange ( "changed", true, false );
 		this.window = window;
 		// setting the default button states
 		this.nextButton.setVisible ( false );
 		this.pongButton.setVisible ( false );
 		this.subTypingButton.setVisible ( false );
 		this.subTypingRecButton.setVisible ( false );
-		//There will be no Subtypingbutton because it has no sourcecode
 		//finished setting the default states
 
 		// hack to get consistent heights
@@ -74,8 +73,6 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 				this.pongButton.getPreferredSize ( ).height ) );
 		this.subTypingRecButton.setPreferredSize ( new Dimension ( this.subTypingRecButton.getPreferredSize ( ).width,
 				this.pongButton.getPreferredSize ( ).height ) );
-		//There will be no SubTypingButton
-		//TODO vielleicht auch machen müssen
 
 		this.language = language;
 
@@ -135,39 +132,42 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 			}
 		} );
 
-		editorPanel.setLayout ( new java.awt.BorderLayout ( ) );
+		this.editorPanel.setLayout ( new java.awt.BorderLayout ( ) );
 
-		add ( editorPanel, java.awt.BorderLayout.CENTER );
+		add ( this.editorPanel, java.awt.BorderLayout.CENTER );
 
 		toolBarPanel.setLayout ( new java.awt.GridBagLayout ( ) );
 
 		editorToolBar.setFloatable ( false );
-		codeButton.setText ( "Source" );
-		codeButton.addActionListener ( new java.awt.event.ActionListener ( ) {
+		this.codeButton.setText ( "Source" ); //$NON-NLS-1$
+		this.codeButton.addActionListener ( new java.awt.event.ActionListener ( ) {
+			@SuppressWarnings("synthetic-access")
 			public void actionPerformed ( java.awt.event.ActionEvent evt ) {
 				codeButtonActionPerformed ( evt );
 			}
 		} );
 
-		editorToolBar.add ( codeButton );
+		editorToolBar.add ( this.codeButton );
 
-		subTypingButton.setText ( "Sub Typing" );
-		subTypingButton.addActionListener ( new java.awt.event.ActionListener ( ) {
+		this.subTypingButton.setText ( "Sub Typing" ); //$NON-NLS-1$
+		this.subTypingButton.addActionListener ( new java.awt.event.ActionListener ( ) {
+			@SuppressWarnings("synthetic-access")
 			public void actionPerformed ( java.awt.event.ActionEvent evt ) {
 				subTypingButtonActionPerformed ( evt );
 			}
 		} );
 
-		editorToolBar.add ( subTypingButton );
+		editorToolBar.add ( this.subTypingButton );
 
-		subTypingRecButton.setText ( "Sub Typing Rec" );
-		subTypingRecButton.addActionListener ( new java.awt.event.ActionListener ( ) {
+		this.subTypingRecButton.setText ( "Sub Typing Rec" ); //$NON-NLS-1$
+		this.subTypingRecButton.addActionListener ( new java.awt.event.ActionListener ( ) {
+			@SuppressWarnings("synthetic-access")
 			public void actionPerformed ( java.awt.event.ActionEvent evt ) {
 				subTypingRecButtonActionPerformed ( evt );
 			}
 		} );
 
-		editorToolBar.add ( subTypingRecButton );
+		editorToolBar.add ( this.subTypingRecButton );
 
 		gridBagConstraints = new java.awt.GridBagConstraints ( );
 		gridBagConstraints.gridx = 0;
@@ -178,32 +178,34 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 		toolBarPanel.add ( editorToolBar, gridBagConstraints );
 
 		actionToolBar.setFloatable ( false );
-		nextButton.setIcon ( new javax.swing.ImageIcon ( getClass ( ).getResource (
-				"/de/unisiegen/tpml/ui/icons/next24.png" ) ) );
-		nextButton.setToolTipText ( "Guess" );
-		nextButton.setBorderPainted ( false );
-		nextButton.setOpaque ( false );
-		nextButton.addActionListener ( new java.awt.event.ActionListener ( ) {
+		this.nextButton.setIcon ( new javax.swing.ImageIcon ( getClass ( ).getResource (
+				"/de/unisiegen/tpml/ui/icons/next24.png" ) ) ); //$NON-NLS-1$
+		this.nextButton.setToolTipText ( "Guess" ); //$NON-NLS-1$
+		this.nextButton.setBorderPainted ( false );
+		this.nextButton.setOpaque ( false );
+		this.nextButton.addActionListener ( new java.awt.event.ActionListener ( ) {
+			@SuppressWarnings("synthetic-access")
 			public void actionPerformed ( java.awt.event.ActionEvent evt ) {
 				nextButtonActionPerformed ( evt );
 			}
 		} );
 
-		actionToolBar.add ( nextButton );
+		actionToolBar.add ( this.nextButton );
 
-		pongButton.setIcon ( new javax.swing.ImageIcon ( getClass ( ).getResource (
-				"/de/unisiegen/tpml/ui/icons/pong16.gif" ) ) );
-		pongButton.setToolTipText ( java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-				"PongTooltip" ) );
-		pongButton.setBorderPainted ( false );
-		pongButton.setOpaque ( false );
-		pongButton.addActionListener ( new java.awt.event.ActionListener ( ) {
+		this.pongButton.setIcon ( new javax.swing.ImageIcon ( getClass ( ).getResource (
+				"/de/unisiegen/tpml/ui/icons/pong16.gif" ) ) ); //$NON-NLS-1$
+		this.pongButton.setToolTipText ( java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+				"PongTooltip" ) ); //$NON-NLS-1$
+		this.pongButton.setBorderPainted ( false );
+		this.pongButton.setOpaque ( false );
+		this.pongButton.addActionListener ( new java.awt.event.ActionListener ( ) {
+			@SuppressWarnings("synthetic-access")
 			public void actionPerformed ( java.awt.event.ActionEvent evt ) {
 				pongButtonActionPerformed ( evt );
 			}
 		} );
 
-		actionToolBar.add ( pongButton );
+		actionToolBar.add ( this.pongButton );
 
 		gridBagConstraints = new java.awt.GridBagConstraints ( );
 		gridBagConstraints.gridx = 1;
@@ -217,44 +219,49 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 
 	}// </editor-fold>//GEN-END:initComponents
 
-	private void pongButtonActionPerformed ( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_pongButtonActionPerformed
+	private void pongButtonActionPerformed ( @SuppressWarnings("unused")
+	java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_pongButtonActionPerformed
 		PongView pongView = new PongView ( ( Frame ) getTopLevelAncestor ( ) );
 		pongView.setVisible ( true );
 	}//GEN-LAST:event_pongButtonActionPerformed
 
-	private void tabChange ( java.awt.event.KeyEvent evt ) {//GEN-FIRST:event_tabChange
+	private void tabChange ( @SuppressWarnings("unused")
+	java.awt.event.KeyEvent evt ) {//GEN-FIRST:event_tabChange
 	// TODO add your handling code here:
 	}//GEN-LAST:event_tabChange
 
-	private void nextButtonActionPerformed ( java.awt.event.ActionEvent evt ) {// GEN-FIRST:event_nextButtonActionPerformed
+	private void nextButtonActionPerformed ( @SuppressWarnings("unused")
+	java.awt.event.ActionEvent evt ) {// GEN-FIRST:event_nextButtonActionPerformed
 		// 
-		activeEditorComponent.handleNext ( );
+		this.activeEditorComponent.handleNext ( );
 	}// GEN-LAST:event_nextButtonActionPerformed
 
-	private void subTypingButtonActionPerformed ( java.awt.event.ActionEvent evt ) {// GEN-FIRST:event_bigstepButtonActionPerformed
+	private void subTypingButtonActionPerformed ( @SuppressWarnings("unused")
+	java.awt.event.ActionEvent evt ) {// GEN-FIRST:event_bigstepButtonActionPerformed
 		setTexteditor ( false );
-		setComponent ( subTyping );
+		setComponent ( this.subTyping );
 		deselectButtons ( );
-		subTypingButton.setSelected ( true );
+		this.subTypingButton.setSelected ( true );
 	}// GEN-LAST:event_bigstepButtonActionPerformed
 
-	//TODO Brauchen wir den auch für den Subtyping
 
-	private void subTypingRecButtonActionPerformed ( java.awt.event.ActionEvent evt ) {// GEN-FIRST:event_smallstepButtonActionPerformed
+	private void subTypingRecButtonActionPerformed ( @SuppressWarnings("unused")
+	java.awt.event.ActionEvent evt ) {// GEN-FIRST:event_smallstepButtonActionPerformed
 		// 
 		setTexteditor ( false );
-		setComponent ( subTypingRec );
+		setComponent ( this.subTypingRec );
 		deselectButtons ( );
-		subTypingRecButton.setSelected ( true );
+		this.subTypingRecButton.setSelected ( true );
 	}// GEN-LAST:event_smallstepButtonActionPerformed
 
-	private void codeButtonActionPerformed ( java.awt.event.ActionEvent evt ) {// GEN-FIRST:event_codeButtonActionPerformed
+	private void codeButtonActionPerformed ( @SuppressWarnings("unused")
+	java.awt.event.ActionEvent evt ) {// GEN-FIRST:event_codeButtonActionPerformed
 		// 
 		setTexteditor ( true );
-		setComponent ( code );
+		setComponent ( this.code );
 		deselectButtons ( );
-		codeButton.setSelected ( true );
-		code.getEditor ( ).requestFocus ( );
+		this.codeButton.setSelected ( true );
+		this.code.getEditor ( ).requestFocus ( );
 	}// GEN-LAST:event_codeButtonActionPerformed
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
@@ -344,17 +351,17 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 	 *            new value of the status
 	 */
 	private void componentStatusChanged ( String ident, Object newValue ) {
-		if ( ident.equals ( "nextStatus" ) ) {
+		if ( ident.equals ( "nextStatus" ) ) { //$NON-NLS-1$
 			this.nextButton.setEnabled ( ( Boolean ) newValue );
-		} else if ( ident.equals ( "pongStatus" ) ) {
+		} else if ( ident.equals ( "pongStatus" ) ) { //$NON-NLS-1$
 			this.pongButton.setVisible ( ( Boolean ) newValue );
-		} else if ( ident.equals ( "redoStatus" ) ) {
+		} else if ( ident.equals ( "redoStatus" ) ) { //$NON-NLS-1$
 			setRedoStatus ( ( Boolean ) newValue );
-		} else if ( ident.equals ( "title" ) ) {
+		} else if ( ident.equals ( "title" ) ) { //$NON-NLS-1$
 			setFileName ( ( String ) newValue );
-		} else if ( ident.equals ( "undoStatus" ) ) {
+		} else if ( ident.equals ( "undoStatus" ) ) { //$NON-NLS-1$
 			setUndoStatus ( ( Boolean ) newValue );
-		} else if ( ident.equals ( "changed" ) ) {
+		} else if ( ident.equals ( "changed" ) ) { //$NON-NLS-1$
 			//setChanged((Boolean) newValue);
 			setUndoStatus ( ( Boolean ) newValue );
 		}
@@ -376,15 +383,15 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 	 */
 	private void setComponent ( EditorComponent comp ) {
 
-		editorPanel.removeAll ( );
-		editorPanel.add ( ( JComponent ) comp, BorderLayout.CENTER );
-		activeEditorComponent = comp;
+		this.editorPanel.removeAll ( );
+		this.editorPanel.add ( ( JComponent ) comp, BorderLayout.CENTER );
+		this.activeEditorComponent = comp;
 		updateComponentStates ( comp );
 		paintAll ( getGraphics ( ) );
 	}
 
 	private EditorComponent getComponent ( ) {
-		return ( EditorComponent ) editorPanel.getComponent ( 0 );
+		return ( EditorComponent ) this.editorPanel.getComponent ( 0 );
 	}
 
 	/**
@@ -392,16 +399,16 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 	 * source editor.
 	 */
 	private void initEditor ( ) {
-		code = new SubTypingSourceView ( language, window );
+		this.code = new SubTypingSourceView ( this.language, this.window );
 
-		editorPanel.removeAll ( );
-		editorPanel.add ( ( JPanel ) code, BorderLayout.CENTER );
-		( ( JPanel ) code ).addPropertyChangeListener ( editorComponentListener );
-		code.setDefaultStates ( );
-		updateComponentStates ( code );
+		this.editorPanel.removeAll ( );
+		this.editorPanel.add ( this.code, BorderLayout.CENTER );
+		( ( JPanel ) this.code ).addPropertyChangeListener ( this.editorComponentListener );
+		this.code.setDefaultStates ( );
+		updateComponentStates ( this.code );
 		deselectButtons ( );
-		codeButton.setSelected ( true );
-		codeButton.setEnabled ( true );
+		this.codeButton.setSelected ( true );
+		this.codeButton.setEnabled ( true );
 
 		paintAll ( this.getGraphics ( ) );
 	}
@@ -413,26 +420,25 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 	public void handleSubTyping ( ) {
 		setTexteditor ( false );
 		try {
-			// TODO Benjamin get the types out of source
 			if ( this.getEditorType ( ) != null && this.getEditorType2 ( ) != null ) {
-				SubTypingProofModel model = language.newSubTypingProofModel ( this.getEditorType ( ), this
+				SubTypingProofModel model = this.language.newSubTypingProofModel ( this.getEditorType ( ), this
 						.getEditorType2 ( ), this.advanced );
-				subTyping = new ProofViewComponent ( ProofViewFactory.newSubTypingView ( model ), model );
-				editorPanel.removeAll ( );
-				activateFunction ( subTypingButton, subTyping );
-				subTyping.setAdvanced ( this.advanced );
+				this.subTyping = new ProofViewComponent ( ProofViewFactory.newSubTypingView ( model ), model );
+				this.editorPanel.removeAll ( );
+				activateFunction ( this.subTypingButton, this.subTyping );
+				this.subTyping.setAdvanced ( this.advanced );
 				paintAll ( getGraphics ( ) );
 			}
 			else {
-				JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-						.getString ( "CouldNotSubType" )
-						, "Sub Typing", JOptionPane.ERROR_MESSAGE );
+				JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+						.getString ( "CouldNotSubType" ) //$NON-NLS-1$
+						, "Sub Typing", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
 			}
 
 		} catch ( Exception e ) {
-			JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-					.getString ( "CouldNotSubType" )
-					+ "\n" + e.getMessage ( ) + ".", "Sub Typing", JOptionPane.ERROR_MESSAGE );
+			JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+					.getString ( "CouldNotSubType" ) //$NON-NLS-1$
+					+ "\n" + e.getMessage ( ) + ".", "Sub Typing", JOptionPane.ERROR_MESSAGE );  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 
@@ -443,24 +449,24 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 		setTexteditor ( false );
 		try {
 			if ( this.getEditorType ( ) != null && this.getEditorType2 ( ) != null ) {
-			RecSubTypingProofModel model = language.newRecSubTypingProofModel ( this.getEditorType ( ), this
+			RecSubTypingProofModel model = this.language.newRecSubTypingProofModel ( this.getEditorType ( ), this
 					.getEditorType2 ( ), this.advanced );
-			subTypingRec = new ProofViewComponent ( ProofViewFactory.newSubTypingRecView ( model ), model );
-			editorPanel.removeAll ( );
-			activateFunction ( subTypingRecButton, subTypingRec );
-			subTypingRec.setAdvanced ( this.advanced );
+			this.subTypingRec = new ProofViewComponent ( ProofViewFactory.newSubTypingRecView ( model ), model );
+			this.editorPanel.removeAll ( );
+			this.activateFunction ( this.subTypingRecButton, this.subTypingRec );
+			this.subTypingRec.setAdvanced ( this.advanced );
 			paintAll ( getGraphics ( ) );
 			}
 			else {
-				JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-						.getString ( "CouldNotSubType" )
-						, "Sub Typing", JOptionPane.ERROR_MESSAGE );
+				JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+						.getString ( "CouldNotSubType" ) //$NON-NLS-1$
+						, "Sub Typing", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
 			}
 		} catch ( Exception e ) {
-			logger.error ( "Could not create new SubTypingView", e );
-			JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-					.getString ( "CouldNotSubType" )
-					+ "\n" + e.getMessage ( ) + ".", "Sub Typing", JOptionPane.ERROR_MESSAGE );
+			logger.error ( "Could not create new SubTypingView", e ); //$NON-NLS-1$
+			JOptionPane.showMessageDialog ( this, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+					.getString ( "CouldNotSubType" ) //$NON-NLS-1$
+					+ "\n" + e.getMessage ( ) + ".", "Sub Typing", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-2$
 		}
 	}
 

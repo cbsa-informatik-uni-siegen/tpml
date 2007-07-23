@@ -52,7 +52,7 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
-import de.unisiegen.tpml.graphics.subtyping.NewSubTypingView ;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingView ;
 import de.unisiegen.tpml.graphics.subtyping.SubTypingSourceView ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
 import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView ;
@@ -273,9 +273,9 @@ public final class DefaultOutline implements Outline
   /**
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    * 
-   * @param pSubTypingView The {@link NewSubTypingView}.
+   * @param pSubTypingView The {@link SubTypingView}.
    */
-  public DefaultOutline ( NewSubTypingView pSubTypingView )
+  public DefaultOutline ( SubTypingView pSubTypingView )
   {
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;

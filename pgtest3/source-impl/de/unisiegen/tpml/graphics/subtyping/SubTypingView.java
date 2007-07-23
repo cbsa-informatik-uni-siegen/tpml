@@ -28,7 +28,7 @@ import de.unisiegen.tpml.graphics.outline.Outline;
  * @version $Rev: 995 $
  * @see de.unisiegen.tpml.graphics.AbstractProofView
  */
-public class NewSubTypingView extends AbstractProofView
+public class SubTypingView extends AbstractProofView
 {
   /**
    * The unique serialization identifier for this class.
@@ -39,7 +39,7 @@ public class NewSubTypingView extends AbstractProofView
   /**
    * The <code>SubTyping</code> component.
    */
-  protected NewSubTypingComponent component ;
+  protected SubTypingComponent component ;
 
 
   /**
@@ -80,13 +80,13 @@ public class NewSubTypingView extends AbstractProofView
 
 
   /**
-   * Allocates a new {@link NewSubTypingView} for the specified
+   * Allocates a new {@link SubTypingView} for the specified
    * {@link SubTypingModel}.
    * 
    * @param pSubTypingModel The {@link SubTypingModel} for the
    *          <code>SubTypingView</code>.
    */
-  public NewSubTypingView ( SubTypingModel pSubTypingModel )
+  public SubTypingView ( SubTypingModel pSubTypingModel )
   {
     super ( ) ;
     this.subTypingModel = pSubTypingModel ;
@@ -94,7 +94,7 @@ public class NewSubTypingView extends AbstractProofView
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
     this.setLayout ( new GridBagLayout ( ) ) ;
     this.scrollPane = new JScrollPane ( ) ;
-    this.component = new NewSubTypingComponent ( this.subTypingModel ) ;
+    this.component = new SubTypingComponent ( this.subTypingModel ) ;
     this.scrollPane.setViewportView ( this.component ) ;
     this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
     this.scrollPane.addComponentListener ( new ComponentAdapter ( )
@@ -103,8 +103,8 @@ public class NewSubTypingView extends AbstractProofView
       public void componentResized ( @ SuppressWarnings ( "unused" )
       ComponentEvent event )
       {
-        NewSubTypingView.this.component
-            .setAvailableWidth ( NewSubTypingView.this.scrollPane
+        SubTypingView.this.component
+            .setAvailableWidth ( SubTypingView.this.scrollPane
                 .getViewport ( ).getWidth ( ) ) ;
       }
     } ) ;

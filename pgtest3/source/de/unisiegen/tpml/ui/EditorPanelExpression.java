@@ -344,8 +344,6 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	
 	private EditorComponent typeinference;
 	
-	private EditorComponent subtyping;
-	
 	private EditorComponent minimaltyping;
 
 	private EditorComponent activeEditorComponent;
@@ -573,47 +571,6 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 		}
 	}
 	
-	/**
-	 * Starts the Subtyping.
-	 */
-	public void handleSubtyping() {
-		setTexteditor(false);
-		
-		try {
-			// changes benjamin
-			//String sztype = "<add:int;sub:bool;>";
-			//String sztype2 = "<sub:bool;add:int;>";
-			/*
-			String sztype = "int";
-			String sztype2 = "int";
-			
-			MonoType type = (MonoType) language.newTypeParser ( new StringReader(sztype) ).parse();
-			MonoType type2 = (MonoType) language.newTypeParser ( new StringReader(sztype2) ).parse();
-			SubTypingProofModel model = language.newSubTypingProofModel(type, type2, this.advanced);
-			subtyping = new ProofViewComponent(ProofViewFactory.newSubtypingView(language), model);*/
-			SubTypingProofModel model = language.newSubTypingProofModel(null, null, this.advanced);
-			subtyping = new ProofViewComponent(ProofViewFactory.newSubtypingView(model), model);
-			//changes benjamin end
-			
-			//typechecker = new ProofViewComponent(ProofViewFactory
-			//		.newTypeCheckerView(model), model);
-			
-			editorPanel.removeAll();
-			//activateFunction(typecheckerButton, typechecker);
-			//
-			activateFunction(null, subtyping);
-			subtyping.setAdvanced(this.advanced);
-			paintAll(getGraphics());
-			
-
-		} catch (Exception e) {
-			logger.error("Could not create new TypeCheckerView", e);
-			JOptionPane.showMessageDialog(this,
-					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotTypeChecker")+
-					"\n"+e.getMessage()+".",
-					"TypeChecker", JOptionPane.ERROR_MESSAGE);
-		}
-	}
 	
 	/**
 	 * Starts the MinimalTyping Interpreter.
@@ -837,7 +794,6 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 		if (smallstep != null) smallstep.setAdvanced(state);
 		if (typechecker != null) typechecker.setAdvanced(state);
 		if (typeinference != null) typeinference.setAdvanced(state);
-		if (subtyping != null) subtyping.setAdvanced(state);
 		if (minimaltyping != null) minimaltyping.setAdvanced(state);
 		this.advanced = state;
 	}

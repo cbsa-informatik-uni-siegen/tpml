@@ -18,7 +18,7 @@ import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode ;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
-import de.unisiegen.tpml.graphics.subtyping.NewSubTypingView ;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingView ;
 
 
 /**
@@ -54,9 +54,9 @@ public final class OutlineTreeModelListener implements TreeModelListener
 
 
   /**
-   * The {@link NewSubTypingView}.
+   * The {@link SubTypingView}.
    */
-  private NewSubTypingView subTypingView = null ;
+  private SubTypingView subTypingView = null ;
 
 
   /**
@@ -76,13 +76,13 @@ public final class OutlineTreeModelListener implements TreeModelListener
 
   /**
    * Initializes the {@link OutlineTreeModelListener} with the given
-   * {@link Outline} and the {@link NewSubTypingView}.
+   * {@link Outline} and the {@link SubTypingView}.
    * 
    * @param pDefaultOutline The {@link DefaultOutline}.
-   * @param pSubTypingView The {@link NewSubTypingView}.
+   * @param pSubTypingView The {@link SubTypingView}.
    */
   public OutlineTreeModelListener ( DefaultOutline pDefaultOutline ,
-      NewSubTypingView pSubTypingView )
+      SubTypingView pSubTypingView )
   {
     this.defaultOutline = pDefaultOutline ;
     this.subTypingView = pSubTypingView ;

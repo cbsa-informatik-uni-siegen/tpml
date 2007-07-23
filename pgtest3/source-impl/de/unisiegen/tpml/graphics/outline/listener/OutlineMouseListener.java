@@ -16,8 +16,8 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent ;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
-import de.unisiegen.tpml.graphics.subtyping.NewSubTypingNodeComponent ;
-import de.unisiegen.tpml.graphics.subtyping.NewSubTypingView ;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingNodeComponent ;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingView ;
 import de.unisiegen.tpml.graphics.subtyping.StyledTypeEnterField ;
 import de.unisiegen.tpml.graphics.subtyping.SubTypingSourceView ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent ;
@@ -30,7 +30,7 @@ import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
  * <code>MouseEvents</code> on the components {@link Outline},
  * {@link SmallStepView}, {@link BigStepView}, {@link TypeCheckerView}
  * {@link TextEditorPanel}, {@link MinimalTypingNodeComponent},
- * {@link NewSubTypingNodeComponent} and {@link SubTypingSourceView}. Sets a
+ * {@link SubTypingNodeComponent} and {@link SubTypingSourceView}. Sets a
  * new {@link Expression} or {@link Type} in the {@link Outline}. It views the
  * <code>JPopupMenu</code> in the {@link Outline}.
  * 
@@ -76,9 +76,9 @@ public final class OutlineMouseListener implements MouseListener
 
 
   /**
-   * The {@link NewSubTypingNodeComponent}.
+   * The {@link SubTypingNodeComponent}.
    */
-  private NewSubTypingNodeComponent subTypingNodeComponent = null ;
+  private SubTypingNodeComponent subTypingNodeComponent = null ;
 
 
   /**
@@ -162,12 +162,12 @@ public final class OutlineMouseListener implements MouseListener
 
   /**
    * Initializes the {@link OutlineMouseListener} with the given
-   * {@link NewSubTypingNodeComponent}.
+   * {@link SubTypingNodeComponent}.
    * 
-   * @param pSubTypingNodeComponent The {@link NewSubTypingNodeComponent}.
+   * @param pSubTypingNodeComponent The {@link SubTypingNodeComponent}.
    */
   public OutlineMouseListener (
-      NewSubTypingNodeComponent pSubTypingNodeComponent )
+      SubTypingNodeComponent pSubTypingNodeComponent )
   {
     this.subTypingNodeComponent = pSubTypingNodeComponent ;
   }
@@ -484,12 +484,12 @@ public final class OutlineMouseListener implements MouseListener
     if ( pMouseEvent.getSource ( ).equals (
         this.subTypingNodeComponent.getIndexLabel ( ) ) )
     {
-      ( ( NewSubTypingView ) this.subTypingNodeComponent.getParent ( )
+      ( ( SubTypingView ) this.subTypingNodeComponent.getParent ( )
           .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
           .getOutline1 ( ).load (
               this.subTypingNodeComponent.getTypeComponent ( ).getType ( ) ,
               Outline.ExecuteMouseClick.SUBTYPING ) ;
-      ( ( NewSubTypingView ) this.subTypingNodeComponent.getParent ( )
+      ( ( SubTypingView ) this.subTypingNodeComponent.getParent ( )
           .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
           .getOutline2 ( ).load (
               this.subTypingNodeComponent.getTypeComponent2 ( ).getType ( ) ,
@@ -499,12 +499,12 @@ public final class OutlineMouseListener implements MouseListener
     else if ( pMouseEvent.getSource ( ).equals (
         this.subTypingNodeComponent.getTypeComponent ( ) ) )
     {
-      ( ( NewSubTypingView ) this.subTypingNodeComponent.getParent ( )
+      ( ( SubTypingView ) this.subTypingNodeComponent.getParent ( )
           .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
           .getOutline1 ( ).load (
               this.subTypingNodeComponent.getTypeComponent ( ).getType ( ) ,
               Outline.ExecuteMouseClick.SUBTYPING ) ;
-      ( ( NewSubTypingView ) this.subTypingNodeComponent.getParent ( )
+      ( ( SubTypingView ) this.subTypingNodeComponent.getParent ( )
           .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
           .getOutline2 ( ).load (
               this.subTypingNodeComponent.getTypeComponent2 ( ).getType ( ) ,
@@ -514,12 +514,12 @@ public final class OutlineMouseListener implements MouseListener
     else if ( pMouseEvent.getSource ( ).equals (
         this.subTypingNodeComponent.getTypeComponent2 ( ) ) )
     {
-      ( ( NewSubTypingView ) this.subTypingNodeComponent.getParent ( )
+      ( ( SubTypingView ) this.subTypingNodeComponent.getParent ( )
           .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
           .getOutline1 ( ).load (
               this.subTypingNodeComponent.getTypeComponent ( ).getType ( ) ,
               Outline.ExecuteMouseClick.SUBTYPING ) ;
-      ( ( NewSubTypingView ) this.subTypingNodeComponent.getParent ( )
+      ( ( SubTypingView ) this.subTypingNodeComponent.getParent ( )
           .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
           .getOutline2 ( ).load (
               this.subTypingNodeComponent.getTypeComponent2 ( ).getType ( ) ,

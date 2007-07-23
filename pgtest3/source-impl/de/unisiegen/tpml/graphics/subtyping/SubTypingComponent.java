@@ -27,7 +27,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * SubTyping<br>
  * <br>
  *  
- * The following image shows a usual look of a part of an TypeChckerComponent.
+ * The following image shows a usual look of a part of an SubTypingComponent.
  * It contains a few nodes of the origin expression:
  * <code>let rec f = lambda x. if x = 0 then 1 else x * f (x-1) in f 3</code><br>
  * <img src="../../../../../../images/SubTyping.png" /><br>
@@ -47,7 +47,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * Everytime the content of the tree changes ({@link #treeContentChanged()} is called) the 
  * {@link #checkForUserObject(SubTypingProofNode)}-method is called. This causes a recursive traversing
  * of the entire tree to check if every node has its corresponding 
- * {@link de.unisiegen.tpml.graphics.SubTyping.NewSubTypingNodeComponent}.<br>
+ * {@link de.unisiegen.tpml.graphics.SubTyping.SubTypingNodeComponent}.<br>
  * <br>
  * When nodes get removed only the userobject of that nodes needs to get release.<br>
  * When nodes get inserted, the first of them is stored in the {@link #jumpNode} so the
@@ -59,12 +59,12 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * 
  * @author marcell
  * 
- * @see de.unisiegen.tpml.graphics.subtyping.NewSubTypingView
- * @see de.unisiegen.tpml.graphics.subtyping.NewSubTypingNodeComponent
+ * @see de.unisiegen.tpml.graphics.subtyping.SubTypingView
+ * @see de.unisiegen.tpml.graphics.subtyping.SubTypingNodeComponent
  * @see de.unisiegen.tpml.graphics.subtyping.SubTypingEnterType
  *
  */
-public class NewSubTypingComponent extends AbstractProofComponent implements Scrollable {
+public class SubTypingComponent extends AbstractProofComponent implements Scrollable {
 	
 	/**
 	 * 
@@ -88,7 +88,7 @@ public class NewSubTypingComponent extends AbstractProofComponent implements Scr
 	private ProofNode										jumpNode;
 
 	
-	public NewSubTypingComponent (SubTypingModel model) {
+	public SubTypingComponent (SubTypingModel model) {
 		super ((AbstractProofModel)model);
 		
 		this.treeNodeLayout			= new TreeNodeLayout (10);
@@ -136,10 +136,11 @@ public class NewSubTypingComponent extends AbstractProofComponent implements Scr
 		this.currentlyLayouting = true;
 		
 		SwingUtilities.invokeLater(new Runnable() {
+			@SuppressWarnings("synthetic-access")
 			public void run () {
-				SubTypingProofNode rootNode = (SubTypingProofNode)NewSubTypingComponent.this.proofModel.getRoot();
+				SubTypingProofNode rootNode = (SubTypingProofNode)SubTypingComponent.this.proofModel.getRoot();
 				
-				Point rightBottomPos = NewSubTypingComponent.this.treeNodeLayout.placeNodes (rootNode, 20, 20, NewSubTypingComponent.this.availableWidth);
+				Point rightBottomPos = SubTypingComponent.this.treeNodeLayout.placeNodes (rootNode, 20, 20, SubTypingComponent.this.availableWidth);
 				
 				// lets add some border to the space
 				
@@ -154,8 +155,8 @@ public class NewSubTypingComponent extends AbstractProofComponent implements Scr
 				setPreferredSize (size);
 				setSize (size);
 				
-				NewSubTypingComponent.this.currentlyLayouting = false;
-				NewSubTypingComponent.this.jumpToNodeVisible ();
+				SubTypingComponent.this.currentlyLayouting = false;
+				SubTypingComponent.this.jumpToNodeVisible ();
 			}
 		});
 	}
@@ -182,12 +183,12 @@ public class NewSubTypingComponent extends AbstractProofComponent implements Scr
 		if (node == null) {
 			return;
 		}
-		NewSubTypingNodeComponent nodeComponent = (NewSubTypingNodeComponent)node.getUserObject();
+		SubTypingNodeComponent nodeComponent = (SubTypingNodeComponent)node.getUserObject();
 		if (nodeComponent == null) {
 			// if the node has no userobject it may be new in the
 			// tree, so a new SubTypingNodeComponent will be created
 			// and added to the SubTypingProofNode  
-			nodeComponent = new NewSubTypingNodeComponent (node, (SubTypingModel)this.proofModel);
+			nodeComponent = new SubTypingNodeComponent (node, (SubTypingModel)this.proofModel);
 			node.setUserObject(nodeComponent);
 			
 			// the newly created nodeComponent is a gui-element so
@@ -195,15 +196,18 @@ public class NewSubTypingComponent extends AbstractProofComponent implements Scr
 			add (nodeComponent);
 			
 			// when the node changes the  gui needs to get updated
-			nodeComponent.addSubTypingNodeListener(new NewSubTypingNodeListener () {
-				public void nodeChanged (NewSubTypingNodeComponent node) {
-					NewSubTypingComponent.this.relayout();
+			nodeComponent.addSubTypingNodeListener(new SubTypingNodeListener () {
+				public void nodeChanged (@SuppressWarnings("unused")
+				SubTypingNodeComponent pNode) {
+					SubTypingComponent.this.relayout();
 				}
-				public void requestTypeEnter (NewSubTypingNodeComponent node) {
-					
+				@SuppressWarnings("unused")
+				public void requestTypeEnter (SubTypingNodeComponent pNode) {
+					//Nothing to do
 				}
-				public void requestJumpToNode (ProofNode node) {
-					NewSubTypingComponent.this.jumpNode = node;
+				@SuppressWarnings("synthetic-access")
+				public void requestJumpToNode (ProofNode pNode) {
+					SubTypingComponent.this.jumpNode = pNode;
 				}
 			});
 		}
@@ -234,7 +238,7 @@ public class NewSubTypingComponent extends AbstractProofComponent implements Scr
 			return;
 		}
 		
-		NewSubTypingNodeComponent nodeComponent = (NewSubTypingNodeComponent)node.getUserObject();
+		SubTypingNodeComponent nodeComponent = (SubTypingNodeComponent)node.getUserObject();
 		if (nodeComponent == null) {
 			return;
 		}
@@ -295,7 +299,7 @@ public class NewSubTypingComponent extends AbstractProofComponent implements Scr
 	
 	
 	/**
-	 * Delegates a {@link NewSubTypingNodeComponent#changeNode()} to every nodes
+	 * Delegates a {@link SubTypingNodeComponent#changeNode()} to every nodes
 	 * that have changed.
 	 */
 	@Override
@@ -307,7 +311,7 @@ public class NewSubTypingComponent extends AbstractProofComponent implements Scr
 			// this element is the root node.
 			if (event.getPath().length == 1) {
 				SubTypingProofNode proofNode = (SubTypingProofNode)event.getPath()[0];
-				NewSubTypingNodeComponent nodeComponent = (NewSubTypingNodeComponent)proofNode.getUserObject();
+				SubTypingNodeComponent nodeComponent = (SubTypingNodeComponent)proofNode.getUserObject();
 				if (nodeComponent != null) {
 					nodeComponent.changeNode ();
 				}
@@ -319,7 +323,7 @@ public class NewSubTypingComponent extends AbstractProofComponent implements Scr
 			if (children[i] instanceof ProofNode) {
 				SubTypingProofNode proofNode = (SubTypingProofNode)children[i];
 				
-				NewSubTypingNodeComponent nodeComponent = (NewSubTypingNodeComponent)proofNode.getUserObject();
+				SubTypingNodeComponent nodeComponent = (SubTypingNodeComponent)proofNode.getUserObject();
 				if (nodeComponent != null) {
 					nodeComponent.changeNode ();
 				}
@@ -338,7 +342,7 @@ public class NewSubTypingComponent extends AbstractProofComponent implements Scr
 			if (children[i] instanceof ProofNode) {
 				SubTypingProofNode proofNode = (SubTypingProofNode)children[i];
 				
-				NewSubTypingNodeComponent nodeComponent = (NewSubTypingNodeComponent)proofNode.getUserObject();
+				SubTypingNodeComponent nodeComponent = (SubTypingNodeComponent)proofNode.getUserObject();
 				if (nodeComponent != null) {
 					remove (nodeComponent);
 					proofNode.setUserObject(null);
@@ -375,7 +379,7 @@ public class NewSubTypingComponent extends AbstractProofComponent implements Scr
 		
 		// get the Component nodes to evaluate the positions
 		// on the viewport
-		NewSubTypingNodeComponent node = (NewSubTypingNodeComponent)this.jumpNode.getUserObject();
+		SubTypingNodeComponent node = (SubTypingNodeComponent)this.jumpNode.getUserObject();
 		if (node == null) {
 			return;
 		}

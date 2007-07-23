@@ -736,19 +736,7 @@ runMenu.add ( subTypingRec ) ;
     } ) ;
     // TODO Erst hochladen, wenn es geht...
     runMenu.add ( typeInference ) ;
-    subtyping.setAccelerator ( javax.swing.KeyStroke.getKeyStroke (
-        java.awt.event.KeyEvent.VK_F12 , 3 ) ) ;
     // TODO Wieder in die Resources einbaeun
-    subtyping.setText ( "Subtyping" ) ;
-    subtyping.addActionListener ( new java.awt.event.ActionListener ( )
-    {
-      public void actionPerformed ( java.awt.event.ActionEvent evt )
-      {
-        subtypingActionPerformed ( evt ) ;
-      }
-    } ) ;
-    // TODO Erst hochladen, wenn es geht...
-    runMenu.add ( subtyping ) ;
     // CHANGME NMICHAEL EMND
     runMenu.add ( runMenuSeparator1 ) ;
     modeSettingsGroup.add ( beginnerRadioButton ) ;
@@ -964,13 +952,6 @@ runMenu.add ( subTypingRec ) ;
   {// GEN-FIRST:event_typecheckerItemActionPerformed
     // 
     ( ( EditorPanelExpression ) getActiveEditor ( ) ).handleTypInference ( ) ;
-  }// GEN-LAST:event_typecheckerItemActionPerformed
-
-
-  private void subtypingActionPerformed ( java.awt.event.ActionEvent evt )
-  {// GEN-FIRST:event_typecheckerItemActionPerformed
-    // 
-    ( ( EditorPanelExpression ) getActiveEditor ( ) ).handleSubtyping ( ) ;
   }// GEN-LAST:event_typecheckerItemActionPerformed
 
 
