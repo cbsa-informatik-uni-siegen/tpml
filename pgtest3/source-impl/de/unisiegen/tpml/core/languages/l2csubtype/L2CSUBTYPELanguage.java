@@ -18,7 +18,7 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
 
-public class L2CSUBTYPELanguage extends L2OLanguage {
+public class L2CSUBTYPELanguage extends L2CLanguage {
 
 	/**
 	   * The group id for proof rules of this language.
