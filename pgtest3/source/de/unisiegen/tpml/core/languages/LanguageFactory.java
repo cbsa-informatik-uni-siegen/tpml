@@ -10,6 +10,7 @@ import de.unisiegen.tpml.core.languages.l1subtype.L1SUBTYPELanguage;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.languages.l2c.L2CLanguage;
 import de.unisiegen.tpml.core.languages.l2cbn.L2CBNLanguage;
+import de.unisiegen.tpml.core.languages.l2csubtype.L2CSUBTYPELanguage;
 import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
 import de.unisiegen.tpml.core.languages.l2osubtype.L2OSUBTYPELanguage;
 import de.unisiegen.tpml.core.languages.l2subtype.L2SUBTYPELanguage;
@@ -61,7 +62,7 @@ public final class LanguageFactory {
 	public Language[] getAvailableLanguages ( ) {
 		return new Language[] { new L0Language ( ), new L0CBNLanguage ( ), new L1Language ( ), new L1SUBTYPELanguage ( ),
 				new L1CBNLanguage ( ), new L2Language ( ), new L2SUBTYPELanguage ( ), new L2CBNLanguage ( ),
-				new L2OLanguage ( ), new L2OSUBTYPELanguage ( ), new L2CLanguage ( ), new L3Language ( ),
+				new L2OLanguage ( ), new L2OSUBTYPELanguage ( ), new L2CLanguage ( ), new L2CSUBTYPELanguage(), new L3Language ( ),
 				new L3SUBTYPELanguage ( ), new L4Language ( ), new L4SUBTYPELanguage ( ) };
 	}
 
