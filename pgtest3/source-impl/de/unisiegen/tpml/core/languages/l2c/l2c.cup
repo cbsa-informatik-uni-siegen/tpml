@@ -1771,32 +1771,34 @@ class_type						::= ZETA:z LPAREN type:t COLON row_type_l2c:row RPAREN:r
 									{: :}
 								;
 
-class_type_error				::= ZETA:z LPAREN:l
-									{: Error.expect("Class-Type", "int : m: int ;)", zleft, lright, "\u03C4"," ",":","\u03D5",")"); :}
-								|	ZETA:z LPAREN type:t
-									{: Error.expect("Class-Type", " : m: int ;)", zleft, tright, ":","\u03D5",")"); :}
+class_type_error				::= ZETA:z epsilon
+									{: Error.expect("Class-Type", "(int : m: int ;)", zleft, zright, "(","\u03C4"," ",":"," ","\u03D5",")"); :}
+								|	ZETA:z LPAREN:l epsilon
+									{: Error.expect("Class-Type", "int : m: int ;)", zleft, lright, "\u03C4"," ",":"," ","\u03D5",")"); :}
+								|	ZETA:z LPAREN type:t epsilon
+									{: Error.expect("Class-Type", " : m: int ;)", zleft, tright, ":"," ","\u03D5",")"); :}
 								|	ZETA:z LPAREN type COLON row_type_l2c:row epsilon
 									{: Error.expect("Class-Type", ")", zleft, rowright, ")"); :}
-								// Missing left paren								
+								// Missing left paren							
 								|	ZETA:z type COLON
 									{: Error.expect("Class-Type", "(", zleft, zright, "("); :}
 								// Missing type								
 								|	ZETA:z LPAREN:l COLON
 									{: Error.expect("Class-Type", "\u03C4 ", zleft, lright, "\u03C4"); :}
 								// Missing colon								
-								|	ZETA:z LPAREN type:t row_type_l2c
+								|	ZETA:z LPAREN type:t row_type_without_epsilon_l2c
 									{: Error.expect("Class-Type", " : ", zleft, tright, ":"); :}									
 								// Missing left paren and type
 								|	ZETA:z COLON
 									{: Error.expect("Class-Type", "(\u03C4", zleft, zright, "(","\u03C4"); :}
 								// Missing type and colon
-								|	ZETA:z LPAREN:l row_type_l2c
+								|	ZETA:z LPAREN:l row_type_without_epsilon_l2c
 									{: Error.expect("Class-Type", "\u03C4 : ", zleft, lright, "\u03C4"," ",":"); :}																
 								// Missing colon and phi						
 								|	ZETA:z LPAREN type:t RPAREN
 									{: Error.expect("Class-Type", " : m: int ;", zleft, tright, ":"," ","\u03D5"); :}		
 								// Missing left paren, type and colon
-								|	ZETA:z row_type_l2c
+								|	ZETA:z row_type_without_epsilon_l2c
 									{: Error.expect("Class-Type", "(\u03C4 : ", zleft, zright, "(","\u03C4"," ",":"); :}	
 								// Missing type, colon and phi
 								|	ZETA:z LPAREN:l RPAREN
