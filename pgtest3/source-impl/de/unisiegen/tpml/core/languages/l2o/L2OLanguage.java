@@ -18,6 +18,8 @@ import de.unisiegen.tpml.core.languages.l0.L0Language ;
 import de.unisiegen.tpml.core.languages.l1.L1Language ;
 import de.unisiegen.tpml.core.languages.l2.L2Language ;
 import de.unisiegen.tpml.core.languages.l2cbn.L2CBNLanguage ;
+import de.unisiegen.tpml.core.languages.l2osubtype.L2ORecSubTypingProofRuleSet;
+import de.unisiegen.tpml.core.languages.l2osubtype.L2OSubTypingProofRuleSet;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel ;
@@ -151,20 +153,6 @@ public class L2OLanguage extends L2Language
 
   /**
    * {@inheritDoc}
-   * 
-   * @see Language#newSubTypingProofModel(MonoType, MonoType, boolean)
-   */
-  @ Override
-  public RecSubTypingProofModel newRecSubTypingProofModel ( MonoType type ,
-      MonoType type2 , boolean mode )
-  {
-    return new RecSubTypingProofModel ( type , type2 ,
-        new L2ORecSubTypingProofRuleSet ( this , mode ) , mode ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
    */
   @ Override
   public LanguageScanner newScanner ( Reader pReader )
@@ -185,20 +173,6 @@ public class L2OLanguage extends L2Language
   {
     return new SmallStepProofModel ( pExpression ,
         new L2OSmallStepProofRuleSet ( this ) ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Language#newSubTypingProofModel(MonoType, MonoType, boolean)
-   */
-  @ Override
-  public SubTypingProofModel newSubTypingProofModel ( MonoType type ,
-      MonoType type2 , boolean mode )
-  {
-    return new SubTypingProofModel ( type , type2 ,
-        new L2OSubTypingProofRuleSet ( this , mode ) , mode ) ;
   }
 
 

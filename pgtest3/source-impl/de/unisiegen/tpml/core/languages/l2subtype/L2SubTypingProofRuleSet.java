@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.languages.l2;
+package de.unisiegen.tpml.core.languages.l2subtype;
 
 import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.languages.l1.L1SubTypingProofRuleSet;
+import de.unisiegen.tpml.core.languages.l1subtype.L1SubTypingProofRuleSet;
 
 /**
  * The subtype proof rules for the <code>L2</code> language.

@@ -7,8 +7,6 @@ import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
-import de.unisiegen.tpml.core.languages.l2.L2RecSubTypingProofRuleSet;
-import de.unisiegen.tpml.core.languages.l2.L2SubTypingProofRuleSet;
 import de.unisiegen.tpml.core.languages.l2c.L2CLanguage;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;

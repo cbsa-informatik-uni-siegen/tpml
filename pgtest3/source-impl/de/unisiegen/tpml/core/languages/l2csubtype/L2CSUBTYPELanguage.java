@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l2osubtype;
+package de.unisiegen.tpml.core.languages.l2csubtype;
 
 import java.text.MessageFormat;
 
@@ -8,6 +8,8 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.l2c.L2CLanguage;
 import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
+import de.unisiegen.tpml.core.languages.l2osubtype.L2ORecSubTypingProofRuleSet;
+import de.unisiegen.tpml.core.languages.l2osubtype.L2OSubTypingProofRuleSet;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
@@ -16,16 +18,16 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
 
-public class L2OSUBTYPELanguage extends L2OLanguage {
+public class L2CSUBTYPELanguage extends L2OLanguage {
 
 	/**
 	   * The group id for proof rules of this language.
 	   * 
 	   * @see de.unisiegen.tpml.core.AbstractProofRule#getGroup()
 	   */
-	  public static final int L2OSubType = L2CLanguage.L2C + 2 ;
+	  public static final int L2CSubType = L2CLanguage.L2C + 1 ;
 	  
-	public L2OSUBTYPELanguage ( ) {
+	public L2CSUBTYPELanguage ( ) {
 	super();
 	}
 
@@ -39,7 +41,7 @@ public class L2OSUBTYPELanguage extends L2OLanguage {
 	   */
 	  public String getDescription ( )
 	  {
-	    return Messages.getString ( "L2OSubTypeLanguage.0" ) ; //$NON-NLS-1$
+	    return Messages.getString ( "L2CSubTypeLanguage.0" ) ; //$NON-NLS-1$
 	  }
 
 
@@ -50,7 +52,7 @@ public class L2OSUBTYPELanguage extends L2OLanguage {
 	   */
 	  public String getName ( )
 	  {
-	    return "L2OSubType" ; //$NON-NLS-1$
+	    return "L2CSubType" ; //$NON-NLS-1$
 	  }
 
 
@@ -61,7 +63,7 @@ public class L2OSUBTYPELanguage extends L2OLanguage {
 	   */
 	  public int getId ( )
 	  {
-	    return L2OSUBTYPELanguage.L2OSubType ;
+	    return L2CSUBTYPELanguage.L2CSubType ;
 	  }
 
 
@@ -72,7 +74,7 @@ public class L2OSUBTYPELanguage extends L2OLanguage {
 	   */
 	  public String getTitle ( )
 	  {
-	    return Messages.getString ( "L2OSubTypeLanguage.1" ) ; //$NON-NLS-1$
+	    return Messages.getString ( "L2CSubTypeLanguage.1" ) ; //$NON-NLS-1$
 	  }
 	
 	@Override

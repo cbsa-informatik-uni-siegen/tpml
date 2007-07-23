@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l2o;
+package de.unisiegen.tpml.core.languages.l2osubtype;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -7,7 +7,8 @@ import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
-import de.unisiegen.tpml.core.languages.l2.L2SubTypingProofRuleSet;
+import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
+import de.unisiegen.tpml.core.languages.l2subtype.L2SubTypingProofRuleSet;
 import de.unisiegen.tpml.core.subtyping.SubTypingException;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofContext;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;

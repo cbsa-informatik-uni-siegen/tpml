@@ -14,6 +14,8 @@ import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.languages.LanguageTypeScanner;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
+import de.unisiegen.tpml.core.languages.l3subtype.L3RecSubTypingProofRuleSet;
+import de.unisiegen.tpml.core.languages.l3subtype.L3SubTypingProofRuleSet;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
@@ -156,30 +158,6 @@ public class L3Language extends L2Language
   {
     return new TypeInferenceProofModel ( expression ,
         new L3TypeInferenceProofRuleSet ( this ) ) ;
-  }
-  
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(MonoType, MonoType, boolean)
-   */
-  @Override
-  public SubTypingProofModel newSubTypingProofModel ( MonoType type, MonoType type2, boolean mode  )
-  {
-    return new SubTypingProofModel (type, type2, 
-        new L3SubTypingProofRuleSet ( this, mode ), mode ) ;
-  }
-  
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(MonoType, MonoType, boolean)
-   */
-  @Override
-  public RecSubTypingProofModel newRecSubTypingProofModel ( MonoType type, MonoType type2, boolean mode  )
-  {
-    return new RecSubTypingProofModel (type, type2, 
-        new L3RecSubTypingProofRuleSet ( this, mode ), mode ) ;
   }
   
   /**

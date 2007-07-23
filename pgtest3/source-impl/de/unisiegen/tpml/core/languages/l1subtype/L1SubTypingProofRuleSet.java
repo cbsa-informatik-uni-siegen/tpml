@@ -1,7 +1,8 @@
-package de.unisiegen.tpml.core.languages.l1;
+package de.unisiegen.tpml.core.languages.l1subtype;
 
 import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet;
 import de.unisiegen.tpml.core.subtyping.SubTypingException;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofContext;
