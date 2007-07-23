@@ -2193,21 +2193,6 @@ public class ParserTest
   private static String EXPR_OBJECT_TYPE_ERROR_2 = "lambda x:< add: int ;" ;
 
 
-  private static String EXPR_ROW_TYPE_1 = "lambda x:< add: int ; >.x" ;
-
-
-  private static String EXPR_ROW_TYPE_2 = "lambda x:< add: int ; sub: int ; >.x" ;
-
-
-  private static String EXPR_ROW_TYPE_ERROR_1 = "lambda x:< add" ;
-
-
-  private static String EXPR_ROW_TYPE_ERROR_2 = "lambda x:< add:" ;
-
-
-  private static String EXPR_ROW_TYPE_ERROR_3 = "lambda x:< add: int" ;
-
-
   private static String OBJECT_TYPE_1 = "< add: int ; >" ;
 
 
@@ -2232,7 +2217,6 @@ public class ParserTest
   private static String ROW_TYPE_4 = "< add: int ; attr sub: int ; >" ;
 
 
-  // TODO
   private static String ROW_TYPE_ERROR_1 = "< add" ;
 
 
@@ -2240,6 +2224,327 @@ public class ParserTest
 
 
   private static String ROW_TYPE_ERROR_3 = "< add: int" ;
+
+
+  private static String ROW_TYPE_ERROR_4 = "< sub: bool ; add" ;
+
+
+  private static String ROW_TYPE_ERROR_5 = "< sub: bool ; add:" ;
+
+
+  private static String ROW_TYPE_ERROR_6 = "< sub: bool ; add: int" ;
+
+
+  // colon
+  private static String ROW_TYPE_ERROR_7 = "< add int" ;
+
+
+  private static String ROW_TYPE_ERROR_8 = "< add int ;" ;
+
+
+  private static String ROW_TYPE_ERROR_9 = "< add int ; >" ;
+
+
+  private static String ROW_TYPE_ERROR_10 = "< add int ; sub: bool ; >" ;
+
+
+  // type
+  private static String ROW_TYPE_ERROR_11 = "< add: ;" ;
+
+
+  private static String ROW_TYPE_ERROR_12 = "< add: ; >" ;
+
+
+  private static String ROW_TYPE_ERROR_13 = "< add: ; sub: bool ; >" ;
+
+
+  // semi
+  private static String ROW_TYPE_ERROR_14 = "< add: int sub: bool ; >" ;
+
+
+  // colon and type
+  private static String ROW_TYPE_ERROR_15 = "< add ;" ;
+
+
+  private static String ROW_TYPE_ERROR_16 = "< add ; >" ;
+
+
+  private static String ROW_TYPE_ERROR_17 = "< add ; sub: bool ; >" ;
+
+
+  // type and semi
+  private static String ROW_TYPE_ERROR_18 = "< add: sub: bool ; >" ;
+
+
+  // colon, type and semi
+  private static String ROW_TYPE_ERROR_19 = "< add sub: bool ; >" ;
+
+
+  // Attribute identifier
+  private static String ROW_TYPE_ERROR_20 = "< attr" ;
+
+
+  private static String ROW_TYPE_ERROR_21 = "< attr add" ;
+
+
+  private static String ROW_TYPE_ERROR_22 = "< attr add:" ;
+
+
+  private static String ROW_TYPE_ERROR_23 = "< attr add: int" ;
+
+
+  private static String ROW_TYPE_ERROR_24 = "< sub: bool ; attr" ;
+
+
+  private static String ROW_TYPE_ERROR_25 = "< sub: bool ; attr add" ;
+
+
+  private static String ROW_TYPE_ERROR_26 = "< sub: bool ; attr add:" ;
+
+
+  private static String ROW_TYPE_ERROR_27 = "< sub: bool ; attr add: int" ;
+
+
+  // identifier
+  private static String ROW_TYPE_ERROR_28 = "< attr :" ;
+
+
+  private static String ROW_TYPE_ERROR_29 = "< attr : int" ;
+
+
+  private static String ROW_TYPE_ERROR_30 = "< attr : int ;" ;
+
+
+  private static String ROW_TYPE_ERROR_31 = "< attr : int ; >" ;
+
+
+  private static String ROW_TYPE_ERROR_32 = "< attr : int ; sub: bool ; >" ;
+
+
+  // colon
+  private static String ROW_TYPE_ERROR_33 = "< attr add int" ;
+
+
+  private static String ROW_TYPE_ERROR_34 = "< attr add int ;" ;
+
+
+  private static String ROW_TYPE_ERROR_35 = "< attr add int ; >" ;
+
+
+  private static String ROW_TYPE_ERROR_36 = "< attr add int ; sub: bool ; >" ;
+
+
+  // type
+  private static String ROW_TYPE_ERROR_37 = "< attr add: ;" ;
+
+
+  private static String ROW_TYPE_ERROR_38 = "< attr add: ; >" ;
+
+
+  private static String ROW_TYPE_ERROR_39 = "< attr add: ; sub: bool ; >" ;
+
+
+  // semi
+  private static String ROW_TYPE_ERROR_40 = "< attr add: int sub: bool ; >" ;
+
+
+  // colon and type
+  private static String ROW_TYPE_ERROR_41 = "< attr add ;" ;
+
+
+  private static String ROW_TYPE_ERROR_42 = "< attr add ; >" ;
+
+
+  private static String ROW_TYPE_ERROR_43 = "< attr add ; sub: bool ; >" ;
+
+
+  // type and semi
+  private static String ROW_TYPE_ERROR_44 = "< attr add: sub: bool ; >" ;
+
+
+  // identifier, colon and type
+  private static String ROW_TYPE_ERROR_45 = "< attr ;" ;
+
+
+  private static String ROW_TYPE_ERROR_46 = "< attr ; >" ;
+
+
+  private static String ROW_TYPE_ERROR_47 = "< attr ; sub: bool ; >" ;
+
+
+  // colon, type and semi
+  private static String ROW_TYPE_ERROR_48 = "< attr add sub: bool ; >" ;
+
+
+  private static String EXPR_ROW_TYPE_1 = "object (self: < add: int ; >) end" ;
+
+
+  private static String EXPR_ROW_TYPE_2 = "object (self: < add: int ; sub: int ; >) end" ;
+
+
+  private static String EXPR_ROW_TYPE_3 = "object (self: < attr add: int ; sub: int ; >) end" ;
+
+
+  private static String EXPR_ROW_TYPE_4 = "object (self: < add: int ; attr sub: int ; >) end" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_1 = "object (self: < add" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_2 = "object (self: < add:" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_3 = "object (self: < add: int" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_4 = "object (self: < sub: bool ; add" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_5 = "object (self: < sub: bool ; add:" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_6 = "object (self: < sub: bool ; add: int" ;
+
+
+  // colon
+  private static String EXPR_ROW_TYPE_ERROR_7 = "object (self: < add int" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_8 = "object (self: < add int ;" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_9 = "object (self: < add int ; >" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_10 = "object (self: < add int ; sub: bool ; >" ;
+
+
+  // type
+  private static String EXPR_ROW_TYPE_ERROR_11 = "object (self: < add: ;" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_12 = "object (self: < add: ; >" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_13 = "object (self: < add: ; sub: bool ; >" ;
+
+
+  // semi
+  private static String EXPR_ROW_TYPE_ERROR_14 = "object (self: < add: int sub: bool ; >" ;
+
+
+  // colon and type
+  private static String EXPR_ROW_TYPE_ERROR_15 = "object (self: < add ;" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_16 = "object (self: < add ; >" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_17 = "object (self: < add ; sub: bool ; >" ;
+
+
+  // type and semi
+  private static String EXPR_ROW_TYPE_ERROR_18 = "object (self: < add: sub: bool ; >" ;
+
+
+  // colon, type and semi
+  private static String EXPR_ROW_TYPE_ERROR_19 = "object (self: < add sub: bool ; >" ;
+
+
+  // Attribute identifier
+  private static String EXPR_ROW_TYPE_ERROR_20 = "object (self: < attr" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_21 = "object (self: < attr add" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_22 = "object (self: < attr add:" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_23 = "object (self: < attr add: int" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_24 = "object (self: < sub: bool ; attr" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_25 = "object (self: < sub: bool ; attr add" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_26 = "object (self: < sub: bool ; attr add:" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_27 = "object (self: < sub: bool ; attr add: int" ;
+
+
+  // identifier
+  private static String EXPR_ROW_TYPE_ERROR_28 = "object (self: < attr :" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_29 = "object (self: < attr : int" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_30 = "object (self: < attr : int ;" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_31 = "object (self: < attr : int ; >" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_32 = "object (self: < attr : int ; sub: bool ; >" ;
+
+
+  // colon
+  private static String EXPR_ROW_TYPE_ERROR_33 = "object (self: < attr add int" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_34 = "object (self: < attr add int ;" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_35 = "object (self: < attr add int ; >" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_36 = "object (self: < attr add int ; sub: bool ; >" ;
+
+
+  // type
+  private static String EXPR_ROW_TYPE_ERROR_37 = "object (self: < attr add: ;" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_38 = "object (self: < attr add: ; >" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_39 = "object (self: < attr add: ; sub: bool ; >" ;
+
+
+  // semi
+  private static String EXPR_ROW_TYPE_ERROR_40 = "object (self: < attr add: int sub: bool ; >" ;
+
+
+  // colon and type
+  private static String EXPR_ROW_TYPE_ERROR_41 = "object (self: < attr add ;" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_42 = "object (self: < attr add ; >" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_43 = "object (self: < attr add ; sub: bool ; >" ;
+
+
+  // type and semi
+  private static String EXPR_ROW_TYPE_ERROR_44 = "object (self: < attr add: sub: bool ; >" ;
+
+
+  // identifier, colon and type
+  private static String EXPR_ROW_TYPE_ERROR_45 = "object (self: < attr ;" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_46 = "object (self: < attr ; >" ;
+
+
+  private static String EXPR_ROW_TYPE_ERROR_47 = "object (self: < attr ; sub: bool ; >" ;
+
+
+  // colon, type and semi
+  private static String EXPR_ROW_TYPE_ERROR_48 = "object (self: < attr add sub: bool ; >" ;
 
 
   private static String CLASS_1 = "class (self) end" ;
@@ -3125,7 +3430,12 @@ public class ParserTest
       CURRIED_METHOD_ERROR_39 , CURRIED_METHOD_ERROR_40 ,
       CURRIED_METHOD_ERROR_41 , EXPR_OBJECT_TYPE_ERROR_1 ,
       EXPR_OBJECT_TYPE_ERROR_2 , EXPR_ROW_TYPE_ERROR_1 , EXPR_ROW_TYPE_ERROR_2 ,
-      EXPR_ROW_TYPE_ERROR_3 } ;
+      EXPR_ROW_TYPE_ERROR_3 , EXPR_ROW_TYPE_ERROR_4 , EXPR_ROW_TYPE_ERROR_5 ,
+      EXPR_ROW_TYPE_ERROR_6 , EXPR_ROW_TYPE_ERROR_7 , EXPR_ROW_TYPE_ERROR_8 ,
+      EXPR_ROW_TYPE_ERROR_9 , EXPR_ROW_TYPE_ERROR_10 , EXPR_ROW_TYPE_ERROR_11 ,
+      EXPR_ROW_TYPE_ERROR_12 , EXPR_ROW_TYPE_ERROR_13 , EXPR_ROW_TYPE_ERROR_14 ,
+      EXPR_ROW_TYPE_ERROR_15 , EXPR_ROW_TYPE_ERROR_16 , EXPR_ROW_TYPE_ERROR_17 ,
+      EXPR_ROW_TYPE_ERROR_18 , EXPR_ROW_TYPE_ERROR_19 } ;
 
 
   private static String [ ] L2OTYPE_NORMAL = new String [ ]
@@ -3138,7 +3448,12 @@ public class ParserTest
   { SIMPLE_TYPE_ERROR_1 , SIMPLE_TYPE_ERROR_2 , ARROW_TYPE_ERROR ,
       REC_TYPE_ERROR_1 , REC_TYPE_ERROR_2 , REC_TYPE_ERROR_3 ,
       OBJECT_TYPE_ERROR_1 , OBJECT_TYPE_ERROR_2 , ROW_TYPE_ERROR_1 ,
-      ROW_TYPE_ERROR_2 , ROW_TYPE_ERROR_3 } ;
+      ROW_TYPE_ERROR_2 , ROW_TYPE_ERROR_3 , ROW_TYPE_ERROR_4 ,
+      ROW_TYPE_ERROR_5 , ROW_TYPE_ERROR_6 , ROW_TYPE_ERROR_7 ,
+      ROW_TYPE_ERROR_8 , ROW_TYPE_ERROR_9 , ROW_TYPE_ERROR_10 ,
+      ROW_TYPE_ERROR_11 , ROW_TYPE_ERROR_12 , ROW_TYPE_ERROR_13 ,
+      ROW_TYPE_ERROR_14 , ROW_TYPE_ERROR_15 , ROW_TYPE_ERROR_16 ,
+      ROW_TYPE_ERROR_17 , ROW_TYPE_ERROR_18 , ROW_TYPE_ERROR_19 } ;
 
 
   private static String [ ] L2C_NORMAL = new String [ ]
@@ -3159,10 +3474,10 @@ public class ParserTest
       SEND , ROW_1 , ROW_2 , ROW_3 , ROW_4 , ROW_5 , ROW_6 , ATTRIBUTE ,
       METHOD_1 , METHOD_2 , CURRIED_METHOD_1 , CURRIED_METHOD_2 ,
       CURRIED_METHOD_3 , CURRIED_METHOD_4 , EXPR_OBJECT_TYPE_1 ,
-      EXPR_OBJECT_TYPE_2 , EXPR_ROW_TYPE_1 , EXPR_ROW_TYPE_2 , CLASS_1 ,
-      CLASS_2 , CLASS_3 , CLASS_4 , CLASS_5 , CLASS_6 , BODY_1 , BODY_2 ,
-      BODY_3 , BODY_4 , BODY_5 , BODY_6 , NEW , EXPR_CLASS_TYPE_1 ,
-      EXPR_CLASS_TYPE_2 } ;
+      EXPR_OBJECT_TYPE_2 , EXPR_ROW_TYPE_1 , EXPR_ROW_TYPE_2 , EXPR_ROW_TYPE_3 ,
+      EXPR_ROW_TYPE_4 , CLASS_2 , CLASS_3 , CLASS_4 , CLASS_5 , CLASS_6 ,
+      BODY_1 , BODY_2 , BODY_3 , BODY_4 , BODY_5 , BODY_6 , NEW ,
+      EXPR_CLASS_TYPE_1 , EXPR_CLASS_TYPE_2 } ;
 
 
   private static String [ ] L2C_ERROR = new String [ ]
@@ -3312,7 +3627,22 @@ public class ParserTest
       CURRIED_METHOD_ERROR_39 , CURRIED_METHOD_ERROR_40 ,
       CURRIED_METHOD_ERROR_41 , EXPR_OBJECT_TYPE_ERROR_1 ,
       EXPR_OBJECT_TYPE_ERROR_2 , EXPR_ROW_TYPE_ERROR_1 , EXPR_ROW_TYPE_ERROR_2 ,
-      EXPR_ROW_TYPE_ERROR_3 , CLASS_ERROR_1 , CLASS_ERROR_2 , CLASS_ERROR_3 ,
+      EXPR_ROW_TYPE_ERROR_3 , EXPR_ROW_TYPE_ERROR_4 , EXPR_ROW_TYPE_ERROR_5 ,
+      EXPR_ROW_TYPE_ERROR_6 , EXPR_ROW_TYPE_ERROR_7 , EXPR_ROW_TYPE_ERROR_8 ,
+      EXPR_ROW_TYPE_ERROR_9 , EXPR_ROW_TYPE_ERROR_10 , EXPR_ROW_TYPE_ERROR_11 ,
+      EXPR_ROW_TYPE_ERROR_12 , EXPR_ROW_TYPE_ERROR_13 , EXPR_ROW_TYPE_ERROR_14 ,
+      EXPR_ROW_TYPE_ERROR_15 , EXPR_ROW_TYPE_ERROR_16 , EXPR_ROW_TYPE_ERROR_17 ,
+      EXPR_ROW_TYPE_ERROR_18 , EXPR_ROW_TYPE_ERROR_19 , EXPR_ROW_TYPE_ERROR_20 ,
+      EXPR_ROW_TYPE_ERROR_21 , EXPR_ROW_TYPE_ERROR_22 , EXPR_ROW_TYPE_ERROR_23 ,
+      EXPR_ROW_TYPE_ERROR_24 , EXPR_ROW_TYPE_ERROR_25 , EXPR_ROW_TYPE_ERROR_26 ,
+      EXPR_ROW_TYPE_ERROR_27 , EXPR_ROW_TYPE_ERROR_28 , EXPR_ROW_TYPE_ERROR_29 ,
+      EXPR_ROW_TYPE_ERROR_30 , EXPR_ROW_TYPE_ERROR_31 , EXPR_ROW_TYPE_ERROR_32 ,
+      EXPR_ROW_TYPE_ERROR_33 , EXPR_ROW_TYPE_ERROR_34 , EXPR_ROW_TYPE_ERROR_35 ,
+      EXPR_ROW_TYPE_ERROR_36 , EXPR_ROW_TYPE_ERROR_37 , EXPR_ROW_TYPE_ERROR_38 ,
+      EXPR_ROW_TYPE_ERROR_39 , EXPR_ROW_TYPE_ERROR_40 , EXPR_ROW_TYPE_ERROR_41 ,
+      EXPR_ROW_TYPE_ERROR_42 , EXPR_ROW_TYPE_ERROR_43 , EXPR_ROW_TYPE_ERROR_44 ,
+      EXPR_ROW_TYPE_ERROR_45 , EXPR_ROW_TYPE_ERROR_46 , EXPR_ROW_TYPE_ERROR_47 ,
+      EXPR_ROW_TYPE_ERROR_48 , CLASS_ERROR_1 , CLASS_ERROR_2 , CLASS_ERROR_3 ,
       CLASS_ERROR_4 , CLASS_ERROR_5 , CLASS_ERROR_6 , CLASS_ERROR_7 ,
       CLASS_ERROR_8 , CLASS_ERROR_9 , CLASS_ERROR_10 , CLASS_ERROR_11 ,
       CLASS_ERROR_12 , CLASS_ERROR_13 , CLASS_ERROR_14 , CLASS_ERROR_15 ,
@@ -3352,14 +3682,30 @@ public class ParserTest
   private static String [ ] L2CTYPE_NORMAL = new String [ ]
   { SIMPLE_TYPE , BOOLEAN_TYPE , INTEGER_TYPE , UNIT_TYPE , TYPE_VARIABLE ,
       TYPE_NAME , REC_TYPE , ARROW_TYPE , OBJECT_TYPE_1 , OBJECT_TYPE_2 ,
-      ROW_TYPE_1 , ROW_TYPE_2 , CLASS_TYPE_1 , CLASS_TYPE_2 } ;
+      ROW_TYPE_1 , ROW_TYPE_2 , ROW_TYPE_3 , ROW_TYPE_4 , CLASS_TYPE_1 ,
+      CLASS_TYPE_2 } ;
 
 
   private static String [ ] L2CTYPE_ERROR = new String [ ]
   { SIMPLE_TYPE_ERROR_1 , SIMPLE_TYPE_ERROR_2 , ARROW_TYPE_ERROR ,
       REC_TYPE_ERROR_1 , REC_TYPE_ERROR_2 , REC_TYPE_ERROR_3 ,
       OBJECT_TYPE_ERROR_1 , OBJECT_TYPE_ERROR_2 , ROW_TYPE_ERROR_1 ,
-      ROW_TYPE_ERROR_2 , ROW_TYPE_ERROR_3 , CLASS_TYPE_ERROR_1 ,
+      ROW_TYPE_ERROR_2 , ROW_TYPE_ERROR_3 , ROW_TYPE_ERROR_4 ,
+      ROW_TYPE_ERROR_5 , ROW_TYPE_ERROR_6 , ROW_TYPE_ERROR_7 ,
+      ROW_TYPE_ERROR_8 , ROW_TYPE_ERROR_9 , ROW_TYPE_ERROR_10 ,
+      ROW_TYPE_ERROR_11 , ROW_TYPE_ERROR_12 , ROW_TYPE_ERROR_13 ,
+      ROW_TYPE_ERROR_14 , ROW_TYPE_ERROR_15 , ROW_TYPE_ERROR_16 ,
+      ROW_TYPE_ERROR_17 , ROW_TYPE_ERROR_18 , ROW_TYPE_ERROR_19 ,
+      ROW_TYPE_ERROR_20 , ROW_TYPE_ERROR_21 , ROW_TYPE_ERROR_22 ,
+      ROW_TYPE_ERROR_23 , ROW_TYPE_ERROR_24 , ROW_TYPE_ERROR_25 ,
+      ROW_TYPE_ERROR_26 , ROW_TYPE_ERROR_27 , ROW_TYPE_ERROR_28 ,
+      ROW_TYPE_ERROR_29 , ROW_TYPE_ERROR_30 , ROW_TYPE_ERROR_31 ,
+      ROW_TYPE_ERROR_32 , ROW_TYPE_ERROR_33 , ROW_TYPE_ERROR_34 ,
+      ROW_TYPE_ERROR_35 , ROW_TYPE_ERROR_36 , ROW_TYPE_ERROR_37 ,
+      ROW_TYPE_ERROR_38 , ROW_TYPE_ERROR_39 , ROW_TYPE_ERROR_40 ,
+      ROW_TYPE_ERROR_41 , ROW_TYPE_ERROR_42 , ROW_TYPE_ERROR_43 ,
+      ROW_TYPE_ERROR_44 , ROW_TYPE_ERROR_45 , ROW_TYPE_ERROR_46 ,
+      ROW_TYPE_ERROR_47 , ROW_TYPE_ERROR_48 , CLASS_TYPE_ERROR_1 ,
       CLASS_TYPE_ERROR_2 , CLASS_TYPE_ERROR_3 , CLASS_TYPE_ERROR_4 ,
       CLASS_TYPE_ERROR_5 , CLASS_TYPE_ERROR_6 , CLASS_TYPE_ERROR_7 ,
       CLASS_TYPE_ERROR_8 , CLASS_TYPE_ERROR_9 , CLASS_TYPE_ERROR_10 ,

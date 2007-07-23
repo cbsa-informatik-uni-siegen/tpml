@@ -51,6 +51,7 @@ non terminal TypeName				type_name;
 non terminal RecType				rec_type;
 non terminal ObjectType				object_type;
 non terminal RowType				row_type_l2c;
+non terminal RowType				row_type_without_epsilon_l2c;
 non terminal ClassType				class_type;
 
 /* Non terminal - Error */
@@ -168,7 +169,11 @@ object_type_error				::= LESS:l row_type_l2c:r epsilon
 
 row_type_l2c					::= epsilon
 									{: RESULT = new RowType (new Identifier[0], new MonoType[0]) ; :}
-								|	IDENTIFIER:id COLON type:tau SEMI row_type_l2c:r
+								|	row_type_without_epsilon_l2c:r
+									{: RESULT = r; :}
+								;
+
+row_type_without_epsilon_l2c	::= IDENTIFIER:id COLON type:tau SEMI row_type_l2c:r
 									{:
 									   Identifier [] identifiers = new Identifier [r.getIdentifiers().length + 1];
 									   identifiers [0] = new Identifier (id,Identifier.Set.METHOD,idleft,idright);
@@ -192,20 +197,65 @@ row_type_l2c					::= epsilon
 									{: :}
 								;
 
-row_type_l2c_error				::= IDENTIFIER:i epsilon
-									{: Error.expect("Row-Type", ": \u03C4 ;", ileft, iright, ":"," ","\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
-								|	IDENTIFIER:i COLON:c epsilon
-									{: Error.expect("Row-Type", " \u03C4 ;", ileft, cright, "\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
-								|	IDENTIFIER:i COLON type:t epsilon
-									{: Error.expect("Row-Type", " ;", ileft, tright, ";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
+row_type_l2c_error				::= IDENTIFIER:id epsilon
+									{: Error.expect("Row-Type", ": \u03C4 ;", idleft, idright, ":"," ","\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
+								|	IDENTIFIER:id COLON:c epsilon
+									{: Error.expect("Row-Type", " \u03C4 ;", idleft, cright, "\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
+								|	IDENTIFIER:id COLON type:t epsilon
+									{: Error.expect("Row-Type", " ;", idleft, tright, ";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
+								// Missing colon
+								|	IDENTIFIER:id type
+									{: Error.expect("Row-Type", ": ", idleft, idright, ":"); :}
+								// Missing type
+								|	IDENTIFIER:id COLON:c SEMI
+									{: Error.expect("Row-Type", " \u03C4 ", idleft, cright, "\u03C4"); :}								
+								// Missing semi
+								|	IDENTIFIER:id COLON type:tau row_type_without_epsilon_l2c
+									{: Error.expect("Row-Type", " ; ", idleft, tauright, ";"); :}									
+								// Missing colon and type
+								|	IDENTIFIER:id SEMI
+									{: Error.expect("Row-Type", ": \u03C4 ", idleft, idright, ":"," ","\u03C4"); :}
+								// Missing type and semi
+								|	IDENTIFIER:id COLON:c row_type_without_epsilon_l2c
+									{: Error.expect("Row-Type", " \u03C4 ; ", idleft, cright, "\u03C4"," ",";"); :}								
+								// Missing colon, type and semi
+								|	IDENTIFIER:id row_type_without_epsilon_l2c
+									{: Error.expect("Row-Type", ": \u03C4 ; ", idleft, idright, ":"," ","\u03C4"," ",";"); :}
+								// Attribute identifier
 								|	ATTR:a epsilon
-									{: Error.expect("Row-Type", " m: \u03C4 ;", aleft, aright, "m",":"," ","\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
+									{: Error.expect("Row-Type", " a: \u03C4 ;", aleft, aright, "a",":"," ","\u03C4"," ",";"," ","..."," ","a_n",":"," ","\u03C4"," ",";"); :}
 								|	ATTR:a IDENTIFIER:i epsilon
-									{: Error.expect("Row-Type", ": \u03C4 ;", aleft, iright, ":"," ","\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
+									{: Error.expect("Row-Type", ": \u03C4 ;", aleft, iright, ":"," ","\u03C4"," ",";"," ","..."," ","a_n",":"," ","\u03C4"," ",";"); :}
 								|	ATTR:a IDENTIFIER:i COLON:c epsilon
-									{: Error.expect("Row-Type", " \u03C4 ;", aleft, cright, "\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
+									{: Error.expect("Row-Type", " \u03C4 ;", aleft, cright, "\u03C4"," ",";"," ","..."," ","a_n",":"," ","\u03C4"," ",";"); :}
 								|	ATTR:a IDENTIFIER:i COLON type:t epsilon
-									{: Error.expect("Row-Type", " ;", aleft, tright, ";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
+									{: Error.expect("Row-Type", " ;", aleft, tright, ";"," ","..."," ","a_n",":"," ","\u03C4"," ",";"); :}
+								// Missing identifier
+								|	ATTR:a COLON
+									{: Error.expect("Row-Type", " a", aleft, aright, "a"); :}
+								|	ATTR:a COLON type
+									{: Error.expect("Row-Type", " a", aleft, aright, "a"); :}
+								// Missing colon
+								|	ATTR:a IDENTIFIER:id type
+									{: Error.expect("Row-Type", ": ", aleft, idright, ":"); :}
+								// Missing type
+								|	ATTR:a IDENTIFIER:id COLON:c SEMI
+									{: Error.expect("Row-Type", " \u03C4 ", aleft, cright, "\u03C4"); :}								
+								// Missing semi
+								|	ATTR:a IDENTIFIER:id COLON type:tau row_type_without_epsilon_l2c
+									{: Error.expect("Row-Type", " ; ", aleft, tauright, ";"); :}
+								// Missing colon and type
+								|	ATTR:a IDENTIFIER:id SEMI
+									{: Error.expect("Row-Type", ": \u03C4 ", aleft, idright, ":"," ","\u03C4"); :}
+								// Missing type and semi
+								|	ATTR:a IDENTIFIER:id COLON:c row_type_without_epsilon_l2c
+									{: Error.expect("Row-Type", " \u03C4 ; ", aleft, cright, "\u03C4"," ",";"); :}
+								// Missing identifier, colon and type
+								|	ATTR:a SEMI
+									{: Error.expect("Row-Type", " a: \u03C4 ", aleft, aright, "a",":"," ","\u03C4"); :}
+								// Missing colon, type and semi
+								|	ATTR:a IDENTIFIER:id row_type_without_epsilon_l2c
+									{: Error.expect("Row-Type", ": \u03C4 ; ", aleft, idright, ":"," ","\u03C4"," ",";"); :}
 								;
 
 class_type						::= ZETA:z LPAREN type:t COLON row_type_l2c:row RPAREN:r
