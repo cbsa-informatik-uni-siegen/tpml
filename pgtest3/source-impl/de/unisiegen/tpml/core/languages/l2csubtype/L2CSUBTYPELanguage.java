@@ -108,7 +108,7 @@ public class L2CSUBTYPELanguage extends L2OLanguage {
 	      boolean mode )
 	  {
 		  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-		        .getString ( "Exception.9" ), new Integer(getId() ) ) ) ; //$NON-NLS-1
+		        .getString ( "Exception.9" ), new Integer(getId() ) ) ) ; //$NON-NLS-1$
 	  }
 
 
@@ -124,7 +124,7 @@ public class L2CSUBTYPELanguage extends L2OLanguage {
 	      MonoType type2 , @ SuppressWarnings ( "unused" )
 	      boolean mode )
 	  {
-		  return new RecSubTypingProofModel(type, type2, new L2ORecSubTypingProofRuleSet(this, mode), mode);
+		  return new RecSubTypingProofModel(type, type2, new L2CRecSubTypingProofRuleSet(this, mode), mode);
 	  }
 
 
@@ -135,7 +135,7 @@ public class L2CSUBTYPELanguage extends L2OLanguage {
 	  public SmallStepProofModel newSmallStepProofModel ( Expression pExpression )
 	  {
 		  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-		        .getString ( "Exception.14" ), new Integer(getId() ) ) ) ; //$NON-NLS-1
+		        .getString ( "Exception.14" ), new Integer(getId() ) ) ) ; //$NON-NLS-1$
 	  }
 
 
@@ -151,7 +151,7 @@ public class L2CSUBTYPELanguage extends L2OLanguage {
 	      MonoType type2 , @ SuppressWarnings ( "unused" )
 	      boolean mode )
 	  {
-		  return new SubTypingProofModel(type, type2, new L2OSubTypingProofRuleSet(this, mode), mode);
+		  return new SubTypingProofModel(type, type2, new L2CSubTypingProofRuleSet(this, mode), mode);
 	  }
 
 
@@ -164,7 +164,7 @@ public class L2CSUBTYPELanguage extends L2OLanguage {
 	      Expression pExpression )
 	  {
 		  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-		        .getString ( "Exception.10" ), new Integer(getId() ) ) ) ; //$NON-NLS-1
+		        .getString ( "Exception.10" ), new Integer(getId() ) ) ) ;  //$NON-NLS-1$
 	  }
 
 
@@ -177,7 +177,7 @@ public class L2CSUBTYPELanguage extends L2OLanguage {
 	      Expression expression )
 	  {
 		  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-		        .getString ( "Exception.13" ), new Integer(getId() ) ) ) ; //$NON-NLS-1
+		        .getString ( "Exception.13" ), new Integer(getId() ) ) ) ; //$NON-NLS-1$
 	  }
 
 }
