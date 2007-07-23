@@ -5,7 +5,7 @@ import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.interfaces.DefaultName ;
+import de.unisiegen.tpml.core.interfaces.IdentifierOrTypeName ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -17,7 +17,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @author Christian Fehler
  * @version $Rev:1056 $
  */
-public final class TypeName extends MonoType implements DefaultName
+public final class TypeName extends MonoType implements IdentifierOrTypeName
 {
   /**
    * Method name for getTypeNames

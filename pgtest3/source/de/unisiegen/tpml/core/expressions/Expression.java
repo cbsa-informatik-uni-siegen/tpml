@@ -675,7 +675,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @see Object#toString()
    */
   @ Override
-  public String toString ( )
+  public final String toString ( )
   {
     return toPrettyString ( ).toString ( ) ;
   }

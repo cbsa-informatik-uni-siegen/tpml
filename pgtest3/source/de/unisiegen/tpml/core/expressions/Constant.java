@@ -138,21 +138,4 @@ public abstract class Constant extends Value
     }
     return this.prettyStringBuilder ;
   }
-
-
-  /**
-   * {@inheritDoc} This method is overwritten in <code>Constant</code> for
-   * optimization reasons, because for example the <code>InfixOperation</code>
-   * needs only the string representation of the <code>BinaryOperator</code>,
-   * but no pretty print information and as such, it suffices to return the
-   * constant's string representation directly here, without going through the
-   * pretty printing.
-   * 
-   * @see Expression#toString()
-   */
-  @ Override
-  public String toString ( )
-  {
-    return this.text ;
-  }
 }

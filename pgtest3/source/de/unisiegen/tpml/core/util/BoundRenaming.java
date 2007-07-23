@@ -3,7 +3,7 @@ package de.unisiegen.tpml.core.util ;
 
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.interfaces.DefaultName ;
+import de.unisiegen.tpml.core.interfaces.IdentifierOrTypeName ;
 import de.unisiegen.tpml.core.types.TypeName ;
 
 
@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.types.TypeName ;
  * @author Christian Fehler
  * @param <E> The {@link Identifier} or {@link TypeName}.
  */
-public final class BoundRenaming < E extends DefaultName >
+public final class BoundRenaming < E extends IdentifierOrTypeName >
 {
   /**
    * The negative list, containing the {@link Identifier}s or {@link TypeName}s
@@ -112,7 +112,7 @@ public final class BoundRenaming < E extends DefaultName >
     while ( this.negativeList.contains ( newIdentifier ) )
     {
       newIdentifier = new Identifier (
-          newIdentifier.getName ( ) + "'" , newIdentifier.getSet ( ) ) ; //$NON-NLS-1$
+          newIdentifier + "'" , newIdentifier.getSet ( ) ) ; //$NON-NLS-1$
     }
     return newIdentifier ;
   }

@@ -4,10 +4,9 @@ package de.unisiegen.tpml.core.expressions ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.DefaultName ;
+import de.unisiegen.tpml.core.interfaces.IdentifierOrTypeName ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.util.Debug ;
 
 
 /**
@@ -19,7 +18,7 @@ import de.unisiegen.tpml.core.util.Debug ;
  * @version $Rev:1056 $
  * @see Value
  */
-public final class Identifier extends Value implements DefaultName
+public final class Identifier extends Value implements IdentifierOrTypeName
 {
   /**
    * The set of {@link Identifier}s.
@@ -67,8 +66,6 @@ public final class Identifier extends Value implements DefaultName
 
   /**
    * The name of the {@link Identifier}.
-   * 
-   * @see #getName()
    */
   private String name ;
 
@@ -120,7 +117,7 @@ public final class Identifier extends Value implements DefaultName
    * @see Expression#clone()
    */
   @ Override
-  public Identifier clone ( )
+  public final Identifier clone ( )
   {
     return new Identifier ( this.name , this.set ) ;
   }
@@ -132,7 +129,7 @@ public final class Identifier extends Value implements DefaultName
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( Object obj )
+  public final boolean equals ( Object obj )
   {
     if ( obj instanceof Identifier )
     {
@@ -150,7 +147,7 @@ public final class Identifier extends Value implements DefaultName
    * @see #boundToExpression
    * @see #setBoundTo(Expression,Identifier)
    */
-  public Expression getBoundToExpression ( )
+  public final Expression getBoundToExpression ( )
   {
     return this.boundToExpression ;
   }
@@ -163,7 +160,7 @@ public final class Identifier extends Value implements DefaultName
    * @see #boundToIdentifier
    * @see #setBoundTo(Expression,Identifier)
    */
-  public Identifier getBoundToIdentifier ( )
+  public final Identifier getBoundToIdentifier ( )
   {
     return this.boundToIdentifier ;
   }
@@ -173,7 +170,7 @@ public final class Identifier extends Value implements DefaultName
    * {@inheritDoc}
    */
   @ Override
-  public String getCaption ( )
+  public final String getCaption ( )
   {
     return "Identifier" ; //$NON-NLS-1$
   }
@@ -184,11 +181,10 @@ public final class Identifier extends Value implements DefaultName
    * identifier.
    * 
    * @return a set which contains the name of the identifier.
-   * @see #getName()
    * @see Expression#getIdentifiersFree()
    */
   @ Override
-  public ArrayList < Identifier > getIdentifiersFree ( )
+  public final ArrayList < Identifier > getIdentifiersFree ( )
   {
     if ( this.identifiersFree == null )
     {
@@ -200,24 +196,13 @@ public final class Identifier extends Value implements DefaultName
 
 
   /**
-   * Returns the name of the identifier.
-   * 
-   * @return the name of the identifier.
-   */
-  public String getName ( )
-  {
-    return this.name ;
-  }
-
-
-  /**
    * Returns the prefix of this {@link Expression}.
    * 
    * @return The prefix of this {@link Expression}.
    * @see #prefix
    */
   @ Override
-  public String getPrefix ( )
+  public final String getPrefix ( )
   {
     if ( this.prefix == null )
     {
@@ -269,7 +254,7 @@ public final class Identifier extends Value implements DefaultName
    * @see #set
    * @see #setSet(Set)
    */
-  public Set getSet ( )
+  public final Set getSet ( )
   {
     return this.set ;
   }
@@ -283,7 +268,7 @@ public final class Identifier extends Value implements DefaultName
    * @see #getSet()
    * @see #setSet(Set)
    */
-  public String getSetDebug ( )
+  public final String getSetDebug ( )
   {
     switch ( this.set )
     {
@@ -314,7 +299,7 @@ public final class Identifier extends Value implements DefaultName
    * @see Expression#hashCode()
    */
   @ Override
-  public int hashCode ( )
+  public final int hashCode ( )
   {
     return this.name.hashCode ( ) ;
   }
@@ -331,7 +316,7 @@ public final class Identifier extends Value implements DefaultName
    * @see #boundToIdentifier
    * @see #getBoundToIdentifier()
    */
-  public void setBoundTo ( Expression pBoundToExpression ,
+  public final void setBoundTo ( Expression pBoundToExpression ,
       Identifier pBoundToIdentifier )
   {
     if ( ( this.boundToIdentifier != null )
@@ -357,7 +342,7 @@ public final class Identifier extends Value implements DefaultName
    * @see #set
    * @see #getSet()
    */
-  public void setSet ( Set pSet )
+  public final void setSet ( Set pSet )
   {
     this.set = pSet ;
   }
@@ -369,10 +354,9 @@ public final class Identifier extends Value implements DefaultName
    * 
    * @return <code>e</code> if <code>id</code> equals the name of the
    *         identifier, else the identifier itself.
-   * @see #getName()
    */
   @ Override
-  public Expression substitute ( Identifier pId , Expression pExpression )
+  public final Expression substitute ( Identifier pId , Expression pExpression )
   {
     if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
     {
@@ -396,21 +380,13 @@ public final class Identifier extends Value implements DefaultName
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   @ Override
-  public PrettyStringBuilder toPrettyStringBuilder (
+  public final PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory factory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = factory.newBuilder ( this , PRIO_IDENTIFIER ) ;
-      if ( Debug.isUserName ( Debug.CHRISTIAN ) )
-      {
-        // this.prettyStringBuilder.addText ( "{" ) ;
-      }
       this.prettyStringBuilder.addIdentifier ( this.name ) ;
-      if ( Debug.isUserName ( Debug.CHRISTIAN ) )
-      {
-        // this.prettyStringBuilder.addText ( " | " + getSetDebug ( ) + "}" ) ;
-      }
     }
     return this.prettyStringBuilder ;
   }
