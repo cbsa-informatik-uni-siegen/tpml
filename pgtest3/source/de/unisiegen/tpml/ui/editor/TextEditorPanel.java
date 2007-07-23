@@ -615,12 +615,11 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
   {
     try
     {
-      TextEditorPanel.this.outline.load ( TextEditorPanel.this.document
-          .getExpression ( ) , pExecute ) ;
+      this.outline.load ( this.document.getExpression ( ) , pExecute ) ;
     }
     catch ( Exception e )
     {
-      TextEditorPanel.this.outline.load ( null , pExecute ) ;
+      this.outline.load ( null , pExecute ) ;
     }
   }
 
