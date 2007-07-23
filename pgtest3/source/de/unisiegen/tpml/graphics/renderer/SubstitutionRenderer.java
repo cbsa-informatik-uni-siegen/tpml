@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -22,7 +23,7 @@ public class SubstitutionRenderer extends AbstractRenderer {
 	/**
 	 * The Substitutions that should be rendered.
 	 */
-	private ArrayList <DefaultTypeSubstitution> defaultTypeSubstitutionList;
+	private ArrayList <TypeSubstitution> defaultTypeSubstitutionList;
 	
 	/**
 	 * Holds informatioin whether the substitution is collapsed.<br>
@@ -77,7 +78,7 @@ public class SubstitutionRenderer extends AbstractRenderer {
 	 * 
 	 * @param substitution
 	 */
-	public void setDefaultTypeSubstitutionList (ArrayList <DefaultTypeSubstitution> defaultTypeSubstitutionListP ) {
+	public void setDefaultTypeSubstitutionList (ArrayList <TypeSubstitution> defaultTypeSubstitutionListP ) {
 		this.defaultTypeSubstitutionList = defaultTypeSubstitutionListP ;
 		
 		// create the string that can be shown in an tooltip 
@@ -91,7 +92,7 @@ public class SubstitutionRenderer extends AbstractRenderer {
 			this.collapsedString = "<html>";
 			for (int i = 0; i<this.defaultTypeSubstitutionList.size(); i++)
 			{
-				DefaultTypeSubstitution thisDetaultTypeSubstitution = this.defaultTypeSubstitutionList.get(i);
+				TypeSubstitution thisDetaultTypeSubstitution = this.defaultTypeSubstitutionList.get(i);
 				String tmp = thisDetaultTypeSubstitution.toString();
 				count += tmp.length();
 				PrettyString ps = thisDetaultTypeSubstitution.toPrettyString();
@@ -161,7 +162,7 @@ public class SubstitutionRenderer extends AbstractRenderer {
   	{
       result.height = AbstractRenderer.getAbsoluteHeight ();
   		// get the first element
-  		DefaultTypeSubstitution s = this.defaultTypeSubstitutionList.get(0);
+  		TypeSubstitution s = this.defaultTypeSubstitutionList.get(0);
   		
   		result.width += AbstractRenderer.keywordFontMetrics.stringWidth(s.toString());
   		
@@ -227,7 +228,7 @@ public class SubstitutionRenderer extends AbstractRenderer {
 			posX += AbstractRenderer.expFontMetrics.stringWidth("[");
 
 			// get the first element
-			DefaultTypeSubstitution s = this.defaultTypeSubstitutionList.get(0);
+			TypeSubstitution s = this.defaultTypeSubstitutionList.get(0);
 
 			// render the symbol
 			gc.setColor(this.alternativeColor != null ? this.alternativeColor : AbstractRenderer.expColor); //if then else

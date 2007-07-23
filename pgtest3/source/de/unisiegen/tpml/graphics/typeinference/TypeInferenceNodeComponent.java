@@ -138,7 +138,7 @@ public class TypeInferenceNodeComponent extends JComponent {
 	
 	private ArrayList <TypeFormula> allFormulasList;
 	
-	private ArrayList <DefaultTypeSubstitution> substitutionList;
+	private ArrayList <TypeSubstitution> substitutionList;
 	
 	
 	

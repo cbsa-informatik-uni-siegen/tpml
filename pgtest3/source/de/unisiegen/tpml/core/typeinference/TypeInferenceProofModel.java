@@ -1,26 +1,29 @@
 package de.unisiegen.tpml.core.typeinference ;
 
 
-import java.util.ArrayList ;
-import org.apache.log4j.Logger ;
-import de.unisiegen.tpml.core.AbstractProofModel ;
-import de.unisiegen.tpml.core.AbstractProofNode ;
-import de.unisiegen.tpml.core.AbstractProofRuleSet ;
-import de.unisiegen.tpml.core.CannotRedoException ;
-import de.unisiegen.tpml.core.CannotUndoException ;
-import de.unisiegen.tpml.core.ProofGuessException ;
-import de.unisiegen.tpml.core.ProofNode ;
-import de.unisiegen.tpml.core.ProofRule ;
-import de.unisiegen.tpml.core.ProofRuleException ;
-import de.unisiegen.tpml.core.ProofStep ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.IsEmpty ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.TypeVariable ;
+import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
+
+import de.unisiegen.tpml.core.AbstractProofModel;
+import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.CannotRedoException;
+import de.unisiegen.tpml.core.CannotUndoException;
+import de.unisiegen.tpml.core.ProofGuessException;
+import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.IsEmpty;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.TypeVariable;
 
 
 /**
@@ -85,7 +88,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel
     super ( new DefaultTypeInferenceProofNode (
         new TypeJudgement ( new DefaultTypeEnvironment ( ) , expression ,
             new TypeVariable ( 1 , 0 ) ) ,
-        new ArrayList < DefaultTypeSubstitution > ( ) ) , pRuleSet ) ;
+        new ArrayList < TypeSubstitution > ( ) ) , pRuleSet ) ;
   }
 
 
@@ -473,8 +476,8 @@ public final class TypeInferenceProofModel extends AbstractProofModel
       boolean mode ) throws ProofRuleException
   {
     // allocate a new TypeCheckerContext
-    DefaultTypeInferenceProofContext context = new DefaultTypeInferenceProofContext (
-        this ) ;
+    NewDefaultTypeInferenceProofContext context = new NewDefaultTypeInferenceProofContext (
+        this, node ) ;
     this.index ++ ;
     DefaultTypeInferenceProofNode typeNode = node ;
     Exception e = null ;
@@ -483,13 +486,13 @@ public final class TypeInferenceProofModel extends AbstractProofModel
       try
       {
         // try to apply the rule to the specified node
-        context.setSubstitutions ( node.getSubstitution ( ) ) ;
+        //context.setSubstitutions ( node.getSubstitution ( ) ) ;
         context.apply ( rule , form , type , mode , node ) ;
         
         ProofStep [] newSteps = new ProofStep [1];
    	  newSteps[0] = new ProofStep ( new IsEmpty ( ) , rule )   ;
         
-        setUndoActions ( node, child, context, rule, form, newSteps );
+        setUndoActions ( node, child, /*context,*/ rule, form, newSteps );
         
         return ;
       }
@@ -507,12 +510,12 @@ public final class TypeInferenceProofModel extends AbstractProofModel
       try
       {
         // try to apply the rule to the specified node
-        context.setSubstitutions ( node.getSubstitution ( ) ) ;
+       // context.setSubstitutions ( node.getSubstitution ( ) ) ;
         context.apply ( rule , formula , type , mode , node ) ;
         
         ProofStep [] newSteps = new ProofStep [1];
    	  newSteps[0] = new ProofStep ( new IsEmpty ( ) , rule )   ;
-        setUndoActions ( node, child, context, rule, form, newSteps );
+        setUndoActions ( node, child, /*context,*/ rule, form, newSteps );
         return ;
       }
       catch ( ProofRuleException e1 )
@@ -637,7 +640,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @throws NullPointerException if any of the parameters is <code>null</code>.
    */
   void contextAddProofNode ( final ArrayList < TypeFormula > formulas ,
-      final ArrayList < DefaultTypeSubstitution > subs  )
+      final ArrayList < TypeSubstitution > subs  )
   {
      this.child = new DefaultTypeInferenceProofNode (
         formulas , subs ) ;
@@ -728,7 +731,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel
 
   private void setUndoActions(final DefaultTypeInferenceProofNode pNode, 
 		  final DefaultTypeInferenceProofNode pChild, 
-		  final DefaultTypeInferenceProofContext context ,
+		  //final DefaultTypeInferenceProofContext context ,
 	     final TypeCheckerProofRule rule , final TypeFormula formula,
 	     final ProofStep [] newSteps){
 	  

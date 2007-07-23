@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
 
 public class TypeSubType implements ShowBondsInput, TypeFormula, PrettyPrintable , PrettyPrintPriorities {
@@ -55,7 +55,7 @@ public class TypeSubType implements ShowBondsInput, TypeFormula, PrettyPrintable
 		return this.type2;
 	}
 
-	public TypeFormula substitute ( ArrayList < DefaultTypeSubstitution > s ) {
+	public TypeSubType substitute ( ArrayList < TypeSubstitution > s ) {
 		return this;
 	}
 	

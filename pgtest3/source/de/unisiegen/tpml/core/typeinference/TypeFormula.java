@@ -3,8 +3,8 @@ package de.unisiegen.tpml.core.typeinference;
 import java.util.ArrayList;
 
 import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -33,7 +33,7 @@ public interface TypeFormula {
 	 *
 	 * @return DefaultTypeEnvironment
 	 */
-	public DefaultTypeEnvironment getEnvironment ( );
+	public TypeEnvironment getEnvironment ( );
 
 	/**
 	 * 
@@ -58,6 +58,6 @@ public interface TypeFormula {
 	 * @param s TypeSubstitution
 	 * @return
 	 */
-	public TypeFormula substitute ( ArrayList < DefaultTypeSubstitution > s );
+	public TypeFormula substitute ( ArrayList < TypeSubstitution > s );
 
 }

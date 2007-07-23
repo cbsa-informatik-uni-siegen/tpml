@@ -238,8 +238,8 @@ public final class TypeEquationTypeInference implements
    * @return the resulting {@link TypeEquationTypeInference}.
    * @see de.unisiegen.tpml.core.types.Type#substitute(TypeSubstitution)
    */
-  public TypeFormula substitute (
-      ArrayList < DefaultTypeSubstitution > substitutions )
+  public TypeEquationTypeInference substitute (
+      ArrayList < TypeSubstitution > substitutions )
   {
     TypeEquationTypeInference newEqn = this.clone ( ) ;
     for ( TypeSubstitution s : substitutions )

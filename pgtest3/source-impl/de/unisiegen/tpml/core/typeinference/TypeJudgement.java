@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
 
@@ -26,7 +26,7 @@ public class TypeJudgement implements TypeFormula {
 	/**
 	 * the type environment of this type judgement
 	 */
-	private DefaultTypeEnvironment environment;
+	private TypeEnvironment environment;
 
 	/**
 	 * the expression of this type judgement
@@ -49,7 +49,7 @@ public class TypeJudgement implements TypeFormula {
 	 * @param expr Expression
 	 * @param t MonoType
 	 */
-	public TypeJudgement ( final DefaultTypeEnvironment env,
+	public TypeJudgement ( final TypeEnvironment env,
 			final Expression expr, final MonoType t ) {
 
 		this.environment = env;
@@ -65,8 +65,8 @@ public class TypeJudgement implements TypeFormula {
 	 * @return null (just needed for TypeEquation)
 	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
 	 */
-	public TypeFormula substitute (
-			ArrayList < DefaultTypeSubstitution > substitutions ) {
+	public TypeJudgement substitute (
+			ArrayList < TypeSubstitution > substitutions ) {
 
 		MonoType newType = this.type.clone ( );
 
@@ -86,7 +86,7 @@ public class TypeJudgement implements TypeFormula {
 	 * 
 	 * @return DefaultTypeEnvironment environment
 	 */
-	public DefaultTypeEnvironment getEnvironment ( ) {
+	public TypeEnvironment getEnvironment ( ) {
 
 		return this.environment;
 	}

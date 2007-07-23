@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.TypeFormula;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement;
@@ -82,7 +82,7 @@ public class CompoundExpressionTypeInference extends JComponent
 	/**
 	 * The current list of DefaultTypeSubsititutions that are rendered.
 	 */
-	private ArrayList<DefaultTypeSubstitution> defaultTypeSubstitutionList;
+	private ArrayList<TypeSubstitution> defaultTypeSubstitutionList;
 
 	/**
 	 * the current Typformulars
@@ -579,7 +579,7 @@ public class CompoundExpressionTypeInference extends JComponent
 	 * 
 	 * @param defaultTypeSubstitutionListP
 	 */
-	public void setDefaultTypeSubstitutionList(ArrayList<DefaultTypeSubstitution> defaultTypeSubstitutionListP)
+	public void setDefaultTypeSubstitutionList(ArrayList<TypeSubstitution> defaultTypeSubstitutionListP)
 	{
 		// check if we have a new environment
 		if (this.defaultTypeSubstitutionList != defaultTypeSubstitutionListP)

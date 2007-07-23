@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.typechecker;
 
 import java.util.Set;
 
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.TypeVariable;
 
@@ -53,4 +54,6 @@ public interface TypeSubstitution {
    * @throws NullPointerException if <code>tvar</code> is <code>null</code>.
    */
   public MonoType get(TypeVariable tvar);
+
+public PrettyString toPrettyString ( );
 }

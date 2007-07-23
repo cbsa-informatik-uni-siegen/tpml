@@ -39,5 +39,5 @@ public interface TypeInferenceProofContext extends TypeCheckerProofContext
    * @return substitutions ArrayList < DefaultTypeSubstitution > with all type
    *         substitutions
    */
-  public ArrayList < DefaultTypeSubstitution > getSubstitution ( ) ;
+  public ArrayList < TypeSubstitution > getSubstitution ( ) ;
 }

@@ -1,13 +1,14 @@
 package de.unisiegen.tpml.core.typeinference ;
 
 
-import java.util.ArrayList ;
-import javax.swing.tree.TreeNode ;
-import de.unisiegen.tpml.core.AbstractProofNode ;
-import de.unisiegen.tpml.core.ProofStep ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule ;
+import java.util.ArrayList;
+
+import javax.swing.tree.TreeNode;
+
+import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -35,7 +36,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   /**
    * list of the collected type substitutions of this node
    */
-  private ArrayList < DefaultTypeSubstitution > substitutions = new ArrayList < DefaultTypeSubstitution > ( ) ;
+  private ArrayList < TypeSubstitution > substitutions = new ArrayList < TypeSubstitution > ( ) ;
 
 
   /**
@@ -52,7 +53,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    */
   public DefaultTypeInferenceProofNode (
       final ArrayList < TypeFormula > judgement ,
-      final ArrayList < DefaultTypeSubstitution > subs )
+      final ArrayList < TypeSubstitution > subs )
   {
     // equations = eqns;
     this.formula = judgement ;
@@ -70,7 +71,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * @param subs substitutions of the node
    */
   public DefaultTypeInferenceProofNode ( final TypeJudgement judgement ,
-      final ArrayList < DefaultTypeSubstitution > subs )
+      final ArrayList < TypeSubstitution > subs )
   {
     // equations = eqns;
     this.formula.add ( judgement ) ;
@@ -277,7 +278,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @return TypeSubstitutionList substitutions
    */
-  public ArrayList < DefaultTypeSubstitution > getSubstitution ( )
+  public ArrayList < TypeSubstitution > getSubstitution ( )
   {
     return this.substitutions ;
   }

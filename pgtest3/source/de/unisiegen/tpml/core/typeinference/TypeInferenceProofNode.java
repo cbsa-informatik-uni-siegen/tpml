@@ -1,12 +1,14 @@
 package de.unisiegen.tpml.core.typeinference ;
 
 
-import java.util.ArrayList ;
-import javax.swing.tree.TreeNode ;
-import de.unisiegen.tpml.core.ProofNode ;
-import de.unisiegen.tpml.core.ProofStep ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule ;
+import java.util.ArrayList;
+
+import javax.swing.tree.TreeNode;
+
+import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -142,7 +144,7 @@ public interface TypeInferenceProofNode extends ProofNode
    * 
    * @return TypeSubstitutionList substitutions
    */
-  public ArrayList < DefaultTypeSubstitution > getSubstitution ( ) ;
+  public ArrayList < TypeSubstitution > getSubstitution ( ) ;
 
 
   /**
