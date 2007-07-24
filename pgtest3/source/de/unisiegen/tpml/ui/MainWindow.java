@@ -1515,17 +1515,6 @@ runMenu.add ( subTypingRec ) ;
 	   subtyping.setVisible ( false ) ;
 	   subTyping.setVisible ( true ) ;
 	   subTypingRec.setVisible ( true );
-	   saveAsItem.setVisible ( true ) ;
-	   saveAsButton.setVisible ( true ) ;
-	   saveAllItem.setVisible ( true ) ;
-	   closeItem.setVisible ( true ) ;
-	   cutItem.setVisible ( false ) ;
-	   cutButton.setVisible ( false ) ;
-	   copyItem.setVisible ( false ) ;
-	   copyButton.setVisible ( false ) ;
-	   pasteItem.setVisible ( false ) ;
-	   pasteButton.setVisible ( false ) ;
-	
 }
 
 
@@ -1539,18 +1528,6 @@ private void setExpressionMode ( ) {
    subtyping.setVisible ( true ) ;
    subTyping.setVisible ( false ) ;
    subTypingRec.setVisible ( false );
-   saveAsItem.setVisible ( true ) ;
-   saveAsButton.setVisible ( true ) ;
-   saveAllItem.setVisible ( true ) ;
-   closeItem.setVisible ( true ) ;
-   cutItem.setVisible ( true ) ;
-   cutButton.setVisible ( true ) ;
-   copyItem.setVisible ( true ) ;
-   copyButton.setVisible ( true ) ;
-   pasteItem.setVisible ( true ) ;
-   pasteButton.setVisible ( true ) ;
-	
-	
 }
 
 

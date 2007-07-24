@@ -3,7 +3,17 @@ package de.unisiegen.tpml.graphics.subtyping;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.io.IOException;
 import java.io.StringReader;
+import java.util.Stack;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -13,7 +23,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
-import de.unisiegen.tpml.core.ProofGuessException;
+import org.apache.log4j.Logger;
+
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
@@ -31,13 +42,12 @@ import de.unisiegen.tpml.ui.SideBarListener;
  * The implementation of the {@link de.unisiegen.tpml.graphics.ProofView}
  * interface for the type checker interpreter user interface.
  * 
- * @author Marcell Fischbach
  * @author Christian Fehler
- * @version $Rev: 995 $
+ * @author Benjamin Mies
  * @see de.unisiegen.tpml.graphics.AbstractProofView
  */
 public class SubTypingSourceView extends JPanel // AbstractProofView //JComponent
-		implements EditorComponent {
+		implements EditorComponent, ClipboardOwner {
 	/**
 	 * The unique serialization identifier for this class.
 	 */
@@ -81,6 +91,27 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 
 	boolean saveStatus;
 
+	boolean nextStatus;
+
+	boolean undoStatus;
+	
+	boolean undoStatus1 = false;
+	
+	boolean undoStatus2 = false;
+	
+	boolean redoStatus;
+	
+	boolean redoStatus1 = false;
+	
+	boolean redoStatus2 = false;
+	
+	 /**
+	   * The initial content of this file
+	   */
+	  private String initialContent = "" ;
+	  
+	  private String currentContent = "" ;
+
 	/**
 	 * The <code>JScrollPane</code> for the <code>component</code>.
 	 */
@@ -102,10 +133,22 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 
 	private DefaultOutline outline2;
 
-	/**
-	 * The {@link SubTypingProofModel}.
-	 */
 	private Language language;
+
+	private Stack < String > undohistory = new Stack < String > ( );
+
+	private Stack < String > redohistory = new Stack < String > ( );
+	
+	private Stack < String > undohistory2 = new Stack < String > ( );
+
+	private Stack < String > redohistory2 = new Stack < String > ( );
+
+	/**
+	 * The {@link Logger} for this class.
+	 * 
+	 * @see Logger
+	 */
+	protected static final Logger logger = Logger.getLogger ( SubTypingSourceView.class );
 
 	/**
 	 * Allocates a new {@link SubTypingSourceView} for the specified
@@ -115,11 +158,15 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 	 *          <code>SubTypingView</code>.
 	 * @param pWindow the MainWindow containing this view
 	 */
-	@SuppressWarnings("synthetic-access")
+	@SuppressWarnings ( "synthetic-access" )
 	public SubTypingSourceView ( Language pLanguage, MainWindow pWindow ) {
 		super ( );
 		this.language = pLanguage;
 		this.window = pWindow;
+		this.undohistory.push ( "" );
+		//this.redohistory.push ( "" );
+		this.undohistory2.push( "" );
+		//this.redohistory2.push ( "" );
 		GridBagConstraints gridBagConstraints = new GridBagConstraints ( );
 		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
 
@@ -149,6 +196,20 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 		this.source.add ( this.sourceLabel2, gridBagConstraints );
 
 		this.editor = new StyledLanguageEditor ( );
+		this.editor.addFocusListener ( new FocusListener(){
+			 public void focusGained(FocusEvent e){
+				 SubTypingSourceView.this.setRedoStatus ( SubTypingSourceView.this.redoStatus1 );
+				 SubTypingSourceView.this.setUndoStatus ( SubTypingSourceView.this.undoStatus1 );
+			 }
+
+		    /**
+		     * Invoked when a component loses the keyboard focus.
+		     */
+		    public void focusLost(FocusEvent e){
+		   	 SubTypingSourceView.this.redoStatus1 = SubTypingSourceView.this.redoStatus;
+				 SubTypingSourceView.this.undoStatus1 =  SubTypingSourceView.this.undoStatus;
+		    }
+	} );
 
 		this.sourceField = new StyledTypeEnterField ( this.language );
 
@@ -223,6 +284,17 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 		this.source.add ( this.scrollPane1, gridBagConstraints );
 
 		this.editor2 = new StyledLanguageEditor ( );
+		this.editor2.addFocusListener ( new FocusListener(){
+				 public void focusGained(FocusEvent e){
+					 SubTypingSourceView.this.setRedoStatus ( SubTypingSourceView.this.redoStatus2 );
+					 SubTypingSourceView.this.setUndoStatus ( SubTypingSourceView.this.undoStatus2 );
+				 }
+
+			    public void focusLost(FocusEvent e){
+			   	 SubTypingSourceView.this.redoStatus2 = SubTypingSourceView.this.redoStatus;
+					 SubTypingSourceView.this.undoStatus2 =  SubTypingSourceView.this.undoStatus;
+			    }
+		} );
 
 		this.sourceField2 = new StyledTypeEnterField ( this.language );
 
@@ -462,7 +534,6 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 		}
 	}
 
-
 	/**
 	 * Returns the editor.
 	 *
@@ -515,9 +586,9 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 			this.sourceField.remove ( 0, this.sourceField.getLength ( ) );
 			this.sourceField.insertString ( 0, text, null );
 			this.sourceField.addDocumentListener ( this.listener );
-		} catch ( BadLocationException e ) {
-			//TODO
-			//logger.error ( "Cannot set Text of the document" , e ) ;
+			this.outline.load ( this.sourceField.getType ( ), Outline.ExecuteInit.SUBTYPING_SOURCE );
+		} catch ( Exception e ) {
+			logger.error ( "Cannot set Text of the document", e ); //$NON-NLS-1$
 		}
 	}
 
@@ -533,136 +604,467 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 			this.sourceField2.remove ( 0, this.sourceField2.getLength ( ) );
 			this.sourceField2.insertString ( 0, text, null );
 			this.sourceField2.addDocumentListener ( this.listener2 );
-		} catch ( BadLocationException e ) {
-			//TODO
-			//logger.error ( "Cannot set Text of the document" , e ) ;
+			this.outline2.load ( this.sourceField2.getType ( ), Outline.ExecuteInit.SUBTYPING_SOURCE );
+		} catch ( Exception e ) {
+			logger.error ( "Cannot set Text of the document", e ); //$NON-NLS-1$
 		}
 	}
-	
-	public String getText(){
-		
+
+	/**
+	 * Get the content of the first sourceField
+	 *
+	 * @return content of the first sourceField
+	 * 
+	 */
+	public String getText ( ) {
+
 		try {
 			return this.sourceField.getText ( 0, this.sourceField.getLength ( ) );
 		} catch ( BadLocationException e ) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
-	
-	public String getText2(){
-		
+
+	/**
+	 * Get the content of the second sourceField
+	 *
+	 * @return content of the second sourceField
+	 * 
+	 */
+	public String getText2 ( ) {
+
 		try {
 			return this.sourceField2.getText ( 0, this.sourceField2.getLength ( ) );
 		} catch ( BadLocationException e ) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 
-	private class OwnDocumentListener implements DocumentListener {
-
-		public void changedUpdate ( DocumentEvent e ) {
-		//Nothing to do so far
-		}
-
-		@SuppressWarnings ( { "synthetic-access", "unqualified-field-access" } )
-		public void insertUpdate ( DocumentEvent e ) {
-			type = eventHandling ( editor, outline );
-			window.setChangeState ( true );
-			saveStatus = true;
-		}
-
-		@SuppressWarnings ( "synthetic-access" )
-		public void removeUpdate ( DocumentEvent e ) {
-			type = eventHandling ( editor, outline );
-			window.setChangeState ( true );
-			saveStatus = true;
-		}
+	/**
+	 * {@inheritDoc} This method always returns false, because <i>Pong</i> cannot
+	 * be played from the editor.
+	 * 
+	 * @see de.unisiegen.tpml.ui.EditorComponent#isPongStatus()
+	 */
+	public boolean isPongStatus ( ) {
+		return false;
 	}
 
-	private class OwnDocumentListener2 implements DocumentListener {
-
-		public void changedUpdate ( DocumentEvent e ) {
-		//Nothing to do so far
-		}
-
-		@SuppressWarnings ( "synthetic-access" )
-		public void insertUpdate ( DocumentEvent e ) {
-			type2 = eventHandling ( editor2,  outline2 );
-			window.setChangeState ( true );
-			saveStatus = true;
-		}
-
-		@SuppressWarnings ( "synthetic-access" )
-		public void removeUpdate ( DocumentEvent e ) {
-			type2 = eventHandling ( editor2, outline2 );
-			window.setChangeState ( true );
-			saveStatus = true;
-		}
-	}
-
+	/**
+	 * 
+	 * Set the first {@link MonoType} of this SourceView
+	 *
+	 * @param type first type of this source view
+	 */
 	public void setType ( MonoType type ) {
 		this.type = type;
 	}
 
+	/**
+	 * 
+	 * Set the second {@link MonoType} of this SourceView
+	 *
+	 * @param type2 second type of this source view
+	 */
 	public void setType2 ( MonoType type2 ) {
 		this.type2 = type2;
 	}
 
+	/**
+	 * Gives information if document has changed since last save.
+	 *
+	 * @return boolean has changed or not
+	 */
 	public boolean isSaveStatus ( ) {
 		return this.saveStatus;
 	}
 
+	/**
+	 * Set a new save status for this document.
+	 *
+	 * @param saveStatus boolean new save status
+	 */
 	public void setSaveStatus ( boolean saveStatus ) {
 		this.saveStatus = saveStatus;
 	}
-	
-	public void handleNext ( ) {
-		// TODO Auto-generated method stub
 
+	/**
+	 * The Next Function is not implemented!
+	 * 
+	 * @author Christoph Fehling
+	 * @version $Rev$
+	 */
+	public void handleNext ( ) {
+	// this function is not implemented here
+	}
+
+	/**
+	 * 
+	 * The editor does not have an advanced mode so this is ignored.
+	 *
+	 */
+	public void setAdvanced ( @SuppressWarnings ( "unused" )
+	boolean status ) {
+	// the editor does not have an advanced mode so this is ignored.
+	}
+
+	/**
+	 * The lostOwnership Function is not implemented!
+	 *
+	 * @param arg0 will be ignored
+	 * @param arg1 will be ignored
+	 * @see java.awt.datatransfer.ClipboardOwner#lostOwnership(java.awt.datatransfer.Clipboard, java.awt.datatransfer.Transferable)
+	 */
+	public void lostOwnership ( @SuppressWarnings ( "unused" )
+	Clipboard arg0, @SuppressWarnings ( "unused" )
+	Transferable arg1 ) {
+	// we do not care so we do nothing
+	}
+
+	/**
+	 * Get the selected text of the editor which has the focus
+	 *
+	 * @return selected text of the focused editor
+	 */
+	public String getSelectedText ( ) {
+		if ( this.editor.hasFocus ( ) )
+			return this.editor.getSelectedText ( );
+		return this.editor2.getSelectedText ( );
+	}
+
+	/**
+	 * Copy the selected text to Clipboard
+	 *
+	 */
+	public void handleCopy ( ) {
+		Clipboard clipboard = getToolkit ( ).getSystemClipboard ( );
+		StringSelection stringSelection = new StringSelection ( getSelectedText ( ) );
+		clipboard.setContents ( stringSelection, this );
+	}
+
+	/**
+	 * Copy the selected text to Clipboard and remove this text.
+	 *
+	 */
+	public void handleCut ( ) {
+		Clipboard clipboard = getToolkit ( ).getSystemClipboard ( );
+		StringSelection stringSelection = new StringSelection ( getSelectedText ( ) );
+		clipboard.setContents ( stringSelection, this );
+		removeSelectedText ( );
+	}
+
+	/**
+	 * Paste the text of the Clipboard to the editor which has the focus 
+	 *
+	 */
+	@SuppressWarnings ( "null" )
+	public void handlePaste ( ) {
+		Clipboard clipboard = getToolkit ( ).getSystemClipboard ( );
+		Transferable contents = clipboard.getContents ( null );
+		boolean hasTransferableText = ( contents != null ) && contents.isDataFlavorSupported ( DataFlavor.stringFlavor );
+		if ( hasTransferableText ) {
+			try {
+				if ( this.editor.hasFocus ( ) )
+					insertText ( ( String ) contents.getTransferData ( DataFlavor.stringFlavor ), this.sourceField,
+							this.editor );
+				else if ( this.editor2.hasFocus ( ) )
+					insertText ( ( String ) contents.getTransferData ( DataFlavor.stringFlavor ), this.sourceField2,
+							this.editor2 );
+				else {
+					logger.error ( "Can not paste from clipboard" ); //$NON-NLS-1$
+					return;
+				}
+
+			} catch ( UnsupportedFlavorException ex ) {
+				logger.error ( "Can not paste from clipboard", ex ); //$NON-NLS-1$
+			} catch ( IOException ex ) {
+				logger.error ( "Can not paste from clipboard", ex ); //$NON-NLS-1$
+			}
 		}
+	}
+
+	/**
+	 * 
+	 * Insert a String to the given language styled editor
+	 *
+	 * @param text the text to insert
+	 * @param document StyledTypeEnterField the document to insert the text
+	 * @param styledEditor the StyledLanguageEditor containing the document
+	 */
+	public void insertText ( String text, StyledTypeEnterField document, StyledLanguageEditor styledEditor ) {
+		try {
+			document.insertString ( styledEditor.getCaretPosition ( ), text, null );
+		} catch ( BadLocationException e ) {
+			logger.error ( "Text could not be inserted into document", e ); //$NON-NLS-1$
+		}
+	}
+
+	private void setNextStatus ( boolean nextStatus ) {
+		if ( this.nextStatus != nextStatus ) {
+			boolean oldNextStatus = this.nextStatus;
+			this.nextStatus = nextStatus;
+			firePropertyChange ( "nextStatus", oldNextStatus, nextStatus );
+		}
+	}
+
+	private void setRedoStatus ( boolean redoStatus ) {
+		if ( this.redoStatus != redoStatus ) {
+			boolean oldRedoStatus = this.redoStatus;
+			this.redoStatus = redoStatus;
+			firePropertyChange ( "redoStatus", oldRedoStatus, redoStatus );
+		}
+		//this.redoItem.setEnabled ( this.redoStatus );
+	}
+
+	private void setUndoStatus ( boolean undoStatus ) {
+		if ( this.undoStatus != undoStatus ) {
+			boolean oldUndoStatus = this.undoStatus;
+			this.undoStatus = undoStatus;
+			firePropertyChange ( "undoStatus", oldUndoStatus, undoStatus );
+		}
+		//this.undoItem.setEnabled ( this.undoStatus );
+	}
+
+	  public boolean isNextStatus ( )
+	  {
+	    return this.nextStatus ;
+	  }
+
+	  public boolean isRedoStatus ( )
+	  {
+	    return this.redoStatus ;
+	  }
+
+
+	  public boolean isUndoStatus ( )
+	  {
+	    return this.undoStatus ;
+	  }
+
+	  public void setDefaultStates ( )
+	  {
+	    // setChanged(false);
+	    setUndoStatus ( false ) ;
+	    setRedoStatus ( false ) ;
+	    setNextStatus ( false ) ;
+	  }
 
 		public void handleRedo ( ) {
-		// TODO Auto-generated method stub
-
+			try {
+				if ( this.editor.hasFocus ( ) ) {
+					this.sourceField.removeDocumentListener ( this.listener );
+					this.undohistory.push ( this.sourceField.getText ( 0, this.sourceField.getLength ( ) ) );
+					this.sourceField.remove ( 0, this.sourceField.getLength ( ) );
+					this.sourceField.insertString ( 0, this.redohistory.pop ( ), null );
+					setUndoStatus ( true );
+					this.sourceField.addDocumentListener ( this.listener );
+					this.outline.load ( this.sourceField.getType ( ), Outline.ExecuteAutoChange.SUBTYPING_SOURCE );
+					if ( this.redohistory.size ( ) == 0 ) {
+						setRedoStatus ( false );
+					}
+				}
+				else if (this.editor2.hasFocus ( )){
+					this.sourceField2.removeDocumentListener ( this.listener2 );
+					this.undohistory2.push ( this.sourceField2.getText ( 0, this.sourceField2.getLength ( ) ) );
+					this.sourceField2.remove ( 0, this.sourceField2.getLength ( ) );
+					this.sourceField2.insertString ( 0, this.redohistory2.pop ( ), null );
+					setUndoStatus ( true );
+					this.sourceField2.addDocumentListener ( this.listener2 );
+					this.outline2.load ( this.sourceField2.getType ( ), Outline.ExecuteAutoChange.SUBTYPING_SOURCE );
+					if ( this.redohistory2.size ( ) == 0 ) {
+						setRedoStatus ( false );
+					}
+				}
+				else {
+					logger.error ( "Cannot handle an redo" ); //$NON-NLS-1$
+					return;
+				}
+			} catch ( Exception e ) {
+				logger.error ( "Cannot handle an redo", e ); //$NON-NLS-1$
+			}
 		}
 
 		public void handleUndo ( ) {
-		// TODO Auto-generated method stub
-
-		}
-
-		public boolean isNextStatus ( ) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		public boolean isPongStatus ( ) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		public boolean isRedoStatus ( ) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		public boolean isUndoStatus ( ) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		public void setAdvanced ( boolean status ) {
-		// TODO Auto-generated method stub
-
-		}
-
-		public void setDefaultStates ( ) {
-		// TODO Auto-generated method stub
-
+			try {
+				if ( this.editor.hasFocus ( ) ) {
+					this.sourceField.removeDocumentListener ( this.listener );
+					String doctext = this.sourceField.getText ( 0, this.sourceField.getLength ( ) );
+					String historytext;
+					if ( this.undohistory.peek ( ).equals ( this.initialContent ) ) {
+						historytext = this.undohistory.peek ( );
+						setUndoStatus ( false );
+					} else {
+						historytext = this.undohistory.pop ( );
+					}
+					this.sourceField.remove ( 0, this.sourceField.getLength ( ) );
+					this.sourceField.insertString ( 0, historytext, null );
+					this.redohistory.add ( doctext );
+					setRedoStatus ( true );
+					this.sourceField.addDocumentListener ( this.listener );
+					this.outline.load ( this.sourceField.getType ( ), Outline.ExecuteAutoChange.SUBTYPING_SOURCE );
+				}
+				else if (this.editor2.hasFocus ( )){
+							this.sourceField2.removeDocumentListener ( this.listener2 );
+							String doctext = this.sourceField2.getText ( 0, this.sourceField2.getLength ( ) );
+							String historytext;
+							if ( this.undohistory2.peek ( ).equals ( this.initialContent ) ) {
+								historytext = this.undohistory2.peek ( );
+								setUndoStatus ( false );
+							} else {
+								historytext = this.undohistory2.pop ( );
+							}
+							this.sourceField2.remove ( 0, this.sourceField2.getLength ( ) );
+							this.sourceField2.insertString ( 0, historytext, null );
+							this.redohistory2.add ( doctext );
+							setRedoStatus ( true );
+							this.sourceField2.addDocumentListener ( this.listener2 );
+							this.outline2.load ( this.sourceField.getType ( ), Outline.ExecuteAutoChange.SUBTYPING_SOURCE );
+						}
+				else {
+					logger.error ( "Cannot handle an undo" );
+					return;
+				}
+			} catch ( Exception e ) {
+				e.printStackTrace ( );
+				logger.error ( "Cannot handle an undo", e );
+			}
 		}
 		
-		public void guess ( ) throws IllegalStateException, ProofGuessException {
-			// TODO Auto-generated method stub
+		private class OwnDocumentListener implements DocumentListener {
 
+			/**
+			 * @inherit Doc
+			 * 
+			 * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
+			 */
+			public void changedUpdate ( @SuppressWarnings ( "unused" )
+			DocumentEvent e ) {
+				logger.debug ( "Document was changed" ) ;
 			}
 
+			/**
+			 * @inherit Doc
+			 *  
+			 * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+			 */
+			public void insertUpdate (	DocumentEvent arg0 ) {
+				try {
+				SubTypingSourceView.this.type = eventHandling ( SubTypingSourceView.this.editor,
+						SubTypingSourceView.this.outline );
+				SubTypingSourceView.this.window.setChangeState ( Boolean.TRUE );
+				SubTypingSourceView.this.saveStatus = true;
+				SubTypingSourceView.this.setUndoStatus ( true ) ;
+		        String doctext = arg0.getDocument ( ).getText ( 0 ,
+		            arg0.getDocument ( ).getLength ( ) ) ;
+		        if ( doctext.endsWith ( " " ) )
+		        {
+		      	  SubTypingSourceView.this.undohistory.push ( doctext ) ;
+		          logger.debug ( "history added: " + doctext ) ;
+		        }
+		        setRedoStatus ( false ) ;
+		        SubTypingSourceView.this.redohistory.clear ( ) ;
+		        SubTypingSourceView.this.currentContent = doctext ;
+				}
+		        catch ( BadLocationException e )
+		        {
+		          logger.error ( "Failed to add text to undo history" , e ) ;
+		        }
+			}
+
+			/**
+			 * @inherit Doc
+			 *
+			 * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
+			 */
+			@SuppressWarnings ( "synthetic-access" )
+			public void removeUpdate (	DocumentEvent arg0 ) {
+				try{
+				SubTypingSourceView.this.type = eventHandling ( SubTypingSourceView.this.editor,
+						SubTypingSourceView.this.outline );
+				SubTypingSourceView.this.window.setChangeState ( Boolean.TRUE );
+				SubTypingSourceView.this.saveStatus = true;
+				SubTypingSourceView.this.setUndoStatus ( true ) ;
+				SubTypingSourceView.this.undohistory
+		            .push ( SubTypingSourceView.this.currentContent ) ;
+		        setRedoStatus ( false ) ;
+		        SubTypingSourceView.this.redohistory.clear ( ) ;
+		        SubTypingSourceView.this.currentContent = arg0.getDocument ( ).getText ( 0 ,
+		            arg0.getDocument ( ).getLength ( ) ) ;
+			}
+	      catch ( BadLocationException e )
+	      {
+	        logger.error ( "Failed to add text to undo history" , e ) ;
+	      }
+			}
+		}
+
+		private class OwnDocumentListener2 implements DocumentListener {
+
+			/**
+			 * @inherit Doc
+			 * 
+			 * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
+			 */
+			public void changedUpdate ( @SuppressWarnings ( "unused" )
+			DocumentEvent e ) {
+				logger.debug ( "Document was changed" ) ;
+			}
+
+			/**
+			 * @inherit Doc
+			 *  
+			 * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+			 */
+			@SuppressWarnings ( "synthetic-access" )
+			public void insertUpdate ( @SuppressWarnings ( "unused" )
+			DocumentEvent arg0 ) {
+				try {
+				SubTypingSourceView.this.type2 = eventHandling ( SubTypingSourceView.this.editor2,
+						SubTypingSourceView.this.outline2 );
+				SubTypingSourceView.this.window.setChangeState ( Boolean.TRUE );
+				SubTypingSourceView.this.saveStatus = true;
+				SubTypingSourceView.this.setUndoStatus ( true ) ;
+		        String doctext = arg0.getDocument ( ).getText ( 0 ,
+		            arg0.getDocument ( ).getLength ( ) ) ;
+		        if ( doctext.endsWith ( " " ) )
+		        {
+		      	  SubTypingSourceView.this.undohistory2.push ( doctext ) ;
+		          logger.debug ( "history2 added: " + doctext ) ;
+		        }
+		        setRedoStatus ( false ) ;
+		        SubTypingSourceView.this.redohistory2.clear ( ) ;
+		        SubTypingSourceView.this.currentContent = doctext ;
+				}
+		        catch ( BadLocationException e )
+		        {
+		          logger.error ( "Failed to add text to undo history" , e ) ;
+		        }
+			}
+
+			/**
+			 * @inherit Doc
+			 *
+			 * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
+			 */
+			@SuppressWarnings ( "synthetic-access" )
+			public void removeUpdate ( DocumentEvent arg0 ) {
+				try{
+				SubTypingSourceView.this.type2 = eventHandling ( SubTypingSourceView.this.editor2,
+						SubTypingSourceView.this.outline2 );
+				SubTypingSourceView.this.window.setChangeState ( Boolean.TRUE );
+				SubTypingSourceView.this.saveStatus = true;
+				SubTypingSourceView.this.setUndoStatus ( true ) ;
+				SubTypingSourceView.this.undohistory2
+		            .push ( SubTypingSourceView.this.currentContent ) ;
+		        setRedoStatus ( false ) ;
+		        SubTypingSourceView.this.redohistory2.clear ( ) ;
+		        SubTypingSourceView.this.currentContent = arg0.getDocument ( ).getText ( 0 ,
+		            arg0.getDocument ( ).getLength ( ) ) ;
+			}
+	      catch ( BadLocationException e )
+	      {
+	        logger.error ( "Failed to add text to undo history2" , e ) ;
+	      }
+			}
+		}
 }

@@ -70,8 +70,14 @@ public class StyledTypeEnterField extends StyledLanguageDocument
    */
   public MonoType getType ( ) throws Exception
   {
+	  try {
     return this.language.newTypeParser (
         new StringReader ( getText ( 0 , getLength ( ) ) ) ).parse ( ) ;
+	  }
+	  catch (LanguageParserException e)
+	  {
+		  return null;
+	  }
   }
 
 

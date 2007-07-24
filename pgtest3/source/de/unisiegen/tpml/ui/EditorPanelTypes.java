@@ -813,33 +813,33 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 	}
 
 	public void handleCopy ( ) {
-	// TODO Auto-generated method stub
+		this.code.handleCopy ( );
 
 	}
 
 	public void handleCut ( ) {
-	// TODO Auto-generated method stub
+		this.code.handleCut ( );
 
 	}
 
 	public void handlePaste ( ) {
-	// TODO Auto-generated method stub
+	this.code.handlePaste ( );
 
 	}
 
 	public void setEditorText ( String string ) {
 		String[] components = string.split ( "°" ); //$NON-NLS-1$
 		try {
-			code.setText ( components[0] );
 			LanguageTypeParser parser = this.language.newTypeParser ( new StringReader ( components[0] ) );
 			code.setType ( parser.parse ( ) );
+			code.setText ( components[0] );
 		} catch ( Exception e ) {
 			//Nothing to do
 		}
 		try {
-			code.setText2 ( components[1] );
 			LanguageTypeParser parser = this.language.newTypeParser ( new StringReader ( components[1] ) );
 			code.setType2 ( parser.parse ( ) );
+			code.setText2 ( components[1] );
 		} catch ( Exception e ) {
 			// Nothing to do
 		}
