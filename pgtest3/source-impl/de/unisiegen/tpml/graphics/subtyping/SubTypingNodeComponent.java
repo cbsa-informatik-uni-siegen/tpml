@@ -413,10 +413,21 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
 	 * Implementation of the eventhandling
 	 */
 
+	/** 
+	 * Add the given node listener.
+	 * 
+	 * @param listener the new node listener
+	 */
 	public void addSubTypingNodeListener ( SubTypingNodeListener listener ) {
 		this.listenerList.add ( SubTypingNodeListener.class, listener );
 	}
 
+	/**
+	 * 
+	 * Remove the given listener.
+	 *
+	 * @param listener the node listener which should be removed
+	 */
 	public void removeSubTypingNodeListener ( SubTypingNodeListener listener ) {
 		this.listenerList.remove ( SubTypingNodeListener.class, listener );
 	}
