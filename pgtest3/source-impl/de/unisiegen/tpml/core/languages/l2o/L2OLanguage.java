@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.languages.l2o ;
 
 
 import java.io.Reader ;
+
 import java_cup.runtime.lr_parser ;
 import de.unisiegen.tpml.core.AbstractProofRule ;
 import de.unisiegen.tpml.core.Messages ;
@@ -18,12 +19,8 @@ import de.unisiegen.tpml.core.languages.l0.L0Language ;
 import de.unisiegen.tpml.core.languages.l1.L1Language ;
 import de.unisiegen.tpml.core.languages.l2.L2Language ;
 import de.unisiegen.tpml.core.languages.l2cbn.L2CBNLanguage ;
-import de.unisiegen.tpml.core.languages.l2osubtype.L2ORecSubTypingProofRuleSet;
-import de.unisiegen.tpml.core.languages.l2osubtype.L2OSubTypingProofRuleSet;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofModel ;
-import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel ;
 import de.unisiegen.tpml.core.types.MonoType ;

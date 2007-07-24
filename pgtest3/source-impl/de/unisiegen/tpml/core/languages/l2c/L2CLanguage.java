@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.languages.l2c ;
 
 import java.io.Reader ;
 import java.text.MessageFormat ;
+
 import java_cup.runtime.lr_parser ;
 import de.unisiegen.tpml.core.AbstractProofRule ;
 import de.unisiegen.tpml.core.Messages ;
@@ -19,11 +20,8 @@ import de.unisiegen.tpml.core.languages.l0.L0Language ;
 import de.unisiegen.tpml.core.languages.l1.L1Language ;
 import de.unisiegen.tpml.core.languages.l2.L2Language ;
 import de.unisiegen.tpml.core.languages.l2o.L2OLanguage ;
-import de.unisiegen.tpml.core.languages.l2o.L2OLanguageTranslator ;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofModel ;
-import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel ;
 import de.unisiegen.tpml.core.types.MonoType ;
@@ -158,23 +156,6 @@ public class L2CLanguage extends L2OLanguage
 
   /**
    * {@inheritDoc}
-   * 
-   * @see Language#newSubTypingProofModel(MonoType, MonoType, boolean)
-   */
-  @ Override
-  public RecSubTypingProofModel newRecSubTypingProofModel (
-      @ SuppressWarnings ( "unused" )
-      MonoType type , @ SuppressWarnings ( "unused" )
-      MonoType type2 , @ SuppressWarnings ( "unused" )
-      boolean mode )
-  {
-    throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "Exception.11" ) , getName ( ) ) ) ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
    */
   @ Override
   public LanguageScanner newScanner ( Reader pReader )
@@ -200,28 +181,11 @@ public class L2CLanguage extends L2OLanguage
 
   /**
    * {@inheritDoc}
-   * 
-   * @see Language#newSubTypingProofModel(MonoType, MonoType, boolean)
-   */
-  @ Override
-  public SubTypingProofModel newSubTypingProofModel (
-      @ SuppressWarnings ( "unused" )
-      MonoType type , @ SuppressWarnings ( "unused" )
-      MonoType type2 , @ SuppressWarnings ( "unused" )
-      boolean mode )
-  {
-    throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "Exception.10" ) , getName ( ) ) ) ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
    */
   @ Override
   public LanguageTranslator newTranslator ( )
   {
-    return new L2OLanguageTranslator ( ) ;
+    return new L2CLanguageTranslator ( ) ;
   }
 
 

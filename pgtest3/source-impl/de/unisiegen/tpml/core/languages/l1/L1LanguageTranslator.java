@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.languages.l1 ;
 import de.unisiegen.tpml.core.expressions.And ;
 import de.unisiegen.tpml.core.expressions.Application ;
 import de.unisiegen.tpml.core.expressions.BooleanConstant ;
+import de.unisiegen.tpml.core.expressions.Coercion ;
 import de.unisiegen.tpml.core.expressions.Condition ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
@@ -145,9 +146,19 @@ public class L1LanguageTranslator extends L0LanguageTranslator
       // generate the condition
       return new Condition ( e1 , new BooleanConstant ( true ) , e2 ) ;
     }
+    else if ( expression instanceof Coercion )
+    {
+      if ( recursive )
+      {
+        Coercion coercion = ( Coercion ) expression ;
+        return new Coercion (
+            translateToCoreSyntax ( coercion.getE ( ) , true ) , coercion
+                .getTau1 ( ) , coercion.getTau2 ( ) ) ;
+      }
+      return expression ;
+    }
     else
     {
-      // dunno, let the parent class handle it
       return super.translateToCoreSyntax ( expression , recursive ) ;
     }
   }
