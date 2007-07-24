@@ -140,7 +140,7 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 			context.apply ( rule, node );
 
 			//	 check if we are finished
-			final DefaultSubTypingProofNode modelRoot = ( DefaultSubTypingProofNode ) getRoot ( );
+			final DefaultSubTypingProofNode modelRoot = getRoot ( );
 			context.addRedoAction ( new Runnable ( ) {
 				@SuppressWarnings ( "synthetic-access" )
 				public void run ( ) {
@@ -338,6 +338,12 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 		return this.ruleSet.getRules ( );
 	}
 	
+	/**
+	 * TODO
+	 *
+	 * @return
+	 * @see de.unisiegen.tpml.core.AbstractProofModel#getRoot()
+	 */
 	@Override
 	public DefaultSubTypingProofNode getRoot(){
 		return (DefaultSubTypingProofNode)super.getRoot ( );
