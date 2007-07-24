@@ -750,6 +750,7 @@ public class MinimalTypingNodeComponent extends JComponent implements
 		menu.addSeparator ( );
 		menu.add ( new MenuGuessItem ( ) );
 		menu.add ( new MenuGuessTreeItem ( ) );
+		menu.add ( new MenuTranslateItem ( ) );
 
 		this.ruleButton.setMenu ( menu );
 	}
