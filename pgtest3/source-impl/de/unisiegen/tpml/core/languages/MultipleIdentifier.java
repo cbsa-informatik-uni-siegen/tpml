@@ -45,6 +45,31 @@ public class MultipleIdentifier
         LanguageParserMultiException.throwExceptionBody ( negativeIdentifiers ) ;
       }
     }
+    if ( pBody.getBodyOrRow ( ) instanceof Row )
+    {
+      Row row = ( Row ) pBody.getBodyOrRow ( ) ;
+      for ( Identifier a : attributeIdentifiers )
+      {
+        negativeIdentifiers.clear ( ) ;
+        for ( Expression e : row.getExpressions ( ) )
+        {
+          if ( e instanceof Attribute )
+          {
+            Attribute attribute = ( Attribute ) e ;
+            if ( a.equals ( attribute.getId ( ) ) )
+            {
+              negativeIdentifiers.add ( attribute.getId ( ) ) ;
+            }
+          }
+        }
+        if ( negativeIdentifiers.size ( ) > 0 )
+        {
+          negativeIdentifiers.add ( a ) ;
+          LanguageParserMultiException
+              .throwExceptionBody ( negativeIdentifiers ) ;
+        }
+      }
+    }
   }
 
 
