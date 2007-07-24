@@ -119,7 +119,7 @@ public class MinimalTypingComponent extends AbstractProofComponent implements Sc
 				return;
 			}
 		}
-    throw new IllegalStateException("Unable to find next node");
+    throw new IllegalStateException("Unable to find next node"); //$NON-NLS-1$
 	}
 
 	/**
@@ -135,6 +135,7 @@ public class MinimalTypingComponent extends AbstractProofComponent implements Sc
 		this.currentlyLayouting = true;
 		
 		SwingUtilities.invokeLater(new Runnable() {
+			@SuppressWarnings("synthetic-access")
 			public void run () {
 				MinimalTypingProofNode rootNode = (MinimalTypingProofNode)MinimalTypingComponent.this.proofModel.getRoot();
 				
@@ -195,14 +196,17 @@ public class MinimalTypingComponent extends AbstractProofComponent implements Sc
 			
 			// when the node changes the  gui needs to get updated
 			nodeComponent.addMinimalTypingNodeListener(new MinimalTypingNodeListener () {
-				public void nodeChanged (MinimalTypingNodeComponent node) {
+				public void nodeChanged (@SuppressWarnings("unused")
+				MinimalTypingNodeComponent pNode) {
 					MinimalTypingComponent.this.relayout();
 				}
-				public void requestTypeEnter (MinimalTypingNodeComponent node) {
-					
+				public void requestTypeEnter (@SuppressWarnings("unused")
+						MinimalTypingNodeComponent pNode) {
+					// Nothing to do
 				}
-				public void requestJumpToNode (ProofNode node) {
-					MinimalTypingComponent.this.jumpNode = node;
+				@SuppressWarnings("synthetic-access")
+				public void requestJumpToNode (ProofNode pNode) {
+					MinimalTypingComponent.this.jumpNode = pNode;
 				}
 			});
 		}

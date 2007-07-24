@@ -178,8 +178,8 @@ public class MinimalTypingView extends AbstractProofView
 		while (enumeration.hasMoreElements()) {
 			// tell the component belonging to this node, that we have a new advanced state
 			MinimalTypingProofNode node = (MinimalTypingProofNode)enumeration.nextElement();
-			MinimalTypingNodeComponent component = (MinimalTypingNodeComponent)node.getUserObject();
-			component.setAdvanced(advanced);
+			MinimalTypingNodeComponent nodeComponent = (MinimalTypingNodeComponent)node.getUserObject();
+			nodeComponent.setAdvanced();
 		}
   }
 }

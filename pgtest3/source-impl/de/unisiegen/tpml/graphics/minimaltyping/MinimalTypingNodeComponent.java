@@ -252,9 +252,13 @@ public class MinimalTypingNodeComponent extends JComponent implements
 		 * Connect the handling of the ruleButton
 		 */
 		this.ruleButton.addMenuButtonListener ( new MenuButtonListener ( ) {
-			public void menuClosed ( MenuButton button ) {}
+			public void menuClosed ( @SuppressWarnings("unused")
+			MenuButton button ) {
+				//Nothing to do
+			}
 
-			public void menuItemActivated ( MenuButton button,
+			public void menuItemActivated ( @SuppressWarnings("unused")
+			MenuButton button,
 					final JMenuItem source ) {
 				// setup a wait cursor for the toplevel ancestor
 				final Container toplevel = getTopLevelAncestor ( );
@@ -350,7 +354,8 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	 * @param maxWidth The maximum amount of pixels available to place the
 	 *          elements.
 	 */
-	private void placeElements ( int maxWidth ) {
+	private void placeElements ( int pMaxWidth ) {
+		int maxWidth = pMaxWidth;
 		// get the size for the index at the beginning: (x)
 		FontMetrics fm = AbstractRenderer.getTextFontMetrics ( );
 		Dimension labelSize = new Dimension ( fm.stringWidth ( this.indexLabel
@@ -498,10 +503,20 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	 * Implementation of the eventhandling
 	 */
 
+	/**
+	 * Add a new {@link MinimalTypingNodeListener} 
+	 * 
+	 * @param listener the new listener to add
+	 */
 	public void addMinimalTypingNodeListener ( MinimalTypingNodeListener listener ) {
 		this.listenerList.add ( MinimalTypingNodeListener.class, listener );
 	}
 
+	/**
+	 * Remove a {@link MinimalTypingNodeListener} 
+	 *
+	 * @param listener the listener to remove
+	 */
 	public void removeMinimalTypingNodeListener (
 			MinimalTypingNodeListener listener ) {
 		this.listenerList.remove ( MinimalTypingNodeListener.class, listener );
@@ -725,11 +740,22 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	//    
 	//  }
 
+	/**
+	 * Get the second @link TypeComponent of this Component
+	 * 
+	 * @return the second type component
+	 */
 	public TypeComponent getTypeComponent2 ( ) {
 		return this.typeComponent2;
 	}
 
-	public void setAdvanced ( boolean advanced ) {
+	/**
+	 * 
+	 * Set the mode for this component.
+	 * True means advanced, false means beginner.
+	 *
+	 */
+	public void setAdvanced (  ) {
 
 		/*
 		 * Create the PopupMenu for the menu button

@@ -4,6 +4,13 @@ import java.util.EventListener;
 
 import de.unisiegen.tpml.core.ProofNode;
 
+/**
+ * 
+ * Listener for MinimalTypingNodes
+ *
+ * @author Benjamin Mies
+ *
+ */
 public interface MinimalTypingNodeListener extends EventListener {
 
 	/**
