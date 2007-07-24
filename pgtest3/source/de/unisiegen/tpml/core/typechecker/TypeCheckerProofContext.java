@@ -48,6 +48,16 @@ public interface TypeCheckerProofContext {
    */
   public void addProofNode(TypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type);
   
+  /**
+   * 
+   * Adds a new child node below the <code>node</code>, to prove the
+   * type safety of the <code>types</code>. 
+   *
+   * @param node the parent node to add the child
+   * @param type the first type of the new child node
+   * @param type2 the second type of the new child node
+   * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#addProofNode(de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode, de.unisiegen.tpml.core.types.MonoType, de.unisiegen.tpml.core.types.MonoType)
+   */
   public void addProofNode(TypeCheckerProofNode node, MonoType type, MonoType type2);
   
   /**

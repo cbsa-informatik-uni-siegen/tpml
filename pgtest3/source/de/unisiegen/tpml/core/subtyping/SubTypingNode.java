@@ -30,11 +30,11 @@ public interface SubTypingNode extends ProofNode, ExpressionOrType {
 	 * @return MonoType the second type of this node
 	 */
 	public MonoType getType2 ( );
-	
+
 	/**
 	 * {@inheritDoc}
 	 *
 	 * @see de.unisiegen.tpml.core.ProofNode#getLastLeaf()
 	 */
-	public SubTypingNode getLastLeaf();
+	public SubTypingNode getLastLeaf ( );
 }

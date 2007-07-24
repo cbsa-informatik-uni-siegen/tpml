@@ -10,46 +10,46 @@ import de.unisiegen.tpml.core.types.MonoType;
 /**
  * 
  * The Default Subtype is needed for the subtyping algorithm. This object
- * contains a subtype and an overtype.
+ * contains a left and an right.
  *
  * @author Benjamin Mies
  *
  */
-public class DefaultSubType implements PrettyPrintable , PrettyPrintPriorities{
+public class DefaultSubType implements PrettyPrintable, PrettyPrintPriorities {
 
-	private MonoType subtype;
+	private MonoType left;
 
-	private MonoType overtype;
+	private MonoType right;
 
 	/**
-	 * Allocates a new default subtype with the given types.
-	 * @param type the subtype of this object
-	 * @param type2 the overtype of this object
+	 * Allocates a new default left with the given types.
+	 * @param left the left of this object
+	 * @param right the right of this object
 	 * 
 	 */
-	public DefaultSubType ( MonoType type, MonoType type2 ) {
-		this.subtype = type;
-		this.overtype = type2;
+	public DefaultSubType ( MonoType left, MonoType right ) {
+		this.left = left;
+		this.right = right;
 	}
 
 	/**
 	 * 
-	 * Returns the overtype of this object
+	 * Returns the right type of this object
 	 *
-	 * @return the overtype of this object
+	 * @return the right (type) overtype of this object
 	 */
-	public MonoType getOvertype ( ) {
-		return this.overtype;
+	public MonoType getRight ( ) {
+		return this.right;
 	}
 
 	/**
 	 * 
-	 * Returns the subtype of this object
+	 * Returns the left type of this object
 	 *
-	 * @return the subtype of this object
+	 * @return the left type (subtype) of this object
 	 */
-	public MonoType getSubtype ( ) {
-		return this.subtype;
+	public MonoType getLeft ( ) {
+		return this.left;
 	}
 
 	/**
@@ -62,8 +62,7 @@ public class DefaultSubType implements PrettyPrintable , PrettyPrintPriorities{
 		if ( pObject instanceof DefaultSubType ) {
 			DefaultSubType other = ( DefaultSubType ) pObject;
 
-			return ( this.subtype.equals ( other.subtype ) && this.overtype
-					.equals ( other.overtype ) );
+			return ( this.left.equals ( other.left ) && this.right.equals ( other.right ) );
 
 		}
 		return false;
@@ -79,46 +78,38 @@ public class DefaultSubType implements PrettyPrintable , PrettyPrintPriorities{
 	@Override
 	public String toString ( ) {
 		final StringBuilder builder = new StringBuilder ( );
-		builder.append ( this.subtype );
+		builder.append ( this.left );
 		builder.append ( "<b><font color=\"#FF0000\">" ); //$NON-NLS-1$
 		builder.append ( " &#60: " ); //$NON-NLS-1$
 		builder.append ( "</font></b>" ); //$NON-NLS-1$
-		builder.append ( this.overtype );
+		builder.append ( this.right );
 		return builder.toString ( );
 	}
-	
-	 //
-	  // Pretty printing
-	  //
-	  /**
-	   * {@inheritDoc}
-	   * 
-	   * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
-	   */
-	  public final PrettyString toPrettyString ( )
-	  {
-	    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-	        .toPrettyString ( ) ;
-	  }
 
+	//
+	// Pretty printing
+	//
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
+	 */
+	public final PrettyString toPrettyString ( ) {
+		return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) ).toPrettyString ( );
+	}
 
-	  /**
-	   * Returns the {@link PrettyStringBuilder}.
-	   * 
-	   * @param factory The {@link PrettyStringBuilderFactory}.
-	   * @return The {@link PrettyStringBuilder}.
-	   */
-	  private PrettyStringBuilder toPrettyStringBuilder (
-	      PrettyStringBuilderFactory factory )
-	  {
-	    PrettyStringBuilder builder = factory.newBuilder ( this , PRIO_EQUATION ) ;
-	    builder.addBuilder ( this.overtype.toPrettyStringBuilder ( factory ) ,
-	        PRIO_EQUATION ) ;
-	    builder.addText ( " = " ) ; //$NON-NLS-1$
-	    builder.addBuilder ( this.subtype.toPrettyStringBuilder ( factory ) ,
-	        PRIO_EQUATION ) ;
-	    return builder ;
-	  }
-
+	/**
+	 * Returns the {@link PrettyStringBuilder}.
+	 * 
+	 * @param factory The {@link PrettyStringBuilderFactory}.
+	 * @return The {@link PrettyStringBuilder}.
+	 */
+	private PrettyStringBuilder toPrettyStringBuilder ( PrettyStringBuilderFactory factory ) {
+		PrettyStringBuilder builder = factory.newBuilder ( this, PRIO_EQUATION );
+		builder.addBuilder ( this.right.toPrettyStringBuilder ( factory ), PRIO_EQUATION );
+		builder.addText ( " = " ); //$NON-NLS-1$
+		builder.addBuilder ( this.left.toPrettyStringBuilder ( factory ), PRIO_EQUATION );
+		return builder;
+	}
 
 }

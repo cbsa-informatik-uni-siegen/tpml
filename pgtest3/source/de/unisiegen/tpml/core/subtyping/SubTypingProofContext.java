@@ -24,7 +24,6 @@ public interface SubTypingProofContext {
 	 *                                  with this proof context.
 	 * @throws NullPointerException if any of the parameters is <code>null</code>.
 	 */
-	public void addProofNode ( SubTypingProofNode node, MonoType type,
-			MonoType type2 );
+	public void addProofNode ( SubTypingProofNode node, MonoType type, MonoType type2 );
 
 }

@@ -27,8 +27,7 @@ public interface RecSubTypingProofContext {
 	 *                                  with this proof context.
 	 * @throws NullPointerException if any of the parameters is <code>null</code>.
 	 */
-	public void addProofNode ( RecSubTypingProofNode node, MonoType type,
-			MonoType type2 );
+	public void addProofNode ( RecSubTypingProofNode node, MonoType type, MonoType type2 );
 
 	/**
 	 * 

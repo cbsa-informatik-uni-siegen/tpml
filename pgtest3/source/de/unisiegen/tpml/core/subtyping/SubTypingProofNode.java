@@ -11,9 +11,7 @@ import de.unisiegen.tpml.core.ProofRule;
  * @see de.unisiegen.tpml.core.ProofNode
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofModel
  */
-public interface SubTypingProofNode extends  SubTypingNode{
-
-
+public interface SubTypingProofNode extends SubTypingNode {
 
 	/**
 	 * Returns <code>true</code> if this node and all subnodes are finished. A node is finished if
@@ -29,8 +27,7 @@ public interface SubTypingProofNode extends  SubTypingNode{
 	 * @see de.unisiegen.tpml.core.ProofNode#getChildAt(int)
 	 */
 	public SubTypingProofNode getChildAt ( int childIndex );
-	
-	
+
 	/**
 	 * {@inheritDoc}
 	 *
@@ -49,6 +46,5 @@ public interface SubTypingProofNode extends  SubTypingNode{
 	 * @see de.unisiegen.tpml.core.ProofStep
 	 */
 	public ProofRule getRule ( );
-	
 
 }

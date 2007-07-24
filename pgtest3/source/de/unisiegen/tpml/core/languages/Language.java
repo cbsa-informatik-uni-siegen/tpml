@@ -255,5 +255,12 @@ public interface Language {
    */
   public LanguageTypeScanner newTypeScanner(Reader reader);
   
+  /**
+   * 
+   * Gives information if this language is a type language or
+   * an expression language
+   *
+   * @return true if this is a type language, else false
+   */
   public boolean isTypeLanguage();
 }

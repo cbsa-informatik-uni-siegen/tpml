@@ -30,7 +30,7 @@ public interface SubTypingModel extends ProofModel {
 	 * @throws ProofRuleException
 	 * @see de.unisiegen.tpml.core.ProofModel#prove(de.unisiegen.tpml.core.ProofRule, de.unisiegen.tpml.core.ProofNode)
 	 */
-	public void prove ( ProofRule rule, ProofNode proofNode )throws ProofRuleException;
+	public void prove ( ProofRule rule, ProofNode proofNode ) throws ProofRuleException;
 
 	/**
 	 * 
@@ -48,12 +48,12 @@ public interface SubTypingModel extends ProofModel {
 	 * @see de.unisiegen.tpml.core.ProofModel#complete(de.unisiegen.tpml.core.ProofNode)
 	 */
 	public void complete ( ProofNode proofNode ) throws ProofGuessException;
-	
+
 	/**
 	 * {@inheritDoc}
 	 *
 	 * @see de.unisiegen.tpml.core.ProofModel#getRoot()
 	 */
-	public SubTypingNode getRoot();
+	public SubTypingNode getRoot ( );
 
 }

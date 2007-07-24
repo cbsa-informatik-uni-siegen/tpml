@@ -4,7 +4,6 @@ import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.subtyping.SubTypingNode;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;
-import de.unisiegen.tpml.core.types.MonoType;
 
 /**
  * Base interface to nodes in a {@link de.unisiegen.tpml.core.subtyping.SubTypingProofModel}.
@@ -14,9 +13,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @see de.unisiegen.tpml.core.ProofNode
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofModel
  */
-public interface RecSubTypingProofNode extends  SubTypingNode {
-
-
+public interface RecSubTypingProofNode extends SubTypingNode {
 
 	/**
 	 * 

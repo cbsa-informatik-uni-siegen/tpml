@@ -20,13 +20,13 @@ public interface TypeEquationProofNode extends TypeCheckerProofNode {
 	 *
 	 * @return equation type equation of this node
 	 */
-	public TypeEquationTypeInference getEquation();
-	
+	public TypeEquationTypeInference getEquation ( );
+
 	/**
 	 * 
 	 * Get the actual choosen mode
 	 *
 	 * @return mode boolean - actual choosen mode
 	 */
-	public boolean getMode();
+	public boolean getMode ( );
 }

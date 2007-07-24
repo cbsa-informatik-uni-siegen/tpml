@@ -46,8 +46,7 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	 * 
 	 * @see Logger
 	 */
-	private static final Logger logger = Logger
-			.getLogger ( RecSubTypingProofModel.class );
+	private static final Logger logger = Logger.getLogger ( RecSubTypingProofModel.class );
 
 	private boolean mode = true;
 
@@ -71,10 +70,8 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	 *
 	 * @see AbstractProofModel#AbstractProofModel(AbstractProofNode, AbstractProofRuleSet)
 	 */
-	public RecSubTypingProofModel ( MonoType type, MonoType type2,
-			AbstractRecSubTypingProofRuleSet ruleSet, boolean mode ) {
-		super ( new DefaultRecSubTypingProofNode ( type, type2,
-				new SeenTypes < DefaultSubType > ( ) ), ruleSet );
+	public RecSubTypingProofModel ( MonoType type, MonoType type2, AbstractRecSubTypingProofRuleSet ruleSet, boolean mode ) {
+		super ( new DefaultRecSubTypingProofNode ( type, type2, new SeenTypes < DefaultSubType > ( ) ), ruleSet );
 		this.ruleSet = ruleSet;
 		this.mode = mode;
 	}
@@ -96,8 +93,7 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule, de.unisiegen.tpml.core.ProofNode)
 	 */
 	@Override
-	public void prove ( ProofRule rule, ProofNode pNode )
-			throws ProofRuleException {
+	public void prove ( ProofRule rule, ProofNode pNode ) throws ProofRuleException {
 
 		if ( !this.ruleSet.contains ( rule ) ) {
 			throw new IllegalArgumentException ( "The rule is invalid for the model" ); //$NON-NLS-1$
@@ -134,18 +130,17 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	 * @see #guess(ProofNode)
 	 * @see #prove(ProofRule, ProofNode)
 	 */
-	private void applyInternal ( RecSubTypingProofRule rule,
-			DefaultRecSubTypingProofNode node ) throws ProofRuleException {
+	private void applyInternal ( RecSubTypingProofRule rule, DefaultRecSubTypingProofNode node )
+			throws ProofRuleException {
 
 		// allocate a new TypeCheckerContext
-		DefaultRecSubTypingProofContext context = new DefaultRecSubTypingProofContext (
-				this, node );
+		DefaultRecSubTypingProofContext context = new DefaultRecSubTypingProofContext ( this, node );
 
 		try {
 			context.apply ( rule, node );
 
 			//	 check if we are finished
-			final DefaultRecSubTypingProofNode modelRoot = ( DefaultRecSubTypingProofNode ) getRoot ( );
+			final DefaultRecSubTypingProofNode modelRoot = getRoot ( );
 			context.addRedoAction ( new Runnable ( ) {
 				@SuppressWarnings ( "synthetic-access" )
 				public void run ( ) {
@@ -211,19 +206,18 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	 * @see #guess(ProofNode)
 	 * @see #guessWithType(ProofNode, MonoType)
 	 */
-	private void guessInternal ( DefaultRecSubTypingProofNode node )
-			throws ProofGuessException {
+	private void guessInternal ( DefaultRecSubTypingProofNode node ) throws ProofGuessException {
 		if ( node == null ) {
 			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
 		}
 		if ( node.getSteps ( ).length > 0 ) {
-			throw new IllegalArgumentException ( MessageFormat.format ( Messages
-					.getString ( "IllegalArgumentException.0" ), node ) ); //$NON-NLS-1$
+			throw new IllegalArgumentException ( MessageFormat.format (
+					Messages.getString ( "IllegalArgumentException.0" ), node ) ); //$NON-NLS-1$
 		}
 
 		if ( !this.root.isNodeRelated ( node ) ) {
-			throw new IllegalArgumentException ( MessageFormat.format ( Messages
-					.getString ( "IllegalArgumentException.1" ), node ) ); //$NON-NLS-1$
+			throw new IllegalArgumentException ( MessageFormat.format (
+					Messages.getString ( "IllegalArgumentException.1" ), node ) ); //$NON-NLS-1$
 		}
 		// try to guess the next rule
 		logger.debug ( "Trying to guess a rule for " + node ); //$NON-NLS-1$
@@ -247,8 +241,8 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 		// unable to guess next step
 		logger.debug ( "Failed to find rule to apply to " + node ); //$NON-NLS-1$
 
-		throw new ProofGuessException ( MessageFormat.format ( Messages
-				.getString ( "ProofGuessException.0" ), node ), node ); //$NON-NLS-1$
+		throw new ProofGuessException (
+				MessageFormat.format ( Messages.getString ( "ProofGuessException.0" ), node ), node ); //$NON-NLS-1$
 	}
 
 	//
@@ -268,14 +262,12 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	 * @throws IllegalArgumentException if <code>node</code> is invalid for this tree.
 	 * @throws NullPointerException if any of the parameters is <code>null</code>.
 	 */
-	void contextAddProofNode ( final DefaultRecSubTypingProofContext context,
-			final RecSubTypingProofNode pNode, final MonoType type,
-			final MonoType type2, final SeenTypes < DefaultSubType > seenTypes ) {
+	void contextAddProofNode ( final DefaultRecSubTypingProofContext context, final RecSubTypingProofNode pNode,
+			final MonoType type, final MonoType type2, final SeenTypes < DefaultSubType > seenTypes ) {
 
 		final DefaultRecSubTypingProofNode node = ( DefaultRecSubTypingProofNode ) pNode;
 
-		final DefaultRecSubTypingProofNode child = new DefaultRecSubTypingProofNode (
-				type, type2, seenTypes );
+		final DefaultRecSubTypingProofNode child = new DefaultRecSubTypingProofNode ( type, type2, seenTypes );
 
 		// add redo and undo options
 		context.addRedoAction ( new Runnable ( ) {
@@ -306,15 +298,14 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	 * 
 	 * @see DefaultTypeCheckerProofContext#apply(TypeCheckerProofRule, TypeCheckerProofNode)
 	 */
-	void contextSetProofNodeRule ( DefaultRecSubTypingProofContext context,
-			final DefaultRecSubTypingProofNode node, final RecSubTypingProofRule rule ) {
+	void contextSetProofNodeRule ( DefaultRecSubTypingProofContext context, final DefaultRecSubTypingProofNode node,
+			final RecSubTypingProofRule rule ) {
 		final ProofStep[] oldSteps = node.getSteps ( );
 
 		context.addRedoAction ( new Runnable ( ) {
 			@SuppressWarnings ( "synthetic-access" )
 			public void run ( ) {
-				node.setSteps ( new ProofStep[] { new ProofStep ( node.getType ( ),
-						node.getType2 ( ), rule ) } );
+				node.setSteps ( new ProofStep[] { new ProofStep ( node.getType ( ), node.getType2 ( ), rule ) } );
 				ProofRule[] rules = new ProofRule[1];
 				rules[0] = rule;
 				node.setRules ( rules );
@@ -343,10 +334,15 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	public ProofRule[] getRules ( ) {
 		return this.ruleSet.getRules ( );
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.AbstractProofModel#getRoot()
+	 */
 	@Override
-	public DefaultRecSubTypingProofNode getRoot(){
-		return (DefaultRecSubTypingProofNode) super.getRoot ( );
+	public DefaultRecSubTypingProofNode getRoot ( ) {
+		return ( DefaultRecSubTypingProofNode ) super.getRoot ( );
 	}
 
 	/**
@@ -357,8 +353,7 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	 * @param type2 second MonoType of the new root
 	 * @param seenTypes list of the already seen subtypes
 	 */
-	public void setRoot ( MonoType type, MonoType type2,
-			SeenTypes < DefaultSubType > seenTypes ) {
+	public void setRoot ( MonoType type, MonoType type2, SeenTypes < DefaultSubType > seenTypes ) {
 		this.root = new DefaultRecSubTypingProofNode ( type, type2, seenTypes );
 	}
 
@@ -379,22 +374,16 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 					this.ruleSet.unregister ( "OBJECT-DEPTH" ); //$NON-NLS-1$
 					this.ruleSet.unregister ( "REFL" ); //$NON-NLS-1$
 
-					this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
-							"OBJECT", "applyObject" ); //$NON-NLS-1$ //$NON-NLS-2$
-					this.ruleSet.registerByMethodName ( L1Language.L1,
-							"REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L2OLanguage.L2O, "OBJECT", "applyObject" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
 					this.ruleSet.unregister ( "OBJECT" ); //$NON-NLS-1$
 					this.ruleSet.unregister ( "REFL" ); //$NON-NLS-1$
 
-					this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
-							"TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
-					this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
-							"OBJECT-WIDTH", "applyObjectWidth" ); //$NON-NLS-1$ //$NON-NLS-2$
-					this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
-							"OBJECT-DEPTH", "applyObjectDepth" ); //$NON-NLS-1$ //$NON-NLS-2$
-					this.ruleSet.registerByMethodName ( L1Language.L1,
-							"REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L2OLanguage.L2O, "TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L2OLanguage.L2O, "OBJECT-WIDTH", "applyObjectWidth" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L2OLanguage.L2O, "OBJECT-DEPTH", "applyObjectDepth" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 		}

@@ -42,8 +42,7 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	 * 
 	 * @see Logger
 	 */
-	private static final Logger logger = Logger
-			.getLogger ( SubTypingProofModel.class );
+	private static final Logger logger = Logger.getLogger ( SubTypingProofModel.class );
 
 	private boolean mode = true;
 
@@ -67,8 +66,7 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	 *
 	 * @see AbstractProofModel#AbstractProofModel(AbstractProofNode, AbstractProofRuleSet)
 	 */
-	public SubTypingProofModel ( MonoType type, MonoType type2,
-			AbstractSubTypingProofRuleSet ruleSet, boolean mode ) {
+	public SubTypingProofModel ( MonoType type, MonoType type2, AbstractSubTypingProofRuleSet ruleSet, boolean mode ) {
 		super ( new DefaultSubTypingProofNode ( type, type2 ), ruleSet );
 		this.ruleSet = ruleSet;
 		this.mode = mode;
@@ -91,8 +89,7 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule, de.unisiegen.tpml.core.ProofNode)
 	 */
 	@Override
-	public void prove ( ProofRule rule, ProofNode pNode )
-			throws ProofRuleException {
+	public void prove ( ProofRule rule, ProofNode pNode ) throws ProofRuleException {
 
 		if ( !this.ruleSet.contains ( rule ) ) {
 			throw new IllegalArgumentException ( "The rule is invalid for the model" ); //$NON-NLS-1$
@@ -129,12 +126,10 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	 * @see #guess(ProofNode)
 	 * @see #prove(ProofRule, ProofNode)
 	 */
-	private void applyInternal ( SubTypingProofRule rule,
-			DefaultSubTypingProofNode node ) throws ProofRuleException {
+	private void applyInternal ( SubTypingProofRule rule, DefaultSubTypingProofNode node ) throws ProofRuleException {
 
 		// allocate a new TypeCheckerContext
-		DefaultSubTypingProofContext context = new DefaultSubTypingProofContext (
-				this, node );
+		DefaultSubTypingProofContext context = new DefaultSubTypingProofContext ( this, node );
 
 		try {
 			context.apply ( rule, node );
@@ -206,19 +201,18 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	 * @see #guess(ProofNode)
 	 * @see #guessWithType(ProofNode, MonoType)
 	 */
-	private void guessInternal ( DefaultSubTypingProofNode node )
-			throws ProofGuessException {
+	private void guessInternal ( DefaultSubTypingProofNode node ) throws ProofGuessException {
 		if ( node == null ) {
 			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
 		}
 		if ( node.getSteps ( ).length > 0 ) {
-			throw new IllegalArgumentException ( MessageFormat.format ( Messages
-					.getString ( "IllegalArgumentException.0" ), node ) ); //$NON-NLS-1$
+			throw new IllegalArgumentException ( MessageFormat.format (
+					Messages.getString ( "IllegalArgumentException.0" ), node ) ); //$NON-NLS-1$
 		}
 
 		if ( !this.root.isNodeRelated ( node ) ) {
-			throw new IllegalArgumentException ( MessageFormat.format ( Messages
-					.getString ( "IllegalArgumentException.1" ), node ) ); //$NON-NLS-1$
+			throw new IllegalArgumentException ( MessageFormat.format (
+					Messages.getString ( "IllegalArgumentException.1" ), node ) ); //$NON-NLS-1$
 		}
 		// try to guess the next rule
 		logger.debug ( "Trying to guess a rule for " + node ); //$NON-NLS-1$
@@ -242,8 +236,8 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 		// unable to guess next step
 		logger.debug ( "Failed to find rule to apply to " + node ); //$NON-NLS-1$
 
-		throw new ProofGuessException ( MessageFormat.format ( Messages
-				.getString ( "ProofGuessException.0" ), node ), node ); //$NON-NLS-1$
+		throw new ProofGuessException (
+				MessageFormat.format ( Messages.getString ( "ProofGuessException.0" ), node ), node ); //$NON-NLS-1$
 	}
 
 	//
@@ -263,13 +257,12 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	 * @throws IllegalArgumentException if <code>node</code> is invalid for this tree.
 	 * @throws NullPointerException if any of the parameters is <code>null</code>.
 	 */
-	void contextAddProofNode ( final DefaultSubTypingProofContext context,
-			final SubTypingProofNode pNode, final MonoType type, final MonoType type2 ) {
+	void contextAddProofNode ( final DefaultSubTypingProofContext context, final SubTypingProofNode pNode,
+			final MonoType type, final MonoType type2 ) {
 
 		final DefaultSubTypingProofNode node = ( DefaultSubTypingProofNode ) pNode;
 
-		final DefaultSubTypingProofNode child = new DefaultSubTypingProofNode (
-				type, type2 );
+		final DefaultSubTypingProofNode child = new DefaultSubTypingProofNode ( type, type2 );
 
 		// add redo and undo options
 		context.addRedoAction ( new Runnable ( ) {
@@ -300,15 +293,14 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	 * 
 	 * @see DefaultTypeCheckerProofContext#apply(TypeCheckerProofRule, TypeCheckerProofNode)
 	 */
-	void contextSetProofNodeRule ( DefaultSubTypingProofContext context,
-			final DefaultSubTypingProofNode node, final SubTypingProofRule rule ) {
+	void contextSetProofNodeRule ( DefaultSubTypingProofContext context, final DefaultSubTypingProofNode node,
+			final SubTypingProofRule rule ) {
 		final ProofStep[] oldSteps = node.getSteps ( );
 
 		context.addRedoAction ( new Runnable ( ) {
 			@SuppressWarnings ( "synthetic-access" )
 			public void run ( ) {
-				node.setSteps ( new ProofStep[] { new ProofStep ( node.getType ( ),
-						node.getType2 ( ), rule ) } );
+				node.setSteps ( new ProofStep[] { new ProofStep ( node.getType ( ), node.getType2 ( ), rule ) } );
 				ProofRule[] rules = new ProofRule[1];
 				rules[0] = rule;
 				node.setRules ( rules );
@@ -337,7 +329,7 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	public ProofRule[] getRules ( ) {
 		return this.ruleSet.getRules ( );
 	}
-	
+
 	/**
 	 * TODO
 	 *
@@ -345,8 +337,8 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#getRoot()
 	 */
 	@Override
-	public DefaultSubTypingProofNode getRoot(){
-		return (DefaultSubTypingProofNode)super.getRoot ( );
+	public DefaultSubTypingProofNode getRoot ( ) {
+		return ( DefaultSubTypingProofNode ) super.getRoot ( );
 	}
 
 	/**
@@ -377,22 +369,16 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 					this.ruleSet.unregister ( "OBJECT-DEPTH" ); //$NON-NLS-1$
 					this.ruleSet.unregister ( "REFL" ); //$NON-NLS-1$
 
-					this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
-							"OBJECT", "applyObject" ); //$NON-NLS-1$ //$NON-NLS-2$
-					this.ruleSet.registerByMethodName ( L1Language.L1,
-							"REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L2OLanguage.L2O, "OBJECT", "applyObject" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
 					this.ruleSet.unregister ( "OBJECT" ); //$NON-NLS-1$
 					this.ruleSet.unregister ( "REFL" ); //$NON-NLS-1$
 
-					this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
-							"TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
-					this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
-							"OBJECT-WIDTH", "applyObjectWidth" ); //$NON-NLS-1$ //$NON-NLS-2$
-					this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
-							"OBJECT-DEPTH", "applyObjectDepth" ); //$NON-NLS-1$ //$NON-NLS-2$
-					this.ruleSet.registerByMethodName ( L1Language.L1,
-							"REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L2OLanguage.L2O, "TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L2OLanguage.L2O, "OBJECT-WIDTH", "applyObjectWidth" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L2OLanguage.L2O, "OBJECT-DEPTH", "applyObjectDepth" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 		}
