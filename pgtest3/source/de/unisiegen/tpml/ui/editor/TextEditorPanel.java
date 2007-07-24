@@ -43,7 +43,6 @@ import de.unisiegen.tpml.ui.SideBarListener ;
  * @version $Rev: 1249 $
  * @see de.unisiegen.tpml.ui.EditorComponent
  */
-@ SuppressWarnings ( "all" )
 public class TextEditorPanel extends JPanel implements EditorComponent ,
     ClipboardOwner
 {
