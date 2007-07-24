@@ -75,7 +75,7 @@ public class L1MinimalTypingProofRuleSet extends AbstractMinimalTypingProofRuleS
 		registerByMethodName ( L1Language.L1, "OR", "applyOr", "updateOr" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		registerByMethodName ( L1Language.L1, "CONST", "applyConst" );//$NON-NLS-1$ //$NON-NLS-2$
 		registerByMethodName ( L1Language.L1, "ID", "applyId" );//$NON-NLS-1$ //$NON-NLS-2$
-		registerByMethodName ( L1Language.L1, "COERCION", "applyCoercion", "updateCoercion" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		registerByMethodName ( L1Language.L1, "COERCE", "applyCoercion", "updateCoercion" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	}
 

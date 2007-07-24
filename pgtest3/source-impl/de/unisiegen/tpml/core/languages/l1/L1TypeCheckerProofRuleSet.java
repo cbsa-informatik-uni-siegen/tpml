@@ -69,7 +69,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 		registerByMethodName ( L1Language.L1, "ID", "applyId" );//$NON-NLS-1$ //$NON-NLS-2$
 		registerByMethodName ( L1Language.L1, "LET", "applyLet" );//$NON-NLS-1$ //$NON-NLS-2$
 		registerByMethodName ( L2Language.L2, "OR", "applyOr" );//$NON-NLS-1$ //$NON-NLS-2$
-		registerByMethodName ( L1Language.L1, "COERCION", "applyCoercion" );//$NON-NLS-1$ //$NON-NLS-2$ 
+		registerByMethodName ( L1Language.L1, "COERCE", "applyCoercion" );//$NON-NLS-1$ //$NON-NLS-2$ 
 		registerByMethodName ( L1Language.L1, "SUBTYPE", "applySubtype" ); //$NON-NLS-1$ //$NON-NLS-2$
 
 	}
