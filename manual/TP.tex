@@ -187,6 +187,7 @@
 \newcommand{\Op}{\name{Op}}
 
 \newcommand{\Row}{\name{Row}}
+\newcommand{\Body}{\name{Body}}
 \newcommand{\Type}{\name{Type}}
 \newcommand{\TypeR}{\name{Type}_r}
 \newcommand{\Ptype}{\name{PType}}
@@ -237,6 +238,11 @@
 \newcommand{\bthis}{\textbf{this}}
 \newcommand{\bself}{\textbf{self}}
 \newcommand{\bobject}{\textbf{object}}
+\newcommand{\bclass}{\textbf{class}}
+\newcommand{\bzeta}{\textbf{$\zeta$}}
+\newcommand{\bnew}{\textbf{new}}
+\newcommand{\binherit}{\textbf{inherit}}
+\newcommand{\bfrom}{\textbf{from}}
 \newcommand{\brec}{\textbf{rec}}
 \newcommand{\bfun}{\textbf{fun}}
 \newcommand{\band}{\textbf{and}}
@@ -262,8 +268,6 @@
 \newcommand{\barray}{\textbf{array}}
 \newcommand{\bof}{\textbf{of}}
 
-\newcommand{\bclass}{\textbf{class}}
-
 \newcommand{\app}[2]{#1\,#2}
 \newcommand{\bift}[2]{\bif\ #1\ \bthen\ #2}
 \newcommand{\bifte}[3]{\bif\ #1\ \bthen\ #2\ \belse\ #3}
@@ -277,6 +281,11 @@
 \newcommand{\fdec}[2]{\bval\ #1 = #2}
 \newcommand{\mdec}[2]{\bmethod\ #1 = #2}
 \newcommand{\object}[2]{\bobject\ (#1)\ #2\ \bend}
+\newcommand{\duplication}[1]{\{\ #1\ \}}
+\newcommand{\class}[2]{\bclass\ (#1)\ #2\ \bend}
+\newcommand{\classtype}[2]{\bzeta (#1 : #2)}
+\newcommand{\new}[1]{\bnew\ #1}
+\newcommand{\inherit}[3]{\binherit\ #1\ \bfrom\ #2\ ;\ #3}
 \newcommand{\head}{\name{head}}
 \newcommand{\body}{\name{body}}
 \newcommand{\clone}[1]{\{\langle #1 \rangle\}}
@@ -291,6 +300,8 @@
 \newcommand{\Ref}{\name{ref}}
 \newcommand{\Deref}{\,!\,}
 \newcommand{\Assign}{\ :=\ }
+
+\newcommand{\doma}[1]{\name{dom}_a\,(#1)}
 
 % Typing rules 
 

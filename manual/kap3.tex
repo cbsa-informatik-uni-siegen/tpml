@@ -481,15 +481,13 @@ herleiten l"asst.
 
 
 \section{Die Sprache \LTWOO}
-
-
 \index{Objekte}
 Die Sprache \LTWOO \ erweitert die Sprache \LTWO\ um Objekte. Die Menge \notation{$\Exp$} der
 g"ultigen Ausdr"ucke wird hierf"ur um die Produktionen
 \bgram
-e \is (e\#m)                                                        & & \mbox{Methodenaufruf}
+e \is (\send{e}{m})                                                 & & \mbox{Methodenaufruf}
   \al \object {self: \tau}{r}                                       & & \mbox{Objekt}
-  \al \{< a_1 = e_1;\ldots;a_n = e_n >\}                            & & \mbox{Duplikation}
+  \al \duplication{a_1 = e_1;\ \ldots\ ;a_n = e_n}                  & & \mbox{Duplikation}
 \egram
 erweitert.
 Die Menge \notation{$\Row$} aller \name{Reihen} r von \LTWOO\ ist definiert durch die kontextfreie Grammatik:
@@ -616,18 +614,60 @@ eine "Ubersetzung in \notation{Kernsyntax} vorgenommen.
 \section{Die Sprache \LTWOC}
 \index{Klassen}
 \index{Vererbung}
-TODO Christian
+Die Sprache \LTWOC\ erweitert die Sprache \LTWOO\ um Klassen bzw. Vererbung.
+Die Menge \notation{\Exp} der g"ultigen Ausdr"ucke wird hierf"ur um die Produktionen
+\bgram
+e \is \class{self: \tau}{b}                                         & & \mbox{Klassen}
+  \al \new{e}				                            & & \mbox{New}
+\egram
+erweitert.
+
+Die Menge \notation{\Body} aller \name{Klassenr"umpfe} b von \LTWOC\ ist definiert durch die
+kontextfreie Grammatik:
+\bgram
+b \is \inherit{a_1,\ \ldots\ ,a_k}{e}{b}                            & & \mbox{Inherit}
+  \al r                                                             & & \mbox{Reihe}
+\egram
+
+Die Menge \notation{\Val} der Werte $v$ wird um die Produktionen
+\bgram
+v \is \class{self: \tau}{r}                                         & & \mbox{Klassenwert}
+\egram
+erweitert, wobei s"amtliche Typangaben wieder optional sind.
+
+Die Menge der monomorphen Typen \notation{\Type} wird erweitert durch eine Produktion f"ur Klassen
+\bgram
+\tau \is \classtype{\tau}{\phi}
+\egram
+
+und die Menge \notation{$\TypeR$} aller $\name{Reihentypen}$ $\phi$ von \LTWOC\ wird erweitert durch
+\bgram
+\phi \is a : \tau;\ \phi_1
+\egram
+, wobei die Methodennamen und Attributnamen in einem Reihentyp $\phi$ paarweise
+verschieden sein m"ussen.
 
 
 \subsection{Small step Semantik von \LTWOC}
-TODO Christian
 
-\subsection{Typsystem von \LTWOC}
-TODO Christian
+Ein \notation{small step} hei"st g"ultig f"ur \LTWOC, wenn er sich mit den small step Regeln von \LTWOO\ und den Regeln\\[5mm]
+  \begin{tabular}{ll}
+    \mbox{(CLASS-EVAL)}     & $\regel{b \to b'}
+                                     {\class{self}{b} \to \class{self}{b'}}$ \\[5mm]
+    \mbox{(NEW-EVAL)}       & $\regel{e \to e'}
+                                     {\new{e} \to \new{e'}}$ \\[5mm]
+    \mbox{(NEW-EXEC)}       & $\new{(\class{self}{r})} \to \object{self}{r}$ \\[3mm]
+    \mbox{(INHERIT-RIGHT)}  & $\regel{b \to b'}
+                                     {\inherit{A}{e}{b} \to \inherit{A}{e}{b'}}$ \\[5mm]
+    \mbox{(INHERIT-LEFT)}   & $\regel{e \to e'}
+                                     {\inherit{A}{e}{r} \to \inherit{A}{e'}{r}}$ \\[5mm]
+    \mbox{(INHERIT-EXEC)}   & $\inherit{A}{\class{self}{r_1}}{r_2} \to$ \\
+                            & $r_1 \oplus r_2 \quad \text{falls } \doma{r_1} = A$
+  \end{tabular}\\[7mm]
+sowie den entsprechenden exception-Regeln herleiten l"asst.
 
 
 \section{Die Sprache \LTHREE}
-
 
 \index{Polymorphie}
 Die Sprache \LTHREE\ erweitert die Sprache \LTWO\ um ein polymorphes \notation{Typsystem}, sowie \notation{Tupel} und 
@@ -905,7 +945,6 @@ OCaml Typsystem.
 
 
 \subsection{Syntaktischer Zucker}
-
 Die Sprache \LFOUR\ beinhaltet drei Abk"urzungen, die wie folgt in \notation{Kernsyntax} "ubersetzt werden
 \begin{eqnarray*}
   e_1\,;\,e_2     & \mbox{ steht f"ur } & \bli{\id}{e_1}{e_2} \\
@@ -915,16 +954,19 @@ Die Sprache \LFOUR\ beinhaltet drei Abk"urzungen, die wie folgt in \notation{Ker
 wobei $\id \not\in free(e_1) \cup free(e_2)$.
 
 
-
 \section{Konkrete Syntax}
-
-Da es mitunter nicht mit jeder herk"ommlichen Tastatur m"oglich ist $\lambda$ zu tippen kann stattdessen das
-Schl"usselwort $\textbf{lambda}$ benutzt werden. Gleiches gilt f"ur das bei RecType verwendete $\mu$, 
-stattdessen kann das Schl"usselwort $\textbf{mu}$ benutzt werden.
-Typvariablen $\alpha,\beta,\ldots$ werden in der "ublichen OCaml-Schreibweise $\texttt{'a},
-\texttt{'b},\ldots$ geschrieben, und f"ur Funktionstypen wird der Pfeil
-$\to$ als $\texttt{->}$ notiert.
-
+Da es mitunter nicht mit jeder herk"ommlichen Tastatur m"oglich ist, griechische Buchstaben zu tippen,
+k"onnen folgende Schl"usselw"orter als Ersatz benutzt werden.\\[5mm]
+\begin{tabular}{lll}
+  \mbox{$\lambda$}                          & $\textbf{lambda}$                        & Lambda\\
+  \mbox{$\mu$}                              & $\textbf{mu}$                            & Rekursive Typen\\
+  \mbox{$\zeta$}                            & $\textbf{zeta}$                          & Klassentypen\\
+  \mbox{$\alpha,\ \beta,\ \ldots \quad$}    & $\texttt{'a}$, $\texttt{'b}$, $\ldots$   & Typvariablen\\
+  \mbox{$\to$}                              & $\texttt{->}$                            & Funktionstypen\\
+\end{tabular}\\[5mm]
+Zu beachten ist auch, dass der Scanner den Ausdruck \glqq{\bf (*) 4 5}\grqq\ nicht akzeptiert,
+da Kommentare mit einem \glqq{\bf (*}\grqq\ eingeleitet werden. Er erwartet ein \glqq{\bf *)}\grqq,
+um den Kommentar zu beenden. Wenn multipliziert werden soll, muss \glqq{\bf ( *) 4 5}\grqq\ eingeben werden.
 
 
 % vi:set syntax=tex ts=2 sw=2 et encoding=UTF-8:
