@@ -130,6 +130,7 @@ e \is c
   \al e_1\,\op\,e_2
   \al \andalso{e_1}{e_2}
   \al \orelse{e_1}{e_2}
+  \al \coercion{e}{\tau}{\tau'}
 \egram
 wobei die Menge \notation{$\Const$} der \Define{Konstanten}{Konstante} \Engl{constants}{constant} $c$ durch
 \bgram
@@ -179,7 +180,9 @@ Ein \notation{big step} hei"st g"ultig f"ur \LONE, wenn er sich mit den big step
      \mbox{(OR-FALSE)}    & $\regel{e_1 \eval \false\quad e_2 \eval v}
                                    {\orelse{e_1}{e_2} \eval v}$ \\[5mm]
      \mbox{(OR-TRUE)}     & $\regel{e_1 \eval \true}
-                                   {\orelse{e_1}{e_2} \eval \true}$
+                                   {\orelse{e_1}{e_2} \eval \true}$\\[5mm]
+     \mbox{(COERCE)}      & $\regel{e \eval v}
+                                   {\coercion{e}{\tau}{\tau'} \eval v}$
   \end{tabular}\\[7mm]
 und mit den zugeh"origen exception-Regeln herleiten l"asst. Diese exception-Regeln erh"alt man
 aus den obigen Regeln indem man zu jeder Regel der Form\\[2mm]
@@ -217,7 +220,8 @@ Ein \notation{small step} hei"st g"ultig f"ur \LONE, wenn er sich mit den small 
     \mbox{(OR-EVAL)}      & $\regel{e_1 \to e_1'}
                                    {\orelse{e_1}{e_2} \to \orelse{e_1'}{e_2}}$\\[5mm]
     \mbox{(OR-FALSE)}     & $\orelse{\false}{e_2} \to e_2$\\[3mm]
-    \mbox{(OR-TRUE)}      & $\orelse{\true}{e_2} \to \true$
+    \mbox{(OR-TRUE)}      & $\orelse{\true}{e_2} \to \true$\\[3mm]
+    \mbox{(COERCE)}       & $\coercion{e}{\tau}{\tau'} \to e$
   \end{tabular}\\[7mm]
 und mit den zugeh"origen exception-Regeln herleiten l"asst. Diese exceptions-Regeln erh"alt man - "ahnlich wie
 bei der big step Seminatik - aus den obigen Regeln indem man f"ur jede Regel der Form\\[2mm]
@@ -265,7 +269,9 @@ den Regeln\\[3mm]
   \mbox{(AND)\ } & $\regel{\Tj{\Gamma}{e_1}{\bool} \quad \Tj{\Gamma}{e_2}{\bool}}
                           {\Tj{\Gamma}{\andalso{e_1}{e_2}}{\bool}}$ \\[5mm]
   \mbox{(OR)\  } & $\regel{\Tj{\Gamma}{e_1}{\bool} \quad \Tj{\Gamma}{e_2}{\bool}}
-                          {\Tj{\Gamma}{\orelse{e_1}{e_2}}{\bool}}$
+                          {\Tj{\Gamma}{\orelse{e_1}{e_2}}{\bool}}$\\[5mm]
+  \mbox{(COERCE)\  } & $\regel{\subtype{\tau}{\tau'} \quad \Tj{\Gamma}{e}{\tau}}
+                          {\Tj{\Gamma}{\coercion{e}{\tau}{\tau'}}{\tau'}}$
 \end{tabular}\\[7mm]
 herleiten l"asst. Die Regel (CONST) besagt hierbei, dass $c$ in der Typumgebung $\Gamma$ den Typ $\tau$ hat, wenn $c$
 den Typ $\tau$ hat. Dies wird durch die Regeln\\[3mm]
@@ -616,8 +622,8 @@ TODO Christian
 \subsection{Small step Semantik von \LTWOC}
 TODO Christian
 
-
-
+\subsection{Typsystem von \LTWOC}
+TODO Christian
 
 
 \section{Die Sprache \LTHREE}
