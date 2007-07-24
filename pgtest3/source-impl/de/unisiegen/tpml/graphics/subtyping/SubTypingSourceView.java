@@ -8,10 +8,8 @@ import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.Stack;
 
@@ -63,7 +61,7 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 	JLabel sourceLabel;
 
 	JLabel sourceLabel2;
-	
+
 	/**
 	 * The type enter fields
 	 */
@@ -93,7 +91,7 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 	MonoType type;
 
 	MonoType type2;
-	
+
 	/**
 	 * Reference to the mainwindow
 	 */
@@ -143,14 +141,14 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 	private DefaultOutline outline;
 
 	private DefaultOutline outline2;
-	
+
 	private JPanel outlinePanel;
 
 	/**
 	 * The actual language for this view
 	 */
 	private Language language;
-	
+
 	/**
 	 * The stacks for redo and undo
 	 */
@@ -391,7 +389,6 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 		gridBagConstraints.weighty = 10;
 		gridBagConstraints.gridwidth = 1;
 		this.source.add ( this.scrollPane2, gridBagConstraints );
-
 
 		this.outlinePanel = new JPanel ( new GridBagLayout ( ) );
 
@@ -755,7 +752,33 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 		Clipboard clipboard = getToolkit ( ).getSystemClipboard ( );
 		StringSelection stringSelection = new StringSelection ( getSelectedText ( ) );
 		clipboard.setContents ( stringSelection, this );
-		removeSelectedText ( );
+		try {
+			if ( this.editor.hasFocus ( ) ) {
+				this.type = eventHandling ( this.editor, this.outline );
+				this.window.setChangeState ( Boolean.TRUE );
+				this.saveStatus = true;
+				this.setUndoStatus ( true );
+				this.undohistory.push ( this.currentContent );
+				setRedoStatus ( false );
+				this.redohistory.clear ( );
+				this.currentContent = this.sourceField.getText ( 0, this.sourceField.getLength ( ) );
+				removeSelectedText ( );
+			} else if ( this.editor2.hasFocus ( ) ) {
+				this.type2 = eventHandling ( this.editor2, this.outline2 );
+				this.window.setChangeState ( Boolean.TRUE );
+				this.saveStatus = true;
+				this.setUndoStatus ( true );
+				this.undohistory2.push ( this.currentContent );
+				setRedoStatus ( false );
+				this.redohistory2.clear ( );
+				this.currentContent = this.sourceField2.getText ( 0, this.sourceField2.getLength ( ) );
+				removeSelectedText2 ( );
+			} else {
+				logger.error ( "Failed to add text to undo history2" ); //$NON-NLS-1$
+			}
+		} catch ( Exception e ) {
+			logger.error ( "Failed to add text to undo history2", e ); //$NON-NLS-1$
+		}
 	}
 
 	/**
@@ -769,20 +792,46 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 		boolean hasTransferableText = ( contents != null ) && contents.isDataFlavorSupported ( DataFlavor.stringFlavor );
 		if ( hasTransferableText ) {
 			try {
-				if ( this.editor.hasFocus ( ) )
+				if ( this.editor.hasFocus ( ) ) {
 					insertText ( ( String ) contents.getTransferData ( DataFlavor.stringFlavor ), this.sourceField,
 							this.editor );
-				else if ( this.editor2.hasFocus ( ) )
+					SubTypingSourceView.this.type = eventHandling ( SubTypingSourceView.this.editor,
+							SubTypingSourceView.this.outline );
+					SubTypingSourceView.this.window.setChangeState ( Boolean.TRUE );
+					SubTypingSourceView.this.saveStatus = true;
+					SubTypingSourceView.this.setUndoStatus ( true );
+					String doctext = this.sourceField.getText ( 0, this.sourceField.getLength ( ) );
+					if ( doctext.endsWith ( " " ) ) //$NON-NLS-1$
+					{
+						SubTypingSourceView.this.undohistory.push ( doctext );
+						logger.debug ( "history added: " + doctext ); //$NON-NLS-1$
+					}
+					setRedoStatus ( false );
+					SubTypingSourceView.this.redohistory.clear ( );
+					SubTypingSourceView.this.currentContent = doctext;
+				} else if ( this.editor2.hasFocus ( ) ) {
 					insertText ( ( String ) contents.getTransferData ( DataFlavor.stringFlavor ), this.sourceField2,
 							this.editor2 );
-				else {
+					SubTypingSourceView.this.type2 = eventHandling ( SubTypingSourceView.this.editor2,
+							SubTypingSourceView.this.outline2 );
+					SubTypingSourceView.this.window.setChangeState ( Boolean.TRUE );
+					SubTypingSourceView.this.saveStatus = true;
+					SubTypingSourceView.this.setUndoStatus ( true );
+					String doctext = this.sourceField2.getText ( 0, this.sourceField2.getLength ( ) );
+					if ( doctext.endsWith ( " " ) ) //$NON-NLS-1$
+					{
+						SubTypingSourceView.this.undohistory2.push ( doctext );
+						logger.debug ( "history2 added: " + doctext ); //$NON-NLS-1$
+					}
+					setRedoStatus ( false );
+					SubTypingSourceView.this.redohistory2.clear ( );
+					SubTypingSourceView.this.currentContent = doctext;
+				} else {
 					logger.error ( "Can not paste from clipboard" ); //$NON-NLS-1$
 					return;
 				}
 
-			} catch ( UnsupportedFlavorException ex ) {
-				logger.error ( "Can not paste from clipboard", ex ); //$NON-NLS-1$
-			} catch ( IOException ex ) {
+			} catch ( Exception ex ) {
 				logger.error ( "Can not paste from clipboard", ex ); //$NON-NLS-1$
 			}
 		}
