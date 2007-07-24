@@ -4,6 +4,16 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.types.MonoType;
 
+/**
+ * 
+ * The Expression Proof Node for the Minimal Typing Algorithm.
+ * Containing an type environment, an expression and a type.
+ *
+ * @author Benjamin Mies
+ * 
+ * @see AbstractMinimalTypingProofNode
+ *
+ */
 public class DefaultMinimalTypingExpressionProofNode extends
 		AbstractMinimalTypingProofNode implements MinimalTypingExpressionProofNode {
 	
@@ -64,7 +74,7 @@ public class DefaultMinimalTypingExpressionProofNode extends
    */
   void setEnvironment(TypeEnvironment environment) {
     if (environment == null) {
-      throw new NullPointerException("environment is null");
+      throw new NullPointerException("environment is null"); //$NON-NLS-1$
     }
     this.environment = environment;
   }
@@ -106,12 +116,12 @@ public class DefaultMinimalTypingExpressionProofNode extends
   public String toString() {
     StringBuilder builder = new StringBuilder();
     builder.append(this.environment);
-    builder.append(" \u22b3 ");
+    builder.append(" \u22b3 "); //$NON-NLS-1$
     builder.append(this.expression);
-    builder.append(" :: ");
+    builder.append(" :: "); //$NON-NLS-1$
     builder.append(this.type);
     if (getRule() != null) {
-      builder.append(" (" + getRule() + ")");
+      builder.append(" (" + getRule() + ")");  //$NON-NLS-1$//$NON-NLS-2$
     }
     return builder.toString();
   }

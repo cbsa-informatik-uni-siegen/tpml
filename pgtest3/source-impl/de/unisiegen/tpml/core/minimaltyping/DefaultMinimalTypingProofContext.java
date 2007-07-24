@@ -447,7 +447,7 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
 	 */
 	public void addSeenType ( MonoType type, MonoType type2 ) {
 		DefaultSubType subtype = new DefaultSubType ( type, type2 );
-		seenTypes.add ( subtype );
+		this.seenTypes.add ( subtype );
 	}
 
 }
