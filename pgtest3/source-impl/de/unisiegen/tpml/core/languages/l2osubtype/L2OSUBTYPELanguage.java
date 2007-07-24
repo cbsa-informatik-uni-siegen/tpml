@@ -16,6 +16,16 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
 
+/**
+ * This class represents the language L2OSubtype, which serves as a factory class for L2O
+ * subtype related functionality, which extends the L2SubType
+ * 
+ * @author Benjamin Mies
+ * @see de.unisiegen.tpml.core.languages.Language
+ * @see de.unisiegen.tpml.core.languages.LanguageTypeParser
+ * @see de.unisiegen.tpml.core.languages.LanguageTypeScanner
+ * @see de.unisiegen.tpml.core.languages.l2o.L2oLanguage
+ */
 public class L2OSUBTYPELanguage extends L2OLanguage {
 
 	/**
@@ -25,6 +35,9 @@ public class L2OSUBTYPELanguage extends L2OLanguage {
 	   */
 	  public static final int L2OSubType = L2CLanguage.L2C + 2 ;
 	  
+	  /**
+	   * Allocates a new <code>L2OSUBTYPELanguage</code> instance.
+	   */
 	public L2OSUBTYPELanguage ( ) {
 	super();
 	}
@@ -37,7 +50,8 @@ public class L2OSUBTYPELanguage extends L2OLanguage {
 	   * 
 	   * @see Language#getDescription()
 	   */
-	  public String getDescription ( )
+	  @Override
+	public String getDescription ( )
 	  {
 	    return Messages.getString ( "L2OSubTypeLanguage.0" ) ; //$NON-NLS-1$
 	  }
@@ -48,7 +62,8 @@ public class L2OSUBTYPELanguage extends L2OLanguage {
 	   * 
 	   * @see Language#getName()
 	   */
-	  public String getName ( )
+	  @Override
+	public String getName ( )
 	  {
 	    return "L2OSubType" ; //$NON-NLS-1$
 	  }
@@ -59,7 +74,8 @@ public class L2OSUBTYPELanguage extends L2OLanguage {
 	   * 
 	   * @see Language#getTitle()
 	   */
-	  public int getId ( )
+	  @Override
+	public int getId ( )
 	  {
 	    return L2OSUBTYPELanguage.L2OSubType ;
 	  }
@@ -70,11 +86,17 @@ public class L2OSUBTYPELanguage extends L2OLanguage {
 	   * 
 	   * @see Language#getTitle()
 	   */
-	  public String getTitle ( )
+	  @Override
+	public String getTitle ( )
 	  {
 	    return Messages.getString ( "L2OSubTypeLanguage.1" ) ; //$NON-NLS-1$
 	  }
 	
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.languages.AbstractLanguage#isTypeLanguage()
+	 */
 	@Override
 	public boolean isTypeLanguage() {
 		  return true;
@@ -106,7 +128,7 @@ public class L2OSUBTYPELanguage extends L2OLanguage {
 	      boolean mode )
 	  {
 		  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-		        .getString ( "Exception.9" ), new Integer(getId() ) ) ) ; //$NON-NLS-1
+		        .getString ( "Exception.9" ), new Integer(getId() ) ) ) ; //$NON-NLS-1$
 	  }
 
 
@@ -130,10 +152,11 @@ public class L2OSUBTYPELanguage extends L2OLanguage {
 	   * {@inheritDoc}
 	   */
 	  @ Override
-	  public SmallStepProofModel newSmallStepProofModel ( Expression pExpression )
+	  public SmallStepProofModel newSmallStepProofModel ( @SuppressWarnings("unused")
+	Expression pExpression )
 	  {
 		  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-		        .getString ( "Exception.14" ), new Integer(getId() ) ) ) ; //$NON-NLS-1
+		        .getString ( "Exception.14" ), new Integer(getId() ) ) ) ; //$NON-NLS-1$
 	  }
 
 
@@ -162,7 +185,7 @@ public class L2OSUBTYPELanguage extends L2OLanguage {
 	      Expression pExpression )
 	  {
 		  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-		        .getString ( "Exception.10" ), new Integer(getId() ) ) ) ; //$NON-NLS-1
+		        .getString ( "Exception.10" ), new Integer(getId() ) ) ) ; //$NON-NLS-1$
 	  }
 
 
@@ -175,7 +198,7 @@ public class L2OSUBTYPELanguage extends L2OLanguage {
 	      Expression expression )
 	  {
 		  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-		        .getString ( "Exception.13" ), new Integer(getId() ) ) ) ; //$NON-NLS-1
+		        .getString ( "Exception.13" ), new Integer(getId() ) ) ) ; //$NON-NLS-1$
 	  }
 
 }

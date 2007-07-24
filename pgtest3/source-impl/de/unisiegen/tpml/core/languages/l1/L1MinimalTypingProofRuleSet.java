@@ -3,8 +3,6 @@ package de.unisiegen.tpml.core.languages.l1;
 import java.text.MessageFormat;
 
 import de.unisiegen.tpml.core.Messages;
-import de.unisiegen.tpml.core.bigstep.BigStepProofContext;
-import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.expressions.And;
 import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.Coercion;
@@ -770,7 +768,7 @@ public class L1MinimalTypingProofRuleSet extends AbstractMinimalTypingProofRuleS
 		 * previously.
 		 * 
 		 * @param context the minimal typing proof context.
-		 * @param pNode the node to update according to <b>(COERCE)</b>.
+		 * @param node the node to update according to <b>(COERCE)</b>.
 		 */
 	  	public void updateCoercion ( MinimalTypingProofContext context ,
 		      MinimalTypingProofNode node )
@@ -784,7 +782,7 @@ public class L1MinimalTypingProofRuleSet extends AbstractMinimalTypingProofRuleS
 	  					subtypeInternal ( type2, type );
 	  				}
 	  				catch (Exception e){
-	  					throw new RuntimeException("type of e not equal the given type");
+	  					throw new RuntimeException("type of e not equal the given type"); //$NON-NLS-1$
 	  				}
 	  				context.addProofNode ( node, coercion.getTau1 ( ), coercion.getTau2 ( ) );
 	  			}

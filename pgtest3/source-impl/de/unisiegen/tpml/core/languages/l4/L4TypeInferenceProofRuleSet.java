@@ -199,7 +199,7 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet
         seenTypes2.add ( eqn ) ;
         TypeEquationTypeInference eqn2 = new TypeEquationTypeInference ( taul
             .getTau1 ( ) , taur.getTau1 ( ) , seenTypes2 ) ;
-        eqn2 = ( TypeEquationTypeInference ) eqn2.substitute ( context
+        eqn2 = eqn2.substitute ( context
             .getSubstitution ( ) ) ;
         unify ( context , node , eqn2 ) ;
       }

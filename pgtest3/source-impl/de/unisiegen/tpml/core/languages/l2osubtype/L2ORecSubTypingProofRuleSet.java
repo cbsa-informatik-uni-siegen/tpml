@@ -39,10 +39,10 @@ public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
 		super ( language, mode );
 
 		unregister ( "REFL" ); //$NON-NLS-1$
-		unregister ( "S-MU-LEFT" );
-		unregister ( "S-MU-RIGHT" );
-		unregister ("S-ASSUME");
-		unregister ("ARROW");
+		unregister ( "S-MU-LEFT" ); //$NON-NLS-1$
+		unregister ( "S-MU-RIGHT" ); //$NON-NLS-1$
+		unregister ("S-ASSUME"); //$NON-NLS-1$
+		unregister ("ARROW"); //$NON-NLS-1$
 
 		// register the type rules
 

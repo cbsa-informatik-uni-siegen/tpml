@@ -150,6 +150,12 @@ public abstract class AbstractLanguage implements Language
         .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$
   }
   
+  /**
+   * 
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.languages.Language#isTypeLanguage()
+   */
   public boolean isTypeLanguage() {
 	  return false;
   }

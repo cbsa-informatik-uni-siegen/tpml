@@ -72,7 +72,7 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    * <code>context</code>.
    * 
    * @param context the type checker proof context.
-   * @param node the type checker proof node.
+   * @param pNode the type checker proof node.
    */
   public void applyList ( TypeCheckerProofContext context ,
 		  TypeCheckerProofNode pNode )
@@ -117,7 +117,7 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    * <code>context</code>.
    * 
    * @param context the type checker proof context.
-   * @param node the type checker proof node.
+   * @param pNode the type checker proof node.
    */
   public void applyPId ( TypeCheckerProofContext context ,
 		  TypeCheckerProofNode pNode )
@@ -137,7 +137,7 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    * <code>context</code>.
    * 
    * @param context the type checker proof context.
-   * @param node the type checker proof node.
+   * @param pNode the type checker proof node.
    */
   public void applyPLet ( TypeCheckerProofContext context ,
 		  TypeCheckerProofNode pNode )
@@ -230,7 +230,7 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    * previously, using <code>context</code>.
    * 
    * @param context the type checker proof context.
-   * @param node the type checker proof node.
+   * @param pNode the type checker proof node.
    */
   public void updatePLet ( TypeCheckerProofContext context ,
 		  TypeCheckerProofNode pNode )
@@ -289,7 +289,7 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    * <code>context</code>.
    * 
    * @param context the type checker proof context.
-   * @param node the type checker proof node.
+   * @param pNode the type checker proof node.
    */
   public void applyTuple ( TypeCheckerProofContext context ,
 		  TypeCheckerProofNode pNode )

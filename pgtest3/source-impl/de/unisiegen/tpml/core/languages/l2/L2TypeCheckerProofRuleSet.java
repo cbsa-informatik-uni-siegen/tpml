@@ -40,7 +40,7 @@ public class L2TypeCheckerProofRuleSet extends L1TypeCheckerProofRuleSet
    * <code>context</code>.
    * 
    * @param context the type checker proof context.
-   * @param node the type checker proof node.
+   * @param pNode the type checker proof node.
    */
   public void applyRec ( TypeCheckerProofContext context ,
       TypeCheckerProofNode pNode )

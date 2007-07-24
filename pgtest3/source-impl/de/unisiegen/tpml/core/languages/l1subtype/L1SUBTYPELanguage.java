@@ -16,6 +16,16 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
 
+/**
+ * This class represents the language L1Subtype, which serves as a factory class for L1
+ * subtype related functionality.
+ * 
+ * @author Benjamin MIes
+ * @see de.unisiegen.tpml.core.languages.Language
+ * @see de.unisiegen.tpml.core.languages.LanguageTypeParser
+ * @see de.unisiegen.tpml.core.languages.LanguageTypeScanner
+ * @see de.unisiegen.tpml.core.languages.l1.L1Language
+ */
 public class L1SUBTYPELanguage extends L1Language {
 	
 	/**
@@ -25,6 +35,9 @@ public class L1SUBTYPELanguage extends L1Language {
 	   */
 	  public static final int L1SubType = L1CBNLanguage.L1CBN + 1 ;
 
+	  /**
+	   * Allocates a new <code>L1SUBTYPELanguage</code> instance.
+	   */
 	public L1SUBTYPELanguage ( ) {
 	super();
 	}
@@ -34,7 +47,8 @@ public class L1SUBTYPELanguage extends L1Language {
 	   * 
 	   * @see Language#getDescription()
 	   */
-	  public String getDescription ( )
+	  @Override
+	public String getDescription ( )
 	  {
 	    return Messages.getString ( "L1SubTypeLanguage.0" ) ; //$NON-NLS-1$
 	  }
@@ -45,7 +59,8 @@ public class L1SUBTYPELanguage extends L1Language {
 	   * 
 	   * @see Language#getName()
 	   */
-	  public String getName ( )
+	  @Override
+	public String getName ( )
 	  {
 	    return "L1SubType" ; //$NON-NLS-1$
 	  }
@@ -56,7 +71,8 @@ public class L1SUBTYPELanguage extends L1Language {
 	   * 
 	   * @see Language#getTitle()
 	   */
-	  public int getId ( )
+	  @Override
+	public int getId ( )
 	  {
 	    return L1SUBTYPELanguage.L1SubType ;
 	  }
@@ -67,11 +83,17 @@ public class L1SUBTYPELanguage extends L1Language {
 	   * 
 	   * @see Language#getTitle()
 	   */
-	  public String getTitle ( )
+	  @Override
+	public String getTitle ( )
 	  {
 	    return Messages.getString ( "L1SubTypeLanguage.1" ) ; //$NON-NLS-1$
 	  }
 	
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.languages.AbstractLanguage#isTypeLanguage()
+	 */
 	@Override
 	public boolean isTypeLanguage() {
 		  return true;
@@ -103,7 +125,7 @@ public class L1SUBTYPELanguage extends L1Language {
 	      boolean mode )
 	  {
 		  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-		        .getString ( "Exception.9" ), new Integer(getId() ) ) ) ; //$NON-NLS-1
+		        .getString ( "Exception.9" ), new Integer(getId() ) ) ) ;  //$NON-NLS-1$
 	  }
 
 
@@ -127,10 +149,11 @@ public class L1SUBTYPELanguage extends L1Language {
 	   * {@inheritDoc}
 	   */
 	  @ Override
-	  public SmallStepProofModel newSmallStepProofModel ( Expression pExpression )
+	  public SmallStepProofModel newSmallStepProofModel ( @SuppressWarnings("unused")
+	Expression pExpression )
 	  {
 		  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-		        .getString ( "Exception.14" ), new Integer(getId() ) ) ) ; //$NON-NLS-1
+		        .getString ( "Exception.14" ), new Integer(getId() ) ) ) ; //$NON-NLS-1$
 	  }
 
 
@@ -159,7 +182,7 @@ public class L1SUBTYPELanguage extends L1Language {
 	      Expression pExpression )
 	  {
 		  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-		        .getString ( "Exception.10" ), new Integer(getId() ) ) ) ; //$NON-NLS-1
+		        .getString ( "Exception.10" ), new Integer(getId() ) ) ) ; //$NON-NLS-1$
 	  }
 
 
@@ -172,7 +195,7 @@ public class L1SUBTYPELanguage extends L1Language {
 	      Expression expression )
 	  {
 		  throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-		        .getString ( "Exception.13" ), new Integer(getId() ) ) ) ; //$NON-NLS-1
+		        .getString ( "Exception.13" ), new Integer(getId() ) ) ) ; //$NON-NLS-1$
 	  }
 
 }

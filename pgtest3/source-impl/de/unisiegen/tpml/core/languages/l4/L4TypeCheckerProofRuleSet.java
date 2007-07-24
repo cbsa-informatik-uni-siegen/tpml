@@ -47,7 +47,7 @@ public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet
    * <code>context</code>.
    * 
    * @param context the type checker proof context.
-   * @param node the type checker proof node.
+   * @param pNode the type checker proof node.
    */
   public void applyCond1 ( TypeCheckerProofContext context ,
 		  TypeCheckerProofNode pNode )
@@ -105,7 +105,7 @@ public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet
    * <code>context</code>.
    * 
    * @param context the type checker proof context.
-   * @param node the type checker proof node.
+   * @param pNode the type checker proof node.
    */
   public void applySeq ( TypeCheckerProofContext context ,
 		  TypeCheckerProofNode pNode )
@@ -124,7 +124,7 @@ public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet
    * <code>context</code>.
    * 
    * @param context the type checker proof context.
-   * @param node the type checker proof context.
+   * @param pNode the type checker proof context.
    */
   public void applyWhile ( TypeCheckerProofContext context ,
 		  TypeCheckerProofNode pNode )

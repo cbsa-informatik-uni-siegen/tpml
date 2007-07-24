@@ -1,7 +1,5 @@
 package de.unisiegen.tpml.core.languages.l3;
 
-import java.text.MessageFormat;
-
 import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.expressions.Tuple;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
@@ -11,9 +9,6 @@ import de.unisiegen.tpml.core.minimaltyping.MinimalTypingExpressionProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingTypesProofNode;
-import de.unisiegen.tpml.core.subtyping.SubTypingException;
-import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofContext;
-import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode;
 import de.unisiegen.tpml.core.types.ListType;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.TupleType;

@@ -21,8 +21,6 @@ import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Or;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
-import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext;
-import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
 import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerExpressionProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
@@ -79,7 +77,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 	 * <code>context</code>.
 	 * 
 	 * @param context the type checker proof context.
-	 * @param node the type checker proof node.
+	 * @param pNode the type checker proof node.
 	 */
 	public void applyAnd ( TypeCheckerProofContext context, TypeCheckerProofNode pNode ) {
 		TypeCheckerExpressionProofNode node = ( TypeCheckerExpressionProofNode ) pNode;
@@ -96,7 +94,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 	 * <code>context</code>.
 	 * 
 	 * @param context the type checker proof context.
-	 * @param node the type checker proof node.
+	 * @param pNode the type checker proof node.
 	 */
 	public void applyAbstr ( TypeCheckerProofContext context, TypeCheckerProofNode pNode ) {
 		TypeCheckerExpressionProofNode node = ( TypeCheckerExpressionProofNode ) pNode;
@@ -151,7 +149,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 	 * <code>context</code>.
 	 * 
 	 * @param context the type checker proof context.
-	 * @param node the type checker proof node.
+	 * @param pNode the type checker proof node.
 	 */
 	public void applyApp ( TypeCheckerProofContext context, TypeCheckerProofNode pNode ) {
 		TypeCheckerExpressionProofNode node = ( TypeCheckerExpressionProofNode ) pNode;
@@ -178,7 +176,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 	 * <code>context</code>.
 	 * 
 	 * @param context the type checker proof context.
-	 * @param node the type checker proof node.
+	 * @param pNode the type checker proof node.
 	 */
 	public void applyCond ( TypeCheckerProofContext context, TypeCheckerProofNode pNode ) {
 		TypeCheckerExpressionProofNode node = ( TypeCheckerExpressionProofNode ) pNode;
@@ -205,7 +203,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 	 * <code>node</node> using the <code>context</code>.
 	 * 
 	 * @param context the type checker proof context.
-	 * @param node the type checker proof node.
+	 * @param pNode the type checker proof node.
 	 */
 	public void applyId ( TypeCheckerProofContext context, TypeCheckerProofNode pNode ) {
 		TypeCheckerExpressionProofNode node = ( TypeCheckerExpressionProofNode ) pNode;
@@ -218,7 +216,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 	 * <code>context</code>.
 	 * 
 	 * @param context the type checker proof context.
-	 * @param node the type checker proof node.
+	 * @param pNode the type checker proof node.
 	 */
 	public void applyLet ( TypeCheckerProofContext context, TypeCheckerProofNode pNode ) {
 		TypeCheckerExpressionProofNode node = ( TypeCheckerExpressionProofNode ) pNode;
@@ -301,7 +299,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 	 * <code>context</code>.
 	 * 
 	 * @param context the type checker proof context.
-	 * @param node the type checker proof node.
+	 * @param pNode the type checker proof node.
 	 */
 	public void applyOr ( TypeCheckerProofContext context, TypeCheckerProofNode pNode ) {
 		TypeCheckerExpressionProofNode node = ( TypeCheckerExpressionProofNode ) pNode;
@@ -447,7 +445,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 	 * <code>context</code>.
 	 * 
 	 * @param context the type checker proof context.
-	 * @param node the node to apply the <b>(COERCE)</b> rule to.
+	 * @param pNode the node to apply the <b>(COERCE)</b> rule to.
 	 */
 	public void applyCoercion ( TypeCheckerProofContext context, TypeCheckerProofNode pNode ) {
 		TypeCheckerExpressionProofNode node = ( TypeCheckerExpressionProofNode ) pNode;
