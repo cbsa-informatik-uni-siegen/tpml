@@ -2,6 +2,9 @@ package de.unisiegen.tpml.core.subtyping;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typeinference.PrettyPrintPriorities;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.util.Debug;
 
@@ -14,12 +17,11 @@ import de.unisiegen.tpml.core.util.Debug;
  * @see de.unisiegen.tpml.core.AbstractProofNode
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode
  */
-public class DefaultSubTypingProofNode extends AbstractProofNode implements
-		SubTypingProofNode {
+public class DefaultSubTypingProofNode extends AbstractProofNode implements SubTypingProofNode, PrettyPrintPriorities {
 
-	private MonoType type;
+	private MonoType left;
 
-	private MonoType type2;
+	private MonoType right;
 
 	/**
 	 * list of proof steps of this node
@@ -28,13 +30,13 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 
 	/**
 	 * Allocates a new proof node with the given types.
-	 * @param pType the first MonoType of this node
-	 * @param pType2 the second MonoType of this node
+	 * @param pLeft the first MonoType of this node
+	 * @param pRight the second MonoType of this node
 	 * 
 	 */
-	public DefaultSubTypingProofNode ( MonoType pType, MonoType pType2 ) {
-		this.type = pType;
-		this.type2 = pType2;
+	public DefaultSubTypingProofNode ( MonoType pLeft, MonoType pRight ) {
+		this.left = pLeft;
+		this.right = pRight;
 	}
 
 	/**
@@ -89,7 +91,7 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getType()
 	 */
 	public MonoType getType ( ) {
-		return this.type;
+		return this.left;
 	}
 
 	/**
@@ -99,7 +101,7 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getType2()
 	 */
 	public MonoType getType2 ( ) {
-		return this.type2;
+		return this.right;
 	}
 
 	/**
@@ -128,23 +130,23 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 		if ( Debug.isUserName ( Debug.BENJAMIN ) ) {
 			String result = ""; //$NON-NLS-1$
 			builder.append ( "<html>" ); //$NON-NLS-1$
-			result += this.type;
+			result += this.left;
 			result = result.replaceAll ( "<", "&#60" ); //$NON-NLS-1$//$NON-NLS-2$
 			builder.append ( result );
 			result = ""; //$NON-NLS-1$
 			builder.append ( "<b><font color=\"#FF0000\">" ); //$NON-NLS-1$
 			builder.append ( " &#60: " ); //$NON-NLS-1$
 			builder.append ( "</font></b>" ); //$NON-NLS-1$
-			result += this.type2;
+			result += this.right;
 			if ( this.getSteps ( ).length > 0 )
 				result += this.getSteps ( )[0].getRule ( ).toString ( );
 			result = result.replaceAll ( "<", "&#60" ); //$NON-NLS-1$ //$NON-NLS-2$
 			builder.append ( result );
 			builder.append ( "</html>" ); //$NON-NLS-1$
 		} else {
-			builder.append ( this.type );
+			builder.append ( this.left );
 			builder.append ( " <: " ); //$NON-NLS-1$
-			builder.append ( this.type2 );
+			builder.append ( this.right );
 			builder.append ( " " ); //$NON-NLS-1$
 			if ( this.getSteps ( ).length > 0 )
 				builder.append ( this.getSteps ( )[0].getRule ( ).toString ( ) );
@@ -167,13 +169,40 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 		return null;
 	}
 
+	/**
+	 * 
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.AbstractProofNode#getLastLeaf()
+	 */
+	@Override
 	public DefaultSubTypingProofNode getLastLeaf ( ) {
-		return (DefaultSubTypingProofNode) super.getLastLeaf ( );
+		return ( DefaultSubTypingProofNode ) super.getLastLeaf ( );
 	}
 
-	public PrettyString toPrettyString ( ) {
-		// TODO Auto-generated method stub
-		return null;
+	//
+	// Pretty printing
+	//
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
+	 */
+	public final PrettyString toPrettyString ( ) {
+		return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) ).toPrettyString ( );
 	}
 
+	/**
+	 * Returns the {@link PrettyStringBuilder}.
+	 * 
+	 * @param factory The {@link PrettyStringBuilderFactory}.
+	 * @return The {@link PrettyStringBuilder}.
+	 */
+	private PrettyStringBuilder toPrettyStringBuilder ( PrettyStringBuilderFactory factory ) {
+		PrettyStringBuilder builder = factory.newBuilder ( this, PRIO_EQUATION );
+		builder.addBuilder ( this.left.toPrettyStringBuilder ( factory ), PRIO_EQUATION );
+		builder.addText ( " <: " ); //$NON-NLS-1$
+		builder.addBuilder ( this.right.toPrettyStringBuilder ( factory ), PRIO_EQUATION );
+		return builder;
+	}
 }

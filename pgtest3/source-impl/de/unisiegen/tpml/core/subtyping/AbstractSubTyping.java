@@ -58,8 +58,7 @@ public abstract class AbstractSubTyping {
 			return false;
 		for ( int i = 0; i < types.length; i++ ) {
 			if ( !types[i].equals ( types2[i] ) )
-				;
-			return false;
+				return false;
 		}
 		return true;
 	}

@@ -27,7 +27,6 @@ import de.unisiegen.tpml.core.expressions.UnitConstant;
 import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
@@ -134,25 +133,21 @@ public class DefaultTypeInferenceProofContext implements TypeInferenceProofConte
 	}
 
 	/**
-	 * TODO
+	 * {@inheritDoc}
 	 * 
-	 * @param left TODO
-	 * @param right TODO
 	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#addEquation(de.unisiegen.tpml.core.types.MonoType,
 	 *      de.unisiegen.tpml.core.types.MonoType)
 	 */
 	public void addEquation ( MonoType left, MonoType right ) {
-		// TODO Test
 		addEquation ( new TypeEquationTypeInference ( left, right, new SeenTypes < TypeEquationTypeInference > ( ) ) );
 	}
 
 	/**
-	 * TODO
+	 * Add a new collected type equation to this list of type equations
 	 * 
-	 * @param pTypeEquationTypeInference TODO
+	 * @param pTypeEquationTypeInference the new type equation to add
 	 */
 	public void addEquation ( TypeEquationTypeInference pTypeEquationTypeInference ) {
-		// TODO Test
 		this.equations.add ( 0, pTypeEquationTypeInference );
 	}
 
@@ -171,6 +166,12 @@ public class DefaultTypeInferenceProofContext implements TypeInferenceProofConte
 		( ( AbstractTypeCheckerProofNode ) pNode ).add ( child );
 	}
 
+	/**
+	 * 
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#addProofNode(de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode, de.unisiegen.tpml.core.types.MonoType, de.unisiegen.tpml.core.types.MonoType)
+	 */
 	public void addProofNode ( final TypeCheckerProofNode pNode, final MonoType type, final MonoType type2 ) {
 		final DefaultTypeCheckerTypeProofNode child = new DefaultTypeCheckerTypeProofNode ( type, type2 );
 		( ( AbstractTypeCheckerProofNode ) pNode ).add ( child );
@@ -212,11 +213,11 @@ public class DefaultTypeInferenceProofContext implements TypeInferenceProofConte
 		if ( formula.getExpression ( ) != null ) {
 			typeNode = new DefaultTypeCheckerExpressionProofNode ( formula.getEnvironment ( ), formula.getExpression ( ),
 					formula.getType ( ) );
-		}else if (formula instanceof TypeSubType){
-			TypeSubType subType = (TypeSubType) formula;
-			typeNode = new DefaultTypeCheckerTypeProofNode(subType.getType ( ), subType.getType2 ( ));
+		} else if ( formula instanceof TypeSubType ) {
+			TypeSubType subType = ( TypeSubType ) formula;
+			typeNode = new DefaultTypeCheckerTypeProofNode ( subType.getType ( ), subType.getType2 ( ) );
 		}
-		
+
 		else if ( rule.toString ( ).equals ( "UNIFY" ) ) { //$NON-NLS-1$
 			typeNode = new DefaultTypeEquationProofNode ( formula.getEnvironment ( ), new Unify ( ), new UnifyType ( ),
 					( TypeEquationTypeInference ) formula, mode );
@@ -257,13 +258,11 @@ public class DefaultTypeInferenceProofContext implements TypeInferenceProofConte
 		for ( int i = 0; i < typeNode.getChildCount ( ); i++ ) {
 			childNode = typeNode.getChildAt ( i );
 			if ( childNode instanceof DefaultTypeCheckerExpressionProofNode ) {
-				DefaultTypeCheckerExpressionProofNode child = (DefaultTypeCheckerExpressionProofNode) childNode;
-				insert = new TypeJudgement ( ( DefaultTypeEnvironment ) child.getEnvironment ( ), child.getExpression ( ),
-						child.getType ( ) );
-			}
-			else {
-				DefaultTypeCheckerTypeProofNode child = (DefaultTypeCheckerTypeProofNode) childNode;
-				insert = new TypeSubType(child.getType ( ), child.getType2 ( ));
+				DefaultTypeCheckerExpressionProofNode child = ( DefaultTypeCheckerExpressionProofNode ) childNode;
+				insert = new TypeJudgement ( child.getEnvironment ( ), child.getExpression ( ), child.getType ( ) );
+			} else {
+				DefaultTypeCheckerTypeProofNode child = ( DefaultTypeCheckerTypeProofNode ) childNode;
+				insert = new TypeSubType ( child.getType ( ), child.getType2 ( ) );
 			}
 			for ( int j = 0; j < sortedFormulas.size ( ); j++ ) {
 				if ( sortedFormulas.get ( j ) instanceof TypeEquationTypeInference || j == sortedFormulas.size ( ) - 1 ) {
@@ -441,7 +440,7 @@ public class DefaultTypeInferenceProofContext implements TypeInferenceProofConte
 	 */
 	void addRedoAction ( Runnable redoAction ) {
 		if ( redoAction == null ) {
-			throw new NullPointerException ( "redoAction is null" );
+			throw new NullPointerException ( "redoAction is null" ); //$NON-NLS-1$
 		}
 
 		// perform the action
@@ -463,7 +462,7 @@ public class DefaultTypeInferenceProofContext implements TypeInferenceProofConte
 	 */
 	void addUndoAction ( Runnable undoAction ) {
 		if ( undoAction == null ) {
-			throw new NullPointerException ( "undoAction is null" );
+			throw new NullPointerException ( "undoAction is null" ); //$NON-NLS-1$
 		}
 
 		// record the action
@@ -480,6 +479,7 @@ public class DefaultTypeInferenceProofContext implements TypeInferenceProofConte
 	 */
 	Runnable getRedoActions ( ) {
 		return new Runnable ( ) {
+			@SuppressWarnings ( "synthetic-access" )
 			public void run ( ) {
 				for ( Runnable redoAction : DefaultTypeInferenceProofContext.this.redoActions ) {
 					redoAction.run ( );
@@ -498,6 +498,7 @@ public class DefaultTypeInferenceProofContext implements TypeInferenceProofConte
 	 */
 	Runnable getUndoActions ( ) {
 		return new Runnable ( ) {
+			@SuppressWarnings ( "synthetic-access" )
 			public void run ( ) {
 				for ( Runnable undoAction : DefaultTypeInferenceProofContext.this.undoActions ) {
 					undoAction.run ( );

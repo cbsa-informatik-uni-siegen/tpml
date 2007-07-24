@@ -15,8 +15,7 @@ import de.unisiegen.tpml.core.ProofRuleException;
  * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofRule
  * @see de.unisiegen.tpml.core.AbstractProofRule
  */
-public abstract class AbstractMinimalTypingProofRule extends AbstractProofRule
-		implements MinimalTypingProofRule {
+public abstract class AbstractMinimalTypingProofRule extends AbstractProofRule implements MinimalTypingProofRule {
 	//
 	// Constructor (package)
 	//
@@ -42,8 +41,7 @@ public abstract class AbstractMinimalTypingProofRule extends AbstractProofRule
 	 * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofRule#apply(de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext,
 	 *      de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode)
 	 */
-	public void apply ( MinimalTypingProofContext context,
-			MinimalTypingProofNode node ) throws ProofRuleException {
+	public void apply ( MinimalTypingProofContext context, MinimalTypingProofNode node ) throws ProofRuleException {
 		if ( node == null ) {
 			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
 		}
@@ -56,35 +54,28 @@ public abstract class AbstractMinimalTypingProofRule extends AbstractProofRule
 			throw e;
 		} catch ( InvocationTargetException e ) {
 			if ( e.getTargetException ( ) instanceof ClassCastException ) {
-				throw new ProofRuleException ( MessageFormat.format ( Messages
-						.getString ( "ProofRuleException.0" ), this, node ), node, //$NON-NLS-1$
+				throw new ProofRuleException ( MessageFormat.format (
+						Messages.getString ( "ProofRuleException.0" ), this, node ), node, //$NON-NLS-1$
 						this, e.getTargetException ( ) );
-			}
-			else if ( e.getTargetException ( ) instanceof IllegalArgumentException ) {
-				throw new ProofRuleException ( MessageFormat.format ( Messages
-						.getString ( "ProofRuleException.0" ), this, node ), node, //$NON-NLS-1$
+			} else if ( e.getTargetException ( ) instanceof IllegalArgumentException ) {
+				throw new ProofRuleException ( MessageFormat.format (
+						Messages.getString ( "ProofRuleException.0" ), this, node ), node, //$NON-NLS-1$
 						this, e.getTargetException ( ) );
-		}
-			else if ( e.getCause ( ) instanceof RuntimeException ) {
+			} else if ( e.getCause ( ) instanceof RuntimeException ) {
 				throw new RuntimeException ( e.getTargetException ( ).getMessage ( ) );
-			}
-			else if ( e.getTargetException ( ).getMessage ( ) == null ) {
+			} else if ( e.getTargetException ( ).getMessage ( ) == null ) {
 				throw new ProofRuleException ( node, this, e.getTargetException ( ) );
 			}
-			throw new ProofRuleException (
-					e.getTargetException ( ).getMessage ( ), node, this, e
-							.getTargetException ( ) );
+			throw new ProofRuleException ( e.getTargetException ( ).getMessage ( ), node, this, e.getTargetException ( ) );
 		} catch ( Exception e ) {
-			
-			 // check if e contains a usable error message
-			 for ( Throwable t = e ; t != null ; t = t.getCause ( ) )
-			 {
-			 if ( t instanceof IllegalArgumentException )
-			 {
-			 throw new ProofRuleException ( t.getMessage ( ) , node , this , e ) ;
-			 }
-			 }
-			 throw new ProofRuleException ( node , this , e ) ;
+
+			// check if e contains a usable error message
+			for ( Throwable t = e; t != null; t = t.getCause ( ) ) {
+				if ( t instanceof IllegalArgumentException ) {
+					throw new ProofRuleException ( t.getMessage ( ), node, this, e );
+				}
+			}
+			throw new ProofRuleException ( node, this, e );
 		}
 	}
 
@@ -94,8 +85,7 @@ public abstract class AbstractMinimalTypingProofRule extends AbstractProofRule
 	 * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofRule#update(de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext,
 	 *      de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode)
 	 */
-	public void update ( MinimalTypingProofContext context,
-			MinimalTypingProofNode node ) {
+	public void update ( MinimalTypingProofContext context, MinimalTypingProofNode node ) {
 		if ( node == null ) {
 			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
 		}
@@ -130,8 +120,8 @@ public abstract class AbstractMinimalTypingProofRule extends AbstractProofRule
 	 *           <code>node</code> using the <code>context</code>.
 	 * @see #apply(MinimalTypingProofContext, MinimalTypingProofNode)
 	 */
-	protected abstract void applyInternal ( MinimalTypingProofContext context,
-			MinimalTypingProofNode node ) throws Exception;
+	protected abstract void applyInternal ( MinimalTypingProofContext context, MinimalTypingProofNode node )
+			throws Exception;
 
 	/**
 	 * Abstract internal update method, implemented by the
@@ -145,6 +135,6 @@ public abstract class AbstractMinimalTypingProofRule extends AbstractProofRule
 	 * @throws Exception if an error occurs while updating the <code>node</code>
 	 *           using the <code>context</code>.
 	 */
-	protected abstract void updateInternal ( MinimalTypingProofContext context,
-			MinimalTypingProofNode node ) throws Exception;
+	protected abstract void updateInternal ( MinimalTypingProofContext context, MinimalTypingProofNode node )
+			throws Exception;
 }

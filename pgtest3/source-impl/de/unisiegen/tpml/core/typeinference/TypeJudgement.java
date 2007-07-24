@@ -49,8 +49,7 @@ public class TypeJudgement implements TypeFormula {
 	 * @param expr Expression
 	 * @param t MonoType
 	 */
-	public TypeJudgement ( final TypeEnvironment env,
-			final Expression expr, final MonoType t ) {
+	public TypeJudgement ( final TypeEnvironment env, final Expression expr, final MonoType t ) {
 
 		this.environment = env;
 		this.expression = expr;
@@ -65,8 +64,7 @@ public class TypeJudgement implements TypeFormula {
 	 * @return null (just needed for TypeEquation)
 	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
 	 */
-	public TypeJudgement substitute (
-			ArrayList < TypeSubstitution > substitutions ) {
+	public TypeJudgement substitute ( ArrayList < TypeSubstitution > substitutions ) {
 
 		MonoType newType = this.type.clone ( );
 
@@ -169,21 +167,20 @@ public class TypeJudgement implements TypeFormula {
 	public void setExpression ( final Expression expression ) {
 		this.expression = expression;
 	}
-	
+
 	/**
 	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals (Object o){
+	public boolean equals ( Object o ) {
 		try {
-			TypeJudgement other = (TypeJudgement) o;
-			if (this.environment.equals ( other.environment ))
-				if (this.expression.equals ( other.expression ))
-					if (this.type.equals ( other.type ))
+			TypeJudgement other = ( TypeJudgement ) o;
+			if ( this.environment.equals ( other.environment ) )
+				if ( this.expression.equals ( other.expression ) )
+					if ( this.type.equals ( other.type ) )
 						return true;
-		}
-		catch (ClassCastException e){
+		} catch ( ClassCastException e ) {
 			return false;
 		}
 		return false;

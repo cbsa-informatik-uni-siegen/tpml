@@ -13,8 +13,7 @@ import de.unisiegen.tpml.core.languages.Language;
  *
  * @see de.unisiegen.tpml.core.AbstractProofRuleSet
  */
-public abstract class AbstractRecSubTypingProofRuleSet extends
-		AbstractProofRuleSet {
+public abstract class AbstractRecSubTypingProofRuleSet extends AbstractProofRuleSet {
 
 	/**
 	 * Allocates a new <code>AbstractSubTypingProofRuleSet</code> for the specified <code>language</code>.
@@ -24,7 +23,8 @@ public abstract class AbstractRecSubTypingProofRuleSet extends
 	 * 
 	 * @throws NullPointerException if <code>language</code> is <code>null</code>.
 	 */
-	public AbstractRecSubTypingProofRuleSet ( Language language, boolean mode ) {
+	public AbstractRecSubTypingProofRuleSet ( Language language, @SuppressWarnings ( "unused" )
+	boolean mode ) {
 		super ( language );
 	}
 
@@ -70,8 +70,8 @@ public abstract class AbstractRecSubTypingProofRuleSet extends
 	 * @see #register(int, String, Method)
 	 * @see AbstractProofRuleSet#register(AbstractProofRule)
 	 */
-	protected void register ( int group, String name, final Method applyMethod,
-			final Method updateMethod ) {
+	protected void register ( int group, String name, final Method applyMethod, @SuppressWarnings ( "unused" )
+	final Method updateMethod ) {
 		if ( name == null ) {
 			throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
 		}
@@ -82,10 +82,8 @@ public abstract class AbstractRecSubTypingProofRuleSet extends
 		// register a new proof rule with the name and methods
 		register ( new AbstractRecSubTypingProofRule ( group, name ) {
 			@Override
-			protected void applyInternal ( RecSubTypingProofContext context,
-					RecSubTypingProofNode node ) throws Exception {
-				applyMethod.invoke ( AbstractRecSubTypingProofRuleSet.this, context,
-						node );
+			protected void applyInternal ( RecSubTypingProofContext context, RecSubTypingProofNode node ) throws Exception {
+				applyMethod.invoke ( AbstractRecSubTypingProofRuleSet.this, context, node );
 			}
 		} );
 	}
@@ -108,8 +106,7 @@ public abstract class AbstractRecSubTypingProofRuleSet extends
 	 * 
 	 * @see #register(int, String, Method)
 	 */
-	protected void registerByMethodName ( int group, String name,
-			String applyMethodName ) {
+	protected void registerByMethodName ( int group, String name, String applyMethodName ) {
 		register ( group, name, getMethodByName ( applyMethodName ) );
 	}
 
@@ -129,10 +126,8 @@ public abstract class AbstractRecSubTypingProofRuleSet extends
 	 * 
 	 * @see #register(int, String, Method, Method)
 	 */
-	protected void registerByMethodName ( int group, String name,
-			String applyMethodName, String updateMethodName ) {
-		register ( group, name, getMethodByName ( applyMethodName ),
-				getMethodByName ( updateMethodName ) );
+	protected void registerByMethodName ( int group, String name, String applyMethodName, String updateMethodName ) {
+		register ( group, name, getMethodByName ( applyMethodName ), getMethodByName ( updateMethodName ) );
 	}
 
 	/**
@@ -172,10 +167,8 @@ public abstract class AbstractRecSubTypingProofRuleSet extends
 		}
 		try {
 			// lookup the method with the parameters BigStepProofContext and BigStepProofNode
-			return getClass ( ).getMethod (
-					methodName,
-					new Class[] { RecSubTypingProofContext.class,
-							RecSubTypingProofNode.class } );
+			return getClass ( ).getMethod ( methodName,
+					new Class[] { RecSubTypingProofContext.class, RecSubTypingProofNode.class } );
 		} catch ( RuntimeException e ) {
 			// just re-throw the exception
 			throw e;

@@ -184,7 +184,7 @@ public abstract class AbstractMinimalTypingProofRuleSet extends AbstractProofRul
 			throw e;
 		} catch ( Exception e ) {
 			// translate the exception to a runtime exception
-			throw new RuntimeException ( "Method " + methodName + " not found", e );  //$NON-NLS-1$//$NON-NLS-2$
+			throw new RuntimeException ( "Method " + methodName + " not found", e ); //$NON-NLS-1$//$NON-NLS-2$
 		}
 	}
 }

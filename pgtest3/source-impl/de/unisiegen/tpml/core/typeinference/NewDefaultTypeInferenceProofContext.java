@@ -82,10 +82,10 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	 * The list of all type substitutions that has been collected 
 	 */
 	private ArrayList < TypeSubstitution > substitutionList = new ArrayList < TypeSubstitution > ( );
-	
-	private ArrayList < TypeJudgement> judgementList = new ArrayList < TypeJudgement> ();
-	
-	private ArrayList <TypeSubType> subTypeList = new ArrayList < TypeSubType> ();
+
+	private ArrayList < TypeJudgement > judgementList = new ArrayList < TypeJudgement > ( );
+
+	private ArrayList < TypeSubType > subTypeList = new ArrayList < TypeSubType > ( );
 
 	/**
 	 * The type inference proof model with which this proof context is associated.
@@ -107,13 +107,14 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	 * @see #getUndoActions()
 	 */
 	private final LinkedList < Runnable > undoActions = new LinkedList < Runnable > ( );
-	
+
 	//
 	// Constructor
 	//
 	/**
 	 * @param pModel the type inference proof model with which the context is
 	 *          associated.
+	 * @param node the type inference proof node for this context
 	 * @throws NullPointerException if <code>model</code> is <code>null</code>.
 	 * @see TypeInferenceProofModel#setIndex(int)
 	 */
@@ -122,12 +123,11 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 			throw new NullPointerException ( "model is null" ); //$NON-NLS-1$
 		}
 		this.model = pModel;
-		
+
 		// collect all type formulas of the parent node
-		getOldFormulas(node);
+		getOldFormulas ( node );
 	}
-	
-	
+
 	/**
 	 * Add a new collected type equation to the list of type equations
 	 * 
@@ -138,8 +138,8 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	 */
 	public void addEquation ( MonoType left, MonoType right ) {
 		addEquation ( new TypeEquationTypeInference ( left, right, new SeenTypes < TypeEquationTypeInference > ( ) ) );
-		}
-	
+	}
+
 	/**
 	 * Add a new collected type equation to the list of type equations
 	 * 
@@ -152,7 +152,7 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 		this.equationList.add ( 0, pTypeEquationTypeInference );
 
 	}
-	
+
 	/**
 	 * Extend a new Substitution to the SubstitutionList
 	 * 
@@ -160,8 +160,8 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	 */
 	public void addSubstitution ( TypeSubstitution s ) {
 		this.substitutionList.add ( s );
-		}
-	
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -170,12 +170,11 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	 *      de.unisiegen.tpml.core.expressions.Expression,
 	 *      de.unisiegen.tpml.core.types.MonoType)
 	 */
-	public void addProofNode ( @SuppressWarnings("unused")
-	TypeCheckerProofNode node, TypeEnvironment environment, Expression expression,
-			MonoType type ) {
-	this.judgementList.add ( new TypeJudgement(environment, expression, type) );
+	public void addProofNode ( @SuppressWarnings ( "unused" )
+	TypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type ) {
+		this.judgementList.add ( new TypeJudgement ( environment, expression, type ) );
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -184,11 +183,11 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	 * 	  de.unisiegen.tpml.core.types.MonoType
 	 *      de.unisiegen.tpml.core.types.MonoType)
 	 */
-	public void addProofNode ( @SuppressWarnings("unused")
+	public void addProofNode ( @SuppressWarnings ( "unused" )
 	TypeCheckerProofNode node, MonoType left, MonoType right ) {
-		this.subTypeList.add ( new TypeSubType(left, right) );
-		}
-	
+		this.subTypeList.add ( new TypeSubType ( left, right ) );
+	}
+
 	//
 	// Accessors
 	//
@@ -200,8 +199,7 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	public ArrayList < TypeSubstitution > getSubstitution ( ) {
 		return this.substitutionList;
 	}
-	
-	
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -266,7 +264,7 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 					+ expression );
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -286,7 +284,7 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 		}
 		return ( MonoType ) type;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -296,7 +294,7 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 		// offset++;
 		return new TypeVariable ( this.model.getIndex ( ), this.offset++ );
 	}
-	
+
 	//
 	// Context action handling
 	//
@@ -352,7 +350,7 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	 */
 	Runnable getRedoActions ( ) {
 		return new Runnable ( ) {
-			@SuppressWarnings("synthetic-access")
+			@SuppressWarnings ( "synthetic-access" )
 			public void run ( ) {
 				for ( Runnable redoAction : NewDefaultTypeInferenceProofContext.this.redoActions ) {
 					redoAction.run ( );
@@ -371,7 +369,7 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	 */
 	Runnable getUndoActions ( ) {
 		return new Runnable ( ) {
-			@SuppressWarnings("synthetic-access")
+			@SuppressWarnings ( "synthetic-access" )
 			public void run ( ) {
 				for ( Runnable undoAction : NewDefaultTypeInferenceProofContext.this.undoActions ) {
 					undoAction.run ( );
@@ -379,7 +377,7 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 			}
 		};
 	}
-	
+
 	/**
 	 * Invokes all previously registered undo actions and clears the list of undo
 	 * actions.
@@ -394,7 +392,7 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 		}
 		this.undoActions.clear ( );
 	}
-	
+
 	//
 	// Rule applicationxterm
 	//
@@ -415,23 +413,21 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	 *           <code>node</code>.
 	 */
 	void apply ( final TypeCheckerProofRule rule, final TypeFormula formula, @SuppressWarnings ( "unused" )
-			final MonoType type, boolean mode, DefaultTypeInferenceProofNode node ) throws ProofRuleException, UnifyException {
-		
+	final MonoType type, boolean mode, DefaultTypeInferenceProofNode node ) throws ProofRuleException, UnifyException {
+
 		// collect all type substitutions of the parent node
 		this.substitutionList.addAll ( node.getSubstitution ( ) );
-		
+
 		// create a typechecker proof node with the actual formula
 		AbstractTypeCheckerProofNode typeNode = null;
-		
-		if (formula instanceof TypeJudgement){
+
+		if ( formula instanceof TypeJudgement ) {
 			typeNode = new DefaultTypeCheckerExpressionProofNode ( formula.getEnvironment ( ), formula.getExpression ( ),
 					formula.getType ( ) );
-		}
-		else if (formula instanceof TypeSubType){
-			TypeSubType subType = (TypeSubType) formula;
-			typeNode = new DefaultTypeCheckerTypeProofNode(subType.getType ( ), subType.getType2 ( ));
-		}
-		else if (formula instanceof TypeEquationTypeInference){
+		} else if ( formula instanceof TypeSubType ) {
+			TypeSubType subType = ( TypeSubType ) formula;
+			typeNode = new DefaultTypeCheckerTypeProofNode ( subType.getType ( ), subType.getType2 ( ) );
+		} else if ( formula instanceof TypeEquationTypeInference ) {
 			typeNode = new DefaultTypeEquationProofNode ( formula.getEnvironment ( ), new Unify ( ), new UnifyType ( ),
 					( TypeEquationTypeInference ) formula, mode );
 		} else {
@@ -439,36 +435,34 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 					new UnifyType ( ) );
 			throw new ProofRuleException ( typeNode, rule );
 		}
-		
+
 		//	try to apply the rule to the node
 		rule.apply ( this, typeNode );
 		// check if the user specified a type
-		
+
 		//if (type != null) { //add an equation for { node.getType() = type }
 		//addEquation(node.getType(), type); }
-		
+
 		// apply the substitution to all type formulas
-		ArrayList<TypeFormula> newFormulas = getNewFormulas( formula );
-		
+		ArrayList < TypeFormula > newFormulas = getNewFormulas ( formula );
+
 		//	create the new node
 		this.model.contextAddProofNode ( newFormulas, this.substitutionList );
 	}
-	
+
 	/**
 	 * 
 	 * Collect the formulas of the parent node, and sort them to the corresponding list
 	 *
 	 * @param node the parent DefaultTypeInferenceProofNode
 	 */
-	private void getOldFormulas(DefaultTypeInferenceProofNode node){
-		for (TypeFormula formula : node.getAllFormulas ( )){
-			if (formula instanceof TypeJudgement){
+	private void getOldFormulas ( DefaultTypeInferenceProofNode node ) {
+		for ( TypeFormula formula : node.getAllFormulas ( ) ) {
+			if ( formula instanceof TypeJudgement ) {
 				this.judgementList.add ( ( TypeJudgement ) formula );
-			}
-			else if (formula instanceof TypeEquationTypeInference){
+			} else if ( formula instanceof TypeEquationTypeInference ) {
 				this.equationList.add ( ( TypeEquationTypeInference ) formula );
-			}
-			else {
+			} else {
 				this.subTypeList.add ( ( TypeSubType ) formula );
 			}
 		}
@@ -482,23 +476,23 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	 * @param actual The actual handled type formula
 	 * @return the new list of type formulas for the child node
 	 */
-	private ArrayList< TypeFormula> getNewFormulas( TypeFormula actual){
-		ArrayList <TypeFormula> formulas = new ArrayList<TypeFormula>();
-		
-		for(TypeJudgement judgement : this.judgementList){
+	private ArrayList < TypeFormula > getNewFormulas ( TypeFormula actual ) {
+		ArrayList < TypeFormula > formulas = new ArrayList < TypeFormula > ( );
+
+		for ( TypeJudgement judgement : this.judgementList ) {
 			formulas.add ( judgement.substitute ( this.substitutionList ) );
 		}
-		for(TypeSubType subType : this.subTypeList){
+		for ( TypeSubType subType : this.subTypeList ) {
 			formulas.add ( subType.substitute ( this.substitutionList ) );
 		}
-		for(TypeEquationTypeInference teqn : this.equationList){
-			if (!formulas.contains ( teqn.substitute ( this.substitutionList ) ))
-			formulas.add ( teqn.substitute ( this.substitutionList ) );
+		for ( TypeEquationTypeInference teqn : this.equationList ) {
+			if ( !formulas.contains ( teqn.substitute ( this.substitutionList ) ) )
+				formulas.add ( teqn.substitute ( this.substitutionList ) );
 		}
-		
+
 		// remove the actual handled type formula
 		formulas.remove ( actual.substitute ( this.substitutionList ) );
-		
+
 		return formulas;
 	}
 }

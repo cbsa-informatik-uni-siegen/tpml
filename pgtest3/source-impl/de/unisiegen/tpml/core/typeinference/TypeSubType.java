@@ -12,96 +12,122 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
 
-public class TypeSubType implements ShowBondsInput, TypeFormula, PrettyPrintable , PrettyPrintPriorities {
-	 
+/**
+ * 
+ * This type of type formula is needed to check subtype relations.
+ *
+ * @author Benjamin Mies
+ *
+ */
+public class TypeSubType implements ShowBondsInput, TypeFormula, PrettyPrintable, PrettyPrintPriorities {
+
 	//
 	// Attributes
 	//
-	
-	private MonoType type;
-	
-	private MonoType type2;
-	
-	public TypeSubType( MonoType pType, MonoType pType2){
-		this.type = pType;
-		this.type2 = pType2;
+
+	private MonoType left;
+
+	private MonoType right;
+
+	/**
+	 * 
+	 * Allocates a new <code>TypeSubType</code>
+	 *
+	 * @param pType the first type of this sub type node
+	 * @param pType2 the second type of this sub type 
+	 */
+	public TypeSubType ( MonoType pType, MonoType pType2 ) {
+		this.left = pType;
+		this.right = pType2;
 	}
 
-	  /**
-	   * {@inheritDoc}
-	   * 
-	   * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getEnvironment()
-	   */
-	  public DefaultTypeEnvironment getEnvironment ( )
-	  {
-	    return new DefaultTypeEnvironment ( ) ;
-	  }
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getEnvironment()
+	 */
+	public DefaultTypeEnvironment getEnvironment ( ) {
+		return new DefaultTypeEnvironment ( );
+	}
 
-	  /**
-	   * {@inheritDoc}
-	   * 
-	   * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getExpression()
-	   */
-	  public Expression getExpression ( )
-	  {
-	    return null ;
-	  }
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getExpression()
+	 */
+	public Expression getExpression ( ) {
+		return null;
+	}
 
+	/**
+	 * 
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getType()
+	 */
 	public MonoType getType ( ) {
-		return this.type;
-	}
-	
-	public MonoType getType2 ( ) {
-		return this.type2;
+		return this.left;
 	}
 
-	public TypeSubType substitute ( ArrayList < TypeSubstitution > s ) {
+	/**
+	 * 
+	 * Get the second type of this node.
+	 *
+	 * @return the second type of this node.
+	 */
+	public MonoType getType2 ( ) {
+		return this.right;
+	}
+
+	/**
+	 * 
+	 * There is nothing to substitute. So the Object itself will be returned.
+	 * 
+	 * @return this unchanged object.
+	 *
+	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#substitute(java.util.ArrayList)
+	 */
+	public TypeSubType substitute ( @SuppressWarnings ( "unused" )
+	ArrayList < TypeSubstitution > s ) {
 		return this;
 	}
-	
-	  //
-	  // Pretty printing
-	  //
-	  /**
-	   * {@inheritDoc}
-	   * 
-	   * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
-	   */
-	  public final PrettyString toPrettyString ( )
-	  {
-	    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-	        .toPrettyString ( ) ;
-	  }
-	
-	  /**
-	   * {@inheritDoc} Returns the string representation for the type equation,
-	   * which is primarily useful for debugging.
-	   * 
-	   * @see java.lang.Object#toString()
-	   */
-	  @ Override
-	  public String toString ( )
-	  {
-	    
-	    return  this.type + " <: " + this.type2 ; //$NON-NLS-1$ 
-	  }
-	  
-	  /**
-	   * Returns the {@link PrettyStringBuilder}.
-	   * 
-	   * @param factory The {@link PrettyStringBuilderFactory}.
-	   * @return The {@link PrettyStringBuilder}.
-	   */
-	  private PrettyStringBuilder toPrettyStringBuilder (
-	      PrettyStringBuilderFactory factory )
-	  {
-	    PrettyStringBuilder builder = factory.newBuilder ( this , PRIO_EQUATION ) ;
-	    builder.addBuilder ( this.type.toPrettyStringBuilder ( factory ) ,
-	        PRIO_EQUATION ) ;
-	    builder.addText ( " <: " ) ; //$NON-NLS-1$
-	    builder.addBuilder ( this.type2.toPrettyStringBuilder ( factory ) ,
-	        PRIO_EQUATION ) ;
-	    return builder ;
-	  }
+
+	//
+	// Pretty printing
+	//
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
+	 */
+	public final PrettyString toPrettyString ( ) {
+		return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) ).toPrettyString ( );
+	}
+
+	/**
+	 * {@inheritDoc} Returns the string representation for the left equation,
+	 * which is primarily useful for debugging.
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString ( ) {
+
+		return this.left + " <: " + this.right; //$NON-NLS-1$ 
+	}
+
+	/**
+	 * Returns the {@link PrettyStringBuilder}.
+	 * 
+	 * @param factory The {@link PrettyStringBuilderFactory}.
+	 * @return The {@link PrettyStringBuilder}.
+	 */
+	private PrettyStringBuilder toPrettyStringBuilder ( PrettyStringBuilderFactory factory ) {
+		PrettyStringBuilder builder = factory.newBuilder ( this, PRIO_EQUATION );
+		builder.addBuilder ( this.left.toPrettyStringBuilder ( factory ), PRIO_EQUATION );
+		builder.addText ( " <: " ); //$NON-NLS-1$
+		builder.addBuilder ( this.right.toPrettyStringBuilder ( factory ), PRIO_EQUATION );
+		return builder;
+	}
 
 }

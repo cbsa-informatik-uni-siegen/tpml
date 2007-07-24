@@ -42,8 +42,7 @@ public class TypeSubstitutionList {
 		super ( );
 	}
 
-	private TypeSubstitutionList ( final DefaultTypeSubstitution pFirst,
-			final TypeSubstitutionList pRemaining ) {
+	private TypeSubstitutionList ( final DefaultTypeSubstitution pFirst, final TypeSubstitutionList pRemaining ) {
 
 		if ( pFirst == null ) {
 			throw new NullPointerException ( "first is null" ); //$NON-NLS-1$

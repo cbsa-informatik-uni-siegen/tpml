@@ -46,8 +46,7 @@ public class DefaultSubTypingProofContext implements SubTypingProofContext {
 	 * @param pNode the actual subtyping proof node
 	 * 
 	 */
-	public DefaultSubTypingProofContext ( SubTypingProofModel pModel,
-			SubTypingProofNode pNode ) {
+	public DefaultSubTypingProofContext ( SubTypingProofModel pModel, SubTypingProofNode pNode ) {
 		this.model = pModel;
 		this.node = ( DefaultSubTypingProofNode ) pNode;
 	}
@@ -70,8 +69,8 @@ public class DefaultSubTypingProofContext implements SubTypingProofContext {
 	 * @throws SubTypingException if an error occurs while the type the application 
 	 *                            of <code>rule</code> to <code>node</code>.
 	 */
-	public void apply ( SubTypingProofRule rule, DefaultSubTypingProofNode pNode )
-			throws ProofRuleException, SubTypingException {
+	public void apply ( SubTypingProofRule rule, DefaultSubTypingProofNode pNode ) throws ProofRuleException,
+			SubTypingException {
 
 		this.model.contextSetProofNodeRule ( this, pNode, rule );
 		//	 try to apply the rule to the node
@@ -83,8 +82,7 @@ public class DefaultSubTypingProofContext implements SubTypingProofContext {
 	 *
 	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofContext#addProofNode(de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode, de.unisiegen.tpml.core.typechecker.TypeEnvironment, de.unisiegen.tpml.core.expressions.Expression, de.unisiegen.tpml.core.types.MonoType)
 	 */
-	public void addProofNode ( SubTypingProofNode pNode, MonoType type,
-			MonoType type2 ) {
+	public void addProofNode ( SubTypingProofNode pNode, MonoType type, MonoType type2 ) {
 		this.model.contextAddProofNode ( this, pNode, type, type2 );
 
 	}

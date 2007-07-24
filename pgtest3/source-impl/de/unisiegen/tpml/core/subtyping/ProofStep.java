@@ -87,8 +87,7 @@ public final class ProofStep {
 	public boolean equals ( Object obj ) {
 		if ( obj instanceof ProofStep ) {
 			ProofStep other = ( ProofStep ) obj;
-			return ( this.type.equals ( other.type )
-					|| this.type2.equals ( other.type2 ) || this.rule
+			return ( this.type.equals ( other.type ) || this.type2.equals ( other.type2 ) || this.rule
 					.equals ( other.rule ) );
 		}
 		return false;
@@ -101,8 +100,7 @@ public final class ProofStep {
 	 */
 	@Override
 	public int hashCode ( ) {
-		return this.type.hashCode ( ) + this.type2.hashCode ( )
-				+ this.rule.hashCode ( );
+		return this.type.hashCode ( ) + this.type2.hashCode ( ) + this.rule.hashCode ( );
 	}
 
 	/**

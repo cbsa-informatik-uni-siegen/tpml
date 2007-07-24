@@ -1,6 +1,5 @@
 package de.unisiegen.tpml.core.subtypingrec;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import de.unisiegen.tpml.core.ProofRuleException;
@@ -15,8 +14,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * 
  * @see de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofContext
  */
-public class DefaultRecSubTypingProofContext implements
-		RecSubTypingProofContext {
+public class DefaultRecSubTypingProofContext implements RecSubTypingProofContext {
 
 	/**
 	 * The rec subtyping proof model with which this proof context is associated.
@@ -52,10 +50,9 @@ public class DefaultRecSubTypingProofContext implements
 	 * @param pNode the actual subtyping proof node
 	 * 
 	 */
-	public DefaultRecSubTypingProofContext ( RecSubTypingProofModel pModel,
-			RecSubTypingProofNode pNode ) {
-		model = pModel;
-		node = ( DefaultRecSubTypingProofNode ) pNode;
+	public DefaultRecSubTypingProofContext ( RecSubTypingProofModel pModel, RecSubTypingProofNode pNode ) {
+		this.model = pModel;
+		this.node = ( DefaultRecSubTypingProofNode ) pNode;
 	}
 
 	//
@@ -76,13 +73,12 @@ public class DefaultRecSubTypingProofContext implements
 	 * @throws SubTypingException if an error occurs while the type the application 
 	 *                            of <code>rule</code> to <code>node</code>.
 	 */
-	public void apply ( RecSubTypingProofRule rule,
-			DefaultRecSubTypingProofNode pNode ) throws ProofRuleException,
+	public void apply ( RecSubTypingProofRule rule, DefaultRecSubTypingProofNode pNode ) throws ProofRuleException,
 			SubTypingException {
 
-		seenTypes.addAll ( pNode.getSeenTypes ( ) );
+		this.seenTypes.addAll ( pNode.getSeenTypes ( ) );
 
-		model.contextSetProofNodeRule ( this, pNode, rule );
+		this.model.contextSetProofNodeRule ( this, pNode, rule );
 		//	 try to apply the rule to the node
 		rule.apply ( this, pNode );
 	}
@@ -92,9 +88,8 @@ public class DefaultRecSubTypingProofContext implements
 	 *
 	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofContext#addProofNode(de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode, de.unisiegen.tpml.core.typechecker.TypeEnvironment, de.unisiegen.tpml.core.expressions.Expression, de.unisiegen.tpml.core.types.MonoType)
 	 */
-	public void addProofNode ( RecSubTypingProofNode pNode, MonoType type,
-			MonoType type2 ) {
-		model.contextAddProofNode ( this, pNode, type, type2, seenTypes );
+	public void addProofNode ( RecSubTypingProofNode pNode, MonoType type, MonoType type2 ) {
+		this.model.contextAddProofNode ( this, pNode, type, type2, this.seenTypes );
 
 	}
 
@@ -105,7 +100,7 @@ public class DefaultRecSubTypingProofContext implements
 	 */
 	public void addSeenType ( MonoType type, MonoType type2 ) {
 		DefaultSubType subtype = new DefaultSubType ( type, type2 );
-		seenTypes.add ( subtype );
+		this.seenTypes.add ( subtype );
 	}
 
 	/**

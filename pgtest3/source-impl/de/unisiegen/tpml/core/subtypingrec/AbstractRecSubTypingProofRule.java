@@ -17,8 +17,7 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofRule
  * @see de.unisiegen.tpml.core.AbstractProofRule
  */
-public abstract class AbstractRecSubTypingProofRule extends AbstractProofRule
-		implements RecSubTypingProofRule {
+public abstract class AbstractRecSubTypingProofRule extends AbstractProofRule implements RecSubTypingProofRule {
 
 	/**
 	 * Allocates a new <code>AbstractSubTypingProofRule</code> of the specified <code>name</code>.
@@ -40,8 +39,8 @@ public abstract class AbstractRecSubTypingProofRule extends AbstractProofRule
 	 *
 	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofRule#apply(de.unisiegen.tpml.core.subtyping.SubTypingProofContext, de.unisiegen.tpml.core.subTyping.RecSubTypingProofNode)
 	 */
-	public void apply ( DefaultRecSubTypingProofContext context,
-			DefaultRecSubTypingProofNode node ) throws ProofRuleException {
+	public void apply ( DefaultRecSubTypingProofContext context, DefaultRecSubTypingProofNode node )
+			throws ProofRuleException {
 		if ( node == null ) {
 			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
 		}
@@ -55,8 +54,7 @@ public abstract class AbstractRecSubTypingProofRule extends AbstractProofRule
 		} catch ( InvocationTargetException e ) {
 			if ( e.getTargetException ( ) instanceof RuntimeException )
 				throw new ProofRuleException ( node, this, e );
-			throw new ProofRuleException ( e.getTargetException ( ).getMessage ( ),
-					node, this, e );
+			throw new ProofRuleException ( e.getTargetException ( ).getMessage ( ), node, this, e );
 		} catch ( Exception e ) {
 			// check if e contains a usable error message
 			for ( Throwable t = e; t != null; t = t.getCause ( ) ) {
@@ -108,8 +106,8 @@ public abstract class AbstractRecSubTypingProofRule extends AbstractProofRule
 	 *                   
 	 * @see #apply(TypeCheckerProofContext, TypeCheckerProofNode)
 	 */
-	protected abstract void applyInternal ( RecSubTypingProofContext context,
-			RecSubTypingProofNode node ) throws Exception, SubTypingException;
+	protected abstract void applyInternal ( RecSubTypingProofContext context, RecSubTypingProofNode node )
+			throws Exception, SubTypingException;
 
 	/*
 	 /**

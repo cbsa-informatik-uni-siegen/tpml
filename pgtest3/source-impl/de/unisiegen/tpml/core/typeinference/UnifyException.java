@@ -49,8 +49,8 @@ public final class UnifyException extends Exception {
 	 */
 	public UnifyException ( final TypeEquationTypeInference equation ) {
 
-		super ( MessageFormat.format ( Messages
-				.getString ( "UnificationException.0" ), equation.getLeft ( ), equation.getRight ( ) ) ); //$NON-NLS-1$
+		super ( MessageFormat.format (
+				Messages.getString ( "UnificationException.0" ), equation.getLeft ( ), equation.getRight ( ) ) ); //$NON-NLS-1$
 		this.equation = equation;
 	}
 
