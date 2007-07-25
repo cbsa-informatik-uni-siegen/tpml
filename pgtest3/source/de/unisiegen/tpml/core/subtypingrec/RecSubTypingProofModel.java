@@ -15,7 +15,6 @@ import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
 import de.unisiegen.tpml.core.subtyping.ProofStep;
-import de.unisiegen.tpml.core.subtyping.SubTypingException;
 import de.unisiegen.tpml.core.subtyping.SubTypingModel;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext;
@@ -175,12 +174,6 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 
 			// re-throw the exception
 			throw e;
-		} catch ( SubTypingException e ) {
-			// revert the actions performed so far
-			context.revert ( );
-
-			// re-throw the exception as proof rule exception
-			throw new ProofRuleException ( e.getMessage ( ), node, rule, null );
 		} catch ( RuntimeException e ) {
 			// revert the actions performed so far
 			context.revert ( );
