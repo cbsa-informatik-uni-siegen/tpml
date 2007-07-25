@@ -53,11 +53,10 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 	 * 
 	 * @see #getIndex()
 	 * @see TypeCheckerProofContext#newTypeVariable()
-	 * @see types.TypeVariable
+	 * @see de.unisiegen.tpml.core.types.TypeVariable
 	 */
 	private int index = 1;
 
-	public DefaultTypeCheckerProofContext context;
 
 	//
 	// Constructor
@@ -68,17 +67,16 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 	 * as its root node.
 	 * 
 	 * @param expression the {@link Expression} for the root node.
-	 * @param ruleSet the available type rules for the model.
+	 * @param pRuleSet the available type rules for the model.
 	 * 
 	 * @throws NullPointerException if either <code>expression</code> or <code>ruleSet</code> is
 	 *                              <code>null</code>.
 	 *
 	 * @see AbstractProofModel#AbstractProofModel(AbstractProofNode, AbstractProofRuleSet)
 	 */
-	public TypeCheckerProofModel ( Expression expression, AbstractTypeCheckerProofRuleSet ruleSet ) {
+	public TypeCheckerProofModel ( Expression expression, AbstractTypeCheckerProofRuleSet pRuleSet ) {
 		super ( new DefaultTypeCheckerExpressionProofNode ( new DefaultTypeEnvironment ( ), expression, new TypeVariable (
-				1, 0 ) ), ruleSet );
-		context = new DefaultTypeCheckerProofContext ( this );
+				1, 0 ) ), pRuleSet );
 	}
 
 	//
@@ -88,13 +86,13 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 	/**
 	 * Returns the current proof model index, which is the number of
 	 * steps already performed on the model (starting with one) and
-	 * used to allocate new, unique {@link types.TypeVariable}s. It
+	 * used to allocate new, unique {@link  de.unisiegen.tpml.core.types.TypeVariable}s. It
 	 * is incremented with every proof step performed on the model.
 	 * 
 	 * @return the current index of the proof model.
 	 * 
 	 * @see TypeCheckerProofContext#newTypeVariable()
-	 * @see types.TypeVariable
+	 * @see  de.unisiegen.tpml.core.types.TypeVariable
 	 */
 	public int getIndex ( ) {
 		return this.index;
@@ -105,17 +103,17 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 	 * called by {@link DefaultTypeCheckerProofContext} whenever a new
 	 * proof context is allocated.
 	 * 
-	 * @param index the new index for the proof model.
+	 * @param pIndex the new index for the proof model.
 	 * 
 	 * @see #getIndex()
 	 * @see DefaultTypeCheckerProofContext
 	 * @see DefaultTypeCheckerProofContext#DefaultTypeCheckerProofContext(TypeCheckerProofModel)
 	 */
-	public void setIndex ( int index ) {
-		if ( index < 1 ) {
-			throw new IllegalArgumentException ( "index is invalid" );
+	public void setIndex ( int pIndex ) {
+		if ( pIndex < 1 ) {
+			throw new IllegalArgumentException ( "index is invalid" ); //$NON-NLS-1$
 		}
-		this.index = index;
+		this.index = pIndex;
 	}
 
 	//
@@ -144,6 +142,7 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 	 * 
 	 * @param node the {@link ProofNode} for which the next proof step should
 	 *             be guessed.
+	 * @param type the type for the node
 	 *             
 	 * @throws IllegalArgumentException if the <code>node</code> is invalid for this model.             
 	 * @throws IllegalStateException if for some reason <code>node</code> cannot be proven.
@@ -155,7 +154,7 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 	 */
 	public void guessWithType ( ProofNode node, MonoType type ) throws ProofGuessException {
 		if ( type == null ) {
-			throw new NullPointerException ( "type is null" );
+			throw new NullPointerException ( "type is null" ); //$NON-NLS-1$
 		}
 
 		// guess the rule for the node utilizing the type
@@ -173,13 +172,13 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 	@Override
 	public void prove ( ProofRule rule, ProofNode node ) throws ProofRuleException {
 		if ( !this.ruleSet.contains ( rule ) ) {
-			throw new IllegalArgumentException ( "The rule is invalid for the model" );
+			throw new IllegalArgumentException ( "The rule is invalid for the model" ); //$NON-NLS-1$
 		}
 		if ( !this.root.isNodeRelated ( node ) ) {
-			throw new IllegalArgumentException ( "The node is invalid for the model" );
+			throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
 		}
 		if ( node.getRules ( ).length > 0 ) {
-			throw new IllegalArgumentException ( "The node is already completed" );
+			throw new IllegalArgumentException ( "The node is already completed" ); //$NON-NLS-1$
 		}
 
 		// try to apply the rule to the specified node
@@ -216,13 +215,15 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 			context.apply ( rule, node, type );
 
 			// check if we are finished
-			final TypeCheckerProofNode root = ( TypeCheckerProofNode ) getRoot ( );
+			final TypeCheckerProofNode rootNode = ( TypeCheckerProofNode ) getRoot ( );
 			context.addRedoAction ( new Runnable ( ) {
+				@SuppressWarnings("synthetic-access")
 				public void run ( ) {
-					setFinished ( root.isFinished ( ) );
+					setFinished ( rootNode.isFinished ( ) );
 				}
 			} );
 			context.addUndoAction ( new Runnable ( ) {
+				@SuppressWarnings("synthetic-access")
 				public void run ( ) {
 					setFinished ( false );
 				}
@@ -282,19 +283,19 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 	private void guessInternal ( AbstractTypeCheckerProofNode node, MonoType type ) throws ProofGuessException {
 		if ( node == null ) {
 
-			throw new NullPointerException ( "node is null" );
+			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
 		}
 		if ( node.getSteps ( ).length > 0 ) {
 
-			throw new IllegalArgumentException ( "The node is already completed" );
+			throw new IllegalArgumentException ( "The node is already completed" ); //$NON-NLS-1$
 		}
 		if ( !this.root.isNodeRelated ( node ) ) {
 
-			throw new IllegalArgumentException ( "The node is invalid for the model" );
+			throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
 		}
 
 		// try to guess the next rule
-		logger.debug ( "Trying to guess a rule for " + node );
+		logger.debug ( "Trying to guess a rule for " + node ); //$NON-NLS-1$
 		for ( ProofRule rule : this.ruleSet.getRules ( ) ) { // MUST be the getRules() from the ProofRuleSet
 			try {
 				// try to apply the rule to the specified node
@@ -304,11 +305,11 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 				setCheating ( true );
 
 				// yep, we did it
-				logger.debug ( "Successfully applied (" + rule + ") to " + node );
+				logger.debug ( "Successfully applied (" + rule + ") to " + node ); //$NON-NLS-1$ //$NON-NLS-2$
 				return;
 			} catch ( ProofRuleException e ) {
 				// rule failed to apply... so, next one, please
-				logger.debug ( "Failed to apply (" + rule + ") to " + node, e );
+				logger.debug ( "Failed to apply (" + rule + ") to " + node, e ); //$NON-NLS-1$ //$NON-NLS-2$
 				continue;
 			} catch ( RuntimeException e ) {
 				throw new ProofGuessException ( e.getMessage ( ), node );
@@ -316,7 +317,7 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 		}
 
 		// unable to guess next step
-		logger.debug ( "Failed to find rule to apply to " + node );
+		logger.debug ( "Failed to find rule to apply to " + node ); //$NON-NLS-1$
 		throw new ProofGuessException ( node );
 	}
 
@@ -340,27 +341,28 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 	public void contextAddProofNode ( DefaultTypeCheckerProofContext context, final AbstractTypeCheckerProofNode node,
 			TypeEnvironment environment, Expression expression, MonoType type ) {
 		if ( context == null ) {
-			throw new NullPointerException ( "context is null" );
+			throw new NullPointerException ( "context is null" ); //$NON-NLS-1$
 		}
 		if ( node == null ) {
-			throw new NullPointerException ( "node is null" );
+			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
 		}
 		if ( environment == null ) {
-			throw new NullPointerException ( "environment is null" );
+			throw new NullPointerException ( "environment is null" ); //$NON-NLS-1$
 		}
 		if ( expression == null ) {
-			throw new NullPointerException ( "expression is null" );
+			throw new NullPointerException ( "expression is null" ); //$NON-NLS-1$
 		}
 		if ( type == null ) {
-			throw new NullPointerException ( "type is null" );
+			throw new NullPointerException ( "type is null" ); //$NON-NLS-1$
 		}
 		if ( !this.root.isNodeRelated ( node ) ) {
-			throw new IllegalArgumentException ( "node is invalid" );
+			throw new IllegalArgumentException ( "node is invalid" ); //$NON-NLS-1$
 		}
 
 		final DefaultTypeCheckerExpressionProofNode child = new DefaultTypeCheckerExpressionProofNode ( environment,
 				expression, type );
 		context.addRedoAction ( new Runnable ( ) {
+			@SuppressWarnings("synthetic-access")
 			public void run ( ) {
 				node.add ( child );
 				nodesWereInserted ( node, new int[] { node.getIndex ( child ) } );
@@ -368,57 +370,74 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 		} );
 
 		context.addUndoAction ( new Runnable ( ) {
+			@SuppressWarnings("synthetic-access")
 			public void run ( ) {
-				int index = node.getIndex ( child );
-				node.remove ( index );
-				nodesWereRemoved ( node, new int[] { index }, new Object[] { child } );
-			}
-		} );
-	}
-
-	public void contextAddProofNode ( DefaultTypeCheckerProofContext context, final AbstractTypeCheckerProofNode node,
-			MonoType type, MonoType type2 ) {
-		if ( context == null ) {
-			throw new NullPointerException ( "context is null" );
-		}
-		if ( node == null ) {
-			throw new NullPointerException ( "node is null" );
-		}
-		if ( type == null ) {
-			throw new NullPointerException ( "expression is null" );
-		}
-		if ( type2 == null ) {
-			throw new NullPointerException ( "type is null" );
-		}
-		if ( !this.root.isNodeRelated ( node ) ) {
-			throw new IllegalArgumentException ( "node is invalid" );
-		}
-
-		final DefaultTypeCheckerTypeProofNode child = new DefaultTypeCheckerTypeProofNode ( type, type2 );
-		context.addRedoAction ( new Runnable ( ) {
-			public void run ( ) {
-				node.add ( child );
-				nodesWereInserted ( node, new int[] { node.getIndex ( child ) } );
-			}
-		} );
-
-		context.addUndoAction ( new Runnable ( ) {
-			public void run ( ) {
-				int index = node.getIndex ( child );
-				node.remove ( index );
-				nodesWereRemoved ( node, new int[] { index }, new Object[] { child } );
+				int nodeIndex = node.getIndex ( child );
+				node.remove ( nodeIndex );
+				nodesWereRemoved ( node, new int[] { nodeIndex }, new Object[] { child } );
 			}
 		} );
 	}
 
 	/**
+	 * 
+	 * Adds a new child proof node below the <code>node</code> using the <code>context</code> and for the
+	 * <code>type</code>s.
+	 *
+	 * @param context the context calling this method
+	 * @param node the parent node to add this child
+	 * @param type the first type of the new child node
+	 * @param type2 the second type of the new child node
+	 */
+	public void contextAddProofNode ( DefaultTypeCheckerProofContext context, final AbstractTypeCheckerProofNode node,
+			MonoType type, MonoType type2 ) {
+		if ( context == null ) {
+			throw new NullPointerException ( "context is null" ); //$NON-NLS-1$
+		}
+		if ( node == null ) {
+			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
+		}
+		if ( type == null ) {
+			throw new NullPointerException ( "expression is null" ); //$NON-NLS-1$
+		}
+		if ( type2 == null ) {
+			throw new NullPointerException ( "type is null" ); //$NON-NLS-1$
+		}
+		if ( !this.root.isNodeRelated ( node ) ) {
+			throw new IllegalArgumentException ( "node is invalid" ); //$NON-NLS-1$
+		}
+
+		final DefaultTypeCheckerTypeProofNode child = new DefaultTypeCheckerTypeProofNode ( type, type2 );
+		context.addRedoAction ( new Runnable ( ) {
+			@SuppressWarnings("synthetic-access")
+			public void run ( ) {
+				node.add ( child );
+				nodesWereInserted ( node, new int[] { node.getIndex ( child ) } );
+			}
+		} );
+
+		context.addUndoAction ( new Runnable ( ) {
+			@SuppressWarnings("synthetic-access")
+			public void run ( ) {
+				int nodeIndex = node.getIndex ( child );
+				node.remove ( nodeIndex );
+				nodesWereRemoved ( node, new int[] { nodeIndex }, new Object[] { child } );
+			}
+		} );
+	}
+
+	/**
+	 * Perform the given substitution to the given node
+	 * 
+	 * @param context the proof context calling this mehtod
 	 * @param s the {@link TypeSubstitution} to apply to all nodes in the proof tree.
 	 * 
 	 * @throws NullPointerException if <code>s</code> is <code>null</code>.
 	 */
+	@SuppressWarnings("unchecked")
 	void contextApplySubstitution ( DefaultTypeCheckerProofContext context, TypeSubstitution s ) {
 		if ( s == null ) {
-			throw new NullPointerException ( "s is null" );
+			throw new NullPointerException ( "s is null" ); //$NON-NLS-1$
 		}
 
 		// apply the substitution s to all nodes in the proof node
@@ -444,6 +463,7 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 						|| !oldType.equals ( newType ) ) {
 					// add the redo action for the substitution
 					context.addRedoAction ( new Runnable ( ) {
+						@SuppressWarnings("synthetic-access")
 						public void run ( ) {
 							node.setEnvironment ( newEnvironment );
 							node.setExpression ( newExpression );
@@ -454,6 +474,7 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 
 					// add the undo action for the substitution
 					context.addUndoAction ( new Runnable ( ) {
+						@SuppressWarnings("synthetic-access")
 						public void run ( ) {
 							node.setEnvironment ( oldEnvironment );
 							node.setExpression ( oldExpression );
@@ -467,20 +488,21 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 	}
 
 	/**
-	 * Used to implement the {@link DefaultTypeCheckerProofContext#apply(TypeCheckerProofRule, TypeCheckerProofNode)}
+	 * Used to implement the {@link DefaultTypeCheckerProofContext#apply(TypeCheckerProofRule, TypeCheckerProofNode, MonoType)}
 	 * method of the {@link DefaultTypeCheckerProofContext} class.
 	 * 
 	 * @param context the type checker proof context.
 	 * @param node the type checker node.
 	 * @param rule the type checker rule.
 	 * 
-	 * @see DefaultTypeCheckerProofContext#apply(TypeCheckerProofRule, TypeCheckerProofNode)
+	 * @see DefaultTypeCheckerProofContext#apply(TypeCheckerProofRule, TypeCheckerProofNode, MonoType)
 	 */
 	public void contextSetProofNodeRule ( DefaultTypeCheckerProofContext context,
 			final AbstractTypeCheckerProofNode node, final TypeCheckerProofRule rule ) {
 		final ProofStep[] oldSteps = node.getSteps ( );
 
 		context.addRedoAction ( new Runnable ( ) {
+			@SuppressWarnings("synthetic-access")
 			public void run ( ) {
 				node.setSteps ( new ProofStep[] { new ProofStep ( node.getExpression ( ), rule ) } );
 				nodeChanged ( node );
@@ -488,6 +510,7 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
 		} );
 
 		context.addUndoAction ( new Runnable ( ) {
+			@SuppressWarnings("synthetic-access")
 			public void run ( ) {
 				node.setSteps ( oldSteps );
 				nodeChanged ( node );

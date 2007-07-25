@@ -3,7 +3,6 @@ package de.unisiegen.tpml.core.typechecker;
 import javax.swing.tree.TreeNode;
 
 import de.unisiegen.tpml.core.ExpressionProofNode;
-import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -38,7 +37,7 @@ public interface TypeCheckerProofNode extends ExpressionProofNode {
 
   
   /**
-   * Convenience wrapper for the {@link ProofNode#getSteps()} method, which returns the
+   * Convenience wrapper for the {@link ExpressionProofNode#getSteps()} method, which returns the
    * <code>TypeCheckerProofRule</code> that was applied to this node or <code>null</code>
    * if no rule was applied to this node so far.
    * 

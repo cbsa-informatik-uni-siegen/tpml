@@ -55,5 +55,11 @@ public interface TypeSubstitution {
    */
   public MonoType get(TypeVariable tvar);
 
-public PrettyString toPrettyString ( );
+  /**
+   * 
+   * Get this type substitution formated as pretty string
+   *
+   * @return pretty string of this type substitution
+   */
+  public PrettyString toPrettyString ( );
 }
