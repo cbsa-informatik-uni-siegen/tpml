@@ -30,8 +30,8 @@ import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
  * <code>MouseEvents</code> on the components {@link Outline},
  * {@link SmallStepView}, {@link BigStepView}, {@link TypeCheckerView}
  * {@link TextEditorPanel}, {@link MinimalTypingNodeComponent},
- * {@link SubTypingNodeComponent} and {@link SubTypingSourceView}. Sets a
- * new {@link Expression} or {@link Type} in the {@link Outline}. It views the
+ * {@link SubTypingNodeComponent} and {@link SubTypingSourceView}. Sets a new
+ * {@link Expression} or {@link Type} in the {@link Outline}. It views the
  * <code>JPopupMenu</code> in the {@link Outline}.
  * 
  * @author Christian Fehler
@@ -166,8 +166,7 @@ public final class OutlineMouseListener implements MouseListener
    * 
    * @param pSubTypingNodeComponent The {@link SubTypingNodeComponent}.
    */
-  public OutlineMouseListener (
-      SubTypingNodeComponent pSubTypingNodeComponent )
+  public OutlineMouseListener ( SubTypingNodeComponent pSubTypingNodeComponent )
   {
     this.subTypingNodeComponent = pSubTypingNodeComponent ;
   }
@@ -607,6 +606,16 @@ public final class OutlineMouseListener implements MouseListener
           .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
           .getOutline ( ).load (
               this.typeCheckerNodeComponent.getTypeComponent ( ).getType ( ) ,
+              Outline.ExecuteMouseClick.TYPECHECKER ) ;
+    }
+    // TypeComponent2
+    else if ( pMouseEvent.getSource ( ).equals (
+        this.typeCheckerNodeComponent.getTypeComponent2 ( ) ) )
+    {
+      ( ( TypeCheckerView ) this.typeCheckerNodeComponent.getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+          .getOutline ( ).load (
+              this.typeCheckerNodeComponent.getTypeComponent2 ( ).getType ( ) ,
               Outline.ExecuteMouseClick.TYPECHECKER ) ;
     }
   }
