@@ -46,7 +46,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * Everytime the content of the tree changes ({@link #treeContentChanged()} is called) the 
  * {@link #checkForUserObject(MinimalTypingProofNode)}-method is called. This causes a recursive traversing
  * of the entire tree to check if every node has its corresponding 
- * {@link de.unisiegen.tpml.graphics.MinimalTyping.MinimalTypingNodeComponent}.<br>
+ * {@link de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingNodeComponent}.<br>
  * <br>
  * When nodes get removed only the userobject of that nodes needs to get release.<br>
  * When nodes get inserted, the first of them is stored in the {@link #jumpNode} so the
@@ -56,11 +56,10 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * 
  * 
  * 
- * @author marcell
+ * @author Benjamin Mies
  * 
- * @see de.unisiegen.tpml.graphics.MinimalTyping.MinimalTypingView
- * @see de.unisiegen.tpml.graphics.MinimalTyping.MinimalTypingNodeComponent
- * @see de.unisiegen.tpml.graphics.MinimalTyping.MinimalTypingEnterType
+ * @see de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingView
+ * @see de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingNodeComponent
  *
  */
 public class MinimalTypingComponent extends AbstractProofComponent implements Scrollable {
@@ -86,7 +85,12 @@ public class MinimalTypingComponent extends AbstractProofComponent implements Sc
 	 */
 	private ProofNode										jumpNode;
 
-	
+	/**
+	 * 
+	 * Allocates a new <code>MinimalTypingComponent</code> o
+	 *
+	 * @param model the proof model for this component
+	 */
 	public MinimalTypingComponent (MinimalTypingProofModel model) {
 		super (model);
 		
@@ -99,6 +103,12 @@ public class MinimalTypingComponent extends AbstractProofComponent implements Sc
 		treeContentChanged();
 	}
 	
+	/**
+	 * 
+	 * Set a new spacing for this component.
+	 *
+	 * @param spacing the new spacing value
+	 */
 	public void setSpacing (int spacing) {
 		this.treeNodeLayout.setSpacing(spacing);
 	}
@@ -231,6 +241,7 @@ public class MinimalTypingComponent extends AbstractProofComponent implements Sc
 	 * <br>
 	 * Resetting means that every {@link PrettyStringRenderer} and 
 	 * {@link EnvironmentRenderer} recalculates their needed font sizes.
+	 * @param node the node to reset
 	 */
 	private void resetUserObject (MinimalTypingProofNode node) {
 		if (node == null) {

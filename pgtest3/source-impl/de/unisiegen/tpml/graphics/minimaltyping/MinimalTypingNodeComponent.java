@@ -52,15 +52,13 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
  * <br>
  * The first rectangle represents the {@link #indexLabel} The second rectanle
  * represents the entire {@link #compoundExpression} including the
- * typeenvironment. The last element in the first row is the {@link #typeLabel}
+ * typeenvironment. The last element in the first row is the typeLabel
  * containing the resulting type, it also is containing the <code>" :: "</code>.
  * If the node is not completly evaluated only the four dots are drawn.<br>
  * In the next row there is only one rectangle containing the rule. In the case
  * of the previous image the {@link #ruleLabel} is shown, but as long as the
  * node has not been evaluated with a rule there would be located the
- * {@link #ruleButton}. Another possible component that could be located at
- * this position is the {@link #typeEnter}. That could be used to give the user
- * the possibilty to enter a type by himself.<br>
+ * {@link #ruleButton}.<br>
  * The bit of free space between the top and the bottom row aswell as between
  * the indexLabel and the expression is given in pixels in the {@link #spacing}.
  * <br>
@@ -80,10 +78,9 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
  * @author marcell
  * @author michael
  * 
- * @see de.unisiegen.tpml.graphics.MinimalTyping.MinimalTypingView
- * @see de.unisiegen.tpml.graphics.MinimalTyping.MinimalTypingComponent
+ * @see de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingView
+ * @see de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingComponent
  * @see de.unisiegen.tpml.graphics.tree.TreeNodeComponent
- * @see de.unisiegen.tpml.graphics.MinimalTyping.MinimalTypingEnterType
  */
 public class MinimalTypingNodeComponent extends JComponent implements
 		TreeNodeComponent {
@@ -125,13 +122,18 @@ public class MinimalTypingNodeComponent extends JComponent implements
 
 
 	/**
-	 * The typeComponent(s) containing the type(s) of this node
-	 * 
+	 * The first typeComponent containing the first type of this node
 	 */
 	private TypeComponent typeComponent;
 
+	/**
+	 * The second typeComponent containing the second type of this node
+	 */
 	private TypeComponent typeComponent2;
 	
+	/**
+	 * The sub type symbol. Means "<:"
+	 */
 	String subtypeSymbol;
 
 	/**
@@ -168,20 +170,19 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	 * Constructor for a MinimalTypingNode<br>
 	 * <br>
 	 * All elements needed within the node will be created and added to the
-	 * component. Some of them will be hidden at first (the {@link #typeEnter},
-	 * or the {@link #ruleLabel}) because they are not needed but they are always
-	 * there.<br>
+	 * component. Some of them will be hidden the {@link #ruleLabel}) because 
+	 * they are not needed but they are always there.<br>
 	 * 
 	 * @param node The origin ProofNode
 	 * @param model The model
-	 * @param translator The translator of the model for the selected language
+	 * @param pTranslator The translator of the model for the selected language
 	 */
 	public MinimalTypingNodeComponent ( MinimalTypingProofNode node,
-			MinimalTypingProofModel model, LanguageTranslator translator ) {
+			MinimalTypingProofModel model, LanguageTranslator pTranslator ) {
 		super ( );
 		this.proofNode = node;
 		this.proofModel = model;
-		this.translator = translator;
+		this.translator = pTranslator;
 		this.dimension = new Dimension ( 0, 0 );
 		this.spacing = 10;
 		this.indexLabel = new JLabel ( );
@@ -341,17 +342,8 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	/**
 	 * Places all elements one after another.<br>
 	 * <br>
-	 * First the label, the expression and the "::" will be placed, if the node is
-	 * already prooven the {@link #typeLabel} will be placed aswell. The
-	 * {@link #dimension} will be rescaled with every item that is placed and with
-	 * all items, the height of the dimension will set to the current maximum.<br>
-	 * <br>
-	 * When all item of the top row are placed the {@link #ruleButton},
-	 * {@link #ruleLabel} or {@link #typeEnter} will be placed depending whether
-	 * the node is evaluated, it is not evaluated or the user previously selected
-	 * <i>Enter type</i>.
 	 * 
-	 * @param maxWidth The maximum amount of pixels available to place the
+	 * @param pMaxWidth The maximum amount of pixels available to place the
 	 *          elements.
 	 */
 	private void placeElements ( int pMaxWidth ) {

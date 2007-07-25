@@ -146,7 +146,6 @@ public class MinimalTypingView extends AbstractProofView
    * Returns the MinimalTypingProofModel.
    * 
    * @return The MinimalTypingProofModel.
-   * @see #MinimalTypingProofModel
    */
   public MinimalTypingProofModel getMinimalTypingProofModel ( )
   {
