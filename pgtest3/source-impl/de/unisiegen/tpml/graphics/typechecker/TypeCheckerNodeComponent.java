@@ -131,11 +131,14 @@ public class TypeCheckerNodeComponent extends JComponent implements TreeNodeComp
 	private CompoundExpression < Identifier, Type > compoundExpression;
 
 	/**
-	 * The {@link JLabel} showing the resulting type of this node, once the node
+	 * The {@link TypeComponent} showing the resulting type of this node, once the node
 	 * has been evaluated or the view is in advaced mode. Otherwise the componet will not be shown.
 	 */
 	private TypeComponent typeComponent;
 
+	/**
+	 * The {@link TypeComponent} showing the resulting type of this node, if it is a coercion
+	 */
 	private TypeComponent typeComponent2;
 
 	/**
@@ -445,8 +448,8 @@ public class TypeCheckerNodeComponent extends JComponent implements TreeNodeComp
 			posX += expSize.width;
 
 			// set the ::
-			this.doubleColonLabel.setBounds ( posX, AbstractRenderer.getFontLeading ( ), AbstractRenderer
-					.getTextFontMetrics ( ).stringWidth ( doubleColonString ), expSize.height );
+			//this.doubleColonLabel.setBounds ( posX, AbstractRenderer.getFontLeading ( ), AbstractRenderer.getTextFontMetrics ( ).stringWidth ( doubleColonString ), expSize.height );
+			this.doubleColonLabel.setBounds ( posX, 0, AbstractRenderer.getTextFontMetrics ( ).stringWidth ( doubleColonString ), AbstractRenderer.getAbsoluteHeight());
 			posX += doubleColonLabel.getSize ( ).width;
 
 			// if the expression and type are not in the same line the type will be placed in the next line
@@ -456,13 +459,13 @@ public class TypeCheckerNodeComponent extends JComponent implements TreeNodeComp
 					this.typeComponent.setBounds ( posXfront, 0 + expSize.height, typeSize.width, typeSize.height );
 					posX += typeSize.width;
 				} else
-				// do net shoe thy type
+				// do not show the type
 				{
 					// siply hide it.
 					this.typeComponent.setBounds ( 0, 0, 0, 0 );
 				}
 			} else
-			// place the Type behind the expression
+			// place the type behind the expression
 			{
 				if ( showType ) {
 					this.typeComponent.setBounds ( posX, 0, typeSize.width, typeSize.height );
@@ -831,5 +834,13 @@ public class TypeCheckerNodeComponent extends JComponent implements TreeNodeComp
 		this.advanced = advancedP;
 		this.placeElements ( lastMaxWidth );
 
+	}
+
+	/**
+	 * @return the typeComponent2
+	 */
+	public TypeComponent getTypeComponent2()
+	{
+		return this.typeComponent2;
 	}
 }
