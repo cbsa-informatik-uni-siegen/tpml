@@ -197,30 +197,31 @@ public class SideBar extends JComponent
 
 
   /**
-   * Adds the given {@link SideBarListener}.
-   * 
-   * @param pSideBarListener The given {@link SideBarListener}.
+   * Builds the marks.
    */
-  public void removeSideBarListener ( SideBarListener pSideBarListener )
+  private void buildMarks ( )
   {
-    this.listenerList.remove ( SideBarListener.class , pSideBarListener ) ;
-  }
-
-
-  /**
-   * Marks the text with the given offsets.
-   */
-  private void fireMarkText ( )
-  {
-    Object listeners[] = this.listenerList.getListenerList ( ) ;
-    for ( int i = 0 ; i < listeners.length ; i ++ )
+    this.exceptions = this.document.getExceptions ( ) ;
+    this.verticalPositions = new int [ this.exceptions.length ] ;
+    for ( int i = 0 ; i < this.exceptions.length ; i ++ )
     {
-      if ( listeners [ i ] == SideBarListener.class )
+      try
       {
-        ( ( SideBarListener ) listeners [ i + 1 ] ).markText (
-            this.currentLeft , this.currentRight ) ;
+        this.verticalPositions [ i ] = - 1 ;
+        Rectangle rect = this.textComponent.modelToView ( this.exceptions [ i ]
+            .getLeft ( ) ) ;
+        if ( rect == null )
+        {
+          return ;
+        }
+        this.verticalPositions [ i ] = rect.y + rect.height / 2 ;
+      }
+      catch ( Exception e )
+      {
+        continue ;
       }
     }
+    this.proppertyChanged = false ;
   }
 
 
@@ -238,6 +239,23 @@ public class SideBar extends JComponent
       {
         ( ( SideBarListener ) listeners [ i + 1 ] ).insertText (
             this.currentRight , pInsertText ) ;
+      }
+    }
+  }
+
+
+  /**
+   * Marks the text with the given offsets.
+   */
+  private void fireMarkText ( )
+  {
+    Object listeners[] = this.listenerList.getListenerList ( ) ;
+    for ( int i = 0 ; i < listeners.length ; i ++ )
+    {
+      if ( listeners [ i ] == SideBarListener.class )
+      {
+        ( ( SideBarListener ) listeners [ i + 1 ] ).markText (
+            this.currentLeft , this.currentRight ) ;
       }
     }
   }
@@ -273,114 +291,6 @@ public class SideBar extends JComponent
   public Dimension getPreferredSize ( )
   {
     return new Dimension ( this.errorIcon.getIconWidth ( ) , getHeight ( ) ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  protected void paintComponent ( Graphics gc )
-  {
-    if ( this.proppertyChanged )
-    {
-      buildMarks ( ) ;
-    }
-    gc.setColor ( getBackground ( ) ) ;
-    gc.fillRect ( 0 , 0 , getWidth ( ) , getHeight ( ) ) ;
-    if ( this.verticalPositions == null )
-    {
-      return ;
-    }
-    for ( int i = 0 ; i < this.verticalPositions.length ; i ++ )
-    {
-      if ( this.verticalPositions [ i ] == - 1 )
-      {
-        continue ;
-      }
-      int y0 = this.verticalPositions [ i ] - this.errorIcon.getIconHeight ( )
-          / 2 - this.verticalScrollBar.getValue ( ) ;
-      int y1 = y0 + this.errorIcon.getIconHeight ( ) ;
-      if ( y1 < 0 || y0 > getHeight ( ) )
-      {
-        continue ;
-      }
-      if ( this.exceptions [ i ] instanceof LanguageParserWarningException )
-      {
-        gc.drawImage ( this.warningIcon.getImage ( ) , 0 , y0 , this ) ;
-      }
-      else if ( this.exceptions [ i ] instanceof LanguageParserReplaceException )
-      {
-        gc.drawImage ( this.replaceIcon.getImage ( ) , 0 , y0 , this ) ;
-      }
-      else
-      {
-        gc.drawImage ( this.errorIcon.getImage ( ) , 0 , y0 , this ) ;
-      }
-    }
-    gc.fillRect ( 0 , getHeight ( ) - this.horizontalScrollBar.getHeight ( ) ,
-        getWidth ( ) , this.horizontalScrollBar.getHeight ( ) ) ;
-  }
-
-
-  /**
-   * Builds the marks.
-   */
-  private void buildMarks ( )
-  {
-    this.exceptions = this.document.getExceptions ( ) ;
-    this.verticalPositions = new int [ this.exceptions.length ] ;
-    for ( int i = 0 ; i < this.exceptions.length ; i ++ )
-    {
-      try
-      {
-        this.verticalPositions [ i ] = - 1 ;
-        Rectangle rect = this.textComponent.modelToView ( this.exceptions [ i ]
-            .getLeft ( ) ) ;
-        if ( rect == null )
-        {
-          return ;
-        }
-        this.verticalPositions [ i ] = rect.y + rect.height / 2 ;
-      }
-      catch ( Exception e )
-      {
-        continue ;
-      }
-    }
-    this.proppertyChanged = false ;
-  }
-
-
-  /**
-   * Handles the mouse move event.
-   * 
-   * @param pMouseEvent The {@link MouseEvent}.
-   */
-  private void mouseMoved ( MouseEvent pMouseEvent )
-  {
-    if ( this.verticalPositions == null )
-    {
-      return ;
-    }
-    int y = pMouseEvent.getY ( ) + this.verticalScrollBar.getValue ( ) ;
-    int hh = this.errorIcon.getIconHeight ( ) / 2 ;
-    for ( int i = 0 ; i < this.verticalPositions.length ; i ++ )
-    {
-      if ( y > this.verticalPositions [ i ] - hh
-          && y <= this.verticalPositions [ i ] + hh )
-      {
-        this.currentLeft = this.exceptions [ i ].getLeft ( ) ;
-        this.currentRight = this.exceptions [ i ].getRight ( ) ;
-        setToolTipText ( this.exceptions [ i ].getMessage ( ) ) ;
-        setCursor ( new Cursor ( Cursor.HAND_CURSOR ) ) ;
-        return ;
-      }
-    }
-    setCursor ( new Cursor ( Cursor.DEFAULT_CURSOR ) ) ;
-    setToolTipText ( null ) ;
-    this.currentLeft = - 1 ;
-    this.currentRight = - 1 ;
   }
 
 
@@ -437,5 +347,95 @@ public class SideBar extends JComponent
       }
     }
     fireMarkText ( ) ;
+  }
+
+
+  /**
+   * Handles the mouse move event.
+   * 
+   * @param pMouseEvent The {@link MouseEvent}.
+   */
+  private void mouseMoved ( MouseEvent pMouseEvent )
+  {
+    if ( this.verticalPositions == null )
+    {
+      return ;
+    }
+    int y = pMouseEvent.getY ( ) + this.verticalScrollBar.getValue ( ) ;
+    int hh = this.errorIcon.getIconHeight ( ) / 2 ;
+    for ( int i = 0 ; i < this.verticalPositions.length ; i ++ )
+    {
+      if ( y > this.verticalPositions [ i ] - hh
+          && y <= this.verticalPositions [ i ] + hh )
+      {
+        this.currentLeft = this.exceptions [ i ].getLeft ( ) ;
+        this.currentRight = this.exceptions [ i ].getRight ( ) ;
+        setToolTipText ( this.exceptions [ i ].getMessage ( ) ) ;
+        setCursor ( new Cursor ( Cursor.HAND_CURSOR ) ) ;
+        return ;
+      }
+    }
+    setCursor ( new Cursor ( Cursor.DEFAULT_CURSOR ) ) ;
+    setToolTipText ( null ) ;
+    this.currentLeft = - 1 ;
+    this.currentRight = - 1 ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  protected void paintComponent ( Graphics gc )
+  {
+    if ( this.proppertyChanged )
+    {
+      buildMarks ( ) ;
+    }
+    gc.setColor ( getBackground ( ) ) ;
+    gc.fillRect ( 0 , 0 , getWidth ( ) , getHeight ( ) ) ;
+    if ( this.verticalPositions == null )
+    {
+      return ;
+    }
+    for ( int i = 0 ; i < this.verticalPositions.length ; i ++ )
+    {
+      if ( this.verticalPositions [ i ] == - 1 )
+      {
+        continue ;
+      }
+      int y0 = this.verticalPositions [ i ] - this.errorIcon.getIconHeight ( )
+          / 2 - this.verticalScrollBar.getValue ( ) ;
+      int y1 = y0 + this.errorIcon.getIconHeight ( ) ;
+      if ( y1 < 0 || y0 > getHeight ( ) )
+      {
+        continue ;
+      }
+      if ( this.exceptions [ i ] instanceof LanguageParserWarningException )
+      {
+        gc.drawImage ( this.warningIcon.getImage ( ) , 0 , y0 , this ) ;
+      }
+      else if ( this.exceptions [ i ] instanceof LanguageParserReplaceException )
+      {
+        gc.drawImage ( this.replaceIcon.getImage ( ) , 0 , y0 , this ) ;
+      }
+      else
+      {
+        gc.drawImage ( this.errorIcon.getImage ( ) , 0 , y0 , this ) ;
+      }
+    }
+    gc.fillRect ( 0 , getHeight ( ) - this.horizontalScrollBar.getHeight ( ) ,
+        getWidth ( ) , this.horizontalScrollBar.getHeight ( ) ) ;
+  }
+
+
+  /**
+   * Adds the given {@link SideBarListener}.
+   * 
+   * @param pSideBarListener The given {@link SideBarListener}.
+   */
+  public void removeSideBarListener ( SideBarListener pSideBarListener )
+  {
+    this.listenerList.remove ( SideBarListener.class , pSideBarListener ) ;
   }
 }

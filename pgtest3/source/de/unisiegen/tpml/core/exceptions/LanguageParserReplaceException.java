@@ -124,7 +124,7 @@ public final class LanguageParserReplaceException extends
       int pParserStartOffsetRename , int pParserEndOffsetRename ,
       String pReplaceText )
   {
-    super ( null , - 1 , - 1 ) ;
+    super ( pMessagesRename , pParserStartOffsetRename , pParserEndOffsetRename ) ;
     this.messagesReplace = new String [ ]
     { pMessagesRename } ;
     this.parserStartOffsetReplace = new int [ ]
