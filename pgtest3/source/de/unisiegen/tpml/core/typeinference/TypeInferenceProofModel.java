@@ -392,11 +392,12 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	private void applyInternal ( TypeCheckerProofRule rule, DefaultTypeInferenceProofNode node, MonoType type,
 			TypeFormula form, boolean mode ) throws ProofRuleException {
 		// allocate a new TypeCheckerContext
-		NewDefaultTypeInferenceProofContext context = new NewDefaultTypeInferenceProofContext ( this, node );
+		DefaultTypeInferenceProofContext context = new DefaultTypeInferenceProofContext ( this );
 		this.index++ ;
 		DefaultTypeInferenceProofNode typeNode = node;
 		Exception e = null;
 		if ( form != null ) {
+			try {
 				// try to apply the rule to the specified node
 				//context.setSubstitutions ( node.getSubstitution ( ) ) ;
 				context.apply ( rule, form, type, mode, node );
@@ -405,8 +406,13 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 				newSteps[0] = new ProofStep ( new IsEmpty ( ), rule );
 
 				setUndoActions ( node, this.child, newSteps );
-
 				return;
+			}
+			catch (UnifyException e1){
+				context.revert ( );
+				throw new ProofRuleException(e1.getMessage ( ), node, rule, e);
+			}
+				
 		}
 		// Try actual Rule with all formulas of the actual node
 		for ( TypeFormula formula : typeNode.getFormula ( ) ) {
@@ -426,12 +432,16 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 				if ( e == null )
 					e = e1;
 				continue;
-			} 
+			} catch ( UnifyException e1 ) {
+				context.revert ( );
+				if (e == null)
+					e=e1;
+			}
 			/*
 			 * catch ( RuntimeException e1 ) { // revert the actions performed so far
 			 * context.revert ( ) ; // rembember first exception to rethrow if ( e ==
 			 * null ) e = e1 ; continue ; }
-			 */
+			 */ 
 		}
 		this.index-- ;
 		if ( e instanceof ProofRuleException ) {
