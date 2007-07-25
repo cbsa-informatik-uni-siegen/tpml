@@ -23,8 +23,14 @@ import de.unisiegen.tpml.core.util.Debug;
 public class DefaultRecSubTypingProofNode extends AbstractProofNode implements RecSubTypingProofNode,
 		SubTypingProofNode, PrettyPrintPriorities {
 
+	/**
+	 * The subtype object containing the subtype and supertype of this node
+	 */
 	private DefaultSubType type;
 
+	/**
+	 * List with the already seen types
+	 */
 	private SeenTypes < DefaultSubType > seenTypes;
 
 	/**
@@ -45,7 +51,7 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements R
 	}
 
 	/**
-	 * inherit Doc de.unisiegen.tpml.core.ProofNode#isProven()
+	 * {@inheritDoc} de.unisiegen.tpml.core.ProofNode#isProven()
 	 */
 	public boolean isProven ( ) {
 		return ( getSteps ( ).length > 0 );
@@ -125,10 +131,10 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements R
 	 * 	
 	 * get the proof steps of this node
 	 *
-	 * @param steps new proof steps for this node
+	 * @param pSteps new proof steps for this node
 	 */
-	public void setSteps ( ProofStep[] steps ) {
-		this.steps = steps;
+	public void setSteps ( ProofStep[] pSteps ) {
+		this.steps = pSteps;
 	}
 
 	/**
@@ -189,9 +195,9 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements R
 
 	/**
 	 * 
-	 * {inheritDoc}
+	 * {@inheritDoc} 
 	 *
-	 * @see de.unisiegen.tpml.core.subtyping.RecSubTypingProofNode#getRule()
+	 * @see de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode#getRule()
 	 */
 	public RecSubTypingProofRule getRule ( ) {
 		ProofStep[] proofSteps = getSteps ( );
