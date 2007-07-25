@@ -513,12 +513,14 @@ public class CompoundExpression < S , E > extends JComponent
       this.environmentRenderer.renderer ( posX , posY , this.environmentSize.width , getHeight ( ) , gc ) ;
     	//this.environmentRenderer.renderer ( posX , posY , this.environmentSize.width , environmentSize.height , gc ) ;
       posX += this.environmentSize.width ;
+      // TODO mal in die gleiche Zeile schreiben
       // draw the arrow character in the vertical center
-      int centerV = getHeight ( ) / 2 ;
-      centerV += AbstractRenderer.getTextFontMetrics ( ).getAscent ( ) / 2 ;
+      // int centerV = getHeight ( ) / 2 ;
+      // centerV += AbstractRenderer.getTextFontMetrics ( ).getAscent ( ) / 2 ;
       gc.setFont ( AbstractRenderer.getTextFont ( ) ) ;
       gc.setColor ( AbstractRenderer.getTextColor ( ) ) ;
-      gc.drawString ( CompoundExpression.arrowStr , posX , centerV ) ;
+      //gc.drawString ( CompoundExpression.arrowStr , posX , centerV ) ;
+      gc.drawString ( CompoundExpression.arrowStr , posX , posY+AbstractRenderer.getFontAscent() ) ;
       posX += AbstractRenderer.getTextFontMetrics ( ).stringWidth (
           CompoundExpression.arrowStr ) ;
       // draw the expression at the last position.
@@ -528,8 +530,8 @@ public class CompoundExpression < S , E > extends JComponent
     }
     
     //TODO DEbugging
-    //gc.setColor (Color.YELLOW);
-    //gc.drawRect(0, 0, getWidth () - 1, getHeight () - 1);
+    gc.setColor (Color.YELLOW);
+    gc.drawRect(0, 0, getWidth () - 1, getHeight () - 1);
   }
 
 

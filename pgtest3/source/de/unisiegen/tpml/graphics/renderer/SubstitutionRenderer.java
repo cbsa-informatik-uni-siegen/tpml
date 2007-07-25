@@ -212,8 +212,9 @@ public class SubstitutionRenderer extends AbstractRenderer {
 		//TODO TEST!!! dieses habe ich eigentlich als richtig herausgefunden...
     //int posY = y+(AbstractRenderer.getAbsoluteHeight ())/2;
 		//Dieses teste ich jetzt mal aus...
-		int posY = y+(AbstractRenderer.fontHeight/2);
-		posY +=(AbstractRenderer.fontAscent/2);
+		//int posY = y+(AbstractRenderer.fontHeight/2);
+		//posY +=(AbstractRenderer.fontAscent/2);
+		int posY = y+AbstractRenderer.fontAscent;
 
 		this.collapsed = false;
 

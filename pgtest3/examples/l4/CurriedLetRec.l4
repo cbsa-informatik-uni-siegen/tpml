@@ -1,1 +1,1 @@
-let a = f in let f f f' = f f' f'' a in f a
+let x = 1 in x

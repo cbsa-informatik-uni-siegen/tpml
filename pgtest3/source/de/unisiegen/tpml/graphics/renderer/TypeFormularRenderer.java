@@ -90,11 +90,6 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	private ArrayList < Integer > typeEquations;
 
 	/**
-	 * remembers the entry to swapp by . -1 if no entry is remembered
-	 */
-	private int remebmberToSwapp = -1;
-
-	/**
 	 * provides a rectangle arround the entry which should be swapped
 	 */
 	private Rectangle markedArea;
@@ -113,22 +108,6 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 * the ListenForMouseContainer
 	 */
 	private ToListenForMouseContainer toListenForM;
-
-	/**
-	 * Holds informatioin whether the environment is collapsed.<br>
-	 * <br>
-	 * Only the first element of the environment is show. If there
-	 * are more than one element, they will only be shown as ", ...".
-	 * Than the collapsed flag is <i>true</i> else it is <i>false</i>.
-	 */
-	private boolean collapsed;
-
-	/**
-	 * The rectangle describing the area of the ", ...".<br>
-	 * <br>
-	 * Can be used to determin where a ToolTip should be displayed.
-	 */
-	private Rectangle collapsedArea;
 
 	/**
 	 * The Arrow renderd between typeenvironment and the expression
@@ -155,8 +134,6 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 *
 	 */
 	public TypeFormularRenderer ( ) {
-		this.collapsed = false;
-		this.collapsedArea = new Rectangle ( );
 
 		this.collapsedAreas = new ArrayList < Rectangle > ( );
 		this.typeFormularPositions = new ArrayList < Rectangle > ( );
@@ -206,7 +183,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 * @return the collapsedStrings
 	 */
 	public ArrayList < String > getCollapsedStrings ( ) {
-		return collapsedStrings;
+		return this.collapsedStrings;
 	}
 
 	/**
@@ -216,7 +193,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 * @return the collapsedStrings
 	 */
 	public ArrayList < String > getAStrings ( ) {
-		return aStrings;
+		return this.aStrings;
 	}
 
 	/**
@@ -226,7 +203,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 * @return the collapsedStrings
 	 */
 	public ArrayList < ArrayList < PrettyString >> getAPrettyStrings ( ) {
-		return aPrettyStrings;
+		return this.aPrettyStrings;
 	}
 
 	/**
@@ -343,12 +320,12 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 */
 	public void draggNDropp ( int x, int y ) {
 		// remember the second element
-		TypeFormula secondElement = typeFormulaList.get ( y );
+		TypeFormula secondElement = this.typeFormulaList.get ( y );
 		// remove it
-		typeFormulaList.remove ( y );
+		this.typeFormulaList.remove ( y );
 		// Inserts it at the position of the first element in the list. Shifts the element
 		// currently at that position and any subsequent elements. (adds one to their indices).
-		typeFormulaList.add ( x, secondElement );
+		this.typeFormulaList.add ( x, secondElement );
 	}
 
 	/**
@@ -386,7 +363,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			//und letztlich brauchen wir dann das Maximum dieser maxima. daher merken wir uns dieses Maximum
 			int lineWidthMaxAll = insertSpace;
 
-			for ( int i = 0; i < typeFormulaList.size ( ); i++ ) {
+			for ( int i = 0; i < this.typeFormulaList.size ( ); i++ ) {
 				//Wir haben bis zu 4 Breiten, von denen wir dann das Maximum zurückgeben müssen...
 				//Eventuell geht aber auch alles in einen Zeile, dann bleieben die anderen eben einrücken...
 				int lineWidthTypeFormula = insertSpace;
@@ -402,7 +379,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 				//Diese Variable bestimmt, ob umgebrochen werden muss oder nicht...
 				int restOfWidth = maxWidth - insertSpace;
 
-				TypeFormula t = typeFormulaList.get ( i );
+				TypeFormula t = this.typeFormulaList.get ( i );
 
 				if ( t instanceof TypeJudgement ) {
 					//get the envirement, expression and type
@@ -410,9 +387,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					Expression expression = t.getExpression ( );
 					Type type = t.getType ( );
 
-					environmentRenderer = new EnvironmentRenderer < Enumeration, Enumeration > ( );
-					environmentRenderer.setEnvironment ( environment );
-					Dimension environmentDim = environmentRenderer.getNeededSize ( );
+					this.environmentRenderer = new EnvironmentRenderer < Enumeration, Enumeration > ( );
+					this.environmentRenderer.setEnvironment ( environment );
+					Dimension environmentDim = this.environmentRenderer.getNeededSize ( );
 
 					//width of envireonment
 					//lineWidthEnvironment += AbstractRenderer.keywordFontMetrics.stringWidth(environment.toString());
@@ -538,10 +515,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		}
 
 		//we also need the space between the Elements
-		result.height += ( ( typeFormulaList.size ( ) - 1 ) * SPACEBETWEENELEMENTS );
-
-		//TODO: Test:
-		//result.width = realMax(result.width, maxWidth);
+		result.height += ( ( this.typeFormulaList.size ( ) - 1 ) * SPACEBETWEENELEMENTS );
 
 		return result;
 	}
@@ -581,18 +555,20 @@ public class TypeFormularRenderer extends AbstractRenderer {
 
 		// calculate the vertical center of the available space 
 		int posX = x;
+		//int posY = y + AbstractRenderer.getAbsoluteHeight ( ) / 2;
 		//int posY = y + height / 2;
-		int posY = y + AbstractRenderer.getAbsoluteHeight ( ) / 2;
 		//int posY = y + AbstractRenderer.fontHeight;
-		posY += AbstractRenderer.fontAscent / 2;
+		//posY += AbstractRenderer.fontAscent / 2;
+		//int posY = y+(AbstractRenderer.fontHeight/2);
+		//posY +=(AbstractRenderer.fontAscent/2);
+		int posY = y + AbstractRenderer.fontAscent;
 
 		// find the first element in the enumeration if there is one
 
-		this.collapsed = false;
 		//Enumeration<S> env = this.environment.symbols();
-		if ( typeFormulaList.size ( ) > 0 ) {
+		if ( this.typeFormulaList.size ( ) > 0 ) {
 			// get the first element
-			TypeFormula t = typeFormulaList.get ( 0 );
+			TypeFormula t = this.typeFormulaList.get ( 0 );
 
 			//Render the solve {
 			//save the einrückung
@@ -620,20 +596,20 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			testAusgabe ( "Noich nutzbar wenn das Einrücken abgezogen ist: " + nochNutzbar );
 
 			//prettyStringrenderer = new PrettyStringRenderer();
-			typeFormularPositions = new ArrayList < Rectangle > ( );
-			typeEquations = new ArrayList < Integer > ( );
-			for ( int i = 0; i < typeFormulaList.size ( ); i++ ) {
-				expressionPostitions.add ( new Rectangle ( 0, 0, 0, 0 ) );
-				typePositions.add ( new Rectangle ( 0, 0, 0, 0 ) );
-				leftTypePositions.add ( new Rectangle ( 0, 0, 0, 0 ) );
-				rightTypePositions.add ( new Rectangle ( 0, 0, 0, 0 ) );
-				aPositions.add ( new Rectangle ( 0, 0, 0, 0 ) );
-				aStrings.add ( "" );
-				aPrettyStrings.add ( new ArrayList < PrettyString > ( ) );
+			this.typeFormularPositions = new ArrayList < Rectangle > ( );
+			this.typeEquations = new ArrayList < Integer > ( );
+			for ( int i = 0; i < this.typeFormulaList.size ( ); i++ ) {
+				this.expressionPostitions.add ( new Rectangle ( 0, 0, 0, 0 ) );
+				this.typePositions.add ( new Rectangle ( 0, 0, 0, 0 ) );
+				this.leftTypePositions.add ( new Rectangle ( 0, 0, 0, 0 ) );
+				this.rightTypePositions.add ( new Rectangle ( 0, 0, 0, 0 ) );
+				this.aPositions.add ( new Rectangle ( 0, 0, 0, 0 ) );
+				this.aStrings.add ( "" );
+				this.aPrettyStrings.add ( new ArrayList < PrettyString > ( ) );
 			}
 
 			//for (int i = typeFormulaList.size()-1; i>=0; i--)
-			for ( int i = 0; i < typeFormulaList.size ( ); i++ ) {
+			for ( int i = 0; i < this.typeFormulaList.size ( ); i++ ) {
 				//expressionPostitions.add(new Rectangle(0,0,0,0));
 				//typePositions.add(new Rectangle(0,0,0,0));
 				//leftTypePositions.add(new Rectangle(0,0,0,0));
@@ -644,7 +620,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 
 				nochNutzbar = width - einrücken;
 				testAusgabe ( "Noich nutzbar wenn das Einrücken abgezogen ist: " + nochNutzbar );
-				t = typeFormulaList.get ( i );
+				t = this.typeFormulaList.get ( i );
 				if ( t instanceof TypeEquationTypeInference ) {
 					//save the pos X where the render starts to render to find out the size later
 					int oldX = posX;
@@ -691,7 +667,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//get the seentyps and provide the String for the Tooltip
 					SeenTypes < TypeEquationTypeInference > typeEquSeenTypes = ( ( TypeEquationTypeInference ) t )
 							.getSeenTypes ( );
-					aStrings.set ( i, typeEquSeenTypes.toString ( ) );
+					this.aStrings.set ( i, typeEquSeenTypes.toString ( ) );
 
 					ArrayList < PrettyString > tmp = new ArrayList < PrettyString > ( );
 
@@ -702,7 +678,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						tmp.add ( ps );
 					}
 					//aPrettyStrings.add(tmp);
-					aPrettyStrings.set ( i, tmp );
+					this.aPrettyStrings.set ( i, tmp );
 
 					//tell the Rendere the PrettyString
 					typeEquationStringrenderer.setPrettyString ( s.toPrettyString ( ) );
@@ -711,9 +687,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					Dimension typeEquationSize = typeEquationStringrenderer.getNeededSize ( Integer.MAX_VALUE );
 
 					//render the typeFormula
-					//typeEquationStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.width, typeEquationSize.height, gc, bondTypeEquation, toListenForM);
-					typeEquationStringrenderer.renderBase ( posX, posY, typeEquationSize.width, typeEquationSize.height, gc,
-							bondTypeEquation, toListenForM );
+					typeEquationStringrenderer.render(posX, posY- AbstractRenderer.fontAscent, typeEquationSize.width, typeEquationSize.height, gc, bondTypeEquation, this.toListenForM);
+					//typeEquationStringrenderer.renderBase ( posX, posY, typeEquationSize.width, typeEquationSize.height, gc, bondTypeEquation, toListenForM );
 
 					//now we need to find out the exact position of the left type and the left one
 					MonoType left = s.getLeft ( );
@@ -735,13 +710,13 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					// change Benjamin
 					//debug("Folgende sollten die gleiche Y-Koordinate haben, und die gleiche Höhe, sonst ist Unfug!"+typeFormularPositions.get(i)+" - "+leftTypePositions.get(i));
 
-					this.typeEquations.add ( i );
+					this.typeEquations.add (new Integer( i ) );
 					posX += typeEquationSize.width;
 
 					gc.setColor ( expColor );
 
 					//every but the last line needs an linebreak
-					if ( i < ( typeFormulaList.size ( ) - 1 ) ) {
+					if ( i < ( this.typeFormulaList.size ( ) - 1 ) ) {
 						posX = x + einrücken;
 						posY += typeEquationSize.height;
 						posY += SPACEBETWEENELEMENTS;
@@ -812,9 +787,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						Dimension typeEquationSize = typeEquationStringrenderer.getNeededSize ( Integer.MAX_VALUE );
 
 						//render the typeFormula
+						typeEquationStringrenderer.render(posX, posY-AbstractRenderer.fontAscent, typeEquationSize.width, typeEquationSize.height, gc, bondTypeEquation, this.toListenForM);
 						//typeEquationStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.width, typeEquationSize.height, gc, bondTypeEquation, toListenForM);
-						typeEquationStringrenderer.renderBase ( posX, posY, typeEquationSize.width, typeEquationSize.height, gc,
-								bondTypeEquation, toListenForM );
+						//typeEquationStringrenderer.renderBase ( posX, posY, typeEquationSize.width, typeEquationSize.height, gc,bondTypeEquation, toListenForM );
 
 						//now we need to find out the exact position of the left type and the left one
 						MonoType left = subType.getType ( );
@@ -836,13 +811,13 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						// change Benjamin
 						//debug("Folgende sollten die gleiche Y-Koordinate haben, und die gleiche Höhe, sonst ist Unfug!"+typeFormularPositions.get(i)+" - "+leftTypePositions.get(i));
 
-						this.typeEquations.add ( i );
+						this.typeEquations.add ( new Integer (i) );
 						posX += typeEquationSize.width;
 
 						gc.setColor ( expColor );
 
 						//every but the last line needs an linebreak
-						if ( i < ( typeFormulaList.size ( ) - 1 ) ) {
+						if ( i < ( this.typeFormulaList.size ( ) - 1 ) ) {
 							posX = x + einrücken;
 							posY += typeEquationSize.height;
 							posY += SPACEBETWEENELEMENTS;
@@ -857,7 +832,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 
 					//				Renderer, damit die einzel gerendert werden...
 					//PrettyStringRenderer prettyStringrenderer = new PrettyStringRenderer();
-					environmentRenderer = new EnvironmentRenderer < Enumeration, Enumeration > ( );
+					this.environmentRenderer = new EnvironmentRenderer < Enumeration, Enumeration > ( );
 					PrettyStringRenderer expressionRenderer = new PrettyStringRenderer ( );
 					PrettyStringRenderer typeRenderer = new PrettyStringRenderer ( );
 
@@ -869,7 +844,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					environment.symbols ( );
 					environment.identifiers ( );
 
-					environmentRenderer.setEnvironment ( environment );
+					this.environmentRenderer.setEnvironment ( environment );
 
 					//environment.
 					gc.setColor ( AbstractRenderer.expColor );
@@ -877,27 +852,26 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//posX += AbstractRenderer.keywordFontMetrics.stringWidth(environment.toString());
 
 					//testAusgabe("Die Größe: "+environmentRenderer.getNeededSize().width); 
-					Dimension environmentSize = environmentRenderer.getNeededSize ( );
+					Dimension environmentSize = this.environmentRenderer.getNeededSize ( );
+					this.environmentRenderer.renderer(posX, posY-AbstractRenderer.fontAscent, this.environmentRenderer.getNeededSize().width, this.environmentRenderer.getNeededSize().height, gc);
 					//environmentRenderer.renderer(posX, posY-(environmentRenderer.getNeededSize().height / 2) - fontAscent / 2, environmentRenderer.getNeededSize().width, environmentRenderer.getNeededSize().height, gc);
-					environmentRenderer.renderBase ( posX, posY, environmentRenderer.getNeededSize ( ).width,
-							environmentRenderer.getNeededSize ( ).height, gc );
-					startWidht += environmentRenderer.getNeededSize ( ).width;
+					//environmentRenderer.renderBase ( posX, posY, environmentRenderer.getNeededSize ( ).width,	environmentRenderer.getNeededSize ( ).height, gc );
+					startWidht += this.environmentRenderer.getNeededSize ( ).width;
 					startWidht += AbstractRenderer.expFontMetrics.stringWidth ( arrowString );
 
-					posX += environmentRenderer.getNeededSize ( ).width;
-					startWidht += environmentRenderer.getNeededSize ( ).width;
-					nochNutzbar -= environmentRenderer.getNeededSize ( ).width;
+					posX += this.environmentRenderer.getNeededSize ( ).width;
+					startWidht += this.environmentRenderer.getNeededSize ( ).width;
+					nochNutzbar -= this.environmentRenderer.getNeededSize ( ).width;
 
 					testAusgabe ( "Noich nutzbar nach der Environment: " + nochNutzbar );
 
 					//höhe = Math.max(höhe,  environmentRenderer.getNeededSize().height);
-					spaceToNexEntry = Math.max ( 0, environmentRenderer.getNeededSize ( ).height );
+					spaceToNexEntry = Math.max ( 0, this.environmentRenderer.getNeededSize ( ).height );
 
-					String envCollapsedString = environmentRenderer.getCollapsedString ( );
+					String envCollapsedString = this.environmentRenderer.getCollapsedString ( );
 					if ( envCollapsedString != null ) {
-						this.collapsed = true;
-						this.collapsedAreas.add ( environmentRenderer.getCollapsedArea ( ) );
-						this.collapsedStrings.add ( environmentRenderer.getCollapsedString ( ) );
+						this.collapsedAreas.add ( this.environmentRenderer.getCollapsedArea ( ) );
+						this.collapsedStrings.add ( this.environmentRenderer.getCollapsedString ( ) );
 					}
 
 					gc.setColor ( AbstractRenderer.expColor );
@@ -933,22 +907,20 @@ public class TypeFormularRenderer extends AbstractRenderer {
 
 						//expressionRenderer.render(posX, posY-AbstractRenderer.getAbsoluteHeight(), expressionSize.width, expressionSize.height, gc, bound, toListenForM);
 						//expressionRenderer.renderBase(posX, posY, expressionSize.width, expressionSize.height, gc, bound, toListenForM);
-						expressionRenderer.render ( posX, posY - AbstractRenderer.fontHeight / 2
-								- AbstractRenderer.fontAscent / 2, expressionSize.width, expressionSize.height, gc, bound,
-								toListenForM );
+						//expressionRenderer.render ( posX, posY - AbstractRenderer.fontHeight / 2 - AbstractRenderer.fontAscent / 2, expressionSize.width, expressionSize.height, gc, bound,	toListenForM );
+						expressionRenderer.render ( posX, posY - AbstractRenderer.fontAscent, expressionSize.width, expressionSize.height, gc, bound,	this.toListenForM );
 						startWidht = Math.max ( startWidht, expressionSize.width );
 						startHeight += expressionSize.height;
-						expressionPostitions.set ( i, new Rectangle ( posX, posY - AbstractRenderer.fontHeight
+						this.expressionPostitions.set ( i, new Rectangle ( posX, posY - AbstractRenderer.fontHeight
 								+ AbstractRenderer.fontDescent, expressionSize.width, expressionSize.height ) );
 
 					} else //also die Expression noch in die gleiche Zeile kommt, wie die Environment
 					{
-						expressionRenderer.render ( posX, posY - AbstractRenderer.fontHeight / 2
-								- AbstractRenderer.fontAscent / 2, expressionSize.width, expressionSize.height, gc, bound,
-								toListenForM );
+						//expressionRenderer.render ( posX, posY - AbstractRenderer.fontHeight / 2 - AbstractRenderer.fontAscent / 2, expressionSize.width, expressionSize.height, gc, bound, toListenForM );
+						expressionRenderer.render ( posX, posY - AbstractRenderer.fontAscent, expressionSize.width, expressionSize.height, gc, bound, this.toListenForM );
 						startWidht += expressionSize.width;
 						startHeight = Math.max ( startHeight, expressionSize.height );
-						expressionPostitions.set ( i, new Rectangle ( posX, posY - AbstractRenderer.fontHeight
+						this.expressionPostitions.set ( i, new Rectangle ( posX, posY - AbstractRenderer.fontHeight
 								+ AbstractRenderer.fontDescent, expressionSize.width, expressionSize.height ) );
 						spaceToNexEntry = Math.max ( spaceToNexEntry, expressionSize.height );
 						//expressionRenderer.renderBase(posX, posY, expressionSize.width ,expressionSize.height, gc, bound, toListenForM);
@@ -990,12 +962,14 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						//posY += Math.max(höhe, expressionSize.height);
 						posY += expressionSize.height;
 						//startHeight += expressionSize.height;
+						
+						typeRenderer.render(posX, posY-fontAscent, typeSize.width ,typeSize.height, gc, bondType, this.toListenForM);
 
 						//typeRenderer.render(posX, posY-(typeSize.height / 2) - fontAscent / 2, typeSize.width ,typeSize.height, gc, bondType, toListenForM);
-						typeRenderer.renderBase ( posX, posY, typeSize.width, typeSize.height, gc, bondType, toListenForM );
+						//typeRenderer.renderBase ( posX, posY, typeSize.width, typeSize.height, gc, bondType, toListenForM );
 						startWidht = Math.max ( startWidht, typeSize.width );
 						startHeight += typeSize.height;
-						typePositions.set ( i, new Rectangle ( posX, posY - AbstractRenderer.fontHeight
+						this.typePositions.set ( i, new Rectangle ( posX, posY - AbstractRenderer.fontHeight
 								+ AbstractRenderer.fontDescent, typeSize.width, typeSize.height ) );
 						posX += typeSize.width;
 
@@ -1003,17 +977,18 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						this.typeFormularPositions.add ( new Rectangle ( oldPosX, startY - AbstractRenderer.fontHeight
 								+ AbstractRenderer.fontDescent, startWidht, startHeight ) );
 						debug ( "Das rectangle für den Quatsch: " + new Rectangle ( oldPosX, posY, startWidht, startHeight ) );
-						debug ( "Anzahl der Einträge in der List: " + typeFormularPositions.size ( ) );
+						debug ( "Anzahl der Einträge in der List: " + this.typeFormularPositions.size ( ) );
 						//this.typeFprmularPostitions.add(new Rectangle(startX, startY, startWidht, startHeight));
-						this.typeEquations.add ( i );
+						this.typeEquations.add (new Integer (i) );
 
 						spaceToNexEntry = typeSize.height;
 					} else {
+						typeRenderer.render(posX, posY-AbstractRenderer.fontAscent, typeSize.width ,typeSize.height, gc, bondType, this.toListenForM);
 						//typeRenderer.render(posX, posY-(typeSize.height / 2) - fontAscent / 2, typeSize.width ,typeSize.height, gc, bondType, toListenForM);
-						typeRenderer.renderBase ( posX, posY, typeSize.width, typeSize.height, gc, bondType, toListenForM );
+						//typeRenderer.renderBase ( posX, posY, typeSize.width, typeSize.height, gc, bondType, toListenForM );
 						startWidht += typeSize.width;
 						startHeight = Math.max ( startHeight, typeSize.height );
-						typePositions.set ( i, new Rectangle ( posX, posY - AbstractRenderer.fontHeight
+						this.typePositions.set ( i, new Rectangle ( posX, posY - AbstractRenderer.fontHeight
 								+ AbstractRenderer.fontDescent, typeSize.width, typeSize.height ) );
 
 						posX += typeSize.width;
@@ -1023,11 +998,11 @@ public class TypeFormularRenderer extends AbstractRenderer {
 								+ AbstractRenderer.fontDescent, startWidht, startHeight ) );
 						//debug("Das rectangle für den Quatsch: "+new Rectangle(oldPosX, posY, startWidht, startHeight));
 						//debug("Anzahl der Einträge in der List: "+typeFormularPositions.size());
-						this.typeEquations.add ( i );
+						this.typeEquations.add ( new Integer (i) );
 					}
 
 					//everey line but the last needs a line braek
-					if ( i < ( typeFormulaList.size ( ) - 1 ) ) {
+					if ( i < ( this.typeFormulaList.size ( ) - 1 ) ) {
 						posX = x + einrücken;
 						posY += spaceToNexEntry;
 						posY += SPACEBETWEENELEMENTS;
@@ -1040,8 +1015,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			gc.drawString ( "}", posX, posY );
 			posX += AbstractRenderer.expFontMetrics.stringWidth ( "}" );
 
-			if ( markedArea != null ) {
-				gc.drawRect ( markedArea.x, markedArea.y, markedArea.width, markedArea.height );
+			if ( this.markedArea != null ) {
+				gc.drawRect ( this.markedArea.x, this.markedArea.y, this.markedArea.width, this.markedArea.height );
 			}
 		}
 	}

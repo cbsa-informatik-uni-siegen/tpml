@@ -186,8 +186,9 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 		
 		// the left bracket
 		int posX = x;
-		int posY = y + height / 2;
-		posY += AbstractRenderer.fontAscent  / 2;
+		//int posY = y + height / 2;
+		//posY += AbstractRenderer.fontAscent  / 2;
+		int posY = y + AbstractRenderer.fontAscent;
 		//if the hight is not bigger then the fonhight normal [ ] are used
 		//or else the bracket will bew renderd manually
 		//TODO test: Die Environment wird nie umgebrochen, wozu dann der Quatsch???

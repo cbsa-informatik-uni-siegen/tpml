@@ -17,6 +17,7 @@ import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
+import de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent;
 
 /**
  * this class renders the types in the TypeChecker
@@ -65,7 +66,7 @@ public class TypeComponent extends JComponent
   private ToListenForMouseContainer toListenForMouse;
 
   /**
-   * can be :: or <:
+   * can be :: or <: and will be set by the {@link TypeCheckerNodeComponent}
    */
   private String text;
 
@@ -80,7 +81,6 @@ public class TypeComponent extends JComponent
     this.bonds = new ShowBonds();
     this.toListenForMouse = new ToListenForMouseContainer();
     this.alternativeColor = null;
-    //this.text = " :: "; //$NON-NLS-1$
     this.text = "";
 
     this.addMouseMotionListener(new MouseMotionAdapter()
@@ -316,28 +316,32 @@ public class TypeComponent extends JComponent
     // Store, the entire expression (with environment) will begin
     // with the expression
 
-    // draw the arrow character in the vertical center
-    int centerV = getHeight() / 2;
-    centerV += AbstractRenderer.getTextFontMetrics().getAscent() / 2;
     gc.setFont(AbstractRenderer.getTextFont());
     gc.setColor(Theme.currentTheme().getExpressionColor());
-    gc.drawString(this.text, posX, centerV);
+    gc.drawString(this.text, posX, posY+AbstractRenderer.getFontAscent());
     posX += AbstractRenderer.getTextFontMetrics().stringWidth(this.text);
     if (this.type instanceof RowType)
     {
-      gc.setFont(AbstractRenderer.getTextFont());
-      gc.setColor(Theme.currentTheme().getExpressionColor());
-      gc.drawString("(", posX, centerV);
-      posX += AbstractRenderer.getTextFontMetrics().stringWidth("(");
+    	if (((RowType) this.type).getIdentifiers().length > 0)
+    	{
+    		gc.setFont(AbstractRenderer.getTextFont());
+        gc.setColor(Theme.currentTheme().getExpressionColor());
+        gc.drawString("(", posX, posY+AbstractRenderer.getFontAscent());
+        posX += AbstractRenderer.getTextFontMetrics().stringWidth("(");
+    	}
+      
     }
     this.typeRenderer.render(posX, posY, getWidth(), getHeight(), gc, this.bonds, this.toListenForMouse);
     posX += this.typeSize.width;
     if (this.type instanceof RowType)
     {
-      gc.setFont(AbstractRenderer.getTextFont());
-      gc.setColor(Theme.currentTheme().getExpressionColor());
-      gc.drawString(")", posX, centerV);
-      posX += AbstractRenderer.getTextFontMetrics().stringWidth(")");
+    	if (((RowType) this.type).getIdentifiers().length > 0)
+    	{
+    		gc.setFont(AbstractRenderer.getTextFont());
+        gc.setColor(Theme.currentTheme().getExpressionColor());
+        gc.drawString(")", posX, posY+AbstractRenderer.getFontAscent());
+        posX += AbstractRenderer.getTextFontMetrics().stringWidth(")");
+    	}
     }
 
     //TODO nur testen

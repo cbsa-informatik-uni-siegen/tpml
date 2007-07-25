@@ -714,11 +714,12 @@ public class PrettyStringRenderer extends AbstractRenderer
     // propper amount of rows
     int i = 0 ;
     int posX = x ;
-    int posY = y + height / 2 ;
-    posY += AbstractRenderer.fontAscent / 2 ;
-    float addY = ( this.result.rows - 1 ) / 2.0f ;
-    addY *= AbstractRenderer.getAbsoluteHeight() ;
-    posY -= addY ;
+    //int posY = y + height / 2 ;
+    //posY += AbstractRenderer.fontAscent / 2 ;
+    int posY = y + AbstractRenderer.fontAscent;
+//    float addY = ( this.result.rows - 1 ) / 2.0f ;
+//    addY *= AbstractRenderer.getAbsoluteHeight() ;
+//    posY -= addY ;
     // start and end position for the underlining (if the pointer is over the
     // button)
     int underlineStart = - 1 ;
