@@ -16,20 +16,26 @@ import de.unisiegen.tpml.core.types.MonoType;
  *
  */
 public class DefaultSubType implements PrettyPrintable, PrettyPrintPriorities {
-
+	
+	/**
+	 * The left type (subtype) of this subtype object
+	 */
 	private MonoType left;
 
+	/**
+	 * The right type (supertype) of this subtype object
+	 */
 	private MonoType right;
 
 	/**
 	 * Allocates a new default left with the given types.
-	 * @param left the left of this object
-	 * @param right the right of this object
+	 * @param pLeft the left of this object
+	 * @param pRight the right of this object
 	 * 
 	 */
-	public DefaultSubType ( MonoType left, MonoType right ) {
-		this.left = left;
-		this.right = right;
+	public DefaultSubType ( MonoType pLeft, MonoType pRight ) {
+		this.left = pLeft;
+		this.right = pRight;
 	}
 
 	/**

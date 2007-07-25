@@ -14,11 +14,6 @@ import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofContext;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
-import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -44,8 +39,14 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	 */
 	private static final Logger logger = Logger.getLogger ( SubTypingProofModel.class );
 
+	/**
+	 * The mode choosen by the user (advanced or beginner)
+	 */
 	private boolean mode = true;
 
+	/**
+	 * The rule set for this proof model
+	 */
 	AbstractSubTypingProofRuleSet ruleSet;
 
 	//
@@ -58,18 +59,18 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	 * 
 	 * @param type the first {@link MonoType} for the root node.
 	 * @param type2 the second {@link MonoType} for the root node.
-	 * @param ruleSet the available type rules for the model.
-	 * @param mode the chosen mode (Advanced or Beginner)
+	 * @param pRuleSet the available type rules for the model.
+	 * @param pMode the chosen mode (Advanced or Beginner)
 	 * 
 	 * @throws NullPointerException if either one <code>type</code> or <code>ruleSet</code> is
 	 *                              <code>null</code>.
 	 *
 	 * @see AbstractProofModel#AbstractProofModel(AbstractProofNode, AbstractProofRuleSet)
 	 */
-	public SubTypingProofModel ( MonoType type, MonoType type2, AbstractSubTypingProofRuleSet ruleSet, boolean mode ) {
-		super ( new DefaultSubTypingProofNode ( type, type2 ), ruleSet );
-		this.ruleSet = ruleSet;
-		this.mode = mode;
+	public SubTypingProofModel ( MonoType type, MonoType type2, AbstractSubTypingProofRuleSet pRuleSet, boolean pMode ) {
+		super ( new DefaultSubTypingProofNode ( type, type2 ), pRuleSet );
+		this.ruleSet = pRuleSet;
+		this.mode = pMode;
 	}
 
 	/**
@@ -117,8 +118,6 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	 * 
 	 * @param rule the type proof rule to apply.
 	 * @param node the type proof node to which to apply the <code>rule</code>.
-	 * @param type the type the user guessed for the <code>node</code> or <code>null</code>
-	 *             if the user didn't enter a type.
 	 * 
 	 * @throws ProofRuleException if the application of the <code>rule</code> to
 	 *                            the <code>node</code> failed.
@@ -129,7 +128,7 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	private void applyInternal ( SubTypingProofRule rule, DefaultSubTypingProofNode node ) throws ProofRuleException {
 
 		// allocate a new TypeCheckerContext
-		DefaultSubTypingProofContext context = new DefaultSubTypingProofContext ( this, node );
+		DefaultSubTypingProofContext context = new DefaultSubTypingProofContext ( this );
 
 		try {
 			context.apply ( rule, node );
@@ -170,12 +169,6 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 
 			// re-throw the exception
 			throw e;
-		} catch ( SubTypingException e ) {
-			// revert the actions performed so far
-			context.revert ( );
-
-			// re-throw the exception as proof rule exception
-			throw new ProofRuleException ( e.getMessage ( ), node, rule, null );
 		} catch ( RuntimeException e ) {
 			// revert the actions performed so far
 			context.revert ( );
@@ -186,12 +179,9 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	}
 
 	/**
-	 * Implementation of the {@link #guess(ProofNode)} and {@link #guessWithType(ProofNode, MonoType)}
-	 * methods.
+	 * Implementation of the {@link #guess(ProofNode)} method.
 	 * 
 	 * @param node the proof node for which to guess the next step.
-	 * @param type the type that the user entered for this <code>node</code> or <code>null</code> to
-	 *             let the type inference algorithm guess the type.
 	 * 
 	 * @throws IllegalArgumentException if the <code>node</code> is invalid for this model.             
 	 * @throws IllegalStateException if for some reason <code>node</code> cannot be proven.
@@ -199,7 +189,6 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	 * @throws ProofGuessException if the next proof step could not be guessed.
 	 *
 	 * @see #guess(ProofNode)
-	 * @see #guessWithType(ProofNode, MonoType)
 	 */
 	private void guessInternal ( DefaultSubTypingProofNode node ) throws ProofGuessException {
 		if ( node == null ) {
@@ -249,10 +238,9 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	 * <code>environment</code>, <code>expression</code> and <code>type</code>.
 	 * 
 	 * @param context the <code>TypeCheckerProofContext</code> on which the action is to be performed.
-	 * @param node the parent <code>DefaultTypeInferenceProofNode</code>.
-	 * @param environment the <code>TypeEnvironment</code> for the child node.
-	 * @param expression the <code>Expression</code> for the child node.
-	 * @param type the type variable or the concrete type for the child node, used for the unification.
+	 * @param pNode the parent <code>DefaultTypeInferenceProofNode</code>.
+	 * @param type the first concrete type for the child node, used for the subtype algorithm.
+	 * @param type2 type the second concrete type for the child node, used for the subtype algorithm.
 	 * 
 	 * @throws IllegalArgumentException if <code>node</code> is invalid for this tree.
 	 * @throws NullPointerException if any of the parameters is <code>null</code>.
@@ -284,14 +272,14 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	}
 
 	/**
-	 * Used to implement the {@link DefaultTypeInferenceProofContext#apply(TypeCheckerProofRule, TypeInferenceProofNode)}
-	 * method of the {@link DefaultTypeInferenceProofContext} class.
+	 * Used to implement the {@link DefaultSubTypingProofContext#apply(SubTypingProofRule, DefaultSubTypingProofNode)}
+	 * method of the {@link DefaultSubTypingProofContext} class.
 	 * 
 	 * @param context the type inference proof context.
 	 * @param node the type inference node.
 	 * @param rule the type checker rule.
 	 * 
-	 * @see DefaultTypeCheckerProofContext#apply(TypeCheckerProofRule, TypeCheckerProofNode)
+	 * @see DefaultSubTypingProofContext#apply(SubTypingProofRule, DefaultSubTypingProofNode)
 	 */
 	void contextSetProofNodeRule ( DefaultSubTypingProofContext context, final DefaultSubTypingProofNode node,
 			final SubTypingProofRule rule ) {
@@ -331,9 +319,9 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	}
 
 	/**
-	 * TODO
+	 * {@inheritDoc}
 	 *
-	 * @return
+	 * @return the root of this model
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#getRoot()
 	 */
 	@Override
@@ -356,14 +344,14 @@ public class SubTypingProofModel extends AbstractProofModel implements SubTyping
 	 * 
 	 * Set the mode (Beginner, Advanced) of choosen by the user
 	 *
-	 * @param mode boolean, true means advanced, false beginner mode
+	 * @param pMode boolean, true means advanced, false beginner mode
 	 */
-	public void setMode ( boolean mode ) {
-		if ( this.mode != mode ) {
-			this.mode = mode;
+	public void setMode ( boolean pMode ) {
+		if ( this.mode != pMode ) {
+			this.mode = pMode;
 			if ( this.ruleSet.getLanguage ( ).getName ( ).equalsIgnoreCase ( "l2o" ) ) { //$NON-NLS-1$
 
-				if ( mode ) {
+				if ( pMode ) {
 					this.ruleSet.unregister ( "TRANS" ); //$NON-NLS-1$
 					this.ruleSet.unregister ( "OBJECT-WIDTH" ); //$NON-NLS-1$
 					this.ruleSet.unregister ( "OBJECT-DEPTH" ); //$NON-NLS-1$

@@ -1,6 +1,6 @@
 package de.unisiegen.tpml.core.subtyping;
 
-import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ExpressionProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 
 /**
@@ -36,7 +36,7 @@ public interface SubTypingProofNode extends SubTypingNode {
 	public SubTypingProofNode getLastLeaf ( );
 
 	/**
-	 * Convenience wrapper for the {@link ProofNode#getSteps()} method, which returns the
+	 * Convenience wrapper for the {@link ExpressionProofNode#getSteps()} method, which returns the
 	 * <code>SubTypingProofRule</code> that was applied to this node or <code>null</code>
 	 * if no rule was applied to this node so far.
 	 * 

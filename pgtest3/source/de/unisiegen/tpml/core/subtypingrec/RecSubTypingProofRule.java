@@ -23,7 +23,7 @@ public interface RecSubTypingProofRule extends ProofRule {
 	 * @throws NullPointerException if either <code>context</code> or <code>node</code> is <code>null</code>.                            
 	 * @throws ProofRuleException if this rule cannot be applied to the <code>node</code>.
 	 */
-	public void apply ( DefaultRecSubTypingProofContext context, DefaultRecSubTypingProofNode node )
+	public void apply ( RecSubTypingProofContext context, RecSubTypingProofNode node )
 			throws ProofRuleException;
 
 }

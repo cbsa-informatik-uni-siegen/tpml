@@ -17,12 +17,8 @@ import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
 import de.unisiegen.tpml.core.subtyping.ProofStep;
 import de.unisiegen.tpml.core.subtyping.SubTypingException;
 import de.unisiegen.tpml.core.subtyping.SubTypingModel;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -48,8 +44,14 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	 */
 	private static final Logger logger = Logger.getLogger ( RecSubTypingProofModel.class );
 
+	/**
+	 * The choosen mode (advanced or beginner)
+	 */
 	private boolean mode = true;
 
+	/**
+	 * The ruleSet for this proof model
+	 */
 	AbstractRecSubTypingProofRuleSet ruleSet;
 
 	//
@@ -62,18 +64,18 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	 * 
 	 * @param type the first {@link MonoType} for the root node.
 	 * @param type2 the second {@link MonoType} for the root node.
-	 * @param ruleSet the available type rules for the model.
-	 * @param mode the chosen mode (Advanced or Beginner)
+	 * @param pRuleSet the available type rules for the model.
+	 * @param pMode the chosen mode (Advanced or Beginner)
 	 * 
 	 * @throws NullPointerException if either one <code>type</code> or <code>ruleSet</code> is
 	 *                              <code>null</code>.
 	 *
 	 * @see AbstractProofModel#AbstractProofModel(AbstractProofNode, AbstractProofRuleSet)
 	 */
-	public RecSubTypingProofModel ( MonoType type, MonoType type2, AbstractRecSubTypingProofRuleSet ruleSet, boolean mode ) {
-		super ( new DefaultRecSubTypingProofNode ( type, type2, new SeenTypes < DefaultSubType > ( ) ), ruleSet );
-		this.ruleSet = ruleSet;
-		this.mode = mode;
+	public RecSubTypingProofModel ( MonoType type, MonoType type2, AbstractRecSubTypingProofRuleSet pRuleSet, boolean pMode ) {
+		super ( new DefaultRecSubTypingProofNode ( type, type2, new SeenTypes < DefaultSubType > ( ) ), pRuleSet );
+		this.ruleSet = pRuleSet;
+		this.mode = pMode;
 	}
 
 	/**
@@ -121,8 +123,6 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	 * 
 	 * @param rule the type proof rule to apply.
 	 * @param node the type proof node to which to apply the <code>rule</code>.
-	 * @param type the type the user guessed for the <code>node</code> or <code>null</code>
-	 *             if the user didn't enter a type.
 	 * 
 	 * @throws ProofRuleException if the application of the <code>rule</code> to
 	 *                            the <code>node</code> failed.
@@ -191,12 +191,9 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	}
 
 	/**
-	 * Implementation of the {@link #guess(ProofNode)} and {@link #guessWithType(ProofNode, MonoType)}
-	 * methods.
+	 * Implementation of the {@link #guess(ProofNode)} method.
 	 * 
 	 * @param node the proof node for which to guess the next step.
-	 * @param type the type that the user entered for this <code>node</code> or <code>null</code> to
-	 *             let the type inference algorithm guess the type.
 	 * 
 	 * @throws IllegalArgumentException if the <code>node</code> is invalid for this model.             
 	 * @throws IllegalStateException if for some reason <code>node</code> cannot be proven.
@@ -204,7 +201,6 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	 * @throws ProofGuessException if the next proof step could not be guessed.
 	 *
 	 * @see #guess(ProofNode)
-	 * @see #guessWithType(ProofNode, MonoType)
 	 */
 	private void guessInternal ( DefaultRecSubTypingProofNode node ) throws ProofGuessException {
 		if ( node == null ) {
@@ -254,10 +250,10 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	 * <code>environment</code>, <code>expression</code> and <code>type</code>.
 	 * 
 	 * @param context the <code>TypeCheckerProofContext</code> on which the action is to be performed.
-	 * @param node the parent <code>DefaultTypeInferenceProofNode</code>.
-	 * @param environment the <code>TypeEnvironment</code> for the child node.
-	 * @param expression the <code>Expression</code> for the child node.
-	 * @param type the type variable or the concrete type for the child node, used for the unification.
+	 * @param pNode the parent <code>DefaultTypeInferenceProofNode</code>.
+	 * @param type the first concrete type for the child node, used for the subtype algorithm.
+	 * @param type2 the second concrete type for the child node, used for the subtype algorithm.
+	 * @param seenTypes a list with already seen types
 	 * 
 	 * @throws IllegalArgumentException if <code>node</code> is invalid for this tree.
 	 * @throws NullPointerException if any of the parameters is <code>null</code>.
@@ -289,14 +285,14 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	}
 
 	/**
-	 * Used to implement the {@link DefaultTypeInferenceProofContext#apply(TypeCheckerProofRule, TypeInferenceProofNode)}
+	 * Used to implement the {@link DefaultRecSubTypingProofContext#apply(RecSubTypingProofRule, DefaultRecSubTypingProofNode)}
 	 * method of the {@link DefaultTypeInferenceProofContext} class.
 	 * 
 	 * @param context the type inference proof context.
 	 * @param node the type inference node.
 	 * @param rule the type checker rule.
 	 * 
-	 * @see DefaultTypeCheckerProofContext#apply(TypeCheckerProofRule, TypeCheckerProofNode)
+	 * @see DefaultRecSubTypingProofContext#apply(RecSubTypingProofRule, DefaultRecSubTypingProofNode)
 	 */
 	void contextSetProofNodeRule ( DefaultRecSubTypingProofContext context, final DefaultRecSubTypingProofNode node,
 			final RecSubTypingProofRule rule ) {
@@ -361,14 +357,14 @@ public class RecSubTypingProofModel extends AbstractProofModel implements SubTyp
 	 * 
 	 * Set the mode (Beginner, Advanced) of choosen by the user
 	 *
-	 * @param mode boolean, true means advanced, false beginner mode
+	 * @param pMode boolean, true means advanced, false beginner mode
 	 */
-	public void setMode ( boolean mode ) {
-		if ( this.mode != mode ) {
-			this.mode = mode;
+	public void setMode ( boolean pMode ) {
+		if ( this.mode != pMode ) {
+			this.mode = pMode;
 			if ( this.ruleSet.getLanguage ( ).getName ( ).equalsIgnoreCase ( "l2o" ) ) { //$NON-NLS-1$
 
-				if ( mode ) {
+				if ( pMode ) {
 					this.ruleSet.unregister ( "TRANS" ); //$NON-NLS-1$
 					this.ruleSet.unregister ( "OBJECT-WIDTH" ); //$NON-NLS-1$
 					this.ruleSet.unregister ( "OBJECT-DEPTH" ); //$NON-NLS-1$

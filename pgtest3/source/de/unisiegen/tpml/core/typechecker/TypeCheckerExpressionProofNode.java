@@ -1,6 +1,5 @@
 package de.unisiegen.tpml.core.typechecker;
 
-import de.unisiegen.tpml.core.types.MonoType;
 
 public interface TypeCheckerExpressionProofNode extends TypeCheckerProofNode {
 
@@ -12,7 +11,6 @@ public interface TypeCheckerExpressionProofNode extends TypeCheckerProofNode {
 	   */
 	  public TypeEnvironment getEnvironment();
 	  
-	 // public TypeCheckerExpressionProofNode getChildAt(int childIndex);
 	  
 
 }

@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.subtypingrec;
 
+import de.unisiegen.tpml.core.ExpressionProofNode;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.subtyping.SubTypingNode;
@@ -39,7 +40,7 @@ public interface RecSubTypingProofNode extends SubTypingNode {
 	public ProofNode getChildAt ( int childIndex );
 
 	/**
-	 * Convenience wrapper for the {@link ProofNode#getSteps()} method, which returns the
+	 * Convenience wrapper for the {@link ExpressionProofNode#getSteps()} method, which returns the
 	 * <code>SubTypingProofRule</code> that was applied to this node or <code>null</code>
 	 * if no rule was applied to this node so far.
 	 * 

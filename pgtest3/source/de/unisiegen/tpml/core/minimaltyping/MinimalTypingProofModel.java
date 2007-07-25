@@ -51,13 +51,18 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
 	 * contexts.
 	 * 
 	 * @see #getIndex()
-	 * @see MinimalTypingProofContext#newTypeVariable()
-	 * @see types.TypeVariable
+	 * @see de.unisiegen.tpml.core.types.TypeVariable
 	 */
 	private int index = 1;
 
+	/**
+	 * The rule set for this proof model
+	 */
 	AbstractMinimalTypingProofRuleSet ruleSet;
 
+	/**
+	 * The choosen mode (advanced or beginner)
+	 */
 	private boolean mode;
 
 	//
@@ -69,7 +74,7 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
 	 * as its root node.
 	 * 
 	 * @param expression the {@link Expression} for the root node.
-	 * @param ruleSet the available type rules for the model.
+	 * @param pRuleSet the available type rules for the model.
 	 * @param pMode The choosen mode (advanced or beginner)
 	 * 
 	 * @throws NullPointerException if either <code>expression</code> or <code>ruleSet</code> is
@@ -77,10 +82,10 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
 	 *
 	 * @see AbstractProofModel#AbstractProofModel(AbstractProofNode, AbstractProofRuleSet)
 	 */
-	public MinimalTypingProofModel ( Expression expression, AbstractMinimalTypingProofRuleSet ruleSet, boolean pMode ) {
-		super ( new DefaultMinimalTypingExpressionProofNode ( new DefaultTypeEnvironment ( ), expression ), ruleSet );
+	public MinimalTypingProofModel ( Expression expression, AbstractMinimalTypingProofRuleSet pRuleSet, boolean pMode ) {
+		super ( new DefaultMinimalTypingExpressionProofNode ( new DefaultTypeEnvironment ( ), expression ), pRuleSet );
 		this.mode = pMode;
-		this.ruleSet = ruleSet;
+		this.ruleSet = pRuleSet;
 	}
 
 	//
@@ -89,14 +94,12 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
 
 	/**
 	 * Returns the current proof model index, which is the number of
-	 * steps already performed on the model (starting with one) and
-	 * used to allocate new, unique {@link types.TypeVariable}s. It
+	 * steps already performed on the model (starting with one). It
 	 * is incremented with every proof step performed on the model.
 	 * 
 	 * @return the current index of the proof model.
 	 * 
-	 * @see MinimalTypingProofContext#newTypeVariable()
-	 * @see types.TypeVariable
+	 * @see  de.unisiegen.tpml.core.types.TypeVariable
 	 */
 	public int getIndex ( ) {
 		return this.index;
@@ -107,17 +110,16 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
 	 * called by {@link DefaultMinimalTypingProofContext} whenever a new
 	 * proof context is allocated.
 	 * 
-	 * @param index the new index for the proof model.
+	 * @param pIndex the new index for the proof model.
 	 * 
 	 * @see #getIndex()
 	 * @see DefaultMinimalTypingProofContext
-	 * @see DefaultMinimalTypingProofContext#DefaultTypeCheckerProofContext(MinimalTypingProofModel)
 	 */
-	public void setIndex ( int index ) {
-		if ( index < 1 ) {
+	public void setIndex ( int pIndex ) {
+		if ( pIndex < 1 ) {
 			throw new IllegalArgumentException ( "index is invalid" ); //$NON-NLS-1$
 		}
-		this.index = index;
+		this.index = pIndex;
 	}
 
 	//
@@ -127,7 +129,6 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see #guessWithType(ProofNode, MonoType)
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
 	 */
 	@Override
@@ -230,8 +231,7 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
 	}
 
 	/**
-	 * Implementation of the {@link #guess(ProofNode)} and {@link #guessWithType(ProofNode, MonoType)}
-	 * methods.
+	 * Implementation of the {@link #guess(ProofNode)} method.
 	 * 
 	 * @param node the proof node for which to guess the next step.
 	 * @param type the type that the user entered for this <code>node</code> or <code>null</code> to
@@ -243,7 +243,6 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
 	 * @throws ProofGuessException if the next proof step could not be guessed.
 	 *
 	 * @see #guess(ProofNode)
-	 * @see #guessWithType(ProofNode, MonoType)
 	 */
 	private void guessInternal ( MinimalTypingProofNode node, MonoType type ) throws ProofGuessException {
 
@@ -299,7 +298,6 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
 	 * @param node the parent <code>DefaultMinimalTypingProofNode</code>.
 	 * @param environment the <code>TypeEnvironment</code> for the child node.
 	 * @param expression the <code>Expression</code> for the child node.
-	 * @param type the concrete type for the child node.
 	 * 
 	 * @throws IllegalArgumentException if <code>node</code> is invalid for this tree.
 	 * @throws NullPointerException if any of the parameters is <code>null</code>.
@@ -392,14 +390,14 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
 	}
 
 	/**
-	 * Used to implement the {@link DefaultMinimalTypingProofContext#apply(MinimalTypingProofRule, MinimalTypingProofNode)}
+	 * Used to implement the {@link DefaultMinimalTypingProofContext#apply(MinimalTypingProofRule, MinimalTypingProofNode, MonoType)}
 	 * method of the {@link DefaultMinimalTypingProofContext} class.
 	 * 
 	 * @param context the type checker proof context.
 	 * @param node the type checker node.
 	 * @param rule the type checker rule.
 	 * 
-	 * @see DefaultMinimalTypingProofContext#apply(MinimalTypingProofRule, MinimalTypingProofNode)
+	 * @see DefaultMinimalTypingProofContext#apply(MinimalTypingProofRule, MinimalTypingProofNode, MonoType)
 	 */
 	public void contextSetProofNodeRule ( DefaultMinimalTypingProofContext context,
 			final AbstractMinimalTypingProofNode node, final MinimalTypingProofRule rule ) {
@@ -454,13 +452,13 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
 	 * 
 	 * Set the mode (Beginner, Advanced) of choosen by the user
 	 *
-	 * @param mode boolean, true means advanced, false beginner mode
+	 * @param pMode boolean, true means advanced, false beginner mode
 	 */
-	public void setMode ( boolean mode ) {
-		if ( this.mode != mode ) {
-			this.mode = mode;
+	public void setMode ( boolean pMode ) {
+		if ( this.mode != pMode ) {
+			this.mode = pMode;
 
-			if ( mode ) {
+			if ( pMode ) {
 				this.ruleSet.unregister ( "ARROW" ); //$NON-NLS-1$
 				this.ruleSet.unregister ( "S-MU-LEFT" ); //$NON-NLS-1$
 				this.ruleSet.unregister ( "S-MU-RIGHT" ); //$NON-NLS-1$

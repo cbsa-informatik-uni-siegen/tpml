@@ -5,7 +5,8 @@ import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 /**
  * This node type represents the normal expression proof nodes in the 
  * Minimal Typing Algorithm. The node contains an {@link TypeEnvironment},
- * an {@link Expression}, and a {@link MonoType}.
+ * an {@link de.unisiegen.tpml.core.expressions.Expression}, and a 
+ * {@link de.unisiegen.tpml.core.types.MonoType}.
  *
  * @author Benjamin Mies
  *

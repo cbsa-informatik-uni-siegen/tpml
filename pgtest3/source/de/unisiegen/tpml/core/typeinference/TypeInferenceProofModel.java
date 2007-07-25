@@ -60,6 +60,9 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 */
 	private int index = 1;
 
+	/**
+	 * The new child to add
+	 */
 	DefaultTypeInferenceProofNode child;
 
 	//
@@ -394,7 +397,6 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		DefaultTypeInferenceProofNode typeNode = node;
 		Exception e = null;
 		if ( form != null ) {
-			try {
 				// try to apply the rule to the specified node
 				//context.setSubstitutions ( node.getSubstitution ( ) ) ;
 				context.apply ( rule, form, type, mode, node );
@@ -402,15 +404,9 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 				ProofStep[] newSteps = new ProofStep[1];
 				newSteps[0] = new ProofStep ( new IsEmpty ( ), rule );
 
-				setUndoActions ( node, child, /*context,*/rule, form, newSteps );
+				setUndoActions ( node, this.child, newSteps );
 
 				return;
-			} catch ( UnifyException e1 ) {
-				// revert the actions performed so far
-				context.revert ( );
-				// re-throw the exception as proof rule exception
-				throw new ProofRuleException ( node, rule, e );
-			}
 		}
 		// Try actual Rule with all formulas of the actual node
 		for ( TypeFormula formula : typeNode.getFormula ( ) ) {
@@ -421,7 +417,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 
 				ProofStep[] newSteps = new ProofStep[1];
 				newSteps[0] = new ProofStep ( new IsEmpty ( ), rule );
-				setUndoActions ( node, child, /*context,*/rule, form, newSteps );
+				setUndoActions ( node, this.child, newSteps );
 				return;
 			} catch ( ProofRuleException e1 ) {
 				// revert the actions performed so far
@@ -430,14 +426,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 				if ( e == null )
 					e = e1;
 				continue;
-			} catch ( UnifyException e1 ) {
-				// revert the actions performed so far
-				context.revert ( );
-				// rembember first exception to rethrow
-				if ( e == null )
-					e = e1;
-				continue;
-			}
+			} 
 			/*
 			 * catch ( RuntimeException e1 ) { // revert the actions performed so far
 			 * context.revert ( ) ; // rembember first exception to rethrow if ( e ==
@@ -516,13 +505,8 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * <code>context</code>, for the <code>environment</code>,
 	 * <code>expression</code> and <code>type</code>.
 	 * 
-	 * @param context the <code>TypeCheckerProofContext</code> on which the
-	 *          action is to be performed.
-	 * @param pNode the parent <code>DefaultTypeInferenceProofNode</code>.
-	 * @param formulas The formulas.
+	 * @param formulas the  <code>TypeFormula</code>s of the new node.
 	 * @param subs The {@link DefaultTypeSubstitution}s.
-	 * @param rule The {@link TypeCheckerProofRule}.
-	 * @param formula The {@link TypeFormula}.
 	 * @throws IllegalArgumentException if <code>node</code> is invalid for this
 	 *           tree.
 	 * @throws NullPointerException if any of the parameters is <code>null</code>.
@@ -600,9 +584,16 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		this.index++ ;
 	}
 
+	/**
+	 * 
+	 * Set a new undo action for the added child
+	 *
+	 * @param pNode the parent node to add the child
+	 * @param pChild the child which is added
+	 * @param newSteps the new proof steps for the parent node
+	 */
 	private void setUndoActions ( final DefaultTypeInferenceProofNode pNode, final DefaultTypeInferenceProofNode pChild,
-	//final DefaultTypeInferenceProofContext context ,
-			final TypeCheckerProofRule rule, final TypeFormula formula, final ProofStep[] newSteps ) {
+			 final ProofStep[] newSteps ) {
 
 		final ProofStep[] oldSteps = pNode.getSteps ( );
 

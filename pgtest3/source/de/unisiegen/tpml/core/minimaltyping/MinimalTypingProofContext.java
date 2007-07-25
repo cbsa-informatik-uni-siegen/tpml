@@ -29,7 +29,6 @@ public interface MinimalTypingProofContext {
 	 * @param node the parent node.
 	 * @param environment the new {@link TypeEnvironment} for the child node.
 	 * @param expression the expression for the child node.
-	 * @param type the expected type for the <code>expression</code>.
 	 * 
 	 * @throws IllegalArgumentException if the <code>node</code> is invalid for the proof model that is associated
 	 *                                  with this proof context.

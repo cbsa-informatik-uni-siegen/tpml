@@ -1,7 +1,7 @@
 package de.unisiegen.tpml.core.typeinference;
 
 import java.util.ArrayList;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 

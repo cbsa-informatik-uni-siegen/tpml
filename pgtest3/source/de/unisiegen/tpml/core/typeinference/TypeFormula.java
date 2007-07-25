@@ -56,7 +56,7 @@ public interface TypeFormula {
 	 * substitute equation or type of this type formula
 	 *
 	 * @param s TypeSubstitution
-	 * @return
+	 * @return the substituted type formula
 	 */
 	public TypeFormula substitute ( ArrayList < TypeSubstitution > s );
 

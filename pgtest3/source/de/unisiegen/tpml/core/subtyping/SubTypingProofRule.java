@@ -13,7 +13,6 @@ import de.unisiegen.tpml.core.ProofRuleException;
  */
 public interface SubTypingProofRule extends ProofRule {
 
-	//	public void update(SubTypingProofContext context, SubTypingProofNode node);
 
 	/**
 	 * Applies this subtyping proof rule to the specified <code>node</code> via the given <code>context</code>.
