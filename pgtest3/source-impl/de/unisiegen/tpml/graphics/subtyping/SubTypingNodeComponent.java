@@ -56,8 +56,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
  * In the next row there is only one rectangle containing the rule. In the case
  * of the previous image the {@link #ruleLabel} is shown, but as long as the
  * node has not been evaluated with a rule there would be located the
- * {@link #ruleButton}. Another possible component that could be located at
- * this position is the {@link #typeEnter}. That could be used to give the user
+ * {@link #ruleButton}.That could be used to give the user
  * the possibilty to enter a type by himself.<br>
  * The bit of free space between the top and the bottom row aswell as between
  * the indexLabel and the expression is given in pixels in the {@link #spacing}.
@@ -78,10 +77,9 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
  * @author marcell
  * @author michael
  * 
- * @see de.unisiegen.tpml.graphics.SubTyping.SubTypingView
- * @see de.unisiegen.tpml.graphics.SubTyping.SubTypingComponent
+ * @see de.unisiegen.tpml.graphics.subtyping.SubTypingView
+ * @see de.unisiegen.tpml.graphics.subtyping.SubTypingComponent
  * @see de.unisiegen.tpml.graphics.tree.TreeNodeComponent
- * @see de.unisiegen.tpml.graphics.SubTyping.SubTypingEnterType
  */
 public class SubTypingNodeComponent extends JComponent implements TreeNodeComponent {
 	/**
@@ -159,9 +157,8 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
 	 * Constructor for a SubTypingNodeComponent<br>
 	 * <br>
 	 * All elements needed within the node will be created and added to the
-	 * component. Some of them will be hidden at first (the {@link #typeEnter},
-	 * or the {@link #ruleLabel}) because they are not needed but they are always
-	 * there.<br>
+	 * component. Some of them will be hidden at first ( the {@link #ruleLabel}) 
+	 * because they are not needed but they are always there.<br>
 	 * 
 	 * @param node The origin ProofNode
 	 * @param model The model
@@ -275,7 +272,7 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
 	}
 
 	/**
-	 * Causes the {@link #compoundExpression} to updated theire expression and
+	 * Causes the SubTypingNodeComponent to updated theire expression and
 	 * environment.
 	 */
 	public void changeNode ( ) {
@@ -313,12 +310,12 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
 	 * {@link #dimension} will be rescaled with every item that is placed and with
 	 * all items, the height of the dimension will set to the current maximum.<br>
 	 * <br>
-	 * When all item of the top row are placed the {@link #ruleButton},
-	 * {@link #ruleLabel} or {@link #typeEnter} will be placed depending whether
+	 * When all item of the top row are placed the {@link #ruleButton} or
+	 * {@link #ruleLabel} will be placed depending whether
 	 * the node is evaluated, it is not evaluated or the user previously selected
 	 * <i>Enter type</i>.
 	 * 
-	 * @param maxWidth The maximum amount of pixels available to place the
+	 * @param pMaxWidth The maximum amount of pixels available to place the
 	 *          elements.
 	 */
 	private void placeElements ( int pMaxWidth ) {

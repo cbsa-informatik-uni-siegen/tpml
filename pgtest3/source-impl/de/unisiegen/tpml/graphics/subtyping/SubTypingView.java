@@ -53,7 +53,9 @@ public class SubTypingView extends AbstractProofView
    */
   private JSplitPane jSplitPane ;
 
-
+  /** 
+   * The panel containing the outlines
+   */
   private JPanel outlinePanel ;
 
 
@@ -208,7 +210,6 @@ public class SubTypingView extends AbstractProofView
    * Returns the SubTypingModel.
    * 
    * @return The SubTypingModel.
-   * @see #SubTypingModel
    */
   public SubTypingModel getSubTypingModel ( )
   {

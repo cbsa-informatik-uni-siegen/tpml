@@ -48,7 +48,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * Everytime the content of the tree changes ({@link #treeContentChanged()} is called) the 
  * {@link #checkForUserObject(SubTypingProofNode)}-method is called. This causes a recursive traversing
  * of the entire tree to check if every node has its corresponding 
- * {@link de.unisiegen.tpml.graphics.SubTyping.SubTypingNodeComponent}.<br>
+ * {@link de.unisiegen.tpml.graphics.subtyping.SubTypingNodeComponent}.<br>
  * <br>
  * When nodes get removed only the userobject of that nodes needs to get release.<br>
  * When nodes get inserted, the first of them is stored in the {@link #jumpNode} so the
@@ -62,7 +62,6 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * 
  * @see de.unisiegen.tpml.graphics.subtyping.SubTypingView
  * @see de.unisiegen.tpml.graphics.subtyping.SubTypingNodeComponent
- * @see de.unisiegen.tpml.graphics.subtyping.SubTypingEnterType
  *
  */
 public class SubTypingComponent extends AbstractProofComponent implements Scrollable {
@@ -245,6 +244,8 @@ public class SubTypingComponent extends AbstractProofComponent implements Scroll
 	 * <br>
 	 * Resetting means that every {@link PrettyStringRenderer} and 
 	 * {@link EnvironmentRenderer} recalculates their needed font sizes.
+	 * 
+	 * @param node the proof node to reset
 	 */
 	private void resetUserObject ( SubTypingProofNode node ) {
 		if ( node == null ) {

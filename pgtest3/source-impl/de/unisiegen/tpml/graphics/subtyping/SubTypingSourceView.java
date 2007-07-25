@@ -54,42 +54,78 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 	private static final long serialVersionUID = -425214200136389228L;
 
 	/** 
-	 * Panel and label for type enter fields
+	 * Panel for type enter fields
 	 */
 	JPanel source;
 
+	/**
+	 * The first enter field label
+	 */
 	JLabel sourceLabel;
 
+	/**
+	 * The second enter field label
+	 */
 	JLabel sourceLabel2;
 
 	/**
-	 * The type enter fields
+	 * The first editor 
 	 */
 	StyledLanguageEditor editor;
 
+	/**
+	 * The second editor 
+	 */
 	StyledLanguageEditor editor2;
 
+	/**
+	 * The first language styled type enter field
+	 */
 	StyledTypeEnterField sourceField;
 
+	/**
+	 * The second language styled type enter field
+	 */
 	StyledTypeEnterField sourceField2;
 
+	/**
+	 * Scrollpane for the first language styled type enter field
+	 */
 	JScrollPane scrollPane1;
 
+	/**
+	 * Scrollpane for the second language styled type enter field
+	 */
 	JScrollPane scrollPane2;
 
+	/**
+	 * Sidebar for the first editor
+	 */
 	SideBar sidebar;
 
+	/**
+	 * Sidebar for the second editor
+	 */
 	SideBar sidebar2;
 
+	/**
+	 * Listener for the first language styled type enter field
+	 */
 	OwnDocumentListener listener;
 
+	/**
+	 * Listener for the second language styled type enter field
+	 */
 	OwnDocumentListener2 listener2;
 
 	/**
-	 * The actual parsed types of this view
+	 * The first parsed type of this view
 	 */
 	MonoType type;
 
+	/**
+	 * The second parsed type of this view
+	 */
 	MonoType type2;
 
 	/**
@@ -98,22 +134,43 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 	MainWindow window;
 
 	/**
-	 * Status for save redo and undo
+	 * Status save
 	 */
 	boolean saveStatus;
 
+	/**
+	 * Status for next
+	 */
 	boolean nextStatus;
 
+	/**
+	 * Undo status for this view
+	 */
 	boolean undoStatus;
 
+	/**
+	 * Undo status for the first editor
+	 */
 	boolean undoStatus1 = false;
 
+	/**
+	 * Undo status for the second editor
+	 */
 	boolean undoStatus2 = false;
 
+	/**
+	 * Redo status for this view
+	 */
 	boolean redoStatus;
 
+	/**
+	 * Redo status for the first editor
+	 */
 	boolean redoStatus1 = false;
 
+	/**
+	 * Redo status for the second editor
+	 */
 	boolean redoStatus2 = false;
 
 	/**
@@ -121,6 +178,9 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 	 */
 	private String initialContent = ""; //$NON-NLS-1$
 
+	/**
+	 * The current content of this file
+	 */
 	private String currentContent = ""; //$NON-NLS-1$
 
 	/**
@@ -134,14 +194,18 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 	private JSplitPane jSplitPane;
 
 	/**
-	 * The {@link Outline} of this view.
-	 * 
-	 * @see #getOutline()
+	 * The first {@link Outline} of this view.
 	 */
 	private DefaultOutline outline;
 
+	/**
+	 * The second {@link Outline} of this view.
+	 */
 	private DefaultOutline outline2;
 
+	/**
+	 * The panel containing the two outlines
+	 */
 	private JPanel outlinePanel;
 
 	/**
@@ -150,14 +214,23 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 	private Language language;
 
 	/**
-	 * The stacks for redo and undo
+	 * The stack for undo action for the first editor
 	 */
 	private Stack < String > undohistory = new Stack < String > ( );
 
+	/**
+	 * The stack for redo action for the first editor
+	 */
 	private Stack < String > redohistory = new Stack < String > ( );
 
+	/**
+	 * The stack for undo action for the second editor
+	 */
 	private Stack < String > undohistory2 = new Stack < String > ( );
 
+	/**
+	 * The stack for redo action for the second editor
+	 */
 	private Stack < String > redohistory2 = new Stack < String > ( );
 
 	/**
@@ -505,10 +578,24 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 		return this.outline2;
 	}
 
+	/**
+	 * 
+	 * Select the text, in the first editor, where the error occured
+	 *
+	 * @param left start position
+	 * @param right end position
+	 */
 	private void selectErrorText ( int left, int right ) {
 		this.editor.select ( left, right );
 	}
 
+	/**
+	 * 
+	 * Select the text, in the second editor, where the error occured
+	 *
+	 * @param left start position
+	 * @param right end position
+	 */
 	private void selectErrorText2 ( int left, int right ) {
 		this.editor2.select ( left, right );
 	}
@@ -520,7 +607,7 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 	 *
 	 * @param pEditor the Editor which has changed
 	 * @param pOutline
-	 * @return
+	 * @return the parsed type
 	 */
 	public MonoType eventHandling ( StyledLanguageEditor pEditor, DefaultOutline pOutline ) {
 		MonoType newType;
@@ -658,20 +745,20 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 	 * 
 	 * Set the first {@link MonoType} of this SourceView
 	 *
-	 * @param type first type of this source view
+	 * @param pType first type of this source view
 	 */
-	public void setType ( MonoType type ) {
-		this.type = type;
+	public void setType ( MonoType pType ) {
+		this.type = pType;
 	}
 
 	/**
 	 * 
 	 * Set the second {@link MonoType} of this SourceView
 	 *
-	 * @param type2 second type of this source view
+	 * @param pType2 second type of this source view
 	 */
-	public void setType2 ( MonoType type2 ) {
-		this.type2 = type2;
+	public void setType2 ( MonoType pType2 ) {
+		this.type2 = pType2;
 	}
 
 	/**
@@ -686,10 +773,10 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 	/**
 	 * Set a new save status for this document.
 	 *
-	 * @param saveStatus boolean new save status
+	 * @param pSaveStatus boolean new save status
 	 */
-	public void setSaveStatus ( boolean saveStatus ) {
-		this.saveStatus = saveStatus;
+	public void setSaveStatus ( boolean pSaveStatus ) {
+		this.saveStatus = pSaveStatus;
 	}
 
 	/**
@@ -703,6 +790,7 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 	/**
 	 * 
 	 * The editor does not have an advanced mode so this is ignored.
+	 * @param status unused
 	 *
 	 */
 	public void setAdvanced ( @SuppressWarnings ( "unused" )
@@ -853,28 +941,46 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 		}
 	}
 
-	private void setNextStatus ( boolean nextStatus ) {
-		if ( this.nextStatus != nextStatus ) {
+	/**
+	 * 
+	 * Set a new next status
+	 *
+	 * @param pNextStatus the new status
+	 */
+	private void setNextStatus ( boolean pNextStatus ) {
+		if ( this.nextStatus != pNextStatus ) {
 			boolean oldNextStatus = this.nextStatus;
-			this.nextStatus = nextStatus;
-			firePropertyChange ( "nextStatus", oldNextStatus, nextStatus ); //$NON-NLS-1$
+			this.nextStatus = pNextStatus;
+			firePropertyChange ( "nextStatus", oldNextStatus, pNextStatus ); //$NON-NLS-1$
 		}
 	}
 
-	private void setRedoStatus ( boolean redoStatus ) {
-		if ( this.redoStatus != redoStatus ) {
+	/**
+	 * 
+	 * Set a new redo status
+	 *
+	 * @param pRedoStatus the new redo status
+	 */
+	private void setRedoStatus ( boolean pRedoStatus ) {
+		if ( this.redoStatus != pRedoStatus ) {
 			boolean oldRedoStatus = this.redoStatus;
-			this.redoStatus = redoStatus;
-			firePropertyChange ( "redoStatus", oldRedoStatus, redoStatus ); //$NON-NLS-1$
+			this.redoStatus = pRedoStatus;
+			firePropertyChange ( "redoStatus", oldRedoStatus, pRedoStatus ); //$NON-NLS-1$
 		}
 		//this.redoItem.setEnabled ( this.redoStatus );
 	}
 
-	private void setUndoStatus ( boolean undoStatus ) {
-		if ( this.undoStatus != undoStatus ) {
+	/**
+	 * 
+	 * Set a new undo status
+	 *
+	 * @param pUndoStatus the new undo status
+	 */
+	private void setUndoStatus ( boolean pUndoStatus ) {
+		if ( this.undoStatus != pUndoStatus ) {
 			boolean oldUndoStatus = this.undoStatus;
-			this.undoStatus = undoStatus;
-			firePropertyChange ( "undoStatus", oldUndoStatus, undoStatus ); //$NON-NLS-1$
+			this.undoStatus = pUndoStatus;
+			firePropertyChange ( "undoStatus", oldUndoStatus, pUndoStatus ); //$NON-NLS-1$
 		}
 		//this.undoItem.setEnabled ( this.undoStatus );
 	}
@@ -1005,6 +1111,15 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 		}
 	}
 
+	/**
+	 * 
+	 * Implementation of a DocumentListener for the first editor, handling the insert and remove
+	 * updates. While update the new expression is parsed, the redo/undo states are updated and
+	 * the redo/undo stacks are also updated.
+	 *
+	 * @author Benjamin Mies
+	 *
+	 */
 	private class OwnDocumentListener implements DocumentListener {
 
 		/**
@@ -1068,6 +1183,15 @@ public class SubTypingSourceView extends JPanel // AbstractProofView //JComponen
 		}
 	}
 
+	/**
+	 * 
+	 * Implementation of a DocumentListener for the second editor, handling the insert and remove
+	 * updates. While update the new expression is parsed, the redo/undo states are updated and
+	 * the redo/undo stacks are also updated.
+	 *
+	 * @author Benjamin Mies
+	 *
+	 */
 	private class OwnDocumentListener2 implements DocumentListener {
 
 		/**
