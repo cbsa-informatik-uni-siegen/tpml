@@ -28,8 +28,8 @@ public final class SubTypingException extends Exception {
 	/**
 	 * The {@link TypeEquationTypeInference} that failed to unify.
 	 * 
-	 * @see #getTau1()
-	 * @see #getTau2()
+	 * @see #getType()
+	 * @see #getType2()
 	 */
 	private SubTypingProofNode node;
 

@@ -31,13 +31,13 @@ public class DefaultTypeCheckerExpressionProofNode extends AbstractTypeCheckerPr
 	 * Allocates a new <code>DefaultTypeCheckerExpressionProofNode</code>
 	 *
 	 * @param pEnvironment the type environment of this proof node
-	 * @param expression the expression of this proof node
-	 * @param type the type of this proof node
+	 * @param pExpression the expression of this proof node
+	 * @param pType the type of this proof node
 	 */
-	public DefaultTypeCheckerExpressionProofNode ( TypeEnvironment pEnvironment, Expression expression, MonoType type ) {
-		super ( expression );
+	public DefaultTypeCheckerExpressionProofNode ( TypeEnvironment pEnvironment, Expression pExpression, MonoType pType ) {
+		super ( pExpression );
 		this.environment = pEnvironment;
-		this.type = type;
+		this.type = pType;
 	}
 
 	//
@@ -45,9 +45,9 @@ public class DefaultTypeCheckerExpressionProofNode extends AbstractTypeCheckerPr
 	//
 
 	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode#getEnvironment()
+	 * Get the type environment of this proof node
+	 * 
+	 * @return the type environment of this proof node
 	 */
 	public TypeEnvironment getEnvironment ( ) {
 		return this.environment;
@@ -56,17 +56,17 @@ public class DefaultTypeCheckerExpressionProofNode extends AbstractTypeCheckerPr
 	/**
 	 * Sets the type environment for this proof node to <code>environment</code>.
 	 * 
-	 * @param environment the new type environment for this node.
+	 * @param pEnvironment the new type environment for this node.
 	 * 
 	 * @throws NullPointerException if <code>environment</code> is <code>null</code>.
 	 * 
 	 * @see #getEnvironment()
 	 */
-	void setEnvironment ( TypeEnvironment environment ) {
-		if ( environment == null ) {
+	void setEnvironment ( TypeEnvironment pEnvironment ) {
+		if ( pEnvironment == null ) {
 			throw new NullPointerException ( "environment is null" ); //$NON-NLS-1$
 		}
-		this.environment = environment;
+		this.environment = pEnvironment;
 	}
 
 	/*	  public DefaultTypeCheckerExpressionProofNode getChildAt(int childIndex){

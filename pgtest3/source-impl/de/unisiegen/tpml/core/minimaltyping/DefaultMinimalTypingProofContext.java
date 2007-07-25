@@ -24,7 +24,6 @@ import de.unisiegen.tpml.core.expressions.UnaryCons;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
 import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
@@ -53,7 +52,6 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
 	/**
 	 * The type checker proof model with which this proof context is associated.
 	 * 
-	 * @see #DefaultTypeCheckerProofContext(TypeCheckerProofModel)
 	 */
 	private MinimalTypingProofModel model;
 
@@ -73,6 +71,9 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
 	 */
 	private LinkedList < Runnable > undoActions = new LinkedList < Runnable > ( );
 
+	/**
+	 * The list of already seen sub types
+	 */
 	private SeenTypes < DefaultSubType > seenTypes = new SeenTypes < DefaultSubType > ( );
 
 	//
@@ -84,26 +85,26 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
 	 * the index of the <code>model</code> using a redo/undo pair, via the
 	 * {@link MinimalTypingProofModel#setIndex(int)} method.
 	 * 
-	 * @param model the minimal typing proof model with which the context is
+	 * @param pModel the minimal typing proof model with which the context is
 	 *          associated.
 	 * @throws NullPointerException if <code>model</code> is <code>null</code>.
 	 * @see MinimalTypingProofModel#setIndex(int)
 	 */
-	public DefaultMinimalTypingProofContext ( final MinimalTypingProofModel model ) {
-		if ( model == null ) {
+	public DefaultMinimalTypingProofContext ( final MinimalTypingProofModel pModel ) {
+		if ( pModel == null ) {
 			throw new NullPointerException ( "model is null" ); //$NON-NLS-1$
 		}
-		this.model = model;
+		this.model = pModel;
 		// increment the model index
-		final int index = model.getIndex ( );
+		final int index = pModel.getIndex ( );
 		addRedoAction ( new Runnable ( ) {
 			public void run ( ) {
-				model.setIndex ( index + 1 );
+				pModel.setIndex ( index + 1 );
 			}
 		} );
 		addUndoAction ( new Runnable ( ) {
 			public void run ( ) {
-				model.setIndex ( index );
+				pModel.setIndex ( index );
 			}
 		} );
 	}
@@ -111,10 +112,9 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingrProofContext#addProofNode(de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode,
-	 *      de.unisiegen.tpml.core.minimaltyping.TypeEnvironment,
-	 *      de.unisiegen.tpml.core.expressions.Expression,
-	 *      de.unisiegen.tpml.core.types.MonoType)
+	 * @see MinimalTypingProofContext#addProofNode(de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode,
+	 *      de.unisiegen.tpml.core.typechecker.TypeEnvironment,
+	 *      de.unisiegen.tpml.core.expressions.Expression)
 	 */
 	public void addProofNode ( MinimalTypingProofNode node, TypeEnvironment environment, Expression expression ) {
 		this.model.contextAddProofNode ( this, ( AbstractMinimalTypingProofNode ) node, environment, expression );
@@ -123,7 +123,7 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingrProofContext#addProofNode(de.unisiegen.tpml.core.minimal.MinimalTypingProofNode,
+	 * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext#addProofNode(de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode,
 	 *      de.unisiegen.tpml.core.types.MonoType,
 	 *      de.unisiegen.tpml.core.types.MonoType)
 	 */
@@ -135,8 +135,7 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingrProofContext#setNodeType(de.unisiegen.tpml.core.minimal.MinimalTypingProofNode,
-	 *      de.unisiegen.tpml.core.types.MonoType,
+	 * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext#setNodeType(de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode,
 	 *      de.unisiegen.tpml.core.types.MonoType)
 	 */
 	public void setNodeType ( MinimalTypingProofNode node, MonoType type ) {
@@ -216,7 +215,7 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
 	 * <code>node</code>.
 	 * 
 	 * @param rule the proof rule to apply to the <code>node</code>.
-	 * @param node the proof node to which to apply the <code>rule</code>.
+	 * @param pNode the proof node to which to apply the <code>rule</code>.
 	 * @param type the type the user guessed for the <code>node</code> or
 	 *          <code>null</code> if the user didn't enter a type.
 	 * @throws NullPointerException if <code>rule</code> or <code>node</code>

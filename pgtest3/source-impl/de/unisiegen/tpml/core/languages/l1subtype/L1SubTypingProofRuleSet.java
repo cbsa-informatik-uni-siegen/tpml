@@ -65,10 +65,9 @@ public class L1SubTypingProofRuleSet extends AbstractSubTypingProofRuleSet {
 	 * 
 	 * @param context the subtyping proof context.
 	 * @param node the subtyping proof node.
-	 * @throws SubTypingException throw Exception if rule can't be applied
 	 */
 	public void applyArrow ( SubTypingProofContext context,
-			SubTypingProofNode node ) throws SubTypingException {
+			SubTypingProofNode node )  {
 		ArrowType type;
 		ArrowType type2;
 		type = ( ArrowType ) node.getType ( );

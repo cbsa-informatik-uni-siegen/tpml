@@ -38,7 +38,7 @@ public abstract class AbstractMinimalTypingProofRule extends AbstractProofRule i
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofRule#apply(de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext,
+	 * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofRule#apply(de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext,
 	 *      de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode)
 	 */
 	public void apply ( MinimalTypingProofContext context, MinimalTypingProofNode node ) throws ProofRuleException {
@@ -82,7 +82,7 @@ public abstract class AbstractMinimalTypingProofRule extends AbstractProofRule i
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofRule#update(de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext,
+	 * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofRule#update(de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext,
 	 *      de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode)
 	 */
 	public void update ( MinimalTypingProofContext context, MinimalTypingProofNode node ) {

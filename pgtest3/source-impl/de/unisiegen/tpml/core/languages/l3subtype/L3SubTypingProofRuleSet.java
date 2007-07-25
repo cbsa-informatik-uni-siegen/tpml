@@ -70,10 +70,9 @@ public class L3SubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 	 * 
 	 * @param context the subtyping proof context.
 	 * @param node the subtyping proof node.
-	 * @throws SubTypingException throw Exception if rule can't be applied
 	 */
 	public void applyList ( SubTypingProofContext context, SubTypingProofNode node )
-			throws SubTypingException {
+			 {
 		ListType type;
 		ListType type2;
 

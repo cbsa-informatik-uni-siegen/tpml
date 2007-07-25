@@ -620,6 +620,13 @@ public class L1MinimalTypingProofRuleSet extends AbstractMinimalTypingProofRuleS
 				Messages.getString ( "MinimalTypingException.3" ), type, type2 ) ); //$NON-NLS-1$
 	}
 
+	/**
+	 * Supremum means intersection of type and type2 
+	 *
+	 * @param type first type for supremum operation
+	 * @param type2 second type for supremum operation
+	 * @return intersection of the two types
+	 */
 	private MonoType supremum ( MonoType type, MonoType type2 ) {
 		if ( type.equals ( type2 ) )
 			return type;
@@ -633,6 +640,13 @@ public class L1MinimalTypingProofRuleSet extends AbstractMinimalTypingProofRuleS
 		throw new RuntimeException ( "supremum type error" ); //$NON-NLS-1$
 	}
 
+	/**
+	 * Infimum means union of type and type2 
+	 *
+	 * @param type first type for infimum operation
+	 * @param type2 second type for infimum operation
+	 * @return union of the two types
+	 */
 	private MonoType infimum ( MonoType type, MonoType type2 ) {
 		if ( type.equals ( type2 ) )
 			return type;

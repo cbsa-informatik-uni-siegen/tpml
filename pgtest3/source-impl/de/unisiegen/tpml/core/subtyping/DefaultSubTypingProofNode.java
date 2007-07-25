@@ -19,8 +19,14 @@ import de.unisiegen.tpml.core.util.Debug;
  */
 public class DefaultSubTypingProofNode extends AbstractProofNode implements SubTypingProofNode, PrettyPrintPriorities {
 
+	/**
+	 * The subtype of this proof node
+	 */
 	private MonoType left;
 
+	/**
+	 * The supertype of this proof node
+	 */
 	private MonoType right;
 
 	/**
@@ -40,7 +46,9 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements SubT
 	}
 
 	/**
-	 * inherit Doc de.unisiegen.tpml.core.ProofNode#isProven()
+	 * {@inheritDoc}de.unisiegen.tpml.core.ProofNode#isProven()
+	 * 
+	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#isProven()
 	 */
 	public boolean isProven ( ) {
 		return ( getSteps ( ).length > 0 );
@@ -109,10 +117,10 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements SubT
 	 * 	
 	 * get the proof steps of this node
 	 *
-	 * @param steps new proof steps for this node
+	 * @param pSteps new proof steps for this node
 	 */
-	public void setSteps ( ProofStep[] steps ) {
-		this.steps = steps;
+	public void setSteps ( ProofStep[] pSteps ) {
+		this.steps = pSteps;
 	}
 
 	/**

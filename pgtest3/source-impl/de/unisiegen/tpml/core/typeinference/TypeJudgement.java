@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * 
  * Represents an judgemnet for unification
  * 
- * @see de.unisiegen.tpml.core.typeinference.formula
+ * @see TypeFormula
  *
  * @author Benjamin Mies
  *
@@ -60,9 +60,8 @@ public class TypeJudgement implements TypeFormula {
 	 * 
 	 * substitude the type equation of this type judgement
 	 *
-	 * @param s TypeSubstitution to substitute
+	 * @param substitutions TypeSubstitution to substitute
 	 * @return null (just needed for TypeEquation)
-	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
 	 */
 	public TypeJudgement substitute ( ArrayList < TypeSubstitution > substitutions ) {
 
@@ -93,11 +92,11 @@ public class TypeJudgement implements TypeFormula {
 	 * 
 	 * set the type environment of this type judgement
 	 *
-	 * @param environment new type environment for this type judement
+	 * @param pEnvironment new type environment for this type judement
 	 */
-	public void setEnvironment ( final DefaultTypeEnvironment environment ) {
+	public void setEnvironment ( final DefaultTypeEnvironment pEnvironment ) {
 
-		this.environment = environment;
+		this.environment = pEnvironment;
 	}
 
 	/**
@@ -115,11 +114,11 @@ public class TypeJudgement implements TypeFormula {
 	 * 
 	 * set the type of this type judgement
 	 *
-	 * @param type new MonoType for this judgement
+	 * @param pType new MonoType for this judgement
 	 */
-	public void setType ( final MonoType type ) {
+	public void setType ( final MonoType pType ) {
 
-		this.type = type;
+		this.type = pType;
 	}
 
 	/**
@@ -162,10 +161,10 @@ public class TypeJudgement implements TypeFormula {
 	/**
 	 * set a new expression for this type judgement
 	 *
-	 * @param expression the expression to be set
+	 * @param pExpression the expression to be set
 	 */
-	public void setExpression ( final Expression expression ) {
-		this.expression = expression;
+	public void setExpression ( final Expression pExpression ) {
+		this.expression = pExpression;
 	}
 
 	/**

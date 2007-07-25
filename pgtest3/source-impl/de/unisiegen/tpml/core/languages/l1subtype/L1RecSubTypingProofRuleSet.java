@@ -68,10 +68,9 @@ public class L1RecSubTypingProofRuleSet extends AbstractRecSubTypingProofRuleSet
 	 * 
 	 * @param context the subtyping proof context.
 	 * @param node the subtyping proof node.
-	 * @throws SubTypingException throw Exception if rule can't be applied
 	 */
 	public void applyArrow ( RecSubTypingProofContext context,
-			RecSubTypingProofNode node ) throws SubTypingException {
+			RecSubTypingProofNode node )  {
 		ArrowType type;
 		ArrowType type2;
 		type = ( ArrowType ) node.getType ( );
@@ -111,10 +110,9 @@ public class L1RecSubTypingProofRuleSet extends AbstractRecSubTypingProofRuleSet
 	 * 
 	 * @param context the subtyping proof context.
 	 * @param node the subtyping proof node.
-	 * @throws SubTypingException throw Exception if rule can't be applied
 	 */
 	public void applyMuLeft ( RecSubTypingProofContext context,
-			RecSubTypingProofNode node ) throws SubTypingException {
+			RecSubTypingProofNode node ) {
 		RecType rec = ( RecType ) node.getType ( );
 
 		context.addProofNode ( node,
@@ -130,10 +128,9 @@ public class L1RecSubTypingProofRuleSet extends AbstractRecSubTypingProofRuleSet
 	 * 
 	 * @param context the subtyping proof context.
 	 * @param node the subtyping proof node.
-	 * @throws SubTypingException throw Exception if rule can't be applied
 	 */
 	public void applyMuRight ( RecSubTypingProofContext context,
-			RecSubTypingProofNode node ) throws SubTypingException {
+			RecSubTypingProofNode node )  {
 		RecType rec = ( RecType ) node.getType2 ( );
 
 		context.addProofNode ( node, node.getType ( ), rec.getTau ( ).substitute ( rec

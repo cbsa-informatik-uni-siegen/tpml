@@ -19,8 +19,14 @@ public final class ProofStep {
 	// Attributes
 	//
 
+	/**
+	 * The first type of the applied proof step
+	 */
 	private MonoType type;
 
+	/**
+	 * The second type of the applied step
+	 */
 	private MonoType type2;
 
 	/**
@@ -36,26 +42,26 @@ public final class ProofStep {
 
 	/**
 	 * Allocates a new proof step with the given <code>expression</code> and the specified <code>rule</code>.
-	 * @param type the first MonoType of the node
-	 * @param type2 the second MonoType of the node
-	 * @param rule the ProofRule apllied to the node
+	 * @param pType the first MonoType of the node
+	 * @param pType2 the second MonoType of the node
+	 * @param pRule the ProofRule apllied to the node
 	 * 
 	 * 
 	 * @throws NullPointerException if <code>expression</code> or <code>rule</code> is <code>null</code>.
 	 */
-	public ProofStep ( MonoType type, MonoType type2, ProofRule rule ) {
-		if ( rule == null ) {
+	public ProofStep ( MonoType pType, MonoType pType2, ProofRule pRule ) {
+		if ( pRule == null ) {
 			throw new NullPointerException ( "rule is null" ); //$NON-NLS-1$
 		}
-		if ( type == null ) {
+		if ( pType == null ) {
 			throw new NullPointerException ( "type is null" ); //$NON-NLS-1$
 		}
-		if ( type2 == null ) {
+		if ( pType2 == null ) {
 			throw new NullPointerException ( "type2 is null" ); //$NON-NLS-1$
 		}
-		this.type = type;
-		this.type2 = type2;
-		this.rule = rule;
+		this.type = pType;
+		this.type2 = pType2;
+		this.rule = pRule;
 	}
 
 	//
@@ -68,7 +74,6 @@ public final class ProofStep {
 	 * 
 	 * @return the proof rule that was applied in this step.
 	 * 
-	 * @see #getExpression()
 	 */
 	public ProofRule getRule ( ) {
 		return this.rule;

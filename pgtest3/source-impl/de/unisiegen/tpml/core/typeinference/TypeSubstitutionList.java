@@ -37,11 +37,21 @@ public class TypeSubstitutionList {
 	// Constructors (private)
 	//
 
+	/**
+	 * Allocates a new, empty<code>TypeSubstitutionList</code> .
+	 */
 	private TypeSubstitutionList ( ) {
 
 		super ( );
 	}
 
+	/**
+	 * 
+	 * Allocates a new <code>TypeSubstitutionList</code> .
+	 *
+	 * @param pFirst the first type substitution of the new list
+	 * @param pRemaining	the remaining list of substitutions
+	 */
 	private TypeSubstitutionList ( final DefaultTypeSubstitution pFirst, final TypeSubstitutionList pRemaining ) {
 
 		if ( pFirst == null ) {

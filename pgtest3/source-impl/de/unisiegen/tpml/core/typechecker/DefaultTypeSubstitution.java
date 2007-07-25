@@ -56,7 +56,6 @@ public final class DefaultTypeSubstitution implements TypeSubstitution, PrettyPr
 	/**
 	 * Allocates a new empty <code>DefaultTypeSubstitution</code>.
 	 * 
-	 * @see TypeSubstitution#EMPTY_SUBSTITUTION
 	 */
 	DefaultTypeSubstitution ( ) {
 		super ( );
@@ -68,13 +67,13 @@ public final class DefaultTypeSubstitution implements TypeSubstitution, PrettyPr
 	 * constructor, which passes {@link #EMPTY_SUBSTITUTION} for the
 	 * <code>parent</code> parameter.
 	 * 
-	 * @param tvar the type variable.
-	 * @param type the (concrete) monomorphic type to substitute for
+	 * @param pTvar the type variable.
+	 * @param pType the (concrete) monomorphic type to substitute for
 	 *          <code>tvar</code>.
 	 * @throws NullPointerException if any of the parameters is <code>null</code>.
 	 */
-	public DefaultTypeSubstitution ( TypeVariable tvar, MonoType type ) {
-		this ( tvar, type, EMPTY_SUBSTITUTION );
+	public DefaultTypeSubstitution ( TypeVariable pTvar, MonoType pType ) {
+		this ( pTvar, pType, EMPTY_SUBSTITUTION );
 	}
 
 	/**
@@ -82,25 +81,25 @@ public final class DefaultTypeSubstitution implements TypeSubstitution, PrettyPr
 	 * pair <code>(tvar,type)</code> and chains up to the specified
 	 * <code>parent</code>.
 	 * 
-	 * @param tvar the type variable.
-	 * @param type the (concrete) monomorphic type to substitute for
+	 * @param pTvar the type variable.
+	 * @param pType the (concrete) monomorphic type to substitute for
 	 *          <code>tvar</code>.
-	 * @param parent the parent substitution to chain up to.
+	 * @param pParent the parent substitution to chain up to.
 	 * @throws NullPointerException if any of the parameters is <code>null</code>.
 	 */
-	DefaultTypeSubstitution ( TypeVariable tvar, MonoType type, DefaultTypeSubstitution parent ) {
-		if ( tvar == null ) {
+	DefaultTypeSubstitution ( TypeVariable pTvar, MonoType pType, DefaultTypeSubstitution pParent ) {
+		if ( pTvar == null ) {
 			throw new NullPointerException ( "tvar is null" ); //$NON-NLS-1$
 		}
-		if ( type == null ) {
+		if ( pType == null ) {
 			throw new NullPointerException ( "type is null" ); //$NON-NLS-1$
 		}
-		if ( parent == null ) {
+		if ( pParent == null ) {
 			throw new NullPointerException ( "parent is null" ); //$NON-NLS-1$
 		}
-		this.tvar = tvar;
-		this.type = type;
-		this.parent = parent;
+		this.tvar = pTvar;
+		this.type = pType;
+		this.parent = pParent;
 	}
 
 	//

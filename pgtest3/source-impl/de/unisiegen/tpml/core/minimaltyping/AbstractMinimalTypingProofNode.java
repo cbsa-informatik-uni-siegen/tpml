@@ -1,3 +1,4 @@
+
 package de.unisiegen.tpml.core.minimaltyping;
 
 import javax.swing.tree.TreeNode;
@@ -21,8 +22,13 @@ abstract class AbstractMinimalTypingProofNode extends AbstractExpressionProofNod
 	//
 	// Constructor (package)
 	//
-	protected AbstractMinimalTypingProofNode ( Expression expression ) {
-		super ( expression );
+	/**
+	 * Allocates a new <code>DefaultMinimalTypingProofContext</code>.
+	 * 
+	 * @param pExpression the expression for this proof node
+	 */
+	protected AbstractMinimalTypingProofNode ( Expression pExpression ) {
+		super ( pExpression );
 	}
 
 	//

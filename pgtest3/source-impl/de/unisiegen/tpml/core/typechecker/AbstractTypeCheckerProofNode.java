@@ -38,16 +38,13 @@ public abstract class AbstractTypeCheckerProofNode extends AbstractExpressionPro
 	 * Allocates a new <code>DefaultTypeCheckerProofNode</code> with the specified <code>environment</code>,
 	 * <code>expression</code> and <code>type</code>.
 	 * 
-	 * @param environment the {@link TypeEnvironment} for this node.
-	 * @param expression the {@link Expression} for this node.
-	 * @param type the {@link de.unisiegen.tpml.core.types.TypeVariable} or concrete type for this node.
+	 * @param pExpression the {@link Expression} for this node.
 	 * 
 	 * @throws NullPointerException if <code>environment</code>, <code>expression</code> or <code>type</code>
 	 *                              is <code>null</code>.
 	 */
-	public AbstractTypeCheckerProofNode ( Expression expression ) {
-		super ( expression );
-		//setType(type);
+	public AbstractTypeCheckerProofNode ( Expression pExpression ) {
+		super ( pExpression );
 	}
 
 	//
@@ -83,17 +80,17 @@ public abstract class AbstractTypeCheckerProofNode extends AbstractExpressionPro
 	/**
 	 * Sets the type of this proof node to <code>type</code>.
 	 * 
-	 * @param type the new type for this proof node.
+	 * @param pType the new type for this proof node.
 	 * 
 	 * @throws NullPointerException if <code>type</code> is <code>null</code>.
 	 * 
 	 * @see #getType()
 	 */
-	void setType ( MonoType type ) {
-		if ( type == null ) {
+	void setType ( MonoType pType ) {
+		if ( pType == null ) {
 			throw new NullPointerException ( "type is null" ); //$NON-NLS-1$
 		}
-		this.type = type;
+		this.type = pType;
 	}
 
 	/**

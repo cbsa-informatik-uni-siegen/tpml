@@ -4,7 +4,6 @@ import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l3subtype.L3RecSubTypingProofRuleSet;
 import de.unisiegen.tpml.core.languages.l4.L4Language;
-import de.unisiegen.tpml.core.subtyping.SubTypingException;
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofContext;
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode;
 import de.unisiegen.tpml.core.types.MonoType;
@@ -45,10 +44,9 @@ public class L4RecSubTypingProofRuleSet extends L3RecSubTypingProofRuleSet {
    * 
    * @param context the subtyping proof context.
    * @param node the subtyping proof node.
-   * @throws SubTypingException throw Exception if rule can't be applied
    */
 	public void applyRef ( RecSubTypingProofContext context,
-			RecSubTypingProofNode node ) throws SubTypingException {
+			RecSubTypingProofNode node )  {
 		RefType type;
 		RefType type2;
 

@@ -18,9 +18,16 @@ import de.unisiegen.tpml.core.types.MonoType;
  */
 public class DefaultMinimalTypingTypesProofNode extends AbstractMinimalTypingProofNode implements
 		MinimalTypingTypesProofNode {
+	
+	/**
+	 * List of all already seen types
+	 */
 	private SeenTypes < DefaultSubType > seenTypes;
 
-	DefaultSubType subtype;
+	/**
+	 * Subtype Object, containing the subtype and supertype
+	 */
+	private DefaultSubType subtype;
 
 	/**
 	 * Allocates a new <code>DefaultMinimalTypingTypesProofNode</code> with the specified <code>types</code>.

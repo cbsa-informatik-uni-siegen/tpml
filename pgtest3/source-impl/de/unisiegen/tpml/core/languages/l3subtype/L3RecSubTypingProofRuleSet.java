@@ -77,10 +77,9 @@ public class L3RecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
 	 * 
 	 * @param context the subtyping proof context.
 	 * @param node the subtyping proof node.
-	 * @throws SubTypingException throw Exception if rule can't be applied
 	 */
 	public void applyList ( RecSubTypingProofContext context, RecSubTypingProofNode node )
-			throws SubTypingException {
+			 {
 		ListType type;
 		ListType type2;
 

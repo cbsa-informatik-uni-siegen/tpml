@@ -70,7 +70,7 @@ public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
 	 * @param context the subtyping proof context.
 	 * @param node the subtyping proof node.
 	 * @throws SubTypingException throw Exception if rule can't be applied
-	 * @throws PrimitiveTypeException 
+	 * @throws SubTypingException 
 	 */
 	public void applyTrans ( RecSubTypingProofContext context,
 			RecSubTypingProofNode node ) throws SubTypingException {

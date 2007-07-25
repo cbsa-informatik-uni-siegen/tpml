@@ -61,7 +61,7 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 	 * @param context the subtyping proof context.
 	 * @param node the subtyping proof node.
 	 * @throws SubTypingException throw Exception if rule can't be applied
-	 * @throws PrimitiveTypeException 
+	 * @throws SubTypingException 
 	 */
 	public void applyTrans ( SubTypingProofContext context,
 			SubTypingProofNode node ) throws SubTypingException {

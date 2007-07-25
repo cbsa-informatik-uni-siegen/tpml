@@ -17,12 +17,8 @@ public class DefaultSubTypingProofContext implements SubTypingProofContext {
 	/**
 	 * The subtyping proof model with which this proof context is associated.
 	 * 
-	 * @see #SubTypingProofContext(SubTypingProofModel)
 	 */
 	private SubTypingProofModel model;
-
-	@SuppressWarnings ( "unused" )
-	private DefaultSubTypingProofNode node;
 
 	/**
 	 * The list of redoable actions on the proof model.
@@ -43,12 +39,10 @@ public class DefaultSubTypingProofContext implements SubTypingProofContext {
 	/**
 	 * Allocates a new proof step with the given types.
 	 * @param pModel the rec subtyping proof model with which the context is associated.
-	 * @param pNode the actual subtyping proof node
 	 * 
 	 */
-	public DefaultSubTypingProofContext ( SubTypingProofModel pModel, SubTypingProofNode pNode ) {
+	public DefaultSubTypingProofContext ( SubTypingProofModel pModel) {
 		this.model = pModel;
-		this.node = ( DefaultSubTypingProofNode ) pNode;
 	}
 
 	//
@@ -60,17 +54,14 @@ public class DefaultSubTypingProofContext implements SubTypingProofContext {
 	 * 
 	 * @param rule the proof rule to apply to the <code>node</code>.
 	 * @param pNode the proof node to which to apply the <code>rule</code>.
-	 * @param type the type the user guessed for the <code>node</code> or <code>null</code>
 	 *             if the user didn't enter a type.
 	 * 
 	 * @throws NullPointerException if <code>rule</code> or <code>node</code> is <code>null</code>.
 	 * @throws ProofRuleException if the application of the <code>rule</code> to the
 	 *                            <code>node</code> failed for some reason.
-	 * @throws SubTypingException if an error occurs while the type the application 
-	 *                            of <code>rule</code> to <code>node</code>.
 	 */
-	public void apply ( SubTypingProofRule rule, DefaultSubTypingProofNode pNode ) throws ProofRuleException,
-			SubTypingException {
+	public void apply ( SubTypingProofRule rule, DefaultSubTypingProofNode pNode ) throws ProofRuleException
+			 {
 
 		this.model.contextSetProofNodeRule ( this, pNode, rule );
 		//	 try to apply the rule to the node
@@ -80,7 +71,7 @@ public class DefaultSubTypingProofContext implements SubTypingProofContext {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofContext#addProofNode(de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode, de.unisiegen.tpml.core.typechecker.TypeEnvironment, de.unisiegen.tpml.core.expressions.Expression, de.unisiegen.tpml.core.types.MonoType)
+	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofContext#addProofNode(de.unisiegen.tpml.core.subtyping.SubTypingProofNode, MonoType, MonoType)
 	 */
 	public void addProofNode ( SubTypingProofNode pNode, MonoType type, MonoType type2 ) {
 		this.model.contextAddProofNode ( this, pNode, type, type2 );

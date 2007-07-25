@@ -17,6 +17,9 @@ public class DefaultTypeCheckerTypeProofNode extends AbstractTypeCheckerProofNod
 	// Attributes
 	//
 
+	/**
+	 * The second type for this proof node
+	 */
 	private MonoType type2;
 
 	/**

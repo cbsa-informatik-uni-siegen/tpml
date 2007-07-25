@@ -49,7 +49,7 @@ public abstract class AbstractLanguage implements Language
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.Language#newMinimalTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   * @see de.unisiegen.tpml.core.languages.Language#newMinimalTypingProofModel(de.unisiegen.tpml.core.expressions.Expression, Boolean)
    */
   public MinimalTypingProofModel newMinimalTypingProofModel (
       @ SuppressWarnings ( "unused" )
@@ -77,7 +77,7 @@ public abstract class AbstractLanguage implements Language
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(MonoType, MonoType, boolean)
    */
   public SubTypingProofModel newSubTypingProofModel ( 
 		  @SuppressWarnings("unused")	MonoType type, 

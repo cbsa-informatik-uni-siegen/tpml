@@ -4,10 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import de.unisiegen.tpml.core.AbstractProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
-import de.unisiegen.tpml.core.subtyping.SubTypingException;
 import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 
 /**
  * Abstract base class for implementations of the <code>SubTypingProofRule</code> interface.
@@ -28,7 +25,7 @@ public abstract class AbstractRecSubTypingProofRule extends AbstractProofRule im
 	 *
 	 * @throws NullPointerException if <code>name</code> is <code>null</code>.
 	 * 
-	 * @see AbstractProofRule#AbstractProofRule(String)
+	 * @see AbstractProofRule#AbstractProofRule(int,String)
 	 */
 	public AbstractRecSubTypingProofRule ( int group, String name ) {
 		super ( group, name );
@@ -37,9 +34,9 @@ public abstract class AbstractRecSubTypingProofRule extends AbstractProofRule im
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofRule#apply(de.unisiegen.tpml.core.subtyping.SubTypingProofContext, de.unisiegen.tpml.core.subTyping.RecSubTypingProofNode)
+	 * @see de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofRule#apply(de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofContext, de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode)
 	 */
-	public void apply ( DefaultRecSubTypingProofContext context, DefaultRecSubTypingProofNode node )
+	public void apply ( RecSubTypingProofContext context, RecSubTypingProofNode node )
 			throws ProofRuleException {
 		if ( node == null ) {
 			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
@@ -98,16 +95,16 @@ public abstract class AbstractRecSubTypingProofRule extends AbstractProofRule im
 	 * Abstract internal apply method, implemented by the {@link AbstractTypeCheckerProofRuleSet} class
 	 * while registering new proof rules.
 	 * 
-	 * @param context see {@link #apply(TypeCheckerProofContext, TypeCheckerProofNode)}.
-	 * @param node see {@link #apply(TypeCheckerProofContext, TypeCheckerProofNode)}.
+	 * @param context see {@link #apply(RecSubTypingProofContext, RecSubTypingProofNode)}.
+	 * @param node see {@link #apply(RecSubTypingProofContext, RecSubTypingProofNode)}.
 	 * 
 	 * @throws Exception if an error occurs while applying the rule to the <code>node</code> using
 	 *                   the <code>context</code>.
 	 *                   
-	 * @see #apply(TypeCheckerProofContext, TypeCheckerProofNode)
+	 * @see #apply(RecSubTypingProofContext, RecSubTypingProofNode)
 	 */
 	protected abstract void applyInternal ( RecSubTypingProofContext context, RecSubTypingProofNode node )
-			throws Exception, SubTypingException;
+			throws Exception;
 
 	/*
 	 /**

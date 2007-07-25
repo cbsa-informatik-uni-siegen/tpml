@@ -45,13 +45,13 @@ public final class UnifyException extends Exception {
 	 * Allocates a new {@link UnifyException} object to indicate that the unification of the
 	 * {@link TypeEquationTypeInference} <code>equationn</code> failed.
 	 * 
-	 * @param equation the {@link TypeEquationTypeInference} that could not be unified.
+	 * @param pEquation the {@link TypeEquationTypeInference} that could not be unified.
 	 */
-	public UnifyException ( final TypeEquationTypeInference equation ) {
+	public UnifyException ( final TypeEquationTypeInference pEquation ) {
 
 		super ( MessageFormat.format (
-				Messages.getString ( "UnificationException.0" ), equation.getLeft ( ), equation.getRight ( ) ) ); //$NON-NLS-1$
-		this.equation = equation;
+				Messages.getString ( "UnificationException.0" ), pEquation.getLeft ( ), pEquation.getRight ( ) ) ); //$NON-NLS-1$
+		this.equation = pEquation;
 	}
 
 	//

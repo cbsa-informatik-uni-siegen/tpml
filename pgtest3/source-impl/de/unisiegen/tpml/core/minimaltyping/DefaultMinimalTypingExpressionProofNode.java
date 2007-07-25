@@ -37,16 +37,15 @@ public class DefaultMinimalTypingExpressionProofNode extends AbstractMinimalTypi
 	 * Allocates a new <code>DefaultMinimalTypingExpressionProofNode</code> with the specified <code>environment</code>,
 	 * <code>expression</code> and <code>type</code>.
 	 * 
-	 * @param environment the {@link TypeEnvironment} for this node.
-	 * @param expression the {@link Expression} for this node.
-	 * @param type the {@link de.unisiegen.tpml.core.types.TypeVariable} or concrete type for this node.
+	 * @param pEnvironment the {@link TypeEnvironment} for this node.
+	 * @param pExpression the {@link Expression} for this node.
 	 * 
 	 * @throws NullPointerException if <code>environment</code>, <code>expression</code> or <code>type</code>
 	 *                              is <code>null</code>.
 	 */
-	public DefaultMinimalTypingExpressionProofNode ( TypeEnvironment environment, Expression expression ) {
-		super ( expression );
-		setEnvironment ( environment );
+	public DefaultMinimalTypingExpressionProofNode ( TypeEnvironment pEnvironment, Expression pExpression ) {
+		super ( pExpression );
+		setEnvironment ( pEnvironment );
 
 	}
 
@@ -66,17 +65,17 @@ public class DefaultMinimalTypingExpressionProofNode extends AbstractMinimalTypi
 	/**
 	 * Sets the type environment for this proof node to <code>environment</code>.
 	 * 
-	 * @param environment the new type environment for this node.
+	 * @param pEnvironment the new type environment for this node.
 	 * 
 	 * @throws NullPointerException if <code>environment</code> is <code>null</code>.
 	 * 
 	 * @see #getEnvironment()
 	 */
-	void setEnvironment ( TypeEnvironment environment ) {
-		if ( environment == null ) {
+	void setEnvironment ( TypeEnvironment pEnvironment ) {
+		if ( pEnvironment == null ) {
 			throw new NullPointerException ( "environment is null" ); //$NON-NLS-1$
 		}
-		this.environment = environment;
+		this.environment = pEnvironment;
 	}
 
 	/**
@@ -91,14 +90,14 @@ public class DefaultMinimalTypingExpressionProofNode extends AbstractMinimalTypi
 	/**
 	 * Sets the type of this proof node to <code>type</code>.
 	 * 
-	 * @param type the new type for this proof node.
+	 * @param pType the new type for this proof node.
 	 * 
 	 * @throws NullPointerException if <code>type</code> is <code>null</code>.
 	 * 
 	 * @see #getType()
 	 */
-	public void setType ( MonoType type ) {
-		this.type = type;
+	public void setType ( MonoType pType ) {
+		this.type = pType;
 	}
 
 	//

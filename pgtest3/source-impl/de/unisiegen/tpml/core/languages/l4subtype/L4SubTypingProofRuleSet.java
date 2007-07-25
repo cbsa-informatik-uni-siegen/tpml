@@ -3,7 +3,6 @@ package de.unisiegen.tpml.core.languages.l4subtype;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.l3subtype.L3SubTypingProofRuleSet;
 import de.unisiegen.tpml.core.languages.l4.L4Language;
-import de.unisiegen.tpml.core.subtyping.SubTypingException;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofContext;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.core.types.MonoType;
@@ -39,10 +38,9 @@ public class L4SubTypingProofRuleSet extends L3SubTypingProofRuleSet {
    * 
    * @param context the subtyping proof context.
    * @param node the subtyping proof node.
-   * @throws SubTypingException throw Exception if rule can't be applied
    */
 	public void applyRef ( SubTypingProofContext context,
-			SubTypingProofNode node ) throws SubTypingException {
+			SubTypingProofNode node )  {
 		RefType type;
 		RefType type2;
 

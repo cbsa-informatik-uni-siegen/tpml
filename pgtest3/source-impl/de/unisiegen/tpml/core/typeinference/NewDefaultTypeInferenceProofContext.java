@@ -80,11 +80,23 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 
 	/**
 	 * The list of all type substitutions that has been collected 
+	 * 
+	 * @see TypeSubstitution
 	 */
 	private ArrayList < TypeSubstitution > substitutionList = new ArrayList < TypeSubstitution > ( );
 
+	/**
+	 * The list of all type judgements that has been collected 
+	 * 
+	 *  @see TypeJudgement
+	 */
 	private ArrayList < TypeJudgement > judgementList = new ArrayList < TypeJudgement > ( );
 
+	/**
+	 * The list of all type subtypes that has been collected 
+	 * 
+	 * @see TypeSubType
+	 */
 	private ArrayList < TypeSubType > subTypeList = new ArrayList < TypeSubType > ( );
 
 	/**
@@ -112,6 +124,9 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	// Constructor
 	//
 	/**
+	 * Allocates a new <code>NewDefaultTypeInferenceProofContext</code> with the specified <code>proof model</code>
+	 * and <code>proof node</code>.
+	 * 
 	 * @param pModel the type inference proof model with which the context is
 	 *          associated.
 	 * @param node the type inference proof node for this context
@@ -179,8 +194,8 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	 * {@inheritDoc}
 	 * 
 	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#addProofNode(
-	 * 	  de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode
-	 * 	  de.unisiegen.tpml.core.types.MonoType
+	 * 	  de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode,
+	 * 	  de.unisiegen.tpml.core.types.MonoType,
 	 *      de.unisiegen.tpml.core.types.MonoType)
 	 */
 	public void addProofNode ( @SuppressWarnings ( "unused" )
@@ -194,7 +209,7 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	/**
 	 * Set the TypeSubstitutions for this context
 	 * 
-	 * @param subs the new list of type substitutions
+	 * @return this list of type substitutions
 	 */
 	public ArrayList < TypeSubstitution > getSubstitution ( ) {
 		return this.substitutionList;
@@ -408,12 +423,9 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	 * @param node The {@link DefaultTypeInferenceProofNode}.
 	 * @throws ProofRuleException if the application of the <code>rule</code> to
 	 *           the <code>node</code> failed for some reason.
-	 * @throws UnifyException if an error occurs while unifying the type equations
-	 *           that resulted from the application of <code>rule</code> to
-	 *           <code>node</code>.
 	 */
 	void apply ( final TypeCheckerProofRule rule, final TypeFormula formula, @SuppressWarnings ( "unused" )
-	final MonoType type, boolean mode, DefaultTypeInferenceProofNode node ) throws ProofRuleException, UnifyException {
+	final MonoType type, boolean mode, DefaultTypeInferenceProofNode node ) throws ProofRuleException {
 
 		// collect all type substitutions of the parent node
 		this.substitutionList.addAll ( node.getSubstitution ( ) );

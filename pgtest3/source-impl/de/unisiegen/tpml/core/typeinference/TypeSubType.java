@@ -25,8 +25,14 @@ public class TypeSubType implements ShowBondsInput, TypeFormula, PrettyPrintable
 	// Attributes
 	//
 
+	/**
+	 * The left type (subtype) of this type formula
+	 */
 	private MonoType left;
 
+	/**
+	 * The right type (supertype) of this type formula
+	 */
 	private MonoType right;
 
 	/**

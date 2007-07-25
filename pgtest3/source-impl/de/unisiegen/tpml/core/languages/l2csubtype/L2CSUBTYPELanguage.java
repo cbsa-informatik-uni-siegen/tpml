@@ -23,7 +23,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageTypeParser
  * @see de.unisiegen.tpml.core.languages.LanguageTypeScanner
- * @see de.unisiegen.tpml.core.languages.l2c.L2cLanguage
+ * @see de.unisiegen.tpml.core.languages.l2c.L2CLanguage
  */
 public class L2CSUBTYPELanguage extends L2CLanguage {
 
