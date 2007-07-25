@@ -181,12 +181,20 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * Cached vector of sub expressions, so the children do not need to be
+   * Cached liyt of sub expressions, so the children do not need to be
    * determined on every invocation of {@link #children()}.
    * 
    * @see #children()
    */
   private ArrayList < Expression > children = null ;
+
+
+  /**
+   * Cached vector of {@link Attribute} {@link Identifier}.
+   * 
+   * @see #getDomA()
+   */
+  protected ArrayList < Identifier > domA = null ;
 
 
   /**
@@ -405,6 +413,27 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
       }
     }
     return this.identifiersFree ;
+  }
+
+
+  /**
+   * Returns a list of all {@link Attribute} {@link Identifier}s in the domain
+   * of this {@link Expression}.
+   * 
+   * @return A list of all {@link Attribute} {@link Identifier}s in the domain
+   *         of this {@link Expression}.
+   */
+  public ArrayList < Identifier > getDomA ( )
+  {
+    if ( this.domA == null )
+    {
+      this.domA = new ArrayList < Identifier > ( ) ;
+      for ( Expression child : children ( ) )
+      {
+        this.domA.addAll ( child.getDomA ( ) ) ;
+      }
+    }
+    return this.domA ;
   }
 
 

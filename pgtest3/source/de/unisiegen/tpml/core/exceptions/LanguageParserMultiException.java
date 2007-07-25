@@ -21,7 +21,7 @@ import de.unisiegen.tpml.core.types.RowType ;
  * @author Christian Fehler
  * @see LanguageParserException
  */
-public final class LanguageParserMultiException extends LanguageParserException
+public class LanguageParserMultiException extends LanguageParserException
 {
   /**
    * The serial version UID.

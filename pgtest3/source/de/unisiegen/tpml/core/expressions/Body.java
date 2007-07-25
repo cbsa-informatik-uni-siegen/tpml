@@ -211,6 +211,30 @@ public final class Body extends Expression implements BodyOrRow ,
 
 
   /**
+   * Returns a list of all {@link Attribute} {@link Identifier}s in the domain
+   * of this {@link Expression}.
+   * 
+   * @return A list of all {@link Attribute} {@link Identifier}s in the domain
+   *         of this {@link Expression}.
+   */
+  @ Override
+  public ArrayList < Identifier > getDomA ( )
+  {
+    if ( this.domA == null )
+    {
+      this.domA = new ArrayList < Identifier > ( ) ;
+      for ( Identifier a : this.identifiers )
+      {
+        this.domA.add ( a ) ;
+      }
+      this.domA.addAll ( this.expressions [ 0 ].getDomA ( ) ) ;
+      this.domA.addAll ( this.expressions [ 1 ].getDomA ( ) ) ;
+    }
+    return this.domA ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override

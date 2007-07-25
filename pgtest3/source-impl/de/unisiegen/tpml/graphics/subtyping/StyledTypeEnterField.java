@@ -10,6 +10,7 @@ import javax.swing.text.BadLocationException ;
 import javax.swing.text.SimpleAttributeSet ;
 import javax.swing.text.StyleConstants ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
+import de.unisiegen.tpml.core.exceptions.LanguageParserReplaceException ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserWarningException ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.languages.AbstractLanguageTypeScanner ;
@@ -70,14 +71,15 @@ public class StyledTypeEnterField extends StyledLanguageDocument
    */
   public MonoType getType ( ) throws Exception
   {
-	  try {
-    return this.language.newTypeParser (
-        new StringReader ( getText ( 0 , getLength ( ) ) ) ).parse ( ) ;
-	  }
-	  catch (LanguageParserException e)
-	  {
-		  return null;
-	  }
+    try
+    {
+      return this.language.newTypeParser (
+          new StringReader ( getText ( 0 , getLength ( ) ) ) ).parse ( ) ;
+    }
+    catch ( LanguageParserException e )
+    {
+      return null ;
+    }
   }
 
 
@@ -210,6 +212,44 @@ public class StyledTypeEnterField extends StyledLanguageDocument
             setCharacterAttributes ( typeName.getParserStartOffset ( ) ,
                 typeName.getParserEndOffset ( )
                     - typeName.getParserStartOffset ( ) , freeSet , false ) ;
+          }
+        }
+        catch ( LanguageParserReplaceException e )
+        {
+          String [ ] messageRename = e.getMessagesReplace ( ) ;
+          int [ ] startOffsetRename = e.getParserStartOffsetReplace ( ) ;
+          int [ ] endOffsetRename = e.getParserEndOffsetReplace ( ) ;
+          String [ ] messageNegative = e.getMessagesNegative ( ) ;
+          int [ ] startOffsetNegative = e.getParserStartOffsetNegative ( ) ;
+          int [ ] endOffsetNegative = e.getParserEndOffsetNegative ( ) ;
+          tmpExceptions = new LanguageParserException [ startOffsetRename.length
+              + startOffsetNegative.length ] ;
+          for ( int i = 0 ; i < startOffsetRename.length ; i ++ )
+          {
+            tmpExceptions [ i ] = new LanguageParserReplaceException (
+                messageRename [ i ] , startOffsetRename [ i ] ,
+                endOffsetRename [ i ] , e.getReplaceText ( ) ) ;
+            SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
+            StyleConstants.setForeground ( errorSet , Color.BLUE ) ;
+            StyleConstants.setUnderline ( errorSet , true ) ;
+            errorSet.addAttribute ( "exception" , tmpExceptions [ i ] ) ; //$NON-NLS-1$
+            setCharacterAttributes ( startOffsetRename [ i ] ,
+                endOffsetRename [ i ] - startOffsetRename [ i ] , errorSet ,
+                false ) ;
+          }
+          for ( int i = 0 ; i < startOffsetNegative.length ; i ++ )
+          {
+            tmpExceptions [ startOffsetRename.length + i ] = new LanguageParserException (
+                messageNegative [ i ] , startOffsetNegative [ i ] ,
+                endOffsetNegative [ i ] ) ;
+            SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
+            StyleConstants.setForeground ( errorSet , Color.RED ) ;
+            StyleConstants.setUnderline ( errorSet , true ) ;
+            errorSet.addAttribute (
+                "exception" , tmpExceptions [ startOffsetRename.length + i ] ) ; //$NON-NLS-1$
+            setCharacterAttributes ( startOffsetNegative [ i ] ,
+                endOffsetNegative [ i ] - startOffsetNegative [ i ] , errorSet ,
+                false ) ;
           }
         }
         catch ( LanguageParserMultiException e )

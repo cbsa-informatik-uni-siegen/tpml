@@ -15,63 +15,117 @@ import java.awt.event.MouseEvent ;
 import java.awt.event.MouseMotionAdapter ;
 import java.beans.PropertyChangeEvent ;
 import java.beans.PropertyChangeListener ;
+import java.util.ArrayList ;
 import javax.swing.ImageIcon ;
 import javax.swing.JComponent ;
 import javax.swing.JScrollBar ;
 import javax.swing.JScrollPane ;
 import javax.swing.text.JTextComponent ;
+import de.unisiegen.tpml.core.exceptions.LanguageParserReplaceException ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserWarningException ;
 import de.unisiegen.tpml.core.languages.LanguageScannerException ;
 import de.unisiegen.tpml.graphics.StyledLanguageDocument ;
 
 
 /**
- * @author marcell
+ * This class implements the sidebar which is used in the source views.
+ * 
+ * @author Marcell Fischbach
+ * @author Christian Fehler
  */
 public class SideBar extends JComponent
 {
   /**
-   * 
+   * The serial version UID.
    */
   private static final long serialVersionUID = - 4668570581006435967L ;
 
 
+  /**
+   * The parser normal error icon.
+   */
   private ImageIcon errorIcon = null ;
 
 
+  /**
+   * The parser warning icon.
+   */
   private ImageIcon warningIcon = null ;
 
 
+  /**
+   * The parser replace icon.
+   */
+  private ImageIcon replaceIcon = null ;
+
+
+  /**
+   * The vertical positions of the errors.
+   */
   private int [ ] verticalPositions ;
 
 
-  private JScrollBar vScrollBar ;
+  /**
+   * The vertical {@link JScrollBar}.
+   */
+  private JScrollBar verticalScrollBar ;
 
 
-  private JScrollBar hScrollBar ;
+  /**
+   * The horizontal {@link JScrollBar}.
+   */
+  private JScrollBar horizontalScrollBar ;
 
 
+  /**
+   * The used {@link JScrollPane}.
+   */
   private JScrollPane scrollPane ;
 
 
+  /**
+   * The array of {@link LanguageScannerException}.
+   */
   private LanguageScannerException [ ] exceptions ;
 
 
+  /**
+   * The used {@link StyledLanguageDocument}.
+   */
   private StyledLanguageDocument document ;
 
 
+  /**
+   * The used text component.
+   */
   private JTextComponent textComponent ;
 
 
+  /**
+   * The status if something has changed.
+   */
   private boolean proppertyChanged ;
 
 
+  /**
+   * The left offset of the current exception.
+   */
   private int currentLeft ;
 
 
+  /**
+   * The right offset of the current exception.
+   */
   private int currentRight ;
 
 
+  /**
+   * Initializes the {@link SideBar}.
+   * 
+   * @param pScrollPane The used {@link JScrollPane}.
+   * @param pDocument The used {@link StyledLanguageDocument}.
+   * @param pTextComponent The used text component.
+   */
   public SideBar ( JScrollPane pScrollPane , StyledLanguageDocument pDocument ,
       JTextComponent pTextComponent )
   {
@@ -82,15 +136,17 @@ public class SideBar extends JComponent
     this.document = pDocument ;
     this.textComponent = pTextComponent ;
     this.errorIcon = new ImageIcon ( getClass ( ).getResource (
-        "/de/unisiegen/tpml/ui/icons/error.gif" ) ) ;
+        "/de/unisiegen/tpml/ui/icons/error.gif" ) ) ; //$NON-NLS-1$
     this.warningIcon = new ImageIcon ( getClass ( ).getResource (
-        "/de/unisiegen/tpml/ui/icons/warning.gif" ) ) ;
+        "/de/unisiegen/tpml/ui/icons/warning.gif" ) ) ; //$NON-NLS-1$
+    this.replaceIcon = new ImageIcon ( getClass ( ).getResource (
+        "/de/unisiegen/tpml/ui/icons/error_blue.gif" ) ) ; //$NON-NLS-1$
     int imageWidth = this.errorIcon.getIconWidth ( ) ;
     this.proppertyChanged = false ;
     setMinimumSize ( new Dimension ( imageWidth , imageWidth ) ) ;
-    this.vScrollBar = this.scrollPane.getVerticalScrollBar ( ) ;
-    this.hScrollBar = this.scrollPane.getHorizontalScrollBar ( ) ;
-    this.vScrollBar.addAdjustmentListener ( new AdjustmentListener ( )
+    this.verticalScrollBar = this.scrollPane.getVerticalScrollBar ( ) ;
+    this.horizontalScrollBar = this.scrollPane.getHorizontalScrollBar ( ) ;
+    this.verticalScrollBar.addAdjustmentListener ( new AdjustmentListener ( )
     {
       public void adjustmentValueChanged ( @ SuppressWarnings ( "unused" )
       AdjustmentEvent event )
@@ -98,7 +154,7 @@ public class SideBar extends JComponent
         repaint ( ) ;
       }
     } ) ;
-    this.document.addPropertyChangeListener ( "exceptions" ,
+    this.document.addPropertyChangeListener ( "exceptions" , //$NON-NLS-1$
         new PropertyChangeListener ( )
         {
           @ SuppressWarnings ( "synthetic-access" )
@@ -123,25 +179,38 @@ public class SideBar extends JComponent
       @ Override
       public void mouseClicked ( MouseEvent event )
       {
-        SideBar.this.mouseSelected ( event ) ;
+        SideBar.this.mouseClicked ( event ) ;
       }
     } ) ;
   }
 
 
-  public void addSideBarListener ( SideBarListener listener )
+  /**
+   * Adds the given {@link SideBarListener}.
+   * 
+   * @param pSideBarListener The given {@link SideBarListener}.
+   */
+  public void addSideBarListener ( SideBarListener pSideBarListener )
   {
-    this.listenerList.add ( SideBarListener.class , listener ) ;
+    this.listenerList.add ( SideBarListener.class , pSideBarListener ) ;
   }
 
 
-  public void removeSideBarListener ( SideBarListener listener )
+  /**
+   * Adds the given {@link SideBarListener}.
+   * 
+   * @param pSideBarListener The given {@link SideBarListener}.
+   */
+  public void removeSideBarListener ( SideBarListener pSideBarListener )
   {
-    this.listenerList.remove ( SideBarListener.class , listener ) ;
+    this.listenerList.remove ( SideBarListener.class , pSideBarListener ) ;
   }
 
 
-  private void fireSelectCurrentException ( )
+  /**
+   * Marks the text with the given offsets.
+   */
+  private void fireMarkText ( )
   {
     Object listeners[] = this.listenerList.getListenerList ( ) ;
     for ( int i = 0 ; i < listeners.length ; i ++ )
@@ -155,7 +224,12 @@ public class SideBar extends JComponent
   }
 
 
-  private void fireInsertText ( String pText )
+  /**
+   * Inserts a given text at the given index.
+   * 
+   * @param pInsertText The text which should be inserted.
+   */
+  private void fireInsertText ( String pInsertText )
   {
     Object listeners[] = this.listenerList.getListenerList ( ) ;
     for ( int i = 0 ; i < listeners.length ; i ++ )
@@ -163,12 +237,38 @@ public class SideBar extends JComponent
       if ( listeners [ i ] == SideBarListener.class )
       {
         ( ( SideBarListener ) listeners [ i + 1 ] ).insertText (
-            this.currentRight , pText ) ;
+            this.currentRight , pInsertText ) ;
       }
     }
   }
 
 
+  /**
+   * Replaces the texts with the given start and end offsets with the replace
+   * text.
+   * 
+   * @param pStart The start offsets of the texts which should be renamed.
+   * @param pEnd The end offsets of the texts which should be renamed.
+   * @param pReplaceText The replace text.
+   */
+  private void fireReplaceText ( int [ ] pStart , int [ ] pEnd ,
+      String pReplaceText )
+  {
+    Object listeners[] = this.listenerList.getListenerList ( ) ;
+    for ( int i = 0 ; i < listeners.length ; i ++ )
+    {
+      if ( listeners [ i ] == SideBarListener.class )
+      {
+        ( ( SideBarListener ) listeners [ i + 1 ] ).replaceText ( pStart ,
+            pEnd , pReplaceText ) ;
+      }
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
   @ Override
   public Dimension getPreferredSize ( )
   {
@@ -176,6 +276,9 @@ public class SideBar extends JComponent
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
   @ Override
   protected void paintComponent ( Graphics gc )
   {
@@ -196,7 +299,7 @@ public class SideBar extends JComponent
         continue ;
       }
       int y0 = this.verticalPositions [ i ] - this.errorIcon.getIconHeight ( )
-          / 2 - this.vScrollBar.getValue ( ) ;
+          / 2 - this.verticalScrollBar.getValue ( ) ;
       int y1 = y0 + this.errorIcon.getIconHeight ( ) ;
       if ( y1 < 0 || y0 > getHeight ( ) )
       {
@@ -206,16 +309,23 @@ public class SideBar extends JComponent
       {
         gc.drawImage ( this.warningIcon.getImage ( ) , 0 , y0 , this ) ;
       }
+      else if ( this.exceptions [ i ] instanceof LanguageParserReplaceException )
+      {
+        gc.drawImage ( this.replaceIcon.getImage ( ) , 0 , y0 , this ) ;
+      }
       else
       {
         gc.drawImage ( this.errorIcon.getImage ( ) , 0 , y0 , this ) ;
       }
     }
-    gc.fillRect ( 0 , getHeight ( ) - this.hScrollBar.getHeight ( ) ,
-        getWidth ( ) , this.hScrollBar.getHeight ( ) ) ;
+    gc.fillRect ( 0 , getHeight ( ) - this.horizontalScrollBar.getHeight ( ) ,
+        getWidth ( ) , this.horizontalScrollBar.getHeight ( ) ) ;
   }
 
 
+  /**
+   * Builds the marks.
+   */
   private void buildMarks ( )
   {
     this.exceptions = this.document.getExceptions ( ) ;
@@ -242,13 +352,18 @@ public class SideBar extends JComponent
   }
 
 
-  private void mouseMoved ( MouseEvent event )
+  /**
+   * Handles the mouse move event.
+   * 
+   * @param pMouseEvent The {@link MouseEvent}.
+   */
+  private void mouseMoved ( MouseEvent pMouseEvent )
   {
     if ( this.verticalPositions == null )
     {
       return ;
     }
-    int y = event.getY ( ) + this.vScrollBar.getValue ( ) ;
+    int y = pMouseEvent.getY ( ) + this.verticalScrollBar.getValue ( ) ;
     int hh = this.errorIcon.getIconHeight ( ) / 2 ;
     for ( int i = 0 ; i < this.verticalPositions.length ; i ++ )
     {
@@ -269,13 +384,18 @@ public class SideBar extends JComponent
   }
 
 
-  public void mouseSelected ( MouseEvent event )
+  /**
+   * Handles the mouse clicked event.
+   * 
+   * @param pMouseEvent The {@link MouseEvent}.
+   */
+  public void mouseClicked ( MouseEvent pMouseEvent )
   {
     if ( this.currentLeft == - 1 || this.currentRight == - 1 )
     {
       return ;
     }
-    int y = event.getY ( ) + this.vScrollBar.getValue ( ) ;
+    int y = pMouseEvent.getY ( ) + this.verticalScrollBar.getValue ( ) ;
     int hh = this.errorIcon.getIconHeight ( ) / 2 ;
     for ( int i = 0 ; i < this.verticalPositions.length ; i ++ )
     {
@@ -290,8 +410,32 @@ public class SideBar extends JComponent
           fireInsertText ( e.getInsertText ( ) ) ;
           return ;
         }
+        if ( this.exceptions [ i ] instanceof LanguageParserReplaceException )
+        {
+          LanguageParserReplaceException e = ( LanguageParserReplaceException ) this.exceptions [ i ] ;
+          this.currentLeft = this.exceptions [ i ].getLeft ( ) ;
+          this.currentRight = this.exceptions [ i ].getRight ( ) ;
+          ArrayList < LanguageParserReplaceException > list = new ArrayList < LanguageParserReplaceException > ( ) ;
+          for ( int j = 0 ; j < this.exceptions.length ; j ++ )
+          {
+            if ( this.exceptions [ j ] instanceof LanguageParserReplaceException )
+            {
+              list
+                  .add ( ( LanguageParserReplaceException ) this.exceptions [ j ] ) ;
+            }
+          }
+          int [ ] start = new int [ list.size ( ) ] ;
+          int [ ] end = new int [ list.size ( ) ] ;
+          for ( int j = 0 ; j < list.size ( ) ; j ++ )
+          {
+            start [ j ] = list.get ( j ).getParserStartOffsetReplace ( ) [ 0 ] ;
+            end [ j ] = list.get ( j ).getParserEndOffsetReplace ( ) [ 0 ] ;
+          }
+          fireReplaceText ( start , end , e.getReplaceText ( ) ) ;
+          return ;
+        }
       }
     }
-    fireSelectCurrentException ( ) ;
+    fireMarkText ( ) ;
   }
 }

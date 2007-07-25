@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.languages ;
 
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
+import de.unisiegen.tpml.core.exceptions.LanguageParserReplaceException ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
 import de.unisiegen.tpml.core.expressions.Body ;
 import de.unisiegen.tpml.core.expressions.Duplication ;
@@ -10,6 +11,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.types.RowType ;
+import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -28,43 +30,74 @@ public class MultipleIdentifier
   public static void check ( Body pBody )
   {
     ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
-    Identifier [ ] attributeIdentifiers = pBody.getIdentifiers ( ) ;
-    for ( int i = 0 ; i < attributeIdentifiers.length ; i ++ )
+    Identifier [ ] bodyIdentifiers = pBody.getIdentifiers ( ) ;
+    for ( int i = 0 ; i < bodyIdentifiers.length ; i ++ )
     {
       negativeIdentifiers.clear ( ) ;
-      for ( int j = i + 1 ; j < attributeIdentifiers.length ; j ++ )
+      for ( int j = i + 1 ; j < bodyIdentifiers.length ; j ++ )
       {
-        if ( attributeIdentifiers [ i ].equals ( attributeIdentifiers [ j ] ) )
+        if ( bodyIdentifiers [ i ].equals ( bodyIdentifiers [ j ] ) )
         {
-          negativeIdentifiers.add ( attributeIdentifiers [ j ] ) ;
+          negativeIdentifiers.add ( bodyIdentifiers [ j ] ) ;
         }
       }
       if ( negativeIdentifiers.size ( ) > 0 )
       {
-        negativeIdentifiers.add ( attributeIdentifiers [ i ] ) ;
+        negativeIdentifiers.add ( bodyIdentifiers [ i ] ) ;
         LanguageParserMultiException.throwExceptionBody ( negativeIdentifiers ) ;
       }
     }
-    if ( pBody.getBodyOrRow ( ) instanceof Row )
+    /*
+     * Rename the duplicated attribute Identifier.
+     */
+    ArrayList < Identifier > replaceIdentifiers = new ArrayList < Identifier > ( ) ;
+    // For all Identifier in the Body
+    for ( Identifier bodyId : bodyIdentifiers )
     {
-      Row row = ( Row ) pBody.getBodyOrRow ( ) ;
-      for ( Identifier a : attributeIdentifiers )
+      // Clear both lists for the next Identifier in the Body
+      negativeIdentifiers.clear ( ) ;
+      replaceIdentifiers.clear ( ) ;
+      // For all Identifier in the domainA from the body or row of the body
+      for ( Identifier domAId : ( ( Expression ) pBody.getBodyOrRow ( ) )
+          .getDomA ( ) )
       {
-        negativeIdentifiers.clear ( ) ;
-        for ( Expression e : row.getExpressions ( ) )
+        // If the Identifiers are equal, something
+        if ( bodyId.equals ( domAId ) )
         {
-          if ( e instanceof Attribute )
+          /*
+           * Rename the Identifier and all Identifier which are bound to him, if
+           * the parent of the domA Identifier is an Attribute.
+           */
+          if ( ( domAId.getParent ( ) != null )
+              && ( domAId.getParent ( ) instanceof Attribute ) )
           {
-            Attribute attribute = ( Attribute ) e ;
-            if ( a.equals ( attribute.getId ( ) ) )
-            {
-              negativeIdentifiers.add ( attribute.getId ( ) ) ;
-            }
+            Attribute attribute = ( Attribute ) domAId.getParent ( ) ;
+            replaceIdentifiers.add ( domAId ) ;
+            replaceIdentifiers.addAll ( attribute.getIdentifiersBound ( ).get (
+                0 ) ) ;
+          }
+          /*
+           * Add the Identifier to the negative list.
+           */
+          else
+          {
+            negativeIdentifiers.add ( domAId ) ;
           }
         }
-        if ( negativeIdentifiers.size ( ) > 0 )
+        if ( replaceIdentifiers.size ( ) > 0 )
         {
-          negativeIdentifiers.add ( a ) ;
+          negativeIdentifiers.add ( bodyId ) ;
+          BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
+          boundRenaming.add ( bodyIdentifiers ) ;
+          boundRenaming.add ( ( ( Expression ) pBody.getBodyOrRow ( ) )
+              .getDomA ( ) ) ;
+          LanguageParserReplaceException.throwExceptionBody (
+              negativeIdentifiers , replaceIdentifiers , boundRenaming
+                  .newIdentifier ( bodyId ).toString ( ) ) ;
+        }
+        else if ( negativeIdentifiers.size ( ) > 0 )
+        {
+          negativeIdentifiers.add ( bodyId ) ;
           LanguageParserMultiException
               .throwExceptionBody ( negativeIdentifiers ) ;
         }

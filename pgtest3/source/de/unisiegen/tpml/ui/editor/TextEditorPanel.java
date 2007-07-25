@@ -52,27 +52,27 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
     {
       String command = evt.getActionCommand ( ) ;
       if ( command.equals ( java.util.ResourceBundle.getBundle (
-          "de/unisiegen/tpml/ui/ui" ).getString ( "Copy" ) ) )
+          "de/unisiegen/tpml/ui/ui" ).getString ( "Copy" ) ) ) //$NON-NLS-1$ //$NON-NLS-2$
       {
         handleCopy ( ) ;
       }
       else if ( command.equals ( java.util.ResourceBundle.getBundle (
-          "de/unisiegen/tpml/ui/ui" ).getString ( "Cut" ) ) )
+          "de/unisiegen/tpml/ui/ui" ).getString ( "Cut" ) ) ) //$NON-NLS-1$ //$NON-NLS-2$
       {
         handleCut ( ) ;
       }
       else if ( command.equals ( java.util.ResourceBundle.getBundle (
-          "de/unisiegen/tpml/ui/ui" ).getString ( "Paste" ) ) )
+          "de/unisiegen/tpml/ui/ui" ).getString ( "Paste" ) ) ) //$NON-NLS-1$ //$NON-NLS-2$
       {
         handlePaste ( ) ;
       }
       else if ( command.equals ( java.util.ResourceBundle.getBundle (
-          "de/unisiegen/tpml/ui/ui" ).getString ( "Undo" ) ) )
+          "de/unisiegen/tpml/ui/ui" ).getString ( "Undo" ) ) ) //$NON-NLS-1$ //$NON-NLS-2$
       {
         handleUndo ( ) ;
       }
       else if ( command.equals ( java.util.ResourceBundle.getBundle (
-          "de/unisiegen/tpml/ui/ui" ).getString ( "Redo" ) ) )
+          "de/unisiegen/tpml/ui/ui" ).getString ( "Redo" ) ) ) //$NON-NLS-1$ //$NON-NLS-2$
       {
         handleRedo ( ) ;
       }
@@ -111,13 +111,13 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
   {
     public void changedUpdate ( DocumentEvent arg0 )
     {
-      logger.debug ( "Document was changed" ) ;
+      logger.debug ( "Document was changed" ) ; //$NON-NLS-1$
     }
 
 
     public void insertUpdate ( DocumentEvent arg0 )
     {
-      logger.debug ( "Text inserted into document" ) ;
+      logger.debug ( "Text inserted into document" ) ; //$NON-NLS-1$
       try
       {
         TextEditorPanel.this.setUndoStatus ( true ) ;
@@ -168,8 +168,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger logger = Logger
-      .getLogger ( TextEditorPanel.class ) ;
+  static final Logger logger = Logger.getLogger ( TextEditorPanel.class ) ;
 
 
   /**
@@ -439,22 +438,35 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
     this.sideBar = new SideBar ( this.scrollpane , this.document , this.editor ) ;
     this.sideBar.addSideBarListener ( new SideBarListener ( )
     {
-      public void markText ( int left , int right )
+      /**
+       * Marks the text with the given offsets.
+       * 
+       * @param pLeft The left offset of the text which should be marked.
+       * @param pRight The right offset of the text which should be marked.
+       */
+      @ SuppressWarnings ( "synthetic-access" )
+      public void markText ( int pLeft , int pRight )
       {
-        if ( ( TextEditorPanel.this.editor.getSelectionStart ( ) == left )
-            && ( TextEditorPanel.this.editor.getSelectionEnd ( ) == right ) )
+        if ( ( TextEditorPanel.this.editor.getSelectionStart ( ) == pLeft )
+            && ( TextEditorPanel.this.editor.getSelectionEnd ( ) == pRight ) )
         {
           TextEditorPanel.this.removeSelectedText ( ) ;
         }
         else
         {
-          TextEditorPanel.this.selectErrorText ( left , right ) ;
+          TextEditorPanel.this.selectErrorText ( pLeft , pRight ) ;
         }
       }
 
 
+      /**
+       * Inserts a given text at the given index.
+       * 
+       * @param pIndex The index in the text, where the text should be inserted.
+       * @param pInsertText The text which should be inserted.
+       */
       @ SuppressWarnings ( "synthetic-access" )
-      public void insertText ( int pIndex , String pText )
+      public void insertText ( int pIndex , String pInsertText )
       {
         int countSpaces = 0 ;
         try
@@ -472,7 +484,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
         try
         {
           int offset = 0 ;
-          String text = pText ;
+          String text = pInsertText ;
           if ( ( countSpaces >= 1 )
               && ( text.substring ( 0 , 1 ).equals ( " " ) ) ) //$NON-NLS-1$
           {
@@ -492,6 +504,41 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
         {
           // Do nothing
         }
+      }
+
+
+      /**
+       * Replaces the texts with the given start and end offsets with the
+       * replace text.
+       * 
+       * @param pStart The start offsets of the texts which should be renamed.
+       * @param pEnd The end offsets of the texts which should be renamed.
+       * @param pReplaceText The replace text.
+       */
+      @ SuppressWarnings ( "synthetic-access" )
+      public void replaceText ( int [ ] pStart , int [ ] pEnd ,
+          String pReplaceText )
+      {
+        TextEditorPanel.this.document
+            .removeDocumentListener ( TextEditorPanel.this.doclistener ) ;
+        int offset = 0 ;
+        for ( int i = 0 ; i < pStart.length ; i ++ )
+        {
+          try
+          {
+            int length = pEnd [ i ] - pStart [ i ] ;
+            TextEditorPanel.this.document.replace ( offset + pStart [ i ] ,
+                length , pReplaceText , null ) ;
+            offset += pReplaceText.length ( ) - length ;
+          }
+          catch ( BadLocationException e )
+          {
+            // Do nothing
+          }
+        }
+        TextEditorPanel.this.document
+            .addDocumentListener ( TextEditorPanel.this.doclistener ) ;
+        loadOutlineExpression ( Outline.ExecuteAutoChange.EDITOR ) ;
       }
     } ) ;
     compoundPanel.add ( this.sideBar , BorderLayout.WEST ) ;

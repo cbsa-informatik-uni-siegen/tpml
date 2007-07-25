@@ -191,6 +191,26 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * Returns a list of all {@link Attribute} {@link Identifier}s in the domain
+   * of this {@link Expression}.
+   * 
+   * @return A list of all {@link Attribute} {@link Identifier}s in the domain
+   *         of this {@link Expression}.
+   */
+  @ Override
+  public ArrayList < Identifier > getDomA ( )
+  {
+    if ( this.domA == null )
+    {
+      this.domA = new ArrayList < Identifier > ( ) ;
+      this.domA.add ( this.identifiers [ 0 ] ) ;
+      this.domA.addAll ( this.expressions [ 0 ].getDomA ( ) ) ;
+    }
+    return this.domA ;
+  }
+
+
+  /**
    * Returns a list of lists of in this {@link Expression} bound
    * {@link Identifier}s.
    * 
