@@ -4,6 +4,12 @@ import java.util.EventListener;
 
 import de.unisiegen.tpml.core.ProofNode;
 
+/**
+ * interface as a <code>EventListener</code> (NodeListener) for the TypeInference
+ *
+ * @author michael
+ *
+ */
 public interface TypeInferenceNodeListener extends EventListener {
 
 	/**
@@ -21,6 +27,7 @@ public interface TypeInferenceNodeListener extends EventListener {
 	
 	/**
 	 * Requests the TypeInferenceComponent to scroll to given node
+	 * @param node the node to sroll to
 	 * 
 	 */
 	public void requestJumpToNode (ProofNode node);
