@@ -53,7 +53,7 @@ import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
  * than is the same as this <code>actualExpressionHeight</code>. <br>
  * 
  * 
- * @author Michael Oeste
+ * @author michael
  * @version $Rev$
  * 
  * @see de.unisiegen.tpml.graphics.typeiference.TypeInferenceView
@@ -150,7 +150,8 @@ public class TypeInferenceNodeComponent extends JComponent
 	 * The expression that should be underlined. When the user moves the mouse over a rule (not not grouped rules) or
 	 * the MenuButton, that a part of the entire expressions needs to get underlined.
 	 */
-	private Expression currentUnderlineExpression;
+	// TODO ausbauen
+	// private Expression currentUnderlineExpression;
 
 	/**
 	 * Adapter that is used to get added to every object that can cause the gui to underline an expression. It is
@@ -205,7 +206,7 @@ public class TypeInferenceNodeComponent extends JComponent
 
 		this.translator = pTranslator;
 
-		this.currentUnderlineExpression = null;
+		// this.currentUnderlineExpression = null;
 
 		// the dimension for the rules initialy (0, 0)
 		this.ruleDimension = new Dimension(0, 0);
@@ -849,11 +850,12 @@ public class TypeInferenceNodeComponent extends JComponent
 	 * Causes every node, including this one, to get freed from the underlining.
 	 * 
 	 */
-	private void freeUnderlining()
-	{
-		freeUnderliningSibling(false, Direction.DIRECTION_CHILD);
-		freeUnderliningSibling(false, Direction.DIRECTION_PARENT);
-	}
+	// TODO rausnehmen
+//	private void freeUnderlining()
+//	{
+//		freeUnderliningSibling(false, Direction.DIRECTION_CHILD);
+//		freeUnderliningSibling(false, Direction.DIRECTION_PARENT);
+//	}
 
 	/**
 	 * Frees every node in the given direction to be freed from the underlining. If <i>ignoreThis</i> is <i>false</i>
@@ -937,7 +939,6 @@ public class TypeInferenceNodeComponent extends JComponent
 
 	/**
 	 * Sets the actual expression height.
-	 * TODO is it ever called
 	 * @param pActualExpressionHeight
 	 */
 	public void setActualExpressionHeight(int pActualExpressionHeight)
