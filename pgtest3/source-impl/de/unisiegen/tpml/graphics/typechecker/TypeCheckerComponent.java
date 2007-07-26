@@ -13,7 +13,6 @@ import javax.swing.event.TreeModelEvent;
 
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerExpressionProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
@@ -98,12 +97,12 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
    * the constructor
    * 
 	 * @param model      the model
-	 * @param advanced   the adcanced mode
+	 * @param pAdvanced   the adcanced mode
 	 */
-	public TypeCheckerComponent (TypeCheckerProofModel model, boolean advanced) {
+	public TypeCheckerComponent (TypeCheckerProofModel model, boolean pAdvanced) {
 		super (model);
 		
-		this.advanced = advanced;
+		this.advanced = pAdvanced;
 		this.treeNodeLayout			= new TreeNodeLayout (10);
 		this.jumpNode						= null;
 		
@@ -153,15 +152,17 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		this.currentlyLayouting = true;
 		
 		SwingUtilities.invokeLater(new Runnable() {
+			@SuppressWarnings("synthetic-access")
 			public void run () {
 				TypeCheckerProofNode rootNode = (TypeCheckerProofNode)TypeCheckerComponent.this.proofModel.getRoot();
 				
-				Point rightBottomPos = TypeCheckerComponent.this.treeNodeLayout.placeNodes (rootNode, 20, 20, TypeCheckerComponent.this.availableWidth);
+				Point rightBottomPos = TypeCheckerComponent.this.getTreeNodeLayout().placeNodes (rootNode, 20, 20, TypeCheckerComponent.this.availableWidth);
 				
+				// TODO wuzu denn das?
 				// lets add some border to the space
 				
-				rightBottomPos.x += 20;
-				rightBottomPos.y += 20;
+				//rightBottomPos.x += 20;
+				//rightBottomPos.y += 20;
 				
 				Dimension size = new Dimension (rightBottomPos.x, rightBottomPos.y);
 				
@@ -213,14 +214,15 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 			
 			// when the node changes the  gui needs to get updated
 			nodeComponent.addTypeCheckerNodeListener(new TypeCheckerNodeListener () {
-				public void nodeChanged (TypeCheckerNodeComponent node) {
+				public void nodeChanged (TypeCheckerNodeComponent pNode) {
 					TypeCheckerComponent.this.relayout();
 				}
-				public void requestTypeEnter (TypeCheckerNodeComponent node) {
+				public void requestTypeEnter (TypeCheckerNodeComponent pNode) {
+					// empty
 					
 				}
-				public void requestJumpToNode (ProofNode node) {
-					TypeCheckerComponent.this.jumpNode = node;
+				public void requestJumpToNode (ProofNode pNode) {
+					TypeCheckerComponent.this.setJumpNode ( pNode );
 				}
 			});
 		}
@@ -386,7 +388,7 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	 * Scroll the Viewport to the rect of the previously saved node. 
 	 *
 	 */
-	private void jumpToNodeVisible () {
+	void jumpToNodeVisible () {
 		if (this.jumpNode == null) {
 			return;
 		}
@@ -452,7 +454,23 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 			// tell the component belonging to this node, that we have a new advanced state
 			TypeCheckerProofNode node = (TypeCheckerProofNode)enumeration.nextElement();
 			TypeCheckerNodeComponent component = (TypeCheckerNodeComponent)node.getUserObject();
-			component.setAdvanced(advanced);
+			component.setAdvanced(this.advanced);
 		}
+	}
+
+	/**
+	 * @return the treeNodeLayout
+	 */
+	public TreeNodeLayout getTreeNodeLayout()
+	{
+		return this.treeNodeLayout;
+	}
+
+	/**
+	 * @param pJumpNode the jumpNode to set
+	 */
+	public void setJumpNode(ProofNode pJumpNode)
+	{
+		this.jumpNode = pJumpNode;
 	}
 }
