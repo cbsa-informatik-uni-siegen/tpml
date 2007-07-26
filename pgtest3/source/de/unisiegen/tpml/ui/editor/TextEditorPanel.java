@@ -358,6 +358,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
     {
       try
       {
+        removeSelectedText ( ) ;
         insertText ( ( String ) contents
             .getTransferData ( DataFlavor.stringFlavor ) ) ;
       }

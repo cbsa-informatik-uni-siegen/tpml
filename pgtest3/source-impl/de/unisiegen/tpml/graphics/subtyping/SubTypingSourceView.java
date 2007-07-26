@@ -1130,6 +1130,7 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
       {
         if ( this.editor.hasFocus ( ) )
         {
+          removeSelectedText ( ) ;
           insertText ( ( String ) contents
               .getTransferData ( DataFlavor.stringFlavor ) , this.sourceField ,
               this.editor ) ;
@@ -1152,6 +1153,7 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
         }
         else if ( this.editor2.hasFocus ( ) )
         {
+          removeSelectedText2 ( ) ;
           insertText ( ( String ) contents
               .getTransferData ( DataFlavor.stringFlavor ) , this.sourceField2 ,
               this.editor2 ) ;
