@@ -23,7 +23,6 @@ import de.unisiegen.tpml.core.types.RefType ;
 import de.unisiegen.tpml.core.types.RowType ;
 import de.unisiegen.tpml.core.types.TupleType ;
 import de.unisiegen.tpml.core.types.TypeVariable ;
-import de.unisiegen.tpml.core.util.Debug ;
 
 
 /**
@@ -110,23 +109,17 @@ public class L2TypeInferenceProofRuleSet extends L2TypeCheckerProofRuleSet
     // ASSUME
     if ( eqn.getSeenTypes ( ).contains ( eqn ) )
     {
-      Debug.out.println (
-          "Unify - ASSUME      " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       return ;
     }
     // TRIV
     else if ( left.equals ( right ) )
     {
-      Debug.out.println (
-          "Unify - TRIV        " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       return ;
     }
     // MU-LEFT
     else if ( left instanceof RecType )
     {
       RecType recType = ( RecType ) left ;
-      Debug.out.println (
-          "Unify - MU-LEFT     " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       context.addEquation ( new TypeEquationTypeInference ( recType.getTau ( )
           .substitute ( recType.getTypeName ( ) , recType ) , right , eqn
           .getSeenTypes ( ).clone ( ) ) ) ;
@@ -136,8 +129,6 @@ public class L2TypeInferenceProofRuleSet extends L2TypeCheckerProofRuleSet
     else if ( right instanceof RecType )
     {
       RecType recType = ( RecType ) right ;
-      Debug.out.println (
-          "Unify - MU-RIGHT    " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       context.addEquation ( new TypeEquationTypeInference ( left , recType
           .getTau ( ).substitute ( recType.getTypeName ( ) , recType ) , eqn
           .getSeenTypes ( ).clone ( ) ) ) ;
@@ -150,8 +141,6 @@ public class L2TypeInferenceProofRuleSet extends L2TypeCheckerProofRuleSet
       TypeVariable tvar = ( TypeVariable ) ( left instanceof TypeVariable ? left
           : right ) ;
       MonoType tau = ( left instanceof TypeVariable ? right : left ) ;
-      Debug.out.println (
-          "Unify - VAR         " + tvar + " = " + tau , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       // either tvar equals tau or tvar is not present in tau
       if ( ! tvar.equals ( tau )
           && ! tau.getTypeVariablesFree ( ).contains ( tvar ) )
@@ -167,8 +156,6 @@ public class L2TypeInferenceProofRuleSet extends L2TypeCheckerProofRuleSet
     {
       ArrowType taul = ( ArrowType ) left ;
       ArrowType taur = ( ArrowType ) right ;
-      Debug.out.println (
-          "Unify - ARROW       " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       // check which mode is choosen
       if ( node.getMode ( ) )
       {
@@ -184,8 +171,7 @@ public class L2TypeInferenceProofRuleSet extends L2TypeCheckerProofRuleSet
         seenTypes2.add ( eqn ) ;
         TypeEquationTypeInference eqn2 = new TypeEquationTypeInference ( taul
             .getTau1 ( ) , taur.getTau1 ( ) , seenTypes2 ) ;
-        eqn2 = eqn2.substitute ( context
-            .getSubstitution ( ) ) ;
+        eqn2 = eqn2.substitute ( context.getSubstitution ( ) ) ;
         unify ( context , node , eqn2 ) ;
       }
       else
@@ -210,8 +196,6 @@ public class L2TypeInferenceProofRuleSet extends L2TypeCheckerProofRuleSet
     // TUPLE
     else if ( left instanceof TupleType && right instanceof TupleType )
     {
-      Debug.out.println (
-          "Unify - TUPLE       " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       // cast to TupleType instances (tau and tau')
       TupleType taul = ( TupleType ) left ;
       TupleType taur = ( TupleType ) right ;
@@ -239,8 +223,6 @@ public class L2TypeInferenceProofRuleSet extends L2TypeCheckerProofRuleSet
     // LIST
     else if ( left instanceof ListType && right instanceof ListType )
     {
-      Debug.out.println (
-          "Unify - LIST        " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       // cast to ListType instances (tau and tau')
       ListType taul = ( ListType ) left ;
       ListType taur = ( ListType ) right ;
@@ -254,8 +236,6 @@ public class L2TypeInferenceProofRuleSet extends L2TypeCheckerProofRuleSet
     // REF
     else if ( left instanceof RefType && right instanceof RefType )
     {
-      Debug.out.println (
-          "Unify - REF         " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       // cast to RefType instances (tau and tau')
       RefType taul = ( RefType ) left ;
       RefType taur = ( RefType ) right ;
@@ -269,8 +249,6 @@ public class L2TypeInferenceProofRuleSet extends L2TypeCheckerProofRuleSet
     // OBJECT
     else if ( ( left instanceof ObjectType ) && ( right instanceof ObjectType ) )
     {
-      Debug.out.println (
-          "Unify - OBJECT      " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       ObjectType tau1 = ( ObjectType ) left ;
       ObjectType tau2 = ( ObjectType ) right ;
       SeenTypes < TypeEquationTypeInference > seenTypes = eqn.getSeenTypes ( )
@@ -284,8 +262,6 @@ public class L2TypeInferenceProofRuleSet extends L2TypeCheckerProofRuleSet
     // ROW
     else if ( ( left instanceof RowType ) && ( right instanceof RowType ) )
     {
-      Debug.out.println (
-          "Unify - ROW         " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       RowType tau1 = ( RowType ) left ;
       RowType tau2 = ( RowType ) right ;
       ArrayList < Identifier > tau1Identifiers = new ArrayList < Identifier > ( ) ;
