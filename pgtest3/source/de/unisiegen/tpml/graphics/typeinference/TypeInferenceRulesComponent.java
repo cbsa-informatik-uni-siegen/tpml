@@ -11,7 +11,6 @@ import javax.swing.JComponent;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 
 /**
@@ -22,22 +21,14 @@ import de.unisiegen.tpml.graphics.components.MenuButton;
  * already applied to the node, a {@link MenuButton} 
  * showing a rule that has not yet been evaluated.
  * <br>
- * TODO
  * The following image demonstrates a usual appearance of
- * a <code>TypeInferenceRulesComponent</code> with a few <i>MetaRules</i>
- * (two of the them are grouped together)
- * and the applied <i>AxiomRule</i>:<br>
+ * a <code>TypeInferenceRulesComponent</code>.
  * <br>
- * <img src="../../../../../../images/rulescomponent.png" /><br>
+ * <img src="../../../../../../images/rulescomponent_typei.png" /><br>
  * <br>
- * In the following image you just can see the boundings of all
- * rule labels.<br>
- * <img src="../../../../../../images/rulescomponent_scheme.png" /><br>
- * <br>
- * There is no <code>spacing/code> between the labels. But there is the 
- * an amount of {@link #spacing} between the centering line
- * (the one of the arrow) and the bottom of the <i>MetaRules</i>
- * and the top of the <i>AxiomRule</i>.<br>
+ * It is nearly the same as the RulesComponent of the small step view but without
+ * grouped sub-rules and with an equals sign instead of the arrow. 
+ * (@see de.unisiegen.tpml.graphics.smallstep.SmallStepRulesComponent <br>
  * <br> 
  * The imported information about the layout on this 
  * is shown in {@link #getNeededSize(MouseMotionAdapter)}. The calling
@@ -50,7 +41,7 @@ import de.unisiegen.tpml.graphics.components.MenuButton;
  * <br>
  * 
  *  
- * @author marcell
+ * @author michael
  * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceView
  * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceComponent
  * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceNodeComponent
@@ -109,11 +100,11 @@ public class TypeInferenceRulesComponent extends JComponent {
 	 * <br>
 	 * The {@link #menuButton} is already created but not yet shown.
 	 * 
-	 * @param proofNode The {@link TypeInferenceProofNode} containing the
+	 * @param pProofNode The {@link TypeInferenceProofNode} containing the
 	 * origin informations.
 	 */
-	public TypeInferenceRulesComponent (TypeInferenceProofNode proofNode) {
-		this.proofNode	= proofNode;
+	public TypeInferenceRulesComponent (TypeInferenceProofNode pProofNode) {
+		this.proofNode	= pProofNode;
 		
 		this.ruleLabels	= new LinkedList<TypeInferenceRuleLabel> ();
 		
@@ -166,12 +157,12 @@ public class TypeInferenceRulesComponent extends JComponent {
 	 * @param width
 	 */
 	public void setActualWidth (int width) {
-		Dimension size = new Dimension (width, this.size.height);
+		Dimension actualSize = new Dimension (width, this.size.height);
 		
-		setSize (size);
-		setPreferredSize (size);
-		setMinimumSize (size);
-		setMaximumSize (size);
+		setSize (actualSize);
+		setPreferredSize (actualSize);
+		setMinimumSize (actualSize);
+		setMaximumSize (actualSize);
 	}
 	
 	/**
@@ -183,154 +174,126 @@ public class TypeInferenceRulesComponent extends JComponent {
 	 * component.
 	 * <br>
 	 * This functions iterates through all steps and just places them.
-	 * The <i>MetaRule</i>s will be placed on top of the arrow-beam and the
-	 * <i>AxiomRule</i> will be placed below.<br>
-	 * If the currently evaluated steps don't end with an <i>AxiomRule</i>
-	 * the {@link #menuButton} will be placed behind the last <i>MetaRule</i>
-	 * above the arrow-beam. When it ends with an <i>AxiomRule</i> it will be
-	 * placed at the beginning of the row below the arrow-beam.<br>
-	 * If there is more than one Rule of a kind directly folowing another, those
-	 * Rules will be grouped together. The number of rules beeing grouped together
-	 * is shown in the exponent. See {@link TypeInferenceRuleLabel} for this.<br>
-	 * <br>
-	 * Every item (except the grouped items) in this component gets added 
-	 * the given adapter to determin in the {@link TypeInferenceComponent} what
-	 * rule is below the mouse, so the corresponding expression could be
-	 * underlined.
+	 * The rules will be placed on top of the euqals sign and the.<br>
+	 * 
+	 * The {@link #menuButton} will be placed above the uequlas sign like the {@link #menuButton}
+	 * is placed in the SmallStepRulesComponent.
 	 * 
 	 * @param adapter 
 	 * 
 	 * @return
 	 */
-	public Dimension getNeededSize (MouseMotionAdapter adapter) {
-		int labelHeight		= Math.max (TypeInferenceRuleLabel.getLabelHeight(),
-																	this.menuButton.getHeight());
-		
-		int neededHeight 	= 2 * labelHeight + 2 * this.spacing + this.equalSignWidth;
-		int centerV 			= neededHeight / 2;
-		this.size 				= new Dimension (0, neededHeight);
-		
-		// clear all the labels that are currently 
-		for (TypeInferenceRuleLabel l : this.ruleLabels) {
+	public Dimension getNeededSize(MouseMotionAdapter adapter)
+	{
+		int labelHeight = Math.max(TypeInferenceRuleLabel.getLabelHeight(), this.menuButton.getHeight());
+
+		int neededHeight = 2 * labelHeight + 2 * this.spacing + this.equalSignWidth;
+		int centerV = neededHeight / 2;
+		this.size = new Dimension(0, neededHeight);
+
+		// clear all the labels that are currently
+		for (TypeInferenceRuleLabel l : this.ruleLabels)
+		{
 			l.removeMouseMotionListener(adapter);
-			remove (l);
+			remove(l);
 		}
 		this.ruleLabels.clear();
-		
-		
+
 		ProofStep[] steps = this.proofNode.getSteps();
-		if (steps.length > 0) {
-			
+		if (steps.length > 0)
+		{
+
 			// first reference rule will be the first node
-			ProofStep step	= steps [0];
-			int count				= 1;
-			
-			for (int i=1; i<steps.length; i++) {
-				ProofStep cStep = steps [i];
-				
+			ProofStep step = steps[0];
+			int count = 1;
+
+			for (int i = 1; i < steps.length; i++)
+			{
+				ProofStep cStep = steps[i];
+
 				// when the next rule is of the same type just increment the
 				// counter and wait until a different rule comes
-				if (cStep.getRule().equals (step.getRule())) {
+				if (cStep.getRule().equals(step.getRule()))
+				{
 					++count;
 				}
-				else {
-					TypeInferenceRuleLabel label 	= new TypeInferenceRuleLabel (step.getRule ().getName (), count);
+				else
+				{
+					TypeInferenceRuleLabel label = new TypeInferenceRuleLabel(step.getRule().getName(), count);
 					label.addMouseMotionListener(adapter);
-					if (count == 1) {
+					if (count == 1)
+					{
 						label.setStepExpression(step.getExpression());
 					}
-					
+
 					// add the label to the gui and to the list of all labels
-					add (label);
+					add(label);
 					this.ruleLabels.add(label);
-					
-					Dimension labelSize 			= label.getPreferredSize();
-					
+
+					Dimension labelSize = label.getPreferredSize();
+
 					// put the label with a bit spacing on top of the centering line
-					label.setBounds(this.size.width, centerV - labelSize.height - this.spacing, labelSize.width, labelSize.height);
+					label.setBounds(this.size.width, centerV - labelSize.height - this.spacing, labelSize.width,
+							labelSize.height);
 					this.size.width += labelSize.width;
-					
-					
+
 					// the actual node this the new reference node
-					step	= cStep;
-					count	= 1;
+					step = cStep;
+					count = 1;
 				}
 			}
-			
-			//TODO
-//			if (((TypeCheckerProofRule)step.getRule()).isAxiom()) {
-//				TypeInferenceRuleLabel label 	= new TypeInferenceRuleLabel (step.getRule ().getName (), count);
-//				label.addMouseMotionListener(adapter);
-//				if (count == 1) {
-//					label.setStepExpression(step.getExpression());
-//				}
-//				
-//				// add the label to the gui and to the list of all labels
-//				add (label);
-//				this.ruleLabels.add(label);
-//				
-//				Dimension labelSize 			= label.getPreferredSize();
-//				
-//				// put the label with a bit spacing at the bottom of the centering line
-//				label.setBounds(0, centerV + this.spacing, labelSize.width, labelSize.height);
-//				
-//				
-//				this.size.width = Math.max (this.size.width, labelSize.width);
-//				
-//				// we are through with this rulepack so its ot needed to display the menuButton
-//				this.menuButton.setVisible(false);
-//			}
-//			else {
-				TypeInferenceRuleLabel label 	= new TypeInferenceRuleLabel (step.getRule ().getName (), count);
-				label.addMouseMotionListener(adapter);
-				if (count == 1) {
-					label.setStepExpression(step.getExpression());
-				}
-				
-				// add the label to the gui and to the list of all labels
-				add (label);
-				this.ruleLabels.add(label);
-				
-				
-				Dimension labelSize 			= label.getPreferredSize();
-				label.setBounds(this.size.width, centerV - labelSize.height - this.spacing, labelSize.width, labelSize.height);
-				this.size.width += labelSize.width;
 
-				
-				// this rulepack doesn't end with an axiom rule so we need to display the menuButton 
-				Dimension buttonSize = this.menuButton.getNeededSize();
-				this.menuButton.setBounds(this.size.width, centerV - this.spacing - buttonSize.height, buttonSize.width, buttonSize.height);
-				this.menuButton.setVisible (false);
-				this.size.width += buttonSize.width;
-			
+			TypeInferenceRuleLabel label = new TypeInferenceRuleLabel(step.getRule().getName(), count);
+			label.addMouseMotionListener(adapter);
+			if (count == 1)
+			{
+				label.setStepExpression(step.getExpression());
+			}
+
+			// add the label to the gui and to the list of all labels
+			add(label);
+			this.ruleLabels.add(label);
+
+			Dimension labelSize = label.getPreferredSize();
+			label
+					.setBounds(this.size.width, centerV - labelSize.height - this.spacing, labelSize.width, labelSize.height);
+			this.size.width += labelSize.width;
+
+			// this rulepack doesn't end with an axiom rule so we need to display the menuButton
+			Dimension buttonSize = this.menuButton.getNeededSize();
+			this.menuButton.setBounds(this.size.width, centerV - this.spacing - buttonSize.height, buttonSize.width,
+					buttonSize.height);
+			this.menuButton.setVisible(false);
+			this.size.width += buttonSize.width;
+
 		}
-		else {
+		else
+		{
 			// no rule at all evaluated
 			Dimension buttonSize = this.menuButton.getNeededSize();
-			this.menuButton.setBounds(this.size.width, centerV - this.spacing - buttonSize.height, buttonSize.width, buttonSize.height);
-			this.menuButton.setVisible (true);
+			this.menuButton.setBounds(this.size.width, centerV - this.spacing - buttonSize.height, buttonSize.width,
+					buttonSize.height);
+			this.menuButton.setVisible(true);
 			this.size.width += buttonSize.width;
 		}
-		
-		this.size.width += this.equalSignWidth*2;
+
+		this.size.width += this.equalSignWidth * 2;
 		return this.size;
 	}
 	
 
 	/**
-	 * Just paints the equalsign; all other components draw themself.
+	 * Just paints the equals sign; all other components draw themself.
 	 */
 	@Override
-	protected void paintComponent (Graphics gc) {
-		int centerV = getHeight () / 2;
-		
+	protected void paintComponent(Graphics gc)
+	{
+		// go to the center
+		int centerV = getHeight() / 2;
+
 		gc.setColor(Color.BLACK);
-		//gc.drawLine (0, centerV, getWidth () - 1, centerV);
-		//TODO Gleichheitszeichen statt arrow
-		gc.drawLine (0, centerV-equalSignHight/2, equalSignWidth, centerV-equalSignHight/2);
-		gc.drawLine (0, centerV+equalSignHight/2, equalSignWidth, centerV+equalSignHight/2);
-		//gc.drawLine (getWidth () - 1, centerV, getWidth () - 1 - this.arrowSize, centerV - this.arrowSize);
-		//gc.drawLine (getWidth () - 1, centerV, getWidth () - 1 - this.arrowSize, centerV + this.arrowSize);
+		gc.drawLine(0, centerV - this.equalSignHight / 2, this.equalSignWidth, centerV - this.equalSignHight / 2);
+		gc.drawLine(0, centerV + this.equalSignHight / 2, this.equalSignWidth, centerV + this.equalSignHight / 2);
 	}
 	
 }
