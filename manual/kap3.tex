@@ -115,8 +115,8 @@ Die Sprache \LONE\ erweitert \LZERO\ um Konstanten, bedingte Ausf"uhrung, den Bi
 \eitem
 Die Menge \notation{$\Type$} der \Define{Typen}{Typ} \Engl{types}{type} $\tau$ ist definiert durch:
 \bgram
-  \tau \is \bool \mid \z \mid \unit
-       \al \tau_1 \to \tau_2
+  \tau \is \bool \mid \inttype \mid \unit
+       \al \arrowtype{\tau_1}{\tau_2}
        \al \mu t.\tau
        \al t
 \egram
@@ -278,10 +278,11 @@ den Typ $\tau$ hat. Dies wird durch die Regeln\\[3mm]
 \begin{tabular}{ll}
 \mbox{(UNIT)\  } & $\tj{()}{\unit}$\\[2mm]
 \mbox{(BOOL)\  } & $\tj{b}{\bool}$\\[2mm]
-\mbox{(INT)\   } & $\tj{n}{\z}$\\[2mm]
+\mbox{(INT)\   } & $\tj{n}{\inttype}$\\[2mm]
 \mbox{(NOT)\   } & $\tj{\Not}{\bool\to\bool}$\\[2mm]
-\mbox{(AOP)\   } & $\tj{\op}{\z\to\z\to\z}$ \reason{ falls $\op$ arithmetischer Operator}\\[2mm]
-\mbox{(ROP)\   } & $\tj{\op}{\z\to\z\to\bool}$ \reason{ falls $\op$ Vergleichsoperator}
+\mbox{(AOP)\   } & $\tj{\op}{\inttype\to\inttype\to\inttype}$ 
+                    \reason{ falls $\op$ arithmetischer Operator}\\[2mm]
+\mbox{(ROP)\   } & $\tj{\op}{\inttype\to\inttype\to\bool}$ \reason{ falls $\op$ Vergleichsoperator}
 \end{tabular}\\[7mm]
 definiert. Beim Type Checker werden diese Regeln f"ur Konstanten nicht angegeben, sondern lediglich die (CONST) Regel.
 
@@ -661,10 +662,18 @@ Ein \notation{small step} hei"st g"ultig f"ur \LTWOC, wenn er sich mit den small
                                      {\inherit{A}{e}{b} \to \inherit{A}{e}{b'}}$ \\[5mm]
     \mbox{(INHERIT-LEFT)}   & $\regel{e \to e'}
                                      {\inherit{A}{e}{r} \to \inherit{A}{e'}{r}}$ \\[5mm]
-    \mbox{(INHERIT-EXEC)}   & $\inherit{A}{\class{self}{r_1}}{r_2} \to$ \\
-                            & $r_1 \oplus r_2 \quad \text{falls } \doma{r_1} = A$
+    \mbox{(INHERIT-EXEC)}   & $\inherit{A}{\class{self}{r_1}}{r_2} \to r_1 \oplus r_2$ \\
+                            & $\text{falls } \doma{r_1} = A$
   \end{tabular}\\[7mm]
 sowie den entsprechenden exception-Regeln herleiten l"asst.
+
+Bei dem Symbol $\oplus$ handelt es sich um die Vereinigung der beiden Reihen $r_1$ und $r_2$.
+Das Ergebniss ist eine Reihe, in der erst die Kinder der Reihe $r_1$ vorkommen und danach
+die Kinder der Reihe $r_2$.
+
+Die Bedingung $\doma{r_1} = A$ bedeutet, dass alle angegebenen
+Attributnamen in dem Inherit Teil mit den Attributen in der Reihe $r_1$ "ubereinstimmen m"ussen.
+Ist dies nicht der Fall, bleibt der SmallStepper stecken.
 
 
 \section{Die Sprache \LTHREE}
@@ -958,16 +967,23 @@ wobei $\id \not\in free(e_1) \cup free(e_2)$.
 Da es mitunter nicht mit jeder herk"ommlichen Tastatur m"oglich ist, griechische Buchstaben zu tippen,
 k"onnen folgende Schl"usselw"orter als Ersatz benutzt werden.\\[5mm]
 \begin{tabular}{lll}
-  \mbox{$\lambda$}                          & $\textbf{lambda}$                        & Lambda\\
-  \mbox{$\mu$}                              & $\textbf{mu}$                            & Rekursive Typen\\
-  \mbox{$\zeta$}                            & $\textbf{zeta}$                          & Klassentypen\\
-  \mbox{$\alpha,\ \beta,\ \ldots \quad$}    & $\texttt{'a}$, $\texttt{'b}$, $\ldots$   & Typvariablen\\
-  \mbox{$\to$}                              & $\texttt{->}$                            & Funktionstypen\\
-  \mbox{$a: \tau;\ \phi$}                   & $\texttt{attr}\ a: \tau;\ \phi \quad$    & Reihentypen\\
+  \mbox{$\lambda$}                            & $\textbf{lambda}$                        & Lambda Ausdruck\\
+  \mbox{$\mu$}                                & $\textbf{mu}$                            & Rekursive Typen\\
+  \mbox{$\zeta$}                              & $\textbf{zeta}$                          & Klassentypen\\
+  \mbox{$\alpha,\ \beta,\ \ldots$}            & $\texttt{'a}$, $\texttt{'b}$, $\ldots$   & Typvariablen\\
+  \mbox{$\to$}                                & $\texttt{->}$                            & Funktionstypen\\
+  \mbox{$a: \tau_1;\ m: \tau_2;\ \phi \quad$} & $\texttt{attr}\ a: \tau_1;\ m: \tau_2;\ \phi \quad$
+                                                                                         & Reihentypen\\
 \end{tabular}\\[5mm]
-Zu beachten ist auch, dass der Scanner den Ausdruck \glqq{\bf (*) 4 5}\grqq\ nicht akzeptiert,
-da Kommentare mit einem \glqq{\bf (*}\grqq\ eingeleitet werden. Er erwartet ein \glqq{\bf *)}\grqq,
-um den Kommentar zu beenden. Wenn multipliziert werden soll, muss \glqq{\bf ( *) 4 5}\grqq\ eingeben werden.
+Bei den Reihentypen muss eine Entscheidung getroffen werden, ob es sich bei einem eingegebenen Identifier
+um einen Attributnamen oder um einen Methodennamen handelt. Da der Parser das nicht automatisch erkennen
+kann, muss das Schl"usselwort \glqq$\texttt{attr}$\grqq\ verwendet werden, wenn der Benutzer ein 
+Attributnamen meint. Wird das Schl"usselwort nicht eingegeben, handelt es sich um einen Methodennamen.
+
+Zu beachten ist auch, dass der Scanner den Ausdruck \glqq$\app{\app{(*)}{4}}{5}$\grqq\ nicht akzeptiert,
+da Kommentare mit einem \glqq$(*$\grqq\ eingeleitet werden. Er erwartet ein \glqq$*)$\grqq,
+um den Kommentar zu beenden. Wenn multipliziert werden soll, muss \glqq$\app{\app{(\ *)}{4}}{5}$\grqq\ 
+eingeben werden.
 
 
 % vi:set syntax=tex ts=2 sw=2 et encoding=UTF-8:

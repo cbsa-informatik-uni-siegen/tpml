@@ -45,9 +45,9 @@ entfernt.
 Der Quelltexteditor hebt freie Identifier und Type-Namen in der eingestellten
 Farbe und fett hervor, da freie Identifier oder Type-Namen meist auf eine
 fehlerhafte Eingabe zur"uckzuf"uhren sind. Gibt der Anwender zum Beispiel
-\glqq{\bf let x = a in x}\grqq\ ein, ist dies nat"urlich nicht falsch, aber
-der Type Checker w"urde den Ausdruck nicht akzeptieren, da das \glqq{\bf a}\grqq\ 
-in der Expression frei vorkommend ist.
+\glqq$\bli{x}{a}{x}$\grqq\ ein, ist dies nat"urlich nicht falsch, aber
+der Type Checker w"urde den Ausdruck nicht akzeptieren, da das 
+\glqq$a$\grqq\ in der Expression frei vorkommend ist.
 
 \subsection{Auto-Vervollst"andigung}
 \label{Auto-Vervollstaendigung}
@@ -62,18 +62,36 @@ besonders f"ur Unge"ubte eine wertvolle Information ist.
 
 Die Expression die noch vervollst"andigt werden muss, wird im Hintergrund
 hervorgehoben, so dass der Anwender genau erkennen kann, welchen Teil er
-noch vervollst"andigen muss. Gibt der Anwender \glqq{\bf 1 + let x =}\grqq\ 
-ein, wird der Teil \glqq{\bf let x =}\grqq\ hervorgehoben und der Tooltip
-verr"at dem Anwender, dass er noch \glqq{\bf e1 in e2}\grqq\ eingeben muss
+noch vervollst"andigen muss. Gibt der Anwender \glqq$\infix{+}{1}{\blet\ x =}$\grqq\ 
+ein, wird der Teil \glqq$\blet\ x =$\grqq\ hervorgehoben und der Tooltip
+verr"at dem Anwender, dass er noch \glqq$e_1\ \bin\ e_2$\grqq\ eingeben muss
 um \glqq{\bf Let}\grqq\ zu vervollst"andigen.
 
-Der Anwender hat die M"oglichkeit auf das Icon zu klicken und der Vorschlag
-wird automatisch an der richtigen Stelle eingef"ugt. Im gegebenen Beispiel
-wird der Ausdruck \glqq{\bf 1 + let x =}\grqq\ automatisch zu
-\glqq{\bf 1 + let x = e1 in e2}\grqq\ erweitert, was f"ur den Parser einen
+Der Anwender hat die M"oglichkeit auf das Icon zu klicken, dann wird der Vorschlag
+automatisch an der richtigen Stelle eingef"ugt. Im gegebenen Beispiel
+wird der Ausdruck \glqq$\infix{+}{1}{\blet\ x =}$\grqq\ automatisch zu
+\glqq$\infix{+}{1}{\bli{x}{e1}{e2}}$\grqq\ erweitert, was f"ur den Parser einen
 g"ultigen Ausdruck darstellt. Die Auto-Vervollst"andigung ist ebenfalls in
 der Lage Fehler innerhalb eines Ausdrucks zu erkennen und durch einen Klick
 auf das Icon zu beheben.
+
+Des weiteren bietet der Parser die M"oglichkeit, Identifier automatisch
+umzubenennen, wenn durch die Namen der Identifier ein Konflikt entstanden
+ist. Dies kann bei Klassen der Fall sein, ein Beispiel hierf"ur ist:\\[2mm]
+\glqq$\class{self}{\inherit{a}{(\class{self}{\val{a}{0}})}{\val{a}{1} \method{m}{a}}}$\grqq
+
+In diesem Beispiel besteht ein Konflikt zwischen dem Identifier \glqq$a$\grqq\ 
+im ersten Teil des inherits und dem Attribut in der zweiten Reihe. Dieser 
+Konflikt w"urde im SmallStepper zu dem Ergebniss f"uhren, dass eine Reihe
+entstehen w"urde, die zweimal das Attribut \glqq$a$\grqq\ enth"alt, deshalb
+lehnt der Parser diesen Ausdruck ab. Der Konflikt kann aber dadurch gel"ost
+werden, dass das Attribut umbenannt wird, dabei muss darauf geachtet werden,
+dass auch alle an den Identifier des Attributes gebundenen Identifier umbenannt
+werden. Dies betrifft in diesem Fall das \glqq$a$\grqq\ im Rumpf der Methode.
+Der Parser blendet in diesem Fall ein blaues Fehlersymbol ein, dass dem Anwender
+signalisieren soll, das eine Umbenennung m"oglich ist. Klickt der Anwender auf
+das Symbol werden die Identifier umbenannt und es entsteht folgender Ausdruck:\\[2mm]
+\glqq$\class{self}{\inherit{a}{(\class{self}{\val{a}{0}})}{\val{a'}{1} \method{m}{a'}}}$\grqq
 
 
 \section {Outline}
@@ -82,13 +100,13 @@ auf das Icon zu beheben.
 Die Outline erlaubt es dem Anwender eingegebene Ausdr"ucke und Typen
 in ihrer Baumansicht zu betrachten. Der Anwender ist somit in der Lage
 zu erkennen aus welchen Teilen ein Ausdruck oder Typ besteht. So ist zum
-Beispiel bei dem Ausdruck \glqq{\bf 1 + 1 + 1}\grqq\ nicht auf den ersten
-Blick ersichtlich, wie sich die Applikationen zusammengesetzen. In der
-Outline wird sichtbar, dass der Ausdruck wie folgt geklammert gesehen
-werden kann \glqq{\bf (1 + 1) + 1}\grqq. Dieses Resultat ist nicht
+Beispiel bei dem Ausdruck \glqq$\infix{+}{\infix{+}{1}{1}}{1}$\grqq\ nicht 
+auf den ersten Blick ersichtlich, wie sich die Applikationen zusammengesetzen. 
+In der Outline wird sichtbar, dass der Ausdruck wie folgt geklammert gesehen
+werden kann \glqq$\infix{+}{(\infix{+}{1}{1})}{1}$\grqq. Dieses Resultat ist nicht
 besonders "uberraschend, betrachtet man aber den Funktions-Typen
-\glqq{\bf int} $\to$ {\bf int} $\to$ {\bf int}\grqq, so ergibt sich
-folgende Klammerung \glqq{\bf int} $\to$ ({\bf int} $\to$ {\bf int})\grqq.
+\glqq$\arrowtype{\inttype}{\arrowtype{\inttype}{\inttype}}$\grqq, so ergibt sich
+folgende Klammerung \glqq$\arrowtype{\inttype}{(\arrowtype{\inttype}{\inttype})}$\grqq.
 Der Anwender kann dar"uber hinaus erkennen, um welche Ausdr"ucke es sich
 handelt, da der Name in der Outline dargestellt wird. Vor dem Namen des
 Ausdrucks steht immer die Menge zu der er geh"ort, diese Menge ist zumeist
@@ -100,7 +118,7 @@ Ausdruck oder Typ zusammensetzt.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=7cm]{images/outline.png}
+\includegraphics[width=10cm]{images/outline.png}
 \caption{Outline}
 \end{center}
 \end{figure}
@@ -111,36 +129,36 @@ kurz angesprochen werden sollen.
 
 {\bf Hervorheben} bietet die M"oglichkeit, den aktuell in der Outline
 selektierten Knoten in h"oheren Knoten zu markieren. Ist zum Beispiel
-der Ausdruck \glqq{\bf let x = 1+1 in x}\grqq\ in der Outline geladen,
-und der Knoten \glqq{\bf 1+1}\grqq\ selektiert, wird der zweite Ausdruck
+der Ausdruck \glqq$\bli{x}{\infix{+}{1}{1}}{x}$\grqq\ in der Outline geladen,
+und der Knoten \glqq${\infix{+}{1}{1}}$\grqq\ selektiert, wird der zweite Ausdruck
 in dem ersten hervorgehoben. Die Farbe der Hervorhebung kann, wie alle
 anderen Farben auch, in den Einstellungen von \TPML\ ver"andert werden.
 
 {\bf Gebundene} steht daf"ur, dass gebundene Identifier und Typ-Namen,
 wenn sie in der Outline selektiert werden, in h"oheren Knoten 
-hervorgehoben werden. Der Ausdruck \glqq{\bf lambda x.x+1}\grqq\ besteht
-aus einen Identifier \glqq{\bf x}\grqq\ und aus einem Kind-Ausdruck
-\glqq{\bf x+1}\grqq. Selektiert man nun den Identifier, werden bei
+hervorgehoben werden. Der Ausdruck \glqq$\abstr{x}{\infix{+}{x}{1}}$\grqq\ besteht
+aus einen Identifier \glqq$x$\grqq\ und aus einem Kind-Ausdruck
+\glqq$\infix{+}{x}{1}$\grqq. Selektiert man nun den Identifier, werden bei
 aktiver Option alle Identifier hervorgehoben, die an diesen Identifier
 gebunden sind. Dieses funktioniert auch umgekehrt, wird also das
-\glqq{\bf x}\grqq\ im Ausdruck \glqq{\bf x+1}\grqq\ selektiert, wird der
+\glqq$x$\grqq\ im Ausdruck \glqq$\infix{+}{x}{1}$\grqq\ selektiert, wird der
 Identifier hervorgehoben, an den dieser Identifier gebunden ist. Vor allem
 bei komplizierteren Ausdr"ucken mit gleichen Identifiern wie 
-\glqq{\bf let x = 1 in x + let x = 2 in x}\grqq\ k"onnen so die Bindungen
+\glqq$\bli{x}{1}{\infix{+}{x}{\bli{x}{2}{x}}}$\grqq\ k"onnen so die Bindungen
 durch die Outline "uberpr"uft werden.
 
 Wenn {\bf Freie} aktiv ist, werden freie Identifier und Type-Namen in der
 Outline hervorgehoben. Dies ist besonders n"utzlich, da freie Identifier
 oder Type-Namen meist auf eine fehlerhafte Eingabe zur"uckzuf"uhren sind.
-Gibt der Anwender zum Beispiel \glqq{\bf let x = a in x}\grqq\ ein, ist 
+Gibt der Anwender zum Beispiel \glqq$\bli{x}{a}{x}$\grqq\ ein, ist 
 dies nat"urlich nicht falsch, aber der Type Checker w"urde den Ausdruck
-nicht akzeptieren, da das \glqq{\bf a}\grqq\ in dem Ausdruck frei 
+nicht akzeptieren, da das \glqq$a$\grqq\ in dem Ausdruck frei 
 vorkommend ist. Es werden allerdings nur Identifier und Type-Namen
 hervorgehoben, die in dem Wurzel Knoten frei vorkommend sind und nicht
 alle, in den jeweiligen Knoten frei vorkommenden Identifier oder Typ-Namen.
 
 Die Option {\bf Ersetzen} steht daf"ur, dass der selektierte Ausdruck
-in h"oheren Knoten durch \glqq{\bf ...}\grqq\ ersetzt wird. Dadurch
+in h"oheren Knoten durch \glqq...\grqq\ ersetzt wird. Dadurch
 werden h"ohere Knoten kompakter dargestellt, was bei gr"o"seren Ausdr"ucken
 von Vorteil ist.
 
@@ -193,7 +211,7 @@ verkn"upft.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=7cm]{images/new-dialog.png}
+\includegraphics[width=8cm]{images/new-dialog.png}
 \caption{Eine neue Datei erstellen}
 \end{center}
 \end{figure}
@@ -216,7 +234,7 @@ Small Step Interpreter.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=7cm]{images/small-step.png}
+\includegraphics[width=10cm]{images/small-step.png}
 \caption{Der Small Step Interpreter}
 \label{FigureSmallStep}
 \end{center}
@@ -276,7 +294,7 @@ diesem Typ auszuwerten.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=7cm]{images/type-checker.png}
+\includegraphics[width=10cm]{images/type-checker.png}
 \caption{Der Type Checker}
 \label{FigureTypeChecker}
 \end{center}
