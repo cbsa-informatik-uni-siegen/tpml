@@ -2744,10 +2744,10 @@ public class ParserTest
   private static String BODY_2 = "class (self) inherit a1, ak from e ; method add = 0 ; end" ;
 
 
-  private static String BODY_3 = "class (self) inherit a1 from e ; inherit a1 from e ; end" ;
+  private static String BODY_3 = "class (self) inherit a1 from e ; inherit b from e ; end" ;
 
 
-  private static String BODY_4 = "class (self) inherit a1, ak from e ; inherit a1 from e ; end" ;
+  private static String BODY_4 = "class (self) inherit a1, ak from e ; inherit b from e ; end" ;
 
 
   private static String BODY_5 = "class (self) method add = 0 ; end" ;
