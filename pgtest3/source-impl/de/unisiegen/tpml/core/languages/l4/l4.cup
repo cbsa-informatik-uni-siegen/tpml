@@ -1035,6 +1035,9 @@ multi_lambda_error				::=	LAMBDA:l LPAREN:lp epsilon
 									{: Error.expect("Multi-Lambda", "e", lleft, dright, "e" ); :}
 								|	LAMBDA:l LPAREN multi_lambda_list RPAREN DOT:d epsilon
 									{: Error.expect("Multi-Lambda", "e", lleft, dright, "e" ); :}
+								// Missing identifier
+								|	LAMBDA:l LPAREN:lp COMMA
+									{: Error.expect("Multi-Lambda", "id", lleft, lpright, "id" ); :}
 								// Missing right paren
 								|	LAMBDA:l LPAREN multi_lambda_list:mll DOT
 									{: Error.expect("Multi-Lambda", ")", lleft, mllright, ")" ); :}
@@ -1113,6 +1116,9 @@ multi_let_error					::= LET:l LPAREN:lp epsilon
 									{: Error.expect("Multi-Let", " in e2", lleft, eright, "in"," ","e2" ); :}	
 								|	LET:l LPAREN multi_let_list RPAREN EQUAL seq_expr IN:i epsilon
 									{: Error.expect("Multi-Let", " e2", lleft, iright, "e2" ); :}
+								// Missing identifier
+								|	LET:l LPAREN:lp COMMA
+									{: Error.expect("Multi-Let", "id", lleft, lpright, "id" ); :}								
 								// Missing right paren
 								|	LET:l LPAREN multi_let_list:mll EQUAL
 									{: Error.expect("Multi-Let", ") ", lleft, mllright, ")" ); :}								
@@ -1336,6 +1342,9 @@ tuple							::=	LPAREN:l tuple_list:e RPAREN:r
 
 tuple_error						::= LPAREN:l tuple_list:t epsilon
 									{: Error.expect("Tuple", ")", lleft, tright, ")"); :}
+								// Missing identifier
+								|	LPAREN:l COMMA
+									{: Error.expect("Tuple", "e", lleft, lright, "e"); :}
 								;
 
 tuple_list						::=	tuple_list:t COMMA seq_expr:e
@@ -1366,6 +1375,9 @@ list_error						::= LBRACKET:l epsilon
 									{: Error.expect("List", "e]", lleft, lright, "e1",";"," ","..."," ",";"," ","e_n","]"); :}
 								|	LBRACKET:l list_list:li epsilon
 									{: Error.expect("List", "]", lleft, liright, "]"); :}
+								// Missing identifier
+								|	LBRACKET:l SEMI
+									{: Error.expect("List", "e", lleft, lright, "e"); :}
 								;
 
 list_list						::=	expr:e

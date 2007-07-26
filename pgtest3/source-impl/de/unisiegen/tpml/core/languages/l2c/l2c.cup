@@ -1412,7 +1412,7 @@ body_error						::= // Missing attribute list
 									INHERIT:i FROM
 									{: Error.expect("Body", " a1, ak ", ileft, iright, "a1",","," ","..."," ",",","a_k"); :}
 								// Missing identifier
-								|	INHERIT:i COMMA body_attribute_list
+								|	INHERIT:i COMMA
 									{: Error.expect("Body", " a ", ileft, iright, "a"); :}
 								// Missing from
 								|	INHERIT:i body_attribute_list:bal expr
