@@ -176,11 +176,11 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 			
 			// when the node changes the  gui needs to get updated
 			nodeComponent.addBigStepNodeListener(new BigStepNodeListener () {
-				public void nodeChanged (BigStepNodeComponent node) {
+				public void nodeChanged (BigStepNodeComponent pNode) {
 					BigStepComponent.this.relayout();
 				}
-				public void requestJumpToNode (ProofNode node) {
-					BigStepComponent.this.jumpNode = node;
+				public void requestJumpToNode (ProofNode pNode) {
+					BigStepComponent.this.setJumpNode(pNode);
 				}
 			});
 		}
@@ -374,15 +374,17 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		this.currentlyLayouting = true;
 		
 		SwingUtilities.invokeLater(new Runnable() {
+			@SuppressWarnings("synthetic-access")
 			public void run () {
 				BigStepProofNode rootNode = (BigStepProofNode)BigStepComponent.this.proofModel.getRoot();
 				
 				Point rightBottomPos = BigStepComponent.this.treeNodeLayout.placeNodes (rootNode, BigStepComponent.this.border, BigStepComponent.this.border, BigStepComponent.this.availableWidth);
 				
+				// Worzu brauchen wird das?
 				// lets add some border to the space
 				
-				rightBottomPos.x += BigStepComponent.this.border;
-				rightBottomPos.y += BigStepComponent.this.border;
+				// rightBottomPos.x += BigStepComponent.this.border;
+				// rightBottomPos.y += BigStepComponent.this.border;
 				
 				Dimension size = new Dimension (rightBottomPos.x, rightBottomPos.y);
 				
@@ -487,5 +489,14 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	public int getScrollableUnitIncrement (Rectangle visibleRect, int orientation, int direction) {
 		//  XXX: Dynamic unit increment
 		return 10;
+	}
+
+
+	/**
+	 * @param jumpNode the jumpNode to set
+	 */
+	public void setJumpNode(ProofNode jumpNode)
+	{
+		this.jumpNode = jumpNode;
 	}	
 }
