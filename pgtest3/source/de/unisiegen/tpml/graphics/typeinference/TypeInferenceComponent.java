@@ -22,12 +22,11 @@ import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 /**
  * The layouting of the TypeInference seems to bee as complicated as the 
  * layouting of the Sammlstepper because of the same reasons.<br>
- * TODO Kommentare hinzufügen
  * When layouting this component (that is done in the {@link #relayout()}-method)
  * first all nodes within the tree are check if they have an 
- * {@link de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent} assigned
+ * {@link de.unisiegen.tpml.graphics.typeinference.TypeInferenceNodeComponent} assigned
  * to them. Then the tree is scanned for the node with the widest 
- * {@link de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent#rules}.
+ * {@link de.unisiegen.tpml.graphics.typeinference.TypeInferenceComponent#rules}.
  * This value is assigned to each node, this way all nodes know the maximum width
  * of all rules and they can use this for their own width. By doing so, all nodes
  * will be horizontaly aligned.<br>
@@ -80,6 +79,9 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	 */
 	private ProofNode								jumpNode;
 	
+	/**
+	 * the advaned value of the typeinference view. 
+	 */
 	private boolean									advanced;
 	
 	/**
@@ -90,25 +92,21 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	 * To get a propper start a {@link #relayout()} is called 
 	 * manually.
 	 * 
-	 * @param proofModel
-	 * @param advanced
+	 * @param pProofModel
+	 * @param pAdvanced
 	 */
-	public TypeInferenceComponent (TypeInferenceProofModel proofModel, boolean advancedP) {
-		super (proofModel);
+	public TypeInferenceComponent (TypeInferenceProofModel pProofModel, boolean pAdvanced) {
+		super (pProofModel);
 		
 		
 		this.currentlyLayouting	= false;
 		
 		setLayout (null);
 		
-		this.model 		= proofModel;
+		this.model 		= pProofModel;
 		this.border		= 20;
 		this.spacing	= 10;
-		this.advanced = advancedP;
-		
-		//TODO mach das ding transparent
-		this.setOpaque ( false );
-		
+		this.advanced = pAdvanced;
 		
 		// trigger the first layouting
 		relayout ();
@@ -132,17 +130,16 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	 * only axiom rules in the rule menu, otherwise, in beginner mode, meta rules will also
 	 * be displayed.
 	 * 
-	 * @param advanced <code>true</code> to display only axiom rules.
+	 * @param pAdvanced <code>true</code> to display only axiom rules.
 	 * 
 	 * @see #isAdvanced()
 	 */
-	void setAdvanced(boolean advanced) {
+	void setAdvanced(boolean pAdvanced) {
 		// check if we have a new setting
-		if (this.advanced != advanced) 
+		if (this.advanced != pAdvanced) 
 		{
-       //TODO TestAusgabe System.out.println("TypeinferencComponent bekommt nun den Wahrheitswert: "+advanced);
 			// remember the new setting
-			this.advanced = advanced;
+			this.advanced = pAdvanced;
 			
 			//inform the nodevomponent
 			
@@ -156,7 +153,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 				// tell the component belonging to this node, that we have a new advanced state
 				TypeInferenceProofNode node = (TypeInferenceProofNode)enumeration.nextElement();
 				TypeInferenceNodeComponent component = (TypeInferenceNodeComponent)node.getUserObject();
-				component.setAdvanced(advanced);
+				component.setAdvanced(pAdvanced);
 			}
 		}
 	}
@@ -165,8 +162,8 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	 * Sets the width that is available by the {@link TypeInferenceView}.
 	 */
 	@Override
-	public void setAvailableWidth (int availableWidth) {
-		this.availableWidth = availableWidth;
+	public void setAvailableWidth (int pAvailableWidth) {
+		this.availableWidth = pAvailableWidth;
 		relayout ();
 	}
 	
@@ -184,7 +181,10 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 		try {
 			return node.getFirstChild();
 		}
-		catch (Exception e) { }
+		catch (Exception e) 
+		{ 
+		// nothing to do	
+		}
 		return null;
 	}
 	
@@ -194,19 +194,18 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	 * <br>
 	 * Usualy only at newly added nodes the TypeInferenceNodeComponent is missing.
 	 * 
-	 * @param node When calling this method: the rootNode of the tree.
+	 * @param pNode When calling this method: the rootNode of the tree.
 	 */
-	private void checkForUserObject (TypeInferenceProofNode node) {
-		if (node == null) {
+	void checkForUserObject (TypeInferenceProofNode pNode) {
+		if (pNode == null) {
 			return;
 		}
 		
-		TypeInferenceNodeComponent nodeComponent = (TypeInferenceNodeComponent)node.getUserObject();
+		TypeInferenceNodeComponent nodeComponent = (TypeInferenceNodeComponent)pNode.getUserObject();
 		if (nodeComponent == null) {
 			
 			// create the noded that has not been there yet
-			//TODO 
-			nodeComponent = new TypeInferenceNodeComponent (node, this.model, this.translator, this.spacing, advanced);
+			nodeComponent = new TypeInferenceNodeComponent (pNode, this.model, this.translator, this.spacing, this.advanced);
 			
 			// add the needed listener
 			nodeComponent.addTypeInferenceNodeListener(new TypeInferenceNodeListener() {
@@ -217,20 +216,20 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 					TypeInferenceComponent.this.repaint();
 				}
 				public void requestJumpToNode (ProofNode node) {
-					TypeInferenceComponent.this.jumpNode = node;
+					TypeInferenceComponent.this.setJumpNode(node);
 				}
 			});
 			
 			nodeComponent.update();
 			
 			// save it to the node
-			node.setUserObject(nodeComponent);
+			pNode.setUserObject(nodeComponent);
 			
 			// and add the TypeInferenceNodeComponent to the gui
 			add (nodeComponent);
 		}
 		
-		checkForUserObject (getFirstChild (node));
+		checkForUserObject (getFirstChild (pNode));
 	}
 	
 	/**
@@ -264,13 +263,17 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	 * Just set it to <b>0</b>. 
 	 * 
 	 * @param node When calling this method: the rootNode of the tree.
-	 * @param currentWidth Used internaly. Should be set to <b>0</b>.
+	 * @param pCurrentWidth Used internaly. Should be set to <b>0</b>.
 	 * @return
 	 */
-	private int checkMaxRuleWidth (TypeInferenceProofNode node, int currentWidth) {
-		if (node == null) {
-			return currentWidth;
+	int checkMaxRuleWidth (TypeInferenceProofNode node, int pCurrentWidth) 
+	{
+		if (node == null) 
+		{
+			return pCurrentWidth;
 		}
+		
+		int currentWidth = pCurrentWidth;
 		
 		// get the size of the current node
 		TypeInferenceNodeComponent nodeComponent = (TypeInferenceNodeComponent)node.getUserObject();
@@ -291,7 +294,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	 * @param node When calling this method: the rootNode of the tree.
 	 * @param maxRuleWidth The maximum Width of the rules.
 	 */
-	private void updateMaxRuleWidth (TypeInferenceProofNode node, int maxRuleWidth) {
+	void updateMaxRuleWidth (TypeInferenceProofNode node, int maxRuleWidth) {
 		if (node == null) {
 			return;
 		}
@@ -310,7 +313,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	 * 
 	 * @param node When calling this method: the rootNode of the tree.
 	 */
-	private void checkExpressionSize (TypeInferenceProofNode node) {
+	void checkExpressionSize (TypeInferenceProofNode node) {
 		if (node == null) {
 			return;
 		}
@@ -318,7 +321,6 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 		TypeInferenceNodeComponent nodeComponent = (TypeInferenceNodeComponent)node.getUserObject();
 		nodeComponent.checkNeededExpressionSize(this.availableWidth - this.border);
 
-		
 		// proceed with the next child
 		checkExpressionSize (getFirstChild (node));
 	}
@@ -340,12 +342,18 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	 * the rules must be placed directly because there is no child node that
 	 * would place them.
 	 * 
-	 * @param node The rootNode
-	 * @param x The horizontal start position
-	 * @param y Ther vertical start position
+	 * @param pNode The rootNode
+	 * @param pX The horizontal start position
+	 * @param pY Ther vertical start position
 	 * @return The size needed to show all the nodes.
 	 */
-	private Dimension placeNode (TypeInferenceProofNode node, int x, int y) {
+	Dimension placeNode (TypeInferenceProofNode pNode, int pX, int pY) 
+	{
+		int x = pX;
+		int y = pY;
+		
+		TypeInferenceProofNode node = pNode;
+		
 		Dimension size = new Dimension (0, 0);
 
 		while (node != null) {
@@ -459,8 +467,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 			public void run () {
 		
 				// get the rootNode it will be used many time
-				TypeInferenceProofNode rootNode = (TypeInferenceProofNode)TypeInferenceComponent.this.proofModel.getRoot();
-				
+				TypeInferenceProofNode rootNode = (TypeInferenceProofNode)TypeInferenceComponent.this.getProofModel().getRoot();
 				
 				// check if all nodes have a propper TypeInferenceNodeComponent
 				checkForUserObject (rootNode);
@@ -474,12 +481,12 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 				
 				// now that the basics for the nodes are found, 
 				// they can be placed
-				Dimension size = placeNode (rootNode, TypeInferenceComponent.this.border, TypeInferenceComponent.this.border);
+				Dimension size = placeNode (rootNode, TypeInferenceComponent.this.getThisBorder(), TypeInferenceComponent.this.getThisBorder());
 				
 				// the needed size evaluaded by placing the nodes gets
 				// widened a bit to have a nice border around the component
-				size.width 	+= TypeInferenceComponent.this.border;
-				size.height += TypeInferenceComponent.this.border;
+				size.width 	+= TypeInferenceComponent.this.getThisBorder();
+				size.height += TypeInferenceComponent.this.getThisBorder();
 				
 				// this size is used to determin all the sizes of the component
 				setPreferredSize (size);
@@ -487,7 +494,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 				setMinimumSize (size);
 				setMaximumSize (size);
 				
-				TypeInferenceComponent.this.currentlyLayouting = false;
+				TypeInferenceComponent.this.setCurrentlyLayouting(false);
 				TypeInferenceComponent.this.jumpToNodeVisible();
 			}
 		});
@@ -622,7 +629,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	 * the saved {@link #jumpNode} lays.
 	 *
 	 */
-	private void jumpToNodeVisible () {
+	void jumpToNodeVisible () {
 		if (this.jumpNode == null) {
 			return;
 		}
@@ -653,8 +660,6 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	//
 	@Override
 	protected void paintComponent (Graphics gc) {
-		//TODO wieder weiß machen...
-		//gc.setColor (Color.LIGHT_GRAY);
 		gc.setColor (Color.WHITE);
 		gc.fillRect(0, 0, getWidth () - 1, getHeight () - 1);
 	}
@@ -682,6 +687,22 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 
 	public boolean getScrollableTracksViewportHeight() {
 		return false;
+	}
+
+	/**
+	 * @param pJumpNode the jumpNode to set
+	 */
+	public void setJumpNode(ProofNode pJumpNode)
+	{
+		this.jumpNode = pJumpNode;
+	}
+
+	/**
+	 * @return the border
+	 */
+	public int getThisBorder()
+	{
+		return this.border;
 	}
 
 	
