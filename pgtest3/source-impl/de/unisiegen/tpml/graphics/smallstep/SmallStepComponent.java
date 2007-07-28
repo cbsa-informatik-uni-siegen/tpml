@@ -201,7 +201,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	 * 
 	 * @param node When calling this method: the rootNode of the tree.
 	 */
-	private void checkForUserObject(SmallStepProofNode node)
+	void checkForUserObject(SmallStepProofNode node)
 	{
 		if (node == null)
 		{
@@ -281,7 +281,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	 * @param pCurrentWidth Used internaly. Should be set to <b>0</b>.
 	 * @return
 	 */
-	private int checkMaxRuleWidth(SmallStepProofNode node, int pCurrentWidth)
+	int checkMaxRuleWidth(SmallStepProofNode node, int pCurrentWidth)
 	{
 		int currentWidth = pCurrentWidth;
 		if (node == null)
@@ -308,7 +308,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	 * @param node When calling this method: the rootNode of the tree.
 	 * @param maxRuleWidth The maximum Width of the rules.
 	 */
-	private void updateMaxRuleWidth(SmallStepProofNode node, int maxRuleWidth)
+	void updateMaxRuleWidth(SmallStepProofNode node, int maxRuleWidth)
 	{
 		if (node == null)
 		{
@@ -329,7 +329,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	 * 
 	 * @param node When calling this method: the rootNode of the tree.
 	 */
-	private void checkExpressionSize(SmallStepProofNode node)
+	void checkExpressionSize(SmallStepProofNode node)
 	{
 		if (node == null)
 		{
@@ -364,10 +364,12 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	 * @param pY Ther vertical start position
 	 * @return The size needed to show all the nodes.
 	 */
-	private Dimension placeNode(SmallStepProofNode node, int pX, int pY)
+	Dimension placeNode(SmallStepProofNode pNode, int pX, int pY)
 	{
 		int x = pX;
 		int y = pY;
+		
+		SmallStepProofNode node = pNode;
 		Dimension size = new Dimension(0, 0);
 
 		while (node != null)
@@ -457,7 +459,6 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 				return size;
 			}
 
-			// TODO das will ich noch verstehen, Marcell fragen
 			node = node.getFirstChild();
 		}
 
@@ -484,12 +485,11 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		this.currentlyLayouting = true;
 
 		SwingUtilities.invokeLater(new Runnable() {
-			@SuppressWarnings("synthetic-access")
 			public void run()
 			{
 
 				// get the rootNode it will be used many time
-				SmallStepProofNode rootNode = (SmallStepProofNode) SmallStepComponent.this.proofModel.getRoot();
+				SmallStepProofNode rootNode = (SmallStepProofNode) SmallStepComponent.this.getProofModel().getRoot();
 
 				// check if all nodes have a propper SmallStepNodeComponent
 				checkForUserObject(rootNode);
@@ -503,13 +503,12 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 
 				// now that the basics for the nodes are found, 
 				// they can be placed
-				Dimension size = placeNode(rootNode, SmallStepComponent.this.border, SmallStepComponent.this.border);
+				Dimension size = placeNode(rootNode, SmallStepComponent.this.getThisBorder(), SmallStepComponent.this.getThisBorder());
 
-				// TODO wozu brauchen wir das, und wenn, dann will ich das so auch beim Typeinference haben...
 				// the needed size evaluaded by placing the nodes gets
 				// widened a bit to have a nice border around the component
-				size.width += SmallStepComponent.this.border;
-				size.height += SmallStepComponent.this.border;
+				size.width += SmallStepComponent.this.getThisBorder();
+				size.height += SmallStepComponent.this.getThisBorder();
 
 				// this size is used to determin all the sizes of the component
 				setPreferredSize(size);
@@ -517,7 +516,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 				setMinimumSize(size);
 				setMaximumSize(size);
 
-				SmallStepComponent.this.currentlyLayouting = false;
+				SmallStepComponent.this.setCurrentlyLayouting(false);
 				SmallStepComponent.this.jumpToNodeVisible();
 			}
 		});
@@ -673,7 +672,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	 * the saved {@link #jumpNode} lays.
 	 *
 	 */
-	private void jumpToNodeVisible()
+	void jumpToNodeVisible()
 	{
 		if (this.jumpNode == null)
 		{
@@ -748,6 +747,14 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	public void setJumpNode(ProofNode pJumpNode)
 	{
 		this.jumpNode = pJumpNode;
+	}
+
+	/**
+	 * @return the border
+	 */
+	public int getThisBorder()
+	{
+		return this.border;
 	}
 
 }

@@ -374,11 +374,10 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		this.currentlyLayouting = true;
 		
 		SwingUtilities.invokeLater(new Runnable() {
-			@SuppressWarnings("synthetic-access")
 			public void run () {
-				BigStepProofNode rootNode = (BigStepProofNode)BigStepComponent.this.proofModel.getRoot();
+				BigStepProofNode rootNode = (BigStepProofNode)BigStepComponent.this.getProofModel().getRoot();
 				
-				Point rightBottomPos = BigStepComponent.this.treeNodeLayout.placeNodes (rootNode, BigStepComponent.this.border, BigStepComponent.this.border, BigStepComponent.this.availableWidth);
+				Point rightBottomPos = BigStepComponent.this.getTreeNodeLayout().placeNodes (rootNode, BigStepComponent.this.getThisBorder(), BigStepComponent.this.getThisBorder(), BigStepComponent.this.getAvailableWidth());
 				
 				// Worzu brauchen wird das?
 				// lets add some border to the space
@@ -394,12 +393,21 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 				setPreferredSize (size);
 				setSize (size);
 				
-				BigStepComponent.this.currentlyLayouting = false;
+				BigStepComponent.this.setCurrentlyLayouting(false);
 				BigStepComponent.this.jumpToNodeVisible();
 			}
 		});
 	}
 	
+	/**
+	 * @return the border
+	 */
+	protected int getThisBorder()
+	{
+		return this.border;
+	}
+
+
 	/**
 	 * Causes every {@link PrettyStringRenderer} and 
 	 * {@link EnvironmentRenderer} to recalculate thier
@@ -438,7 +446,7 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	/**
 	 * Scroll the vieport so that the first of least added nodes becomes visible.<br>
 	 */
-	private void jumpToNodeVisible () {
+	void jumpToNodeVisible () {
 		if (this.jumpNode == null) {
 			return;
 		}
@@ -493,10 +501,19 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 
 
 	/**
-	 * @param jumpNode the jumpNode to set
+	 * @param pJumpNode the jumpNode to set
 	 */
-	public void setJumpNode(ProofNode jumpNode)
+	public void setJumpNode(ProofNode pJumpNode)
 	{
-		this.jumpNode = jumpNode;
+		this.jumpNode = pJumpNode;
+	}
+
+
+	/**
+	 * @return the treeNodeLayout
+	 */
+	public TreeNodeLayout getTreeNodeLayout()
+	{
+		return this.treeNodeLayout;
 	}	
 }
