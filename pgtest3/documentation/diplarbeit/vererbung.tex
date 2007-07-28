@@ -1,0 +1,1374 @@
+%%
+%% Vererbung
+%%
+
+
+\chapter{Vererbung}
+\label{kapitel:Vererbung}
+
+
+{\bf TODO:} Einleitung
+
+
+\section{Syntax der Sprache \Lc}
+
+{\bf TODO:} Prosa
+
+\begin{definition}[Abstrakte Syntax von \Lc] \
+  \begin{enumerate}
+    \item Die Menge $\setBody$ aller \Define{Klassenr\"umpfe}{Klassenrumpf} $b$ von \Lc\ ist durch
+          die folgende kontextfreie Grammatik definiert:
+          \GRbeg
+          b \GRis \bodyInherit{a_1,\ldots,a_k}{e}{b_1}
+            \GRal r
+          \GRend
+          F\"ur $a_1,\ldots,a_k$ schreiben wir kurz $A$ und betrachten $A$ gleichzeitig als
+          Menge, also $A = \{a_1,\ldots,a_k\}$.
+
+    \item Die Menge $\setExp$ aller \Define{Ausdr\"ucke}{Ausdruck} $e$ von \Lc\ erh\"alt man durch
+          folgende Erweiterung der kontextfreien Grammatik von \Lo.
+          \GRbeg
+          e \GRis \expClass{\self}{b}
+            \GRal \expNew{e_1}
+          \GRend
+  \end{enumerate}
+\end{definition}
+
+{\bf TODO:} Damit ist klar, dass $\setRow \subseteq \setBody$, d.h. wenn etwas f\"ur alle $b\in\setBody$
+gezeigt wird, ist damit auch f\"ur alle $r\in\setRow$ gezeigt. S\"amtliche $\binherit$-Anweisungen stehen
+stets am Anfang einer Klasse (vor der Reihe).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Operationelle Semantik der Sprache Lc %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Operationelle Semantik der Sprache \Lc}
+
+Mit einer Syntaxerweiterung geht selbstverst\"andlich stets eine Erweiterung der operationellen Semantik
+einher. Dazu m\"ussen wir zun\"achst die Menge der Werte erweitern, so dass nun auch Klassen, die nur
+noch eine Reihe enthalten, als Werte angesehen werden.
+
+\begin{definition}[Werte und Reihenwerte] \label{definition:Lc:Werte_und_Reihenwerte}
+  Die Menge $\setVal \subseteq \setExp$ aller \Define{Werte}{Wert} $v$ von \Lc\ erh\"alt man,
+  indem man die Produktion
+  \GRbeg
+  v \GRis \expClass{\self}{r}
+  \GRend
+  zur kontextfreien Grammatik von \Lo\ (vgl. Definition~\ref{definition:Lo:Werte_und_Reihenwerte}) hinzunimmt.
+\end{definition}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Frei vorkommende Namen und Substitution %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Frei vorkommende Namen und Substitution}
+
+\begin{definition}[Frei vorkommende Namen] \
+  \label{definition:Lc:Frei_vorkommende_Namen}
+  \begin{enumerate}
+    \item Die Menge $\free{e}$ aller im Ausdruck $e\in\setExp$ \Define{frei vorkommenden
+          Namen}{Frei vorkommende Namen} erh\"alt man durch folgende Verallgemeinerung
+          von Definition~\ref{definition:Lo:Frei_vorkommende_Namen}.
+          \[\begin{array}{rcl}
+            \free{\expClass{\self}{b}} & = & \free{b} \setminus \{\self\} \\
+            \free{\expNew{e}}          & = & \free{e}
+          \end{array}\]
+
+    \item Die Menge $\free{b}$ aller im Klassenrumpf $b\in\setBody$ \Define{frei vorkommenden
+          Namen}{Frei vorkommende Namen} ist wie folgt definiert:
+          \[\begin{array}{rcl}
+            \free{\bodyInherit{A}{e}{b}} &   =  & \{\self\}\,\cup\,\free{e}\,\cup\,\free{b}\setminus A
+          \end{array}\]
+  \end{enumerate}
+\end{definition}
+
+{\bf TODO:} Konvention: alle Attribute eindeutig in einer Reihe, das beinhaltet auch $\binherit$'s, also kein
+mehrfaches Erben der gleichen Klasse m\"oglich (l\"asst sich umgehen, z.B. durch geeignete Umbenennung wie
+Pr\"afixing mit Klassennamen/Supernamen, w\"urde aber die Betrachtung deutlich aufwendiger machen).
+
+Die Menge $\setExp^\star$ ist nach wie vor so definiert, dass nur Ausdr\"ucke aus dieser Menge nur freie
+Vorkommen von Variablennamen enthalten d\"urfen, jedoch keine freien Vorkommen von Attribute- und
+Objektnamen (vgl. Definition~\ref{definition:Lo:Exp_star}).
+
+Die Reiheneinsetzung ist wie fr\"uher definiert (Definition~\ref{definition:Lo:Reiheneinsetzung}).
+Entsprechend m\"ussen wir nur die Definition der Substitution f\"ur die Programmiersprache \Lc\ wie folgt 
+erweitern.
+
+\begin{definition}[Substitution] \label{definition:Lc:Substitution} \
+  \begin{enumerate}
+    \item F\"ur $e'\in\setExp$, $e\in\setExp^\star$ und $\id\in\setId$ erh\"alt man den Ausdruck $e'\SUB{e}{\id}$,
+          der aus $e'$ durch \define{Substitution} von $e$ f\"ur $\id$ entsteht, durch folgende Erweiterung von
+          Definition~\ref{definition:Lo:Substitution}:
+          \[\begin{array}{rcl}
+            \expClass{\self:\tau}{b}\SUB{e}{\id} & = & 
+              \CASEbeg
+                \expClass{\self}{b}             & \text{falls } \id = \self \\
+                \expClass{\self}{b\SUB{e}{\id}} & \text{sonst}
+              \CASEend
+            \\[4mm]
+
+            (\expNew{e'})\SUB{e}{\id} & = &
+              \expNew{e'\SUB{e}{\id}}
+            \\[1mm]
+          \end{array}\]
+
+    \item F\"ur $b\in\setBody$, $e\in\setExp^\star$ und $\id\in\setId$ erh\"alt man den Klassenrumpf
+          $b\SUB{e}{\id}$, der aus $b$ durch \define{Substitution} von $e$ f\"ur $\id$ entsteht,
+          durch folgende Verallgemeinerung von Definition~\ref{definition:Lo:Substitution}:
+          \[\begin{array}{rcl}
+            (\bodyInherit{A}{e'}{b})\SUB{e}{\id} & = &
+              \CASEbeg
+                \bodyInherit{A}{e'\SUB{e}{\id}}{b}             & \text{falls } \id\in A  \\
+                \bodyInherit{A}{e'\SUB{e}{\id}}{b\SUB{e}{\id}} & \text{sonst}
+              \CASEend
+          \end{array}\]
+  \end{enumerate}
+\end{definition}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Small step Semantik %%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Small step Semantik}
+
+{\bf TODO:} Einleitung
+
+\begin{definition}[G\"ultige small steps f\"ur \Lc] \label{definition:Lc:Gueltige_small_steps}
+  Ein \Index{small step}, $e \to_e e'$ mit $e,e'\in\setExp$, $b \to_b b'$ mit $b,b'\in\setBody$
+  oder $r \to_r r'$ mit $r,r'\in\setRow$, hei"st {\em g\"ultig} f\"ur \Lc, wenn er sich mit
+  den small step Regeln von \Lo\ (vgl. Definition~\ref{definition:Lo:Gueltige_small_steps}),
+  sowie den folgenden zus\"atzlichen small step Regeln f\"ur Ausdr\"ucke \\[5mm]
+  \begin{tabular}{ll}
+    \RN{Class-Eval} & $\RULE{b \to_b b'}
+                            {\expClass{\self}{b} \to_e \expClass{\self}{b'}}$ \\[3mm]
+    \RN{New-Eval}   & $\RULE{e \to_e e'}
+                            {\expNew{e} \to_e \expNew{e'}}$ \\[5mm]
+    \RN{New-Exec}   & $\expNew{(\expClass{\self}{r})} \to_e \expObject{\self}{r}$
+  \end{tabular} \\[7mm]
+  und den neuen small step Regeln f\"ur Klassenr\"umpfe \\[5mm]
+  \begin{tabular}{ll}
+    \RN{Inherit-Right}  & $\RULE{b \to_b b'}
+                                {\bodyInherit{A}{e}{b} \to_b \bodyInherit{A}{e}{b'}}$ \\[3mm]
+    \RN{Inherit-Left}   & $\RULE{e \to_e e'}
+                                {\bodyInherit{A}{e}{r} \to_b \bodyInherit{A}{e'}{r}}$ \\[5mm]
+    \RN{Inherit-Exec}   & $\bodyInherit{A}{(\expClass{\self}{r_1})}{r_2} \to_b r_1 \oplus r_2
+                           \quad \text{falls } \doma{r_1} = A$
+  \end{tabular} \\[7mm]
+  herleiten l\"asst.
+\end{definition}
+
+{\bf TODO:} Erl\"auterung der small step Regeln.
+
+F\"ur die erweiterte small step Semantik wollen wir nun wieder zeigen, dass sie eindeutig ist,
+das heisst, f\"ur jeden Ausdruck, jede Reihe und jeden Klassenrumpf h\"ochstens ein small
+step existiert. Dazu zeigen wir zun\"achst wieder, dass f\"ur Werte und Reihenwerte keine
+small steps existieren.
+
+\begin{lemma} \label{lemma:Lc:Werte_und_small_steps} \
+  \begin{enumerate}
+    \item $v \not\to$ f\"ur alle $v\in\setVal$.
+    \item $\omega \not\to$ f\"ur alle $\omega\in\setRVal$.
+  \end{enumerate}
+\end{lemma}
+
+\begin{beweis}
+  F\"ur die Werte der Sprache \Lo\ wurde diese Eigenschaft bereits bewiesen
+  (Lemma~\ref{lemma:Lo:Werte_und_small_steps}), und es ist ziemlich offensichtlich,
+  dass keine der neuen Regeln einen small step f\"ur einen dieser Werte erm\"oglicht.
+  Damit gen\"ugt es zu zeigen, dass auch f\"ur die einzige neue Form eines Wertes,
+  n\"amlich $\expClass{\self}{r}\in\setVal$, kein small step existiert.
+
+  F\"ur $v = \expClass{\self}{r}$ kommt nur ein small step mit der neuen Regel
+  \RN{Class-Eval} in Frage. \RN{Class-Eval} setzt jedoch voraus, dass f\"ur $r$
+  ein small step mit der Relation $\to_b$ existiert. Diese wiederum beschr\"ankt
+  sich aber auf Klassenr\"umpfe, so dass folglich hier kein small step in Frage
+  kommt f\"ur $r$. Also existiert auch f\"ur $\expClass{\self}{r}$ kein small
+  step.
+\end{beweis}
+
+Damit l\"asst sich nun auch f\"ur \Lct\ zeigen, dass die small step Semantik eindeutig ist.
+
+\begin{satz}[Eindeutigkeit des \"Ubergangsschritts] \label{satz:Lc:Eindeutigkeit_des_Uebergangsschritts} \
+  \begin{enumerate}
+    \item F\"ur jeden Ausdruck $e\in\setExp$ existiert h\"ochstens ein $e'\in\setExp$ mit $e \to_e e'$.
+
+    \item F\"ur jede Reihe $r\in\setRow$ existiert h\"ochstens ein $r'\in\setRow$ mit $r \to_r r'$.
+
+    \item F\"ur jeden Klassenrumpf $b\in\setBody$ existiert h\"ochstens ein $b'\in\setBody$ mit $b \to_b b'$.
+  \end{enumerate}
+\end{satz}
+
+\begin{beweis}
+  Der Beweis ist aus offensichtlichen Gr\"unden ziemlich trivial.
+\end{beweis}
+
+{\bf TODO:} Prosa
+
+
+%%%%%%%%%%%%%%%
+%% Typsystem %%
+%%%%%%%%%%%%%%%
+
+\section{Typsystem}
+
+{\bf TODO:} Einleitung
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Syntax der Sprache Lct %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Syntax der Sprache \Lct}
+
+{\bf TODO:} Erl\"auterung zu den Ideen.
+
+\begin{definition}[Typen] \label{definition:Lct:Typen} \
+  \begin{enumerate}
+    \item Die Menge $\setType$ aller \Define{Typen}{Type} $\tau$ von \Lct\ ist durch
+          folgende Erweiterung der kontextfreien Grammatik von \Lot\ (Definition~\ref{definition:Lot:Typen})
+          definiert:
+          \GRbeg
+          \tau \GRis \typeClass{\tau_1}{\phi}
+          \GRend
+
+    \item Die Menge $\setRType$ aller \Define{Reihentypen}{Reihentyp} $\phi$ von \Lct\ definieren wir
+          durch Hinzunahme der Produktion
+          \GRbeg
+          \phi \GRis \rtypeMethod{a}{\tau}{\phi_1}
+          \GRend
+          zur kontextfreien Grammatik der Programmiersprache \Lot\ (Definition~\ref{definition:Lot:Typen}),
+          wobei wie f\"ur Methodennamen, auch f\"ur Attributnamen gilt, dass alle Vorkommen in einem
+          Reihentypen paarweise verschieden sein m\"ussen.
+
+    \item Desweiteren seien Funktionen $\name{dom}_a$ und $\name{dom}_m$ auf $\setRType$ definiert,
+          die jeweils die in einem Reihentyp vorhandenen Attribut- oder Methodennamen auflisten,
+          sowie eine Funktion $\name{methods}$, die aus einem Reihentyp alle Typinformationen
+          \"uber Attribute entfernt.
+  \end{enumerate}
+\end{definition}
+
+Ein Reihentyp enth\"alt nun neben Typinformationen \"uber die Methoden in einer Reihe auch
+Typinformationen \"uber die Attribute in einer Reihe. Desweiteren werden Reihentypen in \Lct\ 
+nicht nur als Typen f\"ur Reihen, sondern ebenfalls als Typen f\"ur Klassenr\"umpfe verwendet.
+Hintergrund dieser \"Anderung ist die Feststellung, dass im Rahmen von Vererbung, die Typen
+von Klassen, im Gegensatz zu den Objekttypen, auch Informationen \"uber die in ihnen vorhandenen
+Attribute aufweisen m\"ussen.
+
+Die Vereinigung von Reihentypen, geschrieben als $\phi_1\oplus\phi_2$, ist wie zuvor definiert
+(Definition~\ref{definition:Lot:Vereinigung_von_Reihentypen}), wobei f\"ur Reihentypen nun auch
+die Typen gemeinsamer Attribute \"ubereinstimmen m\"ussen. Insbesondere gilt nach wie vor, dass
+die Vereinigung zweier inkompatibler Reihentypen nicht definiert ist, also in einer Implementation
+des Typsystems zu einem Typfehler f\"uhrt.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Typsystem der Sprache Lct %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Typsystem der Sprache \Lct}
+
+{\bf TODO:} Prosa, Erweiterung von Definition~\ref{definition:Lort:Typkonstruktoren}
+
+\begin{definition} \
+  \begin{enumerate}
+    \item Die Menge $\setSType \subseteq \setType$ aller {\em einfachen Typen} $\tau_s$ ist wie definiert
+          als Einschr\"ankung der Menge $\setType$ aller Typen auf die primitiven Typen und die
+          Klassentypen, also:
+          \[\begin{array}{rcl}
+            \setSType
+            & = &
+            \{\typeBool,\typeInt,\typeUnit\}
+            \,\cup\,
+            \{\typeClass{\tau}{\phi}\,|\,\tau\in\setType,\phi\in\setRType\}
+          \end{array}\]
+
+    \item Die Menge $\setTCons$ der Typkonstruktoren wird neu definiert durch
+          \[\begin{array}{rcl}
+            \setTCons &   =  & \setSType\,\cup\,\{\to\} \\
+                      & \cup & \{\typeObject{a_1;\ldots;a_k;m_1;\ldots;m_n}\,|\,k,n\in\setN, \\
+                      &      & \ a_1,\ldots,a_k\in\setAttribute, m_1,\ldots,m_n\in\setMethod\},
+          \end{array}\]
+          wobei wie zuvor die Attribut- und Methodennamen in $\typeObject{a_1;\ldots;a_k;m_1;\ldots;m_n}$ als disjunkt
+          angenommen werden.
+  \end{enumerate}
+\end{definition}
+
+Die Idee der einfachen Typen $\tau_s \in \setSType$ ist, dass auf diesen Typen kein Subtyping
+definiert ist. F\"ur die primitiven Datentypen war das bisher stets der Fall. Neu hinzukommt, dass
+auch auf Klassentypen kein Subtyping m\"oglich ist. Der Grund daf\"ur wird sp\"ater im Beweis der
+Typsicherheit ersichtlich. Intuitiv sollte man sich einfach vorstellen, dass jegliche in Klassentypen
+enthaltenen Typinformationen immer erhalten bleiben m\"ussen. Es sollte anhand der Ergebnisse aus
+den zuvor betrachteten Programmiersprachen klar sein, dass f\"ur eine objekt-orientierte Programmiersprache
+Subtyping auf Objekttypen ausreichend ist.
+
+Da die Mengen $\setType$ und $\setTCons$ erweitert worden sind, m\"ussen auch die Funktionen
+$\name{root}$, $\name{arity}$ und $\name{child}$ aus Definition~\ref{definition:Lort:Tree_Funktionen}
+entsprechend erweitert werden.
+
+\begin{definition} \
+  \begin{enumerate}
+    \item Die Funktion $\name{root}:\setType\to\setTCons$ wird wie folgt erweitert:
+          \[\begin{array}{rcl}
+            \TREEroot{\typeObject{a_1:\hat{\tau}_1;\ldots;a_k:\hat{\tau}_k;m_1:\tau_1;\ldots;m_n:\tau_n}}
+              & = & \typeObject{a_1;\ldots;a_k;\ldots;m_1;\ldots;m_n} \\
+            \TREEroot{\typeClass{\tau}{\phi}} & = & \typeClass{\tau}{\phi}
+          \end{array}\]
+
+    \item Die Funktion $\name{arity}:\setType\to\setN$ wird entsprechend erweitert durch:
+          \[\begin{array}{rcl}
+            \TREEarity{\typeObject{a_1:\hat{\tau}_1;\ldots;a_k:\hat{\tau}_k;m_1:\tau_1;\ldots;m_n:\tau_n}} & = & k + n \\
+            \TREEarity{\typeClass{\tau}{\phi}} & = & 0
+          \end{array}\]
+
+    \item Die partielle Funktion $\name{child}:\setType\times\setN\pto\setType$ wird erweitert durch:
+          \[\begin{array}{rcl}
+            \TREEchild{i}{\typeObject{a_1:\hat{\tau}_1;\ldots;a_k:\hat{\tau}_k;m_1:\tau_1;\ldots;m_n:\tau_n}}
+              & = & \CASEbeg
+                      \hat{\tau}_i & \text{falls } 1 \le i \le k \\
+                      \tau_{k+i}   & \text{falls } k < i \le k+n
+                    \CASEend
+          \end{array}\]
+  \end{enumerate}
+\end{definition}
+
+{\bf TODO:} Prosa
+
+\begin{definition} \label{definition:Lct:Typgleichheit}
+  Die Relationen $\sim_n$ wird wieder wie folgt induktiv definiert
+  \[\begin{array}{rcl}
+    \sim_0     & = & \setType^2 \\
+    \sim_{n+1} & = & \{(\tau,\tau')\in\setType^2\,|\,\TREEroot{\tau} = \TREEroot{\tau'} \\
+               &   & \quad \wedge \ \forall 1 \le i \le \TREEarity{\tau}:\ \TREEchild{i}{\tau} \sim_n \TREEchild{i}{\tau'}\},
+  \end{array}\]
+  und die Relation $\sim$ wieder durch
+  \[\begin{array}{rcl}
+    \sim & = & \bigcap\limits_{n\in\setN} \sim_n
+  \end{array}\]
+  als Durchschnitt aller Relationen $\sim_n$.
+\end{definition}
+
+Wie zuvor l\"asst sich zeigen, dass die Relation $\sim$ eine \"Aquivalenzrelation auf $\setType$ ist, und ebenfalls
+wie zuvor kann man zeigen, dass eine entsprechende generierende Abbildung von $\setTypeRel$ nach $\setTypeRel$
+existiert, die $\sim$ als kleinsten Fixpunkt besitzt. Entsprechend gilt das folgende Lemma:
+
+\begin{lemma}[\"Aquivalenz-Lemma f\"ur \Lct] \label{lemma:Lct:Aequivalenz_Lemma}
+  $\tau\sim\hat{\tau}$ gilt genau dann, wenn eine der folgenden Aussagen zutrifft:
+  \begin{enumerate}
+    \item $\tau = \typeRec{t_1}{\ldots\typeRec{t_n}{\tau_s}}$ und
+          $\hat{\tau} = \typeRec{\hat{t}_1}{\ldots\typeRec{\hat{t}_m}{\tau_s}}$ mit $\tau_s\in\setSType$
+
+    \item $\tau = \typeRec{t_1}{\ldots\typeRec{t_n}{\typeArrow{\tau_1}{\tau_2}}}$
+          und $\hat{\tau} = \typeRec{\hat{t}_1}{\ldots\typeRec{\hat{t}_m}{\typeArrow{\hat{\tau}_1}{\hat{\tau}_2}}}$ mit \\
+          $\tau_1{\SUB{\tau}{t_i}}_{i=1}^{n} \sim \hat{\tau}_1{\SUB{\hat{\tau}}{\hat{t}_i}}_{i=1}^{m}$
+          und $\tau_2{\SUB{\tau}{t_i}}_{i=1}^{n} \sim \hat{\tau}_2{\SUB{\hat{\tau}}{\hat{t}_i}}_{i=1}^{m}$
+
+    \item $\tau = \typeRec{t_1}{\ldots\typeRec{t_n}{\typeObject{a_1:\tau_1;\ldots;a_h:\tau_h;m_{h+1}:\tau_{h+1};\ldots;m_k:\tau_k}}}$ und \\
+          $\hat{\tau} = \typeRec{\hat{t}_1}{\ldots\typeRec{\hat{t}_m}{\typeObject{a_1:\hat{\tau}_1;\ldots;a_h:\hat{\tau}_h;m_{h+1}:\hat{\tau}_{h+1};\ldots;m_k:\hat{\tau}_k}}}$ \\
+          mit $\tau_j{\SUB{\tau}{t_i}}_{i=1}^{n} \sim \hat{\tau}_j{\SUB{\hat{\tau}}{\hat{t}_i}}_{i=1}^{m}$ f\"ur alle $j=1,\ldots,k$
+  \end{enumerate}
+\end{lemma}
+
+\begin{beweis}
+  L\"asst sich analog zur \"Aquivalenz-Lemma f\"ur die Programmiersprache \Lort\ (\ref{lemma:Lort:Aequivalenz_Lemma})
+  beweisen, indem man eine entsprechende generierende Funktion angibt, und mit dem Fixpunktsatz von Kleene
+  (\ref{satz:math:Fixpunktsatz_von_Kleene}) zeigt, dass die Relation $\sim$ ein Fixpunkt dieser Funktion ist.
+\end{beweis}
+
+Weiterhin definieren wir auch f\"ur die Programmiersprache \Lct\ auf der Menge $\setType$ eine Subtyprelation $\simle$.
+
+\begin{definition} \label{definition:Lct:Subtyping_Relation}
+  Die Relationen $\simle_n$ werden wie zuvor induktiv durch
+  \[\begin{array}{rcl}
+    \simle_0     &   =  & \setType^2 \\
+    \simle_{n+1} &   =  & \{(\tau,\tau')\in\setType^2\,|\,\TREEroot{\tau} = \TREEroot{\tau'} \in \setSType\} \\
+                 & \cup & \{(\tau,\tau')\in\setType^2\,|\,\TREEroot{\tau} = \TREEroot{\tau'} =\ \to \\
+                 &      & \quad \wedge\,\TREEchild{1}{\tau'} \simle_n \TREEchild{1}{\tau}
+                              \,\wedge\,\TREEchild{2}{\tau} \simle_n \TREEchild{2}{\tau'}\} \\
+                 & \cup & \{(\tau,\tau')\in\setType^2\,|\,\TREEroot{\tau} = \typeObject{a_1;\ldots;a_h;m_{h+1};\ldots;m_{k+l}} \\
+                 &      & \quad \wedge\,\TREEroot{\tau'} = \typeObject{a_1;\ldots;a_h;m_{h+1};\ldots;m_k} \\
+                 &      & \quad \wedge\,\forall 1 \le i \le k:\,\TREEchild{i}{\tau} \simle_n \TREEchild{i}{\tau'}\}
+  \end{array}\]
+  definiert, und die Relation $\simle$ ist wie zuvor durch
+  \[\begin{array}{rcl}
+    \simle & = & \bigcap\limits_{n\in\setN} \simle_n
+  \end{array}\]
+  als Durchschnitt aller Relationen $\simle_n$ definiert.
+\end{definition}
+
+Analog zur Subtyping-Relation der Programmiersprache \Losrt\ (Definition~\ref{definition:Losrt:Subtyping_Relation}) l\"asst
+sich auch hier zeigen, dass die Relation $\simle$ eine Quasiordnung ist, welche antisymmetrisch bez\"uglich der Relation $\sim$
+ist.
+
+\begin{lemma} \label{lemma:Lct:Quasiordnung_und_Antisymmetrie} \
+  \begin{enumerate}
+    \item Die Relation $\simle$ ist eine Quasiordnung.
+    \item $\forall \tau,\tau'\in\setType:\ \tau \simle \tau' \wedge \tau' \simle \tau\ \Leftrightarrow\ \tau\sim\tau'$
+  \end{enumerate}
+\end{lemma}
+
+\begin{beweis}
+  Wie zuvor in den Beweisen der Lemmata f\"ur die Programmiersprache \Losrt\ (Lemma~\ref{lemma:Losrt:Quasiordnung} und
+  \ref{lemma:Losrt:Antisymmetrie}).
+\end{beweis}
+
+{\bf TODO:} Prosa
+
+\begin{lemma}[Subtyping-Lemma f\"ur \Lct] \label{lemma:Lct:Subtyping_Lemma}
+  $\tau \simle \tau'$ gilt genau dann, wenn eine der folgenden Aussagen zutrifft:
+  \begin{enumerate}
+    \item $\tau \sim \tau' \sim \tau_s$ mit $\tau_s \in \setSType$
+
+    \item $\tau \sim \typeArrow{\tau_1}{\tau_2}$ und $\tau' \sim \typeArrow{\tau_1'}{\tau_2'}$ mit
+          $\tau_1' \simle \tau_1$ und $\tau_2 \simle \tau_2'$
+
+    \item $\tau \sim \typeObject{a_1:\tau_1;\ldots;a_n:\tau_n;m_{n+1}:\tau_{n+1};\ldots;m_{k+l}:\tau_{k+l}}$ \\
+          und $\tau' \sim \typeObject{a_1:\tau_1';\ldots;a_n:\tau_n';m_{n+1}:\tau_{n+1}';\ldots;m_k:\tau_k'}$ \\
+          mit $\tau_i \simle \tau_i'$ f\"ur alle $i=1,\ldots,k$
+  \end{enumerate}
+\end{lemma}
+
+\begin{beweis}
+  Erfolgt wie im Fall des Subtyping-Lemmas f\"ur die Programmiersprache \Losrt\ (\ref{lemma:Losrt:Subtyping_Lemma}),
+  indem eine dem Lemma entsprechende generierende Funktion auf $\setTypeRel$ konstruiert wird, und anschliessend
+  mit den Fixpunktsatz von Kleene (\ref{satz:math:Fixpunktsatz_von_Kleene}) gezeigt wird, dass die Relation
+  $\simle$ ein Fixpunkt dieser Funktion ist.
+\end{beweis}
+
+Nach dem wir nun die Relationen $\sim$ und $\simle$ f\"ur die Programmiersprache \Lct\ passend erweitert haben
+und die notwendigen Aussagen gezeigt haben, die einen einfachen Umgang mit diesen Relationen erm\"oglichen,
+k\"onnen wir nun Typregeln aufstellen, die festlegen, wie g\"ultige Typurteile f\"ur Programme der Sprache
+\Lct\ hergeleitet werden k\"onnen:
+
+\begin{definition}[G\"ultige Typurteile f\"ur \Lct] \label{definition:Lct:Gueltige_Typurteile}
+  \index{Typregeln!f\"ur die Sprache \Lct}
+  Ein Typurteil $\Tje{\Gamma}{e}{\tau}$ oder $\Tjr{\Gamma}{b}{\phi}$ heisst {\em g\"ultig} f\"ur
+  \Lct, wenn es sich mit den Typregeln f\"ur die funktionale Kernsprache aus
+  Definition~\ref{definition:Lot:Gueltige_Typurteile}, sowie den Typregeln f\"ur Objekte und
+  Klassen\\[5mm]
+  \begin{tabular}{ll}
+    \RN{Send}     & $\RULE{\Tje{\Gamma}{e}{\typeObject{\rtypeMethod{m}{\tau}{\phi}}}}
+                          {\Tje{\Gamma}{\expSend{e}{m}}{\tau}}$ \\[4mm]
+    \RN{Send'}    & $\RULE{\Tjr{\Gamma}{\omega}{(\rtypeMethod{m}{\tau}{\phi})}}
+                          {\Tje{\Gamma}{\expSend{\omega}{m}}{\tau}}$ \\[4mm]
+    \RN{Object''} & $\RULE{\Tjr{\Gamma^\star\SUB{\tau}{\self}}{r}{\phi}
+                           \quad
+                           \tau \sim \typeObject{\methods{\phi}}}
+                          {\Tje{\Gamma}{\expObject{\self:\tau}{r}}{\tau}}$ \\[4mm]
+    \RN{Dupl}     & $\RULE{\Tje{\Gamma}{\self}{\tau}
+                           \quad
+                           \forall i=1 \ldots n:\Tje{\Gamma}{a_i}{\tau_i} \wedge \Tje{\Gamma}{e_i}{\tau_i}}
+                          {\Tje{\Gamma}{\expDupl{a_1=e_1;\ldots;a_n=e_n}}{\tau}}$ \\[4mm]
+    \RN{Class}    & $\RULE{\Tjr{\Gamma^\star\SUB{\tau}{\self}}{b}{\phi}
+                           \quad
+                           \tau \simle \typeObject{\methods{\phi}}}
+                          {\Tje{\Gamma}{\expClass{\self:\tau}{b}}{\typeClass{\tau}{\phi}}}$ \\[4mm]
+    \RN{New}      & $\RULE{\Tje{\Gamma}{e}{\typeClass{\tau}{\phi}}
+                           \quad
+                           \tau \sim \typeObject{\methods{\phi}}}
+                          {\Tje{\Gamma}{\expNew{e}}{\tau}}$ \\[4mm]
+    \RN{Subsume'} & $\RULE{\Tje{\Gamma}{e}{\tau'} \quad \tau' \simle \tau}
+                          {\Tje{\Gamma}{e}{\tau}}$
+  \end{tabular} \\[7mm]
+  und den verallgemeinerten Typregeln f\"ur Reihen und Klassenr\"umpfe\\[5mm]
+  \begin{tabular}{ll}
+    \RN{Empty}    & $\Tjr{\Gamma}{\rowEpsilon}{\rtypeEmpty}$ \\[2mm]
+    \RN{Attr'}    & $\RULE{\Tje{\Gamma^\star}{e}{\tau}
+                           \quad
+                           \Tjr{\Gamma\SUB{\tau}{a}}{r_1}{\phi}}
+                          {\Tjr{\Gamma}{\rowVal{a}{e}{r_1}}
+                               {(\rtypeMethod{a}{\tau}{\rtypeEmpty}) \oplus \phi}}$ \\[4mm]
+    \RN{Method}   & $\RULE{\Tje{\Gamma}{e}{\tau}
+                           \quad
+                           \Tjr{\Gamma}{r_1}{\phi}}
+                          {\Tjr{\Gamma}{\rowMethod{m}{e}{r_1}}
+                               {(\rtypeMethod{m}{\tau}{\rtypeEmpty}) \oplus \phi}}$ \\[4mm]
+    \RN{Inherit}  & $\RULE{\Tje{\Gamma}{\self}{\tau}
+                           \quad
+                           \Tje{\Gamma^\star}{e}{\typeClass{\tau}{\phi}}
+                           \quad
+                           \doma{\phi}=A
+                           \quad
+                           \Tjr{\Gamma{\SUB{\phi(a)}{a}}_{a \in A}}{b}{\phi'}}
+                          {\Tjr{\Gamma}{\bodyInherit{A}{e}{b}}{\phi \oplus \phi'}}$
+  \end{tabular} \\[7mm]
+  herleiten l\"asst. Wie zuvor gilt, dass die spezielle Typregel \RN{Send'} lediglich
+  f\"ur den Beweis der Typsicherheit von \Lct\ ben\"otigt wird, also in einem m\"oglichen
+  Typechecker nicht implementiert werden muss.
+\end{definition}
+
+
+%%%%%%%%%%%%%%%%%%%
+%% Typsicherheit %%
+%%%%%%%%%%%%%%%%%%%
+
+\subsection{Typsicherheit}
+\index{Typsicherheit}
+
+{\bf TODO:} $\setVal$ mit Typen versehen, ebenso die small step Regeln auf die
+neue Syntax bringen.
+
+{\bf TODO:} Die \"ublichen Lemmata
+
+\begin{lemma}[Typumgebungen und frei vorkommende Namen] \label{lemma:Lct:free_und_dom_Gamma} \
+  \begin{enumerate}
+    \item $\forall \Gamma \in \setTEnv, e\in\setExp,\tau\in\setType:\,
+           \Tj{\Gamma}{e}{\tau}\,\Rightarrow\,\free{e}\subseteq\dom{\Gamma}$
+    \item $\forall \Gamma \in \setTEnv, b\in\setBody,\phi\in\setRType:\,
+           \Tj{\Gamma}{b}{\phi}\,\Rightarrow\,\free{b}\subseteq\dom{\Gamma}$
+  \end{enumerate}
+\end{lemma}
+
+\begin{beweis}
+  Wie im Beweis des Lemmas f\"ur die Programmiersprache \Losrt\ (\ref{lemma:Losrt:free_und_dom_Gamma}) erfolgt
+  der Beweis durch simultane Induktion \"uber die L\"ange der Herleitung der Typurteile
+  $\Tj{\Gamma}{e}{\tau}$ und $\Tj{\Gamma}{b}{\phi}$, mit Fallunterscheidung nach der
+  letzten Typregel in der Herleitung. Wir betrachten lediglich die neuen F\"alle f\"ur
+  die Programmiersprache \Lct:
+  \PROOFCASEbeg
+    \item $\Tj{\Gamma}{\expNew{e}}{\tau}$ mit Typregel \RN{New}
+
+          F\"ur diesen Fall folgt die Behauptung mit Induktionsvoraussetzung unmittelbar aus
+          der ersten Pr\"amisse der \RN{New}-Regel.
+
+    \item $\Tj{\Gamma}{\expClass{\self:\tau}{b}}{\typeClass{\tau}{\phi}}$ mit Typregel \RN{Class}
+
+          Dann gilt nach Voraussetzung $\Tj{\Gamma^\star\SUB{\tau}{\self}}{b}{\phi}$ mit
+          $\tau \simle \typeObject{\methods{\phi}}$. Nach Induktionsvoraussetzung gilt dann
+          \[\begin{array}{l}
+            \free{b} \subseteq \dom{\Gamma^\star\SUB{\tau}{\self}},
+          \end{array}\]
+          und wegen
+          \[\begin{array}{l}
+            \dom{\Gamma^\star\SUB{\tau}{\self}}
+            = \dom{\Gamma^\star} \cup \{\self\}
+            \subseteq \dom{\Gamma} \cup \{\self\}
+          \end{array}\]
+          folgt nach den Gesetzen der Mengenlehre, dass
+          \[\begin{array}{l}
+            \free{b} \setminus \{\self\} \subseteq \dom{\Gamma}
+          \end{array}\]
+          gilt. Die Behauptung folgt dann trivialerweise nach
+          Definition~\ref{definition:Lc:Frei_vorkommende_Namen} (Frei vorkommende Namen).
+
+    \item $\Tj{\Gamma}{\expObject{\self:\tau}{r}}{\phi}$ mit Typregel \RN{Object''}
+
+          Die ver\"anderte Pr\"amisse von \RN{Object''} im Vergleich zu \RN{Object'} hat,
+          wie man sich leicht klar machen kann, keinen Einfluss auf den Ablauf des Beweises
+          f\"ur diesen Fall, so dass dieser Fall vollkommen identisch zu den vorangegangenen
+          Beweisen dieses Lemmas verl\"auft.
+
+    \item $\Tj{\Gamma}{\rowVal{a}{e}{r}}{\phi}$ mit Typregel \RN{Attr'}
+
+          Wie im Fall der \RN{Object''}-Regel hat die \"Anderung der \RN{Attr'}-Regel keinen
+          Einfluss auf den Ablauf dieses Beweises.
+
+    \item $\Tj{\Gamma}{\bodyInherit{A}{e}{b}}{\phi \oplus \phi'}$ mit Typregel \RN{Inherit}
+
+          Dieses Typurteil kann nur aus Pr\"amissen der Form
+          $\Tj{\Gamma}{\self}{\tau}$, $\Tj{\Gamma^\star}{e}{\typeClass{\tau}{\phi}}$,
+          $\doma{\phi} = A$ und $\Tj{\Gamma{\SUB{\phi(a)}{a}}_{a\in{A}}}{b}{\phi'}$
+          folgen. Das bedeutet, mit Induktionsvoraussetzung folgt
+          \[\begin{array}{rclcl}
+            \free{\self} & \subseteq & \dom{\Gamma}, \\
+            \free{e}     & \subseteq & \dom{\Gamma^\star} & \subseteq & \dom{\Gamma} \quad \text{und} \\
+            \free{b}     & \subseteq & \dom{\Gamma{\SUB{\phi(a)}{a}}_{a\in{A}}}
+                         & \subseteq & \dom{\Gamma}\,\cup\,A.
+          \end{array}\]
+          Letzteres l\"asst sich nach den Gesetzen der Mengenlehre umformen zu
+          \[\begin{array}{rcl}
+            \free{b} \setminus A & \subseteq & \dom{\Gamma},
+          \end{array}\]
+          also erhalten wir insgesamt
+          \[\begin{array}{rcl}
+            \{\self\}\,\cup\,\free{e}\,\cup\,[\free{b} \setminus A] & \subseteq & \dom{\Gamma},
+          \end{array}\]
+          was nach Definition~\ref{definition:Lc:Frei_vorkommende_Namen} (Frei vorkommende Namen)
+          genau der Behauptung entspricht.
+  \PROOFCASEend
+  Die \"ubrigen F\"alle folgen wie zuvor f\"ur die Programmiersprache \Losrt.
+\end{beweis}
+
+{\bf TODO:} Koinzidenzlemma
+
+\begin{lemma}[Koinzidenzlemma f\"ur \Lct] \label{lemma:Lct:Koinzidenzlemma} \
+  \begin{enumerate}
+    \item $\forall \Gamma_1,\Gamma_2 \in \setTEnv, e \in \setExp, \tau \in \setType:\,
+           \Tj{\Gamma_1}{e}{\tau}\,\wedge\,\Gamma_1 =_{\free{e}} \Gamma_2
+           \ \Rightarrow \ 
+           \Tj{\Gamma_2}{e}{\tau}$
+    \item $\forall \Gamma_1,\Gamma_2 \in \setTEnv, b \in \setBody, \phi \in \setRType:\,
+           \Tj{\Gamma_1}{b}{\phi}\,\wedge\,\Gamma_1 =_{\free{b}} \Gamma_2
+           \ \Rightarrow \ 
+           \Tj{\Gamma_2}{b}{\phi}$
+  \end{enumerate}
+\end{lemma}
+
+\begin{beweis}
+  Den Beweis f\"uhren wir wie bereits f\"ur die vorangegangenen Programmiersprachen durch
+  simultane Induktion \"uber die L\"ange der Herleitung der Typurteile $\Tj{\Gamma_1}{e}{\tau}$
+  und $\Tj{\Gamma_1}{b}{\phi}$, mit Fallunterscheidung nach der zuletzt angewandten Typregel.
+  Wir betrachten wieder nur die F\"alle f\"ur die neuen oder ge\"anderten Typregeln:
+  \PROOFCASEbeg
+    \item $\Tj{\Gamma_1}{\expNew{e}}{\tau}$ mit Typregel \RN{New}
+
+          Dann gilt nach Voraussetzung $\Tj{\Gamma_1}{e}{\typeClass{\tau}{\phi}}$ und
+          $\tau \sim \typeObject{\methods{\phi}}$. Nach Induktionsvoraussetzung folgt
+          daraus
+          \[\begin{array}{l}
+            \Tj{\Gamma_2}{e}{\typeClass{\tau}{\phi}},
+          \end{array}\]
+          und damit also die Behauptung mit Typregel \RN{New}.
+
+    \item $\Tj{\Gamma_1}{\expClass{\self:\tau}{b}}{\typeClass{\tau}{\phi}}$ mit Typregel \RN{Class}
+
+          Das kann nur aus Pr\"amissen der Form $\Tj{\Gamma_1^\star\SUB{\tau}{\self}}{b}{\phi}$ und
+          $\tau \simle \typeObject{\methods{\phi}}$ folgen. Gem\"a"s
+          Lemma~\ref{lemma:Lot:Uebereinstimmung_von_Typumgebungen} gilt
+          $\Gamma_1^\star =_{\free{e}} \Gamma_2^\star$ und mit erneuter Anwendung des Lemmas folgt
+          $\Gamma_1^\star\SUB{\tau}{\self} =_{\free{e}} \Gamma_2^\star\SUB{\tau}{\self}$. Da
+          $\free{b} \subseteq \free{e}$ folgt schliesslich, wieder mit
+          Lemma~\ref{lemma:Lot:Uebereinstimmung_von_Typumgebungen}, dass auch
+          $\Gamma_1^\star\SUB{\tau}{\self} =_{\free{b}} \Gamma_2^\star\SUB{\tau}{\self}$ gilt.
+          Damit k\"onnen wir nun also die Induktionsvoraussetzung anwenden und erhalten
+          \[\begin{array}{l}
+            \Tj{\Gamma_2^\star\SUB{\tau}{\self}}{b}{\phi},
+          \end{array}\]
+          woraus wiederum wegen $\tau \simle \typeObject{\methods{\phi}}$ mit Typregel \RN{Class}
+          unmittelbar die Behauptung folgt.
+    
+    \item $\Tj{\Gamma_1}{\expObject{\self:\tau}{r}}{\tau}$ mit Typregel \RN{Object''}
+
+          Wie man sich leicht \"uberlegen kann, folgt dieser Fall v\"ollig analog zum
+          vorhergehenden Fall der \RN{Class}-Regel.
+
+    \item $\Tj{\Gamma_1}{\rowVal{a}{e}{r}}{(\rtypeMethod{a}{\tau}{\rtypeEmpty}) \oplus \phi}$ mit Typregel \RN{Attr'}
+
+          Hier ist offensichtlich, dass der Fall identisch zum Beweis des Lemmas f\"ur die
+          vorangegangenen Programmiersprachen abl\"auft, da sich die Ver\"anderungen von
+          \RN{Attr} zu \RN{Attr'} auf den resultierenden Typ beschr\"anken.
+
+    \item $\Tj{\Gamma_1}{\bodyInherit{A}{e}{b}}{\phi \oplus \phi'}$ mit Typregel \RN{Inherit}
+
+          Hier muss nach Voraussetzung $\Tj{\Gamma_1}{\self}{\tau}$,
+          $\Tj{\Gamma_1^\star}{e}{\typeClass{\tau}{\phi}}$, $\doma{\phi} = A$ und
+          $\Tj{\Gamma_1{\SUB{\phi(a)}{a}}_{a\in{A}}}{b}{\phi'}$
+          gelten. Auf die ersten beiden Pr\"amissen l\"asst sich unmittelbar die
+          Induktionsvoraussetzung anwenden, und wir erhalten
+          \[\begin{array}{l}
+            \Tj{\Gamma_2}{\self}{\tau}
+          \end{array}\]
+          und
+          \[\begin{array}{l}
+            \Tj{\Gamma_2^\star}{e}{\typeClass{\tau}{\phi}}.
+          \end{array}\]
+          Wegen Lemma~\ref{lemma:Lot:Uebereinstimmung_von_Typumgebungen} gilt
+          \[\begin{array}{l}
+            \Gamma_1{\SUB{\phi(a)}{a}}_{a\in{A}}
+             =_{\free{b}}
+            \Gamma_2{\SUB{\phi(a)}{a}}_{a\in{A}},
+          \end{array}\]
+          denn, ebenfalls wegen Lemma~\ref{lemma:Lot:Uebereinstimmung_von_Typumgebungen}, gilt
+          $\free{b} \subseteq \free{e}$, also $\Gamma_1 =_{\free{b}} \Gamma_2$. Das bedeutet,
+          wir k\"onnen nun auch f\"ur letzte Pr\"amisse der \RN{Inherit}-Regel die
+          Induktionsvoraussetzung anwenden, und erhalten
+          \[\begin{array}{l}
+            \Tj{\Gamma_2{\SUB{\phi(a)}{a}}_{a\in{A}}}{b}{\phi'}.
+          \end{array}\]
+          Aus diesen Ergebnissen folgt dann mit Typregel \RN{Inherit}, dass auch
+          \[\begin{array}{l}
+            \Tj{\Gamma_2}{\bodyInherit{A}{e}{b}}{\phi \oplus \phi'}
+          \end{array}\]
+          gilt, was zu zeigen war.
+  \PROOFCASEend
+  Die \"ubrigen F\"alle folgen wie in den Beweisen des Lemmas f\"ur die vorangegangenen
+  Programmiersprachen (vgl. Lemma~\ref{lemma:Lot:Koinzidenzlemma}, \ref{lemma:Losub:Koinzidenzlemma},
+  \ref{lemma:Lort:Koinzidenzlemma} und \ref{lemma:Losrt:Koinzidenzlemma}).
+\end{beweis}
+
+{\bf TODO:} Prosa
+
+\begin{lemma}[Typurteile und Substitution] \label{lemma:Lct:Typurteile_und_Substitution}
+  Sei $\id \in \setId \setminus \setSelf$, $\Gamma \in \setTEnv$, $\tau \in \setType$
+  und $e \in \setExp$. Dann gilt:
+  \begin{enumerate}
+    \item $\forall e' \in \setExp:
+           \forall \tau' \in \setType:\,
+           \Tj{\Gamma\SUB{\tau}{\id}}{e'}{\tau'} \wedge \Tj{\Gamma^\star}{e}{\tau}
+           \,\Rightarrow\,
+           \Tj{\Gamma}{e'\SUB{e}{\id}}{\tau'}$
+    \item $\forall b \in \setBody:
+           \forall \phi \in \setRType:\,
+           \Tj{\Gamma\SUB{\tau}{\id}}{b}{\phi} \wedge \Tj{\Gamma^\star}{e}{\tau}
+           \,\Rightarrow\,
+           \Tj{\Gamma}{b\SUB{e}{\id}}{\phi}$
+  \end{enumerate}
+\end{lemma}
+
+\begin{beweis}
+  Wie in den Beweisen des Lemmas f\"ur die vorangegangenen Sprachen, zeigen wir die Behauptung wieder
+  durch simultane Induktion \"uber die L\"ange der Typherleitungen
+  $\Tj{\Gamma\SUB{\tau}{\id}}{e'}{\tau'}$ und $\Tj{\Gamma\SUB{\tau}{\id}}{b}{\phi}$, wobei wir jeweils
+  nach der zuletzt angewandten Typregel unterscheiden. Wie zuvor betrachten wir lediglich die F\"alle
+  f\"ur die neuen oder ge\"anderten Typregeln:
+  \PROOFCASEbeg
+    \item $\Tj{\Gamma\SUB{\tau}{\id}}{\expNew{e'}}{\tau'}$ mit Typregel \RN{New}
+
+          Dann gilt nach Voraussetzung $\Tj{\Gamma\SUB{\tau}{\id}}{e'}{\typeClass{\tau'}{\phi'}}$ mit
+          $\tau' \sim \typeObject{\methods{\phi'}}$. Daraus folgt unmittelbar die Behauptung mit
+          Induktionsvoraussetzung, Typregel \RN{New} und Definition~\ref{definition:Lc:Substitution}.
+
+    \item $\Tj{\Gamma\SUB{\tau}{\id}}{\expClass{\self:\tau'}{b}}{\typeClass{\tau'}{\phi'}}$ mit Typregel \RN{Class}
+
+          Das kann nur aus Pr\"amissen der Form $\Tj{(\Gamma\SUB{\tau}{\id})^\star\SUB{\tau'}{\self}}{b}{\phi'}$
+          und $\tau' \simle \typeObject{\methods{\phi'}}$ folgen. Abh\"angig von der Form von $\id$ folgt mit
+          Lemma~\ref{lemma:Lot:Uebereinstimmung_von_Typumgebungen} und Lemma~\ref{lemma:Lct:Koinzidenzlemma}, dass
+          \[\begin{array}{l}
+            \Tj{\Gamma^\star\SUB{\tau}{\id}\SUB{\tau'}{\self}}{b}{\phi'}
+          \end{array}\]
+          gilt, und da $\id \ne \self$ folgt weiter
+          \[\begin{array}{l}
+            \Tj{\Gamma^\star\SUB{\tau'}{\self}\SUB{\tau}{\id}}{b}{\phi'}.
+          \end{array}\]
+          Wegen $(\Gamma^\star\SUB{\tau'}{\self})^\star = \Gamma^\star$ l\"asst sich nun die
+          Induktionsvoraussetzung anwenden, und wir erhalten
+          \[\begin{array}{l}
+            \Tj{\Gamma^\star\SUB{\tau'}{\self}}{b\SUB{e}{\id}}{\phi'}.
+          \end{array}\]
+          Die Behauptung folgt dann mit Typregel \RN{Class} und Definition~\ref{definition:Lc:Substitution}.
+
+    \item $\Tj{\Gamma\SUB{\tau}{\id}}{\expObject{\self:\tau'}{r}}{\tau'}$ mit Typregel \RN{Object''}
+
+          Folgt offensichtlich analog zum Fall der \RN{Class}-Regel.
+
+    \item $\Tj{\Gamma\SUB{\tau}{\id}}{\rowVal{a}{e'}{r}}{(\rtypeMethod{a}{\tau'}{\rtypeEmpty})\oplus\phi}$ mit \RN{Attr'}
+
+          Dann gilt $\Tj{(\Gamma\SUB{\tau}{\id})^\star}{e'}{\tau'}$ und
+          $\Tj{\Gamma\SUB{\tau}{\id}\SUB{\tau'}{a}}{r}{\phi}$ nach Voraussetzung.
+
+          F\"ur die erste Pr\"amisse folgt abh\"angig von der konkreten Form von $\id$ wegen
+          Lemma~\ref{lemma:Lot:Uebereinstimmung_von_Typumgebungen} und dem Koinzidenzlemma
+          (\ref{lemma:Lct:Koinzidenzlemma}), dass auch
+          \[\begin{array}{l}
+            \Tj{\Gamma^\star\SUB{\tau}{\id}}{e'}{\tau'}
+          \end{array}\]
+          gilt. Da $(\Gamma^\star)^\star = \Gamma^\star$, l\"asst sich hierauf dann die
+          die Induktionsvoraussetzung anwenden, so dass wir
+          \[\begin{array}{l}
+            \Tj{\Gamma^\star}{e'\SUB{e}{\id}}{\tau'}
+          \end{array}\]
+          erhalten.
+
+          F\"ur die zweite Pr\"amisse m\"ussen wir zwei F\"alle unterscheiden:
+          \begin{enumerate}
+            \item $\id \ne a$
+
+                  Dann gilt $\Gamma\SUB{\tau}{\id}\SUB{\tau'}{a} = \Gamma\SUB{\tau'}{a}\SUB{\tau}{\id}$ und
+                  die Behauptung folgt mit Induktionsvoraussetzung und Anwendung von Typregel \RN{Attr'}
+                  auf die beiden Zwischenergebnisse der Pr\"amissen.
+
+            \item $\id = a$
+
+                  In diesem Fall gilt $\Gamma\SUB{\tau}{\id}\SUB{\tau'}{a} = \Gamma\SUB{\tau'}{a}$. Nach
+                  Definition der Substitution (\ref{definition:Lc:Substitution}) gilt f\"ur Attributdeklarationen
+                  \[\begin{array}{l}
+                    (\rowVal{a}{e'}{r})\SUB{e}{a} = (\rowVal{a}{e'\SUB{e}{a}}{r}),
+                  \end{array}\]
+                  also sind offensichtlich bereits alle Voraussetzung erf\"ullt, um mit Typregel \RN{Attr'}
+                  die Behauptung herzuleiten.
+          \end{enumerate}
+
+          Insgesamt haben wir also gezeigt, dass unter den gegebenen Voraussetzungen auch
+          \[\begin{array}{l}
+            \Tj{\Gamma}{(\rowVal{a}{e'}{r})\SUB{e}{\id}}{(\rtypeMethod{a}{\tau'}{\rtypeEmpty})\oplus\phi}
+          \end{array}\]
+          gilt.
+
+    \item $\Tj{\Gamma\SUB{\tau}{\id}}{\bodyInherit{A}{e'}{b}}{\phi\oplus\phi'}$ mit Typregel \RN{Inherit}
+
+          Dieses Typurteil kann nur aus Voraussetzungen der Form $\Tj{\Gamma\SUB{\tau}{\id}}{\self}{\tau'}$,
+          \linebreak[4] $\Tj{(\Gamma\SUB{\tau}{\id})^\star}{e'}{\typeClass{\tau'}{\phi}}$, $\doma{\phi} = A$ und
+          $\Tj{\Gamma\SUB{\tau}{\id}{\SUB{\phi(a)}{a}}_{a\in{A}}}{b}{\phi'}$ folgen.
+
+          {\bf TODO}
+  \PROOFCASEend
+  Die restlichen F\"alle verlaufen identisch zu den Beweisen dieses Lemmas f\"ur die zuvor betrachteten
+  Programmiersprachen (vgl. Lemma~\ref{lemma:Lot:Typurteile_und_Substitution},
+  \ref{lemma:Losub:Typurteile_und_Substitution}, \ref{lemma:Lort:Typurteile_und_Substitution} und
+  \ref{lemma:Losrt:Typurteile_und_Substitution}).
+\end{beweis}
+
+Es sollte den Leser nur sehr bedingt \"uberraschen, dass wir auch f\"ur die Programmiersprache \Lct\ neben
+dem allgemeinen Substitutionslemma, ein spezielles Lemma f\"ur die Substitution von Ausdr\"ucken f\"ur
+$\self$ ben\"otigen. Nach wie vor beschr\"ankt sich die Nutzung dieses Lemmas auf das Auffalten von
+Objekten, so dass das Lemma und der Beweis im wesentlichen von den vorhergehenden Programmiersprachen
+\"ubernommen werden k\"onnen.
+
+\begin{lemma}[Typurteile und $\self$-Substitution] \label{lemma:Lct:Typurteile_und_self_Substitution}
+  Sei $\Gamma \in \setTEnv$, $\self\in\setSelf$,\linebreak[4] $\tau\in\setType$ und $r\in\setRow$. Dann gilt:
+  \renewcommand{\labelenumii}{(\arabic{enumii})}
+  \begin{enumerate}
+    \item F\"ur alle $e\in\setExp$ und $\tau'\in\setType$:
+          \begin{enumerate}
+            \item $\Tj{\Gamma\SUB{\tau}{\self}}{e}{\tau'}$
+            \item $\Tj{\Gamma^\star}{\expObject{\self:\tau}{r}}{\tau}$
+            \item $\forall a\in\dom{\Gamma}\cap\setAttribute,\tau_a\in\setType:\,
+                   \Tj{\Gamma^\star}{r(a)}{\tau_a}\,\Leftrightarrow\,\Tj{\Gamma}{a}{\tau_a}$
+            \item[$\Rightarrow$] $\Tj{\Gamma}{e\SUB{\expObject{\self:\tau}{r}}{\self}}{\tau'}$
+          \end{enumerate}
+
+    \item F\"ur alle $r'\in\setRow$ und $\phi\in\setRType$:
+          \begin{enumerate}
+            \item $\Tj{\Gamma\SUB{\tau}{\self}}{r'}{\phi}$
+            \item $\Tj{\Gamma^\star}{\expObject{\self:\tau}{r \oplus r'}}{\tau}$
+            \item $\forall a\in\dom{\Gamma}\cap\setAttribute,\tau_a\in\setType:\,
+                   \Tj{\Gamma^\star}{r(a)}{\tau_a}\,\Leftrightarrow\,\Tj{\Gamma}{a}{\tau_a}$
+            \item[$\Rightarrow$] $\Tj{\Gamma}{r'\SUB{\expObject{\self:\tau}{r \oplus r'}}{\self}}{\phi}$
+          \end{enumerate}
+  \end{enumerate}
+  \renewcommand{\labelenumii}{\arabic{enumii}.}
+\end{lemma}
+
+Insbesondere trifft das Lemma keine Aussage \"uber $\self$-Substitution in Klassenr\"umpfen, stattdessen
+beschr\"ankt es sich ausschliesslich auf Ausdr\"ucke und Reihen. Die Idee dahinter ist sehr einfach:
+Klassenr\"umpfe k\"onnen nur direkt innerhalb von Klassen vorkommen. $\self$-Substitution tritt jedoch
+nur beim Auffalten von Objekten auf. Zwar kann eine Klasse innerhalb eines Objekts auftreten, jedoch
+endet nach Definition~\ref{definition:Lc:Substitution} die $\self$-Substitution vor der
+Klasse und wird nicht fortgef\"uhrt in den Klassenrumpf.
+
+\begin{beweis}
+  Wie zuvor gilt, dass verm\"oge Lemma~\ref{lemma:Lct:free_und_dom_Gamma} die Substitution stets definiert
+  ist. Der Beweis erfolgt dann ebenfalls wie zuvor durch simultane Induktion \"uber die L\"ange der
+  Herleitung der Typurteile $\Tj{\Gamma\SUB{\tau}{\self}}{e}{\tau'}$ und $\Tj{\Gamma\SUB{\tau}{\self}}{r'}{\phi}$,
+  mit Fallunterscheidung nach der zuletzt angewandten Typregel. Wir beschr\"anken uns wieder auf die F\"alle
+  der neuen oder ge\"anderten Typregeln:
+  \PROOFCASEbeg
+    \item F\"ur \RN{Class} und \RN{Object''} ist -- wie bereits angedeutet -- nichts zu zeigen, da die
+          Behauptung in diesen F\"alle unmittelbar mit Definition~\ref{definition:Lc:Substitution} folgt.
+
+    \item $\Tj{\Gamma\SUB{\tau}{\self}}{\expNew{e'}}{\tau'}$ mit Typregel \RN{New}
+
+          Dann gilt nach Voraussetzung $\Tj{\Gamma\SUB{\tau}{\self}}{e'}{\typeClass{\tau'}{\phi'}}$ mit
+          $\tau' \sim \typeObject{\methods{\phi'}}$. Darauf l\"asst sich dann die Induktionsvoraussetzung
+          anwenden, und es folgt
+          \[\begin{array}{l}
+            \Tj{\Gamma}{e'\SUB{\expObject{\self:\tau}{r}}{\self}}{\typeClass{\tau'}{\phi'}},
+          \end{array}\]
+          woraus dann mit Typregel \RN{New} und Definition~\ref{definition:Lc:Substitution} schliesslich die
+          Behauptung folgt.
+
+    \item $\Tj{\Gamma\SUB{\tau}{\self}}{\rowVal{a}{e'}{r''}}{(\rtypeMethod{a}{\tau'}{\rtypeEmpty})\oplus\phi'}$
+          mit Typregel \RN{Attr'}
+
+          In diesem Fall muss $\Tj{(\Gamma\SUB{\tau}{\self})^\star}{e'}{\tau'}$ und
+          $\Tj{\Gamma\SUB{\tau}{\self}\SUB{\tau'}{a}}{r''}{\phi'}$ gelten.
+
+          Da $(\Gamma\SUB{\tau}{\self})^\star = \Gamma^\star$ folgt nach Lemma~\ref{lemma:Lct:free_und_dom_Gamma},
+          dass $\self\not\in\free{e'}$. Also gilt
+          \[\begin{array}{l}
+            e' = e'\SUB{\expObject{\self:\tau}{r\,\oplus\,(\rowVal{a}{e'}{r''})}}{\self},
+          \end{array}\]
+          und damit ist f\"ur die erste Pr\"amisse der Behauptung nichts weiter zu zeigen.
+
+          F\"ur die zweite Pr\"amisse gilt $\Tj{\Gamma\SUB{\tau'}{a}\SUB{\tau}{\self}}{r''}{\phi'}$, denn
+          $a\ne\self$. Da weiter $(\Gamma\SUB{\tau'}{a})^\star = \Gamma^\star$,
+          $(\rowVal{a}{e'}{r''})(a) = e'$ und $(\Gamma\SUB{\tau'}{a})(a) = \tau'$ gilt, folgt schliesslich
+          mit Induktionsvoraussetzung, dass auch
+          \[\begin{array}{l}
+            \Tj{\Gamma\SUB{\tau'}{a}}{r''\SUB{\expObject{\self:\tau}{r\,\oplus\,(\rowVal{a}{e'}{r''})}}{\self}}{\phi'}
+          \end{array}\]
+          gilt, und somit zusammenfassend, dass mit Typregel \RN{Attr'} und Definition~\ref{definition:Lc:Substitution}
+          die Behauptung folgt.
+  \PROOFCASEend
+  Die weiteren F\"alle verhalten sich \"ahnlich zu den Beweisen dieses Lemmas f\"ur die bereits
+  bekannten Programmiersprachen (vgl. Lemma~\ref{lemma:Lot:Typurteile_und_self_Substitution},
+  \ref{lemma:Losub:Typurteile_und_self_Substitution}, \ref{lemma:Lort:Typurteile_und_self_Substitution}
+  und \ref{lemma:Losrt:Typurteile_und_self_Substitution}).
+\end{beweis}
+
+Neben den bekannten Lemmata ben\"otigen wir f\"ur den Beweis der Typerhaltung f\"ur die Programmiersprache \Lct\ ein
+neues Lemma, welches zusichert, dass der \"Ubergang zu einem gr\"osseren Typ f\"ur einen Eintrag in der
+Typumgebungen keinen Einfluss auf den Typ hat, der f\"ur Reihen oder Klassenr\"umpfe hergeleitet werden kann.
+({\bf TODO:} Eine \"ahnliche Aussage wurde bereits f\"ur die Programmiersprache \Lom\ bewiesen?).
+
+\begin{lemma}[Subtyping und Typumgebungen] \label{lemma:Lct:Subtyping_und_Typumgebungen}
+  Sei $\Gamma\in\setTEnv$, $\id\in\setId$ und seien $\tau,\tau'\in\setType$ mit $\tau' \simle \tau$. Dann gilt:
+  \begin{enumerate}
+    \item $\forall e\in\setExp,\hat{\tau}\in\setType:\,
+           \Tj{\Gamma\SUB{\tau}{\id}}{e}{\hat{\tau}}\ \Rightarrow\ \Tj{\Gamma\SUB{\tau'}{\id}}{e}{\hat{\tau}}$
+    \item $\forall b\in\setBody,\phi\in\setRType:\,
+           \Tj{\Gamma\SUB{\tau}{\id}}{b}{\phi}\ \Rightarrow\ \Tj{\Gamma\SUB{\tau'}{\id}}{b}{\phi}$
+  \end{enumerate}
+\end{lemma}
+
+\begin{beweis}
+  Wir f\"uhren den Beweis wie \"ublich durch simultane Induktion \"uber die L\"ange der Herleitung
+  der Typurteile $\Tj{\Gamma\SUB{\tau}{\id}}{e}{\hat{\tau}}$ und $\Tj{\Gamma\SUB{\tau}{\id}}{b}{\phi}$,
+  wobei wir jeweils nach der zuletzt angewandten Typregel in der Herleitung unterscheiden. Dazu betrachten
+  wir folgende F\"alle:
+  \PROOFCASEbeg
+    \item $\Tj{\Gamma\SUB{\tau}{\id}}{c}{\hat{\tau}}$ mit Typregel \RN{Const}
+
+          Nach Voraussetzung gilt $\tj{c}{\hat{\tau}}$, also folgt unmittelbar $\Tj{\Gamma\SUB{\tau'}{\id}}{c}{\hat{\tau}}$
+          mit Typregel \RN{Const}.
+
+    \item $\Tj{\Gamma\SUB{\tau}{\id}}{\id'}{\hat{\tau}}$ mit Typregel \RN{Id}
+
+          Falls $\id = \id'$, so gilt $\Gamma\SUB{\tau}{\id}(\id') = \tau$, also insbesondere $\hat{\tau} = \tau$. Das
+          heisst, es gilt weiter $\Gamma\SUB{\tau'}{\id}(\id') = \tau'$, und da nach Annahme $\tau' \simle \tau$ gilt,
+          folgt die Behauptung mit Typregel \RN{Subsume'}.
+
+          Andererenfalls, f\"ur $\id \ne \id'$, gilt $\Gamma\SUB{\tau}{\id}(\id') = \Gamma\SUB{\tau'}{\id}(\id') = \hat{\tau}$,
+          also ist nichts zu zeigen.
+
+    \item $\Tj{\Gamma\SUB{\tau}{\id}}{\expApp{e_1}{e_2}}{\hat{\tau}}$ mit Typregel \RN{App}
+
+          Das kann nur aus Pr\"amissen der Form $\Tj{\Gamma\SUB{\tau}{\id}}{e_1}{\typeArrow{\hat{\tau}_2}{\hat{\tau}}}$
+          und $\Tj{\Gamma\SUB{\tau}{\id}}{e_2}{\hat{\tau}_2}$ folgen. Nach Induktionsvoraussetzung gilt dann auch
+          \[\begin{array}{l}
+            \Tj{\Gamma\SUB{\tau'}{\id}}{e_1}{\typeArrow{\hat{\tau}_2}{\hat{\tau}}},
+          \end{array}\]
+          sowie
+          \[\begin{array}{l}
+            \Tj{\Gamma\SUB{\tau'}{\id}}{e_2}{\hat{\tau}_2}.
+          \end{array}\]
+          Damit folgt unmittelbar
+          \[\begin{array}{l}
+            \Tj{\Gamma\SUB{\tau'}{\id}}{\expApp{e_1}{e_2}}{\hat{\tau}}
+          \end{array}\]
+          mit Typregel \RN{App}.
+
+    \item $\Tj{\Gamma\SUB{\tau}{\id}}{e}{\hat{\tau}}$ mit Typregel \RN{Subsume'}
+
+          In diesem Fall existiert nach Voraussetzung ein $\hat{\tau}'\in\setType$ mit $\hat{\tau}'\simle\hat{\tau}$ und es
+          gilt $\Tj{\Gamma\SUB{\tau}{\id}}{e}{\hat{\tau}'}$. Nach Induktionsannahme gilt dann insbesondere
+          \[\begin{array}{l}
+            \Tj{\Gamma\SUB{\tau'}{\id}}{e}{\hat{\tau}'},
+          \end{array}\]
+          also folgt wegen $\hat{\tau}'\simle\hat{\tau}$ mit Typregel \RN{Subsume'} die Behauptung.
+
+    \item $\Tj{\Gamma\SUB{\tau}{\id}}{\bodyInherit{A}{e}{b}}{\phi \oplus \phi'}$ mit Typregel \RN{Inherit}
+
+          Dieses Typurteil kann ausschliesslich aus den Voraussetzungen $\Tj{\Gamma\SUB{\tau}{\id}}{\self}{\hat{\tau}}$,
+          $\Tj{(\Gamma\SUB{\tau}{\id})^\star}{e}{\typeClass{\hat{\tau}}{\phi}}$, $\doma{\phi} = A$ und
+          $\Tj{\Gamma\SUB{\tau}{\id}{\SUB{\phi(a)}{a}}_{a\in{A}}}{b}{\phi'}$ folgen. F\"ur die erste Pr\"amisse
+          folgt unmittelbar mit Induktionsvoraussetzung, dass auch
+          \[\begin{array}{l}
+            \Tj{\Gamma\SUB{\tau'}{\id}}{\self}{\hat{\tau}}
+          \end{array}\]
+          gilt.
+
+          Falls $\id\in\setVar$, so gilt $(\Gamma\SUB{\tau}{\id})^\star = \Gamma^\star\SUB{\tau}{\id}$, also folgt
+          nach Induktionsvoraussetzung
+          \[\begin{array}{l}
+            \Tj{\Gamma^\star\SUB{\tau'}{\id}}{e}{\typeClass{\hat{\tau}}{\phi}},
+          \end{array}\]
+          und wegen $\Gamma^\star\SUB{\tau'}{\id} = (\Gamma\SUB{\tau'}{\id})^\star$ folgt somit
+          \[\begin{array}{l}
+            \Tj{(\Gamma\SUB{\tau'}{\id})^\star}{e}{\typeClass{\hat{\tau}}{\phi}}.
+          \end{array}\]
+          Andererenfalls, f\"ur $\id\in\setId\setminus\setVar$, gilt
+          $(\Gamma\SUB{\tau}{\id})^\star = \Gamma^\star = (\Gamma\SUB{\tau'}{\id})^\star$, also ist nichts
+          zu zeigen.
+
+          F\"ur die letzte Pr\"amisse folgt mit einer analogen Argumentation, dass auch
+          \[\begin{array}{l}
+            \Tj{\Gamma\SUB{\tau'}{\id}{\SUB{\phi(a)}{a}}_{a\in{A}}}{b}{\phi'}
+          \end{array}\]
+          gilt.
+
+          Somit folgt insgesamt mit Typregel \RN{Inherit} aus den bisherigen Ergebnissen, dass
+          \[\begin{array}{l}
+            \Tj{\Gamma\SUB{\tau'}{\id}}{\bodyInherit{A}{e}{b}}{\phi \oplus \phi'}
+          \end{array}\]
+          gilt, was zu zeigen war.
+
+    \item $\Tj{\Gamma\SUB{\tau}{\id}}{\rowVal{a}{e}{r}}{(\rtypeMethod{a}{\hat{\tau}}{\rtypeEmpty}) \oplus \phi}$ mit Typregel \RN{Attr'}
+
+          Das bedingt $\Tj{(\Gamma\SUB{\tau}{\id})^\star}{e}{\hat{\tau}}$ und $\Tj{\Gamma\SUB{\tau}{\id}\SUB{\hat{\tau}}{a}}{r}{\phi}$.
+          Wie bereits im Fall der \RN{Inherit}-Regel, folgt leicht mit Fallunterscheidungen nach der Form von $\id$, dass auch
+          \[\begin{array}{l}
+            \Tj{(\Gamma\SUB{\tau'}{\id})^\star}{e}{\hat{\tau}}
+          \end{array}\]
+          und
+          \[\begin{array}{l}
+            \Tj{\Gamma\SUB{\tau'}{\id}\SUB{\hat{\tau}}{a}}{r}{\phi}
+          \end{array}\]
+          gilt, und daraus folgt mit Typregel \RN{Attr'} unmittelbar die Behauptung.
+  \PROOFCASEend
+  Die restlichen F\"alle verlaufen \"ahnlich.
+\end{beweis}
+
+Speziell f\"ur den Beweis der Typerhaltung ben\"otigen wir f\"ur \Lct\ noch ein weiteres Lemma,
+welches im Fall der small step Regel \RN{Inherit-Exec} zum Einsatz kommt, die einen
+$\binherit$-Klassenrumpf mit einer Klasse vereinfacht zu einer Konkatenation zweier Reihen.
+Entsprechend spezifiziert das Lemma, unter welchen Bedingungen sich f\"ur die durch Konkatenation
+enstandene Reihe ein bestimmter Typ herleiten l\"asst:
+
+\begin{lemma}[Reihenkonkatenation] \label{lemma:Lct:Reihenkonkatenation}
+  Seien $r_1,r_2\in\setRow$ mit $\doma{r_1}\cap\doma{r_2}=\emptyset$, $\phi_1,\phi_2\in\setRType$
+  mit $\phi_1 \oplus \phi_2$ definiert, und $\Gamma\in\setTEnv$ eine beliebige Typumgebung. Dann gilt:
+  \[\begin{array}{rcl}
+    \Tj{\Gamma}{r_1}{\phi_1}\ \wedge\ \Tj{\Gamma{\SUB{\phi_1(a)}{a}}_{a\in\doma{\phi_1}}}{r_2}{\phi_2}
+    & \Rightarrow &
+    \Tj{\Gamma}{r_1 \oplus r_2}{\phi_1 \oplus \phi_2}
+  \end{array}\]
+\end{lemma}
+
+\begin{beweis}
+  Das Lemma l\"asst sich einfach durch Induktion \"uber die L\"ange von $r_1$ beweisen, mit Fallunterscheidung
+  nach der syntaktischen Form von $r_1$:
+  \PROOFCASEbeg
+    \item $r_1=\rowEpsilon$
+
+          Dann gilt $r_1 \oplus r_2 = r_2$. Das Typurteil $\Tj{\Gamma}{r_1}{\phi_1}$ kann nur mit Typregel
+          \RN{Empty} aus $\phi_1 = \rtypeEmpty$ folgen, also gilt $\phi_1 \oplus \phi_2 = \phi_2$.
+          Weiterhin ist $\doma{\phi_1} = \doma{\rtypeEmpty} = \emptyset$, also gilt insbesondere
+          $\Gamma{\SUB{\phi_1(a)}{a}}_{a\in\doma{\phi_1}} = \Gamma$, und somit folgt
+          $\Tj{\Gamma}{r_1 \oplus r_2}{\phi_1 \oplus \phi_2}$.
+          
+    \item $r_1=(\rowVal{a'}{e}{r})$
+
+          Das Typurteil $\Tj{\Gamma}{\rowVal{a'}{e}{r}}{\phi_1}$ kann nur mit Typregel \RN{Attr'} aus Pr\"amissen der
+          Form $\Tj{\Gamma^\star}{e}{\tau}$ und $\Tj{\Gamma\SUB{\tau}{a'}}{r}{\phi}$ mit
+          $\phi_1 = (\rtypeMethod{a'}{\tau}{\rtypeEmpty})\oplus \phi$ folgen. Wenn $\doma{r_1}\cap\doma{r_2} = \emptyset$
+          gilt auch insbesondere $\doma{r}\cap\doma{r_2}=\emptyset$, und offensichtlich ist $\phi\oplus\phi_2$ definiert.
+          Da $a'\in\doma{\phi_1} = \doma{(\rtypeMethod{a'}{\tau}{\rtypeEmpty})\oplus\phi}$, gilt dann
+          auch $\Tj{\Gamma\SUB{\tau}{a'}{\SUB{\phi_1(a)}{a}}_{a\in\doma{\phi_1}}}{r_2}{\phi_2}$. Darauf l\"asst sich
+          nun die Induktionsvoraussetzung anwenden, und wir erhalten
+          \[\begin{array}{l}
+            \Tj{\Gamma\SUB{\tau}{a'}}{r\oplus{r_2}}{\phi\oplus\phi_2}.
+          \end{array}\]
+          Daraus folgt schliesslich mit Typregel \RN{Attr'}, dass insgesamt
+          \[\begin{array}{l}
+            \Tj{\Gamma}{\rowVal{a'}{e}{r\oplus{r_2}}}{(\rtypeMethod{a'}{\tau}{\rtypeEmpty})\oplus\phi\oplus\phi_2}
+          \end{array}\]
+          gilt, was exakt der Behauptung entspricht, denn es gilt $r_1 = (\rowVal{a'}{e}{r})$ und
+          $\phi_1 = (\rtypeMethod{a'}{\tau}{\rtypeEmpty})\oplus\phi$.
+    
+    \item $r_1=(\rowMethod{m}{e}{r})$
+
+          Folgt analog zum vorhergehenden Fall.
+  \PROOFCASEend
+\end{beweis}
+
+Wie im Fall der Programmiersprachen \Lot, \Lort\ und \Losrt, ben\"otigen wir f\"ur die Beweise der
+Preservation- und Progress-Theoreme noch ein weiteres Lemma, das einer Umkehrung der Typrelation
+entspricht. Wie zuvor beschr\"anken wir uns auf die Aussagen des Lemmas, die in den weiteren
+Beweisen benutzt werden, statt das vollst\"andige Lemma zu formulieren.
+
+\begin{lemma}[Umkehrung der Typrelation] \label{lemma:Lct:Umkehrung_der_Typrelation} \
+  \begin{enumerate}
+    \item Wenn $\Tj{\Gamma}{\id}{\tau}$, dann gilt $\Gamma(\id)=\tau'$ und $\tau'\simle\tau$.
+
+    \item Wenn $\Tj{\Gamma}{\expClass{\self:\tau}{b}}{\typeClass{\tau'}{\phi}}$, dann gilt
+          $\Tj{\Gamma^\star\SUB{\tau}{\self}}{b}{\phi}$ und $\tau = \tau'$
+          mit $\tau \simle \typeObject{\methods{\phi}}$.
+  \end{enumerate}
+\end{lemma}
+
+\begin{beweis}
+  Wir \"uberspringen den Beweis, da sich wie zuvor die einzelnen Aussagen leicht durch Induktion \"uber
+  die L\"ange der Typherleitung zeigen lassen.
+\end{beweis}
+
+Dank des vorangegangenen Lemmas lassen sich Anwendungen der \RN{Subsume'}-Regel in den folgenden Beweisen
+im wesentlichenen ignorieren, so dass wir nun das Preservation-Theorem formulieren und leicht beweisen
+k\"onnen.
+
+\begin{satz}[Typerhaltung, "`Preservation"'] \label{satz:Lct:Preservation} \index{Typsicherheit!Preservation} \
+  \begin{enumerate}
+    \item $\forall \Gamma\in\setTEnv:\forall e,e'\in\setExp:\forall \tau\in\setType:\,
+           \Tj{\Gamma^\star}{e}{\tau}\,\wedge\,e \to_e e'\ \Rightarrow\ \Tj{\Gamma^\star}{e'}{\tau}$
+    \item $\forall \Gamma\in\setTEnv:\forall r,r'\in\setRow:\forall \phi\in\setRType:\,
+           \Tj{\Gamma}{r}{\phi}\,\wedge\,r \to_r r'\ \Rightarrow\ \Tj{\Gamma}{r'}{\phi}$
+    \item $\forall \Gamma\in\setTEnv:\forall b,b'\in\setBody:\forall \phi\in\setRType:\,
+           \Tj{\Gamma}{b}{\phi}\,\wedge\,b \to_b b'\ \Rightarrow\ \Tj{\Gamma}{b'}{\phi}$
+  \end{enumerate}
+\end{satz}
+
+\begin{beweis}
+  Wie \"ublich beweisen wir die Typerhaltung durch simultane Induktion \"uber die L\"ange der Herleitung
+  der Typurteile $\Tj{\Gamma^\star}{e}{\tau}$, $\Tj{\Gamma}{r}{\phi}$ und $\Tj{\Gamma}{b}{\phi}$, mit
+  Fallunterscheidung nach der zuletzt angewendeten Typregel. Dazu betrachten wir die folgenden F\"alle:
+  \PROOFCASEbeg
+    \item F\"ur \RN{Const}, \RN{Id}, \RN{Abstr} und \RN{Empty} gilt gem\"a"s Lemma~\ref{lemma:Lc:Werte_und_small_steps}
+          $e \not\to$ bzw. $r \not\to$.
+
+    \item $\Tj{\Gamma^\star}{e}{\tau}$ mit Typregel \RN{Subsume'}
+
+          Nach Voraussetzung existiert ein $\tau'\in\setType$ mit $\Tj{\Gamma^\star}{e}{\tau'}$ und
+          $\tau' \simle \tau$. Nach Induktionsannahme gilt also weiter
+          \[\begin{array}{l}
+            \Tj{\Gamma^\star}{e'}{\tau'},
+          \end{array}\]
+          und wegen $\tau' \simle \tau$ folgt daraus mit Anwendung von Typregel \RN{Subsume'}, dass auch
+          \[\begin{array}{l}
+            \Tj{\Gamma^\star}{e'}{\tau}
+          \end{array}\]
+          gilt.
+
+    \item $\Tj{\Gamma^\star}{\expClass{\self:\tau}{b}}{\typeClass{\tau}{\phi}}$ mit Typregel \RN{Class}
+
+          Dann gilt nach Voraussetzung $\Tj{(\Gamma^\star)^\star\SUB{\tau}{\self}}{b}{\phi}$ mit
+          $\tau \simle \typeObject{\methods{\phi}}$. Dann kann der small
+          step $\expClass{\self:\tau}{b} \to_e e'$ ausschliesslich mit \RN{Class-Eval} hergeleitet worden
+          sein, was wiederum bedingt, dass ein small step $b \to_b b'$ existiert und $e' = \expClass{\self:\tau}{b'}$
+          gilt. Nach Induktionsannahme gilt also
+          \[\begin{array}{l}
+            \Tj{(\Gamma^\star)^\star\SUB{\tau}{\self}}{b'}{\phi},
+          \end{array}\]
+          woraus dann unmittelbar mit Typregel \RN{Class} folgt, dass auch
+          \[\begin{array}{l}
+            \Tj{\Gamma^\star}{\expClass{\self:\tau}{b'}}{\typeClass{\tau}{\phi}}
+          \end{array}\]
+          gilt.
+
+    \item $\Tj{\Gamma^\star}{\expNew{e}}{\tau}$ mit Typregel \RN{New}
+
+          Also m\"ussen die Pr\"amissen $\Tj{\Gamma^\star}{e}{\typeClass{\tau}{\phi}}$ und
+          $\tau \sim \typeObject{\methods{\phi}}$ erf\"ullt sein. Der small step
+          $\expNew{e} \to_e e'$ kann lediglich mit einer der small step Regeln
+          \RN{New-Eval} und \RN{New-Exec} hergeleitet worden sein. Wir unterscheiden also
+          nach der letzten small step Regel in der Herleitung, und zeigen jeweils, dass die
+          Behauptung gilt:
+          \begin{enumerate}
+            \item $\expNew{e} \to_e e'$ mit small step Regel \RN{New-Eval}
+
+                  Dann existiert ein $e''\in\setExp$, so dass $e' = \expNew{e''}$ und $e \to_e e'$ gilt.
+                  Die Behauptung folgt dann unmittelbar mit Induktionsvoraussetzung und Typregel
+                  \RN{New}.
+
+            \item $\expNew{e} \to_e e'$ mit small step Regel \RN{New-Exec}
+
+                  Dann gilt $e = \expClass{\self:\tau'}{r}$ und $e' = \expObject{\self:\tau'}{r}$. Nach
+                  Lemma~\ref{lemma:Lct:Umkehrung_der_Typrelation} muss also
+                  \[\begin{array}{l}
+                    \Tj{(\Gamma^\star)^\star\SUB{\tau'}{\self}}{r}{\phi}
+                  \end{array}\]
+                  gelten, mit $\tau' = \tau$. Wegen $\tau \sim \typeObject{\methods{\phi}}$ folgt daraus
+                  mit Typregel \RN{Object''} schliesslich die Behauptung
+                  \[\begin{array}{l}
+                    \Tj{\Gamma^\star}{\expObject{\self:\tau}{r}}{\tau}.
+                  \end{array}\]
+          \end{enumerate}
+
+    \item $\Tj{\Gamma}{\rowVal{a}{e}{r}}{(\rtypeMethod{a}{\tau}{\rtypeEmpty})\oplus\phi}$ mit Typregel \RN{Attr'}
+
+          Dann gilt nach Voraussetzung $\Tj{\Gamma^\star}{e}{\tau}$ und $\Tj{\Gamma\SUB{\tau}{a}}{r}{\phi}$. Der
+          small step $\rowVal{a}{e}{r} \to_r r'$ kann nur mit einer der small step Regeln \RN{Attr-Left} oder
+          \RN{Attr-Right} hergeleitet worden sein:
+          \begin{enumerate}
+            \item $\rowVal{a}{e}{r} \to_r r'$ mit small step Regel \RN{Attr-Left}
+
+                  Dann existiert ein small step $e \to_e e'$ und es muss $r'=(\rowVal{a}{e'}{r})$ gelten.
+                  Dann folgt die Behauptung mit Induktionsvoraussetzung und Typregel \RN{Attr'}.
+
+            \item $\rowVal{a}{e}{r} \to_r r'$ mit small step Regel \RN{Attr-Right}
+
+                  In diesem Fall existiert ein small step $r \to_r r''$ und es gilt $e\in\setVal$ und
+                  $r'=(\rowVal{a}{e}{r''})$. Hier folgt die Behauptung ebenfalls leicht mit Induktionsvoraussetzung
+                  und Typregel \RN{Attr'}.
+          \end{enumerate}
+
+    \item $\Tj{\Gamma}{\bodyInherit{A}{e}{b}}{\phi \oplus \phi'}$ mit Typregel \RN{Inherit}
+
+          Das kann nur aus Pr\"amissen der Form $\Tj{\Gamma}{\self}{\tau}$, $\Tj{\Gamma^\star}{e}{\typeClass{\tau}{\phi}}$,
+          $\doma{\phi} = A$ und $\Tj{\Gamma{\SUB{\phi(a)}{a}}_{a\in{A}}}{b}{\phi'}$ folgen. Dann kann der small step
+          $\bodyInherit{A}{e}{b} \to_b b'$ ausschliesslich mit einer der small step Regel \RN{Inherit-Right},
+          \RN{Inherit-Left} oder \RN{Inherit-Exec} hergeleitet worden sein. Entsprechend unterscheiden wir nach der
+          zuletzt angewandten small step Regel:
+          \begin{enumerate}
+            \item $\bodyInherit{A}{e}{b} \to_b b'$ mit small step Regel \RN{Inherit-Left}
+
+                  Dann existiert nach Voraussetzung ein small step $e \to_e e'$, und es gilt
+                  $b \in \setRow$ sowie $b' = \bodyInherit{A}{e'}{b}$. Nach Induktionsannahme gilt
+                  \[\begin{array}{l}
+                    \Tj{\Gamma^\star}{e'}{\typeClass{\tau}{\phi}}
+                  \end{array}\]
+                  und mit Typregel \RN{Inherit} folgt somit unmittelbar, dass auch
+                  \[\begin{array}{l}
+                    \Tj{\Gamma}{\bodyInherit{A}{e'}{b}}{\phi\oplus\phi'}
+                  \end{array}\]
+                  gilt.
+
+            \item $\bodyInherit{A}{e}{b} \to_b b'$ mit small step Regel \RN{Inherit-Right}
+
+                  Dann muss gelten $b' = \bodyInherit{A}{e}{b''}$ und die Behauptung folgt \"ahnlich
+                  einfach, wie im vorangegangenen Fall.
+
+            \item $\bodyInherit{A}{e}{b} \to_b b'$ mit small step Regel \RN{Inherit-Exec}
+
+                  Das bedingt $e = \expClass{\self:\hat{\tau}}{r_1}$, $b = r_2 \in \setRow$ und
+                  $b' = r_1 \oplus r_2$. Wegen Lemma~\ref{lemma:Lct:Umkehrung_der_Typrelation} existiert
+                  ein $\tau'\in\setType$ mit $\Gamma(\self)=\tau'$ und $\tau' \simle \tau$. Ebenfalls wegen
+                  Lemma~\ref{lemma:Lct:Umkehrung_der_Typrelation} gilt $\hat{\tau} = \tau$ und
+                  $\Tj{(\Gamma^\star)^\star\SUB{\tau}{\self}}{r_1}{\phi}$. Hieraus l\"asst sich wegen
+                  $(\Gamma^\star)^\star\SUB{\tau}{\self} =_{\free{r_1}} \Gamma\SUB{\tau}{\self}$ und
+                  Lemma~\ref{lemma:Lct:Subtyping_und_Typumgebungen} (Subtyping und Typumgebungen)
+                  herleiten, dass auch
+                  \[\begin{array}{l}
+                    \Tj{\Gamma\SUB{\tau'}{\self}}{r_1}{\phi}
+                  \end{array}\]
+                  und somit, dass
+                  \[\begin{array}{l}
+                    \Tj{\Gamma}{r_1}{\phi}
+                  \end{array}\]
+                  gilt. Darauf nun l\"asst sich Lemma~\ref{lemma:Lct:Reihenkonkatenation} (Reihenkonkatenation)
+                  anwenden, und wir erhalten
+                  \[\begin{array}{l}
+                    \Tj{\Gamma}{r_1 \oplus r_2}{\phi \oplus \phi'},
+                  \end{array}\]
+                  und damit ist die Behauptung gezeigt.
+          \end{enumerate}
+  \PROOFCASEend
+  Die restlichen F\"alle folgen wie in den Beweisen dieses Satzes f\"ur die vorangegangenen Programmiersprachen
+  (vgl. Satz~\ref{satz:Lot:Preservation}, \ref{satz:Losub:Preservation}, \ref{satz:Lort:Preservation}
+  und \ref{satz:Losrt:Preservation}).
+\end{beweis}
+
+Damit ist gezeigt, dass auch f\"ur die Programmiersprache \Lct\ gilt, dass small steps typerhaltend sind. Zum
+Beweis der Typsicherheit fehlt nun lediglich das Progress-Theorem. Dazu formulieren wir auch f\"ur \Lct\ wieder
+zun\"achst ein Canonical Forms Lemma, und zeigen dann, mithilfe dieses Lemmas, dass f\"ur jeden abgeschlossenen,
+wohlgetypten Ausdruck ein small step existiert, sofern er nicht bereits ein Wert ist. Da wir im Beweis des
+Progress-Theorems lediglich die neuen und ge\"anderten Typregeln betrachten, kommen wir bei der Formulierung
+des Canonical Forms Lemmas mit einer einzigen Aussage aus\footnote{Denn, wie \"ublich beschr\"anken wir uns
+auf die Aussagen des Lemmas, die wir auch tats\"achlich im Beweis des Progress-Satzes benutzen.}:
+
+\begin{lemma}[Canonical Forms] \label{lemma:Lct:Canonical_Forms}
+  Sei $v\in\setVal$, $\tau\in\setType$, und gelte $\Tj{[\,]}{v}{\tau}$.
+  \begin{enumerate}
+    \item Wenn $\tau \simle \typeClass{\tau'}{\phi'}$, dann gilt $v=\expClass{\self:\tau'}{r}$.
+  \end{enumerate}
+\end{lemma}
+
+\begin{beweis} \
+  \begin{enumerate}
+    \item Nach Lemma~\ref{lemma:Lct:Subtyping_Lemma} und Lemma~\ref{lemma:Lct:Aequivalenz_Lemma} gilt
+          $\tau = \typeRec{t_1}{\ldots\typeRec{t_n}{\typeClass{\tau'}{\phi'}}}$, das heisst f\"ur das
+          Typurteil $\Tj{[\,]}{v}{\tau}$ kommen lediglich die Typregeln \RN{Class} und \RN{Subsume'}
+          in Frage, und die Behauptung folgt leicht durch Induktion \"uber die L\"ange der Herleitung
+          des Typurteils mit Fallunterscheidung nach der zuletzt angewandten Typregel.
+  \end{enumerate}
+\end{beweis}
+
+Mit dieser Erkenntnis k\"onnen wir nun auch f\"ur die Programmiersprache \Lct\ ein Progress-Theorem formulieren
+und beweisen, wobei die Formulierung des Satzes erweitert werden muss im Vergleich zur Formulierung des Satzes
+f\"ur die Programmiersprache \Losrt\ (Satz~\ref{satz:Losrt:Progress}).
+
+\begin{satz}[Existenz des \"Ubergangsschritts, "`Progress"'] \label{satz:Lct:Progress} \index{Typsicherheit!Progress} \
+  \begin{enumerate}
+    \item $\forall e\in\setExp, \tau\in\setType:\, \Tj{[\,]}{e}{\tau}
+           \,\Rightarrow\,(e\in\setVal\,\vee\,\exists e'\in\setExp: e \to_e e')$
+    \item $\forall \Gamma\in\setTEnv,r\in\setRow, \phi\in\setRType:\, \Tj{\Gamma^+}{r}{\phi}
+           \,\Rightarrow\,(r\in\setRVal\,\vee\,\exists r'\in\setRow: r \to_r r')$
+    \item $\forall \Gamma\in\setTEnv,b\in\setBody\setminus\setRow,\phi\in\setRType:\, \Tj{\Gamma^+}{b}{\phi}
+           \,\Rightarrow\,\exists b'\in\setBody: b \to_b b'$
+  \end{enumerate}
+\end{satz}
+
+F\"ur echte Klassenr\"umpfe $b\in\setBody\setminus\setRow$ existiert keine Vorstellung von einem Wert, wie das f\"ur
+Ausdr\"ucke und Reihen der Fall ist. Stattdessen werden Klassenr\"umpfe zu Reihen ausgewertet, entsprechend ist
+bei der Formulierung des Satzes darauf zu achten, dass f\"ur echte Klassenr\"umpfe stets ein small step existieren
+muss.
+
+\begin{beweis}
+  Wie \"ublich f\"uhren wir den Beweis durch simultane Induktion \"uber die L\"ange der Typherleitungen
+  $\Tj{[\,]}{e}{\tau}$, $\Tj{\Gamma^+}{r}{\phi}$ und $\Tj{\Gamma^+}{b}{\phi}$, und unterscheiden jeweils
+  nach der letzten Typregel in der Herleitung. Wir betrachten lediglich die folgenden F\"alle f\"ur die
+  neuen oder ge\"anderten Typregeln:
+  \PROOFCASEbeg
+    \item $\Tj{[\,]}{e}{\tau}$ mit Typregel \RN{Subsume'}
+
+          Das Typurteil kann nur aus Pr\"amissen der Form $\Tj{[\,]}{e}{\tau'}$ und $\tau' \simle \tau$ folgen.
+          Also folgt die Behauptung unmittelbar mit Induktionsvoraussetzung.
+
+    \item $\Tj{[\,]}{\expObject{\self:\tau}{r}}{\tau}$ mit Typregel \RN{Object''}
+
+          Nach Voraussetzung gilt also $\Tj{[\self:\tau]}{r}{\phi}$ mit $\tau \sim \typeObject{\methods{\phi}}$,
+          woraus nach Induktionsannahme folgt, dass $r$ entweder bereits ein Reihenwert ist, oder ein small step
+          $r \to_r r'$ existiert.
+
+          Gilt bereits $r\in\setRVal$, so gilt damit auch $(\expObject{\self:\tau}{r})\in\setVal$.
+
+          Falls andererseits ein small step $r \to_r r'$ existiert, so l\"asst sich f\"ur den Gesamtausdruck ein
+          small step $\expObject{\self:\tau}{r} \to_e \expObject{\self:\tau}{r'}$ mit Regel \RN{Object-Eval}
+          herleiten.
+
+    \item $\Tj{[\,]}{\expClass{\self:\tau}{b}}{\typeClass{\tau}{\phi}}$ mit Typregel \RN{Class}
+
+          Das bedeutet, es gilt $\Tj{[\self:\tau]}{b}{\phi}$ mit $\tau \simle \typeObject{\methods{\phi}}$. Dann
+          m\"ussen wir unterscheiden, ob $b$ ein echter Klassenrumpf ist, oder ob $b$ bereits eine Reihe ist.
+
+          Wenn $b\in\setRow$, so ist nichts zu zeigen, denn dann gilt $(\expClass{\self:\tau}{b})\in\setVal$.
+
+          Sollte $b\in\setBody\setminus\setRow$ gelten, so existiert nach Induktionsvoraussetzung ein small
+          step $b \to_b b'$, also existiert insgesamt mit Regel \RN{Class-Eval} ein small step
+          $\expClass{\self:\tau}{b} \to_e \expClass{\self:\tau}{b'}$.
+
+    \item $\Tj{[\,]}{\expNew{e}}{\tau}$ mit Typregel \RN{New}
+
+          Dann gilt $\Tj{[\,]}{e}{\typeClass{\tau}{\phi}}$ mit $\tau \sim \typeObject{\methods{\phi}}$. Nach
+          Induktionsvoraussetzung ist $e$ entweder bereits ein Wert, oder es existiert ein $e'\in\setType$
+          mit $e \to_e e'$.
+
+          Falls $e$ bereits ein Wert ist, so existiert nach Lemma~\ref{lemma:Lct:Canonical_Forms} (Canonical Forms)
+          ein $r\in\setRow$ mit $e=\expClass{\self:\tau}{r}$. Dann existiert mit Regel \RN{New-Exec} ein small
+          step $\expNew{(\expClass{\self:\tau}{r})} \to_e \expObject{\self:\tau}{r}$.
+
+          Existiert andererseits f\"ur $e$ ein small step $e \to_e e'$, dann l\"asst sich mit Regel \RN{New-Eval}
+          ein small step $\expNew{e} \to_e \expNew{e'}$ herleiten.
+
+    \item $\Tj{\Gamma^+}{\bodyInherit{A}{e}{b}}{\phi\oplus\phi'}$ mit Typregel \RN{Inherit}
+
+          Nach Voraussetzung gilt $\Tj{\Gamma^+}{\self}{\tau}$, $\Tj{(\Gamma^+)^\star}{e}{\typeClass{\tau}{\phi}}$,
+          $\doma{\phi} = A$ und $\Tj{\Gamma^+{\SUB{\phi(a)}{a}}_{a\in{A}}}{b}{\phi'}$.
+
+          Wie zuvor m\"ussen wir unterscheiden, ob $b$ ein echter Klassenrumpf, oder bereits eine Reihe ist. Ist 
+          $b\in\setBody\setminus\setRow$, so existiert bereits nach Induktionsannahme ein $b'\in\setBody$ mit
+          $b \to_b b'$. Also existiert insgesamt ein small step $\bodyInherit{A}{e}{b} \to_b \bodyInherit{A}{e}{b'}$
+          mit Regel \RN{Inherit-Right}.
+
+          Anderenfalls ist $b$ bereits eine Reihe. Wegen $(\Gamma^+)^\star = [\,]$ folgt dann nach Induktionsvoraussetzung,
+          dass $e$ entweder bereits ein Wert ist, oder ein small step $e \to_e e'$ existiert. Letzteres bedeutet,
+          dass insgesamt f\"ur den Klassenrumpf ein small step $\bodyInherit{A}{e}{b} \to_b \bodyInherit{A}{e'}{b}$ mit small step
+          Regel \RN{Inherit-Left} existiert.
+
+          Damit bleibt lediglich der Fall zu betrachten, dass $e\in\setVal$ und $b=r_2\in\setRow$ gilt. Nach
+          Lemma~\ref{lemma:Lct:Canonical_Forms} (Canonical Forms) gilt dann wieder $e = \expClass{\self:\tau}{r_1}$,
+          und mit Lemma~\ref{lemma:Lct:Umkehrung_der_Typrelation} folgt $\Tj{[\self:\tau]}{r_1}{\phi}$. Offensichtlich
+          gilt dann wegen $\doma{\phi} = A$ auch $\doma{r_1} = A$. Somit existiert insgesamt ein small step
+          $\bodyInherit{A}{\expClass{\self:\tau}{r_1}}{r_2} \to_b r_1 \oplus r_2$ mit Regel \RN{Inherit-Exec}.
+  \PROOFCASEend
+  Die \"ubrigen F\"alle verlaufen \"ahnlich zum Beweis des Satzes f\"ur die zuvor betrachteten Programmiersprachen
+  (vgl. Satz~\ref{satz:Lot:Progress}, \ref{satz:Losub:Progress}, \ref{satz:Lort:Progress} und \ref{satz:Losrt:Progress}).
+\end{beweis}
+
+Basierend auf diesen Ergebnissen l\"asst sich nun analog zu den vorherigen Programmiersprachen, mithilfe der
+Preservation- und Progress-S\"atze, die Typsicherheit von \Lct\ beweisen.
+
+\begin{satz}[Typsicherheit, "`Safety"'] \label{satz:Lct:Safety} \index{Typsicherheit!Safety}
+  Wenn $\Tj{[\,]}{e}{\tau}$, dann bleibt die Berechnung f\"ur $e$ nicht stecken.
+\end{satz}
+
+\begin{beweis}
+  Wie bereits f\"ur die zuvor betrachteten Programmiersprachen, folgt die Typsicherheit unmittelbar aus
+  den Preservation- und Progress-S\"atzen.
+\end{beweis}
+
+
+%%%%%%%%%%%%%%%%%%%%
+%% Typalgorithmus %%
+%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Typalgorithmus}
+
+Auch f\"ur die Programmiersprache \Lct\ k\"onnte man \"ahnlich wie im Fall der Sprache \Losub\ einen Minimal Typing
+Kalk\"ul entwickeln, und f\"ur die erweiterten Relationen $\sim$ und $\simle$ liesse sich ebenfalls recht einfach
+zeigen, dass sie ebenfalls entscheidbar sind, so dass insgesamt klar ist, dass auch f\"ur \Lct\ ein Algorithmus
+zur Typ\"uberpr\"ufung existiert. Eine detailierte Betrachtung dieses Algorithmus f\"ur \Lct\ w\"urde jedoch den
+Rahmen dieser Arbeit sprengen.
+
+% vi:set ts=2 sw=2 et ai syntax=tex:

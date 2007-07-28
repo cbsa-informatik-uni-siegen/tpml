@@ -1,0 +1,226 @@
+%%
+%% Rekursive Typen
+%%
+
+\chapter{Rekursive Typen}
+\label{kapitel:Rekursive_Typen}
+
+
+%%%%%%%%%%%%%%%%
+%% Tree Types %%
+%%%%%%%%%%%%%%%%
+
+\section{Tree Types}
+
+\begin{definition}[Tree Types] \label{definition:Tree_Types:Tree_Types}
+  Die Menge $\setTType$ aller Tree Types $T$ ist durch die kontextfreie Grammatik
+  \GRbeg
+    T \GRis \typeBool \GRmid \typeInt \GRmid \typeUnit
+      \GRal \typeArrow{T_1}{T_2}
+      \GRal \typeObject{m_1:T_1;\ldots;m_n:T_n}
+  \GRend
+  definiert.
+\end{definition}
+
+{\bf TODO:} zu beachten: Tree Types sind unendlich
+
+\begin{definition}[Gleichheit von Tree Types] \label{definition:Tree_Types:Gleichheit}
+  Sei $\mathcal{E}_T: \mathcal{P}(\setTType\times\setTType) \to \mathcal{P}(\setTType\times\setTType)$
+  die wie folgt definierte monotone Funktion:
+  \[\begin{array}{rcl}
+    \mathcal{E}_T(R)
+    & =    & \{(T,T)\ |\ T \in \{\typeBool,\typeInt,\typeUnit\}\} \\
+    & \cup & \{(\typeArrow{T_1}{T_2},\typeArrow{T_1'}{T_2'})\ |\ (T_1,T_1'),(T_2,T_2')\in R\} \\
+    & \cup & \{(\typeObject{{m_i:T_i}^{i=1 \ldots n}},\typeObject{{m_i:T_i'}^{i=1 \ldots n}})\ |\ 
+               \forall i=1,\ldots,n:\,(T_i,T_i') \in R\}
+  \end{array}\]
+  Zwei Tree Types $T,T' \in \setTType$ heissen {\em gleich}, wenn $(T,T')\in \nu \mathcal{E}_T$.
+  In diesem Fall schreiben wir $T =_T T'$.
+\end{definition}
+
+{\bf TODO:} Prosa
+
+\begin{lemma} \label{lemma:Tree_Types:Aequivalenzrelation} \
+  \begin{enumerate}
+    \item $\nu \mathcal{E}_T$ ist reflexiv.
+    \item $\nu \mathcal{E}_T$ ist transitiv.
+    \item $\nu \mathcal{E}_T$ ist symmetrisch.
+    \item $\nu \mathcal{E}_T$ ist eine \"Aquivalenzrelation.
+  \end{enumerate}
+\end{lemma}
+
+\begin{beweis} \
+  \begin{enumerate}
+    \item Nach Lemma~\ref{lemma:math:Reflexivitaet} ist zu zeigen, dass
+          \[\begin{array}{l}
+            \name{Refl}_{\setTType} = \{(T,T)\ |\ T\in\setTType\}
+          \end{array}\]
+          $\mathcal{E}_T$-konsistent ist, also
+          $\name{Refl}_{\setTType} \subseteq \mathcal{E}_T(\name{Refl}_{\setTType})$.
+          Dazu betrachten wir die m\"oglichen Formen von $T$ und zeigen jeweils, dass
+          $(T,T) \in \mathcal{E}_T(\name{Refl}_{\setTType})$.
+          \PROOFCASEbeg
+            \item F\"ur $T \in \{\typeBool,\typeInt,\typeUnit\}$ folgt die Behauptung aus der Definition.
+
+            \item Wenn $T = \typeArrow{T_1}{T_2}$, dann gilt $(T_1,T_1),(T_2,T_2)\in\name{Refl}_{\setTType}$
+                  nach Definition~\ref{definition:math:Reflexivitaet}. Also folgt mit
+                  Definition~\ref{definition:Tree_Types:Gleichheit}, dass
+                  $(\typeArrow{T_1}{T_2},\typeArrow{T_1}{T_2})\in \mathcal{E}_T(\name{Refl}_{\setTType})$.
+
+            \item Im Fall von $T = \typeObject{m_1:T_1;\ldots;m_n:T_n}$ folgt die Behauptung ebenso einfach.
+          \PROOFCASEend
+
+    \item Wegen Lemma~\ref{lemma:math:Transitivitaet} haben wir zu zeigen, dass
+          \[\begin{array}{l}
+            \name{TR}(\mathcal{E}_T(R)) \subseteq \mathcal{E}_T(\name{TR}(R))
+          \end{array}\]
+          f\"ur alle $R \subseteq \setTType \times \setTType$ gilt.
+          Sei dazu $(T_1,T_3)\in\name{TR}(\mathcal{E}_T(R))$. Nach Definition von $\name{TR}$ existiert
+          dann ein $T_2\in\setTType$, so dass $(T_1,T_2),(T_2,T_3)\in\mathcal{E}_T(R)$. Wir betrachten die
+          m\"oglichen Formen von $T_2$.
+          \PROOFCASEbeg
+            \item Wenn $T_2\in\{\typeBool,\typeInt,\typeUnit\}$, dann m\"ussen nach Definition von
+                  $\mathcal{E}_T$ auch $T_1$ und $T_3$ Basistypen sein, und es muss gelten $T_1 = T_2$
+                  und $T_2 = T_3$. Also ist $T_1 = T_3$ und nach Definition somit
+                  $(T_1,T_3)\in\mathcal{E}_T(\name{TR}(R))$.
+
+            \item F\"ur $T_2 = \typeArrow{T_2'}{T_2''}$ kann $(T_1,T_2)\in\mathcal{E}_T(R)$ nur mit
+                  $T_1 = \typeArrow{T_1'}{T_1''}$ und $(T_1',T_2'),(T_1'',T_2'')\in R$ folgen. Entsprechend folgt
+                  $T_3 = \typeArrow{T_3'}{T_3''}$ mit $(T_2',T_3'),(T_2'',T_3'')\in R$ f\"ur
+                  $(T_2,T_3)\in\mathcal{E}_T(R)$. Nach Definition von $\name{TR}$ folgt
+                  $(T_1',T_3'),(T_1'',T_3'')\in\name{TR}(R)$, und nach
+                  Definition~\ref{definition:Tree_Types:Gleichheit} schliesslich
+                  $(\typeArrow{T_1'}{T_1''},\typeArrow{T_3'}{T_3''})\in\mathcal{E}_T(\name{TR}(R))$.
+
+            \item Der Fall $T_2 = \typeObject{m_1:T_1;\ldots;m_n:T_n}$ verl\"auft wieder analog.
+          \PROOFCASEend
+
+    \item Gem\"a"s Lemma~\ref{lemma:math:Symmetrie} ist zu zeigen, dass
+          \[\begin{array}{l}
+            \name{SYMM}(\mathcal{E}_T(R)) \subseteq \mathcal{E}_T(\name{SYMM}(R))
+          \end{array}\]
+          f\"ur alle $R \subseteq \setTType \times \setTType$ gilt. Der Beweis verl\"auft hier
+          analog zum Beweis der Transitivit\"at.
+
+    \item Klar nach (a), (b) und (c).
+  \end{enumerate}
+\end{beweis}
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%% Die Sprache Lort %%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Die Sprache \Lort}
+
+\begin{definition}[Syntax der Sprache \Lort] \label{definition:Lort:Syntax_der_Sprache_Lort} \
+  Vorgegeben sei eine Menge $\setTName$ von \Define{Typnamen}{Typname} $t$.
+  \begin{enumerate}
+    \item Die Menge $\setType^{raw}$ aller syntaktisch herleitbaren Typen $\tau^{raw}$ ist durch die
+          kontextfreie Grammatik
+          \GRbeg
+            \tau^{raw} \GRis \typeBool \GRmid \typeInt \GRmid \typeUnit
+                       \GRal \typeArrow{\tau_1^{raw}}{\tau_2^{raw}}
+                       \GRal \typeRec{t}{\tau_1^{raw}}
+                       \GRal \typeObject{\phi^{raw}}
+          \GRend
+          und die Menge $\setRType^{raw}$ aller syntaktisch herleitbaren Reihentypen $\phi^{raw}$ ist durch
+          \GRbeg
+            \phi^{raw} \GRis \rtypeEmpty
+                       \GRal \rtypeMethod{m}{\tau^{raw}}{\phi_1^{raw}}
+          \GRend
+          definiert.
+
+    \item Die Menge $\free{\tau^{raw}}$ aller im Typ $\tau^{raw}\in\setType^{raw}$ frei vorkommenden Typnamen ist
+          induktiv durch
+          \EQNbeg
+            \free{\tau_\beta} & = & \emptyset \text{ f\"ur } \tau_\beta\in\{\typeBool,\typeInt,\typeUnit\} \\
+            \free{\typeArrow{\tau_1^{raw}}{\tau_2^{raw}}} & = & \free{\tau_1^{raw}} \cup \free{\tau_2^{raw}} \\
+            \free{\typeRec{t}{\tau_1^{raw}}} & = & \free{\tau_1^{raw}} \setminus \{t\} \\
+            \free{\typeObject{\phi^{raw}}} & = & \free{\phi^{raw}}
+          \EQNend
+          und die Menge $\free{\phi^{raw}}$ aller im Reihentyp $\phi^{raw} \in\setRType^{raw}$ frei
+          vorkommenden Typnamen ist induktiv durch
+          \EQNbeg
+            \free{\rtypeEmpty} & = & \emptyset \\
+            \free{\rtypeMethod{m}{\tau^{raw}}{\phi_1^{raw}}} & = & \free{\tau^{raw}} \cup \free{\phi_1^{raw}}
+          \EQNend
+          definiert.
+
+    \item Die Mengen $\setType \subseteq \setType^{raw}$ aller g\"ultigen Typen $\tau$ und
+          $\setRType^{raw}\subseteq\setRType$ aller g\"ultigen Reihentypen $\phi$ der Programmiersprache
+          \Lort\ sind wie folgt definiert
+          \EQNbeg
+            \setType & = & \{\tau\in\setType^{raw}\ |\ \free{\tau} = \emptyset \wedge
+                            \forall t,t_1,\ldots,t_n\in\setTName:
+                            \typeRec{t}{\typeRec{t_1}{\ldots\typeRec{t_n}{t}}} \not\in \mathcal{P}(\tau)\} \\
+            \setRType & = & \{\phi\in\setRType^{raw}\ |\ \free{\phi} = \emptyset\},
+          \EQNend
+          wobei $\mathcal{P}(\tau)$ die Menge aller im Typ $\tau$ vorkommenden Typen bezeichnet.
+  \end{enumerate}
+\end{definition}
+
+{\bf TODO:} Definition von Substitution (geb. Umbenennung nicht notwendig $\free{\tau}=\emptyset$)
+
+{\bf TODO:} Prosa, Zusammenhang zwischen unendlichen B\"aumen und der endlichen $\mu$-Darstellung
+
+\begin{definition} \label{definition:Lort:treeof}
+  Sei $\name{treeof}: \setType \to \setTType$ die wie folgt induktiv definierte Funktion, die
+  endliche Typrepr\"asentationen auf (unendliche) B\"aume abbildet.
+  \[\begin{array}{rcl}
+    \treeof{\typeBool} & = & \typeBool \\
+    \treeof{\typeInt} & = & \typeInt \\
+    \treeof{\typeUnit} & = & \typeUnit \\
+    \treeof{\typeArrow{\tau_1}{\tau_2}} & = & \typeArrow{\treeof{\tau_1}}{\treeof{\tau_2}} \\
+    \treeof{\typeObject{{m_i:\tau_i}^{i=1 \ldots n}}} & = & \typeObject{{m_i:\treeof{\tau_i}}^{i=1 \ldots n}} \\
+    \treeof{\typeRec{t}{\tau}} & = & \treeof{\tau\SUB{\typeRec{t}{\tau}}{t}}
+  \end{array}\]
+\end{definition}
+
+{\bf TODO:} Prosa
+
+\begin{definition}[Gleichheit von rekursiven Typen] \label{definition:Lort:Typgleichheit} \
+  \begin{enumerate}
+    \item Sei $\mathcal{E}: \mathcal{P}(\setType\times\setType) \to \mathcal{P}(\setType\times\setType)$ die
+          wie folgt definierte monotone Funktion.
+          \[\begin{array}{rcl}
+            \mathcal{E}(R) & =  & \{(\tau_\beta,\tau_\beta)\ |\ \tau_\beta \in \{\typeBool,\typeInt,\typeUnit\}\} \\
+                  &\cup& \{(\typeArrow{\tau_1}{\tau_2},\typeArrow{\tau_1'}{\tau_2'})\ |\ (\tau_1,\tau_1')\in R \wedge
+                           (\tau_2,\tau_2')\in R\} \\
+                  &\cup& \{(\typeObject{{m_i:\tau_i}^{i=1 \ldots n}},\typeObject{{m_i:\tau_i'}^{i=1 \ldots n}})\ |\ 
+                           \forall i=1,\ldots,n:(\tau_i,\tau_i')\in R\} \\
+                  &\cup& \{(\typeRec{t}{\tau},\tau')\ |\ (\tau\SUB{\typeRec{t}{\tau}}{t},\tau')\in R\} \\
+                  &\cup& \{(\tau',\typeRec{t}{\tau})\ |\ (\tau',\tau\SUB{\typeRec{t}{\tau}}{t})\in R \wedge
+                           \tau'\not\in\{\typeRec{t'}{\tau''}|t'\in\setTName,\tau''\in\setType\}\}
+          \end{array}\]
+
+    \item Die Relation $\eq$ ist definiert als der gr\"o"ste Fixpunkt von $\mathcal{E}$, also $\tau \eq \tau'$ genau
+          dann wenn $(\tau,\tau')\in\nu \mathcal{E}$.
+  \end{enumerate}
+\end{definition}
+
+{\bf TODO:} \"Uberleitung, Korrektheit, Vollst\"andigkeit
+
+\begin{lemma}[Korrekheit] \label{lemma:Lort:Korrektheit_der_Typgleichheit}
+  Seien $\tau,\tau'\in\setType$. Wenn $(\tau,\tau')\in \nu\mathcal{E}$, dann gilt
+  $(\treeof{\tau},\treeof{\tau'})\in \nu\mathcal{E}_T$.
+\end{lemma}
+
+\begin{lemma}[Vollst\"andigkeit] \label{lemma:Lort:Vollstaendigkeit_der_Typgleichheit}
+  Seien $\tau,\tau'\in\setType$. Wenn $(\treeof{\tau},\treeof{\tau'})\in\nu\mathcal{E}_T$,
+  dann gilt $(\tau,\tau')\in \nu\mathcal{E}$.
+\end{lemma}
+
+\begin{satz}
+  Seien $\tau,\tau' \in \setTType$. Dann gilt:
+  \[\begin{array}{l}
+    \tau \eq \tau'\,\Leftrightarrow\,\treeof{\tau} =_T \treeof{\tau'}
+  \end{array}\]
+\end{satz}
+
+\begin{beweis}
+  Folgt aus der Korrektheit (Lemma~\ref{lemma:Lort:Korrektheit_der_Typgleichheit}) und der
+  Vollst\"andigkeit (Lemma~\ref{lemma:Lort:Vollstaendigkeit_der_Typgleichheit}) von $\eq$.
+\end{beweis}
+
+% vi:set ts=2 sw=2 et ai syntax=tex:
