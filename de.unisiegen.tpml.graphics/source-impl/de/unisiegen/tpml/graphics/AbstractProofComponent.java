@@ -86,5 +86,29 @@ public abstract class AbstractProofComponent extends JComponent {
 		this.availableWidth = availableWidth;
 		relayout();
 	}
+
+	/**
+	 * @param currentlyLayouting the currentlyLayouting to set
+	 */
+	public void setCurrentlyLayouting(boolean currentlyLayouting)
+	{
+		this.currentlyLayouting = currentlyLayouting;
+	}
+
+	/**
+	 * @return the proofModel
+	 */
+	public AbstractProofModel getProofModel()
+	{
+		return this.proofModel;
+	}
+
+	/**
+	 * @return the availableWidth
+	 */
+	public int getAvailableWidth()
+	{
+		return this.availableWidth;
+	}
 	
 }
