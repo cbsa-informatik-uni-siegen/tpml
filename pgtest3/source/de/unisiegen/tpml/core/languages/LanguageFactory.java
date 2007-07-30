@@ -6,18 +6,18 @@ import de.unisiegen.tpml.core.languages.l0.L0Language;
 import de.unisiegen.tpml.core.languages.l0cbn.L0CBNLanguage;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l1cbn.L1CBNLanguage;
-import de.unisiegen.tpml.core.languages.l1subtype.L1SUBTYPELanguage;
+import de.unisiegen.tpml.core.languages.l1subtype.L1SUBLanguage;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.languages.l2c.L2CLanguage;
 import de.unisiegen.tpml.core.languages.l2cbn.L2CBNLanguage;
-import de.unisiegen.tpml.core.languages.l2csubtype.L2CSUBTYPELanguage;
+import de.unisiegen.tpml.core.languages.l2csubtype.L2CSUBLanguage;
 import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
-import de.unisiegen.tpml.core.languages.l2osubtype.L2OSUBTYPELanguage;
-import de.unisiegen.tpml.core.languages.l2subtype.L2SUBTYPELanguage;
+import de.unisiegen.tpml.core.languages.l2osubtype.L2OSUBLanguage;
+import de.unisiegen.tpml.core.languages.l2subtype.L2SUBLanguage;
 import de.unisiegen.tpml.core.languages.l3.L3Language;
-import de.unisiegen.tpml.core.languages.l3subtype.L3SUBTYPELanguage;
+import de.unisiegen.tpml.core.languages.l3subtype.L3SUBLanguage;
 import de.unisiegen.tpml.core.languages.l4.L4Language;
-import de.unisiegen.tpml.core.languages.l4subtype.L4SUBTYPELanguage;
+import de.unisiegen.tpml.core.languages.l4subtype.L4SUBLanguage;
 
 /**
  * Factory class for {@link de.unisiegen.tpml.core.languages.Language}s.
@@ -60,10 +60,10 @@ public final class LanguageFactory {
 	 * @return an array with all available {@link Language}s.
 	 */
 	public Language[] getAvailableLanguages ( ) {
-		return new Language[] { new L0Language ( ), new L0CBNLanguage ( ), new L1Language ( ), new L1SUBTYPELanguage ( ),
-				new L1CBNLanguage ( ), new L2Language ( ), new L2SUBTYPELanguage ( ), new L2CBNLanguage ( ),
-				new L2OLanguage ( ), new L2OSUBTYPELanguage ( ), new L2CLanguage ( ), new L2CSUBTYPELanguage(), new L3Language ( ),
-				new L3SUBTYPELanguage ( ), new L4Language ( ), new L4SUBTYPELanguage ( ) };
+		return new Language[] { new L0Language ( ), new L0CBNLanguage ( ), new L1Language ( ), new L1SUBLanguage ( ),
+				new L1CBNLanguage ( ), new L2Language ( ), new L2SUBLanguage ( ), new L2CBNLanguage ( ),
+				new L2OLanguage ( ), new L2OSUBLanguage ( ), new L2CLanguage ( ), new L2CSUBLanguage(), new L3Language ( ),
+				new L3SUBLanguage ( ), new L4Language ( ), new L4SUBLanguage ( ) };
 	}
 
 	/**
