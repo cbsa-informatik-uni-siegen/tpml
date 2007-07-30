@@ -50,6 +50,6 @@ public interface EditorPanel  {
 
 	boolean shouldBeSaved ( );
 
-	
+	public void handlePrint();
 
 }

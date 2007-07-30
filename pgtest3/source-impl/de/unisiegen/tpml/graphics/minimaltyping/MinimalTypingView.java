@@ -9,6 +9,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Enumeration;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -181,4 +182,10 @@ public class MinimalTypingView extends AbstractProofView
 			nodeComponent.setAdvanced();
 		}
   }
+
+
+	public JComponent getPrintPart() {
+		// TODO Christoph plz print here
+		return null;
+	}
 }

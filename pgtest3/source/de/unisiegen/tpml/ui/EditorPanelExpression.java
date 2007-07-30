@@ -969,4 +969,9 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
     }
   }
 
+public void handlePrint() {
+	PrintHandler printer = new PrintHandler((JComponent)getComponent().getPrintPart());
+    printer.print();
+}
+
 }

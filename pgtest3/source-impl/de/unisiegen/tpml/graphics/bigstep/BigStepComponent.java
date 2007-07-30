@@ -59,7 +59,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * @author marcell
  *
  */
-public class BigStepComponent extends AbstractProofComponent implements Scrollable {
+public class BigStepComponent extends AbstractProofComponent implements Scrollable, Cloneable {
 
 	/**
 	 * 
@@ -515,5 +515,13 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	public TreeNodeLayout getTreeNodeLayout()
 	{
 		return this.treeNodeLayout;
-	}	
+	}
+	
+	public BigStepComponent clone (){
+		try {
+			return (BigStepComponent)super.clone();
+		} catch (CloneNotSupportedException e) {
+			return null;
+		}
+	}
 }

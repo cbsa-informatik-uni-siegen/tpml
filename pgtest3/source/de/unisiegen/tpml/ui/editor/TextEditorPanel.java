@@ -14,6 +14,8 @@ import java.awt.event.MouseAdapter ;
 import java.awt.event.MouseEvent ;
 import java.io.IOException ;
 import java.util.Stack ;
+
+import javax.swing.JComponent;
 import javax.swing.JMenuItem ;
 import javax.swing.JPanel ;
 import javax.swing.JPopupMenu ;
@@ -777,4 +779,9 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
     }
     this.undoItem.setEnabled ( this.undoStatus ) ;
   }
+  
+	public JComponent getPrintPart() {
+
+		return editor;
+	}
 }

@@ -13,6 +13,8 @@ import java.awt.event.FocusEvent ;
 import java.awt.event.FocusListener ;
 import java.io.StringReader ;
 import java.util.Stack ;
+
+import javax.swing.JComponent;
 import javax.swing.JLabel ;
 import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
@@ -1592,4 +1594,10 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
       }
     }
   }
+
+
+public JComponent getPrintPart() {
+	// TODO Christoph plz print here
+	return null;
+}
 }

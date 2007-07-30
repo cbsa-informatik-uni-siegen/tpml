@@ -8,6 +8,7 @@ import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -226,4 +227,10 @@ public class SubTypingView extends AbstractProofView
   {
     this.component.guess ( ) ;
   }
+
+
+public JComponent getPrintPart() {
+	// TODO Christoph plz print here
+	return null;
+}
 }

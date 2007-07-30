@@ -330,4 +330,9 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 		return this.model;
 		
 	}
+	
+	public JComponent getPrintPart() {
+
+		return view.getPrintPart();
+	}
 }

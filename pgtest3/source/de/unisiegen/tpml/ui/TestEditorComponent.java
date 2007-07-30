@@ -6,6 +6,8 @@
 
 package de.unisiegen.tpml.ui;
 
+import javax.swing.JComponent;
+
 
 /**
  * For TESTING only remove this from final version
@@ -305,6 +307,11 @@ public class TestEditorComponent extends javax.swing.JPanel implements EditorCom
 	public void setAdvanced(boolean status) {
 		// 
 		
+	}
+
+	public JComponent getPrintPart() {
+		// TODO Auto-generated method stub
+		return null;
 	}
     
 }

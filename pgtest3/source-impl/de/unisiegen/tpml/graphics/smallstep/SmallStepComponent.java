@@ -49,7 +49,7 @@ import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepRulesComponent
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepRuleLabel
  */
-public class SmallStepComponent extends AbstractProofComponent implements Scrollable
+public class SmallStepComponent extends AbstractProofComponent implements Scrollable, Cloneable
 {
 
 	/**
@@ -739,6 +739,14 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	public boolean getScrollableTracksViewportHeight()
 	{
 		return false;
+	}
+	
+	public SmallStepComponent clone (){
+		try {
+			return (SmallStepComponent)super.clone();
+		} catch (CloneNotSupportedException e) {
+			return null;
+		}
 	}
 
 	/**

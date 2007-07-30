@@ -64,7 +64,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * @see de.unisiegen.tpml.graphics.typechecker.TypeCheckerEnterType
  *
  */
-public class TypeCheckerComponent extends AbstractProofComponent implements Scrollable {
+public class TypeCheckerComponent extends AbstractProofComponent implements Scrollable, Cloneable {
 	
 	/**
 	 * 
@@ -438,6 +438,14 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	public int getScrollableUnitIncrement (Rectangle visibleRect, int orientation, int direction) {
 		//  XXX: Dynamic unit increment
 		return 10;
+	}
+	
+	public TypeCheckerComponent clone (){
+		try {
+			return (TypeCheckerComponent)super.clone();
+		} catch (CloneNotSupportedException e) {
+			return null;
+		}
 	}
 	
 	/**

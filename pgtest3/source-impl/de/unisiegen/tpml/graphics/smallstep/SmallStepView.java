@@ -7,6 +7,8 @@ import java.awt.GridBagLayout ;
 import java.awt.Insets ;
 import java.awt.event.ComponentAdapter ;
 import java.awt.event.ComponentEvent ;
+
+import javax.swing.JComponent;
 import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
 import javax.swing.JSplitPane ;
@@ -178,4 +180,9 @@ public class SmallStepView extends AbstractProofView
     super.setAdvanced ( advanced ) ;
     this.component.setAdvanced ( isAdvanced ( ) ) ;
   }
+
+
+public JComponent getPrintPart() {
+	return (JComponent)component.clone();
+}
 }

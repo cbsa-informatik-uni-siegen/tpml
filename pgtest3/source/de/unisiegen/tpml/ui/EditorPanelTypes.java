@@ -844,4 +844,9 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 			// Nothing to do
 		}
 	}
+
+	public void handlePrint() {
+		// TODO Christoph plz. print this here
+		
+	}
 }

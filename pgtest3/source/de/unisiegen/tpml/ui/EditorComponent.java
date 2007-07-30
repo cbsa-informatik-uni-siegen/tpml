@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.ui;
 
+import javax.swing.JComponent;
+
 /**
  * The interface for every Editor Component (e.g. the code editor and smallstep
  * window.
@@ -76,4 +78,6 @@ public interface EditorComponent {
 	 * @param status true if mode shall be advanced.
 	 */
 	public void setAdvanced(boolean status);
+	
+	public JComponent getPrintPart();
 }
