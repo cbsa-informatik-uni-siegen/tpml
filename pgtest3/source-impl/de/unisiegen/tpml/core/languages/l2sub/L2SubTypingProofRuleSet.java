@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.languages.l2csubtype;
+package de.unisiegen.tpml.core.languages.l2sub;
 
 import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.languages.l2osubtype.L2OSubTypingProofRuleSet;
+import de.unisiegen.tpml.core.languages.l1sub.L1SubTypingProofRuleSet;
 
 /**
  * The subtype proof rules for the <code>L2</code> language.
@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.languages.l2osubtype.L2OSubTypingProofRuleSet;
  * @author Benjamin Mies
  * @see de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet
  */
-public class L2CSubTypingProofRuleSet extends L2OSubTypingProofRuleSet {
+public class L2SubTypingProofRuleSet extends L1SubTypingProofRuleSet {
 
   /**
    * Allocates a new <code>L2SubTypingProofRuleSet</code> for the specified
@@ -20,7 +20,7 @@ public class L2CSubTypingProofRuleSet extends L2OSubTypingProofRuleSet {
    * @throws NullPointerException if <code>language</code> is
    *           <code>null</code>.
    */
-	public L2CSubTypingProofRuleSet ( Language language, boolean mode ) {
+	public L2SubTypingProofRuleSet ( Language language, boolean mode ) {
 		super ( language, mode );
 	}
 

@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l1subtype;
+package de.unisiegen.tpml.core.languages.l1sub;
 
 import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.languages.Language;

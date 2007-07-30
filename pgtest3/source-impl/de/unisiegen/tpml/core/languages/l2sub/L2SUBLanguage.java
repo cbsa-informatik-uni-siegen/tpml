@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l2subtype;
+package de.unisiegen.tpml.core.languages.l2sub;
 
 import java.text.MessageFormat;
 

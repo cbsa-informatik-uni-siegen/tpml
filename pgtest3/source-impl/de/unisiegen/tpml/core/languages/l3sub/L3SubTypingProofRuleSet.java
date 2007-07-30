@@ -1,9 +1,9 @@
-package de.unisiegen.tpml.core.languages.l3subtype;
+package de.unisiegen.tpml.core.languages.l3sub;
 
 import java.text.MessageFormat;
 
 import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.languages.l2subtype.L2SubTypingProofRuleSet;
+import de.unisiegen.tpml.core.languages.l2sub.L2SubTypingProofRuleSet;
 import de.unisiegen.tpml.core.languages.l3.L3Language;
 import de.unisiegen.tpml.core.subtyping.SubTypingException;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofContext;

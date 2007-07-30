@@ -1,10 +1,10 @@
-package de.unisiegen.tpml.core.languages.l3subtype;
+package de.unisiegen.tpml.core.languages.l3sub;
 
 import java.text.MessageFormat;
 
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
-import de.unisiegen.tpml.core.languages.l2subtype.L2RecSubTypingProofRuleSet;
+import de.unisiegen.tpml.core.languages.l2sub.L2RecSubTypingProofRuleSet;
 import de.unisiegen.tpml.core.languages.l3.L3Language;
 import de.unisiegen.tpml.core.subtyping.SubTypingException;
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofContext;

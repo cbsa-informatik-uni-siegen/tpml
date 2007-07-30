@@ -26,6 +26,7 @@ import de.unisiegen.tpml.core.minimaltyping.MinimalTypingTypesProofNode;
 import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
+import de.unisiegen.tpml.graphics.components.LabelComponent;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
 import de.unisiegen.tpml.graphics.components.MenuEnterTypeItem;
@@ -82,8 +83,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
  * @see de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingComponent
  * @see de.unisiegen.tpml.graphics.tree.TreeNodeComponent
  */
-public class MinimalTypingNodeComponent extends JComponent implements
-		TreeNodeComponent {
+public class MinimalTypingNodeComponent extends JComponent implements TreeNodeComponent {
 	/**
 	 * 
 	 */
@@ -120,7 +120,6 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	 */
 	private CompoundExpression < Identifier, Type > compoundExpression;
 
-
 	/**
 	 * The first typeComponent containing the first type of this node
 	 */
@@ -130,11 +129,16 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	 * The second typeComponent containing the second type of this node
 	 */
 	private TypeComponent typeComponent2;
+
+	/**
+	 * The label component, between the two types. Means "<:"
+	 */
+	private LabelComponent labelComponent;
 	
 	/**
-	 * The sub type symbol. Means "<:"
+	 * The label containing the "<:"
 	 */
-	String subtypeSymbol;
+	private JLabel subTypeSymbol;
 
 	/**
 	 * The {@link MenuButton} the user can use to do the actions.
@@ -145,7 +149,7 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	 * The {@link JLabel} showing the resulting type of this node, once the node
 	 * has been evaluated.
 	 *
-	private JLabel typeLabel;*/
+	 private JLabel typeLabel;*/
 
 	/**
 	 * The {@link JLabel} showing the information about the rule, once the rule
@@ -177,43 +181,44 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	 * @param model The model
 	 * @param pTranslator The translator of the model for the selected language
 	 */
-	public MinimalTypingNodeComponent ( MinimalTypingProofNode node,
-			MinimalTypingProofModel model, LanguageTranslator pTranslator ) {
+	public MinimalTypingNodeComponent ( MinimalTypingProofNode node, MinimalTypingProofModel model,
+			LanguageTranslator pTranslator ) {
 		super ( );
 		this.proofNode = node;
 		this.proofModel = model;
 		this.translator = pTranslator;
 		this.dimension = new Dimension ( 0, 0 );
 		this.spacing = 10;
+		this.subTypeSymbol = new JLabel( " " ); //$NON-NLS-1$
 		this.indexLabel = new JLabel ( );
 		this.indexLabel.addMouseListener ( new OutlineMouseListener ( this ) );
 		add ( this.indexLabel );
 		if ( this.proofNode.getEnvironment ( ) != null ) { // proofnode is an expression proof node
 
 			this.compoundExpression = new CompoundExpression < Identifier, Type > ( );
-			this.compoundExpression.addMouseListener ( new OutlineMouseListener (
-					this ) );
+			this.compoundExpression.addMouseListener ( new OutlineMouseListener ( this ) );
 			add ( this.compoundExpression );
-			
+
 			this.typeComponent = new TypeComponent ( );
-			this.typeComponent
-					.addMouseListener ( new OutlineMouseListener ( this ) );
+			this.typeComponent.addMouseListener ( new OutlineMouseListener ( this ) );
 			add ( this.typeComponent );
 
 		} else { // proof node is a type proof node
-			this.subtypeSymbol = " <: "; //$NON-NLS-1$
+			//this.subtypeSymbol = " <: "; //$NON-NLS-1$
 
 			this.typeComponent = new TypeComponent ( );
-			this.typeComponent
-					.addMouseListener ( new OutlineMouseListener ( this ) );
+			this.typeComponent.addMouseListener ( new OutlineMouseListener ( this ) );
 			add ( this.typeComponent );
 			this.typeComponent.setText ( "" ); //$NON-NLS-1$
 
+			
+			this.labelComponent = new LabelComponent ( );
+			add ( this.labelComponent );
+			
 			this.typeComponent2 = new TypeComponent ( );
-			this.typeComponent2
-					.addMouseListener ( new OutlineMouseListener ( this ) );
+			this.typeComponent2.addMouseListener ( new OutlineMouseListener ( this ) );
 			add ( this.typeComponent2 );
-			this.typeComponent2.setText ( this.subtypeSymbol );
+			this.typeComponent2.setText ( "" );  //$NON-NLS-1$
 
 		}
 		changeNode ( );
@@ -253,21 +258,20 @@ public class MinimalTypingNodeComponent extends JComponent implements
 		 * Connect the handling of the ruleButton
 		 */
 		this.ruleButton.addMenuButtonListener ( new MenuButtonListener ( ) {
-			public void menuClosed ( @SuppressWarnings("unused")
+			public void menuClosed ( @SuppressWarnings ( "unused" )
 			MenuButton button ) {
-				//Nothing to do
+			//Nothing to do
 			}
 
-			public void menuItemActivated ( @SuppressWarnings("unused")
-			MenuButton button,
-					final JMenuItem source ) {
+			public void menuItemActivated ( @SuppressWarnings ( "unused" )
+			MenuButton button, final JMenuItem source ) {
 				// setup a wait cursor for the toplevel ancestor
 				final Container toplevel = getTopLevelAncestor ( );
 				final Cursor cursor = toplevel.getCursor ( );
 				toplevel.setCursor ( new Cursor ( Cursor.WAIT_CURSOR ) );
 				// avoid blocking the popup menu
 				SwingUtilities.invokeLater ( new Runnable ( ) {
-					@SuppressWarnings("synthetic-access")
+					@SuppressWarnings ( "synthetic-access" )
 					public void run ( ) {
 						// handle the menu action
 						MinimalTypingNodeComponent.this.handleMenuActivated ( source );
@@ -308,15 +312,15 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	 */
 	public void changeNode ( ) {
 		if ( this.proofNode.getEnvironment ( ) != null ) {
-			this.compoundExpression.setExpression ( this.proofNode
-					.getExpression ( ) );
-			this.compoundExpression.setEnvironment ( this.proofNode
-					.getEnvironment ( ) );
+			this.compoundExpression.setExpression ( this.proofNode.getExpression ( ) );
+			this.compoundExpression.setEnvironment ( this.proofNode.getEnvironment ( ) );
 			this.typeComponent.setType ( this.proofNode.getType ( ) );
 		} else {
 			MinimalTypingTypesProofNode typeNode = ( MinimalTypingTypesProofNode ) this.proofNode;
 
 			this.typeComponent.setType ( typeNode.getType ( ) );
+			this.subTypeSymbol.setText ( "<:" ); //$NON-NLS-1$
+			this.labelComponent.setLabel ( this.subTypeSymbol );
 			this.typeComponent2.setType ( typeNode.getType2 ( ) );
 
 		}
@@ -350,39 +354,35 @@ public class MinimalTypingNodeComponent extends JComponent implements
 		int maxWidth = pMaxWidth;
 		// get the size for the index at the beginning: (x)
 		FontMetrics fm = AbstractRenderer.getTextFontMetrics ( );
-		Dimension labelSize = new Dimension ( fm.stringWidth ( this.indexLabel
-				.getText ( ) ), fm.getHeight ( ) );
+		Dimension labelSize = new Dimension ( fm.stringWidth ( this.indexLabel.getText ( ) ), fm.getHeight ( ) );
 		this.dimension.setSize ( labelSize.width, labelSize.height );
 		// there will be a bit spacing between the index label and the expression
 		this.dimension.width += this.spacing;
 		// the index shrinkens the max size for the expression
 		maxWidth -= labelSize.width;
 		
+		Dimension labelComponentSize = new Dimension ( fm.stringWidth ( this.subTypeSymbol.getText ( ) ), fm.getHeight ( ) );
+		this.dimension.width += labelComponentSize.width + this.spacing;
+
 		if ( this.proofNode.getEnvironment ( ) != null ) { // proofNode instance of expression proof node
-		
 
 			// get the needed size for the expression
 			Dimension expSize = this.compoundExpression.getNeededSize ( maxWidth );
 			this.dimension.width += expSize.width;
-			this.dimension.height = Math.max ( expSize.height,
-					this.dimension.height );
+			this.dimension.height = Math.max ( expSize.height, this.dimension.height );
 			// get the neede size for the type
 			Dimension typeSize = this.typeComponent.getNeededSize ( maxWidth );
 
 			this.dimension.width += typeSize.width;
-			this.dimension.height = Math.max ( typeSize.height,
-					this.dimension.height );
+			this.dimension.height = Math.max ( typeSize.height, this.dimension.height );
 			// now place the components
 			int posX = 0;
-			this.indexLabel.setBounds ( posX, 0, labelSize.width,
-					this.dimension.height );
+			this.indexLabel.setBounds ( posX, 0, labelSize.width, this.dimension.height );
 			posX += labelSize.width + this.spacing;
-			this.compoundExpression.setBounds ( posX, 0, expSize.width,
-					this.dimension.height );
+			this.compoundExpression.setBounds ( posX, 0, expSize.width, this.dimension.height );
 			posX += expSize.width;
 
-			this.typeComponent.setBounds ( posX, 0, typeSize.width,
-					typeSize.height );
+			this.typeComponent.setBounds ( posX, 0, typeSize.width, typeSize.height );
 
 			posX += typeSize.width;
 
@@ -396,22 +396,20 @@ public class MinimalTypingNodeComponent extends JComponent implements
 				// place the menu label
 				this.ruleLabel.setText ( "(" + this.proofNode.getRule ( ) + ")" ); //$NON-NLS-1$ //$NON-NLS-2$
 				Dimension ruleLabelSize = this.ruleLabel.getPreferredSize ( );
-				this.ruleLabel.setBounds ( posX, this.dimension.height
-						+ this.spacing, ruleLabelSize.width, ruleLabelSize.height );
+				this.ruleLabel.setBounds ( posX, this.dimension.height + this.spacing, ruleLabelSize.width,
+						ruleLabelSize.height );
 				this.dimension.height += this.spacing + ruleLabelSize.height;
-				this.dimension.width = Math.max ( this.dimension.width,
-						ruleLabelSize.width + posX );
+				this.dimension.width = Math.max ( this.dimension.width, ruleLabelSize.width + posX );
 				// display only the label not the button
 				this.ruleLabel.setVisible ( true );
 				this.ruleButton.setVisible ( false );
 			} else {
 				// place the menu button
 				Dimension buttonSize = this.ruleButton.getNeededSize ( );
-				this.ruleButton.setBounds ( posX, this.dimension.height
-						+ this.spacing, buttonSize.width, buttonSize.height );
+				this.ruleButton
+						.setBounds ( posX, this.dimension.height + this.spacing, buttonSize.width, buttonSize.height );
 				this.dimension.height += this.spacing + buttonSize.height;
-				this.dimension.width = Math.max ( this.dimension.width,
-						buttonSize.width + posX );
+				this.dimension.width = Math.max ( this.dimension.width, buttonSize.width + posX );
 				// display only the button not the label
 				this.ruleLabel.setVisible ( false );
 				this.ruleButton.setVisible ( true );
@@ -420,36 +418,32 @@ public class MinimalTypingNodeComponent extends JComponent implements
 
 		} else { // proofNode instance of type proof node
 
-
 			//  get the needed size for the expression
 			Dimension expSize = this.typeComponent.getNeededSize ( maxWidth );
 			this.dimension.width += expSize.width;
-			this.dimension.height = Math.max ( expSize.height,
-					this.dimension.height );
+			this.dimension.height = Math.max ( expSize.height, this.dimension.height );
 
 			// the result should never be wrapped so we use 
 			// the Integer.MAX_VALUE to prevent linewrapping
-			Dimension resultSize = this.typeComponent2
-					.getNeededSize ( Integer.MAX_VALUE );
+			Dimension resultSize = this.typeComponent2.getNeededSize ( Integer.MAX_VALUE );
 			this.dimension.width += resultSize.width;
-			this.dimension.height = Math.max ( resultSize.height,
-					this.dimension.height );
-			
-			this.dimension.width += this.subtypeSymbol.length ( );
+			this.dimension.height = Math.max ( resultSize.height, this.dimension.height );
+
+			this.dimension.width += this.subTypeSymbol.getWidth ( ) + this.spacing;
 
 			// now place the elements
 			int posX = 0;
 
-			this.indexLabel.setBounds ( posX, 0, labelSize.width,
-					this.dimension.height );
+			this.indexLabel.setBounds ( posX, 0, labelSize.width, this.dimension.height );
 			posX += labelSize.width + this.spacing;
+			
+			this.typeComponent.setBounds ( posX, 0, expSize.width, this.dimension.height );
+			posX += expSize.width + this.spacing;
+			
+			this.labelComponent.setBounds ( posX, 0, labelComponentSize.width, this.dimension.height );
+			posX += labelComponentSize.width + this.spacing;
 
-			this.typeComponent.setBounds ( posX, 0, expSize.width,
-					this.dimension.height );
-			posX += expSize.width;
-
-			this.typeComponent2.setBounds ( posX, 0, resultSize.width,
-					this.dimension.height );
+			this.typeComponent2.setBounds ( posX, 0, resultSize.width, this.dimension.height );
 
 			/*
 			 * Check whether this is node is evaluated.
@@ -463,12 +457,11 @@ public class MinimalTypingNodeComponent extends JComponent implements
 				this.ruleLabel.setText ( "(" + this.proofNode.getRule ( ) + ")" ); //$NON-NLS-1$ //$NON-NLS-2$
 				Dimension ruleLabelSize = this.ruleLabel.getPreferredSize ( );
 
-				this.ruleLabel.setBounds ( posX, this.dimension.height
-						+ this.spacing, ruleLabelSize.width, ruleLabelSize.height );
+				this.ruleLabel.setBounds ( posX, this.dimension.height + this.spacing, ruleLabelSize.width,
+						ruleLabelSize.height );
 
 				this.dimension.height += this.spacing + ruleLabelSize.height;
-				this.dimension.width = Math.max ( this.dimension.width,
-						ruleLabelSize.width + posX );
+				this.dimension.width = Math.max ( this.dimension.width, ruleLabelSize.width + posX );
 
 				//  display only the label not the button
 				this.ruleLabel.setVisible ( true );
@@ -476,12 +469,11 @@ public class MinimalTypingNodeComponent extends JComponent implements
 			} else {
 				// place the menu button
 				Dimension buttonSize = this.ruleButton.getNeededSize ( );
-				this.ruleButton.setBounds ( posX, this.dimension.height
-						+ this.spacing, buttonSize.width, buttonSize.height );
+				this.ruleButton
+						.setBounds ( posX, this.dimension.height + this.spacing, buttonSize.width, buttonSize.height );
 
 				this.dimension.height += this.spacing + buttonSize.height;
-				this.dimension.width = Math.max ( this.dimension.width,
-						buttonSize.width + posX );
+				this.dimension.width = Math.max ( this.dimension.width, buttonSize.width + posX );
 
 				// display only the button not the label
 				this.ruleLabel.setVisible ( false );
@@ -509,8 +501,7 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	 *
 	 * @param listener the listener to remove
 	 */
-	public void removeMinimalTypingNodeListener (
-			MinimalTypingNodeListener listener ) {
+	public void removeMinimalTypingNodeListener ( MinimalTypingNodeListener listener ) {
 		this.listenerList.remove ( MinimalTypingNodeListener.class, listener );
 	}
 
@@ -530,8 +521,7 @@ public class MinimalTypingNodeComponent extends JComponent implements
 			if ( listeners[i] != MinimalTypingNodeListener.class ) {
 				continue;
 			}
-			( ( MinimalTypingNodeListener ) listeners[i + 1] )
-					.requestJumpToNode ( node );
+			( ( MinimalTypingNodeListener ) listeners[i + 1] ).requestJumpToNode ( node );
 		}
 	}
 
@@ -565,12 +555,9 @@ public class MinimalTypingNodeComponent extends JComponent implements
 			if ( this.proofModel.containsSyntacticSugar ( this.proofNode, false ) ) {
 				String[] answers = {
 						Messages.getString ( "NodeComponent.0" ), Messages.getString ( "NodeComponent.1" ), Messages.getString ( "NodeComponent.2" ) }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				answer = JOptionPane.showOptionDialog (
-						getTopLevelAncestor ( ),
-						Messages.getString ( "NodeComponent.3" ), //$NON-NLS-1$
+				answer = JOptionPane.showOptionDialog ( getTopLevelAncestor ( ), Messages.getString ( "NodeComponent.3" ), //$NON-NLS-1$
 						Messages.getString ( "NodeComponent.4" ), //$NON-NLS-1$
-						JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, answers, answers[0] );
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, answers, answers[0] );
 			}
 			switch ( answer) {
 				case 0:
@@ -593,10 +580,7 @@ public class MinimalTypingNodeComponent extends JComponent implements
 						JOptionPane
 								.showMessageDialog (
 										getTopLevelAncestor ( ),
-										MessageFormat
-												.format (
-														Messages
-																.getString ( "NodeComponent.5" ), e.getMessage ( ) ), Messages.getString ( "NodeComponent.6" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$ //$NON-NLS-2$
+										MessageFormat.format ( Messages.getString ( "NodeComponent.5" ), e.getMessage ( ) ), Messages.getString ( "NodeComponent.6" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				} );
 			}
@@ -613,10 +597,7 @@ public class MinimalTypingNodeComponent extends JComponent implements
 						JOptionPane
 								.showMessageDialog (
 										getTopLevelAncestor ( ),
-										MessageFormat
-												.format (
-														Messages
-																.getString ( "NodeComponent.7" ), e.getMessage ( ) ), Messages.getString ( "NodeComponent.8" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$ //$NON-NLS-2$
+										MessageFormat.format ( Messages.getString ( "NodeComponent.7" ), e.getMessage ( ) ), Messages.getString ( "NodeComponent.8" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				} );
 			}
@@ -636,8 +617,8 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	 */
 	public Dimension update ( int maxWidth ) {
 		placeElements ( maxWidth );
-		this.menuTranslateItem.setEnabled ( this.translator
-				.containsSyntacticSugar ( this.proofNode.getExpression ( ), true ) );
+		this.menuTranslateItem.setEnabled ( this.translator.containsSyntacticSugar ( this.proofNode.getExpression ( ),
+				true ) );
 		return this.dimension;
 	}
 
@@ -654,9 +635,7 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	 * the arrow.
 	 */
 	public Point getBottomArrowConnection ( ) {
-		return new Point ( this.getX ( ) + this.indexLabel.getWidth ( ) / 2, this
-				.getY ( )
-				+ this.indexLabel.getHeight ( ) );
+		return new Point ( this.getX ( ) + this.indexLabel.getWidth ( ) / 2, this.getY ( ) + this.indexLabel.getHeight ( ) );
 	}
 
 	/**
@@ -664,8 +643,7 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	 * the line to its parent.
 	 */
 	public Point getLeftArrowConnection ( ) {
-		return new Point ( this.getX ( ), this.getY ( ) + this.indexLabel.getY ( )
-				+ this.indexLabel.getHeight ( ) / 2 );
+		return new Point ( this.getX ( ), this.getY ( ) + this.indexLabel.getY ( ) + this.indexLabel.getHeight ( ) / 2 );
 	}
 
 	/**
@@ -747,7 +725,7 @@ public class MinimalTypingNodeComponent extends JComponent implements
 	 * True means advanced, false means beginner.
 	 *
 	 */
-	public void setAdvanced (  ) {
+	public void setAdvanced ( ) {
 
 		/*
 		 * Create the PopupMenu for the menu button
