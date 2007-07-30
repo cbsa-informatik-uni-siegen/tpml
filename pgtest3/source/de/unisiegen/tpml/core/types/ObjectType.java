@@ -139,6 +139,18 @@ public final class ObjectType extends MonoType implements DefaultTypes
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Object#hashCode()
+   */
+  @ Override
+  public int hashCode ( )
+  {
+    return this.types [ 0 ].hashCode ( ) ;
+  }
+
+
+  /**
    * Substitutes the type <code>pTau</code> for the {@link TypeName}
    * <code>pTypeName</code> in this type, and returns the resulting type. The
    * resulting type may be a new <code>Type</code> object or if no

@@ -89,6 +89,18 @@ public final class OutlineBinding < E >
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Object#hashCode()
+   */
+  @ Override
+  public int hashCode ( )
+  {
+    return this.list.hashCode ( ) ;
+  }
+
+
+  /**
    * Removes the {@link Identifier} or {@link TypeName} with the given index.
    * 
    * @param pIndex The index of the bound {@link Identifier} or {@link TypeName}.
