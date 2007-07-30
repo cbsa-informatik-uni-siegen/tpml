@@ -539,14 +539,14 @@ public class CompoundExpressionTypeInference extends JComponent
 		// tooltip for the single typeenvironments of every item
 		if (this.typeFormularRenderer != null)
 		{
-			ArrayList<Rectangle> rectsOfCollapsedAreasPositions = this.typeFormularRenderer.getCollapsedAreas();
+			ArrayList<Rectangle> rectsOfCollapsedAreasPositions = this.typeFormularRenderer.getCollapsedTypeEnvironmentAreas();
 
 			for (int i = 0; i < rectsOfCollapsedAreasPositions.size(); i++)
 			{
 				Rectangle r = rectsOfCollapsedAreasPositions.get(i);
 				if (isIn(r, pointMousePosition))
 				{
-					setToolTipText(this.typeFormularRenderer.getCollapsedStrings().get(i));
+					setToolTipText(this.typeFormularRenderer.getCollapsedTypeEnvironmentsStrings().get(i));
 				}
 			}
 		}
@@ -685,46 +685,46 @@ public class CompoundExpressionTypeInference extends JComponent
 	protected void paintComponent(Graphics gc)
 	{
 		// TODO test the different coponents of the renderer:
-		gc.setColor(Color.ORANGE);
-		gc.drawRect(0,0,neededSize.width-1, neededSize.height-1);
-		gc.setColor(Color.CYAN);
-		gc.drawRect(0,0,substitutionSize.width, substitutionSize.height);
-		
-		gc.setColor(Color.RED);
-		for (int i = 0; i < this.typeFormularRenderer.getTypeFormularPositions().size(); i++)
-		{
-			drawRectAngle(this.typeFormularRenderer.getTypeFormularPositions().get(i), gc);
-		}
-
-		gc.setColor(Color.GREEN);
-		for (int i = 0; i < this.typeFormularRenderer.getLeftTypePositions().size(); i++)
-		{
-			drawRectAngle(this.typeFormularRenderer.getLeftTypePositions().get(i), gc);
-		}
-
-		gc.setColor(Color.GREEN);
-		for (int i = 0; i < this.typeFormularRenderer.getRightTypePositions().size(); i++)
-		{
-			drawRectAngle(this.typeFormularRenderer.getRightTypePositions().get(i), gc);
-		}
-
-		gc.setColor(Color.YELLOW);
-		for (int i = 0; i < this.typeFormularRenderer.getTypePositions().size(); i++)
-		{
-			drawRectAngle(this.typeFormularRenderer.getTypePositions().get(i), gc);
-		}
-
-		gc.setColor(Color.BLUE);
-		for (int i = 0; i < this.typeFormularRenderer.getExpressionPositions().size(); i++)
-		{
-			drawRectAngle(this.typeFormularRenderer.getExpressionPositions().get(i), gc);
-		}
-
-		gc.setColor(Color.PINK);
-		for (int i = 0; i < this.typeFormularRenderer.getCollapsedAreas().size(); i++)
-		{
-			drawRectAngle(this.typeFormularRenderer.getCollapsedAreas().get(i), gc);
-		}
+//		gc.setColor(Color.ORANGE);
+//		gc.drawRect(0,0,neededSize.width-1, neededSize.height-1);
+//		gc.setColor(Color.CYAN);
+//		gc.drawRect(0,0,substitutionSize.width, substitutionSize.height);
+//		
+//		gc.setColor(Color.RED);
+//		for (int i = 0; i < this.typeFormularRenderer.getTypeFormularPositions().size(); i++)
+//		{
+//			drawRectAngle(this.typeFormularRenderer.getTypeFormularPositions().get(i), gc);
+//		}
+//
+//		gc.setColor(Color.GREEN);
+//		for (int i = 0; i < this.typeFormularRenderer.getLeftTypePositions().size(); i++)
+//		{
+//			drawRectAngle(this.typeFormularRenderer.getLeftTypePositions().get(i), gc);
+//		}
+//
+//		gc.setColor(Color.GREEN);
+//		for (int i = 0; i < this.typeFormularRenderer.getRightTypePositions().size(); i++)
+//		{
+//			drawRectAngle(this.typeFormularRenderer.getRightTypePositions().get(i), gc);
+//		}
+//
+//		gc.setColor(Color.YELLOW);
+//		for (int i = 0; i < this.typeFormularRenderer.getTypePositions().size(); i++)
+//		{
+//			drawRectAngle(this.typeFormularRenderer.getTypePositions().get(i), gc);
+//		}
+//
+//		gc.setColor(Color.BLUE);
+//		for (int i = 0; i < this.typeFormularRenderer.getExpressionPositions().size(); i++)
+//		{
+//			drawRectAngle(this.typeFormularRenderer.getExpressionPositions().get(i), gc);
+//		}
+//
+//		gc.setColor(Color.PINK);
+//		for (int i = 0; i < this.typeFormularRenderer.getCollapsedTypeEnvironmentAreas().size(); i++)
+//		{
+//			drawRectAngle(this.typeFormularRenderer.getCollapsedTypeEnvironmentAreas().get(i), gc);
+//		}
 
 		// testAusgabe ( "paintComponent wurde aufgerufen..." ) ;
 		// TODO Only for test to make yompoundexpression visible
@@ -819,17 +819,17 @@ public class CompoundExpressionTypeInference extends JComponent
 	}
 
 
-	/**
-	 * TODO TESTMETHODE
-	 *
-	 * @param r
-	 * @param g
-	 */
-	public void drawRectAngle(Rectangle r, Graphics g)
-	{
-		g.drawRect(r.x, r.y, r.width, r.height);
-		// Rectangle rect = new Rectangle()
-	}
+//	/**
+//	 * TODO TESTMETHODE
+//	 *
+//	 * @param r
+//	 * @param g
+//	 */
+//	public void drawRectAngle(Rectangle r, Graphics g)
+//	{
+//		g.drawRect(r.x, r.y, r.width, r.height);
+//		// Rectangle rect = new Rectangle()
+//	}
 
 	/**
 	 * @return the list of TypeFormulas
