@@ -25,10 +25,40 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public final class RefType extends MonoType implements DefaultTypes
 {
   /**
+   * String for the case that the type substitution is null.
+   */
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+
+
+  /**
    * Indeces of the child {@link Type}s.
    */
   private static final int [ ] INDICES_TYPE = new int [ ]
   { - 1 } ;
+
+
+  /**
+   * String for the case that tau is null.
+   */
+  private static final String TAU_NULL = "tau is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Type}.
+   */
+  private static final String CAPTION = "Ref-Type" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>ref</code>.
+   */
+  private static final String REF = "ref" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
 
 
   /**
@@ -49,7 +79,7 @@ public final class RefType extends MonoType implements DefaultTypes
   {
     if ( pTau == null )
     {
-      throw new NullPointerException ( "Tau is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TAU_NULL ) ;
     }
     this.types = new MonoType [ ]
     { pTau } ;
@@ -112,7 +142,7 @@ public final class RefType extends MonoType implements DefaultTypes
   @ Override
   public String getCaption ( )
   {
-    return "Ref-Type" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -187,6 +217,10 @@ public final class RefType extends MonoType implements DefaultTypes
   @ Override
   public MonoType substitute ( TypeSubstitution pTypeSubstitution )
   {
+    if ( pTypeSubstitution == null )
+    {
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
+    }
     return new RefType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ) ;
   }
 
@@ -208,8 +242,8 @@ public final class RefType extends MonoType implements DefaultTypes
           .addBuilder ( this.types [ 0 ]
               .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
               PRIO_REF_TAU ) ;
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addType ( "ref" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addType ( REF ) ;
     }
     return this.prettyStringBuilder ;
   }

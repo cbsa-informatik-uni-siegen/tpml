@@ -23,10 +23,82 @@ public final class Body extends Expression implements BodyOrRow ,
     BoundIdentifiers , DefaultExpressions
 {
   /**
+   * The string of an self identifier.
+   */
+  private static final String SELF = "self" ; //$NON-NLS-1$
+
+
+  /**
    * Indeces of the child {@link Expression}s.
    */
   private static final int [ ] INDICES_E = new int [ ]
   { - 1 , - 1 } ;
+
+
+  /**
+   * The identifier has the wrong set.
+   */
+  private static final String WRONG_SET = "the set of the identifier has to be 'attribute'" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the identifiers are null.
+   */
+  private static final String IDENTIFIERS_NULL = "identifiers is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that one identifier are null.
+   */
+  private static final String IDENTIFIER_NULL = "one identifier is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the expression is null.
+   */
+  private static final String EXPRESSION_NULL = "expression is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the body or row is null.
+   */
+  private static final String BODY_NULL = "body or row is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Attribute" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>inherit</code>.
+   */
+  private static final String INHERIT = "inherit" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>from</code>.
+   */
+  private static final String FROM = "from" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The comma string.
+   */
+  private static final String COMMA = "," ; //$NON-NLS-1$
+
+
+  /**
+   * The semi string.
+   */
+  private static final String SEMI = ";" ; //$NON-NLS-1$
 
 
   /**
@@ -61,27 +133,26 @@ public final class Body extends Expression implements BodyOrRow ,
   {
     if ( pIdentifiers == null )
     {
-      throw new NullPointerException ( "Identifiers is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( IDENTIFIERS_NULL ) ;
     }
     for ( Identifier id : pIdentifiers )
     {
       if ( id == null )
       {
-        throw new NullPointerException ( "One identifier is null" ) ; //$NON-NLS-1$
+        throw new NullPointerException ( IDENTIFIER_NULL ) ;
       }
-      if ( ! id.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) )
+      if ( ! Identifier.Set.ATTRIBUTE.equals ( id.getSet ( ) ) )
       {
-        throw new IllegalArgumentException (
-            "The set of the identifier has to be 'attribute'" ) ; //$NON-NLS-1$
+        throw new IllegalArgumentException ( WRONG_SET ) ;
       }
     }
     if ( pExpression == null )
     {
-      throw new NullPointerException ( "Espression is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( EXPRESSION_NULL ) ;
     }
     if ( pBodyOrRow == null )
     {
-      throw new NullPointerException ( "Body or Row is null is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( BODY_NULL ) ;
     }
     // Identifier
     this.identifiers = pIdentifiers ;
@@ -139,7 +210,7 @@ public final class Body extends Expression implements BodyOrRow ,
       for ( Identifier allId : allIdentifiers )
       {
         if ( ( idAttribute.equals ( allId ) )
-            && ( ! allId.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) ) )
+            && ( ! Identifier.Set.ATTRIBUTE.equals ( allId.getSet ( ) ) ) )
         {
           negativeIdentifiers.add ( allId ) ;
         }
@@ -211,6 +282,16 @@ public final class Body extends Expression implements BodyOrRow ,
 
 
   /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return CAPTION ;
+  }
+
+
+  /**
    * Returns a list of all {@link Attribute} {@link Identifier}s in the domain
    * of this {@link Expression}.
    * 
@@ -231,16 +312,6 @@ public final class Body extends Expression implements BodyOrRow ,
       this.domA.addAll ( this.expressions [ 1 ].getDomA ( ) ) ;
     }
     return this.domA ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Body" ; //$NON-NLS-1$
   }
 
 
@@ -330,8 +401,7 @@ public final class Body extends Expression implements BodyOrRow ,
     if ( this.identifiersFree == null )
     {
       this.identifiersFree = new ArrayList < Identifier > ( ) ;
-      this.identifiersFree
-          .add ( new Identifier ( "self" , Identifier.Set.SELF ) ) ; //$NON-NLS-1$
+      this.identifiersFree.add ( new Identifier ( SELF , Identifier.Set.SELF ) ) ;
       this.identifiersFree.addAll ( this.expressions [ 0 ]
           .getIdentifiersFree ( ) ) ;
       ArrayList < Identifier > freeB = new ArrayList < Identifier > ( ) ;
@@ -453,25 +523,28 @@ public final class Body extends Expression implements BodyOrRow ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_BODY ) ;
-      this.prettyStringBuilder.addKeyword ( "inherit" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( INHERIT ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
         if ( i != this.identifiers.length - 1 )
         {
-          this.prettyStringBuilder.addText ( ", " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( COMMA ) ;
+          this.prettyStringBuilder.addText ( SPACE ) ;
         }
       }
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( "from" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( FROM ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_BODY_E ) ;
-      this.prettyStringBuilder.addText ( " ; " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( SEMI ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_BODY_B ) ;
     }

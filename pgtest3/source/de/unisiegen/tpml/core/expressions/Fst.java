@@ -13,12 +13,24 @@ package de.unisiegen.tpml.core.expressions ;
 public final class Fst extends Projection
 {
   /**
+   * The keyword <code>fst</code>.
+   */
+  private static final String FST = "fst" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "First" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new instance of the <code>fst</code> operator which is a
    * special case of the projection that returns the first item of a pair.
    */
   public Fst ( )
   {
-    super ( 2 , 1 , "fst" ) ; //$NON-NLS-1$
+    super ( 2 , 1 , FST ) ;
   }
 
 
@@ -57,6 +69,6 @@ public final class Fst extends Projection
   @ Override
   public String getCaption ( )
   {
-    return "First" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

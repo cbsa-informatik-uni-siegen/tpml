@@ -43,6 +43,60 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
 
   /**
+   * String for the case that the identifier is null.
+   */
+  private static final String IDENTIFIER_NULL = "identifier is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The identifier has the wrong set.
+   */
+  private static final String WRONG_SET = "the set of the identifier has to be 'method'" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the expression is null.
+   */
+  private static final String EXPRESSION_NULL = "expression is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Method" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>val</code>.
+   */
+  private static final String METHOD = "method" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The equal string.
+   */
+  private static final String EQUAL = "=" ; //$NON-NLS-1$
+
+
+  /**
+   * The colon string.
+   */
+  private static final String COLON = ":" ; //$NON-NLS-1$
+
+
+  /**
+   * The semi string.
+   */
+  private static final String SEMI = ";" ; //$NON-NLS-1$ 
+
+
+  /**
    * The identifiers.
    * 
    * @see #getIdentifiers()
@@ -76,16 +130,15 @@ public class Method extends Expression implements DefaultIdentifiers ,
   {
     if ( pIdentifier == null )
     {
-      throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( IDENTIFIER_NULL ) ;
     }
-    if ( ! pIdentifier.getSet ( ).equals ( Identifier.Set.METHOD ) )
+    if ( ! Identifier.Set.METHOD.equals ( pIdentifier.getSet ( ) ) )
     {
-      throw new IllegalArgumentException (
-          "The set of the identifier has to be 'method'" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( WRONG_SET ) ;
     }
     if ( pExpression == null )
     {
-      throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( EXPRESSION_NULL ) ;
     }
     // Identifier
     this.identifiers = new Identifier [ ]
@@ -160,7 +213,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
   @ Override
   public String getCaption ( )
   {
-    return "Method" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -326,22 +379,26 @@ public class Method extends Expression implements DefaultIdentifiers ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_METHOD ) ;
-      this.prettyStringBuilder.addKeyword ( "method" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( METHOD ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( COLON ) ;
+        this.prettyStringBuilder.addText ( SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_METHOD_TAU ) ;
       }
-      this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( EQUAL ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_METHOD_E ) ;
-      this.prettyStringBuilder.addText ( " ;" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( SEMI ) ;
     }
     return this.prettyStringBuilder ;
   }

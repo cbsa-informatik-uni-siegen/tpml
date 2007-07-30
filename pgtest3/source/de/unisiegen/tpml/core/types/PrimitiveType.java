@@ -19,6 +19,18 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public abstract class PrimitiveType extends MonoType
 {
   /**
+   * The unused string.
+   */
+  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the type substitution is null.
+   */
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+
+
+  /**
    * The name of this primitive type.
    */
   private String name ;
@@ -62,7 +74,7 @@ public abstract class PrimitiveType extends MonoType
     if ( pObject instanceof PrimitiveType )
     {
       PrimitiveType other = ( PrimitiveType ) pObject ;
-      return this.name == other.name ;
+      return this.name.equals ( other.name ) ;
     }
     return false ;
   }
@@ -100,8 +112,8 @@ public abstract class PrimitiveType extends MonoType
    * @return The resulting {@link Type}.
    */
   @ Override
-  public PrimitiveType substitute ( @ SuppressWarnings ( "unused" )
-  TypeName pTypeName , @ SuppressWarnings ( "unused" )
+  public PrimitiveType substitute ( @ SuppressWarnings ( UNUSED )
+  TypeName pTypeName , @ SuppressWarnings ( UNUSED )
   MonoType pTau )
   {
     return this ;
@@ -114,9 +126,13 @@ public abstract class PrimitiveType extends MonoType
    * @see Type#substitute(TypeSubstitution)
    */
   @ Override
-  public PrimitiveType substitute ( @ SuppressWarnings ( "unused" )
+  public PrimitiveType substitute ( @ SuppressWarnings ( UNUSED )
   TypeSubstitution pTypeSubstitution )
   {
+    if ( pTypeSubstitution == null )
+    {
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
+    }
     return this ;
   }
 

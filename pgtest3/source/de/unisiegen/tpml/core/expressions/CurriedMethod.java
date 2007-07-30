@@ -33,6 +33,102 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
+   * String for the case that the expression is null.
+   */
+  private static final String EXPRESSION_NULL = "expression is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the identifiers are null.
+   */
+  private static final String IDENTIFIERS_NULL = "identifiers is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that one identifier are null.
+   */
+  private static final String IDENTIFIER_NULL = "one identifier is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the types are null.
+   */
+  private static final String TYPES_NULL = "types is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The identifier has the wrong set.
+   */
+  private static final String WRONG_SET_M = "the set of the identifier has to be 'method'" ; //$NON-NLS-1$
+
+
+  /**
+   * The identifier has the wrong set.
+   */
+  private static final String WRONG_SET_V = "the set of the identifier has to be 'variable'" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the arity of identifiers and types doesn´t match.
+   */
+  private static final String ARITY = "the arity of identifiers and types must match" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the identifiers are to small.
+   */
+  private static final String TO_SMALL = "identifiers must contain at least two items" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Curried-Method" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The equal string.
+   */
+  private static final String EQUAL = "=" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>method</code>.
+   */
+  private static final String METHOD = "method" ; //$NON-NLS-1$
+
+
+  /**
+   * The semi string.
+   */
+  private static final String SEMI = ";" ; //$NON-NLS-1$ 
+
+
+  /**
+   * The keyword <code>(</code>.
+   */
+  private static final String LPAREN = "(" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>)</code>.
+   */
+  private static final String RPAREN = ")" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>:</code>.
+   */
+  private static final String COLON = ":" ; //$NON-NLS-1$
+
+
+  /**
    * The {@link Identifier}s of this {@link Expression}.
    * 
    * @see #getIdentifiers()
@@ -78,48 +174,44 @@ public final class CurriedMethod extends Expression implements
   {
     if ( pIdentifiers == null )
     {
-      throw new NullPointerException ( "Identifiers is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( IDENTIFIERS_NULL ) ;
     }
     for ( int i = 0 ; i < pIdentifiers.length ; i ++ )
     {
       if ( pIdentifiers [ i ] == null )
       {
-        throw new NullPointerException ( "One identifier is null" ) ; //$NON-NLS-1$
+        throw new NullPointerException ( IDENTIFIER_NULL ) ;
       }
       if ( i == 0 )
       {
-        if ( ! pIdentifiers [ i ].getSet ( ).equals ( Identifier.Set.METHOD ) )
+        if ( ! Identifier.Set.METHOD.equals ( pIdentifiers [ i ].getSet ( ) ) )
         {
-          throw new IllegalArgumentException (
-              "The set of the identifier has to be 'method'" ) ; //$NON-NLS-1$
+          throw new IllegalArgumentException ( WRONG_SET_M ) ;
         }
       }
       else
       {
-        if ( ! pIdentifiers [ i ].getSet ( ).equals ( Identifier.Set.VARIABLE ) )
+        if ( ! Identifier.Set.VARIABLE.equals ( pIdentifiers [ i ].getSet ( ) ) )
         {
-          throw new IllegalArgumentException (
-              "The set of the identifier has to be 'variable'" ) ; //$NON-NLS-1$
+          throw new IllegalArgumentException ( WRONG_SET_V ) ;
         }
       }
     }
     if ( pTypes == null )
     {
-      throw new NullPointerException ( "Types is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TYPES_NULL ) ;
     }
     if ( pExpression == null )
     {
-      throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( EXPRESSION_NULL ) ;
     }
     if ( pIdentifiers.length < 2 )
     {
-      throw new IllegalArgumentException (
-          "Identifiers must contain at least two items" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( TO_SMALL ) ;
     }
     if ( pIdentifiers.length != pTypes.length )
     {
-      throw new IllegalArgumentException (
-          "The arity of Identifiers and Types must match" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( ARITY ) ;
     }
     // Identifier
     this.identifiers = pIdentifiers ;
@@ -190,8 +282,8 @@ public final class CurriedMethod extends Expression implements
       for ( Identifier allId : allIdentifiers )
       {
         if ( ( this.identifiers [ i ].equals ( allId ) )
-            && ( ! ( ( allId.getSet ( ).equals ( Identifier.Set.VARIABLE ) || ( allId
-                .getSet ( ).equals ( Identifier.Set.METHOD ) ) ) ) ) )
+            && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet ( ) ) || ( Identifier.Set.METHOD
+                .equals ( allId.getSet ( ) ) ) ) ) ) )
         {
           negativeIdentifiers.add ( allId ) ;
         }
@@ -263,7 +355,7 @@ public final class CurriedMethod extends Expression implements
   @ Override
   public String getCaption ( )
   {
-    return "Curried-Method" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -544,40 +636,45 @@ public final class CurriedMethod extends Expression implements
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_CURRIED_METHOD ) ;
-      this.prettyStringBuilder.addKeyword ( "method" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( METHOD ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
-        this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( SPACE ) ;
         if ( this.types [ i ] != null )
         {
-          this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( LPAREN ) ;
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
         if ( this.types [ i ] != null )
         {
-          this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( COLON ) ;
+          this.prettyStringBuilder.addText ( SPACE ) ;
           this.prettyStringBuilder.addBuilder ( this.types [ i ]
               .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
               PRIO_CURRIED_METHOD_TAU ) ;
-          this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( RPAREN ) ;
         }
       }
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( COLON ) ;
+        this.prettyStringBuilder.addText ( SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_LET_TAU ) ;
       }
-      this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( EQUAL ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CURRIED_METHOD_E ) ;
-      this.prettyStringBuilder.addText ( " ;" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( SEMI ) ;
     }
     return this.prettyStringBuilder ;
   }

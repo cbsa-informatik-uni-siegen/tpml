@@ -147,6 +147,12 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
+   * The unused string.
+   */
+  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+
+
+  /**
    * Cached <code>TreeSet</code> of the free Identifiers, so the free
    * Identifier do not need to be determined on every invocation of
    * {@link #getIdentifiersFree()}.
@@ -332,6 +338,27 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
+   * Returns a list of all {@link Attribute} {@link Identifier}s in the domain
+   * of this {@link Expression}.
+   * 
+   * @return A list of all {@link Attribute} {@link Identifier}s in the domain
+   *         of this {@link Expression}.
+   */
+  public ArrayList < Identifier > getDomA ( )
+  {
+    if ( this.domA == null )
+    {
+      this.domA = new ArrayList < Identifier > ( ) ;
+      for ( Expression child : children ( ) )
+      {
+        this.domA.addAll ( child.getDomA ( ) ) ;
+      }
+    }
+    return this.domA ;
+  }
+
+
+  /**
    * Returns true, if a free Identifier is not a variable and not a method
    * {@link Identifier}, otherwise false.
    * 
@@ -342,8 +369,8 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   {
     for ( Identifier id : getIdentifiersFree ( ) )
     {
-      if ( ! ( ( id.getSet ( ).equals ( Identifier.Set.VARIABLE ) ) || ( id
-          .getSet ( ).equals ( Identifier.Set.METHOD ) ) ) )
+      if ( ! ( ( Identifier.Set.VARIABLE.equals ( id.getSet ( ) ) ) || ( Identifier.Set.METHOD
+          .equals ( id.getSet ( ) ) ) ) )
       {
         return true ;
       }
@@ -413,27 +440,6 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
       }
     }
     return this.identifiersFree ;
-  }
-
-
-  /**
-   * Returns a list of all {@link Attribute} {@link Identifier}s in the domain
-   * of this {@link Expression}.
-   * 
-   * @return A list of all {@link Attribute} {@link Identifier}s in the domain
-   *         of this {@link Expression}.
-   */
-  public ArrayList < Identifier > getDomA ( )
-  {
-    if ( this.domA == null )
-    {
-      this.domA = new ArrayList < Identifier > ( ) ;
-      for ( Expression child : children ( ) )
-      {
-        this.domA.addAll ( child.getDomA ( ) ) ;
-      }
-    }
-    return this.domA ;
   }
 
 
@@ -658,7 +664,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @throws NullPointerException if <code>substitution</code> is
    *           <code>null</code>.
    */
-  public Expression substitute ( @ SuppressWarnings ( "unused" )
+  public Expression substitute ( @ SuppressWarnings ( UNUSED )
   TypeSubstitution pTypeSubstitution )
   {
     return this ;

@@ -24,6 +24,42 @@ public final class ObjectType extends MonoType implements DefaultTypes
 
 
   /**
+   * String for the case that phi is null.
+   */
+  private static final String PHI_NULL = "phi is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Type}.
+   */
+  private static final String CAPTION = "Object-Type" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the type substitution is null.
+   */
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The greater string.
+   */
+  private static final String GREATER = ">" ; //$NON-NLS-1$
+
+
+  /**
+   * The lower string.
+   */
+  private static final String LOWER = "<" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
    * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
@@ -39,7 +75,7 @@ public final class ObjectType extends MonoType implements DefaultTypes
   {
     if ( pPhi == null )
     {
-      throw new NullPointerException ( "Phi is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( PHI_NULL ) ;
     }
     this.types = new MonoType [ ]
     { pPhi } ;
@@ -101,7 +137,7 @@ public final class ObjectType extends MonoType implements DefaultTypes
   @ Override
   public String getCaption ( )
   {
-    return "Object-Type" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -178,7 +214,7 @@ public final class ObjectType extends MonoType implements DefaultTypes
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( "Substitution is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
     }
     return new ObjectType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ) ;
   }
@@ -197,13 +233,13 @@ public final class ObjectType extends MonoType implements DefaultTypes
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_OBJECT ) ;
-      this.prettyStringBuilder.addKeyword ( "<" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( LOWER ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_OBJECT_ROW ) ;
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addKeyword ( ">" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( GREATER ) ;
     }
     return this.prettyStringBuilder ;
   }

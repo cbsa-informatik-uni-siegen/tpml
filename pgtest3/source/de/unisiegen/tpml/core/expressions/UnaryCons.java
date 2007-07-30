@@ -13,11 +13,23 @@ package de.unisiegen.tpml.core.expressions ;
 public final class UnaryCons extends Constant
 {
   /**
+   * The keyword <code>cons</code>.
+   */
+  private static final String CONS = "cons" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Unary-Cons" ; //$NON-NLS-1$
+
+
+  /**
    * Constructs a new <code>UnaryCons</code> instance.
    */
   public UnaryCons ( )
   {
-    super ( "cons" ) ; //$NON-NLS-1$
+    super ( CONS ) ;
   }
 
 
@@ -55,6 +67,6 @@ public final class UnaryCons extends Constant
   @ Override
   public String getCaption ( )
   {
-    return "Unary-Cons" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

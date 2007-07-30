@@ -13,11 +13,23 @@ package de.unisiegen.tpml.core.types ;
 public final class IntegerType extends PrimitiveType
 {
   /**
+   * The keyword <code>int</code>.
+   */
+  private static final String INT = "int" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Type}.
+   */
+  private static final String CAPTION = "Integer-Type" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new <code>IntegerType</code> instance.
    */
   public IntegerType ( )
   {
-    super ( "int" ) ; //$NON-NLS-1$
+    super ( INT ) ;
   }
 
 
@@ -55,6 +67,6 @@ public final class IntegerType extends PrimitiveType
   @ Override
   public String getCaption ( )
   {
-    return "Integer-Type" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

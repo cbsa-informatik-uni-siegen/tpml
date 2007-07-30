@@ -25,6 +25,30 @@ public final class New extends Expression implements DefaultExpressions
 
 
   /**
+   * String for the case that the expression is null.
+   */
+  private static final String EXPRESSION_NULL = "expression is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "New" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>new</code>.
+   */
+  private static final String NEW = "new" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
    * The expression.
    */
   private Expression [ ] expressions ;
@@ -41,7 +65,7 @@ public final class New extends Expression implements DefaultExpressions
   {
     if ( pExpression == null )
     {
-      throw new NullPointerException ( "e is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( EXPRESSION_NULL ) ;
     }
     this.expressions = new Expression [ ]
     { pExpression } ;
@@ -104,7 +128,7 @@ public final class New extends Expression implements DefaultExpressions
   @ Override
   public String getCaption ( )
   {
-    return "New" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -196,8 +220,8 @@ public final class New extends Expression implements DefaultExpressions
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_NEW ) ;
-      this.prettyStringBuilder.addKeyword ( "new" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( NEW ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_NEW_E ) ;
     }

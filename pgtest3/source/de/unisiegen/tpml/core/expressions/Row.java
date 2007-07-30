@@ -25,6 +25,36 @@ public final class Row extends Expression implements BodyOrRow ,
     DefaultExpressions
 {
   /**
+   * The keyword <code>epsilon</code>.
+   */
+  private static final String EPSILON = "\u03B5" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the expressions are null.
+   */
+  private static final String EXPRESSIONS_NULL = "expressions is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that one expression are null.
+   */
+  private static final String EXPRESSION_NULL = "one expression is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Row" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
    * Returns the union of the given first and second {@link Row}.
    * 
    * @param pR1 The first {@link Row}.
@@ -71,7 +101,14 @@ public final class Row extends Expression implements BodyOrRow ,
   {
     if ( pExpressions == null )
     {
-      throw new NullPointerException ( "Expressions is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( EXPRESSIONS_NULL ) ;
+    }
+    for ( Expression e : pExpressions )
+    {
+      if ( e == null )
+      {
+        throw new NullPointerException ( EXPRESSION_NULL ) ;
+      }
     }
     this.expressions = pExpressions ;
     this.indicesE = new int [ this.expressions.length ] ;
@@ -130,7 +167,7 @@ public final class Row extends Expression implements BodyOrRow ,
         for ( Identifier allId : allIdentifiers )
         {
           if ( ( attribute.getId ( ).equals ( allId ) )
-              && ( ! ( allId.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) ) ) )
+              && ( ! ( Identifier.Set.ATTRIBUTE.equals ( allId.getSet ( ) ) ) ) )
           {
             negativeIdentifiers.add ( allId ) ;
           }
@@ -194,7 +231,7 @@ public final class Row extends Expression implements BodyOrRow ,
   @ Override
   public String getCaption ( )
   {
-    return "Row" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -569,13 +606,13 @@ public final class Row extends Expression implements BodyOrRow ,
                 PRIO_ROW_E ) ;
         if ( i != this.expressions.length - 1 )
         {
-          this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( SPACE ) ;
           this.prettyStringBuilder.addBreak ( ) ;
         }
       }
       if ( this.expressions.length == 0 )
       {
-        this.prettyStringBuilder.addText ( "\u03B5" ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( EPSILON ) ;
       }
     }
     return this.prettyStringBuilder ;

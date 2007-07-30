@@ -45,6 +45,84 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
 
 
   /**
+   * String for the case that the identifiers are null.
+   */
+  private static final String IDENTIFIERS_NULL = "identifiers is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that one identifier are null.
+   */
+  private static final String IDENTIFIER_NULL = "one identifier is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the identifiers are empty.
+   */
+  private static final String IDENTIFIERS_EMPTY = "identifiers is empty" ; //$NON-NLS-1$
+
+
+  /**
+   * The identifier has the wrong set.
+   */
+  private static final String WRONG_SET = "the set of the identifier has to be 'variable'" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the expression is null.
+   */
+  private static final String EXPRESSION_NULL = "expression is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Multi-Lambda" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>lambda</code>.
+   */
+  private static final String LAMBDA = "\u03bb" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>:</code>.
+   */
+  private static final String COLON = ":" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>.</code>.
+   */
+  private static final String DOT = "." ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>(</code>.
+   */
+  private static final String LPAREN = "(" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>)</code>.
+   */
+  private static final String RPAREN = ")" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>,</code>.
+   */
+  private static final String COMMA = "," ; //$NON-NLS-1$
+
+
+  /**
    * Indeces of the child {@link Identifier}s.
    */
   private int [ ] indicesId ;
@@ -89,27 +167,26 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
   {
     if ( pIdentifiers == null )
     {
-      throw new NullPointerException ( "identifiers is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( IDENTIFIERS_NULL ) ;
     }
     if ( pIdentifiers.length == 0 )
     {
-      throw new IllegalArgumentException ( "identifiers is empty" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( IDENTIFIERS_EMPTY ) ;
     }
     for ( Identifier id : pIdentifiers )
     {
       if ( id == null )
       {
-        throw new NullPointerException ( "One identifier is null" ) ; //$NON-NLS-1$
+        throw new NullPointerException ( IDENTIFIER_NULL ) ;
       }
-      if ( ! id.getSet ( ).equals ( Identifier.Set.VARIABLE ) )
+      if ( ! Identifier.Set.VARIABLE.equals ( id.getSet ( ) ) )
       {
-        throw new IllegalArgumentException (
-            "The set of the identifier has to be 'variable'" ) ; //$NON-NLS-1$
+        throw new IllegalArgumentException ( WRONG_SET ) ;
       }
     }
     if ( pExpression == null )
     {
-      throw new NullPointerException ( "e is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( EXPRESSION_NULL ) ;
     }
     // Identifier
     this.identifiers = pIdentifiers ;
@@ -173,8 +250,8 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
       for ( Identifier allId : allIdentifiers )
       {
         if ( ( current.equals ( allId ) )
-            && ( ! ( ( allId.getSet ( ).equals ( Identifier.Set.VARIABLE ) || ( allId
-                .getSet ( ).equals ( Identifier.Set.METHOD ) ) ) ) ) )
+            && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet ( ) ) || ( Identifier.Set.METHOD
+                .equals ( allId.getSet ( ) ) ) ) ) ) )
         {
           negativeIdentifiers.add ( allId ) ;
         }
@@ -244,7 +321,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
   @ Override
   public String getCaption ( )
   {
-    return "Multi-Lambda" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -530,26 +607,28 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_LAMBDA ) ;
-      this.prettyStringBuilder.addKeyword ( "\u03bb" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( LAMBDA ) ;
+      this.prettyStringBuilder.addText ( LPAREN ) ;
       for ( int i = 0 ; i < this.identifiers.length ; ++ i )
       {
         if ( i > 0 )
         {
-          this.prettyStringBuilder.addText ( ", " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( COMMA ) ;
+          this.prettyStringBuilder.addText ( SPACE ) ;
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       }
-      this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( RPAREN ) ;
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( COLON ) ;
+        this.prettyStringBuilder.addText ( SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_LAMBDA_TAU ) ;
       }
-      this.prettyStringBuilder.addText ( "." ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( DOT ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_LAMBDA_E ) ;

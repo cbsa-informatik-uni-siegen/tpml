@@ -19,6 +19,54 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 public final class Tuple extends Expression implements DefaultExpressions
 {
   /**
+   * The keyword <code>(</code>.
+   */
+  private static final String LPAREN = "(" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>)</code>.
+   */
+  private static final String RPAREN = ")" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the expressions are null.
+   */
+  private static final String EXPRESSIONS_NULL = "expressions is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that one expression are null.
+   */
+  private static final String EXPRESSION_NULL = "one expression is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the expressions are empty.
+   */
+  private static final String EXPRESSIONS_EMPTY = "expressions is empty" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Tuple" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The comma string.
+   */
+  private static final String COMMA = "," ; //$NON-NLS-1$
+
+
+  /**
    * The sub expressions.
    * 
    * @see #getExpressions()
@@ -45,11 +93,18 @@ public final class Tuple extends Expression implements DefaultExpressions
   {
     if ( pExpressions == null )
     {
-      throw new NullPointerException ( "expressions is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( EXPRESSIONS_NULL ) ;
+    }
+    for ( Expression e : pExpressions )
+    {
+      if ( e == null )
+      {
+        throw new NullPointerException ( EXPRESSION_NULL ) ;
+      }
     }
     if ( pExpressions.length == 0 )
     {
-      throw new IllegalArgumentException ( "expressions is empty" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( EXPRESSIONS_EMPTY ) ;
     }
     this.expressions = pExpressions ;
     this.indicesE = new int [ this.expressions.length ] ;
@@ -123,7 +178,7 @@ public final class Tuple extends Expression implements DefaultExpressions
   @ Override
   public String getCaption ( )
   {
-    return "Tuple" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -215,19 +270,20 @@ public final class Tuple extends Expression implements DefaultExpressions
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_TUPLE ) ;
-      this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( LPAREN ) ;
       for ( int n = 0 ; n < this.expressions.length ; ++ n )
       {
         if ( n > 0 )
         {
-          this.prettyStringBuilder.addText ( ", " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( COMMA ) ;
+          this.prettyStringBuilder.addText ( SPACE ) ;
           this.prettyStringBuilder.addBreak ( ) ;
         }
         this.prettyStringBuilder.addBuilder ( this.expressions [ n ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_TUPLE_E ) ;
       }
-      this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( RPAREN ) ;
     }
     return this.prettyStringBuilder ;
   }

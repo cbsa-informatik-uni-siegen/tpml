@@ -25,6 +25,12 @@ public final class RecType extends MonoType implements DefaultTypes ,
     BoundTypeNames
 {
   /**
+   * String for the case that the type substitution is null.
+   */
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+
+
+  /**
    * Indeces of the child {@link Type}s.
    */
   private static final int [ ] INDICES_TYPE = new int [ ]
@@ -36,6 +42,36 @@ public final class RecType extends MonoType implements DefaultTypes ,
    */
   private static final int [ ] INDICES_TYPE_NAME = new int [ ]
   { - 1 } ;
+
+
+  /**
+   * String for the case that tau is null.
+   */
+  private static final String TAU_NULL = "tau is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that type name is null.
+   */
+  private static final String TYPE_NAME_NULL = "type name is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Type}.
+   */
+  private static final String CAPTION = "Rec-Type" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>mu</code>.
+   */
+  private static final String MU = "\u03bc" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>.</code>.
+   */
+  private static final String DOT = "." ; //$NON-NLS-1$
 
 
   /**
@@ -63,11 +99,11 @@ public final class RecType extends MonoType implements DefaultTypes ,
   {
     if ( pTypeName == null )
     {
-      throw new NullPointerException ( "TypeName is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TYPE_NAME_NULL ) ;
     }
     if ( pTau == null )
     {
-      throw new NullPointerException ( "Tau is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TAU_NULL ) ;
     }
     // TypeName
     this.typeNames = new TypeName [ ]
@@ -153,7 +189,7 @@ public final class RecType extends MonoType implements DefaultTypes ,
   @ Override
   public String getCaption ( )
   {
-    return "Rec-Type" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -339,7 +375,7 @@ public final class RecType extends MonoType implements DefaultTypes ,
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( "Substitution is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
     }
     return new RecType ( this.typeNames [ 0 ] , this.types [ 0 ]
         .substitute ( pTypeSubstitution ) ) ;
@@ -359,11 +395,11 @@ public final class RecType extends MonoType implements DefaultTypes ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_REC_TYPE ) ;
-      this.prettyStringBuilder.addKeyword ( "\u03bc" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( MU ) ;
       this.prettyStringBuilder.addBuilder ( this.typeNames [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_REC_TYPE_TYPE_NAME ) ;
-      this.prettyStringBuilder.addText ( "." ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( DOT ) ;
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

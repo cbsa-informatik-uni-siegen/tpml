@@ -13,11 +13,23 @@ package de.unisiegen.tpml.core.expressions ;
 public final class Not extends UnaryOperator
 {
   /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Not" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>not</code>.
+   */
+  private static final String NOT = "not" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new <code>Not</code> operator.
    */
   public Not ( )
   {
-    super ( "not" ) ; //$NON-NLS-1$
+    super ( NOT ) ;
   }
 
 
@@ -76,6 +88,6 @@ public final class Not extends UnaryOperator
   @ Override
   public String getCaption ( )
   {
-    return "Not" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

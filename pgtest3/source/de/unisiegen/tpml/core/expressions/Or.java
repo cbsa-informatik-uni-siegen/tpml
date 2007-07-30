@@ -24,6 +24,36 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public final class Or extends Expression implements DefaultExpressions
 {
   /**
+   * The keyword <code>||</code>.
+   */
+  private static final String BARBAR = "||" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Or" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that e1 is null.
+   */
+  private static final String E1_NULL = "e1 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that e2 is null.
+   */
+  private static final String E2_NULL = "e2 is null" ; //$NON-NLS-1$
+
+
+  /**
    * Indeces of the child {@link Expression}s.
    */
   private static final int [ ] INDICES_E = new int [ ]
@@ -49,11 +79,11 @@ public final class Or extends Expression implements DefaultExpressions
   {
     if ( pExpression1 == null )
     {
-      throw new NullPointerException ( "e1 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E1_NULL ) ;
     }
     if ( pExpression2 == null )
     {
-      throw new NullPointerException ( "e2 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E2_NULL ) ;
     }
     this.expressions = new Expression [ ]
     { pExpression1 , pExpression2 } ;
@@ -121,7 +151,7 @@ public final class Or extends Expression implements DefaultExpressions
   @ Override
   public String getCaption ( )
   {
-    return "Or" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -229,10 +259,10 @@ public final class Or extends Expression implements DefaultExpressions
           PRIO_OR ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_OR_E1 ) ;
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( "||" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( BARBAR ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_OR_E2 ) ;
     }

@@ -35,6 +35,42 @@ public final class Send extends Expression implements DefaultIdentifiers ,
 
 
   /**
+   * String for the case that the identifier is null.
+   */
+  private static final String IDENTIFIER_NULL = "identifier is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The identifier has the wrong set.
+   */
+  private static final String WRONG_SET = "the set of the identifier has to be 'method'" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the expression is null.
+   */
+  private static final String EXPRESSION_NULL = "expression is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Send" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>#</code>.
+   */
+  private static final String HASHKEY = "#" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
    * The list of identifiers.
    * 
    * @see #getIdentifiers()
@@ -58,16 +94,15 @@ public final class Send extends Expression implements DefaultIdentifiers ,
   {
     if ( pExpression == null )
     {
-      throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( EXPRESSION_NULL ) ;
     }
     if ( pIdentifier == null )
     {
-      throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( IDENTIFIER_NULL ) ;
     }
-    if ( ! pIdentifier.getSet ( ).equals ( Identifier.Set.METHOD ) )
+    if ( ! Identifier.Set.METHOD.equals ( pIdentifier.getSet ( ) ) )
     {
-      throw new IllegalArgumentException (
-          "The set of the identifier has to be 'method'" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( WRONG_SET ) ;
     }
     // Expression
     this.expressions = new Expression [ ]
@@ -132,7 +167,7 @@ public final class Send extends Expression implements DefaultIdentifiers ,
   @ Override
   public String getCaption ( )
   {
-    return "Send" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -271,7 +306,9 @@ public final class Send extends Expression implements DefaultIdentifiers ,
           PRIO_SEND ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_SEND_E ) ;
-      this.prettyStringBuilder.addText ( " # " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( HASHKEY ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
     }

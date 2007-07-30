@@ -13,11 +13,23 @@ package de.unisiegen.tpml.core.types ;
 public final class BooleanType extends PrimitiveType
 {
   /**
+   * The keyword <code>bool</code>.
+   */
+  private static final String BOOL = "bool" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Type}.
+   */
+  private static final String CAPTION = "Boolean-Type" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new <code>BooleanType</code> instance.
    */
   public BooleanType ( )
   {
-    super ( "bool" ) ; //$NON-NLS-1$
+    super ( BOOL ) ;
   }
 
 
@@ -55,6 +67,6 @@ public final class BooleanType extends PrimitiveType
   @ Override
   public String getCaption ( )
   {
-    return "Boolean-Type" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

@@ -36,9 +36,57 @@ public final class TypeVariable extends MonoType implements
     Comparable < TypeVariable >
 {
   /**
+   * The keyword <code>'</code>.
+   */
+  private static final String BAR = "'" ; //$NON-NLS-1$
+
+
+  /**
+   * The empty string.
+   */
+  private static final String EMPTY_STRING = "" ; //$NON-NLS-1$
+
+
+  /**
+   * The unused string.
+   */
+  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the offset is negative.
+   */
+  private static final String OFFSET_NEGATIVE = "offset is negative" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the index is negative.
+   */
+  private static final String INDEX_NEGATIVE = "index is negative" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the offset is invalid.
+   */
+  private static final String OFFSET_INVALID = "Offset is invalid" ; //$NON-NLS-1$
+
+
+  /**
    * The type variable alpha.
    */
   public static final TypeVariable ALPHA = new TypeVariable ( 0 , 0 ) ;
+
+
+  /**
+   * String for the case that the type substitution is null.
+   */
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Type}.
+   */
+  private static final String CAPTION = "Type-Variable" ; //$NON-NLS-1$
 
 
   /**
@@ -104,7 +152,7 @@ public final class TypeVariable extends MonoType implements
       case 23 :
         return 'ω' ;
       default :
-        throw new IllegalArgumentException ( "Offset is invalid" ) ; //$NON-NLS-1$
+        throw new IllegalArgumentException ( OFFSET_INVALID ) ;
     }
   }
 
@@ -150,11 +198,11 @@ public final class TypeVariable extends MonoType implements
   {
     if ( pIndex < 0 )
     {
-      throw new IllegalArgumentException ( "Index is negative" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( INDEX_NEGATIVE ) ;
     }
     if ( pOffset < 0 )
     {
-      throw new IllegalArgumentException ( "Offset is negative" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( OFFSET_NEGATIVE ) ;
     }
     this.index = pIndex ;
     this.offset = pOffset ;
@@ -260,7 +308,7 @@ public final class TypeVariable extends MonoType implements
   @ Override
   public String getCaption ( )
   {
-    return "Type-Variable" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -336,8 +384,8 @@ public final class TypeVariable extends MonoType implements
    * @return The resulting {@link Type}.
    */
   @ Override
-  public TypeVariable substitute ( @ SuppressWarnings ( "unused" )
-  TypeName pTypeName , @ SuppressWarnings ( "unused" )
+  public TypeVariable substitute ( @ SuppressWarnings ( UNUSED )
+  TypeName pTypeName , @ SuppressWarnings ( UNUSED )
   MonoType pTau )
   {
     return this ;
@@ -354,7 +402,7 @@ public final class TypeVariable extends MonoType implements
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( "Substitution is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
     }
     // perform the substitution on this type variable
     MonoType tau = pTypeSubstitution.get ( this ) ;
@@ -380,11 +428,11 @@ public final class TypeVariable extends MonoType implements
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_TYPE_VARIABLE ) ;
-      String type = "" + offsetToGreekLetter ( this.offset % 24 ) //$NON-NLS-1$
-          + ( ( this.index > 0 ) ? this.index + "" : "" ) ; //$NON-NLS-1$//$NON-NLS-2$
+      String type = offsetToGreekLetter ( this.offset % 24 )
+          + ( ( this.index > 0 ) ? String.valueOf ( this.index ) : EMPTY_STRING ) ;
       for ( int n = ( this.offset / 24 ) ; n > 0 ; -- n )
       {
-        type = type + "'" ; //$NON-NLS-1$
+        type = type + BAR ;
       }
       this.prettyStringBuilder.addType ( type ) ;
     }

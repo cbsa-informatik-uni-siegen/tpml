@@ -30,6 +30,42 @@ public final class ArrowType extends MonoType implements DefaultTypes
 
 
   /**
+   * String for the case that tau1 is null.
+   */
+  private static final String TAU1_NULL = "tau1 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that tau2 is null.
+   */
+  private static final String TAU2_NULL = "tau2 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the type substitution is null.
+   */
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Type}.
+   */
+  private static final String CAPTION = "Arrow-Type" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>-></code>.
+   */
+  private static final String ARROW = "->" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
    * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
@@ -49,11 +85,11 @@ public final class ArrowType extends MonoType implements DefaultTypes
   {
     if ( pTau1 == null )
     {
-      throw new NullPointerException ( "Tau1 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TAU1_NULL ) ;
     }
     if ( pTau2 == null )
     {
-      throw new NullPointerException ( "Tau2 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TAU2_NULL ) ;
     }
     this.types = new MonoType [ ]
     { pTau1 , pTau2 } ;
@@ -127,7 +163,7 @@ public final class ArrowType extends MonoType implements DefaultTypes
   @ Override
   public String getCaption ( )
   {
-    return "Arrow-Type" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -220,7 +256,7 @@ public final class ArrowType extends MonoType implements DefaultTypes
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( "Substitution is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
     }
     return new ArrowType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ,
         this.types [ 1 ].substitute ( pTypeSubstitution ) ) ;
@@ -243,7 +279,9 @@ public final class ArrowType extends MonoType implements DefaultTypes
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_ARROW_TAU1 ) ;
-      this.prettyStringBuilder.addText ( " \u2192 " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( ARROW ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

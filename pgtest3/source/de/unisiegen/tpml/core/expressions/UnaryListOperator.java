@@ -13,6 +13,18 @@ package de.unisiegen.tpml.core.expressions ;
 public abstract class UnaryListOperator extends UnaryOperator
 {
   /**
+   * The assign operator exception string.
+   */
+  private static final String HANDLED = "list operator must be handled by the interpreter" ; //$NON-NLS-1$
+
+
+  /**
+   * The unused string.
+   */
+  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new <code>UnaryListOperator</code> with the string
    * representation given in <code>text</code>.
    * 
@@ -33,13 +45,12 @@ public abstract class UnaryListOperator extends UnaryOperator
    * @throws UnsupportedOperationException on every invocation.
    * @see UnaryOperator#applyTo(Expression)
    */
-  @ SuppressWarnings ( "unused" )
+  @ SuppressWarnings ( UNUSED )
   @ Override
-  public Expression applyTo ( @ SuppressWarnings ( "unused" )
+  public Expression applyTo ( @ SuppressWarnings ( UNUSED )
   Expression pExpression ) throws UnaryOperatorException
   {
-    throw new UnsupportedOperationException (
-        "list operators must be handled by the interpreter" ) ; //$NON-NLS-1$
+    throw new UnsupportedOperationException ( HANDLED ) ;
   }
 
 

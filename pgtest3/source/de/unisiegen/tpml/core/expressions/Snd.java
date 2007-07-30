@@ -13,12 +13,24 @@ package de.unisiegen.tpml.core.expressions ;
 public final class Snd extends Projection
 {
   /**
+   * The keyword <code>snd</code>.
+   */
+  private static final String SND = "snd" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Second" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new instance of the <code>snd</code> operator which is a
    * special case of the projection that returns the second item of a pair.
    */
   public Snd ( )
   {
-    super ( 2 , 2 , "snd" ) ; //$NON-NLS-1$
+    super ( 2 , 2 , SND ) ;
   }
 
 
@@ -57,6 +69,6 @@ public final class Snd extends Projection
   @ Override
   public String getCaption ( )
   {
-    return "Second" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

@@ -24,10 +24,58 @@ import de.unisiegen.tpml.core.typechecker.TypeUtilities ;
 public final class PolyType extends Type implements DefaultTypes
 {
   /**
+   * The keyword <code>for all</code>.
+   */
+  private static final String FORALL = "\u2200" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>,</code>.
+   */
+  private static final String COMMA = "," ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>.</code>.
+   */
+  private static final String DOT = "." ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the quantified variables are null.
+   */
+  private static final String QUANTIFIED_VARIABLES_NULL = "quantified variables are null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the type substitution is null.
+   */
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+
+
+  /**
    * Indeces of the child {@link Type}s.
    */
   private static final int [ ] INDICES_TYPE = new int [ ]
   { - 1 } ;
+
+
+  /**
+   * String for the case that tau is null.
+   */
+  private static final String TAU_NULL = "tau is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Type}.
+   */
+  private static final String CAPTION = "Poly-Type" ; //$NON-NLS-1$
 
 
   /**
@@ -60,11 +108,11 @@ public final class PolyType extends Type implements DefaultTypes
   {
     if ( pQuantifiedVariables == null )
     {
-      throw new NullPointerException ( "QuantifiedVariables is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( QUANTIFIED_VARIABLES_NULL ) ;
     }
     if ( pTau == null )
     {
-      throw new NullPointerException ( "Tau is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TAU_NULL ) ;
     }
     this.quantifiedVariables = pQuantifiedVariables ;
     this.types = new MonoType [ ]
@@ -115,7 +163,7 @@ public final class PolyType extends Type implements DefaultTypes
   @ Override
   public String getCaption ( )
   {
-    return "Poly-Type" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -226,6 +274,10 @@ public final class PolyType extends Type implements DefaultTypes
   @ Override
   public PolyType substitute ( TypeSubstitution pTypeSubstitution )
   {
+    if ( pTypeSubstitution == null )
+    {
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
+    }
     // determine the monomorphic type
     MonoType newTau = this.types [ 0 ] ;
     // perform a bound rename on the type variables
@@ -270,17 +322,18 @@ public final class PolyType extends Type implements DefaultTypes
           PRIO_POLY ) ;
       if ( ! this.quantifiedVariables.isEmpty ( ) )
       {
-        this.prettyStringBuilder.addText ( "\u2200" ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( FORALL ) ;
         for ( Iterator < TypeVariable > it = this.quantifiedVariables
             .iterator ( ) ; it.hasNext ( ) ; )
         {
           this.prettyStringBuilder.addText ( it.next ( ).toString ( ) ) ;
           if ( it.hasNext ( ) )
           {
-            this.prettyStringBuilder.addText ( ", " ) ; //$NON-NLS-1$
+            this.prettyStringBuilder.addText ( COMMA ) ;
+            this.prettyStringBuilder.addText ( SPACE ) ;
           }
         }
-        this.prettyStringBuilder.addText ( "." ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( DOT ) ;
       }
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

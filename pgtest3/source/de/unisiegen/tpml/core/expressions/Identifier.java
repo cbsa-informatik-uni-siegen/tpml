@@ -47,6 +47,24 @@ public final class Identifier extends Value implements IdentifierOrTypeName
 
 
   /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Identifier" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the name is null.
+   */
+  private static final String NAME_NULL = "name is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the set is null.
+   */
+  private static final String SET_NULL = "set is null" ; //$NON-NLS-1$
+
+
+  /**
    * The {@link Expression} in which this {@link Identifier} is bound.
    * 
    * @see #getBoundToExpression()
@@ -87,6 +105,14 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    */
   public Identifier ( String pName , Set pSet )
   {
+    if ( pName == null )
+    {
+      throw new NullPointerException ( NAME_NULL ) ;
+    }
+    if ( pSet == null )
+    {
+      throw new NullPointerException ( SET_NULL ) ;
+    }
     this.name = pName ;
     this.set = pSet ;
   }
@@ -172,7 +198,7 @@ public final class Identifier extends Value implements IdentifierOrTypeName
   @ Override
   public final String getCaption ( )
   {
-    return "Identifier" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -257,39 +283,6 @@ public final class Identifier extends Value implements IdentifierOrTypeName
   public final Set getSet ( )
   {
     return this.set ;
-  }
-
-
-  /**
-   * Returns the set of this {@link Identifier} as a debug string.
-   * 
-   * @return The set of this {@link Identifier} as a debug string.
-   * @see #set
-   * @see #getSet()
-   * @see #setSet(Set)
-   */
-  public final String getSetDebug ( )
-  {
-    switch ( this.set )
-    {
-      case VARIABLE :
-      {
-        return "V" ; //$NON-NLS-1$
-      }
-      case ATTRIBUTE :
-      {
-        return "A" ; //$NON-NLS-1$
-      }
-      case METHOD :
-      {
-        return "M" ; //$NON-NLS-1$
-      }
-      case SELF :
-      {
-        return "S" ; //$NON-NLS-1$
-      }
-    }
-    return "" ; //$NON-NLS-1$
   }
 
 

@@ -45,6 +45,66 @@ public final class Class extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * String for the case that the identifier is null.
+   */
+  private static final String IDENTIFIER_NULL = "identifier is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the body or row is null.
+   */
+  private static final String BODY_NULL = "body or row is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The identifier has the wrong set.
+   */
+  private static final String WRONG_SET = "the set of the identifier has to be 'self'" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Class" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>(</code>.
+   */
+  private static final String LPAREN = "(" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>)</code>.
+   */
+  private static final String RPAREN = ")" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>class</code>.
+   */
+  private static final String CLASS = "class" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>end</code>.
+   */
+  private static final String END = "end" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>:</code>.
+   */
+  private static final String COLON = ":" ; //$NON-NLS-1$
+
+
+  /**
    * The expression.
    */
   private Expression [ ] expressions ;
@@ -77,16 +137,15 @@ public final class Class extends Expression implements BoundIdentifiers ,
   {
     if ( pIdentifier == null )
     {
-      throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( IDENTIFIER_NULL ) ;
     }
-    if ( ! pIdentifier.getSet ( ).equals ( Identifier.Set.SELF ) )
+    if ( ! Identifier.Set.SELF.equals ( pIdentifier.getSet ( ) ) )
     {
-      throw new IllegalArgumentException (
-          "The set of the identifier has to be 'self'" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( WRONG_SET ) ;
     }
     if ( pBodyOrRow == null )
     {
-      throw new NullPointerException ( "Body or Row is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( BODY_NULL ) ;
     }
     // Identifier
     this.identifiers = new Identifier [ ]
@@ -157,16 +216,6 @@ public final class Class extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Class" ; //$NON-NLS-1$
-  }
-
-
-  /**
    * Returns the sub {@link BodyOrRow}.
    * 
    * @return the sub {@link BodyOrRow}.
@@ -174,6 +223,16 @@ public final class Class extends Expression implements BoundIdentifiers ,
   public BodyOrRow getBodyOrRow ( )
   {
     return ( BodyOrRow ) this.expressions [ 0 ] ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return CAPTION ;
   }
 
 
@@ -347,7 +406,7 @@ public final class Class extends Expression implements BoundIdentifiers ,
     /*
      * Do not substitute, if the Identifiers are equal.
      */
-    if ( pId.getSet ( ).equals ( Identifier.Set.SELF ) )
+    if ( Identifier.Set.SELF.equals ( pId.getSet ( ) ) )
     {
       return this ;
     }
@@ -387,25 +446,28 @@ public final class Class extends Expression implements BoundIdentifiers ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_CLASS ) ;
-      this.prettyStringBuilder.addKeyword ( "class" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " (" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( CLASS ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( LPAREN ) ;
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( COLON ) ;
+        this.prettyStringBuilder.addText ( SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_CLASS_TAU ) ;
       }
-      this.prettyStringBuilder.addText ( ") " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( RPAREN ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CLASS_BODY ) ;
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( "end" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( END ) ;
     }
     return this.prettyStringBuilder ;
   }

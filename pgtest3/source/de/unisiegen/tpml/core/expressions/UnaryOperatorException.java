@@ -20,6 +20,36 @@ public final class UnaryOperatorException extends Exception
 
 
   /**
+   * String for the case that the operator is null.
+   */
+  private static final String OPERATOR_NULL = "operator is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the expression is null.
+   */
+  private static final String EXPRESSION_NULL = "expression is null" ; //$NON-NLS-1$
+
+
+  /**
+   * Cannot apply exception string.
+   */
+  private static final String CANNOT_APPLY_1 = "cannot apply " ; //$NON-NLS-1$
+
+
+  /**
+   * Cannot apply exception string.
+   */
+  private static final String CANNOT_APPLY_2 = " to " ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Unary-Operator-Exception" ; //$NON-NLS-1$
+
+
+  /**
    * The unary operator that failed to apply.
    * 
    * @see #getOperator()
@@ -66,14 +96,15 @@ public final class UnaryOperatorException extends Exception
   public UnaryOperatorException ( UnaryOperator pUnaryOperator ,
       Expression pExpression , Throwable cause )
   {
-    super ( "Cannot apply " + pUnaryOperator + " to " + pExpression , cause ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    super ( CANNOT_APPLY_1 + pUnaryOperator + CANNOT_APPLY_2 + pExpression ,
+        cause ) ;
     if ( pUnaryOperator == null )
     {
-      throw new NullPointerException ( "operator is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( OPERATOR_NULL ) ;
     }
     if ( pExpression == null )
     {
-      throw new NullPointerException ( "e is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( EXPRESSION_NULL ) ;
     }
     this.operator = pUnaryOperator ;
     this.e = pExpression ;
@@ -87,7 +118,7 @@ public final class UnaryOperatorException extends Exception
    */
   public String getCaption ( )
   {
-    return "Unary-Operator-Exception" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 

@@ -18,13 +18,37 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 public final class Exn extends Expression
 {
   /**
+   * The string for the exception.
+   */
+  private static final String EXCEPTION = "\u2191" ; //$NON-NLS-1$
+
+
+  /**
+   * The unused string.
+   */
+  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+
+
+  /**
+   * The string for the <b>(EMPTY-LIST)</b> exception.
+   */
+  private static final String EMPTY_LIST = "empty_list" ; //$NON-NLS-1$
+
+
+  /**
+   * The string for the <b>(DIVIDE-BY-ZERO)</b> exception.
+   */
+  private static final String DIVIDE_BY_ZERO = "divide_by_zero" ; //$NON-NLS-1$
+
+
+  /**
    * The <b>(DIVIDE-BY-ZERO)</b> exception.
    * 
    * @return A new <b>(DIVIDE-BY-ZERO)</b> exception.
    */
   public static final Exn newDivideByZero ( )
   {
-    return new Exn ( "divide_by_zero" ) ; //$NON-NLS-1$
+    return new Exn ( DIVIDE_BY_ZERO ) ;
   }
 
 
@@ -35,7 +59,7 @@ public final class Exn extends Expression
    */
   public static final Exn newEmptyList ( )
   {
-    return new Exn ( "empty_list" ) ; //$NON-NLS-1$
+    return new Exn ( EMPTY_LIST ) ;
   }
 
 
@@ -45,6 +69,12 @@ public final class Exn extends Expression
    * @see #toString()
    */
   private String name ;
+
+
+  /**
+   * String for the case that the name is null.
+   */
+  private static final String NAME_NULL = "name is null" ; //$NON-NLS-1$
 
 
   /**
@@ -58,7 +88,7 @@ public final class Exn extends Expression
   {
     if ( pName == null )
     {
-      throw new NullPointerException ( "Name is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( NAME_NULL ) ;
     }
     this.name = pName ;
   }
@@ -95,12 +125,18 @@ public final class Exn extends Expression
 
 
   /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Exception" ; //$NON-NLS-1$
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
   {
-    return "Exception" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -164,7 +200,7 @@ public final class Exn extends Expression
    * @see Expression#substitute(Identifier, Expression)
    */
   @ Override
-  public Exn substitute ( @ SuppressWarnings ( "unused" )
+  public Exn substitute ( @ SuppressWarnings ( UNUSED )
   Identifier pId , Expression pExpression )
   {
     if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
@@ -173,6 +209,12 @@ public final class Exn extends Expression
     }
     return this ;
   }
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
 
 
   /**
@@ -188,7 +230,9 @@ public final class Exn extends Expression
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_EXN ) ;
-      this.prettyStringBuilder.addText ( "\u2191 " + this.name ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( EXCEPTION ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( this.name ) ;
     }
     return this.prettyStringBuilder ;
   }

@@ -15,11 +15,35 @@ package de.unisiegen.tpml.core.expressions ;
 public final class Deref extends UnaryOperator
 {
   /**
+   * The keyword <code>!</code>.
+   */
+  private static final String EXCLAMATION = "!" ; //$NON-NLS-1$
+
+
+  /**
+   * The deref operator exception string.
+   */
+  private static final String HANDLED = "deref operator must be handled by the interpreter" ; //$NON-NLS-1$
+
+
+  /**
+   * The unused string.
+   */
+  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Deref" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new <code>Deref</code> instance.
    */
   public Deref ( )
   {
-    super ( "!" ) ; //$NON-NLS-1$
+    super ( EXCLAMATION ) ;
   }
 
 
@@ -49,13 +73,12 @@ public final class Deref extends UnaryOperator
    *           <code>!</code> operator must be handled by the interpreter.
    * @see UnaryOperator#applyTo(Expression)
    */
-  @ SuppressWarnings ( "unused" )
+  @ SuppressWarnings ( UNUSED )
   @ Override
-  public Expression applyTo ( @ SuppressWarnings ( "unused" )
+  public Expression applyTo ( @ SuppressWarnings ( UNUSED )
   Expression pExpression ) throws UnaryOperatorException
   {
-    throw new UnsupportedOperationException (
-        "deref operator must be handled by the interpreter" ) ; //$NON-NLS-1$
+    throw new UnsupportedOperationException ( HANDLED ) ;
   }
 
 
@@ -77,6 +100,6 @@ public final class Deref extends UnaryOperator
   @ Override
   public String getCaption ( )
   {
-    return "Deref" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

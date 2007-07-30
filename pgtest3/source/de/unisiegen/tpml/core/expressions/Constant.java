@@ -18,12 +18,24 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 public abstract class Constant extends Value
 {
   /**
+   * The unused string.
+   */
+  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+
+
+  /**
    * The text representation of the constant.
    * 
    * @see #getText()
    * @see #toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   protected String text ;
+
+
+  /**
+   * String for the case that the text is null.
+   */
+  private static final String TEXT_NULL = "text is null" ; //$NON-NLS-1$
 
 
   /**
@@ -37,7 +49,7 @@ public abstract class Constant extends Value
   {
     if ( pText == null )
     {
-      throw new NullPointerException ( "text is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TEXT_NULL ) ;
     }
     this.text = pText ;
   }
@@ -110,7 +122,7 @@ public abstract class Constant extends Value
    * @see Expression#substitute(Identifier, Expression)
    */
   @ Override
-  public final Constant substitute ( @ SuppressWarnings ( "unused" )
+  public final Constant substitute ( @ SuppressWarnings ( UNUSED )
   Identifier pId , Expression pExpression )
   {
     if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )

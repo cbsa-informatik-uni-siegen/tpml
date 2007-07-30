@@ -15,6 +15,24 @@ package de.unisiegen.tpml.core.expressions ;
 public final class BooleanConstant extends Constant
 {
   /**
+   * The keyword <code>false</code>.
+   */
+  private static final String FALSE = "false" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>true</code>.
+   */
+  private static final String TRUE = "true" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Boolean" ; //$NON-NLS-1$
+
+
+  /**
    * The boolean value of the constant.
    * 
    * @see #booleanValue()
@@ -31,7 +49,7 @@ public final class BooleanConstant extends Constant
    */
   public BooleanConstant ( boolean pBooleanValue )
   {
-    super ( pBooleanValue ? "true" : "false" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    super ( pBooleanValue ? TRUE : FALSE ) ;
     this.booleanValue = pBooleanValue ;
   }
 
@@ -86,6 +104,6 @@ public final class BooleanConstant extends Constant
   @ Override
   public String getCaption ( )
   {
-    return "Boolean" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

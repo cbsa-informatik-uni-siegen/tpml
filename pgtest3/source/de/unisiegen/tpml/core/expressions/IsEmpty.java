@@ -16,11 +16,23 @@ package de.unisiegen.tpml.core.expressions ;
 public final class IsEmpty extends UnaryListOperator
 {
   /**
+   * The string for the is empty.
+   */
+  private static final String IS_EMPTY = "is_empty" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Is-Empty" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new <code>IsEmpty</code> instance.
    */
   public IsEmpty ( )
   {
-    super ( "is_empty" ) ; //$NON-NLS-1$
+    super ( IS_EMPTY ) ;
   }
 
 
@@ -58,6 +70,6 @@ public final class IsEmpty extends UnaryListOperator
   @ Override
   public String getCaption ( )
   {
-    return "Is-Empty" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

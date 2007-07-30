@@ -30,6 +30,30 @@ public final class ListType extends MonoType implements DefaultTypes
 
 
   /**
+   * String for the case that tau is null.
+   */
+  private static final String TAU_NULL = "tau is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Type}.
+   */
+  private static final String CAPTION = "List-Type" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>list</code>.
+   */
+  private static final String LIST = "list" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
    * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
@@ -48,7 +72,7 @@ public final class ListType extends MonoType implements DefaultTypes
   {
     if ( pTau == null )
     {
-      throw new NullPointerException ( "Tau is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TAU_NULL ) ;
     }
     this.types = new MonoType [ ]
     { pTau } ;
@@ -113,7 +137,7 @@ public final class ListType extends MonoType implements DefaultTypes
   @ Override
   public String getCaption ( )
   {
-    return "List-Type" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -181,6 +205,12 @@ public final class ListType extends MonoType implements DefaultTypes
 
 
   /**
+   * String for the case that the type substitution is null.
+   */
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see MonoType#substitute(TypeSubstitution)
@@ -188,6 +218,10 @@ public final class ListType extends MonoType implements DefaultTypes
   @ Override
   public ListType substitute ( TypeSubstitution pTypeSubstitution )
   {
+    if ( pTypeSubstitution == null )
+    {
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
+    }
     return new ListType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ) ;
   }
 
@@ -208,8 +242,8 @@ public final class ListType extends MonoType implements DefaultTypes
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_LIST_TAU ) ;
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addType ( "list" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addType ( LIST ) ;
     }
     return this.prettyStringBuilder ;
   }

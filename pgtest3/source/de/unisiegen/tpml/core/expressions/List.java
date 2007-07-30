@@ -23,6 +23,66 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public final class List extends Expression implements DefaultExpressions
 {
   /**
+   * The keyword <code>[</code>.
+   */
+  private static final String LBRACKET = "[" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>]</code>.
+   */
+  private static final String RBRACKET = "]" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that e1 is null.
+   */
+  private static final String E1_NULL = "e1 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that e2 is null.
+   */
+  private static final String E2_NULL = "e2 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the expressions are null.
+   */
+  private static final String EXPRESSIONS_NULL = "expressions is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that one expression are null.
+   */
+  private static final String EXPRESSION_NULL = "one expression is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the expressions are empty.
+   */
+  private static final String EXPRESSIONS_EMPTY = "expressions is empty" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "List" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The semi string.
+   */
+  private static final String SEMI = ";" ; //$NON-NLS-1$
+
+
+  /**
    * The expressions within this list.
    * 
    * @see #getExpressions()
@@ -53,11 +113,11 @@ public final class List extends Expression implements DefaultExpressions
   {
     if ( pExpression1 == null )
     {
-      throw new NullPointerException ( "e1 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E1_NULL ) ;
     }
     if ( pExpression2 == null )
     {
-      throw new NullPointerException ( "e2 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E2_NULL ) ;
     }
     // allocate a vector for the expressions of the list and prepend e1 as new
     // first item
@@ -114,11 +174,18 @@ public final class List extends Expression implements DefaultExpressions
   {
     if ( pExpressions == null )
     {
-      throw new NullPointerException ( "expressions is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( EXPRESSIONS_NULL ) ;
+    }
+    for ( Expression e : pExpressions )
+    {
+      if ( e == null )
+      {
+        throw new NullPointerException ( EXPRESSION_NULL ) ;
+      }
     }
     if ( pExpressions.length == 0 )
     {
-      throw new IllegalArgumentException ( "expressions is empty" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( EXPRESSIONS_EMPTY ) ;
     }
     this.expressions = pExpressions ;
     this.indicesE = new int [ this.expressions.length ] ;
@@ -192,7 +259,7 @@ public final class List extends Expression implements DefaultExpressions
   @ Override
   public String getCaption ( )
   {
-    return "List" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -335,19 +402,20 @@ public final class List extends Expression implements DefaultExpressions
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_LIST ) ;
-      this.prettyStringBuilder.addText ( "[" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( LBRACKET ) ;
       for ( int n = 0 ; n < this.expressions.length ; ++ n )
       {
         if ( n > 0 )
         {
-          this.prettyStringBuilder.addText ( "; " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( SEMI ) ;
+          this.prettyStringBuilder.addText ( SPACE ) ;
           this.prettyStringBuilder.addBreak ( ) ;
         }
         this.prettyStringBuilder.addBuilder ( this.expressions [ n ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_LIST_E ) ;
       }
-      this.prettyStringBuilder.addText ( "]" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( RBRACKET ) ;
     }
     return this.prettyStringBuilder ;
   }

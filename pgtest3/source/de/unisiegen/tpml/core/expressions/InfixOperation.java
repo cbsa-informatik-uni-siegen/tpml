@@ -32,6 +32,36 @@ public final class InfixOperation extends Expression implements
 
 
   /**
+   * String for the case that e1 is null.
+   */
+  private static final String E1_NULL = "e1 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that e2 is null.
+   */
+  private static final String E2_NULL = "e2 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that op is null.
+   */
+  private static final String OP_NULL = "op is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Infix-Operation" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
    * The expressions.
    */
   private Expression [ ] expressions ;
@@ -52,15 +82,15 @@ public final class InfixOperation extends Expression implements
   {
     if ( pBinaryOperator == null )
     {
-      throw new NullPointerException ( "op is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( OP_NULL ) ;
     }
     if ( pExpression1 == null )
     {
-      throw new NullPointerException ( "e1 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E1_NULL ) ;
     }
     if ( pExpression2 == null )
     {
-      throw new NullPointerException ( "e2 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E2_NULL ) ;
     }
     this.expressions = new Expression [ ]
     { pExpression1 , pBinaryOperator , pExpression2 } ;
@@ -133,7 +163,7 @@ public final class InfixOperation extends Expression implements
   @ Override
   public String getCaption ( )
   {
-    return "Infix-Operation" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -263,11 +293,11 @@ public final class InfixOperation extends Expression implements
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           ( ( BinaryOperator ) this.expressions [ 1 ] ).getPrettyPriority ( ) ) ;
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           ( ( BinaryOperator ) this.expressions [ 1 ] ).getPrettyPriority ( ) ) ;
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder
           .addBuilder ( this.expressions [ 2 ]
               .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

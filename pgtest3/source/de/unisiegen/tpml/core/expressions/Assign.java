@@ -15,11 +15,35 @@ package de.unisiegen.tpml.core.expressions ;
 public final class Assign extends BinaryOperator
 {
   /**
+   * The assign operator exception string.
+   */
+  private static final String HANDLED = "assign operator must be handled by the interpreter" ; //$NON-NLS-1$
+
+
+  /**
+   * The unused string.
+   */
+  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>:=</code>.
+   */
+  private static final String COLONEQUAL = ":=" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Assign" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new <code>Assign</code> operator.
    */
   public Assign ( )
   {
-    super ( ":=" , PRIO_ASSIGN ) ; //$NON-NLS-1$
+    super ( COLONEQUAL , PRIO_ASSIGN ) ;
   }
 
 
@@ -49,14 +73,13 @@ public final class Assign extends BinaryOperator
    * @throws UnsupportedOperationException on every invokation.
    * @see BinaryOperator#applyTo(Expression, Expression)
    */
-  @ SuppressWarnings ( "unused" )
+  @ SuppressWarnings ( UNUSED )
   @ Override
-  public Expression applyTo ( @ SuppressWarnings ( "unused" )
-  Expression pExpression1 , @ SuppressWarnings ( "unused" )
+  public Expression applyTo ( @ SuppressWarnings ( UNUSED )
+  Expression pExpression1 , @ SuppressWarnings ( UNUSED )
   Expression pExpression2 ) throws BinaryOperatorException
   {
-    throw new UnsupportedOperationException (
-        "assign operator must be handled by the interpreter" ) ; //$NON-NLS-1$
+    throw new UnsupportedOperationException ( HANDLED ) ;
   }
 
 
@@ -78,6 +101,6 @@ public final class Assign extends BinaryOperator
   @ Override
   public String getCaption ( )
   {
-    return "Assign" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

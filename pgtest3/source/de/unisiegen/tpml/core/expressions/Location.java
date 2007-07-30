@@ -19,6 +19,18 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 public final class Location extends Value
 {
   /**
+   * The unused string.
+   */
+  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Location" ; //$NON-NLS-1$
+
+
+  /**
    * The name of the location (uses uppercase letters).
    * 
    * @see #getName()
@@ -91,7 +103,7 @@ public final class Location extends Value
   @ Override
   public String getCaption ( )
   {
-    return "Location" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -125,7 +137,7 @@ public final class Location extends Value
    * @see Expression#substitute(Identifier, Expression)
    */
   @ Override
-  public Location substitute ( @ SuppressWarnings ( "unused" )
+  public Location substitute ( @ SuppressWarnings ( UNUSED )
   Identifier pId , Expression pExpression )
   {
     if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )

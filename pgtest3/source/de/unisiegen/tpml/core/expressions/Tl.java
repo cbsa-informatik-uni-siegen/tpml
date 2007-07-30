@@ -16,11 +16,23 @@ package de.unisiegen.tpml.core.expressions ;
 public final class Tl extends UnaryListOperator
 {
   /**
+   * The keyword <code>tl</code>.
+   */
+  private static final String TL = "tl" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Tail" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new <code>Tl</code> instance.
    */
   public Tl ( )
   {
-    super ( "tl" ) ; //$NON-NLS-1$
+    super ( TL ) ;
   }
 
 
@@ -58,6 +70,6 @@ public final class Tl extends UnaryListOperator
   @ Override
   public String getCaption ( )
   {
-    return "Tail" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

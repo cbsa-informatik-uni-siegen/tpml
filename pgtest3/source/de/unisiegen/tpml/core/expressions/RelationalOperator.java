@@ -15,6 +15,60 @@ package de.unisiegen.tpml.core.expressions ;
 public final class RelationalOperator extends BinaryOperator
 {
   /**
+   * The equal string.
+   */
+  private static final String EQUAL = "=" ; //$NON-NLS-1$
+
+
+  /**
+   * The greater equal string.
+   */
+  private static final String GREATER_EQUAL = ">=" ; //$NON-NLS-1$
+
+
+  /**
+   * The greater string.
+   */
+  private static final String GREATER = ">" ; //$NON-NLS-1$
+
+
+  /**
+   * The lower equal string.
+   */
+  private static final String LOWER_EQUAL = "<=" ; //$NON-NLS-1$
+
+
+  /**
+   * The lower string.
+   */
+  private static final String LOWER = "<" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that e1 is null.
+   */
+  private static final String E1_NULL = "e1 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that e2 is null.
+   */
+  private static final String E2_NULL = "e2 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The inconsistent exception string.
+   */
+  private static final String INCONSISTENT = "inconsistent arithmetic operator class" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Relational-Operator" ; //$NON-NLS-1$
+
+
+  /**
    * Returns the equals operator.
    * 
    * @param pParserStartOffset The start offset of this {@link Expression} in
@@ -26,7 +80,8 @@ public final class RelationalOperator extends BinaryOperator
   public static final RelationalOperator newEquals ( int pParserStartOffset ,
       int pParserEndOffset )
   {
-    return new RelationalOperator ( "=" , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
+    return new RelationalOperator ( EQUAL , pParserStartOffset ,
+        pParserEndOffset ) ;
   }
 
 
@@ -42,8 +97,8 @@ public final class RelationalOperator extends BinaryOperator
   public static final RelationalOperator newGreaterEqual (
       int pParserStartOffset , int pParserEndOffset )
   {
-    return new RelationalOperator (
-        ">=" , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
+    return new RelationalOperator ( GREATER_EQUAL , pParserStartOffset ,
+        pParserEndOffset ) ;
   }
 
 
@@ -59,7 +114,8 @@ public final class RelationalOperator extends BinaryOperator
   public static final RelationalOperator newGreaterThan (
       int pParserStartOffset , int pParserEndOffset )
   {
-    return new RelationalOperator ( ">" , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
+    return new RelationalOperator ( GREATER , pParserStartOffset ,
+        pParserEndOffset ) ;
   }
 
 
@@ -75,8 +131,8 @@ public final class RelationalOperator extends BinaryOperator
   public static final RelationalOperator newLowerEqual (
       int pParserStartOffset , int pParserEndOffset )
   {
-    return new RelationalOperator (
-        "<=" , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
+    return new RelationalOperator ( LOWER_EQUAL , pParserStartOffset ,
+        pParserEndOffset ) ;
   }
 
 
@@ -92,7 +148,8 @@ public final class RelationalOperator extends BinaryOperator
   public static final RelationalOperator newLowerThan ( int pParserStartOffset ,
       int pParserEndOffset )
   {
-    return new RelationalOperator ( "<" , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
+    return new RelationalOperator ( LOWER , pParserStartOffset ,
+        pParserEndOffset ) ;
   }
 
 
@@ -140,11 +197,11 @@ public final class RelationalOperator extends BinaryOperator
   {
     if ( pExpression1 == null )
     {
-      throw new NullPointerException ( "e1 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E1_NULL ) ;
     }
     if ( pExpression2 == null )
     {
-      throw new NullPointerException ( "e2 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E2_NULL ) ;
     }
     try
     {
@@ -152,31 +209,30 @@ public final class RelationalOperator extends BinaryOperator
       int n1 = ( ( IntegerConstant ) pExpression1 ).intValue ( ) ;
       int n2 = ( ( IntegerConstant ) pExpression2 ).intValue ( ) ;
       // perform the requested comparison
-      if ( getText ( ) == "=" ) //$NON-NLS-1$
+      if ( EQUAL.equals ( getText ( ) ) )
       {
         return new BooleanConstant ( n1 == n2 ) ;
       }
-      else if ( getText ( ) == "<" ) //$NON-NLS-1$
+      else if ( LOWER.equals ( getText ( ) ) )
       {
         return new BooleanConstant ( n1 < n2 ) ;
       }
-      else if ( getText ( ) == ">" ) //$NON-NLS-1$
+      else if ( GREATER.equals ( getText ( ) ) )
       {
         return new BooleanConstant ( n1 > n2 ) ;
       }
-      else if ( getText ( ) == "<=" ) //$NON-NLS-1$
+      else if ( LOWER_EQUAL.equals ( getText ( ) ) )
       {
         return new BooleanConstant ( n1 <= n2 ) ;
       }
-      else if ( getText ( ) == ">=" ) //$NON-NLS-1$
+      else if ( GREATER_EQUAL.equals ( getText ( ) ) )
       {
         return new BooleanConstant ( n1 >= n2 ) ;
       }
       else
       {
         // programming error
-        throw new IllegalStateException (
-            "inconsistent arithmetic operator class" ) ; //$NON-NLS-1$
+        throw new IllegalStateException ( INCONSISTENT ) ;
       }
     }
     catch ( ClassCastException e )
@@ -205,6 +261,6 @@ public final class RelationalOperator extends BinaryOperator
   @ Override
   public String getCaption ( )
   {
-    return "Relational-Operator" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

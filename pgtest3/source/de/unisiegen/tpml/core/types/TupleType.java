@@ -20,6 +20,48 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public final class TupleType extends MonoType implements DefaultTypes
 {
   /**
+   * String for the case that the type substitution is null.
+   */
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the types are null.
+   */
+  private static final String TYPES_NULL = "types is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that one type is null.
+   */
+  private static final String TYPE_NULL = "one type is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the types are to small.
+   */
+  private static final String TO_SMALL = "types must contain at least two items" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Type}.
+   */
+  private static final String CAPTION = "Tuple-Type" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The string <code>*</code>.
+   */
+  private static final String MULT = "*" ; //$NON-NLS-1$
+
+
+  /**
    * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
@@ -44,18 +86,17 @@ public final class TupleType extends MonoType implements DefaultTypes
   {
     if ( pTypes == null )
     {
-      throw new NullPointerException ( "Types is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TYPES_NULL ) ;
     }
     if ( pTypes.length < 2 )
     {
-      throw new IllegalArgumentException (
-          "Types must contain atleast two elements" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( TO_SMALL ) ;
     }
     for ( MonoType type : pTypes )
     {
       if ( type == null )
       {
-        throw new NullPointerException ( "One type is null" ) ; //$NON-NLS-1$
+        throw new NullPointerException ( TYPE_NULL ) ;
       }
     }
     this.types = pTypes ;
@@ -130,7 +171,7 @@ public final class TupleType extends MonoType implements DefaultTypes
   @ Override
   public String getCaption ( )
   {
-    return "Tuple-Type" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -200,7 +241,7 @@ public final class TupleType extends MonoType implements DefaultTypes
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( "Substitution is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
     }
     MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
@@ -228,7 +269,9 @@ public final class TupleType extends MonoType implements DefaultTypes
       {
         if ( i > 0 )
         {
-          this.prettyStringBuilder.addText ( " * " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( SPACE ) ;
+          this.prettyStringBuilder.addText ( MULT ) ;
+          this.prettyStringBuilder.addText ( SPACE ) ;
         }
         this.prettyStringBuilder.addBuilder ( this.types [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

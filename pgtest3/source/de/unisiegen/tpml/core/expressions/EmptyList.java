@@ -14,11 +14,23 @@ package de.unisiegen.tpml.core.expressions ;
 public final class EmptyList extends Constant
 {
   /**
+   * The keyword <code>[]</code>.
+   */
+  private static final String BRACKETBRACKET = "[]" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Empty-List" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new <code>EmptyList</code> instance.
    */
   public EmptyList ( )
   {
-    super ( "[]" ) ; //$NON-NLS-1$
+    super ( BRACKETBRACKET ) ;
   }
 
 
@@ -56,6 +68,6 @@ public final class EmptyList extends Constant
   @ Override
   public String getCaption ( )
   {
-    return "Empty-List" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

@@ -45,6 +45,96 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * String for the case that the identifiers are null.
+   */
+  private static final String IDENTIFIERS_NULL = "identifiers is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that one identifier are null.
+   */
+  private static final String IDENTIFIER_NULL = "one identifier is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the identifiers are empty.
+   */
+  private static final String IDENTIFIERS_EMPTY = "identifiers is empty" ; //$NON-NLS-1$
+
+
+  /**
+   * The identifier has the wrong set.
+   */
+  private static final String WRONG_SET = "the set of the identifier has to be 'variable'" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that e1 is null.
+   */
+  private static final String E1_NULL = "e1 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that e2 is null.
+   */
+  private static final String E2_NULL = "e2 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Multi-Let" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>:</code>.
+   */
+  private static final String COLON = ":" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>(</code>.
+   */
+  private static final String LPAREN = "(" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>)</code>.
+   */
+  private static final String RPAREN = ")" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>,</code>.
+   */
+  private static final String COMMA = "," ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>let</code>.
+   */
+  private static final String LET = "let" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>in</code>.
+   */
+  private static final String IN = "in" ; //$NON-NLS-1$ 
+
+
+  /**
+   * The equal string.
+   */
+  private static final String EQUAL = "=" ; //$NON-NLS-1$
+
+
+  /**
    * Indeces of the child {@link Identifier}s.
    */
   private int [ ] indicesId ;
@@ -92,31 +182,30 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
   {
     if ( pIdentifiers == null )
     {
-      throw new NullPointerException ( "identifiers is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( IDENTIFIERS_NULL ) ;
     }
     if ( pIdentifiers.length == 0 )
     {
-      throw new IllegalArgumentException ( "identifiers is empty" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( IDENTIFIERS_EMPTY ) ;
     }
     for ( Identifier id : pIdentifiers )
     {
       if ( id == null )
       {
-        throw new NullPointerException ( "One identifier is null" ) ; //$NON-NLS-1$
+        throw new NullPointerException ( IDENTIFIER_NULL ) ;
       }
-      if ( ! id.getSet ( ).equals ( Identifier.Set.VARIABLE ) )
+      if ( ! Identifier.Set.VARIABLE.equals ( id.getSet ( ) ) )
       {
-        throw new IllegalArgumentException (
-            "The set of the identifier has to be 'variable'" ) ; //$NON-NLS-1$
+        throw new IllegalArgumentException ( WRONG_SET ) ;
       }
     }
     if ( pExpression1 == null )
     {
-      throw new NullPointerException ( "e1 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E1_NULL ) ;
     }
     if ( pExpression2 == null )
     {
-      throw new NullPointerException ( "e2 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E2_NULL ) ;
     }
     // Identifier
     this.identifiers = pIdentifiers ;
@@ -185,8 +274,8 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
       for ( Identifier allId : allIdentifiers )
       {
         if ( ( current.equals ( allId ) )
-            && ( ! ( ( allId.getSet ( ).equals ( Identifier.Set.VARIABLE ) || ( allId
-                .getSet ( ).equals ( Identifier.Set.METHOD ) ) ) ) ) )
+            && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet ( ) ) || ( Identifier.Set.METHOD
+                .equals ( allId.getSet ( ) ) ) ) ) ) )
         {
           negativeIdentifiers.add ( allId ) ;
         }
@@ -258,7 +347,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
   @ Override
   public String getCaption ( )
   {
-    return "Multi-Let" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -562,32 +651,36 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_LET ) ;
-      this.prettyStringBuilder.addKeyword ( "let" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( "(" ) ;//$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( LET ) ;
+      this.prettyStringBuilder.addText ( LPAREN ) ;
       for ( int i = 0 ; i < this.identifiers.length ; ++ i )
       {
         if ( i > 0 )
         {
-          this.prettyStringBuilder.addText ( ", " ) ;//$NON-NLS-1$
+          this.prettyStringBuilder.addText ( COMMA ) ;
+          this.prettyStringBuilder.addText ( SPACE ) ;
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       }
-      this.prettyStringBuilder.addText ( ")" ) ;//$NON-NLS-1$
+      this.prettyStringBuilder.addText ( RPAREN ) ;
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( ": " ) ;//$NON-NLS-1$
+        this.prettyStringBuilder.addText ( COLON ) ;
+        this.prettyStringBuilder.addText ( SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_CONSTANT ) ;
       }
-      this.prettyStringBuilder.addText ( " = " ) ;//$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( EQUAL ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
-      this.prettyStringBuilder.addText ( " " ) ;//$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( "in" ) ;//$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ;//$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( IN ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
     }

@@ -27,6 +27,54 @@ public final class Condition extends Expression implements DefaultExpressions
 
 
   /**
+   * String for the case that e0 is null.
+   */
+  private static final String E0_NULL = "e0 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that e1 is null.
+   */
+  private static final String E1_NULL = "e1 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that e2 is null.
+   */
+  private static final String E2_NULL = "e2 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Condition" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>if</code>.
+   */
+  private static final String IF = "if" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>then</code>.
+   */
+  private static final String THEN = "then" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>else</code>.
+   */
+  private static final String ELSE = "else" ; //$NON-NLS-1$
+
+
+  /**
    * The expressions.
    */
   private Expression [ ] expressions ;
@@ -47,15 +95,15 @@ public final class Condition extends Expression implements DefaultExpressions
   {
     if ( pExpression0 == null )
     {
-      throw new NullPointerException ( "e0 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E0_NULL ) ;
     }
     if ( pExpression1 == null )
     {
-      throw new NullPointerException ( "e1 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E1_NULL ) ;
     }
     if ( pExpression2 == null )
     {
-      throw new NullPointerException ( "e2 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E2_NULL ) ;
     }
     this.expressions = new Expression [ ]
     { pExpression0 , pExpression1 , pExpression2 } ;
@@ -126,7 +174,7 @@ public final class Condition extends Expression implements DefaultExpressions
   @ Override
   public String getCaption ( )
   {
-    return "Condition" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -248,22 +296,22 @@ public final class Condition extends Expression implements DefaultExpressions
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_CONDITION ) ;
-      this.prettyStringBuilder.addKeyword ( "if" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( IF ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CONDITION_E0 ) ;
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( "then" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( THEN ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CONDITION_E1 ) ;
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( "else" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( ELSE ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 2 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CONDITION_E2 ) ;

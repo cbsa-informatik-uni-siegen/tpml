@@ -14,6 +14,12 @@ package de.unisiegen.tpml.core.expressions ;
 public final class IntegerConstant extends Constant
 {
   /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Integer" ; //$NON-NLS-1$
+
+
+  /**
    * The numeric value of the integer constant.
    * 
    * @see #intValue()
@@ -73,7 +79,7 @@ public final class IntegerConstant extends Constant
   @ Override
   public String getCaption ( )
   {
-    return "Integer" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 

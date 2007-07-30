@@ -50,6 +50,66 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
 
 
   /**
+   * String for the case that the identifier is null.
+   */
+  private static final String IDENTIFIER_NULL = "identifier is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The identifier has the wrong set.
+   */
+  private static final String WRONG_SET = "the set of the identifier has to be 'variable'" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that e1 is null.
+   */
+  private static final String E1_NULL = "e1 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that e2 is null.
+   */
+  private static final String E2_NULL = "e2 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Let" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>let</code>.
+   */
+  private static final String LET = "let" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>in</code>.
+   */
+  private static final String IN = "in" ; //$NON-NLS-1$  
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>:</code>.
+   */
+  private static final String COLON = ":" ; //$NON-NLS-1$
+
+
+  /**
+   * The equal string.
+   */
+  private static final String EQUAL = "=" ; //$NON-NLS-1$
+
+
+  /**
    * The list of identifiers.
    * 
    * @see #getIdentifiers()
@@ -88,20 +148,19 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
   {
     if ( pIdentifier == null )
     {
-      throw new NullPointerException ( "id is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( IDENTIFIER_NULL ) ;
     }
-    if ( ! pIdentifier.getSet ( ).equals ( Identifier.Set.VARIABLE ) )
+    if ( ! Identifier.Set.VARIABLE.equals ( pIdentifier.getSet ( ) ) )
     {
-      throw new IllegalArgumentException (
-          "The set of the identifier has to be 'variable'" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( WRONG_SET ) ;
     }
     if ( pExpression1 == null )
     {
-      throw new NullPointerException ( "e1 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E1_NULL ) ;
     }
     if ( pExpression2 == null )
     {
-      throw new NullPointerException ( "e2 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E2_NULL ) ;
     }
     // Identifier
     this.identifiers = new Identifier [ ]
@@ -160,8 +219,8 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
     for ( Identifier allId : allIdentifiers )
     {
       if ( ( this.identifiers [ 0 ].equals ( allId ) )
-          && ( ! ( ( allId.getSet ( ).equals ( Identifier.Set.VARIABLE ) || ( allId
-              .getSet ( ).equals ( Identifier.Set.METHOD ) ) ) ) ) )
+          && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet ( ) ) || ( Identifier.Set.METHOD
+              .equals ( allId.getSet ( ) ) ) ) ) ) )
       {
         negativeIdentifiers.add ( allId ) ;
       }
@@ -228,7 +287,7 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
   @ Override
   public String getCaption ( )
   {
-    return "Let" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -490,24 +549,27 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_LET ) ;
-      this.prettyStringBuilder.addKeyword ( "let" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( LET ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( COLON ) ;
+        this.prettyStringBuilder.addText ( SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_LET_TAU ) ;
       }
-      this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( EQUAL ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( "in" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( IN ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
     }

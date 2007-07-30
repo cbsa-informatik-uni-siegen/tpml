@@ -20,6 +20,24 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public final class TypeName extends MonoType implements IdentifierOrTypeName
 {
   /**
+   * String for the case that the type substitution is null.
+   */
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Type}.
+   */
+  private static final String CAPTION = "Type-Name" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the name is null.
+   */
+  private static final String NAME_NULL = "name is null" ; //$NON-NLS-1$
+
+
+  /**
    * The {@link Type} in which this {@link TypeName} is bound.
    * 
    * @see #getBoundToType()
@@ -52,6 +70,10 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    */
   public TypeName ( String pName )
   {
+    if ( pName == null )
+    {
+      throw new NullPointerException ( NAME_NULL ) ;
+    }
     this.name = pName ;
   }
 
@@ -134,7 +156,7 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
   @ Override
   public String getCaption ( )
   {
-    return "Type-Name" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -273,7 +295,7 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( "Substitution is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
     }
     return this ;
   }

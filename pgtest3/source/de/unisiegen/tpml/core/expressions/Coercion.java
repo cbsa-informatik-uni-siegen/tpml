@@ -42,6 +42,60 @@ public final class Coercion extends Expression implements DefaultTypes ,
 
 
   /**
+   * String for the case that the expression is null.
+   */
+  private static final String EXPRESSION_NULL = "expression is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that tau1 is null.
+   */
+  private static final String TAU1_NULL = "tau1 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that tau2 is null.
+   */
+  private static final String TAU2_NULL = "tau2 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Coercion" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>(</code>.
+   */
+  private static final String LPAREN = "(" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>)</code>.
+   */
+  private static final String RPAREN = ")" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>)</code>.
+   */
+  private static final String SUBTYPE = "<:" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>:</code>.
+   */
+  private static final String COLON = ":" ; //$NON-NLS-1$
+
+
+  /**
    * The types.
    * 
    * @see #getTypes()
@@ -67,15 +121,15 @@ public final class Coercion extends Expression implements DefaultTypes ,
   {
     if ( pExpression == null )
     {
-      throw new NullPointerException ( "e is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( EXPRESSION_NULL ) ;
     }
     if ( pTau1 == null )
     {
-      throw new NullPointerException ( "tau1 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TAU1_NULL ) ;
     }
     if ( pTau2 == null )
     {
-      throw new NullPointerException ( "tau2 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TAU2_NULL ) ;
     }
     // Expression
     this.expressions = new Expression [ ]
@@ -174,7 +228,7 @@ public final class Coercion extends Expression implements DefaultTypes ,
   @ Override
   public String getCaption ( )
   {
-    return "Coercion" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -326,19 +380,22 @@ public final class Coercion extends Expression implements DefaultTypes ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PrettyPrintPriorities.PRIO_COERCION ) ;
-      this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( LPAREN ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PrettyPrintPriorities.PRIO_COERCION_E ) ;
-      this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( COLON ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PrettyPrintPriorities.PRIO_COERCION_TAU1 ) ;
-      this.prettyStringBuilder.addText ( " <: " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( SUBTYPE ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PrettyPrintPriorities.PRIO_COERCION_TAU2 ) ;
-      this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( RPAREN ) ;
     }
     return this.prettyStringBuilder ;
   }

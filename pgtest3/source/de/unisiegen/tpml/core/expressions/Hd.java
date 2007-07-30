@@ -16,11 +16,23 @@ package de.unisiegen.tpml.core.expressions ;
 public final class Hd extends UnaryListOperator
 {
   /**
+   * The keyword <code>hd</code>.
+   */
+  private static final String HD = "hd" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Head" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new <code>Hd</code> instance.
    */
   public Hd ( )
   {
-    super ( "hd" ) ; //$NON-NLS-1$
+    super ( HD ) ;
   }
 
 
@@ -58,6 +70,6 @@ public final class Hd extends UnaryListOperator
   @ Override
   public String getCaption ( )
   {
-    return "Head" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

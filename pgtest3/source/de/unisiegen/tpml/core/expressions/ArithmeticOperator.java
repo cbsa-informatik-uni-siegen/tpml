@@ -14,6 +14,60 @@ package de.unisiegen.tpml.core.expressions ;
 public final class ArithmeticOperator extends BinaryOperator
 {
   /**
+   * The inconsistent exception string.
+   */
+  private static final String INCONSISTENT = "inconsistent arithmetic operator class" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Arithmetic-Operator" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that e1 is null.
+   */
+  private static final String E1_NULL = "e1 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that e2 is null.
+   */
+  private static final String E2_NULL = "e2 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The string <code>/</code>.
+   */
+  private static final String DIV = "/" ; //$NON-NLS-1$
+
+
+  /**
+   * The string <code>+</code>.
+   */
+  private static final String PLUS = "+" ; //$NON-NLS-1$
+
+
+  /**
+   * The string <code>-</code>.
+   */
+  private static final String MINUS = "-" ; //$NON-NLS-1$
+
+
+  /**
+   * The string <code>mod</code>.
+   */
+  private static final String MOD = "mod" ; //$NON-NLS-1$
+
+
+  /**
+   * The string <code>*</code>.
+   */
+  private static final String MULT = "*" ; //$NON-NLS-1$
+
+
+  /**
    * Returns the arithmetic division operator.
    * 
    * @param pParserStartOffset The start offset of this {@link Expression} in
@@ -25,8 +79,8 @@ public final class ArithmeticOperator extends BinaryOperator
   public static final ArithmeticOperator newDiv ( int pParserStartOffset ,
       int pParserEndOffset )
   {
-    return new ArithmeticOperator (
-        "/" , PRIO_DIV , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
+    return new ArithmeticOperator ( DIV , PRIO_DIV , pParserStartOffset ,
+        pParserEndOffset ) ;
   }
 
 
@@ -42,8 +96,8 @@ public final class ArithmeticOperator extends BinaryOperator
   public static final ArithmeticOperator newMinus ( int pParserStartOffset ,
       int pParserEndOffset )
   {
-    return new ArithmeticOperator (
-        "-" , PRIO_MINUS , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
+    return new ArithmeticOperator ( MINUS , PRIO_MINUS , pParserStartOffset ,
+        pParserEndOffset ) ;
   }
 
 
@@ -59,8 +113,8 @@ public final class ArithmeticOperator extends BinaryOperator
   public static final ArithmeticOperator newMod ( int pParserStartOffset ,
       int pParserEndOffset )
   {
-    return new ArithmeticOperator (
-        "mod" , PRIO_MOD , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
+    return new ArithmeticOperator ( MOD , PRIO_MOD , pParserStartOffset ,
+        pParserEndOffset ) ;
   }
 
 
@@ -76,8 +130,8 @@ public final class ArithmeticOperator extends BinaryOperator
   public static final ArithmeticOperator newMult ( int pParserStartOffset ,
       int pParserEndOffset )
   {
-    return new ArithmeticOperator (
-        "*" , PRIO_MULT , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
+    return new ArithmeticOperator ( MULT , PRIO_MULT , pParserStartOffset ,
+        pParserEndOffset ) ;
   }
 
 
@@ -93,8 +147,8 @@ public final class ArithmeticOperator extends BinaryOperator
   public static final ArithmeticOperator newPlus ( int pParserStartOffset ,
       int pParserEndOffset )
   {
-    return new ArithmeticOperator (
-        "+" , PRIO_PLUS , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
+    return new ArithmeticOperator ( PLUS , PRIO_PLUS , pParserStartOffset ,
+        pParserEndOffset ) ;
   }
 
 
@@ -148,11 +202,11 @@ public final class ArithmeticOperator extends BinaryOperator
   {
     if ( pExpression1 == null )
     {
-      throw new NullPointerException ( "e1 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E1_NULL ) ;
     }
     if ( pExpression2 == null )
     {
-      throw new NullPointerException ( "e2 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E2_NULL ) ;
     }
     try
     {
@@ -160,31 +214,30 @@ public final class ArithmeticOperator extends BinaryOperator
       int n1 = ( ( IntegerConstant ) pExpression1 ).intValue ( ) ;
       int n2 = ( ( IntegerConstant ) pExpression2 ).intValue ( ) ;
       // try to perform the application
-      if ( getText ( ) == "+" ) //$NON-NLS-1$
+      if ( PLUS.equals ( getText ( ) ) )
       {
         return new IntegerConstant ( n1 + n2 ) ;
       }
-      else if ( getText ( ) == "-" ) //$NON-NLS-1$
+      else if ( MINUS.equals ( getText ( ) ) )
       {
         return new IntegerConstant ( n1 - n2 ) ;
       }
-      else if ( getText ( ) == "*" ) //$NON-NLS-1$
+      else if ( MULT.equals ( getText ( ) ) )
       {
         return new IntegerConstant ( n1 * n2 ) ;
       }
-      else if ( getText ( ) == "/" ) //$NON-NLS-1$
+      else if ( DIV.equals ( getText ( ) ) )
       {
         return new IntegerConstant ( n1 / n2 ) ;
       }
-      else if ( getText ( ) == "mod" ) //$NON-NLS-1$
+      else if ( MOD.equals ( getText ( ) ) )
       {
         return new IntegerConstant ( n1 % n2 ) ;
       }
       else
       {
         // programming error
-        throw new IllegalStateException (
-            "Inconsistent arithmetic operator class" ) ; //$NON-NLS-1$
+        throw new IllegalStateException ( INCONSISTENT ) ;
       }
     }
     catch ( ClassCastException e )
@@ -218,6 +271,6 @@ public final class ArithmeticOperator extends BinaryOperator
   @ Override
   public String getCaption ( )
   {
-    return "Arithmetic-Operator" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

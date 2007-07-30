@@ -12,11 +12,23 @@ package de.unisiegen.tpml.core.types ;
 public final class UnitType extends PrimitiveType
 {
   /**
+   * The keyword <code>unit</code>.
+   */
+  private static final String UNIT = "unit" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Type}.
+   */
+  private static final String CAPTION = "Unit-Type" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new <code>UnitType</code> instance.
    */
   public UnitType ( )
   {
-    super ( "unit" ) ; //$NON-NLS-1$
+    super ( UNIT ) ;
   }
 
 
@@ -54,6 +66,6 @@ public final class UnitType extends PrimitiveType
   @ Override
   public String getCaption ( )
   {
-    return "Unit-Type" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

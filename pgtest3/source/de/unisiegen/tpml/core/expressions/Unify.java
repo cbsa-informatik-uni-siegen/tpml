@@ -10,11 +10,23 @@ package de.unisiegen.tpml.core.expressions ;
 public class Unify extends Constant
 {
   /**
+   * The keyword <code>unify</code>.
+   */
+  private static final String UNIFY = "unify" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Unify" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new <code>Unify</code>.
    */
   public Unify ( )
   {
-    super ( "unify" ) ; //$NON-NLS-1$
+    super ( UNIFY ) ;
   }
 
 
@@ -36,6 +48,6 @@ public class Unify extends Constant
   @ Override
   public String getCaption ( )
   {
-    return "Unify" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

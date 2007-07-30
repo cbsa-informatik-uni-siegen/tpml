@@ -25,6 +25,90 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     DefaultTypes , SortedChildren
 {
   /**
+   * The keyword <code>empty set</code>.
+   */
+  private static final String EMPTY_SET = "\u00D8" ; //$NON-NLS-1$
+
+
+  /**
+   * The row type union is not defined string.
+   */
+  private static final String ROW_TYPE_UNION = "row type union is not defined" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the type substitution is null.
+   */
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the identifiers are null.
+   */
+  private static final String IDENTIFIERS_NULL = "identifiers is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that one identifier are null.
+   */
+  private static final String IDENTIFIER_NULL = "one identifier is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The identifier has the wrong set.
+   */
+  private static final String WRONG_SET = "the set of the identifier has to be 'attribute' or 'method'" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the types are null.
+   */
+  private static final String TYPES_NULL = "types is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that one type is null.
+   */
+  private static final String TYPE_NULL = "one type is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the arity of identifiers and types doesn´t match.
+   */
+  private static final String ARITY = "the arity of identifiers and types must match" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Type}.
+   */
+  private static final String CAPTION = "Row-Type" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>;</code>.
+   */
+  private static final String SEMI = ";" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>attr</code>.
+   */
+  private static final String ATTR = "attr" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>:</code>.
+   */
+  private static final String COLON = ":" ; //$NON-NLS-1$
+
+
+  /**
    * Returns a new <code>RowType</code> which unions the method types from the
    * input <code>RowTypes</code>. The new <code>RowType</code> contains at
    * first the method types which are in both input <code>RowTypes</code>,
@@ -64,7 +148,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
         {
           if ( ! ( phi1Types [ i ].equals ( phi2Types [ j ] ) ) )
           {
-            throw new RuntimeException ( "RowType union not defined" ) ; //$NON-NLS-1$
+            throw new RuntimeException ( ROW_TYPE_UNION ) ;
           }
           resultIdentifiers.add ( 0 , phi1Identifiers.get ( i ) ) ;
           resultTypes.add ( 0 , phi1Types [ i ] ) ;
@@ -148,35 +232,33 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   {
     if ( pIdentifiers == null )
     {
-      throw new NullPointerException ( "Identifiers is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( IDENTIFIERS_NULL ) ;
     }
     for ( Identifier id : pIdentifiers )
     {
       if ( id == null )
       {
-        throw new NullPointerException ( "One identifier is null" ) ; //$NON-NLS-1$
+        throw new NullPointerException ( IDENTIFIER_NULL ) ;
       }
-      if ( ( ! id.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) )
-          && ( ! id.getSet ( ).equals ( Identifier.Set.METHOD ) ) )
+      if ( ( ! Identifier.Set.ATTRIBUTE.equals ( id.getSet ( ) ) )
+          && ( ! Identifier.Set.METHOD.equals ( id.getSet ( ) ) ) )
       {
-        throw new IllegalArgumentException (
-            "The set of the identifier has to be 'attribute' or 'method'" ) ; //$NON-NLS-1$
+        throw new IllegalArgumentException ( WRONG_SET ) ;
       }
     }
     if ( pTypes == null )
     {
-      throw new NullPointerException ( "Types is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TYPES_NULL ) ;
     }
     if ( pIdentifiers.length != pTypes.length )
     {
-      throw new IllegalArgumentException (
-          "The arity of method names and types must match" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( ARITY ) ;
     }
     for ( MonoType type : pTypes )
     {
       if ( type == null )
       {
-        throw new NullPointerException ( "One type is null" ) ; //$NON-NLS-1$
+        throw new NullPointerException ( TYPE_NULL ) ;
       }
     }
     // Identifier
@@ -358,7 +440,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   @ Override
   public String getCaption ( )
   {
-    return "Row-Type" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -589,7 +671,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( "Substitution is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
     }
     MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
@@ -627,21 +709,23 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
       {
         if ( i != 0 )
         {
-          this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( SPACE ) ;
         }
-        if ( this.identifiers [ i ].getSet ( ).equals (
-            Identifier.Set.ATTRIBUTE ) )
+        if ( Identifier.Set.ATTRIBUTE
+            .equals ( this.identifiers [ i ].getSet ( ) ) )
         {
-          this.prettyStringBuilder.addKeyword ( "attr" ) ; //$NON-NLS-1$
-          this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addKeyword ( ATTR ) ;
+          this.prettyStringBuilder.addText ( SPACE ) ;
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
-        this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( COLON ) ;
+        this.prettyStringBuilder.addText ( SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_ROW_TAU ) ;
-        this.prettyStringBuilder.addText ( " ;" ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( SPACE ) ;
+        this.prettyStringBuilder.addText ( SEMI ) ;
         if ( i != this.types.length - 1 )
         {
           this.prettyStringBuilder.addBreak ( ) ;
@@ -649,14 +733,14 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
       }
       if ( this.remainingRowType != null )
       {
-        this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( SPACE ) ;
         this.prettyStringBuilder.addBreak ( ) ;
         this.prettyStringBuilder.addBuilder ( this.remainingRowType
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
       }
       if ( this.types.length == 0 )
       {
-        this.prettyStringBuilder.addText ( "\u00D8" ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( EMPTY_SET ) ;
       }
     }
     return this.prettyStringBuilder ;

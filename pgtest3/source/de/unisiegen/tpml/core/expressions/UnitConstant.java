@@ -14,11 +14,23 @@ package de.unisiegen.tpml.core.expressions ;
 public final class UnitConstant extends Constant
 {
   /**
+   * The keyword <code>()</code>.
+   */
+  private static final String UNIT = "()" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Unit" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new <code>UnitConstant</code>.
    */
   public UnitConstant ( )
   {
-    super ( "()" ) ; //$NON-NLS-1$
+    super ( UNIT ) ;
   }
 
 
@@ -56,6 +68,6 @@ public final class UnitConstant extends Constant
   @ Override
   public String getCaption ( )
   {
-    return "Unit" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

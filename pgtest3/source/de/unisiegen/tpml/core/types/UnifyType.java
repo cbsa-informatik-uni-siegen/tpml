@@ -9,11 +9,23 @@ package de.unisiegen.tpml.core.types ;
 public class UnifyType extends PrimitiveType
 {
   /**
+   * The keyword <code>bool</code>.
+   */
+  private static final String UNIFY = "unify" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Type}.
+   */
+  private static final String CAPTION = "Unify-Type" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new <code>UnitType</code> instance.
    */
   public UnifyType ( )
   {
-    super ( "unify" ) ; //$NON-NLS-1$
+    super ( UNIFY ) ;
   }
 
 
@@ -35,6 +47,6 @@ public class UnifyType extends PrimitiveType
   @ Override
   public String getCaption ( )
   {
-    return "Unify-Type" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

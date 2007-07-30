@@ -30,10 +30,106 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
     DefaultTypes , DefaultExpressions
 {
   /**
+   * String for the case that the arity of identifiers and types doesn´t match.
+   */
+  private static final String ARITY = "the arity of identifiers and types must match" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the identifiers are to small.
+   */
+  private static final String TO_SMALL = "identifiers must contain at least two items" ; //$NON-NLS-1$
+
+
+  /**
    * Indeces of the child {@link Expression}s.
    */
   private static final int [ ] INDICES_E = new int [ ]
   { 1 , 2 } ;
+
+
+  /**
+   * String for the case that e1 is null.
+   */
+  private static final String E1_NULL = "e1 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that e2 is null.
+   */
+  private static final String E2_NULL = "e2 is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the identifiers are null.
+   */
+  private static final String IDENTIFIERS_NULL = "identifiers is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that one identifier are null.
+   */
+  private static final String IDENTIFIER_NULL = "one identifier is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the types are null.
+   */
+  private static final String TYPES_NULL = "types is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The identifier has the wrong set.
+   */
+  private static final String WRONG_SET = "the set of the identifier has to be 'variable'" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Curried-Let" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The equal string.
+   */
+  private static final String EQUAL = "=" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>let</code>.
+   */
+  private static final String LET = "let" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>in</code>.
+   */
+  private static final String IN = "in" ; //$NON-NLS-1$  
+
+
+  /**
+   * The keyword <code>(</code>.
+   */
+  private static final String LPAREN = "(" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>)</code>.
+   */
+  private static final String RPAREN = ")" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>:</code>.
+   */
+  private static final String COLON = ":" ; //$NON-NLS-1$
 
 
   /**
@@ -94,41 +190,38 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
   {
     if ( pExpression1 == null )
     {
-      throw new NullPointerException ( "e1 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E1_NULL ) ;
     }
     if ( pExpression2 == null )
     {
-      throw new NullPointerException ( "e2 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( E2_NULL ) ;
     }
     if ( pTypes == null )
     {
-      throw new NullPointerException ( "types is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TYPES_NULL ) ;
     }
     if ( pIdentifiers == null )
     {
-      throw new NullPointerException ( "identifiers is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( IDENTIFIERS_NULL ) ;
     }
     for ( Identifier id : pIdentifiers )
     {
       if ( id == null )
       {
-        throw new NullPointerException ( "One identifier is null" ) ; //$NON-NLS-1$
+        throw new NullPointerException ( IDENTIFIER_NULL ) ;
       }
-      if ( ! id.getSet ( ).equals ( Identifier.Set.VARIABLE ) )
+      if ( ! Identifier.Set.VARIABLE.equals ( id.getSet ( ) ) )
       {
-        throw new IllegalArgumentException (
-            "The set of the identifier has to be 'variable'" ) ; //$NON-NLS-1$
+        throw new IllegalArgumentException ( WRONG_SET ) ;
       }
     }
     if ( pIdentifiers.length < 2 )
     {
-      throw new IllegalArgumentException (
-          "identifiers must contain at least two items" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( TO_SMALL ) ;
     }
     if ( pIdentifiers.length != pTypes.length )
     {
-      throw new IllegalArgumentException (
-          "the arity of identifiers and types must match" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( ARITY ) ;
     }
     // Identifier
     this.identifiers = pIdentifiers ;
@@ -210,8 +303,8 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
     for ( Identifier allId : allIdentifiers )
     {
       if ( ( this.identifiers [ 0 ].equals ( allId ) )
-          && ( ! ( ( allId.getSet ( ).equals ( Identifier.Set.VARIABLE ) || ( allId
-              .getSet ( ).equals ( Identifier.Set.METHOD ) ) ) ) ) )
+          && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet ( ) ) || ( Identifier.Set.METHOD
+              .equals ( allId.getSet ( ) ) ) ) ) ) )
       {
         negativeIdentifiers.add ( allId ) ;
       }
@@ -242,8 +335,8 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
       for ( Identifier allId : allIdentifiers )
       {
         if ( ( this.identifiers [ i ].equals ( allId ) )
-            && ( ! ( ( allId.getSet ( ).equals ( Identifier.Set.VARIABLE ) || ( allId
-                .getSet ( ).equals ( Identifier.Set.METHOD ) ) ) ) ) )
+            && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet ( ) ) || ( Identifier.Set.METHOD
+                .equals ( allId.getSet ( ) ) ) ) ) ) )
         {
           negativeIdentifiers.add ( allId ) ;
         }
@@ -321,7 +414,7 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
   @ Override
   public String getCaption ( )
   {
-    return "Curried-Let" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -680,43 +773,47 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_LET ) ;
-      this.prettyStringBuilder.addKeyword ( "let" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( LET ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
-        this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( SPACE ) ;
         if ( this.types [ i ] != null )
         {
-          this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( LPAREN ) ;
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
         if ( this.types [ i ] != null )
         {
-          this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( COLON ) ;
+          this.prettyStringBuilder.addText ( SPACE ) ;
           this.prettyStringBuilder.addBuilder ( this.types [ i ]
               .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
               PRIO_LET_TAU ) ;
-          this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( RPAREN ) ;
         }
       }
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( COLON ) ;
+        this.prettyStringBuilder.addText ( SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_LET_TAU ) ;
       }
-      this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( EQUAL ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( "in" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( IN ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
     }

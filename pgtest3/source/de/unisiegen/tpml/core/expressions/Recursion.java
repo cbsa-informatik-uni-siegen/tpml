@@ -50,6 +50,54 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * String for the case that the identifier is null.
+   */
+  private static final String IDENTIFIER_NULL = "identifier is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The identifier has the wrong set.
+   */
+  private static final String WRONG_SET = "the set of the identifier has to be 'variable'" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the expression is null.
+   */
+  private static final String EXPRESSION_NULL = "expression is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Rec" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>rec</code>.
+   */
+  private static final String REC = "rec" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>:</code>.
+   */
+  private static final String COLON = ":" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>.</code>.
+   */
+  private static final String DOT = "." ; //$NON-NLS-1$
+
+
+  /**
    * The list of identifiers.
    * 
    * @see #getIdentifiers()
@@ -86,16 +134,15 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
   {
     if ( pIdentifier == null )
     {
-      throw new NullPointerException ( "id is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( IDENTIFIER_NULL ) ;
     }
-    if ( ! pIdentifier.getSet ( ).equals ( Identifier.Set.VARIABLE ) )
+    if ( ! Identifier.Set.VARIABLE.equals ( pIdentifier.getSet ( ) ) )
     {
-      throw new IllegalArgumentException (
-          "The set of the identifier has to be 'variable'" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( WRONG_SET ) ;
     }
     if ( pExpression == null )
     {
-      throw new NullPointerException ( "e is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( EXPRESSION_NULL ) ;
     }
     // Identifier
     this.identifiers = new Identifier [ ]
@@ -150,8 +197,8 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
     for ( Identifier allId : allIdentifiers )
     {
       if ( ( this.identifiers [ 0 ].equals ( allId ) )
-          && ( ! ( ( allId.getSet ( ).equals ( Identifier.Set.VARIABLE ) || ( allId
-              .getSet ( ).equals ( Identifier.Set.METHOD ) ) ) ) ) )
+          && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet ( ) ) || ( Identifier.Set.METHOD
+              .equals ( allId.getSet ( ) ) ) ) ) ) )
       {
         negativeIdentifiers.add ( allId ) ;
       }
@@ -216,7 +263,7 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
   @ Override
   public String getCaption ( )
   {
-    return "Recursion" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -455,18 +502,19 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_REC ) ;
-      this.prettyStringBuilder.addKeyword ( "rec" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( REC ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( COLON ) ;
+        this.prettyStringBuilder.addText ( SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_REC_TAU ) ;
       }
-      this.prettyStringBuilder.addText ( "." ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( DOT ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_REC_E ) ;
     }

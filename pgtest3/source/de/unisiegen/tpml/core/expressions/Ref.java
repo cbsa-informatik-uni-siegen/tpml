@@ -15,11 +15,35 @@ package de.unisiegen.tpml.core.expressions ;
 public final class Ref extends UnaryOperator
 {
   /**
+   * The keyword <code>ref</code>.
+   */
+  private static final String REF = "ref" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Ref" ; //$NON-NLS-1$
+
+
+  /**
+   * The ref operator exception string.
+   */
+  private static final String HANDLED = "ref operator must be handled by the interpreter" ; //$NON-NLS-1$
+
+
+  /**
+   * The unused string.
+   */
+  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+
+
+  /**
    * Allocates a new <code>Ref</code> instance.
    */
   public Ref ( )
   {
-    super ( "ref" ) ; //$NON-NLS-1$
+    super ( REF ) ;
   }
 
 
@@ -49,13 +73,12 @@ public final class Ref extends UnaryOperator
    *           <code>ref</code> operator must be handled by the interpreter.
    * @see de.unisiegen.tpml.core.expressions.UnaryOperator#applyTo(de.unisiegen.tpml.core.expressions.Expression)
    */
-  @ SuppressWarnings ( "unused" )
+  @ SuppressWarnings ( UNUSED )
   @ Override
-  public Expression applyTo ( @ SuppressWarnings ( "unused" )
+  public Expression applyTo ( @ SuppressWarnings ( UNUSED )
   Expression pExpression ) throws UnaryOperatorException
   {
-    throw new UnsupportedOperationException (
-        "ref operator must be handled by the interpreter" ) ; //$NON-NLS-1$
+    throw new UnsupportedOperationException ( HANDLED ) ;
   }
 
 
@@ -77,6 +100,6 @@ public final class Ref extends UnaryOperator
   @ Override
   public String getCaption ( )
   {
-    return "Ref" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 }

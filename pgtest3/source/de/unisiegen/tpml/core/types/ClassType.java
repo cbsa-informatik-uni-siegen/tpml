@@ -23,6 +23,60 @@ public final class ClassType extends MonoType implements DefaultTypes
 
 
   /**
+   * String for the case that tau is null.
+   */
+  private static final String TAU_NULL = "tau is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that phi is null.
+   */
+  private static final String PHI_NULL = "phi is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Type}.
+   */
+  private static final String CAPTION = "Class-Type" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the type substitution is null.
+   */
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>zeta</code>.
+   */
+  private static final String ZETA = "\u03B6" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>(</code>.
+   */
+  private static final String LPAREN = "(" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>)</code>.
+   */
+  private static final String RPAREN = ")" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>:</code>.
+   */
+  private static final String COLON = ":" ; //$NON-NLS-1$
+
+
+  /**
    * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
@@ -40,11 +94,11 @@ public final class ClassType extends MonoType implements DefaultTypes
   {
     if ( pTau == null )
     {
-      throw new NullPointerException ( "Tau is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TAU_NULL ) ;
     }
     if ( pPhi == null )
     {
-      throw new NullPointerException ( "Phi is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( PHI_NULL ) ;
     }
     this.types = new MonoType [ ]
     { pTau , pPhi } ;
@@ -111,18 +165,7 @@ public final class ClassType extends MonoType implements DefaultTypes
   @ Override
   public String getCaption ( )
   {
-    return "Class-Type" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * Returns the sub type.
-   * 
-   * @return The sub type.
-   */
-  public MonoType getTau ( )
-  {
-    return this.types [ 0 ] ;
+    return CAPTION ;
   }
 
 
@@ -134,6 +177,17 @@ public final class ClassType extends MonoType implements DefaultTypes
   public MonoType getPhi ( )
   {
     return this.types [ 1 ] ;
+  }
+
+
+  /**
+   * Returns the sub type.
+   * 
+   * @return The sub type.
+   */
+  public MonoType getTau ( )
+  {
+    return this.types [ 0 ] ;
   }
 
 
@@ -202,7 +256,7 @@ public final class ClassType extends MonoType implements DefaultTypes
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( "Substitution is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
     }
     return new ClassType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ,
         this.types [ 1 ].substitute ( pTypeSubstitution ) ) ;
@@ -222,17 +276,19 @@ public final class ClassType extends MonoType implements DefaultTypes
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_CLASS ) ;
-      this.prettyStringBuilder.addKeyword ( "\u03B6" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( ZETA ) ;
+      this.prettyStringBuilder.addText ( LPAREN ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CLASS_TAU ) ;
-      this.prettyStringBuilder.addText ( " : " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( COLON ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CLASS_PHI ) ;
-      this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( RPAREN ) ;
     }
     return this.prettyStringBuilder ;
   }

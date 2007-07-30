@@ -25,6 +25,85 @@ public final class Duplication extends Expression implements
     DefaultIdentifiers , DefaultExpressions , SortedChildren
 {
   /**
+   * String for the case that the identifiers are null.
+   */
+  private static final String IDENTIFIERS_NULL = "identifiers is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that one identifier are null.
+   */
+  private static final String IDENTIFIER_NULL = "one identifier is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the expressions are null.
+   */
+  private static final String EXPRESSIONS_NULL = "expressions is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that one expression are null.
+   */
+  private static final String EXPRESSION_NULL = "one expression is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The identifier has the wrong set.
+   */
+  private static final String WRONG_SET = "the set of the identifier has to be 'attribute'" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the arity of identifiers and expressions doesn´t
+   * match.
+   */
+  private static final String ARITY = "the arity of identifiers and expressions must match" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = "Duplication" ; //$NON-NLS-1$
+
+
+  /**
+   * The string of an self identifier.
+   */
+  private static final String SELF = "self" ; //$NON-NLS-1$
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>;</code>.
+   */
+  private static final String SEMI = ";" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>=</code>.
+   */
+  private static final String EQUAL = "=" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>{<</code>.
+   */
+  private static final String DUPLBEGIN = "{<" ; //$NON-NLS-1$
+
+
+  /**
+   * The keyword <code>>}</code>.
+   */
+  private static final String DUPLEND = ">}" ; //$NON-NLS-1$
+
+
+  /**
    * Indeces of the child {@link Expression}s.
    */
   private int [ ] indicesE ;
@@ -62,28 +141,33 @@ public final class Duplication extends Expression implements
   {
     if ( pIdentifiers == null )
     {
-      throw new NullPointerException ( "Identifiers is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( IDENTIFIERS_NULL ) ;
     }
     for ( Identifier id : pIdentifiers )
     {
       if ( id == null )
       {
-        throw new NullPointerException ( "One identifier is null" ) ; //$NON-NLS-1$
+        throw new NullPointerException ( IDENTIFIER_NULL ) ;
       }
-      if ( ! id.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) )
+      if ( ! Identifier.Set.ATTRIBUTE.equals ( id.getSet ( ) ) )
       {
-        throw new IllegalArgumentException (
-            "The set of the identifier has to be 'attribute'" ) ; //$NON-NLS-1$
+        throw new IllegalArgumentException ( WRONG_SET ) ;
       }
     }
     if ( pExpressions == null )
     {
-      throw new NullPointerException ( "Expressions is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( EXPRESSIONS_NULL ) ;
+    }
+    for ( Expression e : pExpressions )
+    {
+      if ( e == null )
+      {
+        throw new NullPointerException ( EXPRESSION_NULL ) ;
+      }
     }
     if ( pIdentifiers.length != pExpressions.length )
     {
-      throw new IllegalArgumentException (
-          "Identifiers and Expressions length must be equal" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( ARITY ) ;
     }
     // Identifier
     this.identifiers = pIdentifiers ;
@@ -165,7 +249,7 @@ public final class Duplication extends Expression implements
   @ Override
   public String getCaption ( )
   {
-    return "Duplication" ; //$NON-NLS-1$
+    return CAPTION ;
   }
 
 
@@ -211,8 +295,7 @@ public final class Duplication extends Expression implements
     if ( this.identifiersFree == null )
     {
       this.identifiersFree = new ArrayList < Identifier > ( ) ;
-      this.identifiersFree
-          .add ( new Identifier ( "self" , Identifier.Set.SELF ) ) ; //$NON-NLS-1$
+      this.identifiersFree.add ( new Identifier ( SELF , Identifier.Set.SELF ) ) ;
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
         this.identifiersFree.addAll ( this.expressions [ i ]
@@ -283,7 +366,7 @@ public final class Duplication extends Expression implements
     {
       throw new NotOnlyFreeVariableException ( ) ;
     }
-    if ( ( pId.getSet ( ).equals ( Identifier.Set.SELF ) )
+    if ( ( Identifier.Set.SELF.equals ( pId.getSet ( ) ) )
         && ( pExpression instanceof ObjectExpr ) )
     {
       ObjectExpr objectExpr = ( ObjectExpr ) pExpression ;
@@ -359,29 +442,33 @@ public final class Duplication extends Expression implements
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_DUPLICATION ) ;
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addText ( "{< " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( DUPLBEGIN ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
-        this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( SPACE ) ;
+        this.prettyStringBuilder.addText ( EQUAL ) ;
+        this.prettyStringBuilder.addText ( SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.expressions [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_DUPLICATION_E ) ;
         if ( i != this.expressions.length - 1 )
         {
-          this.prettyStringBuilder.addText ( "; " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( SEMI ) ;
+          this.prettyStringBuilder.addText ( SPACE ) ;
           this.prettyStringBuilder.addBreak ( ) ;
         }
       }
       // Only one space for '{< >}'
       if ( this.expressions.length > 0 )
       {
-        this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( SPACE ) ;
       }
-      this.prettyStringBuilder.addText ( ">}" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( DUPLEND ) ;
     }
     return this.prettyStringBuilder ;
   }
