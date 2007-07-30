@@ -42,7 +42,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	/**
 	 * the List of Strings for the tooltip
 	 */
-	private ArrayList < String > collapsedStrings;
+	private ArrayList < String > collapsedTypeEnvironmentsStrings;
 
 	/**
 	 * the List of Strings for the tooltip of the A (not used)
@@ -97,7 +97,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	/**
 	 * the List of areas for the tooltip
 	 */
-	private ArrayList < Rectangle > collapsedAreas;
+	private ArrayList < Rectangle > collapsedTypeEnvironmentAreas;
 
 	/**
 	 * The TypeFOrmulars that should be rendered.
@@ -135,7 +135,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 */
 	public TypeFormularRenderer ( ) {
 
-		this.collapsedAreas = new ArrayList < Rectangle > ( );
+		this.collapsedTypeEnvironmentAreas = new ArrayList < Rectangle > ( );
 		this.typeFormularPositions = new ArrayList < Rectangle > ( );
 		this.expressionPostitions = new ArrayList < Rectangle > ( );
 		this.typePositions = new ArrayList < Rectangle > ( );
@@ -143,7 +143,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		this.rightTypePositions = new ArrayList < Rectangle > ( );
 		this.aPositions = new ArrayList < Rectangle > ( );
 		this.typeEquations = new ArrayList < Integer > ( );
-		this.collapsedStrings = new ArrayList < String > ( );
+		this.collapsedTypeEnvironmentsStrings = new ArrayList < String > ( );
 		this.aStrings = new ArrayList < String > ( );
 		this.aPrettyStrings = new ArrayList < ArrayList < PrettyString >> ( );
 	}
@@ -172,8 +172,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 *
 	 * @return the list of rectangles with areas
 	 */
-	public ArrayList < Rectangle > getCollapsedAreas ( ) {
-		return this.collapsedAreas;
+	public ArrayList < Rectangle > getCollapsedTypeEnvironmentAreas ( ) {
+		return this.collapsedTypeEnvironmentAreas;
 	}
 
 	/**
@@ -182,8 +182,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 *
 	 * @return the collapsedStrings
 	 */
-	public ArrayList < String > getCollapsedStrings ( ) {
-		return this.collapsedStrings;
+	public ArrayList < String > getCollapsedTypeEnvironmentsStrings ( ) {
+		return this.collapsedTypeEnvironmentsStrings;
 	}
 
 	/**
@@ -326,6 +326,24 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		// Inserts it at the position of the first element in the list. Shifts the element
 		// currently at that position and any subsequent elements. (adds one to their indices).
 		this.typeFormulaList.add ( x, secondElement );
+		//TODO die Rects für die 'Environments neu setzen...
+		reorganizeAreas();
+	}
+
+	/**
+	 * resets the saved areas
+	 */
+	private void reorganizeAreas()
+	{
+		this.collapsedTypeEnvironmentAreas = new ArrayList<Rectangle>();
+		this.collapsedTypeEnvironmentsStrings = new ArrayList<String>();
+		this.aPositions = new ArrayList<Rectangle>();
+		this.aStrings = new ArrayList<String>();
+		this.typePositions = new ArrayList<Rectangle>();
+		this.typeFormularPositions = new ArrayList<Rectangle>();
+		this.leftTypePositions = new ArrayList<Rectangle>();
+		this.rightTypePositions = new ArrayList<Rectangle>();
+		
 	}
 
 	/**
@@ -870,8 +888,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 
 					String envCollapsedString = this.environmentRenderer.getCollapsedString ( );
 					if ( envCollapsedString != null ) {
-						this.collapsedAreas.add ( this.environmentRenderer.getCollapsedArea ( ) );
-						this.collapsedStrings.add ( this.environmentRenderer.getCollapsedString ( ) );
+						this.collapsedTypeEnvironmentAreas.add ( this.environmentRenderer.getCollapsedArea ( ) );
+						this.collapsedTypeEnvironmentsStrings.add ( this.environmentRenderer.getCollapsedString ( ) );
 					}
 
 					gc.setColor ( AbstractRenderer.expColor );
