@@ -26,7 +26,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @see de.unisiegen.tpml.core.languages.LanguageTypeScanner
  * @see de.unisiegen.tpml.core.languages.l1.L1Language
  */
-public class L1SUBTYPELanguage extends L1Language {
+public class L1SUBLanguage extends L1Language {
 	
 	/**
 	   * The group id for proof rules of this language.
@@ -36,9 +36,9 @@ public class L1SUBTYPELanguage extends L1Language {
 	  public static final int L1SubType = L1CBNLanguage.L1CBN + 1 ;
 
 	  /**
-	   * Allocates a new <code>L1SUBTYPELanguage</code> instance.
+	   * Allocates a new <code>L1SUBLanguage</code> instance.
 	   */
-	public L1SUBTYPELanguage ( ) {
+	public L1SUBLanguage ( ) {
 	super();
 	}
 	
@@ -62,7 +62,7 @@ public class L1SUBTYPELanguage extends L1Language {
 	  @Override
 	public String getName ( )
 	  {
-	    return "L1SubType" ; //$NON-NLS-1$
+	    return "L1SUB" ; //$NON-NLS-1$
 	  }
 
 
@@ -74,7 +74,7 @@ public class L1SUBTYPELanguage extends L1Language {
 	  @Override
 	public int getId ( )
 	  {
-	    return L1SUBTYPELanguage.L1SubType ;
+	    return L1SUBLanguage.L1SubType ;
 	  }
 
 
