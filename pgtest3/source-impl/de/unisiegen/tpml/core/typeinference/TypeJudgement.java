@@ -65,16 +65,15 @@ public class TypeJudgement implements TypeFormula
   @ Override
   public boolean equals ( Object o )
   {
-    try
+    if ( o instanceof TypeJudgement )
     {
       TypeJudgement other = ( TypeJudgement ) o ;
-      if ( this.environment.equals ( other.environment ) )
-        if ( this.expression.equals ( other.expression ) )
-          if ( this.type.equals ( other.type ) ) return true ;
-    }
-    catch ( ClassCastException e )
-    {
-      return false ;
+      if ( ( this.environment.equals ( other.environment ) )
+          && ( this.expression.equals ( other.expression ) )
+          && ( this.type.equals ( other.type ) ) )
+      {
+        return true ;
+      }
     }
     return false ;
   }
