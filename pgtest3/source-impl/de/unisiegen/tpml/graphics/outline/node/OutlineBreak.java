@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.graphics.outline.node ;
 
 
-import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -18,12 +17,6 @@ import de.unisiegen.tpml.core.types.Type ;
  */
 public final class OutlineBreak
 {
-  /**
-   * Method name for getTypes
-   */
-  private static final String GET_TYPES = "getTypes" ; //$NON-NLS-1$
-
-
   /**
    * The list of breaks.
    */
@@ -135,7 +128,7 @@ public final class OutlineBreak
     }
     if ( pExpression instanceof DefaultTypes )
     {
-      MonoType [ ] types = invokeTypes ( ( DefaultTypes ) pExpression ) ;
+      MonoType [ ] types = ( ( DefaultTypes ) pExpression ).getTypes ( ) ;
       for ( MonoType tau : types )
       {
         PrettyAnnotation prettyAnnotationChild ;
@@ -308,43 +301,6 @@ public final class OutlineBreak
       }
     }
     return false ;
-  }
-
-
-  /**
-   * Returns the array of the types from the given {@link DefaultTypes}.
-   * 
-   * @param pDefaultTypes The {@linkDefaultTypes}.
-   * @return The array of the types.
-   */
-  private final MonoType [ ] invokeTypes ( DefaultTypes pDefaultTypes )
-  {
-    try
-    {
-      return ( MonoType [ ] ) pDefaultTypes.getClass ( ).getMethod ( GET_TYPES ,
-          new Class [ 0 ] ).invoke ( pDefaultTypes , new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "OutlineBreak: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "OutlineBreak: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "OutlineBreak: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "OutlineBreak: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "OutlineBreak: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
   }
 
 

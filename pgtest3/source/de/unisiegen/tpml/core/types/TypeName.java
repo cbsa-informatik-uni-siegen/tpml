@@ -1,10 +1,10 @@
 package de.unisiegen.tpml.core.types ;
 
 
-import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypeNames ;
 import de.unisiegen.tpml.core.interfaces.IdentifierOrTypeName ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -19,12 +19,6 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  */
 public final class TypeName extends MonoType implements IdentifierOrTypeName
 {
-  /**
-   * Method name for getTypeNames
-   */
-  private static final String GET_TYPE_NAMES = "getTypeNames" ; //$NON-NLS-1$
-
-
   /**
    * The {@link Type} in which this {@link TypeName} is bound.
    * 
@@ -156,44 +150,6 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
 
 
   /**
-   * Returns the array of {@link TypeName}s from the parent.
-   * 
-   * @param pInvokedFrom The parent.
-   * @return The array of {@link TypeName}s from the parent.
-   */
-  private final TypeName [ ] getParentTypeNames ( Object pInvokedFrom )
-  {
-    try
-    {
-      return ( TypeName [ ] ) pInvokedFrom.getClass ( ).getMethod (
-          GET_TYPE_NAMES , new Class [ 0 ] ).invoke ( pInvokedFrom ,
-          new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "TypeName: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "TypeName: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "TypeName: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "TypeName: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "TypeName: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
-  }
-
-
-  /**
    * Returns the prefix of this {@link Expression}.
    * 
    * @return The prefix of this {@link Expression}.
@@ -204,23 +160,17 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
   {
     if ( this.prefix == null )
     {
-      if ( this.parent != null )
+      if ( ( this.parent != null )
+          && ( this.parent instanceof DefaultTypeNames ) )
       {
-        for ( Class < ? > currentInterface : this.parent.getClass ( )
-            .getInterfaces ( ) )
+        TypeName [ ] typeNames = ( ( DefaultTypeNames ) this.parent )
+            .getTypeNames ( ) ;
+        for ( TypeName typeName : typeNames )
         {
-          if ( ( currentInterface
-              .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypeNames.class ) || ( currentInterface
-              .equals ( de.unisiegen.tpml.core.interfaces.BoundTypeNames.class ) ) ) )
+          if ( typeName == this )
           {
-            for ( TypeName typeName : getParentTypeNames ( this.parent ) )
-            {
-              if ( typeName == this )
-              {
-                this.prefix = PREFIX_TYPE_NAME ;
-                return this.prefix ;
-              }
-            }
+            this.prefix = PREFIX_TYPE_NAME ;
+            return this.prefix ;
           }
         }
       }
