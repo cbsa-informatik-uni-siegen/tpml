@@ -723,7 +723,7 @@ public class PrettyStringRenderer extends AbstractRenderer
       int posYC = posY - ( AbstractRenderer.getAbsoluteHeight ( ) - fm.getDescent ( ) ) ;
 
       // look for aktual char is in this list (-1 stands for false)
-      if ( ! ( this.toListenForMouse.getMark ( ) ) && (( getPositionInList ( i , annotationsList ) ) > - 1) )
+      if ( ! ( this.toListenForMouse.isMark ( ) ) && (( getPositionInList ( i , annotationsList ) ) > - 1) )
       {
         // tell mouselistener in CompoundExpression to react at these positions
         // posY dose not stand for the baseline but for the center, so we have
@@ -733,10 +733,8 @@ public class PrettyStringRenderer extends AbstractRenderer
         this.toListenForMouse.add ( posX - 1,posYC, posX + charWidth + 1,posYC + fm.getAscent ( ) ) ;
 
       }
-      // Wenn gemalt werden soll, also die Maus �ber einem Buchstaben steht
-      // Damit die Liste mit jeder neuen Expression neu gesetzt wird, wird in
-      // CopoundExpression neu gesetz
-      if ( this.toListenForMouse.getMark ( )
+
+      if ( this.toListenForMouse.isMark ( )
           && (getPositionInList ( i , annotationsList ) != - 1) )
       {
         // if the char will be highlited first teh font and color will be set to

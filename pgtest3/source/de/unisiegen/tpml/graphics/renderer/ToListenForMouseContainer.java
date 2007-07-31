@@ -4,12 +4,13 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 /**
- * here, the mousepositions where the mous over effekt will be aktivated
+ * This class is a tool for the mouse over effect of the CompoundExpression.
+ * Therefor the mousepositions where the mous over effekt will be aktivated
  * are safed. <br>
  * this class provides the comunication between the PrittyStringRenderer and the 
  * CompoundExpression (compoundExpressionTypeInference, TypeCompounent)
  * 
- * @author Feivel
+ * @author michael
  * 
  * @see de.unisiegen.tpml.graphics.components.CompoundExpression
  * @see de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer
@@ -23,7 +24,7 @@ public class ToListenForMouseContainer
 	private ArrayList<Rectangle> toListenForMouse;
 	
 	/**
-	 * saves teh psoition, where the mouse pointer is.
+	 * saves teh position where the mouse pointer is
 	 */
 	private Point hereIam;
 	
@@ -31,58 +32,81 @@ public class ToListenForMouseContainer
 	 * shows if the highliter is aktive or not
 	 */
 	private boolean mark;
-	//counts the marks: the first time, mark is set to true will be ignored
-	//private int markCount;
+	
 	
 	/**
-	 * saves informations about the right anootationlist in wich the chars are that shoeld be marked
+	 * the constructor.
+	 * first the highlighting is not activ
+	 *
 	 */
-	//private int rightList;
-	
-	
-	public ToListenForMouseContainer()
+	public ToListenForMouseContainer ()
 	{
 		this.toListenForMouse = new ArrayList<Rectangle>();
-        this.mark = false;
-        this.hereIam = new Point(0,0);
-        //this.rightList = -2;
+		this.mark = false;
+		this.hereIam = new Point(0, 0);
 	}
 	/**
-	 * adds a position to the ArrayList
-	 * TODO 4 ints heve to be added. mybe a method with 4 ints...
-	 * @param toadd - int with x, y, x1 or y1 position
+	 * adds a Rectangel given by the four edges.
+	 * 
+	 * @param x
+	 *          the x - coordinate left
+	 * @param y
+	 *          the y - coordinate bottom
+	 * @param x1
+	 *          the x - coordinate right
+	 * @param y1
+	 *          the y - coordinate top
+	 * 
 	 */
 	public void add (int x, int y, int x1, int y1)
 	{
     Rectangle r = new Rectangle(x,y,x1-x,y1-y);
-		toListenForMouse.add(r);
+		this.toListenForMouse.add(r);
 	}
-  
-  public void addRect (int x, int y, int widht, int heigth)
+	
+	/**
+	 * adds a Rectangel given by the top-left corner, the width and the heigth
+	 * 
+	 * @param x
+	 *          the x as <code> int </code> - coordinate of the top left
+	 * @param y
+	 *          the y as <code> int </code> - coordinate of the top left
+	 * @param width
+	 *          the width as <code> int </code> of the rectangel
+	 * @param heigth
+	 *          the heigth as <code> int </code> of the rectangel
+	 * 
+	 */
+  public void addRect (int x, int y, int width, int heigth)
   {
-    Rectangle r = new Rectangle(x,y,widht, heigth);
-    toListenForMouse.add(r);
+    Rectangle r = new Rectangle(x,y,width, heigth);
+    this.toListenForMouse.add(r);
   }
 	
 	/**
 	 * returns one part of a position of ArrayList
-	 * @param i - int witch value to return
-	 * @return int with value
+	 * 
+	 * @param i
+	 *          <code> int </code> of the value to return
+	 * @return <code> int </code> with value
 	 */
 	public Rectangle get (int i)
 	{
 		Rectangle result;
-		result = toListenForMouse.get(i);
+		result = this.toListenForMouse.get(i);
 		return result;
 	}
 	
 	/**
 	 * get the infromation if the ArrayList ist empty or not
-	 * @return - booelan, true if empty
+	 * @return - <code> boolean </code> , true if empty
 	 */
 	public boolean isEmpty ()
 	{
-		if (toListenForMouse.size()!= 0 ) return false;
+		if (this.toListenForMouse.size()!= 0 )
+		{
+			return false;
+		}
 		return true;
 	}
 	
@@ -92,67 +116,58 @@ public class ToListenForMouseContainer
 	 */
 	public void reset ()
 	{
-		toListenForMouse.clear ();	
+		this.toListenForMouse.clear ();	
 	}
 	
 	/**
-	 * returns the size of the ArrayList
-	 * @return
+	 * @return as <code> int </code> of the size of the ArrayList
 	 */
 	public int size()
 	{
-		return toListenForMouse.size();
+		return this.toListenForMouse.size();
 	}
 
 	
 	/**
-	 * returns true if it should be marked teh bindings
-	 * @return
+	 * @return <code> boolean </code>, true if the bindings should be marked
 	 */
-	public boolean getMark()
+	public boolean isMark()
 	{
-		return mark;
+		return this.mark;
 	}
 	
 	/**
-	 * sets the boolean if ist should be marked or not
-	 * CATION the first time, mark is set to true, it will be ignored. 
-	 * @param b
+	 * sets the boolean if it should be marked or not 
+	 * 
+	 * @param pMark as <code> boolean </code> 
 	 */
-	public void setMark(boolean b)
+	public void setMark(boolean pMark)
 	{
-    mark = b;
-//		if (!b)
-//		{
-//			mark = b;
-//		}
-//		else if (markCount >= 1)
-//		{
-//			mark = b;
-//		}
-//		else
-//		{
-//			markCount++;
-//		}
+    this.mark = pMark;
 	}
 	
 	/**
-	 * sets the position where the pointer is
+	 * sets the position where the pointer is by x-, and y-coordinate
+	 * 
 	 * @param x
+	 *          the x-coordinate as <code> int </code> of the mousepointer
 	 * @param y
+	 *          the y-coordinate as <code> int </code> of the mousepoitner
 	 */
 	public void setHereIam(int x, int y)
 	{
-		hereIam = new Point(x,y);
+		this.hereIam = new Point(x,y);
 	}
   
   /**
-   * sets the position where the pointer is
-   * @param p the Point
-   */
+	 * sets the position where the pointer is
+	 * 
+	 * @param p
+	 *          the as <code> Point </code> 
+	 */
   public void setHereIam(Point p)
   {
-    hereIam = p;
+    this.hereIam = p;
   }
 	
 	/**
@@ -161,24 +176,6 @@ public class ToListenForMouseContainer
 	 */
 	public Point getHereIam ()
 	{
-		return hereIam;
+		return this.hereIam;
 	}
-	
-//	/**
-//	 * sets the list where the mouseover effect will be activated
-//	 * @param x
-//	 */
-//	public void setRightList (int x)
-//	{
-//		rightList = x;
-//  }
-	
-//	/**
-//	 * returns the list where the mouseovereffect will be activated
-//	 * @return
-//	 */
-//	public int getRightList ()
-//	{
-//		return rightList;
-//	}
 }
