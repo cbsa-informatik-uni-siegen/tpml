@@ -379,5 +379,24 @@ aufgerufen werden kann. Zum Beispiel f"uhrt $\unify (A,\{ (b: \alpha_1 ; \alpha_
 \cup E)$ zu dem Aufruf von $\unify (A \cup \{ (b: \alpha_1 ; \alpha_2) = (a: int ; b: int ;)\},
 \{\alpha_1 = int, \alpha_2 = a: int\} \cup E)$.
 
+\subsection{Minimal Typing}
+Der Minimal Typing Algorithmus ist, wie der Big Stepper und der Type Checker, in einer Baumstruktur realisiert.
+Auch die Bedienung dieser Beweismethode ist "aquivalent zu den beiden anderen. Es besteht auch hier die M"oglichkeit
+die n"achste Regel "uber das Pull Down Men"u auszuw"ahlen, einen Schritt vom Algorithmus selbst erraten zu lassen,
+oder den kompletten Beweis vervollst"andigen zu lassen. F"ur den Fall, dass der Ausdruck synktaktischen Zucker 
+enth"alt, kann auch hier in Kernsyntax "ubersetzt werden.
+
+\subsection{Sub Typing}
+Zur "Uberpr"ufung von Subtyprelationen wurde ein eigener Source Editor angelegt. Dieser beinhaltet zwei Eingabefelder,
+welche von Bedienung und Aussehen dem normalen Source Editor gleichen, allerdings nur f"ur die Eingabe von Typen gedacht
+sind, und nicht f"ur ganze Expressions. Das erste Eingabefeld soll den Subtyp entgegennehmen, und das zweite Eingabefeld 
+den Supertyp, fu"r welche man die Subtyp Realation "uberpr"ufen will. Ein weiterer Unterschied zum allgemeinen Source 
+Editor ist, dass man eine Outline pro Eingabefeld hat, statt wie vorher insgesamt eine Outline.
+
+F"ur den Beweis hat man die Wahl zwischen einfachem Sub Typing, und Sub Typing mit rekursiven Typen. Beide sind von 
+Bedienung und Aussehen her exakt gleich. Auch hier wurde bei der Visualisierung wieder eine Baumstruktur verwendet,
+und von die Bedienung gleicht Subtyping den schon bekannten Beweismethoden. 
+
+
 
 % vi:set syntax=tex ts=2 sw=2 et encoding=UTF-8:

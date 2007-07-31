@@ -368,6 +368,47 @@ und den ge"anderten bzw. gel"oschten Regeln\\[5mm]
   \end{tabular}\\[7mm]
 herleiten l"asst.
 
+\section{Die Sprache \LONESUB}
+Die Sprache \LONESUB beschr"ankt sich auf das Typsystem von \LONE. 
+
+\subsection{Sub Typing Semantik von \LONESUB}
+
+Ein Beweisschritt f"ur Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \\[5mm]
+  \begin{tabular}{ll}
+    \RN{S-Refl}       & $\subtype{\tau}{\tau}$  \\[1mm]
+     \RN{S-Arrow}      & $\RULE{\subtype{\tau_1'} {\tau_1} \quad \subtype {\tau_2} {\tau_2'}}
+                              {\subtype{\typeArrow{\tau_1}{\tau_2}} {\typeArrow{\tau_1'}{\tau_2'}}}$ \\[4mm]
+  \end{tabular} \\[7mm]
+
+herleiten l\"a"st.
+
+\subsection{Rec Sub Typing Semantik von \LONESUB}
+
+Ein Beweisschritt f"ur Rec Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \\[5mm]
+ \begin{tabular}{lll}
+            \RN{S-Refl} & $A \vdash \subtype{\tau}{\tau}$ \\[1mm]
+            \RN{S-Assume} & $\RULE{(\subtype{\tau_1} {\tau_2)} \in A}
+                                   {A \vdash \subtype{\tau_1} {\tau_2}}$ \\[2mm]
+            \RN{S-Arrow} & $\RULE{A' \vdash \subtype{\tau_1} {\tau_1'}
+                                   \quad
+                                   A' \vdash \subtype{\tau_2} {\tau_2'}}
+                                  {A \vdash \subtype{\typeArrow{\tau_1}{\tau_2}}
+                                   {\typeArrow{\tau_1'}{\tau_2'}}}$ 
+                                  & mit $A' = A \cup \{\subtype{\typeArrow{\tau_1}{\tau_2}}
+                                   {\typeArrow{\tau_1'}{\tau_2'}}\}$ \\[2mm]
+            \RN{S-Mu-Left} & $\RULE{A' \vdash \subtype{\tau_1\SUB{\typeRec{t}{\tau_1}}{t}}
+                                     {\tau_2}}
+                                    {A \vdash \subtype{\typeRec{t}{\tau_1}} {\tau_2}}$
+                                   & mit $A' = A \cup \{\subtype{\typeRec{t}{\tau_1}} {\tau_2\}}$ \\[2mm]
+            \RN{S-Mu-Right} & $\RULE{A' \vdash \subtype{\tau_1}
+                                     {\tau_2\SUB{\typeRec{t}{\tau_2}}{t}}}
+                                    {A \vdash \subtype{\tau_1} {\typeRec{t}{\tau_2}}}$
+                                   & mit $A' = A \cup \{\subtype{\tau_1} {\typeRec{t}{\tau_2}\}}$ \\[2mm]
+          \end{tabular}
+
+
+herleiten l\"a"st.
+
 
 
 \section{Die Sprache \LTWO}
@@ -483,6 +524,8 @@ und den ge"anderten bzw. gel"oschten Regeln\\[5mm]
   \end{tabular}\\[7mm]
 herleiten l"asst.
 
+\section{Die Sprache \LTWOSUB}
+Die Sprache \LTWOSUB ist erweitert die Sprache \LONE um das Typsystem der Sprache \LTWO. 
 
 \section{Die Sprache \LTWOO}
 \index{Objekte}
@@ -614,6 +657,51 @@ steht f"ur
 F"ur diesen syntaktischen Zucker wurden keine abgeleiteten Regeln eingef"uhrt, stattdessen wird implizit
 eine "Ubersetzung in \notation{Kernsyntax} vorgenommen.
 
+\section{Die Sprache \LTWOOSUB}
+Die Sprache \LTWOOSUB erweitert die Sprache \LTWOSUB um das Typsystem von \LTWOO. 
+
+\subsection{Sub Typing Semantik von \LTWOOSUB}
+
+Ein Beweisschritt f"ur Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \\[5mm]
+  \begin{tabular}{ll}
+    \RN{S-Trans}      & $\RULE{\subtype{\tau_1} {\tau_2} \quad \subtype{\tau_2} {\tau_3}}
+                              {\subtype{\tau_1} {\tau_3}}$ \\[4mm]
+    \RN{S-Obj-Width}  & $\subtype{\typeObject{m_1:\tau_1;\ldots;m_{n+k}:\tau_{n+k}}}
+                          {\typeObject{m_1:\tau_1;\ldots;m_n:\tau_n}}$ \\[2mm]
+    \RN{S-Obj-Depth}  & $\RULE{\subtype{\tau_i} {\tau_i'} \text{ f\"ur } i=1,\ldots,n}
+                              {\subtype{\typeObject{m_1:\tau_1;\ldots;m_n:\tau_n}}
+                               \subtype{\typeObject{m_1:\tau_1';\ldots;m_n:\tau_n'}}}$ \\[5mm]
+    \RN{S-Object}    & $\RULE{\subtype{\tau_i} {_m \tau_j'} \text{ f\"ur alle } i,j \text{ mit } m_i = m_j'}
+                              {\subtype{\typeObject{m_1:\tau_1;\ldots;m_k:\tau_k}}
+                               {_m \typeObject{m_1':\tau_1';\ldots;m_l':\tau_l'}}}$ \\[4mm]
+                      & $\text{falls } \{m_1',\ldots,m_l'\} \subseteq \{m_1,\ldots,m_k\}$
+  \end{tabular} \\[7mm]
+
+herleiten l\"a"st.
+
+\subsection{Rec Sub Typing Semantik von \LTWOOSUB} 
+
+Ein Beweisschritt f"ur Rec Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \\[5mm]
+ \begin{tabular}{lll}
+    \RN{S-Trans}      & $\RULE{\subtype{A \vdash \tau_1} {\tau_2} \quad \subtype{A \vdash \tau_2} {\tau_3}}
+                              {A \vdash \subtype{\tau_1} {\tau_3}}$ \\[4mm]
+    \RN{S-Obj-Width}  & $A \vdash \subtype{\typeObject{m_1:\tau_1;\ldots;m_{n+k}:\tau_{n+k}}}
+                          {\typeObject{m_1:\tau_1;\ldots;m_n:\tau_n}}$ \\[2mm]
+    \RN{S-Obj-Depth}  & $\RULE{A' \vdash \subtype{\tau_i} {\tau_i'} \text{ f\"ur } i=1,\ldots,n}
+                              {A \vdash \subtype{\typeObject{m_1:\tau_1;\ldots;m_n:\tau_n}}
+                               {\typeObject{m_1:\tau_1';\ldots;m_n:\tau_n'}}}$ \\[5mm]
+				& mit $A' = A \cup \{\subtype{\typeObject{m_1:\tau_1;\ldots;m_n:\tau_n}}
+                               {\typeObject{m_1:\tau_1';\ldots;m_n:\tau_n'}}\}$\\[5mm]
+    \RN{S-Object}    & $\RULE{A' \vdash \subtype{\tau_i} {_m \tau_j'} \text{ f\"ur alle } i,j \text{ mit } m_i = m_j'}
+                              {\subtype{\typeObject{m_1:\tau_1;\ldots;m_k:\tau_k}}
+                               {_m \typeObject{m_1':\tau_1';\ldots;m_l':\tau_l'}}}$ \\[4mm]
+				& mit $A' = A \cup \{\subtype{\typeObject{m_1:\tau_1;\ldots;m_k:\tau_k}}
+                               {_m \typeObject{m_1':\tau_1';\ldots;m_l':\tau_l'}}\}$	\\[2mm]
+                      & $\text{falls } \{m_1',\ldots,m_l'\} \subseteq \{m_1,\ldots,m_k\}$
+          \end{tabular}
+
+
+herleiten l\"a"st.
 
 \section{Die Sprache \LTWOC}
 \index{Klassen}
@@ -851,6 +939,35 @@ steht f"ur
 wobei $\id_1,\ldots,\id_n$ verschieden sind und $\id$ ein neuer Name, der nicht in $e$ bzw. $e_2$ und unter $\id_1,\ldots,\id_n$
 vorkommt.
 
+\section{Die Sprache \LTHREESUB}
+Die Sprache \LTWOSUB erweitert die Sprache \LTWOSUB um das Typsystem von \LTHREE. 
+
+\subsection{Sub Typing Semantik von \LTHREESUB}
+
+Ein Beweisschritt f"ur Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \\[5mm]
+  \begin{tabular}{ll}
+    \RN{S-LIST}      & $\RULE{\subtype{\tau} {\tau'} }
+                              {\subtype{\listtype{\tau}} {\listtype{\tau'}}}$ \\[4mm]
+    \RN{S-PRODUCT}      & $\RULE{\subtype{\tau_i} {\tau_i} \text{ f\"ur  i = 1 ... n }}
+                              {\subtype{\tau_1 * \ldots * \tau_n} {\tau_1' * \ldots * \tau_n'}}$ \\[4mm]
+  \end{tabular} \\[7mm]
+
+herleiten l\"a"st.
+
+\subsection{Rec Sub Typing Semantik von \LTHREESUB}
+
+Ein Beweisschritt f"ur Rec Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \\[5mm]
+ \begin{tabular}{lll}
+    \RN{S-LIST}      & $\RULE{A' \vdash \subtype{\tau} {\tau'} }
+                              {A \vdash \subtype{\listtype{\tau}} {\listtype{\tau'}}}$ 
+				& mit $A' = A \cup \{\subtype{\listtype{\tau}} {\listtype{\tau'}}\}$ \\[4mm]
+    \RN{S-PRODUCT}      & $\RULE{A' \vdash \subtype{\tau_i} {\tau_i} \text{ f\"ur  i = 1 ... n }}
+                              {\subtype{\tau_1 * \ldots * \tau_n} {\tau_1' * \ldots * \tau_n'}}$ 
+				& mit $A' = A \cup \{\subtype{\tau_1 * \ldots * \tau_n} {\tau_1' * \ldots * \tau_n'}\}$ \\[4mm]
+          \end{tabular}
+
+
+herleiten l\"a"st.
 
 
 \section{Die Sprache \LFOUR}
@@ -964,6 +1081,33 @@ Die Sprache \LFOUR\ beinhaltet drei Abk"urzungen, die wie folgt in \notation{Ker
   \bwd{e_1}{e_2}  & \mbox{ steht f"ur } & \rec{\id: unit}{\bift{e_1}{(e_2\,;\,\id)}}
 \end{eqnarray*}
 wobei $\id \not\in free(e_1) \cup free(e_2)$.
+
+
+\section{Die Sprache \LFOURSUB}
+Die Sprache \LFOURSUB erweitert die Sprache \LTHREESUB um das Typsystem von \LFOUR. 
+
+
+\subsection{Sub Typing Semantik von \LFOURSUB}
+
+Ein Beweisschritt f"ur Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \\[5mm]
+  \begin{tabular}{ll}
+    \RN{S-REF}      & $\RULE{\subtype{\tau} {\tau'} }
+                              {\subtype{\reftype{\tau}} {\reftype{\tau'}}}$ \\[4mm]
+   \end{tabular} \\[7mm]
+
+herleiten l\"a"st.
+
+\subsection{Rec Sub Typing Semantik von \LFOURSUB}
+
+Ein Beweisschritt f"ur Rec Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \\[5mm]
+ \begin{tabular}{lll}
+    \RN{S-REF}      & $\RULE{A' \vdash \subtype{\tau} {\tau'} }
+                              {A \vdash \subtype{\reftype{\tau}} {\reftype{\tau'}}}$ 
+                                  & mit $A' = A \cup \{\subtype{\reftype{\tau}} {\reftype{\tau'}}\}$ \\[4mm]
+          \end{tabular}
+
+
+herleiten l\"a"st.
 
 
 \section{Konkrete Syntax}

@@ -44,12 +44,46 @@
 \newcommand{\LZEROCBN}{$\mathcal{L}_0^{CBN}$}
 \newcommand{\LONE}{$\mathcal{L}_1$}
 \newcommand{\LONECBN}{$\mathcal{L}_1^{CBN}$}
+\newcommand{\LONESUB}{$\mathcal{L}_1^{SUB}$}
 \newcommand{\LTWO}{$\mathcal{L}_2$}
 \newcommand{\LTWOCBN}{$\mathcal{L}_2^{CBN}$}
+\newcommand{\LTWOSUB}{$\mathcal{L}_2^{SUB}$}
 \newcommand{\LTWOO}{$\mathcal{L}_2^{O}$}
+\newcommand{\LTWOOSUB}{$\mathcal{L}_2^{OSUB}$}
 \newcommand{\LTWOC}{$\mathcal{L}_2^{C}$}
+\newcommand{\LTWOCSUB}{$\mathcal{L}_2^{CSUB}$}
 \newcommand{\LTHREE}{$\mathcal{L}_3$}
+\newcommand{\LTHREESUB}{$\mathcal{L}_3^{SUB}$}
 \newcommand{\LFOUR}{$\mathcal{L}_4$}
+\newcommand{\LFOURSUB}{$\mathcal{L}_4^{SUB}$}
+
+%%
+%% Types
+%%
+
+\newcommand{\typeUnit}{\bunit}
+\newcommand{\typeBool}{\bbool}
+\newcommand{\typeInt}{\bint}
+\newcommand{\typeArrow}[2]{#1\to#2}
+\newcommand{\typeObject}[1]{\langle#1\rangle}
+\newcommand{\typeRec}[2]{\mu#1.#2}
+\newcommand{\typeRef}[1]{#1\,\bref}
+\newcommand{\typeClass}[2]{\zeta(#1\,:\,#2)}
+
+
+\newcommand{\setType}{\name{Type}}
+
+%%
+%% Rules, etc.
+%%
+
+\newcommand{\SUB}[2]{\ensuremath{[^{#1}\slash_{#2}]}}
+\newcommand{\RINS}[2]{\ensuremath{\langle^{#1}\slash_{#2}\rangle}}
+
+\newcommand{\RULE}[2]{\begin{array}{@{}c@{}} #1 \\ \hline #2 \end{array}}
+
+% Rule names (small caps)
+\newcommand{\RN}[1]{\mbox{{\sc (#1)}}}
 
 % Dokumentinformationen
 \title{{\Huge \TPML\ 2.0}\\Benutzerhandbuch}
