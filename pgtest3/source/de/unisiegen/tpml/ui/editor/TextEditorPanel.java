@@ -14,8 +14,7 @@ import java.awt.event.MouseAdapter ;
 import java.awt.event.MouseEvent ;
 import java.io.IOException ;
 import java.util.Stack ;
-
-import javax.swing.JComponent;
+import javax.swing.JComponent ;
 import javax.swing.JMenuItem ;
 import javax.swing.JPanel ;
 import javax.swing.JPopupMenu ;
@@ -522,8 +521,6 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
       public void replaceText ( int [ ] pStart , int [ ] pEnd ,
           String pReplaceText )
       {
-        TextEditorPanel.this.document
-            .removeDocumentListener ( TextEditorPanel.this.doclistener ) ;
         int offset = 0 ;
         for ( int i = 0 ; i < pStart.length ; i ++ )
         {
@@ -539,9 +536,6 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
             // Do nothing
           }
         }
-        TextEditorPanel.this.document
-            .addDocumentListener ( TextEditorPanel.this.doclistener ) ;
-        loadOutlineExpression ( Outline.ExecuteAutoChange.EDITOR ) ;
       }
     } ) ;
     compoundPanel.add ( this.sideBar , BorderLayout.WEST ) ;
@@ -779,9 +773,10 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
     }
     this.undoItem.setEnabled ( this.undoStatus ) ;
   }
-  
-	public JComponent getPrintPart() {
 
-		return editor;
-	}
+
+  public JComponent getPrintPart ( )
+  {
+    return editor ;
+  }
 }

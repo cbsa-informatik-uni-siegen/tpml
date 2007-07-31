@@ -13,8 +13,7 @@ import java.awt.event.FocusEvent ;
 import java.awt.event.FocusListener ;
 import java.io.StringReader ;
 import java.util.Stack ;
-
-import javax.swing.JComponent;
+import javax.swing.JComponent ;
 import javax.swing.JLabel ;
 import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
@@ -429,8 +428,6 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
       public void replaceText ( int [ ] pStart , int [ ] pEnd ,
           String pReplaceText )
       {
-        SubTypingSourceView.this.sourceField
-            .removeDocumentListener ( SubTypingSourceView.this.listener ) ;
         int offset = 0 ;
         for ( int i = 0 ; i < pStart.length ; i ++ )
         {
@@ -445,19 +442,6 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
           {
             // Do nothing
           }
-        }
-        SubTypingSourceView.this.sourceField
-            .addDocumentListener ( SubTypingSourceView.this.listener ) ;
-        try
-        {
-          SubTypingSourceView.this.outline.load (
-              SubTypingSourceView.this.sourceField.getType ( ) ,
-              Outline.ExecuteAutoChange.SUBTYPING_SOURCE ) ;
-        }
-        catch ( Exception e )
-        {
-          SubTypingSourceView.this.outline.load ( null ,
-              Outline.ExecuteAutoChange.SUBTYPING_SOURCE ) ;
         }
       }
     } ) ;
@@ -591,8 +575,6 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
       public void replaceText ( int [ ] pStart , int [ ] pEnd ,
           String pReplaceText )
       {
-        SubTypingSourceView.this.sourceField2
-            .removeDocumentListener ( SubTypingSourceView.this.listener2 ) ;
         int offset = 0 ;
         for ( int i = 0 ; i < pStart.length ; i ++ )
         {
@@ -607,19 +589,6 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
           {
             // Do nothing
           }
-        }
-        SubTypingSourceView.this.sourceField2
-            .addDocumentListener ( SubTypingSourceView.this.listener2 ) ;
-        try
-        {
-          SubTypingSourceView.this.outline2.load (
-              SubTypingSourceView.this.sourceField2.getType ( ) ,
-              Outline.ExecuteAutoChange.SUBTYPING_SOURCE ) ;
-        }
-        catch ( Exception e )
-        {
-          SubTypingSourceView.this.outline2.load ( null ,
-              Outline.ExecuteAutoChange.SUBTYPING_SOURCE ) ;
         }
       }
     } ) ;
@@ -1596,8 +1565,9 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
   }
 
 
-public JComponent getPrintPart() {
-	// TODO Christoph plz print here
-	return null;
-}
+  public JComponent getPrintPart ( )
+  {
+    // TODO Christoph plz print here
+    return null ;
+  }
 }
