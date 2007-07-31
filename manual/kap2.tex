@@ -38,37 +38,37 @@ wird der fehlerhafte Teil rot unterstrichen.
 
 Bewegt man den Mauszeiger "uber den markierten Text oder das Error-Icon,
 so erscheint ein Tooltip, der den Fehler genauer beschreibt. Ein Klick
-auf das Error-Icon bewirkt, dass fehlerhafte Text markiert wird. Wird
+auf das Error-Icon bewirkt, dass der fehlerhafte Text markiert wird. Wird
 nun noch einmal auf das Error-Icon geklickt, wird der markierte Text
 entfernt.
 
 Der Quelltexteditor hebt freie Identifier und Type-Namen in der eingestellten
-Farbe und fett hervor, da freie Identifier oder Type-Namen meist auf eine
+Farbe hervor, da freie Identifier oder Type-Namen meist auf eine
 fehlerhafte Eingabe zur"uckzuf"uhren sind. Gibt der Anwender zum Beispiel
 \glqq$\bli{x}{a}{x}$\grqq\ ein, ist dies nat"urlich nicht falsch, aber
 der Type Checker w"urde den Ausdruck nicht akzeptieren, da das 
-\glqq$a$\grqq\ in der Expression frei vorkommend ist.
+\glqq$a$\grqq\ in dem Ausdruck frei vorkommend ist.
 
 \subsection{Auto-Vervollst"andigung}
 \label{Auto-Vervollstaendigung}
 \index{Auto-Vervollst""andigung}
 Der Quelltexteditor besitzt eine Auto-Vervollst"andigung. Gibt der Benutzer
-den ersten Teil einer Expression ein, erscheint in der betroffenen Zeile ein
-gelbes Dreieck mit einem Ausrufezeichen. Bewegt man den Mauszeiger "uber
-das Icon, so erscheint ein Tooltip, der einen Vorschlag angibt, was der
-Benutzer noch eingeben muss, um die Expression zu vervollst"andigen. Der
-Tooltip gibt ebenfalls an, um welche Expression es sich handelt, was
+den ersten Teil eines Ausdrucks oder Typs ein, erscheint in der betroffenen
+Zeile ein gelbes Dreieck mit einem Ausrufezeichen. Bewegt man den Mauszeiger 
+"uber das Icon, so erscheint ein Tooltip, der einen Vorschlag angibt, was der
+Benutzer noch eingeben muss, um die Eingabe zu vervollst"andigen. Der
+Tooltip gibt ebenfalls an, um welchen Ausdruck oder Typen es sich handelt, was
 besonders f"ur Unge"ubte eine wertvolle Information ist.
 
-Die Expression die noch vervollst"andigt werden muss, wird im Hintergrund
+Der Ausdruck, der noch vervollst"andigt werden muss, wird im Hintergrund
 hervorgehoben, so dass der Anwender genau erkennen kann, welchen Teil er
 noch vervollst"andigen muss. Gibt der Anwender \glqq$\infix{+}{1}{\blet\ x =}$\grqq\ 
 ein, wird der Teil \glqq$\blet\ x =$\grqq\ hervorgehoben und der Tooltip
 verr"at dem Anwender, dass er noch \glqq$e_1\ \bin\ e_2$\grqq\ eingeben muss
 um \glqq{\bf Let}\grqq\ zu vervollst"andigen.
 
-Der Anwender hat die M"oglichkeit auf das Icon zu klicken, dann wird der Vorschlag
-automatisch an der richtigen Stelle eingef"ugt. Im gegebenen Beispiel
+Der Anwender hat die M"oglichkeit auf das Icon zu klicken, dadurch wird der 
+Vorschlag automatisch an der richtigen Stelle eingef"ugt. Im gegebenen Beispiel
 wird der Ausdruck \glqq$\infix{+}{1}{\blet\ x =}$\grqq\ automatisch zu
 \glqq$\infix{+}{1}{\bli{x}{e1}{e2}}$\grqq\ erweitert, was f"ur den Parser einen
 g"ultigen Ausdruck darstellt. Die Auto-Vervollst"andigung ist ebenfalls in
@@ -81,15 +81,15 @@ ist. Dies kann bei Klassen der Fall sein, ein Beispiel hierf"ur ist:\\[2mm]
 \glqq$\class{self}{\inherit{a}{(\class{self}{\val{a}{0}})}{\val{a}{1} \method{m}{a}}}$\grqq
 
 In diesem Beispiel besteht ein Konflikt zwischen dem Identifier \glqq$a$\grqq\ 
-im ersten Teil des inherits und dem Attribut in der zweiten Reihe. Dieser 
-Konflikt w"urde im SmallStepper zu dem Ergebniss f"uhren, dass eine Reihe
+im ersten Teil des \glqq$\binherit$\grqq\ und dem Attribut in der zweiten Reihe. Dieser 
+Konflikt w"urde im Small Step Interpreter zu dem Ergebniss f"uhren, dass eine Reihe
 entstehen w"urde, die zweimal das Attribut \glqq$a$\grqq\ enth"alt, deshalb
 lehnt der Parser diesen Ausdruck ab. Der Konflikt kann aber dadurch gel"ost
 werden, dass das Attribut umbenannt wird, dabei muss darauf geachtet werden,
 dass auch alle an den Identifier des Attributes gebundenen Identifier umbenannt
 werden. Dies betrifft in diesem Fall das \glqq$a$\grqq\ im Rumpf der Methode.
 Der Parser blendet in diesem Fall ein blaues Fehlersymbol ein, dass dem Anwender
-signalisieren soll, das eine Umbenennung m"oglich ist. Klickt der Anwender auf
+signalisieren soll, dass eine Umbenennung m"oglich ist. Klickt der Anwender auf
 das Symbol werden die Identifier umbenannt und es entsteht folgender Ausdruck:\\[2mm]
 \glqq$\class{self}{\inherit{a}{(\class{self}{\val{a}{0}})}{\val{a'}{1} \method{m}{a'}}}$\grqq
 
@@ -97,24 +97,26 @@ das Symbol werden die Identifier umbenannt und es entsteht folgender Ausdruck:\\
 \section {Outline}
 \label{Outline}
 \index{Outline}
-Die Outline erlaubt es dem Anwender eingegebene Ausdr"ucke und Typen
+Die Outline erlaubt es dem Anwender, eingegebene Ausdr"ucke und Typen
 in ihrer Baumansicht zu betrachten. Der Anwender ist somit in der Lage
 zu erkennen aus welchen Teilen ein Ausdruck oder Typ besteht. So ist zum
 Beispiel bei dem Ausdruck \glqq$\infix{+}{\infix{+}{1}{1}}{1}$\grqq\ nicht 
-auf den ersten Blick ersichtlich, wie sich die Applikationen zusammengesetzen. 
+auf den ersten Blick ersichtlich, wie sich die Applikationen zusammensetzen. 
 In der Outline wird sichtbar, dass der Ausdruck wie folgt geklammert gesehen
-werden kann \glqq$\infix{+}{(\infix{+}{1}{1})}{1}$\grqq. Dieses Resultat ist nicht
+werden kann: \glqq$\infix{+}{(\infix{+}{1}{1})}{1}$\grqq. Dieses Resultat ist nicht
 besonders "uberraschend, betrachtet man aber den Funktions-Typen
 \glqq$\arrowtype{\inttype}{\arrowtype{\inttype}{\inttype}}$\grqq, so ergibt sich
 folgende Klammerung \glqq$\arrowtype{\inttype}{(\arrowtype{\inttype}{\inttype})}$\grqq.
 Der Anwender kann dar"uber hinaus erkennen, um welche Ausdr"ucke es sich
 handelt, da der Name in der Outline dargestellt wird. Vor dem Namen des
 Ausdrucks steht immer die Menge zu der er geh"ort, diese Menge ist zumeist
-\glqq{\bf e}\grqq\ oder \glqq{\bf v}\grqq, falls es sich um ein Value handelt.
+\glqq{\bf e}\grqq\ oder \glqq{\bf v}\grqq, falls es sich um ein Wert handelt.
 Es sind aber f"ur Identifier, Reihen, Typen etc. auch viele andere Mengen
 vorhanden. Neben der Menge zu der ein Ausdruck oder Typ geh"ort, wird auch
 sein Index dagestellt. Dadurch ist erkennbar, aus welchen Teilen sich ein
-Ausdruck oder Typ zusammensetzt.
+Ausdruck oder Typ zusammensetzt. Zum Beispiel setzt sich 
+\glqq$\bli{id}{1+1}{id+2}$\grqq\ aus dem Identifier \glqq$id$\grqq, aus einem
+\glqq$e_1$\grqq\ und einem \glqq$e_2$\grqq\ zusammen.
 
 \begin{figure}[h]
 \begin{center}
@@ -140,20 +142,20 @@ hervorgehoben werden. Der Ausdruck \glqq$\abstr{x}{\infix{+}{x}{1}}$\grqq\ beste
 aus einen Identifier \glqq$x$\grqq\ und aus einem Kind-Ausdruck
 \glqq$\infix{+}{x}{1}$\grqq. Selektiert man nun den Identifier, werden bei
 aktiver Option alle Identifier hervorgehoben, die an diesen Identifier
-gebunden sind. Dieses funktioniert auch umgekehrt, wird also das
+gebunden sind. Dies funktioniert auch umgekehrt, wird also das
 \glqq$x$\grqq\ im Ausdruck \glqq$\infix{+}{x}{1}$\grqq\ selektiert, wird der
 Identifier hervorgehoben, an den dieser Identifier gebunden ist. Vor allem
 bei komplizierteren Ausdr"ucken mit gleichen Identifiern wie 
 \glqq$\bli{x}{1}{\infix{+}{x}{\bli{x}{2}{x}}}$\grqq\ k"onnen so die Bindungen
 durch die Outline "uberpr"uft werden.
 
-Wenn {\bf Freie} aktiv ist, werden freie Identifier und Type-Namen in der
+Wenn {\bf Freie} aktiv ist, werden freie Identifier und Typ-Namen in der
 Outline hervorgehoben. Dies ist besonders n"utzlich, da freie Identifier
-oder Type-Namen meist auf eine fehlerhafte Eingabe zur"uckzuf"uhren sind.
+oder Typ-Namen meist auf eine fehlerhafte Eingabe zur"uckzuf"uhren sind.
 Gibt der Anwender zum Beispiel \glqq$\bli{x}{a}{x}$\grqq\ ein, ist 
 dies nat"urlich nicht falsch, aber der Type Checker w"urde den Ausdruck
 nicht akzeptieren, da das \glqq$a$\grqq\ in dem Ausdruck frei 
-vorkommend ist. Es werden allerdings nur Identifier und Type-Namen
+vorkommend ist. Es werden allerdings nur Identifier und Typ-Namen
 hervorgehoben, die in dem Wurzel Knoten frei vorkommend sind und nicht
 alle, in den jeweiligen Knoten frei vorkommenden Identifier oder Typ-Namen.
 
@@ -163,7 +165,7 @@ werden h"ohere Knoten kompakter dargestellt, was bei gr"o"seren Ausdr"ucken
 von Vorteil ist.
 
 Ist die Option {\bf Source Code} aktiv, wird der Source Code im jeweiligen
-Quelltexteditor hervorgehoben, der dem selektiertem Knoten in der Outline
+Quelltexteditor hervorgehoben, der dem selektierten Knoten in der Outline
 entspricht. Ist diese Option nicht aktiv, kann der Source Code durch einen
 Doppelklick auf den Outline Knoten ebenfalls hervorgehoben werden. Diese
 Option ist nur bei den Quelltexteditor verf"ugbar und nicht bei den

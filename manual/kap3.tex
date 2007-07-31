@@ -92,7 +92,8 @@ herleiten l"asst.
 
 \subsection{Small step Semantik von \LZEROCBN}
 
-Ein \notation{small step} hei"st g"ultig f"ur \LZEROCBN, wenn er sich mit den small step Regeln von \LZERO und den ge"anderten bzw. gel"oschten Regeln\\[5mm]
+Ein \notation{small step} hei"st g"ultig f"ur \LZEROCBN, wenn er sich mit den small step Regeln von \LZERO\ 
+und den ge"anderten bzw. gel"oschten Regeln\\[5mm]
   \begin{tabular}{ll}
      \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
      \mbox{(BETA)}        & $(\abstr{id}{e_1})\,e_2 \to e_1[e_2/\id]$ \\[5mm]
@@ -354,7 +355,8 @@ herleiten l"asst.
 
 \subsection{Small step Semantik von \LONECBN}
 
-Ein \notation{small step} hei"st g"ultig f"ur \LONECBN, wenn er sich mit den small step Regeln von \LONE und den ge"anderten bzw. gel"oschten Regeln\\[5mm]
+Ein \notation{small step} hei"st g"ultig f"ur \LONECBN, wenn er sich mit den small step Regeln von \LONE\ 
+und den ge"anderten bzw. gel"oschten Regeln\\[5mm]
   \begin{tabular}{ll}
      \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
      \mbox{(BETA)}        & $(\abstr{id}{e_1})\,e_2 \to e_1[e_2/\id]$ \\[5mm]
@@ -468,7 +470,8 @@ herleiten l"asst.
 
 \subsection{Small step Semantik von \LTWOCBN}
 
-Ein \notation{small step} hei"st g"ultig f"ur \LTWOCBN, wenn er sich mit den small step Regeln von \LTWO und den ge"anderten bzw. gel"oschten Regeln\\[5mm]
+Ein \notation{small step} hei"st g"ultig f"ur \LTWOCBN, wenn er sich mit den small step Regeln von \LTWO\ 
+und den ge"anderten bzw. gel"oschten Regeln\\[5mm]
   \begin{tabular}{ll}
      \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
      \mbox{(BETA)}        & $(\abstr{id}{e_1})\,e_2 \to e_1[e_2/\id]$ \\[5mm]
@@ -673,7 +676,7 @@ die Kinder der Reihe $r_2$.
 
 Die Bedingung $\doma{r_1} = A$ bedeutet, dass alle angegebenen
 Attributnamen in dem Inherit Teil mit den Attributen in der Reihe $r_1$ "ubereinstimmen m"ussen.
-Ist dies nicht der Fall, bleibt der SmallStepper stecken.
+Ist dies nicht der Fall, bleibt der Small Step Interpreter stecken.
 
 
 \section{Die Sprache \LTHREE}
@@ -965,7 +968,10 @@ wobei $\id \not\in free(e_1) \cup free(e_2)$.
 
 \section{Konkrete Syntax}
 Da es mitunter nicht mit jeder herk"ommlichen Tastatur m"oglich ist, griechische Buchstaben zu tippen,
-k"onnen folgende Schl"usselw"orter als Ersatz benutzt werden.\\[5mm]
+k"onnen die aufgef"uhrten Schl"usselw"orter als Ersatz benutzt werden. Ebenso ist es nicht so einfach
+Unicode Zeichen einzugeben, auch hierf"ur gibt es die entsprechenden Abk"urzungen. Unterscheidungen,
+die nur in er Theorie m"oglich sind, in der Praxis aber nicht unterscheidbar sind, m"ussen mit
+Schl"usselw"ortern unterschieden werden.\\[5mm]
 \begin{tabular}{lll}
   \mbox{$\lambda$}                            & $\textbf{lambda}$                        & Lambda Ausdruck\\
   \mbox{$\mu$}                                & $\textbf{mu}$                            & Rekursive Typen\\
