@@ -29,7 +29,8 @@ public final class BooleanConstant extends Constant
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Boolean" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression
+      .getCaption ( BooleanConstant.class ) ;
 
 
   /**

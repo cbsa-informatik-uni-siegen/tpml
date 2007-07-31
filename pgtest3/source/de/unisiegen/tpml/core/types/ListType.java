@@ -38,7 +38,7 @@ public final class ListType extends MonoType implements DefaultTypes
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = "List-Type" ; //$NON-NLS-1$
+  private static final String CAPTION = Type.getCaption ( ListType.class ) ;
 
 
   /**

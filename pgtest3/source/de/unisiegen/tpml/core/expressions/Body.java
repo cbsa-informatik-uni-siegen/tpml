@@ -68,7 +68,7 @@ public final class Body extends Expression implements BodyOrRow ,
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Attribute" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( Body.class ) ;
 
 
   /**

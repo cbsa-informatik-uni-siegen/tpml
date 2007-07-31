@@ -77,7 +77,8 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Multi-Lambda" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression
+      .getCaption ( MultiLambda.class ) ;
 
 
   /**

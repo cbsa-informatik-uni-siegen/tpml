@@ -49,7 +49,8 @@ public final class Identifier extends Value implements IdentifierOrTypeName
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Identifier" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression
+      .getCaption ( Identifier.class ) ;
 
 
   /**

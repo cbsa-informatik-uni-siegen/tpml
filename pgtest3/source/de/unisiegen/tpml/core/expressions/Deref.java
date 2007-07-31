@@ -35,7 +35,7 @@ public final class Deref extends UnaryOperator
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Deref" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( Deref.class ) ;
 
 
   /**

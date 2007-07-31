@@ -42,6 +42,24 @@ public final class Exn extends Expression
 
 
   /**
+   * String for the case that the name is null.
+   */
+  private static final String NAME_NULL = "name is null" ; //$NON-NLS-1$
+
+
+  /**
+   * The caption of this {@link Expression}.
+   */
+  private static final String CAPTION = Expression.getCaption ( Exn.class ) ;
+
+
+  /**
+   * The space string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
    * The <b>(DIVIDE-BY-ZERO)</b> exception.
    * 
    * @return A new <b>(DIVIDE-BY-ZERO)</b> exception.
@@ -69,12 +87,6 @@ public final class Exn extends Expression
    * @see #toString()
    */
   private String name ;
-
-
-  /**
-   * String for the case that the name is null.
-   */
-  private static final String NAME_NULL = "name is null" ; //$NON-NLS-1$
 
 
   /**
@@ -122,12 +134,6 @@ public final class Exn extends Expression
     }
     return false ;
   }
-
-
-  /**
-   * The caption of this {@link Expression}.
-   */
-  private static final String CAPTION = "Exception" ; //$NON-NLS-1$
 
 
   /**
@@ -209,12 +215,6 @@ public final class Exn extends Expression
     }
     return this ;
   }
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
 
 
   /**

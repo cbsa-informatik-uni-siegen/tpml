@@ -83,7 +83,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Multi-Let" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( MultiLet.class ) ;
 
 
   /**

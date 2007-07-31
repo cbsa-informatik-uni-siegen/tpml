@@ -20,7 +20,7 @@ public final class UnitType extends PrimitiveType
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = "Unit-Type" ; //$NON-NLS-1$
+  private static final String CAPTION = Type.getCaption ( UnitType.class ) ;
 
 
   /**

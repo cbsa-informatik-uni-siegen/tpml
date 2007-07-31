@@ -24,7 +24,7 @@ public final class Tl extends UnaryListOperator
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Tail" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( Tl.class ) ;
 
 
   /**

@@ -70,7 +70,8 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Rec" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression
+      .getCaption ( Recursion.class ) ;
 
 
   /**

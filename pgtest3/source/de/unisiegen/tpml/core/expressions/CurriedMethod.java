@@ -83,7 +83,8 @@ public final class CurriedMethod extends Expression implements
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Curried-Method" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression
+      .getCaption ( CurriedMethod.class ) ;
 
 
   /**

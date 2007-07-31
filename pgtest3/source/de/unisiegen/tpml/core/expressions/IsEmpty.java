@@ -24,7 +24,7 @@ public final class IsEmpty extends UnaryListOperator
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Is-Empty" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( IsEmpty.class ) ;
 
 
   /**

@@ -63,7 +63,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Method" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( Method.class ) ;
 
 
   /**

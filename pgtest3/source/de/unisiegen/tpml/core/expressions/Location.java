@@ -27,7 +27,7 @@ public final class Location extends Value
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Location" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( Location.class ) ;
 
 
   /**

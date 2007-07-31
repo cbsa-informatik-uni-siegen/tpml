@@ -55,7 +55,7 @@ public final class Send extends Expression implements DefaultIdentifiers ,
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Send" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( Send.class ) ;
 
 
   /**

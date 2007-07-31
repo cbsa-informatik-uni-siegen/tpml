@@ -17,7 +17,7 @@ public class UnifyType extends PrimitiveType
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = "Unify-Type" ; //$NON-NLS-1$
+  private static final String CAPTION = Type.getCaption ( UnifyType.class ) ;
 
 
   /**

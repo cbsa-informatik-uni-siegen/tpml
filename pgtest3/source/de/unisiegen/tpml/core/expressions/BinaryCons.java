@@ -23,7 +23,8 @@ public final class BinaryCons extends BinaryOperator
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "BinaryCons" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression
+      .getCaption ( BinaryCons.class ) ;
 
 
   /**

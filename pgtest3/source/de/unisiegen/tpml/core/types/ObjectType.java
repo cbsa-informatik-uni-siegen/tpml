@@ -32,7 +32,7 @@ public final class ObjectType extends MonoType implements DefaultTypes
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = "Object-Type" ; //$NON-NLS-1$
+  private static final String CAPTION = Type.getCaption ( ObjectType.class ) ;
 
 
   /**

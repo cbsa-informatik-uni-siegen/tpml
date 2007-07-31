@@ -65,7 +65,7 @@ public final class Class extends Expression implements BoundIdentifiers ,
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Class" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( Class.class ) ;
 
 
   /**

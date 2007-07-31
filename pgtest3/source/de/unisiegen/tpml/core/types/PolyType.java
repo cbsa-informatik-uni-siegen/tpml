@@ -75,7 +75,7 @@ public final class PolyType extends Type implements DefaultTypes
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = "Poly-Type" ; //$NON-NLS-1$
+  private static final String CAPTION = Type.getCaption ( PolyType.class ) ;
 
 
   /**

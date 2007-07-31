@@ -4,6 +4,8 @@ package de.unisiegen.tpml.core.expressions ;
 import java.util.ArrayList ;
 import java.util.Enumeration ;
 import java.util.LinkedList ;
+import java.util.MissingResourceException ;
+import java.util.ResourceBundle ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -81,6 +83,13 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
+   * The resource bundle.
+   */
+  private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
+      .getBundle ( "de.unisiegen.tpml.core.expressions.messages" ) ; //$NON-NLS-1$
+
+
+  /**
    * Prefix of the {@link Expression}.
    */
   protected static final String PREFIX_EXPRESSION = "e" ; //$NON-NLS-1$
@@ -150,6 +159,25 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * The unused string.
    */
   private static final String UNUSED = "unused" ; //$NON-NLS-1$
+
+
+  /**
+   * Gets the caption for the given class from the resource bundle.
+   * 
+   * @param pClass The given class.
+   * @return The caption of the given class.
+   */
+  public static String getCaption ( java.lang.Class < ? > pClass )
+  {
+    try
+    {
+      return RESOURCE_BUNDLE.getString ( pClass.getSimpleName ( ) ) ;
+    }
+    catch ( MissingResourceException e )
+    {
+      return pClass.getSimpleName ( ) ;
+    }
+  }
 
 
   /**

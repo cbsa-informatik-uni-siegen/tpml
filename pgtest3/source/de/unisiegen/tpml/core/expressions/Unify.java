@@ -18,7 +18,7 @@ public class Unify extends Constant
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Unify" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( Unify.class ) ;
 
 
   /**

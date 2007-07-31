@@ -58,7 +58,8 @@ public final class BinaryOperatorException extends Exception
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Binary-Operator-Exception" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression
+      .getCaption ( BinaryOperatorException.class ) ;
 
 
   /**

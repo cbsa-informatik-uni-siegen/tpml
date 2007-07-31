@@ -86,7 +86,7 @@ public final class TypeVariable extends MonoType implements
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = "Type-Variable" ; //$NON-NLS-1$
+  private static final String CAPTION = Type.getCaption ( TypeVariable.class ) ;
 
 
   /**

@@ -59,7 +59,7 @@ public final class RecType extends MonoType implements DefaultTypes ,
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = "Rec-Type" ; //$NON-NLS-1$
+  private static final String CAPTION = Type.getCaption ( RecType.class ) ;
 
 
   /**

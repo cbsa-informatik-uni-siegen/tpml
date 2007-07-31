@@ -22,7 +22,8 @@ public final class ArithmeticOperator extends BinaryOperator
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Arithmetic-Operator" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression
+      .getCaption ( ArithmeticOperator.class ) ;
 
 
   /**

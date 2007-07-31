@@ -33,7 +33,7 @@ public final class New extends Expression implements DefaultExpressions
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "New" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( New.class ) ;
 
 
   /**

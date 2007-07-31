@@ -67,7 +67,7 @@ public final class List extends Expression implements DefaultExpressions
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "List" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( List.class ) ;
 
 
   /**

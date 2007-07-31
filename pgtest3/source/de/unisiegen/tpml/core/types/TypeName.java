@@ -28,7 +28,7 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = "Type-Name" ; //$NON-NLS-1$
+  private static final String CAPTION = Type.getCaption ( TypeName.class ) ;
 
 
   /**

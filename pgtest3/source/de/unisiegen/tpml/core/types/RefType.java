@@ -46,7 +46,7 @@ public final class RefType extends MonoType implements DefaultTypes
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = "Ref-Type" ; //$NON-NLS-1$
+  private static final String CAPTION = Type.getCaption ( RefType.class ) ;
 
 
   /**

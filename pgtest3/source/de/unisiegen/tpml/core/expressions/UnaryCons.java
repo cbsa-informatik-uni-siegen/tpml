@@ -21,7 +21,8 @@ public final class UnaryCons extends Constant
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Unary-Cons" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression
+      .getCaption ( UnaryCons.class ) ;
 
 
   /**

@@ -30,7 +30,8 @@ public final class CurriedLetRec extends CurriedLet implements
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Curried-Let-Rec" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression
+      .getCaption ( CurriedLetRec.class ) ;
 
 
   /**

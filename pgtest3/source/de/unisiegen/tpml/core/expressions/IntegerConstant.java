@@ -16,7 +16,8 @@ public final class IntegerConstant extends Constant
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Integer" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression
+      .getCaption ( IntegerConstant.class ) ;
 
 
   /**

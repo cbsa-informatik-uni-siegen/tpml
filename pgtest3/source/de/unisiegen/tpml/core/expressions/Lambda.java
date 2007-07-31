@@ -72,7 +72,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Lambda" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( Lambda.class ) ;
 
 
   /**

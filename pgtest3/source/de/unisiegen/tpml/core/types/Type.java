@@ -2,6 +2,8 @@ package de.unisiegen.tpml.core.types ;
 
 
 import java.util.ArrayList ;
+import java.util.MissingResourceException ;
+import java.util.ResourceBundle ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
@@ -25,6 +27,13 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
     ShowBondsInput
 {
   /**
+   * The resource bundle.
+   */
+  private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
+      .getBundle ( "de.unisiegen.tpml.core.types.messages" ) ; //$NON-NLS-1$
+
+
+  /**
    * Prefix of tau {@link Type}s.
    */
   public static final String PREFIX_TAU = "\u03C4" ; //$NON-NLS-1$
@@ -40,6 +49,25 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * Prefix of phi {@link Type}s.
    */
   public static final String PREFIX_PHI = "\u03A6" ; //$NON-NLS-1$
+
+
+  /**
+   * Gets the caption for the given class from the resource bundle.
+   * 
+   * @param pClass The given class.
+   * @return The caption of the given class.
+   */
+  public static String getCaption ( java.lang.Class < ? > pClass )
+  {
+    try
+    {
+      return RESOURCE_BUNDLE.getString ( pClass.getSimpleName ( ) ) ;
+    }
+    catch ( MissingResourceException e )
+    {
+      return pClass.getSimpleName ( ) ;
+    }
+  }
 
 
   /**

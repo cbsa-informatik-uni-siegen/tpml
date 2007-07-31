@@ -76,7 +76,7 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Let" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( Let.class ) ;
 
 
   /**

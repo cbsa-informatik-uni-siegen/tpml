@@ -21,7 +21,7 @@ public final class IntegerType extends PrimitiveType
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = "Integer-Type" ; //$NON-NLS-1$
+  private static final String CAPTION = Type.getCaption ( IntegerType.class ) ;
 
 
   /**

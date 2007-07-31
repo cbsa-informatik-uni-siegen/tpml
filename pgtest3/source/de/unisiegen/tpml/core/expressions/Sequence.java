@@ -54,7 +54,7 @@ public final class Sequence extends Expression implements DefaultExpressions
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Sequence" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( Sequence.class ) ;
 
 
   /**

@@ -21,7 +21,7 @@ public final class BooleanType extends PrimitiveType
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = "Boolean-Type" ; //$NON-NLS-1$
+  private static final String CAPTION = Type.getCaption ( BooleanType.class ) ;
 
 
   /**

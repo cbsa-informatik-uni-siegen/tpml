@@ -21,7 +21,7 @@ public final class Fst extends Projection
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "First" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( Fst.class ) ;
 
 
   /**

@@ -35,7 +35,7 @@ public final class Assign extends BinaryOperator
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Assign" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( Assign.class ) ;
 
 
   /**

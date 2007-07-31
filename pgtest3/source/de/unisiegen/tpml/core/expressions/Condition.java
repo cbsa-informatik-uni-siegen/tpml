@@ -47,7 +47,8 @@ public final class Condition extends Expression implements DefaultExpressions
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Condition" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression
+      .getCaption ( Condition.class ) ;
 
 
   /**

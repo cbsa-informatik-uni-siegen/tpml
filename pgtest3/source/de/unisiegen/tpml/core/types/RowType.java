@@ -81,7 +81,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = "Row-Type" ; //$NON-NLS-1$
+  private static final String CAPTION = Type.getCaption ( RowType.class ) ;
 
 
   /**

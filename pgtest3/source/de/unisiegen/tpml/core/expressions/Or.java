@@ -38,7 +38,7 @@ public final class Or extends Expression implements DefaultExpressions
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Or" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression.getCaption ( Or.class ) ;
 
 
   /**

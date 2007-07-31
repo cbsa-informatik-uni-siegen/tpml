@@ -52,7 +52,8 @@ public final class InfixOperation extends Expression implements
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Infix-Operation" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression
+      .getCaption ( InfixOperation.class ) ;
 
 
   /**

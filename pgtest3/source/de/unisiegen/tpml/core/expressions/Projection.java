@@ -32,7 +32,8 @@ public class Projection extends UnaryOperator
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Projection" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression
+      .getCaption ( Projection.class ) ;
 
 
   /**

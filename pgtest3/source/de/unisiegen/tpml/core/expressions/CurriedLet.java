@@ -87,7 +87,8 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Curried-Let" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression
+      .getCaption ( CurriedLet.class ) ;
 
 
   /**

@@ -64,7 +64,8 @@ public final class Duplication extends Expression implements
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = "Duplication" ; //$NON-NLS-1$
+  private static final String CAPTION = Expression
+      .getCaption ( Duplication.class ) ;
 
 
   /**
