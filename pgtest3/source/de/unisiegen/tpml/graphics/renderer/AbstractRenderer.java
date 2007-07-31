@@ -284,16 +284,6 @@ public abstract class AbstractRenderer
 		AbstractRenderer.typeFontMetrics = reference.getFontMetrics(AbstractRenderer.typeFont);
 		AbstractRenderer.underlineColor = pTheme.getUnderlineColor();
     
-
-//    AbstractRenderer.fontHeight = Math
-//        .max ( AbstractRenderer.expFontMetrics.getHeight ( ) , Math
-//            .max ( AbstractRenderer.keywordFontMetrics.getHeight ( ) , Math
-//                .max ( AbstractRenderer.identifierFontMetrics.getHeight ( ) ,
-//                    Math.max ( AbstractRenderer.constantFontMetrics
-//                        .getHeight ( ) , Math.max (
-//                        AbstractRenderer.envFontMetrics.getHeight ( ) ,
-//                        AbstractRenderer.typeFontMetrics.getHeight ( ) ) ) ) ) ) ;
-    
     fontHeight = realMax(expFontMetrics.getHeight(), keywordFontMetrics.getHeight(), identifierFontMetrics
 				.getHeight(), constantFontMetrics.getHeight(), envFontMetrics.getHeight(), typeFontMetrics.getHeight());
     
@@ -301,47 +291,11 @@ public abstract class AbstractRenderer
 				AbstractRenderer.identifierFontMetrics.getAscent(), constantFontMetrics.getAscent(), envFontMetrics
 						.getAscent(), typeFontMetrics.getAscent());
     
-    
-//    AbstractRenderer.fontAscent = Math
-//        .max ( AbstractRenderer.expFontMetrics.getAscent ( ) , Math
-//            .max ( AbstractRenderer.keywordFontMetrics.getAscent ( ) , Math
-//                .max ( AbstractRenderer.identifierFontMetrics.getAscent ( ) ,
-//                    Math.max ( AbstractRenderer.constantFontMetrics
-//                        .getAscent ( ) , Math.max (
-//                        AbstractRenderer.envFontMetrics.getAscent ( ) ,
-//                        AbstractRenderer.typeFontMetrics.getAscent ( ) ) ) ) ) ) ;
-    
     fontDescent = realMax(expFontMetrics.getDescent(), keywordFontMetrics.getDescent(), identifierFontMetrics
 				.getDescent(), constantFontMetrics.getDescent(), envFontMetrics.getDescent(), typeFontMetrics.getDescent());
         
-        
-//    AbstractRenderer.fontDescent = Math.max ( AbstractRenderer.expFontMetrics
-//        .getDescent ( ) , Math
-//        .max ( AbstractRenderer.keywordFontMetrics.getDescent ( ) , Math.max (
-//            AbstractRenderer.identifierFontMetrics.getDescent ( ) , Math.max (
-//                AbstractRenderer.constantFontMetrics.getDescent ( ) , Math.max (
-//                    AbstractRenderer.envFontMetrics.getDescent ( ) ,
-//                    AbstractRenderer.typeFontMetrics.getDescent ( ) ) ) ) ) ) ;
-    
-//    
-//    
-//    AbstractRenderer.fontLeading = Math.max ( 2, 
-//    	Math.max ( AbstractRenderer.expFontMetrics
-//        .getLeading ( ) , Math
-//        .max ( AbstractRenderer.keywordFontMetrics.getLeading ( )  , Math.max (
-//            AbstractRenderer.identifierFontMetrics.getLeading ( )  , Math.max (
-//                AbstractRenderer.constantFontMetrics.getLeading ( )  , Math.max (
-//                    AbstractRenderer.envFontMetrics.getLeading ( )  ,
-//                    AbstractRenderer.typeFontMetrics.getLeading ( ) ) ) ) ) )  ) ;
-
-//    AbstractRenderer.fontLeading = realMax(2, expFontMetrics.getLeading(), keywordFontMetrics.getLeading(),
-//				identifierFontMetrics.getLeading(), constantFontMetrics.getLeading(), envFontMetrics.getLeading(),
-//				typeFontMetrics.getLeading(), exponentFontMetrics.getLeading());
-
-    // patch the fontLeading and set the min value to 2
-    //  TODO Patching....
-    fontLeading = realMax(2, expFontMetrics.getLeading(), keywordFontMetrics.getLeading(), identifierFontMetrics
-				.getLeading(), constantFontMetrics.getLeading(), envFontMetrics.getLeading(), typeFontMetrics.getLeading());
+    // fontLeading = realMax(2, expFontMetrics.getLeading(), keywordFontMetrics.getLeading(), identifierFontMetrics.getLeading(), constantFontMetrics.getLeading(), envFontMetrics.getLeading(), typeFontMetrics.getLeading());
+    fontLeading = realMax(expFontMetrics.getLeading(), keywordFontMetrics.getLeading(), identifierFontMetrics.getLeading(), constantFontMetrics.getLeading(), envFontMetrics.getLeading(), typeFontMetrics.getLeading());
   }
 
 
@@ -373,17 +327,12 @@ public abstract class AbstractRenderer
 
 /**
  * 
- * get the rela needed hieght for one line
+ * get the real needed hieght for one line
  *
  * @return the realy needed height
  */	
 	public static int getAbsoluteHeight()
 	{
-		// normaly it must be fontAscent + fontDescent + fontLeading (19)
-		// fontHeight is only 18 and we need 20 so I decided to return 
-		// fontHeight + fontLeading...
-		//return fontAscent + fontDescent + fontLeading;
-		//return fontHeight + fontLeading;
 		return fontHeight;
 	}
 	
