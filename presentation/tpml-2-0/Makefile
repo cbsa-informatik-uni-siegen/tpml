@@ -3,6 +3,10 @@
 TEXFILES =								\
 	einleitung.tex						\
 	outline.tex							\
+	callbyname.tex						\
+	parser.tex							\
+	objekte.tex							\
+	klassen.tex							\
 	fazit.tex							\
 	vortrag.tex
 
