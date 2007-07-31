@@ -309,6 +309,7 @@
 \newcommand{\tj}[2]{#1\cc#2}
 \newcommand{\ctj}[2]{\tj{#1}{{\resulttypecolor #2}}}
 \newcommand{\Tj}[3]{#1 \, \triangleright \, #2\cc#3}
+\newcommand{\Tjm}[3]{#1\,\triangleright_m\,#2\coloncolon#3}
 \newcommand{\cTj}[3]{\Tj{{\contextcolor #1}}{#2}{{\resulttypecolor #3}}}
 \newcommand{\cbig}[2]{#1 \ \eval\ {\resultcolor #2}}
 \newcommand{\cBig}[2]{#1 \\ \eval\ {\resultcolor #2}}
@@ -459,3 +460,29 @@
 \newcommand{\Abstr}[2]{\begin{array}[t]{@{}l}
                        \lambda #1.\\\ \ #2
                        \end{array}}
+
+\newcommand{\Lom}{\ensuremath{{\cal L}_o^m}}
+
+%%
+%% Abstract Syntax
+%%
+
+\newcommand{\expAbstr}[2]{\lambda#1.#2}
+\newcommand{\expApp}[2]{#1\,#2}
+\newcommand{\expCond}[3]{\bif\,#1\,\bthen\,#2\,\belse\,#3}
+\newcommand{\expLet}[3]{\blet\,#1=#2\,\bin\,#3}
+\newcommand{\expRec}[2]{\brec\,#1.#2}
+
+\newcommand{\expObject}[2]{\bobject\,(#1)\ #2\ \bend}
+\newcommand{\expSend}[2]{#1\##2}
+\newcommand{\expDupl}[1]{\{\langle#1\rangle\}}
+
+\newcommand{\expCoerce}[2]{(#1:#2)}
+
+\newcommand{\rtypeEmpty}{\emptyset}
+\newcommand{\rtypeMethod}[3]{#1:#2;\,#3}
+
+\newcommand{\rowEpsilon}{\epsilon}
+\newcommand{\rowVal}[3]{\bval\ #1=#2;\,#3}
+\newcommand{\rowMethod}[3]{\bmethod\ #1=#2;\,#3}
+
