@@ -25,10 +25,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JWindow;
 
 /**
+ * no comments for this stuff
  * @author marcell
  * @author Michael
  *
  */
+@SuppressWarnings("all")
 public class Pong extends JComponent {
 
 	/**
