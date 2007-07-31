@@ -119,6 +119,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         newButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/new24.png")));
         newButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("New_File"));
         newButton.setBorderPainted(false);
+        newButton.setFocusPainted(false);
+        newButton.setFocusable(false);
         newButton.setOpaque(false);
         newButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -173,6 +175,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jToolBar1.add(saveAsButton);
 
+        printButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/print.gif")));
         printButton.setBorderPainted(false);
         printButton.setOpaque(false);
         printButton.addActionListener(new java.awt.event.ActionListener() {
