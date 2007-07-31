@@ -1,6 +1,54 @@
-\myslide{Call by Name}
+\myslide{Call by Name I}
 {
   \begin{itemgroup}{Call by Name}
-    \item Blablabla ...
+    \item Sprachen mit Call by Name anstatt Call by Value Semantik
+    \item Ausdr"ucke werden nicht erst ausgewertet
+    \item Ausdr"ucke werden direkt eingesetzt
+    \item "Anderung der Small Step Semantik
+    \item "Anderung der Big Step Semantik
   \end{itemgroup}
+}
+
+
+\myslide{Call by Name II}
+{
+  {\bf "Anderungen:} Small Step Semantik\\[5mm]
+  \begin{tabular}{ll}
+     \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
+     \mbox{(BETA)}        & $(\abstr{id}{e_1})\,e_2 \to e_1[e_2/\id]$ \\[3mm]
+     \mbox{(APP-RIGHT)\ } & $\regel{e \to e'}
+                                   {v\,e \to v\,e'}$ \ 
+                                   falls ${v}$ nicht von der Form $\abstr{id}{e_0}$ \\[5mm]
+     \mbox{(LET-EVAL)\  } & nicht vorhanden \\[3mm]
+     \mbox{(LET-EXEC)}    & $\bli{\id}{e_1}{e_2} \to e_2[e_1/\id]$ \\[3mm]
+  \end{tabular}
+}
+
+
+\myslide{Call by Name III}
+{
+  {\bf "Anderungen:} Big Step Semantik\\[5mm]
+  \begin{tabular}{ll}
+     \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
+     \mbox{(BETA)}        & $\regel{e_1[e_2/\id] \eval v}
+                                   {(\abstr{id}{e_1})\,e_2 \eval v}$ \\[5mm]
+     \mbox{(APP)}         & nicht vorhanden \\[3mm]
+     \mbox{(APP-LEFT)}    & $\regel{e_1 \eval v_1 \quad v_1\,e_2 \eval v}
+                                   {e_1\,e_2 \eval v}$ \\[5mm]
+     \mbox{(APP-RIGHT)}   & $\regel{e_2 \eval v_2 \quad v_1\,v_2 \eval v}
+                                   {v_1\,e_2 \eval v}$ \ 
+                                   falls ${v_1}$ nicht von der Form $\abstr{id}{e}$ \\[5mm]
+     \mbox{(LET)}         & $\regel{e_2[e_1/\id] \eval v}
+                                   {\bli{\id}{e_1}{e_2} \eval v}$ \\[5mm]
+  \end{tabular}
+}
+
+
+\myslide{Call by Name IV}
+{
+  {\bf Beispiel:} Unterschied Call by Name zu Call by Value\\[5mm]
+  \begin{tabular}{ll}
+     Call by Value $\quad$      & $\bli{x}{\infix{/}{1}{0}}{2} \ \ \to \ \ divide\_by\_zero$ \\[3mm]
+     Call by Name $\quad$       & $\bli{x}{\infix{/}{1}{0}}{2} \ \ \to \ \ 2$ \\[3mm]
+  \end{tabular}
 }

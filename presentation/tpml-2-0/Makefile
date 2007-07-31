@@ -1,6 +1,7 @@
 # $Id: Makefile 25 2006-07-06 22:12:17Z benny $
 
 TEXFILES =								\
+	tp.tex								\
 	einleitung.tex						\
 	outline.tex							\
 	callbyname.tex						\

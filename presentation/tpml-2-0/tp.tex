@@ -1,0 +1,28 @@
+% tpml
+\newcommand{\TPML}{\textsf{\textmd{TPML}}}
+\newcommand{\TPMLTWOZERO}{\textsf{\textmd{TPML 2.0}}}
+
+% languages
+\newcommand{\LZEROCBN}{$\mathcal{L}_0^{CBN}$}
+\newcommand{\LONECBN}{$\mathcal{L}_1^{CBN}$}
+\newcommand{\LTWOCBN}{$\mathcal{L}_2^{CBN}$}
+\newcommand{\LTWOO}{$\mathcal{L}_2^{O}$}
+\newcommand{\LTWOC}{$\mathcal{L}_2^{C}$}
+
+% big step
+\newcommand{\regel}[2]{\begin{array}{@{}c@{}} #1 \\ \hline #2 \end{array}}
+\newcommand{\eval}{\Downarrow}
+
+% keyword
+\newcommand{\blet}{\textbf{let}}
+\newcommand{\bin}{\textbf{in}}
+\newcommand{\vdec}[2]{#1 = #2}
+
+% name
+\newcommand{\name}[1]{{\text{\it #1\/}}}
+\newcommand{\id}{\name{id}}
+
+% expression
+\newcommand{\abstr}[2]{\lambda #1.\,#2}
+\newcommand{\bli}[3]{\blet\ \vdec{#1}{#2}\ \bin\ #3}
+\newcommand{\infix}[3]{#2\mathbin{#1}#3}
