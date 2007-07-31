@@ -200,7 +200,10 @@ public class SmallStepNodeComponent extends JComponent
 	 * @author marcell
 	 */
 	private enum Direction {
-		DIRECTION_PARENT, DIRECTION_CHILD,
+		/***/
+		DIRECTION_PARENT, 
+		/***/
+		DIRECTION_CHILD,
 	}
 
 	/**
@@ -794,7 +797,6 @@ public class SmallStepNodeComponent extends JComponent
 	 */
 	public Dimension checkNeededExpressionSize(int pMaxWidth)
 	{
-		// TODO testen, ob das so auch geht...
 		int maxWidth = pMaxWidth;
 		maxWidth -= this.ruleDimension.width + this.spacing;
 		this.expressionDimension = this.compoundExpression.getNeededSize(maxWidth);
@@ -855,16 +857,27 @@ public class SmallStepNodeComponent extends JComponent
 		}
 	}
 
+	/**
+	 * adds a {@link SmallStepNodeListener} to the listenerList of the component
+	 *
+	 * @param listener the SmallStepNodeListener to add
+	 */
 	public void addSmallStepNodeListener(SmallStepNodeListener listener)
 	{
 		this.listenerList.add(SmallStepNodeListener.class, listener);
 	}
 
+	/**
+	 * removes a {@link SmallStepNodeListener} from the listenerList of the component
+	 *
+	 * @param listener
+	 */
 	public void removeSmallStepNodeListener(SmallStepNodeListener listener)
 	{
 		this.listenerList.remove(SmallStepNodeListener.class, listener);
 	}
 
+	/***/
 	private void fireNodeChanged()
 	{
 		Object[] listeners = this.listenerList.getListenerList();
@@ -878,6 +891,7 @@ public class SmallStepNodeComponent extends JComponent
 		}
 	}
 
+	/***/
 	private void fireRequstJumpToNode(ProofNode node)
 	{
 		Object[] listeners = this.listenerList.getListenerList();
