@@ -27,7 +27,7 @@ public class LabelComponent extends JComponent {
 	private PrettyStringRenderer typeRenderer;
 
 	/**
-	 * The current type.
+	 * The current label.
 	 */
 	private JLabel label;
 

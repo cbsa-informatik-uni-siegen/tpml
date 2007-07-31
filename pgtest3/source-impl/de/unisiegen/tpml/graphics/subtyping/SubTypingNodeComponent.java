@@ -31,6 +31,7 @@ import de.unisiegen.tpml.graphics.components.MenuEnterTypeItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
+import de.unisiegen.tpml.graphics.components.NailSymbolComponent;
 import de.unisiegen.tpml.graphics.components.TypeComponent;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
@@ -122,6 +123,11 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
 	 * The Component drawing the label subTypingRecA
 	 */
 	private LabelComponent label;
+	
+	/**
+	 * The nail Symbol of the A
+	 */
+	private NailSymbolComponent nail;
 
 	/**
 	 * The sub type sign "<:"
@@ -184,6 +190,8 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
 		this.subTypingRecA = new JLabel ( );
 		this.label = new LabelComponent ( );
 		add ( this.label );
+		this.nail = new NailSymbolComponent();
+		add(this.nail);
 		this.typeComponent = new TypeComponent ( );
 		this.typeComponent.setText ( "" ); //$NON-NLS-1$
 		this.typeComponent.addMouseListener ( new OutlineMouseListener ( this ) );
@@ -293,7 +301,7 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
 
 		// if the node is RecSubTypingNode we have to render the A and set the Tooltip
 		if ( this.proofNode instanceof RecSubTypingProofNode ) {
-			this.subTypingRecA.setText ( " A\u251C " ); //$NON-NLS-1$
+			this.subTypingRecA.setText ( "A" ); //$NON-NLS-1$
 			this.label.setLabel ( this.subTypingRecA );
 			RecSubTypingProofNode node = ( RecSubTypingProofNode ) this.proofNode;
 
@@ -340,6 +348,8 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
 		Dimension labelComponentSize = new Dimension ( fm.stringWidth ( this.subTypingRecA.getText ( ) ), fm.getHeight ( ) );
 		this.dimension.width += labelComponentSize.width + this.spacing;
 		Dimension lcSubtypeSize = new Dimension ( fm.stringWidth ( this.subType.getText ( ) ), fm.getHeight ( ) );
+		Dimension nailComponentSize = new Dimension (fm.stringWidth ( "--" ), fm.getHeight ( ));
+		this.dimension.width += nailComponentSize.width + this.spacing;
 		this.dimension.width += lcSubtypeSize.width + this.spacing;
 		// there will be a bit spacing between the index label and first type
 		this.dimension.width += this.spacing;
@@ -378,6 +388,8 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
 		if ( this.proofNode instanceof RecSubTypingProofNode ) {
 			this.label.setBounds ( posX, 0, labelComponentSize.width, this.dimension.height );
 			posX += labelComponentSize.width + this.spacing;
+			this.nail.setBounds ( posX, 0, nailComponentSize.width, this.dimension.height );
+			posX += nailComponentSize.width + this.spacing;
 		}
 		this.typeComponent.setBounds ( posX, 0, expSize.width, this.dimension.height );
 		int posXfront = posX;
