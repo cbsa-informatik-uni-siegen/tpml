@@ -73,24 +73,24 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 	/**
 	 * Sets the environment.
 	 * 
-	 * @param environment
+	 * @param pEnvironment
 	 */
-	public void setEnvironment (Environment<S, E> environment) {
-		this.environment = environment;
+	public void setEnvironment (Environment<S, E> pEnvironment) {
+		this.environment = pEnvironment;
 		
 		// create the string that can be shown in an tooltip 
 		// on level above in the CompoundExpression
-		Enumeration<S> env = environment.symbols();
+		Enumeration<S> env = pEnvironment.symbols();
 
 		this.collapsedString = null;
 		if (env.hasMoreElements()) {
 			S s = env.nextElement();
-			E e = environment.get(s);
+			E e = pEnvironment.get(s);
 			this.collapsedString = s.toString() + ": " + e.toString();
 			
 			while (env.hasMoreElements()) {
 				s = env.nextElement();
-				e = environment.get(s);
+				e = pEnvironment.get(s);
 				
 				this.collapsedString += ", " + s.toString() + ": " + e.toString();
 			}
@@ -159,10 +159,10 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
   	return result;
   }
 
-  public void renderBase (int x, int y, int width, int height, Graphics gc )
-  {
-    renderer (x, y-(height / 2) - fontAscent / 2, width, height, gc); 
-  }
+//  public void renderBase (int x, int y, int width, int height, Graphics gc )
+//  {
+//    renderer (x, y-(height / 2) - fontAscent / 2, width, height, gc); 
+//  }
 	
 	
 	/**
@@ -189,10 +189,10 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 		//int posY = y + height / 2;
 		//posY += AbstractRenderer.fontAscent  / 2;
 		int posY = y + AbstractRenderer.fontAscent;
-		//if the hight is not bigger then the fonhight normal [ ] are used
-		//or else the bracket will bew renderd manually
-		//TODO test: Die Environment wird nie umgebrochen, wozu dann der Quatsch???
-		//if (height <= AbstractRenderer.getAbsoluteHeight())
+		// if the hight is not bigger then the fonhight normal [ ] are used
+		// or else the bracket will bew renderd manually. Till now the environments are shorted
+		// with three dots (...) so they are never warped. To ignor the bigger size made by an 
+		// expression (height <= AbstractRenderer.getAbsoluteHeight()) replaced by if (true)
 		if (true)
 		{
 			gc.setFont(expFont);
@@ -247,9 +247,10 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 				this.collapsedArea.x = posX;
 				gc.drawString(EnvironmentRenderer.collapsString, posX, posY);
 				posX += AbstractRenderer.envFontMetrics.stringWidth(collapsString);
-				this.collapsedArea.width 	= (posX -  collapsedArea.x);
+				this.collapsedArea.width 	= (posX - this.collapsedArea.x);
 				
-				this.collapsedArea.y = posY-AbstractRenderer.getAbsoluteHeight();
+				//this.collapsedArea.y = posY-(AbstractRenderer.getAbsoluteHeight()-2);
+				this.collapsedArea.y = posY-(AbstractRenderer.fontAscent);
 				this.collapsedArea.height = AbstractRenderer.getAbsoluteHeight();
 			}
 			
