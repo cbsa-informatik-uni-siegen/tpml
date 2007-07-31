@@ -154,11 +154,6 @@ public class CompoundExpressionTypeInference extends JComponent
 	private Point draggedBesideMousePointer;
 
 	/**
-	 * the needed size
-	 */
-	private Dimension neededSize;
-
-	/**
 	 * the constructor
 	 */
 	public CompoundExpressionTypeInference ()
@@ -532,7 +527,6 @@ public class CompoundExpressionTypeInference extends JComponent
 			if (isIn(r, pointMousePosition))
 			{
 				setToolTipText(this.substitutionRenderer.getCollapsedString());
-				testAusgabe(this.substitutionRenderer.getCollapsedString());
 			}
 		}
 
@@ -671,7 +665,6 @@ public class CompoundExpressionTypeInference extends JComponent
 			result.width += Math.max(this.typeFormulaSize.width+this.spaceInFrontOf, result.width);
 			result.height = this.typeFormulaSize.height + this.substitutionSize.height;
 		}
-		this.neededSize = result;
 		return result;
 	}
 
@@ -839,20 +832,6 @@ public class CompoundExpressionTypeInference extends JComponent
 		return this.typeFormulaList;
 	}
 
-	private static void testAusgabe(String s)
-	{
-		// System.out.println(s);
-	}
-
-	private static void testAusgabe()
-	{
-		// System.out.println();
-	}
-
-	private static void testAusgabeL(String s)
-	{
-		// System.out.print(s);
-	}
 
 	/**
 	 * @return the draggedBesideMousePointer
