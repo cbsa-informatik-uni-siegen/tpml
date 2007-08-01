@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.subtyping ;
+package de.unisiegen.tpml.ui.editor ;
 
 
 import java.awt.GridBagConstraints ;
@@ -29,6 +29,7 @@ import de.unisiegen.tpml.graphics.Messages ;
 import de.unisiegen.tpml.graphics.StyledLanguageEditor ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
+import de.unisiegen.tpml.graphics.subtyping.StyledTypeEnterField;
 import de.unisiegen.tpml.ui.EditorComponent ;
 import de.unisiegen.tpml.ui.MainWindow ;
 import de.unisiegen.tpml.ui.SideBar ;
@@ -44,7 +45,7 @@ import de.unisiegen.tpml.ui.SideBarListener ;
  * @author Christian Fehler
  * @see de.unisiegen.tpml.graphics.AbstractProofView
  */
-public class SubTypingSourceView extends JPanel // AbstractProofView
+public class TypeEditorPanel extends JPanel // AbstractProofView
     // //JComponent
     implements EditorComponent , ClipboardOwner
 {
@@ -276,17 +277,17 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
    * @see Logger
    */
   protected static final Logger logger = Logger
-      .getLogger ( SubTypingSourceView.class ) ;
+      .getLogger ( TypeEditorPanel.class ) ;
 
 
   /**
-   * Allocates a new {@link SubTypingSourceView}
+   * Allocates a new {@link TypeEditorPanel}
    * 
    * @param pLanguage The {@link Language} for the <code>SubTypingView</code>.
    * @param pWindow the MainWindow containing this view
    */
   @ SuppressWarnings ( "synthetic-access" )
-  public SubTypingSourceView ( Language pLanguage , MainWindow pWindow )
+  public TypeEditorPanel ( Language pLanguage , MainWindow pWindow )
   {
     super ( ) ;
     this.language = pLanguage ;
@@ -323,10 +324,10 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
       FocusEvent e )
       {
         // get the saved status for this editor
-        SubTypingSourceView.this
-            .setRedoStatus ( SubTypingSourceView.this.redoStatus1 ) ;
-        SubTypingSourceView.this
-            .setUndoStatus ( SubTypingSourceView.this.undoStatus1 ) ;
+        TypeEditorPanel.this
+            .setRedoStatus ( TypeEditorPanel.this.redoStatus1 ) ;
+        TypeEditorPanel.this
+            .setUndoStatus ( TypeEditorPanel.this.undoStatus1 ) ;
       }
 
 
@@ -337,8 +338,8 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
       FocusEvent e )
       {
         // save the status for this editor
-        SubTypingSourceView.this.redoStatus1 = SubTypingSourceView.this.redoStatus ;
-        SubTypingSourceView.this.undoStatus1 = SubTypingSourceView.this.undoStatus ;
+        TypeEditorPanel.this.redoStatus1 = TypeEditorPanel.this.redoStatus ;
+        TypeEditorPanel.this.undoStatus1 = TypeEditorPanel.this.undoStatus ;
       }
     } ) ;
     this.sourceField = new StyledTypeEnterField ( this.language ) ;
@@ -356,14 +357,14 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
       @ SuppressWarnings ( "synthetic-access" )
       public void markText ( int pLeft , int pRight )
       {
-        if ( ( SubTypingSourceView.this.editor.getSelectionStart ( ) == pLeft )
-            && ( SubTypingSourceView.this.editor.getSelectionEnd ( ) == pRight ) )
+        if ( ( TypeEditorPanel.this.editor.getSelectionStart ( ) == pLeft )
+            && ( TypeEditorPanel.this.editor.getSelectionEnd ( ) == pRight ) )
         {
-          SubTypingSourceView.this.removeSelectedText ( ) ;
+          TypeEditorPanel.this.removeSelectedText ( ) ;
         }
         else
         {
-          SubTypingSourceView.this.selectErrorText ( pLeft , pRight ) ;
+          TypeEditorPanel.this.selectErrorText ( pLeft , pRight ) ;
         }
       }
 
@@ -380,7 +381,7 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
         int countSpaces = 0 ;
         try
         {
-          while ( SubTypingSourceView.this.sourceField.getText (
+          while ( TypeEditorPanel.this.sourceField.getText (
               pIndex + countSpaces , 1 ).equals ( " " ) ) //$NON-NLS-1$
           {
             countSpaces ++ ;
@@ -406,7 +407,7 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
           {
             text = text.substring ( 0 , text.length ( ) - 1 ) ;
           }
-          SubTypingSourceView.this.sourceField.insertString ( pIndex + offset ,
+          TypeEditorPanel.this.sourceField.insertString ( pIndex + offset ,
               text , null ) ;
         }
         catch ( BadLocationException e )
@@ -434,7 +435,7 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
           try
           {
             int length = pEnd [ i ] - pStart [ i ] ;
-            SubTypingSourceView.this.sourceField.replace (
+            TypeEditorPanel.this.sourceField.replace (
                 offset + pStart [ i ] , length , pReplaceText , null ) ;
             offset += pReplaceText.length ( ) - length ;
           }
@@ -473,10 +474,10 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
       FocusEvent e )
       {
         // get the saved status for this editor
-        SubTypingSourceView.this
-            .setRedoStatus ( SubTypingSourceView.this.redoStatus2 ) ;
-        SubTypingSourceView.this
-            .setUndoStatus ( SubTypingSourceView.this.undoStatus2 ) ;
+        TypeEditorPanel.this
+            .setRedoStatus ( TypeEditorPanel.this.redoStatus2 ) ;
+        TypeEditorPanel.this
+            .setUndoStatus ( TypeEditorPanel.this.undoStatus2 ) ;
       }
 
 
@@ -484,8 +485,8 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
       FocusEvent e )
       {
         // save the status for this editor
-        SubTypingSourceView.this.redoStatus2 = SubTypingSourceView.this.redoStatus ;
-        SubTypingSourceView.this.undoStatus2 = SubTypingSourceView.this.undoStatus ;
+        TypeEditorPanel.this.redoStatus2 = TypeEditorPanel.this.redoStatus ;
+        TypeEditorPanel.this.undoStatus2 = TypeEditorPanel.this.undoStatus ;
       }
     } ) ;
     this.sourceField2 = new StyledTypeEnterField ( this.language ) ;
@@ -503,14 +504,14 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
       @ SuppressWarnings ( "synthetic-access" )
       public void markText ( int pLeft , int pRight )
       {
-        if ( ( SubTypingSourceView.this.editor2.getSelectionStart ( ) == pLeft )
-            && ( SubTypingSourceView.this.editor2.getSelectionEnd ( ) == pRight ) )
+        if ( ( TypeEditorPanel.this.editor2.getSelectionStart ( ) == pLeft )
+            && ( TypeEditorPanel.this.editor2.getSelectionEnd ( ) == pRight ) )
         {
-          SubTypingSourceView.this.removeSelectedText2 ( ) ;
+          TypeEditorPanel.this.removeSelectedText2 ( ) ;
         }
         else
         {
-          SubTypingSourceView.this.selectErrorText2 ( pLeft , pRight ) ;
+          TypeEditorPanel.this.selectErrorText2 ( pLeft , pRight ) ;
         }
       }
 
@@ -527,7 +528,7 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
         int countSpaces = 0 ;
         try
         {
-          while ( SubTypingSourceView.this.sourceField2.getText (
+          while ( TypeEditorPanel.this.sourceField2.getText (
               pIndex + countSpaces , 1 ).equals ( " " ) ) //$NON-NLS-1$
           {
             countSpaces ++ ;
@@ -553,7 +554,7 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
           {
             text = text.substring ( 0 , text.length ( ) - 1 ) ;
           }
-          SubTypingSourceView.this.sourceField2.insertString ( pIndex + offset ,
+          TypeEditorPanel.this.sourceField2.insertString ( pIndex + offset ,
               text , null ) ;
         }
         catch ( BadLocationException e )
@@ -581,7 +582,7 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
           try
           {
             int length = pEnd [ i ] - pStart [ i ] ;
-            SubTypingSourceView.this.sourceField2.replace ( offset
+            TypeEditorPanel.this.sourceField2.replace ( offset
                 + pStart [ i ] , length , pReplaceText , null ) ;
             offset += pReplaceText.length ( ) - length ;
           }
@@ -1105,22 +1106,22 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
           insertText ( ( String ) contents
               .getTransferData ( DataFlavor.stringFlavor ) , this.sourceField ,
               this.editor ) ;
-          SubTypingSourceView.this.type = eventHandling (
-              SubTypingSourceView.this.editor ,
-              SubTypingSourceView.this.outline ) ;
-          SubTypingSourceView.this.window.setChangeState ( Boolean.TRUE ) ;
-          SubTypingSourceView.this.saveStatus = true ;
-          SubTypingSourceView.this.setUndoStatus ( true ) ;
+          TypeEditorPanel.this.type = eventHandling (
+              TypeEditorPanel.this.editor ,
+              TypeEditorPanel.this.outline ) ;
+          TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
+          TypeEditorPanel.this.saveStatus = true ;
+          TypeEditorPanel.this.setUndoStatus ( true ) ;
           String doctext = this.sourceField.getText ( 0 , this.sourceField
               .getLength ( ) ) ;
           if ( doctext.endsWith ( " " ) ) //$NON-NLS-1$
           {
-            SubTypingSourceView.this.undohistory.push ( doctext ) ;
+            TypeEditorPanel.this.undohistory.push ( doctext ) ;
             logger.debug ( "history added: " + doctext ) ; //$NON-NLS-1$
           }
           setRedoStatus ( false ) ;
-          SubTypingSourceView.this.redohistory.clear ( ) ;
-          SubTypingSourceView.this.currentContent = doctext ;
+          TypeEditorPanel.this.redohistory.clear ( ) ;
+          TypeEditorPanel.this.currentContent = doctext ;
         }
         else if ( this.editor2.hasFocus ( ) )
         {
@@ -1128,22 +1129,22 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
           insertText ( ( String ) contents
               .getTransferData ( DataFlavor.stringFlavor ) , this.sourceField2 ,
               this.editor2 ) ;
-          SubTypingSourceView.this.type2 = eventHandling (
-              SubTypingSourceView.this.editor2 ,
-              SubTypingSourceView.this.outline2 ) ;
-          SubTypingSourceView.this.window.setChangeState ( Boolean.TRUE ) ;
-          SubTypingSourceView.this.saveStatus = true ;
-          SubTypingSourceView.this.setUndoStatus ( true ) ;
+          TypeEditorPanel.this.type2 = eventHandling (
+              TypeEditorPanel.this.editor2 ,
+              TypeEditorPanel.this.outline2 ) ;
+          TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
+          TypeEditorPanel.this.saveStatus = true ;
+          TypeEditorPanel.this.setUndoStatus ( true ) ;
           String doctext = this.sourceField2.getText ( 0 , this.sourceField2
               .getLength ( ) ) ;
           if ( doctext.endsWith ( " " ) ) //$NON-NLS-1$
           {
-            SubTypingSourceView.this.undohistory2.push ( doctext ) ;
+            TypeEditorPanel.this.undohistory2.push ( doctext ) ;
             logger.debug ( "history2 added: " + doctext ) ; //$NON-NLS-1$
           }
           setRedoStatus ( false ) ;
-          SubTypingSourceView.this.redohistory2.clear ( ) ;
-          SubTypingSourceView.this.currentContent = doctext ;
+          TypeEditorPanel.this.redohistory2.clear ( ) ;
+          TypeEditorPanel.this.currentContent = doctext ;
         }
         else
         {
@@ -1429,21 +1430,21 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
     {
       try
       {
-        SubTypingSourceView.this.type = eventHandling (
-            SubTypingSourceView.this.editor , SubTypingSourceView.this.outline ) ;
-        SubTypingSourceView.this.window.setChangeState ( Boolean.TRUE ) ;
-        SubTypingSourceView.this.saveStatus = true ;
-        SubTypingSourceView.this.setUndoStatus ( true ) ;
+        TypeEditorPanel.this.type = eventHandling (
+            TypeEditorPanel.this.editor , TypeEditorPanel.this.outline ) ;
+        TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
+        TypeEditorPanel.this.saveStatus = true ;
+        TypeEditorPanel.this.setUndoStatus ( true ) ;
         String doctext = arg0.getDocument ( ).getText ( 0 ,
             arg0.getDocument ( ).getLength ( ) ) ;
         if ( doctext.endsWith ( " " ) ) //$NON-NLS-1$
         {
-          SubTypingSourceView.this.undohistory.push ( doctext ) ;
+          TypeEditorPanel.this.undohistory.push ( doctext ) ;
           logger.debug ( "history added: " + doctext ) ; //$NON-NLS-1$
         }
         setRedoStatus ( false ) ;
-        SubTypingSourceView.this.redohistory.clear ( ) ;
-        SubTypingSourceView.this.currentContent = doctext ;
+        TypeEditorPanel.this.redohistory.clear ( ) ;
+        TypeEditorPanel.this.currentContent = doctext ;
       }
       catch ( BadLocationException e )
       {
@@ -1461,16 +1462,16 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
     {
       try
       {
-        SubTypingSourceView.this.type = eventHandling (
-            SubTypingSourceView.this.editor , SubTypingSourceView.this.outline ) ;
-        SubTypingSourceView.this.window.setChangeState ( Boolean.TRUE ) ;
-        SubTypingSourceView.this.saveStatus = true ;
-        SubTypingSourceView.this.setUndoStatus ( true ) ;
-        SubTypingSourceView.this.undohistory
-            .push ( SubTypingSourceView.this.currentContent ) ;
+        TypeEditorPanel.this.type = eventHandling (
+            TypeEditorPanel.this.editor , TypeEditorPanel.this.outline ) ;
+        TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
+        TypeEditorPanel.this.saveStatus = true ;
+        TypeEditorPanel.this.setUndoStatus ( true ) ;
+        TypeEditorPanel.this.undohistory
+            .push ( TypeEditorPanel.this.currentContent ) ;
         setRedoStatus ( false ) ;
-        SubTypingSourceView.this.redohistory.clear ( ) ;
-        SubTypingSourceView.this.currentContent = arg0.getDocument ( ).getText (
+        TypeEditorPanel.this.redohistory.clear ( ) ;
+        TypeEditorPanel.this.currentContent = arg0.getDocument ( ).getText (
             0 , arg0.getDocument ( ).getLength ( ) ) ;
       }
       catch ( BadLocationException e )
@@ -1511,22 +1512,22 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
     {
       try
       {
-        SubTypingSourceView.this.type2 = eventHandling (
-            SubTypingSourceView.this.editor2 ,
-            SubTypingSourceView.this.outline2 ) ;
-        SubTypingSourceView.this.window.setChangeState ( Boolean.TRUE ) ;
-        SubTypingSourceView.this.saveStatus = true ;
-        SubTypingSourceView.this.setUndoStatus ( true ) ;
+        TypeEditorPanel.this.type2 = eventHandling (
+            TypeEditorPanel.this.editor2 ,
+            TypeEditorPanel.this.outline2 ) ;
+        TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
+        TypeEditorPanel.this.saveStatus = true ;
+        TypeEditorPanel.this.setUndoStatus ( true ) ;
         String doctext = arg0.getDocument ( ).getText ( 0 ,
             arg0.getDocument ( ).getLength ( ) ) ;
         if ( doctext.endsWith ( " " ) ) //$NON-NLS-1$
         {
-          SubTypingSourceView.this.undohistory2.push ( doctext ) ;
+          TypeEditorPanel.this.undohistory2.push ( doctext ) ;
           logger.debug ( "history2 added: " + doctext ) ; //$NON-NLS-1$
         }
         setRedoStatus ( false ) ;
-        SubTypingSourceView.this.redohistory2.clear ( ) ;
-        SubTypingSourceView.this.currentContent = doctext ;
+        TypeEditorPanel.this.redohistory2.clear ( ) ;
+        TypeEditorPanel.this.currentContent = doctext ;
       }
       catch ( BadLocationException e )
       {
@@ -1544,17 +1545,17 @@ public class SubTypingSourceView extends JPanel // AbstractProofView
     {
       try
       {
-        SubTypingSourceView.this.type2 = eventHandling (
-            SubTypingSourceView.this.editor2 ,
-            SubTypingSourceView.this.outline2 ) ;
-        SubTypingSourceView.this.window.setChangeState ( Boolean.TRUE ) ;
-        SubTypingSourceView.this.saveStatus = true ;
-        SubTypingSourceView.this.setUndoStatus ( true ) ;
-        SubTypingSourceView.this.undohistory2
-            .push ( SubTypingSourceView.this.currentContent ) ;
+        TypeEditorPanel.this.type2 = eventHandling (
+            TypeEditorPanel.this.editor2 ,
+            TypeEditorPanel.this.outline2 ) ;
+        TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
+        TypeEditorPanel.this.saveStatus = true ;
+        TypeEditorPanel.this.setUndoStatus ( true ) ;
+        TypeEditorPanel.this.undohistory2
+            .push ( TypeEditorPanel.this.currentContent ) ;
         setRedoStatus ( false ) ;
-        SubTypingSourceView.this.redohistory2.clear ( ) ;
-        SubTypingSourceView.this.currentContent = arg0.getDocument ( ).getText (
+        TypeEditorPanel.this.redohistory2.clear ( ) ;
+        TypeEditorPanel.this.currentContent = arg0.getDocument ( ).getText (
             0 , arg0.getDocument ( ).getLength ( ) ) ;
       }
       catch ( BadLocationException e )

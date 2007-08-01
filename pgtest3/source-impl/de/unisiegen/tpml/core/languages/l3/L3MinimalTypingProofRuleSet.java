@@ -1,11 +1,9 @@
 package de.unisiegen.tpml.core.languages.l3;
 
 import de.unisiegen.tpml.core.Messages;
-import de.unisiegen.tpml.core.expressions.Tuple;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.languages.l2.L2MinimalTypingProofRuleSet;
-import de.unisiegen.tpml.core.minimaltyping.MinimalTypingExpressionProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingTypesProofNode;
@@ -38,7 +36,7 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 			unregister ( "S-ASSUME" ); //$NON-NLS-1$
 
 			// register the type rules
-			registerByMethodName ( L3Language.L3, "PODUCT", "applyProduct", "updateProduct" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			registerByMethodName ( L3Language.L3, "TUPLE", "applyTuple", "updateTuple" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			registerByMethodName ( L3Language.L3, "LIST", "applyList" ); //$NON-NLS-1$ //$NON-NLS-2$
 			registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
 			registerByMethodName ( L1Language.L1, "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -46,6 +44,9 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 		registerByMethodName ( L2Language.L2, "TUPLE", "applyTuple", "updateTuple" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	}
+
+
+
 
 	/**
 	 * Applies the <b>(TUPLE)</b> rule to the
@@ -55,48 +56,6 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 * @param pNode the minimal typing proof node.
 	 */
 	public void applyTuple ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
-		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
-		Tuple tuple = ( Tuple ) node.getExpression ( );
-		// generate new child node
-		context.addProofNode ( node, node.getEnvironment ( ), tuple.getExpressions ( )[0] );
-	}
-
-	/**
-	 * Updates the <code>node</code> to which <b>(TUPLE)</b> was applied
-	 * previously.
-	 * 
-	 * @param context the minimal typing proof context.
-	 * @param pNode the node to update according to <b>(TUPLE)</b>.
-	 */
-	public void updateTuple ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
-		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
-		Tuple tuple = ( Tuple ) node.getExpression ( );
-
-		if ( node.getLastChild ( ).isFinished ( ) ) {
-
-			if ( node.getChildCount ( ) == tuple.getExpressions ( ).length ) {
-				MonoType[] types = new MonoType[node.getChildCount ( )];
-				for ( int i = 0; i < node.getChildCount ( ); i++ ) {
-					types[i] = node.getChildAt ( i ).getType ( );
-				}
-				TupleType type = new TupleType ( types );
-				// set the type of this node
-				context.setNodeType ( node, type );
-				return;
-			}
-			// generate new child node
-			context.addProofNode ( node, node.getEnvironment ( ), tuple.getExpressions ( )[node.getChildCount ( )] );
-		}
-	}
-
-	/**
-	 * Applies the <b>(PRODUCT)</b> rule to the <code>node</code> using the
-	 * <code>context</code>.
-	 * 
-	 * @param context the minimal typing proof context.
-	 * @param pNode the minimal typing proof node.
-	 */
-	public void applyProduct ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
 		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
 		TupleType type;
 		TupleType type2;
@@ -118,13 +77,13 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	}
 
 	/**
-	 * Updates the <code>node</code> to which <b>(PRODUCT)</b> was applied
+	 * Updates the <code>node</code> to which <b>(TUPLE)</b> was applied
 	 * previously.
 	 * 
 	 * @param context the minimal typing proof context.
-	 * @param pNode the node to update according to <b>(ATTR)</b>.
+	 * @param pNode the node to update according to <b>(TUPLE)</b>.
 	 */
-	public void updateProduct ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
+	public void updateTuple ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
 		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
 		TupleType type;
 		TupleType type2;

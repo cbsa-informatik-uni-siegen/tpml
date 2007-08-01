@@ -53,9 +53,9 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
 import de.unisiegen.tpml.graphics.subtyping.SubTypingView ;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingSourceView ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
 import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView ;
+import de.unisiegen.tpml.ui.editor.TypeEditorPanel;
 import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
 
 
@@ -129,9 +129,9 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * The {@link SubTypingSourceView}.
+   * The {@link TypeEditorPanel}.
    */
-  private SubTypingSourceView subTypingSourceView = null ;
+  private TypeEditorPanel typeEditorPanel = null ;
 
 
   /**
@@ -348,15 +348,15 @@ public final class DefaultOutline implements Outline
   /**
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    * 
-   * @param pSubTypingSourceView The {@link SubTypingSourceView}.
+   * @param pSubTypingSourceView The {@link TypeEditorPanel}.
    * @param pModus The {@link Outline.Modus} of this {@link Outline}.
    */
-  public DefaultOutline ( SubTypingSourceView pSubTypingSourceView ,
+  public DefaultOutline ( TypeEditorPanel pSubTypingSourceView ,
       Outline.Modus pModus )
   {
     this.preferences = new OutlinePreferences ( ) ;
     this.uI = new OutlineUI ( this ) ;
-    this.subTypingSourceView = pSubTypingSourceView ;
+    this.typeEditorPanel = pSubTypingSourceView ;
     // ComponentListener
     this.uI.getJScrollPaneOutline ( ).addComponentListener (
         new OutlineComponentListener ( pSubTypingSourceView.getJSplitPane ( ) ,
@@ -1796,16 +1796,16 @@ public final class DefaultOutline implements Outline
     {
       document = this.sourceView.getDocument ( ) ;
     }
-    else if ( this.subTypingSourceView != null )
+    else if ( this.typeEditorPanel != null )
     {
-      if ( this.subTypingSourceView.getOutline1 ( ) == this )
+      if ( this.typeEditorPanel.getOutline1 ( ) == this )
       {
-        document = ( StyledLanguageDocument ) this.subTypingSourceView
+        document = ( StyledLanguageDocument ) this.typeEditorPanel
             .getEditor ( ).getDocument ( ) ;
       }
-      else if ( this.subTypingSourceView.getOutline2 ( ) == this )
+      else if ( this.typeEditorPanel.getOutline2 ( ) == this )
       {
-        document = ( StyledLanguageDocument ) this.subTypingSourceView
+        document = ( StyledLanguageDocument ) this.typeEditorPanel
             .getEditor2 ( ).getDocument ( ) ;
       }
       else

@@ -1,13 +1,11 @@
 package de.unisiegen.tpml.graphics.components;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Polygon;
 
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 
 import de.unisiegen.tpml.graphics.Theme;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
@@ -29,11 +27,6 @@ public class NailSymbolComponent extends JComponent {
 	 */
 	private PrettyStringRenderer renderer;
 
-
-	/**
-	 * The size of the type.
-	 */
-	private Dimension labelSize;
 
 	/**
 	 * the constructor
@@ -111,7 +104,7 @@ public class NailSymbolComponent extends JComponent {
 		polygon.addPoint ( posX, ( fm.getAscent ( ) - fm.getHeight ( ) / 2 + fm.getDescent ( ) )
 				- fm.getHeight ( ) / 5 );
 		polygon.addPoint ( posX, fm.getAscent ( ) - fm.getHeight ( ) / 2 + fm.getDescent ( ) );
-		polygon.addPoint ( posX + fm.stringWidth ( "--" ), fm.getAscent ( )
+		polygon.addPoint ( posX + fm.stringWidth ( "--" ), fm.getAscent ( ) //$NON-NLS-1$
 				- fm.getHeight ( ) / 2 + fm.getDescent ( ) );
 		polygon.addPoint ( posX, fm.getAscent ( ) - fm.getHeight ( ) / 2 + fm.getDescent ( ) );
 		

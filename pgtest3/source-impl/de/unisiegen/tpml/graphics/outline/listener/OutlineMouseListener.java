@@ -19,9 +19,9 @@ import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
 import de.unisiegen.tpml.graphics.subtyping.SubTypingNodeComponent ;
 import de.unisiegen.tpml.graphics.subtyping.SubTypingView ;
 import de.unisiegen.tpml.graphics.subtyping.StyledTypeEnterField ;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingSourceView ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
+import de.unisiegen.tpml.ui.editor.TypeEditorPanel;
 import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
 
 
@@ -30,7 +30,7 @@ import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
  * <code>MouseEvents</code> on the components {@link Outline},
  * {@link SmallStepView}, {@link BigStepView}, {@link TypeCheckerView}
  * {@link TextEditorPanel}, {@link MinimalTypingNodeComponent},
- * {@link SubTypingNodeComponent} and {@link SubTypingSourceView}. Sets a new
+ * {@link SubTypingNodeComponent} and {@link TypeEditorPanel}. Sets a new
  * {@link Expression} or {@link Type} in the {@link Outline}. It views the
  * <code>JPopupMenu</code> in the {@link Outline}.
  * 
@@ -82,9 +82,9 @@ public final class OutlineMouseListener implements MouseListener
 
 
   /**
-   * The {@link SubTypingSourceView}.
+   * The {@link TypeEditorPanel}.
    */
-  private SubTypingSourceView subTypingSourceView = null ;
+  private TypeEditorPanel typeEditorPanel = null ;
 
 
   /**
@@ -119,16 +119,16 @@ public final class OutlineMouseListener implements MouseListener
 
   /**
    * Initializes the {@link OutlineMouseListener} with the given
-   * {@link SubTypingSourceView}.
+   * {@link TypeEditorPanel}.
    * 
    * @param pDefaultOutline The {@link DefaultOutline}.
-   * @param pSubTypingSourceView The {@link SubTypingSourceView}.
+   * @param pSubTypingSourceView The {@link TypeEditorPanel}.
    */
   public OutlineMouseListener ( DefaultOutline pDefaultOutline ,
-      SubTypingSourceView pSubTypingSourceView )
+      TypeEditorPanel pSubTypingSourceView )
   {
     this.defaultOutline = pDefaultOutline ;
-    this.subTypingSourceView = pSubTypingSourceView ;
+    this.typeEditorPanel = pSubTypingSourceView ;
   }
 
 
@@ -353,8 +353,8 @@ public final class OutlineMouseListener implements MouseListener
       {
         handleSubTyping ( pMouseEvent ) ;
       }
-      // SubTypingSourceView
-      if ( this.subTypingSourceView != null )
+      // TypeEditorPanel
+      if ( this.typeEditorPanel != null )
       {
         handleSubTypingSourceView ( pMouseEvent ) ;
       }
@@ -535,12 +535,12 @@ public final class OutlineMouseListener implements MouseListener
   private final void handleSubTypingSourceView ( MouseEvent pMouseEvent )
   {
     if ( pMouseEvent.getSource ( ).equals (
-        this.subTypingSourceView.getEditor ( ) ) )
+        this.typeEditorPanel.getEditor ( ) ) )
     {
       Type type = null ;
       try
       {
-        type = ( ( StyledTypeEnterField ) this.subTypingSourceView.getEditor ( )
+        type = ( ( StyledTypeEnterField ) this.typeEditorPanel.getEditor ( )
             .getDocument ( ) ).getType ( ) ;
       }
       catch ( Exception e )
@@ -552,12 +552,12 @@ public final class OutlineMouseListener implements MouseListener
           Outline.ExecuteMouseClick.SUBTYPING_SOURCE ) ;
     }
     else if ( pMouseEvent.getSource ( ).equals (
-        this.subTypingSourceView.getEditor2 ( ) ) )
+        this.typeEditorPanel.getEditor2 ( ) ) )
     {
       Type type = null ;
       try
       {
-        type = ( ( StyledTypeEnterField ) this.subTypingSourceView
+        type = ( ( StyledTypeEnterField ) this.typeEditorPanel
             .getEditor2 ( ).getDocument ( ) ).getType ( ) ;
       }
       catch ( Exception e )

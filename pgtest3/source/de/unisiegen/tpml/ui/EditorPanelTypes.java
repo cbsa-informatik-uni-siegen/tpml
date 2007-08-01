@@ -37,7 +37,7 @@ import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.graphics.ProofViewFactory;
 import de.unisiegen.tpml.graphics.pong.PongView;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingSourceView;
+import de.unisiegen.tpml.ui.editor.TypeEditorPanel;
 import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 
 /**
@@ -287,7 +287,7 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 	/**
 	 * 
 	 */
-	private SubTypingSourceView code;
+	private TypeEditorPanel code;
 
 	private EditorComponent subTyping;
 
@@ -398,7 +398,7 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 	 * source editor.
 	 */
 	private void initEditor ( ) {
-		this.code = new SubTypingSourceView ( this.language, this.window );
+		this.code = new TypeEditorPanel ( this.language, this.window );
 
 		this.editorPanel.removeAll ( );
 		this.editorPanel.add ( this.code, BorderLayout.CENTER );

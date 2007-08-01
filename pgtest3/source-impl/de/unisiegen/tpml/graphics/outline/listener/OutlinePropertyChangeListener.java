@@ -8,7 +8,7 @@ import de.unisiegen.tpml.graphics.AbstractProofView ;
 import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingSourceView ;
+import de.unisiegen.tpml.ui.editor.TypeEditorPanel;
 import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
 
 
@@ -81,7 +81,7 @@ public final class OutlinePropertyChangeListener implements
   {
     if ( ( pPropertyChangeEvent.getSource ( ) instanceof AbstractProofView )
         || ( pPropertyChangeEvent.getSource ( ) instanceof TextEditorPanel )
-        || ( pPropertyChangeEvent.getSource ( ) instanceof SubTypingSourceView ) )
+        || ( pPropertyChangeEvent.getSource ( ) instanceof TypeEditorPanel ) )
     {
       if ( ! this.setDivider )
       {

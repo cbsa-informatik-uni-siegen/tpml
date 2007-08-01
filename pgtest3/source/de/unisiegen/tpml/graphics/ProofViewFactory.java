@@ -39,12 +39,12 @@ public class ProofViewFactory {
 	
 	public static ProofView newSubTypingView (SubTypingProofModel model) {
 		return new SubTypingView(model);
-		//return new SubTypingSourceView(language);
+		//return new TypeEditorPanel(language);
 	}
 	
 	public static ProofView newSubTypingRecView (RecSubTypingProofModel model) {
 		return new SubTypingView(model);
-		//return new SubTypingSourceView(language);
+		//return new TypeEditorPanel(language);
 	}
 	
 	public static ProofView newMinimalTypingView (MinimalTypingProofModel model) {
