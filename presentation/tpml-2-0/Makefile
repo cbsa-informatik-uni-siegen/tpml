@@ -8,6 +8,9 @@ TEXFILES =								\
 	parser.tex							\
 	objekte.tex							\
 	klassen.tex							\
+	typeinference.tex					\
+	minimaltyping.tex					\
+	subtyping.tex						\
 	fazit.tex							\
 	vortrag.tex
 
@@ -22,7 +25,7 @@ clean:
 	rm -f *.aux
 	rm -f *.dvi
 	rm -f *.log
-	rm -f *.pdf
+	#rm -f *.pdf
 	rm -f *.ps
 	rm -f *.toc
 
