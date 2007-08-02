@@ -538,7 +538,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 			JOptionPane.showMessageDialog(this,
 					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotTypeChecker")+
 					"\n"+e.getMessage()+".",
-					"TypeChecker", JOptionPane.ERROR_MESSAGE);
+					"Type Checker", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
@@ -567,7 +567,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 			JOptionPane.showMessageDialog(this,
 					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotTypeChecker")+
 					"\n"+e.getMessage()+".",
-					"TypeChecker", JOptionPane.ERROR_MESSAGE);
+					"Type Inference", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
