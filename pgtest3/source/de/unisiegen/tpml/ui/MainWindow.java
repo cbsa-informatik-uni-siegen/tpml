@@ -72,7 +72,7 @@ public class MainWindow
 	window.setMainWindow(this);
     
     //initComponents ( ) ;
-    window.setTitle ( "TPML " + Versions.UI + Versions.TEST ) ;
+    window.setTitle ( "TPML " + Versions.UI ) ;
     // position the window
     PreferenceManager prefmanager = PreferenceManager.get ( ) ;
     window.setBounds ( prefmanager.getWindowBounds ( ) ) ;
