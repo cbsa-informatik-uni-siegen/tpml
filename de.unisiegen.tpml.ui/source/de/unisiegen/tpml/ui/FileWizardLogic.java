@@ -166,7 +166,6 @@ public class FileWizardLogic
 	  // get a expansionListener on the tree
 		// the expansion will be saved
 		this.fileWizard.languagesTree.addTreeExpansionListener(new TreeExpansionListener() {
-
 			public void treeCollapsed(TreeExpansionEvent event)
 			{
 				treeCollapesedHandler(event);
@@ -196,15 +195,21 @@ public class FileWizardLogic
 			}
 		});
 	  
-	  // set the selected element. The first time the first element will be selced.
-	  // This will only function if the collapsed state is redone
-    int selected = this.preferences.getInt("SelectedElement", 0);
-    this.fileWizard.languagesTree.setSelectionRow( selected );
-    
-    
+	  // set the selected element. The first time the nothing will be selced.
+		// This will only function if the collapsed state is reorganized
+		int selected = this.preferences.getInt("SelectedElement", 0);
+		
+		// -1 stand for nothing selected. If the a row is selected that is bigger than the rowCount
+		// of the tree nothing will be selected
+		if (selected != -1 && selected <= this.fileWizard.languagesTree.getRowCount())
+		{
+			this.fileWizard.languagesTree.setSelectionRow(selected);
+
+			// scroll to the selected one
+			this.fileWizard.languagesTree.scrollRowToVisible(selected);
+		}    
     //((DefaultTreeModel) this.fileWizard.languagesTree.getModel()).nodeChanged(root);
-    
-	 
+
 	}
 	
 	/**
@@ -225,6 +230,18 @@ public class FileWizardLogic
     	this.preferences.putBoolean ( this.fileWizard.languagesTree.getPathForRow(i).toString() , expand ) ;
       i ++ ;
     }
+    
+    // save the selected one once again because the rownumbaer has changed
+    try
+    {
+    		this.preferences.putInt("SelectedElement", this.fileWizard.languagesTree.getSelectionRows()[0]);    	
+    }
+    catch (NullPointerException npe)
+    {
+    	// if theN ullPointerException is throughn there was no element selected
+    	this.preferences.putInt("SelectedElement", -1);
+    }
+    
 	}
 	
 	/**
@@ -278,6 +295,9 @@ public class FileWizardLogic
 	protected void treeSelectionHanlder(TreeSelectionEvent event)
 	{
 		TreePath tp = event.getNewLeadSelectionPath();
+		// sroll to the selected element
+		this.fileWizard.languagesTree.scrollPathToVisible(tp);
+		//
 		if (tp != null && ((DefaultMutableTreeNode)tp.getLastPathComponent()).isLeaf())
 		{
 			// save the selceted element...

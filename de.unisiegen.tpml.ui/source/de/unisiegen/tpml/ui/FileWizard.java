@@ -110,7 +110,7 @@ public class FileWizard extends javax.swing.JDialog {
         okButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("New File...");
+        setTitle(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("New_File..."));
         setName("fileWizard");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -122,7 +122,7 @@ public class FileWizard extends javax.swing.JDialog {
 
         headerPanel.setBackground(javax.swing.UIManager.getDefaults().getColor("window"));
         headerTitleLabel.setFont(new java.awt.Font("Dialog", 1, 24));
-        headerTitleLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("FileWizardTitle"));
+        headerTitleLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("New_File..."));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
