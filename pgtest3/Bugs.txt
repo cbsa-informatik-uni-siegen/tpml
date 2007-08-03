@@ -1,1 +1,1 @@
-- Im Hauptmenü "Typ Inference" ersetzen durch "Type Inference" (Christoph)
+- Im Hauptmenü "Typ Inferenz" ersetzen durch "Type Inference" (Christoph)
