@@ -1,6 +1,24 @@
 \myslide{Parser}
 {
-  \begin{itemgroup}{Parser}
-    \item Blablabla ...
+  \begin{itemgroup}{"Ubersicht}
+    \item Die Parser waren sehr un"ubersichtlich strukturiert
+    \item Pro Ausdruck und Typ wurde ein eigenes \glqq non terminal\grqq eingef"uhrt
+    \item Zus"atzlich ein eigenes \glqq error non terminal\grqq, welches sich um
+          die eingef"uhrte Fehlerbehandlung k"ummert
+    \item Jedem geparsten Ausdruck wird seine Source Code Position mitgegeben, um
+          Fehler anzeigen zu k"onnen und, um den Source Code durch die Outline
+          markieren zu lassen
+    \item Eine automatische Vervollst"andigung wurde eingef"uhrt, um vom Benutzer
+          eingegebene, noch unvollst"andige Ausdr"ucke zu vervollst"andigen
+    \item Fehlermeldungen die mehrere Stellen betreffen wurden eingef"uhrt
   \end{itemgroup}
+}
+
+\myslide{Parser}
+{
+  {\bf Fehlermeldungen}\\[5mm]
+  Gibt der Anwender \glqq$\infix{+}{1}{\blet\ x =}$\grqq\ 
+  ein, wird der Teil \glqq$\blet\ x =$\grqq\ hervorgehoben und der Tooltip
+  verr"at dem Anwender, dass er noch \glqq$e_1\ \bin\ e_2$\grqq\ eingeben muss
+  um \glqq{\bf Let}\grqq\ zu vervollst"andigen.
 }
