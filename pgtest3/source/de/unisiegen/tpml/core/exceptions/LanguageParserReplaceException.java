@@ -153,7 +153,8 @@ public final class LanguageParserReplaceException extends
       String [ ] pMessagesReplace , int [ ] pParserStartOffsetReplace ,
       int [ ] pParserEndOffsetReplace , String pReplaceText )
   {
-    super ( null , - 1 , - 1 ) ;
+    super ( pMessagesNegative [ 0 ] , pParserStartOffsetNegative [ 0 ] ,
+        pParserEndOffsetNegative [ 0 ] ) ;
     this.messagesNegative = pMessagesNegative ;
     this.parserStartOffsetNegative = pParserStartOffsetNegative ;
     this.parserEndOffsetNegative = pParserEndOffsetNegative ;
