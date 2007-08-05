@@ -62,8 +62,10 @@ Unter Windows gen"ugt ein Doppelklick auf die Datei {\tt tpml.exe}. Sollte keine
 Installation gefunden werden, oder ist Java nicht korrekt im System eingerichtet erscheint
 ein Fehlerdialog.
 
-Kommt es zu Fehlern kann die Versionskontrolle umgangen werden, indem die jar-Datei des UI Projektes 
-manuell mit dem Parameter -f gestartet wird.
+Sollte die Versionskontrolle einmal versagen kann sie auch "`ubergangen werden. Dazu muss die JAR-Datei des UI-Paketes manuell gestartet werden.
+\begin{verbatim}
+  java -jar de.unisiegen.tpml.ui-X.Y.Z.jar -f
+\end{verbatim}
 
 
 
@@ -73,9 +75,7 @@ Nach dem Start des Programms k"onnen neue Dateien erstellt werden. Dateien sind 
 Programmiersprache verkn"upft, die durch die Dateiendung identifiziert wird\footnote{In gleicher
 Weise wie {\tt .java} eine Java-Datei bezeichnet und {\tt .c} eine C-Datei.}. In \TPML\ wurden
 die Sprachen \LZERO\ bis \LFOUR\ realisiert, die den wesentlichen in der Vorlesung behandelten
-Sprachen entsprechen\footnote{Derzeit existiert noch keine Sprache, die objekt-orientierte
-Konzepte unterst"utzt, wie sie in diesem Semester im zweiten Teil der Vorlesung eingef"uhrt
-werden. Dies ist Aufgabe der folgenden Projektgruppe.}, wobei die Namen und der Umfang
+Sprachen entsprechen, wobei die Namen und der Umfang
 einzelner Sprachen von denen in der Vorlesung abweichen kann. Die Sprachen werden in
 Kapitel~\ref{DieSprachenImDetail} im Detail behandelt, welches auch als Nachschlagewerk
 dienen soll.
@@ -83,7 +83,7 @@ dienen soll.
 Um eine neue Datei zu erstellen w"ahlt man aus dem Men"u {\bf Datei} den Eintrag {\bf Neu...}
 worauf sich ein Dialog "offnet, in dem die f"ur die Datei zu benutzende Programmiersprache
 ausgew"ahlt werden muss. Da die Vorlesung mit dem ungetypten $\lambda$-Kalk"ul beginnt,
-w"ahlen wir also auch hier ein einfaches Programmbeispiel in der Programmiersprache \LZERO.
+w"ahlen wir also auch hier ein einfaches Programmbeispiel in der Programmiersprache \LZERO. Die Sprachen sind in Kategorien unterteilt, \LZERO ist natürlich in der ersten zu ganz oben zu finden. 
 Nach der Auswahl der Programmiersprache "offnet sich ein Texteditor, in den der Programmtext
 eingegeben werden kann. Hierzu w"ahlen wir das Beispiel der Identit"atsfunktion, angewandt
 auf sich selbst.
@@ -98,7 +98,7 @@ sollte \TPML\ nicht mit einer IDE verwechselt, da es strikt als Lernwerkzeug aus
 
 Anschlie"send kann man nun den big oder small step Interpreter starten und einen Programmablauf
 durchspielen, der bei dem obigen Programm verst"andlicherweise nicht sonderlich spektakul"ar
-ist. F"ur das Beispiel benutzen wir den small step Interpreter. Dazu w"ahlt man aus dem
+ist. Die anderen Beweisemethoden, die alle auf das Typsystem abzielen sind bei \LZERO logischerweise nicht sinnvoll. F"ur das Beispiel benutzen wir den small step Interpreter. Dazu w"ahlt man aus dem
 Men"u {\bf Beweis} den Eintrag {\bf Small Step}. Es "offnet sich nun ein weiterer mit dieser
 Datei verbundener Reiter {\bf Small Step} mit dem aus der Vorlesung bekannten Aussehen einer
 small step Herleitung. Der Interpreter erwartet nun die Auswahl einer small step Regel um den

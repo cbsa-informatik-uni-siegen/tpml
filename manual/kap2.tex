@@ -5,22 +5,21 @@
 
 \chapter{Benutzerinterface}
 
-\section{"Uberblick}
+\section{"Uberblick} 
 
 Das Men"u {\bf Datei} enth"alt Funktionen zur Dateiverwaltung, wie
-beispielsweise "offnen und Schliessen. Weiterhin kann unter {\bf
+beispielsweise "Offnen und Schlie"sen. Weiterhin kann unter {\bf
 Zuletzt benutzt} schnell auf die aktuellsten Dateien zugegriffen
 werden. Unter {\bf Bearbeiten} sind Editorfunktionen enthalten. Die
 einzelnen Komponenten werden in Kapitel~\ref{Qelltexteditor}
 und~\ref{Beweiswerkzeuge} genauer betrachtet. Mit {\bf
-Einstellungen...} kann die Schriftart und Gr"o"se global f"ur alle
-Editorkomponenten gesetzt werden. Weiterhin stellt man hier die
+Einstellungen...} kann die
 Einf"arbung von Schl"usselworten im
-Quelltexteditor~\ref{Qelltexteditor} ein. Das Men"u {\bf Beweis}
+Quelltexteditor~\ref{Qelltexteditor} und andere Farben eingestellt werden. Das Men"u {\bf Beweis}
 enth"alt die einzelnen Beweiswerkzeuge und dient dazu zwischen dem
 {\bf Beginner} und {\bf Fortgeschrittener} Modus zu wechseln. Diese
 Modi beeintr"achtigen die bei den Beweisschritten zur Verf"ugung
-stehenden Regeln.
+stehenden Regeln und beeinflusst die Ansicht der verschiedenen Modi. 
 
 \section {Quelltexteditor}
 \label{Qelltexteditor} Jede ge"offnete Datei wird in einem Tab
@@ -34,7 +33,7 @@ einen neuen Editor "offnen und der Ausdruck kopieren. Alternativ
 kann auch die Dateiendung einer gespeicherten Datei ge"andert
 werden. Ist ein eingegebener Ausdruck fehlerhaft, so wird dies links
 von der betroffenen Zeile durch ein Error-Icon markiert. Zus"atzlich 
-wird der fehlerhafte Teil rot unterstrichen.
+wird der fehlerhafte Teil rot unterstrichen. 
 
 Bewegt man den Mauszeiger "uber den markierten Text oder das Error-Icon,
 so erscheint ein Tooltip, der den Fehler genauer beschreibt. Ein Klick
@@ -190,8 +189,8 @@ rot umrandet.
 \label{Beweiswerkzeuge} Wird ein Beweiswerkzeug gestartet, so wird
 es zus"atzlich zum Quelltexteditor im Tab der Datei angezeigt. F"ur
 jede Datei kann jeweils nur ein Small Step Interpreter, ein Big Step
-Interpreter und ein Type Checker aktiv sein. Diese k"onnen "uber die
-entsprechende Schaltfl"achen angew"ahlt werden. Wird ein
+Interpreter, ein Type Checker usw. aktiv sein. Diese k"onnen "uber die
+entsprechende Schaltfl"achen angew"ahlt werden. Nat"urlich ergibt es keinen Sinn Beweiswerkzeuge, die mit dem Typsystem zu tun haben bei Dateien zu starten, die kein Typsystem haben, wie beispielsweise \LZERO. Wird ein
 Beweiswerkzeug erneut gestartet, so ersetzt der neue Beweis ein ggf.
 schon aktives Beweiswerkzeug des selben Typs. M"ochte man also zum
 Beispiel einen Small Step Beweis neu starten oder f"ur einen leicht
@@ -202,7 +201,15 @@ den neuen ersetzt.
 
 Jedes Beweiswerkzeug verf"ugt "uber einen {\bf Beginner} und einen
 {\bf Fortgeschrittener} Modus. Diese Modi unterscheiden sich in den
-Regeln, zum Beweis des Ausdrucks zur Verf"ugung stehen.
+Regeln, zum Beweis des Ausdrucks zur Verf"ugung stehen und teilweise in der Ansicht des Beweiswerkzeuges. So werden beispielsweise beim Typ Checker im {\bf Beginner} Typen erst dann angezeigt, wenn der Typ bewiesen ist.
+
+\subsection {Mouse-Over-Effekt}
+Jeder der Beweismethoden hat f"ur den Benutzer eine weitere Komfort-Funktion eingebaut. Bei gr"o"seren Programmen, die bewiesen werden sollen, uns insbesondere, wenn der gleiche Identifier doppelt benutzt wird verliert man schnell die "Ubersicht. Folgendes Beispiel soll dies verdeutlichen:
+
+{\bf let x =(lambda x.x x)in x x}
+
+Wie man leicht sieht ist der Identifier "`x"' doppelt verwendet. In noch gr"o"seren Beispielen w"are es nicht mehr einfach zu "uberschauen, an welches "`x"' welches gebunden ist. Um dies zu vereinfachen kann man einfach mit dem Mauszeiger "uber eins der "`x"' fahren, und die dazugeh"origen "`x"' werden farbig hervorgehoben. Zus"atzlich wird der Identifier, an den die anderen gebunden sind extra durch eine andere Farbe hervorgehoben. Im gegebenen Beispiel würde das "`x"' nach dem "`let"' zusammen mit den letzten beiden "`x"' hervorgehoben, w"arend das "`x"' nach dem "`lambda"' zusammen mit den folgenden beiden "`x"' hervorgehoben w"urden. 
+
 
 \section {Tutorials}
 Im folgenden wird anhand von einigen Beispielen in die
