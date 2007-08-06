@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.unisiegen.tpml.ui ;
+package de.unisiegen.tpml ;
 
 
 import java.awt.Cursor ;

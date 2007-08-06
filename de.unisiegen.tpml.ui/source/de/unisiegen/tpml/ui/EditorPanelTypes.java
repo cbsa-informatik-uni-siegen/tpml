@@ -28,6 +28,7 @@ import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 
+import de.unisiegen.tpml.EditorComponent;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser;
@@ -35,14 +36,14 @@ import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.editor.TypeEditorPanel;
 import de.unisiegen.tpml.graphics.ProofViewFactory;
 import de.unisiegen.tpml.graphics.pong.PongView;
-import de.unisiegen.tpml.ui.editor.TypeEditorPanel;
 import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 
 /**
  * Part of the UI displayed in the tabbed pane. It includes one open file and
- * all {@link de.unisiegen.tpml.ui.EditorComponent}s open for that file.
+ * all {@link de.unisiegen.tpml.EditorComponent}s open for that file.
  * 
  * @author Christoph Fehling
  * @author Benjamin Mies
@@ -398,7 +399,7 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 	 * source editor.
 	 */
 	private void initEditor ( ) {
-		this.code = new TypeEditorPanel ( this.language, this.window );
+		this.code = new TypeEditorPanel ( this.language );
 
 		this.editorPanel.removeAll ( );
 		this.editorPanel.add ( this.code, BorderLayout.CENTER );

@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.ui;
+package de.unisiegen.tpml;
 
 import javax.swing.JComponent;
 
