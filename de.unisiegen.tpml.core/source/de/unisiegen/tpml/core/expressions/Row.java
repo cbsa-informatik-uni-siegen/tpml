@@ -406,13 +406,20 @@ public final class Row extends Expression implements BodyOrRow ,
   {
     if ( this.prefix == null )
     {
-      if ( this.isValue ( ) )
+      if ( this.parent instanceof Class )
       {
-        this.prefix = PREFIX_ROW_VALUE ;
+        this.prefix = PREFIX_BODY ;
       }
       else
       {
-        this.prefix = PREFIX_ROW ;
+        if ( this.isValue ( ) )
+        {
+          this.prefix = PREFIX_ROW_VALUE ;
+        }
+        else
+        {
+          this.prefix = PREFIX_ROW ;
+        }
       }
     }
     return this.prefix ;
