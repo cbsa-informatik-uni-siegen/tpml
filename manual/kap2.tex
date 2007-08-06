@@ -18,7 +18,7 @@ Einf"arbung von Schl"usselworten im
 Quelltexteditor~\ref{Qelltexteditor} und andere Farben eingestellt werden. Das Men"u {\bf Beweis}
 enth"alt die einzelnen Beweiswerkzeuge und dient dazu zwischen dem
 {\bf Beginner} und {\bf Fortgeschrittener} Modus zu wechseln. Diese
-Modi beeintr"achtigen die bei den Beweisschritten zur Verf"ugung
+Modi beeinflussen die bei den Beweisschritten zur Verf"ugung
 stehenden Regeln und beeinflusst die Ansicht der verschiedenen Modi. 
 
 \section {Quelltexteditor}
@@ -190,7 +190,7 @@ rot umrandet.
 es zus"atzlich zum Quelltexteditor im Tab der Datei angezeigt. F"ur
 jede Datei kann jeweils nur ein Small Step Interpreter, ein Big Step
 Interpreter, ein Type Checker usw. aktiv sein. Diese k"onnen "uber die
-entsprechende Schaltfl"achen angew"ahlt werden. Nat"urlich ergibt es keinen Sinn Beweiswerkzeuge, die mit dem Typsystem zu tun haben bei Dateien zu starten, die kein Typsystem haben, wie beispielsweise \LZERO. Wird ein
+entsprechende Schaltfl"achen angew"ahlt werden. Nat"urlich ergibt es keinen Sinn, Beweiswerkzeuge, die mit dem Typsystem zu tun haben, bei Dateien zu starten, die kein Typsystem haben, wie beispielsweise \LZERO. Wird ein
 Beweiswerkzeug erneut gestartet, so ersetzt der neue Beweis ein ggf.
 schon aktives Beweiswerkzeug des selben Typs. M"ochte man also zum
 Beispiel einen Small Step Beweis neu starten oder f"ur einen leicht
@@ -204,11 +204,11 @@ Jedes Beweiswerkzeug verf"ugt "uber einen {\bf Beginner} und einen
 Regeln, zum Beweis des Ausdrucks zur Verf"ugung stehen und teilweise in der Ansicht des Beweiswerkzeuges. So werden beispielsweise beim Typ Checker im {\bf Beginner} Typen erst dann angezeigt, wenn der Typ bewiesen ist.
 
 \subsection {Mouse-Over-Effekt}
-Jeder der Beweismethoden hat f"ur den Benutzer eine weitere Komfort-Funktion eingebaut. Bei gr"o"seren Programmen, die bewiesen werden sollen, uns insbesondere, wenn der gleiche Identifier doppelt benutzt wird verliert man schnell die "Ubersicht. Folgendes Beispiel soll dies verdeutlichen:
+Jeder der Beweismethoden hat f"ur den Benutzer eine weitere Komfort-Funktion eingebaut. Bei gr"o"seren Programmen, die bewiesen werden sollen, und insbesondere, wenn der gleiche Identifier doppelt benutzt wird verliert man schnell die "Ubersicht. Folgendes Beispiel soll dies verdeutlichen:
 
 {\bf let x =(lambda x.x x)in x x}
 
-Wie man leicht sieht ist der Identifier "`x"' doppelt verwendet. In noch gr"o"seren Beispielen w"are es nicht mehr einfach zu "uberschauen, an welches "`x"' welches gebunden ist. Um dies zu vereinfachen kann man einfach mit dem Mauszeiger "uber eins der "`x"' fahren, und die dazugeh"origen "`x"' werden farbig hervorgehoben. Zus"atzlich wird der Identifier, an den die anderen gebunden sind extra durch eine andere Farbe hervorgehoben. Im gegebenen Beispiel würde das "`x"' nach dem "`let"' zusammen mit den letzten beiden "`x"' hervorgehoben, w"arend das "`x"' nach dem "`lambda"' zusammen mit den folgenden beiden "`x"' hervorgehoben w"urden. 
+Wie man leicht sieht ist der Identifier \glqq$x$\grqq\ doppelt verwendet. In noch gr"o"seren Beispielen w"are es nicht mehr einfach zu "uberschauen, an welches \glqq$x$\grqq\ welches gebunden ist. Um dies zu vereinfachen kann man einfach mit dem Mauszeiger "uber eins der \glqq$x$\grqq\ fahren, und die dazugeh"origen \glqq$x$\grqq\ werden farbig hervorgehoben. Zus"atzlich wird der Identifier, an den die anderen gebunden sind extra durch eine andere Farbe hervorgehoben\footnote{Die Farben, sowohl für gebundenen als auch bindende Indentifier k"onnen "uber Einstellungen... im Men"u Bearbeiten eingestellt werden.}. Im gegebenen Beispiel würde das \glqq$x$\grqq\ nach dem \glqq$let$\grqq\ zusammen mit den letzten beiden \glqq$x$\grqq\ hervorgehoben, w"arend das \glqq$x$\grqq\ nach dem \glqq$lambda$\grqq\ zusammen mit den folgenden beiden \glqq$x$\grqq\ hervorgehoben w"urden. 
 
 
 \section {Tutorials}
