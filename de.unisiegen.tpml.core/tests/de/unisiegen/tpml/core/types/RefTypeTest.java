@@ -15,10 +15,10 @@ public class RefTypeTest extends TestCase {
    * Test method for the pretty printer.
    */
   public void testToString() {
-    RefType t1 = new RefType(IntegerType.INT);
+    RefType t1 = new RefType(new IntegerType());
     assertEquals("int ref", t1.toString());
     
-    ArrowType t2 = new ArrowType(IntegerType.INT, t1);
+    ArrowType t2 = new ArrowType(new IntegerType(), t1);
     assertEquals("int \u2192 int ref", t2.toString());
     
     RefType t3 = new RefType(t1);

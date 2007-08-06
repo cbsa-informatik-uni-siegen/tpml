@@ -9,7 +9,6 @@ import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.typeinference.PrettyPrintPriorities;
 import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.util.Debug;
 
 /**
  * Default implementation of the <code>RecSubTypingProofNode</code> interface. The class for nodes
@@ -149,32 +148,6 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements R
 
 		final StringBuilder builder = new StringBuilder ( );
 
-		if ( Debug.isUserName ( Debug.BENJAMIN ) ) {
-			builder.append ( "<html>" ); //$NON-NLS-1$
-			builder.append ( "[ A = " ); //$NON-NLS-1$
-			for ( DefaultSubType subtype : this.seenTypes ) {
-				builder.append ( "<b><font color=\"#0000FF\">(</font></b>" ); //$NON-NLS-1$ )
-				builder.append ( " ( " + subtype + " ) " ); //$NON-NLS-1$ //$NON-NLS-2$
-				builder.append ( "<b><font color=\"#0000FF\">)</font></b>" ); //$NON-NLS-1$ )
-			}
-			builder.append ( " ]" ); //$NON-NLS-1$
-			builder.append ( "<br>" ); //$NON-NLS-1$
-			String result = ""; //$NON-NLS-1$
-			result += this.type.getLeft ( );
-			result = result.replaceAll ( "<", "&#60" ); //$NON-NLS-1$//$NON-NLS-2$
-			builder.append ( result );
-			result = ""; //$NON-NLS-1$
-			builder.append ( "<b><font color=\"#FF0000\">" ); //$NON-NLS-1$
-			builder.append ( " &#60: " ); //$NON-NLS-1$
-			builder.append ( "</font></b>" ); //$NON-NLS-1$
-			result += this.type.getRight ( );
-			builder.append ( " " ); //$NON-NLS-1$
-			if ( this.getSteps ( ).length > 0 )
-				result += this.getSteps ( )[0].getRule ( ).toString ( );
-			result = result.replaceAll ( "<", "&#60" ); //$NON-NLS-1$ //$NON-NLS-2$
-			builder.append ( result );
-			builder.append ( "</html>" ); //$NON-NLS-1$
-		} else {
 			builder.append ( "[ A = " ); //$NON-NLS-1$
 			for ( DefaultSubType subtype : this.seenTypes ) {
 				builder.append ( " ( " + subtype + " ) " ); //$NON-NLS-1$//$NON-NLS-2$
@@ -187,7 +160,6 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements R
 			builder.append ( " " ); //$NON-NLS-1$
 			if ( this.getSteps ( ).length > 0 )
 				builder.append ( this.getSteps ( )[0].getRule ( ).toString ( ) );
-		}
 
 		return builder.toString ( );
 

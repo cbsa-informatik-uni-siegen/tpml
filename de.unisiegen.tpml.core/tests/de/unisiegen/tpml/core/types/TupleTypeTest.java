@@ -15,7 +15,7 @@ public class TupleTypeTest extends TestCase {
    * Test method for the pretty printer.
    */
   public void testToString() {
-    TupleType t1 = new TupleType(new MonoType[] { IntegerType.INT, BooleanType.BOOL });
+    TupleType t1 = new TupleType(new MonoType[] { new IntegerType(), new BooleanType() });
     assertEquals("int * bool", t1.toString());
     
     TupleType t2 = new TupleType(new MonoType[] { t1, t1 });

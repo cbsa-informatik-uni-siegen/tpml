@@ -15,16 +15,16 @@ public class ArrowTypeTest extends TestCase {
    * Test method for the pretty printer.
    */
   public final void testToString() {
-    ArrowType t1 = new ArrowType(UnitType.UNIT, BooleanType.BOOL);
+    ArrowType t1 = new ArrowType(new UnitType(), new BooleanType());
     assertEquals("unit \u2192 bool", t1.toString());
     
-    ArrowType t2 = new ArrowType(BooleanType.BOOL, IntegerType.INT);
+    ArrowType t2 = new ArrowType(new BooleanType(), new IntegerType());
     assertEquals("bool \u2192 int", t2.toString());
     
     ArrowType t3 = new ArrowType(t1, t2);
     assertEquals("(unit \u2192 bool) \u2192 bool \u2192 int", t3.toString());
     
-    ArrowType t4 = new ArrowType(IntegerType.INT, t2);
+    ArrowType t4 = new ArrowType(new IntegerType(), t2);
     assertEquals("int \u2192 bool \u2192 int", t4.toString());
   }
 }

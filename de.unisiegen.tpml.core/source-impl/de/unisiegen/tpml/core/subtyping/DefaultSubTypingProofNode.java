@@ -6,7 +6,6 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.core.typeinference.PrettyPrintPriorities;
 import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.util.Debug;
 
 /**
  * Default implementation of the <code>SubTypingProofNode</code> interface. The class for nodes
@@ -135,30 +134,12 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements SubT
 
 		final StringBuilder builder = new StringBuilder ( );
 
-		if ( Debug.isUserName ( Debug.BENJAMIN ) ) {
-			String result = ""; //$NON-NLS-1$
-			builder.append ( "<html>" ); //$NON-NLS-1$
-			result += this.left;
-			result = result.replaceAll ( "<", "&#60" ); //$NON-NLS-1$//$NON-NLS-2$
-			builder.append ( result );
-			result = ""; //$NON-NLS-1$
-			builder.append ( "<b><font color=\"#FF0000\">" ); //$NON-NLS-1$
-			builder.append ( " &#60: " ); //$NON-NLS-1$
-			builder.append ( "</font></b>" ); //$NON-NLS-1$
-			result += this.right;
-			if ( this.getSteps ( ).length > 0 )
-				result += this.getSteps ( )[0].getRule ( ).toString ( );
-			result = result.replaceAll ( "<", "&#60" ); //$NON-NLS-1$ //$NON-NLS-2$
-			builder.append ( result );
-			builder.append ( "</html>" ); //$NON-NLS-1$
-		} else {
 			builder.append ( this.left );
 			builder.append ( " <: " ); //$NON-NLS-1$
 			builder.append ( this.right );
 			builder.append ( " " ); //$NON-NLS-1$
 			if ( this.getSteps ( ).length > 0 )
 				builder.append ( this.getSteps ( )[0].getRule ( ).toString ( ) );
-		}
 
 		return builder.toString ( );
 
