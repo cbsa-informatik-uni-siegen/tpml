@@ -7,7 +7,6 @@ import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserWarningException ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.graphics.Theme ;
 
 
 /**
@@ -105,16 +104,12 @@ public abstract class Error
   public static final void expect ( String pSymbol , String pInsertText ,
       int pLeft , int pRight , String ... pTokenSequence )
   {
-    getHexadecimalColor ( Color.BLACK ) ;
-    expressionColor = getHexadecimalColor ( Theme.currentTheme ( )
-        .getExpressionColor ( ) ) ;
-    identifierColor = getHexadecimalColor ( Theme.currentTheme ( )
-        .getIdentifierColor ( ) ) ;
-    keywordColor = getHexadecimalColor ( Theme.currentTheme ( )
-        .getKeywordColor ( ) ) ;
-    constantColor = getHexadecimalColor ( Theme.currentTheme ( )
-        .getConstantColor ( ) ) ;
-    typeColor = getHexadecimalColor ( Theme.currentTheme ( ).getTypeColor ( ) ) ;
+    // TODO Move Theme to core
+    expressionColor = getHexadecimalColor ( Color.BLACK ) ;
+    identifierColor = getHexadecimalColor ( Color.BLACK ) ;
+    keywordColor = getHexadecimalColor ( Color.BLACK ) ;
+    constantColor = getHexadecimalColor ( Color.BLACK ) ;
+    typeColor = getHexadecimalColor ( Color.BLACK ) ;
     StringBuilder result = new StringBuilder ( ) ;
     result.append ( "\"" ) ; //$NON-NLS-1$
     for ( int i = 0 ; i < pTokenSequence.length ; i ++ )
