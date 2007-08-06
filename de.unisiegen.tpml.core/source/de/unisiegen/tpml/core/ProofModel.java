@@ -1,279 +1,270 @@
-package de.unisiegen.tpml.core;
+package de.unisiegen.tpml.core ;
 
-import java.util.EventListener;
 
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreeNode;
+import java.util.EventListener ;
+import javax.swing.event.TreeModelListener ;
+import javax.swing.tree.TreeModel ;
+import javax.swing.tree.TreeNode ;
+import de.unisiegen.tpml.core.languages.Language ;
+import de.unisiegen.tpml.core.util.beans.Bean ;
 
-import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.util.beans.Bean;
 
 /**
- * The interface defines a suitable data model for proving various properties about an expression. It is based on
- * the generic {@link javax.swing.tree.TreeModel}.
- *
+ * The interface defines a suitable data model for proving various properties
+ * about an expression. It is based on the generic
+ * {@link javax.swing.tree.TreeModel}.
+ * 
  * @author Benedikt Meurer
  * @version $Rev$
- * 
  * @see de.unisiegen.tpml.core.AbstractProofModel
  * @see de.unisiegen.tpml.core.ProofNode
  */
-public interface ProofModel extends Bean, TreeModel {
+public interface ProofModel extends Bean , TreeModel
+{
   //
   // Accessors
   //
-  
   /**
-   * Returns <code>true</code> if the user <i>cheated</i> during the prove using the
-   * {@link #guess(ProofNode)} or {@link #complete(ProofNode)} methods. Otherwise, if
-   * the user did the whole proof by hand, <code>false</code> will be returned.
+   * Returns <code>true</code> if the user <i>cheated</i> during the prove
+   * using the {@link #guess(ProofNode)} or {@link #complete(ProofNode)}
+   * methods. Otherwise, if the user did the whole proof by hand,
+   * <code>false</code> will be returned.
    * 
-   * @return <code>true</code> if the user cheated, <code>false</code> otherwise.
+   * @return <code>true</code> if the user cheated, <code>false</code>
+   *         otherwise.
    */
-  public boolean isCheating();
-  
+  public boolean isCheating ( ) ;
+
+
   /**
-   * Returns <code>true</code> if the proof is finished successfully, otherwise if either the
-   * proof is not yet completed or the proof got stuck, <code>false</code> will be returned.
+   * Returns <code>true</code> if the proof is finished successfully,
+   * otherwise if either the proof is not yet completed or the proof got stuck,
+   * <code>false</code> will be returned.
    * 
    * @return <code>true</code> if the proof is finished.
    */
-  public boolean isFinished();
-  
+  public boolean isFinished ( ) ;
+
+
   /**
    * Returns the {@link Language} for which this proof model was constructed.
    * 
    * @return the {@link Language} for the proof model.
-   * 
    * @see Language
    * @see ProofRuleSet#getLanguage()
    */
-  public Language getLanguage();
-  
+  public Language getLanguage ( ) ;
+
+
   /**
-   * Returns the list of {@link ProofRule}s that should be displayed as possible rules
-   * in the user interface. This is usually a subset of the list of all available rules
-   * for the given proof.
-   * 
-   * The user interface should query the rules everytime the user opens the menu/list to
-   * apply rules, as the list of rules may have changed after an operation.
+   * Returns the list of {@link ProofRule}s that should be displayed as
+   * possible rules in the user interface. This is usually a subset of the list
+   * of all available rules for the given proof. The user interface should query
+   * the rules everytime the user opens the menu/list to apply rules, as the
+   * list of rules may have changed after an operation.
    * 
    * @return the {@link ProofRule}s to be displayed in the user interface.
-   * 
    * @see ProofRuleSet#getRules()
    */
-  public ProofRule[] getRules();
-  
-  
-  
+  public ProofRule [ ] getRules ( ) ;
+
+
   //
   // Undo/Redo
   //
-  
   /**
-   * Returns <code>true</code> if the model has
-   * recorded undo steps that can be redone
-   * using the {@link #redo()} operation.
+   * Returns <code>true</code> if the model has recorded undo steps that can
+   * be redone using the {@link #redo()} operation.
    * 
-   * @return <code>true</code> if {@link #redo()}
-   *         is possible, <code>false</code> otherwise.
-   *
+   * @return <code>true</code> if {@link #redo()} is possible,
+   *         <code>false</code> otherwise.
    * @see #isUndoable()
-   * @see #redo()         
+   * @see #redo()
    */
-  public boolean isRedoable();
-  
+  public boolean isRedoable ( ) ;
+
+
   /**
-   * Returns <code>true</code> if the model has
-   * recorded proof steps that can be undone using
-   * the {@link #undo()} operation.
+   * Returns <code>true</code> if the model has recorded proof steps that can
+   * be undone using the {@link #undo()} operation.
    * 
-   * @return <code>true</code> if {@link #undo()}
-   *         is possible, <code>false</code> otherwise.
-   *
+   * @return <code>true</code> if {@link #undo()} is possible,
+   *         <code>false</code> otherwise.
    * @see #isRedoable()
-   * @see #undo()         
+   * @see #undo()
    */
-  public boolean isUndoable();
+  public boolean isUndoable ( ) ;
+
 
   /**
    * Redoes the previously undo change to the proof model. Use
-   * {@link #isRedoable()} to test whether there's a change to
-   * this model that can be redone.
+   * {@link #isRedoable()} to test whether there's a change to this model that
+   * can be redone.
    * 
-   * @throws CannotRedoException if the redo history is empty
-   *                             or the change cannot be redone
-   *                             for some other reason.
-   * 
+   * @throws CannotRedoException if the redo history is empty or the change
+   *           cannot be redone for some other reason.
    * @see #undo()
    */
-  public void redo() throws CannotRedoException;
-  
+  public void redo ( ) throws CannotRedoException ;
+
+
   /**
-   * Undoes the previous change to the proof model. Use
-   * {@link #isUndoable()} to test whether there's a change
-   * to this model that can be undone.
+   * Undoes the previous change to the proof model. Use {@link #isUndoable()} to
+   * test whether there's a change to this model that can be undone.
    * 
-   * @throws CannotUndoException if the undo history is empty
-   *                             or the change cannot be undone
-   *                             for some other reason.
-   * 
+   * @throws CannotUndoException if the undo history is empty or the change
+   *           cannot be undone for some other reason.
    * @see #redo()
    */
-  public void undo() throws CannotUndoException;
-  
-  
-  
+  public void undo ( ) throws CannotUndoException ;
+
+
   //
   // Actions
   //
-  
   /**
-   * Completes the sub tree starting at the given <code>node</code> using incremental guessing.
-   * The method is somewhat smart in detecting diversion in the big step interpreter. 
+   * Completes the sub tree starting at the given <code>node</code> using
+   * incremental guessing. The method is somewhat smart in detecting diversion
+   * in the big step interpreter.
    * 
    * @param node the {@link ProofNode} which to complete.
-   * 
-   * @throws IllegalArgumentException if the <code>node</code> is invalid for this model.
-   * @throws IllegalStateException if for some reason <code>node</code> cannot be proven.
+   * @throws ProofGuessException if the <code>node</code> can not be
+   *           completed.
+   * @throws IllegalArgumentException if the <code>node</code> is invalid for
+   *           this model.
+   * @throws IllegalStateException if for some reason <code>node</code> cannot
+   *           be proven.
    * @throws NullPointerException if <code>node</code> is <code>null</code>.
-   * 
    * @see #guess(ProofNode)
    */
-  public void complete(ProofNode node) throws ProofGuessException;
-  
+  public void complete ( ProofNode node ) throws ProofGuessException ;
+
+
   /**
-   * Guesses the next proof step for the specified <code>node</code>.
+   * Guesses the next proof step for the specified <code>node</code>. The
+   * <code>node</code> must not be already proven (see the
+   * {@link ProofNode#isProven()} method for details), otherwise an
+   * {@link IllegalStateException} is thrown.
    * 
-   * The <code>node</code> must not be already proven (see the
-   * {@link ProofNode#isProven()} method for details), otherwise
-   * an {@link IllegalStateException} is thrown.
-   * 
-   * @param node the {@link ProofNode} for which the next proof step should
-   *             be guessed.
-   *             
-   * @throws IllegalArgumentException if the <code>node</code> is invalid for this model.             
-   * @throws IllegalStateException if for some reason <code>node</code> cannot be proven.
+   * @param node the {@link ProofNode} for which the next proof step should be
+   *          guessed.
+   * @throws IllegalArgumentException if the <code>node</code> is invalid for
+   *           this model.
+   * @throws IllegalStateException if for some reason <code>node</code> cannot
+   *           be proven.
    * @throws NullPointerException if <code>node</code> is <code>null</code>.
    * @throws ProofGuessException if the next proof step could not be guessed.
-   *
    * @see #complete(ProofNode)
    * @see #prove(ProofRule, ProofNode)
    */
-  public void guess(ProofNode node) throws ProofGuessException;
-  
+  public void guess ( ProofNode node ) throws ProofGuessException ;
+
+
   /**
-   * Applies the given proof <code>rule</code> to the specified
-   * proof <code>node</code>.
-   * 
-   * The <code>node</code> must not be already proven (see the
-   * {@link ProofNode#isProven()} method for details), otherwise
-   * an {@link IllegalStateException} is thrown.
+   * Applies the given proof <code>rule</code> to the specified proof
+   * <code>node</code>. The <code>node</code> must not be already proven
+   * (see the {@link ProofNode#isProven()} method for details), otherwise an
+   * {@link IllegalStateException} is thrown.
    * 
    * @param rule the {@link ProofRule} to apply.
-   * @param node the {@link ProofNode} to which the <code>rule</code>
-   *             should be applied.
-   *             
-   * @throw IllegalArgumentException if either the <code>rule</code> is
-   *                                 not valid for the model, or the
-   *                                 <code>node</code> is invalid for
-   *                                 the model.
+   * @param node the {@link ProofNode} to which the <code>rule</code> should
+   *          be applied.
+   * @throw IllegalArgumentException if either the <code>rule</code> is not
+   *        valid for the model, or the <code>node</code> is invalid for the
+   *        model.
    * @throws IllegalStateException if for some reason <code>node</code> cannot
-   *                               be proven.
-   * @throw ProofRuleException if the <code>rule</code> cannot be applied
-   *                           to the <code>node</code>.
-   *
+   *           be proven.
+   * @throws ProofRuleException if the <code>rule</code> cannot be applied to
+   *           the <code>node</code>.
    * @see #guess(ProofNode)
    */
-  public void prove(ProofRule rule, ProofNode node) throws ProofRuleException;
-  
-  
-  
+  public void prove ( ProofRule rule , ProofNode node )
+      throws ProofRuleException ;
+
+
   //
   // Tree queries
   //
-
   /**
-   * Returns the root of the tree. Returns <code>null</code>
-   * only if the tree has no nodes.
+   * Returns the root of the tree. Returns <code>null</code> only if the tree
+   * has no nodes.
    * 
    * @return the root of the proof tree.
-   * 
    * @see javax.swing.tree.TreeModel#getRoot()
    */
-  public ProofNode getRoot();
+  public ProofNode getRoot ( ) ;
+
 
   /**
    * Returns the child of <code>parent</code> at index <code>index</code> in
-   * the <code>parent</code>'s child array. <code>parent</code> must be a node
-   * previously obtained from this data source. This should not return <code>null</code>
-   * if <code>index</code> is a valid index for <code>parent</code> (that is
+   * the <code>parent</code>'s child array. <code>parent</code> must be a
+   * node previously obtained from this data source. This should not return
+   * <code>null</code> if <code>index</code> is a valid index for
+   * <code>parent</code> (that is
    * <code>index &gt;= 0 && index &lt; getChildCount(parent)</code>).
    * 
    * @param parent a node in the tree, obtained from this data source.
    * @param index the child index of a child node of <code>parent</code>.
-   *  
    * @return the child of <code>parent</code> at index <code>index</code>.
-   * 
    * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
    */
-  public ProofNode getChild(Object parent, int index);
+  public ProofNode getChild ( Object parent , int index ) ;
+
 
   /**
-   * Builds the parents of node up to and including the root node,
-   * where the original node is the last element in the returned
-   * array. The length of the returned array gives the node's depth
-   * in the tree.
+   * Builds the parents of node up to and including the root node, where the
+   * original node is the last element in the returned array. The length of the
+   * returned array gives the node's depth in the tree.
    * 
    * @param aNode the {@link TreeNode} to get the path for.
-   * 
-   * @return the parents of <code>aNode</code> up to and including
-   *         the root node.
+   * @return the parents of <code>aNode</code> up to and including the root
+   *         node.
    */
-  public TreeNode[] getPathToRoot(TreeNode aNode);
+  public TreeNode [ ] getPathToRoot ( TreeNode aNode ) ;
 
-  
-  
+
   //
   // Events
   //
-  
   /**
-   * Returns an array of all the tree model listeners registered on this
-   * model.
+   * Returns an array of all the tree model listeners registered on this model.
    * 
-   * @return all of this model's {@link TreeModelListener}'s or an empty
-   *         array if no tree model listeners are currently registered.
-   *         
+   * @return all of this model's {@link TreeModelListener}'s or an empty array
+   *         if no tree model listeners are currently registered.
    * @see javax.swing.tree.TreeModel#addTreeModelListener(TreeModelListener)
-   * @see javax.swing.tree.TreeModel#removeTreeModelListener(TreeModelListener)         
+   * @see javax.swing.tree.TreeModel#removeTreeModelListener(TreeModelListener)
    */
-  public TreeModelListener[] getTreeModelListeners();
+  public TreeModelListener [ ] getTreeModelListeners ( ) ;
+
 
   /**
-   * Returns an array of all the objects currently registered as <code><em>Foo</em>Listener</code>s
-   * upon this model. <code><em>Foo</em>Listener</code>s are registered using the
-   * <code>add<em>Foo</em>Listener</code> method.
-   *
-   * You can specify the <code>listenerType</code> argument with a class literal, such as
-   * <code><em>Foo</em>Listener.class</code>. For example, you can query a <code>ProofModel</code>
-   * <code>m</code> for its tree model listeners with the following code:
-   *
-   * <pre>TreeModelListener[] tmls = (TreeModelListener[])(m.getListeners(TreeModelListener.class));</pre>
-   *
+   * Returns an array of all the objects currently registered as
+   * <code><em>Foo</em>Listener</code>s upon this model.
+   * <code><em>Foo</em>Listener</code>s are registered using the
+   * <code>add<em>Foo</em>Listener</code> method. You can specify the
+   * <code>listenerType</code> argument with a class literal, such as
+   * <code><em>Foo</em>Listener.class</code>. For example, you can query a
+   * <code>ProofModel</code>
+   * <code>m</code> for its tree model listeners
+   * with the following code:
+   * 
+   * <pre>
+   * TreeModelListener [ ] tmls = ( TreeModelListener [ ] ) ( m
+   *     .getListeners ( TreeModelListener.class ) ) ;
+   * </pre>
+   * 
    * If no such listeners exist, this method returns an empty array.
-   *
-   * @param listenerType the type of listeners requested; this parameter should specify an interface
-   *                     that descends from {@link EventListener}.
-   *                     
-   * @return an array of all objects registered as <code><em>Foo</em>Listener</code>s on this prover,
-   *         or an empty array if no such listeners have been added.
-   *         
-   * @throws ClassCastException if <code>listenerType</code> doesn't specify a class or interface that
-   *                            implements {@link EventListener}.
-   *
+   * 
+   * @param <T> The type of the event listener.
+   * @param listenerType the type of listeners requested; this parameter should
+   *          specify an interface that descends from {@link EventListener}.
+   * @return an array of all objects registered as
+   *         <code><em>Foo</em>Listener</code>s on this prover, or an
+   *         empty array if no such listeners have been added.
+   * @throws ClassCastException if <code>listenerType</code> doesn't specify a
+   *           class or interface that implements {@link EventListener}.
    * @see #getTreeModelListeners()
    */
-  public <T extends EventListener> T[] getListeners(Class<T> listenerType); 
+  public < T extends EventListener > T [ ] getListeners (
+      Class < T > listenerType ) ;
 }

@@ -42,9 +42,11 @@ public final class UnificationException extends Exception
   //
   /**
    * Allocates a new {@link UnificationException} object to indicate that the
-   * unification of the {@link TypeEquationTypeChecker} <code>equationn</code> failed.
+   * unification of the {@link TypeEquationTypeChecker} <code>equationn</code>
+   * failed.
    * 
-   * @param pTypeEquation the {@link TypeEquationTypeChecker} that could not be unified.
+   * @param pTypeEquation the {@link TypeEquationTypeChecker} that could not be
+   *          unified.
    */
   public UnificationException ( TypeEquationTypeChecker pTypeEquation )
   {

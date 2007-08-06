@@ -49,16 +49,16 @@ public final class ProofRuleException extends Exception
    * Allocates a new {@link ProofRuleException} telling that the specified
    * <code>rule</code> could not be applied to the given <code>node</code>.
    * 
-   * @param node the {@link ProofNode}.
-   * @param rule the {@link ProofRule} that could not be applied to the
+   * @param pNode the {@link ProofNode}.
+   * @param pRule the {@link ProofRule} that could not be applied to the
    *          <code>node</code>.
    * @throws NullPointerException if <code>node</code> or <code>rule</code>
    *           is <code>null</code>.
    * @see #ProofRuleException(ProofNode, ProofRule, Throwable)
    */
-  public ProofRuleException ( ProofNode node , ProofRule rule )
+  public ProofRuleException ( ProofNode pNode , ProofRule pRule )
   {
-    this ( node , rule , null ) ;
+    this ( pNode , pRule , null ) ;
   }
 
 
@@ -66,8 +66,8 @@ public final class ProofRuleException extends Exception
    * Allocates a new {@link ProofRuleException} telling that the specified
    * <code>rule</code> could not be applied to the given <code>node</code>.
    * 
-   * @param node the {@link ProofNode}.
-   * @param rule the {@link ProofRule} that could not be applied to the
+   * @param pNode the {@link ProofNode}.
+   * @param pRule the {@link ProofRule} that could not be applied to the
    *          <code>node</code>.
    * @param cause the cause, which is saved for later retrieval by the
    *          {@link Throwable#getCause()} method. A <code>null</code> value
@@ -77,11 +77,13 @@ public final class ProofRuleException extends Exception
    *           is <code>null</code>.
    * @see #ProofRuleException(String, ProofNode, ProofRule, Throwable)
    */
-  public ProofRuleException ( ProofNode node , ProofRule rule , Throwable cause )
+  public ProofRuleException ( ProofNode pNode , ProofRule pRule ,
+      Throwable cause )
   {
-    this ( MessageFormat.format (
-        Messages.getString ( "ProofRuleException.0" ) , rule , node ) , node ,
-        rule , cause ) ;
+    this (
+        MessageFormat.format (
+            Messages.getString ( "ProofRuleException.0" ) , pRule , pNode ) , pNode , //$NON-NLS-1$
+        pRule , cause ) ;
   }
 
 
@@ -92,8 +94,8 @@ public final class ProofRuleException extends Exception
    * the problem.
    * 
    * @param message detailed information about the cause.
-   * @param node the {@link ProofNode}.
-   * @param rule the {@link ProofRule} that could not be applied to the
+   * @param pNode the {@link ProofNode}.
+   * @param pRule the {@link ProofRule} that could not be applied to the
    *          <code>node</code>.
    * @param cause the cause, which is saved for later retrieval by the
    *          {@link Throwable#getCause()} method. A <code>null</code> value
@@ -102,24 +104,24 @@ public final class ProofRuleException extends Exception
    * @throws NullPointerException if <code>message</code>, <code>node</code>
    *           or <code>rule</code> is <code>null</code>.
    */
-  public ProofRuleException ( String message , ProofNode node , ProofRule rule ,
-      Throwable cause )
+  public ProofRuleException ( String message , ProofNode pNode ,
+      ProofRule pRule , Throwable cause )
   {
     super ( message , cause ) ;
     if ( message == null )
     {
-      throw new NullPointerException ( "message is null" ) ;
+      throw new NullPointerException ( "message is null" ) ; //$NON-NLS-1$
     }
-    if ( node == null )
+    if ( pNode == null )
     {
-      throw new NullPointerException ( "node is null" ) ;
+      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
     }
-    if ( rule == null )
+    if ( pRule == null )
     {
-      throw new NullPointerException ( "rule is null" ) ;
+      throw new NullPointerException ( "rule is null" ) ; //$NON-NLS-1$
     }
-    this.node = node ;
-    this.rule = rule ;
+    this.node = pNode ;
+    this.rule = pRule ;
   }
 
 

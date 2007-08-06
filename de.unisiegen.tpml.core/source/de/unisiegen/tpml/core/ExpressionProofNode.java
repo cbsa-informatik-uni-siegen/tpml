@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.core;
 
 import javax.swing.tree.TreeNode;
-
 import de.unisiegen.tpml.core.expressions.Expression;
 
 /**
