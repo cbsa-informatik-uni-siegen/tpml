@@ -82,7 +82,7 @@
 		Autogenerating files (parsers, lexers)
 	-->
 
-    <target name="generate" depends="l0,l1,l2,l3,l4" description="Generate parsers and lexers" />
+	<target name="generate" depends="l0,l1,l2,l2o,l2c,l3,l4" description="Generate parsers and lexers" />
 	
 	<property name="impldir" value="${basedir}/source-impl" />
 	<property name="generateddir" value="${basedir}/source-generated" />
@@ -90,10 +90,12 @@
 	<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11a.jar" />
 	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/JFlex-1.4.1.jar" />
 
-	<target name="l0" description="Generates lexer and parser for L0">
+	<target name="l0" depends="l0-expression" description="Generates lexer and parser for L0" />
+		
+	<target name="l0-expression" description="Generates lexer and parser for L0 expression">
 		<jflex 
-    		file="${impldir}/de/unisiegen/tpml/core/languages/l0/l0.flex"
-    		destdir="${generateddir}"
+	   		file="${impldir}/de/unisiegen/tpml/core/languages/l0/l0.flex"
+	   		destdir="${generateddir}"
 			nobak="yes" />
 		<cup
 			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l0/l0.cup"
@@ -103,17 +105,19 @@
 			symbols="L0Terminals"
 			interface="yes"
 			debug="no"
-			expect="0"
+			expect="1000000"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
+			compact_red="yes"
 			dump_grammar="no" />
 	</target>
-	
-	<target name="l1" description="Generates lexer and parser for L1">
-		<!-- Expressions -->
+		
+	<target name="l1" depends="l1-expression,l1-type" description="Generates lexer and parser for L1" />
+
+	<target name="l1-expression" description="Generates lexer and parser for L1 expression">
 		<jflex 
-    		file="${impldir}/de/unisiegen/tpml/core/languages/l1/l1.flex"
-    		destdir="${generateddir}"
+	   		file="${impldir}/de/unisiegen/tpml/core/languages/l1/l1.flex"
+	   		destdir="${generateddir}"
 			nobak="yes" />
 		<cup
 			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l1/l1.cup"
@@ -123,15 +127,17 @@
 			symbols="L1Terminals"
 			interface="yes"
 			debug="no"
-			expect="0"
+			expect="1000000"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
+			compact_red="yes"
 			dump_grammar="no" />
-		
-		<!-- Types -->
+	</target>
+
+	<target name="l1-type" description="Generates lexer and parser for L1 type">
 		<jflex 
-    		file="${impldir}/de/unisiegen/tpml/core/languages/l1/l1type.flex"
-    		destdir="${generateddir}"
+	   		file="${impldir}/de/unisiegen/tpml/core/languages/l1/l1type.flex"
+	   		destdir="${generateddir}"
 			nobak="yes" />
 		<cup
 			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l1/l1type.cup"
@@ -141,16 +147,19 @@
 			symbols="L1TypeTerminals"
 			interface="yes"
 			debug="no"
-			expect="0"
+			expect="1000000"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
+			compact_red="yes"
 			dump_grammar="no" />
 	</target>
-	
-	<target name="l2" description="Generates lexer and parser for L2">
+		
+	<target name="l2" depends="l2-expression,l2-type" description="Generates lexer and parser for L2" />
+		
+	<target name="l2-expression" description="Generates lexer and parser for L2 expression">
 		<jflex 
-    		file="${impldir}/de/unisiegen/tpml/core/languages/l2/l2.flex"
-    		destdir="${generateddir}"
+	   		file="${impldir}/de/unisiegen/tpml/core/languages/l2/l2.flex"
+	   		destdir="${generateddir}"
 			nobak="yes" />
 		<cup
 			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l2/l2.cup"
@@ -160,14 +169,120 @@
 			symbols="L2Terminals"
 			interface="yes"
 			debug="no"
-			expect="0"
+			expect="1000000"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
+			compact_red="yes"
 			dump_grammar="no" />
 	</target>
-	
-	<target name="l3" description="Generates lexer and parser for L3">
-		<!-- Expressions -->
+
+	<target name="l2-type" description="Generates lexer and parser for L2 type">
+		<jflex 
+    		file="${impldir}/de/unisiegen/tpml/core/languages/l2/l2type.flex"
+    		destdir="${generateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l2/l2type.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l2"
+			package="de.unisiegen.tpml.core.languages.l2"
+			parser="L2AbstractTypeParser"
+			symbols="L2TypeTerminals"
+			interface="yes"
+			debug="no"
+			expect="1000000"
+			nonterms="no"
+			nopositions="no"
+			compact_red="yes"
+			dump_grammar="no" />
+	</target>
+		
+	<target name="l2o" depends="l2o-expression,l2o-type" description="Generates lexer and parser for L2O" />
+		
+	<target name="l2o-expression" description="Generates lexer and parser for L2O expression">
+		<jflex 
+	    	file="${impldir}/de/unisiegen/tpml/core/languages/l2o/l2o.flex"
+	    	destdir="${generateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l2o/l2o.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l2o"
+			package="de.unisiegen.tpml.core.languages.l2o"
+			parser="L2OAbstractParser"
+			symbols="L2OTerminals"
+			interface="yes"
+			debug="no"
+			expect="1000000"
+			nonterms="no"
+			nopositions="no"
+			compact_red="yes"
+			dump_grammar="no" />
+	</target>
+
+	<target name="l2o-type" description="Generates lexer and parser for L2O type">
+		<jflex 
+	   		file="${impldir}/de/unisiegen/tpml/core/languages/l2o/l2otype.flex"
+	   		destdir="${generateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l2o/l2otype.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l2o"
+			package="de.unisiegen.tpml.core.languages.l2o"
+			parser="L2OAbstractTypeParser"
+			symbols="L2OTypeTerminals"
+			interface="yes"
+			debug="no"
+			expect="1000000"
+			nonterms="no"
+			nopositions="no"
+			compact_red="yes"
+			dump_grammar="no" />
+	</target>
+		
+	<target name="l2c" depends="l2c-expression,l2c-type" description="Generates lexer and parser for L2C" />
+		
+	<target name="l2c-expression" description="Generates lexer and parser for L2C expression">
+		<jflex 
+		    file="${impldir}/de/unisiegen/tpml/core/languages/l2c/l2c.flex"
+		    destdir="${generateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l2c/l2c.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l2c"
+			package="de.unisiegen.tpml.core.languages.l2c"
+			parser="L2CAbstractParser"
+			symbols="L2CTerminals"
+			interface="yes"
+			debug="no"
+			expect="1000000"
+			nonterms="no"
+			nopositions="no"
+			compact_red="yes"
+			dump_grammar="no" />
+	</target>
+
+	<target name="l2c-type" description="Generates lexer and parser for L2C type">
+		<jflex 
+	    	file="${impldir}/de/unisiegen/tpml/core/languages/l2c/l2ctype.flex"
+	    	destdir="${generateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l2c/l2ctype.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l2c"
+			package="de.unisiegen.tpml.core.languages.l2c"
+			parser="L2CAbstractTypeParser"
+			symbols="L2CTypeTerminals"
+			interface="yes"
+			debug="no"
+			expect="1000000"
+			nonterms="no"
+			nopositions="no"
+			compact_red="yes"
+			dump_grammar="no" />
+	</target>
+		
+	<target name="l3" depends="l3-expression,l3-type" description="Generates lexer and parser for L3" />
+		
+	<target name="l3-expression" description="Generates lexer and parser for L3 expression">
 		<jflex 
     		file="${impldir}/de/unisiegen/tpml/core/languages/l3/l3.flex"
     		destdir="${generateddir}"
@@ -180,12 +295,14 @@
 			symbols="L3Terminals"
 			interface="yes"
 			debug="no"
-			expect="0"
+			expect="1000000"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
+			compact_red="yes"
 			dump_grammar="no" />
+	</target>
 
-		<!-- Types -->
+	<target name="l3-type" description="Generates lexer and parser for L3 type">
 		<jflex 
     		file="${impldir}/de/unisiegen/tpml/core/languages/l3/l3type.flex"
     		destdir="${generateddir}"
@@ -198,14 +315,16 @@
 			symbols="L3TypeTerminals"
 			interface="yes"
 			debug="no"
-			expect="0"
+			expect="1000000"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
+			compact_red="yes"
 			dump_grammar="no" />
 	</target>
-	
-	<target name="l4" description="Generates lexer and parser for L4">
-		<!-- Expressions -->
+		
+	<target name="l4" depends="l4-expression,l4-type" description="Generates lexer and parser for L4" />
+		
+	<target name="l4-expression" description="Generates lexer and parser for L4 expression">
 		<jflex 
     		file="${impldir}/de/unisiegen/tpml/core/languages/l4/l4.flex"
     		destdir="${generateddir}"
@@ -218,12 +337,14 @@
 			symbols="L4Terminals"
 			interface="yes"
 			debug="no"
-			expect="0"
+			expect="1000000"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
+			compact_red="yes"
 			dump_grammar="no" />
+	</target>
 
-		<!-- Types -->
+	<target name="l4-type" description="Generates lexer and parser for L4 type">
 		<jflex 
     		file="${impldir}/de/unisiegen/tpml/core/languages/l4/l4type.flex"
     		destdir="${generateddir}"
@@ -236,9 +357,10 @@
 			symbols="L4TypeTerminals"
 			interface="yes"
 			debug="no"
-			expect="0"
+			expect="1000000"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
+			compact_red="yes"
 			dump_grammar="no" />
 	</target>
 </project>
