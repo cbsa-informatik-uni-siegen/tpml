@@ -6,7 +6,6 @@ import java.util.Arrays ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.exceptions.RowSubstitutionException ;
-import de.unisiegen.tpml.core.interfaces.BodyOrRow ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.languages.MultipleIdentifier ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -21,8 +20,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @author Christian Fehler
  * @version $Rev: 1066 $
  */
-public final class Row extends Expression implements BodyOrRow ,
-    DefaultExpressions
+public final class Row extends Expression implements DefaultExpressions
 {
   /**
    * The keyword <code>epsilon</code>.

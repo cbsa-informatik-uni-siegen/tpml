@@ -58,8 +58,7 @@ public class MultipleIdentifier
       negativeIdentifiers.clear ( ) ;
       replaceIdentifiers.clear ( ) ;
       // For all Identifier in the domainA from the body or row of the body
-      for ( Identifier domAId : ( ( Expression ) pBody.getBodyOrRow ( ) )
-          .getDomA ( ) )
+      for ( Identifier domAId : ( pBody.getBody ( ) ).getDomA ( ) )
       {
         // If the Identifiers are equal, something
         if ( bodyId.equals ( domAId ) )
@@ -89,8 +88,7 @@ public class MultipleIdentifier
           negativeIdentifiers.add ( bodyId ) ;
           BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
           boundRenaming.add ( bodyIdentifiers ) ;
-          boundRenaming.add ( ( ( Expression ) pBody.getBodyOrRow ( ) )
-              .getDomA ( ) ) ;
+          boundRenaming.add ( pBody.getBody ( ).getDomA ( ) ) ;
           LanguageParserReplaceException.throwExceptionBody (
               negativeIdentifiers , replaceIdentifiers , boundRenaming
                   .newIdentifier ( bodyId ).toString ( ) ) ;

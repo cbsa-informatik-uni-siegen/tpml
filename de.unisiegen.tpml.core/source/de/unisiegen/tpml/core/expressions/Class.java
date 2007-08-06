@@ -3,7 +3,6 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.BodyOrRow ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -54,6 +53,13 @@ public final class Class extends Expression implements BoundIdentifiers ,
    * String for the case that the body or row is null.
    */
   private static final String BODY_NULL = "body or row is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the sub {@link Expression} is not a {@link Body}
+   * and not a {@link Row}.
+   */
+  private static final String BODY_INCORRECT = "the sub body is not a body and not a row" ; //$NON-NLS-1$
 
 
   /**
@@ -131,9 +137,9 @@ public final class Class extends Expression implements BoundIdentifiers ,
    * 
    * @param pIdentifier The {@link Identifier}.
    * @param pTau The {@link Type}.
-   * @param pBodyOrRow The child {@link BodyOrRow}.
+   * @param pBody The child body.
    */
-  public Class ( Identifier pIdentifier , MonoType pTau , BodyOrRow pBodyOrRow )
+  public Class ( Identifier pIdentifier , MonoType pTau , Expression pBody )
   {
     if ( pIdentifier == null )
     {
@@ -143,9 +149,13 @@ public final class Class extends Expression implements BoundIdentifiers ,
     {
       throw new IllegalArgumentException ( WRONG_SET ) ;
     }
-    if ( pBodyOrRow == null )
+    if ( pBody == null )
     {
       throw new NullPointerException ( BODY_NULL ) ;
+    }
+    if ( ( ! ( pBody instanceof Body ) ) && ( ! ( pBody instanceof Row ) ) )
+    {
+      throw new IllegalArgumentException ( BODY_INCORRECT ) ;
     }
     // Identifier
     this.identifiers = new Identifier [ ]
@@ -160,7 +170,7 @@ public final class Class extends Expression implements BoundIdentifiers ,
     }
     // Expression
     this.expressions = new Expression [ ]
-    { ( Expression ) pBodyOrRow } ;
+    { pBody } ;
     this.expressions [ 0 ].setParent ( this ) ;
   }
 
@@ -170,14 +180,14 @@ public final class Class extends Expression implements BoundIdentifiers ,
    * 
    * @param pIdentifier The {@link Identifier}.
    * @param pTau The {@link Type}.
-   * @param pBodyOrRow The child {@link BodyOrRow}.
+   * @param pBodyOrRow The child body.
    * @param pParserStartOffset The start offset of this {@link Expression} in
    *          the source code.
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Class ( Identifier pIdentifier , MonoType pTau , BodyOrRow pBodyOrRow ,
-      int pParserStartOffset , int pParserEndOffset )
+  public Class ( Identifier pIdentifier , MonoType pTau ,
+      Expression pBodyOrRow , int pParserStartOffset , int pParserEndOffset )
   {
     this ( pIdentifier , pTau , pBodyOrRow ) ;
     this.parserStartOffset = pParserStartOffset ;
@@ -193,7 +203,7 @@ public final class Class extends Expression implements BoundIdentifiers ,
   {
     return new Class ( this.identifiers [ 0 ].clone ( ) ,
         this.types [ 0 ] == null ? null : this.types [ 0 ].clone ( ) ,
-        ( BodyOrRow ) this.expressions [ 0 ].clone ( ) ) ;
+        this.expressions [ 0 ].clone ( ) ) ;
   }
 
 
@@ -216,13 +226,13 @@ public final class Class extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * Returns the sub {@link BodyOrRow}.
+   * Returns the sub body.
    * 
-   * @return the sub {@link BodyOrRow}.
+   * @return the sub body.
    */
-  public BodyOrRow getBodyOrRow ( )
+  public Expression getBody ( )
   {
-    return ( BodyOrRow ) this.expressions [ 0 ] ;
+    return this.expressions [ 0 ] ;
   }
 
 
@@ -413,9 +423,8 @@ public final class Class extends Expression implements BoundIdentifiers ,
     /*
      * Perform the substitution.
      */
-    BodyOrRow bodyOrRow = ( BodyOrRow ) this.expressions [ 0 ].substitute (
-        pId , pExpression ) ;
-    return new Class ( this.identifiers [ 0 ] , this.types [ 0 ] , bodyOrRow ) ;
+    Expression body = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
+    return new Class ( this.identifiers [ 0 ] , this.types [ 0 ] , body ) ;
   }
 
 
@@ -429,9 +438,8 @@ public final class Class extends Expression implements BoundIdentifiers ,
   {
     MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
         .substitute ( pTypeSubstitution ) ;
-    BodyOrRow bodyOrRow = ( BodyOrRow ) this.expressions [ 0 ]
-        .substitute ( pTypeSubstitution ) ;
-    return new Class ( this.identifiers [ 0 ] , newTau , bodyOrRow ) ;
+    Expression body = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
+    return new Class ( this.identifiers [ 0 ] , newTau , body ) ;
   }
 
 

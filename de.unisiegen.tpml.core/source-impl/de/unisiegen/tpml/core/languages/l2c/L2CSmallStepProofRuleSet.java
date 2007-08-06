@@ -11,7 +11,6 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.New ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
-import de.unisiegen.tpml.core.interfaces.BodyOrRow ;
 import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.l2o.L2OLanguage ;
 import de.unisiegen.tpml.core.languages.l2o.L2OSmallStepProofRuleSet ;
@@ -102,14 +101,12 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
      * If the Expression is a Class, we can only perform CLASS-EVAL.
      */
     pContext.addProofStep ( getRuleByName ( CLASS_EVAL ) , pClass ) ;
-    Expression bodyOrRow = evaluate ( pContext , ( Expression ) pClass
-        .getBodyOrRow ( ) ) ;
-    if ( bodyOrRow.isException ( ) )
+    Expression body = evaluate ( pContext , pClass.getBody ( ) ) ;
+    if ( body.isException ( ) )
     {
-      return bodyOrRow ;
+      return body ;
     }
-    return new Class ( pClass.getId ( ) , pClass.getTau ( ) ,
-        ( BodyOrRow ) bodyOrRow ) ;
+    return new Class ( pClass.getId ( ) , pClass.getTau ( ) , body ) ;
   }
 
 
@@ -141,11 +138,11 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
      * the Class is a Row, we can perform NEW-EXEC.
      */
     else if ( ( pNew.getE ( ) instanceof Class )
-        && ( ( ( Class ) pNew.getE ( ) ).getBodyOrRow ( ) instanceof Row ) )
+        && ( ( ( Class ) pNew.getE ( ) ).getBody ( ) instanceof Row ) )
     {
       pContext.addProofStep ( getRuleByName ( NEW_EXEC ) , pNew ) ;
       Class tmpClass = ( Class ) pNew.getE ( ) ;
-      Row row = ( Row ) tmpClass.getBodyOrRow ( ) ;
+      Row row = ( Row ) tmpClass.getBody ( ) ;
       return new ObjectExpr ( tmpClass.getId ( ) , tmpClass.getTau ( ) , row ) ;
     }
     return pNew ;
@@ -165,23 +162,21 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
      * If the Expression is a Body and the body of the Body is a Body, we can
      * perform INHERIT-RIGHT.
      */
-    if ( pBody.getBodyOrRow ( ) instanceof Body )
+    if ( pBody.getBody ( ) instanceof Body )
     {
       pContext.addProofStep ( getRuleByName ( INHERIT_RIGHT ) , pBody ) ;
-      Expression body = evaluate ( pContext , ( Expression ) pBody
-          .getBodyOrRow ( ) ) ;
+      Expression body = evaluate ( pContext , pBody.getBody ( ) ) ;
       if ( body.isException ( ) )
       {
         return body ;
       }
-      return new Body ( pBody.getIdentifiers ( ) , pBody.getE ( ) ,
-          ( BodyOrRow ) body ) ;
+      return new Body ( pBody.getIdentifiers ( ) , pBody.getE ( ) , body ) ;
     }
     /*
      * If the Expression is a Body and the body of the Body is a Row and the e
      * of the Body is not yet a value, we can perform INHERIT-LEFT.
      */
-    else if ( ( pBody.getBodyOrRow ( ) instanceof Row )
+    else if ( ( pBody.getBody ( ) instanceof Row )
         && ( ! pBody.getE ( ).isValue ( ) ) )
     {
       pContext.addProofStep ( getRuleByName ( INHERIT_LEFT ) , pBody ) ;
@@ -190,7 +185,7 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
       {
         return e ;
       }
-      return new Body ( pBody.getIdentifiers ( ) , e , pBody.getBodyOrRow ( ) ) ;
+      return new Body ( pBody.getIdentifiers ( ) , e , pBody.getBody ( ) ) ;
     }
     /*
      * If the Expression is a Body and the body of the Body is a Row and the e
@@ -198,12 +193,12 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
      * INHERIT-EXEC.
      */
     else if ( ( pBody.getE ( ) instanceof Class )
-        && ( ( ( Class ) pBody.getE ( ) ).getBodyOrRow ( ) instanceof Row )
-        && ( pBody.getBodyOrRow ( ) instanceof Row ) )
+        && ( ( ( Class ) pBody.getE ( ) ).getBody ( ) instanceof Row )
+        && ( pBody.getBody ( ) instanceof Row ) )
     {
       Class tmpClass = ( Class ) pBody.getE ( ) ;
-      Row r1 = ( Row ) tmpClass.getBodyOrRow ( ) ;
-      Row r2 = ( Row ) pBody.getBodyOrRow ( ) ;
+      Row r1 = ( Row ) tmpClass.getBody ( ) ;
+      Row r2 = ( Row ) pBody.getBody ( ) ;
       // dom_a(r1) = A
       ArrayList < Identifier > attributeIdentifierR1 = new ArrayList < Identifier > ( ) ;
       for ( Expression e : r1.getExpressions ( ) )

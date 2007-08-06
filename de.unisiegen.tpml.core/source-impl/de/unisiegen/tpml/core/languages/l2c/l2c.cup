@@ -30,7 +30,6 @@ import de.unisiegen.tpml.core.expressions.RelationalOperator ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.expressions.UnitConstant ;
-import de.unisiegen.tpml.core.interfaces.BodyOrRow ;
 import de.unisiegen.tpml.core.languages.Error ;
 import de.unisiegen.tpml.core.languages.IdentifierExpressionPair ;
 import de.unisiegen.tpml.core.languages.IdentifierTypePair ;
@@ -155,7 +154,7 @@ non terminal Method					method;
 non terminal CurriedMethod			curried_method;
 non terminal Class					class;
 non terminal New					new;
-non terminal BodyOrRow				body;
+non terminal Expression				body;
 
 /* Non terminal - Type */
 non terminal MonoType				type;

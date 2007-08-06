@@ -5,7 +5,6 @@ import java.util.ArrayList ;
 import java.util.Arrays ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.BodyOrRow ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -19,8 +18,8 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @author Christian Fehler
  * @version $Rev: 1066 $
  */
-public final class Body extends Expression implements BodyOrRow ,
-    BoundIdentifiers , DefaultExpressions
+public final class Body extends Expression implements BoundIdentifiers ,
+    DefaultExpressions
 {
   /**
    * The string of an self identifier.
@@ -63,6 +62,13 @@ public final class Body extends Expression implements BodyOrRow ,
    * String for the case that the body or row is null.
    */
   private static final String BODY_NULL = "body or row is null" ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the sub body is not a {@link Body} and not a
+   * {@link Row}.
+   */
+  private static final String BODY_INCORRECT = "the sub body is not a body and not a row" ; //$NON-NLS-1$
 
 
   /**
@@ -126,10 +132,10 @@ public final class Body extends Expression implements BodyOrRow ,
    * 
    * @param pIdentifiers The attribute {@link Identifier}s.
    * @param pExpression The child {@link Expression}.
-   * @param pBodyOrRow The child {@link BodyOrRow}.
+   * @param pBody The child body.
    */
   public Body ( Identifier [ ] pIdentifiers , Expression pExpression ,
-      BodyOrRow pBodyOrRow )
+      Expression pBody )
   {
     if ( pIdentifiers == null )
     {
@@ -150,9 +156,13 @@ public final class Body extends Expression implements BodyOrRow ,
     {
       throw new NullPointerException ( EXPRESSION_NULL ) ;
     }
-    if ( pBodyOrRow == null )
+    if ( pBody == null )
     {
       throw new NullPointerException ( BODY_NULL ) ;
+    }
+    if ( ( ! ( pBody instanceof Body ) ) && ( ! ( pBody instanceof Row ) ) )
+    {
+      throw new IllegalArgumentException ( BODY_INCORRECT ) ;
     }
     // Identifier
     this.identifiers = pIdentifiers ;
@@ -164,7 +174,7 @@ public final class Body extends Expression implements BodyOrRow ,
     }
     // Expression
     this.expressions = new Expression [ ]
-    { pExpression , ( Expression ) pBodyOrRow } ;
+    { pExpression , pBody } ;
     this.expressions [ 0 ].setParent ( this ) ;
     this.expressions [ 1 ].setParent ( this ) ;
     // Check the disjunction
@@ -178,16 +188,16 @@ public final class Body extends Expression implements BodyOrRow ,
    * 
    * @param pIdentifiers The attribute {@link Identifier}s.
    * @param pExpression The child {@link Expression}.
-   * @param pBodyOrRow The child {@link BodyOrRow}.
+   * @param pBody The child body.
    * @param pParserStartOffset The start offset of this {@link Expression} in
    *          the source code.
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
   public Body ( Identifier [ ] pIdentifiers , Expression pExpression ,
-      BodyOrRow pBodyOrRow , int pParserStartOffset , int pParserEndOffset )
+      Expression pBody , int pParserStartOffset , int pParserEndOffset )
   {
-    this ( pIdentifiers , pExpression , pBodyOrRow ) ;
+    this ( pIdentifiers , pExpression , pBody ) ;
     this.parserStartOffset = pParserStartOffset ;
     this.parserEndOffset = pParserEndOffset ;
   }
@@ -249,7 +259,7 @@ public final class Body extends Expression implements BodyOrRow ,
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
     }
     return new Body ( newIdentifiers , this.expressions [ 0 ].clone ( ) ,
-        ( BodyOrRow ) this.expressions [ 1 ].clone ( ) ) ;
+        this.expressions [ 1 ].clone ( ) ) ;
   }
 
 
@@ -271,13 +281,13 @@ public final class Body extends Expression implements BodyOrRow ,
 
 
   /**
-   * Returns the sub {@link BodyOrRow}.
+   * Returns the sub body.
    * 
-   * @return the sub {@link BodyOrRow}.
+   * @return the sub body.
    */
-  public BodyOrRow getBodyOrRow ( )
+  public Expression getBody ( )
   {
-    return ( BodyOrRow ) this.expressions [ 1 ] ;
+    return this.expressions [ 1 ] ;
   }
 
 
@@ -483,17 +493,16 @@ public final class Body extends Expression implements BodyOrRow ,
      * Perform the substitution.
      */
     Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
-    BodyOrRow newBodyOrRow ;
+    Expression newBody ;
     if ( substituteBody )
     {
-      newBodyOrRow = ( BodyOrRow ) this.expressions [ 1 ].substitute ( pId ,
-          pExpression ) ;
+      newBody = this.expressions [ 1 ].substitute ( pId , pExpression ) ;
     }
     else
     {
-      newBodyOrRow = ( BodyOrRow ) this.expressions [ 1 ] ;
+      newBody = this.expressions [ 1 ] ;
     }
-    return new Body ( this.identifiers , newE , newBodyOrRow ) ;
+    return new Body ( this.identifiers , newE , newBody ) ;
   }
 
 
@@ -506,9 +515,8 @@ public final class Body extends Expression implements BodyOrRow ,
   public Body substitute ( TypeSubstitution pTypeSubstitution )
   {
     Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    BodyOrRow newBodyOrRow = ( BodyOrRow ) this.expressions [ 1 ]
-        .substitute ( pTypeSubstitution ) ;
-    return new Body ( this.identifiers , newE , newBodyOrRow ) ;
+    Expression newBody = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
+    return new Body ( this.identifiers , newE , newBody ) ;
   }
 
 

@@ -5,7 +5,6 @@ import de.unisiegen.tpml.core.expressions.Body ;
 import de.unisiegen.tpml.core.expressions.Class ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.New ;
-import de.unisiegen.tpml.core.interfaces.BodyOrRow ;
 import de.unisiegen.tpml.core.languages.l2o.L2OLanguage ;
 import de.unisiegen.tpml.core.languages.l2o.L2OLanguageTranslator ;
 
@@ -65,8 +64,8 @@ public class L2CLanguageTranslator extends L2OLanguageTranslator
     if ( pRecursive )
     {
       return new Body ( pBody.getIdentifiers ( ) , translateToCoreSyntax (
-          pBody.getE ( ) , true ) , ( BodyOrRow ) translateToCoreSyntax (
-          ( Expression ) pBody.getBodyOrRow ( ) , true ) ) ;
+          pBody.getE ( ) , true ) , translateToCoreSyntax ( pBody.getBody ( ) ,
+          true ) ) ;
     }
     return pBody ;
   }
@@ -85,8 +84,7 @@ public class L2CLanguageTranslator extends L2OLanguageTranslator
     if ( pRecursive )
     {
       return new Class ( pClass.getId ( ) , pClass.getTau ( ) ,
-          ( BodyOrRow ) translateToCoreSyntax ( ( Expression ) pClass
-              .getBodyOrRow ( ) , true ) ) ;
+          translateToCoreSyntax ( pClass.getBody ( ) , true ) ) ;
     }
     return pClass ;
   }

@@ -131,16 +131,16 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @param pIdentifier The {@link Identifier}.
    * @param pTau The {@link Type}.
-   * @param pExpression The child {@link Expression}.
+   * @param pRow The child {@link Row}.
    * @param pParserStartOffset The start offset of this {@link Expression} in
    *          the source code.
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public ObjectExpr ( Identifier pIdentifier , MonoType pTau ,
-      Expression pExpression , int pParserStartOffset , int pParserEndOffset )
+  public ObjectExpr ( Identifier pIdentifier , MonoType pTau , Row pRow ,
+      int pParserStartOffset , int pParserEndOffset )
   {
-    this ( pIdentifier , pTau , ( Row ) pExpression ) ;
+    this ( pIdentifier , pTau , pRow ) ;
     this.parserStartOffset = pParserStartOffset ;
     this.parserEndOffset = pParserEndOffset ;
   }
