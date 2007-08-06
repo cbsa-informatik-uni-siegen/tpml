@@ -184,6 +184,7 @@ public interface Versions
    * The version of the de.unisiegen.tpml.ui subproject.
    */
   public static final String UI = "${de.unisiegen.tpml.ui.version}" ; //$NON-NLS-1$
-}</echo>
+}
+</echo>
 	</target>
 </project>
