@@ -1,0 +1,135 @@
+import de.unisiegen.tpml.core.languages.Error ;
+import de.unisiegen.tpml.core.types.ArrowType ;
+import de.unisiegen.tpml.core.types.BooleanType ;
+import de.unisiegen.tpml.core.types.IntegerType ;
+import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.RecType ;
+import de.unisiegen.tpml.core.types.TypeName ;
+import de.unisiegen.tpml.core.types.TypeVariable ;
+import de.unisiegen.tpml.core.types.UnitType ;
+
+
+/* Syntactic */
+terminal			ARROW;
+terminal			LPAREN;
+terminal			RPAREN;
+terminal			DOT;
+
+/* Types */
+terminal			BOOL;
+terminal			INT;
+terminal			UNIT;
+terminal			MU;
+
+/* Special */
+terminal Integer	TYPEVARIABLE;
+terminal String		IDENTIFIER;
+terminal			COMMENT;
+
+/* Non terminal - Type */
+non terminal MonoType				type;
+non terminal MonoType				simple_type;
+non terminal BooleanType			boolean_type;
+non terminal IntegerType			integer_type;
+non terminal UnitType				unit_type;
+non terminal TypeVariable			type_variable;
+non terminal ArrowType				arrow_type;
+non terminal TypeName				type_name;
+non terminal RecType				rec_type;
+
+/* Non terminal - Error */
+non terminal 		epsilon;
+non terminal 		simple_type_error;
+non terminal 		arrow_type_error;
+non terminal		rec_type_error;
+
+/* Precedence */
+precedence right	ARROW;
+
+
+/*********
+ * Types *
+ *********/
+
+
+type							::=	simple_type:t
+									{: RESULT = t; :}
+								|	arrow_type:a
+									{: RESULT = a; :}
+								;
+
+simple_type						::=	LPAREN:l type:t RPAREN:r
+									{: 
+									   t.setParserStartOffset(lleft);
+									   t.setParserEndOffset(rright);
+									   RESULT = t;
+									:}
+								|	boolean_type:b
+									{: RESULT = b; :}
+								|	integer_type:i
+									{: RESULT = i; :}
+								|	unit_type:u
+									{: RESULT = u; :}
+								|	type_variable:t
+									{: RESULT = t; :}
+								|	type_name:t
+									{: RESULT = t; :}
+								|	rec_type:r
+									{: RESULT = r; :}
+								|	simple_type_error
+									{: :}
+								;
+
+simple_type_error				::= LPAREN:l epsilon
+									{: Error.expect("Type", "\u03C4)", lleft, lright, "\u03C4",")"); :}
+								|	LPAREN:l type:t epsilon
+									{: Error.expect("Type", ")", lleft, tright, ")"); :}
+								;
+
+arrow_type						::= type:t1 ARROW type:t2
+									{: RESULT = new ArrowType(t1, t2, t1left, t2right); :}
+								|	arrow_type_error
+									{: :}
+								;
+
+arrow_type_error				::= type:t ARROW:a epsilon 
+									{: Error.expect("Arrow-Type", " \u03C4", tleft, aright, "\u03C4"); :}
+								;
+
+boolean_type					::= BOOL:b
+									{: RESULT = new BooleanType(bleft, bright); :}
+								;
+
+integer_type					::= INT:i
+									{: RESULT = new IntegerType(ileft, iright); :}
+								;
+
+unit_type						::= UNIT:u
+									{: RESULT = new UnitType(uleft, uright); :}
+								;
+
+type_variable					::= TYPEVARIABLE:t
+									{: RESULT = new TypeVariable(0, t, tleft, tright); :}
+								;
+
+type_name						::= IDENTIFIER:id
+									{: RESULT = new TypeName(id, idleft, idright); :}
+								;
+
+rec_type						::= MU:m IDENTIFIER:id DOT type:t
+									{: RESULT = new RecType(new TypeName(id, idleft, idright), t, mleft, tright); :}
+								|	rec_type_error
+									{: :}								
+								;
+
+rec_type_error					::= MU:m epsilon
+									{: Error.expect("Rec-Type", " t.\u03C4", mleft, mright, "t",".","\u03C4"); :}
+								|	MU:m IDENTIFIER:i epsilon
+									{: Error.expect("Rec-Type", ".\u03C4", mleft, iright, ".","\u03C4"); :}
+								|	MU:m IDENTIFIER DOT:d epsilon
+									{: Error.expect("Rec-Type", "\u03C4", mleft, dright, "\u03C4"); :}
+								;
+
+epsilon							::= /* epsilon */
+									{: :}	
+								;

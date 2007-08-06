@@ -1,0 +1,114 @@
+import de.unisiegen.tpml.core.expressions.Application ;
+import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.Lambda ;
+import de.unisiegen.tpml.core.languages.Error ;
+
+
+/* Syntactic */
+terminal			DOT;
+terminal			LPAREN;
+terminal			RPAREN;
+
+/* Keywords */
+terminal			LAMBDA;
+
+/* Special */
+terminal String		IDENTIFIER;
+terminal			COMMENT;
+
+/* Non terminal - Expression */
+non terminal Expression				seq_expr;
+non terminal Expression				expr;
+non terminal Expression				simple_expr;
+non terminal Expression[]			simple_expr_list;
+non terminal Identifier				identifier;
+non terminal Expression				application;
+non terminal Lambda					lambda_no_type;
+
+/* Non terminal - Error */
+non terminal 		epsilon;
+non terminal 		simple_expr_error;
+non terminal 		lambda_no_type_error;
+
+
+/***************
+ * Expressions *
+ ***************/
+
+
+seq_expr						::= expr:e
+									{: RESULT = e; :}
+								;
+
+expr							::=	simple_expr:e
+									{: RESULT = e; :}
+								|   application:a
+									{: RESULT = a; :}
+								|	lambda_no_type:l
+									{: RESULT = l; :}
+								;
+
+identifier						::= IDENTIFIER:id
+									{: RESULT = new Identifier (id,Identifier.Set.VARIABLE,idleft,idright); :}
+								;
+
+application						::= simple_expr:e simple_expr_list:l
+									{:
+									   for (int n = 0; n < l.length; ++n) 
+						  			   {
+						    			 e = new Application(e, l[n],
+						      			   e.getParserStartOffset ( ) , 
+						       				 l[n].getParserEndOffset ( ) );
+						   			   }
+						   			   RESULT = e; 
+						   			:}
+								;
+
+lambda_no_type					::= LAMBDA:l IDENTIFIER:id DOT seq_expr:e
+									{: RESULT = new Lambda(new Identifier (id,Identifier.Set.VARIABLE,idleft,idright), null, e, lleft, eright); :}
+								|	lambda_no_type_error
+									{: :}
+								;
+
+lambda_no_type_error			::= LAMBDA:l epsilon
+									{: Error.expect("Lambda", " id.e", lleft, lright, "id",".","e" ); :}
+								|	LAMBDA:l IDENTIFIER:i epsilon
+									{: Error.expect("Lambda", ".e", lleft, iright, ".","e" ); :}
+								|	LAMBDA:l IDENTIFIER DOT:d epsilon
+									{: Error.expect("Lambda", "e", lleft, dright, "e" ); :}
+								// Missing identifier
+								|	LAMBDA:l DOT
+									{: Error.expect("Lambda", " id", lleft, lright, "id" ); :}
+								// Missing dot
+								|	LAMBDA:l IDENTIFIER:id seq_expr
+									{: Error.expect("Lambda", ".", lleft, idright, "." ); :}
+								;
+
+simple_expr						::=	identifier:id
+									{: RESULT = id; :}
+								|	LPAREN seq_expr:e RPAREN
+									{: RESULT = e; :}
+								|	simple_expr_error
+									{: :}
+								;
+
+simple_expr_error				::= LPAREN:l epsilon
+									{: Error.expect("Expression", "e)", lleft, lright, "... )"); :}
+								|   LPAREN:l seq_expr:e epsilon
+									{: Error.expect("Expression", ")", lleft, eright, ")"); :}
+								;
+
+simple_expr_list				::=	simple_expr:e simple_expr_list:l 
+									{:
+									   RESULT = new Expression[l.length + 1];
+									   System.arraycopy(l, 0, RESULT, 1, l.length);
+									   RESULT[0] = e;
+									:}
+								|	simple_expr:e
+									{: RESULT = new Expression[] { e }; :}
+								;
+
+epsilon							::= /* epsilon */
+									{: :}	
+								;
