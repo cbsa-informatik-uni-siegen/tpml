@@ -7,5 +7,6 @@
   aus pgtest3 entfernen, da nicht mehr benötigt
 
 *** Christian ***
+- Body in Inherit umbenennen, Parser anpassen
 
 *** Benny ***
