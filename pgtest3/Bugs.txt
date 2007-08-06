@@ -1,2 +1,11 @@
-- Im Hauptmenü "Typ Inferenz" ersetzen durch "Type Inference" (Christoph)
-- Button im MainWindow auf Focusable(false) setzen (Christoph)
+*** Christoph ***
+- Im Hauptmenü "Typ Inferenz" ersetzen durch "Type Inference"
+- Button im MainWindow auf Focusable(false) setzen
+
+*** Michael ***
+- Die Dateien "build.properties", "build.xml", und "tpml.xml" 
+  aus pgtest3 entfernen, da nicht mehr benötigt
+
+*** Christian ***
+
+*** Benny ***
