@@ -17,7 +17,7 @@ import javax.swing.JColorChooser ;
 import javax.swing.JLabel ;
 import javax.swing.JList ;
 import de.unisiegen.tpml.core.util.StringUtilities ;
-import de.unisiegen.tpml.graphics.Theme ;
+import de.unisiegen.tpml.core.util.Theme ;
 
 
 /**

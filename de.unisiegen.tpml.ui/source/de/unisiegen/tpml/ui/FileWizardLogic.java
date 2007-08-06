@@ -19,7 +19,7 @@ import javax.swing.tree.TreePath;
 
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
-import de.unisiegen.tpml.graphics.Theme;
+import de.unisiegen.tpml.core.util.Theme;
 
 /**
  * This organizes the logic of the {@link FileWizard} <br>

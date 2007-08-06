@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics ;
+package de.unisiegen.tpml.core.util ;
 
 
 import java.awt.Color ;

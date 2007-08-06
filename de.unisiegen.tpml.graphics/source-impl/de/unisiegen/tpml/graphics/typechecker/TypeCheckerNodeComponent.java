@@ -31,7 +31,7 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerTypeProofNode;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.graphics.Messages;
-import de.unisiegen.tpml.graphics.Theme;
+import de.unisiegen.tpml.core.util.Theme ;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;

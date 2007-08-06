@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
-import de.unisiegen.tpml.graphics.Theme;
+import de.unisiegen.tpml.core.util.Theme ;
 import de.unisiegen.tpml.graphics.components.Bonds;
 import de.unisiegen.tpml.graphics.components.ShowBonds;
 

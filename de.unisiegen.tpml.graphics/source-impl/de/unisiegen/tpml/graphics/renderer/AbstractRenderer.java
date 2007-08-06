@@ -10,7 +10,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JLabel;
 
-import de.unisiegen.tpml.graphics.Theme;
+import de.unisiegen.tpml.core.util.Theme ;
 
 
 /**

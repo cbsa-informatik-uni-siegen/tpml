@@ -24,7 +24,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.TypeName ;
 import de.unisiegen.tpml.graphics.StyledLanguageDocument ;
-import de.unisiegen.tpml.graphics.Theme ;
+import de.unisiegen.tpml.core.util.Theme ;
 
 
 /**

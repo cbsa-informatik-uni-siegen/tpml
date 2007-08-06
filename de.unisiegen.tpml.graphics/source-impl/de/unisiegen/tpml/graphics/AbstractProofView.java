@@ -3,6 +3,7 @@ package de.unisiegen.tpml.graphics;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
+import de.unisiegen.tpml.core.util.Theme ;
 
 /**
  * Abstract base class for all {@link de.unisiegen.tpml.graphics.ProofView}s.

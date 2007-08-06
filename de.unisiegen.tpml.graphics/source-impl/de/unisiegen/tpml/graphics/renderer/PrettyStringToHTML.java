@@ -6,7 +6,7 @@ import java.text.CharacterIterator;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle;
-import de.unisiegen.tpml.graphics.Theme;
+import de.unisiegen.tpml.core.util.Theme ;
 
 /**
  * This class provides the translation of {@link PrettyString} into HTML-Code

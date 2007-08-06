@@ -10,6 +10,7 @@ import javax.swing.event.TreeModelListener;
 
 import de.unisiegen.tpml.core.AbstractProofModel;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
+import de.unisiegen.tpml.core.util.Theme ;
 
 public abstract class AbstractProofComponent extends JComponent {
 	

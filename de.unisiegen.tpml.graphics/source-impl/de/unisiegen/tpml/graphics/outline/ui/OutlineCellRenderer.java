@@ -7,7 +7,7 @@ import java.awt.Graphics ;
 import javax.swing.JTree ;
 import javax.swing.border.LineBorder ;
 import javax.swing.tree.DefaultTreeCellRenderer ;
-import de.unisiegen.tpml.graphics.Theme ;
+import de.unisiegen.tpml.core.util.Theme ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
 

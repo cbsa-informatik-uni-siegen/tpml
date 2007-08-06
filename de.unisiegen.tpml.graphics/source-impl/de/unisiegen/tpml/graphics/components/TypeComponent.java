@@ -12,7 +12,7 @@ import javax.swing.JComponent;
 
 import de.unisiegen.tpml.core.types.RowType;
 import de.unisiegen.tpml.core.types.Type;
-import de.unisiegen.tpml.graphics.Theme;
+import de.unisiegen.tpml.core.util.Theme ;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;

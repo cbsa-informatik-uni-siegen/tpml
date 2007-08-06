@@ -30,6 +30,7 @@ import de.unisiegen.tpml.core.languages.LanguageScannerException ;
 import de.unisiegen.tpml.core.languages.LanguageSymbol ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.core.types.TypeName ;
+import de.unisiegen.tpml.core.util.Theme ;
 import de.unisiegen.tpml.core.util.beans.Bean ;
 
 
