@@ -794,7 +794,7 @@ public class EditorPanelTypes extends javax.swing.JPanel implements EditorPanel 
 			//if ( code.getType2 ( ) != null )
 			out.write ( code.getText2 ( ).toString ( ) );
 			out.close ( );
-			code.setSaveStatus ( false );
+			code.clearHistory ( );
 			//firePropertyChange ( "changed", true, false );
 			this.window.setChangeState ( false );
 			return true;
