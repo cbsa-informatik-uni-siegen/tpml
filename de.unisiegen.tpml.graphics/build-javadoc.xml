@@ -4,7 +4,7 @@
 		<javadoc access="private" author="true"	version="true" classpath="lib/java-cup-11a-runtime.jar:lib/log4j-1.2.14.jar" destdir="doc/manual" source="1.5" windowtitle="TPML Graphics Reference Manual" encoding="UTF-8">
 			
 			<doctitle><![CDATA[<h1>TPML Graphics Reference Manual</h1>]]></doctitle>
-			<bottom><![CDATA[Copyright (c) 2005-2006 University of Siegen]]></bottom>
+			<bottom><![CDATA[Copyright (c) 2005-2007 University of Siegen]]></bottom>
 			
 			<fileset dir="source">
 				<include name="de/unisiegen/tpml/graphics/**/*.java" />
