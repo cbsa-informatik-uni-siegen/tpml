@@ -90,6 +90,34 @@
 	<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11a-tpml.jar" />
 	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/JFlex-1.4.1.jar" />
 
+	<target name="clean-l0">
+		<delete dir="${generateddir}/de/unisiegen/tpml/core/languages/l0" />
+	</target>
+
+	<target name="clean-l1">
+		<delete dir="${generateddir}/de/unisiegen/tpml/core/languages/l1" />
+	</target>
+
+	<target name="clean-l2">
+		<delete dir="${generateddir}/de/unisiegen/tpml/core/languages/l2" />
+	</target>
+
+	<target name="clean-l2o">
+		<delete dir="${generateddir}/de/unisiegen/tpml/core/languages/l2o" />
+	</target>
+			
+	<target name="clean-l2c">
+		<delete dir="${generateddir}/de/unisiegen/tpml/core/languages/l2c" />
+	</target>
+
+	<target name="clean-l3">
+		<delete dir="${generateddir}/de/unisiegen/tpml/core/languages/l3" />
+	</target>
+		
+	<target name="clean-l4">
+		<delete dir="${generateddir}/de/unisiegen/tpml/core/languages/l4" />
+	</target>
+	
 	<target name="l0" depends="l0-expression" description="Generates lexer and parser for L0" />
 		
 	<target name="l0-expression" description="Generates lexer and parser for L0 expression">
