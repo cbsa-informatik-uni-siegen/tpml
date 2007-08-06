@@ -42,7 +42,6 @@ import de.unisiegen.tpml.ui.netbeans.MainWindowForm;
  * @version $Rev:499 $
  * @see de.unisiegen.tpml.ui.Main
  */
-@SuppressWarnings("all")
 public class MainWindow 
 {
   //
