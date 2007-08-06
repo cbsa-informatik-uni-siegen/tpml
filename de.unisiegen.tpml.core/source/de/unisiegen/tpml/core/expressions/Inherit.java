@@ -13,12 +13,12 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 
 
 /**
- * Instances of this class represent body expressions.
+ * Instances of this class represent inherit expressions.
  * 
  * @author Christian Fehler
  * @version $Rev: 1066 $
  */
-public final class Body extends Expression implements BoundIdentifiers ,
+public final class Inherit extends Expression implements BoundIdentifiers ,
     DefaultExpressions
 {
   /**
@@ -59,13 +59,13 @@ public final class Body extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * String for the case that the body or row is null.
+   * String for the case that the body is null.
    */
-  private static final String BODY_NULL = "body or row is null" ; //$NON-NLS-1$
+  private static final String BODY_NULL = "body is null" ; //$NON-NLS-1$
 
 
   /**
-   * String for the case that the sub body is not a {@link Body} and not a
+   * String for the case that the sub body is not a {@link Inherit} and not a
    * {@link Row}.
    */
   private static final String BODY_INCORRECT = "the sub body is not a body and not a row" ; //$NON-NLS-1$
@@ -74,7 +74,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = Expression.getCaption ( Body.class ) ;
+  private static final String CAPTION = Expression.getCaption ( Inherit.class ) ;
 
 
   /**
@@ -128,13 +128,13 @@ public final class Body extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * Allocates a new {@link Body}.
+   * Allocates a new {@link Inherit}.
    * 
    * @param pIdentifiers The attribute {@link Identifier}s.
    * @param pExpression The child {@link Expression}.
    * @param pBody The child body.
    */
-  public Body ( Identifier [ ] pIdentifiers , Expression pExpression ,
+  public Inherit ( Identifier [ ] pIdentifiers , Expression pExpression ,
       Expression pBody )
   {
     if ( pIdentifiers == null )
@@ -160,7 +160,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
     {
       throw new NullPointerException ( BODY_NULL ) ;
     }
-    if ( ( ! ( pBody instanceof Body ) ) && ( ! ( pBody instanceof Row ) ) )
+    if ( ( ! ( pBody instanceof Inherit ) ) && ( ! ( pBody instanceof Row ) ) )
     {
       throw new IllegalArgumentException ( BODY_INCORRECT ) ;
     }
@@ -184,7 +184,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * Allocates a new {@link Body}.
+   * Allocates a new {@link Inherit}.
    * 
    * @param pIdentifiers The attribute {@link Identifier}s.
    * @param pExpression The child {@link Expression}.
@@ -194,7 +194,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Body ( Identifier [ ] pIdentifiers , Expression pExpression ,
+  public Inherit ( Identifier [ ] pIdentifiers , Expression pExpression ,
       Expression pBody , int pParserStartOffset , int pParserEndOffset )
   {
     this ( pIdentifiers , pExpression , pBody ) ;
@@ -251,14 +251,14 @@ public final class Body extends Expression implements BoundIdentifiers ,
    * {@inheritDoc}
    */
   @ Override
-  public Body clone ( )
+  public Inherit clone ( )
   {
     Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
     }
-    return new Body ( newIdentifiers , this.expressions [ 0 ].clone ( ) ,
+    return new Inherit ( newIdentifiers , this.expressions [ 0 ].clone ( ) ,
         this.expressions [ 1 ].clone ( ) ) ;
   }
 
@@ -269,9 +269,9 @@ public final class Body extends Expression implements BoundIdentifiers ,
   @ Override
   public boolean equals ( Object pObject )
   {
-    if ( pObject instanceof Body )
+    if ( pObject instanceof Inherit )
     {
-      Body other = ( Body ) pObject ;
+      Inherit other = ( Inherit ) pObject ;
       return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
           && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( this.expressions [ 1 ]
           .equals ( other.expressions [ 1 ] ) ) ) ;
@@ -471,7 +471,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
    * {@inheritDoc}
    */
   @ Override
-  public Body substitute ( Identifier pId , Expression pExpression )
+  public Inherit substitute ( Identifier pId , Expression pExpression )
   {
     if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
     {
@@ -502,7 +502,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
     {
       newBody = this.expressions [ 1 ] ;
     }
-    return new Body ( this.identifiers , newE , newBody ) ;
+    return new Inherit ( this.identifiers , newE , newBody ) ;
   }
 
 
@@ -512,11 +512,11 @@ public final class Body extends Expression implements BoundIdentifiers ,
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public Body substitute ( TypeSubstitution pTypeSubstitution )
+  public Inherit substitute ( TypeSubstitution pTypeSubstitution )
   {
     Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
     Expression newBody = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
-    return new Body ( this.identifiers , newE , newBody ) ;
+    return new Inherit ( this.identifiers , newE , newBody ) ;
   }
 
 
@@ -530,7 +530,7 @@ public final class Body extends Expression implements BoundIdentifiers ,
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_BODY ) ;
+          PRIO_INHERIT ) ;
       this.prettyStringBuilder.addKeyword ( INHERIT ) ;
       this.prettyStringBuilder.addText ( SPACE ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
@@ -549,12 +549,14 @@ public final class Body extends Expression implements BoundIdentifiers ,
       this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_BODY_E ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_INHERIT_E ) ;
       this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addText ( SEMI ) ;
       this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_BODY_B ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_INHERIT_B ) ;
     }
     return this.prettyStringBuilder ;
   }

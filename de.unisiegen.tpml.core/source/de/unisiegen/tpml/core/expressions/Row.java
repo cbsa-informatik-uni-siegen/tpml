@@ -404,7 +404,8 @@ public final class Row extends Expression implements DefaultExpressions
   {
     if ( this.prefix == null )
     {
-      if ( this.parent instanceof Class )
+      if ( ( this.parent instanceof Class )
+          || ( this.parent instanceof Inherit ) )
       {
         this.prefix = PREFIX_BODY ;
       }

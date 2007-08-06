@@ -1,7 +1,7 @@
 package de.unisiegen.tpml.core.languages.l2c ;
 
 
-import de.unisiegen.tpml.core.expressions.Body ;
+import de.unisiegen.tpml.core.expressions.Inherit ;
 import de.unisiegen.tpml.core.expressions.Class ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.New ;
@@ -44,26 +44,26 @@ public class L2CLanguageTranslator extends L2OLanguageTranslator
     {
       return translateToCoreSyntaxNew ( ( New ) pExpression , pRecursive ) ;
     }
-    else if ( pExpression instanceof Body )
+    else if ( pExpression instanceof Inherit )
     {
-      return translateToCoreSyntaxBody ( ( Body ) pExpression , pRecursive ) ;
+      return translateToCoreSyntaxBody ( ( Inherit ) pExpression , pRecursive ) ;
     }
     return super.translateToCoreSyntax ( pExpression , pRecursive ) ;
   }
 
 
   /**
-   * Translates the {@link Body} to core syntax.
+   * Translates the {@link Inherit} to core syntax.
    * 
-   * @param pBody The given {@link Body}.
-   * @param pRecursive Translate recursive all children of the {@link Body}.
+   * @param pBody The given {@link Inherit}.
+   * @param pRecursive Translate recursive all children of the {@link Inherit}.
    * @return The translated {@link Expression}.
    */
-  private Expression translateToCoreSyntaxBody ( Body pBody , boolean pRecursive )
+  private Expression translateToCoreSyntaxBody ( Inherit pBody , boolean pRecursive )
   {
     if ( pRecursive )
     {
-      return new Body ( pBody.getIdentifiers ( ) , translateToCoreSyntax (
+      return new Inherit ( pBody.getIdentifiers ( ) , translateToCoreSyntax (
           pBody.getE ( ) , true ) , translateToCoreSyntax ( pBody.getBody ( ) ,
           true ) ) ;
     }

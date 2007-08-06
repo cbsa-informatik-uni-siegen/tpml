@@ -50,14 +50,14 @@ public final class Class extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * String for the case that the body or row is null.
+   * String for the case that the body is null.
    */
-  private static final String BODY_NULL = "body or row is null" ; //$NON-NLS-1$
+  private static final String BODY_NULL = "body is null" ; //$NON-NLS-1$
 
 
   /**
-   * String for the case that the sub {@link Expression} is not a {@link Body}
-   * and not a {@link Row}.
+   * String for the case that the sub {@link Expression} is not a
+   * {@link Inherit} and not a {@link Row}.
    */
   private static final String BODY_INCORRECT = "the sub body is not a body and not a row" ; //$NON-NLS-1$
 
@@ -153,7 +153,7 @@ public final class Class extends Expression implements BoundIdentifiers ,
     {
       throw new NullPointerException ( BODY_NULL ) ;
     }
-    if ( ( ! ( pBody instanceof Body ) ) && ( ! ( pBody instanceof Row ) ) )
+    if ( ( ! ( pBody instanceof Inherit ) ) && ( ! ( pBody instanceof Row ) ) )
     {
       throw new IllegalArgumentException ( BODY_INCORRECT ) ;
     }
@@ -180,16 +180,16 @@ public final class Class extends Expression implements BoundIdentifiers ,
    * 
    * @param pIdentifier The {@link Identifier}.
    * @param pTau The {@link Type}.
-   * @param pBodyOrRow The child body.
+   * @param pBody The child body.
    * @param pParserStartOffset The start offset of this {@link Expression} in
    *          the source code.
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Class ( Identifier pIdentifier , MonoType pTau ,
-      Expression pBodyOrRow , int pParserStartOffset , int pParserEndOffset )
+  public Class ( Identifier pIdentifier , MonoType pTau , Expression pBody ,
+      int pParserStartOffset , int pParserEndOffset )
   {
-    this ( pIdentifier , pTau , pBodyOrRow ) ;
+    this ( pIdentifier , pTau , pBody ) ;
     this.parserStartOffset = pParserStartOffset ;
     this.parserEndOffset = pParserEndOffset ;
   }

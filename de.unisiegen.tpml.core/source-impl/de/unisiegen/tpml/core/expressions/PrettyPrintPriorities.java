@@ -348,21 +348,21 @@ interface PrettyPrintPriorities
 
 
   /**
-   * The pretty print priority for {@link Body}s.
+   * The pretty print priority for {@link Inherit}s.
    */
-  public static final int PRIO_BODY = 0 ;
+  public static final int PRIO_INHERIT = 0 ;
 
 
   /**
-   * The pretty print priority for the expression of {@link Body}s.
+   * The pretty print priority for the expression of {@link Inherit}s.
    */
-  public static final int PRIO_BODY_E = 0 ;
+  public static final int PRIO_INHERIT_E = 0 ;
 
 
   /**
-   * The pretty print priority for the body of {@link Body}s.
+   * The pretty print priority for the body of {@link Inherit}s.
    */
-  public static final int PRIO_BODY_B = 0 ;
+  public static final int PRIO_INHERIT_B = 0 ;
 
 
   /**

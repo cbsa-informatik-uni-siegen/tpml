@@ -3,7 +3,6 @@ import de.unisiegen.tpml.core.expressions.Application ;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
-import de.unisiegen.tpml.core.expressions.Body ;
 import de.unisiegen.tpml.core.expressions.BooleanConstant ;
 import de.unisiegen.tpml.core.expressions.Class;
 import de.unisiegen.tpml.core.expressions.Coercion;
@@ -16,6 +15,7 @@ import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.InfixOperation ;
+import de.unisiegen.tpml.core.expressions.Inherit ;
 import de.unisiegen.tpml.core.expressions.IntegerConstant ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
@@ -154,7 +154,7 @@ non terminal Method					method;
 non terminal CurriedMethod			curried_method;
 non terminal Class					class;
 non terminal New					new;
-non terminal Expression				body;
+non terminal Expression				inherit;
 
 /* Non terminal - Type */
 non terminal MonoType				type;
@@ -181,7 +181,7 @@ non terminal IdentifierTypePair				curried_method_pair;
 non terminal Expression[]					row;
 non terminal IdentifierExpressionPair[]		duplication_list;
 non terminal IdentifierExpressionPair		duplication_pair;
-non terminal Identifier[]					body_attribute_list;
+non terminal Identifier[]					inherit_attribute_list;
 
 /* Non terminal - Error */
 non terminal 		epsilon;
@@ -224,8 +224,8 @@ non terminal 		object_type_error;
 non terminal		row_type_l2c_error;
 non terminal		class_error;
 non terminal		new_error;
-non terminal		body_error;
-non terminal		body_attribute_list_error;
+non terminal		inherit_error;
+non terminal		inherit_attribute_list_error;
 non terminal		class_type_error;
 
 /* Precedence */
@@ -1332,18 +1332,18 @@ send_error						::= simple_expr:s HASHKEY:h epsilon
 									{: Error.expect("Send", " m", sleft, hright, "m"); :}	
 								;
 
-class							::= CLASS:c LPAREN SELF:id RPAREN body:b END:end
-									{: RESULT = new Class (new Identifier (id,Identifier.Set.SELF,idleft,idright), null, b, cleft, endright); :}
-								|	CLASS:c LPAREN SELF:id COLON type:tau RPAREN body:b END:end
-									{: RESULT = new Class (new Identifier (id,Identifier.Set.SELF,idleft,idright), tau, b, cleft, endright); :}
+class							::= CLASS:c LPAREN SELF:id RPAREN inherit:i END:end
+									{: RESULT = new Class (new Identifier (id,Identifier.Set.SELF,idleft,idright), null, i, cleft, endright); :}
+								|	CLASS:c LPAREN SELF:id COLON type:tau RPAREN inherit:i END:end
+									{: RESULT = new Class (new Identifier (id,Identifier.Set.SELF,idleft,idright), tau, i, cleft, endright); :}
 								|	class_error
 									{: :}
 								;
 
-class_error						::= CLASS:c LPAREN SELF COLON type RPAREN body:b epsilon
-									{: Error.expect("Class", " end", cleft, bright, "end"); :}	
-								|	CLASS:c LPAREN SELF RPAREN body:b epsilon
-									{: Error.expect("Class", " end", cleft, bright, "end"); :}
+class_error						::= CLASS:c LPAREN SELF COLON type RPAREN inherit:i epsilon
+									{: Error.expect("Class", " end", cleft, iright, "end"); :}	
+								|	CLASS:c LPAREN SELF RPAREN inherit:i epsilon
+									{: Error.expect("Class", " end", cleft, iright, "end"); :}
 								// Missing left bracket
 								|	CLASS:c SELF
 									{: Error.expect("Class", " (", cleft, cright, "(" ); :}
@@ -1355,11 +1355,11 @@ class_error						::= CLASS:c LPAREN SELF COLON type RPAREN body:b epsilon
 								// Missing right bracket
 								|	CLASS:c LPAREN SELF:s END
 									{: Error.expect("Class", ") ", cleft, sright, ")" ); :}
-								|	CLASS:c LPAREN SELF:s body
+								|	CLASS:c LPAREN SELF:s inherit
 									{: Error.expect("Class", ") ", cleft, sright, ")" ); :}
 								|	CLASS:c LPAREN SELF COLON type:t END
 									{: Error.expect("Class", ") ", cleft, tright, ")" ); :}
-								|	CLASS:c LPAREN SELF COLON type:t body
+								|	CLASS:c LPAREN SELF COLON type:t inherit
 									{: Error.expect("Class", ") ", cleft, tright, ")" ); :}
 								// Missing colon
 								|   CLASS:c LPAREN SELF:s type
@@ -1375,7 +1375,7 @@ class_error						::= CLASS:c LPAREN SELF COLON type RPAREN body:b epsilon
 								// Missing self and right paren
 								|	CLASS:c LPAREN:l END
 									{: Error.expect("Class", "self) ", cleft, lright, "self",")" ); :}
-								|	CLASS:c LPAREN:l body
+								|	CLASS:c LPAREN:l inherit
 									{: Error.expect("Class", "self) ", cleft, lright, "self",")" ); :}
 								// Missing self and colon
 								|	CLASS:c LPAREN:l type
@@ -1383,66 +1383,66 @@ class_error						::= CLASS:c LPAREN SELF COLON type RPAREN body:b epsilon
 								// Missing type and right paren
 								|	CLASS:c LPAREN SELF COLON:co END
 									{: Error.expect("Class", " \u03C4) ", cleft, coright, "\u03C4",")" ); :}
-								|	CLASS:c LPAREN SELF COLON:co body
+								|	CLASS:c LPAREN SELF COLON:co inherit
 									{: Error.expect("Class", " \u03C4) ", cleft, coright, "\u03C4",")" ); :}
 								// Missing left paren, self and right paren
 								|	CLASS:c END
 									{: Error.expect("Class", " (self) ", cleft, cright, "(","self",")" ); :}
-								|	CLASS:c body
+								|	CLASS:c inherit
 									{: Error.expect("Class", " (self) ", cleft, cright, "(","self",")" ); :}								
 								// Missing left paren, self and colon
 								|	CLASS:c type
 									{: Error.expect("Class", " (self: ", cleft, cright, "(","self",":" ); :}
 								;
 
-body							::= INHERIT:i body_attribute_list:bal FROM expr:e SEMI body:b
+inherit							::= INHERIT:in inherit_attribute_list:ial FROM expr:e SEMI inherit:i
 									{:
-									   Body body = new Body (bal, e, b, ileft, bright); 
-									   MultipleIdentifier.check(body);
-									   RESULT = body ;
+									   Inherit inherit = new Inherit (ial, e, i, inleft, iright); 
+									   MultipleIdentifier.check(inherit);
+									   RESULT = inherit ;
 									:}
 								|	row:r
 									{: RESULT = new Row(r, rleft, rright) ; :}
-								|	body_error
+								|	inherit_error
 						   			{: :}
 								;
 
-body_error						::= // Missing attribute list
+inherit_error					::= // Missing attribute list
 									INHERIT:i FROM
-									{: Error.expect("Body", " a1, ak ", ileft, iright, "a1",","," ","..."," ",",","a_k"); :}
+									{: Error.expect("Inherit", " a1, ak ", ileft, iright, "a1",","," ","..."," ",",","a_k"); :}
 								// Missing identifier
 								|	INHERIT:i COMMA
-									{: Error.expect("Body", " a ", ileft, iright, "a"); :}
+									{: Error.expect("Inherit", " a ", ileft, iright, "a"); :}
 								// Missing from
-								|	INHERIT:i body_attribute_list:bal expr
-									{: Error.expect("Body", " from ", ileft, balright, "from"); :}
+								|	INHERIT:i inherit_attribute_list:ial expr
+									{: Error.expect("Inherit", " from ", ileft, ialright, "from"); :}
 								// Missing e
-								|	INHERIT:i body_attribute_list FROM:f SEMI
-									{: Error.expect("Body", " (class (self) end) ", ileft, fright, "e"); :}
+								|	INHERIT:i inherit_attribute_list FROM:f SEMI
+									{: Error.expect("Inherit", " (class (self) end) ", ileft, fright, "e"); :}
 								// Missing semi
-								|	INHERIT:i body_attribute_list FROM expr:e body
-									{: Error.expect("Body", " ; ", ileft, eright, ";"); :}								
+								|	INHERIT:i inherit_attribute_list FROM expr:e inherit
+									{: Error.expect("Inherit", " ; ", ileft, eright, ";"); :}								
 								// Missing attribute list and from
 								|	INHERIT:i expr
-									{: Error.expect("Body", " a1, ak from ", ileft, iright, "a1",","," ","..."," ",",","a_k"," ","from"); :}	
+									{: Error.expect("Inherit", " a1, ak from ", ileft, iright, "a1",","," ","..."," ",",","a_k"," ","from"); :}	
 								// Missing from and e
-								|	INHERIT:i body_attribute_list:bal SEMI
-									{: Error.expect("Body", " from (class (self) end) ", ileft, balright, "from"," ","e"); :}
+								|	INHERIT:i inherit_attribute_list:bal SEMI
+									{: Error.expect("Inherit", " from (class (self) end) ", ileft, balright, "from"," ","e"); :}
 								// Missing e and semi
-								|	INHERIT:i body_attribute_list FROM:f body
-									{: Error.expect("Body", " (class (self) end) ; ", ileft, fright, "e"," ",";"); :}
+								|	INHERIT:i inherit_attribute_list FROM:f inherit
+									{: Error.expect("Inherit", " (class (self) end) ; ", ileft, fright, "e"," ",";"); :}
 								// Missing attribute list, from and e
 								|	INHERIT:i SEMI
-									{: Error.expect("Body", " a1, ak from (class (self) end) ", ileft, iright, "a1",","," ","..."," ",",","a_k"," ","from"," ","e"); :}						
+									{: Error.expect("Inherit", " a1, ak from (class (self) end) ", ileft, iright, "a1",","," ","..."," ",",","a_k"," ","from"," ","e"); :}						
 								// Missing from, e and semi
-								|	INHERIT:i body_attribute_list:bal body
-									{: Error.expect("Body", " from (class (self) end) ; ", ileft, balright, "from"," ","e"," ",";"); :}
+								|	INHERIT:i inherit_attribute_list:ial inherit
+									{: Error.expect("Inherit", " from (class (self) end) ; ", ileft, ialright, "from"," ","e"," ",";"); :}
 								// Missing attribute list, from, e and semi
-								|	INHERIT:i body
-									{: Error.expect("Body", " a1, ak from (class (self) end) ; ", ileft, iright, "a1",","," ","..."," ",",","a_k"," ","from"," ","e"," ",";"); :}						
+								|	INHERIT:i inherit
+									{: Error.expect("Inherit", " a1, ak from (class (self) end) ; ", ileft, iright, "a1",","," ","..."," ",",","a_k"," ","from"," ","e"," ",";"); :}						
 								;
 
-body_attribute_list				::=	body_attribute_list:bal COMMA IDENTIFIER:id
+inherit_attribute_list			::=	inherit_attribute_list:bal COMMA IDENTIFIER:id
 									{:
 									   RESULT = new Identifier[bal.length + 1];
 						   			   System.arraycopy(bal, 0, RESULT, 0, bal.length);
@@ -1450,12 +1450,12 @@ body_attribute_list				::=	body_attribute_list:bal COMMA IDENTIFIER:id
 						   			:}
 								|	IDENTIFIER:id
 									{: RESULT = new Identifier[] { new Identifier(id,Identifier.Set.ATTRIBUTE,idleft,idright) }; :}
-								|	body_attribute_list_error
+								|	inherit_attribute_list_error
 						   			{: :}
 								;
 
-body_attribute_list_error		::=	body_attribute_list:bal COMMA:c epsilon
-									{: Error.expect("Body", " ak ", balleft, cright, "a_i",","," ","..."," ",",","a_k"); :}
+inherit_attribute_list_error	::=	inherit_attribute_list:ial COMMA:c epsilon
+									{: Error.expect("Inherit", " ak ", ialleft, cright, "a_i",","," ","..."," ",",","a_k"); :}
 								;
 
 new								::= NEW:n expr:e

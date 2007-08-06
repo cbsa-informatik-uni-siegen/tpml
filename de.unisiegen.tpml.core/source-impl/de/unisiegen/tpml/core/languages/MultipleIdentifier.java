@@ -5,7 +5,7 @@ import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserReplaceException ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
-import de.unisiegen.tpml.core.expressions.Body ;
+import de.unisiegen.tpml.core.expressions.Inherit ;
 import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
@@ -22,12 +22,12 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
 public class MultipleIdentifier
 {
   /**
-   * Throws a {@link LanguageParserMultiException} if the {@link Body} has two
+   * Throws a {@link LanguageParserMultiException} if the {@link Inherit} has two
    * or more {@link Attribute} with the same {@link Identifier}.
    * 
-   * @param pBody The {@link Body} which should be checked.
+   * @param pBody The {@link Inherit} which should be checked.
    */
-  public static void check ( Body pBody )
+  public static void check ( Inherit pBody )
   {
     ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
     Identifier [ ] bodyIdentifiers = pBody.getIdentifiers ( ) ;
@@ -51,10 +51,10 @@ public class MultipleIdentifier
      * Rename the duplicated attribute Identifier.
      */
     ArrayList < Identifier > replaceIdentifiers = new ArrayList < Identifier > ( ) ;
-    // For all Identifier in the Body
+    // For all Identifier in the Inherit
     for ( Identifier bodyId : bodyIdentifiers )
     {
-      // Clear both lists for the next Identifier in the Body
+      // Clear both lists for the next Identifier in the Inherit
       negativeIdentifiers.clear ( ) ;
       replaceIdentifiers.clear ( ) ;
       // For all Identifier in the domainA from the body or row of the body

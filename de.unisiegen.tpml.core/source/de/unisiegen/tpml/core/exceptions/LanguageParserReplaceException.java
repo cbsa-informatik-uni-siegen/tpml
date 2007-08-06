@@ -5,7 +5,7 @@ import java.text.MessageFormat ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
-import de.unisiegen.tpml.core.expressions.Body ;
+import de.unisiegen.tpml.core.expressions.Inherit ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.languages.LanguageParserException ;
 
@@ -28,7 +28,7 @@ public final class LanguageParserReplaceException extends
 
 
   /**
-   * Throws a <code>LanguageParserReplaceException</code> if the {@link Body}
+   * Throws a <code>LanguageParserReplaceException</code> if the {@link Inherit}
    * consist of {@link Attribute}s with the same {@link Identifier}.
    * 
    * @param pNegativeIdentifiers The input list of negative {@link Identifier}s.

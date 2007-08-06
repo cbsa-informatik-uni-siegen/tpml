@@ -102,7 +102,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * Prefix of the {@link Body}.
+   * Prefix of the {@link Inherit}.
    */
   protected static final String PREFIX_BODY = "b" ; //$NON-NLS-1$
 

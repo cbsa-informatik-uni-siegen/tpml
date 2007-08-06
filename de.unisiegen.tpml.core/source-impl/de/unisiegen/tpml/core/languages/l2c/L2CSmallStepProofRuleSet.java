@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core.languages.l2c ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
-import de.unisiegen.tpml.core.expressions.Body ;
+import de.unisiegen.tpml.core.expressions.Inherit ;
 import de.unisiegen.tpml.core.expressions.Class ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
@@ -150,19 +150,19 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
 
 
   /**
-   * Evaluates the {@link Body} using <code>context</code>.
+   * Evaluates the {@link Inherit} using <code>context</code>.
    * 
    * @param pContext The small step proof context.
-   * @param pBody The {@link Body}.
+   * @param pBody The {@link Inherit}.
    * @return The resulting {@link Expression}.
    */
-  public Expression evaluateBody ( SmallStepProofContext pContext , Body pBody )
+  public Expression evaluateBody ( SmallStepProofContext pContext , Inherit pBody )
   {
     /*
-     * If the Expression is a Body and the body of the Body is a Body, we can
+     * If the Expression is a Inherit and the body of the Inherit is a Inherit, we can
      * perform INHERIT-RIGHT.
      */
-    if ( pBody.getBody ( ) instanceof Body )
+    if ( pBody.getBody ( ) instanceof Inherit )
     {
       pContext.addProofStep ( getRuleByName ( INHERIT_RIGHT ) , pBody ) ;
       Expression body = evaluate ( pContext , pBody.getBody ( ) ) ;
@@ -170,11 +170,11 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
       {
         return body ;
       }
-      return new Body ( pBody.getIdentifiers ( ) , pBody.getE ( ) , body ) ;
+      return new Inherit ( pBody.getIdentifiers ( ) , pBody.getE ( ) , body ) ;
     }
     /*
-     * If the Expression is a Body and the body of the Body is a Row and the e
-     * of the Body is not yet a value, we can perform INHERIT-LEFT.
+     * If the Expression is a Inherit and the body of the Inherit is a Row and the e
+     * of the Inherit is not yet a value, we can perform INHERIT-LEFT.
      */
     else if ( ( pBody.getBody ( ) instanceof Row )
         && ( ! pBody.getE ( ).isValue ( ) ) )
@@ -185,11 +185,11 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
       {
         return e ;
       }
-      return new Body ( pBody.getIdentifiers ( ) , e , pBody.getBody ( ) ) ;
+      return new Inherit ( pBody.getIdentifiers ( ) , e , pBody.getBody ( ) ) ;
     }
     /*
-     * If the Expression is a Body and the body of the Body is a Row and the e
-     * of the Body is a Class and the e of the Class is a Row, we can perform
+     * If the Expression is a Inherit and the body of the Inherit is a Row and the e
+     * of the Inherit is a Class and the e of the Class is a Row, we can perform
      * INHERIT-EXEC.
      */
     else if ( ( pBody.getE ( ) instanceof Class )

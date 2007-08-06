@@ -5,7 +5,7 @@ import java.text.MessageFormat ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
-import de.unisiegen.tpml.core.expressions.Body ;
+import de.unisiegen.tpml.core.expressions.Inherit ;
 import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Method ;
@@ -85,7 +85,7 @@ public class LanguageParserMultiException extends LanguageParserException
 
 
   /**
-   * Throws a <code>LanguageParserMultiException</code> if the {@link Body}
+   * Throws a <code>LanguageParserMultiException</code> if the {@link Inherit}
    * consist of {@link Attribute}s with the same {@link Identifier}.
    * 
    * @param pNegativeIdentifiers The input list of {@link Identifier}s.
