@@ -1,139 +1,151 @@
-package de.unisiegen.tpml.core.smallstep;
+package de.unisiegen.tpml.core.smallstep ;
 
-import java.util.Vector;
 
-import de.unisiegen.tpml.core.ProofRule;
-import de.unisiegen.tpml.core.ProofRuleSet;
-import de.unisiegen.tpml.core.ProofStep;
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.interpreters.DefaultStore;
-import de.unisiegen.tpml.core.interpreters.Store;
+import java.util.Vector ;
+import de.unisiegen.tpml.core.ProofRule ;
+import de.unisiegen.tpml.core.ProofRuleSet ;
+import de.unisiegen.tpml.core.ProofStep ;
+import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.interpreters.DefaultStore ;
+import de.unisiegen.tpml.core.interpreters.Store ;
+
 
 /**
  * Default implementation of the <code>SmallStepProofContext</code> interface.
- *
+ * 
  * @author Benedikt Meurer
  * @version $Rev$
- *
  * @see de.unisiegen.tpml.core.smallstep.SmallStepProofContext
  */
-final class DefaultSmallStepProofContext implements SmallStepProofContext {
+final class DefaultSmallStepProofContext implements SmallStepProofContext
+{
   //
   // Attributes
   //
-  
   /**
    * The resulting {@link Expression}.
    * 
    * @see #getExpression()
    */
-  private Expression expression;
-  
+  private Expression expression ;
+
+
   /**
    * The steps in the proof.
    * 
    * @see #getSteps()
    */
-  private Vector<ProofStep> steps = new Vector<ProofStep>();
-  
+  private Vector < ProofStep > steps = new Vector < ProofStep > ( ) ;
+
+
   /**
    * The resulting {@link Store}.
    * 
    * @see #getStore()
    */
-  private DefaultStore store;
-  
-  
-  
+  private DefaultStore store ;
+
+
   //
   // Constructor (package)
   //
-  
   /**
-   * Allocates a new <code>DefaultSmallStepProofContext</code> instance using the specified <code>node</code>
-   * and the small step proof <code>ruleSet</code>.
-   *
-   * @param node the {@link SmallStepProofNode} for which to determine the next small steps. The expression
-   *             and the store from the <code>node</code> are relevant here.
-   * @param ruleSet the {@link AbstractSmallStepProofRuleSet} to use for the evaluation of the next
-   *                small steps.
+   * Allocates a new <code>DefaultSmallStepProofContext</code> instance using
+   * the specified <code>node</code> and the small step proof
+   * <code>ruleSet</code>.
    * 
-   * @throws NullPointerException if <code>node</code> or <code>ruleSet</code> is <code>null</code>.
+   * @param node the {@link SmallStepProofNode} for which to determine the next
+   *          small steps. The expression and the store from the
+   *          <code>node</code> are relevant here.
+   * @param ruleSet the {@link AbstractSmallStepProofRuleSet} to use for the
+   *          evaluation of the next small steps.
+   * @throws NullPointerException if <code>node</code> or <code>ruleSet</code>
+   *           is <code>null</code>.
    */
-  DefaultSmallStepProofContext(SmallStepProofNode node, ProofRuleSet ruleSet) {
-    if (node == null) {
-      throw new NullPointerException("node is null");
+  DefaultSmallStepProofContext ( SmallStepProofNode node , ProofRuleSet ruleSet )
+  {
+    if ( node == null )
+    {
+      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
     }
-    if (ruleSet == null) {
-      throw new NullPointerException("ruleSet is null");
+    if ( ruleSet == null )
+    {
+      throw new NullPointerException ( "ruleSet is null" ) ; //$NON-NLS-1$
     }
-    
     // setup the initial expression and store
-    this.expression = node.getExpression();
-    this.store = new DefaultStore((DefaultStore)node.getStore());
-    
+    this.expression = node.getExpression ( ) ;
+    this.store = new DefaultStore ( ( DefaultStore ) node.getStore ( ) ) ;
     // evaluate the next steps
-    this.expression = ((AbstractSmallStepProofRuleSet)ruleSet).evaluate(this, this.expression);
+    this.expression = ( ( AbstractSmallStepProofRuleSet ) ruleSet ).evaluate (
+        this , this.expression ) ;
   }
-  
-  
-  
+
+
   //
   // Accessors
   //
-  
   /**
    * {@inheritDoc}
-   *
+   * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofContext#getExpression()
    */
-  public Expression getExpression() {
-    return this.expression;
+  public Expression getExpression ( )
+  {
+    return this.expression ;
   }
-  
+
+
   /**
    * {@inheritDoc}
-   *
+   * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofContext#getSteps()
    */
-  public ProofStep[] getSteps() {
+  public ProofStep [ ] getSteps ( )
+  {
     // return the steps in reversed order
-    ProofStep[] steps = new ProofStep[this.steps.size()];
-    for (int n = 0; n < steps.length; ++n) {
-      if (this.expression.isException()) {
+    ProofStep [ ] newSteps = new ProofStep [ this.steps.size ( ) ] ;
+    for ( int n = 0 ; n < newSteps.length ; ++ n )
+    {
+      if ( this.expression.isException ( ) )
+      {
         // translate meta rules to the associated EXN rules
-        SmallStepProofRule rule = (SmallStepProofRule)this.steps.elementAt(n).getRule();
-        steps[n] = new ProofStep(this.steps.elementAt(n).getExpression(), rule.toExnRule());
+        SmallStepProofRule rule = ( SmallStepProofRule ) this.steps.elementAt (
+            n ).getRule ( ) ;
+        newSteps [ n ] = new ProofStep ( this.steps.elementAt ( n )
+            .getExpression ( ) , rule.toExnRule ( ) ) ;
       }
-      else {
+      else
+      {
         // just use the proof step
-        steps[n] = this.steps.elementAt(n);
+        newSteps [ n ] = this.steps.elementAt ( n ) ;
       }
     }
-    return steps;
+    return newSteps ;
   }
+
 
   /**
    * {@inheritDoc}
-   *
+   * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofContext#getStore()
    */
-  public Store getStore() {
-    return this.store;
+  public Store getStore ( )
+  {
+    return this.store ;
   }
 
-  
-  
+
   //
   // Primitives
   //
-  
   /**
    * {@inheritDoc}
-   *
-   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofContext#addProofStep(de.unisiegen.tpml.core.ProofRule, de.unisiegen.tpml.core.expressions.Expression)
+   * 
+   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofContext#addProofStep(de.unisiegen.tpml.core.ProofRule,
+   *      de.unisiegen.tpml.core.expressions.Expression)
    */
-  public void addProofStep(ProofRule rule, Expression expression) {
-    this.steps.add(new ProofStep(expression, rule));
+  public void addProofStep ( ProofRule rule , Expression pExpression )
+  {
+    this.steps.add ( new ProofStep ( pExpression , rule ) ) ;
   }
 }
