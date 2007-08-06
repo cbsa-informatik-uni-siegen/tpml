@@ -1,15 +1,17 @@
 package de.unisiegen.tpml.graphics.outline.listener ;
 
 
-import java.beans.PropertyChangeEvent ;
-import java.beans.PropertyChangeListener ;
-import javax.swing.JSplitPane ;
-import de.unisiegen.tpml.graphics.AbstractProofView ;
-import de.unisiegen.tpml.graphics.Theme ;
-import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
-import de.unisiegen.tpml.graphics.outline.Outline ;
-import de.unisiegen.tpml.ui.editor.TypeEditorPanel;
-import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.JSplitPane;
+
+import de.unisiegen.tpml.graphics.AbstractProofView;
+import de.unisiegen.tpml.graphics.Theme;
+import de.unisiegen.tpml.graphics.editor.TextEditorPanel;
+import de.unisiegen.tpml.graphics.editor.TypeEditorPanel;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline;
+import de.unisiegen.tpml.graphics.outline.Outline;
 
 
 /**

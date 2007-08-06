@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 
 import javax.swing.JComponent;
@@ -28,25 +27,23 @@ import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 
-import de.unisiegen.tpml.EditorComponent;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
-import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.editor.TextEditorPanel;
+import de.unisiegen.tpml.graphics.EditorComponent;
 import de.unisiegen.tpml.graphics.ProofViewFactory;
+import de.unisiegen.tpml.graphics.editor.TextEditorPanel;
 import de.unisiegen.tpml.graphics.pong.PongView;
 import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 
 /**
  * Part of the UI displayed in the tabbed pane. It includes one open file and
- * all {@link de.unisiegen.tpml.EditorComponent}s open for that file.
+ * all {@link de.unisiegen.tpml.graphics.EditorComponent}s open for that file.
  * 
  * @author Christoph Fehling
  */

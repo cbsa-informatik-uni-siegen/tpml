@@ -13,8 +13,8 @@ import org.apache.log4j.Logger;
 import de.unisiegen.tpml.core.CannotRedoException;
 import de.unisiegen.tpml.core.CannotUndoException;
 import de.unisiegen.tpml.core.ProofModel;
+import de.unisiegen.tpml.graphics.EditorComponent;
 import de.unisiegen.tpml.graphics.ProofView;
-import de.unisiegen.tpml.ui.EditorComponent;
 
 /**
  * Editor Component that displays a Proof. 
@@ -125,7 +125,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#isNextStatus()
+	 * @see de.unisiegen.tpml.graphics.EditorComponent#isNextStatus()
 	 */
 	public boolean isNextStatus() {
 		return this.nextStatus;
@@ -149,7 +149,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see de.unisiegen.tpml.ui.EditorComponent#isPongStatus()
+	 * @see de.unisiegen.tpml.graphics.EditorComponent#isPongStatus()
 	 */
 	public boolean isPongStatus() {
 		return this.pongStatus;
@@ -175,7 +175,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#isRedoStatus()
+	 * @see de.unisiegen.tpml.graphics.EditorComponent#isRedoStatus()
 	 */
 	public boolean isRedoStatus() {
 		return this.redoStatus;
@@ -201,7 +201,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#isUndoStatus()
+	 * @see de.unisiegen.tpml.graphics.EditorComponent#isUndoStatus()
 	 */
 	public boolean isUndoStatus() {
 		return this.undoStatus;
@@ -234,7 +234,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#setDefaultStates()
+	 * @see de.unisiegen.tpml.graphics.EditorComponent#setDefaultStates()
 	 */
 	public void setDefaultStates() {
 		setNextStatus(!this.model.isFinished());
@@ -247,7 +247,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#handleNext()
+	 * @see de.unisiegen.tpml.graphics.EditorComponent#handleNext()
 	 */
 	public void handleNext() {
 		try {
@@ -265,7 +265,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#handleRedo()
+	 * @see de.unisiegen.tpml.graphics.EditorComponent#handleRedo()
 	 */
 	public void handleRedo() {
 		try {
@@ -280,7 +280,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#handleUndo()
+	 * @see de.unisiegen.tpml.graphics.EditorComponent#handleUndo()
 	 */
 	public void handleUndo() {
 		try {
@@ -319,7 +319,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see de.unisiegen.tpml.ui.EditorComponent#setAdvanced(boolean)
+	 * @see de.unisiegen.tpml.graphics.EditorComponent#setAdvanced(boolean)
 	 */
 	public void setAdvanced(boolean status) {
 		this.view.setAdvanced(status);

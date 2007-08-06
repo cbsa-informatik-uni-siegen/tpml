@@ -1,39 +1,42 @@
-package de.unisiegen.tpml.ui.editor ;
+package de.unisiegen.tpml.graphics.editor ;
 
 
-import java.awt.BorderLayout ;
-import java.awt.datatransfer.Clipboard ;
-import java.awt.datatransfer.ClipboardOwner ;
-import java.awt.datatransfer.DataFlavor ;
-import java.awt.datatransfer.StringSelection ;
-import java.awt.datatransfer.Transferable ;
-import java.awt.datatransfer.UnsupportedFlavorException ;
-import java.awt.event.ActionEvent ;
-import java.awt.event.ActionListener ;
-import java.awt.event.MouseAdapter ;
-import java.awt.event.MouseEvent ;
-import java.io.IOException ;
-import java.util.Stack ;
-import javax.swing.JComponent ;
-import javax.swing.JMenuItem ;
-import javax.swing.JPanel ;
-import javax.swing.JPopupMenu ;
-import javax.swing.JScrollPane ;
-import javax.swing.JSeparator ;
-import javax.swing.JSplitPane ;
-import javax.swing.event.DocumentEvent ;
-import javax.swing.event.DocumentListener ;
-import javax.swing.text.BadLocationException ;
-import org.apache.log4j.Logger ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.graphics.StyledLanguageDocument ;
-import de.unisiegen.tpml.graphics.StyledLanguageEditor ;
-import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
-import de.unisiegen.tpml.graphics.outline.Outline ;
-import de.unisiegen.tpml.ui.EditorComponent ;
-import de.unisiegen.tpml.ui.SideBar ;
-import de.unisiegen.tpml.ui.SideBarListener ;
+import java.awt.BorderLayout;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.util.Stack;
+
+import javax.swing.JComponent;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JSplitPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+
+import org.apache.log4j.Logger;
+
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.graphics.EditorComponent;
+import de.unisiegen.tpml.graphics.SideBar;
+import de.unisiegen.tpml.graphics.SideBarListener;
+import de.unisiegen.tpml.graphics.StyledLanguageDocument;
+import de.unisiegen.tpml.graphics.StyledLanguageEditor;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline;
+import de.unisiegen.tpml.graphics.outline.Outline;
 
 
 /**

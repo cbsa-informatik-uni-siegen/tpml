@@ -8,7 +8,7 @@ package de.unisiegen.tpml.ui;
 
 import javax.swing.JComponent;
 
-import de.unisiegen.tpml.EditorComponent;
+import de.unisiegen.tpml.graphics.EditorComponent;
 
 
 /**
@@ -238,7 +238,7 @@ public class TestEditorComponent extends javax.swing.JPanel implements EditorCom
     /**
      * {@inheritDoc}
      *
-     * @see de.unisiegen.tpml.EditorComponent#isPongStatus()
+     * @see de.unisiegen.tpml.graphics.EditorComponent#isPongStatus()
      */
     public boolean isPongStatus() {
     	return false;
