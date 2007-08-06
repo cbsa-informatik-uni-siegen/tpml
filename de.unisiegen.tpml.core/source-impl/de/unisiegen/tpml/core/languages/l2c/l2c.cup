@@ -1403,7 +1403,7 @@ body							::= INHERIT:i body_attribute_list:bal FROM expr:e SEMI body:b
 									   RESULT = body ;
 									:}
 								|	row:r
-									{: RESULT = new Row(r) ; :}
+									{: RESULT = new Row(r, rleft, rright) ; :}
 								|	body_error
 						   			{: :}
 								;
