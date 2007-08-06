@@ -1,1 +1,2 @@
 - Im Hauptmenü "Typ Inferenz" ersetzen durch "Type Inference" (Christoph)
+- Button im MainWindow auf Focusable(false) setzen (Christoph)
