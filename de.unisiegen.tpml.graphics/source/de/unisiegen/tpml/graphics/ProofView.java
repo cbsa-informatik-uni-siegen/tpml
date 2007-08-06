@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.graphics;
 
+import javax.swing.JComponent;
+
 import de.unisiegen.tpml.core.ProofGuessException;
 
 /**
@@ -55,4 +57,10 @@ public interface ProofView {
 	 * @throws ProofGuessException if the proof model failes to guess the next rule.
 	 */
 	public void guess() throws IllegalStateException, ProofGuessException;
+	
+	/**
+	 * Returns the part of the ProofView that shall be printed
+	 * @return the JComponent to be printed
+	 */
+	public JComponent getPrintPart();
 }

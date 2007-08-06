@@ -20,12 +20,103 @@ import de.unisiegen.tpml.core.util.beans.AbstractBean ;
  * @author Marcell Fischbach
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev$
+ * @author michael
+ * @version $Rev:1175 $
  * @see de.unisiegen.tpml.core.util.beans.Bean
  * @see java.beans.PropertyChangeListener
  */
+/**
+ * @author Feivel
+ */
+/**
+ * @author Feivel
+ */
+/**
+ * @author Feivel
+ */
+/**
+ * @author Feivel
+ */
+/**
+ * @author Feivel
+ */
+/**
+ * @author Feivel
+ */
+/**
+ * @author Feivel
+ */
 public final class Theme extends AbstractBean
 {
+  //
+  // Class attributes
+  //
+  /**
+   * The single instance of the <code>Theme</code> class, as returned by the
+   * {@link #currentTheme()} class method.
+   * 
+   * @see #currentTheme()
+   */
+  private static Theme currentTheme ;
+
+
+  //
+  // Class methods
+  //
+  /**
+   * Returns the single instance of the <code>Theme</code> class, which is
+   * allocated on-demand, that is, on the first invocation of this class method,
+   * and stays alive for the live time of the application.
+   * 
+   * @return the current theme.
+   */
+  public static Theme currentTheme ( )
+  {
+    if ( currentTheme == null )
+    {
+      currentTheme = new Theme ( ) ;
+    }
+    return currentTheme ;
+  }
+
+
+  //
+  // Helpers
+  //
+  /**
+   * Encodes the <code>color</code> in its hexadecimal string representation,
+   * which is <tt>#[red][green][blue]</tt>, where the channels are encoded as
+   * 2 hex characters.
+   * 
+   * @param color the {@link Color} to encode
+   * @return the string representation of <code>color</code>.
+   * @throws NullPointerException if <code>color</code> is <code>null</code>.
+   */
+  private static final String encodeColor ( Color color )
+  {
+    // encode the red channel
+    String red = Integer.toHexString ( color.getRed ( ) ) ;
+    if ( red.length ( ) < 2 )
+    {
+      red = "0" + red ; //$NON-NLS-1$
+    }
+    // encode the green channel
+    String green = Integer.toHexString ( color.getGreen ( ) ) ;
+    if ( green.length ( ) < 2 )
+    {
+      green = "0" + green ; //$NON-NLS-1$
+    }
+    // encode the blue channel
+    String blue = Integer.toHexString ( color.getBlue ( ) ) ;
+    if ( blue.length ( ) < 2 )
+    {
+      blue = "0" + blue ; //$NON-NLS-1$
+    }
+    // combine the channels
+    return "#" + red + green + blue ; //$NON-NLS-1$
+  }
+
+
   //
   // Attributes
   //
@@ -85,6 +176,15 @@ public final class Theme extends AbstractBean
 
 
   /**
+   * The {@link Color} used to render identifier.
+   * 
+   * @see #getIdentifierColor()
+   * @see #setIdentifierColor(Color)
+   */
+  private Color identifierColor ;
+
+
+  /**
    * The {@link Color} used to render selected expressions.
    * 
    * @see #getSelectionColor()
@@ -96,28 +196,46 @@ public final class Theme extends AbstractBean
   /**
    * The {@link Color} used to render bindings.
    * 
-   * @see #getBindingColor()
-   * @see #setBindingColor(Color)
+   * @see #getBoundIdColor()
+   * @see #setBoundIdColor(Color)
    */
-  private Color bindingColor ;
+  private Color boundIdColor ;
 
 
   /**
-   * The {@link Color} used to render unbound Identifier.
+   * The {@link Color} used to render free Identifier.
    * 
-   * @see #getUnboundColor()
-   * @see #setUnboundColor(Color)
+   * @see #getFreeIdColor()
+   * @see #setFreeIdColor(Color)
    */
-  private Color unboundColor ;
+  private Color freeIdColor ;
 
 
   /**
-   * The {@link Color} used to render first Identifier.
+   * The {@link Color} used to render binding Identifier.
    * 
-   * @see #getIdColor()
-   * @see #setIdColor(Color)
+   * @see #getBindingIdColor()
+   * @see #setBindingIdColor(Color)
    */
-  private Color idColor ;
+  private Color bindingIdColor ;
+
+
+  /**
+   * The {@link Color} used to render highlighted source code.
+   * 
+   * @see #getHighlightSourceCodeColor()
+   * @see #setHighlightSourceCodeColor(Color)
+   */
+  private Color highlightSourceCodeColor ;
+
+
+  /**
+   * The {@link Color} used to render parser warnings.
+   * 
+   * @see #getParserWarningColor()
+   * @see #setParserWarningColor(Color)
+   */
+  private Color parserWarningColor ;
 
 
   /**
@@ -156,18 +274,6 @@ public final class Theme extends AbstractBean
 
 
   //
-  // Class attributes
-  //
-  /**
-   * The single instance of the <code>Theme</code> class, as returned by the
-   * {@link #currentTheme()} class method.
-   * 
-   * @see #currentTheme()
-   */
-  private static Theme currentTheme ;
-
-
-  //
   // Constructor (private)
   //
   /**
@@ -183,28 +289,32 @@ public final class Theme extends AbstractBean
     this.preferences = Preferences.userNodeForPackage ( Theme.class ) ;
     // load the commentColor setting
     this.commentColor = Color.decode ( this.preferences.get ( "commentColor" , //$NON-NLS-1$
-        "#1a991a" ) ) ; //$NON-NLS-1$
+        "#009900" ) ) ; //$NON-NLS-1$
     // load the constantColor setting
     this.constantColor = Color.decode ( this.preferences.get ( "constantColor" , //$NON-NLS-1$
-        "#00007f" ) ) ; //$NON-NLS-1$
+        "#00007F" ) ) ; //$NON-NLS-1$
     // load the environmentColor setting
     this.environmentColor = Color.decode ( this.preferences.get (
-        "environmentColor" , "#7f7f7f" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+        "environmentColor" , "#7F7F7F" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     // load the expressionColor setting
     this.expressionColor = Color.decode ( this.preferences.get (
         "expressionColor" , "#000000" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     // load the selectionColor setting
     this.selectionColor = Color.decode ( this.preferences.get (
         "selectionColor" , "#FF0000" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    // load the bindingColor setting
-    this.bindingColor = Color.decode ( this.preferences.get ( "bindingColor" , //$NON-NLS-1$
+    // load the boundIdColor setting
+    this.boundIdColor = Color.decode ( this.preferences.get ( "boundIdColor" , //$NON-NLS-1$
         "#FFAA33" ) ) ; //$NON-NLS-1$
-    // load the unboundColor setting
-    this.unboundColor = Color.decode ( this.preferences.get ( "unboundColor" , //$NON-NLS-1$
+    // load the freeIdColor setting
+    this.freeIdColor = Color.decode ( this.preferences.get ( "freeIdColor" , //$NON-NLS-1$
         "#3333FF" ) ) ; //$NON-NLS-1$
-    // load the idColor setting
-    this.idColor = Color
-        .decode ( this.preferences.get ( "idColor" , "#FF0000" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    // load the bindingIdColor setting
+    this.bindingIdColor = Color.decode ( this.preferences.get (
+        "bindingIdColor" , "#FF5519" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    this.highlightSourceCodeColor = Color.decode ( this.preferences.get (
+        "highlightSourceCodeColor" , "#FFFF00" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    this.parserWarningColor = Color.decode ( this.preferences.get (
+        "parserWarningColor" , "#E8F2FE" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     // load the font setting
     /*
      * FIXME: This doesn't work on Windows! (*surprise*) Font defaultFont = new
@@ -214,38 +324,53 @@ public final class Theme extends AbstractBean
      * defaultFont.getSize()));
      */
     this.font = new JComboBox ( ).getFont ( ) ;
+    // another Test: Under windows, the methode new JComboBox ( ).getFont ( ) ;
+    // returns "Tahoma", nobody knows why,
+    // but Tahoma dose not habe our UNI-Code-Chars. With this line, we get the
+    // Font "Dialog" JAVA normaly uses. This
+    // seems not to be a systemfont but works fine.
+    this.font = new Font ( "Dialog" , Font.PLAIN , this.font.getSize ( ) + 2 ) ; //$NON-NLS-1$
     // load the keywordColor setting
     this.keywordColor = Color.decode ( this.preferences.get ( "keywordColor" , //$NON-NLS-1$
-        "#7f0000" ) ) ; //$NON-NLS-1$
+        "#7F0000" ) ) ; //$NON-NLS-1$
+    this.identifierColor = Color.decode ( this.preferences.get (
+        "identifierColor" , //$NON-NLS-1$
+        "#000066" ) ) ; //$NON-NLS-1$
     // load the ruleColor setting
     this.ruleColor = Color.decode ( this.preferences.get ( "ruleColor" , //$NON-NLS-1$
         "#000000" ) ) ; //$NON-NLS-1$
     // load the underlineColor setting
     this.underlineColor = Color.decode ( this.preferences.get (
-        "underlineColor" , "#ff0000" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+        "underlineColor" , "#FF0000" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     // load the typeColor setting
     this.typeColor = Color.decode ( this.preferences.get ( "typeColor" , //$NON-NLS-1$
         "#009900" ) ) ; //$NON-NLS-1$
   }
 
 
-  //
-  // Class methods
-  //
   /**
-   * Returns the single instance of the <code>Theme</code> class, which is
-   * allocated on-demand, that is, on the first invocation of this class method,
-   * and stays alive for the live time of the application.
+   * Returns the {@link Color} used to render binding Identifiers.
    * 
-   * @return the current theme.
+   * @return the color for the binding Identifiers.
+   * @see #setBindingIdColor(Color)
+   * @see Color
    */
-  public static Theme currentTheme ( )
+  public Color getBindingIdColor ( )
   {
-    if ( currentTheme == null )
-    {
-      currentTheme = new Theme ( ) ;
-    }
-    return currentTheme ;
+    return this.bindingIdColor ;
+  }
+
+
+  /**
+   * Returns the {@link Color} used to render bound Identifiers.
+   * 
+   * @return the color for bound Identifier.s
+   * @see #setBoundIdColor(Color)
+   * @see Color
+   */
+  public Color getBoundIdColor ( )
+  {
+    return this.boundIdColor ;
   }
 
 
@@ -266,6 +391,233 @@ public final class Theme extends AbstractBean
 
 
   /**
+   * Returns the color that should be used to render constants.
+   * 
+   * @return the color for constants.
+   * @see #setConstantColor(Color)
+   * @see Color
+   */
+  public Color getConstantColor ( )
+  {
+    return this.constantColor ;
+  }
+
+
+  /**
+   * Returns the color that should be used to render environments, like the type
+   * environment for the type checker and the stores for the big and small step
+   * interpreters.
+   * 
+   * @return the color for environments.
+   * @see #setEnvironmentColor(Color)
+   * @see Color
+   */
+  public Color getEnvironmentColor ( )
+  {
+    return this.environmentColor ;
+  }
+
+
+  /**
+   * Returns the color that should be used to render expressions.
+   * 
+   * @return the color for expressions.
+   * @see #setExpressionColor(Color)
+   * @see Color
+   */
+  public Color getExpressionColor ( )
+  {
+    return this.expressionColor ;
+  }
+
+
+  /**
+   * Returns the global font that should be used for the renderers and editors.
+   * 
+   * @return the font for the renderers and editors.
+   * @see #setFont(Font)
+   * @see Font
+   */
+  public Font getFont ( )
+  {
+    return this.font ;
+  }
+
+
+  /**
+   * Returns the {@link Color} used to render free Identifier.
+   * 
+   * @return the color for the free Identifier.
+   * @see #setFreeIdColor(Color)
+   * @see Color
+   */
+  public Color getFreeIdColor ( )
+  {
+    return this.freeIdColor ;
+  }
+
+
+  /**
+   * Returns the {@link Color} used to render highlighted source code.
+   * 
+   * @return the color for the highlighted source code.
+   * @see #setHighlightSourceCodeColor(Color)
+   * @see Color
+   */
+  public Color getHighlightSourceCodeColor ( )
+  {
+    return this.highlightSourceCodeColor ;
+  }
+
+
+  /**
+   * Returns the {@link Color} used to render Identifiers in the interpreters,
+   * type checker and the editor.
+   * 
+   * @return the color for Identifiers.
+   * @see #setIdentifierColor(Color)
+   * @see Color
+   */
+  public Color getIdentifierColor ( )
+  {
+    return this.identifierColor ;
+  }
+
+
+  /**
+   * Returns the {@link Color} used to render keywords in the interpreters, type
+   * checker and the editor.
+   * 
+   * @return the color for keywords.
+   * @see #setKeywordColor(Color)
+   * @see Color
+   */
+  public Color getKeywordColor ( )
+  {
+    return this.keywordColor ;
+  }
+
+
+  /**
+   * Returns the {@link Color} used to render parser warnings.
+   * 
+   * @return the color for the parser warnings.
+   * @see #setParserWarningColor(Color)
+   * @see Color
+   */
+  public Color getParserWarningColor ( )
+  {
+    return this.parserWarningColor ;
+  }
+
+
+  /**
+   * Returns the {@link Color} that should be used to render rules in the small
+   * and big step interpreters and the type checker.
+   * 
+   * @return the color for rules.
+   * @see #setRuleColor(Color)
+   * @see Color
+   */
+  public Color getRuleColor ( )
+  {
+    return this.ruleColor ;
+  }
+
+
+  /**
+   * Returns the {@link Color} used to render selected expressions.
+   * 
+   * @return the color for selected expressions.
+   * @see #setSelectionColor(Color)
+   * @see Color
+   */
+  public Color getSelectionColor ( )
+  {
+    return this.selectionColor ;
+  }
+
+
+  /**
+   * Returns the color used to render types.
+   * 
+   * @return the color for types.
+   * @see #setTypeColor(Color)
+   * @see Color
+   */
+  public Color getTypeColor ( )
+  {
+    return this.typeColor ;
+  }
+
+
+  /**
+   * Returns the color used to underline in the small stepper.
+   * 
+   * @return the underline color for the small stepper.
+   * @see #setUnderlineColor(Color)
+   * @see Color
+   */
+  public Color getUnderlineColor ( )
+  {
+    return this.underlineColor ;
+  }
+
+
+  /**
+   * Sets the color that should be used to render binding Identifier to the
+   * specified <code>bindingIdColor</code>.
+   * 
+   * @param pBindingIdColor the color for binding Identifier.
+   * @see #getBindingIdColor()
+   * @see Color
+   * @throws NullPointerException if <code>bindingIdColor</code> is
+   *           <code>null</code>.
+   */
+  public void setBindingIdColor ( Color pBindingIdColor )
+  {
+    if ( pBindingIdColor == null )
+    {
+      throw new NullPointerException ( "bindingIdColor is null" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.bindingIdColor.equals ( pBindingIdColor ) )
+    {
+      Color oldIdColor = this.bindingIdColor ;
+      this.bindingIdColor = pBindingIdColor ;
+      firePropertyChange ( "bindingIdColor" , oldIdColor , pBindingIdColor ) ; //$NON-NLS-1$
+      this.preferences
+          .put ( "bindingIdColor" , encodeColor ( pBindingIdColor ) ) ; //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * Sets the color that should be used to render bindings to the specified
+   * <code>bindingsColor</code>.
+   * 
+   * @param pBoundIdColor the color for bindings.
+   * @see #getBoundIdColor()
+   * @see Color
+   * @throws NullPointerException if <code>boundIdColor</code> is
+   *           <code>null</code>.
+   */
+  public void setBoundIdColor ( Color pBoundIdColor )
+  {
+    if ( pBoundIdColor == null )
+    {
+      throw new NullPointerException ( "pBindingColor is null" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.boundIdColor.equals ( pBoundIdColor ) )
+    {
+      Color oldBindingColor = this.boundIdColor ;
+      this.boundIdColor = pBoundIdColor ;
+      firePropertyChange ( "boundIdColor" , oldBindingColor , pBoundIdColor ) ; //$NON-NLS-1$
+      this.preferences.put ( "boundIdColor" , encodeColor ( pBoundIdColor ) ) ; //$NON-NLS-1$
+    }
+  }
+
+
+  /**
    * Sets the color for comments to the specified <code>commentColor</code>.
    * 
    * @param pCommentColor the new color for comments.
@@ -282,26 +634,11 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.commentColor.equals ( pCommentColor ) )
     {
-      // update the commentColor
       Color oldCommentColor = this.commentColor ;
       this.commentColor = pCommentColor ;
       firePropertyChange ( "commentColor" , oldCommentColor , pCommentColor ) ; //$NON-NLS-1$
-      // save the new setting
       this.preferences.put ( "commentColor" , encodeColor ( pCommentColor ) ) ; //$NON-NLS-1$
     }
-  }
-
-
-  /**
-   * Returns the color that should be used to render constants.
-   * 
-   * @return the color for constants.
-   * @see #setConstantColor(Color)
-   * @see Color
-   */
-  public Color getConstantColor ( )
-  {
-    return this.constantColor ;
   }
 
 
@@ -322,28 +659,11 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.constantColor.equals ( pConstantColor ) )
     {
-      // update the constantColor
       Color oldConstantColor = this.constantColor ;
       this.constantColor = pConstantColor ;
       firePropertyChange ( "constantColor" , oldConstantColor , pConstantColor ) ; //$NON-NLS-1$
-      // save the new setting
       this.preferences.put ( "constantColor" , encodeColor ( pConstantColor ) ) ; //$NON-NLS-1$
     }
-  }
-
-
-  /**
-   * Returns the color that should be used to render environments, like the type
-   * environment for the type checker and the stores for the big and small step
-   * interpreters.
-   * 
-   * @return the color for environments.
-   * @see #setEnvironmentColor(Color)
-   * @see Color
-   */
-  public Color getEnvironmentColor ( )
-  {
-    return this.environmentColor ;
   }
 
 
@@ -365,28 +685,13 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.environmentColor.equals ( pEnvironmentColor ) )
     {
-      // update the environmentColor
       Color oldEnvironmentColor = this.environmentColor ;
       this.environmentColor = pEnvironmentColor ;
       firePropertyChange ( "environmentColor" , oldEnvironmentColor , //$NON-NLS-1$
           pEnvironmentColor ) ;
-      // save the new setting
       this.preferences.put ( "environmentColor" , //$NON-NLS-1$
           encodeColor ( pEnvironmentColor ) ) ;
     }
-  }
-
-
-  /**
-   * Returns the color that should be used to render expressions.
-   * 
-   * @return the color for expressions.
-   * @see #setExpressionColor(Color)
-   * @see Color
-   */
-  public Color getExpressionColor ( )
-  {
-    return this.expressionColor ;
   }
 
 
@@ -408,28 +713,13 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.expressionColor.equals ( pExpressionColor ) )
     {
-      // update the expressionColor
       Color oldExpressionColor = this.expressionColor ;
       this.expressionColor = pExpressionColor ;
       firePropertyChange ( "expressionColor" , oldExpressionColor , //$NON-NLS-1$
           pExpressionColor ) ;
-      // save the new setting
       this.preferences.put (
           "expressionColor" , encodeColor ( pExpressionColor ) ) ; //$NON-NLS-1$
     }
-  }
-
-
-  /**
-   * Returns the global font that should be used for the renderers and editors.
-   * 
-   * @return the font for the renderers and editors.
-   * @see #setFont(Font)
-   * @see Font
-   */
-  public Font getFont ( )
-  {
-    return this.font ;
   }
 
 
@@ -460,68 +750,97 @@ public final class Theme extends AbstractBean
 
 
   /**
-   * Returns the {@link Color} used to render keywords in the interpreters, type
-   * checker and the editor.
+   * changes the global font-size that is used fot renders and editors to the
+   * given size
    * 
-   * @return the color for keywords.
-   * @see #setKeywordColor(Color)
-   * @see Color
+   * @param size the new sizer;
    */
-  public Color getKeywordColor ( )
+  public void setFontSize ( int size )
   {
-    return this.keywordColor ;
+    this.font = this.font.deriveFont ( ( float ) size ) ;
   }
 
 
   /**
-   * Returns the {@link Color} used to render selected expressions.
+   * Sets the color that should be used to render free Identifier to the
+   * specified <code>freeIdColor</code>.
    * 
-   * @return the color for selected expressions.
-   * @see #setSelectionColor(Color)
+   * @param pFreeIdColor the color for free Identifier.
+   * @see #getFreeIdColor()
    * @see Color
+   * @throws NullPointerException if <code>freeIdColor</code> is
+   *           <code>null</code>.
    */
-  public Color getSelectionColor ( )
+  public void setFreeIdColor ( Color pFreeIdColor )
   {
-    return this.selectionColor ;
+    if ( pFreeIdColor == null )
+    {
+      throw new NullPointerException ( "freeIdColor is null" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.freeIdColor.equals ( pFreeIdColor ) )
+    {
+      Color oldUnboundColor = this.freeIdColor ;
+      this.freeIdColor = pFreeIdColor ;
+      firePropertyChange ( "freeIdColor" , oldUnboundColor , pFreeIdColor ) ; //$NON-NLS-1$
+      this.preferences.put ( "freeIdColor" , encodeColor ( pFreeIdColor ) ) ; //$NON-NLS-1$
+    }
   }
 
 
   /**
-   * Returns the {@link Color} used to render bindings.
+   * Sets the color that should be used to render highlighted source code to the
+   * specified <code>pHighlightSourceCodeColor</code>.
    * 
-   * @return the color for binding.
-   * @see #setBindingColor(Color)
+   * @param pHighlightSourceCodeColor the color forhighlighted source code.
+   * @see #getHighlightSourceCodeColor()
    * @see Color
+   * @throws NullPointerException if <code>pHighlightSourceCodeColor</code> is
+   *           <code>null</code>.
    */
-  public Color getBindingColor ( )
+  public void setHighlightSourceCodeColor ( Color pHighlightSourceCodeColor )
   {
-    return this.bindingColor ;
+    if ( pHighlightSourceCodeColor == null )
+    {
+      throw new NullPointerException ( "highlightSourceCodeColor is null" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.highlightSourceCodeColor.equals ( pHighlightSourceCodeColor ) )
+    {
+      Color oldSourceColor = this.highlightSourceCodeColor ;
+      this.highlightSourceCodeColor = pHighlightSourceCodeColor ;
+      firePropertyChange (
+          "highlightSourceCodeColor" , oldSourceColor , pHighlightSourceCodeColor ) ; //$NON-NLS-1$
+      this.preferences
+          .put (
+              "highlightSourceCodeColor" , encodeColor ( pHighlightSourceCodeColor ) ) ; //$NON-NLS-1$
+    }
   }
 
 
   /**
-   * Returns the {@link Color} used to render unbound Identifier.
+   * Sets the color that should be used to render Identifiers to the specified
+   * <code>identifierColor</code>.
    * 
-   * @return the color for the unbound Identifier.
-   * @see #setUnboundColor(Color)
+   * @param pIdentifierColor the color for Identifiers.
+   * @see #getIdentifierColor()
    * @see Color
+   * @throws NullPointerException if <code>identifierColor</code> is
+   *           <code>null</code>.
    */
-  public Color getUnboundColor ( )
+  public void setIdentifierColor ( Color pIdentifierColor )
   {
-    return this.unboundColor ;
-  }
-
-
-  /**
-   * Returns the {@link Color} used to render first Identifier.
-   * 
-   * @return the color for the first Identifier.
-   * @see #setIdColor(Color)
-   * @see Color
-   */
-  public Color getIdColor ( )
-  {
-    return this.idColor ;
+    if ( pIdentifierColor == null )
+    {
+      throw new NullPointerException ( "identifierColor is null" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.identifierColor.equals ( pIdentifierColor ) )
+    {
+      Color oldIdentifierColor = this.identifierColor ;
+      this.identifierColor = pIdentifierColor ;
+      firePropertyChange (
+          "identifierColor" , oldIdentifierColor , pIdentifierColor ) ; //$NON-NLS-1$
+      this.preferences.put (
+          "identifierColor" , encodeColor ( pIdentifierColor ) ) ; //$NON-NLS-1$
+    }
   }
 
 
@@ -543,12 +862,64 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.keywordColor.equals ( pKeywordColor ) )
     {
-      // update the keywordColor
       Color oldKeywordColor = this.keywordColor ;
       this.keywordColor = pKeywordColor ;
       firePropertyChange ( "keywordColor" , oldKeywordColor , pKeywordColor ) ; //$NON-NLS-1$
-      // save the new setting
       this.preferences.put ( "keywordColor" , encodeColor ( pKeywordColor ) ) ; //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * Sets the color that should be used to render parser warnings to the
+   * specified <code>pParserWarningColor</code>.
+   * 
+   * @param pParserWarningColor the color for parser warnings.
+   * @see #getParserWarningColor()
+   * @see Color
+   * @throws NullPointerException if <code>pParserWarningColor</code> is
+   *           <code>null</code>.
+   */
+  public void setParserWarningColor ( Color pParserWarningColor )
+  {
+    if ( pParserWarningColor == null )
+    {
+      throw new NullPointerException ( "parserWarningColor is null" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.parserWarningColor.equals ( pParserWarningColor ) )
+    {
+      Color oldParserColor = this.parserWarningColor ;
+      this.parserWarningColor = pParserWarningColor ;
+      firePropertyChange (
+          "parserWarningColor" , oldParserColor , pParserWarningColor ) ; //$NON-NLS-1$
+      this.preferences.put (
+          "parserWarningColor" , encodeColor ( pParserWarningColor ) ) ; //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * Sets the color that should be used to render rules to the specified
+   * <code>ruleColor</code>.
+   * 
+   * @param pRuleColor the color that should be used to render rules.
+   * @throws NullPointerException if <code>ruleColor</code> is
+   *           <code>null</code>.
+   * @see #getRuleColor()
+   * @see Color
+   */
+  public void setRuleColor ( Color pRuleColor )
+  {
+    if ( pRuleColor == null )
+    {
+      throw new NullPointerException ( "ruleColor is null" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.ruleColor.equals ( pRuleColor ) )
+    {
+      Color oldRuleColor = this.ruleColor ;
+      this.ruleColor = pRuleColor ;
+      firePropertyChange ( "ruleColor" , oldRuleColor , pRuleColor ) ; //$NON-NLS-1$
+      this.preferences.put ( "ruleColor" , encodeColor ( pRuleColor ) ) ; //$NON-NLS-1$
     }
   }
 
@@ -584,140 +955,29 @@ public final class Theme extends AbstractBean
 
 
   /**
-   * Sets the color that should be used to render bindings to the specified
-   * <code>bindingsColor</code>.
+   * Sets the color used to render types to the specified <code>typeColor</code>.
    * 
-   * @param pBindingColor the color for bindings.
-   * @see #getBindingColor()
-   * @see Color
-   * @throws NullPointerException if <code>bindingColor</code> is
+   * @param pTypeColor the new color for types.
+   * @throws NullPointerException if <code>typeColor</code> is
    *           <code>null</code>.
+   * @see #getTypeColor()
+   * @see Color
    */
-  public void setBindingColor ( Color pBindingColor )
+  public void setTypeColor ( Color pTypeColor )
   {
-    if ( pBindingColor == null )
+    if ( pTypeColor == null )
     {
-      throw new NullPointerException ( "pBindingColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "typeColor is null" ) ; //$NON-NLS-1$
     }
-    if ( ! this.bindingColor.equals ( pBindingColor ) )
+    if ( ! this.typeColor.equals ( pTypeColor ) )
     {
-      // update the bindingColor
-      Color oldBindingColor = this.bindingColor ;
-      this.bindingColor = pBindingColor ;
-      firePropertyChange ( "bindingColor" , oldBindingColor , pBindingColor ) ; //$NON-NLS-1$
+      // update the typeColor
+      Color oldTypeColor = this.typeColor ;
+      this.typeColor = pTypeColor ;
+      firePropertyChange ( "typeColor" , oldTypeColor , pTypeColor ) ; //$NON-NLS-1$
       // save the new setting
-      this.preferences.put ( "bindingColor" , encodeColor ( pBindingColor ) ) ; //$NON-NLS-1$
+      this.preferences.put ( "typeColor" , encodeColor ( pTypeColor ) ) ; //$NON-NLS-1$
     }
-  }
-
-
-  /**
-   * Sets the color that should be used to render unbound Identifier to the
-   * specified <code>unboundColor</code>.
-   * 
-   * @param pUnboundColor the color for unbound Identifier.
-   * @see #getUnboundColor()
-   * @see Color
-   * @throws NullPointerException if <code>unboundColor</code> is
-   *           <code>null</code>.
-   */
-  public void setUnboundColor ( Color pUnboundColor )
-  {
-    if ( pUnboundColor == null )
-    {
-      throw new NullPointerException ( "unboundColor is null" ) ; //$NON-NLS-1$
-    }
-    if ( ! this.unboundColor.equals ( pUnboundColor ) )
-    {
-      // update the unboundColor
-      Color oldUnboundColor = this.unboundColor ;
-      this.unboundColor = pUnboundColor ;
-      firePropertyChange ( "unboundColor" , oldUnboundColor , pUnboundColor ) ; //$NON-NLS-1$
-      // save the new setting
-      this.preferences.put ( "unboundColor" , encodeColor ( pUnboundColor ) ) ; //$NON-NLS-1$
-    }
-  }
-
-
-  /**
-   * Sets the color that should be used to render first Identifier to the
-   * specified <code>idColor</code>.
-   * 
-   * @param pIDColor the color for first Identifier.
-   * @see #getIdColor()
-   * @see Color
-   * @throws NullPointerException if <code>idColor</code> is <code>null</code>.
-   */
-  public void setIdColor ( Color pIDColor )
-  {
-    if ( pIDColor == null )
-    {
-      throw new NullPointerException ( "idColor is null" ) ; //$NON-NLS-1$
-    }
-    if ( ! this.idColor.equals ( pIDColor ) )
-    {
-      // update the keywordColorid
-      Color oldIdColor = this.idColor ;
-      this.idColor = pIDColor ;
-      firePropertyChange ( "idColor" , oldIdColor , pIDColor ) ; //$NON-NLS-1$
-      // save the new setting
-      this.preferences.put ( "idColor" , encodeColor ( pIDColor ) ) ; //$NON-NLS-1$
-    }
-  }
-
-
-  /**
-   * Returns the {@link Color} that should be used to render rules in the small
-   * and big step interpreters and the type checker.
-   * 
-   * @return the color for rules.
-   * @see #setRuleColor(Color)
-   * @see Color
-   */
-  public Color getRuleColor ( )
-  {
-    return this.ruleColor ;
-  }
-
-
-  /**
-   * Sets the color that should be used to render rules to the specified
-   * <code>ruleColor</code>.
-   * 
-   * @param pRuleColor the color that should be used to render rules.
-   * @throws NullPointerException if <code>ruleColor</code> is
-   *           <code>null</code>.
-   * @see #getRuleColor()
-   * @see Color
-   */
-  public void setRuleColor ( Color pRuleColor )
-  {
-    if ( pRuleColor == null )
-    {
-      throw new NullPointerException ( "ruleColor is null" ) ; //$NON-NLS-1$
-    }
-    if ( ! this.ruleColor.equals ( pRuleColor ) )
-    {
-      // update the ruleColor
-      Color oldRuleColor = this.ruleColor ;
-      this.ruleColor = pRuleColor ;
-      firePropertyChange ( "ruleColor" , oldRuleColor , pRuleColor ) ; //$NON-NLS-1$
-      // save the new setting
-      this.preferences.put ( "ruleColor" , encodeColor ( pRuleColor ) ) ; //$NON-NLS-1$
-    }
-  }
-
-
-  /**
-   * Returns the color used to underline in the small stepper.
-   * 
-   * @return the underline color for the small stepper.
-   * @see #setUnderlineColor(Color)
-   * @see Color
-   */
-  public Color getUnderlineColor ( )
-  {
-    return this.underlineColor ;
   }
 
 
@@ -748,82 +1008,5 @@ public final class Theme extends AbstractBean
       this.preferences
           .put ( "underlineColor" , encodeColor ( pUnderlineColor ) ) ; //$NON-NLS-1$
     }
-  }
-
-
-  /**
-   * Returns the color used to render types.
-   * 
-   * @return the color for types.
-   * @see #setTypeColor(Color)
-   * @see Color
-   */
-  public Color getTypeColor ( )
-  {
-    return this.typeColor ;
-  }
-
-
-  /**
-   * Sets the color used to render types to the specified <code>typeColor</code>.
-   * 
-   * @param pTypeColor the new color for types.
-   * @throws NullPointerException if <code>typeColor</code> is
-   *           <code>null</code>.
-   * @see #getTypeColor()
-   * @see Color
-   */
-  public void setTypeColor ( Color pTypeColor )
-  {
-    if ( pTypeColor == null )
-    {
-      throw new NullPointerException ( "typeColor is null" ) ; //$NON-NLS-1$
-    }
-    if ( ! this.typeColor.equals ( pTypeColor ) )
-    {
-      // update the typeColor
-      Color oldTypeColor = this.typeColor ;
-      this.typeColor = pTypeColor ;
-      firePropertyChange ( "typeColor" , oldTypeColor , pTypeColor ) ; //$NON-NLS-1$
-      // save the new setting
-      this.preferences.put ( "typeColor" , encodeColor ( pTypeColor ) ) ; //$NON-NLS-1$
-    }
-  }
-
-
-  //
-  // Helpers
-  //
-  /**
-   * Encodes the <code>color</code> in its hexadecimal string representation,
-   * which is <tt>#[red][green][blue]</tt>, where the channels are encoded as
-   * 2 hex characters.
-   * 
-   * @param color the {@link Color} to encode
-   * @return the string representation of <code>color</code>.
-   * @throws NullPointerException if <code>color</code> is <code>null</code>.
-   */
-  private static final String encodeColor ( Color color )
-  {
-    // encode the red channel
-    String red = Integer.toHexString ( color.getRed ( ) ) ;
-    if ( red.length ( ) < 2 )
-    {
-      red = "0" + red ; //$NON-NLS-1$
-    }
-    // encode the green channel
-    String green = Integer.toHexString ( color.getGreen ( ) ) ;
-    if ( green.length ( ) < 2 )
-    {
-      green = "0" + green ; //$NON-NLS-1$
-    }
-    // encode the blue channel
-    String blue = Integer.toHexString ( color.getBlue ( ) ) ;
-    if ( blue.length ( ) < 2 )
-    {
-      blue = "0" + blue ; //$NON-NLS-1$
-    }
-    // combine the channels
-    return "#" + red + green + blue ; //$NON-NLS-1$
   }
 }
