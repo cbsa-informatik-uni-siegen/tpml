@@ -561,9 +561,9 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 			
 
 		} catch (Exception e) {
-			logger.error("Could not create new TypeCheckerView", e);
+			logger.error("Could not create new TypeInferenceView", e);
 			JOptionPane.showMessageDialog(this,
-					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotTypeChecker")+
+					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotTypeInference")+
 					"\n"+e.getMessage()+".",
 					"Type Inference", JOptionPane.ERROR_MESSAGE);
 		}
