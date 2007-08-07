@@ -111,6 +111,103 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
 
 
   /**
+   * Evaluates the {@link Inherit} using <code>context</code>.
+   * 
+   * @param pContext The small step proof context.
+   * @param pInherit The {@link Inherit}.
+   * @return The resulting {@link Expression}.
+   */
+  public Expression evaluateInherit ( SmallStepProofContext pContext ,
+      Inherit pInherit )
+  {
+    /*
+     * If the Expression is a Inherit and the body of the Inherit is a Inherit,
+     * we can perform INHERIT-RIGHT.
+     */
+    if ( pInherit.getBody ( ) instanceof Inherit )
+    {
+      pContext.addProofStep ( getRuleByName ( INHERIT_RIGHT ) , pInherit ) ;
+      Expression body = evaluate ( pContext , pInherit.getBody ( ) ) ;
+      if ( body.isException ( ) )
+      {
+        return body ;
+      }
+      return new Inherit ( pInherit.getIdentifiers ( ) , pInherit.getE ( ) ,
+          body ) ;
+    }
+    /*
+     * If the Expression is a Inherit and the body of the Inherit is a Row and
+     * the e of the Inherit is not yet a value, we can perform INHERIT-LEFT.
+     */
+    else if ( ( pInherit.getBody ( ) instanceof Row )
+        && ( ! pInherit.getE ( ).isValue ( ) ) )
+    {
+      pContext.addProofStep ( getRuleByName ( INHERIT_LEFT ) , pInherit ) ;
+      Expression e = evaluate ( pContext , pInherit.getE ( ) ) ;
+      if ( e.isException ( ) )
+      {
+        return e ;
+      }
+      return new Inherit ( pInherit.getIdentifiers ( ) , e , pInherit
+          .getBody ( ) ) ;
+    }
+    /*
+     * If the Expression is a Inherit and the body of the Inherit is a Row and
+     * the e of the Inherit is a Class and the e of the Class is a Row, we can
+     * perform INHERIT-EXEC.
+     */
+    else if ( ( pInherit.getE ( ) instanceof Class )
+        && ( ( ( Class ) pInherit.getE ( ) ).getBody ( ) instanceof Row )
+        && ( pInherit.getBody ( ) instanceof Row ) )
+    {
+      Class tmpClass = ( Class ) pInherit.getE ( ) ;
+      Row r1 = ( Row ) tmpClass.getBody ( ) ;
+      Row r2 = ( Row ) pInherit.getBody ( ) ;
+      // dom_a(r1) = A
+      ArrayList < Identifier > attributeIdentifierR1 = new ArrayList < Identifier > ( ) ;
+      for ( Expression e : r1.getExpressions ( ) )
+      {
+        if ( e instanceof Attribute )
+        {
+          attributeIdentifierR1.add ( ( ( Attribute ) e ).getId ( ) ) ;
+        }
+      }
+      if ( attributeIdentifierR1.size ( ) != pInherit.getIdentifiers ( ).length )
+      {
+        return pInherit ;
+      }
+      for ( Identifier a : pInherit.getIdentifiers ( ) )
+      {
+        boolean found = false ;
+        for ( Identifier attributeId : attributeIdentifierR1 )
+        {
+          if ( a.equals ( attributeId ) )
+          {
+            found = true ;
+            break ;
+          }
+        }
+        if ( ! found )
+        {
+          return pInherit ;
+        }
+      }
+      try
+      {
+        Row row = Row.union ( r1 , r2 ) ;
+        pContext.addProofStep ( getRuleByName ( INHERIT_EXEC ) , pInherit ) ;
+        return row ;
+      }
+      catch ( LanguageParserMultiException e )
+      {
+        return pInherit ;
+      }
+    }
+    return pInherit ;
+  }
+
+
+  /**
    * Evaluates the {@link New} using <code>context</code>.
    * 
    * @param pContext The small step proof context.
@@ -146,99 +243,5 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
       return new ObjectExpr ( tmpClass.getId ( ) , tmpClass.getTau ( ) , row ) ;
     }
     return pNew ;
-  }
-
-
-  /**
-   * Evaluates the {@link Inherit} using <code>context</code>.
-   * 
-   * @param pContext The small step proof context.
-   * @param pBody The {@link Inherit}.
-   * @return The resulting {@link Expression}.
-   */
-  public Expression evaluateBody ( SmallStepProofContext pContext , Inherit pBody )
-  {
-    /*
-     * If the Expression is a Inherit and the body of the Inherit is a Inherit, we can
-     * perform INHERIT-RIGHT.
-     */
-    if ( pBody.getBody ( ) instanceof Inherit )
-    {
-      pContext.addProofStep ( getRuleByName ( INHERIT_RIGHT ) , pBody ) ;
-      Expression body = evaluate ( pContext , pBody.getBody ( ) ) ;
-      if ( body.isException ( ) )
-      {
-        return body ;
-      }
-      return new Inherit ( pBody.getIdentifiers ( ) , pBody.getE ( ) , body ) ;
-    }
-    /*
-     * If the Expression is a Inherit and the body of the Inherit is a Row and the e
-     * of the Inherit is not yet a value, we can perform INHERIT-LEFT.
-     */
-    else if ( ( pBody.getBody ( ) instanceof Row )
-        && ( ! pBody.getE ( ).isValue ( ) ) )
-    {
-      pContext.addProofStep ( getRuleByName ( INHERIT_LEFT ) , pBody ) ;
-      Expression e = evaluate ( pContext , pBody.getE ( ) ) ;
-      if ( e.isException ( ) )
-      {
-        return e ;
-      }
-      return new Inherit ( pBody.getIdentifiers ( ) , e , pBody.getBody ( ) ) ;
-    }
-    /*
-     * If the Expression is a Inherit and the body of the Inherit is a Row and the e
-     * of the Inherit is a Class and the e of the Class is a Row, we can perform
-     * INHERIT-EXEC.
-     */
-    else if ( ( pBody.getE ( ) instanceof Class )
-        && ( ( ( Class ) pBody.getE ( ) ).getBody ( ) instanceof Row )
-        && ( pBody.getBody ( ) instanceof Row ) )
-    {
-      Class tmpClass = ( Class ) pBody.getE ( ) ;
-      Row r1 = ( Row ) tmpClass.getBody ( ) ;
-      Row r2 = ( Row ) pBody.getBody ( ) ;
-      // dom_a(r1) = A
-      ArrayList < Identifier > attributeIdentifierR1 = new ArrayList < Identifier > ( ) ;
-      for ( Expression e : r1.getExpressions ( ) )
-      {
-        if ( e instanceof Attribute )
-        {
-          attributeIdentifierR1.add ( ( ( Attribute ) e ).getId ( ) ) ;
-        }
-      }
-      if ( attributeIdentifierR1.size ( ) != pBody.getIdentifiers ( ).length )
-      {
-        return pBody ;
-      }
-      for ( Identifier a : pBody.getIdentifiers ( ) )
-      {
-        boolean found = false ;
-        for ( Identifier attributeId : attributeIdentifierR1 )
-        {
-          if ( a.equals ( attributeId ) )
-          {
-            found = true ;
-            break ;
-          }
-        }
-        if ( ! found )
-        {
-          return pBody ;
-        }
-      }
-      try
-      {
-        Row row = Row.union ( r1 , r2 ) ;
-        pContext.addProofStep ( getRuleByName ( INHERIT_EXEC ) , pBody ) ;
-        return row ;
-      }
-      catch ( LanguageParserMultiException e )
-      {
-        return pBody ;
-      }
-    }
-    return pBody ;
   }
 }

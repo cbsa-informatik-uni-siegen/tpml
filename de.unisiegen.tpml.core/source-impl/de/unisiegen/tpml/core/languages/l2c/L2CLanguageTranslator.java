@@ -46,28 +46,10 @@ public class L2CLanguageTranslator extends L2OLanguageTranslator
     }
     else if ( pExpression instanceof Inherit )
     {
-      return translateToCoreSyntaxBody ( ( Inherit ) pExpression , pRecursive ) ;
+      return translateToCoreSyntaxInherit ( ( Inherit ) pExpression ,
+          pRecursive ) ;
     }
     return super.translateToCoreSyntax ( pExpression , pRecursive ) ;
-  }
-
-
-  /**
-   * Translates the {@link Inherit} to core syntax.
-   * 
-   * @param pBody The given {@link Inherit}.
-   * @param pRecursive Translate recursive all children of the {@link Inherit}.
-   * @return The translated {@link Expression}.
-   */
-  private Expression translateToCoreSyntaxBody ( Inherit pBody , boolean pRecursive )
-  {
-    if ( pRecursive )
-    {
-      return new Inherit ( pBody.getIdentifiers ( ) , translateToCoreSyntax (
-          pBody.getE ( ) , true ) , translateToCoreSyntax ( pBody.getBody ( ) ,
-          true ) ) ;
-    }
-    return pBody ;
   }
 
 
@@ -87,6 +69,26 @@ public class L2CLanguageTranslator extends L2OLanguageTranslator
           translateToCoreSyntax ( pClass.getBody ( ) , true ) ) ;
     }
     return pClass ;
+  }
+
+
+  /**
+   * Translates the {@link Inherit} to core syntax.
+   * 
+   * @param pInherit The given {@link Inherit}.
+   * @param pRecursive Translate recursive all children of the {@link Inherit}.
+   * @return The translated {@link Expression}.
+   */
+  private Expression translateToCoreSyntaxInherit ( Inherit pInherit ,
+      boolean pRecursive )
+  {
+    if ( pRecursive )
+    {
+      return new Inherit ( pInherit.getIdentifiers ( ) , translateToCoreSyntax (
+          pInherit.getE ( ) , true ) , translateToCoreSyntax ( pInherit
+          .getBody ( ) , true ) ) ;
+    }
+    return pInherit ;
   }
 
 
