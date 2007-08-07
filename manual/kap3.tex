@@ -823,6 +823,27 @@ und die Menge \notation{$\TypeR$} aller $\name{Reihentypen}$ $\phi$ von \LTWOC\ 
 verschieden sein m"ussen.
 
 
+\subsection{Big step Semantik von \LTWOC}
+
+Ein \notation{big step} hei"st g"ultig f"ur \LTWOC, wenn er sich mit den big step Regeln von \LTWOO\ und den Regeln\\[3mm]
+  \begin{tabular}{ll}
+    \mbox{(CLASS)}       & $\regel{b \eval r}
+                                  {\class{self}{b} \eval \class{self}{r}}$ \\[5mm]
+    \mbox{(NEW)}         & $\regel{e \eval \class{self}{r}}
+                                  {\new{e} \eval \object{self}{r}}$ \\[5mm]
+    \mbox{(INHERIT)}     & $\regel{b \eval r_2 \quad  e \eval \class{self}{r_1} \quad \doma{r_1} = A}
+                                  {\inherit{A}{e}{b} \eval r_1 \oplus r_2}$
+  \end{tabular}\\[7mm]
+sowie den dazugeh"origen exception-Regeln herleiten l"asst.
+
+Bei dem Symbol $\oplus$ handelt es sich um die Vereinigung der beiden Reihen $r_1$ und $r_2$.
+Das Ergebniss ist eine Reihe, in der erst die Kinder der Reihe $r_1$ vorkommen und danach
+die Kinder der Reihe $r_2$.
+
+Die Bedingung $\doma{r_1} = A$ bedeutet, dass alle angegebenen
+Attributnamen in dem Inherit Teil mit den Attributen in der Reihe $r_1$ "ubereinstimmen m"ussen.
+Ist dies nicht der Fall, bleibt der Small Step Interpreter stecken.
+
 \subsection{Small step Semantik von \LTWOC}
 
 Ein \notation{small step} hei"st g"ultig f"ur \LTWOC, wenn er sich mit den small step Regeln von \LTWOO\ und den Regeln\\[5mm]
