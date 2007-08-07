@@ -705,7 +705,7 @@ die nicht zu einem Objekt oder Attribut geh"oren.
                               {\Tjm{\Gamma}{\expObject{\self:\tau}{r}}{\tau}}$ \\[4mm]
     \mbox{(Dupl-Subsume)\ } & $\RULE{\Tjm{\Gamma}{\self}{\tau}
                                \quad
-                               \forall i=1 \ldots n:\Tjm{\Gamma}{a_i}{\tau_i}
+                               \forall i:\Tjm{\Gamma}{a_i}{\tau_i}
                                              \wedge \Tjm{\Gamma}{e_i}{\tau_i'}
                                              \wedge \tau_i' \le \tau_i}
                               {\Tjm{\Gamma}{\expDupl{a_1=e_1;\ldots;a_n=e_n}}{\tau}}$\\[4mm]
@@ -753,7 +753,7 @@ Ein Beweisschritt f"ur Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \
                           {\typeObject{m_1:\tau_1;\ldots;m_n:\tau_n}}$ \\[2mm]
     \mbox{(S-Obj-Depth)\ }  & $\RULE{\subtype{\tau_i} {\tau_i'} \text{ f\"ur } i=1,\ldots,n}
                               {\subtype{\typeObject{m_1:\tau_1;\ldots;m_n:\tau_n}}
-                               \subtype{\typeObject{m_1:\tau_1';\ldots;m_n:\tau_n'}}}$ \\[5mm]
+                               {\typeObject{m_1:\tau_1';\ldots;m_n:\tau_n'}}}$ \\[5mm]
     \mbox{(S-Object)\ }    & $\RULE{\subtype{\tau_i} {_m \tau_j'} \text{ f\"ur alle } i,j \text{ mit } m_i = m_j'}
                               {\subtype{\typeObject{m_1:\tau_1;\ldots;m_k:\tau_k}}
                                {_m \typeObject{m_1':\tau_1';\ldots;m_l':\tau_l'}}}$ \\[4mm]

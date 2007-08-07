@@ -208,10 +208,11 @@ Jeder der Beweismethoden hat f"ur den Benutzer eine weitere Komfort-Funktion ein
 
 {\bf $\bli{x}{\abstr{x}{\app{x}{x}}}{\app{x}{x}}$}
 
-Wie man leicht sieht ist der Identifier \glqq$x$\grqq\ doppelt verwendet. In noch gr"o"seren Beispielen w"are es nicht mehr einfach zu "uberschauen, an welches \glqq$x$\grqq\ welches gebunden ist. Um dies zu vereinfachen kann man einfach mit dem Mauszeiger "uber eins der \glqq$x$\grqq\ fahren, und die dazugeh"origen \glqq$x$\grqq\ werden farbig hervorgehoben. Zus"atzlich wird der Identifier, an den die anderen gebunden sind extra durch eine andere Farbe hervorgehoben\footnote{Die Farben, sowohl f"ur gebundenen als auch bindende Indentifier k"onnen "uber Einstellungen... im Men"u Bearbeiten eingestellt werden.}. Im gegebenen Beispiel w"urde das \glqq$x$\grqq\ nach dem \glqq$let$\grqq\ zusammen mit den letzten beiden \glqq$x$\grqq\ hervorgehoben, w"arend das \glqq$x$\grqq\ nach dem \glqq$lambda$\grqq\ zusammen mit den folgenden beiden \glqq$x$\grqq\ hervorgehoben w"urden.
-Idetifier, die keine Bindungen haben, aber Bindungen haben k"onnten werden ebenfalls hervorgehoben. Anders Identifier, die gar keine Bindungen haben k"onnen, wie es bei Namen f"ur Methoden der Fall ist. Dazu sei ein letzte Beispiel zu diesem Thema gegeben:
+Wie man leicht sieht ist der Identifier \glqq$x$\grqq\ doppelt verwendet. In noch gr"o"seren Beispielen w"are es nicht mehr einfach zu "uberschauen, an welches \glqq$x$\grqq\ welches gebunden ist. Um dies zu vereinfachen kann man einfach mit dem Mauszeiger "uber eins der \glqq$x$\grqq\ fahren, und die dazugeh"origen \glqq$x$\grqq\ werden farbig hervorgehoben. Zus"atzlich wird der Identifier, an den die anderen gebunden sind extra durch eine andere Farbe hervorgehoben\footnote{Die Farben, sowohl f"ur gebundenen als auch bindende Identifier k"onnen "uber Einstellungen... im Men"u Bearbeiten eingestellt werden.}. Im gegebenen Beispiel w"urde das \glqq$x$\grqq\ nach dem \glqq$let$\grqq\ zusammen mit den letzten beiden \glqq$x$\grqq\ hervorgehoben, w"arend das \glqq$x$\grqq\ nach dem \glqq$lambda$\grqq\ zusammen mit den folgenden beiden \glqq$x$\grqq\ hervorgehoben w"urden.
 
-{\bf object (self) method inc x y = x + 1 ; end}
+Identifier, die keine Bindungen haben, aber Bindungen haben k"onnten werden ebenfalls hervorgehoben. Anders Identifier, die gar keine Bindungen haben k"onnen, wie es bei Namen f"ur Methoden der Fall ist. Dazu sei ein letztes Beispiel zu diesem Thema gegeben:
+
+$\object{self}{\curriedmethodtwo{inc}{x}{y}{\infix{+}{x}{1}}}$
 
 Dieses Beispiel hat drei Identifier: inc, x und y. x verh"alt sich wie im oberen Beispiel. Es wird zusammen mit dem gebundenen x hervorgehoben. y dagegen hat zwar keinen weiteren gebundenen Identifier, k"onnte aber einen solchen haben. Er wird alleine hervorgehoben. inc letzlich wird nicht hervorgehoben. Es ist ein Methodenname und an den kann prinzipiell nichts gebunden sein.
 
