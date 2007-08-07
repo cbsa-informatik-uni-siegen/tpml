@@ -21,9 +21,11 @@
 \newindex{default}{idx}{ind}{Stichwortverzeichnis}
 
 \newcommand{\question}[3]{\item {\textbf{#1?}}\ (S.\ #2)\\[2mm]#3}
-\newcommand{\statement}[3]{\item {\textbf{#1}}\ (S.\ #2)\\[2mm]#3}
+\newcommand{\statement}[3]{\item {\textbf{#1!}}\ (S.\ #2)\\[2mm]#3}
 \newcommand{\catchword}[1]{-\ #1\\}
 \newcommand{\normaltext}[1]{#1\\}
+\newcommand{\page}[1]{#1}
+\newcommand{\pages}[2]{#1-#2}
 
 \begin{document}
 
@@ -36,49 +38,79 @@
 
 \begin{enumerate}
 
-  \question{In welchen Bereichen sind Automaten dem Menschen unterlegen}{1}
+  \question{In welchen Bereichen sind Automaten dem Menschen unterlegen}{\page{1}}
   {
     \catchword{Erkennen von Dingen}
     \catchword{Erkennen von Situationen}
     \catchword{Freiheit der Entscheidung}
   }
 
-  \question{In welchen Bereichen sind Automaten dem Menschen "uberlegen}{1}
+  \question{In welchen Bereichen sind Automaten dem Menschen "uberlegen}{\page{1}}
   {
     \catchword{Schnelligkeit}
     \catchword{Pr"azision}
   }
 
-  \question{Wie nennt man den Vorgang zur Einf"uhrung von Automaten}{1}
+  \question{Wie nennt man den Vorgang zur Einf"uhrung von Automaten}{\page{1}}
   {
    \normaltext{Automatisierung}
   }
 
-  \question{Wie nennt man den Umfang, in dem ein Vorgang oder Prozess automatisiert ist}{1}
+  \question{Wie nennt man den Umfang, in dem ein Vorgang oder Prozess automatisiert ist}{\page{1}}
   {
     \normaltext{Automatisierungsgrad}
   }
 
-  \question{Wann ist dieser umso h"oher}{1}
+  \question{Wann ist dieser umso h"oher}{\page{1}}
   {
     \normaltext{Je einfacher ein Vorgang oder Prozess ist}
   }
 
-  \question{Welche zwei Einheiten findet man bei automatisierten Prozessen}{1}
+  \question{Welche zwei Einheiten findet man bei automatisierten Prozessen}{\page{1}}
   {
     \catchword{Technischer Prozess}
     \catchword{Automatische Steuerung}
   }
 
+  \question{Wie lautet die DIN Definition eines Automaten}{\page{2}}
+  {
+    \normaltext{Ein Automat ist ein k"unstliches System, das selbstst"andig ein Programm
+                befolgt. Auf Grund des Programms trifft das System Entscheidungen, die
+                auf der Verkn"upfung von Eingaben mit dem jeweiligen Zustand des Systems
+                beruhen, und Ausgaben zur Folge haben.}
+  }
+
+  \statement{Nennen Sie die zwei wesentlichen Merkmale eines Automaten}{\page{2}}
+  {
+    \catchword{Grundstruktur aus einer kausalen Folge von Eingabe, Verarbeitung und Ausgabe}
+    \catchword{Die Verarbeitung beinhaltet Entscheidungen zwischen verschiedenen M"oglichkeiten}
+  }
+
+  \question{Welche Ziele hat die Automatisierung}{\page{2}}
+  {
+    \catchword{Vereinfachung des Prozesses}
+    \catchword{Menschen f"ur Arbeiten mit h"oherem Anspruch freisetzen}
+  }
+
+  \statement{Nennen Sie die f"unf typischen Bereiche,
+             in denen der Mensch Entlastung erfahren kann}{\pages{2}{4}}
+  {
+    \catchword{Arbeiten, die regelm"a"sig und monoton wiederkehren}
+    \catchword{Arbeiten, die hohe Anforderungen an die Konzentration stellen}
+    \catchword{Arbeiten, die eine hohe Arbeitsgeschwindigkeit verlangen}
+    \catchword{Arbeiten, die eine gro"se Datenmenge liefern}
+    \catchword{Arbeiten, die in gesundheitsgef"ahrdender Umgebung stattfinden}
+  }
+
   \newpage
   \section{Prozessrechner Hardware}
 
-  \question{Warum ist das Fach doof}{x}
+  \question{Warum ist das Fach doof}{\page{x}}
   {
     \normaltext{Weil es so ist!}
   }
 
-  \question{Warum ist das Fach doof}{x}
+  \question{Warum ist das Fach doof}{\page{x}}
   {
     \normaltext{Weil es so ist!}
   }
@@ -86,12 +118,12 @@
   \newpage
   \section{Periphere Ger"ate}
 
-  \question{Warum ist das Fach doof}{x}
+  \question{Warum ist das Fach doof}{\page{x}}
   {
     \normaltext{Weil es so ist!}
   }
 
-  \question{Warum ist das Fach doof}{x}
+  \question{Warum ist das Fach doof}{\page{x}}
   {
     \normaltext{Weil es so ist!}
   }
@@ -99,12 +131,12 @@
   \newpage
   \section{Prozessrechner-Software}
 
-  \question{Warum ist das Fach doof}{x}
+  \question{Warum ist das Fach doof}{\page{x}}
   {
     \normaltext{Weil es so ist!}
   }
 
-  \question{Warum ist das Fach doof}{x}
+  \question{Warum ist das Fach doof}{\page{x}}
   {
     \normaltext{Weil es so ist!}
   }
@@ -112,12 +144,12 @@
   \newpage
   \section{Sonstiges}
 
-  \question{Warum ist das Fach doof}{x}
+  \question{Warum ist das Fach doof}{\page{x}}
   {
     \normaltext{Weil es so ist!}
   }
 
-  \question{Warum ist das Fach doof}{x}
+  \question{Warum ist das Fach doof}{\page{x}}
   {
     \normaltext{Weil es so ist!}
   }
