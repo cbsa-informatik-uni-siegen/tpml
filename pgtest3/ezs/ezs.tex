@@ -20,12 +20,12 @@
 
 \newindex{default}{idx}{ind}{Stichwortverzeichnis}
 
-\newcommand{\question}[3]{\item {\textbf{#1?}}\ (S.\ #2)\\[2mm]#3}
-\newcommand{\statement}[3]{\item {\textbf{#1!}}\ (S.\ #2)\\[2mm]#3}
-\newcommand{\catchword}[1]{-\ #1\\}
-\newcommand{\normaltext}[1]{#1\\}
+\newcommand{\question}[3]{\pagebreak[3]\item {\textbf{#1?}}\ (S.\ #2)#3}
+\newcommand{\statement}[3]{\pagebreak[3]\item {\textbf{#1!}}\ (S.\ #2)#3}
+\newcommand{\catchword}[1]{\\-\ #1}
+\newcommand{\normaltext}[1]{\\#1}
 \newcommand{\page}[1]{#1}
-\newcommand{\pages}[2]{#1-#2}
+\newcommand{\pages}[2]{#1\ -\ #2}
 
 \begin{document}
 
@@ -90,6 +90,7 @@
   {
     \catchword{Vereinfachung des Prozesses}
     \catchword{Menschen f"ur Arbeiten mit h"oherem Anspruch freisetzen}
+    \catchword{H"ohere Produktivit"at}
   }
 
   \statement{Nennen Sie die f"unf typischen Bereiche,
@@ -100,6 +101,12 @@
     \catchword{Arbeiten, die eine hohe Arbeitsgeschwindigkeit verlangen}
     \catchword{Arbeiten, die eine gro"se Datenmenge liefern}
     \catchword{Arbeiten, die in gesundheitsgef"ahrdender Umgebung stattfinden}
+  }
+
+  \question{Welche Bereiche umfasst eine h"ohere Produktivit"at}{\page{4}}
+  {
+    \catchword{Gr"o"sere Menge (Quantit"at)}
+    \catchword{Bessere Qualit"at}
   }
 
   \newpage
