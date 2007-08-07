@@ -5,14 +5,11 @@
 *** Michael ***
 - Die Dateien "build.properties", "build.xml", und "tpml.xml" 
   aus pgtest3 entfernen, da nicht mehr benötigt
-- "object (self) method inc x y = x + 1 ; end"
-  Nur zum Erklären der Bindungen für´s Handbuch:
-  - das "inc" ist ein Methodennamen und kann nie Bindungen haben,
-    wird deshalb nicht gehighlighted
-  - das "x" hat eine Bindung, alles wird gehighlighted
-  - das "y" könnte eine Bindung haben, hat aber keine,
-    wird aber gehighlighted
 
 *** Christian ***
+
+- Bitte object (self) method inc x y = x + 1 ; end
+  in ein Skript verwandeln und in der \ubsection Mouse-Over-Effekt
+  einbinden. Danke ;)
 
 *** Benny ***
