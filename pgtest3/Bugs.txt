@@ -14,6 +14,5 @@
     wird aber gehighlighted
 
 *** Christian ***
-- Handbuch gpl Lizenz
 
 *** Benny ***
