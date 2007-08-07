@@ -3,7 +3,6 @@ package de.unisiegen.tpml.core.languages.l2c ;
 
 import java.io.Reader ;
 import java.text.MessageFormat ;
-
 import java_cup.runtime.lr_parser ;
 import de.unisiegen.tpml.core.AbstractProofRule ;
 import de.unisiegen.tpml.core.Messages ;
@@ -107,12 +106,10 @@ public class L2CLanguage extends L2OLanguage
    * {@inheritDoc}
    */
   @ Override
-  public BigStepProofModel newBigStepProofModel (
-      @ SuppressWarnings ( "unused" )
-      Expression pExpression )
+  public BigStepProofModel newBigStepProofModel ( Expression pExpression )
   {
-    throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "Exception.8" ) , getName ( ) ) ) ; //$NON-NLS-1$
+    return new BigStepProofModel ( pExpression , new L2CBigStepProofRuleSet (
+        this ) ) ;
   }
 
 
