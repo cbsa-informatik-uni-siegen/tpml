@@ -26,7 +26,9 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 public class L2CBNLanguage extends L2Language
 {
   /**
-   * TODO
+   * The group id for proof rules of this language.
+   * 
+   * @see de.unisiegen.tpml.core.AbstractProofRule#getGroup()
    */
   public static final int L2CBN = L2Language.L2 + 1 ;
 
