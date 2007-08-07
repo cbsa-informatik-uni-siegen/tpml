@@ -286,11 +286,12 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 		gridBagConstraints.weighty = 0;
 		gridBagConstraints.gridwidth = 2;
 		this.source.add ( this.sourceLabel2, gridBagConstraints );
-		this.editor = new StyledLanguageEditor ( );
-		this.editor.addFocusListener ( new FocusListener ( ) {
+		this.editor1 = new StyledLanguageEditor ( );
+		this.editor1.addFocusListener ( new FocusListener ( ) {
 			public void focusGained ( @SuppressWarnings ( "unused" )
 			FocusEvent e ) {
 			//TODO think about
+				TypeEditorPanel.this.editor = TypeEditorPanel.this.editor1;
 			// get the saved status for this editor
 			/* TypeEditorPanel.this
 			 .setRedoStatus ( TypeEditorPanel.this.redoStatus1 ) ;
@@ -321,8 +322,8 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 			 */
 			@SuppressWarnings ( "synthetic-access" )
 			public void markText ( int pLeft, int pRight ) {
-				if ( ( TypeEditorPanel.this.editor.getSelectionStart ( ) == pLeft )
-						&& ( TypeEditorPanel.this.editor.getSelectionEnd ( ) == pRight ) ) {
+				if ( ( TypeEditorPanel.this.editor1.getSelectionStart ( ) == pLeft )
+						&& ( TypeEditorPanel.this.editor1.getSelectionEnd ( ) == pRight ) ) {
 					TypeEditorPanel.this.removeSelectedText ( );
 				} else {
 					TypeEditorPanel.this.selectErrorText ( pLeft, pRight );
@@ -387,11 +388,11 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				}
 			}
 		} );
-		this.editor.setDocument ( this.sourceField );
+		this.editor1.setDocument ( this.sourceField );
 		this.listener = new OwnDocumentListener ( );
 		this.outline = new DefaultOutline ( this, Outline.Modus.FIRST );
 		this.sourceField.addDocumentListener ( this.listener );
-		this.scrollPane1.setViewportView ( this.editor );
+		this.scrollPane1.setViewportView ( this.editor1 );
 		gridBagConstraints.insets = new Insets ( 5, 0, 0, 0 );
 		gridBagConstraints.fill = GridBagConstraints.BOTH;
 		gridBagConstraints.gridx = 0;
@@ -413,6 +414,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 			public void focusGained ( @SuppressWarnings ( "unused" )
 			FocusEvent e ) {
 			// TODO think about
+				TypeEditorPanel.this.editor = TypeEditorPanel.this.editor2;
 			// get the saved status for this editor
 			/*TypeEditorPanel.this
 			 .setRedoStatus ( TypeEditorPanel.this.redoStatus2 ) ;
@@ -574,8 +576,8 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	 * Remove the selected text from this editor
 	 */
 	public void removeSelectedText ( ) {
-		int start = this.editor.getSelectionStart ( );
-		int end = this.editor.getSelectionEnd ( );
+		int start = this.editor1.getSelectionStart ( );
+		int end = this.editor1.getSelectionEnd ( );
 		try {
 			if ( start < end ) {
 				this.sourceField.remove ( start, ( end - start ) );
@@ -639,7 +641,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	 * @param right end position
 	 */
 	private void selectErrorText ( int left, int right ) {
-		this.editor.select ( left, right );
+		this.editor1.select ( left, right );
 	}
 
 	/**
@@ -680,7 +682,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	 * @see #editor
 	 */
 	public StyledLanguageEditor getEditor ( ) {
-		return this.editor;
+		return this.editor1;
 	}
 
 	/**
@@ -869,7 +871,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	 */
 	public String getSelectedText ( ) {
 		if ( this.editor.equals( this.editor1) )
-			return this.editor.getSelectedText ( );
+			return this.editor1.getSelectedText ( );
 		return this.editor2.getSelectedText ( );
 	}
 
@@ -891,7 +893,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 		clipboard.setContents ( stringSelection, this );
 		try {
 			if ( this.editor.equals( this.editor1) ) {
-				this.type = eventHandling ( this.editor, this.outline );
+				this.type = eventHandling ( this.editor1, this.outline );
 				// this.window.setChangeState ( Boolean.TRUE ) ;
 				firePropertyChange ( "editor", false, true );
 				this.saveStatus = true;
@@ -933,8 +935,8 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				if ( this.editor.equals( this.editor1) ) {
 					removeSelectedText ( );
 					insertText ( ( String ) contents.getTransferData ( DataFlavor.stringFlavor ), this.sourceField,
-							this.editor );
-					TypeEditorPanel.this.type = eventHandling ( TypeEditorPanel.this.editor, TypeEditorPanel.this.outline );
+							this.editor1 );
+					TypeEditorPanel.this.type = eventHandling ( TypeEditorPanel.this.editor1, TypeEditorPanel.this.outline );
 					//TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
 					firePropertyChange ( "editor", false, true );
 					TypeEditorPanel.this.saveStatus = true;
@@ -1222,7 +1224,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 		@SuppressWarnings ( "synthetic-access" )
 		public void insertUpdate ( DocumentEvent arg0 ) {
 			try {
-				TypeEditorPanel.this.type = eventHandling ( TypeEditorPanel.this.editor, TypeEditorPanel.this.outline );
+				TypeEditorPanel.this.type = eventHandling ( TypeEditorPanel.this.editor1, TypeEditorPanel.this.outline );
 				// TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
 				//firePropertyChange ( "editor", false, true );
 				TypeEditorPanel.this.saveStatus = true;
@@ -1248,7 +1250,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 		@SuppressWarnings ( "synthetic-access" )
 		public void removeUpdate ( DocumentEvent arg0 ) {
 			try {
-				TypeEditorPanel.this.type = eventHandling ( TypeEditorPanel.this.editor, TypeEditorPanel.this.outline );
+				TypeEditorPanel.this.type = eventHandling ( TypeEditorPanel.this.editor1, TypeEditorPanel.this.outline );
 				// TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
 				//firePropertyChange ( "editor", false, true );
 				TypeEditorPanel.this.saveStatus = true;
