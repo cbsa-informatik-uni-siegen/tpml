@@ -161,7 +161,8 @@ public final class Identifier extends Value implements IdentifierOrTypeName
     if ( obj instanceof Identifier )
     {
       Identifier other = ( Identifier ) obj ;
-      return this.name.equals ( other.name ) ;
+      return ( ( this.name.equals ( other.name ) ) && ( this.set
+          .equals ( other.set ) ) ) ;
     }
     return false ;
   }
