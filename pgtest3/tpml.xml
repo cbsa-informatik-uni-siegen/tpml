@@ -21,11 +21,11 @@
     <maxHeapSize>0</maxHeapSize>
   </jre>
   <versionInfo>
-    <fileVersion>@de.unisiegen.tpml.ui.version@</fileVersion>
+    <fileVersion>@de.unisiegen.tpml.ui.version@.0</fileVersion>
     <txtFileVersion>@de.unisiegen.tpml.ui.version@</txtFileVersion>
     <fileDescription>TPML</fileDescription>
-    <copyright>(C) 2006</copyright>
-    <productVersion>@de.unisiegen.tpml.ui.version@</productVersion>
+    <copyright>(C) 2007</copyright>
+    <productVersion>@de.unisiegen.tpml.ui.version@.0</productVersion>
     <txtProductVersion>@de.unisiegen.tpml.ui.version@</txtProductVersion>
     <productName>TPML</productName>
     <companyName></companyName>
