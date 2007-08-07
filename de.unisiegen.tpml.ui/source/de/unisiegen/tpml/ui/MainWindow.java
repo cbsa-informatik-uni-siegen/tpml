@@ -463,8 +463,8 @@ public class MainWindow
 
   private void setSaveState ( Boolean state )
   {
-	  window.saveButton.setEnabled ( true ) ; //state ) ;
-	  window.saveItem.setEnabled ( true ) ; //state ) ;
+	  window.saveButton.setEnabled ( state ) ;
+	  window.saveItem.setEnabled ( state ) ;
   }
 
 
