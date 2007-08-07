@@ -70,9 +70,14 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	JLabel sourceLabel2;
 
 	/**
-	 * The first editor
+	 * The actual editor
 	 */
 	StyledLanguageEditor editor;
+	
+	/**
+	 * The first editor
+	 */
+	StyledLanguageEditor editor1;
 
 	/**
 	 * The second editor
@@ -863,7 +868,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	 * @return selected text of the focused editor
 	 */
 	public String getSelectedText ( ) {
-		if ( this.editor.hasFocus ( ) )
+		if ( this.editor.equals( this.editor1) )
 			return this.editor.getSelectedText ( );
 		return this.editor2.getSelectedText ( );
 	}
@@ -885,7 +890,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 		StringSelection stringSelection = new StringSelection ( getSelectedText ( ) );
 		clipboard.setContents ( stringSelection, this );
 		try {
-			if ( this.editor.hasFocus ( ) ) {
+			if ( this.editor.equals( this.editor1) ) {
 				this.type = eventHandling ( this.editor, this.outline );
 				// this.window.setChangeState ( Boolean.TRUE ) ;
 				firePropertyChange ( "editor", false, true );
@@ -896,7 +901,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				this.redohistory.clear ( );
 				this.currentContent1 = this.sourceField.getText ( 0, this.sourceField.getLength ( ) );
 				removeSelectedText ( );
-			} else if ( this.editor2.hasFocus ( ) ) {
+			} else if ( this.editor.equals( this.editor2) ) {
 				this.type2 = eventHandling ( this.editor2, this.outline2 );
 				//this.window.setChangeState ( Boolean.TRUE ) ;
 				firePropertyChange ( "editor", false, true );
@@ -925,7 +930,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 		boolean hasTransferableText = ( contents != null ) && contents.isDataFlavorSupported ( DataFlavor.stringFlavor );
 		if ( hasTransferableText ) {
 			try {
-				if ( this.editor.hasFocus ( ) ) {
+				if ( this.editor.equals( this.editor1) ) {
 					removeSelectedText ( );
 					insertText ( ( String ) contents.getTransferData ( DataFlavor.stringFlavor ), this.sourceField,
 							this.editor );
@@ -943,7 +948,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 					setRedoStatus1 ( false );
 					TypeEditorPanel.this.redohistory.clear ( );
 					TypeEditorPanel.this.currentContent1 = doctext;
-				} else if ( this.editor2.hasFocus ( ) ) {
+				} else if ( this.editor.equals( this.editor2) ) {
 					removeSelectedText2 ( );
 					insertText ( ( String ) contents.getTransferData ( DataFlavor.stringFlavor ), this.sourceField2,
 							this.editor2 );
@@ -1113,7 +1118,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	 */
 	public void handleRedo ( ) {
 		try {
-			if ( this.editor.hasFocus ( ) ) {
+			if ( this.editor.equals( this.editor1) ) {
 				this.sourceField.removeDocumentListener ( this.listener );
 				this.undohistory.push ( this.sourceField.getText ( 0, this.sourceField.getLength ( ) ) );
 				this.sourceField.remove ( 0, this.sourceField.getLength ( ) );
@@ -1124,7 +1129,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				if ( this.redohistory.size ( ) == 0 ) {
 					setRedoStatus1 ( false );
 				}
-			} else if ( this.editor2.hasFocus ( ) ) {
+			} else if ( this.editor.equals( this.editor2) ) {
 				this.sourceField2.removeDocumentListener ( this.listener2 );
 				this.undohistory2.push ( this.sourceField2.getText ( 0, this.sourceField2.getLength ( ) ) );
 				this.sourceField2.remove ( 0, this.sourceField2.getLength ( ) );
@@ -1151,7 +1156,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	 */
 	public void handleUndo ( ) {
 		try {
-			if ( this.editor.hasFocus ( ) ) {
+			if ( this.editor.equals( this.editor1) ) {
 				this.sourceField.removeDocumentListener ( this.listener );
 				String doctext = this.sourceField.getText ( 0, this.sourceField.getLength ( ) );
 				String historytext;
@@ -1167,7 +1172,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				setRedoStatus1 ( true );
 				this.sourceField.addDocumentListener ( this.listener );
 				this.outline.load ( this.sourceField.getType ( ), Outline.ExecuteAutoChange.SUBTYPING_SOURCE );
-			} else if ( this.editor2.hasFocus ( ) ) {
+			} else if ( this.editor.equals( this.editor2) ) {
 				this.sourceField2.removeDocumentListener ( this.listener2 );
 				String doctext = this.sourceField2.getText ( 0, this.sourceField2.getLength ( ) );
 				String historytext;
