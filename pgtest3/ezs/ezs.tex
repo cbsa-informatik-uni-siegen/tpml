@@ -1,0 +1,51 @@
+\documentclass[a4paper,fleqn,latin1,twoside,12pt]{report}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{german}
+\usepackage{ngerman}
+\usepackage[latin1]{inputenc}
+\usepackage{color}
+\usepackage{latexsym}
+\usepackage{array}
+\usepackage{stmaryrd}
+\usepackage{hyperref}
+\usepackage{index}
+\usepackage{graphicx}
+
+% Kopf- und Fusszeilen
+\pagestyle{headings}
+
+% Informationen
+\title{{\Huge Echtzeitsysteme}\\Fragenkatalog}
+\author{{\Large Christian Fehler, Benjamin Mies, Michael Oeste}}
+\date{\small\today}
+
+% Index
+\newindex{default}{idx}{ind}{Stichwortverzeichnis}
+
+% Makros
+\newcommand{\question}[3]
+{\item {\textbf{#1}}\ (S. #2)\\#3}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\chapter{Einf"uhrung}
+
+\begin{enumerate}
+  \question
+  {Warum ist das Fach doof?}{20}
+  {Weil es so ist!}
+
+  \question
+  {Warum ist das Fach doof?}{20}
+  {Weil es so ist!}
+\end{enumerate}
+
+
+\end{document}
