@@ -1,4 +1,4 @@
-\documentclass[a4paper,fleqn,latin1,twoside,12pt]{report}
+\documentclass[a4paper,latin1,12pt]{article}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -14,37 +14,114 @@
 \usepackage{index}
 \usepackage{graphicx}
 
-% Kopf- und Fusszeilen
-\pagestyle{headings}
-
-% Informationen
 \title{{\Huge Echtzeitsysteme}\\Fragenkatalog}
 \author{{\Large Christian Fehler, Benjamin Mies, Michael Oeste}}
 \date{\small\today}
 
-% Index
 \newindex{default}{idx}{ind}{Stichwortverzeichnis}
 
-% Makros
-\newcommand{\question}[3]
-{\item {\textbf{#1}}\ (S. #2)\\#3}
+\newcommand{\question}[3]{\item {\textbf{#1?}}\ (S.\ #2)\\[2mm]#3}
+\newcommand{\statement}[3]{\item {\textbf{#1}}\ (S.\ #2)\\[2mm]#3}
+\newcommand{\catchword}[1]{-\ #1\\}
+\newcommand{\normaltext}[1]{#1\\}
 
 \begin{document}
 
 \maketitle
-\tableofcontents
 \newpage
+\tableofcontents
 
-\chapter{Einf"uhrung}
+\newpage
+\section{Einf"uhrung}
 
 \begin{enumerate}
-  \question
-  {Warum ist das Fach doof?}{20}
-  {Weil es so ist!}
 
-  \question
-  {Warum ist das Fach doof?}{20}
-  {Weil es so ist!}
+  \question{In welchen Bereichen sind Automaten dem Menschen unterlegen}{1}
+  {
+    \catchword{Erkennen von Dingen}
+    \catchword{Erkennen von Situationen}
+    \catchword{Freiheit der Entscheidung}
+  }
+
+  \question{In welchen Bereichen sind Automaten dem Menschen "uberlegen}{1}
+  {
+    \catchword{Schnelligkeit}
+    \catchword{Pr"azision}
+  }
+
+  \question{Wie nennt man den Vorgang zur Einf"uhrung von Automaten}{1}
+  {
+   \normaltext{Automatisierung}
+  }
+
+  \question{Wie nennt man den Umfang, in dem ein Vorgang oder Prozess automatisiert ist}{1}
+  {
+    \normaltext{Automatisierungsgrad}
+  }
+
+  \question{Wann ist dieser umso h"oher}{1}
+  {
+    \normaltext{Je einfacher ein Vorgang oder Prozess ist}
+  }
+
+  \question{Welche zwei Einheiten findet man bei automatisierten Prozessen}{1}
+  {
+    \catchword{Technischer Prozess}
+    \catchword{Automatische Steuerung}
+  }
+
+  \newpage
+  \section{Prozessrechner Hardware}
+
+  \question{Warum ist das Fach doof}{x}
+  {
+    \normaltext{Weil es so ist!}
+  }
+
+  \question{Warum ist das Fach doof}{x}
+  {
+    \normaltext{Weil es so ist!}
+  }
+
+  \newpage
+  \section{Periphere Ger"ate}
+
+  \question{Warum ist das Fach doof}{x}
+  {
+    \normaltext{Weil es so ist!}
+  }
+
+  \question{Warum ist das Fach doof}{x}
+  {
+    \normaltext{Weil es so ist!}
+  }
+
+  \newpage
+  \section{Prozessrechner-Software}
+
+  \question{Warum ist das Fach doof}{x}
+  {
+    \normaltext{Weil es so ist!}
+  }
+
+  \question{Warum ist das Fach doof}{x}
+  {
+    \normaltext{Weil es so ist!}
+  }
+
+  \newpage
+  \section{Sonstiges}
+
+  \question{Warum ist das Fach doof}{x}
+  {
+    \normaltext{Weil es so ist!}
+  }
+
+  \question{Warum ist das Fach doof}{x}
+  {
+    \normaltext{Weil es so ist!}
+  }
+
 \end{enumerate}
 
 
