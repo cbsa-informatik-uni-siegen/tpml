@@ -14,6 +14,6 @@
     wird aber gehighlighted
 
 *** Christian ***
-- Body in Inherit umbenennen, Parser anpassen
+- Handbuch gpl Lizenz
 
 *** Benny ***
