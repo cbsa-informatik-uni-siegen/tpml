@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <!--
+	Builds a final version but with new version-check from pgtest3
 	$Id: build.xml 421 2006-10-12 09:54:10Z benny $
 	
 	Copyright (c) 2006 Benedikt Meurer <benny@xfce.org>
@@ -90,17 +91,33 @@
 
 				<javac 
 									 srcdir="${pgtest3dir}" 
-									 includes="JOpFrame.java,MsgFrame.java,Start.java"
+									 includes="MsgFrame.java,Start.java"
 									 debug="on" 
 									 destdir="${classesdir}" 
 									 optimize="on" 
 									 source="1.2" 
 									 target="1.1"
-									 failonerror="false">
+									 failonerror="true">
 							<src path="${pgtest3dir}"/>
 							<src path="${basedir}/source" />
 					</javac>
+		
+		<javac 
+							 srcdir="${pgtest3dir}" 
+							 includes="JOpFrame.java"
+							 debug="on" 
+							 destdir="${classesdir}" 
+							 optimize="on" 
+							 source="1.2" 
+							 target="1.2"
+							 failonerror="true">
+					<src path="${pgtest3dir}"/>
+					<src path="${basedir}/source" />
+			</javac>
+
+		
 	</target>
+	
 	
 	<target name="dist-jar" depends="dist-compile,version-check">
 		<manifest file="${distdir}/MANIFEST.MF">
