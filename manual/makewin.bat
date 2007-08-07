@@ -3,3 +3,5 @@ pdflatex manual.tex
 	
 makeindex manual.idx -o manual.ind
 	pdflatex manual.tex
+
+start manual.pdf
