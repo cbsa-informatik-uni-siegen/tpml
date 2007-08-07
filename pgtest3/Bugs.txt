@@ -1,15 +1,12 @@
 *** Christoph ***
 - Im Hauptmenü "Typ Inferenz" ersetzen durch "Type Inference"
 - Button im MainWindow auf Focusable(false) setzen
+- AboutDialog neu in Netbeans gemacht? Wegen den neuen Entwicklern?
 
 *** Michael ***
 - Die Dateien "build.properties", "build.xml", und "tpml.xml" 
   aus pgtest3 entfernen, da nicht mehr benötigt
 
 *** Christian ***
-
-- Bitte object (self) method inc x y = x + 1 ; end
-  in ein Skript verwandeln und in der \ubsection Mouse-Over-Effekt
-  einbinden. Danke ;)
 
 *** Benny ***
