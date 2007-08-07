@@ -389,6 +389,7 @@ public final class Duplication extends Expression implements
             .newIdentifier ( this.identifiers [ i ] ) ;
         boundRenaming.add ( newId ) ;
         newIdentifiers [ i ] = newId ;
+        newIdentifiers [ i ].setSet ( Identifier.Set.VARIABLE ) ;
       }
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
