@@ -1,11 +1,11 @@
-\documentclass[a4paper,latin1,12pt]{article}
+\documentclass[a4paper,12pt]{article}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amstext}
 \usepackage{german}
 \usepackage{ngerman}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage{color}
 \usepackage{latexsym}
 \usepackage{array}
@@ -35,7 +35,7 @@
 \tableofcontents
 
 \newpage
-\section{Einf"uhrung}
+\section{Einführung}
 
 \begin{enumerate}
 
@@ -46,13 +46,13 @@
     \catchword{Freiheit der Entscheidung}
   }
 
-  \question{In welchen Bereichen sind Automaten dem Menschen "uberlegen}{\page{1}}
+  \question{In welchen Bereichen sind Automaten dem Menschen überlegen}{\page{1}}
   {
     \catchword{Schnelligkeit}
-    \catchword{Pr"azision}
+    \catchword{Präzision}
   }
 
-  \question{Wie nennt man den Vorgang zur Einf"uhrung von Automaten}{\page{1}}
+  \question{Wie nennt man den Vorgang zur Einführung von Automaten}{\page{1}}
   {
    \normaltext{Automatisierung}
   }
@@ -62,7 +62,7 @@
     \normaltext{Automatisierungsgrad}
   }
 
-  \question{Wann ist dieser umso h"oher}{\page{1}}
+  \question{Wann ist dieser umso höher}{\page{1}}
   {
     \normaltext{Je einfacher ein Vorgang oder Prozess ist}
   }
@@ -75,48 +75,48 @@
 
   \question{Wie lautet die DIN Definition eines Automaten}{\page{2}}
   {
-    \normaltext{Ein Automat ist ein k"unstliches System, das selbstst"andig ein Programm
+    \normaltext{Ein Automat ist ein künstliches System, das selbstständig ein Programm
                 befolgt. Auf Grund des Programms trifft das System Entscheidungen, die
-                auf der Verkn"upfung von Eingaben mit dem jeweiligen Zustand des Systems
+                auf der Verknüpfung von Eingaben mit dem jeweiligen Zustand des Systems
                 beruhen, und Ausgaben zur Folge haben.}
   }
 
   \statement{Nennen Sie die zwei wesentlichen Merkmale eines Automaten}{\page{2}}
   {
     \catchword{Grundstruktur aus einer kausalen Folge von Eingabe, Verarbeitung und Ausgabe}
-    \catchword{Die Verarbeitung beinhaltet Entscheidungen zwischen verschiedenen M"oglichkeiten}
+    \catchword{Die Verarbeitung beinhaltet Entscheidungen zwischen verschiedenen Möglichkeiten}
   }
 
   \question{Welche Ziele hat die Automatisierung}{\page{2}}
   {
     \catchword{Vereinfachung des Prozesses}
-    \catchword{Menschen f"ur Arbeiten mit h"oherem Anspruch freisetzen}
-    \catchword{H"ohere Produktivit"at}
+    \catchword{Menschen für Arbeiten mit höherem Anspruch freisetzen}
+    \catchword{Höhere Produktivität}
   }
 
-  \statement{Nennen Sie die f"unf typischen Bereiche,
+  \statement{Nennen Sie die fünf typischen Bereiche,
              in denen der Mensch Entlastung erfahren kann}{\pages{2}{4}}
   {
     \catchword{Arbeiten, die regelm"a"sig und monoton wiederkehren}
-    \catchword{Arbeiten, die hohe Anforderungen an die Konzentration stellen. Mit wechsel von Zeiten hoher Aktivit"at und hoher Anforderung an die Aufmerksamkeit und Zeiten geringer Aktivit"at, die mit Langeweile ausgef"ullt sind.}
+    \catchword{Arbeiten, die hohe Anforderungen an die Konzentration stellen. Mit wechsel von Zeiten hoher Aktivit"at und hoher Anforderung an die Aufmerksamkeit und Zeiten geringer Aktivit"at, die mit Langeweile ausgefüllt sind.}
     \catchword{Arbeiten, die eine hohe Arbeitsgeschwindigkeit verlangen}
     \catchword{Arbeiten, die eine gro"se Datenmenge liefern}
     \catchword{Arbeiten, die in gesundheitsgef"ahrdender Umgebung stattfinden}
   }
 
-  \question{Welche Bereiche umfasst eine h"ohere Produktivit"at}{\page{4}}
+  \question{Welche Bereiche umfasst eine höhere Produktivität}{\page{4}}
   {
-    \catchword{Gr"o"sere Menge (Quantit"at)}
-    \catchword{Bessere Qualit"at}
+    \catchword{Größere Menge (Quantität)}
+    \catchword{Bessere Qualität}
   }
 
   \statement{Nennen Sie die Grenzen der Automatisierung}{\page{4}}
   {
     \catchword{Ein automatisches System kann nicht auf alle vorkommenden Ereignisse reagieren}
-    \catchword{Kleine Fehler k"onnen katastrophale Folgen haben}
+    \catchword{Kleine Fehler können katastrophale Folgen haben}
   }
 
-  \question{In welchen Bereichen ist die Erkenntnisf"ahigkeit des Menschen notwendig}{\page{4}}
+  \question{In welchen Bereichen ist die Erkenntnisfähigkeit des Menschen notwendig}{\page{4}}
   {
     \catchword{Spracherkennung}
     \catchword{Bildverarbeitung}
@@ -127,6 +127,27 @@
     \catchword{Einhaltung der zeitlichen Abfolgen}
     \catchword{Einhaltung der vorgegebenen Bearbeitungszeiten}
     \result{Realzeitbedingungen einhalten}
+  }
+
+  \question{Welche Anforderungen stellt das Einhalten der zeitlichen Abfolgen}{\page{5}}
+  {
+    \catchword{Schritthaltende Verarbeitungsgeschwidigkeit}
+    \catchword{Viele Entscheidungsmöglichkeiten in einem Programm}
+    \catchword{Sicherheit}
+  }
+
+  \question{Welche zwei Einheiten kommunizieren in der PDV}{\page{5}}
+  {
+    \catchword{Rechner}
+    \catchword{Prozess}
+  }
+
+  \question{Wie lautet die DIN Definition eines Automaten}{\page{2}}
+  {
+    \normaltext{Ein Automat ist ein künstliches System, das selbstständig ein Programm
+                befolgt. Auf Grund des Programms trifft das System Entscheidungen, die
+                auf der Verknüpfung von Eingaben mit dem jeweiligen Zustand des Systems
+                beruhen, und Ausgaben zur Folge haben.}
   }
 
   \newpage
@@ -143,7 +164,7 @@
   }
 
   \newpage
-  \section{Periphere Ger"ate}
+  \section{Periphere Geräte}
 
   \question{Warum ist das Fach doof}{\page{x}}
   {
