@@ -32,6 +32,7 @@ import org.apache.log4j.Logger ;
 import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageFactory ;
 import de.unisiegen.tpml.core.languages.NoSuchLanguageException ;
+import de.unisiegen.tpml.ui.netbeans.EditorPanelForm;
 import de.unisiegen.tpml.ui.netbeans.MainWindowForm;
 
 
@@ -203,10 +204,10 @@ public class MainWindow
       EditorPanel editorPanel = null ;
       for ( Component component : window.tabbedPane.getComponents ( ) )
       {
-        if ( component instanceof EditorPanel
-            && file.equals ( ( ( EditorPanel ) component ).getFile ( ) ) )
+        if ( component instanceof EditorPanelForm
+            && file.equals ( ( (( EditorPanelForm ) component).getCaller() ).getFile ( ) ) )
         {
-          editorPanel = ( EditorPanel ) component ;
+          editorPanel = (( EditorPanelForm ) component).getCaller() ;
           break ;
         }
       }
@@ -238,7 +239,7 @@ public class MainWindow
         else {
       	  editorPanel = new EditorPanelExpression ( language , this ) ;
         }
-        window.tabbedPane.add ( ( Component ) editorPanel ) ;
+        window.tabbedPane.add ( ( Component ) editorPanel.getPanel() ) ;
         editorPanel.setAdvanced ( window.advancedRadioButton.isSelected ( ) ) ;
         editorPanel.setFileName ( file.getName ( ) ) ;
         editorPanel.setEditorText ( buffer.toString ( ) ) ;
@@ -246,7 +247,7 @@ public class MainWindow
         editorPanel.addPropertyChangeListener ( editorPanelListener ) ;
         editorPanel.setTexteditor ( true ) ;
       }
-      window.tabbedPane.setSelectedComponent ( ( Component ) editorPanel ) ;
+      window.tabbedPane.setSelectedComponent ( ( Component ) editorPanel.getPanel() ) ;
       setGeneralStates ( true ) ;
       updateEditorStates ( editorPanel ) ;
     }
@@ -341,13 +342,16 @@ public class MainWindow
 //      pasteItem.setEnabled ( ( Boolean ) newValue ) ;
 //      pasteButton.setEnabled ( ( Boolean ) newValue ) ;
 //    }
-	  updateEditorStates((EditorPanel) window.tabbedPane.getSelectedComponent());
+	  updateEditorStates((EditorPanel)((EditorPanelForm) window.tabbedPane.getSelectedComponent()).getCaller());
   }
 
+  public void updateEditorStates (EditorPanel editor){
+      updateEditorStates((EditorPanelForm)editor.getPanel());
+  }
 
-  public void updateEditorStates ( EditorPanel editor )
+  public void updateEditorStates ( EditorPanelForm editorform )
   {
-    if ( editor == null )
+    if ( editorform == null )
     {// last tab was closed
       setGeneralStates ( false ) ;
       // }
@@ -356,6 +360,7 @@ public class MainWindow
     }
     else
     {
+	EditorPanel editor = editorform.getCaller();
       setRedoState ( editor.isRedoStatus ( ) ) ;
       setUndoState ( editor.isUndoStatus ( ) ) ;
       // setSaveState(editor.isUndoStatus());
@@ -473,14 +478,14 @@ public class MainWindow
     if ( state )
     {
     	window.tabbedPane.setTitleAt ( window.tabbedPane.getSelectedIndex ( ) , "*"
-          + ( ( EditorPanel ) window.tabbedPane.getSelectedComponent ( ) )
+          + ( (( EditorPanelForm ) window.tabbedPane.getSelectedComponent ( ) )).getCaller()
               .getFileName ( ) ) ;
       setSaveState ( true ) ;
     }
     else
     {
     	window.tabbedPane.setTitleAt ( window.tabbedPane.getSelectedIndex ( ) ,
-          ( ( EditorPanel ) window.tabbedPane.getSelectedComponent ( ) )
+          (( ( EditorPanelForm ) window.tabbedPane.getSelectedComponent ( ) )).getCaller()
               .getFileName ( ) ) ;
       setSaveState ( false ) ;
     }
@@ -489,7 +494,8 @@ public class MainWindow
 
   public EditorPanel getActiveEditor ( )
   {
-    return ( EditorPanel ) window.tabbedPane.getSelectedComponent ( ) ;
+      if (window.tabbedPane.getSelectedComponent ( ) == null) return null;
+    return (( EditorPanelForm ) window.tabbedPane.getSelectedComponent ( )).getCaller();
   }
 
 
@@ -511,9 +517,9 @@ public class MainWindow
     setTypeMode();
     }
     
-    window.tabbedPane.add ( ( Component ) newEditorPanel ) ;
+    window.tabbedPane.add ( ( Component ) newEditorPanel.getPanel() ) ;
     newEditorPanel.setAdvanced ( window.advancedRadioButton.isSelected ( ) ) ;
-    window.tabbedPane.setSelectedComponent ( ( Component ) newEditorPanel ) ;
+    window.tabbedPane.setSelectedComponent ( ( Component ) newEditorPanel.getPanel() ) ;
     newEditorPanel.addPropertyChangeListener ( editorPanelListener ) ;
     newEditorPanel.setTexteditor ( true ) ;
     setGeneralStates ( true ) ;
@@ -610,9 +616,9 @@ public void handleOpen ( )
     // be sure to save all files first
     for ( Component component : window.tabbedPane.getComponents ( ) )
     {
-      if ( component instanceof EditorPanel )
+      if ( component instanceof EditorPanelForm )
       {
-        EditorPanel editorPanel = ( EditorPanel ) component ;
+        EditorPanel editorPanel = (( EditorPanelForm ) component).getCaller() ;
         if ( ! editorPanel.shouldBeSaved ( ) )
         {
           continue ;
@@ -737,7 +743,7 @@ public void handleOpen ( )
     int tabcount = window.tabbedPane.getComponentCount ( ) ;
     for ( int i = 0 ; i < tabcount ; i ++ )
     {
-      if ( ! ( ( EditorPanel ) window.tabbedPane.getComponentAt ( i ) ).handleSave ( ) )
+      if ( ! (( ( EditorPanelForm ) window.tabbedPane.getComponentAt ( i ) )).getCaller().handleSave ( ) )
         return ;
     }
   }
@@ -758,7 +764,7 @@ public void handleOpen ( )
     File file ;
     for ( int i = 0 ; i < tabcount ; i ++ )
     {
-      file = ( ( EditorPanel ) window.tabbedPane.getComponentAt ( i ) ).getFile ( ) ;
+      file = ( ( EditorPanelForm ) window.tabbedPane.getComponentAt ( i ) ).getCaller().getFile ( ) ;
       if ( file != null )
       {
         filelist.add ( file ) ;

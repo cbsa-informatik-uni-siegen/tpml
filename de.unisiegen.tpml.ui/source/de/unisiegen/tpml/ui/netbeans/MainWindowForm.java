@@ -626,7 +626,7 @@ public class MainWindowForm extends javax.swing.JFrame {
       {
         if ( component instanceof EditorPanel )
         {
-          EditorPanel editorPanel = ( EditorPanel ) component ;
+          EditorPanel editorPanel = (( EditorPanelForm ) component ).getCaller();
           editorPanel.setAdvanced ( true ) ;
         }
       }
@@ -641,7 +641,7 @@ public class MainWindowForm extends javax.swing.JFrame {
       {
         if ( component instanceof EditorPanel )
         {
-          EditorPanel editorPanel = ( EditorPanel ) component ;
+          EditorPanel editorPanel = (( EditorPanelForm ) component ).getCaller();
           editorPanel.setAdvanced ( false ) ;
         }
       }
@@ -649,8 +649,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     }//GEN-LAST:event_beginnerRadioButtonStateChanged
 
     private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
-// TODO add your handling code here:
-        logic.updateEditorStates ( ( EditorPanel ) this.tabbedPane.getSelectedComponent ( ) ) ;
+            logic.updateEditorStates ( ( EditorPanelForm ) this.tabbedPane.getSelectedComponent ( )) ;
     }//GEN-LAST:event_tabbedPaneStateChanged
 
     private void aboutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutItemActionPerformed

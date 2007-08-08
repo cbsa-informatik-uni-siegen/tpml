@@ -9,6 +9,10 @@ package de.unisiegen.tpml.ui;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 
+import javax.swing.JPanel;
+
+import de.unisiegen.tpml.graphics.EditorComponent;
+
 
 public interface EditorPanel  {
 
@@ -51,5 +55,11 @@ public interface EditorPanel  {
 	boolean shouldBeSaved ( );
 
 	public void handlePrint();
+	
+	public EditorComponent getActiveEditorComponent();
+	
+	public void selectCode();
+	
+	public JPanel getPanel();
 
 }
