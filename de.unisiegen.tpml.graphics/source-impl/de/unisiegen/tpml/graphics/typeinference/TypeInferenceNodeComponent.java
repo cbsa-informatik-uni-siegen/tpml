@@ -575,8 +575,7 @@ public class TypeInferenceNodeComponent extends JComponent
 		}
 		else if (item instanceof MenuTranslateItem)
 		{
-			// TODO geht noch garnicht... Texte in Dingsdatei eintragen
-			System.out.println("Kernsyntax übersetzen...");
+			// TODO this dose not function on all systems but on my system so I can not find the error.
 			int answer = 1;
 			// test if ther are more than one Expression
 			int count = 0;
@@ -589,15 +588,13 @@ public class TypeInferenceNodeComponent extends JComponent
 			}
 			int an = 1;
 			boolean all = false;
-			System.out.println("Anzahl der Ausdrücke: " + count);
 			if (count > 1)
 			{
-				System.out.println("mehrere Ausdrücke");
 				String[] a =
-				{ "Alle Ausdrücke", "Ersten Ausdruck", "Abbrechen" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				{ Messages.getString("TI.All"), Messages.getString("TI.First"), Messages.getString("TI.Cancel") };
 				an = JOptionPane.showOptionDialog(getTopLevelAncestor(),
-						"Möchten Sie alle vorhanden Ausdrücke oder nur den ersten Ausdruck übersetzen?", //$NON-NLS-1$
-						Messages.getString("NodeComponent.4"), //$NON-NLS-1$
+						Messages.getString("TI.AllOrFirst"), 
+						Messages.getString("NodeComponent.4"),
 						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, a, a[0]);
 			}
 			if (an == 0)
@@ -619,7 +616,6 @@ public class TypeInferenceNodeComponent extends JComponent
 					}
 
 					this.proofModel.translateToCoreSyntax(this.proofNode, true, true);
-					System.out.println("fertig!");
 				}
 				catch (IllegalArgumentException e)
 				{
@@ -676,9 +672,6 @@ public class TypeInferenceNodeComponent extends JComponent
 				}
 
 			}
-
-			// this.proofModel.co
-			// this.proofModel.translateToCoreSyntax(this.proofNode, true, true);
 			fireNodeChanged();
 		}
 	}

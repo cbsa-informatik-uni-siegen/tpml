@@ -530,8 +530,8 @@ public class CompoundExpression < S , E > extends JComponent
     }
     
     //TODO DEbugging
-    gc.setColor (Color.YELLOW);
-    gc.drawRect(0, 0, getWidth () - 1, getHeight () - 1);
+    // gc.setColor (Color.YELLOW);
+    // gc.drawRect(0, 0, getWidth () - 1, getHeight () - 1);
   }
 
 
