@@ -275,11 +275,13 @@
                 an einen Prozess gekoppelt ist.}
   }
 
-  \statement{Geben Sie die drei Prozessgrößen an}{\page{11}}
+  \statement{Geben Sie die Prozessgrößen an}{\page{11}}
   {
     \catchword{Prozess-Kennwerte}
     \catchword{Prozessparameter}
     \catchword{Prozesszustand}
+    \catchword{Eingangsgrößen}
+    \catchword{Ausgangsgrößen}
   }
 
     \question{Was sind Prozessgrößen}{\page{11}}
@@ -294,7 +296,6 @@
     \catchword{Transport \resultol{der Durchsatz}}
     \catchword{Umformung \resultol{Art und Umfang der Änderung}}
   }
-
   \question{Was sind Prozesskennwert}{\page{12}}
   {
     \normaltext{Prozesskennwerte oder Anlagedaten sind technische Daten, die durch den Aufbau eines
@@ -349,6 +350,97 @@
     notwendigen Aktionen zum Abgleich im Prozess und Umwandlung in Prozessdaten}
     \catchword{Ausgabedaten: Steuerdaten an den Prozess und Zustandsdaten an den Menschen}
   }
+
+  \statement{Beschreiben Sie die Eingangsgrößen eines Prozesses}{\page{12}}
+  {
+    \catchword{Fließen in den Prozess rein}
+    \catchword{Wirken auf den Prozess}
+    \catchword{Unabhängig vom Prozesszustand}
+    \catchword{Kann kontinuierlich, stückweise oder in Chargen erfolgen}
+  }
+
+  \question{Welche Arten von Eigangsgrößen gibt es}{\page{12}}
+  {
+    \catchword{Stellgrößen: Wirken mehr oder minder direkt auf die Prozesszustandsgrößen}
+    \catchword{Störgrößen: Treten meist als unerwünschte und oft schwer kontrollierbare Störungen auf}
+  }
+
+  \statement{Beschreiben Sie die Ausgangsgrößen eines Prozesses}{\page{13}}
+  {
+    \catchword{Fließen aus dem Prozess raus}
+    \catchword{Können noch auf den Prozess zurückwirken}
+    \catchword{Stets abhängig vom aktuellen Zustand des Prozesses}
+    \catchword{Abhängig von den Stellgrößen}
+  }
+
+  \question{Welche Anforderungen werden an die Meßgrößen gestellt}{\page{13}}
+  {
+    \catchword{Aktuelle Zustandsgrößen sollen unabhängig von eineinander sein}
+    \catchword{Sollen keine Rückwirkungen auf den Prozess haben}
+  }
+
+  \question{Aus welchen Komponenten bestehen Prozessdaten}{\page{14}}
+  {
+    \normaltext{Eingabe- und Ausgabedaten des Prozessrechners}
+  }
+
+  \question{In welcher Form können Eingabedaten vorkommen}{\page{14}}
+  {
+    \catchword{Digital}
+    \catchword{Analog}
+    \catchword{Alarm durch nur ein Bit}
+  }
+
+  \question{Welche Komponenten müssen in einem Prozessmodell vorhanden sein}{\page{17}}
+  {
+    \catchword{Eingangsdaten}
+    \catchword{Ausgangsdaten}
+    \catchword{Zustandsdaten}
+    \result{Zusammenhänge zwischen diesen Größen}
+  }
+
+  \question{Welche zwei Arten von Modellen gibt es und wie können diese Überprüft werden}{\page{17}}
+  {
+    \catchword{Gegenständliche Modell}
+    \catchword{Mathematisches Modell}
+    \result{Simulation mit einem Computer}
+  }
+
+  \question{Was muss bei der Prozessbeschreibung gemacht werden}{\page{17}}
+  {
+    \catchword{Strukturierung des Prozesses in Teilprozesse}
+    \catchword{Verfeinerung bis zu Elementarprozessen}
+    \catchword{Beschreibung ihrer Zusammenhänge}
+  }
+
+  \question{Wie werden statische Strukturen dargestellt}{\page{17}}
+  {
+    \normaltext{Meistens durch ein, an den jeweiligen Einsatzbereich angepasstes Blockschaltbild}
+  }
+
+  \question{Wie werden stationäre Abläufe dargestellt}{\page{17}}
+  {
+    \normaltext{In Blockdiagramme als Wirkungs- oder Transportwege}
+  }
+
+  \question{Welchen Unterschied gibt es bei den Ablaufstrukturen gegenüber
+            den bekannten Programmablaufplänen}{\page{17}}
+  {
+    \normaltext{Parallelverarbeitung}
+  }
+
+  \statement{Welche Arten von Bearbeitung gibt es}{\page{18}}
+  {
+    \catchword{Sequentielle Bearbeitung: Immer nur eine Station aktiv, das Bearbeitungsstück wird
+               von einer zur nächsten Station weitergegeben}
+    \catchword{Serielle Bearbeitung: Alle Stationen aktiv, die Bearbeitungsstücke werden von einer
+               zur nächsten Station weitergegeben}
+    \catchword{Parallele Bearbeitung: Entweder identische Vorgänge zur Steigerung des Durchsatzes,
+               oder Vorgänge die zu einem Endprodukt gebraucht werden}
+  }
+
+
+
 
   \newpage
   \section{Prozessrechner Hardware}
