@@ -608,6 +608,99 @@
     \catchword{Erheblicher zusätzlicher Verwaltungsaufwand bei bedingten Sprüngen}
   }
 
+  \question{Wie heißt das Kernstück des Rechenwerkes und wozu dient es}{\page{41}}
+  {
+    \normaltext{ALU: Durchführung von Operationen auf Operanden}
+  }
+
+  \question{Welche zwei Arten von Operationen gibt es bezogen auf die Operanden}{\page{42}}
+  {
+    \catchword{Binäre Operationen: Zwei Quelloperanden z.B. OR}
+    \catchword{Unäre Operationen: Ein Quelloperand z.B. NOT}
+  }
+
+  \question{Welche drei Klassen von Operationen gibt es}{\page{42}}
+  {
+    \catchword{Boolsche}
+    \catchword{Arithmetische}
+    \catchword{Logische}
+  }
+
+  \statement{Nennen Sie die vier Flaggen, die erzeugt werden}{\page{43}}
+  {
+    \catchword{Zero Bit: Zeigt an, dass das Ergebnis null war}
+    \catchword{Negativ Bit: Zeigt an, dass das Ergebnis negativ war}
+    \catchword{Carry Bit: Übertrag, wenn mit positiven Zahlen gerechnet wird}
+    \catchword{Overflow Bit: Zahlenüberlauf, wenn mit Zahlen im 2-er Komplement gerechnet wird}
+  }
+
+  \question{Was versteht man unter Maschineninstruktionen}{\page{44}}
+  {
+    \normaltext{Informationen, die das Steuerwerk braucht, um Instruktionen auf 
+                Maschinenebene durchzuführen}
+  }
+
+  \question{Aus welchen Teilen besteht jede Instruktion}{\page{44}}
+  {
+    \catchword{Operationsteil}
+    \catchword{Adressteil}
+  }
+
+  \question{Welche drei Gruppen von Instruktionen können unterschieden werden}{\page{44}}
+  {
+    \catchword{Steruerungsinstruktionen}
+    \catchword{Verarbeitungsoperationen}
+    \catchword{Verzweigungen}
+  }
+
+  \question{Was dient bei bedingten Sprüngen zur Überprüfung der Sprungbedingungen}{\page{45}}
+  {
+    \normaltext{Die entsprechenden Status Flags der ALU}
+  }
+
+  \question{Was wird bei der Speicheradressierung stets verwendet}{\page{46}}
+  {
+    \normaltext{Ein internes Register: Program Counter (PC), Indexregister (IX)
+                oder der Stack Pointer (SP)}
+  }
+
+  \statement{Erklären Sie die Adressierungsmodi des Program Counters}{\page{47}}
+  {
+    \catchword{Direkt: Der Operand erfolgt unmittelbar auf die Instruktion, der PC zeigt drauf}
+    \catchword{Absolut: Die absolute Adresse des Operanden folgt unmittelbar auf die Instruktion}
+    \catchword{Relativ: Die relative Adresse des Operanden folgt unmittelbar auf die Instruktion,
+               die absolute Adresse muss daraus durch Addition des PC erst berechnet werden}
+    \catchword{Indirekt: Die absolute Adresse der absoluten Adresse des Operanden folgt unmittelbar
+               auf die Instruktion}
+  }
+
+  \question{Was wird beim Unterprogrammsprung gemacht}{\page{47}}
+  {
+    \catchword{Aktueller PC auf dem Stack ablegen}
+    \catchword{Stack Pointer erhöhen}
+    \catchword{Unterprogramm ausführen}
+    \catchword{Rücksprungadresse vom Stack holen}
+    \catchword{Stack Pointer erniedrigen}
+  }
+
+  \question{Welche drei Gruppen von Leitungen benutzt ein Bus}{\page{55}}
+  {
+    \catchword{Datenleitungen}
+    \catchword{Adressleitungen}
+    \catchword{Steuerleitungen}
+  }
+
+  \question{Worin liegt die besondere Eignung des Busprinzips}{\page{55}}
+  {
+    \normaltext{Große Flexibilität beim Einrichten oder bei Änderungen}
+  }
+
+  \question{Was ist der größte Nachteil des Busses}{\page{55}}
+  {
+    \normaltext{Alle Daten werden über ihn transportiert, dabei kann ein Engpass entstehen}
+  }
+
+
   \newpage
   \section{Periphere Geräte}
 
