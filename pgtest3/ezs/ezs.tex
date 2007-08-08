@@ -815,6 +815,33 @@
                direkte Kommunikation mit dem Arbeitsspeicher}
   }
 
+
+  \statement{Nennen Sie Eigenschaften der synchronen serieller Übertragung}{\page{89}}
+  {
+    \catchword{Es wird eine lückenlose Folge von Zeichen übertragen.}
+    \catchword{Wenn keine aktuellen Daten anliegen werden Füllzeichen übertragen.}
+    \catchword{Hohe Datenrate, da Start und Stoppbits entfallen.}
+    \catchword{Nachteilig ist das erkennen von Füllzeichen und die Synchronisierung der Taktfrequenz.}
+  }
+  
+  \statement{Nennen Sie Eigenschaften der asynchronen serieller Übertragung}{\page{89}}
+  {
+    \catchword{Bits eines Zeichens werden kontinuierlich übertragen, jedoch können zwischen den Zeichen
+    beliebig lange Ruhezeiten liegen.}
+    \catchword{Anfang und Ende eines Zeichen werden durch Start- und Stoppbit gekennzeichnet.}
+    \catchword{Kein erkennen von Füllzeichen und synchronisieren der Taktfrequenz nötig.}
+    \catchword{Dafür müssen aber Start- und Stoppbits erkannt werden.}
+  }
+  
+  \question{Welche Möglichkeiten gibt es Geräte an einen Conroller anzuschließen}{\page{90}}
+  {
+    \catchword{Busanschluß, auf dem wie in der Zentraleinheit Daten-, Adreß- und Steuerleitungen
+    für alle angeschlossenen Geräte geführt werden.}
+    \catchword{Sternanschluß, bei dem jedes Gerät über einen eigenen Anschluß am Controller verfügt.}
+    \catchword{Daisy Chain (Verkettung), bei der zunächst ein Gerät an den Controller angeschlossen wird.
+    An dieses Hauptgerät werden weitere identische Geräte in Form einer Kette angeschlossen.}
+  }
+
   \question{Nennen Sie die Eigenschaften der Parallelschnittstelle}{\page{91}}
   {
     \catchword{Die Bits eines Datenworts werden parallel übertragen}
@@ -851,6 +878,7 @@
   {
     \normaltext{Wegen der binären Codierung gleich groß}
   }
+
 
 
 
