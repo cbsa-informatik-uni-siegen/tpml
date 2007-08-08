@@ -24,6 +24,7 @@
 \newcommand{\statement}[3]{\pagebreak[3]\item {\textbf{#1!}}\ (S.\ #2)#3}
 \newcommand{\catchword}[1]{\\-\ #1}
 \newcommand{\normaltext}[1]{\\#1}
+\newcommand{\result}[1]{\\ $\Rightarrow$\ #1}
 \newcommand{\page}[1]{#1}
 \newcommand{\pages}[2]{#1\ -\ #2}
 
@@ -107,6 +108,25 @@
   {
     \catchword{Gr"o"sere Menge (Quantit"at)}
     \catchword{Bessere Qualit"at}
+  }
+
+  \statement{Nennen Sie die Grenzen der Automatisierung}{\page{4}}
+  {
+    \catchword{Ein automatisches System kann nicht auf alle vorkommenden Ereignisse reagieren}
+    \catchword{Kleine Fehler k"onnen katastrophale Folgen haben}
+  }
+
+  \question{In welchen Bereichen ist die Erkenntnisf"ahigkeit des Menschen notwendig}{\page{4}}
+  {
+    \catchword{Spracherkennung}
+    \catchword{Bildverarbeitung}
+  }
+
+  \question{Welche besonderen Anforderungen werden an den Rechner gestellt}{\page{5}}
+  {
+    \catchword{Einhaltung der zeitlichen Abfolgen}
+    \catchword{Einhaltung der vorgegebenen Bearbeitungszeiten}
+    \result{Realzeitbedingungen einhalten}
   }
 
   \newpage
