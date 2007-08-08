@@ -5,5 +5,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/de.unisiegen.tpml.core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/de.unisiegen.tpml.graphics"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/itext-2.0.4.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

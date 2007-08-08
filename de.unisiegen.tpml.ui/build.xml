@@ -34,6 +34,7 @@
 			<fileset dir="${core.distdir}" includes="*.jar" />
 			<fileset dir="${graphics.distdir}" includes="*.jar" />
 			<fileset dir="${distdir}" includes="*.jar" />
+			<fileset dir="${distdir}/lib" includes="*.jar" />
 			<fileset dir="${basedir}/doc" includes="LICENSE" />
 		</copy>
 		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${basedir}/tpml.sh">
@@ -79,6 +80,7 @@
 				<pathelement location="${core.distdir}/java-cup-11a-runtime.jar" />
 				<pathelement location="${core.distdir}/log4j-1.2.14.jar" />
 				<pathelement location="${graphics.distdir}/de.unisiegen.tpml.graphics-${de.unisiegen.tpml.graphics.version}.jar" />
+				<pathelement location="${basedir}/lib/itext-2.0.4.jar" />
 			</classpath>
 		</javac>
 	</target>
@@ -102,7 +104,7 @@
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Built-By" value="${user.name}" />
 			<attribute name="Main-Class" value="de.unisiegen.tpml.ui.Start" />
-			<attribute name="Class-Path" value="de.unisiegen.tpml.core-${de.unisiegen.tpml.core.version}.jar de.unisiegen.tpml.graphics-${de.unisiegen.tpml.graphics.version}.jar java-cup-11a-runtime.jar log4j-1.2.14.jar" />
+			<attribute name="Class-Path" value="de.unisiegen.tpml.core-${de.unisiegen.tpml.core.version}.jar de.unisiegen.tpml.graphics-${de.unisiegen.tpml.graphics.version}.jar java-cup-11a-runtime.jar log4j-1.2.14.jar itext-2.0.4.jar" />
 			<section name="de.unisiegen.tpml.ui">
 				<attribute name="Specification-Title" value="TPML UI" />
 				<attribute name="Specification-Version" value="${de.unisiegen.tpml.ui.version}" />
