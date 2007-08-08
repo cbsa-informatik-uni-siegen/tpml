@@ -524,9 +524,89 @@
     Dies wird als Realzeitbetrieb bezeichnet.}
   }
 
+
   \newpage
   \section{Prozessrechner Hardware}
 
+  \question{Welche Werke vereint die CPU}{\page{39}}
+  {
+    \catchword{Steuerwerk}
+    \catchword{Rechenwerk}
+    \catchword{evtl. Unterbrechungswerk}
+    \catchword{evtl. Rechenwerk für Gleitkommazahlen}
+  }
+
+   \question{Welche Arten von Leitungen gibt es in der CPU}{\page{39}}
+  {
+    \catchword{Adressleitung \resultol{nur zum Senden von Signalen (unidirektional)}}
+    \catchword{Datenleitung \resultol{zum Senden und Empfangen (bidirektional)}}
+    \catchword{Steuerleitung \resultol{sowohl uni- als auch bidirektional ausgelegt}}
+  }
+
+  \statement{Erklären Sie den Aufbau der CPU (schematisch)} {page{40}}
+  {
+  \normaltext{siehe seite 40 Bild 2.3}
+  }
+
+     \question{Wozu dient das Unterbrechungswerk}{\page{39}}
+  {
+    \catchword{Zur Bearbeitung von Interrupts die hier über ein weiters Bit im Prozessor-
+    Status-Wort zugelassen oder verhindert werden können}
+  }
+
+   \question{Welche wesentlichen 3 Aufgaben hat das Mikroprogramm}{\page{48}}
+  {
+    \catchword{Einlesen von Instruktionen und Daten aus dem Hauptspeicher, und das Abspeichern 
+    von Ergebnissen}
+    \catchword{Interpretieren von Instruktionen, wobei es in eigene Programmteile (Module) verzweigt}
+    \catchword{Steuern der CPU d.h. des Datenverkehrs innerhalb der CPU, und ins besondere 
+    des Rechenwerks (ALU)}
+  }
+
+   \question{Wie bezeichnet man Unterprogramme des Mikroprogramms}{\page{51}}
+  {
+    \catchword{Nanoprogramme}
+  }
+
+   \question{Wofür steht die Abkürzung RISC}{\page{52}}
+  {
+    \normaltext{Reduced Instruction Set Computing}
+  }
+
+   \question{Wofür steht die Abkürzung CISC}{\page{52}}
+  {
+    \normaltext{Complex Instruction Set Computing}
+  }
+
+   \question{Worin unterscheiden sich CISC und RISC}{\pages{52}{53}}
+  {
+    \catchword{Load-and-Store-Architektur}
+    \catchword{Pipelining (Einteilung in 5 Phasen: IF, RD, OP, MM, WT)}
+  }
+
+   \question{In welche Klassen ist der Instruktionssatz bei RISC Prozessoren aufgeteilt}{\page{52}}
+  {
+    \catchword{Instruktionen zum Speicherzugriff (LOAD, STORE)}
+    \catchword{Verarbeitungsinstruktionen (ADD, SUB)}
+    \catchword{Verzweigungsinstruktionen (JMP, BNE)}
+    \catchword{Steuerungsinstruktionen (HALT, WAIT)}
+  }
+
+   \question{Was kann zu besonderen Problemen beim Pipelining führen}{\page{54}}
+  {
+    \catchword{Verzweigung innerhalb des Programms (synchron)}
+    \catchword{Unterbrechung von außen (asynchron)}
+    \result{Dann müssen solche Instruktionen, die bereits begonnen wurden, abgebrochen 
+    werden; bei manchen geht das nicht, und es muss die Verarbeitungskette angehalten 
+    werden (pipe stalling).}
+  }
+
+  \statement{Nennen Sie Eigenschaften von RISC in der PDV}{\page{54}}
+  {
+    \catchword{Da die Verarbeitunsoperationen auf Daten im kArbeitsspeicher immer zusätzlich
+    eine LOAD- und eine STORE-Operation erfordern, werden die Maschinenprogramme deutlich länger.}
+    \catchword{Erheblicher zusätzlicher Verwaltungsaufwand bei bedingten Sprüngen}
+  }
 
   \newpage
   \section{Periphere Geräte}
