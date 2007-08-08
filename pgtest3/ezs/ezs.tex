@@ -700,6 +700,45 @@
     \normaltext{Alle Daten werden über ihn transportiert, dabei kann ein Engpass entstehen}
   }
 
+    \question{Welche Arten von Bussen gibt es}{\page{56}}
+  {
+    \catchword{Synchrone Busse (festes Zeitraster wird vorgegeben, richtet sich nach der 
+    langsamsten Komponente)}
+    \catchword{Asynchrone Busse (Quittierungsverfahren - Handshaking, nutzt die individuellen
+    Geschwindigkeiten der Komponenten aus)}
+  }
+
+  \statement{Erklären Sie Multiplexverfahren}{\page{59}}
+  {
+    \normaltext{Für Daten und Steuerleitungen werden dieselben Leitungen im zeitlichen Wechesel
+    benutzt. Dazu wird eine weitere Steuerleitung zur Siganlisierung des Wechsels benötigt.}
+  }
+
+  \question{Wozu wird die Schnittstelle zum Bus verwendet}{\page{83}}
+  {
+    \catchword{Gesamte Datenübertragung zum und vom Gerät}
+    \catchword{Gesamte Steurung des Gerätes}
+    \catchword{Steuerung des Geräteanschlusses selbst}
+  }
+
+  \question{Welches sind die wichtigsten Register eines Geräteanschlusses}{\page{85}}
+  {
+    \catchword{Data Buffer Register (DBR) ist ein Datenpuffer zur Zwischenspeicherung von Daten}
+    \catchword{Control and Status Register (CSR) enthält einzelne Bits für die Steuerung des Gerätes}
+  }
+
+
+  \question{Welche Geräteschnittstellen kann man unterscheiden}{\page{88}}
+  {
+    \catchword{Parallelschnittstellen, auf denen die einzelnen Bits paralles, die Zeichen selber aber immer
+    nacheinander (seriell) übertragen werden. Da für jedes Bit eine Leitung benötigt wird, sind die Anschlüsse
+    und Kabel aufwendig, aber man erreicht eine hohe Übertragungsgeschwindigkeit.}
+    \catchword{Seriellschnittstellen, auf welchen auch die einzelnen Bits nacheinander übertragen werden. Dadurch
+    können die Daten unabhängig von der Datenbreite über eine einzig Leitung übertragen werden. Allerdangs entsteht
+    hier ein höherer Aufwand bei der Umsetzung, und die Übertragungsgeschwindigkeit ist niedriger.}
+  }
+
+
   \question{Woraus besteht ein Bus}{\page{55}}
   {
     \normaltext{Aus Leitungsbündeln, mit denen die Steckplätze für die Komponenten verbunden sind}
@@ -775,6 +814,7 @@
     \catchword{Speicherdirektzugriff (DMA): Meist ohne Puffer und ohne Eingriff der CPU eine
                direkte Kommunikation mit dem Arbeitsspeicher}
   }
+
 
 
   \newpage
