@@ -149,7 +149,7 @@ public class MinimalTypingComponent extends AbstractProofComponent implements Sc
 			public void run () {
 				MinimalTypingProofNode rootNode = (MinimalTypingProofNode)MinimalTypingComponent.this.proofModel.getRoot();
 				
-				Point rightBottomPos = MinimalTypingComponent.this.treeNodeLayout.placeNodes (rootNode, 20, 20, MinimalTypingComponent.this.availableWidth);
+				Point rightBottomPos = MinimalTypingComponent.this.treeNodeLayout.placeNodes (rootNode, 20, 20, MinimalTypingComponent.this.availableWidth, MinimalTypingComponent.this.availableHeight);
 				
 				// lets add some border to the space
 				

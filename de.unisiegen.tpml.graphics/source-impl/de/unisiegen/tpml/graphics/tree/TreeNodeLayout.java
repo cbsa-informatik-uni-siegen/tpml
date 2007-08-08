@@ -19,6 +19,11 @@ public class TreeNodeLayout {
 	private int availableWidth;
 	
 	/**
+	 *  Contains available height of one paper, is Integer.MaxValue if not printing... 
+	 */
+	private int availableHeight;
+	
+	/**
 	 * The spacing between the nodes.
 	 */
 	private int spacing;
@@ -53,11 +58,12 @@ public class TreeNodeLayout {
 	 * @param root The rootNode of the tree
 	 * @param posX Left position where the root node should be placed
 	 * @param posY Top position where the root node should be placed
-	 * @param availableWidth The maximum width available for the layout.
+	 * @param pAvailableWidth The maximum width available for the layout.
 	 * @return
 	 */
-	public Point placeNodes (ProofNode root, int posX, int posY, int availableWidth) {
-		this.availableWidth = availableWidth;
+	public Point placeNodes (ProofNode root, int posX, int posY, int pAvailableWidth, int pAvailableHeight) {
+		this.availableWidth = pAvailableWidth;
+		this.availableHeight = pAvailableHeight;
 		
 		return placeNode (root, posX, posY, new Point (-1, -1));
 	}
@@ -71,7 +77,10 @@ public class TreeNodeLayout {
 	 * @param posY	The top position of the node
 	 * @return The right bottom pos of the needed width
 	 */
-	private Point placeNode (ProofNode node, int posX, int posY, Point rightBottomPos) {
+	private Point placeNode (ProofNode node, int posX, int posY, Point rightBottomPos) 
+	{
+		
+		int tmpPaper = 0;
 		
 		
 		TreeNodeComponent nodeComponent = (TreeNodeComponent)node.getUserObject();
@@ -85,6 +94,20 @@ public class TreeNodeLayout {
 		// space by indentating the node
 		int availableWidth = this.availableWidth - posX;
 		Dimension size = nodeComponent.update(availableWidth);
+		
+		// add the needed height to the tmpPaper, if it gets bigger than availableHeight, Seitenumbruch
+		if (tmpPaper + size.height > availableHeight)
+		{
+			if (tmpPaper == 0)
+			{
+				System.out.println("Blatt zu klein für einen Knoten...");
+			}
+			else
+			{
+				tmpPaper = 0;
+				posY += 200;
+			}
+		}
 		
 		
 		// do the real positioning of the node

@@ -156,7 +156,7 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 			public void run () {
 				TypeCheckerProofNode rootNode = (TypeCheckerProofNode)TypeCheckerComponent.this.proofModel.getRoot();
 				
-				Point rightBottomPos = TypeCheckerComponent.this.getTreeNodeLayout().placeNodes (rootNode, 20, 20, TypeCheckerComponent.this.availableWidth);
+				Point rightBottomPos = TypeCheckerComponent.this.getTreeNodeLayout().placeNodes (rootNode, 20, 20, TypeCheckerComponent.this.availableWidth, TypeCheckerComponent.this.availableHeight);
 				
 				// TODO wuzu denn das?
 				// lets add some border to the space

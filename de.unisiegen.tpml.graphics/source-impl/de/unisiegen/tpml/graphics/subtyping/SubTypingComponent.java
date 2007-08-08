@@ -152,7 +152,7 @@ public class SubTypingComponent extends AbstractProofComponent implements Scroll
 				SubTypingProofNode rootNode = ( SubTypingProofNode ) SubTypingComponent.this.proofModel.getRoot ( );
 
 				Point rightBottomPos = SubTypingComponent.this.treeNodeLayout.placeNodes ( rootNode, 20, 20,
-						SubTypingComponent.this.availableWidth );
+						SubTypingComponent.this.availableWidth, SubTypingComponent.this.availableHeight );
 
 				// lets add some border to the space
 

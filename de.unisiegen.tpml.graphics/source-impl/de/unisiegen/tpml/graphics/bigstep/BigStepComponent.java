@@ -104,6 +104,7 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	 */
 	public BigStepComponent (BigStepProofModel model) {
 		super (model);
+		this.availableHeight    = Integer.MAX_VALUE;
 		this.treeNodeLayout 		= new TreeNodeLayout ();
 		this.border							= 20;
 		this.jumpNode						= null;
@@ -377,7 +378,9 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 			public void run () {
 				BigStepProofNode rootNode = (BigStepProofNode)BigStepComponent.this.getProofModel().getRoot();
 				
-				Point rightBottomPos = BigStepComponent.this.getTreeNodeLayout().placeNodes (rootNode, BigStepComponent.this.getThisBorder(), BigStepComponent.this.getThisBorder(), BigStepComponent.this.getAvailableWidth());
+				Point rightBottomPos = BigStepComponent.this.getTreeNodeLayout().placeNodes(rootNode,
+						BigStepComponent.this.getThisBorder(), BigStepComponent.this.getThisBorder(),
+						BigStepComponent.this.getAvailableWidth(), BigStepComponent.this.getAvailableHeight());
 				
 				// Worzu brauchen wird das?
 				// lets add some border to the space

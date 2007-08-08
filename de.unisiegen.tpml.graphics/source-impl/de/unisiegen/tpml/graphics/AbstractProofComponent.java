@@ -28,6 +28,11 @@ public abstract class AbstractProofComponent extends JComponent {
 	
 	protected	int											availableWidth;
 	
+	/**
+	 * this is only needed when printing...
+	 */
+	protected int 										availableHeight;
+	
 	private Theme											theme;
 
 	
@@ -87,6 +92,18 @@ public abstract class AbstractProofComponent extends JComponent {
 		this.availableWidth = availableWidth;
 		relayout();
 	}
+	
+	public void setAvailableHeight (int pAvailableHeight)
+	{
+		this.availableHeight = pAvailableHeight;
+		relayout();
+	}
+	
+	public void resetAvailableHeight (int pAvailableHeight)
+	{
+		this.availableHeight = Integer.MAX_VALUE;
+		relayout();
+	}
 
 	/**
 	 * @param currentlyLayouting the currentlyLayouting to set
@@ -111,5 +128,16 @@ public abstract class AbstractProofComponent extends JComponent {
 	{
 		return this.availableWidth;
 	}
+	
+	
+	/**
+	 * @return the availableHeight
+	 */
+	public int getAvailableHeight()
+	{
+		return this.availableHeight;
+	}
+	
+	
 	
 }
