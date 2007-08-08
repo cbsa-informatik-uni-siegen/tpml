@@ -18,6 +18,9 @@ public class TreeNodeLayout {
 	 */
 	private int availableWidth;
 	
+	//TODO for test
+	private int tmpPaper = 0;
+	
 	/**
 	 *  Contains available height of one paper, is Integer.MaxValue if not printing... 
 	 */
@@ -80,9 +83,6 @@ public class TreeNodeLayout {
 	private Point placeNode (ProofNode node, int posX, int posY, Point rightBottomPos) 
 	{
 		
-		int tmpPaper = 0;
-		
-		
 		TreeNodeComponent nodeComponent = (TreeNodeComponent)node.getUserObject();
 		
 		if (nodeComponent == null) {
@@ -104,10 +104,12 @@ public class TreeNodeLayout {
 			}
 			else
 			{
+				System.out.println("Seitenumbruch...");
 				tmpPaper = 0;
-				posY += 200;
+				posY += size.height - (tmpPaper - availableHeight);
 			}
 		}
+		tmpPaper += size.height;
 		
 		
 		// do the real positioning of the node
@@ -133,11 +135,12 @@ public class TreeNodeLayout {
 		
 		
 		// delegate the rest to the other nodes
-		for (int i=0; i<node.getChildCount(); i++) {
+		for (int i=0; i<node.getChildCount(); i++) 
+		{
 			ProofNode pNode = node.getChildAt(i);
 			
 			placeNode (pNode, posX, posY, rightBottomPos);
-			
+
 			// increment the posY for the next node 
 			posY = rightBottomPos.y;
 			

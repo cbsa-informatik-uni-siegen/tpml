@@ -104,7 +104,9 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	 */
 	public BigStepComponent (BigStepProofModel model) {
 		super (model);
+		// TODO for test
 		this.availableHeight    = Integer.MAX_VALUE;
+		//this.availableHeight      = 600;
 		this.treeNodeLayout 		= new TreeNodeLayout ();
 		this.border							= 20;
 		this.jumpNode						= null;
