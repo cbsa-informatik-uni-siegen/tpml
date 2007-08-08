@@ -439,6 +439,13 @@
                oder Vorgänge die zu einem Endprodukt gebraucht werden}
   }
 
+  \statement{Erklären Sie die Verteilte Verarbeitung}{\page{20}}
+  {
+    \catchword{Unterteilung von komplexen Prozessen in Teilbereiche}
+    \catchword{Für Teilbereiche einen eigenen hochspezialisierten Prozessrechner einsetzen,
+               der einen höheren Wirkungsgrad haben sollte}
+  }
+
   \question{Welche Arten der Prozesserkennung gibt es}{\page{19}}
   {
     \catchword{Empirische Prozesserkennung \resultol der technische Prozess ist bereits realisiert, und soll 
@@ -463,10 +470,52 @@
     \catchword{Dies kann durch geeignette Analysen und Simulationen verringert werden}
   }
 
+  \question{Was muss geschehen, um eine gemeinsame Prozesslenkung zu erhalten und
+            was ergibt sich daraus}{\page{20}}
+  {
+    \normaltext{Koppelung der Einzelrechner, die durch einen Leitrechner geführt werden}
+    \result{Eine hierachische Baumstruktur entsteht}
+  }
+
   \question{Was bezeichnet man als lernenden Prozessmodell}{\page{20}}
   {
     \catchword{Modelle, die nicht nur passiv die Parameter auf Grund von Prozessdaten bestimmen, sondern die optimalen
     Werte aktiv selber sucht.}
+  }
+
+  \question{Welche Komponente sitzt noch über dem Leitrechner}{\page{21}}
+  {
+    \normaltext{Betriebsrechner}
+  }
+
+  \question{Welche Vorteile ergeben sich aus der Verteilung der Aufgaben}{\page{21}}
+  {
+    \catchword{Leistungssteigerung}
+    \catchword{Höhere Verfügbarkeit \resultol{Leitrechner kann einspringen}}
+  }
+
+  \question{Welche Lösungsansätze gibt es um ein Beispiel zu lösen}{\page{24}}
+  {
+    \catchword{Stationäre Lösung: Dauerhafte Erfassung der Zustandgrößen}
+    \catchword{Dynamische Lösung: Indirekte Erfassung über Änderungen und einen Anfangszustand}
+  }
+
+  \question{Welches Problem ergibt sich bei dynamischen Lösungen, bezogen auf die Zeit}{\page{26}}
+  {
+    \catchword{Die Erfassung der Eingabedaten erfolgt nicht gleichzeitig}
+    \result{Programmzeiten müssen klein im Vergleich zu den prozesszeiten sein}
+  }
+
+  \question{Welche Arten von Kommunikation gibt es zwischen Rechner und Peripherie}{\pages{26}{27}}
+  {
+    \catchword{Abfragebetrieb (Polling)}
+    \catchword{Interrupt-Betrieb}
+  }
+
+  \question{Welche Probleme ergeben sich bei eintreffenden Ereignissen}{\page{29}}
+  {
+    \catchword{Kurz hintereinander: Ereignisse können verloren gehen}
+    \catchword{Selten: Rechner ist mit unproduktiven Warten beschäftigt}
   }
 
   \question{Was ist die Grundforderung an die PDV}{\page{30}}
