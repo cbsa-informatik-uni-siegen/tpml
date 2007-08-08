@@ -700,6 +700,82 @@
     \normaltext{Alle Daten werden über ihn transportiert, dabei kann ein Engpass entstehen}
   }
 
+  \question{Woraus besteht ein Bus}{\page{55}}
+  {
+    \normaltext{Aus Leitungsbündeln, mit denen die Steckplätze für die Komponenten verbunden sind}
+  }
+
+  \question{Was sollte mit Teilen der Zentraleinheit geschehem}{\page{55}}
+  {
+    \catchword{Möglichst nahe an den technischen Prozess bringen}
+    \catchword{Möglichst weit weg von Störeinflüssen}
+    \result{Stehen manchmal im Widerspruch zueinander}
+  }
+
+  \question{Warum dürfen bestimmte Längen nicht überschritten werden}{\page{56}}
+  {
+    \normaltext{Wegen der Signallaufzeit (etwa 5 ns/m)\resultol{Kollisionen auf dem Bus}}
+  }
+
+  \question{Welche Störungen können in Kabeln auftreten}{\page{56}}
+  {
+    \catchword{Signalverfälschungen durch äußere Störungen}
+    \catchword{Interne Reflexionen}
+  }
+
+  \question{Wie können diese Störungen verhindert werden}{\page{56}}
+  {
+    \catchword{Abgeschirmte Leitungen}
+    \catchword{Verdrillte Leitungen mit definiertem Wellenwiderstand}
+  }
+
+  \statement{Nennen Sie die technischen Merkmale eines Busses}{\page{56}}
+  {
+    \catchword{Zahl der Leitungen}
+    \catchword{Verwendung jeder Leitung als Daten-, Adress-, oder Steuerleitung}
+    \catchword{Belegung der Steckplätze}
+    \catchword{Art der Signale}
+  }
+
+  \statement{Nennen Sie die Aufgabe der Geräteanschlüsse}{\page{82}}
+  {
+    \normaltext{Ankopplung von externen Geräten verschiedenster Art}
+  }
+
+  \question{Wie erfolgt die Kommunikation mit der Peripherie}{\page{82}}
+  {
+    \catchword{Zustand des Gerätes muss abgefragt werden}
+    \catchword{Oder von dem Gerät gemeldet werden}
+  }
+
+  \question{Was ist die eigentliche Aufgabe eines Geräteanschlusses}{\page{82}}
+  {
+    \catchword{Anpassung der Daten, der Adressen und Steuersignale}
+    \catchword{Steuerung des Datenflusses}
+  }
+
+  \statement{Nennen Sie die fünf verschiedenen Geräteanschlüsse}{\page{83}}
+  {
+    \catchword{Ein-/ Ausgabe-Prozessoren}
+    \catchword{Blockmultiplexer}
+    \catchword{Controller}
+    \catchword{Byte-Multiplexer}
+    \catchword{Interfaces}
+  }
+
+  \statement{Nennen Sie die zwei Übertragungsverfahren}{\page{86}}
+  {
+    \catchword{Einzelzeichenübertragung: Bei zeichenorientierten Geräten}
+    \catchword{Blockübertragung: Vorwiegend bei Massenspeicher}
+  }
+
+  \question{Welche zwei Arten von Datenübertragung zwischen Controller und Speicher gibt es}{\page{87}}
+  {
+    \catchword{Blockpufferung: Ankommende Daten werden im Puffer zwischengespeichert und dort abgeholt}
+    \catchword{Speicherdirektzugriff (DMA): Meist ohne Puffer und ohne Eingriff der CPU eine
+               direkte Kommunikation mit dem Arbeitsspeicher}
+  }
+
 
   \newpage
   \section{Periphere Geräte}
