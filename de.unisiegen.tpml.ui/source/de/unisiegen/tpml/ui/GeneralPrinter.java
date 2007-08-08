@@ -130,7 +130,7 @@ public class GeneralPrinter {
 	    PdfCopy writer = null;
 	    while (f < nop) {
 		// we create a reader for a certain document
-		PdfReader reader = new PdfReader(tmpdir+"tmp" + f + ".pdf");
+		PdfReader reader = new PdfReader(tmpdir+"/tmp" + f + ".pdf");
 		reader.consolidateNamedDestinations();
 		// we retrieve the total number of pages
 		int n = reader.getNumberOfPages();
@@ -169,7 +169,7 @@ public class GeneralPrinter {
 
     private void deleteFiles(int nop) {
 	for (int i = 0; i < nop; i++) {
-	    File f = new File(tmpdir+"tmp" + i + ".pdf");
+	    File f = new File(tmpdir+"/tmp" + i + ".pdf");
 	    f.delete();
 	}
     }
