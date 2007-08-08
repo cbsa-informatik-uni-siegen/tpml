@@ -1,6 +1,5 @@
 package de.unisiegen.tpml.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -9,11 +8,8 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
@@ -74,7 +70,7 @@ public class GeneralPrinter {
 
 	    do {
 		document = new Document(pageFormat);
-		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(tmpdir+"tmp" + i + ".pdf"));
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(tmpdir+"/tmp" + i + ".pdf"));
 		document.open();
 		PdfContentByte cb = writer.getDirectContent();
 		// do not use the scale factor in the next one!
