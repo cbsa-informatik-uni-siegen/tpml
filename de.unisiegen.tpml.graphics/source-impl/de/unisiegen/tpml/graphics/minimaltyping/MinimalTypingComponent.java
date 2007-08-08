@@ -137,43 +137,51 @@ public class MinimalTypingComponent extends AbstractProofComponent implements Sc
 	 *
 	 */
 	@Override
-	protected void relayout () {
-		if (this.currentlyLayouting) {
+	protected void relayout()
+	{
+		if (this.currentlyLayouting)
+		{
 			return;
 		}
-		
+
 		this.currentlyLayouting = true;
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@SuppressWarnings("synthetic-access")
-			public void run () {
-				MinimalTypingProofNode rootNode = (MinimalTypingProofNode)MinimalTypingComponent.this.proofModel.getRoot();
-				
-				Point rightBottomPos = MinimalTypingComponent.this.treeNodeLayout.placeNodes (rootNode, 20, 20, MinimalTypingComponent.this.availableWidth, MinimalTypingComponent.this.availableHeight);
-				
-				// lets add some border to the space
-				
-				rightBottomPos.x += 20;
-				rightBottomPos.y += 20;
-				
-				Dimension size = new Dimension (rightBottomPos.x, rightBottomPos.y);
-				
-				// set all the sizes needed by the component
-				setMaximumSize (size);
-				setMinimumSize (size);
-				setPreferredSize (size);
-				setSize (size);
-				
-				MinimalTypingComponent.this.currentlyLayouting = false;
-				MinimalTypingComponent.this.jumpToNodeVisible ();
+			public void run()
+			{
+				doRelayout();
 			}
 		});
 	}
 	
+	protected void doRelayout()
+	{
+		MinimalTypingProofNode rootNode = (MinimalTypingProofNode) MinimalTypingComponent.this.proofModel.getRoot();
+
+		Point rightBottomPos = MinimalTypingComponent.this.treeNodeLayout.placeNodes(rootNode, 20, 20,
+				MinimalTypingComponent.this.availableWidth, MinimalTypingComponent.this.availableHeight);
+
+		// lets add some border to the space
+
+		rightBottomPos.x += 20;
+		rightBottomPos.y += 20;
+
+		Dimension size = new Dimension(rightBottomPos.x, rightBottomPos.y);
+
+		// set all the sizes needed by the component
+		setMaximumSize(size);
+		setMinimumSize(size);
+		setPreferredSize(size);
+		setSize(size);
+
+		MinimalTypingComponent.this.currentlyLayouting = false;
+		MinimalTypingComponent.this.jumpToNodeVisible();
+		
+	}
+
 	/**
-	 * Causes every {@link PrettyStringRenderer} and 
-	 * {@link EnvironmentRenderer} to recalculate thier
-	 * layout.
+	 * Causes every {@link PrettyStringRenderer} and {@link EnvironmentRenderer} to recalculate thier layout.
 	 */
 	@Override
 	protected void resetLayout () {
@@ -432,5 +440,13 @@ public class MinimalTypingComponent extends AbstractProofComponent implements Sc
 	public int getScrollableUnitIncrement (Rectangle visibleRect, int orientation, int direction) {
 		//  XXX: Dynamic unit increment
 		return 10;
+	}
+
+	@Override
+	protected void forcedRelayout()
+	{
+		// TODO größe setzen...
+		doRelayout();
+		
 	}
 }

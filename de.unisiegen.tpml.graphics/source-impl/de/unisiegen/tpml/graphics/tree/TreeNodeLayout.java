@@ -67,6 +67,7 @@ public class TreeNodeLayout {
 	public Point placeNodes (ProofNode root, int posX, int posY, int pAvailableWidth, int pAvailableHeight) {
 		this.availableWidth = pAvailableWidth;
 		this.availableHeight = pAvailableHeight;
+		tmpPaper = 0;
 		
 		return placeNode (root, posX, posY, new Point (-1, -1));
 	}
@@ -96,17 +97,18 @@ public class TreeNodeLayout {
 		Dimension size = nodeComponent.update(availableWidth);
 		
 		// add the needed height to the tmpPaper, if it gets bigger than availableHeight, Seitenumbruch
-		if (tmpPaper + size.height > availableHeight)
+		if (tmpPaper + this.spacing + size.height > availableHeight)
 		{
-			if (tmpPaper == 0)
 			{
-				System.out.println("Blatt zu klein für einen Knoten...");
-			}
-			else
-			{
-				System.out.println("Seitenumbruch...");
+				// TODO umbrechen... dazu wird das noch fehlende zur posY addiert... Die Seite wird voll gemacht...
+				//posY += size.height - ((tmpPaper + this.spacing + size.height) - availableHeight);
+				posY += availableHeight - tmpPaper;
+				// TODO test
+				// posY += 200;
+				
+				System.out.println("Seitenumbruch..."+(size.height - ((tmpPaper + size.height) - availableHeight)));
+				// tmpPaper wird nun wieder neu an zu zählen...
 				tmpPaper = 0;
-				posY += size.height - (tmpPaper - availableHeight);
 			}
 		}
 		tmpPaper += size.height;
@@ -117,6 +119,7 @@ public class TreeNodeLayout {
 		
 		// let some spacing between two nodes
 		posY += this.spacing;
+		tmpPaper += this.spacing;
 	
 		//
 		// change the resulting point

@@ -144,44 +144,52 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	 *
 	 */
 	@Override
-	protected void relayout () {
-		if (this.currentlyLayouting) {
+	protected void relayout()
+	{
+		if (this.currentlyLayouting)
+		{
 			return;
 		}
-		
+
 		this.currentlyLayouting = true;
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@SuppressWarnings("synthetic-access")
-			public void run () {
-				TypeCheckerProofNode rootNode = (TypeCheckerProofNode)TypeCheckerComponent.this.proofModel.getRoot();
-				
-				Point rightBottomPos = TypeCheckerComponent.this.getTreeNodeLayout().placeNodes (rootNode, 20, 20, TypeCheckerComponent.this.availableWidth, TypeCheckerComponent.this.availableHeight);
-				
-				// TODO wuzu denn das?
-				// lets add some border to the space
-				
-				//rightBottomPos.x += 20;
-				//rightBottomPos.y += 20;
-				
-				Dimension size = new Dimension (rightBottomPos.x, rightBottomPos.y);
-				
-				// set all the sizes needed by the component
-				setMaximumSize (size);
-				setMinimumSize (size);
-				setPreferredSize (size);
-				setSize (size);
-				
-				TypeCheckerComponent.this.currentlyLayouting = false;
-				TypeCheckerComponent.this.jumpToNodeVisible ();
+			public void run()
+			{
+				doRelayout();
 			}
 		});
 	}
 	
+	protected void doRelayout()
+	{
+		TypeCheckerProofNode rootNode = (TypeCheckerProofNode) TypeCheckerComponent.this.proofModel.getRoot();
+
+		Point rightBottomPos = TypeCheckerComponent.this.getTreeNodeLayout().placeNodes(rootNode, 20, 20,
+				TypeCheckerComponent.this.availableWidth, TypeCheckerComponent.this.availableHeight);
+
+		// TODO wuzu denn das?
+		// lets add some border to the space
+
+		// rightBottomPos.x += 20;
+		// rightBottomPos.y += 20;
+
+		Dimension size = new Dimension(rightBottomPos.x, rightBottomPos.y);
+
+		// set all the sizes needed by the component
+		setMaximumSize(size);
+		setMinimumSize(size);
+		setPreferredSize(size);
+		setSize(size);
+
+		TypeCheckerComponent.this.currentlyLayouting = false;
+		TypeCheckerComponent.this.jumpToNodeVisible();
+		
+	}
+
 	/**
-	 * Causes every {@link PrettyStringRenderer} and 
-	 * {@link EnvironmentRenderer} to recalculate thier
-	 * layout.
+	 * Causes every {@link PrettyStringRenderer} and {@link EnvironmentRenderer} to recalculate thier layout.
 	 */
 	@Override
 	protected void resetLayout () {
@@ -480,5 +488,13 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	public void setJumpNode(ProofNode pJumpNode)
 	{
 		this.jumpNode = pJumpNode;
+	}
+
+	@Override
+	protected void forcedRelayout()
+	{
+		// TODO größe setzen...
+		doRelayout();
+		
 	}
 }

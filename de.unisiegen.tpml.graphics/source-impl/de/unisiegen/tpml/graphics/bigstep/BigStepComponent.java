@@ -378,32 +378,53 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run () {
-				BigStepProofNode rootNode = (BigStepProofNode)BigStepComponent.this.getProofModel().getRoot();
-				
-				Point rightBottomPos = BigStepComponent.this.getTreeNodeLayout().placeNodes(rootNode,
-						BigStepComponent.this.getThisBorder(), BigStepComponent.this.getThisBorder(),
-						BigStepComponent.this.getAvailableWidth(), BigStepComponent.this.getAvailableHeight());
-				
-				// Worzu brauchen wird das?
-				// lets add some border to the space
-				
-				// rightBottomPos.x += BigStepComponent.this.border;
-				// rightBottomPos.y += BigStepComponent.this.border;
-				
-				Dimension size = new Dimension (rightBottomPos.x, rightBottomPos.y);
-				
-				// set all the sizes needed by the component
-				setMaximumSize (size);
-				setMinimumSize (size);
-				setPreferredSize (size);
-				setSize (size);
-				
-				BigStepComponent.this.setCurrentlyLayouting(false);
-				BigStepComponent.this.jumpToNodeVisible();
+				doRelayout();
+
 			}
 		});
 	}
 	
+	/**
+	 *TODO
+	 * 
+	 */
+	@Override
+	protected void forcedRelayout()
+	{
+		doRelayout();
+	}
+	
+	/**
+	 * TODO
+	 */
+	protected void doRelayout()
+	{
+		BigStepProofNode rootNode = (BigStepProofNode)BigStepComponent.this.getProofModel().getRoot();
+		
+		Point rightBottomPos = BigStepComponent.this.getTreeNodeLayout().placeNodes(rootNode,
+				BigStepComponent.this.getThisBorder(), BigStepComponent.this.getThisBorder(),
+				BigStepComponent.this.getAvailableWidth(), BigStepComponent.this.getAvailableHeight());
+		
+		// Worzu brauchen wird das?
+		// lets add some border to the space
+		
+		// rightBottomPos.x += BigStepComponent.this.border;
+		// rightBottomPos.y += BigStepComponent.this.border;
+		
+		Dimension size = new Dimension (rightBottomPos.x, rightBottomPos.y);
+		
+		// set all the sizes needed by the component
+		setMaximumSize (size);
+		setMinimumSize (size);
+		setPreferredSize (size);
+		setSize (size);
+		
+		BigStepComponent.this.setCurrentlyLayouting(false);
+		BigStepComponent.this.jumpToNodeVisible();
+		
+	}
+
+
 	/**
 	 * @return the border
 	 */

@@ -139,44 +139,51 @@ public class SubTypingComponent extends AbstractProofComponent implements Scroll
 	 *
 	 */
 	@Override
-	protected void relayout ( ) {
-		if ( this.currentlyLayouting ) {
+	protected void relayout()
+	{
+		if (this.currentlyLayouting)
+		{
 			return;
 		}
 
 		this.currentlyLayouting = true;
 
-		SwingUtilities.invokeLater ( new Runnable ( ) {
-			@SuppressWarnings ( "synthetic-access" )
-			public void run ( ) {
-				SubTypingProofNode rootNode = ( SubTypingProofNode ) SubTypingComponent.this.proofModel.getRoot ( );
-
-				Point rightBottomPos = SubTypingComponent.this.treeNodeLayout.placeNodes ( rootNode, 20, 20,
-						SubTypingComponent.this.availableWidth, SubTypingComponent.this.availableHeight );
-
-				// lets add some border to the space
-
-				rightBottomPos.x += 20;
-				rightBottomPos.y += 20;
-
-				Dimension size = new Dimension ( rightBottomPos.x, rightBottomPos.y );
-
-				// set all the sizes needed by the component
-				setMaximumSize ( size );
-				setMinimumSize ( size );
-				setPreferredSize ( size );
-				setSize ( size );
-
-				SubTypingComponent.this.currentlyLayouting = false;
-				SubTypingComponent.this.jumpToNodeVisible ( );
+		SwingUtilities.invokeLater(new Runnable() {
+			@SuppressWarnings("synthetic-access")
+			public void run()
+			{
+				doRelayout();
 			}
-		} );
+		});
+	}
+
+	protected void doRelayout()
+	{
+		SubTypingProofNode rootNode = (SubTypingProofNode) SubTypingComponent.this.proofModel.getRoot();
+
+		Point rightBottomPos = SubTypingComponent.this.treeNodeLayout.placeNodes(rootNode, 20, 20,
+				SubTypingComponent.this.availableWidth, SubTypingComponent.this.availableHeight);
+
+		// lets add some border to the space
+
+		rightBottomPos.x += 20;
+		rightBottomPos.y += 20;
+
+		Dimension size = new Dimension(rightBottomPos.x, rightBottomPos.y);
+
+		// set all the sizes needed by the component
+		setMaximumSize(size);
+		setMinimumSize(size);
+		setPreferredSize(size);
+		setSize(size);
+
+		SubTypingComponent.this.currentlyLayouting = false;
+		SubTypingComponent.this.jumpToNodeVisible();
+		
 	}
 
 	/**
-	 * Causes every {@link PrettyStringRenderer} and 
-	 * {@link EnvironmentRenderer} to recalculate thier
-	 * layout.
+	 * Causes every {@link PrettyStringRenderer} and {@link EnvironmentRenderer} to recalculate thier layout.
 	 */
 	@Override
 	protected void resetLayout ( ) {
@@ -432,5 +439,13 @@ public class SubTypingComponent extends AbstractProofComponent implements Scroll
 	public int getScrollableUnitIncrement ( Rectangle visibleRect, int orientation, int direction ) {
 		//  XXX: Dynamic unit increment
 		return 10;
+	}
+
+	@Override
+	protected void forcedRelayout()
+	{
+		// TODO größe setzen...
+		doRelayout();
+		
 	}
 }

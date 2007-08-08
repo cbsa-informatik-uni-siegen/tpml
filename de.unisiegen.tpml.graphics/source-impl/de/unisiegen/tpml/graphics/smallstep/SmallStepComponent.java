@@ -488,38 +488,44 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 			public void run()
 			{
 
-				// get the rootNode it will be used many time
-				SmallStepProofNode rootNode = (SmallStepProofNode) SmallStepComponent.this.getProofModel().getRoot();
-
-				// check if all nodes have a propper SmallStepNodeComponent
-				checkForUserObject(rootNode);
-
-				// find the maximum width of the rules and inform the entire tree
-				int maxRuleWidth = checkMaxRuleWidth(rootNode, 0);
-				updateMaxRuleWidth(rootNode, maxRuleWidth);
-
-				// evaluate the the sizes of the expression 
-				checkExpressionSize(rootNode);
-
-				// now that the basics for the nodes are found, 
-				// they can be placed
-				Dimension size = placeNode(rootNode, SmallStepComponent.this.getThisBorder(), SmallStepComponent.this.getThisBorder());
-
-				// the needed size evaluaded by placing the nodes gets
-				// widened a bit to have a nice border around the component
-				size.width += SmallStepComponent.this.getThisBorder();
-				size.height += SmallStepComponent.this.getThisBorder();
-
-				// this size is used to determin all the sizes of the component
-				setPreferredSize(size);
-				setSize(size);
-				setMinimumSize(size);
-				setMaximumSize(size);
-
-				SmallStepComponent.this.setCurrentlyLayouting(false);
-				SmallStepComponent.this.jumpToNodeVisible();
+				doRelayout();
 			}
 		});
+	}
+
+	protected void doRelayout()
+	{
+//	 get the rootNode it will be used many time
+		SmallStepProofNode rootNode = (SmallStepProofNode) SmallStepComponent.this.getProofModel().getRoot();
+
+		// check if all nodes have a propper SmallStepNodeComponent
+		checkForUserObject(rootNode);
+
+		// find the maximum width of the rules and inform the entire tree
+		int maxRuleWidth = checkMaxRuleWidth(rootNode, 0);
+		updateMaxRuleWidth(rootNode, maxRuleWidth);
+
+		// evaluate the the sizes of the expression 
+		checkExpressionSize(rootNode);
+
+		// now that the basics for the nodes are found, 
+		// they can be placed
+		Dimension size = placeNode(rootNode, SmallStepComponent.this.getThisBorder(), SmallStepComponent.this.getThisBorder());
+
+		// the needed size evaluaded by placing the nodes gets
+		// widened a bit to have a nice border around the component
+		size.width += SmallStepComponent.this.getThisBorder();
+		size.height += SmallStepComponent.this.getThisBorder();
+
+		// this size is used to determin all the sizes of the component
+		setPreferredSize(size);
+		setSize(size);
+		setMinimumSize(size);
+		setMaximumSize(size);
+
+		SmallStepComponent.this.setCurrentlyLayouting(false);
+		SmallStepComponent.this.jumpToNodeVisible();
+		
 	}
 
 	/**
@@ -763,6 +769,13 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	public int getThisBorder()
 	{
 		return this.border;
+	}
+
+	@Override
+	protected void forcedRelayout()
+	{
+		doRelayout();
+		
 	}
 
 }

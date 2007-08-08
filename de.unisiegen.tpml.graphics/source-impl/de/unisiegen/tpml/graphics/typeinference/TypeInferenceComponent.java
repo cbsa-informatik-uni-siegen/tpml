@@ -466,40 +466,46 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run () {
 		
-				// get the rootNode it will be used many time
-				TypeInferenceProofNode rootNode = (TypeInferenceProofNode)TypeInferenceComponent.this.getProofModel().getRoot();
-				
-				// check if all nodes have a propper TypeInferenceNodeComponent
-				checkForUserObject (rootNode);
-				
-				// find the maximum width of the rules and inform the entire tree
-				int maxRuleWidth = checkMaxRuleWidth (rootNode, 0);
-				updateMaxRuleWidth (rootNode, maxRuleWidth);
-				
-				// evaluate the the sizes of the expression 
-				checkExpressionSize(rootNode);
-				
-				// now that the basics for the nodes are found, 
-				// they can be placed
-				Dimension size = placeNode (rootNode, TypeInferenceComponent.this.getThisBorder(), TypeInferenceComponent.this.getThisBorder());
-				
-				// the needed size evaluaded by placing the nodes gets
-				// widened a bit to have a nice border around the component
-				size.width 	+= TypeInferenceComponent.this.getThisBorder();
-				size.height += TypeInferenceComponent.this.getThisBorder();
-				
-				// this size is used to determin all the sizes of the component
-				setPreferredSize (size);
-				setSize (size);
-				setMinimumSize (size);
-				setMaximumSize (size);
-				
-				TypeInferenceComponent.this.setCurrentlyLayouting(false);
-				TypeInferenceComponent.this.jumpToNodeVisible();
+				doRelayout();
 			}
 		});
 	}
 	
+	protected void doRelayout()
+	{
+//	 get the rootNode it will be used many time
+		TypeInferenceProofNode rootNode = (TypeInferenceProofNode)TypeInferenceComponent.this.getProofModel().getRoot();
+		
+		// check if all nodes have a propper TypeInferenceNodeComponent
+		checkForUserObject (rootNode);
+		
+		// find the maximum width of the rules and inform the entire tree
+		int maxRuleWidth = checkMaxRuleWidth (rootNode, 0);
+		updateMaxRuleWidth (rootNode, maxRuleWidth);
+		
+		// evaluate the the sizes of the expression 
+		checkExpressionSize(rootNode);
+		
+		// now that the basics for the nodes are found, 
+		// they can be placed
+		Dimension size = placeNode (rootNode, TypeInferenceComponent.this.getThisBorder(), TypeInferenceComponent.this.getThisBorder());
+		
+		// the needed size evaluaded by placing the nodes gets
+		// widened a bit to have a nice border around the component
+		size.width 	+= TypeInferenceComponent.this.getThisBorder();
+		size.height += TypeInferenceComponent.this.getThisBorder();
+		
+		// this size is used to determin all the sizes of the component
+		setPreferredSize (size);
+		setSize (size);
+		setMinimumSize (size);
+		setMaximumSize (size);
+		
+		TypeInferenceComponent.this.setCurrentlyLayouting(false);
+		TypeInferenceComponent.this.jumpToNodeVisible();
+		
+	}
+
 	/**
 	 * Resets all user objects by calling {@link #resetUserObject(TypeInferenceProofNode)}
 	 * on the rootNode of the model. <br>
@@ -703,6 +709,13 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	public int getThisBorder()
 	{
 		return this.border;
+	}
+
+	@Override
+	protected void forcedRelayout()
+	{
+		doRelayout();
+		
 	}
 
 	

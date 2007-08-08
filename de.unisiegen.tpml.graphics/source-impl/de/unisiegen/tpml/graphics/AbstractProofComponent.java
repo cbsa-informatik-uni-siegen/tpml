@@ -86,6 +86,8 @@ public abstract class AbstractProofComponent extends JComponent {
 	
 	protected abstract void relayout ();
 	
+	protected abstract void forcedRelayout();
+	
 	protected abstract void resetLayout ();
 	
 	public void setAvailableWidth (int availableWidth) {
@@ -96,7 +98,7 @@ public abstract class AbstractProofComponent extends JComponent {
 	public void setAvailableHeight (int pAvailableHeight)
 	{
 		this.availableHeight = pAvailableHeight;
-		relayout();
+		forcedRelayout();
 	}
 	
 	public void resetAvailableHeight (int pAvailableHeight)
