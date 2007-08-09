@@ -109,6 +109,7 @@ public class GeneralPrinter {
 	if(!openDiaglog()) return;
 		
 	this.comp = icomp;
+	comp.setBackground(new Color(255,255,255));
 
 	try {
 	    // creating a temporary file to wirte to:
@@ -168,10 +169,12 @@ public class GeneralPrinter {
 	PdfContentByte cb = writer.getDirectContent();
 	// do not use the scale factor in the next one!
 	g1 = cb.createGraphicsShapes(pageFormat.getWidth(), pageFormat.getHeight());
+	g1.setBackground(new Color(255,255,255));
 	g1.scale(scale, scale);
 	// g2.setClip(right, above,
 	// g2.getClipBounds().width,g2.getClipBounds().height);
 	g2 = (Graphics2D) g1.create(right, above, g1.getClipBounds().width - 2 * right, g1.getClipBounds().height - 2 * above);
+	g2.setBackground(new Color(255,255,255));
 	JPanel j1 = new JPanel();
 	j1.setSize(g2.getClipBounds().width, g2.getClipBounds().height);
 	j1.setBackground(new Color(255, 255, 255));
