@@ -126,7 +126,6 @@ public class GeneralPrinter {
 		if (nop == -1) {
 		    comp.setAvailableWidth(g2.getClipBounds().width);
 		    comp.setAvailableHeight(g2.getClipBounds().height);
-		    ((BigStepComponent)comp).forcerelayout();
 		    nop = (comp.getHeight() / printarea.getHeight() + 1);
 		}
 		printarea.add(comp);
