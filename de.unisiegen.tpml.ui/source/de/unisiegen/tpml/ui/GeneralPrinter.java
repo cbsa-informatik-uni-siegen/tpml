@@ -94,7 +94,7 @@ public class GeneralPrinter {
 	boolean l33t = false;
 
 	try {
-	    createPage(0);
+	    JPanel printarea = createPage(0);
 	    Graphics remember = editor.getGraphics();
 	l33t = editor.getSize().height > g2.getClipBounds().height;
 	    editor.paint(g2);
@@ -146,21 +146,22 @@ public class GeneralPrinter {
 	    int i = 0;
 
 	    do {
-		createPage(i);
+		JPanel printarea = createPage(i);
 		
 		if (nop == -1) {
 		    comp.setAvailableWidth(g2.getClipBounds().width);
 		    comp.setAvailableHeight(g2.getClipBounds().height);
-		    nop = (comp.getHeight() / g2.getClipBounds().height + 1);
+		    nop = (comp.getHeight() / printarea.getHeight() + 1);
 		}
+		printarea.add(comp);
 		
 		// on the first page we will have to eliminate the natural top spacing
 		if (i == 0) {
-		    comp.setBounds(-naturalright, -naturalabove - i * g2.getClipBounds().height, comp.getWidth(), comp.getHeight());
+		    comp.setBounds(-naturalright, -naturalabove - i * printarea.getHeight(), comp.getWidth(), comp.getHeight());
 		} else {
-		    comp.setBounds(-naturalright, -i * g2.getClipBounds().height, comp.getWidth(), comp.getHeight());
+		    comp.setBounds(-naturalright, -i * printarea.getHeight(), comp.getWidth(), comp.getHeight());
 		}
-		comp.paint(g2);
+		printarea.paint(g2);
 		
 		closePage();
 		i++;
@@ -185,7 +186,7 @@ public class GeneralPrinter {
 	document.close();
     }
 
-    private void  createPage(int i) throws DocumentException, FileNotFoundException {
+    private JPanel createPage(int i) throws DocumentException, FileNotFoundException {
 	document = new Document(pageFormat);
 	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(tmpdir+"/tmp" + i + ".pdf"));
 	document.open();
@@ -198,6 +199,11 @@ public class GeneralPrinter {
 	// g2.getClipBounds().width,g2.getClipBounds().height);
 	g2 = (Graphics2D) g1.create(right, above, g1.getClipBounds().width - 2 * right, g1.getClipBounds().height - 2 * above);
 	g2.setBackground(new Color(255,255,255));
+	JPanel j1 = new JPanel();
+	j1.setSize(g2.getClipBounds().width, g2.getClipBounds().height);
+	j1.setBackground(new Color(255, 255, 255));
+	j1.setOpaque(false);
+	return j1;
     }
     
     private void createSplitPage(int i) throws DocumentException, FileNotFoundException {
