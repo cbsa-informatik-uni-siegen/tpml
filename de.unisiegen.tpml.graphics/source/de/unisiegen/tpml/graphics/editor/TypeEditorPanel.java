@@ -147,7 +147,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	/**
 	 * Undo status for this view
 	 */
-	// boolean undoStatus ;
+	 boolean undoStatus ;
 
 	/**
 	 * Undo status for the first editor
@@ -162,7 +162,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	/**
 	 * Redo status for this view
 	 */
-	// boolean redoStatus ;
+	boolean redoStatus ;
 
 	/**
 	 * Redo status for the first editor
@@ -293,10 +293,10 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 			//TODO think about
 				TypeEditorPanel.this.editor = TypeEditorPanel.this.editor1;
 			// get the saved status for this editor
-			/* TypeEditorPanel.this
+			 TypeEditorPanel.this
 			 .setRedoStatus ( TypeEditorPanel.this.redoStatus1 ) ;
 			 TypeEditorPanel.this
-			 .setUndoStatus ( TypeEditorPanel.this.undoStatus1 ) ;*/
+			 .setUndoStatus ( TypeEditorPanel.this.undoStatus1 ) ;
 			}
 
 			/**
@@ -306,8 +306,8 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 			FocusEvent e ) {
 			// TODO think about
 			// save the status for this editor
-			/*TypeEditorPanel.this.redoStatus1 = TypeEditorPanel.this.redoStatus ;
-			 TypeEditorPanel.this.undoStatus1 = TypeEditorPanel.this.undoStatus ;*/
+			TypeEditorPanel.this.redoStatus1 = TypeEditorPanel.this.redoStatus ;
+			 TypeEditorPanel.this.undoStatus1 = TypeEditorPanel.this.undoStatus ;
 			}
 		} );
 		this.sourceField = new StyledTypeEnterField ( this.language );
@@ -416,18 +416,18 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 			// TODO think about
 				TypeEditorPanel.this.editor = TypeEditorPanel.this.editor2;
 			// get the saved status for this editor
-			/*TypeEditorPanel.this
+			TypeEditorPanel.this
 			 .setRedoStatus ( TypeEditorPanel.this.redoStatus2 ) ;
 			 TypeEditorPanel.this
-			 .setUndoStatus ( TypeEditorPanel.this.undoStatus2 ) ;*/
+			 .setUndoStatus ( TypeEditorPanel.this.undoStatus2 ) ;
 			}
 
 			public void focusLost ( @SuppressWarnings ( "unused" )
 			FocusEvent e ) {
 			//TODO think about
 			// save the status for this editor
-			/*TypeEditorPanel.this.redoStatus2 = TypeEditorPanel.this.redoStatus ;
-			 TypeEditorPanel.this.undoStatus2 = TypeEditorPanel.this.undoStatus ;*/
+			TypeEditorPanel.this.redoStatus2 = TypeEditorPanel.this.redoStatus ;
+			 TypeEditorPanel.this.undoStatus2 = TypeEditorPanel.this.undoStatus ;
 			}
 		} );
 		this.sourceField2 = new StyledTypeEnterField ( this.language );
@@ -725,9 +725,9 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 			this.sourceField.removeDocumentListener ( this.listener );
 			this.sourceField.remove ( 0, this.sourceField.getLength ( ) );
 			this.sourceField.insertString ( 0, text, null );
-			setRedoStatus1 ( false );
+			setRedoStatus ( false );
 			this.redohistory.clear ( );
-			setUndoStatus1 ( false );
+			setUndoStatus ( false );
 			this.undohistory.clear ( );
 			this.undohistory.push ( text );
 			this.sourceField.addDocumentListener ( this.listener );
@@ -749,9 +749,9 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 			this.sourceField2.removeDocumentListener ( this.listener2 );
 			this.sourceField2.remove ( 0, this.sourceField2.getLength ( ) );
 			this.sourceField2.insertString ( 0, text, null );
-			setRedoStatus2 ( false );
+			setRedoStatus ( false );
 			this.redohistory2.clear ( );
-			setUndoStatus2 ( false );
+			setUndoStatus ( false );
 			this.undohistory2.clear ( );
 			this.undohistory2.push ( text );
 			this.sourceField2.addDocumentListener ( this.listener2 );
@@ -897,9 +897,9 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				// this.window.setChangeState ( Boolean.TRUE ) ;
 				firePropertyChange ( "editor", false, true );
 				this.saveStatus = true;
-				this.setUndoStatus1 ( true );
+				this.setUndoStatus ( true );
 				this.undohistory.push ( this.currentContent1 );
-				setRedoStatus1 ( false );
+				setRedoStatus ( false );
 				this.redohistory.clear ( );
 				this.currentContent1 = this.sourceField.getText ( 0, this.sourceField.getLength ( ) );
 				removeSelectedText ( );
@@ -908,9 +908,9 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				//this.window.setChangeState ( Boolean.TRUE ) ;
 				firePropertyChange ( "editor", false, true );
 				this.saveStatus = true;
-				this.setUndoStatus2 ( true );
+				this.setUndoStatus ( true );
 				this.undohistory2.push ( this.currentContent2 );
-				setRedoStatus2 ( false );
+				setRedoStatus ( false );
 				this.redohistory2.clear ( );
 				this.currentContent2 = this.sourceField2.getText ( 0, this.sourceField2.getLength ( ) );
 				removeSelectedText2 ( );
@@ -940,14 +940,14 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 					//TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
 					firePropertyChange ( "editor", false, true );
 					TypeEditorPanel.this.saveStatus = true;
-					TypeEditorPanel.this.setUndoStatus1 ( true );
+					TypeEditorPanel.this.setUndoStatus ( true );
 					String doctext = this.sourceField.getText ( 0, this.sourceField.getLength ( ) );
 					if ( doctext.endsWith ( " " ) ) //$NON-NLS-1$
 					{
 						TypeEditorPanel.this.undohistory.push ( doctext );
 						logger.debug ( "history added: " + doctext ); //$NON-NLS-1$
 					}
-					setRedoStatus1 ( false );
+					setRedoStatus ( false );
 					TypeEditorPanel.this.redohistory.clear ( );
 					TypeEditorPanel.this.currentContent1 = doctext;
 				} else if ( this.editor.equals( this.editor2) ) {
@@ -958,14 +958,14 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 					//TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
 					firePropertyChange ( "editor", false, true );
 					TypeEditorPanel.this.saveStatus = true;
-					TypeEditorPanel.this.setUndoStatus2 ( true );
+					TypeEditorPanel.this.setUndoStatus ( true );
 					String doctext = this.sourceField2.getText ( 0, this.sourceField2.getLength ( ) );
 					if ( doctext.endsWith ( " " ) ) //$NON-NLS-1$
 					{
 						TypeEditorPanel.this.undohistory2.push ( doctext );
 						logger.debug ( "history2 added: " + doctext ); //$NON-NLS-1$
 					}
-					setRedoStatus2 ( false );
+					setRedoStatus ( false );
 					TypeEditorPanel.this.redohistory2.clear ( );
 					TypeEditorPanel.this.currentContent2 = doctext;
 				} else {
@@ -1007,45 +1007,17 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	}
 
 	/**
-	 * Set a new redo status for the first editor
-	 * 
-	 * @param pRedoStatus the new redo status
-	 */
-	private void setRedoStatus1 ( boolean pRedoStatus ) {
-		if ( this.redoStatus1 != pRedoStatus ) {
-			boolean oldRedoStatus = this.redoStatus1;
-			this.redoStatus1 = pRedoStatus;
-			firePropertyChange ( "redoStatus", oldRedoStatus, pRedoStatus ); //$NON-NLS-1$
-		}
-		// this.redoItem.setEnabled ( this.redoStatus );
-	}
-
-	/**
 	 * Set a new redo status for the second editor
 	 * 
 	 * @param pRedoStatus the new redo status
 	 */
-	private void setRedoStatus2 ( boolean pRedoStatus ) {
-		if ( this.redoStatus2 != pRedoStatus ) {
-			boolean oldRedoStatus = this.redoStatus2;
-			this.redoStatus2 = pRedoStatus;
+	private void setRedoStatus ( boolean pRedoStatus ) {
+		if ( this.redoStatus != pRedoStatus ) {
+			boolean oldRedoStatus = this.redoStatus;
+			this.redoStatus = pRedoStatus;
 			firePropertyChange ( "redoStatus", oldRedoStatus, pRedoStatus ); //$NON-NLS-1$
 		}
 		// this.redoItem.setEnabled ( this.redoStatus );
-	}
-
-	/**
-	 * Set a new undo status for the first editor
-	 * 
-	 * @param pUndoStatus the new undo status
-	 */
-	private void setUndoStatus1 ( boolean pUndoStatus ) {
-		if ( this.undoStatus1 != pUndoStatus ) {
-			boolean oldUndoStatus = this.undoStatus1;
-			this.undoStatus1 = pUndoStatus;
-			firePropertyChange ( "undoStatus", oldUndoStatus, pUndoStatus ); //$NON-NLS-1$
-		}
-		// this.undoItem.setEnabled ( this.undoStatus );
 	}
 
 	/**
@@ -1053,10 +1025,10 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	 * 
 	 * @param pUndoStatus the new undo status
 	 */
-	private void setUndoStatus2 ( boolean pUndoStatus ) {
-		if ( this.undoStatus2 != pUndoStatus ) {
-			boolean oldUndoStatus = this.undoStatus2;
-			this.undoStatus2 = pUndoStatus;
+	private void setUndoStatus ( boolean pUndoStatus ) {
+		if ( this.undoStatus != pUndoStatus ) {
+			boolean oldUndoStatus = this.undoStatus;
+			this.undoStatus = pUndoStatus;
 			firePropertyChange ( "undoStatus", oldUndoStatus, pUndoStatus ); //$NON-NLS-1$
 		}
 		// this.undoItem.setEnabled ( this.undoStatus );
@@ -1077,8 +1049,8 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	 * @see de.unisiegen.tpml.ui.EditorComponent#isRedoStatus()
 	 */
 	public boolean isRedoStatus ( ) {
-		//return this.redoStatus ;
-		return this.redoStatus1 || this.redoStatus2;
+		return this.redoStatus ;
+		//return this.redoStatus1 || this.redoStatus2;
 	}
 
 	/**
@@ -1088,7 +1060,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	 */
 	public boolean isUndoStatus ( ) {
 		//return this.undoStatus ;
-		return this.undoStatus1 || this.undoStatus2;
+		return this.saveStatus;
 	}
 
 	/**
@@ -1098,10 +1070,10 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	 */
 	public void setDefaultStates ( ) {
 		// setChanged(false);
-		setUndoStatus1 ( false );
-		setUndoStatus2 ( false );
-		setRedoStatus1 ( false );
-		setRedoStatus2 ( false );
+		setUndoStatus ( false );
+		setUndoStatus ( false );
+		setRedoStatus ( false );
+		setRedoStatus ( false );
 		setNextStatus ( false );
 	}
 	
@@ -1109,8 +1081,8 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	  {
 	    undohistory.clear ( ) ;
 	    redohistory.clear ( ) ;
-	    setUndoStatus1 ( false ) ;
-	    setUndoStatus2 (false);
+	    setUndoStatus ( false ) ;
+	    setUndoStatus (false);
 	  }
 
 	/**
@@ -1125,22 +1097,22 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				this.undohistory.push ( this.sourceField.getText ( 0, this.sourceField.getLength ( ) ) );
 				this.sourceField.remove ( 0, this.sourceField.getLength ( ) );
 				this.sourceField.insertString ( 0, this.redohistory.pop ( ), null );
-				setUndoStatus1 ( true );
+				setUndoStatus ( true );
 				this.sourceField.addDocumentListener ( this.listener );
 				this.outline.load ( this.sourceField.getType ( ), Outline.ExecuteAutoChange.SUBTYPING_SOURCE );
 				if ( this.redohistory.size ( ) == 0 ) {
-					setRedoStatus1 ( false );
+					setRedoStatus ( false );
 				}
 			} else if ( this.editor.equals( this.editor2) ) {
 				this.sourceField2.removeDocumentListener ( this.listener2 );
 				this.undohistory2.push ( this.sourceField2.getText ( 0, this.sourceField2.getLength ( ) ) );
 				this.sourceField2.remove ( 0, this.sourceField2.getLength ( ) );
 				this.sourceField2.insertString ( 0, this.redohistory2.pop ( ), null );
-				setUndoStatus2 ( true );
+				setUndoStatus ( true );
 				this.sourceField2.addDocumentListener ( this.listener2 );
 				this.outline2.load ( this.sourceField2.getType ( ), Outline.ExecuteAutoChange.SUBTYPING_SOURCE );
 				if ( this.redohistory2.size ( ) == 0 ) {
-					setRedoStatus2 ( false );
+					setRedoStatus ( false );
 				}
 			} else {
 				logger.error ( "Cannot handle an redo" ); //$NON-NLS-1$
@@ -1164,14 +1136,14 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				String historytext;
 				if ( this.undohistory.peek ( ).equals ( this.initialContent1 ) ) {
 					historytext = this.undohistory.peek ( );
-					setUndoStatus1 ( false );
+					setUndoStatus ( false );
 				} else {
 					historytext = this.undohistory.pop ( );
 				}
 				this.sourceField.remove ( 0, this.sourceField.getLength ( ) );
 				this.sourceField.insertString ( 0, historytext, null );
 				this.redohistory.add ( doctext );
-				setRedoStatus1 ( true );
+				setRedoStatus ( true );
 				this.sourceField.addDocumentListener ( this.listener );
 				this.outline.load ( this.sourceField.getType ( ), Outline.ExecuteAutoChange.SUBTYPING_SOURCE );
 			} else if ( this.editor.equals( this.editor2) ) {
@@ -1180,14 +1152,14 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				String historytext;
 				if ( this.undohistory2.peek ( ).equals ( this.initialContent2 ) ) {
 					historytext = this.undohistory2.peek ( );
-					setUndoStatus2 ( false );
+					setUndoStatus ( false );
 				} else {
 					historytext = this.undohistory2.pop ( );
 				}
 				this.sourceField2.remove ( 0, this.sourceField2.getLength ( ) );
 				this.sourceField2.insertString ( 0, historytext, null );
 				this.redohistory2.add ( doctext );
-				setRedoStatus2 ( true );
+				setRedoStatus ( true );
 				this.sourceField2.addDocumentListener ( this.listener2 );
 				this.outline2.load ( this.sourceField.getType ( ), Outline.ExecuteAutoChange.SUBTYPING_SOURCE );
 			} else {
@@ -1228,14 +1200,14 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				// TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
 				//firePropertyChange ( "editor", false, true );
 				TypeEditorPanel.this.saveStatus = true;
-				TypeEditorPanel.this.setUndoStatus1 ( true );
+				TypeEditorPanel.this.setUndoStatus ( true );
 				String doctext = arg0.getDocument ( ).getText ( 0, arg0.getDocument ( ).getLength ( ) );
 				if ( doctext.endsWith ( " " ) ) //$NON-NLS-1$
 				{
 					TypeEditorPanel.this.undohistory.push ( doctext );
 					logger.debug ( "history added: " + doctext ); //$NON-NLS-1$
 				}
-				setRedoStatus1 ( false );
+				setRedoStatus ( false );
 				TypeEditorPanel.this.redohistory.clear ( );
 				TypeEditorPanel.this.currentContent1 = doctext;
 			} catch ( BadLocationException e ) {
@@ -1254,9 +1226,9 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				// TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
 				//firePropertyChange ( "editor", false, true );
 				TypeEditorPanel.this.saveStatus = true;
-				TypeEditorPanel.this.setUndoStatus1 ( true );
+				TypeEditorPanel.this.setUndoStatus ( true );
 				TypeEditorPanel.this.undohistory.push ( TypeEditorPanel.this.currentContent1 );
-				setRedoStatus1 ( false );
+				setRedoStatus ( false );
 				TypeEditorPanel.this.redohistory.clear ( );
 				TypeEditorPanel.this.currentContent1 = arg0.getDocument ( )
 						.getText ( 0, arg0.getDocument ( ).getLength ( ) );
@@ -1295,14 +1267,14 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				// TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
 				//firePropertyChange ( "editor", false, true );
 				TypeEditorPanel.this.saveStatus = true;
-				TypeEditorPanel.this.setUndoStatus2 ( true );
+				TypeEditorPanel.this.setUndoStatus ( true );
 				String doctext = arg0.getDocument ( ).getText ( 0, arg0.getDocument ( ).getLength ( ) );
 				if ( doctext.endsWith ( " " ) ) //$NON-NLS-1$
 				{
 					TypeEditorPanel.this.undohistory2.push ( doctext );
 					logger.debug ( "history2 added: " + doctext ); //$NON-NLS-1$
 				}
-				setRedoStatus2 ( false );
+				setRedoStatus ( false );
 				TypeEditorPanel.this.redohistory2.clear ( );
 				TypeEditorPanel.this.currentContent2 = doctext;
 			} catch ( BadLocationException e ) {
@@ -1321,9 +1293,9 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				//TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
 				//firePropertyChange ( "editor", false, true );
 				TypeEditorPanel.this.saveStatus = true;
-				TypeEditorPanel.this.setUndoStatus2 ( true );
+				TypeEditorPanel.this.setUndoStatus ( true );
 				TypeEditorPanel.this.undohistory2.push ( TypeEditorPanel.this.currentContent2 );
-				setRedoStatus2 ( false );
+				setRedoStatus ( false );
 				TypeEditorPanel.this.redohistory2.clear ( );
 				TypeEditorPanel.this.currentContent2 = arg0.getDocument ( )
 						.getText ( 0, arg0.getDocument ( ).getLength ( ) );

@@ -453,7 +453,8 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel {
 	 * @return true if the undo function is available
 	 */
 	public boolean isUndoStatus ( ) {
-		return undoStatus;
+		//return undoStatus;
+		return code.isUndoStatus ( );
 	}
 
 	public void setUndoStatus ( boolean undoStatus ) {
