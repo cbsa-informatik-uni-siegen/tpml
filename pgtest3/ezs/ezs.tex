@@ -102,7 +102,7 @@
              in denen der Mensch Entlastung erfahren kann}{\pages{2}{4}}
   {
     \catchword{Arbeiten, die regelmäßig und monoton wiederkehren}
-    \catchword{Arbeiten, die hohe Anforderungen an die Konzentration stellen. Mit Wechsel von Zeiten
+    \catchword{Arbeiten, die hohe Anforderungen an die Konzentration stellen. Mit wechsel von Zeiten
                hoher Aktivität und hoher Anforderung an die Aufmerksamkeit und Zeiten geringer Aktivität,
                die mit Langeweile ausgefüllt sind.}
     \catchword{Arbeiten, die eine hohe Arbeitsgeschwindigkeit verlangen}
@@ -143,7 +143,7 @@
   \question{Wie ist der Begriff Prozess definiert}{\page{6}}
   {
     \normaltext{Der Vorgang zur Umformung, zum Transport oder zur Speicherung von Materie, 
-    Energie oder Information. Ein technischer Prozess ist ein Prozess, dessen Zustandsgrößen
+    Enerie oder Information. Ein technischer Prozess ist ein Prozess, dessen Zustandsgrößen
     mit technischen Mitteln erfasst und beeinflusst werden können.}
   }
 
@@ -205,12 +205,12 @@
     \normaltext{Transportprozess}
   }
 
-  \question{Mit welchem Prozess ist ein Umformungsprozess fast immer gekoppelt}{\page{6}}
+  \question{Mit welchem Prozess ist ein Umformunsprozess fast immer gekoppelt}{\page{6}}
   {
     \normaltext{Transport- oder Speicherprozess}
   }
 
-  \question{In welche Arten kann man Prozesse nach ihrer Komplexität einteilen}{\pages{7}{8}}
+  \question{In welche Arten kann man Prozesse nach ihrer Komlexität einteilen}{\pages{7}{8}}
   {
     \catchword{Elementarprozesse (sind durch genau eine Verarbeitungsart und ein 
     Verarbeitungsgut gekennzeichnet)}
@@ -224,7 +224,7 @@
 
   \question{Wie kann man die Verarbeitungsstruktur unterteilen}{\page{8}}
   {
-    \catchword{kontinuierliche Verarbeitung (z.B. Transportsysteme für Flüssigkeiten und Gase)}
+    \catchword{kontinuierliche Verarbeitung (zB Transportsysteme für Flüssigkeiten und Gase)}
     \catchword{diskontinuierliche oder diskrete Verarbeitung bei Stückproszessen (zB Automobilbau)}
     \catchword{Chargenprozesse (Verarbeitung auf Teilmengen eines sonst kontinuierlichen Gutes)}
   }
@@ -1262,44 +1262,47 @@
                 Unmittelbar vor dem Ende der ISR wird der Interrupt wieder freigegeben.}
   }
 
-  \statement{Nennen Sie die Ereignisse die in der Zentraleinheit selber auftauchen}{\page{134}}
+  \statement{Nennen Sie vorbeugende Maßnahmen gegen Netzausfall}{\page{136}}
   {
-    \catchword{HALT oder RESET: Funktionen, die als nicht maskierbare Interrupts behandelt werden}
-    \catchword{Impulse von der Echtzeituhr: }
-    \catchword{Spannungsausfall}
-    \catchword{Ablauffehler bei einer Instruktion}
+    \catchword{Einsatz von Unterbrechungsfreier Stromversorgung (USV).}
+    \catchword{Einsatz von Notstromaggregaten.}
+    \catchword{Übergang aller Systeme in einen sicheren Zustand, bei dem die Folgeschäden minimal
+    bleiben (fail-safe Technik).}
+  }
+  
+  \statement{Nennen Sie die Aktionen beim Netzausfall}{\page{136}}
+  {
+    \catchword{Der Prozess muss in einen sicheren Zustand gebracht werden, wobei auf eine korrekte
+    Reihenfolge geachtet werden muss.}
+    \catchword{Der aktuelle Zustand des Prozesses sollte erfasst und gesichert werden.}
+    \catchword{Der Zustand des Programms sollter gesichert werden, d.h. an welcher Stelle er mit
+    welchen Werten unterbrochen wurde.}
+  }
+  
+  \question{Was ist die besondere Eigenschaft bei Systemaufrufen von Interrupts und Traps}{\page{142}}
+  {
+    \normaltext{Sie springen Hilfsprogramme (Handler) an, ohne dass deren Startadress bekannt ist.
+    Sie haben stattdessen einen Zeiger auf eine Tabelle der die Startadresse entnommen werden kann.}
   }
 
-  \question{Was versteht man unter Supervisor Calls}{\page{135}}
+  \question{Was versteht man unter Direct Memory Access (DMA)}{\page{145}}
   {
-    \normaltext{Unter Supervisor Calls versteht man Software-induzierte Interrupts}
+    \normaltext{Um die CPU zu entlasten werden Daten direkt zwischen Controller und Arbeitsspeicher
+    ausgetauscht.}
   }
 
-  \question{Welche zwei Arten von Ablauffehlern können auftreten}{\page{139}}
+  
+  \question{Was für Anforderungen werden an die Hardware bei DMA gestellt}{\page{145}}
   {
-    \catchword{Programmfehler: Versteckte Fehler im Programm}
-    \catchword{Hardware-Fehler: Permanenter Ausfall von Bauteilen oder temporäre Störung}
-  }
-
-  \question{Wie kann der Rechner unterschiedliche Fehler erkennen}{\page{139}}
-  {
-    \normaltext{Indem der Interrupt einen Vektor zur Verfügung stellt}
-  }
-
   \statement{Nennen und erklären Sie kurz die auftretenden Fehler}{\pages{140}{142}}
-  {
-    \catchword{Time-out: Die adressierte Speicherstelle meldet sich nicht}
-    \catchword{Odd address: Fehler aufgrund von fehlerhaften Wortgrenzen}
-    \catchword{Parity: Fehler aufgrund von falschen Prüfbits}
-    \catchword{Space violation: Bereichsverletzung festgestellt wurch die MMU}
-    \catchword{Illegal instruction: Der Instruktionscode ist nicht interpretierbar}
-    \catchword{Reserved instruction: Resevierte Instruktionscodes verwendet}
-    \catchword{Stack limit violation: Stack ist übergelaufen}
-    \catchword{Illegal operand: Operanden passen nicht zur Operation}
-    \catchword{Illegal jump: Falsches Verzweigungsziel}
-    \catchword{Overflow: Überlauf eines Registers}
-    \catchword{Divide by 0: Division durch 0}
   }
+  {
+    \catchword{Diese Methode erfordert besondere Intelligenz beim Controller.}
+    \catchword{Die CPU muss darauf vorbereitet sein.}
+    \catchword{Auf dem Bus muss ein geeignetes Protokoll definiert sein.}
+    \catchword{Der Arbeitsspeicher muss nur in einigen Ausnahmefällen besonders ausgestattet sein.}
+  }
+
 
   \statement{Nennen Sie die drei charakteristischen Abschnitte des DMA-Betriebs}{\page{145}}
   {
@@ -1307,6 +1310,7 @@
     \catchword{Der Controller führt eine Verarbeitung durch}
     \catchword{Der Controller liefert eine Ausgabe}
   }
+
 
 
 
