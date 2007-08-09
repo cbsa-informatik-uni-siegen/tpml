@@ -204,7 +204,7 @@ public class GeneralPrinter {
 	JPanel j1 = new JPanel();
 	j1.setSize(g2.getClipBounds().width, g2.getClipBounds().height);
 	j1.setBackground(new Color(255, 255, 255));
-	j1.setOpaque(false);
+	j1.setOpaque(true);
 	return j1;
     }
     
