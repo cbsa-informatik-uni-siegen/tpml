@@ -45,7 +45,7 @@ public class GeneralPrinter {
 
     LinkedList<LinkedList<Component>> pages;
 
-    private double scale = .5;
+    private double scale = .6;
 
     private int right = 40;
 
@@ -110,6 +110,7 @@ public class GeneralPrinter {
 		
 	this.comp = icomp;
 	comp.setBackground(new Color(255,255,255));
+	comp.setOpaque(false);
 
 	try {
 	    // creating a temporary file to wirte to:
@@ -177,6 +178,7 @@ public class GeneralPrinter {
 	JPanel j1 = new JPanel();
 	j1.setSize(g2.getClipBounds().width, g2.getClipBounds().height);
 	j1.setBackground(new Color(255, 255, 255));
+	j1.setOpaque(false);
 	return j1;
     }
 
