@@ -133,6 +133,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         openButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/open24.png")));
         openButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Open_File"));
         openButton.setBorderPainted(false);
+        openButton.setFocusPainted(false);
+        openButton.setFocusable(false);
         openButton.setOpaque(false);
         openButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -145,6 +147,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/save24.png")));
         saveButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Save_File"));
         saveButton.setBorderPainted(false);
+        saveButton.setFocusPainted(false);
+        saveButton.setFocusable(false);
         saveButton.setOpaque(false);
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,6 +170,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         saveAsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/saveas24.png")));
         saveAsButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Save_File_As..."));
         saveAsButton.setBorderPainted(false);
+        saveAsButton.setFocusPainted(false);
+        saveAsButton.setFocusable(false);
         saveAsButton.setOpaque(false);
         saveAsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -177,6 +183,8 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         printButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/print.gif")));
         printButton.setBorderPainted(false);
+        printButton.setFocusPainted(false);
+        printButton.setFocusable(false);
         printButton.setOpaque(false);
         printButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -198,6 +206,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         cutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/cut24.gif")));
         cutButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Cut"));
         cutButton.setBorderPainted(false);
+        cutButton.setFocusPainted(false);
+        cutButton.setFocusable(false);
         cutButton.setOpaque(false);
         cutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -210,6 +220,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         copyButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/copy24.gif")));
         copyButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Copy"));
         copyButton.setBorderPainted(false);
+        copyButton.setFocusPainted(false);
+        copyButton.setFocusable(false);
         copyButton.setOpaque(false);
         copyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -222,6 +234,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         pasteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/paste24.gif")));
         pasteButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Paste"));
         pasteButton.setBorderPainted(false);
+        pasteButton.setFocusPainted(false);
+        pasteButton.setFocusable(false);
         pasteButton.setOpaque(false);
         pasteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -234,6 +248,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         undoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/undo24.gif")));
         undoButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Undo_the_last_step."));
         undoButton.setBorderPainted(false);
+        undoButton.setFocusPainted(false);
+        undoButton.setFocusable(false);
         undoButton.setOpaque(false);
         undoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -246,6 +262,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         redoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/redo24.gif")));
         redoButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Redo_the_last_step."));
         redoButton.setBorderPainted(false);
+        redoButton.setFocusPainted(false);
+        redoButton.setFocusable(false);
         redoButton.setOpaque(false);
         redoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

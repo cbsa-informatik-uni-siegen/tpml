@@ -691,6 +691,8 @@
                   <ResourceString bundle="de/unisiegen/tpml/ui/ui.properties" key="Open_File" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
+                <Property name="focusable" type="boolean" value="false"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -710,6 +712,8 @@
                   <ResourceString bundle="de/unisiegen/tpml/ui/ui.properties" key="Save_File" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
+                <Property name="focusable" type="boolean" value="false"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -729,6 +733,8 @@
                   <ResourceString bundle="de/unisiegen/tpml/ui/ui.properties" key="Save_File_As..." replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
+                <Property name="focusable" type="boolean" value="false"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -744,6 +750,8 @@
                   <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/print.gif"/>
                 </Property>
                 <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
+                <Property name="focusable" type="boolean" value="false"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -785,6 +793,8 @@
                   <ResourceString bundle="de/unisiegen/tpml/ui/ui.properties" key="Cut" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
+                <Property name="focusable" type="boolean" value="false"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -803,6 +813,8 @@
                   <ResourceString bundle="de/unisiegen/tpml/ui/ui.properties" key="Copy" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
+                <Property name="focusable" type="boolean" value="false"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -821,6 +833,8 @@
                   <ResourceString bundle="de/unisiegen/tpml/ui/ui.properties" key="Paste" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
+                <Property name="focusable" type="boolean" value="false"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -839,6 +853,8 @@
                   <ResourceString bundle="de/unisiegen/tpml/ui/ui.properties" key="Undo_the_last_step." replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
+                <Property name="focusable" type="boolean" value="false"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -857,6 +873,8 @@
                   <ResourceString bundle="de/unisiegen/tpml/ui/ui.properties" key="Redo_the_last_step." replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
+                <Property name="focusable" type="boolean" value="false"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Events>

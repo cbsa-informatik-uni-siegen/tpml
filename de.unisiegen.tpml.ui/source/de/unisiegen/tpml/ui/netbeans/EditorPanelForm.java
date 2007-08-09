@@ -145,6 +145,8 @@ public class EditorPanelForm extends javax.swing.JPanel {
         nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/next24.png")));
         nextButton.setToolTipText("Guess");
         nextButton.setBorderPainted(false);
+        nextButton.setFocusPainted(false);
+        nextButton.setFocusable(false);
         nextButton.setOpaque(false);
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,6 +159,8 @@ public class EditorPanelForm extends javax.swing.JPanel {
         pongButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/pong16.gif")));
         pongButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("PongTooltip"));
         pongButton.setBorderPainted(false);
+        pongButton.setFocusPainted(false);
+        pongButton.setFocusable(false);
         pongButton.setOpaque(false);
         pongButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
