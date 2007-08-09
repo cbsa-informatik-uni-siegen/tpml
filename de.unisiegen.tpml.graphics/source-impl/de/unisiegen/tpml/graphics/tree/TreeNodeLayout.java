@@ -18,8 +18,15 @@ public class TreeNodeLayout {
 	 */
 	private int availableWidth;
 	
-	//TODO for test
-	private int tmpPaper = 0;
+	/**
+	 * the singel pages will be filled to avoid deviding the singel nodes while printing
+	 */
+	private int actualPageCounter = 0;
+	
+	/**
+	 * The space between the the singel elements over the sides 
+	 */
+	private int spaceUnderPage = 12;
 	
 	/**
 	 *  Contains available height of one paper, is Integer.MaxValue if not printing... 
@@ -67,7 +74,7 @@ public class TreeNodeLayout {
 	public Point placeNodes (ProofNode root, int posX, int posY, int pAvailableWidth, int pAvailableHeight) {
 		this.availableWidth = pAvailableWidth;
 		this.availableHeight = pAvailableHeight;
-		tmpPaper = 0;
+		actualPageCounter = 0;
 		
 		return placeNode (root, posX, posY, new Point (-1, -1));
 	}
@@ -96,23 +103,21 @@ public class TreeNodeLayout {
 		int availableWidth = this.availableWidth - posX;
 		Dimension size = nodeComponent.update(availableWidth);
 		
-		// add the needed height to the tmpPaper, if it gets bigger than availableHeight, Seitenumbruch
-		if (tmpPaper + this.spacing + size.height + 10 > availableHeight)
+		// add the needed height to the tmpPaper, if it gets bigger than availableHeight, pagebreak
+		if (actualPageCounter + this.spacing + size.height + this.spaceUnderPage > this.availableHeight)
 		{
 			{
-				// TODO umbrechen... dazu wird das noch fehlende zur posY addiert... Die Seite wird voll gemacht...
-				//posY += size.height - ((tmpPaper + this.spacing + size.height) - availableHeight);
-				posY += availableHeight - tmpPaper;
+				// add the rest of space on the page to to posY... So the next node will get to next page
+				posY += this.availableHeight - this.actualPageCounter;
 				//posY += 10;
 
-				
-				System.out.println("Seitenumbruch..."+(size.height - ((tmpPaper + size.height) - availableHeight)));
-				// tmpPaper wird nun wieder neu an zu zählen...
-				// tmpPaper = 10;
-				tmpPaper = 0;
+				// the actualPageCounter restarts
+				this.actualPageCounter = 0;
 			}
 		}
-		tmpPaper += size.height;
+		
+		// add the needed height to the actualPageCounter
+		actualPageCounter += size.height;
 		
 		
 		// do the real positioning of the node
@@ -120,7 +125,7 @@ public class TreeNodeLayout {
 		
 		// let some spacing between two nodes
 		posY += this.spacing;
-		tmpPaper += this.spacing;
+		actualPageCounter += this.spacing;
 	
 		//
 		// change the resulting point

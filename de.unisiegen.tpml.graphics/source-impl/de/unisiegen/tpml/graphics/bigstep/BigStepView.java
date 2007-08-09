@@ -85,7 +85,9 @@ public class BigStepView extends AbstractProofView
     this.scrollPane = new JScrollPane ( ) ;
     this.component = new BigStepComponent ( this.bigStepProofModel ) ;
     this.scrollPane.setViewportView ( this.component ) ;
+    //this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
     this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
+    this.scrollPane.getViewport().setOpaque(true);
     this.scrollPane.addComponentListener ( new ComponentAdapter ( )
     {
       @ Override

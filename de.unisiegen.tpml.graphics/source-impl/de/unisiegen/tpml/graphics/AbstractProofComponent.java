@@ -29,7 +29,8 @@ public abstract class AbstractProofComponent extends JComponent {
 	protected	int											availableWidth;
 	
 	/**
-	 * this is only needed when printing...
+	 * this is only needed when printing. The availableHeight stands for the height available eache side and comes form
+	 * the dialoge from the gui
 	 */
 	protected int 										availableHeight;
 	
@@ -39,7 +40,10 @@ public abstract class AbstractProofComponent extends JComponent {
 	
 	public	AbstractProofComponent (AbstractProofModel proofModel) {
 		super ();
-		
+		// TODO Testen
+		// if nobody is printing prevent pagebreak by setting the availableHeight to Integer.MAX_VALUE;
+		this.availableHeight 		= Integer.MAX_VALUE;
+		//this.availableHeight 		= 600;
 		this.proofModel 				= proofModel;
 		this.currentlyLayouting	= false;
 		this.translator 				= this.proofModel.getLanguage().newTranslator();
@@ -95,13 +99,24 @@ public abstract class AbstractProofComponent extends JComponent {
 		relayout();
 	}
 	
+	/**
+	 * set the availableHeight. It is used while printing. 
+	 *
+	 * @param pAvailableHeight
+	 */
 	public void setAvailableHeight (int pAvailableHeight)
 	{
 		this.availableHeight = pAvailableHeight;
+		// the relayout must be performed immediately 
 		forcedRelayout();
 	}
 	
-	public void resetAvailableHeight (int pAvailableHeight)
+	/**
+	 * resets the availableHeight
+	 *
+	 * @param pAvailableHeight
+	 */
+	public void resetAvailableHeight ()
 	{
 		this.availableHeight = Integer.MAX_VALUE;
 		relayout();

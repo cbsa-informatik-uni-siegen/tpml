@@ -609,6 +609,20 @@ public class SmallStepNodeComponent extends JComponent
 		setBounds(this.origin.x, this.origin.y, this.ruleDimension.width + this.expressionDimension.width
 				+ this.spacing, this.actualRuleHeight + this.actualExpressionHeight + this.spacing);
 	}
+	
+	
+	/**
+	 * Delegate the call to the {@link Component#setBounds(int, int, int, int)}
+	 * method.<br>
+	 * The position comes directly from the {@link #origin}. The size is a
+	 * compined needed dimension of the {@link #ruleDimension} and the
+	 * {@link #expressionDimension}.
+	 */
+	public void setBounds(int space)
+	{
+		setBounds(this.origin.x, this.origin.y, this.ruleDimension.width + this.expressionDimension.width
+				+ this.spacing, this.actualRuleHeight + this.actualExpressionHeight + this.spacing+space);
+	}
 
 	/**
 	 * Causes an update of the {@link #compoundExpression} and the
@@ -733,6 +747,19 @@ public class SmallStepNodeComponent extends JComponent
 	public void placeRules()
 	{
 		int top = getRuleTop() + (this.actualRuleHeight - this.ruleDimension.height) / 2;
+		this.rules.setBounds(0, top, this.ruleDimension.width, this.ruleDimension.height);
+	}
+	
+	/**
+	 * Causes the rules to get places moved by y<br>
+	 * 
+	 * The top position of the rules is chosen that the {@link #rules}-item is
+	 * verticaly centered in the space available.
+	 * @param y the amount to move
+	 */
+	public void placeRules(int y)
+	{
+		int top = getRuleTop() + (this.actualRuleHeight - this.ruleDimension.height) / 2 +y;
 		this.rules.setBounds(0, top, this.ruleDimension.width, this.ruleDimension.height);
 	}
 

@@ -89,6 +89,8 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	 */
 	private boolean advanced;
 
+	private int actualPageSpaceCounter=0;
+
 	/**
 	 * Sets the default values.<br>
 	 * <br>
@@ -369,8 +371,15 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		int x = pX;
 		int y = pY;
 		
+		actualPageSpaceCounter = y;
+		
 		SmallStepProofNode node = pNode;
 		Dimension size = new Dimension(0, 0);
+		
+		// save the space the next node will be moved down
+		int movedDown = 0;
+		
+		int lastNodeHeight = actualPageSpaceCounter;
 
 		while (node != null)
 		{
@@ -388,6 +397,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 
 				// move the positioning
 				y += nodeComponent.getRuleTop();
+				actualPageSpaceCounter =y;
 
 				// evaluate the new dimensions
 				size.height = y;
@@ -404,28 +414,87 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 				Dimension ruleSize = parentNodeComponent.getRuleSize();
 
 				int maxHeight = Math.max(expSize.height, ruleSize.height);
+				
+				
+				System.out.println("availableHeight "+availableHeight+"tmpPaper "+actualPageSpaceCounter);
+				System.out.println("noch Platz: "+(availableHeight-actualPageSpaceCounter));
+				System.out.println("benötigter Platz: "+maxHeight);
+				
+				// provide printing
+				// if the actualPageSpaceCounter has not enough space for the next node perform a pagebrak
+				if (this.actualPageSpaceCounter + maxHeight + lastNodeHeight > availableHeight)
+				{
+					{
+						// save the space the node is moved down
+						movedDown = availableHeight - actualPageSpaceCounter;
+						
+						// move the next node down
+						y += availableHeight - actualPageSpaceCounter;
 
-				// inform both component about the actual height they should use to
-				// place them
-				parentNodeComponent.setActualRuleHeight(maxHeight);
-				nodeComponent.setActualExpressionHeight(maxHeight);
+						// restart the actualPageSpaceCounter
+						actualPageSpaceCounter = 0;
 
-				// let both components place theire elements
-				parentNodeComponent.placeRules();
-				nodeComponent.placeExpression();
+						// inform both component about the actual height they should use to
+						// place them
+						parentNodeComponent.setActualRuleHeight(maxHeight);
+						nodeComponent.setActualExpressionHeight(maxHeight);
+	
+						// let both components place theire elements
+						parentNodeComponent.placeRules();
+						nodeComponent.placeExpression();
 
-				// this finishes the parentNode so it can be placed
-				parentNodeComponent.setBounds();
+						// this finishes the parentNode so it can be placed
+						parentNodeComponent.setBounds();
 
-				// the additional height come from the actual node
-				y += nodeComponent.getRuleTop();
+						// the additional height come from the actual node
+						y += nodeComponent.getRuleTop();
+						this.actualPageSpaceCounter += nodeComponent.getRuleTop();
+						
+						System.out.println(maxHeight+" - "+nodeComponent.getRuleTop());
 
-				// evaluate the new dimensions
-				size.height = y;
+						// evaluate the new dimensions
+						size.height = y;
 
-				// the actual width of the entire component can now be checked
-				// on the finshed node. the parent node
-				size.width = Math.max(size.width, x + parentNodeComponent.getSize().width);
+						// the actual width of the entire component can now be checked
+						// on the finshed node. the parent node
+						size.width = Math.max(size.width, x + parentNodeComponent.getSize().width);
+					}
+				}
+				else
+				{
+					
+					// inform both component about the actual height they should use to
+					// place them
+					parentNodeComponent.setActualRuleHeight(maxHeight);
+					nodeComponent.setActualExpressionHeight(maxHeight);
+
+					// let both components place theire elements
+					// the movedDown saves the information how far the the parent-Rules must be moved down...
+					parentNodeComponent.placeRules(movedDown);
+					nodeComponent.placeExpression();
+
+					// this finishes the parentNode so it can be placed
+					parentNodeComponent.setBounds(movedDown);
+					
+					movedDown = 0;
+
+					// the additional height come from the actual node
+					y += nodeComponent.getRuleTop();
+					this.actualPageSpaceCounter += nodeComponent.getRuleTop();
+					System.out.println(maxHeight+" - "+nodeComponent.getRuleTop());
+
+					// evaluate the new dimensions
+					size.height = y;
+
+					// the actual width of the entire component can now be checked
+					// on the finshed node. the parent node
+					size.width = Math.max(size.width, x + parentNodeComponent.getSize().width);
+
+				}
+				
+				lastNodeHeight = maxHeight;
+				//tmpPaper += maxHeight;
+
 			}
 
 			// if the node has no children the rules need to get
@@ -511,6 +580,8 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		// now that the basics for the nodes are found, 
 		// they can be placed
 		Dimension size = placeNode(rootNode, SmallStepComponent.this.getThisBorder(), SmallStepComponent.this.getThisBorder());
+		
+		
 
 		// the needed size evaluaded by placing the nodes gets
 		// widened a bit to have a nice border around the component
@@ -714,6 +785,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	@Override
 	protected void paintComponent(Graphics gc)
 	{
+		// TODO wieder wieß machen...
 		gc.setColor(Color.WHITE);
 		gc.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
 	}
