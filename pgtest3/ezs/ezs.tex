@@ -1240,6 +1240,16 @@
     \normaltext{Das Unterbrechungswerk}
   }
 
+
+  \statement{Nennen Sie die Grundregeln für ISR bei Realzeitverhalten}{\pages{131}{132}}
+  {
+    \catchword{Die ISR muss die Prozessdaten so schnell wie möglich abholen (lesen) und abspeichern.}
+    \catchword{Während dieser Zeit soll sie durch eine genügend hohe Prirität nicht unterbrechbar sein, 
+    auf jeden Fall nicht durch ein gleichartiges Ereignis, das diese ISR benutzt.}
+    \catchword{Die Ausgabewerte müssen so schnell wie möglich berechnet und ausgegeben werden.}
+  }
+
+
   \question{Aus welchen zwei Werten wird die Interrupt-Anforderung IRQ gebildet}{\page{132}}
   {
     \normaltext{Aus der logischen UND-Verknüpfung von R- und IE-Bit}
