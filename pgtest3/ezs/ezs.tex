@@ -997,12 +997,103 @@
     Service Routine (ISR) bezeichnet wird.}
   }
   
-  \question{Welche Aufgaben übernimmt die ISR}{\page{112}}
+  \question{Welche Aufgaben übernimmt die ISR}{\page{117}}
   {
-    \catchword{}
-    \catchword{}
-    \catchword{}
-    \catchword{}
+    \catchword{Übernahme von Daten}
+    \catchword{Berechnungen}
+    \catchword{Ausgabe von Steuerdaten}
+    \catchword{nach Beendigung wieder in das unterbrochene Programm zurück springen}
+  }
+  
+  \statement{Nennen Sie unterschiede zwischen Unterprogrammsprüngen und Unterbrechungen}{\pages{117}{118}}
+  {
+    \catchword{Bei einer Unterbrechung wird der Zeitpunkt des Sprungs durch ein Ereignis bestimmt, und 
+    nicht durch das laufende Programm.}
+    \catchword{ISRs stellen eigenständige Programme dar, die unabhängig voneinander erstellt und geladen
+    werden können.}
+    \catchword{Die Verarbeitungsziele der ISRs müssen nichts miteinander zu tun haben, und eine Kommunikation
+    is zunächst nicht erforderlich.}
+  }
+  
+    \question{Was sind Semaphore}{\page{118}}
+  {
+    \normaltext{Signalträger, vergleichbar mit den Flaggen im Prozessor-Status-Wort, mit denen ISRs synchronisiert
+    werden können, falls ihre Arbeiten voneinander abhängen.}
+  }
+  
+  \statement{Nennen Sie Vorteile beim Interrupt-Betrieb}{\page{118}}
+  {
+    \catchword{Es können andere Programme im Mehrprogrammbetrieb bearbeitet werden, wenn keine Aufgaben für die 
+    Prozesslenkung vorliegen.}
+    \catchword{ISR können als eigenständige Programme erstellt, in den Arbeitsspeicher geladen, und bei Bedarf 
+    entladen werden.}
+    \catchword{Die Erfassung von zeitlichen Abläufen wird genauer, sowohl was den Zeitpunkt eines Ereignisses
+    betrifft, als auch die zeitliche Abfolge.}
+  }
+  
+  \statement{Nennen Sie Nachteile beim Interrupt-Betrieb}{\page{118}}
+  {
+    \catchword{Höherer Aufwand bei der Hardware und bei der Software.}
+    \catchword{Die Koordinierung aller Programme ist aufwendiger.}
+    \catchword{Für die Planung und Erstellung der Software müssen neue Methoden eingesetzt werden.}
+    \catchword{Die Hardware muss geeignete Schaltungen und Verbindungen enthalten.}
+  }
+  
+  \question{Welche Anforderungen werden an die Hardware für den Interrupt-Betrieb gestellt}{\page{120}}
+  {
+    \catchword{Geräteanschluss müssen in der Lage sein, aus einem vom Gerät ankommenden Ereignis eine 
+    Unterbrechungsanforderung zu erzeugen.}
+    \catchword{Der Bus muss spezielle Steuerleitungen für die Unterbrechungsanforderungen und für deren
+    Bestätigung besitzen.}
+    \catchword{Es muss ein geeignetes Protokoll definiert sein, wie die Leitungen zu verwenden sind.}
+  }
+  
+  \question{Welche 3 wesentlichen Aufgaben hat das Unterbrechungswerk}{\page{122}}
+  {
+    \catchword{Die Abweisung oder Zulassung von Interrupt-Anforderungen und die Auswahl, wenn mehrere
+    gleichzeitig auftreten.}
+    \catchword{Die Durchführung des Interrupt-Zyklus auf dem Bus und das Lesen des Interrupt-Vektors.}
+    \catchword{Die Aktivierung des Steuerwerks, welches die Interrupt-Sequenz durchführt.}
+  }
+  
+   \question{Was versteht man unter Non-maskable Interrupts (NMI)}{\page{122}}
+  {
+    \normaltext{Unterbrechungen, die nicht abgeblockt werden dürfen. Diese werden dann auf einer 
+    besonderen Leitung angefordert.}
+  }
+  
+   \question{Was ist die Aufgabe der Interrupt-Logik im Geräteanschluss}{\page{122}}
+  {
+    \catchword{Im Falle einer Abweisung dafür sorgen, dass keine Unterbrechungsanforderung verloren geht.}
+    \catchword{Die Unterbrechungsanforderungen nach ihrer Erledigung löschen.}
+  }
+  
+   \question{Welche Methoden zur Auswahl von Interrupt-Anforderungen gibt es}{\page{128}}
+  {
+    \catchword{Maskierung}
+    \catchword{Prioritäten}
+  }
+  
+   \question{Wie funktioniert Maskierung}{\page{128}}
+  {
+    \catchword{Die Interrupt-Leitungen des Busses werden uncodiert jeweils einem Bit in einem 
+    Interrupt-Register zugeführt, das eine Maskenfunktion hat.}
+    \catchword{Wenn das entsprechende Maskenbit gesetzt ist, wird der Interrupt zugelassen.}
+    \catchword{Da hier noch Konkurrenzen auftreten können, muss eine zusätzliche Prioritätenregelung 
+    eingeführt werden.}
+  }
+  
+   \question{Wie funktioniert Prioritätenregelung nach Rangordnung}{\pages{128}{129}}
+  {
+    \catchword{Die ankommenden Interrupt-Leitungen werden als Dualzahlen codiert und dadurch auf wenig 
+    Bit komprimiert.}
+    \catchword{Diese wird als mehrfaches logisches ODER überlagert, oder in ihrer Gesamtheit gleich 
+    als Dualzahl interpretiert.}
+    \catchword{Diese Zahl wird als Hardware-Priorität mit der aktuellen Software-Priorität numerisch 
+    verglichen.}
+    \catchword{Wenn die Hardware Priorität größer als die Software-Priorität ist, wird der Interrupt
+    zugelassen. (Das hat zur Folge, dass alle Interrupts abgewiesen werden könne, wenn im PSW ein genügend
+    großer Wert eingetragen wird)}
   }
 
   \newpage
