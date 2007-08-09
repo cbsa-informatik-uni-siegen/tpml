@@ -97,17 +97,18 @@ public class TreeNodeLayout {
 		Dimension size = nodeComponent.update(availableWidth);
 		
 		// add the needed height to the tmpPaper, if it gets bigger than availableHeight, Seitenumbruch
-		if (tmpPaper + this.spacing + size.height > availableHeight)
+		if (tmpPaper + this.spacing + size.height + 10 > availableHeight)
 		{
 			{
 				// TODO umbrechen... dazu wird das noch fehlende zur posY addiert... Die Seite wird voll gemacht...
 				//posY += size.height - ((tmpPaper + this.spacing + size.height) - availableHeight);
 				posY += availableHeight - tmpPaper;
-				// TODO test
-				// posY += 200;
+				//posY += 10;
+
 				
 				System.out.println("Seitenumbruch..."+(size.height - ((tmpPaper + size.height) - availableHeight)));
 				// tmpPaper wird nun wieder neu an zu zählen...
+				// tmpPaper = 10;
 				tmpPaper = 0;
 			}
 		}
