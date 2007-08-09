@@ -18,6 +18,7 @@ import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
+import de.unisiegen.tpml.graphics.typechecker.TypeCheckerComponent;
 
 /**
  * The layouting of the TypeInference seems to bee as complicated as the 
@@ -44,7 +45,7 @@ import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
  * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceRulesComponent
  * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceRuleLabel
  */
-public class TypeInferenceComponent extends AbstractProofComponent implements Scrollable {
+public class TypeInferenceComponent extends AbstractProofComponent implements Scrollable, Cloneable {
 
 	/**
 	 * 
@@ -709,6 +710,14 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	public int getThisBorder()
 	{
 		return this.border;
+	}
+	
+	public TypeInferenceComponent clone (){
+		try {
+			return (TypeInferenceComponent)super.clone();
+		} catch (CloneNotSupportedException e) {
+			return null;
+		}
 	}
 
 	@Override

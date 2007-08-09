@@ -185,7 +185,7 @@ public class TypeInferenceView extends AbstractProofView
 	}
 
 	public JComponent getPrintPart() {
-		// TODO Auto-generated method stub
-		return null;
+		
+	    return (JComponent)component.clone();
 	}
 }

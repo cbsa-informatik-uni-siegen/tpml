@@ -230,7 +230,6 @@ public class SubTypingView extends AbstractProofView
 
 
 public JComponent getPrintPart() {
-	// TODO Christoph plz print here
-	return null;
+    return (JComponent)component.clone();
 }
 }

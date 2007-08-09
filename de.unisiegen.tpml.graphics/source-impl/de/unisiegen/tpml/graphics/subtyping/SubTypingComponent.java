@@ -18,6 +18,7 @@ import de.unisiegen.tpml.core.subtyping.SubTypingModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
+import de.unisiegen.tpml.graphics.bigstep.BigStepComponent;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 import de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer;
@@ -64,7 +65,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * @see de.unisiegen.tpml.graphics.subtyping.SubTypingNodeComponent
  *
  */
-public class SubTypingComponent extends AbstractProofComponent implements Scrollable {
+public class SubTypingComponent extends AbstractProofComponent implements Scrollable, Cloneable {
 
 	/**
 	 * 
@@ -439,6 +440,14 @@ public class SubTypingComponent extends AbstractProofComponent implements Scroll
 	public int getScrollableUnitIncrement ( Rectangle visibleRect, int orientation, int direction ) {
 		//  XXX: Dynamic unit increment
 		return 10;
+	}
+	
+	public SubTypingComponent clone (){
+		try {
+			return (SubTypingComponent)super.clone();
+		} catch (CloneNotSupportedException e) {
+			return null;
+		}
 	}
 
 	@Override

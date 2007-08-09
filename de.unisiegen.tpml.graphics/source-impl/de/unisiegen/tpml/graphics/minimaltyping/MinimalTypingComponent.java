@@ -16,6 +16,7 @@ import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
+import de.unisiegen.tpml.graphics.bigstep.BigStepComponent;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 import de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer;
@@ -62,7 +63,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * @see de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingNodeComponent
  *
  */
-public class MinimalTypingComponent extends AbstractProofComponent implements Scrollable {
+public class MinimalTypingComponent extends AbstractProofComponent implements Scrollable, Cloneable {
 	
 	/**
 	 * 
@@ -440,6 +441,14 @@ public class MinimalTypingComponent extends AbstractProofComponent implements Sc
 	public int getScrollableUnitIncrement (Rectangle visibleRect, int orientation, int direction) {
 		//  XXX: Dynamic unit increment
 		return 10;
+	}
+	
+	public MinimalTypingComponent clone (){
+		try {
+			return (MinimalTypingComponent)super.clone();
+		} catch (CloneNotSupportedException e) {
+			return null;
+		}
 	}
 
 	@Override
