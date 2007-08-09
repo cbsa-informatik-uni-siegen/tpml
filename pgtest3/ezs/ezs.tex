@@ -102,7 +102,7 @@
              in denen der Mensch Entlastung erfahren kann}{\pages{2}{4}}
   {
     \catchword{Arbeiten, die regelmäßig und monoton wiederkehren}
-    \catchword{Arbeiten, die hohe Anforderungen an die Konzentration stellen. Mit wechsel von Zeiten
+    \catchword{Arbeiten, die hohe Anforderungen an die Konzentration stellen. Mit Wechsel von Zeiten
                hoher Aktivität und hoher Anforderung an die Aufmerksamkeit und Zeiten geringer Aktivität,
                die mit Langeweile ausgefüllt sind.}
     \catchword{Arbeiten, die eine hohe Arbeitsgeschwindigkeit verlangen}
@@ -143,7 +143,7 @@
   \question{Wie ist der Begriff Prozess definiert}{\page{6}}
   {
     \normaltext{Der Vorgang zur Umformung, zum Transport oder zur Speicherung von Materie, 
-    Enerie oder Information. Ein technischer Prozess ist ein Prozess, dessen Zustandsgrößen
+    Energie oder Information. Ein technischer Prozess ist ein Prozess, dessen Zustandsgrößen
     mit technischen Mitteln erfasst und beeinflusst werden können.}
   }
 
@@ -205,12 +205,12 @@
     \normaltext{Transportprozess}
   }
 
-  \question{Mit welchem Prozess ist ein Umformunsprozess fast immer gekoppelt}{\page{6}}
+  \question{Mit welchem Prozess ist ein Umformungsprozess fast immer gekoppelt}{\page{6}}
   {
     \normaltext{Transport- oder Speicherprozess}
   }
 
-  \question{In welche Arten kann man Prozesse nach ihrer Komlexität einteilen}{\pages{7}{8}}
+  \question{In welche Arten kann man Prozesse nach ihrer Komplexität einteilen}{\pages{7}{8}}
   {
     \catchword{Elementarprozesse (sind durch genau eine Verarbeitungsart und ein 
     Verarbeitungsgut gekennzeichnet)}
@@ -224,7 +224,7 @@
 
   \question{Wie kann man die Verarbeitungsstruktur unterteilen}{\page{8}}
   {
-    \catchword{kontinuierliche Verarbeitung (zB Transportsysteme für Flüssigkeiten und Gase)}
+    \catchword{kontinuierliche Verarbeitung (z.B. Transportsysteme für Flüssigkeiten und Gase)}
     \catchword{diskontinuierliche oder diskrete Verarbeitung bei Stückproszessen (zB Automobilbau)}
     \catchword{Chargenprozesse (Verarbeitung auf Teilmengen eines sonst kontinuierlichen Gutes)}
   }
@@ -1261,6 +1261,47 @@
                 Das R-Bit wird dann zwar gesetzt, aber der Interrupt wird nicht zugelassen.
                 Unmittelbar vor dem Ende der ISR wird der Interrupt wieder freigegeben.}
   }
+
+  \statement{Nennen Sie die Ereignisse die in der Zentraleinheit selber auftauchen}{\page{134}}
+  {
+    \catchword{HALT oder RESET: Funktionen, die als nicht maskierbare Interrupts behandelt werden}
+    \catchword{Impulse von der Echtzeituhr: }
+    \catchword{Spannungsausfall}
+    \catchword{Ablauffehler bei einer Instruktion}
+  }
+
+  \question{Was versteht man unter Supervisor Calls}{\page{135}}
+  {
+    \normaltext{Unter Supervisor Calls versteht man Software-induzierte Interrupts}
+  }
+
+  \question{Welche zwei Arten von Ablauffehlern können auftreten}{\page{139}}
+  {
+    \catchword{Programmfehler: Versteckte Fehler im Programm}
+    \catchword{Hardware-Fehler: Permanenter Ausfall von Bauteilen oder temporäre Störung}
+  }
+
+  \question{Wie kann der Rechner unterschiedliche Fehler erkennen}{\page{139}}
+  {
+    \normaltext{Indem der Interrupt einen Vektor zur Verfügung stellt}
+  }
+
+  \statement{Nennen und erklären Sie kurz die auftretenden Fehler}{\pages{140}{141}}
+  {
+    \catchword{Time-out: Die adressierte Speicherstelle meldet sich nicht}
+    \catchword{Odd address: Fehler aufgrund von fehlerhaften Wortgrenzen}
+    \catchword{Parity: Fehler aufgrund von falschen Prüfbits}
+    \catchword{Space violation: Bereichsverletzung festgestellt wurch die MMU}
+    \catchword{Illegal instruction: Der Instruktionscode ist nicht interpretierbar}
+    \catchword{Reserved instruction: Resevierte Instruktionscodes verwendet}
+    \catchword{Stack limit violation: Stack ist übergelaufen}
+    \catchword{Illegal operand: Operanden passen nicht zur Operation}
+    \catchword{Illegal jump: Falsches Verzweigungsziel}
+    \catchword{Overflow: Überlauf eines Registers}
+    \catchword{Divide by 0: Division durch 0}
+  }
+
+
 
 
 
