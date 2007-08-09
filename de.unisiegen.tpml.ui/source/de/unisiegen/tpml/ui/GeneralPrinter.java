@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -22,6 +23,8 @@ import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfWriter;
 
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
+import de.unisiegen.tpml.graphics.bigstep.BigStepComponent;
+import de.unisiegen.tpml.ui.netbeans.PdfDialog;
 
 public class GeneralPrinter {
     private Document document;
@@ -47,6 +50,8 @@ public class GeneralPrinter {
     private int naturalabove = 20;
     
     private String tmpdir;
+    
+    private String filename;
 
     public GeneralPrinter(JPanel caller) {
 	// document = new Document(PageSize.A4);
@@ -54,15 +59,35 @@ public class GeneralPrinter {
 	this.caller = caller;
     }
 
-    public boolean print(AbstractProofComponent icomp) {
-	JOptionPane.showMessageDialog(caller, "Put Layoutchooser and Filechooser here.");
-	pageFormat = PageSize.A4.rotate();
+    public void print(AbstractProofComponent icomp) {
+
+	PdfDialog dialog = new PdfDialog((JFrame)caller.getTopLevelAncestor(), true);
+
+	dialog.setLocationRelativeTo(caller);
+	dialog.setVisible(true);
+	//System.out.println(dialog.filechooser.getSelectedFile());
+	//System.out.println(dialog.landscape);
+	
+	if (dialog.cancelled) return;
+	
+	this.filename = dialog.filechooser.getSelectedFile().getAbsolutePath();
+	if (! this.filename.substring(filename.length()-4).equalsIgnoreCase(".pdf")){
+	    this.filename = this.filename+".pdf";
+	}
+	tmpdir = dialog.filechooser.getSelectedFile().getParent();
+	
+	if (dialog.landscape){
+	    pageFormat = PageSize.A4.rotate();
+	}else {
+	    pageFormat = PageSize.A4;
+	}
+		
 	this.comp = icomp;
 
 	try {
 	    // creating a temporary file to wirte to:
-	    tmpdir = System.getProperty("java.io.tmpdir");
-	    System.out.println(tmpdir);
+	    //tmpdir = System.getProperty("java.io.tmpdir");
+	    //System.out.println(tmpdir);
 
 	    // Number Of Pages
 	    int nop = -1;
@@ -84,11 +109,10 @@ public class GeneralPrinter {
 
 		j1.setBackground(new Color(255, 255, 255));
 		if (nop == -1) {
-		    nop = (comp.getHeight() / j1.getHeight() + 1);
 		    comp.setAvailableWidth(g2.getClipBounds().width);
 		    comp.setAvailableHeight(g2.getClipBounds().height);
-		    comp.validate();
-		    comp.doLayout();
+		    ((BigStepComponent)comp).forcerelayout();
+		    nop = (comp.getHeight() / j1.getHeight() + 1);
 		}
 
 		j1.add(comp);
@@ -116,7 +140,6 @@ public class GeneralPrinter {
 	} catch (Exception de) {
 	    de.printStackTrace();
 	}
-	return true;
     }
 
     private void concatenatePages(int nop) {
@@ -125,7 +148,7 @@ public class GeneralPrinter {
 	    int pageOffset = 0;
 	    ArrayList master = new ArrayList();
 	    int f = 0;
-	    String outFile = "out.pdf";
+	    String outFile = filename;
 	    Document document = null;
 	    PdfCopy writer = null;
 	    while (f < nop) {
