@@ -874,13 +874,94 @@
     \normaltext{NRZ (Non Return to Zero)}
   }
 
-  \statement{Wie groß ist die Baudrate in Bezug auf die Bitrate}{\page{98}}
+  \question{Wie groß ist die Baudrate in Bezug auf die Bitrate}{\page{98}}
   {
     \normaltext{Wegen der binären Codierung gleich groß}
   }
 
+  \question{Warum hat der Schnittstellenumsetzer UART eine besondere Bedeutung}{\page{99}}
+  {
+    \catchword{Die serielle Schnitstelle ist praktisch an jedem Rechner vorhanden.}
+  }
+  
+    \question{Welche Aufgabe hat der Empfänger (Seriell-Parallel-Wandler)}{\page{99}}
+  {
+    \catchword{Er setzt die im Datenregister DBR-T angelieferten Daten aus der bitparallelen 
+    Darstellung in eine serielle um.}
+  }
+  
+  \question{Welche Aufgabe hat der Sender (Parallel-Seriell-Wandler)}{\page{99}}
+  {
+    \catchword{Er setzt die ankommenden seriellen Daten in die parallele Darstellung um.}
+  }
 
+  \question{Welche Teile besitzen sowohl Sender als auch Empfänger }{\pages{99}{100}}
+  {
+    \catchword{Busschnittstelle}
+    \catchword{Geräteschnittstelle}
+    \catchword{Pegelumsetzer}
+  }
+  
+    \question{Was versteht man unter Polling}{\page{110}}
+  {
+    \normaltext{Bein Abrufbetrie (polling) werden Informationen über den Zustand der Geräte
+    oder der Datenübertragung von einem Programm abgerufen. Dazu fragt die CPU in einer Schleife
+    die CSRs der Geräteanschlüsse ab. Anhand dieser Informationen verzweigt das Programm in 
+    entsprechende Routinen.}
+  }
+  
+    \question{Nennen Sie Vorteile des Polling Betriebs}{\page{111}}
+  {
+    \catchword{Einfachheit der programmtechnischen Realisierung.}
+    \catchword{Die Hardware kann relativ einfach ausgelgt werden.}
+  }
+  
+  \question{Nennen Sie Nachteile des Polling Betriebs}{\page{112}}
+  {
+    \catchword{Die CPU ist die meist Zeit damit beschäftigt, alle CSRs abzufragen.}
+    \catchword{Die Zeitauflösung (Genauigkeit) mit der man den Zeitpunkt für das Eintreten
+    eines Ereignisses festlegen kann, wird zunächst durch die Zeit für einenn Schleifendurchlauf
+    vorgegeben.}
+    \catchword{Die Reihenfolge von verschiedenen Ereignissen kann verfälscht werden.}
+    \catchword{Bei einer notwendigen Änderung z.B. Abschalten oder Hinzufügen eines neuen
+    Gerätes wird eine Programmänderung notwendig, die aber nicht im laufenden Betrieb 
+    durchgeführt werden kann.}
+  }
+  
+   \question{Was ist die grundsätzliche Anforderung an einen Prozessrechner bei Realzeitverarbeitung}{\page{113}}
+  {
+    \normaltext{Die Verarbeitung der Prozessdaten muss schritthaltend erfolgen, d.h. so schnell,
+    dass der Prozess nicht auf  die Ergebnisse warten muss. Man könnte auch sagen, die Anforderung
+    durch den Prozess bestheht darin, dass ein Ereignis abgearbeitet sein muss, bevor ein neues eintritt.}
+  }
+  
+  \question{Was ist die Forderung für einen sicheren Betrieb}{\page{115}}
+  {
+    \normaltext{Die Summe aus der maximal möglichen Reaktionszeit tr und der längsten Bearbeitungszeit tb
+    soll kleiner sein, als der Minimalabstand von Prozessereignissen tp abzüglich der maximalen Stellzeiten ts.
+    Bei Gleichheit liegt der denkbar ungünstige Fall vor, der eintreten kann (engl.: worst case).}
+  }
+  
+    \question{Was kann bei Realzeitanwendungen zum verstopfen des Rechners fürhen}{\page{115}}
+  {
+    \normaltext{Häufige Ereignisse mit langer Bearbeitungszeit. Zur Vermeidung sollen solche Ereignisse gar 
+    nicht zugelassen werden.}
+  }
 
+  \question{Was wird im Interrupt-Betrieb durch Ereignisse erzeugt}{\page{117}}
+  {
+    \normaltext{Es wird eine Unterbrechungsanforderung erzeugt, welcher stattgegeben wird, indem das gerade
+    laufende Programm unterbrochen und ein Sprung in ein Hilfsprogramm durchgeführt wird, welches als Interrupt
+    Service Routine (ISR) bezeichnet wird.}
+  }
+  
+  \question{Welche Aufgaben übernimmt die ISR}{\page{112}}
+  {
+    \catchword{}
+    \catchword{}
+    \catchword{}
+    \catchword{}
+  }
 
   \newpage
   \section{Periphere Geräte}
