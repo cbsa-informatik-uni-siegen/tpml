@@ -1316,8 +1316,28 @@
     \catchword{Der Controller liefert eine Ausgabe}
   }
 
-
-
+  \statement{Nennen Sie die Möglichkeiten der DMA-Übertragung}{\page{147}}
+  {
+    \catchword{Cycle-stealing \resultol{Der Controller erhält den Bus bei Bedarf nach jedm abgeschlossenen
+    Buszyklus der CPU}}
+    \catchword{Prozessorhalt \resultol{Wenn der Controller den Bus zugeteilt erhält, belgt er ihn, bis der
+    gesamte DMA-Block übertragen ist}}
+    \catchword{Burst-mode \resultol{Der Controller überträgt jeweils eine festgelegte Anzahl von Daten
+    hintereinander über den Bus}}
+    \catchword{Denkbar ist auch eine Betriebsart, bei der ein Burst so lange dauert, bis das FiFo abgearbeitet
+    ist, oder die CPU den Bus zurückverlangt.}
+  }
+  
+  \question{Was versteht man unter Direct Memory Access (DMA)}{\page{147}}
+  {
+    \normaltext{Die DMA-Anforderungen (NPR) haben praktisch immer die höchste Priorität.}
+  }
+  
+  \question{Wieviele NPR- und NPG- Leitungen gibt es auf einem Bus}{\page{148}}
+  {
+    \normaltext{Jeweils nur eine. Falls mehrere DMA-Controller eingesetzt werden sollen, verwendet 
+    man zu ihrer Prioritätensteuerung eine Verriegelungstechnik mit einer Daisy Chain.}
+  }
 
 
   \newpage
