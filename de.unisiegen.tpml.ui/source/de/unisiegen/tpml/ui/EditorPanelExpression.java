@@ -7,6 +7,7 @@
 package de.unisiegen.tpml.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.beans.PropertyChangeEvent;
@@ -757,7 +758,12 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 
 public void handlePrint() {
 	  GeneralPrinter printer = new GeneralPrinter(mypanel);
-	  printer.print(((AbstractProofComponent)getComponent().getPrintPart()));
+	  if (this.isTexteditor()){
+	      printer.print(code.getEditor());
+	  } else{
+	      printer.print(((AbstractProofComponent)getComponent().getPrintPart()));
+	  }
+	  
 }
 
 public void selectTypeChecker() {

@@ -2,8 +2,10 @@ package de.unisiegen.tpml.ui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -13,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PRAcroForm;
@@ -23,6 +26,7 @@ import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfWriter;
 
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
+import de.unisiegen.tpml.graphics.StyledLanguageEditor;
 import de.unisiegen.tpml.graphics.bigstep.BigStepComponent;
 import de.unisiegen.tpml.ui.netbeans.PdfDialog;
 
@@ -34,6 +38,8 @@ public class GeneralPrinter {
     private AbstractProofComponent comp;
 
     private Rectangle pageFormat;
+    
+    private java.awt.Graphics2D g1;
 
     private java.awt.Graphics2D g2;
 
@@ -58,29 +64,38 @@ public class GeneralPrinter {
 	// document = new Document(PageSize.A4.rotate());
 	this.caller = caller;
     }
+    
+    public void print (StyledLanguageEditor editor){
+	if(!openDiaglog()) return;
+	try {
+	    JPanel printarea = createPage(0);
+	    Graphics remember = editor.getGraphics();
+	    editor.paint(g2);
+	    editor.paint(remember);
+	    closePage();
+	    
+//	  concatenate the temporary pages
+	    this.concatenatePages(1);
+
+	    // remove the temporary pages now
+	    this.deleteFiles(1);
+
+	    JOptionPane.showMessageDialog(caller, "Document has been printed!");
+	    
+	} catch (FileNotFoundException e) {
+	    JOptionPane.showMessageDialog(caller, "Can not access the file, might be open");
+	    
+	    e.printStackTrace();
+	} catch (DocumentException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	
+    }
 
     public void print(AbstractProofComponent icomp) {
 
-	PdfDialog dialog = new PdfDialog((JFrame)caller.getTopLevelAncestor(), true);
-
-	dialog.setLocationRelativeTo(caller);
-	dialog.setVisible(true);
-	//System.out.println(dialog.filechooser.getSelectedFile());
-	//System.out.println(dialog.landscape);
-	
-	if (dialog.cancelled) return;
-	
-	this.filename = dialog.filechooser.getSelectedFile().getAbsolutePath();
-	if (! this.filename.substring(filename.length()-4).equalsIgnoreCase(".pdf")){
-	    this.filename = this.filename+".pdf";
-	}
-	tmpdir = dialog.filechooser.getSelectedFile().getParent();
-	
-	if (dialog.landscape){
-	    pageFormat = PageSize.A4.rotate();
-	}else {
-	    pageFormat = PageSize.A4;
-	}
+	if(!openDiaglog()) return;
 		
 	this.comp = icomp;
 
@@ -94,38 +109,25 @@ public class GeneralPrinter {
 	    int i = 0;
 
 	    do {
-		document = new Document(pageFormat);
-		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(tmpdir+"/tmp" + i + ".pdf"));
-		document.open();
-		PdfContentByte cb = writer.getDirectContent();
-		// do not use the scale factor in the next one!
-		java.awt.Graphics2D g1 = cb.createGraphicsShapes(pageFormat.getWidth(), pageFormat.getHeight());
-		g1.scale(scale, scale);
-		// g2.setClip(right, above,
-		// g2.getClipBounds().width,g2.getClipBounds().height);
-		g2 = (Graphics2D) g1.create(right, above, g1.getClipBounds().width - 2 * right, g1.getClipBounds().height - 2 * above);
-		JPanel j1 = new JPanel();
-		j1.setSize(g2.getClipBounds().width, g2.getClipBounds().height);
-
-		j1.setBackground(new Color(255, 255, 255));
+		JPanel printarea = createPage(i);
+		
 		if (nop == -1) {
 		    comp.setAvailableWidth(g2.getClipBounds().width);
 		    comp.setAvailableHeight(g2.getClipBounds().height);
 		    ((BigStepComponent)comp).forcerelayout();
-		    nop = (comp.getHeight() / j1.getHeight() + 1);
+		    nop = (comp.getHeight() / printarea.getHeight() + 1);
 		}
-
-		j1.add(comp);
+		printarea.add(comp);
+		
 		// on the first page we will have to eliminate the natural top spacing
 		if (i == 0) {
-		    comp.setBounds(-naturalright, -naturalabove - i * j1.getHeight(), comp.getWidth(), comp.getHeight());
+		    comp.setBounds(-naturalright, -naturalabove - i * printarea.getHeight(), comp.getWidth(), comp.getHeight());
 		} else {
-		    comp.setBounds(-naturalright, -i * j1.getHeight(), comp.getWidth(), comp.getHeight());
+		    comp.setBounds(-naturalright, -i * printarea.getHeight(), comp.getWidth(), comp.getHeight());
 		}
-		j1.paint(g2);
-		g2.dispose();
-		g1.dispose();
-		document.close();
+		printarea.paint(g2);
+		
+		closePage();
 		i++;
 	    } while (i < nop);
 
@@ -142,7 +144,55 @@ public class GeneralPrinter {
 	}
     }
 
+    private void closePage() {
+	g2.dispose();
+	g1.dispose();
+	document.close();
+    }
+
+    private JPanel createPage(int i) throws DocumentException, FileNotFoundException {
+	document = new Document(pageFormat);
+	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(tmpdir+"/tmp" + i + ".pdf"));
+	document.open();
+	PdfContentByte cb = writer.getDirectContent();
+	// do not use the scale factor in the next one!
+	g1 = cb.createGraphicsShapes(pageFormat.getWidth(), pageFormat.getHeight());
+	g1.scale(scale, scale);
+	// g2.setClip(right, above,
+	// g2.getClipBounds().width,g2.getClipBounds().height);
+	g2 = (Graphics2D) g1.create(right, above, g1.getClipBounds().width - 2 * right, g1.getClipBounds().height - 2 * above);
+	JPanel j1 = new JPanel();
+	j1.setSize(g2.getClipBounds().width, g2.getClipBounds().height);
+	j1.setBackground(new Color(255, 255, 255));
+	return j1;
+    }
+
+    private boolean openDiaglog() {
+	PdfDialog dialog = new PdfDialog((JFrame)caller.getTopLevelAncestor(), true);
+
+	dialog.setLocationRelativeTo(caller);
+	dialog.setVisible(true);
+	//System.out.println(dialog.filechooser.getSelectedFile());
+	//System.out.println(dialog.landscape);
+	
+	if (dialog.cancelled) return false;
+	
+	this.filename = dialog.filechooser.getSelectedFile().getAbsolutePath();
+	if (! this.filename.substring(filename.length()-4).equalsIgnoreCase(".pdf")){
+	    this.filename = this.filename+".pdf";
+	}
+	tmpdir = dialog.filechooser.getSelectedFile().getParent();
+	
+	if (dialog.landscape){
+	    pageFormat = PageSize.A4.rotate();
+	}else {
+	    pageFormat = PageSize.A4;
+	}
+	return true;
+    }
+
     private void concatenatePages(int nop) {
+	if (nop < 1) return; // nothing to concatenate...
 	// concatenate temporary files here
 	try {
 	    int pageOffset = 0;
@@ -191,6 +241,7 @@ public class GeneralPrinter {
     }
 
     private void deleteFiles(int nop) {
+	if (nop < 1) return; //nothing to delete
 	for (int i = 0; i < nop; i++) {
 	    File f = new File(tmpdir+"/tmp" + i + ".pdf");
 	    f.delete();
