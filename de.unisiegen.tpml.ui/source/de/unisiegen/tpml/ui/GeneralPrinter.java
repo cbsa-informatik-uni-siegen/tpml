@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.Line2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -28,6 +29,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
 import de.unisiegen.tpml.graphics.StyledLanguageEditor;
 import de.unisiegen.tpml.graphics.bigstep.BigStepComponent;
+import de.unisiegen.tpml.graphics.editor.TypeEditorPanel;
 import de.unisiegen.tpml.ui.netbeans.PdfDialog;
 
 public class GeneralPrinter {
@@ -42,6 +44,8 @@ public class GeneralPrinter {
     private java.awt.Graphics2D g1;
 
     private java.awt.Graphics2D g2;
+    
+    private java.awt.Graphics2D g3;
 
     LinkedList<LinkedList<Component>> pages;
 
@@ -65,12 +69,32 @@ public class GeneralPrinter {
 	this.caller = caller;
     }
     
+    public void print (TypeEditorPanel editorPanel){
+	System.out.println("TypeEditorPanel print!");
+	if(!openDiaglog()) return;
+	try {
+	    createSplitPage(0);
+	    //editorPanel.getEditor().paint(g2);
+	    //editorPanel.getEditor2().paint(g3);
+	    closePage();
+	    this.concatenatePages(1);
+	    this.deleteFiles(1);
+	    System.out.println("TypeEditorPanel print!");
+	} catch (FileNotFoundException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (DocumentException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+    }
+    
     public void print (StyledLanguageEditor editor){
 	if(!openDiaglog()) return;
 	boolean l33t = false;
 
 	try {
-	    JPanel printarea = createPage(0);
+	    createPage(0);
 	    Graphics remember = editor.getGraphics();
 	l33t = editor.getSize().height > g2.getClipBounds().height;
 	    editor.paint(g2);
@@ -122,22 +146,21 @@ public class GeneralPrinter {
 	    int i = 0;
 
 	    do {
-		JPanel printarea = createPage(i);
+		createPage(i);
 		
 		if (nop == -1) {
 		    comp.setAvailableWidth(g2.getClipBounds().width);
 		    comp.setAvailableHeight(g2.getClipBounds().height);
-		    nop = (comp.getHeight() / printarea.getHeight() + 1);
+		    nop = (comp.getHeight() / g2.getClipBounds().height + 1);
 		}
-		printarea.add(comp);
 		
 		// on the first page we will have to eliminate the natural top spacing
 		if (i == 0) {
-		    comp.setBounds(-naturalright, -naturalabove - i * printarea.getHeight(), comp.getWidth(), comp.getHeight());
+		    comp.setBounds(-naturalright, -naturalabove - i * g2.getClipBounds().height, comp.getWidth(), comp.getHeight());
 		} else {
-		    comp.setBounds(-naturalright, -i * printarea.getHeight(), comp.getWidth(), comp.getHeight());
+		    comp.setBounds(-naturalright, -i * g2.getClipBounds().height, comp.getWidth(), comp.getHeight());
 		}
-		printarea.paint(g2);
+		comp.paint(g2);
 		
 		closePage();
 		i++;
@@ -162,7 +185,7 @@ public class GeneralPrinter {
 	document.close();
     }
 
-    private JPanel createPage(int i) throws DocumentException, FileNotFoundException {
+    private void  createPage(int i) throws DocumentException, FileNotFoundException {
 	document = new Document(pageFormat);
 	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(tmpdir+"/tmp" + i + ".pdf"));
 	document.open();
@@ -175,11 +198,25 @@ public class GeneralPrinter {
 	// g2.getClipBounds().width,g2.getClipBounds().height);
 	g2 = (Graphics2D) g1.create(right, above, g1.getClipBounds().width - 2 * right, g1.getClipBounds().height - 2 * above);
 	g2.setBackground(new Color(255,255,255));
-	JPanel j1 = new JPanel();
-	j1.setSize(g2.getClipBounds().width, g2.getClipBounds().height);
-	j1.setBackground(new Color(255, 255, 255));
-	j1.setOpaque(false);
-	return j1;
+    }
+    
+    private void createSplitPage(int i) throws DocumentException, FileNotFoundException {
+	document = new Document(pageFormat);
+	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(tmpdir+"/tmp" + i + ".pdf"));
+	document.open();
+	PdfContentByte cb = writer.getDirectContent();
+	// do not use the scale factor in the next one!
+	g1 = cb.createGraphicsShapes(pageFormat.getWidth(), pageFormat.getHeight());
+	g1.setBackground(new Color(255,255,255));
+	g1.scale(scale, scale);
+	// g2.setClip(right, above,
+	// g2.getClipBounds().width,g2.getClipBounds().height);
+	g2 = (Graphics2D) g1.create(right, above, g1.getClipBounds().width - 2 * right, (g1.getClipBounds().height - 2 * above)/2-5);
+	g2.draw(g2.getClipBounds());
+	g3 = (Graphics2D) g1.create(right, g2.getClipBounds().y+g2.getClipBounds().height+10, g1.getClipBounds().width - 2 * right, (g1.getClipBounds().height - 2 * above)/2-5);
+	g3.draw(g3.getClipBounds());
+	g1.draw(new java.awt.Rectangle(right, ((g1.getClipBounds().height - 2 * above)/2), g1.getClipBounds().width- 2 * right, 1));
+
     }
 
     private boolean openDiaglog() {
