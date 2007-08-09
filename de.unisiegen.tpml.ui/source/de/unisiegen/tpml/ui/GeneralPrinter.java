@@ -148,6 +148,7 @@ public class GeneralPrinter {
 	    int i = 0;
 
 	    do {
+		//TODO remove the Jpanel it is not needed anny more!
 		JPanel printarea = createPage(i);
 		
 		if (nop == -1) {
@@ -158,12 +159,25 @@ public class GeneralPrinter {
 		printarea.add(comp);
 		
 		// on the first page we will have to eliminate the natural top spacing
+		//TODO setze hier _nicht_ die bounds von comp, sondern erstelle ein entsprechend verschobenes
+		//graphics auf g2 und printe darauf!
+		
+		//OLD:
+//		if (i == 0) {
+//		    comp.setBounds(-naturalright, -naturalabove - i * printarea.getHeight(), comp.getWidth(), comp.getHeight());
+//		} else {
+//		    comp.setBounds(-naturalright, -i * printarea.getHeight(), comp.getWidth(), comp.getHeight());
+//		}
+//		printarea.paint(g2);
+		Graphics2D offsetted;
 		if (i == 0) {
-		    comp.setBounds(-naturalright, -naturalabove - i * printarea.getHeight(), comp.getWidth(), comp.getHeight());
-		} else {
-		    comp.setBounds(-naturalright, -i * printarea.getHeight(), comp.getWidth(), comp.getHeight());
+		 offsetted = (Graphics2D)g2.create(0, -naturalabove-i * g2.getClipBounds().height , g2.getClipBounds().width, comp.getHeight());
 		}
-		printarea.paint(g2);
+		else {
+		    offsetted = (Graphics2D)g2.create(0, -i * g2.getClipBounds().height , g2.getClipBounds().width, comp.getHeight());
+		}
+		comp.paint(offsetted);
+		
 		
 		closePage();
 		i++;
