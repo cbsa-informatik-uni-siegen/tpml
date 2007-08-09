@@ -66,6 +66,7 @@ public class PdfDialog extends javax.swing.JDialog {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 30, 0, 0);
         getContentPane().add(portraitButton, gridBagConstraints);
 
         landscapeButton.setText("landscape");
@@ -81,6 +82,7 @@ public class PdfDialog extends javax.swing.JDialog {
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 30, 0, 0);
         getContentPane().add(landscapeButton, gridBagConstraints);
 
         filechooser.setDialogTitle("PDF Printing");

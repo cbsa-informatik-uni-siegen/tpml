@@ -35,6 +35,7 @@ import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.util.beans.AbstractBean;
+import de.unisiegen.tpml.graphics.AbstractProofComponent;
 import de.unisiegen.tpml.graphics.EditorComponent;
 import de.unisiegen.tpml.graphics.ProofViewFactory;
 import de.unisiegen.tpml.graphics.editor.TypeEditorPanel;
@@ -672,8 +673,12 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel {
 	}
 
 	public void handlePrint() {
-		// TODO Christoph plz. print this here
-		
+		  GeneralPrinter printer = new GeneralPrinter(mypanel);
+		  if (this.isTexteditor()){
+		      printer.print(code);
+		  } else{
+		      printer.print(((AbstractProofComponent)getComponent().getPrintPart()));
+		  }		
 	}
 
 	public EditorComponent getActiveEditorComponent() {

@@ -46,6 +46,8 @@ public class GeneralPrinter {
     private java.awt.Graphics2D g2;
     
     private java.awt.Graphics2D g3;
+    
+    private java.awt.Graphics2D g4;
 
     LinkedList<LinkedList<Component>> pages;
 
@@ -74,8 +76,8 @@ public class GeneralPrinter {
 	if(!openDiaglog()) return;
 	try {
 	    createSplitPage(0);
-	    //editorPanel.getEditor().paint(g2);
-	    //editorPanel.getEditor2().paint(g3);
+	    editorPanel.getEditor().paint(g3);
+	    editorPanel.getEditor2().paint(g4);
 	    closePage();
 	    this.concatenatePages(1);
 	    this.deleteFiles(1);
@@ -217,12 +219,10 @@ public class GeneralPrinter {
 	g1.scale(scale, scale);
 	// g2.setClip(right, above,
 	// g2.getClipBounds().width,g2.getClipBounds().height);
-	g2 = (Graphics2D) g1.create(right, above, g1.getClipBounds().width - 2 * right, (g1.getClipBounds().height - 2 * above)/2-5);
-	g2.draw(g2.getClipBounds());
-	g3 = (Graphics2D) g1.create(right, g2.getClipBounds().y+g2.getClipBounds().height+10, g1.getClipBounds().width - 2 * right, (g1.getClipBounds().height - 2 * above)/2-5);
-	g3.draw(g3.getClipBounds());
-	g1.draw(new java.awt.Rectangle(right, ((g1.getClipBounds().height - 2 * above)/2), g1.getClipBounds().width- 2 * right, 1));
-
+	g2 = (Graphics2D) g1.create(right, above, g1.getClipBounds().width - 2 * right, g1.getClipBounds().height - 2 * above);
+	g3 = (Graphics2D) g2.create(0, 0, g2.getClipBounds().width, g2.getClipBounds().height/2-5);
+	g4 = (Graphics2D) g2.create(0, g2.getClipBounds().height/2+5, g2.getClipBounds().width, g2.getClipBounds().height/2-5);
+	g2.drawRect(0, g2.getClipBounds().height/2, g2.getClipBounds().width, 1);
     }
 
     private boolean openDiaglog() {
