@@ -67,9 +67,12 @@ public class GeneralPrinter {
     
     public void print (StyledLanguageEditor editor){
 	if(!openDiaglog()) return;
+	boolean l33t = false;
+
 	try {
 	    JPanel printarea = createPage(0);
 	    Graphics remember = editor.getGraphics();
+	l33t = editor.getSize().height > g2.getClipBounds().height;
 	    editor.paint(g2);
 	    editor.paint(remember);
 	    closePage();
@@ -79,8 +82,16 @@ public class GeneralPrinter {
 
 	    // remove the temporary pages now
 	    this.deleteFiles(1);
-
-	    JOptionPane.showMessageDialog(caller, "Document has been printed!");
+	    if (l33t){
+		 JOptionPane.showMessageDialog(caller, "Your Sourcecode is too long to be printed properly...\n" +
+		 		"I give up, you are too elite.\n" +
+		 		"Actually you are most likely Kurt or Ben...\n" +
+		 		"It's lonely at the top. But you may get yourself a coffe now\n" +
+		 		"and enjoy the comfort to look down upon everyone at the bottom.");
+	    } else {
+		 JOptionPane.showMessageDialog(caller, "Document has been printed!");
+	    }
+	   
 	    
 	} catch (FileNotFoundException e) {
 	    JOptionPane.showMessageDialog(caller, "Can not access the file, might be open");
