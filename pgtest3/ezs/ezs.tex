@@ -879,6 +879,30 @@
     \normaltext{Wegen der binären Codierung gleich groß}
   }
 
+  \statement{Beschreiben Sie den Aufbau eines A-t-Diagramms}{\pages{106}{107}}
+  {
+    \catchword{Auf der x-Achse die Zeit t}
+    \catchword{Auf der y-Achse die Adresse A der zum Zeitpunkt t verarbeiteten Instruktion,
+               also den Inhalt des Programmzählers (PC)}
+  }
+
+  \question{Wie sieht eine sequentielle Abarbeitung in einem A-t-Diagramm aus}{\page{106}}
+  {
+    \normaltext{Wie eine Gerade, deren Steigung im Wesentlichen von der Rechengeschwindigkeit
+                der CPU abhängt}
+  }
+
+  \question{Wie sieht ein Programmsprung in einem A-t-Diagramm aus}{\page{106}}
+  {
+    \normaltext{Programmsprünge erscheinen als senkrechte Linie im Diagramm}
+  }
+
+  \question{Wie kann nach Ablauffehlern gesucht werden}{\page{107}}
+  {
+    \normaltext{Durch Hardware-Monitore, die den Ablauf am Bus verfolgen, entweder durch
+                Oszilloskope oder durch Logikanalysatoren}
+  }
+
   \question{Warum hat der Schnittstellenumsetzer UART eine besondere Bedeutung}{\page{99}}
   {
     \catchword{Die serielle Schnitstelle ist praktisch an jedem Rechner vorhanden.}
@@ -894,6 +918,23 @@
   {
     \catchword{Er setzt die ankommenden seriellen Daten in die parallele Darstellung um.}
   }
+
+
+
+  \statement{Nennen Sie die unterschiedlichen Betriebsarten}{\page{108}}
+  {
+    \catchword{Einprogrammbetrieb: Der Rechner bearbeitet immer nur ein Programm}
+    \catchword{Einbenutzerbetrieb: Nur eine Benutzer gleichzeitig aktiv
+               \resultol{keine Zugriffssicherung notwendig}}
+    \catchword{Mehrprogrammbetrieb: Mehrere Programme stehen ablaufbereit im Speicher}
+  }
+
+  \question{Worauf sollte bei der Programmentwicklung geachtet werden}{\page{108}}
+  {
+    \normaltext{Dass der Prozessbetrieb nicht behindert oder gestört wird}
+  }
+
+
 
   \question{Welche Teile besitzen sowohl Sender als auch Empfänger }{\pages{99}{100}}
   {
@@ -947,6 +988,7 @@
     \normaltext{Häufige Ereignisse mit langer Bearbeitungszeit. Zur Vermeidung sollen solche Ereignisse gar 
     nicht zugelassen werden.}
   }
+
 
   \question{Was wird im Interrupt-Betrieb durch Ereignisse erzeugt}{\page{117}}
   {
