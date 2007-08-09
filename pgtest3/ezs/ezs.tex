@@ -28,6 +28,7 @@
 \newcommand{\resultol}[1]{ $\Rightarrow$\ #1}
 \newcommand{\page}[1]{#1}
 \newcommand{\pages}[2]{#1\ -\ #2}
+\newcommand{\important}[1]{\textbf{#1}}
 
 \begin{document}
 
@@ -35,8 +36,10 @@
 \newpage
 \tableofcontents
 
+
 \newpage
 \section{Einführung}
+
 
 \begin{enumerate}
 
@@ -327,27 +330,29 @@
   {
     \catchword{Indirekt gekoppelter Betrieb (engl.: off-line) wobei die Daten zwischen Rechner und Prozess
     mittels Datenträger übermittelt werden.}
-    \catchword{Direkt gekoppelter Betrieb (engl.: on-line) mit direktem Datenaustausch zwischen Rechner und Prozess}
-    \catchword{Offener Prozessbetrieb (engl.: open loop control) wobei der Fluss der Daten einseitig ist und noch 
-    teilweise die Mitarbeit des Menschen erfordert.}
-    \catchword{Geschlossener Prozessbetrieb (engl.: closed loop control) ist ein vollständiger Regelkreis, bei dem 
-    Istwerte vom Prozess aufgenommen, miet den Sollwerten im Rechner vergleichen und daraus wieder Steuerdaten für
-    den Prozess gewonnen werden.}
+    \catchword{Direkt gekoppelter Betrieb (engl.: on-line) mit direktem Datenaustausch
+               zwischen Rechner und Prozess}
+    \catchword{Offener Prozessbetrieb (engl.: open loop control) wobei der Fluss der Daten
+               einseitig ist und noch teilweise die Mitarbeit des Menschen erfordert.}
+    \catchword{Geschlossener Prozessbetrieb (engl.: closed loop control) ist ein vollständiger
+               Regelkreis, bei dem Istwerte vom Prozess aufgenommen, miet den Sollwerten im
+               Rechner vergleichen und daraus wieder Steuerdaten für den Prozess gewonnen werden.}
   }
 
   \question{Wie kann man den Prozessbetrieb weiter unterteilen}{\page{15}}
   {
-    \catchword{Messwerterfassung. Hier übernimmt der Rechner nur Daten vom Prozess, um sie weiter zu verarbeiten.}
+    \catchword{Messwerterfassung. Hier übernimmt der Rechner nur Daten vom Prozess,
+               um sie weiter zu verarbeiten.}
     \catchword{Prozesssteuerung. Hier werden ausschließlich Daten vom Rechner zum Prozess übertragen. }
   }
 
-  \question{Warum ergeben sich bein geschlossenen Prozessbetrieb geschlossenen Prozessbetrieb höhere Anforderungen
-   als im offenen}{\page{16}}
+  \question{Warum ergeben sich bein geschlossenen Prozessbetrieb geschlossenen Prozessbetrieb
+            höhere Anforderungen als im offenen}{\page{16}}
   {
     \normaltext{Da hier 2 gegenläufige Datenströme verarbeitet werden müssen}
     \catchword{Eingabedaten: Sollwerte vom Menschen, und Istwerte vom Prozess}
-    \catchword{Verarbeitung: Bestimmung des Prozesszustands, Vergleich von Ist- und Sollwerten, Berechnung der 
-    notwendigen Aktionen zum Abgleich im Prozess und Umwandlung in Prozessdaten}
+    \catchword{Verarbeitung: Bestimmung des Prozesszustands, Vergleich von Ist- und Sollwerten,
+               Berechnung der notwendigen Aktionen zum Abgleich im Prozess und Umwandlung in Prozessdaten}
     \catchword{Ausgabedaten: Steuerdaten an den Prozess und Zustandsdaten an den Menschen}
   }
 
@@ -457,14 +462,16 @@
   \question{In welchen Ebenen kann die Erstellung eines Modells erfolgen}{\page{19}}
   {
     \catchword{als statisches Modell, in dem die Prozessgrößen, Eingangs-, Ausgangsgrößen und Zustandsgrößen
-    definiert und beschrieben werden.}
+               definiert und beschrieben werden.}
     \catchword{als stationäres Modell, in dem die Zusammenhänge zwischen den Prozessgrößen für den stationären 
-    Zustand beschrieben werden, also für den Fall, dass alle Größen im wesentlichen stabil sind.}
-    \catchword{als dynamische Modell, in dem die zeitlichen Veränderungen der Prozessgrößen durch innere oder äußere 
-    Wirkungen beschrieben werden, insbesondere auch Einschalt- und Einschwingvorgänge.}
+               Zustand beschrieben werden, also für den Fall, dass alle Größen im wesentlichen stabil sind.}
+    \catchword{als dynamische Modell, in dem die zeitlichen Veränderungen der Prozessgrößen durch
+               innere oder äußere Wirkungen beschrieben werden, insbesondere auch Einschalt- 
+               und Einschwingvorgänge.}
   }
 
-  \question{Wodurch entsteht die Unvollkommenheit eines Modells, und wie kann diese verringert werden}{\page{20}}
+  \question{Wodurch entsteht die Unvollkommenheit eines Modells, und wie kann diese 
+            verringert werden}{\page{20}}
   {
     \catchword{Sie entsteht dadurch, dass die Störgrößen nicht genügend genau bekannt sind.}
     \catchword{Dies kann durch geeignette Analysen und Simulationen verringert werden}
@@ -479,8 +486,8 @@
 
   \question{Was bezeichnet man als lernenden Prozessmodell}{\page{20}}
   {
-    \catchword{Modelle, die nicht nur passiv die Parameter auf Grund von Prozessdaten bestimmen, sondern die optimalen
-    Werte aktiv selber sucht.}
+    \catchword{Modelle, die nicht nur passiv die Parameter auf Grund von Prozessdaten bestimmen,
+               sondern die optimalen Werte aktiv selber sucht.}
   }
 
   \question{Welche Komponente sitzt noch über dem Leitrechner}{\page{21}}
@@ -520,8 +527,8 @@
 
   \question{Was ist die Grundforderung an die PDV}{\page{30}}
   {
-    \normaltext{Der Rechner muss dem Prozessgeschehen, insbesondere seinem wirklichen Zeitverhalten angepasst sein.
-    Dies wird als Realzeitbetrieb bezeichnet.}
+    \normaltext{Der Rechner muss dem Prozessgeschehen, insbesondere seinem wirklichen
+                Zeitverhalten angepasst sein. Dies wird als Realzeitbetrieb bezeichnet.}
   }
 
 
@@ -557,10 +564,10 @@
    \question{Welche wesentlichen 3 Aufgaben hat das Mikroprogramm}{\page{48}}
   {
     \catchword{Einlesen von Instruktionen und Daten aus dem Hauptspeicher, und das Abspeichern 
-    von Ergebnissen}
+               von Ergebnissen}
     \catchword{Interpretieren von Instruktionen, wobei es in eigene Programmteile (Module) verzweigt}
     \catchword{Steuern der CPU d.h. des Datenverkehrs innerhalb der CPU, und ins besondere 
-    des Rechenwerks (ALU)}
+               des Rechenwerks (ALU)}
   }
 
    \question{Wie bezeichnet man Unterprogramme des Mikroprogramms}{\page{51}}
@@ -597,14 +604,15 @@
     \catchword{Verzweigung innerhalb des Programms (synchron)}
     \catchword{Unterbrechung von außen (asynchron)}
     \result{Dann müssen solche Instruktionen, die bereits begonnen wurden, abgebrochen 
-    werden; bei manchen geht das nicht, und es muss die Verarbeitungskette angehalten 
-    werden (pipe stalling).}
+            werden; bei manchen geht das nicht, und es muss die Verarbeitungskette angehalten 
+            werden (pipe stalling).}
   }
 
   \statement{Nennen Sie Eigenschaften von RISC in der PDV}{\page{54}}
   {
     \catchword{Da die Verarbeitunsoperationen auf Daten im kArbeitsspeicher immer zusätzlich
-    eine LOAD- und eine STORE-Operation erfordern, werden die Maschinenprogramme deutlich länger.}
+               eine LOAD- und eine STORE-Operation erfordern, werden die Maschinenprogramme
+               deutlich länger.}
     \catchword{Erheblicher zusätzlicher Verwaltungsaufwand bei bedingten Sprüngen}
   }
 
@@ -703,15 +711,15 @@
     \question{Welche Arten von Bussen gibt es}{\page{56}}
   {
     \catchword{Synchrone Busse (festes Zeitraster wird vorgegeben, richtet sich nach der 
-    langsamsten Komponente)}
+               langsamsten Komponente)}
     \catchword{Asynchrone Busse (Quittierungsverfahren - Handshaking, nutzt die individuellen
-    Geschwindigkeiten der Komponenten aus)}
+               Geschwindigkeiten der Komponenten aus)}
   }
 
   \statement{Erklären Sie Multiplexverfahren}{\page{59}}
   {
     \normaltext{Für Daten und Steuerleitungen werden dieselben Leitungen im zeitlichen Wechesel
-    benutzt. Dazu wird eine weitere Steuerleitung zur Siganlisierung des Wechsels benötigt.}
+                benutzt. Dazu wird eine weitere Steuerleitung zur Siganlisierung des Wechsels benötigt.}
   }
 
   \question{Wozu wird die Schnittstelle zum Bus verwendet}{\page{83}}
@@ -730,12 +738,14 @@
 
   \question{Welche Geräteschnittstellen kann man unterscheiden}{\page{88}}
   {
-    \catchword{Parallelschnittstellen, auf denen die einzelnen Bits paralles, die Zeichen selber aber immer
-    nacheinander (seriell) übertragen werden. Da für jedes Bit eine Leitung benötigt wird, sind die Anschlüsse
-    und Kabel aufwendig, aber man erreicht eine hohe Übertragungsgeschwindigkeit.}
-    \catchword{Seriellschnittstellen, auf welchen auch die einzelnen Bits nacheinander übertragen werden. Dadurch
-    können die Daten unabhängig von der Datenbreite über eine einzig Leitung übertragen werden. Allerdangs entsteht
-    hier ein höherer Aufwand bei der Umsetzung, und die Übertragungsgeschwindigkeit ist niedriger.}
+    \catchword{Parallelschnittstellen, auf denen die einzelnen Bits paralles, die Zeichen selber 
+               aber immer nacheinander (seriell) übertragen werden. Da für jedes Bit eine Leitung benötigt 
+               wird, sind die Anschlüsse und Kabel aufwendig, aber man erreicht eine hohe
+               Übertragungsgeschwindigkeit.}
+    \catchword{Seriellschnittstellen, auf welchen auch die einzelnen Bits nacheinander übertragen werden. 
+               Dadurch können die Daten unabhängig von der Datenbreite über eine einzig Leitung
+               übertragen werden. Allerdangs entsteht hier ein höherer Aufwand bei der Umsetzung, und 
+               die Übertragungsgeschwindigkeit ist niedriger.}
   }
 
 
@@ -823,7 +833,7 @@
     \catchword{Hohe Datenrate, da Start und Stoppbits entfallen.}
     \catchword{Nachteilig ist das erkennen von Füllzeichen und die Synchronisierung der Taktfrequenz.}
   }
-  
+
   \statement{Nennen Sie Eigenschaften der asynchronen serieller Übertragung}{\page{89}}
   {
     \catchword{Bits eines Zeichens werden kontinuierlich übertragen, jedoch können zwischen den Zeichen
@@ -832,7 +842,7 @@
     \catchword{Kein erkennen von Füllzeichen und synchronisieren der Taktfrequenz nötig.}
     \catchword{Dafür müssen aber Start- und Stoppbits erkannt werden.}
   }
-  
+
   \question{Welche Möglichkeiten gibt es Geräte an einen Conroller anzuschließen}{\page{90}}
   {
     \catchword{Busanschluß, auf dem wie in der Zentraleinheit Daten-, Adreß- und Steuerleitungen
@@ -907,19 +917,17 @@
   {
     \catchword{Die serielle Schnitstelle ist praktisch an jedem Rechner vorhanden.}
   }
-  
+
     \question{Welche Aufgabe hat der Empfänger (Seriell-Parallel-Wandler)}{\page{99}}
   {
     \catchword{Er setzt die im Datenregister DBR-T angelieferten Daten aus der bitparallelen 
     Darstellung in eine serielle um.}
   }
-  
+
   \question{Welche Aufgabe hat der Sender (Parallel-Seriell-Wandler)}{\page{99}}
   {
     \catchword{Er setzt die ankommenden seriellen Daten in die parallele Darstellung um.}
   }
-
-
 
   \statement{Nennen Sie die unterschiedlichen Betriebsarten}{\page{108}}
   {
@@ -934,7 +942,12 @@
     \normaltext{Dass der Prozessbetrieb nicht behindert oder gestört wird}
   }
 
-
+  \statement{Nennen Sie die zwei Verfahren, mit denen der Mehrprogrammbetrieb
+             realisiert werden kann}{\page{110}}
+  {
+    \catchword{Time-sharing: CPU wird in Zeitscheiben zugewiesen}
+    \catchword{Resource-sharing: Betriebsmittel werden nach Prioritäten oder Wartezeiten vergeben}
+  }
 
   \question{Welche Teile besitzen sowohl Sender als auch Empfänger }{\pages{99}{100}}
   {
@@ -942,34 +955,35 @@
     \catchword{Geräteschnittstelle}
     \catchword{Pegelumsetzer}
   }
-  
-    \question{Was versteht man unter Polling}{\page{110}}
+
+  \question{Was versteht man unter Polling}{\page{110}}
   {
     \normaltext{Bein Abrufbetrie (polling) werden Informationen über den Zustand der Geräte
-    oder der Datenübertragung von einem Programm abgerufen. Dazu fragt die CPU in einer Schleife
-    die CSRs der Geräteanschlüsse ab. Anhand dieser Informationen verzweigt das Programm in 
-    entsprechende Routinen.}
+                oder der Datenübertragung von einem Programm abgerufen. Dazu fragt die CPU in einer Schleife
+                die CSRs der Geräteanschlüsse ab. Anhand dieser Informationen verzweigt das Programm in 
+                entsprechende Routinen.}
   }
-  
-    \question{Nennen Sie Vorteile des Polling Betriebs}{\page{111}}
+
+  \question{Nennen Sie Vorteile des Polling Betriebs}{\page{111}}
   {
     \catchword{Einfachheit der programmtechnischen Realisierung.}
     \catchword{Die Hardware kann relativ einfach ausgelgt werden.}
   }
-  
+
   \question{Nennen Sie Nachteile des Polling Betriebs}{\page{112}}
   {
     \catchword{Die CPU ist die meist Zeit damit beschäftigt, alle CSRs abzufragen.}
     \catchword{Die Zeitauflösung (Genauigkeit) mit der man den Zeitpunkt für das Eintreten
-    eines Ereignisses festlegen kann, wird zunächst durch die Zeit für einenn Schleifendurchlauf
-    vorgegeben.}
+               eines Ereignisses festlegen kann, wird zunächst durch die Zeit für einenn Schleifendurchlauf
+               vorgegeben.}
     \catchword{Die Reihenfolge von verschiedenen Ereignissen kann verfälscht werden.}
     \catchword{Bei einer notwendigen Änderung z.B. Abschalten oder Hinzufügen eines neuen
-    Gerätes wird eine Programmänderung notwendig, die aber nicht im laufenden Betrieb 
-    durchgeführt werden kann.}
+               Gerätes wird eine Programmänderung notwendig, die aber nicht im laufenden Betrieb 
+               durchgeführt werden kann.}
   }
-  
-   \question{Was ist die grundsätzliche Anforderung an einen Prozessrechner bei Realzeitverarbeitung}{\page{113}}
+
+   \question{Was ist die grundsätzliche Anforderung an einen Prozessrechner bei
+             Realzeitverarbeitung}{\page{113}}
   {
     \normaltext{Die Verarbeitung der Prozessdaten muss schritthaltend erfolgen, d.h. so schnell,
     dass der Prozess nicht auf  die Ergebnisse warten muss. Man könnte auch sagen, die Anforderung
@@ -1017,8 +1031,8 @@
   
     \question{Was sind Semaphore}{\page{118}}
   {
-    \normaltext{Signalträger, vergleichbar mit den Flaggen im Prozessor-Status-Wort, mit denen ISRs synchronisiert
-    werden können, falls ihre Arbeiten voneinander abhängen.}
+    \normaltext{Signalträger, vergleichbar mit den Flaggen im Prozessor-Status-Wort, mit denen ISRs 
+                synchronisiert werden können, falls ihre Arbeiten voneinander abhängen.}
   }
   
   \statement{Nennen Sie Vorteile beim Interrupt-Betrieb}{\page{118}}
@@ -1096,64 +1110,191 @@
     großer Wert eingetragen wird)}
   }
 
+  \statement{Erklären Sie detailiert den Ablauf eines Interrupts}{\pages{119}{120}}
+  {
+    \catchword{Eine Unterbrechungsanforderung wird von einem Geräteanschluss erzeugt
+               und das aktuelle Programm wird unterbrochen}
+    \catchword{Der aktuelle Stand des Programmzählers (PC) und der Inhalt der
+               Prozessor-Status-Worts (PS) werden auf dem Stack abgelegt. Die
+               Adresse dafür enthält der Stack-Pointer (SP)}
+    \catchword{Die Unterbrechungsanforderung muss identifiziert werden, dazu dient
+               ein Vektor. Mit diesem Vektor wird in der Interrupt-Vektor-Tabelle (IVT)
+               die Startadresse (der neue PC) für die zugeordnete ISR gesucht}
+    \catchword{Diese Zuordnung kann über eine eigenständige Routine erfolgen,
+               die Interrupt-Dispatcher-Routine, welche die Geräte zur Identifizierung
+               abfragt}
+    \catchword{Diese Methode ist allerdings sehr langsam, deshalb wird in der Regel
+               die Zuordnung automatisch durch vektorisierte Interrupts, die bei
+               der Interrupt-Anforderungen den Vektor mitliefern}
+    \catchword{Mit dem neuen PC aus der IVT erfolgt der Sprung in die ISR. Dabei muss
+               ein neuer Prozesszustand (PS) definiert werden}
+    \catchword{Nach der Abarbeitung der ISR erfolgt der Rücksprung über eine spezielle
+               Rücksprunginstruktion (RTI, Return from Interrupt). Der alte PC und
+               PS werden vom Stack geholt und zurückgeladen}
+    \catchword{Das unterbrochene Programm wird fortgesetzt}
+  }
+
+  \statement{Skizzieren Sie eine Interrupt-Anforderung}{\page{119}}
+  {
+    \normaltext{Siehe Bild 2.51 auf Seite 119}
+  }
+
+  \question{Was muss gemacht werden, wenn bei der Interrupt-Bearbeitung
+            Konflikte auftreten}{\page{122}}
+  {
+    \catchword{Vorrangregeln}
+    \catchword{Vergabe von Prioritäten}
+  }
+
+  \question{Welche zwei Probleme können bei eintreffenden Ereignissen auftreten}{\page{122}}
+  {
+    \catchword{Von einer Ereignisquelle treffen kurzzeitig mehr Ereignisse ein,
+               als verarbeitet werden können. }
+    \catchword{Von verschiedenen Ereignisquellen treffen praktisch gleichzeitig Ereignisse ein.
+               Dann muss eine Reihenfolge der Abarbeitung gewählt werden}
+  }
+
+  \question{Wann können Ereignisfolgen nur aufgefangen werden}{\page{122}}
+  {
+    \normaltext{Nur, wenn die zulässige Antwortzeit genügend groß ist}
+  }
+
+  \statement{Nennen Sie zwei Methoden Ereignisfolgen aufzunehmen}{\page{123}}
+  {
+    \catchword{Ereignisse werden zwischengepuffert}
+    \catchword{Die ISR kann von neuen Ereignissen immer wieder unterbrochen werden}
+  }
+
+  \question{Welche Probleme ergeben sich, wenn die ISR unterbrochen wird}{\page{123}}
+  {
+    \normaltext{Sie muss besondere Eigenschaften haben, so dass sie jederzeit wieder
+                benutzt werden kann. Sie muss unterbrechbar sein, bevor sie ihre
+                Ergebnisse ausgegeben hat. Diese Eigenschaft wird als \important{reentrancy}
+                bezeichnet, wörtlich als Wiedereintrittsfähigkeit}
+  }
+
+  \question{Was müssen Programme, die mit der Eigenschaft reentrancy
+            bezeichnet werden, machen}{\page{124}}
+  {
+    \normaltext{Alle anfallenden Zwischenergebnisse müssen in jedem Durchlauf gut
+                gesichert werden. Das kann dadurch erreicht werden, gleich am Beginn
+                der Routine alle benötigten Speicherplätze von Variablen und alle
+                CPU-Register auf dem Stack gesichert werden}
+  }
+
+  \question{Was muss bei vielen eintreffenden Ereignissen geschehen und zu welchen
+            Problemen führt dies}{\page{124}}
+  {
+    \catchword{Ereignisse müssen in einer Warteschlange gesammelt werden, und können
+               dann in der Reihenfolge bearbeitet werden, in der sie eingetroffen
+               sind}
+    \result{Die Reaktionszeit kann beliebig lang werden}
+  }
+
+  \question{Welches Vorgehen liefert bessere Ergebnisse}{\page{124}}
+  {
+    \normaltext{Besser Ergebnisse erhält man, wenn man auch die ISRs unterbricht,
+                allerdings nicht wahllos, sondern es müssen Prioritäten gesetzt werden}
+  }
+
+  \question{Wie lautet eine einfache Regel zur Vergabe von Prioritäten}{\page{125}}
+  {
+    \catchword{Ereignisse mit hoher Folgefrequenz und kurzer Bearbeitungszeit, bekommen
+               höhere Prioritäten}
+    \catchword{Ereignisse, die selten auftreten, aber eine lange Bearbeitungszeit haben,
+               bekommen niedrigere Prioritäten}
+    \result{Diese Regel muss aber häufig durchbrochen werden}
+  }
+
+  \question{Was muss bei einer Vorrangregel geschehen}{\page{125}}
+  {
+    \normaltext{Unterbrechungsanforderungen müssen zugelassen oder abgewiesen werden}
+  }
+
+  \question{Was für den Impuls von eintreffenden Ereignissen gelten}{\page{125}}
+  {
+    \normaltext{Der Länge des Impuls sollte möglichst kurz sein gegenüber allen
+                Prozess- und Verarbeitungszeiten}
+  }
+
+  \question{Worüber kann festgelegt werden, ob ein Interrupt zugelassen
+            oder abgewiesen wird}{\page{125}}
+  {
+    \normaltext{Durch das Interrupt-Enable-Bit (IE) im Interface}
+  }
+
+  \statement{Skizzieren Sie die Interrupt Verkettung}{\page{126}}
+  {
+    \normaltext{Siehe Bild 2.56 auf Seite 126}
+  }
+
+  \statement{Erklären Sie das Prinzip der Daisy Chain bei Interrupts}{\page{126}}
+  {
+    \normaltext{Bei der \important{Daisy Chain} werden die Anschlüsse hardwaremäßig
+                verkettet, so dass sich eine Rangfolge der Interrupt-Anforderungen
+                ergibt. Hierbei hat der Anschluss, welcher der CPU am nächsten liegt
+                die höchste Priorität.}
+    \result{Die Rangfolge ist dabei statisch}
+  }
+
+  \question{Welche Komponente fällt bei dynamischen Prioritäten die Entscheidung,
+            welcher Interrupt der wichtigste ist}{\page{127}}
+  {
+    \normaltext{Das Unterbrechungswerk}
+  }
+
   \newpage
   \section{Periphere Geräte}
-  
+
+
   \statement{Beschreibe kurz die generelle Aufgabe der Prozessperepherie}{\page{188}}
   {
     \catchword{Prozessgrößen in Rechnerdaten umwandeln und umgekehrt}
   }
-  
+
   \question{In welcher Form können die Daten des Prozess vorliegen}{\page{188}}
   {
-    \catchword{elektrischer und nicht elektrischer Form(Strom, Spannung, Temperatur)}
+    \catchword{elektrischer und nicht elektrischer Form (Strom, Spannung, Temperatur)}
     \catchword{digital oder analog, sie ändern sich diskret oder kontinuierlich (Stückzahlen, MEssströme)}
-    \catchword{dynamische Binärwerte(Unterbrechung einer Lichtschranke)}
+    \catchword{dynamische Binärwerte (Unterbrechung einer Lichtschranke)}
   }
-  
-  \statement{Beschreiben Sie anhand eines Schaubildes den Weg der Informationen vom Prozess in den Rechner und umgekehrt}{\page{189}}
- {
-  \normaltext{wichtiges Bild!!!}
- } 
- 
- \statement{Beschreiben Sie grundlegend die Aufgaben einer Messkette}{\page{190}}
- {
-  \normaltext{An der Messstelle wird die Messgröße erfasst, die eventuell dann transformiert werden muss.
-  Das Messgerät setzt den Messwert in ein Signal um, das leicht weiterverarbeitet werden kann. Das Messgerät besteht aus zwei Komponenten:}
- \catchword{Messfühler: er setzt die Messgröße durch Ausnutzen naturwissenschafftlicher Gesetzmäßigkeiten in leichter erfassbare Größen um. Z.B.: Druck/Temparatur in einen Weg} 
- \catchword{Messwandler: einen Weiter Umwandlung mit dem Ergebnis eines meist elektrischen Signals, das gut übertragen werden kann.}
- \normaltext{Zuletzt wird das analoge elektische Signal mittels A/D-Wandler in ein digitales Singal umgewandelt und an den Rechner übertragen.}
- 
- 
- }
- 
- \statement{Nennen Sie einen Grund für einen frühe A/D-Wandlung (vor der Übertragung zum Rechner)}{\page{191}} 
- {
- \catchword{digitale Daten können durch sichere Codes vor Übertragungsfehlern geschützt werden, das Ergebnis wird nicht weiter verfälscht.} 
- }
- 
-  \statement{Nennen Sie FAktoren, die in das Modell des gesamten Messprozesses eingehen müssen, insbesondere Fehlermöglichkeiten)}{\page{191}} 
- {
- \catchword{Übertragungseingenschafften aller Glieder in der Kette} 
- \catchword{Übersetzungsverhältnisse} 
- \catchword{Übertragungsfunktionen und -kennlinien} 
- \catchword{Signallaufzeiten} 
- \catchword{Kodierungen}
- \normaltext{Jede Umwandlung, und jeder Transport vor der A/D-Wandlung verfälscht das Ergebnis.}
- }
 
- 
- 
- 
-  
-  
-  
-  
-  
-  
-  
-  
+  \statement{Beschreiben Sie anhand eines Schaubildes den Weg der Informationen
+             vom Prozess in den Rechner und umgekehrt}{\page{189}}
+  {
+    \normaltext{wichtiges Bild!!!}
+  }
 
+  \statement{Beschreiben Sie grundlegend die Aufgaben einer Messkette}{\page{190}}
+  {
+    \normaltext{An der Messstelle wird die Messgröße erfasst, die eventuell dann 
+              transformiert werden muss. Das Messgerät setzt den Messwert in ein Signal
+              um, das leicht weiterverarbeitet werden kann. Das Messgerät besteht
+              aus zwei Komponenten:}
+    \catchword{Messfühler: er setzt die Messgröße durch Ausnutzen naturwissenschafftlicher
+             Gesetzmäßigkeiten in leichter erfassbare Größen um. Z.B.: Druck/Temparatur in einen Weg} 
+    \catchword{Messwandler: einen Weiter Umwandlung mit dem Ergebnis eines meist elektrischen
+               Signals, das gut übertragen werden kann.}
+    \normaltext{Zuletzt wird das analoge elektische Signal mittels A/D-Wandler in ein digitales
+                Singal umgewandelt und an den Rechner übertragen.}
+  }
+
+  \statement{Nennen Sie einen Grund für einen frühe A/D-Wandlung (vor der Übertragung zum Rechner)}{\page{191}} 
+  {
+    \catchword{digitale Daten können durch sichere Codes vor Übertragungsfehlern geschützt werden,
+               das Ergebnis wird nicht weiter verfälscht.} 
+  }
+
+  \statement{Nennen Sie Faktoren, die in das Modell des gesamten Messprozesses eingehen müssen,
+             insbesondere Fehlermöglichkeiten)}{\page{191}} 
+  {
+    \catchword{Übertragungseingenschafften aller Glieder in der Kette} 
+    \catchword{Übersetzungsverhältnisse} 
+    \catchword{Übertragungsfunktionen und -kennlinien} 
+    \catchword{Signallaufzeiten} 
+    \catchword{Kodierungen}
+    \normaltext{Jede Umwandlung, und jeder Transport vor der A/D-Wandlung verfälscht das Ergebnis.}
+  }
 
   \newpage
   \section{Prozessrechner-Software}
