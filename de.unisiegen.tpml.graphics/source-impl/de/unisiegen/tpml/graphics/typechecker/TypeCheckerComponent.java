@@ -102,6 +102,7 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	public TypeCheckerComponent (TypeCheckerProofModel model, boolean pAdvanced) {
 		super (model);
 		
+		this.availableHeight    = Integer.MAX_VALUE;
 		this.advanced = pAdvanced;
 		this.treeNodeLayout			= new TreeNodeLayout (10);
 		this.jumpNode						= null;
