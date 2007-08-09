@@ -619,8 +619,8 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel {
 			out.write ( code.getText2 ( ).toString ( ) );
 			out.close ( );
 			code.clearHistory ( );
-			//firePropertyChange ( "changed", true, false );
-			this.window.setChangeState ( false );
+			firePropertyChange ( "changed", true, false );
+			//this.window.setChangeState ( false );
 			return true;
 		} catch ( UnsupportedEncodingException e ) {
 			logger.error ( "Could not write to file", e );

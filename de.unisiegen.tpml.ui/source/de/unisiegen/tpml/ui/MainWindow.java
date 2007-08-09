@@ -371,7 +371,7 @@ public class MainWindow
       }
       else
       {
-        setEditorFunctions ( true ) ;
+        setEditorFunctions ( false ) ;
       }
     }
     if (this.getActiveEditor ( ) instanceof EditorPanelExpression)
@@ -473,7 +473,7 @@ public class MainWindow
   }
 
 
-  public void setChangeState ( Boolean state )
+  private void setChangeState ( Boolean state )
   {
     if ( state )
     {
