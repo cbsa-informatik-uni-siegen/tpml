@@ -1316,6 +1316,30 @@
     \catchword{Der Controller liefert eine Ausgabe}
   }
 
+  \question{Wie wird die Datenübertragung eingeleitet}{\page{146}}
+  {
+    \normaltext{Wie bei einem Interrupt durch eine Unterbrechungsanforderung, allerdings
+                auf einer besonderen Steuerleitung. Damit wird angegeben, dass die CPU
+                für die Übertragung nicht benötigt wird. Diese Anforderung sollte eine
+                sehr hohe Priorität haben.}
+  }
+
+  \question{Welchen Vorteil bietet DMA im Realzeitbetrieb}{\page{149}}
+  {
+    \normaltext{Prozessdaten können in großer Menge und mit hoher Geschwindigkeit eingelesen werden}
+  }
+
+  \question{Welchen Nachteil bietet DMA im Realzeitbetrieb}{\page{149}}
+  {
+    \normaltext{Laufende Programme, auch Interrupt Service Routinen, können durch
+                DMA verlangsamt werden}
+  }
+
+  \question{Was kann mit der Laufzeit und der Antwortzeit einer ISR durch DMA passieren}{\page{150}}
+  {
+    \normaltext{Können sich erhöhen, wenn der Bus durch DMA belegt ist}
+  }
+
   \statement{Nennen Sie die Möglichkeiten der DMA-Übertragung}{\page{147}}
   {
     \catchword{Cycle-stealing \resultol{Der Controller erhält den Bus bei Bedarf nach jedm abgeschlossenen
@@ -1337,6 +1361,12 @@
   {
     \normaltext{Jeweils nur eine. Falls mehrere DMA-Controller eingesetzt werden sollen, verwendet 
     man zu ihrer Prioritätensteuerung eine Verriegelungstechnik mit einer Daisy Chain.}
+  }
+
+  \question{Wann kann die Belastung durch DMA gegen 0 gehen}{\page{150}}
+  {
+    \normaltext{Wenn die DMA-Buszyklen immer zu Zeiten auftreten, in denen die CPU den Bus
+                sowieso nicht benötigt.}
   }
 
 
