@@ -1870,7 +1870,7 @@
     \normaltext{Aus einem Digitalwert und einer Referenzspannung wird ein analoge Ausgangsspannung gebildet.}
   }
   
-   \statement{Nennen Sie die charakteristischen Leistungsmerkmale der DAUs)}{\page{219}}
+   \statement{Nennen Sie die charakteristischen Leistungsmerkmale der DAUs}{\page{219}}
   {
     \catchword{Auflösung (8-12 Bit)}
     \catchword{Genauigkeit}
@@ -1878,7 +1878,7 @@
     
   }
   
-   \statement{Nennen Sie Fehlerquellen der DAUs)}{\page{219}}
+   \statement{Nennen Sie Fehlerquellen der DAUs}{\page{219}}
   {
     \catchword{Nullpunktverschiebung}
     \catchword{Monotoniefehler}
@@ -1887,17 +1887,33 @@
     
   }
   
-   \statement{Nennen Sie drei verschiedene geläufige Verfahren der DAU}{\pages{219}{}}
+   \statement{Nennen Sie drei verschiedene geläufige Verfahren der DAU}
+   {\pages{219}{}}
   {
     \catchword{Stromsummenwandler}
     \catchword{R-2R-Wiederstandsnetzwerke}
     \catchword{Linear-Umsetzer}    
   }
   
-   \statement{Beschreiben Sie die prinzipielle Funktionsweise des Stromsummenwandlers}{\page{219}}
+   \statement{Beschreiben Sie die prinzipielle Funktionsweise des 
+   Stromsummenwandlers}{\page{219}}
   {
-    \catchword{Referenzspannung wird mittels verschiedener Widerstände in sich um den FAktor 2 unterscheidende Ströme aufgeteilt}
-    \catchword{Die zu den Digitalsbits gehörenden Ströme werden aufsummiert und ergeben den Ausgangsstrom}
+    \catchword{Referenzspannung wird mittels verschiedener Widerstände in sich 
+    um den FAktor 2 unterscheidende Ströme aufgeteilt}
+    \catchword{Die zu den Digitalsbits gehörenden Ströme werden aufsummiert und 
+    ergeben den Ausgangsstrom}
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
   \question{Welchen Nachteil haben Multiplexer}{\page{203}}
@@ -1968,8 +1984,6 @@
     unterdrücken. Für Momentanwertmessungen muss hier immer ein Sample-an-Hold-Glied eingesetzt werden.}
   }
 
-
-  }
   
      \statement{Nennen Sie die Leistungsdaten des Stromsummenwandlers}{\page{219}}
   {
@@ -1979,7 +1993,7 @@
 
   }
   
-       \statement{Nennen Sie den Vorzteil des Stromsummenwandlers und beschreiben Sie genau sein Problem)}{\page{220}}
+       \statement{Nennen Sie den Vorzteil des Stromsummenwandlers und beschreiben Sie genau sein Problem}{\page{220}}
   {
     \catchword{geringer Aufwand: n Wiederstände (bei n Bits)}
     \catchword{Monotonie: In der Mitte des Wandlungsbrereich befinden sich die zwei Dualwerte 1000 000
@@ -1995,23 +2009,70 @@
 
   }
   
-        \statement{Skizzieren Sie den prinzipiellen Aufbau des Linear-Umsetzers )}{\page{222}}
+        \statement{Skizzieren Sie den prinzipiellen Aufbau des Linear-Umsetzers}
+        {\page{222}}
   {
     \normaltext{Siehe Bild}
 
   }
   
-         \statement{Nennen Sie die entscheidnenden Vor- und Nachteile des Linear-Umsetzers )}{\page{222}}
+         \statement{Nennen Sie die entscheidnenden Vor- und Nachteile des 
+         Linear-Umsetzers}{\page{222}}
   {
-    \catchword{Nachteil: riesiger Aufwand: für n Bits braucht man $2^n$ Wiederstände und $(2^n)-1$ Umschalter}
+    \catchword{Nachteil: riesiger Aufwand: für n Bits braucht man $2^n$ 
+    Wiederstände und $(2^n)-1$ Umschalter}
     \catchword{Sehr genau, sowohl linear als auch monoton}
 
   }
   
-    %3.2.3
-    
-    \subsubsection{Prozessanschluss}
   
+   \statement{Nennen Sie drei Verfahren um Eingangspinns bzw. Ausgangspins an 
+   dem Rechner spraren zu können}{\pages{226}{227}}
+  {
+    \catchword{Multiplexer}
+    \catchword{Kontaktmatrix, Relaismatrix}
+    \catchword{Parallelle Daten in Serielle Daten umwandeln: UARTS (Siehe S. 
+    227}
+  }
+
+  \statement{Beschreiben Sie den Aufbau der Kontaktmatrix (Rlaismatrix) und
+  Szizzieren Sie diese}{\page{226}}
+  {
+    \normaltext{Raster von Abfragekontakten, die durch Prozessgrößen (z.B. auch 
+    die Zeit) betättigt werden. Über diese Kontaktpunkte wird jeweils einer der
+    Leitungen an eine der Eingangsleitungen durchgeschaltet.}
+  }
+  
+    \question{Welchen entscheidenden Nachteil haben UARTS}{\page{226}}
+  {
+    \normaltext{Durch die Seriallisierung wird die Datenübertragung verlangsamt
+    und verzögert.}
+  }
+  
+    \statement{Beschreiben Sie die Funktionsweise und Anforderungen an die 
+    Multiplexverfahren}{\page{226}}
+  {
+    \catchword{Zeitmultiplexverfahren: die verschiedenen Daten werden in 
+    reservierten Zeitabschnitten übertragen. In der Zeit, in der Umgeschaltet 
+    wird darf sich das Signal nicbt ändern, es muss also gepuffert werden. 
+    Sender und Empfänger müssen synchron arbeiten.}
+    \catchword{Frequenzmultiplexverfahren: Jeder Kanal wird einer anderen 
+    Trägerfrequenz aufmodelliert und nach der Übertragung durch Filter wieder
+    getrennt. Die Bänder dürfen sich nicht überlagern. }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
   
   
   
@@ -2024,6 +2085,107 @@
 
   \newpage
   \section{Prozessrechner-Software}
+  
+  %4
+
+%4.1.5 Petrinetze
+
+  \question{Wozu eignen sich Petrinetze insbesondere im Gegensatz zu 
+    klassischen Strunkturierungs-Methoden von Prozessen}{\page{269}}
+  {
+    \normaltext{neben statischen Strunkturen lassen sich auch dynamische 
+   Vorgänge darstellen, sogar parallele Arbeitsschritte.}
+  }
+  
+      \question{Was wird in einem Petrinetz duch Stellen, was durch Transitionen
+      dargestellt}{\page{270}}
+  {
+    \catchword{Stellen: Zustand}
+    \catchword{Transition: Aktion}
+  }
+  
+  
+  \question{Zeichnen Sie eine Konjunktion und eine Disjunktion}{\page{270}}
+  {
+    \catchword{Konjunktion: mehrere Eingangstellen auf einen Transition}
+    \catchword{Disjunktion: mehrere Peie auf einen Stelle}
+  }
+  
+  
+  \statement{Zeichnen Sie einen Signalträger (Semaphor) in einem Petrinetz,
+  der zwei Tasks gegenseitig aus einem Kritischen Abschnitt ausschließt}
+  {\page{272}}
+  {
+    \normaltext{Bild 4.13 Seite 272 oben}
+  }
+  
+  \statement{Zeichnen Sie ein Petrinetz, das zwei Tasks symmetrisch 
+  synchronisiert}
+      {\page{273}}
+  {
+    \normaltext{Bild 4.14 Seite 273 oben, ganz links}
+  }
+  
+  \statement{Zeichnen Sie ein Petrinetz, das zwei Tasks asymmetrisch 
+  synchronisiert}
+      {\page{273}}
+  {
+    \normaltext{Bild 4.14 Seite 273 oben, Mitte}
+  }
+  
+  \statement{Zeichnen Sie ein Petrinetz, dass den Ablauf einer Interrupt-Service
+  -Routine erläutert}
+      {\page{274}}
+  {
+    \normaltext{Bild 4.15 Seite 274 oben}
+  }
+  
+  %4.2.3.2 Taskzustände
+  
+  \statement{Zeichnen Sie ein Diagramm in dem alle möglichen Zustände eines
+  Tasks und ihren Übergägnen enthalten ist}
+      {\page{291}}
+  {
+    \normaltext{Bild 4.23 Seite 291 oben}
+  }
+  
+  \statement{Beschreiben Sie den Zustand ruhend kurz}
+      {\page{290}}
+  {
+    \normaltext{Task ist vorhanden aber zur Zeit nicht zur Bearbeitung
+    vorgesehen. Sie lagern auf der Platte, es gibt ein paar Zustandsinformationen
+    und Informationen über ihren Betriebsmittelbedarf. In diesen Zusand kommen
+    sie nach ihrer Beendigung aus dem Zustand Rechnend oder nach ihrer 
+    Erstellung. Aus diesem Zustand kommt der Task in bereit, wenn er angefordert
+    wird.}
+  }
+  
+  \statement{Beschreiben Sie den Zustand bereit kurz}
+      {\page{291}}
+  {
+  \normaltext{Task besitzt alle benötigten Betriebsmittel außer die CPU. Taks 
+  befinden sich hier normalerweise in einer Warteschlange, oft auch mit
+  Prioritäten. Die Prozessverwaltung holt aus der Warteschlange die Tasks ab,
+  die dann rechnend sind. Neben den aufgerufenen ruhenden Tasks kommen auch 
+  Tasks auch rechnen nach einem Interrupt oder aus dem Zustand wartend, wenn
+  ihnen alle benötigten Betribesmittel zur Verfügung gestellt wurden.}
+  }
+  
+\statement{Beschreiben Sie den Zustand rechnend kurz}
+      {\page{291}}
+  {
+  \normaltext{Task besitzt die CPU. Es können also nur so viele Tasks wie CPUs 
+  rechnend sein. }
+  }  
+  
+  \statement{Beschreiben Sie den Zustand wartend kurz}
+      {\page{291}}
+  {
+  \normaltext{Tasks, die auf die Zuteilung von Betriebsmitteln warten. Sie 
+  können nach den Betriebsmittel sortiert sein und dort Warteschlangen bilden,
+  auch hier kann es Prioritäten geben.}
+  }
+
 
 
   \newpage
