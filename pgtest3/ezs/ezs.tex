@@ -1632,6 +1632,57 @@
     \catchword{Stelleinrichtungen: Bestehen aus mehreren Stellgeräten}
   }
 
+  \question{Was besagt das Shannon Theorem}{\pages{201}{202}}
+  {
+    \normaltext{Eine Abtastrate fs erlaubt eine informationsgetreue Umwandlung nur solcher Signale, die
+    nur Frequenzanteile bis zu einer Obergrenze $  f_m\textless f_s/2 $ enthalten.}
+  }
+  
+  \question{Wodurch wird die Frequenz begrenzt}{\page{202}}
+  {
+    \normaltext{Da während einer endlichen Zeit $ T = N/f_s $  nur N Abtastungen durchgeführt werden können,
+    wird dabei die Frequenzauflösung auf einen endlichen Bereich $ \Delta f = 2f_m/N = f_s/N = 1/T $ begrenzt.
+    Das führt zu einer oberen Frequenzgrenze $ f_{max} = f_m - \Delta f $.  }
+  }
+  
+  \question{Was tritt bei Überschreitung der Zeitauflösung auf}{\page{202}}
+  {
+    \normaltext{Es tritt der sogenannte Alias-Effekt auf, der das Vorhandensein weit niedriger Frequenzen
+    vortäuscht.}
+  }
+  
+  \question{Was kann man gegen diesen Effekt tun}{\page{202}}
+  {
+    \normaltext{Vorschalten von Filtern in Form von Tiefpässen.}
+  }
+  
+  \question{Welche Abtastfrequenzen werden bei welchem Betrieb erreicht}{\page{202}}
+  {
+    \catchword{Abrufbetrieb (Polling) \resultol{100 Hz}}
+    \catchword{Anforderungsbetrieb (mit Interrupt) \resultol{1000Hz}}
+    \catchword{Speicherdirektzugriff (DMA) \resultol 100 kHz (das ist die Grenze üblicher ADUs)}
+    \normaltext{Für höhere Abtastfrequenzen setzt man am besten einen eigenen Datenpuffer z.B. als
+    FIFO davor.}
+  }
+  
+  \question{Wozu wird ein Messstellenumschalter (Multiplexer) verwendet}{\page{203}}
+  {
+    \normaltext{Der Ausgang wird im zeitlichen Wechsel an einen der Ausgänge durchgeschaltet.}
+  }
+  
+  \question{Welche Möglichkeiten gibt es einen Multiplexer zu verwenden}{\page{203}}
+  {
+    \catchword{wahlfrei (RAM) über ein Adresswort}
+    \catchword{sequentiell (SAM)}
+  }
+  
+  \question{Welche Vor- und Nachteile hat SAM}{\page{203}}
+  {
+    \catchword{Vorteil: oft schneller, da zyklisch weitergeschaltet wird}
+    \catchword{Nachteil: Die Abtastrate geht fr jeden der Eingangskanäle in dem Maße zurück, wie die Zahl der 
+    Kanäle zunimmt.}
+  }
+
 
   \newpage
   \section{Prozessrechner-Software}
