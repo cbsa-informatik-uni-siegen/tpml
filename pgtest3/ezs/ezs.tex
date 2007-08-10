@@ -1730,11 +1730,86 @@
     \catchword{Stufenumsetzer oder Wägecodierer}
   }
 
+  \question{Was wird als Wandlungsrate bezeichnet}{\page{208}}
+  {
+    \normaltext{Die Frequenz mit der ein Umsetzer umwandeln dann, also der Kehrwert der
+                Umsetzungszeit, die durch die Laufzeiten durch die Bauteile bestimmt ist}
+  }
+
   \statement{Erklären Sie detailiert den Simultanwandler (Parallelwandler)}{\page{206}}
   {
     \normaltext{Das anliegende Eingangssignal wird gleichzeitig über eine Reihe von Komparatoren
                 (Nullwertsvergleicher) mit einer Spannungsteilerkette verglichen, die von der
-                Bezugsspannung $U_R$ gespeist wird.}
+                Bezugsspannung $U_R$ gespeist wird. Dabei liefern alle Komparatoren eine 0,
+                für die der Signalwert kleiner ist als der Vergleichswert, die übrigen eine 1.
+                An einer bestimmten Position erfolgt dabei der Umschlag von 0 nach 1. Dieser
+                \important{1-aus-m Code} wird durch ein geeignetes Codiernetz in eine Dualzahl
+                umgesetzt. Dieses Verfahren ist sehr aufwendig, da man für $n$ Bits insgesamt
+                $2^n - 1$ Komparatoren benötigt. Der Umsetzer ist sehr schnell, da der
+                Momentanwert der Eingangsspannung unmittelbar angezeigt wird. Die Eingangsspannung
+                muss nur so lange konstant bleiben, dass alle Komparatoren durchschalten können,
+                was als Aperturzeit bezeichnet wird. Die Genauigkeit der Wandlung wird fast
+                ausschließlich von der Güte der Komparatoren bestimmt}
+  }
+
+  \question{Wie groß sollten Abweichungen maximal sein}{\page{206}}
+  {
+    \normaltext{Kleiner als 1/2 LSB, damit das Ergebniss nicht verfälscht wird}
+  }
+
+  \statement{Skizzieren Sie das Blockschaltbild des Simultanwandlers} {\page{206}}
+  {
+    \normaltext{Siehe Bild 3.27 Seite 206}
+  }
+
+  \statement{Erklären Sie detailiert den Zählumsetzer}{\page{208}}
+  {
+    \normaltext{Der Zählumsetzer vergleicht die Eingangsspannung mit einer Sägezahnspannung
+                aus einem Digital-Analog-Wandler (DAU), der den Digitalwert aus einem Zähler
+                in eine Analogspannung umsetzt. Dieser Zähler kann von außen durch einen
+                Startimpuls zurückgesetzt werden und gestartet werden und zählt die Impulse
+                eines Taktgenerators solange, bis der Komparator die zählung stoppt. Danach
+                kann der Wert des Zählers ausgewertet werden. Das Auflösungsvermögen wird hier
+                durch die Taktfrequenz und die Anstiegszeiten des Sägezahns bestimmt, welche
+                wiederum durch den Umsetzungsfaktor des DAU bestimmt werden. Die Wandlungsrate
+                ist dann nicht mehr festgelegt, sondern vom Eingangssignal abhängig. Die
+                Genauigkeit ist im wesentlichen durch den DAU bestimmt.}
+  }
+
+  \statement{Skizzieren Sie das Blockschaltbild des Zählumsetzers} {\page{208}}
+  {
+    \normaltext{Siehe Bild 3.29 Seite 208}
+  }
+
+  \statement{Erklären Sie detailiert den Spannungs-Frequenz-Umsetzer}{\page{210}}
+  {
+    \normaltext{Die anliegende Spannung wird in eine Frequenz umgesetzt. Das Vefahren ist
+                nicht besonders linear. Während einer vorgegebenen Zeitspanne $t$ wird
+                ein Kondensator $C$ durch eine bezugsspannungsquelle aufgeladen, der sich
+                dann über einen Widerstand $R$ solange entlädt, bis er den Wer des Messsignals
+                ereicht hat. Der Komparator startet dann den Aufladevorgang von neuem, so dass
+                am Ausgang eine Folge von Impulsen konstanter Länge mit veränderlichen Abständen
+                entsteht. Dieser Abstand ist in etwa umgekehrt proportional zur anliegenden
+                Messspannung $U$ und damit die Impulsfolgefrequenz $f$ proportional zu $U$.
+                Die Impulsfrequenz kann dann mit einem Frequenzzähler über kürzere oder
+                längere Intervalle gemessen und dabei gemittelt werden. Damit wird auch die
+                Auflösung festgelegt, die in weiten Grenzen variiert werden kann. Die Genauigkeit
+                wird hier durch den Linearitätsfehler der Anordnung beschränkt.}
+  }
+
+  \statement{Skizzieren Sie das Blockschaltbild des Spannungs-Frequenz-Umsetzer} {\page{210}}
+  {
+    \normaltext{Siehe Bild 3.32 Seite 210}
+  }
+
+  \statement{Erklären Sie detailiert den Stufenumsetzers}{\pages{211}{212}}
+  {
+    \normaltext{ToDo}
+  }
+
+  \statement{Skizzieren Sie das Blockschaltbild des Stufenumsetzers} {\pages{211}{212}}
+  {
+    \normaltext{Siehe Bild 3.33 Seite 211}
   }
 
   \question{Was besagt das Shannon Theorem}{\pages{201}{202}}
