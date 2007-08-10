@@ -1787,6 +1787,89 @@
     \catchword{Nachteil: Die Abtastrate geht fr jeden der Eingangskanäle in dem Maße zurück, wie die Zahl der 
     Kanäle zunimmt.}
   }
+  
+  %3.2.2.3
+  
+   \question{Was ist die generelle Fun ktionsweise eines D/A-Wandlers (ein Satz)}{\page{219}}
+  {
+    \normaltext{Aus einem Digitalwert und einer Referenzspannung wird ein analoge Ausgangsspannung gebildet.}
+  }
+  
+   \statement{Nennen Sie die charakteristischen Leistungsmerkmale der DAUs)}{\page{219}}
+  {
+    \catchword{Auflösung (8-12 Bit)}
+    \catchword{Genauigkeit}
+    \catchword{Geschwindigkeit}
+    
+  }
+  
+   \statement{Nennen Sie Fehlerquellen der DAUs)}{\page{219}}
+  {
+    \catchword{Nullpunktverschiebung}
+    \catchword{Monotoniefehler}
+    \catchword{Verstärkungsfehler}
+    \catchword{Linearitätsfehler}
+    
+  }
+  
+   \statement{Nennen Sie drei verschiedene geläufige Verfahren der DAU}{\pages{219}{}}
+  {
+    \catchword{Stromsummenwandler}
+    \catchword{R-2R-Wiederstandsnetzwerke}
+    \catchword{Linear-Umsetzer}    
+  }
+  
+   \statement{Beschreiben Sie die prinzipielle Funktionsweise des Stromsummenwandlers}{\page{219}}
+  {
+    \catchword{Referenzspannung wird mittels verschiedener Widerstände in sich um den FAktor 2 unterscheidende Ströme aufgeteilt}
+    \catchword{Die zu den Digitalsbits gehörenden Ströme werden aufsummiert und ergeben den Ausgangsstrom}
+
+  }
+  
+     \statement{Nennen Sie die Leistungsdaten des Stromsummenwandlers}{\page{219}}
+  {
+    \catchword{12 Bit Auflösung}
+    \catchword{Genauigkeit: 0,025\%}
+    \catchword{Wandlungszeit: 2$\mu$sec}
+
+  }
+  
+       \statement{Nennen Sie den Vorzteil des Stromsummenwandlers und beschreiben Sie genau sein Problem)}{\page{220}}
+  {
+    \catchword{geringer Aufwand: n Wiederstände (bei n Bits)}
+    \catchword{Monotonie: In der Mitte des Wandlungsbrereich befinden sich die zwei Dualwerte 1000 000 und 0111 1111, die sich nur um ein Bit unterscheiden. Im ersten Fall wird der Strom nur duch einen Wiederstand mit 1kOhm fließen (Strom ist dann 5mA), im zweiten Fall durch alle anderen parallel fließen: Die Summe wäre 254/265*5mV = 4,98mA. Es reicht aus, wenn der erste Widerstand um mehr als 4 Ohm von seinen 1kOhm abweicht und der Strom würde kleiner als 4,8 mA, und damit läge ein Monotoniefehler vor. }
+  }
+  
+       \statement{Skizzieren Sie den prinzipiellen Aufbau des R-2R-Widerstandnetzwerkes. )}{\page{221}}
+  {
+    \normaltext{Siehe Bild}
+
+  }
+  
+        \statement{Skizzieren Sie den prinzipiellen Aufbau des Linear-Umsetzers )}{\page{222}}
+  {
+    \normaltext{Siehe Bild}
+
+  }
+  
+         \statement{Nennen Sie die entscheidnenden Vor- und Nachteile des Linear-Umsetzers )}{\page{222}}
+  {
+    \catchword{Nachteil: riesiger Aufwand: für n Bits braucht man $2^n$ Wiederstände und $(2^n)-1$ Umschalter}
+    \catchword{Sehr genau, sowohl linear als auch monoton}
+
+  }
+  
+    %3.2.3
+    
+    \subsubsection{Prozessanschluss}
+  
+  
+  
+  
+  
+  
+  
+  
 
 
   \newpage
