@@ -20,14 +20,23 @@
 
 \newindex{default}{idx}{ind}{Stichwortverzeichnis}
 
+% Mit Antworten
 \newcommand{\question}[3]{\pagebreak[3]\item {\textbf{#1?}}\ (S.\ #2)#3}
 \newcommand{\statement}[3]{\pagebreak[3]\item {\textbf{#1!}}\ (S.\ #2)#3}
+
+% Ohne Antworten
+%\newcommand{\question}[3]{\pagebreak[3]\item {\textbf{#1?}}\ (S.\ #2)}
+%\newcommand{\statement}[3]{\pagebreak[3]\item {\textbf{#1!}}\ (S.\ #2)}
+
 \newcommand{\catchword}[1]{\\-\ #1}
 \newcommand{\normaltext}[1]{\\#1}
-\newcommand{\result}[1]{\\ $\Rightarrow$\ #1}
-\newcommand{\resultol}[1]{ $\Rightarrow$\ #1}
+\newcommand{\result}[1]{\\$\Rightarrow$\ #1}
+
+\newcommand{\resultol}[1]{$\Rightarrow$\ #1}
+
 \newcommand{\page}[1]{#1}
 \newcommand{\pages}[2]{#1\ -\ #2}
+
 \newcommand{\important}[1]{\textbf{#1}}
 
 \begin{document}
@@ -1632,30 +1641,126 @@
     \catchword{Stelleinrichtungen: Bestehen aus mehreren Stellgeräten}
   }
 
+  \question{Was muss mit analogen elektrischen Eingangssignalen häufig geschehen}{\page{200}}
+  {
+    \normaltext{Eine Umsetzung in digitale, binär codierte Werte durch Analog-Digital-Umsetzer
+                oder Wandler}
+  }
+
+  \question{Wenn der Analog-Digital-Umsetzer als Prozess betrachtet wird, hat er welche Ein-
+            und Ausgänge}{\page{200}}
+  {
+    \catchword{Eingang: Zeitlich veränderliche Spannung $U(t)$}
+    \catchword{Eingang: Feste Referenzspannung $U_R$}
+    \catchword{Ausgang: Digitalwert $D(t)$}
+  }
+
+  \question{Was bestimmt das Auflösungsvermögen}{\page{200}}
+  {
+    \normaltext{Die Anzahl der ausgegebenen Digitalstellen, welche aber nicht gleichbedeutend
+                mit der Genauigkeit ist}
+  }
+
+  \question{Welche Codierung können die Ausgabewerte haben}{\page{200}}
+  {
+    \catchword{Dualzahl}
+    \catchword{Binäre Offset}
+    \catchword{2-er Komplement}
+    \catchword{1-er Komplement}
+  }
+
+  \question{Was muss bei sich schnell veränderlichen Eingangswerten getan werden}{\page{201}}
+  {
+    \normaltext{Es muss ein Speicher für den Momentanwert der Eingangsspannung eingesetzt werden,
+                der als Abtast- und Halteglied bezeichnet wird. Dabei wird die Eingangsspannung
+                zum Beispiel in einem Kondensator gespeichert. Die Öffnungszeit des Gates wird
+                als Aufnahmezeit bezeichnet.}
+  }
+
+  \question{Was wird als Haltezeit bezeichnet}{\page{201}}
+  {
+    \normaltext{Die Zeit, während der das Signal für den ADU einen konstanten Wert haben muss,
+                wird als Abtastzeit oder Aperturzeit bezeichnet}
+  }
+
+  \statement{Nennen und erklären Sie die sechs bei einem ADU auftretenden
+             Umsetzungsfehler}{\pages{204}{205}}
+  {
+    \catchword{Quantisierungsfehler: Bedingt durch die endliche Auflösung des ADU, also durch
+               die endliche Anzahl von Ausgangsbits}
+    \catchword{Verstärkunsfehler: Bezieht sich auf den nominellen Umsetzungsfaktor vom analogen
+               Eingangssignal $U$ zum digitalen Ausgabewert $D$. Kann durch Eichung immer wieder
+               neu bestimmt werden}
+    \catchword{Nullpunktsverschiebung: Systematische Verschiebung aller Ausgangswerte um einen
+               festen Betrag}
+    \catchword{Linearitätsfehler: Beschreibt die Abweichung des lokalen vom mittleren Umsetzungfaktor
+               und zeigt sich in einer gekrümmten Kennlinie}
+    \catchword{Monotoniefehler: Lokale extreme Nichtlinearitäten der Kennlinie, wo die Monotonie
+               gestört ist}
+    \catchword{Gesamtfehler (oder umgekehrt die Genauigkeit): Summe aller Einzelfehler}
+  }
+
+  \question{Worin unterscheiden sich die verschiedenen Analog-Digital-Umsetzer}{\page{205}}
+  {
+    \catchword{Realisierungsaufwand, also den entstehenden Kosten}
+    \catchword{Auflösung}
+    \catchword{Genauigkeit}
+    \catchword{Geschwindigkeit}
+  }
+
+  \question{Wie kann eine Polaritätserkennung realisiert werden}{\page{206}}
+  {
+    \catchword{Erkennung der Polarität mit einem Komparator}
+    \catchword{Dieser Komparator liefert das MSB der Daten}
+    \catchword{Der Komparator dient auch zur Auswahl des Signals bei positiver Spannung
+               oder des invertierten Signals bei negativer Spannung}
+    \catchword{Die negative Spannung wird über einen Inverter zur Verfügung gestellt}
+    \catchword{Durch dieses Vorgehen bekommt der ADU immer positive Werte und kann die
+               restlichen Bits ohne das MSB bestimmen}
+  }
+
+  \question{Welche verschiedenen Analog-Digital-Umsetzer gibt es}{\pages{206}{212}}
+  {
+    \catchword{Simultanwandler oder Parallelwandler}
+    \catchword{Sägezahnumsetzer}
+    \catchword{Zählumsetzer}
+    \catchword{Folgeumsetzer}
+    \catchword{Integrationswandler}
+    \catchword{Spannungs-Frequenz-Umsetzer}
+    \catchword{Stufenumsetzer oder Wägecodierer}
+  }
+
+  \statement{Erklären Sie detailiert den Simultanwandler (Parallelwandler)}{\page{206}}
+  {
+    \normaltext{Das anliegende Eingangssignal wird gleichzeitig über eine Reihe von Komparatoren
+                (Nullwertsvergleicher) mit einer Spannungsteilerkette verglichen, die von der
+                Bezugsspannung $U_R$ gespeist wird.}
+  }
+
   \question{Was besagt das Shannon Theorem}{\pages{201}{202}}
   {
     \normaltext{Eine Abtastrate fs erlaubt eine informationsgetreue Umwandlung nur solcher Signale, die
     nur Frequenzanteile bis zu einer Obergrenze $  f_m\textless f_s/2 $ enthalten.}
   }
-  
+
   \question{Wodurch wird die Frequenz begrenzt}{\page{202}}
   {
     \normaltext{Da während einer endlichen Zeit $ T = N/f_s $  nur N Abtastungen durchgeführt werden können,
     wird dabei die Frequenzauflösung auf einen endlichen Bereich $ \Delta f = 2f_m/N = f_s/N = 1/T $ begrenzt.
     Das führt zu einer oberen Frequenzgrenze $ f_{max} = f_m - \Delta f $.  }
   }
-  
+
   \question{Was tritt bei Überschreitung der Zeitauflösung auf}{\page{202}}
   {
     \normaltext{Es tritt der sogenannte Alias-Effekt auf, der das Vorhandensein weit niedriger Frequenzen
     vortäuscht.}
   }
-  
+
   \question{Was kann man gegen diesen Effekt tun}{\page{202}}
   {
     \normaltext{Vorschalten von Filtern in Form von Tiefpässen.}
   }
-  
+
   \question{Welche Abtastfrequenzen werden bei welchem Betrieb erreicht}{\page{202}}
   {
     \catchword{Abrufbetrieb (Polling) \resultol{100 Hz}}
@@ -1664,18 +1769,18 @@
     \normaltext{Für höhere Abtastfrequenzen setzt man am besten einen eigenen Datenpuffer z.B. als
     FIFO davor.}
   }
-  
+
   \question{Wozu wird ein Messstellenumschalter (Multiplexer) verwendet}{\page{203}}
   {
     \normaltext{Der Ausgang wird im zeitlichen Wechsel an einen der Ausgänge durchgeschaltet.}
   }
-  
+
   \question{Welche Möglichkeiten gibt es einen Multiplexer zu verwenden}{\page{203}}
   {
     \catchword{wahlfrei (RAM) über ein Adresswort}
     \catchword{sequentiell (SAM)}
   }
-  
+
   \question{Welche Vor- und Nachteile hat SAM}{\page{203}}
   {
     \catchword{Vorteil: oft schneller, da zyklisch weitergeschaltet wird}
