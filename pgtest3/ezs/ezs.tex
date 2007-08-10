@@ -1899,6 +1899,76 @@
     \catchword{Referenzspannung wird mittels verschiedener Widerstände in sich um den FAktor 2 unterscheidende Ströme aufgeteilt}
     \catchword{Die zu den Digitalsbits gehörenden Ströme werden aufsummiert und ergeben den Ausgangsstrom}
 
+
+  \question{Welchen Nachteil haben Multiplexer}{\page{203}}
+  {
+    \normaltext{Da im Multiplexverfahren die Messsignale nacheinander umgewandelt werden, können unter Umständen
+    zeitliche Beziehungen verloren gehen; z.B. wenn man die WErt von verschiedenen Messstellen für exakt den selben
+    Zeitpunkt wissen möchte.}
+  }
+
+\statement{Skizzieren Sie das Blockschaltbild des Sägezahnumsetzers}{\page{207}}
+  {
+    siehe Bild 3.28, Seite 207
+  }
+
+  \statement{Erklären Sie detailiert den Sägezahnumsetzer}{\page{207}}
+  {
+    \normaltext{Die Signalspannung wird durch einen einzigen Komperator mit der zeitlinear 
+    ansteigenden Spannung eines Sägezahngenerators verglichen. Beim Start des Sägezahns wird
+    ein Zähler zurückgesetzt, und zählt dann die Taktimpulse bis der Komperator feststelle,
+    dass die ansteigende Spannung gleich der Messspannung ist. Damit ist die Anzahl der 
+    gezählten Impulse ein Maß für die Eingangsspannung. (vgl. Bild 3.28)
+    Die Wandlungsrate ist hier durch die Frequenz des Sägezahns festgelegt. Die Auflösung kann
+    fast beliebig groß gemacht werden, denn sie wird durch die Taktfrequenz für den Zähler und
+    die Periodendauer des Sägezahns bestimmt. Auflösungen bis zu 20 bit sind hier möglich. Die
+    Genauigkeit hängt aber im wesentlichen von der Linearität des Sägezahns ab, im geringeren
+    Umfang auch von der Frequenzstabilität des Taktgenerators. Ein besonderer Nachteil ist die
+    große Totzeit, die entsteht, wenn der Sägezahn nach Beendigung der Zählung bis zum Ende
+    durchlaufen muss. Auch kann er meißt nicht von außen gestartet werden, sonder bestimmt selber
+    Beginn und Ende der Umsetzung, kann das aber durch ein BUSY-Signal mitteilen.}
+  }
+  
+  \statement{Skizzieren Sie das Blockschaltbild des Folgeumsetzer}{\page{208}}
+  {
+    siehe Bild 3.30, Seite 207
+  }
+  
+  \statement{Erklären Sie detailiert den Folgeumsetzer}{\page{208}}
+  {
+    \normaltext{Der Folgeumsetzer ist eine Variante des Zählumsetzers, bei der der Zähler als
+    Vorwärts-/Rückwärtszähler ausgelegt ist und durch den Komperator richtungsgesteuert wird.
+    Wenn der Signalwert sich nicht zu schnell ändert, liegt hier immer ein Momentanwert wor.
+    Falls die Abweichung von Signal- und Vergleichsspannung betragsmäßig einen bestimmten Wert
+    überschreitet, liefert der Umsetzer ein BUSY-Signal, umd dies zu melden.}
+  }
+  
+  \statement{Skizzieren Sie das Blockschaltbild des Integrationswandlers}{\page{209}}
+  {
+    siehe Bild 3.31, Seite 209
+  }
+  
+  \statement{Erklären Sie detailiert den Integrationswandler nach dem Zwei-Rampen-Verfahren}{\pages{208}{210}}
+  {
+    \normaltext{Beim Integrationswandler nach dem Zwei-Rampe-Verfahren (engl.: dual slope) wird
+    das Messsignal über einen festen Zeitraum $t_1 = N*T$ integriert, welcher durch einen zentralen 
+    Takt bestimmt wird. Dabei wird ein Kondensator C auf eine Spannung $U_C$ aufgeladen, die exakt
+    dem Mittelwert der Messspannung $U_x$ während der Zeit $t_1$ entspricht. Anschließend wird der
+    Kondensator durch die Bezugsspannungsquelle $U_R$ entladen, und die dazu benötigte Zeit
+    $t_2 = x*T$ durch mitzählen der Taktimpulse gemessen. Man erhält daraus den Messwert 
+    $U_x = U_R * x/N$ wobei sich alle übrigen Gerätegrößen (R, C, T) herausheben, wenn sie während
+    der Messzeit konstant sind. Dadurch wird dieses Verfahren sehr genau.
+    Auch die Auflösung ist sehr gut, wenn man mit einer genügend hohen Taktfrequenz arbeitet,
+    typischerweise 1MHz, die durch den DAU begrenzt wird. 
+    Die Besonderheit bei diesem Verfahren liegt darin, dass durch die Integration ein Mittelwert
+    über einen größeren Zeitraum gebildet wird, und deabei Schankungen und Störungen des Messsignals
+    herausgemittelt werden.
+    Da kleinen Signalen oft eine Störung durch das Versorgungsnetz mit 50 Hz überlagert ist, kann man
+    mit Messzeiten, die ein Vielfaches der Periodendauer von 20 msec sind, diese Störungen weitgehend
+    unterdrücken. Für Momentanwertmessungen muss hier immer ein Sample-an-Hold-Glied eingesetzt werden.}
+  }
+
+
   }
   
      \statement{Nennen Sie die Leistungsdaten des Stromsummenwandlers}{\page{219}}
@@ -1912,7 +1982,11 @@
        \statement{Nennen Sie den Vorzteil des Stromsummenwandlers und beschreiben Sie genau sein Problem)}{\page{220}}
   {
     \catchword{geringer Aufwand: n Wiederstände (bei n Bits)}
-    \catchword{Monotonie: In der Mitte des Wandlungsbrereich befinden sich die zwei Dualwerte 1000 000 und 0111 1111, die sich nur um ein Bit unterscheiden. Im ersten Fall wird der Strom nur duch einen Wiederstand mit 1kOhm fließen (Strom ist dann 5mA), im zweiten Fall durch alle anderen parallel fließen: Die Summe wäre 254/265*5mV = 4,98mA. Es reicht aus, wenn der erste Widerstand um mehr als 4 Ohm von seinen 1kOhm abweicht und der Strom würde kleiner als 4,8 mA, und damit läge ein Monotoniefehler vor. }
+    \catchword{Monotonie: In der Mitte des Wandlungsbrereich befinden sich die zwei Dualwerte 1000 000
+    und 0111 1111, die sich nur um ein Bit unterscheiden. Im ersten Fall wird der Strom nur duch einen
+    Wiederstand mit 1kOhm fließen (Strom ist dann 5mA), im zweiten Fall durch alle anderen parallel fließen:
+    Die Summe wäre 254/265*5mV = 4,98mA. Es reicht aus, wenn der erste Widerstand um mehr als 4 Ohm von
+    seinen 1kOhm abweicht und der Strom würde kleiner als 4,8 mA, und damit läge ein Monotoniefehler vor.}
   }
   
        \statement{Skizzieren Sie den prinzipiellen Aufbau des R-2R-Widerstandnetzwerkes. )}{\page{221}}
@@ -1945,6 +2019,7 @@
   
   
   
+
 
 
   \newpage
