@@ -1641,6 +1641,43 @@
     \catchword{Stelleinrichtungen: Bestehen aus mehreren Stellgeräten}
   }
 
+  \question{Nach ihrem Verhalten charakterisiert man unterschiedliche Stellgliedern}{\pages{216}{217}}
+  {
+    \catchword{Statisch: Durch eine Kennlinie gekennzeichnet}
+    \catchword{Stetig: Monotone und stegie Kennlinie}
+    \catchword{Schaltend: Ausgangsgröße kann nur diskrete Werte annehmen}
+    \catchword{Dynamisch: Gekennzeichnet durch eine (meist komplexe) Übertragungsfunktion}
+  }
+
+  \question{Welche zwei wichtigen Änderungen einer Eingangsgöße gibt es}{\page{217}}
+  {
+    \catchword{Impulsantwort}
+    \catchword{Sprungantwort}
+  }
+
+  \question{Welche Impulsantworten unterscheidet man}{\page{217}}
+  {
+    \catchword{Geräte mit Speicherverhalten: Verharren in der angenommenen Stellung
+               auch wenn keine Steuereinwrikung mehr vorliegt}
+    \catchword{Geräte mit Haftverhalten: Zeigen ein Speicherverhalten, das von einer
+               Hilfsenergie unabhängig ist}
+    \catchword{Geräte ohne Speicherverhalten: Kehren bei Ausfall der Steuerung oder der
+               Hilfsenergie in eine Grundstellung oder Ruhelage zurück}
+  }
+
+  \question{Welche Sprungantworten unterscheidet man}{\page{218}}
+  {
+    \catchword{Proportionalverhalten: Die Ausgangsgröße ist proportional zur Eingangsgröße}
+    \catchword{Differenzierverhalten: Die Ausgangsgröße reagiert nur kurz auf die Änderung
+               der Eingangsgröße}
+    \catchword{Integrierverhalten: Die Ausgangsgröße wächst an, solange das Eingangssignal
+               anliegt}
+    \catchword{Kriechverhalten: Das Ausgangssignal nimmt nur langsam seinen Endwert an}
+    \catchword{Überschwingen: Das Ausgangssignal schießt über seinen Endwert hinaus und
+               pendelt sich dann auf diesen ein}
+    \catchword{Verzögerungsverhalten: Das Ausgangssignal reagiert erst nach einer Verzögerung}
+  }
+
   \question{Was muss mit analogen elektrischen Eingangssignalen häufig geschehen}{\page{200}}
   {
     \normaltext{Eine Umsetzung in digitale, binär codierte Werte durch Analog-Digital-Umsetzer
@@ -1804,7 +1841,15 @@
 
   \statement{Erklären Sie detailiert den Stufenumsetzers}{\pages{211}{212}}
   {
-    \normaltext{ToDo}
+    \normaltext{Der Stufenumsetzer arbeitet nach dem Prinzip der sukzessiven Aproximation. Ein DAU
+                wird für die Erzeugung einer Vergleichsspannung eingesetzt, aber nicht einfach linear
+                durchfahren. Stattdessen wird bitweise sukkzessiv abgeglichen. Dabei wird zuerst das
+                MSB bestimmt, indem es zunächst versuchsweise gesetzt wird. Die vom DAU erzeugte
+                Spannung wird dann mit einem Komparator verglichen. Wenn die vom DAU erzeugte Spannung
+                größer als die Eingangsspannung ist, wird das Bit wieder gelöscht, ansonsten bleibt
+                es erhalten. Da hier der Signalwert innerhalb weniger Schritte erreicht wird, nämlich
+                gerade so vieler, wie die Auflösung beträgt. Während der Zeit des Umwandels muss das
+                Eingangssignal konstant bleiben.}
   }
 
   \statement{Skizzieren Sie das Blockschaltbild des Stufenumsetzers} {\pages{211}{212}}
@@ -2024,6 +2069,129 @@
     \catchword{Sehr genau, sowohl linear als auch monoton}
 
   }
+
+
+
+  \question{Wie können Geräte im einfachsten Fall an die Zentraleinheit angeschlossen
+            werden}{\page{236}}
+  {
+    \normaltext{Sternförmig, so dass die Geräte keine Verbindung untereinander haben, aber
+                an die Zentraleinheit angeschlossen sind}
+  }
+
+  \question{Welche Komponenten eines Prozessrechners müssen an die Anforderungen
+            des technischen Prozesses angepasst werden}{\page{240}}
+  {
+    \catchword{CPU}
+    \catchword{Speichergröße}
+    \catchword{Standardperipherie}
+    \catchword{Prozessperipherie}
+  }
+
+  \question{Welcher Ablauf ist für die Planung der Konfiguration typisch}{\page{240}}
+  {
+    \catchword{Voruntersuchung: Kosten-Nutzen-Analyse}
+    \catchword{Istaufnahme: Der zu lenkende Prozess wird untersucht}
+    \result{Schema: Messaufgaben, Steuerungsaufgaben, Bedienungsaufgaben und Sicherheitsfragen}
+    \catchword{Sollkonzept: Pfichtenheft wird erstellt}
+    \catchword{Beschaffung: Durch eine gezielte Ausschreibung}
+  }
+
+  \statement{Nennen Sie die zwei Problemgruppen bezüglich der Betriebssicherheit}{\page{241}}
+  {
+    \catchword{Sicherheit bei der Verarbeitung: Zuverlässigkeit und Störungsfreiheit im Betrieb}
+    \catchword{Sicherheit für die Umgebung: Gefährdung von Gesundheit und Leben}
+  }
+
+  \statement{Geben Sie die verschiedenen möglichen Störungen an}{\page{241}}
+  {
+    \catchword{Netzausfall}
+    \catchword{Verfälschung der Daten}
+    \catchword{Temporäre Hardware-Fehler}
+    \catchword{Permanente Hardware-Fehler}
+    \catchword{Permanente Software-Fehler}
+  }
+
+  \question{Was versteht man unter der Failsafe-Technik}{\page{241}}
+  {
+    \normaltext{Eine Strategie zur Entschärfung von Gefahren, die erreichen soll,
+                dass im Fehlerfall alle Systeme oder Einzelgruppen in einen sicheren
+                Zustand übergehen. Das wird auch als \important{inhärente} Sicherheit
+                bezeichnet. Was dabei ein sicherer Zustand ist, hängt vom Prozess ab.}
+  }
+
+  \question{Was versteht man unter dem Watchdog-Verfahren}{\page{242}}
+  {
+    \normaltext{In vorgegebenen zeitlichen Abständen müssen bestimmte Aktionen erfolgen.
+                Bleiben diese aus, wird dies als Fehler registriert, der dann behandelt
+                werden muss.}
+  }
+
+  \question{Wie ist die Zuverlässigkeit definiert}{\page{242}}
+  {
+    \normaltext{Die Zuverlässigkeit ist die Eigenschaft, dass sich ein System innerhalb
+                vorgegebener Grenzen bewegt und seine Aufgaben somit erfüllt.}
+  }
+
+  \question{Was wird danach als Fehler bezeichnet}{\page{242}}
+  {
+    \normaltext{Eine unzulässige Abweichung vom Sollwert}
+  }
+
+  \question{Welche zwei Arten von Ausfällen gibt es}{\page{242}}
+  {
+    \catchword{Driftausfall: Wenn sich der Ausfall vorher durch Fehler bemerkbar macht}
+    \catchword{Sprungausfall: Wenn der Ausfall unvorhersagbar eintritt}
+  }
+
+  \statement{Erklären sie die Kurze der Ausfallrate}{\pages{244}{245}}
+  {
+    \catchword{Am Anfang durch Frühausfälle relativ hoch}
+    \catchword{Im mittleren Bereich nur statistische Ausfälle}
+    \catchword{Am Ende setzen sich Verschleißausfälle durch}
+  }
+
+  \question{Wie verhält sich die Reparaturrate bezüglich der Ausfallrate}{\page{244}}
+  {
+    \normaltext{Sie zeigt ein entgegengesetztes Verhalten}
+  }
+
+  \question{Was kann die Lebensdauer eines Systems verringern}{\page{245}}
+  {
+    \catchword{Überlastung}
+    \catchword{Unterlastung unter Umständen auch}
+  }
+
+  \question{Durch welche zwei Schaltungen kann die Gesamtverfügbarkeit beschrieben
+            werden}{\page{245}}
+  {
+    \catchword{Serienschaltung: Das System fällt aus, wenn ein Gerät ausfällt}
+    \catchword{Parallelschaltung: Das System bleibt verfügbar, solange mindestens ein
+               Gerät funktioniert}
+  }
+
+  \question{Wie kann die Zuverlässigkeit eines Systems erhöht werden}{\page{248}}
+  {
+    \catchword{Einheiten mit genügend Reserve}
+    \catchword{Ausreichende Kühlung}
+    \catchword{Vorbeugende Wartung}
+  }
+
+  \statement{Erklären Sie die drei Arten der Reserve}{\page{249}}
+  {
+    \catchword{Kalte Reserve: Reservegerät ist nicht in Betrieb}
+    \catchword{Warme Reserve: Reservegerät ist betriebsbereit angeschlossen und
+               in Wartestellung}
+    \catchword{Heiße Reserve: Reservegerät ist bereit parallel in Betrieb}
+  }
+
+  \statement{Erklären Sie das Prinzip der Mehrheitsentscheidung}{\page{250}}
+  {
+    \normaltext{Aufgaben werden auf unterschidlichen Rechnern mit unterschiedlicher Hard-
+                und Software berechnet. Nach der Berechnung werden die Ergebnisse verglichen
+                und es wird eine Mehrheitsentscheidnung getroffen.}
+  }
+
   
   
    \statement{Nennen Sie drei Verfahren um Eingangspinns bzw. Ausgangspins an 
