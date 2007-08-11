@@ -1415,11 +1415,11 @@
   \statement{Beschreiben Sie grundlegend die Aufgaben einer Messkette}{\page{190}}
   {
     \normaltext{An der Messstelle wird die Messgröße erfasst, die eventuell dann 
-              transformiert werden muss. Das Messgerät setzt den Messwert in ein Signal
-              um, das leicht weiterverarbeitet werden kann. Das Messgerät besteht
-              aus zwei Komponenten:}
+               transformiert werden muss. Das Messgerät setzt den Messwert in ein Signal
+               um, das leicht weiterverarbeitet werden kann. Das Messgerät besteht
+               aus zwei Komponenten:}
     \catchword{Messfühler: er setzt die Messgröße durch Ausnutzen naturwissenschaftlicher
-             Gesetzmäßigkeiten in leichter erfassbare Größen um. Z.B.: Druck/Temperatur in einen Weg} 
+               Gesetzmäßigkeiten in leichter erfassbare Größen um. Z.B.: Druck/Temperatur in einen Weg} 
     \catchword{Messwandler: einen Weiter Umwandlung mit dem Ergebnis eines meist elektrischen
                Signals, das gut übertragen werden kann.}
     \normaltext{Zuletzt wird das analoge elektrische Signal mittels A/D-Wandler in ein digitales
@@ -1596,7 +1596,7 @@
   {
     \catchword{Primäre Stellgrößen: Wirken direkt auf die Prozessgrößen}
     \catchword{Sekundäre Stellgrößen: Wirken auf den Stellantrieb, der seinerseits
-              ein primäres Stellglied betätigt}
+               ein primäres Stellglied betätigt}
   }
 
   \question{Wie unterscheidet man Stellgrößen nach der technischen Natur}{\page{214}}
@@ -1860,20 +1860,21 @@
   \question{Was besagt das Shannon Theorem}{\pages{201}{202}}
   {
     \normaltext{Eine Abtastrate fs erlaubt eine informationsgetreue Umwandlung nur solcher Signale, die
-    nur Frequenzanteile bis zu einer Obergrenze $  f_m\textless f_s/2 $ enthalten.}
+                nur Frequenzanteile bis zu einer Obergrenze $  f_m\textless f_s/2 $ enthalten.}
   }
 
   \question{Wodurch wird die Frequenz begrenzt}{\page{202}}
   {
-    \normaltext{Da während einer endlichen Zeit $ T = N/f_s $  nur N Abtastungen durchgeführt werden können,
-    wird dabei die Frequenzauflösung auf einen endlichen Bereich $ \Delta f = 2f_m/N = f_s/N = 1/T $ begrenzt.
-    Das führt zu einer oberen Frequenzgrenze $ f_{max} = f_m - \Delta f $.  }
+    \normaltext{Da während einer endlichen Zeit $ T = N/f_s $  nur N Abtastungen durchgeführt
+                werden können, wird dabei die Frequenzauflösung auf einen endlichen Bereich
+                $ \Delta f = 2f_m/N = f_s/N = 1/T $ begrenzt. Das führt zu einer oberen
+                Frequenzgrenze $ f_{max} = f_m - \Delta f $.  }
   }
 
   \question{Was tritt bei Überschreitung der Zeitauflösung auf}{\page{202}}
   {
-    \normaltext{Es tritt der sogenannte Alias-Effekt auf, der das Vorhandensein weit niedriger Frequenzen
-    vortäuscht.}
+    \normaltext{Es tritt der sogenannte Alias-Effekt auf, der das Vorhandensein weit niedriger
+                Frequenzen vortäuscht.}
   }
 
   \question{Was kann man gegen diesen Effekt tun}{\page{202}}
@@ -1887,7 +1888,7 @@
     \catchword{Anforderungsbetrieb (mit Interrupt) \resultol{1000Hz}}
     \catchword{Speicherdirektzugriff (DMA) \resultol 100 kHz (das ist die Grenze üblicher ADUs)}
     \normaltext{Für höhere Abtastfrequenzen setzt man am besten einen eigenen Datenpuffer z.B. als
-    FIFO davor.}
+                FIFO davor.}
   }
 
   \question{Wozu wird ein Messstellenumschalter (Multiplexer) verwendet}{\page{203}}
@@ -1905,155 +1906,145 @@
   {
     \catchword{Vorteil: oft schneller, da zyklisch weitergeschaltet wird}
     \catchword{Nachteil: Die Abtastrate geht fr jeden der Eingangskanäle in dem Maße zurück, wie die Zahl der 
-    Kanäle zunimmt.}
+               Kanäle zunimmt.}
   }
-  
-  %3.2.2.3
-  
-   \question{Was ist die generelle Fun ktionsweise eines D/A-Wandlers (ein Satz)}{\page{219}}
+
+  \question{Was ist die generelle Fun ktionsweise eines D/A-Wandlers (ein Satz)}{\page{219}}
   {
     \normaltext{Aus einem Digitalwert und einer Referenzspannung wird ein analoge Ausgangsspannung gebildet.}
   }
-  
-   \statement{Nennen Sie die charakteristischen Leistungsmerkmale der DAUs)}{\page{219}}
+
+  \statement{Nennen Sie die charakteristischen Leistungsmerkmale der DAUs)}{\page{219}}
   {
     \catchword{Auflösung (8-12 Bit)}
     \catchword{Genauigkeit}
     \catchword{Geschwindigkeit}
-    
   }
-  
-   \statement{Nennen Sie Fehlerquellen der DAUs)}{\page{219}}
+
+  \statement{Nennen Sie Fehlerquellen der DAUs)}{\page{219}}
   {
     \catchword{Nullpunktverschiebung}
     \catchword{Monotoniefehler}
     \catchword{Verstärkungsfehler}
     \catchword{Linearitätsfehler}
-    
   }
-  
-   \statement{Nennen Sie drei verschiedene geläufige Verfahren der DAU}{\pages{219}{}}
+
+  \statement{Nennen Sie drei verschiedene geläufige Verfahren der DAU}{\pages{219}{}}
   {
     \catchword{Stromsummenwandler}
     \catchword{R-2R-Wiederstandsnetzwerke}
     \catchword{Linear-Umsetzer}    
   }
-  
-   \statement{Beschreiben Sie die prinzipielle Funktionsweise des Stromsummenwandlers}{\page{219}}
-  {
-    \catchword{Referenzspannung wird mittels verschiedener Widerstände in sich um den FAktor 2 unterscheidende Ströme aufgeteilt}
-    \catchword{Die zu den Digitalsbits gehörenden Ströme werden aufsummiert und ergeben den Ausgangsstrom}
 
+  \statement{Beschreiben Sie die prinzipielle Funktionsweise des Stromsummenwandlers}{\page{219}}
+  {
+    \catchword{Referenzspannung wird mittels verschiedener Widerstände in sich um den Faktor 2
+               unterscheidende Ströme aufgeteilt}
+    \catchword{Die zu den Digitalsbits gehörenden Ströme werden aufsummiert und ergeben den Ausgangsstrom}
+  }
 
   \question{Welchen Nachteil haben Multiplexer}{\page{203}}
   {
-    \normaltext{Da im Multiplexverfahren die Messsignale nacheinander umgewandelt werden, können unter Umständen
-    zeitliche Beziehungen verloren gehen; z.B. wenn man die WErt von verschiedenen Messstellen für exakt den selben
-    Zeitpunkt wissen möchte.}
+    \normaltext{Da im Multiplexverfahren die Messsignale nacheinander umgewandelt werden, können
+                unter Umständen zeitliche Beziehungen verloren gehen; z.B. wenn man die Wert von
+                verschiedenen Messstellen für exakt den selben Zeitpunkt wissen möchte.}
   }
 
-\statement{Skizzieren Sie das Blockschaltbild des Sägezahnumsetzers}{\page{207}}
+  \statement{Skizzieren Sie das Blockschaltbild des Sägezahnumsetzers}{\page{207}}
   {
-    siehe Bild 3.28, Seite 207
+    \normaltext{siehe Bild 3.28, Seite 207}
   }
 
   \statement{Erklären Sie detailiert den Sägezahnumsetzer}{\page{207}}
   {
     \normaltext{Die Signalspannung wird durch einen einzigen Komperator mit der zeitlinear 
-    ansteigenden Spannung eines Sägezahngenerators verglichen. Beim Start des Sägezahns wird
-    ein Zähler zurückgesetzt, und zählt dann die Taktimpulse bis der Komperator feststelle,
-    dass die ansteigende Spannung gleich der Messspannung ist. Damit ist die Anzahl der 
-    gezählten Impulse ein Maß für die Eingangsspannung. (vgl. Bild 3.28)
-    Die Wandlungsrate ist hier durch die Frequenz des Sägezahns festgelegt. Die Auflösung kann
-    fast beliebig groß gemacht werden, denn sie wird durch die Taktfrequenz für den Zähler und
-    die Periodendauer des Sägezahns bestimmt. Auflösungen bis zu 20 bit sind hier möglich. Die
-    Genauigkeit hängt aber im wesentlichen von der Linearität des Sägezahns ab, im geringeren
-    Umfang auch von der Frequenzstabilität des Taktgenerators. Ein besonderer Nachteil ist die
-    große Totzeit, die entsteht, wenn der Sägezahn nach Beendigung der Zählung bis zum Ende
-    durchlaufen muss. Auch kann er meißt nicht von außen gestartet werden, sonder bestimmt selber
-    Beginn und Ende der Umsetzung, kann das aber durch ein BUSY-Signal mitteilen.}
+                ansteigenden Spannung eines Sägezahngenerators verglichen. Beim Start des Sägezahns wird
+                ein Zähler zurückgesetzt, und zählt dann die Taktimpulse bis der Komperator feststelle,
+                dass die ansteigende Spannung gleich der Messspannung ist. Damit ist die Anzahl der 
+                gezählten Impulse ein Maß für die Eingangsspannung. (vgl. Bild 3.28)
+                Die Wandlungsrate ist hier durch die Frequenz des Sägezahns festgelegt. Die Auflösung kann
+                fast beliebig groß gemacht werden, denn sie wird durch die Taktfrequenz für den Zähler und
+                die Periodendauer des Sägezahns bestimmt. Auflösungen bis zu 20 bit sind hier möglich. Die
+                Genauigkeit hängt aber im wesentlichen von der Linearität des Sägezahns ab, im geringeren
+                Umfang auch von der Frequenzstabilität des Taktgenerators. Ein besonderer Nachteil ist die
+                große Totzeit, die entsteht, wenn der Sägezahn nach Beendigung der Zählung bis zum Ende
+                durchlaufen muss. Auch kann er meißt nicht von außen gestartet werden, sonder bestimmt selber
+                Beginn und Ende der Umsetzung, kann das aber durch ein BUSY-Signal mitteilen.}
   }
-  
+
   \statement{Skizzieren Sie das Blockschaltbild des Folgeumsetzer}{\page{208}}
   {
-    siehe Bild 3.30, Seite 207
+    \normaltext{siehe Bild 3.30, Seite 207}
   }
-  
+
   \statement{Erklären Sie den Folgeumsetzer}{\page{208}}
   {
     \normaltext{Der Folgeumsetzer ist eine Variante des Zählumsetzers, bei der der Zähler als
-    Vorwärts-/Rückwärtszähler ausgelegt ist und durch den Komperator richtungsgesteuert wird.
-    Wenn der Signalwert sich nicht zu schnell ändert, liegt hier immer ein Momentanwert wor.
-    Falls die Abweichung von Signal- und Vergleichsspannung betragsmäßig einen bestimmten Wert
-    überschreitet, liefert der Umsetzer ein BUSY-Signal, umd dies zu melden.}
+                Vorwärts-/Rückwärtszähler ausgelegt ist und durch den Komperator richtungsgesteuert wird.
+                Wenn der Signalwert sich nicht zu schnell ändert, liegt hier immer ein Momentanwert wor.
+                Falls die Abweichung von Signal- und Vergleichsspannung betragsmäßig einen bestimmten Wert
+                überschreitet, liefert der Umsetzer ein BUSY-Signal, umd dies zu melden.}
   }
-  
+
   \statement{Skizzieren Sie das Blockschaltbild des Integrationswandlers}{\page{209}}
   {
-    siehe Bild 3.31, Seite 209
+    \normaltext{siehe Bild 3.31, Seite 209}
   }
-  
+
   \statement{Erklären Sie detailiert den Integrationswandler nach dem Zwei-Rampen-Verfahren}{\pages{208}{210}}
   {
     \normaltext{Beim Integrationswandler nach dem Zwei-Rampe-Verfahren (engl.: dual slope) wird
-    das Messsignal über einen festen Zeitraum $t_1 = N*T$ integriert, welcher durch einen zentralen 
-    Takt bestimmt wird. Dabei wird ein Kondensator C auf eine Spannung $U_C$ aufgeladen, die exakt
-    dem Mittelwert der Messspannung $U_x$ während der Zeit $t_1$ entspricht. Anschließend wird der
-    Kondensator durch die Bezugsspannungsquelle $U_R$ entladen, und die dazu benötigte Zeit
-    $t_2 = x*T$ durch mitzählen der Taktimpulse gemessen. Man erhält daraus den Messwert 
-    $U_x = U_R * x/N$ wobei sich alle übrigen Gerätegrößen (R, C, T) herausheben, wenn sie während
-    der Messzeit konstant sind. Dadurch wird dieses Verfahren sehr genau.
-    Auch die Auflösung ist sehr gut, wenn man mit einer genügend hohen Taktfrequenz arbeitet,
-    typischerweise 1MHz, die durch den DAU begrenzt wird. 
-    Die Besonderheit bei diesem Verfahren liegt darin, dass durch die Integration ein Mittelwert
-    über einen größeren Zeitraum gebildet wird, und deabei Schankungen und Störungen des Messsignals
-    herausgemittelt werden.
-    Da kleinen Signalen oft eine Störung durch das Versorgungsnetz mit 50 Hz überlagert ist, kann man
-    mit Messzeiten, die ein Vielfaches der Periodendauer von 20 msec sind, diese Störungen weitgehend
-    unterdrücken. Für Momentanwertmessungen muss hier immer ein Sample-an-Hold-Glied eingesetzt werden.}
+                das Messsignal über einen festen Zeitraum $t_1 = N*T$ integriert, welcher durch
+                einen zentralen Takt bestimmt wird. Dabei wird ein Kondensator C auf eine Spannung
+                $U_C$ aufgeladen, die exakt dem Mittelwert der Messspannung $U_x$ während der Zeit $t_1$
+                entspricht. Anschließend wird der Kondensator durch die Bezugsspannungsquelle $U_R$
+                entladen, und die dazu benötigte Zeit $t_2 = x*T$ durch mitzählen der Taktimpulse gemessen.
+                Man erhält daraus den Messwert $U_x = U_R * x/N$ wobei sich alle übrigen Gerätegrößen
+                (R, C, T) herausheben, wenn sie während der Messzeit konstant sind. Dadurch wird dieses
+                Verfahren sehr genau. Auch die Auflösung ist sehr gut, wenn man mit einer genügend hohen
+                Taktfrequenz arbeitet, typischerweise 1MHz, die durch den DAU begrenzt wird. Die Besonderheit
+                bei diesem Verfahren liegt darin, dass durch die Integration ein Mittelwert über einen größeren
+                Zeitraum gebildet wird, und deabei Schankungen und Störungen des Messsignals herausgemittelt
+                werden. Da kleinen Signalen oft eine Störung durch das Versorgungsnetz mit 50 Hz überlagert ist,
+                kann man mit Messzeiten, die ein Vielfaches der Periodendauer von 20 msec sind, diese Störungen
+                weitgehend unterdrücken. Für Momentanwertmessungen muss hier immer ein Sample-an-Hold-Glied
+                eingesetzt werden.}
   }
 
-
-  }
-  
-     \statement{Nennen Sie die Leistungsdaten des Stromsummenwandlers}{\page{219}}
+  \statement{Nennen Sie die Leistungsdaten des Stromsummenwandlers}{\page{219}}
   {
     \catchword{12 Bit Auflösung}
     \catchword{Genauigkeit: 0,025\%}
     \catchword{Wandlungszeit: 2$\mu$sec}
-
   }
-  
-       \statement{Nennen Sie den Vorzteil des Stromsummenwandlers und beschreiben Sie genau sein Problem)}{\page{220}}
+
+  \statement{Nennen Sie den Vorzteil des Stromsummenwandlers und beschreiben Sie
+             genau sein Problem)}{\page{220}}
   {
     \catchword{geringer Aufwand: n Wiederstände (bei n Bits)}
     \catchword{Monotonie: In der Mitte des Wandlungsbrereich befinden sich die zwei Dualwerte 1000 000
-    und 0111 1111, die sich nur um ein Bit unterscheiden. Im ersten Fall wird der Strom nur duch einen
-    Wiederstand mit 1kOhm fließen (Strom ist dann 5mA), im zweiten Fall durch alle anderen parallel fließen:
-    Die Summe wäre 254/265*5mV = 4,98mA. Es reicht aus, wenn der erste Widerstand um mehr als 4 Ohm von
-    seinen 1kOhm abweicht und der Strom würde kleiner als 4,8 mA, und damit läge ein Monotoniefehler vor.}
+               und 0111 1111, die sich nur um ein Bit unterscheiden. Im ersten Fall wird der Strom nur
+               durch einen Wiederstand mit 1kOhm fließen (Strom ist dann 5mA), im zweiten Fall durch alle
+               anderen parallel fließen: Die Summe wäre 254/265*5mV = 4,98mA. Es reicht aus, wenn der erste
+               Widerstand um mehr als 4 Ohm von seinen 1kOhm abweicht und der Strom würde kleiner als 4,8 mA,
+               und damit läge ein Monotoniefehler vor.}
   }
-  
-       \statement{Skizzieren Sie den prinzipiellen Aufbau des R-2R-Widerstandnetzwerkes. )}{\page{221}}
+
+  \statement{Skizzieren Sie den prinzipiellen Aufbau des R-2R-Widerstandnetzwerkes. )}{\page{221}}
   {
     \normaltext{Siehe Bild}
-
   }
-  
-        \statement{Skizzieren Sie den prinzipiellen Aufbau des Linear-Umsetzers )}{\page{222}}
+
+  \statement{Skizzieren Sie den prinzipiellen Aufbau des Linear-Umsetzers )}{\page{222}}
   {
     \normaltext{Siehe Bild}
-
   }
-  
-         \statement{Nennen Sie die entscheidnenden Vor- und Nachteile des Linear-Umsetzers )}{\page{222}}
+
+  \statement{Nennen Sie die entscheidnenden Vor- und Nachteile des Linear-Umsetzers )}{\page{222}}
   {
     \catchword{Nachteil: riesiger Aufwand: für n Bits braucht man $2^n$ Wiederstände und $(2^n)-1$ Umschalter}
     \catchword{Sehr genau, sowohl linear als auch monoton}
-
   }
-
-
 
   \question{Wie können Geräte im einfachsten Fall an die Zentraleinheit angeschlossen
             werden}{\page{236}}
@@ -2175,14 +2166,14 @@
                 und es wird eine Mehrheitsentscheidnung getroffen.}
   }
 
-  
-   \question{Was wird durch die Art einer Übertragungsleitung bestimmt}{\page{229}}
+  \question{Was wird durch die Art einer Übertragungsleitung bestimmt}{\page{229}}
   {
     \catchword{Übertragungseigenschaften einer Leitung}
     \catchword{Störempfindlichkeit einer Leitung}
   }
-  
-   \question{Durch welche einzelnen Elemente kann eine Übertragungsleitung ersatzweise beschrieben werden}{\page{229}}
+
+  \question{Durch welche einzelnen Elemente kann eine Übertragungsleitung ersatzweise
+            beschrieben werden}{\page{229}}
   {
     \catchword{einen ohmschen Widerstand R, der eine frequenzunabhängige Signaldämpfung bewirkt und
     mit der Leitungslänge proportional anwächst.}
@@ -2192,62 +2183,63 @@
     eingekoppelt werden. Zu diesen Störungen zählt auch Übersprechen von benachbarten Leitungen. Die
     Störempfindlichkeit wächst mit der Leitungslänge.}
   }
-  
-   \question{Was wird noch durch die Kapazitäten und Induktivitäten bestimmt}{\page{230}}
+
+  \question{Was wird noch durch die Kapazitäten und Induktivitäten bestimmt}{\page{230}}
   {
-    \catchword{Der komplexe Wellenwiderstand Z der Leitung, der als ohmscher Abschlusswiderstand am Kabelende
-    benötigt wird, damit keine Reflexionen auftreten.}
-    \catchword{Die Signalgeschwindigkeit c auf der Leitung, deren Kehrwert als Laufzeitkonstante bezeichnet wird.}
+    \catchword{Der komplexe Wellenwiderstand Z der Leitung, der als ohmscher Abschlusswiderstand
+               am Kabelende benötigt wird, damit keine Reflexionen auftreten.}
+    \catchword{Die Signalgeschwindigkeit c auf der Leitung, deren Kehrwert als Laufzeitkonstante
+               bezeichnet wird.}
   }
-  
-   \question{Welche Aufbauarten von Leitungstypen kann man unterscheiden}{\pages{230}{231}}
+
+  \question{Welche Aufbauarten von Leitungstypen kann man unterscheiden}{\pages{230}{231}}
   {
     \catchword{Einzeladern \resultol{kein definierter Wellenwiderstand, geringe Bandbreitenlänge
-    (ca 1MHz*m), große Störanfälligkeit}}
+               (ca 1MHz*m), große Störanfälligkeit}}
     \catchword{Flachbandkabel \resultol{parallel verlaufende Einzeladern, relativ gut definierter
-    Wellenwiderstand, relativ große Bandbreitenlänge (ca 100MHz*m)}}
+               Wellenwiderstand, relativ große Bandbreitenlänge (ca 100MHz*m)}}
     \catchword{Verdrillte Adernkabel \resultol{relativ guter Wellenwiderstand, relativ große 
-    Bandbreitenlänge (über 1MHz*m), Störeinwirkung hebt sich in den beiden Leitern weitgehend
-    gegenseitig auf}}
+               Bandbreitenlänge (über 1MHz*m), Störeinwirkung hebt sich in den beiden Leitern weitgehend
+               gegenseitig auf}}
     \catchword{Koaxialkabel \resultol{besteht aus Innenleiter und geschlossener, konzentrischer
-    Aussenleiter, höchste Störfestigkeit, wohldefinierter Wellenwiderstand, Bandbreitenlänge hängt
-    stark vom Isolationsmaterial ab (ca 100MHz*km)}}
+               Aussenleiter, höchste Störfestigkeit, wohldefinierter Wellenwiderstand, Bandbreitenlänge
+               hängt stark vom Isolationsmaterial ab (ca 100MHz*km)}}
     \catchword{Lichtwellenleiter \resultol{ummantelte Glasfaser, über die moduliertes Licht geleitet
-    wird, praktisch absolut stör- und abhörsicher, hohe Bandbreitenlänge (ca 1GHz*km)}}
+               wird, praktisch absolut stör- und abhörsicher, hohe Bandbreitenlänge (ca 1GHz*km)}}
   }
-  
+
   \question{Welche andere Art der Übertragung gibt es noch)}{\page{231}}
   {
     \normaltext{Leitungsungebundene Übertragung durch Ultraschall, Infrarotlicht oder per Funk.}
   }
-  
+
   \question{Welche Arten von Störungen können auftreten}{\pages{231}{232}}
   {
     \catchword{Wechselspannungen, die von außen induktiv oder kapazitiv eingekoppelt werden.}
     \catchword{Gleichspannungen, die über eine galvanische Kopplung entstehen. z.B. wenn Sender und
-     Empfänger auf versch. Potentialen liegen.}
+               Empfänger auf versch. Potentialen liegen.}
     \catchword{Gleichtaktstörungen, durch gleichphasige Einkopplungen auf den Leitern, oder durch
-    Potentialdifferenz zwischen Sender und Empfänger.}
+               Potentialdifferenz zwischen Sender und Empfänger.}
     \catchword{Gegentaktstörungen, die durch Gleichtaktstörungen entstehen, die nicht gleich groß
-    sind, oder sich nicht kompensieren lassen.}
+               sind, oder sich nicht kompensieren lassen.}
   }
-  
-   \question{Welche Störquellen gibt es}{\page{232}}
+
+  \question{Welche Störquellen gibt es}{\page{232}}
   {
     \catchword{Nachbarleitungen, auf denen Signale mit hochfrequenten Anteilen oder mit hoher
-    Leistung transportiert werden.}
+               Leistung transportiert werden.}
     \catchword{Erdschleifen, bei denen versch. Signale oder Versorungsströme über einen gemeinsamen
-    Erdleiter laufen}
+               Erdleiter laufen}
     \catchword{Prozesseinrichtungen, die mit hohen Listungen aus dem Netz betrieben werden. Hier
-    werden die Störungen meistens induktiv eingekoppelt und führen zu Gegentaktstörungen mit
-    Netzfrequenz.}
+               werden die Störungen meistens induktiv eingekoppelt und führen zu Gegentaktstörungen mit
+               Netzfrequenz.}
     \catchword{Hochfrequenz-Generatoren und -Anlagen, zur Wärmebehandlung. Hier wirkt meißt die
-    kapazitive Ankopplung.}
+               kapazitive Ankopplung.}
     \catchword{Elektrische Funken, die beim Öffnen von Schaltern entstehen. Unter Umständen führen
-    sie zu unberechnbaren Stoßwellen.}
+               sie zu unberechnbaren Stoßwellen.}
   }
-  
-   \question{Welche Schutzeinrichtungen gibt es (mit Ersatzschaltbildern)}{\page{233}}
+
+  \question{Welche Schutzeinrichtungen gibt es (mit Ersatzschaltbildern)}{\page{233}}
   {
     \catchword{Koppelkondensatoren (kapazitive Ankopplung)}
     \catchword{Koppelübertrager (induktive Ankopplung)}
@@ -2259,20 +2251,6 @@
     \catchword{Tiefpässe}
     \catchword{Zenerdioden}
   }
-  
-  
-    %3.2.3
-    
-    \subsubsection{Prozessanschluss}
-  
-  
-  
-  
-  
-  
-  
-  
-
 
 
   \newpage
