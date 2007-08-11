@@ -45,10 +45,8 @@
 \newpage
 \tableofcontents
 
-
 \newpage
 \section{Einführung}
-
 
 \begin{enumerate}
 
@@ -564,17 +562,74 @@
                 Zeitverhalten angepasst sein. Dies wird als Realzeitbetrieb bezeichnet.}
   }
 
-
   \newpage
   \section{Prozessrechner Hardware}
 
+  \subsection{Rechnerkonfiguration}
+
+  \question{Aus welchen zwei Einheiten besteht ein Prozessrechner}{\page{33}}
+  {
+    \catchword{Zentraleinheit}
+    \catchword{Peripherie}
+  }
+
+  \question{In welche Gruppen können die peripheren Geräte eingeteilt werden}{\page{34}}
+  {
+    \catchword{Ein-/Ausgabegeräte}
+    \catchword{Externspeicher oder Massenspeicher}
+    \catchword{Prozessperipherie}
+    \catchword{Kommunikationsperipherie}
+  }
+
+  \subsection{Die Zentraleinheit}
+
+  \question{Aus welchen drei Komponenten besteht die Zentraleinheit}{\page{35}}
+  {
+    \catchword{CPU}
+    \catchword{Hauptspeicher}
+    \catchword{Anschlüsse für periphere Geräte}
+  }
+
+  \question{Aus welchen zwei Komponenten besteht die CPU}{\page{36}}
+  {
+    \catchword{Steuerwerk (Leitwerk)}
+    \catchword{Rechenwerk}
+  }
+
+  \statement{Nennen Sie die drei wesentlichen Merkmale einer CPU}{\page{36}}
+  {
+    \catchword{Datenstruktur}
+    \catchword{Instruktionssatz}
+    \catchword{Geschwindigkeit}
+  }
+
+  \question{Um welches Prinzip handelt es sich, wenn Daten und Instruktionen gleichwertig
+            im Speicher stehen}{\page{36}}
+  {
+    \normaltext{Man spricht vom \important{von-Neuman}-Prinzip}
+  }
+
+  \question{Worum handelt es sich bei einem Bus}{\page{37}}
+  {
+    \normaltext{Um einen gemeinsamen Datenpfad}
+  }
+
+  \question{Welche Bus-Arten gibt es}{\page{38}}
+  {
+    \catchword{Synchrone Busse: Feste Zeitvorgabe durch einen Takt}
+    \catchword{Asynchrone Busse: Arbeiten mit einem Quittierungsverfahren}
+  }
+
+  \subsection{Die CPU}
+
+  \subsubsection{Der Aufbau der CPU}
 
   \question{Welche Werke vereint die CPU}{\page{39}}
   {
-    \catchword{Steuerwerk}
+    \catchword{Steuerwerk (Leitwerk)}
     \catchword{Rechenwerk}
-    \catchword{evtl. Unterbrechungswerk}
-    \catchword{evtl. Rechenwerk für Gleitkommazahlen}
+    \catchword{Evtl. Unterbrechungswerk}
+    \catchword{Evtl. Rechenwerk für Gleitkommazahlen}
   }
 
   \question{Welche Arten von Leitungen gibt es in der CPU}{\page{39}}
@@ -584,10 +639,12 @@
     \catchword{Steuerleitung \resultol{sowohl uni- als auch bidirektional ausgelegt}}
   }
 
-  \question{Wozu dient das Unterbrechungswerk}{\page{39}}
+  \question{Welche Hilfregister besitzt das Steuerwerk}{\page{39}}
   {
-    \catchword{Zur Bearbeitung von Interrupts die hier über ein zweites Bit im Prozessor-
-               Status-Wort zugelassen oder verhindert werden können}
+    \catchword{Instruktionsregister}
+    \catchword{Program Counter}
+    \catchword{Stack Pointer}
+    \catchword{Indexregister}
   }
 
   \statement{Erklären Sie den Aufbau der CPU (schematisch)} {\page{40}}
@@ -595,7 +652,15 @@
     \normaltext{Siehe Bild 2.3 Seite 40}
   }
 
-  \question{Wie heißt das Kernstück des Rechenwerkes und wozu dient es}{\page{41}}
+  \question{Wozu dient das Unterbrechungswerk}{\page{40}}
+  {
+    \catchword{Zur Bearbeitung von Interrupts, die hier über ein Bit im
+               Prozessor-Status-Wort zugelassen oder verhindert werden können}
+  }
+
+  \subsubsection{Das Rechenwerk}
+
+  \question{Wie heißt das Kernstück des Rechenwerks und wozu dient es}{\page{41}}
   {
     \normaltext{ALU: Durchführung von Operationen auf Operanden}
   }
@@ -621,9 +686,11 @@
     \catchword{Overflow Bit: Zahlenüberlauf, wenn mit Zahlen im 2-er Komplement gerechnet wird}
   }
 
+  \subsubsection{Maschineninstruktionen}
+
   \question{Was versteht man unter Maschineninstruktionen}{\page{44}}
   {
-    \normaltext{Informationen, die das Steuerwerk braucht, um Instruktionen auf 
+    \normaltext{Informationen, die das Steuerwerk braucht, um Instruktionen auf
                 Maschinenebene durchzuführen}
   }
 
@@ -633,7 +700,7 @@
     \catchword{Adressteil}
   }
 
-  \question{Welche drei Gruppen von Instruktionen können unterschieden werden}{\page{44}}
+  \question{Welche drei Gruppen von Instruktionen können unterschieden werden}{\pages{44}{45}}
   {
     \catchword{Steruerungsinstruktionen}
     \catchword{Verarbeitungsoperationen}
@@ -651,7 +718,7 @@
                 oder der Stack Pointer (SP)}
   }
 
-  \statement{Erklären Sie die Adressierungsmodi des Program Counters}{\page{47}}
+  \statement{Erklären Sie die Adressierungsmodi des Program Counters}{\pages{46}{47}}
   {
     \catchword{Direkt: Der Operand erfolgt unmittelbar auf die Instruktion, der PC zeigt drauf}
     \catchword{Absolut: Die absolute Adresse des Operanden folgt unmittelbar auf die Instruktion}
@@ -670,7 +737,9 @@
     \catchword{Stack Pointer erniedrigen}
   }
 
-  \question{Welche wesentlichen 3 Aufgaben hat das Mikroprogramm}{\page{48}}
+  \subsubsection{Das Mikroprogramm}
+
+  \question{Welche wesentlichen drei Aufgaben hat das Mikroprogramm}{\page{48}}
   {
     \catchword{Einlesen von Instruktionen und Daten aus dem Hauptspeicher, und das Abspeichern 
                von Ergebnissen}
@@ -679,10 +748,24 @@
                des Rechenwerks (ALU)}
   }
 
+  \question{Was muss mit neuen Instruktionen geschehen}{\page{49}}
+  {
+    \catchword{Instruktion lesen}
+    \catchword{Instruktion interpretieren}
+  }
+
+  \question{Welche zwei Arten von Verzweigungen gibt es}{\page{50}}
+  {
+    \catchword{Unbedingter Sprung}
+    \catchword{Bedingter Sprung}
+  }
+
   \question{Wie bezeichnet man Unterprogramme des Mikroprogramms}{\page{51}}
   {
     \catchword{Nanoprogramme}
   }
+
+  \subsubsection{RISC}
 
   \question{Wofür steht die Abkürzung RISC}{\page{52}}
   {
@@ -708,13 +791,13 @@
     \catchword{Steuerungsinstruktionen (HALT, WAIT)}
   }
 
-  \question{Was kann zu besonderen Problemen beim Pipelining führen}{\page{54}}
+  \question{Was kann zu besonderen Problemen beim Pipelining führen}{\pages{53}{54}}
   {
     \catchword{Verzweigung innerhalb des Programms (synchron)}
     \catchword{Unterbrechung von außen (asynchron)}
-    \result{Dann müssen solche Instruktionen, die bereits begonnen wurden, abgebrochen 
-            werden; bei manchen geht das nicht, und es muss die Verarbeitungskette angehalten 
-            werden (pipe stalling).}
+    \result{Dann müssen solche Instruktionen, die bereits begonnen wurden, abgebrochen
+            werden; bei manchen geht das nicht, und es muss die Verarbeitungskette angehalten
+            werden (pipe stalling)}
   }
 
   \statement{Nennen Sie Eigenschaften von RISC in der PDV}{\page{54}}
@@ -724,6 +807,8 @@
                deutlich länger.}
     \catchword{Erheblicher zusätzlicher Verwaltungsaufwand bei bedingten Sprüngen}
   }
+
+  \subsection{Der BUS}
 
   \question{Welche drei Gruppen von Leitungen benutzt ein Bus}{\page{55}}
   {
@@ -1409,7 +1494,6 @@
 
   \newpage
   \section{Periphere Geräte}
-
 
   \statement{Beschreibe kurz die generelle Aufgabe der Prozessperipherie}{\page{188}}
   {
@@ -2298,14 +2382,11 @@
     \catchword{Keine Entwicklungswerkzeuge}
   }
 
-
   \newpage
   \section{Prozessrechner-Software}
 
-
   \newpage
   \section{Sonstiges}
-
 
 \end{enumerate}
 
