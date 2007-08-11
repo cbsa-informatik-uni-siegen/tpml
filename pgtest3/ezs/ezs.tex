@@ -1426,7 +1426,8 @@
                 Signal umgewandelt und an den Rechner übertragen.}
   }
 
-  \statement{Nennen Sie einen Grund für einen frühe A/D-Wandlung (vor der Übertragung zum Rechner)}{\page{191}} 
+  \statement{Nennen Sie einen Grund für einen frühe A/D-Wandlung
+             (vor der Übertragung zum Rechner)}{\page{191}}
   {
     \catchword{digitale Daten können durch sichere Codes vor Übertragungsfehlern geschützt werden,
                das Ergebnis wird nicht weiter verfälscht.} 
@@ -1547,6 +1548,310 @@
     \catchword{Optische Interferometrie \resultol{Entfernungen werden über Laufzeitunterschiede
                zu Referenzstrecken durch optische Überlagerung gemessen.}}
     \catchword{Piezoelektrische Sensoren \resultol{wandeln geringste Deformationen in Spannungen um.}}
+  }
+
+  \question{Was muss mit analogen elektrischen Eingangssignalen häufig geschehen}{\page{200}}
+  {
+    \normaltext{Eine Umsetzung in digitale, binär codierte Werte durch Analog-Digital-Umsetzer
+                oder Wandler}
+  }
+
+  \question{Wenn der Analog-Digital-Umsetzer als Prozess betrachtet wird, hat er welche Ein-
+            und Ausgänge}{\page{200}}
+  {
+    \catchword{Eingang: Zeitlich veränderliche Spannung $U(t)$}
+    \catchword{Eingang: Feste Referenzspannung $U_R$}
+    \catchword{Ausgang: Digitalwert $D(t)$}
+  }
+
+  \question{Was bestimmt das Auflösungsvermögen}{\page{200}}
+  {
+    \normaltext{Die Anzahl der ausgegebenen Digitalstellen, welche aber nicht gleichbedeutend
+                mit der Genauigkeit ist}
+  }
+
+  \question{Welche Codierung können die Ausgabewerte haben}{\page{200}}
+  {
+    \catchword{Dualzahl}
+    \catchword{Binäre Offset}
+    \catchword{2-er Komplement}
+    \catchword{1-er Komplement}
+  }
+
+\question{Was muss bei sich schnell veränderlichen Eingangswerten getan werden}{\page{201}}
+  {
+    \normaltext{Es muss ein Speicher für den Momentanwert der Eingangsspannung eingesetzt werden,
+                der als Abtast- und Halteglied bezeichnet wird. Dabei wird die Eingangsspannung
+                zum Beispiel in einem Kondensator gespeichert. Die Öffnungszeit des Gates wird
+                als Aufnahmezeit bezeichnet.}
+  }
+
+  \question{Was wird als Haltezeit bezeichnet}{\page{201}}
+  {
+    \normaltext{Die Zeit, während der das Signal für den ADU einen konstanten Wert haben muss,
+                wird als Abtastzeit oder Aperturzeit bezeichnet}
+  }
+
+\question{Was besagt das Shannon Theorem}{\pages{201}{202}}
+  {
+    \normaltext{Eine Abtastrate fs erlaubt eine informationsgetreue Umwandlung nur solcher Signale, die
+                nur Frequenzanteile bis zu einer Obergrenze $  f_m\textless f_s/2 $ enthalten.}
+  }
+
+  \question{Wodurch wird die Frequenz begrenzt}{\page{202}}
+  {
+    \normaltext{Da während einer endlichen Zeit $ T = N/f_s $  nur N Abtastungen durchgeführt
+                werden können, wird dabei die Frequenzauflösung auf einen endlichen Bereich
+                $ \Delta f = 2f_m/N = f_s/N = 1/T $ begrenzt. Das führt zu einer oberen
+                Frequenzgrenze $ f_{max} = f_m - \Delta f $.  }
+  }
+
+  \question{Was tritt bei Überschreitung der Zeitauflösung auf}{\page{202}}
+  {
+    \normaltext{Es tritt der sogenannte Alias-Effekt auf, der das Vorhandensein weit niedriger
+                Frequenzen vortäuscht.}
+  }
+
+  \question{Was kann man gegen diesen Effekt tun}{\page{202}}
+  {
+    \normaltext{Vorschalten von Filtern in Form von Tiefpässen.}
+  }
+
+  \question{Welche Abtastfrequenzen werden bei welchem Betrieb erreicht}{\page{202}}
+  {
+    \catchword{Abrufbetrieb (Polling) \resultol{100 Hz}}
+    \catchword{Anforderungsbetrieb (mit Interrupt) \resultol{1000Hz}}
+    \catchword{Speicherdirektzugriff (DMA) \resultol 100 kHz (das ist die Grenze üblicher ADUs)}
+    \normaltext{Für höhere Abtastfrequenzen setzt man am besten einen eigenen Datenpuffer z.B. als
+                FIFO davor.}
+  }
+
+  \question{Wozu wird ein Messstellenumschalter (Multiplexer) verwendet}{\page{203}}
+  {
+    \normaltext{Der Ausgang wird im zeitlichen Wechsel an einen der Ausgänge durchgeschaltet.}
+  }
+
+  \question{Welche Möglichkeiten gibt es einen Multiplexer zu verwenden}{\page{203}}
+  {
+    \catchword{wahlfrei (RAM) über ein Adresswort}
+    \catchword{sequentiell (SAM)}
+  }
+
+  \question{Welche Vor- und Nachteile hat SAM}{\page{203}}
+  {
+    \catchword{Vorteil: oft schneller, da zyklisch weitergeschaltet wird}
+    \catchword{Nachteil: Die Abtastrate geht fr jeden der Eingangskanäle in dem Maße zurück, wie die Zahl der 
+               Kanäle zunimmt.}
+  }
+
+  \question{Welchen Nachteil haben Multiplexer}{\page{203}}
+  {
+    \normaltext{Da im Multiplexverfahren die Messsignale nacheinander umgewandelt werden, können
+                unter Umständen zeitliche Beziehungen verloren gehen; z.B. wenn man die Wert von
+                verschiedenen Messstellen für exakt den selben Zeitpunkt wissen möchte.}
+  }
+
+  \statement{Nennen und erklären Sie die sechs bei einem ADU auftretenden
+             Umsetzungsfehler}{\pages{204}{205}}
+  {
+    \catchword{Quantisierungsfehler: Bedingt durch die endliche Auflösung des ADU, also durch
+               die endliche Anzahl von Ausgangsbits}
+    \catchword{Verstärkunsfehler: Bezieht sich auf den nominellen Umsetzungsfaktor vom analogen
+               Eingangssignal $U$ zum digitalen Ausgabewert $D$. Kann durch Eichung immer wieder
+               neu bestimmt werden}
+    \catchword{Nullpunktsverschiebung: Systematische Verschiebung aller Ausgangswerte um einen
+               festen Betrag}
+    \catchword{Linearitätsfehler: Beschreibt die Abweichung des lokalen vom mittleren Umsetzungfaktor
+               und zeigt sich in einer gekrümmten Kennlinie}
+    \catchword{Monotoniefehler: Lokale extreme Nichtlinearitäten der Kennlinie, wo die Monotonie
+               gestört ist}
+    \catchword{Gesamtfehler (oder umgekehrt die Genauigkeit): Summe aller Einzelfehler}
+  }
+
+  \question{Worin unterscheiden sich die verschiedenen Analog-Digital-Umsetzer}{\page{205}}
+  {
+    \catchword{Realisierungsaufwand, also den entstehenden Kosten}
+    \catchword{Auflösung}
+    \catchword{Genauigkeit}
+    \catchword{Geschwindigkeit}
+  }
+
+  \question{Wie kann eine Polaritätserkennung realisiert werden}{\page{206}}
+  {
+    \catchword{Erkennung der Polarität mit einem Komparator}
+    \catchword{Dieser Komparator liefert das MSB der Daten}
+    \catchword{Der Komparator dient auch zur Auswahl des Signals bei positiver Spannung
+               oder des invertierten Signals bei negativer Spannung}
+    \catchword{Die negative Spannung wird über einen Inverter zur Verfügung gestellt}
+    \catchword{Durch dieses Vorgehen bekommt der ADU immer positive Werte und kann die
+               restlichen Bits ohne das MSB bestimmen}
+  }
+
+  \question{Welche verschiedenen Analog-Digital-Umsetzer gibt es}{\pages{206}{212}}
+  {
+    \catchword{Simultanwandler oder Parallelwandler}
+    \catchword{Sägezahnumsetzer}
+    \catchword{Zählumsetzer}
+    \catchword{Folgeumsetzer}
+    \catchword{Integrationswandler}
+    \catchword{Spannungs-Frequenz-Umsetzer}
+    \catchword{Stufenumsetzer oder Wägecodierer}
+  }
+
+  \statement{Erklären Sie detailiert den Simultanwandler (Parallelwandler)}{\page{206}}
+  {
+    \normaltext{Das anliegende Eingangssignal wird gleichzeitig über eine Reihe von Komparatoren
+                (Nullwertsvergleicher) mit einer Spannungsteilerkette verglichen, die von der
+                Bezugsspannung $U_R$ gespeist wird. Dabei liefern alle Komparatoren eine 0,
+                für die der Signalwert kleiner ist als der Vergleichswert, die übrigen eine 1.
+                An einer bestimmten Position erfolgt dabei der Umschlag von 0 nach 1. Dieser
+                \important{1-aus-m Code} wird durch ein geeignetes Codiernetz in eine Dualzahl
+                umgesetzt. Dieses Verfahren ist sehr aufwendig, da man für $n$ Bits insgesamt
+                $2^n - 1$ Komparatoren benötigt. Der Umsetzer ist sehr schnell, da der
+                Momentanwert der Eingangsspannung unmittelbar angezeigt wird. Die Eingangsspannung
+                muss nur so lange konstant bleiben, dass alle Komparatoren durchschalten können,
+                was als Aperturzeit bezeichnet wird. Die Genauigkeit der Wandlung wird fast
+                ausschließlich von der Güte der Komparatoren bestimmt}
+  }
+
+  \question{Wie groß sollten Abweichungen maximal sein}{\page{206}}
+  {
+    \normaltext{Kleiner als 1/2 LSB, damit das Ergebniss nicht verfälscht wird}
+  }
+
+  \statement{Skizzieren Sie das Blockschaltbild des Simultanwandlers} {\page{206}}
+  {
+    \normaltext{Siehe Bild 3.27 Seite 206}
+  }
+
+  \statement{Skizzieren Sie das Blockschaltbild des Sägezahnumsetzers}{\page{207}}
+  {
+    \normaltext{siehe Bild 3.28, Seite 207}
+  }
+
+  \statement{Erklären Sie detailiert den Sägezahnumsetzer}{\page{207}}
+  {
+    \normaltext{Die Signalspannung wird durch einen einzigen Komperator mit der zeitlinear 
+                ansteigenden Spannung eines Sägezahngenerators verglichen. Beim Start des Sägezahns wird
+                ein Zähler zurückgesetzt, und zählt dann die Taktimpulse bis der Komperator feststelle,
+                dass die ansteigende Spannung gleich der Messspannung ist. Damit ist die Anzahl der 
+                gezählten Impulse ein Maß für die Eingangsspannung. (vgl. Bild 3.28)
+                Die Wandlungsrate ist hier durch die Frequenz des Sägezahns festgelegt. Die Auflösung kann
+                fast beliebig groß gemacht werden, denn sie wird durch die Taktfrequenz für den Zähler und
+                die Periodendauer des Sägezahns bestimmt. Auflösungen bis zu 20 bit sind hier möglich. Die
+                Genauigkeit hängt aber im wesentlichen von der Linearität des Sägezahns ab, im geringeren
+                Umfang auch von der Frequenzstabilität des Taktgenerators. Ein besonderer Nachteil ist die
+                große Totzeit, die entsteht, wenn der Sägezahn nach Beendigung der Zählung bis zum Ende
+                durchlaufen muss. Auch kann er meißt nicht von außen gestartet werden, sonder bestimmt selber
+                Beginn und Ende der Umsetzung, kann das aber durch ein BUSY-Signal mitteilen.}
+  }
+
+  \statement{Skizzieren Sie das Blockschaltbild des Sägezahnumsetzer}{\page{207}}
+  {
+    \normaltext{siehe Bild 3.28, Seite 207}
+  }
+
+  \statement{Erklären Sie detailiert den Zählumsetzer}{\page{208}}
+  {
+    \normaltext{Der Zählumsetzer vergleicht die Eingangsspannung mit einer Sägezahnspannung
+                aus einem Digital-Analog-Wandler (DAU), der den Digitalwert aus einem Zähler
+                in eine Analogspannung umsetzt. Dieser Zähler kann von außen durch einen
+                Startimpuls zurückgesetzt werden und gestartet werden und zählt die Impulse
+                eines Taktgenerators solange, bis der Komparator die zählung stoppt. Danach
+                kann der Wert des Zählers ausgewertet werden. Das Auflösungsvermögen wird hier
+                durch die Taktfrequenz und die Anstiegszeiten des Sägezahns bestimmt, welche
+                wiederum durch den Umsetzungsfaktor des DAU bestimmt werden. Die Wandlungsrate
+                ist dann nicht mehr festgelegt, sondern vom Eingangssignal abhängig. Die
+                Genauigkeit ist im wesentlichen durch den DAU bestimmt.}
+  }
+
+  \statement{Skizzieren Sie das Blockschaltbild des Zählumsetzers} {\page{208}}
+  {
+    \normaltext{Siehe Bild 3.29 Seite 208}
+  }
+
+  \statement{Erklären Sie den Folgeumsetzer}{\page{208}}
+  {
+    \normaltext{Der Folgeumsetzer ist eine Variante des Zählumsetzers, bei der der Zähler als
+                Vorwärts-/Rückwärtszähler ausgelegt ist und durch den Komperator richtungsgesteuert wird.
+                Wenn der Signalwert sich nicht zu schnell ändert, liegt hier immer ein Momentanwert wor.
+                Falls die Abweichung von Signal- und Vergleichsspannung betragsmäßig einen bestimmten Wert
+                überschreitet, liefert der Umsetzer ein BUSY-Signal, umd dies zu melden.}
+  }
+
+  \statement{Skizzieren Sie das Blockschaltbild des Folgeumsetzer} {\page{208}}
+  {
+    \normaltext{Siehe Bild 3.30 Seite 208}
+  }
+
+  \question{Was wird als Wandlungsrate bezeichnet}{\page{208}}
+  {
+    \normaltext{Die Frequenz mit der ein Umsetzer umwandeln dann, also der Kehrwert der
+                Umsetzungszeit, die durch die Laufzeiten durch die Bauteile bestimmt ist}
+  }
+
+  \statement{Erklären Sie detailiert den Integrationswandler nach dem Zwei-Rampen-Verfahren}{\pages{208}{210}}
+  {
+    \normaltext{Beim Integrationswandler nach dem Zwei-Rampe-Verfahren (engl.: dual slope) wird
+                das Messsignal über einen festen Zeitraum $t_1 = N*T$ integriert, welcher durch
+                einen zentralen Takt bestimmt wird. Dabei wird ein Kondensator C auf eine Spannung
+                $U_C$ aufgeladen, die exakt dem Mittelwert der Messspannung $U_x$ während der Zeit $t_1$
+                entspricht. Anschließend wird der Kondensator durch die Bezugsspannungsquelle $U_R$
+                entladen, und die dazu benötigte Zeit $t_2 = x*T$ durch mitzählen der Taktimpulse gemessen.
+                Man erhält daraus den Messwert $U_x = U_R * x/N$ wobei sich alle übrigen Gerätegrößen
+                (R, C, T) herausheben, wenn sie während der Messzeit konstant sind. Dadurch wird dieses
+                Verfahren sehr genau. Auch die Auflösung ist sehr gut, wenn man mit einer genügend hohen
+                Taktfrequenz arbeitet, typischerweise 1MHz, die durch den DAU begrenzt wird. Die Besonderheit
+                bei diesem Verfahren liegt darin, dass durch die Integration ein Mittelwert über einen größeren
+                Zeitraum gebildet wird, und deabei Schankungen und Störungen des Messsignals herausgemittelt
+                werden. Da kleinen Signalen oft eine Störung durch das Versorgungsnetz mit 50 Hz überlagert ist,
+                kann man mit Messzeiten, die ein Vielfaches der Periodendauer von 20 msec sind, diese Störungen
+                weitgehend unterdrücken. Für Momentanwertmessungen muss hier immer ein Sample-an-Hold-Glied
+                eingesetzt werden.}
+  }
+
+  \statement{Skizzieren Sie das Blockschaltbild des Integrationswandlers}{\page{209}}
+  {
+    \normaltext{siehe Bild 3.31, Seite 209}
+  }
+
+  \statement{Erklären Sie detailiert den Spannungs-Frequenz-Umsetzer}{\page{210}}
+  {
+    \normaltext{Die anliegende Spannung wird in eine Frequenz umgesetzt. Das Vefahren ist
+                nicht besonders linear. Während einer vorgegebenen Zeitspanne $t$ wird
+                ein Kondensator $C$ durch eine bezugsspannungsquelle aufgeladen, der sich
+                dann über einen Widerstand $R$ solange entlädt, bis er den Wer des Messsignals
+                ereicht hat. Der Komparator startet dann den Aufladevorgang von neuem, so dass
+                am Ausgang eine Folge von Impulsen konstanter Länge mit veränderlichen Abständen
+                entsteht. Dieser Abstand ist in etwa umgekehrt proportional zur anliegenden
+                Messspannung $U$ und damit die Impulsfolgefrequenz $f$ proportional zu $U$.
+                Die Impulsfrequenz kann dann mit einem Frequenzzähler über kürzere oder
+                längere Intervalle gemessen und dabei gemittelt werden. Damit wird auch die
+                Auflösung festgelegt, die in weiten Grenzen variiert werden kann. Die Genauigkeit
+                wird hier durch den Linearitätsfehler der Anordnung beschränkt.}
+  }
+
+  \statement{Skizzieren Sie das Blockschaltbild des Spannungs-Frequenz-Umsetzer} {\page{210}}
+  {
+    \normaltext{Siehe Bild 3.32 Seite 210}
+  }
+
+  \statement{Erklären Sie detailiert den Stufenumsetzers}{\pages{211}{212}}
+  {
+    \normaltext{Der Stufenumsetzer arbeitet nach dem Prinzip der sukzessiven Aproximation. Ein DAU
+                wird für die Erzeugung einer Vergleichsspannung eingesetzt, aber nicht einfach linear
+                durchfahren. Stattdessen wird bitweise sukkzessiv abgeglichen. Dabei wird zuerst das
+                MSB bestimmt, indem es zunächst versuchsweise gesetzt wird. Die vom DAU erzeugte
+                Spannung wird dann mit einem Komparator verglichen. Wenn die vom DAU erzeugte Spannung
+                größer als die Eingangsspannung ist, wird das Bit wieder gelöscht, ansonsten bleibt
+                es erhalten. Da hier der Signalwert innerhalb weniger Schritte erreicht wird, nämlich
+                gerade so vieler, wie die Auflösung beträgt. Während der Zeit des Umwandels muss das
+                Eingangssignal konstant bleiben.}
+  }
+
+  \statement{Skizzieren Sie das Blockschaltbild des Stufenumsetzers} {\pages{211}{212}}
+  {
+    \normaltext{Siehe Bild 3.33 Seite 211}
   }
 
   \question{Was muss bei der Prozesssteuerung durch den Prozessrechner getan werden}{\page{213}}
@@ -1678,237 +1983,6 @@
     \catchword{Verzögerungsverhalten: Das Ausgangssignal reagiert erst nach einer Verzögerung}
   }
 
-  \question{Was muss mit analogen elektrischen Eingangssignalen häufig geschehen}{\page{200}}
-  {
-    \normaltext{Eine Umsetzung in digitale, binär codierte Werte durch Analog-Digital-Umsetzer
-                oder Wandler}
-  }
-
-  \question{Wenn der Analog-Digital-Umsetzer als Prozess betrachtet wird, hat er welche Ein-
-            und Ausgänge}{\page{200}}
-  {
-    \catchword{Eingang: Zeitlich veränderliche Spannung $U(t)$}
-    \catchword{Eingang: Feste Referenzspannung $U_R$}
-    \catchword{Ausgang: Digitalwert $D(t)$}
-  }
-
-  \question{Was bestimmt das Auflösungsvermögen}{\page{200}}
-  {
-    \normaltext{Die Anzahl der ausgegebenen Digitalstellen, welche aber nicht gleichbedeutend
-                mit der Genauigkeit ist}
-  }
-
-  \question{Welche Codierung können die Ausgabewerte haben}{\page{200}}
-  {
-    \catchword{Dualzahl}
-    \catchword{Binäre Offset}
-    \catchword{2-er Komplement}
-    \catchword{1-er Komplement}
-  }
-
-  \question{Was muss bei sich schnell veränderlichen Eingangswerten getan werden}{\page{201}}
-  {
-    \normaltext{Es muss ein Speicher für den Momentanwert der Eingangsspannung eingesetzt werden,
-                der als Abtast- und Halteglied bezeichnet wird. Dabei wird die Eingangsspannung
-                zum Beispiel in einem Kondensator gespeichert. Die Öffnungszeit des Gates wird
-                als Aufnahmezeit bezeichnet.}
-  }
-
-  \question{Was wird als Haltezeit bezeichnet}{\page{201}}
-  {
-    \normaltext{Die Zeit, während der das Signal für den ADU einen konstanten Wert haben muss,
-                wird als Abtastzeit oder Aperturzeit bezeichnet}
-  }
-
-  \statement{Nennen und erklären Sie die sechs bei einem ADU auftretenden
-             Umsetzungsfehler}{\pages{204}{205}}
-  {
-    \catchword{Quantisierungsfehler: Bedingt durch die endliche Auflösung des ADU, also durch
-               die endliche Anzahl von Ausgangsbits}
-    \catchword{Verstärkunsfehler: Bezieht sich auf den nominellen Umsetzungsfaktor vom analogen
-               Eingangssignal $U$ zum digitalen Ausgabewert $D$. Kann durch Eichung immer wieder
-               neu bestimmt werden}
-    \catchword{Nullpunktsverschiebung: Systematische Verschiebung aller Ausgangswerte um einen
-               festen Betrag}
-    \catchword{Linearitätsfehler: Beschreibt die Abweichung des lokalen vom mittleren Umsetzungfaktor
-               und zeigt sich in einer gekrümmten Kennlinie}
-    \catchword{Monotoniefehler: Lokale extreme Nichtlinearitäten der Kennlinie, wo die Monotonie
-               gestört ist}
-    \catchword{Gesamtfehler (oder umgekehrt die Genauigkeit): Summe aller Einzelfehler}
-  }
-
-  \question{Worin unterscheiden sich die verschiedenen Analog-Digital-Umsetzer}{\page{205}}
-  {
-    \catchword{Realisierungsaufwand, also den entstehenden Kosten}
-    \catchword{Auflösung}
-    \catchword{Genauigkeit}
-    \catchword{Geschwindigkeit}
-  }
-
-  \question{Wie kann eine Polaritätserkennung realisiert werden}{\page{206}}
-  {
-    \catchword{Erkennung der Polarität mit einem Komparator}
-    \catchword{Dieser Komparator liefert das MSB der Daten}
-    \catchword{Der Komparator dient auch zur Auswahl des Signals bei positiver Spannung
-               oder des invertierten Signals bei negativer Spannung}
-    \catchword{Die negative Spannung wird über einen Inverter zur Verfügung gestellt}
-    \catchword{Durch dieses Vorgehen bekommt der ADU immer positive Werte und kann die
-               restlichen Bits ohne das MSB bestimmen}
-  }
-
-  \question{Welche verschiedenen Analog-Digital-Umsetzer gibt es}{\pages{206}{212}}
-  {
-    \catchword{Simultanwandler oder Parallelwandler}
-    \catchword{Sägezahnumsetzer}
-    \catchword{Zählumsetzer}
-    \catchword{Folgeumsetzer}
-    \catchword{Integrationswandler}
-    \catchword{Spannungs-Frequenz-Umsetzer}
-    \catchword{Stufenumsetzer oder Wägecodierer}
-  }
-
-  \question{Was wird als Wandlungsrate bezeichnet}{\page{208}}
-  {
-    \normaltext{Die Frequenz mit der ein Umsetzer umwandeln dann, also der Kehrwert der
-                Umsetzungszeit, die durch die Laufzeiten durch die Bauteile bestimmt ist}
-  }
-
-  \statement{Erklären Sie detailiert den Simultanwandler (Parallelwandler)}{\page{206}}
-  {
-    \normaltext{Das anliegende Eingangssignal wird gleichzeitig über eine Reihe von Komparatoren
-                (Nullwertsvergleicher) mit einer Spannungsteilerkette verglichen, die von der
-                Bezugsspannung $U_R$ gespeist wird. Dabei liefern alle Komparatoren eine 0,
-                für die der Signalwert kleiner ist als der Vergleichswert, die übrigen eine 1.
-                An einer bestimmten Position erfolgt dabei der Umschlag von 0 nach 1. Dieser
-                \important{1-aus-m Code} wird durch ein geeignetes Codiernetz in eine Dualzahl
-                umgesetzt. Dieses Verfahren ist sehr aufwendig, da man für $n$ Bits insgesamt
-                $2^n - 1$ Komparatoren benötigt. Der Umsetzer ist sehr schnell, da der
-                Momentanwert der Eingangsspannung unmittelbar angezeigt wird. Die Eingangsspannung
-                muss nur so lange konstant bleiben, dass alle Komparatoren durchschalten können,
-                was als Aperturzeit bezeichnet wird. Die Genauigkeit der Wandlung wird fast
-                ausschließlich von der Güte der Komparatoren bestimmt}
-  }
-
-  \question{Wie groß sollten Abweichungen maximal sein}{\page{206}}
-  {
-    \normaltext{Kleiner als 1/2 LSB, damit das Ergebniss nicht verfälscht wird}
-  }
-
-  \statement{Skizzieren Sie das Blockschaltbild des Simultanwandlers} {\page{206}}
-  {
-    \normaltext{Siehe Bild 3.27 Seite 206}
-  }
-
-  \statement{Erklären Sie detailiert den Zählumsetzer}{\page{208}}
-  {
-    \normaltext{Der Zählumsetzer vergleicht die Eingangsspannung mit einer Sägezahnspannung
-                aus einem Digital-Analog-Wandler (DAU), der den Digitalwert aus einem Zähler
-                in eine Analogspannung umsetzt. Dieser Zähler kann von außen durch einen
-                Startimpuls zurückgesetzt werden und gestartet werden und zählt die Impulse
-                eines Taktgenerators solange, bis der Komparator die zählung stoppt. Danach
-                kann der Wert des Zählers ausgewertet werden. Das Auflösungsvermögen wird hier
-                durch die Taktfrequenz und die Anstiegszeiten des Sägezahns bestimmt, welche
-                wiederum durch den Umsetzungsfaktor des DAU bestimmt werden. Die Wandlungsrate
-                ist dann nicht mehr festgelegt, sondern vom Eingangssignal abhängig. Die
-                Genauigkeit ist im wesentlichen durch den DAU bestimmt.}
-  }
-
-  \statement{Skizzieren Sie das Blockschaltbild des Zählumsetzers} {\page{208}}
-  {
-    \normaltext{Siehe Bild 3.29 Seite 208}
-  }
-
-  \statement{Erklären Sie detailiert den Spannungs-Frequenz-Umsetzer}{\page{210}}
-  {
-    \normaltext{Die anliegende Spannung wird in eine Frequenz umgesetzt. Das Vefahren ist
-                nicht besonders linear. Während einer vorgegebenen Zeitspanne $t$ wird
-                ein Kondensator $C$ durch eine bezugsspannungsquelle aufgeladen, der sich
-                dann über einen Widerstand $R$ solange entlädt, bis er den Wer des Messsignals
-                ereicht hat. Der Komparator startet dann den Aufladevorgang von neuem, so dass
-                am Ausgang eine Folge von Impulsen konstanter Länge mit veränderlichen Abständen
-                entsteht. Dieser Abstand ist in etwa umgekehrt proportional zur anliegenden
-                Messspannung $U$ und damit die Impulsfolgefrequenz $f$ proportional zu $U$.
-                Die Impulsfrequenz kann dann mit einem Frequenzzähler über kürzere oder
-                längere Intervalle gemessen und dabei gemittelt werden. Damit wird auch die
-                Auflösung festgelegt, die in weiten Grenzen variiert werden kann. Die Genauigkeit
-                wird hier durch den Linearitätsfehler der Anordnung beschränkt.}
-  }
-
-  \statement{Skizzieren Sie das Blockschaltbild des Spannungs-Frequenz-Umsetzer} {\page{210}}
-  {
-    \normaltext{Siehe Bild 3.32 Seite 210}
-  }
-
-  \statement{Erklären Sie detailiert den Stufenumsetzers}{\pages{211}{212}}
-  {
-    \normaltext{Der Stufenumsetzer arbeitet nach dem Prinzip der sukzessiven Aproximation. Ein DAU
-                wird für die Erzeugung einer Vergleichsspannung eingesetzt, aber nicht einfach linear
-                durchfahren. Stattdessen wird bitweise sukkzessiv abgeglichen. Dabei wird zuerst das
-                MSB bestimmt, indem es zunächst versuchsweise gesetzt wird. Die vom DAU erzeugte
-                Spannung wird dann mit einem Komparator verglichen. Wenn die vom DAU erzeugte Spannung
-                größer als die Eingangsspannung ist, wird das Bit wieder gelöscht, ansonsten bleibt
-                es erhalten. Da hier der Signalwert innerhalb weniger Schritte erreicht wird, nämlich
-                gerade so vieler, wie die Auflösung beträgt. Während der Zeit des Umwandels muss das
-                Eingangssignal konstant bleiben.}
-  }
-
-  \statement{Skizzieren Sie das Blockschaltbild des Stufenumsetzers} {\pages{211}{212}}
-  {
-    \normaltext{Siehe Bild 3.33 Seite 211}
-  }
-
-  \question{Was besagt das Shannon Theorem}{\pages{201}{202}}
-  {
-    \normaltext{Eine Abtastrate fs erlaubt eine informationsgetreue Umwandlung nur solcher Signale, die
-                nur Frequenzanteile bis zu einer Obergrenze $  f_m\textless f_s/2 $ enthalten.}
-  }
-
-  \question{Wodurch wird die Frequenz begrenzt}{\page{202}}
-  {
-    \normaltext{Da während einer endlichen Zeit $ T = N/f_s $  nur N Abtastungen durchgeführt
-                werden können, wird dabei die Frequenzauflösung auf einen endlichen Bereich
-                $ \Delta f = 2f_m/N = f_s/N = 1/T $ begrenzt. Das führt zu einer oberen
-                Frequenzgrenze $ f_{max} = f_m - \Delta f $.  }
-  }
-
-  \question{Was tritt bei Überschreitung der Zeitauflösung auf}{\page{202}}
-  {
-    \normaltext{Es tritt der sogenannte Alias-Effekt auf, der das Vorhandensein weit niedriger
-                Frequenzen vortäuscht.}
-  }
-
-  \question{Was kann man gegen diesen Effekt tun}{\page{202}}
-  {
-    \normaltext{Vorschalten von Filtern in Form von Tiefpässen.}
-  }
-
-  \question{Welche Abtastfrequenzen werden bei welchem Betrieb erreicht}{\page{202}}
-  {
-    \catchword{Abrufbetrieb (Polling) \resultol{100 Hz}}
-    \catchword{Anforderungsbetrieb (mit Interrupt) \resultol{1000Hz}}
-    \catchword{Speicherdirektzugriff (DMA) \resultol 100 kHz (das ist die Grenze üblicher ADUs)}
-    \normaltext{Für höhere Abtastfrequenzen setzt man am besten einen eigenen Datenpuffer z.B. als
-                FIFO davor.}
-  }
-
-  \question{Wozu wird ein Messstellenumschalter (Multiplexer) verwendet}{\page{203}}
-  {
-    \normaltext{Der Ausgang wird im zeitlichen Wechsel an einen der Ausgänge durchgeschaltet.}
-  }
-
-  \question{Welche Möglichkeiten gibt es einen Multiplexer zu verwenden}{\page{203}}
-  {
-    \catchword{wahlfrei (RAM) über ein Adresswort}
-    \catchword{sequentiell (SAM)}
-  }
-
-  \question{Welche Vor- und Nachteile hat SAM}{\page{203}}
-  {
-    \catchword{Vorteil: oft schneller, da zyklisch weitergeschaltet wird}
-    \catchword{Nachteil: Die Abtastrate geht fr jeden der Eingangskanäle in dem Maße zurück, wie die Zahl der 
-               Kanäle zunimmt.}
-  }
-
   \question{Was ist die generelle Fun ktionsweise eines D/A-Wandlers (ein Satz)}{\page{219}}
   {
     \normaltext{Aus einem Digitalwert und einer Referenzspannung wird ein analoge Ausgangsspannung gebildet.}
@@ -1933,7 +2007,7 @@
   {
     \catchword{Stromsummenwandler}
     \catchword{R-2R-Wiederstandsnetzwerke}
-    \catchword{Linear-Umsetzer}    
+    \catchword{Linear-Umsetzer}
   }
 
   \statement{Beschreiben Sie die prinzipielle Funktionsweise des Stromsummenwandlers}{\page{219}}
@@ -1941,74 +2015,6 @@
     \catchword{Referenzspannung wird mittels verschiedener Widerstände in sich um den Faktor 2
                unterscheidende Ströme aufgeteilt}
     \catchword{Die zu den Digitalsbits gehörenden Ströme werden aufsummiert und ergeben den Ausgangsstrom}
-  }
-
-  \question{Welchen Nachteil haben Multiplexer}{\page{203}}
-  {
-    \normaltext{Da im Multiplexverfahren die Messsignale nacheinander umgewandelt werden, können
-                unter Umständen zeitliche Beziehungen verloren gehen; z.B. wenn man die Wert von
-                verschiedenen Messstellen für exakt den selben Zeitpunkt wissen möchte.}
-  }
-
-  \statement{Skizzieren Sie das Blockschaltbild des Sägezahnumsetzers}{\page{207}}
-  {
-    \normaltext{siehe Bild 3.28, Seite 207}
-  }
-
-  \statement{Erklären Sie detailiert den Sägezahnumsetzer}{\page{207}}
-  {
-    \normaltext{Die Signalspannung wird durch einen einzigen Komperator mit der zeitlinear 
-                ansteigenden Spannung eines Sägezahngenerators verglichen. Beim Start des Sägezahns wird
-                ein Zähler zurückgesetzt, und zählt dann die Taktimpulse bis der Komperator feststelle,
-                dass die ansteigende Spannung gleich der Messspannung ist. Damit ist die Anzahl der 
-                gezählten Impulse ein Maß für die Eingangsspannung. (vgl. Bild 3.28)
-                Die Wandlungsrate ist hier durch die Frequenz des Sägezahns festgelegt. Die Auflösung kann
-                fast beliebig groß gemacht werden, denn sie wird durch die Taktfrequenz für den Zähler und
-                die Periodendauer des Sägezahns bestimmt. Auflösungen bis zu 20 bit sind hier möglich. Die
-                Genauigkeit hängt aber im wesentlichen von der Linearität des Sägezahns ab, im geringeren
-                Umfang auch von der Frequenzstabilität des Taktgenerators. Ein besonderer Nachteil ist die
-                große Totzeit, die entsteht, wenn der Sägezahn nach Beendigung der Zählung bis zum Ende
-                durchlaufen muss. Auch kann er meißt nicht von außen gestartet werden, sonder bestimmt selber
-                Beginn und Ende der Umsetzung, kann das aber durch ein BUSY-Signal mitteilen.}
-  }
-
-  \statement{Skizzieren Sie das Blockschaltbild des Folgeumsetzer}{\page{208}}
-  {
-    \normaltext{siehe Bild 3.30, Seite 207}
-  }
-
-  \statement{Erklären Sie den Folgeumsetzer}{\page{208}}
-  {
-    \normaltext{Der Folgeumsetzer ist eine Variante des Zählumsetzers, bei der der Zähler als
-                Vorwärts-/Rückwärtszähler ausgelegt ist und durch den Komperator richtungsgesteuert wird.
-                Wenn der Signalwert sich nicht zu schnell ändert, liegt hier immer ein Momentanwert wor.
-                Falls die Abweichung von Signal- und Vergleichsspannung betragsmäßig einen bestimmten Wert
-                überschreitet, liefert der Umsetzer ein BUSY-Signal, umd dies zu melden.}
-  }
-
-  \statement{Skizzieren Sie das Blockschaltbild des Integrationswandlers}{\page{209}}
-  {
-    \normaltext{siehe Bild 3.31, Seite 209}
-  }
-
-  \statement{Erklären Sie detailiert den Integrationswandler nach dem Zwei-Rampen-Verfahren}{\pages{208}{210}}
-  {
-    \normaltext{Beim Integrationswandler nach dem Zwei-Rampe-Verfahren (engl.: dual slope) wird
-                das Messsignal über einen festen Zeitraum $t_1 = N*T$ integriert, welcher durch
-                einen zentralen Takt bestimmt wird. Dabei wird ein Kondensator C auf eine Spannung
-                $U_C$ aufgeladen, die exakt dem Mittelwert der Messspannung $U_x$ während der Zeit $t_1$
-                entspricht. Anschließend wird der Kondensator durch die Bezugsspannungsquelle $U_R$
-                entladen, und die dazu benötigte Zeit $t_2 = x*T$ durch mitzählen der Taktimpulse gemessen.
-                Man erhält daraus den Messwert $U_x = U_R * x/N$ wobei sich alle übrigen Gerätegrößen
-                (R, C, T) herausheben, wenn sie während der Messzeit konstant sind. Dadurch wird dieses
-                Verfahren sehr genau. Auch die Auflösung ist sehr gut, wenn man mit einer genügend hohen
-                Taktfrequenz arbeitet, typischerweise 1MHz, die durch den DAU begrenzt wird. Die Besonderheit
-                bei diesem Verfahren liegt darin, dass durch die Integration ein Mittelwert über einen größeren
-                Zeitraum gebildet wird, und deabei Schankungen und Störungen des Messsignals herausgemittelt
-                werden. Da kleinen Signalen oft eine Störung durch das Versorgungsnetz mit 50 Hz überlagert ist,
-                kann man mit Messzeiten, die ein Vielfaches der Periodendauer von 20 msec sind, diese Störungen
-                weitgehend unterdrücken. Für Momentanwertmessungen muss hier immer ein Sample-an-Hold-Glied
-                eingesetzt werden.}
   }
 
   \statement{Nennen Sie die Leistungsdaten des Stromsummenwandlers}{\page{219}}
@@ -2044,6 +2050,92 @@
   {
     \catchword{Nachteil: riesiger Aufwand: für n Bits braucht man $2^n$ Wiederstände und $(2^n)-1$ Umschalter}
     \catchword{Sehr genau, sowohl linear als auch monoton}
+  }
+
+ \question{Was wird durch die Art einer Übertragungsleitung bestimmt}{\page{229}}
+  {
+    \catchword{Übertragungseigenschaften einer Leitung}
+    \catchword{Störempfindlichkeit einer Leitung}
+  }
+
+  \question{Durch welche einzelnen Elemente kann eine Übertragungsleitung ersatzweise
+            beschrieben werden}{\page{229}}
+  {
+    \catchword{einen ohmschen Widerstand R, der eine frequenzunabhängige Signaldämpfung bewirkt und
+    mit der Leitungslänge proportional anwächst.}
+    \catchword{Induktivitäten L und Kapazitäten C, die zusammen mir R einenn Tiefpass bilden, der höhere
+    Frequenzen abschneidet und die Bandbreite der Leitung bestimmt, welche proportional zur Länge abnimmt.}
+    \catchword{Kopplungskapazitäten $C_k$ und Kopplungsinduktivitäten $L_k$, über welche die äußeren Störungen
+    eingekoppelt werden. Zu diesen Störungen zählt auch Übersprechen von benachbarten Leitungen. Die
+    Störempfindlichkeit wächst mit der Leitungslänge.}
+  }
+
+  \question{Was wird noch durch die Kapazitäten und Induktivitäten bestimmt}{\page{230}}
+  {
+    \catchword{Der komplexe Wellenwiderstand Z der Leitung, der als ohmscher Abschlusswiderstand
+               am Kabelende benötigt wird, damit keine Reflexionen auftreten.}
+    \catchword{Die Signalgeschwindigkeit c auf der Leitung, deren Kehrwert als Laufzeitkonstante
+               bezeichnet wird.}
+  }
+
+  \question{Welche Aufbauarten von Leitungstypen kann man unterscheiden}{\pages{230}{231}}
+  {
+    \catchword{Einzeladern \resultol{kein definierter Wellenwiderstand, geringe Bandbreitenlänge
+               (ca 1MHz*m), große Störanfälligkeit}}
+    \catchword{Flachbandkabel \resultol{parallel verlaufende Einzeladern, relativ gut definierter
+               Wellenwiderstand, relativ große Bandbreitenlänge (ca 100MHz*m)}}
+    \catchword{Verdrillte Adernkabel \resultol{relativ guter Wellenwiderstand, relativ große 
+               Bandbreitenlänge (über 1MHz*m), Störeinwirkung hebt sich in den beiden Leitern weitgehend
+               gegenseitig auf}}
+    \catchword{Koaxialkabel \resultol{besteht aus Innenleiter und geschlossener, konzentrischer
+               Aussenleiter, höchste Störfestigkeit, wohldefinierter Wellenwiderstand, Bandbreitenlänge
+               hängt stark vom Isolationsmaterial ab (ca 100MHz*km)}}
+    \catchword{Lichtwellenleiter \resultol{ummantelte Glasfaser, über die moduliertes Licht geleitet
+               wird, praktisch absolut stör- und abhörsicher, hohe Bandbreitenlänge (ca 1GHz*km)}}
+  }
+
+  \question{Welche andere Art der Übertragung gibt es noch)}{\page{231}}
+  {
+    \normaltext{Leitungsungebundene Übertragung durch Ultraschall, Infrarotlicht oder per Funk.}
+  }
+
+  \question{Welche Arten von Störungen können auftreten}{\pages{231}{232}}
+  {
+    \catchword{Wechselspannungen, die von außen induktiv oder kapazitiv eingekoppelt werden.}
+    \catchword{Gleichspannungen, die über eine galvanische Kopplung entstehen. z.B. wenn Sender und
+               Empfänger auf versch. Potentialen liegen.}
+    \catchword{Gleichtaktstörungen, durch gleichphasige Einkopplungen auf den Leitern, oder durch
+               Potentialdifferenz zwischen Sender und Empfänger.}
+    \catchword{Gegentaktstörungen, die durch Gleichtaktstörungen entstehen, die nicht gleich groß
+               sind, oder sich nicht kompensieren lassen.}
+  }
+
+  \question{Welche Störquellen gibt es}{\page{232}}
+  {
+    \catchword{Nachbarleitungen, auf denen Signale mit hochfrequenten Anteilen oder mit hoher
+               Leistung transportiert werden.}
+    \catchword{Erdschleifen, bei denen versch. Signale oder Versorungsströme über einen gemeinsamen
+               Erdleiter laufen}
+    \catchword{Prozesseinrichtungen, die mit hohen Listungen aus dem Netz betrieben werden. Hier
+               werden die Störungen meistens induktiv eingekoppelt und führen zu Gegentaktstörungen mit
+               Netzfrequenz.}
+    \catchword{Hochfrequenz-Generatoren und -Anlagen, zur Wärmebehandlung. Hier wirkt meißt die
+               kapazitive Ankopplung.}
+    \catchword{Elektrische Funken, die beim Öffnen von Schaltern entstehen. Unter Umständen führen
+               sie zu unberechnbaren Stoßwellen.}
+  }
+
+  \question{Welche Schutzeinrichtungen gibt es (mit Ersatzschaltbildern)}{\page{233}}
+  {
+    \catchword{Koppelkondensatoren (kapazitive Ankopplung)}
+    \catchword{Koppelübertrager (induktive Ankopplung)}
+    \catchword{Optokoppler}
+    \catchword{Relais}
+    \catchword{Begrenzer mit Dioden}
+    \catchword{Ladungsübertrager (Flying Capacitors)}
+    \catchword{Zerhackerschaltungen}
+    \catchword{Tiefpässe}
+    \catchword{Zenerdioden}
   }
 
   \question{Wie können Geräte im einfachsten Fall an die Zentraleinheit angeschlossen
@@ -2164,92 +2256,6 @@
     \normaltext{Aufgaben werden auf unterschidlichen Rechnern mit unterschiedlicher Hard-
                 und Software berechnet. Nach der Berechnung werden die Ergebnisse verglichen
                 und es wird eine Mehrheitsentscheidnung getroffen.}
-  }
-
-  \question{Was wird durch die Art einer Übertragungsleitung bestimmt}{\page{229}}
-  {
-    \catchword{Übertragungseigenschaften einer Leitung}
-    \catchword{Störempfindlichkeit einer Leitung}
-  }
-
-  \question{Durch welche einzelnen Elemente kann eine Übertragungsleitung ersatzweise
-            beschrieben werden}{\page{229}}
-  {
-    \catchword{einen ohmschen Widerstand R, der eine frequenzunabhängige Signaldämpfung bewirkt und
-    mit der Leitungslänge proportional anwächst.}
-    \catchword{Induktivitäten L und Kapazitäten C, die zusammen mir R einenn Tiefpass bilden, der höhere
-    Frequenzen abschneidet und die Bandbreite der Leitung bestimmt, welche proportional zur Länge abnimmt.}
-    \catchword{Kopplungskapazitäten $C_k$ und Kopplungsinduktivitäten $L_k$, über welche die äußeren Störungen
-    eingekoppelt werden. Zu diesen Störungen zählt auch Übersprechen von benachbarten Leitungen. Die
-    Störempfindlichkeit wächst mit der Leitungslänge.}
-  }
-
-  \question{Was wird noch durch die Kapazitäten und Induktivitäten bestimmt}{\page{230}}
-  {
-    \catchword{Der komplexe Wellenwiderstand Z der Leitung, der als ohmscher Abschlusswiderstand
-               am Kabelende benötigt wird, damit keine Reflexionen auftreten.}
-    \catchword{Die Signalgeschwindigkeit c auf der Leitung, deren Kehrwert als Laufzeitkonstante
-               bezeichnet wird.}
-  }
-
-  \question{Welche Aufbauarten von Leitungstypen kann man unterscheiden}{\pages{230}{231}}
-  {
-    \catchword{Einzeladern \resultol{kein definierter Wellenwiderstand, geringe Bandbreitenlänge
-               (ca 1MHz*m), große Störanfälligkeit}}
-    \catchword{Flachbandkabel \resultol{parallel verlaufende Einzeladern, relativ gut definierter
-               Wellenwiderstand, relativ große Bandbreitenlänge (ca 100MHz*m)}}
-    \catchword{Verdrillte Adernkabel \resultol{relativ guter Wellenwiderstand, relativ große 
-               Bandbreitenlänge (über 1MHz*m), Störeinwirkung hebt sich in den beiden Leitern weitgehend
-               gegenseitig auf}}
-    \catchword{Koaxialkabel \resultol{besteht aus Innenleiter und geschlossener, konzentrischer
-               Aussenleiter, höchste Störfestigkeit, wohldefinierter Wellenwiderstand, Bandbreitenlänge
-               hängt stark vom Isolationsmaterial ab (ca 100MHz*km)}}
-    \catchword{Lichtwellenleiter \resultol{ummantelte Glasfaser, über die moduliertes Licht geleitet
-               wird, praktisch absolut stör- und abhörsicher, hohe Bandbreitenlänge (ca 1GHz*km)}}
-  }
-
-  \question{Welche andere Art der Übertragung gibt es noch)}{\page{231}}
-  {
-    \normaltext{Leitungsungebundene Übertragung durch Ultraschall, Infrarotlicht oder per Funk.}
-  }
-
-  \question{Welche Arten von Störungen können auftreten}{\pages{231}{232}}
-  {
-    \catchword{Wechselspannungen, die von außen induktiv oder kapazitiv eingekoppelt werden.}
-    \catchword{Gleichspannungen, die über eine galvanische Kopplung entstehen. z.B. wenn Sender und
-               Empfänger auf versch. Potentialen liegen.}
-    \catchword{Gleichtaktstörungen, durch gleichphasige Einkopplungen auf den Leitern, oder durch
-               Potentialdifferenz zwischen Sender und Empfänger.}
-    \catchword{Gegentaktstörungen, die durch Gleichtaktstörungen entstehen, die nicht gleich groß
-               sind, oder sich nicht kompensieren lassen.}
-  }
-
-  \question{Welche Störquellen gibt es}{\page{232}}
-  {
-    \catchword{Nachbarleitungen, auf denen Signale mit hochfrequenten Anteilen oder mit hoher
-               Leistung transportiert werden.}
-    \catchword{Erdschleifen, bei denen versch. Signale oder Versorungsströme über einen gemeinsamen
-               Erdleiter laufen}
-    \catchword{Prozesseinrichtungen, die mit hohen Listungen aus dem Netz betrieben werden. Hier
-               werden die Störungen meistens induktiv eingekoppelt und führen zu Gegentaktstörungen mit
-               Netzfrequenz.}
-    \catchword{Hochfrequenz-Generatoren und -Anlagen, zur Wärmebehandlung. Hier wirkt meißt die
-               kapazitive Ankopplung.}
-    \catchword{Elektrische Funken, die beim Öffnen von Schaltern entstehen. Unter Umständen führen
-               sie zu unberechnbaren Stoßwellen.}
-  }
-
-  \question{Welche Schutzeinrichtungen gibt es (mit Ersatzschaltbildern)}{\page{233}}
-  {
-    \catchword{Koppelkondensatoren (kapazitive Ankopplung)}
-    \catchword{Koppelübertrager (induktive Ankopplung)}
-    \catchword{Optokoppler}
-    \catchword{Relais}
-    \catchword{Begrenzer mit Dioden}
-    \catchword{Ladungsübertrager (Flying Capacitors)}
-    \catchword{Zerhackerschaltungen}
-    \catchword{Tiefpässe}
-    \catchword{Zenerdioden}
   }
 
 
