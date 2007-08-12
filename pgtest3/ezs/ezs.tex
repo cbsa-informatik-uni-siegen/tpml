@@ -2384,6 +2384,106 @@
 
   \newpage
   \section{Prozessrechner-Software}
+  
+  %4
+
+%4.1.5 Petrinetze
+
+  \question{Wozu eignen sich Petrinetze insbesondere im Gegensatz zu 
+    klassischen Strunkturierungs-Methoden von Prozessen}{\page{269}}
+  {
+    \normaltext{neben statischen Strunkturen lassen sich auch dynamische 
+   Vorgänge darstellen, sogar parallele Arbeitsschritte.}
+  }
+  
+      \question{Was wird in einem Petrinetz duch Stellen, was durch Transitionen
+      dargestellt}{\page{270}}
+  {
+    \catchword{Stellen: Zustand}
+    \catchword{Transition: Aktion}
+  }
+  
+  
+  \question{Zeichnen Sie eine Konjunktion und eine Disjunktion}{\page{270}}
+  {
+    \catchword{Konjunktion: mehrere Eingangstellen auf einen Transition}
+    \catchword{Disjunktion: mehrere Peie auf einen Stelle}
+  }
+  
+  
+  \statement{Zeichnen Sie einen Signalträger (Semaphor) in einem Petrinetz,
+  der zwei Tasks gegenseitig aus einem Kritischen Abschnitt ausschließt}
+  {\page{272}}
+  {
+    \normaltext{Bild 4.13 Seite 272 oben}
+  }
+  
+  \statement{Zeichnen Sie ein Petrinetz, das zwei Tasks symmetrisch 
+  synchronisiert}
+      {\page{273}}
+  {
+    \normaltext{Bild 4.14 Seite 273 oben, ganz links}
+  }
+  
+  \statement{Zeichnen Sie ein Petrinetz, das zwei Tasks asymmetrisch 
+  synchronisiert}
+      {\page{273}}
+  {
+    \normaltext{Bild 4.14 Seite 273 oben, Mitte}
+  }
+  
+  \statement{Zeichnen Sie ein Petrinetz, dass den Ablauf einer Interrupt-Service
+  -Routine erläutert}
+      {\page{274}}
+  {
+    \normaltext{Bild 4.15 Seite 274 oben}
+  }
+  
+  %4.2.3.2 Taskzustände
+  
+  \statement{Zeichnen Sie ein Diagramm in dem alle möglichen Zustände eines
+  Tasks und ihren Übergägnen enthalten ist}
+      {\page{291}}
+  {
+    \normaltext{Bild 4.23 Seite 291 oben}
+  }
+  
+  \statement{Beschreiben Sie den Zustand ruhend kurz}
+      {\page{290}}
+  {
+    \normaltext{Task ist vorhanden aber zur Zeit nicht zur Bearbeitung
+    vorgesehen. Sie lagern auf der Platte, es gibt ein paar Zustandsinformationen
+    und Informationen über ihren Betriebsmittelbedarf. In diesen Zusand kommen
+    sie nach ihrer Beendigung aus dem Zustand Rechnend oder nach ihrer 
+    Erstellung. Aus diesem Zustand kommt der Task in bereit, wenn er angefordert
+    wird.}
+  }
+  
+  \statement{Beschreiben Sie den Zustand bereit kurz}
+      {\page{291}}
+  {
+  \normaltext{Task besitzt alle benötigten Betriebsmittel außer die CPU. Taks 
+  befinden sich hier normalerweise in einer Warteschlange, oft auch mit
+  Prioritäten. Die Prozessverwaltung holt aus der Warteschlange die Tasks ab,
+  die dann rechnend sind. Neben den aufgerufenen ruhenden Tasks kommen auch 
+  Tasks auch rechnen nach einem Interrupt oder aus dem Zustand wartend, wenn
+  ihnen alle benötigten Betribesmittel zur Verfügung gestellt wurden.}
+  }
+  
+\statement{Beschreiben Sie den Zustand rechnend kurz}
+      {\page{291}}
+  {
+  \normaltext{Task besitzt die CPU. Es können also nur so viele Tasks wie CPUs 
+  rechnend sein. }
+  }  
+  
+  \statement{Beschreiben Sie den Zustand wartend kurz}
+      {\page{291}}
+  {
+  \normaltext{Tasks, die auf die Zuteilung von Betriebsmitteln warten. Sie 
+  können nach den Betriebsmittel sortiert sein und dort Warteschlangen bilden,
+  auch hier kann es Prioritäten geben.}
+  }
 
   \newpage
   \section{Sonstiges}
