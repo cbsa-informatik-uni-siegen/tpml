@@ -8,11 +8,11 @@
 Dieses Kapitel beschreibt die in \TPML\ verf"ugbaren Sprachen im Detail. Dies beinhaltet sowohl die abstrakte Syntax der Sprachen als auch die
 operationelle Semantik und das Typsystem, also die Regeln f"ur die big und small step Interpreter und den Type Checker. Dieses Kapitel ist
 jedoch nicht geeignet als Ersatz f"ur den Besuch der Vorlesung oder "Ubung, ebensowenig sollte dieses Handbuch als vollst"andiges Skript
-mi"sverstanden werden\footnote{Es mag wiederum allerdings n"utzlich als Grundlage f"ur die Pr"ufungsvorbereitung sein, da es eine vollst"andige
-Auflistung des Regelwerks darstellt, welches jedoch nicht hunderprozentig mit dem Vorlesungsinhalt "ubereinstimmt.}.
+missverstanden werden\footnote{Es mag wiederum allerdings n"utzlich als Grundlage f"ur die Pr"ufungsvorbereitung sein, da es eine vollst"andige
+Auflistung des Regelwerks darstellt, welches jedoch nicht hundertprozentig mit dem Vorlesungsinhalt "ubereinstimmt.}.
 
 Die Sprachen \LZERO\ bis \LFOUR\ sind strikt hierarchisch aufgebaut, das hei"st die Sprache $\mathcal{L}_{n+1}$ erweitert die Sprache
-$\mathcal{L}_n$ ($0 \le n < 4$), beinhaltet also alle Merkmale der Sprache $\mathcal{L}_n$. Die Sprachen entsprechen im wesentlichen
+$\mathcal{L}_n$ ($0 \le n < 4$), beinhaltet also alle Merkmale der Sprache $\mathcal{L}_n$. Die Sprachen entsprechen im Wesentlichen
 den in der Vorlesung behandelten Sprachen. Kleinere Abweichungen sind jedoch m"oglich und stellenweise nicht vermeidbar. In der "Ubung
 werden, falls notwendig, diese Abweichungen herausgestellt und erl"autert.
 
@@ -197,8 +197,8 @@ aus den obigen Regeln indem man zu jeder Regel der Form\\[2mm]
       \mbox{(R-EXN-$i$)} & $\regel{e_1 \eval v_1 \quad \ldots \quad e_{i-1} \eval v_{i-1} \quad e_i \eval \exn}
                                 {e \eval \exn}$ \\[5mm]
    \end{tabular}\\[3mm]
-hinzuf"ugt. Exception-Regeln m"ussen beim big step Interpreter nicht explizit ausgew"ahlt werden, sonde\mbox werden
-automatisch eingesetzt, sobald eine Ausnahme weitergereicht werden mu"s.
+hinzuf"ugt. Exception-Regeln m"ussen beim big step Interpreter nicht explizit ausgew"ahlt werden, sondern werden
+automatisch eingesetzt, sobald eine Ausnahme weitergereicht werden muss.
 
 
 \subsection{Small step Semantik von \LONE}
@@ -225,7 +225,7 @@ Ein \notation{small step} hei"st g"ultig f"ur \LONE, wenn er sich mit den small 
     \mbox{(COERCE)}       & $\coercion{e}{\tau}{\tau'} \to e$
   \end{tabular}\\[7mm]
 und mit den zugeh"origen exception-Regeln herleiten l"asst. Diese exceptions-Regeln erh"alt man - "ahnlich wie
-bei der big step Seminatik - aus den obigen Regeln indem man f"ur jede Regel der Form\\[2mm]
+bei der big step Seminatik - aus den obigen Regeln, indem man f"ur jede Regel der Form\\[2mm]
   \begin{tabular}{ll}
     \mbox{(R)} & $\regel{e_1 \to e'_1}{e_2 \to e'_2}$
   \end{tabular}\\[3mm]
@@ -241,11 +241,11 @@ explizit angegeben werden m"ussen.
 
 \LONE\ verf"ugt "uber ein einfaches \notation{Typsystem}, benutzt aber wie alle folgenden Sprachen schon den
 \notation{Typinferenzalgorithmus}, was anfangs vielleicht zu schwer verst"andlichen Fehlermeldungen f"uhren kann.
-In diesem Fall sollte es in der "Ubung angesprochen werden.
+Diese sollten sollte es in der "Ubung angesprochen werden.
 
 Ein \define{Typurteil} f"ur Ausdr"ucke ist von der Form $\Tj{\Gamma}{e}{\tau}$, wobei $\Gamma: \Id \pto \Type$ eine
-partielle Funktion mit endlichem Definitionsbereich ist, die bestimmten Bezeichne\mbox einen Typ zuordnet. $\Gamma$ wird
-als \define{Typumgebung} \engl{type environment} bezeichnet. Ein Typurteil heisst g"ultig f"ur \LONE, wenn es sich mit
+partielle Funktion mit endlichem Definitionsbereich ist, die bestimmten Bezeichnern \mbox einen Typ zuordnet. $\Gamma$ wird
+als \define{Typumgebung} \engl{type environment} bezeichnet. Ein Typurteil hei"st g"ultig f"ur \LONE, wenn es sich mit
 den Regeln\\[3mm]
 \begin{tabular}{ll}
   \mbox{(CONST)\  } & $\regel{\tj{c}{\tau}}
@@ -285,12 +285,12 @@ den Typ $\tau$ hat. Dies wird durch die Regeln\\[3mm]
                     \reason{ falls $\op$ arithmetischer Operator}\\[2mm]
 \mbox{(ROP)\   } & $\tj{\op}{\inttype\to\inttype\to\bool}$ \reason{ falls $\op$ Vergleichsoperator}
 \end{tabular}\\[7mm]
-definiert. Beim Type Checker werden diese Regeln f"ur Konstanten nicht angegeben, sonde\mbox lediglich die (CONST) Regel.
+definiert. Beim Type Checker werden diese Regeln f"ur Konstanten nicht angegeben, sondern \mbox lediglich die (CONST) Regel.
 
 
 \subsection{Minimal Typing Semantik von \LONE}
 
-  Ein Typurteil $\Tjm{\Gamma}{e}{\tau}$ oder $\Tjm{\Gamma}{r}{\phi}$ heisst g\"ultig f\"ur \Lom,
+  Ein Typurteil $\Tjm{\Gamma}{e}{\tau}$ oder $\Tjm{\Gamma}{r}{\phi}$ hei"st g\"ultig f\"ur \Lom,
   wenn es sich mit den Typregeln  \\[5mm]
   \begin{tabular}{ll} 
     \mbox{(Id)\ }           & $\Tjm{\Gamma}{\id}{\tau} \quad \text{falls } \id\in\dom{\Gamma} \wedge \Gamma(\id) = \tau$ \\[1mm]
@@ -331,17 +331,17 @@ definiert. Beim Type Checker werden diese Regeln f"ur Konstanten nicht angegeben
 Die Sprache \LONE\ und alle folgenden Sprachen enthalten \Define{syntaktischen Zucker}{syntaktischer Zucker} um das Schreiben
 von Programmen zu vereinfachen. Der syntaktische Zucker l"asst sich dann anschlie"send in Kernsyntax "ubersetzen oder direkt
 verarbeiten. Hierbei wurden aus Gr"unden der "Ubersichtlichkeit nicht immer abgeleitete Regeln f"ur den syntaktischen Zucker eingef"uhrt,
-sonde\mbox es wird implizit eine Konvertierung des betreffenden Teilausdrucks in \notation{Kernsyntax} vorgenommen. F"ur \LONE\ betrifft dies
+sondern \mbox es wird implizit eine Konvertierung des betreffenden Teilausdrucks in \notation{Kernsyntax} vorgenommen. F"ur \LONE\ betrifft dies
 Ausdr"ucke, die Operatoren in \notation{Infixschreibweise} enthalten, und die logischen Operatoren $\mathbin{\&\&}$ und $\mathbin{||}$. Es gilt:
 \beqns
 e_1\,\op\,e_2\quad \mbox{steht f"ur}\quad (\op\,e_1)\,e_2
 \eeqns
 Beim small step Interpreter w"urden also die Regeln (APP-LEFT) und (OP) angewendet. Beim Schreiben von Programmen ist dar"uber
-hinaus zu beachten, dass Operatoren, sofe\mbox sie nicht in Infixausdr"ucken auftauchen, immer geklammert werden m"ussen. Die
+hinaus zu beachten, dass Operatoren, sofern \mbox sie nicht in Infixausdr"ucken auftauchen, immer geklammert werden m"ussen. Die
 Funktion, die $1$ zu ihrem Parameter addiert wird also als
 \[(+)\,1\]
 geschrieben. Dies entspricht der OCaml-Konvention und ist notwendig, da der Parser sonst bei bestimmten Ausdr"ucken nicht
-entscheiden kann, ob es ein Infixausdruck ist, oder der Operator als Parameter in eine Funktion eingesetzt werden soll. Zum
+entscheiden kann, ob es ein Infixausdruck ist oder der Operator als Parameter in eine Funktion eingesetzt werden soll. Zum
 Beispiel l"asst sich
 \[x + y\]
 interpretieren als Infixaddition von $x$ und $y$ oder als Anwendung der Funktion $x$ auf die Parameter $+$ und $y$. Intuitiv
@@ -353,7 +353,7 @@ $\mathbin{||}$-Verkn"upfungen sind syntaktischer Zucker f"ur die bedingte Ausf"u
   \andalso{e_1}{e_2} & \mbox{ steht f"ur } & \bifte{e_1}{e_2}{\false} \\
   \orelse{e_1}{e_2} & \mbox{ steht f"ur } & \bifte{e_1}{\true}{e_2}
 \eeqns
-und es existieren abgeleitete Interpreter- und Typregeln, da sonst der Umgang mit diesen Konstrukten zu aufwendig
+und es existieren abgeleitete Interpreter- und Typregeln, da sonst der Umgang mit diesen Konstrukten zu aufw"andig
 w"are.
 
 Interessant zu beobachten ist, dass auch der $\Not$-Operator als syntaktischer Zucker aufgefasst werden k"onnte.
@@ -368,8 +368,8 @@ Dies sei aber nur am Rande erw"ahnt.
 
 \index{Call By Name}
 Die Sprache \LONECBN \ bietet den gleichen Funktionsumfang wie die Sprache \LONE, benutzt aber statt der 
-Call by Value eine Call by Name Semantik. Um dies zu realisieren werden verschiedene Regeln in der Big step 
-und der Small step Semantik gel"oscht oder ge"andert. Nur diese ge"anderten bzw. gel"oschten Regeln werden hier
+Call by Value eine Call by Name Semantik. Um dies zu realisieren werden verschiedene Regeln in der big step 
+und der small step Semantik gel"oscht oder ge"andert. Nur diese ge"anderten bzw. gel"oschten Regeln werden hier
 aufgef"uhrt.
 
 \subsection{Big step Semantik von \LONECBN}
@@ -418,7 +418,7 @@ Ein Beweisschritt f"ur Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \
                               {\subtype{\typeArrow{\tau_1}{\tau_2}} {\typeArrow{\tau_1'}{\tau_2'}}}$ \\[4mm]
   \end{tabular} \\[7mm]
 
-herleiten l\"a"st.
+herleiten l\"asst.
 
 \subsection{Rec Sub Typing Semantik von \LONESUB}
 
@@ -445,7 +445,7 @@ Ein Beweisschritt f"ur Rec Sub Typing hei"st g"ultig, wenn er sich mit den Regel
           \end{tabular}
 
 
-herleiten l\"a"st.
+herleiten l\"asst.
 
 
 
@@ -497,13 +497,13 @@ bestimmt.
 
 \subsection{Minimal Typing Semantik von \LTWO}
 
-  Ein Typurteil $\Tjm{\Gamma}{e}{\tau}$ oder $\Tjm{\Gamma}{r}{\phi}$ heisst g\"ultig f\"ur \Lom,
+  Ein Typurteil $\Tjm{\Gamma}{e}{\tau}$ oder $\Tjm{\Gamma}{r}{\phi}$ hei"st g\"ultig f\"ur \Lom,
   wenn es sich mit den Typregeln \\[5mm]
   \begin{tabular}{ll} 
     \mbox{(Rec-Subsume)\ }  & $\RULE{\Tjm{\Gamma\SUB{\tau}{x}}{e}{\tau'} \quad \tau' \le \tau}
                               {\Tjm{\Gamma}{\expRec{x:\tau}{e}}{\tau}}$ \\[4mm]
   \end{tabular} \\[7mm]
-  und den Suptyping Regeln herleiten l\"a"st.
+  und den Suptyping Regeln herleiten l\"asst.
 
 
 \subsection{Syntaktischer Zucker}
@@ -534,8 +534,8 @@ eine "Ubersetzung in \notation{Kernsyntax} vorgenommen.
 
 \index{Call By Name}
 Die Sprache \LTWOCBN \ bietet den gleichen Funktionsumfang wie die Sprache \LTWO, benutzt aber statt der 
-Call by Value eine Call by Name Semantik. Um dies zu realisieren werden verschiedene Regeln in der Big step 
-und der Small step Semantik gel"oscht oder ge"andert. Nur diese ge"anderten bzw. gel"oschten Regeln werden hier
+Call by Value eine Call by Name Semantik. Um dies zu realisieren werden verschiedene Regeln in der big step 
+und der small step Semantik gel"oscht oder ge"andert. Nur diese ge"anderten bzw. gel"oschten Regeln werden hier
 aufgef"uhrt.
 
 \subsection{Big step Semantik von \LTWOCBN}
@@ -573,7 +573,7 @@ und den ge"anderten bzw. gel"oschten Regeln\\[5mm]
 herleiten l"asst.
 
 \section{Die Sprache \LTWOSUB}
-Die Sprache \LTWOSUB ist erweitert die Sprache \LONE um das Typsystem der Sprache \LTWO. 
+Die Sprache \LTWOSUB erweitert die Sprache \LONE um das Typsystem der Sprache \LTWO. 
 
 \section{Die Sprache \LTWOO}
 \index{Objekte}
@@ -724,7 +724,7 @@ die nicht zu einem Objekt oder Attribut geh"oren.
                                 {\Tjm{\Gamma}{\rowMethod{m}{e}{r_1}}
                                              {(\rtypeMethod{m}{\tau}{\rtypeEmpty}) \oplus \phi}}$
   \end{tabular} \\[7mm]
-  und den Suptyping Regeln herleiten l\"a"st.
+  und den Suptyping Regeln herleiten l\"asst.
 
 
 \subsection{Syntaktischer Zucker}
@@ -760,7 +760,7 @@ Ein Beweisschritt f"ur Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \
                       & $\text{falls } \{m_1',\ldots,m_l'\} \subseteq \{m_1,\ldots,m_k\}$
   \end{tabular} \\[7mm]
 
-herleiten l\"a"st.
+herleiten l\"asst.
 
 \subsection{Rec Sub Typing Semantik von \LTWOOSUB} 
 
@@ -784,7 +784,7 @@ Ein Beweisschritt f"ur Rec Sub Typing hei"st g"ultig, wenn er sich mit den Regel
           \end{tabular}
 
 
-herleiten l\"a"st.
+herleiten l\"asst.
 
 \section{Die Sprache \LTWOC}
 \index{Klassen}
@@ -819,7 +819,7 @@ und die Menge \notation{$\TypeR$} aller $\name{Reihentypen}$ $\phi$ von \LTWOC\ 
 \bgram
 \phi \is a : \tau;\ \phi_1
 \egram
-, wobei die Methodennamen und Attributnamen in einem Reihentyp $\phi$ paarweise
+wobei die Methodennamen und Attributnamen in einem Reihentyp $\phi$ paarweise
 verschieden sein m"ussen.
 
 
@@ -874,7 +874,7 @@ Ist dies nicht der Fall, bleibt der Small Step Interpreter stecken.
 \section{Die Sprache \LTHREE}
 
 \index{Polymorphie}
-Die Sprache \LTHREE\ erweitert die Sprache \LTWO\ um ein polymorphes \notation{Typsystem}, sowie \notation{Tupel} und 
+Die Sprache \LTHREE\ erweitert die Sprache \LTWO\ um ein polymorphes \notation{Typsystem} sowie \notation{Tupel} und 
 \notation{Listen}, f"ur die zus"atzlich abk"urzende Schreibweisen eingef"uhrt wurden. Die Menge \notation{$\Exp$} der
 g"ultigen Ausdr"ucke wird hierf"ur um die Produktionen
 \bgram
@@ -933,9 +933,9 @@ Ein \notation{big step} hei"st g"ultig f"ur \LTHREE, wenn er sich mit den big st
     \mbox{(IS-EMPTY-TRUE)}  & $\Empty\,[\,] \eval \true$
   \end{tabular}\\[7mm]
 sowie den entsprechenden exception-Regeln herleiten l"asst. Zu beachten ist, dass - vielleicht wider der Intuition - die
-(CONS) Regel\footnote{Der Leser wird sich hoffentlich erinne\mbox, dass bin"are Operatoren, die au"serhalb eines Infixausdrucks
+(CONS) Regel\footnote{Der Leser wird sich hoffentlich erinnern \mbox, dass bin"are Operatoren, die au"serhalb eines Infixausdrucks
 verwendet werden, geklammert werden m"ussen. $v'\,\coloncolon\,[v_1,\ldots,v_n]$ ist also syntaktischer Zucker f"ur
-$(\coloncolon)\,v'\,[v_1;\ldots;v_n]$.} f"ur den bin"aren Konkatenationsoperator $\coloncolon$ definiert ist, und nicht f"ur den
+$(\coloncolon)\,v'\,[v_1;\ldots;v_n]$.} f"ur den bin"aren Konkatenationsoperator $\coloncolon$ definiert ist und nicht f"ur den
 un"aren Listenkonstruktor $\Cons$. Dies wird jedoch leicht ersichtlich, wenn man sich vor Augen h"alt, dass $(\Cons\,v) \in \Val$.
 F"ur Details zum Thema Listen sei hier auf den Inhalt der Vorlesung verwiesen.
 
@@ -995,7 +995,7 @@ die bisherige Regel (ID). Die neue Regel
                           \quad
                           \Tj{\Gamma[Closure_\Gamma(\tau)/\id]}{e_2}{\tau'}}
                           {\Tj{\Gamma}{\bli{\id}{e_1}{e_2}}{\tau'}}\]
-sorgt f"ur das ,,polymorph machen'' des Typs beim Eintragen in die Typumgebung, wobei der polymorphe Abschlu"s eines Typs $\tau$
+sorgt f"ur das ,,polymorph machen'' des Typs beim Eintragen in die Typumgebung, wobei der polymorphe Abschluss eines Typs $\tau$
 in der Typumgebung $\Gamma$ durch
 \[
   Closure_\Gamma(\tau) = \forall\alpha_1,\ldots,\alpha_n.\,\tau \reason{mit $\{\alpha_1,\ldots,\alpha_n\} = free(\tau) \backslash free(\Gamma)$}
@@ -1025,12 +1025,12 @@ hinzugenommen.
   \mbox{(TUPLE)\ }& $\regel{\Tjm{\Gamma}{e_1}{\tau_1} \quad \ldots \quad \Tjm{\Gamma}{e_n}{\tau_n}}
                            {\Tjm{\Gamma}{(e_1,\ldots,e_n)}{\tau_1 * \ldots * \tau_n}}$
   \end{tabular} \\[7mm]
-  und den Suptyping Regeln herleiten l\"a"st.
+  und den Suptyping Regeln herleiten l\"asst.
 
 \subsection{Syntaktischer Zucker}
 
-\LTHREE\ enth"alt wie gesehen syntaktischen Zucker f"ur den leichteren Umgang mit Listen und Tupeln. Die Ak"urzungen werden
-wie im Folgenden dargestellt in die Kernsyntax "ubersetzt.
+\LTHREE\ enth"alt syntaktischen Zucker f"ur den leichteren Umgang mit Listen und Tupeln. Die Ak"urzungen werden
+in die Kernsyntax "ubersetzt.
 \begin{eqnarray*}
   [e_1;\ldots;e_n]    & \mbox{ steht f"ur } & \Cons\,(e_1,\ldots \Cons\,(e_n, [\,])) \quad (n \le 1) \\
   e_1 \coloncolon e_2 & \mbox{ steht f"ur } & \Cons\,(e_1, e_2) \\
@@ -1069,7 +1069,7 @@ Ein Beweisschritt f"ur Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \
                               {\subtype{\tau_1 * \ldots * \tau_n} {\tau_1' * \ldots * \tau_n'}}$ \\[4mm]
   \end{tabular} \\[7mm]
 
-herleiten l\"a"st.
+herleiten l\"asst.
 
 \subsection{Rec Sub Typing Semantik von \LTHREESUB}
 
@@ -1084,7 +1084,7 @@ Ein Beweisschritt f"ur Rec Sub Typing hei"st g"ultig, wenn er sich mit den Regel
           \end{tabular}
 
 
-herleiten l\"a"st.
+herleiten l\"asst.
 
 
 \section{Die Sprache \LFOUR}
@@ -1102,7 +1102,7 @@ c \is \Ref \mid \Deref \mid \Assign
 \egram
 erweitert.
 
-Die operationelle Semantik muss f"ur die Sprache \LFOUR\ angepasst werden. Dazu sei eine unendliche Menge \notation{$\Loc$} vorgegen,
+Die operationelle Semantik muss f"ur die Sprache \LFOUR\ angepasst werden. Dazu sei eine unendliche Menge \notation{$\Loc$} vorgegeben,
 deren Element ($X, Y, \ldots$) \Define{Speicherpl"atze}{Speicherplatz} \engl{locations}{location} genannt werden. Ein \define{Speicherzustand}
 \engl{store} ist eine partielle Funktion
 \[
@@ -1115,7 +1115,7 @@ $\Ref$-Operators sei eine totale Funktion
 \[
   alloc: \name{Store} \to \Loc
 \]
-mit $alloc(\sigma) \not\in dom(\sigma)$ gegeben ($alloc(\sigma)$ ist also ein Speicherplatz in $\sigma$,
+mit $alloc(\sigma) \not\in dom(\sigma)$ gegeben, ($alloc(\sigma)$ ist also ein Speicherplatz in $\sigma$,
 der bisher noch nicht alloziert wurde).
 
 
@@ -1212,7 +1212,7 @@ Ein Beweisschritt f"ur Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \
                               {\subtype{\reftype{\tau}} {\reftype{\tau'}}}$ \\[4mm]
    \end{tabular} \\[7mm]
 
-herleiten l\"a"st.
+herleiten l\"asst.
 
 \subsection{Rec Sub Typing Semantik von \LFOURSUB}
 
@@ -1224,7 +1224,7 @@ Ein Beweisschritt f"ur Rec Sub Typing hei"st g"ultig, wenn er sich mit den Regel
           \end{tabular}
 
 
-herleiten l\"a"st.
+herleiten l\"asst.
 
 
 \section{Konkrete Syntax}
@@ -1232,7 +1232,7 @@ Da es mitunter nicht mit jeder herk"ommlichen Tastatur m"oglich ist, griechische
 k"onnen die aufgef"uhrten Schl"usselw"orter als Ersatz benutzt werden. Ebenso ist es nicht so einfach
 Unicode Zeichen einzugeben, auch hierf"ur gibt es die entsprechenden Abk"urzungen. Unterscheidungen,
 die nur in er Theorie m"oglich sind, in der Praxis aber nicht unterscheidbar sind, m"ussen mit
-Schl"usselw"orte\mbox unterschieden werden.\\[5mm]
+Schl"usselw"ortern \mbox unterschieden werden.\\[5mm]
 \begin{tabular}{lll}
   \mbox{$\lambda$}                            & $\textbf{lambda}$                        & Lambda Ausdruck\\
   \mbox{$\mu$}                                & $\textbf{mu}$                            & Rekursive Typen\\

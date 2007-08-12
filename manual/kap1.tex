@@ -9,10 +9,10 @@
 
 \section{Systemvoraussetzungen}
 
-\TPML\ wurde vollst"andig in Java entwickelt, und ben"otigt zur Ausf"uhrung lediglich ein JRE oder
+\TPML\ wurde vollst"andig in Java entwickelt und ben"otigt zur Ausf"uhrung lediglich ein JRE oder
 JDK in der Version 5.0 oder neuer.
-Einige System, wie zum Beispiel Mac OS X Tiger, diverse Linux Distributionen und angepasste Windows
-OEM Installation, enthalten bereits Java 5.0. Ansonsten kann die neueste Version der Java Runtime
+Einige Systeme, wie zum Beispiel Mac OS X Tiger, diverse Linux Distributionen und angepasste Windows
+OEM Installationen, enthalten bereits Java 5.0. Ansonsten kann die neueste Version der Java Runtime
 Environment (optional kombiniert mit dem Java Development Kit) von der Sun Microsystems Webseite
 heruntergeladen werden.
 
@@ -29,7 +29,7 @@ im Homeverzeichnis ein Eintrag
 und anschlie"send muss entweder die Datei mittels {\tt source .bashrc} neugeladen oder die
 Shell neu gestartet werden.
 
-Unter Windows "ubernimmt das Java Installationsprogramm die Aufgabe die entsprechenden Systemeinstellungen
+Unter Windows "ubernimmt das Java Installationsprogramm die Aufgabe, die entsprechenden Systemeinstellungen
 anzupassen. Es sind in der Regel nach der Installation keine weitere Anpassungen mehr notwendig.
 
 
@@ -54,15 +54,15 @@ Anschlie"send wechselt man in das erzeugte Verzeichnis {\tt tpml-X.Y.Z} und f"uh
 {\tt tpml.sh} aus. Sofern eine geeignete JavaSE 5.0 Installation gefunden wurde, startet nun \TPML,
 ansonsten gibt es eine Fehlermeldung, und es sollte "uberpr"uft werden, ob wirklich ein JRE oder JDK
 5.0 installiert ist, und sichergestellt werden, dass das {\tt java}-Binary im {\tt \$PATH} liegt. Beim
-ersten Start von {\tt tpml.sh} wird das Programm im System registriert, das hei"st im Men"u erscheint
+ersten Start von {\tt tpml.sh} wird das Programm im System registriert, das hei"st, im Men"u erscheint
 ein Eintrag f"ur \TPML\ und Dateien k"onnen in standardkonformen Dateimanagern (zum Beispiel Thunar
 und Nautilus) per Doppelklick ge"offnet werden.
 
 Unter Windows gen"ugt ein Doppelklick auf die Datei {\tt tpml.exe}. Sollte keine JavaSE 5.0
-Installation gefunden werden, oder ist Java nicht korrekt im System eingerichtet erscheint
+Installation gefunden werden oder ist Java nicht korrekt im System eingerichtet, erscheint
 ein Fehlerdialog.
 
-Sollte die Versionskontrolle einmal versagen kann sie auch "ubergangen werden. Dazu muss die JAR-Datei des UI-Paketes manuell gestartet werden.
+Sollte die Versionskontrolle einmal versagen, kann sie auch "ubergangen werden. Dazu muss die JAR-Datei des UI-Paketes manuell gestartet werden.
 \begin{verbatim}
   java -jar de.unisiegen.tpml.ui-X.Y.Z.jar -f
 \end{verbatim}
@@ -76,11 +76,11 @@ Programmiersprache verkn"upft, die durch die Dateiendung identifiziert wird\foot
 Weise wie {\tt .java} eine Java-Datei bezeichnet und {\tt .c} eine C-Datei.}. In \TPML\ wurden
 die Sprachen \LZERO\ bis \LFOUR\ realisiert, die den wesentlichen in der Vorlesung behandelten
 Sprachen entsprechen, wobei die Namen und der Umfang
-einzelner Sprachen von denen in der Vorlesung abweichen kann. Die Sprachen werden in
-Kapitel~\ref{DieSprachenImDetail} im Detail behandelt, welches auch als Nachschlagewerk
+einzelner Sprachen von denen in der Vorlesung abweichen kann. Die Sprachen werden im Detail in
+Kapitel~\ref{DieSprachenImDetail} behandelt, welches auch als Nachschlagewerk
 dienen soll.
 
-Um eine neue Datei zu erstellen w"ahlt man aus dem Men"u {\bf Datei} den Eintrag {\bf Neu...}
+Um eine neue Datei zu erstellen, w"ahlt man aus dem Men"u {\bf Datei} den Eintrag {\bf Neu...},
 worauf sich ein Dialog "offnet, in dem die f"ur die Datei zu benutzende Programmiersprache
 ausgew"ahlt werden muss. Da die Vorlesung mit dem ungetypten $\lambda$-Kalk"ul beginnt,
 w"ahlen wir also auch hier ein einfaches Programmbeispiel in der Programmiersprache \LZERO.
@@ -95,7 +95,7 @@ Zugegebenerma"sen nicht das beindruckendste Programm, aber f"ur ein erstes Beisp
 sehr gut geeignet. Wie man bei der Eingabe des obigen Programms merken wird, unterst"utzt
 der Editor Syntaxhighlighting und markiert automatische Fehler im Programmtext, wie man
 es in der Regel von integrierten Entwicklungsumgebungen gewohnt ist\footnote{Nichtsdestotrotz
-sollte \TPML\ nicht mit einer IDE verwechselt, da es strikt als Lernwerkzeug ausgelegt ist.}.
+sollte \TPML\ nicht mit einer IDE verwechselt werden, da es strikt als Lernwerkzeug ausgelegt ist.}.
 
 Anschlie"send kann man nun den big oder small step Interpreter starten und einen Programmablauf
 durchspielen, der bei dem obigen Programm verst"andlicherweise nicht sonderlich spektakul"ar
@@ -103,7 +103,7 @@ ist. F"ur das Beispiel benutzen wir den small step Interpreter. Dazu w"ahlt man 
 Men"u {\bf Beweis} den Eintrag {\bf Small Step}. Es "offnet sich nun ein weiterer mit dieser
 Datei verbundener Reiter {\bf Small Step} mit dem aus der Vorlesung bekannten Aussehen einer
 small step Herleitung. Der Interpreter erwartet nun die Auswahl einer small step Regel um den
-Beweis zu vervollst"andigen. Hierzu klickt man den grauen Button, und w"ahlt dann aus
+Beweis zu vervollst"andigen. Hierzu klickt man den grauen Button und w"ahlt dann aus
 dem Men"u die n"achste anzuwendende Regel, in unserem Fall die (BETA-V) Regel.
 
 Nach Anwendung der Regel zeigt der Interpreter den n"achsten Beweisschritt, der in diesem

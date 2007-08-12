@@ -13,13 +13,13 @@ Zuletzt benutzt} schnell auf die aktuellsten Dateien zugegriffen
 werden. Unter {\bf Bearbeiten} sind Editorfunktionen enthalten. Die
 einzelnen Komponenten werden in Kapitel~\ref{Qelltexteditor}
 und~\ref{Beweiswerkzeuge} genauer betrachtet. Mit {\bf
-Einstellungen...} kann die
+Einstellungen...} k"onnen die
 Einf"arbung von Schl"usselworten im
 Quelltexteditor~\ref{Qelltexteditor} und andere Farben eingestellt werden. Das Men"u {\bf Beweis}
-enth"alt die einzelnen Beweiswerkzeuge und dient dazu zwischen dem
+enth"alt die einzelnen Beweiswerkzeuge und dient dazu, zwischen dem
 {\bf Beginner} und {\bf Fortgeschrittener} Modus zu wechseln. Diese
 Modi beeinflussen die bei den Beweisschritten zur Verf"ugung
-stehenden Regeln und beeinflusst die Ansicht der verschiedenen Modi. 
+stehenden Regeln und die Ansicht der verschiedenen Modi. 
 
 \section {Quelltexteditor}
 \label{Qelltexteditor} Jede ge"offnete Datei wird in einem Tab
@@ -29,7 +29,7 @@ gewechselt werden.
 
 Jeder Datei ist eine Sprache fest zugeordnet. M"ochte man einen
 Ausdruck in einer anderen Sprache beweisen, so kann man hierf"ur
-einen neuen Editor "offnen und der Ausdruck kopieren. Alternativ
+einen neuen Editor "offnen und den Ausdruck kopieren. Alternativ
 kann auch die Dateiendung einer gespeicherten Datei ge"andert
 werden. Ist ein eingegebener Ausdruck fehlerhaft, so wird dies links
 von der betroffenen Zeile durch ein Error-Icon markiert. Zus"atzlich 
@@ -56,7 +56,7 @@ den ersten Teil eines Ausdrucks oder Typs ein, erscheint in der betroffenen
 Zeile ein gelbes Dreieck mit einem Ausrufezeichen. Bewegt man den Mauszeiger 
 "uber das Icon, so erscheint ein Tooltip, der einen Vorschlag angibt, was der
 Benutzer noch eingeben muss, um die Eingabe zu vervollst"andigen. Der
-Tooltip gibt ebenfalls an, um welchen Ausdruck oder Typen es sich handelt, was
+Tooltip gibt ebenfalls an, um welchen Ausdruck oder Typ es sich handelt, was
 besonders f"ur Unge"ubte eine wertvolle Information ist.
 
 Der Ausdruck, der noch vervollst"andigt werden muss, wird im Hintergrund
@@ -71,7 +71,7 @@ Vorschlag automatisch an der richtigen Stelle eingef"ugt. Im gegebenen Beispiel
 wird der Ausdruck \glqq$\infix{+}{1}{\blet\ x =}$\grqq\ automatisch zu
 \glqq$\infix{+}{1}{\bli{x}{e1}{e2}}$\grqq\ erweitert, was f"ur den Parser einen
 g"ultigen Ausdruck darstellt. Die Auto-Vervollst"andigung ist ebenfalls in
-der Lage Fehler innerhalb eines Ausdrucks zu erkennen und durch einen Klick
+der Lage, Fehler innerhalb eines Ausdrucks zu erkennen und durch einen Klick
 auf das Icon zu beheben.
 
 Des weiteren bietet der Parser die M"oglichkeit, Identifier automatisch
@@ -84,12 +84,12 @@ im ersten Teil des \glqq$\binherit$\grqq\ und dem Attribut in der zweiten Reihe.
 Konflikt w"urde im Small Step Interpreter zu dem Ergebniss f"uhren, dass eine Reihe
 entstehen w"urde, die zweimal das Attribut \glqq$a$\grqq\ enth"alt, deshalb
 lehnt der Parser diesen Ausdruck ab. Der Konflikt kann aber dadurch gel"ost
-werden, dass das Attribut umbenannt wird, dabei muss darauf geachtet werden,
+werden, dass das Attribut umbenannt wird. Dabei muss darauf geachtet werden,
 dass auch alle an den Identifier des Attributes gebundenen Identifier umbenannt
 werden. Dies betrifft in diesem Fall das \glqq$a$\grqq\ im Rumpf der Methode.
-Der Parser blendet in diesem Fall ein blaues Fehlersymbol ein, dass dem Anwender
+Der Parser blendet in diesem Fall ein blaues Fehlersymbol ein, das dem Anwender
 signalisieren soll, dass eine Umbenennung m"oglich ist. Klickt der Anwender auf
-das Symbol werden die Identifier umbenannt und es entsteht folgender Ausdruck:\\[2mm]
+das Symbol, werden die Identifier umbenannt und es entsteht folgender Ausdruck:\\[2mm]
 \glqq$\class{self}{\inherit{a}{(\class{self}{\val{a}{0}})}{\val{a'}{1} \method{m}{a'}}}$\grqq
 
 
@@ -98,7 +98,7 @@ das Symbol werden die Identifier umbenannt und es entsteht folgender Ausdruck:\\
 \index{Outline}
 Die Outline erlaubt es dem Anwender, eingegebene Ausdr"ucke und Typen
 in ihrer Baumansicht zu betrachten. Der Anwender ist somit in der Lage
-zu erkennen aus welchen Teilen ein Ausdruck oder Typ besteht. So ist zum
+zu erkennen, aus welchen Teilen ein Ausdruck oder Typ besteht. So ist zum
 Beispiel bei dem Ausdruck \glqq$\infix{+}{\infix{+}{1}{1}}{1}$\grqq\ nicht 
 auf den ersten Blick ersichtlich, wie sich die Applikationen zusammensetzen. 
 In der Outline wird sichtbar, dass der Ausdruck wie folgt geklammert gesehen
@@ -109,10 +109,10 @@ folgende Klammerung \glqq$\arrowtype{\inttype}{(\arrowtype{\inttype}{\inttype})}
 Der Anwender kann dar"uber hinaus erkennen, um welche Ausdr"ucke es sich
 handelt, da der Name in der Outline dargestellt wird. Vor dem Namen des
 Ausdrucks steht immer die Menge zu der er geh"ort, diese Menge ist zumeist
-\glqq{\bf e}\grqq\ oder \glqq{\bf v}\grqq, falls es sich um ein Wert handelt.
+\glqq{\bf e}\grqq\ oder \glqq{\bf v}\grqq, falls es sich um einen Wert handelt.
 Es sind aber f"ur Identifier, Reihen, Typen etc. auch viele andere Mengen
-vorhanden. Neben der Menge zu der ein Ausdruck oder Typ geh"ort, wird auch
-sein Index dagestellt. Dadurch ist erkennbar, aus welchen Teilen sich ein
+vorhanden. Neben der Menge, zu der ein Ausdruck oder Typ geh"ort, wird auch
+sein Index dargestellt. Dadurch ist erkennbar, aus welchen Teilen sich ein
 Ausdruck oder Typ zusammensetzt. Zum Beispiel setzt sich 
 \glqq$\bli{id}{1+1}{id+2}$\grqq\ aus dem Identifier \glqq$id$\grqq, aus einem
 \glqq$e_1$\grqq\ und einem \glqq$e_2$\grqq\ zusammen.
@@ -130,7 +130,7 @@ kurz angesprochen werden sollen.
 
 {\bf Hervorheben} bietet die M"oglichkeit, den aktuell in der Outline
 selektierten Knoten in h"oheren Knoten zu markieren. Ist zum Beispiel
-der Ausdruck \glqq$\bli{x}{\infix{+}{1}{1}}{x}$\grqq\ in der Outline geladen,
+der Ausdruck \glqq$\bli{x}{\infix{+}{1}{1}}{x}$\grqq\ in der Outline geladen
 und der Knoten \glqq${\infix{+}{1}{1}}$\grqq\ selektiert, wird der zweite Ausdruck
 in dem ersten hervorgehoben. Die Farbe der Hervorhebung kann, wie alle
 anderen Farben auch, in den Einstellungen von \TPML\ ver"andert werden.
@@ -155,8 +155,8 @@ Gibt der Anwender zum Beispiel \glqq$\bli{x}{a}{x}$\grqq\ ein, ist
 dies nat"urlich nicht falsch, aber der Type Checker w"urde den Ausdruck
 nicht akzeptieren, da das \glqq$a$\grqq\ in dem Ausdruck frei 
 vorkommend ist. Es werden allerdings nur Identifier und Typ-Namen
-hervorgehoben, die in dem Wurzel Knoten frei vorkommend sind und nicht
-alle, in den jeweiligen Knoten frei vorkommenden Identifier oder Typ-Namen.
+hervorgehoben, die in dem Wurzelknoten frei vorkommend sind, und nicht
+alle in den jeweiligen Knoten frei vorkommenden Identifier oder Typ-Namen.
 
 Die Option {\bf Ersetzen} steht daf"ur, dass der selektierte Ausdruck
 in h"oheren Knoten durch \glqq...\grqq\ ersetzt wird. Dadurch
@@ -167,19 +167,19 @@ Ist die Option {\bf Source Code} aktiv, wird der Source Code im jeweiligen
 Quelltexteditor hervorgehoben, der dem selektierten Knoten in der Outline
 entspricht. Ist diese Option nicht aktiv, kann der Source Code durch einen
 Doppelklick auf den Outline Knoten ebenfalls hervorgehoben werden. Diese
-Option ist nur bei den Quelltexteditor verf"ugbar und nicht bei den
+Option ist nur bei den Quelltexteditoren verf"ugbar und nicht bei den
 verschiedenen Beweiswerkzeugen.
 
 {\bf Auto Update} steht daf"ur, dass die Outline automatisch geladen wird,
-wenn sich etwas "andert, dies geschieht nach einer gewollten Verz"ogerung,
+wenn sich etwas "andert. Dies geschieht nach einer gewollten Verz"ogerung,
 die n"otig ist, damit sich nicht zu viele "Anderungen ergeben. Diese Option
 ist nur in Ansichten aktiv, in denen "Anderungen eindeutig sind, also in den
 Quelltexteditoren und im Small Step Interpreter. In den anderen
-Beweiswerkzeugen k"onnen bei einem Schritt mehrere Knoten erzeugt werden
+Beweiswerkzeugen k"onnen bei einem Schritt mehrere Knoten erzeugt werden,
 und ein Laden der Outline w"are nicht eindeutig m"oglich.
 Ist die Option nicht aktiv oder gar nicht verf"ugbar, kann der Anwender auf 
-die entsprechenden Ausdr"ucke oder Typen klicken und diese werden dann geladen.
-Gleiches gilt f"ur die Quelltexteditoren, klickt man mit der Maus auf den
+die entsprechenden Ausdr"ucke oder Typen klicken, und diese werden dann geladen.
+Gleiches gilt f"ur die Quelltexteditoren: Klickt man mit der Maus auf den
 Editor, wird der aktuelle Ausdruck oder Typ in die Outline geladen. Ist im
 Quelltexteditor im Moment kein g"ultiger Ausdruck geladen, wird die Outline
 rot umrandet.
@@ -201,23 +201,36 @@ den neuen ersetzt.
 
 Jedes Beweiswerkzeug verf"ugt "uber einen {\bf Beginner} und einen
 {\bf Fortgeschrittener} Modus. Diese Modi unterscheiden sich in den
-Regeln, zum Beweis des Ausdrucks zur Verf"ugung stehen und teilweise in der Ansicht des Beweiswerkzeuges. So werden beispielsweise beim Typ Checker im {\bf Beginner} Typen erst dann angezeigt, wenn der Typ bewiesen ist.
+Regeln, die zum Beweis des Ausdrucks zur Verf"ugung stehen, und teilweise in der Ansicht des Beweiswerkzeuges. So werden beispielsweise beim Typ Checker im {\bf Beginner} Typen erst dann angezeigt, wenn der Typ bewiesen ist.
 
 \subsection {Mouse-Over-Effekt}
-Jeder der Beweismethoden hat f"ur den Benutzer eine weitere Komfort-Funktion eingebaut. Bei gr"o"seren Programmen, die bewiesen werden sollen, und insbesondere, wenn der gleiche Identifier doppelt benutzt wird verliert man schnell die "Ubersicht. Folgendes Beispiel soll dies verdeutlichen:
+Jede der Beweismethoden hat f"ur den Benutzer eine weitere Komfort-Funktion eingebaut. Bei gr"o"seren Programmen, 
+die bewiesen werden sollen, und insbesondere, wenn der gleiche Identifier doppelt benutzt wird, verliert man schnell 
+die "Ubersicht. Folgendes Beispiel soll dies verdeutlichen:
 
 {\bf $\bli{x}{\abstr{x}{\app{x}{x}}}{\app{x}{x}}$}
 
-Wie man leicht sieht ist der Identifier \glqq$x$\grqq\ doppelt verwendet. In noch gr"o"seren Beispielen w"are es nicht mehr einfach zu "uberschauen, an welches \glqq$x$\grqq\ welches gebunden ist. Um dies zu vereinfachen kann man einfach mit dem Mauszeiger "uber eins der \glqq$x$\grqq\ fahren, und die dazugeh"origen \glqq$x$\grqq\ werden farbig hervorgehoben. Zus"atzlich wird der Identifier, an den die anderen gebunden sind extra durch eine andere Farbe hervorgehoben\footnote{Die Farben, sowohl f"ur gebundenen als auch bindende Identifier k"onnen "uber Einstellungen... im Men"u Bearbeiten eingestellt werden.}. Im gegebenen Beispiel w"urde das \glqq$x$\grqq\ nach dem \glqq$let$\grqq\ zusammen mit den letzten beiden \glqq$x$\grqq\ hervorgehoben, w"arend das \glqq$x$\grqq\ nach dem \glqq$lambda$\grqq\ zusammen mit den folgenden beiden \glqq$x$\grqq\ hervorgehoben w"urden.
+Wie man leicht sieht, ist der Identifier \glqq$x$\grqq\ doppelt verwendet. 
+In noch gr"o"seren Beispielen w"are es nicht mehr einfach zu "uberschauen, an welches \glqq$x$\grqq\ welches gebunden ist. 
+Um dies zu vereinfachen kann man einfach mit dem Mauszeiger "uber eines der \glqq$x$\grqq\ fahren, 
+und die dazugeh"origen \glqq$x$\grqq\ werden farbig hervorgehoben. Zus"atzlich wird der Identifier, 
+an den die anderen gebunden sind, extra durch eine andere Farbe hervorgehoben\footnote{Die Farben, sowohl f"ur gebundenen als auch bindende Identifier k"onnen "uber Einstellungen... im Men"u Bearbeiten eingestellt werden.}. I
+m gegebenen Beispiel w"urde das \glqq$x$\grqq\ nach dem \glqq$let$\grqq\ zusammen mit den letzten beiden \glqq$x$\grqq\ hervorgehoben, 
+w"ahrend das \glqq$x$\grqq\ nach dem \glqq$lambda$\grqq\ zusammen mit den folgenden beiden \glqq$x$\grqq\ hervorgehoben w"urde.
 
-Identifier, die keine Bindungen haben, aber Bindungen haben k"onnten werden ebenfalls hervorgehoben. Anders Identifier, die gar keine Bindungen haben k"onnen, wie es bei Namen f"ur Methoden der Fall ist. Dazu sei ein letztes Beispiel zu diesem Thema gegeben:
+Identifier, die keine Bindungen haben aber Bindungen haben k"onnten, werden ebenfalls hervorgehoben. 
+Anders Identifier, die gar keine Bindungen haben k"onnen, wie es bei Namen f"ur Methoden der Fall ist. 
+Dazu sei ein letztes Beispiel zu diesem Thema gegeben:
 
 $\object{self}{\curriedmethodtwo{inc}{x}{y}{\infix{+}{x}{1}}}$
 
-Dieses Beispiel hat drei Identifier: inc, x und y. x verh"alt sich wie im oberen Beispiel. Es wird zusammen mit dem gebundenen x hervorgehoben. y dagegen hat zwar keinen weiteren gebundenen Identifier, k"onnte aber einen solchen haben. Er wird alleine hervorgehoben. inc letzlich wird nicht hervorgehoben. Es ist ein Methodenname und an den kann prinzipiell nichts gebunden sein.
+Dieses Beispiel hat drei Identifier: inc, x und y. x verh"alt sich wie im oberen Beispiel. 
+Es wird zusammen mit dem gebundenen x hervorgehoben. y dagegen hat zwar keinen weiteren gebundenen Identifier, 
+k"onnte aber einen solchen haben. Er wird allein hervorgehoben. inc letzlich wird nicht hervorgehoben. 
+Es ist ein Methodenname, und an den kann prinzipiell nichts gebunden sein.
 
 \section {Tutorials}
-Im folgenden wird anhand von einigen Beispielen in die
+Im Folgenden wird anhand von einigen Beispielen in die
 Funktionsweise der einzelnen Beweiswerkzeuge eingef"uhrt. Zun"achst
 "offnen wir "uber {\bf Datei} $\rightarrow$ {\bf Neu...} einen
 Editor. Wie gesagt ist jeder Editor fest mit einer Sprache
@@ -255,7 +268,7 @@ Small Step Interpreter.
 \end{figure}
 
 Bewegt man nun den Mauscursor "uber den Buttons des Regelmen"us
-oberhalb des Pfeils f"ur den ersten Ableitungsschritt wird der Teil
+oberhalb des Pfeils f"ur den ersten Ableitungsschritt, wird der Teil
 des Ausdrucks rot unterstrichen, der als n"achstes Abgeleitet werden
 soll, wie in Abbildung~\ref{FigureSmallStep} gezeigt.
 In unserem Falle ist dies der gesamte Ausdruck. Der n"achste
@@ -270,33 +283,33 @@ wird mittels {\bf Vervollst"andigen} im selben Men"u vorgenommen.
 
 Ist man mit den Regeln vertraut, so kann man "uber {\bf Beweis}
 $\rightarrow$ {\bf Fortgeschrittener} einige Regeln ausblenden. Das
-Regelmen"u enth"alt nun nur noch Regeln die spezifizieren was getan
+Regelmen"u enth"alt nun nur noch Regeln, die spezifizieren was getan
 werden soll und nicht mehr genau wo. So muss zum Beispiel eine
-Bedingung nicht mehr mit {\bf COND-EVAL} ausgewertet werden. Man
-gibt w"ahlt lediglich {\bf COND-TRUE} bzw. {\bf COND-FALSE} aus.
+Bedingung nicht mehr mit {\bf COND-EVAL} ausgewertet werden. Man 
+w"ahlt lediglich {\bf COND-TRUE} bzw. {\bf COND-FALSE} aus.
 
 \subsection{Big Step Interpreter}
 Der Big Step Interpreter kann auch "uber das {\bf Beweis} Men"u oder
-mit der Taste F11 gestartet werden. Zu beachten ist, dass man sich
-hierf"ur nicht zwingend im Quelltexteditor befinden muss. Auch beim
+mit der Taste F11 gestartet werden. Man muss sich
+hierf"ur nicht zwingend im Quelltexteditor befinden. Auch beim
 Big Step Interpreter k"onnen Regeln "uber das Regelmen"u ausgew"ahlt
 werden. Ist ein Unterbaum vollst"andig ausgewertet, so wird das
 ermittelte Ergebnis f"ur h"ohere Knoten "ubernommen. Da unser
 Beispiel lediglich einen Unterbaum f"ur die Regel {\bf BETA-VALUE}
 enth"alt, ist dies auch gleichzeitig unser Ergebnis. Im Gegensatz
 zum Small Step Interpreter gibt es aufgrund der Baumstruktur des
-Beweises mehrere Stellen an denen Regeln angewandt werden k"onnen.
-Die Raten-Funktion bezieht sich dabei immer auf den obersten, noch
+Beweises mehrere Stellen, an denen Regeln angewandt werden k"onnen.
+Die Raten-Funktion bezieht sich dabei immer auf den obersten noch
 nicht komplett ausgewerteten Teilbaum. Mit {\bf Vervollst"andigen}
 wird stets nur der jeweilige Unterbaum komplett ausgewertet und
-nicht wie beim Small Step Interpreter der komplette Beweis zu ende
+nicht wie beim Small Step Interpreter der komplette Beweis zu Ende
 gef"uhrt.
 
 \subsection{Type Checker}
 
 Diese Beweisart ist genau wie der Big Step Interpreter in einer
 Baumstruktur aufgebaut. Der Type Checker verh"alt sich daher
-bez"uglich des Anwenden von Regeln, den Raten und der
+bez"uglich des Anwendens von Regeln, den Raten und der
 Vervollst"andigen Funktion genau wie der Big Step Interpreter. Das
 Anf"ugen von Typvariablen geschieht bei Regelanwendung automatisch.
 
@@ -316,10 +329,10 @@ diesem Typ auszuwerten.
 
 \subsection{Type Inference}
 Der Type Inference Algorithmus ist, wie der Small Step Interpreter 
-auch, in einer Listenstruktur realisiert, und kann "uber {\bf Beweis} 
+auch, in einer Listenstruktur realisiert und kann "uber {\bf Beweis} 
 $\rightarrow$ {\bf Type Inference} gestartet werden. Die Bedienung ist auch diesmal 
 wieder an die bereits genannten Beweisarten angelehnt. Es besteht 
-auch hier die M"oglichkeit selber Regeln auf den aktuellen Ausdruck
+auch hier die M"oglichkeit, selbst Regeln auf den aktuellen Ausdruck
 anzuwenden, den n"achsten Schritt erraten zu lassen, oder den kompletten
 Ausdruck zu vervollst"andigen.
 
@@ -334,8 +347,8 @@ kann man "uber {\bf Beweis} $\rightarrow$ {\bf Fortgeschrittener} in den
 Advanced Modus wechseln. In diesem Modus werden Type Equations, bei denen beide
 Typvariablen aus Arrow Types bestehen, jetzt nicht mehr neue Type Equations
 aufgenommen, sondern diese werden direkt zu Type Substitutions aufgel"ost.
-Ausserdem wird beim Anwenden einer Regel auf den Ausdruck nicht mehr vom System
-versucht die Regel einer Type Formula zuzuordnen, sondern es wird versucht die Regel
+Au"serdem wird beim Anwenden einer Regel auf den Ausdruck nicht mehr vom System
+versucht, die Regel einer Type Formula zuzuordnen, sondern es wird versucht, die Regel
 auf die erste Type Formula anzuwenden. Diese k"onnen allerdings durch Drag 
 and Drop umsortiert werden.
 
@@ -384,8 +397,8 @@ zusammensetzt:\\[4mm]
   (STRUCT)\   & $\unify(A,\{\tau_1 = \tau_2\} \cup E) = \fail$\\[1mm]
               & in  allen anderen F\"allen
 \end{tabular}\\[6mm]
-Bei der Regel {\bf ROW} ist darauf zu achten, dass die Methodennamen nicht in der gleichen Reihenfolge
-vorkommen m"ussen. Ebenfalls m"ussen die Methodennamen nicht in beiden Reihen vorkommen, da f"ur den Fall, 
+Bei der Regel {\bf ROW} m"ussen die Methodennamen nicht in der gleichen Reihenfolge
+vorkommen. Zudem m"ussen die Methodennamen nicht in beiden Reihen vorkommen, da f"ur den Fall, 
 dass $\phi$ nicht gleich $\epsilon$ ist, $\unify$ auch mit $\phi$ und den restlichen Methoden von $\tau'$ 
 aufgerufen werden kann. Zum Beispiel f"uhrt $\unify (A,\{ (b: \alpha_1 ; \alpha_2) = (a: int ; b: int ;)\}
 \cup E)$ zu dem Aufruf von $\unify (A \cup \{ (b: \alpha_1 ; \alpha_2) = (a: int ; b: int ;)\},
@@ -393,7 +406,7 @@ aufgerufen werden kann. Zum Beispiel f"uhrt $\unify (A,\{ (b: \alpha_1 ; \alpha_
 
 \subsection{Minimal Typing}
 Der Minimal Typing Algorithmus ist, wie der Big Stepper und der Type Checker, in einer Baumstruktur realisiert.
-Auch die Bedienung dieser Beweismethode ist "aquivalent zu den beiden anderen. Es besteht auch hier die M"oglichkeit
+Auch die Bedienung dieser Beweismethode ist "aquivalent zu den beiden anderen. Es besteht auch hier die M"oglichkeit,
 die n"achste Regel "uber das Pull Down Men"u auszuw"ahlen, einen Schritt vom Algorithmus selbst erraten zu lassen,
 oder den kompletten Beweis vervollst"andigen zu lassen. F"ur den Fall, dass der Ausdruck synktaktischen Zucker 
 enth"alt, kann auch hier in Kernsyntax "ubersetzt werden.
@@ -401,13 +414,13 @@ enth"alt, kann auch hier in Kernsyntax "ubersetzt werden.
 \subsection{Sub Typing}
 Zur "Uberpr"ufung von Subtyprelationen wurde ein eigener Source Editor angelegt. Dieser beinhaltet zwei Eingabefelder,
 welche von Bedienung und Aussehen dem normalen Source Editor gleichen, allerdings nur f"ur die Eingabe von Typen gedacht
-sind, und nicht f"ur ganze Expressions. Das erste Eingabefeld soll den Subtyp entgegennehmen, und das zweite Eingabefeld 
-den Supertyp, fu"r welche man die Subtyp Realation "uberpr"ufen will. Ein weiterer Unterschied zum allgemeinen Source 
+sind und nicht f"ur ganze Expressions. Das erste Eingabefeld soll den Subtyp entgegennehmen und das zweite Eingabefeld 
+den Supertyp, f"ur welche man die Subtyp Realation "uberpr"ufen will. Ein weiterer Unterschied zum allgemeinen Source 
 Editor ist, dass man eine Outline pro Eingabefeld hat, statt wie vorher insgesamt eine Outline.
 
 F"ur den Beweis hat man die Wahl zwischen einfachem Sub Typing, und Sub Typing mit rekursiven Typen. Beide sind von 
 Bedienung und Aussehen her exakt gleich. Auch hier wurde bei der Visualisierung wieder eine Baumstruktur verwendet,
-und von die Bedienung gleicht Subtyping den schon bekannten Beweismethoden. 
+und von der Bedienung gleicht Subtyping den schon bekannten Beweismethoden. 
 
 
 
