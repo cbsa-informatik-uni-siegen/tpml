@@ -23,10 +23,14 @@
 % Mit Antworten
 \newcommand{\question}[3]{\pagebreak[3]\item {\textbf{#1?}}\ (S.\ #2)#3}
 \newcommand{\statement}[3]{\pagebreak[3]\item {\textbf{#1!}}\ (S.\ #2)#3}
+\newcommand{\questionnopage}[2]{\pagebreak[3]\item {\textbf{#1?}}#2}
+\newcommand{\statementnopage}[2]{\pagebreak[3]\item {\textbf{#1!}}#2}
 
 % Ohne Antworten
 %\newcommand{\question}[3]{\pagebreak[3]\item {\textbf{#1?}}\ (S.\ #2)}
 %\newcommand{\statement}[3]{\pagebreak[3]\item {\textbf{#1!}}\ (S.\ #2)}
+%\newcommand{\questionnopage}[2]{\pagebreak[3]\item {\textbf{#1?}}}
+%\newcommand{\statementnopage}[2]{\pagebreak[3]\item {\textbf{#1!}}}
 
 \newcommand{\catchword}[1]{\\-\ #1}
 \newcommand{\normaltext}[1]{\\#1}
@@ -810,6 +814,8 @@
 
   \subsection{Der BUS}
 
+  \subsubsection{Aufbau des Busses}
+
   \question{Welche drei Gruppen von Leitungen benutzt ein Bus}{\page{55}}
   {
     \catchword{Datenleitungen}
@@ -831,6 +837,8 @@
   {
     \normaltext{Aus Leitungsbündeln, mit denen die Steckplätze für die Komponenten verbunden sind}
   }
+
+  \subsubsection{Technische Ausführung}
 
   \question{Was sollte mit Teilen der Zentraleinheit geschehen}{\page{55}}
   {
@@ -864,6 +872,8 @@
     \catchword{Art der Signale}
   }
 
+  \subsubsection{Protokolle}
+
   \question{Welche Arten von Bussen gibt es}{\page{56}}
   {
     \catchword{Synchrone Busse (festes Zeitraster wird vorgegeben, richtet sich nach der 
@@ -872,11 +882,29 @@
                Geschwindigkeiten der Komponenten aus)}
   }
 
+  \subsubsection{Multiplexverfahren}
+
   \statement{Erklären Sie Multiplexverfahren}{\page{59}}
   {
     \normaltext{Für Daten und Steuerleitungen werden dieselben Leitungen im zeitlichen Wechsel
                 benutzt. Dazu wird eine weitere Steuerleitung zur Signalisierung des Wechsels benötigt.}
   }
+
+  \subsubsection{Konkrete Bussysteme}
+
+  \subsection{Arbeitsspeicher}
+
+  \subsubsection{Speicherorganisation}
+
+  \subsubsection{Speichersteuerung}
+
+  \subsubsection{Speicherelemente}
+
+  \subsubsection{Erweiterung des Adressbereichs}
+
+  \subsubsection{Cache Memory}
+
+  \subsection{Geräteanschlüsse}
 
   \statement{Nennen Sie die Aufgabe der Geräteanschlüsse}{\page{82}}
   {
@@ -904,6 +932,8 @@
     \catchword{Interfaces}
   }
 
+  \subsubsection{Die Schnittstelle zum Bus}
+
   \question{Wozu wird die Schnittstelle zum Bus verwendet}{\page{83}}
   {
     \catchword{Gesamte Datenübertragung zum und vom Gerät}
@@ -917,6 +947,8 @@
     \catchword{Control and Status Register (CSR) enthält einzelne Bits für die Steuerung des Gerätes}
   }
 
+  \subsubsection{Übertragungsverfahren}
+
   \statement{Nennen Sie die zwei Übertragungsverfahren}{\page{86}}
   {
     \catchword{Einzelzeichenübertragung: Bei zeichenorientierten Geräten}
@@ -929,6 +961,8 @@
     \catchword{Speicherdirektzugriff (DMA): Meist ohne Puffer und ohne Eingriff der CPU eine
                direkte Kommunikation mit dem Arbeitsspeicher}
   }
+
+  \subsubsection{Geräteschnittstellen}
 
   \question{Welche Geräteschnittstellen kann man unterscheiden}{\page{88}}
   {
@@ -968,6 +1002,8 @@
                An dieses Hauptgerät werden weitere identische Geräte in Form einer Kette angeschlossen.}
   }
 
+  \subsubsection{Die Parallelschnittstelle}
+
   \question{Nennen Sie die Eigenschaften der Parallelschnittstelle}{\page{91}}
   {
     \catchword{Die Bits eines Datenworts werden parallel übertragen}
@@ -980,6 +1016,8 @@
   {
     \normaltext{Alle Signalpegel entsprechen TTL}
   }
+
+  \subsubsection{Die asynchrone serielle Schnittstelle (V.24, RS-232-C)}
 
   \question{Welche Einheiten verbindet eine serielle Schnittstelle}{\pages{94}{95}}
   {
@@ -1005,6 +1043,8 @@
     \normaltext{Wegen der binären Codierung gleich groß}
   }
 
+  \subsubsection{Der Schnittstellenumsetzer UART}
+
   \question{Warum hat der Schnittstellenumsetzer UART eine besondere Bedeutung}{\page{99}}
   {
     \catchword{Die serielle Schnittstelle ist praktisch an jedem Rechner vorhanden.}
@@ -1027,6 +1067,10 @@
     \catchword{Geräteschnittstelle}
     \catchword{Pegelumsetzer}
   }
+
+  \subsection{Betriebsarten}
+
+  \subsubsection{Ablaufdarstellung}
 
   \question{Wie sieht eine sequentielle Abarbeitung in einem A-t-Diagramm aus}{\page{106}}
   {
@@ -1052,6 +1096,8 @@
                 Oszilloskope oder durch Logikanalysatoren}
   }
 
+  \subsubsection{Betriebsarten}
+
   \statement{Nennen Sie die unterschiedlichen Betriebsarten}{\page{108}}
   {
     \catchword{Einprogrammbetrieb: Der Rechner bearbeitet immer nur ein Programm}
@@ -1072,6 +1118,8 @@
     \catchword{Resource-sharing: Betriebsmittel werden nach Prioritäten oder Wartezeiten vergeben}
   }
 
+  \subsubsection{Der Abrufbetrieb (Polling)}
+
   \question{Was versteht man unter Polling}{\page{110}}
   {
     \normaltext{Bein Abrufbetrieb (Polling) werden Informationen über den Zustand der Geräte
@@ -1080,13 +1128,13 @@
                 entsprechende Routinen.}
   }
 
-  \question{Nennen Sie Vorteile des Polling Betriebs}{\page{111}}
+  \question{Nennen Sie Vorteile des Polling Betriebs}{\pages{110}{111}}
   {
-    \catchword{Einfachheit der programmtechnischen Realisierung.}
-    \catchword{Die Hardware kann relativ einfach ausgelegt werden.}
+    \catchword{Einfachheit der programmtechnischen Realisierung}
+    \catchword{Die Hardware kann relativ einfach ausgelegt werden}
   }
 
-  \question{Nennen Sie Nachteile des Polling Betriebs}{\page{112}}
+  \question{Nennen Sie Nachteile des Polling Betriebs}{\pages{112}{113}}
   {
     \catchword{Die CPU ist die meist Zeit damit beschäftigt, alle CSRs abzufragen.}
     \catchword{Die Zeitauflösung (Genauigkeit) mit der man den Zeitpunkt für das Eintreten
@@ -1097,6 +1145,8 @@
                Gerätes wird eine Programmänderung notwendig, die aber nicht im laufenden Betrieb 
                durchgeführt werden kann.}
   }
+
+  \subsubsection{Realzeitverhalten}
 
   \question{Was ist die grundsätzliche Anforderung an einen Prozessrechner bei
             Realzeitverarbeitung}{\page{113}}
@@ -1121,6 +1171,7 @@
                 nicht zugelassen werden.}
   }
 
+  \subsubsection{Der Anforderungsbetrieb, Interrupt-Betrieb}
 
   \question{Was wird im Interrupt-Betrieb durch Ereignisse erzeugt}{\page{117}}
   {
@@ -1134,7 +1185,7 @@
     \catchword{Übernahme von Daten}
     \catchword{Berechnungen}
     \catchword{Ausgabe von Steuerdaten}
-    \catchword{nach Beendigung wieder in das unterbrochene Programm zurück springen}
+    \catchword{Nach Beendigung wieder in das unterbrochene Programm zurück springen}
   }
 
   \statement{Nennen Sie Unterschiede zwischen Unterprogrammsprüngen und Unterbrechungen}{\pages{117}{118}}
@@ -1217,10 +1268,10 @@
     \catchword{Die Aktivierung des Steuerwerks, welches die Interrupt-Sequenz durchführt.}
   }
 
-  \question{Was versteht man unter Non-maskable Interrupts (NMI)}{\page{122}}
+  \question{Was versteht man unter Non-Maskable Interrupts (NMI)}{\page{122}}
   {
     \normaltext{Unterbrechungen, die nicht ab geblockt werden dürfen. Diese werden dann auf einer 
-                besonderen Leitung angefordert.}
+                besonderen Leitung angefordert}
   }
 
   \question{Was ist die Aufgabe der Interrupt-Logik im Geräteanschluss}{\page{122}}
@@ -1381,6 +1432,8 @@
                 Unmittelbar vor dem Ende der ISR wird der Interrupt wieder freigegeben.}
   }
 
+  \subsubsection{Interne Ereignisse (Traps)}
+
   \statement{Nennen Sie vorbeugende Maßnahmen gegen Netzausfall}{\page{136}}
   {
     \catchword{Einsatz von Unterbrechungsfreier Stromversorgung (USV).}
@@ -1412,6 +1465,8 @@
                 Sie haben stattdessen einen Zeiger auf eine Tabelle der die Startadresse
                 entnommen werden kann.}
   }
+
+  \subsubsection{Der Speicherdirektzugriff (DMA)}
 
   \question{Was versteht man unter Direct Memory Access (DMA)}{\page{145}}
   {
@@ -1495,7 +1550,27 @@
   \newpage
   \section{Periphere Geräte}
 
-  \statement{Beschreibe kurz die generelle Aufgabe der Prozessperipherie}{\page{188}}
+  \subsection{Standardperipherie}
+
+  \subsubsection{Das Terminal}
+
+  \subsubsection{Graphikeingabe}
+
+  \subsubsection{Drucker}
+
+  \subsubsection{Plotter}
+
+  \subsubsection{Lochstreifen und Lochkarten}
+
+  \subsubsection{Spracheingabe und Sprachausgabe}
+
+  \subsubsection{Magnetbandgeräte}
+
+  \subsubsection{Magnetplatten}
+
+  \subsection{Prozessperipherie}
+
+  \statement{Beschreiben Sie kurz die generelle Aufgabe der Prozessperipherie}{\page{188}}
   {
     \catchword{Prozessgrößen in Rechnerdaten umwandeln und umgekehrt}
   }
@@ -1516,8 +1591,10 @@
   \statement{Beschreiben Sie anhand eines Schaubildes den Weg der Informationen
              vom Prozess in den Rechner und umgekehrt}{\page{189}}
   {
-    \normaltext{wichtiges Bild!!!}
+    \normaltext{Sehr wichtig! Siehe Bild 3.14 Seite 189}
   }
+
+  \subsubsection{Messwerterfassung}
 
   \statement{Beschreiben Sie grundlegend die Aufgaben einer Messkette}{\page{190}}
   {
@@ -1616,7 +1693,7 @@
                 und eventuell auch schon eine Messwertverarbeitung stattfindet.}
   }
 
-  \statement{Nennen und erklären Sie die vier Kategorien der Messglieder}{\page{194}} 
+  \statement{Nennen und erklären Sie die vier Kategorien der Messglieder}{\page{194}}
   {
     \catchword{Messwertumsetzer oder Wandler: Umwandlung von nichtelektrischen Größen in andere,
                leichter erfassbare, nichtelektrische Größen}
@@ -1685,7 +1762,7 @@
     \catchword{1-er Komplement}
   }
 
-\question{Was muss bei sich schnell veränderlichen Eingangswerten getan werden}{\page{201}}
+  \question{Was muss bei sich schnell veränderlichen Eingangswerten getan werden}{\page{201}}
   {
     \normaltext{Es muss ein Speicher für den Momentanwert der Eingangsspannung eingesetzt werden,
                 der als Abtast- und Halteglied bezeichnet wird. Dabei wird die Eingangsspannung
@@ -1699,10 +1776,10 @@
                 wird als Abtastzeit oder Aperturzeit bezeichnet}
   }
 
-\question{Was besagt das Shannon Theorem}{\pages{201}{202}}
+  \question{Was besagt das Shannon Theorem}{\pages{201}{202}}
   {
-    \normaltext{Eine Abtastrate fs erlaubt eine informationsgetreue Umwandlung nur solcher Signale, die
-                nur Frequenzanteile bis zu einer Obergrenze $  f_m\textless f_s/2 $ enthalten.}
+    \normaltext{Eine Abtastrate $f_s$ erlaubt eine informationsgetreue Umwandlung nur solcher Signale, die
+                nur Frequenzanteile bis zu einer Obergrenze $f_m \textless f_s/2$ enthalten.}
   }
 
   \question{Wodurch wird die Frequenz begrenzt}{\page{202}}
@@ -1721,7 +1798,7 @@
 
   \question{Was kann man gegen diesen Effekt tun}{\page{202}}
   {
-    \normaltext{Vorschalten von Filtern in Form von Tiefpässen.}
+    \normaltext{Vorschalten von Filtern in Form von Tiefpässen}
   }
 
   \question{Welche Abtastfrequenzen werden bei welchem Betrieb erreicht}{\page{202}}
@@ -1805,6 +1882,11 @@
     \catchword{Stufenumsetzer oder Wägecodierer}
   }
 
+  \question{Wie groß sollten Abweichungen maximal sein}{\page{206}}
+  {
+    \normaltext{Kleiner als 1/2 LSB, damit das Ergebniss nicht verfälscht wird}
+  }
+
   \statement{Erklären Sie detailiert den Simultanwandler (Parallelwandler)}{\page{206}}
   {
     \normaltext{Das anliegende Eingangssignal wird gleichzeitig über eine Reihe von Komparatoren
@@ -1821,19 +1903,9 @@
                 ausschließlich von der Güte der Komparatoren bestimmt}
   }
 
-  \question{Wie groß sollten Abweichungen maximal sein}{\page{206}}
+  \statement{Skizzieren Sie das Blockschaltbild des Simultanwandlers (Parallelwandlers)} {\page{206}}
   {
-    \normaltext{Kleiner als 1/2 LSB, damit das Ergebniss nicht verfälscht wird}
-  }
-
-  \statement{Skizzieren Sie das Blockschaltbild des Simultanwandlers} {\page{206}}
-  {
-    \normaltext{Siehe Bild 3.27 Seite 206}
-  }
-
-  \statement{Skizzieren Sie das Blockschaltbild des Sägezahnumsetzers}{\page{207}}
-  {
-    \normaltext{siehe Bild 3.28, Seite 207}
+    \normaltext{Siehe Bild 3.27, Seite 206}
   }
 
   \statement{Erklären Sie detailiert den Sägezahnumsetzer}{\page{207}}
@@ -1855,7 +1927,7 @@
 
   \statement{Skizzieren Sie das Blockschaltbild des Sägezahnumsetzer}{\page{207}}
   {
-    \normaltext{siehe Bild 3.28, Seite 207}
+    \normaltext{Siehe Bild 3.28, Seite 207}
   }
 
   \statement{Erklären Sie detailiert den Zählumsetzer}{\page{208}}
@@ -1874,7 +1946,7 @@
 
   \statement{Skizzieren Sie das Blockschaltbild des Zählumsetzers} {\page{208}}
   {
-    \normaltext{Siehe Bild 3.29 Seite 208}
+    \normaltext{Siehe Bild 3.29, Seite 208}
   }
 
   \statement{Erklären Sie den Folgeumsetzer}{\page{208}}
@@ -1886,9 +1958,9 @@
                 überschreitet, liefert der Umsetzer ein BUSY-Signal, umd dies zu melden.}
   }
 
-  \statement{Skizzieren Sie das Blockschaltbild des Folgeumsetzer} {\page{208}}
+  \statement{Skizzieren Sie das Blockschaltbild des Folgeumsetzers} {\page{208}}
   {
-    \normaltext{Siehe Bild 3.30 Seite 208}
+    \normaltext{Siehe Bild 3.30, Seite 208}
   }
 
   \question{Was wird als Wandlungsrate bezeichnet}{\page{208}}
@@ -1919,7 +1991,7 @@
 
   \statement{Skizzieren Sie das Blockschaltbild des Integrationswandlers}{\page{209}}
   {
-    \normaltext{siehe Bild 3.31, Seite 209}
+    \normaltext{Siehe Bild 3.31, Seite 209}
   }
 
   \statement{Erklären Sie detailiert den Spannungs-Frequenz-Umsetzer}{\page{210}}
@@ -1943,7 +2015,7 @@
     \normaltext{Siehe Bild 3.32 Seite 210}
   }
 
-  \statement{Erklären Sie detailiert den Stufenumsetzers}{\pages{211}{212}}
+  \statement{Erklären Sie detailiert den Stufenumsetzer (Wägecodierer)}{\pages{211}{212}}
   {
     \normaltext{Der Stufenumsetzer arbeitet nach dem Prinzip der sukzessiven Aproximation. Ein DAU
                 wird für die Erzeugung einer Vergleichsspannung eingesetzt, aber nicht einfach linear
@@ -1956,15 +2028,17 @@
                 Eingangssignal konstant bleiben.}
   }
 
-  \statement{Skizzieren Sie das Blockschaltbild des Stufenumsetzers} {\pages{211}{212}}
+  \statement{Skizzieren Sie das Blockschaltbild des Stufenumsetzers (Wägecodierers)} {\pages{211}{212}}
   {
-    \normaltext{Siehe Bild 3.33 Seite 211}
+    \normaltext{Siehe Bild 3.33, Seite 211}
   }
+
+  \subsubsection{Prozesssteuerung}
 
   \question{Was muss bei der Prozesssteuerung durch den Prozessrechner getan werden}{\page{213}}
   {
     \normaltext{Durch den Prozessrechner müssen Steuergrößen erzeugt werden, mit denen der Zustand
-                eines Prozesses beeinflusst werden kann.}
+                eines Prozesses beeinflusst werden kann}
   }
 
   \question{Was versteht man unter dem offenen Prozessbetrieb}{\page{213}}
@@ -1989,15 +2063,6 @@
                 beeinflussen kann}
   }
 
-  \question{Nach welchen fünf Gesichstpunkten kann man Stellgrößen einteilen}{\pages{214}{215}}
-  {
-    \catchword{Stellort}
-    \catchword{Prozessnähe}
-    \catchword{Technische Natur}
-    \catchword{Stelleigenschaft und Signalform}
-    \catchword{Zeitlichen Verhalten}
-  }
-
   \question{Wie unterscheidet man Stellgrößen nach ihrem Stellort}{\page{214}}
   {
     \catchword{Zufluss von Verarbeitungsgut}
@@ -2015,6 +2080,15 @@
   {
     \catchword{Elektrische Stellgrößen: Meist nur als sekundäre Größen}
     \catchword{Sekundäre Stellgrößen: Eher die Regel}
+  }
+
+  \question{Nach welchen fünf Gesichstpunkten kann man Stellgrößen einteilen}{\pages{214}{215}}
+  {
+    \catchword{Stellort}
+    \catchword{Prozessnähe}
+    \catchword{Technische Natur}
+    \catchword{Stelleigenschaft und Signalform}
+    \catchword{Zeitlichen Verhalten}
   }
 
   \question{Wie unterscheidet man Stellgrößen nach den Stelleigenschaften
@@ -2090,9 +2164,9 @@
     \catchword{Verzögerungsverhalten: Das Ausgangssignal reagiert erst nach einer Verzögerung}
   }
 
-  \question{Was ist die generelle Fun ktionsweise eines D/A-Wandlers (ein Satz)}{\page{219}}
+  \question{Was ist die generelle Funktionsweise eines D/A-Wandlers (ein Satz)}{\page{219}}
   {
-    \normaltext{Aus einem Digitalwert und einer Referenzspannung wird ein analoge Ausgangsspannung gebildet.}
+    \normaltext{Aus einem Digitalwert und einer Referenzspannung wird ein analoge Ausgangsspannung gebildet}
   }
 
   \statement{Nennen Sie die charakteristischen Leistungsmerkmale der DAUs)}{\page{219}}
@@ -2143,23 +2217,25 @@
                und damit läge ein Monotoniefehler vor.}
   }
 
-  \statement{Skizzieren Sie den prinzipiellen Aufbau des R-2R-Widerstandnetzwerkes. )}{\page{221}}
+  \statement{Skizzieren Sie den prinzipiellen Aufbau des R-2R-Widerstandnetzwerkes}{\page{221}}
   {
-    \normaltext{Siehe Bild}
+    \normaltext{Siehe Bild 3.39, Seite 221}
   }
 
-  \statement{Skizzieren Sie den prinzipiellen Aufbau des Linear-Umsetzers )}{\page{222}}
+  \statement{Skizzieren Sie den prinzipiellen Aufbau des Linear-Umsetzers}{\page{222}}
   {
-    \normaltext{Siehe Bild}
+    \normaltext{Siehe Bild 3.39, Seite 221}
   }
 
-  \statement{Nennen Sie die entscheidnenden Vor- und Nachteile des Linear-Umsetzers )}{\page{222}}
+  \statement{Nennen Sie die entscheidenden Vor- und Nachteile des Linear-Umsetzers}{\page{222}}
   {
     \catchword{Nachteil: riesiger Aufwand: für n Bits braucht man $2^n$ Wiederstände und $(2^n)-1$ Umschalter}
     \catchword{Sehr genau, sowohl linear als auch monoton}
   }
 
- \question{Was wird durch die Art einer Übertragungsleitung bestimmt}{\page{229}}
+  \subsubsection{Prozessanschluss}
+
+  \question{Was wird durch die Art einer Übertragungsleitung bestimmt}{\page{229}}
   {
     \catchword{Übertragungseigenschaften einer Leitung}
     \catchword{Störempfindlichkeit einer Leitung}
@@ -2169,12 +2245,13 @@
             beschrieben werden}{\page{229}}
   {
     \catchword{einen ohmschen Widerstand R, der eine frequenzunabhängige Signaldämpfung bewirkt und
-    mit der Leitungslänge proportional anwächst.}
+               mit der Leitungslänge proportional anwächst.}
     \catchword{Induktivitäten L und Kapazitäten C, die zusammen mir R einenn Tiefpass bilden, der höhere
-    Frequenzen abschneidet und die Bandbreite der Leitung bestimmt, welche proportional zur Länge abnimmt.}
-    \catchword{Kopplungskapazitäten $C_k$ und Kopplungsinduktivitäten $L_k$, über welche die äußeren Störungen
-    eingekoppelt werden. Zu diesen Störungen zählt auch Übersprechen von benachbarten Leitungen. Die
-    Störempfindlichkeit wächst mit der Leitungslänge.}
+               Frequenzen abschneidet und die Bandbreite der Leitung bestimmt, welche proportional
+               zur Länge abnimmt.}
+    \catchword{Kopplungskapazitäten $C_k$ und Kopplungsinduktivitäten $L_k$, über welche die äußeren
+               Störungen eingekoppelt werden. Zu diesen Störungen zählt auch Übersprechen von benachbarten
+               Leitungen. Die Störempfindlichkeit wächst mit der Leitungslänge.}
   }
 
   \question{Was wird noch durch die Kapazitäten und Induktivitäten bestimmt}{\page{230}}
@@ -2201,7 +2278,7 @@
                wird, praktisch absolut stör- und abhörsicher, hohe Bandbreitenlänge (ca 1GHz*km)}}
   }
 
-  \question{Welche andere Art der Übertragung gibt es noch)}{\page{231}}
+  \question{Welche andere Art der Übertragung gibt es noch}{\page{231}}
   {
     \normaltext{Leitungsungebundene Übertragung durch Ultraschall, Infrarotlicht oder per Funk.}
   }
@@ -2261,6 +2338,10 @@
     \catchword{Prozessperipherie}
   }
 
+  \subsection{Prozessrechnereinsatz}
+
+  \subsubsection{Planung der Konfiguration}
+
   \question{Welcher Ablauf ist für die Planung der Konfiguration typisch}{\page{240}}
   {
     \catchword{Voruntersuchung: Kosten-Nutzen-Analyse}
@@ -2269,6 +2350,8 @@
     \catchword{Sollkonzept: Pfichtenheft wird erstellt}
     \catchword{Beschaffung: Durch eine gezielte Ausschreibung}
   }
+
+  \subsubsection{Betriebssicherheit}
 
   \statement{Nennen Sie die zwei Problemgruppen bezüglich der Betriebssicherheit}{\page{241}}
   {
@@ -2365,6 +2448,8 @@
                 und es wird eine Mehrheitsentscheidnung getroffen.}
   }
 
+  \subsubsection{Installation und Betrieb}
+
   \question{Welche Strörungen können aus dem Netz kommen}{\page{251}}
   {
     \catchword{Kurzzeitige, impulsförmige Störungen: Können durch Tiefpassschaltungen
@@ -2384,169 +2469,180 @@
 
   \newpage
   \section{Prozessrechner-Software}
-  
-  %4
 
-%4.1.5 Petrinetze
+  \subsection{Strukturierung von Prozess-Software}
+
+  \subsubsection{Klassische Strukturen der EDV}
+
+  \subsubsection{Entscheidungstabellen}
+
+  \subsubsection{Zustandsdiagramme und -tafeln}
+
+  \subsubsection{Instanzennetze}
+
+  \subsubsection{Petrinetze}
 
   \question{Wozu eignen sich Petrinetze insbesondere im Gegensatz zu 
-    klassischen Strunkturierungs-Methoden von Prozessen}{\page{269}}
+            klassischen Strunkturierungs-Methoden von Prozessen}{\page{269}}
   {
-    \normaltext{neben statischen Strunkturen lassen sich auch dynamische 
-   Vorgänge darstellen, sogar parallele Arbeitsschritte.}
+    \normaltext{Neben statischen Strunkturen lassen sich auch dynamische
+                Vorgänge darstellen, sogar parallele Arbeitsschritte}
   }
-  
-      \question{Was wird in einem Petrinetz duch Stellen, was durch Transitionen
-      dargestellt}{\page{270}}
+
+  \question{Was wird in einem Petrinetz duch Stellen, was durch Transitionen
+            dargestellt}{\page{270}}
   {
     \catchword{Stellen: Zustand}
     \catchword{Transition: Aktion}
   }
-  
-  
+
   \question{Zeichnen Sie eine Konjunktion und eine Disjunktion}{\page{270}}
   {
     \catchword{Konjunktion: mehrere Eingangstellen auf einen Transition}
     \catchword{Disjunktion: mehrere Peie auf einen Stelle}
   }
-  
-  
+
   \statement{Zeichnen Sie einen Signalträger (Semaphor) in einem Petrinetz,
-  der zwei Tasks gegenseitig aus einem Kritischen Abschnitt ausschließt}
-  {\page{272}}
+             der zwei Tasks gegenseitig aus einem Kritischen Abschnitt ausschließt}{\page{272}}
   {
-    \normaltext{Bild 4.13 Seite 272 oben}
+    \normaltext{Bild 4.13, Seite 272 oben}
   }
-  
+
   \statement{Zeichnen Sie ein Petrinetz, das zwei Tasks symmetrisch 
-  synchronisiert}
-      {\page{273}}
+             synchronisiert}{\page{273}}
   {
-    \normaltext{Bild 4.14 Seite 273 oben, ganz links}
+    \normaltext{Bild 4.14, Seite 273 oben, ganz links}
   }
-  
+
   \statement{Zeichnen Sie ein Petrinetz, das zwei Tasks asymmetrisch 
-  synchronisiert}
-      {\page{273}}
+             synchronisiert}{\page{273}}
   {
-    \normaltext{Bild 4.14 Seite 273 oben, Mitte}
+    \normaltext{Bild 4.14, Seite 273 oben, Mitte}
   }
-  
-  \statement{Zeichnen Sie ein Petrinetz, dass den Ablauf einer Interrupt-Service
-  -Routine erläutert}
-      {\page{274}}
+
+  \statement{Zeichnen Sie ein Petrinetz, dass den Ablauf einer
+             Interrupt-Service-Routine erläutert}{\page{274}}
   {
-    \normaltext{Bild 4.15 Seite 274 oben}
+    \normaltext{Bild 4.15, Seite 274 oben}
   }
-  
-  %4.2.3.2 Taskzustände
-  
+
+  \subsubsection{Programmstrukturen}
+
+  \subsection{Prozessrechner-Betriebssysteme}
+
+  \subsubsection{Prozessrechnerbetrieb}
+
+  \subsubsection{Betriebsysteme}
+
+  \subsubsection{Das Taskmanagement}
+
+  \statement{Beschreiben Sie den Zustand ruhend}{\page{290}}
+  {
+    \normaltext{Task ist vorhanden aber zur Zeit nicht zur Bearbeitung vorgesehen.
+                Sie lagern auf der Platte, es gibt ein paar Zustandsinformationen
+                und Informationen über ihren Betriebsmittelbedarf. In diesen Zusand
+                kommen nsie nach ihrer Beendigung aus dem Zustand Rechnend oder nach
+                ihrer Erstellung. Aus diesem Zustand kommt der Task in bereit, wenn
+                er angefordert wird.}
+  }
+
   \statement{Zeichnen Sie ein Diagramm in dem alle möglichen Zustände eines
-  Tasks und ihren Übergägnen enthalten ist}
-      {\page{291}}
+             Tasks und ihren Übergängen enthalten ist}{\page{291}}
   {
-    \normaltext{Bild 4.23 Seite 291 oben}
+    \normaltext{Bild 4.23, Seite 291 oben}
   }
-  
-  \statement{Beschreiben Sie den Zustand ruhend kurz}
-      {\page{290}}
+
+  \statement{Beschreiben Sie den Zustand bereit}{\page{291}}
   {
-    \normaltext{Task ist vorhanden aber zur Zeit nicht zur Bearbeitung
-    vorgesehen. Sie lagern auf der Platte, es gibt ein paar Zustandsinformationen
-    und Informationen über ihren Betriebsmittelbedarf. In diesen Zusand kommen
-    sie nach ihrer Beendigung aus dem Zustand Rechnend oder nach ihrer 
-    Erstellung. Aus diesem Zustand kommt der Task in bereit, wenn er angefordert
-    wird.}
+    \normaltext{Task besitzt alle benötigten Betriebsmittel außer die CPU. Taks befinden
+                sich hier normalerweise in einer Warteschlange, oft auch mit Prioritäten.
+                Die Prozessverwaltung holt aus der Warteschlange die Tasks ab, die dann
+                rechnend sind. Neben den aufgerufenen ruhenden Tasks kommen auch Tasks auch
+                rechnen nach einem Interrupt oder aus dem Zustand wartend, wenn ihnen alle
+                benötigten Betribesmittel zur Verfügung gestellt wurden.}
   }
-  
-  \statement{Beschreiben Sie den Zustand bereit kurz}
-      {\page{291}}
+
+  \statement{Beschreiben Sie den Zustand rechnend}{\page{291}}
   {
-  \normaltext{Task besitzt alle benötigten Betriebsmittel außer die CPU. Taks 
-  befinden sich hier normalerweise in einer Warteschlange, oft auch mit
-  Prioritäten. Die Prozessverwaltung holt aus der Warteschlange die Tasks ab,
-  die dann rechnend sind. Neben den aufgerufenen ruhenden Tasks kommen auch 
-  Tasks auch rechnen nach einem Interrupt oder aus dem Zustand wartend, wenn
-  ihnen alle benötigten Betribesmittel zur Verfügung gestellt wurden.}
+    \normaltext{Task besitzt die CPU. Es können also nur so viele Tasks wie CPUs rechnend sein}
   }
-  
-\statement{Beschreiben Sie den Zustand rechnend kurz}
-      {\page{291}}
+
+  \statement{Beschreiben Sie den Zustand wartend kurz}{\page{291}}
   {
-  \normaltext{Task besitzt die CPU. Es können also nur so viele Tasks wie CPUs 
-  rechnend sein. }
-  }  
-  
-  \statement{Beschreiben Sie den Zustand wartend kurz}
-      {\page{291}}
-  {
-  \normaltext{Tasks, die auf die Zuteilung von Betriebsmitteln warten. Sie 
-  können nach den Betriebsmittel sortiert sein und dort Warteschlangen bilden,
-  auch hier kann es Prioritäten geben.}
+    \normaltext{Tasks, die auf die Zuteilung von Betriebsmitteln warten. Sie können nach
+                den Betriebsmittel sortiert sein und dort Warteschlangen bilden, auch hier
+                kann es Prioritäten geben.}
   }
+
+  \subsubsection{Die Datenverwaltung}
+
+  \subsubsection{Betriebsmittelverwaltung}
+
+  \subsubsection{Gerätetreiber}
+
+  \subsubsection{Prozessbetrieb}
+
+  \subsubsection{Systemverwaltung}
+
+  \subsection{Realzeitprogrammiersprachen}
+
+  \subsubsection{Anforderungen}
+
+  \subsubsection{Assemblerprogrammierung}
+
+  \subsubsection{Ablauforientierte Hochsprachen}
+
+  \subsubsection{Systemprogrammiersprachen}
+
+  \subsubsection{Prozessprogrammiersprachen}
+
+  \subsubsection{Spezialsprachen}
 
   \newpage
   \section{Sonstiges}
-  
-  \question{Wie legt man den Automatisierungsgrad fest}
-      {}
+
+  \questionnopage{Wie legt man den Automatisierungsgrad fest}
   {
-  \normaltext{Abwägen: Kosten - Nutzen}
-  }
-  
-  \question{Was bedeutet Durchsatz und in welchen 
-  Eineheiten wird er gemessen}
-      {}
-  {
-  \normaltext{Arbeitsmenge / Zeit, gemessen z.B. in 
-  Stück / Tag, Tonne / Stunde, Liter / Minute}
-  }
-  
-  \question{Wie ist Auslasung definidert und welchen 
-  maximalen Wert kann sie erreichen, welcher Wert wäre 
-  normal.}
-      {}
-  {
-  \normaltext{Durchsatz / max Durchsatz, <1, typ: =0,9}
+    \normaltext{Abwägen: Kosten - Nutzen}
   }
 
-\question{Was bedeutet Just In Time}
-      {}
+  \questionnopage{Was bedeutet Durchsatz und in welchen Einheiten wird er gemessen}
   {
-  \normaltext{Es gibt keine Lagerhaltung, sie wird durch 
-  den Transport ersetzt. Manch ein LKW fährt auf deutschen 
-  Autobahnen als Lagerstelle rum.}
+    \normaltext{Arbeitsmenge / Zeit, gemessen z.B. in Stück / Tag, Tonne / Stunde, Liter / Minute}
   }
-  
-  \question{Welche Vor / Nachteile hat Just in Time}
-      {}
+
+  \questionnopage{Wie ist Auslasung definidert und welchen maximalen Wert kann sie erreichen,
+                  welcher Wert wäre normal}
   {
-  \normaltext{man spart Lagerkosten,
-  Man ist abhängig vom Verkehrsaufkommen}
+    \normaltext{Durchsatz / max Durchsatz, <1, typ: =0,9}
   }
-  
-  \question{Welche Vor / Nachteile hat Just in Time}
-      {}
+
+  \questionnopage{Was bedeutet Just In Time}
   {
-  \normaltext{man spart Lagerkosten,
-  Man ist abhängig vom Verkehrsaufkommen}
+    \normaltext{Es gibt keine Lagerhaltung, sie wird durch den Transport ersetzt. Manch ein
+                LKW fährt auf deutschen Autobahnen als Lagerstelle rum.}
   }
-  
-  \question{Welche Kenngröße beschreibt die 
-  Leistungsähigkeit für Datenübertragung}
-      {}
+
+  \questionnopage{Welche Vor- und Nachteile hat Just in Time}
   {
-  \normaltext{das BAndbreiten - Längen - Produkt}
+    \normaltext{Man spart Lagerkosten und man ist abhängig vom Verkehrsaufkommen}
   }
-  
-  \question{Wie lauten typische Werte für zwei Leitungstypen}
-      {}
+
+  \questionnopage{Welche Vor- und Nachteile hat Just in Time}
   {
-  \normaltext{Einzelader: 1MHz * m}
-  \normaltext{Glasphaser: 1GHz * m}
+    \normaltext{Man spart Lagerkosten und man ist abhängig vom Verkehrsaufkommen}
   }
-  
-  
+
+  \questionnopage{Welche Kenngröße beschreibt die Leistungsähigkeit für Datenübertragung}
+  {
+    \normaltext{Das Bandbreiten - Längen - Produkt}
+  }
+
+  \questionnopage{Wie lauten typische Werte für zwei Leitungstypen}
+  {
+    \normaltext{Einzelader: 1MHz * m}
+    \normaltext{Glasphaser: 1GHz * m}
+  }
 
 \end{enumerate}
 
