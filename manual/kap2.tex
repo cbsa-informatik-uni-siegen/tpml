@@ -77,7 +77,7 @@ auf das Icon zu beheben.
 Des weiteren bietet der Parser die M"oglichkeit, Identifier automatisch
 umzubenennen, wenn durch die Namen der Identifier ein Konflikt entstanden
 ist. Dies kann bei Klassen der Fall sein, ein Beispiel hierf"ur ist:\\[2mm]
-\glqq$\class{self}{\inherit{a}{(\class{self}{\val{a}{0}})}{\val{a}{1} \method{m}{a}}}$\grqq
+\glqq$\class{self}{\inherit{a}{(\class{self}{\attr{a}{0}})}{\attr{a}{1} \method{m}{a}}}$\grqq
 
 In diesem Beispiel besteht ein Konflikt zwischen dem Identifier \glqq$a$\grqq\ 
 im ersten Teil des \glqq$\binherit$\grqq\ und dem Attribut in der zweiten Reihe. Dieser 
@@ -90,7 +90,7 @@ werden. Dies betrifft in diesem Fall das \glqq$a$\grqq\ im Rumpf der Methode.
 Der Parser blendet in diesem Fall ein blaues Fehlersymbol ein, das dem Anwender
 signalisieren soll, dass eine Umbenennung m"oglich ist. Klickt der Anwender auf
 das Symbol, werden die Identifier umbenannt und es entsteht folgender Ausdruck:\\[2mm]
-\glqq$\class{self}{\inherit{a}{(\class{self}{\val{a}{0}})}{\val{a'}{1} \method{m}{a'}}}$\grqq
+\glqq$\class{self}{\inherit{a}{(\class{self}{\attr{a}{0}})}{\attr{a'}{1} \method{m}{a'}}}$\grqq
 
 
 \section {Outline}
