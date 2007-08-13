@@ -2270,7 +2270,7 @@
                Wellenwiderstand, relativ große Bandbreitenlänge (ca 100MHz*m)}}
     \catchword{Verdrillte Adernkabel \resultol{relativ guter Wellenwiderstand, relativ große 
                Bandbreitenlänge (über 1MHz*m), Störeinwirkung hebt sich in den beiden Leitern weitgehend
-               gegenseitig auf}}
+               gegenseitig auf (2 Ströme in entgegengesetzter Richtung)}}
     \catchword{Koaxialkabel \resultol{besteht aus Innenleiter und geschlossener, konzentrischer
                Aussenleiter, höchste Störfestigkeit, wohldefinierter Wellenwiderstand, Bandbreitenlänge
                hängt stark vom Isolationsmaterial ab (ca 100MHz*km)}}
@@ -2602,6 +2602,12 @@
   \section{Sonstiges}
 
   \subsection{Beispielklausur}
+  
+  \questionnopage{Welche Aufgaben lassen sich schlecht automatisieren}
+  {
+    \catchword{unvorhersehbare Ereignisse}
+    \catchword{komplexe (z.B. Erkennung (visuell, akustisch))}
+  }
 
   \questionnopage{Wie legt man den Automatisierungsgrad fest}
   {
@@ -2618,7 +2624,7 @@
   {
     \catchword{Durchsatz / maximalen Durchsatz}
     \catchword{Maximal: 1}
-    \catchword{Typisch: $ <1 \approx 0,9$}
+    \catchword{Typisch: $ <1 \approx 0,92$}
   }
 
   \questionnopage{Was bedeutet Just In Time}
@@ -2634,7 +2640,35 @@
 
   \questionnopage{Welche Vor- und Nachteile hat Just in Time}
   {
-    \normaltext{Man spart Lagerkosten und man ist abhängig vom Verkehrsaufkommen}
+    \normaltext{Man spart Lagerkosten aber man ist abhängig vom Verkehrsaufkommen}
+  }
+  
+  \questionnopage{Welche Architekturen haben Sie kennengelernt (mit Skizze)}
+  {
+    \catchword{von Neumann}
+    \catchword{Harvard}
+    \catchword{Modifizierte Harvard}
+  }
+  
+  \statementnopage{Skizzieren Sie die Erfassung und Ausgabe von Messgrößen in einem Rechner}
+  {
+  \normaltext{siehe Beispielklausur Aufgabe 5}
+  }
+  
+  \statementnopage{Nennen Sie 3 Verfahren zur A/D-Wandlung}
+  {
+    \catchword{\important{Flash/Parallelwandler:} Widerstandskette teilt die Refernzspannung. 
+    Mit einem Komperator wird die Eingangsspannung verglichen. Daraus ergibt sich eine 1 zu n
+    Kodierung, die umkodiert werden muss.}
+    \catchword{\important{Sägezahnwandler:} Eingangsspannung wird mit einem Sägezahnimpuls 
+    verglichen. Der Takt gemessen (Zeit) bis der Komperator umschlägt.}
+    \catchword{\important{Zählwandler:} Im Prinzip wie Sägezahnwandler, aber die 
+    Vergleichsspannung wird über Zähler mit D/A-Wandler erzeugt; dadurch abgekürzter Zyklus möglich.}
+  }
+  
+  \statementnopage{Skizzieren Sie detailiert die sukzessive Approximation (Skizze)}
+  {
+  \normaltext{siehe Beispielklausur Aufgabe 6b}
   }
 
   \questionnopage{Welche Kenngröße beschreibt die Leistungsähigkeit für Datenübertragung}
@@ -2644,8 +2678,90 @@
 
   \questionnopage{Wie lauten typische Werte für zwei Leitungstypen}
   {
-    \normaltext{Einzelader: 1MHz * m}
-    \normaltext{Glasphaser: 1GHz * m}
+    \catchword{Einzelader: 1MHz * m}
+    \catchword{Glasphaser: 1GHz * m}
+  }
+  
+  \statementnopage{Skizzieren Sie das Ersatzschaltbild für Störungseinkopplung}
+  {
+  \normaltext{siehe Beispielklausur Aufgabe 7b}
+  }
+
+  \questionnopage{Was versteht man unter Leitungsanpassung}
+  {
+    \normaltext{Abschluss der Leitung mit ihrem Wellenwiderstand \resultol{keine Reflexion}}
+  }
+  
+  \questionnopage{Welche Auswirkungen haben geometrische Ungleichmäßigkeiten}
+  {
+    \normaltext{Reflexionen an den Übergängen\result{überall kleine Reflektionen}
+    \result{Leitungsrauschen}}
+  }
+  
+  \statementnopage{Stellen Sie den prinzipiellen Ablauf eines Interrupts dar}
+  {
+    \catchword{externes Ereignis}
+    \catchword{Erkennung des Gerätes}
+    \catchword{Rettung des Kontextes}
+    \catchword{Bearbeitung}
+    \catchword{Widerherstellen des Kontextes}
+    \catchword{vorheriges Programm läuft weiter}
+  }
+  
+  \questionnopage{Wie kann einem Interrupt hardwaremäßig eine Priorität zugewiesen werden 
+  (2 Methoden)}
+  {
+    \catchword{Daisychain}
+    \catchword{Interruptkontroller}
+  }
+  
+  \questionnopage{Wo im Rechner kann ein Interrupt maskiert werden}
+  {
+    \catchword{Gerät}
+    \catchword{Interruptkontroller}
+    \catchword{CPU}
+  }
+  
+  \questionnopage{Wozu dient die ISR-Tabelle}
+  {
+    \normaltext{Zuweisung von Geräteidentifikatoren zu ISR-Adressen}
+  }
+  
+  \questionnopage{Was bedeutet Maskierung einer Adresse}
+  {
+    \normaltext{Abschaltung von Interrupts durch spezielle Register}
+  }
+  
+  \questionnopage{Wozu wird Maskierung verwendet}
+  {
+    \catchword{Priorisierung}
+    \catchword{Vermeidung von Wiedereintritten bei nich reentrancy fähigem Code}
+    \catchword{}
+  }
+  
+  \statementnopage{Skizzieren Sie Folgesynchronisation als Petri-Netz}
+  {
+  \normaltext{siehe Beispielklausur Aufgabe 9}
+  }
+  
+  \statementnopage{Skizzieren Sie Sperrsynchronisation als Petri-Netz}
+  {
+  \normaltext{siehe Beispielklausur Aufgabe 9}
+  }
+  
+  \statementnopage{Petri-Netz-Aufgabe: A,B steigern. \catchword{A hat bis jetzt mehr geboten}
+  \catchword{B wird gefragt} \catchword{Wenn B mehr bietet, wird A gefragt} \catchword{Wenn
+  nicht bekommt A Gegenstand}}
+  {
+  \normaltext{siehe Beispielklausur Aufgabe 10}
+  }
+  
+  \statementnopage{Beschreiben Sie detailiert den Verwaltungsablauf beim Zeitscheibenverfahren}
+  {
+  \catchword{Zeitzähler erzeugt Interrupt}
+  \catchword{Interrupt startet Verwaltung}
+  \catchword{Verwaltung hat eine geordnete Liste aller Tasks im Zustand \important{bereit}}
+  \catchword{Auswahlverfahren zur Bestimmung der nächsten zu bedienenden Task}
   }
 
   \subsection{Vorlesung}
