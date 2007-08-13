@@ -244,7 +244,7 @@ explizit angegeben werden m"ussen.
 Diese sollten sollte es in der "Ubung angesprochen werden.
 
 Ein \define{Typurteil} f"ur Ausdr"ucke ist von der Form $\Tj{\Gamma}{e}{\tau}$, wobei $\Gamma: \Id \pto \Type$ eine
-partielle Funktion mit endlichem Definitionsbereich ist, die bestimmten Bezeichnern \mbox einen Typ zuordnet. $\Gamma$ wird
+partielle Funktion mit endlichem Definitionsbereich ist, die bestimmten Bezeichnern einen Typ zuordnet. $\Gamma$ wird
 als \define{Typumgebung} \engl{type environment} bezeichnet. Ein Typurteil hei"st g"ultig f"ur \LONE, wenn es sich mit
 den Regeln\\[3mm]
 \begin{tabular}{ll}
@@ -285,7 +285,7 @@ den Typ $\tau$ hat. Dies wird durch die Regeln\\[3mm]
                     \reason{ falls $\op$ arithmetischer Operator}\\[2mm]
 \mbox{(ROP)\   } & $\tj{\op}{\inttype\to\inttype\to\bool}$ \reason{ falls $\op$ Vergleichsoperator}
 \end{tabular}\\[7mm]
-definiert. Beim Type Checker werden diese Regeln f"ur Konstanten nicht angegeben, sondern \mbox lediglich die (CONST) Regel.
+definiert. Beim Type Checker werden diese Regeln f"ur Konstanten nicht angegeben, sondern lediglich die (CONST) Regel.
 
 
 \subsection{Minimal Typing Semantik von \LONE}
@@ -331,13 +331,13 @@ definiert. Beim Type Checker werden diese Regeln f"ur Konstanten nicht angegeben
 Die Sprache \LONE\ und alle folgenden Sprachen enthalten \Define{syntaktischen Zucker}{syntaktischer Zucker} um das Schreiben
 von Programmen zu vereinfachen. Der syntaktische Zucker l"asst sich dann anschlie"send in Kernsyntax "ubersetzen oder direkt
 verarbeiten. Hierbei wurden aus Gr"unden der "Ubersichtlichkeit nicht immer abgeleitete Regeln f"ur den syntaktischen Zucker eingef"uhrt,
-sondern \mbox es wird implizit eine Konvertierung des betreffenden Teilausdrucks in \notation{Kernsyntax} vorgenommen. F"ur \LONE\ betrifft dies
+sondern es wird implizit eine Konvertierung des betreffenden Teilausdrucks in \notation{Kernsyntax} vorgenommen. F"ur \LONE\ betrifft dies
 Ausdr"ucke, die Operatoren in \notation{Infixschreibweise} enthalten, und die logischen Operatoren $\mathbin{\&\&}$ und $\mathbin{||}$. Es gilt:
 \beqns
 e_1\,\op\,e_2\quad \mbox{steht f"ur}\quad (\op\,e_1)\,e_2
 \eeqns
 Beim small step Interpreter w"urden also die Regeln (APP-LEFT) und (OP) angewendet. Beim Schreiben von Programmen ist dar"uber
-hinaus zu beachten, dass Operatoren, sofern \mbox sie nicht in Infixausdr"ucken auftauchen, immer geklammert werden m"ussen. Die
+hinaus zu beachten, dass Operatoren, sofern sie nicht in Infixausdr"ucken auftauchen, immer geklammert werden m"ussen. Die
 Funktion, die $1$ zu ihrem Parameter addiert wird also als
 \[(+)\,1\]
 geschrieben. Dies entspricht der OCaml-Konvention und ist notwendig, da der Parser sonst bei bestimmten Ausdr"ucken nicht
@@ -933,7 +933,7 @@ Ein \notation{big step} hei"st g"ultig f"ur \LTHREE, wenn er sich mit den big st
     \mbox{(IS-EMPTY-TRUE)}  & $\Empty\,[\,] \eval \true$
   \end{tabular}\\[7mm]
 sowie den entsprechenden exception-Regeln herleiten l"asst. Zu beachten ist, dass - vielleicht wider der Intuition - die
-(CONS) Regel\footnote{Der Leser wird sich hoffentlich erinnern \mbox, dass bin"are Operatoren, die au"serhalb eines Infixausdrucks
+(CONS) Regel\footnote{Der Leser wird sich hoffentlich erinnern, dass bin"are Operatoren, die au"serhalb eines Infixausdrucks
 verwendet werden, geklammert werden m"ussen. $v'\,\coloncolon\,[v_1,\ldots,v_n]$ ist also syntaktischer Zucker f"ur
 $(\coloncolon)\,v'\,[v_1;\ldots;v_n]$.} f"ur den bin"aren Konkatenationsoperator $\coloncolon$ definiert ist und nicht f"ur den
 un"aren Listenkonstruktor $\Cons$. Dies wird jedoch leicht ersichtlich, wenn man sich vor Augen h"alt, dass $(\Cons\,v) \in \Val$.
@@ -1232,7 +1232,7 @@ Da es mitunter nicht mit jeder herk"ommlichen Tastatur m"oglich ist, griechische
 k"onnen die aufgef"uhrten Schl"usselw"orter als Ersatz benutzt werden. Ebenso ist es nicht so einfach
 Unicode Zeichen einzugeben, auch hierf"ur gibt es die entsprechenden Abk"urzungen. Unterscheidungen,
 die nur in er Theorie m"oglich sind, in der Praxis aber nicht unterscheidbar sind, m"ussen mit
-Schl"usselw"ortern \mbox unterschieden werden.\\[5mm]
+Schl"usselw"ortern unterschieden werden.\\[5mm]
 \begin{tabular}{lll}
   \mbox{$\lambda$}                            & $\textbf{lambda}$                        & Lambda Ausdruck\\
   \mbox{$\mu$}                                & $\textbf{mu}$                            & Rekursive Typen\\
