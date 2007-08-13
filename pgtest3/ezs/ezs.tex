@@ -2206,7 +2206,7 @@
   }
 
   \statement{Nennen Sie den Vorzteil des Stromsummenwandlers und beschreiben Sie
-             genau sein Problem)}{\page{220}}
+             genau sein Problem}{\page{220}}
   {
     \catchword{geringer Aufwand: n Wiederstände (bei n Bits)}
     \catchword{Monotonie: In der Mitte des Wandlungsbrereich befinden sich die zwei Dualwerte 1000 000
@@ -2217,7 +2217,7 @@
                und damit läge ein Monotoniefehler vor.}
   }
 
-  \statement{Skizzieren Sie den prinzipiellen Aufbau des R-2R-Widerstandnetzwerkes}{\page{221}}
+  \statement{Skizzieren Sie den prinzipiellen Aufbau des R-2R Widerstandnetzwerkes}{\page{221}}
   {
     \normaltext{Siehe Bild 3.39, Seite 221}
   }
@@ -2955,6 +2955,42 @@
   \questionnopage{Wie lassen sich Gegentaktstörungen verringern}
   {
     \normaltext{Durch hochsymmetrische Leitungen}
+  }
+
+  \statementnopage{Gehen Sie auf die Echtzeituhr ein}
+  {
+    \catchword{Absolute Zeit (MEZ): Festlegung durch das Physikalisch Technische Bundesamt}
+    \catchword{Quarzuhren}
+    \catchword{Batteriegepuffert}
+    \catchword{Startzeitregister \resultol{Softwarerealisierung möglich}}
+  }
+
+  \questionnopage{Was sind die Unterschiede des kooperativen zum nicht kooperativen Multitasking}
+  {
+    \catchword{Kooperatives Multitasking: Verantwortung der Abgabe der CPU liegt beim Programm}
+    \catchword{Nicht kooperatives Multitasking: Verantwortung der Abgabe der CPU liegt beim
+               Betriebssystem}
+  }
+
+  \questionnopage{Auf welche Arten können Prozesse kommunizieren}
+  {
+    \catchword{Nachrichten: sicher, aber langsam}
+    \catchword{Shared Memory: unsicher, aber schnell}
+  }
+
+  \statementnopage{Gehen Sie auf die Grundregeln für die Interruptprioritäten ein}
+  {
+    \catchword{Prozessdaten schnell abholen / speichern}
+    \catchword{Abholung nicht unterbrechbar}
+    \catchword{Ausgabewerte schnell berechnen / ausgeben}
+    \catchword{Zeitkritische Interrupts müssen eine hohe Priorität haben}
+  }
+
+  \questionnopage{Was beschreibt bei Speichern die Zugriffszeit und was die Zykluszeit}
+  {
+    \catchword{Zugriffszeit: Zeit die ein Speicher braucht, um die angeforderten Daten zu liefern}
+    \catchword{Zykluszeit: Zeit nach der ein Speicher wieder angefragt werden kann}
+    \result {Zykluszeit ist immer größer gleich der Zugriffszeit}
   }
 
   \subsection{Übung}
