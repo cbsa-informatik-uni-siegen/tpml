@@ -184,13 +184,6 @@
                 Zustandsgrößen mit technischen Mitteln erfasst und beeinflusst werden können.}
   }
 
-  \question{Was bezeichnet man als Verarbeitungsart}{\page{6}}
-  {
-    \catchword{Umformung}
-    \catchword{Transport}
-    \catchword{Speicherung}
-  }
-
   \question{Aus welchen zwei Teilen besteht ein Elementarprozess}{\page{6}}
   {
     \catchword{Verarbeitungsart}
@@ -216,7 +209,7 @@
     \normaltext{Transportprozess}
   }
 
-  \question{Mit welchem Prozess ist ein Umformunsprozess fast immer gekoppelt}{\page{6}}
+  \question{Mit welchem Prozess ist ein Umformungsprozess fast immer gekoppelt}{\page{6}}
   {
     \normaltext{Transport- oder Speicherprozess}
   }
@@ -225,7 +218,7 @@
   {
     \catchword{Elementarprozesse: Sind durch genau eine Verarbeitungsart und ein
                Verarbeitungsgut gekennzeichnet}
-    \catchword{Einzelprozesse: Stellen die kleinste geschlossene Prozesseinheit dar
+    \catchword{Einzelprozesse: Stellen die kleinste geschlossene Prozesseinheit dar.
                Sind aus mehreren Elementarprozessen zusammengesetzt}
     \catchword{Maschinen: Basieren auf mehreren Elementar- oder Einzelprozessen}
     \catchword{Anlagen: Bestehen aus mehreren Maschinen}
@@ -255,7 +248,7 @@
   \question{Wie definiert man stochastische Prozesse}{\page{9}}
   {
     \catchword{Keine vorhersagbare Abfolge}
-    \catchword{Gehorcht den Gesetzen der Statistik}
+    \catchword{Gehorchen den Gesetzen der Statistik}
   }
 
   \statement{Nennen und erklären Sie kurz die Verarbeitungsbereiche}{\page{9}}
@@ -279,14 +272,14 @@
   \question{Wie lautet die DIN Definition eines Prozessrechners}{\page{10}}
   {
     \normaltext{Als Prozessrechner wird ein Rechner bezeichnet, der mittels Prozessperipherie direkt
-                an einen Prozess gekoppelt ist.}
+                an einen Prozess gekoppelt ist}
   }
 
   \statement{Geben Sie die Prozessgrößen an}{\page{11}}
   {
     \catchword{Prozess-Kennwerte}
-    \catchword{Prozessparameter}
-    \catchword{Prozesszustand}
+    \catchword{Prozess-Parameter}
+    \catchword{Prozess-Zustand}
     \catchword{Eingangsgrößen}
     \catchword{Ausgangsgrößen}
   }
@@ -315,7 +308,7 @@
     \catchword{Umformung \resultol{Art und Umfang der Änderung}}
   }
 
-  \question{Was sind Prozesskennwert}{\page{12}}
+  \question{Was sind Prozesskennwerte}{\page{12}}
   {
     \normaltext{Prozesskennwerte oder Anlagedaten sind technische Daten, die durch den Aufbau eines
                 Prozesses, seine Struktur, Konstruktion und Anwendung festgelegt sind. Also Festwerte,
@@ -424,9 +417,9 @@
     \result{Zusammenhänge zwischen diesen Größen}
   }
 
-  \question{Welche zwei Arten von Modellen gibt es und wie können diese Überprüft werden}{\page{17}}
+  \question{Welche zwei Arten von Modellen gibt es und wie können diese überprüft werden}{\page{17}}
   {
-    \catchword{Gegenständliche Modell}
+    \catchword{Gegenständliches Modell}
     \catchword{Mathematisches Modell}
     \result{Simulation mit einem Computer}
   }
@@ -456,14 +449,14 @@
     \normaltext{Parallelverarbeitung}
   }
 
-  \statement{Welche Arten von Bearbeitung gibt es}{\page{18}}
+  \question{Welche Arten von Bearbeitung gibt es}{\page{18}}
   {
     \catchword{Sequentielle Bearbeitung: Immer nur eine Station aktiv, das Bearbeitungsstück wird
                von einer zur nächsten Station weitergegeben}
     \catchword{Serielle Bearbeitung: Alle Stationen aktiv, die Bearbeitungsstücke werden von einer
                zur nächsten Station weitergegeben}
     \catchword{Parallele Bearbeitung: Entweder identische Vorgänge zur Steigerung des Durchsatzes,
-               oder Vorgänge die zu einem Endprodukt gebraucht werden}
+               oder Vorgänge, deren Ergebnis zu einem Endprodukt beitragen}
   }
 
   \subsubsection{Prozesserkennung}
@@ -478,7 +471,7 @@
 
   \question{In welchen Ebenen kann die Erstellung eines Modells erfolgen}{\page{19}}
   {
-    \catchword{Als statisches Modell, in dem die Prozessgrößen, Eingangs-, Ausgangsgrößen und Zustandsgrößen
+    \catchword{Als statisches Modell, in dem die Prozessgrößen, Eingangs-, Ausgangs- und Zustandsgrößen
                definiert und beschrieben werden.}
     \catchword{Als stationäres Modell, in dem die Zusammenhänge zwischen den Prozessgrößen für den stationären 
                Zustand beschrieben werden, also für den Fall, dass alle Größen im wesentlichen stabil sind.}
@@ -497,7 +490,7 @@
   \question{Was bezeichnet man als lernenden Prozessmodell}{\page{20}}
   {
     \catchword{Modelle, die nicht nur passiv die Parameter auf Grund von Prozessdaten bestimmen,
-               sondern die optimalen Werte aktiv selber sucht.}
+               sondern sich die optimalen Werte selber aktiv suchen.}
   }
 
   \subsubsection{Verteilte Verarbeitung}
@@ -725,7 +718,7 @@
 
   \statement{Erklären Sie die Adressierungsmodi des Program Counters}{\pages{46}{47}}
   {
-    \catchword{Direkt: Der Operand erfolgt unmittelbar auf die Instruktion, der PC zeigt drauf}
+    \catchword{Direkt: Der Operand folgt unmittelbar auf die Instruktion, der PC zeigt drauf}
     \catchword{Absolut: Die absolute Adresse des Operanden folgt unmittelbar auf die Instruktion}
     \catchword{Relativ: Die relative Adresse des Operanden folgt unmittelbar auf die Instruktion,
                die absolute Adresse muss daraus durch Addition des PC erst berechnet werden}
@@ -735,7 +728,7 @@
 
   \question{Was wird beim Unterprogrammsprung gemacht}{\page{47}}
   {
-    \catchword{Aktueller PC auf dem Stack ablegen}
+    \catchword{Aktuellen PC auf dem Stack ablegen}
     \catchword{Stack Pointer erhöhen}
     \catchword{Unterprogramm ausführen}
     \catchword{Rücksprungadresse vom Stack holen}
@@ -746,10 +739,10 @@
 
   \question{Welche wesentlichen drei Aufgaben hat das Mikroprogramm}{\page{48}}
   {
-    \catchword{Einlesen von Instruktionen und Daten aus dem Hauptspeicher, und das Abspeichern 
+    \catchword{Einlesen von Instruktionen und Daten aus dem Hauptspeicher, und das Abspeichern
                von Ergebnissen}
     \catchword{Interpretieren von Instruktionen, wobei es in eigene Programmteile (Module) verzweigt}
-    \catchword{Steuern der CPU d.h. des Datenverkehrs innerhalb der CPU, und ins besondere 
+    \catchword{Steuern der CPU d.h. des Datenverkehrs innerhalb der CPU, und insbesondere
                des Rechenwerks (ALU)}
   }
 
@@ -937,7 +930,7 @@
 
   \question{Wozu wird die Schnittstelle zum Bus verwendet}{\page{83}}
   {
-    \catchword{Gesamte Datenübertragung zum und vom Gerät}
+    \catchword{Gesamte Datenübertragung zum Gerät hin und vom Gerät weg}
     \catchword{Gesamte Steuerung des Gerätes}
     \catchword{Steuerung des Geräteanschlusses selbst}
   }
@@ -959,7 +952,7 @@
   \question{Welche zwei Arten von Datenübertragung zwischen Controller und Speicher gibt es}{\page{87}}
   {
     \catchword{Blockpufferung: Ankommende Daten werden im Puffer zwischengespeichert und dort abgeholt}
-    \catchword{Speicherdirektzugriff (DMA): Meist ohne Puffer und ohne Eingriff der CPU eine
+    \catchword{Speicherdirektzugriff (DMA): Meist ohne Puffer und ohne Eingriff der CPU durch eine
                direkte Kommunikation mit dem Arbeitsspeicher}
   }
 
@@ -972,25 +965,25 @@
                wird, sind die Anschlüsse und Kabel aufwendig, aber man erreicht eine hohe
                Übertragungsgeschwindigkeit.}
     \catchword{Seriellschnittstellen, auf welchen auch die einzelnen Bits nacheinander übertragen werden. 
-               Dadurch können die Daten unabhängig von der Datenbreite über eine einzig Leitung
+               Dadurch können die Daten unabhängig von der Datenbreite über eine einzige Leitung
                übertragen werden. Allerdings entsteht hier ein höherer Aufwand bei der Umsetzung, und 
                die Übertragungsgeschwindigkeit ist niedriger.}
   }
 
-  \statement{Nennen Sie Eigenschaften der synchronen serieller Übertragung}{\page{89}}
+  \statement{Nennen Sie Eigenschaften der synchronen seriellen Übertragung}{\page{89}}
   {
     \catchword{Es wird eine lückenlose Folge von Zeichen übertragen.}
     \catchword{Wenn keine aktuellen Daten anliegen werden Füllzeichen übertragen.}
-    \catchword{Hohe Datenrate, da Start und Stoppbits entfallen.}
-    \catchword{Nachteilig ist das erkennen von Füllzeichen und die Synchronisierung der Taktfrequenz.}
+    \catchword{Hohe Datenrate, da Start- und Stoppbits entfallen.}
+    \catchword{Nachteilig ist das Erkennen von Füllzeichen und die Synchronisierung der Taktfrequenz.}
   }
 
-  \statement{Nennen Sie Eigenschaften der asynchronen serieller Übertragung}{\page{89}}
+  \statement{Nennen Sie Eigenschaften der asynchronen seriellen Übertragung}{\page{89}}
   {
     \catchword{Bits eines Zeichens werden kontinuierlich übertragen, jedoch können zwischen den Zeichen
                beliebig lange Ruhezeiten liegen.}
     \catchword{Anfang und Ende eines Zeichen werden durch Start- und Stoppbit gekennzeichnet.}
-    \catchword{Kein erkennen von Füllzeichen und synchronisieren der Taktfrequenz nötig.}
+    \catchword{Kein Erkennen von Füllzeichen und synchronisieren der Taktfrequenz nötig.}
     \catchword{Dafür müssen aber Start- und Stoppbits erkannt werden.}
   }
 
@@ -1005,7 +998,7 @@
 
   \subsubsection{Die Parallelschnittstelle}
 
-  \question{Nennen Sie die Eigenschaften der Parallelschnittstelle}{\page{91}}
+  \statement{Nennen Sie die Eigenschaften der Parallelschnittstelle}{\page{91}}
   {
     \catchword{Die Bits eines Datenworts werden parallel übertragen}
     \catchword{Nur minimale Anforderungen an die eigentlichen Schnittstellenumsetzer}
@@ -1053,13 +1046,13 @@
 
   \question{Welche Aufgabe hat der Sender (Parallel-Seriell-Wandler)}{\page{99}}
   {
-    \catchword{Er setzt die im Datenregister DBR-T angelieferten Daten aus der bitparallelen 
-               Darstellung in eine serielle um.}
+    \normaltext{Er setzt die ankommenden seriellen Daten in die parallele Darstellung um.}
   }
 
   \question{Welche Aufgabe hat der Empfänger (Seriell-Parallel-Wandler)}{\page{99}}
   {
-    \catchword{Er setzt die ankommenden seriellen Daten in die parallele Darstellung um.}
+    \normaltext{Er setzt die im Datenregister DBR-T angelieferten Daten aus der bitparallelen 
+               Darstellung in eine serielle um.}
   }
 
   \question{Welche Teile besitzen sowohl Sender als auch Empfänger }{\pages{99}{100}}
@@ -1087,7 +1080,7 @@
   \statement{Beschreiben Sie den Aufbau eines A-t-Diagramms}{\pages{106}{107}}
   {
     \catchword{Auf der x-Achse die Zeit t}
-    \catchword{Auf der y-Achse die Adresse A der zum Zeitpunkt t verarbeiteten Instruktion,
+    \catchword{Auf der y-Achse die Adresse $A$ der zum Zeitpunkt $t$ verarbeiteten Instruktion,
                also den Inhalt des Programmzählers (PC)}
   }
 
@@ -1123,7 +1116,7 @@
 
   \question{Was versteht man unter Polling}{\page{110}}
   {
-    \normaltext{Bein Abrufbetrieb (Polling) werden Informationen über den Zustand der Geräte
+    \normaltext{Beim Abrufbetrieb (Polling) werden Informationen über den Zustand der Geräte
                 oder der Datenübertragung von einem Programm abgerufen. Dazu fragt die CPU in einer Schleife
                 die CSRs der Geräteanschlüsse ab. Anhand dieser Informationen verzweigt das Programm in 
                 entsprechende Routinen.}
@@ -1137,7 +1130,7 @@
 
   \question{Nennen Sie Nachteile des Polling Betriebs}{\pages{112}{113}}
   {
-    \catchword{Die CPU ist die meist Zeit damit beschäftigt, alle CSRs abzufragen.}
+    \catchword{Die CPU ist die meiste Zeit damit beschäftigt, alle CSRs abzufragen.}
     \catchword{Die Zeitauflösung (Genauigkeit) mit der man den Zeitpunkt für das Eintreten
                eines Ereignisses festlegen kann, wird zunächst durch die Zeit für einen Schleifendurchlauf
                vorgegeben.}
@@ -1160,9 +1153,9 @@
 
   \question{Was ist die Forderung für einen sicheren Betrieb}{\page{115}}
   {
-    \normaltext{Die Summe aus der maximal möglichen Reaktionszeit tr und der längsten Bearbeitungszeit tb
-                soll kleiner sein, als der Minimalabstand von Prozessereignissen tp abzüglich der maximalen 
-                Stellzeiten ts. Bei Gleichheit liegt der denkbar ungünstige Fall vor, der eintreten kann
+    \normaltext{Die Summe aus der maximal möglichen Reaktionszeit $t_r$ und der längsten Bearbeitungszeit $t_b$
+                soll kleiner sein, als der Minimalabstand von Prozessereignissen $t_p$ abzüglich der maximalen
+                Stellzeiten $t_s$. Bei Gleichheit liegt der denkbar ungünstige Fall vor, der eintreten kann
                 (engl.: worst case).}
   }
 
@@ -1186,7 +1179,7 @@
     \catchword{Übernahme von Daten}
     \catchword{Berechnungen}
     \catchword{Ausgabe von Steuerdaten}
-    \catchword{Nach Beendigung wieder in das unterbrochene Programm zurück springen}
+    \catchword{Nach Beendigung wieder in das unterbrochene Programm zurückgesprungen}
   }
 
   \statement{Nennen Sie Unterschiede zwischen Unterprogrammsprüngen und Unterbrechungen}{\pages{117}{118}}
@@ -1233,7 +1226,7 @@
     \catchword{Eine Unterbrechungsanforderung wird von einem Geräteanschluss erzeugt
                und das aktuelle Programm wird unterbrochen}
     \catchword{Der aktuelle Stand des Programmzählers (PC) und der Inhalt der
-               Prozessor-Status-Worts (PS) werden auf dem Stack abgelegt. Die
+               Prozessor-Status-Worts (PSW) werden auf dem Stack abgelegt. Die
                Adresse dafür enthält der Stack-Pointer (SP)}
     \catchword{Die Unterbrechungsanforderung muss identifiziert werden, dazu dient
                ein Vektor. Mit diesem Vektor wird in der Interrupt-Vektor-Tabelle (IVT)
@@ -1245,23 +1238,23 @@
                die Zuordnung automatisch durch vektorisierte Interrupts, die bei
                der Interrupt-Anforderungen den Vektor mitliefern}
     \catchword{Mit dem neuen PC aus der IVT erfolgt der Sprung in die ISR. Dabei muss
-               ein neuer Prozesszustand (PS) definiert werden}
+               ein neuer Prozesszustand (PSW) definiert werden}
     \catchword{Nach der Abarbeitung der ISR erfolgt der Rücksprung über eine spezielle
                Rücksprunginstruktion (RTI, Return from Interrupt). Der alte PC und
-               PS werden vom Stack geholt und zurückgeladen}
+               PSW werden vom Stack geholt und zurückgeladen}
     \catchword{Das unterbrochene Programm wird fortgesetzt}
   }
 
   \question{Welche Anforderungen werden an die Hardware für den Interrupt-Betrieb gestellt}{\page{120}}
   {
-    \catchword{Geräteanschluss müssen in der Lage sein, aus einem vom Gerät ankommenden Ereignis eine 
+    \catchword{Geräteanschlüsse müssen in der Lage sein, aus einem vom Gerät ankommenden Ereignis eine 
                Unterbrechungsanforderung zu erzeugen.}
     \catchword{Der Bus muss spezielle Steuerleitungen für die Unterbrechungsanforderungen und für deren
                Bestätigung besitzen.}
     \catchword{Es muss ein geeignetes Protokoll definiert sein, wie die Leitungen zu verwenden sind.}
   }
 
-  \question{Welche 3 wesentlichen Aufgaben hat das Unterbrechungswerk}{\page{122}}
+  \question{Welche drei wesentlichen Aufgaben hat das Unterbrechungswerk}{\page{122}}
   {
     \catchword{Die Abweisung oder Zulassung von Interrupt-Anforderungen und die Auswahl, wenn mehrere
                gleichzeitig auftreten.}
@@ -1271,7 +1264,7 @@
 
   \question{Was versteht man unter Non-Maskable Interrupts (NMI)}{\page{122}}
   {
-    \normaltext{Unterbrechungen, die nicht ab geblockt werden dürfen. Diese werden dann auf einer 
+    \normaltext{Unterbrechungen, die nicht geblockt werden dürfen. Diese werden dann auf einer 
                 besonderen Leitung angefordert}
   }
 
@@ -1319,7 +1312,7 @@
             bezeichnet werden, machen}{\page{124}}
   {
     \normaltext{Alle anfallenden Zwischenergebnisse müssen in jedem Durchlauf gut
-                gesichert werden. Das kann dadurch erreicht werden, gleich am Beginn
+                gesichert werden. Das kann dadurch erreicht werden, gleich zu Beginn
                 der Routine alle benötigten Speicherplätze von Variablen und alle
                 CPU-Register auf dem Stack gesichert werden}
   }
@@ -1353,7 +1346,7 @@
     \normaltext{Unterbrechungsanforderungen müssen zugelassen oder abgewiesen werden}
   }
 
-  \question{Was für den Impuls von eintreffenden Ereignissen gelten}{\page{125}}
+  \question{Was muss für den Impuls von eintreffenden Ereignissen gelten}{\page{125}}
   {
     \normaltext{Der Länge des Impuls sollte möglichst kurz sein gegenüber allen
                 Prozess- und Verarbeitungszeiten}
@@ -1402,14 +1395,14 @@
 
    \question{Wie funktioniert Prioritätenregelung nach Rangordnung}{\pages{128}{129}}
   {
-    \catchword{Die ankommenden Interrupt-Leitungen werden als Dualzahlen codiert und dadurch auf wenig 
+    \catchword{Die ankommenden Interrupt-Leitungen werden als Dualzahlen codiert und dadurch auf wenige
                Bit komprimiert.}
-    \catchword{Diese wird als mehrfaches logisches ODER überlagert, oder in ihrer Gesamtheit gleich 
-               als Dualzahl interpretiert.}
+    \catchword{Diese können durch logische ODER überlagert, oder in ihrer Gesamtheit gleich
+               als Dualzahl interpretiert werden.}
     \catchword{Diese Zahl wird als Hardware-Priorität mit der aktuellen Software-Priorität numerisch 
                verglichen.}
     \catchword{Wenn die Hardware Priorität größer als die Software-Priorität ist, wird der Interrupt
-               zugelassen. (Das hat zur Folge, dass alle Interrupts abgewiesen werden könne, wenn
+               zugelassen. (Das hat zur Folge, dass alle Interrupts abgewiesen werden können, wenn
                im PSW ein genügend großer Wert eingetragen wird)}
   }
 
@@ -1448,16 +1441,20 @@
     \catchword{Der Prozess muss in einen sicheren Zustand gebracht werden, wobei auf eine korrekte
                Reihenfolge geachtet werden muss.}
     \catchword{Der aktuelle Zustand des Prozesses sollte erfasst und gesichert werden.}
-    \catchword{Der Zustand des Programms sollte gesichert werden, d.h. an welcher Stelle er mit
+    \catchword{Der Zustand des Programms sollte gesichert werden, d.h. an welcher Stelle es mit
                welchen Werten unterbrochen wurde.}
   }
 
   \statement{Nennen und erklären Sie kurz die auftretenden Fehler}{\pages{140}{142}}
   {
-    \catchword{Diese Methode erfordert besondere Intelligenz beim Controller.}
-    \catchword{Die CPU muss darauf vorbereitet sein.}
-    \catchword{Auf dem Bus muss ein geeignetes Protokoll definiert sein.}
-    \catchword{Der Arbeitsspeicher muss nur in einigen Ausnahmefällen besonders ausgestattet sein.}
+    \catchword{Illegal instruction: Der Instruktionscode kann nicht interpretiert werden}
+    \catchword{Reserved instruction: Der Instruktionscode ist reserviert}
+    \catchword{Privileged instruction: Fehlende Rechte zur Ausführung}
+    \catchword{Stack limit violation: Stack ist übergelaufen}
+    \catchword{Illegal operand: Operand passt nicht zur Operation}
+    \catchword{Illegal jump: Zieladresse ungültig}
+    \catchword{Overflow: Überlauf bei einer Instruktion}
+    \catchword{Divide by 0: Division durch 0}
   }
 
   \question{Was ist die besondere Eigenschaft bei Systemaufrufen von Interrupts und Traps}{\page{142}}
@@ -1506,7 +1503,7 @@
                gesamte DMA-Block übertragen ist}}
     \catchword{Burst-mode \resultol{Der Controller überträgt jeweils eine festgelegte Anzahl von Daten
                hintereinander über den Bus}}
-    \catchword{Denkbar ist auch eine Betriebsart, bei der ein Burst so lange dauert, bis das FiFo abgearbeitet
+    \catchword{Denkbar ist auch eine Betriebsart, bei der ein Burst so lange dauert, bis das FIFO abgearbeitet
                ist, oder die CPU den Bus zurückverlangt.}
   }
 
@@ -1515,7 +1512,7 @@
     \normaltext{Die DMA-Anforderungen (NPR) haben praktisch immer die höchste Priorität.}
   }
 
-  \question{Wieviele NPR- und NPG- Leitungen gibt es auf einem Bus}{\page{148}}
+  \question{Wieviele NPR- und Non-Processor-Grant-Leitungen (NPG) gibt es auf einem Bus}{\page{148}}
   {
     \normaltext{Jeweils nur eine. Falls mehrere DMA-Controller eingesetzt werden sollen, verwendet 
                 man zu ihrer Prioritätensteuerung eine Verriegelungstechnik mit einer Daisy Chain.}
@@ -1576,7 +1573,7 @@
     \catchword{Prozessgrößen in Rechnerdaten umwandeln und umgekehrt}
   }
 
-  \question{In welcher Form können die Daten des Prozess vorliegen}{\page{188}}
+  \question{In welcher Form können die Daten des Prozesses vorliegen}{\page{188}}
   {
     \catchword{elektrischer und nicht elektrischer Form (Strom, Spannung, Temperatur)}
     \catchword{digital oder analog, sie ändern sich diskret oder kontinuierlich (Stückzahlen, Messströme)}
@@ -1604,7 +1601,7 @@
                um, das leicht weiterverarbeitet werden kann. Das Messgerät besteht
                aus zwei Komponenten:}
     \catchword{Messfühler: er setzt die Messgröße durch Ausnutzen naturwissenschaftlicher
-               Gesetzmäßigkeiten in leichter erfassbare Größen um. Z.B.: Druck/Temperatur in einen Weg} 
+               Gesetzmäßigkeiten in leichter erfassbare Größen um z.B.: Druck/Temperatur in einen Weg.}
     \catchword{Messwandler: einen Weiter Umwandlung mit dem Ergebnis eines meist elektrischen
                Signals, das gut übertragen werden kann.}
     \normaltext{Zuletzt wird das analoge elektrische Signal mittels A/D-Wandler in ein digitales
@@ -1619,9 +1616,9 @@
   }
 
   \statement{Nennen Sie Faktoren, die in das Modell des gesamten Messprozesses eingehen müssen,
-             insbesondere Fehlermöglichkeiten)}{\page{191}} 
+             insbesondere Fehlermöglichkeiten}{\page{191}} 
   {
-    \catchword{Übertragungseingenschafften aller Glieder in der Kette}
+    \catchword{Übertragungseigenschaften aller Glieder in der Kette}
     \catchword{Übersetzungsverhältnisse}
     \catchword{Übertragungsfunktionen und -kennlinien}
     \catchword{Signallaufzeiten}
@@ -1666,7 +1663,8 @@
                Zeitpunkten ändern}}
     \catchword{digitale Signale \resultol{können nur ganz diskrete Werte annehmen}}
     \catchword{quantisierte Signale \resultol{deren diskrete Werte äquidistant sind}}
-    \catchword{binäre Signale \resultol{Extremfall von digitalen Signalen mit nur 2 versch. Werten}}
+    \catchword{binäre Signale \resultol{Extremfall von digitalen Signalen mit nur zwei
+               verschiedenen Werten}}
     \catchword{Impulsfolgen aus kurzen Binärsignalen \resultol{deren Abstände oder Anzahl pro 
                Zeiteinheit die Information darstellen}}
     \catchword{Abtastimpulse \resultol{die zeitlich äquidistant sind oder beliebig verteilt sind,
@@ -1689,7 +1687,7 @@
 
   \question{Was versteht man unter einer Messeinrichtung}{\page{193}}
   {
-    \normaltext{Als Messeinrichtung bezeichnet man Messgeräte, Messglieder und -fühler,
+    \normaltext{Als Messeinrichtung bezeichnet man Messgeräte, Messglieder und Messfühler,
                 aber auch größere Anlagen, in denen mehrere Messeräte vereinigt sind
                 und eventuell auch schon eine Messwertverarbeitung stattfindet.}
   }
@@ -1720,7 +1718,7 @@
 
   \question{Welche Messglieder gibt es und wie funktionieren sie}{\pages{195}{199}}
   {
-    \catchword{Schleifdrahtpotentiometer \resultol{erlaubt die direkte Umwandlung eines Weges x in
+    \catchword{Schleifdrahtpotentiometer \resultol{erlaubt die direkte Umwandlung eines Weges $x$ in
                eine statische analoge elektrische Spannung.}}
     \catchword{Codierstab \resultol{bewirkt die Diskretisierung einer Strecke durch Einteilung in Abschnitte 
                gleicher Länge. Dann muss die Position relativ zum Codierstab erfasst und erkannt werden.}}
@@ -1729,7 +1727,7 @@
     \catchword{Radarmessung \resultol{Laufzeitmessung mit bekannter Laufgeschwindigkeit.}}
     \catchword{Kapazitive und induktive Messverfahren \resultol{Kondensator wird deformiert und dadurch seine
                Kapazität geändert, oder eine Spuleninduktivität durch Einschieben eines Ferritkernes.}}
-    \catchword{Dehnungsmessstreifen \resultol{Widerstandswert änder sich bei Dehnung.}}
+    \catchword{Dehnungsmessstreifen \resultol{Widerstandswert ändert sich bei Dehnung.}}
     \catchword{Optische Interferometrie \resultol{Entfernungen werden über Laufzeitunterschiede
                zu Referenzstrecken durch optische Überlagerung gemessen.}}
     \catchword{Piezoelektrische Sensoren \resultol{wandeln geringste Deformationen in Spannungen um.}}
@@ -1758,7 +1756,7 @@
   \question{Welche Codierung können die Ausgabewerte haben}{\page{200}}
   {
     \catchword{Dualzahl}
-    \catchword{Binäre Offset}
+    \catchword{Binäres Offset}
     \catchword{2-er Komplement}
     \catchword{1-er Komplement}
   }
@@ -1780,12 +1778,12 @@
   \question{Was besagt das Shannon Theorem}{\pages{201}{202}}
   {
     \normaltext{Eine Abtastrate $f_s$ erlaubt eine informationsgetreue Umwandlung nur solcher Signale, die
-                nur Frequenzanteile bis zu einer Obergrenze $f_m \textless f_s/2$ enthalten.}
+                nur Frequenzanteile bis zu einer Obergrenze $f_m \le f_s/2$ enthalten.}
   }
 
   \question{Wodurch wird die Frequenz begrenzt}{\page{202}}
   {
-    \normaltext{Da während einer endlichen Zeit $ T = N/f_s $  nur N Abtastungen durchgeführt
+    \normaltext{Da während einer endlichen Zeit $ T = N/f_s $  nur $N$ Abtastungen durchgeführt
                 werden können, wird dabei die Frequenzauflösung auf einen endlichen Bereich
                 $ \Delta f = 2f_m/N = f_s/N = 1/T $ begrenzt. Das führt zu einer oberen
                 Frequenzgrenze $ f_{max} = f_m - \Delta f $.  }
@@ -1805,7 +1803,7 @@
   \question{Welche Abtastfrequenzen werden bei welchem Betrieb erreicht}{\page{202}}
   {
     \catchword{Abrufbetrieb (Polling) \resultol{100 Hz}}
-    \catchword{Anforderungsbetrieb (mit Interrupt) \resultol{1000Hz}}
+    \catchword{Anforderungsbetrieb (mit Interrupt) \resultol{1000 Hz}}
     \catchword{Speicherdirektzugriff (DMA) \resultol 100 kHz (das ist die Grenze üblicher ADUs)}
     \normaltext{Für höhere Abtastfrequenzen setzt man am besten einen eigenen Datenpuffer z.B. als
                 FIFO davor.}
@@ -1818,15 +1816,15 @@
 
   \question{Welche Möglichkeiten gibt es einen Multiplexer zu verwenden}{\page{203}}
   {
-    \catchword{wahlfrei (RAM) über ein Adresswort}
-    \catchword{sequentiell (SAM)}
+    \catchword{Wahlfrei (RAM) über ein Adresswort}
+    \catchword{Sequentiell (SAM)}
   }
 
   \question{Welche Vor- und Nachteile hat SAM}{\page{203}}
   {
-    \catchword{Vorteil: oft schneller, da zyklisch weitergeschaltet wird}
-    \catchword{Nachteil: Die Abtastrate geht fr jeden der Eingangskanäle in dem Maße zurück, wie die Zahl der 
-               Kanäle zunimmt.}
+    \catchword{Vorteil: Oft schneller, da zyklisch weitergeschaltet wird}
+    \catchword{Nachteil: Die Abtastrate geht für jeden der Eingangskanäle in dem Maße zurück,
+               wie die Zahl der Kanäle zunimmt.}
   }
 
   \question{Welchen Nachteil haben Multiplexer}{\page{203}}
@@ -1864,7 +1862,7 @@
   \question{Wie kann eine Polaritätserkennung realisiert werden}{\page{206}}
   {
     \catchword{Erkennung der Polarität mit einem Komparator}
-    \catchword{Dieser Komparator liefert das MSB der Daten}
+    \catchword{Dieser Komparator liefert das höchstwertige Bit (MSB) der Daten}
     \catchword{Der Komparator dient auch zur Auswahl des Signals bei positiver Spannung
                oder des invertierten Signals bei negativer Spannung}
     \catchword{Die negative Spannung wird über einen Inverter zur Verfügung gestellt}
@@ -1885,7 +1883,7 @@
 
   \question{Wie groß sollten Abweichungen maximal sein}{\page{206}}
   {
-    \normaltext{Kleiner als 1/2 LSB, damit das Ergebniss nicht verfälscht wird}
+    \normaltext{Kleiner als 1/2 des niedrigsten Bits (LSB), damit das Ergebniss nicht verfälscht wird}
   }
 
   \statement{Erklären Sie detailiert den Simultanwandler (Parallelwandler)}{\page{206}}
@@ -1913,16 +1911,16 @@
   {
     \normaltext{Die Signalspannung wird durch einen einzigen Komperator mit der zeitlinear 
                 ansteigenden Spannung eines Sägezahngenerators verglichen. Beim Start des Sägezahns wird
-                ein Zähler zurückgesetzt, und zählt dann die Taktimpulse bis der Komperator feststelle,
+                ein Zähler zurückgesetzt, und zählt dann die Taktimpulse bis der Komperator feststellt,
                 dass die ansteigende Spannung gleich der Messspannung ist. Damit ist die Anzahl der 
-                gezählten Impulse ein Maß für die Eingangsspannung. (vgl. Bild 3.28)
+                gezählten Impulse ein Maß für die Eingangsspannung (vgl. Bild 3.28).
                 Die Wandlungsrate ist hier durch die Frequenz des Sägezahns festgelegt. Die Auflösung kann
                 fast beliebig groß gemacht werden, denn sie wird durch die Taktfrequenz für den Zähler und
-                die Periodendauer des Sägezahns bestimmt. Auflösungen bis zu 20 bit sind hier möglich. Die
-                Genauigkeit hängt aber im wesentlichen von der Linearität des Sägezahns ab, im geringeren
+                die Periodendauer des Sägezahns bestimmt. Auflösungen bis zu 20 Bit sind hier möglich. Die
+                Genauigkeit hängt aber im Wesentlichen von der Linearität des Sägezahns ab, im geringeren
                 Umfang auch von der Frequenzstabilität des Taktgenerators. Ein besonderer Nachteil ist die
                 große Totzeit, die entsteht, wenn der Sägezahn nach Beendigung der Zählung bis zum Ende
-                durchlaufen muss. Auch kann er meißt nicht von außen gestartet werden, sonder bestimmt selber
+                durchlaufen muss. Auch kann er meist nicht von außen gestartet werden, sondern bestimmt selber
                 Beginn und Ende der Umsetzung, kann das aber durch ein BUSY-Signal mitteilen.}
   }
 
@@ -1936,13 +1934,13 @@
     \normaltext{Der Zählumsetzer vergleicht die Eingangsspannung mit einer Sägezahnspannung
                 aus einem Digital-Analog-Wandler (DAU), der den Digitalwert aus einem Zähler
                 in eine Analogspannung umsetzt. Dieser Zähler kann von außen durch einen
-                Startimpuls zurückgesetzt werden und gestartet werden und zählt die Impulse
-                eines Taktgenerators solange, bis der Komparator die zählung stoppt. Danach
+                Startimpuls zurückgesetzt und gestartet werden und zählt die Impulse
+                eines Taktgenerators solange, bis der Komparator die Zählung stoppt. Danach
                 kann der Wert des Zählers ausgewertet werden. Das Auflösungsvermögen wird hier
                 durch die Taktfrequenz und die Anstiegszeiten des Sägezahns bestimmt, welche
                 wiederum durch den Umsetzungsfaktor des DAU bestimmt werden. Die Wandlungsrate
                 ist dann nicht mehr festgelegt, sondern vom Eingangssignal abhängig. Die
-                Genauigkeit ist im wesentlichen durch den DAU bestimmt.}
+                Genauigkeit ist im Wesentlichen durch den DAU bestimmt.}
   }
 
   \statement{Skizzieren Sie das Blockschaltbild des Zählumsetzers} {\page{208}}
@@ -1950,13 +1948,13 @@
     \normaltext{Siehe Bild 3.29, Seite 208}
   }
 
-  \statement{Erklären Sie den Folgeumsetzer}{\page{208}}
+  \statement{Erklären Sie detailiert den Folgeumsetzer}{\page{208}}
   {
     \normaltext{Der Folgeumsetzer ist eine Variante des Zählumsetzers, bei der der Zähler als
                 Vorwärts-/Rückwärtszähler ausgelegt ist und durch den Komperator richtungsgesteuert wird.
-                Wenn der Signalwert sich nicht zu schnell ändert, liegt hier immer ein Momentanwert wor.
+                Wenn der Signalwert sich nicht zu schnell ändert, liegt hier immer ein Momentanwert vor.
                 Falls die Abweichung von Signal- und Vergleichsspannung betragsmäßig einen bestimmten Wert
-                überschreitet, liefert der Umsetzer ein BUSY-Signal, umd dies zu melden.}
+                überschreitet, liefert der Umsetzer ein BUSY-Signal, um dies zu melden.}
   }
 
   \statement{Skizzieren Sie das Blockschaltbild des Folgeumsetzers} {\page{208}}
@@ -1966,26 +1964,26 @@
 
   \question{Was wird als Wandlungsrate bezeichnet}{\page{208}}
   {
-    \normaltext{Die Frequenz mit der ein Umsetzer umwandeln dann, also der Kehrwert der
-                Umsetzungszeit, die durch die Laufzeiten durch die Bauteile bestimmt ist}
+    \normaltext{Die Frequenz mit der ein Umsetzer umwandeln kann, also der Kehrwert der
+                Umsetzungszeit, die durch die Laufzeiten und durch die Bauteile bestimmt ist}
   }
 
   \statement{Erklären Sie detailiert den Integrationswandler nach dem Zwei-Rampen-Verfahren}{\pages{208}{210}}
   {
-    \normaltext{Beim Integrationswandler nach dem Zwei-Rampe-Verfahren (engl.: dual slope) wird
+    \normaltext{Beim Integrationswandler nach dem Zwei-Rampen-Verfahren (engl.: dual slope) wird
                 das Messsignal über einen festen Zeitraum $t_1 = N*T$ integriert, welcher durch
-                einen zentralen Takt bestimmt wird. Dabei wird ein Kondensator C auf eine Spannung
+                einen zentralen Takt bestimmt wird. Dabei wird ein Kondensator $C$ auf eine Spannung
                 $U_C$ aufgeladen, die exakt dem Mittelwert der Messspannung $U_x$ während der Zeit $t_1$
                 entspricht. Anschließend wird der Kondensator durch die Bezugsspannungsquelle $U_R$
                 entladen, und die dazu benötigte Zeit $t_2 = x*T$ durch mitzählen der Taktimpulse gemessen.
                 Man erhält daraus den Messwert $U_x = U_R * x/N$ wobei sich alle übrigen Gerätegrößen
-                (R, C, T) herausheben, wenn sie während der Messzeit konstant sind. Dadurch wird dieses
+                ($R$, $C$, $T$) herausheben, wenn sie während der Messzeit konstant sind. Dadurch wird dieses
                 Verfahren sehr genau. Auch die Auflösung ist sehr gut, wenn man mit einer genügend hohen
-                Taktfrequenz arbeitet, typischerweise 1MHz, die durch den DAU begrenzt wird. Die Besonderheit
+                Taktfrequenz arbeitet, typischerweise 1 MHz, die durch den DAU begrenzt wird. Die Besonderheit
                 bei diesem Verfahren liegt darin, dass durch die Integration ein Mittelwert über einen größeren
-                Zeitraum gebildet wird, und deabei Schankungen und Störungen des Messsignals herausgemittelt
+                Zeitraum gebildet wird, und dabei Schankungen und Störungen des Messsignals herausgemittelt
                 werden. Da kleinen Signalen oft eine Störung durch das Versorgungsnetz mit 50 Hz überlagert ist,
-                kann man mit Messzeiten, die ein Vielfaches der Periodendauer von 20 msec sind, diese Störungen
+                kann man mit Messzeiten, die ein Vielfaches der Periodendauer von 20 ms sind, diese Störungen
                 weitgehend unterdrücken. Für Momentanwertmessungen muss hier immer ein Sample-an-Hold-Glied
                 eingesetzt werden.}
   }
@@ -1997,14 +1995,14 @@
 
   \statement{Erklären Sie detailiert den Spannungs-Frequenz-Umsetzer}{\page{210}}
   {
-    \normaltext{Die anliegende Spannung wird in eine Frequenz umgesetzt. Das Vefahren ist
+    \normaltext{Die anliegende Spannung wird in eine Frequenz umgesetzt. Das Verfahren ist
                 nicht besonders linear. Während einer vorgegebenen Zeitspanne $t$ wird
-                ein Kondensator $C$ durch eine bezugsspannungsquelle aufgeladen, der sich
-                dann über einen Widerstand $R$ solange entlädt, bis er den Wer des Messsignals
-                ereicht hat. Der Komparator startet dann den Aufladevorgang von neuem, so dass
+                ein Kondensator $C$ durch eine Bezugsspannungsquelle aufgeladen, der sich
+                dann über einen Widerstand $R$ solange entlädt, bis er den Wert des Messsignals
+                erreicht hat. Der Komparator startet dann den Aufladevorgang von neuem, so dass
                 am Ausgang eine Folge von Impulsen konstanter Länge mit veränderlichen Abständen
                 entsteht. Dieser Abstand ist in etwa umgekehrt proportional zur anliegenden
-                Messspannung $U$ und damit die Impulsfolgefrequenz $f$ proportional zu $U$.
+                Messspannung $U$ und damit ist die Impulsfolgefrequenz $f$ proportional zu $U$.
                 Die Impulsfrequenz kann dann mit einem Frequenzzähler über kürzere oder
                 längere Intervalle gemessen und dabei gemittelt werden. Damit wird auch die
                 Auflösung festgelegt, die in weiten Grenzen variiert werden kann. Die Genauigkeit
@@ -2025,7 +2023,7 @@
                 Spannung wird dann mit einem Komparator verglichen. Wenn die vom DAU erzeugte Spannung
                 größer als die Eingangsspannung ist, wird das Bit wieder gelöscht, ansonsten bleibt
                 es erhalten. Da hier der Signalwert innerhalb weniger Schritte erreicht wird, nämlich
-                gerade so vieler, wie die Auflösung beträgt. Während der Zeit des Umwandels muss das
+                gerade so vieler, wie die Auflösung in Bit beträgt. Während der Zeit des Umwandels muss das
                 Eingangssignal konstant bleiben.}
   }
 
@@ -2106,13 +2104,13 @@
     \catchword{Statische: Größen, die zeitlich konstant sind}
     \catchword{Stationäre: Größen mit konstanten Kenngrößen wie z.B. Frequenz}
     \catchword{Quasistationäre: Größen, die sich langsam ändern}
-    \catchword{Synamische: Größen, die sich schnell ändern}
+    \catchword{Dynamische: Größen, die sich schnell ändern}
   }
 
   \statement{Erklären Sie die Kette bei den Stellgliedern}{\page{215}}
   {
     \normaltext{Die Kette reicht vom Prozessrechner mit seinen digitalen Ausgabewerten
-                bis zum Prozess reicht, wo die primären Stellgrößen, meist mit einem hohen
+                bis zum Prozess, wo die primären Stellgrößen, meist mit einem hohen
                 Energiebedarf verbunden sind.}
   }
 
@@ -2131,7 +2129,7 @@
   \question{Nach ihrem Verhalten charakterisiert man unterschiedliche Stellgliedern}{\pages{216}{217}}
   {
     \catchword{Statisch: Durch eine Kennlinie gekennzeichnet}
-    \catchword{Stetig: Monotone und stegie Kennlinie}
+    \catchword{Stetig: Monotone und stetige Kennlinie}
     \catchword{Schaltend: Ausgangsgröße kann nur diskrete Werte annehmen}
     \catchword{Dynamisch: Gekennzeichnet durch eine (meist komplexe) Übertragungsfunktion}
   }
@@ -2145,7 +2143,7 @@
   \question{Welche Impulsantworten unterscheidet man}{\page{217}}
   {
     \catchword{Geräte mit Speicherverhalten: Verharren in der angenommenen Stellung
-               auch wenn keine Steuereinwrikung mehr vorliegt}
+               auch wenn keine Steuereinwirkung mehr vorliegt}
     \catchword{Geräte mit Haftverhalten: Zeigen ein Speicherverhalten, das von einer
                Hilfsenergie unabhängig ist}
     \catchword{Geräte ohne Speicherverhalten: Kehren bei Ausfall der Steuerung oder der
@@ -2170,14 +2168,14 @@
     \normaltext{Aus einem Digitalwert und einer Referenzspannung wird ein analoge Ausgangsspannung gebildet}
   }
 
-  \statement{Nennen Sie die charakteristischen Leistungsmerkmale der DAUs)}{\page{219}}
+  \statement{Nennen Sie die charakteristischen Leistungsmerkmale der DAUs}{\page{219}}
   {
     \catchword{Auflösung (8-12 Bit)}
     \catchword{Genauigkeit}
     \catchword{Geschwindigkeit}
   }
 
-  \statement{Nennen Sie Fehlerquellen der DAUs)}{\page{219}}
+  \statement{Nennen Sie Fehlerquellen der DAUs}{\page{219}}
   {
     \catchword{Nullpunktverschiebung}
     \catchword{Monotoniefehler}
@@ -2185,7 +2183,7 @@
     \catchword{Linearitätsfehler}
   }
 
-  \statement{Nennen Sie drei verschiedene geläufige Verfahren der DAU}{\pages{219}{}}
+  \statement{Nennen Sie drei verschiedene geläufige Verfahren der DAU}{\pages{219}{222}}
   {
     \catchword{Stromsummenwandler}
     \catchword{R-2R-Wiederstandsnetzwerke}
@@ -2203,19 +2201,19 @@
   {
     \catchword{12 Bit Auflösung}
     \catchword{Genauigkeit: 0,025\%}
-    \catchword{Wandlungszeit: 2$\mu$sec}
+    \catchword{Wandlungszeit: 2$\mu s$}
   }
 
-  \statement{Nennen Sie den Vorzteil des Stromsummenwandlers und beschreiben Sie
+  \statement{Nennen Sie den Vorteil des Stromsummenwandlers und beschreiben Sie
              genau sein Problem}{\page{220}}
   {
-    \catchword{geringer Aufwand: n Wiederstände (bei n Bits)}
+    \catchword{geringer Aufwand: $n$ Wiederstände (bei $n$ Bits)}
     \catchword{Monotonie: In der Mitte des Wandlungsbrereich befinden sich die zwei Dualwerte 1000 000
                und 0111 1111, die sich nur um ein Bit unterscheiden. Im ersten Fall wird der Strom nur
-               durch einen Wiederstand mit 1kOhm fließen (Strom ist dann 5mA), im zweiten Fall durch alle
-               anderen parallel fließen: Die Summe wäre 254/265*5mV = 4,98mA. Es reicht aus, wenn der erste
-               Widerstand um mehr als 4 Ohm von seinen 1kOhm abweicht und der Strom würde kleiner als 4,8 mA,
-               und damit läge ein Monotoniefehler vor.}
+               durch einen Wiederstand mit 1k$\Omega$ fließen (Strom ist dann 5mA), im zweiten Fall
+               durch alle anderen parallel fließen: Die Summe wäre 254/265*5mV = 4,98mA. Es reicht aus,
+               wenn der erste Widerstand um mehr als 4$\Omega$ von seinen 1k $\Omega$ abweicht und der
+               Strom würde kleiner als 4,8 mA, und damit läge ein Monotoniefehler vor.}
   }
 
   \statement{Skizzieren Sie den prinzipiellen Aufbau des R-2R Widerstandnetzwerkes}{\page{221}}
@@ -2230,7 +2228,7 @@
 
   \statement{Nennen Sie die entscheidenden Vor- und Nachteile des Linear-Umsetzers}{\page{222}}
   {
-    \catchword{Nachteil: riesiger Aufwand: für n Bits braucht man $2^n$ Wiederstände und $(2^n)-1$ Umschalter}
+    \catchword{Nachteil: riesiger Aufwand: für $n$ Bits braucht man $2^n$ Wiederstände und $(2^n)-1$ Umschalter}
     \catchword{Sehr genau, sowohl linear als auch monoton}
   }
 
@@ -2245,38 +2243,39 @@
   \question{Durch welche einzelnen Elemente kann eine Übertragungsleitung ersatzweise
             beschrieben werden}{\page{229}}
   {
-    \catchword{einen ohmschen Widerstand R, der eine frequenzunabhängige Signaldämpfung bewirkt und
+    \catchword{einen ohmschen Widerstand $R$, der eine frequenzunabhängige Signaldämpfung bewirkt und
                mit der Leitungslänge proportional anwächst.}
-    \catchword{Induktivitäten L und Kapazitäten C, die zusammen mir R einenn Tiefpass bilden, der höhere
-               Frequenzen abschneidet und die Bandbreite der Leitung bestimmt, welche proportional
-               zur Länge abnimmt.}
+    \catchword{Induktivitäten $L$ und Kapazitäten $C$, die zusammen mit $R$ einen Tiefpass bilden,
+               der höhere Frequenzen abschneidet und die Bandbreite der Leitung bestimmt, welche
+               proportional zur Länge abnimmt.}
     \catchword{Kopplungskapazitäten $C_k$ und Kopplungsinduktivitäten $L_k$, über welche die äußeren
                Störungen eingekoppelt werden. Zu diesen Störungen zählt auch Übersprechen von benachbarten
-               Leitungen. Die Störempfindlichkeit wächst mit der Leitungslänge.}
+               Leitungen. Die Störempfindlichkeit wächst mit der Leitungslänge an.}
   }
 
   \question{Was wird noch durch die Kapazitäten und Induktivitäten bestimmt}{\page{230}}
   {
-    \catchword{Der komplexe Wellenwiderstand Z der Leitung, der als ohmscher Abschlusswiderstand
+    \catchword{Der komplexe Wellenwiderstand $Z$ der Leitung, der als ohmscher Abschlusswiderstand
                am Kabelende benötigt wird, damit keine Reflexionen auftreten.}
-    \catchword{Die Signalgeschwindigkeit c auf der Leitung, deren Kehrwert als Laufzeitkonstante
+    \catchword{Die Signalgeschwindigkeit $c$ auf der Leitung, deren Kehrwert als Laufzeitkonstante
                bezeichnet wird.}
   }
 
   \question{Welche Aufbauarten von Leitungstypen kann man unterscheiden}{\pages{230}{231}}
   {
-    \catchword{Einzeladern \resultol{kein definierter Wellenwiderstand, geringe Bandbreitenlänge
-               (ca 1MHz*m), große Störanfälligkeit}}
+    \catchword{Einzeladern \resultol{kein definierter Wellenwiderstand, geringes Bandbreitenlängenprodukt
+               (ca $1 MHz * m$), große Störanfälligkeit}}
     \catchword{Flachbandkabel \resultol{parallel verlaufende Einzeladern, relativ gut definierter
-               Wellenwiderstand, relativ große Bandbreitenlänge (ca 100MHz*m)}}
-    \catchword{Verdrillte Adernkabel \resultol{relativ guter Wellenwiderstand, relativ große 
-               Bandbreitenlänge (über 1MHz*m), Störeinwirkung hebt sich in den beiden Leitern weitgehend
-               gegenseitig auf (2 Ströme in entgegengesetzter Richtung)}}
+               Wellenwiderstand, relativ großes Bandbreitenlängenprodukt (ca. $100 MHz * m$)}}
+    \catchword{Verdrillte Adernkabel \resultol{relativ guter Wellenwiderstand, relativ großes
+               Bandbreitenlängenprodukt (über $1 MHz * m$), Störeinwirkung hebt sich in den beiden
+               Leitern weitgehend gegenseitig auf (2 Ströme in entgegengesetzter Richtung)}}
     \catchword{Koaxialkabel \resultol{besteht aus Innenleiter und geschlossener, konzentrischer
-               Aussenleiter, höchste Störfestigkeit, wohldefinierter Wellenwiderstand, Bandbreitenlänge
-               hängt stark vom Isolationsmaterial ab (ca 100MHz*km)}}
+               Aussenleiter, höchste Störfestigkeit, wohldefinierter Wellenwiderstand,
+               Bandbreitenlängenprodukt hängt stark vom Isolationsmaterial ab (ca. $100 MHz * km$)}}
     \catchword{Lichtwellenleiter \resultol{ummantelte Glasfaser, über die moduliertes Licht geleitet
-               wird, praktisch absolut stör- und abhörsicher, hohe Bandbreitenlänge (ca 1GHz*km)}}
+               wird, praktisch absolut stör- und abhörsicher, hohes Bandbreitenlängenprodukt
+               (ca. $1 GHz * km$)}}
   }
 
   \question{Welche andere Art der Übertragung gibt es noch}{\page{231}}
@@ -2288,7 +2287,7 @@
   {
     \catchword{Wechselspannungen, die von außen induktiv oder kapazitiv eingekoppelt werden.}
     \catchword{Gleichspannungen, die über eine galvanische Kopplung entstehen. z.B. wenn Sender und
-               Empfänger auf versch. Potentialen liegen.}
+               Empfänger auf verschiedenen Potentialen liegen.}
     \catchword{Gleichtaktstörungen, durch gleichphasige Einkopplungen auf den Leitern, oder durch
                Potentialdifferenz zwischen Sender und Empfänger.}
     \catchword{Gegentaktstörungen, die durch Gleichtaktstörungen entstehen, die nicht gleich groß
@@ -2299,15 +2298,15 @@
   {
     \catchword{Nachbarleitungen, auf denen Signale mit hochfrequenten Anteilen oder mit hoher
                Leistung transportiert werden.}
-    \catchword{Erdschleifen, bei denen versch. Signale oder Versorungsströme über einen gemeinsamen
+    \catchword{Erdschleifen, bei denen verschiedene Signale oder Versorgungsströme über einen gemeinsamen
                Erdleiter laufen}
-    \catchword{Prozesseinrichtungen, die mit hohen Listungen aus dem Netz betrieben werden. Hier
+    \catchword{Prozesseinrichtungen, die mit hohen Leistungen aus dem Netz betrieben werden. Hier
                werden die Störungen meistens induktiv eingekoppelt und führen zu Gegentaktstörungen mit
                Netzfrequenz.}
     \catchword{Hochfrequenz-Generatoren und -Anlagen, zur Wärmebehandlung. Hier wirkt meißt die
-               kapazitive Ankopplung.}
+               kapazitive Einkopplung.}
     \catchword{Elektrische Funken, die beim Öffnen von Schaltern entstehen. Unter Umständen führen
-               sie zu unberechnbaren Stoßwellen.}
+               sie zu unberechenbaren Stoßwellen.}
   }
 
   \question{Welche Schutzeinrichtungen gibt es (mit Ersatzschaltbildern)}{\page{233}}
@@ -2401,7 +2400,7 @@
     \catchword{Sprungausfall: Wenn der Ausfall unvorhersagbar eintritt}
   }
 
-  \statement{Erklären sie die Kurze der Ausfallrate}{\pages{244}{245}}
+  \statement{Erklären sie die Kurve der Ausfallrate}{\pages{244}{245}}
   {
     \catchword{Am Anfang durch Frühausfälle relativ hoch}
     \catchword{Im mittleren Bereich nur statistische Ausfälle}
@@ -2444,9 +2443,9 @@
 
   \statement{Erklären Sie das Prinzip der Mehrheitsentscheidung}{\page{250}}
   {
-    \normaltext{Aufgaben werden auf unterschidlichen Rechnern mit unterschiedlicher Hard-
+    \normaltext{Aufgaben werden auf unterschiedlichen Rechnern mit unterschiedlicher Hard-
                 und Software berechnet. Nach der Berechnung werden die Ergebnisse verglichen
-                und es wird eine Mehrheitsentscheidnung getroffen.}
+                und es wird eine Mehrheitsentscheidung getroffen.}
   }
 
   \subsubsection{Installation und Betrieb}
@@ -2465,7 +2464,7 @@
     \catchword{Vorbeugende Wartung}
     \catchword{Repararturmaßnahmen protokollieren}
     \catchword{Schutzmaßnahmen gegen Fehlbedienung oder gar Sabotage}
-    \catchword{Keine Entwicklungswerkzeuge}
+    \catchword{Keine Entwicklungswerkzeuge auf dem Rechner}
   }
 
   \newpage
@@ -2490,17 +2489,17 @@
                 Vorgänge darstellen, sogar parallele Arbeitsschritte}
   }
 
-  \question{Was wird in einem Petrinetz duch Stellen, was durch Transitionen
+  \question{Was wird in einem Petrinetz durch Stellen, was durch Transitionen
             dargestellt}{\page{270}}
   {
     \catchword{Stellen: Zustand}
     \catchword{Transition: Aktion}
   }
 
-  \question{Zeichnen Sie eine Konjunktion und eine Disjunktion}{\page{270}}
+  \statement{Zeichnen Sie eine Konjunktion und eine Disjunktion}{\page{270}}
   {
     \catchword{Konjunktion: mehrere Eingangstellen auf einen Transition}
-    \catchword{Disjunktion: mehrere Peie auf einen Stelle}
+    \catchword{Disjunktion: mehrere Pfeile auf einen Stelle}
   }
 
   \statement{Zeichnen Sie einen Signalträger (Semaphor) in einem Petrinetz,
@@ -2542,8 +2541,8 @@
     \normaltext{Task ist vorhanden aber zur Zeit nicht zur Bearbeitung vorgesehen.
                 Sie lagern auf der Platte, es gibt ein paar Zustandsinformationen
                 und Informationen über ihren Betriebsmittelbedarf. In diesen Zusand
-                kommen nsie nach ihrer Beendigung aus dem Zustand Rechnend oder nach
-                ihrer Erstellung. Aus diesem Zustand kommt der Task in bereit, wenn
+                kommen sie nach ihrer Beendigung aus dem Zustand \important{rechnend} oder nach
+                ihrer Erstellung. Aus diesem Zustand kommt der Task in \important{bereit}, wenn
                 er angefordert wird.}
   }
 
@@ -2555,20 +2554,22 @@
 
   \statement{Beschreiben Sie den Zustand bereit}{\page{291}}
   {
-    \normaltext{Task besitzt alle benötigten Betriebsmittel außer die CPU. Taks befinden
+    \normaltext{Task besitzt alle benötigten Betriebsmittel außer der CPU. Taks befinden
                 sich hier normalerweise in einer Warteschlange, oft auch mit Prioritäten.
                 Die Prozessverwaltung holt aus der Warteschlange die Tasks ab, die dann
-                rechnend sind. Neben den aufgerufenen ruhenden Tasks kommen auch Tasks auch
-                rechnen nach einem Interrupt oder aus dem Zustand wartend, wenn ihnen alle
-                benötigten Betribesmittel zur Verfügung gestellt wurden.}
+                \important{rechnend} sind. Neben den aufgerufenen ruhenden Tasks kommen auch Tasks
+                aus dem Zustand \important{rechnend} nach einem Interrupt oder aus dem Zustand 
+                \important{wartend}, wenn ihnen alle benötigten Betribesmittel zur Verfügung
+                gestellt wurden.}
   }
 
   \statement{Beschreiben Sie den Zustand rechnend}{\page{291}}
   {
-    \normaltext{Task besitzt die CPU. Es können also nur so viele Tasks wie CPUs rechnend sein}
+    \normaltext{Task besitzt die CPU. Es können also nur so viele Tasks wie CPUs
+                \important{rechnend} sein}
   }
 
-  \statement{Beschreiben Sie den Zustand wartend kurz}{\page{291}}
+  \statement{Beschreiben Sie den Zustand wartend}{\page{291}}
   {
     \normaltext{Tasks, die auf die Zuteilung von Betriebsmitteln warten. Sie können nach
                 den Betriebsmittel sortiert sein und dort Warteschlangen bilden, auch hier
@@ -2620,7 +2621,7 @@
     \normaltext{Arbeitsmenge / Zeit, gemessen z.B. in Stück / Tag, Tonne / Stunde, Liter / Minute}
   }
 
-  \questionnopage{Wie ist Auslasung definidert und welchen maximalen Wert kann sie erreichen,
+  \questionnopage{Wie ist Auslastung definiert und welchen maximalen Wert kann sie erreichen,
                   welcher Wert wäre normal}
   {
     \catchword{Durchsatz / maximalen Durchsatz}
@@ -2630,36 +2631,30 @@
 
   \questionnopage{Was bedeutet Just In Time}
   {
-    \normaltext{Es gibt keine Lagerhaltung, sie wird durch den Transport ersetzt. Manch ein
-                LKW fährt auf deutschen Autobahnen als Lagerstelle rum.}
-  }
-
-  \questionnopage{Welche Vor- und Nachteile hat Just in Time}
-  {
-    \normaltext{Man spart Lagerkosten und man ist abhängig vom Verkehrsaufkommen}
+    \normaltext{Es gibt keine Lagerhaltung, sie wird durch den Transport ersetzt.}
   }
 
   \questionnopage{Welche Vor- und Nachteile hat Just in Time}
   {
     \normaltext{Man spart Lagerkosten aber man ist abhängig vom Verkehrsaufkommen}
   }
-  
+
   \questionnopage{Welche Architekturen haben Sie kennengelernt (mit Skizze)}
   {
-    \catchword{von Neumann}
+    \catchword{von-Neumann}
     \catchword{Harvard}
     \catchword{Modifizierte Harvard}
   }
-  
+
   \statementnopage{Skizzieren Sie die Erfassung und Ausgabe von Messgrößen in einem Rechner}
   {
-  \normaltext{siehe Beispielklausur Aufgabe 5}
+    \normaltext{siehe Beispielklausur Aufgabe 5}
   }
-  
-  \statementnopage{Nennen Sie 3 Verfahren zur A/D-Wandlung}
+
+  \statementnopage{Nennen Sie drei Verfahren zur A/D-Wandlung}
   {
     \catchword{\important{Flash/Parallelwandler:} Widerstandskette teilt die Refernzspannung. 
-    Mit einem Komperator wird die Eingangsspannung verglichen. Daraus ergibt sich eine 1 zu n
+    Mit einem Komperator wird die Eingangsspannung verglichen. Daraus ergibt sich eine 1-zu-n
     Kodierung, die umkodiert werden muss.}
     \catchword{\important{Sägezahnwandler:} Eingangsspannung wird mit einem Sägezahnimpuls 
     verglichen. Der Takt gemessen (Zeit) bis der Komperator umschlägt.}
@@ -2672,15 +2667,15 @@
   \normaltext{siehe Beispielklausur Aufgabe 6b}
   }
 
-  \questionnopage{Welche Kenngröße beschreibt die Leistungsähigkeit für Datenübertragung}
+  \questionnopage{Welche Kenngröße beschreibt die Leistungsfähigkeit für Datenübertragung}
   {
-    \normaltext{Das Bandbreiten - Längen - Produkt}
+    \normaltext{Das Bandbreiten-Längen-Produkt}
   }
 
   \questionnopage{Wie lauten typische Werte für zwei Leitungstypen}
   {
-    \catchword{Einzelader: 1MHz * m}
-    \catchword{Glasphaser: 1GHz * m}
+    \catchword{Einzelader: $1 MHz * m$}
+    \catchword{Glasphaser: $1 GHz * m$}
   }
   
   \statementnopage{Skizzieren Sie das Ersatzschaltbild für Störungseinkopplung}
@@ -2701,19 +2696,19 @@
   
   \statementnopage{Stellen Sie den prinzipiellen Ablauf eines Interrupts dar}
   {
-    \catchword{externes Ereignis}
+    \catchword{Externes Ereignis}
     \catchword{Erkennung des Gerätes}
     \catchword{Rettung des Kontextes}
     \catchword{Bearbeitung}
-    \catchword{Widerherstellen des Kontextes}
-    \catchword{vorheriges Programm läuft weiter}
+    \catchword{Wiederherstellen des Kontextes}
+    \catchword{Vorheriges Programm läuft weiter}
   }
   
   \questionnopage{Wie kann einem Interrupt hardwaremäßig eine Priorität zugewiesen werden 
   (2 Methoden)}
   {
-    \catchword{Daisychain}
-    \catchword{Interruptkontroller}
+    \catchword{Daisy-Chain}
+    \catchword{Interrupt-Controller}
   }
   
   \questionnopage{Wo im Rechner kann ein Interrupt maskiert werden}
@@ -2736,21 +2731,20 @@
   \questionnopage{Wozu wird Maskierung verwendet}
   {
     \catchword{Priorisierung}
-    \catchword{Vermeidung von Wiedereintritten bei nich reentrancy fähigem Code}
-    \catchword{}
+    \catchword{Vermeidung von Wiedereintritten bei nicht reentrancy fähigem Code}
   }
   
-  \statementnopage{Skizzieren Sie Folgesynchronisation als Petri-Netz}
+  \statementnopage{Skizzieren Sie Folge-Synchronisation als Petri-Netz}
   {
   \normaltext{siehe Beispielklausur Aufgabe 9}
   }
   
-  \statementnopage{Skizzieren Sie Sperrsynchronisation als Petri-Netz}
+  \statementnopage{Skizzieren Sie Sperr-Synchronisation als Petri-Netz}
   {
   \normaltext{siehe Beispielklausur Aufgabe 9}
   }
   
-  \statementnopage{Petri-Netz-Aufgabe: A,B steigern. \catchword{A hat bis jetzt mehr geboten}
+  \statementnopage{Petri-Netz-Aufgabe: A, B steigern. \catchword{A hat bis jetzt mehr geboten}
   \catchword{B wird gefragt} \catchword{Wenn B mehr bietet, wird A gefragt} \catchword{Wenn
   nicht bekommt A Gegenstand}}
   {
@@ -2767,9 +2761,9 @@
 
   \subsection{Vorlesung}
 
-\statementnopage{Definieren Sie den Befriff Automatisierungsgrad}  
+\statementnopage{Definieren Sie den Begriff Automatisierungsgrad}  
 {
-  /normaltext{Der Automatisierungsgrad gibt Auskunft über das Verhältnis 
+  \normaltext{Der Automatisierungsgrad gibt Auskunft über das Verhältnis 
   von manuellen zu automatisierten Fertigungsschritten. 
   Der gewählte Grad der Automatisierung ist in den meisten Fällen abhängig 
   von der zu produzierenden Stückzahl (Kosten-Nutzen), dem Bereich (Rohbau, 
@@ -2788,22 +2782,22 @@
   
     \questionnopage{Welche Arbeitsverteilungen gibt es}
   {
-    \catchword{rein sequentiell: Beispiel: Manufaktur}
-    \catchword{FLießbandprinzip: Vorteil: Parallele Bearbeitung,
+    \catchword{Rein sequentiell: Beispiel: Manufaktur}
+    \catchword{Fließbandprinzip: Vorteil: Parallele Bearbeitung,
     leicht erlernbare einzelne Arbeitsschritte Problem: feste Taktzeit, alle 
     Bearbeitungsschritte müssen gleich viel Zeit in Anspruch nehmen}
     \catchword{entkoppeltes Fließbandprinzip: Vorteil: Durch Pufferung wird der
-    fester Takt außer Kraft gesetzt}
+    feste Takt außer Kraft gesetzt}
     \catchword{Parallelverarbeitung mit Ausgleich unterschiedlich komplexer Arbeiten}
     \catchword{Pufferung durch Transport (Just in Time)}
   }
   
-  \questionnopage{Warum ist in der PDV unter umständen einen demokratische 
+  \questionnopage{Warum ist in der PDV unter Umständen eine demokratische 
   Entscheidungsfindung hinderlich, wann wird sie dennoch angewandt}
   {
     \catchword{zu teuer, aufwändig, langsam}
     \catchword{wenn man viel Zeit hat und die Entscheidung unsicher - Demokratie}
-    \catchword{wenn einfache entscheidung, die schnell sein muss - Hierarchie}
+    \catchword{wenn einfache Entscheidung, die schnell sein muss - Hierarchie}
   }
   
     \questionnopage{Welche Leistungseinheiten eines Rechners sind wichtig}
@@ -2816,43 +2810,35 @@
   }
   
     \questionnopage{Welche Effekte auf einer Leitung spielen bei hohen, 
-    sehr hoehen und sehr niedrigen Frequenzen einen Rolle}
+    sehr hohen und sehr niedrigen Frequenzen einen Rolle}
   {
-    \catchword{sehr hohe: C und L spielen einen Rolle}
-    \catchword{hohe Frequenzen: C spielt einen Rolle, L weniger, 
-    das Signal wird gedämpft}
-    \catchword{sehr niedrige: L und C spielen keine Rolle, Gleichstrom}
+    \catchword{sehr hohe: $C$ und $L$ spielen eine Rolle}
+    \catchword{hohe Frequenzen: $C$ spielt eine Rolle, $L$ weniger,
+               das Signal wird gedämpft}
+    \catchword{sehr niedrige: $L$ und $C$ spielen keine Rolle, Gleichstrom}
     
   }
   
-  \questionnopage{Was gibt das Bandbreitenprodukt einer Leitung an}
+  \questionnopage{Was gibt das Bandbreitenlängenprodukt einer Leitung an}
   {
     \catchword{wie viele Informationen enthält eine Leitung bestimmter Länge}
     
   }
   
-    \questionnopage{Was beeinflusst den komplexen Wellenwiederstand, und wozu ist 
+    \questionnopage{Was beeinflusst den komplexen Wellenwiderstand, und wozu ist 
     seine Kenntnis wichtig}
   {
-    \catchword{H/m, F/m, Ohm/m, Leitung abschließen, Signalanpassung}
+    \catchword{$H/m$, $F/m$, $\Omega/m$, Leitung abschließen, Signalanpassung}
     
   }
   
     \questionnopage{Wie groß ist die Signalausbreitungsgeschwindigkeit auf einem 
     Kabel etwa}
   {
-    \catchword{C/1,5, C $approx$ 300 000 000 m/sec}
+    \catchword{C/1,5, C $\approx$ 300 000 000 m/sec}
     
   }
-  
-  
-  
-  
-  
-  
-  
 
-  
   \questionnopage{Welche Standard-Architekturen gibt es}
   {
     \catchword{Von-Neumann}
@@ -2871,7 +2857,7 @@
   \questionnopage{Welche Größen sind schwierig zu messen}
   {
     \catchword{Rauhigkeit}
-    \catchword{Textur einer Oberfläche, da es keine einheitliche Messvorschrift vorhanden ist}
+    \catchword{Textur einer Oberfläche, da keine einheitliche Messvorschrift vorhanden ist}
   }
 
   \statementnopage{Erklären Sie die Handhabung der Komplexität durch Hierarchisierung}
@@ -2916,10 +2902,10 @@
   {
     \catchword{Die Leitung hat eine Induktivität $L$}
     \catchword{Die Leitung hat einen Widerstand $R$}
-    \catchword{Die Leitung hat eine Kapazität $C$ gegenüber einer anderen Leitung oder Masse}
+    \catchword{Die Leitung hat eine Kapazität $C$ gegenüber einer anderen Leitung}
   }
 
-  \questionnopage{Aus welchen Teilen besteht der komplexe Widerstand}
+  \questionnopage{Aus welchen Teilen besteht der komplexe Widerstand Z}
   {
     \catchword{Induktivitätsbelag $H/m$}
     \catchword{Kapazitätsbelag $C/m$}
@@ -2957,30 +2943,22 @@
   {
     \normaltext{Durch hochsymmetrische Leitungen}
   }
-  
-  
-  
-  
-  
-  
-  %%Wandler zusatzfragen...
-  \subsection{Wandler-Zusatz}
-  
-\questionnopage{Was ist ein Komperator, wie wird er ralisiert, und was wird von 
-ihm gefordert}
+
+  \questionnopage{Was ist ein Komperator, wie wird er realisiert, und was wird von 
+                  ihm gefordert}
   {
     \catchword{Ein Komperator vergleicht zwei Eingangsspannung 
-    und zeigt an einem Ausgang an, welche Spannung größer ist}
-    \catchword{es handelt sich um einen analogen Verstrker mit einer möglichst
-    starken Verstärkung}
+               und zeigt an einem Ausgang an, welche Spannung größer ist}
+    \catchword{es handelt sich um einen analogen Verstärker mit einer möglichst
+               großer Verstärkung}
   }
   
-  \questionnopage{Welche Fehler treten beim Summen-Delta-Wandler üblicher Weise auf}
+  \questionnopage{Welche Fehler treten beim Summen-Delta-Wandler üblicherweise auf}
   {
       \catchword{Linearität wird verlassen, Paralleleffekt, je steiler, desto schlimmer}
   }
   
-   \questionnopage{Was bedeutet Zeitkritisch}
+   \questionnopage{Was bedeutet zeitkritisch}
   {
    \normaltext{Streng: jedes Ereignis muss vor jedem weiteren, das eintreffen kann
    abgearbeitet sein. Wenn es nicht zeitkristisch ist, dann ist eine Warteschlange 
@@ -3035,8 +3013,8 @@ ihm gefordert}
   \subsection{Übung}
   
   \questionnopage{Es soll eine Aufzugssteuerung als Petri-Netz modelliert werden.
-  Dabei sollen das Tuer-Oeffen und -Schliessen, und das Anfahren und
-  Anhalten beruecksichtigt werden. Wieviele parallele Aktionen
+  Dabei sollen das Tür-Öffen und -Schliessen, und das Anfahren und
+  Anhalten berücksichtigt werden. Wieviele parallele Aktionen
   finden statt}
   {
   \normaltext{siehe Übungen}
@@ -3046,7 +3024,7 @@ ihm gefordert}
   erzeugt ein Produkt und legt es auf eine Ablage, sofern diese
   frei ist. Danach kann ein weiteres Produkt erzeugt werden. Der
   Verbraucher nimmt - falls vorhanden - Produkte aus der Ablage.
-  Aus welchen nebenlaeufigen Strukturen setzt sich das zu
+  Aus welchen nebenläufigen Strukturen setzt sich das zu
   modellierende System zusammen}
   {
   \normaltext{siehe Übungen}
@@ -3054,16 +3032,16 @@ ihm gefordert}
   
   \statementnopage{Eine Ampelkreuzung soll modelliert werden, wobei Abbiegespuren,
   etc. nicht beruecksichtigt werden muessen. Da diagonal
-  entgegengesetzte Ampeln die gleiche Farbe anzeigen, muessen nur
+  entgegengesetzte Ampeln die gleiche Farbe anzeigen, müssen nur
   zwei Ampeln modelliert werden. Weiterhin sollen nur die Farben
-  Rot und Gruen beruecksichtigt werden. Die Ampeln besitzen
+  Rot und Grün berücksichtigt werden. Die Ampeln besitzen
   Induktionsschleifen}
   {
   \normaltext{siehe Übungen}
   }
   
   \statementnopage{Ein Produktionssystem bestehe aus drei Maschinen M1, M2, M3. Die
-  beiden Maschinenbediener B1, B2 erledigen eintreffende Auftraege
+  beiden Maschinenbediener B1, B2 erledigen eintreffende Aufträge
   nach folgendem Vorgehen: Jeder Auftrag wird zuerst von M1
   bearbeitet, danach wahlweise von M2 oder M3. Der Bediener B1
   bedient M1, M2. Der Bediener B2 bedient die Maschinen M1, M3}
@@ -3071,10 +3049,10 @@ ihm gefordert}
   \normaltext{siehe Übungen}
   }
   
-  \statementnopage{Es soll ein Parkplatz vor einem Geschaeft als Petri-Netz
-  modelliert werden. Der Parkplatz besteht aus drei Stellplaetzen.
+  \statementnopage{Es soll ein Parkplatz vor einem Geschäft als Petri-Netz
+  modelliert werden. Der Parkplatz besteht aus drei Stellplätzen.
   Hin und wieder kommen Autos, um dort zu parken. Es besteht jedoch
-  auch die Moeglichkeit, dass die Autos wieder wegfahren, ohne dort
+  auch die Möglichkeit, dass die Autos wieder wegfahren, ohne dort
   zu parken, beispielsweise, weil der Parkplatz voll ist. Als
   Anfangszustand soll nur der mittlere Stellplatz von einem Auto
   belegt sein}
@@ -3095,25 +3073,25 @@ ihm gefordert}
   
   \statementnopage{Eine Hose, ein Paar Socken, ein Paar Schuhe und ein Pullover liegen
   bereit und werden in einer sinnvollen Reihenfolge angezogen.
-  Modellieren Sie die verschiedenen Moeglichkeiten als Petri-Netz}
+  Modellieren Sie die verschiedenen Möglichkeiten als Petri-Netz}
   {
   \normaltext{siehe Übungen}
   }
   
-  \statementnopage{Modellieren Sie die Zubereitung von Ruehrei mit Speck als Petri-Netz.
+  \statementnopage{Modellieren Sie die Zubereitung von Rührei mit Speck als Petri-Netz.
   Zutaten: 300g durchwachsenen Speck, etwas Bratfett, 10 Eier, Salz}
   {
   \normaltext{siehe Übungen}
   }
   
-  \statementnopage{Modellieren sie die Tankvorgaenge an einer Tankstelle mit zwei
-  Zapfsaeulen (mit jeweils einem Standplatz) und einer Kasse als
+  \statementnopage{Modellieren sie die Tankvorgänge an einer Tankstelle mit zwei
+  Zapfsäulen (mit jeweils einem Standplatz) und einer Kasse als
   Petri-Netz}
   {
   \normaltext{siehe Übungen}
   }
   
-  \statementnopage{Modellieren sie die Arztpraxis mit Anmeldung, 2 Ärzten und 3 Stühlen zum warten. 
+  \statementnopage{Modellieren sie die Arztpraxis mit Anmeldung, 2 Ärzten und 3 Stühlen zum Warten.
   \catchword{sagen zu welchem Arzt man will}
   \catchword{setzen sich auf die Stühle}
   \catchword{gehen zum Arzt wenn frei}}
