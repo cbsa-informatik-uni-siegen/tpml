@@ -777,8 +777,8 @@
 
   \question{Worin unterscheiden sich CISC und RISC}{\pages{52}{53}}
   {
-    \catchword{Load-and-Store-Architektur}
-    \catchword{Pipelining (Einteilung in 5 Phasen: IF, RD, OP, MM, WT)}
+    \catchword{Load-and-Store-Architektur bei RISC}
+    \catchword{Pipelining (Einteilung in 5 Phasen: IF, RD, OP, MM, WT bei RISC)}
   }
 
   \question{In welche Klassen ist der Instruktionssatz bei RISC Prozessoren aufgeteilt}{\page{52}}
@@ -1348,7 +1348,7 @@
 
   \question{Was muss für den Impuls von eintreffenden Ereignissen gelten}{\page{125}}
   {
-    \normaltext{Der Länge des Impuls sollte möglichst kurz sein gegenüber allen
+    \normaltext{Die Länge des Impuls sollte möglichst kurz sein gegenüber allen
                 Prozess- und Verarbeitungszeiten}
   }
 
@@ -1602,13 +1602,13 @@
                aus zwei Komponenten:}
     \catchword{Messfühler: er setzt die Messgröße durch Ausnutzen naturwissenschaftlicher
                Gesetzmäßigkeiten in leichter erfassbare Größen um z.B.: Druck/Temperatur in einen Weg.}
-    \catchword{Messwandler: einen Weiter Umwandlung mit dem Ergebnis eines meist elektrischen
+    \catchword{Messwandler: eine weitere Umwandlung mit dem Ergebnis eines meist elektrischen
                Signals, das gut übertragen werden kann.}
     \normaltext{Zuletzt wird das analoge elektrische Signal mittels A/D-Wandler in ein digitales
                 Signal umgewandelt und an den Rechner übertragen.}
   }
 
-  \statement{Nennen Sie einen Grund für einen frühe A/D-Wandlung
+  \statement{Nennen Sie einen Grund für eine frühe A/D-Wandlung
              (vor der Übertragung zum Rechner)}{\page{191}}
   {
     \catchword{digitale Daten können durch sichere Codes vor Übertragungsfehlern geschützt werden,
@@ -1630,6 +1630,13 @@
   {
     \catchword{Geeignete Codierung mit Prüfbits}
     \catchword{Geeignete Codierung mit automatischer Fehlerkorrektur}
+  }
+
+  \question{Was versteht man unter primären Messwerten}{\page{192}}
+  {
+    \catchword{Sie werden direkt am Prozess genommen und sind noch unverfälscht}
+    \catchword{Werte, die einen Prozesszustand direkt beschreiben und ihm eindeutig zugeordnet
+               werden können}
   }
 
   \question{Was versteht man unter sekundären Messwerten}{\page{192}}
@@ -1669,13 +1676,6 @@
                Zeiteinheit die Information darstellen}}
     \catchword{Abtastimpulse \resultol{die zeitlich äquidistant sind oder beliebig verteilt sind,
                und weitere Informationen in ihren Impulshöhen bieten}}
-  }
-
-  \question{Was versteht man unter primären Messwerten}{\page{192}}
-  {
-    \catchword{Sie werden direkt am Prozess genommen und sind noch unverfälscht}
-    \catchword{Werte, die einen Prozesszustand direkt beschreiben und ihm eindeutig zugeordnet
-               werden können}
   }
 
   \question{Was versteht man unter Messgliedern}{\page{193}}
@@ -1726,7 +1726,7 @@
                Vorgeschichte durch Mitzählen bestimmt werden.}}
     \catchword{Radarmessung \resultol{Laufzeitmessung mit bekannter Laufgeschwindigkeit.}}
     \catchword{Kapazitive und induktive Messverfahren \resultol{Kondensator wird deformiert und dadurch seine
-               Kapazität geändert, oder eine Spuleninduktivität durch Einschieben eines Ferritkernes.}}
+               Kapazität geändert, oder eine Spuleninduktivität wird durch Einschieben eines Ferritkernes geändert.}}
     \catchword{Dehnungsmessstreifen \resultol{Widerstandswert ändert sich bei Dehnung.}}
     \catchword{Optische Interferometrie \resultol{Entfernungen werden über Laufzeitunterschiede
                zu Referenzstrecken durch optische Überlagerung gemessen.}}
@@ -1981,7 +1981,7 @@
                 Verfahren sehr genau. Auch die Auflösung ist sehr gut, wenn man mit einer genügend hohen
                 Taktfrequenz arbeitet, typischerweise 1 MHz, die durch den DAU begrenzt wird. Die Besonderheit
                 bei diesem Verfahren liegt darin, dass durch die Integration ein Mittelwert über einen größeren
-                Zeitraum gebildet wird, und dabei Schankungen und Störungen des Messsignals herausgemittelt
+                Zeitraum gebildet wird, und dabei Schwankungen und Störungen des Messsignals herausgemittelt
                 werden. Da kleinen Signalen oft eine Störung durch das Versorgungsnetz mit 50 Hz überlagert ist,
                 kann man mit Messzeiten, die ein Vielfaches der Periodendauer von 20 ms sind, diese Störungen
                 weitgehend unterdrücken. Für Momentanwertmessungen muss hier immer ein Sample-an-Hold-Glied
@@ -2126,7 +2126,7 @@
     \catchword{Stelleinrichtungen: Bestehen aus mehreren Stellgeräten}
   }
 
-  \question{Nach ihrem Verhalten charakterisiert man unterschiedliche Stellgliedern}{\pages{216}{217}}
+  \question{Nach ihrem Verhalten charakterisiert man unterschiedliche Stellglieder}{\pages{216}{217}}
   {
     \catchword{Statisch: Durch eine Kennlinie gekennzeichnet}
     \catchword{Stetig: Monotone und stetige Kennlinie}
@@ -2194,7 +2194,7 @@
   {
     \catchword{Referenzspannung wird mittels verschiedener Widerstände in sich um den Faktor 2
                unterscheidende Ströme aufgeteilt}
-    \catchword{Die zu den Digitalsbits gehörenden Ströme werden aufsummiert und ergeben den Ausgangsstrom}
+    \catchword{Die zu den Digitalbits gehörenden Ströme werden aufsummiert und ergeben den Ausgangsstrom}
   }
 
   \statement{Nennen Sie die Leistungsdaten des Stromsummenwandlers}{\page{219}}
@@ -2207,10 +2207,10 @@
   \statement{Nennen Sie den Vorteil des Stromsummenwandlers und beschreiben Sie
              genau sein Problem}{\page{220}}
   {
-    \catchword{geringer Aufwand: $n$ Wiederstände (bei $n$ Bits)}
-    \catchword{Monotonie: In der Mitte des Wandlungsbrereich befinden sich die zwei Dualwerte 1000 000
+    \catchword{geringer Aufwand: $n$ Widerstände (bei $n$ Bits)}
+    \catchword{Monotonie: In der Mitte des Wandlungsbrereichs befinden sich die zwei Dualwerte 1000 0000
                und 0111 1111, die sich nur um ein Bit unterscheiden. Im ersten Fall wird der Strom nur
-               durch einen Wiederstand mit 1k$\Omega$ fließen (Strom ist dann 5mA), im zweiten Fall
+               durch einen Widerstand mit 1k$\Omega$ fließen (Strom ist dann 5mA), im zweiten Fall
                durch alle anderen parallel fließen: Die Summe wäre 254/265*5mV = 4,98mA. Es reicht aus,
                wenn der erste Widerstand um mehr als 4$\Omega$ von seinen 1k $\Omega$ abweicht und der
                Strom würde kleiner als 4,8 mA, und damit läge ein Monotoniefehler vor.}
@@ -2228,7 +2228,7 @@
 
   \statement{Nennen Sie die entscheidenden Vor- und Nachteile des Linear-Umsetzers}{\page{222}}
   {
-    \catchword{Nachteil: riesiger Aufwand: für $n$ Bits braucht man $2^n$ Wiederstände und $(2^n)-1$ Umschalter}
+    \catchword{Nachteil: riesiger Aufwand: für $n$ Bits braucht man $2^n$ Widerstände und $(2^n)-1$ Umschalter}
     \catchword{Sehr genau, sowohl linear als auch monoton}
   }
 
@@ -2270,7 +2270,7 @@
     \catchword{Verdrillte Adernkabel \resultol{relativ guter Wellenwiderstand, relativ großes
                Bandbreitenlängenprodukt (über $1 MHz * m$), Störeinwirkung hebt sich in den beiden
                Leitern weitgehend gegenseitig auf (2 Ströme in entgegengesetzter Richtung)}}
-    \catchword{Koaxialkabel \resultol{besteht aus Innenleiter und geschlossener, konzentrischer
+    \catchword{Koaxialkabel \resultol{besteht aus Innenleiter und geschlossenem, konzentrischen
                Aussenleiter, höchste Störfestigkeit, wohldefinierter Wellenwiderstand,
                Bandbreitenlängenprodukt hängt stark vom Isolationsmaterial ab (ca. $100 MHz * km$)}}
     \catchword{Lichtwellenleiter \resultol{ummantelte Glasfaser, über die moduliertes Licht geleitet
@@ -2347,7 +2347,7 @@
     \catchword{Voruntersuchung: Kosten-Nutzen-Analyse}
     \catchword{Istaufnahme: Der zu lenkende Prozess wird untersucht}
     \result{Schema: Messaufgaben, Steuerungsaufgaben, Bedienungsaufgaben und Sicherheitsfragen}
-    \catchword{Sollkonzept: Pfichtenheft wird erstellt}
+    \catchword{Sollkonzept: Pflichtenheft wird erstellt}
     \catchword{Beschaffung: Durch eine gezielte Ausschreibung}
   }
 
@@ -2438,7 +2438,7 @@
     \catchword{Kalte Reserve: Reservegerät ist nicht in Betrieb}
     \catchword{Warme Reserve: Reservegerät ist betriebsbereit angeschlossen und
                in Wartestellung}
-    \catchword{Heiße Reserve: Reservegerät ist bereit parallel in Betrieb}
+    \catchword{Heiße Reserve: Reservegerät ist bereits parallel in Betrieb}
   }
 
   \statement{Erklären Sie das Prinzip der Mehrheitsentscheidung}{\page{250}}
@@ -2485,7 +2485,7 @@
   \question{Wozu eignen sich Petrinetze insbesondere im Gegensatz zu 
             klassischen Strunkturierungs-Methoden von Prozessen}{\page{269}}
   {
-    \normaltext{Neben statischen Strunkturen lassen sich auch dynamische
+    \normaltext{Neben statischen Strukturen lassen sich auch dynamische
                 Vorgänge darstellen, sogar parallele Arbeitsschritte}
   }
 
@@ -2499,7 +2499,7 @@
   \statement{Zeichnen Sie eine Konjunktion und eine Disjunktion}{\page{270}}
   {
     \catchword{Konjunktion: mehrere Eingangstellen auf einen Transition}
-    \catchword{Disjunktion: mehrere Pfeile auf einen Stelle}
+    \catchword{Disjunktion: mehrere Pfeile auf eine Stelle}
   }
 
   \statement{Zeichnen Sie einen Signalträger (Semaphor) in einem Petrinetz,
