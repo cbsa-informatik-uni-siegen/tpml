@@ -36,13 +36,11 @@
 \newcommand{\catchword}[1]{\\-\ #1}
 \newcommand{\normaltext}[1]{\\#1}
 \newcommand{\result}[1]{\\$\Rightarrow$\ #1}
-
 \newcommand{\resultol}[1]{$\Rightarrow$\ #1}
-
 \newcommand{\page}[1]{#1}
 \newcommand{\pages}[2]{#1\ -\ #2}
-
 \newcommand{\important}[1]{\index{#1}\textit{#1}}
+\newcommand{\view}[2]{\index{Skizze}Siehe Bild #1 auf Seite #2}
 
 \begin{document}
 
@@ -655,7 +653,7 @@
 
   \statement{Erklären Sie den Aufbau der \important{CPU} (schematisch)} {\page{40}}
   {
-    \normaltext{Siehe \index{Bild} 2.3 Seite 40}
+    \normaltext{\view{2.3}{40}}
   }
 
   \question{Wozu dient das \important{Unterbrechungswerk}}{\page{40}}
@@ -1242,7 +1240,7 @@
 
   \statement{Skizzieren Sie eine \important{Interrupt-Anforderung}}{\page{119}}
   {
-    \normaltext{Siehe \index{Bild} 2.51 auf Seite 119}
+    \normaltext{\view{2.51}{119}}
   }
 
   \statement{Erklären Sie detailliert den Ablauf eines \important{Interrupts}}{\pages{119}{120}}
@@ -1386,7 +1384,7 @@
 
   \statement{Skizzieren Sie die \important{Interrupt} Verkettung}{\page{126}}
   {
-    \normaltext{Siehe \index{Bild} 2.56 auf Seite 126}
+    \normaltext{\view{2.56}{126}}
   }
 
   \statement{Erklären Sie das Prinzip der \important{Daisy Chain} bei Interrupts}{\page{126}}
@@ -1620,7 +1618,7 @@
   \statement{Beschreiben Sie anhand eines Schaubildes den Weg der Informationen
              vom Prozess in den Rechner und umgekehrt}{\page{189}}
   {
-    \normaltext{Siehe \index{Bild} 3.14 Seite 189}
+    \normaltext{\view{3.14}{189}}
   }
 
   \subsubsection{Messwerterfassung}
@@ -1950,7 +1948,7 @@
   \statement{Skizzieren Sie das \important{Blockschaltbild} des \important{Simultanwandlers}
              (\important{Parallelwandlers})} {\page{206}}
   {
-    \normaltext{Siehe \index{Bild} 3.27, Seite 206}
+    \normaltext{\view{3.27}{206}}
   }
 
   \statement{Erklären Sie detailiert den \important{Sägezahnumsetzer}}{\page{207}}
@@ -1960,7 +1958,7 @@
                 verglichen. Beim Start des Sägezahns wird ein Zähler zurückgesetzt, und zählt
                 dann die \important{Taktimpulse} bis der \important{Komparator} feststellt,
                 dass die ansteigende Spannung gleich der Messspannung ist. Damit ist die Anzahl der
-                gezählzen Impulse ein Maß für die \important{Eingangsspannung} (vgl. \index{Bild} 3.28).
+                gezählzen Impulse ein Maß für die \important{Eingangsspannung} (\view{3.28}{207}).
                 Die \important{Wandlungsrate} ist hier durch die Frequenz des Sägezahns festgelegt.
                 Die Auflösung kann fast beliebig groß gemacht werden, denn sie wird durch die
                 \important{Taktfrequenz} für den Zähler und die \important{Periodendauer} des
@@ -1974,7 +1972,7 @@
 
   \statement{Skizzieren Sie das Blockschaltbild des \important{Sägezahnumsetzer}}{\page{207}}
   {
-    \normaltext{Siehe \index{Bild} 3.28, Seite 207}
+    \normaltext{\view{3.28}{207}}
   }
 
   \statement{Erklären Sie detailiert den \important{Zählumsetzer}}{\page{208}}
@@ -1995,7 +1993,7 @@
 
   \statement{Skizzieren Sie das Blockschaltbild des \important{Zählumsetzers}} {\page{208}}
   {
-    \normaltext{Siehe \index{Bild} 3.29, Seite 208}
+    \normaltext{\view{3.29}{208}}
   }
 
   \statement{Erklären Sie detailiert den \important{Folgeumsetzer}}{\page{208}}
@@ -2010,7 +2008,7 @@
 
   \statement{Skizzieren Sie das Blockschaltbild des \important{Folgeumsetzers}} {\page{208}}
   {
-    \normaltext{Siehe \index{Bild} 3.30, Seite 208}
+    \normaltext{\view{3.30}{208}}
   }
 
   \question{Was wird als \important{Wandlungsrate} bezeichnet}{\page{208}}
@@ -2043,7 +2041,7 @@
 
   \statement{Skizzieren Sie das Blockschaltbild des Integrationswandlers}{\page{209}}
   {
-    \normaltext{Siehe \index{Bild} 3.31, Seite 209}
+    \normaltext{\view{3.31}{209}}
   }
 
   \statement{Erklären Sie detailiert den Spannungs-Frequenz-Umsetzer}{\page{210}}
@@ -2064,7 +2062,7 @@
 
   \statement{Skizzieren Sie das Blockschaltbild des Spannungs-Frequenz-Umsetzer} {\page{210}}
   {
-    \normaltext{Siehe \index{Bild} 3.32 Seite 210}
+    \normaltext{\view{3.32}{210}}
   }
 
   \statement{Erklären Sie detailiert den Stufenumsetzer (Wägecodierer)}{\pages{211}{212}}
@@ -2082,7 +2080,7 @@
 
   \statement{Skizzieren Sie das Blockschaltbild des Stufenumsetzers (Wägecodierers)} {\pages{211}{212}}
   {
-    \normaltext{Siehe \index{Bild} 3.33, Seite 211}
+    \normaltext{\view{3.33}{211}}
   }
 
   \subsubsection{Prozesssteuerung}
@@ -2271,12 +2269,12 @@
 
   \statement{Skizzieren Sie den prinzipiellen Aufbau des R-2R Widerstandnetzwerkes}{\page{221}}
   {
-    \normaltext{Siehe \index{Bild} 3.39, Seite 221}
+    \normaltext{\view{3.39}{221}}
   }
 
   \statement{Skizzieren Sie den prinzipiellen Aufbau des Linear-Umsetzers}{\page{222}}
   {
-    \normaltext{Siehe \index{Bild} 3.39, Seite 221}
+    \normaltext{\view{3.39}{221}}
   }
 
   \statement{Nennen Sie die entscheidenden Vor- und Nachteile des Linear-Umsetzers}{\page{222}}
@@ -2559,25 +2557,25 @@
   \statement{Zeichnen Sie einen Signalträger (Semaphor) in einem Petrinetz,
              der zwei Tasks gegenseitig aus einem Kritischen Abschnitt ausschließt}{\page{272}}
   {
-    \normaltext{\index{Bild} 4.13, Seite 272 oben}
+    \normaltext{\view{4.13}{272}}
   }
 
   \statement{Zeichnen Sie ein Petrinetz, das zwei Tasks symmetrisch 
              synchronisiert}{\page{273}}
   {
-    \normaltext{\index{Bild} 4.14, Seite 273 oben, ganz links}
+    \normaltext{\view{4.14}{273}}
   }
 
   \statement{Zeichnen Sie ein Petrinetz, das zwei Tasks asymmetrisch 
              synchronisiert}{\page{273}}
   {
-    \normaltext{\index{Bild} 4.14, Seite 273 oben, Mitte}
+    \normaltext{\view{4.14}{273}}
   }
 
   \statement{Zeichnen Sie ein Petrinetz, dass den Ablauf einer
              Interrupt-Service-Routine erläutert}{\page{274}}
   {
-    \normaltext{\index{Bild} 4.15, Seite 274 oben}
+    \normaltext{\view{4.15}{274}}
   }
 
   \subsubsection{Programmstrukturen}
@@ -2603,7 +2601,7 @@
   \statement{Zeichnen Sie ein Diagramm in dem alle möglichen Zustände eines
              Tasks und ihren Übergängen enthalten ist}{\page{291}}
   {
-    \normaltext{\index{Bild} 4.23, Seite 291 oben}
+    \normaltext{\view{4.23}{291}}
   }
 
   \statement{Beschreiben Sie den Zustand bereit}{\page{291}}
