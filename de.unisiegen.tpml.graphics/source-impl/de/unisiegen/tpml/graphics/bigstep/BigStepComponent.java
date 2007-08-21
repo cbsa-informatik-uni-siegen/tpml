@@ -104,9 +104,7 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	 */
 	public BigStepComponent (BigStepProofModel model) {
 		super (model);
-		// TODO for test
 		this.availableHeight    = Integer.MAX_VALUE;
-		//this.availableHeight      = 600;
 		this.treeNodeLayout 		= new TreeNodeLayout ();
 		this.border							= 20;
 		this.jumpNode						= null;
@@ -385,7 +383,7 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	}
 	
 	/**
-	 *TODO
+	 *{@inheritDoc}
 	 * 
 	 */
 	@Override
@@ -395,7 +393,7 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	}
 	
 	/**
-	 * TODO
+	 * dose a relayout
 	 */
 	protected void doRelayout()
 	{
@@ -519,6 +517,7 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	public boolean getScrollableTracksViewportWidth () {
 		return false;
 	}
+	
 	
 	public int getScrollableUnitIncrement (Rectangle visibleRect, int orientation, int direction) {
 		//  XXX: Dynamic unit increment
