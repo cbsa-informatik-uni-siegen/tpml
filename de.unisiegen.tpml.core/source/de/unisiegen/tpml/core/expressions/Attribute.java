@@ -64,30 +64,6 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * The keyword <code>val</code>.
-   */
-  private static final String VAL = "val" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
-   * The equal string.
-   */
-  private static final String EQUAL = "=" ; //$NON-NLS-1$
-
-
-  /**
-   * The semi string.
-   */
-  private static final String SEMI = ";" ; //$NON-NLS-1$ 
-
-
-  /**
    * The list of identifiers.
    * 
    * @see #getIdentifiers()
@@ -408,18 +384,18 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_ATTRIBUTE ) ;
-      this.prettyStringBuilder.addKeyword ( VAL ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_VAL ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
-      this.prettyStringBuilder.addText ( EQUAL ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_EQUAL ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_ATTRIBUTE_E ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
-      this.prettyStringBuilder.addText ( SEMI ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SEMI ) ;
     }
     return this.prettyStringBuilder ;
   }

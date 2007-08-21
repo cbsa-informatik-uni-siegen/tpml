@@ -33,18 +33,6 @@ public final class Sequence extends Expression implements DefaultExpressions
 
 
   /**
-   * The keyword <code>;</code>.
-   */
-  private static final String SEMI = ";" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
    * String for the case that e1 is null.
    */
   private static final String E1_NULL = "e1 is null" ; //$NON-NLS-1$
@@ -309,8 +297,8 @@ public final class Sequence extends Expression implements DefaultExpressions
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_SEQUENCE_E1 ) ;
-      this.prettyStringBuilder.addText ( SEMI ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SEMI ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

@@ -71,36 +71,6 @@ public final class Coercion extends Expression implements DefaultTypes ,
 
 
   /**
-   * The keyword <code>(</code>.
-   */
-  private static final String LPAREN = "(" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>)</code>.
-   */
-  private static final String RPAREN = ")" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>)</code>.
-   */
-  private static final String SUBTYPE = "<:" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>:</code>.
-   */
-  private static final String COLON = ":" ; //$NON-NLS-1$
-
-
-  /**
    * The types.
    * 
    * @see #getTypes()
@@ -440,23 +410,23 @@ public final class Coercion extends Expression implements DefaultTypes ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PrettyPrintPriorities.PRIO_COERCION ) ;
-      this.prettyStringBuilder.addText ( LPAREN ) ;
+      this.prettyStringBuilder.addText ( PRETTY_LPAREN ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PrettyPrintPriorities.PRIO_COERCION_E ) ;
-      this.prettyStringBuilder.addText ( COLON ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PrettyPrintPriorities.PRIO_COERCION_TAU1 ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
-      this.prettyStringBuilder.addText ( SUBTYPE ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SUBTYPE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PrettyPrintPriorities.PRIO_COERCION_TAU2 ) ;
-      this.prettyStringBuilder.addText ( RPAREN ) ;
+      this.prettyStringBuilder.addText ( PRETTY_RPAREN ) ;
     }
     return this.prettyStringBuilder ;
   }

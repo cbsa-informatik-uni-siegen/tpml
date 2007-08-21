@@ -28,18 +28,6 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public final class List extends Expression implements DefaultExpressions
 {
   /**
-   * The keyword <code>[</code>.
-   */
-  private static final String LBRACKET = "[" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>]</code>.
-   */
-  private static final String RBRACKET = "]" ; //$NON-NLS-1$
-
-
-  /**
    * String for the case that e1 is null.
    */
   private static final String E1_NULL = "e1 is null" ; //$NON-NLS-1$
@@ -73,18 +61,6 @@ public final class List extends Expression implements DefaultExpressions
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression.getCaption ( List.class ) ;
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
-   * The semi string.
-   */
-  private static final String SEMI = ";" ; //$NON-NLS-1$
 
 
   /**
@@ -459,20 +435,20 @@ public final class List extends Expression implements DefaultExpressions
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_LIST ) ;
-      this.prettyStringBuilder.addText ( LBRACKET ) ;
+      this.prettyStringBuilder.addText ( PRETTY_LBRACKET ) ;
       for ( int n = 0 ; n < this.expressions.length ; ++ n )
       {
         if ( n > 0 )
         {
-          this.prettyStringBuilder.addText ( SEMI ) ;
-          this.prettyStringBuilder.addText ( SPACE ) ;
+          this.prettyStringBuilder.addText ( PRETTY_SEMI ) ;
+          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
           this.prettyStringBuilder.addBreak ( ) ;
         }
         this.prettyStringBuilder.addBuilder ( this.expressions [ n ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_LIST_E ) ;
       }
-      this.prettyStringBuilder.addText ( RBRACKET ) ;
+      this.prettyStringBuilder.addText ( PRETTY_RBRACKET ) ;
     }
     return this.prettyStringBuilder ;
   }

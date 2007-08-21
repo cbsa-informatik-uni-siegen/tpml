@@ -28,30 +28,6 @@ import de.unisiegen.tpml.core.typechecker.TypeUtilities ;
 public final class PolyType extends Type implements DefaultTypes
 {
   /**
-   * The keyword <code>for all</code>.
-   */
-  private static final String FORALL = "\u2200" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>,</code>.
-   */
-  private static final String COMMA = "," ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>.</code>.
-   */
-  private static final String DOT = "." ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
    * String for the case that the quantified variables are null.
    */
   private static final String QUANTIFIED_VARIABLES_NULL = "quantified variables are null" ; //$NON-NLS-1$
@@ -389,18 +365,18 @@ public final class PolyType extends Type implements DefaultTypes
           PRIO_POLY ) ;
       if ( ! this.quantifiedVariables.isEmpty ( ) )
       {
-        this.prettyStringBuilder.addText ( FORALL ) ;
+        this.prettyStringBuilder.addText ( PRETTY_FORALL ) ;
         for ( Iterator < TypeVariable > it = this.quantifiedVariables
             .iterator ( ) ; it.hasNext ( ) ; )
         {
           this.prettyStringBuilder.addText ( it.next ( ).toString ( ) ) ;
           if ( it.hasNext ( ) )
           {
-            this.prettyStringBuilder.addText ( COMMA ) ;
-            this.prettyStringBuilder.addText ( SPACE ) ;
+            this.prettyStringBuilder.addText ( PRETTY_COMMA ) ;
+            this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
           }
         }
-        this.prettyStringBuilder.addText ( DOT ) ;
+        this.prettyStringBuilder.addText ( PRETTY_DOT ) ;
       }
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

@@ -87,36 +87,6 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
 
 
   /**
-   * The keyword <code>let</code>.
-   */
-  private static final String LET = "let" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>in</code>.
-   */
-  private static final String IN = "in" ; //$NON-NLS-1$  
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>:</code>.
-   */
-  private static final String COLON = ":" ; //$NON-NLS-1$
-
-
-  /**
-   * The equal string.
-   */
-  private static final String EQUAL = "=" ; //$NON-NLS-1$
-
-
-  /**
    * The list of identifiers.
    * 
    * @see #getIdentifiers()
@@ -663,27 +633,27 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_LET ) ;
-      this.prettyStringBuilder.addKeyword ( LET ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_LET ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( COLON ) ;
-        this.prettyStringBuilder.addText ( SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_LET_TAU ) ;
       }
-      this.prettyStringBuilder.addText ( SPACE ) ;
-      this.prettyStringBuilder.addText ( EQUAL ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_EQUAL ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( IN ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_IN ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
     }

@@ -82,42 +82,6 @@ public final class Class extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * The keyword <code>(</code>.
-   */
-  private static final String LPAREN = "(" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>)</code>.
-   */
-  private static final String RPAREN = ")" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>class</code>.
-   */
-  private static final String CLASS = "class" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>end</code>.
-   */
-  private static final String END = "end" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>:</code>.
-   */
-  private static final String COLON = ":" ; //$NON-NLS-1$
-
-
-  /**
    * The expression.
    */
   private Expression [ ] expressions ;
@@ -561,28 +525,28 @@ public final class Class extends Expression implements BoundIdentifiers ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_CLASS ) ;
-      this.prettyStringBuilder.addKeyword ( CLASS ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
-      this.prettyStringBuilder.addText ( LPAREN ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_CLASS ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_LPAREN ) ;
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( COLON ) ;
-        this.prettyStringBuilder.addText ( SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_CLASS_TAU ) ;
       }
-      this.prettyStringBuilder.addText ( RPAREN ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_RPAREN ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CLASS_BODY ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( END ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_END ) ;
     }
     return this.prettyStringBuilder ;
   }

@@ -28,12 +28,6 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
 public final class Row extends Expression implements DefaultExpressions
 {
   /**
-   * The keyword <code>epsilon</code>.
-   */
-  private static final String EPSILON = "\u03B5" ; //$NON-NLS-1$
-
-
-  /**
    * String for the case that the expressions are null.
    */
   private static final String EXPRESSIONS_NULL = "expressions is null" ; //$NON-NLS-1$
@@ -49,12 +43,6 @@ public final class Row extends Expression implements DefaultExpressions
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression.getCaption ( Row.class ) ;
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
 
 
   /**
@@ -674,13 +662,13 @@ public final class Row extends Expression implements DefaultExpressions
                 PRIO_ROW_E ) ;
         if ( i != this.expressions.length - 1 )
         {
-          this.prettyStringBuilder.addText ( SPACE ) ;
+          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
           this.prettyStringBuilder.addBreak ( ) ;
         }
       }
       if ( this.expressions.length == 0 )
       {
-        this.prettyStringBuilder.addText ( EPSILON ) ;
+        this.prettyStringBuilder.addText ( PRETTY_EPSILON ) ;
       }
     }
     return this.prettyStringBuilder ;

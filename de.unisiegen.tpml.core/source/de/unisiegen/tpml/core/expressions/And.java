@@ -29,18 +29,6 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public final class And extends Expression implements DefaultExpressions
 {
   /**
-   * The keyword <code>&&</code>.
-   */
-  private static final String AMPERAMPER = "&&" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression.getCaption ( And.class ) ;
@@ -310,10 +298,10 @@ public final class And extends Expression implements DefaultExpressions
           PRIO_AND ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_AND_E1 ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( AMPERAMPER ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_AMPERAMPER ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_AND_E2 ) ;
     }

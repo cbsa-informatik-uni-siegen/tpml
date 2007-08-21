@@ -55,18 +55,6 @@ public final class TupleType extends MonoType implements DefaultTypes
 
 
   /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
-   * The string <code>*</code>.
-   */
-  private static final String MULT = "*" ; //$NON-NLS-1$
-
-
-  /**
    * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
@@ -331,9 +319,9 @@ public final class TupleType extends MonoType implements DefaultTypes
       {
         if ( i > 0 )
         {
-          this.prettyStringBuilder.addText ( SPACE ) ;
-          this.prettyStringBuilder.addText ( MULT ) ;
-          this.prettyStringBuilder.addText ( SPACE ) ;
+          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+          this.prettyStringBuilder.addText ( PRETTY_MULT ) ;
+          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
         }
         this.prettyStringBuilder.addBuilder ( this.types [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

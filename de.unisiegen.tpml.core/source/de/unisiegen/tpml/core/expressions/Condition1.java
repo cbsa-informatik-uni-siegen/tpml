@@ -52,24 +52,6 @@ public final class Condition1 extends Expression implements DefaultExpressions
 
 
   /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>if</code>.
-   */
-  private static final String IF = "if" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>then</code>.
-   */
-  private static final String THEN = "then" ; //$NON-NLS-1$
-
-
-  /**
    * The expressions.
    */
   private Expression [ ] expressions ;
@@ -317,15 +299,15 @@ public final class Condition1 extends Expression implements DefaultExpressions
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_CONDITION ) ;
-      this.prettyStringBuilder.addKeyword ( IF ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_IF ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CONDITION_E0 ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( THEN ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_THEN ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CONDITION_E1 ) ;

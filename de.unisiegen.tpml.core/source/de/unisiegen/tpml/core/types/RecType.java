@@ -68,18 +68,6 @@ public final class RecType extends MonoType implements DefaultTypes ,
 
 
   /**
-   * The keyword <code>mu</code>.
-   */
-  private static final String MU = "\u03bc" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>.</code>.
-   */
-  private static final String DOT = "." ; //$NON-NLS-1$
-
-
-  /**
    * The list of {@link TypeName}s.
    * 
    * @see #getTypeNames()
@@ -450,11 +438,11 @@ public final class RecType extends MonoType implements DefaultTypes ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_REC_TYPE ) ;
-      this.prettyStringBuilder.addKeyword ( MU ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_MU ) ;
       this.prettyStringBuilder.addBuilder ( this.typeNames [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_REC_TYPE_TYPE_NAME ) ;
-      this.prettyStringBuilder.addText ( DOT ) ;
+      this.prettyStringBuilder.addText ( PRETTY_DOT ) ;
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

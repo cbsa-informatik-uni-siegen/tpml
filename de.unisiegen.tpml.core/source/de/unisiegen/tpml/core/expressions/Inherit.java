@@ -83,36 +83,6 @@ public final class Inherit extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * The keyword <code>inherit</code>.
-   */
-  private static final String INHERIT = "inherit" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>from</code>.
-   */
-  private static final String FROM = "from" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
-   * The comma string.
-   */
-  private static final String COMMA = "," ; //$NON-NLS-1$
-
-
-  /**
-   * The semi string.
-   */
-  private static final String SEMI = ";" ; //$NON-NLS-1$
-
-
-  /**
    * Indeces of the child {@link Identifier}s.
    */
   private int [ ] indicesId ;
@@ -612,28 +582,28 @@ public final class Inherit extends Expression implements BoundIdentifiers ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_INHERIT ) ;
-      this.prettyStringBuilder.addKeyword ( INHERIT ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_INHERIT ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
         if ( i != this.identifiers.length - 1 )
         {
-          this.prettyStringBuilder.addText ( COMMA ) ;
-          this.prettyStringBuilder.addText ( SPACE ) ;
+          this.prettyStringBuilder.addText ( PRETTY_COMMA ) ;
+          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
         }
       }
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( FROM ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_FROM ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_INHERIT_E ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
-      this.prettyStringBuilder.addText ( SEMI ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SEMI ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

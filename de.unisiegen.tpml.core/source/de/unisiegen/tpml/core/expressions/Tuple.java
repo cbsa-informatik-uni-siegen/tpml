@@ -24,18 +24,6 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 public final class Tuple extends Expression implements DefaultExpressions
 {
   /**
-   * The keyword <code>(</code>.
-   */
-  private static final String LPAREN = "(" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>)</code>.
-   */
-  private static final String RPAREN = ")" ; //$NON-NLS-1$
-
-
-  /**
    * String for the case that the expressions are null.
    */
   private static final String EXPRESSIONS_NULL = "expressions is null" ; //$NON-NLS-1$
@@ -57,18 +45,6 @@ public final class Tuple extends Expression implements DefaultExpressions
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression.getCaption ( Tuple.class ) ;
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
-   * The comma string.
-   */
-  private static final String COMMA = "," ; //$NON-NLS-1$
 
 
   /**
@@ -329,20 +305,20 @@ public final class Tuple extends Expression implements DefaultExpressions
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_TUPLE ) ;
-      this.prettyStringBuilder.addText ( LPAREN ) ;
+      this.prettyStringBuilder.addText ( PRETTY_LPAREN ) ;
       for ( int n = 0 ; n < this.expressions.length ; ++ n )
       {
         if ( n > 0 )
         {
-          this.prettyStringBuilder.addText ( COMMA ) ;
-          this.prettyStringBuilder.addText ( SPACE ) ;
+          this.prettyStringBuilder.addText ( PRETTY_COMMA ) ;
+          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
           this.prettyStringBuilder.addBreak ( ) ;
         }
         this.prettyStringBuilder.addBuilder ( this.expressions [ n ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_TUPLE_E ) ;
       }
-      this.prettyStringBuilder.addText ( RPAREN ) ;
+      this.prettyStringBuilder.addText ( PRETTY_RPAREN ) ;
     }
     return this.prettyStringBuilder ;
   }

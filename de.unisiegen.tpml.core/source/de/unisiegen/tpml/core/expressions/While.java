@@ -51,24 +51,6 @@ public final class While extends Expression implements DefaultExpressions
 
 
   /**
-   * The keyword <code>while</code>.
-   */
-  private static final String WHILE = "while" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>do</code>.
-   */
-  private static final String DO = "do" ; //$NON-NLS-1$  
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
    * The first and second expression.
    */
   private Expression [ ] expressions ;
@@ -314,15 +296,15 @@ public final class While extends Expression implements DefaultExpressions
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_WHILE ) ;
-      this.prettyStringBuilder.addKeyword ( WHILE ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_WHILE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_WHILE_E1 ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( DO ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_DO ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_WHILE_E2 ) ;

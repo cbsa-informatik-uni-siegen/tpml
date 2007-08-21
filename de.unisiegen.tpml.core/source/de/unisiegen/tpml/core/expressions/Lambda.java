@@ -83,30 +83,6 @@ public final class Lambda extends Value implements BoundIdentifiers ,
 
 
   /**
-   * The keyword <code>lambda</code>.
-   */
-  private static final String LAMBDA = "\u03bb" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>:</code>.
-   */
-  private static final String COLON = ":" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>.</code>.
-   */
-  private static final String DOT = "." ; //$NON-NLS-1$
-
-
-  /**
    * The list of identifiers.
    * 
    * @see #getIdentifiers()
@@ -621,19 +597,19 @@ public final class Lambda extends Value implements BoundIdentifiers ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PrettyPrintPriorities.PRIO_LAMBDA ) ;
-      this.prettyStringBuilder.addKeyword ( LAMBDA ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_LAMBDA ) ;
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PrettyPrintPriorities.PRIO_ID ) ;
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( COLON ) ;
-        this.prettyStringBuilder.addText ( SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PrettyPrintPriorities.PRIO_LAMBDA_TAU ) ;
       }
-      this.prettyStringBuilder.addText ( DOT ) ;
+      this.prettyStringBuilder.addText ( PRETTY_DOT ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PrettyPrintPriorities.PRIO_LAMBDA_E ) ;

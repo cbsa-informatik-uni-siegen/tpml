@@ -82,30 +82,6 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * The keyword <code>rec</code>.
-   */
-  private static final String REC = "rec" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>:</code>.
-   */
-  private static final String COLON = ":" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>.</code>.
-   */
-  private static final String DOT = "." ; //$NON-NLS-1$
-
-
-  /**
    * The list of identifiers.
    * 
    * @see #getIdentifiers()
@@ -605,19 +581,19 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_REC ) ;
-      this.prettyStringBuilder.addKeyword ( REC ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_REC ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( COLON ) ;
-        this.prettyStringBuilder.addText ( SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_REC_TAU ) ;
       }
-      this.prettyStringBuilder.addText ( DOT ) ;
+      this.prettyStringBuilder.addText ( PRETTY_DOT ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_REC_E ) ;
     }

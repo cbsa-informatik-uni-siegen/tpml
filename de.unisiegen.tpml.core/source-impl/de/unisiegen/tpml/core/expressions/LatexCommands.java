@@ -44,6 +44,18 @@ public interface LatexCommands
 
 
   /**
+   * The latex print command for a left paren.
+   */
+  public static final String LATEX_LPAREN = "(" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a right paren.
+   */
+  public static final String LATEX_RPAREN = ")" ; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for an epsilon.
    */
   public static final String LATEX_EPSILON = "\\epsilon" ; //$NON-NLS-1$

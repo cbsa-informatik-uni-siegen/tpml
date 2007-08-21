@@ -80,36 +80,6 @@ public final class Duplication extends Expression implements
 
 
   /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>;</code>.
-   */
-  private static final String SEMI = ";" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>=</code>.
-   */
-  private static final String EQUAL = "=" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>{<</code>.
-   */
-  private static final String DUPLBEGIN = "{<" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>>}</code>.
-   */
-  private static final String DUPLEND = ">}" ; //$NON-NLS-1$
-
-
-  /**
    * Indeces of the child {@link Expression}s.
    */
   private int [ ] indicesE ;
@@ -523,31 +493,31 @@ public final class Duplication extends Expression implements
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_DUPLICATION ) ;
-      this.prettyStringBuilder.addText ( DUPLBEGIN ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_DUPLBEGIN ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
-        this.prettyStringBuilder.addText ( SPACE ) ;
-        this.prettyStringBuilder.addText ( EQUAL ) ;
-        this.prettyStringBuilder.addText ( SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_EQUAL ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.expressions [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_DUPLICATION_E ) ;
         if ( i != this.expressions.length - 1 )
         {
-          this.prettyStringBuilder.addText ( SEMI ) ;
-          this.prettyStringBuilder.addText ( SPACE ) ;
+          this.prettyStringBuilder.addText ( PRETTY_SEMI ) ;
+          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
           this.prettyStringBuilder.addBreak ( ) ;
         }
       }
       // Only one space for '{< >}'
       if ( this.expressions.length > 0 )
       {
-        this.prettyStringBuilder.addText ( SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       }
-      this.prettyStringBuilder.addText ( DUPLEND ) ;
+      this.prettyStringBuilder.addText ( PRETTY_DUPLEND ) ;
     }
     return this.prettyStringBuilder ;
   }

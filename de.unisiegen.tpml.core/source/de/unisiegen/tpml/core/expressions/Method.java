@@ -74,36 +74,6 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * The keyword <code>val</code>.
-   */
-  private static final String METHOD = "method" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
-   * The equal string.
-   */
-  private static final String EQUAL = "=" ; //$NON-NLS-1$
-
-
-  /**
-   * The colon string.
-   */
-  private static final String COLON = ":" ; //$NON-NLS-1$
-
-
-  /**
-   * The semi string.
-   */
-  private static final String SEMI = ";" ; //$NON-NLS-1$ 
-
-
-  /**
    * The identifiers.
    * 
    * @see #getIdentifiers()
@@ -483,26 +453,26 @@ public class Method extends Expression implements DefaultIdentifiers ,
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_METHOD ) ;
-      this.prettyStringBuilder.addKeyword ( METHOD ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_METHOD ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( COLON ) ;
-        this.prettyStringBuilder.addText ( SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_METHOD_TAU ) ;
       }
-      this.prettyStringBuilder.addText ( SPACE ) ;
-      this.prettyStringBuilder.addText ( EQUAL ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_EQUAL ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_METHOD_E ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
-      this.prettyStringBuilder.addText ( SEMI ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SEMI ) ;
     }
     return this.prettyStringBuilder ;
   }

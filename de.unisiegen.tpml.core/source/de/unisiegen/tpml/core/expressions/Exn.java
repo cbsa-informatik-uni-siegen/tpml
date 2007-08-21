@@ -23,12 +23,6 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 public final class Exn extends Expression
 {
   /**
-   * The string for the exception.
-   */
-  private static final String EXCEPTION = "\u2191" ; //$NON-NLS-1$
-
-
-  /**
    * The unused string.
    */
   private static final String UNUSED = "unused" ; //$NON-NLS-1$
@@ -56,12 +50,6 @@ public final class Exn extends Expression
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression.getCaption ( Exn.class ) ;
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
 
 
   /**
@@ -271,8 +259,8 @@ public final class Exn extends Expression
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_EXN ) ;
-      this.prettyStringBuilder.addText ( EXCEPTION ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_EXCEPTION ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addText ( this.name ) ;
     }
     return this.prettyStringBuilder ;

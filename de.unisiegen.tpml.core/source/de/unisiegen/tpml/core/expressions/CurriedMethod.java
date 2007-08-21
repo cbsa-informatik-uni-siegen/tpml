@@ -95,48 +95,6 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
-   * The equal string.
-   */
-  private static final String EQUAL = "=" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>method</code>.
-   */
-  private static final String METHOD = "method" ; //$NON-NLS-1$
-
-
-  /**
-   * The semi string.
-   */
-  private static final String SEMI = ";" ; //$NON-NLS-1$ 
-
-
-  /**
-   * The keyword <code>(</code>.
-   */
-  private static final String LPAREN = "(" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>)</code>.
-   */
-  private static final String RPAREN = ")" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>:</code>.
-   */
-  private static final String COLON = ":" ; //$NON-NLS-1$
-
-
-  /**
    * The {@link Identifier}s of this {@link Expression}.
    * 
    * @see #getIdentifiers()
@@ -729,7 +687,7 @@ public final class CurriedMethod extends Expression implements
         this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         if ( this.types [ i ] != null )
         {
-          this.latexStringBuilder.addText ( LPAREN ) ;
+          this.latexStringBuilder.addText ( LATEX_LPAREN ) ;
         }
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
@@ -740,7 +698,7 @@ public final class CurriedMethod extends Expression implements
           this.latexStringBuilder.addBuilder ( this.types [ i ]
               .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
               PRIO_CURRIED_METHOD_TAU ) ;
-          this.latexStringBuilder.addText ( RPAREN ) ;
+          this.latexStringBuilder.addText ( LATEX_RPAREN ) ;
         }
       }
       this.latexStringBuilder.addBuilderEnd ( ) ;
@@ -776,45 +734,45 @@ public final class CurriedMethod extends Expression implements
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_CURRIED_METHOD ) ;
-      this.prettyStringBuilder.addKeyword ( METHOD ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_METHOD ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
-        this.prettyStringBuilder.addText ( SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
         if ( this.types [ i ] != null )
         {
-          this.prettyStringBuilder.addText ( LPAREN ) ;
+          this.prettyStringBuilder.addText ( PRETTY_LPAREN ) ;
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
         if ( this.types [ i ] != null )
         {
-          this.prettyStringBuilder.addText ( COLON ) ;
-          this.prettyStringBuilder.addText ( SPACE ) ;
+          this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
+          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
           this.prettyStringBuilder.addBuilder ( this.types [ i ]
               .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
               PRIO_CURRIED_METHOD_TAU ) ;
-          this.prettyStringBuilder.addText ( RPAREN ) ;
+          this.prettyStringBuilder.addText ( PRETTY_RPAREN ) ;
         }
       }
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( COLON ) ;
-        this.prettyStringBuilder.addText ( SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_LET_TAU ) ;
       }
-      this.prettyStringBuilder.addText ( SPACE ) ;
-      this.prettyStringBuilder.addText ( EQUAL ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_EQUAL ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CURRIED_METHOD_E ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
-      this.prettyStringBuilder.addText ( SEMI ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SEMI ) ;
     }
     return this.prettyStringBuilder ;
   }

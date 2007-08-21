@@ -29,18 +29,6 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public final class Or extends Expression implements DefaultExpressions
 {
   /**
-   * The keyword <code>||</code>.
-   */
-  private static final String BARBAR = "||" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression.getCaption ( Or.class ) ;
@@ -310,10 +298,10 @@ public final class Or extends Expression implements DefaultExpressions
           PRIO_OR ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_OR_E1 ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( BARBAR ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_BARBAR ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_OR_E2 ) ;
     }

@@ -30,12 +30,6 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     DefaultTypes , SortedChildren
 {
   /**
-   * The keyword <code>empty set</code>.
-   */
-  private static final String EMPTY_SET = "\u00D8" ; //$NON-NLS-1$
-
-
-  /**
    * The row type union is not defined string.
    */
   private static final String ROW_TYPE_UNION = "row type union is not defined" ; //$NON-NLS-1$
@@ -87,30 +81,6 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * The caption of this {@link Type}.
    */
   private static final String CAPTION = Type.getCaption ( RowType.class ) ;
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>;</code>.
-   */
-  private static final String SEMI = ";" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>attr</code>.
-   */
-  private static final String ATTR = "attr" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>:</code>.
-   */
-  private static final String COLON = ":" ; //$NON-NLS-1$
 
 
   /**
@@ -802,23 +772,23 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
       {
         if ( i != 0 )
         {
-          this.prettyStringBuilder.addText ( SPACE ) ;
+          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
         }
         if ( Identifier.Set.ATTRIBUTE
             .equals ( this.identifiers [ i ].getSet ( ) ) )
         {
-          this.prettyStringBuilder.addKeyword ( ATTR ) ;
-          this.prettyStringBuilder.addText ( SPACE ) ;
+          this.prettyStringBuilder.addKeyword ( PRETTY_ATTR ) ;
+          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
-        this.prettyStringBuilder.addText ( COLON ) ;
-        this.prettyStringBuilder.addText ( SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_ROW_TAU ) ;
-        this.prettyStringBuilder.addText ( SPACE ) ;
-        this.prettyStringBuilder.addText ( SEMI ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SEMI ) ;
         if ( i != this.types.length - 1 )
         {
           this.prettyStringBuilder.addBreak ( ) ;
@@ -826,14 +796,14 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
       }
       if ( this.remainingRowType != null )
       {
-        this.prettyStringBuilder.addText ( SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
         this.prettyStringBuilder.addBreak ( ) ;
         this.prettyStringBuilder.addBuilder ( this.remainingRowType
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
       }
       if ( this.types.length == 0 )
       {
-        this.prettyStringBuilder.addText ( EMPTY_SET ) ;
+        this.prettyStringBuilder.addText ( PRETTY_EMPTY_SET ) ;
       }
     }
     return this.prettyStringBuilder ;

@@ -42,18 +42,6 @@ public final class New extends Expression implements DefaultExpressions
 
 
   /**
-   * The keyword <code>new</code>.
-   */
-  private static final String NEW = "new" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
    * The expression.
    */
   private Expression [ ] expressions ;
@@ -265,8 +253,8 @@ public final class New extends Expression implements DefaultExpressions
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_NEW ) ;
-      this.prettyStringBuilder.addKeyword ( NEW ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_NEW ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_NEW_E ) ;
     }

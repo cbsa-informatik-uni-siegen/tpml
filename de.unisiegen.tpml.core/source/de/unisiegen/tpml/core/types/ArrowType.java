@@ -59,18 +59,6 @@ public final class ArrowType extends MonoType implements DefaultTypes
 
 
   /**
-   * The keyword <code>-></code>.
-   */
-  private static final String ARROW = "\u2192" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
    * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
@@ -332,9 +320,9 @@ public final class ArrowType extends MonoType implements DefaultTypes
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_ARROW_TAU1 ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
-      this.prettyStringBuilder.addText ( ARROW ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_ARROW ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

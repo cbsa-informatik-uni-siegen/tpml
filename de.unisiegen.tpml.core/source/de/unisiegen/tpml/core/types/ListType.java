@@ -47,18 +47,6 @@ public final class ListType extends MonoType implements DefaultTypes
 
 
   /**
-   * The keyword <code>list</code>.
-   */
-  private static final String LIST = "list" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
    * String for the case that the type substitution is null.
    */
   private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
@@ -288,8 +276,8 @@ public final class ListType extends MonoType implements DefaultTypes
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_LIST_TAU ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
-      this.prettyStringBuilder.addType ( LIST ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addType ( PRETTY_LIST ) ;
     }
     return this.prettyStringBuilder ;
   }

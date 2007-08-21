@@ -35,7 +35,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @see PrettyPrintable
  */
 public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
-    LatexPrintable , LatexCommands , ShowBondsInput
+    LatexPrintable , LatexCommands , ShowBondsInput , PrettyCommands
 {
   /**
    * The resource bundle.

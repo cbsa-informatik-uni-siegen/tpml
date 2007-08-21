@@ -55,18 +55,6 @@ public final class RefType extends MonoType implements DefaultTypes
 
 
   /**
-   * The keyword <code>ref</code>.
-   */
-  private static final String REF = "ref" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
    * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
@@ -160,10 +148,9 @@ public final class RefType extends MonoType implements DefaultTypes
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands
-    .add ( new DefaultLatexCommand ( "boldRef" , 0 , "\\textbf{ref}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-commands.add ( new DefaultLatexCommand ( LATEX_REF_TYPE , 1 ,
-    "#1\\ \\boldRef" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( "boldRef" , 0 , "\\textbf{ref}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_REF_TYPE , 1 ,
+        "#1\\ \\boldRef" ) ) ; //$NON-NLS-1$
     for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
     {
       commands.add ( command ) ;
@@ -288,8 +275,8 @@ commands.add ( new DefaultLatexCommand ( LATEX_REF_TYPE , 1 ,
           .addBuilder ( this.types [ 0 ]
               .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
               PRIO_REF_TAU ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
-      this.prettyStringBuilder.addType ( REF ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addType ( PRETTY_REF ) ;
     }
     return this.prettyStringBuilder ;
   }

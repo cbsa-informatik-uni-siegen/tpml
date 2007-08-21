@@ -62,12 +62,6 @@ public final class InfixOperation extends Expression implements
 
 
   /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
    * The expressions.
    */
   private Expression [ ] expressions ;
@@ -356,11 +350,11 @@ public final class InfixOperation extends Expression implements
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder
           .addBuilder ( this.expressions [ 2 ]
               .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

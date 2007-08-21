@@ -36,7 +36,8 @@ import de.unisiegen.tpml.core.types.TypeName ;
  * @see PrettyPrintable
  */
 public abstract class Expression implements Cloneable , PrettyPrintable ,
-    PrettyPrintPriorities , LatexPrintable , LatexCommands , ShowBondsInput
+    PrettyPrintPriorities , LatexPrintable , LatexCommands , ShowBondsInput ,
+    PrettyCommands
 {
   /**
    * A level-order enumeration of the expressions within a given expression.

@@ -52,36 +52,6 @@ public final class ClassType extends MonoType implements DefaultTypes
 
 
   /**
-   * The keyword <code>zeta</code>.
-   */
-  private static final String ZETA = "\u03B6" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>(</code>.
-   */
-  private static final String LPAREN = "(" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>)</code>.
-   */
-  private static final String RPAREN = ")" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>:</code>.
-   */
-  private static final String COLON = ":" ; //$NON-NLS-1$
-
-
-  /**
    * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
@@ -333,19 +303,19 @@ public final class ClassType extends MonoType implements DefaultTypes
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_CLASS ) ;
-      this.prettyStringBuilder.addKeyword ( ZETA ) ;
-      this.prettyStringBuilder.addText ( LPAREN ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_ZETA ) ;
+      this.prettyStringBuilder.addText ( PRETTY_LPAREN ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CLASS_TAU ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
-      this.prettyStringBuilder.addText ( COLON ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CLASS_PHI ) ;
-      this.prettyStringBuilder.addText ( RPAREN ) ;
+      this.prettyStringBuilder.addText ( PRETTY_RPAREN ) ;
     }
     return this.prettyStringBuilder ;
   }

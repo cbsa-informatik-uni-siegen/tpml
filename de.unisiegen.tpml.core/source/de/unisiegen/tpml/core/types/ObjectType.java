@@ -47,24 +47,6 @@ public final class ObjectType extends MonoType implements DefaultTypes
 
 
   /**
-   * The greater string.
-   */
-  private static final String GREATER = ">" ; //$NON-NLS-1$
-
-
-  /**
-   * The lower string.
-   */
-  private static final String LOWER = "<" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
    * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
@@ -278,13 +260,13 @@ public final class ObjectType extends MonoType implements DefaultTypes
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_OBJECT ) ;
-      this.prettyStringBuilder.addKeyword ( LOWER ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_LOWER ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_OBJECT_ROW ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
-      this.prettyStringBuilder.addKeyword ( GREATER ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addKeyword ( PRETTY_GREATER ) ;
     }
     return this.prettyStringBuilder ;
   }

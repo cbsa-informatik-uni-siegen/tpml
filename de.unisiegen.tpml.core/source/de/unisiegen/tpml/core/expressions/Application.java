@@ -25,12 +25,6 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public final class Application extends Expression implements DefaultExpressions
 {
   /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
@@ -322,7 +316,7 @@ public final class Application extends Expression implements DefaultExpressions
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_APPLICATION_E1 ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_APPLICATION_E2 ) ;

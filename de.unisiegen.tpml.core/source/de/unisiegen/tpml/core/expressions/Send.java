@@ -64,18 +64,6 @@ public final class Send extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * The keyword <code>#</code>.
-   */
-  private static final String HASHKEY = "#" ; //$NON-NLS-1$
-
-
-  /**
-   * The space string.
-   */
-  private static final String SPACE = " " ; //$NON-NLS-1$
-
-
-  /**
    * The list of identifiers.
    * 
    * @see #getIdentifiers()
@@ -358,9 +346,9 @@ public final class Send extends Expression implements DefaultIdentifiers ,
           PRIO_SEND ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_SEND_E ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
-      this.prettyStringBuilder.addText ( HASHKEY ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_HASHKEY ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
     }

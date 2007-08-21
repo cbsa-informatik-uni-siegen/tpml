@@ -17,18 +17,6 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 public abstract class BinaryOperator extends Constant
 {
   /**
-   * The keyword <code>(</code>.
-   */
-  private static final String LPAREN = "(" ; //$NON-NLS-1$
-
-
-  /**
-   * The keyword <code>)</code>.
-   */
-  private static final String RPAREN = ")" ; //$NON-NLS-1$
-
-
-  /**
    * The base pretty print priority for this binary operator, when used within
    * an infix operation.
    * 
@@ -132,12 +120,12 @@ public abstract class BinaryOperator extends Constant
           PRIO_CONSTANT ) ;
       if ( ! ( this.parent instanceof InfixOperation ) )
       {
-        this.prettyStringBuilder.addText ( LPAREN ) ;
+        this.prettyStringBuilder.addText ( PRETTY_LPAREN ) ;
       }
       this.prettyStringBuilder.addConstant ( this.text ) ;
       if ( ! ( this.parent instanceof InfixOperation ) )
       {
-        this.prettyStringBuilder.addText ( RPAREN ) ;
+        this.prettyStringBuilder.addText ( PRETTY_RPAREN ) ;
       }
     }
     return this.prettyStringBuilder ;

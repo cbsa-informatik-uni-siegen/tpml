@@ -41,18 +41,6 @@ public final class TypeVariable extends MonoType implements
     Comparable < TypeVariable >
 {
   /**
-   * The keyword <code>'</code>.
-   */
-  private static final String BAR = "'" ; //$NON-NLS-1$
-
-
-  /**
-   * The empty string.
-   */
-  private static final String EMPTY_STRING = "" ; //$NON-NLS-1$
-
-
-  /**
    * The unused string.
    */
   private static final String UNUSED = "unused" ; //$NON-NLS-1$
@@ -545,10 +533,11 @@ public final class TypeVariable extends MonoType implements
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_TYPE_VARIABLE ) ;
       String type = offsetToGreekLetter ( this.offset % 24 )
-          + ( ( this.index > 0 ) ? String.valueOf ( this.index ) : EMPTY_STRING ) ;
+          + ( ( this.index > 0 ) ? String.valueOf ( this.index )
+              : PRETTY_EMPTY_STRING ) ;
       for ( int n = ( this.offset / 24 ) ; n > 0 ; -- n )
       {
-        type = type + BAR ;
+        type = type + PRETTY_BAR ;
       }
       this.prettyStringBuilder.addType ( type ) ;
     }
