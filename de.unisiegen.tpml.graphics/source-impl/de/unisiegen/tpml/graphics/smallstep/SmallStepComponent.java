@@ -89,6 +89,9 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	 */
 	private boolean advanced;
 
+	/**
+	 * to place the singel components on the singel pages
+	 */
 	private int actualPageSpaceCounter=0;
 
 	/**
@@ -371,7 +374,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		int x = pX;
 		int y = pY;
 		
-		actualPageSpaceCounter = y;
+		this.actualPageSpaceCounter = y;
 		
 		SmallStepProofNode node = pNode;
 		Dimension size = new Dimension(0, 0);
@@ -379,12 +382,12 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		// save the space the next node will be moved down
 		int movedDown = 0;
 		
-		int lastNodeHeight = actualPageSpaceCounter;
+		int lastNodeHeight = this.actualPageSpaceCounter;
 
 		while (node != null)
 		{
 			SmallStepNodeComponent nodeComponent = (SmallStepNodeComponent) node.getUserObject();
-
+			
 			// set the origin of this node
 			nodeComponent.setOrigion(new Point(x, y));
 
@@ -397,7 +400,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 
 				// move the positioning
 				y += nodeComponent.getRuleTop();
-				actualPageSpaceCounter =y;
+				this.actualPageSpaceCounter = y;
 
 				// evaluate the new dimensions
 				size.height = y;
@@ -415,24 +418,19 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 
 				int maxHeight = Math.max(expSize.height, ruleSize.height);
 				
-				
-				System.out.println("availableHeight "+availableHeight+"tmpPaper "+actualPageSpaceCounter);
-				System.out.println("noch Platz: "+(availableHeight-actualPageSpaceCounter));
-				System.out.println("benötigter Platz: "+maxHeight);
-				
 				// provide printing
 				// if the actualPageSpaceCounter has not enough space for the next node perform a pagebrak
-				if (this.actualPageSpaceCounter + maxHeight + lastNodeHeight > availableHeight)
+				if (this.actualPageSpaceCounter + maxHeight + lastNodeHeight > this.availableHeight)
 				{
 					{
 						// save the space the node is moved down
-						movedDown = availableHeight - actualPageSpaceCounter;
+						movedDown = this.availableHeight - this.actualPageSpaceCounter;
 						
 						// move the next node down
-						y += availableHeight - actualPageSpaceCounter;
+						y += this.availableHeight - this.actualPageSpaceCounter;
 
 						// restart the actualPageSpaceCounter
-						actualPageSpaceCounter = 0;
+						this.actualPageSpaceCounter = 0;
 
 						// inform both component about the actual height they should use to
 						// place them
@@ -562,6 +560,10 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		});
 	}
 
+	/**
+	 * dose a relayout
+	 *
+	 */
 	protected void doRelayout()
 	{
 //	 get the rootNode it will be used many time
@@ -785,7 +787,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	@Override
 	protected void paintComponent(Graphics gc)
 	{
-		// TODO wieder wieß machen...
+		// if you want to see the whole small step component you might make it visible here
 		gc.setColor(Color.WHITE);
 		gc.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
 	}
