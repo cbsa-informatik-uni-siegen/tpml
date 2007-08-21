@@ -942,4 +942,5 @@ public class SmallStepNodeComponent extends JComponent
 	{
 		return this.compoundExpression;
 	}
+
 }
