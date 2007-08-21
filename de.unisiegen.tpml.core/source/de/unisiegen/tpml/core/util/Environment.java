@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.util ;
 
 
 import java.util.Enumeration ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
 
 
 /**
@@ -17,7 +18,7 @@ import java.util.Enumeration ;
  * @param <E> The entry.
  * @see de.unisiegen.tpml.core.util.AbstractEnvironment
  */
-public interface Environment < S , E >
+public interface Environment < S , E > extends LatexPrintable
 {
   /**
    * Returns <code>true</code> if this environment contains an entry for the
