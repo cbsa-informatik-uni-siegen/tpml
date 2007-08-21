@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.interfaces.DefaultTypeNames ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
@@ -278,14 +279,14 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public TreeSet < String > getLatexPackages ( )
+  public TreeSet < LatexPackage > getLatexPackages ( )
   {
-    TreeSet < String > packages = new TreeSet < String > ( ) ;
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
     if ( this instanceof DefaultTypes )
     {
       for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )
       {
-        for ( String pack : type.getLatexPackages ( ) )
+        for ( LatexPackage pack : type.getLatexPackages ( ) )
         {
           packages.add ( pack ) ;
         }
@@ -295,7 +296,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
     {
       for ( Identifier id : ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) )
       {
-        for ( String pack : id.getLatexPackages ( ) )
+        for ( LatexPackage pack : id.getLatexPackages ( ) )
         {
           packages.add ( pack ) ;
         }
@@ -305,7 +306,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
     {
       for ( TypeName typeName : ( ( DefaultTypeNames ) this ).getTypeNames ( ) )
       {
-        for ( String pack : typeName.getLatexPackages ( ) )
+        for ( LatexPackage pack : typeName.getLatexPackages ( ) )
         {
           packages.add ( pack ) ;
         }

@@ -9,7 +9,9 @@ import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -468,26 +470,26 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * @return A set of needed latex packages for this latex printable object.
    */
   @ Override
-  public TreeSet < String > getLatexPackages ( )
+  public TreeSet < LatexPackage > getLatexPackages ( )
   {
-    TreeSet < String > packages = new TreeSet < String > ( ) ;
-    packages.add ( "\\usepackage{ifthen}" ) ; //$NON-NLS-1$
-    for ( String pack : this.identifiers [ 0 ].getLatexPackages ( ) )
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
+    for ( LatexPackage pack : this.identifiers [ 0 ].getLatexPackages ( ) )
     {
       packages.add ( pack ) ;
     }
     if ( this.types [ 0 ] != null )
     {
-      for ( String pack : this.types [ 0 ].getLatexPackages ( ) )
+      for ( LatexPackage pack : this.types [ 0 ].getLatexPackages ( ) )
       {
         packages.add ( pack ) ;
       }
     }
-    for ( String pack : this.expressions [ 0 ].getLatexPackages ( ) )
+    for ( LatexPackage pack : this.expressions [ 0 ].getLatexPackages ( ) )
     {
       packages.add ( pack ) ;
     }
-    for ( String pack : this.expressions [ 1 ].getLatexPackages ( ) )
+    for ( LatexPackage pack : this.expressions [ 1 ].getLatexPackages ( ) )
     {
       packages.add ( pack ) ;
     }

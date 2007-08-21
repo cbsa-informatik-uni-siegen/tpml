@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
@@ -537,14 +538,14 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public TreeSet < String > getLatexPackages ( )
+  public TreeSet < LatexPackage > getLatexPackages ( )
   {
-    TreeSet < String > packages = new TreeSet < String > ( ) ;
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
     if ( this instanceof DefaultExpressions )
     {
       for ( Expression e : ( ( DefaultExpressions ) this ).getExpressions ( ) )
       {
-        for ( String pack : e.getLatexPackages ( ) )
+        for ( LatexPackage pack : e.getLatexPackages ( ) )
         {
           packages.add ( pack ) ;
         }
@@ -554,7 +555,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
     {
       for ( Identifier id : ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) )
       {
-        for ( String pack : id.getLatexPackages ( ) )
+        for ( LatexPackage pack : id.getLatexPackages ( ) )
         {
           packages.add ( pack ) ;
         }
@@ -566,7 +567,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
       {
         if ( type != null )
         {
-          for ( String pack : type.getLatexPackages ( ) )
+          for ( LatexPackage pack : type.getLatexPackages ( ) )
           {
             packages.add ( pack ) ;
           }

@@ -286,39 +286,6 @@ public final class LetRec extends Let implements BoundIdentifiers ,
 
 
   /**
-   * Returns a set of needed latex packages for this latex printable object.
-   * 
-   * @return A set of needed latex packages for this latex printable object.
-   */
-  @ Override
-  public TreeSet < String > getLatexPackages ( )
-  {
-    TreeSet < String > packages = new TreeSet < String > ( ) ;
-    packages.add ( "\\usepackage{ifthen}" ) ; //$NON-NLS-1$
-    for ( String pack : this.identifiers [ 0 ].getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    if ( this.types [ 0 ] != null )
-    {
-      for ( String pack : this.types [ 0 ].getLatexPackages ( ) )
-      {
-        packages.add ( pack ) ;
-      }
-    }
-    for ( String pack : this.expressions [ 0 ].getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( String pack : this.expressions [ 1 ].getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    return packages ;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Let#substitute(Identifier, Expression)

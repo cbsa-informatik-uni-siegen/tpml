@@ -33,8 +33,8 @@ public class LatexTest
 {
   public static void main ( String [ ] args )
   {
-    // testExpression ( ) ;
-    testType ( ) ;
+    testExpression ( ) ;
+    // testType ( ) ;
   }
 
 
@@ -42,7 +42,7 @@ public class LatexTest
   {
     try
     {
-      String text = "lambda (x,y).1" ;
+      String text = "let x: int = 1 in x + x" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
@@ -60,9 +60,9 @@ public class LatexTest
       out.write ( "\\usepackage{a4wide}" ) ;
       out.newLine ( ) ;
       out.newLine ( ) ;
-      for ( String pack : expression.getLatexPackages ( ) )
+      for ( LatexPackage pack : expression.getLatexPackages ( ) )
       {
-        out.write ( pack ) ;
+        out.write ( pack.toString ( ) ) ;
         out.newLine ( ) ;
       }
       out.newLine ( ) ;
@@ -122,9 +122,9 @@ public class LatexTest
       out.write ( "\\usepackage{a4wide}" ) ;
       out.newLine ( ) ;
       out.newLine ( ) ;
-      for ( String pack : type.getLatexPackages ( ) )
+      for ( LatexPackage pack : type.getLatexPackages ( ) )
       {
-        out.write ( pack ) ;
+        out.write ( pack.toString ( ) ) ;
         out.newLine ( ) ;
       }
       out.newLine ( ) ;

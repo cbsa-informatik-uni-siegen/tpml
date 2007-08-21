@@ -25,7 +25,7 @@ public interface LatexPrintable
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public TreeSet < String > getLatexPackages ( ) ;
+  public TreeSet < LatexPackage > getLatexPackages ( ) ;
 
 
   /**
