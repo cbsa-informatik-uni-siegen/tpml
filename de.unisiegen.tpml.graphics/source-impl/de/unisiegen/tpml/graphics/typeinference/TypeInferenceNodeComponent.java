@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.graphics.typeinference;
 
 import java.awt.AWTEvent;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
@@ -147,13 +148,6 @@ public class TypeInferenceNodeComponent extends JComponent
 	private LanguageTranslator translator;
 
 	/**
-	 * The expression that should be underlined. When the user moves the mouse over a rule (not not grouped rules) or
-	 * the MenuButton, that a part of the entire expressions needs to get underlined.
-	 */
-	// TODO ausbauen
-	// private Expression currentUnderlineExpression;
-
-	/**
 	 * Adapter that is used to get added to every object that can cause the gui to underline an expression. It is
 	 * bound to every {@link TypeInferenceRuleLabel} and to every {@link MenuButton}.
 	 */
@@ -262,7 +256,7 @@ public class TypeInferenceNodeComponent extends JComponent
 			}
 		});
 
-		// TODO rausnehmen...
+		// TODO normaly nobdy needs it, but if it is removed the tooltip dose not function...
 		// create the adapters that will be used to determine
 		// whether an expression needs to get underlined
 		MouseMotionAdapter underlineThisAdapter	= new MouseMotionAdapter() {
@@ -273,30 +267,9 @@ public class TypeInferenceNodeComponent extends JComponent
 			}
 		};
 
-//		this.underlineRuleAdapter = new MouseMotionAdapter() {
-//			@Override
-//			public void mouseMoved(MouseEvent event)
-//			{
-//				if (event.getSource() instanceof TypeInferenceRuleLabel)
-//				{
-//					TypeInferenceRuleLabel label = (TypeInferenceRuleLabel) event.getSource();
-//					TypeInferenceNodeComponent.this.updateUnderlineExpression(label);
-//				}
-//				else if (event.getSource() instanceof MenuButton)
-//				{
-//					MenuButton button = (MenuButton) event.getSource();
-//					TypeInferenceNodeComponent.this.updateUnderlineExpression(button);
-//				}
-//			}
-//		};
 
 		this.addMouseMotionListener(underlineThisAdapter);
 		this.compoundExpression.addMouseMotionListener(underlineThisAdapter);
-		
-		
-//		this.compoundExpression.addMouseMotionListener(this.underlineRuleAdapter);
-//		this.rules.getMenuButton().addMouseMotionListener(this.underlineRuleAdapter);
-//		this.addMouseMotionListener(underlineThisAdapter);
 
 		// apply the advanced setting
 		setAdvanced(this.advanced);
@@ -309,9 +282,10 @@ public class TypeInferenceNodeComponent extends JComponent
 	@Override
 	protected void paintComponent(Graphics gc)
 	{
-		// TODO Rahmen entfernen
+		// TODO just recomment these lines to make the components visable
 		// gc.setColor(Color.BLACK);
-		// gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
+    // gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
+		
 		super.paintComponent(gc);
 	}
 
@@ -445,60 +419,6 @@ public class TypeInferenceNodeComponent extends JComponent
 		this.rules.getMenuButton().setMenu(menu);
 	}
 
-	// TODO rausnehmen, die brauchen wir doch garnicht, oder???
-	/**
-	 * Resets the expression of the {@link #currentUnderlineExpression}, if it has changed, and informs the
-	 * {@link #compoundExpression}-Renderer that is has changed. Causes all other nodes within the tree to free
-	 * theire underlining.
-	 * 
-	 * @param expression
-	 */
-//	private void updateUnderlineExpression(Expression expression)
-//	{
-//		if (this.currentUnderlineExpression == expression)
-//		{
-//			return;
-//		}
-//
-//		this.currentUnderlineExpression = expression;
-//
-//		// this.compoundExpression.setUnderlineExpression(this.currentUnderlineExpression);
-//
-//		// free all the other nodes
-//		freeUnderliningSibling(true, Direction.DIRECTION_CHILD);
-//		freeUnderliningSibling(true, Direction.DIRECTION_PARENT);
-//
-//	}
-
-	/**
-	 * Delegates the updating of the underline to {@link #updateUnderlineExpression(Expression)} with the expression
-	 * stored within the label.
-	 * 
-	 * @param label
-	 *          The label from the {@link TypeInferenceRulesComponent}.
-	 */
-//	private void updateUnderlineExpression(TypeInferenceRuleLabel label)
-//	{
-//		updateUnderlineExpression(label.getStepExpression());
-//	}
-
-	/**
-	 * Delegates the updating of the underline to {@link #updateUnderlineExpression(Expression)} with the expression
-	 * of the first unproved {@link ProofStep}.
-	 * 
-	 * @param button
-	 *          The button from the {@link TypeInferenceRulesComponent}.
-	 */
-//	private void updateUnderlineExpression(MenuButton button)
-//	{
-//		// ProofStep[] steps = this.proofModel.remaining(this.proofNode);
-//
-//		// if (steps.length == 0) {
-//		return;
-//		// }
-//
-//		// updateUnderlineExpression (steps [0].getExpression());
-//	}
 
 	/**
 	 * Called when an {@link JMenuItem} from the Menu was selected.<br>
@@ -514,8 +434,6 @@ public class TypeInferenceNodeComponent extends JComponent
 	 */
 	void menuItemActivated(JMenuItem item)
 	{
-		// TODO brauchen wir nicht
-		// freeUnderlining();
 		if (item instanceof MenuRuleItem)
 		{
 			MenuRuleItem ruleItem = (MenuRuleItem) item;
@@ -840,17 +758,6 @@ public class TypeInferenceNodeComponent extends JComponent
 	}
 
 	/**
-	 * Causes every node, including this one, to get freed from the underlining.
-	 * 
-	 */
-	// TODO rausnehmen
-//	private void freeUnderlining()
-//	{
-//		freeUnderliningSibling(false, Direction.DIRECTION_CHILD);
-//		freeUnderliningSibling(false, Direction.DIRECTION_PARENT);
-//	}
-
-	/**
 	 * Frees every node in the given direction to be freed from the underlining. If <i>ignoreThis</i> is <i>false</i>
 	 * the current nodes is freed aswell.
 	 * 
@@ -956,7 +863,6 @@ public class TypeInferenceNodeComponent extends JComponent
 	 */
 	public void placeExpression()
 	{
-		// TODO noch mal testen... ist jetzt aber wie im SmallStepper schön!
 		if (this.expressionDimension.height < this.actualExpressionHeight )
 		{
 			int diff = this.actualExpressionHeight - this.expressionDimension.height;
@@ -966,9 +872,6 @@ public class TypeInferenceNodeComponent extends JComponent
 		{
 			this.compoundExpression.setBounds(this.ruleDimension.width + this.spacing, 0, this.expressionDimension.width,	this.actualExpressionHeight);
 		}
-		
-		// old version
-		//this.compoundExpression.setBounds(this.ruleDimension.width + this.spacing, 0, this.expressionDimension.width,	this.expressionDimension.height);
 	}
 
 	public void addTypeInferenceNodeListener(TypeInferenceNodeListener listener)
