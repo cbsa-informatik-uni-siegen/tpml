@@ -73,6 +73,12 @@ public class LatexTest
       out.write ( "\\markright{TPML LaTeX Export}" ) ;
       out.newLine ( ) ;
       out.newLine ( ) ;
+      for ( LatexInstruction instruction : expression.getLatexInstructions ( ) )
+      {
+        out.write ( instruction.toString ( ) ) ;
+        out.newLine ( ) ;
+      }
+      out.newLine ( ) ;
       for ( LatexCommand command : expression.getLatexCommands ( ) )
       {
         out.write ( command.toString ( ) ) ;
@@ -134,6 +140,12 @@ public class LatexTest
       out.newLine ( ) ;
       out.write ( "\\markright{TPML LaTeX Export}" ) ;
       out.newLine ( ) ;
+      out.newLine ( ) ;
+      for ( LatexInstruction instruction : type.getLatexInstructions ( ) )
+      {
+        out.write ( instruction.toString ( ) ) ;
+        out.newLine ( ) ;
+      }
       out.newLine ( ) ;
       for ( LatexCommand command : type.getLatexCommands ( ) )
       {
