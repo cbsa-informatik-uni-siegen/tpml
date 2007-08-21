@@ -104,7 +104,7 @@ public class TreeNodeLayout {
 		Dimension size = nodeComponent.update(availableWidth);
 		
 		// add the needed height to the tmpPaper, if it gets bigger than availableHeight, pagebreak
-		if (actualPageCounter + this.spacing + size.height + this.spaceUnderPage > this.availableHeight)
+		if (this.actualPageCounter + this.spacing + size.height + this.spaceUnderPage > this.availableHeight)
 		{
 			{
 				// add the rest of space on the page to to posY... So the next node will get to next page
@@ -117,7 +117,7 @@ public class TreeNodeLayout {
 		}
 		
 		// add the needed height to the actualPageCounter
-		actualPageCounter += size.height;
+		this.actualPageCounter += size.height;
 		
 		
 		// do the real positioning of the node
@@ -125,7 +125,7 @@ public class TreeNodeLayout {
 		
 		// let some spacing between two nodes
 		posY += this.spacing;
-		actualPageCounter += this.spacing;
+		this.actualPageCounter += this.spacing;
 	
 		//
 		// change the resulting point
