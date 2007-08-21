@@ -29,6 +29,14 @@ public interface LatexPrintable
 
 
   /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public TreeSet < LatexInstruction > getLatexInstructions ( ) ;
+
+
+  /**
    * Returns a {@link LatexString} that can be used to export this latex
    * printable object.
    * 

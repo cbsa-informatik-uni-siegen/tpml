@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.interfaces.DefaultTypeNames ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
@@ -271,6 +272,48 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
       }
     }
     return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  {
+    TreeSet < LatexInstruction > packages = new TreeSet < LatexInstruction > ( ) ;
+    if ( this instanceof DefaultTypes )
+    {
+      for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )
+      {
+        for ( LatexInstruction instruction : type.getLatexInstructions ( ) )
+        {
+          packages.add ( instruction ) ;
+        }
+      }
+    }
+    if ( this instanceof DefaultIdentifiers )
+    {
+      for ( Identifier id : ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) )
+      {
+        for ( LatexInstruction instruction : id.getLatexInstructions ( ) )
+        {
+          packages.add ( instruction ) ;
+        }
+      }
+    }
+    if ( this instanceof DefaultTypeNames )
+    {
+      for ( TypeName typeName : ( ( DefaultTypeNames ) this ).getTypeNames ( ) )
+      {
+        for ( LatexInstruction instruction : typeName.getLatexInstructions ( ) )
+        {
+          packages.add ( instruction ) ;
+        }
+      }
+    }
+    return packages ;
   }
 
 

@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
@@ -530,6 +531,51 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
       }
     }
     return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  {
+    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    if ( this instanceof DefaultExpressions )
+    {
+      for ( Expression e : ( ( DefaultExpressions ) this ).getExpressions ( ) )
+      {
+        for ( LatexInstruction instruction : e.getLatexInstructions ( ) )
+        {
+          instructions.add ( instruction ) ;
+        }
+      }
+    }
+    if ( this instanceof DefaultIdentifiers )
+    {
+      for ( Identifier id : ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) )
+      {
+        for ( LatexInstruction instruction : id.getLatexInstructions ( ) )
+        {
+          instructions.add ( instruction ) ;
+        }
+      }
+    }
+    if ( this instanceof DefaultTypes )
+    {
+      for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )
+      {
+        if ( type != null )
+        {
+          for ( LatexInstruction instruction : type.getLatexInstructions ( ) )
+          {
+            instructions.add ( instruction ) ;
+          }
+        }
+      }
+    }
+    return instructions ;
   }
 
 
