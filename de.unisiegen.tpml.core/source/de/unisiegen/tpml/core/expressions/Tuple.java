@@ -296,13 +296,13 @@ public final class Tuple extends Expression implements DefaultExpressions
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           PRIO_TUPLE , LATEX_TUPLE ) ;
-      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int n = 0 ; n < this.expressions.length ; ++ n )
       {
         if ( n > 0 )
         {
-          this.latexStringBuilder.addText ( COMMA ) ;
-          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addText ( LATEX_COMMA ) ;
+          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
           this.latexStringBuilder.addBreak ( ) ;
         }
         this.latexStringBuilder
@@ -310,7 +310,7 @@ public final class Tuple extends Expression implements DefaultExpressions
                 .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
                 PRIO_TUPLE_E ) ;
       }
-      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderEnd ( ) ;
     }
     return this.latexStringBuilder ;
   }

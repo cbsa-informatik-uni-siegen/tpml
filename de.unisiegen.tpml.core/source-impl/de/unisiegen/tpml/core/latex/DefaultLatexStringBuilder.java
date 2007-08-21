@@ -108,6 +108,28 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
   /**
    * {@inheritDoc}
    * 
+   * @see LatexStringBuilder#addBuilderBegin()
+   */
+  public void addBuilderBegin ( )
+  {
+    this.items.add ( new TextLatexItem ( "{" ) ) ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexStringBuilder#addBuilderEnd()
+   */
+  public void addBuilderEnd ( )
+  {
+    this.items.add ( new TextLatexItem ( "}" ) ) ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see LatexStringBuilder#addBuilder(LatexStringBuilder, int)
    */
   public void addEmptyBuilder ( )

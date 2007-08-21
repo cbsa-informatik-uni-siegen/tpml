@@ -39,6 +39,18 @@ public interface LatexStringBuilder
 
 
   /**
+   * Inserts the begin of a builder.
+   */
+  public void addBuilderBegin ( ) ;
+
+
+  /**
+   * Inserts the end of a builder.
+   */
+  public void addBuilderEnd ( ) ;
+
+
+  /**
    * Inserts an empty builder at the end of our builder. This is used, if an
    * optinal argument is not used.
    */

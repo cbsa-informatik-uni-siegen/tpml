@@ -250,8 +250,9 @@ public final class Exn extends Expression
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           PRIO_EXN , LATEX_EXN ) ;
-      this.latexStringBuilder.addText ( "{" //$NON-NLS-1$
-          + this.name.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+      this.latexStringBuilder.addBuilderBegin ( ) ;
+      this.latexStringBuilder.addText ( this.name.replaceAll ( "_" , "\\\\_" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+      this.latexStringBuilder.addBuilderEnd ( ) ;
     }
     return this.latexStringBuilder ;
   }

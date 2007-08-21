@@ -864,12 +864,12 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           PRIO_LET , LATEX_CURRIED_LET ) ;
-      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderBegin ( ) ;
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
-        this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+        this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         if ( this.types [ i ] != null )
         {
           this.latexStringBuilder.addText ( LPAREN ) ;
@@ -878,15 +878,15 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
         if ( this.types [ i ] != null )
         {
-          this.latexStringBuilder.addText ( "\\colon" ) ; //$NON-NLS-1$
-          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addText ( LATEX_COLON ) ;
+          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
           this.latexStringBuilder.addBuilder ( this.types [ i ]
               .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
               PRIO_LET_TAU ) ;
           this.latexStringBuilder.addText ( RPAREN ) ;
         }
       }
-      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderEnd ( ) ;
       if ( this.types [ 0 ] == null )
       {
         this.latexStringBuilder.addEmptyBuilder ( ) ;

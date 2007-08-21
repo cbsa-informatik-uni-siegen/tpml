@@ -165,8 +165,9 @@ public abstract class Constant extends Value
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           PRIO_CONSTANT , LATEX_CONSTANT ) ;
-      this.latexStringBuilder.addText ( "{" //$NON-NLS-1$
-          + this.text.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+      this.latexStringBuilder.addBuilderBegin ( ) ;
+      this.latexStringBuilder.addText ( this.text.replaceAll ( "_" , "\\\\_" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+      this.latexStringBuilder.addBuilderEnd ( ) ;
     }
     return this.latexStringBuilder ;
   }

@@ -180,7 +180,9 @@ public final class Location extends Value
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           PRIO_LOCATION , LATEX_LOCATION ) ;
-      this.latexStringBuilder.addText ( "{" + this.name + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
+      this.latexStringBuilder.addBuilderBegin ( ) ;
+      this.latexStringBuilder.addText ( this.name.replaceAll ( "_" , "\\\\_" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+      this.latexStringBuilder.addBuilderEnd ( ) ;
     }
     return this.latexStringBuilder ;
   }

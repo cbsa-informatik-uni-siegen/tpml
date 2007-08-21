@@ -517,12 +517,15 @@ public final class TypeVariable extends MonoType implements
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           PRIO_TYPE_VARIABLE , LATEX_TYPE_VARIABLE ) ;
       String type = offsetToGreekLetterLatex ( this.offset % 24 )
-          + ( ( this.index > 0 ) ? String.valueOf ( this.index ) : EMPTY_STRING ) ;
+          + ( ( this.index > 0 ) ? String.valueOf ( this.index )
+              : LATEX_EMPTY_STRING ) ;
       for ( int n = ( this.offset / 24 ) ; n > 0 ; -- n )
       {
-        type = type + BAR ;
+        type = type + LATEX_BAR ;
       }
-      this.latexStringBuilder.addText ( "{" + type + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+      this.latexStringBuilder.addBuilderBegin ( ) ;
+      this.latexStringBuilder.addText ( type ) ;
+      this.latexStringBuilder.addBuilderEnd ( ) ;
     }
     return this.latexStringBuilder ;
   }

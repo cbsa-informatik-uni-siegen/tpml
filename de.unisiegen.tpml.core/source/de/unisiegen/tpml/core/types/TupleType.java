@@ -291,14 +291,14 @@ public final class TupleType extends MonoType implements DefaultTypes
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           PRIO_TUPLE , LATEX_TUPLE_TYPE ) ;
-      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.types.length ; i ++ )
       {
         if ( i > 0 )
         {
-          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
-          this.latexStringBuilder.addText ( MULT ) ;
-          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
+          this.latexStringBuilder.addText ( LATEX_MULT ) ;
+          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
         this.latexStringBuilder.addBuilder ( this.types [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
@@ -308,7 +308,7 @@ public final class TupleType extends MonoType implements DefaultTypes
           this.latexStringBuilder.addBreak ( ) ;
         }
       }
-      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderEnd ( ) ;
     }
     return this.latexStringBuilder ;
   }

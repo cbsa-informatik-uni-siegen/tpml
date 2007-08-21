@@ -502,8 +502,8 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands
-        .add ( new DefaultLatexCommand ( "boldAttr" , 0 , "\\textbf{attr}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_BOLD_ATTR , 0 ,
+        "\\textbf{attr}" ) ) ; //$NON-NLS-1$ 
     commands.add ( new DefaultLatexCommand ( LATEX_ROW_TYPE , 1 , "#1" ) ) ; //$NON-NLS-1$
     for ( Identifier id : this.identifiers )
     {
@@ -740,29 +740,29 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           PRIO_ROW , LATEX_ROW_TYPE ) ;
-      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.types.length ; i ++ )
       {
         if ( i != 0 )
         {
-          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
         if ( Identifier.Set.ATTRIBUTE
             .equals ( this.identifiers [ i ].getSet ( ) ) )
         {
-          this.latexStringBuilder.addText ( "\\boldAttr" ) ; //$NON-NLS-1$
-          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addText ( "\\" + LATEX_BOLD_ATTR ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
-        this.latexStringBuilder.addText ( "\\colon" ) ; //$NON-NLS-1$
-        this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+        this.latexStringBuilder.addText ( LATEX_COLON ) ;
+        this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         this.latexStringBuilder
             .addBuilder ( this.types [ i ]
                 .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
                 PRIO_ROW_TAU ) ;
-        this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
-        this.latexStringBuilder.addText ( SEMI ) ;
+        this.latexStringBuilder.addText ( LATEX_SPACE ) ;
+        this.latexStringBuilder.addText ( LATEX_SEMI ) ;
         if ( i != this.types.length - 1 )
         {
           this.latexStringBuilder.addBreak ( ) ;
@@ -770,16 +770,16 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
       }
       if ( this.remainingRowType != null )
       {
-        this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+        this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         this.latexStringBuilder.addBreak ( ) ;
         this.latexStringBuilder.addBuilder ( this.remainingRowType
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
       }
       if ( this.types.length == 0 )
       {
-        this.latexStringBuilder.addText ( "\\emptyset" ) ; //$NON-NLS-1$
+        this.latexStringBuilder.addText ( LATEX_EMPTYSET ) ;
       }
-      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderEnd ( ) ;
     }
     return this.latexStringBuilder ;
   }

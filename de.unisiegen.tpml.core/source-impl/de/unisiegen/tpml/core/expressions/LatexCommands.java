@@ -14,6 +14,42 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 public interface LatexCommands
 {
   /**
+   * The latex print command for a space.
+   */
+  public static final String LATEX_SPACE = "\\ " ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a colon.
+   */
+  public static final String LATEX_COLON = "\\colon" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a comma.
+   */
+  public static final String LATEX_COMMA = "," ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a semi.
+   */
+  public static final String LATEX_SEMI = ";" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for an equal.
+   */
+  public static final String LATEX_EQUAL = "=" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for an epsilon.
+   */
+  public static final String LATEX_EPSILON = "\\epsilon" ; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for {@link And}.
    */
   public static final String LATEX_AND = "expAnd" ; //$NON-NLS-1$

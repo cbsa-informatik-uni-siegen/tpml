@@ -685,18 +685,18 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           PRIO_LAMBDA , LATEX_MULTI_LAMBDA ) ;
-      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; ++ i )
       {
         if ( i > 0 )
         {
-          this.latexStringBuilder.addText ( COMMA ) ;
-          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addText ( LATEX_COMMA ) ;
+          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
       }
-      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderEnd ( ) ;
       if ( this.types [ 0 ] == null )
       {
         this.latexStringBuilder.addEmptyBuilder ( ) ;

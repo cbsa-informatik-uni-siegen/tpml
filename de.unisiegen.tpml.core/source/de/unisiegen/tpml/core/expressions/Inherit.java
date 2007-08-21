@@ -572,18 +572,18 @@ public final class Inherit extends Expression implements BoundIdentifiers ,
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           PRIO_INHERIT , LATEX_INHERIT ) ;
-      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
         if ( i != this.identifiers.length - 1 )
         {
-          this.latexStringBuilder.addText ( COMMA ) ;
-          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addText ( LATEX_COMMA ) ;
+          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
       }
-      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderEnd ( ) ;
       this.latexStringBuilder.addBreak ( ) ;
       this.latexStringBuilder
           .addBuilder ( this.expressions [ 0 ]

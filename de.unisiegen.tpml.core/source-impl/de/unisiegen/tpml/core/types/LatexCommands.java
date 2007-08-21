@@ -14,6 +14,72 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 public interface LatexCommands
 {
   /**
+   * The latex print command for a space.
+   */
+  public static final String LATEX_SPACE = "\\ " ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a dot.
+   */
+  public static final String LATEX_DOT = "." ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a colon.
+   */
+  public static final String LATEX_COLON = "\\colon" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a comma.
+   */
+  public static final String LATEX_COMMA = "," ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a semi.
+   */
+  public static final String LATEX_SEMI = ";" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a mult.
+   */
+  public static final String LATEX_MULT = "*" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a bar.
+   */
+  public static final String LATEX_BAR = "'" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for an empty string.
+   */
+  public static final String LATEX_EMPTY_STRING = "" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a for all.
+   */
+  public static final String LATEX_FORALL = "\\forall" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for an empty set.
+   */
+  public static final String LATEX_EMPTYSET = "\\emptyset" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a bold attr.
+   */
+  public static final String LATEX_BOLD_ATTR = "boldAttr" ; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for {@link ArrowType}.
    */
   public static final String LATEX_ARROW_TYPE = "typeArrowType" ; //$NON-NLS-1$

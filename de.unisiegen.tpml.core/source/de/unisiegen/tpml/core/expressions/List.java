@@ -428,19 +428,19 @@ public final class List extends Expression implements DefaultExpressions
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           PRIO_LIST , LATEX_LIST ) ;
-      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int n = 0 ; n < this.expressions.length ; ++ n )
       {
         if ( n > 0 )
         {
-          this.latexStringBuilder.addText ( SEMI ) ;
-          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addText ( LATEX_SEMI ) ;
+          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
           this.latexStringBuilder.addBreak ( ) ;
         }
         this.latexStringBuilder.addBuilder ( this.expressions [ n ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LIST_E ) ;
       }
-      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderEnd ( ) ;
     }
     return this.latexStringBuilder ;
   }

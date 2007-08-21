@@ -721,12 +721,12 @@ public final class CurriedMethod extends Expression implements
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           PRIO_CURRIED_METHOD , LATEX_CURRIED_METHOD ) ;
-      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderBegin ( ) ;
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
-        this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+        this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         if ( this.types [ i ] != null )
         {
           this.latexStringBuilder.addText ( LPAREN ) ;
@@ -735,15 +735,15 @@ public final class CurriedMethod extends Expression implements
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
         if ( this.types [ i ] != null )
         {
-          this.latexStringBuilder.addText ( "\\colon" ) ; //$NON-NLS-1$
-          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addText ( LATEX_COLON ) ;
+          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
           this.latexStringBuilder.addBuilder ( this.types [ i ]
               .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
               PRIO_CURRIED_METHOD_TAU ) ;
           this.latexStringBuilder.addText ( RPAREN ) ;
         }
       }
-      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderEnd ( ) ;
       if ( this.types [ 0 ] == null )
       {
         this.latexStringBuilder.addEmptyBuilder ( ) ;

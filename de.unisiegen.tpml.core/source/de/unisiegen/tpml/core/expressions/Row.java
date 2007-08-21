@@ -632,22 +632,22 @@ public final class Row extends Expression implements DefaultExpressions
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           PRIO_ROW , LATEX_ROW ) ;
-      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
         this.latexStringBuilder.addBuilder ( this.expressions [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ROW_E ) ;
         if ( i != this.expressions.length - 1 )
         {
-          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
           this.latexStringBuilder.addBreak ( ) ;
         }
       }
       if ( this.expressions.length == 0 )
       {
-        this.latexStringBuilder.addText ( "\\epsilon" ) ; //$NON-NLS-1$
+        this.latexStringBuilder.addText ( LATEX_EPSILON ) ;
       }
-      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderEnd ( ) ;
     }
     return this.latexStringBuilder ;
   }

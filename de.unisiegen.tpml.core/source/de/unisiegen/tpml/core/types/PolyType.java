@@ -349,10 +349,10 @@ public final class PolyType extends Type implements DefaultTypes
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           PRIO_POLY , LATEX_POLY_TYPE ) ;
-      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderBegin ( ) ;
       if ( ! this.quantifiedVariables.isEmpty ( ) )
       {
-        this.latexStringBuilder.addText ( "\\forall" ) ; //$NON-NLS-1$
+        this.latexStringBuilder.addText ( LATEX_FORALL ) ;
         for ( Iterator < TypeVariable > it = this.quantifiedVariables
             .iterator ( ) ; it.hasNext ( ) ; )
         {
@@ -360,15 +360,15 @@ public final class PolyType extends Type implements DefaultTypes
               .toString ( ) ) ;
           if ( it.hasNext ( ) )
           {
-            this.latexStringBuilder.addText ( COMMA ) ;
-            this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+            this.latexStringBuilder.addText ( LATEX_COMMA ) ;
+            this.latexStringBuilder.addText ( LATEX_SPACE ) ;
           }
         }
-        this.latexStringBuilder.addText ( DOT ) ;
+        this.latexStringBuilder.addText ( LATEX_DOT ) ;
       }
       this.latexStringBuilder.addBuilder ( this.types [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_POLY_TAU ) ;
-      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderEnd ( ) ;
     }
     return this.latexStringBuilder ;
   }

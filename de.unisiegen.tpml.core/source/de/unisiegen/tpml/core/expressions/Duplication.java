@@ -480,31 +480,31 @@ public final class Duplication extends Expression implements
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           PRIO_DUPLICATION , LATEX_DUPLICATION ) ;
-      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
-      this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderBegin ( ) ;
+      this.latexStringBuilder.addText ( LATEX_SPACE ) ;
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
-        this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
-        this.latexStringBuilder.addText ( EQUAL ) ;
-        this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+        this.latexStringBuilder.addText ( LATEX_SPACE ) ;
+        this.latexStringBuilder.addText ( LATEX_EQUAL ) ;
+        this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         this.latexStringBuilder.addBuilder ( this.expressions [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
             PRIO_DUPLICATION_E ) ;
         if ( i != this.expressions.length - 1 )
         {
-          this.latexStringBuilder.addText ( SEMI ) ;
-          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addText ( LATEX_SEMI ) ;
+          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
           this.latexStringBuilder.addBreak ( ) ;
         }
       }
       // Only one space for '{< >}'
       if ( this.expressions.length > 0 )
       {
-        this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+        this.latexStringBuilder.addText ( LATEX_SPACE ) ;
       }
-      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilderEnd ( ) ;
     }
     return this.latexStringBuilder ;
   }
