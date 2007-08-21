@@ -3,12 +3,17 @@ package de.unisiegen.tpml.core.types ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
 import de.unisiegen.tpml.core.interfaces.SortedChildren ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -489,6 +494,36 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands
+        .add ( new DefaultLatexCommand ( "boldAttr" , 0 , "\\textbf{attr}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_ROW_TYPE , 1 , "#1" ) ) ; //$NON-NLS-1$
+    for ( Identifier id : this.identifiers )
+    {
+      for ( LatexCommand command : id.getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    for ( MonoType type : this.types )
+    {
+      for ( LatexCommand command : type.getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    return commands ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#getPrefix()
@@ -689,6 +724,64 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
       }
     }
     return new RowType ( this.identifiers , newTypes , newRemainingRowType ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_ROW , LATEX_ROW_TYPE ) ;
+      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      for ( int i = 0 ; i < this.types.length ; i ++ )
+      {
+        if ( i != 0 )
+        {
+          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+        }
+        if ( Identifier.Set.ATTRIBUTE
+            .equals ( this.identifiers [ i ].getSet ( ) ) )
+        {
+          this.latexStringBuilder.addText ( "\\boldAttr" ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+        }
+        this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
+            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+        this.latexStringBuilder.addText ( "\\colon" ) ; //$NON-NLS-1$
+        this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+        this.latexStringBuilder
+            .addBuilder ( this.types [ i ]
+                .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+                PRIO_ROW_TAU ) ;
+        this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+        this.latexStringBuilder.addText ( SEMI ) ;
+        if ( i != this.types.length - 1 )
+        {
+          this.latexStringBuilder.addBreak ( ) ;
+        }
+      }
+      if ( this.remainingRowType != null )
+      {
+        this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+        this.latexStringBuilder.addBreak ( ) ;
+        this.latexStringBuilder.addBuilder ( this.remainingRowType
+            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+      }
+      if ( this.types.length == 0 )
+      {
+        this.latexStringBuilder.addText ( "\\emptyset" ) ; //$NON-NLS-1$
+      }
+      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+    }
+    return this.latexStringBuilder ;
   }
 
 

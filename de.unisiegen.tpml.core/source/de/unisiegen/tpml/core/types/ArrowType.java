@@ -1,7 +1,12 @@
 package de.unisiegen.tpml.core.types ;
 
 
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -56,7 +61,7 @@ public final class ArrowType extends MonoType implements DefaultTypes
   /**
    * The keyword <code>-></code>.
    */
-  private static final String ARROW = "->" ; //$NON-NLS-1$
+  private static final String ARROW = "\u2192" ; //$NON-NLS-1$
 
 
   /**
@@ -168,6 +173,29 @@ public final class ArrowType extends MonoType implements DefaultTypes
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_ARROW_TYPE , 2 ,
+        "#1\\ \\to\\ #2" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.types [ 1 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
    * Returns the parameter type <code>tau1</code> for this arrow type.
    * 
    * @return the parameter type <code>tau1</code>.
@@ -260,6 +288,31 @@ public final class ArrowType extends MonoType implements DefaultTypes
     }
     return new ArrowType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ,
         this.types [ 1 ].substitute ( pTypeSubstitution ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_ARROW , LATEX_ARROW_TYPE ) ;
+      this.latexStringBuilder.addBuilder ( this.types [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+          PRIO_ARROW_TAU1 ) ;
+      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addBuilder ( this.types [ 1 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+          PRIO_ARROW_TAU2 ) ;
+    }
+    return this.latexStringBuilder ;
   }
 
 

@@ -1,7 +1,12 @@
 package de.unisiegen.tpml.core.types ;
 
 
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -142,6 +147,25 @@ public final class ObjectType extends MonoType implements DefaultTypes
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_OBJECT_TYPE , 1 ,
+        "<\\ #1\\ >" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
    * Returns the sub {@link MonoType}.
    * 
    * @return The sub {@link MonoType}.
@@ -217,6 +241,27 @@ public final class ObjectType extends MonoType implements DefaultTypes
       throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
     }
     return new ObjectType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_OBJECT , LATEX_OBJECT_TYPE ) ;
+      this.latexStringBuilder.addBuilder ( this.types [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+          PRIO_OBJECT_ROW ) ;
+    }
+    return this.latexStringBuilder ;
   }
 
 

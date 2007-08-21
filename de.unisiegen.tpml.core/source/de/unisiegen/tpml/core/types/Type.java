@@ -4,9 +4,18 @@ package de.unisiegen.tpml.core.types ;
 import java.util.ArrayList ;
 import java.util.MissingResourceException ;
 import java.util.ResourceBundle ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypeNames ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -24,7 +33,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @see PrettyPrintable
  */
 public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
-    ShowBondsInput
+    LatexPrintable , LatexCommands , ShowBondsInput
 {
   /**
    * The resource bundle.
@@ -103,6 +112,16 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @see #toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   protected PrettyStringBuilder prettyStringBuilder = null ;
+
+
+  /**
+   * Cached {@link LatexStringBuilder}, so the {@link LatexStringBuilder} do
+   * not need to be determined on every invocation of
+   * {@link #toLatexStringBuilder(LatexStringBuilderFactory)}.
+   * 
+   * @see #toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  protected LatexStringBuilder latexStringBuilder = null ;
 
 
   /**
@@ -210,6 +229,90 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @return The caption of this {@link Type}.
    */
   public abstract String getCaption ( ) ;
+
+
+  /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    if ( this instanceof DefaultTypes )
+    {
+      for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )
+      {
+        for ( LatexCommand command : type.getLatexCommands ( ) )
+        {
+          commands.add ( command ) ;
+        }
+      }
+    }
+    if ( this instanceof DefaultIdentifiers )
+    {
+      for ( Identifier id : ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) )
+      {
+        for ( LatexCommand command : id.getLatexCommands ( ) )
+        {
+          commands.add ( command ) ;
+        }
+      }
+    }
+    if ( this instanceof DefaultTypeNames )
+    {
+      for ( TypeName typeName : ( ( DefaultTypeNames ) this ).getTypeNames ( ) )
+      {
+        for ( LatexCommand command : typeName.getLatexCommands ( ) )
+        {
+          commands.add ( command ) ;
+        }
+      }
+    }
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public TreeSet < String > getLatexPackages ( )
+  {
+    TreeSet < String > packages = new TreeSet < String > ( ) ;
+    if ( this instanceof DefaultTypes )
+    {
+      for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )
+      {
+        for ( String pack : type.getLatexPackages ( ) )
+        {
+          packages.add ( pack ) ;
+        }
+      }
+    }
+    if ( this instanceof DefaultIdentifiers )
+    {
+      for ( Identifier id : ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) )
+      {
+        for ( String pack : id.getLatexPackages ( ) )
+        {
+          packages.add ( pack ) ;
+        }
+      }
+    }
+    if ( this instanceof DefaultTypeNames )
+    {
+      for ( TypeName typeName : ( ( DefaultTypeNames ) this ).getTypeNames ( ) )
+      {
+        for ( String pack : typeName.getLatexPackages ( ) )
+        {
+          packages.add ( pack ) ;
+        }
+      }
+    }
+    return packages ;
+  }
 
 
   /**
@@ -370,6 +473,36 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    *           <code>null</code>.
    */
   public abstract Type substitute ( TypeSubstitution pTypeSubstitution ) ;
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexString()
+   */
+  public final LatexString toLatexString ( )
+  {
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+        .toLatexString ( ) ;
+  }
+
+
+  /**
+   * Returns the latex string builder used to latex print this type. The latex
+   * string builder must be allocated from the specified <code>factory</code>,
+   * which is currently always the default factory, but may also be another
+   * factory in the future.
+   * 
+   * @param pLatexStringBuilderFactory the {@link LatexStringBuilderFactory}
+   *          used to allocate the required latex string builders to latex print
+   *          this type.
+   * @return the latex string builder used to latex print this type.
+   * @see #toLatexString()
+   * @see LatexStringBuilder
+   * @see LatexStringBuilderFactory
+   */
+  public abstract LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory ) ;
 
 
   /**

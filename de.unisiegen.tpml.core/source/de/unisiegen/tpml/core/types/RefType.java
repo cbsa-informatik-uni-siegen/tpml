@@ -1,9 +1,14 @@
 package de.unisiegen.tpml.core.types ;
 
 
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Location ;
 import de.unisiegen.tpml.core.expressions.Ref ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -147,6 +152,27 @@ public final class RefType extends MonoType implements DefaultTypes
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands
+    .add ( new DefaultLatexCommand ( "boldRef" , 0 , "\\textbf{ref}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+commands.add ( new DefaultLatexCommand ( LATEX_REF_TYPE , 1 ,
+    "#1\\ \\boldRef" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
    * Returns the base type of the reference type.
    * 
    * @return the base type.
@@ -222,6 +248,26 @@ public final class RefType extends MonoType implements DefaultTypes
       throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
     }
     return new RefType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_REF , LATEX_REF_TYPE ) ;
+      this.latexStringBuilder.addBuilder ( this.types [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_REF_TAU ) ;
+    }
+    return this.latexStringBuilder ;
   }
 
 

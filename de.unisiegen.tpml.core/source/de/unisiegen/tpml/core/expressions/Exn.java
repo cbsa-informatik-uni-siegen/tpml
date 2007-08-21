@@ -1,7 +1,12 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
@@ -147,6 +152,21 @@ public final class Exn extends Expression
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_EXN , 1 ,
+        "\\uparrow\\ \\textit{#1}" ) ) ; //$NON-NLS-1$
+    return commands ;
+  }
+
+
+  /**
    * Returns the name of the exception.
    * 
    * @return the name of the exception.
@@ -214,6 +234,26 @@ public final class Exn extends Expression
       throw new NotOnlyFreeVariableException ( ) ;
     }
     return this ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public final LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_EXN , LATEX_EXN ) ;
+      this.latexStringBuilder.addText ( "{" //$NON-NLS-1$
+          + this.name.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    }
+    return this.latexStringBuilder ;
   }
 
 

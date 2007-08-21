@@ -3,11 +3,16 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.exceptions.RowSubstitutionException ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.languages.MultipleIdentifier ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -321,6 +326,27 @@ public final class Row extends Expression implements DefaultExpressions
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_ROW , 1 , "#1" ) ) ; //$NON-NLS-1$
+    for ( Expression child : this.expressions )
+    {
+      for ( LatexCommand command : child.getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    return commands ;
+  }
+
+
+  /**
    * Returns the number of child {@link Attribute}s.
    * 
    * @return The number of child {@link Attribute}s.
@@ -595,6 +621,42 @@ public final class Row extends Expression implements DefaultExpressions
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_ROW , LATEX_ROW ) ;
+      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      {
+        this.latexStringBuilder.addBuilder ( this.expressions [ i ]
+            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ROW_E ) ;
+        if ( i != this.expressions.length - 1 )
+        {
+          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addBreak ( ) ;
+        }
+      }
+      if ( this.expressions.length == 0 )
+      {
+        this.latexStringBuilder.addText ( "\\epsilon" ) ; //$NON-NLS-1$
+      }
+      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+    }
+    return this.latexStringBuilder ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (

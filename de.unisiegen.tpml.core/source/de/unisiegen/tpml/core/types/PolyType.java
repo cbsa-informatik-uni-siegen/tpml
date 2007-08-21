@@ -6,6 +6,10 @@ import java.util.Iterator ;
 import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -168,6 +172,31 @@ public final class PolyType extends Type implements DefaultTypes
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_POLY_TYPE , 1 , "#1" ) ) ; //$NON-NLS-1$
+    for ( TypeVariable typeVariable : this.quantifiedVariables )
+    {
+      for ( LatexCommand command : typeVariable.getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
    * Returns the set of quantified variables.
    * 
    * @return the quantified type variables.
@@ -304,6 +333,44 @@ public final class PolyType extends Type implements DefaultTypes
     newTau = newTau.substitute ( pTypeSubstitution ) ;
     // generate the polymorphic type
     return new PolyType ( newQuantifiedVariables , newTau ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_POLY , LATEX_POLY_TYPE ) ;
+      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      if ( ! this.quantifiedVariables.isEmpty ( ) )
+      {
+        this.latexStringBuilder.addText ( "\\forall" ) ; //$NON-NLS-1$
+        for ( Iterator < TypeVariable > it = this.quantifiedVariables
+            .iterator ( ) ; it.hasNext ( ) ; )
+        {
+          this.latexStringBuilder.addText ( it.next ( ).toLatexString ( )
+              .toString ( ) ) ;
+          if ( it.hasNext ( ) )
+          {
+            this.latexStringBuilder.addText ( COMMA ) ;
+            this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+          }
+        }
+        this.latexStringBuilder.addText ( DOT ) ;
+      }
+      this.latexStringBuilder.addBuilder ( this.types [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_POLY_TAU ) ;
+      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+    }
+    return this.latexStringBuilder ;
   }
 
 

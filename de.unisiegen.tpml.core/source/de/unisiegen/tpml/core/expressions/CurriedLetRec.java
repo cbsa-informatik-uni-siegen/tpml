@@ -2,11 +2,16 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -377,6 +382,54 @@ public final class CurriedLetRec extends CurriedLet implements
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( "boldLet" , 0 , "\\textbf{let}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( "boldRec" , 0 , "\\textbf{rec}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( "boldIn" , 0 , "\\textbf{in}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands
+        .add ( new DefaultLatexCommand (
+            LATEX_CURRIED_LET_REC ,
+            4 ,
+            "\\ifthenelse{\\equal{#2}{}}" //$NON-NLS-1$
+                + "{\\boldLet\\ \\boldRec\\ #1\\ =\\ #3\\ \\boldIn\\ #4}" //$NON-NLS-1$
+                + "{\\boldLet\\ \\boldRec\\ #1\\colon\\ #2\\ =\\ #3\\ \\boldIn\\ #4}" ) ) ; //$NON-NLS-1$
+    for ( Identifier id : this.identifiers )
+    {
+      for ( LatexCommand command : id.getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    for ( MonoType type : this.types )
+    {
+      if ( type != null )
+      {
+        for ( LatexCommand command : type.getLatexCommands ( ) )
+        {
+          commands.add ( command ) ;
+        }
+      }
+    }
+    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.expressions [ 1 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see CurriedLet#substitute(Identifier, Expression)
@@ -513,6 +566,64 @@ public final class CurriedLetRec extends CurriedLet implements
     return new CurriedLetRec ( this.identifiers , newTypes ,
         this.expressions [ 0 ].substitute ( pTypeSubstitution ) ,
         this.expressions [ 1 ].substitute ( pTypeSubstitution ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_LET , LATEX_CURRIED_LET_REC ) ;
+      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+      for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+      {
+        this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+        if ( this.types [ i ] != null )
+        {
+          this.latexStringBuilder.addText ( LPAREN ) ;
+        }
+        this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
+            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+        if ( this.types [ i ] != null )
+        {
+          this.latexStringBuilder.addText ( "\\colon" ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addBuilder ( this.types [ i ]
+              .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+              PRIO_LET_TAU ) ;
+          this.latexStringBuilder.addText ( RPAREN ) ;
+        }
+      }
+      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+      if ( this.types [ 0 ] == null )
+      {
+        this.latexStringBuilder.addEmptyBuilder ( ) ;
+      }
+      else
+      {
+        this.latexStringBuilder
+            .addBuilder ( this.types [ 0 ]
+                .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+                PRIO_LET_TAU ) ;
+      }
+      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LET_E1 ) ;
+      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LET_E2 ) ;
+    }
+    return this.latexStringBuilder ;
   }
 
 

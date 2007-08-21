@@ -1,7 +1,12 @@
 package de.unisiegen.tpml.core.types ;
 
 
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -170,6 +175,31 @@ public final class ClassType extends MonoType implements DefaultTypes
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( "boldZeta" , 0 , //$NON-NLS-1$
+        "\\textbf{$\\zeta$}" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_CLASS_TYPE , 2 ,
+        "\\boldZeta( #1\\ \\colon\\ #2)" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.types [ 1 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
    * Returns the sub phi.
    * 
    * @return The sub phi.
@@ -260,6 +290,33 @@ public final class ClassType extends MonoType implements DefaultTypes
     }
     return new ClassType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ,
         this.types [ 1 ].substitute ( pTypeSubstitution ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_CLASS , LATEX_CLASS_TYPE ) ;
+      this.latexStringBuilder
+          .addBuilder ( this.types [ 0 ]
+              .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+              PRIO_CLASS_TAU ) ;
+      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder
+          .addBuilder ( this.types [ 1 ]
+              .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+              PRIO_CLASS_PHI ) ;
+    }
+    return this.latexStringBuilder ;
   }
 
 

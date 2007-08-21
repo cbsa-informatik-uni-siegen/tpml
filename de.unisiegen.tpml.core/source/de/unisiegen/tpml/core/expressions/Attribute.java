@@ -2,9 +2,14 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -295,6 +300,30 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( "boldVal" , 0 , "\\textbf{val}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_ATTRIBUTE , 2 ,
+        "\\boldVal\\ #1\\ =\\ #2\\ ;" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : this.identifiers [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override
@@ -345,6 +374,31 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_ATTRIBUTE , LATEX_ATTRIBUTE ) ;
+      this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+          PRIO_ATTRIBUTE_E ) ;
+    }
+    return this.latexStringBuilder ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (

@@ -1,7 +1,12 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
@@ -24,18 +29,18 @@ public abstract class Constant extends Value
 
 
   /**
+   * String for the case that the text is null.
+   */
+  private static final String TEXT_NULL = "text is null" ; //$NON-NLS-1$
+
+
+  /**
    * The text representation of the constant.
    * 
    * @see #getText()
    * @see #toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   protected String text ;
-
-
-  /**
-   * String for the case that the text is null.
-   */
-  private static final String TEXT_NULL = "text is null" ; //$NON-NLS-1$
 
 
   /**
@@ -90,6 +95,20 @@ public abstract class Constant extends Value
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_CONSTANT , 1 , "#1" ) ) ; //$NON-NLS-1$
+    return commands ;
+  }
+
+
+  /**
    * Returns the text representation for this constant, just like
    * {@link #toString()}.
    * 
@@ -130,6 +149,26 @@ public abstract class Constant extends Value
       throw new NotOnlyFreeVariableException ( ) ;
     }
     return this ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_CONSTANT , LATEX_CONSTANT ) ;
+      this.latexStringBuilder.addText ( "{" //$NON-NLS-1$
+          + this.text.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
+    return this.latexStringBuilder ;
   }
 
 

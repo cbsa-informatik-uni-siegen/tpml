@@ -3,11 +3,16 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -493,6 +498,83 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( "boldLet" , 0 , "\\textbf{let}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( "boldIn" , 0 , "\\textbf{in}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_MULTI_LET , 4 ,
+        "\\ifthenelse{\\equal{#2}{}}" //$NON-NLS-1$
+            + "{\\boldLet\\ (#1)\\ =\\ #3\\ \\boldIn\\ #4}" //$NON-NLS-1$
+            + "{\\boldLet\\ (#1)\\colon\\ #2\\ =\\ #3\\ \\boldIn\\ #4}" ) ) ; //$NON-NLS-1$
+    for ( Identifier id : this.identifiers )
+    {
+      for ( LatexCommand command : id.getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    if ( this.types [ 0 ] != null )
+    {
+      for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.expressions [ 1 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  @ Override
+  public TreeSet < String > getLatexPackages ( )
+  {
+    TreeSet < String > packages = new TreeSet < String > ( ) ;
+    packages.add ( "\\usepackage{ifthen}" ) ; //$NON-NLS-1$
+    for ( Identifier id : this.identifiers )
+    {
+      for ( String pack : id.getLatexPackages ( ) )
+      {
+        packages.add ( pack ) ;
+      }
+    }
+    if ( this.types [ 0 ] != null )
+    {
+      for ( String pack : this.types [ 0 ].getLatexPackages ( ) )
+      {
+        packages.add ( pack ) ;
+      }
+    }
+    for ( String pack : this.expressions [ 0 ].getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( String pack : this.expressions [ 1 ].getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    return packages ;
+  }
+
+
+  /**
    * Returns the tuple type for <code>e1</code> or <code>null</code>.
    * 
    * @return the type for <code>e1</code> or <code>null</code>.
@@ -641,6 +723,52 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
   /**
    * {@inheritDoc}
    * 
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_LET , LATEX_MULTI_LET ) ;
+      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      for ( int i = 0 ; i < this.identifiers.length ; ++ i )
+      {
+        if ( i > 0 )
+        {
+          this.latexStringBuilder.addText ( COMMA ) ;
+          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+        }
+        this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
+            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+      }
+      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+      if ( this.types [ 0 ] == null )
+      {
+        this.latexStringBuilder.addEmptyBuilder ( ) ;
+      }
+      else
+      {
+        this.latexStringBuilder
+            .addBuilder ( this.types [ 0 ]
+                .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+                PRIO_LET_TAU ) ;
+      }
+      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LET_E1 ) ;
+      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LET_E2 ) ;
+    }
+    return this.latexStringBuilder ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   @ Override
@@ -670,7 +798,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
         this.prettyStringBuilder.addText ( SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_CONSTANT ) ;
+            PRIO_LET_TAU ) ;
       }
       this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addText ( EQUAL ) ;

@@ -2,9 +2,14 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.IdentifierOrTypeName ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
@@ -223,6 +228,21 @@ public final class Identifier extends Value implements IdentifierOrTypeName
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_IDENTIFIER , 1 ,
+        "\\textit{#1}" ) ) ; //$NON-NLS-1$
+    return commands ;
+  }
+
+
+  /**
    * Returns the prefix of this {@link Expression}.
    * 
    * @return The prefix of this {@link Expression}.
@@ -371,15 +391,36 @@ public final class Identifier extends Value implements IdentifierOrTypeName
   /**
    * {@inheritDoc}
    * 
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public final LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_IDENTIFIER , LATEX_IDENTIFIER ) ;
+      this.latexStringBuilder.addText ( "{" //$NON-NLS-1$
+          + this.name.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    }
+    return this.latexStringBuilder ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   @ Override
   public final PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory factory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = factory.newBuilder ( this , PRIO_IDENTIFIER ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_IDENTIFIER ) ;
       this.prettyStringBuilder.addIdentifier ( this.name ) ;
     }
     return this.prettyStringBuilder ;

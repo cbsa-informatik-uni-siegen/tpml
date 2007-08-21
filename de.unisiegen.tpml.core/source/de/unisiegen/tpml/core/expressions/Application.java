@@ -1,8 +1,13 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -189,6 +194,29 @@ public final class Application extends Expression implements DefaultExpressions
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands
+        .add ( new DefaultLatexCommand ( LATEX_APPLICATION , 2 , "#1\\ #2" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.expressions [ 1 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#hashCode()
@@ -251,6 +279,30 @@ public final class Application extends Expression implements DefaultExpressions
     Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
     Expression newE2 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
     return new Application ( newE1 , newE2 ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_APPLICATION , LATEX_APPLICATION ) ;
+      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+          PRIO_APPLICATION_E1 ) ;
+      this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+          PRIO_APPLICATION_E2 ) ;
+    }
+    return this.latexStringBuilder ;
   }
 
 

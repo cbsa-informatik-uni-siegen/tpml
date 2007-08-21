@@ -2,9 +2,14 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.Arrays ;
+import java.util.TreeSet ;
 import java.util.Vector ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -286,6 +291,27 @@ public final class List extends Expression implements DefaultExpressions
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_LIST , 1 , "[#1]" ) ) ; //$NON-NLS-1$ 
+    for ( Expression child : this.expressions )
+    {
+      for ( LatexCommand command : child.getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    return commands ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#hashCode()
@@ -386,6 +412,37 @@ public final class List extends Expression implements DefaultExpressions
       return new List ( newExpressions ) ;
     }
     return new EmptyList ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_LIST , LATEX_LIST ) ;
+      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      for ( int n = 0 ; n < this.expressions.length ; ++ n )
+      {
+        if ( n > 0 )
+        {
+          this.latexStringBuilder.addText ( SEMI ) ;
+          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addBreak ( ) ;
+        }
+        this.latexStringBuilder.addBuilder ( this.expressions [ n ]
+            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LIST_E ) ;
+      }
+      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+    }
+    return this.latexStringBuilder ;
   }
 
 

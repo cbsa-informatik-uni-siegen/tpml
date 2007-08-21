@@ -1,8 +1,13 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -94,7 +99,7 @@ public final class InfixOperation extends Expression implements
       throw new NullPointerException ( E2_NULL ) ;
     }
     this.expressions = new Expression [ ]
-    { pExpression1 , pBinaryOperator , pExpression2 } ;
+    { pBinaryOperator , pExpression1 , pExpression2 } ;
     this.expressions [ 0 ].setParent ( this ) ;
     this.expressions [ 1 ].setParent ( this ) ;
     this.expressions [ 2 ].setParent ( this ) ;
@@ -133,8 +138,8 @@ public final class InfixOperation extends Expression implements
   @ Override
   public InfixOperation clone ( )
   {
-    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 1 ]
-        .clone ( ) , this.expressions [ 0 ].clone ( ) , this.expressions [ 2 ]
+    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 0 ]
+        .clone ( ) , this.expressions [ 1 ].clone ( ) , this.expressions [ 2 ]
         .clone ( ) ) ;
   }
 
@@ -150,8 +155,8 @@ public final class InfixOperation extends Expression implements
     if ( pObject instanceof InfixOperation )
     {
       InfixOperation other = ( InfixOperation ) pObject ;
-      return ( ( this.expressions [ 1 ].equals ( other.expressions [ 1 ] ) )
-          && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( this.expressions [ 2 ]
+      return ( ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) )
+          && ( this.expressions [ 1 ].equals ( other.expressions [ 1 ] ) ) && ( this.expressions [ 2 ]
           .equals ( other.expressions [ 2 ] ) ) ) ;
     }
     return false ;
@@ -177,7 +182,7 @@ public final class InfixOperation extends Expression implements
    */
   public Expression getE1 ( )
   {
-    return this.expressions [ 0 ] ;
+    return this.expressions [ 1 ] ;
   }
 
 
@@ -217,6 +222,33 @@ public final class InfixOperation extends Expression implements
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_INFIX_OPERATION , 3 ,
+        "#2\\ \\mathbin{#1}\\ #3" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.expressions [ 1 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.expressions [ 2 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
    * Returns the binary operator that is applied to <code>e1</code> and
    * <code>e2</code>.
    * 
@@ -226,7 +258,7 @@ public final class InfixOperation extends Expression implements
    */
   public BinaryOperator getOp ( )
   {
-    return ( BinaryOperator ) this.expressions [ 1 ] ;
+    return ( BinaryOperator ) this.expressions [ 0 ] ;
   }
 
 
@@ -238,8 +270,8 @@ public final class InfixOperation extends Expression implements
   @ Override
   public int hashCode ( )
   {
-    return this.expressions [ 1 ].hashCode ( )
-        + this.expressions [ 0 ].hashCode ( )
+    return this.expressions [ 0 ].hashCode ( )
+        + this.expressions [ 1 ].hashCode ( )
         + this.expressions [ 2 ].hashCode ( ) ;
   }
 
@@ -256,9 +288,9 @@ public final class InfixOperation extends Expression implements
     {
       throw new NotOnlyFreeVariableException ( ) ;
     }
-    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
+    Expression newE1 = this.expressions [ 1 ].substitute ( pId , pExpression ) ;
     Expression newE2 = this.expressions [ 2 ].substitute ( pId , pExpression ) ;
-    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 1 ] ,
+    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 0 ] ,
         newE1 , newE2 ) ;
   }
 
@@ -271,10 +303,40 @@ public final class InfixOperation extends Expression implements
   @ Override
   public InfixOperation substitute ( TypeSubstitution pTypeSubstitution )
   {
-    Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
+    Expression newE1 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
     Expression newE2 = this.expressions [ 2 ].substitute ( pTypeSubstitution ) ;
-    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 1 ] ,
+    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 0 ] ,
         newE1 , newE2 ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ,
+          LATEX_INFIX_OPERATION ) ;
+      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+          ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ) ;
+      this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+          ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ) ;
+      this.latexStringBuilder
+          .addBuilder ( this.expressions [ 2 ]
+              .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+              ( ( BinaryOperator ) this.expressions [ 0 ] )
+                  .getPrettyPriority ( ) + 1 ) ;
+    }
+    return this.latexStringBuilder ;
   }
 
 
@@ -283,26 +345,26 @@ public final class InfixOperation extends Expression implements
    * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  public @ Override
-  PrettyStringBuilder toPrettyStringBuilder (
+  @ Override
+  public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          ( ( BinaryOperator ) this.expressions [ 1 ] ).getPrettyPriority ( ) ) ;
-      this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          ( ( BinaryOperator ) this.expressions [ 1 ] ).getPrettyPriority ( ) ) ;
-      this.prettyStringBuilder.addText ( SPACE ) ;
+          ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          ( ( BinaryOperator ) this.expressions [ 1 ] ).getPrettyPriority ( ) ) ;
+          ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ) ;
+      this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ) ;
       this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder
           .addBuilder ( this.expressions [ 2 ]
               .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-              ( ( BinaryOperator ) this.expressions [ 1 ] )
+              ( ( BinaryOperator ) this.expressions [ 0 ] )
                   .getPrettyPriority ( ) + 1 ) ;
     }
     return this.prettyStringBuilder ;

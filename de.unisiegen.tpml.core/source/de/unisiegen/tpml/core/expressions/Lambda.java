@@ -2,11 +2,16 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -391,6 +396,70 @@ public final class Lambda extends Value implements BoundIdentifiers ,
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( "boldLambda" , 0 , //$NON-NLS-1$
+        "\\textbf{$\\lambda$}" ) ) ; //$NON-NLS-1$
+    commands
+        .add ( new DefaultLatexCommand (
+            LATEX_LAMBDA ,
+            3 ,
+            "\\ifthenelse{\\equal{#2}{}}{\\boldLambda #1.#3}{\\boldLambda #1\\colon\\ #2.#3}" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : this.identifiers [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    if ( this.types [ 0 ] != null )
+    {
+      for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  @ Override
+  public TreeSet < String > getLatexPackages ( )
+  {
+    TreeSet < String > packages = new TreeSet < String > ( ) ;
+    packages.add ( "\\usepackage{ifthen}" ) ; //$NON-NLS-1$
+    for ( String pack : this.identifiers [ 0 ].getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    if ( this.types [ 0 ] != null )
+    {
+      for ( String pack : this.types [ 0 ].getLatexPackages ( ) )
+      {
+        packages.add ( pack ) ;
+      }
+    }
+    for ( String pack : this.expressions [ 0 ].getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    return packages ;
+  }
+
+
+  /**
    * Returns the type for the parameter or <code>null</code>.
    * 
    * @return the type for the parameter or <code>null</code>.
@@ -506,10 +575,44 @@ public final class Lambda extends Value implements BoundIdentifiers ,
   /**
    * {@inheritDoc}
    * 
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PrettyPrintPriorities.PRIO_LAMBDA , LATEX_LAMBDA ) ;
+      this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_ID ) ;
+      if ( this.types [ 0 ] == null )
+      {
+        this.latexStringBuilder.addEmptyBuilder ( ) ;
+      }
+      else
+      {
+        this.latexStringBuilder.addBuilder ( this.types [ 0 ]
+            .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+            PrettyPrintPriorities.PRIO_LAMBDA_TAU ) ;
+      }
+      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_LAMBDA_E ) ;
+    }
+    return this.latexStringBuilder ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  public @ Override
-  PrettyStringBuilder toPrettyStringBuilder (
+  @ Override
+  public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )

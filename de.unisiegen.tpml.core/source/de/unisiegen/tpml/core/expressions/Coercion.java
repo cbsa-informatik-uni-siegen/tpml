@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
@@ -9,6 +10,10 @@ import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
 import de.unisiegen.tpml.core.interfaces.SortedChildren ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -266,6 +271,33 @@ public final class Coercion extends Expression implements DefaultTypes ,
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_COERCION , 3 ,
+        "(#1\\colon\\ #2<\\colon\\ #3)" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.types [ 1 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
    * Returns the {@link Expression} and the {@link Type}s in the right sorting.
    * 
    * @return The {@link Expression} and the {@link Type}s in the right sorting.
@@ -370,10 +402,38 @@ public final class Coercion extends Expression implements DefaultTypes ,
   /**
    * {@inheritDoc}
    * 
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PrettyPrintPriorities.PRIO_COERCION , LATEX_COERCION ) ;
+      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_COERCION_E ) ;
+      this.latexStringBuilder.addBuilder ( this.types [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_COERCION_TAU1 ) ;
+      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addBuilder ( this.types [ 1 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_COERCION_TAU2 ) ;
+    }
+    return this.latexStringBuilder ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  public @ Override
-  PrettyStringBuilder toPrettyStringBuilder (
+  @ Override
+  public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
@@ -392,6 +452,7 @@ public final class Coercion extends Expression implements DefaultTypes ,
       this.prettyStringBuilder.addText ( SPACE ) ;
       this.prettyStringBuilder.addText ( SUBTYPE ) ;
       this.prettyStringBuilder.addText ( SPACE ) ;
+      this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PrettyPrintPriorities.PRIO_COERCION_TAU2 ) ;

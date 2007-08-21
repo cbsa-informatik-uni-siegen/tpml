@@ -2,6 +2,11 @@ package de.unisiegen.tpml.core.types ;
 
 
 import java.util.ArrayList ;
+import java.util.TreeSet ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -151,6 +156,75 @@ public final class TypeVariable extends MonoType implements
         return 'ψ' ;
       case 23 :
         return 'ω' ;
+      default :
+        throw new IllegalArgumentException ( OFFSET_INVALID ) ;
+    }
+  }
+
+
+  /**
+   * Returns the greek letter as a latex command that is assigned to the
+   * specified <code>offset</code>.
+   * 
+   * @param pOffset the offset to translate to a greek letter.
+   * @return the greek letter as a latex command that should be used to
+   *         represent the specified <code>offset</code>.
+   * @throws IllegalArgumentException if <code>offset</code> is larger than
+   *           <code>23</code> or negative.
+   */
+  private static String offsetToGreekLetterLatex ( int pOffset )
+  {
+    switch ( pOffset )
+    {
+      case 0 :
+        return "\\alpha" ;//$NON-NLS-1$
+      case 1 :
+        return "\\beta" ;//$NON-NLS-1$
+      case 2 :
+        return "\\gamma" ;//$NON-NLS-1$
+      case 3 :
+        return "\\delta" ;//$NON-NLS-1$
+      case 4 :
+        return "\\epsilon" ;//$NON-NLS-1$
+      case 5 :
+        return "\\zeta" ;//$NON-NLS-1$
+      case 6 :
+        return "\\eta" ;//$NON-NLS-1$
+      case 7 :
+        return "\\theta" ;//$NON-NLS-1$
+      case 8 :
+        return "\\iota" ;//$NON-NLS-1$
+      case 9 :
+        return "\\kappa" ;//$NON-NLS-1$
+      case 10 :
+        return "\\lambda" ;//$NON-NLS-1$
+      case 11 :
+        return "\\mu" ;//$NON-NLS-1$
+      case 12 :
+        return "\\nu" ;//$NON-NLS-1$
+      case 13 :
+        return "\\xi" ;//$NON-NLS-1$
+      case 14 :
+        // There is no latex command for omikron
+        return "o" ; //$NON-NLS-1$
+      case 15 :
+        return "\\pi" ;//$NON-NLS-1$
+      case 16 :
+        return "\\rho" ;//$NON-NLS-1$
+      case 17 :
+        return "\\sigma" ;//$NON-NLS-1$
+      case 18 :
+        return "\\tau" ;//$NON-NLS-1$
+      case 19 :
+        return "\\upsilon" ;//$NON-NLS-1$
+      case 20 :
+        return "\\phi" ;//$NON-NLS-1$
+      case 21 :
+        return "\\chi" ;//$NON-NLS-1$
+      case 22 :
+        return "\\psi" ;//$NON-NLS-1$
+      case 23 :
+        return "\\omega" ;//$NON-NLS-1$
       default :
         throw new IllegalArgumentException ( OFFSET_INVALID ) ;
     }
@@ -329,6 +403,20 @@ public final class TypeVariable extends MonoType implements
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_VARIABLE , 1 , "#1" ) ) ; //$NON-NLS-1$
+    return commands ;
+  }
+
+
+  /**
    * Returns the offset of this variable. See the description of the
    * {@link TypeVariable} class for details about the <code>index</code> and
    * the <code>offset</code>.
@@ -412,6 +500,31 @@ public final class TypeVariable extends MonoType implements
       tau = tau.substitute ( pTypeSubstitution ) ;
     }
     return tau ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_TYPE_VARIABLE , LATEX_TYPE_VARIABLE ) ;
+      String type = offsetToGreekLetterLatex ( this.offset % 24 )
+          + ( ( this.index > 0 ) ? String.valueOf ( this.index ) : EMPTY_STRING ) ;
+      for ( int n = ( this.offset / 24 ) ; n > 0 ; -- n )
+      {
+        type = type + BAR ;
+      }
+      this.latexStringBuilder.addText ( "{" + type + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    }
+    return this.latexStringBuilder ;
   }
 
 

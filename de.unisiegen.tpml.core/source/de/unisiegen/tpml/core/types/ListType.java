@@ -1,9 +1,14 @@
 package de.unisiegen.tpml.core.types ;
 
 
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.EmptyList ;
 import de.unisiegen.tpml.core.expressions.List ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -51,6 +56,12 @@ public final class ListType extends MonoType implements DefaultTypes
    * The space string.
    */
   private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * String for the case that the type substitution is null.
+   */
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
 
 
   /**
@@ -142,6 +153,27 @@ public final class ListType extends MonoType implements DefaultTypes
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands
+        .add ( new DefaultLatexCommand ( "boldList" , 0 , "\\textbf{list}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_LIST_TYPE , 1 ,
+        "#1\\ \\boldList" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
    * Returns the base element type.
    * 
    * @return the base element type
@@ -205,12 +237,6 @@ public final class ListType extends MonoType implements DefaultTypes
 
 
   /**
-   * String for the case that the type substitution is null.
-   */
-  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see MonoType#substitute(TypeSubstitution)
@@ -223,6 +249,26 @@ public final class ListType extends MonoType implements DefaultTypes
       throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
     }
     return new ListType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_LIST , LATEX_LIST_TYPE ) ;
+      this.latexStringBuilder.addBuilder ( this.types [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LIST_TAU ) ;
+    }
+    return this.latexStringBuilder ;
   }
 
 

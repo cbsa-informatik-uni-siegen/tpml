@@ -33,7 +33,7 @@ public abstract class PrimitiveType extends MonoType
   /**
    * The name of this primitive type.
    */
-  private String name ;
+  protected String name ;
 
 
   /**
@@ -142,8 +142,8 @@ public abstract class PrimitiveType extends MonoType
    * 
    * @see Type#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  public @ Override
-  PrettyStringBuilder toPrettyStringBuilder (
+  @ Override
+  public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )

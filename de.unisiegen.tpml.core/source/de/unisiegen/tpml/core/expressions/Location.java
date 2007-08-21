@@ -1,7 +1,12 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
@@ -108,6 +113,20 @@ public final class Location extends Value
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_LOCATION , 1 , "#1" ) ) ; //$NON-NLS-1$
+    return commands ;
+  }
+
+
+  /**
    * Returns the name of the memory location.
    * 
    * @return the name of the memory location.
@@ -151,10 +170,29 @@ public final class Location extends Value
   /**
    * {@inheritDoc}
    * 
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_LOCATION , LATEX_LOCATION ) ;
+      this.latexStringBuilder.addText ( "{" + this.name + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
+    }
+    return this.latexStringBuilder ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  public @ Override
-  PrettyStringBuilder toPrettyStringBuilder (
+  @ Override
+  public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )

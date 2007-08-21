@@ -3,11 +3,16 @@ package de.unisiegen.tpml.core.types ;
 
 import java.text.MessageFormat ;
 import java.util.ArrayList ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.interfaces.BoundTypeNames ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.languages.LanguageParserException ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -190,6 +195,31 @@ public final class RecType extends MonoType implements DefaultTypes ,
   public String getCaption ( )
   {
     return CAPTION ;
+  }
+
+
+  /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands
+        .add ( new DefaultLatexCommand ( "boldMu" , 0 , "\\textbf{$\\mu$}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_REC_TYPE , 2 ,
+        "\\boldMu #1.#2" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : this.typeNames [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
   }
 
 
@@ -379,6 +409,31 @@ public final class RecType extends MonoType implements DefaultTypes ,
     }
     return new RecType ( this.typeNames [ 0 ] , this.types [ 0 ]
         .substitute ( pTypeSubstitution ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_REC_TYPE , LATEX_REC_TYPE ) ;
+      this.latexStringBuilder.addBuilder ( this.typeNames [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+          PRIO_REC_TYPE_TYPE_NAME ) ;
+      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addBuilder ( this.types [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+          PRIO_REC_TYPE_TAU ) ;
+    }
+    return this.latexStringBuilder ;
   }
 
 

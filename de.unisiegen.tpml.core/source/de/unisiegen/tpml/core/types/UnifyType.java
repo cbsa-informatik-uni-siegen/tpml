@@ -1,6 +1,13 @@
 package de.unisiegen.tpml.core.types ;
 
 
+import java.util.TreeSet ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+
+
 /**
  * Type for the type equation in the unification algorithm
  * 
@@ -48,5 +55,40 @@ public class UnifyType extends PrimitiveType
   public String getCaption ( )
   {
     return CAPTION ;
+  }
+
+
+  /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( "boldUnify" , 0 , //$NON-NLS-1$
+        "\\textbf{unify}" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_UNIFY_TYPE , 0 ,
+        "\\boldUnify" ) ) ; //$NON-NLS-1$
+    return commands ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_PRIMITIVE , LATEX_UNIFY_TYPE ) ;
+    }
+    return this.latexStringBuilder ;
   }
 }

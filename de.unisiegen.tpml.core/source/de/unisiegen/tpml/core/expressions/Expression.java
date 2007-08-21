@@ -6,10 +6,16 @@ import java.util.Enumeration ;
 import java.util.LinkedList ;
 import java.util.MissingResourceException ;
 import java.util.ResourceBundle ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -28,7 +34,7 @@ import de.unisiegen.tpml.core.types.TypeName ;
  * @see PrettyPrintable
  */
 public abstract class Expression implements Cloneable , PrettyPrintable ,
-    PrettyPrintPriorities , ShowBondsInput
+    PrettyPrintPriorities , LatexPrintable , LatexCommands , ShowBondsInput
 {
   /**
    * A level-order enumeration of the expressions within a given expression.
@@ -206,6 +212,16 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @see #toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   protected PrettyStringBuilder prettyStringBuilder = null ;
+
+
+  /**
+   * Cached {@link LatexStringBuilder}, so the {@link LatexStringBuilder} do
+   * not need to be determined on every invocation of
+   * {@link #toLatexStringBuilder(LatexStringBuilderFactory)}.
+   * 
+   * @see #toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  protected LatexStringBuilder latexStringBuilder = null ;
 
 
   /**
@@ -472,6 +488,96 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    if ( this instanceof DefaultExpressions )
+    {
+      for ( Expression e : ( ( DefaultExpressions ) this ).getExpressions ( ) )
+      {
+        for ( LatexCommand command : e.getLatexCommands ( ) )
+        {
+          commands.add ( command ) ;
+        }
+      }
+    }
+    if ( this instanceof DefaultIdentifiers )
+    {
+      for ( Identifier id : ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) )
+      {
+        for ( LatexCommand command : id.getLatexCommands ( ) )
+        {
+          commands.add ( command ) ;
+        }
+      }
+    }
+    if ( this instanceof DefaultTypes )
+    {
+      for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )
+      {
+        if ( type != null )
+        {
+          for ( LatexCommand command : type.getLatexCommands ( ) )
+          {
+            commands.add ( command ) ;
+          }
+        }
+      }
+    }
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public TreeSet < String > getLatexPackages ( )
+  {
+    TreeSet < String > packages = new TreeSet < String > ( ) ;
+    if ( this instanceof DefaultExpressions )
+    {
+      for ( Expression e : ( ( DefaultExpressions ) this ).getExpressions ( ) )
+      {
+        for ( String pack : e.getLatexPackages ( ) )
+        {
+          packages.add ( pack ) ;
+        }
+      }
+    }
+    if ( this instanceof DefaultIdentifiers )
+    {
+      for ( Identifier id : ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) )
+      {
+        for ( String pack : id.getLatexPackages ( ) )
+        {
+          packages.add ( pack ) ;
+        }
+      }
+    }
+    if ( this instanceof DefaultTypes )
+    {
+      for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )
+      {
+        if ( type != null )
+        {
+          for ( String pack : type.getLatexPackages ( ) )
+          {
+            packages.add ( pack ) ;
+          }
+        }
+      }
+    }
+    return packages ;
+  }
+
+
+  /**
    * Returns the parent of this {@link Expression}.
    * 
    * @return The parent of this {@link Expression}.
@@ -697,6 +803,36 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   {
     return this ;
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexString()
+   */
+  public final LatexString toLatexString ( )
+  {
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+        .toLatexString ( ) ;
+  }
+
+
+  /**
+   * Returns the latex string builder used to latex print this expression. The
+   * latex string builder must be allocated from the specified
+   * <code>factory</code>, which is currently always the default factory, but
+   * may also be another factory in the future.
+   * 
+   * @param pLatexStringBuilderFactory the {@link LatexStringBuilderFactory}
+   *          used to allocate the required latex string builders to latex print
+   *          this expression.
+   * @return the latex string builder used to latex print this expression.
+   * @see #toLatexString()
+   * @see LatexStringBuilder
+   * @see LatexStringBuilderFactory
+   */
+  public abstract LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory ) ;
 
 
   /**

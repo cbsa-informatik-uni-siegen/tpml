@@ -3,11 +3,16 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -591,6 +596,89 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( "boldLet" , 0 , "\\textbf{let}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( "boldIn" , 0 , "\\textbf{in}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_CURRIED_LET , 4 ,
+        "\\ifthenelse{\\equal{#2}{}}" //$NON-NLS-1$
+            + "{\\boldLet\\ #1\\ =\\ #3\\ \\boldIn\\ #4}" //$NON-NLS-1$
+            + "{\\boldLet\\ #1\\colon\\ #2\\ =\\ #3\\ \\boldIn\\ #4}" ) ) ; //$NON-NLS-1$
+    for ( Identifier id : this.identifiers )
+    {
+      for ( LatexCommand command : id.getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    for ( MonoType type : this.types )
+    {
+      if ( type != null )
+      {
+        for ( LatexCommand command : type.getLatexCommands ( ) )
+        {
+          commands.add ( command ) ;
+        }
+      }
+    }
+    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.expressions [ 1 ].getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  @ Override
+  public TreeSet < String > getLatexPackages ( )
+  {
+    TreeSet < String > packages = new TreeSet < String > ( ) ;
+    packages.add ( "\\usepackage{ifthen}" ) ; //$NON-NLS-1$
+    for ( Identifier id : this.identifiers )
+    {
+      for ( String pack : id.getLatexPackages ( ) )
+      {
+        packages.add ( pack ) ;
+      }
+    }
+    for ( MonoType type : this.types )
+    {
+      if ( type != null )
+      {
+        for ( String pack : type.getLatexPackages ( ) )
+        {
+          packages.add ( pack ) ;
+        }
+      }
+    }
+    for ( String pack : this.expressions [ 0 ].getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( String pack : this.expressions [ 1 ].getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    return packages ;
+  }
+
+
+  /**
    * Returns the types for the <code>identifiers</code>.
    * <code>let id (id1:tau1)...(idn:taun): tau = e1 in e2</code> is translated
    * to <code>let id = lambda id1:tau1...lambda idn:taun.e1 in e2</code> which
@@ -758,6 +846,64 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
     Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
     Expression newE2 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
     return new CurriedLet ( this.identifiers , newTypes , newE1 , newE2 ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  @ Override
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    if ( this.latexStringBuilder == null )
+    {
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_LET , LATEX_CURRIED_LET ) ;
+      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+      for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+      {
+        this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+        if ( this.types [ i ] != null )
+        {
+          this.latexStringBuilder.addText ( LPAREN ) ;
+        }
+        this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
+            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+        if ( this.types [ i ] != null )
+        {
+          this.latexStringBuilder.addText ( "\\colon" ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addText ( "\\ " ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addBuilder ( this.types [ i ]
+              .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+              PRIO_LET_TAU ) ;
+          this.latexStringBuilder.addText ( RPAREN ) ;
+        }
+      }
+      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+      if ( this.types [ 0 ] == null )
+      {
+        this.latexStringBuilder.addEmptyBuilder ( ) ;
+      }
+      else
+      {
+        this.latexStringBuilder
+            .addBuilder ( this.types [ 0 ]
+                .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
+                PRIO_LET_TAU ) ;
+      }
+      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LET_E1 ) ;
+      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LET_E2 ) ;
+    }
+    return this.latexStringBuilder ;
   }
 
 
