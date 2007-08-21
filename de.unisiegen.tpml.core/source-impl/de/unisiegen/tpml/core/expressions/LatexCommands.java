@@ -1,12 +1,15 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+
+
 /**
  * This interface includes the latex print commands.
  * 
  * @author Christian Fehler
- * @see de.unisiegen.tpml.core.expressions.Expression
- * @see de.unisiegen.tpml.core.latex.LatexStringBuilder
+ * @see Expression
+ * @see LatexStringBuilder
  */
 public interface LatexCommands
 {

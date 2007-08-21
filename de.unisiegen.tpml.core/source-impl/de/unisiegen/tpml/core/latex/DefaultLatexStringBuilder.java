@@ -5,18 +5,17 @@ import java.util.ArrayList ;
 
 
 /**
- * Default implementation of the <code>PrettyStringBuilder</code> interface,
- * which is the heart of the pretty printer.
+ * Default implementation of the <code>LatexStringBuilder</code> interface,
+ * which is the heart of the latex printer.
  * 
- * @author Benedikt Meurer
- * @version $Rev:835 $
- * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder
- * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory
+ * @author Christian Fehler
+ * @see LatexStringBuilder
+ * @see LatexStringBuilderFactory
  */
 final class DefaultLatexStringBuilder implements LatexStringBuilder
 {
   /**
-   * The items already added to this pretty string builder.
+   * The items already added to this latex string builder.
    * 
    * @see AbstractLatexItem
    */
@@ -30,15 +29,15 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
 
 
   /**
-   * Allocates a new <code>DefaultPrettyStringBuilder</code> for the
+   * Allocates a new <code>DefaultLatextringBuilder</code> for the
    * <code>printable</code>, where the priority used for the
    * <code>printable</code> is <code>returnPriority</code>.
    * 
-   * @param pPrintable the printable for which to generate a pretty string.
-   * @param pReturnPriority the priority for the <code>printable</code>,
+   * @param pPrintable The printable for which to generate a latex string.
+   * @param pReturnPriority The priority for the <code>printable</code>,
    *          which determines where and when to add parenthesis around
    *          {@link LatexPrintable}s added to this builder.
-   * @param pName TODO
+   * @param pName The name of the latex command.
    * @throws NullPointerException if <code>printable</code> is
    *           <code>null</code>.
    */
@@ -68,43 +67,19 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder#addBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder,
-   *      int)
+   * @see LatexStringBuilder#addBuilder(LatexStringBuilder, int)
    */
-  public void addEmptyBuilder ( )
+  public void addBuilder ( LatexStringBuilder pLatexStringBuilder ,
+      int pArgumentPriority )
   {
-    // implement the break
-    if ( ( this.items.size ( ) > 0 )
-        && ( this.items.get ( this.items.size ( ) - 1 ) instanceof BreakLatexItem ) )
-    {
-      BreakLatexItem moveBreak = ( BreakLatexItem ) this.items
-          .remove ( this.items.size ( ) - 1 ) ;
-      this.items.add ( new TextLatexItem ( "{}" ) ) ; //$NON-NLS-1$
-      this.items.add ( moveBreak ) ;
-    }
-    else
-    {
-      this.items.add ( new TextLatexItem ( "{}" ) ) ; //$NON-NLS-1$
-    }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder#addBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder,
-   *      int)
-   */
-  public void addBuilder ( LatexStringBuilder builder , int argumentPriority )
-  {
-    if ( builder == null )
+    if ( pLatexStringBuilder == null )
     {
       throw new NullPointerException ( "builder is null" ) ; //$NON-NLS-1$
     }
     // cast to a default latex string builder
-    DefaultLatexStringBuilder defaultBuilder = ( DefaultLatexStringBuilder ) builder ;
+    DefaultLatexStringBuilder defaultBuilder = ( DefaultLatexStringBuilder ) pLatexStringBuilder ;
     // check if we need parenthesis
-    boolean parenthesis = ( defaultBuilder.returnPriority < argumentPriority ) ;
+    boolean parenthesis = ( defaultBuilder.returnPriority < pArgumentPriority ) ;
     // implement the break
     if ( ( this.items.size ( ) > 0 )
         && ( this.items.get ( this.items.size ( ) - 1 ) instanceof BreakLatexItem ) )
@@ -133,9 +108,32 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder#addText(java.lang.String)
+   * @see LatexStringBuilder#addBuilder(LatexStringBuilder, int)
    */
-  public void addText ( String text )
+  public void addEmptyBuilder ( )
+  {
+    // implement the break
+    if ( ( this.items.size ( ) > 0 )
+        && ( this.items.get ( this.items.size ( ) - 1 ) instanceof BreakLatexItem ) )
+    {
+      BreakLatexItem moveBreak = ( BreakLatexItem ) this.items
+          .remove ( this.items.size ( ) - 1 ) ;
+      this.items.add ( new TextLatexItem ( "{}" ) ) ; //$NON-NLS-1$
+      this.items.add ( moveBreak ) ;
+    }
+    else
+    {
+      this.items.add ( new TextLatexItem ( "{}" ) ) ; //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexStringBuilder#addText(String)
+   */
+  public void addText ( String pText )
   {
     // implement the break
     if ( ( this.items.size ( ) > 0 )
@@ -144,14 +142,48 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
       this.items.remove ( this.items.size ( ) - 1 ) ;
       this.items.add ( new TextLatexItem ( "\\linebreak[3]" ) ) ; //$NON-NLS-1$
     }
-    this.items.add ( new TextLatexItem ( text ) ) ;
+    this.items.add ( new TextLatexItem ( pText ) ) ;
+  }
+
+
+  /**
+   * Determines the string representation of this builders contents and adds it
+   * to the <code>pBuffer</code>.
+   * 
+   * @param pBuffer String buffer to store the characters to.
+   */
+  void determineString ( StringBuilder pBuffer )
+  {
+    // process all items for this string builder
+    for ( AbstractLatexItem item : this.items )
+    {
+      // determine the string representation for the item
+      item.determineString ( pBuffer ) ;
+    }
+  }
+
+
+  /**
+   * Determines the number of characters required to serialize the latex string
+   * builder content to a latex string.
+   * 
+   * @return The number of characters in the generated latex string.
+   */
+  int determineStringLength ( )
+  {
+    int length = 0 ;
+    for ( AbstractLatexItem item : this.items )
+    {
+      length += item.determineStringLength ( ) ;
+    }
+    return length ;
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder#toPrettyString()
+   * @see LatexStringBuilder#toLatexString()
    */
   public LatexString toLatexString ( )
   {
@@ -162,42 +194,5 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
     // determine the string representation and place it into the string buffer
     determineString ( buffer ) ;
     return new DefaultLatexString ( buffer.toString ( ) ) ;
-  }
-
-
-  //
-  // Pretty string construction
-  //
-  /**
-   * Determines the string representation of this builders contents and adds it
-   * to the <code>buffer</code>.
-   * 
-   * @param buffer string buffer to store the characters to.
-   */
-  void determineString ( StringBuilder buffer )
-  {
-    // process all items for this string builder
-    for ( AbstractLatexItem item : this.items )
-    {
-      // determine the string representation for the item
-      item.determineString ( buffer ) ;
-    }
-  }
-
-
-  /**
-   * Determines the number of characters required to serialize the pretty string
-   * builder content to a pretty string.
-   * 
-   * @return the number of characters in the generated pretty string.
-   */
-  int determineStringLength ( )
-  {
-    int length = 0 ;
-    for ( AbstractLatexItem item : this.items )
-    {
-      length += item.determineStringLength ( ) ;
-    }
-    return length ;
   }
 }

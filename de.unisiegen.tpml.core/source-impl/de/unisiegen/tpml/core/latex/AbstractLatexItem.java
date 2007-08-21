@@ -2,27 +2,26 @@ package de.unisiegen.tpml.core.latex ;
 
 
 /**
- * Abstract base class for items in the
- * {@link de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder}, which are
- * used to collect the information while generating the pretty string content.
+ * Abstract base class for items in the {@link DefaultLatexStringBuilder},
+ * which are used to collect the information while generating the latex string
+ * content.
  * 
- * @author Benedikt Meurer
- * @version $Rev:277 $
- * @see de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder
+ * @author Christian Fehler
+ * @see DefaultLatexStringBuilder
  */
 abstract class AbstractLatexItem
 {
   /**
-   * @param buffer
+   * @param pBuffer The string of the latex string.
    */
-  abstract void determineString ( StringBuilder buffer ) ;
+  abstract void determineString ( StringBuilder pBuffer ) ;
 
 
   /**
    * Returns the length of the string in characters required to serialize this
-   * item to a pretty string.
+   * item to a latex string.
    * 
-   * @return the required string length.
+   * @return The required string length.
    * @see #determineString(StringBuilder)
    */
   abstract int determineStringLength ( ) ;

@@ -8,7 +8,6 @@ import java.util.TreeSet ;
  * Base interface for classes whose instances can be printed in latex.
  * 
  * @author Christian Fehler
- * @version $Rev:277 $
  */
 public interface LatexPrintable
 {

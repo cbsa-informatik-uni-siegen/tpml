@@ -2,18 +2,12 @@ package de.unisiegen.tpml.core.latex ;
 
 
 /**
- * This class represents a chunk of text in
- * {@link de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder}s item list,
- * which is associated with a given
- * {@link de.unisiegen.tpml.core.prettyprinter.PrettyStyle}. For example this
- * is used to implement various methods of the pretty string builder, like
- * <code>addConstant()</code>, <code>addKeyword()</code> and
- * <code>addText()</code>.
+ * This class represents a chunk of text in {@link DefaultLatexStringBuilder}s
+ * item list.
  * 
- * @author Benedikt Meurer
- * @version $Rev:277 $
- * @see de.unisiegen.tpml.core.latex.AbstractLatexItem
- * @see de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder
+ * @author Christian Fehler
+ * @see AbstractLatexItem
+ * @see DefaultLatexStringBuilder
  */
 final class TextLatexItem extends AbstractLatexItem
 {
@@ -25,12 +19,11 @@ final class TextLatexItem extends AbstractLatexItem
 
   /**
    * Allocates a new <code>TextItem</code>, which represents a portion of
-   * text, as given by the <code>content</code>, associated with the
-   * specified <code>style</code>.
+   * text, as given by the <code>pContent</code>.
    * 
-   * @param pContent the text content.
-   * @throws NullPointerException if either <code>content</code> or
-   *           <code>style</code> is <code>null</code>.
+   * @param pContent The text content.
+   * @throws NullPointerException if the <code>pContent</code> is
+   *           <code>null</code>.
    */
   TextLatexItem ( String pContent )
   {
@@ -48,17 +41,17 @@ final class TextLatexItem extends AbstractLatexItem
    * @see AbstractLatexItem#determineString(StringBuilder)
    */
   @ Override
-  void determineString ( StringBuilder buffer )
+  void determineString ( StringBuilder pBuffer )
   {
     // append the text content
-    buffer.append ( this.content ) ;
+    pBuffer.append ( this.content ) ;
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.latex.AbstractLatexItem#determineStringLength()
+   * @see AbstractLatexItem#determineStringLength()
    */
   @ Override
   int determineStringLength ( )

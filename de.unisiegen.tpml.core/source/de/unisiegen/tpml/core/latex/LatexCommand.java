@@ -2,18 +2,16 @@ package de.unisiegen.tpml.core.latex ;
 
 
 /**
- * TODO
+ * This interface is used for latex commands.
  * 
  * @author Christian Fehler
- * @see LatexPrintable
  */
 public interface LatexCommand extends Comparable < LatexCommand >
 {
   /**
-   * TODO
+   * Returns the string value of this <code>LatexCommand</code>.
    * 
-   * @return TODO
-   * @see Object#toString()
+   * @return The string value of this <code>LatexCommand</code>.
    */
   public String toString ( ) ;
 }

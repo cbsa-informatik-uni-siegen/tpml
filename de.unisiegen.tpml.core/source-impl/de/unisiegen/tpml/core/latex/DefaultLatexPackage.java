@@ -2,20 +2,23 @@ package de.unisiegen.tpml.core.latex ;
 
 
 /**
- * TODO
+ * This class is used for latex packages.
+ * 
+ * @author Christian Fehler
  */
 public final class DefaultLatexPackage implements LatexPackage
 {
   /**
-   * TODO
+   * The name of the latex package.
    */
   private String name ;
 
 
   /**
-   * TODO
+   * Allocates a new <code>DefaultLatexPackage</code> for the specified
+   * <code>pName</code>.
    * 
-   * @param pName
+   * @param pName The name of the new latex command.
    */
   public DefaultLatexPackage ( String pName )
   {
@@ -24,10 +27,9 @@ public final class DefaultLatexPackage implements LatexPackage
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param pOther TODO
-   * @return TODO
+   * @see Comparable#compareTo(Object)
    */
   public int compareTo ( LatexPackage pOther )
   {
@@ -36,7 +38,9 @@ public final class DefaultLatexPackage implements LatexPackage
 
 
   /**
-   * TODO
+   * {@inheritDoc}
+   * 
+   * @see Object#equals(Object)
    */
   @ Override
   public boolean equals ( Object pObject )
@@ -51,7 +55,9 @@ public final class DefaultLatexPackage implements LatexPackage
 
 
   /**
-   * TODO
+   * {@inheritDoc}
+   * 
+   * @see Object#equals(Object)
    */
   @ Override
   public int hashCode ( )
@@ -61,7 +67,9 @@ public final class DefaultLatexPackage implements LatexPackage
 
 
   /**
-   * TODO
+   * Returns the string value of this <code>DefaultLatexInstruction</code>.
+   * 
+   * @return The string value of this <code>DefaultLatexInstruction</code>.
    */
   @ Override
   public String toString ( )

@@ -2,18 +2,16 @@ package de.unisiegen.tpml.core.latex ;
 
 
 /**
- * TODO
+ * This interface is used for latex instructions.
  * 
  * @author Christian Fehler
- * @see LatexPrintable
  */
 public interface LatexInstruction extends Comparable < LatexInstruction >
 {
   /**
-   * TODO
+   * Returns the string value of this <code>LatexInstruction</code>.
    * 
-   * @return TODO
-   * @see Object#toString()
+   * @return The string value of this <code>LatexInstruction</code>.
    */
   public String toString ( ) ;
 }

@@ -2,20 +2,23 @@ package de.unisiegen.tpml.core.latex ;
 
 
 /**
- * TODO
+ * This class is used for latex instructions.
+ * 
+ * @author Christian Fehler
  */
 public final class DefaultLatexInstruction implements LatexInstruction
 {
   /**
-   * TODO
+   * The text of the latex instruction.
    */
   private String text ;
 
 
   /**
-   * TODO
+   * Allocates a new <code>DefaultLatexInstruction</code> for the specified
+   * <code>pText</code>.
    * 
-   * @param pText
+   * @param pText The text of the new latex instruction.
    */
   public DefaultLatexInstruction ( String pText )
   {
@@ -24,10 +27,9 @@ public final class DefaultLatexInstruction implements LatexInstruction
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param pOther TODO
-   * @return TODO
+   * @see Comparable#compareTo(Object)
    */
   public int compareTo ( LatexInstruction pOther )
   {
@@ -36,7 +38,9 @@ public final class DefaultLatexInstruction implements LatexInstruction
 
 
   /**
-   * TODO
+   * {@inheritDoc}
+   * 
+   * @see Object#equals(Object)
    */
   @ Override
   public boolean equals ( Object pObject )
@@ -51,7 +55,9 @@ public final class DefaultLatexInstruction implements LatexInstruction
 
 
   /**
-   * TODO
+   * {@inheritDoc}
+   * 
+   * @see Object#equals(Object)
    */
   @ Override
   public int hashCode ( )
@@ -61,7 +67,9 @@ public final class DefaultLatexInstruction implements LatexInstruction
 
 
   /**
-   * TODO
+   * Returns the string value of this <code>DefaultLatexInstruction</code>.
+   * 
+   * @return The string value of this <code>DefaultLatexInstruction</code>.
    */
   @ Override
   public String toString ( )

@@ -1,12 +1,15 @@
 package de.unisiegen.tpml.core.types ;
 
 
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+
+
 /**
  * This interface includes the latex print commands.
  * 
  * @author Christian Fehler
- * @see de.unisiegen.tpml.core.types.Type
- * @see de.unisiegen.tpml.core.latex.LatexStringBuilder
+ * @see Type
+ * @see LatexStringBuilder
  */
 public interface LatexCommands
 {

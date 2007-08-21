@@ -2,18 +2,17 @@ package de.unisiegen.tpml.core.latex ;
 
 
 /**
- * This class represents a pretty string builder that is added to another pretty
+ * This class represents a latex string builder that is added to another latex
  * string builder.
  * 
- * @author Benedikt Meurer
- * @version $Rev:277 $
- * @see de.unisiegen.tpml.core.latex.AbstractLatexItem
- * @see de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder
+ * @author Christian Fehler
+ * @see AbstractLatexItem
+ * @see DefaultLatexStringBuilder
  */
 final class BuilderLatexItem extends AbstractLatexItem
 {
   /**
-   * The pretty string builder associated with this item.
+   * The latex string builder associated with this item.
    */
   private DefaultLatexStringBuilder builder ;
 
@@ -43,9 +42,9 @@ final class BuilderLatexItem extends AbstractLatexItem
    * @see AbstractLatexItem#determineString(StringBuilder)
    */
   @ Override
-  protected void determineString ( StringBuilder buffer )
+  protected void determineString ( StringBuilder pBuffer )
   {
-    this.builder.determineString ( buffer ) ;
+    this.builder.determineString ( pBuffer ) ;
   }
 
 

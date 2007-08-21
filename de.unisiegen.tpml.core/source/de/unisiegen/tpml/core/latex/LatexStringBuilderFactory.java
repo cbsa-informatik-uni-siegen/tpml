@@ -2,41 +2,33 @@ package de.unisiegen.tpml.core.latex ;
 
 
 /**
- * Factory class for
- * {@link de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder}s. Use this
- * class to allocate new pretty string builders, which in turn are used to
- * generate new {@link de.unisiegen.tpml.core.prettyprinter.PrettyString}s.
+ * Factory class for {@link LatexStringBuilder}s. Use this class to allocate
+ * new latex string builders, which in turn are used to generate new
+ * {@linkLatexString}s.
  * 
- * @author Benedikt Meurer
- * @version $Rev:277 $
- * @see de.unisiegen.tpml.core.prettyprinter.PrettyString
- * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder
+ * @author Christian Fehler
+ * @see LatexString
+ * @seeLatexStringBuilder
  */
 public final class LatexStringBuilderFactory
 {
-  //
-  // Constructor (private)
-  //
   /**
-   * Allocates a new <code>PrettyStringBuilderFactory</code>, which can be
+   * Allocates a new <code>LatexStringBuilderFactory</code>, which can be
    * used to allocate new {@link LatexStringBuilder}s.
    * 
    * @see #newInstance()
    */
   private LatexStringBuilderFactory ( )
   {
-    // nothing to do here...
+    // nothing to do here
   }
 
 
-  //
-  // Factory instantiation
-  //
   /**
-   * Allocates a new <code>PrettyStringBuilderFactory</code>, which can be
+   * Allocates a new <code>LatexStringBuilderFactory</code>, which can be
    * used to allocate new {@link LatexStringBuilder}s.
    * 
-   * @return a newly allocated <code>PrettyStringBuilderFactory</code>
+   * @return A newly allocated <code>LatexStringBuilderFactory</code>
    *         instance.
    * @see #newBuilder(LatexPrintable,int,String)
    */
@@ -46,29 +38,27 @@ public final class LatexStringBuilderFactory
   }
 
 
-  //
-  // Builder management
-  //
   /**
-   * Allocates a new <code>PrettyStringBuilder</code>, which will generate an
-   * annotation for the <code>printable</code> for the whole string
+   * Allocates a new <code>LatexStringBuilder</code>, which will generate an
+   * annotation for the <code>LatexPrintable</code> for the whole string
    * represented by the builder.
    * 
-   * @param printable the printable object.
-   * @param returnPriority the return priority according to the priority grammar
-   *          used for the printables in this builder.
-   * @param pName TODO
-   * @return a newly allocated <code>PrettyStringBuilder</code> for the
-   *         <code>printable</code> with the specified
-   *         <code>returnPriority</code>.
-   * @throws NullPointerException if <code>printable</code> is
+   * @param pLatexPrintable the printable object.
+   * @param pReturnPriority the return priority according to the priority
+   *          grammar used for the printables in this builder.
+   * @param pName The name of the latex command.
+   * @return A newly allocated <code>LatexStringBuilder</code> for the
+   *         <code>LatexPrintable</code> with the specified
+   *         <code>pReturnPriority</code>.
+   * @throws NullPointerException If <code>LatexPrintable</code> is
    *           <code>null</code>.
    * @see LatexString
    * @see LatexStringBuilder
    */
-  public LatexStringBuilder newBuilder ( LatexPrintable printable ,
-      int returnPriority , String pName )
+  public LatexStringBuilder newBuilder ( LatexPrintable pLatexPrintable ,
+      int pReturnPriority , String pName )
   {
-    return new DefaultLatexStringBuilder ( printable , returnPriority , pName ) ;
+    return new DefaultLatexStringBuilder ( pLatexPrintable , pReturnPriority ,
+        pName ) ;
   }
 }
