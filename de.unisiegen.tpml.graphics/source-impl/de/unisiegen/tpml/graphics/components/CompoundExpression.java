@@ -121,7 +121,6 @@ public class CompoundExpression < S , E > extends JComponent
    */
   private ToListenForMouseContainer toListenForMouse ;
 
-
   /**
    * the constructor
    *
@@ -427,9 +426,8 @@ public class CompoundExpression < S , E > extends JComponent
     if ( this.expression != null && this.expressionRenderer != null )
     {
       // now check the size still available for the expression
-    	//TODO Test for printing
-    	this.expressionSize = this.expressionRenderer.getNeededSizeAll_ ( maxWidth ) ;
-      //this.expressionSize = this.expressionRenderer.getNeededSize ( maxWidth ) ;
+   		this.expressionSize = this.expressionRenderer.getNeededSizeAll_ ( maxWidth ) ;
+  
       result.width += this.expressionSize.width ;
       result.height = Math.max ( result.height , this.expressionSize.height ) ;
     }
@@ -513,13 +511,9 @@ public class CompoundExpression < S , E > extends JComponent
       this.environmentRenderer.renderer ( posX , posY , this.environmentSize.width , getHeight ( ) , gc ) ;
     	//this.environmentRenderer.renderer ( posX , posY , this.environmentSize.width , environmentSize.height , gc ) ;
       posX += this.environmentSize.width ;
-      // TODO mal in die gleiche Zeile schreiben
-      // draw the arrow character in the vertical center
-      // int centerV = getHeight ( ) / 2 ;
-      // centerV += AbstractRenderer.getTextFontMetrics ( ).getAscent ( ) / 2 ;
+
       gc.setFont ( AbstractRenderer.getTextFont ( ) ) ;
       gc.setColor ( AbstractRenderer.getTextColor ( ) ) ;
-      //gc.drawString ( CompoundExpression.arrowStr , posX , centerV ) ;
       gc.drawString ( CompoundExpression.arrowStr , posX , posY+AbstractRenderer.getFontAscent() ) ;
       posX += AbstractRenderer.getTextFontMetrics ( ).stringWidth (
           CompoundExpression.arrowStr ) ;
