@@ -366,7 +366,7 @@ public class MainWindow
       // setSaveState(editor.isUndoStatus());
       if ( editor.isTexteditor ( ) )
       {
-        setChangeState ( editor.isUndoStatus ( ) ) ;
+        setChangeState ( editor.isSaveStatus ( ) ) ;
         setEditorFunctions ( true ) ;
       }
       else
