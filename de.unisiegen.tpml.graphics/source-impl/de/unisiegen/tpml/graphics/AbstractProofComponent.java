@@ -40,10 +40,8 @@ public abstract class AbstractProofComponent extends JComponent {
 	
 	public	AbstractProofComponent (AbstractProofModel proofModel) {
 		super ();
-		// TODO Testen
 		// if nobody is printing prevent pagebreak by setting the availableHeight to Integer.MAX_VALUE;
 		this.availableHeight 		= Integer.MAX_VALUE;
-		//this.availableHeight 		= 600;
 		this.proofModel 				= proofModel;
 		this.currentlyLayouting	= false;
 		this.translator 				= this.proofModel.getLanguage().newTranslator();
@@ -119,6 +117,8 @@ public abstract class AbstractProofComponent extends JComponent {
 	public void resetAvailableHeight ()
 	{
 		this.availableHeight = Integer.MAX_VALUE;
+		// TODO test
+		//forcedRelayout();
 		relayout();
 	}
 
