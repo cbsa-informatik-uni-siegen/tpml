@@ -79,10 +79,10 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    // testExpression ( ) ;
-    // testType ( ) ;
+     testExpression ( ) ;
+    //testType ( ) ;
     // testTypeEnvironment ( ) ;
-    testStore ( ) ;
+    // testStore ( ) ;
   }
 
 
@@ -119,9 +119,9 @@ public class LatexTest
   {
     try
     {
-      String text = "let x: int = 1 in x + x" ;
+      String text = "(+) 3 3" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
-      Language language = factory.getLanguageById ( "l4" ) ;
+      Language language = factory.getLanguageById ( "l2c" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
           .parse ( ) ;
       testLatexPrintable ( expression ) ;

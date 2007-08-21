@@ -82,89 +82,89 @@ public interface LatexCommands
   /**
    * The latex print command for {@link ArrowType}.
    */
-  public static final String LATEX_ARROW_TYPE = "typeArrowType" ; //$NON-NLS-1$
+  public static final String LATEX_ARROW_TYPE = "TypeArrowType" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for {@link BooleanType}.
    */
-  public static final String LATEX_BOOLEAN_TYPE = "typeBooleanType" ; //$NON-NLS-1$
+  public static final String LATEX_BOOLEAN_TYPE = "TypeBooleanType" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for {@link ClassType}.
    */
-  public static final String LATEX_CLASS_TYPE = "typeClassType" ; //$NON-NLS-1$
+  public static final String LATEX_CLASS_TYPE = "TypeClassType" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for {@link IntegerType}.
    */
-  public static final String LATEX_INTEGER_TYPE = "typeIntegerType" ; //$NON-NLS-1$
+  public static final String LATEX_INTEGER_TYPE = "TypeIntegerType" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for {@link ListType}.
    */
-  public static final String LATEX_LIST_TYPE = "typeListType" ; //$NON-NLS-1$
+  public static final String LATEX_LIST_TYPE = "TypeListType" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for {@link ObjectType}.
    */
-  public static final String LATEX_OBJECT_TYPE = "typeObjectType" ; //$NON-NLS-1$
+  public static final String LATEX_OBJECT_TYPE = "TypeObjectType" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for {@link PolyType}.
    */
-  public static final String LATEX_POLY_TYPE = "typePolyType" ; //$NON-NLS-1$
+  public static final String LATEX_POLY_TYPE = "TypePolyType" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for {@link RecType}.
    */
-  public static final String LATEX_REC_TYPE = "typeRecType" ; //$NON-NLS-1$
+  public static final String LATEX_REC_TYPE = "TypeRecType" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for {@link RefType}.
    */
-  public static final String LATEX_REF_TYPE = "typeRefType" ; //$NON-NLS-1$
+  public static final String LATEX_REF_TYPE = "TypeRefType" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for {@link RowType}.
    */
-  public static final String LATEX_ROW_TYPE = "typeRowType" ; //$NON-NLS-1$
+  public static final String LATEX_ROW_TYPE = "TypeRowType" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for {@link TupleType}.
    */
-  public static final String LATEX_TUPLE_TYPE = "typeTupleType" ; //$NON-NLS-1$
+  public static final String LATEX_TUPLE_TYPE = "TypeTupleType" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for {@link TypeName}.
    */
-  public static final String LATEX_TYPE_NAME = "typeTypeName" ; //$NON-NLS-1$
+  public static final String LATEX_TYPE_NAME = "TypeTypeName" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for {@link TypeVariable}.
    */
-  public static final String LATEX_TYPE_VARIABLE = "typeTypeVariable" ; //$NON-NLS-1$
+  public static final String LATEX_TYPE_VARIABLE = "TypeTypeVariable" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for {@link UnifyType}.
    */
-  public static final String LATEX_UNIFY_TYPE = "typeUnifyType" ; //$NON-NLS-1$
+  public static final String LATEX_UNIFY_TYPE = "TypeUnifyType" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for {@link UnitType}.
    */
-  public static final String LATEX_UNIT_TYPE = "typeUnitType" ; //$NON-NLS-1$
+  public static final String LATEX_UNIT_TYPE = "TypeUnitType" ; //$NON-NLS-1$
 }
