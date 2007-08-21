@@ -19,6 +19,7 @@ import de.unisiegen.tpml.core.types.PolyType ;
 import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.core.types.TypeVariable ;
 import de.unisiegen.tpml.core.types.UnifyType ;
+import de.unisiegen.tpml.core.types.UnitType ;
 
 
 /**
@@ -32,8 +33,8 @@ public class LatexTest
 {
   public static void main ( String [ ] args )
   {
-    testExpression ( ) ;
-    // testType ( ) ;
+    // testExpression ( ) ;
+    testType ( ) ;
   }
 
 
@@ -104,7 +105,7 @@ public class LatexTest
   {
     try
     {
-      String text = "int -> bool" ;
+      String text = "unit" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
       Type type = language.newTypeParser ( new StringReader ( text ) ).parse ( ) ;
