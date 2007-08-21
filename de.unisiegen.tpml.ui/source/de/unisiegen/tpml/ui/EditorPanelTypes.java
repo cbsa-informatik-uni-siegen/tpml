@@ -49,6 +49,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
  * @author Christoph Fehling
  * @author Benjamin Mies
  */
+@SuppressWarnings("all")
 public class EditorPanelTypes extends AbstractBean implements EditorPanel {
 
 	/**
@@ -454,8 +455,12 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel {
 	 * @return true if the undo function is available
 	 */
 	public boolean isUndoStatus ( ) {
-		//return undoStatus;
-		return code.isUndoStatus ( );
+		return this.undoStatus;
+		//return code.isUndoStatus ( );
+	}
+	
+	public boolean isSaveStatus ( ) {
+		return code.isSaveStatus ( );
 	}
 
 	public void setUndoStatus ( boolean undoStatus ) {
@@ -482,7 +487,7 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel {
 	}
 
 	public boolean shouldBeSaved ( ) {
-		return code.isSaveStatus ( );
+		return code.isUndoStatus ( );
 	}
 
 	public void handleUndo ( ) {

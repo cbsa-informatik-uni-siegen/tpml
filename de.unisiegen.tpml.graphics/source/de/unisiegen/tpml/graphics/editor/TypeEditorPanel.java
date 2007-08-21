@@ -135,11 +135,6 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	MonoType type2;
 
 	/**
-	 * Status save
-	 */
-	boolean saveStatus;
-
-	/**
 	 * Status for next
 	 */
 	boolean nextStatus;
@@ -816,24 +811,6 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	}
 
 	/**
-	 * Gives information if document has changed since last save.
-	 * 
-	 * @return boolean has changed or not
-	 */
-	public boolean isSaveStatus ( ) {
-		return this.saveStatus;
-	}
-
-	/**
-	 * Set a new save status for this document.
-	 * 
-	 * @param pSaveStatus boolean new save status
-	 */
-	public void setSaveStatus ( boolean pSaveStatus ) {
-		this.saveStatus = pSaveStatus;
-	}
-
-	/**
 	 * The Next Function is not implemented!
 	 */
 	public void handleNext ( ) {
@@ -896,7 +873,6 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				this.type = eventHandling ( this.editor1, this.outline );
 				// this.window.setChangeState ( Boolean.TRUE ) ;
 				firePropertyChange ( "editor", false, true );
-				this.saveStatus = true;
 				this.setUndoStatus ( true );
 				this.undohistory.push ( this.currentContent1 );
 				setRedoStatus ( false );
@@ -907,7 +883,6 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				this.type2 = eventHandling ( this.editor2, this.outline2 );
 				//this.window.setChangeState ( Boolean.TRUE ) ;
 				firePropertyChange ( "editor", false, true );
-				this.saveStatus = true;
 				this.setUndoStatus ( true );
 				this.undohistory2.push ( this.currentContent2 );
 				setRedoStatus ( false );
@@ -939,7 +914,6 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 					TypeEditorPanel.this.type = eventHandling ( TypeEditorPanel.this.editor1, TypeEditorPanel.this.outline );
 					//TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
 					firePropertyChange ( "editor", false, true );
-					TypeEditorPanel.this.saveStatus = true;
 					TypeEditorPanel.this.setUndoStatus ( true );
 					String doctext = this.sourceField.getText ( 0, this.sourceField.getLength ( ) );
 					if ( doctext.endsWith ( " " ) ) //$NON-NLS-1$
@@ -957,7 +931,6 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 					TypeEditorPanel.this.type2 = eventHandling ( TypeEditorPanel.this.editor2, TypeEditorPanel.this.outline2 );
 					//TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
 					firePropertyChange ( "editor", false, true );
-					TypeEditorPanel.this.saveStatus = true;
 					TypeEditorPanel.this.setUndoStatus ( true );
 					String doctext = this.sourceField2.getText ( 0, this.sourceField2.getLength ( ) );
 					if ( doctext.endsWith ( " " ) ) //$NON-NLS-1$
@@ -1059,8 +1032,11 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	 * @see de.unisiegen.tpml.ui.EditorComponent#isUndoStatus()
 	 */
 	public boolean isUndoStatus ( ) {
-		//return this.undoStatus ;
-		return this.saveStatus;
+		return this.undoStatus ;
+	}
+	
+	public boolean isSaveStatus ( ) {
+		return this.undoStatus1 | this.undoStatus2 | this.undoStatus ;
 	}
 
 	/**
@@ -1079,10 +1055,20 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 	
 	  public void clearHistory ( )
 	  {
+		 this.redoStatus1 = false;
+		 this.redoStatus2 = false;
 	    undohistory.clear ( ) ;
 	    redohistory.clear ( ) ;
+	    undohistory2.clear ( ) ;
+	    redohistory2.clear ( ) ;
+	    this.undoStatus = this.undoStatus1;
 	    setUndoStatus ( false ) ;
-	    setUndoStatus (false);
+	    
+	    this.undoStatus1 = false;
+	    this.undoStatus = this.undoStatus2;
+	    setUndoStatus (false) ;
+	    
+	    this.undoStatus2 = false;
 	  }
 
 	/**
@@ -1198,8 +1184,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 			try {
 				TypeEditorPanel.this.type = eventHandling ( TypeEditorPanel.this.editor1, TypeEditorPanel.this.outline );
 				// TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
-				//firePropertyChange ( "editor", false, true );
-				TypeEditorPanel.this.saveStatus = true;
+				// firePropertyChange ( "editor", false, true );
 				TypeEditorPanel.this.setUndoStatus ( true );
 				String doctext = arg0.getDocument ( ).getText ( 0, arg0.getDocument ( ).getLength ( ) );
 				if ( doctext.endsWith ( " " ) ) //$NON-NLS-1$
@@ -1207,9 +1192,10 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 					TypeEditorPanel.this.undohistory.push ( doctext );
 					logger.debug ( "history added: " + doctext ); //$NON-NLS-1$
 				}
-				setRedoStatus ( false );
+				TypeEditorPanel.this.setRedoStatus ( false );
 				TypeEditorPanel.this.redohistory.clear ( );
 				TypeEditorPanel.this.currentContent1 = doctext;
+				//setUndoStatus ( true );
 			} catch ( BadLocationException e ) {
 				logger.error ( "Failed to add text to undo history", e ); //$NON-NLS-1$
 			}
@@ -1224,14 +1210,14 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 			try {
 				TypeEditorPanel.this.type = eventHandling ( TypeEditorPanel.this.editor1, TypeEditorPanel.this.outline );
 				// TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
-				//firePropertyChange ( "editor", false, true );
-				TypeEditorPanel.this.saveStatus = true;
+				firePropertyChange ( "editor", false, true );
 				TypeEditorPanel.this.setUndoStatus ( true );
 				TypeEditorPanel.this.undohistory.push ( TypeEditorPanel.this.currentContent1 );
 				setRedoStatus ( false );
 				TypeEditorPanel.this.redohistory.clear ( );
 				TypeEditorPanel.this.currentContent1 = arg0.getDocument ( )
 						.getText ( 0, arg0.getDocument ( ).getLength ( ) );
+				setUndoStatus ( true );
 			} catch ( BadLocationException e ) {
 				logger.error ( "Failed to add text to undo history", e ); //$NON-NLS-1$
 			}
@@ -1266,7 +1252,6 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				TypeEditorPanel.this.type2 = eventHandling ( TypeEditorPanel.this.editor2, TypeEditorPanel.this.outline2 );
 				// TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
 				//firePropertyChange ( "editor", false, true );
-				TypeEditorPanel.this.saveStatus = true;
 				TypeEditorPanel.this.setUndoStatus ( true );
 				String doctext = arg0.getDocument ( ).getText ( 0, arg0.getDocument ( ).getLength ( ) );
 				if ( doctext.endsWith ( " " ) ) //$NON-NLS-1$
@@ -1277,6 +1262,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				setRedoStatus ( false );
 				TypeEditorPanel.this.redohistory2.clear ( );
 				TypeEditorPanel.this.currentContent2 = doctext;
+				setUndoStatus ( true );
 			} catch ( BadLocationException e ) {
 				logger.error ( "Failed to add text to undo history", e ); //$NON-NLS-1$
 			}
@@ -1292,13 +1278,13 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
 				TypeEditorPanel.this.type2 = eventHandling ( TypeEditorPanel.this.editor2, TypeEditorPanel.this.outline2 );
 				//TypeEditorPanel.this.window.setChangeState ( Boolean.TRUE ) ;
 				//firePropertyChange ( "editor", false, true );
-				TypeEditorPanel.this.saveStatus = true;
 				TypeEditorPanel.this.setUndoStatus ( true );
 				TypeEditorPanel.this.undohistory2.push ( TypeEditorPanel.this.currentContent2 );
 				setRedoStatus ( false );
 				TypeEditorPanel.this.redohistory2.clear ( );
 				TypeEditorPanel.this.currentContent2 = arg0.getDocument ( )
 						.getText ( 0, arg0.getDocument ( ).getLength ( ) );
+				setUndoStatus ( true );
 			} catch ( BadLocationException e ) {
 				logger.error ( "Failed to add text to undo history2", e ); //$NON-NLS-1$
 			}

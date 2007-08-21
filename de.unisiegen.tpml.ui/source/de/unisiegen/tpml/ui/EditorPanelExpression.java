@@ -565,6 +565,10 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	public boolean isUndoStatus() {
 		return undoStatus;
 	}
+	
+	public boolean isSaveStatus() {
+		return undoStatus;
+	}
 
 	public void setUndoStatus(boolean undoStatus) {
 		if (this.undoStatus != undoStatus) {

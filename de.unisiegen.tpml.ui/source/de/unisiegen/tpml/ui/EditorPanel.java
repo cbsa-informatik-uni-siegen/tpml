@@ -47,6 +47,8 @@ public interface EditorPanel  {
 	boolean isRedoStatus ( );
 
 	boolean isUndoStatus ( );
+	
+	boolean isSaveStatus ( );
 
 	boolean isTexteditor ( );
 
