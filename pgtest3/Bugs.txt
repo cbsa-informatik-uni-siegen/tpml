@@ -9,3 +9,4 @@
 *** Christian ***
 
 *** Benny ***
+DefaultSubType.toPrettyStringBuilder verwendet ein "=" anstatt einem "<:"
