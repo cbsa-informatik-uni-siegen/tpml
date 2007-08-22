@@ -72,6 +72,17 @@ public final class RelationalOperator extends BinaryOperator
   /**
    * Returns the equals operator.
    * 
+   * @return the equals operator.
+   */
+  public static final RelationalOperator newEquals ( )
+  {
+    return new RelationalOperator ( EQUAL ) ;
+  }
+
+
+  /**
+   * Returns the equals operator.
+   * 
    * @param pParserStartOffset The start offset of this {@link Expression} in
    *          the source code.
    * @param pParserEndOffset The end offset of this {@link Expression} in the
@@ -83,6 +94,17 @@ public final class RelationalOperator extends BinaryOperator
   {
     return new RelationalOperator ( EQUAL , pParserStartOffset ,
         pParserEndOffset ) ;
+  }
+
+
+  /**
+   * Returns the greater-equal operator.
+   * 
+   * @return the greater-equal operator.
+   */
+  public static final RelationalOperator newGreaterEqual ( )
+  {
+    return new RelationalOperator ( GREATER_EQUAL ) ;
   }
 
 
@@ -106,6 +128,17 @@ public final class RelationalOperator extends BinaryOperator
   /**
    * Returns the greater-than operator.
    * 
+   * @return the greater-than operator.
+   */
+  public static final RelationalOperator newGreaterThan ( )
+  {
+    return new RelationalOperator ( GREATER ) ;
+  }
+
+
+  /**
+   * Returns the greater-than operator.
+   * 
    * @param pParserStartOffset The start offset of this {@link Expression} in
    *          the source code.
    * @param pParserEndOffset The end offset of this {@link Expression} in the
@@ -123,6 +156,17 @@ public final class RelationalOperator extends BinaryOperator
   /**
    * Returns the lower-equal operator.
    * 
+   * @return the lower-equal operator.
+   */
+  public static final RelationalOperator newLowerEqual ( )
+  {
+    return new RelationalOperator ( LOWER_EQUAL ) ;
+  }
+
+
+  /**
+   * Returns the lower-equal operator.
+   * 
    * @param pParserStartOffset The start offset of this {@link Expression} in
    *          the source code.
    * @param pParserEndOffset The end offset of this {@link Expression} in the
@@ -134,6 +178,17 @@ public final class RelationalOperator extends BinaryOperator
   {
     return new RelationalOperator ( LOWER_EQUAL , pParserStartOffset ,
         pParserEndOffset ) ;
+  }
+
+
+  /**
+   * Returns the lower-than operator.
+   * 
+   * @return the lower-than operator.
+   */
+  public static final RelationalOperator newLowerThan ( )
+  {
+    return new RelationalOperator ( LOWER ) ;
   }
 
 

@@ -71,6 +71,17 @@ public final class ArithmeticOperator extends BinaryOperator
   /**
    * Returns the arithmetic division operator.
    * 
+   * @return a new instance of the div operator.
+   */
+  public static final ArithmeticOperator newDiv ( )
+  {
+    return new ArithmeticOperator ( DIV , PRIO_DIV ) ;
+  }
+
+
+  /**
+   * Returns the arithmetic division operator.
+   * 
    * @param pParserStartOffset The start offset of this {@link Expression} in
    *          the source code.
    * @param pParserEndOffset The end offset of this {@link Expression} in the
@@ -82,6 +93,17 @@ public final class ArithmeticOperator extends BinaryOperator
   {
     return new ArithmeticOperator ( DIV , PRIO_DIV , pParserStartOffset ,
         pParserEndOffset ) ;
+  }
+
+
+  /**
+   * Returns the arithmetic minus operator.
+   * 
+   * @return a new instance of the minus operator.
+   */
+  public static final ArithmeticOperator newMinus ( )
+  {
+    return new ArithmeticOperator ( MINUS , PRIO_MINUS ) ;
   }
 
 
@@ -105,6 +127,17 @@ public final class ArithmeticOperator extends BinaryOperator
   /**
    * Returns the arithmetic modulo operator.
    * 
+   * @return a new instance of the mod operator.
+   */
+  public static final ArithmeticOperator newMod ( )
+  {
+    return new ArithmeticOperator ( MOD , PRIO_MOD ) ;
+  }
+
+
+  /**
+   * Returns the arithmetic modulo operator.
+   * 
    * @param pParserStartOffset The start offset of this {@link Expression} in
    *          the source code.
    * @param pParserEndOffset The end offset of this {@link Expression} in the
@@ -122,6 +155,17 @@ public final class ArithmeticOperator extends BinaryOperator
   /**
    * Returns the arithmetic multiplication operator.
    * 
+   * @return a new instance of the mult operator.
+   */
+  public static final ArithmeticOperator newMult ( )
+  {
+    return new ArithmeticOperator ( MULT , PRIO_MULT ) ;
+  }
+
+
+  /**
+   * Returns the arithmetic multiplication operator.
+   * 
    * @param pParserStartOffset The start offset of this {@link Expression} in
    *          the source code.
    * @param pParserEndOffset The end offset of this {@link Expression} in the
@@ -133,6 +177,17 @@ public final class ArithmeticOperator extends BinaryOperator
   {
     return new ArithmeticOperator ( MULT , PRIO_MULT , pParserStartOffset ,
         pParserEndOffset ) ;
+  }
+
+
+  /**
+   * Returns the arithmetic plus operator.
+   * 
+   * @return a new instance of the plus operator.
+   */
+  public static final ArithmeticOperator newPlus ( )
+  {
+    return new ArithmeticOperator ( PLUS , PRIO_PLUS ) ;
   }
 
 
