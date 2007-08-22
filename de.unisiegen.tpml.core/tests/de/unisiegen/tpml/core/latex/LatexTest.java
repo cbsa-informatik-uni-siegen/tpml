@@ -20,6 +20,7 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
 import de.unisiegen.tpml.core.typechecker.SeenTypes ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
+import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
 import de.unisiegen.tpml.core.typeinference.TypeSubType ;
 import de.unisiegen.tpml.core.types.BooleanType ;
@@ -78,7 +79,7 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    int number = 11 ;
+    int number = 12 ;
     if ( number == 0 ) testExpression ( ) ;
     if ( number == 1 ) testType ( ) ;
     if ( number == 2 ) testTypeEnvironment ( ) ;
@@ -91,6 +92,7 @@ public class LatexTest
     if ( number == 9 ) testTypeSubType ( ) ;
     if ( number == 10 ) testTypeSubstitution ( ) ;
     if ( number == 11 ) testTypeEquationListTypeChecker ( ) ;
+    if ( number == 12 ) testTypeEquationListTypeInference ( ) ;
   }
 
 
@@ -310,6 +312,27 @@ public class LatexTest
       TypeEquationTypeChecker typeEquation1 = new TypeEquationTypeChecker (
           new IntegerType ( ) , new BooleanType ( ) , seenTypes ) ;
       TypeEquationTypeChecker typeEquation2 = new TypeEquationTypeChecker (
+          new BooleanType ( ) , new UnitType ( ) , seenTypes ) ;
+      equationList = equationList.extend ( typeEquation1 ) ;
+      equationList = equationList.extend ( typeEquation2 ) ;
+      testLatexPrintable ( equationList ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
+  public static void testTypeEquationListTypeInference ( )
+  {
+    try
+    {
+      TypeEquationListTypeInference equationList = TypeEquationListTypeInference.EMPTY_LIST ;
+      SeenTypes < TypeEquationTypeInference > seenTypes = new SeenTypes < TypeEquationTypeInference > ( ) ;
+      TypeEquationTypeInference typeEquation1 = new TypeEquationTypeInference (
+          new IntegerType ( ) , new BooleanType ( ) , seenTypes ) ;
+      TypeEquationTypeInference typeEquation2 = new TypeEquationTypeInference (
           new BooleanType ( ) , new UnitType ( ) , seenTypes ) ;
       equationList = equationList.extend ( typeEquation1 ) ;
       equationList = equationList.extend ( typeEquation2 ) ;
