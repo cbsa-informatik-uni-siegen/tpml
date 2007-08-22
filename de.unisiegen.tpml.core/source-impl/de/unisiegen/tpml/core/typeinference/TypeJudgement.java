@@ -2,7 +2,18 @@ package de.unisiegen.tpml.core.typeinference ;
 
 
 import java.util.ArrayList ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandNames ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -14,12 +25,10 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * 
  * @see TypeFormula
  * @author Benjamin Mies
+ * @author Christian Fehler
  */
-public class TypeJudgement implements TypeFormula
+public class TypeJudgement implements TypeFormula , LatexCommandNames
 {
-  //
-  // Attributes
-  //
   /**
    * the type environment of this type judgement
    */
@@ -56,9 +65,6 @@ public class TypeJudgement implements TypeFormula
   }
 
 
-  //
-  // Constructor
-  //
   /**
    * @see java.lang.Object#equals(java.lang.Object)
    */
@@ -90,9 +96,6 @@ public class TypeJudgement implements TypeFormula
   }
 
 
-  //
-  // Accessors
-  //
   /**
    * get the Expression of this type judgement
    * 
@@ -102,6 +105,83 @@ public class TypeJudgement implements TypeFormula
   public Expression getExpression ( )
   {
     return this.expression ;
+  }
+
+
+  /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_JUDGEMENT , 3 , "#1\\ " //$NON-NLS-1$
+        + LATEX_RIGHT_TRIANGLE + "\\ #2\\ ::\\ #3" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : this.environment.getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.expression.getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.type.getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  {
+    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    for ( LatexInstruction instruction : this.environment
+        .getLatexInstructions ( ) )
+    {
+      instructions.add ( instruction ) ;
+    }
+    for ( LatexInstruction instruction : this.expression
+        .getLatexInstructions ( ) )
+    {
+      instructions.add ( instruction ) ;
+    }
+    for ( LatexInstruction instruction : this.type.getLatexInstructions ( ) )
+    {
+      instructions.add ( instruction ) ;
+    }
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public TreeSet < LatexPackage > getLatexPackages ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "amssymb" ) ) ; //$NON-NLS-1$
+    for ( LatexPackage pack : this.environment.getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : this.type.getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : this.expression.getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    return packages ;
   }
 
 
@@ -151,9 +231,6 @@ public class TypeJudgement implements TypeFormula
   }
 
 
-  //
-  // Base methods
-  //
   /**
    * set the type of this type judgement
    * 
@@ -179,6 +256,38 @@ public class TypeJudgement implements TypeFormula
       newType.substitute ( s ) ;
     }
     return new TypeJudgement ( this.environment , this.expression , newType ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexString()
+   */
+  public final LatexString toLatexString ( )
+  {
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+        .toLatexString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  public final LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
+        0 , LATEX_TYPE_JUDGEMENT ) ;
+    builder.addBuilder ( this.environment
+        .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+    builder.addBuilder ( this.expression
+        .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+    builder.addBuilder ( this.type
+        .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+    return builder ;
   }
 
 

@@ -7,8 +7,10 @@ import java.io.IOException ;
 import java.io.OutputStreamWriter ;
 import java.io.StringReader ;
 import java.util.TreeSet ;
+import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.InfixOperation ;
 import de.unisiegen.tpml.core.expressions.IntegerConstant ;
 import de.unisiegen.tpml.core.expressions.Location ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
@@ -22,10 +24,13 @@ import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeJudgement ;
 import de.unisiegen.tpml.core.typeinference.TypeSubType ;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList ;
+import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.BooleanType ;
 import de.unisiegen.tpml.core.types.IntegerType ;
+import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.core.types.TypeVariable ;
 import de.unisiegen.tpml.core.types.UnitType ;
@@ -80,7 +85,7 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    int number = 13 ;
+    int number = 14 ;
     if ( number == 0 ) testExpression ( ) ;
     if ( number == 1 ) testType ( ) ;
     if ( number == 2 ) testTypeEnvironment ( ) ;
@@ -95,6 +100,7 @@ public class LatexTest
     if ( number == 11 ) testTypeEquationListTypeChecker ( ) ;
     if ( number == 12 ) testTypeEquationListTypeInference ( ) ;
     if ( number == 13 ) testTypeSubstitutionList ( ) ;
+    if ( number == 14 ) testTypeJudgement ( ) ;
   }
 
 
@@ -417,6 +423,32 @@ public class LatexTest
       TypeEquationTypeInference typeEquation = new TypeEquationTypeInference (
           new IntegerType ( ) , new BooleanType ( ) , seenTypes ) ;
       testLatexPrintable ( typeEquation ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
+  public static void testTypeJudgement ( )
+  {
+    try
+    {
+      DefaultTypeEnvironment environment = new DefaultTypeEnvironment ( ) ;
+      environment = ( DefaultTypeEnvironment ) environment
+          .extend ( new Identifier ( "b" , Identifier.Set.VARIABLE ) ,
+              new BooleanType ( ) ) ;
+      environment = ( DefaultTypeEnvironment ) environment.extend (
+          new Identifier ( "a" , Identifier.Set.VARIABLE ) , new UnitType ( ) ) ;
+      Expression expression = new InfixOperation ( ArithmeticOperator
+          .newPlus ( ) , new Identifier ( "a" , Identifier.Set.VARIABLE ) ,
+          new Identifier ( "b" , Identifier.Set.VARIABLE ) ) ;
+      MonoType type = new ArrowType ( new IntegerType ( ) , new ArrowType (
+          new IntegerType ( ) , new IntegerType ( ) ) ) ;
+      TypeJudgement judgement = new TypeJudgement ( environment , expression ,
+          type ) ;
+      testLatexPrintable ( judgement ) ;
     }
     catch ( Exception e )
     {

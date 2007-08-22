@@ -34,8 +34,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker
  */
 public final class TypeEquationTypeInference implements ShowBondsInput ,
-    TypeFormula , PrettyPrintable , PrettyPrintPriorities , LatexPrintable ,
-    LatexCommandNames
+    TypeFormula , PrettyPrintable , PrettyPrintPriorities , LatexCommandNames
 {
   /**
    * The monomorphic type on the left side.

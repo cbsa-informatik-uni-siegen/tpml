@@ -43,6 +43,7 @@ import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeJudgement ;
 import de.unisiegen.tpml.core.typeinference.TypeSubType ;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList ;
 import de.unisiegen.tpml.core.types.ArrowType ;
@@ -455,6 +456,12 @@ public interface LatexCommandNames
 
 
   /**
+   * The latex print command for a right triangle.
+   */
+  public static final String LATEX_RIGHT_TRIANGLE = "\\vartriangleright" ; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for an empty set.
    */
   public static final String LATEX_EMPTYSET = "\\emptyset" ; //$NON-NLS-1$
@@ -668,4 +675,10 @@ public interface LatexCommandNames
    * The latex print command for {@link TypeSubstitutionList}.
    */
   public static final String LATEX_TYPE_SUBSTITUTION_LIST = "TypeSubstitutionList" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for {@link TypeJudgement}.
+   */
+  public static final String LATEX_TYPE_JUDGEMENT = "TypeJudgement" ; //$NON-NLS-1$
 }
