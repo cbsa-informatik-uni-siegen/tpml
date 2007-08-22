@@ -44,6 +44,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
 import de.unisiegen.tpml.core.typeinference.TypeSubType ;
+import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList ;
 import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.BooleanType ;
 import de.unisiegen.tpml.core.types.ClassType ;
@@ -661,4 +662,10 @@ public interface LatexCommandNames
    * The latex print command for {@link TypeEquationListTypeInference}.
    */
   public static final String LATEX_TYPE_EQUATION_LIST_TYPE_INFERENCE = "TypeEquationListTypeInference" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for {@link TypeSubstitutionList}.
+   */
+  public static final String LATEX_TYPE_SUBSTITUTION_LIST = "TypeSubstitutionList" ; //$NON-NLS-1$
 }

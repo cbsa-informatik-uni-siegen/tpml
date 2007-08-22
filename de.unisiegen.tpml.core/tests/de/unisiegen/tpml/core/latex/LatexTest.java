@@ -23,6 +23,7 @@ import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
 import de.unisiegen.tpml.core.typeinference.TypeSubType ;
+import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList ;
 import de.unisiegen.tpml.core.types.BooleanType ;
 import de.unisiegen.tpml.core.types.IntegerType ;
 import de.unisiegen.tpml.core.types.Type ;
@@ -79,7 +80,7 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    int number = 12 ;
+    int number = 13 ;
     if ( number == 0 ) testExpression ( ) ;
     if ( number == 1 ) testType ( ) ;
     if ( number == 2 ) testTypeEnvironment ( ) ;
@@ -93,6 +94,7 @@ public class LatexTest
     if ( number == 10 ) testTypeSubstitution ( ) ;
     if ( number == 11 ) testTypeEquationListTypeChecker ( ) ;
     if ( number == 12 ) testTypeEquationListTypeInference ( ) ;
+    if ( number == 13 ) testTypeSubstitutionList ( ) ;
   }
 
 
@@ -102,36 +104,6 @@ public class LatexTest
     {
       bufferedWriter.newLine ( ) ;
       System.out.println ( ) ;
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-    }
-  }
-
-
-  public static void println ( String pText )
-  {
-    try
-    {
-      bufferedWriter.write ( pText ) ;
-      bufferedWriter.newLine ( ) ;
-      System.out.println ( pText ) ;
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-    }
-  }
-
-
-  public static void println ( LatexInstruction pLatexInstruction )
-  {
-    try
-    {
-      bufferedWriter.write ( pLatexInstruction.toString ( ) ) ;
-      bufferedWriter.newLine ( ) ;
-      System.out.println ( pLatexInstruction.toString ( ) ) ;
     }
     catch ( Exception e )
     {
@@ -155,6 +127,21 @@ public class LatexTest
   }
 
 
+  public static void println ( LatexInstruction pLatexInstruction )
+  {
+    try
+    {
+      bufferedWriter.write ( pLatexInstruction.toString ( ) ) ;
+      bufferedWriter.newLine ( ) ;
+      System.out.println ( pLatexInstruction.toString ( ) ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
   public static void println ( LatexPackage pLatexPackage )
   {
     try
@@ -162,6 +149,21 @@ public class LatexTest
       bufferedWriter.write ( pLatexPackage.toString ( ) ) ;
       bufferedWriter.newLine ( ) ;
       System.out.println ( pLatexPackage.toString ( ) ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
+  public static void println ( String pText )
+  {
+    try
+    {
+      bufferedWriter.write ( pText ) ;
+      bufferedWriter.newLine ( ) ;
+      System.out.println ( pText ) ;
     }
     catch ( Exception e )
     {
@@ -430,6 +432,26 @@ public class LatexTest
       DefaultTypeSubstitution typeSubstitution = new DefaultTypeSubstitution (
           new TypeVariable ( 0 , 0 ) , new BooleanType ( ) ) ;
       testLatexPrintable ( typeSubstitution ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
+  public static void testTypeSubstitutionList ( )
+  {
+    try
+    {
+      TypeSubstitutionList substitionList = TypeSubstitutionList.EMPTY_LIST ;
+      DefaultTypeSubstitution typeSubstitution1 = new DefaultTypeSubstitution (
+          new TypeVariable ( 0 , 0 ) , new BooleanType ( ) ) ;
+      DefaultTypeSubstitution typeSubstitution2 = new DefaultTypeSubstitution (
+          new TypeVariable ( 0 , 1 ) , new IntegerType ( ) ) ;
+      substitionList = substitionList.extend ( typeSubstitution1 ) ;
+      substitionList = substitionList.extend ( typeSubstitution2 ) ;
+      testLatexPrintable ( substitionList ) ;
     }
     catch ( Exception e )
     {

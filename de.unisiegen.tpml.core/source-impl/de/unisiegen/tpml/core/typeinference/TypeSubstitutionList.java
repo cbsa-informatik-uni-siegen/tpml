@@ -1,6 +1,16 @@
 package de.unisiegen.tpml.core.typeinference ;
 
 
+import java.util.TreeSet ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandNames ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 
@@ -10,21 +20,16 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * algorithm to perform the {@link TypeEquationTypeInference}s.
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  */
-public class TypeSubstitutionList
+public class TypeSubstitutionList implements LatexPrintable , LatexCommandNames
 {
-  //
-  // Constants
-  //
   /**
    * empty type substitution list
    */
   public static final TypeSubstitutionList EMPTY_LIST = new TypeSubstitutionList ( ) ;
 
 
-  //
-  // Attributes
-  //
   /**
    * The first TypeSubstitution in the list.
    */
@@ -37,9 +42,6 @@ public class TypeSubstitutionList
   private TypeSubstitutionList remaining ;
 
 
-  //
-  // Constructors (private)
-  //
   /**
    * Allocates a new, empty<code>TypeSubstitutionList</code> .
    */
@@ -71,33 +73,6 @@ public class TypeSubstitutionList
   }
 
 
-  //
-  // Base Methods
-  //
-  /**
-   * needed for output and debug
-   * 
-   * @return string with all type substitutions
-   * @see java.lang.Object#toString()
-   */
-  @ Override
-  public String toString ( )
-  {
-    final StringBuilder builder = new StringBuilder ( 128 ) ;
-    builder.append ( '{' ) ;
-    for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
-    {
-      if ( list != this )
-      {
-        builder.append ( ", " ) ; //$NON-NLS-1$
-      }
-      builder.append ( list.first.toString ( ) ) ;
-    }
-    builder.append ( '}' ) ;
-    return builder.toString ( ) ;
-  }
-
-
   /**
    * add a new type substitution to this list
    * 
@@ -122,6 +97,65 @@ public class TypeSubstitutionList
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_SUBSTITUTION_LIST , 1 ,
+        "\\{#1\\}" ) ) ; //$NON-NLS-1$
+    for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
+    {
+      for ( LatexCommand command : list.first.getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  {
+    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
+    {
+      for ( LatexInstruction instruction : list.first.getLatexInstructions ( ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public TreeSet < LatexPackage > getLatexPackages ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
+    {
+      for ( LatexPackage pack : list.first.getLatexPackages ( ) )
+      {
+        packages.add ( pack ) ;
+      }
+    }
+    return packages ;
+  }
+
+
+  /**
    * get the tail of the type substitution list
    * 
    * @return the remaing list of substitutions
@@ -129,5 +163,67 @@ public class TypeSubstitutionList
   public TypeSubstitutionList getRemaining ( )
   {
     return this.remaining ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexString()
+   */
+  public final LatexString toLatexString ( )
+  {
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+        .toLatexString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  public final LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
+        0 , LATEX_TYPE_SUBSTITUTION_LIST ) ;
+    builder.addBuilderBegin ( ) ;
+    for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
+    {
+      if ( list != this )
+      {
+        builder.addText ( LATEX_COMMA ) ;
+        builder.addText ( LATEX_SPACE ) ;
+      }
+      builder.addBuilder ( list.first
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+    }
+    builder.addBuilderEnd ( ) ;
+    return builder ;
+  }
+
+
+  /**
+   * needed for output and debug
+   * 
+   * @return string with all type substitutions
+   * @see java.lang.Object#toString()
+   */
+  @ Override
+  public String toString ( )
+  {
+    final StringBuilder builder = new StringBuilder ( 128 ) ;
+    builder.append ( '{' ) ;
+    for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
+    {
+      if ( list != this )
+      {
+        builder.append ( ", " ) ; //$NON-NLS-1$
+      }
+      builder.append ( list.first.toString ( ) ) ;
+    }
+    builder.append ( '}' ) ;
+    return builder.toString ( ) ;
   }
 }
