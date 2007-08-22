@@ -7,6 +7,9 @@
   "unregister.cmd" aus pgtest3 entfernen
 
 *** Christian ***
+- TypeEquationTypeChecker: SeenTypes nach Nachfrage aus dem LatexString entfernen
+- TypeEquationTypeInference: SeenTypes nach Nachfrage aus dem LatexString entfernen
+
 
 *** Benny ***
-DefaultSubType.toPrettyStringBuilder verwendet ein "=" anstatt einem "<:"
+- "DefaultSubType.toPrettyStringBuilder" verwendet ein "=" anstatt einem "<:"
