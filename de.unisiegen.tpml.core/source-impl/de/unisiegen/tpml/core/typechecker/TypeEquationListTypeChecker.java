@@ -8,6 +8,7 @@ import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -35,7 +36,7 @@ import de.unisiegen.tpml.core.types.TypeVariable ;
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker
  */
 public final class TypeEquationListTypeChecker implements LatexPrintable ,
-    LatexCommands
+    LatexCommandNames
 {
   /**
    * The empty equation list.

@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -29,7 +30,8 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @author Christian Fehler
  */
 public class TypeSubType implements ShowBondsInput , TypeFormula ,
-    PrettyPrintable , PrettyPrintPriorities , LatexPrintable , LatexCommands
+    PrettyPrintable , PrettyPrintPriorities , LatexPrintable ,
+    LatexCommandNames
 {
   /**
    * The left type (subtype) of this type formula

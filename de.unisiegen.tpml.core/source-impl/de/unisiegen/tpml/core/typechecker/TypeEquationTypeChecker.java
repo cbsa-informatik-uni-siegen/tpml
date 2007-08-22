@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.typechecker ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -22,7 +23,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker
  */
 public final class TypeEquationTypeChecker implements LatexPrintable ,
-    LatexCommands
+    LatexCommandNames
 {
   /**
    * The monomorphic type on the left side.
@@ -106,13 +107,6 @@ public final class TypeEquationTypeChecker implements LatexPrintable ,
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_EQUATION_TYPE_CHECKER ,
         2 , "#1\\ =\\ #2" ) ) ; //$NON-NLS-1$
-    // commands.add ( new DefaultLatexCommand ( LATEX_TYPE_EQUATION_TYPE_CHECKER
-    // ,
-    // 3 , "#1\\ #2\\ =\\ #3" ) ) ; //$NON-NLS-1$
-    /*
-     * for ( LatexCommand command : this.seenTypes.getLatexCommands ( ) ) {
-     * commands.add ( command ) ; }
-     */
     for ( LatexCommand command : this.left.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
@@ -133,10 +127,6 @@ public final class TypeEquationTypeChecker implements LatexPrintable ,
   public TreeSet < LatexInstruction > getLatexInstructions ( )
   {
     TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
-    /*
-     * for ( LatexInstruction instruction : this.seenTypes.getLatexInstructions ( ) ) {
-     * instructions.add ( instruction ) ; }
-     */
     for ( LatexInstruction instruction : this.left.getLatexInstructions ( ) )
     {
       instructions.add ( instruction ) ;
@@ -157,10 +147,6 @@ public final class TypeEquationTypeChecker implements LatexPrintable ,
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    // for ( LatexPackage pack : this.seenTypes.getLatexPackages ( ) )
-    // {
-    // packages.add ( pack ) ;
-    // }
     for ( LatexPackage pack : this.left.getLatexPackages ( ) )
     {
       packages.add ( pack ) ;
@@ -257,8 +243,6 @@ public final class TypeEquationTypeChecker implements LatexPrintable ,
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
         0 , LATEX_TYPE_EQUATION_TYPE_CHECKER ) ;
-    // builder.addBuilder ( this.seenTypes
-    // .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
     builder.addBuilder ( this.left
         .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
     builder.addBuilder ( this.right

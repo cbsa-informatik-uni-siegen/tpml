@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -36,8 +37,8 @@ import de.unisiegen.tpml.core.types.TypeName ;
  * @see PrettyPrintable
  */
 public abstract class Expression implements Cloneable , PrettyPrintable ,
-    PrettyPrintPriorities , LatexPrintable , LatexCommands , ShowBondsInput ,
-    PrettyCommands
+    PrettyPrintPriorities , LatexPrintable , LatexCommandNames ,
+    ShowBondsInput , PrettyCommands
 {
   /**
    * A level-order enumeration of the expressions within a given expression.

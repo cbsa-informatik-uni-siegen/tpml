@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.typeinference ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -21,7 +22,7 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
  * @see de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference
  */
 public final class TypeEquationListTypeInference implements LatexPrintable ,
-    LatexCommands
+    LatexCommandNames
 {
   /**
    * The empty equation list.

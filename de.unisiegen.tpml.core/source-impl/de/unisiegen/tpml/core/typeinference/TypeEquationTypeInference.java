@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -34,7 +35,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  */
 public final class TypeEquationTypeInference implements ShowBondsInput ,
     TypeFormula , PrettyPrintable , PrettyPrintPriorities , LatexPrintable ,
-    LatexCommands
+    LatexCommandNames
 {
   /**
    * The monomorphic type on the left side.
@@ -155,13 +156,6 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand (
         LATEX_TYPE_EQUATION_TYPE_INFERENCE , 2 , "#1\\ =\\ #2" ) ) ; //$NON-NLS-1$
-    // commands.add ( new DefaultLatexCommand (
-    // LATEX_TYPE_EQUATION_TYPE_INFERENCE , 3 , "#1\\ #2\\ =\\ #3" ) ) ;
-    // //$NON-NLS-1$
-    /*
-     * for ( LatexCommand command : this.seenTypes.getLatexCommands ( ) ) {
-     * commands.add ( command ) ; }
-     */
     for ( LatexCommand command : this.left.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
@@ -182,10 +176,6 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
   public TreeSet < LatexInstruction > getLatexInstructions ( )
   {
     TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
-    /*
-     * for ( LatexInstruction instruction : this.seenTypes.getLatexInstructions ( ) ) {
-     * instructions.add ( instruction ) ; }
-     */
     for ( LatexInstruction instruction : this.left.getLatexInstructions ( ) )
     {
       instructions.add ( instruction ) ;
@@ -206,10 +196,6 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    /*
-     * for ( LatexPackage pack : this.seenTypes.getLatexPackages ( ) ) {
-     * packages.add ( pack ) ; }
-     */
     for ( LatexPackage pack : this.left.getLatexPackages ( ) )
     {
       packages.add ( pack ) ;
@@ -348,10 +334,6 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
         0 , LATEX_TYPE_EQUATION_TYPE_INFERENCE ) ;
-    /*
-     * builder.addBuilder ( this.seenTypes .toLatexStringBuilder (
-     * pLatexStringBuilderFactory ) , 0 ) ;
-     */
     builder.addBuilder ( this.left
         .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
     builder.addBuilder ( this.right
@@ -360,9 +342,6 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
   }
 
 
-  //
-  // Pretty printing
-  //
   /**
    * {@inheritDoc}
    * 

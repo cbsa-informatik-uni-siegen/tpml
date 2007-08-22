@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.interfaces.DefaultTypeNames ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -35,7 +36,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @see PrettyPrintable
  */
 public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
-    LatexPrintable , LatexCommands , ShowBondsInput , PrettyCommands
+    LatexPrintable , LatexCommandNames , ShowBondsInput , PrettyCommands
 {
   /**
    * The resource bundle.

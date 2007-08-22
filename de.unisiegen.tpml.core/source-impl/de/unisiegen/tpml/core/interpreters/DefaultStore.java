@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Location ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -28,11 +29,9 @@ import de.unisiegen.tpml.core.util.AbstractEnvironment ;
  */
 public final class DefaultStore extends
     AbstractEnvironment < Location , Expression > implements Store ,
-    LatexCommands
+    LatexCommandNames
 {
-  //
-  // Constructors
-  //
+
   /**
    * Default constructor, creates a new store with no mappings.
    */
@@ -55,9 +54,6 @@ public final class DefaultStore extends
   }
 
 
-  //
-  // Store modifications
-  //
   /**
    * {@inheritDoc}
    * 
@@ -83,9 +79,7 @@ public final class DefaultStore extends
   }
 
 
-  //
-  // Store queries
-  //
+
   /**
    * {@inheritDoc}
    * 

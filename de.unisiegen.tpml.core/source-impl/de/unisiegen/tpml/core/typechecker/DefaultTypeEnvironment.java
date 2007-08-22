@@ -7,6 +7,7 @@ import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -31,7 +32,7 @@ import de.unisiegen.tpml.core.util.AbstractEnvironment ;
  */
 public final class DefaultTypeEnvironment extends
     AbstractEnvironment < Identifier , Type > implements TypeEnvironment ,
-    LatexCommands
+    LatexCommandNames
 {
   /**
    * Allocates a new empty <code>DefaultTypeEnvironment</code>.

@@ -5,6 +5,7 @@ import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -32,7 +33,7 @@ import de.unisiegen.tpml.core.types.TypeVariable ;
  * @see de.unisiegen.tpml.core.typechecker.TypeSubstitution
  */
 public final class DefaultTypeSubstitution implements TypeSubstitution ,
-    PrettyPrintable , LatexCommands
+    PrettyPrintable , LatexCommandNames
 {
   /**
    * The empty type substitution, which does not contain any mappings.
