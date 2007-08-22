@@ -84,7 +84,24 @@ public final class DefaultLatexCommand implements LatexCommand ,
    */
   public int compareTo ( LatexCommand pOther )
   {
-    return this.name.compareTo ( ( ( DefaultLatexCommand ) pOther ).name ) ;
+    DefaultLatexCommand other = ( DefaultLatexCommand ) pOther ;
+    if ( this.name.startsWith ( LATEX_KEY ) )
+    {
+      // case 1
+      if ( other.name.startsWith ( LATEX_KEY ) )
+      {
+        return this.name.compareTo ( other.name ) ;
+      }
+      // case 2
+      return - 1 ;
+    }
+    // case 3
+    if ( other.name.startsWith ( LATEX_KEY ) )
+    {
+      return 1 ;
+    }
+    // case 4
+    return this.name.compareTo ( other.name ) ;
   }
 
 
@@ -129,8 +146,7 @@ public final class DefaultLatexCommand implements LatexCommand ,
   public String toString ( )
   {
     StringBuilder result = new StringBuilder ( ) ;
-    if ( ( this.parameterDescriptions != null )
-        && ( this.parameterDescriptions.length > 0 ) )
+    if ( this.parameterDescriptions != null )
     {
       result.append ( "% " ) ; //$NON-NLS-1$
       result.append ( this.name ) ;
@@ -140,6 +156,12 @@ public final class DefaultLatexCommand implements LatexCommand ,
         result.append ( descriptions ) ;
         result.append ( "}" ) ; //$NON-NLS-1$
       }
+      result.append ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+    }
+    else
+    {
+      result.append ( "% " ) ; //$NON-NLS-1$
+      result.append ( this.name ) ;
       result.append ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
     }
     result.append ( "\\newcommand{\\" ) ; //$NON-NLS-1$

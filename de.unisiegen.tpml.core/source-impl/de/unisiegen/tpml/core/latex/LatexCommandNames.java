@@ -135,105 +135,111 @@ public interface LatexCommandNames
 
 
   /**
+   * The latex print command for the beginnig of keywords.
+   */
+  public static final String LATEX_KEY = "Key" ; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for the keyword <code>val</code>.
    */
-  public static final String LATEX_KEY_VAL = "KeyVal" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_VAL = LATEX_KEY + "Val" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>class</code>.
    */
-  public static final String LATEX_KEY_CLASS = "KeyClass" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_CLASS = LATEX_KEY + "Class" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>end</code>.
    */
-  public static final String LATEX_KEY_END = "KeyEnd" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_END = LATEX_KEY + "End" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>if</code>.
    */
-  public static final String LATEX_KEY_IF = "KeyIf" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_IF = LATEX_KEY + "If" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>then</code>.
    */
-  public static final String LATEX_KEY_THEN = "KeyThen" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_THEN = LATEX_KEY + "Then" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>else</code>.
    */
-  public static final String LATEX_KEY_ELSE = "KeyElse" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_ELSE = LATEX_KEY + "Else" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>let</code>.
    */
-  public static final String LATEX_KEY_LET = "KeyLet" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_LET = LATEX_KEY + "Let" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>in</code>.
    */
-  public static final String LATEX_KEY_IN = "KeyIn" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_IN = LATEX_KEY + "In" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>rec</code>.
    */
-  public static final String LATEX_KEY_REC = "KeyRec" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_REC = LATEX_KEY + "Rec" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>method</code>.
    */
-  public static final String LATEX_KEY_METHOD = "KeyMethod" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_METHOD = LATEX_KEY + "Method" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>inherit</code>.
    */
-  public static final String LATEX_KEY_INHERIT = "KeyInherit" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_INHERIT = LATEX_KEY + "Inherit" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>from</code>.
    */
-  public static final String LATEX_KEY_FROM = "KeyFrom" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_FROM = LATEX_KEY + "From" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>lambda</code>.
    */
-  public static final String LATEX_KEY_LAMBDA = "KeyLambda" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_LAMBDA = LATEX_KEY + "Lambda" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>new</code>.
    */
-  public static final String LATEX_KEY_NEW = "KeyNew" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_NEW = LATEX_KEY + "New" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>object</code>.
    */
-  public static final String LATEX_KEY_OBJECT = "KeyObject" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_OBJECT = LATEX_KEY + "Object" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>while</code>.
    */
-  public static final String LATEX_KEY_WHILE = "KeyWhile" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_WHILE = LATEX_KEY + "While" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>do</code>.
    */
-  public static final String LATEX_KEY_DO = "KeyDo" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_DO = LATEX_KEY + "Do" ; //$NON-NLS-1$
 
 
   /**
@@ -485,55 +491,55 @@ public interface LatexCommandNames
   /**
    * The latex print command for the keyword <code>attr</code>.
    */
-  public static final String LATEX_KEY_ATTR = "KeyAttr" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_ATTR = LATEX_KEY + "Attr" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>bool</code>.
    */
-  public static final String LATEX_KEY_BOOL = "KeyBool" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_BOOL = LATEX_KEY + "Bool" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>int</code>.
    */
-  public static final String LATEX_KEY_INT = "KeyInt" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_INT = LATEX_KEY + "Int" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>unit</code>.
    */
-  public static final String LATEX_KEY_UNIT = "KeyUnit" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_UNIT = LATEX_KEY + "Unit" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>unify</code>.
    */
-  public static final String LATEX_KEY_UNIFY = "KeyUnify" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_UNIFY = LATEX_KEY + "Unify" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>zeta</code>.
    */
-  public static final String LATEX_KEY_ZETA = "KeyZeta" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_ZETA = LATEX_KEY + "Zeta" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>list</code>.
    */
-  public static final String LATEX_KEY_LIST = "KeyList" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_LIST = LATEX_KEY + "List" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>ref</code>.
    */
-  public static final String LATEX_KEY_REF = "KeyRef" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_REF = LATEX_KEY + "Ref" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for the keyword <code>mu</code>.
    */
-  public static final String LATEX_KEY_MU = "KeyMu" ; //$NON-NLS-1$
+  public static final String LATEX_KEY_MU = LATEX_KEY + "Mu" ; //$NON-NLS-1$
 
 
   /**
