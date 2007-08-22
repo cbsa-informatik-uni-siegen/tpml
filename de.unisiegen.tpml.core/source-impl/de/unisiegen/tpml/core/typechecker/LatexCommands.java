@@ -8,7 +8,6 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
  * This interface includes the latex print commands.
  * 
  * @author Christian Fehler
- * @see DefaultTypeEnvironment
  * @see LatexStringBuilder
  */
 public interface LatexCommands
@@ -41,4 +40,16 @@ public interface LatexCommands
    * The latex print command for {@link TypeEnvironment}.
    */
   public static final String LATEX_TYPE_ENVIRONMENT = "TypeEnvironment" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for {@link SeenTypes}.
+   */
+  public static final String LATEX_SEEN_TYPES = "SeenTypes" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for {@link TypeEquationTypeChecker}.
+   */
+  public static final String LATEX_TYPE_EQUATION_TYPE_CHECKER = "TypeEquationTypeChecker" ; //$NON-NLS-1$
 }

@@ -210,18 +210,9 @@ public final class DefaultStore extends
 
 
   /**
-   * Returns the latex string builder used to latex print this store. The latex
-   * string builder must be allocated from the specified
-   * <code>pLatexStringBuilderFactory</code>, which is currently always the
-   * default factory, but may also be another factory in the future.
+   * {@inheritDoc}
    * 
-   * @param pLatexStringBuilderFactory the {@link LatexStringBuilderFactory}
-   *          used to allocate the required latex string builders to latex print
-   *          this store.
-   * @return The latex string builder used to latex print this store.
-   * @see #toLatexString()
-   * @see LatexStringBuilder
-   * @see LatexStringBuilderFactory
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
    */
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory )

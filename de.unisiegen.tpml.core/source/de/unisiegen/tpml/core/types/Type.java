@@ -532,18 +532,9 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
 
 
   /**
-   * Returns the latex string builder used to latex print this type. The latex
-   * string builder must be allocated from the specified <code>factory</code>,
-   * which is currently always the default factory, but may also be another
-   * factory in the future.
+   * {@inheritDoc}
    * 
-   * @param pLatexStringBuilderFactory the {@link LatexStringBuilderFactory}
-   *          used to allocate the required latex string builders to latex print
-   *          this type.
-   * @return the latex string builder used to latex print this type.
-   * @see #toLatexString()
-   * @see LatexStringBuilder
-   * @see LatexStringBuilderFactory
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
    */
   public abstract LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory ) ;

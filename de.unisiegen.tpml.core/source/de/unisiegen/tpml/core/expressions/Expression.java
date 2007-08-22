@@ -866,18 +866,9 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * Returns the latex string builder used to latex print this expression. The
-   * latex string builder must be allocated from the specified
-   * <code>pLatexStringBuilderFactory</code>, which is currently always the
-   * default factory, but may also be another factory in the future.
+   * {@inheritDoc}
    * 
-   * @param pLatexStringBuilderFactory the {@link LatexStringBuilderFactory}
-   *          used to allocate the required latex string builders to latex print
-   *          this expression.
-   * @return The latex string builder used to latex print this expression.
-   * @see #toLatexString()
-   * @see LatexStringBuilder
-   * @see LatexStringBuilderFactory
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
    */
   public abstract LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory ) ;

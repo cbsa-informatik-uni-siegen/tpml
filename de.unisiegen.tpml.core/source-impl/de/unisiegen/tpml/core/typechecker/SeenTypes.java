@@ -1,8 +1,19 @@
-package de.unisiegen.tpml.core.typechecker;
+package de.unisiegen.tpml.core.typechecker ;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import de.unisiegen.tpml.core.types.Type;
+
+import java.util.ArrayList ;
+import java.util.Iterator ;
+import java.util.TreeSet ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.types.Type ;
+
 
 /**
  * A list of seen {@link Type}s.
@@ -10,117 +21,237 @@ import de.unisiegen.tpml.core.types.Type;
  * @author Christian Fehler
  * @param <E>
  */
-public class SeenTypes<E> implements Cloneable, Iterable < E > {
-	/**
-	 * The internal list of seen {@link Type}s.
-	 */
-	private ArrayList < E > list;
+public final class SeenTypes < E extends LatexPrintable > implements Cloneable ,
+    Iterable < E > , LatexPrintable , LatexCommands
+{
+  /**
+   * The internal list of seen {@link Type}s.
+   */
+  private ArrayList < E > list ;
 
-	/**
-	 * Initializes the seen {@link Type}s.
-	 */
-	public SeenTypes ( ) {
-		this.list = new ArrayList < E > ( );
-	}
 
-	/**
-	 * Inserts the given item to the beginning of the list and removes it before.
-	 * So the new item is only one time in the list.
-	 * 
-	 * @param pItem The item to add.
-	 */
-	public void add ( E pItem ) {
-		this.list.remove ( pItem );
-		this.list.add ( 0, pItem );
-	}
+  /**
+   * Initializes the seen {@link Type}s.
+   */
+  public SeenTypes ( )
+  {
+    this.list = new ArrayList < E > ( ) ;
+  }
 
-	/**
-	 * Inserts the given items to the beginning of the list and remove them
-	 * before. So the new items are only one time in the list.
-	 * 
-	 * @param pSeenTypes The {@link SeenTypes} to add.
-	 */
-	public void addAll ( SeenTypes < E > pSeenTypes ) {
-		for ( int i = pSeenTypes.size ( ) - 1; i >= 0; i-- ) {
-			E item = pSeenTypes.get ( i );
-			this.list.remove ( item );
-			this.list.add ( 0, item );
-		}
-	}
 
-	/**
-	 * Returns a shallow copy of this <tt>SeenTypes</tt> instance. (The elements
-	 * themselves are not copied.)
-	 * 
-	 * @return A clone of this <tt>SeenTypes</tt> instance.
-	 * @see Object#clone()
-	 */
-	@Override
-	public SeenTypes < E > clone ( ) {
-		SeenTypes < E > newSeenTypes = new SeenTypes < E > ( );
-		for ( E item : this.list ) {
-			newSeenTypes.add ( item );
-		}
-		return newSeenTypes;
-	}
+  /**
+   * Inserts the given item to the beginning of the list and removes it before.
+   * So the new item is only one time in the list.
+   * 
+   * @param pItem The item to add.
+   */
+  public final void add ( E pItem )
+  {
+    this.list.remove ( pItem ) ;
+    this.list.add ( 0 , pItem ) ;
+  }
 
-	/**
-	 * Returns <tt>true</tt> if this {@link SeenTypes} contains the specified
-	 * item.
-	 * 
-	 * @param pItem The item whose presence in this list is to be tested.
-	 * @return <tt>true</tt> if this list contains the specified item.
-	 */
-	public boolean contains ( E pItem ) {
-		return this.list.contains ( pItem );
-	}
 
-	/**
-	 * Returns the element at the specified position in this list.
-	 * 
-	 * @param pIndex The index of the element to return.
-	 * @return The element at the specified position in this list.
-	 */
-	public E get ( int pIndex ) {
-		return this.list.get ( pIndex );
-	}
+  /**
+   * Inserts the given items to the beginning of the list and remove them
+   * before. So the new items are only one time in the list.
+   * 
+   * @param pSeenTypes The {@link SeenTypes} to add.
+   */
+  public final void addAll ( SeenTypes < E > pSeenTypes )
+  {
+    for ( int i = pSeenTypes.size ( ) - 1 ; i >= 0 ; i -- )
+    {
+      E item = pSeenTypes.get ( i ) ;
+      this.list.remove ( item ) ;
+      this.list.add ( 0 , item ) ;
+    }
+  }
 
-	/**
-	 * Returns an iterator over the elements in this list in proper sequence.
-	 * 
-	 * @return An iterator over the elements in this list in proper sequence.
-	 * @see Iterable#iterator()
-	 */
-	public Iterator < E > iterator ( ) {
-		return this.list.iterator ( );
-	}
 
-	/**
-	 * Returns the number of elements in this list.
-	 * 
-	 * @return The number of elements in this list.
-	 */
-	public int size ( ) {
-		return this.list.size ( );
-	}
+  /**
+   * Returns a shallow copy of this <tt>SeenTypes</tt> instance. (The elements
+   * themselves are not copied.)
+   * 
+   * @return A clone of this <tt>SeenTypes</tt> instance.
+   * @see Object#clone()
+   */
+  @ Override
+  public final SeenTypes < E > clone ( )
+  {
+    SeenTypes < E > newSeenTypes = new SeenTypes < E > ( ) ;
+    for ( E item : this.list )
+    {
+      newSeenTypes.add ( item ) ;
+    }
+    return newSeenTypes ;
+  }
 
-	/**
-	 * Returns a string representation of this {@link SeenTypes}.
-	 * 
-	 * @return A string representation of this {@link SeenTypes}.
-	 * @see Object#toString()
-	 */
-	@Override
-	public String toString ( ) {
-		StringBuilder result = new StringBuilder ( );
-		result.append ( "[" ); //$NON-NLS-1$
-		for ( int i = 0; i < this.list.size ( ); i++ ) {
-			result.append ( this.list.get ( i ) );
-			if ( i < this.list.size ( ) - 1 ) {
-				result.append ( ", " ); //$NON-NLS-1$
-			}
-		}
-		result.append ( "]" ); //$NON-NLS-1$
-		return result.toString ( );
-	}
+
+  /**
+   * Returns <tt>true</tt> if this {@link SeenTypes} contains the specified
+   * item.
+   * 
+   * @param pItem The item whose presence in this list is to be tested.
+   * @return <tt>true</tt> if this list contains the specified item.
+   */
+  public final boolean contains ( E pItem )
+  {
+    return this.list.contains ( pItem ) ;
+  }
+
+
+  /**
+   * Returns the element at the specified position in this list.
+   * 
+   * @param pIndex The index of the element to return.
+   * @return The element at the specified position in this list.
+   */
+  public final E get ( int pIndex )
+  {
+    return this.list.get ( pIndex ) ;
+  }
+
+
+  /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_SEEN_TYPES , 1 , "[#1]" ) ) ; //$NON-NLS-1$ 
+    for ( E entry : this.list )
+    {
+      for ( LatexCommand command : entry.getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  {
+    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    for ( E entry : this.list )
+    {
+      for ( LatexInstruction instruction : entry.getLatexInstructions ( ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public TreeSet < LatexPackage > getLatexPackages ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    for ( E entry : this.list )
+    {
+      for ( LatexPackage pack : entry.getLatexPackages ( ) )
+      {
+        packages.add ( pack ) ;
+      }
+    }
+    return packages ;
+  }
+
+
+  /**
+   * Returns an iterator over the elements in this list in proper sequence.
+   * 
+   * @return An iterator over the elements in this list in proper sequence.
+   * @see Iterable#iterator()
+   */
+  public Iterator < E > iterator ( )
+  {
+    return this.list.iterator ( ) ;
+  }
+
+
+  /**
+   * Returns the number of elements in this list.
+   * 
+   * @return The number of elements in this list.
+   */
+  public final int size ( )
+  {
+    return this.list.size ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexString()
+   */
+  public final LatexString toLatexString ( )
+  {
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+        .toLatexString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  public final LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
+        0 , LATEX_SEEN_TYPES ) ;
+    builder.addBuilderBegin ( ) ;
+    for ( int i = 0 ; i < this.list.size ( ) ; i ++ )
+    {
+      builder.addBuilder ( this.list.get ( i ).toLatexStringBuilder (
+          pLatexStringBuilderFactory ) , 0 ) ;
+      if ( i < this.list.size ( ) - 1 )
+      {
+        builder.addText ( LATEX_COMMA ) ;
+        builder.addText ( LATEX_SPACE ) ;
+      }
+    }
+    builder.addBuilderEnd ( ) ;
+    return builder ;
+  }
+
+
+  /**
+   * Returns a string representation of this {@link SeenTypes}.
+   * 
+   * @return A string representation of this {@link SeenTypes}.
+   * @see Object#toString()
+   */
+  @ Override
+  public String toString ( )
+  {
+    StringBuilder result = new StringBuilder ( ) ;
+    result.append ( "[" ) ; //$NON-NLS-1$
+    for ( int i = 0 ; i < this.list.size ( ) ; i ++ )
+    {
+      result.append ( this.list.get ( i ) ) ;
+      if ( i < this.list.size ( ) - 1 )
+      {
+        result.append ( ", " ) ; //$NON-NLS-1$
+      }
+    }
+    result.append ( "]" ) ; //$NON-NLS-1$
+    return result.toString ( ) ;
+  }
 }

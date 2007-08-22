@@ -259,18 +259,9 @@ public final class DefaultTypeEnvironment extends
 
 
   /**
-   * Returns the latex string builder used to latex print this type environment.
-   * The latex string builder must be allocated from the specified
-   * <code>pLatexStringBuilderFactory</code>, which is currently always the
-   * default factory, but may also be another factory in the future.
+   * {@inheritDoc}
    * 
-   * @param pLatexStringBuilderFactory the {@link LatexStringBuilderFactory}
-   *          used to allocate the required latex string builders to latex print
-   *          this type environment.
-   * @return The latex string builder used to latex print this type environment.
-   * @see #toLatexString()
-   * @see LatexStringBuilder
-   * @see LatexStringBuilderFactory
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
    */
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory )
@@ -286,7 +277,7 @@ public final class DefaultTypeEnvironment extends
       builder.addText ( LATEX_SPACE ) ;
       builder.addBuilder ( this.mappings.get ( i ).getEntry ( )
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
-      if ( i != this.mappings.size ( ) - 1 )
+      if ( i < this.mappings.size ( ) - 1 )
       {
         builder.addText ( LATEX_COMMA ) ;
         builder.addText ( LATEX_SPACE ) ;
