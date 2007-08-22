@@ -376,20 +376,20 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
 
 
   /**
-   * Returns the {@link PrettyStringBuilder}.
+   * {@inheritDoc}
    * 
-   * @param factory The {@link PrettyStringBuilderFactory}.
-   * @return The {@link PrettyStringBuilder}.
+   * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  private PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory factory )
+  public PrettyStringBuilder toPrettyStringBuilder (
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = factory.newBuilder ( this , PRIO_EQUATION ) ;
-    builder.addBuilder ( this.left.toPrettyStringBuilder ( factory ) ,
-        PRIO_EQUATION ) ;
+    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
+        this , PRIO_EQUATION ) ;
+    builder.addBuilder ( this.left
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_EQUATION ) ;
     builder.addText ( " = " ) ; //$NON-NLS-1$
-    builder.addBuilder ( this.right.toPrettyStringBuilder ( factory ) ,
-        PRIO_EQUATION ) ;
+    builder.addBuilder ( this.right
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_EQUATION ) ;
     return builder ;
   }
 

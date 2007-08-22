@@ -553,18 +553,9 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
 
 
   /**
-   * Returns the pretty string builder used to pretty print this type. The
-   * pretty string builder must be allocated from the specified
-   * <code>factory</code>, which is currently always the default factory, but
-   * may also be another factory in the future.
+   * {@inheritDoc}
    * 
-   * @param pPrettyStringBuilderFactory the {@link PrettyStringBuilderFactory}
-   *          used to allocate the required pretty string builders to pretty
-   *          print this type.
-   * @return the pretty string builder used to pretty print this type.
-   * @see #toPrettyString()
-   * @see PrettyStringBuilder
-   * @see PrettyStringBuilderFactory
+   * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   public abstract PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory ) ;
