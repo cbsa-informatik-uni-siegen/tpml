@@ -9,7 +9,6 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.subtyping.ProofStep ;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode ;
 import de.unisiegen.tpml.core.typechecker.SeenTypes ;
-import de.unisiegen.tpml.core.typeinference.PrettyPrintPriorities ;
 import de.unisiegen.tpml.core.types.MonoType ;
 
 
@@ -23,7 +22,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @see de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode
  */
 public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
-    RecSubTypingProofNode , SubTypingProofNode , PrettyPrintPriorities
+    RecSubTypingProofNode , SubTypingProofNode
 {
   /**
    * The subtype object containing the subtype and supertype of this node
@@ -217,12 +216,12 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_EQUATION ) ;
+        this , 0 ) ;
     builder.addBuilder ( this.type.getLeft ( ).toPrettyStringBuilder (
-        pPrettyStringBuilderFactory ) , PRIO_EQUATION ) ;
+        pPrettyStringBuilderFactory ) , 0 ) ;
     builder.addText ( " <: " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.type.getRight ( ).toPrettyStringBuilder (
-        pPrettyStringBuilderFactory ) , PRIO_EQUATION ) ;
+        pPrettyStringBuilderFactory ) , 0 ) ;
     return builder ;
   }
 

@@ -30,8 +30,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @author Christian Fehler
  */
 public class TypeSubType implements ShowBondsInput , TypeFormula ,
-    PrettyPrintable , PrettyPrintPriorities , LatexPrintable ,
-    LatexCommandNames
+    PrettyPrintable , LatexPrintable , LatexCommandNames
 {
   /**
    * The left type (subtype) of this type formula
@@ -228,12 +227,12 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_EQUATION ) ;
+        this , 0 ) ;
     builder.addBuilder ( this.left
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_EQUATION ) ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
     builder.addText ( " <: " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.right
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_EQUATION ) ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
     return builder ;
   }
 

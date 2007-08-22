@@ -381,17 +381,17 @@ public final class Coercion extends Expression implements DefaultTypes ,
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_COERCION , LATEX_COERCION ) ;
+          PRIO_COERCION , LATEX_COERCION ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_COERCION_E ) ;
+          PRIO_COERCION_E ) ;
       this.latexStringBuilder.addBuilder ( this.types [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_COERCION_TAU1 ) ;
+          PRIO_COERCION_TAU1 ) ;
       this.latexStringBuilder.addBreak ( ) ;
       this.latexStringBuilder.addBuilder ( this.types [ 1 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_COERCION_TAU2 ) ;
+          PRIO_COERCION_TAU2 ) ;
     }
     return this.latexStringBuilder ;
   }
@@ -409,23 +409,23 @@ public final class Coercion extends Expression implements DefaultTypes ,
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_COERCION ) ;
+          PRIO_COERCION ) ;
       this.prettyStringBuilder.addText ( PRETTY_LPAREN ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_COERCION_E ) ;
+          PRIO_COERCION_E ) ;
       this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
       this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_COERCION_TAU1 ) ;
+          PRIO_COERCION_TAU1 ) ;
       this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addText ( PRETTY_SUBTYPE ) ;
       this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_COERCION_TAU2 ) ;
+          PRIO_COERCION_TAU2 ) ;
       this.prettyStringBuilder.addText ( PRETTY_RPAREN ) ;
     }
     return this.prettyStringBuilder ;

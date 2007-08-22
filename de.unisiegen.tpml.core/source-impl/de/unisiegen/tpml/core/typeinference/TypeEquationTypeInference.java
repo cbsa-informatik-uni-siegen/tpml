@@ -34,7 +34,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker
  */
 public final class TypeEquationTypeInference implements ShowBondsInput ,
-    TypeFormula , PrettyPrintable , PrettyPrintPriorities , LatexCommandNames
+    TypeFormula , PrettyPrintable , LatexCommandNames
 {
   /**
    * The monomorphic type on the left side.
@@ -362,12 +362,12 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_EQUATION ) ;
+        this , 0 ) ;
     builder.addBuilder ( this.left
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_EQUATION ) ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
     builder.addText ( " = " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.right
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_EQUATION ) ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
     return builder ;
   }
 

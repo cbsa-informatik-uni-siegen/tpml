@@ -15,7 +15,6 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typeinference.PrettyPrintPriorities ;
 import de.unisiegen.tpml.core.types.MonoType ;
 
 
@@ -26,8 +25,8 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @author Benjamin Mies
  * @author Christian Fehler
  */
-public class DefaultSubType implements PrettyPrintable , PrettyPrintPriorities ,
-    LatexPrintable , LatexCommandNames
+public class DefaultSubType implements PrettyPrintable , LatexPrintable ,
+    LatexCommandNames
 {
   /**
    * The left type (subtype) of this subtype object
@@ -219,12 +218,12 @@ public class DefaultSubType implements PrettyPrintable , PrettyPrintPriorities ,
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_EQUATION ) ;
+        this , 0 ) ;
     builder.addBuilder ( this.right
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_EQUATION ) ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
     builder.addText ( " = " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.left
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_EQUATION ) ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
     return builder ;
   }
 

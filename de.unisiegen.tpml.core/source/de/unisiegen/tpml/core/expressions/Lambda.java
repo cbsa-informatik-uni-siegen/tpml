@@ -560,10 +560,9 @@ public final class Lambda extends Value implements BoundIdentifiers ,
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_LAMBDA , LATEX_LAMBDA ) ;
+          PRIO_LAMBDA , LATEX_LAMBDA ) ;
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_ID ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
       if ( this.types [ 0 ] == null )
       {
         this.latexStringBuilder.addEmptyBuilder ( ) ;
@@ -572,11 +571,10 @@ public final class Lambda extends Value implements BoundIdentifiers ,
       {
         this.latexStringBuilder.addBuilder ( this.types [ 0 ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-            PrettyPrintPriorities.PRIO_LAMBDA_TAU ) ;
+            PRIO_LAMBDA_TAU ) ;
       }
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_LAMBDA_E ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LAMBDA_E ) ;
     }
     return this.latexStringBuilder ;
   }
@@ -594,23 +592,22 @@ public final class Lambda extends Value implements BoundIdentifiers ,
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_LAMBDA ) ;
+          PRIO_LAMBDA ) ;
       this.prettyStringBuilder.addKeyword ( PRETTY_LAMBDA ) ;
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_ID ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       if ( this.types [ 0 ] != null )
       {
         this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
         this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PrettyPrintPriorities.PRIO_LAMBDA_TAU ) ;
+            PRIO_LAMBDA_TAU ) ;
       }
       this.prettyStringBuilder.addText ( PRETTY_DOT ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_LAMBDA_E ) ;
+          PRIO_LAMBDA_E ) ;
     }
     return this.prettyStringBuilder ;
   }
