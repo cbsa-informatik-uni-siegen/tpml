@@ -18,6 +18,7 @@ import de.unisiegen.tpml.core.subtypingrec.DefaultSubType ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
 import de.unisiegen.tpml.core.typechecker.SeenTypes ;
+import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
 import de.unisiegen.tpml.core.typeinference.TypeSubType ;
@@ -77,7 +78,7 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    int number = 10 ;
+    int number = 11 ;
     if ( number == 0 ) testExpression ( ) ;
     if ( number == 1 ) testType ( ) ;
     if ( number == 2 ) testTypeEnvironment ( ) ;
@@ -89,6 +90,7 @@ public class LatexTest
     if ( number == 8 ) testSubType ( ) ;
     if ( number == 9 ) testTypeSubType ( ) ;
     if ( number == 10 ) testTypeSubstitution ( ) ;
+    if ( number == 11 ) testTypeEquationListTypeChecker ( ) ;
   }
 
 
@@ -299,12 +301,49 @@ public class LatexTest
   }
 
 
+  public static void testTypeEquationListTypeChecker ( )
+  {
+    try
+    {
+      TypeEquationListTypeChecker equationList = TypeEquationListTypeChecker.EMPTY_LIST ;
+      SeenTypes < TypeEquationTypeChecker > seenTypes = new SeenTypes < TypeEquationTypeChecker > ( ) ;
+      TypeEquationTypeChecker typeEquation1 = new TypeEquationTypeChecker (
+          new IntegerType ( ) , new BooleanType ( ) , seenTypes ) ;
+      TypeEquationTypeChecker typeEquation2 = new TypeEquationTypeChecker (
+          new BooleanType ( ) , new UnitType ( ) , seenTypes ) ;
+      equationList = equationList.extend ( typeEquation1 ) ;
+      equationList = equationList.extend ( typeEquation2 ) ;
+      testLatexPrintable ( equationList ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
   public static void testTypeEquationTypeChecker ( )
   {
     try
     {
       SeenTypes < TypeEquationTypeChecker > seenTypes = new SeenTypes < TypeEquationTypeChecker > ( ) ;
       TypeEquationTypeChecker typeEquation = new TypeEquationTypeChecker (
+          new IntegerType ( ) , new BooleanType ( ) , seenTypes ) ;
+      testLatexPrintable ( typeEquation ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
+  public static void testTypeEquationTypeInference ( )
+  {
+    try
+    {
+      SeenTypes < TypeEquationTypeInference > seenTypes = new SeenTypes < TypeEquationTypeInference > ( ) ;
+      TypeEquationTypeInference typeEquation = new TypeEquationTypeInference (
           new IntegerType ( ) , new BooleanType ( ) , seenTypes ) ;
       testLatexPrintable ( typeEquation ) ;
     }
@@ -322,22 +361,6 @@ public class LatexTest
       DefaultTypeSubstitution typeSubstitution = new DefaultTypeSubstitution (
           new TypeVariable ( 0 , 0 ) , new BooleanType ( ) ) ;
       testLatexPrintable ( typeSubstitution ) ;
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-    }
-  }
-
-
-  public static void testTypeEquationTypeInference ( )
-  {
-    try
-    {
-      SeenTypes < TypeEquationTypeInference > seenTypes = new SeenTypes < TypeEquationTypeInference > ( ) ;
-      TypeEquationTypeInference typeEquation = new TypeEquationTypeInference (
-          new IntegerType ( ) , new BooleanType ( ) , seenTypes ) ;
-      testLatexPrintable ( typeEquation ) ;
     }
     catch ( Exception e )
     {

@@ -3,8 +3,17 @@ package de.unisiegen.tpml.core.typechecker ;
 
 import java.text.MessageFormat ;
 import java.util.ArrayList ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.ListType ;
 import de.unisiegen.tpml.core.types.MonoType ;
@@ -25,11 +34,9 @@ import de.unisiegen.tpml.core.types.TypeVariable ;
  * @version $Rev:926M $
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker
  */
-public final class TypeEquationListTypeChecker
+public final class TypeEquationListTypeChecker implements LatexPrintable ,
+    LatexCommands
 {
-  //
-  // Constants
-  //
   /**
    * The empty equation list.
    * 
@@ -38,9 +45,6 @@ public final class TypeEquationListTypeChecker
   public static final TypeEquationListTypeChecker EMPTY_LIST = new TypeEquationListTypeChecker ( ) ;
 
 
-  //
-  // Attributes
-  //
   /**
    * The first equation in the list.
    */
@@ -53,9 +57,6 @@ public final class TypeEquationListTypeChecker
   public TypeEquationListTypeChecker remaining ;
 
 
-  //
-  // Constructors (private)
-  //
   /**
    * Allocates a new empty equation list.
    * 
@@ -92,9 +93,6 @@ public final class TypeEquationListTypeChecker
   }
 
 
-  //
-  // Primitives
-  //
   /**
    * Allocates a new {@link TypeEquationListTypeChecker}, which extends this
    * equation list with a new {@link TypeEquationTypeChecker} for
@@ -109,6 +107,65 @@ public final class TypeEquationListTypeChecker
       TypeEquationTypeChecker pTypeEquationTypeChecker )
   {
     return new TypeEquationListTypeChecker ( pTypeEquationTypeChecker , this ) ;
+  }
+
+
+  /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand (
+        LATEX_TYPE_EQUATION_LIST_TYPE_CHECKER , 1 , "\\{#1\\}" ) ) ; //$NON-NLS-1$
+    for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
+    {
+      for ( LatexCommand command : list.first.getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  {
+    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
+    {
+      for ( LatexInstruction instruction : list.first.getLatexInstructions ( ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public TreeSet < LatexPackage > getLatexPackages ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
+    {
+      for ( LatexPackage pack : list.first.getLatexPackages ( ) )
+      {
+        packages.add ( pack ) ;
+      }
+    }
+    return packages ;
   }
 
 
@@ -132,9 +189,44 @@ public final class TypeEquationListTypeChecker
   }
 
 
-  //
-  // Base methods
-  //
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexString()
+   */
+  public final LatexString toLatexString ( )
+  {
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+        .toLatexString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  public final LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
+        0 , LATEX_TYPE_EQUATION_LIST_TYPE_CHECKER ) ;
+    builder.addBuilderBegin ( ) ;
+    for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
+    {
+      if ( list != this )
+      {
+        builder.addText ( LATEX_COMMA ) ;
+        builder.addText ( LATEX_SPACE ) ;
+      }
+      builder.addBuilder ( list.first
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+    }
+    builder.addBuilderEnd ( ) ;
+    return builder ;
+  }
+
+
   /**
    * Returns the string representation of the equations contained in this list.
    * This method is mainly useful for debugging purposes.

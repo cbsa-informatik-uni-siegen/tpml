@@ -86,10 +86,10 @@ public final class UnitType extends PrimitiveType
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands
-        .add ( new DefaultLatexCommand ( "boldUnit" , 0 , "\\textbf{unit}" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-    commands
-        .add ( new DefaultLatexCommand ( LATEX_UNIT_TYPE , 0 , "\\boldUnit" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_UNIT , 0 ,
+        "\\textbf{unit}" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_UNIT_TYPE , 0 ,
+        "\\" + LATEX_KEYWORD_UNIT ) ) ; //$NON-NLS-1$
     return commands ;
   }
 
