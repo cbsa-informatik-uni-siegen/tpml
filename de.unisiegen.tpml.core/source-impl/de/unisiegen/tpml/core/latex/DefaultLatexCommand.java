@@ -41,8 +41,10 @@ public final class DefaultLatexCommand implements LatexCommand ,
    * @param pName The name of the new latex command.
    * @param pParameterCount The parameter count of the new latex command.
    * @param pBody The body of the new latex command.
+   * @param pParameterDescriptions The array of parameter descriptions.
    */
-  public DefaultLatexCommand ( String pName , int pParameterCount , String pBody )
+  public DefaultLatexCommand ( String pName , int pParameterCount ,
+      String pBody , String ... pParameterDescriptions )
   {
     this.name = pName ;
     if ( pParameterCount < 0 )
@@ -51,23 +53,6 @@ public final class DefaultLatexCommand implements LatexCommand ,
     }
     this.parameterCount = pParameterCount ;
     this.body = pBody ;
-  }
-
-
-  /**
-   * Allocates a new <code>DefaultLatexCommand</code> for the specified
-   * <code>pName</code>, <code>pParameterCount</code> and
-   * <code>pBody</code>.
-   * 
-   * @param pName The name of the new latex command.
-   * @param pParameterCount The parameter count of the new latex command.
-   * @param pBody The body of the new latex command.
-   * @param pParameterDescriptions The array of parameter descriptions.
-   */
-  public DefaultLatexCommand ( String pName , int pParameterCount ,
-      String pBody , String ... pParameterDescriptions )
-  {
-    this ( pName , pParameterCount , pBody ) ;
     if ( pParameterCount != pParameterDescriptions.length )
     {
       throw new IllegalArgumentException (
