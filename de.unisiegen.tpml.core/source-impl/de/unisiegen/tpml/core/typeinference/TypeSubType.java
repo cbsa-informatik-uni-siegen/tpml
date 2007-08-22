@@ -2,8 +2,17 @@ package de.unisiegen.tpml.core.typeinference ;
 
 
 import java.util.ArrayList ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -17,13 +26,11 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * This type of type formula is needed to check subtype relations.
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  */
 public class TypeSubType implements ShowBondsInput , TypeFormula ,
-    PrettyPrintable , PrettyPrintPriorities
+    PrettyPrintable , PrettyPrintPriorities , LatexPrintable , LatexCommands
 {
-  //
-  // Attributes
-  //
   /**
    * The left type (subtype) of this type formula
    */
@@ -72,6 +79,68 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_SUB_TYPE , 2 ,
+        "#1\\ <:\\ #2" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : this.left.getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.right.getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  {
+    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    for ( LatexInstruction instruction : this.left.getLatexInstructions ( ) )
+    {
+      instructions.add ( instruction ) ;
+    }
+    for ( LatexInstruction instruction : this.right.getLatexInstructions ( ) )
+    {
+      instructions.add ( instruction ) ;
+    }
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public TreeSet < LatexPackage > getLatexPackages ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    for ( LatexPackage pack : this.left.getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : this.right.getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    return packages ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getType()
@@ -103,6 +172,36 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
   ArrayList < TypeSubstitution > s )
   {
     return this ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexString()
+   */
+  public final LatexString toLatexString ( )
+  {
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+        .toLatexString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
+   */
+  public final LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
+  {
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
+        0 , LATEX_TYPE_SUB_TYPE ) ;
+    builder.addBuilder ( this.left
+        .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+    builder.addBuilder ( this.right
+        .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+    return builder ;
   }
 
 

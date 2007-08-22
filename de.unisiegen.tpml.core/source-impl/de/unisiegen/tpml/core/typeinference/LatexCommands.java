@@ -16,4 +16,10 @@ public interface LatexCommands
    * The latex print command for {@link TypeEquationTypeInference}.
    */
   public static final String LATEX_TYPE_EQUATION_TYPE_INFERENCE = "TypeEquationTypeInference" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for {@link TypeSubType}.
+   */
+  public static final String LATEX_TYPE_SUB_TYPE = "TypeSubType" ; //$NON-NLS-1$
 }
