@@ -79,8 +79,8 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-     testExpression ( ) ;
-    //testType ( ) ;
+    // testExpression ( ) ;
+    testType ( ) ;
     // testTypeEnvironment ( ) ;
     // testStore ( ) ;
   }
@@ -119,9 +119,9 @@ public class LatexTest
   {
     try
     {
-      String text = "(+) 3 3" ;
+      String text = "while 1 do 2" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
-      Language language = factory.getLanguageById ( "l2c" ) ;
+      Language language = factory.getLanguageById ( "l4" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
           .parse ( ) ;
       testLatexPrintable ( expression ) ;
@@ -205,7 +205,7 @@ public class LatexTest
   {
     try
     {
-      String text = "unit" ;
+      String text = "int ref" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
       Type type = language.newTypeParser ( new StringReader ( text ) ).parse ( ) ;

@@ -167,9 +167,10 @@ public final class New extends Expression implements DefaultExpressions
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( "boldNew" , 0 , "\\textbf{new}" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-    commands
-        .add ( new DefaultLatexCommand ( LATEX_NEW , 1 , "\\boldNew\\ {#1}" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_NEW , 0 ,
+        "\\textbf{new}" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_NEW , 1 , "\\" //$NON-NLS-1$
+        + LATEX_KEYWORD_NEW + "\\ {#1}" ) ) ; //$NON-NLS-1$
     for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
     {
       commands.add ( command ) ;

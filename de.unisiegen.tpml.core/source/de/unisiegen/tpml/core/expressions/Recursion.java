@@ -375,11 +375,11 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( "boldRec" , 0 , "\\textbf{rec}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_REC , 0 ,
+        "\\textbf{rec}" ) ) ; //$NON-NLS-1$ 
     commands.add ( new DefaultLatexCommand ( LATEX_RECURSION , 3 ,
-        "\\ifthenelse{\\equal{#2}{}}" //$NON-NLS-1$
-            + "{\\boldRec\\ #1.#3}" //$NON-NLS-1$
-            + "{\\boldRec\\ #1\\colon\\ #2.#3}" ) ) ; //$NON-NLS-1$
+        "\\ifthenelse{\\equal{#2}{}}" + "{\\" + LATEX_KEYWORD_REC + "\\ #1.#3}" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            + "{\\" + LATEX_KEYWORD_REC + "\\ #1\\colon\\ #2.#3}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     for ( LatexCommand command : this.identifiers [ 0 ].getLatexCommands ( ) )
     {
       commands.add ( command ) ;

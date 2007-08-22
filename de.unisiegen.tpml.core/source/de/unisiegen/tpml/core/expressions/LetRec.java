@@ -216,16 +216,18 @@ public final class LetRec extends Let implements BoundIdentifiers ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( "boldLet" , 0 , "\\textbf{let}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( "boldRec" , 0 , "\\textbf{rec}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( "boldIn" , 0 , "\\textbf{in}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands
-        .add ( new DefaultLatexCommand (
-            LATEX_LET_REC ,
-            4 ,
-            "\\ifthenelse{\\equal{#2}{}}" //$NON-NLS-1$
-                + "{\\boldLet\\ \\boldRec\\ #1\\ =\\ #3\\ \\boldIn\\ #4}" //$NON-NLS-1$
-                + "{\\boldLet\\ \\boldRec\\ #1\\colon\\ #2\\ =\\ #3\\ \\boldIn\\ #4}" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_LET , 0 ,
+        "\\textbf{let}" ) ) ; //$NON-NLS-1$ 
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_REC , 0 ,
+        "\\textbf{rec}" ) ) ; //$NON-NLS-1$ 
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_IN , 0 ,
+        "\\textbf{in}" ) ) ; //$NON-NLS-1$ 
+    commands.add ( new DefaultLatexCommand ( LATEX_LET_REC , 4 ,
+        "\\ifthenelse{\\equal{#2}{}}" + "{\\" + LATEX_KEYWORD_LET + "\\ \\" //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+            + LATEX_KEYWORD_REC + "\\ #1\\ =\\ #3\\ \\" + LATEX_KEYWORD_IN //$NON-NLS-1$
+            + "\\ #4}" + "{\\" + LATEX_KEYWORD_LET + "\\ \\" //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+            + LATEX_KEYWORD_REC + "\\ #1\\colon\\ #2\\ =\\ #3\\ \\" //$NON-NLS-1$
+            + LATEX_KEYWORD_IN + "\\ #4}" ) ) ; //$NON-NLS-1$
     for ( LatexCommand command : this.identifiers [ 0 ].getLatexCommands ( ) )
     {
       commands.add ( command ) ;

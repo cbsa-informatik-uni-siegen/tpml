@@ -198,11 +198,12 @@ public final class While extends Expression implements DefaultExpressions
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand (
-        "boldWhile" , 0 , "\\textbf{while}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( "boldDo" , 0 , "\\textbf{do}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_WHILE , 2 ,
-        "\\boldWhile\\ #1\\ \\boldDo\\ #2" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_WHILE , 0 ,
+        "\\textbf{while}" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_DO , 0 ,
+        "\\textbf{do}" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_WHILE , 2 , "\\" //$NON-NLS-1$
+        + LATEX_KEYWORD_WHILE + "\\ #1\\ \\" + LATEX_KEYWORD_DO + "\\ #2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
     {
       commands.add ( command ) ;

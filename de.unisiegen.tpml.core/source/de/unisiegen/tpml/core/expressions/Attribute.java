@@ -284,9 +284,10 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_VAL , 0 , "\\textbf{val}" ) ) ; //$NON-NLS-1$ 
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_VAL , 0 ,
+        "\\textbf{val}" ) ) ; //$NON-NLS-1$ 
     commands.add ( new DefaultLatexCommand ( LATEX_ATTRIBUTE , 2 ,
-        "\\" + LATEX_VAL + "\\ #1\\ =\\ #2\\ ;" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        "\\" + LATEX_KEYWORD_VAL + "\\ #1\\ =\\ #2\\ ;" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     for ( LatexCommand command : this.identifiers [ 0 ].getLatexCommands ( ) )
     {
       commands.add ( command ) ;

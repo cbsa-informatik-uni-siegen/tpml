@@ -87,9 +87,10 @@ public final class IntegerType extends PrimitiveType
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( "boldInt" , 0 , "\\textbf{int}" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_INT , 0 ,
+        "\\textbf{int}" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_INTEGER_TYPE , 0 ,
-        "\\boldInt" ) ) ; //$NON-NLS-1$
+        "\\" + LATEX_KEYWORD_INT ) ) ; //$NON-NLS-1$
     return commands ;
   }
 

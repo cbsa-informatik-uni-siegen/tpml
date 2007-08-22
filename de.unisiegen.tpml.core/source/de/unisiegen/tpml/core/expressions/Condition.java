@@ -226,13 +226,15 @@ public final class Condition extends Expression implements DefaultExpressions
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( "boldIf" , 0 , "\\textbf{if}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands
-        .add ( new DefaultLatexCommand ( "boldThen" , 0 , "\\textbf{then}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands
-        .add ( new DefaultLatexCommand ( "boldElse" , 0 , "\\textbf{else}" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_CONDITION , 3 ,
-        "\\boldIf\\ #1\\ \\boldThen\\ #2\\ \\boldElse\\ #3" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_IF , 0 ,
+        "\\textbf{if}" ) ) ; //$NON-NLS-1$ 
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_THEN , 0 ,
+        "\\textbf{then}" ) ) ; //$NON-NLS-1$ 
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_ELSE , 0 ,
+        "\\textbf{else}" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_CONDITION , 3 , "\\" //$NON-NLS-1$
+        + LATEX_KEYWORD_IF + "\\ #1\\ \\" + LATEX_KEYWORD_THEN + "\\ #2\\ \\" //$NON-NLS-1$//$NON-NLS-2$
+        + LATEX_KEYWORD_ELSE + "\\ #3" ) ) ; //$NON-NLS-1$
     for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
     {
       commands.add ( command ) ;

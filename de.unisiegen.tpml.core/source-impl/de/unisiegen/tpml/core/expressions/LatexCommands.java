@@ -64,7 +64,103 @@ public interface LatexCommands
   /**
    * The latex print command for the keyword <code>val</code>.
    */
-  public static final String LATEX_VAL = "KeywordVal" ; //$NON-NLS-1$
+  public static final String LATEX_KEYWORD_VAL = "KeywordVal" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>class</code>.
+   */
+  public static final String LATEX_KEYWORD_CLASS = "KeywordClass" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>end</code>.
+   */
+  public static final String LATEX_KEYWORD_END = "KeywordEnd" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>if</code>.
+   */
+  public static final String LATEX_KEYWORD_IF = "KeywordIf" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>then</code>.
+   */
+  public static final String LATEX_KEYWORD_THEN = "KeywordThen" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>else</code>.
+   */
+  public static final String LATEX_KEYWORD_ELSE = "KeywordElse" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>let</code>.
+   */
+  public static final String LATEX_KEYWORD_LET = "KeywordLet" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>in</code>.
+   */
+  public static final String LATEX_KEYWORD_IN = "KeywordIn" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>rec</code>.
+   */
+  public static final String LATEX_KEYWORD_REC = "KeywordRec" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>method</code>.
+   */
+  public static final String LATEX_KEYWORD_METHOD = "KeywordMethod" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>inherit</code>.
+   */
+  public static final String LATEX_KEYWORD_INHERIT = "KeywordInherit" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>from</code>.
+   */
+  public static final String LATEX_KEYWORD_FROM = "KeywordFrom" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>lambda</code>.
+   */
+  public static final String LATEX_KEYWORD_LAMBDA = "KeywordLambda" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>new</code>.
+   */
+  public static final String LATEX_KEYWORD_NEW = "KeywordNew" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>object</code>.
+   */
+  public static final String LATEX_KEYWORD_OBJECT = "KeywordObject" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>while</code>.
+   */
+  public static final String LATEX_KEYWORD_WHILE = "KeywordWhile" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>do</code>.
+   */
+  public static final String LATEX_KEYWORD_DO = "KeywordDo" ; //$NON-NLS-1$
 
 
   /**

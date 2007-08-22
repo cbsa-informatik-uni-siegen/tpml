@@ -149,10 +149,10 @@ public final class ListType extends MonoType implements DefaultTypes
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands
-        .add ( new DefaultLatexCommand ( "boldList" , 0 , "\\textbf{list}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_LIST_TYPE , 1 ,
-        "#1\\ \\boldList" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_LIST , 0 ,
+        "\\textbf{list}" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_LIST_TYPE , 1 , "#1\\ \\" //$NON-NLS-1$
+        + LATEX_KEYWORD_LIST ) ) ;
     for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
     {
       commands.add ( command ) ;

@@ -87,10 +87,10 @@ public final class BooleanType extends PrimitiveType
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands
-        .add ( new DefaultLatexCommand ( "boldBool" , 0 , "\\textbf{bool}" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_BOOLEAN_TYPE , 0 ,
-        "\\boldBool" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_BOOL , 0 ,
+        "\\textbf{bool}" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_BOOLEAN_TYPE , 0 , "\\" //$NON-NLS-1$
+        + LATEX_KEYWORD_BOOL ) ) ;
     return commands ;
   }
 

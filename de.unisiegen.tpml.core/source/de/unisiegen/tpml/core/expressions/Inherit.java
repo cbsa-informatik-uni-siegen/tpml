@@ -424,12 +424,13 @@ public final class Inherit extends Expression implements BoundIdentifiers ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand (
-        "boldInherit" , 0 , "\\textbf{inherit}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands
-        .add ( new DefaultLatexCommand ( "boldFrom" , 0 , "\\textbf{from}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_INHERIT , 3 ,
-        "\\boldInherit\\ #1\\ \\boldFrom\\ #2\\ ;\\ #3" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_INHERIT , 0 ,
+        "\\textbf{inherit}" ) ) ; //$NON-NLS-1$ 
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_FROM , 0 ,
+        "\\textbf{from}" ) ) ; //$NON-NLS-1$ 
+    commands.add ( new DefaultLatexCommand ( LATEX_INHERIT , 3 , "\\" //$NON-NLS-1$
+        + LATEX_KEYWORD_INHERIT + "\\ #1\\ \\" + LATEX_KEYWORD_FROM //$NON-NLS-1$
+        + "\\ #2\\ ;\\ #3" ) ) ; //$NON-NLS-1$
     for ( Identifier id : this.identifiers )
     {
       for ( LatexCommand command : id.getLatexCommands ( ) )

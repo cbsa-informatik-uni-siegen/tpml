@@ -74,9 +74,57 @@ public interface LatexCommands
 
 
   /**
-   * The latex print command for a bold attr.
+   * The latex print command for the keyword <code>attr</code>.
    */
-  public static final String LATEX_BOLD_ATTR = "boldAttr" ; //$NON-NLS-1$
+  public static final String LATEX_KEYWORD_ATTR = "KeywordAttr" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>bool</code>.
+   */
+  public static final String LATEX_KEYWORD_BOOL = "KeywordBool" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>int</code>.
+   */
+  public static final String LATEX_KEYWORD_INT = "KeywordInt" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>unit</code>.
+   */
+  public static final String LATEX_KEYWORD_UNIT = "KeywordUnit" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>unify</code>.
+   */
+  public static final String LATEX_KEYWORD_UNIFY = "KeywordUnify" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>zeta</code>.
+   */
+  public static final String LATEX_KEYWORD_ZETA = "KeywordZeta" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>list</code>.
+   */
+  public static final String LATEX_KEYWORD_LIST = "KeywordList" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>ref</code>.
+   */
+  public static final String LATEX_KEYWORD_REF = "KeywordRef" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>mu</code>.
+   */
+  public static final String LATEX_KEYWORD_MU = "KeywordMu" ; //$NON-NLS-1$
 
 
   /**

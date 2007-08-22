@@ -569,13 +569,11 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( "boldLambda" , 0 , //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_LAMBDA , 0 ,
         "\\textbf{$\\lambda$}" ) ) ; //$NON-NLS-1$
-    commands
-        .add ( new DefaultLatexCommand (
-            LATEX_MULTI_LAMBDA ,
-            3 ,
-            "\\ifthenelse{\\equal{#2}{}}{\\boldLambda (#1).#3}{\\boldLambda (#1)\\colon\\ #2.#3}" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_MULTI_LAMBDA , 3 ,
+        "\\ifthenelse{\\equal{#2}{}}{\\" + LATEX_KEYWORD_LAMBDA + "(#1).#3}" //$NON-NLS-1$//$NON-NLS-2$
+            + "{\\" + LATEX_KEYWORD_LAMBDA + "(#1)\\colon\\ #2.#3}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     for ( Identifier id : this.identifiers )
     {
       for ( LatexCommand command : id.getLatexCommands ( ) )

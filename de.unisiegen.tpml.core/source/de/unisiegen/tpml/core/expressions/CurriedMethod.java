@@ -462,12 +462,13 @@ public final class CurriedMethod extends Expression implements
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand (
-        "boldMethod" , 0 , "\\textbf{method}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_METHOD , 0 ,
+        "\\textbf{method}" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_CURRIED_METHOD , 3 ,
         "\\ifthenelse{\\equal{#2}{}}" //$NON-NLS-1$
-            + "{\\boldMethod\\ #1\\ =\\ #3\\ ;}" //$NON-NLS-1$
-            + "{\\boldMethod\\ #1\\colon\\ #2\\ =\\ #3\\ ;}" ) ) ; //$NON-NLS-1$
+            + "{\\" + LATEX_KEYWORD_METHOD + "\\ #1\\ =\\ #3\\ ;}" //$NON-NLS-1$ //$NON-NLS-2$
+            + "{\\" //$NON-NLS-1$
+            + LATEX_KEYWORD_METHOD + "\\ #1\\colon\\ #2\\ =\\ #3\\ ;}" ) ) ; //$NON-NLS-1$
     for ( Identifier id : this.identifiers )
     {
       for ( LatexCommand command : id.getLatexCommands ( ) )
