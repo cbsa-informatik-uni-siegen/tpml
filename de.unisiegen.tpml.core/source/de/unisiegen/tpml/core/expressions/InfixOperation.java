@@ -4,6 +4,8 @@ package de.unisiegen.tpml.core.expressions ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
+import de.unisiegen.tpml.core.interfaces.SortedChildren ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
@@ -27,13 +29,13 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @see Expression
  */
 public final class InfixOperation extends Expression implements
-    DefaultExpressions
+    DefaultExpressions , SortedChildren
 {
   /**
    * Indeces of the child {@link Expression}s.
    */
   private static final int [ ] INDICES_E = new int [ ]
-  { 1 , - 1 , 2 } ;
+  { - 1 , 1 , 2 } ;
 
 
   /**
@@ -253,6 +255,20 @@ public final class InfixOperation extends Expression implements
   public BinaryOperator getOp ( )
   {
     return ( BinaryOperator ) this.expressions [ 0 ] ;
+  }
+
+
+  /**
+   * Returns the {@link Expression}s in the right sorting.
+   * 
+   * @return The {@link Expression}s in the right sorting.
+   * @see SortedChildren#getSortedChildren()
+   */
+  public ExpressionOrType [ ] getSortedChildren ( )
+  {
+    ExpressionOrType [ ] result = new ExpressionOrType [ ]
+    { this.expressions [ 1 ] , this.expressions [ 0 ] , this.expressions [ 2 ] } ;
+    return result ;
   }
 
 
