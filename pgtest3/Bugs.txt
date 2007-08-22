@@ -2,14 +2,15 @@
 - Shortcut für´s Drucken und für alle Beweiswerkzeuge
 - AboutDialog mit Netbeans neu machen
 
+
 *** Michael ***
 - Die Dateien "build.xml", "tpml.xml", "register.cmd" und 
   "unregister.cmd" aus pgtest3 entfernen
 
+
 *** Christian ***
-- TypeEquationTypeChecker: SeenTypes nach Nachfrage aus dem LatexString entfernen
-- TypeEquationTypeInference: SeenTypes nach Nachfrage aus dem LatexString entfernen
 
 
 *** Benny ***
 - "DefaultSubType.toPrettyStringBuilder" verwendet ein "=" anstatt einem "<:"
+  Wird auch vom Renderer verwendet!
