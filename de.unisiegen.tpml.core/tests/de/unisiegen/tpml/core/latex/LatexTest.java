@@ -39,14 +39,14 @@ import de.unisiegen.tpml.core.types.UnitType ;
 { "all" } )
 public class LatexTest
 {
-  private static BufferedWriter out ;
+  private static BufferedWriter bufferedWriter ;
 
 
   public static void close ( )
   {
     try
     {
-      out.close ( ) ;
+      bufferedWriter.close ( ) ;
     }
     catch ( Exception e )
     {
@@ -72,8 +72,8 @@ public class LatexTest
   {
     try
     {
-      out = new BufferedWriter ( new OutputStreamWriter ( new FileOutputStream (
-          "test.tex" ) , "UTF8" ) ) ;
+      bufferedWriter = new BufferedWriter ( new OutputStreamWriter (
+          new FileOutputStream ( "test.tex" ) , "UTF8" ) ) ;
     }
     catch ( Exception e )
     {
@@ -96,11 +96,11 @@ public class LatexTest
   }
 
 
-  public static void printLine ( )
+  public static void println ( )
   {
     try
     {
-      out.newLine ( ) ;
+      bufferedWriter.newLine ( ) ;
       System.out.println ( ) ;
     }
     catch ( Exception e )
@@ -110,13 +110,58 @@ public class LatexTest
   }
 
 
-  public static void printLine ( String pText )
+  public static void println ( String pText )
   {
     try
     {
-      out.write ( pText ) ;
-      out.newLine ( ) ;
+      bufferedWriter.write ( pText ) ;
+      bufferedWriter.newLine ( ) ;
       System.out.println ( pText ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
+  public static void println ( LatexInstruction pLatexInstruction )
+  {
+    try
+    {
+      bufferedWriter.write ( pLatexInstruction.toString ( ) ) ;
+      bufferedWriter.newLine ( ) ;
+      System.out.println ( pLatexInstruction.toString ( ) ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
+  public static void println ( LatexCommand pLatexCommand )
+  {
+    try
+    {
+      bufferedWriter.write ( pLatexCommand.toString ( ) ) ;
+      bufferedWriter.newLine ( ) ;
+      System.out.println ( pLatexCommand.toString ( ) ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
+  public static void println ( LatexPackage pLatexPackage )
+  {
+    try
+    {
+      bufferedWriter.write ( pLatexPackage.toString ( ) ) ;
+      bufferedWriter.newLine ( ) ;
+      System.out.println ( pLatexPackage.toString ( ) ) ;
     }
     catch ( Exception e )
     {
@@ -145,50 +190,51 @@ public class LatexTest
 
   public static void testLatexPrintable ( LatexPrintable pLatexPrintable )
   {
-    // document class and packages
-    printLine ( "\\documentclass[a4paper,12pt]{report}" ) ;
-    printLine ( "\\usepackage[utf8]{inputenc}" ) ;
-    printLine ( "\\usepackage{a4wide}" ) ;
-    printLine ( ) ;
+    // document class and needed packages
+    println ( "\\documentclass[a4paper,12pt]{report}" ) ;
+    println ( "\\usepackage[utf8]{inputenc}" ) ;
+    println ( "\\usepackage{a4wide}" ) ;
+    println ( ) ;
     // packages
     TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
     for ( LatexPackage pack : packages )
     {
-      printLine ( pack.toString ( ) ) ;
+      println ( pack ) ;
     }
     if ( packages.size ( ) > 0 )
     {
-      printLine ( ) ;
+      println ( ) ;
     }
     // instructions
     TreeSet < LatexInstruction > instructions = pLatexPrintable
         .getLatexInstructions ( ) ;
     for ( LatexInstruction instruction : instructions )
     {
-      printLine ( instruction.toString ( ) ) ;
+      println ( instruction ) ;
     }
     if ( instructions.size ( ) > 0 )
     {
-      printLine ( ) ;
+      println ( ) ;
     }
     // commands
     TreeSet < LatexCommand > commands = pLatexPrintable.getLatexCommands ( ) ;
     for ( LatexCommand command : commands )
     {
-      printLine ( command.toString ( ) ) ;
+      println ( command ) ;
     }
     if ( commands.size ( ) > 0 )
     {
-      printLine ( ) ;
+      println ( ) ;
     }
     // document
-    printLine ( "\\begin{document}" ) ;
-    printLine ( ) ;
-    printLine ( "$" ) ;
-    printLine ( pLatexPrintable.toLatexString ( ).toString ( ) ) ;
-    printLine ( "$" ) ;
-    printLine ( ) ;
-    printLine ( "\\end{document}" ) ;
+    println ( "\\begin{document}" ) ;
+    println ( ) ;
+    println ( "$" ) ;
+    println ( pLatexPrintable.toLatexString ( ).toString ( ) ) ;
+    println ( "$" ) ;
+    println ( ) ;
+    println ( "\\end{document}" ) ;
+    // close and compile
     close ( ) ;
     compile ( ) ;
   }
