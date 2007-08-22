@@ -16,6 +16,7 @@ import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageFactory ;
 import de.unisiegen.tpml.core.subtypingrec.DefaultSubType ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
 import de.unisiegen.tpml.core.typechecker.SeenTypes ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
@@ -23,6 +24,7 @@ import de.unisiegen.tpml.core.typeinference.TypeSubType ;
 import de.unisiegen.tpml.core.types.BooleanType ;
 import de.unisiegen.tpml.core.types.IntegerType ;
 import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.core.types.TypeVariable ;
 import de.unisiegen.tpml.core.types.UnitType ;
 
 
@@ -75,59 +77,18 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    switch ( 9 )
-    {
-      case 0 :
-      {
-        testExpression ( ) ;
-        break ;
-      }
-      case 1 :
-      {
-        testType ( ) ;
-        break ;
-      }
-      case 2 :
-      {
-        testTypeEnvironment ( ) ;
-        break ;
-      }
-      case 3 :
-      {
-        testStore ( ) ;
-        break ;
-      }
-      case 4 :
-      {
-        testSeenTypesTypeChecker ( ) ;
-        break ;
-      }
-      case 5 :
-      {
-        testSeenTypesTypeInference ( ) ;
-        break ;
-      }
-      case 6 :
-      {
-        testTypeEquationTypeChecker ( ) ;
-        break ;
-      }
-      case 7 :
-      {
-        testTypeEquationTypeInference ( ) ;
-        break ;
-      }
-      case 8 :
-      {
-        testSubType ( ) ;
-        break ;
-      }
-      case 9 :
-      {
-        testTypeSubType ( ) ;
-        break ;
-      }
-    }
+    int number = 10 ;
+    if ( number == 0 ) testExpression ( ) ;
+    if ( number == 1 ) testType ( ) ;
+    if ( number == 2 ) testTypeEnvironment ( ) ;
+    if ( number == 3 ) testStore ( ) ;
+    if ( number == 4 ) testSeenTypesTypeChecker ( ) ;
+    if ( number == 5 ) testSeenTypesTypeInference ( ) ;
+    if ( number == 6 ) testTypeEquationTypeChecker ( ) ;
+    if ( number == 7 ) testTypeEquationTypeInference ( ) ;
+    if ( number == 8 ) testSubType ( ) ;
+    if ( number == 9 ) testTypeSubType ( ) ;
+    if ( number == 10 ) testTypeSubstitution ( ) ;
   }
 
 
@@ -346,6 +307,21 @@ public class LatexTest
       TypeEquationTypeChecker typeEquation = new TypeEquationTypeChecker (
           new IntegerType ( ) , new BooleanType ( ) , seenTypes ) ;
       testLatexPrintable ( typeEquation ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
+  public static void testTypeSubstitution ( )
+  {
+    try
+    {
+      DefaultTypeSubstitution typeSubstitution = new DefaultTypeSubstitution (
+          new TypeVariable ( 0 , 0 ) , new BooleanType ( ) ) ;
+      testLatexPrintable ( typeSubstitution ) ;
     }
     catch ( Exception e )
     {

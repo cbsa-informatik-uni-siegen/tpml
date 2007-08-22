@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.typechecker ;
 
 
 import java.util.Set ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.TypeVariable ;
@@ -13,14 +14,12 @@ import de.unisiegen.tpml.core.types.TypeVariable ;
  * be used to substitute both on types and expressions.
  * 
  * @author Benedikt Meurer
+ * @author Christian Fehler
  * @version $Rev:277 $
  * @see de.unisiegen.tpml.core.types.TypeVariable
  */
-public interface TypeSubstitution
+public interface TypeSubstitution extends LatexPrintable
 {
-  //
-  // Primitives
-  //
   /**
    * Returns the composition of this {@link TypeSubstitution} and <code>s</code>.
    * The composition will apply pairs from this substitution first and

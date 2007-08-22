@@ -52,4 +52,10 @@ public interface LatexCommands
    * The latex print command for {@link TypeEquationTypeChecker}.
    */
   public static final String LATEX_TYPE_EQUATION_TYPE_CHECKER = "TypeEquationTypeChecker" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for {@link TypeSubstitution}.
+   */
+  public static final String LATEX_TYPE_SUBSTITUTION = "TypeSubstitution" ; //$NON-NLS-1$
 }
