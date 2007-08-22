@@ -200,12 +200,23 @@ public class LatexTest
   public static void testLatexPrintable ( LatexPrintable pLatexPrintable )
   {
     // document class and needed packages
+    println ( "%%" ) ;
+    println ( "%% TPML LaTeX Export" ) ;
+    println ( "%%" ) ;
+    println ( ) ;
     println ( "\\documentclass[a4paper,12pt]{report}" ) ;
     println ( "\\usepackage[utf8]{inputenc}" ) ;
     println ( "\\usepackage{a4wide}" ) ;
     println ( ) ;
     // packages
     TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
+    if ( packages.size ( ) > 0 )
+    {
+      println ( "%%" ) ;
+      println ( "%% " + LatexPackage.DESCRIPTION ) ;
+      println ( "%%" ) ;
+      println ( ) ;
+    }
     for ( LatexPackage pack : packages )
     {
       println ( pack ) ;
@@ -217,6 +228,13 @@ public class LatexTest
     // instructions
     TreeSet < LatexInstruction > instructions = pLatexPrintable
         .getLatexInstructions ( ) ;
+    if ( instructions.size ( ) > 0 )
+    {
+      println ( "%%" ) ;
+      println ( "%% " + LatexInstruction.DESCRIPTION ) ;
+      println ( "%%" ) ;
+      println ( ) ;
+    }
     for ( LatexInstruction instruction : instructions )
     {
       println ( instruction ) ;
@@ -227,6 +245,13 @@ public class LatexTest
     }
     // commands
     TreeSet < LatexCommand > commands = pLatexPrintable.getLatexCommands ( ) ;
+    if ( commands.size ( ) > 0 )
+    {
+      println ( "%%" ) ;
+      println ( "%% " + LatexCommand.DESCRIPTION ) ;
+      println ( "%%" ) ;
+      println ( ) ;
+    }
     for ( LatexCommand command : commands )
     {
       println ( command ) ;
@@ -236,6 +261,10 @@ public class LatexTest
       println ( ) ;
     }
     // document
+    println ( "%%" ) ;
+    println ( "%% Document" ) ;
+    println ( "%%" ) ;
+    println ( ) ;
     println ( "\\begin{document}" ) ;
     println ( ) ;
     println ( "$" ) ;

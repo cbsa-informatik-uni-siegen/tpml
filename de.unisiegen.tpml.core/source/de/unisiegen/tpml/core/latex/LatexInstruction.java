@@ -9,6 +9,12 @@ package de.unisiegen.tpml.core.latex ;
 public interface LatexInstruction extends Comparable < LatexInstruction >
 {
   /**
+   * The description.
+   */
+  public static final String DESCRIPTION = "Needed latex instructions" ; //$NON-NLS-1$
+
+
+  /**
    * Returns the string value of this <code>LatexInstruction</code>.
    * 
    * @return The string value of this <code>LatexInstruction</code>.
