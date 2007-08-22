@@ -156,7 +156,8 @@ public final class PolyType extends Type implements DefaultTypes
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_POLY_TYPE , 1 , "#1" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_POLY_TYPE , 1 , "#1" , //$NON-NLS-1$
+        "forall tvar1, ..., tvarn.tau" ) ) ; //$NON-NLS-1$
     for ( TypeVariable typeVariable : this.quantifiedVariables )
     {
       for ( LatexCommand command : typeVariable.getLatexCommands ( ) )

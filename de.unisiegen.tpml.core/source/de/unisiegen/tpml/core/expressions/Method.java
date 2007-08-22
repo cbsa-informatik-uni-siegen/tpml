@@ -269,12 +269,13 @@ public class Method extends Expression implements DefaultIdentifiers ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_METHOD , 0 ,
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_METHOD , 0 ,
         "\\textbf{method}" ) ) ; //$NON-NLS-1$ 
     commands.add ( new DefaultLatexCommand ( LATEX_METHOD , 3 ,
-        "\\ifthenelse{\\equal{#2}{}}" + "{\\" + LATEX_KEYWORD_METHOD //$NON-NLS-1$ //$NON-NLS-2$
-            + "\\ #1\\ =\\ #3\\ ;}" + "{\\" + LATEX_KEYWORD_METHOD //$NON-NLS-1$//$NON-NLS-2$
-            + "\\ #1\\colon\\ #2\\ =\\ #3\\ ;}" ) ) ; //$NON-NLS-1$
+        "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" //$NON-NLS-1$ //$NON-NLS-2$
+            + LATEX_KEY_METHOD + "\\ #1\\ =\\ #3\\ ;}" //$NON-NLS-1$
+            + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" + LATEX_KEY_METHOD //$NON-NLS-1$
+            + "\\ #1\\colon\\ #2\\ =\\ #3\\ ;}" , "m" , "tau" , "e" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
     for ( LatexCommand command : this.identifiers [ 0 ].getLatexCommands ( ) )
     {
       commands.add ( command ) ;

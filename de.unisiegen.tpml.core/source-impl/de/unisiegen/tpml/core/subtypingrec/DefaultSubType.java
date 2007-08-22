@@ -80,7 +80,7 @@ public class DefaultSubType implements PrettyPrintable , LatexPrintable ,
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_SUB_TYPE , 2 ,
-        "#1\\ <:\\ #2" ) ) ; //$NON-NLS-1$
+        "#1\\ <:\\ #2" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     for ( LatexCommand command : this.left.getLatexCommands ( ) )
     {
       commands.add ( command ) ;

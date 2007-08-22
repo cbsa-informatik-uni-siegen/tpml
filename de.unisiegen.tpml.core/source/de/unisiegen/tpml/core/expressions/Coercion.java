@@ -250,7 +250,7 @@ public final class Coercion extends Expression implements DefaultTypes ,
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_COERCION , 3 ,
-        "(#1\\colon\\ #2<\\colon\\ #3)" ) ) ; //$NON-NLS-1$
+        "(#1\\colon\\ #2<\\colon\\ #3)" , "e" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
     for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
     {
       commands.add ( command ) ;

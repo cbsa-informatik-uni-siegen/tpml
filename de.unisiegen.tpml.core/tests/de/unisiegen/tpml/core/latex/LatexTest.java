@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter ;
 import java.io.StringReader ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
+import de.unisiegen.tpml.core.expressions.Exn ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.InfixOperation ;
@@ -322,7 +323,7 @@ public class LatexTest
   {
     try
     {
-      String text = "int ref" ;
+      String text = "int -> int -> int" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
       Type type = language.newTypeParser ( new StringReader ( text ) ).parse ( ) ;

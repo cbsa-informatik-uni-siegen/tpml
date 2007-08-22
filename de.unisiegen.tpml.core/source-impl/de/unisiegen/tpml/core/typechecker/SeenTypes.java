@@ -122,7 +122,8 @@ public final class SeenTypes < E extends LatexPrintable > implements Cloneable ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_SEEN_TYPES , 1 , "[#1]" ) ) ; //$NON-NLS-1$ 
+    commands.add ( new DefaultLatexCommand ( LATEX_SEEN_TYPES , 1 , "[#1]" , //$NON-NLS-1$
+        "E1, ... , En" ) ) ; //$NON-NLS-1$
     for ( E entry : this.list )
     {
       for ( LatexCommand command : entry.getLatexCommands ( ) )

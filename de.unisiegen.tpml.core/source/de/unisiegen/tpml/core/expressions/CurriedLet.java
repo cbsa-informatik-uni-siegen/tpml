@@ -564,20 +564,16 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_LET , 0 ,
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_LET , 0 ,
         "\\textbf{let}" ) ) ; //$NON-NLS-1$
-    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_IN , 0 ,
-        "\\textbf{in}" ) ) ; //$NON-NLS-1$ 
     commands
-        .add ( new DefaultLatexCommand ( LATEX_CURRIED_LET , 4 ,
-            "\\ifthenelse{\\equal{#2}{}}" //$NON-NLS-1$
-                + "{\\" + LATEX_KEYWORD_LET //$NON-NLS-1$
-                + "\\ #1\\ =\\ #3\\ \\" //$NON-NLS-1$
-                + LATEX_KEYWORD_IN + "\\ #4}" + "{\\" //$NON-NLS-1$ //$NON-NLS-2$
-                + LATEX_KEYWORD_LET
-                + "\\ #1\\colon\\ #2\\ =\\ #3\\ \\" //$NON-NLS-1$
-                + LATEX_KEYWORD_IN
-                + "\\ #4}" ) ) ; //$NON-NLS-1$
+        .add ( new DefaultLatexCommand ( LATEX_KEY_IN , 0 , "\\textbf{in}" ) ) ; //$NON-NLS-1$ 
+    commands.add ( new DefaultLatexCommand ( LATEX_CURRIED_LET , 4 ,
+        "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" //$NON-NLS-1$ //$NON-NLS-2$
+            + LATEX_KEY_LET + "\\ #1\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}" //$NON-NLS-1$ //$NON-NLS-2$
+            + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" + LATEX_KEY_LET //$NON-NLS-1$
+            + "\\ #1\\colon\\ #2\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}" , //$NON-NLS-1$//$NON-NLS-2$
+        "id (id1: tau1) ... (idn: taun)" , "tau" , "e1" , "e2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     for ( Identifier id : this.identifiers )
     {
       for ( LatexCommand command : id.getLatexCommands ( ) )

@@ -112,6 +112,12 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
+   * Prefix of the {@link Expression} which is a constant.
+   */
+  protected static final String PREFIX_CONST = "c" ; //$NON-NLS-1$
+
+
+  /**
    * Prefix of the {@link Inherit}.
    */
   protected static final String PREFIX_BODY = "b" ; //$NON-NLS-1$

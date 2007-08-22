@@ -88,7 +88,7 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_SUB_TYPE , 2 ,
-        "#1\\ <:\\ #2" ) ) ; //$NON-NLS-1$
+        "#1\\ <:\\ #2" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     for ( LatexCommand command : this.left.getLatexCommands ( ) )
     {
       commands.add ( command ) ;

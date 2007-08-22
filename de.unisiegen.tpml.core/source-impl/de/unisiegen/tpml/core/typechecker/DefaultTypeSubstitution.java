@@ -193,7 +193,7 @@ public final class DefaultTypeSubstitution implements TypeSubstitution ,
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_SUBSTITUTION , 2 ,
-        "#1/#2" ) ) ; //$NON-NLS-1$
+        "#1/#2" , "tau" , "tvar" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     for ( LatexCommand command : this.type.getLatexCommands ( ) )
     {
       commands.add ( command ) ;

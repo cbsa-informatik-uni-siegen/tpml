@@ -305,7 +305,7 @@ public final class Duplication extends Expression implements
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_DUPLICATION , 1 ,
-        "\\{<#1>\\}" ) ) ; //$NON-NLS-1$
+        "\\{<#1>\\}" , "a1 = e1 ; ... ; an = en" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     for ( Identifier id : this.identifiers )
     {
       for ( LatexCommand command : id.getLatexCommands ( ) )

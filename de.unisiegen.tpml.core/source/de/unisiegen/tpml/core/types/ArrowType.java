@@ -170,7 +170,7 @@ public final class ArrowType extends MonoType implements DefaultTypes
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_ARROW_TYPE , 2 ,
-        "#1\\ \\to\\ #2" ) ) ; //$NON-NLS-1$
+        "#1\\ \\to\\ #2" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
     for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
     {
       commands.add ( command ) ;

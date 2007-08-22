@@ -105,7 +105,7 @@ public class TypeSubstitutionList implements LatexPrintable , LatexCommandNames
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_SUBSTITUTION_LIST , 1 ,
-        "\\{#1\\}" ) ) ; //$NON-NLS-1$
+        "\\{#1\\}" , "tsub1, ... , tsubn" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       for ( LatexCommand command : list.first.getLatexCommands ( ) )

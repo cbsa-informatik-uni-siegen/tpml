@@ -472,9 +472,10 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_ATTR , 0 ,
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_ATTR , 0 ,
         "\\textbf{attr}" ) ) ; //$NON-NLS-1$ 
-    commands.add ( new DefaultLatexCommand ( LATEX_ROW_TYPE , 1 , "#1" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_ROW_TYPE , 1 , "#1" , //$NON-NLS-1$
+        "epsilon | attr a : tau ; phi1 | m : tau ; phi1" ) ) ; //$NON-NLS-1$
     for ( Identifier id : this.identifiers )
     {
       for ( LatexCommand command : id.getLatexCommands ( ) )
@@ -720,7 +721,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
         if ( Identifier.Set.ATTRIBUTE
             .equals ( this.identifiers [ i ].getSet ( ) ) )
         {
-          this.latexStringBuilder.addText ( "\\" + LATEX_KEYWORD_ATTR ) ; //$NON-NLS-1$
+          this.latexStringBuilder.addText ( "\\" + LATEX_KEY_ATTR ) ; //$NON-NLS-1$
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]

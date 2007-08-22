@@ -67,10 +67,10 @@ public class UnifyType extends PrimitiveType
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_UNIFY , 0 ,
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_UNIFY , 0 ,
         "\\textbf{unify}" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_UNIFY_TYPE , 0 , "\\" //$NON-NLS-1$
-        + LATEX_KEYWORD_UNIFY ) ) ;
+        + LATEX_KEY_UNIFY ) ) ;
     return commands ;
   }
 

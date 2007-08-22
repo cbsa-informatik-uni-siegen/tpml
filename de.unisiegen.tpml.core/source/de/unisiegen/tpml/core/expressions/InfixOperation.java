@@ -227,7 +227,7 @@ public final class InfixOperation extends Expression implements
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_INFIX_OPERATION , 3 ,
-        "#2\\ \\mathbin{#1}\\ #3" ) ) ; //$NON-NLS-1$
+        "#2\\ \\mathbin{#1}\\ #3" , "op" , "e1" , "e2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
     {
       commands.add ( command ) ;

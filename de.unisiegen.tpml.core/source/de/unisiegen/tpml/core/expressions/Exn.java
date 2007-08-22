@@ -149,7 +149,7 @@ public final class Exn extends Expression
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_EXN , 1 ,
-        "\\uparrow\\ \\textit{#1}" ) ) ; //$NON-NLS-1$
+        "\\uparrow\\ \\textit{#1}" , "name" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     return commands ;
   }
 

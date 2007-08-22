@@ -322,7 +322,8 @@ public final class Row extends Expression implements DefaultExpressions
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_ROW , 1 , "#1" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_ROW , 1 , "#1" , //$NON-NLS-1$
+        "epsilon | val a = e; r1 | method m : τ = e ; r1" ) ) ; //$NON-NLS-1$
     for ( Expression child : this.expressions )
     {
       for ( LatexCommand command : child.getLatexCommands ( ) )

@@ -120,7 +120,8 @@ public final class TypeEquationListTypeChecker implements LatexPrintable ,
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand (
-        LATEX_TYPE_EQUATION_LIST_TYPE_CHECKER , 1 , "\\{#1\\}" ) ) ; //$NON-NLS-1$
+        LATEX_TYPE_EQUATION_LIST_TYPE_CHECKER , 1 , "\\{#1\\}" , //$NON-NLS-1$
+        "teqn1, ... , teqnn" ) ) ; //$NON-NLS-1$
     for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       for ( LatexCommand command : list.first.getLatexCommands ( ) )

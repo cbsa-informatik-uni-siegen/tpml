@@ -202,7 +202,7 @@ public final class And extends Expression implements DefaultExpressions
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_AND , 2 ,
-        "#1\\ \\mathbin{\\&\\&}\\ #2" ) ) ; //$NON-NLS-1$
+        "#1\\ \\mathbin{\\&\\&}\\ #2" , "e1" , "e2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
     {
       commands.add ( command ) ;

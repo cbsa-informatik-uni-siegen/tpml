@@ -103,8 +103,25 @@ public abstract class Constant extends Value
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_CONSTANT , 1 , "#1" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_CONSTANT , 1 , "#1" , "c" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     return commands ;
+  }
+
+
+  /**
+   * Returns the prefix of this {@link Expression}.
+   * 
+   * @return The prefix of this {@link Expression}.
+   * @see #prefix
+   */
+  @ Override
+  public String getPrefix ( )
+  {
+    if ( this.prefix == null )
+    {
+      this.prefix = PREFIX_CONST ;
+    }
+    return this.prefix ;
   }
 
 

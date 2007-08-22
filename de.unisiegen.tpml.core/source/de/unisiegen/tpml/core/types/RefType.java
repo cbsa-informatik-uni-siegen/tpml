@@ -148,10 +148,10 @@ public final class RefType extends MonoType implements DefaultTypes
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_REF , 0 ,
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_REF , 0 ,
         "\\textbf{ref}" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_REF_TYPE , 1 , "#1\\ \\" //$NON-NLS-1$
-        + LATEX_KEYWORD_REF ) ) ;
+        + LATEX_KEY_REF , "tau" ) ) ; //$NON-NLS-1$
     for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
     {
       commands.add ( command ) ;

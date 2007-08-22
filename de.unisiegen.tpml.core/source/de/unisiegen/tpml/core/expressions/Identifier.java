@@ -237,7 +237,7 @@ public final class Identifier extends Value implements IdentifierOrTypeName
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_IDENTIFIER , 1 ,
-        "\\textit{#1}" ) ) ; //$NON-NLS-1$
+        "\\textit{#1}" , "name" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     return commands ;
   }
 

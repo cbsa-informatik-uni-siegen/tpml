@@ -153,10 +153,10 @@ public final class ClassType extends MonoType implements DefaultTypes
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_ZETA , 0 ,
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_ZETA , 0 ,
         "\\textbf{$\\zeta$}" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_CLASS_TYPE , 2 , "\\" //$NON-NLS-1$
-        + LATEX_KEYWORD_ZETA + "(#1\\ \\colon\\ #2)" ) ) ; //$NON-NLS-1$
+        + LATEX_KEY_ZETA + "(#1\\ \\colon\\ #2)" , "tau" , "phi" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
     {
       commands.add ( command ) ;

@@ -307,15 +307,16 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_OBJECT , 0 ,
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_OBJECT , 0 ,
         "\\textbf{object}" ) ) ; //$NON-NLS-1$
-    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_END , 0 ,
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_END , 0 ,
         "\\textbf{end}" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_OBJECT_EXPR , 3 ,
-        "\\ifthenelse{\\equal{#2}{}}" + "{\\" + LATEX_KEYWORD_OBJECT //$NON-NLS-1$ //$NON-NLS-2$
-            + "\\ (#1)\\ #3\\ \\" + LATEX_KEYWORD_END + "}" + "{\\" //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-            + LATEX_KEYWORD_OBJECT + "\\ (#1\\colon\\ #2)\\ #3\\ \\" //$NON-NLS-1$
-            + LATEX_KEYWORD_END + "}" ) ) ; //$NON-NLS-1$
+        "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" //$NON-NLS-1$//$NON-NLS-2$
+            + LATEX_KEY_OBJECT + "\\ (#1)\\ #3\\ \\" + LATEX_KEY_END + "}" //$NON-NLS-1$//$NON-NLS-2$
+            + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" + LATEX_KEY_OBJECT //$NON-NLS-1$
+            + "\\ (#1\\colon\\ #2)\\ #3\\ \\" + LATEX_KEY_END + "}" , "self" , //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+        "tau" , "r" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     for ( LatexCommand command : this.identifiers [ 0 ].getLatexCommands ( ) )
     {
       commands.add ( command ) ;

@@ -342,21 +342,19 @@ public final class CurriedLetRec extends CurriedLet implements
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_LET , 0 ,
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_LET , 0 ,
         "\\textbf{let}" ) ) ; //$NON-NLS-1$ 
-    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_REC , 0 ,
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_REC , 0 ,
         "\\textbf{rec}" ) ) ; //$NON-NLS-1$ 
-    commands.add ( new DefaultLatexCommand ( LATEX_KEYWORD_IN , 0 ,
-        "\\textbf{in}" ) ) ; //$NON-NLS-1$ 
+    commands
+        .add ( new DefaultLatexCommand ( LATEX_KEY_IN , 0 , "\\textbf{in}" ) ) ; //$NON-NLS-1$ 
     commands.add ( new DefaultLatexCommand ( LATEX_CURRIED_LET_REC , 4 ,
-        "\\ifthenelse{\\equal{#2}{}}" //$NON-NLS-1$
-            + "{\\" + LATEX_KEYWORD_LET + "\\ \\" //$NON-NLS-1$//$NON-NLS-2$
-            + LATEX_KEYWORD_REC
-            + "\\ #1\\ =\\ #3\\ \\" + LATEX_KEYWORD_IN + "\\ #4}" //$NON-NLS-1$ //$NON-NLS-2$
-            + "{\\" //$NON-NLS-1$
-            + LATEX_KEYWORD_LET + "\\ \\" //$NON-NLS-1$
-            + LATEX_KEYWORD_REC + "\\ #1\\colon\\ #2\\ =\\ #3\\ \\" //$NON-NLS-1$
-            + LATEX_KEYWORD_IN + "\\ #4}" ) ) ; //$NON-NLS-1$
+        "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" //$NON-NLS-1$//$NON-NLS-2$
+            + LATEX_KEY_LET + "\\ \\" + LATEX_KEY_REC + "\\ #1\\ =\\ #3\\ \\" //$NON-NLS-1$//$NON-NLS-2$
+            + LATEX_KEY_IN + "\\ #4}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" //$NON-NLS-1$//$NON-NLS-2$
+            + LATEX_KEY_LET + "\\ \\" + LATEX_KEY_REC //$NON-NLS-1$
+            + "\\ #1\\colon\\ #2\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}" , //$NON-NLS-1$ //$NON-NLS-2$
+        "id (id1: tau1) ... (idn: taun)" , "tau" , "e1" , "e2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     for ( Identifier id : this.identifiers )
     {
       for ( LatexCommand command : id.getLatexCommands ( ) )

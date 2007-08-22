@@ -117,7 +117,7 @@ public class TypeJudgement implements TypeFormula , LatexCommandNames
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_JUDGEMENT , 3 , "#1\\ " //$NON-NLS-1$
-        + LATEX_RIGHT_TRIANGLE + "\\ #2\\ ::\\ #3" ) ) ; //$NON-NLS-1$
+        + LATEX_RIGHT_TRIANGLE + "\\ #2\\ ::\\ #3" , "env" , "e" , "tau" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
     for ( LatexCommand command : this.environment.getLatexCommands ( ) )
     {
       commands.add ( command ) ;

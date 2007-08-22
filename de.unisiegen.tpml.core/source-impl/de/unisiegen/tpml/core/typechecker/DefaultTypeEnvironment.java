@@ -125,7 +125,7 @@ public final class DefaultTypeEnvironment extends
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_ENVIRONMENT , 1 ,
-        "[#1]" ) ) ; //$NON-NLS-1$ 
+        "[#1]" , "id1: tau1, ..., idn: taun" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     for ( Mapping < Identifier , Type > mapping : this.mappings )
     {
       for ( LatexCommand command : mapping.getSymbol ( ).getLatexCommands ( ) )

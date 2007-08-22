@@ -177,7 +177,8 @@ public final class TupleType extends MonoType implements DefaultTypes
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_TUPLE_TYPE , 1 , "#1" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_TUPLE_TYPE , 1 , "#1" , //$NON-NLS-1$
+        "tau1 * ... * taun" ) ) ; //$NON-NLS-1$
     for ( MonoType type : this.types )
     {
       for ( LatexCommand command : type.getLatexCommands ( ) )

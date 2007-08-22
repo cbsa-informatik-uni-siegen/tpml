@@ -31,7 +31,6 @@ public final class DefaultStore extends
     AbstractEnvironment < Location , Expression > implements Store ,
     LatexCommandNames
 {
-
   /**
    * Default constructor, creates a new store with no mappings.
    */
@@ -79,7 +78,6 @@ public final class DefaultStore extends
   }
 
 
-
   /**
    * {@inheritDoc}
    * 
@@ -99,7 +97,8 @@ public final class DefaultStore extends
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_STORE , 1 , "[#1]" ) ) ; //$NON-NLS-1$ 
+    commands.add ( new DefaultLatexCommand ( LATEX_STORE , 1 , "[#1]" , //$NON-NLS-1$
+        "X1: e1, ..., Xn: en" ) ) ; //$NON-NLS-1$
     for ( Mapping < Location , Expression > mapping : this.mappings )
     {
       for ( LatexCommand command : mapping.getSymbol ( ).getLatexCommands ( ) )

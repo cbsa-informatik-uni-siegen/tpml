@@ -154,7 +154,8 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand (
-        LATEX_TYPE_EQUATION_TYPE_INFERENCE , 2 , "#1\\ =\\ #2" ) ) ; //$NON-NLS-1$
+        LATEX_TYPE_EQUATION_TYPE_INFERENCE , 2 , "#1\\ =\\ #2" , "tau1" , //$NON-NLS-1$ //$NON-NLS-2$
+        "tau2" ) ) ; //$NON-NLS-1$
     for ( LatexCommand command : this.left.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
