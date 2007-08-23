@@ -25,7 +25,7 @@ final class TextLatexItem extends AbstractLatexItem
    * @throws NullPointerException if the <code>pContent</code> is
    *           <code>null</code>.
    */
-  TextLatexItem ( String pContent )
+  protected TextLatexItem ( String pContent )
   {
     if ( pContent == null )
     {
@@ -41,34 +41,9 @@ final class TextLatexItem extends AbstractLatexItem
    * @see AbstractLatexItem#determineString(StringBuilder,int)
    */
   @ Override
-  void determineString ( StringBuilder pBuffer , int pIndent )
+  protected void determineString ( StringBuilder pBuffer , int pIndent )
   {
-    // append the text content
     pBuffer.append ( DefaultLatexStringBuilder.getIndent ( pIndent )
         + this.content ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see AbstractLatexItem#determineStringLength()
-   */
-  @ Override
-  int determineStringLength ( )
-  {
-    return this.content.length ( ) ;
-  }
-
-
-  /**
-   * Returns the content.
-   * 
-   * @return The content.
-   * @see #content
-   */
-  public String getContent ( )
-  {
-    return this.content ;
   }
 }

@@ -303,7 +303,7 @@ public class LatexTest
   {
     try
     {
-      String text = "{< a = 0 >}" ;
+      String text = "let x: int = 1 in x" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l2c" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )

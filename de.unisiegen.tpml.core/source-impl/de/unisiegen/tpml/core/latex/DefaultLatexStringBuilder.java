@@ -67,8 +67,8 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
    * @throws NullPointerException if <code>printable</code> is
    *           <code>null</code>.
    */
-  DefaultLatexStringBuilder ( LatexPrintable pPrintable , int pReturnPriority ,
-      String pName , int pIndent )
+  public DefaultLatexStringBuilder ( LatexPrintable pPrintable ,
+      int pReturnPriority , String pName , int pIndent )
   {
     if ( pPrintable == null )
     {
@@ -184,23 +184,6 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
     {
       item.determineString ( pBuffer , pIndent ) ;
     }
-  }
-
-
-  /**
-   * Determines the number of characters required to serialize the latex string
-   * builder content to a latex string.
-   * 
-   * @return The number of characters in the generated latex string.
-   */
-  public int determineStringLength ( )
-  {
-    int length = 0 ;
-    for ( AbstractLatexItem item : this.items )
-    {
-      length += item.determineStringLength ( ) ;
-    }
-    return length ;
   }
 
 

@@ -46,16 +46,4 @@ final class BuilderLatexItem extends AbstractLatexItem
   {
     this.builder.determineString ( pBuffer , pIndent ) ;
   }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see AbstractLatexItem#determineStringLength()
-   */
-  @ Override
-  protected int determineStringLength ( )
-  {
-    return this.builder.determineStringLength ( ) ;
-  }
 }
