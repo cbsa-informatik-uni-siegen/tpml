@@ -221,7 +221,7 @@ public class DefaultSubType implements PrettyPrintable , LatexPrintable ,
         this , 0 ) ;
     builder.addBuilder ( this.right
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    builder.addText ( " = " ) ; //$NON-NLS-1$
+    builder.addText ( " <: " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.left
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
     return builder ;

@@ -12,6 +12,4 @@
 
 
 *** Benny ***
-- "DefaultSubType.toPrettyStringBuilder" verwendet ein "=" anstatt einem "<:"
-  Wird auch vom Renderer verwendet!
 - NewDefaultTypeInferenceProofContext und DefaultTypeInferenceProofContext
