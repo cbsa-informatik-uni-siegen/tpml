@@ -1,7 +1,18 @@
 package de.unisiegen.tpml.core.subtypingrec ;
 
 
+import java.util.TreeSet;
+
 import de.unisiegen.tpml.core.AbstractProofNode ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandNames;
+import de.unisiegen.tpml.core.latex.LatexInstruction;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -22,7 +33,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @see de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode
  */
 public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
-    RecSubTypingProofNode , SubTypingProofNode
+    RecSubTypingProofNode , SubTypingProofNode, LatexPrintable, LatexCommandNames
 {
   /**
    * The subtype object containing the subtype and supertype of this node
@@ -134,9 +145,9 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getType()
+   * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getLeft()
    */
-  public MonoType getType ( )
+  public MonoType getLeft ( )
   {
     return this.type.getLeft ( ) ;
   }
@@ -145,9 +156,9 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getType2()
+   * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getRight()
    */
-  public MonoType getType2 ( )
+  public MonoType getRight ( )
   {
     return this.type.getRight ( ) ;
   }
@@ -250,4 +261,61 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
       builder.append ( this.getSteps ( ) [ 0 ].getRule ( ).toString ( ) ) ;
     return builder.toString ( ) ;
   }
+  
+	public TreeSet < LatexCommand > getLatexCommands ( ) {
+		TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( );
+		commands.add ( new DefaultLatexCommand ( LATEX_REC_SUB_TYPE_PROOF_NODE, 3, "#1\\vdash\\newline " //$NON-NLS-1$
+				+ "\\ #2\\ <:\\ #3", "seenTypes","tau1", "tau2" ) );   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ 
+		for ( LatexCommand command : this.getLeft().getLatexCommands ( ) ) {
+			commands.add ( command );
+		}
+		for ( LatexCommand command : this.getRight().getLatexCommands ( ) ) {
+			commands.add ( command );
+		}
+		for ( LatexCommand command : this.seenTypes.getLatexCommands ( ) ) {
+			commands.add ( command );
+		}
+		return commands;
+	}
+
+	public TreeSet < LatexInstruction > getLatexInstructions ( ) {
+		TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( );
+		for ( LatexInstruction instruction : this.getLeft().getLatexInstructions ( ) ) {
+			instructions.add ( instruction );
+		}
+		for ( LatexInstruction instruction : this.getRight().getLatexInstructions ( ) ) {
+			instructions.add ( instruction );
+		}
+		for ( LatexInstruction instruction : this.seenTypes.getLatexInstructions ( ) ) {
+			instructions.add ( instruction );
+		}
+		return instructions;
+	}
+
+	public TreeSet < LatexPackage > getLatexPackages ( ) {
+		TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( );
+		for ( LatexPackage pack : this.getLeft().getLatexPackages ( ) ) {
+			packages.add ( pack );
+		}
+		for ( LatexPackage pack : this.getRight ( ).getLatexPackages ( ) ) {
+			packages.add ( pack );
+		}
+		for ( LatexPackage pack : this.seenTypes.getLatexPackages ( ) ) {
+			packages.add ( pack );
+		}
+		return packages;
+	}
+
+	public LatexString toLatexString ( ) {
+		return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) ).toLatexString ( );
+	}
+
+	public LatexStringBuilder toLatexStringBuilder ( LatexStringBuilderFactory pLatexStringBuilderFactory ) {
+		LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this, 0, LATEX_REC_SUB_TYPE_PROOF_NODE );
+		builder.addBuilder ( this.seenTypes.toLatexStringBuilder ( pLatexStringBuilderFactory ), 0 );
+		builder.addBuilder ( this.getLeft().toLatexStringBuilder ( pLatexStringBuilderFactory ), 0 );
+		builder.addBuilder ( this.getRight().toLatexStringBuilder ( pLatexStringBuilderFactory ), 0 );
+
+		return builder;
+	}
 }

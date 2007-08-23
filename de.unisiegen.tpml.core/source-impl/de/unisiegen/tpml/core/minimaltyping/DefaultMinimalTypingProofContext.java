@@ -350,10 +350,10 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
 	 *{@inheritDoc}
 	 * 
 	 * @see de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofContext#addSeenType(de.unisiegen.tpml.core.types.MonoType, de.unisiegen.tpml.core.types.MonoType)
-	 */
+	 *
 	public void addSeenType ( MonoType type, MonoType type2 ) {
 		DefaultSubType subtype = new DefaultSubType ( type, type2 );
 		this.seenTypes.add ( subtype );
 	}
-
+*/
 }

@@ -1,6 +1,52 @@
 package de.unisiegen.tpml.core.latex ;
 
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.TreeSet;
+
+import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode;
+import de.unisiegen.tpml.core.expressions.And;
+import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.InfixOperation;
+import de.unisiegen.tpml.core.expressions.IntegerConstant;
+import de.unisiegen.tpml.core.expressions.Location;
+import de.unisiegen.tpml.core.expressions.Ref;
+import de.unisiegen.tpml.core.interpreters.DefaultStore;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageFactory;
+import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofNode;
+import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode;
+import de.unisiegen.tpml.core.subtypingrec.DefaultRecSubTypingProofNode;
+import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.SeenTypes;
+import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker;
+import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode;
+import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
+import de.unisiegen.tpml.core.typeinference.TypeFormula;
+import de.unisiegen.tpml.core.typeinference.TypeJudgement;
+import de.unisiegen.tpml.core.typeinference.TypeSubType;
+import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
+import de.unisiegen.tpml.core.types.ArrowType;
+import de.unisiegen.tpml.core.types.BooleanType;
+import de.unisiegen.tpml.core.types.IntegerType;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.core.types.TypeVariable;
+import de.unisiegen.tpml.core.types.UnitType;
 import java.io.BufferedWriter ;
 import java.io.FileOutputStream ;
 import java.io.IOException ;
@@ -154,6 +200,8 @@ public class LatexTest
     if ( number == 17 ) testTypeCheckerTypeProofNode ( ) ;
     if ( number == 18 ) testBigStepProofNode ( ) ;
     if ( number == 19 ) testTypeInferenceProofNode ( ) ;
+    if ( number == 20 ) testSubTypingProofNode ( ) ;
+    if ( number == 22 ) testRecSubTypingProofNode ( ) ;
     if ( number == 21 ) testMinimalTypingTypesProofNode ( ) ;
     if ( number == 23 ) testMinimalTypingExpressionProofNode ( ) ;
   }
@@ -759,6 +807,40 @@ public class LatexTest
           .newPlus ( ) , new Identifier ( "a" , Identifier.Set.VARIABLE ) ,
           new Identifier ( "b" , Identifier.Set.VARIABLE ) ) ;
       DefaultBigStepProofNode node = new DefaultBigStepProofNode ( expression ) ;
+      printLatexPrintable ( node ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+  
+  public static void testSubTypingProofNode ( )
+  {
+    try
+    {
+      MonoType type = new ArrowType ( new IntegerType ( ) , new ArrowType (
+          new IntegerType ( ) , new IntegerType ( ) ) ) ;
+      MonoType type2 = new ArrowType ( new IntegerType ( ) , new ArrowType (
+            new IntegerType ( ) , new IntegerType ( ) ) ) ;
+      DefaultSubTypingProofNode node = new DefaultSubTypingProofNode ( type, type2) ;
+      printLatexPrintable ( node ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+  
+  public static void testRecSubTypingProofNode ( )
+  {
+    try
+    {
+      MonoType type = new ArrowType ( new IntegerType ( ) , new ArrowType (
+          new IntegerType ( ) , new IntegerType ( ) ) ) ;
+      MonoType type2 = new ArrowType ( new IntegerType ( ) , new ArrowType (
+            new IntegerType ( ) , new IntegerType ( ) ) ) ;
+      DefaultRecSubTypingProofNode node = new DefaultRecSubTypingProofNode ( type, type2, new SeenTypes < DefaultSubType > ()) ;
       printLatexPrintable ( node ) ;
     }
     catch ( Exception e )

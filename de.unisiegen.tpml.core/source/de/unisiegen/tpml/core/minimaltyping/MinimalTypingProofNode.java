@@ -144,4 +144,5 @@ public interface MinimalTypingProofNode extends ExpressionProofNode
    * @return the type environment of this node
    */
   public TypeEnvironment getEnvironment ( ) ;
+
 }

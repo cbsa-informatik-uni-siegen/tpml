@@ -84,5 +84,5 @@ public interface MinimalTypingProofContext
    * @param type the left type
    * @param type2 the right type
    */
-  public void addSeenType ( MonoType type , MonoType type2 ) ;
+  //public void addSeenType ( MonoType type , MonoType type2 ) ;
 }

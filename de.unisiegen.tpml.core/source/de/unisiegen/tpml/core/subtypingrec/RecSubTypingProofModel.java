@@ -332,7 +332,7 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
       public void run ( )
       {
         node.setSteps ( new ProofStep [ ]
-        { new ProofStep ( node.getType ( ) , node.getType2 ( ) , rule ) } ) ;
+        { new ProofStep ( node.getLeft ( ) , node.getRight ( ) , rule ) } ) ;
         ProofRule [ ] rules = new ProofRule [ 1 ] ;
         rules [ 0 ] = rule ;
         node.setRules ( rules ) ;

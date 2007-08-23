@@ -72,7 +72,7 @@ public final class SubTypingException extends Exception {
 	 */
 	public MonoType getType ( ) {
 
-		return this.node.getType ( );
+		return this.node.getLeft ( );
 	}
 
 	/**
@@ -83,7 +83,7 @@ public final class SubTypingException extends Exception {
 	 */
 	public MonoType getType2 ( ) {
 
-		return this.node.getType2 ( );
+		return this.node.getRight ( );
 	}
 
 }

@@ -19,7 +19,7 @@ public interface SubTypingNode extends ProofNode , ExpressionOrType
    * 
    * @return MonoType the first type of this node
    */
-  public MonoType getType ( ) ;
+  public MonoType getLeft ( ) ;
 
 
   /**
@@ -27,7 +27,7 @@ public interface SubTypingNode extends ProofNode , ExpressionOrType
    * 
    * @return MonoType the second type of this node
    */
-  public MonoType getType2 ( ) ;
+  public MonoType getRight ( ) ;
 
 
   /**

@@ -18,14 +18,6 @@ import de.unisiegen.tpml.core.typechecker.SeenTypes ;
 import de.unisiegen.tpml.core.types.MonoType ;
 
 
-/**
- * The Type Proof Node for the Minimal Typing Algorithm. Containing two types,
- * and a list of alreday seen types.
- * 
- * @author Benjamin Mies
- * @author Christian Fehler
- * @see AbstractMinimalTypingProofNode
- */
 public class DefaultMinimalTypingTypesProofNode extends
     AbstractMinimalTypingProofNode implements MinimalTypingTypesProofNode ,
     LatexPrintable , LatexCommandNames
@@ -139,6 +131,10 @@ public class DefaultMinimalTypingTypesProofNode extends
     return this.subtype ;
   }
 
+
+	public void setSeenTypes ( SeenTypes < DefaultSubType > seenTypes ) {
+		this.seenTypes = seenTypes;
+	}
 
   /**
    * {@inheritDoc}
