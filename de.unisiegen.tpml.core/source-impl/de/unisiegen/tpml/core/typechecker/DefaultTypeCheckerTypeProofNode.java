@@ -1,6 +1,17 @@
 package de.unisiegen.tpml.core.typechecker;
 
+import java.util.TreeSet;
+
 import de.unisiegen.tpml.core.expressions.Unify;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandNames;
+import de.unisiegen.tpml.core.latex.LatexInstruction;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -11,7 +22,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @author Benjamin Mies
  *
  */
-public class DefaultTypeCheckerTypeProofNode extends AbstractTypeCheckerProofNode implements TypeCheckerTypeProofNode {
+public class DefaultTypeCheckerTypeProofNode extends AbstractTypeCheckerProofNode implements TypeCheckerTypeProofNode, LatexPrintable, LatexCommandNames {
 
 	//
 	// Attributes
@@ -66,6 +77,57 @@ public class DefaultTypeCheckerTypeProofNode extends AbstractTypeCheckerProofNod
 			builder.append ( " (" + getRule ( ) + ")" ); //$NON-NLS-1$//$NON-NLS-2$
 		}
 		return builder.toString ( );
+	}
+	
+	
+	public TreeSet < LatexCommand > getLatexCommands ( ) {
+		TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( );
+		commands.add ( new DefaultLatexCommand ( LATEX_TYPE_CHECKER_TYPE_PROOF_NODE, 2, "#1\\ " //$NON-NLS-1$
+				+ "<:\\ #2", "tau1", "tau2" ) );   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ 
+		for ( LatexCommand command : this.type.getLatexCommands ( ) ) {
+			commands.add ( command );
+		}
+		for ( LatexCommand command : this.type2.getLatexCommands ( ) ) {
+			commands.add ( command );
+		}
+
+		return commands;
+	}
+
+	public TreeSet < LatexInstruction > getLatexInstructions ( ) {
+		TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( );
+		for ( LatexInstruction instruction : this.type.getLatexInstructions ( ) ) {
+			instructions.add ( instruction );
+		}
+		for ( LatexInstruction instruction : this.type2.getLatexInstructions ( ) ) {
+			instructions.add ( instruction );
+		}
+
+		return instructions;
+	}
+
+	public TreeSet < LatexPackage > getLatexPackages ( ) {
+		TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( );
+		for ( LatexPackage pack : this.type.getLatexPackages ( ) ) {
+			packages.add ( pack );
+		}
+		for ( LatexPackage pack : this.type2.getLatexPackages ( ) ) {
+			packages.add ( pack );
+		}
+
+		return packages;
+	}
+
+	public LatexString toLatexString ( ) {
+		return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) ).toLatexString ( );
+	}
+
+	public LatexStringBuilder toLatexStringBuilder ( LatexStringBuilderFactory pLatexStringBuilderFactory ) {
+		LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this, 0, LATEX_TYPE_CHECKER_TYPE_PROOF_NODE );
+		builder.addBuilder ( this.type.toLatexStringBuilder ( pLatexStringBuilderFactory ), 0 );
+		builder.addBuilder ( this.type2.toLatexStringBuilder ( pLatexStringBuilderFactory ), 0 );
+
+		return builder;
 	}
 
 }

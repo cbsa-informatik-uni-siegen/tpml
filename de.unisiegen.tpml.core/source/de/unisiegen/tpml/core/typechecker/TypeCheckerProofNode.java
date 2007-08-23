@@ -3,6 +3,8 @@ package de.unisiegen.tpml.core.typechecker ;
 
 import javax.swing.tree.TreeNode ;
 import de.unisiegen.tpml.core.ExpressionProofNode ;
+import de.unisiegen.tpml.core.latex.LatexCommandNames;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
 import de.unisiegen.tpml.core.types.MonoType ;
 
 
@@ -15,7 +17,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @see de.unisiegen.tpml.core.ExpressionProofNode
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel
  */
-public interface TypeCheckerProofNode extends ExpressionProofNode
+public interface TypeCheckerProofNode extends ExpressionProofNode, LatexPrintable, LatexCommandNames
 {
   //
   // Accessors

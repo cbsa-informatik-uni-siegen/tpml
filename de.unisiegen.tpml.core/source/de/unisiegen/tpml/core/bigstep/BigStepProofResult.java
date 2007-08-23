@@ -1,9 +1,20 @@
 package de.unisiegen.tpml.core.bigstep ;
 
 
+import java.util.TreeSet;
+
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
 import de.unisiegen.tpml.core.interpreters.Store ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandNames;
+import de.unisiegen.tpml.core.latex.LatexInstruction;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
 
 
 /**
@@ -15,7 +26,7 @@ import de.unisiegen.tpml.core.interpreters.Store ;
  * @author Benedikt Meurer
  * @version $Rev$
  */
-public final class BigStepProofResult
+public final class BigStepProofResult implements LatexPrintable, LatexCommandNames
 {
   //
   // Attributes
@@ -89,4 +100,50 @@ public final class BigStepProofResult
   {
     return this.value ;
   }
+  
+	public TreeSet < LatexCommand > getLatexCommands ( ) {
+		TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( );
+		commands.add ( new DefaultLatexCommand ( LATEX_BIG_STEP_PROOF_RESULT, 2, 
+				"\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND   //$NON-NLS-1$
+				+ "{#1}" //$NON-NLS-1$
+				+"{((#1\\ #2)}", "e", "store" ) );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+				   
+		
+		for ( LatexCommand command : this.value.getLatexCommands ( ) ) {
+			commands.add ( command );
+		}
+		return commands;
+	}
+
+	public TreeSet < LatexInstruction > getLatexInstructions ( ) {
+		TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( );
+		for ( LatexInstruction instruction : this.value.getLatexInstructions ( ) ) {
+			instructions.add ( instruction );
+		}
+		return instructions;
+	}
+
+	public TreeSet < LatexPackage > getLatexPackages ( ) {
+		TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( );
+		for ( LatexPackage pack : this.value.getLatexPackages ( ) ) {
+			packages.add ( pack );
+		}
+		return packages;
+	}
+
+	public LatexString toLatexString ( ) {
+		return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) ).toLatexString ( );
+	}
+
+	public LatexStringBuilder toLatexStringBuilder ( LatexStringBuilderFactory pLatexStringBuilderFactory ) {
+		LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this, 0, LATEX_BIG_STEP_PROOF_RESULT );
+		builder.addBuilder ( this.value.toLatexStringBuilder ( pLatexStringBuilderFactory ), 0 );
+		if (this.value.containsMemoryOperations ( ))
+		builder.addBuilder ( getStore ( ).toLatexStringBuilder ( pLatexStringBuilderFactory ), 0 ) ;
+		else {
+			builder.addEmptyBuilder ( );
+		}
+
+		return builder;
+	}
 }

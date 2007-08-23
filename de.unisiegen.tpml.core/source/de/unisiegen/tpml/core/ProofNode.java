@@ -1,9 +1,13 @@
 package de.unisiegen.tpml.core ;
 
 
-import java.util.Enumeration ;
-import java.util.NoSuchElementException ;
-import javax.swing.tree.TreeNode ;
+import java.util.Enumeration;
+import java.util.NoSuchElementException;
+
+import javax.swing.tree.TreeNode;
+
+import de.unisiegen.tpml.core.latex.LatexCommandNames;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
 
 
 /**
@@ -14,7 +18,8 @@ import javax.swing.tree.TreeNode ;
  * @version $Rev$
  * @see javax.swing.tree.TreeNode
  */
-public interface ProofNode extends TreeNode
+//TODO toggle comment if Latex Export for Nodes is ready
+public interface ProofNode extends TreeNode//, LatexPrintable, LatexCommandNames
 {
   //
   // Primitives
