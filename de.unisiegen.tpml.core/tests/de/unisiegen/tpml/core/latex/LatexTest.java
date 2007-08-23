@@ -6,6 +6,7 @@ import java.io.FileOutputStream ;
 import java.io.IOException ;
 import java.io.OutputStreamWriter ;
 import java.io.StringReader ;
+import java.util.ArrayList ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.And ;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
@@ -25,8 +26,11 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
 import de.unisiegen.tpml.core.typechecker.SeenTypes ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeFormula ;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement ;
 import de.unisiegen.tpml.core.typeinference.TypeSubType ;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList ;
@@ -88,7 +92,7 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    int number = 14 ;
+    int number = 16 ;
     if ( number == 0 ) testExpression ( ) ;
     if ( number == 1 ) testType ( ) ;
     if ( number == 2 ) testTypeEnvironment ( ) ;
@@ -105,6 +109,7 @@ public class LatexTest
     if ( number == 13 ) testTypeSubstitutionList ( ) ;
     if ( number == 14 ) testTypeJudgement ( ) ;
     if ( number == 15 ) testSmallStepProofNode ( ) ;
+    if ( number == 16 ) testTypeInferenceProofNode ( ) ;
   }
 
 
@@ -501,6 +506,59 @@ public class LatexTest
       store.put ( new Location ( "a" ) , new IntegerConstant ( 1 ) ) ;
       DefaultSmallStepProofNode node = new DefaultSmallStepProofNode ( new And (
           new IntegerConstant ( 1 ) , new IntegerConstant ( 1 ) ) , store ) ;
+      printLatexPrintable ( node ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
+  public static void testTypeInferenceProofNode ( )
+  {
+    try
+    {
+      SeenTypes < TypeEquationTypeInference > seenTypes = new SeenTypes < TypeEquationTypeInference > ( ) ;
+      TypeEquationTypeInference typeEquation1 = new TypeEquationTypeInference (
+          new TypeVariable ( 0 , 0 ) , new BooleanType ( ) , seenTypes ) ;
+      TypeEquationTypeInference typeEquation2 = new TypeEquationTypeInference (
+          new TypeVariable ( 0 , 0 ) , new TypeVariable ( 0 , 1 ) , seenTypes ) ;
+      TypeEquationTypeInference typeEquation3 = new TypeEquationTypeInference (
+          new BooleanType ( ) , new BooleanType ( ) , seenTypes ) ;
+      TypeSubType typeSubType = new TypeSubType ( new IntegerType ( ) ,
+          new BooleanType ( ) ) ;
+      ArrayList < TypeFormula > formulas = new ArrayList < TypeFormula > ( ) ;
+      DefaultTypeEnvironment environment = new DefaultTypeEnvironment ( ) ;
+      environment = ( DefaultTypeEnvironment ) environment
+          .extend ( new Identifier ( "b" , Identifier.Set.VARIABLE ) ,
+              new BooleanType ( ) ) ;
+      environment = ( DefaultTypeEnvironment ) environment.extend (
+          new Identifier ( "a" , Identifier.Set.VARIABLE ) , new UnitType ( ) ) ;
+      Expression expression = new InfixOperation ( ArithmeticOperator
+          .newPlus ( ) , new Identifier ( "a" , Identifier.Set.VARIABLE ) ,
+          new Identifier ( "b" , Identifier.Set.VARIABLE ) ) ;
+      MonoType type = new ArrowType ( new IntegerType ( ) , new ArrowType (
+          new IntegerType ( ) , new IntegerType ( ) ) ) ;
+      TypeJudgement judgement = new TypeJudgement ( environment , expression ,
+          type ) ;
+      formulas.add ( typeEquation1 ) ;
+      formulas.add ( typeEquation2 ) ;
+      formulas.add ( typeEquation3 ) ;
+      formulas.add ( typeSubType ) ;
+      formulas.add ( judgement ) ;
+      DefaultTypeSubstitution typeSubstitution1 = new DefaultTypeSubstitution (
+          new TypeVariable ( 0 , 0 ) , new BooleanType ( ) ) ;
+      DefaultTypeSubstitution typeSubstitution2 = new DefaultTypeSubstitution (
+          new TypeVariable ( 0 , 1 ) , new BooleanType ( ) ) ;
+      DefaultTypeSubstitution typeSubstitution3 = new DefaultTypeSubstitution (
+          new TypeVariable ( 0 , 2 ) , new BooleanType ( ) ) ;
+      ArrayList < TypeSubstitution > substitutions = new ArrayList < TypeSubstitution > ( ) ;
+      substitutions.add ( typeSubstitution1 ) ;
+      substitutions.add ( typeSubstitution2 ) ;
+      substitutions.add ( typeSubstitution3 ) ;
+      DefaultTypeInferenceProofNode node = new DefaultTypeInferenceProofNode (
+          formulas , substitutions ) ;
       printLatexPrintable ( node ) ;
     }
     catch ( Exception e )

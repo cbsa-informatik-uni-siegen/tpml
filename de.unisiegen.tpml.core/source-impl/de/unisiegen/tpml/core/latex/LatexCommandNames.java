@@ -44,6 +44,7 @@ import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode ;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement ;
 import de.unisiegen.tpml.core.typeinference.TypeSubType ;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList ;
@@ -709,4 +710,10 @@ public interface LatexCommandNames
    * The latex print command for {@link SmallStepProofNode}.
    */
   public static final String LATEX_SMALL_STEP_PROOF_NODE = "SmallStepProofNode" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for {@link TypeInferenceProofNode}.
+   */
+  public static final String LATEX_TYPE_INFERENCE_PROOF_NODE = "TypeInferenceProofNode" ; //$NON-NLS-1$
 }

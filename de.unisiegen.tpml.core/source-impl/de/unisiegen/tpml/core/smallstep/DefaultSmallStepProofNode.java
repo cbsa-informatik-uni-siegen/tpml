@@ -148,49 +148,6 @@ public final class DefaultSmallStepProofNode extends
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getParent()
-   */
-  @ Override
-  public DefaultSmallStepProofNode getParent ( )
-  {
-    return ( DefaultSmallStepProofNode ) super.getParent ( ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getRoot()
-   */
-  @ Override
-  public DefaultSmallStepProofNode getRoot ( )
-  {
-    return ( DefaultSmallStepProofNode ) super.getRoot ( ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.ProofNode#isProven()
-   */
-  public boolean isProven ( )
-  {
-    // check if any axiom was applied
-    for ( ProofRule rule : getRules ( ) )
-    {
-      if ( ( ( SmallStepProofRule ) rule ).isAxiom ( ) )
-      {
-        return true ;
-      }
-    }
-    return false ;
-  }
-
-
-  /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
    * @return A set of needed latex commands for this latex printable object.
@@ -257,6 +214,49 @@ public final class DefaultSmallStepProofNode extends
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getParent()
+   */
+  @ Override
+  public DefaultSmallStepProofNode getParent ( )
+  {
+    return ( DefaultSmallStepProofNode ) super.getParent ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getRoot()
+   */
+  @ Override
+  public DefaultSmallStepProofNode getRoot ( )
+  {
+    return ( DefaultSmallStepProofNode ) super.getRoot ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.ProofNode#isProven()
+   */
+  public boolean isProven ( )
+  {
+    // check if any axiom was applied
+    for ( ProofRule rule : getRules ( ) )
+    {
+      if ( ( ( SmallStepProofRule ) rule ).isAxiom ( ) )
+      {
+        return true ;
+      }
+    }
+    return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see LatexPrintable#toLatexString()
    */
   public final LatexString toLatexString ( )
@@ -265,6 +265,7 @@ public final class DefaultSmallStepProofNode extends
         .toLatexString ( ) ;
   }
 
+  // TODO Store only if expression.containsMemory ...
 
   /**
    * {@inheritDoc}
