@@ -230,6 +230,14 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
       {
         commands.add ( command ) ;
       }
+      if ( form instanceof TypeEquationTypeInference )
+      {
+        for ( LatexCommand command : ( ( TypeEquationTypeInference ) form )
+            .getSeenTypes ( ).getLatexCommands ( ) )
+        {
+          commands.add ( command ) ;
+        }
+      }
     }
     return commands ;
   }
@@ -255,6 +263,14 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
       for ( LatexInstruction instruction : form.getLatexInstructions ( ) )
       {
         instructions.add ( instruction ) ;
+      }
+      if ( form instanceof TypeEquationTypeInference )
+      {
+        for ( LatexInstruction instruction : ( ( TypeEquationTypeInference ) form )
+            .getSeenTypes ( ).getLatexInstructions ( ) )
+        {
+          instructions.add ( instruction ) ;
+        }
       }
     }
     return instructions ;
@@ -282,6 +298,14 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
       for ( LatexPackage pack : form.getLatexPackages ( ) )
       {
         packages.add ( pack ) ;
+      }
+      if ( form instanceof TypeEquationTypeInference )
+      {
+        for ( LatexPackage pack : ( ( TypeEquationTypeInference ) form )
+            .getSeenTypes ( ).getLatexPackages ( ) )
+        {
+          packages.add ( pack ) ;
+        }
       }
     }
     return packages ;
@@ -439,6 +463,14 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
     builder.addBuilderBegin ( ) ;
     for ( int i = 0 ; i < this.formula.size ( ) ; i ++ )
     {
+      if ( this.formula.get ( i ) instanceof TypeEquationTypeInference )
+      {
+        TypeEquationTypeInference equation = ( TypeEquationTypeInference ) this.formula
+            .get ( i ) ;
+        builder.addBuilder ( equation.getSeenTypes ( ).toLatexStringBuilder (
+            pLatexStringBuilderFactory ) , 0 ) ;
+        builder.addText ( "\\ \\vdash\\ " ) ; //$NON-NLS-1$
+      }
       builder.addBuilder ( this.formula.get ( i ).toLatexStringBuilder (
           pLatexStringBuilderFactory ) , 0 ) ;
       if ( i < this.formula.size ( ) - 1 )
