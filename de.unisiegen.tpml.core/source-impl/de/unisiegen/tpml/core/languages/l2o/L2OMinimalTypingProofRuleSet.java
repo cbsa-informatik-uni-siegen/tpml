@@ -21,6 +21,7 @@ import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext ;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode ;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingTypesProofNode ;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode ;
+import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
 import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.MonoType ;
@@ -676,7 +677,7 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet
         throw new RuntimeException ( Messages
             .getString ( "SubTypingException.5" ) ) ; //$NON-NLS-1$
       }
-      context.addSeenType ( node.getType ( ) , node.getType2 ( ) ) ;
+      node.getSeenTypes ( ).add ( new DefaultSubType( node.getType ( ), node.getType2 ( )) );
     }
   }
 
@@ -714,7 +715,7 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet
     }
     else throw new RuntimeException ( Messages
         .getString ( "SubTypingException.5" ) ) ; //$NON-NLS-1$
-    context.addSeenType ( node.getType ( ) , node.getType2 ( ) ) ;
+    node.getSeenTypes ( ).add ( new DefaultSubType( node.getType ( ), node.getType2 ( )) );
   }
 
 

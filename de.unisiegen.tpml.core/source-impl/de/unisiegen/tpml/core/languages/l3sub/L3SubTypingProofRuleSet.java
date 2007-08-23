@@ -50,8 +50,8 @@ public class L3SubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 		TupleType type;
 		TupleType type2;
 
-		type = ( TupleType ) node.getType ( );
-		type2 = ( TupleType ) node.getType2 ( );
+		type = ( TupleType ) node.getLeft ( );
+		type2 = ( TupleType ) node.getRight ( );
 
 		MonoType[] types = type.getTypes ( );
 		MonoType[] types2 = type2.getTypes ( );
@@ -61,7 +61,7 @@ public class L3SubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 				context.addProofNode ( node, types[i], types2[i] );
 			}
 		} else
-			throw new SubTypingException (MessageFormat.format ( "SubTypingException.6", node.getType ( ), node.getType2 ( ) ), node ); //$NON-NLS-1$
+			throw new SubTypingException (MessageFormat.format ( "SubTypingException.6", node.getLeft ( ), node.getRight ( ) ), node ); //$NON-NLS-1$
 	}
 
 	/**
@@ -76,8 +76,8 @@ public class L3SubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 		ListType type;
 		ListType type2;
 
-		type = ( ListType ) node.getType ( );
-		type2 = ( ListType ) node.getType2 ( );
+		type = ( ListType ) node.getLeft ( );
+		type2 = ( ListType ) node.getRight ( );
 
 		MonoType tau = type.getTau ( );
 		MonoType tau2 = type2.getTau ( );

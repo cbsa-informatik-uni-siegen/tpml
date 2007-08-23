@@ -44,8 +44,8 @@ public class L4SubTypingProofRuleSet extends L3SubTypingProofRuleSet {
 		RefType type;
 		RefType type2;
 
-		type = ( RefType ) node.getType ( );
-		type2 = ( RefType ) node.getType2 ( );
+		type = ( RefType ) node.getLeft ( );
+		type2 = ( RefType ) node.getRight ( );
 		
 		MonoType tau = type.getTau ( );
 		MonoType tau2 = type2.getTau ( );

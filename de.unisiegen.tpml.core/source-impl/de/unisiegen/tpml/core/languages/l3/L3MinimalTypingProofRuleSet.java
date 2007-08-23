@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.languages.l2.L2MinimalTypingProofRuleSet;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingTypesProofNode;
+import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
 import de.unisiegen.tpml.core.types.ListType;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.TupleType;
@@ -70,7 +71,7 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 			//	for ( int i = 0; i < types.length; i++ ) {
 			// generate new child node
 			context.addProofNode ( node, types[0], types2[0] );
-			context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+			node.getSeenTypes ( ).add ( new DefaultSubType( node.getType ( ), node.getType2 ( )) );
 			//}
 		} else
 			throw new RuntimeException ( Messages.getString ( "SubTypingException.5" ) ); //$NON-NLS-1$
@@ -120,7 +121,7 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 
 		// generate new child node
 		context.addProofNode ( node, tau, tau2 );
-		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+		node.getSeenTypes ( ).add ( new DefaultSubType( node.getType ( ), node.getType2 ( )) );
 
 	}
 

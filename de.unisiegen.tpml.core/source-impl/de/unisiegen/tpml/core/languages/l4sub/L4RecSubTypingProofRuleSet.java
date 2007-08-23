@@ -50,14 +50,14 @@ public class L4RecSubTypingProofRuleSet extends L3RecSubTypingProofRuleSet {
 		RefType type;
 		RefType type2;
 
-		type = ( RefType ) node.getType ( );
-		type2 = ( RefType ) node.getType2 ( );
+		type = ( RefType ) node.getLeft ( );
+		type2 = ( RefType ) node.getRight ( );
 		
 		MonoType tau = type.getTau ( );
 		MonoType tau2 = type2.getTau ( );
 		
 		context.addProofNode ( node, tau, tau2 );
-		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+		context.addSeenType ( node.getLeft ( ), node.getRight ( ) );
 		
 	}
 }

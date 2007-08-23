@@ -52,8 +52,8 @@ public class L1RecSubTypingProofRuleSet extends AbstractRecSubTypingProofRuleSet
 		MonoType type;
 		MonoType type2;
 
-		type = node.getType ( );
-		type2 = node.getType2 ( );
+		type = node.getLeft ( );
+		type2 = node.getRight ( );
 
 		if ( type.equals ( type2 ) )
 			return;
@@ -73,8 +73,8 @@ public class L1RecSubTypingProofRuleSet extends AbstractRecSubTypingProofRuleSet
 			RecSubTypingProofNode node )  {
 		ArrowType type;
 		ArrowType type2;
-		type = ( ArrowType ) node.getType ( );
-		type2 = ( ArrowType ) node.getType2 ( );
+		type = ( ArrowType ) node.getLeft ( );
+		type2 = ( ArrowType ) node.getRight ( );
 
 		MonoType taul = type.getTau1 ( );
 		MonoType taur = type.getTau2 ( );
@@ -85,7 +85,7 @@ public class L1RecSubTypingProofRuleSet extends AbstractRecSubTypingProofRuleSet
 		context.addProofNode ( node, tau2l, taul );
 		context.addProofNode ( node, taur, tau2r );
 
-		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+		context.addSeenType ( node.getLeft ( ), node.getRight ( ) );
 	}
 
 	/**
@@ -113,12 +113,12 @@ public class L1RecSubTypingProofRuleSet extends AbstractRecSubTypingProofRuleSet
 	 */
 	public void applyMuLeft ( RecSubTypingProofContext context,
 			RecSubTypingProofNode node ) {
-		RecType rec = ( RecType ) node.getType ( );
+		RecType rec = ( RecType ) node.getLeft ( );
 
 		context.addProofNode ( node,
-				rec.getTau ( ).substitute ( rec.getTypeName ( ), rec ), node.getType2 ( ) );
+				rec.getTau ( ).substitute ( rec.getTypeName ( ), rec ), node.getRight ( ) );
 		
-		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+		context.addSeenType ( node.getLeft ( ), node.getRight ( ) );
 
 	}
 
@@ -131,12 +131,12 @@ public class L1RecSubTypingProofRuleSet extends AbstractRecSubTypingProofRuleSet
 	 */
 	public void applyMuRight ( RecSubTypingProofContext context,
 			RecSubTypingProofNode node )  {
-		RecType rec = ( RecType ) node.getType2 ( );
+		RecType rec = ( RecType ) node.getRight ( );
 
-		context.addProofNode ( node, node.getType ( ), rec.getTau ( ).substitute ( rec
+		context.addProofNode ( node, node.getLeft ( ), rec.getTau ( ).substitute ( rec
 				.getTypeName ( ), rec ) );
 		
-		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+		context.addSeenType ( node.getLeft ( ), node.getRight ( ) );
 
 	}
 }

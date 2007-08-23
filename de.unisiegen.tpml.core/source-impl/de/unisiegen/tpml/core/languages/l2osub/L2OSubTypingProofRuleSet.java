@@ -66,8 +66,8 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 	public void applyTrans ( SubTypingProofContext context,
 			SubTypingProofNode node ) throws SubTypingException {
 		try {
-			ObjectType type = ( ObjectType ) node.getType2 ( );
-			ObjectType type2 = ( ObjectType ) node.getType ( );
+			ObjectType type = ( ObjectType ) node.getRight ( );
+			ObjectType type2 = ( ObjectType ) node.getLeft ( );
 
 			ArrayList < Identifier > newIds = new ArrayList < Identifier > ( );
 			ArrayList < MonoType > newTypes = new ArrayList < MonoType > ( );
@@ -115,8 +115,8 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 			context.addProofNode ( node, newType, type );
 
 		} catch ( ClassCastException e ) {
-			MonoType type = node.getType ( );
-			MonoType type2 = node.getType2 ( );
+			MonoType type = node.getLeft ( );
+			MonoType type2 = node.getRight ( );
 			// if both types instance of Primitive Type throw Exception
 			if ( type instanceof PrimitiveType && type2 instanceof PrimitiveType ) {
 				throw new SubTypingException ( Messages
@@ -155,8 +155,8 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 	SubTypingProofContext context,
 			SubTypingProofNode node ) throws SubTypingException {
 		boolean goOn;
-		ObjectType type = ( ObjectType ) node.getType ( );
-		ObjectType type2 = ( ObjectType ) node.getType2 ( );
+		ObjectType type = ( ObjectType ) node.getLeft ( );
+		ObjectType type2 = ( ObjectType ) node.getRight ( );
 
 		RowType r1 = ( RowType ) ( type ).getPhi ( );
 		RowType r2 = ( RowType ) ( type2 ).getPhi ( );
@@ -198,8 +198,8 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 			SubTypingProofNode node ) throws SubTypingException {
 
 		boolean goOn;
-		ObjectType type = ( ObjectType ) node.getType ( );
-		ObjectType type2 = ( ObjectType ) node.getType2 ( );
+		ObjectType type = ( ObjectType ) node.getLeft ( );
+		ObjectType type2 = ( ObjectType ) node.getRight ( );
 
 		RowType r1 = ( RowType ) ( type ).getPhi ( );
 		RowType r2 = ( RowType ) ( type2 ).getPhi ( );
@@ -241,8 +241,8 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 			SubTypingProofNode node ) throws SubTypingException {
 		boolean goOn = false;
 
-		ObjectType type = ( ObjectType ) node.getType ( );
-		ObjectType type2 = ( ObjectType ) node.getType2 ( );
+		ObjectType type = ( ObjectType ) node.getLeft ( );
+		ObjectType type2 = ( ObjectType ) node.getRight ( );
 
 		RowType r1 = ( RowType ) type.getPhi ( );
 		RowType r2 = ( RowType ) type2.getPhi ( );

@@ -24,6 +24,7 @@ import de.unisiegen.tpml.core.minimaltyping.MinimalTypingExpressionProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingTypesProofNode;
+import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
@@ -707,7 +708,7 @@ public class L1MinimalTypingProofRuleSet extends AbstractMinimalTypingProofRuleS
 		context.addProofNode ( node, tau2l, taul );
 		context.addProofNode ( node, taur, tau2r );
 
-		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+		node.getSeenTypes ( ).add ( new DefaultSubType( node.getType ( ), node.getType2 ( )) );
 	}
 
 	/**
@@ -740,7 +741,7 @@ public class L1MinimalTypingProofRuleSet extends AbstractMinimalTypingProofRuleS
 		// generate new child node
 		context.addProofNode ( node, rec.getTau ( ).substitute ( rec.getTypeName ( ), rec ), node.getType2 ( ) );
 
-		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+		node.getSeenTypes ( ).add ( new DefaultSubType( node.getType ( ), node.getType2 ( )) );
 
 	}
 
@@ -758,7 +759,7 @@ public class L1MinimalTypingProofRuleSet extends AbstractMinimalTypingProofRuleS
 		// generate new child node
 		context.addProofNode ( node, node.getType ( ), rec.getTau ( ).substitute ( rec.getTypeName ( ), rec ) );
 
-		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+		node.getSeenTypes ( ).add ( new DefaultSubType( node.getType ( ), node.getType2 ( )) );
 
 	}
 	

@@ -49,8 +49,8 @@ public class L1SubTypingProofRuleSet extends AbstractSubTypingProofRuleSet {
 		MonoType type;
 		MonoType type2;
 
-		type = node.getType ( );
-		type2 = node.getType2 ( );
+		type = node.getLeft ( );
+		type2 = node.getRight ( );
 
 		if ( type.equals ( type2 ) )
 			return;
@@ -70,8 +70,8 @@ public class L1SubTypingProofRuleSet extends AbstractSubTypingProofRuleSet {
 			SubTypingProofNode node )  {
 		ArrowType type;
 		ArrowType type2;
-		type = ( ArrowType ) node.getType ( );
-		type2 = ( ArrowType ) node.getType2 ( );
+		type = ( ArrowType ) node.getLeft ( );
+		type2 = ( ArrowType ) node.getRight ( );
 
 		MonoType taul = type.getTau1 ( );
 		MonoType taur = type.getTau2 ( );

@@ -75,8 +75,8 @@ public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
 	public void applyTrans ( RecSubTypingProofContext context,
 			RecSubTypingProofNode node ) throws SubTypingException {
 		try {
-			ObjectType type = ( ObjectType ) node.getType2 ( );
-			ObjectType type2 = ( ObjectType ) node.getType ( );
+			ObjectType type = ( ObjectType ) node.getRight ( );
+			ObjectType type2 = ( ObjectType ) node.getLeft ( );
 
 			ArrayList < Identifier > newIds = new ArrayList < Identifier > ( );
 			ArrayList < MonoType > newTypes = new ArrayList < MonoType > ( );
@@ -123,8 +123,8 @@ public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
 			context.addProofNode ( node, newType, type );
 
 		} catch ( ClassCastException e ) {
-			MonoType type = node.getType ( );
-			MonoType type2 = node.getType2 ( );
+			MonoType type = node.getLeft ( );
+			MonoType type2 = node.getRight ( );
 			// if both types instance of Primitive Type throw Exception
 			if ( type instanceof PrimitiveType && type2 instanceof PrimitiveType ){
 				throw new SubTypingException ( Messages.getString ( "SubTypingException.1" ), node ); //$NON-NLS-1$
@@ -162,8 +162,8 @@ public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
 	public void applyObjectWidth ( RecSubTypingProofContext context,
 			RecSubTypingProofNode node ) throws SubTypingException {
 		boolean goOn;
-		ObjectType type = ( ObjectType ) node.getType ( );
-		ObjectType type2 = ( ObjectType ) node.getType2 ( );
+		ObjectType type = ( ObjectType ) node.getLeft ( );
+		ObjectType type2 = ( ObjectType ) node.getRight ( );
 
 		RowType r1 = ( RowType ) ( type ).getPhi ( );
 		RowType r2 = ( RowType ) ( type2 ).getPhi ( );
@@ -188,7 +188,7 @@ public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
 			if ( !goOn ) {
 				throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.4" ),type,type2), node ); //$NON-NLS-1$
 				}
-			context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+			context.addSeenType ( node.getLeft ( ), node.getRight ( ) );
 		}
 	}
 
@@ -204,8 +204,8 @@ public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
 			RecSubTypingProofNode node ) throws SubTypingException {
 
 		boolean goOn;
-		ObjectType type = ( ObjectType ) node.getType ( );
-		ObjectType type2 = ( ObjectType ) node.getType2 ( );
+		ObjectType type = ( ObjectType ) node.getLeft ( );
+		ObjectType type2 = ( ObjectType ) node.getRight ( );
 
 		RowType r1 = ( RowType ) ( type ).getPhi ( );
 		RowType r2 = ( RowType ) ( type2 ).getPhi ( );
@@ -232,7 +232,7 @@ public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
 			}
 		} else
 			throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.0" ),type, type2), node ); //$NON-NLS-1$
-		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+		context.addSeenType ( node.getLeft ( ), node.getRight ( ) );
 		}
 
 	/**
@@ -247,8 +247,8 @@ public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
 			RecSubTypingProofNode node ) throws SubTypingException {
 		boolean goOn = false;
 
-		ObjectType type = ( ObjectType ) node.getType ( );
-		ObjectType type2 = ( ObjectType ) node.getType2 ( );
+		ObjectType type = ( ObjectType ) node.getLeft ( );
+		ObjectType type2 = ( ObjectType ) node.getRight ( );
 
 		RowType r1 = ( RowType ) type.getPhi ( );
 		RowType r2 = ( RowType ) type2.getPhi ( );
@@ -279,6 +279,6 @@ public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
 				throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.3" ),type,type2), node ); //$NON-NLS-1$
 				}
 		}
-		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+		context.addSeenType ( node.getLeft ( ), node.getRight ( ) );
 	}
 }
