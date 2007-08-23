@@ -1,45 +1,44 @@
 package de.unisiegen.tpml.core.latex ;
 
 
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.StringReader;
-import java.util.TreeSet;
-
-import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode;
-import de.unisiegen.tpml.core.expressions.And;
-import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.expressions.Identifier;
-import de.unisiegen.tpml.core.expressions.InfixOperation;
-import de.unisiegen.tpml.core.expressions.IntegerConstant;
-import de.unisiegen.tpml.core.expressions.Location;
-import de.unisiegen.tpml.core.interpreters.DefaultStore;
-import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.languages.LanguageFactory;
-import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofNode;
-import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
-import de.unisiegen.tpml.core.typechecker.SeenTypes;
-import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker;
-import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker;
-import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
-import de.unisiegen.tpml.core.typeinference.TypeJudgement;
-import de.unisiegen.tpml.core.typeinference.TypeSubType;
-import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
-import de.unisiegen.tpml.core.types.ArrowType;
-import de.unisiegen.tpml.core.types.BooleanType;
-import de.unisiegen.tpml.core.types.IntegerType;
-import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.types.Type;
-import de.unisiegen.tpml.core.types.TypeVariable;
-import de.unisiegen.tpml.core.types.UnitType;
+import java.io.BufferedWriter ;
+import java.io.FileOutputStream ;
+import java.io.IOException ;
+import java.io.OutputStreamWriter ;
+import java.io.StringReader ;
+import java.util.TreeSet ;
+import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode ;
+import de.unisiegen.tpml.core.expressions.And ;
+import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
+import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.InfixOperation ;
+import de.unisiegen.tpml.core.expressions.IntegerConstant ;
+import de.unisiegen.tpml.core.expressions.Location ;
+import de.unisiegen.tpml.core.interpreters.DefaultStore ;
+import de.unisiegen.tpml.core.languages.Language ;
+import de.unisiegen.tpml.core.languages.LanguageFactory ;
+import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofNode ;
+import de.unisiegen.tpml.core.subtypingrec.DefaultSubType ;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode ;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode ;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
+import de.unisiegen.tpml.core.typechecker.SeenTypes ;
+import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker ;
+import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
+import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeJudgement ;
+import de.unisiegen.tpml.core.typeinference.TypeSubType ;
+import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList ;
+import de.unisiegen.tpml.core.types.ArrowType ;
+import de.unisiegen.tpml.core.types.BooleanType ;
+import de.unisiegen.tpml.core.types.IntegerType ;
+import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.core.types.TypeVariable ;
+import de.unisiegen.tpml.core.types.UnitType ;
 import java.io.BufferedWriter ;
 import java.io.FileOutputStream ;
 import java.io.IOException ;
@@ -59,6 +58,7 @@ import de.unisiegen.tpml.core.expressions.Ref ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
 import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageFactory ;
+import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingTypesProofNode ;
 import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofNode ;
 import de.unisiegen.tpml.core.subtypingrec.DefaultSubType ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
@@ -132,7 +132,7 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    int number = 18 ;
+    int number = 21 ;
     if ( number == 0 ) testExpression ( ) ;
     if ( number == 1 ) testType ( ) ;
     if ( number == 2 ) testTypeEnvironment ( ) ;
@@ -149,10 +149,11 @@ public class LatexTest
     if ( number == 13 ) testTypeSubstitutionList ( ) ;
     if ( number == 14 ) testTypeJudgement ( ) ;
     if ( number == 15 ) testSmallStepProofNode ( ) ;
-    if ( number == 16) testTypeCheckerExpressionProofNode ( );
-    if ( number == 17) testTypeCheckerTypeProofNode ( );
-    if ( number == 18) testBigStepProofNode ( );
+    if ( number == 16 ) testTypeCheckerExpressionProofNode ( ) ;
+    if ( number == 17 ) testTypeCheckerTypeProofNode ( ) ;
+    if ( number == 18 ) testBigStepProofNode ( ) ;
     if ( number == 19 ) testTypeInferenceProofNode ( ) ;
+    if ( number == 21 ) testMinimalTypingTypesProofNode ( ) ;
   }
 
 
@@ -539,6 +540,21 @@ public class LatexTest
   }
 
 
+  public static void testMinimalTypingTypesProofNode ( )
+  {
+    try
+    {
+      DefaultMinimalTypingTypesProofNode node = new DefaultMinimalTypingTypesProofNode (
+          new IntegerType ( ) , new BooleanType ( ) ) ;
+      printLatexPrintable ( node ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
   public static void testSmallStepProofNode ( )
   {
     try
@@ -659,7 +675,8 @@ public class LatexTest
       e.printStackTrace ( ) ;
     }
   }
-  
+
+
   public static void testTypeCheckerExpressionProofNode ( )
   {
     try
@@ -675,7 +692,8 @@ public class LatexTest
           new Identifier ( "b" , Identifier.Set.VARIABLE ) ) ;
       MonoType type = new ArrowType ( new IntegerType ( ) , new ArrowType (
           new IntegerType ( ) , new IntegerType ( ) ) ) ;
-      DefaultTypeCheckerExpressionProofNode node = new DefaultTypeCheckerExpressionProofNode ( environment , expression, type) ;
+      DefaultTypeCheckerExpressionProofNode node = new DefaultTypeCheckerExpressionProofNode (
+          environment , expression , type ) ;
       printLatexPrintable ( node ) ;
     }
     catch ( Exception e )
@@ -683,7 +701,8 @@ public class LatexTest
       e.printStackTrace ( ) ;
     }
   }
-  
+
+
   public static void testTypeCheckerTypeProofNode ( )
   {
     try
@@ -691,8 +710,9 @@ public class LatexTest
       MonoType type = new ArrowType ( new IntegerType ( ) , new ArrowType (
           new IntegerType ( ) , new IntegerType ( ) ) ) ;
       MonoType type2 = new ArrowType ( new IntegerType ( ) , new ArrowType (
-            new IntegerType ( ) , new IntegerType ( ) ) ) ;
-      DefaultTypeCheckerTypeProofNode node = new DefaultTypeCheckerTypeProofNode ( type, type2) ;
+          new IntegerType ( ) , new IntegerType ( ) ) ) ;
+      DefaultTypeCheckerTypeProofNode node = new DefaultTypeCheckerTypeProofNode (
+          type , type2 ) ;
       printLatexPrintable ( node ) ;
     }
     catch ( Exception e )
@@ -700,14 +720,15 @@ public class LatexTest
       e.printStackTrace ( ) ;
     }
   }
-  
+
+
   public static void testBigStepProofNode ( )
   {
     try
     {
-   	 Expression expression = new InfixOperation ( ArithmeticOperator
-             .newPlus ( ) , new Identifier ( "a" , Identifier.Set.VARIABLE ) ,
-             new Identifier ( "b" , Identifier.Set.VARIABLE ) ) ;
+      Expression expression = new InfixOperation ( ArithmeticOperator
+          .newPlus ( ) , new Identifier ( "a" , Identifier.Set.VARIABLE ) ,
+          new Identifier ( "b" , Identifier.Set.VARIABLE ) ) ;
       DefaultBigStepProofNode node = new DefaultBigStepProofNode ( expression ) ;
       printLatexPrintable ( node ) ;
     }
