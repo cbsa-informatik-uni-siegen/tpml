@@ -130,7 +130,8 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
    */
   public void addCanBreakHere ( )
   {
-    this.items.add ( CanBreakHereLatexItem.ITEM ) ;
+    // TODO Bugfix
+    // this.items.add ( CanBreakHereLatexItem.ITEM ) ;
   }
 
 

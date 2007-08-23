@@ -58,6 +58,7 @@ import de.unisiegen.tpml.core.expressions.Ref ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
 import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageFactory ;
+import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingExpressionProofNode ;
 import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingTypesProofNode ;
 import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofNode ;
 import de.unisiegen.tpml.core.subtypingrec.DefaultSubType ;
@@ -132,7 +133,7 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    int number = 21 ;
+    int number = 23 ;
     if ( number == 0 ) testExpression ( ) ;
     if ( number == 1 ) testType ( ) ;
     if ( number == 2 ) testTypeEnvironment ( ) ;
@@ -154,6 +155,34 @@ public class LatexTest
     if ( number == 18 ) testBigStepProofNode ( ) ;
     if ( number == 19 ) testTypeInferenceProofNode ( ) ;
     if ( number == 21 ) testMinimalTypingTypesProofNode ( ) ;
+    if ( number == 23 ) testMinimalTypingExpressionProofNode ( ) ;
+  }
+
+
+  public static void testMinimalTypingExpressionProofNode ( )
+  {
+    try
+    {
+      DefaultTypeEnvironment environment = new DefaultTypeEnvironment ( ) ;
+      environment = ( DefaultTypeEnvironment ) environment
+          .extend ( new Identifier ( "b" , Identifier.Set.VARIABLE ) ,
+              new BooleanType ( ) ) ;
+      environment = ( DefaultTypeEnvironment ) environment.extend (
+          new Identifier ( "a" , Identifier.Set.VARIABLE ) , new UnitType ( ) ) ;
+      Expression expression = new InfixOperation ( ArithmeticOperator
+          .newPlus ( ) , new Identifier ( "a" , Identifier.Set.VARIABLE ) ,
+          new Identifier ( "b" , Identifier.Set.VARIABLE ) ) ;
+      MonoType type = new ArrowType ( new IntegerType ( ) , new ArrowType (
+          new IntegerType ( ) , new IntegerType ( ) ) ) ;
+      DefaultMinimalTypingExpressionProofNode node = new DefaultMinimalTypingExpressionProofNode (
+          environment , expression ) ;
+      node.setType ( type ) ;
+      printLatexPrintable ( node ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
   }
 
 
