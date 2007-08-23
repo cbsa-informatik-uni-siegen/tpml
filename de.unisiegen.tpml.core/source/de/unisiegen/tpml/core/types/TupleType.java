@@ -294,7 +294,7 @@ public final class TupleType extends MonoType implements DefaultTypes
             PRIO_TUPLE_TAU ) ;
         if ( i != this.types.length - 1 )
         {
-          this.latexStringBuilder.addBreak ( ) ;
+          this.latexStringBuilder.addCanBreakHere ( ) ;
         }
       }
       this.latexStringBuilder.addBuilderEnd ( ) ;

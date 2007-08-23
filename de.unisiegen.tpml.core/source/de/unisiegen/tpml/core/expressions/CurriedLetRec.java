@@ -571,10 +571,10 @@ public final class CurriedLetRec extends CurriedLet implements
                 .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
                 PRIO_LET_TAU ) ;
       }
-      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addCanBreakHere ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LET_E1 ) ;
-      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addCanBreakHere ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LET_E2 ) ;
     }

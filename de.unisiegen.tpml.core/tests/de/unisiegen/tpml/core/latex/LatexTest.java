@@ -86,7 +86,7 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    int number = 14 ;
+    int number = 0 ;
     if ( number == 0 ) testExpression ( ) ;
     if ( number == 1 ) testType ( ) ;
     if ( number == 2 ) testTypeEnvironment ( ) ;
@@ -102,6 +102,88 @@ public class LatexTest
     if ( number == 12 ) testTypeEquationListTypeInference ( ) ;
     if ( number == 13 ) testTypeSubstitutionList ( ) ;
     if ( number == 14 ) testTypeJudgement ( ) ;
+  }
+
+
+  public static void printLatexPrintable ( LatexPrintable pLatexPrintable )
+  {
+    // document class and needed packages
+    println ( "%%" ) ;
+    println ( "%% TPML LaTeX Export" ) ;
+    println ( "%%" ) ;
+    println ( ) ;
+    println ( "\\documentclass[a4paper,12pt]{report}" ) ;
+    println ( "\\usepackage[utf8]{inputenc}" ) ;
+    println ( "\\usepackage{a4wide}" ) ;
+    println ( "\\setlength{\\parindent}{0pt}" ) ;
+    println ( ) ;
+    // packages
+    TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
+    if ( packages.size ( ) > 0 )
+    {
+      println ( "%%" ) ;
+      println ( "%% " + LatexPackage.DESCRIPTION ) ;
+      println ( "%%" ) ;
+      println ( ) ;
+    }
+    for ( LatexPackage pack : packages )
+    {
+      println ( pack ) ;
+    }
+    if ( packages.size ( ) > 0 )
+    {
+      println ( ) ;
+    }
+    // instructions
+    TreeSet < LatexInstruction > instructions = pLatexPrintable
+        .getLatexInstructions ( ) ;
+    if ( instructions.size ( ) > 0 )
+    {
+      println ( "%%" ) ;
+      println ( "%% " + LatexInstruction.DESCRIPTION ) ;
+      println ( "%%" ) ;
+      println ( ) ;
+    }
+    for ( LatexInstruction instruction : instructions )
+    {
+      println ( instruction ) ;
+    }
+    if ( instructions.size ( ) > 0 )
+    {
+      println ( ) ;
+    }
+    // commands
+    TreeSet < LatexCommand > commands = pLatexPrintable.getLatexCommands ( ) ;
+    if ( commands.size ( ) > 0 )
+    {
+      println ( "%%" ) ;
+      println ( "%% " + LatexCommand.DESCRIPTION ) ;
+      println ( "%%" ) ;
+      println ( ) ;
+    }
+    for ( LatexCommand command : commands )
+    {
+      println ( command ) ;
+    }
+    if ( commands.size ( ) > 0 )
+    {
+      println ( ) ;
+    }
+    // document
+    println ( "%%" ) ;
+    println ( "%% Document" ) ;
+    println ( "%%" ) ;
+    println ( ) ;
+    println ( "\\begin{document}" ) ;
+    println ( ) ;
+    println ( "$" ) ;
+    println ( pLatexPrintable.toLatexString ( ).toString ( ) ) ;
+    println ( "$" ) ;
+    println ( ) ;
+    println ( "\\end{document}" ) ;
+    // close and compile
+    close ( ) ;
+    compile ( ) ;
   }
 
 
@@ -183,98 +265,17 @@ public class LatexTest
   {
     try
     {
-      String text = "while 1 do 2" ;
+      String text = "1 && 2" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
           .parse ( ) ;
-      testLatexPrintable ( expression ) ;
+      printLatexPrintable ( expression ) ;
     }
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
     }
-  }
-
-
-  public static void testLatexPrintable ( LatexPrintable pLatexPrintable )
-  {
-    // document class and needed packages
-    println ( "%%" ) ;
-    println ( "%% TPML LaTeX Export" ) ;
-    println ( "%%" ) ;
-    println ( ) ;
-    println ( "\\documentclass[a4paper,12pt]{report}" ) ;
-    println ( "\\usepackage[utf8]{inputenc}" ) ;
-    println ( "\\usepackage{a4wide}" ) ;
-    println ( ) ;
-    // packages
-    TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
-    if ( packages.size ( ) > 0 )
-    {
-      println ( "%%" ) ;
-      println ( "%% " + LatexPackage.DESCRIPTION ) ;
-      println ( "%%" ) ;
-      println ( ) ;
-    }
-    for ( LatexPackage pack : packages )
-    {
-      println ( pack ) ;
-    }
-    if ( packages.size ( ) > 0 )
-    {
-      println ( ) ;
-    }
-    // instructions
-    TreeSet < LatexInstruction > instructions = pLatexPrintable
-        .getLatexInstructions ( ) ;
-    if ( instructions.size ( ) > 0 )
-    {
-      println ( "%%" ) ;
-      println ( "%% " + LatexInstruction.DESCRIPTION ) ;
-      println ( "%%" ) ;
-      println ( ) ;
-    }
-    for ( LatexInstruction instruction : instructions )
-    {
-      println ( instruction ) ;
-    }
-    if ( instructions.size ( ) > 0 )
-    {
-      println ( ) ;
-    }
-    // commands
-    TreeSet < LatexCommand > commands = pLatexPrintable.getLatexCommands ( ) ;
-    if ( commands.size ( ) > 0 )
-    {
-      println ( "%%" ) ;
-      println ( "%% " + LatexCommand.DESCRIPTION ) ;
-      println ( "%%" ) ;
-      println ( ) ;
-    }
-    for ( LatexCommand command : commands )
-    {
-      println ( command ) ;
-    }
-    if ( commands.size ( ) > 0 )
-    {
-      println ( ) ;
-    }
-    // document
-    println ( "%%" ) ;
-    println ( "%% Document" ) ;
-    println ( "%%" ) ;
-    println ( ) ;
-    println ( "\\begin{document}" ) ;
-    println ( ) ;
-    println ( "$" ) ;
-    println ( pLatexPrintable.toLatexString ( ).toString ( ) ) ;
-    println ( "$" ) ;
-    println ( ) ;
-    println ( "\\end{document}" ) ;
-    // close and compile
-    close ( ) ;
-    compile ( ) ;
   }
 
 
@@ -288,7 +289,7 @@ public class LatexTest
           new BooleanType ( ) , seenTypes2 ) ) ;
       seenTypes1.add ( new TypeEquationTypeChecker ( new BooleanType ( ) ,
           new UnitType ( ) , seenTypes2 ) ) ;
-      testLatexPrintable ( seenTypes1 ) ;
+      printLatexPrintable ( seenTypes1 ) ;
     }
     catch ( Exception e )
     {
@@ -307,7 +308,7 @@ public class LatexTest
           new BooleanType ( ) , seenTypes2 ) ) ;
       seenTypes1.add ( new TypeEquationTypeInference ( new BooleanType ( ) ,
           new UnitType ( ) , seenTypes2 ) ) ;
-      testLatexPrintable ( seenTypes1 ) ;
+      printLatexPrintable ( seenTypes1 ) ;
     }
     catch ( Exception e )
     {
@@ -324,7 +325,7 @@ public class LatexTest
       store.put ( new Location ( "c" ) , new IntegerConstant ( 3 ) ) ;
       store.put ( new Location ( "b" ) , new IntegerConstant ( 2 ) ) ;
       store.put ( new Location ( "a" ) , new IntegerConstant ( 1 ) ) ;
-      testLatexPrintable ( store ) ;
+      printLatexPrintable ( store ) ;
     }
     catch ( Exception e )
     {
@@ -339,7 +340,7 @@ public class LatexTest
     {
       DefaultSubType subType = new DefaultSubType ( new IntegerType ( ) ,
           new BooleanType ( ) ) ;
-      testLatexPrintable ( subType ) ;
+      printLatexPrintable ( subType ) ;
     }
     catch ( Exception e )
     {
@@ -356,7 +357,7 @@ public class LatexTest
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
       Type type = language.newTypeParser ( new StringReader ( text ) ).parse ( ) ;
-      testLatexPrintable ( type ) ;
+      printLatexPrintable ( type ) ;
     }
     catch ( Exception e )
     {
@@ -378,7 +379,7 @@ public class LatexTest
               new BooleanType ( ) ) ;
       environment = ( DefaultTypeEnvironment ) environment.extend (
           new Identifier ( "a" , Identifier.Set.VARIABLE ) , new UnitType ( ) ) ;
-      testLatexPrintable ( environment ) ;
+      printLatexPrintable ( environment ) ;
     }
     catch ( Exception e )
     {
@@ -399,7 +400,7 @@ public class LatexTest
           new BooleanType ( ) , new UnitType ( ) , seenTypes ) ;
       equationList = equationList.extend ( typeEquation1 ) ;
       equationList = equationList.extend ( typeEquation2 ) ;
-      testLatexPrintable ( equationList ) ;
+      printLatexPrintable ( equationList ) ;
     }
     catch ( Exception e )
     {
@@ -420,7 +421,7 @@ public class LatexTest
           new BooleanType ( ) , new UnitType ( ) , seenTypes ) ;
       equationList = equationList.extend ( typeEquation1 ) ;
       equationList = equationList.extend ( typeEquation2 ) ;
-      testLatexPrintable ( equationList ) ;
+      printLatexPrintable ( equationList ) ;
     }
     catch ( Exception e )
     {
@@ -436,7 +437,7 @@ public class LatexTest
       SeenTypes < TypeEquationTypeChecker > seenTypes = new SeenTypes < TypeEquationTypeChecker > ( ) ;
       TypeEquationTypeChecker typeEquation = new TypeEquationTypeChecker (
           new IntegerType ( ) , new BooleanType ( ) , seenTypes ) ;
-      testLatexPrintable ( typeEquation ) ;
+      printLatexPrintable ( typeEquation ) ;
     }
     catch ( Exception e )
     {
@@ -452,7 +453,7 @@ public class LatexTest
       SeenTypes < TypeEquationTypeInference > seenTypes = new SeenTypes < TypeEquationTypeInference > ( ) ;
       TypeEquationTypeInference typeEquation = new TypeEquationTypeInference (
           new IntegerType ( ) , new BooleanType ( ) , seenTypes ) ;
-      testLatexPrintable ( typeEquation ) ;
+      printLatexPrintable ( typeEquation ) ;
     }
     catch ( Exception e )
     {
@@ -478,7 +479,7 @@ public class LatexTest
           new IntegerType ( ) , new IntegerType ( ) ) ) ;
       TypeJudgement judgement = new TypeJudgement ( environment , expression ,
           type ) ;
-      testLatexPrintable ( judgement ) ;
+      printLatexPrintable ( judgement ) ;
     }
     catch ( Exception e )
     {
@@ -493,7 +494,7 @@ public class LatexTest
     {
       DefaultTypeSubstitution typeSubstitution = new DefaultTypeSubstitution (
           new TypeVariable ( 0 , 0 ) , new BooleanType ( ) ) ;
-      testLatexPrintable ( typeSubstitution ) ;
+      printLatexPrintable ( typeSubstitution ) ;
     }
     catch ( Exception e )
     {
@@ -513,7 +514,7 @@ public class LatexTest
           new TypeVariable ( 0 , 1 ) , new IntegerType ( ) ) ;
       substitionList = substitionList.extend ( typeSubstitution1 ) ;
       substitionList = substitionList.extend ( typeSubstitution2 ) ;
-      testLatexPrintable ( substitionList ) ;
+      printLatexPrintable ( substitionList ) ;
     }
     catch ( Exception e )
     {
@@ -528,7 +529,7 @@ public class LatexTest
     {
       TypeSubType typeSubType = new TypeSubType ( new IntegerType ( ) ,
           new BooleanType ( ) ) ;
-      testLatexPrintable ( typeSubType ) ;
+      printLatexPrintable ( typeSubType ) ;
     }
     catch ( Exception e )
     {

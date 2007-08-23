@@ -56,17 +56,6 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
   /**
    * {@inheritDoc}
    * 
-   * @see LatexStringBuilder#addBreak()
-   */
-  public void addBreak ( )
-  {
-    this.items.add ( BreakLatexItem.BREAK_LATEX_ITEM ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see LatexStringBuilder#addBuilder(LatexStringBuilder, int)
    */
   public void addBuilder ( LatexStringBuilder pLatexStringBuilder ,
@@ -82,11 +71,18 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
     boolean parenthesis = ( defaultBuilder.returnPriority < pArgumentPriority ) ;
     // implement the break
     if ( ( this.items.size ( ) > 0 )
-        && ( this.items.get ( this.items.size ( ) - 1 ) instanceof BreakLatexItem ) )
+        && ( this.items.get ( this.items.size ( ) - 1 ) instanceof CanBreakHereLatexItem ) )
     {
       this.items.remove ( this.items.size ( ) - 1 ) ;
       this.items.add ( new TextLatexItem ( "{" ) ) ; //$NON-NLS-1$
       this.items.add ( new TextLatexItem ( "\\linebreak[3]" ) ) ; //$NON-NLS-1$
+    }
+    else if ( ( this.items.size ( ) > 0 )
+        && ( this.items.get ( this.items.size ( ) - 1 ) instanceof MustBreakHereLatexItem ) )
+    {
+      this.items.remove ( this.items.size ( ) - 1 ) ;
+      this.items.add ( new TextLatexItem ( "{" ) ) ; //$NON-NLS-1$
+      this.items.add ( new TextLatexItem ( "\\newline" ) ) ; //$NON-NLS-1$
     }
     else
     {
@@ -130,15 +126,27 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
   /**
    * {@inheritDoc}
    * 
+   * @see LatexStringBuilder#addCanBreakHere()
+   */
+  public void addCanBreakHere ( )
+  {
+    this.items.add ( CanBreakHereLatexItem.ITEM ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see LatexStringBuilder#addBuilder(LatexStringBuilder, int)
    */
   public void addEmptyBuilder ( )
   {
     // implement the break
     if ( ( this.items.size ( ) > 0 )
-        && ( this.items.get ( this.items.size ( ) - 1 ) instanceof BreakLatexItem ) )
+        && ( ( this.items.get ( this.items.size ( ) - 1 ) instanceof CanBreakHereLatexItem ) || ( this.items
+            .get ( this.items.size ( ) - 1 ) instanceof MustBreakHereLatexItem ) ) )
     {
-      BreakLatexItem moveBreak = ( BreakLatexItem ) this.items
+      AbstractLatexItem moveBreak = this.items
           .remove ( this.items.size ( ) - 1 ) ;
       this.items.add ( new TextLatexItem ( "{}" ) ) ; //$NON-NLS-1$
       this.items.add ( moveBreak ) ;
@@ -153,16 +161,33 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
   /**
    * {@inheritDoc}
    * 
+   * @see LatexStringBuilder#addMustBreakHere()
+   */
+  public void addMustBreakHere ( )
+  {
+    this.items.add ( MustBreakHereLatexItem.ITEM ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see LatexStringBuilder#addText(String)
    */
   public void addText ( String pText )
   {
     // implement the break
     if ( ( this.items.size ( ) > 0 )
-        && ( this.items.get ( this.items.size ( ) - 1 ) instanceof BreakLatexItem ) )
+        && ( this.items.get ( this.items.size ( ) - 1 ) instanceof CanBreakHereLatexItem ) )
     {
       this.items.remove ( this.items.size ( ) - 1 ) ;
       this.items.add ( new TextLatexItem ( "\\linebreak[3]" ) ) ; //$NON-NLS-1$
+    }
+    else if ( ( this.items.size ( ) > 0 )
+        && ( this.items.get ( this.items.size ( ) - 1 ) instanceof MustBreakHereLatexItem ) )
+    {
+      this.items.remove ( this.items.size ( ) - 1 ) ;
+      this.items.add ( new TextLatexItem ( "\\newline" ) ) ; //$NON-NLS-1$
     }
     this.items.add ( new TextLatexItem ( pText ) ) ;
   }

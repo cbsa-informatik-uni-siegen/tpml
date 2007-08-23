@@ -466,7 +466,7 @@ public final class Duplication extends Expression implements
         {
           this.latexStringBuilder.addText ( LATEX_SEMI ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
-          this.latexStringBuilder.addBreak ( ) ;
+          this.latexStringBuilder.addCanBreakHere ( ) ;
         }
       }
       // Only one space for '{< >}'

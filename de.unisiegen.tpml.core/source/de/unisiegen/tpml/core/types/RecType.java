@@ -416,7 +416,7 @@ public final class RecType extends MonoType implements DefaultTypes ,
       this.latexStringBuilder.addBuilder ( this.typeNames [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
           PRIO_REC_TYPE_TYPE_NAME ) ;
-      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addCanBreakHere ( ) ;
       this.latexStringBuilder.addBuilder ( this.types [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
           PRIO_REC_TYPE_TAU ) ;

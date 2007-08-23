@@ -388,7 +388,7 @@ public final class Coercion extends Expression implements DefaultTypes ,
       this.latexStringBuilder.addBuilder ( this.types [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
           PRIO_COERCION_TAU1 ) ;
-      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addCanBreakHere ( ) ;
       this.latexStringBuilder.addBuilder ( this.types [ 1 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
           PRIO_COERCION_TAU2 ) ;

@@ -280,7 +280,7 @@ public final class Tuple extends Expression implements DefaultExpressions
         {
           this.latexStringBuilder.addText ( LATEX_COMMA ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
-          this.latexStringBuilder.addBreak ( ) ;
+          this.latexStringBuilder.addCanBreakHere ( ) ;
         }
         this.latexStringBuilder
             .addBuilder ( this.expressions [ n ]

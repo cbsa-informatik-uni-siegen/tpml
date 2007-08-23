@@ -506,7 +506,7 @@ public final class Class extends Expression implements BoundIdentifiers ,
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
             PRIO_CLASS_TAU ) ;
       }
-      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addCanBreakHere ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
           PRIO_CLASS_BODY ) ;

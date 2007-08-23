@@ -275,7 +275,7 @@ public final class And extends Expression implements DefaultExpressions
           PRIO_AND , LATEX_AND ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_AND_E1 ) ;
-      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addCanBreakHere ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_AND_E2 ) ;
     }

@@ -3,27 +3,27 @@ package de.unisiegen.tpml.core.latex ;
 
 /**
  * This class represents breaks that can be inserted into the item list of a
- * latex string builder using the {@link LatexStringBuilder#addBreak()} method
- * and indicate that the presenter may start a new line at this offset.
+ * latex string builder using the {@link LatexStringBuilder#addCanBreakHere()}
+ * method and indicate that the presenter may start a new line at this offset.
  * 
  * @author Christian Fehler
  * @see AbstractLatexItem
- * @see LatexStringBuilder#addBreak()
+ * @see LatexStringBuilder#addCanBreakHere()
  */
-final class BreakLatexItem extends AbstractLatexItem
+final class CanBreakHereLatexItem extends AbstractLatexItem
 {
   /**
-   * The single instance of the <code>BreakLatexItem</code> class, which is
-   * used to reduce the overhead of allocating several (empty)
-   * <code>BreakLatexItem</code> instances.
+   * The single instance of the <code>CanBreakHereLatexItem</code> class,
+   * which is used to reduce the overhead of allocating several (empty)
+   * <code>CanBreakHereLatexItem</code> instances.
    */
-  public static final BreakLatexItem BREAK_LATEX_ITEM = new BreakLatexItem ( ) ;
+  public static final CanBreakHereLatexItem ITEM = new CanBreakHereLatexItem ( ) ;
 
 
   /**
-   * Allocates a new <code>BreakLatexItem</code> instance.
+   * Allocates a new <code>CanBreakHereLatexItem</code> instance.
    */
-  private BreakLatexItem ( )
+  private CanBreakHereLatexItem ( )
   {
     // nothing to do here
   }

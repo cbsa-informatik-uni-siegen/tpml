@@ -496,11 +496,11 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
             PRIO_OBJECTEXPR_TAU ) ;
       }
-      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addCanBreakHere ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
           PRIO_OBJECTEXPR_ROW ) ;
-      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addCanBreakHere ( ) ;
     }
     return this.latexStringBuilder ;
   }

@@ -736,13 +736,13 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
         this.latexStringBuilder.addText ( LATEX_SEMI ) ;
         if ( i != this.types.length - 1 )
         {
-          this.latexStringBuilder.addBreak ( ) ;
+          this.latexStringBuilder.addCanBreakHere ( ) ;
         }
       }
       if ( this.remainingRowType != null )
       {
         this.latexStringBuilder.addText ( LATEX_SPACE ) ;
-        this.latexStringBuilder.addBreak ( ) ;
+        this.latexStringBuilder.addCanBreakHere ( ) ;
         this.latexStringBuilder.addBuilder ( this.remainingRowType
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
       }

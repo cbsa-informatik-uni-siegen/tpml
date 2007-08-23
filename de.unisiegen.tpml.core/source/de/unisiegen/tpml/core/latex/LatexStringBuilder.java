@@ -13,13 +13,6 @@ package de.unisiegen.tpml.core.latex ;
 public interface LatexStringBuilder
 {
   /**
-   * Appends a break location to the string builder. A break marks the location
-   * as possible newline insertion position for the presenter.
-   */
-  public void addBreak ( ) ;
-
-
-  /**
    * Inserts the given <code>pLatexStringBuilder</code> at the specified
    * <code>pArgumentPriority</code> at the end of our builder. If the return
    * priority of the <code>pLatexStringBuilder</code> is less than the
@@ -51,10 +44,24 @@ public interface LatexStringBuilder
 
 
   /**
+   * Appends a break location to the string builder. A break marks the location
+   * as possible newline insertion position for the presenter.
+   */
+  public void addCanBreakHere ( ) ;
+
+
+  /**
    * Inserts an empty builder at the end of our builder. This is used, if an
    * optinal argument is not used.
    */
   public void addEmptyBuilder ( ) ;
+
+
+  /**
+   * Appends a break location to the string builder. A break marks the location
+   * for a newline insertion position for the presenter.
+   */
+  public void addMustBreakHere ( ) ;
 
 
   /**

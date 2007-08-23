@@ -412,7 +412,7 @@ public final class List extends Expression implements DefaultExpressions
         {
           this.latexStringBuilder.addText ( LATEX_SEMI ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
-          this.latexStringBuilder.addBreak ( ) ;
+          this.latexStringBuilder.addCanBreakHere ( ) ;
         }
         this.latexStringBuilder.addBuilder ( this.expressions [ n ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LIST_E ) ;

@@ -629,7 +629,7 @@ public final class Row extends Expression implements DefaultExpressions
         if ( i != this.expressions.length - 1 )
         {
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
-          this.latexStringBuilder.addBreak ( ) ;
+          this.latexStringBuilder.addCanBreakHere ( ) ;
         }
       }
       if ( this.expressions.length == 0 )

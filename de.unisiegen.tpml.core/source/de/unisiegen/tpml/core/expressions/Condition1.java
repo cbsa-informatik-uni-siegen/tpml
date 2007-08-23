@@ -279,7 +279,7 @@ public final class Condition1 extends Expression implements DefaultExpressions
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
           PRIO_CONDITION_E0 ) ;
-      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addCanBreakHere ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
           PRIO_CONDITION_E1 ) ;

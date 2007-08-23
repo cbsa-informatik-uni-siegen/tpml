@@ -277,7 +277,7 @@ public final class While extends Expression implements DefaultExpressions
           PRIO_WHILE , LATEX_WHILE ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_WHILE_E1 ) ;
-      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addCanBreakHere ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_WHILE_E2 ) ;
     }

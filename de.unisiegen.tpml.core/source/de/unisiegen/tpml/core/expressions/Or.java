@@ -275,7 +275,7 @@ public final class Or extends Expression implements DefaultExpressions
           PRIO_OR , LATEX_OR ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_OR_E1 ) ;
-      this.latexStringBuilder.addBreak ( ) ;
+      this.latexStringBuilder.addCanBreakHere ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_OR_E2 ) ;
     }
