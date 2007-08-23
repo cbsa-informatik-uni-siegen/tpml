@@ -7,6 +7,7 @@ import javax.swing.tree.TreeNode ;
 import de.unisiegen.tpml.core.AbstractProofNode ;
 import de.unisiegen.tpml.core.ProofStep ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
@@ -213,7 +214,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_PROOF_NODE ,
-        2 , "[#1]\\\\[1mm]#2" , "substitutions" , "type formulas" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+        2 , "\\ifthenelse{\\equal{#1}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+            + "{#2}" + LATEX_LINE_BREAK_NEW_COMMAND + "{[#1]\\\\[1mm]#2}" , //$NON-NLS-1$ //$NON-NLS-2$
+        "substitutions" , "formulas" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     for ( TypeSubstitution substitution : this.substitutions )
     {
       for ( LatexCommand command : substitution.getLatexCommands ( ) )
@@ -266,6 +269,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
     for ( TypeSubstitution substitution : this.substitutions )
     {
       for ( LatexPackage pack : substitution.getLatexPackages ( ) )
@@ -410,7 +414,6 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   }
 
 
-  // TODO Substitutions only if more than one element
   /**
    * {@inheritDoc}
    * 
