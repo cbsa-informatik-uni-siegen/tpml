@@ -318,9 +318,9 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
 
 		}
 
-		this.typeComponent.setType ( this.proofNode.getType ( ) );
+		this.typeComponent.setType ( this.proofNode.getLeft ( ) );
 		this.lcSubType.setLabel ( this.subType );
-		this.typeComponent2.setType ( this.proofNode.getType2 ( ) );
+		this.typeComponent2.setType ( this.proofNode.getRight ( ) );
 	}
 
 	/**
@@ -364,8 +364,8 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
 
 		// get the neede size for the type
 
-		this.proofNode.getType2 ( ).toPrettyString ( );
-		this.typeLabel.setText ( "" + this.proofNode.getType ( ) ); //$NON-NLS-1$
+		this.proofNode.getRight ( ).toPrettyString ( );
+		this.typeLabel.setText ( "" + this.proofNode.getLeft ( ) ); //$NON-NLS-1$
 		//Dimension typeSize = this.typeLabel.getPreferredSize ( ) ;
 		Dimension typeSize = this.typeComponent2.getNeededSize ( maxWidth );
 

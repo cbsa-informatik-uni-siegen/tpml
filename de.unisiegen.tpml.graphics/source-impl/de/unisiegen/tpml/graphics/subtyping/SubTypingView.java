@@ -115,7 +115,7 @@ public class SubTypingView extends AbstractProofView
     
     this.outline1 = new DefaultOutline ( this ) ;
     this.outline1.load ( this.subTypingModel.getRoot ( ).getLastLeaf ( )
-        .getType ( ) , Outline.ExecuteInit.SUBTYPING ) ;
+        .getLeft ( ) , Outline.ExecuteInit.SUBTYPING ) ;
     JScrollPane jPanelOutline1 = this.outline1.getTree ( ) ;
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
     gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 2 ) ;
@@ -130,7 +130,7 @@ public class SubTypingView extends AbstractProofView
     this.outline2 = new DefaultOutline ( this ) ;
     this.outline1.setSyncOutline ( this.outline2 ) ;
     this.outline2.load ( this.subTypingModel.getRoot ( ).getLastLeaf ( )
-        .getType2 ( ) , Outline.ExecuteInit.SUBTYPING ) ;
+        .getRight ( ) , Outline.ExecuteInit.SUBTYPING ) ;
     
     JScrollPane jPanelOutline2 = this.outline2.getTree ( ) ;
     
