@@ -7,6 +7,7 @@ import java.io.IOException ;
 import java.io.OutputStreamWriter ;
 import java.io.StringReader ;
 import java.util.TreeSet ;
+import de.unisiegen.tpml.core.expressions.And ;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
 import de.unisiegen.tpml.core.expressions.Exn ;
 import de.unisiegen.tpml.core.expressions.Expression ;
@@ -17,6 +18,7 @@ import de.unisiegen.tpml.core.expressions.Location ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
 import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageFactory ;
+import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofNode ;
 import de.unisiegen.tpml.core.subtypingrec.DefaultSubType ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
@@ -86,7 +88,7 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    int number = 0 ;
+    int number = 14 ;
     if ( number == 0 ) testExpression ( ) ;
     if ( number == 1 ) testType ( ) ;
     if ( number == 2 ) testTypeEnvironment ( ) ;
@@ -102,6 +104,7 @@ public class LatexTest
     if ( number == 12 ) testTypeEquationListTypeInference ( ) ;
     if ( number == 13 ) testTypeSubstitutionList ( ) ;
     if ( number == 14 ) testTypeJudgement ( ) ;
+    if ( number == 15 ) testSmallStepProofNode ( ) ;
   }
 
 
@@ -480,6 +483,25 @@ public class LatexTest
       TypeJudgement judgement = new TypeJudgement ( environment , expression ,
           type ) ;
       printLatexPrintable ( judgement ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
+  public static void testSmallStepProofNode ( )
+  {
+    try
+    {
+      DefaultStore store = new DefaultStore ( ) ;
+      store.put ( new Location ( "c" ) , new IntegerConstant ( 3 ) ) ;
+      store.put ( new Location ( "b" ) , new IntegerConstant ( 2 ) ) ;
+      store.put ( new Location ( "a" ) , new IntegerConstant ( 1 ) ) ;
+      DefaultSmallStepProofNode node = new DefaultSmallStepProofNode ( new And (
+          new IntegerConstant ( 1 ) , new IntegerConstant ( 1 ) ) , store ) ;
+      printLatexPrintable ( node ) ;
     }
     catch ( Exception e )
     {

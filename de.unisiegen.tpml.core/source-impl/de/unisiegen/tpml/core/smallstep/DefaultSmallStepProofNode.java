@@ -1,12 +1,22 @@
 package de.unisiegen.tpml.core.smallstep ;
 
 
+import java.util.TreeSet ;
 import javax.swing.tree.TreeNode ;
 import de.unisiegen.tpml.core.ProofRule ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
 import de.unisiegen.tpml.core.interpreters.Store ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandNames ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 
 
 /**
@@ -15,16 +25,14 @@ import de.unisiegen.tpml.core.interpreters.Store ;
  * {@link de.unisiegen.tpml.core.smallstep.SmallStepProofModel}.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @author Christian Fehler
  * @see de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode
  * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode
  */
-final class DefaultSmallStepProofNode extends AbstractInterpreterProofNode
-    implements SmallStepProofNode
+public final class DefaultSmallStepProofNode extends
+    AbstractInterpreterProofNode implements SmallStepProofNode ,
+    LatexPrintable , LatexCommandNames
 {
-  //
-  // Constructor (package)
-  //
   /**
    * Convenience wrapper for
    * {@link #DefaultSmallStepProofNode(Expression, Store)}, which passes an
@@ -34,7 +42,7 @@ final class DefaultSmallStepProofNode extends AbstractInterpreterProofNode
    * @throws NullPointerException if <code>expression</code> is
    *           <code>null</code>.
    */
-  DefaultSmallStepProofNode ( Expression pExpression )
+  public DefaultSmallStepProofNode ( Expression pExpression )
   {
     this ( pExpression , new DefaultStore ( ) ) ;
   }
@@ -49,15 +57,120 @@ final class DefaultSmallStepProofNode extends AbstractInterpreterProofNode
    * @throws NullPointerException if either <code>expression</code> or
    *           <code>store</code> is <code>null</code>.
    */
-  DefaultSmallStepProofNode ( Expression pExpression , Store store )
+  public DefaultSmallStepProofNode ( Expression pExpression , Store store )
   {
     super ( pExpression , store ) ;
   }
 
 
-  //
-  // Primitives
-  //
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildAfter(javax.swing.tree.TreeNode)
+   */
+  @ Override
+  public DefaultSmallStepProofNode getChildAfter ( TreeNode aChild )
+  {
+    return ( DefaultSmallStepProofNode ) super.getChildAfter ( aChild ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildAt(int)
+   */
+  @ Override
+  public DefaultSmallStepProofNode getChildAt ( int childIndex )
+  {
+    return ( DefaultSmallStepProofNode ) super.getChildAt ( childIndex ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildBefore(javax.swing.tree.TreeNode)
+   */
+  @ Override
+  public DefaultSmallStepProofNode getChildBefore ( TreeNode aChild )
+  {
+    return ( DefaultSmallStepProofNode ) super.getChildBefore ( aChild ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getFirstChild()
+   */
+  @ Override
+  public DefaultSmallStepProofNode getFirstChild ( )
+  {
+    return ( DefaultSmallStepProofNode ) super.getFirstChild ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getFirstLeaf()
+   */
+  @ Override
+  public DefaultSmallStepProofNode getFirstLeaf ( )
+  {
+    return ( DefaultSmallStepProofNode ) super.getFirstLeaf ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getLastChild()
+   */
+  @ Override
+  public DefaultSmallStepProofNode getLastChild ( )
+  {
+    return ( DefaultSmallStepProofNode ) super.getLastChild ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getLastLeaf()
+   */
+  @ Override
+  public DefaultSmallStepProofNode getLastLeaf ( )
+  {
+    return ( DefaultSmallStepProofNode ) super.getLastLeaf ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getParent()
+   */
+  @ Override
+  public DefaultSmallStepProofNode getParent ( )
+  {
+    return ( DefaultSmallStepProofNode ) super.getParent ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getRoot()
+   */
+  @ Override
+  public DefaultSmallStepProofNode getRoot ( )
+  {
+    return ( DefaultSmallStepProofNode ) super.getRoot ( ) ;
+  }
+
+
   /**
    * {@inheritDoc}
    * 
@@ -78,125 +191,99 @@ final class DefaultSmallStepProofNode extends AbstractInterpreterProofNode
 
 
   /**
-   * {@inheritDoc}
+   * Returns a set of needed latex commands for this latex printable object.
    * 
-   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildAt(int)
+   * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public DefaultSmallStepProofNode getChildAt ( int childIndex )
+  public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    return ( DefaultSmallStepProofNode ) super.getChildAt ( childIndex ) ;
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_NODE , 2 ,
+        "(#1,\\ #2)" , "store" , "e" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+    for ( LatexCommand command : this.getStore ( ).getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.getExpression ( ).getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  {
+    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    for ( LatexInstruction instruction : this.getStore ( )
+        .getLatexInstructions ( ) )
+    {
+      instructions.add ( instruction ) ;
+    }
+    for ( LatexInstruction instruction : this.getExpression ( )
+        .getLatexInstructions ( ) )
+    {
+      instructions.add ( instruction ) ;
+    }
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public TreeSet < LatexPackage > getLatexPackages ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    for ( LatexPackage pack : this.getStore ( ).getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : this.getExpression ( ).getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    return packages ;
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getParent()
+   * @see LatexPrintable#toLatexString()
    */
-  @ Override
-  public DefaultSmallStepProofNode getParent ( )
+  public final LatexString toLatexString ( )
   {
-    return ( DefaultSmallStepProofNode ) super.getParent ( ) ;
-  }
-
-
-  //
-  // Tree Queries
-  //
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getRoot()
-   */
-  @ Override
-  public DefaultSmallStepProofNode getRoot ( )
-  {
-    return ( DefaultSmallStepProofNode ) super.getRoot ( ) ;
-  }
-
-
-  //
-  // Child Queries
-  //
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getFirstChild()
-   */
-  @ Override
-  public DefaultSmallStepProofNode getFirstChild ( )
-  {
-    return ( DefaultSmallStepProofNode ) super.getFirstChild ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+        .toLatexString ( ) ;
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getLastChild()
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
    */
-  @ Override
-  public DefaultSmallStepProofNode getLastChild ( )
+  public final LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory )
   {
-    return ( DefaultSmallStepProofNode ) super.getLastChild ( ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
+        0 , LATEX_SMALL_STEP_PROOF_NODE ) ;
+    builder.addBuilder ( this.getStore ( ).toLatexStringBuilder (
+        pLatexStringBuilderFactory ) , 0 ) ;
+    builder.addBuilder ( this.getExpression ( ).toLatexStringBuilder (
+        pLatexStringBuilderFactory ) , 0 ) ;
+    return builder ;
   }
 
 
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildAfter(javax.swing.tree.TreeNode)
-   */
-  @ Override
-  public DefaultSmallStepProofNode getChildAfter ( TreeNode aChild )
-  {
-    return ( DefaultSmallStepProofNode ) super.getChildAfter ( aChild ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildBefore(javax.swing.tree.TreeNode)
-   */
-  @ Override
-  public DefaultSmallStepProofNode getChildBefore ( TreeNode aChild )
-  {
-    return ( DefaultSmallStepProofNode ) super.getChildBefore ( aChild ) ;
-  }
-
-
-  //
-  // Leaf Queries
-  //
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getFirstLeaf()
-   */
-  @ Override
-  public DefaultSmallStepProofNode getFirstLeaf ( )
-  {
-    return ( DefaultSmallStepProofNode ) super.getFirstLeaf ( ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getLastLeaf()
-   */
-  @ Override
-  public DefaultSmallStepProofNode getLastLeaf ( )
-  {
-    return ( DefaultSmallStepProofNode ) super.getLastLeaf ( ) ;
-  }
-
-
-  //
-  // Base methods
-  //
   /**
    * {@inheritDoc} This is mainly useful for debugging.
    * 

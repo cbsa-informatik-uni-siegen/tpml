@@ -35,6 +35,7 @@ import de.unisiegen.tpml.core.expressions.Sequence ;
 import de.unisiegen.tpml.core.expressions.Tuple ;
 import de.unisiegen.tpml.core.expressions.While ;
 import de.unisiegen.tpml.core.interpreters.Store ;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofNode ;
 import de.unisiegen.tpml.core.subtypingrec.DefaultSubType ;
 import de.unisiegen.tpml.core.typechecker.SeenTypes ;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
@@ -702,4 +703,10 @@ public interface LatexCommandNames
    * The latex print command for {@link TypeJudgement}.
    */
   public static final String LATEX_TYPE_JUDGEMENT = "TypeJudgement" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for {@link SmallStepProofNode}.
+   */
+  public static final String LATEX_SMALL_STEP_PROOF_NODE = "SmallStepProofNode" ; //$NON-NLS-1$
 }
