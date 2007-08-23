@@ -85,7 +85,7 @@ public final class UnitType extends PrimitiveType
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_UNIT , 0 ,
         "\\textbf{unit}" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_UNIT_TYPE , 0 ,
@@ -97,16 +97,16 @@ public final class UnitType extends PrimitiveType
   /**
    * {@inheritDoc}
    * 
-   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_PRIMITIVE , LATEX_UNIT_TYPE ) ;
+          PRIO_PRIMITIVE , LATEX_UNIT_TYPE , pIndent ) ;
     }
     return this.latexStringBuilder ;
   }

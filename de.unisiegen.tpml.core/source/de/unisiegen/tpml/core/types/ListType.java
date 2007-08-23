@@ -148,15 +148,11 @@ public final class ListType extends MonoType implements DefaultTypes
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_LIST , 0 ,
         "\\textbf{list}" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_LIST_TYPE , 1 , "#1\\ \\" //$NON-NLS-1$
         + LATEX_KEY_LIST , "tau" ) ) ; //$NON-NLS-1$
-    for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
     return commands ;
   }
 
@@ -243,18 +239,19 @@ public final class ListType extends MonoType implements DefaultTypes
   /**
    * {@inheritDoc}
    * 
-   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_LIST , LATEX_LIST_TYPE ) ;
+          PRIO_LIST , LATEX_LIST_TYPE , pIndent ) ;
       this.latexStringBuilder.addBuilder ( this.types [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LIST_TAU ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_LIST_TAU ) ;
     }
     return this.latexStringBuilder ;
   }

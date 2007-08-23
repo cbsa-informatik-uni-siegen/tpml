@@ -563,7 +563,7 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_LET , 0 ,
         "\\textbf{let}" ) ) ; //$NON-NLS-1$
     commands
@@ -574,31 +574,6 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
             + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" + LATEX_KEY_LET //$NON-NLS-1$
             + "\\ #1\\colon\\ #2\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}" , //$NON-NLS-1$//$NON-NLS-2$
         "id (id1: tau1) ... (idn: taun)" , "tau" , "e1" , "e2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    for ( Identifier id : this.identifiers )
-    {
-      for ( LatexCommand command : id.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
-    for ( MonoType type : this.types )
-    {
-      if ( type != null )
-      {
-        for ( LatexCommand command : type.getLatexCommands ( ) )
-        {
-          commands.add ( command ) ;
-        }
-      }
-    }
-    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.expressions [ 1 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
     return commands ;
   }
 
@@ -611,33 +586,8 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
   @ Override
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    TreeSet < LatexPackage > packages = super.getLatexPackages ( ) ;
     packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
-    for ( Identifier id : this.identifiers )
-    {
-      for ( LatexPackage pack : id.getLatexPackages ( ) )
-      {
-        packages.add ( pack ) ;
-      }
-    }
-    for ( MonoType type : this.types )
-    {
-      if ( type != null )
-      {
-        for ( LatexPackage pack : type.getLatexPackages ( ) )
-        {
-          packages.add ( pack ) ;
-        }
-      }
-    }
-    for ( LatexPackage pack : this.expressions [ 0 ].getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : this.expressions [ 1 ].getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
     return packages ;
   }
 
@@ -816,19 +766,20 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_LET , LATEX_CURRIED_LET ) ;
+          PRIO_LET , LATEX_CURRIED_LET , pIndent ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_ID ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
         this.latexStringBuilder.addText ( LATEX_SPACE ) ;
@@ -837,14 +788,15 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
           this.latexStringBuilder.addText ( LATEX_LPAREN ) ;
         }
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_ID ) ;
         if ( this.types [ i ] != null )
         {
           this.latexStringBuilder.addText ( LATEX_COLON ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
           this.latexStringBuilder.addBuilder ( this.types [ i ]
-              .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-              PRIO_LET_TAU ) ;
+              .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                  + LATEX_INDENT ) , PRIO_LET_TAU ) ;
           this.latexStringBuilder.addText ( LATEX_RPAREN ) ;
         }
       }
@@ -855,17 +807,16 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
       }
       else
       {
-        this.latexStringBuilder
-            .addBuilder ( this.types [ 0 ]
-                .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-                PRIO_LET_TAU ) ;
+        this.latexStringBuilder.addBuilder ( this.types [ 0 ]
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_LET_TAU ) ;
       }
-      this.latexStringBuilder.addCanBreakHere ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LET_E1 ) ;
-      this.latexStringBuilder.addCanBreakHere ( ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_LET_E1 ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LET_E2 ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_LET_E2 ) ;
     }
     return this.latexStringBuilder ;
   }

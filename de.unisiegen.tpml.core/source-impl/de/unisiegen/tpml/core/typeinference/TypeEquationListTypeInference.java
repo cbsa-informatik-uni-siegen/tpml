@@ -188,7 +188,7 @@ public final class TypeEquationListTypeInference implements LatexPrintable ,
    */
   public final LatexString toLatexString ( )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
         .toLatexString ( ) ;
   }
 
@@ -196,13 +196,13 @@ public final class TypeEquationListTypeInference implements LatexPrintable ,
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_EQUATION_LIST_TYPE_INFERENCE ) ;
+        0 , LATEX_TYPE_EQUATION_LIST_TYPE_INFERENCE , pIndent ) ;
     builder.addBuilderBegin ( ) ;
     for ( TypeEquationListTypeInference list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
@@ -211,8 +211,8 @@ public final class TypeEquationListTypeInference implements LatexPrintable ,
         builder.addText ( LATEX_COMMA ) ;
         builder.addText ( LATEX_SPACE ) ;
       }
-      builder.addBuilder ( list.first
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+      builder.addBuilder ( list.first.toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     }
     builder.addBuilderEnd ( ) ;
     return builder ;

@@ -118,7 +118,7 @@ public abstract class BinaryOperator extends Constant
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_BINARY_OPERATOR , 1 , "#1" , //$NON-NLS-1$
         "op" ) ) ; //$NON-NLS-1$
     return commands ;
@@ -128,27 +128,26 @@ public abstract class BinaryOperator extends Constant
   /**
    * {@inheritDoc}
    * 
-   * @see Constant#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Constant#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_CONSTANT , LATEX_BINARY_OPERATOR ) ;
-      this.latexStringBuilder.addBuilderBegin ( ) ;
-      if ( ! ( this.parent instanceof InfixOperation ) )
+          PRIO_CONSTANT , LATEX_BINARY_OPERATOR , pIndent ) ;
+      if ( this.parent instanceof InfixOperation )
       {
-        this.latexStringBuilder.addText ( LATEX_LPAREN ) ;
+        this.latexStringBuilder.addText ( "{" //$NON-NLS-1$
+            + this.text.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
       }
-      this.latexStringBuilder.addText ( this.text.replaceAll ( "_" , "\\\\_" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-      if ( ! ( this.parent instanceof InfixOperation ) )
+      else
       {
-        this.latexStringBuilder.addText ( LATEX_RPAREN ) ;
+        this.latexStringBuilder.addText ( "{" + LATEX_LPAREN //$NON-NLS-1$
+            + this.text.replaceAll ( "_" , "\\\\_" ) + LATEX_RPAREN + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
       }
-      this.latexStringBuilder.addBuilderEnd ( ) ;
     }
     return this.latexStringBuilder ;
   }

@@ -266,7 +266,7 @@ public class TypeJudgement implements TypeFormula , LatexCommandNames
    */
   public final LatexString toLatexString ( )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
         .toLatexString ( ) ;
   }
 
@@ -274,19 +274,19 @@ public class TypeJudgement implements TypeFormula , LatexCommandNames
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_JUDGEMENT ) ;
-    builder.addBuilder ( this.environment
-        .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
-    builder.addBuilder ( this.expression
-        .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
-    builder.addBuilder ( this.type
-        .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+        0 , LATEX_TYPE_JUDGEMENT , pIndent ) ;
+    builder.addBuilder ( this.environment.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+    builder.addBuilder ( this.expression.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+    builder.addBuilder ( this.type.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     return builder ;
   }
 

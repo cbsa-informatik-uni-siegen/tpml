@@ -147,7 +147,7 @@ public final class Exn extends Expression
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_EXN , 1 ,
         "\\uparrow\\ \\textit{#1}" , "name" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     return commands ;
@@ -228,19 +228,18 @@ public final class Exn extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_EXN , LATEX_EXN ) ;
-      this.latexStringBuilder.addBuilderBegin ( ) ;
-      this.latexStringBuilder.addText ( this.name.replaceAll ( "_" , "\\\\_" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-      this.latexStringBuilder.addBuilderEnd ( ) ;
+          PRIO_EXN , LATEX_EXN , pIndent ) ;
+      this.latexStringBuilder.addText ( "{" //$NON-NLS-1$
+          + this.name.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
     return this.latexStringBuilder ;
   }

@@ -155,7 +155,7 @@ public final class PolyType extends Type implements DefaultTypes
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_POLY_TYPE , 1 , "#1" , //$NON-NLS-1$
         "forall tvar1, ..., tvarn.tau" ) ) ; //$NON-NLS-1$
     for ( TypeVariable typeVariable : this.quantifiedVariables )
@@ -164,10 +164,6 @@ public final class PolyType extends Type implements DefaultTypes
       {
         commands.add ( command ) ;
       }
-    }
-    for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
     }
     return commands ;
   }
@@ -316,16 +312,16 @@ public final class PolyType extends Type implements DefaultTypes
   /**
    * {@inheritDoc}
    * 
-   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_POLY , LATEX_POLY_TYPE ) ;
+          PRIO_POLY , LATEX_POLY_TYPE , pIndent ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       if ( ! this.quantifiedVariables.isEmpty ( ) )
       {
@@ -344,7 +340,8 @@ public final class PolyType extends Type implements DefaultTypes
         this.latexStringBuilder.addText ( LATEX_DOT ) ;
       }
       this.latexStringBuilder.addBuilder ( this.types [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_POLY_TAU ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_POLY_TAU ) ;
       this.latexStringBuilder.addBuilderEnd ( ) ;
     }
     return this.latexStringBuilder ;

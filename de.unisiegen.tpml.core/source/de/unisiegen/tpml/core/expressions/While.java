@@ -197,7 +197,7 @@ public final class While extends Expression implements DefaultExpressions
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_WHILE , 0 ,
         "\\textbf{while}" ) ) ; //$NON-NLS-1$
     commands
@@ -205,14 +205,6 @@ public final class While extends Expression implements DefaultExpressions
     commands.add ( new DefaultLatexCommand ( LATEX_WHILE , 2 , "\\" //$NON-NLS-1$
         + LATEX_KEY_WHILE + "\\ #1\\ \\" + LATEX_KEY_DO + "\\ #2" , "e1" , //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
         "e2" ) ) ; //$NON-NLS-1$
-    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.expressions [ 1 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
     return commands ;
   }
 
@@ -265,21 +257,22 @@ public final class While extends Expression implements DefaultExpressions
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_WHILE , LATEX_WHILE ) ;
+          PRIO_WHILE , LATEX_WHILE , pIndent ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_WHILE_E1 ) ;
-      this.latexStringBuilder.addCanBreakHere ( ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_WHILE_E1 ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_WHILE_E2 ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_WHILE_E2 ) ;
     }
     return this.latexStringBuilder ;
   }

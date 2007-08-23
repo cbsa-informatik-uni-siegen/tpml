@@ -39,12 +39,12 @@ final class BuilderLatexItem extends AbstractLatexItem
   /**
    * {@inheritDoc}
    * 
-   * @see AbstractLatexItem#determineString(StringBuilder)
+   * @see AbstractLatexItem#determineString(StringBuilder, int)
    */
   @ Override
-  protected void determineString ( StringBuilder pBuffer )
+  protected void determineString ( StringBuilder pBuffer , int pIndent )
   {
-    this.builder.determineString ( pBuffer ) ;
+    this.builder.determineString ( pBuffer , pIndent ) ;
   }
 
 

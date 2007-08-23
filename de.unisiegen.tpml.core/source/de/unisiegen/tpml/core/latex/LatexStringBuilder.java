@@ -10,7 +10,7 @@ package de.unisiegen.tpml.core.latex ;
  * @see LatexString
  * @see LatexStringBuilderFactory
  */
-public interface LatexStringBuilder
+public interface LatexStringBuilder extends LatexCommandNames
 {
   /**
    * Inserts the given <code>pLatexStringBuilder</code> at the specified
@@ -44,24 +44,10 @@ public interface LatexStringBuilder
 
 
   /**
-   * Appends a break location to the string builder. A break marks the location
-   * as possible newline insertion position for the presenter.
-   */
-  public void addCanBreakHere ( ) ;
-
-
-  /**
    * Inserts an empty builder at the end of our builder. This is used, if an
    * optinal argument is not used.
    */
   public void addEmptyBuilder ( ) ;
-
-
-  /**
-   * Appends a break location to the string builder. A break marks the location
-   * for a newline insertion position for the presenter.
-   */
-  public void addMustBreakHere ( ) ;
 
 
   /**

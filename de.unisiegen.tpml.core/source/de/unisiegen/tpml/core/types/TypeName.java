@@ -173,7 +173,7 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_NAME , 1 ,
         "\\textit{#1}" , "name" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     return commands ;
@@ -324,19 +324,18 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_TYPE_NAME , LATEX_TYPE_NAME ) ;
-      this.latexStringBuilder.addBuilderBegin ( ) ;
-      this.latexStringBuilder.addText ( this.name.replaceAll ( "_" , "\\\\_" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ 
-      this.latexStringBuilder.addBuilderEnd ( ) ;
+          PRIO_TYPE_NAME , LATEX_TYPE_NAME , pIndent ) ;
+      this.latexStringBuilder.addText ( "{" //$NON-NLS-1$
+          + this.name.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
     return this.latexStringBuilder ;
   }

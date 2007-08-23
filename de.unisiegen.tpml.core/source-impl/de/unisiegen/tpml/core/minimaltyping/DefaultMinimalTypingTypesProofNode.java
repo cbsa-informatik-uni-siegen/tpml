@@ -5,7 +5,6 @@ import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Unify ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -18,9 +17,16 @@ import de.unisiegen.tpml.core.typechecker.SeenTypes ;
 import de.unisiegen.tpml.core.types.MonoType ;
 
 
+/**
+ * The Types Proof Node for the Minimal Typing Algorithm. Containing a seen
+ * types and a sub type.
+ * 
+ * @author Benjamin Mies
+ * @author Christian Fehler
+ * @see AbstractMinimalTypingProofNode
+ */
 public class DefaultMinimalTypingTypesProofNode extends
-    AbstractMinimalTypingProofNode implements MinimalTypingTypesProofNode ,
-    LatexPrintable , LatexCommandNames
+    AbstractMinimalTypingProofNode implements MinimalTypingTypesProofNode
 {
   /**
    * List of all already seen types
@@ -132,10 +138,6 @@ public class DefaultMinimalTypingTypesProofNode extends
   }
 
 
-	public void setSeenTypes ( SeenTypes < DefaultSubType > seenTypes ) {
-		this.seenTypes = seenTypes;
-	}
-
   /**
    * {@inheritDoc}
    * 
@@ -159,13 +161,24 @@ public class DefaultMinimalTypingTypesProofNode extends
 
 
   /**
+   * Sets the seen types.
+   * 
+   * @param pSeenTypes The seen types.
+   */
+  public void setSeenTypes ( SeenTypes < DefaultSubType > pSeenTypes )
+  {
+    this.seenTypes = pSeenTypes ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see LatexPrintable#toLatexString()
    */
   public final LatexString toLatexString ( )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
         .toLatexString ( ) ;
   }
 
@@ -173,15 +186,15 @@ public class DefaultMinimalTypingTypesProofNode extends
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_MINIMAL_TYPING_TYPES_PROOF_NODE ) ;
-    builder.addBuilder ( this.subtype
-        .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+        0 , LATEX_MINIMAL_TYPING_TYPES_PROOF_NODE , pIndent ) ;
+    builder.addBuilder ( this.subtype.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     return builder ;
   }
 

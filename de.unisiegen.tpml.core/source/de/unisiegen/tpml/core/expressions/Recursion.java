@@ -374,7 +374,7 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_REC , 0 ,
         "\\textbf{rec}" ) ) ; //$NON-NLS-1$ 
     commands.add ( new DefaultLatexCommand ( LATEX_RECURSION , 3 ,
@@ -382,21 +382,6 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
             + LATEX_KEY_REC + "\\ #1.#3}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
             + "{\\" + LATEX_KEY_REC + "\\ #1\\colon\\ #2.#3}" , "id" , "tau" , //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         "e" ) ) ; //$NON-NLS-1$
-    for ( LatexCommand command : this.identifiers [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    if ( this.types [ 0 ] != null )
-    {
-      for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
-    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
     return commands ;
   }
 
@@ -409,23 +394,8 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
   @ Override
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    TreeSet < LatexPackage > packages = super.getLatexPackages ( ) ;
     packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
-    for ( LatexPackage pack : this.identifiers [ 0 ].getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    if ( this.types [ 0 ] != null )
-    {
-      for ( LatexPackage pack : this.types [ 0 ].getLatexPackages ( ) )
-      {
-        packages.add ( pack ) ;
-      }
-    }
-    for ( LatexPackage pack : this.expressions [ 0 ].getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
     return packages ;
   }
 
@@ -540,31 +510,32 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_REC , LATEX_RECURSION ) ;
+          PRIO_REC , LATEX_RECURSION , pIndent ) ;
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_ID ) ;
       if ( this.types [ 0 ] == null )
       {
         this.latexStringBuilder.addEmptyBuilder ( ) ;
       }
       else
       {
-        this.latexStringBuilder
-            .addBuilder ( this.types [ 0 ]
-                .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-                PRIO_REC_TAU ) ;
+        this.latexStringBuilder.addBuilder ( this.types [ 0 ]
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_REC_TAU ) ;
       }
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_REC_E ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_REC_E ) ;
     }
     return this.latexStringBuilder ;
   }

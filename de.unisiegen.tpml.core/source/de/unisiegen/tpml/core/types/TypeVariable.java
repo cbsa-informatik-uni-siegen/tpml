@@ -398,7 +398,7 @@ public final class TypeVariable extends MonoType implements
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_VARIABLE , 1 , "#1" , //$NON-NLS-1$
         "name" ) ) ; //$NON-NLS-1$
     return commands ;
@@ -495,16 +495,16 @@ public final class TypeVariable extends MonoType implements
   /**
    * {@inheritDoc}
    * 
-   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_TYPE_VARIABLE , LATEX_TYPE_VARIABLE ) ;
+          PRIO_TYPE_VARIABLE , LATEX_TYPE_VARIABLE , pIndent ) ;
       String type = offsetToGreekLetterLatex ( this.offset % 24 )
           + ( ( this.index > 0 ) ? String.valueOf ( this.index )
               : LATEX_EMPTY_STRING ) ;
@@ -512,9 +512,7 @@ public final class TypeVariable extends MonoType implements
       {
         type = type + LATEX_BAR ;
       }
-      this.latexStringBuilder.addBuilderBegin ( ) ;
-      this.latexStringBuilder.addText ( type ) ;
-      this.latexStringBuilder.addBuilderEnd ( ) ;
+      this.latexStringBuilder.addText ( "{" + type + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$
     }
     return this.latexStringBuilder ;
   }

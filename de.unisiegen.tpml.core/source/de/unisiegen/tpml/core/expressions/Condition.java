@@ -225,7 +225,7 @@ public final class Condition extends Expression implements DefaultExpressions
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands
         .add ( new DefaultLatexCommand ( LATEX_KEY_IF , 0 , "\\textbf{if}" ) ) ; //$NON-NLS-1$ 
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_THEN , 0 ,
@@ -235,18 +235,6 @@ public final class Condition extends Expression implements DefaultExpressions
     commands.add ( new DefaultLatexCommand ( LATEX_CONDITION , 3 , "\\" //$NON-NLS-1$
         + LATEX_KEY_IF + "\\ #1\\ \\" + LATEX_KEY_THEN + "\\ #2\\ \\" //$NON-NLS-1$//$NON-NLS-2$
         + LATEX_KEY_ELSE + "\\ #3" , "e0" , "e1" , "e2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.expressions [ 1 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.expressions [ 2 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
     return commands ;
   }
 
@@ -302,27 +290,25 @@ public final class Condition extends Expression implements DefaultExpressions
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_CONDITION , LATEX_CONDITION ) ;
+          PRIO_CONDITION , LATEX_CONDITION , pIndent ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-          PRIO_CONDITION_E0 ) ;
-      this.latexStringBuilder.addCanBreakHere ( ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_CONDITION_E0 ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-          PRIO_CONDITION_E1 ) ;
-      this.latexStringBuilder.addCanBreakHere ( ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_CONDITION_E1 ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 2 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-          PRIO_CONDITION_E2 ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_CONDITION_E2 ) ;
     }
     return this.latexStringBuilder ;
   }

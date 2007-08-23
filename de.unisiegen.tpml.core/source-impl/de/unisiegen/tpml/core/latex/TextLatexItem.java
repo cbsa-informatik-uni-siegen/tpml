@@ -38,13 +38,14 @@ final class TextLatexItem extends AbstractLatexItem
   /**
    * {@inheritDoc}
    * 
-   * @see AbstractLatexItem#determineString(StringBuilder)
+   * @see AbstractLatexItem#determineString(StringBuilder,int)
    */
   @ Override
-  void determineString ( StringBuilder pBuffer )
+  void determineString ( StringBuilder pBuffer , int pIndent )
   {
     // append the text content
-    pBuffer.append ( this.content ) ;
+    pBuffer.append ( DefaultLatexStringBuilder.getIndent ( pIndent )
+        + this.content ) ;
   }
 
 

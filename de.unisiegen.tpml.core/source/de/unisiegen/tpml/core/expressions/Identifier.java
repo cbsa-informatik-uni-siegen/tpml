@@ -391,19 +391,18 @@ public final class Identifier extends Value implements IdentifierOrTypeName
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_IDENTIFIER , LATEX_IDENTIFIER ) ;
-      this.latexStringBuilder.addBuilderBegin ( ) ;
-      this.latexStringBuilder.addText ( this.name.replaceAll ( "_" , "\\\\_" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-      this.latexStringBuilder.addBuilderEnd ( ) ;
+          PRIO_IDENTIFIER , LATEX_IDENTIFIER , pIndent ) ;
+      this.latexStringBuilder.addText ( "{" //$NON-NLS-1$
+          + this.name.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     }
     return this.latexStringBuilder ;
   }

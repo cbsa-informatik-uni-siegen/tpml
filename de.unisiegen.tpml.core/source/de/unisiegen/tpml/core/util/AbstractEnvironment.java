@@ -19,9 +19,6 @@ import java.util.LinkedList ;
 public abstract class AbstractEnvironment < S , E > implements
     Environment < S , E >
 {
-  //
-  // Inner classes
-  //
   /**
    * The store mappings, mapping symbols to entries.
    * 
@@ -64,17 +61,6 @@ public abstract class AbstractEnvironment < S , E > implements
 
 
     /**
-     * Returns the symbol.
-     * 
-     * @return The symbol.
-     */
-    public S getSymbol ( )
-    {
-      return this.symbol ;
-    }
-
-
-    /**
      * Returns the entry.
      * 
      * @return The entry.
@@ -83,21 +69,26 @@ public abstract class AbstractEnvironment < S , E > implements
     {
       return this.entry ;
     }
+
+
+    /**
+     * Returns the symbol.
+     * 
+     * @return The symbol.
+     */
+    public S getSymbol ( )
+    {
+      return this.symbol ;
+    }
   }
 
 
-  //
-  // Attributes
-  //
   /**
    * The mappings, the symbol/entry pairs, within this environment.
    */
   protected LinkedList < Mapping < S , E >> mappings ;
 
 
-  //
-  // Constructors
-  //
   /**
    * Default constructor, creates a new empty environment with no mappings.
    */
@@ -128,9 +119,6 @@ public abstract class AbstractEnvironment < S , E > implements
   }
 
 
-  //
-  // Primitives
-  //
   /**
    * {@inheritDoc}
    * 
@@ -234,9 +222,6 @@ public abstract class AbstractEnvironment < S , E > implements
   }
 
 
-  //
-  // Base methods
-  //
   /**
    * Returns the string representation for the mutable store. Should be used for
    * debugging purpose only.

@@ -120,7 +120,7 @@ public final class Location extends Value
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands
         .add ( new DefaultLatexCommand ( LATEX_LOCATION , 1 , "#1" , "name" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     return commands ;
@@ -171,19 +171,18 @@ public final class Location extends Value
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_LOCATION , LATEX_LOCATION ) ;
-      this.latexStringBuilder.addBuilderBegin ( ) ;
-      this.latexStringBuilder.addText ( this.name.replaceAll ( "_" , "\\\\_" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-      this.latexStringBuilder.addBuilderEnd ( ) ;
+          PRIO_LOCATION , LATEX_LOCATION , pIndent ) ;
+      this.latexStringBuilder.addText ( "{" //$NON-NLS-1$
+          + this.name.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
     return this.latexStringBuilder ;
   }

@@ -9,7 +9,6 @@ import de.unisiegen.tpml.core.ProofStep ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -31,7 +30,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode
  */
 public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
-    TypeInferenceProofNode , LatexPrintable , LatexCommandNames
+    TypeInferenceProofNode
 {
   /**
    * list of all formulas of this node
@@ -433,7 +432,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    */
   public final LatexString toLatexString ( )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
         .toLatexString ( ) ;
   }
 
@@ -441,18 +440,18 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_INFERENCE_PROOF_NODE ) ;
+        0 , LATEX_TYPE_INFERENCE_PROOF_NODE , pIndent ) ;
     builder.addBuilderBegin ( ) ;
     for ( int i = 0 ; i < this.substitutions.size ( ) ; i ++ )
     {
       builder.addBuilder ( this.substitutions.get ( i ).toLatexStringBuilder (
-          pLatexStringBuilderFactory ) , 0 ) ;
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
       if ( i < this.substitutions.size ( ) - 1 )
       {
         builder.addText ( LATEX_COMMA ) ;
@@ -468,11 +467,11 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
         TypeEquationTypeInference equation = ( TypeEquationTypeInference ) this.formula
             .get ( i ) ;
         builder.addBuilder ( equation.getSeenTypes ( ).toLatexStringBuilder (
-            pLatexStringBuilderFactory ) , 0 ) ;
+            pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
         builder.addText ( "\\ \\vdash\\ " ) ; //$NON-NLS-1$
       }
       builder.addBuilder ( this.formula.get ( i ).toLatexStringBuilder (
-          pLatexStringBuilderFactory ) , 0 ) ;
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
       if ( i < this.formula.size ( ) - 1 )
       {
         builder.addText ( "\\newline" ) ; //$NON-NLS-1$

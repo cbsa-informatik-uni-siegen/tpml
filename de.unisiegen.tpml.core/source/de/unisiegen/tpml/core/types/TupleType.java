@@ -176,16 +176,9 @@ public final class TupleType extends MonoType implements DefaultTypes
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TUPLE_TYPE , 1 , "#1" , //$NON-NLS-1$
         "tau1 * ... * taun" ) ) ; //$NON-NLS-1$
-    for ( MonoType type : this.types )
-    {
-      for ( LatexCommand command : type.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
     return commands ;
   }
 
@@ -270,16 +263,16 @@ public final class TupleType extends MonoType implements DefaultTypes
   /**
    * {@inheritDoc}
    * 
-   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_TUPLE , LATEX_TUPLE_TYPE ) ;
+          PRIO_TUPLE , LATEX_TUPLE_TYPE , pIndent ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.types.length ; i ++ )
       {
@@ -290,12 +283,8 @@ public final class TupleType extends MonoType implements DefaultTypes
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
         this.latexStringBuilder.addBuilder ( this.types [ i ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-            PRIO_TUPLE_TAU ) ;
-        if ( i != this.types.length - 1 )
-        {
-          this.latexStringBuilder.addCanBreakHere ( ) ;
-        }
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_TUPLE_TAU ) ;
       }
       this.latexStringBuilder.addBuilderEnd ( ) ;
     }

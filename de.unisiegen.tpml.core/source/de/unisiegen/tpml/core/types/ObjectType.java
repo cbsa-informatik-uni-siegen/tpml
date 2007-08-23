@@ -136,13 +136,9 @@ public final class ObjectType extends MonoType implements DefaultTypes
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_OBJECT_TYPE , 1 ,
         "<\\ #1\\ >" , "phi" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
     return commands ;
   }
 
@@ -229,19 +225,19 @@ public final class ObjectType extends MonoType implements DefaultTypes
   /**
    * {@inheritDoc}
    * 
-   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_OBJECT , LATEX_OBJECT_TYPE ) ;
+          PRIO_OBJECT , LATEX_OBJECT_TYPE , pIndent ) ;
       this.latexStringBuilder.addBuilder ( this.types [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-          PRIO_OBJECT_ROW ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_OBJECT_ROW ) ;
     }
     return this.latexStringBuilder ;
   }

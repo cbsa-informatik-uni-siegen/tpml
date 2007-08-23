@@ -15,6 +15,25 @@ import java.util.ArrayList ;
 final class DefaultLatexStringBuilder implements LatexStringBuilder
 {
   /**
+   * Returns a string only with spaces. The count of the returned spaces is
+   * <code>pIdent</code>.
+   * 
+   * @param pIndent The number of spaces.
+   * @return A string only with spaces. The count of the returned spaces is
+   *         <code>pIdent</code>.
+   */
+  public static String getIndent ( int pIndent )
+  {
+    StringBuilder result = new StringBuilder ( ) ;
+    for ( int i = 0 ; i < pIndent ; i ++ )
+    {
+      result.append ( " " ) ; //$NON-NLS-1$
+    }
+    return result.toString ( ) ;
+  }
+
+
+  /**
    * The items already added to this latex string builder.
    * 
    * @see AbstractLatexItem
@@ -29,6 +48,12 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
 
 
   /**
+   * The indent of this object.
+   */
+  private int indent ;
+
+
+  /**
    * Allocates a new <code>DefaultLatextringBuilder</code> for the
    * <code>printable</code>, where the priority used for the
    * <code>printable</code> is <code>returnPriority</code>.
@@ -38,18 +63,21 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
    *          which determines where and when to add parenthesis around
    *          {@link LatexPrintable}s added to this builder.
    * @param pName The name of the latex command.
+   * @param pIndent The indent of this object.
    * @throws NullPointerException if <code>printable</code> is
    *           <code>null</code>.
    */
   DefaultLatexStringBuilder ( LatexPrintable pPrintable , int pReturnPriority ,
-      String pName )
+      String pName , int pIndent )
   {
     if ( pPrintable == null )
     {
       throw new NullPointerException ( "printable is null" ) ; //$NON-NLS-1$
     }
     this.returnPriority = pReturnPriority ;
-    this.items.add ( new TextLatexItem ( "\\" + pName ) ) ; //$NON-NLS-1$
+    this.items
+        .add ( new TextLatexItem ( getIndent ( pIndent ) + "\\" + pName ) ) ; //$NON-NLS-1$
+    this.indent = pIndent ;
   }
 
 
@@ -65,39 +93,33 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
     {
       throw new NullPointerException ( "builder is null" ) ; //$NON-NLS-1$
     }
-    // cast to a default latex string builder
     DefaultLatexStringBuilder defaultBuilder = ( DefaultLatexStringBuilder ) pLatexStringBuilder ;
-    // check if we need parenthesis
+    this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+    this.items.add ( new TextLatexItem ( getIndent ( this.indent ) + "{" ) ) ; //$NON-NLS-1$
+    this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     boolean parenthesis = ( defaultBuilder.returnPriority < pArgumentPriority ) ;
-    // implement the break
-    if ( ( this.items.size ( ) > 0 )
-        && ( this.items.get ( this.items.size ( ) - 1 ) instanceof CanBreakHereLatexItem ) )
+    if ( parenthesis )
     {
-      this.items.remove ( this.items.size ( ) - 1 ) ;
-      this.items.add ( new TextLatexItem ( "{" ) ) ; //$NON-NLS-1$
-      this.items.add ( new TextLatexItem ( "\\linebreak[3]" ) ) ; //$NON-NLS-1$
-    }
-    else if ( ( this.items.size ( ) > 0 )
-        && ( this.items.get ( this.items.size ( ) - 1 ) instanceof MustBreakHereLatexItem ) )
-    {
-      this.items.remove ( this.items.size ( ) - 1 ) ;
-      this.items.add ( new TextLatexItem ( "{" ) ) ; //$NON-NLS-1$
-      this.items.add ( new TextLatexItem ( "\\newline" ) ) ; //$NON-NLS-1$
+      this.items.add ( new TextLatexItem ( getIndent ( this.indent
+          + LATEX_INDENT )
+          + "\\" + LATEX_PARENTHESIS ) ) ; //$NON-NLS-1$
+      this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+      this.items.add ( new TextLatexItem ( getIndent ( this.indent
+          + LATEX_INDENT )
+          + "{" ) ) ; //$NON-NLS-1$
+      this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+      this.items.add ( new BuilderLatexItem ( defaultBuilder ) ) ;
+      this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+      this.items.add ( new TextLatexItem ( getIndent ( this.indent
+          + LATEX_INDENT )
+          + "}" ) ) ; //$NON-NLS-1$
     }
     else
     {
-      this.items.add ( new TextLatexItem ( "{" ) ) ; //$NON-NLS-1$
+      this.items.add ( new BuilderLatexItem ( defaultBuilder ) ) ;
     }
-    if ( parenthesis )
-    {
-      this.items.add ( new TextLatexItem ( "(" ) ) ; //$NON-NLS-1$
-    }
-    this.items.add ( new BuilderLatexItem ( defaultBuilder ) ) ;
-    if ( parenthesis )
-    {
-      this.items.add ( new TextLatexItem ( ")" ) ) ; //$NON-NLS-1$
-    }
-    this.items.add ( new TextLatexItem ( "}" ) ) ; //$NON-NLS-1$
+    this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+    this.items.add ( new TextLatexItem ( getIndent ( this.indent ) + "}" ) ) ; //$NON-NLS-1$
   }
 
 
@@ -108,7 +130,8 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
    */
   public void addBuilderBegin ( )
   {
-    this.items.add ( new TextLatexItem ( "{" ) ) ; //$NON-NLS-1$
+    this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+    this.items.add ( new TextLatexItem ( getIndent ( this.indent ) + "{" ) ) ; //$NON-NLS-1$
   }
 
 
@@ -119,54 +142,21 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
    */
   public void addBuilderEnd ( )
   {
-    this.items.add ( new TextLatexItem ( "}" ) ) ; //$NON-NLS-1$
+    this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+    this.items.add ( new TextLatexItem ( getIndent ( this.indent ) + "}" ) ) ; //$NON-NLS-1$
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see LatexStringBuilder#addCanBreakHere()
-   */
-  public void addCanBreakHere ( )
-  {
-    // TODO Bugfix
-    // this.items.add ( CanBreakHereLatexItem.ITEM ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see LatexStringBuilder#addBuilder(LatexStringBuilder, int)
+   * @see LatexStringBuilder#addEmptyBuilder()
    */
   public void addEmptyBuilder ( )
   {
-    // implement the break
-    if ( ( this.items.size ( ) > 0 )
-        && ( ( this.items.get ( this.items.size ( ) - 1 ) instanceof CanBreakHereLatexItem ) || ( this.items
-            .get ( this.items.size ( ) - 1 ) instanceof MustBreakHereLatexItem ) ) )
-    {
-      AbstractLatexItem moveBreak = this.items
-          .remove ( this.items.size ( ) - 1 ) ;
-      this.items.add ( new TextLatexItem ( "{}" ) ) ; //$NON-NLS-1$
-      this.items.add ( moveBreak ) ;
-    }
-    else
-    {
-      this.items.add ( new TextLatexItem ( "{}" ) ) ; //$NON-NLS-1$
-    }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see LatexStringBuilder#addMustBreakHere()
-   */
-  public void addMustBreakHere ( )
-  {
-    this.items.add ( MustBreakHereLatexItem.ITEM ) ;
+    this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+    this.items.add ( new TextLatexItem ( getIndent ( this.indent ) + "{" ) ) ; //$NON-NLS-1$
+    this.items.add ( new TextLatexItem ( getIndent ( this.indent ) + "}" ) ) ; //$NON-NLS-1$
   }
 
 
@@ -177,19 +167,6 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
    */
   public void addText ( String pText )
   {
-    // implement the break
-    if ( ( this.items.size ( ) > 0 )
-        && ( this.items.get ( this.items.size ( ) - 1 ) instanceof CanBreakHereLatexItem ) )
-    {
-      this.items.remove ( this.items.size ( ) - 1 ) ;
-      this.items.add ( new TextLatexItem ( "\\linebreak[3]" ) ) ; //$NON-NLS-1$
-    }
-    else if ( ( this.items.size ( ) > 0 )
-        && ( this.items.get ( this.items.size ( ) - 1 ) instanceof MustBreakHereLatexItem ) )
-    {
-      this.items.remove ( this.items.size ( ) - 1 ) ;
-      this.items.add ( new TextLatexItem ( "\\newline" ) ) ; //$NON-NLS-1$
-    }
     this.items.add ( new TextLatexItem ( pText ) ) ;
   }
 
@@ -199,14 +176,13 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
    * to the <code>pBuffer</code>.
    * 
    * @param pBuffer String buffer to store the characters to.
+   * @param pIndent The indent of this object.
    */
-  void determineString ( StringBuilder pBuffer )
+  public void determineString ( StringBuilder pBuffer , int pIndent )
   {
-    // process all items for this string builder
     for ( AbstractLatexItem item : this.items )
     {
-      // determine the string representation for the item
-      item.determineString ( pBuffer ) ;
+      item.determineString ( pBuffer , pIndent ) ;
     }
   }
 
@@ -217,7 +193,7 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
    * 
    * @return The number of characters in the generated latex string.
    */
-  int determineStringLength ( )
+  public int determineStringLength ( )
   {
     int length = 0 ;
     for ( AbstractLatexItem item : this.items )
@@ -235,12 +211,8 @@ final class DefaultLatexStringBuilder implements LatexStringBuilder
    */
   public LatexString toLatexString ( )
   {
-    // determine the final string length for the builder contents
-    int length = determineStringLength ( ) ;
-    // allocate the string buffer
-    StringBuilder buffer = new StringBuilder ( length ) ;
-    // determine the string representation and place it into the string buffer
-    determineString ( buffer ) ;
+    StringBuilder buffer = new StringBuilder ( ) ;
+    determineString ( buffer , this.indent ) ;
     return new DefaultLatexString ( buffer.toString ( ) ) ;
   }
 }

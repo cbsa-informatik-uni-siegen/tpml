@@ -225,21 +225,9 @@ public final class InfixOperation extends Expression implements
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_INFIX_OPERATION , 3 ,
         "#2\\ \\mathbin{#1}\\ #3" , "op" , "e1" , "e2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.expressions [ 1 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.expressions [ 2 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
     return commands ;
   }
 
@@ -323,28 +311,29 @@ public final class InfixOperation extends Expression implements
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ,
-          LATEX_INFIX_OPERATION ) ;
+          LATEX_INFIX_OPERATION , pIndent ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-          ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , ( ( BinaryOperator ) this.expressions [ 0 ] )
+          .getPrettyPriority ( ) ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-          ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ) ;
-      this.latexStringBuilder
-          .addBuilder ( this.expressions [ 2 ]
-              .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-              ( ( BinaryOperator ) this.expressions [ 0 ] )
-                  .getPrettyPriority ( ) + 1 ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , ( ( BinaryOperator ) this.expressions [ 0 ] )
+          .getPrettyPriority ( ) ) ;
+      this.latexStringBuilder.addBuilder ( this.expressions [ 2 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , ( ( BinaryOperator ) this.expressions [ 0 ] )
+          .getPrettyPriority ( ) + 1 ) ;
     }
     return this.latexStringBuilder ;
   }

@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
@@ -227,9 +228,9 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   /**
    * Cached {@link LatexStringBuilder}, so the {@link LatexStringBuilder} do
    * not need to be determined on every invocation of
-   * {@link #toLatexStringBuilder(LatexStringBuilderFactory)}.
+   * {@link #toLatexStringBuilder(LatexStringBuilderFactory,int)}.
    * 
-   * @see #toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see #toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   protected LatexStringBuilder latexStringBuilder = null ;
 
@@ -505,6 +506,8 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_PARENTHESIS , 1 , "(#1)" , //$NON-NLS-1$
+        "e" ) ) ; //$NON-NLS-1$
     if ( this instanceof DefaultExpressions )
     {
       for ( Expression e : ( ( DefaultExpressions ) this ).getExpressions ( ) )
@@ -867,7 +870,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    */
   public final LatexString toLatexString ( )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
         .toLatexString ( ) ;
   }
 
@@ -875,10 +878,10 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public abstract LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory ) ;
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent ) ;
 
 
   /**

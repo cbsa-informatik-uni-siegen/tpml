@@ -1,19 +1,16 @@
 package de.unisiegen.tpml.core.subtyping ;
 
 
-import java.util.TreeSet;
-
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.AbstractProofNode ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
-import de.unisiegen.tpml.core.latex.DefaultLatexPackage;
-import de.unisiegen.tpml.core.latex.LatexCommand;
-import de.unisiegen.tpml.core.latex.LatexCommandNames;
-import de.unisiegen.tpml.core.latex.LatexInstruction;
-import de.unisiegen.tpml.core.latex.LatexPackage;
-import de.unisiegen.tpml.core.latex.LatexPrintable;
-import de.unisiegen.tpml.core.latex.LatexString;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -31,7 +28,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode
  */
 public class DefaultSubTypingProofNode extends AbstractProofNode implements
-    SubTypingProofNode, LatexPrintable, LatexCommandNames
+    SubTypingProofNode
 {
   /**
    * The subtype of this proof node
@@ -89,27 +86,65 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 
 
   /**
-   * {inheritDoc}
+   * Returns a set of needed latex commands for this latex printable object.
    * 
-   * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getRule()
+   * @return A set of needed latex commands for this latex printable object.
    */
-  public SubTypingProofRule getRule ( )
+  public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    ProofStep [ ] proofSteps = getSteps ( ) ;
-    if ( proofSteps.length > 0 )
-      return ( SubTypingProofRule ) proofSteps [ 0 ].getRule ( ) ;
-    return null ;
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_SUB_TYPE_PROOF_NODE , 2 ,
+        "#1\\ " //$NON-NLS-1$
+            + "<:\\ #2" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ 
+    for ( LatexCommand command : this.left.getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.right.getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
   }
 
 
   /**
-   * get the proof steps of this node
+   * Returns a set of needed latex instructions for this latex printable object.
    * 
-   * @return ProofStep[] steps
+   * @return A set of needed latex instructions for this latex printable object.
    */
-  public ProofStep [ ] getSteps ( )
+  public TreeSet < LatexInstruction > getLatexInstructions ( )
   {
-    return this.steps ;
+    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    for ( LatexInstruction instruction : this.left.getLatexInstructions ( ) )
+    {
+      instructions.add ( instruction ) ;
+    }
+    for ( LatexInstruction instruction : this.right.getLatexInstructions ( ) )
+    {
+      instructions.add ( instruction ) ;
+    }
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public TreeSet < LatexPackage > getLatexPackages ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    for ( LatexPackage pack : this.left.getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : this.right.getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    return packages ;
   }
 
 
@@ -132,6 +167,31 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
   public MonoType getRight ( )
   {
     return this.right ;
+  }
+
+
+  /**
+   * {inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getRule()
+   */
+  public SubTypingProofRule getRule ( )
+  {
+    ProofStep [ ] proofSteps = getSteps ( ) ;
+    if ( proofSteps.length > 0 )
+      return ( SubTypingProofRule ) proofSteps [ 0 ].getRule ( ) ;
+    return null ;
+  }
+
+
+  /**
+   * get the proof steps of this node
+   * 
+   * @return ProofStep[] steps
+   */
+  public ProofStep [ ] getSteps ( )
+  {
+    return this.steps ;
   }
 
 
@@ -176,6 +236,36 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
   public void setSteps ( ProofStep [ ] pSteps )
   {
     this.steps = pSteps ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexString()
+   */
+  public LatexString toLatexString ( )
+  {
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
+        .toLatexString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
+   */
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+  {
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
+        0 , LATEX_SUB_TYPE_PROOF_NODE , pIndent ) ;
+    builder.addBuilder ( this.left.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+    builder.addBuilder ( this.right.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+    return builder ;
   }
 
 
@@ -227,51 +317,4 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
       builder.append ( this.getSteps ( ) [ 0 ].getRule ( ).toString ( ) ) ;
     return builder.toString ( ) ;
   }
-  
-	public TreeSet < LatexCommand > getLatexCommands ( ) {
-		TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( );
-		commands.add ( new DefaultLatexCommand ( LATEX_SUB_TYPE_PROOF_NODE, 2, "#1\\ " //$NON-NLS-1$
-				+ "<:\\ #2", "tau1", "tau2" ) );   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ 
-		for ( LatexCommand command : this.left.getLatexCommands ( ) ) {
-			commands.add ( command );
-		}
-		for ( LatexCommand command : this.right.getLatexCommands ( ) ) {
-			commands.add ( command );
-		}
-		return commands;
-	}
-
-	public TreeSet < LatexInstruction > getLatexInstructions ( ) {
-		TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( );
-		for ( LatexInstruction instruction : this.left.getLatexInstructions ( ) ) {
-			instructions.add ( instruction );
-		}
-		for ( LatexInstruction instruction : this.right.getLatexInstructions ( ) ) {
-			instructions.add ( instruction );
-		}
-		return instructions;
-	}
-
-	public TreeSet < LatexPackage > getLatexPackages ( ) {
-		TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( );
-		for ( LatexPackage pack : this.left.getLatexPackages ( ) ) {
-			packages.add ( pack );
-		}
-		for ( LatexPackage pack : this.right.getLatexPackages ( ) ) {
-			packages.add ( pack );
-		}
-		return packages;
-	}
-
-	public LatexString toLatexString ( ) {
-		return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) ).toLatexString ( );
-	}
-
-	public LatexStringBuilder toLatexStringBuilder ( LatexStringBuilderFactory pLatexStringBuilderFactory ) {
-		LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this, 0, LATEX_SUB_TYPE_PROOF_NODE );
-		builder.addBuilder ( this.left.toLatexStringBuilder ( pLatexStringBuilderFactory ), 0 );
-		builder.addBuilder ( this.right.toLatexStringBuilder ( pLatexStringBuilderFactory ), 0 );
-
-		return builder;
-	}
 }

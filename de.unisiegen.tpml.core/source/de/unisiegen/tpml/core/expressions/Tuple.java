@@ -193,16 +193,9 @@ public final class Tuple extends Expression implements DefaultExpressions
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TUPLE , 1 , "(#1)" , //$NON-NLS-1$
         "e1, ... , en" ) ) ; //$NON-NLS-1$
-    for ( Expression child : this.expressions )
-    {
-      for ( LatexCommand command : child.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
     return commands ;
   }
 
@@ -263,16 +256,16 @@ public final class Tuple extends Expression implements DefaultExpressions
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_TUPLE , LATEX_TUPLE ) ;
+          PRIO_TUPLE , LATEX_TUPLE , pIndent ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int n = 0 ; n < this.expressions.length ; ++ n )
       {
@@ -280,12 +273,10 @@ public final class Tuple extends Expression implements DefaultExpressions
         {
           this.latexStringBuilder.addText ( LATEX_COMMA ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
-          this.latexStringBuilder.addCanBreakHere ( ) ;
         }
-        this.latexStringBuilder
-            .addBuilder ( this.expressions [ n ]
-                .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-                PRIO_TUPLE_E ) ;
+        this.latexStringBuilder.addBuilder ( this.expressions [ n ]
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_TUPLE_E ) ;
       }
       this.latexStringBuilder.addBuilderEnd ( ) ;
     }

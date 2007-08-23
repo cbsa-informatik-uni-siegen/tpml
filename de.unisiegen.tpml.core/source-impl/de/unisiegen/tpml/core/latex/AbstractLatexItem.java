@@ -13,8 +13,9 @@ abstract class AbstractLatexItem
 {
   /**
    * @param pBuffer The string of the latex string.
+   * @param pIndent The indent of this object.
    */
-  abstract void determineString ( StringBuilder pBuffer ) ;
+  abstract void determineString ( StringBuilder pBuffer , int pIndent ) ;
 
 
   /**
@@ -22,7 +23,7 @@ abstract class AbstractLatexItem
    * item to a latex string.
    * 
    * @return The required string length.
-   * @see #determineString(StringBuilder)
+   * @see #determineString(StringBuilder,int)
    */
   abstract int determineStringLength ( ) ;
 }

@@ -86,7 +86,7 @@ public final class IntegerType extends PrimitiveType
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_INT , 0 ,
         "\\textbf{int}" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_INTEGER_TYPE , 0 ,
@@ -98,16 +98,16 @@ public final class IntegerType extends PrimitiveType
   /**
    * {@inheritDoc}
    * 
-   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_PRIMITIVE , LATEX_INTEGER_TYPE ) ;
+          PRIO_PRIMITIVE , LATEX_INTEGER_TYPE , pIndent ) ;
     }
     return this.latexStringBuilder ;
   }

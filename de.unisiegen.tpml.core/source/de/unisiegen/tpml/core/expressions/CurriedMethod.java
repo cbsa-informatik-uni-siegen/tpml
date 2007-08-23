@@ -461,7 +461,7 @@ public final class CurriedMethod extends Expression implements
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_METHOD , 0 ,
         "\\textbf{method}" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_CURRIED_METHOD , 3 ,
@@ -470,27 +470,6 @@ public final class CurriedMethod extends Expression implements
             + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" + LATEX_KEY_METHOD //$NON-NLS-1$
             + "\\ #1\\colon\\ #2\\ =\\ #3\\ ;}" , //$NON-NLS-1$
         "m (id1: tau1) ... (idn: taun)" , "tau" , "e" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    for ( Identifier id : this.identifiers )
-    {
-      for ( LatexCommand command : id.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
-    for ( MonoType type : this.types )
-    {
-      if ( type != null )
-      {
-        for ( LatexCommand command : type.getLatexCommands ( ) )
-        {
-          commands.add ( command ) ;
-        }
-      }
-    }
-    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
     return commands ;
   }
 
@@ -503,29 +482,8 @@ public final class CurriedMethod extends Expression implements
   @ Override
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    TreeSet < LatexPackage > packages = super.getLatexPackages ( ) ;
     packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
-    for ( Identifier id : this.identifiers )
-    {
-      for ( LatexPackage pack : id.getLatexPackages ( ) )
-      {
-        packages.add ( pack ) ;
-      }
-    }
-    for ( MonoType type : this.types )
-    {
-      if ( type != null )
-      {
-        for ( LatexPackage pack : type.getLatexPackages ( ) )
-        {
-          packages.add ( pack ) ;
-        }
-      }
-    }
-    for ( LatexPackage pack : this.expressions [ 0 ].getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
     return packages ;
   }
 
@@ -671,19 +629,20 @@ public final class CurriedMethod extends Expression implements
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_CURRIED_METHOD , LATEX_CURRIED_METHOD ) ;
+          PRIO_CURRIED_METHOD , LATEX_CURRIED_METHOD , pIndent ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_ID ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
         this.latexStringBuilder.addText ( LATEX_SPACE ) ;
@@ -692,14 +651,15 @@ public final class CurriedMethod extends Expression implements
           this.latexStringBuilder.addText ( LATEX_LPAREN ) ;
         }
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_ID ) ;
         if ( this.types [ i ] != null )
         {
           this.latexStringBuilder.addText ( LATEX_COLON ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
           this.latexStringBuilder.addBuilder ( this.types [ i ]
-              .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-              PRIO_CURRIED_METHOD_TAU ) ;
+              .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                  + LATEX_INDENT ) , PRIO_CURRIED_METHOD_TAU ) ;
           this.latexStringBuilder.addText ( LATEX_RPAREN ) ;
         }
       }
@@ -710,14 +670,13 @@ public final class CurriedMethod extends Expression implements
       }
       else
       {
-        this.latexStringBuilder
-            .addBuilder ( this.types [ 0 ]
-                .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-                PRIO_LET_TAU ) ;
+        this.latexStringBuilder.addBuilder ( this.types [ 0 ]
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_LET_TAU ) ;
       }
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-          PRIO_CURRIED_METHOD_E ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_CURRIED_METHOD_E ) ;
     }
     return this.latexStringBuilder ;
   }

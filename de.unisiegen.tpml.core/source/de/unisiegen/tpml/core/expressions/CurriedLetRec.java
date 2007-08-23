@@ -341,7 +341,7 @@ public final class CurriedLetRec extends CurriedLet implements
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_LET , 0 ,
         "\\textbf{let}" ) ) ; //$NON-NLS-1$ 
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_REC , 0 ,
@@ -355,31 +355,6 @@ public final class CurriedLetRec extends CurriedLet implements
             + LATEX_KEY_LET + "\\ \\" + LATEX_KEY_REC //$NON-NLS-1$
             + "\\ #1\\colon\\ #2\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}" , //$NON-NLS-1$ //$NON-NLS-2$
         "id (id1: tau1) ... (idn: taun)" , "tau" , "e1" , "e2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    for ( Identifier id : this.identifiers )
-    {
-      for ( LatexCommand command : id.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
-    for ( MonoType type : this.types )
-    {
-      if ( type != null )
-      {
-        for ( LatexCommand command : type.getLatexCommands ( ) )
-        {
-          commands.add ( command ) ;
-        }
-      }
-    }
-    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.expressions [ 1 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
     return commands ;
   }
 
@@ -527,19 +502,20 @@ public final class CurriedLetRec extends CurriedLet implements
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_LET , LATEX_CURRIED_LET_REC ) ;
+          PRIO_LET , LATEX_CURRIED_LET_REC , pIndent ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_ID ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
         this.latexStringBuilder.addText ( LATEX_SPACE ) ;
@@ -548,14 +524,15 @@ public final class CurriedLetRec extends CurriedLet implements
           this.latexStringBuilder.addText ( LATEX_LPAREN ) ;
         }
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_ID ) ;
         if ( this.types [ i ] != null )
         {
           this.latexStringBuilder.addText ( LATEX_COLON ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
           this.latexStringBuilder.addBuilder ( this.types [ i ]
-              .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-              PRIO_LET_TAU ) ;
+              .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                  + LATEX_INDENT ) , PRIO_LET_TAU ) ;
           this.latexStringBuilder.addText ( LATEX_RPAREN ) ;
         }
       }
@@ -566,17 +543,16 @@ public final class CurriedLetRec extends CurriedLet implements
       }
       else
       {
-        this.latexStringBuilder
-            .addBuilder ( this.types [ 0 ]
-                .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-                PRIO_LET_TAU ) ;
+        this.latexStringBuilder.addBuilder ( this.types [ 0 ]
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_LET_TAU ) ;
       }
-      this.latexStringBuilder.addCanBreakHere ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LET_E1 ) ;
-      this.latexStringBuilder.addCanBreakHere ( ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_LET_E1 ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LET_E2 ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_LET_E2 ) ;
     }
     return this.latexStringBuilder ;
   }

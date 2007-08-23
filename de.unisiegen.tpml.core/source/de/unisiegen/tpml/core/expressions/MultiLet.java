@@ -459,7 +459,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_LET , 0 ,
         "\\textbf{let}" ) ) ; //$NON-NLS-1$
     commands
@@ -470,28 +470,6 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
             + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" + LATEX_KEY_LET //$NON-NLS-1$
             + "\\ (#1)\\colon\\ #2\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}" , //$NON-NLS-1$ //$NON-NLS-2$
         "id1, ..., idn" , "tau" , "e1" , "e2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
-    for ( Identifier id : this.identifiers )
-    {
-      for ( LatexCommand command : id.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
-    if ( this.types [ 0 ] != null )
-    {
-      for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
-    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.expressions [ 1 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
     return commands ;
   }
 
@@ -504,30 +482,8 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
   @ Override
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    TreeSet < LatexPackage > packages = super.getLatexPackages ( ) ;
     packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
-    for ( Identifier id : this.identifiers )
-    {
-      for ( LatexPackage pack : id.getLatexPackages ( ) )
-      {
-        packages.add ( pack ) ;
-      }
-    }
-    if ( this.types [ 0 ] != null )
-    {
-      for ( LatexPackage pack : this.types [ 0 ].getLatexPackages ( ) )
-      {
-        packages.add ( pack ) ;
-      }
-    }
-    for ( LatexPackage pack : this.expressions [ 0 ].getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : this.expressions [ 1 ].getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
     return packages ;
   }
 
@@ -681,16 +637,16 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_LET , LATEX_MULTI_LET ) ;
+          PRIO_LET , LATEX_MULTI_LET , pIndent ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; ++ i )
       {
@@ -700,7 +656,8 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_ID ) ;
       }
       this.latexStringBuilder.addBuilderEnd ( ) ;
       if ( this.types [ 0 ] == null )
@@ -709,16 +666,16 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
       }
       else
       {
-        this.latexStringBuilder
-            .addBuilder ( this.types [ 0 ]
-                .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-                PRIO_LET_TAU ) ;
+        this.latexStringBuilder.addBuilder ( this.types [ 0 ]
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_LET_TAU ) ;
       }
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LET_E1 ) ;
-      this.latexStringBuilder.addCanBreakHere ( ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_LET_E1 ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LET_E2 ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_LET_E2 ) ;
     }
     return this.latexStringBuilder ;
   }

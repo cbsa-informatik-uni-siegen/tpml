@@ -102,7 +102,7 @@ public abstract class Constant extends Value
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_CONSTANT , 1 , "#1" , "c" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     return commands ;
   }
@@ -172,19 +172,18 @@ public abstract class Constant extends Value
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_CONSTANT , LATEX_CONSTANT ) ;
-      this.latexStringBuilder.addBuilderBegin ( ) ;
-      this.latexStringBuilder.addText ( this.text.replaceAll ( "_" , "\\\\_" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-      this.latexStringBuilder.addBuilderEnd ( ) ;
+          PRIO_CONSTANT , LATEX_CONSTANT , pIndent ) ;
+      this.latexStringBuilder.addText ( "{" //$NON-NLS-1$
+          + this.text.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     }
     return this.latexStringBuilder ;
   }

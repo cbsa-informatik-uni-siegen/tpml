@@ -303,23 +303,9 @@ public final class Duplication extends Expression implements
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_DUPLICATION , 1 ,
         "\\{<#1>\\}" , "a1 = e1 ; ... ; an = en" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    for ( Identifier id : this.identifiers )
-    {
-      for ( LatexCommand command : id.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
-    for ( Expression child : this.expressions )
-    {
-      for ( LatexCommand command : child.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
     return commands ;
   }
 
@@ -440,33 +426,33 @@ public final class Duplication extends Expression implements
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_DUPLICATION , LATEX_DUPLICATION ) ;
+          PRIO_DUPLICATION , LATEX_DUPLICATION , pIndent ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       this.latexStringBuilder.addText ( LATEX_SPACE ) ;
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_ID ) ;
         this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         this.latexStringBuilder.addText ( LATEX_EQUAL ) ;
         this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         this.latexStringBuilder.addBuilder ( this.expressions [ i ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-            PRIO_DUPLICATION_E ) ;
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_DUPLICATION_E ) ;
         if ( i != this.expressions.length - 1 )
         {
           this.latexStringBuilder.addText ( LATEX_SEMI ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
-          this.latexStringBuilder.addCanBreakHere ( ) ;
         }
       }
       // Only one space for '{< >}'

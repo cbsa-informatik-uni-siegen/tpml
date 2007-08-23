@@ -104,26 +104,25 @@ public class LatexTest
     if ( number == 1 ) testType ( ) ;
     if ( number == 2 ) testTypeEnvironment ( ) ;
     if ( number == 3 ) testStore ( ) ;
-    if ( number == 4 ) testSeenTypesTypeChecker ( ) ;
-    if ( number == 5 ) testSeenTypesTypeInference ( ) ;
-    if ( number == 6 ) testTypeEquationTypeChecker ( ) ;
-    if ( number == 7 ) testTypeEquationTypeInference ( ) ;
-    if ( number == 8 ) testSubType ( ) ;
-    if ( number == 9 ) testTypeSubType ( ) ;
-    if ( number == 10 ) testTypeSubstitution ( ) ;
-    if ( number == 11 ) testTypeEquationListTypeChecker ( ) ;
-    if ( number == 12 ) testTypeEquationListTypeInference ( ) ;
-    if ( number == 13 ) testTypeSubstitutionList ( ) ;
-    if ( number == 14 ) testTypeJudgement ( ) ;
-    if ( number == 15 ) testSmallStepProofNode ( ) ;
-    if ( number == 16 ) testTypeCheckerExpressionProofNode ( ) ;
-    if ( number == 17 ) testTypeCheckerTypeProofNode ( ) ;
-    if ( number == 18 ) testBigStepProofNode ( ) ;
-    if ( number == 19 ) testTypeInferenceProofNode ( ) ;
-    if ( number == 20 ) testSubTypingProofNode ( ) ;
-    if ( number == 21 ) testRecSubTypingProofNode ( ) ;
-    if ( number == 22 ) testMinimalTypingTypesProofNode ( ) ;
-    if ( number == 23 ) testMinimalTypingExpressionProofNode ( ) ;
+    if ( number == 4 ) testSeenTypes ( ) ;
+    if ( number == 5 ) testTypeEquationTypeChecker ( ) ;
+    if ( number == 6 ) testTypeEquationTypeInference ( ) ;
+    if ( number == 7 ) testSubType ( ) ;
+    if ( number == 8 ) testTypeSubType ( ) ;
+    if ( number == 9 ) testTypeSubstitution ( ) ;
+    if ( number == 10 ) testTypeEquationListTypeChecker ( ) ;
+    if ( number == 11 ) testTypeEquationListTypeInference ( ) ;
+    if ( number == 12 ) testTypeSubstitutionList ( ) ;
+    if ( number == 13 ) testTypeJudgement ( ) ;
+    if ( number == 14 ) testSmallStepProofNode ( ) ;
+    if ( number == 15 ) testTypeCheckerExpressionProofNode ( ) ;
+    if ( number == 16 ) testTypeCheckerTypeProofNode ( ) ;
+    if ( number == 17 ) testBigStepProofNode ( ) ;
+    if ( number == 18 ) testTypeInferenceProofNode ( ) ;
+    if ( number == 19 ) testSubTypingProofNode ( ) ;
+    if ( number == 20 ) testRecSubTypingProofNode ( ) ;
+    if ( number == 21 ) testMinimalTypingTypesProofNode ( ) ;
+    if ( number == 22 ) testMinimalTypingExpressionProofNode ( ) ;
   }
 
 
@@ -304,9 +303,9 @@ public class LatexTest
   {
     try
     {
-      String text = "x && y" ;
+      String text = "{< a = 0 >}" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
-      Language language = factory.getLanguageById ( "l4" ) ;
+      Language language = factory.getLanguageById ( "l2c" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
           .parse ( ) ;
       printLatexPrintable ( expression ) ;
@@ -379,7 +378,7 @@ public class LatexTest
   }
 
 
-  public static void testSeenTypesTypeChecker ( )
+  public static void testSeenTypes ( )
   {
     try
     {
@@ -388,25 +387,6 @@ public class LatexTest
       seenTypes1.add ( new TypeEquationTypeChecker ( new IntegerType ( ) ,
           new BooleanType ( ) , seenTypes2 ) ) ;
       seenTypes1.add ( new TypeEquationTypeChecker ( new BooleanType ( ) ,
-          new UnitType ( ) , seenTypes2 ) ) ;
-      printLatexPrintable ( seenTypes1 ) ;
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-    }
-  }
-
-
-  public static void testSeenTypesTypeInference ( )
-  {
-    try
-    {
-      SeenTypes < TypeEquationTypeInference > seenTypes1 = new SeenTypes < TypeEquationTypeInference > ( ) ;
-      SeenTypes < TypeEquationTypeInference > seenTypes2 = new SeenTypes < TypeEquationTypeInference > ( ) ;
-      seenTypes1.add ( new TypeEquationTypeInference ( new IntegerType ( ) ,
-          new BooleanType ( ) , seenTypes2 ) ) ;
-      seenTypes1.add ( new TypeEquationTypeInference ( new BooleanType ( ) ,
           new UnitType ( ) , seenTypes2 ) ) ;
       printLatexPrintable ( seenTypes1 ) ;
     }
@@ -650,6 +630,9 @@ public class LatexTest
     try
     {
       SeenTypes < TypeEquationTypeInference > seenTypes = new SeenTypes < TypeEquationTypeInference > ( ) ;
+      SeenTypes < TypeEquationTypeInference > seenTypes2 = new SeenTypes < TypeEquationTypeInference > ( ) ;
+      seenTypes.add ( new TypeEquationTypeInference (
+          new TypeVariable ( 0 , 0 ) , new BooleanType ( ) , seenTypes2 ) ) ;
       TypeEquationTypeInference typeEquation1 = new TypeEquationTypeInference (
           new TypeVariable ( 0 , 0 ) , new BooleanType ( ) , seenTypes ) ;
       TypeEquationTypeInference typeEquation2 = new TypeEquationTypeInference (

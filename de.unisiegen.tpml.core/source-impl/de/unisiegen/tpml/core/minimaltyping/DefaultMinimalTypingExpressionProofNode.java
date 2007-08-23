@@ -6,7 +6,6 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -26,8 +25,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @see AbstractMinimalTypingProofNode
  */
 public class DefaultMinimalTypingExpressionProofNode extends
-    AbstractMinimalTypingProofNode implements MinimalTypingExpressionProofNode ,
-    LatexPrintable , LatexCommandNames
+    AbstractMinimalTypingProofNode implements MinimalTypingExpressionProofNode
 {
   /**
    * The type environment for this type checker proof node.
@@ -218,7 +216,7 @@ public class DefaultMinimalTypingExpressionProofNode extends
    */
   public final LatexString toLatexString ( )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
         .toLatexString ( ) ;
   }
 
@@ -226,25 +224,25 @@ public class DefaultMinimalTypingExpressionProofNode extends
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_MINIMAL_TYPING_EXPRESSION_PROOF_NODE ) ;
-    builder.addBuilder ( this.environment
-        .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
-    builder.addBuilder ( this.expression
-        .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+        0 , LATEX_MINIMAL_TYPING_EXPRESSION_PROOF_NODE , pIndent ) ;
+    builder.addBuilder ( this.environment.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+    builder.addBuilder ( this.expression.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     if ( this.type == null )
     {
       builder.addEmptyBuilder ( ) ;
     }
     else
     {
-      builder.addBuilder ( this.type
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+      builder.addBuilder ( this.type.toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     }
     return builder ;
   }

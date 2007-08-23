@@ -423,7 +423,7 @@ public final class Inherit extends Expression implements BoundIdentifiers ,
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_INHERIT , 0 ,
         "\\textbf{inherit}" ) ) ; //$NON-NLS-1$ 
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_FROM , 0 ,
@@ -431,21 +431,6 @@ public final class Inherit extends Expression implements BoundIdentifiers ,
     commands.add ( new DefaultLatexCommand ( LATEX_INHERIT , 3 , "\\" //$NON-NLS-1$
         + LATEX_KEY_INHERIT + "\\ #1\\ \\" + LATEX_KEY_FROM + "\\ #2\\ ;\\ #3" , //$NON-NLS-1$ //$NON-NLS-2$
         "a1, ... , ak" , "e" , "b" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    for ( Identifier id : this.identifiers )
-    {
-      for ( LatexCommand command : id.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
-    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.expressions [ 1 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
     return commands ;
   }
 
@@ -533,21 +518,22 @@ public final class Inherit extends Expression implements BoundIdentifiers ,
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_INHERIT , LATEX_INHERIT ) ;
+          PRIO_INHERIT , LATEX_INHERIT , pIndent ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_ID ) ;
         if ( i != this.identifiers.length - 1 )
         {
           this.latexStringBuilder.addText ( LATEX_COMMA ) ;
@@ -555,16 +541,12 @@ public final class Inherit extends Expression implements BoundIdentifiers ,
         }
       }
       this.latexStringBuilder.addBuilderEnd ( ) ;
-      this.latexStringBuilder.addCanBreakHere ( ) ;
-      this.latexStringBuilder
-          .addBuilder ( this.expressions [ 0 ]
-              .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-              PRIO_INHERIT_E ) ;
-      this.latexStringBuilder.addCanBreakHere ( ) ;
-      this.latexStringBuilder
-          .addBuilder ( this.expressions [ 1 ]
-              .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-              PRIO_INHERIT_B ) ;
+      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_INHERIT_E ) ;
+      this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_INHERIT_B ) ;
     }
     return this.latexStringBuilder ;
   }

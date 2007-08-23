@@ -168,17 +168,9 @@ public final class ArrowType extends MonoType implements DefaultTypes
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_ARROW_TYPE , 2 ,
         "#1\\ \\to\\ #2" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-    for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.types [ 1 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
     return commands ;
   }
 
@@ -282,23 +274,22 @@ public final class ArrowType extends MonoType implements DefaultTypes
   /**
    * {@inheritDoc}
    * 
-   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_ARROW , LATEX_ARROW_TYPE ) ;
+          PRIO_ARROW , LATEX_ARROW_TYPE , pIndent ) ;
       this.latexStringBuilder.addBuilder ( this.types [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-          PRIO_ARROW_TAU1 ) ;
-      this.latexStringBuilder.addCanBreakHere ( ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_ARROW_TAU1 ) ;
       this.latexStringBuilder.addBuilder ( this.types [ 1 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-          PRIO_ARROW_TAU2 ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_ARROW_TAU2 ) ;
     }
     return this.latexStringBuilder ;
   }

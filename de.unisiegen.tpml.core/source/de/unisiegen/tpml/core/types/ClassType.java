@@ -152,19 +152,11 @@ public final class ClassType extends MonoType implements DefaultTypes
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_ZETA , 0 ,
         "\\textbf{$\\zeta$}" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_CLASS_TYPE , 2 , "\\" //$NON-NLS-1$
         + LATEX_KEY_ZETA + "(#1\\ \\colon\\ #2)" , "tau" , "phi" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-    for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.types [ 1 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
     return commands ;
   }
 
@@ -266,25 +258,22 @@ public final class ClassType extends MonoType implements DefaultTypes
   /**
    * {@inheritDoc}
    * 
-   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_CLASS , LATEX_CLASS_TYPE ) ;
-      this.latexStringBuilder
-          .addBuilder ( this.types [ 0 ]
-              .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-              PRIO_CLASS_TAU ) ;
-      this.latexStringBuilder.addCanBreakHere ( ) ;
-      this.latexStringBuilder
-          .addBuilder ( this.types [ 1 ]
-              .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-              PRIO_CLASS_PHI ) ;
+          PRIO_CLASS , LATEX_CLASS_TYPE , pIndent ) ;
+      this.latexStringBuilder.addBuilder ( this.types [ 0 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_CLASS_TAU ) ;
+      this.latexStringBuilder.addBuilder ( this.types [ 1 ]
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_CLASS_PHI ) ;
     }
     return this.latexStringBuilder ;
   }

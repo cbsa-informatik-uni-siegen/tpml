@@ -203,7 +203,7 @@ public final class SeenTypes < E extends LatexPrintable > implements Cloneable ,
    */
   public final LatexString toLatexString ( )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
         .toLatexString ( ) ;
   }
 
@@ -211,18 +211,18 @@ public final class SeenTypes < E extends LatexPrintable > implements Cloneable ,
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_SEEN_TYPES ) ;
+        0 , LATEX_SEEN_TYPES , pIndent ) ;
     builder.addBuilderBegin ( ) ;
     for ( int i = 0 ; i < this.list.size ( ) ; i ++ )
     {
       builder.addBuilder ( this.list.get ( i ).toLatexStringBuilder (
-          pLatexStringBuilderFactory ) , 0 ) ;
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
       if ( i < this.list.size ( ) - 1 )
       {
         builder.addText ( LATEX_COMMA ) ;

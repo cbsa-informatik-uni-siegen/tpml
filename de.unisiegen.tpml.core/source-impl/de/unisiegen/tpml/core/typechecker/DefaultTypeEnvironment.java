@@ -7,7 +7,6 @@ import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -31,8 +30,7 @@ import de.unisiegen.tpml.core.util.AbstractEnvironment ;
  * @see AbstractEnvironment
  */
 public final class DefaultTypeEnvironment extends
-    AbstractEnvironment < Identifier , Type > implements TypeEnvironment ,
-    LatexCommandNames
+    AbstractEnvironment < Identifier , Type > implements TypeEnvironment
 {
   /**
    * Allocates a new empty <code>DefaultTypeEnvironment</code>.
@@ -254,7 +252,7 @@ public final class DefaultTypeEnvironment extends
    */
   public final LatexString toLatexString ( )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
         .toLatexString ( ) ;
   }
 
@@ -262,22 +260,24 @@ public final class DefaultTypeEnvironment extends
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_ENVIRONMENT ) ;
+        0 , LATEX_TYPE_ENVIRONMENT , pIndent ) ;
     builder.addBuilderBegin ( ) ;
     for ( int i = 0 ; i < this.mappings.size ( ) ; i ++ )
     {
       builder.addBuilder ( this.mappings.get ( i ).getSymbol ( )
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ,
+              pIndent + LATEX_INDENT ) , 0 ) ;
       builder.addText ( LATEX_COLON ) ;
       builder.addText ( LATEX_SPACE ) ;
       builder.addBuilder ( this.mappings.get ( i ).getEntry ( )
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ,
+              pIndent + LATEX_INDENT ) , 0 ) ;
       if ( i < this.mappings.size ( ) - 1 )
       {
         builder.addText ( LATEX_COMMA ) ;

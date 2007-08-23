@@ -11,7 +11,6 @@ import de.unisiegen.tpml.core.interpreters.Store ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -31,8 +30,7 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
  * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode
  */
 public final class DefaultSmallStepProofNode extends
-    AbstractInterpreterProofNode implements SmallStepProofNode ,
-    LatexPrintable , LatexCommandNames
+    AbstractInterpreterProofNode implements SmallStepProofNode
 {
   /**
    * Convenience wrapper for
@@ -265,7 +263,7 @@ public final class DefaultSmallStepProofNode extends
    */
   public final LatexString toLatexString ( )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
         .toLatexString ( ) ;
   }
 
@@ -273,19 +271,19 @@ public final class DefaultSmallStepProofNode extends
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_SMALL_STEP_PROOF_NODE ) ;
+        0 , LATEX_SMALL_STEP_PROOF_NODE , pIndent ) ;
     builder.addBuilder ( this.getExpression ( ).toLatexStringBuilder (
-        pLatexStringBuilderFactory ) , 0 ) ;
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     if ( this.getExpression ( ).containsMemoryOperations ( ) )
     {
       builder.addBuilder ( this.getStore ( ).toLatexStringBuilder (
-          pLatexStringBuilderFactory ) , 0 ) ;
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     }
     else
     {

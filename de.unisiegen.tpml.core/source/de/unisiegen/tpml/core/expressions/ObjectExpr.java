@@ -306,7 +306,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_OBJECT , 0 ,
         "\\textbf{object}" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_END , 0 ,
@@ -317,21 +317,6 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
             + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" + LATEX_KEY_OBJECT //$NON-NLS-1$
             + "\\ (#1\\colon\\ #2)\\ #3\\ \\" + LATEX_KEY_END + "}" , "self" , //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
         "tau" , "r" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    for ( LatexCommand command : this.identifiers [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    if ( this.types [ 0 ] != null )
-    {
-      for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
-    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
     return commands ;
   }
 
@@ -344,23 +329,8 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   @ Override
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    TreeSet < LatexPackage > packages = super.getLatexPackages ( ) ;
     packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
-    for ( LatexPackage pack : this.identifiers [ 0 ].getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    if ( this.types [ 0 ] != null )
-    {
-      for ( LatexPackage pack : this.types [ 0 ].getLatexPackages ( ) )
-      {
-        packages.add ( pack ) ;
-      }
-    }
-    for ( LatexPackage pack : this.expressions [ 0 ].getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
     return packages ;
   }
 
@@ -474,18 +444,19 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_OBJECTEXPR , LATEX_OBJECT_EXPR ) ;
+          PRIO_OBJECTEXPR , LATEX_OBJECT_EXPR , pIndent ) ;
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_ID ) ;
       if ( this.types [ 0 ] == null )
       {
         this.latexStringBuilder.addEmptyBuilder ( ) ;
@@ -493,14 +464,12 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
       else
       {
         this.latexStringBuilder.addBuilder ( this.types [ 0 ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-            PRIO_OBJECTEXPR_TAU ) ;
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_OBJECTEXPR_TAU ) ;
       }
-      this.latexStringBuilder.addCanBreakHere ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-          PRIO_OBJECTEXPR_ROW ) ;
-      this.latexStringBuilder.addCanBreakHere ( ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_OBJECTEXPR_ROW ) ;
     }
     return this.latexStringBuilder ;
   }

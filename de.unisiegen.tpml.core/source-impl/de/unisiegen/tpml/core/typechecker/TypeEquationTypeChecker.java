@@ -228,7 +228,7 @@ public final class TypeEquationTypeChecker implements LatexPrintable ,
    */
   public final LatexString toLatexString ( )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
         .toLatexString ( ) ;
   }
 
@@ -236,17 +236,17 @@ public final class TypeEquationTypeChecker implements LatexPrintable ,
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_EQUATION_TYPE_CHECKER ) ;
-    builder.addBuilder ( this.left
-        .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
-    builder.addBuilder ( this.right
-        .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+        0 , LATEX_TYPE_EQUATION_TYPE_CHECKER , pIndent ) ;
+    builder.addBuilder ( this.left.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+    builder.addBuilder ( this.right.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     return builder ;
   }
 

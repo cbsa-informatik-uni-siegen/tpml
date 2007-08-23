@@ -283,19 +283,11 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_VAL , 0 ,
         "\\textbf{val}" ) ) ; //$NON-NLS-1$ 
     commands.add ( new DefaultLatexCommand ( LATEX_ATTRIBUTE , 2 , "\\" //$NON-NLS-1$
         + LATEX_KEY_VAL + "\\ #1\\ =\\ #2\\ ;" , "a" , "e" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    for ( LatexCommand command : this.identifiers [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
     return commands ;
   }
 
@@ -352,21 +344,22 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_ATTRIBUTE , LATEX_ATTRIBUTE ) ;
+          PRIO_ATTRIBUTE , LATEX_ATTRIBUTE , pIndent ) ;
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_ID ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-          PRIO_ATTRIBUTE_E ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_ATTRIBUTE_E ) ;
     }
     return this.latexStringBuilder ;
   }

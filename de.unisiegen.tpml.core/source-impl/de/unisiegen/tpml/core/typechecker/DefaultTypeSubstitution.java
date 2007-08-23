@@ -5,7 +5,6 @@ import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -33,7 +32,7 @@ import de.unisiegen.tpml.core.types.TypeVariable ;
  * @see de.unisiegen.tpml.core.typechecker.TypeSubstitution
  */
 public final class DefaultTypeSubstitution implements TypeSubstitution ,
-    PrettyPrintable , LatexCommandNames
+    PrettyPrintable
 {
   /**
    * The empty type substitution, which does not contain any mappings.
@@ -253,7 +252,7 @@ public final class DefaultTypeSubstitution implements TypeSubstitution ,
    */
   public final LatexString toLatexString ( )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) )
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
         .toLatexString ( ) ;
   }
 
@@ -261,17 +260,17 @@ public final class DefaultTypeSubstitution implements TypeSubstitution ,
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_SUBSTITUTION ) ;
-    builder.addBuilder ( this.type
-        .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
-    builder.addBuilder ( this.tvar
-        .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+        0 , LATEX_TYPE_SUBSTITUTION , pIndent ) ;
+    builder.addBuilder ( this.type.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+    builder.addBuilder ( this.tvar.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     return builder ;
   }
 

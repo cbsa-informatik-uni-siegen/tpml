@@ -568,7 +568,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_LAMBDA , 0 ,
         "\\textbf{$\\lambda$}" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_MULTI_LAMBDA , 3 ,
@@ -576,24 +576,6 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
             + LATEX_KEY_LAMBDA + "(#1).#3}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
             + "{\\" + LATEX_KEY_LAMBDA + "(#1)\\colon\\ #2.#3}" , //$NON-NLS-1$//$NON-NLS-2$
         "id1, ..., idn" , "tau" , "e" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-    for ( Identifier id : this.identifiers )
-    {
-      for ( LatexCommand command : id.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
-    if ( this.types [ 0 ] != null )
-    {
-      for ( LatexCommand command : this.types [ 0 ].getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
-    for ( LatexCommand command : this.expressions [ 0 ].getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
     return commands ;
   }
 
@@ -606,26 +588,8 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
   @ Override
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    TreeSet < LatexPackage > packages = super.getLatexPackages ( ) ;
     packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
-    for ( Identifier id : this.identifiers )
-    {
-      for ( LatexPackage pack : id.getLatexPackages ( ) )
-      {
-        packages.add ( pack ) ;
-      }
-    }
-    if ( this.types [ 0 ] != null )
-    {
-      for ( LatexPackage pack : this.types [ 0 ].getLatexPackages ( ) )
-      {
-        packages.add ( pack ) ;
-      }
-    }
-    for ( LatexPackage pack : this.expressions [ 0 ].getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
     return packages ;
   }
 
@@ -633,16 +597,16 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_LAMBDA , LATEX_MULTI_LAMBDA ) ;
+          PRIO_LAMBDA , LATEX_MULTI_LAMBDA , pIndent ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; ++ i )
       {
@@ -652,7 +616,8 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_ID ) ;
       }
       this.latexStringBuilder.addBuilderEnd ( ) ;
       if ( this.types [ 0 ] == null )
@@ -662,11 +627,12 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
       else
       {
         this.latexStringBuilder.addBuilder ( this.types [ 0 ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-            PRIO_LAMBDA_TAU ) ;
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_LAMBDA_TAU ) ;
       }
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_LAMBDA_E ) ;
+          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+              + LATEX_INDENT ) , PRIO_LAMBDA_E ) ;
     }
     return this.latexStringBuilder ;
   }

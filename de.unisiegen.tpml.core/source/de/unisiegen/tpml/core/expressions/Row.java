@@ -321,16 +321,9 @@ public final class Row extends Expression implements DefaultExpressions
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_ROW , 1 , "#1" , //$NON-NLS-1$
         "epsilon | val a = e; r1 | method m : τ = e ; r1" ) ) ; //$NON-NLS-1$
-    for ( Expression child : this.expressions )
-    {
-      for ( LatexCommand command : child.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
     return commands ;
   }
 
@@ -611,25 +604,25 @@ public final class Row extends Expression implements DefaultExpressions
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_ROW , LATEX_ROW ) ;
+          PRIO_ROW , LATEX_ROW , pIndent ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
         this.latexStringBuilder.addBuilder ( this.expressions [ i ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ROW_E ) ;
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_ROW_E ) ;
         if ( i != this.expressions.length - 1 )
         {
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
-          this.latexStringBuilder.addCanBreakHere ( ) ;
         }
       }
       if ( this.expressions.length == 0 )

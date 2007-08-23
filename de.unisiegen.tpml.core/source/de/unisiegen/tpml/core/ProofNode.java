@@ -1,13 +1,11 @@
 package de.unisiegen.tpml.core ;
 
 
-import java.util.Enumeration;
-import java.util.NoSuchElementException;
-
-import javax.swing.tree.TreeNode;
-
-import de.unisiegen.tpml.core.latex.LatexCommandNames;
-import de.unisiegen.tpml.core.latex.LatexPrintable;
+import java.util.Enumeration ;
+import java.util.NoSuchElementException ;
+import javax.swing.tree.TreeNode ;
+import de.unisiegen.tpml.core.latex.LatexCommandNames ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
 
 
 /**
@@ -15,36 +13,30 @@ import de.unisiegen.tpml.core.latex.LatexPrintable;
  * {@link de.unisiegen.tpml.core.ProofModel}s.
  * 
  * @author Benedikt Meurer
+ * @author Christian Fehler
  * @version $Rev$
  * @see javax.swing.tree.TreeNode
  */
-//TODO toggle comment if Latex Export for Nodes is ready
-public interface ProofNode extends TreeNode//, LatexPrintable, LatexCommandNames
+public interface ProofNode extends TreeNode , LatexPrintable ,
+    LatexCommandNames
 {
-  //
-  // Primitives
-  //
   /**
-   * Returns the {@link ProofRule}s which were already applied to this proof
-   * node. If no rules have been applied so far, the empty array is returned
-   * instead.
+   * Returns the child in this node's child array that immediately follows
+   * <code>aChild</code>, which must be a child of this node. If
+   * <code>aChild</code> is the last child, returns <code>null</code>. This
+   * method performs a linear search of this node's children for
+   * <code>aChild</code> and is <code>O(n)</code> where <code>n</code> is
+   * the number of children; to traverse the entire array of children, use an
+   * enumeration instead.
    * 
-   * @return the already applied {@link ProofRule}s.
-   * @see ProofRule
+   * @param aChild The given node.
+   * @return the child of this node that immediately follows <code>aChild</code>.
+   * @throws IllegalArgumentException if <code>aChild</code> is
+   *           <code>null</code> or is not a child of this node.
+   * @see javax.swing.tree.TreeNode#children()
+   * @see #getChildBefore(TreeNode)
    */
-  public ProofRule [ ] getRules ( ) ;
-
-
-  /**
-   * Returns <code>true</code> if this node is already proven, that is,
-   * whether no more rules can be applied to this node. If <code>false</code>
-   * is returned the user must still apply additional rules to complete this
-   * node.
-   * 
-   * @return <code>true</code> if this node is already proven.
-   * @see #getRules()
-   */
-  public boolean isProven ( ) ;
+  public ProofNode getChildAfter ( TreeNode aChild ) ;
 
 
   /**
@@ -61,6 +53,69 @@ public interface ProofNode extends TreeNode//, LatexPrintable, LatexCommandNames
 
 
   /**
+   * Returns the child in this node's child array that immediately precedes
+   * <code>aChild</code>, which must be a child of this node. If
+   * <code>aChild</code> is the first child, returns <code>null</code>.
+   * This method performs a linear search of this node's children for
+   * <code>aChild</code> and is O(n) where n is the number of children.
+   * 
+   * @param aChild The given node.
+   * @return the child of this node that immediately precedes
+   *         <code>aChild</code>.
+   * @throws IllegalArgumentException if <code>aChild</code> is
+   *           <code>null</code> or is not a child of this node.
+   * @see javax.swing.tree.TreeNode#children()
+   * @see #getChildAfter(TreeNode)
+   */
+  public ProofNode getChildBefore ( TreeNode aChild ) ;
+
+
+  /**
+   * Returns this node's first child. If this node has no children, throws
+   * {@link NoSuchElementException}.
+   * 
+   * @return the first child of this node.
+   * @throws NoSuchElementException if this node has no children.
+   * @see #getLastChild()
+   */
+  public ProofNode getFirstChild ( ) ;
+
+
+  /**
+   * Finds and returns the first leaf that is a descendant of this node - either
+   * this node or its first child's first leaf. Returns this node if it is a
+   * leaf.
+   * 
+   * @return the first leaf in the subtree rooted at this node.
+   * @see javax.swing.tree.TreeNode#isLeaf()
+   * @see #isNodeDescendant(ProofNode)
+   */
+  public ProofNode getFirstLeaf ( ) ;
+
+
+  /**
+   * Returns this node's last child. If this node has no children, throws
+   * {@link NoSuchElementException}.
+   * 
+   * @return the last child of this node.
+   * @throws NoSuchElementException if this node has no children.
+   * @see #getFirstChild()
+   */
+  public ProofNode getLastChild ( ) ;
+
+
+  /**
+   * Finds and returns the last leaf that is a descendant of this node - either
+   * this node or its last child's last leaf. Returns this node if it is a leaf.
+   * 
+   * @return the last leaf in the subtree rooted at this node.
+   * @see javax.swing.tree.TreeNode#isLeaf()
+   * @see #isNodeDescendant(ProofNode)
+   */
+  public ProofNode getLastLeaf ( ) ;
+
+
+  /**
    * Returns the node's parent or <code>null</code> if this node has no
    * parent.
    * 
@@ -71,9 +126,28 @@ public interface ProofNode extends TreeNode//, LatexPrintable, LatexCommandNames
   public ProofNode getParent ( ) ;
 
 
-  //
-  // User Objects
-  //
+  /**
+   * Returns the root of the tree that contains this node. The root is the
+   * ancestor with a <code>null</code> parent.
+   * 
+   * @return the root of the tree that contains this node.
+   * @see #isNodeAncestor(TreeNode)
+   * @see #isRoot()
+   */
+  public ProofNode getRoot ( ) ;
+
+
+  /**
+   * Returns the {@link ProofRule}s which were already applied to this proof
+   * node. If no rules have been applied so far, the empty array is returned
+   * instead.
+   * 
+   * @return the already applied {@link ProofRule}s.
+   * @see ProofRule
+   */
+  public ProofRule [ ] getRules ( ) ;
+
+
   /**
    * Returns the user object associated with this proof node, or
    * <code>null</code> if no user object was previously set via
@@ -85,20 +159,6 @@ public interface ProofNode extends TreeNode//, LatexPrintable, LatexCommandNames
   public Object getUserObject ( ) ;
 
 
-  /**
-   * Associates the specified <code>userObject</code> with this proof node.
-   * The <code>userObject</code> may be <code>null</code>, in which case
-   * only the previously set user object will be reset.
-   * 
-   * @param userObject the new user object to associate with this proof node.
-   * @see #getUserObject()
-   */
-  public void setUserObject ( Object userObject ) ;
-
-
-  //
-  // Tree Queries
-  //
   /**
    * Returns <code>true</code> if <code>anotherNode</code> is an ancestor of
    * this node - if it is this node, this node's parent, or an ancestor of this
@@ -114,6 +174,20 @@ public interface ProofNode extends TreeNode//, LatexPrintable, LatexCommandNames
    * @see #isNodeDescendant(ProofNode)
    */
   public boolean isNodeAncestor ( TreeNode anotherNode ) ;
+
+
+  /**
+   * Returns <code>true</code> if <code>aNode</code> is a child of this
+   * node. If <code>aNode</code> is <code>null</code>, this method returns
+   * <code>false</code>.
+   * 
+   * @param aNode The node which should be tested.
+   * @return <code>true</code> if <code>aNode</code> is a child of this
+   *         node; <code>false</code> if <code>aNode</code> is
+   *         <code>null</code>.
+   * @see #isNodeAncestor(TreeNode)
+   */
+  public boolean isNodeChild ( TreeNode aNode ) ;
 
 
   /**
@@ -148,14 +222,15 @@ public interface ProofNode extends TreeNode//, LatexPrintable, LatexCommandNames
 
 
   /**
-   * Returns the root of the tree that contains this node. The root is the
-   * ancestor with a <code>null</code> parent.
+   * Returns <code>true</code> if this node is already proven, that is,
+   * whether no more rules can be applied to this node. If <code>false</code>
+   * is returned the user must still apply additional rules to complete this
+   * node.
    * 
-   * @return the root of the tree that contains this node.
-   * @see #isNodeAncestor(TreeNode)
-   * @see #isRoot()
+   * @return <code>true</code> if this node is already proven.
+   * @see #getRules()
    */
-  public ProofNode getRoot ( ) ;
+  public boolean isProven ( ) ;
 
 
   /**
@@ -181,104 +256,13 @@ public interface ProofNode extends TreeNode//, LatexPrintable, LatexCommandNames
   public Enumeration < ProofNode > postorderEnumeration ( ) ;
 
 
-  //
-  // Child Queries
-  //
   /**
-   * Returns <code>true</code> if <code>aNode</code> is a child of this
-   * node. If <code>aNode</code> is <code>null</code>, this method returns
-   * <code>false</code>.
+   * Associates the specified <code>userObject</code> with this proof node.
+   * The <code>userObject</code> may be <code>null</code>, in which case
+   * only the previously set user object will be reset.
    * 
-   * @param aNode The node which should be tested.
-   * @return <code>true</code> if <code>aNode</code> is a child of this
-   *         node; <code>false</code> if <code>aNode</code> is
-   *         <code>null</code>.
-   * @see #isNodeAncestor(TreeNode)
+   * @param userObject the new user object to associate with this proof node.
+   * @see #getUserObject()
    */
-  public boolean isNodeChild ( TreeNode aNode ) ;
-
-
-  /**
-   * Returns this node's first child. If this node has no children, throws
-   * {@link NoSuchElementException}.
-   * 
-   * @return the first child of this node.
-   * @throws NoSuchElementException if this node has no children.
-   * @see #getLastChild()
-   */
-  public ProofNode getFirstChild ( ) ;
-
-
-  /**
-   * Returns this node's last child. If this node has no children, throws
-   * {@link NoSuchElementException}.
-   * 
-   * @return the last child of this node.
-   * @throws NoSuchElementException if this node has no children.
-   * @see #getFirstChild()
-   */
-  public ProofNode getLastChild ( ) ;
-
-
-  /**
-   * Returns the child in this node's child array that immediately follows
-   * <code>aChild</code>, which must be a child of this node. If
-   * <code>aChild</code> is the last child, returns <code>null</code>. This
-   * method performs a linear search of this node's children for
-   * <code>aChild</code> and is <code>O(n)</code> where <code>n</code> is
-   * the number of children; to traverse the entire array of children, use an
-   * enumeration instead.
-   * 
-   * @param aChild The given node.
-   * @return the child of this node that immediately follows <code>aChild</code>.
-   * @throws IllegalArgumentException if <code>aChild</code> is
-   *           <code>null</code> or is not a child of this node.
-   * @see javax.swing.tree.TreeNode#children()
-   * @see #getChildBefore(TreeNode)
-   */
-  public ProofNode getChildAfter ( TreeNode aChild ) ;
-
-
-  /**
-   * Returns the child in this node's child array that immediately precedes
-   * <code>aChild</code>, which must be a child of this node. If
-   * <code>aChild</code> is the first child, returns <code>null</code>.
-   * This method performs a linear search of this node's children for
-   * <code>aChild</code> and is O(n) where n is the number of children.
-   * 
-   * @param aChild The given node.
-   * @return the child of this node that immediately precedes
-   *         <code>aChild</code>.
-   * @throws IllegalArgumentException if <code>aChild</code> is
-   *           <code>null</code> or is not a child of this node.
-   * @see javax.swing.tree.TreeNode#children()
-   * @see #getChildAfter(TreeNode)
-   */
-  public ProofNode getChildBefore ( TreeNode aChild ) ;
-
-
-  //
-  // Leaf Queries
-  //
-  /**
-   * Finds and returns the first leaf that is a descendant of this node - either
-   * this node or its first child's first leaf. Returns this node if it is a
-   * leaf.
-   * 
-   * @return the first leaf in the subtree rooted at this node.
-   * @see javax.swing.tree.TreeNode#isLeaf()
-   * @see #isNodeDescendant(ProofNode)
-   */
-  public ProofNode getFirstLeaf ( ) ;
-
-
-  /**
-   * Finds and returns the last leaf that is a descendant of this node - either
-   * this node or its last child's last leaf. Returns this node if it is a leaf.
-   * 
-   * @return the last leaf in the subtree rooted at this node.
-   * @see javax.swing.tree.TreeNode#isLeaf()
-   * @see #isNodeDescendant(ProofNode)
-   */
-  public ProofNode getLastLeaf ( ) ;
+  public void setUserObject ( Object userObject ) ;
 }

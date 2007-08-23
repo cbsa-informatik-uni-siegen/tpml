@@ -9,7 +9,7 @@ import java.util.TreeSet ;
  * 
  * @author Christian Fehler
  */
-public interface LatexPrintable
+public interface LatexPrintable extends LatexCommandNames
 {
   /**
    * Returns a set of needed latex commands for this latex printable object.
@@ -54,6 +54,7 @@ public interface LatexPrintable
    * @param pLatexStringBuilderFactory the {@link LatexStringBuilderFactory}
    *          used to allocate the required latex string builders to latex print
    *          this latex printable object.
+   * @param pIndent The indent of this object.
    * @return The latex string builder used to latex print this latex printable
    *         object.
    * @see #toLatexString()
@@ -61,5 +62,5 @@ public interface LatexPrintable
    * @see LatexStringBuilderFactory
    */
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory ) ;
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent ) ;
 }

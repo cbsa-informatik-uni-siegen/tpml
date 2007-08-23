@@ -471,25 +471,11 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   @ Override
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_ATTR , 0 ,
         "\\textbf{attr}" ) ) ; //$NON-NLS-1$ 
     commands.add ( new DefaultLatexCommand ( LATEX_ROW_TYPE , 1 , "#1" , //$NON-NLS-1$
         "epsilon | attr a : tau ; phi1 | m : tau ; phi1" ) ) ; //$NON-NLS-1$
-    for ( Identifier id : this.identifiers )
-    {
-      for ( LatexCommand command : id.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
-    for ( MonoType type : this.types )
-    {
-      for ( LatexCommand command : type.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
     return commands ;
   }
 
@@ -701,16 +687,16 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   /**
    * {@inheritDoc}
    * 
-   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory)
+   * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   @ Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_ROW , LATEX_ROW_TYPE ) ;
+          PRIO_ROW , LATEX_ROW_TYPE , pIndent ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.types.length ; i ++ )
       {
@@ -725,26 +711,22 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , PRIO_ID ) ;
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_ID ) ;
         this.latexStringBuilder.addText ( LATEX_COLON ) ;
         this.latexStringBuilder.addText ( LATEX_SPACE ) ;
-        this.latexStringBuilder
-            .addBuilder ( this.types [ i ]
-                .toLatexStringBuilder ( pLatexStringBuilderFactory ) ,
-                PRIO_ROW_TAU ) ;
+        this.latexStringBuilder.addBuilder ( this.types [ i ]
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , PRIO_ROW_TAU ) ;
         this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         this.latexStringBuilder.addText ( LATEX_SEMI ) ;
-        if ( i != this.types.length - 1 )
-        {
-          this.latexStringBuilder.addCanBreakHere ( ) ;
-        }
       }
       if ( this.remainingRowType != null )
       {
         this.latexStringBuilder.addText ( LATEX_SPACE ) ;
-        this.latexStringBuilder.addCanBreakHere ( ) ;
         this.latexStringBuilder.addBuilder ( this.remainingRowType
-            .toLatexStringBuilder ( pLatexStringBuilderFactory ) , 0 ) ;
+            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+                + LATEX_INDENT ) , 0 ) ;
       }
       if ( this.types.length == 0 )
       {
