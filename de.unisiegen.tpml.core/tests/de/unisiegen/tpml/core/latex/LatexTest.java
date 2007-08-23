@@ -16,6 +16,7 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.InfixOperation ;
 import de.unisiegen.tpml.core.expressions.IntegerConstant ;
 import de.unisiegen.tpml.core.expressions.Location ;
+import de.unisiegen.tpml.core.expressions.Ref ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
 import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageFactory ;
@@ -92,7 +93,7 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    int number = 16 ;
+    int number = 15 ;
     if ( number == 0 ) testExpression ( ) ;
     if ( number == 1 ) testType ( ) ;
     if ( number == 2 ) testTypeEnvironment ( ) ;
@@ -505,7 +506,7 @@ public class LatexTest
       store.put ( new Location ( "b" ) , new IntegerConstant ( 2 ) ) ;
       store.put ( new Location ( "a" ) , new IntegerConstant ( 1 ) ) ;
       DefaultSmallStepProofNode node = new DefaultSmallStepProofNode ( new And (
-          new IntegerConstant ( 1 ) , new IntegerConstant ( 1 ) ) , store ) ;
+          new Ref ( ) , new IntegerConstant ( 1 ) ) , store ) ;
       printLatexPrintable ( node ) ;
     }
     catch ( Exception e )

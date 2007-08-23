@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
 import de.unisiegen.tpml.core.interpreters.Store ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
@@ -156,7 +157,9 @@ public final class DefaultSmallStepProofNode extends
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_NODE , 2 ,
-        "(#1,\\ #2)" , "store" , "e" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+        "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+            + "{#1}" + LATEX_LINE_BREAK_NEW_COMMAND + "{(#1\\ \\ #2)}" , //$NON-NLS-1$//$NON-NLS-2$
+        "e" , "store" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     for ( LatexCommand command : this.getStore ( ).getLatexCommands ( ) )
     {
       commands.add ( command ) ;
@@ -199,6 +202,7 @@ public final class DefaultSmallStepProofNode extends
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
     for ( LatexPackage pack : this.getStore ( ).getLatexPackages ( ) )
     {
       packages.add ( pack ) ;
@@ -265,7 +269,6 @@ public final class DefaultSmallStepProofNode extends
         .toLatexString ( ) ;
   }
 
-  // TODO Store only if expression.containsMemory ...
 
   /**
    * {@inheritDoc}
@@ -277,10 +280,17 @@ public final class DefaultSmallStepProofNode extends
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
         0 , LATEX_SMALL_STEP_PROOF_NODE ) ;
-    builder.addBuilder ( this.getStore ( ).toLatexStringBuilder (
-        pLatexStringBuilderFactory ) , 0 ) ;
     builder.addBuilder ( this.getExpression ( ).toLatexStringBuilder (
         pLatexStringBuilderFactory ) , 0 ) ;
+    if ( this.getExpression ( ).containsMemoryOperations ( ) )
+    {
+      builder.addBuilder ( this.getStore ( ).toLatexStringBuilder (
+          pLatexStringBuilderFactory ) , 0 ) ;
+    }
+    else
+    {
+      builder.addEmptyBuilder ( ) ;
+    }
     return builder ;
   }
 
