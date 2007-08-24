@@ -16,7 +16,14 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.SeenTypes ;
 import de.unisiegen.tpml.core.types.MonoType ;
 
-
+/**
+ * The Type Proof Node for the Minimal Typing Algorithm. Containing two types,
+ * and a list of alreday seen types.
+ * 
+ * @author Benjamin Mies
+ * @author Christian Fehler
+ * @see AbstractMinimalTypingProofNode
+ */
 /**
  * The Types Proof Node for the Minimal Typing Algorithm. Containing a seen
  * types and a sub type.
@@ -137,6 +144,15 @@ public class DefaultMinimalTypingTypesProofNode extends
     return this.subtype ;
   }
 
+  /**
+   * 
+   * Set the seen types of this node
+   *
+   * @param pSeenTypes the new already seen types
+   */
+	public void setSeenTypes ( SeenTypes < DefaultSubType > pSeenTypes ) {
+		this.seenTypes = pSeenTypes;
+	}
 
   /**
    * {@inheritDoc}
@@ -157,17 +173,6 @@ public class DefaultMinimalTypingTypesProofNode extends
   public MonoType getType2 ( )
   {
     return this.subtype.getRight ( ) ;
-  }
-
-
-  /**
-   * Sets the seen types.
-   * 
-   * @param pSeenTypes The seen types.
-   */
-  public void setSeenTypes ( SeenTypes < DefaultSubType > pSeenTypes )
-  {
-    this.seenTypes = pSeenTypes ;
   }
 
 
