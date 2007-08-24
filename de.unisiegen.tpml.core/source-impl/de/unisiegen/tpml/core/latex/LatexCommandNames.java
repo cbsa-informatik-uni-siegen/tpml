@@ -784,4 +784,9 @@ public interface LatexCommandNames
    * The latex print command for {@link MinimalTypingExpressionProofNode}.
    */
   public static final String LATEX_MINIMAL_TYPING_EXPRESSION_PROOF_NODE = "MinimalTypingExpressionProofNode" ; //$NON-NLS-1$
+  
+  /**
+   * The latex print command for {@link BigStepProofModel}.
+   */
+  public static final String LATEX_BIG_STEP_PROOF_MODEL = "BigStepProofModel" ; //$NON-NLS-1$
 }
