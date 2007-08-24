@@ -321,7 +321,11 @@ public final class InfixOperation extends Expression implements
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
           ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ,
-          LATEX_INFIX_OPERATION , pIndent ) ;
+          LATEX_INFIX_OPERATION , pIndent ,
+          this.toPrettyString ( ).toString ( ) , this.expressions [ 0 ]
+              .toPrettyString ( ).toString ( ) , this.expressions [ 1 ]
+              .toPrettyString ( ).toString ( ) , this.expressions [ 2 ]
+              .toPrettyString ( ).toString ( ) ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , ( ( BinaryOperator ) this.expressions [ 0 ] )

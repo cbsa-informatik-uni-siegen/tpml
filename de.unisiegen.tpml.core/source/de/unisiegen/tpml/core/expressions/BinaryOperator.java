@@ -137,7 +137,8 @@ public abstract class BinaryOperator extends Constant
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_CONSTANT , LATEX_BINARY_OPERATOR , pIndent ) ;
+          PRIO_CONSTANT , LATEX_BINARY_OPERATOR , pIndent , this
+              .toPrettyString ( ).toString ( ) ) ;
       if ( this.parent instanceof InfixOperation )
       {
         this.latexStringBuilder.addText ( "{" //$NON-NLS-1$

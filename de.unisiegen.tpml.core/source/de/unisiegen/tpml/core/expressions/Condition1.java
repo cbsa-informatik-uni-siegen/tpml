@@ -267,7 +267,10 @@ public final class Condition1 extends Expression implements DefaultExpressions
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_CONDITION , LATEX_CONDITION1 , pIndent ) ;
+          PRIO_CONDITION , LATEX_CONDITION1 , pIndent , this.toPrettyString ( )
+              .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
+              .toString ( ) , this.expressions [ 1 ].toPrettyString ( )
+              .toString ( ) ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_CONDITION_E0 ) ;

@@ -519,7 +519,11 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_REC , LATEX_RECURSION , pIndent ) ;
+          PRIO_REC , LATEX_RECURSION , pIndent , this.toPrettyString ( )
+              .toString ( ) , this.identifiers [ 0 ].toPrettyString ( )
+              .toString ( ) , this.types [ 0 ] == null ? LATEX_EMPTY_STRING
+              : this.types [ 0 ].toPrettyString ( ).toString ( ) ,
+          this.expressions [ 0 ].toPrettyString ( ).toString ( ) ) ;
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_ID ) ;

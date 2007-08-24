@@ -266,7 +266,10 @@ public final class While extends Expression implements DefaultExpressions
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_WHILE , LATEX_WHILE , pIndent ) ;
+          PRIO_WHILE , LATEX_WHILE , pIndent , this.toPrettyString ( )
+              .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
+              .toString ( ) , this.expressions [ 1 ].toPrettyString ( )
+              .toString ( ) ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_WHILE_E1 ) ;

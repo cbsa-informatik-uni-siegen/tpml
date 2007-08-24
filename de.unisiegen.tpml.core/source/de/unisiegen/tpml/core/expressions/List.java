@@ -7,6 +7,7 @@ import java.util.Vector ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -396,19 +397,40 @@ public final class List extends Expression implements DefaultExpressions
   {
     if ( this.latexStringBuilder == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_LIST , LATEX_LIST , pIndent ) ;
-      this.latexStringBuilder.addBuilderBegin ( ) ;
-      for ( int n = 0 ; n < this.expressions.length ; ++ n )
+      StringBuilder body = new StringBuilder ( ) ;
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
-        if ( n > 0 )
+        if ( i > 0 )
         {
-          this.latexStringBuilder.addText ( LATEX_SEMI ) ;
+          body.append ( PRETTY_SEMI ) ;
+          body.append ( PRETTY_SPACE ) ;
+        }
+        body.append ( this.expressions [ i ].toPrettyString ( ).toString ( ) ) ;
+      }
+      String descriptions[] = new String [ 2 + this.expressions.length ] ;
+      descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
+      descriptions [ 1 ] = body.toString ( ) ;
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      {
+        descriptions [ 2 + i ] = this.expressions [ i ].toPrettyString ( )
+            .toString ( ) ;
+      }
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_LIST , LATEX_LIST , pIndent , descriptions ) ;
+      this.latexStringBuilder.addBuilderBegin ( ) ;
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      {
+        if ( i > 0 )
+        {
+          this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+              .getIndent ( pIndent + LATEX_INDENT )
+              + LATEX_SEMI ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
-        this.latexStringBuilder.addBuilder ( this.expressions [ n ]
+        this.latexStringBuilder.addBuilder ( this.expressions [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-                + LATEX_INDENT ) , PRIO_LIST_E ) ;
+                + LATEX_INDENT * 2 ) , PRIO_LIST_E ) ;
       }
       this.latexStringBuilder.addBuilderEnd ( ) ;
     }
@@ -430,15 +452,15 @@ public final class List extends Expression implements DefaultExpressions
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_LIST ) ;
       this.prettyStringBuilder.addText ( PRETTY_LBRACKET ) ;
-      for ( int n = 0 ; n < this.expressions.length ; ++ n )
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
-        if ( n > 0 )
+        if ( i > 0 )
         {
           this.prettyStringBuilder.addText ( PRETTY_SEMI ) ;
           this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
           this.prettyStringBuilder.addBreak ( ) ;
         }
-        this.prettyStringBuilder.addBuilder ( this.expressions [ n ]
+        this.prettyStringBuilder.addBuilder ( this.expressions [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_LIST_E ) ;
       }

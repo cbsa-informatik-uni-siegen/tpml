@@ -10,6 +10,7 @@ import de.unisiegen.tpml.core.exceptions.RowSubstitutionException ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.languages.MultipleIdentifier ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -612,22 +613,49 @@ public final class Row extends Expression implements DefaultExpressions
   {
     if ( this.latexStringBuilder == null )
     {
+      StringBuilder body = new StringBuilder ( ) ;
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      {
+        body.append ( this.expressions [ i ].toPrettyString ( ).toString ( ) ) ;
+        if ( i != this.expressions.length - 1 )
+        {
+          body.append ( PRETTY_SPACE ) ;
+        }
+      }
+      if ( this.expressions.length == 0 )
+      {
+        body.append ( PRETTY_EPSILON ) ;
+      }
+      String descriptions[] = new String [ 2 + this.expressions.length ] ;
+      descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
+      descriptions [ 1 ] = body.toString ( ) ;
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      {
+        descriptions [ 2 + i ] = this.expressions [ i ].toPrettyString ( )
+            .toString ( ) ;
+      }
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_ROW , LATEX_ROW , pIndent ) ;
+          PRIO_ROW , LATEX_ROW , pIndent , descriptions ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
         this.latexStringBuilder.addBuilder ( this.expressions [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-                + LATEX_INDENT ) , PRIO_ROW_E ) ;
+                + LATEX_INDENT * 2 ) , PRIO_ROW_E ) ;
         if ( i != this.expressions.length - 1 )
         {
-          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
+          this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+              .getIndent ( pIndent + LATEX_INDENT )
+              + LATEX_SPACE ) ;
         }
       }
       if ( this.expressions.length == 0 )
       {
-        this.latexStringBuilder.addText ( LATEX_EPSILON ) ;
+        this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+            .getIndent ( pIndent + LATEX_INDENT )
+            + LATEX_EPSILON ) ;
       }
       this.latexStringBuilder.addBuilderEnd ( ) ;
     }

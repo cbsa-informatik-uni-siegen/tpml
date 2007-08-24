@@ -463,7 +463,11 @@ public final class Class extends Expression implements BoundIdentifiers ,
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_CLASS , LATEX_CLASS , pIndent ) ;
+          PRIO_CLASS , LATEX_CLASS , pIndent , this.toPrettyString ( )
+              .toString ( ) , this.identifiers [ 0 ].toPrettyString ( )
+              .toString ( ) , this.types [ 0 ] == null ? LATEX_EMPTY_STRING
+              : this.types [ 0 ].toPrettyString ( ).toString ( ) ,
+          this.expressions [ 0 ].toPrettyString ( ).toString ( ) ) ;
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_ID ) ;

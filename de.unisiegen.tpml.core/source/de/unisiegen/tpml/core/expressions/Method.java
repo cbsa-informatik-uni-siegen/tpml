@@ -391,7 +391,11 @@ public class Method extends Expression implements DefaultIdentifiers ,
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_METHOD , LATEX_METHOD , pIndent ) ;
+          PRIO_METHOD , LATEX_METHOD , pIndent , this.toPrettyString ( )
+              .toString ( ) , this.identifiers [ 0 ].toPrettyString ( )
+              .toString ( ) , this.types [ 0 ] == null ? LATEX_EMPTY_STRING
+              : this.types [ 0 ].toPrettyString ( ).toString ( ) ,
+          this.expressions [ 0 ].toPrettyString ( ).toString ( ) ) ;
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_ID ) ;

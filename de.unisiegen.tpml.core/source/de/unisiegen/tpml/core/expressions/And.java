@@ -264,7 +264,10 @@ public final class And extends Expression implements DefaultExpressions
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_AND , LATEX_AND , pIndent ) ;
+          PRIO_AND , LATEX_AND , pIndent ,
+          this.toPrettyString ( ).toString ( ) , this.expressions [ 0 ]
+              .toPrettyString ( ).toString ( ) , this.expressions [ 1 ]
+              .toPrettyString ( ).toString ( ) ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_AND_E1 ) ;

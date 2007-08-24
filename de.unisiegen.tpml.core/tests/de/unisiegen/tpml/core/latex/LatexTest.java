@@ -303,9 +303,9 @@ public class LatexTest
   {
     try
     {
-      String text = "let x: int = 1 in x" ;
+      String text = "let (a,b,c) = 1 in 2" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
-      Language language = factory.getLanguageById ( "l2c" ) ;
+      Language language = factory.getLanguageById ( "l4" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
           .parse ( ) ;
       printLatexPrintable ( expression ) ;

@@ -261,7 +261,10 @@ public final class Sequence extends Expression implements DefaultExpressions
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_SEQUENCE , LATEX_SEQUENCE , pIndent ) ;
+          PRIO_SEQUENCE , LATEX_SEQUENCE , pIndent , this.toPrettyString ( )
+              .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
+              .toString ( ) , this.expressions [ 1 ].toPrettyString ( )
+              .toString ( ) ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_SEQUENCE_E1 ) ;

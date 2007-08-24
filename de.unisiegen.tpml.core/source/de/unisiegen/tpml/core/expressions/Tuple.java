@@ -6,6 +6,7 @@ import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -264,19 +265,40 @@ public final class Tuple extends Expression implements DefaultExpressions
   {
     if ( this.latexStringBuilder == null )
     {
+      StringBuilder body = new StringBuilder ( ) ;
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      {
+        if ( i > 0 )
+        {
+          body.append ( PRETTY_COMMA ) ;
+          body.append ( PRETTY_SPACE ) ;
+        }
+        body.append ( this.expressions [ i ].toPrettyString ( ).toString ( ) ) ;
+      }
+      String descriptions[] = new String [ 2 + this.expressions.length ] ;
+      descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
+      descriptions [ 1 ] = body.toString ( ) ;
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      {
+        descriptions [ 2 + i ] = this.expressions [ i ].toPrettyString ( )
+            .toString ( ) ;
+      }
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_TUPLE , LATEX_TUPLE , pIndent ) ;
+          PRIO_TUPLE , LATEX_TUPLE , pIndent , descriptions ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int n = 0 ; n < this.expressions.length ; ++ n )
       {
         if ( n > 0 )
         {
-          this.latexStringBuilder.addText ( LATEX_COMMA ) ;
+          this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+              .getIndent ( pIndent + LATEX_INDENT )
+              + LATEX_COMMA ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
         this.latexStringBuilder.addBuilder ( this.expressions [ n ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-                + LATEX_INDENT ) , PRIO_TUPLE_E ) ;
+                + LATEX_INDENT * 2 ) , PRIO_TUPLE_E ) ;
       }
       this.latexStringBuilder.addBuilderEnd ( ) ;
     }
@@ -298,15 +320,15 @@ public final class Tuple extends Expression implements DefaultExpressions
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_TUPLE ) ;
       this.prettyStringBuilder.addText ( PRETTY_LPAREN ) ;
-      for ( int n = 0 ; n < this.expressions.length ; ++ n )
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
-        if ( n > 0 )
+        if ( i > 0 )
         {
           this.prettyStringBuilder.addText ( PRETTY_COMMA ) ;
           this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
           this.prettyStringBuilder.addBreak ( ) ;
         }
-        this.prettyStringBuilder.addBuilder ( this.expressions [ n ]
+        this.prettyStringBuilder.addBuilder ( this.expressions [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_TUPLE_E ) ;
       }

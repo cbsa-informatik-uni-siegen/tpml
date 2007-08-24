@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
@@ -645,19 +646,48 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
   {
     if ( this.latexStringBuilder == null )
     {
+      StringBuilder identifier = new StringBuilder ( ) ;
+      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      {
+        identifier.append ( this.identifiers [ i ].toPrettyString ( )
+            .toString ( ) ) ;
+        if ( i != this.identifiers.length - 1 )
+        {
+          identifier.append ( PRETTY_COMMA ) ;
+          identifier.append ( PRETTY_SPACE ) ;
+        }
+      }
+      String descriptions[] = new String [ 2 + this.identifiers.length
+          + this.types.length + this.expressions.length ] ;
+      descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
+      descriptions [ 1 ] = identifier.toString ( ) ;
+      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      {
+        descriptions [ 2 + i ] = this.identifiers [ i ].toPrettyString ( )
+            .toString ( ) ;
+      }
+      descriptions [ descriptions.length - 3 ] = this.types [ 0 ] == null ? LATEX_EMPTY_STRING
+          : this.types [ 0 ].toPrettyString ( ).toString ( ) ;
+      descriptions [ descriptions.length - 2 ] = this.expressions [ 0 ]
+          .toPrettyString ( ).toString ( ) ;
+      descriptions [ descriptions.length - 1 ] = this.expressions [ 1 ]
+          .toPrettyString ( ).toString ( ) ;
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_LET , LATEX_MULTI_LET , pIndent ) ;
+          PRIO_LET , LATEX_MULTI_LET , pIndent , descriptions ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; ++ i )
       {
         if ( i > 0 )
         {
-          this.latexStringBuilder.addText ( LATEX_COMMA ) ;
+          this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+              .getIndent ( pIndent + LATEX_INDENT )
+              + LATEX_COMMA ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-                + LATEX_INDENT ) , PRIO_ID ) ;
+                + LATEX_INDENT * 2 ) , PRIO_ID ) ;
       }
       this.latexStringBuilder.addBuilderEnd ( ) ;
       if ( this.types [ 0 ] == null )

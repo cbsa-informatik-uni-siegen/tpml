@@ -353,7 +353,10 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_ATTRIBUTE , LATEX_ATTRIBUTE , pIndent ) ;
+          PRIO_ATTRIBUTE , LATEX_ATTRIBUTE , pIndent , this.toPrettyString ( )
+              .toString ( ) , this.identifiers [ 0 ].toPrettyString ( )
+              .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
+              .toString ( ) ) ;
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_ID ) ;

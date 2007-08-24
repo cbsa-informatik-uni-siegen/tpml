@@ -313,7 +313,10 @@ public final class Send extends Expression implements DefaultIdentifiers ,
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_SEND , LATEX_SEND , pIndent ) ;
+          PRIO_SEND , LATEX_SEND , pIndent , this.toPrettyString ( )
+              .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
+              .toString ( ) , this.identifiers [ 0 ].toPrettyString ( )
+              .toString ( ) ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_SEND_E ) ;

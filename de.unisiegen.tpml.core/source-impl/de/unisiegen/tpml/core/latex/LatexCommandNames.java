@@ -261,7 +261,7 @@ public interface LatexCommandNames
   /**
    * The latex print command for parentheis.
    */
-  public static final String LATEX_PARENTHESIS = "Parentheis" ; //$NON-NLS-1$
+  public static final String LATEX_PARENTHESIS = "Parenthesis" ; //$NON-NLS-1$
 
 
   /**

@@ -400,7 +400,8 @@ public final class Identifier extends Value implements IdentifierOrTypeName
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_IDENTIFIER , LATEX_IDENTIFIER , pIndent ) ;
+          PRIO_IDENTIFIER , LATEX_IDENTIFIER , pIndent , this.toPrettyString ( )
+              .toString ( ) ) ;
       this.latexStringBuilder.addText ( "{" //$NON-NLS-1$
           + this.name.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     }

@@ -10,6 +10,7 @@ import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
 import de.unisiegen.tpml.core.interfaces.SortedChildren ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -434,31 +435,68 @@ public final class Duplication extends Expression implements
   {
     if ( this.latexStringBuilder == null )
     {
+      StringBuilder body = new StringBuilder ( ) ;
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      {
+        body.append ( this.identifiers [ i ].toPrettyString ( ).toString ( ) ) ;
+        body.append ( PRETTY_SPACE ) ;
+        body.append ( PRETTY_EQUAL ) ;
+        body.append ( PRETTY_SPACE ) ;
+        body.append ( this.expressions [ i ].toPrettyString ( ).toString ( ) ) ;
+        if ( i != this.expressions.length - 1 )
+        {
+          body.append ( PRETTY_SEMI ) ;
+          body.append ( PRETTY_SPACE ) ;
+        }
+      }
+      String descriptions[] = new String [ 2 + this.identifiers.length
+          + this.expressions.length ] ;
+      descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
+      descriptions [ 1 ] = body.toString ( ) ;
+      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      {
+        descriptions [ 2 + i * 2 ] = this.identifiers [ i ].toPrettyString ( )
+            .toString ( ) ;
+        descriptions [ 3 + i * 2 ] = this.expressions [ i ].toPrettyString ( )
+            .toString ( ) ;
+      }
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_DUPLICATION , LATEX_DUPLICATION , pIndent ) ;
+          PRIO_DUPLICATION , LATEX_DUPLICATION , pIndent , descriptions ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
-      this.latexStringBuilder.addText ( LATEX_SPACE ) ;
+      this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+          .getIndent ( pIndent + LATEX_INDENT )
+          + LATEX_SPACE ) ;
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-                + LATEX_INDENT ) , PRIO_ID ) ;
-        this.latexStringBuilder.addText ( LATEX_SPACE ) ;
+                + LATEX_INDENT * 2 ) , PRIO_ID ) ;
+        this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+            .getIndent ( pIndent + LATEX_INDENT )
+            + LATEX_SPACE ) ;
         this.latexStringBuilder.addText ( LATEX_EQUAL ) ;
         this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         this.latexStringBuilder.addBuilder ( this.expressions [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-                + LATEX_INDENT ) , PRIO_DUPLICATION_E ) ;
+                + LATEX_INDENT * 2 ) , PRIO_DUPLICATION_E ) ;
         if ( i != this.expressions.length - 1 )
         {
-          this.latexStringBuilder.addText ( LATEX_SEMI ) ;
+          this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+              .getIndent ( pIndent + LATEX_INDENT )
+              + LATEX_SEMI ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
       }
       // Only one space for '{< >}'
       if ( this.expressions.length > 0 )
       {
-        this.latexStringBuilder.addText ( LATEX_SPACE ) ;
+        this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+            .getIndent ( pIndent + LATEX_INDENT )
+            + LATEX_SPACE ) ;
       }
       this.latexStringBuilder.addBuilderEnd ( ) ;
     }

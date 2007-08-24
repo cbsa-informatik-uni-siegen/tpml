@@ -264,7 +264,9 @@ public final class Or extends Expression implements DefaultExpressions
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_OR , LATEX_OR , pIndent ) ;
+          PRIO_OR , LATEX_OR , pIndent , this.toPrettyString ( ).toString ( ) ,
+          this.expressions [ 0 ].toPrettyString ( ).toString ( ) ,
+          this.expressions [ 1 ].toPrettyString ( ).toString ( ) ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_OR_E1 ) ;

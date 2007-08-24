@@ -30,7 +30,7 @@ public final class LatexStringBuilderFactory
    * 
    * @return A newly allocated <code>LatexStringBuilderFactory</code>
    *         instance.
-   * @see #newBuilder(LatexPrintable,int,String,int)
+   * @see #newBuilder(LatexPrintable,int,String,int,String ...)
    */
   public static LatexStringBuilderFactory newInstance ( )
   {
@@ -48,6 +48,7 @@ public final class LatexStringBuilderFactory
    *          grammar used for the printables in this builder.
    * @param pName The name of the latex command.
    * @param pIndent The indent of this object.
+   * @param pParameterDescriptions The array of parameter descriptions.
    * @return A newly allocated <code>LatexStringBuilder</code> for the
    *         <code>LatexPrintable</code> with the specified
    *         <code>pReturnPriority</code>.
@@ -57,9 +58,10 @@ public final class LatexStringBuilderFactory
    * @see LatexStringBuilder
    */
   public LatexStringBuilder newBuilder ( LatexPrintable pLatexPrintable ,
-      int pReturnPriority , String pName , int pIndent )
+      int pReturnPriority , String pName , int pIndent ,
+      String ... pParameterDescriptions )
   {
     return new DefaultLatexStringBuilder ( pLatexPrintable , pReturnPriority ,
-        pName , pIndent ) ;
+        pName , pIndent , pParameterDescriptions ) ;
   }
 }
