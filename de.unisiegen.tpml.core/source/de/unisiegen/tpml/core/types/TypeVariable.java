@@ -504,7 +504,8 @@ public final class TypeVariable extends MonoType implements
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_TYPE_VARIABLE , LATEX_TYPE_VARIABLE , pIndent ) ;
+          PRIO_TYPE_VARIABLE , LATEX_TYPE_VARIABLE , pIndent , this
+              .toPrettyString ( ).toString ( ) ) ;
       String type = offsetToGreekLetterLatex ( this.offset % 24 )
           + ( ( this.index > 0 ) ? String.valueOf ( this.index )
               : LATEX_EMPTY_STRING ) ;

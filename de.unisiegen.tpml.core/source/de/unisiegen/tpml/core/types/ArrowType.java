@@ -283,7 +283,9 @@ public final class ArrowType extends MonoType implements DefaultTypes
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_ARROW , LATEX_ARROW_TYPE , pIndent ) ;
+          PRIO_ARROW , LATEX_ARROW_TYPE , pIndent , this.toPrettyString ( )
+              .toString ( ) , this.types [ 0 ].toPrettyString ( ).toString ( ) ,
+          this.types [ 1 ].toPrettyString ( ).toString ( ) ) ;
       this.latexStringBuilder.addBuilder ( this.types [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_ARROW_TAU1 ) ;

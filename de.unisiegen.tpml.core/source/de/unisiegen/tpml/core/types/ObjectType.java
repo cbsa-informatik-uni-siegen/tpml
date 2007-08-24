@@ -234,7 +234,8 @@ public final class ObjectType extends MonoType implements DefaultTypes
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_OBJECT , LATEX_OBJECT_TYPE , pIndent ) ;
+          PRIO_OBJECT , LATEX_OBJECT_TYPE , pIndent , this.toPrettyString ( )
+              .toString ( ) , this.types [ 0 ].toPrettyString ( ).toString ( ) ) ;
       this.latexStringBuilder.addBuilder ( this.types [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_OBJECT_ROW ) ;

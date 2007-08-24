@@ -7,7 +7,10 @@ import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -156,8 +159,10 @@ public final class PolyType extends Type implements DefaultTypes
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_POLY_TYPE , 1 , "#1" , //$NON-NLS-1$
-        "forall tvar1, ..., tvarn.tau" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_POLY_TYPE , 2 ,
+        "\\ifthenelse{\\equal{#1}{}}" + LATEX_LINE_BREAK_NEW_COMMAND + "{#2}" //$NON-NLS-1$ //$NON-NLS-2$
+            + LATEX_LINE_BREAK_NEW_COMMAND + "{#1.#2}" , //$NON-NLS-1$
+        "forall tvar1, ..., tvarn" , "tau" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     for ( TypeVariable typeVariable : this.quantifiedVariables )
     {
       for ( LatexCommand command : typeVariable.getLatexCommands ( ) )
@@ -166,6 +171,20 @@ public final class PolyType extends Type implements DefaultTypes
       }
     }
     return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexPackage > getLatexPackages ( )
+  {
+    TreeSet < LatexPackage > packages = super.getLatexPackages ( ) ;
+    packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
+    return packages ;
   }
 
 
@@ -320,29 +339,69 @@ public final class PolyType extends Type implements DefaultTypes
   {
     if ( this.latexStringBuilder == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_POLY , LATEX_POLY_TYPE , pIndent ) ;
-      this.latexStringBuilder.addBuilderBegin ( ) ;
+      StringBuilder body = new StringBuilder ( ) ;
       if ( ! this.quantifiedVariables.isEmpty ( ) )
       {
-        this.latexStringBuilder.addText ( LATEX_FORALL ) ;
+        body.append ( PRETTY_FORALL ) ;
         for ( Iterator < TypeVariable > it = this.quantifiedVariables
             .iterator ( ) ; it.hasNext ( ) ; )
         {
-          this.latexStringBuilder.addText ( it.next ( ).toLatexString ( )
-              .toString ( ) ) ;
+          body.append ( it.next ( ).toPrettyString ( ).toString ( ) ) ;
           if ( it.hasNext ( ) )
           {
-            this.latexStringBuilder.addText ( LATEX_COMMA ) ;
+            body.append ( PRETTY_COMMA ) ;
+            body.append ( PRETTY_SPACE ) ;
+          }
+        }
+        body.append ( PRETTY_DOT ) ;
+      }
+      body.append ( this.types [ 0 ].toPrettyString ( ).toString ( ) ) ;
+      String descriptions[] = new String [ 2 + this.quantifiedVariables.size ( )
+          + this.types.length ] ;
+      descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
+      descriptions [ 1 ] = body.toString ( ) ;
+      int count = 2 ;
+      for ( Iterator < TypeVariable > it = this.quantifiedVariables.iterator ( ) ; it
+          .hasNext ( ) ; )
+      {
+        descriptions [ count ] = it.next ( ).toPrettyString ( ).toString ( ) ;
+        count ++ ;
+      }
+      descriptions [ descriptions.length - 1 ] = this.types [ 0 ]
+          .toPrettyString ( ).toString ( ) ;
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+          PRIO_POLY , LATEX_POLY_TYPE , pIndent , descriptions ) ;
+      if ( ! this.quantifiedVariables.isEmpty ( ) )
+      {
+        this.latexStringBuilder.addBuilderBegin ( ) ;
+        this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+            .getIndent ( pIndent + LATEX_INDENT )
+            + LATEX_FORALL ) ;
+        for ( Iterator < TypeVariable > it = this.quantifiedVariables
+            .iterator ( ) ; it.hasNext ( ) ; )
+        {
+          this.latexStringBuilder.addBuilder ( it.next ( )
+              .toLatexStringBuilder ( pLatexStringBuilderFactory ,
+                  pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+          if ( it.hasNext ( ) )
+          {
+            this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+            this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+                .getIndent ( pIndent + LATEX_INDENT )
+                + LATEX_COMMA ) ;
             this.latexStringBuilder.addText ( LATEX_SPACE ) ;
           }
         }
-        this.latexStringBuilder.addText ( LATEX_DOT ) ;
+        this.latexStringBuilder.addBuilderEnd ( ) ;
+      }
+      else
+      {
+        this.latexStringBuilder.addEmptyBuilder ( ) ;
       }
       this.latexStringBuilder.addBuilder ( this.types [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_POLY_TAU ) ;
-      this.latexStringBuilder.addBuilderEnd ( ) ;
     }
     return this.latexStringBuilder ;
   }
@@ -367,7 +426,8 @@ public final class PolyType extends Type implements DefaultTypes
         for ( Iterator < TypeVariable > it = this.quantifiedVariables
             .iterator ( ) ; it.hasNext ( ) ; )
         {
-          this.prettyStringBuilder.addText ( it.next ( ).toString ( ) ) ;
+          this.prettyStringBuilder.addBuilder ( it.next ( )
+              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
           if ( it.hasNext ( ) )
           {
             this.prettyStringBuilder.addText ( PRETTY_COMMA ) ;

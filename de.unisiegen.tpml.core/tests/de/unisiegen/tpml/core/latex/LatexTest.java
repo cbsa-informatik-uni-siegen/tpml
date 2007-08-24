@@ -45,6 +45,8 @@ import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.BooleanType ;
 import de.unisiegen.tpml.core.types.IntegerType ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.PolyType ;
+import de.unisiegen.tpml.core.types.RowType ;
 import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.core.types.TypeVariable ;
 import de.unisiegen.tpml.core.types.UnitType ;
@@ -99,7 +101,7 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    int number = 0 ;
+    int number = 1 ;
     if ( number == 0 ) testExpression ( ) ;
     if ( number == 1 ) testType ( ) ;
     if ( number == 2 ) testTypeEnvironment ( ) ;
@@ -471,10 +473,17 @@ public class LatexTest
   {
     try
     {
-      String text = "int -> int -> int" ;
+      String text = "int * bool * unit" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
       Type type = language.newTypeParser ( new StringReader ( text ) ).parse ( ) ;
+      // PolyType
+      /*
+       * TreeSet < TypeVariable > quantified = new TreeSet < TypeVariable > ( ) ;
+       * quantified.add ( new TypeVariable ( 0 , 0 ) ) ; quantified.add ( new
+       * TypeVariable ( 0 , 1 ) ) ; quantified.add ( new TypeVariable ( 0 , 2 ) ) ;
+       * type = new PolyType ( quantified , new IntegerType ( ) ) ;
+       */
       printLatexPrintable ( type ) ;
     }
     catch ( Exception e )

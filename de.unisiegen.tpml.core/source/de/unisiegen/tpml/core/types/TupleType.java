@@ -5,6 +5,7 @@ import java.util.Arrays ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -271,20 +272,42 @@ public final class TupleType extends MonoType implements DefaultTypes
   {
     if ( this.latexStringBuilder == null )
     {
+      StringBuilder body = new StringBuilder ( ) ;
+      for ( int i = 0 ; i < this.types.length ; i ++ )
+      {
+        if ( i > 0 )
+        {
+          body.append ( PRETTY_SPACE ) ;
+          body.append ( PRETTY_MULT ) ;
+          body.append ( PRETTY_SPACE ) ;
+        }
+        body.append ( this.types [ i ].toPrettyString ( ).toString ( ) ) ;
+      }
+      String descriptions[] = new String [ 2 + this.types.length ] ;
+      descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
+      descriptions [ 1 ] = body.toString ( ) ;
+      for ( int i = 0 ; i < this.types.length ; i ++ )
+      {
+        descriptions [ 2 + i ] = this.types [ i ].toPrettyString ( )
+            .toString ( ) ;
+      }
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_TUPLE , LATEX_TUPLE_TYPE , pIndent ) ;
+          PRIO_TUPLE , LATEX_TUPLE_TYPE , pIndent , descriptions ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.types.length ; i ++ )
       {
         if ( i > 0 )
         {
-          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
+          this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+              .getIndent ( pIndent + LATEX_INDENT )
+              + LATEX_SPACE ) ;
           this.latexStringBuilder.addText ( LATEX_MULT ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
         this.latexStringBuilder.addBuilder ( this.types [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-                + LATEX_INDENT ) , PRIO_TUPLE_TAU ) ;
+                + LATEX_INDENT * 2 ) , PRIO_TUPLE_TAU ) ;
       }
       this.latexStringBuilder.addBuilderEnd ( ) ;
     }

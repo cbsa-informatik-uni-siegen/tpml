@@ -333,7 +333,8 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
-          PRIO_TYPE_NAME , LATEX_TYPE_NAME , pIndent ) ;
+          PRIO_TYPE_NAME , LATEX_TYPE_NAME , pIndent , this.toPrettyString ( )
+              .toString ( ) ) ;
       this.latexStringBuilder.addText ( "{" //$NON-NLS-1$
           + this.name.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
