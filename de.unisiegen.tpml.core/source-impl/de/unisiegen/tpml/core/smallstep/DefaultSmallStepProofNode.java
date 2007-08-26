@@ -17,6 +17,10 @@ import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
 
 /**
@@ -30,7 +34,8 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
  * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode
  */
 public final class DefaultSmallStepProofNode extends
-    AbstractInterpreterProofNode implements SmallStepProofNode
+    AbstractInterpreterProofNode implements SmallStepProofNode ,
+    PrettyPrintable
 {
   /**
    * Convenience wrapper for
@@ -277,7 +282,9 @@ public final class DefaultSmallStepProofNode extends
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_SMALL_STEP_PROOF_NODE , pIndent ) ;
+        0 , LATEX_SMALL_STEP_PROOF_NODE , pIndent , this.toPrettyString ( )
+            .toString ( ) , this.getExpression ( ).toPrettyString ( )
+            .toString ( ) , this.getStore ( ).toPrettyString ( ).toString ( ) ) ;
     builder.addBuilder ( this.getExpression ( ).toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     if ( this.getExpression ( ).containsMemoryOperations ( ) )
@@ -294,19 +301,59 @@ public final class DefaultSmallStepProofNode extends
 
 
   /**
-   * {@inheritDoc} This is mainly useful for debugging.
+   * {@inheritDoc}
    * 
-   * @see java.lang.Object#toString()
+   * @see PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ( )
+  {
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+        .toPrettyString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
+   */
+  public PrettyStringBuilder toPrettyStringBuilder (
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+  {
+    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
+        this , 0 ) ;
+    if ( this.getExpression ( ).containsMemoryOperations ( ) )
+    {
+      builder.addText ( PRETTY_LPAREN ) ;
+      builder.addBuilder ( this.getExpression ( ).toPrettyStringBuilder (
+          pPrettyStringBuilderFactory ) , 0 ) ;
+      builder.addText ( PRETTY_SPACE ) ;
+      builder.addText ( PRETTY_SPACE ) ;
+      builder.addBuilder ( this.getStore ( ).toPrettyStringBuilder (
+          pPrettyStringBuilderFactory ) , 0 ) ;
+      builder.addText ( PRETTY_RPAREN ) ;
+    }
+    else
+    {
+      builder.addBuilder ( this.getExpression ( ).toPrettyStringBuilder (
+          pPrettyStringBuilderFactory ) , 0 ) ;
+    }
+    return builder ;
+  }
+
+
+  /**
+   * Returns the string representation for this small step proof node. This
+   * method is mainly used for debugging.
+   * 
+   * @return The pretty printed string representation for this small step proof
+   *         node.
+   * @see #toPrettyString()
+   * @see Object#toString()
    */
   @ Override
-  public String toString ( )
+  public final String toString ( )
   {
-    StringBuilder builder = new StringBuilder ( ) ;
-    builder.append ( '(' ) ;
-    builder.append ( getStore ( ) ) ;
-    builder.append ( ", " ) ; //$NON-NLS-1$
-    builder.append ( getExpression ( ) ) ;
-    builder.append ( ')' ) ;
-    return builder.toString ( ) ;
+    return toPrettyString ( ).toString ( ) ;
   }
 }

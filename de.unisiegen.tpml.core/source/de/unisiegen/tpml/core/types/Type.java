@@ -37,7 +37,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @see PrettyPrintable
  */
 public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
-    LatexPrintable , LatexCommandNames , ShowBondsInput , PrettyCommands
+    LatexPrintable , LatexCommandNames , ShowBondsInput
 {
   /**
    * The resource bundle.
@@ -569,7 +569,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * Returns the string representation for this type. This method is mainly used
    * for debugging.
    * 
-   * @return the pretty printed string representation for this type.
+   * @return The pretty printed string representation for this type.
    * @see #toPrettyString()
    * @see Object#toString()
    */

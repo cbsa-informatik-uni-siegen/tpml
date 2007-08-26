@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.prettyprinter ;
 
 
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.expressions.Expression ;
 
 
 /**
@@ -11,12 +11,18 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
  * @see Expression
  * @see PrettyStringBuilder
  */
-public interface PrettyCommands
+public interface PrettyCommandNames
 {
   /**
    * The pretty print command for a space.
    */
   public static final String PRETTY_SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print command for a slash.
+   */
+  public static final String PRETTY_SLASH = "/" ; //$NON-NLS-1$
 
 
   /**
@@ -86,7 +92,7 @@ public interface PrettyCommands
 
 
   /**
-   * The pretty print keyword <code>)</code>.
+   * The pretty print keyword <code><:</code>.
    */
   public static final String PRETTY_SUBTYPE = "<:" ; //$NON-NLS-1$
 
@@ -143,6 +149,18 @@ public interface PrettyCommands
    * The pretty print keyword <code>>}</code>.
    */
   public static final String PRETTY_DUPLEND = ">}" ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print keyword <code>{</code>.
+   */
+  public static final String PRETTY_CLPAREN = "{" ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print keyword <code>}</code>.
+   */
+  public static final String PRETTY_CRPAREN = "}" ; //$NON-NLS-1$
 
 
   /**
@@ -221,4 +239,82 @@ public interface PrettyCommands
    * The pretty print keyword <code>do</code>.
    */
   public static final String PRETTY_DO = "do" ; //$NON-NLS-1$  
+
+
+  /**
+   * The pretty print keyword <code>-></code>.
+   */
+  public static final String PRETTY_ARROW = "\u2192" ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print keyword <code>zeta</code>.
+   */
+  public static final String PRETTY_ZETA = "\u03B6" ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print keyword <code>list</code>.
+   */
+  public static final String PRETTY_LIST = "list" ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print greater string.
+   */
+  public static final String PRETTY_GREATER = ">" ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print lower string.
+   */
+  public static final String PRETTY_LOWER = "<" ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print keyword <code>for all</code>.
+   */
+  public static final String PRETTY_FORALL = "\u2200" ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print keyword <code>mu</code>.
+   */
+  public static final String PRETTY_MU = "\u03bc" ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print keyword <code>ref</code>.
+   */
+  public static final String PRETTY_REF = "ref" ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print keyword <code>empty set</code>.
+   */
+  public static final String PRETTY_EMPTY_SET = "\u00D8" ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print keyword <code>attr</code>.
+   */
+  public static final String PRETTY_ATTR = "attr" ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print string <code>*</code>.
+   */
+  public static final String PRETTY_MULT = "*" ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print keyword <code>'</code>.
+   */
+  public static final String PRETTY_BAR = "'" ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print empty string.
+   */
+  public static final String PRETTY_EMPTY_STRING = "" ; //$NON-NLS-1$
 }

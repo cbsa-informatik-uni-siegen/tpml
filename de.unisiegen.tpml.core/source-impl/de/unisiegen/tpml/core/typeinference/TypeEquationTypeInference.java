@@ -333,7 +333,9 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_EQUATION_TYPE_INFERENCE , pIndent ) ;
+        0 , LATEX_TYPE_EQUATION_TYPE_INFERENCE , pIndent , this
+            .toPrettyString ( ).toString ( ) , this.left.toPrettyString ( )
+            .toString ( ) , this.right.toPrettyString ( ).toString ( ) ) ;
     builder.addBuilder ( this.left.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     builder.addBuilder ( this.right.toLatexStringBuilder (
@@ -366,7 +368,9 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
         this , 0 ) ;
     builder.addBuilder ( this.left
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    builder.addText ( " = " ) ; //$NON-NLS-1$
+    builder.addText ( PRETTY_SPACE ) ;
+    builder.addText ( PRETTY_EQUAL ) ;
+    builder.addText ( PRETTY_SPACE ) ;
     builder.addBuilder ( this.right
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
     return builder ;
@@ -374,26 +378,16 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
 
 
   /**
-   * {@inheritDoc} Returns the string representation for the type equation,
-   * which is primarily useful for debugging.
+   * Returns the string representation for this type equation. This method is
+   * mainly used for debugging.
    * 
-   * @see java.lang.Object#toString()
+   * @return The pretty printed string representation for this type equation.
+   * @see #toPrettyString()
+   * @see Object#toString()
    */
   @ Override
-  public String toString ( )
+  public final String toString ( )
   {
-    StringBuilder result = new StringBuilder ( ) ;
-    result.append ( "[" ) ; //$NON-NLS-1$
-    for ( int i = 0 ; i < this.seenTypes.size ( ) ; i ++ )
-    {
-      result.append ( this.seenTypes.get ( i ).left + " = " //$NON-NLS-1$
-          + this.seenTypes.get ( i ).right ) ;
-      if ( i < this.seenTypes.size ( ) - 1 )
-      {
-        result.append ( ", " ) ; //$NON-NLS-1$
-      }
-    }
-    result.append ( "] " ) ; //$NON-NLS-1$
-    return result.toString ( ) + this.left + " = " + this.right ; //$NON-NLS-1$ 
+    return toPrettyString ( ).toString ( ) ;
   }
 }

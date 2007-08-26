@@ -21,9 +21,6 @@ import de.unisiegen.tpml.core.util.Environment ;
  */
 public interface TypeEnvironment extends Environment < Identifier , Type >
 {
-  //
-  // Primitives
-  //
   /**
    * Returns the polymorphic closure of <code>tau</code> in this type
    * environment.

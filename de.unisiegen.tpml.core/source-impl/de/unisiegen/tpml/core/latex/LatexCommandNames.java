@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.latex ;
 
 
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofResult ;
 import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode ;
 import de.unisiegen.tpml.core.expressions.And ;
@@ -784,7 +785,8 @@ public interface LatexCommandNames
    * The latex print command for {@link MinimalTypingExpressionProofNode}.
    */
   public static final String LATEX_MINIMAL_TYPING_EXPRESSION_PROOF_NODE = "MinimalTypingExpressionProofNode" ; //$NON-NLS-1$
-  
+
+
   /**
    * The latex print command for {@link BigStepProofModel}.
    */

@@ -13,7 +13,6 @@ import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -38,8 +37,7 @@ import de.unisiegen.tpml.core.types.TypeName ;
  * @see PrettyPrintable
  */
 public abstract class Expression implements Cloneable , PrettyPrintable ,
-    PrettyPrintPriorities , LatexPrintable , LatexCommandNames ,
-    ShowBondsInput , PrettyCommands
+    PrettyPrintPriorities , LatexPrintable , ShowBondsInput
 {
   /**
    * A level-order enumeration of the expressions within a given expression.
@@ -909,7 +907,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * Returns the string representation for this expression. This method is
    * mainly used for debugging.
    * 
-   * @return the pretty printed string representation for this expression.
+   * @return The pretty printed string representation for this expression.
    * @see #toPrettyString()
    * @see Object#toString()
    */

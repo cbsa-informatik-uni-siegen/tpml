@@ -4,7 +4,6 @@ package de.unisiegen.tpml.core ;
 import java.util.Enumeration ;
 import java.util.NoSuchElementException ;
 import javax.swing.tree.TreeNode ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 
 
@@ -17,7 +16,7 @@ import de.unisiegen.tpml.core.latex.LatexPrintable ;
  * @version $Rev$
  * @see javax.swing.tree.TreeNode
  */
-public interface ProofNode extends TreeNode, LatexPrintable, LatexCommandNames
+public interface ProofNode extends TreeNode , LatexPrintable
 {
   /**
    * Returns the child in this node's child array that immediately follows

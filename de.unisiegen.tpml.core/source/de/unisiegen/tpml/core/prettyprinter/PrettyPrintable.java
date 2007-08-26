@@ -8,7 +8,7 @@ package de.unisiegen.tpml.core.prettyprinter ;
  * @author Christian Fehler
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyString
  */
-public interface PrettyPrintable
+public interface PrettyPrintable extends PrettyCommandNames
 {
   /**
    * Returns a {@link PrettyString} that can be used to represent this printable

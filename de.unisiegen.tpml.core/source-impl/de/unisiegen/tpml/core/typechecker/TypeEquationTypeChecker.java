@@ -4,13 +4,16 @@ package de.unisiegen.tpml.core.typechecker ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.types.MonoType ;
 
 
@@ -22,8 +25,8 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @version $Rev:838 $
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker
  */
-public final class TypeEquationTypeChecker implements LatexPrintable ,
-    LatexCommandNames
+public final class TypeEquationTypeChecker implements PrettyPrintable ,
+    LatexPrintable
 {
   /**
    * The monomorphic type on the left side.
@@ -242,7 +245,9 @@ public final class TypeEquationTypeChecker implements LatexPrintable ,
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_EQUATION_TYPE_CHECKER , pIndent ) ;
+        0 , LATEX_TYPE_EQUATION_TYPE_CHECKER , pIndent , this.toPrettyString ( )
+            .toString ( ) , this.left.toPrettyString ( ).toString ( ) ,
+        this.right.toPrettyString ( ).toString ( ) ) ;
     builder.addBuilder ( this.left.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     builder.addBuilder ( this.right.toLatexStringBuilder (
@@ -252,14 +257,49 @@ public final class TypeEquationTypeChecker implements LatexPrintable ,
 
 
   /**
-   * {@inheritDoc} Returns the string representation for the type equation,
-   * which is primarily useful for debugging.
+   * {@inheritDoc}
    * 
-   * @see java.lang.Object#toString()
+   * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ( )
+  {
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+        .toPrettyString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
+   */
+  public PrettyStringBuilder toPrettyStringBuilder (
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+  {
+    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
+        this , 0 ) ;
+    builder.addBuilder ( this.left
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+    builder.addText ( PRETTY_SPACE ) ;
+    builder.addText ( PRETTY_EQUAL ) ;
+    builder.addText ( PRETTY_SPACE ) ;
+    builder.addBuilder ( this.right
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+    return builder ;
+  }
+
+
+  /**
+   * Returns the string representation for this type equation. This method is
+   * mainly used for debugging.
+   * 
+   * @return The pretty printed string representation for this expression.
+   * @see #toPrettyString()
+   * @see Object#toString()
    */
   @ Override
-  public String toString ( )
+  public final String toString ( )
   {
-    return ( this.seenTypes + " " + this.left + " = " + this.right ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    return toPrettyString ( ).toString ( ) ;
   }
 }

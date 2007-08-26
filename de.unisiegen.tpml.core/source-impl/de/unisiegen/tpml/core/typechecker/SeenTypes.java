@@ -5,6 +5,7 @@ import java.util.ArrayList ;
 import java.util.Iterator ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
@@ -13,6 +14,10 @@ import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.types.Type ;
 
 
@@ -22,8 +27,9 @@ import de.unisiegen.tpml.core.types.Type ;
  * @author Christian Fehler
  * @param <E>
  */
-public final class SeenTypes < E extends LatexPrintable > implements Cloneable ,
-    Iterable < E > , LatexPrintable , LatexCommandNames
+public final class SeenTypes < E extends PrettyPrintable & LatexPrintable >
+    implements Cloneable , Iterable < E > , PrettyPrintable , LatexPrintable ,
+    LatexCommandNames
 {
   /**
    * The internal list of seen {@link Type}s.
@@ -216,16 +222,39 @@ public final class SeenTypes < E extends LatexPrintable > implements Cloneable ,
   public final LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
+    StringBuilder body = new StringBuilder ( ) ;
+    body.append ( PRETTY_CLPAREN ) ;
+    for ( int i = 0 ; i < this.list.size ( ) ; i ++ )
+    {
+      body.append ( this.list.get ( i ).toPrettyString ( ).toString ( ) ) ;
+      if ( i != this.list.size ( ) - 1 )
+      {
+        body.append ( PRETTY_COMMA ) ;
+        body.append ( PRETTY_SPACE ) ;
+      }
+    }
+    body.append ( PRETTY_CRPAREN ) ;
+    String descriptions[] = new String [ 2 + this.list.size ( ) ] ;
+    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
+    descriptions [ 1 ] = body.toString ( ) ;
+    for ( int i = 0 ; i < this.list.size ( ) ; i ++ )
+    {
+      descriptions [ 2 + i ] = this.list.get ( i ).toPrettyString ( )
+          .toString ( ) ;
+    }
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_SEEN_TYPES , pIndent ) ;
+        0 , LATEX_SEEN_TYPES , pIndent , descriptions ) ;
     builder.addBuilderBegin ( ) ;
     for ( int i = 0 ; i < this.list.size ( ) ; i ++ )
     {
       builder.addBuilder ( this.list.get ( i ).toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
       if ( i < this.list.size ( ) - 1 )
       {
-        builder.addText ( LATEX_COMMA ) ;
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+            + LATEX_INDENT )
+            + LATEX_COMMA ) ;
         builder.addText ( LATEX_SPACE ) ;
       }
     }
@@ -235,25 +264,54 @@ public final class SeenTypes < E extends LatexPrintable > implements Cloneable ,
 
 
   /**
-   * Returns a string representation of this {@link SeenTypes}.
+   * {@inheritDoc}
    * 
-   * @return A string representation of this {@link SeenTypes}.
+   * @see PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ( )
+  {
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+        .toPrettyString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
+   */
+  public PrettyStringBuilder toPrettyStringBuilder (
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+  {
+    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
+        this , 0 ) ;
+    builder.addText ( PRETTY_CLPAREN ) ;
+    for ( int i = 0 ; i < this.list.size ( ) ; i ++ )
+    {
+      builder.addBuilder ( this.list.get ( i ).toPrettyStringBuilder (
+          pPrettyStringBuilderFactory ) , 0 ) ;
+      if ( i != this.list.size ( ) - 1 )
+      {
+        builder.addText ( PRETTY_COMMA ) ;
+        builder.addText ( PRETTY_SPACE ) ;
+      }
+    }
+    builder.addText ( PRETTY_CRPAREN ) ;
+    return builder ;
+  }
+
+
+  /**
+   * Returns the string representation for this seen types. This method is
+   * mainly used for debugging.
+   * 
+   * @return The pretty printed string representation for this expression.
+   * @see #toPrettyString()
    * @see Object#toString()
    */
   @ Override
-  public String toString ( )
+  public final String toString ( )
   {
-    StringBuilder result = new StringBuilder ( ) ;
-    result.append ( "[" ) ; //$NON-NLS-1$
-    for ( int i = 0 ; i < this.list.size ( ) ; i ++ )
-    {
-      result.append ( this.list.get ( i ) ) ;
-      if ( i < this.list.size ( ) - 1 )
-      {
-        result.append ( ", " ) ; //$NON-NLS-1$
-      }
-    }
-    result.append ( "]" ) ; //$NON-NLS-1$
-    return result.toString ( ) ;
+    return toPrettyString ( ).toString ( ) ;
   }
 }

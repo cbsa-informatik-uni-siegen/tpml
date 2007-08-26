@@ -2,8 +2,8 @@ package de.unisiegen.tpml.core.util ;
 
 
 import java.util.Enumeration ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 
 
 /**
@@ -19,8 +19,7 @@ import de.unisiegen.tpml.core.latex.LatexPrintable ;
  * @param <E> The entry.
  * @see de.unisiegen.tpml.core.util.AbstractEnvironment
  */
-public interface Environment < S , E > extends LatexPrintable ,
-    LatexCommandNames
+public interface Environment < S , E > extends PrettyPrintable , LatexPrintable
 {
   /**
    * Returns <code>true</code> if this environment contains an entry for the

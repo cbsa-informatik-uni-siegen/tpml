@@ -7,7 +7,6 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -30,7 +29,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @author Christian Fehler
  */
 public class TypeSubType implements ShowBondsInput , TypeFormula ,
-    PrettyPrintable , LatexPrintable , LatexCommandNames
+    PrettyPrintable , LatexPrintable
 {
   /**
    * The left type (subtype) of this type formula
@@ -197,7 +196,9 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_SUB_TYPE , pIndent ) ;
+        0 , LATEX_TYPE_SUB_TYPE , pIndent ,
+        this.toPrettyString ( ).toString ( ) , this.left.toPrettyString ( )
+            .toString ( ) , this.right.toPrettyString ( ).toString ( ) ) ;
     builder.addBuilder ( this.left.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     builder.addBuilder ( this.right.toLatexStringBuilder (
@@ -230,7 +231,9 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
         this , 0 ) ;
     builder.addBuilder ( this.left
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    builder.addText ( " <: " ) ; //$NON-NLS-1$
+    builder.addText ( PRETTY_SPACE ) ;
+    builder.addText ( PRETTY_SUBTYPE ) ;
+    builder.addText ( PRETTY_SPACE ) ;
     builder.addBuilder ( this.right
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
     return builder ;
@@ -238,14 +241,16 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
 
 
   /**
-   * {@inheritDoc} Returns the string representation for the left equation,
-   * which is primarily useful for debugging.
+   * Returns the string representation for this type sub type. This method is
+   * mainly used for debugging.
    * 
-   * @see java.lang.Object#toString()
+   * @return The pretty printed string representation for this type sub type.
+   * @see #toPrettyString()
+   * @see Object#toString()
    */
   @ Override
-  public String toString ( )
+  public final String toString ( )
   {
-    return this.left + " <: " + this.right ; //$NON-NLS-1$ 
+    return toPrettyString ( ).toString ( ) ;
   }
 }

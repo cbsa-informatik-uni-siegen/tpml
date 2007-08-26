@@ -4,7 +4,6 @@ package de.unisiegen.tpml.core.subtypingrec ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -25,8 +24,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @author Benjamin Mies
  * @author Christian Fehler
  */
-public class DefaultSubType implements PrettyPrintable , LatexPrintable ,
-    LatexCommandNames
+public class DefaultSubType implements PrettyPrintable , LatexPrintable
 {
   /**
    * The left type (subtype) of this subtype object
@@ -188,7 +186,9 @@ public class DefaultSubType implements PrettyPrintable , LatexPrintable ,
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_SUB_TYPE , pIndent ) ;
+        0 , LATEX_SUB_TYPE , pIndent , this.toPrettyString ( ).toString ( ) ,
+        this.left.toPrettyString ( ).toString ( ) , this.right
+            .toPrettyString ( ).toString ( ) ) ;
     builder.addBuilder ( this.left.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     builder.addBuilder ( this.right.toLatexStringBuilder (
@@ -219,29 +219,28 @@ public class DefaultSubType implements PrettyPrintable , LatexPrintable ,
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , 0 ) ;
-    builder.addBuilder ( this.right
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    builder.addText ( " <: " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.left
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+    builder.addText ( PRETTY_SPACE ) ;
+    builder.addText ( PRETTY_SUBTYPE ) ;
+    builder.addText ( PRETTY_SPACE ) ;
+    builder.addBuilder ( this.right
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
     return builder ;
   }
 
 
   /**
-   * {@inheritDoc} Mainly useful for debugging purposes.
+   * Returns the string representation for this sub type. This method is mainly
+   * used for debugging.
    * 
-   * @see java.lang.Object#toString()
+   * @return The pretty printed string representation for this sub type.
+   * @see #toPrettyString()
+   * @see Object#toString()
    */
   @ Override
-  public String toString ( )
+  public final String toString ( )
   {
-    final StringBuilder builder = new StringBuilder ( ) ;
-    builder.append ( this.left ) ;
-    builder.append ( "<b><font color=\"#FF0000\">" ) ; //$NON-NLS-1$
-    builder.append ( " &#60: " ) ; //$NON-NLS-1$
-    builder.append ( "</font></b>" ) ; //$NON-NLS-1$
-    builder.append ( this.right ) ;
-    return builder.toString ( ) ;
+    return toPrettyString ( ).toString ( ) ;
   }
 }

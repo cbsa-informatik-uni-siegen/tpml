@@ -31,8 +31,7 @@ import de.unisiegen.tpml.core.types.TypeVariable ;
  * @version $Rev:1194 $
  * @see de.unisiegen.tpml.core.typechecker.TypeSubstitution
  */
-public final class DefaultTypeSubstitution implements TypeSubstitution ,
-    PrettyPrintable
+public final class DefaultTypeSubstitution implements TypeSubstitution
 {
   /**
    * The empty type substitution, which does not contain any mappings.
@@ -250,7 +249,7 @@ public final class DefaultTypeSubstitution implements TypeSubstitution ,
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public final LatexString toLatexString ( )
+  public LatexString toLatexString ( )
   {
     return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
         .toLatexString ( ) ;
@@ -262,11 +261,13 @@ public final class DefaultTypeSubstitution implements TypeSubstitution ,
    * 
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  public final LatexStringBuilder toLatexStringBuilder (
+  public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_SUBSTITUTION , pIndent ) ;
+        0 , LATEX_TYPE_SUBSTITUTION , pIndent , this.toPrettyString ( )
+            .toString ( ) , this.type.toPrettyString ( ).toString ( ) ,
+        this.tvar.toPrettyString ( ).toString ( ) ) ;
     builder.addBuilder ( this.type.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     builder.addBuilder ( this.tvar.toLatexStringBuilder (
@@ -280,7 +281,7 @@ public final class DefaultTypeSubstitution implements TypeSubstitution ,
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ( )
+  public PrettyString toPrettyString ( )
   {
     return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
         .toPrettyString ( ) ;
@@ -299,7 +300,7 @@ public final class DefaultTypeSubstitution implements TypeSubstitution ,
         this , 0 ) ;
     builder.addBuilder ( this.type
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    builder.addText ( "/" ) ; //$NON-NLS-1$
+    builder.addText ( PRETTY_SLASH ) ;
     builder.addBuilder ( this.tvar
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
     return builder ;
@@ -307,13 +308,17 @@ public final class DefaultTypeSubstitution implements TypeSubstitution ,
 
 
   /**
-   * {@inheritDoc} Mainly useful for debugging purposes.
+   * Returns the string representation for this type substitution. This method
+   * is mainly used for debugging.
    * 
-   * @see java.lang.Object#toString()
+   * @return The pretty printed string representation for this type
+   *         substitution.
+   * @see #toPrettyString()
+   * @see Object#toString()
    */
   @ Override
-  public String toString ( )
+  public final String toString ( )
   {
-    return this.type.toString ( ) + "/" + this.tvar.toString ( ) ; //$NON-NLS-1$
+    return toPrettyString ( ).toString ( ) ;
   }
 }

@@ -101,22 +101,22 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    int number = 1 ;
-    if ( number == 0 ) testExpression ( ) ;
-    if ( number == 1 ) testType ( ) ;
-    if ( number == 2 ) testTypeEnvironment ( ) ;
-    if ( number == 3 ) testStore ( ) ;
-    if ( number == 4 ) testSeenTypes ( ) ;
-    if ( number == 5 ) testTypeEquationTypeChecker ( ) ;
-    if ( number == 6 ) testTypeEquationTypeInference ( ) ;
-    if ( number == 7 ) testSubType ( ) ;
-    if ( number == 8 ) testTypeSubType ( ) ;
-    if ( number == 9 ) testTypeSubstitution ( ) ;
+    int number = 9 ;
+    if ( number == 0 ) testExpression ( ) ;// done
+    if ( number == 1 ) testType ( ) ; // done
+    if ( number == 2 ) testTypeEnvironment ( ) ; // done
+    if ( number == 3 ) testStore ( ) ; // done
+    if ( number == 4 ) testSeenTypes ( ) ; // done
+    if ( number == 5 ) testTypeEquationTypeChecker ( ) ; // done
+    if ( number == 6 ) testTypeEquationTypeInference ( ) ; // done
+    if ( number == 7 ) testSubType ( ) ; // done
+    if ( number == 8 ) testTypeSubType ( ) ; // done
+    if ( number == 9 ) testTypeSubstitution ( ) ; // done
     if ( number == 10 ) testTypeEquationListTypeChecker ( ) ;
     if ( number == 11 ) testTypeEquationListTypeInference ( ) ;
     if ( number == 12 ) testTypeSubstitutionList ( ) ;
     if ( number == 13 ) testTypeJudgement ( ) ;
-    if ( number == 14 ) testSmallStepProofNode ( ) ;
+    if ( number == 14 ) testSmallStepProofNode ( ) ; // done
     if ( number == 15 ) testTypeCheckerExpressionProofNode ( ) ;
     if ( number == 16 ) testTypeCheckerTypeProofNode ( ) ;
     if ( number == 17 ) testBigStepProofNode ( ) ;
