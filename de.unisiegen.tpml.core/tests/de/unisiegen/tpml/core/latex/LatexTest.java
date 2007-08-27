@@ -7,7 +7,10 @@ import java.io.IOException ;
 import java.io.OutputStreamWriter ;
 import java.io.StringReader ;
 import java.util.ArrayList ;
+import java.util.LinkedList ;
 import java.util.TreeSet ;
+import de.unisiegen.tpml.core.ProofModel ;
+import de.unisiegen.tpml.core.ProofNode ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofResult ;
 import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode ;
 import de.unisiegen.tpml.core.expressions.And ;
@@ -24,6 +27,7 @@ import de.unisiegen.tpml.core.languages.LanguageFactory ;
 import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingExpressionProofNode ;
 import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingTypesProofNode ;
 import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofNode ;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode ;
 import de.unisiegen.tpml.core.subtypingrec.DefaultRecSubTypingProofNode ;
 import de.unisiegen.tpml.core.subtypingrec.DefaultSubType ;
@@ -32,6 +36,7 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
 import de.unisiegen.tpml.core.typechecker.SeenTypes ;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -83,8 +88,7 @@ public class LatexTest
     try
     {
       System.out.println ( ) ;
-      System.out.println ( "*** compile ***") ;
-      
+      System.out.println ( "*** compile ***" ) ;
       Process p ;
       // pdflatex
       System.out.println ( "latex" ) ;
@@ -131,7 +135,6 @@ public class LatexTest
       {
         System.err.println ( "LatexTest: ps2pdf error" ) ;
       }
-
     }
     catch ( IOException e )
     {
@@ -151,7 +154,7 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    int number = 18 ;
+    int number = 0 ;
     if ( number == 0 ) testExpression ( ) ;
     if ( number == 1 ) testType ( ) ;
     if ( number == 2 ) testTypeEnvironment ( ) ;
@@ -175,6 +178,26 @@ public class LatexTest
     if ( number == 20 ) testRecSubTypingProofNode ( ) ;
     if ( number == 21 ) testMinimalTypingTypesProofNode ( ) ;
     if ( number == 22 ) testMinimalTypingExpressionProofNode ( ) ;
+  }
+
+
+  private static ProofNode nextNode ( ProofModel model )
+  {
+    LinkedList < ProofNode > nodes = new LinkedList < ProofNode > ( ) ;
+    nodes.add ( model.getRoot ( ) ) ;
+    while ( ! nodes.isEmpty ( ) )
+    {
+      ProofNode node = nodes.poll ( ) ;
+      if ( node.getRules ( ).length == 0 )
+      {
+        return node ;
+      }
+      for ( int n = 0 ; n < node.getChildCount ( ) ; ++ n )
+      {
+        nodes.add ( node.getChildAt ( n ) ) ;
+      }
+    }
+    throw new IllegalStateException ( "Unable to find next node" ) ;
   }
 
 
@@ -543,6 +566,27 @@ public class LatexTest
   }
 
 
+  public static void testSmallStepProofModel ( )
+  {
+    try
+    {
+      Expression expression = new InfixOperation ( ArithmeticOperator
+          .newPlus ( ) , new IntegerConstant ( 1 ) , new InfixOperation (
+          ArithmeticOperator.newPlus ( ) , new IntegerConstant ( 2 ) ,
+          new IntegerConstant ( 3 ) ) ) ;
+      Language language = LanguageFactory.newInstance ( ).getLanguageById (
+          "l2o" ) ;
+      SmallStepProofModel model = language.newSmallStepProofModel ( expression ) ;
+      model.guess ( nextNode ( model ) ) ;
+      // printLatexPrintable ( node ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
   public static void testSmallStepProofNode ( )
   {
     try
@@ -551,8 +595,12 @@ public class LatexTest
       store.put ( new Location ( "c" ) , new IntegerConstant ( 3 ) ) ;
       store.put ( new Location ( "b" ) , new IntegerConstant ( 2 ) ) ;
       store.put ( new Location ( "a" ) , new IntegerConstant ( 1 ) ) ;
-      DefaultSmallStepProofNode node = new DefaultSmallStepProofNode ( new And (
-          new Ref ( ) , new IntegerConstant ( 1 ) ) , store ) ;
+      Expression expression = new InfixOperation ( ArithmeticOperator
+          .newPlus ( ) , new IntegerConstant ( 1 ) , new InfixOperation (
+          ArithmeticOperator.newPlus ( ) , new IntegerConstant ( 2 ) ,
+          new IntegerConstant ( 3 ) ) ) ;
+      DefaultSmallStepProofNode node = new DefaultSmallStepProofNode (
+          expression ) ;
       printLatexPrintable ( node ) ;
     }
     catch ( Exception e )
