@@ -82,7 +82,56 @@ public class LatexTest
   {
     try
     {
-      Runtime.getRuntime ( ).exec ( "pdflatex test.tex" ) ;
+      System.out.println ( ) ;
+      System.out.println ( "*** compile ***") ;
+      
+      Process p ;
+      // pdflatex
+      System.out.println ( "latex" ) ;
+      p = Runtime.getRuntime ( ).exec ( "latex test.tex" ) ;
+      try
+      {
+        p.waitFor ( ) ;
+      }
+      catch ( InterruptedException e )
+      {
+        e.printStackTrace ( ) ;
+      }
+      if ( p.exitValue ( ) != 0 )
+      {
+        System.err.println ( "LatexTest: latex error" ) ;
+      }
+      // dvips
+      System.out.println ( "dvips" ) ;
+      p = Runtime.getRuntime ( ).exec ( "dvips test.dvi" ) ;
+      try
+      {
+        p.waitFor ( ) ;
+      }
+      catch ( InterruptedException e )
+      {
+        e.printStackTrace ( ) ;
+      }
+      if ( p.exitValue ( ) != 0 )
+      {
+        System.err.println ( "LatexTest: dvips error" ) ;
+      }
+      // ps2pdf
+      System.out.println ( "ps2pdf" ) ;
+      p = Runtime.getRuntime ( ).exec ( "ps2pdf test.ps" ) ;
+      try
+      {
+        p.waitFor ( ) ;
+      }
+      catch ( InterruptedException e )
+      {
+        e.printStackTrace ( ) ;
+      }
+      if ( p.exitValue ( ) != 0 )
+      {
+        System.err.println ( "LatexTest: ps2pdf error" ) ;
+      }
+
     }
     catch ( IOException e )
     {
