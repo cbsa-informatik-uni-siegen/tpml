@@ -260,7 +260,9 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_SUB_TYPE_PROOF_NODE , pIndent ) ;
+        0 , LATEX_SUB_TYPE_PROOF_NODE , pIndent , this.toPrettyString ( )
+            .toString ( ) , this.left.toPrettyString ( ).toString ( ) ,
+        this.right.toPrettyString ( ).toString ( ) ) ;
     builder.addBuilder ( this.left.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     builder.addBuilder ( this.right.toLatexStringBuilder (
@@ -293,7 +295,9 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
         this , 0 ) ;
     builder.addBuilder ( this.left
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    builder.addText ( " <: " ) ; //$NON-NLS-1$
+    builder.addText ( PRETTY_SPACE ) ;
+    builder.addText ( PRETTY_SUBTYPE ) ;
+    builder.addText ( PRETTY_SPACE ) ;
     builder.addBuilder ( this.right
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
     return builder ;
@@ -301,20 +305,17 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 
 
   /**
-   * {@inheritDoc} Mainly useful for debugging purposes.
+   * Returns the string representation for this sub typing proof node. This
+   * method is mainly used for debugging.
    * 
-   * @see java.lang.Object#toString()
+   * @return The pretty printed string representation for this sub typing
+   *         expression proof node.
+   * @see #toPrettyString()
+   * @see Object#toString()
    */
   @ Override
-  public String toString ( )
+  public final String toString ( )
   {
-    final StringBuilder builder = new StringBuilder ( ) ;
-    builder.append ( this.left ) ;
-    builder.append ( " <: " ) ; //$NON-NLS-1$
-    builder.append ( this.right ) ;
-    builder.append ( " " ) ; //$NON-NLS-1$
-    if ( this.getSteps ( ).length > 0 )
-      builder.append ( this.getSteps ( ) [ 0 ].getRule ( ).toString ( ) ) ;
-    return builder.toString ( ) ;
+    return toPrettyString ( ).toString ( ) ;
   }
 }

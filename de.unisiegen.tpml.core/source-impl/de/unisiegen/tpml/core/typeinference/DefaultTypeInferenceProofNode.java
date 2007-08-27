@@ -8,6 +8,7 @@ import de.unisiegen.tpml.core.AbstractProofNode ;
 import de.unisiegen.tpml.core.ProofStep ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
@@ -15,6 +16,10 @@ import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 
@@ -445,20 +450,97 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   public final LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_INFERENCE_PROOF_NODE , pIndent ) ;
-    builder.addBuilderBegin ( ) ;
-    for ( int i = 0 ; i < this.substitutions.size ( ) ; i ++ )
+    int countEquation = 0 ;
+    for ( int i = 0 ; i < this.formula.size ( ) ; i ++ )
     {
-      builder.addBuilder ( this.substitutions.get ( i ).toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-      if ( i < this.substitutions.size ( ) - 1 )
+      if ( this.formula.get ( i ) instanceof TypeEquationTypeInference )
       {
-        builder.addText ( LATEX_COMMA ) ;
-        builder.addText ( LATEX_SPACE ) ;
+        countEquation ++ ;
       }
     }
-    builder.addBuilderEnd ( ) ;
+    StringBuilder body1 = new StringBuilder ( ) ;
+    if ( this.substitutions.size ( ) > 0 )
+    {
+      body1.append ( PRETTY_LBRACKET ) ;
+      for ( int i = 0 ; i < this.substitutions.size ( ) ; i ++ )
+      {
+        body1.append ( this.substitutions.get ( i ).toPrettyString ( )
+            .toString ( ) ) ;
+        if ( i < this.substitutions.size ( ) - 1 )
+        {
+          body1.append ( PRETTY_COMMA ) ;
+          body1.append ( PRETTY_SPACE ) ;
+        }
+      }
+      body1.append ( PRETTY_RBRACKET ) ;
+    }
+    StringBuilder body2 = new StringBuilder ( ) ;
+    for ( int i = 0 ; i < this.formula.size ( ) ; i ++ )
+    {
+      if ( this.formula.get ( i ) instanceof TypeEquationTypeInference )
+      {
+        TypeEquationTypeInference equation = ( TypeEquationTypeInference ) this.formula
+            .get ( i ) ;
+        body2
+            .append ( equation.getSeenTypes ( ).toPrettyString ( ).toString ( ) ) ;
+        body2.append ( PRETTY_SPACE ) ;
+        body2.append ( PRETTY_NAIL ) ;
+        body2.append ( PRETTY_SPACE ) ;
+      }
+      body2.append ( this.formula.get ( i ).toPrettyString ( ).toString ( ) ) ;
+      if ( i < this.formula.size ( ) - 1 )
+      {
+        body2.append ( PRETTY_LINE_BREAK ) ;
+      }
+    }
+    String descriptions[] = new String [ 3 + this.substitutions.size ( )
+        + this.formula.size ( ) + countEquation ] ;
+    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
+    descriptions [ 1 ] = body1.toString ( ) ;
+    for ( int i = 0 ; i < this.substitutions.size ( ) ; i ++ )
+    {
+      descriptions [ 2 + i ] = this.substitutions.get ( i ).toPrettyString ( )
+          .toString ( ) ;
+    }
+    descriptions [ 2 + this.substitutions.size ( ) ] = body2.toString ( ) ;
+    int tmpCountEquation = 0 ;
+    for ( int i = 0 ; i < this.formula.size ( ) ; i ++ )
+    {
+      if ( this.formula.get ( i ) instanceof TypeEquationTypeInference )
+      {
+        TypeEquationTypeInference equation = ( TypeEquationTypeInference ) this.formula
+            .get ( i ) ;
+        descriptions [ 3 + this.substitutions.size ( ) + i + tmpCountEquation ] = equation
+            .getSeenTypes ( ).toPrettyString ( ).toString ( ) ;
+        tmpCountEquation ++ ;
+      }
+      descriptions [ 3 + this.substitutions.size ( ) + i + tmpCountEquation ] = this.formula
+          .get ( i ).toPrettyString ( ).toString ( ) ;
+    }
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
+        0 , LATEX_TYPE_INFERENCE_PROOF_NODE , pIndent , descriptions ) ;
+    if ( this.substitutions.size ( ) > 0 )
+    {
+      builder.addBuilderBegin ( ) ;
+      for ( int i = 0 ; i < this.substitutions.size ( ) ; i ++ )
+      {
+        builder.addBuilder ( this.substitutions.get ( i ).toLatexStringBuilder (
+            pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+        if ( i < this.substitutions.size ( ) - 1 )
+        {
+          builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+              + LATEX_INDENT )
+              + LATEX_COMMA ) ;
+          builder.addText ( LATEX_SPACE ) ;
+        }
+      }
+      builder.addBuilderEnd ( ) ;
+    }
+    else
+    {
+      builder.addEmptyBuilder ( ) ;
+    }
     builder.addBuilderBegin ( ) ;
     for ( int i = 0 ; i < this.formula.size ( ) ; i ++ )
     {
@@ -467,14 +549,22 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
         TypeEquationTypeInference equation = ( TypeEquationTypeInference ) this.formula
             .get ( i ) ;
         builder.addBuilder ( equation.getSeenTypes ( ).toLatexStringBuilder (
-            pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-        builder.addText ( "\\ \\vdash\\ " ) ; //$NON-NLS-1$
+            pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+            + LATEX_INDENT )
+            + LATEX_SPACE ) ;
+        builder.addText ( LATEX_NAIL ) ;
+        builder.addText ( LATEX_SPACE ) ;
       }
       builder.addBuilder ( this.formula.get ( i ).toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
       if ( i < this.formula.size ( ) - 1 )
       {
-        builder.addText ( "\\newline" ) ; //$NON-NLS-1$
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+            + LATEX_INDENT )
+            + LATEX_NEW_LINE ) ;
       }
     }
     builder.addBuilderEnd ( ) ;
@@ -483,30 +573,78 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 
 
   /**
-   * {@inheritDoc} Mainly useful for debugging purposes.
+   * {@inheritDoc}
    * 
-   * @see java.lang.Object#toString()
+   * @see PrettyPrintable#toPrettyString()
    */
-  @ Override
-  public String toString ( )
+  public PrettyString toPrettyString ( )
   {
-    final StringBuilder builder = new StringBuilder ( ) ;
-    builder.append ( "<html>" ) ; //$NON-NLS-1$
-    builder.append ( "S: " + this.substitutions ) ; //$NON-NLS-1$
-    builder.append ( "<br>" ) ; //$NON-NLS-1$
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+        .toPrettyString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
+   */
+  public PrettyStringBuilder toPrettyStringBuilder (
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+  {
+    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
+        this , 0 ) ;
+    if ( this.substitutions.size ( ) > 0 )
+    {
+      builder.addText ( PRETTY_LBRACKET ) ;
+      for ( int i = 0 ; i < this.substitutions.size ( ) ; i ++ )
+      {
+        builder.addBuilder ( this.substitutions.get ( i )
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+        if ( i < this.substitutions.size ( ) - 1 )
+        {
+          builder.addText ( PRETTY_COMMA ) ;
+          builder.addText ( PRETTY_SPACE ) ;
+        }
+      }
+      builder.addText ( PRETTY_RBRACKET ) ;
+      builder.addText ( PRETTY_LINE_BREAK ) ;
+    }
     for ( int i = 0 ; i < this.formula.size ( ) ; i ++ )
     {
-      if ( i != 0 )
+      if ( this.formula.get ( i ) instanceof TypeEquationTypeInference )
       {
-        builder.append ( "<br>" ) ; //$NON-NLS-1$
+        TypeEquationTypeInference equation = ( TypeEquationTypeInference ) this.formula
+            .get ( i ) ;
+        builder.addBuilder ( equation.getSeenTypes ( ).toPrettyStringBuilder (
+            pPrettyStringBuilderFactory ) , 0 ) ;
+        builder.addText ( PRETTY_SPACE ) ;
+        builder.addText ( PRETTY_NAIL ) ;
+        builder.addText ( PRETTY_SPACE ) ;
       }
-      builder.append ( this.formula.get ( i ) ) ;
+      builder.addBuilder ( this.formula.get ( i ).toPrettyStringBuilder (
+          pPrettyStringBuilderFactory ) , 0 ) ;
+      if ( i < this.formula.size ( ) - 1 )
+      {
+        builder.addText ( PRETTY_LINE_BREAK ) ;
+      }
     }
-    if ( getRule ( ) != null )
-    {
-      builder.append ( " (" + getRule ( ) + ")" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    }
-    builder.append ( "</html>" ) ; //$NON-NLS-1$
-    return builder.toString ( ) ;
+    return builder ;
+  }
+
+
+  /**
+   * Returns the string representation for this type inference proof node. This
+   * method is mainly used for debugging.
+   * 
+   * @return The pretty printed string representation for thistype inference
+   *         proof node.
+   * @see #toPrettyString()
+   * @see Object#toString()
+   */
+  @ Override
+  public final String toString ( )
+  {
+    return toPrettyString ( ).toString ( ) ;
   }
 }

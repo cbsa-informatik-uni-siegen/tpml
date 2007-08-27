@@ -12,6 +12,10 @@ import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
 import de.unisiegen.tpml.core.types.MonoType ;
 
@@ -230,7 +234,12 @@ public class DefaultMinimalTypingExpressionProofNode extends
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_MINIMAL_TYPING_EXPRESSION_PROOF_NODE , pIndent ) ;
+        0 , LATEX_MINIMAL_TYPING_EXPRESSION_PROOF_NODE , pIndent , this
+            .toPrettyString ( ).toString ( ) , this.environment
+            .toPrettyString ( ).toString ( ) , this.expression
+            .toPrettyString ( ).toString ( ) ,
+        this.type == null ? LATEX_EMPTY_STRING : this.type.toPrettyString ( )
+            .toString ( ) ) ;
     builder.addBuilder ( this.environment.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     builder.addBuilder ( this.expression.toLatexStringBuilder (
@@ -249,23 +258,59 @@ public class DefaultMinimalTypingExpressionProofNode extends
 
 
   /**
-   * {@inheritDoc} Mainly useful for debugging purposes.
+   * {@inheritDoc}
    * 
-   * @see java.lang.Object#toString()
+   * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ( )
+  {
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+        .toPrettyString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
+   */
+  public PrettyStringBuilder toPrettyStringBuilder (
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+  {
+    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
+        this , 0 ) ;
+    builder.addBuilder ( this.environment
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+    builder.addText ( PRETTY_SPACE ) ;
+    builder.addText ( PRETTY_RIGHT_TRIANGLE ) ;
+    builder.addText ( PRETTY_SPACE ) ;
+    builder.addBuilder ( this.expression
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+    if ( this.type != null )
+    {
+      builder.addText ( PRETTY_SPACE ) ;
+      builder.addText ( PRETTY_COLON ) ;
+      builder.addText ( PRETTY_COLON ) ;
+      builder.addText ( PRETTY_SPACE ) ;
+      builder.addBuilder ( this.type
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+    }
+    return builder ;
+  }
+
+
+  /**
+   * Returns the string representation for this minimal typing expression proof
+   * node. This method is mainly used for debugging.
+   * 
+   * @return The pretty printed string representation for this minimal typing
+   *         expression proof node.
+   * @see #toPrettyString()
+   * @see Object#toString()
    */
   @ Override
-  public String toString ( )
+  public final String toString ( )
   {
-    StringBuilder builder = new StringBuilder ( ) ;
-    builder.append ( this.environment ) ;
-    builder.append ( " \u22b3 " ) ; //$NON-NLS-1$
-    builder.append ( this.expression ) ;
-    builder.append ( " :: " ) ; //$NON-NLS-1$
-    builder.append ( this.type ) ;
-    if ( getRule ( ) != null )
-    {
-      builder.append ( " (" + getRule ( ) + ")" ) ; //$NON-NLS-1$//$NON-NLS-2$
-    }
-    return builder.toString ( ) ;
+    return toPrettyString ( ).toString ( ) ;
   }
 }

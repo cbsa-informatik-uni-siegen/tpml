@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.latex ;
 
 
 import java.util.ArrayList ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyCommandNames ;
 
 
 /**
@@ -12,7 +13,8 @@ import java.util.ArrayList ;
  * @see LatexStringBuilder
  * @see LatexStringBuilderFactory
  */
-public final class DefaultLatexStringBuilder implements LatexStringBuilder
+public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
+    PrettyCommandNames
 {
   /**
    * Returns a string only with spaces. The count of the returned spaces is
@@ -93,8 +95,10 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder
     this.parameterDescriptions = pParameterDescriptions ;
     if ( this.parameterDescriptions.length > 0 )
     {
-      this.items.add ( new TextLatexItem ( getIndent ( this.indent ) + "% " //$NON-NLS-1$
-          + this.parameterDescriptions [ this.count ] ) ) ;
+      this.items.add ( new TextLatexItem ( getIndent ( this.indent )
+          + "% " //$NON-NLS-1$
+          + this.parameterDescriptions [ this.count ].replaceAll (
+              PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + "% " ) ) ) ; //$NON-NLS-1$
       this.count ++ ;
       this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     }
@@ -119,8 +123,10 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder
     this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     if ( this.parameterDescriptions.length > 0 )
     {
-      this.items.add ( new TextLatexItem ( getIndent ( this.indent ) + "% " //$NON-NLS-1$
-          + this.parameterDescriptions [ this.count ] ) ) ;
+      this.items.add ( new TextLatexItem ( getIndent ( this.indent )
+          + "% " //$NON-NLS-1$
+          + this.parameterDescriptions [ this.count ].replaceAll (
+              PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + "% " ) ) ) ; //$NON-NLS-1$
       this.count ++ ;
       this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     }
@@ -162,8 +168,10 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder
     this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     if ( this.parameterDescriptions.length > 0 )
     {
-      this.items.add ( new TextLatexItem ( getIndent ( this.indent ) + "% " //$NON-NLS-1$
-          + this.parameterDescriptions [ this.count ] ) ) ;
+      this.items.add ( new TextLatexItem ( getIndent ( this.indent )
+          + "% " //$NON-NLS-1$
+          + this.parameterDescriptions [ this.count ].replaceAll (
+              PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + "% " ) ) ) ; //$NON-NLS-1$
       this.count ++ ;
       this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     }

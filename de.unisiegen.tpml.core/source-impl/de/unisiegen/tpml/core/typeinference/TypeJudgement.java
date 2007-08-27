@@ -7,13 +7,16 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -27,7 +30,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @author Benjamin Mies
  * @author Christian Fehler
  */
-public class TypeJudgement implements TypeFormula , LatexCommandNames
+public class TypeJudgement implements TypeFormula
 {
   /**
    * the type environment of this type judgement
@@ -280,7 +283,10 @@ public class TypeJudgement implements TypeFormula , LatexCommandNames
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_JUDGEMENT , pIndent ) ;
+        0 , LATEX_TYPE_JUDGEMENT , pIndent , this.toPrettyString ( )
+            .toString ( ) , this.environment.toPrettyString ( ).toString ( ) ,
+        this.expression.toPrettyString ( ).toString ( ) , this.type
+            .toPrettyString ( ).toString ( ) ) ;
     builder.addBuilder ( this.environment.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     builder.addBuilder ( this.expression.toLatexStringBuilder (
@@ -292,22 +298,55 @@ public class TypeJudgement implements TypeFormula , LatexCommandNames
 
 
   /**
-   * Returns the string representation of the equations contained in this list.
-   * This method is mainly useful for debugging purposes.
+   * {@inheritDoc}
    * 
-   * @return the string representation.
-   * @see TypeEquationTypeInference#toString()
-   * @see java.lang.Object#toString()
+   * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ( )
+  {
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+        .toPrettyString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
+   */
+  public PrettyStringBuilder toPrettyStringBuilder (
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+  {
+    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
+        this , 0 ) ;
+    builder.addBuilder ( this.environment
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+    builder.addText ( PRETTY_SPACE ) ;
+    builder.addText ( PRETTY_RIGHT_TRIANGLE ) ;
+    builder.addText ( PRETTY_SPACE ) ;
+    builder.addBuilder ( this.expression
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+    builder.addText ( PRETTY_SPACE ) ;
+    builder.addText ( PRETTY_COLON ) ;
+    builder.addText ( PRETTY_COLON ) ;
+    builder.addText ( PRETTY_SPACE ) ;
+    builder.addBuilder ( this.type
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+    return builder ;
+  }
+
+
+  /**
+   * Returns the string representation for this type judgement. This method is
+   * mainly used for debugging.
+   * 
+   * @return The pretty printed string representation for this type judgement.
+   * @see #toPrettyString()
+   * @see Object#toString()
    */
   @ Override
-  public String toString ( )
+  public final String toString ( )
   {
-    final StringBuilder builder = new StringBuilder ( 128 ) ;
-    builder.append ( this.environment ) ;
-    builder.append ( " \u22b3 " ) ; //$NON-NLS-1$
-    builder.append ( this.expression ) ;
-    builder.append ( " :: " ) ; //$NON-NLS-1$
-    builder.append ( this.type ) ;
-    return builder.toString ( ) ;
+    return toPrettyString ( ).toString ( ) ;
   }
 }

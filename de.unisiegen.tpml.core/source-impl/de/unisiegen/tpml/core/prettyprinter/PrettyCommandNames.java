@@ -14,9 +14,28 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 public interface PrettyCommandNames
 {
   /**
+   * The pretty print command for a line break.
+   */
+  public static final String PRETTY_LINE_BREAK = System
+      .getProperty ( "line.separator" ) ; //$NON-NLS-1$
+
+
+  /**
    * The pretty print command for a space.
    */
   public static final String PRETTY_SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print command for a right triangle.
+   */
+  public static final String PRETTY_RIGHT_TRIANGLE = "\u22b3" ; //$NON-NLS-1$
+
+
+  /**
+   * The pretty print command for a nail.
+   */
+  public static final String PRETTY_NAIL = "\u22a2" ; //$NON-NLS-1$
 
 
   /**

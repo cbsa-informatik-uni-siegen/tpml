@@ -5,6 +5,7 @@ import java.util.Enumeration ;
 import java.util.NoSuchElementException ;
 import javax.swing.tree.TreeNode ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 
 
 /**
@@ -16,7 +17,7 @@ import de.unisiegen.tpml.core.latex.LatexPrintable ;
  * @version $Rev$
  * @see javax.swing.tree.TreeNode
  */
-public interface ProofNode extends TreeNode , LatexPrintable
+public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
 {
   /**
    * Returns the child in this node's child array that immediately follows

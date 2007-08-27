@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.typeinference ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
@@ -16,7 +17,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @author Benjamin Mies
  * @author Christian Fehler
  */
-public interface TypeFormula extends LatexPrintable
+public interface TypeFormula extends PrettyPrintable , LatexPrintable
 {
   /**
    * get the environment of this type formula

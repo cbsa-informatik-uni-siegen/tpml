@@ -3,14 +3,18 @@ package de.unisiegen.tpml.core.typeinference ;
 
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 
@@ -22,7 +26,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @author Benjamin Mies
  * @author Christian Fehler
  */
-public class TypeSubstitutionList implements LatexPrintable , LatexCommandNames
+public class TypeSubstitutionList implements PrettyPrintable , LatexPrintable
 {
   /**
    * empty type substitution list
@@ -186,18 +190,44 @@ public class TypeSubstitutionList implements LatexPrintable , LatexCommandNames
   public final LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
+    StringBuilder body = new StringBuilder ( ) ;
+    body.append ( PRETTY_CLPAREN ) ;
+    int count = 0 ;
+    for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
+    {
+      if ( list != this )
+      {
+        body.append ( PRETTY_COMMA ) ;
+        body.append ( PRETTY_SPACE ) ;
+      }
+      body.append ( list.first.toPrettyString ( ).toString ( ) ) ;
+      count ++ ;
+    }
+    body.append ( PRETTY_CRPAREN ) ;
+    String descriptions[] = new String [ 2 + count ] ;
+    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
+    descriptions [ 1 ] = body.toString ( ) ;
+    count = 0 ;
+    for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
+    {
+      descriptions [ 2 + count ] = list.first.toPrettyString ( ).toString ( ) ;
+      count ++ ;
+    }
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_SUBSTITUTION_LIST , pIndent ) ;
+        0 , LATEX_TYPE_SUBSTITUTION_LIST , pIndent , descriptions ) ;
     builder.addBuilderBegin ( ) ;
     for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       if ( list != this )
       {
-        builder.addText ( LATEX_COMMA ) ;
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+            + LATEX_INDENT )
+            + LATEX_COMMA ) ;
         builder.addText ( LATEX_SPACE ) ;
       }
       builder.addBuilder ( list.first.toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
     }
     builder.addBuilderEnd ( ) ;
     return builder ;
@@ -205,25 +235,55 @@ public class TypeSubstitutionList implements LatexPrintable , LatexCommandNames
 
 
   /**
-   * needed for output and debug
+   * {@inheritDoc}
    * 
-   * @return string with all type substitutions
-   * @see java.lang.Object#toString()
+   * @see PrettyPrintable#toPrettyString()
    */
-  @ Override
-  public String toString ( )
+  public PrettyString toPrettyString ( )
   {
-    final StringBuilder builder = new StringBuilder ( 128 ) ;
-    builder.append ( '{' ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+        .toPrettyString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
+   */
+  public PrettyStringBuilder toPrettyStringBuilder (
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+  {
+    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
+        this , 0 ) ;
+    builder.addText ( PRETTY_CLPAREN ) ;
     for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       if ( list != this )
       {
-        builder.append ( ", " ) ; //$NON-NLS-1$
+        builder.addText ( PRETTY_COMMA ) ;
+        builder.addText ( PRETTY_SPACE ) ;
       }
-      builder.append ( list.first.toString ( ) ) ;
+      builder.addBuilder ( list.first
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
     }
-    builder.append ( '}' ) ;
-    return builder.toString ( ) ;
+    builder.addText ( PRETTY_CRPAREN ) ;
+    return builder ;
+  }
+
+
+  /**
+   * Returns the string representation for this type substitution list. This
+   * method is mainly used for debugging.
+   * 
+   * @return The pretty printed string representation for this type substitution
+   *         list.
+   * @see #toPrettyString()
+   * @see Object#toString()
+   */
+  @ Override
+  public final String toString ( )
+  {
+    return toPrettyString ( ).toString ( ) ;
   }
 }

@@ -85,7 +85,7 @@ public interface LatexCommandNames
   /**
    * The indent of the latex child commands.
    */
-  public static final int LATEX_INDENT = 1 ;
+  public static final int LATEX_INDENT = 2 ;
 
 
   /**
@@ -107,6 +107,18 @@ public interface LatexCommandNames
    * The latex print command for a space.
    */
   public static final String LATEX_SPACE = "\\ " ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a new line.
+   */
+  public static final String LATEX_NEW_LINE = "\\newline" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a nail.
+   */
+  public static final String LATEX_NAIL = "\\vdash" ; //$NON-NLS-1$
 
 
   /**

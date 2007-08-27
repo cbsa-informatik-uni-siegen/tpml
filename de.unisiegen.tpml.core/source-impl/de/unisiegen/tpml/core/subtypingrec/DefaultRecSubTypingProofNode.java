@@ -301,8 +301,21 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
+    StringBuilder body = new StringBuilder ( ) ;
+    body.append ( this.seenTypes.toPrettyString ( ).toString ( ) ) ;
+    body.append ( PRETTY_SPACE ) ;
+    body.append ( PRETTY_NAIL ) ;
+    body.append ( PRETTY_SPACE ) ;
+    body.append ( this.getLeft ( ).toPrettyString ( ).toString ( ) ) ;
+    body.append ( PRETTY_SPACE ) ;
+    body.append ( PRETTY_SUBTYPE ) ;
+    body.append ( PRETTY_SPACE ) ;
+    body.append ( this.getRight ( ).toPrettyString ( ).toString ( ) ) ;
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_REC_SUB_TYPE_PROOF_NODE , pIndent ) ;
+        0 , LATEX_REC_SUB_TYPE_PROOF_NODE , pIndent , body.toString ( ) ,
+        this.seenTypes.toPrettyString ( ).toString ( ) , this.getLeft ( )
+            .toPrettyString ( ).toString ( ) , this.getRight ( )
+            .toPrettyString ( ).toString ( ) ) ;
     builder.addBuilder ( this.seenTypes.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     builder.addBuilder ( this.getLeft ( ).toLatexStringBuilder (
@@ -337,7 +350,9 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
         this , 0 ) ;
     builder.addBuilder ( this.type.getLeft ( ).toPrettyStringBuilder (
         pPrettyStringBuilderFactory ) , 0 ) ;
-    builder.addText ( " <: " ) ; //$NON-NLS-1$
+    builder.addText ( PRETTY_SPACE ) ;
+    builder.addText ( PRETTY_SUBTYPE ) ;
+    builder.addText ( PRETTY_SPACE ) ;
     builder.addBuilder ( this.type.getRight ( ).toPrettyStringBuilder (
         pPrettyStringBuilderFactory ) , 0 ) ;
     return builder ;
