@@ -1,77 +1,78 @@
 package de.unisiegen.tpml.core.latex ;
 
 
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
-import de.unisiegen.tpml.core.bigstep.BigStepProofResult ;
-import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode ;
-import de.unisiegen.tpml.core.expressions.And ;
-import de.unisiegen.tpml.core.expressions.Application ;
-import de.unisiegen.tpml.core.expressions.Attribute ;
-import de.unisiegen.tpml.core.expressions.BinaryOperator ;
-import de.unisiegen.tpml.core.expressions.Coercion ;
-import de.unisiegen.tpml.core.expressions.Condition ;
-import de.unisiegen.tpml.core.expressions.Condition1 ;
-import de.unisiegen.tpml.core.expressions.Constant ;
-import de.unisiegen.tpml.core.expressions.CurriedLet ;
-import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
-import de.unisiegen.tpml.core.expressions.CurriedMethod ;
-import de.unisiegen.tpml.core.expressions.Duplication ;
-import de.unisiegen.tpml.core.expressions.Exn ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.InfixOperation ;
-import de.unisiegen.tpml.core.expressions.Inherit ;
-import de.unisiegen.tpml.core.expressions.Lambda ;
-import de.unisiegen.tpml.core.expressions.Let ;
-import de.unisiegen.tpml.core.expressions.LetRec ;
-import de.unisiegen.tpml.core.expressions.List ;
-import de.unisiegen.tpml.core.expressions.Location ;
-import de.unisiegen.tpml.core.expressions.Method ;
-import de.unisiegen.tpml.core.expressions.MultiLambda ;
-import de.unisiegen.tpml.core.expressions.MultiLet ;
-import de.unisiegen.tpml.core.expressions.New ;
-import de.unisiegen.tpml.core.expressions.ObjectExpr ;
-import de.unisiegen.tpml.core.expressions.Or ;
-import de.unisiegen.tpml.core.expressions.Recursion ;
-import de.unisiegen.tpml.core.expressions.Row ;
-import de.unisiegen.tpml.core.expressions.Send ;
-import de.unisiegen.tpml.core.expressions.Sequence ;
-import de.unisiegen.tpml.core.expressions.Tuple ;
-import de.unisiegen.tpml.core.expressions.While ;
-import de.unisiegen.tpml.core.interpreters.Store ;
-import de.unisiegen.tpml.core.minimaltyping.MinimalTypingExpressionProofNode ;
-import de.unisiegen.tpml.core.minimaltyping.MinimalTypingTypesProofNode ;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofNode ;
-import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode ;
-import de.unisiegen.tpml.core.subtypingrec.DefaultRecSubTypingProofNode ;
-import de.unisiegen.tpml.core.subtypingrec.DefaultSubType ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode ;
-import de.unisiegen.tpml.core.typechecker.SeenTypes ;
-import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
-import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker ;
-import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference ;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode ;
-import de.unisiegen.tpml.core.typeinference.TypeJudgement ;
-import de.unisiegen.tpml.core.typeinference.TypeSubType ;
-import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList ;
-import de.unisiegen.tpml.core.types.ArrowType ;
-import de.unisiegen.tpml.core.types.BooleanType ;
-import de.unisiegen.tpml.core.types.ClassType ;
-import de.unisiegen.tpml.core.types.IntegerType ;
-import de.unisiegen.tpml.core.types.ListType ;
-import de.unisiegen.tpml.core.types.ObjectType ;
-import de.unisiegen.tpml.core.types.PolyType ;
-import de.unisiegen.tpml.core.types.RecType ;
-import de.unisiegen.tpml.core.types.RefType ;
-import de.unisiegen.tpml.core.types.RowType ;
-import de.unisiegen.tpml.core.types.TupleType ;
-import de.unisiegen.tpml.core.types.TypeName ;
-import de.unisiegen.tpml.core.types.TypeVariable ;
-import de.unisiegen.tpml.core.types.UnifyType ;
-import de.unisiegen.tpml.core.types.UnitType ;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.bigstep.BigStepProofResult;
+import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode;
+import de.unisiegen.tpml.core.expressions.And;
+import de.unisiegen.tpml.core.expressions.Application;
+import de.unisiegen.tpml.core.expressions.Attribute;
+import de.unisiegen.tpml.core.expressions.BinaryOperator;
+import de.unisiegen.tpml.core.expressions.Coercion;
+import de.unisiegen.tpml.core.expressions.Condition;
+import de.unisiegen.tpml.core.expressions.Condition1;
+import de.unisiegen.tpml.core.expressions.Constant;
+import de.unisiegen.tpml.core.expressions.CurriedLet;
+import de.unisiegen.tpml.core.expressions.CurriedLetRec;
+import de.unisiegen.tpml.core.expressions.CurriedMethod;
+import de.unisiegen.tpml.core.expressions.Duplication;
+import de.unisiegen.tpml.core.expressions.Exn;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.InfixOperation;
+import de.unisiegen.tpml.core.expressions.Inherit;
+import de.unisiegen.tpml.core.expressions.Lambda;
+import de.unisiegen.tpml.core.expressions.Let;
+import de.unisiegen.tpml.core.expressions.LetRec;
+import de.unisiegen.tpml.core.expressions.List;
+import de.unisiegen.tpml.core.expressions.Location;
+import de.unisiegen.tpml.core.expressions.Method;
+import de.unisiegen.tpml.core.expressions.MultiLambda;
+import de.unisiegen.tpml.core.expressions.MultiLet;
+import de.unisiegen.tpml.core.expressions.New;
+import de.unisiegen.tpml.core.expressions.ObjectExpr;
+import de.unisiegen.tpml.core.expressions.Or;
+import de.unisiegen.tpml.core.expressions.Recursion;
+import de.unisiegen.tpml.core.expressions.Row;
+import de.unisiegen.tpml.core.expressions.Send;
+import de.unisiegen.tpml.core.expressions.Sequence;
+import de.unisiegen.tpml.core.expressions.Tuple;
+import de.unisiegen.tpml.core.expressions.While;
+import de.unisiegen.tpml.core.interpreters.Store;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingExpressionProofNode;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingTypesProofNode;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
+import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode;
+import de.unisiegen.tpml.core.subtypingrec.DefaultRecSubTypingProofNode;
+import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode;
+import de.unisiegen.tpml.core.typechecker.SeenTypes;
+import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker;
+import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
+import de.unisiegen.tpml.core.typeinference.TypeJudgement;
+import de.unisiegen.tpml.core.typeinference.TypeSubType;
+import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
+import de.unisiegen.tpml.core.types.ArrowType;
+import de.unisiegen.tpml.core.types.BooleanType;
+import de.unisiegen.tpml.core.types.ClassType;
+import de.unisiegen.tpml.core.types.IntegerType;
+import de.unisiegen.tpml.core.types.ListType;
+import de.unisiegen.tpml.core.types.ObjectType;
+import de.unisiegen.tpml.core.types.PolyType;
+import de.unisiegen.tpml.core.types.RecType;
+import de.unisiegen.tpml.core.types.RefType;
+import de.unisiegen.tpml.core.types.RowType;
+import de.unisiegen.tpml.core.types.TupleType;
+import de.unisiegen.tpml.core.types.TypeName;
+import de.unisiegen.tpml.core.types.TypeVariable;
+import de.unisiegen.tpml.core.types.UnifyType;
+import de.unisiegen.tpml.core.types.UnitType;
 
 
 /**
@@ -754,7 +755,7 @@ public interface LatexCommandNames
   /**
    * The latex print command for {@link DefaultBigStepProofNode}.
    */
-  public static final String LATEX_BIG_STEP_PROOF_NODE = "TypeCheckerTypeProofNode" ;//$NON-NLS-1$
+  public static final String LATEX_BIG_STEP_PROOF_NODE = "BigStepProofNode" ;//$NON-NLS-1$
 
 
   /**
@@ -803,4 +804,9 @@ public interface LatexCommandNames
    * The latex print command for {@link BigStepProofModel}.
    */
   public static final String LATEX_BIG_STEP_PROOF_MODEL = "BigStepProofModel" ; //$NON-NLS-1$
+  
+  /**
+   * The latex print command for {@link MinimalTypingProofModel}.
+   */
+  public static final String LATEX_MINIMAL_TYPING_PROOF_MODEL = "BigStepProofModel" ; //$NON-NLS-1$
 }

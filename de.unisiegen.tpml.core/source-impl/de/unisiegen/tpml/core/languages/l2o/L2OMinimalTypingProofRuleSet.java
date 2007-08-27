@@ -643,7 +643,8 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet
    * @param context the minimal typing proof context.
    * @param pNode the minimal typing proof node.
    */
-  public void applyObjectWidth ( MinimalTypingProofContext context ,
+  public void applyObjectWidth ( @SuppressWarnings("unused")
+MinimalTypingProofContext context ,
       MinimalTypingProofNode pNode )
   {
     MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode ;

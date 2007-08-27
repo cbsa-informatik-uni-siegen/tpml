@@ -17,7 +17,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @see de.unisiegen.tpml.core.ExpressionProofNode
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel
  */
-public interface TypeCheckerProofNode extends ExpressionProofNode, LatexPrintable, LatexCommandNames
+public interface TypeCheckerProofNode extends ExpressionProofNode
 {
   //
   // Accessors

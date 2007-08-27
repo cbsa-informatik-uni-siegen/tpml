@@ -1,27 +1,29 @@
 package de.unisiegen.tpml.core.typeinference ;
 
 
-import java.util.ArrayList ;
-import java.util.TreeSet ;
-import javax.swing.tree.TreeNode ;
-import de.unisiegen.tpml.core.AbstractProofNode ;
-import de.unisiegen.tpml.core.ProofStep ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexInstruction ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import java.util.ArrayList;
+import java.util.TreeSet;
+
+import javax.swing.tree.TreeNode;
+
+import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexCommand;
+import de.unisiegen.tpml.core.latex.LatexInstruction;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPrintableNode;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -218,9 +220,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_PROOF_NODE ,
-        2 , "\\ifthenelse{\\equal{#1}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-            + "{#2}" + LATEX_LINE_BREAK_NEW_COMMAND + "{[#1]\\\\[1mm]#2}" , //$NON-NLS-1$ //$NON-NLS-2$
-        "substitutions" , "formulas" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+        4 , "\\ifthenelse{\\equal{#3}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+            + "{#4}" + LATEX_LINE_BREAK_NEW_COMMAND + "{[#3]\\\\[1mm]#4}" , //$NON-NLS-1$ //$NON-NLS-2$
+        "depth", "id", "substitutions" , "formulas" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     for ( TypeSubstitution substitution : this.substitutions )
     {
       for ( LatexCommand command : substitution.getLatexCommands ( ) )
@@ -433,11 +435,11 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexString()
+   * @see LatexPrintableNode#toLatexString(int,int)
    */
-  public final LatexString toLatexString ( )
+  public final LatexString toLatexString ( int pDepth, int pId )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0, pDepth, pId )
         .toLatexString ( ) ;
   }
 
@@ -445,10 +447,10 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
+   * @see LatexPrintableNode#toLatexStringBuilder(LatexStringBuilderFactory,int,int,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent, int pDepth, int pId )
   {
     int countEquation = 0 ;
     for ( int i = 0 ; i < this.formula.size ( ) ; i ++ )
@@ -521,6 +523,8 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
         0 , LATEX_TYPE_INFERENCE_PROOF_NODE , pIndent , descriptions ) ;
     if ( this.substitutions.size ( ) > 0 )
     {
+   	builder.addText ( "{" + String.valueOf ( pDepth ) + "}" );  //$NON-NLS-1$//$NON-NLS-2$
+      builder.addText ( "{" + String.valueOf ( pId ) + "}" );  //$NON-NLS-1$//$NON-NLS-2$
       builder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.substitutions.size ( ) ; i ++ )
       {

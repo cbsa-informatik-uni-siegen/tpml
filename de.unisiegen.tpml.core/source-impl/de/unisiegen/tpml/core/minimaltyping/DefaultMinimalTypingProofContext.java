@@ -22,8 +22,6 @@ import de.unisiegen.tpml.core.expressions.RelationalOperator;
 import de.unisiegen.tpml.core.expressions.Tl;
 import de.unisiegen.tpml.core.expressions.UnaryCons;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
-import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
-import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
@@ -71,10 +69,6 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
 	 */
 	private LinkedList < Runnable > undoActions = new LinkedList < Runnable > ( );
 
-	/**
-	 * The list of already seen sub types
-	 */
-	private SeenTypes < DefaultSubType > seenTypes = new SeenTypes < DefaultSubType > ( );
 
 	//
 	// Constructor (package)

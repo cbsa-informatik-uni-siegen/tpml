@@ -209,6 +209,87 @@ public class LatexTest
     close ( ) ;
     compile ( ) ;
   }
+  
+  public static void printLatexPrintable ( LatexPrintableNode pLatexPrintable )
+  {
+    // document class and needed packages
+    println ( "%%" ) ;
+    println ( "%% TPML LaTeX Export" ) ;
+    println ( "%%" ) ;
+    println ( ) ;
+    println ( "\\documentclass[a4paper,12pt]{report}" ) ;
+    println ( "\\usepackage[utf8]{inputenc}" ) ;
+    println ( "\\usepackage{a4wide}" ) ;
+    println ( "\\setlength{\\parindent}{0pt}" ) ;
+    println ( ) ;
+    // packages
+    TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
+    if ( packages.size ( ) > 0 )
+    {
+      println ( "%%" ) ;
+      println ( "%% " + LatexPackage.DESCRIPTION ) ;
+      println ( "%%" ) ;
+      println ( ) ;
+    }
+    for ( LatexPackage pack : packages )
+    {
+      println ( pack ) ;
+    }
+    if ( packages.size ( ) > 0 )
+    {
+      println ( ) ;
+    }
+    // instructions
+    TreeSet < LatexInstruction > instructions = pLatexPrintable
+        .getLatexInstructions ( ) ;
+    if ( instructions.size ( ) > 0 )
+    {
+      println ( "%%" ) ;
+      println ( "%% " + LatexInstruction.DESCRIPTION ) ;
+      println ( "%%" ) ;
+      println ( ) ;
+    }
+    for ( LatexInstruction instruction : instructions )
+    {
+      println ( instruction ) ;
+    }
+    if ( instructions.size ( ) > 0 )
+    {
+      println ( ) ;
+    }
+    // commands
+    TreeSet < LatexCommand > commands = pLatexPrintable.getLatexCommands ( ) ;
+    if ( commands.size ( ) > 0 )
+    {
+      println ( "%%" ) ;
+      println ( "%% " + LatexCommand.DESCRIPTION ) ;
+      println ( "%%" ) ;
+      println ( ) ;
+    }
+    for ( LatexCommand command : commands )
+    {
+      println ( command ) ;
+    }
+    if ( commands.size ( ) > 0 )
+    {
+      println ( ) ;
+    }
+    // document
+    println ( "%%" ) ;
+    println ( "%% Document" ) ;
+    println ( "%%" ) ;
+    println ( ) ;
+    println ( "\\begin{document}" ) ;
+    println ( ) ;
+    println ( "$" ) ;
+    println ( pLatexPrintable.toLatexString ( 0, 0 ).toString ( ) ) ;
+    println ( "$" ) ;
+    println ( ) ;
+    println ( "\\end{document}" ) ;
+    // close and compile
+    close ( ) ;
+    compile ( ) ;
+  }
 
 
   public static void println ( )

@@ -16,6 +16,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofModel;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode;
 import de.unisiegen.tpml.core.interpreters.Store;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
 import de.unisiegen.tpml.core.latex.LatexCommand;
 import de.unisiegen.tpml.core.latex.LatexCommandNames;
 import de.unisiegen.tpml.core.latex.LatexInstruction;
@@ -313,6 +314,11 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel imple
 		Enumeration children = pNode.children ( );
 		int depth = pDepth;
 		TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( );
+		 commands.add ( new DefaultLatexCommand (
+				 LATEX_BIG_STEP_PROOF_MODEL , 1 , "\\mktree#1\\ " , "proofmodel" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+		   
+		
+		
 		ProofNode node = ( ProofNode ) children.nextElement ( );
 		while ( pNode.children ( ).hasMoreElements ( ) ) {
 			for ( LatexCommand command : node.getLatexCommands ( ) ) {
