@@ -6,8 +6,6 @@
 *** Michael ***
 - Die Dateien "build.xml", "tpml.xml", "register.cmd" und 
   "unregister.cmd" aus pgtest3 entfernen
-- Beim MinimalTyping wird der Typ ohne Trennzeichen wie " :: " direkt
-  hinter die Expression gerendert.
 
 *** Christian ***
 
