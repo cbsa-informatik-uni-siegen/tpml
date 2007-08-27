@@ -103,8 +103,8 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
         .add ( new DefaultLatexCommand (
             LATEX_REC_SUB_TYPE_PROOF_NODE ,
             5 ,
-            "#1\\vdash\\newline " //$NON-NLS-1$
-                + "\\ #2\\ <:\\ #3" , "depth" , "id" , "seenTypes" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ 
+            "#3\\vdash\\newline " //$NON-NLS-1$
+                + "\\ #4\\ <:\\ #5" , "depth" , "id" , "seenTypes" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ 
     for ( LatexCommand command : this.getLeft ( ).getLatexCommands ( ) )
     {
       commands.add ( command ) ;

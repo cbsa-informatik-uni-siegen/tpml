@@ -159,7 +159,7 @@ public final class DefaultSmallStepProofNode extends
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_NODE , 2 ,
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_NODE , 4 ,
         "\\ifthenelse{\\equal{#4}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
             + "{#3}" + LATEX_LINE_BREAK_NEW_COMMAND + "{(#3\\ \\ #4)}" , //$NON-NLS-1$//$NON-NLS-2$
         "depth" , "id" , "e" , "store" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
