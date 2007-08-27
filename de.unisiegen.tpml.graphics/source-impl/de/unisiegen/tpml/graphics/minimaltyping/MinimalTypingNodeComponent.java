@@ -24,6 +24,7 @@ import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingTypesProofNode;
 import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.core.util.Theme;
 import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.LabelComponent;
@@ -139,6 +140,17 @@ public class MinimalTypingNodeComponent extends JComponent implements TreeNodeCo
 	 * The label containing the "<:"
 	 */
 	private JLabel subTypeSymbol;
+	
+	/**
+	 * The Label shown between the type and the expression. It will be
+	 * " :: "
+	 */
+	private JLabel doubleColonLabel;
+	
+	/**
+	 * The String for the label
+	 */
+	private static final String doubleColonString = "  ::  ";
 
 	/**
 	 * The {@link MenuButton} the user can use to do the actions.
@@ -232,7 +244,15 @@ public class MinimalTypingNodeComponent extends JComponent implements TreeNodeCo
 		this.ruleLabel = new JLabel ( );
 		add ( this.ruleLabel );
 		this.ruleLabel.setVisible ( false );
+		this.doubleColonLabel = new JLabel();
+		add(this.doubleColonLabel);
+		this.doubleColonLabel.setFont(Theme.currentTheme().getFont());
+		this.doubleColonLabel.setForeground(Theme.currentTheme().getExpressionColor());
+		this.doubleColonLabel.setText(doubleColonString);
 
+		
+		
+		
 		/*
 		 * Create the PopupMenu for the menu button
 		 */
@@ -367,8 +387,9 @@ public class MinimalTypingNodeComponent extends JComponent implements TreeNodeCo
 		if ( this.proofNode.getEnvironment ( ) != null ) { // proofNode instance of expression proof node
 
 			// get the needed size for the expression
-			Dimension expSize = this.compoundExpression.getNeededSize ( maxWidth );
+			Dimension expSize = this.compoundExpression.getNeededSize ( maxWidth- AbstractRenderer.getTextFontMetrics().stringWidth(doubleColonString) );
 			this.dimension.width += expSize.width;
+			this.dimension.width += AbstractRenderer.getTextFontMetrics().stringWidth(doubleColonString);
 			this.dimension.height = Math.max ( expSize.height, this.dimension.height );
 			// get the neede size for the type
 			Dimension typeSize = this.typeComponent.getNeededSize ( maxWidth );
@@ -381,6 +402,15 @@ public class MinimalTypingNodeComponent extends JComponent implements TreeNodeCo
 			posX += labelSize.width + this.spacing;
 			this.compoundExpression.setBounds ( posX, 0, expSize.width, this.dimension.height );
 			posX += expSize.width;
+			
+			// set the ::
+			//this.doubleColonLabel.setBounds ( posX, AbstractRenderer.getFontLeading ( ), AbstractRenderer.getTextFontMetrics ( ).stringWidth ( doubleColonString ), expSize.height );
+			this.doubleColonLabel.setBounds(posX, 0,
+					AbstractRenderer.getTextFontMetrics().stringWidth(doubleColonString), AbstractRenderer
+							.getAbsoluteHeight());
+			posX += this.doubleColonLabel.getSize().width;
+
+			
 
 			this.typeComponent.setBounds ( posX, 0, typeSize.width, typeSize.height );
 
