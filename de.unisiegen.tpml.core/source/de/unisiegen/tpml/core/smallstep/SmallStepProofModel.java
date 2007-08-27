@@ -15,6 +15,7 @@ import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofModel ;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
@@ -246,8 +247,8 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
             LATEX_SMALL_STEP_PROOF_MODEL ,
             1 ,
             "$\\begin{longtable}{p{2.5cm}p{12cm}}$#1$\\end{longtable}$" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_ARROW , 2 ,
-        "\\xrightarrow[#2]{#1}" , "above text" , "below text" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_ARROW , 0 ,
+        "\\longrightarrow" ) ) ; //$NON-NLS-1$
     for ( LatexCommand command : getLatexCommandsInternal ( this.root ) )
     {
       commands.add ( command ) ;
@@ -534,10 +535,16 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
         LATEX_SMALL_STEP_PROOF_MODEL , pIndent ) ;
     builder.addBuilderBegin ( ) ;
-    builder.addText ( " $&$" ) ; //$NON-NLS-1$
+    builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+    builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+        + LATEX_INDENT )
+        + LATEX_SMALL_STEP_NEW_COLUMN ) ;
     builder.addBuilder ( this.root.toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT , 0 , 0 ) , 0 ) ;
-    builder.addText ( "$\\\\[5mm]$" ) ; //$NON-NLS-1$
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 , 0 , 0 ) , 0 ) ;
+    builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+    builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+        + LATEX_INDENT )
+        + LATEX_SMALL_STEP_NEW_RULE ) ;
     for ( int i = 0 ; i < this.root.getChildCount ( ) ; i ++ )
     {
       toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
@@ -570,7 +577,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     {
       textAbove.append ( pParentNode.getRules ( ) [ i ].toLatexString ( )
           .toString ( )
-          + " $& \\\\$ " ) ; //$NON-NLS-1$
+          + LATEX_SMALL_STEP_NEW_ROW_ONLY_RULE ) ;
     }
     if ( pParentNode.getRules ( ).length > 0 )
     {
@@ -579,18 +586,23 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
               .toLatexString ( ).toString ( ) ) ;
     }
     pLatexStringBuilder.addText ( textAbove.toString ( ) ) ;
-    pLatexStringBuilder.addText ( "\\longrightarrow" + " $&$ " ) ; //$NON-NLS-1$//$NON-NLS-2$
+    pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_SMALL_STEP_ARROW
+        + LATEX_SMALL_STEP_NEW_COLUMN ) ;
     pLatexStringBuilder.addBuilder ( pCurrentNode.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT , 0 , 0 ) , 0 ) ;
-    pLatexStringBuilder.addText ( " $\\\\$ " ) ; //$NON-NLS-1$
+    pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+    pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+        .getIndent ( pIndent )
+        + LATEX_SMALL_STEP_NEW_ROW ) ;
     pLatexStringBuilder.addText ( textBelow.toString ( ) ) ;
-    pLatexStringBuilder.addText ( " $& $ " ) ; //$NON-NLS-1$
-    pLatexStringBuilder.addText ( "$\\\\[5mm]$" ) ; //$NON-NLS-1$
+    pLatexStringBuilder.addText ( LATEX_SMALL_STEP_NEW_COLUMN ) ;
+    pLatexStringBuilder.addText ( LATEX_SMALL_STEP_SPACE ) ;
+    pLatexStringBuilder.addText ( LATEX_SMALL_STEP_NEW_RULE ) ;
     for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
     {
       toLatexStringBuilderInternal ( pLatexStringBuilderFactory ,
           pLatexStringBuilder , pCurrentNode , pCurrentNode.getChildAt ( i ) ,
-          pIndent + LATEX_INDENT ) ;
+          pIndent ) ;
     }
   }
 }

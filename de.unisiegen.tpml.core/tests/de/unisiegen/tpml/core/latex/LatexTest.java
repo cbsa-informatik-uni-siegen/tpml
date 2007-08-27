@@ -484,9 +484,9 @@ public class LatexTest
   {
     try
     {
-      String text = "let hallo = 1 in hallo + hallo + hallo + hallo + hallo + hallo + hallo + hallo + hallo + hallo + hallo + hallo + hallo" ;
+      String text = "1+1" ;
       // PowerSet
-      text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
+      //text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
@@ -584,7 +584,7 @@ public class LatexTest
   {
     try
     {
-      String text = "let x = 1 + 1 in let y = 0 in x + y" ;
+      String text = "let x = 1 + 1 in let y = 5 + 5 + 5 in x + y" ;
       // PowerSet
       // text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map
       // f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 ::

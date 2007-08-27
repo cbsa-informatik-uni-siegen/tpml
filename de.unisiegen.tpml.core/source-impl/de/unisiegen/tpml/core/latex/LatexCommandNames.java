@@ -112,6 +112,36 @@ public interface LatexCommandNames
 
 
   /**
+   * The latex print command for a small step new column
+   */
+  public static final String LATEX_SMALL_STEP_NEW_COLUMN = "$&$" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a small step new rule
+   */
+  public static final String LATEX_SMALL_STEP_NEW_RULE = "$\\\\[5mm]$" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a small step new row with only the rule
+   */
+  public static final String LATEX_SMALL_STEP_NEW_ROW_ONLY_RULE = "$&\\\\$" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a small step new row.
+   */
+  public static final String LATEX_SMALL_STEP_NEW_ROW = "$\\\\$" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a small step space.
+   */
+  public static final String LATEX_SMALL_STEP_SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for a space.
    */
   public static final String LATEX_SPACE = "\\ " ; //$NON-NLS-1$
@@ -535,6 +565,12 @@ public interface LatexCommandNames
    * The latex print command for the keyword <code>attr</code>.
    */
   public static final String LATEX_KEY_ATTR = LATEX_KEY + "Attr" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a prefix of a command.
+   */
+  public static final String LATEX_PREFIX_COMMAND = "\\" ; //$NON-NLS-1$
 
 
   /**

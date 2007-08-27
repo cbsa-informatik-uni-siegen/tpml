@@ -763,7 +763,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
           this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
           this.latexStringBuilder.addText ( DefaultLatexStringBuilder
               .getIndent ( pIndent + LATEX_INDENT )
-              + "\\" + LATEX_KEY_ATTR ) ; //$NON-NLS-1$
+              + LATEX_PREFIX_COMMAND + LATEX_KEY_ATTR ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
         this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
