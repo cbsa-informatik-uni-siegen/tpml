@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter ;
 import java.io.StringReader ;
 import java.util.ArrayList ;
 import java.util.TreeSet ;
+import de.unisiegen.tpml.core.bigstep.BigStepProofResult ;
 import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode ;
 import de.unisiegen.tpml.core.expressions.And ;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
@@ -101,7 +102,7 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    int number = 9 ;
+    int number = 17 ;
     if ( number == 0 ) testExpression ( ) ;// done
     if ( number == 1 ) testType ( ) ; // done
     if ( number == 2 ) testTypeEnvironment ( ) ; // done
@@ -112,19 +113,19 @@ public class LatexTest
     if ( number == 7 ) testSubType ( ) ; // done
     if ( number == 8 ) testTypeSubType ( ) ; // done
     if ( number == 9 ) testTypeSubstitution ( ) ; // done
-    if ( number == 10 ) testTypeEquationListTypeChecker ( ) ;
-    if ( number == 11 ) testTypeEquationListTypeInference ( ) ;
-    if ( number == 12 ) testTypeSubstitutionList ( ) ;
-    if ( number == 13 ) testTypeJudgement ( ) ;
+    if ( number == 10 ) testTypeEquationListTypeChecker ( ) ; // done
+    if ( number == 11 ) testTypeEquationListTypeInference ( ) ; // done
+    if ( number == 12 ) testTypeSubstitutionList ( ) ;// done
+    if ( number == 13 ) testTypeJudgement ( ) ;// done
     if ( number == 14 ) testSmallStepProofNode ( ) ; // done
-    if ( number == 15 ) testTypeCheckerExpressionProofNode ( ) ;
-    if ( number == 16 ) testTypeCheckerTypeProofNode ( ) ;
+    if ( number == 15 ) testTypeCheckerExpressionProofNode ( ) ;// done
+    if ( number == 16 ) testTypeCheckerTypeProofNode ( ) ;// done
     if ( number == 17 ) testBigStepProofNode ( ) ;
-    if ( number == 18 ) testTypeInferenceProofNode ( ) ;
-    if ( number == 19 ) testSubTypingProofNode ( ) ;
-    if ( number == 20 ) testRecSubTypingProofNode ( ) ;
-    if ( number == 21 ) testMinimalTypingTypesProofNode ( ) ;
-    if ( number == 22 ) testMinimalTypingExpressionProofNode ( ) ;
+    if ( number == 18 ) testTypeInferenceProofNode ( ) ; // done
+    if ( number == 19 ) testSubTypingProofNode ( ) ; // done
+    if ( number == 20 ) testRecSubTypingProofNode ( ) ;// done
+    if ( number == 21 ) testMinimalTypingTypesProofNode ( ) ; // done
+    if ( number == 22 ) testMinimalTypingExpressionProofNode ( ) ;// done
   }
 
 
@@ -290,8 +291,20 @@ public class LatexTest
     {
       Expression expression = new InfixOperation ( ArithmeticOperator
           .newPlus ( ) , new Identifier ( "a" , Identifier.Set.VARIABLE ) ,
-          new Identifier ( "b" , Identifier.Set.VARIABLE ) ) ;
-      DefaultBigStepProofNode node = new DefaultBigStepProofNode ( expression ) ;
+          new Ref ( ) ) ;
+      DefaultStore store1 = new DefaultStore ( ) ;
+      store1.put ( new Location ( "f" ) , new IntegerConstant ( 6 ) ) ;
+      store1.put ( new Location ( "e" ) , new IntegerConstant ( 5 ) ) ;
+      store1.put ( new Location ( "d" ) , new IntegerConstant ( 4 ) ) ;
+      DefaultBigStepProofNode node = new DefaultBigStepProofNode ( expression ,
+          store1 ) ;
+      // with result
+      DefaultStore store2 = new DefaultStore ( ) ;
+      store2.put ( new Location ( "c" ) , new IntegerConstant ( 3 ) ) ;
+      store2.put ( new Location ( "b" ) , new IntegerConstant ( 2 ) ) ;
+      store2.put ( new Location ( "a" ) , new IntegerConstant ( 1 ) ) ;
+      BigStepProofResult result = new BigStepProofResult ( store2 , new Ref ( ) ) ;
+      node.setResult ( result ) ;
       printLatexPrintable ( node ) ;
     }
     catch ( Exception e )
@@ -368,7 +381,7 @@ public class LatexTest
       MonoType type = new ArrowType ( new IntegerType ( ) , new ArrowType (
           new IntegerType ( ) , new IntegerType ( ) ) ) ;
       MonoType type2 = new ArrowType ( new IntegerType ( ) , new ArrowType (
-          new IntegerType ( ) , new IntegerType ( ) ) ) ;
+          new IntegerType ( ) , new BooleanType ( ) ) ) ;
       DefaultRecSubTypingProofNode node = new DefaultRecSubTypingProofNode (
           type , type2 , new SeenTypes < DefaultSubType > ( ) ) ;
       printLatexPrintable ( node ) ;

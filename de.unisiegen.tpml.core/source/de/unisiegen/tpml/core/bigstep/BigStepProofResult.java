@@ -6,6 +6,8 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
 import de.unisiegen.tpml.core.interpreters.Store ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
@@ -13,6 +15,10 @@ import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
 
 /**
@@ -22,9 +28,11 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
  * {@link de.unisiegen.tpml.core.interpreters.Store}.
  * 
  * @author Benedikt Meurer
+ * @author Christian Fehler
  * @version $Rev$
  */
-public final class BigStepProofResult implements LatexPrintable 
+public final class BigStepProofResult implements PrettyPrintable ,
+    LatexPrintable
 {
   /**
    * The resulting store of a proof node.
@@ -52,7 +60,7 @@ public final class BigStepProofResult implements LatexPrintable
    * @see #getStore()
    * @see #getValue()
    */
-  BigStepProofResult ( Store pStore , Expression pValue )
+  public BigStepProofResult ( Store pStore , Expression pValue )
   {
     if ( pStore == null )
     {
@@ -71,11 +79,13 @@ public final class BigStepProofResult implements LatexPrintable
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_BIG_STEP_PROOF_RESULT , 2 ,
-        "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-            + "{#1}" //$NON-NLS-1$
-            + "{((#1\\ #2)}" , "e" , "store" ) ) ;//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+    commands.add ( new DefaultLatexCommand ( LATEX_BIG_STEP_PROOF_RESULT , 1 ,
+        "{#1}" , "body" ) ) ;//$NON-NLS-1$ //$NON-NLS-2$ 
     for ( LatexCommand command : this.value.getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.store.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
     }
@@ -95,6 +105,10 @@ public final class BigStepProofResult implements LatexPrintable
     {
       instructions.add ( instruction ) ;
     }
+    for ( LatexInstruction instruction : this.store.getLatexInstructions ( ) )
+    {
+      instructions.add ( instruction ) ;
+    }
     return instructions ;
   }
 
@@ -107,7 +121,12 @@ public final class BigStepProofResult implements LatexPrintable
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
     for ( LatexPackage pack : this.value.getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : this.store.getLatexPackages ( ) )
     {
       packages.add ( pack ) ;
     }
@@ -163,17 +182,108 @@ public final class BigStepProofResult implements LatexPrintable
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_BIG_STEP_PROOF_RESULT , pIndent ) ;
-    builder.addBuilder ( this.value.toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+    StringBuilder body = new StringBuilder ( ) ;
     if ( this.value.containsMemoryOperations ( ) )
-      builder.addBuilder ( getStore ( ).toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+    {
+      body.append ( this.value.toPrettyString ( ).toString ( ) ) ;
+      body.append ( PRETTY_SPACE ) ;
+      body.append ( PRETTY_SPACE ) ;
+      body.append ( this.store.toPrettyString ( ).toString ( ) ) ;
+    }
     else
     {
+      body.append ( this.value.toPrettyString ( ).toString ( ) ) ;
+    }
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
+        0 , LATEX_BIG_STEP_PROOF_RESULT , pIndent , this.toPrettyString ( )
+            .toString ( ) , body.toString ( ) , this.value.toPrettyString ( )
+            .toString ( ) , this.getStore ( ).toPrettyString ( ).toString ( ) ) ;
+    builder.addBuilderBegin ( ) ;
+    if ( this.value.containsMemoryOperations ( ) )
+    {
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+          + LATEX_INDENT )
+          + LATEX_LPAREN ) ;
+      builder.addBuilder ( this.value.toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+          + LATEX_INDENT )
+          + LATEX_SPACE ) ;
+      builder.addText ( LATEX_SPACE ) ;
+      builder.addBuilder ( this.store.toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+          + LATEX_INDENT )
+          + LATEX_RPAREN ) ;
+    }
+    else
+    {
+      builder.addBuilder ( this.value.toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
       builder.addEmptyBuilder ( ) ;
     }
+    builder.addBuilderEnd ( ) ;
     return builder ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ( )
+  {
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+        .toPrettyString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
+   */
+  public PrettyStringBuilder toPrettyStringBuilder (
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+  {
+    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
+        this , 0 ) ;
+    if ( this.value.containsMemoryOperations ( ) )
+    {
+      builder.addText ( PRETTY_LPAREN ) ;
+      builder.addBuilder ( this.value
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+      builder.addText ( PRETTY_SPACE ) ;
+      builder.addText ( PRETTY_SPACE ) ;
+      builder.addBuilder ( this.store
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+      builder.addText ( PRETTY_RPAREN ) ;
+    }
+    else
+    {
+      builder.addBuilder ( this.value
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+    }
+    return builder ;
+  }
+
+
+  /**
+   * Returns the string representation for this big step proof result. This
+   * method is mainly used for debugging.
+   * 
+   * @return The pretty printed string representation for this big step proof
+   *         result.
+   * @see #toPrettyString()
+   * @see Object#toString()
+   */
+  @ Override
+  public final String toString ( )
+  {
+    return toPrettyString ( ).toString ( ) ;
   }
 }

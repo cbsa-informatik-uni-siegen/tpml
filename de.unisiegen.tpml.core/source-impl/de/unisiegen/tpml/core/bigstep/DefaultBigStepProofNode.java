@@ -17,6 +17,10 @@ import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
 
 /**
@@ -168,13 +172,12 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
         "\\ifthenelse{\\equal{#3}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$ 
             + "{\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$ 
             + "{#1}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-            + "{(#1\\ #2)}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-            + "}" //$NON-NLS-1$
+            + "{(#1\\ \\ #2)}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
             + "{\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$ 
-            + "{#1\\ \\eval\\ #3}" //$NON-NLS-1$
-            + "{(#1\\ \\ #2)\\ \\eval\\ #3}" //$NON-NLS-1$
+            + "{#1\\ \\Downarrow\\ #3}" //$NON-NLS-1$
+            + "{(#1\\ \\ #2)\\ \\Downarrow\\ #3}" //$NON-NLS-1$
             + "}" //$NON-NLS-1$
-        , "e" , "store" , "tau" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ 
+        , "e" , "store" , "result" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ 
     for ( LatexCommand command : this.expression.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
@@ -348,7 +351,7 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * @throws IllegalArgumentException if <code>result</code> is invalid.
    * @see #getResult()
    */
-  void setResult ( BigStepProofResult pResult )
+  public void setResult ( BigStepProofResult pResult )
   {
     if ( pResult != null && ! pResult.getValue ( ).isException ( )
         && ! pResult.getValue ( ).isValue ( ) )
@@ -380,7 +383,11 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_BIG_STEP_PROOF_NODE , pIndent ) ;
+        0 , LATEX_BIG_STEP_PROOF_NODE , pIndent , this.toPrettyString ( )
+            .toString ( ) , this.expression.toPrettyString ( ).toString ( ) ,
+        this.getStore ( ).toPrettyString ( ).toString ( ) ,
+        this.result == null ? LATEX_EMPTY_STRING : this.result
+            .toPrettyString ( ).toString ( ) ) ;
     builder.addBuilder ( this.expression.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     if ( this.expression.containsMemoryOperations ( ) )
@@ -400,6 +407,53 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
     else
     {
       builder.addEmptyBuilder ( ) ;
+    }
+    return builder ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ( )
+  {
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+        .toPrettyString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
+   */
+  public PrettyStringBuilder toPrettyStringBuilder (
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+  {
+    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
+        this , 0 ) ;
+    boolean memoryEnabled = getExpression ( ).containsMemoryOperations ( ) ;
+    if ( memoryEnabled )
+    {
+      builder.addText ( PRETTY_LPAREN ) ;
+    }
+    builder.addBuilder ( this.getExpression ( ).toPrettyStringBuilder (
+        pPrettyStringBuilderFactory ) , 0 ) ;
+    if ( memoryEnabled )
+    {
+      builder.addText ( PRETTY_SPACE ) ;
+      builder.addText ( PRETTY_SPACE ) ;
+      builder.addBuilder ( this.getStore ( ).toPrettyStringBuilder (
+          pPrettyStringBuilderFactory ) , 0 ) ;
+      builder.addText ( PRETTY_RPAREN ) ;
+    }
+    builder.addText ( " \u21d3 " ) ; //$NON-NLS-1$
+    if ( this.result != null )
+    {
+      builder.addBuilder ( this.result
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
     }
     return builder ;
   }
