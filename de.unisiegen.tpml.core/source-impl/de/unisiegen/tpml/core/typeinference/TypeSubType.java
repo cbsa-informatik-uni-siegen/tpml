@@ -195,10 +195,10 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
   public final LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_SUB_TYPE , pIndent ,
-        this.toPrettyString ( ).toString ( ) , this.left.toPrettyString ( )
-            .toString ( ) , this.right.toPrettyString ( ).toString ( ) ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_TYPE_SUB_TYPE , pIndent , this.toPrettyString ( ).toString ( ) ,
+        this.left.toPrettyString ( ).toString ( ) , this.right
+            .toPrettyString ( ).toString ( ) ) ;
     builder.addBuilder ( this.left.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     builder.addBuilder ( this.right.toLatexStringBuilder (

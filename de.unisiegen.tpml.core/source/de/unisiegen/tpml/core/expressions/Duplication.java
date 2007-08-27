@@ -460,7 +460,7 @@ public final class Duplication extends Expression implements
         descriptions [ 3 + i * 2 ] = this.expressions [ i ].toPrettyString ( )
             .toString ( ) ;
       }
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_DUPLICATION , LATEX_DUPLICATION , pIndent , descriptions ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;

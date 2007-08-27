@@ -297,8 +297,8 @@ public final class DefaultTypeEnvironment extends
       descriptions [ 3 + i * 2 ] = this.mappings.get ( i ).getEntry ( )
           .toPrettyString ( ).toString ( ) ;
     }
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_ENVIRONMENT , pIndent , descriptions ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_TYPE_ENVIRONMENT , pIndent , descriptions ) ;
     builder.addBuilderBegin ( ) ;
     for ( int i = 0 ; i < this.mappings.size ( ) ; i ++ )
     {

@@ -291,7 +291,7 @@ public final class TupleType extends MonoType implements DefaultTypes
         descriptions [ 2 + i ] = this.types [ i ].toPrettyString ( )
             .toString ( ) ;
       }
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_TUPLE , LATEX_TUPLE_TYPE , pIndent , descriptions ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.types.length ; i ++ )

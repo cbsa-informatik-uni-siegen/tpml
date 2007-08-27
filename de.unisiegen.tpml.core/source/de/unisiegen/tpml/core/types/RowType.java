@@ -748,7 +748,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
         descriptions [ descriptions.length - 1 ] = this.remainingRowType
             .toPrettyString ( ).toString ( ) ;
       }
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_ROW , LATEX_ROW_TYPE , pIndent , descriptions ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.types.length ; i ++ )

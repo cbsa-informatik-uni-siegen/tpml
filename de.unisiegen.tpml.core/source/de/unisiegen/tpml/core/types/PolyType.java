@@ -369,7 +369,7 @@ public final class PolyType extends Type implements DefaultTypes
       }
       descriptions [ descriptions.length - 1 ] = this.types [ 0 ]
           .toPrettyString ( ).toString ( ) ;
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_POLY , LATEX_POLY_TYPE , pIndent , descriptions ) ;
       if ( ! this.quantifiedVariables.isEmpty ( ) )
       {

@@ -194,8 +194,8 @@ public final class BigStepProofResult implements PrettyPrintable ,
     {
       body.append ( this.value.toPrettyString ( ).toString ( ) ) ;
     }
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_BIG_STEP_PROOF_RESULT , pIndent , this.toPrettyString ( )
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_BIG_STEP_PROOF_RESULT , pIndent , this.toPrettyString ( )
             .toString ( ) , body.toString ( ) , this.value.toPrettyString ( )
             .toString ( ) , this.getStore ( ).toPrettyString ( ).toString ( ) ) ;
     builder.addBuilderBegin ( ) ;

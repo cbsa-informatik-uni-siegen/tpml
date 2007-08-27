@@ -561,7 +561,7 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
   {
     if ( this.latexStringBuilder == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_LET , LATEX_LET , pIndent ,
           this.toPrettyString ( ).toString ( ) , this.identifiers [ 0 ]
               .toPrettyString ( ).toString ( ) ,

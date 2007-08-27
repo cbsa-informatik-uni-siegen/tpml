@@ -1,25 +1,23 @@
 package de.unisiegen.tpml.core.minimaltyping ;
 
 
-import java.util.TreeSet;
-
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
-import de.unisiegen.tpml.core.latex.DefaultLatexPackage;
-import de.unisiegen.tpml.core.latex.LatexCommand;
-import de.unisiegen.tpml.core.latex.LatexInstruction;
-import de.unisiegen.tpml.core.latex.LatexPackage;
-import de.unisiegen.tpml.core.latex.LatexPrintableNode;
-import de.unisiegen.tpml.core.latex.LatexString;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
-import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
-import de.unisiegen.tpml.core.types.MonoType;
-
+import java.util.TreeSet ;
+import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPrintableNode ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
+import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
@@ -94,8 +92,8 @@ public class DefaultMinimalTypingExpressionProofNode extends
         LATEX_MINIMAL_TYPING_EXPRESSION_PROOF_NODE , 5 ,
         "\\ifthenelse{\\equal{#3}{}}" + LATEX_LINE_BREAK_NEW_COMMAND + "{#3\\ " //$NON-NLS-1$//$NON-NLS-2$
             + LATEX_RIGHT_TRIANGLE + "\\ #4}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-            + "{#3\\ " + LATEX_RIGHT_TRIANGLE + "\\ #4\\ ::\\ #5}" , "depth", //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-            "id", "env", "e" , "tau" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            + "{#3\\ " + LATEX_RIGHT_TRIANGLE + "\\ #4\\ ::\\ #5}" , "depth" , //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+        "id" , "env" , "e" , "tau" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     for ( LatexCommand command : this.environment.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
@@ -220,10 +218,10 @@ public class DefaultMinimalTypingExpressionProofNode extends
    * 
    * @see LatexPrintableNode#toLatexString(int, int)
    */
-  public final LatexString toLatexString ( int pDepth, int pId )
+  public final LatexString toLatexString ( int pDepth , int pId )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0, pDepth, pId )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) ,
+        0 , pDepth , pId ).toLatexString ( ) ;
   }
 
 
@@ -233,18 +231,18 @@ public class DefaultMinimalTypingExpressionProofNode extends
    * @see LatexPrintableNode#toLatexStringBuilder(LatexStringBuilderFactory,int,int,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent, int pDepth, int pId )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent ,
+      int pDepth , int pId )
   {
-	 
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_MINIMAL_TYPING_EXPRESSION_PROOF_NODE , pIndent , this
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_MINIMAL_TYPING_EXPRESSION_PROOF_NODE , pIndent , this
             .toPrettyString ( ).toString ( ) , this.environment
             .toPrettyString ( ).toString ( ) , this.expression
             .toPrettyString ( ).toString ( ) ,
         this.type == null ? LATEX_EMPTY_STRING : this.type.toPrettyString ( )
             .toString ( ) ) ;
-    builder.addText ( "{" + String.valueOf ( pDepth ) + "}" );  //$NON-NLS-1$//$NON-NLS-2$
-    builder.addText ( "{" + String.valueOf ( pId ) + "}" );  //$NON-NLS-1$//$NON-NLS-2$
+    builder.addText ( "{" + String.valueOf ( pDepth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
+    builder.addText ( "{" + String.valueOf ( pId ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addBuilder ( this.environment.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     builder.addBuilder ( this.expression.toLatexStringBuilder (

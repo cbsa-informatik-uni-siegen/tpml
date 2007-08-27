@@ -630,7 +630,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
           : this.types [ 0 ].toPrettyString ( ).toString ( ) ;
       descriptions [ descriptions.length - 1 ] = this.expressions [ 0 ]
           .toPrettyString ( ).toString ( ) ;
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_LAMBDA , LATEX_MULTI_LAMBDA , pIndent , descriptions ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; ++ i )

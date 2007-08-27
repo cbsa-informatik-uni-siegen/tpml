@@ -1,9 +1,8 @@
 package de.unisiegen.tpml.core.minimaltyping ;
 
 
-import java.util.Enumeration;
-import java.util.TreeSet;
-
+import java.util.Enumeration ;
+import java.util.TreeSet ;
 import org.apache.log4j.Logger ;
 import de.unisiegen.tpml.core.AbstractExpressionProofModel ;
 import de.unisiegen.tpml.core.AbstractProofModel ;
@@ -16,14 +15,14 @@ import de.unisiegen.tpml.core.ProofRuleException ;
 import de.unisiegen.tpml.core.ProofStep ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.languages.l1.L1Language ;
-import de.unisiegen.tpml.core.latex.LatexCommand;
-import de.unisiegen.tpml.core.latex.LatexCommandNames;
-import de.unisiegen.tpml.core.latex.LatexInstruction;
-import de.unisiegen.tpml.core.latex.LatexPackage;
-import de.unisiegen.tpml.core.latex.LatexPrintable;
-import de.unisiegen.tpml.core.latex.LatexString;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandNames ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
 import de.unisiegen.tpml.core.types.MonoType ;
@@ -39,7 +38,8 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext
  * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode
  */
-public class MinimalTypingProofModel extends AbstractExpressionProofModel implements LatexPrintable, LatexCommandNames 
+public class MinimalTypingProofModel extends AbstractExpressionProofModel
+    implements LatexPrintable , LatexCommandNames
 {
   //
   // Constants
@@ -562,105 +562,135 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel implem
       }
     }
   }
-  
+
+
   /**
-	 * 
-	 * {@inheritDoc}
-	 * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexCommands()
-	 */
-	public TreeSet < LatexCommand > getLatexCommands ( ) {
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexCommands()
+   */
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    return getLatexCommandsInternal ( 0 , this.root ) ;
+  }
 
-		return getLatexCommandsInternal ( 0, this.root );
-	}
 
-	private TreeSet < LatexCommand > getLatexCommandsInternal ( int pDepth, ProofNode pNode ) {
-		Enumeration children = pNode.children ( );
-		int depth = pDepth;
-		TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( );
-		ProofNode node = ( ProofNode ) children.nextElement ( );
-		while ( pNode.children ( ).hasMoreElements ( ) ) {
-			for ( LatexCommand command : node.getLatexCommands ( ) ) {
-				commands.add ( command );
-			}
-			for ( LatexCommand command : getLatexCommandsInternal ( ++depth, node ) ) {
-				commands.add ( command );
-			}
-			node = ( ProofNode ) children.nextElement ( );
-		}
-		return commands;
-	}
+  private TreeSet < LatexCommand > getLatexCommandsInternal ( int pDepth ,
+      ProofNode pNode )
+  {
+    Enumeration children = pNode.children ( ) ;
+    int depth = pDepth ;
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    ProofNode node = ( ProofNode ) children.nextElement ( ) ;
+    while ( pNode.children ( ).hasMoreElements ( ) )
+    {
+      for ( LatexCommand command : node.getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+      for ( LatexCommand command : getLatexCommandsInternal ( ++ depth , node ) )
+      {
+        commands.add ( command ) ;
+      }
+      node = ( ProofNode ) children.nextElement ( ) ;
+    }
+    return commands ;
+  }
 
-	/**
-	 * 
-	 * {@inheritDoc}
-	 * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexInstructions()
-	 */
-	public TreeSet < LatexInstruction > getLatexInstructions ( ) {
-		return getLatexInstructionsInternal ( 0, this.root );
-	}
 
-	private TreeSet < LatexInstruction > getLatexInstructionsInternal ( int pDepth, ProofNode pNode ) {
-		Enumeration children = pNode.children ( );
-		int depth = pDepth;
-		TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( );
-		ProofNode node = ( ProofNode ) children.nextElement ( );
-		while ( pNode.children ( ).hasMoreElements ( ) ) {
-			for ( LatexInstruction instruction : node.getLatexInstructions ( ) ) {
-				instructions.add ( instruction );
-			}
-			for ( LatexInstruction instruction : getLatexInstructionsInternal ( ++depth, node ) ) {
-				instructions.add ( instruction );
-			}
-			node = ( ProofNode ) children.nextElement ( );
-		}
-		return instructions;
-	}
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexInstructions()
+   */
+  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  {
+    return getLatexInstructionsInternal ( 0 , this.root ) ;
+  }
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexPackages()
-	 */
-	public TreeSet < LatexPackage > getLatexPackages ( ) {
-		return getLatexPackagesInternal ( 0, this.root );
-	}
-	
-	private TreeSet < LatexPackage > getLatexPackagesInternal ( int pDepth, ProofNode pNode ) {
-		Enumeration children = pNode.children ( );
-		int depth = pDepth;
-		TreeSet < LatexPackage > pack = new TreeSet < LatexPackage > ( );
-		ProofNode node = ( ProofNode ) children.nextElement ( );
-		while ( pNode.children ( ).hasMoreElements ( ) ) {
-			for ( LatexPackage instruction : node.getLatexPackages ( ) ) {
-				pack.add ( instruction );
-			}
-			for ( LatexPackage instruction : getLatexPackagesInternal ( ++depth, node ) ) {
-				pack.add ( instruction );
-			}
-			node = ( ProofNode ) children.nextElement ( );
-		}
-		return pack;
-	}
 
-	/**
-	 * {@inheritDoc} 
-	 *
-	 * @see de.unisiegen.tpml.core.latex.LatexPrintable#toLatexString()
-	 */
-	public LatexString toLatexString ( ) {
-		return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-      .toLatexString ( ) ;
-	}
+  private TreeSet < LatexInstruction > getLatexInstructionsInternal (
+      int pDepth , ProofNode pNode )
+  {
+    Enumeration children = pNode.children ( ) ;
+    int depth = pDepth ;
+    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ProofNode node = ( ProofNode ) children.nextElement ( ) ;
+    while ( pNode.children ( ).hasMoreElements ( ) )
+    {
+      for ( LatexInstruction instruction : node.getLatexInstructions ( ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+      for ( LatexInstruction instruction : getLatexInstructionsInternal (
+          ++ depth , node ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+      node = ( ProofNode ) children.nextElement ( ) ;
+    }
+    return instructions ;
+  }
 
-	/**
-	 * {@inheritDoc} 
-	 *
-	 * @see de.unisiegen.tpml.core.latex.LatexPrintable#toLatexStringBuilder(de.unisiegen.tpml.core.latex.LatexStringBuilderFactory, int)
-	 */
-	public LatexStringBuilder toLatexStringBuilder ( LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent ) {
-		 LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-		        0 , LATEX_MINIMAL_TYPING_PROOF_MODEL , pIndent ) ;
-		 
-		return builder;
-	}
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexPackages()
+   */
+  public TreeSet < LatexPackage > getLatexPackages ( )
+  {
+    return getLatexPackagesInternal ( 0 , this.root ) ;
+  }
+
+
+  private TreeSet < LatexPackage > getLatexPackagesInternal ( int pDepth ,
+      ProofNode pNode )
+  {
+    Enumeration children = pNode.children ( ) ;
+    int depth = pDepth ;
+    TreeSet < LatexPackage > pack = new TreeSet < LatexPackage > ( ) ;
+    ProofNode node = ( ProofNode ) children.nextElement ( ) ;
+    while ( pNode.children ( ).hasMoreElements ( ) )
+    {
+      for ( LatexPackage instruction : node.getLatexPackages ( ) )
+      {
+        pack.add ( instruction ) ;
+      }
+      for ( LatexPackage instruction : getLatexPackagesInternal ( ++ depth ,
+          node ) )
+      {
+        pack.add ( instruction ) ;
+      }
+      node = ( ProofNode ) children.nextElement ( ) ;
+    }
+    return pack ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.latex.LatexPrintable#toLatexString()
+   */
+  public LatexString toLatexString ( )
+  {
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
+        .toLatexString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.latex.LatexPrintable#toLatexStringBuilder(de.unisiegen.tpml.core.latex.LatexStringBuilderFactory,
+   *      int)
+   */
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+  {
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_MINIMAL_TYPING_PROOF_MODEL , pIndent ) ;
+    return builder ;
+  }
 }

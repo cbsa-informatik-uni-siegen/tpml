@@ -415,7 +415,7 @@ public final class List extends Expression implements DefaultExpressions
         descriptions [ 2 + i ] = this.expressions [ i ].toPrettyString ( )
             .toString ( ) ;
       }
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_LIST , LATEX_LIST , pIndent , descriptions ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.expressions.length ; i ++ )

@@ -185,8 +185,8 @@ public class DefaultSubType implements PrettyPrintable , LatexPrintable
   public final LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_SUB_TYPE , pIndent , this.toPrettyString ( ).toString ( ) ,
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_SUB_TYPE , pIndent , this.toPrettyString ( ).toString ( ) ,
         this.left.toPrettyString ( ).toString ( ) , this.right
             .toPrettyString ( ).toString ( ) ) ;
     builder.addBuilder ( this.left.toLatexStringBuilder (

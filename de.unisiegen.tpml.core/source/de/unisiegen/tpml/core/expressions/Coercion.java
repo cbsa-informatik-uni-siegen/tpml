@@ -368,7 +368,7 @@ public final class Coercion extends Expression implements DefaultTypes ,
   {
     if ( this.latexStringBuilder == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_COERCION , LATEX_COERCION , pIndent , this.toPrettyString ( )
               .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
               .toString ( ) , this.types [ 0 ].toPrettyString ( ).toString ( ) ,

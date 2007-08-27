@@ -106,7 +106,7 @@ public final class BooleanType extends PrimitiveType
   {
     if ( this.latexStringBuilder == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_PRIMITIVE , LATEX_BOOLEAN_TYPE , pIndent , this
               .toPrettyString ( ).toString ( ) ) ;
     }

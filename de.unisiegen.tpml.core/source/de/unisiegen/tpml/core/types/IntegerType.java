@@ -106,7 +106,7 @@ public final class IntegerType extends PrimitiveType
   {
     if ( this.latexStringBuilder == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_PRIMITIVE , LATEX_INTEGER_TYPE , pIndent , this
               .toPrettyString ( ).toString ( ) ) ;
     }

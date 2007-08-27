@@ -1,28 +1,26 @@
 package de.unisiegen.tpml.core.bigstep ;
 
 
-import java.util.TreeSet;
-
-import javax.swing.tree.TreeNode;
-
-import de.unisiegen.tpml.core.ProofStep;
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode;
-import de.unisiegen.tpml.core.interpreters.DefaultStore;
-import de.unisiegen.tpml.core.interpreters.Store;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
-import de.unisiegen.tpml.core.latex.DefaultLatexPackage;
-import de.unisiegen.tpml.core.latex.LatexCommand;
-import de.unisiegen.tpml.core.latex.LatexInstruction;
-import de.unisiegen.tpml.core.latex.LatexPackage;
-import de.unisiegen.tpml.core.latex.LatexPrintableNode;
-import de.unisiegen.tpml.core.latex.LatexString;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import java.util.TreeSet ;
+import javax.swing.tree.TreeNode ;
+import de.unisiegen.tpml.core.ProofStep ;
+import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode ;
+import de.unisiegen.tpml.core.interpreters.DefaultStore ;
+import de.unisiegen.tpml.core.interpreters.Store ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPrintableNode ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
 
 /**
@@ -179,7 +177,7 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
             + "{#3\\ \\Downarrow\\ #5}" //$NON-NLS-1$
             + "{(#3\\ \\ #4)\\ \\Downarrow\\ #5}" //$NON-NLS-1$
             + "}" //$NON-NLS-1$
-        ,"depth", "id", "e" , "store" , "result" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
+        , "depth" , "id" , "e" , "store" , "result" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
     for ( LatexCommand command : this.expression.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
@@ -369,10 +367,10 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see LatexPrintableNode#toLatexString(int,int)
    */
-  public LatexString toLatexString ( int pDepth, int pId )
+  public LatexString toLatexString ( int pDepth , int pId )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0, pDepth, pId )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) ,
+        0 , pDepth , pId ).toLatexString ( ) ;
   }
 
 
@@ -382,16 +380,17 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * @see LatexPrintableNode#toLatexStringBuilder(LatexStringBuilderFactory,int,int,int)
    */
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent, int pDepth, int pId )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent ,
+      int pDepth , int pId )
   {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_BIG_STEP_PROOF_NODE , pIndent , this.toPrettyString ( )
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_BIG_STEP_PROOF_NODE , pIndent , this.toPrettyString ( )
             .toString ( ) , this.expression.toPrettyString ( ).toString ( ) ,
         this.getStore ( ).toPrettyString ( ).toString ( ) ,
         this.result == null ? LATEX_EMPTY_STRING : this.result
             .toPrettyString ( ).toString ( ) ) ;
-    builder.addText ( "{" + String.valueOf ( pDepth ) + "}" );  //$NON-NLS-1$//$NON-NLS-2$
-    builder.addText ( "{" + String.valueOf ( pId ) + "}" );  //$NON-NLS-1$//$NON-NLS-2$
+    builder.addText ( "{" + String.valueOf ( pDepth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
+    builder.addText ( "{" + String.valueOf ( pId ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addBuilder ( this.expression.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     if ( this.expression.containsMemoryOperations ( ) )

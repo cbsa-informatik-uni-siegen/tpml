@@ -634,7 +634,7 @@ public final class Row extends Expression implements DefaultExpressions
         descriptions [ 2 + i ] = this.expressions [ i ].toPrettyString ( )
             .toString ( ) ;
       }
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_ROW , LATEX_ROW , pIndent , descriptions ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.expressions.length ; i ++ )

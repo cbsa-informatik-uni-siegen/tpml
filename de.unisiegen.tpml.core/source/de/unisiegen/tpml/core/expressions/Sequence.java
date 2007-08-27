@@ -260,7 +260,7 @@ public final class Sequence extends Expression implements DefaultExpressions
   {
     if ( this.latexStringBuilder == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_SEQUENCE , LATEX_SEQUENCE , pIndent , this.toPrettyString ( )
               .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
               .toString ( ) , this.expressions [ 1 ].toPrettyString ( )

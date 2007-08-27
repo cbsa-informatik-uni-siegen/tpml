@@ -813,7 +813,7 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
           .toPrettyString ( ).toString ( ) ;
       descriptions [ descriptions.length - 1 ] = this.expressions [ 1 ]
           .toPrettyString ( ).toString ( ) ;
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_LET , LATEX_CURRIED_LET , pIndent , descriptions ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]

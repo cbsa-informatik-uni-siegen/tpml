@@ -1,22 +1,21 @@
 package de.unisiegen.tpml.core.typechecker ;
 
 
-import java.util.TreeSet;
-
-import de.unisiegen.tpml.core.expressions.Unify;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
-import de.unisiegen.tpml.core.latex.LatexCommand;
-import de.unisiegen.tpml.core.latex.LatexInstruction;
-import de.unisiegen.tpml.core.latex.LatexPackage;
-import de.unisiegen.tpml.core.latex.LatexPrintableNode;
-import de.unisiegen.tpml.core.latex.LatexString;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
-import de.unisiegen.tpml.core.types.MonoType;
+import java.util.TreeSet ;
+import de.unisiegen.tpml.core.expressions.Unify ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPrintableNode ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
@@ -58,7 +57,7 @@ public class DefaultTypeCheckerTypeProofNode extends
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand (
         LATEX_TYPE_CHECKER_TYPE_PROOF_NODE , 4 , "#3\\ " //$NON-NLS-1$
-            + "<:\\ #4" , "depth", "id", "tau1", "tau2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
+            + "<:\\ #4" , "depth" , "id" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
     for ( LatexCommand command : this.type.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
@@ -127,10 +126,10 @@ public class DefaultTypeCheckerTypeProofNode extends
    * 
    * @see LatexPrintableNode#toLatexString(int,int)
    */
-  public LatexString toLatexString ( int pDepth, int pId )
+  public LatexString toLatexString ( int pDepth , int pId )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 , pDepth, pId)
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) ,
+        0 , pDepth , pId ).toLatexString ( ) ;
   }
 
 
@@ -140,14 +139,15 @@ public class DefaultTypeCheckerTypeProofNode extends
    * @see LatexPrintableNode#toLatexStringBuilder(LatexStringBuilderFactory,int,int,int)
    */
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent, int pDepth, int pId )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent ,
+      int pDepth , int pId )
   {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_CHECKER_TYPE_PROOF_NODE , pIndent , this
-            .toPrettyString ( ).toString ( ) , this.type.toPrettyString ( )
-            .toString ( ) , this.type2.toPrettyString ( ).toString ( ) ) ;
-    builder.addText ( "{" + String.valueOf ( pDepth ) + "}" );  //$NON-NLS-1$//$NON-NLS-2$
-    builder.addText ( "{" + String.valueOf ( pId ) + "}" );  //$NON-NLS-1$//$NON-NLS-2$
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_TYPE_CHECKER_TYPE_PROOF_NODE , pIndent , this.toPrettyString ( )
+            .toString ( ) , this.type.toPrettyString ( ).toString ( ) ,
+        this.type2.toPrettyString ( ).toString ( ) ) ;
+    builder.addText ( "{" + String.valueOf ( pDepth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
+    builder.addText ( "{" + String.valueOf ( pId ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addBuilder ( this.type.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     builder.addBuilder ( this.type2.toLatexStringBuilder (

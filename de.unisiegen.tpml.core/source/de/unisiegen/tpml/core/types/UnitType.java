@@ -105,7 +105,7 @@ public final class UnitType extends PrimitiveType
   {
     if ( this.latexStringBuilder == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_PRIMITIVE , LATEX_UNIT_TYPE , pIndent , this.toPrettyString ( )
               .toString ( ) ) ;
     }

@@ -136,7 +136,7 @@ public abstract class BinaryOperator extends Constant
   {
     if ( this.latexStringBuilder == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_CONSTANT , LATEX_BINARY_OPERATOR , pIndent , this
               .toPrettyString ( ).toString ( ) ) ;
       if ( this.parent instanceof InfixOperation )

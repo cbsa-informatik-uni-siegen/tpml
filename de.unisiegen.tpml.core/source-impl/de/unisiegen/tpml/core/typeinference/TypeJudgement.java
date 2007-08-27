@@ -282,11 +282,11 @@ public class TypeJudgement implements TypeFormula
   public final LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_JUDGEMENT , pIndent , this.toPrettyString ( )
-            .toString ( ) , this.environment.toPrettyString ( ).toString ( ) ,
-        this.expression.toPrettyString ( ).toString ( ) , this.type
-            .toPrettyString ( ).toString ( ) ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_TYPE_JUDGEMENT , pIndent , this.toPrettyString ( ).toString ( ) ,
+        this.environment.toPrettyString ( ).toString ( ) , this.expression
+            .toPrettyString ( ).toString ( ) , this.type.toPrettyString ( )
+            .toString ( ) ) ;
     builder.addBuilder ( this.environment.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     builder.addBuilder ( this.expression.toLatexStringBuilder (

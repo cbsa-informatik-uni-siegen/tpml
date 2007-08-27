@@ -264,10 +264,10 @@ public final class DefaultTypeSubstitution implements TypeSubstitution
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_SUBSTITUTION , pIndent , this.toPrettyString ( )
-            .toString ( ) , this.type.toPrettyString ( ).toString ( ) ,
-        this.tvar.toPrettyString ( ).toString ( ) ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_TYPE_SUBSTITUTION , pIndent ,
+        this.toPrettyString ( ).toString ( ) , this.type.toPrettyString ( )
+            .toString ( ) , this.tvar.toPrettyString ( ).toString ( ) ) ;
     builder.addBuilder ( this.type.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     builder.addBuilder ( this.tvar.toLatexStringBuilder (

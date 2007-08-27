@@ -319,7 +319,7 @@ public final class InfixOperation extends Expression implements
   {
     if ( this.latexStringBuilder == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ,
           LATEX_INFIX_OPERATION , pIndent ,
           this.toPrettyString ( ).toString ( ) , this.expressions [ 0 ]

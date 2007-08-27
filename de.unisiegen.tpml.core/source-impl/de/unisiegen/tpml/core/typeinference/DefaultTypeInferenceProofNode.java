@@ -518,8 +518,8 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
       descriptions [ 3 + this.substitutions.size ( ) + i + tmpCountEquation ] = this.formula
           .get ( i ).toPrettyString ( ).toString ( ) ;
     }
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_INFERENCE_PROOF_NODE , pIndent , descriptions ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_TYPE_INFERENCE_PROOF_NODE , pIndent , descriptions ) ;
     builder.addText ( "{" + String.valueOf ( pDepth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addText ( "{" + String.valueOf ( pId ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     if ( this.substitutions.size ( ) > 0 )

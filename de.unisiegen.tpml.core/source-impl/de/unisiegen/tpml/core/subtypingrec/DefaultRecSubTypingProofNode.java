@@ -1,25 +1,24 @@
 package de.unisiegen.tpml.core.subtypingrec ;
 
 
-import java.util.TreeSet;
-
-import de.unisiegen.tpml.core.AbstractProofNode;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
-import de.unisiegen.tpml.core.latex.LatexCommand;
-import de.unisiegen.tpml.core.latex.LatexInstruction;
-import de.unisiegen.tpml.core.latex.LatexPackage;
-import de.unisiegen.tpml.core.latex.LatexPrintableNode;
-import de.unisiegen.tpml.core.latex.LatexString;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
-import de.unisiegen.tpml.core.subtyping.ProofStep;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
-import de.unisiegen.tpml.core.typechecker.SeenTypes;
-import de.unisiegen.tpml.core.types.MonoType;
+import java.util.TreeSet ;
+import de.unisiegen.tpml.core.AbstractProofNode ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPrintableNode ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.subtyping.ProofStep ;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofNode ;
+import de.unisiegen.tpml.core.typechecker.SeenTypes ;
+import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
@@ -100,9 +99,12 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_REC_SUB_TYPE_PROOF_NODE , 5 ,
-        "#1\\vdash\\newline " //$NON-NLS-1$
-            + "\\ #2\\ <:\\ #3" , "depth", "id", "seenTypes" , "tau1" , "tau2") ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ 
+    commands
+        .add ( new DefaultLatexCommand (
+            LATEX_REC_SUB_TYPE_PROOF_NODE ,
+            5 ,
+            "#1\\vdash\\newline " //$NON-NLS-1$
+                + "\\ #2\\ <:\\ #3" , "depth" , "id" , "seenTypes" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ 
     for ( LatexCommand command : this.getLeft ( ).getLatexCommands ( ) )
     {
       commands.add ( command ) ;
@@ -287,10 +289,10 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
    * 
    * @see LatexPrintableNode#toLatexString(int,int)
    */
-  public LatexString toLatexString ( int pDepth, int pId )
+  public LatexString toLatexString ( int pDepth , int pId )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0, pDepth, pId )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) ,
+        0 , pDepth , pId ).toLatexString ( ) ;
   }
 
 
@@ -300,7 +302,8 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
    * @see LatexPrintableNode#toLatexStringBuilder(LatexStringBuilderFactory,int,int,int)
    */
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent, int pDepth, int pId )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent ,
+      int pDepth , int pId )
   {
     StringBuilder body = new StringBuilder ( ) ;
     body.append ( this.seenTypes.toPrettyString ( ).toString ( ) ) ;
@@ -312,13 +315,13 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
     body.append ( PRETTY_SUBTYPE ) ;
     body.append ( PRETTY_SPACE ) ;
     body.append ( this.getRight ( ).toPrettyString ( ).toString ( ) ) ;
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_REC_SUB_TYPE_PROOF_NODE , pIndent , body.toString ( ) ,
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_REC_SUB_TYPE_PROOF_NODE , pIndent , body.toString ( ) ,
         this.seenTypes.toPrettyString ( ).toString ( ) , this.getLeft ( )
             .toPrettyString ( ).toString ( ) , this.getRight ( )
             .toPrettyString ( ).toString ( ) ) ;
-    builder.addText ( "{" + String.valueOf ( pDepth ) + "}" );  //$NON-NLS-1$//$NON-NLS-2$
-    builder.addText ( "{" + String.valueOf ( pId ) + "}" );  //$NON-NLS-1$//$NON-NLS-2$
+    builder.addText ( "{" + String.valueOf ( pDepth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
+    builder.addText ( "{" + String.valueOf ( pId ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addBuilder ( this.seenTypes.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     builder.addBuilder ( this.getLeft ( ).toLatexStringBuilder (

@@ -244,8 +244,8 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
   public final LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_EQUATION_TYPE_CHECKER , pIndent , this.toPrettyString ( )
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_TYPE_EQUATION_TYPE_CHECKER , pIndent , this.toPrettyString ( )
             .toString ( ) , this.left.toPrettyString ( ).toString ( ) ,
         this.right.toPrettyString ( ).toString ( ) ) ;
     builder.addBuilder ( this.left.toLatexStringBuilder (

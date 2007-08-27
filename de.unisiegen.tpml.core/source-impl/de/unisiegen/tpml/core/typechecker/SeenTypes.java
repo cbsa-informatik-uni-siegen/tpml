@@ -242,8 +242,8 @@ public final class SeenTypes < E extends PrettyPrintable & LatexPrintable >
       descriptions [ 2 + i ] = this.list.get ( i ).toPrettyString ( )
           .toString ( ) ;
     }
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_SEEN_TYPES , pIndent , descriptions ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_SEEN_TYPES , pIndent , descriptions ) ;
     builder.addBuilderBegin ( ) ;
     for ( int i = 0 ; i < this.list.size ( ) ; i ++ )
     {

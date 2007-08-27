@@ -279,7 +279,7 @@ public final class Application extends Expression implements DefaultExpressions
   {
     if ( this.latexStringBuilder == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_APPLICATION , LATEX_APPLICATION , pIndent , this
               .toPrettyString ( ).toString ( ) , this.expressions [ 0 ]
               .toPrettyString ( ).toString ( ) , this.expressions [ 1 ]

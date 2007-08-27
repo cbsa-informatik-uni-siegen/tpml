@@ -674,7 +674,7 @@ public final class CurriedMethod extends Expression implements
           : this.types [ 0 ].toPrettyString ( ).toString ( ) ;
       descriptions [ descriptions.length - 1 ] = this.expressions [ 0 ]
           .toPrettyString ( ).toString ( ) ;
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_CURRIED_METHOD , LATEX_CURRIED_METHOD , pIndent , descriptions ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]

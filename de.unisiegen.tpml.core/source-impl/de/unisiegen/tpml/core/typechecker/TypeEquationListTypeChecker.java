@@ -238,8 +238,8 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable ,
       descriptions [ 2 + count ] = list.first.toPrettyString ( ).toString ( ) ;
       count ++ ;
     }
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_EQUATION_LIST_TYPE_CHECKER , pIndent , descriptions ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_TYPE_EQUATION_LIST_TYPE_CHECKER , pIndent , descriptions ) ;
     builder.addBuilderBegin ( ) ;
     for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
     {

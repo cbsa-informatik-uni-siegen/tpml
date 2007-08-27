@@ -180,7 +180,7 @@ public abstract class Constant extends Value
   {
     if ( this.latexStringBuilder == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_CONSTANT , LATEX_CONSTANT , pIndent , this.toPrettyString ( )
               .toString ( ) ) ;
       this.latexStringBuilder.addText ( "{" //$NON-NLS-1$

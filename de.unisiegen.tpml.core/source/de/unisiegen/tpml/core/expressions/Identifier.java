@@ -399,7 +399,7 @@ public final class Identifier extends Value implements IdentifierOrTypeName
   {
     if ( this.latexStringBuilder == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_IDENTIFIER , LATEX_IDENTIFIER , pIndent , this.toPrettyString ( )
               .toString ( ) ) ;
       this.latexStringBuilder.addText ( "{" //$NON-NLS-1$

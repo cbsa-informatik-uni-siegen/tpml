@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -549,7 +549,7 @@ public final class CurriedLetRec extends CurriedLet implements
           .toPrettyString ( ).toString ( ) ;
       descriptions [ descriptions.length - 1 ] = this.expressions [ 1 ]
           .toPrettyString ( ).toString ( ) ;
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_LET , LATEX_CURRIED_LET_REC , pIndent , descriptions ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]

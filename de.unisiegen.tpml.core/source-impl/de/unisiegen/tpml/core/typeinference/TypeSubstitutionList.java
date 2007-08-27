@@ -213,8 +213,8 @@ public class TypeSubstitutionList implements PrettyPrintable , LatexPrintable
       descriptions [ 2 + count ] = list.first.toPrettyString ( ).toString ( ) ;
       count ++ ;
     }
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_TYPE_SUBSTITUTION_LIST , pIndent , descriptions ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_TYPE_SUBSTITUTION_LIST , pIndent , descriptions ) ;
     builder.addBuilderBegin ( ) ;
     for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
     {

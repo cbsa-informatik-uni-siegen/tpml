@@ -30,7 +30,7 @@ public final class LatexStringBuilderFactory
    * 
    * @return A newly allocated <code>LatexStringBuilderFactory</code>
    *         instance.
-   * @see #newBuilder(LatexPrintable,int,String,int,String ...)
+   * @see #newBuilder(int,String,int,String ...)
    */
   public static LatexStringBuilderFactory newInstance ( )
   {
@@ -43,7 +43,6 @@ public final class LatexStringBuilderFactory
    * annotation for the <code>LatexPrintable</code> for the whole string
    * represented by the builder.
    * 
-   * @param pLatexPrintable the printable object.
    * @param pReturnPriority the return priority according to the priority
    *          grammar used for the printables in this builder.
    * @param pName The name of the latex command.
@@ -57,38 +56,10 @@ public final class LatexStringBuilderFactory
    * @see LatexString
    * @see LatexStringBuilder
    */
-  public LatexStringBuilder newBuilder ( LatexPrintable pLatexPrintable ,
-      int pReturnPriority , String pName , int pIndent ,
-      String ... pParameterDescriptions )
+  public LatexStringBuilder newBuilder ( int pReturnPriority , String pName ,
+      int pIndent , String ... pParameterDescriptions )
   {
-    return new DefaultLatexStringBuilder ( pLatexPrintable , pReturnPriority ,
-        pName , pIndent , pParameterDescriptions ) ;
-  }
-  
-  /**
-   * Allocates a new <code>LatexStringBuilder</code>, which will generate an
-   * annotation for the <code>LatexPrintable</code> for the whole string
-   * represented by the builder.
-   * 
-   * @param pLatexPrintable the printable object.
-   * @param pReturnPriority the return priority according to the priority
-   *          grammar used for the printables in this builder.
-   * @param pName The name of the latex command.
-   * @param pIndent The indent of this object.
-   * @param pParameterDescriptions The array of parameter descriptions.
-   * @return A newly allocated <code>LatexStringBuilder</code> for the
-   *         <code>LatexPrintable</code> with the specified
-   *         <code>pReturnPriority</code>.
-   * @throws NullPointerException If <code>LatexPrintable</code> is
-   *           <code>null</code>.
-   * @see LatexString
-   * @see LatexStringBuilder
-   */
-  public LatexStringBuilder newBuilder ( LatexPrintableNode pLatexPrintable ,
-      int pReturnPriority , String pName , int pIndent ,
-      String ... pParameterDescriptions )
-  {
-    return new DefaultLatexStringBuilder ( pLatexPrintable , pReturnPriority ,
-        pName , pIndent , pParameterDescriptions ) ;
+    return new DefaultLatexStringBuilder ( pReturnPriority , pName , pIndent ,
+        pParameterDescriptions ) ;
   }
 }

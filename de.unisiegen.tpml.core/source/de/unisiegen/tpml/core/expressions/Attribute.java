@@ -352,7 +352,7 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
   {
     if ( this.latexStringBuilder == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_ATTRIBUTE , LATEX_ATTRIBUTE , pIndent , this.toPrettyString ( )
               .toString ( ) , this.identifiers [ 0 ].toPrettyString ( )
               .toString ( ) , this.expressions [ 0 ].toPrettyString ( )

@@ -228,7 +228,7 @@ public final class New extends Expression implements DefaultExpressions
   {
     if ( this.latexStringBuilder == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_NEW , LATEX_NEW , pIndent ,
           this.toPrettyString ( ).toString ( ) , this.expressions [ 0 ]
               .toPrettyString ( ).toString ( ) ) ;

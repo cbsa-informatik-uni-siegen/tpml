@@ -237,8 +237,8 @@ public final class Exn extends Expression
     if ( this.latexStringBuilder == null )
     {
       this.latexStringBuilder = pLatexStringBuilderFactory
-          .newBuilder ( this , PRIO_EXN , LATEX_EXN , pIndent , this
-              .toPrettyString ( ).toString ( ) ) ;
+          .newBuilder ( PRIO_EXN , LATEX_EXN , pIndent , this.toPrettyString ( )
+              .toString ( ) ) ;
       this.latexStringBuilder.addText ( "{" //$NON-NLS-1$
           + this.name.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }

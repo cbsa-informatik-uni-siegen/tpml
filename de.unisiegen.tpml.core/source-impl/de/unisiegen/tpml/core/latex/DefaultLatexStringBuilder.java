@@ -72,7 +72,6 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
    * <code>printable</code>, where the priority used for the
    * <code>printable</code> is <code>returnPriority</code>.
    * 
-   * @param pPrintable The printable for which to generate a latex string.
    * @param pReturnPriority The priority for the <code>printable</code>,
    *          which determines where and when to add parenthesis around
    *          {@link LatexPrintable}s added to this builder.
@@ -82,54 +81,9 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
    * @throws NullPointerException if <code>printable</code> is
    *           <code>null</code>.
    */
-  public DefaultLatexStringBuilder ( LatexPrintable pPrintable ,
-      int pReturnPriority , String pName , int pIndent ,
-      String ... pParameterDescriptions )
+  public DefaultLatexStringBuilder ( int pReturnPriority , String pName ,
+      int pIndent , String ... pParameterDescriptions )
   {
-    if ( pPrintable == null )
-    {
-      throw new NullPointerException ( "printable is null" ) ; //$NON-NLS-1$
-    }
-    this.returnPriority = pReturnPriority ;
-    this.indent = pIndent ;
-    this.parameterDescriptions = pParameterDescriptions ;
-    if ( this.parameterDescriptions.length > 0 )
-    {
-      this.items.add ( new TextLatexItem ( getIndent ( this.indent )
-          + "% " //$NON-NLS-1$
-          + this.parameterDescriptions [ this.count ].replaceAll (
-              PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + "% " ) ) ) ; //$NON-NLS-1$
-      this.count ++ ;
-      this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
-    }
-    this.items
-        .add ( new TextLatexItem ( getIndent ( pIndent ) + "\\" + pName ) ) ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * Allocates a new <code>DefaultLatextringBuilder</code> for the
-   * <code>printable</code>, where the priority used for the
-   * <code>printable</code> is <code>returnPriority</code>.
-   * 
-   * @param pPrintable The printable for which to generate a latex string.
-   * @param pReturnPriority The priority for the <code>printable</code>,
-   *          which determines where and when to add parenthesis around
-   *          {@link LatexPrintable}s added to this builder.
-   * @param pName The name of this latex command.
-   * @param pIndent The indent of this object.
-   * @param pParameterDescriptions The array of parameter descriptions.
-   * @throws NullPointerException if <code>printable</code> is
-   *           <code>null</code>.
-   */
-  public DefaultLatexStringBuilder ( LatexPrintableNode pPrintable ,
-      int pReturnPriority , String pName , int pIndent ,
-      String ... pParameterDescriptions )
-  {
-    if ( pPrintable == null )
-    {
-      throw new NullPointerException ( "printable is null" ) ; //$NON-NLS-1$
-    }
     this.returnPriority = pReturnPriority ;
     this.indent = pIndent ;
     this.parameterDescriptions = pParameterDescriptions ;

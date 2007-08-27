@@ -452,7 +452,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   {
     if ( this.latexStringBuilder == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder ( this ,
+      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_OBJECTEXPR , LATEX_OBJECT_EXPR , pIndent , this
               .toPrettyString ( ).toString ( ) , this.identifiers [ 0 ]
               .toPrettyString ( ).toString ( ) ,

@@ -240,8 +240,8 @@ public final class DefaultStore extends
       descriptions [ 3 + i * 2 ] = this.mappings.get ( i ).getEntry ( )
           .toPrettyString ( ).toString ( ) ;
     }
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( this ,
-        0 , LATEX_STORE , pIndent , descriptions ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_STORE , pIndent , descriptions ) ;
     builder.addBuilderBegin ( ) ;
     for ( int i = 0 ; i < this.mappings.size ( ) ; i ++ )
     {
