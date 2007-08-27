@@ -1,6 +1,8 @@
 package de.unisiegen.tpml.core.smallstep ;
 
 
+import java.util.Enumeration ;
+import java.util.TreeSet ;
 import org.apache.log4j.Logger ;
 import de.unisiegen.tpml.core.AbstractProofRuleSet ;
 import de.unisiegen.tpml.core.Messages ;
@@ -12,6 +14,15 @@ import de.unisiegen.tpml.core.ProofStep ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofModel ;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
 
 
 /**
@@ -20,15 +31,14 @@ import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode ;
  * is passed to the constructor.
  * 
  * @author Benedikt Meurer
+ * @author Christian Fehler
  * @version $Rev$
  * @see de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofModel
  * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode
  */
 public final class SmallStepProofModel extends AbstractInterpreterProofModel
+    implements LatexPrintable
 {
-  //
-  // Constants
-  //
   /**
    * The {@link Logger} for this class.
    * 
@@ -38,9 +48,6 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
       .getLogger ( SmallStepProofModel.class ) ;
 
 
-  //
-  // Constructor
-  //
   /**
    * Allocates a new <code>SmallStepProofModel</code> with the specified
    * <code>expression</code> as its root node.
@@ -61,132 +68,6 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
   }
 
 
-  //
-  // Actions
-  //
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
-   */
-  @ Override
-  public void guess ( ProofNode node ) throws ProofGuessException
-  {
-    // guess the remaining steps for the node
-    ProofStep [ ] remainingSteps = remaining ( node ) ;
-    // check if the node is already completed
-    if ( remainingSteps.length == 0 )
-    {
-      // check if we are already completed
-      if ( node.isProven ( ) )
-      {
-        // the node is already proven, programming error
-        throw new IllegalStateException ( "Cannot prove an already proven node" ) ; //$NON-NLS-1$
-      }
-      // the evaluation got stuck
-      throw new ProofGuessException ( Messages
-          .getString ( "InterpreterModel.0" ) , node ) ; //$NON-NLS-1$
-    }
-    // try to prove using the guessed rule
-    try
-    {
-      // apply the last rule of the remaining steps to the node
-      apply ( remainingSteps [ remainingSteps.length - 1 ].getRule ( ) , node ) ;
-      // remember that the user cheated
-      setCheating ( true ) ;
-    }
-    catch ( ProofRuleException e )
-    {
-      // failed to guess
-      throw new ProofGuessException ( node , e ) ;
-    }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule,
-   *      de.unisiegen.tpml.core.ProofNode)
-   */
-  @ Override
-  public void prove ( ProofRule rule , ProofNode node )
-      throws ProofRuleException
-  {
-    if ( node == null )
-    {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
-    }
-    if ( rule == null )
-    {
-      throw new NullPointerException ( "rule is null" ) ; //$NON-NLS-1$
-    }
-    if ( ! this.root.isNodeRelated ( node ) )
-    {
-      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
-    }
-    if ( ! this.ruleSet.contains ( rule ) )
-    {
-      throw new IllegalArgumentException ( "The rule is invalid for the model" ) ; //$NON-NLS-1$
-    }
-    // apply the rule to the specified node
-    try
-    {
-      apply ( rule , node ) ;
-    }
-    catch ( RuntimeException e )
-    {
-      logger
-          .error (
-              "An internal error occurred while proving " + node + " using (" + rule + ")" , e ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-      throw e ;
-    }
-  }
-
-
-  /**
-   * Returns the remaining {@link de.unisiegen.tpml.core.ProofStep}s required
-   * to prove the specified <code>node</code>. This method is used to guess
-   * the next step, see the {@link #guess(ProofNode)} method for further
-   * details, and in the user interface, to highlight the next expression.
-   * 
-   * @param node the {@link de.unisiegen.tpml.core.ProofNode} for which to
-   *          return the remaining steps required to prove the <code>node</code>.
-   * @return the remaining {@link ProofStep}s required to prove the
-   *         <code>node</code>, or an empty array if the <code>node</code>
-   *         is already proven or the evaluation is stuck.
-   * @throws IllegalArgumentException if the <code>node</code> is invalid for
-   *           the model.
-   * @throws NullPointerException if <code>node</code> is <code>null</code>.
-   */
-  public ProofStep [ ] remaining ( ProofNode node )
-  {
-    if ( node == null )
-    {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
-    }
-    if ( ! this.root.isNodeRelated ( node ) )
-    {
-      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
-    }
-    // evaluate the next step for the node
-    DefaultSmallStepProofContext context = new DefaultSmallStepProofContext (
-        ( SmallStepProofNode ) node , this.ruleSet ) ;
-    // determine the completed/evaluated steps
-    ProofStep [ ] completedSteps = ( ( SmallStepProofNode ) node ).getSteps ( ) ;
-    ProofStep [ ] evaluatedSteps = context.getSteps ( ) ;
-    // generate the remaining steps
-    ProofStep [ ] remainingSteps = new ProofStep [ evaluatedSteps.length
-        - completedSteps.length ] ;
-    System.arraycopy ( evaluatedSteps , completedSteps.length , remainingSteps ,
-        0 , remainingSteps.length ) ;
-    return remainingSteps ;
-  }
-
-
-  //
-  // Undo/Redo
-  //
   /**
    * {@inheritDoc}
    * 
@@ -199,28 +80,6 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     edit.redo ( ) ;
     // add to the undo history
     super.addUndoableTreeEdit ( edit ) ;
-  }
-
-
-  //
-  // Internals
-  //
-  /**
-   * Convenience wrapper for the
-   * {@link #apply(DefaultSmallStepProofRule, DefaultSmallStepProofNode)}
-   * method, which automatically casts to the appropriate types.
-   * 
-   * @param rule the small step proof rule to apply to <code>node</code>.
-   * @param node the node to which to apply the <code>rule</code>.
-   * @throws ProofRuleException if the <code>rule</code> cannot be applied to
-   *           the <code>node</code>.
-   * @see #apply(DefaultSmallStepProofRule, DefaultSmallStepProofNode)
-   */
-  private void apply ( ProofRule rule , ProofNode node )
-      throws ProofRuleException
-  {
-    apply ( ( DefaultSmallStepProofRule ) rule ,
-        ( DefaultSmallStepProofNode ) node ) ;
   }
 
 
@@ -353,5 +212,314 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
         }
       } ) ;
     }
+  }
+
+
+  /**
+   * Convenience wrapper for the
+   * {@link #apply(DefaultSmallStepProofRule, DefaultSmallStepProofNode)}
+   * method, which automatically casts to the appropriate types.
+   * 
+   * @param rule the small step proof rule to apply to <code>node</code>.
+   * @param node the node to which to apply the <code>rule</code>.
+   * @throws ProofRuleException if the <code>rule</code> cannot be applied to
+   *           the <code>node</code>.
+   * @see #apply(DefaultSmallStepProofRule, DefaultSmallStepProofNode)
+   */
+  private void apply ( ProofRule rule , ProofNode node )
+      throws ProofRuleException
+  {
+    apply ( ( DefaultSmallStepProofRule ) rule ,
+        ( DefaultSmallStepProofNode ) node ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexCommands()
+   */
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_MODEL , 1 ,
+        "#1" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    for ( LatexCommand command : getLatexCommandsInternal ( this.root ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexString()
+   */
+  public final LatexString toLatexString ( )
+  {
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
+        .toLatexString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
+   */
+  public final LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+  {
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_SMALL_STEP_PROOF_MODEL , pIndent  ) ;
+    builder.addBuilderBegin ( ) ;
+    
+    
+    
+    
+ 
+
+    
+    
+    builder.addBuilderEnd ( ) ;
+    return builder ;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /**
+   * TODO
+   * 
+   * @param pNode TODO
+   * @return TODO
+   */
+  private TreeSet < LatexCommand > getLatexCommandsInternal ( ProofNode pNode )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    for ( LatexCommand command : pNode.getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    {
+      for ( LatexCommand command : pNode.getChildAt ( i ).getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    return commands ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexInstructions()
+   */
+  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  {
+    TreeSet < LatexInstruction > packages = new TreeSet < LatexInstruction > ( ) ;
+    for ( LatexInstruction pack : getLatexInstructionsInternal ( this.root ) )
+    {
+      packages.add ( pack ) ;
+    }
+    return packages ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pNode TODO
+   * @return TODO
+   */
+  private TreeSet < LatexInstruction > getLatexInstructionsInternal (
+      ProofNode pNode )
+  {
+    TreeSet < LatexInstruction > packages = new TreeSet < LatexInstruction > ( ) ;
+    for ( LatexInstruction pack : pNode.getLatexInstructions ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    {
+      for ( LatexInstruction pack : pNode.getChildAt ( i )
+          .getLatexInstructions ( ) )
+      {
+        packages.add ( pack ) ;
+      }
+    }
+    return packages ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexPackages()
+   */
+  public TreeSet < LatexPackage > getLatexPackages ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "longtable" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
+    for ( LatexPackage pack : getLatexPackagesInternal ( this.root ) )
+    {
+      packages.add ( pack ) ;
+    }
+    return packages ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pNode TODO
+   * @return TODO
+   */
+  private TreeSet < LatexPackage > getLatexPackagesInternal ( ProofNode pNode )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    for ( LatexPackage pack : pNode.getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    {
+      for ( LatexPackage pack : pNode.getChildAt ( i ).getLatexPackages ( ) )
+      {
+        packages.add ( pack ) ;
+      }
+    }
+    return packages ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
+   */
+  @ Override
+  public void guess ( ProofNode node ) throws ProofGuessException
+  {
+    // guess the remaining steps for the node
+    ProofStep [ ] remainingSteps = remaining ( node ) ;
+    // check if the node is already completed
+    if ( remainingSteps.length == 0 )
+    {
+      // check if we are already completed
+      if ( node.isProven ( ) )
+      {
+        // the node is already proven, programming error
+        throw new IllegalStateException ( "Cannot prove an already proven node" ) ; //$NON-NLS-1$
+      }
+      // the evaluation got stuck
+      throw new ProofGuessException ( Messages
+          .getString ( "InterpreterModel.0" ) , node ) ; //$NON-NLS-1$
+    }
+    // try to prove using the guessed rule
+    try
+    {
+      // apply the last rule of the remaining steps to the node
+      apply ( remainingSteps [ remainingSteps.length - 1 ].getRule ( ) , node ) ;
+      // remember that the user cheated
+      setCheating ( true ) ;
+    }
+    catch ( ProofRuleException e )
+    {
+      // failed to guess
+      throw new ProofGuessException ( node , e ) ;
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule,
+   *      de.unisiegen.tpml.core.ProofNode)
+   */
+  @ Override
+  public void prove ( ProofRule rule , ProofNode node )
+      throws ProofRuleException
+  {
+    if ( node == null )
+    {
+      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+    }
+    if ( rule == null )
+    {
+      throw new NullPointerException ( "rule is null" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.root.isNodeRelated ( node ) )
+    {
+      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.ruleSet.contains ( rule ) )
+    {
+      throw new IllegalArgumentException ( "The rule is invalid for the model" ) ; //$NON-NLS-1$
+    }
+    // apply the rule to the specified node
+    try
+    {
+      apply ( rule , node ) ;
+    }
+    catch ( RuntimeException e )
+    {
+      logger
+          .error (
+              "An internal error occurred while proving " + node + " using (" + rule + ")" , e ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+      throw e ;
+    }
+  }
+
+
+  /**
+   * Returns the remaining {@link de.unisiegen.tpml.core.ProofStep}s required
+   * to prove the specified <code>node</code>. This method is used to guess
+   * the next step, see the {@link #guess(ProofNode)} method for further
+   * details, and in the user interface, to highlight the next expression.
+   * 
+   * @param node the {@link de.unisiegen.tpml.core.ProofNode} for which to
+   *          return the remaining steps required to prove the <code>node</code>.
+   * @return the remaining {@link ProofStep}s required to prove the
+   *         <code>node</code>, or an empty array if the <code>node</code>
+   *         is already proven or the evaluation is stuck.
+   * @throws IllegalArgumentException if the <code>node</code> is invalid for
+   *           the model.
+   * @throws NullPointerException if <code>node</code> is <code>null</code>.
+   */
+  public ProofStep [ ] remaining ( ProofNode node )
+  {
+    if ( node == null )
+    {
+      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.root.isNodeRelated ( node ) )
+    {
+      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+    }
+    // evaluate the next step for the node
+    DefaultSmallStepProofContext context = new DefaultSmallStepProofContext (
+        ( SmallStepProofNode ) node , this.ruleSet ) ;
+    // determine the completed/evaluated steps
+    ProofStep [ ] completedSteps = ( ( SmallStepProofNode ) node ).getSteps ( ) ;
+    ProofStep [ ] evaluatedSteps = context.getSteps ( ) ;
+    // generate the remaining steps
+    ProofStep [ ] remainingSteps = new ProofStep [ evaluatedSteps.length
+        - completedSteps.length ] ;
+    System.arraycopy ( evaluatedSteps , completedSteps.length , remainingSteps ,
+        0 , remainingSteps.length ) ;
+    return remainingSteps ;
   }
 }
