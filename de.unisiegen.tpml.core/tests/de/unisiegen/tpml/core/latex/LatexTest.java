@@ -13,7 +13,6 @@ import de.unisiegen.tpml.core.ProofModel ;
 import de.unisiegen.tpml.core.ProofNode ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofResult ;
 import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode ;
-import de.unisiegen.tpml.core.expressions.And ;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
@@ -36,7 +35,6 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
 import de.unisiegen.tpml.core.typechecker.SeenTypes ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -51,8 +49,6 @@ import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.BooleanType ;
 import de.unisiegen.tpml.core.types.IntegerType ;
 import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.PolyType ;
-import de.unisiegen.tpml.core.types.RowType ;
 import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.core.types.TypeVariable ;
 import de.unisiegen.tpml.core.types.UnitType ;
@@ -90,8 +86,8 @@ public class LatexTest
       System.out.println ( ) ;
       System.out.println ( "*** compile ***" ) ;
       Process p ;
-      // pdflatex
-      System.out.println ( "latex" ) ;
+      // latex 1
+      System.out.println ( "latex 1" ) ;
       p = Runtime.getRuntime ( ).exec ( "latex test.tex" ) ;
       try
       {
@@ -103,7 +99,22 @@ public class LatexTest
       }
       if ( p.exitValue ( ) != 0 )
       {
-        System.err.println ( "LatexTest: latex error" ) ;
+        System.err.println ( "LatexTest: latex 1 error" ) ;
+      }
+      // latex 2
+      System.out.println ( "latex 2" ) ;
+      p = Runtime.getRuntime ( ).exec ( "latex test.tex" ) ;
+      try
+      {
+        p.waitFor ( ) ;
+      }
+      catch ( InterruptedException e )
+      {
+        e.printStackTrace ( ) ;
+      }
+      if ( p.exitValue ( ) != 0 )
+      {
+        System.err.println ( "LatexTest: latex 2 error" ) ;
       }
       // dvips
       System.out.println ( "dvips" ) ;
@@ -154,7 +165,7 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    int number = 0 ;
+    int number = 24 ;
     if ( number == 0 ) testExpression ( ) ;
     if ( number == 1 ) testType ( ) ;
     if ( number == 2 ) testTypeEnvironment ( ) ;
@@ -178,6 +189,7 @@ public class LatexTest
     if ( number == 20 ) testRecSubTypingProofNode ( ) ;
     if ( number == 21 ) testMinimalTypingTypesProofNode ( ) ;
     if ( number == 22 ) testMinimalTypingExpressionProofNode ( ) ;
+    if ( number == 24 ) testSmallStepProofModel ( ) ;
   }
 
 
@@ -472,7 +484,9 @@ public class LatexTest
   {
     try
     {
-      String text = "let (a,b,c) = 1 in 2" ;
+      String text = "let hallo = 1 in hallo + hallo + hallo + hallo + hallo + hallo + hallo + hallo + hallo + hallo + hallo + hallo + hallo" ;
+      // PowerSet
+      text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
@@ -570,15 +584,20 @@ public class LatexTest
   {
     try
     {
-      Expression expression = new InfixOperation ( ArithmeticOperator
-          .newPlus ( ) , new IntegerConstant ( 1 ) , new InfixOperation (
-          ArithmeticOperator.newPlus ( ) , new IntegerConstant ( 2 ) ,
-          new IntegerConstant ( 3 ) ) ) ;
-      Language language = LanguageFactory.newInstance ( ).getLanguageById (
-          "l2o" ) ;
+      String text = "let x = 1 + 1 in let y = 0 in x + y" ;
+      // PowerSet
+      // text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map
+      // f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 ::
+      // append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else
+      // let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set
+      // [1;2]" ;
+      LanguageFactory factory = LanguageFactory.newInstance ( ) ;
+      Language language = factory.getLanguageById ( "l4" ) ;
+      Expression expression = language.newParser ( new StringReader ( text ) )
+          .parse ( ) ;
       SmallStepProofModel model = language.newSmallStepProofModel ( expression ) ;
-      model.guess ( nextNode ( model ) ) ;
-      // printLatexPrintable ( node ) ;
+      model.complete ( nextNode ( model ) ) ;
+      printLatexPrintable ( model ) ;
     }
     catch ( Exception e )
     {

@@ -2,10 +2,19 @@ package de.unisiegen.tpml.core.bigstep ;
 
 
 import java.lang.reflect.InvocationTargetException ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.AbstractProofRule ;
 import de.unisiegen.tpml.core.ProofRuleException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.exceptions.RowSubstitutionException ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.UnificationException ;
 
 
@@ -22,9 +31,41 @@ import de.unisiegen.tpml.core.typechecker.UnificationException ;
 abstract class AbstractBigStepProofRule extends AbstractProofRule implements
     BigStepProofRule
 {
-  //
-  // Constructor (package)
-  //
+  /**
+   * Allocates a new <code>BigStepProofRule</code> with the specified
+   * <code>name</code>, that does nothing, meaning that
+   * {@link #apply(BigStepProofContext, BigStepProofNode)} and
+   * {@link #update(BigStepProofContext, BigStepProofNode)} are noops.
+   * 
+   * @param name the name of the rule to allocate.
+   * @return a newly allocated <code>BigStepProofRule</code> with the
+   *         specified <code>name</code>, that does nothing.
+   * @see #toExnRule(int)
+   */
+  static BigStepProofRule newNoopRule ( String name )
+  {
+    return new AbstractBigStepProofRule ( - 1 , name )
+    {
+      @ Override
+      protected void applyInternal ( @ SuppressWarnings ( "unused" )
+      BigStepProofContext context , @ SuppressWarnings ( "unused" )
+      BigStepProofNode node ) throws Exception
+      {
+        throw new IllegalArgumentException ( "Cannot apply noop rules" ) ; //$NON-NLS-1$
+      }
+
+
+      @ Override
+      protected void updateInternal ( @ SuppressWarnings ( "unused" )
+      BigStepProofContext context , @ SuppressWarnings ( "unused" )
+      BigStepProofNode node ) throws Exception
+      {
+        // nothing to do here...
+      }
+    } ;
+  }
+
+
   /**
    * Allocates a new <code>AbstractBigStepProofRule</code> of the specified
    * <code>name</code>.
@@ -40,9 +81,6 @@ abstract class AbstractBigStepProofRule extends AbstractProofRule implements
   }
 
 
-  //
-  // Primitives
-  //
   /**
    * Applies this big step proof rule to the specified <code>node</code> via
    * the given <code>context</code>.
@@ -100,6 +138,106 @@ abstract class AbstractBigStepProofRule extends AbstractProofRule implements
 
 
   /**
+   * Abstract internal apply method, implemented by the
+   * {@link AbstractBigStepProofRuleSet} class while registering new proof
+   * rules.
+   * 
+   * @param context see {@link #apply(BigStepProofContext, BigStepProofNode)}.
+   * @param node see {@link #apply(BigStepProofContext, BigStepProofNode)}.
+   * @throws Exception if an error occurs while applying the rule to the
+   *           <code>node</code> using the <code>context</code>.
+   * @see #apply(BigStepProofContext, BigStepProofNode)
+   */
+  protected abstract void applyInternal ( BigStepProofContext context ,
+      BigStepProofNode node ) throws Exception ;
+
+
+  /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_BIG_STEP_PROOF_RULE , 1 ,
+        "\\mbox{\\scriptsize{\\textbf{(#1)}}}" , "name" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  {
+    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public TreeSet < LatexPackage > getLatexPackages ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    return packages ;
+  }
+
+
+  /**
+   * Translates this big step proof rule to an appropriate exception rule, with
+   * the given sub node index <code>n</code>. For example, for <b>(APP)</b>,
+   * this generates <b>(APP-EXN-n)</b>.
+   * 
+   * @param n the index of the sub node, starting at <code>0</code>.
+   * @return the new {@link BigStepProofRule} for the exception.
+   * @throws IllegalArgumentException if <code>n</code> is negative.
+   */
+  BigStepProofRule toExnRule ( int n )
+  {
+    if ( n < 0 )
+    {
+      throw new IllegalArgumentException ( "n is negative" ) ; //$NON-NLS-1$
+    }
+    return newNoopRule ( getName ( ) + "-EXN-" + ( n + 1 ) ) ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexString()
+   */
+  public final LatexString toLatexString ( )
+  {
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
+        .toLatexString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
+   */
+  public final LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+  {
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_BIG_STEP_PROOF_RULE , pIndent ) ;
+    builder
+        .addText ( "{" + this.getName ( ).replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    return builder ;
+  }
+
+
+  /**
    * Updates the specified <code>node</code> as part of a previous rule
    * application for <code>context</code>. This method is only interesting
    * for non-axiom rules, like <b>(APP)</b> or <b>(LET)</b>, that need to
@@ -146,24 +284,6 @@ abstract class AbstractBigStepProofRule extends AbstractProofRule implements
   }
 
 
-  //
-  // Abstract methods
-  //
-  /**
-   * Abstract internal apply method, implemented by the
-   * {@link AbstractBigStepProofRuleSet} class while registering new proof
-   * rules.
-   * 
-   * @param context see {@link #apply(BigStepProofContext, BigStepProofNode)}.
-   * @param node see {@link #apply(BigStepProofContext, BigStepProofNode)}.
-   * @throws Exception if an error occurs while applying the rule to the
-   *           <code>node</code> using the <code>context</code>.
-   * @see #apply(BigStepProofContext, BigStepProofNode)
-   */
-  protected abstract void applyInternal ( BigStepProofContext context ,
-      BigStepProofNode node ) throws Exception ;
-
-
   /**
    * Abstract internal update method, implemented by the
    * {@link AbstractBigStepProofRuleSet} class while registering new proof
@@ -176,61 +296,4 @@ abstract class AbstractBigStepProofRule extends AbstractProofRule implements
    */
   protected abstract void updateInternal ( BigStepProofContext context ,
       BigStepProofNode node ) throws Exception ;
-
-
-  //
-  // Rule allocation
-  //
-  /**
-   * Allocates a new <code>BigStepProofRule</code> with the specified
-   * <code>name</code>, that does nothing, meaning that
-   * {@link #apply(BigStepProofContext, BigStepProofNode)} and
-   * {@link #update(BigStepProofContext, BigStepProofNode)} are noops.
-   * 
-   * @param name the name of the rule to allocate.
-   * @return a newly allocated <code>BigStepProofRule</code> with the
-   *         specified <code>name</code>, that does nothing.
-   * @see #toExnRule(int)
-   */
-  static BigStepProofRule newNoopRule ( String name )
-  {
-    return new AbstractBigStepProofRule ( - 1 , name )
-    {
-      @ Override
-      protected void applyInternal ( @ SuppressWarnings ( "unused" )
-      BigStepProofContext context , @ SuppressWarnings ( "unused" )
-      BigStepProofNode node ) throws Exception
-      {
-        throw new IllegalArgumentException ( "Cannot apply noop rules" ) ; //$NON-NLS-1$
-      }
-
-
-      @ Override
-      protected void updateInternal ( @ SuppressWarnings ( "unused" )
-      BigStepProofContext context , @ SuppressWarnings ( "unused" )
-      BigStepProofNode node ) throws Exception
-      {
-        // nothing to do here...
-      }
-    } ;
-  }
-
-
-  /**
-   * Translates this big step proof rule to an appropriate exception rule, with
-   * the given sub node index <code>n</code>. For example, for <b>(APP)</b>,
-   * this generates <b>(APP-EXN-n)</b>.
-   * 
-   * @param n the index of the sub node, starting at <code>0</code>.
-   * @return the new {@link BigStepProofRule} for the exception.
-   * @throws IllegalArgumentException if <code>n</code> is negative.
-   */
-  BigStepProofRule toExnRule ( int n )
-  {
-    if ( n < 0 )
-    {
-      throw new IllegalArgumentException ( "n is negative" ) ; //$NON-NLS-1$
-    }
-    return newNoopRule ( getName ( ) + "-EXN-" + ( n + 1 ) ) ; //$NON-NLS-1$
-  }
 }

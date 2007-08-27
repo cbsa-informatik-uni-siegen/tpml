@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.latex ;
 
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofResult ;
+import de.unisiegen.tpml.core.bigstep.BigStepProofRule ;
 import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode ;
 import de.unisiegen.tpml.core.expressions.And ;
 import de.unisiegen.tpml.core.expressions.Application ;
@@ -40,15 +41,20 @@ import de.unisiegen.tpml.core.expressions.While ;
 import de.unisiegen.tpml.core.interpreters.Store ;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingExpressionProofNode ;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel ;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofRule ;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingTypesProofNode ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofNode ;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofRule ;
 import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode ;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofRule ;
 import de.unisiegen.tpml.core.subtypingrec.DefaultRecSubTypingProofNode ;
 import de.unisiegen.tpml.core.subtypingrec.DefaultSubType ;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofRule ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode ;
 import de.unisiegen.tpml.core.typechecker.SeenTypes ;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule ;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
@@ -808,6 +814,12 @@ public interface LatexCommandNames
 
 
   /**
+   * The latex print command for small step arrow.
+   */
+  public static final String LATEX_SMALL_STEP_ARROW = "SmallStepArrow" ; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for {@link BigStepProofModel}.
    */
   public static final String LATEX_BIG_STEP_PROOF_MODEL = "BigStepProofModel" ; //$NON-NLS-1$
@@ -817,4 +829,40 @@ public interface LatexCommandNames
    * The latex print command for {@link MinimalTypingProofModel}.
    */
   public static final String LATEX_MINIMAL_TYPING_PROOF_MODEL = "BigStepProofModel" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for {@link SmallStepProofRule}.
+   */
+  public static final String LATEX_SMALL_STEP_PROOF_RULE = "SmallStepProofRule" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for {@link MinimalTypingProofRule}.
+   */
+  public static final String LATEX_MINIMAL_TYPING_PROOF_RULE = "MinimalTypingProofRule" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for {@link RecSubTypingProofRule}.
+   */
+  public static final String LATEX_REC_SUB_TYPING_PROOF_RULE = "RecSubTypingProofRule" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for {@link SubTypingProofRule}.
+   */
+  public static final String LATEX_SUB_TYPING_PROOF_RULE = "SubTypingProofRule" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for {@link TypeCheckerProofRule}.
+   */
+  public static final String LATEX_TYPE_CHECKER_PROOF_RULE = "TypeCheckerProofRule" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for {@link BigStepProofRule}.
+   */
+  public static final String LATEX_BIG_STEP_PROOF_RULE = "BigStepProofRule" ; //$NON-NLS-1$
 }

@@ -20,19 +20,19 @@ public interface LatexPrintable extends LatexCommandNames
 
 
   /**
-   * Returns a set of needed latex packages for this latex printable object.
-   * 
-   * @return A set of needed latex packages for this latex printable object.
-   */
-  public TreeSet < LatexPackage > getLatexPackages ( ) ;
-
-
-  /**
    * Returns a set of needed latex instructions for this latex printable object.
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
   public TreeSet < LatexInstruction > getLatexInstructions ( ) ;
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public TreeSet < LatexPackage > getLatexPackages ( ) ;
 
 
   /**

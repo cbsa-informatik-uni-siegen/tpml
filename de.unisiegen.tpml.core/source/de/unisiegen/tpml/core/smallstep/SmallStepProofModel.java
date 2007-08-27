@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.core.smallstep ;
 
 
-import java.util.Enumeration ;
 import java.util.TreeSet ;
 import org.apache.log4j.Logger ;
 import de.unisiegen.tpml.core.AbstractProofRuleSet ;
@@ -20,9 +19,9 @@ import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 
 
 /**
@@ -242,8 +241,13 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_MODEL , 1 ,
-        "#1" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands
+        .add ( new DefaultLatexCommand (
+            LATEX_SMALL_STEP_PROOF_MODEL ,
+            1 ,
+            "$\\begin{longtable}{p{2.5cm}p{12cm}}$#1$\\end{longtable}$" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_ARROW , 2 ,
+        "\\xrightarrow[#2]{#1}" , "above text" , "below text" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     for ( LatexCommand command : getLatexCommandsInternal ( this.root ) )
     {
       commands.add ( command ) ;
@@ -251,56 +255,14 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     return commands ;
   }
 
-  /**
-   * {@inheritDoc}
-   * 
-   * @see LatexPrintable#toLatexString()
-   */
-  public final LatexString toLatexString ( )
-  {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
-  }
-
 
   /**
-   * {@inheritDoc}
+   * Returns a set of needed latex commands for the given latex printable
+   * {@link ProofNode}.
    * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
-   */
-  public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
-  {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_SMALL_STEP_PROOF_MODEL , pIndent  ) ;
-    builder.addBuilderBegin ( ) ;
-    
-    
-    
-    
- 
-
-    
-    
-    builder.addBuilderEnd ( ) ;
-    return builder ;
-  }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  /**
-   * TODO
-   * 
-   * @param pNode TODO
-   * @return TODO
+   * @param pNode The input {@link ProofNode}.
+   * @return A set of needed latex commands for the given latex printable
+   *         {@link ProofNode}.
    */
   private TreeSet < LatexCommand > getLatexCommandsInternal ( ProofNode pNode )
   {
@@ -308,6 +270,13 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     for ( LatexCommand command : pNode.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
+    }
+    for ( ProofRule rule : pNode.getRules ( ) )
+    {
+      for ( LatexCommand command : rule.getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
     }
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
@@ -327,38 +296,47 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    */
   public TreeSet < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > packages = new TreeSet < LatexInstruction > ( ) ;
-    for ( LatexInstruction pack : getLatexInstructionsInternal ( this.root ) )
+    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    for ( LatexInstruction instruction : getLatexInstructionsInternal ( this.root ) )
     {
-      packages.add ( pack ) ;
+      instructions.add ( instruction ) ;
     }
-    return packages ;
+    return instructions ;
   }
 
 
   /**
-   * TODO
+   * Returns a set of needed latex instructions for the given latex printable
+   * {@link ProofNode}.
    * 
-   * @param pNode TODO
-   * @return TODO
+   * @param pNode The input {@link ProofNode}.
+   * @return A set of needed latex instructions for the given latex printable
+   *         {@link ProofNode}.
    */
   private TreeSet < LatexInstruction > getLatexInstructionsInternal (
       ProofNode pNode )
   {
-    TreeSet < LatexInstruction > packages = new TreeSet < LatexInstruction > ( ) ;
+    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
     for ( LatexInstruction pack : pNode.getLatexInstructions ( ) )
     {
-      packages.add ( pack ) ;
+      instructions.add ( pack ) ;
+    }
+    for ( ProofRule rule : pNode.getRules ( ) )
+    {
+      for ( LatexInstruction instruction : rule.getLatexInstructions ( ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
-      for ( LatexInstruction pack : pNode.getChildAt ( i )
+      for ( LatexInstruction instruction : pNode.getChildAt ( i )
           .getLatexInstructions ( ) )
       {
-        packages.add ( pack ) ;
+        instructions.add ( instruction ) ;
       }
     }
-    return packages ;
+    return instructions ;
   }
 
 
@@ -381,10 +359,12 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
 
 
   /**
-   * TODO
+   * Returns a set of needed latex packages for the given latex printable
+   * {@link ProofNode}.
    * 
-   * @param pNode TODO
-   * @return TODO
+   * @param pNode The input {@link ProofNode}.
+   * @return A set of needed latex packages for the given latex printable
+   *         {@link ProofNode}.
    */
   private TreeSet < LatexPackage > getLatexPackagesInternal ( ProofNode pNode )
   {
@@ -392,6 +372,13 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     for ( LatexPackage pack : pNode.getLatexPackages ( ) )
     {
       packages.add ( pack ) ;
+    }
+    for ( ProofRule rule : pNode.getRules ( ) )
+    {
+      for ( LatexPackage pack : rule.getLatexPackages ( ) )
+      {
+        packages.add ( pack ) ;
+      }
     }
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
@@ -521,5 +508,89 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     System.arraycopy ( evaluatedSteps , completedSteps.length , remainingSteps ,
         0 , remainingSteps.length ) ;
     return remainingSteps ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexString()
+   */
+  public final LatexString toLatexString ( )
+  {
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
+        .toLatexString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
+   */
+  public final LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+  {
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_SMALL_STEP_PROOF_MODEL , pIndent ) ;
+    builder.addBuilderBegin ( ) ;
+    builder.addText ( " $&$" ) ; //$NON-NLS-1$
+    builder.addBuilder ( this.root.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT , 0 , 0 ) , 0 ) ;
+    builder.addText ( "$\\\\[5mm]$" ) ; //$NON-NLS-1$
+    for ( int i = 0 ; i < this.root.getChildCount ( ) ; i ++ )
+    {
+      toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
+          this.root , this.root.getChildAt ( i ) , pIndent + LATEX_INDENT ) ;
+    }
+    builder.addBuilderEnd ( ) ;
+    return builder ;
+  }
+
+
+  /**
+   * Build the latex string for the given <code>pCurrentNode</code>.
+   * 
+   * @param pLatexStringBuilderFactory The factory which should be used.
+   * @param pLatexStringBuilder The {@link LatexStringBuilder} which should be
+   *          completed.
+   * @param pParentNode The parent of the current {@link ProofNode}. This node
+   *          is needed because of his {@link ProofNode}s.
+   * @param pCurrentNode The current {@link ProofNode}.
+   * @param pIndent The indent of this object.
+   */
+  public final void toLatexStringBuilderInternal (
+      LatexStringBuilderFactory pLatexStringBuilderFactory ,
+      LatexStringBuilder pLatexStringBuilder , ProofNode pParentNode ,
+      ProofNode pCurrentNode , int pIndent )
+  {
+    StringBuilder textAbove = new StringBuilder ( ) ;
+    StringBuilder textBelow = new StringBuilder ( ) ;
+    for ( int i = 0 ; i < pParentNode.getRules ( ).length - 1 ; i ++ )
+    {
+      textAbove.append ( pParentNode.getRules ( ) [ i ].toLatexString ( )
+          .toString ( )
+          + " $& \\\\$ " ) ; //$NON-NLS-1$
+    }
+    if ( pParentNode.getRules ( ).length > 0 )
+    {
+      textBelow
+          .append ( pParentNode.getRules ( ) [ pParentNode.getRules ( ).length - 1 ]
+              .toLatexString ( ).toString ( ) ) ;
+    }
+    pLatexStringBuilder.addText ( textAbove.toString ( ) ) ;
+    pLatexStringBuilder.addText ( "\\longrightarrow" + " $&$ " ) ; //$NON-NLS-1$//$NON-NLS-2$
+    pLatexStringBuilder.addBuilder ( pCurrentNode.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT , 0 , 0 ) , 0 ) ;
+    pLatexStringBuilder.addText ( " $\\\\$ " ) ; //$NON-NLS-1$
+    pLatexStringBuilder.addText ( textBelow.toString ( ) ) ;
+    pLatexStringBuilder.addText ( " $& $ " ) ; //$NON-NLS-1$
+    pLatexStringBuilder.addText ( "$\\\\[5mm]$" ) ; //$NON-NLS-1$
+    for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
+    {
+      toLatexStringBuilderInternal ( pLatexStringBuilderFactory ,
+          pLatexStringBuilder , pCurrentNode , pCurrentNode.getChildAt ( i ) ,
+          pIndent + LATEX_INDENT ) ;
+    }
   }
 }
