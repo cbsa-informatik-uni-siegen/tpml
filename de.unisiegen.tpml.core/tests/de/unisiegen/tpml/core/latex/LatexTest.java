@@ -102,30 +102,30 @@ public class LatexTest
     {
       e.printStackTrace ( ) ;
     }
-    int number = 17 ;
-    if ( number == 0 ) testExpression ( ) ;// done
-    if ( number == 1 ) testType ( ) ; // done
-    if ( number == 2 ) testTypeEnvironment ( ) ; // done
-    if ( number == 3 ) testStore ( ) ; // done
-    if ( number == 4 ) testSeenTypes ( ) ; // done
-    if ( number == 5 ) testTypeEquationTypeChecker ( ) ; // done
-    if ( number == 6 ) testTypeEquationTypeInference ( ) ; // done
-    if ( number == 7 ) testSubType ( ) ; // done
-    if ( number == 8 ) testTypeSubType ( ) ; // done
-    if ( number == 9 ) testTypeSubstitution ( ) ; // done
-    if ( number == 10 ) testTypeEquationListTypeChecker ( ) ; // done
-    if ( number == 11 ) testTypeEquationListTypeInference ( ) ; // done
-    if ( number == 12 ) testTypeSubstitutionList ( ) ;// done
-    if ( number == 13 ) testTypeJudgement ( ) ;// done
-    if ( number == 14 ) testSmallStepProofNode ( ) ; // done
-    if ( number == 15 ) testTypeCheckerExpressionProofNode ( ) ;// done
-    if ( number == 16 ) testTypeCheckerTypeProofNode ( ) ;// done
+    int number = 18 ;
+    if ( number == 0 ) testExpression ( ) ;
+    if ( number == 1 ) testType ( ) ;
+    if ( number == 2 ) testTypeEnvironment ( ) ;
+    if ( number == 3 ) testStore ( ) ;
+    if ( number == 4 ) testSeenTypes ( ) ;
+    if ( number == 5 ) testTypeEquationTypeChecker ( ) ;
+    if ( number == 6 ) testTypeEquationTypeInference ( ) ;
+    if ( number == 7 ) testSubType ( ) ;
+    if ( number == 8 ) testTypeSubType ( ) ;
+    if ( number == 9 ) testTypeSubstitution ( ) ;
+    if ( number == 10 ) testTypeEquationListTypeChecker ( ) ;
+    if ( number == 11 ) testTypeEquationListTypeInference ( ) ;
+    if ( number == 12 ) testTypeSubstitutionList ( ) ;
+    if ( number == 13 ) testTypeJudgement ( ) ;
+    if ( number == 14 ) testSmallStepProofNode ( ) ;
+    if ( number == 15 ) testTypeCheckerExpressionProofNode ( ) ;
+    if ( number == 16 ) testTypeCheckerTypeProofNode ( ) ;
     if ( number == 17 ) testBigStepProofNode ( ) ;
-    if ( number == 18 ) testTypeInferenceProofNode ( ) ; // done
-    if ( number == 19 ) testSubTypingProofNode ( ) ; // done
-    if ( number == 20 ) testRecSubTypingProofNode ( ) ;// done
-    if ( number == 21 ) testMinimalTypingTypesProofNode ( ) ; // done
-    if ( number == 22 ) testMinimalTypingExpressionProofNode ( ) ;// done
+    if ( number == 18 ) testTypeInferenceProofNode ( ) ;
+    if ( number == 19 ) testSubTypingProofNode ( ) ;
+    if ( number == 20 ) testRecSubTypingProofNode ( ) ;
+    if ( number == 21 ) testMinimalTypingTypesProofNode ( ) ;
+    if ( number == 22 ) testMinimalTypingExpressionProofNode ( ) ;
   }
 
 
@@ -209,7 +209,8 @@ public class LatexTest
     close ( ) ;
     compile ( ) ;
   }
-  
+
+
   public static void printLatexPrintable ( LatexPrintableNode pLatexPrintable )
   {
     // document class and needed packages
@@ -282,7 +283,7 @@ public class LatexTest
     println ( "\\begin{document}" ) ;
     println ( ) ;
     println ( "$" ) ;
-    println ( pLatexPrintable.toLatexString ( 0, 0 ).toString ( ) ) ;
+    println ( pLatexPrintable.toLatexString ( 0 , 0 ).toString ( ) ) ;
     println ( "$" ) ;
     println ( ) ;
     println ( "\\end{document}" ) ;
