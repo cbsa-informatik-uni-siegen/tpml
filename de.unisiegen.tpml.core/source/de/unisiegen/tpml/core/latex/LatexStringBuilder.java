@@ -14,10 +14,11 @@ public interface LatexStringBuilder extends LatexCommandNames
 {
   /**
    * Inserts the given <code>pLatexStringBuilder</code> at the specified
-   * <code>pArgumentPriority</code> at the end of our builder. If the return
-   * priority of the <code>pLatexStringBuilder</code> is less than the
-   * specified <code>pArgumentPriority</code>, parenthesis will be added
-   * around the text generated for the <code>pLatexStringBuilder</code>.
+   * <code>pArgumentPriority</code> at the end of our builder with the needed
+   * brackets. If the return priority of the <code>pLatexStringBuilder</code>
+   * is less than the specified <code>pArgumentPriority</code>, parenthesis
+   * will be added around the text generated for the
+   * <code>pLatexStringBuilder</code>.
    * 
    * @param pLatexStringBuilder The <code>LatexStringBuilder</code> to insert.
    * @param pArgumentPriority The argument priority of the
@@ -41,6 +42,26 @@ public interface LatexStringBuilder extends LatexCommandNames
    * Inserts the end of a builder.
    */
   public void addBuilderEnd ( ) ;
+
+
+  /**
+   * Inserts the given <code>pLatexStringBuilder</code> at the specified
+   * <code>pArgumentPriority</code> at the end of our builder without any
+   * brackets. If the return priority of the <code>pLatexStringBuilder</code>
+   * is less than the specified <code>pArgumentPriority</code>, parenthesis
+   * will be added around the text generated for the
+   * <code>pLatexStringBuilder</code>.
+   * 
+   * @param pLatexStringBuilder The <code>LatexStringBuilder</code> to insert.
+   * @param pArgumentPriority The argument priority of the
+   *          <code>pLatexStringBuilder</code>.
+   * @throws ClassCastException If the implementation of the
+   *           <code>pLatexStringBuilder</code> is different than the
+   *           implementation of this builder.
+   * @throws NullPointerException If <code>builder</code> is <code>null</code>.
+   */
+  public void addBuilderWithoutBrackets (
+      LatexStringBuilder pLatexStringBuilder , int pArgumentPriority ) ;
 
 
   /**

@@ -246,7 +246,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
         .add ( new DefaultLatexCommand (
             LATEX_SMALL_STEP_PROOF_MODEL ,
             1 ,
-            "$\\begin{longtable}{p{2.5cm}p{12cm}}$#1$\\end{longtable}$" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+            "$\\begin{longtable}{p{3.0cm}p{11.5cm}}$#1$\\end{longtable}$" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_ARROW , 0 ,
         "\\longrightarrow" ) ) ; //$NON-NLS-1$
     for ( LatexCommand command : getLatexCommandsInternal ( this.root ) )
@@ -539,7 +539,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
         + LATEX_INDENT )
         + LATEX_SMALL_STEP_NEW_COLUMN ) ;
-    builder.addBuilder ( this.root.toLatexStringBuilder (
+    builder.addBuilderWithoutBrackets ( this.root.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 , 0 , 0 ) , 0 ) ;
     builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
     builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
@@ -588,8 +588,9 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     pLatexStringBuilder.addText ( textAbove.toString ( ) ) ;
     pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_SMALL_STEP_ARROW
         + LATEX_SMALL_STEP_NEW_COLUMN ) ;
-    pLatexStringBuilder.addBuilder ( pCurrentNode.toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT , 0 , 0 ) , 0 ) ;
+    pLatexStringBuilder.addBuilderWithoutBrackets ( pCurrentNode
+        .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+            + LATEX_INDENT , 0 , 0 ) , 0 ) ;
     pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
     pLatexStringBuilder.addText ( DefaultLatexStringBuilder
         .getIndent ( pIndent )

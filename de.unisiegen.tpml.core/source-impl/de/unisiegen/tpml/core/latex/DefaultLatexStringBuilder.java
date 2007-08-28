@@ -190,6 +190,53 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
   /**
    * {@inheritDoc}
    * 
+   * @see LatexStringBuilder#addBuilderWithoutBrackets(LatexStringBuilder, int)
+   */
+  public void addBuilderWithoutBrackets (
+      LatexStringBuilder pLatexStringBuilder , int pArgumentPriority )
+  {
+    if ( pLatexStringBuilder == null )
+    {
+      throw new NullPointerException ( "builder is null" ) ; //$NON-NLS-1$
+    }
+    DefaultLatexStringBuilder defaultBuilder = ( DefaultLatexStringBuilder ) pLatexStringBuilder ;
+    this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+    if ( this.parameterDescriptions.length > 0 )
+    {
+      this.items.add ( new TextLatexItem ( getIndent ( this.indent )
+          + "% " //$NON-NLS-1$
+          + this.parameterDescriptions [ this.count ].replaceAll (
+              PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + "% " ) ) ) ; //$NON-NLS-1$
+      this.count ++ ;
+      this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+    }
+    boolean parenthesis = ( defaultBuilder.returnPriority < pArgumentPriority ) ;
+    if ( parenthesis )
+    {
+      this.items.add ( new TextLatexItem ( getIndent ( this.indent
+          + LATEX_INDENT )
+          + "\\" + LATEX_PARENTHESIS ) ) ; //$NON-NLS-1$
+      this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+      this.items.add ( new TextLatexItem ( getIndent ( this.indent
+          + LATEX_INDENT )
+          + "{" ) ) ; //$NON-NLS-1$
+      this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+      this.items.add ( new BuilderLatexItem ( defaultBuilder ) ) ;
+      this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+      this.items.add ( new TextLatexItem ( getIndent ( this.indent
+          + LATEX_INDENT )
+          + "}" ) ) ; //$NON-NLS-1$
+    }
+    else
+    {
+      this.items.add ( new BuilderLatexItem ( defaultBuilder ) ) ;
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see LatexStringBuilder#addEmptyBuilder()
    */
   public void addEmptyBuilder ( )

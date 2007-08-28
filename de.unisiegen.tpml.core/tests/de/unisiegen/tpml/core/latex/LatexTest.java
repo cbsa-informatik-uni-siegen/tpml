@@ -1,59 +1,59 @@
 package de.unisiegen.tpml.core.latex ;
 
 
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.TreeSet;
-
-import de.unisiegen.tpml.core.ProofModel;
-import de.unisiegen.tpml.core.ProofNode;
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
-import de.unisiegen.tpml.core.bigstep.BigStepProofResult;
-import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode;
-import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.expressions.Identifier;
-import de.unisiegen.tpml.core.expressions.InfixOperation;
-import de.unisiegen.tpml.core.expressions.IntegerConstant;
-import de.unisiegen.tpml.core.expressions.Location;
-import de.unisiegen.tpml.core.expressions.Ref;
-import de.unisiegen.tpml.core.interpreters.DefaultStore;
-import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.languages.LanguageFactory;
-import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingExpressionProofNode;
-import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingTypesProofNode;
-import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofNode;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
-import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode;
-import de.unisiegen.tpml.core.subtypingrec.DefaultRecSubTypingProofNode;
-import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
-import de.unisiegen.tpml.core.typechecker.SeenTypes;
-import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker;
-import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
-import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode;
-import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
-import de.unisiegen.tpml.core.typeinference.TypeFormula;
-import de.unisiegen.tpml.core.typeinference.TypeJudgement;
-import de.unisiegen.tpml.core.typeinference.TypeSubType;
-import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
-import de.unisiegen.tpml.core.types.ArrowType;
-import de.unisiegen.tpml.core.types.BooleanType;
-import de.unisiegen.tpml.core.types.IntegerType;
-import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.types.Type;
-import de.unisiegen.tpml.core.types.TypeVariable;
-import de.unisiegen.tpml.core.types.UnitType;
+import java.io.BufferedWriter ;
+import java.io.File ;
+import java.io.FileOutputStream ;
+import java.io.IOException ;
+import java.io.OutputStreamWriter ;
+import java.io.StringReader ;
+import java.util.ArrayList ;
+import java.util.LinkedList ;
+import java.util.TreeSet ;
+import de.unisiegen.tpml.core.ProofModel ;
+import de.unisiegen.tpml.core.ProofNode ;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
+import de.unisiegen.tpml.core.bigstep.BigStepProofResult ;
+import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode ;
+import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
+import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.InfixOperation ;
+import de.unisiegen.tpml.core.expressions.IntegerConstant ;
+import de.unisiegen.tpml.core.expressions.Location ;
+import de.unisiegen.tpml.core.expressions.Ref ;
+import de.unisiegen.tpml.core.interpreters.DefaultStore ;
+import de.unisiegen.tpml.core.languages.Language ;
+import de.unisiegen.tpml.core.languages.LanguageFactory ;
+import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingExpressionProofNode ;
+import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingTypesProofNode ;
+import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofNode ;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
+import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode ;
+import de.unisiegen.tpml.core.subtypingrec.DefaultRecSubTypingProofNode ;
+import de.unisiegen.tpml.core.subtypingrec.DefaultSubType ;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode ;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode ;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
+import de.unisiegen.tpml.core.typechecker.SeenTypes ;
+import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker ;
+import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode ;
+import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeFormula ;
+import de.unisiegen.tpml.core.typeinference.TypeJudgement ;
+import de.unisiegen.tpml.core.typeinference.TypeSubType ;
+import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList ;
+import de.unisiegen.tpml.core.types.ArrowType ;
+import de.unisiegen.tpml.core.types.BooleanType ;
+import de.unisiegen.tpml.core.types.IntegerType ;
+import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.core.types.TypeVariable ;
+import de.unisiegen.tpml.core.types.UnitType ;
 
 
 /**
@@ -65,28 +65,27 @@ import de.unisiegen.tpml.core.types.UnitType;
 { "all" } )
 public class LatexTest
 {
-  private static BufferedWriter bufferedWriter ;
-
-
-  public static void close ( )
-  {
-    try
-    {
-      bufferedWriter.close ( ) ;
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-    }
-  }
+  private static boolean console = false ;
 
 
   public static void compile ( )
   {
     try
     {
-      System.out.println ( ) ;
+      if ( console )
+      {
+        System.out.println ( ) ;
+      }
       System.out.println ( "*** compile ***" ) ;
+      // sleep
+      System.out.println ( "sleep" ) ;
+      try
+      {
+        Thread.sleep ( 1000 ) ;
+      }
+      catch ( InterruptedException e1 )
+      {
+      }
       Process p ;
       // latex 1
       System.out.println ( "latex 1" ) ;
@@ -156,17 +155,108 @@ public class LatexTest
   }
 
 
-  public static void main ( String [ ] args )
+  public static void exportLatexPrintable ( LatexPrintable pLatexPrintable ,
+      File pFile )
   {
+    BufferedWriter writer ;
     try
     {
-      bufferedWriter = new BufferedWriter ( new OutputStreamWriter (
-          new FileOutputStream ( "test.tex" ) , "UTF8" ) ) ;
+      writer = new BufferedWriter ( new OutputStreamWriter (
+          new FileOutputStream ( pFile ) , "UTF8" ) ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+      return ;
+    }
+    // document class and needed packages
+    println ( writer , "%%" ) ;
+    println ( writer , "%% TPML LaTeX Export" ) ;
+    println ( writer , "%%" ) ;
+    println ( writer ) ;
+    println ( writer , "\\documentclass[a4paper,12pt]{report}" ) ;
+    println ( writer , "\\usepackage[utf8]{inputenc}" ) ;
+    println ( writer , "\\usepackage{a4wide}" ) ;
+    println ( writer , "\\setlength{\\parindent}{0pt}" ) ;
+    println ( writer ) ;
+    // packages
+    TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
+    if ( packages.size ( ) > 0 )
+    {
+      println ( writer , "%%" ) ;
+      println ( writer , "%% " + LatexPackage.DESCRIPTION ) ;
+      println ( writer , "%%" ) ;
+      println ( writer ) ;
+    }
+    for ( LatexPackage pack : packages )
+    {
+      println ( writer , pack ) ;
+    }
+    if ( packages.size ( ) > 0 )
+    {
+      println ( writer ) ;
+    }
+    // instructions
+    TreeSet < LatexInstruction > instructions = pLatexPrintable
+        .getLatexInstructions ( ) ;
+    if ( instructions.size ( ) > 0 )
+    {
+      println ( writer , "%%" ) ;
+      println ( writer , "%% " + LatexInstruction.DESCRIPTION ) ;
+      println ( writer , "%%" ) ;
+      println ( writer ) ;
+    }
+    for ( LatexInstruction instruction : instructions )
+    {
+      println ( writer , instruction ) ;
+    }
+    if ( instructions.size ( ) > 0 )
+    {
+      println ( writer ) ;
+    }
+    // commands
+    TreeSet < LatexCommand > commands = pLatexPrintable.getLatexCommands ( ) ;
+    if ( commands.size ( ) > 0 )
+    {
+      println ( writer , "%%" ) ;
+      println ( writer , "%% " + LatexCommand.DESCRIPTION ) ;
+      println ( writer , "%%" ) ;
+      println ( writer ) ;
+    }
+    for ( LatexCommand command : commands )
+    {
+      println ( writer , command ) ;
+    }
+    if ( commands.size ( ) > 0 )
+    {
+      println ( writer ) ;
+    }
+    // document
+    println ( writer , "%%" ) ;
+    println ( writer , "%% Document" ) ;
+    println ( writer , "%%" ) ;
+    println ( writer ) ;
+    println ( writer , "\\begin{document}" ) ;
+    println ( writer ) ;
+    println ( writer , "$" ) ;
+    println ( writer , pLatexPrintable.toLatexString ( ).toString ( ) ) ;
+    println ( writer , "$" ) ;
+    println ( writer ) ;
+    println ( writer , "\\end{document}" ) ;
+    // close
+    try
+    {
+      writer.close ( ) ;
     }
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
     }
+  }
+
+
+  public static void main ( String [ ] args )
+  {
     int number = 24 ;
     if ( number == 0 ) testExpression ( ) ;
     if ( number == 1 ) testType ( ) ;
@@ -218,174 +308,215 @@ public class LatexTest
 
   public static void printLatexPrintable ( LatexPrintable pLatexPrintable )
   {
+    BufferedWriter writer ;
+    try
+    {
+      writer = new BufferedWriter ( new OutputStreamWriter (
+          new FileOutputStream ( "test.tex" ) , "UTF8" ) ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+      return ;
+    }
     // document class and needed packages
-    println ( "%%" ) ;
-    println ( "%% TPML LaTeX Export" ) ;
-    println ( "%%" ) ;
-    println ( ) ;
-    println ( "\\documentclass[a4paper,12pt]{report}" ) ;
-    println ( "\\usepackage[utf8]{inputenc}" ) ;
-    println ( "\\usepackage{a4wide}" ) ;
-    println ( "\\setlength{\\parindent}{0pt}" ) ;
-    println ( ) ;
+    println ( writer , "%%" ) ;
+    println ( writer , "%% TPML LaTeX Export" ) ;
+    println ( writer , "%%" ) ;
+    println ( writer ) ;
+    println ( writer , "\\documentclass[a4paper,12pt]{report}" ) ;
+    println ( writer , "\\usepackage[utf8]{inputenc}" ) ;
+    println ( writer , "\\usepackage{a4wide}" ) ;
+    println ( writer , "\\setlength{\\parindent}{0pt}" ) ;
+    println ( writer ) ;
     // packages
     TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
     if ( packages.size ( ) > 0 )
     {
-      println ( "%%" ) ;
-      println ( "%% " + LatexPackage.DESCRIPTION ) ;
-      println ( "%%" ) ;
-      println ( ) ;
+      println ( writer , "%%" ) ;
+      println ( writer , "%% " + LatexPackage.DESCRIPTION ) ;
+      println ( writer , "%%" ) ;
+      println ( writer ) ;
     }
     for ( LatexPackage pack : packages )
     {
-      println ( pack ) ;
+      println ( writer , pack ) ;
     }
     if ( packages.size ( ) > 0 )
     {
-      println ( ) ;
+      println ( writer ) ;
     }
     // instructions
     TreeSet < LatexInstruction > instructions = pLatexPrintable
         .getLatexInstructions ( ) ;
     if ( instructions.size ( ) > 0 )
     {
-      println ( "%%" ) ;
-      println ( "%% " + LatexInstruction.DESCRIPTION ) ;
-      println ( "%%" ) ;
-      println ( ) ;
+      println ( writer , "%%" ) ;
+      println ( writer , "%% " + LatexInstruction.DESCRIPTION ) ;
+      println ( writer , "%%" ) ;
+      println ( writer ) ;
     }
     for ( LatexInstruction instruction : instructions )
     {
-      println ( instruction ) ;
+      println ( writer , instruction ) ;
     }
     if ( instructions.size ( ) > 0 )
     {
-      println ( ) ;
+      println ( writer ) ;
     }
     // commands
     TreeSet < LatexCommand > commands = pLatexPrintable.getLatexCommands ( ) ;
     if ( commands.size ( ) > 0 )
     {
-      println ( "%%" ) ;
-      println ( "%% " + LatexCommand.DESCRIPTION ) ;
-      println ( "%%" ) ;
-      println ( ) ;
+      println ( writer , "%%" ) ;
+      println ( writer , "%% " + LatexCommand.DESCRIPTION ) ;
+      println ( writer , "%%" ) ;
+      println ( writer ) ;
     }
     for ( LatexCommand command : commands )
     {
-      println ( command ) ;
+      println ( writer , command ) ;
     }
     if ( commands.size ( ) > 0 )
     {
-      println ( ) ;
+      println ( writer ) ;
     }
     // document
-    println ( "%%" ) ;
-    println ( "%% Document" ) ;
-    println ( "%%" ) ;
-    println ( ) ;
-    println ( "\\begin{document}" ) ;
-    println ( ) ;
-    println ( "$" ) ;
-    println ( pLatexPrintable.toLatexString ( ).toString ( ) ) ;
-    println ( "$" ) ;
-    println ( ) ;
-    println ( "\\end{document}" ) ;
-    // close and compile
-    close ( ) ;
+    println ( writer , "%%" ) ;
+    println ( writer , "%% Document" ) ;
+    println ( writer , "%%" ) ;
+    println ( writer ) ;
+    println ( writer , "\\begin{document}" ) ;
+    println ( writer ) ;
+    println ( writer , "$" ) ;
+    println ( writer , pLatexPrintable.toLatexString ( ).toString ( ) ) ;
+    println ( writer , "$" ) ;
+    println ( writer ) ;
+    println ( writer , "\\end{document}" ) ;
+    // close
+    try
+    {
+      writer.close ( ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+    // compile
     compile ( ) ;
   }
 
 
   public static void printLatexPrintable ( LatexPrintableNode pLatexPrintable )
   {
+    BufferedWriter writer ;
+    try
+    {
+      writer = new BufferedWriter ( new OutputStreamWriter (
+          new FileOutputStream ( "test.tex" ) , "UTF8" ) ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+      return ;
+    }
     // document class and needed packages
-    println ( "%%" ) ;
-    println ( "%% TPML LaTeX Export" ) ;
-    println ( "%%" ) ;
-    println ( ) ;
-    println ( "\\documentclass[a4paper,12pt]{report}" ) ;
-    println ( "\\usepackage[utf8]{inputenc}" ) ;
-    println ( "\\usepackage{a4wide}" ) ;
-    println ( "\\setlength{\\parindent}{0pt}" ) ;
-    println ( ) ;
+    println ( writer , "%%" ) ;
+    println ( writer , "%% TPML LaTeX Export" ) ;
+    println ( writer , "%%" ) ;
+    println ( writer ) ;
+    println ( writer , "\\documentclass[a4paper,12pt]{report}" ) ;
+    println ( writer , "\\usepackage[utf8]{inputenc}" ) ;
+    println ( writer , "\\usepackage{a4wide}" ) ;
+    println ( writer , "\\setlength{\\parindent}{0pt}" ) ;
+    println ( writer ) ;
     // packages
     TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
     if ( packages.size ( ) > 0 )
     {
-      println ( "%%" ) ;
-      println ( "%% " + LatexPackage.DESCRIPTION ) ;
-      println ( "%%" ) ;
-      println ( ) ;
+      println ( writer , "%%" ) ;
+      println ( writer , "%% " + LatexPackage.DESCRIPTION ) ;
+      println ( writer , "%%" ) ;
+      println ( writer ) ;
     }
     for ( LatexPackage pack : packages )
     {
-      println ( pack ) ;
+      println ( writer , pack ) ;
     }
     if ( packages.size ( ) > 0 )
     {
-      println ( ) ;
+      println ( writer ) ;
     }
     // instructions
     TreeSet < LatexInstruction > instructions = pLatexPrintable
         .getLatexInstructions ( ) ;
     if ( instructions.size ( ) > 0 )
     {
-      println ( "%%" ) ;
-      println ( "%% " + LatexInstruction.DESCRIPTION ) ;
-      println ( "%%" ) ;
-      println ( ) ;
+      println ( writer , "%%" ) ;
+      println ( writer , "%% " + LatexInstruction.DESCRIPTION ) ;
+      println ( writer , "%%" ) ;
+      println ( writer ) ;
     }
     for ( LatexInstruction instruction : instructions )
     {
-      println ( instruction ) ;
+      println ( writer , instruction ) ;
     }
     if ( instructions.size ( ) > 0 )
     {
-      println ( ) ;
+      println ( writer ) ;
     }
     // commands
     TreeSet < LatexCommand > commands = pLatexPrintable.getLatexCommands ( ) ;
     if ( commands.size ( ) > 0 )
     {
-      println ( "%%" ) ;
-      println ( "%% " + LatexCommand.DESCRIPTION ) ;
-      println ( "%%" ) ;
-      println ( ) ;
+      println ( writer , "%%" ) ;
+      println ( writer , "%% " + LatexCommand.DESCRIPTION ) ;
+      println ( writer , "%%" ) ;
+      println ( writer ) ;
     }
     for ( LatexCommand command : commands )
     {
-      println ( command ) ;
+      println ( writer , command ) ;
     }
     if ( commands.size ( ) > 0 )
     {
-      println ( ) ;
+      println ( writer ) ;
     }
     // document
-    println ( "%%" ) ;
-    println ( "%% Document" ) ;
-    println ( "%%" ) ;
-    println ( ) ;
-    println ( "\\begin{document}" ) ;
-    println ( ) ;
-    println ( "$" ) ;
-    println ( pLatexPrintable.toLatexString ( 0 , 0 ).toString ( ) ) ;
-    println ( "$" ) ;
-    println ( ) ;
-    println ( "\\end{document}" ) ;
-    // close and compile
-    close ( ) ;
+    println ( writer , "%%" ) ;
+    println ( writer , "%% Document" ) ;
+    println ( writer , "%%" ) ;
+    println ( writer ) ;
+    println ( writer , "\\begin{document}" ) ;
+    println ( writer ) ;
+    println ( writer , "$" ) ;
+    println ( writer , pLatexPrintable.toLatexString ( 0 , 0 ).toString ( ) ) ;
+    println ( writer , "$" ) ;
+    println ( writer ) ;
+    println ( writer , "\\end{document}" ) ;
+    // close
+    try
+    {
+      writer.close ( ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+    // compile
     compile ( ) ;
   }
 
 
-  public static void println ( )
+  public static void println ( BufferedWriter pBufferedWriter )
   {
     try
     {
-      bufferedWriter.newLine ( ) ;
-      System.out.println ( ) ;
+      pBufferedWriter.newLine ( ) ;
+      if ( console )
+      {
+        System.out.println ( ) ;
+      }
     }
     catch ( Exception e )
     {
@@ -394,13 +525,17 @@ public class LatexTest
   }
 
 
-  public static void println ( LatexCommand pLatexCommand )
+  public static void println ( BufferedWriter pBufferedWriter ,
+      LatexCommand pLatexCommand )
   {
     try
     {
-      bufferedWriter.write ( pLatexCommand.toString ( ) ) ;
-      bufferedWriter.newLine ( ) ;
-      System.out.println ( pLatexCommand.toString ( ) ) ;
+      pBufferedWriter.write ( pLatexCommand.toString ( ) ) ;
+      pBufferedWriter.newLine ( ) ;
+      if ( console )
+      {
+        System.out.println ( pLatexCommand.toString ( ) ) ;
+      }
     }
     catch ( Exception e )
     {
@@ -409,13 +544,17 @@ public class LatexTest
   }
 
 
-  public static void println ( LatexInstruction pLatexInstruction )
+  public static void println ( BufferedWriter pBufferedWriter ,
+      LatexInstruction pLatexInstruction )
   {
     try
     {
-      bufferedWriter.write ( pLatexInstruction.toString ( ) ) ;
-      bufferedWriter.newLine ( ) ;
-      System.out.println ( pLatexInstruction.toString ( ) ) ;
+      pBufferedWriter.write ( pLatexInstruction.toString ( ) ) ;
+      pBufferedWriter.newLine ( ) ;
+      if ( console )
+      {
+        System.out.println ( pLatexInstruction.toString ( ) ) ;
+      }
     }
     catch ( Exception e )
     {
@@ -424,13 +563,17 @@ public class LatexTest
   }
 
 
-  public static void println ( LatexPackage pLatexPackage )
+  public static void println ( BufferedWriter pBufferedWriter ,
+      LatexPackage pLatexPackage )
   {
     try
     {
-      bufferedWriter.write ( pLatexPackage.toString ( ) ) ;
-      bufferedWriter.newLine ( ) ;
-      System.out.println ( pLatexPackage.toString ( ) ) ;
+      pBufferedWriter.write ( pLatexPackage.toString ( ) ) ;
+      pBufferedWriter.newLine ( ) ;
+      if ( console )
+      {
+        System.out.println ( pLatexPackage.toString ( ) ) ;
+      }
     }
     catch ( Exception e )
     {
@@ -439,13 +582,37 @@ public class LatexTest
   }
 
 
-  public static void println ( String pText )
+  public static void println ( BufferedWriter pBufferedWriter , String pText )
   {
     try
     {
-      bufferedWriter.write ( pText ) ;
-      bufferedWriter.newLine ( ) ;
-      System.out.println ( pText ) ;
+      pBufferedWriter.write ( pText ) ;
+      pBufferedWriter.newLine ( ) ;
+      if ( console )
+      {
+        System.out.println ( pText ) ;
+      }
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
+  public static void testBigStepProofModel ( )
+  {
+    try
+    {
+      Expression expression = new InfixOperation ( ArithmeticOperator
+          .newPlus ( ) , new IntegerConstant ( 1 ) , new InfixOperation (
+          ArithmeticOperator.newPlus ( ) , new IntegerConstant ( 2 ) ,
+          new IntegerConstant ( 3 ) ) ) ;
+      Language language = LanguageFactory.newInstance ( ).getLanguageById (
+          "l2o" ) ;
+      BigStepProofModel model = language.newBigStepProofModel ( expression ) ;
+      model.guess ( nextNode ( model ) ) ;
+      printLatexPrintable ( model ) ;
     }
     catch ( Exception e )
     {
@@ -487,9 +654,13 @@ public class LatexTest
   {
     try
     {
-      String text = "1+1" ;
+      String text = "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1" ;
       // PowerSet
-      //text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
+      // text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map
+      // f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 ::
+      // append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else
+      // let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set
+      // [1;2]" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
@@ -587,8 +758,9 @@ public class LatexTest
   {
     try
     {
-      String text = "let x = 1 + 1 in let y = 5 + 5 + 5 in x + y" ;
+      String text = "100000 + 200000 + 300000 + 400000 + 500000 + 600000 + 700000 + 800000 + 900000" ;
       // PowerSet
+      text = "let x = 1 + 1 in x" ;
       // text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map
       // f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 ::
       // append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else
@@ -978,19 +1150,4 @@ public class LatexTest
       e.printStackTrace ( ) ;
     }
   }
-  
-	public static void testBigStepProofModel ( ) {
-		try {
-			Expression expression = new InfixOperation (
-					ArithmeticOperator.newPlus ( ),
-					new IntegerConstant ( 1 ),
-					new InfixOperation ( ArithmeticOperator.newPlus ( ), new IntegerConstant ( 2 ), new IntegerConstant ( 3 ) ) );
-			Language language = LanguageFactory.newInstance ( ).getLanguageById ( "l2o" );
-			BigStepProofModel model = language.newBigStepProofModel ( expression );
-			model.guess ( nextNode ( model ) );
-			 printLatexPrintable ( model ) ;
-		} catch ( Exception e ) {
-			e.printStackTrace ( );
-		}
-	}
 }
