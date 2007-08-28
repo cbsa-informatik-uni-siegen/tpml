@@ -280,7 +280,8 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     }
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
-      for ( LatexCommand command : pNode.getChildAt ( i ).getLatexCommands ( ) )
+      for ( LatexCommand command : getLatexCommandsInternal ( pNode
+          .getChildAt ( i ) ) )
       {
         commands.add ( command ) ;
       }
@@ -330,8 +331,8 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     }
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
-      for ( LatexInstruction instruction : pNode.getChildAt ( i )
-          .getLatexInstructions ( ) )
+      for ( LatexInstruction instruction : getLatexInstructionsInternal ( pNode
+          .getChildAt ( i ) ) )
       {
         instructions.add ( instruction ) ;
       }
@@ -382,7 +383,8 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     }
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
-      for ( LatexPackage pack : pNode.getChildAt ( i ).getLatexPackages ( ) )
+      for ( LatexPackage pack : getLatexPackagesInternal ( pNode
+          .getChildAt ( i ) ) )
       {
         packages.add ( pack ) ;
       }
