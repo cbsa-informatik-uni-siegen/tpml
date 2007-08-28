@@ -234,6 +234,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
   }
 
 
+  // TODO \rule
   /**
    * {@inheritDoc}
    * 
@@ -246,7 +247,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
         .add ( new DefaultLatexCommand (
             LATEX_SMALL_STEP_PROOF_MODEL ,
             1 ,
-            "$\\begin{longtable}{p{3.5cm}p{17cm}}$#1$\\end{longtable}$" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+            "$\\begin{longtable}{p{3.5cm}p{22cm}}$#1$\\end{longtable}$" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_ARROW , 0 ,
         "\\longrightarrow" ) ) ; //$NON-NLS-1$
     for ( LatexCommand command : getLatexCommandsInternal ( this.root ) )

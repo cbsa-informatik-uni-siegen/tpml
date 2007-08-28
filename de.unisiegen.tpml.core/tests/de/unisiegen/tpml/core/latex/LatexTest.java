@@ -77,15 +77,6 @@ public class LatexTest
         System.out.println ( ) ;
       }
       System.out.println ( "*** compile ***" ) ;
-      // sleep
-      System.out.println ( "sleep" ) ;
-      try
-      {
-        Thread.sleep ( 1000 ) ;
-      }
-      catch ( InterruptedException e1 )
-      {
-      }
       Process p ;
       // latex 1
       System.out.println ( "latex 1" ) ;
@@ -169,17 +160,19 @@ public class LatexTest
       e.printStackTrace ( ) ;
       return ;
     }
-    // document class and needed packages
     println ( writer , "%%" ) ;
     println ( writer , "%% TPML LaTeX Export" ) ;
     println ( writer , "%%" ) ;
     println ( writer ) ;
     println ( writer , "\\documentclass[a4paper,12pt]{report}" ) ;
     println ( writer , "\\usepackage[utf8]{inputenc}" ) ;
-    println ( writer , "\\usepackage{a4wide}" ) ;
     println ( writer , "\\usepackage{lscape}" ) ;
     println ( writer , "\\setlength{\\parindent}{0pt}" ) ;
     println ( writer , "\\pagestyle{empty}" ) ;
+    println ( writer , "\\oddsidemargin=-30pt" ) ;
+    println ( writer , "\\topmargin=-60pt" ) ;
+    println ( writer , "\\textwidth=510pt" ) ;
+    println ( writer , "\\textheight=750pt" ) ;
     println ( writer ) ;
     // packages
     TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
@@ -321,7 +314,6 @@ public class LatexTest
       e.printStackTrace ( ) ;
       return ;
     }
-    // \rule
     // document class and needed packages
     println ( writer , "%%" ) ;
     println ( writer , "%% TPML LaTeX Export" ) ;
@@ -329,10 +321,13 @@ public class LatexTest
     println ( writer ) ;
     println ( writer , "\\documentclass[a4paper,12pt]{report}" ) ;
     println ( writer , "\\usepackage[utf8]{inputenc}" ) ;
-    println ( writer , "\\usepackage{a4wide}" ) ;
     println ( writer , "\\usepackage{lscape}" ) ;
     println ( writer , "\\setlength{\\parindent}{0pt}" ) ;
     println ( writer , "\\pagestyle{empty}" ) ;
+    println ( writer , "\\oddsidemargin=-30pt" ) ;
+    println ( writer , "\\topmargin=-60pt" ) ;
+    println ( writer , "\\textwidth=510pt" ) ;
+    println ( writer , "\\textheight=750pt" ) ;
     println ( writer ) ;
     // packages
     TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
@@ -395,6 +390,10 @@ public class LatexTest
     println ( writer , "\\begin{landscape}" ) ;
     println ( writer ) ;
     println ( writer , "$" ) ;
+    /*
+     * for ( int i = 0 ; i < 1000 ; i ++ ) { println ( writer , "Das ist ein
+     * Test! " ) ; }
+     */
     println ( writer , pLatexPrintable.toLatexString ( ).toString ( ) ) ;
     println ( writer , "$" ) ;
     println ( writer ) ;
@@ -427,17 +426,19 @@ public class LatexTest
       e.printStackTrace ( ) ;
       return ;
     }
-    // document class and needed packages
     println ( writer , "%%" ) ;
     println ( writer , "%% TPML LaTeX Export" ) ;
     println ( writer , "%%" ) ;
     println ( writer ) ;
     println ( writer , "\\documentclass[a4paper,12pt]{report}" ) ;
     println ( writer , "\\usepackage[utf8]{inputenc}" ) ;
-    println ( writer , "\\usepackage{a4wide}" ) ;
     println ( writer , "\\usepackage{lscape}" ) ;
     println ( writer , "\\setlength{\\parindent}{0pt}" ) ;
     println ( writer , "\\pagestyle{empty}" ) ;
+    println ( writer , "\\oddsidemargin=-30pt" ) ;
+    println ( writer , "\\topmargin=-60pt" ) ;
+    println ( writer , "\\textwidth=510pt" ) ;
+    println ( writer , "\\textheight=750pt" ) ;
     println ( writer ) ;
     // packages
     TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
@@ -663,7 +664,9 @@ public class LatexTest
   {
     try
     {
-      String text = "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1" ;
+      String text = "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1"
+          + "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1"
+          + "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1" ;
       // PowerSet
       // text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map
       // f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 ::
