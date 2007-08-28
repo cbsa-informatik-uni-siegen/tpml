@@ -1,57 +1,59 @@
 package de.unisiegen.tpml.core.latex ;
 
 
-import java.io.BufferedWriter ;
-import java.io.FileOutputStream ;
-import java.io.IOException ;
-import java.io.OutputStreamWriter ;
-import java.io.StringReader ;
-import java.util.ArrayList ;
-import java.util.LinkedList ;
-import java.util.TreeSet ;
-import de.unisiegen.tpml.core.ProofModel ;
-import de.unisiegen.tpml.core.ProofNode ;
-import de.unisiegen.tpml.core.bigstep.BigStepProofResult ;
-import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode ;
-import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.InfixOperation ;
-import de.unisiegen.tpml.core.expressions.IntegerConstant ;
-import de.unisiegen.tpml.core.expressions.Location ;
-import de.unisiegen.tpml.core.expressions.Ref ;
-import de.unisiegen.tpml.core.interpreters.DefaultStore ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.core.languages.LanguageFactory ;
-import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingExpressionProofNode ;
-import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingTypesProofNode ;
-import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofNode ;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
-import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode ;
-import de.unisiegen.tpml.core.subtypingrec.DefaultRecSubTypingProofNode ;
-import de.unisiegen.tpml.core.subtypingrec.DefaultSubType ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
-import de.unisiegen.tpml.core.typechecker.SeenTypes ;
-import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker ;
-import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode ;
-import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference ;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
-import de.unisiegen.tpml.core.typeinference.TypeFormula ;
-import de.unisiegen.tpml.core.typeinference.TypeJudgement ;
-import de.unisiegen.tpml.core.typeinference.TypeSubType ;
-import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList ;
-import de.unisiegen.tpml.core.types.ArrowType ;
-import de.unisiegen.tpml.core.types.BooleanType ;
-import de.unisiegen.tpml.core.types.IntegerType ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.Type ;
-import de.unisiegen.tpml.core.types.TypeVariable ;
-import de.unisiegen.tpml.core.types.UnitType ;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.TreeSet;
+
+import de.unisiegen.tpml.core.ProofModel;
+import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.bigstep.BigStepProofResult;
+import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode;
+import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.InfixOperation;
+import de.unisiegen.tpml.core.expressions.IntegerConstant;
+import de.unisiegen.tpml.core.expressions.Location;
+import de.unisiegen.tpml.core.expressions.Ref;
+import de.unisiegen.tpml.core.interpreters.DefaultStore;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageFactory;
+import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingExpressionProofNode;
+import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingTypesProofNode;
+import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofNode;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
+import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode;
+import de.unisiegen.tpml.core.subtypingrec.DefaultRecSubTypingProofNode;
+import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.SeenTypes;
+import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker;
+import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode;
+import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
+import de.unisiegen.tpml.core.typeinference.TypeFormula;
+import de.unisiegen.tpml.core.typeinference.TypeJudgement;
+import de.unisiegen.tpml.core.typeinference.TypeSubType;
+import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
+import de.unisiegen.tpml.core.types.ArrowType;
+import de.unisiegen.tpml.core.types.BooleanType;
+import de.unisiegen.tpml.core.types.IntegerType;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.core.types.TypeVariable;
+import de.unisiegen.tpml.core.types.UnitType;
 
 
 /**
@@ -189,6 +191,7 @@ public class LatexTest
     if ( number == 20 ) testRecSubTypingProofNode ( ) ;
     if ( number == 21 ) testMinimalTypingTypesProofNode ( ) ;
     if ( number == 22 ) testMinimalTypingExpressionProofNode ( ) ;
+    if ( number == 23 ) testBigStepProofModel ( ) ;
     if ( number == 24 ) testSmallStepProofModel ( ) ;
   }
 
@@ -975,4 +978,19 @@ public class LatexTest
       e.printStackTrace ( ) ;
     }
   }
+  
+	public static void testBigStepProofModel ( ) {
+		try {
+			Expression expression = new InfixOperation (
+					ArithmeticOperator.newPlus ( ),
+					new IntegerConstant ( 1 ),
+					new InfixOperation ( ArithmeticOperator.newPlus ( ), new IntegerConstant ( 2 ), new IntegerConstant ( 3 ) ) );
+			Language language = LanguageFactory.newInstance ( ).getLanguageById ( "l2o" );
+			BigStepProofModel model = language.newBigStepProofModel ( expression );
+			model.guess ( nextNode ( model ) );
+			 printLatexPrintable ( model ) ;
+		} catch ( Exception e ) {
+			e.printStackTrace ( );
+		}
+	}
 }
