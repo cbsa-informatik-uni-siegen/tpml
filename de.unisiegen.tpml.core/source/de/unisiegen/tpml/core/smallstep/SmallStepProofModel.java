@@ -15,7 +15,6 @@ import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofModel ;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
@@ -535,21 +534,29 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
         LATEX_SMALL_STEP_PROOF_MODEL , pIndent ) ;
     builder.addBuilderBegin ( ) ;
-    builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-    builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-        + LATEX_INDENT ) ) ;
-    builder.addText ( " $&$ " ) ;
-    builder.addText ( " $\\begin{tabular}{p{22cm}}$ " ) ;
-    builder.addText ( " $\\begin{tabular}{p{22cm}}$ " ) ;
-    builder.addText ( " $\\end{tabular}$ " ) ;
-    builder.addText ( " $\\\\$ " ) ;
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$&$" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$\\begin{tabular}{p{22cm}}$" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$\\begin{tabular}{p{22cm}}$" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$\\end{tabular}$" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$\\\\$" ) ; //$NON-NLS-1$
     builder.addBuilderWithoutBrackets ( this.root.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT , 0 , 0 ) , 0 ) ;
-    builder.addText ( " $\\\\$ " ) ;
-    builder.addText ( " $\\begin{tabular}{p{22cm}}$ " ) ;
-    builder.addText ( " $\\end{tabular}$ " ) ;
-    builder.addText ( " $\\end{tabular} $" ) ;
-    builder.addText ( " $\\\\[3mm]$ " ) ;
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$\\\\$" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$\\begin{tabular}{p{22cm}}$" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$\\end{tabular}$" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$\\end{tabular}$" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$\\\\[5mm]$" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
     for ( int i = 0 ; i < this.root.getChildCount ( ) ; i ++ )
     {
       toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
@@ -576,8 +583,10 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
       LatexStringBuilder pLatexStringBuilder , ProofNode pParentNode ,
       ProofNode pCurrentNode , int pIndent )
   {
-    pLatexStringBuilder.addText ( " $\\begin{tabular}{p{3.5cm}}$ " ) ;
-    pLatexStringBuilder.addText ( " $\\begin{tabular}{p{3.5cm}}$ " ) ;
+    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{3.5cm}}$" ) ; //$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{3.5cm}}$" ) ; //$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     int countAbove = 0 ;
     for ( int i = 0 ; i < pParentNode.getRules ( ).length ; i ++ )
     {
@@ -601,13 +610,15 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
         }
         if ( countAbove > 0 )
         {
-          pLatexStringBuilder.addText ( " $\\\\$ " ) ;
+          pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
+          pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
         }
         if ( sameRule > 1 )
         {
           pLatexStringBuilder.addText ( pParentNode.getRules ( ) [ i ]
               .toLatexString ( ).toString ( )
-              + "^" + sameRule ) ;
+              + "^" + sameRule ) ;//$NON-NLS-1$
+          pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
         }
         else
         {
@@ -617,11 +628,16 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
         countAbove ++ ;
       }
     }
-    pLatexStringBuilder.addText ( " $\\end{tabular}$ " ) ;
-    pLatexStringBuilder.addText ( " $\\\\$ " ) ;
-    pLatexStringBuilder.addText ( "\\xrightarrow{\\rule{3cm}{0cm}}" ) ;
-    pLatexStringBuilder.addText ( " $\\\\$ " ) ;
-    pLatexStringBuilder.addText ( " $\\begin{tabular}{p{3.5cm}}$ " ) ;
+    pLatexStringBuilder.addText ( "$\\end{tabular}$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "\\xrightarrow{\\rule{3cm}{0cm}}" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{3.5cm}}$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     int countBelow = 0 ;
     for ( int i = 0 ; i < pParentNode.getRules ( ).length ; i ++ )
     {
@@ -631,38 +647,54 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
       {
         if ( countBelow > 0 )
         {
-          pLatexStringBuilder.addText ( " $\\\\$ " ) ;
+          pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
+          pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
         }
         pLatexStringBuilder.addText ( pParentNode.getRules ( ) [ i ]
             .toLatexString ( ).toString ( ) ) ;
+        pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
         countBelow ++ ;
       }
     }
-    pLatexStringBuilder.addText ( " $\\end{tabular}$ " ) ;
-    pLatexStringBuilder.addText ( " $\\end{tabular}$ " ) ;
-    pLatexStringBuilder.addText ( " $&$ " ) ;
-    pLatexStringBuilder.addText ( " $\\begin{tabular}{p{22cm}}$ " ) ;
-    pLatexStringBuilder.addText ( " $\\begin{tabular}{p{22cm}}$ " ) ;
+    pLatexStringBuilder.addText ( "$\\end{tabular}$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\end{tabular}$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$&$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{22cm}}$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{22cm}}$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     for ( int i = 0 ; i < countAbove - 1 ; i ++ )
     {
-      pLatexStringBuilder.addText ( " $\\\\$ " ) ;
+      pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     }
-    pLatexStringBuilder.addText ( " $\\end{tabular}$ " ) ;
-    pLatexStringBuilder.addText ( " $\\\\$ " ) ;
+    pLatexStringBuilder.addText ( "$\\end{tabular}$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addBuilderWithoutBrackets ( pCurrentNode
-        .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-            + LATEX_INDENT , 0 , 0 ) , 0 ) ;
-    pLatexStringBuilder.addText ( " $\\\\$ " ) ;
-    pLatexStringBuilder.addText ( " $\\begin{tabular}{p{22cm}}$ " ) ;
+        .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent , 0 , 0 ) ,
+        0 ) ;
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{22cm}}$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     for ( int i = 0 ; i < countBelow - 1 ; i ++ )
     {
-      pLatexStringBuilder.addText ( " $\\\\$ " ) ;
+      pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     }
-    pLatexStringBuilder.addText ( " $\\end{tabular}$ " ) ;
-    pLatexStringBuilder.addText ( " $\\end{tabular}$" ) ;
-    pLatexStringBuilder.addText ( " $\\\\[3mm]$ " ) ;
+    pLatexStringBuilder.addText ( "$\\end{tabular}$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\end{tabular}$" ) ;//$NON-NLS-1$
     for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
     {
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addText ( "$\\\\[10mm]$" ) ; //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
       toLatexStringBuilderInternal ( pLatexStringBuilderFactory ,
           pLatexStringBuilder , pCurrentNode , pCurrentNode.getChildAt ( i ) ,
           pIndent ) ;

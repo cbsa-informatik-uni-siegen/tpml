@@ -255,6 +255,19 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
   /**
    * {@inheritDoc}
    * 
+   * @see LatexStringBuilder#addSourceCodeBreak(int)
+   */
+  public void addSourceCodeBreak ( int pIndentOffset )
+  {
+    this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+    this.items.add ( new TextLatexItem ( DefaultLatexStringBuilder
+        .getIndent ( this.indent + pIndentOffset ) ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see LatexStringBuilder#addText(String)
    */
   public void addText ( String pText )

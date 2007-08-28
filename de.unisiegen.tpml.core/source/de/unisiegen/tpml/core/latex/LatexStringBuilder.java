@@ -72,6 +72,14 @@ public interface LatexStringBuilder extends LatexCommandNames
 
 
   /**
+   * Adds a break to the source code.
+   * 
+   * @param pIndentOffset The offset to the indent of this builder.
+   */
+  public void addSourceCodeBreak ( int pIndentOffset ) ;
+
+
+  /**
    * Appends the given <code>pText</code> to the latex string builder.
    * 
    * @param pText The text to append.
