@@ -234,7 +234,6 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
   }
 
 
-  // TODO \rule
   /**
    * {@inheritDoc}
    * 
@@ -538,14 +537,19 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     builder.addBuilderBegin ( ) ;
     builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
     builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-        + LATEX_INDENT )
-        + LATEX_SMALL_STEP_NEW_COLUMN ) ;
+        + LATEX_INDENT ) ) ;
+    builder.addText ( " $&$ " ) ;
+    builder.addText ( " $\\begin{tabular}{p{22cm}}$ " ) ;
+    builder.addText ( " $\\begin{tabular}{p{22cm}}$ " ) ;
+    builder.addText ( " $\\end{tabular}$ " ) ;
+    builder.addText ( " $\\\\$ " ) ;
     builder.addBuilderWithoutBrackets ( this.root.toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 , 0 , 0 ) , 0 ) ;
-    builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-    builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-        + LATEX_INDENT )
-        + LATEX_SMALL_STEP_NEW_RULE ) ;
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT , 0 , 0 ) , 0 ) ;
+    builder.addText ( " $\\\\$ " ) ;
+    builder.addText ( " $\\begin{tabular}{p{22cm}}$ " ) ;
+    builder.addText ( " $\\end{tabular}$ " ) ;
+    builder.addText ( " $\\end{tabular} $" ) ;
+    builder.addText ( " $\\\\[3mm]$ " ) ;
     for ( int i = 0 ; i < this.root.getChildCount ( ) ; i ++ )
     {
       toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
@@ -572,34 +576,91 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
       LatexStringBuilder pLatexStringBuilder , ProofNode pParentNode ,
       ProofNode pCurrentNode , int pIndent )
   {
-    StringBuilder textAbove = new StringBuilder ( ) ;
-    StringBuilder textBelow = new StringBuilder ( ) ;
-    for ( int i = 0 ; i < pParentNode.getRules ( ).length - 1 ; i ++ )
+    pLatexStringBuilder.addText ( " $\\begin{tabular}{p{3.5cm}}$ " ) ;
+    pLatexStringBuilder.addText ( " $\\begin{tabular}{p{3.5cm}}$ " ) ;
+    int countAbove = 0 ;
+    for ( int i = 0 ; i < pParentNode.getRules ( ).length ; i ++ )
     {
-      textAbove.append ( pParentNode.getRules ( ) [ i ].toLatexString ( )
-          .toString ( )
-          + LATEX_SMALL_STEP_NEW_ROW_ONLY_RULE ) ;
-    }
-    if ( pParentNode.getRules ( ).length > 0 )
-    {
-      textBelow
-          .append ( pParentNode.getRules ( ) [ pParentNode.getRules ( ).length - 1 ]
+      DefaultSmallStepProofRule rule = ( DefaultSmallStepProofRule ) pParentNode
+          .getRules ( ) [ i ] ;
+      if ( ! rule.isAxiom ( ) )
+      {
+        int sameRule = 1 ;
+        for ( int j = i + 1 ; j < pParentNode.getRules ( ).length ; j ++ )
+        {
+          if ( pParentNode.getRules ( ) [ j ].getName ( ).equals (
+              pParentNode.getRules ( ) [ i ].getName ( ) ) )
+          {
+            sameRule ++ ;
+            i = j ;
+          }
+          else
+          {
+            break ;
+          }
+        }
+        if ( countAbove > 0 )
+        {
+          pLatexStringBuilder.addText ( " $\\\\$ " ) ;
+        }
+        if ( sameRule > 1 )
+        {
+          pLatexStringBuilder.addText ( pParentNode.getRules ( ) [ i ]
+              .toLatexString ( ).toString ( )
+              + "^" + sameRule ) ;
+        }
+        else
+        {
+          pLatexStringBuilder.addText ( pParentNode.getRules ( ) [ i ]
               .toLatexString ( ).toString ( ) ) ;
+        }
+        countAbove ++ ;
+      }
     }
-    pLatexStringBuilder.addText ( textAbove.toString ( ) ) ;
-    pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_SMALL_STEP_ARROW
-        + LATEX_SMALL_STEP_NEW_COLUMN ) ;
+    pLatexStringBuilder.addText ( " $\\end{tabular}$ " ) ;
+    pLatexStringBuilder.addText ( " $\\\\$ " ) ;
+    pLatexStringBuilder.addText ( "\\xrightarrow{\\rule{3cm}{0cm}}" ) ;
+    pLatexStringBuilder.addText ( " $\\\\$ " ) ;
+    pLatexStringBuilder.addText ( " $\\begin{tabular}{p{3.5cm}}$ " ) ;
+    int countBelow = 0 ;
+    for ( int i = 0 ; i < pParentNode.getRules ( ).length ; i ++ )
+    {
+      DefaultSmallStepProofRule rule = ( DefaultSmallStepProofRule ) pParentNode
+          .getRules ( ) [ i ] ;
+      if ( rule.isAxiom ( ) )
+      {
+        if ( countBelow > 0 )
+        {
+          pLatexStringBuilder.addText ( " $\\\\$ " ) ;
+        }
+        pLatexStringBuilder.addText ( pParentNode.getRules ( ) [ i ]
+            .toLatexString ( ).toString ( ) ) ;
+        countBelow ++ ;
+      }
+    }
+    pLatexStringBuilder.addText ( " $\\end{tabular}$ " ) ;
+    pLatexStringBuilder.addText ( " $\\end{tabular}$ " ) ;
+    pLatexStringBuilder.addText ( " $&$ " ) ;
+    pLatexStringBuilder.addText ( " $\\begin{tabular}{p{22cm}}$ " ) ;
+    pLatexStringBuilder.addText ( " $\\begin{tabular}{p{22cm}}$ " ) ;
+    for ( int i = 0 ; i < countAbove - 1 ; i ++ )
+    {
+      pLatexStringBuilder.addText ( " $\\\\$ " ) ;
+    }
+    pLatexStringBuilder.addText ( " $\\end{tabular}$ " ) ;
+    pLatexStringBuilder.addText ( " $\\\\$ " ) ;
     pLatexStringBuilder.addBuilderWithoutBrackets ( pCurrentNode
         .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
             + LATEX_INDENT , 0 , 0 ) , 0 ) ;
-    pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-    pLatexStringBuilder.addText ( DefaultLatexStringBuilder
-        .getIndent ( pIndent )
-        + LATEX_SMALL_STEP_NEW_ROW ) ;
-    pLatexStringBuilder.addText ( textBelow.toString ( ) ) ;
-    pLatexStringBuilder.addText ( LATEX_SMALL_STEP_NEW_COLUMN ) ;
-    pLatexStringBuilder.addText ( LATEX_SMALL_STEP_SPACE ) ;
-    pLatexStringBuilder.addText ( LATEX_SMALL_STEP_NEW_RULE ) ;
+    pLatexStringBuilder.addText ( " $\\\\$ " ) ;
+    pLatexStringBuilder.addText ( " $\\begin{tabular}{p{22cm}}$ " ) ;
+    for ( int i = 0 ; i < countBelow - 1 ; i ++ )
+    {
+      pLatexStringBuilder.addText ( " $\\\\$ " ) ;
+    }
+    pLatexStringBuilder.addText ( " $\\end{tabular}$ " ) ;
+    pLatexStringBuilder.addText ( " $\\end{tabular}$" ) ;
+    pLatexStringBuilder.addText ( " $\\\\[3mm]$ " ) ;
     for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
     {
       toLatexStringBuilderInternal ( pLatexStringBuilderFactory ,

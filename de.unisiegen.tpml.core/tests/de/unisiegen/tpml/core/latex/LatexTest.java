@@ -772,7 +772,9 @@ public class LatexTest
     {
       String text = "100000 + 200000 + 300000 + 400000 + 500000 + 600000 + 700000 + 800000 + 900000" ;
       // PowerSet
-      text = "let x = 1 + 1 + 1 in x+x" ;
+      text = "let x = 1 in x" ;
+      // text = "let rec fact x = if x = 1 then 1 else if x = 0 then 1 else x *
+      // fact (x-1) in fact 8" ;
       // text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map
       // f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 ::
       // append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else
