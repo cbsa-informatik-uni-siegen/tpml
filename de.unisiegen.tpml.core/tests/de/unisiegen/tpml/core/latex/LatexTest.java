@@ -177,7 +177,9 @@ public class LatexTest
     println ( writer , "\\documentclass[a4paper,12pt]{report}" ) ;
     println ( writer , "\\usepackage[utf8]{inputenc}" ) ;
     println ( writer , "\\usepackage{a4wide}" ) ;
+    println ( writer , "\\usepackage{lscape}" ) ;
     println ( writer , "\\setlength{\\parindent}{0pt}" ) ;
+    println ( writer , "\\pagestyle{empty}" ) ;
     println ( writer ) ;
     // packages
     TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
@@ -319,6 +321,7 @@ public class LatexTest
       e.printStackTrace ( ) ;
       return ;
     }
+    // \rule
     // document class and needed packages
     println ( writer , "%%" ) ;
     println ( writer , "%% TPML LaTeX Export" ) ;
@@ -327,7 +330,9 @@ public class LatexTest
     println ( writer , "\\documentclass[a4paper,12pt]{report}" ) ;
     println ( writer , "\\usepackage[utf8]{inputenc}" ) ;
     println ( writer , "\\usepackage{a4wide}" ) ;
+    println ( writer , "\\usepackage{lscape}" ) ;
     println ( writer , "\\setlength{\\parindent}{0pt}" ) ;
+    println ( writer , "\\pagestyle{empty}" ) ;
     println ( writer ) ;
     // packages
     TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
@@ -387,11 +392,13 @@ public class LatexTest
     println ( writer , "%%" ) ;
     println ( writer ) ;
     println ( writer , "\\begin{document}" ) ;
+    println ( writer , "\\begin{landscape}" ) ;
     println ( writer ) ;
     println ( writer , "$" ) ;
     println ( writer , pLatexPrintable.toLatexString ( ).toString ( ) ) ;
     println ( writer , "$" ) ;
     println ( writer ) ;
+    println ( writer , "\\end{landscape}" ) ;
     println ( writer , "\\end{document}" ) ;
     // close
     try
@@ -428,7 +435,9 @@ public class LatexTest
     println ( writer , "\\documentclass[a4paper,12pt]{report}" ) ;
     println ( writer , "\\usepackage[utf8]{inputenc}" ) ;
     println ( writer , "\\usepackage{a4wide}" ) ;
+    println ( writer , "\\usepackage{lscape}" ) ;
     println ( writer , "\\setlength{\\parindent}{0pt}" ) ;
+    println ( writer , "\\pagestyle{empty}" ) ;
     println ( writer ) ;
     // packages
     TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
@@ -760,7 +769,7 @@ public class LatexTest
     {
       String text = "100000 + 200000 + 300000 + 400000 + 500000 + 600000 + 700000 + 800000 + 900000" ;
       // PowerSet
-      text = "let x = 1 + 1 in x" ;
+      text = "let x = 1 + 1 + 1 in x+x" ;
       // text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map
       // f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 ::
       // append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else
