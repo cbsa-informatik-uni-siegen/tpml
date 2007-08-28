@@ -488,6 +488,7 @@ public final class Duplication extends Expression implements
               .getIndent ( pIndent + LATEX_INDENT )
               + LATEX_SEMI ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
+          this.latexStringBuilder.addBreak ( ) ;
         }
       }
       // Only one space for '{< >}'

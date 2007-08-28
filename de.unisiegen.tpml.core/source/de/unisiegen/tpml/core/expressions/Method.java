@@ -409,6 +409,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
                 + LATEX_INDENT ) , PRIO_METHOD_TAU ) ;
       }
+      this.latexStringBuilder.addBreak ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_METHOD_E ) ;
@@ -445,6 +446,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
       this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addText ( PRETTY_EQUAL ) ;
       this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_METHOD_E ) ;

@@ -304,6 +304,7 @@ public final class TupleType extends MonoType implements DefaultTypes
               + LATEX_SPACE ) ;
           this.latexStringBuilder.addText ( LATEX_MULT ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
+          this.latexStringBuilder.addBreak ( ) ;
         }
         this.latexStringBuilder.addBuilder ( this.types [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent

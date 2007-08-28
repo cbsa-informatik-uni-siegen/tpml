@@ -39,6 +39,13 @@ public interface LatexStringBuilder extends LatexCommandNames
 
 
   /**
+   * Appends a break location to the string builder. A break marks the location
+   * as possible newline insertion position for the latex export.
+   */
+  public void addBreak ( ) ;
+
+
+  /**
    * Inserts the end of a builder.
    */
   public void addBuilderEnd ( ) ;

@@ -537,6 +537,7 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
                 + LATEX_INDENT ) , PRIO_REC_TAU ) ;
       }
+      this.latexStringBuilder.addBreak ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_REC_E ) ;
@@ -571,6 +572,7 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
             PRIO_REC_TAU ) ;
       }
       this.prettyStringBuilder.addText ( PRETTY_DOT ) ;
+      this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_REC_E ) ;
     }

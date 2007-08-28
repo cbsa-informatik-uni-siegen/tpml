@@ -723,6 +723,7 @@ public final class CurriedMethod extends Expression implements
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
                 + LATEX_INDENT ) , PRIO_LET_TAU ) ;
       }
+      this.latexStringBuilder.addBreak ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_CURRIED_METHOD_E ) ;
@@ -778,6 +779,7 @@ public final class CurriedMethod extends Expression implements
       this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addText ( PRETTY_EQUAL ) ;
       this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CURRIED_METHOD_E ) ;

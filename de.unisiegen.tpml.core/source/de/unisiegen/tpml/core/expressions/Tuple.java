@@ -286,17 +286,18 @@ public final class Tuple extends Expression implements DefaultExpressions
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_TUPLE , LATEX_TUPLE , pIndent , descriptions ) ;
       this.latexStringBuilder.addBuilderBegin ( ) ;
-      for ( int n = 0 ; n < this.expressions.length ; ++ n )
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
-        if ( n > 0 )
+        if ( i > 0 )
         {
           this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
           this.latexStringBuilder.addText ( DefaultLatexStringBuilder
               .getIndent ( pIndent + LATEX_INDENT )
               + LATEX_COMMA ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
+          this.latexStringBuilder.addBreak ( ) ;
         }
-        this.latexStringBuilder.addBuilder ( this.expressions [ n ]
+        this.latexStringBuilder.addBuilder ( this.expressions [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
                 + LATEX_INDENT * 2 ) , PRIO_TUPLE_E ) ;
       }

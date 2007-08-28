@@ -273,6 +273,7 @@ public final class ClassType extends MonoType implements DefaultTypes
       this.latexStringBuilder.addBuilder ( this.types [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_CLASS_TAU ) ;
+      this.latexStringBuilder.addBreak ( ) ;
       this.latexStringBuilder.addBuilder ( this.types [ 1 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_CLASS_PHI ) ;

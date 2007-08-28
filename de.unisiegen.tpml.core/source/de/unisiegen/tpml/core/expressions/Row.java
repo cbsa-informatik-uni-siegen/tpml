@@ -648,6 +648,7 @@ public final class Row extends Expression implements DefaultExpressions
           this.latexStringBuilder.addText ( DefaultLatexStringBuilder
               .getIndent ( pIndent + LATEX_INDENT )
               + LATEX_SPACE ) ;
+          this.latexStringBuilder.addBreak ( ) ;
         }
       }
       if ( this.expressions.length == 0 )

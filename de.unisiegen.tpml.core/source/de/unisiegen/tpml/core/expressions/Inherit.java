@@ -568,10 +568,12 @@ public final class Inherit extends Expression implements BoundIdentifiers ,
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
         }
       }
+      this.latexStringBuilder.addBreak ( ) ;
       this.latexStringBuilder.addBuilderEnd ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_INHERIT_E ) ;
+      this.latexStringBuilder.addBreak ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_INHERIT_B ) ;

@@ -104,6 +104,17 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
   /**
    * {@inheritDoc}
    * 
+   * @see LatexStringBuilder#addBreak()
+   */
+  public void addBreak ( )
+  {
+    this.items.add ( new BreakLatexItem ( ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see LatexStringBuilder#addBuilder(LatexStringBuilder, int)
    */
   public void addBuilder ( LatexStringBuilder pLatexStringBuilder ,
@@ -114,6 +125,12 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
       throw new NullPointerException ( "builder is null" ) ; //$NON-NLS-1$
     }
     DefaultLatexStringBuilder defaultBuilder = ( DefaultLatexStringBuilder ) pLatexStringBuilder ;
+    boolean breakItem = false ;
+    if ( this.items.get ( this.items.size ( ) - 1 ) instanceof BreakLatexItem )
+    {
+      this.items.remove ( this.items.size ( ) - 1 ) ;
+      breakItem = true ;
+    }
     this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     if ( this.parameterDescriptions.length > 0 )
     {
@@ -126,6 +143,13 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
     }
     this.items.add ( new TextLatexItem ( getIndent ( this.indent ) + "{" ) ) ; //$NON-NLS-1$
     this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+    if ( breakItem )
+    {
+      this.items.add ( new TextLatexItem ( getIndent ( this.indent
+          + LATEX_INDENT )
+          + "\\linebreak[3]" ) ) ; //$NON-NLS-1$
+      this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+    }
     boolean parenthesis = ( defaultBuilder.returnPriority < pArgumentPriority ) ;
     if ( parenthesis )
     {
@@ -200,6 +224,12 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
       throw new NullPointerException ( "builder is null" ) ; //$NON-NLS-1$
     }
     DefaultLatexStringBuilder defaultBuilder = ( DefaultLatexStringBuilder ) pLatexStringBuilder ;
+    boolean breakItem = false ;
+    if ( this.items.get ( this.items.size ( ) - 1 ) instanceof BreakLatexItem )
+    {
+      this.items.remove ( this.items.size ( ) - 1 ) ;
+      breakItem = true ;
+    }
     this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     if ( this.parameterDescriptions.length > 0 )
     {
@@ -208,6 +238,13 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
           + this.parameterDescriptions [ this.count ].replaceAll (
               PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + "% " ) ) ) ; //$NON-NLS-1$
       this.count ++ ;
+      this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+    }
+    if ( breakItem )
+    {
+      this.items.add ( new TextLatexItem ( getIndent ( this.indent
+          + LATEX_INDENT )
+          + "\\linebreak[3]" ) ) ; //$NON-NLS-1$
       this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     }
     boolean parenthesis = ( defaultBuilder.returnPriority < pArgumentPriority ) ;

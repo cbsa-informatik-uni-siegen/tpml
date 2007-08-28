@@ -376,9 +376,11 @@ public final class Coercion extends Expression implements DefaultTypes ,
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_COERCION_E ) ;
+      this.latexStringBuilder.addBreak ( ) ;
       this.latexStringBuilder.addBuilder ( this.types [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_COERCION_TAU1 ) ;
+      this.latexStringBuilder.addBreak ( ) ;
       this.latexStringBuilder.addBuilder ( this.types [ 1 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_COERCION_TAU2 ) ;
@@ -406,6 +408,7 @@ public final class Coercion extends Expression implements DefaultTypes ,
           PRIO_COERCION_E ) ;
       this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
       this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_COERCION_TAU1 ) ;

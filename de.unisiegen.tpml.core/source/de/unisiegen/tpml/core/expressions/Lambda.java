@@ -550,6 +550,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
                 + LATEX_INDENT ) , PRIO_LAMBDA_TAU ) ;
       }
+      this.latexStringBuilder.addBreak ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_LAMBDA_E ) ;
@@ -583,6 +584,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
             PRIO_LAMBDA_TAU ) ;
       }
       this.prettyStringBuilder.addText ( PRETTY_DOT ) ;
+      this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_LAMBDA_E ) ;

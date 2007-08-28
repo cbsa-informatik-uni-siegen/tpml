@@ -360,6 +360,7 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
       this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_ID ) ;
+      this.latexStringBuilder.addBreak ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_ATTRIBUTE_E ) ;
@@ -388,6 +389,7 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
       this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addText ( PRETTY_EQUAL ) ;
       this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_ATTRIBUTE_E ) ;

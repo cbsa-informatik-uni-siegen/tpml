@@ -700,9 +700,11 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
                 + LATEX_INDENT ) , PRIO_LET_TAU ) ;
       }
+      this.latexStringBuilder.addBreak ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_LET_E1 ) ;
+      this.latexStringBuilder.addBreak ( ) ;
       this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_LET_E2 ) ;
@@ -748,6 +750,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
       this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addText ( PRETTY_EQUAL ) ;
       this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
       this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;

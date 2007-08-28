@@ -394,6 +394,7 @@ public final class PolyType extends Type implements DefaultTypes
           }
         }
         this.latexStringBuilder.addBuilderEnd ( ) ;
+        this.prettyStringBuilder.addBreak ( ) ;
       }
       else
       {
@@ -435,6 +436,7 @@ public final class PolyType extends Type implements DefaultTypes
           }
         }
         this.prettyStringBuilder.addText ( PRETTY_DOT ) ;
+        this.prettyStringBuilder.addBreak ( ) ;
       }
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

@@ -796,6 +796,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
         this.latexStringBuilder.addText ( DefaultLatexStringBuilder
             .getIndent ( pIndent + LATEX_INDENT )
             + LATEX_SPACE ) ;
+        this.prettyStringBuilder.addBreak ( ) ;
         this.latexStringBuilder.addBuilder ( this.remainingRowType
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
                 + LATEX_INDENT * 2 ) , 0 ) ;

@@ -427,6 +427,7 @@ public final class List extends Expression implements DefaultExpressions
               .getIndent ( pIndent + LATEX_INDENT )
               + LATEX_SEMI ) ;
           this.latexStringBuilder.addText ( LATEX_SPACE ) ;
+          this.latexStringBuilder.addBreak ( ) ;
         }
         this.latexStringBuilder.addBuilder ( this.expressions [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
