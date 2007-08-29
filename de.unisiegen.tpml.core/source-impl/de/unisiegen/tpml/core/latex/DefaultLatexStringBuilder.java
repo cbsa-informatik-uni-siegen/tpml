@@ -92,14 +92,16 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
       this.items.add ( new TextLatexItem ( getIndent ( this.indent )
           + "% " //$NON-NLS-1$
           + this.parameterDescriptions [ this.count ].replaceAll (
-              PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + "% " ) ) ) ; //$NON-NLS-1$
+              PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + getIndent ( this.indent )
+                  + "% " ) ) ) ; //$NON-NLS-1$
       this.count ++ ;
       this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     }
     this.items
         .add ( new TextLatexItem ( getIndent ( pIndent ) + "\\" + pName ) ) ; //$NON-NLS-1$
   }
-  
+
+
   /**
    * Allocates a new <code>DefaultLatextringBuilder</code> for the
    * <code>printable</code>, where the priority used for the
@@ -113,8 +115,8 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
    * @throws NullPointerException if <code>printable</code> is
    *           <code>null</code>.
    */
-  public DefaultLatexStringBuilder ( int pReturnPriority ,
-      int pIndent , String ... pParameterDescriptions )
+  public DefaultLatexStringBuilder ( int pReturnPriority , int pIndent ,
+      String ... pParameterDescriptions )
   {
     this.returnPriority = pReturnPriority ;
     this.indent = pIndent ;
@@ -124,7 +126,8 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
       this.items.add ( new TextLatexItem ( getIndent ( this.indent )
           + "% " //$NON-NLS-1$
           + this.parameterDescriptions [ this.count ].replaceAll (
-              PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + "% " ) ) ) ; //$NON-NLS-1$
+              PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + getIndent ( this.indent )
+                  + "% " ) ) ) ; //$NON-NLS-1$
       this.count ++ ;
       this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     }
@@ -167,7 +170,8 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
       this.items.add ( new TextLatexItem ( getIndent ( this.indent )
           + "% " //$NON-NLS-1$
           + this.parameterDescriptions [ this.count ].replaceAll (
-              PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + "% " ) ) ) ; //$NON-NLS-1$
+              PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + getIndent ( this.indent )
+                  + "% " ) ) ) ; //$NON-NLS-1$
       this.count ++ ;
       this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     }
@@ -219,7 +223,8 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
       this.items.add ( new TextLatexItem ( getIndent ( this.indent )
           + "% " //$NON-NLS-1$
           + this.parameterDescriptions [ this.count ].replaceAll (
-              PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + "% " ) ) ) ; //$NON-NLS-1$
+              PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + getIndent ( this.indent )
+                  + "% " ) ) ) ; //$NON-NLS-1$
       this.count ++ ;
       this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     }
@@ -266,7 +271,8 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
       this.items.add ( new TextLatexItem ( getIndent ( this.indent )
           + "% " //$NON-NLS-1$
           + this.parameterDescriptions [ this.count ].replaceAll (
-              PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + "% " ) ) ) ; //$NON-NLS-1$
+              PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + getIndent ( this.indent )
+                  + "% " ) ) ) ; //$NON-NLS-1$
       this.count ++ ;
       this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     }
