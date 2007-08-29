@@ -139,16 +139,17 @@ public abstract class BinaryOperator extends Constant
       this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
           PRIO_CONSTANT , LATEX_BINARY_OPERATOR , pIndent , this
               .toPrettyString ( ).toString ( ) ) ;
-      if ( this.parent instanceof InfixOperation )
+      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      if ( ! ( this.parent instanceof InfixOperation ) )
       {
-        this.latexStringBuilder.addText ( "{" //$NON-NLS-1$
-            + this.text.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+        this.latexStringBuilder.addText ( LATEX_LPAREN ) ;
       }
-      else
+      this.latexStringBuilder.addText ( this.text.replaceAll ( "_" , "\\\\_" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+      if ( ! ( this.parent instanceof InfixOperation ) )
       {
-        this.latexStringBuilder.addText ( "{" + LATEX_LPAREN //$NON-NLS-1$
-            + this.text.replaceAll ( "_" , "\\\\_" ) + LATEX_RPAREN + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+        this.latexStringBuilder.addText ( LATEX_RPAREN ) ;
       }
+      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
     }
     return this.latexStringBuilder ;
   }

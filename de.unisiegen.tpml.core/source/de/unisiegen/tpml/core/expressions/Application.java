@@ -74,9 +74,31 @@ public final class Application extends Expression implements DefaultExpressions
     {
       throw new NullPointerException ( E2_NULL ) ;
     }
-    this.expressions = new Expression [ ]
-    { pExpression1 , pExpression2 } ;
+    this.expressions = new Expression [ 2 ] ;
+    /*
+     * Clone the children if they have already a parent and this parent is an
+     * instanceof InfixOperation, because if the now needed brackets. Otherwise
+     * the latex export does not work.
+     */
+    if ( ( pExpression1.getParent ( ) != null )
+        && ( pExpression1.getParent ( ) instanceof InfixOperation ) )
+    {
+      this.expressions [ 0 ] = pExpression1.clone ( ) ;
+    }
+    else
+    {
+      this.expressions [ 0 ] = pExpression1 ;
+    }
     this.expressions [ 0 ].setParent ( this ) ;
+    if ( ( pExpression2.getParent ( ) != null )
+        && ( pExpression2.getParent ( ) instanceof InfixOperation ) )
+    {
+      this.expressions [ 1 ] = pExpression2.clone ( ) ;
+    }
+    else
+    {
+      this.expressions [ 1 ] = pExpression2 ;
+    }
     this.expressions [ 1 ].setParent ( this ) ;
   }
 
