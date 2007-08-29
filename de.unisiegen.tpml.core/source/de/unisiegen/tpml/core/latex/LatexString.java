@@ -2,10 +2,10 @@ package de.unisiegen.tpml.core.latex ;
 
 
 /**
- * Provides the functionality to latex print a {@link LatexPrintable}..
+ * Provides the functionality to latex print a {@link LatexPrintableNormal}..
  * 
  * @author Christian Fehler
- * @see LatexPrintable
+ * @see LatexPrintableNormal
  */
 public interface LatexString
 {

@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexPrintableNormal ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -32,7 +32,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  * @version $Rev$
  */
 public final class BigStepProofResult implements PrettyPrintable ,
-    LatexPrintable
+    LatexPrintableNormal
 {
   /**
    * The resulting store of a proof node.
@@ -165,7 +165,7 @@ public final class BigStepProofResult implements PrettyPrintable ,
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexString()
+   * @see LatexPrintableNormal#toLatexString()
    */
   public LatexString toLatexString ( )
   {
@@ -177,7 +177,7 @@ public final class BigStepProofResult implements PrettyPrintable ,
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
+   * @see LatexPrintableNormal#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )

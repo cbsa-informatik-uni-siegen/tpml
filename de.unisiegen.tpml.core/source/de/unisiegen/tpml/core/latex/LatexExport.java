@@ -14,19 +14,19 @@ import de.unisiegen.tpml.core.ProofModel ;
 
 /**
  * The main class of the latex export. The export method writes the input
- * {@link LatexPrintable} to the given {@link File}.
+ * {@link LatexPrintableNormal} to the given {@link File}.
  * 
  * @author Christian Fehler
  */
 public abstract class LatexExport
 {
   /**
-   * Writes the input {@link LatexPrintable} to the given {@link File}.
+   * Writes the input {@link LatexPrintableNormal} to the given {@link File}.
    * 
-   * @param pLatexPrintable The input {@link LatexPrintable}.
+   * @param pLatexPrintable The input {@link LatexPrintableNormal}.
    * @param pFile The input {@link File}.
    */
-  public final static void export ( LatexPrintable pLatexPrintable , File pFile )
+  public final static void export ( LatexPrintableNormal pLatexPrintable , File pFile )
   {
     try
     {
@@ -140,9 +140,9 @@ public abstract class LatexExport
 
 
   /**
-   * Writes the input {@link LatexPrintable} to the given {@link File}.
+   * Writes the input {@link LatexPrintableNormal} to the given {@link File}.
    * 
-   * @param pLatexPrintable The input {@link LatexPrintable}.
+   * @param pLatexPrintable The input {@link LatexPrintableNormal}.
    * @param pFile The input {@link File}.
    */
   public final static void export ( LatexPrintableNode pLatexPrintable ,

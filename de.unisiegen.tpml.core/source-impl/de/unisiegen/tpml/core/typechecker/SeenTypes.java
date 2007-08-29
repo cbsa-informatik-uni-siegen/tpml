@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexPrintableNormal ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -27,8 +27,8 @@ import de.unisiegen.tpml.core.types.Type ;
  * @author Christian Fehler
  * @param <E>
  */
-public final class SeenTypes < E extends PrettyPrintable & LatexPrintable >
-    implements Cloneable , Iterable < E > , PrettyPrintable , LatexPrintable ,
+public final class SeenTypes < E extends PrettyPrintable & LatexPrintableNormal >
+    implements Cloneable , Iterable < E > , PrettyPrintable , LatexPrintableNormal ,
     LatexCommandNames
 {
   /**
@@ -205,7 +205,7 @@ public final class SeenTypes < E extends PrettyPrintable & LatexPrintable >
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexString()
+   * @see LatexPrintableNormal#toLatexString()
    */
   public final LatexString toLatexString ( )
   {
@@ -217,7 +217,7 @@ public final class SeenTypes < E extends PrettyPrintable & LatexPrintable >
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
+   * @see LatexPrintableNormal#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )

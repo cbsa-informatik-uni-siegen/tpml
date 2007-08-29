@@ -1,7 +1,7 @@
 package de.unisiegen.tpml.core ;
 
 
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexPrintableNormal ;
 
 
 /**
@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.latex.LatexPrintable ;
  * @version $Rev$
  * @see de.unisiegen.tpml.core.ProofRuleSet
  */
-public interface ProofRule extends Comparable < ProofRule > , LatexPrintable
+public interface ProofRule extends Comparable < ProofRule > , LatexPrintableNormal
 {
   /**
    * Returns the group to which this proof rule belongs. The group is an

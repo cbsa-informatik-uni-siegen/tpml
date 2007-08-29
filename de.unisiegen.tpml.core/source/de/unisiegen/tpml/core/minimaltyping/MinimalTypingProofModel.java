@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexPrintableNormal ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -39,7 +39,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode
  */
 public class MinimalTypingProofModel extends AbstractExpressionProofModel
-    implements LatexPrintable , LatexCommandNames
+    implements LatexPrintableNormal , LatexCommandNames
 {
   //
   // Constants
@@ -567,7 +567,7 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexCommands()
+   * @see de.unisiegen.tpml.core.latex.LatexPrintableNormal#getLatexCommands()
    */
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
@@ -601,7 +601,7 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexInstructions()
+   * @see de.unisiegen.tpml.core.latex.LatexPrintableNormal#getLatexInstructions()
    */
   public TreeSet < LatexInstruction > getLatexInstructions ( )
   {
@@ -636,7 +636,7 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexPackages()
+   * @see de.unisiegen.tpml.core.latex.LatexPrintableNormal#getLatexPackages()
    */
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
@@ -671,7 +671,7 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.latex.LatexPrintable#toLatexString()
+   * @see de.unisiegen.tpml.core.latex.LatexPrintableNormal#toLatexString()
    */
   public LatexString toLatexString ( )
   {
@@ -683,7 +683,7 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.latex.LatexPrintable#toLatexStringBuilder(de.unisiegen.tpml.core.latex.LatexStringBuilderFactory,
+   * @see de.unisiegen.tpml.core.latex.LatexPrintableNormal#toLatexStringBuilder(de.unisiegen.tpml.core.latex.LatexStringBuilderFactory,
    *      int)
    */
   public LatexStringBuilder toLatexStringBuilder (

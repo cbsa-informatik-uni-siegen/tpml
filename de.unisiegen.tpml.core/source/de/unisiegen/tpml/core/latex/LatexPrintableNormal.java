@@ -9,7 +9,7 @@ import java.util.TreeSet ;
  * 
  * @author Christian Fehler
  */
-public interface LatexPrintable extends LatexCommandNames
+public interface LatexPrintableNormal extends LatexCommandNames
 {
   /**
    * Returns a set of needed latex commands for this latex printable object.

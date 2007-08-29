@@ -23,7 +23,7 @@ import de.unisiegen.tpml.core.latex.LatexCommand;
 import de.unisiegen.tpml.core.latex.LatexCommandNames;
 import de.unisiegen.tpml.core.latex.LatexInstruction;
 import de.unisiegen.tpml.core.latex.LatexPackage;
-import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexPrintableNormal;
 import de.unisiegen.tpml.core.latex.LatexString;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
@@ -39,7 +39,7 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
  * @see de.unisiegen.tpml.core.bigstep.BigStepProofNode
  * @see de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofModel
  */
-public final class BigStepProofModel extends AbstractInterpreterProofModel implements LatexPrintable, LatexCommandNames {
+public final class BigStepProofModel extends AbstractInterpreterProofModel implements LatexPrintableNormal, LatexCommandNames {
 	//
 	// Constants
 	//
@@ -305,7 +305,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel imple
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexCommands()
+	 * @see de.unisiegen.tpml.core.latex.LatexPrintableNormal#getLatexCommands()
 	 */
 	public TreeSet < LatexCommand > getLatexCommands ( ) {
 		TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( );
@@ -339,7 +339,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel imple
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexInstructions()
+	 * @see de.unisiegen.tpml.core.latex.LatexPrintableNormal#getLatexInstructions()
 	 */
 	public TreeSet < LatexInstruction > getLatexInstructions ( ) {
 		TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( );
@@ -386,7 +386,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel imple
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexPackages()
+	 * @see de.unisiegen.tpml.core.latex.LatexPrintableNormal#getLatexPackages()
 	 */
 	public TreeSet < LatexPackage > getLatexPackages ( ) {
 		TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( );
@@ -424,7 +424,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel imple
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see de.unisiegen.tpml.core.latex.LatexPrintable#toLatexString()
+	 * @see de.unisiegen.tpml.core.latex.LatexPrintableNormal#toLatexString()
 	 */
 	public LatexString toLatexString ( ) {
 		return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ), 0 ).toLatexString ( );
@@ -433,7 +433,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel imple
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
+	 * @see LatexPrintableNormal#toLatexStringBuilder(LatexStringBuilderFactory,int)
 	 */
 	public final LatexStringBuilder toLatexStringBuilder ( LatexStringBuilderFactory pLatexStringBuilderFactory,
 			int pIndent ) {

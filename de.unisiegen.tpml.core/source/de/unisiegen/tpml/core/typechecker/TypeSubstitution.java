@@ -2,7 +2,7 @@ package de.unisiegen.tpml.core.typechecker ;
 
 
 import java.util.Set ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexPrintableNormal ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.TypeVariable ;
@@ -18,7 +18,7 @@ import de.unisiegen.tpml.core.types.TypeVariable ;
  * @version $Rev:277 $
  * @see de.unisiegen.tpml.core.types.TypeVariable
  */
-public interface TypeSubstitution extends PrettyPrintable , LatexPrintable
+public interface TypeSubstitution extends PrettyPrintable , LatexPrintableNormal
 {
   /**
    * Returns the composition of this {@link TypeSubstitution} and <code>s</code>.

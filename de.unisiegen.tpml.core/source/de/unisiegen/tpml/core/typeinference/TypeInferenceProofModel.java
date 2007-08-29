@@ -22,7 +22,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexPrintableNormal ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -47,7 +47,7 @@ import de.unisiegen.tpml.core.types.TypeVariable ;
  * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode
  */
 public final class TypeInferenceProofModel extends AbstractProofModel implements
-    LatexPrintable
+    LatexPrintableNormal
 {
   /**
    * The {@link Logger} for this class.
@@ -300,7 +300,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel implements
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexCommands()
+   * @see de.unisiegen.tpml.core.latex.LatexPrintableNormal#getLatexCommands()
    */
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
@@ -356,7 +356,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel implements
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexInstructions()
+   * @see de.unisiegen.tpml.core.latex.LatexPrintableNormal#getLatexInstructions()
    */
   public TreeSet < LatexInstruction > getLatexInstructions ( )
   {
@@ -408,7 +408,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel implements
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexPackages()
+   * @see de.unisiegen.tpml.core.latex.LatexPrintableNormal#getLatexPackages()
    */
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
@@ -769,7 +769,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel implements
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexString()
+   * @see LatexPrintableNormal#toLatexString()
    */
   public final LatexString toLatexString ( )
   {
@@ -781,7 +781,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel implements
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
+   * @see LatexPrintableNormal#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
