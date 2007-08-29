@@ -29,6 +29,18 @@ public abstract class AbstractProofNode implements ProofNode
    * when no steps have been added to a proof node.
    */
   private static final ProofRule [ ] EMPTY_ARRAY = new ProofRule [ 0 ] ;
+  
+  /**
+   * The identifier counter.
+   * Needed to give an unique id to every proof node.
+   */
+  private static int idCounter = 1;
+  
+  /**
+   * The unique id of this proof node
+   */
+  private int id;
+  
 
 
   /**
@@ -104,6 +116,7 @@ public abstract class AbstractProofNode implements ProofNode
   protected AbstractProofNode ( )
   {
     this.rules = EMPTY_ARRAY ;
+    this.id = AbstractProofNode.idCounter++;
   }
 
 
@@ -751,4 +764,14 @@ public abstract class AbstractProofNode implements ProofNode
       return node ;
     }
   }
+
+/**
+ * 
+ * Get the unique id of this proof node
+ *
+ * @return int unique id
+ */
+public int getId ( ) {
+	return this.id;
+}
 }

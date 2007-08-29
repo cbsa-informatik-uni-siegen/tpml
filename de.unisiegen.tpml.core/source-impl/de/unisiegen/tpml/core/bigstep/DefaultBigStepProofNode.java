@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
 import de.unisiegen.tpml.core.interpreters.Store ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
@@ -167,17 +168,28 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    */
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
+	  
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_BIG_STEP_PROOF_NODE , 5 ,
-        "\\ifthenelse{\\equal{#5}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$ 
-            + "{\\ifthenelse{\\equal{#4}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$ 
-            + "{#3}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-            + "{(#3\\ \\ #4)}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+    
+    commands.add ( new DefaultLatexCommand ( LATEX_BYRULE , 1 ,
+   		 "\\hspace{-5mm}\\byrulecolor\\mbox{\\scriptsize\\ #1}","rule"));
+    
+    commands.add ( new DefaultLatexCommand ( LATEX_BIG_STEP_PROOF_NODE , 6 ,
+   		 "\\ifarrows"+ LATEX_LINE_BREAK_NEW_COMMAND
+   		 +"\\else \\refstepcounter{node}"+ LATEX_LINE_BREAK_NEW_COMMAND
+   		 +"\\noindent\\hspace{\\treeindent}\\hspace{#2\\nodeindent}"+ LATEX_LINE_BREAK_NEW_COMMAND
+   		 +"\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}"+ LATEX_LINE_BREAK_NEW_COMMAND
+   		 +"\\blong  "+ LATEX_LINE_BREAK_NEW_COMMAND
             + "{\\ifthenelse{\\equal{#4}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$ 
             + "{#3\\ \\Downarrow\\ #5}" //$NON-NLS-1$
             + "{(#3\\ \\ #4)\\ \\Downarrow\\ #5}" //$NON-NLS-1$
             + "}" //$NON-NLS-1$
-        , "depth" , "id" , "e" , "store" , "result" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
+         		+"\\\\"+ LATEX_LINE_BREAK_NEW_COMMAND  +
+         		"\\byrule{#6} "
+         +"\\elong"+ LATEX_LINE_BREAK_NEW_COMMAND
+         +"\\vspace{\\nodesep}"+ LATEX_LINE_BREAK_NEW_COMMAND
+         +"\\fi"+ LATEX_LINE_BREAK_NEW_COMMAND
+        , "depth" , "id" , "e" , "store" , "result", "proofrule" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
     for ( LatexCommand command : this.expression.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
@@ -189,6 +201,13 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
     if ( this.result != null )
     {
       for ( LatexCommand command : this.result.getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    if ( getRule() != null )
+    {
+      for ( LatexCommand command : getRule().getLatexCommands ( ) )
       {
         commands.add ( command ) ;
       }
@@ -222,6 +241,13 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
         instructions.add ( instruction ) ;
       }
     }
+    if ( getRule() != null )
+    {
+      for ( LatexInstruction instruction : getRule().getLatexInstructions ( ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
     return instructions ;
   }
 
@@ -246,6 +272,13 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
     if ( this.result != null )
     {
       for ( LatexPackage pack : this.result.getLatexPackages ( ) )
+      {
+        packages.add ( pack ) ;
+      }
+    }
+    if ( getRule ( ) != null )
+    {
+      for ( LatexPackage pack : getRule().getLatexPackages ( ) )
       {
         packages.add ( pack ) ;
       }
@@ -384,13 +417,13 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
       int pDepth , int pId )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_BIG_STEP_PROOF_NODE , pIndent , this.toPrettyString ( )
+        LATEX_BIG_STEP_PROOF_NODE , pIndent /*, this.toPrettyString ( )
             .toString ( ) , this.expression.toPrettyString ( ).toString ( ) ,
         this.getStore ( ).toPrettyString ( ).toString ( ) ,
         this.result == null ? LATEX_EMPTY_STRING : this.result
-            .toPrettyString ( ).toString ( ) ) ;
-    builder.addText ( "{" + String.valueOf ( pDepth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
+            .toPrettyString ( ).toString ( )*/ ) ;
     builder.addText ( "{" + String.valueOf ( pId ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
+    builder.addText ( "{" + String.valueOf ( pDepth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addBuilder ( this.expression.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     if ( this.expression.containsMemoryOperations ( ) )
@@ -411,6 +444,10 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
     {
       builder.addEmptyBuilder ( ) ;
     }
+    if (this.getRule ( )!= null)
+   	 builder.addBuilder ( this.getRule ( ).toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent ), 0 );
+    else
+   	 builder.addEmptyBuilder ( );
     return builder ;
   }
 

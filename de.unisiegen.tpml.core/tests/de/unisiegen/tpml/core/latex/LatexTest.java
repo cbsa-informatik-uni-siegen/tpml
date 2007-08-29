@@ -242,8 +242,10 @@ public class LatexTest
     println ( writer , "\\begin{document}" ) ;
     println ( writer , "\\begin{landscape}" ) ;
     println ( writer ) ;
+    if (!(pLatexPrintable instanceof ProofModel))
     println ( writer , "$" ) ;
     println ( writer , pLatexPrintable.toLatexString ( ).toString ( ) ) ;
+    if (!(pLatexPrintable instanceof ProofModel))
     println ( writer , "$" ) ;
     println ( writer ) ;
     println ( writer , "\\end{landscape}" ) ;
@@ -415,8 +417,10 @@ public class LatexTest
     println ( writer , "\\begin{document}" ) ;
     println ( writer , "\\begin{landscape}" ) ;
     println ( writer ) ;
+    if (!(pLatexPrintable instanceof ProofModel))
     println ( writer , "$" ) ;
     println ( writer , pLatexPrintable.toLatexString ( ).toString ( ) ) ;
+    if (!(pLatexPrintable instanceof ProofModel))
     println ( writer , "$" ) ;
     println ( writer ) ;
     println ( writer , "\\end{landscape}" ) ;

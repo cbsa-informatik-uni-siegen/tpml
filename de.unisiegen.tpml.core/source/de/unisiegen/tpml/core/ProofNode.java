@@ -266,4 +266,12 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintableNo
    * @see #getUserObject()
    */
   public void setUserObject ( Object userObject ) ;
+  
+  /**
+   * 
+   * Get the unique id of this proof node
+   *
+   * @return int unique id
+   */
+  public int getId();
 }
