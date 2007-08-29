@@ -199,7 +199,30 @@ public interface LatexCommandNames
    * The latex print command for an epsilon.
    */
   public static final String LATEX_EPSILON = "\\epsilon" ; //$NON-NLS-1$
-
+  
+  /**
+   * The latex print command for the definition of the color dark green.
+   */
+  public static final String LATEX_DEFINE_COLOR_DARKGREEN = "{darkgreen}{rgb}{0.1,0.5,0}" ; //$NON-NLS-1$
+  
+  /**
+   * The latex print command for the definition of the color dark green.
+   */
+  public static final String LATEX_RESULT_TYPE_COLOR = "{\\resulttypecolor}{\\color{darkgreen}}" ; //$NON-NLS-1$
+  
+  /**
+   * The latex print command for the result color.
+   */
+  public static final String LATEX_RESULT_COLOR = "{\\resultcolor}{\\color{blue}}" ; //$NON-NLS-1$
+  
+  /**
+   * The latex print command for the rule color.
+   */
+  public static final String LATEX_RULE_COLOR = "{\\byrulecolor}{\\color{red}}" ; //$NON-NLS-1$
+  
+  /*
+  \newcommand{\byrulecolor}{\color{red}}
+*/
 
   /**
    * The latex print command for the beginnig of keywords.
@@ -901,4 +924,17 @@ public interface LatexCommandNames
    * The latex print command for {@link BigStepProofRule}.
    */
   public static final String LATEX_BIG_STEP_PROOF_RULE = "BigStepProofRule" ; //$NON-NLS-1$
+  
+  /**
+   * The latex print command to build the tree
+   */
+  public static final String LATEX_MKTREE = "mktree"; //$NON-NLS-1$
+  
+  /**
+   * The latex print command to print an arrow
+   */
+  public static final String LATEX_ARROW = "arrow"; //$NON-NLS-1$
+  
+  public static final String LATEX_BYRULE = "byrule"; //$NON-NLS-1$
+  
 }

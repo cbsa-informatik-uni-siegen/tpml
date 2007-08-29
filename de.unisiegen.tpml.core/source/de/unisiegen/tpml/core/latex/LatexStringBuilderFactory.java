@@ -62,4 +62,29 @@ public final class LatexStringBuilderFactory
     return new DefaultLatexStringBuilder ( pReturnPriority , pName , pIndent ,
         pParameterDescriptions ) ;
   }
+  
+  
+  /**
+   * Allocates a new <code>LatexStringBuilder</code>, which will generate an
+   * annotation for the <code>LatexPrintable</code> for the whole string
+   * represented by the builder.
+   * 
+   * @param pReturnPriority the return priority according to the priority
+   *          grammar used for the printables in this builder.
+   * @param pIndent The indent of this object.
+   * @param pParameterDescriptions The array of parameter descriptions.
+   * @return A newly allocated <code>LatexStringBuilder</code> for the
+   *         <code>LatexPrintable</code> with the specified
+   *         <code>pReturnPriority</code>.
+   * @throws NullPointerException If <code>LatexPrintable</code> is
+   *           <code>null</code>.
+   * @see LatexString
+   * @see LatexStringBuilder
+   */
+  public LatexStringBuilder newBuilder ( int pReturnPriority ,
+      int pIndent , String ... pParameterDescriptions )
+  {
+    return new DefaultLatexStringBuilder ( pReturnPriority , pIndent ,
+        pParameterDescriptions ) ;
+  }
 }
