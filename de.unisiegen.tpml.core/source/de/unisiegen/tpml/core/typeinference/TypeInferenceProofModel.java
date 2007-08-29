@@ -18,6 +18,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.IsEmpty ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
@@ -305,12 +306,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel implements
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands
-        .add ( new DefaultLatexCommand (
-            LATEX_TYPE_INFERENCE_PROOF_MODEL ,
-            1 ,
-            "$\\begin{longtable}{p{3.5cm}p{22cm}}$#1$\\end{longtable}$" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_ARROW , 0 ,
-        "\\longrightarrow" ) ) ; //$NON-NLS-1$
+        .add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_PROOF_MODEL , 1 ,
+            "\\begin{longtable}{p{2.5cm}p{23cm}}$#1$\\end{longtable}" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_EQUAL , 0 ,
+        "\\mbox{\\LARGE=}" ) ) ; //$NON-NLS-1$
     for ( LatexCommand command : getLatexCommandsInternal ( ( TypeInferenceProofNode ) this.root ) )
     {
       commands.add ( command ) ;
@@ -790,14 +789,69 @@ public final class TypeInferenceProofModel extends AbstractProofModel implements
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
         LATEX_TYPE_INFERENCE_PROOF_MODEL , pIndent ) ;
     builder.addBuilderBegin ( ) ;
+    // First column
     builder.addSourceCodeBreak ( 0 ) ;
     builder.addText ( "$&$" ) ; //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "$\\begin{tabular}{p{22cm}}$" ) ; //$NON-NLS-1$
+    // Second column
+    builder.addText ( "$\\begin{tabular}{p{23cm}}$" ) ; //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 ) ;
     builder.addText ( "$\\\\$" ) ; //$NON-NLS-1$
-    builder.addBuilderWithoutBrackets ( this.root.toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT , 0 , 0 ) , 0 ) ;
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$\\begin{tabular}{p{23cm}}$" ) ; //$NON-NLS-1$
+    DefaultTypeInferenceProofNode node = ( DefaultTypeInferenceProofNode ) this.root ;
+    if ( node.getSubstitution ( ).size ( ) > 0 )
+    {
+      builder.addText ( LATEX_LBRACKET ) ;
+      for ( int i = 0 ; i < node.getSubstitution ( ).size ( ) ; i ++ )
+      {
+        builder.addBuilderWithoutBrackets ( node.getSubstitution ( ).get ( i )
+            .toLatexStringBuilder ( pLatexStringBuilderFactory ,
+                pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+        if ( i < node.getSubstitution ( ).size ( ) - 1 )
+        {
+          builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+              + LATEX_INDENT )
+              + LATEX_COMMA ) ;
+          builder.addText ( LATEX_SPACE ) ;
+        }
+      }
+      builder.addText ( LATEX_RBRACKET ) ;
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+          + LATEX_INDENT ) ) ;
+      builder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
+    }
+    for ( int i = 0 ; i < node.getFormula ( ).size ( ) ; i ++ )
+    {
+      if ( node.getFormula ( ).get ( i ) instanceof TypeEquationTypeInference )
+      {
+        TypeEquationTypeInference equation = ( TypeEquationTypeInference ) node
+            .getFormula ( ).get ( i ) ;
+        builder.addBuilderWithoutBrackets ( equation.getSeenTypes ( )
+            .toLatexStringBuilder ( pLatexStringBuilderFactory ,
+                pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+            + LATEX_INDENT )
+            + LATEX_SPACE ) ;
+        builder.addText ( LATEX_NAIL ) ;
+        builder.addText ( LATEX_SPACE ) ;
+      }
+      builder.addBuilderWithoutBrackets ( node.getFormula ( ).get ( i )
+          .toLatexStringBuilder ( pLatexStringBuilderFactory ,
+              pIndent + LATEX_INDENT ) , 0 ) ;
+      if ( i < node.getFormula ( ).size ( ) - 1 )
+      {
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+            + LATEX_INDENT ) ) ;
+        builder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
+      }
+    }
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$\\end{tabular}$" ) ; //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 ) ;
     builder.addText ( "$\\end{tabular}$" ) ; //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 ) ;
@@ -806,9 +860,9 @@ public final class TypeInferenceProofModel extends AbstractProofModel implements
     for ( int i = 0 ; i < this.root.getChildCount ( ) ; i ++ )
     {
       toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
-          ( TypeInferenceProofNode ) this.root ,
-          ( TypeInferenceProofNode ) this.root.getChildAt ( i ) , pIndent
-              + LATEX_INDENT ) ;
+          ( DefaultTypeInferenceProofNode ) this.root ,
+          ( DefaultTypeInferenceProofNode ) this.root.getChildAt ( i ) ,
+          pIndent + LATEX_INDENT ) ;
     }
     builder.addBuilderEnd ( ) ;
     return builder ;
@@ -829,11 +883,11 @@ public final class TypeInferenceProofModel extends AbstractProofModel implements
   public final void toLatexStringBuilderInternal (
       LatexStringBuilderFactory pLatexStringBuilderFactory ,
       LatexStringBuilder pLatexStringBuilder ,
-      TypeInferenceProofNode pParentNode , TypeInferenceProofNode pCurrentNode ,
-      int pIndent )
+      DefaultTypeInferenceProofNode pParentNode ,
+      DefaultTypeInferenceProofNode pCurrentNode , int pIndent )
   {
     // First column
-    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{3.5cm}}$" ) ; //$NON-NLS-1$
+    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{2.5cm}}$" ) ; //$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     if ( pParentNode.getRule ( ) != null )
     {
@@ -843,19 +897,71 @@ public final class TypeInferenceProofModel extends AbstractProofModel implements
     }
     pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "\\mbox{\\LARGE=}" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+        + LATEX_TYPE_INFERENCE_EQUAL ) ;
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$\\end{tabular}$" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$&$" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     // Second column
-    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{22cm}}$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{23cm}}$" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
-    pLatexStringBuilder.addBuilderWithoutBrackets ( pCurrentNode
-        .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent , 0 , 0 ) ,
-        0 ) ;
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{23cm}}$" ) ; //$NON-NLS-1$
+    if ( pCurrentNode.getSubstitution ( ).size ( ) > 0 )
+    {
+      pLatexStringBuilder.addText ( LATEX_LBRACKET ) ;
+      for ( int i = 0 ; i < pCurrentNode.getSubstitution ( ).size ( ) ; i ++ )
+      {
+        pLatexStringBuilder.addBuilderWithoutBrackets ( pCurrentNode
+            .getSubstitution ( ).get ( i ).toLatexStringBuilder (
+                pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+        if ( i < pCurrentNode.getSubstitution ( ).size ( ) - 1 )
+        {
+          pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+              .getIndent ( pIndent + LATEX_INDENT ) ) ;
+          pLatexStringBuilder.addText ( LATEX_COMMA ) ;
+          pLatexStringBuilder.addText ( LATEX_SPACE ) ;
+        }
+      }
+      pLatexStringBuilder.addText ( LATEX_RBRACKET ) ;
+      pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+          .getIndent ( pIndent + LATEX_INDENT ) ) ;
+      pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
+    }
+    for ( int i = 0 ; i < pCurrentNode.getFormula ( ).size ( ) ; i ++ )
+    {
+      if ( pCurrentNode.getFormula ( ).get ( i ) instanceof TypeEquationTypeInference )
+      {
+        TypeEquationTypeInference equation = ( TypeEquationTypeInference ) pCurrentNode
+            .getFormula ( ).get ( i ) ;
+        pLatexStringBuilder.addBuilderWithoutBrackets ( equation
+            .getSeenTypes ( ).toLatexStringBuilder (
+                pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+        pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+            .getIndent ( pIndent + LATEX_INDENT )
+            + LATEX_SPACE ) ;
+        pLatexStringBuilder.addText ( LATEX_NAIL ) ;
+        pLatexStringBuilder.addText ( LATEX_SPACE ) ;
+      }
+      pLatexStringBuilder.addBuilderWithoutBrackets ( pCurrentNode
+          .getFormula ( ).get ( i ).toLatexStringBuilder (
+              pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+      if ( i < pCurrentNode.getFormula ( ).size ( ) - 1 )
+      {
+        pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+            .getIndent ( pIndent + LATEX_INDENT ) ) ;
+        pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
+      }
+    }
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\end{tabular}$" ) ; //$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$\\end{tabular}$" ) ;//$NON-NLS-1$
     for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )

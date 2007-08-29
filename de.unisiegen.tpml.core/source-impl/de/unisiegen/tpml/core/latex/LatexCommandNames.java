@@ -902,6 +902,12 @@ public interface LatexCommandNames
 
 
   /**
+   * The latex print command for a type inference equal.
+   */
+  public static final String LATEX_TYPE_INFERENCE_EQUAL = "TypeInferenceEqual" ; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for {@link BigStepProofModel}.
    */
   public static final String LATEX_BIG_STEP_PROOF_MODEL = "BigStepProofModel" ; //$NON-NLS-1$

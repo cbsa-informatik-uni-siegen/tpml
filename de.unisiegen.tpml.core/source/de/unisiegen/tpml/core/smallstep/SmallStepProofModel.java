@@ -241,13 +241,10 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands
-        .add ( new DefaultLatexCommand (
-            LATEX_SMALL_STEP_PROOF_MODEL ,
-            1 ,
-            "$\\begin{longtable}{p{3.5cm}p{22cm}}$#1$\\end{longtable}$" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_MODEL , 1 ,
+        "\\begin{longtable}{p{3.5cm}p{22cm}}$#1$\\end{longtable}" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_ARROW , 0 ,
-        "\\longrightarrow" ) ) ; //$NON-NLS-1$
+        "\\xrightarrow{\\rule{3cm}{0cm}}" ) ) ; //$NON-NLS-1$
     for ( LatexCommand command : getLatexCommandsInternal ( this.root ) )
     {
       commands.add ( command ) ;
@@ -634,7 +631,8 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "\\xrightarrow{\\rule{3cm}{0cm}}" ) ;//$NON-NLS-1$
+    pLatexStringBuilder
+        .addText ( LATEX_PREFIX_COMMAND + LATEX_SMALL_STEP_ARROW ) ;
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;

@@ -289,8 +289,10 @@ public class TypeJudgement implements TypeFormula
             .toString ( ) ) ;
     builder.addBuilder ( this.environment.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+    builder.addBreak ( ) ;
     builder.addBuilder ( this.expression.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+    builder.addBreak ( ) ;
     builder.addBuilder ( this.type.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     return builder ;

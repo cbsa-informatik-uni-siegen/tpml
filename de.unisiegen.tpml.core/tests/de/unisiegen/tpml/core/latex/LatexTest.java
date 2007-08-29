@@ -242,11 +242,11 @@ public class LatexTest
     println ( writer , "\\begin{document}" ) ;
     println ( writer , "\\begin{landscape}" ) ;
     println ( writer ) ;
-    if (!(pLatexPrintable instanceof ProofModel))
-    println ( writer , "$" ) ;
+    if ( ! ( pLatexPrintable instanceof ProofModel ) )
+      println ( writer , "$" ) ;
     println ( writer , pLatexPrintable.toLatexString ( ).toString ( ) ) ;
-    if (!(pLatexPrintable instanceof ProofModel))
-    println ( writer , "$" ) ;
+    if ( ! ( pLatexPrintable instanceof ProofModel ) )
+      println ( writer , "$" ) ;
     println ( writer ) ;
     println ( writer , "\\end{landscape}" ) ;
     println ( writer , "\\end{document}" ) ;
@@ -417,11 +417,11 @@ public class LatexTest
     println ( writer , "\\begin{document}" ) ;
     println ( writer , "\\begin{landscape}" ) ;
     println ( writer ) ;
-    if (!(pLatexPrintable instanceof ProofModel))
-    println ( writer , "$" ) ;
+    if ( ! ( pLatexPrintable instanceof ProofModel ) )
+      println ( writer , "$" ) ;
     println ( writer , pLatexPrintable.toLatexString ( ).toString ( ) ) ;
-    if (!(pLatexPrintable instanceof ProofModel))
-    println ( writer , "$" ) ;
+    if ( ! ( pLatexPrintable instanceof ProofModel ) )
+      println ( writer , "$" ) ;
     println ( writer ) ;
     println ( writer , "\\end{landscape}" ) ;
     println ( writer , "\\end{document}" ) ;
@@ -793,11 +793,7 @@ public class LatexTest
     try
     {
       String text = "let x = 1 in x" ;
-      // text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map
-      // f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 ::
-      // append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else
-      // let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set
-      // [1;2]" ;
+      text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
       text = "let rec f x = if x = 0 then 1 else x * f (x-1) in f 2" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
@@ -1058,7 +1054,7 @@ public class LatexTest
     try
     {
       String text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
-      // text = "let rec f x = if x = 0 then 1 else x * f (x-1) in f 2" ;
+      text = "let rec fact x = if x = 0 then 1 else if x = 1 then 1 else if x = 2 then 2 else if x = 3 then 6 else x * fact (x-1) in fact 4" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
