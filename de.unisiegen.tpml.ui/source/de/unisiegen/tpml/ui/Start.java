@@ -2,15 +2,15 @@ package de.unisiegen.tpml.ui;
 
 /**
  * this class first checks the javaversion. If ist is under 1.5 it shows an errormessage. Otherwise it starts the
- * main.java. This class should be compiled with target 1.1.
+ * main.class. This class should be compiled with target 1.1.
  * 
- * @author Feivel
+ * @author michael
  * 
  */
 public class Start
 {
 	/**
-	 * The needed Java-version is represented by the MSTERN and the SLAVEN. Example: Java 1.4.2: MASTERN: 1, SLAVEN 4
+	 * The needed Java-version is represented by the MASTERN and the SLAVEN. Example: Java 1.4.2: MASTERN: 1, SLAVEN 4
 	 * Java 1.5.0: MASTERN: 1, SLAVEN 5 all digits after the second dot will be ignored.
 	 */
 	// Here you can definde the needed JAVA-Version MASTERN.SLAVAN
@@ -20,13 +20,13 @@ public class Start
 	final static int MASTERN = 1;
 
 	/**
-	 * The needed Java-version is represented by the MSTERN and the SLAVEN. Example: Java 1.4.2: MASTERN: 1, SLAVEN 4
+	 * The needed Java-version is represented by the MASTERN and the SLAVEN. Example: Java 1.4.2: MASTERN: 1, SLAVEN 4
 	 * Java 1.5.0: MASTERN: 1, SLAVEN 5 all digits after the second dot will be ignored.
 	 */
 	final static int SLAVEN = 5;
 
 	/**
-	 * implementation of split function because String.split dose not exist bevore Java 1.4 implementation ist
+	 * implementation of split function because String.split dose not exist bevore Java 1.4. The implementation is
 	 * different. Argument isn't a regular expression, it is only a char
 	 * 
 	 * @param toDiv
@@ -97,7 +97,7 @@ public class Start
 		// String contrains version like 1.5.0_006
 		String version = System.getProperty("java.version");
 		// Regular expression [.] for ., get 1 and 5 from 1.5, only this part will be tested
-		// the split function only existf from 1.4, so self implementatet will be uses
+		// the split function only exists from 1.4, so self implementatet will be uses
 		// String[] versionA = version.split("[.]");
 		String[] versionA = split(version, '.');
 
@@ -108,8 +108,10 @@ public class Start
 		}
 		catch (NumberFormatException e)
 		{
-			new MsgFrame("Unbekannte Version", "Das Ergebnis der Java-versionspr�fung ist ung�ltig! Es wurde "
-					+ versionA[0] + "." + versionA[1] + "als Version zur�ckgegeben.");
+			new MsgFrame("unknown JAVA version", "The result of the java-version check is not valid.\n"
+					+  versionA[0] + "." + versionA[1] + "\n" +
+							"to start TPML please call it using -f. \"java -jar de.unisiegen.tpml.ui-1.2.0.jar -f\n" +
+							"node: de.unisiegen.tpml.ui-1.2.0.jar stands for the actual version.");
 		}
 
 		// lexografik order: in 2.5, the 5 isn't important
@@ -136,7 +138,6 @@ public class Start
 		int neededMaster = MASTERN;
 		int neededSlave = SLAVEN;
 		boolean force = false;
-		int forceInt = -1;
 
 		if (countArgs > 0)
 		{
@@ -144,7 +145,6 @@ public class Start
 			{
 				if (args[i].equalsIgnoreCase("-f"))
 				{
-					forceInt = i;
 					force = true;
 				}
 			}
@@ -152,43 +152,34 @@ public class Start
 		// if -f is set- programm starts wihtout any test
 		if (force)
 		{
-			// alle Argumente werden gebaut, damit Dateien gestartet ge�ffnet werden k�nnen
+			// build the other arguments to provide open files
 			String Arguments[] = new String[args.length - 1];
 			int j = 0;
 			for (int i = 0; i < args.length; i++)
 			{
-				// wenn das Argument das -f ist, wird es nicht mitgereicht
-				if (i == forceInt)
+				// the -f will be ignored because the main.class dose not use it
+				if (args[i].equalsIgnoreCase("-f"))
 				{
+					// nothing to do, do not copy to Arguments
 				}
 				else
 				{
-					j++;
 					Arguments[j] = args[i];
+					j++;
 				}
 			}
 			Main.main(Arguments);
 		}
-		else
-		// no force
+		else // no force, check
 		{
 			try
 			{
-				// Problem: Split gibt es fr�her noch nicht 1.4
-				// String [] neededVersionA = neededVersion.split("[.]");
-				// String[] actualVersionA = split(actualVersion, '.');
-				// actualMaster = Integer.parseInt(actualVersionA[0]);
-				// actualSlave = Integer.parseInt(actualVersionA[1]);
-				// Testausgabe f�r die Java-Version
-				// System.out.println(System.getProperty("java.version"));
-				// JavaTest javaTest = new JavaTest();
-
-				// For errormessages bevor 1.2
-				// For nicer errormessages
+				// for errormessages bevor 1.2
+				// for nicer errormessages
 				boolean is12 = isJavaRightVersion(1, 2);
 				// boolean is12 = false;
 
-				// checks fersion
+				// checks version
 				boolean isRight = isJavaRightVersion(neededMaster, neededSlave);
 
 				if (isRight)
@@ -199,51 +190,54 @@ public class Start
 					}
 					catch (Exception e)
 					{
-						String message = "Das Programm konnte nicht gestartet werden!";
-						String title = "Programmstart fehlgeschlafen.";
+						String message = "The programm could not be started!";
+						String title = "Error while running TPML";
 						if (is12)
 						{
 							new JOpFrame(title, message);
-							System.exit(1);
+							//new MsgFrame(title, message);
+							System.exit(1224);
 						}
 						else
 						{
 							new MsgFrame(title, message);
-							System.exit(1);
+							System.exit(1224);
 						}
 					}
 				}
 				else
 				{
 					String message = "Java " + neededMaster + "." + neededSlave
-							+ " NICHT erkannt! Installieren Sie bitte die ben�tigte Verion.";
-					String title = "Falsche Java-Version";
+							+ " not founded! Install this version or above. To sidestep the version test and force TPML to start\r" +
+									"please run \"java -jar de.unisiegen.tpml.ui-1.2.0.jar -f\".";
+					String title = "Wrong JAVA version";
 					if (is12)
 					{
 						new JOpFrame(title, message);
-						System.exit(1);
+						//new MsgFrame(title, message);
+						System.exit(55);
 					}
 					else
 					{
 						new MsgFrame(title, message);
+						System.exit(55);
 					}
 				}
 			}
 			catch (IndexOutOfBoundsException e)
 			{
-				// Fehlermeldungen f�r Entwickler
-				System.out.println("Die ben�tigte Versionsnummer und das zu startende Programm m�ssen �bergeben werden.");
-				System.out.println("JavaTest version programm");
-				System.out.println("z.B.: JavaTest 1.4 main");
+				// errormessages for developer...
+				System.out.println("The needed Version number must be given");
+				System.out.println("JavaTest version");
+				System.out.println("z.B.: JavaTest 1.4");
 				System.exit(125);
 			}
 			catch (NumberFormatException e)
 			{
-				// Fehlermeldungen f�r Entwickler
-				System.out.println("Die Version muss korrekt �bergeben werden! Es wurde " + args[0]
-						+ " als Version �bergeben!");
-				System.out.println("JavaTest version programm");
-				System.out.println("z.B.: JavaTest 1.4 main");
+				// Fehlermeldungen für Entwickler
+				System.out.println("The version must be given correctly. The given Version was:" + args[0]);
+				System.out.println("JavaTest version");
+				System.out.println("z.B.: JavaTest 1.4");
 				System.exit(125);
 			}
 		}

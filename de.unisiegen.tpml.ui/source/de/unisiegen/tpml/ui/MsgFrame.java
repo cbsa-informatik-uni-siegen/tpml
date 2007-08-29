@@ -3,6 +3,7 @@ package de.unisiegen.tpml.ui;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Label;
@@ -18,22 +19,25 @@ import java.awt.event.WindowEvent;
  * this class will be used instead of JOptionPane(); because of the compatibility to old versions
  * This class should be compiled with target 1.1                   
  */
-public class MsgFrame extends Frame implements ActionListener
+public class MsgFrame extends Dialog implements ActionListener
 {
+	/***/
+	private static final long serialVersionUID = -3179421902078619893L;
+
 	/**
 	 * displays a simpel message like a JOptionPane. After OK is pressed the programm will exit with errorcode 1
 	 *
 	 * @param titel		the titel of the window
 	 * @param message	the message that should displayed
 	 */
+	@SuppressWarnings("deprecation")
 	public MsgFrame (String titel, String message)
 	{
-		super(titel);
+		super(new Frame(), true);
+		this.setTitle(titel);
 		setLayout(new BorderLayout());
 		setBackground(Color.lightGray);
 		
-		//TODO zentrieren
-		// setSize(100,80);
 
 		// Label:
 		Label msg = new Label(message);
@@ -68,7 +72,8 @@ public class MsgFrame extends Frame implements ActionListener
 		setLocation(x,y);
 		
 		
-		//TODO Muss noch gek�rt werden, warum show() nicht verwendet werden sollte.
+		// to be compatible with early java versions
+		// setVisible(true);
 		show();
 	}
 
