@@ -1,15 +1,11 @@
 package de.unisiegen.tpml.core.latex ;
 
 
-import java.io.BufferedWriter ;
 import java.io.File ;
-import java.io.FileOutputStream ;
 import java.io.IOException ;
-import java.io.OutputStreamWriter ;
 import java.io.StringReader ;
 import java.util.ArrayList ;
 import java.util.LinkedList ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.ProofModel ;
 import de.unisiegen.tpml.core.ProofNode ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
@@ -61,6 +57,7 @@ import de.unisiegen.tpml.core.types.UnitType ;
  * A test class for the latex export.
  * 
  * @author Christian Fehler
+ * @author Benjamin Mies
  */
 @ SuppressWarnings ( value =
 { "all" } )
@@ -72,12 +69,8 @@ public class LatexTest
   private static boolean compile = true ;
 
 
-  public static void compile ( )
+  private final static void compile ( )
   {
-    if ( ! compile )
-    {
-      return ;
-    }
     try
     {
       if ( console )
@@ -100,6 +93,7 @@ public class LatexTest
       if ( p.exitValue ( ) != 0 )
       {
         System.err.println ( "LatexTest: latex 1 error" ) ;
+        return ;
       }
       // latex 2
       System.out.println ( "latex 2" ) ;
@@ -115,6 +109,7 @@ public class LatexTest
       if ( p.exitValue ( ) != 0 )
       {
         System.err.println ( "LatexTest: latex 2 error" ) ;
+        return ;
       }
       // dvips
       System.out.println ( "dvips" ) ;
@@ -130,6 +125,7 @@ public class LatexTest
       if ( p.exitValue ( ) != 0 )
       {
         System.err.println ( "LatexTest: dvips error" ) ;
+        return ;
       }
       // ps2pdf
       System.out.println ( "ps2pdf" ) ;
@@ -145,6 +141,7 @@ public class LatexTest
       if ( p.exitValue ( ) != 0 )
       {
         System.err.println ( "LatexTest: ps2pdf error" ) ;
+        return ;
       }
     }
     catch ( IOException e )
@@ -154,116 +151,9 @@ public class LatexTest
   }
 
 
-  public static void exportLatexPrintable ( LatexPrintable pLatexPrintable ,
-      File pFile )
+  public final static void main ( String [ ] args )
   {
-    BufferedWriter writer ;
-    try
-    {
-      writer = new BufferedWriter ( new OutputStreamWriter (
-          new FileOutputStream ( pFile ) , "UTF8" ) ) ;
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-      return ;
-    }
-    println ( writer , "%%" ) ;
-    println ( writer , "%% TPML LaTeX Export" ) ;
-    println ( writer , "%%" ) ;
-    println ( writer ) ;
-    println ( writer , "\\documentclass[a4paper,12pt]{report}" ) ;
-    println ( writer , "\\usepackage[utf8]{inputenc}" ) ;
-    println ( writer , "\\usepackage{lscape}" ) ;
-    println ( writer , "\\setlength{\\parindent}{0pt}" ) ;
-    println ( writer , "\\pagestyle{empty}" ) ;
-    println ( writer , "\\oddsidemargin=-30pt" ) ;
-    println ( writer , "\\topmargin=-60pt" ) ;
-    println ( writer , "\\textwidth=510pt" ) ;
-    println ( writer , "\\textheight=750pt" ) ;
-    println ( writer ) ;
-    // packages
-    TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
-    if ( packages.size ( ) > 0 )
-    {
-      println ( writer , "%%" ) ;
-      println ( writer , "%% " + LatexPackage.DESCRIPTION ) ;
-      println ( writer , "%%" ) ;
-      println ( writer ) ;
-    }
-    for ( LatexPackage pack : packages )
-    {
-      println ( writer , pack ) ;
-    }
-    if ( packages.size ( ) > 0 )
-    {
-      println ( writer ) ;
-    }
-    // instructions
-    TreeSet < LatexInstruction > instructions = pLatexPrintable
-        .getLatexInstructions ( ) ;
-    if ( instructions.size ( ) > 0 )
-    {
-      println ( writer , "%%" ) ;
-      println ( writer , "%% " + LatexInstruction.DESCRIPTION ) ;
-      println ( writer , "%%" ) ;
-      println ( writer ) ;
-    }
-    for ( LatexInstruction instruction : instructions )
-    {
-      println ( writer , instruction ) ;
-    }
-    if ( instructions.size ( ) > 0 )
-    {
-      println ( writer ) ;
-    }
-    // commands
-    TreeSet < LatexCommand > commands = pLatexPrintable.getLatexCommands ( ) ;
-    if ( commands.size ( ) > 0 )
-    {
-      println ( writer , "%%" ) ;
-      println ( writer , "%% " + LatexCommand.DESCRIPTION ) ;
-      println ( writer , "%%" ) ;
-      println ( writer ) ;
-    }
-    for ( LatexCommand command : commands )
-    {
-      println ( writer , command ) ;
-    }
-    if ( commands.size ( ) > 0 )
-    {
-      println ( writer ) ;
-    }
-    // document
-    println ( writer , "%%" ) ;
-    println ( writer , "%% Document" ) ;
-    println ( writer , "%%" ) ;
-    println ( writer ) ;
-    println ( writer , "\\begin{document}" ) ;
-    println ( writer , "\\begin{landscape}" ) ;
-    println ( writer ) ;
-    if ( ! ( pLatexPrintable instanceof ProofModel ) )
-      println ( writer , "$" ) ;
-    println ( writer , pLatexPrintable.toLatexString ( ).toString ( ) ) ;
-    if ( ! ( pLatexPrintable instanceof ProofModel ) )
-      println ( writer , "$" ) ;
-    println ( writer ) ;
-    println ( writer , "\\end{landscape}" ) ;
-    println ( writer , "\\end{document}" ) ;
-    // close
-    try
-    {
-      writer.close ( ) ;
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-    }
-  }
-
-
-  public static void main ( String [ ] args )
-  {
+    System.out.println ( "*** started ***" ) ;
     for ( String arg : args )
     {
       if ( arg.equals ( "-no-console" ) )
@@ -275,41 +165,43 @@ public class LatexTest
         compile = false ;
       }
     }
+    File file = new File ( "test.tex" ) ;
     int number = 25 ;
-    if ( number == 0 ) testExpression ( ) ;
-    if ( number == 1 ) testType ( ) ;
-    if ( number == 2 ) testTypeEnvironment ( ) ;
-    if ( number == 3 ) testStore ( ) ;
-    if ( number == 4 ) testSeenTypes ( ) ;
-    if ( number == 5 ) testTypeEquationTypeChecker ( ) ;
-    if ( number == 6 ) testTypeEquationTypeInference ( ) ;
-    if ( number == 7 ) testSubType ( ) ;
-    if ( number == 8 ) testTypeSubType ( ) ;
-    if ( number == 9 ) testTypeSubstitution ( ) ;
-    if ( number == 10 ) testTypeEquationListTypeChecker ( ) ;
-    if ( number == 11 ) testTypeEquationListTypeInference ( ) ;
-    if ( number == 12 ) testTypeSubstitutionList ( ) ;
-    if ( number == 13 ) testTypeJudgement ( ) ;
-    if ( number == 14 ) testSmallStepProofNode ( ) ;
-    if ( number == 15 ) testTypeCheckerExpressionProofNode ( ) ;
-    if ( number == 16 ) testTypeCheckerTypeProofNode ( ) ;
-    if ( number == 17 ) testBigStepProofNode ( ) ;
-    if ( number == 18 ) testTypeInferenceProofNode ( ) ;
-    if ( number == 19 ) testSubTypingProofNode ( ) ;
-    if ( number == 20 ) testRecSubTypingProofNode ( ) ;
-    if ( number == 21 ) testMinimalTypingTypesProofNode ( ) ;
-    if ( number == 22 ) testMinimalTypingExpressionProofNode ( ) ;
-    if ( number == 23 ) testBigStepProofModel ( ) ;
-    if ( number == 24 ) testSmallStepProofModel ( ) ;
-    if ( number == 25 ) testTypeInferenceProofModel ( ) ;
-    if ( ! compile )
+    if ( number == 0 ) testExpression ( file ) ;
+    if ( number == 1 ) testType ( file ) ;
+    if ( number == 2 ) testTypeEnvironment ( file ) ;
+    if ( number == 3 ) testStore ( file ) ;
+    if ( number == 4 ) testSeenTypes ( file ) ;
+    if ( number == 5 ) testTypeEquationTypeChecker ( file ) ;
+    if ( number == 6 ) testTypeEquationTypeInference ( file ) ;
+    if ( number == 7 ) testSubType ( file ) ;
+    if ( number == 8 ) testTypeSubType ( file ) ;
+    if ( number == 9 ) testTypeSubstitution ( file ) ;
+    if ( number == 10 ) testTypeEquationListTypeChecker ( file ) ;
+    if ( number == 11 ) testTypeEquationListTypeInference ( file ) ;
+    if ( number == 12 ) testTypeSubstitutionList ( file ) ;
+    if ( number == 13 ) testTypeJudgement ( file ) ;
+    if ( number == 14 ) testSmallStepProofNode ( file ) ;
+    if ( number == 15 ) testTypeCheckerExpressionProofNode ( file ) ;
+    if ( number == 16 ) testTypeCheckerTypeProofNode ( file ) ;
+    if ( number == 17 ) testBigStepProofNode ( file ) ;
+    if ( number == 18 ) testTypeInferenceProofNode ( file ) ;
+    if ( number == 19 ) testSubTypingProofNode ( file ) ;
+    if ( number == 20 ) testRecSubTypingProofNode ( file ) ;
+    if ( number == 21 ) testMinimalTypingTypesProofNode ( file ) ;
+    if ( number == 22 ) testMinimalTypingExpressionProofNode ( file ) ;
+    if ( number == 23 ) testBigStepProofModel ( file ) ;
+    if ( number == 24 ) testSmallStepProofModel ( file ) ;
+    if ( number == 25 ) testTypeInferenceProofModel ( file ) ;
+    if ( compile )
     {
-      System.out.println ( "*** latex export done ***" ) ;
+      compile ( ) ;
     }
+    System.out.println ( "*** finished ***" ) ;
   }
 
 
-  private static ProofNode nextNode ( ProofModel model )
+  private final static ProofNode nextNode ( ProofModel model )
   {
     LinkedList < ProofNode > nodes = new LinkedList < ProofNode > ( ) ;
     nodes.add ( model.getRoot ( ) ) ;
@@ -329,317 +221,7 @@ public class LatexTest
   }
 
 
-  public static void printLatexPrintable ( LatexPrintable pLatexPrintable )
-  {
-    BufferedWriter writer ;
-    try
-    {
-      writer = new BufferedWriter ( new OutputStreamWriter (
-          new FileOutputStream ( "test.tex" ) , "UTF8" ) ) ;
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-      return ;
-    }
-    // document class and needed packages
-    println ( writer , "%%" ) ;
-    println ( writer , "%% TPML LaTeX Export" ) ;
-    println ( writer , "%%" ) ;
-    println ( writer ) ;
-    println ( writer , "\\documentclass[a4paper,12pt]{report}" ) ;
-    println ( writer , "\\usepackage[utf8]{inputenc}" ) ;
-    println ( writer , "\\usepackage{lscape}" ) ;
-    println ( writer , "\\setlength{\\parindent}{0pt}" ) ;
-    println ( writer , "\\pagestyle{empty}" ) ;
-    println ( writer , "\\oddsidemargin=-30pt" ) ;
-    println ( writer , "\\topmargin=-60pt" ) ;
-    println ( writer , "\\textwidth=510pt" ) ;
-    println ( writer , "\\textheight=750pt" ) ;
-    println ( writer ) ;
-    // packages
-    TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
-    if ( packages.size ( ) > 0 )
-    {
-      println ( writer , "%%" ) ;
-      println ( writer , "%% " + LatexPackage.DESCRIPTION ) ;
-      println ( writer , "%%" ) ;
-      println ( writer ) ;
-    }
-    for ( LatexPackage pack : packages )
-    {
-      println ( writer , pack ) ;
-    }
-    if ( packages.size ( ) > 0 )
-    {
-      println ( writer ) ;
-    }
-    // instructions
-    TreeSet < LatexInstruction > instructions = pLatexPrintable
-        .getLatexInstructions ( ) ;
-    if ( instructions.size ( ) > 0 )
-    {
-      println ( writer , "%%" ) ;
-      println ( writer , "%% " + LatexInstruction.DESCRIPTION ) ;
-      println ( writer , "%%" ) ;
-      println ( writer ) ;
-    }
-    for ( LatexInstruction instruction : instructions )
-    {
-      println ( writer , instruction ) ;
-    }
-    if ( instructions.size ( ) > 0 )
-    {
-      println ( writer ) ;
-    }
-    // commands
-    TreeSet < LatexCommand > commands = pLatexPrintable.getLatexCommands ( ) ;
-    if ( commands.size ( ) > 0 )
-    {
-      println ( writer , "%%" ) ;
-      println ( writer , "%% " + LatexCommand.DESCRIPTION ) ;
-      println ( writer , "%%" ) ;
-      println ( writer ) ;
-    }
-    for ( LatexCommand command : commands )
-    {
-      println ( writer , command ) ;
-    }
-    if ( commands.size ( ) > 0 )
-    {
-      println ( writer ) ;
-    }
-    // document
-    println ( writer , "%%" ) ;
-    println ( writer , "%% Document" ) ;
-    println ( writer , "%%" ) ;
-    println ( writer ) ;
-    println ( writer , "\\begin{document}" ) ;
-    println ( writer , "\\begin{landscape}" ) ;
-    println ( writer ) ;
-    if ( ! ( pLatexPrintable instanceof ProofModel ) )
-      println ( writer , "$" ) ;
-    println ( writer , pLatexPrintable.toLatexString ( ).toString ( ) ) ;
-    if ( ! ( pLatexPrintable instanceof ProofModel ) )
-      println ( writer , "$" ) ;
-    println ( writer ) ;
-    println ( writer , "\\end{landscape}" ) ;
-    println ( writer , "\\end{document}" ) ;
-    // close
-    try
-    {
-      writer.close ( ) ;
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-    }
-    // compile
-    compile ( ) ;
-  }
-
-
-  public static void printLatexPrintable ( LatexPrintableNode pLatexPrintable )
-  {
-    BufferedWriter writer ;
-    try
-    {
-      writer = new BufferedWriter ( new OutputStreamWriter (
-          new FileOutputStream ( "test.tex" ) , "UTF8" ) ) ;
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-      return ;
-    }
-    // document class and needed packages
-    println ( writer , "%%" ) ;
-    println ( writer , "%% TPML LaTeX Export" ) ;
-    println ( writer , "%%" ) ;
-    println ( writer ) ;
-    println ( writer , "\\documentclass[a4paper,12pt]{report}" ) ;
-    println ( writer , "\\usepackage[utf8]{inputenc}" ) ;
-    println ( writer , "\\usepackage{lscape}" ) ;
-    println ( writer , "\\setlength{\\parindent}{0pt}" ) ;
-    println ( writer , "\\pagestyle{empty}" ) ;
-    println ( writer , "\\oddsidemargin=-30pt" ) ;
-    println ( writer , "\\topmargin=-60pt" ) ;
-    println ( writer , "\\textwidth=510pt" ) ;
-    println ( writer , "\\textheight=750pt" ) ;
-    println ( writer ) ;
-    // packages
-    TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
-    if ( packages.size ( ) > 0 )
-    {
-      println ( writer , "%%" ) ;
-      println ( writer , "%% " + LatexPackage.DESCRIPTION ) ;
-      println ( writer , "%%" ) ;
-      println ( writer ) ;
-    }
-    for ( LatexPackage pack : packages )
-    {
-      println ( writer , pack ) ;
-    }
-    if ( packages.size ( ) > 0 )
-    {
-      println ( writer ) ;
-    }
-    // instructions
-    TreeSet < LatexInstruction > instructions = pLatexPrintable
-        .getLatexInstructions ( ) ;
-    if ( instructions.size ( ) > 0 )
-    {
-      println ( writer , "%%" ) ;
-      println ( writer , "%% " + LatexInstruction.DESCRIPTION ) ;
-      println ( writer , "%%" ) ;
-      println ( writer ) ;
-    }
-    for ( LatexInstruction instruction : instructions )
-    {
-      println ( writer , instruction ) ;
-    }
-    if ( instructions.size ( ) > 0 )
-    {
-      println ( writer ) ;
-    }
-    // commands
-    TreeSet < LatexCommand > commands = pLatexPrintable.getLatexCommands ( ) ;
-    if ( commands.size ( ) > 0 )
-    {
-      println ( writer , "%%" ) ;
-      println ( writer , "%% " + LatexCommand.DESCRIPTION ) ;
-      println ( writer , "%%" ) ;
-      println ( writer ) ;
-    }
-    for ( LatexCommand command : commands )
-    {
-      println ( writer , command ) ;
-    }
-    if ( commands.size ( ) > 0 )
-    {
-      println ( writer ) ;
-    }
-    // document
-    println ( writer , "%%" ) ;
-    println ( writer , "%% Document" ) ;
-    println ( writer , "%%" ) ;
-    println ( writer ) ;
-    println ( writer , "\\begin{document}" ) ;
-    println ( writer , "\\begin{landscape}" ) ;
-    println ( writer ) ;
-    println ( writer , "$" ) ;
-    println ( writer , pLatexPrintable.toLatexString ( 0 , 0 ).toString ( ) ) ;
-    println ( writer , "$" ) ;
-    println ( writer ) ;
-    println ( writer , "\\end{landscape}" ) ;
-    println ( writer , "\\end{document}" ) ;
-    // close
-    try
-    {
-      writer.close ( ) ;
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-    }
-    // compile
-    compile ( ) ;
-  }
-
-
-  public static void println ( BufferedWriter pBufferedWriter )
-  {
-    try
-    {
-      pBufferedWriter.newLine ( ) ;
-      if ( console )
-      {
-        System.out.println ( ) ;
-      }
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-    }
-  }
-
-
-  public static void println ( BufferedWriter pBufferedWriter ,
-      LatexCommand pLatexCommand )
-  {
-    try
-    {
-      pBufferedWriter.write ( pLatexCommand.toString ( ) ) ;
-      pBufferedWriter.newLine ( ) ;
-      if ( console )
-      {
-        System.out.println ( pLatexCommand.toString ( ) ) ;
-      }
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-    }
-  }
-
-
-  public static void println ( BufferedWriter pBufferedWriter ,
-      LatexInstruction pLatexInstruction )
-  {
-    try
-    {
-      pBufferedWriter.write ( pLatexInstruction.toString ( ) ) ;
-      pBufferedWriter.newLine ( ) ;
-      if ( console )
-      {
-        System.out.println ( pLatexInstruction.toString ( ) ) ;
-      }
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-    }
-  }
-
-
-  public static void println ( BufferedWriter pBufferedWriter ,
-      LatexPackage pLatexPackage )
-  {
-    try
-    {
-      pBufferedWriter.write ( pLatexPackage.toString ( ) ) ;
-      pBufferedWriter.newLine ( ) ;
-      if ( console )
-      {
-        System.out.println ( pLatexPackage.toString ( ) ) ;
-      }
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-    }
-  }
-
-
-  public static void println ( BufferedWriter pBufferedWriter , String pText )
-  {
-    try
-    {
-      pBufferedWriter.write ( pText ) ;
-      pBufferedWriter.newLine ( ) ;
-      if ( console )
-      {
-        System.out.println ( pText ) ;
-      }
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-    }
-  }
-
-
-  public static void testBigStepProofModel ( )
+  private final static void testBigStepProofModel ( File pFile )
   {
     try
     {
@@ -651,7 +233,7 @@ public class LatexTest
           "l2o" ) ;
       BigStepProofModel model = language.newBigStepProofModel ( expression ) ;
       model.guess ( nextNode ( model ) ) ;
-      printLatexPrintable ( model ) ;
+      LatexExport.export ( model , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -660,7 +242,7 @@ public class LatexTest
   }
 
 
-  public static void testBigStepProofNode ( )
+  private final static void testBigStepProofNode ( File pFile )
   {
     try
     {
@@ -680,7 +262,7 @@ public class LatexTest
       store2.put ( new Location ( "a" ) , new IntegerConstant ( 1 ) ) ;
       BigStepProofResult result = new BigStepProofResult ( store2 , new Ref ( ) ) ;
       node.setResult ( result ) ;
-      printLatexPrintable ( node ) ;
+      LatexExport.export ( node , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -689,7 +271,7 @@ public class LatexTest
   }
 
 
-  public static void testExpression ( )
+  private final static void testExpression ( File pFile )
   {
     try
     {
@@ -699,7 +281,7 @@ public class LatexTest
       Language language = factory.getLanguageById ( "l4" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
           .parse ( ) ;
-      printLatexPrintable ( expression ) ;
+      LatexExport.export ( expression , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -708,7 +290,7 @@ public class LatexTest
   }
 
 
-  public static void testMinimalTypingExpressionProofNode ( )
+  private final static void testMinimalTypingExpressionProofNode ( File pFile )
   {
     try
     {
@@ -726,7 +308,7 @@ public class LatexTest
       DefaultMinimalTypingExpressionProofNode node = new DefaultMinimalTypingExpressionProofNode (
           environment , expression ) ;
       node.setType ( type ) ;
-      printLatexPrintable ( node ) ;
+      LatexExport.export ( node , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -735,13 +317,13 @@ public class LatexTest
   }
 
 
-  public static void testMinimalTypingTypesProofNode ( )
+  private final static void testMinimalTypingTypesProofNode ( File pFile )
   {
     try
     {
       DefaultMinimalTypingTypesProofNode node = new DefaultMinimalTypingTypesProofNode (
           new IntegerType ( ) , new BooleanType ( ) ) ;
-      printLatexPrintable ( node ) ;
+      LatexExport.export ( node , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -750,7 +332,7 @@ public class LatexTest
   }
 
 
-  public static void testRecSubTypingProofNode ( )
+  private final static void testRecSubTypingProofNode ( File pFile )
   {
     try
     {
@@ -760,7 +342,7 @@ public class LatexTest
           new IntegerType ( ) , new BooleanType ( ) ) ) ;
       DefaultRecSubTypingProofNode node = new DefaultRecSubTypingProofNode (
           type , type2 , new SeenTypes < DefaultSubType > ( ) ) ;
-      printLatexPrintable ( node ) ;
+      LatexExport.export ( node , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -769,7 +351,7 @@ public class LatexTest
   }
 
 
-  public static void testSeenTypes ( )
+  private final static void testSeenTypes ( File pFile )
   {
     try
     {
@@ -779,7 +361,7 @@ public class LatexTest
           new BooleanType ( ) , seenTypes2 ) ) ;
       seenTypes1.add ( new TypeEquationTypeChecker ( new BooleanType ( ) ,
           new UnitType ( ) , seenTypes2 ) ) ;
-      printLatexPrintable ( seenTypes1 ) ;
+      LatexExport.export ( seenTypes1 , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -788,7 +370,7 @@ public class LatexTest
   }
 
 
-  public static void testSmallStepProofModel ( )
+  private final static void testSmallStepProofModel ( File pFile )
   {
     try
     {
@@ -801,7 +383,7 @@ public class LatexTest
           .parse ( ) ;
       SmallStepProofModel model = language.newSmallStepProofModel ( expression ) ;
       model.complete ( nextNode ( model ) ) ;
-      printLatexPrintable ( model ) ;
+      LatexExport.export ( model , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -810,7 +392,7 @@ public class LatexTest
   }
 
 
-  public static void testSmallStepProofNode ( )
+  private final static void testSmallStepProofNode ( File pFile )
   {
     try
     {
@@ -824,7 +406,7 @@ public class LatexTest
           new IntegerConstant ( 3 ) ) ) ;
       DefaultSmallStepProofNode node = new DefaultSmallStepProofNode (
           expression ) ;
-      printLatexPrintable ( node ) ;
+      LatexExport.export ( node , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -833,7 +415,7 @@ public class LatexTest
   }
 
 
-  public static void testStore ( )
+  private final static void testStore ( File pFile )
   {
     try
     {
@@ -841,7 +423,7 @@ public class LatexTest
       store.put ( new Location ( "c" ) , new IntegerConstant ( 3 ) ) ;
       store.put ( new Location ( "b" ) , new IntegerConstant ( 2 ) ) ;
       store.put ( new Location ( "a" ) , new IntegerConstant ( 1 ) ) ;
-      printLatexPrintable ( store ) ;
+      LatexExport.export ( store , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -850,13 +432,13 @@ public class LatexTest
   }
 
 
-  public static void testSubType ( )
+  private final static void testSubType ( File pFile )
   {
     try
     {
       DefaultSubType subType = new DefaultSubType ( new IntegerType ( ) ,
           new BooleanType ( ) ) ;
-      printLatexPrintable ( subType ) ;
+      LatexExport.export ( subType , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -865,7 +447,7 @@ public class LatexTest
   }
 
 
-  public static void testSubTypingProofNode ( )
+  private final static void testSubTypingProofNode ( File pFile )
   {
     try
     {
@@ -875,7 +457,7 @@ public class LatexTest
           new IntegerType ( ) , new IntegerType ( ) ) ) ;
       DefaultSubTypingProofNode node = new DefaultSubTypingProofNode ( type ,
           type2 ) ;
-      printLatexPrintable ( node ) ;
+      LatexExport.export ( node , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -884,7 +466,7 @@ public class LatexTest
   }
 
 
-  public static void testType ( )
+  private final static void testType ( File pFile )
   {
     try
     {
@@ -899,7 +481,7 @@ public class LatexTest
        * TypeVariable ( 0 , 1 ) ) ; quantified.add ( new TypeVariable ( 0 , 2 ) ) ;
        * type = new PolyType ( quantified , new IntegerType ( ) ) ;
        */
-      printLatexPrintable ( type ) ;
+      LatexExport.export ( type , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -908,7 +490,7 @@ public class LatexTest
   }
 
 
-  public static void testTypeCheckerExpressionProofNode ( )
+  private final static void testTypeCheckerExpressionProofNode ( File pFile )
   {
     try
     {
@@ -925,7 +507,7 @@ public class LatexTest
           new IntegerType ( ) , new IntegerType ( ) ) ) ;
       DefaultTypeCheckerExpressionProofNode node = new DefaultTypeCheckerExpressionProofNode (
           environment , expression , type ) ;
-      printLatexPrintable ( node ) ;
+      LatexExport.export ( node , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -934,7 +516,7 @@ public class LatexTest
   }
 
 
-  public static void testTypeCheckerTypeProofNode ( )
+  private final static void testTypeCheckerTypeProofNode ( File pFile )
   {
     try
     {
@@ -944,7 +526,7 @@ public class LatexTest
           new IntegerType ( ) , new IntegerType ( ) ) ) ;
       DefaultTypeCheckerTypeProofNode node = new DefaultTypeCheckerTypeProofNode (
           type , type2 ) ;
-      printLatexPrintable ( node ) ;
+      LatexExport.export ( node , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -953,7 +535,7 @@ public class LatexTest
   }
 
 
-  public static void testTypeEnvironment ( )
+  private final static void testTypeEnvironment ( File pFile )
   {
     try
     {
@@ -966,7 +548,7 @@ public class LatexTest
               new BooleanType ( ) ) ;
       environment = ( DefaultTypeEnvironment ) environment.extend (
           new Identifier ( "a" , Identifier.Set.VARIABLE ) , new UnitType ( ) ) ;
-      printLatexPrintable ( environment ) ;
+      LatexExport.export ( environment , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -975,7 +557,7 @@ public class LatexTest
   }
 
 
-  public static void testTypeEquationListTypeChecker ( )
+  private final static void testTypeEquationListTypeChecker ( File pFile )
   {
     try
     {
@@ -987,7 +569,7 @@ public class LatexTest
           new BooleanType ( ) , new UnitType ( ) , seenTypes ) ;
       equationList = equationList.extend ( typeEquation1 ) ;
       equationList = equationList.extend ( typeEquation2 ) ;
-      printLatexPrintable ( equationList ) ;
+      LatexExport.export ( equationList , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -996,7 +578,7 @@ public class LatexTest
   }
 
 
-  public static void testTypeEquationListTypeInference ( )
+  private final static void testTypeEquationListTypeInference ( File pFile )
   {
     try
     {
@@ -1008,7 +590,7 @@ public class LatexTest
           new BooleanType ( ) , new UnitType ( ) , seenTypes ) ;
       equationList = equationList.extend ( typeEquation1 ) ;
       equationList = equationList.extend ( typeEquation2 ) ;
-      printLatexPrintable ( equationList ) ;
+      LatexExport.export ( equationList , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -1017,14 +599,14 @@ public class LatexTest
   }
 
 
-  public static void testTypeEquationTypeChecker ( )
+  private final static void testTypeEquationTypeChecker ( File pFile )
   {
     try
     {
       SeenTypes < TypeEquationTypeChecker > seenTypes = new SeenTypes < TypeEquationTypeChecker > ( ) ;
       TypeEquationTypeChecker typeEquation = new TypeEquationTypeChecker (
           new IntegerType ( ) , new BooleanType ( ) , seenTypes ) ;
-      printLatexPrintable ( typeEquation ) ;
+      LatexExport.export ( typeEquation , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -1033,14 +615,14 @@ public class LatexTest
   }
 
 
-  public static void testTypeEquationTypeInference ( )
+  private final static void testTypeEquationTypeInference ( File pFile )
   {
     try
     {
       SeenTypes < TypeEquationTypeInference > seenTypes = new SeenTypes < TypeEquationTypeInference > ( ) ;
       TypeEquationTypeInference typeEquation = new TypeEquationTypeInference (
           new IntegerType ( ) , new BooleanType ( ) , seenTypes ) ;
-      printLatexPrintable ( typeEquation ) ;
+      LatexExport.export ( typeEquation , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -1049,7 +631,7 @@ public class LatexTest
   }
 
 
-  public static void testTypeInferenceProofModel ( )
+  private final static void testTypeInferenceProofModel ( File pFile )
   {
     try
     {
@@ -1062,7 +644,7 @@ public class LatexTest
       TypeInferenceProofModel model = language
           .newTypeInferenceProofModel ( expression ) ;
       model.complete ( nextNode ( model ) ) ;
-      printLatexPrintable ( model ) ;
+      LatexExport.export ( model , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -1071,7 +653,7 @@ public class LatexTest
   }
 
 
-  public static void testTypeInferenceProofNode ( )
+  private final static void testTypeInferenceProofNode ( File pFile )
   {
     try
     {
@@ -1118,7 +700,7 @@ public class LatexTest
       substitutions.add ( typeSubstitution3 ) ;
       DefaultTypeInferenceProofNode node = new DefaultTypeInferenceProofNode (
           formulas , substitutions ) ;
-      printLatexPrintable ( node ) ;
+      LatexExport.export ( node , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -1127,7 +709,7 @@ public class LatexTest
   }
 
 
-  public static void testTypeJudgement ( )
+  private final static void testTypeJudgement ( File pFile )
   {
     try
     {
@@ -1144,7 +726,7 @@ public class LatexTest
           new IntegerType ( ) , new IntegerType ( ) ) ) ;
       TypeJudgement judgement = new TypeJudgement ( environment , expression ,
           type ) ;
-      printLatexPrintable ( judgement ) ;
+      LatexExport.export ( judgement , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -1153,13 +735,13 @@ public class LatexTest
   }
 
 
-  public static void testTypeSubstitution ( )
+  private final static void testTypeSubstitution ( File pFile )
   {
     try
     {
       DefaultTypeSubstitution typeSubstitution = new DefaultTypeSubstitution (
           new TypeVariable ( 0 , 0 ) , new BooleanType ( ) ) ;
-      printLatexPrintable ( typeSubstitution ) ;
+      LatexExport.export ( typeSubstitution , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -1168,7 +750,7 @@ public class LatexTest
   }
 
 
-  public static void testTypeSubstitutionList ( )
+  private final static void testTypeSubstitutionList ( File pFile )
   {
     try
     {
@@ -1179,7 +761,7 @@ public class LatexTest
           new TypeVariable ( 0 , 1 ) , new IntegerType ( ) ) ;
       substitionList = substitionList.extend ( typeSubstitution1 ) ;
       substitionList = substitionList.extend ( typeSubstitution2 ) ;
-      printLatexPrintable ( substitionList ) ;
+      LatexExport.export ( substitionList , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -1188,13 +770,13 @@ public class LatexTest
   }
 
 
-  public static void testTypeSubType ( )
+  private final static void testTypeSubType ( File pFile )
   {
     try
     {
       TypeSubType typeSubType = new TypeSubType ( new IntegerType ( ) ,
           new BooleanType ( ) ) ;
-      printLatexPrintable ( typeSubType ) ;
+      LatexExport.export ( typeSubType , pFile ) ;
     }
     catch ( Exception e )
     {
