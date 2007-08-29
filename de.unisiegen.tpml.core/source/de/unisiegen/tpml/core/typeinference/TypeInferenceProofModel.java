@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.typeinference ;
 
 
 import java.util.ArrayList ;
+import java.util.TreeSet ;
 import org.apache.log4j.Logger ;
 import de.unisiegen.tpml.core.AbstractProofModel ;
 import de.unisiegen.tpml.core.AbstractProofNode ;
@@ -15,6 +16,15 @@ import de.unisiegen.tpml.core.ProofRuleException ;
 import de.unisiegen.tpml.core.ProofStep ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.IsEmpty ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext ;
@@ -35,11 +45,9 @@ import de.unisiegen.tpml.core.types.TypeVariable ;
  * @see de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext
  * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode
  */
-public final class TypeInferenceProofModel extends AbstractProofModel
+public final class TypeInferenceProofModel extends AbstractProofModel implements
+    LatexPrintable
 {
-  //
-  // Constants
-  //
   /**
    * The {@link Logger} for this class.
    * 
@@ -49,9 +57,6 @@ public final class TypeInferenceProofModel extends AbstractProofModel
       .getLogger ( TypeInferenceProofModel.class ) ;
 
 
-  //
-  // Attributes
-  //
   /**
    * The current proof index, which indicates the number of steps that have been
    * performed on the proof model so far (starting with one), and is used to
@@ -70,9 +75,6 @@ public final class TypeInferenceProofModel extends AbstractProofModel
   DefaultTypeInferenceProofNode child ;
 
 
-  //
-  // Constructor
-  //
   /**
    * Allocates a new <code>TypeInferenceProofModel</code> with the specified
    * <code>expression</code> as its root node.
@@ -94,9 +96,190 @@ public final class TypeInferenceProofModel extends AbstractProofModel
   }
 
 
-  //
-  // Accessors
-  //
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.AbstractProofModel#addUndoableTreeEdit(de.unisiegen.tpml.core.AbstractProofModel.UndoableTreeEdit)
+   */
+  @ Override
+  public void addUndoableTreeEdit ( UndoableTreeEdit edit )
+  {
+    // perform the redo of the edit
+    edit.redo ( ) ;
+    // add to the undo history
+    super.addUndoableTreeEdit ( edit ) ;
+  }
+
+
+  /**
+   * Applies the specified proof <code>rule</code> to the given
+   * <code>node</code> in this proof model.
+   * 
+   * @param rule the type proof rule to apply.
+   * @param node the type proof node to which to apply the <code>rule</code>.
+   * @param type the type the user guessed for the <code>node</code> or
+   *          <code>null</code> if the user didn't enter a type.
+   * @param form The {@link TypeFormula}.
+   * @param mode The choosen mode.
+   * @throws ProofRuleException if the application of the <code>rule</code> to
+   *           the <code>node</code> failed.
+   * @see #guess(ProofNode)
+   * @see #prove(ProofRule, ProofNode)
+   */
+  private void applyInternal ( TypeCheckerProofRule rule ,
+      DefaultTypeInferenceProofNode node , MonoType type , TypeFormula form ,
+      boolean mode ) throws ProofRuleException
+  {
+    // allocate a new TypeCheckerContext
+    NewDefaultTypeInferenceProofContext context = new NewDefaultTypeInferenceProofContext (
+        this , node ) ;
+    this.index ++ ;
+    DefaultTypeInferenceProofNode typeNode = node ;
+    Exception e = null ;
+    if ( form != null )
+    {
+      // try {
+      // try to apply the rule to the specified node
+      // context.setSubstitutions ( node.getSubstitution ( ) ) ;
+      context.apply ( rule , form , type , mode , node ) ;
+      ProofStep [ ] newSteps = new ProofStep [ 1 ] ;
+      newSteps [ 0 ] = new ProofStep ( new IsEmpty ( ) , rule ) ;
+      setUndoActions ( node , this.child , newSteps ) ;
+      return ;
+      /*
+       * } catch (UnifyException e1){ context.revert ( ); throw new
+       * ProofRuleException(e1.getMessage ( ), node, rule, e); }
+       */
+    }
+    // Try actual Rule with all formulas of the actual node
+    for ( TypeFormula formula : typeNode.getFormula ( ) )
+    {
+      try
+      {
+        // try to apply the rule to the specified node
+        // context.setSubstitutions ( node.getSubstitution ( ) ) ;
+        context.apply ( rule , formula , type , mode , node ) ;
+        ProofStep [ ] newSteps = new ProofStep [ 1 ] ;
+        newSteps [ 0 ] = new ProofStep ( new IsEmpty ( ) , rule ) ;
+        setUndoActions ( node , this.child , newSteps ) ;
+        return ;
+      }
+      catch ( ProofRuleException e1 )
+      {
+        // revert the actions performed so far
+        context.revert ( ) ;
+        // rembember first exception to rethrow
+        if ( e == null ) e = e1 ;
+        continue ;
+      } /*
+         * catch ( UnifyException e1 ) { context.revert ( ); if (e == null)
+         * e=e1; }
+         */
+      /*
+       * catch ( RuntimeException e1 ) { // revert the actions performed so far
+       * context.revert ( ) ; // rembember first exception to rethrow if ( e ==
+       * null ) e = e1 ; continue ; }
+       */
+    }
+    this.index -- ;
+    if ( e instanceof ProofRuleException )
+    {
+      // rethrow exception
+      throw ( ProofRuleException ) e ;
+    }
+    else if ( e instanceof RuntimeException )
+    {
+      // rethrow exception
+      throw ( RuntimeException ) e ;
+    }
+    else
+    {
+      // re-throw the exception as proof rule exception
+      throw new ProofRuleException ( node , rule , e ) ;
+    }
+  }
+
+
+  /**
+   * Returns <code>true</code> if the expression for the <code>node</code>
+   * contains syntactic sugar. If <code>recursive</code> is <code>true</code>
+   * and the expression for the <code>node</code> is not syntactic sugar, its
+   * sub expressions will also be checked.
+   * 
+   * @param node the proof node whose expression should be checked for syntactic
+   *          sugar.
+   * @param expression of the actual type formula which should be checke for
+   *          syntactic sugar.
+   * @param recursive signals if the expression should be checked recursive
+   * @return <code>true</code> if the expression of the <code>node</code>
+   *         contains syntactic sugar according to the language for this model.
+   * @throws IllegalArgumentException if the <code>node</code> is invalid for
+   *           this proof model.
+   * @throws NullPointerException if the <code>node</code> is
+   *           <code>null</code>.
+   * @see #translateToCoreSyntax(TypeInferenceProofNode, boolean, boolean)
+   * @see de.unisiegen.tpml.core.languages.LanguageTranslator#containsSyntacticSugar(Expression,
+   *      boolean)
+   */
+  public boolean containsSyntacticSugar ( TypeInferenceProofNode node ,
+      Expression expression , boolean recursive )
+  {
+    if ( node == null )
+    {
+      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.root.isNodeRelated ( node ) )
+    {
+      throw new IllegalArgumentException ( "node is invalid" ) ; //$NON-NLS-1$
+    }
+    if ( this.translator == null )
+    {
+      this.translator = this.ruleSet.getLanguage ( ).newTranslator ( ) ;
+    }
+    return this.translator.containsSyntacticSugar ( expression , recursive ) ;
+  }
+
+
+  /**
+   * Adds a new child proof node below the <code>node</code> using the
+   * <code>context</code>, for the <code>environment</code>,
+   * <code>expression</code> and <code>type</code>.
+   * 
+   * @param formulas the <code>TypeFormula</code>s of the new node.
+   * @param subs The {@link DefaultTypeSubstitution}s.
+   * @throws IllegalArgumentException if <code>node</code> is invalid for this
+   *           tree.
+   * @throws NullPointerException if any of the parameters is <code>null</code>.
+   */
+  void contextAddProofNode ( final ArrayList < TypeFormula > formulas ,
+      final ArrayList < TypeSubstitution > subs )
+  {
+    this.child = new DefaultTypeInferenceProofNode ( formulas , subs ) ;
+  }
+
+
+  /**
+   * Used to implement the
+   * {@link DefaultTypeInferenceProofContext#apply(TypeCheckerProofRule, TypeFormula, MonoType, boolean,DefaultTypeInferenceProofNode)}
+   * method of the {@link DefaultTypeInferenceProofContext} class.
+   * 
+   * @param context the type inference proof context.
+   * @param node the type inference node.
+   * @param rule the type checker rule.
+   * @param formula The {@link TypeFormula}.
+   */
+  void contextSetProofNodeRule ( @ SuppressWarnings ( "unused" )
+  DefaultTypeInferenceProofContext context ,
+      final DefaultTypeInferenceProofNode node ,
+      final TypeCheckerProofRule rule , @ SuppressWarnings ( "unused" )
+      TypeFormula formula )
+  {
+    node.setSteps ( new ProofStep [ ]
+    { new ProofStep ( new IsEmpty ( ) , rule ) } ) ;
+    nodeChanged ( node ) ;
+  }
+
+
   /**
    * Returns the current proof model index, which is the number of steps already
    * performed on the model (starting with one) and used to allocate new, unique
@@ -114,27 +297,181 @@ public final class TypeInferenceProofModel extends AbstractProofModel
 
 
   /**
-   * Sets the current proof model index. This is a support operation, called by
-   * {@link DefaultTypeInferenceProofContext} whenever a new proof context is
-   * allocated.
+   * {@inheritDoc}
    * 
-   * @param pIndex the new index for the proof model.
-   * @see #getIndex()
-   * @see DefaultTypeInferenceProofContext
+   * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexCommands()
    */
-  void setIndex ( int pIndex )
+  public TreeSet < LatexCommand > getLatexCommands ( )
   {
-    if ( pIndex < 1 )
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands
+        .add ( new DefaultLatexCommand (
+            LATEX_TYPE_INFERENCE_PROOF_MODEL ,
+            1 ,
+            "$\\begin{longtable}{p{3.5cm}p{22cm}}$#1$\\end{longtable}$" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_ARROW , 0 ,
+        "\\longrightarrow" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : getLatexCommandsInternal ( ( TypeInferenceProofNode ) this.root ) )
     {
-      throw new IllegalArgumentException ( "index is invalid" ) ; //$NON-NLS-1$
+      commands.add ( command ) ;
     }
-    this.index = pIndex ;
+    return commands ;
   }
 
 
-  //
-  // Actions
-  //
+  /**
+   * Returns a set of needed latex commands for the given latex printable
+   * {@link ProofNode}.
+   * 
+   * @param pNode The input {@link ProofNode}.
+   * @return A set of needed latex commands for the given latex printable
+   *         {@link ProofNode}.
+   */
+  private TreeSet < LatexCommand > getLatexCommandsInternal (
+      TypeInferenceProofNode pNode )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    for ( LatexCommand command : pNode.getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    if ( pNode.getRule ( ) != null )
+    {
+      for ( LatexCommand command : pNode.getRule ( ).getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    {
+      for ( LatexCommand command : getLatexCommandsInternal ( pNode
+          .getChildAt ( i ) ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    return commands ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexInstructions()
+   */
+  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  {
+    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    for ( LatexInstruction instruction : getLatexInstructionsInternal ( ( TypeInferenceProofNode ) this.root ) )
+    {
+      instructions.add ( instruction ) ;
+    }
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for the given latex printable
+   * {@link ProofNode}.
+   * 
+   * @param pNode The input {@link ProofNode}.
+   * @return A set of needed latex instructions for the given latex printable
+   *         {@link ProofNode}.
+   */
+  private TreeSet < LatexInstruction > getLatexInstructionsInternal (
+      TypeInferenceProofNode pNode )
+  {
+    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    for ( LatexInstruction pack : pNode.getLatexInstructions ( ) )
+    {
+      instructions.add ( pack ) ;
+    }
+    if ( pNode.getRule ( ) != null )
+    {
+      for ( LatexInstruction instruction : pNode.getRule ( )
+          .getLatexInstructions ( ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    {
+      for ( LatexInstruction instruction : getLatexInstructionsInternal ( pNode
+          .getChildAt ( i ) ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    return instructions ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexPackages()
+   */
+  public TreeSet < LatexPackage > getLatexPackages ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "longtable" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
+    for ( LatexPackage pack : getLatexPackagesInternal ( ( TypeInferenceProofNode ) this.root ) )
+    {
+      packages.add ( pack ) ;
+    }
+    return packages ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for the given latex printable
+   * {@link ProofNode}.
+   * 
+   * @param pNode The input {@link ProofNode}.
+   * @return A set of needed latex packages for the given latex printable
+   *         {@link ProofNode}.
+   */
+  private TreeSet < LatexPackage > getLatexPackagesInternal (
+      TypeInferenceProofNode pNode )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    for ( LatexPackage pack : pNode.getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    if ( pNode.getRule ( ) != null )
+    {
+      for ( LatexPackage pack : pNode.getRule ( ).getLatexPackages ( ) )
+      {
+        packages.add ( pack ) ;
+      }
+    }
+    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    {
+      for ( LatexPackage pack : getLatexPackagesInternal ( pNode
+          .getChildAt ( i ) ) )
+      {
+        packages.add ( pack ) ;
+      }
+    }
+    return packages ;
+  }
+
+
+  /**
+   * get the rules of the actual proof rule set
+   * 
+   * @return ProofRuleSet[] with all rules
+   * @see de.unisiegen.tpml.core.AbstractProofModel#getRules()
+   */
+  @ Override
+  public ProofRule [ ] getRules ( )
+  {
+    return this.ruleSet.getRules ( ) ;
+  }
+
+
   /**
    * {@inheritDoc}
    * 
@@ -160,6 +497,67 @@ public final class TypeInferenceProofModel extends AbstractProofModel
       throws ProofGuessException
   {
     guessInternal ( ( DefaultTypeInferenceProofNode ) node , null , mode ) ;
+  }
+
+
+  /**
+   * Implementation of the {@link #guess(ProofNode)} and
+   * {@link #guess(ProofNode, boolean)} methods.
+   * 
+   * @param node the proof node for which to guess the next step.
+   * @param type the type that the user entered for this <code>node</code> or
+   *          <code>null</code> to let the type inference algorithm guess the
+   *          type.
+   * @param mode The choosen mode.
+   * @throws IllegalArgumentException if the <code>node</code> is invalid for
+   *           this model.
+   * @throws IllegalStateException if for some reason <code>node</code> cannot
+   *           be proven.
+   * @throws NullPointerException if <code>node</code> is <code>null</code>.
+   * @throws ProofGuessException if the next proof step could not be guessed.
+   * @see #guess(ProofNode)
+   * @see #guess(ProofNode, boolean)
+   */
+  private void guessInternal ( DefaultTypeInferenceProofNode node ,
+      MonoType type , boolean mode ) throws ProofGuessException
+  {
+    if ( node == null )
+    {
+      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+    }
+    if ( node.getSteps ( ).length > 0 )
+    {
+      throw new IllegalArgumentException ( "The node is already completed" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.root.isNodeRelated ( node ) )
+    {
+      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+    }
+    // try to guess the next rule
+    logger.debug ( "Trying to guess a rule for " + node ) ; //$NON-NLS-1$
+    for ( ProofRule rule : this.ruleSet.getRules ( ) )
+    {
+      try
+      {
+        // try to apply the rule to the specified node
+        applyInternal ( ( TypeCheckerProofRule ) rule , node , type , null ,
+            mode ) ;
+        // remember that the user cheated
+        setCheating ( true ) ;
+        // yep, we did it
+        logger.debug ( "Successfully applied (" + rule + ") to " + node ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        return ;
+      }
+      catch ( ProofRuleException e )
+      {
+        // rule failed to apply... so, next one, please
+        logger.debug ( "Failed to apply (" + rule + ") to " + node , e ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        continue ;
+      }
+    }
+    // unable to guess next step
+    logger.debug ( "Failed to find rule to apply to " + node ) ; //$NON-NLS-1$
+    throw new ProofGuessException ( node ) ;
   }
 
 
@@ -260,6 +658,19 @@ public final class TypeInferenceProofModel extends AbstractProofModel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.ProofModel#redo()
+   */
+  @ Override
+  public void redo ( ) throws CannotRedoException
+  {
+    super.redo ( ) ;
+    this.index ++ ;
+  }
+
+
+  /**
    * mehtod used for DnD in the gui.
    * 
    * @param node type inference proof node which ownes the formula list to
@@ -292,42 +703,170 @@ public final class TypeInferenceProofModel extends AbstractProofModel
 
 
   /**
-   * Returns <code>true</code> if the expression for the <code>node</code>
-   * contains syntactic sugar. If <code>recursive</code> is <code>true</code>
-   * and the expression for the <code>node</code> is not syntactic sugar, its
-   * sub expressions will also be checked.
+   * Sets the current proof model index. This is a support operation, called by
+   * {@link DefaultTypeInferenceProofContext} whenever a new proof context is
+   * allocated.
    * 
-   * @param node the proof node whose expression should be checked for syntactic
-   *          sugar.
-   * @param expression of the actual type formula which should be checke for
-   *          syntactic sugar.
-   * @param recursive signals if the expression should be checked recursive
-   * @return <code>true</code> if the expression of the <code>node</code>
-   *         contains syntactic sugar according to the language for this model.
-   * @throws IllegalArgumentException if the <code>node</code> is invalid for
-   *           this proof model.
-   * @throws NullPointerException if the <code>node</code> is
-   *           <code>null</code>.
-   * @see #translateToCoreSyntax(TypeInferenceProofNode, boolean, boolean)
-   * @see de.unisiegen.tpml.core.languages.LanguageTranslator#containsSyntacticSugar(Expression,
-   *      boolean)
+   * @param pIndex the new index for the proof model.
+   * @see #getIndex()
+   * @see DefaultTypeInferenceProofContext
    */
-  public boolean containsSyntacticSugar ( TypeInferenceProofNode node ,
-      Expression expression , boolean recursive )
+  void setIndex ( int pIndex )
   {
-    if ( node == null )
+    if ( pIndex < 1 )
     {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "index is invalid" ) ; //$NON-NLS-1$
     }
-    if ( ! this.root.isNodeRelated ( node ) )
+    this.index = pIndex ;
+  }
+
+
+  /**
+   * Set a new undo action for the added child
+   * 
+   * @param pNode the parent node to add the child
+   * @param pChild the child which is added
+   * @param newSteps the new proof steps for the parent node
+   */
+  private void setUndoActions ( final DefaultTypeInferenceProofNode pNode ,
+      final DefaultTypeInferenceProofNode pChild , final ProofStep [ ] newSteps )
+  {
+    final ProofStep [ ] oldSteps = pNode.getSteps ( ) ;
+    // add redo and undo options
+    addUndoableTreeEdit ( new UndoableTreeEdit ( )
     {
-      throw new IllegalArgumentException ( "node is invalid" ) ; //$NON-NLS-1$
-    }
-    if ( this.translator == null )
+      @ SuppressWarnings ( "synthetic-access" )
+      public void redo ( )
+      {
+        pNode.add ( pChild ) ;
+        // contextSetProofNodeRule ( context , pNode , rule , formula ) ;
+        pNode.setSteps ( newSteps ) ;
+        nodesWereInserted ( pNode , new int [ ]
+        { pNode.getIndex ( pChild ) } ) ;
+        setFinished ( ( ( DefaultTypeInferenceProofNode ) TypeInferenceProofModel.this.root )
+            .isFinished ( ) ) ;
+        nodeChanged ( pNode ) ;
+      }
+
+
+      @ SuppressWarnings ( "synthetic-access" )
+      public void undo ( )
+      {
+        // update the "finished" state
+        setFinished ( false ) ;
+        // remove the child and revert the steps
+        int [ ] indices =
+        { pNode.getIndex ( pChild ) } ;
+        pNode.removeAllChildren ( ) ;
+        nodesWereRemoved ( pNode , indices , new Object [ ]
+        { pChild } ) ;
+        pNode.setSteps ( oldSteps ) ;
+        nodeChanged ( pNode ) ;
+      }
+    } ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexString()
+   */
+  public final LatexString toLatexString ( )
+  {
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
+        .toLatexString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
+   */
+  public final LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+  {
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_TYPE_INFERENCE_PROOF_MODEL , pIndent ) ;
+    builder.addBuilderBegin ( ) ;
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$&$" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$\\begin{tabular}{p{22cm}}$" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$\\\\$" ) ; //$NON-NLS-1$
+    builder.addBuilderWithoutBrackets ( this.root.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT , 0 , 0 ) , 0 ) ;
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$\\end{tabular}$" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "$\\\\[5mm]$" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
+    for ( int i = 0 ; i < this.root.getChildCount ( ) ; i ++ )
     {
-      this.translator = this.ruleSet.getLanguage ( ).newTranslator ( ) ;
+      toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
+          ( TypeInferenceProofNode ) this.root ,
+          ( TypeInferenceProofNode ) this.root.getChildAt ( i ) , pIndent
+              + LATEX_INDENT ) ;
     }
-    return this.translator.containsSyntacticSugar ( expression , recursive ) ;
+    builder.addBuilderEnd ( ) ;
+    return builder ;
+  }
+
+
+  /**
+   * Build the latex string for the given <code>pCurrentNode</code>.
+   * 
+   * @param pLatexStringBuilderFactory The factory which should be used.
+   * @param pLatexStringBuilder The {@link LatexStringBuilder} which should be
+   *          completed.
+   * @param pParentNode The parent of the current {@link ProofNode}. This node
+   *          is needed because of his {@link ProofNode}s.
+   * @param pCurrentNode The current {@link ProofNode}.
+   * @param pIndent The indent of this object.
+   */
+  public final void toLatexStringBuilderInternal (
+      LatexStringBuilderFactory pLatexStringBuilderFactory ,
+      LatexStringBuilder pLatexStringBuilder ,
+      TypeInferenceProofNode pParentNode , TypeInferenceProofNode pCurrentNode ,
+      int pIndent )
+  {
+    // First column
+    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{3.5cm}}$" ) ; //$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    if ( pParentNode.getRule ( ) != null )
+    {
+      pLatexStringBuilder.addText ( pParentNode.getRule ( ).toLatexString ( )
+          .toString ( ) ) ;
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    }
+    pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "\\mbox{\\LARGE=}" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\end{tabular}$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$&$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    // Second column
+    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{22cm}}$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addBuilderWithoutBrackets ( pCurrentNode
+        .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent , 0 , 0 ) ,
+        0 ) ;
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\end{tabular}$" ) ;//$NON-NLS-1$
+    for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
+    {
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addText ( "$\\\\[10mm]$" ) ; //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      toLatexStringBuilderInternal ( pLatexStringBuilderFactory ,
+          pLatexStringBuilder , pCurrentNode , pCurrentNode.getChildAt ( i ) ,
+          pIndent ) ;
+    }
   }
 
 
@@ -455,233 +994,6 @@ public final class TypeInferenceProofModel extends AbstractProofModel
   }
 
 
-  //
-  // Rule application
-  //
-  /**
-   * Applies the specified proof <code>rule</code> to the given
-   * <code>node</code> in this proof model.
-   * 
-   * @param rule the type proof rule to apply.
-   * @param node the type proof node to which to apply the <code>rule</code>.
-   * @param type the type the user guessed for the <code>node</code> or
-   *          <code>null</code> if the user didn't enter a type.
-   * @param form The {@link TypeFormula}.
-   * @param mode The choosen mode.
-   * @throws ProofRuleException if the application of the <code>rule</code> to
-   *           the <code>node</code> failed.
-   * @see #guess(ProofNode)
-   * @see #prove(ProofRule, ProofNode)
-   */
-  private void applyInternal ( TypeCheckerProofRule rule ,
-      DefaultTypeInferenceProofNode node , MonoType type , TypeFormula form ,
-      boolean mode ) throws ProofRuleException
-  {
-    // allocate a new TypeCheckerContext
-    NewDefaultTypeInferenceProofContext context = new NewDefaultTypeInferenceProofContext (
-        this , node ) ;
-    this.index ++ ;
-    DefaultTypeInferenceProofNode typeNode = node ;
-    Exception e = null ;
-    if ( form != null )
-    {
-      // try {
-      // try to apply the rule to the specified node
-      // context.setSubstitutions ( node.getSubstitution ( ) ) ;
-      context.apply ( rule , form , type , mode , node ) ;
-      ProofStep [ ] newSteps = new ProofStep [ 1 ] ;
-      newSteps [ 0 ] = new ProofStep ( new IsEmpty ( ) , rule ) ;
-      setUndoActions ( node , this.child , newSteps ) ;
-      return ;
-      /*
-       * } catch (UnifyException e1){ context.revert ( ); throw new
-       * ProofRuleException(e1.getMessage ( ), node, rule, e); }
-       */
-    }
-    // Try actual Rule with all formulas of the actual node
-    for ( TypeFormula formula : typeNode.getFormula ( ) )
-    {
-      try
-      {
-        // try to apply the rule to the specified node
-        // context.setSubstitutions ( node.getSubstitution ( ) ) ;
-        context.apply ( rule , formula , type , mode , node ) ;
-        ProofStep [ ] newSteps = new ProofStep [ 1 ] ;
-        newSteps [ 0 ] = new ProofStep ( new IsEmpty ( ) , rule ) ;
-        setUndoActions ( node , this.child , newSteps ) ;
-        return ;
-      }
-      catch ( ProofRuleException e1 )
-      {
-        // revert the actions performed so far
-        context.revert ( ) ;
-        // rembember first exception to rethrow
-        if ( e == null ) e = e1 ;
-        continue ;
-      } /*
-         * catch ( UnifyException e1 ) { context.revert ( ); if (e == null)
-         * e=e1; }
-         */
-      /*
-       * catch ( RuntimeException e1 ) { // revert the actions performed so far
-       * context.revert ( ) ; // rembember first exception to rethrow if ( e ==
-       * null ) e = e1 ; continue ; }
-       */
-    }
-    this.index -- ;
-    if ( e instanceof ProofRuleException )
-    {
-      // rethrow exception
-      throw ( ProofRuleException ) e ;
-    }
-    else if ( e instanceof RuntimeException )
-    {
-      // rethrow exception
-      throw ( RuntimeException ) e ;
-    }
-    else
-    {
-      // re-throw the exception as proof rule exception
-      throw new ProofRuleException ( node , rule , e ) ;
-    }
-  }
-
-
-  /**
-   * Implementation of the {@link #guess(ProofNode)} and
-   * {@link #guess(ProofNode, boolean)} methods.
-   * 
-   * @param node the proof node for which to guess the next step.
-   * @param type the type that the user entered for this <code>node</code> or
-   *          <code>null</code> to let the type inference algorithm guess the
-   *          type.
-   * @param mode The choosen mode.
-   * @throws IllegalArgumentException if the <code>node</code> is invalid for
-   *           this model.
-   * @throws IllegalStateException if for some reason <code>node</code> cannot
-   *           be proven.
-   * @throws NullPointerException if <code>node</code> is <code>null</code>.
-   * @throws ProofGuessException if the next proof step could not be guessed.
-   * @see #guess(ProofNode)
-   * @see #guess(ProofNode, boolean)
-   */
-  private void guessInternal ( DefaultTypeInferenceProofNode node ,
-      MonoType type , boolean mode ) throws ProofGuessException
-  {
-    if ( node == null )
-    {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
-    }
-    if ( node.getSteps ( ).length > 0 )
-    {
-      throw new IllegalArgumentException ( "The node is already completed" ) ; //$NON-NLS-1$
-    }
-    if ( ! this.root.isNodeRelated ( node ) )
-    {
-      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
-    }
-    // try to guess the next rule
-    logger.debug ( "Trying to guess a rule for " + node ) ; //$NON-NLS-1$
-    for ( ProofRule rule : this.ruleSet.getRules ( ) )
-    {
-      try
-      {
-        // try to apply the rule to the specified node
-        applyInternal ( ( TypeCheckerProofRule ) rule , node , type , null ,
-            mode ) ;
-        // remember that the user cheated
-        setCheating ( true ) ;
-        // yep, we did it
-        logger.debug ( "Successfully applied (" + rule + ") to " + node ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        return ;
-      }
-      catch ( ProofRuleException e )
-      {
-        // rule failed to apply... so, next one, please
-        logger.debug ( "Failed to apply (" + rule + ") to " + node , e ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        continue ;
-      }
-    }
-    // unable to guess next step
-    logger.debug ( "Failed to find rule to apply to " + node ) ; //$NON-NLS-1$
-    throw new ProofGuessException ( node ) ;
-  }
-
-
-  //
-  // Proof context support
-  //
-  /**
-   * Adds a new child proof node below the <code>node</code> using the
-   * <code>context</code>, for the <code>environment</code>,
-   * <code>expression</code> and <code>type</code>.
-   * 
-   * @param formulas the <code>TypeFormula</code>s of the new node.
-   * @param subs The {@link DefaultTypeSubstitution}s.
-   * @throws IllegalArgumentException if <code>node</code> is invalid for this
-   *           tree.
-   * @throws NullPointerException if any of the parameters is <code>null</code>.
-   */
-  void contextAddProofNode ( final ArrayList < TypeFormula > formulas ,
-      final ArrayList < TypeSubstitution > subs )
-  {
-    this.child = new DefaultTypeInferenceProofNode ( formulas , subs ) ;
-  }
-
-
-  /**
-   * Used to implement the
-   * {@link DefaultTypeInferenceProofContext#apply(TypeCheckerProofRule, TypeFormula, MonoType, boolean,DefaultTypeInferenceProofNode)}
-   * method of the {@link DefaultTypeInferenceProofContext} class.
-   * 
-   * @param context the type inference proof context.
-   * @param node the type inference node.
-   * @param rule the type checker rule.
-   * @param formula The {@link TypeFormula}.
-   */
-  void contextSetProofNodeRule ( @ SuppressWarnings ( "unused" )
-  DefaultTypeInferenceProofContext context ,
-      final DefaultTypeInferenceProofNode node ,
-      final TypeCheckerProofRule rule , @ SuppressWarnings ( "unused" )
-      TypeFormula formula )
-  {
-    node.setSteps ( new ProofStep [ ]
-    { new ProofStep ( new IsEmpty ( ) , rule ) } ) ;
-    nodeChanged ( node ) ;
-  }
-
-
-  //
-  // Undo/Redo
-  //
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.AbstractProofModel#addUndoableTreeEdit(de.unisiegen.tpml.core.AbstractProofModel.UndoableTreeEdit)
-   */
-  @ Override
-  public void addUndoableTreeEdit ( UndoableTreeEdit edit )
-  {
-    // perform the redo of the edit
-    edit.redo ( ) ;
-    // add to the undo history
-    super.addUndoableTreeEdit ( edit ) ;
-  }
-
-
-  /**
-   * get the rules of the actual proof rule set
-   * 
-   * @return ProofRuleSet[] with all rules
-   * @see de.unisiegen.tpml.core.AbstractProofModel#getRules()
-   */
-  @ Override
-  public ProofRule [ ] getRules ( )
-  {
-    return this.ruleSet.getRules ( ) ;
-  }
-
-
   /**
    * {@inheritDoc}
    * 
@@ -693,70 +1005,4 @@ public final class TypeInferenceProofModel extends AbstractProofModel
     super.undo ( ) ;
     this.index -- ;
   }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.ProofModel#redo()
-   */
-  @ Override
-  public void redo ( ) throws CannotRedoException
-  {
-    super.redo ( ) ;
-    this.index ++ ;
-  }
-
-
-  /**
-   * Set a new undo action for the added child
-   * 
-   * @param pNode the parent node to add the child
-   * @param pChild the child which is added
-   * @param newSteps the new proof steps for the parent node
-   */
-  private void setUndoActions ( final DefaultTypeInferenceProofNode pNode ,
-      final DefaultTypeInferenceProofNode pChild , final ProofStep [ ] newSteps )
-  {
-    final ProofStep [ ] oldSteps = pNode.getSteps ( ) ;
-    // add redo and undo options
-    addUndoableTreeEdit ( new UndoableTreeEdit ( )
-    {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void redo ( )
-      {
-        pNode.add ( pChild ) ;
-        // contextSetProofNodeRule ( context , pNode , rule , formula ) ;
-        pNode.setSteps ( newSteps ) ;
-        nodesWereInserted ( pNode , new int [ ]
-        { pNode.getIndex ( pChild ) } ) ;
-        setFinished ( ( ( DefaultTypeInferenceProofNode ) TypeInferenceProofModel.this.root )
-            .isFinished ( ) ) ;
-        nodeChanged ( pNode ) ;
-      }
-
-
-      @ SuppressWarnings ( "synthetic-access" )
-      public void undo ( )
-      {
-        // update the "finished" state
-        setFinished ( false ) ;
-        // remove the child and revert the steps
-        int [ ] indices =
-        { pNode.getIndex ( pChild ) } ;
-        pNode.removeAllChildren ( ) ;
-        nodesWereRemoved ( pNode , indices , new Object [ ]
-        { pChild } ) ;
-        pNode.setSteps ( oldSteps ) ;
-        nodeChanged ( pNode ) ;
-      }
-    } ) ;
-  }
-  /*
-   * public ArrayList < MonoType > getSubstitudedTypesForSubstitutions (
-   * ArrayList < DefaultTypeSubstitution > substitutions ) { ArrayList <
-   * MonoType > result = new ArrayList < MonoType > ( ); for (
-   * DefaultTypeSubstitution s : substitutions ) { result.add ( s.getType ( ) ); }
-   * return result; }
-   */
 }

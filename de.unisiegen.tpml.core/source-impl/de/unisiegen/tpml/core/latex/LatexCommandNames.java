@@ -61,6 +61,7 @@ import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel ;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode ;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement ;
 import de.unisiegen.tpml.core.typeinference.TypeSubType ;
@@ -112,19 +113,19 @@ public interface LatexCommandNames
 
 
   /**
-   * The latex print command for a small step new column
+   * The latex print command for a small step new column.
    */
   public static final String LATEX_SMALL_STEP_NEW_COLUMN = "$&$" ; //$NON-NLS-1$
 
 
   /**
-   * The latex print command for a small step new rule
+   * The latex print command for a small step new rule.
    */
   public static final String LATEX_SMALL_STEP_NEW_RULE = "$\\\\[5mm]$" ; //$NON-NLS-1$
 
 
   /**
-   * The latex print command for a small step new row with only the rule
+   * The latex print command for a small step new row with only the rule.
    */
   public static final String LATEX_SMALL_STEP_NEW_ROW_ONLY_RULE = "$&\\\\$" ; //$NON-NLS-1$
 
@@ -196,34 +197,50 @@ public interface LatexCommandNames
 
 
   /**
+   * The latex print command for a left bracket.
+   */
+  public static final String LATEX_LBRACKET = "[" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a right bracket.
+   */
+  public static final String LATEX_RBRACKET = "]" ; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for an epsilon.
    */
   public static final String LATEX_EPSILON = "\\epsilon" ; //$NON-NLS-1$
-  
+
+
   /**
    * The latex print command for the definition of the color dark green.
    */
   public static final String LATEX_DEFINE_COLOR_DARKGREEN = "{darkgreen}{rgb}{0.1,0.5,0}" ; //$NON-NLS-1$
-  
+
+
   /**
    * The latex print command for the definition of the color dark green.
    */
   public static final String LATEX_RESULT_TYPE_COLOR = "{\\resulttypecolor}{\\color{darkgreen}}" ; //$NON-NLS-1$
-  
+
+
   /**
    * The latex print command for the result color.
    */
   public static final String LATEX_RESULT_COLOR = "{\\resultcolor}{\\color{blue}}" ; //$NON-NLS-1$
-  
+
+
   /**
    * The latex print command for the rule color.
    */
   public static final String LATEX_RULE_COLOR = "{\\byrulecolor}{\\color{red}}" ; //$NON-NLS-1$
-  
-  /*
-  \newcommand{\byrulecolor}{\color{red}}
-*/
 
+
+  /*
+   * \newcommand{\byrulecolor}{\color{red}}
+   */
   /**
    * The latex print command for the beginnig of keywords.
    */
@@ -873,6 +890,12 @@ public interface LatexCommandNames
 
 
   /**
+   * The latex print command for {@link TypeInferenceProofModel}.
+   */
+  public static final String LATEX_TYPE_INFERENCE_PROOF_MODEL = "TypeInferenceProofModel" ; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for small step arrow.
    */
   public static final String LATEX_SMALL_STEP_ARROW = "SmallStepArrow" ; //$NON-NLS-1$
@@ -924,17 +947,22 @@ public interface LatexCommandNames
    * The latex print command for {@link BigStepProofRule}.
    */
   public static final String LATEX_BIG_STEP_PROOF_RULE = "BigStepProofRule" ; //$NON-NLS-1$
-  
+
+
   /**
    * The latex print command to build the tree
    */
-  public static final String LATEX_MKTREE = "mktree"; //$NON-NLS-1$
-  
+  public static final String LATEX_MKTREE = "mktree" ; //$NON-NLS-1$
+
+
   /**
-   * The latex print command to print an arrow
+   * The latex print command to print an arrow.
    */
-  public static final String LATEX_ARROW = "arrow"; //$NON-NLS-1$
-  
-  public static final String LATEX_BYRULE = "byrule"; //$NON-NLS-1$
-  
+  public static final String LATEX_ARROW = "arrow" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command to print by rule.
+   */
+  public static final String LATEX_BYRULE = "byrule" ; //$NON-NLS-1$
 }

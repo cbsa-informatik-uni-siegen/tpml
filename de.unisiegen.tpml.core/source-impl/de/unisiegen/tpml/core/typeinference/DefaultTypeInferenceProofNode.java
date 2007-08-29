@@ -218,9 +218,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_PROOF_NODE ,
-        4 , "\\ifthenelse{\\equal{#3}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-            + "{#4}" + LATEX_LINE_BREAK_NEW_COMMAND + "{[#3]\\\\[1mm]#4}" , //$NON-NLS-1$ //$NON-NLS-2$
-        "depth" , "id" , "substitutions" , "formulas" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        3 , "#3" , "depth" , "id" , "body" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
     for ( TypeSubstitution substitution : this.substitutions )
     {
       for ( LatexCommand command : substitution.getLatexCommands ( ) )
@@ -522,9 +520,10 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
         LATEX_TYPE_INFERENCE_PROOF_NODE , pIndent , descriptions ) ;
     builder.addText ( "{" + String.valueOf ( pDepth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addText ( "{" + String.valueOf ( pId ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
+    builder.addBuilderBegin ( ) ;
     if ( this.substitutions.size ( ) > 0 )
     {
-      builder.addBuilderBegin ( ) ;
+      builder.addText ( LATEX_LBRACKET ) ;
       for ( int i = 0 ; i < this.substitutions.size ( ) ; i ++ )
       {
         builder.addBuilder ( this.substitutions.get ( i ).toLatexStringBuilder (
@@ -538,13 +537,12 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
           builder.addText ( LATEX_SPACE ) ;
         }
       }
-      builder.addBuilderEnd ( ) ;
+      builder.addText ( LATEX_RBRACKET ) ;
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+          + LATEX_INDENT )
+          + LATEX_NEW_LINE ) ;
     }
-    else
-    {
-      builder.addEmptyBuilder ( ) ;
-    }
-    builder.addBuilderBegin ( ) ;
     for ( int i = 0 ; i < this.formula.size ( ) ; i ++ )
     {
       if ( this.formula.get ( i ) instanceof TypeEquationTypeInference )

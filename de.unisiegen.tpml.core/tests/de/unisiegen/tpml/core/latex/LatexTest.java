@@ -44,6 +44,7 @@ import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
 import de.unisiegen.tpml.core.typeinference.TypeFormula ;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel ;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement ;
 import de.unisiegen.tpml.core.typeinference.TypeSubType ;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList ;
@@ -239,11 +240,13 @@ public class LatexTest
     println ( writer , "%%" ) ;
     println ( writer ) ;
     println ( writer , "\\begin{document}" ) ;
+    println ( writer , "\\begin{landscape}" ) ;
     println ( writer ) ;
     println ( writer , "$" ) ;
     println ( writer , pLatexPrintable.toLatexString ( ).toString ( ) ) ;
     println ( writer , "$" ) ;
     println ( writer ) ;
+    println ( writer , "\\end{landscape}" ) ;
     println ( writer , "\\end{document}" ) ;
     // close
     try
@@ -257,6 +260,7 @@ public class LatexTest
   }
 
 
+  // TODO zweizeiliger, eingerückter Kommentar
   public static void main ( String [ ] args )
   {
     for ( String arg : args )
@@ -296,6 +300,11 @@ public class LatexTest
     if ( number == 22 ) testMinimalTypingExpressionProofNode ( ) ;
     if ( number == 23 ) testBigStepProofModel ( ) ;
     if ( number == 24 ) testSmallStepProofModel ( ) ;
+    if ( number == 25 ) testTypeInferenceProofModel ( ) ;
+    if ( ! compile )
+    {
+      System.out.println ( "*** latex export done ***" ) ;
+    }
   }
 
 
@@ -408,10 +417,6 @@ public class LatexTest
     println ( writer , "\\begin{landscape}" ) ;
     println ( writer ) ;
     println ( writer , "$" ) ;
-    /*
-     * for ( int i = 0 ; i < 1000 ; i ++ ) { println ( writer , "Das ist ein
-     * Test! " ) ; }
-     */
     println ( writer , pLatexPrintable.toLatexString ( ).toString ( ) ) ;
     println ( writer , "$" ) ;
     println ( writer ) ;
@@ -444,6 +449,7 @@ public class LatexTest
       e.printStackTrace ( ) ;
       return ;
     }
+    // document class and needed packages
     println ( writer , "%%" ) ;
     println ( writer , "%% TPML LaTeX Export" ) ;
     println ( writer , "%%" ) ;
@@ -516,11 +522,13 @@ public class LatexTest
     println ( writer , "%%" ) ;
     println ( writer ) ;
     println ( writer , "\\begin{document}" ) ;
+    println ( writer , "\\begin{landscape}" ) ;
     println ( writer ) ;
     println ( writer , "$" ) ;
     println ( writer , pLatexPrintable.toLatexString ( 0 , 0 ).toString ( ) ) ;
     println ( writer , "$" ) ;
     println ( writer ) ;
+    println ( writer , "\\end{landscape}" ) ;
     println ( writer , "\\end{document}" ) ;
     // close
     try
@@ -683,7 +691,6 @@ public class LatexTest
     try
     {
       String text = "let x = 0 in 1" ;
-      // PowerSet
       text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
@@ -783,7 +790,8 @@ public class LatexTest
     try
     {
       String text = "let x = 1 in x" ;
-      text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
+      //text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
+      text = "let rec f x = if x = 0 then 1 else x * f (x-1) in f 2" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
@@ -1030,6 +1038,28 @@ public class LatexTest
       TypeEquationTypeInference typeEquation = new TypeEquationTypeInference (
           new IntegerType ( ) , new BooleanType ( ) , seenTypes ) ;
       printLatexPrintable ( typeEquation ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+    }
+  }
+
+
+  public static void testTypeInferenceProofModel ( )
+  {
+    try
+    {
+      String text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
+      // text = "let rec f x = if x = 0 then 1 else x * f (x-1) in f 2" ;
+      LanguageFactory factory = LanguageFactory.newInstance ( ) ;
+      Language language = factory.getLanguageById ( "l4" ) ;
+      Expression expression = language.newParser ( new StringReader ( text ) )
+          .parse ( ) ;
+      TypeInferenceProofModel model = language
+          .newTypeInferenceProofModel ( expression ) ;
+      model.complete ( nextNode ( model ) ) ;
+      printLatexPrintable ( model ) ;
     }
     catch ( Exception e )
     {
