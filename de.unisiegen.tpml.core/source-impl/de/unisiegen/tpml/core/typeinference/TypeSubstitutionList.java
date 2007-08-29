@@ -222,9 +222,10 @@ public class TypeSubstitutionList implements PrettyPrintable , LatexPrintable
       {
         builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-            + LATEX_INDENT )
-            + LATEX_COMMA ) ;
+            + LATEX_INDENT ) ) ;
+        builder.addText ( LATEX_COMMA ) ;
         builder.addText ( LATEX_SPACE ) ;
+        builder.addBreak ( ) ;
       }
       builder.addBuilder ( list.first.toLatexStringBuilder (
           pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;

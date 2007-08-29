@@ -126,7 +126,7 @@ public abstract class AbstractTypeCheckerProofRule extends AbstractProofRule
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_CHECKER_PROOF_RULE , 1 ,
-        "\\mbox{\\scriptsize{\\textbf{(#1)}}}" , "name" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        "\\mbox{\\scriptsize{\\centerline{\\textbf{(#1)}}}}" , "name" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     return commands ;
   }
 

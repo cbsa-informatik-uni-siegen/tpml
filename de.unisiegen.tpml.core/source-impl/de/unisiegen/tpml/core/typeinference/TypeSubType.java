@@ -201,6 +201,7 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
             .toPrettyString ( ).toString ( ) ) ;
     builder.addBuilder ( this.left.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+    builder.addBreak ( ) ;
     builder.addBuilder ( this.right.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     return builder ;

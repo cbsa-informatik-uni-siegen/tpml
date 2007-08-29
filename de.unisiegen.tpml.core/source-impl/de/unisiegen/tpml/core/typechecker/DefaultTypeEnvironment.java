@@ -307,8 +307,8 @@ public final class DefaultTypeEnvironment extends
               pIndent + LATEX_INDENT * 2 ) , 0 ) ;
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-          + LATEX_INDENT )
-          + LATEX_COLON ) ;
+          + LATEX_INDENT ) ) ;
+      builder.addText ( LATEX_COLON ) ;
       builder.addText ( LATEX_SPACE ) ;
       builder.addBuilder ( this.mappings.get ( i ).getEntry ( )
           .toLatexStringBuilder ( pLatexStringBuilderFactory ,
@@ -317,9 +317,10 @@ public final class DefaultTypeEnvironment extends
       {
         builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-            + LATEX_INDENT )
-            + LATEX_COMMA ) ;
+            + LATEX_INDENT ) ) ;
+        builder.addText ( LATEX_COMMA ) ;
         builder.addText ( LATEX_SPACE ) ;
+        builder.addBreak ( ) ;
       }
     }
     builder.addBuilderEnd ( ) ;
