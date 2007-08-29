@@ -144,7 +144,7 @@ public class LatexTest
         return ;
       }
     }
-    catch ( IOException e )
+    catch ( Exception e )
     {
       e.printStackTrace ( ) ;
     }
@@ -212,12 +212,12 @@ public class LatexTest
       {
         return node ;
       }
-      for ( int n = 0 ; n < node.getChildCount ( ) ; ++ n )
+      for ( int i = 0 ; i < node.getChildCount ( ) ; i ++ )
       {
-        nodes.add ( node.getChildAt ( n ) ) ;
+        nodes.add ( node.getChildAt ( i ) ) ;
       }
     }
-    throw new IllegalStateException ( "Unable to find next node" ) ;
+    throw new IllegalStateException ( "unable to find next node" ) ;
   }
 
 
