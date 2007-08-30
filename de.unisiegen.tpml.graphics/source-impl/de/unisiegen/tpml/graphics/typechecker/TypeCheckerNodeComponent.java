@@ -258,11 +258,7 @@ public class TypeCheckerNodeComponent extends JComponent implements TreeNodeComp
 		this.doubleColonLabel.setFont(Theme.currentTheme().getFont());
 		this.doubleColonLabel.setForeground(Theme.currentTheme().getExpressionColor());
 		this.doubleColonLabel.setText(doubleColonString);
-		//this.typeLabel = new JLabel ( ) ;
-		//add ( this.typeLabel ) ;
-		//this.typeLabel.setText ( " !! " ) ; //$NON-NLS-1$
-		//this.typeLabel.addMouseListener ( new OutlineMouseListener ( this ) ) ;
-
+		
 		this.typeEnter = new TypeCheckerEnterType();
 		add(this.typeEnter);
 
