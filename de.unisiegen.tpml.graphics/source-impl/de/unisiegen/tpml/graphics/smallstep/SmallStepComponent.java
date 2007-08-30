@@ -89,10 +89,6 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	 */
 	private boolean advanced;
 
-	/**
-	 * to place the singel components on the singel pages
-	 */
-	private int actualPageSpaceCounter=0;
 
 	/**
 	 * Sets the default values.<br>
@@ -424,13 +420,13 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 				{
 					{
 						// save the space the node is moved down
-						movedDown = this.availableHeight - this.actualPageSpaceCounter;
+						movedDown = (this.availableHeight - this.actualPageSpaceCounter)/2;   //Wäää?
 						
 						// move the next node down
-						y += this.availableHeight - this.actualPageSpaceCounter;
+						y += movedDown;
 
 						// restart the actualPageSpaceCounter
-						this.actualPageSpaceCounter = 0;
+						this.actualPageSpaceCounter = -movedDown; //Wäää?
 
 						// inform both component about the actual height they should use to
 						// place them
@@ -448,7 +444,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 						y += nodeComponent.getRuleTop();
 						this.actualPageSpaceCounter += nodeComponent.getRuleTop();
 						
-						System.out.println(maxHeight+" - "+nodeComponent.getRuleTop());
+						//System.out.println(maxHeight+" - "+nodeComponent.getRuleTop());
 
 						// evaluate the new dimensions
 						size.height = y;
@@ -479,7 +475,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 					// the additional height come from the actual node
 					y += nodeComponent.getRuleTop();
 					this.actualPageSpaceCounter += nodeComponent.getRuleTop();
-					System.out.println(maxHeight+" - "+nodeComponent.getRuleTop());
+					//System.out.println(maxHeight+" - "+nodeComponent.getRuleTop());
 
 					// evaluate the new dimensions
 					size.height = y;

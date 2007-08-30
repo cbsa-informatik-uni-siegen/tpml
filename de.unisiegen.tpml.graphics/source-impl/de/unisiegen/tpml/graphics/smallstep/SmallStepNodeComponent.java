@@ -739,6 +739,13 @@ public class SmallStepNodeComponent extends JComponent
 		this.rules.setVisible(true);
 	}
 
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Causes the rules to get places.<br>
 	 * The top position of the rules is chosen that the {@link #rules}-item is
