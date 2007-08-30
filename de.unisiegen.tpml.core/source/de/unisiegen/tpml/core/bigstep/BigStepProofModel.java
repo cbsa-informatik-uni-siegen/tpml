@@ -516,11 +516,12 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel imple
 	 */
 	public final void toLatexStringBuilderInternal ( LatexStringBuilderFactory pLatexStringBuilderFactory,
 			LatexStringBuilder pLatexStringBuilder, ProofNode pCurrentNode, int pIndent, int pDepth ) {
+		
 		int depth = pDepth + 1;
 		pLatexStringBuilder.addBuilder ( pCurrentNode.toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent
-				+ LATEX_INDENT, depth, pCurrentNode.getId ( ) ), 0 );
+				+ LATEX_INDENT ), 0 );
 		int value = 90;
-		if ( pCurrentNode.getChildCount ( ) > 1 )
+		if ( pCurrentNode.getChildCount ( ) == 1 )
 			value = 180;
 
 		for ( int i = 0; i < pCurrentNode.getChildCount ( ); i++ ) {
