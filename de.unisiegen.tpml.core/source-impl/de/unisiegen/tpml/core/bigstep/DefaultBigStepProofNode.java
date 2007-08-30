@@ -179,14 +179,15 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    		 +"\\else \\refstepcounter{node}"+ LATEX_LINE_BREAK_NEW_COMMAND
    		 +"\\noindent\\hspace{\\treeindent}\\hspace{#2\\nodeindent}"+ LATEX_LINE_BREAK_NEW_COMMAND
    		 +"\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}"+ LATEX_LINE_BREAK_NEW_COMMAND
-   		 +"\\blong  "+ LATEX_LINE_BREAK_NEW_COMMAND
-            + "{\\ifthenelse{\\equal{#4}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$ 
+   		 //+"\\blong  "+ LATEX_LINE_BREAK_NEW_COMMAND
+   		   +"$\\begin{tabular}{p{15cm}}$"+ LATEX_LINE_BREAK_NEW_COMMAND
+            + "\\ifthenelse{\\equal{#4}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$ 
             + "{#3\\ \\Downarrow\\ #5}" //$NON-NLS-1$
             + "{(#3\\ \\ #4)\\ \\Downarrow\\ #5}" //$NON-NLS-1$
-            + "}" //$NON-NLS-1$
-         		+"\\\\"+ LATEX_LINE_BREAK_NEW_COMMAND  +
+         		+"$\\\\$"+ LATEX_LINE_BREAK_NEW_COMMAND  +
          		"\\byrule{#6} "
-         +"\\elong"+ LATEX_LINE_BREAK_NEW_COMMAND
+           + "$\\end{tabular}$"+ LATEX_LINE_BREAK_NEW_COMMAND
+        // +"\\elong"+ LATEX_LINE_BREAK_NEW_COMMAND
          +"\\vspace{\\nodesep}"+ LATEX_LINE_BREAK_NEW_COMMAND
          +"\\fi"+ LATEX_LINE_BREAK_NEW_COMMAND
         , "depth" , "id" , "e" , "store" , "result", "proofrule" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
@@ -448,6 +449,7 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    	 builder.addBuilder ( this.getRule ( ).toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent ), 0 );
     else
    	 builder.addEmptyBuilder ( );
+    
     return builder ;
   }
 
