@@ -9,16 +9,6 @@ package de.unisiegen.tpml.core.latex ;
 public interface LatexPrintableNormal extends LatexPrintable
 {
   /**
-   * Returns a {@link LatexString} that can be used to export this latex
-   * printable object.
-   * 
-   * @return A {@link LatexString} that can be used to export this latex
-   *         printable object.
-   */
-  public LatexString toLatexString ( ) ;
-
-
-  /**
    * Returns the latex string builder used to latex print thislatex printable
    * object. The latex string builder must be allocated from the specified
    * <code>pLatexStringBuilderFactory</code>, which is currently always the

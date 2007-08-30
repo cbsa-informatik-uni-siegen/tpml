@@ -398,12 +398,12 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintableNode#toLatexString(int,int)
+   * @see LatexPrintableNode#toLatexString()
    */
-  public LatexString toLatexString ( int pDepth , int pId )
+  public LatexString toLatexString (  )
   {
     return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) ,
-        0 , pDepth , pId ).toLatexString ( ) ;
+        0 , 0 , 0 ).toLatexString ( ) ;
   }
 
 

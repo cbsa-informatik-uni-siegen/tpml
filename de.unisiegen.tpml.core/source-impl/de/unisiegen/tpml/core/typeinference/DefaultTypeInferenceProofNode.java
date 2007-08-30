@@ -431,12 +431,12 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintableNode#toLatexString(int,int)
+   * @see LatexPrintableNode#toLatexString()
    */
-  public final LatexString toLatexString ( int pDepth , int pId )
+  public final LatexString toLatexString ( )
   {
     return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) ,
-        0 , pDepth , pId ).toLatexString ( ) ;
+        0 , 0 , 0 ).toLatexString ( ) ;
   }
 
 

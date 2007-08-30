@@ -33,4 +33,14 @@ public interface LatexPrintable extends LatexCommandNames
    * @return A set of needed latex packages for this latex printable object.
    */
   public TreeSet < LatexPackage > getLatexPackages ( ) ;
+
+
+  /**
+   * Returns a {@link LatexString} that can be used to export this latex
+   * printable object.
+   * 
+   * @return A {@link LatexString} that can be used to export this latex
+   *         printable object.
+   */
+  public LatexString toLatexString ( ) ;
 }
