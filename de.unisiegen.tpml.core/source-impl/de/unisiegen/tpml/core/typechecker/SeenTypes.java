@@ -7,7 +7,6 @@ import java.util.TreeSet ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -28,8 +27,7 @@ import de.unisiegen.tpml.core.types.Type ;
  * @param <E>
  */
 public final class SeenTypes < E extends PrettyPrintable & LatexPrintable >
-    implements Cloneable , Iterable < E > , PrettyPrintable , LatexPrintable ,
-    LatexCommandNames
+    implements Cloneable , Iterable < E > , PrettyPrintable , LatexPrintable
 {
   /**
    * The internal list of seen {@link Type}s.
