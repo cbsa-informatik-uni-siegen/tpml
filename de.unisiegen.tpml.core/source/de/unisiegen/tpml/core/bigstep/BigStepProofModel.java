@@ -438,7 +438,6 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel imple
 	public final LatexStringBuilder toLatexStringBuilder ( LatexStringBuilderFactory pLatexStringBuilderFactory,
 			int pIndent ) {
 		LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0, pIndent );
-		builder.addBuilderBegin ( );
 		{
 			builder.addText ( "\\treeindent=0mm" );
 			builder.addSourceCodeBreak ( 0 );
@@ -447,7 +446,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel imple
 			builder.addText ( "\\nodesep=2mm" );
 			
 			builder.addSourceCodeBreak ( 0 );
-			builder.addText ( "\\newcommand{\\longtext}[1]{\\topmargin=#1\\enlargethispage{840mm}" );
+			builder.addText ( "\\newcommand{\\longtext}[1]{\\oddsidemargin=#1\\enlargethispage{840mm}" );
 			builder.addSourceCodeBreak ( 0 );
 
 			builder.addText ( "\\mktree{" );
@@ -456,10 +455,28 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel imple
 		builder.addText ( "}" );
 		builder.addText ( "}" );
 
-		builder.addText ( "\\longtext{-14mm}" );
+		builder.addText ( "\\longtext{-30pt}" );
+		builder.addSourceCodeBreak ( 0 );
 		builder.addText ( "\\newpage" );
-		builder.addText ( "\\longtext{-294mm}" );
-		builder.addBuilderEnd ( );
+		builder.addSourceCodeBreak ( 0 );
+		builder.addText ( "\\longtext{-175mm}" );
+		builder.addSourceCodeBreak ( 0 );
+		builder.addText ( "\\newpage" );
+		builder.addSourceCodeBreak ( 0 );
+		builder.addText ( "\\longtext{-350mm}" );
+		builder.addSourceCodeBreak ( 0 );
+		builder.addText ( "\\newpage" );
+		builder.addSourceCodeBreak ( 0 );
+		builder.addText ( "\\longtext{-525mm}" );
+		builder.addSourceCodeBreak ( 0 );
+		builder.addText ( "\\newpage" );
+		builder.addSourceCodeBreak ( 0 );
+		builder.addText ( "\\longtext{-700mm}" );
+		builder.addSourceCodeBreak ( 0 );
+		builder.addText ( "\\newpage" );
+		builder.addSourceCodeBreak ( 0 );
+		builder.addText ( "\\longtext{-875mm}" );
+		builder.addSourceCodeBreak ( 0 );
 		return builder;
 	}
 
