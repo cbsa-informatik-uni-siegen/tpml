@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPrintableNormal ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -37,7 +37,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @see PrettyPrintable
  */
 public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
-    LatexPrintableNormal , LatexCommandNames , ShowBondsInput
+    LatexPrintable , LatexCommandNames , ShowBondsInput
 {
   /**
    * The resource bundle.
@@ -526,7 +526,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintableNormal#toLatexString()
+   * @see LatexPrintable#toLatexString()
    */
   public final LatexString toLatexString ( )
   {
@@ -538,7 +538,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintableNormal#toLatexStringBuilder(LatexStringBuilderFactory,int)
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public abstract LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent ) ;

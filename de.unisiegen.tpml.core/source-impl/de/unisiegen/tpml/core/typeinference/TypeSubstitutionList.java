@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPrintableNormal ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -26,7 +26,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @author Benjamin Mies
  * @author Christian Fehler
  */
-public class TypeSubstitutionList implements PrettyPrintable , LatexPrintableNormal
+public class TypeSubstitutionList implements PrettyPrintable , LatexPrintable
 {
   /**
    * empty type substitution list
@@ -173,7 +173,7 @@ public class TypeSubstitutionList implements PrettyPrintable , LatexPrintableNor
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintableNormal#toLatexString()
+   * @see LatexPrintable#toLatexString()
    */
   public final LatexString toLatexString ( )
   {
@@ -185,7 +185,7 @@ public class TypeSubstitutionList implements PrettyPrintable , LatexPrintableNor
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintableNormal#toLatexStringBuilder(LatexStringBuilderFactory,int)
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )

@@ -3,8 +3,6 @@ package de.unisiegen.tpml.core.typechecker ;
 
 import javax.swing.tree.TreeNode ;
 import de.unisiegen.tpml.core.ExpressionProofNode ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames;
-import de.unisiegen.tpml.core.latex.LatexPrintableNormal;
 import de.unisiegen.tpml.core.types.MonoType ;
 
 

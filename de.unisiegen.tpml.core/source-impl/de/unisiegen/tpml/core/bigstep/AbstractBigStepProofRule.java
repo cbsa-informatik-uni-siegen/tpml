@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPrintableNormal ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -212,7 +212,7 @@ abstract class AbstractBigStepProofRule extends AbstractProofRule implements
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintableNormal#toLatexString()
+   * @see LatexPrintable#toLatexString()
    */
   public final LatexString toLatexString ( )
   {
@@ -224,7 +224,7 @@ abstract class AbstractBigStepProofRule extends AbstractProofRule implements
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintableNormal#toLatexStringBuilder(LatexStringBuilderFactory,int)
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )

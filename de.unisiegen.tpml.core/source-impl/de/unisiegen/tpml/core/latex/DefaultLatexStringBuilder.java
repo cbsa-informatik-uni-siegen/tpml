@@ -74,7 +74,7 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
    * 
    * @param pReturnPriority The priority for the <code>printable</code>,
    *          which determines where and when to add parenthesis around
-   *          {@link LatexPrintableNormal}s added to this builder.
+   *          {@link LatexPrintable}s added to this builder.
    * @param pName The name of this latex command.
    * @param pIndent The indent of this object.
    * @param pParameterDescriptions The array of parameter descriptions.
@@ -109,7 +109,7 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
    * 
    * @param pReturnPriority The priority for the <code>printable</code>,
    *          which determines where and when to add parenthesis around
-   *          {@link LatexPrintableNormal}s added to this builder.
+   *          {@link LatexPrintable}s added to this builder.
    * @param pIndent The indent of this object.
    * @param pParameterDescriptions The array of parameter descriptions.
    * @throws NullPointerException if <code>printable</code> is

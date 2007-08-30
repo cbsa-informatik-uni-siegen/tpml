@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexPackage;
 import de.unisiegen.tpml.core.latex.LatexCommand;
 import de.unisiegen.tpml.core.latex.LatexInstruction;
 import de.unisiegen.tpml.core.latex.LatexPackage;
-import de.unisiegen.tpml.core.latex.LatexPrintableNode;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
 import de.unisiegen.tpml.core.latex.LatexString;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;

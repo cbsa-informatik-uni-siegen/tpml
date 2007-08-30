@@ -132,8 +132,7 @@ public abstract class LatexExport
       println ( writer , "$" ) ; //$NON-NLS-1$
     }
     // latex printable
-    println ( writer , ( ( LatexPrintableNormal ) pLatexPrintable )
-        .toLatexString ( ).toString ( ) ) ;
+    println ( writer , pLatexPrintable.toLatexString ( ).toString ( ) ) ;
     if ( ! ( pLatexPrintable instanceof ProofModel ) )
     {
       println ( writer , "$" ) ; //$NON-NLS-1$

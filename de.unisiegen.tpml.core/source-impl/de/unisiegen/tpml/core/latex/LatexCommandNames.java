@@ -87,7 +87,7 @@ import de.unisiegen.tpml.core.types.UnitType ;
  * This interface includes the latex print commands.
  * 
  * @author Christian Fehler
- * @see LatexPrintableNormal
+ * @see LatexPrintable
  */
 public interface LatexCommandNames
 {

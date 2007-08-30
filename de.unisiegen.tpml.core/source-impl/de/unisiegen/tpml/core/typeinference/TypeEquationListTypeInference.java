@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPrintableNormal ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -26,7 +26,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  * @see de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference
  */
 public final class TypeEquationListTypeInference implements PrettyPrintable ,
-    LatexPrintableNormal
+    LatexPrintable
 {
   /**
    * The empty equation list.
@@ -188,7 +188,7 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintableNormal#toLatexString()
+   * @see LatexPrintable#toLatexString()
    */
   public final LatexString toLatexString ( )
   {
@@ -200,7 +200,7 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintableNormal#toLatexStringBuilder(LatexStringBuilderFactory,int)
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )

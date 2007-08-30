@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPrintableNode ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -218,7 +218,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_PROOF_NODE ,
-        3 , "#3" , "depth" , "id" , "body" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+        1 , "#1" , "body" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     for ( TypeSubstitution substitution : this.substitutions )
     {
       for ( LatexCommand command : substitution.getLatexCommands ( ) )
@@ -431,23 +431,22 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintableNode#toLatexString()
+   * @see LatexPrintable#toLatexString()
    */
   public final LatexString toLatexString ( )
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) ,
-        0 , 0 , 0 ).toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
+        .toLatexString ( ) ;
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see LatexPrintableNode#toLatexStringBuilder(LatexStringBuilderFactory,int,int,int)
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent ,
-      int pDepth , int pId )
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     int countEquation = 0 ;
     for ( int i = 0 ; i < this.formula.size ( ) ; i ++ )
@@ -518,8 +517,6 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
     }
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
         LATEX_TYPE_INFERENCE_PROOF_NODE , pIndent , descriptions ) ;
-    builder.addText ( "{" + String.valueOf ( pDepth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
-    builder.addText ( "{" + String.valueOf ( pId ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addBuilderBegin ( ) ;
     if ( this.substitutions.size ( ) > 0 )
     {

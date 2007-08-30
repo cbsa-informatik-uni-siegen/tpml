@@ -1,13 +1,11 @@
 package de.unisiegen.tpml.core ;
 
 
-import java.util.Enumeration;
-import java.util.NoSuchElementException;
-
-import javax.swing.tree.TreeNode;
-
-import de.unisiegen.tpml.core.latex.LatexPrintableNormal;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import java.util.Enumeration ;
+import java.util.NoSuchElementException ;
+import javax.swing.tree.TreeNode ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 
 
 /**
@@ -19,7 +17,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
  * @version $Rev$
  * @see javax.swing.tree.TreeNode
  */
-public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintableNormal
+public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
 {
   /**
    * Returns the child in this node's child array that immediately follows
@@ -266,12 +264,12 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintableNo
    * @see #getUserObject()
    */
   public void setUserObject ( Object userObject ) ;
-  
+
+
   /**
-   * 
    * Get the unique id of this proof node
-   *
+   * 
    * @return int unique id
    */
-  public int getId();
+  public int getId ( ) ;
 }
