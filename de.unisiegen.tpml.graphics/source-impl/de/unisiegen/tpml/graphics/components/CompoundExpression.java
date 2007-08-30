@@ -375,10 +375,12 @@ public class CompoundExpression < S , E > extends JComponent
   public Dimension getNeededSize ( int pMaxWidth )
   {
   	int maxWidth = pMaxWidth;
-  	if (maxWidth < 0)
-  	{
-  		return new Dimension(0,0);
-  	}
+
+  	// TODO was ist, wenn der Platz zu klein wird...
+ // 	if (maxWidth < 0)
+ // 	{
+ // 		return new Dimension(0,0);
+ // 	}
   	
     Dimension result = new Dimension ( 0 , 0 ) ;
     if ( this.noLineWrapping )
