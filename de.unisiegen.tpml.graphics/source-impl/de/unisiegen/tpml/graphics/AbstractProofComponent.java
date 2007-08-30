@@ -34,6 +34,11 @@ public abstract class AbstractProofComponent extends JComponent {
 	 */
 	protected int 										availableHeight;
 	
+	/**
+	 * to place the singel components on the singel pages
+	 */
+	protected int actualPageSpaceCounter=0;
+	
 	private Theme											theme;
 
 	
