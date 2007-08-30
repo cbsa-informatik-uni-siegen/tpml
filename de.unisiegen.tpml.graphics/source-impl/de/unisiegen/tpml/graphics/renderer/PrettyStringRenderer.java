@@ -233,14 +233,18 @@ public class PrettyStringRenderer extends AbstractRenderer
   {
     // JAVA makes teh Window very samll at first (-56)
     // catch this
-    if ( maxWidth < 0 )
-    {
-      return new Dimension ( 0 , 0 ) ;
-    }
+    
+  	//TODO was macht er, wenn er zu wenig Platz hat?
+  	//if ( maxWidth <= -56 )
+    //{
+    //  return new Dimension ( 0 , 0 ) ;
+    //}
     // first, find out if the normal algorithem (getNeededSizeAll)
     // is ok to render it
+    // if ther is no space available for the expression, e.g. the rules are to wide
+    // calculate the normal one to
     Dimension dimOfOne = getNeededSize ( maxWidth ) ;
-    if ( dimOfOne.width <= maxWidth )
+    if ( dimOfOne.width <= maxWidth || maxWidth < 20 )
     {
       // so use it
       return dimOfOne ;
