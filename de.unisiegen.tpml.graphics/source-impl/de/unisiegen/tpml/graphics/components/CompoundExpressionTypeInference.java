@@ -722,7 +722,7 @@ public class CompoundExpressionTypeInference extends JComponent
 		// testAusgabe ( "paintComponent wurde aufgerufen..." ) ;
 		// TODO Only for test to make yompoundexpression visible
 		// it also displays how often the exptresso is rednerd while srolling...
-		// gc.setColor (Color.yellow);
+		
 		// --------------------------------
 		// Color [] test = new Color [10];
 		// test[0] = Color.yellow;
@@ -738,7 +738,9 @@ public class CompoundExpressionTypeInference extends JComponent
 		// double get = Math.random();
 		// int getR = (int) (get*10);
 		// gc.setColor (test[getR]);
-		// gc.fillRect(0, 0, getWidth () - 1, getHeight () - 1);
+		// TODO Workaround printing: if this ist not done nothing is readabel in PDF
+		gc.setColor (Color.WHITE);
+		gc.fillRect(-1, -1, getWidth () +5, getHeight () + 5);
 		// --------------------------------
 		// make sure that we have an expression renderer
 		// if ( this.expressionRenderer == null )
