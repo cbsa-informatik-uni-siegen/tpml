@@ -537,6 +537,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     builder.addSourceCodeBreak ( 0 ) ;
     builder.addText ( "$&$" ) ; //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 ) ;
+    // small steps
     builder.addText ( "$\\begin{tabular}{p{22cm}}$" ) ; //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 ) ;
     builder.addText ( "$\\begin{tabular}{p{22cm}}$" ) ; //$NON-NLS-1$
@@ -560,7 +561,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     for ( int i = 0 ; i < this.root.getChildCount ( ) ; i ++ )
     {
       toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
-          this.root , this.root.getChildAt ( i ) , pIndent + LATEX_INDENT ) ;
+          this.root , this.root.getChildAt ( i ) , pIndent ) ;
     }
     builder.addBuilderEnd ( ) ;
     return builder ;
@@ -583,25 +584,25 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
       LatexStringBuilder pLatexStringBuilder , ProofNode pParentNode ,
       ProofNode pCurrentNode , int pIndent )
   {
+    ProofRule [ ] rules = pParentNode.getRules ( ) ;
     pLatexStringBuilder.addText ( "$\\begin{tabular}{p{3.5cm}}$" ) ; //$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder
         .addText ( LATEX_PREFIX_COMMAND + LATEX_SMALL_STEP_ARROW ) ;
+    // not axiom rules
     pLatexStringBuilder.addBuilderBegin ( ) ;
-    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{2.5cm}}$" ) ; //$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    int countAbove = 0 ;
-    for ( int i = 0 ; i < pParentNode.getRules ( ).length ; i ++ )
+    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{2.5cm}}$" ) ; //$NON-NLS-1$
+    int countNotAxiomRules = 0 ;
+    for ( int i = 0 ; i < rules.length ; i ++ )
     {
-      DefaultSmallStepProofRule rule = ( DefaultSmallStepProofRule ) pParentNode
-          .getRules ( ) [ i ] ;
+      DefaultSmallStepProofRule rule = ( DefaultSmallStepProofRule ) rules [ i ] ;
       if ( ! rule.isAxiom ( ) )
       {
         int sameRule = 1 ;
-        for ( int j = i + 1 ; j < pParentNode.getRules ( ).length ; j ++ )
+        for ( int j = i + 1 ; j < rules.length ; j ++ )
         {
-          if ( pParentNode.getRules ( ) [ j ].getName ( ).equals (
-              pParentNode.getRules ( ) [ i ].getName ( ) ) )
+          if ( rules [ j ].getName ( ).equals ( rule.getName ( ) ) )
           {
             sameRule ++ ;
             i = j ;
@@ -611,61 +612,70 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
             break ;
           }
         }
-        if ( countAbove > 0 )
+        if ( countNotAxiomRules > 0 )
         {
           pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
-          pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
         }
         if ( sameRule > 1 )
         {
-          pLatexStringBuilder.addText ( pParentNode.getRules ( ) [ i ]
-              .toLatexString ( ).toString ( )
-              + "^" + sameRule ) ;//$NON-NLS-1$
+          pLatexStringBuilder.addBuilder ( rule.toLatexStringBuilder (
+              pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 3 ) , 0 ) ;
+          pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+          pLatexStringBuilder.addText ( "^" + sameRule ) ; //$NON-NLS-1$
           pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
         }
         else
         {
-          pLatexStringBuilder.addText ( pParentNode.getRules ( ) [ i ]
-              .toLatexString ( ).toString ( ) ) ;
-        }
-        countAbove ++ ;
-      }
-    }
-    pLatexStringBuilder.addText ( "$\\end{tabular}$" ) ;//$NON-NLS-1$
-    pLatexStringBuilder.addBuilderEnd ( ) ;
-    pLatexStringBuilder.addBuilderBegin ( ) ;
-    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{2.5cm}}$" ) ;//$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    int countBelow = 0 ;
-    for ( int i = 0 ; i < pParentNode.getRules ( ).length ; i ++ )
-    {
-      DefaultSmallStepProofRule rule = ( DefaultSmallStepProofRule ) pParentNode
-          .getRules ( ) [ i ] ;
-      if ( rule.isAxiom ( ) )
-      {
-        if ( countBelow > 0 )
-        {
-          pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
+          pLatexStringBuilder.addBuilder ( rule.toLatexStringBuilder (
+              pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 3 ) , 0 ) ;
           pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
         }
-        // TODO
-        pLatexStringBuilder.addText ( pParentNode.getRules ( ) [ i ]
-            .toLatexString ( ).toString ( ) ) ;
-        pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-        countBelow ++ ;
+        countNotAxiomRules ++ ;
       }
+    }
+    if ( countNotAxiomRules == 0 )
+    {
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     }
     pLatexStringBuilder.addText ( "$\\end{tabular}$" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addBuilderEnd ( ) ;
+    // axiom rules
+    pLatexStringBuilder.addBuilderBegin ( ) ;
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$\\begin{tabular}{p{2.5cm}}$" ) ;//$NON-NLS-1$
+    int countAxiomRules = 0 ;
+    for ( int i = 0 ; i < rules.length ; i ++ )
+    {
+      DefaultSmallStepProofRule rule = ( DefaultSmallStepProofRule ) rules [ i ] ;
+      if ( rule.isAxiom ( ) )
+      {
+        if ( countAxiomRules > 0 )
+        {
+          pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
+        }
+        pLatexStringBuilder.addBuilder ( rule.toLatexStringBuilder (
+            pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 3 ) , 0 ) ;
+        pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+        countAxiomRules ++ ;
+      }
+    }
+    if ( countAxiomRules == 0 )
+    {
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    }
+    pLatexStringBuilder.addText ( "$\\end{tabular}$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addBuilderEnd ( ) ;
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$\\end{tabular}$" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$&$" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    // small steps
     pLatexStringBuilder.addText ( "$\\begin{tabular}{p{22cm}}$" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$\\begin{tabular}{p{22cm}}$" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    for ( int i = 0 ; i < countAbove - 1 ; i ++ )
+    for ( int i = 0 ; i < countNotAxiomRules - 1 ; i ++ )
     {
       pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
       pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
@@ -674,13 +684,14 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addBuilderWithoutBrackets ( pCurrentNode
-        .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent ) , 0 ) ;
+        .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
+            + LATEX_INDENT ) , 0 ) ;
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$\\begin{tabular}{p{22cm}}$" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    for ( int i = 0 ; i < countBelow - 1 ; i ++ )
+    for ( int i = 0 ; i < countAxiomRules - 1 ; i ++ )
     {
       pLatexStringBuilder.addText ( "$\\\\$" ) ;//$NON-NLS-1$
       pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
