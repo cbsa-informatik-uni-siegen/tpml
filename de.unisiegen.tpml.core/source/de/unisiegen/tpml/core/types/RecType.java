@@ -401,22 +401,20 @@ public final class RecType extends MonoType implements DefaultTypes ,
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
-    {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_REC_TYPE , LATEX_REC_TYPE , pIndent , this.toPrettyString ( )
-              .toString ( ) , this.typeNames [ 0 ].toPrettyString ( )
-              .toString ( ) , this.toPrettyString ( ).toString ( ) ,
-          this.types [ 0 ].toPrettyString ( ).toString ( ) ) ;
-      this.latexStringBuilder.addBuilder ( this.typeNames [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_REC_TYPE_TYPE_NAME ) ;
-      this.prettyStringBuilder.addBreak ( ) ;
-      this.latexStringBuilder.addBuilder ( this.types [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_REC_TYPE_TAU ) ;
-    }
-    return this.latexStringBuilder ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_REC_TYPE , LATEX_REC_TYPE , pIndent , this.toPrettyString ( )
+            .toString ( ) ,
+        this.typeNames [ 0 ].toPrettyString ( ).toString ( ) , this
+            .toPrettyString ( ).toString ( ) , this.types [ 0 ]
+            .toPrettyString ( ).toString ( ) ) ;
+    builder.addBuilder ( this.typeNames [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
+        PRIO_REC_TYPE_TYPE_NAME ) ;
+    this.prettyStringBuilder.addBreak ( ) ;
+    builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
+        PRIO_REC_TYPE_TAU ) ;
+    return builder ;
   }
 
 

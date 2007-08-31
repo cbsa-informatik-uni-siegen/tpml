@@ -317,30 +317,25 @@ public final class InfixOperation extends Expression implements
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
-    {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ,
-          LATEX_INFIX_OPERATION , pIndent ,
-          this.toPrettyString ( ).toString ( ) , this.expressions [ 0 ]
-              .toPrettyString ( ).toString ( ) , this.expressions [ 1 ]
-              .toPrettyString ( ).toString ( ) , this.expressions [ 2 ]
-              .toPrettyString ( ).toString ( ) ) ;
-      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , ( ( BinaryOperator ) this.expressions [ 0 ] )
-          .getPrettyPriority ( ) ) ;
-      this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , ( ( BinaryOperator ) this.expressions [ 0 ] )
-          .getPrettyPriority ( ) ) ;
-      this.latexStringBuilder.addBreak ( ) ;
-      this.latexStringBuilder.addBuilder ( this.expressions [ 2 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , ( ( BinaryOperator ) this.expressions [ 0 ] )
-          .getPrettyPriority ( ) + 1 ) ;
-    }
-    return this.latexStringBuilder ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ,
+        LATEX_INFIX_OPERATION , pIndent , this.toPrettyString ( ).toString ( ) ,
+        this.expressions [ 0 ].toPrettyString ( ).toString ( ) ,
+        this.expressions [ 1 ].toPrettyString ( ).toString ( ) ,
+        this.expressions [ 2 ].toPrettyString ( ).toString ( ) ) ;
+    builder.addBuilder ( this.expressions [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
+        ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ) ;
+    builder.addBuilder ( this.expressions [ 1 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
+        ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ) ;
+    builder.addBreak ( ) ;
+    builder
+        .addBuilder (
+            this.expressions [ 2 ].toLatexStringBuilder (
+                pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
+            ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) + 1 ) ;
+    return builder ;
   }
 
 

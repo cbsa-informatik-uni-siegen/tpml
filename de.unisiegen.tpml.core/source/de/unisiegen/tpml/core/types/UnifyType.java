@@ -84,12 +84,9 @@ public class UnifyType extends PrimitiveType
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
-    {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_PRIMITIVE , LATEX_UNIFY_TYPE , pIndent , this.toPrettyString ( )
-              .toString ( ) ) ;
-    }
-    return this.latexStringBuilder ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_PRIMITIVE , LATEX_UNIFY_TYPE , pIndent , this.toPrettyString ( )
+            .toString ( ) ) ;
+    return builder ;
   }
 }

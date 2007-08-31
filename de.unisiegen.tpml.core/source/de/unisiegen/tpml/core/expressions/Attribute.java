@@ -350,22 +350,18 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
-    {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_ATTRIBUTE , LATEX_ATTRIBUTE , pIndent , this.toPrettyString ( )
-              .toString ( ) , this.identifiers [ 0 ].toPrettyString ( )
-              .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
-              .toString ( ) ) ;
-      this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_ID ) ;
-      this.latexStringBuilder.addBreak ( ) ;
-      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_ATTRIBUTE_E ) ;
-    }
-    return this.latexStringBuilder ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_ATTRIBUTE , LATEX_ATTRIBUTE , pIndent , this.toPrettyString ( )
+            .toString ( ) , this.identifiers [ 0 ].toPrettyString ( )
+            .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
+            .toString ( ) ) ;
+    builder.addBuilder ( this.identifiers [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_ID ) ;
+    builder.addBreak ( ) ;
+    builder.addBuilder ( this.expressions [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
+        PRIO_ATTRIBUTE_E ) ;
+    return builder ;
   }
 
 

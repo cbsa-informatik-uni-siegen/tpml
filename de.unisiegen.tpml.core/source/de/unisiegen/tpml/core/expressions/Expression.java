@@ -224,16 +224,6 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * Cached {@link LatexStringBuilder}, so the {@link LatexStringBuilder} do
-   * not need to be determined on every invocation of
-   * {@link #toLatexStringBuilder(LatexStringBuilderFactory,int)}.
-   * 
-   * @see #toLatexStringBuilder(LatexStringBuilderFactory,int)
-   */
-  protected LatexStringBuilder latexStringBuilder = null ;
-
-
-  /**
    * A list of lists of bound {@link Identifier}s in this {@link Expression}.
    */
   protected ArrayList < ArrayList < Identifier >> boundIdentifiers = null ;

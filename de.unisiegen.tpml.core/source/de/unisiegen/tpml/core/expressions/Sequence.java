@@ -1,16 +1,16 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.util.TreeSet ;
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import java.util.TreeSet;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommand;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -258,22 +258,21 @@ public final class Sequence extends Expression implements DefaultExpressions
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
-    {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
+
+    LatexStringBuilder builder  = pLatexStringBuilderFactory.newBuilder (
           PRIO_SEQUENCE , LATEX_SEQUENCE , pIndent , this.toPrettyString ( )
               .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
               .toString ( ) , this.expressions [ 1 ].toPrettyString ( )
               .toString ( ) ) ;
-      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
+      builder.addBuilder ( this.expressions [ 0 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_SEQUENCE_E1 ) ;
-      this.latexStringBuilder.addBreak ( ) ;
-      this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
+      builder.addBreak ( ) ;
+      builder.addBuilder ( this.expressions [ 1 ]
           .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
               + LATEX_INDENT ) , PRIO_SEQUENCE_E2 ) ;
-    }
-    return this.latexStringBuilder ;
+    
+    return builder ;
   }
 
 

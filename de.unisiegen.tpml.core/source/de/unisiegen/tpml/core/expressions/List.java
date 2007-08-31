@@ -395,47 +395,44 @@ public final class List extends Expression implements DefaultExpressions
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
+    StringBuilder body = new StringBuilder ( ) ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
-      StringBuilder body = new StringBuilder ( ) ;
-      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      if ( i > 0 )
       {
-        if ( i > 0 )
-        {
-          body.append ( PRETTY_SEMI ) ;
-          body.append ( PRETTY_SPACE ) ;
-        }
-        body.append ( this.expressions [ i ].toPrettyString ( ).toString ( ) ) ;
+        body.append ( PRETTY_SEMI ) ;
+        body.append ( PRETTY_SPACE ) ;
       }
-      String descriptions[] = new String [ 2 + this.expressions.length ] ;
-      descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
-      descriptions [ 1 ] = body.toString ( ) ;
-      for ( int i = 0 ; i < this.expressions.length ; i ++ )
-      {
-        descriptions [ 2 + i ] = this.expressions [ i ].toPrettyString ( )
-            .toString ( ) ;
-      }
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_LIST , LATEX_LIST , pIndent , descriptions ) ;
-      this.latexStringBuilder.addBuilderBegin ( ) ;
-      for ( int i = 0 ; i < this.expressions.length ; i ++ )
-      {
-        if ( i > 0 )
-        {
-          this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-          this.latexStringBuilder.addText ( DefaultLatexStringBuilder
-              .getIndent ( pIndent + LATEX_INDENT )
-              + LATEX_SEMI ) ;
-          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
-          this.latexStringBuilder.addBreak ( ) ;
-        }
-        this.latexStringBuilder.addBuilder ( this.expressions [ i ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-                + LATEX_INDENT * 2 ) , PRIO_LIST_E ) ;
-      }
-      this.latexStringBuilder.addBuilderEnd ( ) ;
+      body.append ( this.expressions [ i ].toPrettyString ( ).toString ( ) ) ;
     }
-    return this.latexStringBuilder ;
+    String descriptions[] = new String [ 2 + this.expressions.length ] ;
+    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
+    descriptions [ 1 ] = body.toString ( ) ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    {
+      descriptions [ 2 + i ] = this.expressions [ i ].toPrettyString ( )
+          .toString ( ) ;
+    }
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_LIST , LATEX_LIST , pIndent , descriptions ) ;
+    builder.addBuilderBegin ( ) ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    {
+      if ( i > 0 )
+      {
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+            + LATEX_INDENT )
+            + LATEX_SEMI ) ;
+        builder.addText ( LATEX_SPACE ) ;
+        builder.addBreak ( ) ;
+      }
+      builder.addBuilder ( this.expressions [ i ].toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) ,
+          PRIO_LIST_E ) ;
+    }
+    builder.addBuilderEnd ( ) ;
+    return builder ;
   }
 
 

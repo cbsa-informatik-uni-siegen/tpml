@@ -310,21 +310,16 @@ public final class Send extends Expression implements DefaultIdentifiers ,
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
-    {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_SEND , LATEX_SEND , pIndent , this.toPrettyString ( )
-              .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
-              .toString ( ) , this.identifiers [ 0 ].toPrettyString ( )
-              .toString ( ) ) ;
-      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_SEND_E ) ;
-      this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_ID ) ;
-    }
-    return this.latexStringBuilder ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_SEND , LATEX_SEND , pIndent ,
+        this.toPrettyString ( ).toString ( ) , this.expressions [ 0 ]
+            .toPrettyString ( ).toString ( ) , this.identifiers [ 0 ]
+            .toPrettyString ( ).toString ( ) ) ;
+    builder.addBuilder ( this.expressions [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_SEND_E ) ;
+    builder.addBuilder ( this.identifiers [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_ID ) ;
+    return builder ;
   }
 
 

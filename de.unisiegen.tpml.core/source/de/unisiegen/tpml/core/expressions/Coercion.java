@@ -366,26 +366,24 @@ public final class Coercion extends Expression implements DefaultTypes ,
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
-    {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_COERCION , LATEX_COERCION , pIndent , this.toPrettyString ( )
-              .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
-              .toString ( ) , this.types [ 0 ].toPrettyString ( ).toString ( ) ,
-          this.types [ 1 ].toPrettyString ( ).toString ( ) ) ;
-      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_COERCION_E ) ;
-      this.latexStringBuilder.addBreak ( ) ;
-      this.latexStringBuilder.addBuilder ( this.types [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_COERCION_TAU1 ) ;
-      this.latexStringBuilder.addBreak ( ) ;
-      this.latexStringBuilder.addBuilder ( this.types [ 1 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_COERCION_TAU2 ) ;
-    }
-    return this.latexStringBuilder ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_COERCION , LATEX_COERCION , pIndent , this.toPrettyString ( )
+            .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
+            .toString ( ) , this.types [ 0 ].toPrettyString ( ).toString ( ) ,
+        this.types [ 1 ].toPrettyString ( ).toString ( ) ) ;
+    builder
+        .addBuilder ( this.expressions [ 0 ].toLatexStringBuilder (
+            pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
+            PRIO_COERCION_E ) ;
+    builder.addBreak ( ) ;
+    builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
+        PRIO_COERCION_TAU1 ) ;
+    builder.addBreak ( ) ;
+    builder.addBuilder ( this.types [ 1 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
+        PRIO_COERCION_TAU2 ) ;
+    return builder ;
   }
 
 

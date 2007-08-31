@@ -460,33 +460,30 @@ public final class Class extends Expression implements BoundIdentifiers ,
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_CLASS , LATEX_CLASS , pIndent , this.toPrettyString ( )
+            .toString ( ) , this.identifiers [ 0 ].toPrettyString ( )
+            .toString ( ) , this.types [ 0 ] == null ? LATEX_EMPTY_STRING
+            : this.types [ 0 ].toPrettyString ( ).toString ( ) ,
+        this.expressions [ 0 ].toPrettyString ( ).toString ( ) ) ;
+    builder.addBuilder ( this.identifiers [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_ID ) ;
+    if ( this.types [ 0 ] == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_CLASS , LATEX_CLASS , pIndent , this.toPrettyString ( )
-              .toString ( ) , this.identifiers [ 0 ].toPrettyString ( )
-              .toString ( ) , this.types [ 0 ] == null ? LATEX_EMPTY_STRING
-              : this.types [ 0 ].toPrettyString ( ).toString ( ) ,
-          this.expressions [ 0 ].toPrettyString ( ).toString ( ) ) ;
-      this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_ID ) ;
-      if ( this.types [ 0 ] == null )
-      {
-        this.latexStringBuilder.addEmptyBuilder ( ) ;
-      }
-      else
-      {
-        this.latexStringBuilder.addBuilder ( this.types [ 0 ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-                + LATEX_INDENT ) , PRIO_CLASS_TAU ) ;
-      }
-      this.latexStringBuilder.addBreak ( ) ;
-      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_CLASS_BODY ) ;
+      builder.addEmptyBuilder ( ) ;
     }
-    return this.latexStringBuilder ;
+    else
+    {
+      builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
+          PRIO_CLASS_TAU ) ;
+    }
+    builder.addBreak ( ) ;
+    builder
+        .addBuilder ( this.expressions [ 0 ].toLatexStringBuilder (
+            pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
+            PRIO_CLASS_BODY ) ;
+    return builder ;
   }
 
 

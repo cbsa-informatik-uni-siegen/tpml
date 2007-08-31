@@ -559,38 +559,30 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_LET , LATEX_LET , pIndent , this.toPrettyString ( ).toString ( ) ,
+        this.identifiers [ 0 ].toPrettyString ( ).toString ( ) ,
+        this.types [ 0 ] == null ? LATEX_EMPTY_STRING : this.types [ 0 ]
+            .toPrettyString ( ).toString ( ) , this.expressions [ 0 ]
+            .toPrettyString ( ).toString ( ) , this.expressions [ 1 ]
+            .toPrettyString ( ).toString ( ) ) ;
+    builder.addBuilder ( this.identifiers [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_ID ) ;
+    if ( this.types [ 0 ] == null )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_LET , LATEX_LET , pIndent ,
-          this.toPrettyString ( ).toString ( ) , this.identifiers [ 0 ]
-              .toPrettyString ( ).toString ( ) ,
-          this.types [ 0 ] == null ? LATEX_EMPTY_STRING : this.types [ 0 ]
-              .toPrettyString ( ).toString ( ) , this.expressions [ 0 ]
-              .toPrettyString ( ).toString ( ) , this.expressions [ 1 ]
-              .toPrettyString ( ).toString ( ) ) ;
-      this.latexStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_ID ) ;
-      if ( this.types [ 0 ] == null )
-      {
-        this.latexStringBuilder.addEmptyBuilder ( ) ;
-      }
-      else
-      {
-        this.latexStringBuilder.addBuilder ( this.types [ 0 ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-                + LATEX_INDENT ) , PRIO_LET_TAU ) ;
-      }
-      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_LET_E1 ) ;
-      this.latexStringBuilder.addBreak ( ) ;
-      this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_LET_E2 ) ;
+      builder.addEmptyBuilder ( ) ;
     }
-    return this.latexStringBuilder ;
+    else
+    {
+      builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_LET_TAU ) ;
+    }
+    builder.addBuilder ( this.expressions [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_LET_E1 ) ;
+    builder.addBreak ( ) ;
+    builder.addBuilder ( this.expressions [ 1 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_LET_E2 ) ;
+    return builder ;
   }
 
 

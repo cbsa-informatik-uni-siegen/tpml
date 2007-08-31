@@ -13,7 +13,6 @@ import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -37,7 +36,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @see PrettyPrintable
  */
 public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
-    LatexPrintable , LatexCommandNames , ShowBondsInput
+    LatexPrintable , ShowBondsInput
 {
   /**
    * The resource bundle.
@@ -116,16 +115,6 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @see #toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   protected PrettyStringBuilder prettyStringBuilder = null ;
-
-
-  /**
-   * Cached {@link LatexStringBuilder}, so the {@link LatexStringBuilder} do
-   * not need to be determined on every invocation of
-   * {@link #toLatexStringBuilder(LatexStringBuilderFactory,int)}.
-   * 
-   * @see #toLatexStringBuilder(LatexStringBuilderFactory,int)
-   */
-  protected LatexStringBuilder latexStringBuilder = null ;
 
 
   /**

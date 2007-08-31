@@ -264,22 +264,19 @@ public final class Condition1 extends Expression implements DefaultExpressions
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
-    {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_CONDITION , LATEX_CONDITION1 , pIndent , this.toPrettyString ( )
-              .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
-              .toString ( ) , this.expressions [ 1 ].toPrettyString ( )
-              .toString ( ) ) ;
-      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_CONDITION_E0 ) ;
-      this.latexStringBuilder.addBreak ( ) ;
-      this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_CONDITION_E1 ) ;
-    }
-    return this.latexStringBuilder ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_CONDITION , LATEX_CONDITION1 , pIndent , this.toPrettyString ( )
+            .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
+            .toString ( ) , this.expressions [ 1 ].toPrettyString ( )
+            .toString ( ) ) ;
+    builder.addBuilder ( this.expressions [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
+        PRIO_CONDITION_E0 ) ;
+    builder.addBreak ( ) ;
+    builder.addBuilder ( this.expressions [ 1 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
+        PRIO_CONDITION_E1 ) ;
+    return builder ;
   }
 
 

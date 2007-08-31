@@ -270,49 +270,45 @@ public final class TupleType extends MonoType implements DefaultTypes
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
+    StringBuilder body = new StringBuilder ( ) ;
+    for ( int i = 0 ; i < this.types.length ; i ++ )
     {
-      StringBuilder body = new StringBuilder ( ) ;
-      for ( int i = 0 ; i < this.types.length ; i ++ )
+      if ( i > 0 )
       {
-        if ( i > 0 )
-        {
-          body.append ( PRETTY_SPACE ) ;
-          body.append ( PRETTY_MULT ) ;
-          body.append ( PRETTY_SPACE ) ;
-        }
-        body.append ( this.types [ i ].toPrettyString ( ).toString ( ) ) ;
+        body.append ( PRETTY_SPACE ) ;
+        body.append ( PRETTY_MULT ) ;
+        body.append ( PRETTY_SPACE ) ;
       }
-      String descriptions[] = new String [ 2 + this.types.length ] ;
-      descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
-      descriptions [ 1 ] = body.toString ( ) ;
-      for ( int i = 0 ; i < this.types.length ; i ++ )
-      {
-        descriptions [ 2 + i ] = this.types [ i ].toPrettyString ( )
-            .toString ( ) ;
-      }
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_TUPLE , LATEX_TUPLE_TYPE , pIndent , descriptions ) ;
-      this.latexStringBuilder.addBuilderBegin ( ) ;
-      for ( int i = 0 ; i < this.types.length ; i ++ )
-      {
-        if ( i > 0 )
-        {
-          this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-          this.latexStringBuilder.addText ( DefaultLatexStringBuilder
-              .getIndent ( pIndent + LATEX_INDENT )
-              + LATEX_SPACE ) ;
-          this.latexStringBuilder.addText ( LATEX_MULT ) ;
-          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
-          this.latexStringBuilder.addBreak ( ) ;
-        }
-        this.latexStringBuilder.addBuilder ( this.types [ i ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-                + LATEX_INDENT * 2 ) , PRIO_TUPLE_TAU ) ;
-      }
-      this.latexStringBuilder.addBuilderEnd ( ) ;
+      body.append ( this.types [ i ].toPrettyString ( ).toString ( ) ) ;
     }
-    return this.latexStringBuilder ;
+    String descriptions[] = new String [ 2 + this.types.length ] ;
+    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
+    descriptions [ 1 ] = body.toString ( ) ;
+    for ( int i = 0 ; i < this.types.length ; i ++ )
+    {
+      descriptions [ 2 + i ] = this.types [ i ].toPrettyString ( ).toString ( ) ;
+    }
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_TUPLE , LATEX_TUPLE_TYPE , pIndent , descriptions ) ;
+    builder.addBuilderBegin ( ) ;
+    for ( int i = 0 ; i < this.types.length ; i ++ )
+    {
+      if ( i > 0 )
+      {
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+            + LATEX_INDENT )
+            + LATEX_SPACE ) ;
+        builder.addText ( LATEX_MULT ) ;
+        builder.addText ( LATEX_SPACE ) ;
+        builder.addBreak ( ) ;
+      }
+      builder.addBuilder ( this.types [ i ].toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) ,
+          PRIO_TUPLE_TAU ) ;
+    }
+    builder.addBuilderEnd ( ) ;
+    return builder ;
   }
 
 

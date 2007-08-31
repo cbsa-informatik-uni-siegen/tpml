@@ -280,20 +280,19 @@ public final class ArrowType extends MonoType implements DefaultTypes
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
-    {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_ARROW , LATEX_ARROW_TYPE , pIndent , this.toPrettyString ( )
-              .toString ( ) , this.types [ 0 ].toPrettyString ( ).toString ( ) ,
-          this.types [ 1 ].toPrettyString ( ).toString ( ) ) ;
-      this.latexStringBuilder.addBuilder ( this.types [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_ARROW_TAU1 ) ;
-      this.latexStringBuilder.addBuilder ( this.types [ 1 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_ARROW_TAU2 ) ;
-    }
-    return this.latexStringBuilder ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_ARROW , LATEX_ARROW_TYPE , pIndent , this.toPrettyString ( )
+            .toString ( ) , this.types [ 0 ].toPrettyString ( ).toString ( ) ,
+        this.types [ 1 ].toPrettyString ( ).toString ( ) ) ;
+    builder
+        .addBuilder ( this.types [ 0 ].toLatexStringBuilder (
+            pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
+            PRIO_ARROW_TAU1 ) ;
+    builder
+        .addBuilder ( this.types [ 1 ].toLatexStringBuilder (
+            pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
+            PRIO_ARROW_TAU2 ) ;
+    return builder ;
   }
 
 

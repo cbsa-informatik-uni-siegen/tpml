@@ -134,24 +134,21 @@ public abstract class BinaryOperator extends Constant
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_CONSTANT , LATEX_BINARY_OPERATOR , pIndent , this
+            .toPrettyString ( ).toString ( ) ) ;
+    builder.addText ( "{" ) ; //$NON-NLS-1$
+    if ( ! ( this.parent instanceof InfixOperation ) )
     {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_CONSTANT , LATEX_BINARY_OPERATOR , pIndent , this
-              .toPrettyString ( ).toString ( ) ) ;
-      this.latexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
-      if ( ! ( this.parent instanceof InfixOperation ) )
-      {
-        this.latexStringBuilder.addText ( LATEX_LPAREN ) ;
-      }
-      this.latexStringBuilder.addText ( this.text.replaceAll ( "_" , "\\\\_" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-      if ( ! ( this.parent instanceof InfixOperation ) )
-      {
-        this.latexStringBuilder.addText ( LATEX_RPAREN ) ;
-      }
-      this.latexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+      builder.addText ( LATEX_LPAREN ) ;
     }
-    return this.latexStringBuilder ;
+    builder.addText ( this.text.replaceAll ( "_" , "\\\\_" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    if ( ! ( this.parent instanceof InfixOperation ) )
+    {
+      builder.addText ( LATEX_RPAREN ) ;
+    }
+    builder.addText ( "}" ) ; //$NON-NLS-1$
+    return builder ;
   }
 
 

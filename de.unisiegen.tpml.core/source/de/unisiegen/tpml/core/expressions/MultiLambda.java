@@ -604,66 +604,61 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
+    StringBuilder identifier = new StringBuilder ( ) ;
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
     {
-      StringBuilder identifier = new StringBuilder ( ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      identifier
+          .append ( this.identifiers [ i ].toPrettyString ( ).toString ( ) ) ;
+      if ( i != this.identifiers.length - 1 )
       {
-        identifier.append ( this.identifiers [ i ].toPrettyString ( )
-            .toString ( ) ) ;
-        if ( i != this.identifiers.length - 1 )
-        {
-          identifier.append ( PRETTY_COMMA ) ;
-          identifier.append ( PRETTY_SPACE ) ;
-        }
+        identifier.append ( PRETTY_COMMA ) ;
+        identifier.append ( PRETTY_SPACE ) ;
       }
-      String descriptions[] = new String [ 2 + this.identifiers.length
-          + this.types.length + this.expressions.length ] ;
-      descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
-      descriptions [ 1 ] = identifier.toString ( ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
-      {
-        descriptions [ 2 + i ] = this.identifiers [ i ].toPrettyString ( )
-            .toString ( ) ;
-      }
-      descriptions [ descriptions.length - 2 ] = this.types [ 0 ] == null ? LATEX_EMPTY_STRING
-          : this.types [ 0 ].toPrettyString ( ).toString ( ) ;
-      descriptions [ descriptions.length - 1 ] = this.expressions [ 0 ]
-          .toPrettyString ( ).toString ( ) ;
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_LAMBDA , LATEX_MULTI_LAMBDA , pIndent , descriptions ) ;
-      this.latexStringBuilder.addBuilderBegin ( ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; ++ i )
-      {
-        if ( i > 0 )
-        {
-          this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-          this.latexStringBuilder.addText ( DefaultLatexStringBuilder
-              .getIndent ( pIndent + LATEX_INDENT )
-              + LATEX_COMMA ) ;
-          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
-        }
-        this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-                + LATEX_INDENT * 2 ) , PRIO_ID ) ;
-      }
-      this.latexStringBuilder.addBuilderEnd ( ) ;
-      if ( this.types [ 0 ] == null )
-      {
-        this.latexStringBuilder.addEmptyBuilder ( ) ;
-      }
-      else
-      {
-        this.latexStringBuilder.addBuilder ( this.types [ 0 ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-                + LATEX_INDENT ) , PRIO_LAMBDA_TAU ) ;
-      }
-      this.latexStringBuilder.addBreak ( ) ;
-      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_LAMBDA_E ) ;
     }
-    return this.latexStringBuilder ;
+    String descriptions[] = new String [ 2 + this.identifiers.length
+        + this.types.length + this.expressions.length ] ;
+    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
+    descriptions [ 1 ] = identifier.toString ( ) ;
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    {
+      descriptions [ 2 + i ] = this.identifiers [ i ].toPrettyString ( )
+          .toString ( ) ;
+    }
+    descriptions [ descriptions.length - 2 ] = this.types [ 0 ] == null ? LATEX_EMPTY_STRING
+        : this.types [ 0 ].toPrettyString ( ).toString ( ) ;
+    descriptions [ descriptions.length - 1 ] = this.expressions [ 0 ]
+        .toPrettyString ( ).toString ( ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_LAMBDA , LATEX_MULTI_LAMBDA , pIndent , descriptions ) ;
+    builder.addBuilderBegin ( ) ;
+    for ( int i = 0 ; i < this.identifiers.length ; ++ i )
+    {
+      if ( i > 0 )
+      {
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+            + LATEX_INDENT )
+            + LATEX_COMMA ) ;
+        builder.addText ( LATEX_SPACE ) ;
+      }
+      builder.addBuilder ( this.identifiers [ i ].toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , PRIO_ID ) ;
+    }
+    builder.addBuilderEnd ( ) ;
+    if ( this.types [ 0 ] == null )
+    {
+      builder.addEmptyBuilder ( ) ;
+    }
+    else
+    {
+      builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
+          PRIO_LAMBDA_TAU ) ;
+    }
+    builder.addBreak ( ) ;
+    builder.addBuilder ( this.expressions [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_LAMBDA_E ) ;
+    return builder ;
   }
 
 

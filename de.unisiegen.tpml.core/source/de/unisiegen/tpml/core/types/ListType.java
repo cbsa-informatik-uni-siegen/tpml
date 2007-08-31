@@ -245,16 +245,12 @@ public final class ListType extends MonoType implements DefaultTypes
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
-    {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_LIST , LATEX_LIST_TYPE , pIndent , this.toPrettyString ( )
-              .toString ( ) , this.types [ 0 ].toPrettyString ( ).toString ( ) ) ;
-      this.latexStringBuilder.addBuilder ( this.types [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_LIST_TAU ) ;
-    }
-    return this.latexStringBuilder ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_LIST , LATEX_LIST_TYPE , pIndent , this.toPrettyString ( )
+            .toString ( ) , this.types [ 0 ].toPrettyString ( ).toString ( ) ) ;
+    builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_LIST_TAU ) ;
+    return builder ;
   }
 
 

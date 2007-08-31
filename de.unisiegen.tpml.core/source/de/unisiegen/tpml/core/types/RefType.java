@@ -244,16 +244,12 @@ public final class RefType extends MonoType implements DefaultTypes
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
-    {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_REF , LATEX_REF_TYPE , pIndent , this.toPrettyString ( )
-              .toString ( ) , this.types [ 0 ].toPrettyString ( ).toString ( ) ) ;
-      this.latexStringBuilder.addBuilder ( this.types [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_REF_TAU ) ;
-    }
-    return this.latexStringBuilder ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_REF , LATEX_REF_TYPE , pIndent , this.toPrettyString ( )
+            .toString ( ) , this.types [ 0 ].toPrettyString ( ).toString ( ) ) ;
+    builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_REF_TAU ) ;
+    return builder ;
   }
 
 

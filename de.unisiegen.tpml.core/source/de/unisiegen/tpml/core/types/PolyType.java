@@ -337,74 +337,69 @@ public final class PolyType extends Type implements DefaultTypes
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
+    StringBuilder body = new StringBuilder ( ) ;
+    if ( ! this.quantifiedVariables.isEmpty ( ) )
     {
-      StringBuilder body = new StringBuilder ( ) ;
-      if ( ! this.quantifiedVariables.isEmpty ( ) )
-      {
-        body.append ( PRETTY_FORALL ) ;
-        for ( Iterator < TypeVariable > it = this.quantifiedVariables
-            .iterator ( ) ; it.hasNext ( ) ; )
-        {
-          body.append ( it.next ( ).toPrettyString ( ).toString ( ) ) ;
-          if ( it.hasNext ( ) )
-          {
-            body.append ( PRETTY_COMMA ) ;
-            body.append ( PRETTY_SPACE ) ;
-          }
-        }
-        body.append ( PRETTY_DOT ) ;
-      }
-      body.append ( this.types [ 0 ].toPrettyString ( ).toString ( ) ) ;
-      String descriptions[] = new String [ 2 + this.quantifiedVariables.size ( )
-          + this.types.length ] ;
-      descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
-      descriptions [ 1 ] = body.toString ( ) ;
-      int count = 2 ;
+      body.append ( PRETTY_FORALL ) ;
       for ( Iterator < TypeVariable > it = this.quantifiedVariables.iterator ( ) ; it
           .hasNext ( ) ; )
       {
-        descriptions [ count ] = it.next ( ).toPrettyString ( ).toString ( ) ;
-        count ++ ;
-      }
-      descriptions [ descriptions.length - 1 ] = this.types [ 0 ]
-          .toPrettyString ( ).toString ( ) ;
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_POLY , LATEX_POLY_TYPE , pIndent , descriptions ) ;
-      if ( ! this.quantifiedVariables.isEmpty ( ) )
-      {
-        this.latexStringBuilder.addBuilderBegin ( ) ;
-        this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-        this.latexStringBuilder.addText ( DefaultLatexStringBuilder
-            .getIndent ( pIndent + LATEX_INDENT )
-            + LATEX_FORALL ) ;
-        for ( Iterator < TypeVariable > it = this.quantifiedVariables
-            .iterator ( ) ; it.hasNext ( ) ; )
+        body.append ( it.next ( ).toPrettyString ( ).toString ( ) ) ;
+        if ( it.hasNext ( ) )
         {
-          this.latexStringBuilder.addBuilder ( it.next ( )
-              .toLatexStringBuilder ( pLatexStringBuilderFactory ,
-                  pIndent + LATEX_INDENT * 2 ) , 0 ) ;
-          if ( it.hasNext ( ) )
-          {
-            this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-            this.latexStringBuilder.addText ( DefaultLatexStringBuilder
-                .getIndent ( pIndent + LATEX_INDENT )
-                + LATEX_COMMA ) ;
-            this.latexStringBuilder.addText ( LATEX_SPACE ) ;
-          }
+          body.append ( PRETTY_COMMA ) ;
+          body.append ( PRETTY_SPACE ) ;
         }
-        this.latexStringBuilder.addBuilderEnd ( ) ;
-        this.prettyStringBuilder.addBreak ( ) ;
       }
-      else
-      {
-        this.latexStringBuilder.addEmptyBuilder ( ) ;
-      }
-      this.latexStringBuilder.addBuilder ( this.types [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_POLY_TAU ) ;
+      body.append ( PRETTY_DOT ) ;
     }
-    return this.latexStringBuilder ;
+    body.append ( this.types [ 0 ].toPrettyString ( ).toString ( ) ) ;
+    String descriptions[] = new String [ 2 + this.quantifiedVariables.size ( )
+        + this.types.length ] ;
+    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
+    descriptions [ 1 ] = body.toString ( ) ;
+    int count = 2 ;
+    for ( Iterator < TypeVariable > it = this.quantifiedVariables.iterator ( ) ; it
+        .hasNext ( ) ; )
+    {
+      descriptions [ count ] = it.next ( ).toPrettyString ( ).toString ( ) ;
+      count ++ ;
+    }
+    descriptions [ descriptions.length - 1 ] = this.types [ 0 ]
+        .toPrettyString ( ).toString ( ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_POLY , LATEX_POLY_TYPE , pIndent , descriptions ) ;
+    if ( ! this.quantifiedVariables.isEmpty ( ) )
+    {
+      builder.addBuilderBegin ( ) ;
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+          + LATEX_INDENT )
+          + LATEX_FORALL ) ;
+      for ( Iterator < TypeVariable > it = this.quantifiedVariables.iterator ( ) ; it
+          .hasNext ( ) ; )
+      {
+        builder.addBuilder ( it.next ( ).toLatexStringBuilder (
+            pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+        if ( it.hasNext ( ) )
+        {
+          builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+              + LATEX_INDENT )
+              + LATEX_COMMA ) ;
+          builder.addText ( LATEX_SPACE ) ;
+        }
+      }
+      builder.addBuilderEnd ( ) ;
+      this.prettyStringBuilder.addBreak ( ) ;
+    }
+    else
+    {
+      builder.addEmptyBuilder ( ) ;
+    }
+    builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_POLY_TAU ) ;
+    return builder ;
   }
 
 

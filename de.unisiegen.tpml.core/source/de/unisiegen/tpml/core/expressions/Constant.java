@@ -178,15 +178,12 @@ public abstract class Constant extends Value
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
-    {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_CONSTANT , LATEX_CONSTANT , pIndent , this.toPrettyString ( )
-              .toString ( ) ) ;
-      this.latexStringBuilder.addText ( "{" //$NON-NLS-1$
-          + this.text.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-    }
-    return this.latexStringBuilder ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_CONSTANT , LATEX_CONSTANT , pIndent , this.toPrettyString ( )
+            .toString ( ) ) ;
+    builder.addText ( "{" //$NON-NLS-1$
+        + this.text.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    return builder ;
   }
 
 

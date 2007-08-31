@@ -263,22 +263,17 @@ public final class While extends Expression implements DefaultExpressions
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
-    {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_WHILE , LATEX_WHILE , pIndent , this.toPrettyString ( )
-              .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
-              .toString ( ) , this.expressions [ 1 ].toPrettyString ( )
-              .toString ( ) ) ;
-      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_WHILE_E1 ) ;
-      this.latexStringBuilder.addBreak ( ) ;
-      this.latexStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_WHILE_E2 ) ;
-    }
-    return this.latexStringBuilder ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_WHILE , LATEX_WHILE , pIndent , this.toPrettyString ( )
+            .toString ( ) , this.expressions [ 0 ].toPrettyString ( )
+            .toString ( ) , this.expressions [ 1 ].toPrettyString ( )
+            .toString ( ) ) ;
+    builder.addBuilder ( this.expressions [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_WHILE_E1 ) ;
+    builder.addBreak ( ) ;
+    builder.addBuilder ( this.expressions [ 1 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_WHILE_E2 ) ;
+    return builder ;
   }
 
 

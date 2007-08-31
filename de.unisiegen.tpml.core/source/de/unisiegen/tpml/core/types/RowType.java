@@ -1,23 +1,23 @@
 package de.unisiegen.tpml.core.types ;
 
 
-import java.util.ArrayList ;
-import java.util.Arrays ;
-import java.util.TreeSet ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
-import de.unisiegen.tpml.core.interfaces.SortedChildren ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.TreeSet;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType;
+import de.unisiegen.tpml.core.interfaces.SortedChildren;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexCommand;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -701,8 +701,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
-    {
+
       StringBuilder body = new StringBuilder ( ) ;
       for ( int i = 0 ; i < this.types.length ; i ++ )
       {
@@ -748,62 +747,62 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
         descriptions [ descriptions.length - 1 ] = this.remainingRowType
             .toPrettyString ( ).toString ( ) ;
       }
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
+      LatexStringBuilder builder  = pLatexStringBuilderFactory.newBuilder (
           PRIO_ROW , LATEX_ROW_TYPE , pIndent , descriptions ) ;
-      this.latexStringBuilder.addBuilderBegin ( ) ;
+      builder.addBuilderBegin ( ) ;
       for ( int i = 0 ; i < this.types.length ; i ++ )
       {
         if ( i != 0 )
         {
-          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
+          builder.addText ( LATEX_SPACE ) ;
         }
         if ( Identifier.Set.ATTRIBUTE
             .equals ( this.identifiers [ i ].getSet ( ) ) )
         {
-          this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-          this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+          builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          builder.addText ( DefaultLatexStringBuilder
               .getIndent ( pIndent + LATEX_INDENT )
               + LATEX_PREFIX_COMMAND + LATEX_KEY_ATTR ) ;
-          this.latexStringBuilder.addText ( LATEX_SPACE ) ;
+          builder.addText ( LATEX_SPACE ) ;
         }
-        this.latexStringBuilder.addBuilder ( this.identifiers [ i ]
+        builder.addBuilder ( this.identifiers [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
                 + LATEX_INDENT * 2 ) , PRIO_ID ) ;
-        this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-        this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( DefaultLatexStringBuilder
             .getIndent ( pIndent + LATEX_INDENT )
             + LATEX_COLON ) ;
-        this.latexStringBuilder.addText ( LATEX_SPACE ) ;
-        this.latexStringBuilder.addBuilder ( this.types [ i ]
+        builder.addText ( LATEX_SPACE ) ;
+        builder.addBuilder ( this.types [ i ]
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
                 + LATEX_INDENT * 2 ) , PRIO_ROW_TAU ) ;
-        this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-        this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( DefaultLatexStringBuilder
             .getIndent ( pIndent + LATEX_INDENT )
             + LATEX_SPACE ) ;
-        this.latexStringBuilder.addText ( LATEX_SEMI ) ;
+        builder.addText ( LATEX_SEMI ) ;
       }
       if ( this.types.length == 0 )
       {
-        this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-        this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( DefaultLatexStringBuilder
             .getIndent ( pIndent + LATEX_INDENT )
             + LATEX_EMPTYSET ) ;
       }
       if ( this.remainingRowType != null )
       {
-        this.latexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-        this.latexStringBuilder.addText ( DefaultLatexStringBuilder
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( DefaultLatexStringBuilder
             .getIndent ( pIndent + LATEX_INDENT )
             + LATEX_SPACE ) ;
         this.prettyStringBuilder.addBreak ( ) ;
-        this.latexStringBuilder.addBuilder ( this.remainingRowType
+        builder.addBuilder ( this.remainingRowType
             .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
                 + LATEX_INDENT * 2 ) , 0 ) ;
       }
-      this.latexStringBuilder.addBuilderEnd ( ) ;
-    }
-    return this.latexStringBuilder ;
+      builder.addBuilderEnd ( ) ;
+    
+    return builder ;
   }
 
 

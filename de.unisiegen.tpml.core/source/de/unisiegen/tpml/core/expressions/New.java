@@ -226,17 +226,12 @@ public final class New extends Expression implements DefaultExpressions
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    if ( this.latexStringBuilder == null )
-    {
-      this.latexStringBuilder = pLatexStringBuilderFactory.newBuilder (
-          PRIO_NEW , LATEX_NEW , pIndent ,
-          this.toPrettyString ( ).toString ( ) , this.expressions [ 0 ]
-              .toPrettyString ( ).toString ( ) ) ;
-      this.latexStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-              + LATEX_INDENT ) , PRIO_NEW_E ) ;
-    }
-    return this.latexStringBuilder ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_NEW , LATEX_NEW , pIndent , this.toPrettyString ( ).toString ( ) ,
+        this.expressions [ 0 ].toPrettyString ( ).toString ( ) ) ;
+    builder.addBuilder ( this.expressions [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_NEW_E ) ;
+    return builder ;
   }
 
 
