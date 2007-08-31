@@ -63,7 +63,7 @@ final class DefaultSmallStepProofRule extends AbstractProofRule implements
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_RULE , 1 ,
-        "\\mbox{\\scriptsize{\\textbf{(#1)}}}" , "name" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        "\\mbox{\\textbf{(#1)}}" , "name" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     return commands ;
   }
 
