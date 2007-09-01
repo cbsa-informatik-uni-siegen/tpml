@@ -146,7 +146,8 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
     }
     this.language = pLanguage ;
     // setup the normal attribute set
-    StyleConstants.setForeground ( this.normalSet , Color.BLACK ) ;
+    StyleConstants.setForeground ( this.normalSet , Theme.currentTheme ( )
+        .getExpressionColor ( ) ) ;
     StyleConstants.setBold ( this.normalSet , false ) ;
     // setup the comment set
     SimpleAttributeSet commentSet = new SimpleAttributeSet ( ) ;
