@@ -308,9 +308,9 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_OBJECT , 0 ,
-        "\\textbf{object}" ) ) ; //$NON-NLS-1$
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{object}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_END , 0 ,
-        "\\textbf{end}" ) ) ; //$NON-NLS-1$
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{end}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_OBJECT_EXPR , 3 ,
         "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" //$NON-NLS-1$//$NON-NLS-2$
             + LATEX_KEY_OBJECT + "\\ (#1)\\ #3\\ \\" + LATEX_KEY_END + "}" //$NON-NLS-1$//$NON-NLS-2$

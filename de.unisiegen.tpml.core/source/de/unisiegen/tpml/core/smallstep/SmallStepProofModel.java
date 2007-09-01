@@ -244,9 +244,9 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_MODEL , 1 ,
         "\\begin{longtable}{p{3.5cm}p{22cm}}#1\\end{longtable}" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_ARROW , 2 ,
-        "\\xrightarrow" + "[\\mbox{\\color{red}{\\scriptsize{#2}}}]" //$NON-NLS-1$ //$NON-NLS-2$
-            + "{\\mbox{\\color{red}{\\scriptsize{#1}}}}" , "not axiom rules" , //$NON-NLS-1$//$NON-NLS-2$
-        "axiom rules" ) ) ; //$NON-NLS-1$
+        "\\xrightarrow" + "[\\mbox{\\color{" + LATEX_COLOR_RULE //$NON-NLS-1$ //$NON-NLS-2$
+            + "}{\\scriptsize{#2}}}]" + "{\\mbox{\\color{" + LATEX_COLOR_RULE //$NON-NLS-1$//$NON-NLS-2$
+            + "}{\\scriptsize{#1}}}}" , "not axiom rules" , "axiom rules" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     for ( LatexCommand command : getLatexCommandsInternal ( this.root ) )
     {
       commands.add ( command ) ;

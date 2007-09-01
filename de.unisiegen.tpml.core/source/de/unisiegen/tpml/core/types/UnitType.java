@@ -87,7 +87,7 @@ public final class UnitType extends PrimitiveType
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_UNIT , 0 ,
-        "\\textbf{unit}" ) ) ; //$NON-NLS-1$
+        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{unit}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_UNIT_TYPE , 0 ,
         "\\" + LATEX_KEY_UNIT ) ) ; //$NON-NLS-1$
     return commands ;

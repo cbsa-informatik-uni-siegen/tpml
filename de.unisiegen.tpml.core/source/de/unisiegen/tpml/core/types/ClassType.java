@@ -154,7 +154,7 @@ public final class ClassType extends MonoType implements DefaultTypes
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_ZETA , 0 ,
-        "\\textbf{$\\zeta$}" ) ) ; //$NON-NLS-1$
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{$\\zeta$}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_CLASS_TYPE , 2 , "\\" //$NON-NLS-1$
         + LATEX_KEY_ZETA + "(#1\\ \\colon\\ #2)" , "tau" , "phi" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     return commands ;

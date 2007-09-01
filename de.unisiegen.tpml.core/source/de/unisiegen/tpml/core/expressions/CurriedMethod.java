@@ -464,7 +464,7 @@ public final class CurriedMethod extends Expression implements
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_METHOD , 0 ,
-        "\\textbf{method}" ) ) ; //$NON-NLS-1$
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{method}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_CURRIED_METHOD , 3 ,
         "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" //$NON-NLS-1$ //$NON-NLS-2$
             + LATEX_KEY_METHOD + "\\ #1\\ =\\ #3\\ ;}" //$NON-NLS-1$

@@ -196,7 +196,7 @@ public final class RecType extends MonoType implements DefaultTypes ,
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_MU , 0 ,
-        "\\textbf{$\\mu$}" ) ) ; //$NON-NLS-1$
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{$\\mu$}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_REC_TYPE , 2 , "\\" //$NON-NLS-1$
         + LATEX_KEY_MU + "#1.#2" , "t" , "tau" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
     return commands ;

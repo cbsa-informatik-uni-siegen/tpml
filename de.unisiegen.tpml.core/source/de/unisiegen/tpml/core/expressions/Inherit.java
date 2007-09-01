@@ -426,9 +426,9 @@ public final class Inherit extends Expression implements BoundIdentifiers ,
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_INHERIT , 0 ,
-        "\\textbf{inherit}" ) ) ; //$NON-NLS-1$ 
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{inherit}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_FROM , 0 ,
-        "\\textbf{from}" ) ) ; //$NON-NLS-1$ 
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{from}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_INHERIT , 3 , "\\" //$NON-NLS-1$
         + LATEX_KEY_INHERIT + "\\ #1\\ \\" + LATEX_KEY_FROM + "\\ #2\\ ;\\ #3" , //$NON-NLS-1$ //$NON-NLS-2$
         "a1, ... , ak" , "e" , "b" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.awt.Color ;
 import java.util.ArrayList ;
 import java.util.Enumeration ;
 import java.util.LinkedList ;
@@ -12,6 +13,8 @@ import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
@@ -26,6 +29,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.TypeName ;
+import de.unisiegen.tpml.core.util.Theme ;
 
 
 /**
@@ -541,6 +545,54 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   public TreeSet < LatexInstruction > getLatexInstructions ( )
   {
     TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    Color colorExpression = Theme.currentTheme ( ).getExpressionColor ( ) ;
+    float red = ( float ) Math
+        .round ( ( ( float ) colorExpression.getRed ( ) ) / 255 * 100 ) / 100 ;
+    float green = ( float ) Math.round ( ( ( float ) colorExpression
+        .getGreen ( ) ) / 255 * 100 ) / 100 ;
+    float blue = ( float ) Math
+        .round ( ( ( float ) colorExpression.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_EXPRESSION + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}" ) ) ; //$NON-NLS-1$
+    Color colorKeyword = Theme.currentTheme ( ).getKeywordColor ( ) ;
+    red = ( float ) Math
+        .round ( ( ( float ) colorKeyword.getRed ( ) ) / 255 * 100 ) / 100 ;
+    green = ( float ) Math
+        .round ( ( ( float ) colorKeyword.getGreen ( ) ) / 255 * 100 ) / 100 ;
+    blue = ( float ) Math
+        .round ( ( ( float ) colorKeyword.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_KEYWORD + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}" ) ) ; //$NON-NLS-1$
+    Color colorConstant = Theme.currentTheme ( ).getConstantColor ( ) ;
+    red = ( float ) Math
+        .round ( ( ( float ) colorConstant.getRed ( ) ) / 255 * 100 ) / 100 ;
+    green = ( float ) Math
+        .round ( ( ( float ) colorConstant.getGreen ( ) ) / 255 * 100 ) / 100 ;
+    blue = ( float ) Math
+        .round ( ( ( float ) colorConstant.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_CONSTANT + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}" ) ) ; //$NON-NLS-1$
+    Color colorIdentifier = Theme.currentTheme ( ).getIdentifierColor ( ) ;
+    red = ( float ) Math
+        .round ( ( ( float ) colorIdentifier.getRed ( ) ) / 255 * 100 ) / 100 ;
+    green = ( float ) Math
+        .round ( ( ( float ) colorIdentifier.getGreen ( ) ) / 255 * 100 ) / 100 ;
+    blue = ( float ) Math
+        .round ( ( ( float ) colorIdentifier.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_IDENTIFIER + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}" ) ) ; //$NON-NLS-1$
     if ( this instanceof DefaultExpressions )
     {
       for ( Expression e : ( ( DefaultExpressions ) this ).getExpressions ( ) )
@@ -586,6 +638,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     if ( this instanceof DefaultExpressions )
     {
       for ( Expression e : ( ( DefaultExpressions ) this ).getExpressions ( ) )

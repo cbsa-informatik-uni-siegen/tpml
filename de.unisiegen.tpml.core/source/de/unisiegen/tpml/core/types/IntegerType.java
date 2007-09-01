@@ -88,7 +88,7 @@ public final class IntegerType extends PrimitiveType
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_INT , 0 ,
-        "\\textbf{int}" ) ) ; //$NON-NLS-1$
+        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{int}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_INTEGER_TYPE , 0 ,
         "\\" + LATEX_KEY_INT ) ) ; //$NON-NLS-1$
     return commands ;

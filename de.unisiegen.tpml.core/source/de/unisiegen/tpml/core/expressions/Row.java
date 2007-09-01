@@ -653,8 +653,8 @@ public final class Row extends Expression implements DefaultExpressions
     {
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-          + LATEX_INDENT )
-          + LATEX_EPSILON ) ;
+          + LATEX_INDENT ) ) ;
+      builder.addText (  LATEX_EPSILON ) ;
     }
     builder.addBuilderEnd ( ) ;
     return builder ;

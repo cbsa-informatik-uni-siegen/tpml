@@ -33,9 +33,11 @@ public final class DefaultLatexInstruction implements LatexInstruction
    */
   public int compareTo ( LatexInstruction pOther )
   {
-	  if (this.text.compareTo ( ((DefaultLatexInstruction) pOther).text )==0)
-		  return 0;
-	  return 1;
+    if ( this.text.compareTo ( ( ( DefaultLatexInstruction ) pOther ).text ) == 0 )
+    {
+      return 0 ;
+    }
+    return 1 ;
   }
 
 

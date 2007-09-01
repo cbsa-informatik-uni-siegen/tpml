@@ -566,9 +566,9 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_LET , 0 ,
-        "\\textbf{let}" ) ) ; //$NON-NLS-1$
-    commands
-        .add ( new DefaultLatexCommand ( LATEX_KEY_IN , 0 , "\\textbf{in}" ) ) ; //$NON-NLS-1$ 
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{let}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_IN , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{in}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_CURRIED_LET , 4 ,
         "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" //$NON-NLS-1$ //$NON-NLS-2$
             + LATEX_KEY_LET + "\\ #1\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}" //$NON-NLS-1$ //$NON-NLS-2$

@@ -199,9 +199,9 @@ public final class While extends Expression implements DefaultExpressions
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_WHILE , 0 ,
-        "\\textbf{while}" ) ) ; //$NON-NLS-1$
-    commands
-        .add ( new DefaultLatexCommand ( LATEX_KEY_DO , 0 , "\\textbf{do}" ) ) ; //$NON-NLS-1$
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{while}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_DO , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{do}}" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_WHILE , 2 , "\\" //$NON-NLS-1$
         + LATEX_KEY_WHILE + "\\ #1\\ \\" + LATEX_KEY_DO + "\\ #2" , "e1" , //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
         "e2" ) ) ; //$NON-NLS-1$

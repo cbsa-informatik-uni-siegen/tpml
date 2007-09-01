@@ -399,8 +399,8 @@ public final class TypeVariable extends MonoType implements
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_VARIABLE , 1 , "#1" , //$NON-NLS-1$
-        "name" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_VARIABLE , 1 ,
+        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{$#1$}}" , "tvar" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     return commands ;
   }
 

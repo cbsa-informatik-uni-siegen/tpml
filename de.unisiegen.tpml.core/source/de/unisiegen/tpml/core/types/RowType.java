@@ -1,23 +1,23 @@
 package de.unisiegen.tpml.core.types ;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.TreeSet;
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.expressions.Identifier;
-import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes;
-import de.unisiegen.tpml.core.interfaces.ExpressionOrType;
-import de.unisiegen.tpml.core.interfaces.SortedChildren;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
-import de.unisiegen.tpml.core.latex.LatexCommand;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import java.util.ArrayList ;
+import java.util.Arrays ;
+import java.util.TreeSet ;
+import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
+import de.unisiegen.tpml.core.interfaces.SortedChildren ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 
 
 /**
@@ -474,7 +474,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_ATTR , 0 ,
-        "\\textbf{attr}" ) ) ; //$NON-NLS-1$ 
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{attr}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_ROW_TYPE , 1 , "#1" , //$NON-NLS-1$
         "epsilon | attr a : tau ; phi1 | m : tau ; phi1" ) ) ; //$NON-NLS-1$
     if ( this.remainingRowType != null )
@@ -701,107 +701,101 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-
-      StringBuilder body = new StringBuilder ( ) ;
-      for ( int i = 0 ; i < this.types.length ; i ++ )
-      {
-        if ( i != 0 )
-        {
-          body.append ( PRETTY_SPACE ) ;
-        }
-        if ( Identifier.Set.ATTRIBUTE
-            .equals ( this.identifiers [ i ].getSet ( ) ) )
-        {
-          body.append ( PRETTY_ATTR ) ;
-          body.append ( PRETTY_SPACE ) ;
-        }
-        body.append ( this.identifiers [ i ].toPrettyString ( ).toString ( ) ) ;
-        body.append ( PRETTY_COLON ) ;
-        body.append ( PRETTY_SPACE ) ;
-        body.append ( this.types [ i ].toPrettyString ( ).toString ( ) ) ;
-        body.append ( PRETTY_SPACE ) ;
-        body.append ( PRETTY_SEMI ) ;
-      }
-      if ( this.remainingRowType != null )
+    StringBuilder body = new StringBuilder ( ) ;
+    for ( int i = 0 ; i < this.types.length ; i ++ )
+    {
+      if ( i != 0 )
       {
         body.append ( PRETTY_SPACE ) ;
-        body.append ( this.remainingRowType.toPrettyString ( ).toString ( ) ) ;
       }
-      if ( this.types.length == 0 )
+      if ( Identifier.Set.ATTRIBUTE.equals ( this.identifiers [ i ].getSet ( ) ) )
       {
-        body.append ( PRETTY_EMPTY_SET ) ;
+        body.append ( PRETTY_ATTR ) ;
+        body.append ( PRETTY_SPACE ) ;
       }
-      String descriptions[] = new String [ 2 + this.identifiers.length
-          + this.types.length + ( this.remainingRowType == null ? 0 : 1 ) ] ;
-      descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
-      descriptions [ 1 ] = body.toString ( ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      body.append ( this.identifiers [ i ].toPrettyString ( ).toString ( ) ) ;
+      body.append ( PRETTY_COLON ) ;
+      body.append ( PRETTY_SPACE ) ;
+      body.append ( this.types [ i ].toPrettyString ( ).toString ( ) ) ;
+      body.append ( PRETTY_SPACE ) ;
+      body.append ( PRETTY_SEMI ) ;
+    }
+    if ( this.remainingRowType != null )
+    {
+      body.append ( PRETTY_SPACE ) ;
+      body.append ( this.remainingRowType.toPrettyString ( ).toString ( ) ) ;
+    }
+    if ( this.types.length == 0 )
+    {
+      body.append ( PRETTY_EMPTY_SET ) ;
+    }
+    String descriptions[] = new String [ 2 + this.identifiers.length
+        + this.types.length + ( this.remainingRowType == null ? 0 : 1 ) ] ;
+    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
+    descriptions [ 1 ] = body.toString ( ) ;
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    {
+      descriptions [ 2 + i * 2 ] = this.identifiers [ i ].toPrettyString ( )
+          .toString ( ) ;
+      descriptions [ 3 + i * 2 ] = this.types [ i ].toPrettyString ( )
+          .toString ( ) ;
+    }
+    if ( this.remainingRowType != null )
+    {
+      descriptions [ descriptions.length - 1 ] = this.remainingRowType
+          .toPrettyString ( ).toString ( ) ;
+    }
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        PRIO_ROW , LATEX_ROW_TYPE , pIndent , descriptions ) ;
+    builder.addBuilderBegin ( ) ;
+    for ( int i = 0 ; i < this.types.length ; i ++ )
+    {
+      if ( i != 0 )
       {
-        descriptions [ 2 + i * 2 ] = this.identifiers [ i ].toPrettyString ( )
-            .toString ( ) ;
-        descriptions [ 3 + i * 2 ] = this.types [ i ].toPrettyString ( )
-            .toString ( ) ;
-      }
-      if ( this.remainingRowType != null )
-      {
-        descriptions [ descriptions.length - 1 ] = this.remainingRowType
-            .toPrettyString ( ).toString ( ) ;
-      }
-      LatexStringBuilder builder  = pLatexStringBuilderFactory.newBuilder (
-          PRIO_ROW , LATEX_ROW_TYPE , pIndent , descriptions ) ;
-      builder.addBuilderBegin ( ) ;
-      for ( int i = 0 ; i < this.types.length ; i ++ )
-      {
-        if ( i != 0 )
-        {
-          builder.addText ( LATEX_SPACE ) ;
-        }
-        if ( Identifier.Set.ATTRIBUTE
-            .equals ( this.identifiers [ i ].getSet ( ) ) )
-        {
-          builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-          builder.addText ( DefaultLatexStringBuilder
-              .getIndent ( pIndent + LATEX_INDENT )
-              + LATEX_PREFIX_COMMAND + LATEX_KEY_ATTR ) ;
-          builder.addText ( LATEX_SPACE ) ;
-        }
-        builder.addBuilder ( this.identifiers [ i ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-                + LATEX_INDENT * 2 ) , PRIO_ID ) ;
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-        builder.addText ( DefaultLatexStringBuilder
-            .getIndent ( pIndent + LATEX_INDENT )
-            + LATEX_COLON ) ;
         builder.addText ( LATEX_SPACE ) ;
-        builder.addBuilder ( this.types [ i ]
-            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-                + LATEX_INDENT * 2 ) , PRIO_ROW_TAU ) ;
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-        builder.addText ( DefaultLatexStringBuilder
-            .getIndent ( pIndent + LATEX_INDENT )
-            + LATEX_SPACE ) ;
-        builder.addText ( LATEX_SEMI ) ;
       }
-      if ( this.types.length == 0 )
+      if ( Identifier.Set.ATTRIBUTE.equals ( this.identifiers [ i ].getSet ( ) ) )
       {
         builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-        builder.addText ( DefaultLatexStringBuilder
-            .getIndent ( pIndent + LATEX_INDENT )
-            + LATEX_EMPTYSET ) ;
+        builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+            + LATEX_INDENT )
+            + LATEX_PREFIX_COMMAND + LATEX_KEY_ATTR ) ;
+        builder.addText ( LATEX_SPACE ) ;
       }
-      if ( this.remainingRowType != null )
-      {
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-        builder.addText ( DefaultLatexStringBuilder
-            .getIndent ( pIndent + LATEX_INDENT )
-            + LATEX_SPACE ) ;
-        this.prettyStringBuilder.addBreak ( ) ;
-        builder.addBuilder ( this.remainingRowType
-            .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-                + LATEX_INDENT * 2 ) , 0 ) ;
-      }
-      builder.addBuilderEnd ( ) ;
-    
+      builder.addBuilder ( this.identifiers [ i ].toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , PRIO_ID ) ;
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+          + LATEX_INDENT )
+          + LATEX_COLON ) ;
+      builder.addText ( LATEX_SPACE ) ;
+      builder.addBuilder ( this.types [ i ].toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) ,
+          PRIO_ROW_TAU ) ;
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+          + LATEX_INDENT )
+          + LATEX_SPACE ) ;
+      builder.addText ( LATEX_SEMI ) ;
+    }
+    if ( this.types.length == 0 )
+    {
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+          + LATEX_INDENT )
+          + LATEX_EMPTYSET ) ;
+    }
+    if ( this.remainingRowType != null )
+    {
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
+          + LATEX_INDENT )
+          + LATEX_SPACE ) ;
+      this.prettyStringBuilder.addBreak ( ) ;
+      builder.addBuilder ( this.remainingRowType.toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+    }
+    builder.addBuilderEnd ( ) ;
     return builder ;
   }
 

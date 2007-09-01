@@ -201,8 +201,10 @@ public final class Or extends Expression implements DefaultExpressions
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_OR , 2 ,
-        "#1\\ \\mathbin{\\|}\\ #2" , "e1" , "e2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_BARBAR , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{$\\|$}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_OR , 2 , "#1\\ \\" //$NON-NLS-1$
+        + LATEX_KEY_BARBAR + "\\ #2" , "e1" , "e2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
     return commands ;
   }
 

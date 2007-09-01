@@ -121,8 +121,9 @@ public final class Location extends Value
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands
-        .add ( new DefaultLatexCommand ( LATEX_LOCATION , 1 , "#1" , "name" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_LOCATION , 1 ,
+        "\\mbox{\\color{" //$NON-NLS-1$
+            + LATEX_COLOR_EXPRESSION + "}{#1}}" , "name" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ 
     return commands ;
   }
 

@@ -376,7 +376,7 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_REC , 0 ,
-        "\\textbf{rec}" ) ) ; //$NON-NLS-1$ 
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{rec}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_RECURSION , 3 ,
         "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" //$NON-NLS-1$ //$NON-NLS-2$
             + LATEX_KEY_REC + "\\ #1.#3}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$

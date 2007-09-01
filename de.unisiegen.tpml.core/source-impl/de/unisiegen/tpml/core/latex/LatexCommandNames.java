@@ -113,6 +113,42 @@ public interface LatexCommandNames
 
 
   /**
+   * The latex print command for the keyword color.
+   */
+  public static final String LATEX_COLOR_KEYWORD = "ColorKeyword" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the constant color.
+   */
+  public static final String LATEX_COLOR_CONSTANT = "ColorConstant" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the identifier color.
+   */
+  public static final String LATEX_COLOR_IDENTIFIER = "ColorIdentifier" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the expression color.
+   */
+  public static final String LATEX_COLOR_EXPRESSION = "ColorExpression" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the type color.
+   */
+  public static final String LATEX_COLOR_TYPE = "ColorType" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the rule color.
+   */
+  public static final String LATEX_COLOR_RULE = "ColorRule" ; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for a small step new column.
    */
   public static final String LATEX_SMALL_STEP_NEW_COLUMN = "$&$" ; //$NON-NLS-1$
@@ -251,6 +287,18 @@ public interface LatexCommandNames
    * The latex print command for the keyword <code>val</code>.
    */
   public static final String LATEX_KEY_VAL = LATEX_KEY + "Val" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>&&</code>.
+   */
+  public static final String LATEX_KEY_AMPERAMPER = LATEX_KEY + "AmperAmper" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the keyword <code>||</code>.
+   */
+  public static final String LATEX_KEY_BARBAR = LATEX_KEY + "BarBar" ; //$NON-NLS-1$
 
 
   /**

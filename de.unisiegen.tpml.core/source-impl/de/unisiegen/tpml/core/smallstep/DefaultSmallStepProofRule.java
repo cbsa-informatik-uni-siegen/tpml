@@ -1,9 +1,12 @@
 package de.unisiegen.tpml.core.smallstep ;
 
 
+import java.awt.Color ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.AbstractProofRule ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
@@ -11,6 +14,7 @@ import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.util.Theme ;
 
 
 /**
@@ -63,7 +67,8 @@ final class DefaultSmallStepProofRule extends AbstractProofRule implements
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_RULE , 1 ,
-        "\\mbox{\\textbf{(#1)}}" , "name" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        "\\mbox{\\textbf{\\color{" + LATEX_COLOR_RULE + "}(#1)}}" , //$NON-NLS-1$//$NON-NLS-2$
+        "name" ) ) ; //$NON-NLS-1$
     return commands ;
   }
 
@@ -76,6 +81,18 @@ final class DefaultSmallStepProofRule extends AbstractProofRule implements
   public TreeSet < LatexInstruction > getLatexInstructions ( )
   {
     TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    Color colorRule = Theme.currentTheme ( ).getRuleColor ( ) ;
+    float red = ( float ) Math
+        .round ( ( ( float ) colorRule.getRed ( ) ) / 255 * 100 ) / 100 ;
+    float green = ( float ) Math
+        .round ( ( ( float ) colorRule.getGreen ( ) ) / 255 * 100 ) / 100 ;
+    float blue = ( float ) Math
+        .round ( ( ( float ) colorRule.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_RULE + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}" ) ) ; //$NON-NLS-1$
     return instructions ;
   }
 
@@ -88,6 +105,7 @@ final class DefaultSmallStepProofRule extends AbstractProofRule implements
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     return packages ;
   }
 

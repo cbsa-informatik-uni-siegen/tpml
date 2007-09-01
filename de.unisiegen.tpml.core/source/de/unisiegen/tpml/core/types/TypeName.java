@@ -175,7 +175,7 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_NAME , 1 ,
-        "\\textit{#1}" , "name" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        "\\mbox{\\color{" + LATEX_COLOR_IDENTIFIER + "}{#1}}" , "t" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     return commands ;
   }
 

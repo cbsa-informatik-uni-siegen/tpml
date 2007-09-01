@@ -344,11 +344,11 @@ public final class CurriedLetRec extends CurriedLet implements
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_LET , 0 ,
-        "\\textbf{let}" ) ) ; //$NON-NLS-1$ 
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{let}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_REC , 0 ,
-        "\\textbf{rec}" ) ) ; //$NON-NLS-1$ 
-    commands
-        .add ( new DefaultLatexCommand ( LATEX_KEY_IN , 0 , "\\textbf{in}" ) ) ; //$NON-NLS-1$ 
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{rec}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_IN , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{in}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_CURRIED_LET_REC , 4 ,
         "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" //$NON-NLS-1$//$NON-NLS-2$
             + LATEX_KEY_LET + "\\ \\" + LATEX_KEY_REC + "\\ #1\\ =\\ #3\\ \\" //$NON-NLS-1$//$NON-NLS-2$

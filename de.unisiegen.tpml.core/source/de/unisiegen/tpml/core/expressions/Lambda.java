@@ -383,7 +383,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_LAMBDA , 0 ,
-        "\\textbf{$\\lambda$}" ) ) ; //$NON-NLS-1$
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{$\\lambda$}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_LAMBDA , 3 ,
         "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" //$NON-NLS-1$ //$NON-NLS-2$
             + LATEX_KEY_LAMBDA + "#1.#3}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$

@@ -285,7 +285,7 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_VAL , 0 ,
-        "\\textbf{val}" ) ) ; //$NON-NLS-1$ 
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{val}}" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_ATTRIBUTE , 2 , "\\" //$NON-NLS-1$
         + LATEX_KEY_VAL + "\\ #1\\ =\\ #2\\ ;" , "a" , "e" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     return commands ;

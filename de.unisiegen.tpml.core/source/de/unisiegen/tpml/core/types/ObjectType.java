@@ -255,13 +255,13 @@ public final class ObjectType extends MonoType implements DefaultTypes
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_OBJECT ) ;
-      this.prettyStringBuilder.addKeyword ( PRETTY_LOWER ) ;
+      this.prettyStringBuilder.addText ( PRETTY_LOWER ) ;
       this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_OBJECT_ROW ) ;
       this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-      this.prettyStringBuilder.addKeyword ( PRETTY_GREATER ) ;
+      this.prettyStringBuilder.addText ( PRETTY_GREATER ) ;
     }
     return this.prettyStringBuilder ;
   }

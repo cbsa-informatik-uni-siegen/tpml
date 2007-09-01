@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.types ;
 
 
+import java.awt.Color ;
 import java.util.ArrayList ;
 import java.util.MissingResourceException ;
 import java.util.ResourceBundle ;
@@ -12,6 +13,8 @@ import de.unisiegen.tpml.core.interfaces.DefaultTypeNames ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
@@ -24,6 +27,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.util.Theme ;
 
 
 /**
@@ -275,14 +279,50 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    */
   public TreeSet < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > packages = new TreeSet < LatexInstruction > ( ) ;
+    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    Color colorType = Theme.currentTheme ( ).getTypeColor ( ) ;
+    float red = ( float ) Math
+        .round ( ( ( float ) colorType.getRed ( ) ) / 255 * 100 ) / 100 ;
+    float green = ( float ) Math
+        .round ( ( ( float ) colorType.getGreen ( ) ) / 255 * 100 ) / 100 ;
+    float blue = ( float ) Math
+        .round ( ( ( float ) colorType.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_TYPE + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}" ) ) ; //$NON-NLS-1$
+    Color colorKeyword = Theme.currentTheme ( ).getKeywordColor ( ) ;
+    red = ( float ) Math
+        .round ( ( ( float ) colorKeyword.getRed ( ) ) / 255 * 100 ) / 100 ;
+    green = ( float ) Math
+        .round ( ( ( float ) colorKeyword.getGreen ( ) ) / 255 * 100 ) / 100 ;
+    blue = ( float ) Math
+        .round ( ( ( float ) colorKeyword.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_KEYWORD + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}" ) ) ; //$NON-NLS-1$
+    Color colorIdentifier = Theme.currentTheme ( ).getIdentifierColor ( ) ;
+    red = ( float ) Math
+        .round ( ( ( float ) colorIdentifier.getRed ( ) ) / 255 * 100 ) / 100 ;
+    green = ( float ) Math
+        .round ( ( ( float ) colorIdentifier.getGreen ( ) ) / 255 * 100 ) / 100 ;
+    blue = ( float ) Math
+        .round ( ( ( float ) colorIdentifier.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_IDENTIFIER + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}" ) ) ; //$NON-NLS-1$
     if ( this instanceof DefaultTypes )
     {
       for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )
       {
         for ( LatexInstruction instruction : type.getLatexInstructions ( ) )
         {
-          packages.add ( instruction ) ;
+          instructions.add ( instruction ) ;
         }
       }
     }
@@ -292,7 +332,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
       {
         for ( LatexInstruction instruction : id.getLatexInstructions ( ) )
         {
-          packages.add ( instruction ) ;
+          instructions.add ( instruction ) ;
         }
       }
     }
@@ -302,11 +342,11 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
       {
         for ( LatexInstruction instruction : typeName.getLatexInstructions ( ) )
         {
-          packages.add ( instruction ) ;
+          instructions.add ( instruction ) ;
         }
       }
     }
-    return packages ;
+    return instructions ;
   }
 
 
@@ -318,6 +358,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     if ( this instanceof DefaultTypes )
     {
       for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )
