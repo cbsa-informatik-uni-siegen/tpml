@@ -410,11 +410,13 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_IN , 0 ,
         "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{in}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_LET , 4 ,
-        "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" //$NON-NLS-1$ //$NON-NLS-2$
-            + LATEX_KEY_LET + "\\ #1\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}" //$NON-NLS-1$//$NON-NLS-2$
-            + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" + LATEX_KEY_LET //$NON-NLS-1$
-            + "\\ #1\\colon\\ #2\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}" , //$NON-NLS-1$ //$NON-NLS-2$
-        "id" , "tau" , "e1" , "e2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+            + "{\\color{" + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_LET //$NON-NLS-1$ //$NON-NLS-2$
+            + "\\ #1\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}"//$NON-NLS-1$ //$NON-NLS-2$
+            + LATEX_LINE_BREAK_NEW_COMMAND + "{\\color{"//$NON-NLS-1$
+            + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_LET//$NON-NLS-1$ 
+            + "\\ #1\\colon\\ #2\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}" ,//$NON-NLS-1$ //$NON-NLS-2$
+        "id" , "tau" , "e1" , "e2" ) ) ;//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     return commands ;
   }
 

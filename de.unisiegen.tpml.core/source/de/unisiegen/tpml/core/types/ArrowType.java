@@ -169,8 +169,8 @@ public final class ArrowType extends MonoType implements DefaultTypes
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_ARROW_TYPE , 2 ,
-        "#1\\ \\to\\ #2" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+    commands.add ( new DefaultLatexCommand ( LATEX_ARROW_TYPE , 2 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}#1\\ \\to\\ #2" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
     return commands ;
   }
 

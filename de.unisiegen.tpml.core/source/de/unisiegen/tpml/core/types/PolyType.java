@@ -160,9 +160,11 @@ public final class PolyType extends Type implements DefaultTypes
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_POLY_TYPE , 2 ,
-        "\\ifthenelse{\\equal{#1}{}}" + LATEX_LINE_BREAK_NEW_COMMAND + "{#2}" //$NON-NLS-1$ //$NON-NLS-2$
-            + LATEX_LINE_BREAK_NEW_COMMAND + "{#1.#2}" , //$NON-NLS-1$
-        "forall tvar1, ..., tvarn" , "tau" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+        "\\ifthenelse{\\equal{#1}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+            + "{\\color{" + LATEX_COLOR_EXPRESSION + "}#2}" //$NON-NLS-1$ //$NON-NLS-2$
+            + LATEX_LINE_BREAK_NEW_COMMAND + "{\\color{" //$NON-NLS-1$
+            + LATEX_COLOR_EXPRESSION + "}#1.#2}" , //$NON-NLS-1$
+        "forall tvar1, ..., tvarn" , "tau" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     for ( TypeVariable typeVariable : this.quantifiedVariables )
     {
       for ( LatexCommand command : typeVariable.getLatexCommands ( ) )

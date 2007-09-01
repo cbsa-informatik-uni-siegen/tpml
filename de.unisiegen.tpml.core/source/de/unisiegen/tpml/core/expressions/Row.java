@@ -323,7 +323,8 @@ public final class Row extends Expression implements DefaultExpressions
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_ROW , 1 , "#1" , //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_ROW , 1 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}#1" , //$NON-NLS-1$
         "epsilon | val a = e; r1 | method m : τ = e ; r1" ) ) ; //$NON-NLS-1$
     return commands ;
   }
@@ -654,7 +655,7 @@ public final class Row extends Expression implements DefaultExpressions
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
           + LATEX_INDENT ) ) ;
-      builder.addText (  LATEX_EPSILON ) ;
+      builder.addText ( LATEX_EPSILON ) ;
     }
     builder.addBuilderEnd ( ) ;
     return builder ;

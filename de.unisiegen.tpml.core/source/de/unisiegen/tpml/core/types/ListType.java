@@ -150,9 +150,10 @@ public final class ListType extends MonoType implements DefaultTypes
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_LIST , 0 ,
-        "\\textbf{list}" ) ) ; //$NON-NLS-1$
-    commands.add ( new DefaultLatexCommand ( LATEX_LIST_TYPE , 1 , "#1\\ \\" //$NON-NLS-1$
-        + LATEX_KEY_LIST , "tau" ) ) ; //$NON-NLS-1$
+        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{list}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_LIST_TYPE , 1 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}#1\\ \\" + LATEX_KEY_LIST + "" , //$NON-NLS-1$//$NON-NLS-2$
+        "tau" ) ) ; //$NON-NLS-1$
     return commands ;
   }
 

@@ -239,8 +239,8 @@ public final class Send extends Expression implements DefaultIdentifiers ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_SEND , 2 , "#1\\ \\#\\ #2" , //$NON-NLS-1$
-        "e" , "m" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_SEND , 2 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}#1\\ \\#\\ #2" , "e" , "m" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     return commands ;
   }
 

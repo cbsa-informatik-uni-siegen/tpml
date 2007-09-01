@@ -226,11 +226,9 @@ public final class InfixOperation extends Expression implements
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    
-    
-    
     commands.add ( new DefaultLatexCommand ( LATEX_INFIX_OPERATION , 3 ,
-        "#2\\ #1\\ #3" , "op" , "e1" , "e2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        "\\color{" + LATEX_COLOR_EXPRESSION + "}#2\\ #1\\ #3" , "op" , "e1" , //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+        "e2" ) ) ; //$NON-NLS-1$
     return commands ;
   }
 

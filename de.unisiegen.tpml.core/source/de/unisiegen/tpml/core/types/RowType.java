@@ -475,7 +475,8 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_ATTR , 0 ,
         "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{attr}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_ROW_TYPE , 1 , "#1" , //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_ROW_TYPE , 1 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}#1" , //$NON-NLS-1$
         "epsilon | attr a : tau ; phi1 | m : tau ; phi1" ) ) ; //$NON-NLS-1$
     if ( this.remainingRowType != null )
     {

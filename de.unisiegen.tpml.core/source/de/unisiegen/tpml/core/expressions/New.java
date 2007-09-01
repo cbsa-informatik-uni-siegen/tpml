@@ -169,8 +169,8 @@ public final class New extends Expression implements DefaultExpressions
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_NEW , 0 ,
         "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{new}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_NEW , 1 , "\\" //$NON-NLS-1$
-        + LATEX_KEY_NEW + "\\ #1" , "e" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_NEW , 1 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_NEW + "\\ #1" , "e" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
     return commands ;
   }
 

@@ -272,10 +272,11 @@ public class Method extends Expression implements DefaultIdentifiers ,
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_METHOD , 0 ,
         "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{method}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_METHOD , 3 ,
-        "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" //$NON-NLS-1$ //$NON-NLS-2$
-            + LATEX_KEY_METHOD + "\\ #1\\ =\\ #3\\ ;}" //$NON-NLS-1$
-            + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" + LATEX_KEY_METHOD //$NON-NLS-1$
-            + "\\ #1\\colon\\ #2\\ =\\ #3\\ ;}" , "m" , "tau" , "e" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+        "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+            + "{\\color{" + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_METHOD //$NON-NLS-1$//$NON-NLS-2$
+            + "\\ #1\\ =\\ #3\\ ;}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+            + "{\\color{" + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_METHOD //$NON-NLS-1$ //$NON-NLS-2$
+            + "\\ #1\\colon\\ #2\\ =\\ #3\\ ;}" , "m" , "tau" , "e" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
     return commands ;
   }
 

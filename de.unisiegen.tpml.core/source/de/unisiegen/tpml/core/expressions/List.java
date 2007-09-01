@@ -276,8 +276,8 @@ public final class List extends Expression implements DefaultExpressions
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_LIST , 1 , "[#1]" , //$NON-NLS-1$
-        "e1; ... ; en" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_LIST , 1 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}{[#1]}" , "e1; ... ; en" ) ) ;  //$NON-NLS-1$//$NON-NLS-2$
     return commands ;
   }
 

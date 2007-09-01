@@ -148,8 +148,8 @@ public final class Exn extends Expression
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_EXN , 1 ,
-        "\\uparrow\\ \\textit{#1}" , "name" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_EXN , 1 , "\\mbox{\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}{$\\uparrow$\\ #1}}" , "name" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     return commands ;
   }
 

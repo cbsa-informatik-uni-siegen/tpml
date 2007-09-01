@@ -249,8 +249,9 @@ public final class Coercion extends Expression implements DefaultTypes ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_COERCION , 3 ,
-        "(#1\\colon\\ #2<\\colon\\ #3)" , "e" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
+    commands.add ( new DefaultLatexCommand ( LATEX_COERCION , 3 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}(#1\\colon\\ #2<\\colon\\ #3)" , "e" , //$NON-NLS-1$//$NON-NLS-2$
+        "tau1" , "tau2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     return commands ;
   }
 

@@ -232,9 +232,10 @@ public final class Condition extends Expression implements DefaultExpressions
         "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{then}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_ELSE , 0 ,
         "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{else}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_CONDITION , 3 , "\\" //$NON-NLS-1$
-        + LATEX_KEY_IF + "\\ #1\\ \\" + LATEX_KEY_THEN + "\\ #2\\ \\" //$NON-NLS-1$//$NON-NLS-2$
-        + LATEX_KEY_ELSE + "\\ #3" , "e0" , "e1" , "e2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    commands.add ( new DefaultLatexCommand ( LATEX_CONDITION , 3 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_IF + "\\ #1\\ \\" //$NON-NLS-1$ //$NON-NLS-2$
+        + LATEX_KEY_THEN + "\\ #2\\ \\" + LATEX_KEY_ELSE + "\\ #3" , "e0" , //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+        "e1" , "e2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     return commands ;
   }
 

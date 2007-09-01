@@ -333,11 +333,13 @@ public final class Class extends Expression implements BoundIdentifiers ,
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_END , 0 ,
         "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{end}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_CLASS , 3 ,
-        "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" //$NON-NLS-1$//$NON-NLS-2$
-            + LATEX_KEY_CLASS + "\\ (#1)\\ #3\\ \\" + LATEX_KEY_END + "}" //$NON-NLS-1$ //$NON-NLS-2$
-            + LATEX_LINE_BREAK_NEW_COMMAND + "{\\" + LATEX_KEY_CLASS //$NON-NLS-1$
-            + "\\ (#1\\colon\\ #2)\\ #3\\" + LATEX_KEY_END + "}" , "self" , //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        "tau" , "b" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+        "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+            + "{\\color{" + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_CLASS //$NON-NLS-1$//$NON-NLS-2$
+            + "\\ (#1)\\ #3\\ \\" + LATEX_KEY_END + "}" //$NON-NLS-1$//$NON-NLS-2$
+            + LATEX_LINE_BREAK_NEW_COMMAND + "{\\color{" //$NON-NLS-1$
+            + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_CLASS //$NON-NLS-1$
+            + "\\ (#1\\colon\\ #2)\\ #3\\" + LATEX_KEY_END + "}" , "self" , //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+        "tau" , "b" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     return commands ;
   }
 

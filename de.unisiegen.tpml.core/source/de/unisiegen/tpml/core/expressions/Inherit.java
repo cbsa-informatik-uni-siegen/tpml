@@ -429,9 +429,9 @@ public final class Inherit extends Expression implements BoundIdentifiers ,
         "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{inherit}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_FROM , 0 ,
         "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{from}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_INHERIT , 3 , "\\" //$NON-NLS-1$
-        + LATEX_KEY_INHERIT + "\\ #1\\ \\" + LATEX_KEY_FROM + "\\ #2\\ ;\\ #3" , //$NON-NLS-1$ //$NON-NLS-2$
-        "a1, ... , ak" , "e" , "b" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    commands.add ( new DefaultLatexCommand ( LATEX_INHERIT , 3 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_INHERIT + "\\ #1\\ \\" //$NON-NLS-1$//$NON-NLS-2$
+        + LATEX_KEY_FROM + "\\ #2\\ ;\\ #3" , "a1, ... , ak" , "e" , "b" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     return commands ;
   }
 

@@ -316,6 +316,18 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
             + red + "," //$NON-NLS-1$
             + green + "," //$NON-NLS-1$
             + blue + "}" ) ) ; //$NON-NLS-1$
+    Color colorExpression = Theme.currentTheme ( ).getExpressionColor ( ) ;
+    red = ( float ) Math
+        .round ( ( ( float ) colorExpression.getRed ( ) ) / 255 * 100 ) / 100 ;
+    green = ( float ) Math
+        .round ( ( ( float ) colorExpression.getGreen ( ) ) / 255 * 100 ) / 100 ;
+    blue = ( float ) Math
+        .round ( ( ( float ) colorExpression.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_EXPRESSION + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}" ) ) ; //$NON-NLS-1$
     if ( this instanceof DefaultTypes )
     {
       for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )

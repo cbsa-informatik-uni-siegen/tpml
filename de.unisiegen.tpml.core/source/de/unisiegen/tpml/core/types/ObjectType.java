@@ -137,8 +137,8 @@ public final class ObjectType extends MonoType implements DefaultTypes
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_OBJECT_TYPE , 1 ,
-        "<\\ #1\\ >" , "phi" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_OBJECT_TYPE , 1 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}<\\ #1\\ >" , "phi" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     return commands ;
   }
 
