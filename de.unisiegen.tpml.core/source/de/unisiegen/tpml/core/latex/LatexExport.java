@@ -182,7 +182,7 @@ public abstract class LatexExport implements LatexCommandNames
    * @param pBufferedWriter The {@link BufferedWriter} which should be used.
    * @throws LatexException If an I/O error occurs.
    */
-  private final static void println ( BufferedWriter pBufferedWriter )
+  public final static void println ( BufferedWriter pBufferedWriter )
       throws LatexException
   {
     try
@@ -203,7 +203,7 @@ public abstract class LatexExport implements LatexCommandNames
    * @param pText The text which should be written to the {@link BufferedWriter}.
    * @throws LatexException If an I/O error occurs.
    */
-  private final static void println ( BufferedWriter pBufferedWriter ,
+  public final static void println ( BufferedWriter pBufferedWriter ,
       String pText ) throws LatexException
   {
     try

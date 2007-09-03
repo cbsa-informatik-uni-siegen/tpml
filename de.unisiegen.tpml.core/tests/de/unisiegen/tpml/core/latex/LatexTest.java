@@ -182,7 +182,7 @@ public class LatexTest
         compile = false ;
       }
     }
-    int number = 42 ;
+    int number = 00 ;
     File file = new File ( "test.tex" ) ;
     // Expression, Type, Environment
     if ( number == 00 ) testExpression ( file ) ;
@@ -224,6 +224,8 @@ public class LatexTest
     if ( number == 70 ) testRecSubTypingProofRule ( file ) ;
     if ( number == 71 ) testSubType ( file ) ;
     if ( number == 72 ) testRecSubTypingProofNode ( file ) ;
+    // LatexExportAll
+    if ( number == 80 ) testLatexExportAll ( file ) ;
     if ( compile )
     {
       compile ( ) ;
@@ -354,11 +356,29 @@ public class LatexTest
     {
       String text = "let x = 0 in 1" ;
       text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
+      text = "let spiderschwein = 0 in 1" ;
+      text = "true && false" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
           .parse ( ) ;
       LatexExport.export ( expression , pFile ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
+    }
+  }
+
+
+  private final static void testLatexExportAll ( File pFile )
+  {
+    try
+    {
+      LatexExportAll.exportAll ( pFile ) ;
+      System.out.println ( "*** finished ***" ) ;
+      System.exit ( 0 ) ;
     }
     catch ( Exception e )
     {
@@ -512,6 +532,7 @@ public class LatexTest
       String text = "let x = 1 in x" ;
       text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
       text = "let rec f x = if x = 0 then 1 else x * f (x-1) in f 2" ;
+      text = "let spiderschwein = 0 in 1" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
