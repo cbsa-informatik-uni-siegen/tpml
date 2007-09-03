@@ -110,6 +110,13 @@ public interface LatexCommandNames
   public static final String LATEX_LINE_BREAK_NEW_COMMAND = System
       .getProperty ( "line.separator" ) //$NON-NLS-1$
       + "             " ; //$NON-NLS-1$
+  
+  /**
+   * The string for a line break in the source code.
+   */
+  public static final String LATEX_LINE_BREAK_NEW_COMMAND_INDENT = System
+      .getProperty ( "line.separator" ) //$NON-NLS-1$
+      + "               " ; //$NON-NLS-1$
 
 
   /**
