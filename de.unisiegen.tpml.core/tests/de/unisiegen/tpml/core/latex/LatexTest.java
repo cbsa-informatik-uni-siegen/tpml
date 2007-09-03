@@ -182,7 +182,7 @@ public class LatexTest
         compile = false ;
       }
     }
-    int number = 41 ;
+    int number = 32 ;
     File file = new File ( "test.tex" ) ;
     // Expression, Type, Environment
     if ( number == 00 ) testExpression ( file ) ;
@@ -321,25 +321,6 @@ public class LatexTest
   }
 
 
-  private final static void testBigStepResult ( File pFile )
-  {
-    try
-    {
-      DefaultStore store = new DefaultStore ( ) ;
-      store.put ( new Location ( "X" ) , new IntegerConstant ( 3 ) ) ;
-      store.put ( new Location ( "Y" ) , new IntegerConstant ( 2 ) ) ;
-      store.put ( new Location ( "Z" ) , new IntegerConstant ( 1 ) ) ;
-      BigStepProofResult result = new BigStepProofResult ( store , new Ref ( ) ) ;
-      LatexExport.export ( result , pFile ) ;
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-      System.exit ( 1 ) ;
-    }
-  }
-
-
   private final static void testBigStepProofRule ( File pFile )
   {
     try
@@ -370,13 +351,31 @@ public class LatexTest
   }
 
 
+  private final static void testBigStepResult ( File pFile )
+  {
+    try
+    {
+      DefaultStore store = new DefaultStore ( ) ;
+      store.put ( new Location ( "X" ) , new IntegerConstant ( 3 ) ) ;
+      store.put ( new Location ( "Y" ) , new IntegerConstant ( 2 ) ) ;
+      store.put ( new Location ( "Z" ) , new IntegerConstant ( 1 ) ) ;
+      BigStepProofResult result = new BigStepProofResult ( store , new Ref ( ) ) ;
+      LatexExport.export ( result , pFile ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
+    }
+  }
+
+
   private final static void testExpression ( File pFile )
   {
     try
     {
       String text = "let x = 0 in 1" ;
       text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
-      text = "let spiderschwein = 0 in 1" ;
       text = "true && false" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
@@ -552,7 +551,6 @@ public class LatexTest
       String text = "let x = 1 in x" ;
       text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
       text = "let rec f x = if x = 0 then 1 else x * f (x-1) in f 2" ;
-      text = "let spiderschwein = 0 in 1" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
