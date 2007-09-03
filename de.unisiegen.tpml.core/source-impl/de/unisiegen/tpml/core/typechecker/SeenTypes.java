@@ -5,6 +5,8 @@ import java.util.ArrayList ;
 import java.util.Iterator ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
@@ -126,8 +128,9 @@ public final class SeenTypes < E extends PrettyPrintable & LatexPrintable >
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_SEEN_TYPES , 1 , "\\{#1\\}" , //$NON-NLS-1$
-        "E1, ... , En" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_SEEN_TYPES , 1 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{\\{}#1\\color{" + LATEX_COLOR_NONE_STYLE //$NON-NLS-1$
+        + "}{\\}}" , "E1, ... , En" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     for ( E entry : this.list )
     {
       for ( LatexCommand command : entry.getLatexCommands ( ) )
@@ -147,6 +150,9 @@ public final class SeenTypes < E extends PrettyPrintable & LatexPrintable >
   public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
     for ( E entry : this.list )
     {
       for ( LatexInstruction instruction : entry.getLatexInstructions ( ) )
@@ -169,6 +175,7 @@ public final class SeenTypes < E extends PrettyPrintable & LatexPrintable >
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     for ( E entry : this.list )
     {
       for ( LatexPackage pack : entry.getLatexPackages ( ) )
@@ -255,8 +262,10 @@ public final class SeenTypes < E extends PrettyPrintable & LatexPrintable >
         builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
             + LATEX_INDENT ) ) ;
+        builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
         builder.addText ( LATEX_COMMA ) ;
         builder.addText ( LATEX_SPACE ) ;
+        builder.addText ( "}" ) ; //$NON-NLS-1$
         builder.addBreak ( ) ;
       }
     }
