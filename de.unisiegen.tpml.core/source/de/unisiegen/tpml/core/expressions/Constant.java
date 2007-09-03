@@ -104,7 +104,7 @@ public abstract class Constant extends Value
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_CONSTANT , 1 ,
-        "\\textbf{\\color{" + LATEX_COLOR_CONSTANT + "}{#1}}" , "c" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        "\\mbox{\\textbf{\\color{" + LATEX_COLOR_CONSTANT + "}{#1}}}" , "c" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     return commands ;
   }
 
