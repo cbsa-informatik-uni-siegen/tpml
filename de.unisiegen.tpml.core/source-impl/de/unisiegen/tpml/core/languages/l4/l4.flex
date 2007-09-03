@@ -85,6 +85,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 		case REC:
 		case WHILE:
 		case DO:
+		case EXCLAMATION:
 		  return PrettyStyle.KEYWORD;
 		case BOOL:
 		case INT:
