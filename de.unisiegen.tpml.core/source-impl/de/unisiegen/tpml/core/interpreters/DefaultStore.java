@@ -265,8 +265,10 @@ public final class DefaultStore extends
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
           + LATEX_INDENT ) ) ;
+      builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
       builder.addText ( LATEX_COLON ) ;
       builder.addText ( LATEX_SPACE ) ;
+      builder.addText ( "}" ) ; //$NON-NLS-1$
       builder.addBuilder ( this.mappings.get ( i ).getEntry ( )
           .toLatexStringBuilder ( pLatexStringBuilderFactory ,
               pIndent + LATEX_INDENT * 2 ) , 0 ) ;
@@ -275,8 +277,10 @@ public final class DefaultStore extends
         builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
             + LATEX_INDENT ) ) ;
+        builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
         builder.addText ( LATEX_COMMA ) ;
         builder.addText ( LATEX_SPACE ) ;
+        builder.addText ( "}" ) ; //$NON-NLS-1$
       }
     }
     builder.addBuilderEnd ( ) ;
