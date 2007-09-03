@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
 import de.unisiegen.tpml.core.interpreters.Store ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
@@ -81,7 +82,7 @@ public final class BigStepProofResult implements PrettyPrintable ,
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_BIG_STEP_PROOF_RESULT , 1 ,
-        "{#1}" , "body" ) ) ;//$NON-NLS-1$ //$NON-NLS-2$ 
+        "#1" , "body" ) ) ;//$NON-NLS-1$ //$NON-NLS-2$ 
     for ( LatexCommand command : this.value.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
@@ -102,6 +103,9 @@ public final class BigStepProofResult implements PrettyPrintable ,
   public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
     for ( LatexInstruction instruction : this.value.getLatexInstructions ( ) )
     {
       if ( ! instructions.contains ( instruction ) )
@@ -129,6 +133,7 @@ public final class BigStepProofResult implements PrettyPrintable ,
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
     packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     for ( LatexPackage pack : this.value.getLatexPackages ( ) )
     {
       packages.add ( pack ) ;
@@ -210,21 +215,25 @@ public final class BigStepProofResult implements PrettyPrintable ,
     {
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-          + LATEX_INDENT )
-          + LATEX_LPAREN ) ;
+          + LATEX_INDENT ) ) ;
+      builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+      builder.addText ( LATEX_LPAREN ) ;
+      builder.addText ( "}" ) ; //$NON-NLS-1$
       builder.addBuilder ( this.value.toLatexStringBuilder (
           pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-          + LATEX_INDENT )
-          + LATEX_SPACE ) ;
+          + LATEX_INDENT ) ) ;
+      builder.addText ( LATEX_SPACE ) ;
       builder.addText ( LATEX_SPACE ) ;
       builder.addBuilder ( this.store.toLatexStringBuilder (
           pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-          + LATEX_INDENT )
-          + LATEX_RPAREN ) ;
+          + LATEX_INDENT ) ) ;
+      builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+      builder.addText ( LATEX_RPAREN ) ;
+      builder.addText ( "}" ) ; //$NON-NLS-1$
     }
     else
     {

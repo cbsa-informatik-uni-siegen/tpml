@@ -182,7 +182,7 @@ public class LatexTest
         compile = false ;
       }
     }
-    int number = 00 ;
+    int number = 41 ;
     File file = new File ( "test.tex" ) ;
     // Expression, Type, Environment
     if ( number == 00 ) testExpression ( file ) ;
@@ -211,8 +211,9 @@ public class LatexTest
     if ( number == 32 ) testSmallStepProofModel ( file ) ;
     // BigStep
     if ( number == 40 ) testBigStepProofRule ( file ) ;
-    if ( number == 41 ) testBigStepProofNode ( file ) ;
-    if ( number == 42 ) testBigStepProofModel ( file ) ;
+    if ( number == 41 ) testBigStepResult ( file ) ;
+    if ( number == 42 ) testBigStepProofNode ( file ) ;
+    if ( number == 43 ) testBigStepProofModel ( file ) ;
     // MinimalTyping
     if ( number == 50 ) testMinimalTypingProofRule ( file ) ;
     if ( number == 51 ) testMinimalTypingExpressionProofNode ( file ) ;
@@ -311,6 +312,25 @@ public class LatexTest
       BigStepProofResult result = new BigStepProofResult ( store2 , new Ref ( ) ) ;
       node.setResult ( result ) ;
       LatexExport.export ( node , pFile ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
+    }
+  }
+
+
+  private final static void testBigStepResult ( File pFile )
+  {
+    try
+    {
+      DefaultStore store = new DefaultStore ( ) ;
+      store.put ( new Location ( "X" ) , new IntegerConstant ( 3 ) ) ;
+      store.put ( new Location ( "Y" ) , new IntegerConstant ( 2 ) ) ;
+      store.put ( new Location ( "Z" ) , new IntegerConstant ( 1 ) ) ;
+      BigStepProofResult result = new BigStepProofResult ( store , new Ref ( ) ) ;
+      LatexExport.export ( result , pFile ) ;
     }
     catch ( Exception e )
     {
