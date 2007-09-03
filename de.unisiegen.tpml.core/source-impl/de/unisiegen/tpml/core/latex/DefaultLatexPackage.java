@@ -74,9 +74,11 @@ public final class DefaultLatexPackage implements LatexPackage
   @ Override
   public String toString ( )
   {
-    String result = "\\usepackage{" ; //$NON-NLS-1$
-    result += this.name ;
-    result += "}" ; //$NON-NLS-1$
-    return result ;
+    StringBuilder result = new StringBuilder ( ) ;
+    result.append ( "\\usepackage" ) ; //$NON-NLS-1$
+    result.append ( "{" ) ; //$NON-NLS-1$
+    result.append ( this.name ) ;
+    result.append ( "}" ) ; //$NON-NLS-1$
+    return result.toString ( ) ;
   }
 }

@@ -9,6 +9,7 @@ import java.io.IOException ;
 import java.io.OutputStreamWriter ;
 import java.io.UnsupportedEncodingException ;
 import java.nio.charset.Charset ;
+import java.util.ArrayList ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.ProofModel ;
@@ -85,7 +86,7 @@ public abstract class LatexExport
       println ( writer ) ;
     }
     // instructions
-    TreeSet < LatexInstruction > instructions = pLatexPrintable
+    ArrayList < LatexInstruction > instructions = pLatexPrintable
         .getLatexInstructions ( ) ;
     if ( instructions.size ( ) > 0 )
     {

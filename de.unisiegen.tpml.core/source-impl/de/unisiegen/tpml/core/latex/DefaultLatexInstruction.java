@@ -6,12 +6,19 @@ package de.unisiegen.tpml.core.latex ;
  * 
  * @author Christian Fehler
  */
-public final class DefaultLatexInstruction implements LatexInstruction
+public final class DefaultLatexInstruction implements LatexInstruction ,
+    LatexCommandNames
 {
   /**
    * The text of the latex instruction.
    */
   private String text ;
+
+
+  /**
+   * The description of this instruction.
+   */
+  private String description = null ;
 
 
   /**
@@ -27,17 +34,16 @@ public final class DefaultLatexInstruction implements LatexInstruction
 
 
   /**
-   * {@inheritDoc}
+   * Allocates a new <code>DefaultLatexInstruction</code> for the specified
+   * <code>pText</code>.
    * 
-   * @see Comparable#compareTo(Object)
+   * @param pText The text of the new latex instruction.
+   * @param pDescription The description of this instruction.
    */
-  public int compareTo ( LatexInstruction pOther )
+  public DefaultLatexInstruction ( String pText , String pDescription )
   {
-    if ( this.text.compareTo ( ( ( DefaultLatexInstruction ) pOther ).text ) == 0 )
-    {
-      return 0 ;
-    }
-    return 1 ;
+    this ( pText ) ;
+    this.description = pDescription ;
   }
 
 
@@ -78,6 +84,14 @@ public final class DefaultLatexInstruction implements LatexInstruction
   @ Override
   public String toString ( )
   {
-    return this.text ;
+    StringBuilder result = new StringBuilder ( ) ;
+    if ( this.description != null )
+    {
+      result.append ( "% " ) ; //$NON-NLS-1$
+      result.append ( this.description ) ;
+      result.append ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+    }
+    result.append ( this.text ) ;
+    return result.toString ( ) ;
   }
 }

@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.bigstep ;
 
 
 import java.text.MessageFormat ;
+import java.util.ArrayList ;
 import java.util.TreeSet ;
 import org.apache.log4j.Logger ;
 import de.unisiegen.tpml.core.AbstractProofRuleSet ;
@@ -386,7 +387,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
                 + "\\ncangle[angleA=-90,angleB=#1]{<-}{\\thetree.#2}{\\thetree.#3}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\else" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\fi" , "bli" , "bla" , "blub" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
-    for ( LatexCommand command : getLatexCommandsInternal ( this.root ) )
+    for ( LatexCommand command : getLatexCommandsInternal ( ( BigStepProofNode ) this.root ) )
     {
       commands.add ( command ) ;
     }
@@ -394,12 +395,28 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
   }
 
 
-  private TreeSet < LatexCommand > getLatexCommandsInternal ( ProofNode pNode )
+  /**
+   * Returns a set of needed latex commands for the given latex printable
+   * {@link ProofNode}.
+   * 
+   * @param pNode The input {@link ProofNode}.
+   * @return A set of needed latex commands for the given latex printable
+   *         {@link ProofNode}.
+   */
+  private TreeSet < LatexCommand > getLatexCommandsInternal (
+      BigStepProofNode pNode )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     for ( LatexCommand command : pNode.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
+    }
+    if ( pNode.getRule ( ) != null )
+    {
+      for ( LatexCommand command : pNode.getRule ( ).getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
     }
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
@@ -418,9 +435,9 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
    * 
    * @see LatexPrintable#getLatexInstructions()
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ) ; //$NON-NLS-1$
     instructions
         .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ) ; //$NON-NLS-1$
@@ -445,44 +462,66 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
         "\\newcommand{\\blong}{\\!\\!\\begin{array}[t]{l}}" ) ) ; //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
         "\\newcommand{\\elong}{\\end{array}}" ) ) ; //$NON-NLS-1$
-    for ( LatexInstruction instruction : getLatexInstructionsInternal ( this.root ) )
+    for ( LatexInstruction instruction : getLatexInstructionsInternal ( ( BigStepProofNode ) this.root ) )
     {
-      instructions.add ( instruction ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     return instructions ;
   }
 
 
   /**
-   * TODO
+   * Returns a set of needed latex instructions for the given latex printable
+   * {@link ProofNode}.
    * 
-   * @param pNode TODO
-   * @return TODO
+   * @param pNode The input {@link ProofNode}.
+   * @return A set of needed latex instructions for the given latex printable
+   *         {@link ProofNode}.
    */
-  private TreeSet < LatexInstruction > getLatexInstructionsInternal (
-      ProofNode pNode )
+  private ArrayList < LatexInstruction > getLatexInstructionsInternal (
+      BigStepProofNode pNode )
   {
-    TreeSet < LatexInstruction > packages = new TreeSet < LatexInstruction > ( ) ;
-    for ( LatexInstruction pack : pNode.getLatexInstructions ( ) )
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    for ( LatexInstruction instruction : pNode.getLatexInstructions ( ) )
     {
-      packages.add ( pack ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    if ( pNode.getRule ( ) != null )
+    {
+      for ( LatexInstruction instruction : pNode.getRule ( )
+          .getLatexInstructions ( ) )
+      {
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
+      }
     }
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
-      for ( LatexInstruction pack : getLatexInstructionsInternal ( pNode
+      for ( LatexInstruction instruction : getLatexInstructionsInternal ( pNode
           .getChildAt ( i ) ) )
       {
-        packages.add ( pack ) ;
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
       }
     }
-    return packages ;
+    return instructions ;
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.latex.LatexPrintableNormal#getLatexPackages()
+   * @see LatexPrintable#getLatexPackages()
    */
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
@@ -493,7 +532,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
     packages.add ( new DefaultLatexPackage ( "pst-node" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "amstext" ) ) ; //$NON-NLS-1$
-    for ( LatexPackage pack : getLatexPackagesInternal ( this.root ) )
+    for ( LatexPackage pack : getLatexPackagesInternal ( ( BigStepProofNode ) this.root ) )
     {
       packages.add ( pack ) ;
     }
@@ -502,17 +541,27 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
 
 
   /**
-   * TODO
+   * Returns a set of needed latex packages for the given latex printable
+   * {@link ProofNode}.
    * 
-   * @param pNode TODO
-   * @return TODO
+   * @param pNode The input {@link ProofNode}.
+   * @return A set of needed latex packages for the given latex printable
+   *         {@link ProofNode}.
    */
-  private TreeSet < LatexPackage > getLatexPackagesInternal ( ProofNode pNode )
+  private TreeSet < LatexPackage > getLatexPackagesInternal (
+      BigStepProofNode pNode )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
     for ( LatexPackage pack : pNode.getLatexPackages ( ) )
     {
       packages.add ( pack ) ;
+    }
+    if ( pNode.getRule ( ) != null )
+    {
+      for ( LatexPackage pack : pNode.getRule ( ).getLatexPackages ( ) )
+      {
+        packages.add ( pack ) ;
+      }
     }
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {

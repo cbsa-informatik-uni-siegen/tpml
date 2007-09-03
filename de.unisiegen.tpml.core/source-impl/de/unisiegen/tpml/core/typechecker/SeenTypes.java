@@ -144,14 +144,17 @@ public final class SeenTypes < E extends PrettyPrintable & LatexPrintable >
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     for ( E entry : this.list )
     {
       for ( LatexInstruction instruction : entry.getLatexInstructions ( ) )
       {
-        instructions.add ( instruction ) ;
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
       }
     }
     return instructions ;

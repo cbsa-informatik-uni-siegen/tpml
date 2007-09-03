@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.smallstep ;
 
 
+import java.util.ArrayList ;
 import java.util.TreeSet ;
 import org.apache.log4j.Logger ;
 import de.unisiegen.tpml.core.AbstractProofRuleSet ;
@@ -14,6 +15,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofModel ;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
@@ -241,12 +243,20 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_NEW_NODE , 0 ,
+        "\\\\[10mm]" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_NEW_RULE , 0 ,
+        "\\\\" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_RULES_COMPLETED ,
+        0 , "&" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_MODEL , 1 ,
         "\\begin{longtable}{p{3.5cm}p{22cm}}#1\\end{longtable}" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_ARROW , 2 ,
-        "\\xrightarrow" + "[\\mbox{\\color{" + LATEX_COLOR_RULE //$NON-NLS-1$ //$NON-NLS-2$
-            + "}{\\scriptsize{#2}}}]" + "{\\mbox{\\color{" + LATEX_COLOR_RULE //$NON-NLS-1$//$NON-NLS-2$
-            + "}{\\scriptsize{#1}}}}" , "not axiom rules" , "axiom rules" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        "\\xrightarrow" + LATEX_LINE_BREAK_NEW_COMMAND + "[\\mbox{\\color{" //$NON-NLS-1$//$NON-NLS-2$
+            + LATEX_COLOR_RULE + "}{\\scriptsize{#2}}}]" //$NON-NLS-1$
+            + LATEX_LINE_BREAK_NEW_COMMAND + "{\\mbox{\\color{" //$NON-NLS-1$
+            + LATEX_COLOR_RULE + "}{\\scriptsize{#1}}}}" , "not axiom rules" , //$NON-NLS-1$ //$NON-NLS-2$
+        "axiom rules" ) ) ; //$NON-NLS-1$
     for ( LatexCommand command : getLatexCommandsInternal ( this.root ) )
     {
       commands.add ( command ) ;
@@ -294,12 +304,27 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @see LatexPrintable#getLatexInstructions()
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newenvironment{smallsteprulearrow}" //$NON-NLS-1$
+            + "{\\begin{tabular}[t]{p{3.5cm}}}{\\end{tabular}}" , //$NON-NLS-1$
+        "The environment of the small step rules with the arrow" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newenvironment{smallsteprules}" //$NON-NLS-1$
+            + "{\\begin{tabular}{p{2.5cm}}}{\\end{tabular}}" , //$NON-NLS-1$
+        "The environment of the small step rules" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newenvironment{smallstepnode}" //$NON-NLS-1$
+            + "{\\begin{tabular}[b]{p{22cm}}}{\\end{tabular}}" , //$NON-NLS-1$
+        "The environment of the small step nodes" ) ) ; //$NON-NLS-1$
     for ( LatexInstruction instruction : getLatexInstructionsInternal ( this.root ) )
     {
-      instructions.add ( instruction ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     return instructions ;
   }
@@ -313,19 +338,25 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * @return A set of needed latex instructions for the given latex printable
    *         {@link ProofNode}.
    */
-  private TreeSet < LatexInstruction > getLatexInstructionsInternal (
+  private ArrayList < LatexInstruction > getLatexInstructionsInternal (
       ProofNode pNode )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
-    for ( LatexInstruction pack : pNode.getLatexInstructions ( ) )
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    for ( LatexInstruction instruction : pNode.getLatexInstructions ( ) )
     {
-      instructions.add ( pack ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     for ( ProofRule rule : pNode.getRules ( ) )
     {
       for ( LatexInstruction instruction : rule.getLatexInstructions ( ) )
       {
-        instructions.add ( instruction ) ;
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
       }
     }
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
@@ -333,7 +364,10 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
       for ( LatexInstruction instruction : getLatexInstructionsInternal ( pNode
           .getChildAt ( i ) ) )
       {
-        instructions.add ( instruction ) ;
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
       }
     }
     return instructions ;
@@ -537,18 +571,12 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
         LATEX_SMALL_STEP_PROOF_MODEL , pIndent ) ;
     builder.addBuilderBegin ( ) ;
     builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "% no small step" ) ; //$NON-NLS-1$
+    builder.addText ( "% no small step rules in the first node" ) ; //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "&" ) ; //$NON-NLS-1$
+    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SMALL_STEP_RULES_COMPLETED ) ;
     builder.addSourceCodeBreak ( 0 ) ;
     // small steps
-    builder.addText ( "\\begin{tabular}{p{22cm}}" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\begin{tabular}{p{22cm}}" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\end{tabular}" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\\\" ) ; //$NON-NLS-1$
+    builder.addText ( "\\begin{smallstepnode}" ) ; //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 ) ;
     builder.addText ( "$" ) ; //$NON-NLS-1$
     builder.addBuilderWithoutBrackets ( this.root.toLatexStringBuilder (
@@ -556,16 +584,13 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     builder.addSourceCodeBreak ( 0 ) ;
     builder.addText ( "$" ) ; //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\\\" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\begin{tabular}{p{22cm}}" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\end{tabular}" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\end{tabular}" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\\\[10mm]" ) ;//$NON-NLS-1$ 
-    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "\\end{smallstepnode}" ) ; //$NON-NLS-1$
+    if ( this.root.getChildCount ( ) > 0 )
+    {
+      builder.addSourceCodeBreak ( 0 ) ;
+      builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SMALL_STEP_NEW_NODE ) ;
+      builder.addSourceCodeBreak ( 0 ) ;
+    }
     for ( int i = 0 ; i < this.root.getChildCount ( ) ; i ++ )
     {
       toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
@@ -593,7 +618,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
       ProofNode pCurrentNode , int pIndent )
   {
     ProofRule [ ] rules = pParentNode.getRules ( ) ;
-    pLatexStringBuilder.addText ( "\\begin{tabular}[t]{p{3.5cm}}" ) ; //$NON-NLS-1$
+    pLatexStringBuilder.addText ( "\\begin{smallsteprulearrow}" ) ; //$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
@@ -604,7 +629,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "\\begin{tabular}{p{2.5cm}}" ) ; //$NON-NLS-1$
+    pLatexStringBuilder.addText ( "\\begin{smallsteprules}" ) ; //$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
     int countNotAxiomRules = 0 ;
@@ -630,7 +655,8 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
         {
           pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
           pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-          pLatexStringBuilder.addText ( "\\\\" ) ;//$NON-NLS-1$
+          pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+              + LATEX_SMALL_STEP_NEW_RULE ) ;
           pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
           pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
         }
@@ -657,7 +683,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     }
     pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "\\end{tabular}" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addText ( "\\end{smallsteprules}" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
     pLatexStringBuilder.addBuilderEnd ( ) ;
@@ -666,7 +692,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "\\begin{tabular}{p{2.5cm}}" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addText ( "\\begin{smallsteprules}" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
     int countAxiomRules = 0 ;
@@ -679,7 +705,8 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
         {
           pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
           pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-          pLatexStringBuilder.addText ( "\\\\" ) ;//$NON-NLS-1$
+          pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+              + LATEX_SMALL_STEP_NEW_RULE ) ;
           pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
           pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
         }
@@ -695,19 +722,20 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     }
     pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "\\end{tabular}" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addText ( "\\end{smallsteprules}" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
     pLatexStringBuilder.addBuilderEnd ( ) ;
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "\\end{tabular}" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addText ( "\\end{smallsteprulearrow}" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "&" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+        + LATEX_SMALL_STEP_RULES_COMPLETED ) ;
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     // small steps
-    pLatexStringBuilder.addText ( "\\begin{tabular}[b]{p{22cm}}" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addText ( "\\begin{smallstepnode}" ) ;//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
     pLatexStringBuilder.addBuilderWithoutBrackets ( pCurrentNode
@@ -716,11 +744,12 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "\\end{tabular}" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addText ( "\\end{smallstepnode}" ) ;//$NON-NLS-1$
     for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
     {
       pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-      pLatexStringBuilder.addText ( "\\\\[10mm]" ) ; //$NON-NLS-1$
+      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+          + LATEX_SMALL_STEP_NEW_NODE ) ;
       pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
       toLatexStringBuilderInternal ( pLatexStringBuilderFactory ,
           pLatexStringBuilder , pCurrentNode , pCurrentNode.getChildAt ( i ) ,

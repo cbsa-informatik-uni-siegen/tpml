@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.subtypingrec ;
 
 
+import java.util.ArrayList ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
@@ -96,16 +97,22 @@ public class DefaultSubType implements PrettyPrintable , LatexPrintable
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     for ( LatexInstruction instruction : this.left.getLatexInstructions ( ) )
     {
-      instructions.add ( instruction ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     for ( LatexInstruction instruction : this.right.getLatexInstructions ( ) )
     {
-      instructions.add ( instruction ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     return instructions ;
   }

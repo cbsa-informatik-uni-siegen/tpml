@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.bigstep ;
 
 
+import java.util.ArrayList ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
@@ -98,16 +99,22 @@ public final class BigStepProofResult implements PrettyPrintable ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     for ( LatexInstruction instruction : this.value.getLatexInstructions ( ) )
     {
-      instructions.add ( instruction ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     for ( LatexInstruction instruction : this.store.getLatexInstructions ( ) )
     {
-      instructions.add ( instruction ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     return instructions ;
   }

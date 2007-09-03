@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.typeinference ;
 
 
+import java.util.ArrayList ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
@@ -141,14 +142,17 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     for ( TypeEquationListTypeInference list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       for ( LatexInstruction instruction : list.first.getLatexInstructions ( ) )
       {
-        instructions.add ( instruction ) ;
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
       }
     }
     return instructions ;

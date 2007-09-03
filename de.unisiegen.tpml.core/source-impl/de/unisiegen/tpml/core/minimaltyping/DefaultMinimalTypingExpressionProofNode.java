@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.minimaltyping ;
 
 
+import java.util.ArrayList ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
@@ -118,24 +119,33 @@ public class DefaultMinimalTypingExpressionProofNode extends
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     for ( LatexInstruction instruction : this.environment
         .getLatexInstructions ( ) )
     {
-      instructions.add ( instruction ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     for ( LatexInstruction instruction : this.expression
         .getLatexInstructions ( ) )
     {
-      instructions.add ( instruction ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     if ( this.type != null )
     {
       for ( LatexInstruction instruction : this.type.getLatexInstructions ( ) )
       {
-        instructions.add ( instruction ) ;
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
       }
     }
     return instructions ;

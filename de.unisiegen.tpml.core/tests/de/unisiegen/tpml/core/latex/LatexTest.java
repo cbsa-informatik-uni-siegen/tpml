@@ -2,13 +2,15 @@ package de.unisiegen.tpml.core.latex ;
 
 
 import java.io.File ;
-import java.io.IOException ;
 import java.io.StringReader ;
 import java.util.ArrayList ;
 import java.util.LinkedList ;
 import de.unisiegen.tpml.core.ProofModel ;
 import de.unisiegen.tpml.core.ProofNode ;
+import de.unisiegen.tpml.core.bigstep.AbstractBigStepProofRule ;
+import de.unisiegen.tpml.core.bigstep.BigStepProofContext ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
+import de.unisiegen.tpml.core.bigstep.BigStepProofNode ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofResult ;
 import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode ;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
@@ -24,15 +26,25 @@ import de.unisiegen.tpml.core.languages.LanguageFactory ;
 import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingExpressionProofNode ;
 import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingTypesProofNode ;
 import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofNode ;
+import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofRule ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
+import de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRule ;
 import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode ;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofContext ;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofNode ;
+import de.unisiegen.tpml.core.subtypingrec.AbstractRecSubTypingProofRule ;
 import de.unisiegen.tpml.core.subtypingrec.DefaultRecSubTypingProofNode ;
 import de.unisiegen.tpml.core.subtypingrec.DefaultSubType ;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofContext ;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode ;
+import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRule ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
 import de.unisiegen.tpml.core.typechecker.SeenTypes ;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext ;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -89,6 +101,7 @@ public class LatexTest
       catch ( InterruptedException e )
       {
         e.printStackTrace ( ) ;
+        System.exit ( 1 ) ;
       }
       if ( p.exitValue ( ) != 0 )
       {
@@ -105,6 +118,7 @@ public class LatexTest
       catch ( InterruptedException e )
       {
         e.printStackTrace ( ) ;
+        System.exit ( 1 ) ;
       }
       if ( p.exitValue ( ) != 0 )
       {
@@ -121,6 +135,7 @@ public class LatexTest
       catch ( InterruptedException e )
       {
         e.printStackTrace ( ) ;
+        System.exit ( 1 ) ;
       }
       if ( p.exitValue ( ) != 0 )
       {
@@ -137,6 +152,7 @@ public class LatexTest
       catch ( InterruptedException e )
       {
         e.printStackTrace ( ) ;
+        System.exit ( 1 ) ;
       }
       if ( p.exitValue ( ) != 0 )
       {
@@ -147,6 +163,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -165,34 +182,48 @@ public class LatexTest
         compile = false ;
       }
     }
-    int number = 23 ;
+    int number = 26 ;
     File file = new File ( "test.tex" ) ;
-    if ( number == 0 ) testExpression ( file ) ;
-    if ( number == 1 ) testType ( file ) ;
-    if ( number == 2 ) testTypeEnvironment ( file ) ;
-    if ( number == 3 ) testStore ( file ) ;
-    if ( number == 4 ) testSeenTypes ( file ) ;
-    if ( number == 5 ) testTypeEquationTypeChecker ( file ) ;
-    if ( number == 6 ) testTypeEquationTypeInference ( file ) ;
-    if ( number == 7 ) testSubType ( file ) ;
-    if ( number == 8 ) testTypeSubType ( file ) ;
-    if ( number == 9 ) testTypeSubstitution ( file ) ;
-    if ( number == 10 ) testTypeEquationListTypeChecker ( file ) ;
-    if ( number == 11 ) testTypeEquationListTypeInference ( file ) ;
-    if ( number == 12 ) testTypeSubstitutionList ( file ) ;
-    if ( number == 13 ) testTypeJudgement ( file ) ;
-    if ( number == 14 ) testSmallStepProofNode ( file ) ;
+    // Expression, Type, Environment
+    if ( number == 00 ) testExpression ( file ) ;
+    if ( number == 01 ) testType ( file ) ;
+    if ( number == 02 ) testTypeEnvironment ( file ) ;
+    if ( number == 03 ) testStore ( file ) ;
+    // TypeChecker
+    if ( number == 10 ) testTypeCheckerProofRule ( file ) ;
+    if ( number == 11 ) testSeenTypes ( file ) ;
+    if ( number == 12 ) testTypeSubstitution ( file ) ;
+    if ( number == 13 ) testTypeEquationTypeChecker ( file ) ;
+    if ( number == 14 ) testTypeEquationListTypeChecker ( file ) ;
     if ( number == 15 ) testTypeCheckerExpressionProofNode ( file ) ;
     if ( number == 16 ) testTypeCheckerTypeProofNode ( file ) ;
-    if ( number == 17 ) testBigStepProofNode ( file ) ;
-    if ( number == 18 ) testTypeInferenceProofNode ( file ) ;
-    if ( number == 19 ) testSubTypingProofNode ( file ) ;
-    if ( number == 20 ) testRecSubTypingProofNode ( file ) ;
-    if ( number == 21 ) testMinimalTypingTypesProofNode ( file ) ;
-    if ( number == 22 ) testMinimalTypingExpressionProofNode ( file ) ;
-    if ( number == 23 ) testBigStepProofModel ( file ) ;
-    if ( number == 24 ) testSmallStepProofModel ( file ) ;
-    if ( number == 25 ) testTypeInferenceProofModel ( file ) ;
+    // TypeInference
+    if ( number == 20 ) testTypeEquationTypeInference ( file ) ;
+    if ( number == 21 ) testTypeEquationListTypeInference ( file ) ;
+    if ( number == 22 ) testTypeSubstitutionList ( file ) ;
+    if ( number == 23 ) testTypeJudgement ( file ) ;
+    if ( number == 24 ) testTypeSubType ( file ) ;
+    if ( number == 25 ) testTypeInferenceProofNode ( file ) ;
+    if ( number == 26 ) testTypeInferenceProofModel ( file ) ;
+    // SmallStep
+    if ( number == 30 ) testSmallStepProofRule ( file ) ;
+    if ( number == 31 ) testSmallStepProofNode ( file ) ;
+    if ( number == 32 ) testSmallStepProofModel ( file ) ;
+    // BigStep
+    if ( number == 40 ) testBigStepProofRule ( file ) ;
+    if ( number == 41 ) testBigStepProofNode ( file ) ;
+    if ( number == 42 ) testBigStepProofModel ( file ) ;
+    // MinimalTyping
+    if ( number == 50 ) testMinimalTypingProofRule ( file ) ;
+    if ( number == 51 ) testMinimalTypingExpressionProofNode ( file ) ;
+    if ( number == 52 ) testMinimalTypingTypesProofNode ( file ) ;
+    // SubTyping
+    if ( number == 60 ) testSubTypingProofRule ( file ) ;
+    if ( number == 61 ) testSubTypingProofNode ( file ) ;
+    // RecSubTyping
+    if ( number == 70 ) testRecSubTypingProofRule ( file ) ;
+    if ( number == 71 ) testSubType ( file ) ;
+    if ( number == 72 ) testRecSubTypingProofNode ( file ) ;
     if ( compile )
     {
       compile ( ) ;
@@ -225,19 +256,26 @@ public class LatexTest
   {
     try
     {
-   	 Language language = LanguageFactory.newInstance ( ).getLanguageById (
-       "l4" ) ;
-   	 String text = "true || false";
-   	// String text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
-   	 //String text = "let rec fact x = if x = 0 then 1 else x * (fact x-1) in fact 0";
-   	 //String text = " let x: int = let x : int = let x : int = 3+2+4+5+6+7+8+9+11+2+3+4 in x+2 in x+3 in x+5";
-   	 Expression expression = language.newParser ( new StringReader ( text ) )
-       .parse ( ) ;
-      /*Expression expression = new InfixOperation ( ArithmeticOperator
-          .newPlus ( ) , new IntegerConstant ( 1 ) , new InfixOperation (
-          ArithmeticOperator.newPlus ( ) , new IntegerConstant ( 2 ) ,
-          new IntegerConstant ( 3 ) ) ) ;*/
-      
+      Language language = LanguageFactory.newInstance ( ).getLanguageById (
+          "l4" ) ;
+      String text = "true || false" ;
+      // String text = "let rec map f l = if is_empty l then [] else (f (hd l))
+      // :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else
+      // hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then
+      // [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in
+      // power_set [1;2]" ;
+      // String text = "let rec fact x = if x = 0 then 1 else x * (fact x-1) in
+      // fact 0";
+      // String text = " let x: int = let x : int = let x : int =
+      // 3+2+4+5+6+7+8+9+11+2+3+4 in x+2 in x+3 in x+5";
+      Expression expression = language.newParser ( new StringReader ( text ) )
+          .parse ( ) ;
+      /*
+       * Expression expression = new InfixOperation ( ArithmeticOperator
+       * .newPlus ( ) , new IntegerConstant ( 1 ) , new InfixOperation (
+       * ArithmeticOperator.newPlus ( ) , new IntegerConstant ( 2 ) , new
+       * IntegerConstant ( 3 ) ) ) ;
+       */
       BigStepProofModel model = language.newBigStepProofModel ( expression ) ;
       model.complete ( nextNode ( model ) ) ;
       LatexExport.export ( model , pFile ) ;
@@ -245,6 +283,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -274,6 +313,37 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
+    }
+  }
+
+
+  private final static void testBigStepProofRule ( File pFile )
+  {
+    try
+    {
+      AbstractBigStepProofRule rule = new AbstractBigStepProofRule ( 0 ,
+          "BIG-STEP-RULE" )
+      {
+        @ Override
+        protected void applyInternal ( BigStepProofContext context ,
+            BigStepProofNode node ) throws Exception
+        {
+        }
+
+
+        @ Override
+        protected void updateInternal ( BigStepProofContext context ,
+            BigStepProofNode node ) throws Exception
+        {
+        }
+      } ;
+      LatexExport.export ( rule , pFile ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -293,6 +363,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -320,6 +391,37 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
+    }
+  }
+
+
+  private final static void testMinimalTypingProofRule ( File pFile )
+  {
+    try
+    {
+      AbstractBigStepProofRule rule = new AbstractBigStepProofRule ( 0 ,
+          "BIG-STEP-RULE" )
+      {
+        @ Override
+        protected void applyInternal ( BigStepProofContext context ,
+            BigStepProofNode node ) throws Exception
+        {
+        }
+
+
+        @ Override
+        protected void updateInternal ( BigStepProofContext context ,
+            BigStepProofNode node ) throws Exception
+        {
+        }
+      } ;
+      LatexExport.export ( rule , pFile ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -335,6 +437,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -354,6 +457,30 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
+    }
+  }
+
+
+  private final static void testRecSubTypingProofRule ( File pFile )
+  {
+    try
+    {
+      AbstractRecSubTypingProofRule rule = new AbstractRecSubTypingProofRule (
+          0 , "REC-SUB-TYPING-RULE" )
+      {
+        @ Override
+        protected void applyInternal ( RecSubTypingProofContext context ,
+            RecSubTypingProofNode node ) throws Exception
+        {
+        }
+      } ;
+      LatexExport.export ( rule , pFile ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -373,6 +500,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -395,6 +523,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -418,6 +547,23 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
+    }
+  }
+
+
+  private final static void testSmallStepProofRule ( File pFile )
+  {
+    try
+    {
+      DefaultSmallStepProofRule rule = new DefaultSmallStepProofRule ( 0 ,
+          "SMALL-STEP-RULE" , true ) ;
+      LatexExport.export ( rule , pFile ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -435,6 +581,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -450,6 +597,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -469,6 +617,30 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
+    }
+  }
+
+
+  private final static void testSubTypingProofRule ( File pFile )
+  {
+    try
+    {
+      AbstractSubTypingProofRule rule = new AbstractSubTypingProofRule ( 0 ,
+          "SUB-TYPING-RULE" )
+      {
+        @ Override
+        protected void applyInternal ( SubTypingProofContext context ,
+            SubTypingProofNode node ) throws Exception
+        {
+        }
+      } ;
+      LatexExport.export ( rule , pFile ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -493,6 +665,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -519,6 +692,37 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
+    }
+  }
+
+
+  private final static void testTypeCheckerProofRule ( File pFile )
+  {
+    try
+    {
+      AbstractTypeCheckerProofRule rule = new AbstractTypeCheckerProofRule ( 0 ,
+          "TYPE-CHECKER-RULE" )
+      {
+        @ Override
+        protected void applyInternal ( TypeCheckerProofContext context ,
+            TypeCheckerProofNode node ) throws Exception
+        {
+        }
+
+
+        @ Override
+        protected void updateInternal ( TypeCheckerProofContext context ,
+            TypeCheckerProofNode node ) throws Exception
+        {
+        }
+      } ;
+      LatexExport.export ( rule , pFile ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -538,6 +742,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -560,6 +765,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -581,6 +787,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -602,6 +809,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -618,6 +826,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -634,6 +843,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -644,6 +854,7 @@ public class LatexTest
     {
       String text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
       text = "let rec fact x = if x = 0 then 1 else if x = 1 then 1 else if x = 2 then 2 else if x = 3 then 6 else x * fact (x-1) in fact 4" ;
+      text = "1+1" ;
       LanguageFactory factory = LanguageFactory.newInstance ( ) ;
       Language language = factory.getLanguageById ( "l4" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
@@ -656,6 +867,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -712,6 +924,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -738,6 +951,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -753,6 +967,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -773,6 +988,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 
@@ -788,6 +1004,7 @@ public class LatexTest
     catch ( Exception e )
     {
       e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
     }
   }
 }

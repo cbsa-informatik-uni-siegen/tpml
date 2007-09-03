@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.smallstep ;
 
 
+import java.util.ArrayList ;
 import java.util.TreeSet ;
 import javax.swing.tree.TreeNode ;
 import de.unisiegen.tpml.core.ProofRule ;
@@ -180,18 +181,24 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     for ( LatexInstruction instruction : this.getStore ( )
         .getLatexInstructions ( ) )
     {
-      instructions.add ( instruction ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     for ( LatexInstruction instruction : this.getExpression ( )
         .getLatexInstructions ( ) )
     {
-      instructions.add ( instruction ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     return instructions ;
   }

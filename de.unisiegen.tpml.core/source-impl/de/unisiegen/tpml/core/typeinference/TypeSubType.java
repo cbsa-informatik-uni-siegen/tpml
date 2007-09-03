@@ -6,6 +6,8 @@ import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
@@ -87,7 +89,8 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_SUB_TYPE , 2 ,
-        "#1\\ <:\\ #2" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        "#1\\ \\color{" + LATEX_COLOR_NONE_STYLE + "}{<:}\\ #2" , "tau1" , //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        "tau2" ) ) ; //$NON-NLS-1$
     for ( LatexCommand command : this.left.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
@@ -105,16 +108,25 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
     for ( LatexInstruction instruction : this.left.getLatexInstructions ( ) )
     {
-      instructions.add ( instruction ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     for ( LatexInstruction instruction : this.right.getLatexInstructions ( ) )
     {
-      instructions.add ( instruction ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     return instructions ;
   }
@@ -128,6 +140,7 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     for ( LatexPackage pack : this.left.getLatexPackages ( ) )
     {
       packages.add ( pack ) ;

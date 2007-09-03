@@ -5,6 +5,7 @@ import java.util.ArrayList ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
@@ -120,7 +121,8 @@ public class TypeJudgement implements TypeFormula
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_JUDGEMENT , 3 , "#1\\ " //$NON-NLS-1$
-        + LATEX_RIGHT_TRIANGLE + "\\ #2\\ ::\\ #3" , "env" , "e" , "tau" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+        + LATEX_RIGHT_TRIANGLE + "\\ #2\\ \\color{" + LATEX_COLOR_NONE_STYLE //$NON-NLS-1$
+        + "}{::}\\ #3" , "env" , "e" , "tau" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     for ( LatexCommand command : this.environment.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
@@ -142,22 +144,34 @@ public class TypeJudgement implements TypeFormula
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
     for ( LatexInstruction instruction : this.environment
         .getLatexInstructions ( ) )
     {
-      instructions.add ( instruction ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     for ( LatexInstruction instruction : this.expression
         .getLatexInstructions ( ) )
     {
-      instructions.add ( instruction ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     for ( LatexInstruction instruction : this.type.getLatexInstructions ( ) )
     {
-      instructions.add ( instruction ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     return instructions ;
   }
@@ -172,6 +186,7 @@ public class TypeJudgement implements TypeFormula
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
     packages.add ( new DefaultLatexPackage ( "amssymb" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     for ( LatexPackage pack : this.environment.getLatexPackages ( ) )
     {
       packages.add ( pack ) ;

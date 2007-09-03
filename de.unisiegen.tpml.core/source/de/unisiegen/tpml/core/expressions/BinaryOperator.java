@@ -120,7 +120,7 @@ public abstract class BinaryOperator extends Constant
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_BINARY_OPERATOR , 1 ,
-        "\\textbf{\\color{" + LATEX_COLOR_CONSTANT + "}{#1}}" , "op" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        "\\textbf{\\color{" + LATEX_COLOR_CONSTANT + "}{$#1$}}" , "op" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     return commands ;
   }
 

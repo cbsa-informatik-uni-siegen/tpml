@@ -1,13 +1,17 @@
 package de.unisiegen.tpml.core.bigstep ;
 
 
+import java.awt.Color ;
 import java.lang.reflect.InvocationTargetException ;
+import java.util.ArrayList ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.AbstractProofRule ;
 import de.unisiegen.tpml.core.ProofRuleException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.exceptions.RowSubstitutionException ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
@@ -15,7 +19,12 @@ import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.UnificationException ;
+import de.unisiegen.tpml.core.util.Theme ;
 
 
 /**
@@ -28,8 +37,8 @@ import de.unisiegen.tpml.core.typechecker.UnificationException ;
  * @see de.unisiegen.tpml.core.bigstep.BigStepProofRule
  * @see de.unisiegen.tpml.core.AbstractProofRule
  */
-abstract class AbstractBigStepProofRule extends AbstractProofRule implements
-    BigStepProofRule
+public abstract class AbstractBigStepProofRule extends AbstractProofRule
+    implements BigStepProofRule
 {
   /**
    * Allocates a new <code>BigStepProofRule</code> with the specified
@@ -42,7 +51,7 @@ abstract class AbstractBigStepProofRule extends AbstractProofRule implements
    *         specified <code>name</code>, that does nothing.
    * @see #toExnRule(int)
    */
-  static BigStepProofRule newNoopRule ( String name )
+  public static BigStepProofRule newNoopRule ( String name )
   {
     return new AbstractBigStepProofRule ( - 1 , name )
     {
@@ -75,7 +84,7 @@ abstract class AbstractBigStepProofRule extends AbstractProofRule implements
    * @param name the name of the big step proof rule to allocate.
    * @throws NullPointerException if <code>name</code> is <code>null</code>.
    */
-  AbstractBigStepProofRule ( int group , String name )
+  public AbstractBigStepProofRule ( int group , String name )
   {
     super ( group , name ) ;
   }
@@ -161,7 +170,8 @@ abstract class AbstractBigStepProofRule extends AbstractProofRule implements
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_BIG_STEP_PROOF_RULE , 1 ,
-        "\\mbox{\\scriptsize{\\textbf{(#1)}}}" , "name" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        "\\mbox{\\textbf{\\color{" + LATEX_COLOR_RULE + "}(#1)}}" , //$NON-NLS-1$//$NON-NLS-2$
+        "name" ) ) ; //$NON-NLS-1$
     return commands ;
   }
 
@@ -171,9 +181,21 @@ abstract class AbstractBigStepProofRule extends AbstractProofRule implements
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    Color colorRule = Theme.currentTheme ( ).getRuleColor ( ) ;
+    float red = ( float ) Math
+        .round ( ( ( float ) colorRule.getRed ( ) ) / 255 * 100 ) / 100 ;
+    float green = ( float ) Math
+        .round ( ( ( float ) colorRule.getGreen ( ) ) / 255 * 100 ) / 100 ;
+    float blue = ( float ) Math
+        .round ( ( ( float ) colorRule.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_RULE + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}" , LATEX_COLOR_RULE + ": color of proof rules" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     return instructions ;
   }
 
@@ -186,6 +208,7 @@ abstract class AbstractBigStepProofRule extends AbstractProofRule implements
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     return packages ;
   }
 
@@ -230,10 +253,55 @@ abstract class AbstractBigStepProofRule extends AbstractProofRule implements
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_BIG_STEP_PROOF_RULE , pIndent ) ;
+        LATEX_BIG_STEP_PROOF_RULE , pIndent , this.toPrettyString ( )
+            .toString ( ) ) ;
     builder
         .addText ( "{" + this.getName ( ).replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     return builder ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ( )
+  {
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+        .toPrettyString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
+   */
+  public PrettyStringBuilder toPrettyStringBuilder (
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+  {
+    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
+        this , 0 ) ;
+    builder.addText ( PRETTY_LPAREN ) ;
+    builder.addText ( this.getName ( ) ) ;
+    builder.addText ( PRETTY_RPAREN ) ;
+    return builder ;
+  }
+
+
+  /**
+   * Returns the string representation for this proof rule. This method is
+   * mainly used for debugging.
+   * 
+   * @return The pretty printed string representation for this proof rule.
+   * @see #toPrettyString()
+   * @see Object#toString()
+   */
+  @ Override
+  public final String toString ( )
+  {
+    return toPrettyString ( ).toString ( ) ;
   }
 
 

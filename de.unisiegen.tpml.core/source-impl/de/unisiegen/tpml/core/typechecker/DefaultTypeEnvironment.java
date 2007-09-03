@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.typechecker ;
 
 
+import java.util.ArrayList ;
 import java.util.Enumeration ;
 import java.util.Set ;
 import java.util.TreeSet ;
@@ -149,20 +150,26 @@ public final class DefaultTypeEnvironment extends
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     for ( Mapping < Identifier , Type > mapping : this.mappings )
     {
       for ( LatexInstruction instruction : mapping.getSymbol ( )
           .getLatexInstructions ( ) )
       {
-        instructions.add ( instruction ) ;
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
       }
       for ( LatexInstruction instruction : mapping.getEntry ( )
           .getLatexInstructions ( ) )
       {
-        instructions.add ( instruction ) ;
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
       }
     }
     return instructions ;
@@ -320,7 +327,6 @@ public final class DefaultTypeEnvironment extends
             + LATEX_INDENT ) ) ;
         builder.addText ( LATEX_COMMA ) ;
         builder.addText ( LATEX_SPACE ) ;
-        builder.addBreak ( ) ;
       }
     }
     builder.addBuilderEnd ( ) ;

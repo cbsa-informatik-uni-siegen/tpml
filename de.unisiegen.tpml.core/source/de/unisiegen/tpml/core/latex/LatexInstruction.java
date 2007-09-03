@@ -6,7 +6,7 @@ package de.unisiegen.tpml.core.latex ;
  * 
  * @author Christian Fehler
  */
-public interface LatexInstruction extends Comparable < LatexInstruction >
+public interface LatexInstruction
 {
   /**
    * The description.

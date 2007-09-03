@@ -1,22 +1,23 @@
 package de.unisiegen.tpml.core.typeinference ;
 
 
-import java.util.TreeSet ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexInstruction ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import java.util.ArrayList;
+import java.util.TreeSet;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexCommand;
+import de.unisiegen.tpml.core.latex.LatexInstruction;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -126,14 +127,17 @@ public class TypeSubstitutionList implements PrettyPrintable , LatexPrintable
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       for ( LatexInstruction instruction : list.first.getLatexInstructions ( ) )
       {
-        instructions.add ( instruction ) ;
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
       }
     }
     return instructions ;

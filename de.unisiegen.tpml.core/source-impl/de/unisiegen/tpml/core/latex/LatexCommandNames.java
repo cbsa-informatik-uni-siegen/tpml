@@ -137,6 +137,12 @@ public interface LatexCommandNames
 
 
   /**
+   * The latex print command for the none style color.
+   */
+  public static final String LATEX_COLOR_NONE_STYLE = "ColorNoneStyle" ; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for the type color.
    */
   public static final String LATEX_COLOR_TYPE = "ColorType" ; //$NON-NLS-1$
@@ -149,33 +155,39 @@ public interface LatexCommandNames
 
 
   /**
-   * The latex print command for a small step new column.
+   * The latex print command for a new node in the type inference.
    */
-  public static final String LATEX_SMALL_STEP_NEW_COLUMN = "$&$" ; //$NON-NLS-1$
+  public static final String LATEX_TYPE_INFERENCE_NEW_NODE = "TypeInferenceNewNode" ; //$NON-NLS-1$
 
 
   /**
-   * The latex print command for a small step new rule.
+   * The latex print command for a new formula in the type inference.
    */
-  public static final String LATEX_SMALL_STEP_NEW_RULE = "$\\\\[5mm]$" ; //$NON-NLS-1$
+  public static final String LATEX_TYPE_INFERENCE_NEW_FORMULA = "TypeInferenceNewFormula" ; //$NON-NLS-1$
 
 
   /**
-   * The latex print command for a small step new row with only the rule.
+   * The latex print command for the completed rules.
    */
-  public static final String LATEX_SMALL_STEP_NEW_ROW_ONLY_RULE = "$&\\\\$" ; //$NON-NLS-1$
+  public static final String LATEX_TYPE_INFERENCE_RULES_COMPLETED = "TypeInferenceRulesCompleted" ; //$NON-NLS-1$
 
 
   /**
-   * The latex print command for a small step new row.
+   * The latex print command for a new node in the small step interpreter.
    */
-  public static final String LATEX_SMALL_STEP_NEW_ROW = "$\\\\$" ; //$NON-NLS-1$
+  public static final String LATEX_SMALL_STEP_NEW_NODE = "SmallStepNewNode" ; //$NON-NLS-1$
 
 
   /**
-   * The latex print command for a small step space.
+   * The latex print command for the completed rules.
    */
-  public static final String LATEX_SMALL_STEP_SPACE = " " ; //$NON-NLS-1$
+  public static final String LATEX_SMALL_STEP_RULES_COMPLETED = "SmallStepRulesCompleted" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a new rule in the small step interpreter.
+   */
+  public static final String LATEX_SMALL_STEP_NEW_RULE = "SmallStepNewRule" ; //$NON-NLS-1$
 
 
   /**
@@ -953,6 +965,12 @@ public interface LatexCommandNames
    * The latex print command for a type inference equal.
    */
   public static final String LATEX_TYPE_INFERENCE_EQUAL = "TypeInferenceEqual" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for a type inference rule.
+   */
+  public static final String LATEX_TYPE_INFERENCE_RULE = "TypeInferenceRule" ; //$NON-NLS-1$
 
 
   /**

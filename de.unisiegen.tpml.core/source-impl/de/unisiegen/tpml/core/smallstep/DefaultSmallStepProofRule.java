@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.smallstep ;
 
 
 import java.awt.Color ;
+import java.util.ArrayList ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.AbstractProofRule ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
@@ -14,6 +15,10 @@ import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.util.Theme ;
 
 
@@ -26,8 +31,8 @@ import de.unisiegen.tpml.core.util.Theme ;
  * @see de.unisiegen.tpml.core.AbstractProofRule
  * @see de.unisiegen.tpml.core.smallstep.SmallStepProofRule
  */
-final class DefaultSmallStepProofRule extends AbstractProofRule implements
-    SmallStepProofRule
+public final class DefaultSmallStepProofRule extends AbstractProofRule
+    implements SmallStepProofRule
 {
   /**
    * <code>true</code> if this small step proof rule is an axiom, and as such,
@@ -51,7 +56,7 @@ final class DefaultSmallStepProofRule extends AbstractProofRule implements
    * @throws NullPointerException if <code>name</code> is <code>null</code>.
    * @see #isAxiom()
    */
-  DefaultSmallStepProofRule ( int group , String name , boolean pAxiom )
+  public DefaultSmallStepProofRule ( int group , String name , boolean pAxiom )
   {
     super ( group , name ) ;
     this.axiom = pAxiom ;
@@ -78,9 +83,9 @@ final class DefaultSmallStepProofRule extends AbstractProofRule implements
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     Color colorRule = Theme.currentTheme ( ).getRuleColor ( ) ;
     float red = ( float ) Math
         .round ( ( ( float ) colorRule.getRed ( ) ) / 255 * 100 ) / 100 ;
@@ -92,7 +97,7 @@ final class DefaultSmallStepProofRule extends AbstractProofRule implements
         "\\definecolor{" + LATEX_COLOR_RULE + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
             + red + "," //$NON-NLS-1$
             + green + "," //$NON-NLS-1$
-            + blue + "}" ) ) ; //$NON-NLS-1$
+            + blue + "}" , LATEX_COLOR_RULE + ": color of proof rules" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     return instructions ;
   }
 
@@ -158,9 +163,54 @@ final class DefaultSmallStepProofRule extends AbstractProofRule implements
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_SMALL_STEP_PROOF_RULE , pIndent ) ;
+        LATEX_SMALL_STEP_PROOF_RULE , pIndent , this.toPrettyString ( )
+            .toString ( ) ) ;
     builder
         .addText ( "{" + this.getName ( ).replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     return builder ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ( )
+  {
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+        .toPrettyString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
+   */
+  public PrettyStringBuilder toPrettyStringBuilder (
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+  {
+    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
+        this , 0 ) ;
+    builder.addText ( PRETTY_LPAREN ) ;
+    builder.addText ( this.getName ( ) ) ;
+    builder.addText ( PRETTY_RPAREN ) ;
+    return builder ;
+  }
+
+
+  /**
+   * Returns the string representation for this proof rule. This method is
+   * mainly used for debugging.
+   * 
+   * @return The pretty printed string representation for this proof rule.
+   * @see #toPrettyString()
+   * @see Object#toString()
+   */
+  @ Override
+  public final String toString ( )
+  {
+    return toPrettyString ( ).toString ( ) ;
   }
 }

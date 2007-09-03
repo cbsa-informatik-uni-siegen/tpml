@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.latex ;
 
 
+import java.util.ArrayList ;
 import java.util.TreeSet ;
 
 
@@ -20,11 +21,13 @@ public interface LatexPrintable extends LatexCommandNames
 
 
   /**
-   * Returns a set of needed latex instructions for this latex printable object.
+   * Returns a list of needed latex instructions for this latex printable
+   * object.
    * 
-   * @return A set of needed latex instructions for this latex printable object.
+   * @return A lsit of needed latex instructions for this latex printable
+   *         object.
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( ) ;
+  public ArrayList < LatexInstruction > getLatexInstructions ( ) ;
 
 
   /**

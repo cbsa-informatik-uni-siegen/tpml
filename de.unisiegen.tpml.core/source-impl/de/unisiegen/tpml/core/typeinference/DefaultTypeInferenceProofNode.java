@@ -250,28 +250,37 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     for ( TypeSubstitution substitution : this.substitutions )
     {
       for ( LatexInstruction instruction : substitution.getLatexInstructions ( ) )
       {
-        instructions.add ( instruction ) ;
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
       }
     }
     for ( TypeFormula form : this.formula )
     {
       for ( LatexInstruction instruction : form.getLatexInstructions ( ) )
       {
-        instructions.add ( instruction ) ;
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
       }
       if ( form instanceof TypeEquationTypeInference )
       {
         for ( LatexInstruction instruction : ( ( TypeEquationTypeInference ) form )
             .getSeenTypes ( ).getLatexInstructions ( ) )
         {
-          instructions.add ( instruction ) ;
+          if ( ! instructions.contains ( instruction ) )
+          {
+            instructions.add ( instruction ) ;
+          }
         }
       }
     }

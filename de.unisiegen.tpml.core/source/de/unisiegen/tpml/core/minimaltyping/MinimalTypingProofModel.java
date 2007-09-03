@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.minimaltyping ;
 
 
+import java.util.ArrayList ;
 import java.util.Enumeration ;
 import java.util.TreeSet ;
 import org.apache.log4j.Logger ;
@@ -433,7 +434,7 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * 
    * @see LatexPrintable#getLatexInstructions()
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     return getLatexInstructionsInternal ( 0 , this.root ) ;
   }
@@ -448,23 +449,29 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * @return A set of needed latex instructions for the given latex printable
    *         {@link ProofNode}.
    */
-  private TreeSet < LatexInstruction > getLatexInstructionsInternal (
+  private ArrayList < LatexInstruction > getLatexInstructionsInternal (
       int pDepth , ProofNode pNode )
   {
     Enumeration < ? > children = pNode.children ( ) ;
     int depth = pDepth ;
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     ProofNode node = ( ProofNode ) children.nextElement ( ) ;
     while ( pNode.children ( ).hasMoreElements ( ) )
     {
       for ( LatexInstruction instruction : node.getLatexInstructions ( ) )
       {
-        instructions.add ( instruction ) ;
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
       }
       for ( LatexInstruction instruction : getLatexInstructionsInternal (
           ++ depth , node ) )
       {
-        instructions.add ( instruction ) ;
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
       }
       node = ( ProofNode ) children.nextElement ( ) ;
     }

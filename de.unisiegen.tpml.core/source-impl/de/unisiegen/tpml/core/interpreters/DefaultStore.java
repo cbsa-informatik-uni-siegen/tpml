@@ -1,11 +1,14 @@
 package de.unisiegen.tpml.core.interpreters ;
 
 
+import java.util.ArrayList ;
 import java.util.Enumeration ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Location ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
@@ -100,8 +103,9 @@ public final class DefaultStore extends
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_STORE , 1 , "[#1]" , //$NON-NLS-1$
-        "X1: e1, ..., Xn: en" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_STORE , 1 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{[}#1\\color{" + LATEX_COLOR_NONE_STYLE //$NON-NLS-1$
+        + "}{]}" , "X1: e1, ..., Xn: en" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     for ( Mapping < Location , Expression > mapping : this.mappings )
     {
       for ( LatexCommand command : mapping.getSymbol ( ).getLatexCommands ( ) )
@@ -122,20 +126,29 @@ public final class DefaultStore extends
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
     for ( Mapping < Location , Expression > mapping : this.mappings )
     {
       for ( LatexInstruction instruction : mapping.getSymbol ( )
           .getLatexInstructions ( ) )
       {
-        instructions.add ( instruction ) ;
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
       }
       for ( LatexInstruction instruction : mapping.getEntry ( )
           .getLatexInstructions ( ) )
       {
-        instructions.add ( instruction ) ;
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
       }
     }
     return instructions ;
@@ -150,6 +163,7 @@ public final class DefaultStore extends
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     for ( Mapping < Location , Expression > mapping : this.mappings )
     {
       for ( LatexPackage pack : mapping.getSymbol ( ).getLatexPackages ( ) )
@@ -263,7 +277,6 @@ public final class DefaultStore extends
             + LATEX_INDENT ) ) ;
         builder.addText ( LATEX_COMMA ) ;
         builder.addText ( LATEX_SPACE ) ;
-        builder.addBreak ( ) ;
       }
     }
     builder.addBuilderEnd ( ) ;

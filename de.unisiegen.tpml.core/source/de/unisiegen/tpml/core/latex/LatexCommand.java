@@ -15,6 +15,14 @@ public interface LatexCommand extends Comparable < LatexCommand >
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Object#equals(Object)
+   */
+  public boolean equals ( Object pObject ) ;
+
+
+  /**
    * Returns the string value of this <code>LatexCommand</code>.
    * 
    * @return The string value of this <code>LatexCommand</code>.

@@ -542,9 +542,9 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public TreeSet < LatexInstruction > getLatexInstructions ( )
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
-    TreeSet < LatexInstruction > instructions = new TreeSet < LatexInstruction > ( ) ;
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     Color colorExpression = Theme.currentTheme ( ).getExpressionColor ( ) ;
     float red = ( float ) Math
         .round ( ( ( float ) colorExpression.getRed ( ) ) / 255 * 100 ) / 100 ;
@@ -556,7 +556,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
         "\\definecolor{" + LATEX_COLOR_EXPRESSION + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
             + red + "," //$NON-NLS-1$
             + green + "," //$NON-NLS-1$
-            + blue + "}" ) ) ; //$NON-NLS-1$
+            + blue + "}" , LATEX_COLOR_EXPRESSION + ": color of expression text" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     Color colorKeyword = Theme.currentTheme ( ).getKeywordColor ( ) ;
     red = ( float ) Math
         .round ( ( ( float ) colorKeyword.getRed ( ) ) / 255 * 100 ) / 100 ;
@@ -568,7 +568,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
         "\\definecolor{" + LATEX_COLOR_KEYWORD + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
             + red + "," //$NON-NLS-1$
             + green + "," //$NON-NLS-1$
-            + blue + "}" ) ) ; //$NON-NLS-1$
+            + blue + "}" , LATEX_COLOR_KEYWORD + ": color of keywords" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     Color colorConstant = Theme.currentTheme ( ).getConstantColor ( ) ;
     red = ( float ) Math
         .round ( ( ( float ) colorConstant.getRed ( ) ) / 255 * 100 ) / 100 ;
@@ -580,7 +580,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
         "\\definecolor{" + LATEX_COLOR_CONSTANT + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
             + red + "," //$NON-NLS-1$
             + green + "," //$NON-NLS-1$
-            + blue + "}" ) ) ; //$NON-NLS-1$
+            + blue + "}" , LATEX_COLOR_CONSTANT + ": color of constants" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     Color colorIdentifier = Theme.currentTheme ( ).getIdentifierColor ( ) ;
     red = ( float ) Math
         .round ( ( ( float ) colorIdentifier.getRed ( ) ) / 255 * 100 ) / 100 ;
@@ -592,14 +592,17 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
         "\\definecolor{" + LATEX_COLOR_IDENTIFIER + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
             + red + "," //$NON-NLS-1$
             + green + "," //$NON-NLS-1$
-            + blue + "}" ) ) ; //$NON-NLS-1$
+            + blue + "}" , LATEX_COLOR_IDENTIFIER + ": color of identifiers" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     if ( this instanceof DefaultExpressions )
     {
       for ( Expression e : ( ( DefaultExpressions ) this ).getExpressions ( ) )
       {
         for ( LatexInstruction instruction : e.getLatexInstructions ( ) )
         {
-          instructions.add ( instruction ) ;
+          if ( ! instructions.contains ( instruction ) )
+          {
+            instructions.add ( instruction ) ;
+          }
         }
       }
     }
@@ -609,7 +612,10 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
       {
         for ( LatexInstruction instruction : id.getLatexInstructions ( ) )
         {
-          instructions.add ( instruction ) ;
+          if ( ! instructions.contains ( instruction ) )
+          {
+            instructions.add ( instruction ) ;
+          }
         }
       }
     }
@@ -621,7 +627,10 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
         {
           for ( LatexInstruction instruction : type.getLatexInstructions ( ) )
           {
-            instructions.add ( instruction ) ;
+            if ( ! instructions.contains ( instruction ) )
+            {
+              instructions.add ( instruction ) ;
+            }
           }
         }
       }
