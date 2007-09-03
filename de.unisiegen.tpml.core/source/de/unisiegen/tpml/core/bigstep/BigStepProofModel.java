@@ -522,7 +522,6 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
     packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "pstricks" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "pst-node" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "amstext" ) ) ; //$NON-NLS-1$
     for ( LatexPackage pack : getLatexPackagesInternal ( ( BigStepProofNode ) this.root ) )
     {
@@ -590,67 +589,29 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
         pIndent ) ;
     {
-      builder.addText ( "\\treeindent=0mm" ) ;
+      builder.addText ( "\\treeindent=0mm" ) ; //$NON-NLS-1$
       builder.addSourceCodeBreak ( 0 ) ;
-      builder.addText ( "\\nodeindent=7mm" ) ;
+      builder.addText ( "\\nodeindent=7mm" ) ; //$NON-NLS-1$
       builder.addSourceCodeBreak ( 0 ) ;
-      builder.addText ( "\\nodesep=2mm" ) ;
+      builder.addText ( "\\nodesep=2mm" ) ; //$NON-NLS-1$
       builder.addSourceCodeBreak ( 0 ) ;
       builder
-          .addText ( "\\newcommand{\\longtext}[1]{\\oddsidemargin=#1\\enlargethispage{840mm}" ) ;
+          .addText ( "\\newcommand{\\longtext}[1]{\\oddsidemargin=#1\\enlargethispage{840mm}" ) ; //$NON-NLS-1$
       builder.addSourceCodeBreak ( 0 ) ;
-      builder.addText ( "\\mktree{" ) ;
+      builder.addText ( "\\mktree{" ) ; //$NON-NLS-1$
       toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
-          this.root , pIndent + LATEX_INDENT , - 1 ) ;
+          this.root , pIndent  , - 1 ) ;
     }
-    builder.addText ( "}" ) ;
-    builder.addText ( "}" ) ;
-    builder.addText ( "\\longtext{-30pt}" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\newpage" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\longtext{-195mm}" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\newpage" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\longtext{-390mm}" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\newpage" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\longtext{-585mm}" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\newpage" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\longtext{-780mm}" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\newpage" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\longtext{-975mm}" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\newpage" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\longtext{-1170mm}" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\newpage" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\longtext{-1365mm}" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\newpage" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\longtext{-1560mm}" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\newpage" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\longtext{-1755mm}" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\newpage" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\longtext{-1950mm}" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\newpage" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\longtext{-2145mm}" ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "}" ) ; //$NON-NLS-1$
+    builder.addText ( "}" ) ; //$NON-NLS-1$
+    builder.addText ( "\\longtext{-30pt}" ); //$NON-NLS-1$
+		for ( int i = 1; i < 6; i++ ) {
+			builder.addSourceCodeBreak ( 0 );
+			builder.addText ( "\\newpage" ); //$NON-NLS-1$
+			builder.addSourceCodeBreak ( 0 );
+			int page = -205 * i;
+			builder.addText ( "\\longtext{" + page + "mm}" ); //$NON-NLS-1$ //$NON-NLS-2$
+		}
     return builder ;
   }
 
@@ -663,6 +624,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
    *          completed. is needed because of his {@link ProofNode}s.
    * @param pCurrentNode The current {@link ProofNode}.
    * @param pIndent The indent of this object.
+	* @param pDepth the depth of the actual node 
    */
   public final void toLatexStringBuilderInternal (
       LatexStringBuilderFactory pLatexStringBuilderFactory ,
@@ -672,13 +634,13 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
     int depth = pDepth + 1 ;
     pLatexStringBuilder.addBuilder ( pCurrentNode.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    int value = 90 ;
+    int value = 180 ;
     if ( pCurrentNode.getChildCount ( ) == 1 ) value = 180 ;
     for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
     {
-      pLatexStringBuilder.addText ( "\\arrow{" + value + "}{"
-          + pCurrentNode.getId ( ) + "}{"
-          + pCurrentNode.getChildAt ( i ).getId ( ) + "}" ) ;
+      pLatexStringBuilder.addText ( "\\arrow{" + value + "}{"  //$NON-NLS-1$//$NON-NLS-2$
+          + pCurrentNode.getId ( ) + "}{" //$NON-NLS-1$
+          + pCurrentNode.getChildAt ( i ).getId ( ) + "}" ) ; //$NON-NLS-1$
       pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     }
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
