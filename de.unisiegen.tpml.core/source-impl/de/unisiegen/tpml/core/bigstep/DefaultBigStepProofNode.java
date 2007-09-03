@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode;
 import de.unisiegen.tpml.core.interpreters.DefaultStore;
 import de.unisiegen.tpml.core.interpreters.Store;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage;
 import de.unisiegen.tpml.core.latex.LatexCommand;
 import de.unisiegen.tpml.core.latex.LatexInstruction;
@@ -174,17 +175,19 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     
     commands.add ( new DefaultLatexCommand ( LATEX_BYRULE , 1 ,
-   		 "\\hspace{-5mm}\\byrulecolor\\mbox{\\scriptsize\\ #1}","rule"));
+   		 "\\hspace{-5mm}\\mbox{\\scriptsize\\ #1}","rule"));
     
     commands.add ( new DefaultLatexCommand ( LATEX_BIG_STEP_PROOF_NODE , 7 ,
    		 "\\ifarrows"+ LATEX_LINE_BREAK_NEW_COMMAND
    		 +"\\else \\refstepcounter{node}"+ LATEX_LINE_BREAK_NEW_COMMAND
    		 +"\\noindent\\hspace{\\treeindent}\\hspace{#2\\nodeindent}"+ LATEX_LINE_BREAK_NEW_COMMAND
    		 +"\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}"+ LATEX_LINE_BREAK_NEW_COMMAND
-   		   +"$\\begin{tabular}[t]{p{#7}}|$"+ LATEX_LINE_BREAK_NEW_COMMAND
+   		   +"$\\begin{tabular}[t]{p{#7}}$"+ LATEX_LINE_BREAK_NEW_COMMAND
             + "\\ifthenelse{\\equal{#4}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$ 
-            + "{#3\\ \\Downarrow\\ #5}" //$NON-NLS-1$
-            + "{(#3\\ \\ #4)\\ \\Downarrow\\ #5}" //$NON-NLS-1$
+            + "{#3\\ \\color{" + LATEX_COLOR_NONE_STYLE //$NON-NLS-1$
+        + "}{\\Downarrow}\\ #5}" //$NON-NLS-1$
+            + "{(#3\\ \\ #4)\\ \\color{" + LATEX_COLOR_NONE_STYLE //$NON-NLS-1$
+        + "}{\\Downarrow}\\ #5}" //$NON-NLS-1$
          		+"$\\\\$"+ LATEX_LINE_BREAK_NEW_COMMAND  +
          		"\\byrule{#6} "
            + "$\\end{tabular}$"+ LATEX_LINE_BREAK_NEW_COMMAND
@@ -225,6 +228,9 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
   public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+          + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+          LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
     for ( LatexInstruction instruction : this.expression
         .getLatexInstructions ( ) )
     {
@@ -273,6 +279,7 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
     for ( LatexPackage pack : this.expression.getLatexPackages ( ) )
     {

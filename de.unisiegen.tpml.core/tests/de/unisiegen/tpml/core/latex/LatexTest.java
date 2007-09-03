@@ -182,7 +182,7 @@ public class LatexTest
         compile = false ;
       }
     }
-    int number = 26 ;
+    int number = 42 ;
     File file = new File ( "test.tex" ) ;
     // Expression, Type, Environment
     if ( number == 00 ) testExpression ( file ) ;

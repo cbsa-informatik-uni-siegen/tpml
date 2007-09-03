@@ -448,14 +448,6 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
     instructions
         .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ) ; //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
-        "\\definecolor" + LATEX_DEFINE_COLOR_DARKGREEN ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newcommand" + LATEX_RESULT_COLOR ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newcommand" + LATEX_RESULT_TYPE_COLOR ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newcommand" + LATEX_RULE_COLOR ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
         "\\newif\\ifarrows  " + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
             + "\\arrowsfalse" ) ) ; //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
