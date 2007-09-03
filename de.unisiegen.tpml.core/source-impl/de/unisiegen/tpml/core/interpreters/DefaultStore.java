@@ -38,13 +38,55 @@ public final class DefaultStore extends
     AbstractEnvironment < Location , Expression > implements Store
 {
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_STORE , 1 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{[}#1\\color{" + LATEX_COLOR_NONE_STYLE //$NON-NLS-1$
+        + "}{]}" , "X1: e1, ..., Xn: en" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  {
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
+    return packages ;
+  }
+
+
+  /**
    * Default constructor, creates a new store with no mappings.
    */
   public DefaultStore ( )
   {
     super ( ) ;
   }
-
 
   /**
    * Allocates a new <code>DefaultStore</code>, based on the mappings from
@@ -93,8 +135,9 @@ public final class DefaultStore extends
   {
     return containsSymbol ( location ) ;
   }
-
-
+  
+  
+  
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
@@ -103,9 +146,11 @@ public final class DefaultStore extends
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_STORE , 1 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE_STYLE + "}{[}#1\\color{" + LATEX_COLOR_NONE_STYLE //$NON-NLS-1$
-        + "}{]}" , "X1: e1, ..., Xn: en" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+ 
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     for ( Mapping < Location , Expression > mapping : this.mappings )
     {
       for ( LatexCommand command : mapping.getSymbol ( ).getLatexCommands ( ) )
@@ -129,9 +174,14 @@ public final class DefaultStore extends
   public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
+    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    
     for ( Mapping < Location , Expression > mapping : this.mappings )
     {
       for ( LatexInstruction instruction : mapping.getSymbol ( )
@@ -163,7 +213,10 @@ public final class DefaultStore extends
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
+    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
     for ( Mapping < Location , Expression > mapping : this.mappings )
     {
       for ( LatexPackage pack : mapping.getSymbol ( ).getLatexPackages ( ) )

@@ -47,6 +47,8 @@ import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.expressions.Sequence ;
 import de.unisiegen.tpml.core.expressions.Tuple ;
 import de.unisiegen.tpml.core.expressions.While ;
+import de.unisiegen.tpml.core.interpreters.DefaultStore ;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
 import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.BooleanType ;
 import de.unisiegen.tpml.core.types.ClassType ;
@@ -373,6 +375,17 @@ public class LatexExportAll
     {
       commands.add ( command ) ;
     }
+    // Environment
+    for ( LatexCommand command : DefaultTypeEnvironment
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    // Store
+    for ( LatexCommand command : DefaultStore.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 
@@ -396,6 +409,24 @@ public class LatexExportAll
     }
     // Type
     for ( LatexInstruction instruction : Type.getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    // Environment
+    for ( LatexInstruction instruction : DefaultTypeEnvironment
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    // Store
+    for ( LatexInstruction instruction : DefaultStore
+        .getLatexInstructionsStatic ( ) )
     {
       if ( ! instructions.contains ( instruction ) )
       {
@@ -461,6 +492,16 @@ public class LatexExportAll
       packages.add ( pack ) ;
     }
     for ( LatexPackage pack : PolyType.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    // Environment
+    for ( LatexPackage pack : DefaultTypeEnvironment.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    // Store
+    for ( LatexPackage pack : DefaultStore.getLatexPackagesStatic ( ) )
     {
       packages.add ( pack ) ;
     }
