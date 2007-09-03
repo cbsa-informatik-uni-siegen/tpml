@@ -64,6 +64,21 @@ public final class InfixOperation extends Expression implements
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_INFIX_OPERATION , 3 ,
+        "\\color{" + LATEX_COLOR_EXPRESSION + "}#2\\ #1\\ #3" , "op" , "e1" , //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+        "e2" ) ) ; //$NON-NLS-1$
+    return commands ;
+  }
+
+
+  /**
    * The expressions.
    */
   private Expression [ ] expressions ;
@@ -226,9 +241,10 @@ public final class InfixOperation extends Expression implements
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_INFIX_OPERATION , 3 ,
-        "\\color{" + LATEX_COLOR_EXPRESSION + "}#2\\ #1\\ #3" , "op" , "e1" , //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
-        "e2" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 

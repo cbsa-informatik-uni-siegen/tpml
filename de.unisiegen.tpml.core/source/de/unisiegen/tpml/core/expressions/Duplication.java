@@ -81,6 +81,20 @@ public final class Duplication extends Expression implements
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_DUPLICATION , 1 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}\\{<#1>\\}" , "a1 = e1 ; ... ; an = en" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    return commands ;
+  }
+
+
+  /**
    * Indeces of the child {@link Expression}s.
    */
   private int [ ] indicesE ;
@@ -294,8 +308,6 @@ public final class Duplication extends Expression implements
   {
     return this.indicesId ;
   }
-
-
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
@@ -305,11 +317,12 @@ public final class Duplication extends Expression implements
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_DUPLICATION , 1 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}\\{<#1>\\}" , "a1 = e1 ; ... ; an = en" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
-
 
   /**
    * Returns the {@link Identifier}s and {@link Expression}s in the right

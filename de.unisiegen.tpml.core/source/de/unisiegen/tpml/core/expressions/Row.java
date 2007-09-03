@@ -47,6 +47,21 @@ public final class Row extends Expression implements DefaultExpressions
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_ROW , 1 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}#1" , //$NON-NLS-1$
+        "epsilon | val a = e; r1 | method m : τ = e ; r1" ) ) ; //$NON-NLS-1$
+    return commands ;
+  }
+
+
+  /**
    * Returns the union of the given first and second {@link Row}.
    * 
    * @param pR1 The first {@link Row}.
@@ -323,9 +338,10 @@ public final class Row extends Expression implements DefaultExpressions
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_ROW , 1 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}#1" , //$NON-NLS-1$
-        "epsilon | val a = e; r1 | method m : τ = e ; r1" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 

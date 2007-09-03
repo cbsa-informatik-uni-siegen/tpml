@@ -54,6 +54,23 @@ public final class Or extends Expression implements DefaultExpressions
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_BARBAR , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{$\\|$}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_OR , 2 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}#1\\ \\" + LATEX_KEY_BARBAR + "\\ #2" , //$NON-NLS-1$ //$NON-NLS-2$
+        "e1" , "e2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    return commands ;
+  }
+
+
+  /**
    * The left and right expression.
    */
   private Expression [ ] expressions ;
@@ -201,11 +218,10 @@ public final class Or extends Expression implements DefaultExpressions
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_BARBAR , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{$\\|$}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_OR , 2 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}#1\\ \\" + LATEX_KEY_BARBAR + "\\ #2" , //$NON-NLS-1$ //$NON-NLS-2$
-        "e1" , "e2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 

@@ -71,6 +71,21 @@ public final class Coercion extends Expression implements DefaultTypes ,
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_COERCION , 3 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}(#1\\colon\\ #2\\ <\\colon\\ #3)" , "e" , //$NON-NLS-1$//$NON-NLS-2$
+        "tau1" , "tau2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    return commands ;
+  }
+
+
+  /**
    * The types.
    * 
    * @see #getTypes()
@@ -249,9 +264,10 @@ public final class Coercion extends Expression implements DefaultTypes ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_COERCION , 3 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}(#1\\colon\\ #2<\\colon\\ #3)" , "e" , //$NON-NLS-1$//$NON-NLS-2$
-        "tau1" , "tau2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 

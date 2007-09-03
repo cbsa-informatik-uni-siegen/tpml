@@ -90,6 +90,39 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_LAMBDA , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{$\\lambda$}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_MULTI_LAMBDA , 3 ,
+        "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+            + "{\\color{" + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_LAMBDA //$NON-NLS-1$ //$NON-NLS-2$
+            + "(#1).#3}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\color{" //$NON-NLS-1$//$NON-NLS-2$
+            + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_LAMBDA //$NON-NLS-1$
+            + "(#1)\\colon\\ #2.#3}" , "id1, ..., idn" , "tau" , "e" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+       return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
+    return packages ;
+  }
+
+
+  /**
    * Indeces of the child {@link Identifier}s.
    */
   private int [ ] indicesId ;
@@ -422,6 +455,40 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexPackage > getLatexPackages ( )
+  {
+    TreeSet < LatexPackage > packages = super.getLatexPackages ( ) ;
+    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    return packages ;
+  }
+
+
+  /**
    * Returns the type of the <code>identifiers</code> or <code>null</code>
    * if no type was specified.
    * 
@@ -468,7 +535,8 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
         + this.expressions [ 0 ].hashCode ( ) ;
   }
 
-
+  
+  
   /**
    * {@inheritDoc}
    * 
@@ -559,42 +627,8 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
     return new MultiLambda ( this.identifiers , newTau , this.expressions [ 0 ]
         .substitute ( pTypeSubstitution ) ) ;
   }
-
-
-  /**
-   * Returns a set of needed latex commands for this latex printable object.
-   * 
-   * @return A set of needed latex commands for this latex printable object.
-   */
-  @ Override
-  public TreeSet < LatexCommand > getLatexCommands ( )
-  {
-    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_LAMBDA , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{$\\lambda$}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_MULTI_LAMBDA , 3 ,
-        "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-            + "{\\color{" + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_LAMBDA //$NON-NLS-1$ //$NON-NLS-2$
-            + "(#1).#3}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\color{" //$NON-NLS-1$//$NON-NLS-2$
-            + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_LAMBDA //$NON-NLS-1$
-            + "(#1)\\colon\\ #2.#3}" , "id1, ..., idn" , "tau" , "e" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    return commands ;
-  }
-
-
-  /**
-   * Returns a set of needed latex packages for this latex printable object.
-   * 
-   * @return A set of needed latex packages for this latex printable object.
-   */
-  @ Override
-  public TreeSet < LatexPackage > getLatexPackages ( )
-  {
-    TreeSet < LatexPackage > packages = super.getLatexPackages ( ) ;
-    packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
-    return packages ;
-  }
-
+  
+  
 
   /**
    * {@inheritDoc}

@@ -53,6 +53,20 @@ public final class Exn extends Expression
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_EXN , 1 , "\\mbox{\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}{$\\uparrow$\\ #1}}" , "name" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    return commands ;
+  }
+
+
+  /**
    * The <b>(DIVIDE-BY-ZERO)</b> exception.
    * 
    * @return A new <b>(DIVIDE-BY-ZERO)</b> exception.
@@ -148,8 +162,10 @@ public final class Exn extends Expression
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_EXN , 1 , "\\mbox{\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}{$\\uparrow$\\ #1}}" , "name" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 

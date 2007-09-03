@@ -35,6 +35,20 @@ public abstract class Constant extends Value
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_CONSTANT , 1 ,
+        "\\mbox{\\textbf{\\color{" + LATEX_COLOR_CONSTANT + "}{#1}}}" , "c" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    return commands ;
+  }
+
+
+  /**
    * The text representation of the constant.
    * 
    * @see #getText()
@@ -103,8 +117,10 @@ public abstract class Constant extends Value
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_CONSTANT , 1 ,
-        "\\mbox{\\textbf{\\color{" + LATEX_COLOR_CONSTANT + "}{#1}}}" , "c" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 

@@ -84,6 +84,25 @@ public final class Inherit extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_INHERIT , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{inherit}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_FROM , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{from}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_INHERIT , 3 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_INHERIT + "\\ #1\\ \\" //$NON-NLS-1$//$NON-NLS-2$
+        + LATEX_KEY_FROM + "\\ #2\\ ;\\ #3" , "a1, ... , ak" , "e" , "b" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    return commands ;
+  }
+
+
+  /**
    * Indeces of the child {@link Identifier}s.
    */
   private int [ ] indicesId ;
@@ -414,8 +433,6 @@ public final class Inherit extends Expression implements BoundIdentifiers ,
   {
     return this.indicesId ;
   }
-
-
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
@@ -425,16 +442,11 @@ public final class Inherit extends Expression implements BoundIdentifiers ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_INHERIT , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{inherit}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_FROM , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{from}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_INHERIT , 3 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_INHERIT + "\\ #1\\ \\" //$NON-NLS-1$//$NON-NLS-2$
-        + LATEX_KEY_FROM + "\\ #2\\ ;\\ #3" , "a1, ... , ak" , "e" , "b" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    return commands ;
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }return commands ;
   }
-
 
   /**
    * Returns the prefix of this {@link Expression}.
