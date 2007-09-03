@@ -4,6 +4,8 @@ package de.unisiegen.tpml.core.typeinference ;
 import java.util.ArrayList ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
@@ -124,8 +126,9 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand (
-        LATEX_TYPE_EQUATION_LIST_TYPE_INFERENCE , 1 , "\\{#1\\}" , //$NON-NLS-1$
-        "teqn1, ... , teqnn" ) ) ; //$NON-NLS-1$
+        LATEX_TYPE_EQUATION_LIST_TYPE_INFERENCE , 1 , "\\color{" //$NON-NLS-1$
+            + LATEX_COLOR_NONE_STYLE + "}{\\{}#1\\color{" //$NON-NLS-1$
+            + LATEX_COLOR_NONE_STYLE + "}{\\}}" , "teqn1, ... , teqnn" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     for ( TypeEquationListTypeInference list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       for ( LatexCommand command : list.first.getLatexCommands ( ) )
@@ -145,6 +148,9 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
   public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
     for ( TypeEquationListTypeInference list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       for ( LatexInstruction instruction : list.first.getLatexInstructions ( ) )
@@ -167,6 +173,7 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     for ( TypeEquationListTypeInference list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       for ( LatexPackage pack : list.first.getLatexPackages ( ) )
@@ -242,8 +249,10 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
         builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
             + LATEX_INDENT ) ) ;
+        builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
         builder.addText ( LATEX_COMMA ) ;
         builder.addText ( LATEX_SPACE ) ;
+        builder.addText ( "}" ) ; //$NON-NLS-1$
         builder.addBreak ( ) ;
       }
       builder.addBuilder ( list.first.toLatexStringBuilder (

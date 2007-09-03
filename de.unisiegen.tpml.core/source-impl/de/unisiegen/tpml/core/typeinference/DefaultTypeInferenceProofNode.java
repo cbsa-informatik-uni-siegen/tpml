@@ -7,6 +7,7 @@ import javax.swing.tree.TreeNode ;
 import de.unisiegen.tpml.core.AbstractProofNode ;
 import de.unisiegen.tpml.core.ProofStep ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
@@ -253,6 +254,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
     for ( TypeSubstitution substitution : this.substitutions )
     {
       for ( LatexInstruction instruction : substitution.getLatexInstructions ( ) )
@@ -297,6 +301,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
     packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     for ( TypeSubstitution substitution : this.substitutions )
     {
       for ( LatexPackage pack : substitution.getLatexPackages ( ) )
@@ -529,7 +534,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
     builder.addBuilderBegin ( ) ;
     if ( this.substitutions.size ( ) > 0 )
     {
+      builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
       builder.addText ( LATEX_LBRACKET ) ;
+      builder.addText ( "}" ) ; //$NON-NLS-1$
       for ( int i = 0 ; i < this.substitutions.size ( ) ; i ++ )
       {
         builder.addBuilder ( this.substitutions.get ( i ).toLatexStringBuilder (
@@ -538,16 +545,20 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
         {
           builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
           builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-              + LATEX_INDENT )
-              + LATEX_COMMA ) ;
+              + LATEX_INDENT ) ) ;
+          builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+          builder.addText ( LATEX_COMMA ) ;
           builder.addText ( LATEX_SPACE ) ;
+          builder.addText ( "}" ) ; //$NON-NLS-1$
         }
       }
+      builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
       builder.addText ( LATEX_RBRACKET ) ;
+      builder.addText ( "}" ) ; //$NON-NLS-1$
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-          + LATEX_INDENT )
-          + LATEX_NEW_LINE ) ;
+          + LATEX_INDENT ) ) ;
+      builder.addText ( LATEX_NEW_LINE ) ;
     }
     for ( int i = 0 ; i < this.formula.size ( ) ; i ++ )
     {
@@ -559,10 +570,12 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
             pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
         builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-            + LATEX_INDENT )
-            + LATEX_SPACE ) ;
+            + LATEX_INDENT ) ) ;
+        builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        builder.addText ( LATEX_SPACE ) ;
         builder.addText ( LATEX_NAIL ) ;
         builder.addText ( LATEX_SPACE ) ;
+        builder.addText ( "}" ) ; //$NON-NLS-1$
       }
       builder.addBuilder ( this.formula.get ( i ).toLatexStringBuilder (
           pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
@@ -570,8 +583,8 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
       {
         builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-            + LATEX_INDENT )
-            + LATEX_NEW_LINE ) ;
+            + LATEX_INDENT ) ) ;
+        builder.addText ( LATEX_NEW_LINE ) ;
       }
     }
     builder.addBuilderEnd ( ) ;
