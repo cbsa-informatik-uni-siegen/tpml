@@ -21,7 +21,7 @@ import de.unisiegen.tpml.core.ProofModel ;
  * 
  * @author Christian Fehler
  */
-public abstract class LatexExport
+public abstract class LatexExport implements LatexCommandNames
 {
   /**
    * The name of a supported {@link Charset}.
@@ -68,75 +68,97 @@ public abstract class LatexExport
     println ( writer , "\\textwidth=510pt" ) ; //$NON-NLS-1$
     println ( writer , "\\textheight=750pt" ) ; //$NON-NLS-1$
     println ( writer ) ;
-    // packages
-    TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
-    if ( packages.size ( ) > 0 )
+    if ( pLatexPrintable.toLatexString ( ).toString ( ).contains (
+        "\\" + LATEX_IDENTIFIER + "{spiderschwein}" ) ) //$NON-NLS-1$//$NON-NLS-2$
     {
+      println ( writer , "\\begin{document}" ) ; //$NON-NLS-1$
+      println ( writer , "\\begin{landscape}" ) ; //$NON-NLS-1$
+      println ( writer ) ;
+      println ( writer , "\\begin{verbatim}" ) ; //$NON-NLS-1$
+      println ( writer , "----------.__.--------._.----------" ) ; //$NON-NLS-1$
+      println ( writer , "---------,-|--|==\\__|-|------------" ) ; //$NON-NLS-1$
+      println ( writer , "---_-_,'--|--|--------|--\\---------" ) ; //$NON-NLS-1$
+      println ( writer , "---|@|---------------|---\\---------" ) ; //$NON-NLS-1$
+      println ( writer , "----|o--o-------------'.---|-------" ) ; //$NON-NLS-1$
+      println ( writer , "----\\----------------------/~~~----" ) ; //$NON-NLS-1$
+      println ( writer , "-----|-__--======='----------------" ) ; //$NON-NLS-1$
+      println ( writer , "-----\\/--\\/------------------------" ) ; //$NON-NLS-1$
+      println ( writer , "-----------------------------------" ) ; //$NON-NLS-1$
+      println ( writer , "\\end{verbatim}" ) ; //$NON-NLS-1$
+      println ( writer , "Spiderschwein, Spiderschwein ..." ) ; //$NON-NLS-1$
+    }
+    else
+    {
+      // packages
+      TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
+      if ( packages.size ( ) > 0 )
+      {
+        println ( writer , "%%" ) ; //$NON-NLS-1$
+        println ( writer , "%% " + LatexPackage.DESCRIPTION ) ; //$NON-NLS-1$
+        println ( writer , "%%" ) ; //$NON-NLS-1$
+        println ( writer ) ;
+      }
+      for ( LatexPackage pack : packages )
+      {
+        println ( writer , pack.toString ( ) ) ;
+      }
+      if ( packages.size ( ) > 0 )
+      {
+        println ( writer ) ;
+      }
+      // instructions
+      ArrayList < LatexInstruction > instructions = pLatexPrintable
+          .getLatexInstructions ( ) ;
+      if ( instructions.size ( ) > 0 )
+      {
+        println ( writer , "%%" ) ; //$NON-NLS-1$
+        println ( writer , "%% " + LatexInstruction.DESCRIPTION ) ; //$NON-NLS-1$
+        println ( writer , "%%" ) ; //$NON-NLS-1$
+        println ( writer ) ;
+      }
+      for ( LatexInstruction instruction : instructions )
+      {
+        println ( writer , instruction.toString ( ) ) ;
+      }
+      if ( instructions.size ( ) > 0 )
+      {
+        println ( writer ) ;
+      }
+      // commands
+      TreeSet < LatexCommand > commands = pLatexPrintable.getLatexCommands ( ) ;
+      if ( commands.size ( ) > 0 )
+      {
+        println ( writer , "%%" ) ; //$NON-NLS-1$
+        println ( writer , "%% " + LatexCommand.DESCRIPTION ) ; //$NON-NLS-1$
+        println ( writer , "%%" ) ; //$NON-NLS-1$
+        println ( writer ) ;
+      }
+      for ( LatexCommand command : commands )
+      {
+        println ( writer , command.toString ( ) ) ;
+      }
+      if ( commands.size ( ) > 0 )
+      {
+        println ( writer ) ;
+      }
+      // document begin
       println ( writer , "%%" ) ; //$NON-NLS-1$
-      println ( writer , "%% " + LatexPackage.DESCRIPTION ) ; //$NON-NLS-1$
+      println ( writer , "%% Document" ) ; //$NON-NLS-1$
       println ( writer , "%%" ) ; //$NON-NLS-1$
       println ( writer ) ;
-    }
-    for ( LatexPackage pack : packages )
-    {
-      println ( writer , pack.toString ( ) ) ;
-    }
-    if ( packages.size ( ) > 0 )
-    {
+      println ( writer , "\\begin{document}" ) ; //$NON-NLS-1$
+      println ( writer , "\\begin{landscape}" ) ; //$NON-NLS-1$
       println ( writer ) ;
-    }
-    // instructions
-    ArrayList < LatexInstruction > instructions = pLatexPrintable
-        .getLatexInstructions ( ) ;
-    if ( instructions.size ( ) > 0 )
-    {
-      println ( writer , "%%" ) ; //$NON-NLS-1$
-      println ( writer , "%% " + LatexInstruction.DESCRIPTION ) ; //$NON-NLS-1$
-      println ( writer , "%%" ) ; //$NON-NLS-1$
-      println ( writer ) ;
-    }
-    for ( LatexInstruction instruction : instructions )
-    {
-      println ( writer , instruction.toString ( ) ) ;
-    }
-    if ( instructions.size ( ) > 0 )
-    {
-      println ( writer ) ;
-    }
-    // commands
-    TreeSet < LatexCommand > commands = pLatexPrintable.getLatexCommands ( ) ;
-    if ( commands.size ( ) > 0 )
-    {
-      println ( writer , "%%" ) ; //$NON-NLS-1$
-      println ( writer , "%% " + LatexCommand.DESCRIPTION ) ; //$NON-NLS-1$
-      println ( writer , "%%" ) ; //$NON-NLS-1$
-      println ( writer ) ;
-    }
-    for ( LatexCommand command : commands )
-    {
-      println ( writer , command.toString ( ) ) ;
-    }
-    if ( commands.size ( ) > 0 )
-    {
-      println ( writer ) ;
-    }
-    // document begin
-    println ( writer , "%%" ) ; //$NON-NLS-1$
-    println ( writer , "%% Document" ) ; //$NON-NLS-1$
-    println ( writer , "%%" ) ; //$NON-NLS-1$
-    println ( writer ) ;
-    println ( writer , "\\begin{document}" ) ; //$NON-NLS-1$
-    println ( writer , "\\begin{landscape}" ) ; //$NON-NLS-1$
-    println ( writer ) ;
-    if ( ! ( pLatexPrintable instanceof ProofModel ) )
-    {
-      println ( writer , "$" ) ; //$NON-NLS-1$
-    }
-    // latex printable
-    println ( writer , pLatexPrintable.toLatexString ( ).toString ( ) ) ;
-    if ( ! ( pLatexPrintable instanceof ProofModel ) )
-    {
-      println ( writer , "$" ) ; //$NON-NLS-1$
+      if ( ! ( pLatexPrintable instanceof ProofModel ) )
+      {
+        println ( writer , "$" ) ; //$NON-NLS-1$
+      }
+      // latex printable
+      println ( writer , pLatexPrintable.toLatexString ( ).toString ( ) ) ;
+      if ( ! ( pLatexPrintable instanceof ProofModel ) )
+      {
+        println ( writer , "$" ) ; //$NON-NLS-1$
+      }
     }
     // document end
     println ( writer ) ;
