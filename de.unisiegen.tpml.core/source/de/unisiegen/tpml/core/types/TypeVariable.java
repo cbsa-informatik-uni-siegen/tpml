@@ -83,6 +83,20 @@ public final class TypeVariable extends MonoType implements
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_VARIABLE , 1 ,
+        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{$#1$}}" , "tvar" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    return commands ;
+  }
+
+
+  /**
    * Returns the greek letter that is assigned to the specified
    * <code>offset</code>.
    * 
@@ -399,8 +413,10 @@ public final class TypeVariable extends MonoType implements
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_VARIABLE , 1 ,
-        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{$#1$}}" , "tvar" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 

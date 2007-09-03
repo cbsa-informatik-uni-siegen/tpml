@@ -52,6 +52,23 @@ public final class ClassType extends MonoType implements DefaultTypes
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_ZETA , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{$\\zeta$}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_CLASS_TYPE , 2 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_ZETA //$NON-NLS-1$
+        + "(#1\\ \\colon\\ #2)" , "tau" , "phi" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    return commands ;
+  }
+
+
+  /**
    * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
@@ -153,11 +170,10 @@ public final class ClassType extends MonoType implements DefaultTypes
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_ZETA , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{$\\zeta$}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_CLASS_TYPE , 2 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_ZETA //$NON-NLS-1$
-        + "(#1\\ \\colon\\ #2)" , "tau" , "phi" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 

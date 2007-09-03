@@ -31,6 +31,22 @@ public final class UnitType extends PrimitiveType
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_UNIT , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{unit}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_UNIT_TYPE , 0 ,
+        "\\" + LATEX_KEY_UNIT ) ) ; //$NON-NLS-1$
+    return commands ;
+  }
+
+
+  /**
    * Allocates a new <code>UnitType</code> instance.
    */
   public UnitType ( )
@@ -86,10 +102,10 @@ public final class UnitType extends PrimitiveType
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_UNIT , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{unit}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_UNIT_TYPE , 0 ,
-        "\\" + LATEX_KEY_UNIT ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 

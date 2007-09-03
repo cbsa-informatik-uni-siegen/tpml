@@ -56,6 +56,20 @@ public final class TupleType extends MonoType implements DefaultTypes
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_TUPLE_TYPE , 1 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}#1" , "tau1 * ... * taun" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    return commands ;
+  }
+
+
+  /**
    * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
@@ -178,8 +192,10 @@ public final class TupleType extends MonoType implements DefaultTypes
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_TUPLE_TYPE , 1 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}#1" , "tau1 * ... * taun" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 

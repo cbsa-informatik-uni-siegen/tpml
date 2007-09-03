@@ -32,6 +32,22 @@ public final class BooleanType extends PrimitiveType
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_BOOL , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{bool}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_BOOLEAN_TYPE , 0 , "\\" //$NON-NLS-1$
+        + LATEX_KEY_BOOL ) ) ;
+    return commands ;
+  }
+
+
+  /**
    * Allocates a new <code>BooleanType</code> instance.
    */
   public BooleanType ( )
@@ -87,10 +103,10 @@ public final class BooleanType extends PrimitiveType
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_BOOL , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{bool}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_BOOLEAN_TYPE , 0 , "\\" //$NON-NLS-1$
-        + LATEX_KEY_BOOL ) ) ;
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 

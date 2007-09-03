@@ -87,6 +87,93 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_PARENTHESIS , 1 , "(#1)" , //$NON-NLS-1$
+    "tau" ) ) ; //$NON-NLS-1$
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  {
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    Color colorExpression = Theme.currentTheme ( ).getExpressionColor ( ) ;
+    float red = ( float ) Math
+        .round ( ( ( float ) colorExpression.getRed ( ) ) / 255 * 100 ) / 100 ;
+    float green = ( float ) Math.round ( ( ( float ) colorExpression
+        .getGreen ( ) ) / 255 * 100 ) / 100 ;
+    float blue = ( float ) Math
+        .round ( ( ( float ) colorExpression.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_EXPRESSION + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}" , LATEX_COLOR_EXPRESSION + ": color of expression text" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    Color colorType = Theme.currentTheme ( ).getTypeColor ( ) ;
+    red = ( float ) Math
+        .round ( ( ( float ) colorType.getRed ( ) ) / 255 * 100 ) / 100 ;
+    green = ( float ) Math
+        .round ( ( ( float ) colorType.getGreen ( ) ) / 255 * 100 ) / 100 ;
+    blue = ( float ) Math
+        .round ( ( ( float ) colorType.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_TYPE + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}" , LATEX_COLOR_TYPE + ": color of types" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    Color colorKeyword = Theme.currentTheme ( ).getKeywordColor ( ) ;
+    red = ( float ) Math
+        .round ( ( ( float ) colorKeyword.getRed ( ) ) / 255 * 100 ) / 100 ;
+    green = ( float ) Math
+        .round ( ( ( float ) colorKeyword.getGreen ( ) ) / 255 * 100 ) / 100 ;
+    blue = ( float ) Math
+        .round ( ( ( float ) colorKeyword.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_KEYWORD + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}" , LATEX_COLOR_KEYWORD + ": color of keywords" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    Color colorIdentifier = Theme.currentTheme ( ).getIdentifierColor ( ) ;
+    red = ( float ) Math
+        .round ( ( ( float ) colorIdentifier.getRed ( ) ) / 255 * 100 ) / 100 ;
+    green = ( float ) Math
+        .round ( ( ( float ) colorIdentifier.getGreen ( ) ) / 255 * 100 ) / 100 ;
+    blue = ( float ) Math
+        .round ( ( ( float ) colorIdentifier.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_IDENTIFIER + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}" , LATEX_COLOR_IDENTIFIER + ": color of keywords" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
+    return packages ;
+  }
+
+
+  /**
    * Cached vector of sub types, so the children do not need to be determined on
    * every invocation of {@link #children()}.
    * 
@@ -197,7 +284,6 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
     return this.children ;
   }
 
-
   /**
    * Clones this type, so that the result is an type equal to this type, but
    * with a different object identity. This is used in the substitution of type
@@ -226,8 +312,9 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @return The caption of this {@link Type}.
    */
   public abstract String getCaption ( ) ;
-
-
+  
+  
+  
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
@@ -236,8 +323,10 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_PARENTHESIS , 1 , "(#1)" , //$NON-NLS-1$
-        "tau" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     if ( this instanceof DefaultTypes )
     {
       for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )
@@ -280,54 +369,14 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
   public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    Color colorExpression = Theme.currentTheme ( ).getExpressionColor ( ) ;
-    float red = ( float ) Math
-        .round ( ( ( float ) colorExpression.getRed ( ) ) / 255 * 100 ) / 100 ;
-    float green = ( float ) Math.round ( ( ( float ) colorExpression
-        .getGreen ( ) ) / 255 * 100 ) / 100 ;
-    float blue = ( float ) Math
-        .round ( ( ( float ) colorExpression.getBlue ( ) ) / 255 * 100 ) / 100 ;
-    instructions.add ( new DefaultLatexInstruction (
-        "\\definecolor{" + LATEX_COLOR_EXPRESSION + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
-            + red + "," //$NON-NLS-1$
-            + green + "," //$NON-NLS-1$
-            + blue + "}" , LATEX_COLOR_EXPRESSION + ": color of expression text" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    Color colorType = Theme.currentTheme ( ).getTypeColor ( ) ;
-    red = ( float ) Math
-        .round ( ( ( float ) colorType.getRed ( ) ) / 255 * 100 ) / 100 ;
-    green = ( float ) Math
-        .round ( ( ( float ) colorType.getGreen ( ) ) / 255 * 100 ) / 100 ;
-    blue = ( float ) Math
-        .round ( ( ( float ) colorType.getBlue ( ) ) / 255 * 100 ) / 100 ;
-    instructions.add ( new DefaultLatexInstruction (
-        "\\definecolor{" + LATEX_COLOR_TYPE + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
-            + red + "," //$NON-NLS-1$
-            + green + "," //$NON-NLS-1$
-            + blue + "}" , LATEX_COLOR_TYPE + ": color of types" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    Color colorKeyword = Theme.currentTheme ( ).getKeywordColor ( ) ;
-    red = ( float ) Math
-        .round ( ( ( float ) colorKeyword.getRed ( ) ) / 255 * 100 ) / 100 ;
-    green = ( float ) Math
-        .round ( ( ( float ) colorKeyword.getGreen ( ) ) / 255 * 100 ) / 100 ;
-    blue = ( float ) Math
-        .round ( ( ( float ) colorKeyword.getBlue ( ) ) / 255 * 100 ) / 100 ;
-    instructions.add ( new DefaultLatexInstruction (
-        "\\definecolor{" + LATEX_COLOR_KEYWORD + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
-            + red + "," //$NON-NLS-1$
-            + green + "," //$NON-NLS-1$
-            + blue + "}" , LATEX_COLOR_KEYWORD + ": color of keywords" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    Color colorIdentifier = Theme.currentTheme ( ).getIdentifierColor ( ) ;
-    red = ( float ) Math
-        .round ( ( ( float ) colorIdentifier.getRed ( ) ) / 255 * 100 ) / 100 ;
-    green = ( float ) Math
-        .round ( ( ( float ) colorIdentifier.getGreen ( ) ) / 255 * 100 ) / 100 ;
-    blue = ( float ) Math
-        .round ( ( ( float ) colorIdentifier.getBlue ( ) ) / 255 * 100 ) / 100 ;
-    instructions.add ( new DefaultLatexInstruction (
-        "\\definecolor{" + LATEX_COLOR_IDENTIFIER + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
-            + red + "," //$NON-NLS-1$
-            + green + "," //$NON-NLS-1$
-            + blue + "}" , LATEX_COLOR_IDENTIFIER + ": color of keywords" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    
     if ( this instanceof DefaultTypes )
     {
       for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )
@@ -376,7 +425,10 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
+    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
     if ( this instanceof DefaultTypes )
     {
       for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )

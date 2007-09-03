@@ -28,6 +28,22 @@ public class UnifyType extends PrimitiveType
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_UNIFY , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{unify}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_UNIFY_TYPE , 0 , "\\" //$NON-NLS-1$
+        + LATEX_KEY_UNIFY ) ) ;
+    return commands ;
+  }
+
+
+  /**
    * Allocates a new <code>UnitType</code> instance.
    */
   public UnifyType ( )
@@ -67,10 +83,10 @@ public class UnifyType extends PrimitiveType
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_UNIFY , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{unify}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_UNIFY_TYPE , 0 , "\\" //$NON-NLS-1$
-        + LATEX_KEY_UNIFY ) ) ;
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 

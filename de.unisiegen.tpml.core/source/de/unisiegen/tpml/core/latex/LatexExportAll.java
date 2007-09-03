@@ -47,6 +47,22 @@ import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.expressions.Sequence ;
 import de.unisiegen.tpml.core.expressions.Tuple ;
 import de.unisiegen.tpml.core.expressions.While ;
+import de.unisiegen.tpml.core.types.ArrowType ;
+import de.unisiegen.tpml.core.types.BooleanType ;
+import de.unisiegen.tpml.core.types.ClassType ;
+import de.unisiegen.tpml.core.types.IntegerType ;
+import de.unisiegen.tpml.core.types.ListType ;
+import de.unisiegen.tpml.core.types.ObjectType ;
+import de.unisiegen.tpml.core.types.PolyType ;
+import de.unisiegen.tpml.core.types.RecType ;
+import de.unisiegen.tpml.core.types.RefType ;
+import de.unisiegen.tpml.core.types.RowType ;
+import de.unisiegen.tpml.core.types.TupleType ;
+import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.core.types.TypeName ;
+import de.unisiegen.tpml.core.types.TypeVariable ;
+import de.unisiegen.tpml.core.types.UnifyType ;
+import de.unisiegen.tpml.core.types.UnitType ;
 
 
 /**
@@ -151,6 +167,7 @@ public class LatexExportAll
   private static TreeSet < LatexCommand > getAllLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    // Expression
     for ( LatexCommand command : Expression.getLatexCommandsStatic ( ) )
     {
       commands.add ( command ) ;
@@ -291,6 +308,71 @@ public class LatexExportAll
     {
       commands.add ( command ) ;
     }
+    // Type
+    for ( LatexCommand command : Type.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : ArrowType.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : BooleanType.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : ClassType.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : IntegerType.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : ListType.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : ObjectType.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : PolyType.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : RecType.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : RefType.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : RowType.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : TupleType.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : TypeName.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : TypeVariable.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : UnifyType.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : UnitType.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 
@@ -303,10 +385,22 @@ public class LatexExportAll
   private static ArrayList < LatexInstruction > getAllLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    // Expression
     for ( LatexInstruction instruction : Expression
         .getLatexInstructionsStatic ( ) )
     {
-      instructions.add ( instruction ) ;
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    // Type
+    for ( LatexInstruction instruction : Type.getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
     }
     return instructions ;
   }
@@ -320,6 +414,7 @@ public class LatexExportAll
   private static TreeSet < LatexPackage > getAllLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    // Expression
     for ( LatexPackage pack : Expression.getLatexPackagesStatic ( ) )
     {
       packages.add ( pack ) ;
@@ -357,6 +452,15 @@ public class LatexExportAll
       packages.add ( pack ) ;
     }
     for ( LatexPackage pack : Recursion.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    // Type
+    for ( LatexPackage pack : Type.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : PolyType.getLatexPackagesStatic ( ) )
     {
       packages.add ( pack ) ;
     }

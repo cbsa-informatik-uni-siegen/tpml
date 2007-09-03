@@ -85,6 +85,23 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_ATTR , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{attr}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_ROW_TYPE , 1 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}#1" , //$NON-NLS-1$
+        "epsilon | attr a : tau ; phi1 | m : tau ; phi1" ) ) ; //$NON-NLS-1$
+    return commands ;
+  }
+
+
+  /**
    * Returns a new <code>RowType</code> which unions the method types from the
    * input <code>RowTypes</code>. The new <code>RowType</code> contains at
    * first the method types which are in both input <code>RowTypes</code>,
@@ -473,11 +490,10 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_ATTR , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{attr}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_ROW_TYPE , 1 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}#1" , //$NON-NLS-1$
-        "epsilon | attr a : tau ; phi1 | m : tau ; phi1" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     if ( this.remainingRowType != null )
     {
       for ( LatexCommand command : this.remainingRowType.getLatexCommands ( ) )
