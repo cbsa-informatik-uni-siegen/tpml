@@ -11,6 +11,8 @@ import javax.swing.Scrollable;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeModelEvent;
 
+import com.sun.org.apache.xerces.internal.dom.ParentNode;
+
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
@@ -327,6 +329,23 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Iterates through the entire tree an places every node.<br>
 	 * <br>
@@ -350,14 +369,24 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	 */
 	Dimension placeNode (TypeInferenceProofNode pNode, int pX, int pY) 
 	{
+																		//System.out.println("verfügbare Seitenhöhe: "+availableHeight);
 		int x = pX;
 		int y = pY;
 		
-		TypeInferenceProofNode node = pNode;
+		this.actualPageSpaceCounter = y;
 		
+		TypeInferenceProofNode node = pNode;
 		Dimension size = new Dimension (0, 0);
+		
+		// save the space the next node will be moved down to get on the next page
+		int movedDown = 0;
+		
+		int lastNodeHeight = this.actualPageSpaceCounter;
+		// TODO Test: count the pages to set the startofset of eacht site
+		int pagecount = 1;
 
-		while (node != null) {
+		while (node != null) 
+		{
 			TypeInferenceNodeComponent nodeComponent = (TypeInferenceNodeComponent)node.getUserObject();
 			
 			// set the origin of this node
@@ -366,64 +395,174 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 			// if the node has no parent node it appears to be the rootNode
 			// 
 			// the expression of the rootNode can be placed without checking anything
-			if (node.getParent() == null) {
+			if (node.getParent() == null) 
+			{
 				nodeComponent.placeExpression();
-				
-				
+							
 				// move the positioning
 				y += nodeComponent.getRuleTop();
+				this.actualPageSpaceCounter = y;
 				
 				// evaluate the new dimensions
 				size.height		= y;
 				
 			}
-			else {
+			else // the expression is not the root node
+			{
 				// evaluate the max size of this nodes expression and the parent
 				// nodes rules
 				TypeInferenceProofNode 			parentNode = node.getParent();
 				TypeInferenceNodeComponent 	parentNodeComponent = (TypeInferenceNodeComponent)parentNode.getUserObject();
 				
-				
 				Dimension expSize 	= nodeComponent.getExpressionSize();
 				Dimension ruleSize 	= parentNodeComponent.getRuleSize();
 	
 				int maxHeight = Math.max(expSize.height, ruleSize.height);
+													//System.out.println("Die höhe: "+maxHeight+" auf der aktuellen Seite: "+actualPageSpaceCounter + "VErfügbar: "+availableHeight);
 				
-				// inform both component about the actual height they should use to
-				// place them
-				parentNodeComponent.setActualRuleHeight(maxHeight);
-				nodeComponent.setActualExpressionHeight(maxHeight);
+				// provide printing
+				// if the actualPageSpaceCounter has not enough space for the next node perform a pagebraek
+				//if (this.actualPageSpaceCounter + maxHeight + lastNodeHeight > this.availableHeight-errorCorretion)
+				//{
+				//	return size;
+				//}
+				//
+													
+				// TODO müssen wir noch mal gucken, geht so erstmal...
+				// if (this.actualPageSpaceCounter + 2* maxHeight > this.availableHeight-errorCorretion )
+				// the 100 is added to secure the pagebrake. I do not know why it is needed.
 				
-				// let both components place theire elements
-				parentNodeComponent.placeRules();
-				nodeComponent.placeExpression();
+				//komische version, geht aber
+				//if (this.actualPageSpaceCounter + maxHeight + lastNodeHeight + 100 > this.availableHeight )
 				
+				// So scheint das geil, ich bin ein junger Gott!!! ;)
+				if (this.actualPageSpaceCounter + maxHeight + nodeComponent.getRuleTop() > this.availableHeight )
+				{
+					
+					// save the space the node must moved down
+					//movedDown = ((this.availableHeight - this.actualPageSpaceCounter));
+					// the moved down will be calculated as the old y and the new one later on, and it will be devided by 2
+					movedDown = y;
+					
+					// move the next node down
+					//y+= movedDown+errorCorretion; //y += this.availableHeight - this.actualPageSpaceCounter;
+					y=pagecount*availableHeight;
+					movedDown = y-movedDown;
+					//ganz ganz wichtig, wenn ich es auch noch nciht versanden habe!!!
+					movedDown -= nodeComponent.getRuleTop();
 				
-				// this finishes the parentNode so it can be placed
-				parentNodeComponent.setBounds();
-				
-				// the additional height come from the actual node
-				y += nodeComponent.getRuleTop();
-				
-				// evaluate the new dimensions
-				size.height = y;
+					//movedDown /= 2;
+					//y+=pagecount*20;
+					pagecount++;
 
-				// the actual width of the entire component can now be checked
-				// on the finshed node. the parent node
-				size.width	= Math.max(size.width, x + parentNodeComponent.getSize().width);
+					// restart the actualPageSpaceCounter
+					this.actualPageSpaceCounter = 0;
+					
+					// inform both component about the actual height they should use to
+					// place them
+					parentNodeComponent.setActualRuleHeight(maxHeight);
+					nodeComponent.setActualExpressionHeight(maxHeight);
+					
+					// let both components place theire elements
+					parentNodeComponent.placeRules();
+					nodeComponent.placeExpression();
+					
+					// this finishes the parentNode so it can be placed
+					parentNodeComponent.setBounds();
+					
+					//TODO was bitte ist das???
+					// the additional height come from the actual node
+					//y += nodeComponent.getRuleTop();
+					//this.actualPageSpaceCounter += nodeComponent.getRuleTop();
+					
+					//System.out.println(maxHeight+" - "+nodeComponent.getRuleTop());
+					
+					// evaluate the new dimensions
+					size.height = y;
+
+					// the actual width of the entire component can now be checked
+					// on the finshed node. the parent node
+					size.width	= Math.max(size.width, x + parentNodeComponent.getSize().width);
+
+				}
+				else
+				{
+					
+					// inform both component about the actual height they should use to
+					// place them
+					
+					// Das ist schon einen ganz nette Variante, Dann einfach die regel mit placeRules setzen, ohne irgend einem
+					// moveDown...
+					//parentNodeComponent.setActualRuleHeight(maxHeight+movedDown);
+					
+					
+					nodeComponent.setActualExpressionHeight(maxHeight);
+
+					// let both components place theire elements
+					// the movedDown saves the information how far the the parent-Rules must be moved down...
+					//parentNodeComponent.placeRules(movedDown);
+					if (movedDown != 0)
+					{
+						//parentNodeComponent.placeRulesFix(y+movedDown);
+						//System.err.println("moveddown: "+movedDown);
+						//parentNodeComponent.setSpacing(parentNodeComponent.getSpacing()+movedDown);
+						//parentNodeComponent.placeRulesFix(movedDown);
+						//parentNodeComponent.setSize(parentNodeComponent.WIDTH, parentNodeComponent.HEIGHT+movedDown);
+						//parentNodeComponent.setSize(parentNodeComponent.getSize().width, parentNodeComponent.getSize().height+movedDown);
+						
+						//Wir wollen die Expresson größer machen, und schon segelt die Regel auch mit runter... :(
+						parentNodeComponent.setActualExpressionHeight(parentNodeComponent.getActualExpressionHeight()+movedDown);
+						parentNodeComponent.placeRules();
+					}
+					else
+					{
+						parentNodeComponent.placeRules();
+					}
+					
+					nodeComponent.placeExpression();
+
+					// this finishes the parentNode so it can be placed
+					//parentNodeComponent.setBounds(movedDown);
+					
+					parentNodeComponent.setBounds();
+					
+					//parentNodeComponent.setBounds();
+					
+					movedDown = 0;
+
+					// the additional height come from the actual node
+					y += nodeComponent.getRuleTop();
+					this.actualPageSpaceCounter += nodeComponent.getRuleTop();
+					//System.out.println(maxHeight+" - "+nodeComponent.getRuleTop());
+					
+					// evaluate the new dimensions
+					size.height = y;
+
+					// the actual width of the entire component can now be checked
+					// on the finshed node. the parent node
+					size.width	= Math.max(size.width, x + parentNodeComponent.getSize().width);
+
+				}
+				
+				lastNodeHeight = maxHeight;
+				//tmpPaper += maxHeight;
+				
 			}
 		
 			// if the node has no children the rules need to get
 			// placed here with the expression
-			if (getFirstChild (node) == null) {
+			if (getFirstChild (node) == null)
+			{
 				
-				if (this.model.isFinished()) {
+				if (this.model.isFinished()) 
+				{
 					nodeComponent.hideRules ();
 					nodeComponent.setBounds();
 					
 					size.width	= Math.max(size.width, x + nodeComponent.getSize().width);
 				}
-				else {
+				else 
+				{
 					// the rules can savely be positioned
 					nodeComponent.placeRules();
 					
