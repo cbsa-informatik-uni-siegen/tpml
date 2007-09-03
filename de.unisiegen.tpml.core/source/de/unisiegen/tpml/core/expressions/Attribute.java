@@ -64,6 +64,23 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_VAL , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{val}}" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_ATTRIBUTE , 2 , "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_VAL //$NON-NLS-1$
+        + "\\ #1\\ =\\ #2\\ ;" , "a" , "e" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    return commands ;
+  }
+
+
+  /**
    * The list of identifiers.
    * 
    * @see #getIdentifiers()
@@ -284,11 +301,10 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_VAL , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{val}}" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_ATTRIBUTE , 2 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_VAL //$NON-NLS-1$
-        + "\\ #1\\ =\\ #2\\ ;" , "a" , "e" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 

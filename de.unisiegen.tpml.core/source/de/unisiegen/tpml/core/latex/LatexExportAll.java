@@ -13,6 +13,10 @@ import java.util.ArrayList ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.expressions.And ;
+import de.unisiegen.tpml.core.expressions.Application ;
+import de.unisiegen.tpml.core.expressions.Attribute ;
+import de.unisiegen.tpml.core.expressions.BinaryOperator ;
+import de.unisiegen.tpml.core.expressions.Class ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 
 
@@ -130,6 +134,22 @@ public class LatexExportAll
     {
       commands.add ( command ) ;
     }
+    for ( LatexCommand command : Application.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : Attribute.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : BinaryOperator.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : Class.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 
@@ -160,6 +180,10 @@ public class LatexExportAll
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
     for ( LatexPackage pack : Expression.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : Class.getLatexPackagesStatic ( ) )
     {
       packages.add ( pack ) ;
     }

@@ -22,6 +22,20 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 public abstract class BinaryOperator extends Constant
 {
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_BINARY_OPERATOR , 1 ,
+        "\\textbf{\\color{" + LATEX_COLOR_CONSTANT + "}{$#1$}}" , "op" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    return commands ;
+  }
+
+
+  /**
    * The base pretty print priority for this binary operator, when used within
    * an infix operation.
    * 
@@ -82,6 +96,23 @@ public abstract class BinaryOperator extends Constant
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  @ Override
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
+
+
+  /**
    * Returns the prefix of this {@link Expression}.
    * 
    * @return The prefix of this {@link Expression}.
@@ -107,21 +138,6 @@ public abstract class BinaryOperator extends Constant
   public int getPrettyPriority ( )
   {
     return this.prettyPriority ;
-  }
-
-
-  /**
-   * Returns a set of needed latex commands for this latex printable object.
-   * 
-   * @return A set of needed latex commands for this latex printable object.
-   */
-  @ Override
-  public TreeSet < LatexCommand > getLatexCommands ( )
-  {
-    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_BINARY_OPERATOR , 1 ,
-        "\\textbf{\\color{" + LATEX_COLOR_CONSTANT + "}{$#1$}}" , "op" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    return commands ;
   }
 
 
