@@ -4,6 +4,8 @@ package de.unisiegen.tpml.core.subtypingrec ;
 import java.util.ArrayList ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
@@ -79,7 +81,8 @@ public class DefaultSubType implements PrettyPrintable , LatexPrintable
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_SUB_TYPE , 2 ,
-        "#1\\ <:\\ #2" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        "#1\\ \\color{" + LATEX_COLOR_NONE_STYLE + "}{<:}\\ #2" , "tau1" , //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+        "tau2" ) ) ; //$NON-NLS-1$
     for ( LatexCommand command : this.left.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
@@ -100,6 +103,9 @@ public class DefaultSubType implements PrettyPrintable , LatexPrintable
   public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
     for ( LatexInstruction instruction : this.left.getLatexInstructions ( ) )
     {
       if ( ! instructions.contains ( instruction ) )
@@ -126,6 +132,7 @@ public class DefaultSubType implements PrettyPrintable , LatexPrintable
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     for ( LatexPackage pack : this.left.getLatexPackages ( ) )
     {
       packages.add ( pack ) ;

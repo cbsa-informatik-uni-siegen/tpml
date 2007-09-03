@@ -10,6 +10,7 @@ import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
 import de.unisiegen.tpml.core.interpreters.Store ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
@@ -162,8 +163,9 @@ public final class DefaultSmallStepProofNode extends
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_NODE , 2 ,
         "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-            + "{#1}" + LATEX_LINE_BREAK_NEW_COMMAND + "{(#1\\ \\ #2)}" , //$NON-NLS-1$//$NON-NLS-2$
-        "e" , "store" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+            + "{#1}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\color{" //$NON-NLS-1$ //$NON-NLS-2$
+            + LATEX_COLOR_NONE_STYLE + "}{(}#1\\ \\ #2\\color{" //$NON-NLS-1$
+            + LATEX_COLOR_NONE_STYLE + "}{)}}" , "e" , "store" ) ) ;  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     for ( LatexCommand command : this.getStore ( ).getLatexCommands ( ) )
     {
       commands.add ( command ) ;
@@ -184,6 +186,9 @@ public final class DefaultSmallStepProofNode extends
   public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
     for ( LatexInstruction instruction : this.getStore ( )
         .getLatexInstructions ( ) )
     {
@@ -213,6 +218,7 @@ public final class DefaultSmallStepProofNode extends
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
     packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     for ( LatexPackage pack : this.getStore ( ).getLatexPackages ( ) )
     {
       packages.add ( pack ) ;
