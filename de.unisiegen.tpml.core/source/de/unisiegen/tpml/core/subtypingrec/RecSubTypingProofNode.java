@@ -41,7 +41,7 @@ public interface RecSubTypingProofNode extends SubTypingNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getChildAt(int)
    */
-  public ProofNode getChildAt ( int childIndex ) ;
+  public RecSubTypingProofNode getChildAt ( int childIndex ) ;
 
 
   /**

@@ -39,6 +39,7 @@ import de.unisiegen.tpml.core.subtypingrec.AbstractRecSubTypingProofRule;
 import de.unisiegen.tpml.core.subtypingrec.DefaultRecSubTypingProofNode;
 import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofContext;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode;
 import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRule;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode;
@@ -227,11 +228,13 @@ public class LatexTest
     // SubTyping
     if ( number == 60 ) testSubTypingProofRule ( file ) ;
     if ( number == 61 ) testSubTypingProofNode ( file ) ;
+    if ( number == 62 ) testSubTypingProofModel ( file ) ;
     // RecSubTyping
     if ( number == 70 ) testRecSubTypingProofRule ( file ) ;
     if ( number == 71 ) testSubType ( file ) ;
     if ( number == 72 ) testRecSubTypingProofNode ( file ) ;
-    if ( number == 73 ) testSubTypingProofModel ( file ) ;
+    if ( number == 73 ) testRecSubTypingProofModel ( file ) ;
+    
     // LatexExportAll
     if ( number == 80 ) testLatexExportAll ( file ) ;
     if ( compile )
@@ -497,6 +500,27 @@ public class LatexTest
 	      Expression expression = language.newParser ( new StringReader ( text ) )
 	          .parse ( ) ;
 	      MinimalTypingProofModel model = language.newMinimalTypingProofModel  ( expression, false ) ;
+	      model.complete ( nextNode ( model ) ) ;
+	      LatexExport.export ( model , pFile ) ;
+	    }
+	    catch ( Exception e )
+	    {
+	      e.printStackTrace ( ) ;
+	      System.exit ( 1 ) ;
+	    }
+  }
+  
+  private final static void testRecSubTypingProofModel ( File pFile )
+  {
+	  try
+	    {
+	      Language language = LanguageFactory.newInstance ( ).getLanguageById (
+	          "l2sub" ) ;
+	      MonoType type = new ArrowType ( new IntegerType ( ) , new ArrowType (
+	            new IntegerType ( ) , new IntegerType ( ) ) ) ;
+	      MonoType type2 = new ArrowType ( new IntegerType ( ) , new ArrowType (
+	            new IntegerType ( ) , new IntegerType ( ) ) ) ;
+	      RecSubTypingProofModel model = language.newRecSubTypingProofModel  ( type, type2, false ) ;
 	      model.complete ( nextNode ( model ) ) ;
 	      LatexExport.export ( model , pFile ) ;
 	    }
