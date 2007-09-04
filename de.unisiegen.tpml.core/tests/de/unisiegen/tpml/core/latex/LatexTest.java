@@ -3,6 +3,8 @@ package de.unisiegen.tpml.core.latex ;
 
 import java.io.File;
 import java.io.StringReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -80,6 +82,12 @@ import de.unisiegen.tpml.core.types.UnitType;
 { "all" } )
 public class LatexTest
 {
+  private static boolean error = false ;
+  
+  
+  private static boolean all = false ;
+  
+  
   private static boolean console = true ;
 
 
@@ -94,9 +102,11 @@ public class LatexTest
       {
         System.out.println ( ) ;
       }
+      if ( console )
       System.out.println ( "*** compile ***" ) ;
       Process p ;
       // latex 1
+      if ( console )
       System.out.println ( "latex 1" ) ;
       p = Runtime.getRuntime ( ).exec ( "latex test.tex" ) ;
       try
@@ -114,6 +124,7 @@ public class LatexTest
         return ;
       }
       // latex 2
+      if ( console )
       System.out.println ( "latex 2" ) ;
       p = Runtime.getRuntime ( ).exec ( "latex test.tex" ) ;
       try
@@ -131,6 +142,7 @@ public class LatexTest
         return ;
       }
       // dvips
+      if ( console )
       System.out.println ( "dvips" ) ;
       p = Runtime.getRuntime ( ).exec ( "dvips test.dvi" ) ;
       try
@@ -148,6 +160,7 @@ public class LatexTest
         return ;
       }
       // ps2pdf
+      if ( console )
       System.out.println ( "ps2pdf" ) ;
       p = Runtime.getRuntime ( ).exec ( "ps2pdf test.ps" ) ;
       try
@@ -175,6 +188,7 @@ public class LatexTest
 
   public final static void main ( String [ ] args )
   {
+	 File file = new File ( "test.tex" ) ;
     System.out.println ( "*** started ***" ) ;
     for ( String arg : args )
     {
@@ -186,9 +200,11 @@ public class LatexTest
       {
         compile = false ;
       }
+      if (arg.equals ( "-all" ))
+      	all = true;
     }
+    if (all){
     int number = 73 ;
-    File file = new File ( "test.tex" ) ;
     // Expression, Type, Environment
     if ( number == 00 ) testExpression ( file ) ;
     if ( number == 01 ) testType ( file ) ;
@@ -241,7 +257,245 @@ public class LatexTest
     {
       compile ( ) ;
     }
-    System.out.println ( "*** finished ***" ) ;
+    }
+    else{
+   	 console = false;
+   	 testExpression ( file );
+   	 compile ( ) ;
+   	 if (removeFiles ( file ))
+   		 System.out.println("testExpression: success");
+   	 else
+   		 System.err.println("testExpression: failed");
+   	 testType ( file ) ;
+   	 compile ( ) ;
+   	 if (removeFiles ( file ))
+   		 System.out.println("testType: success");
+   	 else
+   		 System.err.println("testType: failed");
+   	 testTypeEnvironment ( file ) ;
+   	 compile ( ) ;
+   	 if (removeFiles ( file ))
+   		 System.out.println("testEnvironment: success");
+   	 else
+   		 System.err.println("testEnvironment: failed");
+       testStore ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testStore: success");
+   	 else
+   		 System.err.println("testStore: failed");
+       testTypeCheckerProofRule ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testTypeCheckerProofRule: success");
+   	 else
+   		 System.err.println("testTypeCheckerProofRule: failed");
+       testSeenTypes ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testSeenTypes: success");
+   	 else
+   		 System.err.println("testSeenTypes: failed");
+       testTypeSubstitution ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testTypeSubstitution: success");
+   	 else
+   		 System.err.println("testTypeSubstitution: failed");
+       testTypeEquationTypeChecker ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testTypeEquationTypeChecker: success");
+   	 else
+   		 System.err.println("testTypeEquationTypeChecker: failed");
+       testTypeEquationListTypeChecker ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testTypeEquationListTypeChecker: success");
+   	 else
+   		 System.err.println("testTypeEquationListTypeChecker: failed");
+       testTypeCheckerExpressionProofNode ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testTypeCheckerExpressionProofNode: success");
+   	 else
+   		 System.err.println("testTypeCheckerExpressionProofNode: failed");
+       testTypeCheckerTypeProofNode ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testTypeCheckerTypeProofNode: success");
+   	 else
+   		 System.err.println("testTypeCheckerTypeProofNode: failed");
+       testTypeCheckerProofModel ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testTypeCheckerProofModel: success");
+   	 else
+   		 System.err.println("testTypeCheckerProofModel: failed");
+       // TypeInference
+       testTypeEquationTypeInference ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testTypeEquationTypeInference: success");
+   	 else
+   		 System.err.println("testTypeEquationTypeInference: failed");
+       testTypeEquationListTypeInference ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testTypeEquationListTypeInference: success");
+   	 else
+   		 System.err.println("testTypeEquationListTypeInference: failed");
+       testTypeSubstitutionList ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testTypeSubstitutionList: success");
+   	 else
+   		 System.err.println("testTypeSubstitutionList: failed");
+       testTypeJudgement ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testTypeJudgement: success");
+   	 else
+   		 System.err.println("testTypeJudgement: failed");
+       testTypeSubType ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testTypeSubType: success");
+   	 else
+   		 System.err.println("testTypeSubType: failed");
+       testTypeInferenceProofNode ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testTypeInferenceProofNode: success");
+   	 else
+   		 System.err.println("testTypeInferenceProofNode: failed");
+       testTypeInferenceProofModel ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testTypeInferenceProofModel: success");
+   	 else
+   		 System.err.println("testTypeInferenceProofModel: failed");
+       // SmallStep
+       testSmallStepProofRule ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testSmallStepProofRule: success");
+   	 else
+   		 System.err.println("testSmallStepProofRule: failed");
+       testSmallStepProofNode ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testSmallStepProofNode: success");
+   	 else
+   		 System.err.println("testSmallStepProofNode: failed");
+       testSmallStepProofModel ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testSmallStepProofModel: success");
+   	 else
+   		 System.err.println("testSmallStepProofModel: failed");
+       // BigStep
+       testBigStepProofRule ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testBigStepProofRule: success");
+   	 else
+   		 System.err.println("testBigStepProofRule: failed");
+       testBigStepResult ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testBigStepResult: success");
+   	 else
+   		 System.err.println("testBigStepResult: failed");
+       testBigStepProofNode ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testBigStepProofNode: success");
+   	 else
+   		 System.err.println("testBigStepProofNode: failed");
+       testBigStepProofModel ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testBigStepProofModel: success");
+   	 else
+   		 System.err.println("testBigStepProofModel: failed");
+       // MinimalTyping
+       testMinimalTypingProofRule ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testMinimalTypingProofRule: success");
+   	 else
+   		 System.err.println("testMinimalTypingProofRule: failed");
+       testMinimalTypingExpressionProofNode ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testMinimalTypingExpressionProofNode: success");
+   	 else
+   		 System.err.println("testMinimalTypingExpressionProofNode: failed");
+       testMinimalTypingTypesProofNode ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testMinimalTypingTypesProofNode: success");
+   	 else
+   		 System.err.println("testMinimalTypingTypesProofNode: failed");
+       testMinimalTypingProofModel ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testMinimalTypingProofModel: success");
+   	 else
+   		 System.err.println("testMinimalTypingProofModel: failed");
+       // SubTyping
+       testSubTypingProofRule ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testSubTypingProofRule: success");
+   	 else
+   		 System.err.println("testSubTypingProofRule: failed");
+       testSubTypingProofNode ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testSubTypingProofNode: success");
+   	 else
+   		 System.err.println("testSubTypingProofNode: failed");
+       testSubTypingProofModel ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testSubTypingProofModel: success");
+   	 else
+   		 System.err.println("testSubTypingProofModel: failed");
+       // RecSubTyping
+       testRecSubTypingProofRule ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testRecSubTypingProofRule: success");
+   	 else
+   		 System.err.println("testRecSubTypingProofRule: failed");
+       testSubType ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testSubType: success");
+   	 else
+   		 System.err.println("testSubType: failed");
+       testRecSubTypingProofNode ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testRecSubTypingProofNode: success");
+   	 else
+   		 System.err.println("testRecSubTypingProofNode: failed");
+       testRecSubTypingProofModel ( file ) ;
+       compile ( ) ;
+       if (removeFiles ( file ))
+   		 System.out.println("testRecSubTypingProofModel: success");
+   	 else
+   		 System.err.println("testRecSubTypingProofModel: failed");
+       if (error)
+      	 System.err.println("Something gone wrong");
+       else 
+      	 System.err.println("Done all without problems");
+       }
+    System.out.println ( "*** finished***" ) ;
+   
+    
   }
 
 
@@ -1139,4 +1393,25 @@ public class LatexTest
       System.exit ( 1 ) ;
     }
   }
+  
+
+	private static boolean removeFiles ( File pFile ) {
+		int index = pFile.toString ( ).indexOf ( '.' );
+		String fileName = pFile.toString ( ).substring ( 0, index );
+		File dviFile = new File ( fileName + ".dvi" );
+		dviFile.delete ( );
+		File psFile = new File ( fileName + ".ps" );
+		psFile.delete ( );
+		File auxFile = new File ( fileName + ".aux" );
+		auxFile.delete ( );
+		File logFile = new File ( fileName + ".log" );
+		logFile.delete ( );
+		pFile.delete ( );
+		File pdfFile = new File ( fileName + ".pdf" );
+		if (pdfFile.delete ( )){
+			return true;
+		}
+		error = true;
+		return false;
+	}
 }
