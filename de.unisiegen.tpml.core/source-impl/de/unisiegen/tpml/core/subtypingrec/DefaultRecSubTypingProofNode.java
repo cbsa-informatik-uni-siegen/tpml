@@ -7,7 +7,6 @@ import de.unisiegen.tpml.core.AbstractProofNode ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexInstruction ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
@@ -37,6 +36,87 @@ import de.unisiegen.tpml.core.types.MonoType ;
 public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
     RecSubTypingProofNode , SubTypingProofNode
 {
+  /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_BYRULE , 1 ,
+        "\\hspace{-5mm}\\mbox{\\scriptsize\\ #1}" , "rule" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands
+        .add ( new DefaultLatexCommand (
+            LATEX_REC_SUB_TYPING_PROOF_NODE ,
+            7 ,
+            "\\ifarrows" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "\\else \\refstepcounter{node}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "\\noindent\\hspace{\\treeindent}\\hspace{#2\\nodeindent}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "$\\begin{tabular}[t]{p{#7}}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "#3\\ \\color{" + LATEX_COLOR_NONE_STYLE + "}{\\vdash}" //$NON-NLS-1$//$NON-NLS-2$
+                + "\\ #4\\ \\color{" + LATEX_COLOR_NONE_STYLE //$NON-NLS-1$
+                + "}{<:}\\ #5$\\\\$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "\\byrule{#6} " //$NON-NLS-1$
+                + "$\\end{tabular}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "\\vspace{\\nodesep}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "\\fi" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+            , "depth" , "id" , "seenTypes" , "type" , "type2" , "rule" , //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+            "space" ) ) ; //$NON-NLS-1$
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  {
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ) ; //$NON-NLS-1$
+    instructions
+        .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newlength{\\treeindent}" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newlength{\\nodeindent}" ) ) ; //$NON-NLS-1$
+    instructions
+        .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newif\\ifarrows  " + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
+            + "\\arrowsfalse" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newcommand{\\blong}{\\!\\!\\begin{array}[t]{l}}" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newcommand{\\elong}{\\end{array}}" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
+     return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "pstricks" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "pst-node" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "amstext" ) ) ; //$NON-NLS-1$
+       return packages ;
+  }
+
+
   /**
    * The subtype object containing the subtype and supertype of this node
    */
@@ -92,6 +172,128 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
   public DefaultRecSubTypingProofNode getLastLeaf ( )
   {
     return ( DefaultRecSubTypingProofNode ) super.getLastLeaf ( ) ;
+  }
+
+
+  /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.getLeft ( ).getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.getRight ( ).getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : this.seenTypes.getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    if ( getRule ( ) != null )
+    {
+      for ( LatexCommand command : getRule ( ).getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
+  {
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : this.getLeft ( )
+        .getLatexInstructions ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : this.getRight ( )
+        .getLatexInstructions ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : this.seenTypes.getLatexInstructions ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    if ( getRule ( ) != null )
+    {
+      for ( LatexInstruction instruction : getRule ( ).getLatexInstructions ( ) )
+      {
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
+      }
+    }
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public TreeSet < LatexPackage > getLatexPackages ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : this.getLeft ( ).getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : this.getRight ( ).getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : this.seenTypes.getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    if ( getRule ( ) != null )
+    {
+      for ( LatexPackage pack : getRule ( ).getLatexPackages ( ) )
+      {
+        packages.add ( pack ) ;
+      }
+    }
+    return packages ;
   }
 
 
@@ -164,8 +366,6 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
   {
     return this.type ;
   }
-
-
   /**
    * {@inheritDoc}
    * 
@@ -205,6 +405,69 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
   public void setSteps ( ProofStep [ ] pSteps )
   {
     this.steps = pSteps ;
+  }
+  
+  
+  
+  
+  
+  
+  
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexString()
+   */
+  public final LatexString toLatexString ( )
+  {
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
+        .toLatexString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
+   */
+  public final LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+  {
+    int depth = 0 ;
+    AbstractProofNode myParent = this.getParent ( ) ;
+    while ( myParent != null )
+    {
+      depth ++ ;
+      myParent = myParent.getParent ( ) ;
+    }
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        LATEX_REC_SUB_TYPING_PROOF_NODE , pIndent , this.toPrettyString ( )
+            .toString ( ) , this.seenTypes.toPrettyString ( ).toString ( ) ,
+        this.getLeft ( ).toPrettyString ( ).toString ( ) , this.getRight ( )
+            .toPrettyString ( ).toString ( ) ,
+        this.getRule ( ) == null ? LATEX_EMPTY_STRING : this.getRule ( )
+            .toPrettyString ( ).toString ( ) ) ;
+    builder.addText ( "{" + String.valueOf ( this.getId ( ) ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
+    builder.addText ( "{" + String.valueOf ( depth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
+    builder.addBuilder ( this.seenTypes.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+    builder.addBuilder ( this.getLeft ( ).toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+    builder.addBuilder ( this.getRight ( ).toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+    if ( this.getRule ( ) != null )
+    {
+      builder.addBuilder ( this.getRule ( ).toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+    }
+    else
+    {
+      builder.addEmptyBuilder ( ) ;
+    }
+    int indent = 245 - depth * 7 ;
+    builder.addText ( "{" + indent + "mm}" ) ; //$NON-NLS-1$//$NON-NLS-2$
+    return builder ;
   }
 
 
@@ -264,231 +527,5 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
     if ( this.getSteps ( ).length > 0 )
       builder.append ( this.getSteps ( ) [ 0 ].getRule ( ).toString ( ) ) ;
     return builder.toString ( ) ;
-  }
-
-
-  /**
-   * Returns a set of needed latex commands for this latex printable object.
-   * 
-   * @return A set of needed latex commands for this latex printable object.
-   */
-  public TreeSet < LatexCommand > getLatexCommands ( )
-  {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_BYRULE , 1 ,
-        "\\hspace{-5mm}\\mbox{\\scriptsize\\ #1}" , "rule" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands
-        .add ( new DefaultLatexCommand (
-            LATEX_TYPE_CHECKER_TYPE_PROOF_NODE ,
-            7 ,
-            "\\ifarrows" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\else \\refstepcounter{node}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\noindent\\hspace{\\treeindent}\\hspace{#2\\nodeindent}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "$\\begin{tabular}[t]{p{#7}}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "{#3 #4\\ \\color{" + LATEX_COLOR_NONE_STYLE //$NON-NLS-1$
-                + "}{<:}\\ #5} $\\\\$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\byrule{#6} " //$NON-NLS-1$
-                + "$\\end{tabular}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\vspace{\\nodesep}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\fi" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-            , "depth" , "id" , "seenTypes" , "type" , "type2" , "rule" , //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
-            "space" ) ) ; //$NON-NLS-1$
-    for ( LatexCommand command : this.getLeft ( ).getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.getRight ( ).getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.seenTypes.getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    if ( getRule ( ) != null )
-    {
-      for ( LatexCommand command : getRule ( ).getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
-    return commands ;
-  }
-
-
-  /**
-   * Returns a set of needed latex instructions for this latex printable object.
-   * 
-   * @return A set of needed latex instructions for this latex printable object.
-   */
-  public ArrayList < LatexInstruction > getLatexInstructions ( )
-  {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ) ; //$NON-NLS-1$
-    instructions
-        .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newlength{\\treeindent}" ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newlength{\\nodeindent}" ) ) ; //$NON-NLS-1$
-    instructions
-        .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newif\\ifarrows  " + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
-            + "\\arrowsfalse" ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newcommand{\\blong}{\\!\\!\\begin{array}[t]{l}}" ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newcommand{\\elong}{\\end{array}}" ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
-    for ( LatexInstruction instruction : this.getLeft ( )
-        .getLatexInstructions ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : this.getRight ( )
-        .getLatexInstructions ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : this.seenTypes.getLatexInstructions ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    if ( getRule ( ) != null )
-    {
-      for ( LatexInstruction instruction : getRule ( ).getLatexInstructions ( ) )
-      {
-        if ( ! instructions.contains ( instruction ) )
-        {
-          instructions.add ( instruction ) ;
-        }
-      }
-    }
-    return instructions ;
-  }
-
-
-  /**
-   * Returns a set of needed latex packages for this latex printable object.
-   * 
-   * @return A set of needed latex packages for this latex printable object.
-   */
-  public TreeSet < LatexPackage > getLatexPackages ( )
-  {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "pstricks" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "pst-node" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "amstext" ) ) ; //$NON-NLS-1$
-    for ( LatexPackage pack : this.getLeft ( ).getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : this.getRight ( ).getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : this.seenTypes.getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    if ( getRule ( ) != null )
-    {
-      for ( LatexPackage pack : getRule ( ).getLatexPackages ( ) )
-      {
-        packages.add ( pack ) ;
-      }
-    }
-    return packages ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see LatexPrintable#toLatexString()
-   */
-  public final LatexString toLatexString ( )
-  {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
-   */
-  public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
-  {
-    int depth = 0 ;
-    AbstractProofNode myParent = this.getParent ( ) ;
-    while ( myParent != null )
-    {
-      depth ++ ;
-      myParent = myParent.getParent ( ) ;
-    }
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_TYPE_CHECKER_TYPE_PROOF_NODE , pIndent /*
-                                                       * , this .toPrettyString (
-                                                       * ).toString ( ) ,
-                                                       * this.seenTypes
-                                                       * .toPrettyString (
-                                                       * ).toString ( ) ,
-                                                       * this.getLeft()
-                                                       * .toPrettyString (
-                                                       * ).toString ( ) ,
-                                                       * this.getRight()
-                                                       * .toPrettyString (
-                                                       * ).toString ( ) ,
-                                                       * this.getRule ( ) ==
-                                                       * null ?
-                                                       * LATEX_EMPTY_STRING :
-                                                       * this.getRule (
-                                                       * ).toPrettyString (
-                                                       * ).toString ( )
-                                                       */) ;
-    builder.addText ( "{" + String.valueOf ( this.getId ( ) ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
-    builder.addText ( "{" + String.valueOf ( depth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
-    builder.addBuilderBegin ( ) ;
-    builder.addBuilder ( this.seenTypes.toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
-    builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-    builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-        + LATEX_INDENT ) ) ;
-    builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    builder.addText ( LATEX_SPACE ) ;
-    builder.addText ( LATEX_NAIL ) ;
-    builder.addText ( LATEX_SPACE ) ;
-    builder.addText ( "}" ) ; //$NON-NLS-1$
-    builder.addBuilderEnd ( ) ;
-    builder.addBuilder ( this.getLeft ( ).toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    builder.addBuilder ( this.getRight ( ).toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    if ( this.getRule ( ) != null )
-      builder.addBuilder ( this.getRule ( ).toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    else builder.addEmptyBuilder ( ) ;
-    int indent = 245 - depth * 7 ;
-    builder.addText ( "{" + indent + "mm}" ) ; //$NON-NLS-1$//$NON-NLS-2$
-    return builder ;
   }
 }

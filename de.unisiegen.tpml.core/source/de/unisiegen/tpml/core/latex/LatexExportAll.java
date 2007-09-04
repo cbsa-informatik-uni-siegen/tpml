@@ -52,11 +52,19 @@ import de.unisiegen.tpml.core.expressions.Sequence ;
 import de.unisiegen.tpml.core.expressions.Tuple ;
 import de.unisiegen.tpml.core.expressions.While ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
+import de.unisiegen.tpml.core.minimaltyping.AbstractMinimalTypingProofRule ;
+import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingExpressionProofNode ;
+import de.unisiegen.tpml.core.minimaltyping.DefaultMinimalTypingTypesProofNode ;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel ;
 import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofNode ;
 import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofRule ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
+import de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRule ;
+import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode ;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel ;
+import de.unisiegen.tpml.core.subtypingrec.AbstractRecSubTypingProofRule ;
+import de.unisiegen.tpml.core.subtypingrec.DefaultRecSubTypingProofNode ;
+import de.unisiegen.tpml.core.subtypingrec.DefaultSubType ;
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel ;
 import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRule ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode ;
@@ -519,17 +527,56 @@ public class LatexExportAll
       commands.add ( command ) ;
     }
     // MinimalTyping
+    for ( LatexCommand command : AbstractMinimalTypingProofRule
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : DefaultMinimalTypingExpressionProofNode
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : DefaultMinimalTypingTypesProofNode
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     for ( LatexCommand command : MinimalTypingProofModel
         .getLatexCommandsStatic ( ) )
     {
       commands.add ( command ) ;
     }
     // SubTyping
+    for ( LatexCommand command : AbstractSubTypingProofRule
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : DefaultSubTypingProofNode
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     for ( LatexCommand command : SubTypingProofModel.getLatexCommandsStatic ( ) )
     {
       commands.add ( command ) ;
     }
     // RecSubTyping
+    for ( LatexCommand command : AbstractRecSubTypingProofRule
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : DefaultSubType.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : DefaultRecSubTypingProofNode
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     for ( LatexCommand command : RecSubTypingProofModel
         .getLatexCommandsStatic ( ) )
     {
@@ -763,6 +810,30 @@ public class LatexExportAll
       }
     }
     // MinimalTyping
+    for ( LatexInstruction instruction : AbstractMinimalTypingProofRule
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : DefaultMinimalTypingExpressionProofNode
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : DefaultMinimalTypingTypesProofNode
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
     for ( LatexInstruction instruction : MinimalTypingProofModel
         .getLatexInstructionsStatic ( ) )
     {
@@ -772,6 +843,22 @@ public class LatexExportAll
       }
     }
     // SubTyping
+    for ( LatexInstruction instruction : AbstractSubTypingProofRule
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : DefaultSubTypingProofNode
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
     for ( LatexInstruction instruction : SubTypingProofModel
         .getLatexInstructionsStatic ( ) )
     {
@@ -781,6 +868,30 @@ public class LatexExportAll
       }
     }
     // RecSubTyping
+    for ( LatexInstruction instruction : AbstractRecSubTypingProofRule
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : DefaultSubType
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : DefaultRecSubTypingProofNode
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
     for ( LatexInstruction instruction : RecSubTypingProofModel
         .getLatexInstructionsStatic ( ) )
     {
@@ -964,16 +1075,55 @@ public class LatexExportAll
       packages.add ( pack ) ;
     }
     // MinimalTyping
+    for ( LatexPackage pack : AbstractMinimalTypingProofRule
+        .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : DefaultMinimalTypingExpressionProofNode
+        .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : DefaultMinimalTypingTypesProofNode
+        .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
     for ( LatexPackage pack : MinimalTypingProofModel.getLatexPackagesStatic ( ) )
     {
       packages.add ( pack ) ;
     }
     // SubTyping
+    for ( LatexPackage pack : AbstractSubTypingProofRule
+        .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : DefaultSubTypingProofNode
+        .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
     for ( LatexPackage pack : SubTypingProofModel.getLatexPackagesStatic ( ) )
     {
       packages.add ( pack ) ;
     }
     // RecSubTyping
+    for ( LatexPackage pack : AbstractRecSubTypingProofRule
+        .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : DefaultSubType.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : DefaultRecSubTypingProofNode
+        .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
     for ( LatexPackage pack : RecSubTypingProofModel.getLatexPackagesStatic ( ) )
     {
       packages.add ( pack ) ;

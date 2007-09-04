@@ -110,7 +110,8 @@ public interface LatexCommandNames
   public static final String LATEX_LINE_BREAK_NEW_COMMAND = System
       .getProperty ( "line.separator" ) //$NON-NLS-1$
       + "             " ; //$NON-NLS-1$
-  
+
+
   /**
    * The string for a line break in the source code.
    */
@@ -902,13 +903,13 @@ public interface LatexCommandNames
   /**
    * The latex print command for {@link DefaultSubTypingProofNode}.
    */
-  public static final String LATEX_SUB_TYPE_PROOF_NODE = "SubTypingProofNode" ; //$NON-NLS-1$
+  public static final String LATEX_SUB_TYPING_PROOF_NODE = "SubTypingProofNode" ; //$NON-NLS-1$
 
 
   /**
    * The latex print command for {@link DefaultRecSubTypingProofNode}.
    */
-  public static final String LATEX_REC_SUB_TYPE_PROOF_NODE = "RecSubTypingProofNode" ; //$NON-NLS-1$
+  public static final String LATEX_REC_SUB_TYPING_PROOF_NODE = "RecSubTypingProofNode" ; //$NON-NLS-1$
 
 
   /**

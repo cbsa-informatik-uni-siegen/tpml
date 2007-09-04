@@ -196,7 +196,7 @@ public class LatexTest
     }
     if ( ! all )
     {
-      int number = 73 ;
+      int number = 80 ;
       // Expression, Type, Environment
       if ( number == 00 ) testExpression ( file ) ;
       if ( number == 01 ) testType ( file ) ;
@@ -229,18 +229,18 @@ public class LatexTest
       if ( number == 42 ) testBigStepProofNode ( file ) ;
       if ( number == 43 ) testBigStepProofModel ( file ) ;
       // MinimalTyping
-      if ( number == 50 ) testMinimalTypingProofRule ( file ) ; // TODO
-      if ( number == 51 ) testMinimalTypingExpressionProofNode ( file ) ; // TODO
-      if ( number == 52 ) testMinimalTypingTypesProofNode ( file ) ; // TODO
+      if ( number == 50 ) testMinimalTypingProofRule ( file ) ;
+      if ( number == 51 ) testMinimalTypingExpressionProofNode ( file ) ;
+      if ( number == 52 ) testMinimalTypingTypesProofNode ( file ) ;
       if ( number == 53 ) testMinimalTypingProofModel ( file ) ;
       // SubTyping
-      if ( number == 60 ) testSubTypingProofRule ( file ) ; // TODO
-      if ( number == 61 ) testSubTypingProofNode ( file ) ; // TODO
+      if ( number == 60 ) testSubTypingProofRule ( file ) ;
+      if ( number == 61 ) testSubTypingProofNode ( file ) ;
       if ( number == 62 ) testSubTypingProofModel ( file ) ;
       // RecSubTyping
-      if ( number == 70 ) testRecSubTypingProofRule ( file ) ; // TODO
-      if ( number == 71 ) testSubType ( file ) ; // TODO
-      if ( number == 72 ) testRecSubTypingProofNode ( file ) ; // TODO
+      if ( number == 70 ) testRecSubTypingProofRule ( file ) ;
+      if ( number == 71 ) testSubType ( file ) ;
+      if ( number == 72 ) testRecSubTypingProofNode ( file ) ;
       if ( number == 73 ) testRecSubTypingProofModel ( file ) ;
       // LatexExportAll
       if ( number == 80 ) testLatexExportAll ( new File ( "tpml.tex" ) ) ;
@@ -473,6 +473,29 @@ public class LatexTest
   }
 
 
+  private static boolean removeFiles ( File pFile )
+  {
+    int index = pFile.toString ( ).indexOf ( '.' ) ;
+    String fileName = pFile.toString ( ).substring ( 0 , index ) ;
+    File dviFile = new File ( fileName + ".dvi" ) ;
+    dviFile.delete ( ) ;
+    File psFile = new File ( fileName + ".ps" ) ;
+    psFile.delete ( ) ;
+    File auxFile = new File ( fileName + ".aux" ) ;
+    auxFile.delete ( ) ;
+    File logFile = new File ( fileName + ".log" ) ;
+    logFile.delete ( ) ;
+    pFile.delete ( ) ;
+    File pdfFile = new File ( fileName + ".pdf" ) ;
+    if ( pdfFile.delete ( ) )
+    {
+      return true ;
+    }
+    error = true ;
+    return false ;
+  }
+
+
   private final static void testBigStepProofModel ( File pFile )
   {
     try
@@ -653,6 +676,28 @@ public class LatexTest
   }
 
 
+  private final static void testMinimalTypingProofModel ( File pFile )
+  {
+    try
+    {
+      Language language = LanguageFactory.newInstance ( ).getLanguageById (
+          "l4" ) ;
+      String text = "true || false" ;
+      Expression expression = language.newParser ( new StringReader ( text ) )
+          .parse ( ) ;
+      MinimalTypingProofModel model = language.newMinimalTypingProofModel (
+          expression , false ) ;
+      model.complete ( nextNode ( model ) ) ;
+      LatexExport.export ( model , pFile ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
+    }
+  }
+
+
   private final static void testMinimalTypingProofRule ( File pFile )
   {
     try
@@ -690,28 +735,6 @@ public class LatexTest
       DefaultMinimalTypingTypesProofNode node = new DefaultMinimalTypingTypesProofNode (
           new IntegerType ( ) , new BooleanType ( ) ) ;
       LatexExport.export ( node , pFile ) ;
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-      System.exit ( 1 ) ;
-    }
-  }
-
-
-  private final static void testMinimalTypingProofModel ( File pFile )
-  {
-    try
-    {
-      Language language = LanguageFactory.newInstance ( ).getLanguageById (
-          "l4" ) ;
-      String text = "true || false" ;
-      Expression expression = language.newParser ( new StringReader ( text ) )
-          .parse ( ) ;
-      MinimalTypingProofModel model = language.newMinimalTypingProofModel (
-          expression , false ) ;
-      model.complete ( nextNode ( model ) ) ;
-      LatexExport.export ( model , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -995,28 +1018,6 @@ public class LatexTest
   }
 
 
-  private final static void testTypeCheckerProofModel ( File pFile )
-  {
-    try
-    {
-      Language language = LanguageFactory.newInstance ( ).getLanguageById (
-          "l4" ) ;
-      String text = "true || false" ;
-      Expression expression = language.newParser ( new StringReader ( text ) )
-          .parse ( ) ;
-      TypeCheckerProofModel model = language
-          .newTypeCheckerProofModel ( expression ) ;
-      model.complete ( nextNode ( model ) ) ;
-      LatexExport.export ( model , pFile ) ;
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-      System.exit ( 1 ) ;
-    }
-  }
-
-
   private final static void testTypeCheckerExpressionProofNode ( File pFile )
   {
     try
@@ -1035,6 +1036,28 @@ public class LatexTest
       DefaultTypeCheckerExpressionProofNode node = new DefaultTypeCheckerExpressionProofNode (
           environment , expression , type ) ;
       LatexExport.export ( node , pFile ) ;
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+      System.exit ( 1 ) ;
+    }
+  }
+
+
+  private final static void testTypeCheckerProofModel ( File pFile )
+  {
+    try
+    {
+      Language language = LanguageFactory.newInstance ( ).getLanguageById (
+          "l4" ) ;
+      String text = "true || false" ;
+      Expression expression = language.newParser ( new StringReader ( text ) )
+          .parse ( ) ;
+      TypeCheckerProofModel model = language
+          .newTypeCheckerProofModel ( expression ) ;
+      model.complete ( nextNode ( model ) ) ;
+      LatexExport.export ( model , pFile ) ;
     }
     catch ( Exception e )
     {
@@ -1353,28 +1376,5 @@ public class LatexTest
       e.printStackTrace ( ) ;
       System.exit ( 1 ) ;
     }
-  }
-
-
-  private static boolean removeFiles ( File pFile )
-  {
-    int index = pFile.toString ( ).indexOf ( '.' ) ;
-    String fileName = pFile.toString ( ).substring ( 0 , index ) ;
-    File dviFile = new File ( fileName + ".dvi" ) ;
-    dviFile.delete ( ) ;
-    File psFile = new File ( fileName + ".ps" ) ;
-    psFile.delete ( ) ;
-    File auxFile = new File ( fileName + ".aux" ) ;
-    auxFile.delete ( ) ;
-    File logFile = new File ( fileName + ".log" ) ;
-    logFile.delete ( ) ;
-    pFile.delete ( ) ;
-    File pdfFile = new File ( fileName + ".pdf" ) ;
-    if ( pdfFile.delete ( ) )
-    {
-      return true ;
-    }
-    error = true ;
-    return false ;
   }
 }
