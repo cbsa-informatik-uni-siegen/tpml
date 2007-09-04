@@ -49,14 +49,16 @@ public class DefaultTypeCheckerExpressionProofNode extends
                 + "\\noindent\\hspace{\\treeindent}\\hspace{#2\\nodeindent}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "$\\begin{tabular}[t]{p{#7}}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "{#3\\ #4\\color{" + LATEX_COLOR_NONE_STYLE //$NON-NLS-1$
-                + "}{\\ ::}\\ #5}$\\\\$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "{#3\\ \\color{" + LATEX_COLOR_NONE_STYLE + "}{" //$NON-NLS-1$//$NON-NLS-2$
+                + LATEX_RIGHT_TRIANGLE
+                + "}\\ #4\\ \\color{" + LATEX_COLOR_NONE_STYLE //$NON-NLS-1$
+                + "}{::}\\ #5}$\\\\$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\byrule{#6} " //$NON-NLS-1$
                 + "$\\end{tabular}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\vspace{\\nodesep}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\fi" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-            ,
-            "depth" , "id" , "evironment" , "expression" , "type" , "rule" , "space" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ 
+            , "depth" , "id" , "evironment" , "expression" , "type" , "rule" , //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+            "space" ) ) ; //$NON-NLS-1$
     return commands ;
   }
 
@@ -106,6 +108,7 @@ public class DefaultTypeCheckerExpressionProofNode extends
     packages.add ( new DefaultLatexPackage ( "pst-node" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "amstext" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "amssymb" ) ) ; //$NON-NLS-1$
     return packages ;
   }
 
