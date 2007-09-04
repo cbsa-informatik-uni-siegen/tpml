@@ -52,9 +52,12 @@ import de.unisiegen.tpml.core.expressions.Sequence ;
 import de.unisiegen.tpml.core.expressions.Tuple ;
 import de.unisiegen.tpml.core.expressions.While ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel ;
 import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofNode ;
 import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofRule ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel ;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel ;
 import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRule ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode ;
@@ -515,6 +518,23 @@ public class LatexExportAll
     {
       commands.add ( command ) ;
     }
+    // MinimalTyping
+    for ( LatexCommand command : MinimalTypingProofModel
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    // SubTyping
+    for ( LatexCommand command : SubTypingProofModel.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    // RecSubTyping
+    for ( LatexCommand command : RecSubTypingProofModel
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 
@@ -742,6 +762,33 @@ public class LatexExportAll
         instructions.add ( instruction ) ;
       }
     }
+    // MinimalTyping
+    for ( LatexInstruction instruction : MinimalTypingProofModel
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    // SubTyping
+    for ( LatexInstruction instruction : SubTypingProofModel
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    // RecSubTyping
+    for ( LatexInstruction instruction : RecSubTypingProofModel
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
     return instructions ;
   }
 
@@ -913,6 +960,21 @@ public class LatexExportAll
       packages.add ( pack ) ;
     }
     for ( LatexPackage pack : BigStepProofModel.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    // MinimalTyping
+    for ( LatexPackage pack : MinimalTypingProofModel.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    // SubTyping
+    for ( LatexPackage pack : SubTypingProofModel.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    // RecSubTyping
+    for ( LatexPackage pack : RecSubTypingProofModel.getLatexPackagesStatic ( ) )
     {
       packages.add ( pack ) ;
     }

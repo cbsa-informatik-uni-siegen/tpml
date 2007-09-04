@@ -2,7 +2,6 @@ package de.unisiegen.tpml.core.subtypingrec ;
 
 
 import de.unisiegen.tpml.core.ExpressionProofNode ;
-import de.unisiegen.tpml.core.ProofNode ;
 import de.unisiegen.tpml.core.ProofRule ;
 import de.unisiegen.tpml.core.subtyping.SubTypingNode ;
 import de.unisiegen.tpml.core.typechecker.SeenTypes ;
