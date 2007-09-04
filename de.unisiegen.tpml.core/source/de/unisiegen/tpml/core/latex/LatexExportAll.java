@@ -12,6 +12,10 @@ import java.nio.charset.Charset ;
 import java.util.ArrayList ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.Messages ;
+import de.unisiegen.tpml.core.bigstep.AbstractBigStepProofRule ;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
+import de.unisiegen.tpml.core.bigstep.BigStepProofResult ;
+import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode ;
 import de.unisiegen.tpml.core.expressions.And ;
 import de.unisiegen.tpml.core.expressions.Application ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
@@ -492,6 +496,25 @@ public class LatexExportAll
     {
       commands.add ( command ) ;
     }
+    // BigStep
+    for ( LatexCommand command : AbstractBigStepProofRule
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : BigStepProofResult.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : DefaultBigStepProofNode
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : BigStepProofModel.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 
@@ -686,6 +709,39 @@ public class LatexExportAll
         instructions.add ( instruction ) ;
       }
     }
+    // BigStep
+    for ( LatexInstruction instruction : AbstractBigStepProofRule
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : BigStepProofResult
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : DefaultBigStepProofNode
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : BigStepProofModel
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
     return instructions ;
   }
 
@@ -839,6 +895,24 @@ public class LatexExportAll
       packages.add ( pack ) ;
     }
     for ( LatexPackage pack : SmallStepProofModel.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    // BigStep
+    for ( LatexPackage pack : AbstractBigStepProofRule
+        .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : BigStepProofResult.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : DefaultBigStepProofNode.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : BigStepProofModel.getLatexPackagesStatic ( ) )
     {
       packages.add ( pack ) ;
     }

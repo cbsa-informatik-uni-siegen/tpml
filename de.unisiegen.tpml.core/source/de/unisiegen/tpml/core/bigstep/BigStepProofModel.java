@@ -53,6 +53,73 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
       .getLogger ( BigStepProofModel.class ) ;
 
 
+  /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_MKTREE , 1 ,
+        "\\stepcounter{tree} #1 \\arrowstrue #1 \\arrowsfalse" , "tree" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    commands
+        .add ( new DefaultLatexCommand (
+            LATEX_ARROW ,
+            3 ,
+            "\\ifarrows" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "\\ncangle[angleA=-90,angleB=#1]{<-}{\\thetree.#2}{\\thetree.#3}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "\\else" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "\\fi" , "bli" , "bla" , "blub" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  {
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ) ; //$NON-NLS-1$
+    instructions
+        .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newlength{\\treeindent}" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newlength{\\nodeindent}" ) ) ; //$NON-NLS-1$
+    instructions
+        .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newif\\ifarrows  " + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
+            + "\\arrowsfalse" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newcommand{\\blong}{\\!\\!\\begin{array}[t]{l}}" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newcommand{\\elong}{\\end{array}}" ) ) ; //$NON-NLS-1$
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "longtable" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "pstricks" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "pst-node" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "amstext" ) ) ; //$NON-NLS-1$
+    return packages ;
+  }
+
+
   //
   // Constructor
   //
@@ -71,120 +138,6 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
       AbstractProofRuleSet pRuleSet )
   {
     super ( new DefaultBigStepProofNode ( expression ) , pRuleSet ) ;
-  }
-
-
-  //
-  // Actions
-  //
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
-   */
-  @ Override
-  public void guess ( ProofNode node ) throws ProofGuessException
-  {
-    if ( node == null )
-    {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
-    }
-    if ( node.getRules ( ).length > 0 )
-    {
-      throw new IllegalArgumentException ( Messages.getString ( "BigStep.0" ) ) ; //$NON-NLS-1$
-    }
-    if ( ! this.root.isNodeRelated ( node ) )
-    {
-      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
-    }
-    // try to guess the next rule
-    logger.debug ( "Trying to guess a rule for " + node ) ; //$NON-NLS-1$
-    for ( ProofRule rule : this.ruleSet.getRules ( ) )
-    { // MUST be the getRules() from the ProofRuleSet
-      try
-      {
-        // cast node to a DefaultBigStepProofNode
-        DefaultBigStepProofNode current = ( DefaultBigStepProofNode ) node ;
-        // (APP) is a special case, because (APP) can always be applied to
-        // applications,
-        // which can turn into trouble for expressions such as "1 + true"
-        if ( rule.getName ( ).equals ( "APP" ) ) //$NON-NLS-1$
-        {
-          // determine the parent node
-          BigStepProofNode parent = current.getParent ( ) ;
-          // in order to avoid endless guessing of (APP) for said expressions,
-          // we check if the
-          // parent node has exactly the same expression and (APP) was applied
-          // to it, and if
-          // so, skip the (APP) rule here
-          if ( parent != null && parent.getRule ( ).equals ( rule )
-              && parent.getExpression ( ).equals ( current.getExpression ( ) ) )
-          {
-            // log the details of the problem...
-            logger
-                .debug ( MessageFormat
-                    .format (
-                        "Detected endless guessing of ({0}) for {1}" , rule , current ) ) ; //$NON-NLS-1$
-            // ...and skip the (APP) rule for the guess operation
-            continue ;
-          }
-        }
-        // try to apply the rule to the specified node
-        apply ( ( BigStepProofRule ) rule , current ) ;
-        // remember that the user cheated
-        setCheating ( true ) ;
-        // yep, we did it
-        logger.debug ( MessageFormat.format (
-            "Successfully applied ({0}) to {1}" , rule , node ) ) ; //$NON-NLS-1$
-        return ;
-      }
-      catch ( ProofRuleException e )
-      {
-        // rule failed to apply... so, next one, please
-        logger.debug ( MessageFormat.format (
-            "Failed to apply ({0}) to {1}" , rule , node ) , e ) ; //$NON-NLS-1$
-        continue ;
-      }
-    }
-    // unable to guess next step
-    logger.debug ( "Failed to find rule to apply to " + node ) ; //$NON-NLS-1$
-    throw new ProofGuessException (
-        Messages.getString ( "InterpreterModel.0" ) , node ) ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule,
-   *      de.unisiegen.tpml.core.ProofNode)
-   */
-  @ Override
-  public void prove ( ProofRule rule , ProofNode node )
-      throws ProofRuleException
-  {
-    if ( rule == null )
-    {
-      throw new NullPointerException ( "rule is null" ) ; //$NON-NLS-1$
-    }
-    if ( node == null )
-    {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
-    }
-    if ( ! this.ruleSet.contains ( rule ) )
-    {
-      throw new IllegalArgumentException ( "The rule is invalid for the model" ) ; //$NON-NLS-1$
-    }
-    if ( ! this.root.isNodeRelated ( node ) )
-    {
-      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
-    }
-    if ( node.getRules ( ).length > 0 )
-    {
-      throw new IllegalArgumentException ( Messages.getString ( "BigStep.0" ) ) ; //$NON-NLS-1$
-    }
-    // try to apply the rule to the specified node
-    apply ( ( BigStepProofRule ) rule , ( DefaultBigStepProofNode ) node ) ;
   }
 
 
@@ -329,8 +282,6 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
       }
     } ) ;
   }
-
-
   /**
    * Used to implement the
    * {@link BigStepProofContext#setProofNodeRule(BigStepProofNode, BigStepProofRule)}
@@ -376,16 +327,10 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_MKTREE , 1 ,
-        "\\stepcounter{tree} #1 \\arrowstrue #1 \\arrowsfalse" , "tree" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-    commands
-        .add ( new DefaultLatexCommand (
-            LATEX_ARROW ,
-            3 ,
-            "\\ifarrows" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\ncangle[angleA=-90,angleB=#1]{<-}{\\thetree.#2}{\\thetree.#3}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\else" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\fi" , "bli" , "bla" , "blub" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     for ( LatexCommand command : getLatexCommandsInternal ( ( BigStepProofNode ) this.root ) )
     {
       commands.add ( command ) ;
@@ -427,7 +372,10 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
     }
     return commands ;
   }
-
+  
+  
+  
+  
 
   /**
    * {@inheritDoc}
@@ -437,22 +385,13 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
   public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ) ; //$NON-NLS-1$
-    instructions
-        .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newlength{\\treeindent}" ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newlength{\\nodeindent}" ) ) ; //$NON-NLS-1$
-    instructions
-        .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newif\\ifarrows  " + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
-            + "\\arrowsfalse" ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newcommand{\\blong}{\\!\\!\\begin{array}[t]{l}}" ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newcommand{\\elong}{\\end{array}}" ) ) ; //$NON-NLS-1$
+    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
     for ( LatexInstruction instruction : getLatexInstructionsInternal ( ( BigStepProofNode ) this.root ) )
     {
       if ( ! instructions.contains ( instruction ) )
@@ -517,11 +456,10 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    packages.add ( new DefaultLatexPackage ( "longtable" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "pstricks" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "pst-node" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "amstext" ) ) ; //$NON-NLS-1$
+    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
     for ( LatexPackage pack : getLatexPackagesInternal ( ( BigStepProofNode ) this.root ) )
     {
       packages.add ( pack ) ;
@@ -562,6 +500,120 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
       }
     }
     return packages ;
+  }
+
+
+  //
+  // Actions
+  //
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
+   */
+  @ Override
+  public void guess ( ProofNode node ) throws ProofGuessException
+  {
+    if ( node == null )
+    {
+      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+    }
+    if ( node.getRules ( ).length > 0 )
+    {
+      throw new IllegalArgumentException ( Messages.getString ( "BigStep.0" ) ) ; //$NON-NLS-1$
+    }
+    if ( ! this.root.isNodeRelated ( node ) )
+    {
+      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+    }
+    // try to guess the next rule
+    logger.debug ( "Trying to guess a rule for " + node ) ; //$NON-NLS-1$
+    for ( ProofRule rule : this.ruleSet.getRules ( ) )
+    { // MUST be the getRules() from the ProofRuleSet
+      try
+      {
+        // cast node to a DefaultBigStepProofNode
+        DefaultBigStepProofNode current = ( DefaultBigStepProofNode ) node ;
+        // (APP) is a special case, because (APP) can always be applied to
+        // applications,
+        // which can turn into trouble for expressions such as "1 + true"
+        if ( rule.getName ( ).equals ( "APP" ) ) //$NON-NLS-1$
+        {
+          // determine the parent node
+          BigStepProofNode parent = current.getParent ( ) ;
+          // in order to avoid endless guessing of (APP) for said expressions,
+          // we check if the
+          // parent node has exactly the same expression and (APP) was applied
+          // to it, and if
+          // so, skip the (APP) rule here
+          if ( parent != null && parent.getRule ( ).equals ( rule )
+              && parent.getExpression ( ).equals ( current.getExpression ( ) ) )
+          {
+            // log the details of the problem...
+            logger
+                .debug ( MessageFormat
+                    .format (
+                        "Detected endless guessing of ({0}) for {1}" , rule , current ) ) ; //$NON-NLS-1$
+            // ...and skip the (APP) rule for the guess operation
+            continue ;
+          }
+        }
+        // try to apply the rule to the specified node
+        apply ( ( BigStepProofRule ) rule , current ) ;
+        // remember that the user cheated
+        setCheating ( true ) ;
+        // yep, we did it
+        logger.debug ( MessageFormat.format (
+            "Successfully applied ({0}) to {1}" , rule , node ) ) ; //$NON-NLS-1$
+        return ;
+      }
+      catch ( ProofRuleException e )
+      {
+        // rule failed to apply... so, next one, please
+        logger.debug ( MessageFormat.format (
+            "Failed to apply ({0}) to {1}" , rule , node ) , e ) ; //$NON-NLS-1$
+        continue ;
+      }
+    }
+    // unable to guess next step
+    logger.debug ( "Failed to find rule to apply to " + node ) ; //$NON-NLS-1$
+    throw new ProofGuessException (
+        Messages.getString ( "InterpreterModel.0" ) , node ) ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule,
+   *      de.unisiegen.tpml.core.ProofNode)
+   */
+  @ Override
+  public void prove ( ProofRule rule , ProofNode node )
+      throws ProofRuleException
+  {
+    if ( rule == null )
+    {
+      throw new NullPointerException ( "rule is null" ) ; //$NON-NLS-1$
+    }
+    if ( node == null )
+    {
+      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.ruleSet.contains ( rule ) )
+    {
+      throw new IllegalArgumentException ( "The rule is invalid for the model" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.root.isNodeRelated ( node ) )
+    {
+      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+    }
+    if ( node.getRules ( ).length > 0 )
+    {
+      throw new IllegalArgumentException ( Messages.getString ( "BigStep.0" ) ) ; //$NON-NLS-1$
+    }
+    // try to apply the rule to the specified node
+    apply ( ( BigStepProofRule ) rule , ( DefaultBigStepProofNode ) node ) ;
   }
 
 
