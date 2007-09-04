@@ -40,7 +40,7 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_EQUATION_TYPE_CHECKER ,
-        2 , "#1\\ \\color{" + LATEX_COLOR_NONE_STYLE + "}{=}\\ #2" , "tau1" , //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+        2 , "#1\\ \\color{" + LATEX_COLOR_NONE + "}{=}\\ #2" , "tau1" , //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
         "tau2" ) ) ; //$NON-NLS-1$
     return commands ;
   }
@@ -55,8 +55,8 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
     return instructions ;
   }
 

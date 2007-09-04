@@ -145,9 +145,9 @@ public interface LatexCommandNames
 
 
   /**
-   * The latex print command for the none style color.
+   * The latex print command for none color.
    */
-  public static final String LATEX_COLOR_NONE_STYLE = "ColorNoneStyle" ; //$NON-NLS-1$
+  public static final String LATEX_COLOR_NONE = "ColorNone" ; //$NON-NLS-1$
 
 
   /**

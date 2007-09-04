@@ -49,8 +49,8 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand (
         LATEX_TYPE_EQUATION_LIST_TYPE_INFERENCE , 1 , "\\color{" //$NON-NLS-1$
-            + LATEX_COLOR_NONE_STYLE + "}{\\{}#1\\color{" //$NON-NLS-1$
-            + LATEX_COLOR_NONE_STYLE + "}{\\}}" , "teqn1, ... , teqnn" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+            + LATEX_COLOR_NONE + "}{\\{}#1\\color{" //$NON-NLS-1$
+            + LATEX_COLOR_NONE + "}{\\}}" , "teqn1, ... , teqnn" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     return commands ;
   }
 
@@ -64,8 +64,8 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
     return instructions ;
   }
 
@@ -300,7 +300,7 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
         builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
             + LATEX_INDENT ) ) ;
-        builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
         builder.addText ( LATEX_COMMA ) ;
         builder.addText ( LATEX_SPACE ) ;
         builder.addText ( "}" ) ; //$NON-NLS-1$

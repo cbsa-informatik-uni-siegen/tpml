@@ -46,8 +46,8 @@ public class TypeSubstitutionList implements PrettyPrintable , LatexPrintable
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_SUBSTITUTION_LIST , 1 ,
-        "\\color{" + LATEX_COLOR_NONE_STYLE + "}{\\{}#1\\color{"  //$NON-NLS-1$//$NON-NLS-2$
-            + LATEX_COLOR_NONE_STYLE + "}{\\}}" , "tsub1, ... , tsubn" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        "\\color{" + LATEX_COLOR_NONE + "}{\\{}#1\\color{"  //$NON-NLS-1$//$NON-NLS-2$
+            + LATEX_COLOR_NONE + "}{\\}}" , "tsub1, ... , tsubn" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     return commands ;
   }
 
@@ -61,8 +61,8 @@ public class TypeSubstitutionList implements PrettyPrintable , LatexPrintable
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
     return instructions ;
   }
 
@@ -285,7 +285,7 @@ public class TypeSubstitutionList implements PrettyPrintable , LatexPrintable
         builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
             + LATEX_INDENT ) ) ;
-        builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
         builder.addText ( LATEX_COMMA ) ;
         builder.addText ( LATEX_SPACE ) ;
         builder.addText ( "}" ) ; //$NON-NLS-1$

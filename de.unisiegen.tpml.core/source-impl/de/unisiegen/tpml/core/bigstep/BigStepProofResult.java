@@ -31,7 +31,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev:2491 $
  */
 public final class BigStepProofResult implements PrettyPrintable ,
     LatexPrintable
@@ -46,7 +46,7 @@ public final class BigStepProofResult implements PrettyPrintable ,
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_BIG_STEP_PROOF_RESULT , 1 ,
         "#1" , "body" ) ) ;//$NON-NLS-1$ //$NON-NLS-2$ 
-     return commands ;
+    return commands ;
   }
 
 
@@ -59,8 +59,8 @@ public final class BigStepProofResult implements PrettyPrintable ,
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
     return instructions ;
   }
 
@@ -77,6 +77,7 @@ public final class BigStepProofResult implements PrettyPrintable ,
     packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     return packages ;
   }
+
 
   /**
    * The resulting store of a proof node.
@@ -113,10 +114,8 @@ public final class BigStepProofResult implements PrettyPrintable ,
     this.store = pStore ;
     this.value = pValue ;
   }
-  
-  
-  
-  
+
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
@@ -268,7 +267,7 @@ public final class BigStepProofResult implements PrettyPrintable ,
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
           + LATEX_INDENT ) ) ;
-      builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+      builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
       builder.addText ( LATEX_LPAREN ) ;
       builder.addText ( "}" ) ; //$NON-NLS-1$
       builder.addBuilder ( this.value.toLatexStringBuilder (
@@ -283,7 +282,7 @@ public final class BigStepProofResult implements PrettyPrintable ,
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
           + LATEX_INDENT ) ) ;
-      builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+      builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
       builder.addText ( LATEX_RPAREN ) ;
       builder.addText ( "}" ) ; //$NON-NLS-1$
     }

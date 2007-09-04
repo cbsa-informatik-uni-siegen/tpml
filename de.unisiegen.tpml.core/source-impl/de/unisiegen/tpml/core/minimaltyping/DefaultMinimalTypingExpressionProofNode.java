@@ -52,9 +52,9 @@ public class DefaultMinimalTypingExpressionProofNode extends
                 + "\\noindent\\hspace{\\treeindent}\\hspace{#2\\nodeindent}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "$\\begin{tabular}[t]{p{#7}}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "#3\\ \\color{" + LATEX_COLOR_NONE_STYLE + "}{" //$NON-NLS-1$//$NON-NLS-2$
+                + "#3\\ \\color{" + LATEX_COLOR_NONE + "}{" //$NON-NLS-1$//$NON-NLS-2$
                 + LATEX_RIGHT_TRIANGLE + "}\\ #4\\ \\color{" //$NON-NLS-1$
-                + LATEX_COLOR_NONE_STYLE + "}{::}\\ #5$\\\\$" //$NON-NLS-1$
+                + LATEX_COLOR_NONE + "}{::}\\ #5$\\\\$" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND + "\\byrule{#6} " //$NON-NLS-1$
                 + "$\\end{tabular}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\vspace{\\nodesep}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
@@ -90,8 +90,8 @@ public class DefaultMinimalTypingExpressionProofNode extends
     instructions.add ( new DefaultLatexInstruction (
         "\\newcommand{\\elong}{\\end{array}}" ) ) ; //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
     return instructions ;
   }
 

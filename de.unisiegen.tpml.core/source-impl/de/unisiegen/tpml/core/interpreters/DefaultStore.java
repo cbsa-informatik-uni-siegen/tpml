@@ -46,7 +46,7 @@ public final class DefaultStore extends
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_STORE , 1 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE_STYLE + "}{[}#1\\color{" + LATEX_COLOR_NONE_STYLE //$NON-NLS-1$
+        + LATEX_COLOR_NONE + "}{[}#1\\color{" + LATEX_COLOR_NONE //$NON-NLS-1$
         + "}{]}" , "X1: e1, ..., Xn: en" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     return commands ;
   }
@@ -61,8 +61,8 @@ public final class DefaultStore extends
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
     return instructions ;
   }
 
@@ -316,7 +316,7 @@ public final class DefaultStore extends
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
           + LATEX_INDENT ) ) ;
-      builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+      builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
       builder.addText ( LATEX_COLON ) ;
       builder.addText ( LATEX_SPACE ) ;
       builder.addText ( "}" ) ; //$NON-NLS-1$
@@ -328,7 +328,7 @@ public final class DefaultStore extends
         builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
             + LATEX_INDENT ) ) ;
-        builder.addText ( "\\color{" + LATEX_COLOR_NONE_STYLE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
         builder.addText ( LATEX_COMMA ) ;
         builder.addText ( LATEX_SPACE ) ;
         builder.addText ( "}" ) ; //$NON-NLS-1$

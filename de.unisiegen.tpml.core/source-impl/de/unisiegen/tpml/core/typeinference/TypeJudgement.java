@@ -42,8 +42,8 @@ public class TypeJudgement implements TypeFormula
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_JUDGEMENT , 3 ,
-        "#1\\ \\color{" + LATEX_COLOR_NONE_STYLE + "}{" + LATEX_RIGHT_TRIANGLE //$NON-NLS-1$ //$NON-NLS-2$
-            + "}\\ #2\\ \\color{" + LATEX_COLOR_NONE_STYLE + "}{::}\\ #3" , //$NON-NLS-1$//$NON-NLS-2$
+        "#1\\ \\color{" + LATEX_COLOR_NONE + "}{" + LATEX_RIGHT_TRIANGLE //$NON-NLS-1$ //$NON-NLS-2$
+            + "}\\ #2\\ \\color{" + LATEX_COLOR_NONE + "}{::}\\ #3" , //$NON-NLS-1$//$NON-NLS-2$
         "env" , "e" , "tau" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     return commands ;
   }
@@ -58,8 +58,8 @@ public class TypeJudgement implements TypeFormula
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
     return instructions ;
   }
 
