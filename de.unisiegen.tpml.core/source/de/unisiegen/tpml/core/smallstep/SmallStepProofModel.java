@@ -38,7 +38,6 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
  * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode
  */
 public final class SmallStepProofModel extends AbstractInterpreterProofModel
-    implements LatexPrintable
 {
   /**
    * The {@link Logger} for this class.

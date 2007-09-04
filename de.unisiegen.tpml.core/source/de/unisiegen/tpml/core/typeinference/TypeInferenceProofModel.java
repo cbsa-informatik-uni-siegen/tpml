@@ -47,8 +47,7 @@ import de.unisiegen.tpml.core.types.TypeVariable ;
  * @see de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext
  * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode
  */
-public final class TypeInferenceProofModel extends AbstractProofModel implements
-    LatexPrintable
+public final class TypeInferenceProofModel extends AbstractProofModel 
 {
   /**
    * The {@link Logger} for this class.

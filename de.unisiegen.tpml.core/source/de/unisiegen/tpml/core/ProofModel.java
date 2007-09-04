@@ -1,12 +1,15 @@
 package de.unisiegen.tpml.core ;
 
 
-import java.util.EventListener ;
-import javax.swing.event.TreeModelListener ;
-import javax.swing.tree.TreeModel ;
-import javax.swing.tree.TreeNode ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.core.util.beans.Bean ;
+import java.util.EventListener;
+
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
+
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.util.beans.Bean;
 
 
 /**
@@ -19,7 +22,7 @@ import de.unisiegen.tpml.core.util.beans.Bean ;
  * @see de.unisiegen.tpml.core.AbstractProofModel
  * @see de.unisiegen.tpml.core.ProofNode
  */
-public interface ProofModel extends Bean , TreeModel
+public interface ProofModel extends Bean , TreeModel, LatexPrintable
 {
   //
   // Accessors

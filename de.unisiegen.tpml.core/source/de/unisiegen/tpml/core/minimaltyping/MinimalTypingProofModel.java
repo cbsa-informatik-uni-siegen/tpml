@@ -14,7 +14,6 @@ import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.ProofStep;
-import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
@@ -42,7 +41,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext
  * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode
  */
-public class MinimalTypingProofModel extends AbstractExpressionProofModel implements LatexPrintable, LatexCommandNames {
+public class MinimalTypingProofModel extends AbstractExpressionProofModel {
 	/**
 	 * The {@link Logger} for this class.
 	 * 
@@ -638,9 +637,8 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel implem
 	public final void toLatexStringBuilderInternal ( LatexStringBuilderFactory pLatexStringBuilderFactory,
 			LatexStringBuilder pLatexStringBuilder, ProofNode pCurrentNode, int pIndent, int pDepth ) {
 		int depth = pDepth + 1;
-		pLatexStringBuilder.addBuilder ( pCurrentNode.toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent
-				 ), 0 );
-			int value = 180;
+		pLatexStringBuilder.addBuilder ( pCurrentNode.toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent ), 0 );
+		int value = 180;
 		for ( int i = 0; i < pCurrentNode.getChildCount ( ); i++ ) {
 			pLatexStringBuilder.addText ( "\\arrow{" + value + "}{" //$NON-NLS-1$//$NON-NLS-2$
 					+ pCurrentNode.getId ( ) + "}{" //$NON-NLS-1$

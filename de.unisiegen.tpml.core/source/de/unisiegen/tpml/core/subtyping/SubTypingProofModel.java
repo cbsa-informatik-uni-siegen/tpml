@@ -42,7 +42,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode
  */
 public class SubTypingProofModel extends AbstractProofModel implements
-    SubTypingModel ,LatexPrintable, LatexCommandNames
+    SubTypingModel 
 {
   //
   // Constants

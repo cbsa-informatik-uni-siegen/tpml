@@ -40,7 +40,6 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
  * @see de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofModel
  */
 public final class BigStepProofModel extends AbstractInterpreterProofModel
-    implements LatexPrintable
 {
   //
   // Constants

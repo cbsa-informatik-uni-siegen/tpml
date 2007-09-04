@@ -43,7 +43,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode
  */
-public class TypeCheckerProofModel extends AbstractExpressionProofModel implements LatexPrintable, LatexCommandNames
+public class TypeCheckerProofModel extends AbstractExpressionProofModel
 {
   //
   // Constants
