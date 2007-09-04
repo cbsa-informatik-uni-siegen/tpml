@@ -88,6 +88,7 @@ public final class DefaultStore extends
     super ( ) ;
   }
 
+
   /**
    * Allocates a new <code>DefaultStore</code>, based on the mappings from
    * the <code>store</code>.
@@ -135,9 +136,8 @@ public final class DefaultStore extends
   {
     return containsSymbol ( location ) ;
   }
-  
-  
-  
+
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
@@ -146,7 +146,6 @@ public final class DefaultStore extends
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
- 
     for ( LatexCommand command : getLatexCommandsStatic ( ) )
     {
       commands.add ( command ) ;
@@ -181,7 +180,6 @@ public final class DefaultStore extends
         instructions.add ( instruction ) ;
       }
     }
-    
     for ( Mapping < Location , Expression > mapping : this.mappings )
     {
       for ( LatexInstruction instruction : mapping.getSymbol ( )

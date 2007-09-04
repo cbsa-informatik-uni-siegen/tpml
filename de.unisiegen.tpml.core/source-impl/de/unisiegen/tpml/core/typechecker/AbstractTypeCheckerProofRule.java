@@ -40,6 +40,56 @@ public abstract class AbstractTypeCheckerProofRule extends AbstractProofRule
     implements TypeCheckerProofRule
 {
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_CHECKER_PROOF_RULE , 1 ,
+        "\\mbox{\\textbf{\\color{" + LATEX_COLOR_RULE + "}(#1)}}" , //$NON-NLS-1$//$NON-NLS-2$
+        "name" ) ) ; //$NON-NLS-1$
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  {
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    Color colorRule = Theme.currentTheme ( ).getRuleColor ( ) ;
+    float red = ( float ) Math
+        .round ( ( ( float ) colorRule.getRed ( ) ) / 255 * 100 ) / 100 ;
+    float green = ( float ) Math
+        .round ( ( ( float ) colorRule.getGreen ( ) ) / 255 * 100 ) / 100 ;
+    float blue = ( float ) Math
+        .round ( ( ( float ) colorRule.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_RULE + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}" , LATEX_COLOR_RULE + ": color of proof rules" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
+    return packages ;
+  }
+  /**
    * Allocates a new <code>AbstractTypeCheckerProofRule</code> of the
    * specified <code>name</code>.
    * 
@@ -125,7 +175,6 @@ public abstract class AbstractTypeCheckerProofRule extends AbstractProofRule
   protected abstract void applyInternal ( TypeCheckerProofContext context ,
       TypeCheckerProofNode node ) throws Exception ;
 
-
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
@@ -134,10 +183,11 @@ public abstract class AbstractTypeCheckerProofRule extends AbstractProofRule
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_CHECKER_PROOF_RULE , 1 ,
-        "\\mbox{\\textbf{\\color{" + LATEX_COLOR_RULE + "}(#1)}}" , //$NON-NLS-1$//$NON-NLS-2$
-        "name" ) ) ; //$NON-NLS-1$
-    return commands ;
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+ return commands ;
   }
 
 
@@ -149,19 +199,14 @@ public abstract class AbstractTypeCheckerProofRule extends AbstractProofRule
   public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    Color colorRule = Theme.currentTheme ( ).getRuleColor ( ) ;
-    float red = ( float ) Math
-        .round ( ( ( float ) colorRule.getRed ( ) ) / 255 * 100 ) / 100 ;
-    float green = ( float ) Math
-        .round ( ( ( float ) colorRule.getGreen ( ) ) / 255 * 100 ) / 100 ;
-    float blue = ( float ) Math
-        .round ( ( ( float ) colorRule.getBlue ( ) ) / 255 * 100 ) / 100 ;
-    instructions.add ( new DefaultLatexInstruction (
-        "\\definecolor{" + LATEX_COLOR_RULE + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
-            + red + "," //$NON-NLS-1$
-            + green + "," //$NON-NLS-1$
-            + blue + "}" , LATEX_COLOR_RULE + ": color of proof rules" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    return instructions ;
+    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+ return instructions ;
   }
 
 
@@ -173,8 +218,11 @@ public abstract class AbstractTypeCheckerProofRule extends AbstractProofRule
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
-    return packages ;
+    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+   return packages ;
   }
 
 

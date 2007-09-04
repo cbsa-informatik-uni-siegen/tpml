@@ -48,7 +48,12 @@ import de.unisiegen.tpml.core.expressions.Sequence ;
 import de.unisiegen.tpml.core.expressions.Tuple ;
 import de.unisiegen.tpml.core.expressions.While ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
+import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRule ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
+import de.unisiegen.tpml.core.typechecker.SeenTypes ;
+import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker ;
+import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
 import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.BooleanType ;
 import de.unisiegen.tpml.core.types.ClassType ;
@@ -386,6 +391,31 @@ public class LatexExportAll
     {
       commands.add ( command ) ;
     }
+    // TypeChecker
+    for ( LatexCommand command : AbstractTypeCheckerProofRule
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : SeenTypes.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : DefaultTypeSubstitution
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : TypeEquationTypeChecker
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : TypeEquationListTypeChecker
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 
@@ -426,6 +456,47 @@ public class LatexExportAll
     }
     // Store
     for ( LatexInstruction instruction : DefaultStore
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    // TypeChecker
+    for ( LatexInstruction instruction : AbstractTypeCheckerProofRule
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : SeenTypes
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : DefaultTypeSubstitution
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : TypeEquationTypeChecker
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : TypeEquationListTypeChecker
         .getLatexInstructionsStatic ( ) )
     {
       if ( ! instructions.contains ( instruction ) )
@@ -502,6 +573,29 @@ public class LatexExportAll
     }
     // Store
     for ( LatexPackage pack : DefaultStore.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    // TypeChecker
+    for ( LatexPackage pack : AbstractTypeCheckerProofRule
+        .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : SeenTypes.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : DefaultTypeSubstitution.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : TypeEquationTypeChecker.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : TypeEquationListTypeChecker
+        .getLatexPackagesStatic ( ) )
     {
       packages.add ( pack ) ;
     }
