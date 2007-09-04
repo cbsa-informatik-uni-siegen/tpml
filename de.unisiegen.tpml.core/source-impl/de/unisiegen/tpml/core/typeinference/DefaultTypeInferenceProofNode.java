@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
@@ -57,9 +57,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
         + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
         LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
@@ -296,45 +296,18 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public ArrayList < LatexInstruction > getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( TypeSubstitution substitution : this.substitutions )
-    {
-      for ( LatexInstruction instruction : substitution.getLatexInstructions ( ) )
-      {
-        if ( ! instructions.contains ( instruction ) )
-        {
-          instructions.add ( instruction ) ;
-        }
-      }
-    }
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    instructions.add ( getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( this.substitutions ) ;
     for ( TypeFormula form : this.formula )
     {
-      for ( LatexInstruction instruction : form.getLatexInstructions ( ) )
-      {
-        if ( ! instructions.contains ( instruction ) )
-        {
-          instructions.add ( instruction ) ;
-        }
-      }
+      instructions.add ( form ) ;
       if ( form instanceof TypeEquationTypeInference )
       {
-        for ( LatexInstruction instruction : ( ( TypeEquationTypeInference ) form )
-            .getSeenTypes ( ).getLatexInstructions ( ) )
-        {
-          if ( ! instructions.contains ( instruction ) )
-          {
-            instructions.add ( instruction ) ;
-          }
-        }
+        instructions.add ( ( ( TypeEquationTypeInference ) form )
+            .getSeenTypes ( ).getLatexInstructions ( ) ) ;
       }
     }
     return instructions ;

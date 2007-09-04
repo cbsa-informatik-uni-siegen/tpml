@@ -55,6 +55,18 @@ public final class DefaultLatexPackage implements LatexPackage
 
 
   /**
+   * Returns the name.
+   * 
+   * @return The name.
+   * @see #name
+   */
+  public String getName ( )
+  {
+    return this.name ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#equals(Object)

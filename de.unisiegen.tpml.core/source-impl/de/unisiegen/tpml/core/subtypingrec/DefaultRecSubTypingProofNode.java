@@ -1,14 +1,13 @@
 package de.unisiegen.tpml.core.subtypingrec ;
 
 
-import java.util.ArrayList ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.AbstractProofNode ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
@@ -73,9 +72,9 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
     instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ) ; //$NON-NLS-1$
     instructions
         .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ) ; //$NON-NLS-1$
@@ -95,7 +94,7 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
         + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
         LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
-     return instructions ;
+    return instructions ;
   }
 
 
@@ -113,7 +112,7 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
     packages.add ( new DefaultLatexPackage ( "pst-node" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "amstext" ) ) ; //$NON-NLS-1$
-       return packages ;
+    return packages ;
   }
 
 
@@ -215,48 +214,16 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public ArrayList < LatexInstruction > getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : this.getLeft ( )
-        .getLatexInstructions ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : this.getRight ( )
-        .getLatexInstructions ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : this.seenTypes.getLatexInstructions ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    instructions.add ( getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( this.getLeft ( ) ) ;
+    instructions.add ( this.getRight ( ) ) ;
+    instructions.add ( this.seenTypes.getLatexInstructions ( ) ) ;
     if ( getRule ( ) != null )
     {
-      for ( LatexInstruction instruction : getRule ( ).getLatexInstructions ( ) )
-      {
-        if ( ! instructions.contains ( instruction ) )
-        {
-          instructions.add ( instruction ) ;
-        }
-      }
+      instructions.add ( getRule ( ) ) ;
     }
     return instructions ;
   }
@@ -366,6 +333,8 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
   {
     return this.type ;
   }
+
+
   /**
    * {@inheritDoc}
    * 
@@ -406,13 +375,7 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
   {
     this.steps = pSteps ;
   }
-  
-  
-  
-  
-  
-  
-  
+
 
   /**
    * {@inheritDoc}

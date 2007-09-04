@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
@@ -95,7 +95,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_PARENTHESIS , 1 , "(#1)" , //$NON-NLS-1$
-    "tau" ) ) ; //$NON-NLS-1$
+        "tau" ) ) ; //$NON-NLS-1$
     return commands ;
   }
 
@@ -105,9 +105,9 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
     Color colorExpression = Theme.currentTheme ( ).getExpressionColor ( ) ;
     float red = ( float ) Math
         .round ( ( ( float ) colorExpression.getRed ( ) ) / 255 * 100 ) / 100 ;
@@ -115,11 +115,12 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
         .getGreen ( ) ) / 255 * 100 ) / 100 ;
     float blue = ( float ) Math
         .round ( ( ( float ) colorExpression.getBlue ( ) ) / 255 * 100 ) / 100 ;
-    instructions.add ( new DefaultLatexInstruction (
-        "\\definecolor{" + LATEX_COLOR_EXPRESSION + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
-            + red + "," //$NON-NLS-1$
-            + green + "," //$NON-NLS-1$
-            + blue + "}" , LATEX_COLOR_EXPRESSION + ": color of expression text" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    instructions
+        .add ( new DefaultLatexInstruction (
+            "\\definecolor{" + LATEX_COLOR_EXPRESSION + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+                + red + "," //$NON-NLS-1$
+                + green + "," //$NON-NLS-1$
+                + blue + "}" , LATEX_COLOR_EXPRESSION + ": color of expression text" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     Color colorType = Theme.currentTheme ( ).getTypeColor ( ) ;
     red = ( float ) Math
         .round ( ( ( float ) colorType.getRed ( ) ) / 255 * 100 ) / 100 ;
@@ -284,6 +285,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
     return this.children ;
   }
 
+
   /**
    * Clones this type, so that the result is an type equal to this type, but
    * with a different object identity. This is used in the substitution of type
@@ -312,9 +314,8 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @return The caption of this {@link Type}.
    */
   public abstract String getCaption ( ) ;
-  
-  
-  
+
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
@@ -366,52 +367,21 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public ArrayList < LatexInstruction > getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    instructions.add ( getLatexInstructionsStatic ( ) ) ;
     if ( this instanceof DefaultTypes )
     {
-      for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )
-      {
-        for ( LatexInstruction instruction : type.getLatexInstructions ( ) )
-        {
-          instructions.add ( instruction ) ;
-        }
-      }
+      instructions.add ( ( ( DefaultTypes ) this ).getTypes ( ) ) ;
     }
     if ( this instanceof DefaultIdentifiers )
     {
-      for ( Identifier id : ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) )
-      {
-        for ( LatexInstruction instruction : id.getLatexInstructions ( ) )
-        {
-          if ( ! instructions.contains ( instruction ) )
-          {
-            instructions.add ( instruction ) ;
-          }
-        }
-      }
+      instructions.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) ) ;
     }
     if ( this instanceof DefaultTypeNames )
     {
-      for ( TypeName typeName : ( ( DefaultTypeNames ) this ).getTypeNames ( ) )
-      {
-        for ( LatexInstruction instruction : typeName.getLatexInstructions ( ) )
-        {
-          if ( ! instructions.contains ( instruction ) )
-          {
-            instructions.add ( instruction ) ;
-          }
-        }
-      }
+      instructions.add ( ( ( DefaultTypeNames ) this ).getTypeNames ( ) ) ;
     }
     return instructions ;
   }

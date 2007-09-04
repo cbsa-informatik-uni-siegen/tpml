@@ -3,7 +3,6 @@ package de.unisiegen.tpml.core.bigstep ;
 
 import java.awt.Color ;
 import java.lang.reflect.InvocationTargetException ;
-import java.util.ArrayList ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.AbstractProofRule ;
 import de.unisiegen.tpml.core.ProofRuleException ;
@@ -13,7 +12,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
@@ -60,9 +59,9 @@ public abstract class AbstractBigStepProofRule extends AbstractProofRule
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
     Color colorRule = Theme.currentTheme ( ).getRuleColor ( ) ;
     float red = ( float ) Math
         .round ( ( ( float ) colorRule.getRed ( ) ) / 255 * 100 ) / 100 ;
@@ -234,16 +233,10 @@ public abstract class AbstractBigStepProofRule extends AbstractProofRule
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public ArrayList < LatexInstruction > getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    instructions.add ( getLatexInstructionsStatic ( ) ) ;
     return instructions ;
   }
 

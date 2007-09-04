@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
@@ -218,9 +218,9 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
     Color colorExpression = Theme.currentTheme ( ).getExpressionColor ( ) ;
     float red = ( float ) Math
         .round ( ( ( float ) colorExpression.getRed ( ) ) / 255 * 100 ) / 100 ;
@@ -628,45 +628,23 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * Returns a set of needed latex instructions for this latex printable object.
+   * Returns a list of needed latex instructions for this latex printable
+   * object.
    * 
-   * @return A set of needed latex instructions for this latex printable object.
+   * @return A lsit of needed latex instructions for this latex printable
+   *         object.
    */
-  public ArrayList < LatexInstruction > getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    instructions.add ( getLatexInstructionsStatic ( ) ) ;
     if ( this instanceof DefaultExpressions )
     {
-      for ( Expression e : ( ( DefaultExpressions ) this ).getExpressions ( ) )
-      {
-        for ( LatexInstruction instruction : e.getLatexInstructions ( ) )
-        {
-          if ( ! instructions.contains ( instruction ) )
-          {
-            instructions.add ( instruction ) ;
-          }
-        }
-      }
+      instructions.add ( ( ( DefaultExpressions ) this ).getExpressions ( ) ) ;
     }
     if ( this instanceof DefaultIdentifiers )
     {
-      for ( Identifier id : ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) )
-      {
-        for ( LatexInstruction instruction : id.getLatexInstructions ( ) )
-        {
-          if ( ! instructions.contains ( instruction ) )
-          {
-            instructions.add ( instruction ) ;
-          }
-        }
-      }
+      instructions.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) ) ;
     }
     if ( this instanceof DefaultTypes )
     {
@@ -674,13 +652,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
       {
         if ( type != null )
         {
-          for ( LatexInstruction instruction : type.getLatexInstructions ( ) )
-          {
-            if ( ! instructions.contains ( instruction ) )
-            {
-              instructions.add ( instruction ) ;
-            }
-          }
+          instructions.add ( type ) ;
         }
       }
     }

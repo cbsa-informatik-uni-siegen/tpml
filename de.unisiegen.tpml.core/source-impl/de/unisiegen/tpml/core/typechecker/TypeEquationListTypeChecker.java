@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
@@ -64,7 +64,7 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable ,
         LATEX_TYPE_EQUATION_LIST_TYPE_CHECKER , 1 , "\\color{" //$NON-NLS-1$
             + LATEX_COLOR_NONE + "}{\\{}#1\\color{" //$NON-NLS-1$
             + LATEX_COLOR_NONE + "}{\\}}" , "teqn1, ... , teqnn" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-     return commands ;
+    return commands ;
   }
 
 
@@ -73,13 +73,13 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
         + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
         LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
-     return instructions ;
+    return instructions ;
   }
 
 
@@ -106,6 +106,8 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable ,
    * The remaining equations or <code>null</code>.
    */
   public TypeEquationListTypeChecker remaining ;
+
+
   /**
    * Allocates a new empty equation list.
    * 
@@ -158,6 +160,7 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable ,
     return new TypeEquationListTypeChecker ( pTypeEquationTypeChecker , this ) ;
   }
 
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
@@ -170,7 +173,7 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable ,
     {
       commands.add ( command ) ;
     }
-  for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
+    for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       for ( LatexCommand command : list.first.getLatexCommands ( ) )
       {
@@ -186,25 +189,13 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public ArrayList < LatexInstruction > getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    instructions.add ( getLatexInstructionsStatic ( ) ) ;
+    for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
-    {
-      for ( LatexInstruction instruction : list.first.getLatexInstructions ( ) )
-      {
-        if ( ! instructions.contains ( instruction ) )
-        {
-          instructions.add ( instruction ) ;
-        }
-      }
+      instructions.add ( list.first ) ;
     }
     return instructions ;
   }
@@ -222,7 +213,7 @@ for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list
     {
       packages.add ( pack ) ;
     }
-   for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
+    for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       for ( LatexPackage pack : list.first.getLatexPackages ( ) )
       {

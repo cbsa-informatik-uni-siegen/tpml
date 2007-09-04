@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
 import de.unisiegen.tpml.core.latex.LatexCommandNames ;
-import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
@@ -58,9 +58,9 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
         + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
         LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
@@ -149,6 +149,7 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
         this.seenTypes ) ;
   }
 
+
   /**
    * {@inheritDoc}
    * 
@@ -187,10 +188,8 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
   {
     return null ;
   }
-  
-  
-  
-  
+
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
@@ -203,7 +202,7 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
     {
       commands.add ( command ) ;
     }
- for ( LatexCommand command : this.left.getLatexCommands ( ) )
+    for ( LatexCommand command : this.left.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
     }
@@ -220,30 +219,12 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public ArrayList < LatexInstruction > getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
- for ( LatexInstruction instruction : this.left.getLatexInstructions ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : this.right.getLatexInstructions ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    instructions.add ( getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( this.left ) ;
+    instructions.add ( this.right ) ;
     return instructions ;
   }
 
@@ -260,7 +241,7 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
     {
       packages.add ( pack ) ;
     }
-   for ( LatexPackage pack : this.left.getLatexPackages ( ) )
+    for ( LatexPackage pack : this.left.getLatexPackages ( ) )
     {
       packages.add ( pack ) ;
     }

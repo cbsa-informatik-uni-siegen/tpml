@@ -2,7 +2,6 @@ package de.unisiegen.tpml.core.bigstep ;
 
 
 import java.text.MessageFormat ;
-import java.util.ArrayList ;
 import java.util.TreeSet ;
 import org.apache.log4j.Logger ;
 import de.unisiegen.tpml.core.AbstractProofRuleSet ;
@@ -20,7 +19,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
@@ -80,9 +79,9 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
     instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ) ; //$NON-NLS-1$
     instructions
         .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ) ; //$NON-NLS-1$
@@ -282,6 +281,8 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
       }
     } ) ;
   }
+
+
   /**
    * Used to implement the
    * {@link BigStepProofContext#setProofNodeRule(BigStepProofNode, BigStepProofRule)}
@@ -372,33 +373,19 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
     }
     return commands ;
   }
-  
-  
-  
-  
+
 
   /**
    * {@inheritDoc}
    * 
    * @see LatexPrintable#getLatexInstructions()
    */
-  public ArrayList < LatexInstruction > getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : getLatexInstructionsInternal ( ( BigStepProofNode ) this.root ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    instructions.add ( getLatexInstructionsStatic ( ) ) ;
+    instructions
+        .add ( getLatexInstructionsInternal ( ( BigStepProofNode ) this.root ) ) ;
     return instructions ;
   }
 
@@ -411,38 +398,19 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
    * @return A set of needed latex instructions for the given latex printable
    *         {@link ProofNode}.
    */
-  private ArrayList < LatexInstruction > getLatexInstructionsInternal (
+  private LatexInstructionList getLatexInstructionsInternal (
       BigStepProofNode pNode )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    for ( LatexInstruction instruction : pNode.getLatexInstructions ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    instructions.add ( pNode ) ;
     if ( pNode.getRule ( ) != null )
     {
-      for ( LatexInstruction instruction : pNode.getRule ( )
-          .getLatexInstructions ( ) )
-      {
-        if ( ! instructions.contains ( instruction ) )
-        {
-          instructions.add ( instruction ) ;
-        }
-      }
+      instructions.add ( pNode.getRule ( ) ) ;
     }
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
-      for ( LatexInstruction instruction : getLatexInstructionsInternal ( pNode
-          .getChildAt ( i ) ) )
-      {
-        if ( ! instructions.contains ( instruction ) )
-        {
-          instructions.add ( instruction ) ;
-        }
-      }
+      instructions
+          .add ( getLatexInstructionsInternal ( pNode.getChildAt ( i ) ) ) ;
     }
     return instructions ;
   }
@@ -651,18 +619,19 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
       builder.addSourceCodeBreak ( 0 ) ;
       builder.addText ( "\\mktree{" ) ; //$NON-NLS-1$
       toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
-          this.root , pIndent  , - 1 ) ;
+          this.root , pIndent , - 1 ) ;
     }
     builder.addText ( "}" ) ; //$NON-NLS-1$
     builder.addText ( "}" ) ; //$NON-NLS-1$
-    builder.addText ( "\\longtext{-30pt}" ); //$NON-NLS-1$
-		for ( int i = 1; i < 6; i++ ) {
-			builder.addSourceCodeBreak ( 0 );
-			builder.addText ( "\\newpage" ); //$NON-NLS-1$
-			builder.addSourceCodeBreak ( 0 );
-			int page = -205 * i;
-			builder.addText ( "\\longtext{" + page + "mm}" ); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+    builder.addText ( "\\longtext{-30pt}" ) ; //$NON-NLS-1$
+    for ( int i = 1 ; i < 6 ; i ++ )
+    {
+      builder.addSourceCodeBreak ( 0 ) ;
+      builder.addText ( "\\newpage" ) ; //$NON-NLS-1$
+      builder.addSourceCodeBreak ( 0 ) ;
+      int page = - 205 * i ;
+      builder.addText ( "\\longtext{" + page + "mm}" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    }
     return builder ;
   }
 
@@ -675,7 +644,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
    *          completed. is needed because of his {@link ProofNode}s.
    * @param pCurrentNode The current {@link ProofNode}.
    * @param pIndent The indent of this object.
-	* @param pDepth the depth of the actual node 
+   * @param pDepth the depth of the actual node
    */
   public final void toLatexStringBuilderInternal (
       LatexStringBuilderFactory pLatexStringBuilderFactory ,
@@ -689,7 +658,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
     if ( pCurrentNode.getChildCount ( ) == 1 ) value = 180 ;
     for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
     {
-      pLatexStringBuilder.addText ( "\\arrow{" + value + "}{"  //$NON-NLS-1$//$NON-NLS-2$
+      pLatexStringBuilder.addText ( "\\arrow{" + value + "}{" //$NON-NLS-1$//$NON-NLS-2$
           + pCurrentNode.getId ( ) + "}{" //$NON-NLS-1$
           + pCurrentNode.getChildAt ( i ).getId ( ) + "}" ) ; //$NON-NLS-1$
       pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;

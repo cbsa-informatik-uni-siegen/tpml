@@ -65,6 +65,30 @@ public final class DefaultLatexInstruction implements LatexInstruction ,
 
 
   /**
+   * Returns the description.
+   * 
+   * @return The description.
+   * @see #description
+   */
+  public String getDescription ( )
+  {
+    return this.description ;
+  }
+
+
+  /**
+   * Returns the text.
+   * 
+   * @return The text.
+   * @see #text
+   */
+  public String getText ( )
+  {
+    return this.text ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#equals(Object)

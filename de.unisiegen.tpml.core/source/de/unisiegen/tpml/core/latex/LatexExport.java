@@ -333,7 +333,7 @@ public abstract class LatexExport implements LatexCommandNames
         println ( writer ) ;
       }
       // instructions
-      ArrayList < LatexInstruction > instructions = pLatexPrintable
+      LatexInstructionList instructions = pLatexPrintable
           .getLatexInstructions ( ) ;
       if ( instructions.size ( ) > 0 )
       {

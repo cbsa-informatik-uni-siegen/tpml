@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.core.smallstep ;
 
 
-import java.util.ArrayList ;
 import java.util.TreeSet ;
 import org.apache.log4j.Logger ;
 import de.unisiegen.tpml.core.AbstractProofRuleSet ;
@@ -18,7 +17,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
@@ -79,9 +78,9 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
     instructions.add ( new DefaultLatexInstruction (
         "\\newenvironment{smallsteprulearrow}" //$NON-NLS-1$
             + "{\\begin{tabular}[t]{p{3.5cm}}}{\\end{tabular}}" , //$NON-NLS-1$
@@ -358,23 +357,11 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @see LatexPrintable#getLatexInstructions()
    */
-  public ArrayList < LatexInstruction > getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : getLatexInstructionsInternal ( this.root ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    instructions.add ( getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( getLatexInstructionsInternal ( this.root ) ) ;
     return instructions ;
   }
 
@@ -387,37 +374,18 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * @return A set of needed latex instructions for the given latex printable
    *         {@link ProofNode}.
    */
-  private ArrayList < LatexInstruction > getLatexInstructionsInternal (
-      ProofNode pNode )
+  private LatexInstructionList getLatexInstructionsInternal ( ProofNode pNode )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    for ( LatexInstruction instruction : pNode.getLatexInstructions ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    instructions.add ( pNode ) ;
     for ( ProofRule rule : pNode.getRules ( ) )
     {
-      for ( LatexInstruction instruction : rule.getLatexInstructions ( ) )
-      {
-        if ( ! instructions.contains ( instruction ) )
-        {
-          instructions.add ( instruction ) ;
-        }
-      }
+      instructions.add ( rule ) ;
     }
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
-      for ( LatexInstruction instruction : getLatexInstructionsInternal ( pNode
-          .getChildAt ( i ) ) )
-      {
-        if ( ! instructions.contains ( instruction ) )
-        {
-          instructions.add ( instruction ) ;
-        }
-      }
+      instructions
+          .add ( getLatexInstructionsInternal ( pNode.getChildAt ( i ) ) ) ;
     }
     return instructions ;
   }

@@ -2,7 +2,6 @@ package de.unisiegen.tpml.core.subtyping ;
 
 
 import java.text.MessageFormat ;
-import java.util.ArrayList ;
 import java.util.TreeSet ;
 import org.apache.log4j.Logger ;
 import de.unisiegen.tpml.core.AbstractProofModel ;
@@ -19,7 +18,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
@@ -80,9 +79,9 @@ public class SubTypingProofModel extends AbstractProofModel implements
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
     instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ) ; //$NON-NLS-1$
     instructions
         .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ) ; //$NON-NLS-1$
@@ -117,7 +116,7 @@ public class SubTypingProofModel extends AbstractProofModel implements
     packages.add ( new DefaultLatexPackage ( "pst-node" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "amstext" ) ) ; //$NON-NLS-1$
-     return packages ;
+    return packages ;
   }
 
 
@@ -389,23 +388,12 @@ public class SubTypingProofModel extends AbstractProofModel implements
    * 
    * @see LatexPrintable#getLatexInstructions()
    */
-  public ArrayList < LatexInstruction > getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : getLatexInstructionsInternal ( ( SubTypingProofNode ) this.root ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    instructions.add ( getLatexInstructionsStatic ( ) ) ;
+    instructions
+        .add ( getLatexInstructionsInternal ( ( SubTypingProofNode ) this.root ) ) ;
     return instructions ;
   }
 
@@ -418,41 +406,23 @@ public class SubTypingProofModel extends AbstractProofModel implements
    * @return A set of needed latex instructions for the given latex printable
    *         {@link ProofNode}.
    */
-  private ArrayList < LatexInstruction > getLatexInstructionsInternal (
+  private LatexInstructionList getLatexInstructionsInternal (
       SubTypingProofNode pNode )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    for ( LatexInstruction instruction : pNode.getLatexInstructions ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    instructions.add ( pNode ) ;
     if ( pNode.getRule ( ) != null )
     {
-      for ( LatexInstruction instruction : pNode.getRule ( )
-          .getLatexInstructions ( ) )
-      {
-        if ( ! instructions.contains ( instruction ) )
-        {
-          instructions.add ( instruction ) ;
-        }
-      }
+      instructions.add ( pNode.getRule ( ) ) ;
     }
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
-      for ( LatexInstruction instruction : getLatexInstructionsInternal ( pNode
-          .getChildAt ( i ) ) )
-      {
-        if ( ! instructions.contains ( instruction ) )
-        {
-          instructions.add ( instruction ) ;
-        }
-      }
+      instructions
+          .add ( getLatexInstructionsInternal ( pNode.getChildAt ( i ) ) ) ;
     }
     return instructions ;
   }
+
 
   /**
    * {@inheritDoc}
@@ -520,17 +490,7 @@ public class SubTypingProofModel extends AbstractProofModel implements
   {
     return ( DefaultSubTypingProofNode ) super.getRoot ( ) ;
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
 
   /**
    * get the rules of the actual proof rule set

@@ -110,6 +110,30 @@ public final class DefaultLatexCommand implements LatexCommand ,
 
 
   /**
+   * Returns the body.
+   * 
+   * @return The body.
+   * @see #body
+   */
+  public String getBody ( )
+  {
+    return this.body ;
+  }
+
+
+  /**
+   * Returns the name.
+   * 
+   * @return The name.
+   * @see #name
+   */
+  public String getName ( )
+  {
+    return this.name ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#equals(Object)
