@@ -60,6 +60,65 @@ public final class TypeInferenceProofModel extends AbstractProofModel implements
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_NEW_NODE , 0 ,
+        "\\\\[10mm]" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_NEW_FORMULA ,
+        0 , "\\\\" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand (
+        LATEX_TYPE_INFERENCE_RULES_COMPLETED , 0 , "&" ) ) ; //$NON-NLS-1$
+    commands
+        .add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_PROOF_MODEL , 1 ,
+            "\\begin{longtable}{p{2cm}p{23.5cm}}#1\\end{longtable}" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_RULE , 1 ,
+        "\\mbox{\\centerline{\\scriptsize{#1}}}" , "rule" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_EQUAL , 0 ,
+        "\\mbox{\\centerline{\\LARGE=}}" ) ) ; //$NON-NLS-1$
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  {
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newenvironment{typeinferencenode}" //$NON-NLS-1$
+            + "{\\begin{tabular}{p{23.5cm}}}{\\end{tabular}}" , //$NON-NLS-1$
+        "The environment of the type inference nodes" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newenvironment{typeinferencerule}" //$NON-NLS-1$
+            + "{\\begin{tabular}{p{2cm}}}{\\end{tabular}}" , //$NON-NLS-1$
+        "The environment of the type inference rule" ) ) ; //$NON-NLS-1$
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "longtable" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
+    return packages ;
+  }
+
+
+  /**
    * The current proof index, which indicates the number of steps that have been
    * performed on the proof model so far (starting with one), and is used to
    * generate new unique type variables in the associated contexts.
@@ -306,19 +365,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel implements
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_NEW_NODE , 0 ,
-        "\\\\[10mm]" ) ) ; //$NON-NLS-1$
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_NEW_FORMULA ,
-        0 , "\\\\" ) ) ; //$NON-NLS-1$
-    commands.add ( new DefaultLatexCommand (
-        LATEX_TYPE_INFERENCE_RULES_COMPLETED , 0 , "&" ) ) ; //$NON-NLS-1$
-    commands
-        .add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_PROOF_MODEL , 1 ,
-            "\\begin{longtable}{p{2cm}p{23.5cm}}#1\\end{longtable}" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_RULE , 1 ,
-        "\\mbox{\\centerline{\\scriptsize{#1}}}" , "rule" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_EQUAL , 0 ,
-        "\\mbox{\\centerline{\\LARGE=}}" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     for ( LatexCommand command : getLatexCommandsInternal ( ( TypeInferenceProofNode ) this.root ) )
     {
       commands.add ( command ) ;
@@ -370,14 +420,13 @@ public final class TypeInferenceProofModel extends AbstractProofModel implements
   public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newenvironment{typeinferencenode}" //$NON-NLS-1$
-            + "{\\begin{tabular}{p{23.5cm}}}{\\end{tabular}}" , //$NON-NLS-1$
-        "The environment of the type inference nodes" ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newenvironment{typeinferencerule}" //$NON-NLS-1$
-            + "{\\begin{tabular}{p{2cm}}}{\\end{tabular}}" , //$NON-NLS-1$
-        "The environment of the type inference rule" ) ) ; //$NON-NLS-1$
+    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
     for ( LatexInstruction instruction : getLatexInstructionsInternal ( ( TypeInferenceProofNode ) this.root ) )
     {
       if ( ! instructions.contains ( instruction ) )
@@ -442,8 +491,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel implements
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    packages.add ( new DefaultLatexPackage ( "longtable" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
+    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
     for ( LatexPackage pack : getLatexPackagesInternal ( ( TypeInferenceProofNode ) this.root ) )
     {
       packages.add ( pack ) ;

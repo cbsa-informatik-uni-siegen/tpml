@@ -39,6 +39,49 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
     TypeFormula , PrettyPrintable , LatexCommandNames
 {
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand (
+        LATEX_TYPE_EQUATION_TYPE_INFERENCE , 2 , "#1\\ \\color{" //$NON-NLS-1$
+            + LATEX_COLOR_NONE_STYLE + "}{=}\\ #2" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  {
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
+    return packages ;
+  }
+
+
+  /**
    * The monomorphic type on the left side.
    * 
    * @see #getLeft()
@@ -106,7 +149,6 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
         this.seenTypes ) ;
   }
 
-
   /**
    * {@inheritDoc}
    * 
@@ -145,8 +187,10 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
   {
     return null ;
   }
-
-
+  
+  
+  
+  
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
@@ -155,10 +199,11 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand (
-        LATEX_TYPE_EQUATION_TYPE_INFERENCE , 2 , "#1\\ \\color{" //$NON-NLS-1$
-            + LATEX_COLOR_NONE_STYLE + "}{=}\\ #2" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    for ( LatexCommand command : this.left.getLatexCommands ( ) )
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+ for ( LatexCommand command : this.left.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
     }
@@ -178,10 +223,14 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
   public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
-    for ( LatexInstruction instruction : this.left.getLatexInstructions ( ) )
+    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+ for ( LatexInstruction instruction : this.left.getLatexInstructions ( ) )
     {
       if ( ! instructions.contains ( instruction ) )
       {
@@ -207,8 +256,11 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
-    for ( LatexPackage pack : this.left.getLatexPackages ( ) )
+    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+   for ( LatexPackage pack : this.left.getLatexPackages ( ) )
     {
       packages.add ( pack ) ;
     }

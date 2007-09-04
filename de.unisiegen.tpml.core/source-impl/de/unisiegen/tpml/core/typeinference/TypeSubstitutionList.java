@@ -38,6 +38,49 @@ public class TypeSubstitutionList implements PrettyPrintable , LatexPrintable
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_SUBSTITUTION_LIST , 1 ,
+        "\\color{" + LATEX_COLOR_NONE_STYLE + "}{\\{}#1\\color{"  //$NON-NLS-1$//$NON-NLS-2$
+            + LATEX_COLOR_NONE_STYLE + "}{\\}}" , "tsub1, ... , tsubn" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  {
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
+    return packages ;
+  }
+
+
+  /**
    * The first TypeSubstitution in the list.
    */
   private DefaultTypeSubstitution first ;
@@ -111,10 +154,10 @@ public class TypeSubstitutionList implements PrettyPrintable , LatexPrintable
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_SUBSTITUTION_LIST , 1 ,
-        "\\color{" //$NON-NLS-1$
-            + LATEX_COLOR_NONE_STYLE + "}{\\{}#1\\color{" //$NON-NLS-1$
-            + LATEX_COLOR_NONE_STYLE + "}{\\}}" , "tsub1, ... , tsubn" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       for ( LatexCommand command : list.first.getLatexCommands ( ) )
@@ -134,10 +177,14 @@ public class TypeSubstitutionList implements PrettyPrintable , LatexPrintable
   public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
-    for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
+    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+ for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       for ( LatexInstruction instruction : list.first.getLatexInstructions ( ) )
       {
@@ -159,8 +206,11 @@ public class TypeSubstitutionList implements PrettyPrintable , LatexPrintable
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
-    for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
+    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+   for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       for ( LatexPackage pack : list.first.getLatexPackages ( ) )
       {

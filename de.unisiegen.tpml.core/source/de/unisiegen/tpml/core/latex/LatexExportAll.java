@@ -54,6 +54,13 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
 import de.unisiegen.tpml.core.typechecker.SeenTypes ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
+import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode ;
+import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel ;
+import de.unisiegen.tpml.core.typeinference.TypeJudgement ;
+import de.unisiegen.tpml.core.typeinference.TypeSubType ;
+import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList ;
 import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.BooleanType ;
 import de.unisiegen.tpml.core.types.ClassType ;
@@ -416,6 +423,39 @@ public class LatexExportAll
     {
       commands.add ( command ) ;
     }
+    // TypeInference
+    for ( LatexCommand command : TypeEquationTypeInference
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : TypeEquationListTypeInference
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : TypeSubstitutionList.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : TypeJudgement.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : TypeSubType.getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : DefaultTypeInferenceProofNode
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : TypeInferenceProofModel
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     return commands ;
   }
 
@@ -497,6 +537,63 @@ public class LatexExportAll
       }
     }
     for ( LatexInstruction instruction : TypeEquationListTypeChecker
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    // TypeInference
+    for ( LatexInstruction instruction : TypeEquationTypeInference
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : TypeEquationListTypeInference
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : TypeSubstitutionList
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : TypeJudgement
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : TypeSubType
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : DefaultTypeInferenceProofNode
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : TypeInferenceProofModel
         .getLatexInstructionsStatic ( ) )
     {
       if ( ! instructions.contains ( instruction ) )
@@ -596,6 +693,38 @@ public class LatexExportAll
     }
     for ( LatexPackage pack : TypeEquationListTypeChecker
         .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    // TypeInference
+    for ( LatexPackage pack : TypeEquationTypeInference
+        .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : TypeEquationListTypeInference
+        .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : TypeSubstitutionList.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : TypeJudgement.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : TypeSubType.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : DefaultTypeInferenceProofNode
+        .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : TypeInferenceProofModel.getLatexPackagesStatic ( ) )
     {
       packages.add ( pack ) ;
     }

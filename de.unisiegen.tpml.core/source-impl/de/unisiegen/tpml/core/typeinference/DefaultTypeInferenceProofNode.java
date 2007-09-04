@@ -39,6 +39,49 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
     TypeInferenceProofNode
 {
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_PROOF_NODE ,
+        1 , "#1" , "body" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  {
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "amssymb" ) ) ; //$NON-NLS-1$
+    return packages ;
+  }
+
+
+  /**
    * list of all formulas of this node
    */
   private ArrayList < TypeFormula > formula = new ArrayList < TypeFormula > ( ) ;
@@ -218,8 +261,10 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_PROOF_NODE ,
-        1 , "#1" , "body" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     for ( TypeSubstitution substitution : this.substitutions )
     {
       for ( LatexCommand command : substitution.getLatexCommands ( ) )
@@ -254,9 +299,13 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE_STYLE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE_STYLE + ": color of normal text" ) ) ; //$NON-NLS-1$
+    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
     for ( TypeSubstitution substitution : this.substitutions )
     {
       for ( LatexInstruction instruction : substitution.getLatexInstructions ( ) )
@@ -300,8 +349,10 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
+    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
     for ( TypeSubstitution substitution : this.substitutions )
     {
       for ( LatexPackage pack : substitution.getLatexPackages ( ) )
