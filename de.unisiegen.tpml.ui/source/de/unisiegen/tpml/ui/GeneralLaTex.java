@@ -160,7 +160,7 @@ public class GeneralLaTex
 				
 				status.setVisible(true);
 				
-				LatexExport.export(laTexPrintable, file);
+				LatexExport.export(laTexPrintable, file, null, LatexExport.Modus.ONE_FILE);
 				
 				status.dispose();
 				
