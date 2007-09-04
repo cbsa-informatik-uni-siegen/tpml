@@ -203,7 +203,7 @@ public class LatexTest
       if (arg.equals ( "-all" ))
       	all = true;
     }
-    if (all){
+    if (!all){
     int number = 73 ;
     // Expression, Type, Environment
     if ( number == 00 ) testExpression ( file ) ;
