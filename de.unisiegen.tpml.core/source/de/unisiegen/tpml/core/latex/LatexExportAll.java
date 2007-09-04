@@ -48,10 +48,16 @@ import de.unisiegen.tpml.core.expressions.Sequence ;
 import de.unisiegen.tpml.core.expressions.Tuple ;
 import de.unisiegen.tpml.core.expressions.While ;
 import de.unisiegen.tpml.core.interpreters.DefaultStore ;
+import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofNode ;
+import de.unisiegen.tpml.core.smallstep.DefaultSmallStepProofRule ;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRule ;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode ;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
 import de.unisiegen.tpml.core.typechecker.SeenTypes ;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode ;
@@ -423,6 +429,21 @@ public class LatexExportAll
     {
       commands.add ( command ) ;
     }
+    for ( LatexCommand command : DefaultTypeCheckerExpressionProofNode
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : DefaultTypeCheckerTypeProofNode
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : TypeCheckerProofModel
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     // TypeInference
     for ( LatexCommand command : TypeEquationTypeInference
         .getLatexCommandsStatic ( ) )
@@ -453,6 +474,21 @@ public class LatexExportAll
     }
     for ( LatexCommand command : TypeInferenceProofModel
         .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    // SmallStep
+    for ( LatexCommand command : DefaultSmallStepProofRule
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : DefaultSmallStepProofNode
+        .getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : SmallStepProofModel.getLatexCommandsStatic ( ) )
     {
       commands.add ( command ) ;
     }
@@ -544,6 +580,30 @@ public class LatexExportAll
         instructions.add ( instruction ) ;
       }
     }
+    for ( LatexInstruction instruction : DefaultTypeCheckerExpressionProofNode
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : DefaultTypeCheckerTypeProofNode
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : TypeCheckerProofModel
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
     // TypeInference
     for ( LatexInstruction instruction : TypeEquationTypeInference
         .getLatexInstructionsStatic ( ) )
@@ -594,6 +654,31 @@ public class LatexExportAll
       }
     }
     for ( LatexInstruction instruction : TypeInferenceProofModel
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    // SmallStep
+    for ( LatexInstruction instruction : DefaultSmallStepProofRule
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : DefaultSmallStepProofNode
+        .getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : SmallStepProofModel
         .getLatexInstructionsStatic ( ) )
     {
       if ( ! instructions.contains ( instruction ) )
@@ -696,6 +781,20 @@ public class LatexExportAll
     {
       packages.add ( pack ) ;
     }
+    for ( LatexPackage pack : DefaultTypeCheckerExpressionProofNode
+        .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : DefaultTypeCheckerTypeProofNode
+        .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : TypeCheckerProofModel.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
     // TypeInference
     for ( LatexPackage pack : TypeEquationTypeInference
         .getLatexPackagesStatic ( ) )
@@ -725,6 +824,21 @@ public class LatexExportAll
       packages.add ( pack ) ;
     }
     for ( LatexPackage pack : TypeInferenceProofModel.getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    // SmallStep
+    for ( LatexPackage pack : DefaultSmallStepProofRule
+        .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : DefaultSmallStepProofNode
+        .getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : SmallStepProofModel.getLatexPackagesStatic ( ) )
     {
       packages.add ( pack ) ;
     }

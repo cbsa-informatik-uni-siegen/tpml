@@ -49,6 +49,71 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_NEW_NODE , 0 ,
+        "\\\\[10mm]" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_NEW_RULE , 0 ,
+        "\\\\" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_RULES_COMPLETED ,
+        0 , "&" ) ) ; //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_MODEL , 1 ,
+        "\\begin{longtable}{p{3.5cm}p{22cm}}#1\\end{longtable}" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_ARROW , 2 ,
+        "\\xrightarrow" + LATEX_LINE_BREAK_NEW_COMMAND + "[\\mbox{\\color{" //$NON-NLS-1$//$NON-NLS-2$
+            + LATEX_COLOR_RULE + "}{\\scriptsize{#2}}}]" //$NON-NLS-1$
+            + LATEX_LINE_BREAK_NEW_COMMAND + "{\\mbox{\\color{" //$NON-NLS-1$
+            + LATEX_COLOR_RULE + "}{\\scriptsize{#1}}}}" , "not axiom rules" , //$NON-NLS-1$ //$NON-NLS-2$
+        "axiom rules" ) ) ; //$NON-NLS-1$
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  {
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newenvironment{smallsteprulearrow}" //$NON-NLS-1$
+            + "{\\begin{tabular}[t]{p{3.5cm}}}{\\end{tabular}}" , //$NON-NLS-1$
+        "The environment of the small step rules with the arrow" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newenvironment{smallsteprules}" //$NON-NLS-1$
+            + "{\\begin{tabular}{p{2.5cm}}}{\\end{tabular}}" , //$NON-NLS-1$
+        "The environment of the small step rules" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newenvironment{smallstepnode}" //$NON-NLS-1$
+            + "{\\begin{tabular}[b]{p{22cm}}}{\\end{tabular}}" , //$NON-NLS-1$
+        "The environment of the small step nodes" ) ) ; //$NON-NLS-1$
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "longtable" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
+    return packages ;
+  }
+
+
+  /**
    * Allocates a new <code>SmallStepProofModel</code> with the specified
    * <code>expression</code> as its root node.
    * 
@@ -242,20 +307,10 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
   public TreeSet < LatexCommand > getLatexCommands ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_NEW_NODE , 0 ,
-        "\\\\[10mm]" ) ) ; //$NON-NLS-1$
-    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_NEW_RULE , 0 ,
-        "\\\\" ) ) ; //$NON-NLS-1$
-    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_RULES_COMPLETED ,
-        0 , "&" ) ) ; //$NON-NLS-1$
-    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_MODEL , 1 ,
-        "\\begin{longtable}{p{3.5cm}p{22cm}}#1\\end{longtable}" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_ARROW , 2 ,
-        "\\xrightarrow" + LATEX_LINE_BREAK_NEW_COMMAND + "[\\mbox{\\color{" //$NON-NLS-1$//$NON-NLS-2$
-            + LATEX_COLOR_RULE + "}{\\scriptsize{#2}}}]" //$NON-NLS-1$
-            + LATEX_LINE_BREAK_NEW_COMMAND + "{\\mbox{\\color{" //$NON-NLS-1$
-            + LATEX_COLOR_RULE + "}{\\scriptsize{#1}}}}" , "not axiom rules" , //$NON-NLS-1$ //$NON-NLS-2$
-        "axiom rules" ) ) ; //$NON-NLS-1$
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
     for ( LatexCommand command : getLatexCommandsInternal ( this.root ) )
     {
       commands.add ( command ) ;
@@ -306,18 +361,13 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
   public ArrayList < LatexInstruction > getLatexInstructions ( )
   {
     ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newenvironment{smallsteprulearrow}" //$NON-NLS-1$
-            + "{\\begin{tabular}[t]{p{3.5cm}}}{\\end{tabular}}" , //$NON-NLS-1$
-        "The environment of the small step rules with the arrow" ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newenvironment{smallsteprules}" //$NON-NLS-1$
-            + "{\\begin{tabular}{p{2.5cm}}}{\\end{tabular}}" , //$NON-NLS-1$
-        "The environment of the small step rules" ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newenvironment{smallstepnode}" //$NON-NLS-1$
-            + "{\\begin{tabular}[b]{p{22cm}}}{\\end{tabular}}" , //$NON-NLS-1$
-        "The environment of the small step nodes" ) ) ; //$NON-NLS-1$
+    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
     for ( LatexInstruction instruction : getLatexInstructionsInternal ( this.root ) )
     {
       if ( ! instructions.contains ( instruction ) )
@@ -381,9 +431,10 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
   public TreeSet < LatexPackage > getLatexPackages ( )
   {
     TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    packages.add ( new DefaultLatexPackage ( "longtable" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
+    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
     for ( LatexPackage pack : getLatexPackagesInternal ( this.root ) )
     {
       packages.add ( pack ) ;

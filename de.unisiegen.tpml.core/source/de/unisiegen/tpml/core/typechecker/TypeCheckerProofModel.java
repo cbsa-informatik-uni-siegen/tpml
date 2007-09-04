@@ -1,35 +1,32 @@
 package de.unisiegen.tpml.core.typechecker ;
 
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.TreeSet;
-
-import org.apache.log4j.Logger;
-
-import de.unisiegen.tpml.core.AbstractExpressionProofModel;
-import de.unisiegen.tpml.core.AbstractProofModel;
-import de.unisiegen.tpml.core.AbstractProofNode;
-import de.unisiegen.tpml.core.AbstractProofRuleSet;
-import de.unisiegen.tpml.core.ProofGuessException;
-import de.unisiegen.tpml.core.ProofNode;
-import de.unisiegen.tpml.core.ProofRule;
-import de.unisiegen.tpml.core.ProofRuleException;
-import de.unisiegen.tpml.core.ProofStep;
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
-import de.unisiegen.tpml.core.latex.DefaultLatexPackage;
-import de.unisiegen.tpml.core.latex.LatexCommand;
-import de.unisiegen.tpml.core.latex.LatexCommandNames;
-import de.unisiegen.tpml.core.latex.LatexInstruction;
-import de.unisiegen.tpml.core.latex.LatexPackage;
-import de.unisiegen.tpml.core.latex.LatexPrintable;
-import de.unisiegen.tpml.core.latex.LatexString;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
-import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.types.TypeVariable;
+import java.util.ArrayList ;
+import java.util.Enumeration ;
+import java.util.TreeSet ;
+import org.apache.log4j.Logger ;
+import de.unisiegen.tpml.core.AbstractExpressionProofModel ;
+import de.unisiegen.tpml.core.AbstractProofModel ;
+import de.unisiegen.tpml.core.AbstractProofNode ;
+import de.unisiegen.tpml.core.AbstractProofRuleSet ;
+import de.unisiegen.tpml.core.ProofGuessException ;
+import de.unisiegen.tpml.core.ProofNode ;
+import de.unisiegen.tpml.core.ProofRule ;
+import de.unisiegen.tpml.core.ProofRuleException ;
+import de.unisiegen.tpml.core.ProofStep ;
+import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
+import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexInstruction ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.core.latex.LatexString ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.TypeVariable ;
 
 
 /**
@@ -55,6 +52,74 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel
    */
   private static final Logger logger = Logger
       .getLogger ( TypeCheckerProofModel.class ) ;
+
+
+  /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_MKTREE , 1 ,
+        "\\stepcounter{tree} #1 \\arrowstrue #1 \\arrowsfalse" , "tree" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    commands
+        .add ( new DefaultLatexCommand (
+            LATEX_ARROW ,
+            3 ,
+            "\\ifarrows" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "\\ncangle[angleA=-90,angleB=#1]{<-}{\\thetree.#2}{\\thetree.#3}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "\\else" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "\\fi" , "bli" , "bla" , "blub" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+    return commands ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public static ArrayList < LatexInstruction > getLatexInstructionsStatic ( )
+  {
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ) ; //$NON-NLS-1$
+    instructions
+        .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newlength{\\treeindent}" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newlength{\\nodeindent}" ) ) ; //$NON-NLS-1$
+    instructions
+        .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newif\\ifarrows  " + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
+            + "\\arrowsfalse" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newcommand{\\blong}{\\!\\!\\begin{array}[t]{l}}" ) ) ; //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newcommand{\\elong}{\\end{array}}" ) ) ; //$NON-NLS-1$
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    packages.add ( new DefaultLatexPackage ( "longtable" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "pstricks" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "pst-node" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
+    packages.add ( new DefaultLatexPackage ( "amstext" ) ) ; //$NON-NLS-1$
+    return packages ;
+  }
 
 
   //
@@ -93,124 +158,6 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel
         new DefaultTypeCheckerExpressionProofNode (
             new DefaultTypeEnvironment ( ) , expression , new TypeVariable ( 1 ,
                 0 ) ) , pRuleSet ) ;
-  }
-
-
-  //
-  // Accessors
-  //
-  /**
-   * Returns the current proof model index, which is the number of steps already
-   * performed on the model (starting with one) and used to allocate new, unique
-   * {@link  de.unisiegen.tpml.core.types.TypeVariable}s. It is incremented
-   * with every proof step performed on the model.
-   * 
-   * @return the current index of the proof model.
-   * @see TypeCheckerProofContext#newTypeVariable()
-   * @see de.unisiegen.tpml.core.types.TypeVariable
-   */
-  public int getIndex ( )
-  {
-    return this.index ;
-  }
-
-
-  /**
-   * Sets the current proof model index. This is a support operation, called by
-   * {@link DefaultTypeCheckerProofContext} whenever a new proof context is
-   * allocated.
-   * 
-   * @param pIndex the new index for the proof model.
-   * @see #getIndex()
-   * @see DefaultTypeCheckerProofContext
-   * @see DefaultTypeCheckerProofContext#DefaultTypeCheckerProofContext(TypeCheckerProofModel)
-   */
-  public void setIndex ( int pIndex )
-  {
-    if ( pIndex < 1 )
-    {
-      throw new IllegalArgumentException ( "index is invalid" ) ; //$NON-NLS-1$
-    }
-    this.index = pIndex ;
-  }
-
-
-  //
-  // Actions
-  //
-  /**
-   * {@inheritDoc}
-   * 
-   * @see #guessWithType(ProofNode, MonoType)
-   * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
-   */
-  @ Override
-  public void guess ( ProofNode node ) throws ProofGuessException
-  {
-    guessInternal ( ( AbstractTypeCheckerProofNode ) node , null ) ;
-  }
-
-
-  /**
-   * Guesses the next proof step for the specified <code>node</code> using the
-   * <code>type</code> for the <code>node</code>. This method is used for
-   * the <tt>"Enter type"</tt> action in the type checker user interface. The
-   * <code>node</code> must not be already proven (see the
-   * {@link ProofNode#isProven()} method for details), otherwise an
-   * {@link IllegalStateException} is thrown.
-   * 
-   * @param node the {@link ProofNode} for which the next proof step should be
-   *          guessed.
-   * @param type the type for the node
-   * @throws IllegalArgumentException if the <code>node</code> is invalid for
-   *           this model.
-   * @throws IllegalStateException if for some reason <code>node</code> cannot
-   *           be proven.
-   * @throws NullPointerException if <code>node</code> or <code>type</code>
-   *           is <code>null</code>.
-   * @throws ProofGuessException if the next proof step could not be guessed.
-   * @see #guess(ProofNode)
-   * @see #prove(ProofRule, ProofNode)
-   */
-  public void guessWithType ( ProofNode node , MonoType type )
-      throws ProofGuessException
-  {
-    if ( type == null )
-    {
-      throw new NullPointerException ( "type is null" ) ; //$NON-NLS-1$
-    }
-    // guess the rule for the node utilizing the type
-    guessInternal ( ( AbstractTypeCheckerProofNode ) node , type ) ;
-    // try to complete the node
-    complete ( node ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule,
-   *      de.unisiegen.tpml.core.ProofNode)
-   */
-  @ Override
-  public void prove ( ProofRule rule , ProofNode node )
-      throws ProofRuleException
-  {
-    if ( ! this.ruleSet.contains ( rule ) )
-    {
-      throw new IllegalArgumentException ( "The rule is invalid for the model" ) ; //$NON-NLS-1$
-    }
-    if ( ! this.root.isNodeRelated ( node ) )
-    {
-      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
-    }
-    if ( node.getRules ( ).length > 0 )
-    {
-      throw new IllegalArgumentException ( "The node is already completed" ) ; //$NON-NLS-1$
-    }
-    // try to apply the rule to the specified node
-    applyInternal ( ( TypeCheckerProofRule ) rule ,
-        ( AbstractTypeCheckerProofNode ) node , null ) ;
   }
 
 
@@ -302,65 +249,61 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel
 
 
   /**
-   * Implementation of the {@link #guess(ProofNode)} and
-   * {@link #guessWithType(ProofNode, MonoType)} methods.
+   * Adds a new child proof node below the <code>node</code> using the
+   * <code>context</code> and for the <code>type</code>s.
    * 
-   * @param node the proof node for which to guess the next step.
-   * @param type the type that the user entered for this <code>node</code> or
-   *          <code>null</code> to let the type inference algorithm guess the
-   *          type.
-   * @throws IllegalArgumentException if the <code>node</code> is invalid for
-   *           this model.
-   * @throws IllegalStateException if for some reason <code>node</code> cannot
-   *           be proven.
-   * @throws NullPointerException if <code>node</code> is <code>null</code>.
-   * @throws ProofGuessException if the next proof step could not be guessed.
-   * @see #guess(ProofNode)
-   * @see #guessWithType(ProofNode, MonoType)
+   * @param context the context calling this method
+   * @param node the parent node to add this child
+   * @param type the first type of the new child node
+   * @param type2 the second type of the new child node
    */
-  private void guessInternal ( AbstractTypeCheckerProofNode node , MonoType type )
-      throws ProofGuessException
+  public void contextAddProofNode ( DefaultTypeCheckerProofContext context ,
+      final AbstractTypeCheckerProofNode node , MonoType type , MonoType type2 )
   {
+    if ( context == null )
+    {
+      throw new NullPointerException ( "context is null" ) ; //$NON-NLS-1$
+    }
     if ( node == null )
     {
       throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
     }
-    if ( node.getSteps ( ).length > 0 )
+    if ( type == null )
     {
-      throw new IllegalArgumentException ( "The node is already completed" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "expression is null" ) ; //$NON-NLS-1$
+    }
+    if ( type2 == null )
+    {
+      throw new NullPointerException ( "type is null" ) ; //$NON-NLS-1$
     }
     if ( ! this.root.isNodeRelated ( node ) )
     {
-      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "node is invalid" ) ; //$NON-NLS-1$
     }
-    // try to guess the next rule
-    logger.debug ( "Trying to guess a rule for " + node ) ; //$NON-NLS-1$
-    for ( ProofRule rule : this.ruleSet.getRules ( ) )
-    { // MUST be the getRules() from the ProofRuleSet
-      try
+    final DefaultTypeCheckerTypeProofNode child = new DefaultTypeCheckerTypeProofNode (
+        type , type2 ) ;
+    context.addRedoAction ( new Runnable ( )
+    {
+      @ SuppressWarnings ( "synthetic-access" )
+      public void run ( )
       {
-        // try to apply the rule to the specified node
-        applyInternal ( ( TypeCheckerProofRule ) rule , node , type ) ;
-        // remember that the user cheated
-        setCheating ( true ) ;
-        // yep, we did it
-        logger.debug ( "Successfully applied (" + rule + ") to " + node ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        return ;
+        node.add ( child ) ;
+        nodesWereInserted ( node , new int [ ]
+        { node.getIndex ( child ) } ) ;
       }
-      catch ( ProofRuleException e )
+    } ) ;
+    context.addUndoAction ( new Runnable ( )
+    {
+      @ SuppressWarnings ( "synthetic-access" )
+      public void run ( )
       {
-        // rule failed to apply... so, next one, please
-        logger.debug ( "Failed to apply (" + rule + ") to " + node , e ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        continue ;
+        int nodeIndex = node.getIndex ( child ) ;
+        node.remove ( nodeIndex ) ;
+        nodesWereRemoved ( node , new int [ ]
+        { nodeIndex } , new Object [ ]
+        { child } ) ;
       }
-      catch ( RuntimeException e )
-      {
-        throw new ProofGuessException ( e.getMessage ( ) , node ) ;
-      }
-    }
-    // unable to guess next step
-    logger.debug ( "Failed to find rule to apply to " + node ) ; //$NON-NLS-1$
-    throw new ProofGuessException ( node ) ;
+    } ) ;
   }
 
 
@@ -413,65 +356,6 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel
     }
     final DefaultTypeCheckerExpressionProofNode child = new DefaultTypeCheckerExpressionProofNode (
         environment , expression , type ) ;
-    context.addRedoAction ( new Runnable ( )
-    {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
-      {
-        node.add ( child ) ;
-        nodesWereInserted ( node , new int [ ]
-        { node.getIndex ( child ) } ) ;
-      }
-    } ) ;
-    context.addUndoAction ( new Runnable ( )
-    {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
-      {
-        int nodeIndex = node.getIndex ( child ) ;
-        node.remove ( nodeIndex ) ;
-        nodesWereRemoved ( node , new int [ ]
-        { nodeIndex } , new Object [ ]
-        { child } ) ;
-      }
-    } ) ;
-  }
-
-
-  /**
-   * Adds a new child proof node below the <code>node</code> using the
-   * <code>context</code> and for the <code>type</code>s.
-   * 
-   * @param context the context calling this method
-   * @param node the parent node to add this child
-   * @param type the first type of the new child node
-   * @param type2 the second type of the new child node
-   */
-  public void contextAddProofNode ( DefaultTypeCheckerProofContext context ,
-      final AbstractTypeCheckerProofNode node , MonoType type , MonoType type2 )
-  {
-    if ( context == null )
-    {
-      throw new NullPointerException ( "context is null" ) ; //$NON-NLS-1$
-    }
-    if ( node == null )
-    {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
-    }
-    if ( type == null )
-    {
-      throw new NullPointerException ( "expression is null" ) ; //$NON-NLS-1$
-    }
-    if ( type2 == null )
-    {
-      throw new NullPointerException ( "type is null" ) ; //$NON-NLS-1$
-    }
-    if ( ! this.root.isNodeRelated ( node ) )
-    {
-      throw new IllegalArgumentException ( "node is invalid" ) ; //$NON-NLS-1$
-    }
-    final DefaultTypeCheckerTypeProofNode child = new DefaultTypeCheckerTypeProofNode (
-        type , type2 ) ;
     context.addRedoAction ( new Runnable ( )
     {
       @ SuppressWarnings ( "synthetic-access" )
@@ -600,221 +484,452 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel
       }
     } ) ;
   }
-  
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see LatexPrintable#getLatexCommands()
-	 */
-	public TreeSet < LatexCommand > getLatexCommands ( ) {
-		TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( );
-		commands.add ( new DefaultLatexCommand ( LATEX_MKTREE, 1,
-				"\\stepcounter{tree} #1 \\arrowstrue #1 \\arrowsfalse", "tree" ) ); //$NON-NLS-1$//$NON-NLS-2$
-		commands.add ( new DefaultLatexCommand ( LATEX_ARROW, 3, "\\ifarrows" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-				+ "\\ncangle[angleA=-90,angleB=#1]{<-}{\\thetree.#2}{\\thetree.#3}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-				+ "\\else" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-				+ "\\fi", "bli", "bla", "blub" ) ); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
-		for ( LatexCommand command : getLatexCommandsInternal ( ( TypeCheckerProofNode ) this.root ) ) {
-			commands.add ( command );
-		}
-		return commands;
-	}
 
-	/**
-	 * Returns a set of needed latex commands for the given latex printable
-	 * {@link ProofNode}.
-	 * 
-	 * @param pNode The input {@link ProofNode}.
-	 * @return A set of needed latex commands for the given latex printable
-	 *         {@link ProofNode}.
-	 */
-	private TreeSet < LatexCommand > getLatexCommandsInternal ( TypeCheckerProofNode pNode ) {
-		TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( );
-		for ( LatexCommand command : pNode.getLatexCommands ( ) ) {
-			commands.add ( command );
-		}
-		if ( pNode.getRule ( ) != null ) {
-			for ( LatexCommand command : pNode.getRule ( ).getLatexCommands ( ) ) {
-				commands.add ( command );
-			}
-		}
-		for ( int i = 0; i < pNode.getChildCount ( ); i++ ) {
-			for ( LatexCommand command : getLatexCommandsInternal ( pNode.getChildAt ( i ) ) ) {
-				commands.add ( command );
-			}
-		}
-		return commands;
-	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see LatexPrintable#getLatexInstructions()
-	 */
-	public ArrayList < LatexInstruction > getLatexInstructions ( ) {
-		ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( );
-		instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ); //$NON-NLS-1$
-		instructions.add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ); //$NON-NLS-1$
-		instructions.add ( new DefaultLatexInstruction ( "\\newlength{\\treeindent}" ) ); //$NON-NLS-1$
-		instructions.add ( new DefaultLatexInstruction ( "\\newlength{\\nodeindent}" ) ); //$NON-NLS-1$
-		instructions.add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ); //$NON-NLS-1$
-		instructions.add ( new DefaultLatexInstruction ( "\\newif\\ifarrows  " + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
-				+ "\\arrowsfalse" ) ); //$NON-NLS-1$
-		instructions.add ( new DefaultLatexInstruction ( "\\newcommand{\\blong}{\\!\\!\\begin{array}[t]{l}}" ) ); //$NON-NLS-1$
-		instructions.add ( new DefaultLatexInstruction ( "\\newcommand{\\elong}{\\end{array}}" ) ); //$NON-NLS-1$
-		for ( LatexInstruction instruction : getLatexInstructionsInternal ( ( TypeCheckerProofNode ) this.root ) ) {
-			if ( !instructions.contains ( instruction ) ) {
-				instructions.add ( instruction );
-			}
-		}
-		return instructions;
-	}
+  //
+  // Accessors
+  //
+  /**
+   * Returns the current proof model index, which is the number of steps already
+   * performed on the model (starting with one) and used to allocate new, unique
+   * {@link  de.unisiegen.tpml.core.types.TypeVariable}s. It is incremented
+   * with every proof step performed on the model.
+   * 
+   * @return the current index of the proof model.
+   * @see TypeCheckerProofContext#newTypeVariable()
+   * @see de.unisiegen.tpml.core.types.TypeVariable
+   */
+  public int getIndex ( )
+  {
+    return this.index ;
+  }
 
-	/**
-	 * Returns a set of needed latex instructions for the given latex printable
-	 * {@link ProofNode}.
-	 * 
-	 * @param pNode The input {@link ProofNode}.
-	 * @return A set of needed latex instructions for the given latex printable
-	 *         {@link ProofNode}.
-	 */
-	private ArrayList < LatexInstruction > getLatexInstructionsInternal ( TypeCheckerProofNode pNode ) {
-		ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( );
-		for ( LatexInstruction instruction : pNode.getLatexInstructions ( ) ) {
-			if ( !instructions.contains ( instruction ) ) {
-				instructions.add ( instruction );
-			}
-		}
-		if ( pNode.getRule ( ) != null ) {
-			for ( LatexInstruction instruction : pNode.getRule ( ).getLatexInstructions ( ) ) {
-				if ( !instructions.contains ( instruction ) ) {
-					instructions.add ( instruction );
-				}
-			}
-		}
-		for ( int i = 0; i < pNode.getChildCount ( ); i++ ) {
-			for ( LatexInstruction instruction : getLatexInstructionsInternal ( pNode.getChildAt ( i ) ) ) {
-				if ( !instructions.contains ( instruction ) ) {
-					instructions.add ( instruction );
-				}
-			}
-		}
-		return instructions;
-	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see LatexPrintable#getLatexPackages()
-	 */
-	public TreeSet < LatexPackage > getLatexPackages ( ) {
-		TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( );
-		packages.add ( new DefaultLatexPackage ( "longtable" ) ); //$NON-NLS-1$
-		packages.add ( new DefaultLatexPackage ( "amsmath" ) ); //$NON-NLS-1$
-		packages.add ( new DefaultLatexPackage ( "pstricks" ) ); //$NON-NLS-1$
-		packages.add ( new DefaultLatexPackage ( "pst-node" ) ); //$NON-NLS-1$
-		packages.add ( new DefaultLatexPackage ( "color" ) ); //$NON-NLS-1$
-		packages.add ( new DefaultLatexPackage ( "amstext" ) ); //$NON-NLS-1$
-		for ( LatexPackage pack : getLatexPackagesInternal ( ( TypeCheckerProofNode ) this.root ) ) {
-			packages.add ( pack );
-		}
-		return packages;
-	}
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#getLatexCommands()
+   */
+  public TreeSet < LatexCommand > getLatexCommands ( )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    for ( LatexCommand command : getLatexCommandsStatic ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    for ( LatexCommand command : getLatexCommandsInternal ( ( TypeCheckerProofNode ) this.root ) )
+    {
+      commands.add ( command ) ;
+    }
+    return commands ;
+  }
 
-	/**
-	 * Returns a set of needed latex packages for the given latex printable
-	 * {@link ProofNode}.
-	 * 
-	 * @param pNode The input {@link ProofNode}.
-	 * @return A set of needed latex packages for the given latex printable
-	 *         {@link ProofNode}.
-	 */
-	private TreeSet < LatexPackage > getLatexPackagesInternal ( TypeCheckerProofNode pNode ) {
-		TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( );
-		for ( LatexPackage pack : pNode.getLatexPackages ( ) ) {
-			packages.add ( pack );
-		}
-		if ( pNode.getRule ( ) != null ) {
-			for ( LatexPackage pack : pNode.getRule ( ).getLatexPackages ( ) ) {
-				packages.add ( pack );
-			}
-		}
-		for ( int i = 0; i < pNode.getChildCount ( ); i++ ) {
-			for ( LatexPackage pack : getLatexPackagesInternal ( pNode.getChildAt ( i ) ) ) {
-				packages.add ( pack );
-			}
-		}
-		return packages;
-	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see LatexPrintable#toLatexString()
-	 */
-	public LatexString toLatexString ( ) {
-		return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ), 0 ).toLatexString ( );
-	}
+  /**
+   * Returns a set of needed latex commands for the given latex printable
+   * {@link ProofNode}.
+   * 
+   * @param pNode The input {@link ProofNode}.
+   * @return A set of needed latex commands for the given latex printable
+   *         {@link ProofNode}.
+   */
+  private TreeSet < LatexCommand > getLatexCommandsInternal (
+      TypeCheckerProofNode pNode )
+  {
+    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    for ( LatexCommand command : pNode.getLatexCommands ( ) )
+    {
+      commands.add ( command ) ;
+    }
+    if ( pNode.getRule ( ) != null )
+    {
+      for ( LatexCommand command : pNode.getRule ( ).getLatexCommands ( ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    {
+      for ( LatexCommand command : getLatexCommandsInternal ( pNode
+          .getChildAt ( i ) ) )
+      {
+        commands.add ( command ) ;
+      }
+    }
+    return commands ;
+  }
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
-	 */
-	public final LatexStringBuilder toLatexStringBuilder ( LatexStringBuilderFactory pLatexStringBuilderFactory,
-			int pIndent ) {
-		LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0, pIndent );
-		{
-			builder.addText ( "\\treeindent=0mm" ); //$NON-NLS-1$
-			builder.addSourceCodeBreak ( 0 );
-			builder.addText ( "\\nodeindent=7mm" ); //$NON-NLS-1$
-			builder.addSourceCodeBreak ( 0 );
-			builder.addText ( "\\nodesep=2mm" ); //$NON-NLS-1$
-			builder.addSourceCodeBreak ( 0 );
-			builder.addText ( "\\newcommand{\\longtext}[1]{\\oddsidemargin=#1\\enlargethispage{840mm}" ); //$NON-NLS-1$
-			builder.addSourceCodeBreak ( 0 );
-			builder.addText ( "\\mktree{" ); //$NON-NLS-1$
-			toLatexStringBuilderInternal ( pLatexStringBuilderFactory, builder, this.root, pIndent + LATEX_INDENT, -1 );
-		}
-		builder.addText ( "}" ); //$NON-NLS-1$
-		builder.addText ( "}" ); //$NON-NLS-1$
-		builder.addText ( "\\longtext{-30pt}" ); //$NON-NLS-1$
-		for ( int i = 1; i < 6; i++ ) {
-			builder.addSourceCodeBreak ( 0 );
-			builder.addText ( "\\newpage" ); //$NON-NLS-1$
-			builder.addSourceCodeBreak ( 0 );
-			int page = -205 * i;
-			builder.addText ( "\\longtext{" + page + "mm}" ); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		return builder;
-	}
 
-	/**
-	 * Build the latex string for the given <code>pCurrentNode</code>.
-	 * 
-	 * @param pLatexStringBuilderFactory The factory which should be used.
-	 * @param pLatexStringBuilder The {@link LatexStringBuilder} which should be
-	 *          completed. is needed because of his {@link ProofNode}s.
-	 * @param pCurrentNode The current {@link ProofNode}.
-	 * @param pIndent The indent of this object.
-	 * @param pDepth the depth of the actual node 
-	 */
-	public final void toLatexStringBuilderInternal ( LatexStringBuilderFactory pLatexStringBuilderFactory,
-			LatexStringBuilder pLatexStringBuilder, ProofNode pCurrentNode, int pIndent, int pDepth ) {
-		int depth = pDepth + 1;
-		pLatexStringBuilder.addBuilder ( pCurrentNode.toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent
-				 ), 0 );
-			int value = 180;
-		for ( int i = 0; i < pCurrentNode.getChildCount ( ); i++ ) {
-			pLatexStringBuilder.addText ( "\\arrow{" + value + "}{" //$NON-NLS-1$//$NON-NLS-2$
-					+ pCurrentNode.getId ( ) + "}{" //$NON-NLS-1$
-					+ pCurrentNode.getChildAt ( i ).getId ( ) + "}" ); //$NON-NLS-1$
-			pLatexStringBuilder.addSourceCodeBreak ( 0 );
-		}
-		pLatexStringBuilder.addSourceCodeBreak ( 0 );
-		for ( int i = 0; i < pCurrentNode.getChildCount ( ); i++ ) {
-			toLatexStringBuilderInternal ( pLatexStringBuilderFactory, pLatexStringBuilder, pCurrentNode.getChildAt ( i ),
-					pIndent, depth );
-		}
-	}
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#getLatexInstructions()
+   */
+  public ArrayList < LatexInstruction > getLatexInstructions ( )
+  {
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    for ( LatexInstruction instruction : getLatexInstructionsStatic ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    for ( LatexInstruction instruction : getLatexInstructionsInternal ( ( TypeCheckerProofNode ) this.root ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    return instructions ;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for the given latex printable
+   * {@link ProofNode}.
+   * 
+   * @param pNode The input {@link ProofNode}.
+   * @return A set of needed latex instructions for the given latex printable
+   *         {@link ProofNode}.
+   */
+  private ArrayList < LatexInstruction > getLatexInstructionsInternal (
+      TypeCheckerProofNode pNode )
+  {
+    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    for ( LatexInstruction instruction : pNode.getLatexInstructions ( ) )
+    {
+      if ( ! instructions.contains ( instruction ) )
+      {
+        instructions.add ( instruction ) ;
+      }
+    }
+    if ( pNode.getRule ( ) != null )
+    {
+      for ( LatexInstruction instruction : pNode.getRule ( )
+          .getLatexInstructions ( ) )
+      {
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
+      }
+    }
+    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    {
+      for ( LatexInstruction instruction : getLatexInstructionsInternal ( pNode
+          .getChildAt ( i ) ) )
+      {
+        if ( ! instructions.contains ( instruction ) )
+        {
+          instructions.add ( instruction ) ;
+        }
+      }
+    }
+    return instructions ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#getLatexPackages()
+   */
+  public TreeSet < LatexPackage > getLatexPackages ( )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    for ( LatexPackage pack : getLatexPackagesInternal ( ( TypeCheckerProofNode ) this.root ) )
+    {
+      packages.add ( pack ) ;
+    }
+    return packages ;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for the given latex printable
+   * {@link ProofNode}.
+   * 
+   * @param pNode The input {@link ProofNode}.
+   * @return A set of needed latex packages for the given latex printable
+   *         {@link ProofNode}.
+   */
+  private TreeSet < LatexPackage > getLatexPackagesInternal (
+      TypeCheckerProofNode pNode )
+  {
+    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    for ( LatexPackage pack : pNode.getLatexPackages ( ) )
+    {
+      packages.add ( pack ) ;
+    }
+    if ( pNode.getRule ( ) != null )
+    {
+      for ( LatexPackage pack : pNode.getRule ( ).getLatexPackages ( ) )
+      {
+        packages.add ( pack ) ;
+      }
+    }
+    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    {
+      for ( LatexPackage pack : getLatexPackagesInternal ( pNode
+          .getChildAt ( i ) ) )
+      {
+        packages.add ( pack ) ;
+      }
+    }
+    return packages ;
+  }
+
+
+  //
+  // Actions
+  //
+  /**
+   * {@inheritDoc}
+   * 
+   * @see #guessWithType(ProofNode, MonoType)
+   * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
+   */
+  @ Override
+  public void guess ( ProofNode node ) throws ProofGuessException
+  {
+    guessInternal ( ( AbstractTypeCheckerProofNode ) node , null ) ;
+  }
+
+
+  /**
+   * Implementation of the {@link #guess(ProofNode)} and
+   * {@link #guessWithType(ProofNode, MonoType)} methods.
+   * 
+   * @param node the proof node for which to guess the next step.
+   * @param type the type that the user entered for this <code>node</code> or
+   *          <code>null</code> to let the type inference algorithm guess the
+   *          type.
+   * @throws IllegalArgumentException if the <code>node</code> is invalid for
+   *           this model.
+   * @throws IllegalStateException if for some reason <code>node</code> cannot
+   *           be proven.
+   * @throws NullPointerException if <code>node</code> is <code>null</code>.
+   * @throws ProofGuessException if the next proof step could not be guessed.
+   * @see #guess(ProofNode)
+   * @see #guessWithType(ProofNode, MonoType)
+   */
+  private void guessInternal ( AbstractTypeCheckerProofNode node , MonoType type )
+      throws ProofGuessException
+  {
+    if ( node == null )
+    {
+      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+    }
+    if ( node.getSteps ( ).length > 0 )
+    {
+      throw new IllegalArgumentException ( "The node is already completed" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.root.isNodeRelated ( node ) )
+    {
+      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+    }
+    // try to guess the next rule
+    logger.debug ( "Trying to guess a rule for " + node ) ; //$NON-NLS-1$
+    for ( ProofRule rule : this.ruleSet.getRules ( ) )
+    { // MUST be the getRules() from the ProofRuleSet
+      try
+      {
+        // try to apply the rule to the specified node
+        applyInternal ( ( TypeCheckerProofRule ) rule , node , type ) ;
+        // remember that the user cheated
+        setCheating ( true ) ;
+        // yep, we did it
+        logger.debug ( "Successfully applied (" + rule + ") to " + node ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        return ;
+      }
+      catch ( ProofRuleException e )
+      {
+        // rule failed to apply... so, next one, please
+        logger.debug ( "Failed to apply (" + rule + ") to " + node , e ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        continue ;
+      }
+      catch ( RuntimeException e )
+      {
+        throw new ProofGuessException ( e.getMessage ( ) , node ) ;
+      }
+    }
+    // unable to guess next step
+    logger.debug ( "Failed to find rule to apply to " + node ) ; //$NON-NLS-1$
+    throw new ProofGuessException ( node ) ;
+  }
+
+
+  /**
+   * Guesses the next proof step for the specified <code>node</code> using the
+   * <code>type</code> for the <code>node</code>. This method is used for
+   * the <tt>"Enter type"</tt> action in the type checker user interface. The
+   * <code>node</code> must not be already proven (see the
+   * {@link ProofNode#isProven()} method for details), otherwise an
+   * {@link IllegalStateException} is thrown.
+   * 
+   * @param node the {@link ProofNode} for which the next proof step should be
+   *          guessed.
+   * @param type the type for the node
+   * @throws IllegalArgumentException if the <code>node</code> is invalid for
+   *           this model.
+   * @throws IllegalStateException if for some reason <code>node</code> cannot
+   *           be proven.
+   * @throws NullPointerException if <code>node</code> or <code>type</code>
+   *           is <code>null</code>.
+   * @throws ProofGuessException if the next proof step could not be guessed.
+   * @see #guess(ProofNode)
+   * @see #prove(ProofRule, ProofNode)
+   */
+  public void guessWithType ( ProofNode node , MonoType type )
+      throws ProofGuessException
+  {
+    if ( type == null )
+    {
+      throw new NullPointerException ( "type is null" ) ; //$NON-NLS-1$
+    }
+    // guess the rule for the node utilizing the type
+    guessInternal ( ( AbstractTypeCheckerProofNode ) node , type ) ;
+    // try to complete the node
+    complete ( node ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule,
+   *      de.unisiegen.tpml.core.ProofNode)
+   */
+  @ Override
+  public void prove ( ProofRule rule , ProofNode node )
+      throws ProofRuleException
+  {
+    if ( ! this.ruleSet.contains ( rule ) )
+    {
+      throw new IllegalArgumentException ( "The rule is invalid for the model" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.root.isNodeRelated ( node ) )
+    {
+      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+    }
+    if ( node.getRules ( ).length > 0 )
+    {
+      throw new IllegalArgumentException ( "The node is already completed" ) ; //$NON-NLS-1$
+    }
+    // try to apply the rule to the specified node
+    applyInternal ( ( TypeCheckerProofRule ) rule ,
+        ( AbstractTypeCheckerProofNode ) node , null ) ;
+  }
+
+
+  /**
+   * Sets the current proof model index. This is a support operation, called by
+   * {@link DefaultTypeCheckerProofContext} whenever a new proof context is
+   * allocated.
+   * 
+   * @param pIndex the new index for the proof model.
+   * @see #getIndex()
+   * @see DefaultTypeCheckerProofContext
+   * @see DefaultTypeCheckerProofContext#DefaultTypeCheckerProofContext(TypeCheckerProofModel)
+   */
+  public void setIndex ( int pIndex )
+  {
+    if ( pIndex < 1 )
+    {
+      throw new IllegalArgumentException ( "index is invalid" ) ; //$NON-NLS-1$
+    }
+    this.index = pIndex ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexString()
+   */
+  public LatexString toLatexString ( )
+  {
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
+        .toLatexString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
+   */
+  public final LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+  {
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        pIndent ) ;
+    {
+      builder.addText ( "\\treeindent=0mm" ) ; //$NON-NLS-1$
+      builder.addSourceCodeBreak ( 0 ) ;
+      builder.addText ( "\\nodeindent=7mm" ) ; //$NON-NLS-1$
+      builder.addSourceCodeBreak ( 0 ) ;
+      builder.addText ( "\\nodesep=2mm" ) ; //$NON-NLS-1$
+      builder.addSourceCodeBreak ( 0 ) ;
+      builder
+          .addText ( "\\newcommand{\\longtext}[1]{\\oddsidemargin=#1\\enlargethispage{840mm}" ) ; //$NON-NLS-1$
+      builder.addSourceCodeBreak ( 0 ) ;
+      builder.addText ( "\\mktree{" ) ; //$NON-NLS-1$
+      toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
+          this.root , pIndent + LATEX_INDENT , - 1 ) ;
+    }
+    builder.addText ( "}" ) ; //$NON-NLS-1$
+    builder.addText ( "}" ) ; //$NON-NLS-1$
+    builder.addText ( "\\longtext{-30pt}" ) ; //$NON-NLS-1$
+    for ( int i = 1 ; i < 6 ; i ++ )
+    {
+      builder.addSourceCodeBreak ( 0 ) ;
+      builder.addText ( "\\newpage" ) ; //$NON-NLS-1$
+      builder.addSourceCodeBreak ( 0 ) ;
+      int page = - 205 * i ;
+      builder.addText ( "\\longtext{" + page + "mm}" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    }
+    return builder ;
+  }
+
+
+  /**
+   * Build the latex string for the given <code>pCurrentNode</code>.
+   * 
+   * @param pLatexStringBuilderFactory The factory which should be used.
+   * @param pLatexStringBuilder The {@link LatexStringBuilder} which should be
+   *          completed. is needed because of his {@link ProofNode}s.
+   * @param pCurrentNode The current {@link ProofNode}.
+   * @param pIndent The indent of this object.
+   * @param pDepth the depth of the actual node
+   */
+  public final void toLatexStringBuilderInternal (
+      LatexStringBuilderFactory pLatexStringBuilderFactory ,
+      LatexStringBuilder pLatexStringBuilder , ProofNode pCurrentNode ,
+      int pIndent , int pDepth )
+  {
+    int depth = pDepth + 1 ;
+    pLatexStringBuilder.addBuilder ( pCurrentNode.toLatexStringBuilder (
+        pLatexStringBuilderFactory , pIndent ) , 0 ) ;
+    int value = 180 ;
+    for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
+    {
+      pLatexStringBuilder.addText ( "\\arrow{" + value + "}{" //$NON-NLS-1$//$NON-NLS-2$
+          + pCurrentNode.getId ( ) + "}{" //$NON-NLS-1$
+          + pCurrentNode.getChildAt ( i ).getId ( ) + "}" ) ; //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    }
+    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
+    {
+      toLatexStringBuilderInternal ( pLatexStringBuilderFactory ,
+          pLatexStringBuilder , pCurrentNode.getChildAt ( i ) , pIndent , depth ) ;
+    }
+  }
 }
