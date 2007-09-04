@@ -260,6 +260,7 @@ public class LatexTest
     }
     else{
    	 console = false;
+   	 // Expression, Type, Environment
    	 testExpression ( file );
    	 compile ( ) ;
    	 if (removeFiles ( file ))
@@ -286,6 +287,7 @@ public class LatexTest
    		 System.err.println("testStore: failed");
        testTypeCheckerProofRule ( file ) ;
        compile ( ) ;
+       // TypeChecker
        if (removeFiles ( file ))
    		 System.out.println("testTypeCheckerProofRule: success");
    	 else
