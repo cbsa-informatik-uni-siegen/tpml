@@ -131,7 +131,7 @@ public class DefaultTypeCheckerTypeProofNode extends
 								+ "\\noindent\\hspace{\\treeindent}\\hspace{#2\\nodeindent}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
 								+ "\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
 								+ "$\\begin{tabular}[t]{p{#6}}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-								+ "{#3\\ <:\\ #4}" //$NON-NLS-1$
+								+ "{#3\\ <:\\ #4}$\\\\$" //$NON-NLS-1$
 								+ "\\byrule{#5} " //$NON-NLS-1$
 								+ "$\\end{tabular}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
 								+ "\\vspace{\\nodesep}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$

@@ -2,20 +2,21 @@ package de.unisiegen.tpml.core.typechecker ;
 
 
 import java.util.ArrayList;
-import java.util.Enumeration ;
+import java.util.Enumeration;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger ;
-import de.unisiegen.tpml.core.AbstractExpressionProofModel ;
-import de.unisiegen.tpml.core.AbstractProofModel ;
-import de.unisiegen.tpml.core.AbstractProofNode ;
-import de.unisiegen.tpml.core.AbstractProofRuleSet ;
-import de.unisiegen.tpml.core.ProofGuessException ;
-import de.unisiegen.tpml.core.ProofNode ;
-import de.unisiegen.tpml.core.ProofRule ;
-import de.unisiegen.tpml.core.ProofRuleException ;
-import de.unisiegen.tpml.core.ProofStep ;
-import de.unisiegen.tpml.core.expressions.Expression ;
+import org.apache.log4j.Logger;
+
+import de.unisiegen.tpml.core.AbstractExpressionProofModel;
+import de.unisiegen.tpml.core.AbstractProofModel;
+import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.ProofGuessException;
+import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage;
@@ -27,9 +28,8 @@ import de.unisiegen.tpml.core.latex.LatexPrintable;
 import de.unisiegen.tpml.core.latex.LatexString;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
-import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.TypeVariable ;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.TypeVariable;
 
 
 /**

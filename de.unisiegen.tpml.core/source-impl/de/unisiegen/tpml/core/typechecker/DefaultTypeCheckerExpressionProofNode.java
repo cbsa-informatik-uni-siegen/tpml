@@ -169,7 +169,7 @@ public class DefaultTypeCheckerExpressionProofNode extends
 								+ "$\\end{tabular}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
 								+ "\\vspace{\\nodesep}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
 								+ "\\fi" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-						, "depth", "id", "evironment","expression", "type", "rule", "space" ) ); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
+						, "depth", "id", "evironment","expression", "type", "rule", "space" ) ); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ 
 		for ( LatexCommand command : this.environment.getLatexCommands ( ) ) {
 			commands.add ( command );
 		}

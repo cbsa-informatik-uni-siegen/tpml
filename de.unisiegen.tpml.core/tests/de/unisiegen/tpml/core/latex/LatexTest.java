@@ -33,6 +33,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRule;
 import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofContext;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.core.subtypingrec.AbstractRecSubTypingProofRule;
 import de.unisiegen.tpml.core.subtypingrec.DefaultRecSubTypingProofNode;
@@ -185,7 +186,7 @@ public class LatexTest
         compile = false ;
       }
     }
-    int number = 17 ;
+    int number = 73 ;
     File file = new File ( "test.tex" ) ;
     // Expression, Type, Environment
     if ( number == 00 ) testExpression ( file ) ;
@@ -230,6 +231,7 @@ public class LatexTest
     if ( number == 70 ) testRecSubTypingProofRule ( file ) ;
     if ( number == 71 ) testSubType ( file ) ;
     if ( number == 72 ) testRecSubTypingProofNode ( file ) ;
+    if ( number == 73 ) testSubTypingProofModel ( file ) ;
     // LatexExportAll
     if ( number == 80 ) testLatexExportAll ( file ) ;
     if ( compile )
@@ -663,6 +665,27 @@ public class LatexTest
       e.printStackTrace ( ) ;
       System.exit ( 1 ) ;
     }
+  }
+  
+  private final static void testSubTypingProofModel ( File pFile )
+  {
+	  try
+	    {
+	      Language language = LanguageFactory.newInstance ( ).getLanguageById (
+	          "l2sub" ) ;
+	      MonoType type = new ArrowType ( new IntegerType ( ) , new ArrowType (
+	            new IntegerType ( ) , new IntegerType ( ) ) ) ;
+	      MonoType type2 = new ArrowType ( new IntegerType ( ) , new ArrowType (
+	            new IntegerType ( ) , new IntegerType ( ) ) ) ;
+	      SubTypingProofModel model = language.newSubTypingProofModel  ( type, type2, false ) ;
+	      model.complete ( nextNode ( model ) ) ;
+	      LatexExport.export ( model , pFile ) ;
+	    }
+	    catch ( Exception e )
+	    {
+	      e.printStackTrace ( ) ;
+	      System.exit ( 1 ) ;
+	    }
   }
 
 
