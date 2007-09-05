@@ -93,11 +93,11 @@ public final class TypeInferenceProofModel extends AbstractProofModel
     LatexInstructionList instructions = new LatexInstructionList ( ) ;
     instructions.add ( new DefaultLatexInstruction (
         "\\newenvironment{typeinferencenode}" //$NON-NLS-1$
-            + "{\\begin{tabular}{p{23.5cm}}}{\\end{tabular}}" , //$NON-NLS-1$
+            + "{\\begin{tabular}[t]{p{23.5cm}}}{\\end{tabular}}" , //$NON-NLS-1$
         "The environment of the type inference nodes" ) ) ; //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
         "\\newenvironment{typeinferencerule}" //$NON-NLS-1$
-            + "{\\begin{tabular}{p{2cm}}}{\\end{tabular}}" , //$NON-NLS-1$
+            + "{\\begin{tabular}[b]{p{2cm}}}{\\end{tabular}}" , //$NON-NLS-1$
         "The environment of the type inference rule" ) ) ; //$NON-NLS-1$
     return instructions ;
   }
