@@ -391,6 +391,32 @@ public interface LatexCommandNames
 
 
   /**
+   * The latex print command for the keyword <code>solve</code>.
+   */
+  public static final String LATEX_KEY_SOLVE = LATEX_KEY + "Solve" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the left paren of the keyword
+   * <code>solve</code>.
+   */
+  public static final String LATEX_SOLVE_LPAREN = "SolveLeftParen" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the right paren of the keyword
+   * <code>solve</code>.
+   */
+  public static final String LATEX_SOLVE_RPAREN = "SolveRightParen" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the substitutions begin.
+   */
+  public static final String LATEX_TYPE_INFERENCE_SUBSTITUTIONS_BEGIN = "TypeInferenceSubstitutionBegin" ; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for parentheis.
    */
   public static final String LATEX_PARENTHESIS = "Parenthesis" ; //$NON-NLS-1$

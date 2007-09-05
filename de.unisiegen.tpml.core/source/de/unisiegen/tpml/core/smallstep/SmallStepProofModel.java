@@ -62,7 +62,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_RULES_COMPLETED ,
         0 , "&" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_MODEL , 1 ,
-        "\\begin{longtable}{p{3.5cm}p{22cm}}#1\\end{longtable}" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        "\\begin{longtable}{p{3.5cm}@{}p{22cm}@{}}#1\\end{longtable}" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_ARROW , 2 ,
         "\\xrightarrow" + LATEX_LINE_BREAK_NEW_COMMAND + "[\\mbox{\\color{" //$NON-NLS-1$//$NON-NLS-2$
             + LATEX_COLOR_RULE + "}{\\scriptsize{#2}}}]" //$NON-NLS-1$
@@ -83,15 +83,15 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     LatexInstructionList instructions = new LatexInstructionList ( ) ;
     instructions.add ( new DefaultLatexInstruction (
         "\\newenvironment{smallsteprulearrow}" //$NON-NLS-1$
-            + "{\\begin{tabular}[t]{p{3.5cm}}}{\\end{tabular}}" , //$NON-NLS-1$
+            + "{\\begin{tabular}[t]{p{3.5cm}@{}}}{\\end{tabular}}" , //$NON-NLS-1$
         "The environment of the small step rules with the arrow" ) ) ; //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
         "\\newenvironment{smallsteprules}" //$NON-NLS-1$
-            + "{\\begin{tabular}{p{2.5cm}}}{\\end{tabular}}" , //$NON-NLS-1$
+            + "{\\begin{tabular}{p{2.5cm}@{}}}{\\end{tabular}}" , //$NON-NLS-1$
         "The environment of the small step rules" ) ) ; //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
         "\\newenvironment{smallstepnode}" //$NON-NLS-1$
-            + "{\\begin{tabular}[b]{p{22cm}}}{\\end{tabular}}" , //$NON-NLS-1$
+            + "{\\begin{tabular}[b]{p{22cm}@{}}}{\\end{tabular}}" , //$NON-NLS-1$
         "The environment of the small step nodes" ) ) ; //$NON-NLS-1$
     return instructions ;
   }
@@ -566,6 +566,28 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
 
 
   /**
+   * 
+   * {@inheritDoc}
+   * @see de.unisiegen.tpml.core.ProofModel#setOverlap(int)
+   */
+  public void setOverlap ( @SuppressWarnings("unused")
+		  int pOverlap ) {
+	  throw new UnsupportedOperationException();
+  }
+
+
+  /**
+   *
+   * {@inheritDoc}
+   * @see de.unisiegen.tpml.core.ProofModel#setPages(int)
+   */
+  public void setPages ( @SuppressWarnings("unused")
+		  int pPages ) {
+	  throw new UnsupportedOperationException();
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see LatexPrintable#toLatexString()
@@ -575,7 +597,6 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
         .toLatexString ( ) ;
   }
-
 
   /**
    * {@inheritDoc}
@@ -617,7 +638,6 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     builder.addBuilderEnd ( ) ;
     return builder ;
   }
-
 
   /**
    * Build the latex string for the given <code>pCurrentNode</code>.
@@ -773,25 +793,5 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
           pLatexStringBuilder , pCurrentNode , pCurrentNode.getChildAt ( i ) ,
           pIndent ) ;
     }
-  }
-
-  /**
-   * 
-   * {@inheritDoc}
-   * @see de.unisiegen.tpml.core.ProofModel#setOverlap(int)
-   */
-  public void setOverlap ( @SuppressWarnings("unused")
-		  int pOverlap ) {
-	  throw new UnsupportedOperationException();
-  }
-
-  /**
-   *
-   * {@inheritDoc}
-   * @see de.unisiegen.tpml.core.ProofModel#setPages(int)
-   */
-  public void setPages ( @SuppressWarnings("unused")
-		  int pPages ) {
-	  throw new UnsupportedOperationException();
   }
 }

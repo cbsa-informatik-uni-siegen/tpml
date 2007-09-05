@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.typeinference ;
 
 
+import java.awt.Color ;
 import java.util.ArrayList ;
 import java.util.TreeSet ;
 import org.apache.log4j.Logger ;
@@ -34,6 +35,7 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.TypeVariable ;
+import de.unisiegen.tpml.core.util.Theme ;
 
 
 /**
@@ -66,6 +68,15 @@ public final class TypeInferenceProofModel extends AbstractProofModel
   public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
   {
     TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_SOLVE , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{solve}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_SOLVE_LPAREN , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_NONE + "}{\\ \\{}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_SOLVE_RPAREN , 0 ,
+        "\\textbf{\\color{" + LATEX_COLOR_NONE + "}{\\ \\}}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand (
+        LATEX_TYPE_INFERENCE_SUBSTITUTIONS_BEGIN , 0 ,
+        "\\multicolumn{2}{p{23.5cm}}" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_NEW_NODE , 0 ,
         "\\\\[10mm]" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_NEW_FORMULA ,
@@ -73,8 +84,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel
     commands.add ( new DefaultLatexCommand (
         LATEX_TYPE_INFERENCE_RULES_COMPLETED , 0 , "&" ) ) ; //$NON-NLS-1$
     commands
-        .add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_PROOF_MODEL , 1 ,
-            "\\begin{longtable}{p{2cm}p{23.5cm}}#1\\end{longtable}" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        .add ( new DefaultLatexCommand (
+            LATEX_TYPE_INFERENCE_PROOF_MODEL ,
+            1 ,
+            "\\begin{longtable}{p{2cm}@{}p{23.5cm}@{}}#1\\end{longtable}" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_RULE , 1 ,
         "\\mbox{\\centerline{\\scriptsize{#1}}}" , "rule" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_EQUAL , 0 ,
@@ -93,12 +106,27 @@ public final class TypeInferenceProofModel extends AbstractProofModel
     LatexInstructionList instructions = new LatexInstructionList ( ) ;
     instructions.add ( new DefaultLatexInstruction (
         "\\newenvironment{typeinferencenode}" //$NON-NLS-1$
-            + "{\\begin{tabular}[t]{p{23.5cm}}}{\\end{tabular}}" , //$NON-NLS-1$
+            + "{\\begin{tabular}[t]{p{1.7cm}@{}p{21.8cm}@{}}}{\\end{tabular}}" , //$NON-NLS-1$
         "The environment of the type inference nodes" ) ) ; //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
         "\\newenvironment{typeinferencerule}" //$NON-NLS-1$
-            + "{\\begin{tabular}[b]{p{2cm}}}{\\end{tabular}}" , //$NON-NLS-1$
+            + "{\\begin{tabular}[b]{p{2cm}@{}}}{\\end{tabular}}" , //$NON-NLS-1$
         "The environment of the type inference rule" ) ) ; //$NON-NLS-1$
+    Color colorKeyword = Theme.currentTheme ( ).getKeywordColor ( ) ;
+    float red = ( float ) Math
+        .round ( ( ( float ) colorKeyword.getRed ( ) ) / 255 * 100 ) / 100 ;
+    float green = ( float ) Math
+        .round ( ( ( float ) colorKeyword.getGreen ( ) ) / 255 * 100 ) / 100 ;
+    float blue = ( float ) Math
+        .round ( ( ( float ) colorKeyword.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_KEYWORD + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}" , LATEX_COLOR_KEYWORD + ": color of keywords" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
     return instructions ;
   }
 
@@ -770,6 +798,30 @@ public final class TypeInferenceProofModel extends AbstractProofModel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.ProofModel#setOverlap(int)
+   */
+  public void setOverlap ( @ SuppressWarnings ( "unused" )
+  int pOverlap )
+  {
+    throw new UnsupportedOperationException ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.ProofModel#setPages(int)
+   */
+  public void setPages ( @ SuppressWarnings ( "unused" )
+  int pPages )
+  {
+    throw new UnsupportedOperationException ( ) ;
+  }
+
+
+  /**
    * Set a new undo action for the added child
    * 
    * @param pNode the parent node to add the child
@@ -846,40 +898,19 @@ public final class TypeInferenceProofModel extends AbstractProofModel
     builder.addSourceCodeBreak ( 0 ) ;
     builder.addText ( "\\begin{typeinferencenode}" ) ; //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_KEY_SOLVE ) ;
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SOLVE_LPAREN ) ;
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "&" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
     builder.addText ( "$" ) ; //$NON-NLS-1$
     DefaultTypeInferenceProofNode node = ( DefaultTypeInferenceProofNode ) this.root ;
-    for ( int i = 0 ; i < node.getFormula ( ).size ( ) ; i ++ )
-    {
-      if ( node.getFormula ( ).get ( i ) instanceof TypeEquationTypeInference )
-      {
-        TypeEquationTypeInference equation = ( TypeEquationTypeInference ) node
-            .getFormula ( ).get ( i ) ;
-        builder.addBuilderWithoutBrackets ( equation.getSeenTypes ( )
-            .toLatexStringBuilder ( pLatexStringBuilderFactory ,
-                pIndent + LATEX_INDENT ) , 0 ) ;
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-        builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-            + LATEX_INDENT ) ) ;
-        builder.addText ( LATEX_SPACE ) ;
-        builder.addText ( LATEX_NAIL ) ;
-        builder.addText ( LATEX_SPACE ) ;
-      }
-      builder.addBuilderWithoutBrackets ( node.getFormula ( ).get ( i )
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ,
-              pIndent + LATEX_INDENT ) , 0 ) ;
-      if ( i < node.getFormula ( ).size ( ) - 1 )
-      {
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
-        builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-            + LATEX_INDENT ) ) ;
-        builder.addText ( "$" ) ;//$NON-NLS-1$
-        builder.addSourceCodeBreak ( 0 ) ;
-        builder.addText ( LATEX_PREFIX_COMMAND
-            + LATEX_TYPE_INFERENCE_NEW_FORMULA ) ;
-        builder.addSourceCodeBreak ( 0 ) ;
-        builder.addText ( "$" ) ;//$NON-NLS-1$
-      }
-    }
+    builder.addBuilderWithoutBrackets ( node.getFormula ( ).get ( 0 )
+        .toLatexStringBuilder ( pLatexStringBuilderFactory ,
+            pIndent + LATEX_INDENT ) , 0 ) ;
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SOLVE_RPAREN ) ;
     builder.addSourceCodeBreak ( 0 ) ;
     builder.addText ( "$" ) ; //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 ) ;
@@ -950,11 +981,15 @@ public final class TypeInferenceProofModel extends AbstractProofModel
         + LATEX_TYPE_INFERENCE_RULES_COMPLETED ) ;
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     // Second column
-    pLatexStringBuilder.addText ( "\\begin{typeinferencenode}" ) ;//$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "$" ) ;//$NON-NLS-1$
+    pLatexStringBuilder.addText ( "\\begin{typeinferencenode}" ) ; //$NON-NLS-1$
     if ( pCurrentNode.getSubstitution ( ).size ( ) > 0 )
     {
+      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+          + LATEX_TYPE_INFERENCE_SUBSTITUTIONS_BEGIN ) ;
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
       pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
       pLatexStringBuilder.addText ( DefaultLatexStringBuilder
           .getIndent ( pIndent + LATEX_INDENT ) ) ;
@@ -978,6 +1013,12 @@ public final class TypeInferenceProofModel extends AbstractProofModel
       pLatexStringBuilder.addText ( DefaultLatexStringBuilder
           .getIndent ( pIndent + LATEX_INDENT ) ) ;
       pLatexStringBuilder.addText ( LATEX_RBRACKET ) ;
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
       if ( pCurrentNode.getFormula ( ).size ( ) > 0 )
       {
         pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
@@ -991,8 +1032,26 @@ public final class TypeInferenceProofModel extends AbstractProofModel
         pLatexStringBuilder.addText ( "$" ) ;//$NON-NLS-1$
       }
     }
+    else
+    {
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
+    }
+    if ( pCurrentNode.getFormula ( ).size ( ) > 0 )
+    {
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_KEY_SOLVE ) ;
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_SOLVE_LPAREN ) ;
+    }
     for ( int i = 0 ; i < pCurrentNode.getFormula ( ).size ( ) ; i ++ )
     {
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addText ( "&" ) ; //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
       if ( pCurrentNode.getFormula ( ).get ( i ) instanceof TypeEquationTypeInference )
       {
         TypeEquationTypeInference equation = ( TypeEquationTypeInference ) pCurrentNode
@@ -1020,9 +1079,12 @@ public final class TypeInferenceProofModel extends AbstractProofModel
         pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
         pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
             + LATEX_TYPE_INFERENCE_NEW_FORMULA ) ;
-        pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-        pLatexStringBuilder.addText ( "$" ) ;//$NON-NLS-1$
       }
+    }
+    if ( pCurrentNode.getFormula ( ).size ( ) > 0 )
+    {
+      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_SOLVE_RPAREN ) ;
     }
     pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
     pLatexStringBuilder.addText ( "$" ) ;//$NON-NLS-1$
@@ -1175,25 +1237,5 @@ public final class TypeInferenceProofModel extends AbstractProofModel
   {
     super.undo ( ) ;
     this.index -- ;
-  }
-  
-  /**
-   * 
-   * {@inheritDoc}
-   * @see de.unisiegen.tpml.core.ProofModel#setOverlap(int)
-   */
-  public void setOverlap ( @SuppressWarnings("unused")
-		  int pOverlap ) {
-	  throw new UnsupportedOperationException();
-  }
-
-  /**
-   *
-   * {@inheritDoc}
-   * @see de.unisiegen.tpml.core.ProofModel#setPages(int)
-   */
-  public void setPages ( @SuppressWarnings("unused")
-		  int pPages ) {
-	  throw new UnsupportedOperationException();
   }
 }
