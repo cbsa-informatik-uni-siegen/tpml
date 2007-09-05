@@ -13,4 +13,3 @@
 *** Benny ***
 - NewDefaultTypeInferenceProofContext und DefaultTypeInferenceProofContext
 - \blong, \elong entfernen?
-- Parameter von \newcommand{\arrow} in den Modeln kommentieren.

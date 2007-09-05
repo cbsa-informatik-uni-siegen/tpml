@@ -69,7 +69,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
             "\\ifarrows" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\ncangle[angleA=-90,angleB=#1]{<-}{\\thetree.#2}{\\thetree.#3}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\else" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\fi" , "bli" , "bla" , "blub" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+                + "\\fi" , "angle" , "from" , "to" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
     return commands ;
   }
 
