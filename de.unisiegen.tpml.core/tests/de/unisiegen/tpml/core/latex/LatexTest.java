@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.latex ;
 
 import java.io.File ;
 import java.io.StringReader ;
+import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
 import java.util.LinkedList ;
 import de.unisiegen.tpml.core.ProofModel ;
@@ -91,7 +92,7 @@ public class LatexTest
   private static boolean compile = true ;
 
 
-  private final static void compile ( )
+  private final static int compile ( )
   {
     try
     {
@@ -99,11 +100,17 @@ public class LatexTest
       {
         System.out.println ( ) ;
       }
-      if ( console ) System.out.println ( "*** compile ***" ) ;
+      if ( console )
+      {
+        System.out.println ( "*** compile ***" ) ;
+      }
       Process p ;
       // latex 1
-      if ( console ) System.out.println ( "latex 1" ) ;
-      p = Runtime.getRuntime ( ).exec ( "latex test.tex" ) ;
+      if ( console )
+      {
+        System.out.println ( "latex 1" ) ;
+      }
+      p = Runtime.getRuntime ( ).exec ( "latex -halt-on-error test.tex" ) ;
       try
       {
         p.waitFor ( ) ;
@@ -111,16 +118,19 @@ public class LatexTest
       catch ( InterruptedException e )
       {
         e.printStackTrace ( ) ;
-        System.exit ( 1 ) ;
+        return 1 ;
       }
       if ( p.exitValue ( ) != 0 )
       {
         System.err.println ( "LatexTest: latex 1 error" ) ;
-        return ;
+        return 1 ;
       }
       // latex 2
-      if ( console ) System.out.println ( "latex 2" ) ;
-      p = Runtime.getRuntime ( ).exec ( "latex test.tex" ) ;
+      if ( console )
+      {
+        System.out.println ( "latex 2" ) ;
+      }
+      p = Runtime.getRuntime ( ).exec ( "latex -halt-on-error test.tex" ) ;
       try
       {
         p.waitFor ( ) ;
@@ -128,15 +138,18 @@ public class LatexTest
       catch ( InterruptedException e )
       {
         e.printStackTrace ( ) ;
-        System.exit ( 1 ) ;
+        return 1 ;
       }
       if ( p.exitValue ( ) != 0 )
       {
         System.err.println ( "LatexTest: latex 2 error" ) ;
-        return ;
+        return 1 ;
       }
       // dvips
-      if ( console ) System.out.println ( "dvips" ) ;
+      if ( console )
+      {
+        System.out.println ( "dvips" ) ;
+      }
       p = Runtime.getRuntime ( ).exec ( "dvips test.dvi" ) ;
       try
       {
@@ -145,15 +158,18 @@ public class LatexTest
       catch ( InterruptedException e )
       {
         e.printStackTrace ( ) ;
-        System.exit ( 1 ) ;
+        return 1 ;
       }
       if ( p.exitValue ( ) != 0 )
       {
         System.err.println ( "LatexTest: dvips error" ) ;
-        return ;
+        return 1 ;
       }
       // ps2pdf
-      if ( console ) System.out.println ( "ps2pdf" ) ;
+      if ( console )
+      {
+        System.out.println ( "ps2pdf" ) ;
+      }
       p = Runtime.getRuntime ( ).exec ( "ps2pdf test.ps" ) ;
       try
       {
@@ -162,13 +178,31 @@ public class LatexTest
       catch ( InterruptedException e )
       {
         e.printStackTrace ( ) ;
-        System.exit ( 1 ) ;
+        return 1 ;
       }
       if ( p.exitValue ( ) != 0 )
       {
         System.err.println ( "LatexTest: ps2pdf error" ) ;
-        return ;
+        return 1 ;
       }
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ( ) ;
+      return 1 ;
+    }
+    return 0 ;
+  }
+
+
+  private final static void latexExportTPML ( File pLatexFile , File pTPMLFile )
+  {
+    try
+    {
+      LatexExport.export ( null , null , pTPMLFile ,
+          LatexExport.Modus.TPML_FILE ) ;
+      System.out.println ( "*** finished ***" ) ;
+      System.exit ( 0 ) ;
     }
     catch ( Exception e )
     {
@@ -197,7 +231,7 @@ public class LatexTest
     }
     if ( ! all )
     {
-      int number = 0 ;
+      int number = 43 ;
       // Expression, Type, Environment
       if ( number == 00 ) testExpression ( test , tpml ) ;
       if ( number == 01 ) testType ( test , tpml ) ;
@@ -244,211 +278,66 @@ public class LatexTest
       if ( number == 72 ) testRecSubTypingProofNode ( test , tpml ) ;
       if ( number == 73 ) testRecSubTypingProofModel ( test , tpml ) ;
       // LatexExportAll
-      if ( number == 80 ) testLatexExportTPML ( test , tpml ) ;
+      if ( number == 80 ) latexExportTPML ( test , tpml ) ;
       if ( compile )
       {
-        compile ( ) ;
+        if ( compile ( ) != 0 )
+        {
+          System.exit ( 1 ) ;
+        }
       }
     }
     else
     {
       console = false ;
-      // Expression, Type, Environment
-      testExpression ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testExpression: success" ) ;
-      else System.err.println ( "testExpression: failed" ) ;
-      testType ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testType: success" ) ;
-      else System.err.println ( "testType: failed" ) ;
-      testTypeEnvironment ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testEnvironment: success" ) ;
-      else System.err.println ( "testEnvironment: failed" ) ;
-      testStore ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testStore: success" ) ;
-      else System.err.println ( "testStore: failed" ) ;
-      testTypeCheckerProofRule ( test , tpml ) ;
-      compile ( ) ;
-      // TypeChecker
-      if ( removeFiles ( test ) )
-        System.out.println ( "testTypeCheckerProofRule: success" ) ;
-      else System.err.println ( "testTypeCheckerProofRule: failed" ) ;
-      testSeenTypes ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testSeenTypes: success" ) ;
-      else System.err.println ( "testSeenTypes: failed" ) ;
-      testTypeSubstitution ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testTypeSubstitution: success" ) ;
-      else System.err.println ( "testTypeSubstitution: failed" ) ;
-      testTypeEquationTypeChecker ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testTypeEquationTypeChecker: success" ) ;
-      else System.err.println ( "testTypeEquationTypeChecker: failed" ) ;
-      testTypeEquationListTypeChecker ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testTypeEquationListTypeChecker: success" ) ;
-      else System.err.println ( "testTypeEquationListTypeChecker: failed" ) ;
-      testTypeCheckerExpressionProofNode ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testTypeCheckerExpressionProofNode: success" ) ;
-      else System.err.println ( "testTypeCheckerExpressionProofNode: failed" ) ;
-      testTypeCheckerTypeProofNode ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testTypeCheckerTypeProofNode: success" ) ;
-      else System.err.println ( "testTypeCheckerTypeProofNode: failed" ) ;
-      testTypeCheckerProofModel ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testTypeCheckerProofModel: success" ) ;
-      else System.err.println ( "testTypeCheckerProofModel: failed" ) ;
-      // TypeInference
-      testTypeEquationTypeInference ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testTypeEquationTypeInference: success" ) ;
-      else System.err.println ( "testTypeEquationTypeInference: failed" ) ;
-      testTypeEquationListTypeInference ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testTypeEquationListTypeInference: success" ) ;
-      else System.err.println ( "testTypeEquationListTypeInference: failed" ) ;
-      testTypeSubstitutionList ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testTypeSubstitutionList: success" ) ;
-      else System.err.println ( "testTypeSubstitutionList: failed" ) ;
-      testTypeJudgement ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testTypeJudgement: success" ) ;
-      else System.err.println ( "testTypeJudgement: failed" ) ;
-      testTypeSubType ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testTypeSubType: success" ) ;
-      else System.err.println ( "testTypeSubType: failed" ) ;
-      testTypeInferenceProofNode ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testTypeInferenceProofNode: success" ) ;
-      else System.err.println ( "testTypeInferenceProofNode: failed" ) ;
-      testTypeInferenceProofModel ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testTypeInferenceProofModel: success" ) ;
-      else System.err.println ( "testTypeInferenceProofModel: failed" ) ;
-      // SmallStep
-      testSmallStepProofRule ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testSmallStepProofRule: success" ) ;
-      else System.err.println ( "testSmallStepProofRule: failed" ) ;
-      testSmallStepProofNode ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testSmallStepProofNode: success" ) ;
-      else System.err.println ( "testSmallStepProofNode: failed" ) ;
-      testSmallStepProofModel ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testSmallStepProofModel: success" ) ;
-      else System.err.println ( "testSmallStepProofModel: failed" ) ;
-      // BigStep
-      testBigStepProofRule ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testBigStepProofRule: success" ) ;
-      else System.err.println ( "testBigStepProofRule: failed" ) ;
-      testBigStepResult ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testBigStepResult: success" ) ;
-      else System.err.println ( "testBigStepResult: failed" ) ;
-      testBigStepProofNode ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testBigStepProofNode: success" ) ;
-      else System.err.println ( "testBigStepProofNode: failed" ) ;
-      testBigStepProofModel ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testBigStepProofModel: success" ) ;
-      else System.err.println ( "testBigStepProofModel: failed" ) ;
-      // MinimalTyping
-      testMinimalTypingProofRule ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testMinimalTypingProofRule: success" ) ;
-      else System.err.println ( "testMinimalTypingProofRule: failed" ) ;
-      testMinimalTypingExpressionProofNode ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testMinimalTypingExpressionProofNode: success" ) ;
-      else System.err.println ( "testMinimalTypingExpressionProofNode: failed" ) ;
-      testMinimalTypingTypesProofNode ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testMinimalTypingTypesProofNode: success" ) ;
-      else System.err.println ( "testMinimalTypingTypesProofNode: failed" ) ;
-      testMinimalTypingProofModel ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testMinimalTypingProofModel: success" ) ;
-      else System.err.println ( "testMinimalTypingProofModel: failed" ) ;
-      // SubTyping
-      testSubTypingProofRule ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testSubTypingProofRule: success" ) ;
-      else System.err.println ( "testSubTypingProofRule: failed" ) ;
-      testSubTypingProofNode ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testSubTypingProofNode: success" ) ;
-      else System.err.println ( "testSubTypingProofNode: failed" ) ;
-      testSubTypingProofModel ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testSubTypingProofModel: success" ) ;
-      else System.err.println ( "testSubTypingProofModel: failed" ) ;
-      // RecSubTyping
-      testRecSubTypingProofRule ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testRecSubTypingProofRule: success" ) ;
-      else System.err.println ( "testRecSubTypingProofRule: failed" ) ;
-      testSubType ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testSubType: success" ) ;
-      else System.err.println ( "testSubType: failed" ) ;
-      testRecSubTypingProofNode ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testRecSubTypingProofNode: success" ) ;
-      else System.err.println ( "testRecSubTypingProofNode: failed" ) ;
-      testRecSubTypingProofModel ( test , tpml ) ;
-      compile ( ) ;
-      if ( removeFiles ( test ) )
-        System.out.println ( "testRecSubTypingProofModel: success" ) ;
-      else System.err.println ( "testRecSubTypingProofModel: failed" ) ;
+      removeFiles ( test ) ;
+      error = false ;
+      for ( java.lang.reflect.Method m : LatexTest.class.getDeclaredMethods ( ) )
+      {
+        if ( m.getName ( ).startsWith ( "test" ) )
+        {
+          try
+          {
+            m.invoke ( null , new Object [ ]
+            { test , tpml } ) ;
+            if ( compile ( ) != 0 )
+            {
+              error = true ;
+            }
+            if ( removeFiles ( test ) )
+            {
+              System.out.println ( m.getName ( ) + ": success" ) ;
+            }
+            else
+            {
+              System.err.println ( m.getName ( ) + ": failed" ) ;
+            }
+          }
+          catch ( IllegalArgumentException e )
+          {
+            e.printStackTrace ( ) ;
+            System.exit ( 1 ) ;
+          }
+          catch ( IllegalAccessException e )
+          {
+            e.printStackTrace ( ) ;
+            System.exit ( 1 ) ;
+          }
+          catch ( InvocationTargetException e )
+          {
+            e.printStackTrace ( ) ;
+            System.exit ( 1 ) ;
+          }
+        }
+      }
       if ( error )
+      {
         System.err.println ( "Something gone wrong" ) ;
-      else System.err.println ( "Done all without problems" ) ;
+      }
+      else
+      {
+        System.out.println ( "Done all without problems" ) ;
+      }
     }
     System.out.println ( "*** finished***" ) ;
   }
@@ -620,24 +509,6 @@ public class LatexTest
           .parse ( ) ;
       LatexExport.export ( expression , pLatexFile , pTPMLFile ,
           LatexExport.Modus.ONE_FILE ) ;
-    }
-    catch ( Exception e )
-    {
-      e.printStackTrace ( ) ;
-      System.exit ( 1 ) ;
-    }
-  }
-
-
-  private final static void testLatexExportTPML ( File pLatexFile ,
-      File pTPMLFile )
-  {
-    try
-    {
-      LatexExport.export ( null , null , pTPMLFile ,
-          LatexExport.Modus.TPML_FILE ) ;
-      System.out.println ( "*** finished ***" ) ;
-      System.exit ( 0 ) ;
     }
     catch ( Exception e )
     {
