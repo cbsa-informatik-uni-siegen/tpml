@@ -268,13 +268,7 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
     this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     if ( this.parameterDescriptions.length > 0 )
     {
-      this.items.add ( new TextLatexItem ( getIndent ( this.indent )
-          + "% " //$NON-NLS-1$
-          + this.parameterDescriptions [ this.count ].replaceAll (
-              PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + getIndent ( this.indent )
-                  + "% " ) ) ) ; //$NON-NLS-1$
       this.count ++ ;
-      this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     }
     if ( breakItem )
     {

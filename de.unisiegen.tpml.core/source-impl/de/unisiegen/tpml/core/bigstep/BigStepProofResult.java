@@ -251,15 +251,15 @@ public final class BigStepProofResult implements PrettyPrintable ,
       builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
       builder.addText ( LATEX_LPAREN ) ;
       builder.addText ( "}" ) ; //$NON-NLS-1$
-      builder.addBuilder ( this.value.toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+      builder.addBuilderWithoutBrackets ( this.value.toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
           + LATEX_INDENT ) ) ;
       builder.addText ( LATEX_SPACE ) ;
       builder.addText ( LATEX_SPACE ) ;
-      builder.addBuilder ( this.store.toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+      builder.addBuilderWithoutBrackets ( this.store.toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
           + LATEX_INDENT ) ) ;
@@ -269,8 +269,8 @@ public final class BigStepProofResult implements PrettyPrintable ,
     }
     else
     {
-      builder.addBuilder ( this.value.toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+      builder.addBuilderWithoutBrackets ( this.value.toLatexStringBuilder (
+          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
       builder.addEmptyBuilder ( ) ;
     }
     builder.addBuilderEnd ( ) ;
