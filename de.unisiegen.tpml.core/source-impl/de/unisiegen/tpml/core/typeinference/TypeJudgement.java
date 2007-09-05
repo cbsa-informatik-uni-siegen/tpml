@@ -2,14 +2,13 @@ package de.unisiegen.tpml.core.typeinference ;
 
 
 import java.util.ArrayList ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPackageList ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
@@ -69,9 +68,9 @@ public class TypeJudgement implements TypeFormula
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    LatexPackageList packages = new LatexPackageList ( ) ;
     packages.add ( new DefaultLatexPackage ( "amssymb" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     return packages ;
@@ -194,25 +193,13 @@ public class TypeJudgement implements TypeFormula
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public TreeSet < LatexPackage > getLatexPackages ( )
+  public LatexPackageList getLatexPackages ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : this.environment.getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : this.type.getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : this.expression.getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
+    LatexPackageList packages = new LatexPackageList ( ) ;
+    packages.add ( getLatexPackagesStatic ( ) ) ;
+    packages.add ( this.environment ) ;
+    packages.add ( this.type ) ;
+    packages.add ( this.expression ) ;
     return packages ;
   }
 

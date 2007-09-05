@@ -3,7 +3,6 @@ package de.unisiegen.tpml.core.typeinference ;
 
 import java.awt.Color ;
 import java.util.ArrayList ;
-import java.util.TreeSet ;
 import org.apache.log4j.Logger ;
 import de.unisiegen.tpml.core.AbstractProofModel ;
 import de.unisiegen.tpml.core.AbstractProofNode ;
@@ -24,6 +23,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPackageList ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
@@ -136,9 +136,9 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    LatexPackageList packages = new LatexPackageList ( ) ;
     packages.add ( new DefaultLatexPackage ( "longtable" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
     return packages ;
@@ -464,9 +464,9 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * 
    * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexPackages()
    */
-  public TreeSet < LatexPackage > getLatexPackages ( )
+  public LatexPackageList getLatexPackages ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    LatexPackageList packages = new LatexPackageList ( ) ;
     for ( LatexPackage pack : getLatexPackagesStatic ( ) )
     {
       packages.add ( pack ) ;
@@ -487,28 +487,15 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @return A set of needed latex packages for the given latex printable
    *         {@link ProofNode}.
    */
-  private TreeSet < LatexPackage > getLatexPackagesInternal (
+  private LatexPackageList getLatexPackagesInternal (
       TypeInferenceProofNode pNode )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    for ( LatexPackage pack : pNode.getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    if ( pNode.getRule ( ) != null )
-    {
-      for ( LatexPackage pack : pNode.getRule ( ).getLatexPackages ( ) )
-      {
-        packages.add ( pack ) ;
-      }
-    }
+    LatexPackageList packages = new LatexPackageList ( ) ;
+    packages.add ( pNode.getLatexPackages ( ) ) ;
+    packages.add ( pNode.getRule ( ) ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
-      for ( LatexPackage pack : getLatexPackagesInternal ( pNode
-          .getChildAt ( i ) ) )
-      {
-        packages.add ( pack ) ;
-      }
+      packages.add ( getLatexPackagesInternal ( pNode.getChildAt ( i ) ) ) ;
     }
     return packages ;
   }

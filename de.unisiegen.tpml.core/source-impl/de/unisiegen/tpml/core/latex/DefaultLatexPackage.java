@@ -29,17 +29,6 @@ public final class DefaultLatexPackage implements LatexPackage
   /**
    * {@inheritDoc}
    * 
-   * @see Comparable#compareTo(Object)
-   */
-  public int compareTo ( LatexPackage pOther )
-  {
-    return this.name.compareTo ( ( ( DefaultLatexPackage ) pOther ).name ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Object#equals(Object)
    */
   @ Override
@@ -63,18 +52,6 @@ public final class DefaultLatexPackage implements LatexPackage
   public String getName ( )
   {
     return this.name ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Object#equals(Object)
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.name.hashCode ( ) ;
   }
 
 

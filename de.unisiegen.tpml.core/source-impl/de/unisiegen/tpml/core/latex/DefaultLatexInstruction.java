@@ -65,18 +65,6 @@ public final class DefaultLatexInstruction implements LatexInstruction ,
 
 
   /**
-   * Returns the description.
-   * 
-   * @return The description.
-   * @see #description
-   */
-  public String getDescription ( )
-  {
-    return this.description ;
-  }
-
-
-  /**
    * Returns the text.
    * 
    * @return The text.
@@ -85,18 +73,6 @@ public final class DefaultLatexInstruction implements LatexInstruction ,
   public String getText ( )
   {
     return this.text ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Object#equals(Object)
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.text.hashCode ( ) ;
   }
 
 

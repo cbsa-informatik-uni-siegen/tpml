@@ -1,9 +1,6 @@
 package de.unisiegen.tpml.core.latex ;
 
 
-import java.util.TreeSet ;
-
-
 /**
  * Base interface for classes whose instances can be printed in latex.
  * 
@@ -34,7 +31,7 @@ public interface LatexPrintable extends LatexCommandNames
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public TreeSet < LatexPackage > getLatexPackages ( ) ;
+  public LatexPackageList getLatexPackages ( ) ;
 
 
   /**

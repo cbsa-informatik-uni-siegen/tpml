@@ -2,6 +2,8 @@ package de.unisiegen.tpml.core.latex ;
 
 
 import java.util.ArrayList ;
+import java.util.Collections ;
+import java.util.Comparator ;
 import java.util.Iterator ;
 
 
@@ -12,6 +14,47 @@ import java.util.Iterator ;
  */
 public class LatexCommandList implements Iterable < LatexCommand >
 {
+  /**
+   * TODO
+   * 
+   * @author Christian Fehler
+   */
+  protected class LatexCommandComparator implements LatexCommandNames ,
+      Comparator < LatexCommand >
+  {
+    /**
+     * TODO
+     * 
+     * @param pLatexCommand1 TODO
+     * @param pLatexCommand2 TODO
+     * @return TODO
+     * @see Comparator#compare(Object, Object)
+     */
+    public int compare ( LatexCommand pLatexCommand1 ,
+        LatexCommand pLatexCommand2 )
+    {
+      if ( pLatexCommand1.getName ( ).startsWith ( LATEX_KEY ) )
+      {
+        // case 1
+        if ( pLatexCommand2.getName ( ).startsWith ( LATEX_KEY ) )
+        {
+          return pLatexCommand1.getName ( ).compareTo (
+              pLatexCommand2.getName ( ) ) ;
+        }
+        // case 2
+        return - 1 ;
+      }
+      // case 3
+      if ( pLatexCommand2.getName ( ).startsWith ( LATEX_KEY ) )
+      {
+        return 1 ;
+      }
+      // case 4
+      return pLatexCommand1.getName ( ).compareTo ( pLatexCommand2.getName ( ) ) ;
+    }
+  }
+
+
   /**
    * The internal used list.
    */
@@ -46,6 +89,7 @@ public class LatexCommandList implements Iterable < LatexCommand >
             if ( ! this.list.contains ( command ) )
             {
               this.list.add ( command ) ;
+              sort ( ) ;
             }
           }
         }
@@ -66,6 +110,7 @@ public class LatexCommandList implements Iterable < LatexCommand >
       if ( ! this.list.contains ( pLatexCommand ) )
       {
         this.list.add ( pLatexCommand ) ;
+        sort ( ) ;
       }
     }
   }
@@ -86,6 +131,7 @@ public class LatexCommandList implements Iterable < LatexCommand >
         if ( ! this.list.contains ( command ) )
         {
           this.list.add ( command ) ;
+          sort ( ) ;
         }
       }
     }
@@ -106,6 +152,7 @@ public class LatexCommandList implements Iterable < LatexCommand >
         if ( ! this.list.contains ( command ) )
         {
           this.list.add ( command ) ;
+          sort ( ) ;
         }
       }
     }
@@ -131,6 +178,7 @@ public class LatexCommandList implements Iterable < LatexCommand >
             if ( ! this.list.contains ( command ) )
             {
               this.list.add ( command ) ;
+              sort ( ) ;
             }
           }
         }
@@ -159,5 +207,14 @@ public class LatexCommandList implements Iterable < LatexCommand >
   public int size ( )
   {
     return this.list.size ( ) ;
+  }
+
+
+  /**
+   * Sorts the list.
+   */
+  private void sort ( )
+  {
+    Collections.sort ( this.list , new LatexCommandComparator ( ) ) ;
   }
 }

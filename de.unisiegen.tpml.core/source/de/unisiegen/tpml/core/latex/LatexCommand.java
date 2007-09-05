@@ -6,7 +6,7 @@ package de.unisiegen.tpml.core.latex ;
  * 
  * @author Christian Fehler
  */
-public interface LatexCommand extends Comparable < LatexCommand >
+public interface LatexCommand
 {
   /**
    * The description.
@@ -20,6 +20,14 @@ public interface LatexCommand extends Comparable < LatexCommand >
    * @see Object#equals(Object)
    */
   public boolean equals ( Object pObject ) ;
+
+
+  /**
+   * Returns the name.
+   * 
+   * @return The name.
+   */
+  public String getName ( ) ;
 
 
   /**

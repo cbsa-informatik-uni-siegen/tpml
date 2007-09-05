@@ -2,7 +2,6 @@ package de.unisiegen.tpml.core.subtyping ;
 
 
 import java.text.MessageFormat ;
-import java.util.TreeSet ;
 import org.apache.log4j.Logger ;
 import de.unisiegen.tpml.core.AbstractProofModel ;
 import de.unisiegen.tpml.core.AbstractProofNode ;
@@ -19,7 +18,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPackageList ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
@@ -115,9 +114,9 @@ public class SubTypingProofModel extends AbstractProofModel implements
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    LatexPackageList packages = new LatexPackageList ( ) ;
     packages.add ( new DefaultLatexPackage ( "longtable" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "pstricks" ) ) ; //$NON-NLS-1$
@@ -415,17 +414,12 @@ public class SubTypingProofModel extends AbstractProofModel implements
    * 
    * @see LatexPrintable#getLatexPackages()
    */
-  public TreeSet < LatexPackage > getLatexPackages ( )
+  public LatexPackageList getLatexPackages ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : getLatexPackagesInternal ( ( SubTypingProofNode ) this.root ) )
-    {
-      packages.add ( pack ) ;
-    }
+    LatexPackageList packages = new LatexPackageList ( ) ;
+    packages.add ( getLatexPackagesStatic ( ) ) ;
+    packages
+        .add ( getLatexPackagesInternal ( ( SubTypingProofNode ) this.root ) ) ;
     return packages ;
   }
 
@@ -438,28 +432,14 @@ public class SubTypingProofModel extends AbstractProofModel implements
    * @return A set of needed latex packages for the given latex printable
    *         {@link ProofNode}.
    */
-  private TreeSet < LatexPackage > getLatexPackagesInternal (
-      SubTypingProofNode pNode )
+  private LatexPackageList getLatexPackagesInternal ( SubTypingProofNode pNode )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    for ( LatexPackage pack : pNode.getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    if ( pNode.getRule ( ) != null )
-    {
-      for ( LatexPackage pack : pNode.getRule ( ).getLatexPackages ( ) )
-      {
-        packages.add ( pack ) ;
-      }
-    }
+    LatexPackageList packages = new LatexPackageList ( ) ;
+    packages.add ( pNode.getLatexPackages ( ) ) ;
+    packages.add ( pNode.getRule ( ) ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
-      for ( LatexPackage pack : getLatexPackagesInternal ( pNode
-          .getChildAt ( i ) ) )
-      {
-        packages.add ( pack ) ;
-      }
+      packages.add ( getLatexPackagesInternal ( pNode.getChildAt ( i ) ) ) ;
     }
     return packages ;
   }

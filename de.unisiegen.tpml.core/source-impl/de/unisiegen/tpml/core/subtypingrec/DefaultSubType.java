@@ -1,13 +1,12 @@
 package de.unisiegen.tpml.core.subtypingrec ;
 
 
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPackageList ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
@@ -63,9 +62,9 @@ public class DefaultSubType implements PrettyPrintable , LatexPrintable
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    LatexPackageList packages = new LatexPackageList ( ) ;
     packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     return packages ;
   }
@@ -149,21 +148,12 @@ public class DefaultSubType implements PrettyPrintable , LatexPrintable
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public TreeSet < LatexPackage > getLatexPackages ( )
+  public LatexPackageList getLatexPackages ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : this.left.getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : this.right.getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
+    LatexPackageList packages = new LatexPackageList ( ) ;
+    packages.add ( getLatexPackagesStatic ( ) ) ;
+    packages.add ( this.left ) ;
+    packages.add ( this.right ) ;
     return packages ;
   }
 

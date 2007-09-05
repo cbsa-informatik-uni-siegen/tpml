@@ -3,7 +3,6 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
@@ -13,7 +12,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPackageList ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -114,9 +113,9 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    LatexPackageList packages = new LatexPackageList ( ) ;
     packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
     return packages ;
   }
@@ -474,13 +473,10 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * @return A set of needed latex packages for this latex printable object.
    */
   @ Override
-  public TreeSet < LatexPackage > getLatexPackages ( )
+  public LatexPackageList getLatexPackages ( )
   {
-    TreeSet < LatexPackage > packages = super.getLatexPackages ( ) ;
-    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
+    LatexPackageList packages = super.getLatexPackages ( ) ;
+    packages.add ( getLatexPackagesStatic ( ) ) ;
     return packages ;
   }
 

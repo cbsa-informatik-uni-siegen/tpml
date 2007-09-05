@@ -65,34 +65,6 @@ public final class DefaultLatexCommand implements LatexCommand ,
   /**
    * {@inheritDoc}
    * 
-   * @see Comparable#compareTo(Object)
-   */
-  public int compareTo ( LatexCommand pOther )
-  {
-    DefaultLatexCommand other = ( DefaultLatexCommand ) pOther ;
-    if ( this.name.startsWith ( LATEX_KEY ) )
-    {
-      // case 1
-      if ( other.name.startsWith ( LATEX_KEY ) )
-      {
-        return this.name.compareTo ( other.name ) ;
-      }
-      // case 2
-      return - 1 ;
-    }
-    // case 3
-    if ( other.name.startsWith ( LATEX_KEY ) )
-    {
-      return 1 ;
-    }
-    // case 4
-    return this.name.compareTo ( other.name ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Object#equals(Object)
    */
   @ Override
@@ -101,23 +73,9 @@ public final class DefaultLatexCommand implements LatexCommand ,
     if ( pObject instanceof DefaultLatexCommand )
     {
       DefaultLatexCommand other = ( DefaultLatexCommand ) pObject ;
-      return this.name.equals ( other.name )
-          && ( this.parameterCount == other.parameterCount )
-          && this.body.equals ( other.body ) ;
+      return this.name.equals ( other.name ) ;
     }
     return false ;
-  }
-
-
-  /**
-   * Returns the body.
-   * 
-   * @return The body.
-   * @see #body
-   */
-  public String getBody ( )
-  {
-    return this.body ;
   }
 
 
@@ -130,19 +88,6 @@ public final class DefaultLatexCommand implements LatexCommand ,
   public String getName ( )
   {
     return this.name ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Object#equals(Object)
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.name.hashCode ( ) + ( this.parameterCount << 5 )
-        + this.body.hashCode ( ) ;
   }
 
 

@@ -7,7 +7,6 @@ import java.util.Enumeration ;
 import java.util.LinkedList ;
 import java.util.MissingResourceException ;
 import java.util.ResourceBundle ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -17,7 +16,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPackageList ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
@@ -279,9 +278,9 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    LatexPackageList packages = new LatexPackageList ( ) ;
     packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     return packages ;
   }
@@ -635,45 +634,21 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public TreeSet < LatexPackage > getLatexPackages ( )
+  public LatexPackageList getLatexPackages ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
+    LatexPackageList packages = new LatexPackageList ( ) ;
+    packages.add ( getLatexPackagesStatic ( ) ) ;
     if ( this instanceof DefaultExpressions )
     {
-      for ( Expression e : ( ( DefaultExpressions ) this ).getExpressions ( ) )
-      {
-        for ( LatexPackage pack : e.getLatexPackages ( ) )
-        {
-          packages.add ( pack ) ;
-        }
-      }
+      packages.add ( ( ( DefaultExpressions ) this ).getExpressions ( ) ) ;
     }
     if ( this instanceof DefaultIdentifiers )
     {
-      for ( Identifier id : ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) )
-      {
-        for ( LatexPackage pack : id.getLatexPackages ( ) )
-        {
-          packages.add ( pack ) ;
-        }
-      }
+      packages.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) ) ;
     }
     if ( this instanceof DefaultTypes )
     {
-      for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )
-      {
-        if ( type != null )
-        {
-          for ( LatexPackage pack : type.getLatexPackages ( ) )
-          {
-            packages.add ( pack ) ;
-          }
-        }
-      }
+      packages.add ( ( ( DefaultTypes ) this ).getTypes ( ) ) ;
     }
     return packages ;
   }

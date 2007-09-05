@@ -5,9 +5,7 @@ import java.awt.Color ;
 import java.util.ArrayList ;
 import java.util.MissingResourceException ;
 import java.util.ResourceBundle ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypeNames ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -17,7 +15,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPackageList ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
@@ -166,9 +164,9 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    LatexPackageList packages = new LatexPackageList ( ) ;
     packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     return packages ;
   }
@@ -371,42 +369,21 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public TreeSet < LatexPackage > getLatexPackages ( )
+  public LatexPackageList getLatexPackages ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
+    LatexPackageList packages = new LatexPackageList ( ) ;
+    packages.add ( getLatexPackagesStatic ( ) ) ;
     if ( this instanceof DefaultTypes )
     {
-      for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )
-      {
-        for ( LatexPackage pack : type.getLatexPackages ( ) )
-        {
-          packages.add ( pack ) ;
-        }
-      }
+      packages.add ( ( ( DefaultTypes ) this ).getTypes ( ) ) ;
     }
     if ( this instanceof DefaultIdentifiers )
     {
-      for ( Identifier id : ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) )
-      {
-        for ( LatexPackage pack : id.getLatexPackages ( ) )
-        {
-          packages.add ( pack ) ;
-        }
-      }
+      packages.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) ) ;
     }
     if ( this instanceof DefaultTypeNames )
     {
-      for ( TypeName typeName : ( ( DefaultTypeNames ) this ).getTypeNames ( ) )
-      {
-        for ( LatexPackage pack : typeName.getLatexPackages ( ) )
-        {
-          packages.add ( pack ) ;
-        }
-      }
+      packages.add ( ( ( DefaultTypeNames ) this ).getTypeNames ( ) ) ;
     }
     return packages ;
   }

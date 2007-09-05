@@ -15,6 +15,14 @@ public interface LatexInstruction
 
 
   /**
+   * Returns the text.
+   * 
+   * @return The text.
+   */
+  public String getText ( ) ;
+
+
+  /**
    * Returns the string value of this <code>LatexInstruction</code>.
    * 
    * @return The string value of this <code>LatexInstruction</code>.

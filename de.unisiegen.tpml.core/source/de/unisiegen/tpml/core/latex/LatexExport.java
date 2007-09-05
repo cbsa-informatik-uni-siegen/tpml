@@ -9,7 +9,6 @@ import java.io.IOException ;
 import java.io.OutputStreamWriter ;
 import java.io.UnsupportedEncodingException ;
 import java.nio.charset.Charset ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.ProofModel ;
 import de.unisiegen.tpml.core.bigstep.AbstractBigStepProofRule ;
@@ -267,7 +266,7 @@ public abstract class LatexExport implements LatexCommandNames
     if ( pOneFile )
     {
       // packages
-      TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
+      LatexPackageList packages = pLatexPrintable.getLatexPackages ( ) ;
       if ( packages.size ( ) > 0 )
       {
         println ( writer , "%%" ) ; //$NON-NLS-1$
@@ -395,7 +394,7 @@ public abstract class LatexExport implements LatexCommandNames
       throw new LatexException ( Messages.getString ( "LatexExport.2" ) ) ; //$NON-NLS-1$
     }
     // packages
-    TreeSet < LatexPackage > packages = getAllLatexPackages ( ) ;
+    LatexPackageList packages = getAllLatexPackages ( ) ;
     if ( packages.size ( ) > 0 )
     {
       LatexExport.println ( writer , "%%" ) ; //$NON-NLS-1$
@@ -646,225 +645,70 @@ public abstract class LatexExport implements LatexCommandNames
    * 
    * @return All needed {@link LatexPackage}s.
    */
-  private static TreeSet < LatexPackage > getAllLatexPackages ( )
+  private static LatexPackageList getAllLatexPackages ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    LatexPackageList packages = new LatexPackageList ( ) ;
     // Expression
-    for ( LatexPackage pack : Expression.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : Class.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : CurriedLet.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : CurriedMethod.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : Lambda.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : Let.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : MultiLambda.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : MultiLet.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : ObjectExpr.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : Recursion.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
+    packages.add ( Expression.getLatexPackagesStatic ( ) ) ;
+    packages.add ( Class.getLatexPackagesStatic ( ) ) ;
+    packages.add ( CurriedLet.getLatexPackagesStatic ( ) ) ;
+    packages.add ( CurriedMethod.getLatexPackagesStatic ( ) ) ;
+    packages.add ( Lambda.getLatexPackagesStatic ( ) ) ;
+    packages.add ( Let.getLatexPackagesStatic ( ) ) ;
+    packages.add ( MultiLambda.getLatexPackagesStatic ( ) ) ;
+    packages.add ( MultiLet.getLatexPackagesStatic ( ) ) ;
+    packages.add ( ObjectExpr.getLatexPackagesStatic ( ) ) ;
+    packages.add ( Recursion.getLatexPackagesStatic ( ) ) ;
     // Type
-    for ( LatexPackage pack : Type.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : PolyType.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
+    packages.add ( Type.getLatexPackagesStatic ( ) ) ;
+    packages.add ( PolyType.getLatexPackagesStatic ( ) ) ;
     // Environment
-    for ( LatexPackage pack : DefaultTypeEnvironment.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
+    packages.add ( DefaultTypeEnvironment.getLatexPackagesStatic ( ) ) ;
     // Store
-    for ( LatexPackage pack : DefaultStore.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
+    packages.add ( DefaultStore.getLatexPackagesStatic ( ) ) ;
     // TypeChecker
-    for ( LatexPackage pack : AbstractTypeCheckerProofRule
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : SeenTypes.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : DefaultTypeSubstitution.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : TypeEquationTypeChecker.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : TypeEquationListTypeChecker
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : DefaultTypeCheckerExpressionProofNode
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : DefaultTypeCheckerTypeProofNode
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : TypeCheckerProofModel.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
+    packages.add ( AbstractTypeCheckerProofRule.getLatexPackagesStatic ( ) ) ;
+    packages.add ( SeenTypes.getLatexPackagesStatic ( ) ) ;
+    packages.add ( DefaultTypeSubstitution.getLatexPackagesStatic ( ) ) ;
+    packages.add ( TypeEquationTypeChecker.getLatexPackagesStatic ( ) ) ;
+    packages.add ( TypeEquationListTypeChecker.getLatexPackagesStatic ( ) ) ;
+    packages.add ( DefaultTypeCheckerExpressionProofNode
+        .getLatexPackagesStatic ( ) ) ;
+    packages.add ( DefaultTypeCheckerTypeProofNode.getLatexPackagesStatic ( ) ) ;
+    packages.add ( TypeCheckerProofModel.getLatexPackagesStatic ( ) ) ;
     // TypeInference
-    for ( LatexPackage pack : TypeEquationTypeInference
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : TypeEquationListTypeInference
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : TypeSubstitutionList.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : TypeJudgement.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : TypeSubType.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : DefaultTypeInferenceProofNode
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : TypeInferenceProofModel.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
+    packages.add ( TypeEquationTypeInference.getLatexPackagesStatic ( ) ) ;
+    packages.add ( TypeEquationListTypeInference.getLatexPackagesStatic ( ) ) ;
+    packages.add ( TypeSubstitutionList.getLatexPackagesStatic ( ) ) ;
+    packages.add ( TypeJudgement.getLatexPackagesStatic ( ) ) ;
+    packages.add ( TypeSubType.getLatexPackagesStatic ( ) ) ;
+    packages.add ( DefaultTypeInferenceProofNode.getLatexPackagesStatic ( ) ) ;
+    packages.add ( TypeInferenceProofModel.getLatexPackagesStatic ( ) ) ;
     // SmallStep
-    for ( LatexPackage pack : DefaultSmallStepProofRule
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : DefaultSmallStepProofNode
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : SmallStepProofModel.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
+    packages.add ( DefaultSmallStepProofRule.getLatexPackagesStatic ( ) ) ;
+    packages.add ( DefaultSmallStepProofNode.getLatexPackagesStatic ( ) ) ;
+    packages.add ( SmallStepProofModel.getLatexPackagesStatic ( ) ) ;
     // BigStep
-    for ( LatexPackage pack : AbstractBigStepProofRule
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : BigStepProofResult.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : DefaultBigStepProofNode.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : BigStepProofModel.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
+    packages.add ( AbstractBigStepProofRule.getLatexPackagesStatic ( ) ) ;
+    packages.add ( BigStepProofResult.getLatexPackagesStatic ( ) ) ;
+    packages.add ( DefaultBigStepProofNode.getLatexPackagesStatic ( ) ) ;
+    packages.add ( BigStepProofModel.getLatexPackagesStatic ( ) ) ;
     // MinimalTyping
-    for ( LatexPackage pack : AbstractMinimalTypingProofRule
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : DefaultMinimalTypingExpressionProofNode
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : DefaultMinimalTypingTypesProofNode
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : MinimalTypingProofModel.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
+    packages.add ( AbstractMinimalTypingProofRule.getLatexPackagesStatic ( ) ) ;
+    packages.add ( DefaultMinimalTypingExpressionProofNode
+        .getLatexPackagesStatic ( ) ) ;
+    packages
+        .add ( DefaultMinimalTypingTypesProofNode.getLatexPackagesStatic ( ) ) ;
+    packages.add ( MinimalTypingProofModel.getLatexPackagesStatic ( ) ) ;
     // SubTyping
-    for ( LatexPackage pack : AbstractSubTypingProofRule
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : DefaultSubTypingProofNode
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : SubTypingProofModel.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
+    packages.add ( AbstractSubTypingProofRule.getLatexPackagesStatic ( ) ) ;
+    packages.add ( DefaultSubTypingProofNode.getLatexPackagesStatic ( ) ) ;
+    packages.add ( SubTypingProofModel.getLatexPackagesStatic ( ) ) ;
     // RecSubTyping
-    for ( LatexPackage pack : AbstractRecSubTypingProofRule
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : DefaultSubType.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : DefaultRecSubTypingProofNode
-        .getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : RecSubTypingProofModel.getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
+    packages.add ( AbstractRecSubTypingProofRule.getLatexPackagesStatic ( ) ) ;
+    packages.add ( DefaultSubType.getLatexPackagesStatic ( ) ) ;
+    packages.add ( DefaultRecSubTypingProofNode.getLatexPackagesStatic ( ) ) ;
+    packages.add ( RecSubTypingProofModel.getLatexPackagesStatic ( ) ) ;
     return packages ;
   }
 

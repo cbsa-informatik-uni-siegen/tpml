@@ -1,14 +1,13 @@
 package de.unisiegen.tpml.core.typechecker ;
 
 
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Unify ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
+import de.unisiegen.tpml.core.latex.LatexPackageList ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
@@ -90,9 +89,9 @@ public class DefaultTypeCheckerTypeProofNode extends
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static TreeSet < LatexPackage > getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
+    LatexPackageList packages = new LatexPackageList ( ) ;
     packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
     packages.add ( new DefaultLatexPackage ( "pstricks" ) ) ; //$NON-NLS-1$
@@ -160,28 +159,13 @@ public class DefaultTypeCheckerTypeProofNode extends
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public TreeSet < LatexPackage > getLatexPackages ( )
+  public LatexPackageList getLatexPackages ( )
   {
-    TreeSet < LatexPackage > packages = new TreeSet < LatexPackage > ( ) ;
-    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : this.type.getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    for ( LatexPackage pack : this.type2.getLatexPackages ( ) )
-    {
-      packages.add ( pack ) ;
-    }
-    if ( getRule ( ) != null )
-    {
-      for ( LatexPackage pack : getRule ( ).getLatexPackages ( ) )
-      {
-        packages.add ( pack ) ;
-      }
-    }
+    LatexPackageList packages = new LatexPackageList ( ) ;
+    packages.add ( getLatexPackagesStatic ( ) ) ;
+    packages.add ( this.type ) ;
+    packages.add ( this.type2 ) ;
+    packages.add ( getRule ( ) ) ;
     return packages ;
   }
 

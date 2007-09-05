@@ -6,12 +6,20 @@ package de.unisiegen.tpml.core.latex ;
  * 
  * @author Christian Fehler
  */
-public interface LatexPackage extends Comparable < LatexPackage >
+public interface LatexPackage
 {
   /**
    * The description.
    */
   public static final String DESCRIPTION = "Needed latex packages" ; //$NON-NLS-1$
+
+
+  /**
+   * Returns the name.
+   * 
+   * @return The name.
+   */
+  public String getName ( ) ;
 
 
   /**
