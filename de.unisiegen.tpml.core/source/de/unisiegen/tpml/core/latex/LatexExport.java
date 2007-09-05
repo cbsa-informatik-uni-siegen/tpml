@@ -9,7 +9,6 @@ import java.io.IOException ;
 import java.io.OutputStreamWriter ;
 import java.io.UnsupportedEncodingException ;
 import java.nio.charset.Charset ;
-import java.util.ArrayList ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.ProofModel ;
@@ -405,7 +404,7 @@ public abstract class LatexExport implements LatexCommandNames
       LatexExport.println ( writer ) ;
     }
     // instructions
-    ArrayList < LatexInstruction > instructions = getAllLatexInstructions ( ) ;
+    LatexInstructionList instructions = getAllLatexInstructions ( ) ;
     if ( instructions.size ( ) > 0 )
     {
       LatexExport.println ( writer , "%%" ) ; //$NON-NLS-1$
@@ -843,315 +842,73 @@ public abstract class LatexExport implements LatexCommandNames
    * 
    * @return All needed {@link LatexInstruction}s.
    */
-  private static ArrayList < LatexInstruction > getAllLatexInstructions ( )
+  private static LatexInstructionList getAllLatexInstructions ( )
   {
-    ArrayList < LatexInstruction > instructions = new ArrayList < LatexInstruction > ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ( ) ;
     // Expression
-    for ( LatexInstruction instruction : Expression
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    instructions.add ( Expression.getLatexInstructionsStatic ( ) ) ;
     // Type
-    for ( LatexInstruction instruction : Type.getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    instructions.add ( Type.getLatexInstructionsStatic ( ) ) ;
     // Environment
-    for ( LatexInstruction instruction : DefaultTypeEnvironment
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    instructions.add ( DefaultTypeEnvironment.getLatexInstructionsStatic ( ) ) ;
     // Store
-    for ( LatexInstruction instruction : DefaultStore
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    instructions.add ( DefaultStore.getLatexInstructionsStatic ( ) ) ;
     // TypeChecker
-    for ( LatexInstruction instruction : AbstractTypeCheckerProofRule
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : SeenTypes
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : DefaultTypeSubstitution
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : TypeEquationTypeChecker
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : TypeEquationListTypeChecker
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : DefaultTypeCheckerExpressionProofNode
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : DefaultTypeCheckerTypeProofNode
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : TypeCheckerProofModel
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    instructions.add ( AbstractTypeCheckerProofRule
+        .getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( SeenTypes.getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( DefaultTypeSubstitution.getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( TypeEquationTypeChecker.getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( TypeEquationListTypeChecker
+        .getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( DefaultTypeCheckerExpressionProofNode
+        .getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( DefaultTypeCheckerTypeProofNode
+        .getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( TypeCheckerProofModel.getLatexInstructionsStatic ( ) ) ;
     // TypeInference
-    for ( LatexInstruction instruction : TypeEquationTypeInference
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : TypeEquationListTypeInference
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : TypeSubstitutionList
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : TypeJudgement
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : TypeSubType
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : DefaultTypeInferenceProofNode
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : TypeInferenceProofModel
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    instructions
+        .add ( TypeEquationTypeInference.getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( TypeEquationListTypeInference
+        .getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( TypeSubstitutionList.getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( TypeJudgement.getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( TypeSubType.getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( DefaultTypeInferenceProofNode
+        .getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( TypeInferenceProofModel.getLatexInstructionsStatic ( ) ) ;
     // SmallStep
-    for ( LatexInstruction instruction : DefaultSmallStepProofRule
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : DefaultSmallStepProofNode
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : SmallStepProofModel
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    instructions
+        .add ( DefaultSmallStepProofRule.getLatexInstructionsStatic ( ) ) ;
+    instructions
+        .add ( DefaultSmallStepProofNode.getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( SmallStepProofModel.getLatexInstructionsStatic ( ) ) ;
     // BigStep
-    for ( LatexInstruction instruction : AbstractBigStepProofRule
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : BigStepProofResult
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : DefaultBigStepProofNode
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : BigStepProofModel
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    instructions.add ( AbstractBigStepProofRule.getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( BigStepProofResult.getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( DefaultBigStepProofNode.getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( BigStepProofModel.getLatexInstructionsStatic ( ) ) ;
     // MinimalTyping
-    for ( LatexInstruction instruction : AbstractMinimalTypingProofRule
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : DefaultMinimalTypingExpressionProofNode
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : DefaultMinimalTypingTypesProofNode
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : MinimalTypingProofModel
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    instructions.add ( AbstractMinimalTypingProofRule
+        .getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( DefaultMinimalTypingExpressionProofNode
+        .getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( DefaultMinimalTypingTypesProofNode
+        .getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( MinimalTypingProofModel.getLatexInstructionsStatic ( ) ) ;
     // SubTyping
-    for ( LatexInstruction instruction : AbstractSubTypingProofRule
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : DefaultSubTypingProofNode
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : SubTypingProofModel
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    instructions
+        .add ( AbstractSubTypingProofRule.getLatexInstructionsStatic ( ) ) ;
+    instructions
+        .add ( DefaultSubTypingProofNode.getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( SubTypingProofModel.getLatexInstructionsStatic ( ) ) ;
     // RecSubTyping
-    for ( LatexInstruction instruction : AbstractRecSubTypingProofRule
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : DefaultSubType
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : DefaultRecSubTypingProofNode
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
-    for ( LatexInstruction instruction : RecSubTypingProofModel
-        .getLatexInstructionsStatic ( ) )
-    {
-      if ( ! instructions.contains ( instruction ) )
-      {
-        instructions.add ( instruction ) ;
-      }
-    }
+    instructions.add ( AbstractRecSubTypingProofRule
+        .getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( DefaultSubType.getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( DefaultRecSubTypingProofNode
+        .getLatexInstructionsStatic ( ) ) ;
+    instructions.add ( RecSubTypingProofModel.getLatexInstructionsStatic ( ) ) ;
     return instructions ;
   }
 
