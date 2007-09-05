@@ -143,46 +143,12 @@ public abstract class LatexExport implements LatexCommandNames
    * 
    * @param pLatexPrintable The input {@link LatexPrintable}.
    * @param pLatexFile The latex {@link File}.
-   * @param pTPMLFile The tpml {@link File}.
-   * @param pModus The {@link Modus} of the export.
+   * @param pOneFile The {@link Modus} of the export.
    * @throws LatexException If something in the latex export does not work.
    */
   public final static void export ( LatexPrintable pLatexPrintable ,
-      File pLatexFile , File pTPMLFile , Modus pModus ) throws LatexException
+      File pLatexFile , boolean pOneFile ) throws LatexException
   {
-    if ( pModus == null )
-    {
-      throw new NullPointerException ( "export modus is null" ) ; //$NON-NLS-1$
-    }
-    // eateregg
-    if ( ( pLatexPrintable != null )
-        && ( pLatexPrintable.toLatexString ( ).toString ( ).contains ( "\\" //$NON-NLS-1$
-            + LATEX_IDENTIFIER + "{spiderschwein}" ) ) ) //$NON-NLS-1$
-    {
-      if ( pLatexFile == null )
-      {
-        throw new NullPointerException ( "latex file is null" ) ; //$NON-NLS-1$
-      }
-      exportEasteregg ( pLatexFile ) ;
-      return ;
-    }
-    // tpml file
-    if ( pModus.equals ( Modus.TPML_FILE ) )
-    {
-      if ( pTPMLFile == null )
-      {
-        throw new NullPointerException ( "tpml file is null" ) ; //$NON-NLS-1$
-      }
-      exportTPML ( pTPMLFile ) ;
-      return ;
-    }
-    if ( pModus.equals ( Modus.INPUT_FILE ) )
-    {
-      if ( pTPMLFile == null )
-      {
-        throw new NullPointerException ( "tpml file is null" ) ; //$NON-NLS-1$
-      }
-    }
     if ( pLatexPrintable == null )
     {
       throw new NullPointerException ( "latex printable is null" ) ; //$NON-NLS-1$
@@ -191,7 +157,16 @@ public abstract class LatexExport implements LatexCommandNames
     {
       throw new NullPointerException ( "latex file is null" ) ; //$NON-NLS-1$
     }
-    exportLatex ( pLatexPrintable , pLatexFile , pTPMLFile , pModus ) ;
+    // eateregg
+    if ( pLatexPrintable.toLatexString ( ).toString ( ).contains ( "\\" //$NON-NLS-1$
+        + LATEX_IDENTIFIER + "{spiderschwein}" ) ) //$NON-NLS-1$
+    {
+      exportEasteregg ( pLatexFile ) ;
+    }
+    else
+    {
+      exportLatex ( pLatexPrintable , pLatexFile , pOneFile ) ;
+    }
   }
 
 
@@ -268,12 +243,11 @@ public abstract class LatexExport implements LatexCommandNames
    * 
    * @param pLatexPrintable The input {@link LatexPrintable}.
    * @param pLatexFile The latex {@link File}.
-   * @param pTPMLFile The tpml {@link File}.
-   * @param pModus The {@link Modus} of the export.
+   * @param pOneFile The {@link Modus} of the export.
    * @throws LatexException If something in the latex export does not work.
    */
   private final static void exportLatex ( LatexPrintable pLatexPrintable ,
-      File pLatexFile , File pTPMLFile , Modus pModus ) throws LatexException
+      File pLatexFile , boolean pOneFile ) throws LatexException
   {
     BufferedWriter writer ;
     try
@@ -304,16 +278,7 @@ public abstract class LatexExport implements LatexCommandNames
     println ( writer , "\\textwidth=510pt" ) ; //$NON-NLS-1$
     println ( writer , "\\textheight=750pt" ) ; //$NON-NLS-1$
     println ( writer ) ;
-    if ( pModus.equals ( Modus.INPUT_FILE ) )
-    {
-      println ( writer , "%%" ) ; //$NON-NLS-1$
-      println ( writer , "%% Needed tpml input" ) ; //$NON-NLS-1$
-      println ( writer , "%%" ) ; //$NON-NLS-1$
-      println ( writer ) ;
-      println ( writer , "\\input{" + pTPMLFile.getName ( ) + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-      println ( writer ) ;
-    }
-    else
+    if ( pOneFile )
     {
       // packages
       TreeSet < LatexPackage > packages = pLatexPrintable.getLatexPackages ( ) ;
@@ -368,6 +333,15 @@ public abstract class LatexExport implements LatexCommandNames
         println ( writer ) ;
       }
     }
+    else
+    {
+      println ( writer , "%%" ) ; //$NON-NLS-1$
+      println ( writer , "%% Needed tpml input" ) ; //$NON-NLS-1$
+      println ( writer , "%%" ) ; //$NON-NLS-1$
+      println ( writer ) ;
+      println ( writer , "\\input{tpml}" ) ; //$NON-NLS-1$
+      println ( writer ) ;
+    }
     // document begin
     println ( writer , "%%" ) ; //$NON-NLS-1$
     println ( writer , "%% Document" ) ; //$NON-NLS-1$
@@ -405,16 +379,26 @@ public abstract class LatexExport implements LatexCommandNames
   /**
    * Writes all latex commands to the given {@link File}.
    * 
-   * @param pTPMLFile The tpml {@link File}.
+   * @param pDirectory The tpml {@link File} directory.
    * @throws LatexException If something in the latex export does not work.
    */
-  private final static void exportTPML ( File pTPMLFile ) throws LatexException
+  public final static void exportTPML ( File pDirectory ) throws LatexException
   {
+    if ( pDirectory == null )
+    {
+      throw new NullPointerException ( "directory is null" ) ; //$NON-NLS-1$
+    }
+    if ( ! pDirectory.isDirectory ( ) )
+    {
+      throw new IllegalArgumentException ( "input file is not a directory" ) ; //$NON-NLS-1$
+    }
     BufferedWriter writer ;
     try
     {
-      writer = new BufferedWriter ( new OutputStreamWriter (
-          new FileOutputStream ( pTPMLFile ) , CHARSET_NAME ) ) ;
+      writer = new BufferedWriter (
+          new OutputStreamWriter ( new FileOutputStream ( pDirectory
+              .getAbsolutePath ( )
+              + "/tpml.tex" ) , CHARSET_NAME ) ) ; //$NON-NLS-1$
     }
     catch ( UnsupportedEncodingException e )
     {

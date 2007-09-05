@@ -92,14 +92,16 @@ public class LatexTest
   private static boolean compile = true ;
 
 
+  private static boolean oneFile = true ;
+
+
+  private static boolean tpmlExport = false ;
+
+
   private final static int compile ( )
   {
     try
     {
-      if ( console )
-      {
-        System.out.println ( ) ;
-      }
       if ( console )
       {
         System.out.println ( "*** compile ***" ) ;
@@ -195,12 +197,11 @@ public class LatexTest
   }
 
 
-  private final static void latexExportTPML ( File pLatexFile , File pTPMLFile )
+  private final static void latexExportTPML ( File pTPMLFile )
   {
     try
     {
-      LatexExport.export ( null , null , pTPMLFile ,
-          LatexExport.Modus.TPML_FILE ) ;
+      LatexExport.exportTPML ( pTPMLFile ) ;
       System.out.println ( "*** finished ***" ) ;
       System.exit ( 0 ) ;
     }
@@ -214,8 +215,6 @@ public class LatexTest
 
   public final static void main ( String [ ] args )
   {
-    File test = new File ( "test.tex" ) ;
-    File tpml = new File ( "tpml.tex" ) ;
     System.out.println ( "*** started ***" ) ;
     for ( String arg : args )
     {
@@ -227,58 +226,73 @@ public class LatexTest
       {
         compile = false ;
       }
-      if ( arg.equals ( "-all" ) ) all = true ;
+      if ( arg.equals ( "-all" ) )
+      {
+        all = true ;
+      }
+      if ( arg.equals ( "-input" ) )
+      {
+        oneFile = false ;
+      }
+      if ( arg.equals ( "-tpml-export" ) )
+      {
+        tpmlExport = true ;
+      }
     }
-    if ( ! all )
+    if ( tpmlExport )
     {
+      File tpml = new File ( new File ( "" ).getAbsolutePath ( ) + "/" ) ;
+      latexExportTPML ( tpml ) ;
+    }
+    else if ( ! all )
+    {
+      File test = new File ( "test.tex" ) ;
       int number = 43 ;
       // Expression, Type, Environment
-      if ( number == 00 ) testExpression ( test , tpml ) ;
-      if ( number == 01 ) testType ( test , tpml ) ;
-      if ( number == 02 ) testTypeEnvironment ( test , tpml ) ;
-      if ( number == 03 ) testStore ( test , tpml ) ;
+      if ( number == 00 ) testExpression ( test ) ;
+      if ( number == 01 ) testType ( test ) ;
+      if ( number == 02 ) testTypeEnvironment ( test ) ;
+      if ( number == 03 ) testStore ( test ) ;
       // TypeChecker
-      if ( number == 10 ) testTypeCheckerProofRule ( test , tpml ) ;
-      if ( number == 11 ) testSeenTypes ( test , tpml ) ;
-      if ( number == 12 ) testTypeSubstitution ( test , tpml ) ;
-      if ( number == 13 ) testTypeEquationTypeChecker ( test , tpml ) ;
-      if ( number == 14 ) testTypeEquationListTypeChecker ( test , tpml ) ;
-      if ( number == 15 ) testTypeCheckerExpressionProofNode ( test , tpml ) ;
-      if ( number == 16 ) testTypeCheckerTypeProofNode ( test , tpml ) ;
-      if ( number == 17 ) testTypeCheckerProofModel ( test , tpml ) ;
+      if ( number == 10 ) testTypeCheckerProofRule ( test ) ;
+      if ( number == 11 ) testSeenTypes ( test ) ;
+      if ( number == 12 ) testTypeSubstitution ( test ) ;
+      if ( number == 13 ) testTypeEquationTypeChecker ( test ) ;
+      if ( number == 14 ) testTypeEquationListTypeChecker ( test ) ;
+      if ( number == 15 ) testTypeCheckerExpressionProofNode ( test ) ;
+      if ( number == 16 ) testTypeCheckerTypeProofNode ( test ) ;
+      if ( number == 17 ) testTypeCheckerProofModel ( test ) ;
       // TypeInference
-      if ( number == 20 ) testTypeEquationTypeInference ( test , tpml ) ;
-      if ( number == 21 ) testTypeEquationListTypeInference ( test , tpml ) ;
-      if ( number == 22 ) testTypeSubstitutionList ( test , tpml ) ;
-      if ( number == 23 ) testTypeJudgement ( test , tpml ) ;
-      if ( number == 24 ) testTypeSubType ( test , tpml ) ;
-      if ( number == 25 ) testTypeInferenceProofNode ( test , tpml ) ;
-      if ( number == 26 ) testTypeInferenceProofModel ( test , tpml ) ;
+      if ( number == 20 ) testTypeEquationTypeInference ( test ) ;
+      if ( number == 21 ) testTypeEquationListTypeInference ( test ) ;
+      if ( number == 22 ) testTypeSubstitutionList ( test ) ;
+      if ( number == 23 ) testTypeJudgement ( test ) ;
+      if ( number == 24 ) testTypeSubType ( test ) ;
+      if ( number == 25 ) testTypeInferenceProofNode ( test ) ;
+      if ( number == 26 ) testTypeInferenceProofModel ( test ) ;
       // SmallStep
-      if ( number == 30 ) testSmallStepProofRule ( test , tpml ) ;
-      if ( number == 31 ) testSmallStepProofNode ( test , tpml ) ;
-      if ( number == 32 ) testSmallStepProofModel ( test , tpml ) ;
+      if ( number == 30 ) testSmallStepProofRule ( test ) ;
+      if ( number == 31 ) testSmallStepProofNode ( test ) ;
+      if ( number == 32 ) testSmallStepProofModel ( test ) ;
       // BigStep
-      if ( number == 40 ) testBigStepProofRule ( test , tpml ) ;
-      if ( number == 41 ) testBigStepResult ( test , tpml ) ;
-      if ( number == 42 ) testBigStepProofNode ( test , tpml ) ;
-      if ( number == 43 ) testBigStepProofModel ( test , tpml ) ;
+      if ( number == 40 ) testBigStepProofRule ( test ) ;
+      if ( number == 41 ) testBigStepResult ( test ) ;
+      if ( number == 42 ) testBigStepProofNode ( test ) ;
+      if ( number == 43 ) testBigStepProofModel ( test ) ;
       // MinimalTyping
-      if ( number == 50 ) testMinimalTypingProofRule ( test , tpml ) ;
-      if ( number == 51 ) testMinimalTypingExpressionProofNode ( test , tpml ) ;
-      if ( number == 52 ) testMinimalTypingTypesProofNode ( test , tpml ) ;
-      if ( number == 53 ) testMinimalTypingProofModel ( test , tpml ) ;
+      if ( number == 50 ) testMinimalTypingProofRule ( test ) ;
+      if ( number == 51 ) testMinimalTypingExpressionProofNode ( test ) ;
+      if ( number == 52 ) testMinimalTypingTypesProofNode ( test ) ;
+      if ( number == 53 ) testMinimalTypingProofModel ( test ) ;
       // SubTyping
-      if ( number == 60 ) testSubTypingProofRule ( test , tpml ) ;
-      if ( number == 61 ) testSubTypingProofNode ( test , tpml ) ;
-      if ( number == 62 ) testSubTypingProofModel ( test , tpml ) ;
+      if ( number == 60 ) testSubTypingProofRule ( test ) ;
+      if ( number == 61 ) testSubTypingProofNode ( test ) ;
+      if ( number == 62 ) testSubTypingProofModel ( test ) ;
       // RecSubTyping
-      if ( number == 70 ) testRecSubTypingProofRule ( test , tpml ) ;
-      if ( number == 71 ) testSubType ( test , tpml ) ;
-      if ( number == 72 ) testRecSubTypingProofNode ( test , tpml ) ;
-      if ( number == 73 ) testRecSubTypingProofModel ( test , tpml ) ;
-      // LatexExportAll
-      if ( number == 80 ) latexExportTPML ( test , tpml ) ;
+      if ( number == 70 ) testRecSubTypingProofRule ( test ) ;
+      if ( number == 71 ) testSubType ( test ) ;
+      if ( number == 72 ) testRecSubTypingProofNode ( test ) ;
+      if ( number == 73 ) testRecSubTypingProofModel ( test ) ;
       if ( compile )
       {
         if ( compile ( ) != 0 )
@@ -289,6 +303,7 @@ public class LatexTest
     }
     else
     {
+      File test = new File ( "test.tex" ) ;
       console = false ;
       removeFiles ( test ) ;
       error = false ;
@@ -299,7 +314,7 @@ public class LatexTest
           try
           {
             m.invoke ( null , new Object [ ]
-            { test , tpml } ) ;
+            { test } ) ;
             if ( compile ( ) != 0 )
             {
               error = true ;
@@ -386,8 +401,7 @@ public class LatexTest
   }
 
 
-  private final static void testBigStepProofModel ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testBigStepProofModel ( File pLatexFile )
   {
     try
     {
@@ -402,8 +416,7 @@ public class LatexTest
           .parse ( ) ;
       BigStepProofModel model = language.newBigStepProofModel ( expression ) ;
       model.complete ( nextNode ( model ) ) ;
-      LatexExport.export ( model , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( model , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -413,8 +426,7 @@ public class LatexTest
   }
 
 
-  private final static void testBigStepProofNode ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testBigStepProofNode ( File pLatexFile )
   {
     try
     {
@@ -434,8 +446,7 @@ public class LatexTest
       store2.put ( new Location ( "a" ) , new IntegerConstant ( 1 ) ) ;
       BigStepProofResult result = new BigStepProofResult ( store2 , new Ref ( ) ) ;
       node.setResult ( result ) ;
-      LatexExport.export ( node , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( node , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -445,8 +456,7 @@ public class LatexTest
   }
 
 
-  private final static void testBigStepProofRule ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testBigStepProofRule ( File pLatexFile )
   {
     try
     {
@@ -466,8 +476,7 @@ public class LatexTest
         {
         }
       } ;
-      LatexExport.export ( rule , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( rule , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -477,7 +486,7 @@ public class LatexTest
   }
 
 
-  private final static void testBigStepResult ( File pLatexFile , File pTPMLFile )
+  private final static void testBigStepResult ( File pLatexFile )
   {
     try
     {
@@ -486,8 +495,7 @@ public class LatexTest
       store.put ( new Location ( "Y" ) , new IntegerConstant ( 2 ) ) ;
       store.put ( new Location ( "Z" ) , new IntegerConstant ( 1 ) ) ;
       BigStepProofResult result = new BigStepProofResult ( store , new Ref ( ) ) ;
-      LatexExport.export ( result , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( result , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -497,7 +505,7 @@ public class LatexTest
   }
 
 
-  private final static void testExpression ( File pLatexFile , File pTPMLFile )
+  private final static void testExpression ( File pLatexFile )
   {
     try
     {
@@ -507,8 +515,7 @@ public class LatexTest
       Language language = factory.getLanguageById ( "l4" ) ;
       Expression expression = language.newParser ( new StringReader ( text ) )
           .parse ( ) ;
-      LatexExport.export ( expression , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( expression , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -519,7 +526,7 @@ public class LatexTest
 
 
   private final static void testMinimalTypingExpressionProofNode (
-      File pLatexFile , File pTPMLFile )
+      File pLatexFile )
   {
     try
     {
@@ -537,8 +544,7 @@ public class LatexTest
       DefaultMinimalTypingExpressionProofNode node = new DefaultMinimalTypingExpressionProofNode (
           environment , expression ) ;
       node.setType ( type ) ;
-      LatexExport.export ( node , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( node , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -548,8 +554,7 @@ public class LatexTest
   }
 
 
-  private final static void testMinimalTypingProofModel ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testMinimalTypingProofModel ( File pLatexFile )
   {
     try
     {
@@ -561,8 +566,7 @@ public class LatexTest
       MinimalTypingProofModel model = language.newMinimalTypingProofModel (
           expression , false ) ;
       model.complete ( nextNode ( model ) ) ;
-      LatexExport.export ( model , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( model , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -572,8 +576,7 @@ public class LatexTest
   }
 
 
-  private final static void testMinimalTypingProofRule ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testMinimalTypingProofRule ( File pLatexFile )
   {
     try
     {
@@ -593,8 +596,7 @@ public class LatexTest
         {
         }
       } ;
-      LatexExport.export ( rule , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( rule , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -604,15 +606,13 @@ public class LatexTest
   }
 
 
-  private final static void testMinimalTypingTypesProofNode ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testMinimalTypingTypesProofNode ( File pLatexFile )
   {
     try
     {
       DefaultMinimalTypingTypesProofNode node = new DefaultMinimalTypingTypesProofNode (
           new IntegerType ( ) , new BooleanType ( ) ) ;
-      LatexExport.export ( node , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( node , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -622,8 +622,7 @@ public class LatexTest
   }
 
 
-  private final static void testRecSubTypingProofModel ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testRecSubTypingProofModel ( File pLatexFile )
   {
     try
     {
@@ -636,8 +635,7 @@ public class LatexTest
       RecSubTypingProofModel model = language.newRecSubTypingProofModel ( type ,
           type2 , false ) ;
       model.complete ( nextNode ( model ) ) ;
-      LatexExport.export ( model , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( model , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -647,8 +645,7 @@ public class LatexTest
   }
 
 
-  private final static void testRecSubTypingProofNode ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testRecSubTypingProofNode ( File pLatexFile )
   {
     try
     {
@@ -658,8 +655,7 @@ public class LatexTest
           new IntegerType ( ) , new BooleanType ( ) ) ) ;
       DefaultRecSubTypingProofNode node = new DefaultRecSubTypingProofNode (
           type , type2 , new SeenTypes < DefaultSubType > ( ) ) ;
-      LatexExport.export ( node , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( node , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -669,8 +665,7 @@ public class LatexTest
   }
 
 
-  private final static void testRecSubTypingProofRule ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testRecSubTypingProofRule ( File pLatexFile )
   {
     try
     {
@@ -683,8 +678,7 @@ public class LatexTest
         {
         }
       } ;
-      LatexExport.export ( rule , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( rule , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -694,7 +688,7 @@ public class LatexTest
   }
 
 
-  private final static void testSeenTypes ( File pLatexFile , File pTPMLFile )
+  private final static void testSeenTypes ( File pLatexFile )
   {
     try
     {
@@ -704,8 +698,7 @@ public class LatexTest
           new BooleanType ( ) , seenTypes2 ) ) ;
       seenTypes1.add ( new TypeEquationTypeChecker ( new BooleanType ( ) ,
           new UnitType ( ) , seenTypes2 ) ) ;
-      LatexExport.export ( seenTypes1 , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( seenTypes1 , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -715,8 +708,7 @@ public class LatexTest
   }
 
 
-  private final static void testSmallStepProofModel ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testSmallStepProofModel ( File pLatexFile )
   {
     try
     {
@@ -729,8 +721,7 @@ public class LatexTest
           .parse ( ) ;
       SmallStepProofModel model = language.newSmallStepProofModel ( expression ) ;
       model.complete ( nextNode ( model ) ) ;
-      LatexExport.export ( model , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( model , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -740,8 +731,7 @@ public class LatexTest
   }
 
 
-  private final static void testSmallStepProofNode ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testSmallStepProofNode ( File pLatexFile )
   {
     try
     {
@@ -755,8 +745,7 @@ public class LatexTest
           new IntegerConstant ( 3 ) ) ) ;
       DefaultSmallStepProofNode node = new DefaultSmallStepProofNode (
           expression ) ;
-      LatexExport.export ( node , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( node , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -766,15 +755,13 @@ public class LatexTest
   }
 
 
-  private final static void testSmallStepProofRule ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testSmallStepProofRule ( File pLatexFile )
   {
     try
     {
       DefaultSmallStepProofRule rule = new DefaultSmallStepProofRule ( 0 ,
           "SMALL-STEP-RULE" , true ) ;
-      LatexExport.export ( rule , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( rule , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -784,7 +771,7 @@ public class LatexTest
   }
 
 
-  private final static void testStore ( File pLatexFile , File pTPMLFile )
+  private final static void testStore ( File pLatexFile )
   {
     try
     {
@@ -792,8 +779,7 @@ public class LatexTest
       store.put ( new Location ( "c" ) , new IntegerConstant ( 3 ) ) ;
       store.put ( new Location ( "b" ) , new IntegerConstant ( 2 ) ) ;
       store.put ( new Location ( "a" ) , new IntegerConstant ( 1 ) ) ;
-      LatexExport.export ( store , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( store , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -803,14 +789,13 @@ public class LatexTest
   }
 
 
-  private final static void testSubType ( File pLatexFile , File pTPMLFile )
+  private final static void testSubType ( File pLatexFile )
   {
     try
     {
       DefaultSubType subType = new DefaultSubType ( new IntegerType ( ) ,
           new BooleanType ( ) ) ;
-      LatexExport.export ( subType , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( subType , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -820,8 +805,7 @@ public class LatexTest
   }
 
 
-  private final static void testSubTypingProofModel ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testSubTypingProofModel ( File pLatexFile )
   {
     try
     {
@@ -834,8 +818,7 @@ public class LatexTest
       SubTypingProofModel model = language.newSubTypingProofModel ( type ,
           type2 , false ) ;
       model.complete ( nextNode ( model ) ) ;
-      LatexExport.export ( model , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( model , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -845,8 +828,7 @@ public class LatexTest
   }
 
 
-  private final static void testSubTypingProofNode ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testSubTypingProofNode ( File pLatexFile )
   {
     try
     {
@@ -856,8 +838,7 @@ public class LatexTest
           new IntegerType ( ) , new IntegerType ( ) ) ) ;
       DefaultSubTypingProofNode node = new DefaultSubTypingProofNode ( type ,
           type2 ) ;
-      LatexExport.export ( node , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( node , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -867,8 +848,7 @@ public class LatexTest
   }
 
 
-  private final static void testSubTypingProofRule ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testSubTypingProofRule ( File pLatexFile )
   {
     try
     {
@@ -881,8 +861,7 @@ public class LatexTest
         {
         }
       } ;
-      LatexExport.export ( rule , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( rule , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -892,7 +871,7 @@ public class LatexTest
   }
 
 
-  private final static void testType ( File pLatexFile , File pTPMLFile )
+  private final static void testType ( File pLatexFile )
   {
     try
     {
@@ -907,8 +886,7 @@ public class LatexTest
        * TypeVariable ( 0 , 1 ) ) ; quantified.add ( new TypeVariable ( 0 , 2 ) ) ;
        * type = new PolyType ( quantified , new IntegerType ( ) ) ;
        */
-      LatexExport.export ( type , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( type , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -918,8 +896,7 @@ public class LatexTest
   }
 
 
-  private final static void testTypeCheckerExpressionProofNode (
-      File pLatexFile , File pTPMLFile )
+  private final static void testTypeCheckerExpressionProofNode ( File pLatexFile )
   {
     try
     {
@@ -936,8 +913,7 @@ public class LatexTest
           new IntegerType ( ) , new IntegerType ( ) ) ) ;
       DefaultTypeCheckerExpressionProofNode node = new DefaultTypeCheckerExpressionProofNode (
           environment , expression , type ) ;
-      LatexExport.export ( node , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( node , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -947,8 +923,7 @@ public class LatexTest
   }
 
 
-  private final static void testTypeCheckerProofModel ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testTypeCheckerProofModel ( File pLatexFile )
   {
     try
     {
@@ -960,8 +935,7 @@ public class LatexTest
       TypeCheckerProofModel model = language
           .newTypeCheckerProofModel ( expression ) ;
       model.complete ( nextNode ( model ) ) ;
-      LatexExport.export ( model , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( model , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -971,8 +945,7 @@ public class LatexTest
   }
 
 
-  private final static void testTypeCheckerProofRule ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testTypeCheckerProofRule ( File pLatexFile )
   {
     try
     {
@@ -992,8 +965,7 @@ public class LatexTest
         {
         }
       } ;
-      LatexExport.export ( rule , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( rule , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -1003,8 +975,7 @@ public class LatexTest
   }
 
 
-  private final static void testTypeCheckerTypeProofNode ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testTypeCheckerTypeProofNode ( File pLatexFile )
   {
     try
     {
@@ -1014,8 +985,7 @@ public class LatexTest
           new IntegerType ( ) , new IntegerType ( ) ) ) ;
       DefaultTypeCheckerTypeProofNode node = new DefaultTypeCheckerTypeProofNode (
           type , type2 ) ;
-      LatexExport.export ( node , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( node , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -1025,8 +995,7 @@ public class LatexTest
   }
 
 
-  private final static void testTypeEnvironment ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testTypeEnvironment ( File pLatexFile )
   {
     try
     {
@@ -1039,8 +1008,7 @@ public class LatexTest
               new BooleanType ( ) ) ;
       environment = ( DefaultTypeEnvironment ) environment.extend (
           new Identifier ( "a" , Identifier.Set.VARIABLE ) , new UnitType ( ) ) ;
-      LatexExport.export ( environment , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( environment , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -1050,8 +1018,7 @@ public class LatexTest
   }
 
 
-  private final static void testTypeEquationListTypeChecker ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testTypeEquationListTypeChecker ( File pLatexFile )
   {
     try
     {
@@ -1063,8 +1030,7 @@ public class LatexTest
           new BooleanType ( ) , new UnitType ( ) , seenTypes ) ;
       equationList = equationList.extend ( typeEquation1 ) ;
       equationList = equationList.extend ( typeEquation2 ) ;
-      LatexExport.export ( equationList , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( equationList , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -1074,8 +1040,7 @@ public class LatexTest
   }
 
 
-  private final static void testTypeEquationListTypeInference (
-      File pLatexFile , File pTPMLFile )
+  private final static void testTypeEquationListTypeInference ( File pLatexFile )
   {
     try
     {
@@ -1087,8 +1052,7 @@ public class LatexTest
           new BooleanType ( ) , new UnitType ( ) , seenTypes ) ;
       equationList = equationList.extend ( typeEquation1 ) ;
       equationList = equationList.extend ( typeEquation2 ) ;
-      LatexExport.export ( equationList , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( equationList , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -1098,16 +1062,14 @@ public class LatexTest
   }
 
 
-  private final static void testTypeEquationTypeChecker ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testTypeEquationTypeChecker ( File pLatexFile )
   {
     try
     {
       SeenTypes < TypeEquationTypeChecker > seenTypes = new SeenTypes < TypeEquationTypeChecker > ( ) ;
       TypeEquationTypeChecker typeEquation = new TypeEquationTypeChecker (
           new IntegerType ( ) , new BooleanType ( ) , seenTypes ) ;
-      LatexExport.export ( typeEquation , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( typeEquation , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -1117,16 +1079,14 @@ public class LatexTest
   }
 
 
-  private final static void testTypeEquationTypeInference ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testTypeEquationTypeInference ( File pLatexFile )
   {
     try
     {
       SeenTypes < TypeEquationTypeInference > seenTypes = new SeenTypes < TypeEquationTypeInference > ( ) ;
       TypeEquationTypeInference typeEquation = new TypeEquationTypeInference (
           new IntegerType ( ) , new BooleanType ( ) , seenTypes ) ;
-      LatexExport.export ( typeEquation , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( typeEquation , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -1136,8 +1096,7 @@ public class LatexTest
   }
 
 
-  private final static void testTypeInferenceProofModel ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testTypeInferenceProofModel ( File pLatexFile )
   {
     try
     {
@@ -1151,8 +1110,7 @@ public class LatexTest
       TypeInferenceProofModel model = language
           .newTypeInferenceProofModel ( expression ) ;
       model.complete ( nextNode ( model ) ) ;
-      LatexExport.export ( model , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( model , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -1162,8 +1120,7 @@ public class LatexTest
   }
 
 
-  private final static void testTypeInferenceProofNode ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testTypeInferenceProofNode ( File pLatexFile )
   {
     try
     {
@@ -1210,8 +1167,7 @@ public class LatexTest
       substitutions.add ( typeSubstitution3 ) ;
       DefaultTypeInferenceProofNode node = new DefaultTypeInferenceProofNode (
           formulas , substitutions ) ;
-      LatexExport.export ( node , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( node , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -1221,7 +1177,7 @@ public class LatexTest
   }
 
 
-  private final static void testTypeJudgement ( File pLatexFile , File pTPMLFile )
+  private final static void testTypeJudgement ( File pLatexFile )
   {
     try
     {
@@ -1238,8 +1194,7 @@ public class LatexTest
           new IntegerType ( ) , new IntegerType ( ) ) ) ;
       TypeJudgement judgement = new TypeJudgement ( environment , expression ,
           type ) ;
-      LatexExport.export ( judgement , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( judgement , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -1249,15 +1204,13 @@ public class LatexTest
   }
 
 
-  private final static void testTypeSubstitution ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testTypeSubstitution ( File pLatexFile )
   {
     try
     {
       DefaultTypeSubstitution typeSubstitution = new DefaultTypeSubstitution (
           new TypeVariable ( 0 , 0 ) , new BooleanType ( ) ) ;
-      LatexExport.export ( typeSubstitution , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( typeSubstitution , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -1267,8 +1220,7 @@ public class LatexTest
   }
 
 
-  private final static void testTypeSubstitutionList ( File pLatexFile ,
-      File pTPMLFile )
+  private final static void testTypeSubstitutionList ( File pLatexFile )
   {
     try
     {
@@ -1279,8 +1231,7 @@ public class LatexTest
           new TypeVariable ( 0 , 1 ) , new IntegerType ( ) ) ;
       substitionList = substitionList.extend ( typeSubstitution1 ) ;
       substitionList = substitionList.extend ( typeSubstitution2 ) ;
-      LatexExport.export ( substitionList , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( substitionList , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
@@ -1290,14 +1241,13 @@ public class LatexTest
   }
 
 
-  private final static void testTypeSubType ( File pLatexFile , File pTPMLFile )
+  private final static void testTypeSubType ( File pLatexFile )
   {
     try
     {
       TypeSubType typeSubType = new TypeSubType ( new IntegerType ( ) ,
           new BooleanType ( ) ) ;
-      LatexExport.export ( typeSubType , pLatexFile , pTPMLFile ,
-          LatexExport.Modus.ONE_FILE ) ;
+      LatexExport.export ( typeSubType , pLatexFile , oneFile ) ;
     }
     catch ( Exception e )
     {
