@@ -134,6 +134,10 @@ public abstract class LatexExport implements LatexCommandNames
     {
       throw new NullPointerException ( "latex file is null" ) ; //$NON-NLS-1$
     }
+    if ( pLatexFile.isDirectory ( ) )
+    {
+      throw new IllegalArgumentException ( "input file is not a normal file" ) ; //$NON-NLS-1$
+    }
     // eateregg
     if ( pLatexPrintable.toLatexString ( ).toString ( ).contains ( "\\" //$NON-NLS-1$
         + LATEX_IDENTIFIER + "{spiderschwein}" ) ) //$NON-NLS-1$
