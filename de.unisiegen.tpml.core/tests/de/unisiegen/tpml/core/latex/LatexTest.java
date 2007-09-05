@@ -409,9 +409,9 @@ public class LatexTest
           "l4" ) ;
       String text = "true || false" ;
       text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
-      text = "let rec fact x = if x = 0 then 1 else x * (fact x-1) in fact 0" ;
-      text = " let x: int = let x : int = let x : int ="
-          + "3+2+4+5+6+7+8+9+11+2+3+4 in x+2 in x+3 in x+5" ;
+      text = "let rec fact x = if x = 0 then 1 else if x = 1 then 1 else if x = 2 then 2 else if x = 3 then 6 else x * fact (x-1) in fact 4" ;
+     // text = " let x: int = let x : int = let x : int ="
+      //    + "3+2+4+5+6+7+8+9+11+2+3+4 in x+2 in x+3 in x+5" ;
       Expression expression = language.newParser ( new StringReader ( text ) )
           .parse ( ) ;
       BigStepProofModel model = language.newBigStepProofModel ( expression ) ;
