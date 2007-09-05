@@ -174,7 +174,8 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	 * @param s the new found substitution
 	 */
 	public void addSubstitution ( TypeSubstitution s ) {
-		this.substitutionList.add ( s );
+		this.substitutionList.remove ( s );
+		this.substitutionList.add (0, s );
 	}
 
 	/**
@@ -428,7 +429,10 @@ public class NewDefaultTypeInferenceProofContext implements TypeInferenceProofCo
 	final MonoType type, boolean mode, DefaultTypeInferenceProofNode node ) throws ProofRuleException {
 
 		// collect all type substitutions of the parent node
-		this.substitutionList.addAll ( node.getSubstitution ( ) );
+		for (TypeSubstitution sub : node.getSubstitution ( )){
+			addSubstitution ( sub );
+		}
+		
 
 		// create a typechecker proof node with the actual formula
 		AbstractTypeCheckerProofNode typeNode = null;
