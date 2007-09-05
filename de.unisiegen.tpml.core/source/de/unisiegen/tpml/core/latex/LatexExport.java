@@ -110,29 +110,6 @@ import de.unisiegen.tpml.core.types.UnitType ;
 public abstract class LatexExport implements LatexCommandNames
 {
   /**
-   * The modus of {@link LatexExport}s.
-   * 
-   * @author Christian Fehler
-   */
-  public enum Modus
-  {
-    /**
-     * Export one file with all commands.
-     */
-    ONE_FILE ,
-    /**
-     * Export a file without any commands, which uses the tpml latex file as
-     * import.
-     */
-    INPUT_FILE ,
-    /**
-     * Export the tpml latex file with all commands.
-     */
-    TPML_FILE
-  }
-
-
-  /**
    * The name of a supported {@link Charset}.
    */
   private static final String CHARSET_NAME = "UTF8" ; //$NON-NLS-1$
@@ -143,7 +120,8 @@ public abstract class LatexExport implements LatexCommandNames
    * 
    * @param pLatexPrintable The input {@link LatexPrintable}.
    * @param pLatexFile The latex {@link File}.
-   * @param pOneFile The {@link Modus} of the export.
+   * @param pOneFile If true, only one file is exported, otherwise the tpml file
+   *          is used as an import.
    * @throws LatexException If something in the latex export does not work.
    */
   public final static void export ( LatexPrintable pLatexPrintable ,
@@ -243,7 +221,8 @@ public abstract class LatexExport implements LatexCommandNames
    * 
    * @param pLatexPrintable The input {@link LatexPrintable}.
    * @param pLatexFile The latex {@link File}.
-   * @param pOneFile The {@link Modus} of the export.
+   * @param pOneFile If true, only one file is exported, otherwise the tpml file
+   *          is used as an import.
    * @throws LatexException If something in the latex export does not work.
    */
   private final static void exportLatex ( LatexPrintable pLatexPrintable ,
