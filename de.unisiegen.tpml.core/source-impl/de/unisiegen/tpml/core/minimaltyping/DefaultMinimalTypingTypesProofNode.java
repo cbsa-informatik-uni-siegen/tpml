@@ -311,7 +311,8 @@ public class DefaultMinimalTypingTypesProofNode extends
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
         LATEX_MINIMAL_TYPING_TYPES_PROOF_NODE , pIndent , this
             .toPrettyString ( ).toString ( ) , this.subtype.toPrettyString ( )
-            .toString ( ) ) ;
+            .toString ( ), this.getRule ( ) == null ? LATEX_EMPTY_STRING
+                  : this.getRule ( ).toPrettyString ( ).toString ( ) ) ;
     builder.addText ( "{" + String.valueOf ( this.getId ( ) ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addText ( "{" + String.valueOf ( depth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addBuilder ( this.subtype.toLatexStringBuilder (

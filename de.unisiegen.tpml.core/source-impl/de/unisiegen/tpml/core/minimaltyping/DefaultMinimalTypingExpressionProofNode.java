@@ -179,6 +179,7 @@ public class DefaultMinimalTypingExpressionProofNode extends
     {
       commands.add ( command ) ;
     }
+    if (this.type != null)
     for ( LatexCommand command : this.type.getLatexCommands ( ) )
     {
       commands.add ( command ) ;
@@ -205,6 +206,7 @@ public class DefaultMinimalTypingExpressionProofNode extends
     instructions.add ( getLatexInstructionsStatic ( ) ) ;
     instructions.add ( this.environment ) ;
     instructions.add ( this.expression ) ;
+    if (this.type != null)
     instructions.add ( this.type ) ;
     if ( getRule ( ) != null )
     {
@@ -234,6 +236,7 @@ public class DefaultMinimalTypingExpressionProofNode extends
     {
       packages.add ( pack ) ;
     }
+    if (this.type != null)
     for ( LatexPackage pack : this.type.getLatexPackages ( ) )
     {
       packages.add ( pack ) ;
