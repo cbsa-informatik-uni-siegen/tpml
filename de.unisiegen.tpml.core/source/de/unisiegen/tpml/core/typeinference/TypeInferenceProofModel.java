@@ -1176,4 +1176,24 @@ public final class TypeInferenceProofModel extends AbstractProofModel
     super.undo ( ) ;
     this.index -- ;
   }
+  
+  /**
+   * 
+   * {@inheritDoc}
+   * @see de.unisiegen.tpml.core.ProofModel#setOverlap(int)
+   */
+  public void setOverlap ( @SuppressWarnings("unused")
+		  int pOverlap ) {
+	  throw new UnsupportedOperationException();
+  }
+
+  /**
+   *
+   * {@inheritDoc}
+   * @see de.unisiegen.tpml.core.ProofModel#setPages(int)
+   */
+  public void setPages ( @SuppressWarnings("unused")
+		  int pPages ) {
+	  throw new UnsupportedOperationException();
+  }
 }

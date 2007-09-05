@@ -270,4 +270,20 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    */
   public < T extends EventListener > T [ ] getListeners (
       Class < T > listenerType ) ;
+  
+	/**
+	 * 
+	 * Set the actual side overlap for the exported latex file
+	 *
+	 * @param pOverlap the side overlapping
+	 */
+	public void setOverlap ( int pOverlap ) ;
+
+	/**
+	 * 
+	 * Set the number of pages for the exported latex file
+	 *
+	 * @param pPages number of pages
+	 */
+	public void setPages ( int pPages ) ;
 }
