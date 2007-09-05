@@ -202,7 +202,11 @@ public abstract class LatexExport implements LatexCommandNames
     println ( writer , "-----\\/--\\/------------------------" ) ; //$NON-NLS-1$
     println ( writer , "-----------------------------------" ) ; //$NON-NLS-1$
     println ( writer , "\\end{verbatim}" ) ; //$NON-NLS-1$
-    println ( writer , "Spiderschwein, Spiderschwein ..." ) ; //$NON-NLS-1$
+    println ( writer , "Spiderschwein, Spiderschwein." ) ; //$NON-NLS-1$
+    println ( writer , "Macht was immer ein Spiderschwein macht." ) ; //$NON-NLS-1$
+    println ( writer , "Hängt es von einem Netz? Kann es nicht," ) ; //$NON-NLS-1$
+    println ( writer , "es ist ein Schwein. Pass auf!" ) ; //$NON-NLS-1$
+    println ( writer , "Es ist ein Spiderschwein." ) ; //$NON-NLS-1$
     // document end
     println ( writer ) ;
     println ( writer , "\\end{landscape}" ) ; //$NON-NLS-1$
