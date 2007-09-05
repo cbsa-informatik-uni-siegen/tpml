@@ -91,10 +91,6 @@ public class DefaultMinimalTypingTypesProofNode extends
     instructions.add ( new DefaultLatexInstruction (
         "\\newif\\ifarrows  " + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
             + "\\arrowsfalse" ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newcommand{\\blong}{\\!\\!\\begin{array}[t]{l}}" ) ) ; //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newcommand{\\elong}{\\end{array}}" ) ) ; //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
         + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
         LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
