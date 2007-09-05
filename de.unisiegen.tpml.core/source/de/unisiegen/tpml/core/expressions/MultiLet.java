@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -99,9 +99,9 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_LET , 0 ,
         "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{let}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_IN , 0 ,
@@ -114,7 +114,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
             + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_LET //$NON-NLS-1$
             + "\\ (#1)\\colon\\ #2\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}" , //$NON-NLS-1$ //$NON-NLS-2$
         "id1, ..., idn" , "tau" , "e1" , "e2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-     return commands ;
+    return commands ;
   }
 
 
@@ -488,19 +488,17 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
     return this.indicesId ;
   }
 
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
   @ Override
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    LatexCommandList commands = super.getLatexCommands ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
     return commands ;
   }
 
@@ -520,8 +518,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
     }
     return packages ;
   }
-  
-  
+
 
   /**
    * Returns the tuple type for <code>e1</code> or <code>null</code>.

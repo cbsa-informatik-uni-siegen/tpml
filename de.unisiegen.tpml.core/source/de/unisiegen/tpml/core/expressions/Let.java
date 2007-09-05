@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -91,9 +91,9 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_LET , 0 ,
         "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{let}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_IN , 0 ,
@@ -396,6 +396,8 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
     }
     return this.boundIdentifiers ;
   }
+
+
   /**
    * {@inheritDoc}
    * 
@@ -430,19 +432,17 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
     return INDICES_ID ;
   }
 
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
   @ Override
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    LatexCommandList commands = super.getLatexCommands ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
     return commands ;
   }
 

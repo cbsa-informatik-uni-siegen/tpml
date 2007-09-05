@@ -302,7 +302,7 @@ public abstract class LatexExport implements LatexCommandNames
         println ( writer ) ;
       }
       // commands
-      TreeSet < LatexCommand > commands = pLatexPrintable.getLatexCommands ( ) ;
+      LatexCommandList commands = pLatexPrintable.getLatexCommands ( ) ;
       if ( commands.size ( ) > 0 )
       {
         println ( writer , "%%" ) ; //$NON-NLS-1$
@@ -429,7 +429,7 @@ public abstract class LatexExport implements LatexCommandNames
       LatexExport.println ( writer ) ;
     }
     // commands
-    TreeSet < LatexCommand > commands = getAllLatexCommands ( ) ;
+    LatexCommandList commands = getAllLatexCommands ( ) ;
     if ( commands.size ( ) > 0 )
     {
       LatexExport.println ( writer , "%%" ) ; //$NON-NLS-1$
@@ -458,389 +458,109 @@ public abstract class LatexExport implements LatexCommandNames
    * 
    * @return All needed {@link LatexCommand}s.
    */
-  private static TreeSet < LatexCommand > getAllLatexCommands ( )
+  private static LatexCommandList getAllLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     // Expression
-    for ( LatexCommand command : Expression.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : And.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Application.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Attribute.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : BinaryOperator.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Class.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Coercion.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Condition.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Condition1.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Constant.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : CurriedLet.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : CurriedLetRec.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : CurriedMethod.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Duplication.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Exn.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Identifier.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : InfixOperation.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Inherit.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Lambda.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Let.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : LetRec.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : List.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Location.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Method.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : MultiLambda.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : MultiLet.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : New.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : ObjectExpr.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Or.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Recursion.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Row.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Send.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Sequence.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : Tuple.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : While.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    commands.add ( Expression.getLatexCommandsStatic ( ) ) ;
+    commands.add ( And.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Application.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Attribute.getLatexCommandsStatic ( ) ) ;
+    commands.add ( BinaryOperator.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Class.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Coercion.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Condition.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Condition1.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Constant.getLatexCommandsStatic ( ) ) ;
+    commands.add ( CurriedLet.getLatexCommandsStatic ( ) ) ;
+    commands.add ( CurriedLetRec.getLatexCommandsStatic ( ) ) ;
+    commands.add ( CurriedMethod.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Duplication.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Exn.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Identifier.getLatexCommandsStatic ( ) ) ;
+    commands.add ( InfixOperation.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Inherit.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Lambda.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Let.getLatexCommandsStatic ( ) ) ;
+    commands.add ( LetRec.getLatexCommandsStatic ( ) ) ;
+    commands.add ( List.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Location.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Method.getLatexCommandsStatic ( ) ) ;
+    commands.add ( MultiLambda.getLatexCommandsStatic ( ) ) ;
+    commands.add ( MultiLet.getLatexCommandsStatic ( ) ) ;
+    commands.add ( New.getLatexCommandsStatic ( ) ) ;
+    commands.add ( ObjectExpr.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Or.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Recursion.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Row.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Send.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Sequence.getLatexCommandsStatic ( ) ) ;
+    commands.add ( Tuple.getLatexCommandsStatic ( ) ) ;
+    commands.add ( While.getLatexCommandsStatic ( ) ) ;
     // Type
-    for ( LatexCommand command : Type.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : ArrowType.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : BooleanType.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : ClassType.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : IntegerType.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : ListType.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : ObjectType.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : PolyType.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : RecType.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : RefType.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : RowType.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : TupleType.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : TypeName.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : TypeVariable.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : UnifyType.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : UnitType.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    commands.add ( Type.getLatexCommandsStatic ( ) ) ;
+    commands.add ( ArrowType.getLatexCommandsStatic ( ) ) ;
+    commands.add ( BooleanType.getLatexCommandsStatic ( ) ) ;
+    commands.add ( ClassType.getLatexCommandsStatic ( ) ) ;
+    commands.add ( IntegerType.getLatexCommandsStatic ( ) ) ;
+    commands.add ( ListType.getLatexCommandsStatic ( ) ) ;
+    commands.add ( ObjectType.getLatexCommandsStatic ( ) ) ;
+    commands.add ( PolyType.getLatexCommandsStatic ( ) ) ;
+    commands.add ( RecType.getLatexCommandsStatic ( ) ) ;
+    commands.add ( RefType.getLatexCommandsStatic ( ) ) ;
+    commands.add ( RowType.getLatexCommandsStatic ( ) ) ;
+    commands.add ( TupleType.getLatexCommandsStatic ( ) ) ;
+    commands.add ( TypeName.getLatexCommandsStatic ( ) ) ;
+    commands.add ( TypeVariable.getLatexCommandsStatic ( ) ) ;
+    commands.add ( UnifyType.getLatexCommandsStatic ( ) ) ;
+    commands.add ( UnitType.getLatexCommandsStatic ( ) ) ;
     // Environment
-    for ( LatexCommand command : DefaultTypeEnvironment
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    commands.add ( DefaultTypeEnvironment.getLatexCommandsStatic ( ) ) ;
     // Store
-    for ( LatexCommand command : DefaultStore.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    commands.add ( DefaultStore.getLatexCommandsStatic ( ) ) ;
     // TypeChecker
-    for ( LatexCommand command : AbstractTypeCheckerProofRule
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : SeenTypes.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : DefaultTypeSubstitution
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : TypeEquationTypeChecker
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : TypeEquationListTypeChecker
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : DefaultTypeCheckerExpressionProofNode
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : DefaultTypeCheckerTypeProofNode
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : TypeCheckerProofModel
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    commands.add ( AbstractTypeCheckerProofRule.getLatexCommandsStatic ( ) ) ;
+    commands.add ( SeenTypes.getLatexCommandsStatic ( ) ) ;
+    commands.add ( DefaultTypeSubstitution.getLatexCommandsStatic ( ) ) ;
+    commands.add ( TypeEquationTypeChecker.getLatexCommandsStatic ( ) ) ;
+    commands.add ( TypeEquationListTypeChecker.getLatexCommandsStatic ( ) ) ;
+    commands.add ( DefaultTypeCheckerExpressionProofNode
+        .getLatexCommandsStatic ( ) ) ;
+    commands.add ( DefaultTypeCheckerTypeProofNode.getLatexCommandsStatic ( ) ) ;
+    commands.add ( TypeCheckerProofModel.getLatexCommandsStatic ( ) ) ;
     // TypeInference
-    for ( LatexCommand command : TypeEquationTypeInference
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : TypeEquationListTypeInference
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : TypeSubstitutionList.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : TypeJudgement.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : TypeSubType.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : DefaultTypeInferenceProofNode
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : TypeInferenceProofModel
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    commands.add ( TypeEquationTypeInference.getLatexCommandsStatic ( ) ) ;
+    commands.add ( TypeEquationListTypeInference.getLatexCommandsStatic ( ) ) ;
+    commands.add ( TypeSubstitutionList.getLatexCommandsStatic ( ) ) ;
+    commands.add ( TypeJudgement.getLatexCommandsStatic ( ) ) ;
+    commands.add ( TypeSubType.getLatexCommandsStatic ( ) ) ;
+    commands.add ( DefaultTypeInferenceProofNode.getLatexCommandsStatic ( ) ) ;
+    commands.add ( TypeInferenceProofModel.getLatexCommandsStatic ( ) ) ;
     // SmallStep
-    for ( LatexCommand command : DefaultSmallStepProofRule
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : DefaultSmallStepProofNode
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : SmallStepProofModel.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    commands.add ( DefaultSmallStepProofRule.getLatexCommandsStatic ( ) ) ;
+    commands.add ( DefaultSmallStepProofNode.getLatexCommandsStatic ( ) ) ;
+    commands.add ( SmallStepProofModel.getLatexCommandsStatic ( ) ) ;
     // BigStep
-    for ( LatexCommand command : AbstractBigStepProofRule
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : BigStepProofResult.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : DefaultBigStepProofNode
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : BigStepProofModel.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    commands.add ( AbstractBigStepProofRule.getLatexCommandsStatic ( ) ) ;
+    commands.add ( BigStepProofResult.getLatexCommandsStatic ( ) ) ;
+    commands.add ( DefaultBigStepProofNode.getLatexCommandsStatic ( ) ) ;
+    commands.add ( BigStepProofModel.getLatexCommandsStatic ( ) ) ;
     // MinimalTyping
-    for ( LatexCommand command : AbstractMinimalTypingProofRule
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : DefaultMinimalTypingExpressionProofNode
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : DefaultMinimalTypingTypesProofNode
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : MinimalTypingProofModel
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    commands.add ( AbstractMinimalTypingProofRule.getLatexCommandsStatic ( ) ) ;
+    commands.add ( DefaultMinimalTypingExpressionProofNode
+        .getLatexCommandsStatic ( ) ) ;
+    commands
+        .add ( DefaultMinimalTypingTypesProofNode.getLatexCommandsStatic ( ) ) ;
+    commands.add ( MinimalTypingProofModel.getLatexCommandsStatic ( ) ) ;
     // SubTyping
-    for ( LatexCommand command : AbstractSubTypingProofRule
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : DefaultSubTypingProofNode
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : SubTypingProofModel.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    commands.add ( AbstractSubTypingProofRule.getLatexCommandsStatic ( ) ) ;
+    commands.add ( DefaultSubTypingProofNode.getLatexCommandsStatic ( ) ) ;
+    commands.add ( SubTypingProofModel.getLatexCommandsStatic ( ) ) ;
     // RecSubTyping
-    for ( LatexCommand command : AbstractRecSubTypingProofRule
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : DefaultSubType.getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : DefaultRecSubTypingProofNode
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : RecSubTypingProofModel
-        .getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    commands.add ( AbstractRecSubTypingProofRule.getLatexCommandsStatic ( ) ) ;
+    commands.add ( DefaultSubType.getLatexCommandsStatic ( ) ) ;
+    commands.add ( DefaultRecSubTypingProofNode.getLatexCommandsStatic ( ) ) ;
+    commands.add ( RecSubTypingProofModel.getLatexCommandsStatic ( ) ) ;
     return commands ;
   }
 

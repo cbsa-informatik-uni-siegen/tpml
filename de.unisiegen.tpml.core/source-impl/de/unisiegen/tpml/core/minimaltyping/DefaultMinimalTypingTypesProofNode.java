@@ -6,7 +6,7 @@ import de.unisiegen.tpml.core.expressions.Unify ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -47,9 +47,9 @@ public class DefaultMinimalTypingTypesProofNode extends
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_BYRULE , 1 ,
         "\\hspace{-5mm}\\mbox{\\scriptsize\\ #1}" , "rule" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands
@@ -159,24 +159,12 @@ public class DefaultMinimalTypingTypesProofNode extends
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.subtype.getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    if ( getRule ( ) != null )
-    {
-      for ( LatexCommand command : getRule ( ).getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
+    LatexCommandList commands = new LatexCommandList ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
+    commands.add ( this.subtype ) ;
+    commands.add ( getRule ( ) ) ;
     return commands ;
   }
 
@@ -191,10 +179,7 @@ public class DefaultMinimalTypingTypesProofNode extends
     LatexInstructionList instructions = new LatexInstructionList ( ) ;
     instructions.add ( getLatexInstructionsStatic ( ) ) ;
     instructions.add ( this.subtype ) ;
-    if ( getRule ( ) != null )
-    {
-      instructions.add ( getRule ( ) ) ;
-    }
+    instructions.add ( getRule ( ) ) ;
     return instructions ;
   }
 
@@ -311,8 +296,8 @@ public class DefaultMinimalTypingTypesProofNode extends
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
         LATEX_MINIMAL_TYPING_TYPES_PROOF_NODE , pIndent , this
             .toPrettyString ( ).toString ( ) , this.subtype.toPrettyString ( )
-            .toString ( ), this.getRule ( ) == null ? LATEX_EMPTY_STRING
-                  : this.getRule ( ).toPrettyString ( ).toString ( ) ) ;
+            .toString ( ) , this.getRule ( ) == null ? LATEX_EMPTY_STRING
+            : this.getRule ( ).toPrettyString ( ).toString ( ) ) ;
     builder.addText ( "{" + String.valueOf ( this.getId ( ) ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addText ( "{" + String.valueOf ( depth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addBuilder ( this.subtype.toLatexStringBuilder (

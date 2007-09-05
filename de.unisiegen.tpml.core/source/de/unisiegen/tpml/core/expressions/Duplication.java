@@ -3,7 +3,6 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
@@ -11,7 +10,7 @@ import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
 import de.unisiegen.tpml.core.interfaces.SortedChildren ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -85,9 +84,9 @@ public final class Duplication extends Expression implements
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_DUPLICATION , 1 , "\\color{" //$NON-NLS-1$
         + LATEX_COLOR_EXPRESSION + "}\\{<#1>\\}" , "a1 = e1 ; ... ; an = en" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     return commands ;
@@ -308,21 +307,21 @@ public final class Duplication extends Expression implements
   {
     return this.indicesId ;
   }
+
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
   @ Override
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    LatexCommandList commands = super.getLatexCommands ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
     return commands ;
   }
+
 
   /**
    * Returns the {@link Identifier}s and {@link Expression}s in the right

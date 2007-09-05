@@ -6,7 +6,7 @@ import java.util.TreeSet ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -48,9 +48,9 @@ public final class DefaultTypeSubstitution implements TypeSubstitution
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_SUBSTITUTION , 2 ,
         "#1\\color{" + LATEX_COLOR_NONE + "}{/}#2" , "tau" , "tvar" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     return commands ;
@@ -231,21 +231,12 @@ public final class DefaultTypeSubstitution implements TypeSubstitution
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.type.getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.tvar.getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    LatexCommandList commands = new LatexCommandList ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
+    commands.add ( this.type ) ;
+    commands.add ( this.tvar ) ;
     return commands ;
   }
 

@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -52,17 +52,20 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_NEW_NODE , 0 ,
         "\\\\[10mm]" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_NEW_RULE , 0 ,
         "\\\\" ) ) ; //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_RULES_COMPLETED ,
         0 , "&" ) ) ; //$NON-NLS-1$
-    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_MODEL , 1 ,
-        "\\begin{longtable}{p{3.5cm}@{}p{22cm}@{}}#1\\end{longtable}" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    commands
+        .add ( new DefaultLatexCommand (
+            LATEX_SMALL_STEP_PROOF_MODEL ,
+            1 ,
+            "\\begin{longtable}{p{3.5cm}@{}p{22cm}@{}}#1\\end{longtable}" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_ARROW , 2 ,
         "\\xrightarrow" + LATEX_LINE_BREAK_NEW_COMMAND + "[\\mbox{\\color{" //$NON-NLS-1$//$NON-NLS-2$
             + LATEX_COLOR_RULE + "}{\\scriptsize{#2}}}]" //$NON-NLS-1$
@@ -303,17 +306,11 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @see LatexPrintable#getLatexCommands()
    */
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : getLatexCommandsInternal ( this.root ) )
-    {
-      commands.add ( command ) ;
-    }
+    LatexCommandList commands = new LatexCommandList ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
+    commands.add ( getLatexCommandsInternal ( this.root ) ) ;
     return commands ;
   }
 
@@ -326,27 +323,14 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * @return A set of needed latex commands for the given latex printable
    *         {@link ProofNode}.
    */
-  private TreeSet < LatexCommand > getLatexCommandsInternal ( ProofNode pNode )
+  private LatexCommandList getLatexCommandsInternal ( ProofNode pNode )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    for ( LatexCommand command : pNode.getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( ProofRule rule : pNode.getRules ( ) )
-    {
-      for ( LatexCommand command : rule.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
+    LatexCommandList commands = new LatexCommandList ( ) ;
+    commands.add ( pNode ) ;
+    commands.add ( pNode.getRules ( ) ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
-      for ( LatexCommand command : getLatexCommandsInternal ( pNode
-          .getChildAt ( i ) ) )
-      {
-        commands.add ( command ) ;
-      }
+      commands.add ( getLatexCommandsInternal ( pNode.getChildAt ( i ) ) ) ;
     }
     return commands ;
   }
@@ -378,10 +362,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
   {
     LatexInstructionList instructions = new LatexInstructionList ( ) ;
     instructions.add ( pNode ) ;
-    for ( ProofRule rule : pNode.getRules ( ) )
-    {
-      instructions.add ( rule ) ;
-    }
+    instructions.add ( pNode.getRules ( ) ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
       instructions
@@ -566,24 +547,26 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
 
 
   /**
-   * 
    * {@inheritDoc}
+   * 
    * @see de.unisiegen.tpml.core.ProofModel#setOverlap(int)
    */
-  public void setOverlap ( @SuppressWarnings("unused")
-		  int pOverlap ) {
-	  throw new UnsupportedOperationException();
+  public void setOverlap ( @ SuppressWarnings ( "unused" )
+  int pOverlap )
+  {
+    throw new UnsupportedOperationException ( ) ;
   }
 
 
   /**
-   *
    * {@inheritDoc}
+   * 
    * @see de.unisiegen.tpml.core.ProofModel#setPages(int)
    */
-  public void setPages ( @SuppressWarnings("unused")
-		  int pPages ) {
-	  throw new UnsupportedOperationException();
+  public void setPages ( @ SuppressWarnings ( "unused" )
+  int pPages )
+  {
+    throw new UnsupportedOperationException ( ) ;
   }
 
 
@@ -597,6 +580,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
         .toLatexString ( ) ;
   }
+
 
   /**
    * {@inheritDoc}
@@ -638,6 +622,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     builder.addBuilderEnd ( ) ;
     return builder ;
   }
+
 
   /**
    * Build the latex string for the given <code>pCurrentNode</code>.

@@ -6,7 +6,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -41,9 +41,9 @@ public class TypeSubstitutionList implements PrettyPrintable , LatexPrintable
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_SUBSTITUTION_LIST , 1 ,
         "\\color{" + LATEX_COLOR_NONE + "}{\\{}#1\\color{" //$NON-NLS-1$//$NON-NLS-2$
             + LATEX_COLOR_NONE + "}{\\}}" , "tsub1, ... , tsubn" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
@@ -150,19 +150,13 @@ public class TypeSubstitutionList implements PrettyPrintable , LatexPrintable
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    LatexCommandList commands = new LatexCommandList ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
     for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
-      for ( LatexCommand command : list.first.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
+      commands.add ( list.first ) ;
     }
     return commands ;
   }

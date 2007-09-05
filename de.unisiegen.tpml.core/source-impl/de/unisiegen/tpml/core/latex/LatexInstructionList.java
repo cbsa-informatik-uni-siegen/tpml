@@ -35,14 +35,20 @@ public class LatexInstructionList implements Iterable < LatexInstruction >
    */
   public void add ( Iterable < ? extends LatexPrintable > pLatexPrintables )
   {
-    for ( LatexPrintable latexPrintable : pLatexPrintables )
+    if ( pLatexPrintables != null )
     {
-      for ( LatexInstruction instruction : latexPrintable
-          .getLatexInstructions ( ) )
+      for ( LatexPrintable latexPrintable : pLatexPrintables )
       {
-        if ( ! this.list.contains ( instruction ) )
+        if ( latexPrintable != null )
         {
-          this.list.add ( instruction ) ;
+          for ( LatexInstruction instruction : latexPrintable
+              .getLatexInstructions ( ) )
+          {
+            if ( ! this.list.contains ( instruction ) )
+            {
+              this.list.add ( instruction ) ;
+            }
+          }
         }
       }
     }
@@ -56,9 +62,12 @@ public class LatexInstructionList implements Iterable < LatexInstruction >
    */
   public void add ( LatexInstruction pLatexInstruction )
   {
-    if ( ! this.list.contains ( pLatexInstruction ) )
+    if ( pLatexInstruction != null )
     {
-      this.list.add ( pLatexInstruction ) ;
+      if ( ! this.list.contains ( pLatexInstruction ) )
+      {
+        this.list.add ( pLatexInstruction ) ;
+      }
     }
   }
 
@@ -71,11 +80,14 @@ public class LatexInstructionList implements Iterable < LatexInstruction >
    */
   public void add ( LatexInstructionList pLatexInstructionList )
   {
-    for ( LatexInstruction instruction : pLatexInstructionList )
+    if ( pLatexInstructionList != null )
     {
-      if ( ! this.list.contains ( instruction ) )
+      for ( LatexInstruction instruction : pLatexInstructionList )
       {
-        this.list.add ( instruction ) ;
+        if ( ! this.list.contains ( instruction ) )
+        {
+          this.list.add ( instruction ) ;
+        }
       }
     }
   }
@@ -89,12 +101,15 @@ public class LatexInstructionList implements Iterable < LatexInstruction >
    */
   public void add ( LatexPrintable pLatexPrintable )
   {
-    for ( LatexInstruction instruction : pLatexPrintable
-        .getLatexInstructions ( ) )
+    if ( pLatexPrintable != null )
     {
-      if ( ! this.list.contains ( instruction ) )
+      for ( LatexInstruction instruction : pLatexPrintable
+          .getLatexInstructions ( ) )
       {
-        this.list.add ( instruction ) ;
+        if ( ! this.list.contains ( instruction ) )
+        {
+          this.list.add ( instruction ) ;
+        }
       }
     }
   }
@@ -108,14 +123,20 @@ public class LatexInstructionList implements Iterable < LatexInstruction >
    */
   public void add ( LatexPrintable [ ] pLatexPrintables )
   {
-    for ( LatexPrintable latexPrintable : pLatexPrintables )
+    if ( pLatexPrintables != null )
     {
-      for ( LatexInstruction instruction : latexPrintable
-          .getLatexInstructions ( ) )
+      for ( LatexPrintable latexPrintable : pLatexPrintables )
       {
-        if ( ! this.list.contains ( instruction ) )
+        if ( latexPrintable != null )
         {
-          this.list.add ( instruction ) ;
+          for ( LatexInstruction instruction : latexPrintable
+              .getLatexInstructions ( ) )
+          {
+            if ( ! this.list.contains ( instruction ) )
+            {
+              this.list.add ( instruction ) ;
+            }
+          }
         }
       }
     }

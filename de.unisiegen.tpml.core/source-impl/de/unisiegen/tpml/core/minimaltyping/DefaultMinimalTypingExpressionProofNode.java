@@ -6,7 +6,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -37,9 +37,9 @@ public class DefaultMinimalTypingExpressionProofNode extends
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_BYRULE , 1 ,
         "\\hspace{-5mm}\\mbox{\\scriptsize\\ #1}" , "rule" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands
@@ -164,33 +164,14 @@ public class DefaultMinimalTypingExpressionProofNode extends
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.environment.getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.expression.getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    if (this.type != null)
-    for ( LatexCommand command : this.type.getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    if ( getRule ( ) != null )
-    {
-      for ( LatexCommand command : getRule ( ).getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
+    LatexCommandList commands = new LatexCommandList ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
+    commands.add ( this.environment ) ;
+    commands.add ( this.expression ) ;
+    commands.add ( this.type ) ;
+    commands.add ( getRule ( ) ) ;
     return commands ;
   }
 
@@ -206,12 +187,8 @@ public class DefaultMinimalTypingExpressionProofNode extends
     instructions.add ( getLatexInstructionsStatic ( ) ) ;
     instructions.add ( this.environment ) ;
     instructions.add ( this.expression ) ;
-    if (this.type != null)
     instructions.add ( this.type ) ;
-    if ( getRule ( ) != null )
-    {
-      instructions.add ( getRule ( ) ) ;
-    }
+    instructions.add ( getRule ( ) ) ;
     return instructions ;
   }
 
@@ -236,10 +213,12 @@ public class DefaultMinimalTypingExpressionProofNode extends
     {
       packages.add ( pack ) ;
     }
-    if (this.type != null)
-    for ( LatexPackage pack : this.type.getLatexPackages ( ) )
+    if ( this.type != null )
     {
-      packages.add ( pack ) ;
+      for ( LatexPackage pack : this.type.getLatexPackages ( ) )
+      {
+        packages.add ( pack ) ;
+      }
     }
     if ( getRule ( ) != null )
     {

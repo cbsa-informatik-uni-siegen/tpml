@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -38,9 +38,9 @@ public class TypeJudgement implements TypeFormula
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_JUDGEMENT , 3 ,
         "#1\\ \\color{" + LATEX_COLOR_NONE + "}{" + LATEX_RIGHT_TRIANGLE //$NON-NLS-1$ //$NON-NLS-2$
             + "}\\ #2\\ \\color{" + LATEX_COLOR_NONE + "}{::}\\ #3" , //$NON-NLS-1$//$NON-NLS-2$
@@ -162,25 +162,13 @@ public class TypeJudgement implements TypeFormula
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.environment.getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.expression.getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.type.getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    LatexCommandList commands = new LatexCommandList ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
+    commands.add ( this.environment ) ;
+    commands.add ( this.expression ) ;
+    commands.add ( this.type ) ;
     return commands ;
   }
 

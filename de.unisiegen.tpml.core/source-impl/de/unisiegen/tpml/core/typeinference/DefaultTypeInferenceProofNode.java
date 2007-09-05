@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -43,9 +43,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_PROOF_NODE ,
         1 , "#1" , "body" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     return commands ;
@@ -258,33 +258,18 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( TypeSubstitution substitution : this.substitutions )
-    {
-      for ( LatexCommand command : substitution.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
+    LatexCommandList commands = new LatexCommandList ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
+    commands.add ( this.substitutions ) ;
+    commands.add ( this.formula ) ;
     for ( TypeFormula form : this.formula )
     {
-      for ( LatexCommand command : form.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
       if ( form instanceof TypeEquationTypeInference )
       {
-        for ( LatexCommand command : ( ( TypeEquationTypeInference ) form )
-            .getSeenTypes ( ).getLatexCommands ( ) )
-        {
-          commands.add ( command ) ;
-        }
+        commands.add ( ( ( TypeEquationTypeInference ) form ).getSeenTypes ( )
+            .getLatexCommands ( ) ) ;
       }
     }
     return commands ;
@@ -301,9 +286,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
     LatexInstructionList instructions = new LatexInstructionList ( ) ;
     instructions.add ( getLatexInstructionsStatic ( ) ) ;
     instructions.add ( this.substitutions ) ;
+    instructions.add ( this.formula ) ;
     for ( TypeFormula form : this.formula )
     {
-      instructions.add ( form ) ;
       if ( form instanceof TypeEquationTypeInference )
       {
         instructions.add ( ( ( TypeEquationTypeInference ) form )

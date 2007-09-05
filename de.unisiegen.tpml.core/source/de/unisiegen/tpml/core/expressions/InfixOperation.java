@@ -1,13 +1,12 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
 import de.unisiegen.tpml.core.interfaces.SortedChildren ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -68,9 +67,9 @@ public final class InfixOperation extends Expression implements
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_INFIX_OPERATION , 3 ,
         "\\color{" + LATEX_COLOR_EXPRESSION + "}#2\\ #1\\ #3" , "op" , "e1" , //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
         "e2" ) ) ; //$NON-NLS-1$
@@ -238,13 +237,10 @@ public final class InfixOperation extends Expression implements
    * @return A set of needed latex commands for this latex printable object.
    */
   @ Override
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    LatexCommandList commands = super.getLatexCommands ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
     return commands ;
   }
 

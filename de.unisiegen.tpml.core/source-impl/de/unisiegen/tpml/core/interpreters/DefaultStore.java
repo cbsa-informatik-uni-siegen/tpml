@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -41,9 +41,9 @@ public final class DefaultStore extends
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_STORE , 1 , "\\color{" //$NON-NLS-1$
         + LATEX_COLOR_NONE + "}{[}#1\\color{" + LATEX_COLOR_NONE //$NON-NLS-1$
         + "}{]}" , "X1: e1, ..., Xn: en" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
@@ -142,23 +142,14 @@ public final class DefaultStore extends
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    LatexCommandList commands = new LatexCommandList ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
     for ( Mapping < Location , Expression > mapping : this.mappings )
     {
-      for ( LatexCommand command : mapping.getSymbol ( ).getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-      for ( LatexCommand command : mapping.getEntry ( ).getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
+      commands.add ( mapping.getSymbol ( ) ) ;
+      commands.add ( mapping.getEntry ( ) ) ;
     }
     return commands ;
   }

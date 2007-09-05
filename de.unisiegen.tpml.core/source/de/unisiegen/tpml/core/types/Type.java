@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -91,9 +91,9 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_PARENTHESIS , 1 , "(#1)" , //$NON-NLS-1$
         "tau" ) ) ; //$NON-NLS-1$
     return commands ;
@@ -321,42 +321,21 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    LatexCommandList commands = new LatexCommandList ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
     if ( this instanceof DefaultTypes )
     {
-      for ( MonoType type : ( ( DefaultTypes ) this ).getTypes ( ) )
-      {
-        for ( LatexCommand command : type.getLatexCommands ( ) )
-        {
-          commands.add ( command ) ;
-        }
-      }
+      commands.add ( ( ( DefaultTypes ) this ).getTypes ( ) ) ;
     }
     if ( this instanceof DefaultIdentifiers )
     {
-      for ( Identifier id : ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) )
-      {
-        for ( LatexCommand command : id.getLatexCommands ( ) )
-        {
-          commands.add ( command ) ;
-        }
-      }
+      commands.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) ) ;
     }
     if ( this instanceof DefaultTypeNames )
     {
-      for ( TypeName typeName : ( ( DefaultTypeNames ) this ).getTypeNames ( ) )
-      {
-        for ( LatexCommand command : typeName.getLatexCommands ( ) )
-        {
-          commands.add ( command ) ;
-        }
-      }
+      commands.add ( ( ( DefaultTypeNames ) this ).getTypeNames ( ) ) ;
     }
     return commands ;
   }

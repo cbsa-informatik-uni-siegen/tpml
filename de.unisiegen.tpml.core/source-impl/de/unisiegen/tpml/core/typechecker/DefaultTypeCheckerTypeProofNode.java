@@ -6,7 +6,7 @@ import de.unisiegen.tpml.core.expressions.Unify ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -34,9 +34,9 @@ public class DefaultTypeCheckerTypeProofNode extends
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_BYRULE , 1 ,
         "\\hspace{-5mm}\\mbox{\\scriptsize\\ #1}" , "rule" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands
@@ -128,28 +128,13 @@ public class DefaultTypeCheckerTypeProofNode extends
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.type.getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( LatexCommand command : this.type2.getLatexCommands ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    if ( getRule ( ) != null )
-    {
-      for ( LatexCommand command : getRule ( ).getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
+    LatexCommandList commands = new LatexCommandList ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
+    commands.add ( this.type ) ;
+    commands.add ( this.type2 ) ;
+    commands.add ( getRule ( ) ) ;
     return commands ;
   }
 
@@ -165,10 +150,7 @@ public class DefaultTypeCheckerTypeProofNode extends
     instructions.add ( getLatexInstructionsStatic ( ) ) ;
     instructions.add ( this.type ) ;
     instructions.add ( this.type2 ) ;
-    if ( getRule ( ) != null )
-    {
-      instructions.add ( getRule ( ) ) ;
-    }
+    instructions.add ( getRule ( ) ) ;
     return instructions ;
   }
 

@@ -8,7 +8,7 @@ import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
@@ -36,9 +36,9 @@ public final class SeenTypes < E extends PrettyPrintable & LatexPrintable >
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_SEEN_TYPES , 1 , "\\color{" //$NON-NLS-1$
         + LATEX_COLOR_NONE + "}{\\{}#1\\color{" + LATEX_COLOR_NONE //$NON-NLS-1$
         + "}{\\}}" , "E1, ... , En" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
@@ -168,20 +168,11 @@ public final class SeenTypes < E extends PrettyPrintable & LatexPrintable >
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
-    for ( E entry : this.list )
-    {
-      for ( LatexCommand command : entry.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
+    LatexCommandList commands = new LatexCommandList ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
+    commands.add ( this.list ) ;
     return commands ;
   }
 
@@ -195,10 +186,7 @@ public final class SeenTypes < E extends PrettyPrintable & LatexPrintable >
   {
     LatexInstructionList instructions = new LatexInstructionList ( ) ;
     instructions.add ( getLatexInstructionsStatic ( ) ) ;
-    for ( E entry : this.list )
-    {
-      instructions.add ( entry ) ;
-    }
+    instructions.add ( this.list ) ;
     return instructions ;
   }
 

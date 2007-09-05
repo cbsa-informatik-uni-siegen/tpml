@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -100,9 +100,9 @@ public final class CurriedMethod extends Expression implements
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_KEY_METHOD , 0 ,
         "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{method}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_CURRIED_METHOD , 3 ,
@@ -453,6 +453,7 @@ public final class CurriedMethod extends Expression implements
     return this.boundIdentifiers ;
   }
 
+
   /**
    * {@inheritDoc}
    */
@@ -485,16 +486,7 @@ public final class CurriedMethod extends Expression implements
   {
     return this.indicesId ;
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
 
   /**
    * Returns a set of needed latex commands for this latex printable object.
@@ -502,13 +494,10 @@ public final class CurriedMethod extends Expression implements
    * @return A set of needed latex commands for this latex printable object.
    */
   @ Override
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
+    LatexCommandList commands = super.getLatexCommands ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
     return commands ;
   }
 

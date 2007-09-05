@@ -16,7 +16,7 @@ public interface LatexPrintable extends LatexCommandNames
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public TreeSet < LatexCommand > getLatexCommands ( ) ;
+  public LatexCommandList getLatexCommands ( ) ;
 
 
   /**

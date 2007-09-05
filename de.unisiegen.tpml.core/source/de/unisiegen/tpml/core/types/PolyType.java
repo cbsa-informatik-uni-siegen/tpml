@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommand ;
+import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -66,9 +66,9 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static TreeSet < LatexCommand > getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ( )
   {
-    TreeSet < LatexCommand > commands = new TreeSet < LatexCommand > ( ) ;
+    LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_POLY_TYPE , 2 ,
         "\\ifthenelse{\\equal{#1}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
             + "{\\color{" + LATEX_COLOR_EXPRESSION + "}#2}" //$NON-NLS-1$ //$NON-NLS-2$
@@ -151,6 +151,8 @@ public final class PolyType extends Type implements DefaultTypes
     }
     return new PolyType ( newQuantifiedVariables , this.types [ 0 ].clone ( ) ) ;
   }
+
+
   /**
    * {@inheritDoc}
    * 
@@ -177,8 +179,7 @@ public final class PolyType extends Type implements DefaultTypes
   {
     return CAPTION ;
   }
-  
-  
+
 
   /**
    * Returns a set of needed latex commands for this latex printable object.
@@ -186,20 +187,11 @@ public final class PolyType extends Type implements DefaultTypes
    * @return A set of needed latex commands for this latex printable object.
    */
   @ Override
-  public TreeSet < LatexCommand > getLatexCommands ( )
+  public LatexCommandList getLatexCommands ( )
   {
-    TreeSet < LatexCommand > commands = super.getLatexCommands ( ) ;
-    for ( LatexCommand command : getLatexCommandsStatic ( ) )
-    {
-      commands.add ( command ) ;
-    }
- for ( TypeVariable typeVariable : this.quantifiedVariables )
-    {
-      for ( LatexCommand command : typeVariable.getLatexCommands ( ) )
-      {
-        commands.add ( command ) ;
-      }
-    }
+    LatexCommandList commands = super.getLatexCommands ( ) ;
+    commands.add ( getLatexCommandsStatic ( ) ) ;
+    commands.add ( this.quantifiedVariables ) ;
     return commands ;
   }
 
