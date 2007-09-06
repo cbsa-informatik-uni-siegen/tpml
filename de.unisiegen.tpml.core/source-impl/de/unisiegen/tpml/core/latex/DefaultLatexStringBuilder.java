@@ -227,10 +227,6 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
       breakItem = true ;
     }
     this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
-    if ( this.parameterDescriptions.length > 0 )
-    {
-      this.parameterCount ++ ;
-    }
     if ( breakItem )
     {
       this.items.add ( new TextLatexItem ( getIndent ( this.indent
@@ -259,6 +255,7 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
     {
       this.items.add ( new BuilderLatexItem ( defaultBuilder ) ) ;
     }
+    this.parameterCount ++ ;
   }
 
 
@@ -267,7 +264,7 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
    */
   private void addParameterDescription ( )
   {
-    if ( this.parameterDescriptions.length > 0 )
+    if ( this.parameterCount < this.parameterDescriptions.length )
     {
       this.items.add ( new TextLatexItem ( getIndent ( this.indent )
           + "% " //$NON-NLS-1$
@@ -275,8 +272,8 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
               PRETTY_LINE_BREAK , PRETTY_LINE_BREAK + getIndent ( this.indent )
                   + "% " ) ) ) ; //$NON-NLS-1$
       this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
-      this.parameterCount ++ ;
     }
+    this.parameterCount ++ ;
   }
 
 

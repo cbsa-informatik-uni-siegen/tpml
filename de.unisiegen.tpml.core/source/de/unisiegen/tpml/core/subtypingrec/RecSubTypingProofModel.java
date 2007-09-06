@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.subtypingrec ;
 
 
 import java.text.MessageFormat ;
+import java.util.ArrayList ;
 import org.apache.log4j.Logger ;
 import de.unisiegen.tpml.core.AbstractProofModel ;
 import de.unisiegen.tpml.core.AbstractProofNode ;
@@ -23,6 +24,10 @@ import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.subtyping.ProofStep ;
 import de.unisiegen.tpml.core.subtyping.SubTypingModel ;
 import de.unisiegen.tpml.core.typechecker.SeenTypes ;
@@ -53,18 +58,6 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    */
   private static final Logger logger = Logger
       .getLogger ( RecSubTypingProofModel.class ) ;
-
-
-  /**
-   * The side overlapping for latex export
-   */
-  int overlap = 0 ;
-
-
-  /**
-   * The number of pages for latex export
-   */
-  int pages = 5 ;
 
 
   /**
@@ -129,6 +122,18 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
     packages.add ( new DefaultLatexPackage ( "amstext" ) ) ; //$NON-NLS-1$
     return packages ;
   }
+
+
+  /**
+   * The side overlapping for latex export
+   */
+  int overlap = 0 ;
+
+
+  /**
+   * The number of pages for latex export
+   */
+  int pages = 5 ;
 
 
   /**
@@ -338,6 +343,25 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
         nodeChanged ( node ) ;
       }
     } ) ;
+  }
+
+
+  /**
+   * Returns the {@link PrettyString}s of all child {@link ProofNode}s.
+   * 
+   * @param pCurrentNode
+   * @return The {@link PrettyString}s of all child {@link ProofNode}s.
+   */
+  private ArrayList < PrettyString > getDescription ( ProofNode pCurrentNode )
+  {
+    ArrayList < PrettyString > descriptionList = new ArrayList < PrettyString > ( ) ;
+    descriptionList.add ( pCurrentNode.toPrettyString ( ) ) ;
+    for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
+    {
+      descriptionList
+          .addAll ( getDescription ( pCurrentNode.getChildAt ( i ) ) ) ;
+    }
+    return descriptionList ;
   }
 
 
@@ -617,6 +641,28 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
 
 
   /**
+   * Set the actual side overlap for the exported latex file
+   * 
+   * @param pOverlap the side overlapping
+   */
+  public void setOverlap ( int pOverlap )
+  {
+    this.overlap = pOverlap ;
+  }
+
+
+  /**
+   * Set the number of pages for the exported latex file
+   * 
+   * @param pPages number of pages
+   */
+  public void setPages ( int pPages )
+  {
+    this.pages = pPages ;
+  }
+
+
+  /**
    * set a new root for this model
    * 
    * @param type first MonoType of the new root
@@ -650,22 +696,28 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
   public final LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        pIndent ) ;
+    ArrayList < PrettyString > descriptionList = new ArrayList < PrettyString > ( ) ;
+    descriptionList.add ( this.toPrettyString ( ) ) ;
+    descriptionList.addAll ( getDescription ( this.root ) ) ;
+    String [ ] description = new String [ descriptionList.size ( ) ] ;
+    for ( int i = 0 ; i < descriptionList.size ( ) ; i ++ )
     {
-      builder.addText ( "\\treeindent=0mm" ) ; //$NON-NLS-1$
-      builder.addSourceCodeBreak ( 0 ) ;
-      builder.addText ( "\\nodeindent=7mm" ) ; //$NON-NLS-1$
-      builder.addSourceCodeBreak ( 0 ) ;
-      builder.addText ( "\\nodesep=2mm" ) ; //$NON-NLS-1$
-      builder.addSourceCodeBreak ( 0 ) ;
-      builder
-          .addText ( "\\newcommand{\\longtext}[1]{\\oddsidemargin=#1\\enlargethispage{840mm}" ) ; //$NON-NLS-1$
-      builder.addSourceCodeBreak ( 0 ) ;
-      builder.addText ( "\\mktree{" ) ; //$NON-NLS-1$
-      toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
-          this.root , pIndent + LATEX_INDENT , - 1 ) ;
+      description [ i ] = descriptionList.get ( i ).toString ( ) ;
     }
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
+        pIndent , description ) ;
+    builder.addText ( "\\treeindent=0mm" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "\\nodeindent=7mm" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "\\nodesep=2mm" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder
+        .addText ( "\\newcommand{\\longtext}[1]{\\oddsidemargin=#1\\enlargethispage{840mm}" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addText ( "\\mktree{" ) ; //$NON-NLS-1$
+    toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
+        this.root , pIndent + LATEX_INDENT , - 1 ) ;
     builder.addText ( "}" ) ; //$NON-NLS-1$
     builder.addText ( "}" ) ; //$NON-NLS-1$
     builder.addText ( "\\longtext{-30pt}" ) ; //$NON-NLS-1$
@@ -720,23 +772,46 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
 
 
   /**
-   * Set the actual side overlap for the exported latex file
+   * {@inheritDoc}
    * 
-   * @param pOverlap the side overlapping
+   * @see PrettyPrintable#toPrettyString()
    */
-  public void setOverlap ( int pOverlap )
+  public final PrettyString toPrettyString ( )
   {
-    this.overlap = pOverlap ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+        .toPrettyString ( ) ;
   }
 
 
   /**
-   * Set the number of pages for the exported latex file
+   * {@inheritDoc}
    * 
-   * @param pPages number of pages
+   * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  public void setPages ( int pPages )
+  public PrettyStringBuilder toPrettyStringBuilder (
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    this.pages = pPages ;
+    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
+        this , 0 ) ;
+    builder.addBuilder ( this.root
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+    builder.addText ( PRETTY_LINE_BREAK ) ;
+    builder.addText ( PRETTY_CONTINUATION ) ;
+    return builder ;
+  }
+
+
+  /**
+   * Returns the string representation for this model. This method is mainly
+   * used for debugging.
+   * 
+   * @return The pretty printed string representation for this model.
+   * @see #toPrettyString()
+   * @see Object#toString()
+   */
+  @ Override
+  public final String toString ( )
+  {
+    return toPrettyString ( ).toString ( ) ;
   }
 }

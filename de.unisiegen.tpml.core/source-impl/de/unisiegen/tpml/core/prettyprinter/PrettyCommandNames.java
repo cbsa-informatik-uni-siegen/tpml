@@ -27,6 +27,12 @@ public interface PrettyCommandNames
 
 
   /**
+   * The pretty print command for a continuation.
+   */
+  public static final String PRETTY_CONTINUATION = "..." ; //$NON-NLS-1$
+
+
+  /**
    * The pretty print command for a right triangle.
    */
   public static final String PRETTY_RIGHT_TRIANGLE = "\u22b3" ; //$NON-NLS-1$

@@ -1,12 +1,15 @@
 package de.unisiegen.tpml.core.latex ;
 
 
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+
+
 /**
  * Base interface for classes whose instances can be printed in latex.
  * 
  * @author Christian Fehler
  */
-public interface LatexPrintable extends LatexCommandNames
+public interface LatexPrintable extends PrettyPrintable , LatexCommandNames
 {
   /**
    * Returns a set of needed latex commands for this latex printable object.

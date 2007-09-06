@@ -22,6 +22,10 @@ import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
 
 /**
@@ -571,7 +575,8 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
       LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_SMALL_STEP_PROOF_MODEL , pIndent ) ;
+        LATEX_SMALL_STEP_PROOF_MODEL , pIndent , this.toPrettyString ( )
+            .toString ( ) ) ;
     builder.addBuilderBegin ( ) ;
     builder.addSourceCodeBreak ( 0 ) ;
     builder.addText ( "% no small step rules in the first node" ) ; //$NON-NLS-1$
@@ -758,5 +763,50 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
           pLatexStringBuilder , pCurrentNode , pCurrentNode.getChildAt ( i ) ,
           pIndent ) ;
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ( )
+  {
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+        .toPrettyString ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
+   */
+  public PrettyStringBuilder toPrettyStringBuilder (
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+  {
+    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
+        this , 0 ) ;
+    builder.addBuilder ( this.root
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+    builder.addText ( PRETTY_LINE_BREAK ) ;
+    builder.addText ( PRETTY_CONTINUATION ) ;
+    return builder ;
+  }
+
+
+  /**
+   * Returns the string representation for this model. This method is mainly
+   * used for debugging.
+   * 
+   * @return The pretty printed string representation for this model.
+   * @see #toPrettyString()
+   * @see Object#toString()
+   */
+  @ Override
+  public final String toString ( )
+  {
+    return toPrettyString ( ).toString ( ) ;
   }
 }
