@@ -222,7 +222,8 @@ public final class BigStepProofResult implements PrettyPrintable ,
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
         LATEX_BIG_STEP_PROOF_RESULT , pIndent , this.toPrettyString ( )
             .toString ( ) , body.toString ( ) , this.value.toPrettyString ( )
-            .toString ( ) , this.getStore ( ).toPrettyString ( ).toString ( ) ) ;
+            .toString ( ) , this.value.containsMemoryOperations ( ) ? this
+            .getStore ( ).toPrettyString ( ).toString ( ) : LATEX_NO_STORE ) ;
     builder.addBuilderBegin ( ) ;
     if ( this.value.containsMemoryOperations ( ) )
     {

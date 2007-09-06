@@ -691,7 +691,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
       descriptions [ 2 + i ] = this.identifiers [ i ].toPrettyString ( )
           .toString ( ) ;
     }
-    descriptions [ descriptions.length - 3 ] = this.types [ 0 ] == null ? LATEX_EMPTY_STRING
+    descriptions [ descriptions.length - 3 ] = this.types [ 0 ] == null ? LATEX_NO_TYPE
         : this.types [ 0 ].toPrettyString ( ).toString ( ) ;
     descriptions [ descriptions.length - 2 ] = this.expressions [ 0 ]
         .toPrettyString ( ).toString ( ) ;

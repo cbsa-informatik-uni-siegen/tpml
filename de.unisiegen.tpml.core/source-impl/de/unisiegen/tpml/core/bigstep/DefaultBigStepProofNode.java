@@ -432,11 +432,11 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
         LATEX_BIG_STEP_PROOF_NODE , pIndent , this.toPrettyString ( )
             .toString ( ) , this.expression.toPrettyString ( ).toString ( ) ,
-        this.getStore ( ).toPrettyString ( ).toString ( ) ,
-        this.result == null ? LATEX_EMPTY_STRING : this.result
-            .toPrettyString ( ).toString ( ) ,
-        this.getRule ( ) == null ? LATEX_EMPTY_STRING : this.getRule ( )
-            .toPrettyString ( ).toString ( ) ) ;
+        this.expression.containsMemoryOperations ( ) ? this.getStore ( )
+            .toPrettyString ( ).toString ( ) : LATEX_NO_STORE ,
+        this.result == null ? LATEX_NO_RESULT : this.result.toPrettyString ( )
+            .toString ( ) , this.getRule ( ) == null ? LATEX_NO_RULE : this
+            .getRule ( ).toPrettyString ( ).toString ( ) ) ;
     builder.addText ( "{" + String.valueOf ( this.getId ( ) ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addText ( "{" + String.valueOf ( depth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addBuilder ( this.expression.toLatexStringBuilder (
@@ -460,9 +460,14 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
       builder.addEmptyBuilder ( ) ;
     }
     if ( this.getRule ( ) != null )
+    {
       builder.addBuilder ( this.getRule ( ).toLatexStringBuilder (
           pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    else builder.addEmptyBuilder ( ) ;
+    }
+    else
+    {
+      builder.addEmptyBuilder ( ) ;
+    }
     int indent = 245 - depth * 7 ;
     builder.addSourceCodeBreak ( 0 ) ;
     builder.addText ( "% Width of the table" ) ; //$NON-NLS-1$

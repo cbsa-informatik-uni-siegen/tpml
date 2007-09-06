@@ -214,7 +214,7 @@ public class DefaultTypeCheckerTypeProofNode extends
         LATEX_TYPE_CHECKER_TYPE_PROOF_NODE , pIndent , this.toPrettyString ( )
             .toString ( ) , this.type.toPrettyString ( ).toString ( ) ,
         this.type2.toPrettyString ( ).toString ( ) ,
-        this.getRule ( ) == null ? LATEX_EMPTY_STRING : this.getRule ( )
+        this.getRule ( ) == null ? LATEX_NO_RULE : this.getRule ( )
             .toPrettyString ( ).toString ( ) ) ;
     builder.addText ( "{" + String.valueOf ( this.getId ( ) ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addText ( "{" + String.valueOf ( depth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
@@ -223,9 +223,14 @@ public class DefaultTypeCheckerTypeProofNode extends
     builder.addBuilder ( this.type2.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     if ( this.getRule ( ) != null )
+    {
       builder.addBuilder ( this.getRule ( ).toLatexStringBuilder (
           pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    else builder.addEmptyBuilder ( ) ;
+    }
+    else
+    {
+      builder.addEmptyBuilder ( ) ;
+    }
     int indent = 245 - depth * 7 ;
     builder.addText ( "{" + indent + "mm}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     return builder ;

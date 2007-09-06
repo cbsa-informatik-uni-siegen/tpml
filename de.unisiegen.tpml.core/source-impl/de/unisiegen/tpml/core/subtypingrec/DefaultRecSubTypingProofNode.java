@@ -367,7 +367,7 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
             .toString ( ) , this.seenTypes.toPrettyString ( ).toString ( ) ,
         this.getLeft ( ).toPrettyString ( ).toString ( ) , this.getRight ( )
             .toPrettyString ( ).toString ( ) ,
-        this.getRule ( ) == null ? LATEX_EMPTY_STRING : this.getRule ( )
+        this.getRule ( ) == null ? LATEX_NO_RULE : this.getRule ( )
             .toPrettyString ( ).toString ( ) ) ;
     builder.addText ( "{" + String.valueOf ( this.getId ( ) ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addText ( "{" + String.valueOf ( depth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$

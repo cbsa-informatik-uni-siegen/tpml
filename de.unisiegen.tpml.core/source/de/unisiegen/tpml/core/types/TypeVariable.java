@@ -518,7 +518,7 @@ public final class TypeVariable extends MonoType implements
             .toPrettyString ( ).toString ( ) ) ;
     String type = offsetToGreekLetterLatex ( this.offset % 24 )
         + ( ( this.index > 0 ) ? String.valueOf ( this.index )
-            : LATEX_EMPTY_STRING ) ;
+            : "" ) ; //$NON-NLS-1$
     for ( int n = ( this.offset / 24 ) ; n > 0 ; -- n )
     {
       type = type + LATEX_BAR ;

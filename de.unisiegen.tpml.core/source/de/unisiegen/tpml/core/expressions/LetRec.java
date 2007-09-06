@@ -321,7 +321,7 @@ public final class LetRec extends Let implements BoundIdentifiers ,
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
         PRIO_LET , LATEX_LET_REC , pIndent , this.toPrettyString ( )
             .toString ( ) , this.identifiers [ 0 ].toPrettyString ( )
-            .toString ( ) , this.types [ 0 ] == null ? LATEX_EMPTY_STRING
+            .toString ( ) , this.types [ 0 ] == null ? LATEX_NO_TYPE
             : this.types [ 0 ].toPrettyString ( ).toString ( ) ,
         this.expressions [ 0 ].toPrettyString ( ).toString ( ) ,
         this.expressions [ 1 ].toPrettyString ( ).toString ( ) ) ;

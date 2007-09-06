@@ -650,7 +650,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
       descriptions [ 2 + i ] = this.identifiers [ i ].toPrettyString ( )
           .toString ( ) ;
     }
-    descriptions [ descriptions.length - 2 ] = this.types [ 0 ] == null ? LATEX_EMPTY_STRING
+    descriptions [ descriptions.length - 2 ] = this.types [ 0 ] == null ? LATEX_NO_TYPE
         : this.types [ 0 ].toPrettyString ( ).toString ( ) ;
     descriptions [ descriptions.length - 1 ] = this.expressions [ 0 ]
         .toPrettyString ( ).toString ( ) ;

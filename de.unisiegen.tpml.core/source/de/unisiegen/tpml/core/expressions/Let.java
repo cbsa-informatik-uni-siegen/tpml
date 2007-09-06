@@ -589,7 +589,7 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
         PRIO_LET , LATEX_LET , pIndent , this.toPrettyString ( ).toString ( ) ,
         this.identifiers [ 0 ].toPrettyString ( ).toString ( ) ,
-        this.types [ 0 ] == null ? LATEX_EMPTY_STRING : this.types [ 0 ]
+        this.types [ 0 ] == null ? LATEX_NO_TYPE : this.types [ 0 ]
             .toPrettyString ( ).toString ( ) , this.expressions [ 0 ]
             .toPrettyString ( ).toString ( ) , this.expressions [ 1 ]
             .toPrettyString ( ).toString ( ) ) ;

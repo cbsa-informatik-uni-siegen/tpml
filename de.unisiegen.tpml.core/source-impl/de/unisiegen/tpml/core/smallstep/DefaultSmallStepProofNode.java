@@ -308,7 +308,9 @@ public final class DefaultSmallStepProofNode extends
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
         LATEX_SMALL_STEP_PROOF_NODE , pIndent , this.toPrettyString ( )
             .toString ( ) , this.getExpression ( ).toPrettyString ( )
-            .toString ( ) , this.getStore ( ).toPrettyString ( ).toString ( ) ) ;
+            .toString ( ) ,
+        this.getExpression ( ).containsMemoryOperations ( ) ? this.getStore ( )
+            .toPrettyString ( ).toString ( ) : LATEX_NO_STORE ) ;
     builder.addBuilder ( this.getExpression ( ).toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     if ( this.getExpression ( ).containsMemoryOperations ( ) )

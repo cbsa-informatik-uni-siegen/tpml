@@ -558,7 +558,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
         PRIO_LAMBDA , LATEX_LAMBDA , pIndent , this.toPrettyString ( )
             .toString ( ) , this.identifiers [ 0 ].toPrettyString ( )
-            .toString ( ) , this.types [ 0 ] == null ? LATEX_EMPTY_STRING
+            .toString ( ) , this.types [ 0 ] == null ? LATEX_NO_TYPE
             : this.types [ 0 ].toPrettyString ( ).toString ( ) ,
         this.expressions [ 0 ].toPrettyString ( ).toString ( ) ) ;
     builder.addBuilder ( this.identifiers [ 0 ].toLatexStringBuilder (

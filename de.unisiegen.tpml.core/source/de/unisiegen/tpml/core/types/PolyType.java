@@ -373,9 +373,11 @@ public final class PolyType extends Type implements DefaultTypes
           body.append ( PRETTY_SPACE ) ;
         }
       }
-      body.append ( PRETTY_DOT ) ;
     }
-    body.append ( this.types [ 0 ].toPrettyString ( ).toString ( ) ) ;
+    else
+    {
+      body.append ( LATEX_NO_QUANTIFIED_VARIABLES ) ;
+    }
     String descriptions[] = new String [ 2 + this.quantifiedVariables.size ( )
         + this.types.length ] ;
     descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;

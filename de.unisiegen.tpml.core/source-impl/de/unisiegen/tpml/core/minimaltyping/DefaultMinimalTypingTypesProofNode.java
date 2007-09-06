@@ -285,16 +285,21 @@ public class DefaultMinimalTypingTypesProofNode extends
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
         LATEX_MINIMAL_TYPING_TYPES_PROOF_NODE , pIndent , this
             .toPrettyString ( ).toString ( ) , this.subtype.toPrettyString ( )
-            .toString ( ) , this.getRule ( ) == null ? LATEX_EMPTY_STRING
-            : this.getRule ( ).toPrettyString ( ).toString ( ) ) ;
+            .toString ( ) , this.getRule ( ) == null ? LATEX_NO_RULE : this
+            .getRule ( ).toPrettyString ( ).toString ( ) ) ;
     builder.addText ( "{" + String.valueOf ( this.getId ( ) ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addText ( "{" + String.valueOf ( depth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     builder.addBuilder ( this.subtype.toLatexStringBuilder (
         pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
     if ( this.getRule ( ) != null )
+    {
       builder.addBuilder ( this.getRule ( ).toLatexStringBuilder (
           pLatexStringBuilderFactory , pIndent ) , 0 ) ;
-    else builder.addEmptyBuilder ( ) ;
+    }
+    else
+    {
+      builder.addEmptyBuilder ( ) ;
+    }
     int indent = 245 - depth * 7 ;
     builder.addText ( "{" + indent + "mm}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     return builder ;

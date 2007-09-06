@@ -690,10 +690,10 @@ public final class CurriedMethod extends Expression implements
     {
       descriptions [ 1 + i * 2 ] = this.identifiers [ i ].toPrettyString ( )
           .toString ( ) ;
-      descriptions [ 2 + i * 2 ] = this.types [ i ] == null ? LATEX_EMPTY_STRING
+      descriptions [ 2 + i * 2 ] = this.types [ i ] == null ? LATEX_NO_TYPE
           : this.types [ i ].toPrettyString ( ).toString ( ) ;
     }
-    descriptions [ descriptions.length - 2 ] = this.types [ 0 ] == null ? LATEX_EMPTY_STRING
+    descriptions [ descriptions.length - 2 ] = this.types [ 0 ] == null ? LATEX_NO_TYPE
         : this.types [ 0 ].toPrettyString ( ).toString ( ) ;
     descriptions [ descriptions.length - 1 ] = this.expressions [ 0 ]
         .toPrettyString ( ).toString ( ) ;
