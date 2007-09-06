@@ -12,7 +12,9 @@ beispielsweise "Offnen und Schlie"sen. Weiterhin kann unter {\bf
 Zuletzt benutzt} schnell auf die aktuellsten Dateien zugegriffen
 werden. Unter {\bf Bearbeiten} sind Editorfunktionen enthalten. Die
 einzelnen Komponenten werden in Kapitel~\ref{Qelltexteditor}
-und~\ref{Beweiswerkzeuge} genauer betrachtet. Mit {\bf
+und~\ref{Beweiswerkzeuge} genauer betrachtet. "Uber Latex Export
+kann man den Quelltext oder die Beweise in eine Tex-Datei
+exportieren. Mehr dazu im Kapitel~\ref{Latexexport}. Mit {\bf
 Einstellungen...} k"onnen die
 Einf"arbung von Schl"usselworten im
 Quelltexteditor~\ref{Qelltexteditor} und andere Farben eingestellt werden. Das Men"u {\bf Beweis}
@@ -91,7 +93,6 @@ Der Parser blendet in diesem Fall ein blaues Fehlersymbol ein, das dem Anwender
 signalisieren soll, dass eine Umbenennung m"oglich ist. Klickt der Anwender auf
 das Symbol, werden die Identifier umbenannt und es entsteht folgender Ausdruck:\\[2mm]
 \glqq$\class{self}{\inherit{a}{(\class{self}{\attr{a}{0}})}{\attr{a'}{1} \method{m}{a'}}}$\grqq
-
 
 \section {Outline}
 \label{Outline}
@@ -183,6 +184,49 @@ Gleiches gilt f"ur die Quelltexteditoren: Klickt man mit der Maus auf den
 Editor, wird der aktuelle Ausdruck oder Typ in die Outline geladen. Ist im
 Quelltexteditor im Moment kein g"ultiger Ausdruck geladen, wird die Outline
 rot umrandet.
+
+
+\section {Latexexport}
+"Uber den Latexexport lassen sich Quelltext und Beweisschritte in eine Tex-Datei
+exportieren. Welche dann in ein pdf mit Syntaxhighlighting "uberf"uhrt werden kann.
+Bei dem Quelltext gibt es die Einschr"ankung, dass nur g"ultige Ausdr"ucke exportiert
+werden k"onnen. Das bedeutet, dass der Quelltext vor dem Export geparset wird, und dann
+eine Expression, bzw. ein Subtype exportiert wird. Erstellt man ein pdf aus exportierten
+Beweisschritten, so erh"alt man eine Optik, welche stark an die TPML Ausgabe angelehnt ist.
+Weiterhin besteht die M"oglichkeit sich "uber den Men"ueintrag {\bf tpml.tex erstellen...}
+eine Datei generieren zu lassen, welche alle Commands die in TPML verwendet werden enth"alt.
+
+
+Um ein pdf zu erstellen k"onnen die folgenden vier Befehle verwendet werden:\\[5mm]
+\begin{tabular}{l}
+	\mbox{latex \textit{filename.tex} (2 mal ausf"uhren)}\\[3mm]
+	\mbox{dvips \textit{filename.dvi}}\\[3mm]
+	\mbox{ps2pdf \textit{filename.ps}}
+\end{tabular}\\[3mm]
+
+Damit das konvertieren fehlerfrei funktioniert werden die Pakete {\bf amsmath}, {\bf amssymb}, 
+{\bf amstext}, {\bf color}, {\bf ifthen}, {\bf longtable}, {\bf pst-node} und {\bf pstricks}
+ben"otigt.
+
+Unter Windows kann man zum Beispiel das Tool {\bf MIKTEX} verwenden, welches auf der Seite
+http://miktex.org/ zum Download bereit steht.
+
+\subsection {Der Latexexport Dialog}
+Es gibt noch verschiedene Einstellm"oglichkeiten, welche man vornehmen kann. Zun"achst einmal
+ist der Name der Zieldatei frei w"ahlbar. Desweiteren kann man sich entscheiden ob man eine
+einzige Zieldatei mit allen ben"otigten Commands erstellen m"ochte, oder die Commands aus einer
+separaten Datei verwendet werden sollen (tpml.tex), welche sich beim compilieren im selben Ordner 
+befinden muss.\\ 
+Bei den Beweismethoden, welche in einer Baumstruktur dargestellt werden, hat man
+die M"oglichkeit eine "Uberlappung der Seiten in mm anzugeben (Standard ist keine "Uberlappung)
+und die Anzahl der Seiten anzugeben, da 15 Seiten voreingestellt sind. Werden weniger Seiten
+ben"otigt, entstehen am Ende eine entsprechende Anzahl an weissen Seiten, welche durch die
+eigene Angabe einer Seitenanzahl entfernt werden kann.\\
+Leider ist es nicht m"oglich ein Dokument
+in Baumstruktur "uber Latex in ein pdf zu konvertieren, welches die Grenze von 15 Seiten 
+"uberschreitet. Dies kann allerdings "uber den Standard pdf-Export erzeugt werden.
+
+
 
 
 \section {Beweiswerkzeuge}
