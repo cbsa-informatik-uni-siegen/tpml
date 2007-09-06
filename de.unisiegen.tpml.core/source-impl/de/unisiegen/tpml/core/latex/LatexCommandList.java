@@ -15,7 +15,7 @@ import java.util.Iterator ;
 public class LatexCommandList implements Iterable < LatexCommand >
 {
   /**
-   * TODO
+   * This <code>Comparator</code> is used to sort the {@link LatexCommandList}.
    * 
    * @author Christian Fehler
    */
@@ -23,11 +23,14 @@ public class LatexCommandList implements Iterable < LatexCommand >
       Comparator < LatexCommand >
   {
     /**
-     * TODO
+     * Compares its two arguments for order. Returns a negative integer, zero,
+     * or a positive integer as the first argument is less than, equal to, or
+     * greater than the second.
      * 
-     * @param pLatexCommand1 TODO
-     * @param pLatexCommand2 TODO
-     * @return TODO
+     * @param pLatexCommand1 The first {@link LatexCommand}.
+     * @param pLatexCommand2 The second {@link LatexCommand}.
+     * @return A negative integer, zero, or a positive integer as the first
+     *         argument is less than, equal to, or greater than the second.
      * @see Comparator#compare(Object, Object)
      */
     public int compare ( LatexCommand pLatexCommand1 ,

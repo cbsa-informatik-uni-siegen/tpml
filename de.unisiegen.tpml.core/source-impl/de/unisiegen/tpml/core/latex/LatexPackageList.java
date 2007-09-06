@@ -15,7 +15,7 @@ import java.util.Iterator ;
 public class LatexPackageList implements Iterable < LatexPackage >
 {
   /**
-   * TODO
+   * This <code>Comparator</code> is used to sort the {@link LatexPackageList}.
    * 
    * @author Christian Fehler
    */
@@ -23,11 +23,14 @@ public class LatexPackageList implements Iterable < LatexPackage >
       Comparator < LatexPackage >
   {
     /**
-     * TODO
+     * Compares its two arguments for order. Returns a negative integer, zero,
+     * or a positive integer as the first argument is less than, equal to, or
+     * greater than the second.
      * 
-     * @param pLatexPackage1 TODO
-     * @param pLatexPackage2 TODO
-     * @return TODO
+     * @param pLatexPackage1 The first {@link LatexPackage}.
+     * @param pLatexPackage2 The second {@link LatexPackage}.
+     * @return A negative integer, zero, or a positive integer as the first
+     *         argument is less than, equal to, or greater than the second.
      * @see Comparator#compare(Object, Object)
      */
     public int compare ( LatexPackage pLatexPackage1 ,
