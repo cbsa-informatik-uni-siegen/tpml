@@ -11,8 +11,6 @@ import javax.swing.Scrollable;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeModelEvent;
 
-import com.sun.org.apache.xerces.internal.dom.ParentNode;
-
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
@@ -20,7 +18,6 @@ import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
-import de.unisiegen.tpml.graphics.typechecker.TypeCheckerComponent;
 
 /**
  * The layouting of the TypeInference seems to bee as complicated as the 
@@ -369,22 +366,23 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	 */
 	Dimension placeNode (TypeInferenceProofNode pNode, int pX, int pY) 
 	{
-																		//System.out.println("verfügbare Seitenhöhe: "+availableHeight);
+	
 		int x = pX;
 		int y = pY;
 		
+		// for printing
+		// save the space the next node will be moved down to get on the next page
+		int movedDown = 0;
+		
+		// count the pages
+		int pagecount = 1;
+		
+		// save the used space on the actual page
 		this.actualPageSpaceCounter = y;
 		
 		TypeInferenceProofNode node = pNode;
 		Dimension size = new Dimension (0, 0);
 		
-		// save the space the next node will be moved down to get on the next page
-		int movedDown = 0;
-		
-		int lastNodeHeight = this.actualPageSpaceCounter;
-		// TODO Test: count the pages to set the startofset of eacht site
-		int pagecount = 1;
-
 		while (node != null) 
 		{
 			TypeInferenceNodeComponent nodeComponent = (TypeInferenceNodeComponent)node.getUserObject();
@@ -418,41 +416,26 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 				Dimension ruleSize 	= parentNodeComponent.getRuleSize();
 	
 				int maxHeight = Math.max(expSize.height, ruleSize.height);
-													//System.out.println("Die höhe: "+maxHeight+" auf der aktuellen Seite: "+actualPageSpaceCounter + "VErfügbar: "+availableHeight);
-				
-				// provide printing
+		
+				// providing printig
 				// if the actualPageSpaceCounter has not enough space for the next node perform a pagebraek
-				//if (this.actualPageSpaceCounter + maxHeight + lastNodeHeight > this.availableHeight-errorCorretion)
-				//{
-				//	return size;
-				//}
-				//
-													
-				// TODO müssen wir noch mal gucken, geht so erstmal...
-				// if (this.actualPageSpaceCounter + 2* maxHeight > this.availableHeight-errorCorretion )
-				// the 100 is added to secure the pagebrake. I do not know why it is needed.
-				
-				//komische version, geht aber
-				//if (this.actualPageSpaceCounter + maxHeight + lastNodeHeight + 100 > this.availableHeight )
-				
-				// So scheint das geil, ich bin ein junger Gott!!! ;)
 				if (this.actualPageSpaceCounter + maxHeight + nodeComponent.getRuleTop() > this.availableHeight )
 				{
+					// save the last MovedDown value. If the last node has not had enough space this parents rule must 
+					// be moved down
+					int oldMovedDown = movedDown;
 					
 					// save the space the node must moved down
-					//movedDown = ((this.availableHeight - this.actualPageSpaceCounter));
 					// the moved down will be calculated as the old y and the new one later on, and it will be devided by 2
 					movedDown = y;
 					
-					// move the next node down
-					//y+= movedDown+errorCorretion; //y += this.availableHeight - this.actualPageSpaceCounter;
-					y=pagecount*availableHeight;
+					// move the next node down to the next page
+					y=pagecount*this.availableHeight;
 					movedDown = y-movedDown;
 					//ganz ganz wichtig, wenn ich es auch noch nciht versanden habe!!!
 					movedDown -= nodeComponent.getRuleTop();
 				
-					//movedDown /= 2;
-					//y+=pagecount*20;
+					// ther is a new page
 					pagecount++;
 
 					// restart the actualPageSpaceCounter
@@ -464,18 +447,16 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 					nodeComponent.setActualExpressionHeight(maxHeight);
 					
 					// let both components place theire elements
+					if (oldMovedDown != 0)
+					{
+						// by refreshing the perentNodeComponents actualExpressionHeight the Rule wents down
+						parentNodeComponent.setActualExpressionHeight(parentNodeComponent.getActualExpressionHeight()+oldMovedDown);
+					}
 					parentNodeComponent.placeRules();
 					nodeComponent.placeExpression();
 					
 					// this finishes the parentNode so it can be placed
 					parentNodeComponent.setBounds();
-					
-					//TODO was bitte ist das???
-					// the additional height come from the actual node
-					//y += nodeComponent.getRuleTop();
-					//this.actualPageSpaceCounter += nodeComponent.getRuleTop();
-					
-					//System.out.println(maxHeight+" - "+nodeComponent.getRuleTop());
 					
 					// evaluate the new dimensions
 					size.height = y;
@@ -490,51 +471,29 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 					
 					// inform both component about the actual height they should use to
 					// place them
-					
-					// Das ist schon einen ganz nette Variante, Dann einfach die regel mit placeRules setzen, ohne irgend einem
-					// moveDown...
-					//parentNodeComponent.setActualRuleHeight(maxHeight+movedDown);
-					
-					
 					nodeComponent.setActualExpressionHeight(maxHeight);
 
-					// let both components place theire elements
 					// the movedDown saves the information how far the the parent-Rules must be moved down...
-					//parentNodeComponent.placeRules(movedDown);
 					if (movedDown != 0)
 					{
-						//parentNodeComponent.placeRulesFix(y+movedDown);
-						//System.err.println("moveddown: "+movedDown);
-						//parentNodeComponent.setSpacing(parentNodeComponent.getSpacing()+movedDown);
-						//parentNodeComponent.placeRulesFix(movedDown);
-						//parentNodeComponent.setSize(parentNodeComponent.WIDTH, parentNodeComponent.HEIGHT+movedDown);
-						//parentNodeComponent.setSize(parentNodeComponent.getSize().width, parentNodeComponent.getSize().height+movedDown);
-						
-						//Wir wollen die Expresson größer machen, und schon segelt die Regel auch mit runter... :(
+						// by refreshing the perentNodeComponents actualExpressionHeight the Rule wents down
 						parentNodeComponent.setActualExpressionHeight(parentNodeComponent.getActualExpressionHeight()+movedDown);
-						parentNodeComponent.placeRules();
-					}
-					else
-					{
-						parentNodeComponent.placeRules();
 					}
 					
+					// let both components place theire elements
+					parentNodeComponent.placeRules();
 					nodeComponent.placeExpression();
 
 					// this finishes the parentNode so it can be placed
-					//parentNodeComponent.setBounds(movedDown);
-					
 					parentNodeComponent.setBounds();
 					
-					//parentNodeComponent.setBounds();
-					
+					// reset the movedDown
 					movedDown = 0;
 
 					// the additional height come from the actual node
 					y += nodeComponent.getRuleTop();
 					this.actualPageSpaceCounter += nodeComponent.getRuleTop();
-					//System.out.println(maxHeight+" - "+nodeComponent.getRuleTop());
-					
+
 					// evaluate the new dimensions
 					size.height = y;
 
@@ -543,10 +502,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 					size.width	= Math.max(size.width, x + parentNodeComponent.getSize().width);
 
 				}
-				
-				lastNodeHeight = maxHeight;
-				//tmpPaper += maxHeight;
-				
+			
 			}
 		
 			// if the node has no children the rules need to get
@@ -611,9 +567,18 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 		});
 	}
 	
+	/**
+	 * Does the entire layouting of the TypeInferenceComponent.<br>
+	 * <br>
+	 * All nodes in the tree will get a TypeInferenceNodeComponent, the size 
+	 * of the widest rule combo on the left-hand-site is evaluated. <br>
+	 * In order to render all expression alligned every node is informed of
+	 * this width.
+	 *
+	 */
 	protected void doRelayout()
 	{
-//	 get the rootNode it will be used many time
+		//	 get the rootNode it will be used many time
 		TypeInferenceProofNode rootNode = (TypeInferenceProofNode)TypeInferenceComponent.this.getProofModel().getRoot();
 		
 		// check if all nodes have a propper TypeInferenceNodeComponent
