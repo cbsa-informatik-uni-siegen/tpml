@@ -50,10 +50,12 @@ public class DefaultMinimalTypingExpressionProofNode extends
                 + "\\noindent\\hspace{\\treeindent}\\hspace{#2\\nodeindent}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "$\\begin{tabular}[t]{p{#7}}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                // begin of the node variables
                 + "#3\\ \\color{" + LATEX_COLOR_NONE + "}{" //$NON-NLS-1$//$NON-NLS-2$
                 + LATEX_RIGHT_TRIANGLE + "}\\ #4\\ \\color{" //$NON-NLS-1$
                 + LATEX_COLOR_NONE + "}{::}\\ #5$\\\\$" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND + "\\byrule{#6} " //$NON-NLS-1$
+                // end of the node variables
                 + "$\\end{tabular}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\vspace{\\nodesep}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\fi" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
