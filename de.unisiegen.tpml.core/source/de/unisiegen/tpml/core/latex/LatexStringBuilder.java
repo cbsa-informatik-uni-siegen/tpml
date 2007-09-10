@@ -13,6 +13,13 @@ package de.unisiegen.tpml.core.latex ;
 public interface LatexStringBuilder extends LatexCommandNames
 {
   /**
+   * Appends a break location to the string builder. A break marks the location
+   * as possible newline insertion position for the latex export.
+   */
+  public void addBreak ( ) ;
+
+
+  /**
    * Inserts the given <code>pLatexStringBuilder</code> at the specified
    * <code>pArgumentPriority</code> at the end of our builder with the needed
    * brackets. If the return priority of the <code>pLatexStringBuilder</code>
@@ -39,13 +46,6 @@ public interface LatexStringBuilder extends LatexCommandNames
 
 
   /**
-   * Appends a break location to the string builder. A break marks the location
-   * as possible newline insertion position for the latex export.
-   */
-  public void addBreak ( ) ;
-
-
-  /**
    * Inserts the end of a builder.
    */
   public void addBuilderEnd ( ) ;
@@ -69,6 +69,16 @@ public interface LatexStringBuilder extends LatexCommandNames
    */
   public void addBuilderWithoutBrackets (
       LatexStringBuilder pLatexStringBuilder , int pArgumentPriority ) ;
+
+
+  /**
+   * Appends the given <code>pText</code> as a comment to the latex string
+   * builder.
+   * 
+   * @param pText The text to append.
+   * @throws NullPointerException If <code>pText</code> is <code>null</code>.
+   */
+  public void addComment ( String pText ) ;
 
 
   /**

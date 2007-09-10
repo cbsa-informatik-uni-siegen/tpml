@@ -260,6 +260,31 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see LatexStringBuilder#addComment(String)
+   */
+  public void addComment ( String pText )
+  {
+    this.items.add ( new TextLatexItem ( "% " + pText ) ) ; //$NON-NLS-1$
+    addSourceCodeBreak ( 0 ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LatexStringBuilder#addEmptyBuilder()
+   */
+  public void addEmptyBuilder ( )
+  {
+    this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
+    addParameterDescription ( ) ;
+    this.items.add ( new TextLatexItem ( getIndent ( this.indent ) + "{}" ) ) ; //$NON-NLS-1$
+  }
+
+
+  /**
    * Adds the parameter description to the source code.
    */
   private void addParameterDescription ( )
@@ -274,19 +299,6 @@ public final class DefaultLatexStringBuilder implements LatexStringBuilder ,
       this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
     }
     this.parameterCount ++ ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see LatexStringBuilder#addEmptyBuilder()
-   */
-  public void addEmptyBuilder ( )
-  {
-    this.items.add ( new TextLatexItem ( LATEX_LINE_BREAK_SOURCE_CODE ) ) ;
-    addParameterDescription ( ) ;
-    this.items.add ( new TextLatexItem ( getIndent ( this.indent ) + "{}" ) ) ; //$NON-NLS-1$
   }
 
 

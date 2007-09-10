@@ -5,6 +5,8 @@ import java.io.File ;
 import java.io.StringReader ;
 import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
+import java.util.Collections ;
+import java.util.Comparator ;
 import java.util.LinkedList ;
 import de.unisiegen.tpml.core.ProofModel ;
 import de.unisiegen.tpml.core.ProofNode ;
@@ -80,9 +82,6 @@ import de.unisiegen.tpml.core.types.UnitType ;
 { "all" } )
 public class LatexTest
 {
-  private static boolean error = false ;
-
-
   private static boolean all = false ;
 
 
@@ -246,53 +245,53 @@ public class LatexTest
     }
     else if ( ! all )
     {
-      File test = new File ( "test.tex" ) ;
-      int number = 43 ;
+      File file = new File ( "test.tex" ) ;
+      int number = 17 ;
       // Expression, Type, Environment
-      if ( number == 00 ) testExpression ( test ) ;
-      if ( number == 01 ) testType ( test ) ;
-      if ( number == 02 ) testTypeEnvironment ( test ) ;
-      if ( number == 03 ) testStore ( test ) ;
+      if ( number == 00 ) testExpression ( file ) ;
+      if ( number == 01 ) testType ( file ) ;
+      if ( number == 02 ) testTypeEnvironment ( file ) ;
+      if ( number == 03 ) testStore ( file ) ;
       // TypeChecker
-      if ( number == 10 ) testTypeCheckerProofRule ( test ) ;
-      if ( number == 11 ) testSeenTypes ( test ) ;
-      if ( number == 12 ) testTypeSubstitution ( test ) ;
-      if ( number == 13 ) testTypeEquationTypeChecker ( test ) ;
-      if ( number == 14 ) testTypeEquationListTypeChecker ( test ) ;
-      if ( number == 15 ) testTypeCheckerExpressionProofNode ( test ) ;
-      if ( number == 16 ) testTypeCheckerTypeProofNode ( test ) ;
-      if ( number == 17 ) testTypeCheckerProofModel ( test ) ;
+      if ( number == 10 ) testTypeCheckerProofRule ( file ) ;
+      if ( number == 11 ) testSeenTypes ( file ) ;
+      if ( number == 12 ) testTypeSubstitution ( file ) ;
+      if ( number == 13 ) testTypeEquationTypeChecker ( file ) ;
+      if ( number == 14 ) testTypeEquationListTypeChecker ( file ) ;
+      if ( number == 15 ) testTypeCheckerExpressionProofNode ( file ) ;
+      if ( number == 16 ) testTypeCheckerTypeProofNode ( file ) ;
+      if ( number == 17 ) testTypeCheckerProofModel ( file ) ;
       // TypeInference
-      if ( number == 20 ) testTypeEquationTypeInference ( test ) ;
-      if ( number == 21 ) testTypeEquationListTypeInference ( test ) ;
-      if ( number == 22 ) testTypeSubstitutionList ( test ) ;
-      if ( number == 23 ) testTypeJudgement ( test ) ;
-      if ( number == 24 ) testTypeSubType ( test ) ;
-      if ( number == 25 ) testTypeInferenceProofNode ( test ) ;
-      if ( number == 26 ) testTypeInferenceProofModel ( test ) ;
+      if ( number == 20 ) testTypeEquationTypeInference ( file ) ;
+      if ( number == 21 ) testTypeEquationListTypeInference ( file ) ;
+      if ( number == 22 ) testTypeSubstitutionList ( file ) ;
+      if ( number == 23 ) testTypeJudgement ( file ) ;
+      if ( number == 24 ) testTypeSubType ( file ) ;
+      if ( number == 25 ) testTypeInferenceProofNode ( file ) ;
+      if ( number == 26 ) testTypeInferenceProofModel ( file ) ;
       // SmallStep
-      if ( number == 30 ) testSmallStepProofRule ( test ) ;
-      if ( number == 31 ) testSmallStepProofNode ( test ) ;
-      if ( number == 32 ) testSmallStepProofModel ( test ) ;
+      if ( number == 30 ) testSmallStepProofRule ( file ) ;
+      if ( number == 31 ) testSmallStepProofNode ( file ) ;
+      if ( number == 32 ) testSmallStepProofModel ( file ) ;
       // BigStep
-      if ( number == 40 ) testBigStepProofRule ( test ) ;
-      if ( number == 41 ) testBigStepResult ( test ) ;
-      if ( number == 42 ) testBigStepProofNode ( test ) ;
-      if ( number == 43 ) testBigStepProofModel ( test ) ;
+      if ( number == 40 ) testBigStepProofRule ( file ) ;
+      if ( number == 41 ) testBigStepResult ( file ) ;
+      if ( number == 42 ) testBigStepProofNode ( file ) ;
+      if ( number == 43 ) testBigStepProofModel ( file ) ;
       // MinimalTyping
-      if ( number == 50 ) testMinimalTypingProofRule ( test ) ;
-      if ( number == 51 ) testMinimalTypingExpressionProofNode ( test ) ;
-      if ( number == 52 ) testMinimalTypingTypesProofNode ( test ) ;
-      if ( number == 53 ) testMinimalTypingProofModel ( test ) ;
+      if ( number == 50 ) testMinimalTypingProofRule ( file ) ;
+      if ( number == 51 ) testMinimalTypingExpressionProofNode ( file ) ;
+      if ( number == 52 ) testMinimalTypingTypesProofNode ( file ) ;
+      if ( number == 53 ) testMinimalTypingProofModel ( file ) ;
       // SubTyping
-      if ( number == 60 ) testSubTypingProofRule ( test ) ;
-      if ( number == 61 ) testSubTypingProofNode ( test ) ;
-      if ( number == 62 ) testSubTypingProofModel ( test ) ;
+      if ( number == 60 ) testSubTypingProofRule ( file ) ;
+      if ( number == 61 ) testSubTypingProofNode ( file ) ;
+      if ( number == 62 ) testSubTypingProofModel ( file ) ;
       // RecSubTyping
-      if ( number == 70 ) testRecSubTypingProofRule ( test ) ;
-      if ( number == 71 ) testSubType ( test ) ;
-      if ( number == 72 ) testRecSubTypingProofNode ( test ) ;
-      if ( number == 73 ) testRecSubTypingProofModel ( test ) ;
+      if ( number == 70 ) testRecSubTypingProofRule ( file ) ;
+      if ( number == 71 ) testSubType ( file ) ;
+      if ( number == 72 ) testRecSubTypingProofNode ( file ) ;
+      if ( number == 73 ) testRecSubTypingProofModel ( file ) ;
       if ( compile )
       {
         if ( compile ( ) != 0 )
@@ -305,27 +304,43 @@ public class LatexTest
     {
       File test = new File ( "test.tex" ) ;
       console = false ;
-      removeFiles ( test ) ;
-      error = false ;
-      for ( java.lang.reflect.Method m : LatexTest.class.getDeclaredMethods ( ) )
+      boolean okayAll = true ;
+      boolean okayCurrent = true ;
+      ArrayList < java.lang.reflect.Method > list = new ArrayList < java.lang.reflect.Method > ( ) ;
+      for ( java.lang.reflect.Method method : LatexTest.class
+          .getDeclaredMethods ( ) )
       {
-        if ( m.getName ( ).startsWith ( "test" ) )
+        list.add ( method ) ;
+      }
+      Collections.sort ( list , new Comparator < java.lang.reflect.Method > ( )
+      {
+        public int compare ( java.lang.reflect.Method pMethod1 ,
+            java.lang.reflect.Method pMethod2 )
+        {
+          return pMethod1.getName ( ).compareTo ( pMethod2.getName ( ) ) ;
+        }
+      } ) ;
+      for ( java.lang.reflect.Method method : list )
+      {
+        if ( method.getName ( ).startsWith ( "test" ) )
         {
           try
           {
-            m.invoke ( null , new Object [ ]
+            okayCurrent = true ;
+            method.invoke ( null , new Object [ ]
             { test } ) ;
             if ( compile ( ) != 0 )
             {
-              error = true ;
+              okayAll = false ;
+              okayCurrent = false ;
             }
-            if ( removeFiles ( test ) )
+            if ( okayCurrent )
             {
-              System.out.println ( m.getName ( ) + ": success" ) ;
+              System.out.println ( method.getName ( ) + ": success" ) ;
             }
             else
             {
-              System.err.println ( m.getName ( ) + ": failed" ) ;
+              System.err.println ( method.getName ( ) + ": failed" ) ;
             }
           }
           catch ( IllegalArgumentException e )
@@ -345,13 +360,13 @@ public class LatexTest
           }
         }
       }
-      if ( error )
+      if ( okayAll )
       {
-        System.err.println ( "Something gone wrong" ) ;
+        System.out.println ( "=> no problems found" ) ;
       }
       else
       {
-        System.out.println ( "Done all without problems" ) ;
+        System.err.println ( "=> problems found" ) ;
       }
     }
     System.out.println ( "*** finished***" ) ;
@@ -378,29 +393,6 @@ public class LatexTest
   }
 
 
-  private static boolean removeFiles ( File pFile )
-  {
-    int index = pFile.toString ( ).indexOf ( '.' ) ;
-    String fileName = pFile.toString ( ).substring ( 0 , index ) ;
-    File dviFile = new File ( fileName + ".dvi" ) ;
-    dviFile.delete ( ) ;
-    File psFile = new File ( fileName + ".ps" ) ;
-    psFile.delete ( ) ;
-    File auxFile = new File ( fileName + ".aux" ) ;
-    auxFile.delete ( ) ;
-    File logFile = new File ( fileName + ".log" ) ;
-    logFile.delete ( ) ;
-    pFile.delete ( ) ;
-    File pdfFile = new File ( fileName + ".pdf" ) ;
-    if ( pdfFile.delete ( ) )
-    {
-      return true ;
-    }
-    error = true ;
-    return false ;
-  }
-
-
   private final static void testBigStepProofModel ( File pLatexFile )
   {
     try
@@ -410,8 +402,8 @@ public class LatexTest
       String text = "true || false" ;
       text = "let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl l1) l2 in let rec power_set l = if is_empty l then [[]] else let p = power_set (tl l) in append p (map ((::) (hd l)) p) in power_set [1;2]" ;
       text = "let rec fact x = if x = 0 then 1 else if x = 1 then 1 else if x = 2 then 2 else if x = 3 then 6 else x * fact (x-1) in fact 4" ;
-     // text = " let x: int = let x : int = let x : int ="
-      //    + "3+2+4+5+6+7+8+9+11+2+3+4 in x+2 in x+3 in x+5" ;
+      // text = " let x: int = let x : int = let x : int ="
+      // + "3+2+4+5+6+7+8+9+11+2+3+4 in x+2 in x+3 in x+5" ;
       Expression expression = language.newParser ( new StringReader ( text ) )
           .parse ( ) ;
       BigStepProofModel model = language.newBigStepProofModel ( expression ) ;

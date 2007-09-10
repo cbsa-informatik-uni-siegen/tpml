@@ -94,7 +94,7 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
     instructions
         .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ) ; //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
-        "\\newif\\ifarrows  " + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
+        "\\newif\\ifarrows" + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
             + "\\arrowsfalse" ) ) ; //$NON-NLS-1$
     return instructions ;
   }
@@ -820,6 +820,7 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
         this.root , pIndent + LATEX_INDENT , - 1 ) ;
     builder.addText ( "}" ) ; //$NON-NLS-1$
     builder.addText ( "}" ) ; //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 ) ;
     builder.addText ( "\\longtext{-30pt}" ) ; //$NON-NLS-1$
     for ( int i = 1 ; i < this.pages ; i ++ )
     {

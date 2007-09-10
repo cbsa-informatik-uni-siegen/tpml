@@ -862,8 +862,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel
             .toString ( ) ) ;
     builder.addBuilderBegin ( ) ;
     builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "% no type inference rule in the first node" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addComment ( "no type inference rule in the first node" ) ; //$NON-NLS-1$
     builder.addText ( LATEX_PREFIX_COMMAND
         + LATEX_TYPE_INFERENCE_RULES_COMPLETED ) ;
     builder.addSourceCodeBreak ( 0 ) ;

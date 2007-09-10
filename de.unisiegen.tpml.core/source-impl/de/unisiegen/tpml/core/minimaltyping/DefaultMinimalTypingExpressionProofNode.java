@@ -83,7 +83,7 @@ public class DefaultMinimalTypingExpressionProofNode extends
     instructions
         .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ) ; //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
-        "\\newif\\ifarrows  " + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
+        "\\newif\\ifarrows" + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
             + "\\arrowsfalse" ) ) ; //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
         + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
@@ -313,6 +313,8 @@ public class DefaultMinimalTypingExpressionProofNode extends
       builder.addEmptyBuilder ( ) ;
     }
     int indent = 245 - depth * 7 ;
+    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addComment ( "width of the table" ) ; //$NON-NLS-1$
     builder.addText ( "{" + indent + "mm}" ) ; //$NON-NLS-1$//$NON-NLS-2$
     return builder ;
   }

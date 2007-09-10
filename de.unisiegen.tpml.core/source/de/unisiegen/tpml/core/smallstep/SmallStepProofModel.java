@@ -579,8 +579,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
             .toString ( ) ) ;
     builder.addBuilderBegin ( ) ;
     builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "% no small step rules in the first node" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
+    builder.addComment ( "no small step rules in the first node" ) ; //$NON-NLS-1$
     builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SMALL_STEP_RULES_COMPLETED ) ;
     builder.addSourceCodeBreak ( 0 ) ;
     // small steps
