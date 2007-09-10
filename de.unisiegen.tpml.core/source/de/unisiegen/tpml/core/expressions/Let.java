@@ -8,8 +8,8 @@ import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommandList ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPackageList ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
@@ -117,7 +117,7 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
   public static LatexPackageList getLatexPackagesStatic ( )
   {
     LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
+    packages.add ( LatexPackage.IFTHEN ) ;
     return packages ;
   }
 

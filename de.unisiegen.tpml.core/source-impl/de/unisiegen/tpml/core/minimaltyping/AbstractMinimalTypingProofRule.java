@@ -9,9 +9,9 @@ import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.ProofRuleException ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPackageList ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
@@ -83,7 +83,7 @@ public abstract class AbstractMinimalTypingProofRule extends AbstractProofRule
   public static LatexPackageList getLatexPackagesStatic ( )
   {
     LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
+    packages.add ( LatexPackage.COLOR ) ;
     return packages ;
   }
 

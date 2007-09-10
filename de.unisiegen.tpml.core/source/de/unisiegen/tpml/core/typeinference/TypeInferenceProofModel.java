@@ -18,7 +18,6 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.IsEmpty ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
 import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
@@ -143,8 +142,8 @@ public final class TypeInferenceProofModel extends AbstractProofModel
   public static LatexPackageList getLatexPackagesStatic ( )
   {
     LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( new DefaultLatexPackage ( "longtable" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
+    packages.add ( LatexPackage.AMSMATH ) ;
+    packages.add ( LatexPackage.LONGTABLE ) ;
     return packages ;
   }
 

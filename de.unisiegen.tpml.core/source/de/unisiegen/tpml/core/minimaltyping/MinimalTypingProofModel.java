@@ -16,9 +16,9 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.languages.l1.L1Language ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPackageList ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
@@ -108,12 +108,12 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
   public static LatexPackageList getLatexPackagesStatic ( )
   {
     LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( new DefaultLatexPackage ( "longtable" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "amsmath" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "pstricks" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "pst-node" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "amstext" ) ) ; //$NON-NLS-1$
+    packages.add ( LatexPackage.AMSMATH ) ;
+    packages.add ( LatexPackage.AMSTEXT ) ;
+    packages.add ( LatexPackage.LONGTABLE ) ;
+    packages.add ( LatexPackage.COLOR ) ;
+    packages.add ( LatexPackage.PSTNODE ) ;
+    packages.add ( LatexPackage.PSTRICKS ) ;
     return packages ;
   }
 

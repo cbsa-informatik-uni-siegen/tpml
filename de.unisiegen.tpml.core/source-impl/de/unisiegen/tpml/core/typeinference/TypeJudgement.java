@@ -5,9 +5,9 @@ import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexCommandList ;
 import de.unisiegen.tpml.core.latex.LatexInstructionList ;
+import de.unisiegen.tpml.core.latex.LatexPackage ;
 import de.unisiegen.tpml.core.latex.LatexPackageList ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
 import de.unisiegen.tpml.core.latex.LatexString ;
@@ -71,8 +71,8 @@ public class TypeJudgement implements TypeFormula
   public static LatexPackageList getLatexPackagesStatic ( )
   {
     LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( new DefaultLatexPackage ( "amssymb" ) ) ; //$NON-NLS-1$
-    packages.add ( new DefaultLatexPackage ( "color" ) ) ; //$NON-NLS-1$
+    packages.add ( LatexPackage.AMSSYMB ) ;
+    packages.add ( LatexPackage.COLOR ) ;
     return packages ;
   }
 

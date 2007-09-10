@@ -1,21 +1,21 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
-import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
 
 
 /**
@@ -100,7 +100,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
   public static LatexPackageList getLatexPackagesStatic ( )
   {
     LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( new DefaultLatexPackage ( "ifthen" ) ) ; //$NON-NLS-1$
+    packages.add ( LatexPackage.IFTHEN ) ;
     return packages ;
   }
 
