@@ -283,8 +283,8 @@ public class TypeInferenceNodeComponent extends JComponent
 	protected void paintComponent(Graphics gc)
 	{
 		// TODO just recomment these lines to make the components visable
-		 gc.setColor(Color.BLACK);
-    gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
+		// gc.setColor(Color.BLACK);
+    // gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
 		
 		super.paintComponent(gc);
 	}
