@@ -10,9 +10,12 @@ import de.unisiegen.tpml.ui.AboutDialog;
 import de.unisiegen.tpml.ui.EditorPanel;
 import de.unisiegen.tpml.ui.EditorPanelExpression;
 import de.unisiegen.tpml.ui.EditorPanelTypes;
+import de.unisiegen.tpml.ui.GeneralLaTex;
 import de.unisiegen.tpml.ui.MainWindow;
 import de.unisiegen.tpml.ui.PreferenceDialog;
 import java.awt.Component;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 
 /**
  *
@@ -56,6 +59,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         openButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
         saveAsButton = new javax.swing.JButton();
+        latexExportButton = new javax.swing.JButton();
         printButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         editToolBar = new javax.swing.JToolBar();
@@ -75,6 +79,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         saveAsItem = new javax.swing.JMenuItem();
         saveAllItem = new javax.swing.JMenuItem();
         printItem = new javax.swing.JMenuItem();
+        latexExportItem = new javax.swing.JMenuItem();
+        tpmlTEXItem = new javax.swing.JMenuItem();
         fileMenuSerpator2 = new javax.swing.JSeparator();
         recentFilesMenu = new javax.swing.JMenu();
         fileMenuSeperator3 = new javax.swing.JSeparator();
@@ -181,7 +187,16 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jToolBar1.add(saveAsButton);
 
-        printButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/print.gif")));
+        latexExportButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/latexexport_klein_.gif")));
+        latexExportButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                latexExportButtonActionPerformed(evt);
+            }
+        });
+
+        jToolBar1.add(latexExportButton);
+
+        printButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/pdfexport_klein.gif")));
         printButton.setBorderPainted(false);
         printButton.setFocusPainted(false);
         printButton.setFocusable(false);
@@ -292,6 +307,12 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         fileMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("FileMnemonic").charAt(0));
         fileMenu.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("File"));
+        fileMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileMenuActionPerformed(evt);
+            }
+        });
+
         newItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         newItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/new16.gif")));
         newItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("NewMnemonic").charAt(0));
@@ -368,7 +389,33 @@ public class MainWindowForm extends javax.swing.JFrame {
         printItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
         printItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("PrintItemMnemonic").charAt(0));
         printItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("printItem"));
+        printItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printItemActionPerformed(evt);
+            }
+        });
+
         fileMenu.add(printItem);
+
+        latexExportItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
+        latexExportItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("latexExport"));
+        latexExportItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                latexExportItemActionPerformed(evt);
+            }
+        });
+
+        fileMenu.add(latexExportItem);
+
+        tpmlTEXItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
+        tpmlTEXItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("BuilTPML"));
+        tpmlTEXItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tpmlTEXItemActionPerformed(evt);
+            }
+        });
+
+        fileMenu.add(tpmlTEXItem);
 
         fileMenu.add(fileMenuSerpator2);
 
@@ -603,6 +650,27 @@ public class MainWindowForm extends javax.swing.JFrame {
         setBounds(0, 0, 706, 561);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void printItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printItemActionPerformed
+ logic.getActiveEditor().handlePrint();
+    }//GEN-LAST:event_printItemActionPerformed
+
+    private void tpmlTEXItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tpmlTEXItemActionPerformed
+GeneralLaTex gl = new GeneralLaTex(this.getFrames()[0]);
+        gl.exportTPML();
+    }//GEN-LAST:event_tpmlTEXItemActionPerformed
+
+    private void latexExportItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_latexExportItemActionPerformed
+ logic.getActiveEditor().handleLatexExport();
+    }//GEN-LAST:event_latexExportItemActionPerformed
+
+    private void fileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileMenuActionPerformed
+// TODO add your handling code here:
+    }//GEN-LAST:event_fileMenuActionPerformed
+
+    private void latexExportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_latexExportButtonActionPerformed
+  logic.getActiveEditor().handleLatexExport();
+    }//GEN-LAST:event_latexExportButtonActionPerformed
+
     private void subtypingrecItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subtypingrecItemActionPerformed
         ( ( EditorPanelTypes ) logic.getActiveEditor ( ) ).handleSubTypingRec ( ) ;
     }//GEN-LAST:event_subtypingrecItemActionPerformed
@@ -829,6 +897,8 @@ public class MainWindowForm extends javax.swing.JFrame {
     public javax.swing.JSeparator fileMenuSeperator3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JButton latexExportButton;
+    private javax.swing.JMenuItem latexExportItem;
     public javax.swing.JMenuItem minimaltypingItem;
     private javax.swing.ButtonGroup modeSettingsGroup;
     public javax.swing.JButton pasteButton;
@@ -849,6 +919,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     public javax.swing.JMenuItem subtypingItem;
     public javax.swing.JMenuItem subtypingrecItem;
     public javax.swing.JTabbedPane tabbedPane;
+    private javax.swing.JMenuItem tpmlTEXItem;
     public javax.swing.JMenuItem typecheckerItem;
     public javax.swing.JMenuItem typeinferenceItem;
     public javax.swing.JButton undoButton;

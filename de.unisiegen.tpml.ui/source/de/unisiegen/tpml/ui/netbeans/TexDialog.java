@@ -34,6 +34,8 @@ public class TexDialog extends javax.swing.JDialog {
         filechooser = new javax.swing.JFileChooser();
         overlappingTextField = new javax.swing.JTextField();
         allCheckBox = new javax.swing.JCheckBox();
+        pageCOuntLabel = new javax.swing.JLabel();
+        pageCountTextField = new javax.swing.JTextField();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -52,6 +54,7 @@ public class TexDialog extends javax.swing.JDialog {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipady = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
         getContentPane().add(jLabel1, gridBagConstraints);
 
@@ -76,12 +79,13 @@ public class TexDialog extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         getContentPane().add(filechooser, gridBagConstraints);
 
         overlappingTextField.setText("0");
+        overlappingTextField.setToolTipText("please enter the overlapping in mm");
         overlappingTextField.setPreferredSize(new java.awt.Dimension(30, 19));
         overlappingTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,7 +96,8 @@ public class TexDialog extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 10);
         getContentPane().add(overlappingTextField, gridBagConstraints);
 
         allCheckBox.setSelected(true);
@@ -100,14 +105,40 @@ public class TexDialog extends javax.swing.JDialog {
         allCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         allCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         getContentPane().add(allCheckBox, gridBagConstraints);
+
+        pageCOuntLabel.setText("Pagecount:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
+        getContentPane().add(pageCOuntLabel, gridBagConstraints);
+
+        pageCountTextField.setText("5");
+        pageCountTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pageCountTextFieldActionPerformed(evt);
+            }
+        });
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 10);
+        getContentPane().add(pageCountTextField, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void pageCountTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pageCountTextFieldActionPerformed
+// TODO add your handling code here:
+    }//GEN-LAST:event_pageCountTextFieldActionPerformed
 
     private void overlappingTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_overlappingTextFieldActionPerformed
 // TODO add your handling code here:
@@ -130,14 +161,34 @@ public class TexDialog extends javax.swing.JDialog {
             if (evt.getActionCommand().equals("ApproveSelection")){
                 this.all = allCheckBox.isSelected();
                 this.overlapping = overlappingTextField.getText();
+  
                 try{
                     int test = Integer.parseInt(overlappingTextField.getText());
+                    if (test <0 || test > 50)
+                    {
+                        throw new NumberFormatException();
+                    }
                     overlappingInt = test;
                 }
                 catch (NumberFormatException e)
                 {
                   //TODO Multilanguage
-                    JOptionPane.showMessageDialog(this,"The Overlapping-Value must be an integer!");
+                    JOptionPane.showMessageDialog(this,"The Overlapping-Value must be an integer between 0 and 50!");
+                    return;
+                }
+                
+                try {
+                    int test = Integer.parseInt(pageCountTextField.getText());
+                    if (test <0 || test > 15)
+                    {
+                        throw new NumberFormatException();
+                    }
+                    pagecount = test;
+                    
+                }
+                catch (NumberFormatException e)
+                {
+                    JOptionPane.showMessageDialog(this,"The pagecount value must be an integer between 1 and 15");
                     return;
                 }
                 this.dispose();
@@ -150,12 +201,28 @@ public class TexDialog extends javax.swing.JDialog {
     public javax.swing.JFileChooser filechooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField overlappingTextField;
+    public javax.swing.JTextField overlappingTextField;
+    private javax.swing.JLabel pageCOuntLabel;
+    public javax.swing.JTextField pageCountTextField;
     // End of variables declaration//GEN-END:variables
     
+    /**
+     * true if the tpml.tex shohld be indluded
+     */
     public boolean all;
+    /**
+     * true if the dialog is canceld
+     */
     public boolean cancelled;
     public String overlapping;
+    /**
+     * the overlapping enterd by the user
+     */
     public int overlappingInt;
+    /**
+     * the pagecount enterd by the user
+     */
+    public int pagecount;
+    
  
 }
