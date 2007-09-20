@@ -739,8 +739,10 @@ public class CompoundExpressionTypeInference extends JComponent
 		// int getR = (int) (get*10);
 		// gc.setColor (test[getR]);
 		// TODO Workaround printing: if this ist not done nothing is readabel in PDF
+		
 		gc.setColor (Color.WHITE);
 		gc.fillRect(-1, -1, getWidth () +5, getHeight () + 5);
+		
 		// --------------------------------
 		// make sure that we have an expression renderer
 		// if ( this.expressionRenderer == null )
