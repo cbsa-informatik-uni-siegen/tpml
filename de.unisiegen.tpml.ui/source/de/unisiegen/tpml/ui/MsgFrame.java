@@ -30,7 +30,6 @@ public class MsgFrame extends Dialog implements ActionListener
 	 * @param titel		the titel of the window
 	 * @param message	the message that should displayed
 	 */
-	@SuppressWarnings("deprecation")
 	public MsgFrame (String titel, String message)
 	{
 		super(new Frame(), true);

@@ -58,6 +58,8 @@ public interface EditorPanel  {
 
 	public void handlePrint();
 	
+	public void handleLatexExport();
+	
 	public EditorComponent getActiveEditorComponent();
 	
 	public void selectCode();

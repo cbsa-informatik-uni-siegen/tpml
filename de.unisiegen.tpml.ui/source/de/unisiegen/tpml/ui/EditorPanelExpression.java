@@ -29,6 +29,7 @@ import javax.swing.filechooser.FileFilter;
 import org.apache.log4j.Logger;
 
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
@@ -40,6 +41,7 @@ import de.unisiegen.tpml.core.util.beans.AbstractBean;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
 import de.unisiegen.tpml.graphics.EditorComponent;
 import de.unisiegen.tpml.graphics.ProofViewFactory;
+import de.unisiegen.tpml.graphics.StyledLanguageEditor;
 import de.unisiegen.tpml.graphics.editor.TextEditorPanel;
 import de.unisiegen.tpml.graphics.pong.PongView;
 import de.unisiegen.tpml.ui.netbeans.EditorPanelForm;
@@ -768,6 +770,36 @@ public void handlePrint() {
 	      printer.print(((AbstractProofComponent)getComponent().getPrintPart()));
 	  }
 	  
+}
+
+//TODO Einbau der Latex-komponente... by Michgael
+public void handleLatexExport (){
+	if  (this.isTexteditor()){
+		try
+		{
+			Expression exp = this.code.getDocument().getExpression();
+			GeneralLaTex laTex = new GeneralLaTex(exp, mypanel);
+			laTex.export();
+		}
+		catch (Exception e)
+		{
+			// no real expression
+			
+			JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) 
+					.getString ( "CouldNotLaTeXExpression" ), "Editor", JOptionPane.ERROR_MESSAGE ); 
+			
+			//JOptionPane.showMessageDialog(mypanel, "Sorry, no Expression enterd!");
+		}
+	}
+	else
+	{
+		System.out.println(((ProofViewComponent)getComponent()).getModel());
+		GeneralLaTex laTex = new GeneralLaTex(((ProofViewComponent)getComponent()).getModel(), mypanel);
+		laTex.export();
+	}
+	
+	
+	
 }
 
 public void selectTypeChecker() {

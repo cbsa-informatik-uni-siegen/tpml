@@ -136,7 +136,10 @@ public class GeneralPrinter {
 		
 	this.comp = icomp;
 	comp.setBackground(new Color(255,255,255));
-	comp.setOpaque(false);
+	//changed by Michael
+	//comp.setOpaque(false);
+	comp.setOpaque(true);
+	//xchanged by Michael
 
 	try {
 	    // creating a temporary file to wirte to:

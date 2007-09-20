@@ -27,13 +27,17 @@ import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 
+import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
+import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.util.beans.AbstractBean;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
 import de.unisiegen.tpml.graphics.EditorComponent;
@@ -684,6 +688,37 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel {
 		  } else{
 		      printer.print(((AbstractProofComponent)getComponent().getPrintPart()));
 		  }		
+	}
+	
+//TODO Einbau der Latex-komponente... by Michgael
+	public void handleLatexExport (){
+		if  (this.isTexteditor()){
+			try
+			{
+				MonoType type1 = this.code.getType();
+				MonoType type2 = this.code.getType2();
+				DefaultSubType subtype = new DefaultSubType(type1, type2); 
+				GeneralLaTex laTex = new GeneralLaTex(subtype, mypanel);
+				laTex.export();
+			}
+			catch (Exception e)
+			{
+//			 no real expression
+				JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) 
+						.getString ( "CouldNotLaTeXTyp" ), "Sub Typing", JOptionPane.ERROR_MESSAGE ); 
+				
+				//JOptionPane.showMessageDialog(mypanel, "Sorry, no Types enterd!");
+			}
+		}
+		else
+		{
+			System.out.println(((ProofViewComponent)getComponent()).getModel());
+			GeneralLaTex laTex = new GeneralLaTex((SmallStepProofModel)((ProofViewComponent)getComponent()).getModel(), mypanel);
+			laTex.export();
+		}
+		
+		
+		
 	}
 
 	public EditorComponent getActiveEditorComponent() {

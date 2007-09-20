@@ -1,48 +1,78 @@
 package de.unisiegen.tpml.ui;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.Frame;
 import java.io.File;
 
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
-import javax.swing.filechooser.FileFilter;
 
+import de.unisiegen.tpml.core.ProofModel;
 import de.unisiegen.tpml.core.latex.LatexException;
 import de.unisiegen.tpml.core.latex.LatexExport;
 import de.unisiegen.tpml.core.latex.LatexPrintable;
-import de.unisiegen.tpml.ui.netbeans.PdfDialog;
 import de.unisiegen.tpml.ui.netbeans.TexDialog;
 
+/**
+ * this class provides the GUI for the latex-export.
+ * it is used for the proofviews and the tpml.tex
+ *
+ * @author michael
+ *
+ */
 public class GeneralLaTex
 {
-	
-	//Klasse, die die Datei baut, hier wird eine staitsche MEhtode aufgerufen, die das File übergeben bekommt, und den
-	//latexprintable
-
-	//wir brauchen die view
-	//private ProofViewComponent ourProofView;
+	/**
+	 * the latex manager
+	 */
 	private LatexPrintable laTexPrintable;
 	
-	private JPanel parent;
+	/**
+	 * the parent of the shown dialogs
+	 */
+	private JComponent parent;
 	
+	/**
+	 * the parent of the shown dialogs
+	 */
+	private Frame parentFrame;
+	
+	/**
+	 * TODO vielleicht gibt es irgendwann eien Statusdialog
+	 */
 	private JDialog status;
 	
+	/**
+	 * TODO Textarea des Stustusses
+	 */
 	private JTextArea text;
 	
+	/**
+	 * TODO Prograssbar, alles nur Test im Moment
+	 */
 	private JProgressBar progress;
 	
-	public GeneralLaTex ()
+	/**
+	 * the default constructor
+	 *
+	 * @param pParent  - the parent frame 
+	 */
+	public GeneralLaTex (Frame pParent)
 	{
-
+		this.parentFrame = pParent;
 	}
 	
+	/**
+	 * the constructor used exporting files
+	 *
+	 * @param pLaTexPrintable
+	 * @param pParent
+	 */
 	public GeneralLaTex (LatexPrintable pLaTexPrintable, JPanel pParent)
 	{
 		this.laTexPrintable = pLaTexPrintable;
@@ -51,66 +81,91 @@ public class GeneralLaTex
 
 	}
 
-	public File showFileDialog ()
+//	public File showFileDialog ()
+//	{
+//		JFileChooser fc = new JFileChooser();
+//		fc.setMultiSelectionEnabled(false);
+//		fc.setDialogType(JFileChooser.SAVE_DIALOG);
+//		fc.setDialogTitle("LaTex - Export");
+//		fc.setDragEnabled(false);
+//		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+//		fc.setFileFilter ( new FileFilter ( )
+//		{
+//			@Override
+//			public boolean accept ( File f )
+//			{
+//				return f.getName ( ).toLowerCase ( ).endsWith ( ".tex" ) //$NON-NLS-1$
+//						|| f.isDirectory ( );
+//			}
+//
+//			@Override
+//			public String getDescription ( )
+//			{
+//				return "TEX-Files (*.tex)"; //$NON-NLS-1$
+//			}
+//		} );
+//		fc.showDialog(this.parent, "Export");
+//		return fc.getSelectedFile();
+//	}
+	
+	
+	/**
+	 *  exports the tpml.tex to an choosen dir
+	 */
+	public void exportTPML()
 	{
 		JFileChooser fc = new JFileChooser();
 		fc.setMultiSelectionEnabled(false);
 		fc.setDialogType(JFileChooser.SAVE_DIALOG);
-		fc.setDialogTitle("LaTex - Export");
+		fc.setDialogTitle(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("TPMLTEX.Titel"));
 		fc.setDragEnabled(false);
-		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		fc.setFileFilter ( new FileFilter ( )
+		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fc.showDialog(this.parentFrame, java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("TPMLTEX.Export"));
+		if (!(fc.getSelectedFile() == null))
 		{
-			@Override
-			public boolean accept ( File f )
+			try
 			{
-				return f.getName ( ).toLowerCase ( ).endsWith ( ".tex" ) //$NON-NLS-1$
-						|| f.isDirectory ( );
+				LatexExport.exportTPML(fc.getSelectedFile());
 			}
-
-			@Override
-			public String getDescription ( )
+			catch (LatexException e)
 			{
-				return "TEX-Files (*.tex)"; //$NON-NLS-1$
+				JOptionPane.showMessageDialog(this.parentFrame, e);
 			}
-		} );
-		fc.showDialog(this.parent, "Export");
-		return fc.getSelectedFile();
-	}
-	
-	/**
-	 * TODO only for testing
-	 *
-	 * @param args
-	 */
-	public static void main (String [] args )
-	{
-		GeneralLaTex test = new GeneralLaTex();
-		File file = test.showFileDialog();
-		System.out.println("selected File: "+file);
-		
-		
-		String filename = file.getAbsolutePath();
-		if (! filename.substring(filename.length()-4).equalsIgnoreCase(".tex")){
-		    filename = filename+".tex";
-		    file = new File (filename);
 		}
-		
-		System.out.println("selected File: "+file);
-		
-		
-		//tatischeKlasse.statischemethode (test.ourProofView.getModel().getLatexPrintable(), file);
-		
-		 JOptionPane.showMessageDialog(test.parent, "LaTex-Export done!");
-		
+				
 		
 	}
 
+	/**
+	 * this method shows the file save dialog. If needed the optins for overlapping and 
+	 * the pagecount are enabled. The File will be automatical be a tex-file. After getting
+	 * the needed informations the texexport is called.
+	 *
+	 */
 	public void export()
 	{
-		TexDialog dialog = new TexDialog((JFrame)parent.getTopLevelAncestor(), true);
+		TexDialog dialog = new TexDialog((JFrame)this.parent.getTopLevelAncestor(), true);
 		
-		dialog.setLocationRelativeTo(parent);
+		dialog.setLocationRelativeTo(this.parent);
+		
+		// let us now if weneed the overlap or not
+		boolean needed = true;
+		if (this.laTexPrintable instanceof ProofModel)
+		{
+			try
+			{
+				((ProofModel)this.laTexPrintable).setOverlap(0);
+			}
+			catch (UnsupportedOperationException e) {
+				needed = false;
+			}
+		}
+		if (!needed)
+		{
+			dialog.pageCountTextField.setEnabled(false);
+			dialog.overlappingTextField.setEnabled(false);
+			
+		}
 		dialog.setVisible(true);
 		
 		if (dialog.cancelled)
@@ -119,15 +174,16 @@ public class GeneralLaTex
 		}
 		
 		File file = dialog.filechooser.getSelectedFile();
+		// get the overlapping
 		int overlapping = dialog.overlappingInt;
+		// get the pagecount
+		int pageCount = dialog.pagecount;
+		// get the information if the TPML.TEX shold be included or not
 		boolean all = dialog.all;
-		System.out.println("Infos: "+file+" - "+overlapping+" - "+all);
 		
 		//File file = showFileDialog();
 		if (file != null)
-		{
-			System.out.println("selected File: "+file);
-			
+		{			
 			// fix the filename if the user has not entered a filename ending with .tex
 			String filename = file.getAbsolutePath();
 			if (! filename.substring(filename.length()-4).equalsIgnoreCase(".tex"))
@@ -139,37 +195,52 @@ public class GeneralLaTex
 			//LatexTest.exportLatexPrintable((SmallStepProofModel)this.ourProofView.getModel(), file);
 			try
 			{
-				status = new JDialog ();
-				status.setTitle("Stautus");
-				status.setModal(false);
+//				this.status = new JDialog ();
+//				this.status.setTitle("Stautus");
+//				this.status.setModal(false);
+//				
+//				this.text = new JTextArea ( "LaTex-Export will be done. Pleas wait.");
+//				this.status.add(this.text);
+//				this.status.setSize(150, 100);
+//				
+////			 Größe des Bildschirms ermitteln
+//	      Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//
+//	      // Position des JFrames errechnen
+//	      int top = (screenSize.height - this.status.getHeight()) / 2;
+//	      int left = (screenSize.width - this.status.getWidth()) / 2;
+//
+//	      // Position zuordnen
+//	      this.status.setLocation(left, top); 
+//				
+//				
+//				this.status.setVisible(true);
 				
-				text = new JTextArea ( "LaTex-Export will be done. Pleas wait.");
-				status.add(text);
-				status.setSize(150, 100);
+				if (this.laTexPrintable instanceof ProofModel)
+				{
+					try
+					{
+						((ProofModel)this.laTexPrintable).setOverlap(overlapping);
+						((ProofModel)this.laTexPrintable).setPages(pageCount);
+					}
+					catch (UnsupportedOperationException e)
+					{
+						// nothing to to
+					}
+				}
 				
-//			 Größe des Bildschirms ermitteln
-	      Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-	      // Position des JFrames errechnen
-	      int top = (screenSize.height - status.getHeight()) / 2;
-	      int left = (screenSize.width - status.getWidth()) / 2;
-
-	      // Position zuordnen
-	      status.setLocation(left, top); 
+				LatexExport.export(this.laTexPrintable, file, all);
 				
+//				this.status.dispose();
 				
-				status.setVisible(true);
-				
-				LatexExport.export(laTexPrintable, file, true);
-				
-				status.dispose();
-				
-				JOptionPane.showMessageDialog(this.parent, "LaTex-Export done!");
+				JOptionPane.showMessageDialog(this.parent, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) 
+						.getString ( "LatexDone" ));
 			}
 			catch (LatexException e)
 			{
-				// TODO "Error" in die Properties packen
-				JOptionPane.showMessageDialog(this.parent, e.toString(), "Error", JOptionPane.ERROR_MESSAGE); 
+				JOptionPane.showMessageDialog(this.parent, e.toString(), 
+						java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) 
+						.getString ( "Error" ), JOptionPane.ERROR_MESSAGE); 
 			}
 						
 		}
