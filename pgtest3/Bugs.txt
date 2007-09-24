@@ -7,13 +7,10 @@
 - Die Dateien "build.xml", "tpml.xml", "register.cmd" und 
   "unregister.cmd" aus pgtest3 entfernen
 - LaTeX Export:
-  - Overlapping und Pagecount übersetzen
   - Letztes gewähltes Verzeichnis speichern, nicht immer in ~ anfangen
   - Wenn tpml.tex erzeugt würde, eine Nachricht anzeigen, wie bei der normalen
     tex-Datei
   - Kasten um TeX-Export Button entfernen
-  - Name von Dialog bei Latex-Export ändern, und Nachricht selbst ändern
-  	(LaTeX-Export erfolgreich, LaTeX-Datei erstellt)
   - Dialogbox wollen Sie die Datei überschreiben...
 
 
