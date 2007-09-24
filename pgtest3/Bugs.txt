@@ -16,6 +16,9 @@
   - Kasten um TeX-Export Button entfernen
   - Name von Dialog bei Latex-Export ändern, und Nachricht selbst ändern
   	(LaTeX-Export erfolgreich, LaTeX-Datei erstellt)
+  - Dialogbox wollen Sie die Datei überschreiben...
+  - Comboboxen für Eingabe von Seitenzahl
+  - hinter Overlapping Angabe von Einheit -> mm
 
 *** Christian ***
 
