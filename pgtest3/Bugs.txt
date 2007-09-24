@@ -8,8 +8,6 @@
   "unregister.cmd" aus pgtest3 entfernen
 - LaTeX Export:
   - Overlapping und Pagecount übersetzen
-  - Overlapping und Pagecount nicht sichtbar bei:
-    Expression-Source, SubTyping-Source, TypeInference und SmallStepper
   - Letztes gewähltes Verzeichnis speichern, nicht immer in ~ anfangen
   - Wenn tpml.tex erzeugt würde, eine Nachricht anzeigen, wie bei der normalen
     tex-Datei
@@ -17,8 +15,7 @@
   - Name von Dialog bei Latex-Export ändern, und Nachricht selbst ändern
   	(LaTeX-Export erfolgreich, LaTeX-Datei erstellt)
   - Dialogbox wollen Sie die Datei überschreiben...
-  - Comboboxen für Eingabe von Seitenzahl
-  - hinter Overlapping Angabe von Einheit -> mm
+
 
 *** Christian ***
 
