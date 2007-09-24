@@ -14,6 +14,8 @@
   - Wenn tpml.tex erzeugt würde, eine Nachricht anzeigen, wie bei der normalen
     tex-Datei
   - Kasten um TeX-Export Button entfernen
+  - Name von Dialog bei Latex-Export ändern, und Nachricht selbst ändern
+  	(LaTeX-Export erfolgreich, LaTeX-Datei erstellt)
 
 *** Christian ***
 
