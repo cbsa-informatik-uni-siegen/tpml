@@ -6,10 +6,13 @@
 *** Michael ***
 - Die Dateien "build.xml", "tpml.xml", "register.cmd" und 
   "unregister.cmd" aus pgtest3 entfernen
-- LaTeX Export:
-  - Kasten um TeX-Export Button entfernen
-  - Dialogbox wollen Sie die Datei überschreiben...
-
+- Kasten um TeX-Export Button entfernen,
+  folgende Werte setzen, wie beim Druck-Button
+    <Property name="borderPainted" type="boolean" value="false"/>
+    <Property name="focusPainted" type="boolean" value="false"/>
+    <Property name="focusable" type="boolean" value="false"/>
+    <Property name="opaque" type="boolean" value="false"/>
+        
 
 *** Christian ***
 

@@ -295,6 +295,18 @@ public class GeneralLaTex
             // nothing to to
           }
         }
+        if ( file.exists ( ) )
+        {
+          if ( JOptionPane.showConfirmDialog ( this.parent , ResourceBundle
+              .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+                  "Latex.OverrideFile" ) //$NON-NLS-1$
+              + "?" , ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$ //$NON-NLS-2$
+              .getString ( "Latex.Override" ) //$NON-NLS-1$
+              + "?" , JOptionPane.YES_NO_OPTION ) == JOptionPane.NO_OPTION ) //$NON-NLS-1$
+          {
+            return ;
+          }
+        }
         LatexExport.export ( this.laTexPrintable , file , all ) ;
         // this.status.dispose();
         JOptionPane.showMessageDialog ( this.parent , ResourceBundle.getBundle (
@@ -358,6 +370,20 @@ public class GeneralLaTex
       {
         preferences
             .put ( "lastDir" , fc.getSelectedFile ( ).getAbsolutePath ( ) ) ; //$NON-NLS-1$
+        File tpmlFile = new File ( fc.getSelectedFile ( ).getAbsolutePath ( )
+            + "/tpml.tex" ) ; //$NON-NLS-1$
+        if ( tpmlFile.exists ( ) )
+        {
+          if ( JOptionPane.showConfirmDialog ( this.parent , ResourceBundle
+              .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+                  "Latex.OverrideFile" ) //$NON-NLS-1$
+              + "?" , ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$ //$NON-NLS-2$
+              .getString ( "Latex.Override" ) //$NON-NLS-1$
+              + "?" , JOptionPane.YES_NO_OPTION ) == JOptionPane.NO_OPTION ) //$NON-NLS-1$
+          {
+            return ;
+          }
+        }
         LatexExport.exportTPML ( fc.getSelectedFile ( ) ) ;
         JOptionPane.showMessageDialog ( this.parent , ResourceBundle.getBundle (
             "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.Done" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
