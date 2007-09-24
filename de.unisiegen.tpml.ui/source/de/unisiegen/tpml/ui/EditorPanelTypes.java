@@ -712,8 +712,7 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel {
 		}
 		else
 		{
-			System.out.println(((ProofViewComponent)getComponent()).getModel());
-			GeneralLaTex laTex = new GeneralLaTex((SmallStepProofModel)((ProofViewComponent)getComponent()).getModel(), mypanel);
+			GeneralLaTex laTex = new GeneralLaTex(((ProofViewComponent)getComponent()).getModel(), mypanel);
 			laTex.export();
 		}
 		

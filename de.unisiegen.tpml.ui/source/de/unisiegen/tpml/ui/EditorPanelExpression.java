@@ -793,7 +793,6 @@ public void handleLatexExport (){
 	}
 	else
 	{
-		System.out.println(((ProofViewComponent)getComponent()).getModel());
 		GeneralLaTex laTex = new GeneralLaTex(((ProofViewComponent)getComponent()).getModel(), mypanel);
 		laTex.export();
 	}
