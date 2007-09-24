@@ -6,6 +6,13 @@
 *** Michael ***
 - Die Dateien "build.xml", "tpml.xml", "register.cmd" und 
   "unregister.cmd" aus pgtest3 entfernen
+- LaTeX Export:
+  - Overlapping und Pagecount übersetzen
+  - Overlapping und Pagecount nicht sichtbar bei:
+    Expression-Source, SubTyping-Source, TypeInference und SmallStepper
+  - Letztes gewähltes Verzeichnis speichern, nicht immer in ~ anfangen
+  - Wenn tpml.tex erzeugt würde, eine Nachricht anzeigen, wie bei der normalen
+    tex-Datei
 
 *** Christian ***
 
