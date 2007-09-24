@@ -220,7 +220,7 @@ public class TexDialog extends javax.swing.JDialog {
     
     
     // Variablendeklaration - nicht modifizieren//GEN-BEGIN:variables
-    private javax.swing.JCheckBox allCheckBox;
+    public javax.swing.JCheckBox allCheckBox;
     public javax.swing.JFileChooser filechooser;
     private javax.swing.JSeparator jSeparator1;
     public javax.swing.JLabel overlappingEntity;

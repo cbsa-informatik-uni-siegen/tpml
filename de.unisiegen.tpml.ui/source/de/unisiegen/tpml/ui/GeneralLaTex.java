@@ -116,6 +116,10 @@ public class GeneralLaTex
     this.dialog.pageCountLabel.setText ( ResourceBundle.getBundle (
         "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.PageCount" ) //$NON-NLS-1$ //$NON-NLS-2$
         + ":" ) ; //$NON-NLS-1$
+    this.dialog.allCheckBox.setText ( ResourceBundle.getBundle (
+        "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.OneFile" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    this.dialog.allCheckBox.setToolTipText ( ResourceBundle.getBundle (
+        "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.OneFileToolTip" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     this.dialog.pageCountTextField.addKeyListener ( new KeyListener ( )
     {
       public void keyPressed ( @ SuppressWarnings ( "unused" )
