@@ -45,6 +45,13 @@ public class TexDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("LaTeX Export");
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                TexDiealogCloseActionPerformed(evt);
+            }
+        });
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -111,7 +118,6 @@ public class TexDialog extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
         getContentPane().add(allCheckBox, gridBagConstraints);
@@ -147,6 +153,11 @@ public class TexDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void TexDiealogCloseActionPerformed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_TexDiealogCloseActionPerformed
+    this.cancelled=true;
+    return;
+    }//GEN-LAST:event_TexDiealogCloseActionPerformed
 
     private void pageCountTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pageCountTextFieldActionPerformed
 // TODO add your handling code here:
