@@ -6,6 +6,7 @@ import java.awt.Frame ;
 import java.awt.event.KeyEvent ;
 import java.awt.event.KeyListener ;
 import java.io.File ;
+import java.util.ResourceBundle ;
 import javax.swing.JComponent ;
 import javax.swing.JDialog ;
 import javax.swing.JFileChooser ;
@@ -156,8 +157,14 @@ public class GeneralLaTex
    */
   public void export ( )
   {
-    this.dialog = new TexDialog ( ( JFrame ) this.parent.getTopLevelAncestor ( ) ,
-        true ) ;
+    this.dialog = new TexDialog (
+        ( JFrame ) this.parent.getTopLevelAncestor ( ) , true ) ;
+    this.dialog.overlappingLabel.setText ( ResourceBundle.getBundle (
+        "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.Overlapping" )
+        + ":" ) ;
+    this.dialog.pageCountLabel.setText ( ResourceBundle.getBundle (
+        "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.PageCount" )
+        + ":" ) ;
     this.dialog.pageCountTextField.addKeyListener ( new KeyListener ( )
     {
       public void keyPressed ( @ SuppressWarnings ( "unused" )
@@ -175,7 +182,7 @@ public class GeneralLaTex
           int count = Integer.valueOf (
               GeneralLaTex.this.dialog.pageCountTextField.getText ( ) )
               .intValue ( ) ;
-           if ( ( count <= 0 ) || ( count > 13 ) )
+          if ( ( count <= 0 ) || ( count > 13 ) )
           {
             GeneralLaTex.this.dialog.pageCountTextField
                 .setBackground ( Color.RED ) ;
@@ -188,7 +195,7 @@ public class GeneralLaTex
         }
         catch ( NumberFormatException e )
         {
-               GeneralLaTex.this.dialog.pageCountTextField
+          GeneralLaTex.this.dialog.pageCountTextField
               .setBackground ( Color.RED ) ;
         }
       }
@@ -205,13 +212,6 @@ public class GeneralLaTex
         }
       }
     } ) ;
-    
-    
-    
-    
-    
-    
-    
     this.dialog.overlappingTextField.addKeyListener ( new KeyListener ( )
     {
       public void keyPressed ( @ SuppressWarnings ( "unused" )
@@ -229,7 +229,7 @@ public class GeneralLaTex
           int count = Integer.valueOf (
               GeneralLaTex.this.dialog.overlappingTextField.getText ( ) )
               .intValue ( ) ;
-           if ( ( count <= 0 ) || ( count > 50 ) )
+          if ( ( count <= 0 ) || ( count > 50 ) )
           {
             GeneralLaTex.this.dialog.overlappingTextField
                 .setBackground ( Color.RED ) ;
@@ -242,7 +242,7 @@ public class GeneralLaTex
         }
         catch ( NumberFormatException e )
         {
-               GeneralLaTex.this.dialog.overlappingTextField
+          GeneralLaTex.this.dialog.overlappingTextField
               .setBackground ( Color.RED ) ;
         }
       }
@@ -259,15 +259,6 @@ public class GeneralLaTex
         }
       }
     } ) ;
-    
-    
-    
-    
-    
-    
-    
-    
-    
     this.dialog.setLocationRelativeTo ( this.parent ) ;
     // let us now if weneed the overlap or not
     boolean needed = false ;
@@ -288,7 +279,7 @@ public class GeneralLaTex
       this.dialog.overlappingLabel.setVisible ( false ) ;
       this.dialog.overlappingTextField.setVisible ( false ) ;
       this.dialog.overlappingEntity.setVisible ( false ) ;
-      this. dialog.pageCountLabel.setVisible ( false ) ;
+      this.dialog.pageCountLabel.setVisible ( false ) ;
       this.dialog.pageCountTextField.setVisible ( false ) ;
     }
     this.dialog.setVisible ( true ) ;
@@ -354,14 +345,16 @@ public class GeneralLaTex
         }
         LatexExport.export ( this.laTexPrintable , file , all ) ;
         // this.status.dispose();
-        JOptionPane.showMessageDialog ( this.parent , java.util.ResourceBundle
-            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "LatexDone" ) ) ;
+        JOptionPane
+            .showMessageDialog ( this.parent , java.util.ResourceBundle
+                .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
+                    "Latex.Done" ) ) ;
       }
       catch ( LatexException e )
       {
         JOptionPane.showMessageDialog ( this.parent , e.toString ( ) ,
             java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-                .getString ( "Error" ) , JOptionPane.ERROR_MESSAGE ) ;
+                .getString ( "Latex.Error" ) , JOptionPane.ERROR_MESSAGE ) ;
       }
     }
   }
