@@ -13,6 +13,7 @@
   - Letztes gewähltes Verzeichnis speichern, nicht immer in ~ anfangen
   - Wenn tpml.tex erzeugt würde, eine Nachricht anzeigen, wie bei der normalen
     tex-Datei
+  - Kasten um TeX-Export Button entfernen
 
 *** Christian ***
 
