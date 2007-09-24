@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent ;
 import java.awt.event.KeyListener ;
 import java.io.File ;
 import java.util.ResourceBundle ;
+import java.util.prefs.Preferences ;
 import javax.swing.JComponent ;
 import javax.swing.JDialog ;
 import javax.swing.JFileChooser ;
@@ -19,6 +20,7 @@ import de.unisiegen.tpml.core.ProofModel ;
 import de.unisiegen.tpml.core.latex.LatexException ;
 import de.unisiegen.tpml.core.latex.LatexExport ;
 import de.unisiegen.tpml.core.latex.LatexPrintable ;
+import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.ui.netbeans.TexDialog ;
 
 
@@ -105,6 +107,9 @@ public class GeneralLaTex
   {
     this.dialog = new TexDialog (
         ( JFrame ) this.parent.getTopLevelAncestor ( ) , true ) ;
+    Preferences preferences = Preferences.userNodeForPackage ( Outline.class ) ;
+    this.dialog.filechooser.setCurrentDirectory ( new File ( preferences.get (
+        "lastDir" , "." ) ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     this.dialog.overlappingLabel.setText ( ResourceBundle.getBundle (
         "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.Overlapping" ) //$NON-NLS-1$//$NON-NLS-2$
         + ":" ) ; //$NON-NLS-1$
@@ -243,6 +248,7 @@ public class GeneralLaTex
     // File file = showFileDialog();
     if ( file != null )
     {
+      preferences.put ( "lastDir" , file.getAbsolutePath ( ) ) ; //$NON-NLS-1$
       // fix the filename if the user has not entered a filename ending with
       // .tex
       String filename = file.getAbsolutePath ( ) ;
@@ -342,12 +348,16 @@ public class GeneralLaTex
         .getString ( "Latex.Title" ) ) ; //$NON-NLS-1$
     fc.setDragEnabled ( false ) ;
     fc.setFileSelectionMode ( JFileChooser.DIRECTORIES_ONLY ) ;
+    Preferences preferences = Preferences.userNodeForPackage ( Outline.class ) ;
+    fc.setCurrentDirectory ( new File ( preferences.get ( "lastDir" , "." ) ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     fc.showDialog ( this.parentFrame , ResourceBundle.getBundle (
         "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.Export" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-    if ( ! ( fc.getSelectedFile ( ) == null ) )
+    if ( fc.getSelectedFile ( ) != null )
     {
       try
       {
+        preferences
+            .put ( "lastDir" , fc.getSelectedFile ( ).getAbsolutePath ( ) ) ; //$NON-NLS-1$
         LatexExport.exportTPML ( fc.getSelectedFile ( ) ) ;
         JOptionPane.showMessageDialog ( this.parent , ResourceBundle.getBundle (
             "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.Done" ) ) ; //$NON-NLS-1$//$NON-NLS-2$

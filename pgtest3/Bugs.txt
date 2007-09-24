@@ -7,7 +7,6 @@
 - Die Dateien "build.xml", "tpml.xml", "register.cmd" und 
   "unregister.cmd" aus pgtest3 entfernen
 - LaTeX Export:
-  - Letztes gewähltes Verzeichnis speichern, nicht immer in ~ anfangen
   - Kasten um TeX-Export Button entfernen
   - Dialogbox wollen Sie die Datei überschreiben...
 
