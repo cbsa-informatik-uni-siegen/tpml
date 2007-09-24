@@ -42,19 +42,25 @@ public class DefaultTypeCheckerTypeProofNode extends
         .add ( new DefaultLatexCommand (
             LATEX_TYPE_CHECKER_TYPE_PROOF_NODE ,
             6 ,
-            "\\ifarrows" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\else \\refstepcounter{node}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\noindent\\hspace{\\treeindent}\\hspace{#2\\nodeindent}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "$\\begin{tabular}[t]{p{#6}}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+            LATEX_LINE_BREAK_NEW_COMMAND
+                + "\\ifarrows" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND
+                + "\\else \\refstepcounter{node}" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND
+                + "\\noindent\\hspace{\\treeindent}\\hspace{#2\\nodeindent}" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND
+                + "\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND + "$\\begin{tabular}[t]{p{#6}}$" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND_INDENT1
                 // begin of the node variables
-                + "#3\\ \\color{" + LATEX_COLOR_NONE //$NON-NLS-1$
-                + "}{<:}\\ #4$\\\\$" + "\\byrule{#5} " //$NON-NLS-1$ //$NON-NLS-2$
-                + "$\\end{tabular}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "#3\\ \\color{" + LATEX_COLOR_NONE + "}{<:}\\ #4" //$NON-NLS-1$//$NON-NLS-2$
+                + LATEX_LINE_BREAK_NEW_COMMAND + "$\\\\$" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND_INDENT1 + "\\byrule{#5}" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND + "$\\end{tabular}$" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND
                 // end of the node variables
-                + "\\vspace{\\nodesep}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\fi" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-            , "depth" , "id" , "type" , "type2" , "rule" , "space" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ 
+                + "\\vspace{\\nodesep}" + LATEX_LINE_BREAK_NEW_COMMAND + "\\fi" , //$NON-NLS-1$ //$NON-NLS-2$
+            "depth" , "id" , "type" , "type2" , "rule" , "space" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
     return commands ;
   }
 

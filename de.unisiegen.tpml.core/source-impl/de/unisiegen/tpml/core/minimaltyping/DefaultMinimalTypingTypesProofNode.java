@@ -55,19 +55,24 @@ public class DefaultMinimalTypingTypesProofNode extends
         .add ( new DefaultLatexCommand (
             LATEX_MINIMAL_TYPING_TYPES_PROOF_NODE ,
             5 ,
-            "\\ifarrows" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\else \\refstepcounter{node}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\noindent\\hspace{\\treeindent}\\hspace{#2\\nodeindent}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "$\\begin{tabular}[t]{p{#5}}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+            LATEX_LINE_BREAK_NEW_COMMAND
+                + "\\ifarrows" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND
+                + "\\else \\refstepcounter{node}" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND
+                + "\\noindent\\hspace{\\treeindent}\\hspace{#2\\nodeindent}" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND
+                + "\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND + "$\\begin{tabular}[t]{p{#5}}$" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND_INDENT1
                 // begin of the node variables
-                + "#3$\\\\$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\byrule{#4} " //$NON-NLS-1$
+                + "#3" + LATEX_LINE_BREAK_NEW_COMMAND + "$\\\\$" //$NON-NLS-1$ //$NON-NLS-2$
+                + LATEX_LINE_BREAK_NEW_COMMAND_INDENT1 + "\\byrule{#4}" //$NON-NLS-1$
                 // end of the node variables
-                + "$\\end{tabular}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\vspace{\\nodesep}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\fi" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-            , "depth" , "id" , "subtype" , "rule" , "space" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
+                + LATEX_LINE_BREAK_NEW_COMMAND + "$\\end{tabular}$" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND + "\\vspace{\\nodesep}" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND + "\\fi" , "depth" , "id" , //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+            "subtype" , "rule" , "space" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
     return commands ;
   }
 

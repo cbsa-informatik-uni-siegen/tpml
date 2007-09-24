@@ -49,25 +49,32 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
         .add ( new DefaultLatexCommand (
             LATEX_BIG_STEP_PROOF_NODE ,
             7 ,
-            "\\ifarrows" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\else \\refstepcounter{node}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\noindent\\hspace{\\treeindent}\\hspace{#2\\nodeindent}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "$\\begin{tabular}[t]{p{#7}}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\ifthenelse{\\equal{#4}{}}" + LATEX_LINE_BREAK_NEW_COMMAND_INDENT //$NON-NLS-1$ 
+            LATEX_LINE_BREAK_NEW_COMMAND
+                + "\\ifarrows" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND
+                + "\\else \\refstepcounter{node}" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND
+                + "\\noindent\\hspace{\\treeindent}\\hspace{#2\\nodeindent}" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND
+                + "\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND
+                + "$\\begin{tabular}[t]{p{#7}}$" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND_INDENT1
+                + "\\ifthenelse{\\equal{#4}{}}" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND_INDENT2
                 // begin of the node variables
-                + "{#3\\ \\color{" + LATEX_COLOR_NONE //$NON-NLS-1$
-                + "}{\\Downarrow}\\ #5}" + LATEX_LINE_BREAK_NEW_COMMAND_INDENT //$NON-NLS-1$
-                + "{\\color{" + LATEX_COLOR_NONE //$NON-NLS-1$
-                + "}{(}#3\\ \\ #4\\color{" + LATEX_COLOR_NONE //$NON-NLS-1$
-                + "}{)}\\ \\color{" + LATEX_COLOR_NONE //$NON-NLS-1$
-                + "}{\\Downarrow}\\ #5}" + "$\\\\$" //$NON-NLS-1$//$NON-NLS-2$
-                + LATEX_LINE_BREAK_NEW_COMMAND + "\\byrule{#6} " //$NON-NLS-1$
+                + "{#3\\ \\color{" + LATEX_COLOR_NONE + "}{\\Downarrow}\\ #5}" //$NON-NLS-1$ //$NON-NLS-2$
+                + LATEX_LINE_BREAK_NEW_COMMAND_INDENT2 + "{\\color{" //$NON-NLS-1$
+                + LATEX_COLOR_NONE + "}{(}#3\\ \\ #4\\color{" //$NON-NLS-1$
+                + LATEX_COLOR_NONE + "}{)}\\ \\color{" + LATEX_COLOR_NONE //$NON-NLS-1$
+                + "}{\\Downarrow}\\ #5}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "$\\\\$" + LATEX_LINE_BREAK_NEW_COMMAND_INDENT1 //$NON-NLS-1$
+                + "\\byrule{#6}" //$NON-NLS-1$
                 // end of the node variables
-                + "$\\end{tabular}$" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\vspace{\\nodesep}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\fi" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-            , "depth" , "id" , "e" , "store" , "result" , "proofrule" , "space" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ 
+                + LATEX_LINE_BREAK_NEW_COMMAND + "$\\end{tabular}$" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND + "\\vspace{\\nodesep}" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND + "\\fi" , "depth" , "id" , "e" , //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            "store" , "result" , "proofrule" , "space" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
     return commands ;
   }
 
