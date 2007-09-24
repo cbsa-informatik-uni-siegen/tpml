@@ -67,6 +67,12 @@ public class GeneralLaTex
 
 
   /**
+   * The {@link TexDialog}.
+   */
+  protected TexDialog dialog ;
+
+
+  /**
    * the default constructor
    * 
    * @param pParent - the parent frame
@@ -90,66 +96,6 @@ public class GeneralLaTex
   }
 
 
-  // public File showFileDialog ()
-  // {
-  // JFileChooser fc = new JFileChooser();
-  // fc.setMultiSelectionEnabled(false);
-  // fc.setDialogType(JFileChooser.SAVE_DIALOG);
-  // fc.setDialogTitle("LaTex - Export");
-  // fc.setDragEnabled(false);
-  // fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-  // fc.setFileFilter ( new FileFilter ( )
-  // {
-  // @Override
-  // public boolean accept ( File f )
-  // {
-  // return f.getName ( ).toLowerCase ( ).endsWith ( ".tex" ) //$NON-NLS-1$
-  // || f.isDirectory ( );
-  // }
-  //
-  // @Override
-  // public String getDescription ( )
-  // {
-  // return "TEX-Files (*.tex)"; //$NON-NLS-1$
-  // }
-  // } );
-  // fc.showDialog(this.parent, "Export");
-  // return fc.getSelectedFile();
-  // }
-  /**
-   * exports the tpml.tex to an choosen dir
-   */
-  public void exportTPML ( )
-  {
-    JFileChooser fc = new JFileChooser ( ) ;
-    fc.setMultiSelectionEnabled ( false ) ;
-    fc.setDialogType ( JFileChooser.SAVE_DIALOG ) ;
-    fc.setDialogTitle ( java.util.ResourceBundle.getBundle (
-        "de/unisiegen/tpml/ui/ui" ).getString ( "TPMLTEX.Titel" ) ) ;
-    fc.setDragEnabled ( false ) ;
-    fc.setFileSelectionMode ( JFileChooser.DIRECTORIES_ONLY ) ;
-    fc.showDialog ( this.parentFrame , java.util.ResourceBundle.getBundle (
-        "de/unisiegen/tpml/ui/ui" ).getString ( "TPMLTEX.Export" ) ) ;
-    if ( ! ( fc.getSelectedFile ( ) == null ) )
-    {
-      try
-      {
-        LatexExport.exportTPML ( fc.getSelectedFile ( ) ) ;
-      }
-      catch ( LatexException e )
-      {
-        JOptionPane.showMessageDialog ( this.parentFrame , e ) ;
-      }
-    }
-  }
-
-
-  /**
-   * TODO
-   */
-  protected TexDialog dialog ;
-
-
   /**
    * this method shows the file save dialog. If needed the optins for
    * overlapping and the pagecount are enabled. The File will be automatical be
@@ -160,11 +106,11 @@ public class GeneralLaTex
     this.dialog = new TexDialog (
         ( JFrame ) this.parent.getTopLevelAncestor ( ) , true ) ;
     this.dialog.overlappingLabel.setText ( ResourceBundle.getBundle (
-        "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.Overlapping" )
-        + ":" ) ;
+        "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.Overlapping" ) //$NON-NLS-1$//$NON-NLS-2$
+        + ":" ) ; //$NON-NLS-1$
     this.dialog.pageCountLabel.setText ( ResourceBundle.getBundle (
-        "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.PageCount" )
-        + ":" ) ;
+        "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.PageCount" ) //$NON-NLS-1$ //$NON-NLS-2$
+        + ":" ) ; //$NON-NLS-1$
     this.dialog.pageCountTextField.addKeyListener ( new KeyListener ( )
     {
       public void keyPressed ( @ SuppressWarnings ( "unused" )
@@ -301,9 +247,9 @@ public class GeneralLaTex
       // .tex
       String filename = file.getAbsolutePath ( ) ;
       if ( ! filename.substring ( filename.length ( ) - 4 ).equalsIgnoreCase (
-          ".tex" ) )
+          ".tex" ) ) //$NON-NLS-1$
       {
-        filename = filename + ".tex" ;
+        filename = filename + ".tex" ; //$NON-NLS-1$
         file = new File ( filename ) ;
       }
       // LatexTest.exportLatexPrintable((SmallStepProofModel)this.ourProofView.getModel(),
@@ -345,16 +291,72 @@ public class GeneralLaTex
         }
         LatexExport.export ( this.laTexPrintable , file , all ) ;
         // this.status.dispose();
-        JOptionPane
-            .showMessageDialog ( this.parent , java.util.ResourceBundle
-                .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-                    "Latex.Done" ) ) ;
+        JOptionPane.showMessageDialog ( this.parent , ResourceBundle.getBundle (
+            "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.Done" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
       }
       catch ( LatexException e )
       {
         JOptionPane.showMessageDialog ( this.parent , e.toString ( ) ,
-            java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-                .getString ( "Latex.Error" ) , JOptionPane.ERROR_MESSAGE ) ;
+            ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+                "Latex.Error" ) , JOptionPane.ERROR_MESSAGE ) ; //$NON-NLS-1$
+      }
+    }
+  }
+
+
+  // public File showFileDialog ()
+  // {
+  // JFileChooser fc = new JFileChooser();
+  // fc.setMultiSelectionEnabled(false);
+  // fc.setDialogType(JFileChooser.SAVE_DIALOG);
+  // fc.setDialogTitle("LaTex - Export");
+  // fc.setDragEnabled(false);
+  // fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+  // fc.setFileFilter ( new FileFilter ( )
+  // {
+  // @Override
+  // public boolean accept ( File f )
+  // {
+  // return f.getName ( ).toLowerCase ( ).endsWith ( ".tex" ) //$NON-NLS-1$
+  // || f.isDirectory ( );
+  // }
+  //
+  // @Override
+  // public String getDescription ( )
+  // {
+  // return "TEX-Files (*.tex)"; //$NON-NLS-1$
+  // }
+  // } );
+  // fc.showDialog(this.parent, "Export");
+  // return fc.getSelectedFile();
+  // }
+  /**
+   * exports the tpml.tex to an choosen dir
+   */
+  public void exportTPML ( )
+  {
+    JFileChooser fc = new JFileChooser ( ) ;
+    fc.setMultiSelectionEnabled ( false ) ;
+    fc.setDialogType ( JFileChooser.SAVE_DIALOG ) ;
+    fc.setDialogTitle ( ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+        .getString ( "Latex.Title" ) ) ; //$NON-NLS-1$
+    fc.setDragEnabled ( false ) ;
+    fc.setFileSelectionMode ( JFileChooser.DIRECTORIES_ONLY ) ;
+    fc.showDialog ( this.parentFrame , ResourceBundle.getBundle (
+        "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.Export" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    if ( ! ( fc.getSelectedFile ( ) == null ) )
+    {
+      try
+      {
+        LatexExport.exportTPML ( fc.getSelectedFile ( ) ) ;
+        JOptionPane.showMessageDialog ( this.parent , ResourceBundle.getBundle (
+            "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.Done" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+      }
+      catch ( LatexException e )
+      {
+        JOptionPane.showMessageDialog ( this.parent , e.toString ( ) ,
+            ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+                "Latex.Error" ) , JOptionPane.ERROR_MESSAGE ) ; //$NON-NLS-1$
       }
     }
   }
