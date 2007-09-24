@@ -16,6 +16,8 @@ import javax.swing.JOptionPane ;
 import javax.swing.JPanel ;
 import javax.swing.JProgressBar ;
 import javax.swing.JTextArea ;
+import javax.swing.filechooser.FileFilter ;
+import javax.swing.text.Utilities ;
 import de.unisiegen.tpml.core.ProofModel ;
 import de.unisiegen.tpml.core.latex.LatexException ;
 import de.unisiegen.tpml.core.latex.LatexExport ;
@@ -110,6 +112,23 @@ public class GeneralLaTex
     Preferences preferences = Preferences.userNodeForPackage ( Outline.class ) ;
     this.dialog.filechooser.setCurrentDirectory ( new File ( preferences.get (
         "lastDir" , "." ) ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    this.dialog.filechooser.setFileFilter ( new FileFilter ( )
+    {
+      @ Override
+      public boolean accept ( File pFile )
+      {
+        return ( pFile.isDirectory ( ) )
+            || ( pFile.getName ( ).toLowerCase ( ).endsWith ( ".tex" ) ) ; //$NON-NLS-1$
+      }
+
+
+      @ Override
+      public String getDescription ( )
+      {
+        return ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+            .getString ( "Latex.FileFilter" ) ; //$NON-NLS-1$
+      }
+    } ) ;
     this.dialog.overlappingLabel.setText ( ResourceBundle.getBundle (
         "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.Overlapping" ) //$NON-NLS-1$//$NON-NLS-2$
         + ":" ) ; //$NON-NLS-1$
@@ -308,6 +327,7 @@ public class GeneralLaTex
               .getString ( "Latex.Override" ) //$NON-NLS-1$
               + "?" , JOptionPane.YES_NO_OPTION ) == JOptionPane.NO_OPTION ) //$NON-NLS-1$
           {
+            export ( ) ;
             return ;
           }
         }
@@ -385,6 +405,7 @@ public class GeneralLaTex
               .getString ( "Latex.Override" ) //$NON-NLS-1$
               + "?" , JOptionPane.YES_NO_OPTION ) == JOptionPane.NO_OPTION ) //$NON-NLS-1$
           {
+            exportTPML ( ) ;
             return ;
           }
         }
