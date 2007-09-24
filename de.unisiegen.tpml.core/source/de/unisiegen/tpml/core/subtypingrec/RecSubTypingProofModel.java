@@ -721,16 +721,13 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
     builder.addText ( "}" ) ; //$NON-NLS-1$
     builder.addText ( "}" ) ; //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\longtext{-30pt}" ) ; //$NON-NLS-1$
+    builder.addText ( "\\longtext{0mm}" ) ; //$NON-NLS-1$
     for ( int i = 1 ; i < this.pages ; i ++ )
     {
       builder.addSourceCodeBreak ( 0 ) ;
       builder.addText ( "\\newpage" ) ; //$NON-NLS-1$
       builder.addSourceCodeBreak ( 0 ) ;
-      int page ;
-      if ( i == 1 )
-        page = ( - 220 + this.overlap ) * i ;
-      else page = ( - 215 + this.overlap ) * i ;
+      int page  = ( - 210 + this.overlap ) * i ;
       builder.addText ( "\\longtext{" + page + "mm}" ) ; //$NON-NLS-1$ //$NON-NLS-2$
     }
     return builder ;
