@@ -203,7 +203,7 @@ public class GeneralLaTex
           int count = Integer.valueOf (
               GeneralLaTex.this.dialog.overlappingTextField.getText ( ) )
               .intValue ( ) ;
-          if ( ( count <= 0 ) || ( count > 50 ) )
+          if ( ( count < 0 ) || ( count > 50 ) )
           {
             GeneralLaTex.this.dialog.overlappingTextField
                 .setBackground ( Color.RED ) ;
