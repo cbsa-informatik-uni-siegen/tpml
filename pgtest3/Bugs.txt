@@ -6,14 +6,9 @@
 *** Michael ***
 - Die Dateien "build.xml", "tpml.xml", "register.cmd" und 
   "unregister.cmd" aus pgtest3 entfernen
-- Kasten um TeX-Export Button entfernen,
-  folgende Werte setzen, wie beim Druck-Button
-    <Property name="borderPainted" type="boolean" value="false"/>
-    <Property name="focusPainted" type="boolean" value="false"/>
-    <Property name="focusable" type="boolean" value="false"/>
-    <Property name="opaque" type="boolean" value="false"/>
 - Typeinference: verschieben für Knoten verbieten, auf die schon
 	eine Regel angewendet wurde.
+- Bei den Rules die doppelten Klammern entfernen.
         
 
 *** Christian ***
