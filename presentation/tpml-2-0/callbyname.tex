@@ -1,20 +1,20 @@
 \myslide{Call by Name}
 {
-  \begin{itemgroup}{"Ubersicht}
+  \begin{itemgroup}{Übersicht}
     \item Sprachen \LZEROCBN, \LONECBN und \LTWOCBN  mit Call by Name Semantik
-    \item Ausdr"ucke werden nicht erst ausgewertet, sondern direkt eingesetzt,
+    \item Ausdrücke werden nicht erst ausgewertet, sondern direkt eingesetzt,
           dadurch kann es zu unterschiedlichen Ergebnissen kommen
-    \item "Anderung der Small Step Semantik
-    \item "Anderung der Big Step Semantik
-    \item Einf"uhrung eigener Dateiendungen
-    \item Relevant f"ur die Pr"ufung \glqq \TPONE \grqq
+    \item Änderung der Small Step Semantik
+    \item Änderung der Big Step Semantik
+    \item Einführung eigener Dateiendungen
+    \item Relevant für die Prüfung \glqq \TPONE \grqq
   \end{itemgroup}
 }
 
 
 \myslide{Call by Name}
 {
-  {\bf "Anderungen:} Small Step Semantik\\[5mm]
+  {\bf Änderungen:} Small Step Semantik\\[5mm]
   \begin{tabular}{ll}
      \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
      \mbox{(BETA)}        & $\ExprApplication{\Parenthesis{\ExprLambda{id}{}{e_1}}}{e_2} \to e_1[e_2/\id]$ \\[3mm]
@@ -29,7 +29,7 @@
 
 \myslide{Call by Name}
 {
-  {\bf "Anderungen:} Big Step Semantik\\[5mm]
+  {\bf Änderungen:} Big Step Semantik\\[5mm]
   \begin{tabular}{ll}
      \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
      \mbox{(BETA)}        & $\regel{e_1[e_2/\id] \eval v}
