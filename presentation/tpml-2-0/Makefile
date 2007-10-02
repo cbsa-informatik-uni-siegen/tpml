@@ -14,6 +14,8 @@ TEXFILES =								\
 	minimaltyping.tex					\
 	subtyping.tex						\
 	fazit.tex							\
+	verfeinerungen.tex					\
+	view.tex							\
 	vortrag.tex
 
 all: pdf
