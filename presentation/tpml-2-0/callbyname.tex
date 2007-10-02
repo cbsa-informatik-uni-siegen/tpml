@@ -17,12 +17,14 @@
   {\bf Änderungen:} Small Step Semantik\\[5mm]
   \begin{tabular}{ll}
      \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
-     \mbox{(BETA)}        & $\ExprApplication{\Parenthesis{\ExprLambda{id}{}{e_1}}}{e_2} \to e_1[e_2/\id]$ \\[3mm]
+     \mbox{(BETA)}        & $\ExprApplication{\Parenthesis{\ExprLambda{id}{}{e_1}}}{e_2} \to
+                                               e_1[e_2/\ExprIdentifier{id}]$ \\[3mm]
      \mbox{(APP-RIGHT)\ } & $\regel{e \to e'}
                                    {v\,e \to v\,e'}$ \ 
                                    falls ${v}$ nicht von der Form $\ExprLambda{id}{}{e_0}$ \\[5mm]
      \mbox{(LET-EVAL)\  } & nicht vorhanden \\[3mm]
-     \mbox{(LET-EXEC)}    & $\ExprLet{\id}{}{e_1}{e_2} \to e_2[e_1/\id]$ \\[3mm]
+     \mbox{(LET-EXEC)}    & $\ExprLet{\ExprIdentifier{id}}{}{e_1}{e_2} \to
+                                      e_2[e_1/\ExprIdentifier{id}]$ \\[3mm]
   \end{tabular}
 }
 
@@ -32,7 +34,7 @@
   {\bf Änderungen:} Big Step Semantik\\[5mm]
   \begin{tabular}{ll}
      \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
-     \mbox{(BETA)}        & $\regel{e_1[e_2/\id] \eval v}
+     \mbox{(BETA)}        & $\regel{e_1[e_2/\ExprIdentifier{id}] \eval v}
                                    {\ExprApplication{\Parenthesis{\ExprLambda{id}{}{e_1}}}{e_2} \eval v}$ \\[5mm]
      \mbox{(APP)}         & nicht vorhanden \\[3mm]
      \mbox{(APP-LEFT)}    & $\regel{e_1 \eval v_1 \quad v_1\,e_2 \eval v}
@@ -40,8 +42,8 @@
      \mbox{(APP-RIGHT)}   & $\regel{e_2 \eval v_2 \quad v_1\,v_2 \eval v}
                                    {v_1\,e_2 \eval v}$ \ 
                                    falls ${v_1}$ nicht von der Form $\ExprLambda{id}{}{e}$ \\[5mm]
-     \mbox{(LET)}         & $\regel{e_2[e_1/\id] \eval v}
-                                   {\ExprLet{\id}{}{e_1}{e_2} \eval v}$ \\[5mm]
+     \mbox{(LET)}         & $\regel{e_2[e_1/\ExprIdentifier{id}] \eval v}
+                                   {\ExprLet{\ExprIdentifier{id}}{}{e_1}{e_2} \eval v}$ \\[5mm]
   \end{tabular}
 }
 

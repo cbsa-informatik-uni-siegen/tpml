@@ -1,7 +1,3 @@
-% packages
-\usepackage{color}
-\usepackage{ifthen}
-
 % tpml
 \newcommand{\TPML}{\textsf{\textmd{TPML}}}
 \newcommand{\TPMLTWOZERO}{\textsf{\textmd{TPML 2.0}}}
@@ -17,37 +13,6 @@
 \newcommand{\LTWOO}{$\mathcal{L}_2^{O}$}
 \newcommand{\LTWOC}{$\mathcal{L}_2^{C}$}
 
-% color
-\definecolor{ColorExpression}{rgb}{0.0,0.0,0.0}
-\definecolor{ColorKeyword}{rgb}{0.5,0.0,0.0}
-\definecolor{ColorConstant}{rgb}{0.0,0.0,0.5}
-\definecolor{ColorIdentifier}{rgb}{0.0,0.0,0.4}
-\definecolor{ColorType}{rgb}{0.0,0.6,0.0}
-\definecolor{ColorNone}{rgb}{0.0,0.0,0.0}
-\definecolor{ColorRule}{rgb}{0.0,0.0,0.0}
-
 % big step
 \newcommand{\regel}[2]{\begin{array}{@{}c@{}} #1 \\ \hline #2 \end{array}}
 \newcommand{\eval}{\Downarrow}
-
-% keyword
-\newcommand{\KeyLet}{\textbf{\color{ColorKeyword}{let}}}
-\newcommand{\KeyIn}{\textbf{\color{ColorKeyword}{in}}}
-\newcommand{\KeyLambda}{\textbf{\color{ColorKeyword}{$\lambda$}}}
-
-% identifier
-\newcommand{\id}{\ExprIdentifier{id}}
-
-% expression
-\newcommand{\ExprApplication}[2]{\color{ColorExpression}#1\ #2}
-\newcommand{\ExprConstant}[1]{\mbox{\textbf{\color{ColorConstant}{#1}}}}
-\newcommand{\ExprExn}[1]{\mbox{\color{ColorExpression}{$\uparrow$\ #1}}}
-\newcommand{\ExprLambda}[3]{\ifthenelse{\equal{#2}{}}
-             {\color{ColorExpression}\KeyLambda#1.#3}
-             {\color{ColorExpression}\KeyLambda#1\colon\ #2.#3}}
-\newcommand{\ExprLet}[4]{\ifthenelse{\equal{#2}{}}
-             {\color{ColorExpression}\KeyLet\ #1\ =\ #3\ \KeyIn\ #4}
-             {\color{ColorExpression}\KeyLet\ #1\colon\ #2\ =\ #3\ \KeyIn\ #4}}
-\newcommand{\ExprIdentifier}[1]{\mbox{\color{ColorIdentifier}{#1}}}
-\newcommand{\ExprInfixOperation}[3]{\color{ColorExpression}#2\ #1\ #3}
-\newcommand{\Parenthesis}[1]{(#1)}
