@@ -9,7 +9,7 @@
 %
 
 \usepackage{amssymb}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage{german}
 \usepackage{ngerman}
 
@@ -30,7 +30,7 @@
 \addoverviewitem{Benutzerfreundlichkeit: Outline, Parser-Autovervollst"andigung}
 \addoverviewitem{Weitere Sprachen: Call by Name, Objekte und Klassen}
 \addoverviewitem{\LaTeX-Export}
-\addoverviewitem{Beweise: Type Inference, Minimal Typing und Subtyping}
+\addoverviewitem{Neue Beweise: Type Inference, Minimal Typing und Subtyping}
 \addoverviewitem{Fazit}
 
 \CenteredGraphics
@@ -75,9 +75,14 @@
 \include{latex}
 
 %%
-%% Type Inference
+%% Beweise
 %%
 \makeoverviewslide
+\include{beweise}
+
+%%
+%% Type Inference
+%%
 \include{typeinference}
 
 %%

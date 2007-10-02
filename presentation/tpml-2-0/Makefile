@@ -9,6 +9,7 @@ TEXFILES =								\
 	objekte.tex							\
 	klassen.tex							\
 	latex.tex							\
+	beweis.tex							\
 	typeinference.tex					\
 	minimaltyping.tex					\
 	subtyping.tex						\
