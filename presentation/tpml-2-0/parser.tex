@@ -10,15 +10,18 @@
           markieren zu lassen
     \item Eine automatische Vervollständigung wurde eingeführt, um vom Benutzer
           eingegebene, noch unvollständige Ausdrücke zu vervollständigen
-    \item Fehlermeldungen die mehrere Stellen betreffen wurden eingeführt
+    \item Fehlermeldungen, die mehrere Stellen betreffen, wurden eingeführt
   \end{itemgroup}
 }
 
 \myslide{Parser-Autovervollständigung}
 {
-  {\bf Fehlermeldungen}\\[5mm]
+  {\bf Fehlermeldungen}\\[2mm]
   Gibt der Anwender \glqq \ExprInfixOperation{+}{1}{\KeyLet\ \ExprIdentifier{x} =}\grqq\ 
   ein, wird der Teil \glqq \KeyLet\ \ExprIdentifier{x} =\grqq\ hervorgehoben und der Tooltip
   verrät dem Anwender, dass er noch den Ausdruck \glqq $e_1$\ \KeyIn\ $e_2$\grqq\ eingeben muss,
   um \glqq{\bf Let}\grqq\ zu vervollständigen.
+  \begin{center}
+    \includegraphics[height=9cm]{images/parser.png}
+  \end{center}
 }
