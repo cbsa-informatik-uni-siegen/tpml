@@ -8,6 +8,7 @@ TEXFILES =								\
 	parser.tex							\
 	objekte.tex							\
 	klassen.tex							\
+	latex.tex							\
 	typeinference.tex					\
 	minimaltyping.tex					\
 	subtyping.tex						\
