@@ -188,6 +188,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBar1.add(saveAsButton);
 
         latexExportButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/latexexport_klein_.gif")));
+        latexExportButton.setBorderPainted(false);
         latexExportButton.setFocusPainted(false);
         latexExportButton.setFocusable(false);
         latexExportButton.setOpaque(false);
