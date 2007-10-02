@@ -1,6 +1,6 @@
-\myslide{Call by Name}
+\myslide{Call by Name - Übersicht}
 {
-  \begin{itemgroup}{Übersicht}
+  \begin{itemgroup}{}
     \item Sprachen \LZEROCBN, \LONECBN und \LTWOCBN  mit Call by Name Semantik
     \item Ausdrücke werden nicht erst ausgewertet, sondern direkt eingesetzt,
           dadurch kann es zu unterschiedlichen Ergebnissen kommen
@@ -12,9 +12,9 @@
 }
 
 
-\myslide{Call by Name}
+\myslide{Call by Name - Änderungen}
 {
-  {\bf Änderungen:} Small Step Semantik\\[5mm]
+  {\bf Small Step Semantik}\\[5mm]
   \begin{tabular}{ll}
      \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
      \mbox{(BETA)}        & $\ExprApplication{\Parenthesis{\ExprLambda{id}{}{e_1}}}{e_2} \to
@@ -29,9 +29,9 @@
 }
 
 
-\myslide{Call by Name}
+\myslide{Call by Name - Änderungen}
 {
-  {\bf Änderungen:} Big Step Semantik\\[5mm]
+  {\bf Big Step Semantik}\\[5mm]
   \begin{tabular}{ll}
      \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
      \mbox{(BETA)}        & $\bigsteprule{e_1[e_2/\ExprIdentifier{id}] \eval v}
@@ -48,9 +48,9 @@
 }
 
 
-\myslide{Call by Name}
+\myslide{Call by Name - Beispiel}
 {
-  {\bf Beispiel:} Unterschied von \glqq Call by Name\grqq\ zu \glqq Call by Value\grqq\\[5mm]
+  {\bf Unterschied der Semantiken}\\[5mm]
   \begin{tabular}{ll}
      Call by Value $\quad$      & $\ExprLet{\ExprIdentifier{x}}{}
                                   {\ExprInfixOperation{/}{\ExprConstant{1}}{\ExprConstant{0}}}

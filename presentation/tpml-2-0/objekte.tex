@@ -7,25 +7,21 @@
 
 \myslide{Objekte}
 {
+  {\bf Erweiterung der Produktionen}
   \bgram
     e \is (\ExprSend{e}{\ExprIdentifier{m}})   & & \mbox{Methodenaufruf}
       \al \ExprObject{\ExprIdentifier{self}}{\TypeTypeVariable{\tau}}{r}   & & \mbox{Objekt}
       \al \ExprDuplication{\ExprIdentifier{$a_1$}\ =\ e_1;\ \ldots\ ;
-          \ExprIdentifier{$a_n$} = e_n}   & & \mbox{Duplikation}
-  \egram
+          \ExprIdentifier{$a_n$} = e_n}   & & \mbox{Duplikation}\\
 
-  \bgram
     r \is \ExprRow{\epsilon}   & & \mbox{leere Reihe}
       \al \ExprAttribute{\ExprIdentifier{a}}{e}\ r_1   & & \mbox{Attribut}
-      \al \ExprMethod{\ExprIdentifier{m}}{\TypeTypeVariable{\tau}}{e}\ r_1   & & \mbox{Methode}
-  \egram
+      \al \ExprMethod{\ExprIdentifier{m}}{\TypeTypeVariable{\tau}}{e}\ r_1   & & \mbox{Methode}\\
 
-  \bgram
-    \tau \is \TypeRowType{\phi}
-  \egram
+    \tau \is \TypeRowType{\phi}   & & \mbox{Objekttyp}\\
 
-  \bgram
-    \phi \is \TypeRowType{\emptyset}
-         \al \TypeRowType{{\ExprIdentifier{m}}\colon\ {\TypeTypeVariable{\tau}}\ ;}\ \phi_1
+    \phi \is \TypeRowType{\emptyset}   & & \mbox{Leerer Reihentyp}
+         \al \TypeRowType{{\ExprIdentifier{m}}\colon\ {\TypeTypeVariable{\tau}}\ ;}\ \phi_1   
+             & & \mbox{Methoden-Reihentyp}
   \egram
 }
