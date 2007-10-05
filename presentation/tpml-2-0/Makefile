@@ -6,6 +6,7 @@ TEXFILES =								\
 	outline.tex							\
 	callbyname.tex						\
 	parser.tex							\
+	sourcecode.tex						\
 	objekte.tex							\
 	klassen.tex							\
 	latex.tex							\
