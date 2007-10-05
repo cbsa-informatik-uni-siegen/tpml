@@ -1,6 +1,20 @@
 \myslide{Minimal Typing}
 {
-  \begin{itemgroup}{Minimal Typing}
-    \item Blablabla ...
+  \textbf{Minimal Typing ist ein Beweiswerkzeug, um den Typ für einen Ausdruck zu bestimmen} \\[6mm]
+  \begin{itemgroup}{Unterschiede zu Type Checker und Type Inference}
+    \item Es gibt keine Typvariablen mehr
+      \catchword {Es werden keine Typen mehr geraten}
+    \item Es muss ein Typ für die Identifier angegeben werden
+      \catchword $\TypeEnvironment{}\ {\vartriangleright}\ {\ExprLet{\ExprIdentifier{x}}{}
+         {\ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprConstant{5}}{\ExprConstant{5}}}
+         {\ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprIdentifier{x}}{\ExprConstant{2}}}}$
+      $\to$ {\color{red}{falsch}}
+      \catchword $\TypeEnvironment{}\ {\vartriangleright}\ {\ExprLet{\ExprIdentifier{x}}{\TypeIntegerType}
+         {\ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprConstant{5}}{\ExprConstant{5}}}
+         {\ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprIdentifier{x}}{\ExprConstant{2}}}}$
+      $\to$ {\color{green}{richtig}}
+    \item Es wird überprüft ob der angegebene Typ und der berechnete Typ übereinstimmt
+      \catchword{Subtyprelation}
+    
   \end{itemgroup}
 }

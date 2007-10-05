@@ -1,6 +1,38 @@
 \myslide{\LaTeX-Export}
 {
   \begin{itemgroup}{\LaTeX-Export}
-    \item Blablabla ...
+    \item Alle Komponenten implementieren eine toLatexString()-Methode
+    \item Jede Komponente liefert die benötigten Commands und Imports
+    \catchword{Im Kopf der exportierten \LaTeX-Datei}
+    \catchword{Als seperate \LaTeX-Datei}
+    \item \LaTeX-Export für Sourcecode ist auf eine Din A4 Seite beschränkt
+
+  \end{itemgroup}
+}
+
+\myslide{\LaTeX-Export}
+{
+  \begin{itemgroup}{Wo findet der \LaTeX-Export Verwendung}
+    \item Erstellen von Übungszetteln
+    \item Erstellen von Musterlösungen
+    \item Zum Einbau von Ausdrücken in z.B. wissenschaftlichen Arbeiten
+    \item Innerhalb der Projektgruppe zum Schreiben des Handbuchs und der Präsentation
+    \item Konvertierung in pdf-Format
+    \catchword{Anpassung des Dokuments nach eigenen Vorstellungen bezüglich der Farben und
+    Formatierungen}
+  \end{itemgroup}
+}
+
+\myslide{\LaTeX-Export}
+{
+  \begin{itemgroup}{Einstellungen}
+    \item Allgemeine Einstellungen
+    \catchword{Name der zu erstellenden \LaTeX-Datei}
+    \catchword{Commands und Imports in seperate Datei}
+    \catchword{Auswahl des Zielordners}
+    \item Extra Einstellungen für Models der Baumstruktur
+    \catchword{Überlappung der einzelnen Seiten \\ (Wert zwischen $0mm$ und $50mm$)}
+    \catchword{Anzahl der Seiten \\ (Maximale Anzahl 13 Seiten)}
+
   \end{itemgroup}
 }

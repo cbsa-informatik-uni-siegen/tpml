@@ -1,32 +1,39 @@
 \myslide{Type Inference - Implementierung}
 { 
-    \begin{itemgroup}{Der Typinferenzalgorithmus arbeitet auf einer Liste von TypeFormulas. \\[5mm] 
-	TypeFormula:}
+    \begin{itemgroup}{Der Typinferenzalgorithmus arbeitet auf einer Liste von TypeFormulas. \\[10mm] 
+	TypeFormula:\\[-4mm]}
+    
     \item \textbf{Typeequation} 	$\to$	$\SeenTypes{}\ \vdash\ \TypeEquationTypeInference
 	{\TypeTypeVariable{\alpha3}} {\TypeIntegerType} $ 
     \item \textbf{Typejudgement} $\to$  	 $\TypeJudgement {\TypeEnvironment{}} {\ExprConstant{1}}
     	{\TypeTypeVariable{\alpha5}} $ 
     \item \textbf{Subtype}	$\to$	$\TypeSubType {\TypeIntegerType} {\TypeBooleanType} $  \\[-3mm]
-    \item \textbf{Typeequation} 
-	\catchword{zur Auswertung von Typgleichungen}
-	\catchword{ensteht durch Anwendung der Regeln auf eine Expression}
-	\catchword{eigenes Regelwerk des Typinferenzalgorithmus}
+
     \end{itemgroup}
 }
 
+\myslide{Type Inference - Implementierung}
+{ 
+    \begin{itemgroup}{Typeequation}
+     
+	\item zur Auswertung von Typgleichungen
+	\item ensteht durch Anwendung der Regeln auf eine Expression 
+	\item eigenes Regelwerk des Typinferenzalgorithmus  \\
+    \end{itemgroup}
+    \begin{itemgroup}{Subtype}	
+	\item zur Auswertung von Subtyprelationen
+	\item ensteht durch Auswertung einer Expression vom Typ Coercion
+	\item Regelwerk entspricht Sub Typing
+     \end{itemgroup}
+}
 
 \myslide{Type Inference - Implementierung}
 { 
-	\begin{itemgroup}{}
-	\item \textbf{Subtype}	
-	\catchword{zur Auswertung von Subtyprelationen}
-	\catchword{ensteht durch Auswertung einer Expression vom Typ Coercion}
-	\catchword{Regelwerk entspricht Sub Typing}
-    	\item \textbf{Typejudgement}
-	\catchword{zur Auswertung von Expressions}
-	\catchword{vom Benutzer vorgeben oder aus einer anderen Expression entstanden}
-	\catchword{Es wird intern eine Type Checker Knoten angelegt, die entsprechende Regel angewendet,
-	und das die enstehenden Knoten der Liste von TypeFormulas hinzugefügt}
-	\catchword{Regelwerk entspricht Type Checker}
+	\begin{itemgroup}{Typejudgement}
+	\item zur Auswertung von Expressions 
+	\item vom Benutzer vorgeben oder aus einer anderen Expression entstanden
+	\item Es wird intern eine Type Checker Knoten angelegt, die entsprechende Regel angewendet,
+	und die enstehenden Knoten der Liste von TypeFormulas hinzugefügt
+	\item Regelwerk entspricht Type Checker
      \end{itemgroup}
 }
