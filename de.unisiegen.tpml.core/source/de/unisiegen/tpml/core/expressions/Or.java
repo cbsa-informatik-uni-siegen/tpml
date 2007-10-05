@@ -148,7 +148,7 @@ public final class Or extends Expression implements DefaultExpressions
     {
       Or other = ( Or ) pObject ;
       return ( ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( this.expressions [ 1 ]
-          .equals ( other.expressions [ 0 ] ) ) ) ;
+          .equals ( other.expressions [ 1 ] ) ) ) ;
     }
     return false ;
   }
