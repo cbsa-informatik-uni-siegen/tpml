@@ -31,7 +31,6 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.subtyping.ProofStep ;
 import de.unisiegen.tpml.core.subtyping.SubTypingModel ;
 import de.unisiegen.tpml.core.typechecker.SeenTypes ;
-import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext ;
 import de.unisiegen.tpml.core.types.MonoType ;
 
 

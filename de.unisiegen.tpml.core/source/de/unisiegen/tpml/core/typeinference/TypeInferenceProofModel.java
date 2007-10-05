@@ -222,7 +222,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel
       boolean mode ) throws ProofRuleException
   {
     // allocate a new TypeCheckerContext
-    NewDefaultTypeInferenceProofContext context = new NewDefaultTypeInferenceProofContext (
+    DefaultTypeInferenceProofContext context = new DefaultTypeInferenceProofContext (
         this , node ) ;
     this.index ++ ;
     DefaultTypeInferenceProofNode typeNode = node ;
