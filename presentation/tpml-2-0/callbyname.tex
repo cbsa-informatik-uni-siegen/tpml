@@ -48,15 +48,46 @@
 }
 
 
-\myslide{Call by Name - Beispiel}
+\myslide{Call by Name - Beispiele}
 {
-  {\bf Unterschied der Semantiken}\\[5mm]
-  \begin{tabular}{ll}
-     Call by Value $\quad$      & $\ExprLet{\ExprIdentifier{x}}{}
-                                  {\ExprInfixOperation{/}{\ExprConstant{1}}{\ExprConstant{0}}}
-                                  {\ExprConstant{2}} \ \ \to \ \ \ExprExn{divide\_by\_zero}$ \\[3mm]
-     Call by Name $\quad$       & $\ExprLet{\ExprIdentifier{x}}{}
-                                  {\ExprInfixOperation{/}{\ExprConstant{1}}{\ExprConstant{0}}}
-                                  {\ExprConstant{2}} \ \ \to \ \ \ExprConstant{2}$ \\[3mm]
+  {\bf Unterschiedlicher Weg - gleiches Ergebnis}\\
+  \begin{tabular}{p{5.5cm}@{}p{1.0cm}@{}p{17.0cm}@{}}
+     Call by Value   & & $
+                         \ExprLet{\ExprIdentifier{x}}{}
+                         {\ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprConstant{1}}{\ExprConstant{1}}}
+                         {\ExprIdentifier{x}}
+                         $\\ & $\to$ & $
+                         \ExprLet{\ExprIdentifier{x}}{}
+                         {\ExprConstant{2}}
+                         {\ExprIdentifier{x}}
+                         $\\ & $\to$ & $
+                         \ExprConstant{2}
+                         $\\
+     Call by Name    & & $
+                         \ExprLet{\ExprIdentifier{x}}{}
+                         {\ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprConstant{1}}{\ExprConstant{1}}}
+                         {\ExprIdentifier{x}}
+                         $\\ & $\to$ & $
+                         \ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprConstant{1}}{\ExprConstant{1}}
+                         $\\ & $\to$ & $
+                         \ExprConstant{2}
+                         $
+  \end{tabular}\\[3mm]
+  {\bf Unterschiedliches Ergebnis}\\
+  \begin{tabular}{p{5.5cm}@{}p{1.0cm}@{}p{17.0cm}@{}}
+     Call by Value   & & $
+                         \ExprLet{\ExprIdentifier{x}}{}
+                         {\ExprInfixOperation{\ExprBinaryOperator{/}}{\ExprConstant{1}}{\ExprConstant{0}}}
+                         {\ExprConstant{2}}
+                         $\\ & $\to$ & $
+                         \ExprExn{divide\_by\_zero}
+                         $\\
+     Call by Name    & & $
+                         \ExprLet{\ExprIdentifier{x}}{}
+                         {\ExprInfixOperation{\ExprBinaryOperator{/}}{\ExprConstant{1}}{\ExprConstant{0}}}
+                         {\ExprConstant{2}}
+                         $\\ & $\to$ & $
+                         \ExprConstant{2}
+                         $
   \end{tabular}
 }

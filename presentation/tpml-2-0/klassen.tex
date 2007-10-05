@@ -5,7 +5,7 @@
   \end{itemgroup}
 }
 
-\myslide{Klassen}
+\myslide{Klassen - Erweiterung der Produktionen}
 {
   \bproduction
     e \is \ExprClass{\ExprIdentifier{self}}{\TypeTypeVariable{\tau}}{b\ }   & & \mbox{Klasse}
@@ -20,4 +20,13 @@
     \phi \is \TypeRowType{{\ExprIdentifier{a}}\colon\ {\TypeTypeVariable{\tau}}\ ;}\ \phi_1
              & & \mbox{Attribut-Reihentyp}
   \eproduction
+
+  {\bf Problem:} Methoden- und Attribut-Reihentyp sind durch den Parser nicht unterscheidbar,
+                 da dieser nur einen Identifier erkennt.
+
+  \animate{1}{
+    {\bf Lösung:} Konkrete Syntax:
+                  $\TypeRowType{\KeyAttr\ {\ExprIdentifier{a}}\colon\ {\TypeTypeVariable{\tau}}\ ;}
+                   \TypeRowType{{\ExprIdentifier{m}}\colon\ {\TypeTypeVariable{\tau}}\ ;}\ \phi_1$
+  }
 }
