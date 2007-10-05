@@ -1,4 +1,4 @@
-\myslide{Parser-Autovervollständigung}
+\myslide{Parser - Autovervollständigung}
 {
   \begin{itemgroup}{Übersicht}
     \item Die Parser waren sehr unübersichtlich strukturiert
@@ -14,14 +14,24 @@
   \end{itemgroup}
 }
 
-\myslide{Parser-Autovervollständigung}
+\myslide{Parser - Autovervollständigung}
 {
-  {\bf Fehlermeldungen}\\[2mm]
   Gibt der Anwender \glqq \ExprInfixOperation{+}{1}{\KeyLet\ \ExprIdentifier{x} =}\grqq\ 
   ein, wird der Teil \glqq \KeyLet\ \ExprIdentifier{x} =\grqq\ hervorgehoben und der Tooltip
   verrät dem Anwender, dass er noch den Ausdruck \glqq $e_1$\ \KeyIn\ $e_2$\grqq\ eingeben muss,
-  um \glqq{\bf Let}\grqq\ zu vervollständigen.
+  um \glqq{\bf Let}\grqq\ zu vervollständigen. Durch einen Mausklick auf das Symbol wird der
+  fehlende Code ergänzt.
   \begin{center}
-    \includegraphics[height=9cm]{images/parser.png}
+    \includegraphics[height=10cm]{images/parser.png}
+  \end{center}
+}
+
+\myslide{Parser - Fehlermeldungen}
+{
+  Gibt der Anwender einen Ausdruck ein, der laut Theorie nicht zulässig ist, werden die entsprechenden
+  Stellen rot unterstrichen. In diesem Beispiel ist ein Objekt mit Attributen mit dem gleichen Namen
+  nicht erlaubt.
+  \begin{center}
+    \includegraphics[height=10cm]{images/parser_error.png}
   \end{center}
 }

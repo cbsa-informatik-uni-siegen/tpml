@@ -7,21 +7,17 @@
 
 \myslide{Klassen}
 {
-  \bgram
-    e \is \ExprClass{\ExprIdentifier{self}}{\TypeTypeVariable{\tau}}{b\ }   & & \mbox{Klassen}
-       \al \ExprNew{e}   & & \mbox{New}
-  \egram
+  \bproduction
+    e \is \ExprClass{\ExprIdentifier{self}}{\TypeTypeVariable{\tau}}{b\ }   & & \mbox{Klasse}
+       \al \ExprNew{e}   & & \mbox{New}\\
 
-  \bgram
     b \is \ExprInherit{\ExprIdentifier{$a_1$},\ \ldots\ ,\ExprIdentifier{$a_k$}}{e}{b}   & & \mbox{Inherit}
-       \al r   & & \mbox{Reihe}
-  \egram
+       \al r   & & \mbox{Reihe}\\
 
-  \bgram
     \tau \is \TypeClassType{\TypeTypeVariable{\tau}}{\TypeTypeVariable{\phi}}
-  \egram
+             & & \mbox{Klassentyp}\\
 
-  \bgram
     \phi \is \TypeRowType{{\ExprIdentifier{a}}\colon\ {\TypeTypeVariable{\tau}}\ ;}\ \phi_1
-  \egram
+             & & \mbox{Attribut-Reihentyp}
+  \eproduction
 }
