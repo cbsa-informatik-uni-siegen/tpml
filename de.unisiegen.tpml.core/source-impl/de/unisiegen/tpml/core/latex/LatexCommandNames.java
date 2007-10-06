@@ -147,6 +147,18 @@ public interface LatexCommandNames
 
 
   /**
+   * The latex print command for the binding identifier color.
+   */
+  public static final String LATEX_COLOR_BINDING_ID = "ColorBindingId" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the bound identifier color.
+   */
+  public static final String LATEX_COLOR_BOUND_ID = "ColorBoundId" ; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for the expression color.
    */
   public static final String LATEX_COLOR_EXPRESSION = "ColorExpression" ; //$NON-NLS-1$

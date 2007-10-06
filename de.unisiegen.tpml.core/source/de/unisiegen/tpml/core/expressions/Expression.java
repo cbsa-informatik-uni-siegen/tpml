@@ -269,6 +269,32 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
             + red + "," //$NON-NLS-1$
             + green + "," //$NON-NLS-1$
             + blue + "}" , LATEX_COLOR_IDENTIFIER + ": color of identifiers" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    Color colorBindingId = Theme.currentTheme ( ).getBindingIdColor ( ) ;
+    red = ( float ) Math
+        .round ( ( ( float ) colorBindingId.getRed ( ) ) / 255 * 100 ) / 100 ;
+    green = ( float ) Math
+        .round ( ( ( float ) colorBindingId.getGreen ( ) ) / 255 * 100 ) / 100 ;
+    blue = ( float ) Math
+        .round ( ( ( float ) colorBindingId.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions
+        .add ( new DefaultLatexInstruction (
+            "\\definecolor{" + LATEX_COLOR_BINDING_ID + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+                + red + "," //$NON-NLS-1$
+                + green + "," //$NON-NLS-1$
+                + blue + "}" , LATEX_COLOR_BINDING_ID + ": color of binding identifiers" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    Color colorBoundId = Theme.currentTheme ( ).getBoundIdColor ( ) ;
+    red = ( float ) Math
+        .round ( ( ( float ) colorBoundId.getRed ( ) ) / 255 * 100 ) / 100 ;
+    green = ( float ) Math
+        .round ( ( ( float ) colorBoundId.getGreen ( ) ) / 255 * 100 ) / 100 ;
+    blue = ( float ) Math
+        .round ( ( ( float ) colorBoundId.getBlue ( ) ) / 255 * 100 ) / 100 ;
+    instructions
+        .add ( new DefaultLatexInstruction (
+            "\\definecolor{" + LATEX_COLOR_BOUND_ID + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+                + red + "," //$NON-NLS-1$
+                + green + "," //$NON-NLS-1$
+                + blue + "}" , LATEX_COLOR_BOUND_ID + ": color of bound identifiers" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
     return instructions ;
   }
 
