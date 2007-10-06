@@ -1,14 +1,18 @@
 \myslide{Call by Name - Übersicht}
 {
-  \begin{itemgroup}{}
-    \item Einführung neuer Sprachen \LZEROCBN, \LONECBN und \LTWOCBN  mit Call by Name Semantik
-    \item Ausdrücke werden nicht erst ausgewertet, sondern direkt eingesetzt,
-          dadurch kann es zu unterschiedlichen Ergebnissen kommen
-    \item Änderung der Small Step Semantik
-    \item Änderung der Big Step Semantik
-    \item Einführung eigener Dateiendungen (*.l2cbn, ...)
-    \item Relevant für die Prüfung \glqq \TPONE \grqq
-  \end{itemgroup}
+  \textbf{Aufgabenstellung}: Ausdrücke werden nicht erst ausgewertet, sondern direkt eingesetzt,
+  dadurch kann es zu unterschiedlichen Ergebnissen kommen
+
+  \animate{1}
+  {
+    \begin{itemgroup}{Lösung:}
+      \item Einführung neuer Sprachen \LZEROCBN, \LONECBN und \LTWOCBN  mit Call by Name Semantik
+      \item Änderung der Small Step Semantik
+      \item Änderung der Big Step Semantik
+      \item Einführung eigener Dateiendungen (.l2cbn, ...)
+      \item Relevant für die Prüfung \glqq \TPONE \grqq
+    \end{itemgroup}
+  }
 }
 
 
@@ -26,6 +30,14 @@
      \mbox{(LET-EXEC)}    & $\ExprLet{\ExprIdentifier{id}}{}{e_1}{e_2} \to
                                       e_2[e_1/\ExprIdentifier{id}]$ \\[3mm]
   \end{tabular}
+
+  \animate{1}
+  {
+    Die Regel (APP-RIGHT) muss verändert werden, da sonst auf den Ausdruck \glqq
+    $\ExprApplication{\Parenthesis{\ExprLambda{\ExprIdentifier{x}}{}{\ExprIdentifier{x}}}}
+    {\ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprConstant{1}}{\ExprConstant{1}}}$\grqq\ 
+    außer (APP-RIGHT) auch (BETA) anwendbar wäre.
+  }
 }
 
 
