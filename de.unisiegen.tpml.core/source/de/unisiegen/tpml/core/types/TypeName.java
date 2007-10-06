@@ -51,6 +51,13 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
     LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_TYPE_NAME , 1 ,
         "\\mbox{\\color{" + LATEX_COLOR_IDENTIFIER + "}{#1}}" , "t" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    commands
+        .add ( new DefaultLatexCommand (
+            LATEX_TYPE_NAME_BINDING ,
+            1 ,
+            "\\mbox{\\textbf{\\color{" + LATEX_COLOR_BINDING_ID + "}{#1}}}" , "id" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_NAME_BOUND , 1 ,
+        "\\mbox{\\textbf{\\color{" + LATEX_COLOR_BOUND_ID + "}{#1}}}" , "id" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     return commands ;
   }
 

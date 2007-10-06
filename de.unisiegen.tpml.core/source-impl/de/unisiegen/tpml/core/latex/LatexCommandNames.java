@@ -857,6 +857,18 @@ public interface LatexCommandNames
 
 
   /**
+   * The latex print command for binding {@link TypeName}.
+   */
+  public static final String LATEX_TYPE_NAME_BINDING = "TypeTypeNameBinding" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for bound {@link TypeName}.
+   */
+  public static final String LATEX_TYPE_NAME_BOUND = "TypeTypeNameBound" ; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for {@link TypeVariable}.
    */
   public static final String LATEX_TYPE_VARIABLE = "TypeTypeVariable" ; //$NON-NLS-1$
