@@ -79,6 +79,10 @@ public final class Identifier extends Value implements IdentifierOrTypeName
     LatexCommandList commands = new LatexCommandList ( ) ;
     commands.add ( new DefaultLatexCommand ( LATEX_IDENTIFIER , 1 ,
         "\\mbox{\\color{" + LATEX_COLOR_IDENTIFIER + "}{#1}}" , "id" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    commands.add ( new DefaultLatexCommand ( LATEX_IDENTIFIER_BINDING , 1 ,
+        "\\mbox{\\color{" + LATEX_COLOR_BINDING_ID + "}{#1}}" , "id" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    commands.add ( new DefaultLatexCommand ( LATEX_IDENTIFIER_BOUND , 1 ,
+        "\\mbox{\\color{" + LATEX_COLOR_BOUND_ID + "}{#1}}" , "id" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     return commands ;
   }
 

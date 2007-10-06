@@ -533,6 +533,18 @@ public interface LatexCommandNames
 
 
   /**
+   * The latex print command for binding {@link Identifier}.
+   */
+  public static final String LATEX_IDENTIFIER_BINDING = "ExprIdentifierBinding" ; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for bound {@link Identifier}.
+   */
+  public static final String LATEX_IDENTIFIER_BOUND = "ExprIdentifierBound" ; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for {@link InfixOperation}.
    */
   public static final String LATEX_INFIX_OPERATION = "ExprInfixOperation" ; //$NON-NLS-1$
