@@ -1,33 +1,37 @@
-\myslide{Outline}
+\myslide{Outline - Übersicht}
 {
-  \begin{itemgroup}{Übersicht}
-    \item Ausdrücke und Typen können in ihrer Baumansicht betrachtet werden
+  \begin{itemgroup}{}
+    \item Von Ausdrücken und Typen kann der Ableitungsbaum betrachtet werden
+          (z.B. $\TypeArrowType{\TypeIntegerType}{\TypeArrowType{\TypeIntegerType}{\TypeIntegerType}}$)
     \item Schwierige Ausdrucke können so besser verstanden werden
     \item Name der Ausdücke und Typen wird dargestellt (z.B. Let)
     \item Menge der Ausdrücke und Typen wird dargestellt (z.B. op)
-    \item Der Index wird ebenfalls eingeblendet (z.B. $e_1$)
-    \item Bindungen von Identifiern können betrachtet werden
+    \item Der Index der Kinder wird eingeblendet (z.B. $e_1$)
+    \item Bindungen von Identifiern (z.B. $\ExprLet{\ExprIdentifierBinding{x}}{}{\ExprConstant{2}}
+          {\ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprIdentifierBound{x}}{\ExprConstant{1}}}$)
     \item Die Outline muss bei neu implementierten Ausdrücken nicht angepasst
           werden, sondern übernimmt diese automatisch
   \end{itemgroup}
 }
 
-\myslide{Outline}
+\myslide{Outline - Einstellungen}
 {
-  \begin{itemgroup}{Einstellungen}
-    \item \glqq Hervorheben\grqq: Selektierte Knoten werden in höheren Knoten markiert
-    \item \glqq Gebundene\grqq: Gebundene Identifier werden markiert
-    \item \glqq Freie\grqq: Frei vorkommende Identifier werden markiert
-    \item \glqq Ersetzen\grqq: Selektierte Knoten werden in höheren Knoten durch
-                               \glqq ...\grqq\ ersetzt
-    \item \glqq Source Code\grqq: Der zu dem selektierten Knoten passende Source Code
-                                  wird im Editor hervorgehoben
-    \item \glqq Auto Update\grqq: Die Outline wird bei Änderungen automatisch aktualisiert
-                                  (z.B. Änderungen im Source Code)
+  \begin{itemgroup}{}
+    \item \textbf{Hervorheben}: Selektierte Knoten werden in höheren Knoten farblich 
+                                hervorgehoben
+    \item \textbf{Gebundene}: Gebundene Identifier werden markiert
+    \item \textbf{Freie}: Frei vorkommende Identifier werden markiert
+    \item \textbf{Ersetzen}: Selektierte Knoten werden in höheren Knoten durch
+                             \glqq\textbf{...}\grqq\ ersetzt, dadurch wird die Ansicht
+                             kompakter
+    \item \textbf{Source Code}: Der zu dem selektierten Knoten passende Source Code
+                                wird im Editor hervorgehoben
+    \item \textbf{Auto Update}: Die Outline wird bei Änderungen automatisch aktualisiert
+                                (z.B. Änderungen im Source Code Editor)
   \end{itemgroup}
 }
 
-\myslide{Outline}
+\myslide{Outline - Beispiel}
 {
   \begin{center}
     \includegraphics[height=14cm]{images/outline.png}

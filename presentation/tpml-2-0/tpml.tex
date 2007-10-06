@@ -23,6 +23,10 @@
 \definecolor{ColorConstant}{rgb}{0.0,0.0,0.5}
 % ColorIdentifier: color of identifiers
 \definecolor{ColorIdentifier}{rgb}{0.0,0.0,0.4}
+% ColorBindingId: color of binding identifiers
+\definecolor{ColorBindingId}{rgb}{1.0,0.33,0.1}
+% ColorBoundId: color of bound identifiers
+\definecolor{ColorBoundId}{rgb}{1.0,0.67,0.2}
 % ColorType: color of types
 \definecolor{ColorType}{rgb}{0.0,0.6,0.0}
 % ColorNone: color of normal text
@@ -166,6 +170,10 @@
 \newcommand{\ExprExn}[1]{\mbox{\color{ColorExpression}{$\uparrow$\ #1}}}
 % ExprIdentifier{id}
 \newcommand{\ExprIdentifier}[1]{\mbox{\color{ColorIdentifier}{#1}}}
+% ExprIdentifierBinding{id}
+\newcommand{\ExprIdentifierBinding}[1]{\mbox{\textbf{\color{ColorBindingId}{#1}}}}
+% ExprIdentifierBound{id}
+\newcommand{\ExprIdentifierBound}[1]{\mbox{\textbf{\color{ColorBoundId}{#1}}}}
 % ExprInfixOperation{op}{e1}{e2}
 \newcommand{\ExprInfixOperation}[3]{\color{ColorExpression}#2\ #1\ #3}
 % ExprInherit{a1, ... , ak}{e}{b}
@@ -396,6 +404,10 @@
 \newcommand{\TypeTupleType}[1]{\color{ColorExpression}#1}
 % TypeTypeName{t}
 \newcommand{\TypeTypeName}[1]{\mbox{\color{ColorIdentifier}{#1}}}
+% TypeTypeNameBinding{id}
+\newcommand{\TypeTypeNameBinding}[1]{\mbox{\textbf{\color{ColorBindingId}{#1}}}}
+% TypeTypeNameBound{id}
+\newcommand{\TypeTypeNameBound}[1]{\mbox{\textbf{\color{ColorBoundId}{#1}}}}
 % TypeTypeVariable{tvar}
 \newcommand{\TypeTypeVariable}[1]{\textbf{\color{ColorType}{$#1$}}}
 % TypeUnifyType
