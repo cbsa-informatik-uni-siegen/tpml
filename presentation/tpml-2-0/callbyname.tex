@@ -1,7 +1,7 @@
 \myslide{Call by Name - Übersicht}
 {
   \begin{itemgroup}{}
-    \item Sprachen \LZEROCBN, \LONECBN und \LTWOCBN  mit Call by Name Semantik
+    \item Einführung neuer Sprachen \LZEROCBN, \LONECBN und \LTWOCBN  mit Call by Name Semantik
     \item Ausdrücke werden nicht erst ausgewertet, sondern direkt eingesetzt,
           dadurch kann es zu unterschiedlichen Ergebnissen kommen
     \item Änderung der Small Step Semantik
@@ -50,43 +50,84 @@
 
 \myslide{Call by Name - Beispiele}
 {
-  {\bf Unterschiedlicher Weg - gleiches Ergebnis}\\
-  \begin{tabular}{p{5.5cm}@{}p{1.0cm}@{}p{17.0cm}@{}}
+  {\bf Unterschiedlicher Weg - gleiches Ergebnis}\\[5mm]
+  \begin{tabular}{p{5.5cm}@{}p{6.0cm}@{}p{12.0cm}@{}}
      Call by Value   & & $
                          \ExprLet{\ExprIdentifier{x}}{}
                          {\ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprConstant{1}}{\ExprConstant{1}}}
                          {\ExprIdentifier{x}}
-                         $\\ & $\to$ & $
+                         $\\[3mm] & $\SmallStepArrow{$
+                         \begin{tabular}[t]{p{4.5cm}@{}}
+                         \tiny{(LET-EVAL)}
+                         \end{tabular}$}{$
+                         \begin{tabular}[t]{p{4.5cm}@{}}
+                         \tiny{(OP)}
+                         \end{tabular}$}$ & $
                          \ExprLet{\ExprIdentifier{x}}{}
                          {\ExprConstant{2}}
                          {\ExprIdentifier{x}}
-                         $\\ & $\to$ & $
+                         $\\[-5mm] & $\SmallStepArrow{$
+                         \begin{tabular}[t]{p{4.5cm}@{}}
+                         \tiny{}
+                         \end{tabular}$}{$
+                         \begin{tabular}[t]{p{4.5cm}@{}}
+                         \tiny{(LET-EXEC)}
+                         \end{tabular}$}$ & $
                          \ExprConstant{2}
-                         $\\
+                         $\\[10mm]
      Call by Name    & & $
                          \ExprLet{\ExprIdentifier{x}}{}
                          {\ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprConstant{1}}{\ExprConstant{1}}}
                          {\ExprIdentifier{x}}
-                         $\\ & $\to$ & $
+                         $\\[3mm] & $\SmallStepArrow{$
+                         \begin{tabular}[t]{p{4.5cm}@{}}
+                         \tiny{}
+                         \end{tabular}$}{$
+                         \begin{tabular}[t]{p{4.5cm}@{}}
+                         \tiny{(LET-EXEC)}
+                         \end{tabular}$}$ & $
                          \ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprConstant{1}}{\ExprConstant{1}}
-                         $\\ & $\to$ & $
+                         $\\[-5mm] & $\SmallStepArrow{$
+                         \begin{tabular}[t]{p{4.5cm}@{}}
+                         \tiny{}
+                         \end{tabular}$}{$
+                         \begin{tabular}[t]{p{4.5cm}@{}}
+                         \tiny{(OP)}
+                         \end{tabular}$}$
+                         & $
                          \ExprConstant{2}
                          $
   \end{tabular}\\[3mm]
-  {\bf Unterschiedliches Ergebnis}\\
-  \begin{tabular}{p{5.5cm}@{}p{1.0cm}@{}p{17.0cm}@{}}
+}
+
+\myslide{Call by Name - Beispiele}
+{
+  {\bf Unterschiedliches Ergebnis}\\[5mm]
+  \begin{tabular}{p{5.5cm}@{}p{6.5cm}@{}p{11.5cm}@{}}
      Call by Value   & & $
                          \ExprLet{\ExprIdentifier{x}}{}
                          {\ExprInfixOperation{\ExprBinaryOperator{/}}{\ExprConstant{1}}{\ExprConstant{0}}}
                          {\ExprConstant{2}}
-                         $\\ & $\to$ & $
+                         $\\[3mm] & $\SmallStepArrow{$
+                         \begin{tabular}[t]{p{5.0cm}@{}}
+                         \tiny{(LET-EVAL-EXN)}
+                         \end{tabular}$}{$
+                         \begin{tabular}[t]{p{5.0cm}@{}}
+                         \tiny{(OP)}
+                         \end{tabular}$}$ & $
                          \ExprExn{divide\_by\_zero}
-                         $\\
+                         $\\[10mm]
      Call by Name    & & $
                          \ExprLet{\ExprIdentifier{x}}{}
                          {\ExprInfixOperation{\ExprBinaryOperator{/}}{\ExprConstant{1}}{\ExprConstant{0}}}
                          {\ExprConstant{2}}
-                         $\\ & $\to$ & $
+                         $\\[3mm] & $\SmallStepArrow{$
+                         \begin{tabular}[t]{p{5.0cm}@{}}
+                         \tiny{}
+                         \end{tabular}$}{$
+                         \begin{tabular}[t]{p{5.0cm}@{}}
+                         \tiny{(LET-EXEC)}
+                         \end{tabular}$}$ & $
                          \ExprConstant{2}
                          $
   \end{tabular}
