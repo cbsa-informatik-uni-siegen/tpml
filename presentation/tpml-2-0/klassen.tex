@@ -7,19 +7,23 @@
 
 \myslide{Klassen - Erweiterung der Produktionen}
 {
-  \bproduction
-    e \is \ExprClass{\ExprIdentifier{self}}{\TypeTypeVariable{\tau}}{b\ }   & & \mbox{Klasse}
-       \al \ExprNew{e}   & & \mbox{New}\\
+  \begin{tabular}{lrp{12.0cm}l}
+    e      & ::=    & $\ExprClass{\ExprIdentifier{self}}{\TypeTypeVariable{\tau}}{b\ }$
+                    & \mbox{Klasse}\\
+           & $\mid$ & \ExprNew{e}
+                    & \mbox{New}\\[5mm]
 
-    b \is \ExprInherit{\ExprIdentifier{$a_1$},\ \ldots\ ,\ExprIdentifier{$a_k$}}{e}{b}   & & \mbox{Inherit}
-       \al r   & & \mbox{Reihe}\\
+    b      & ::=    & $\ExprInherit{\ExprIdentifier{$a_1$},\ \ldots\ ,\ExprIdentifier{$a_k$}}{e}{b}$
+                    & \mbox{Inherit}\\
+           & $\mid$ & r
+                    & \mbox{Reihe}\\[5mm]
 
-    \tau \is \TypeClassType{\TypeTypeVariable{\tau}}{\TypeTypeVariable{\phi}}
-             & & \mbox{Klassentyp}\\
+    $\tau$ & ::=    & $\TypeClassType{\TypeTypeVariable{\tau}}{\TypeTypeVariable{\phi}}$
+                    & \mbox{Klassentyp}\\[5mm]
 
-    \phi \is \TypeRowType{{\ExprIdentifier{a}}\colon\ {\TypeTypeVariable{\tau}}\ ;}\ \phi_1
-             & & \mbox{Attribut-Reihentyp}
-  \eproduction
+    $\phi$ & ::=    & $\TypeRowType{{\ExprIdentifier{a}}\colon\ {\TypeTypeVariable{\tau}}\ ;}\ \phi_1$
+                    & \mbox{Attribut-Reihentyp}
+  \end{tabular}
 
   {\bf Problem:} Methoden- und Attribut-Reihentyp sind durch den Parser nicht unterscheidbar,
                  da dieser nur einen Identifier erkennt.

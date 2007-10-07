@@ -7,20 +7,27 @@
 
 \myslide{Objekte - Erweiterung der Produktionen}
 {
-  \bproduction
-    e \is (\ExprSend{e}{\ExprIdentifier{m}})   & & \mbox{Methodenaufruf}
-      \al \ExprObject{\ExprIdentifier{self}}{\TypeTypeVariable{\tau}}{r}   & & \mbox{Objekt}
-      \al \ExprDuplication{\ExprIdentifier{$a_1$}\ =\ e_1;\ \ldots\ ;
-          \ExprIdentifier{$a_n$} = e_n}   & & \mbox{Duplikation}\\
+  \begin{tabular}{lrp{12.0cm}l}
+    e      & ::=    & $\Parenthesis{\ExprSend{e}{\ExprIdentifier{m}}}$
+                    & \mbox{Methodenaufruf}\\
+           & $\mid$ & $\ExprObject{\ExprIdentifier{self}}{\TypeTypeVariable{\tau}}{r}$
+                    & \mbox{Objekt}\\
+           & $\mid$ & $\ExprDuplication{\ExprIdentifier{$a_1$}\ =\ e_1;\ \ldots\ ; \ExprIdentifier{$a_n$} = e_n}$
+                    & \mbox{Duplikation}\\[5mm]
 
-    r \is \ExprRow{\epsilon}   & & \mbox{leere Reihe}
-      \al \ExprAttribute{\ExprIdentifier{a}}{e}\ r_1   & & \mbox{Attribut}
-      \al \ExprMethod{\ExprIdentifier{m}}{\TypeTypeVariable{\tau}}{e}\ r_1   & & \mbox{Methode}\\
+    r      & ::=    & $\ExprRow{\epsilon}$
+                    & \mbox{leere Reihe}\\
+           & $\mid$ & $\ExprAttribute{\ExprIdentifier{a}}{e}\ r_1$
+                    & \mbox{Attribut}\\
+           & $\mid$ & $\ExprMethod{\ExprIdentifier{m}}{\TypeTypeVariable{\tau}}{e}\ r_1$
+                    & \mbox{Methode}\\[5mm]
 
-    \tau \is \TypeRowType{\phi}   & & \mbox{Objekttyp}\\
+    $\tau$ & ::=    & $\TypeRowType{\phi}$
+                    & \mbox{Objekttyp}\\[5mm]
 
-    \phi \is \TypeRowType{\emptyset}   & & \mbox{Leerer Reihentyp}
-         \al \TypeRowType{{\ExprIdentifier{m}}\colon\ {\TypeTypeVariable{\tau}}\ ;}\ \phi_1   
-             & & \mbox{Methoden-Reihentyp}
-  \eproduction
+    $\phi$ & ::=    & $\TypeRowType{\emptyset}$
+                    & \mbox{Leerer Reihentyp}\\
+           & $\mid$ & $\TypeRowType{{\ExprIdentifier{m}}\colon\ {\TypeTypeVariable{\tau}}\ ;}\ \phi_1$
+                    & \mbox{Methoden-Reihentyp}
+  \end{tabular}
 }
