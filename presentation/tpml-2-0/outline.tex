@@ -1,9 +1,9 @@
 \myslide{Outline - Übersicht}
 {
-  \begin{itemgroup}{}
+  \begin{itemize}
     \item Von Ausdrücken und Typen kann der Ableitungsbaum betrachtet werden
           (z.B. $\TypeArrowType{\TypeIntegerType}{\TypeArrowType{\TypeIntegerType}{\TypeIntegerType}}$)
-    \item Schwierige Ausdrucke können so besser verstanden werden
+    \item Schwierige Ausdrücke können so besser verstanden werden
     \item Name der Ausdücke und Typen wird dargestellt (z.B. Let)
     \item Menge der Ausdrücke und Typen wird dargestellt (z.B. op)
     \item Der Index der Kinder wird eingeblendet (z.B. $e_1$)
@@ -11,12 +11,14 @@
           {\ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprIdentifierBound{x}}{\ExprConstant{1}}}$)
     \item Die Outline muss bei neu implementierten Ausdrücken nicht angepasst
           werden, sondern übernimmt diese automatisch
-  \end{itemgroup}
+    \item Per Mausklick auf Ausdrücke oder Typen können diese aus den Beweiswerkzeugen
+          in die Outline geladen werden
+  \end{itemize}
 }
 
 \myslide{Outline - Einstellungen}
 {
-  \begin{itemgroup}{}
+  \begin{itemize}
     \item \textbf{Hervorheben}: Selektierte Knoten werden in höheren Knoten farblich 
                                 hervorgehoben
     \item \textbf{Gebundene}: Gebundene Identifier werden markiert
@@ -28,7 +30,7 @@
                                 wird im Editor hervorgehoben
     \item \textbf{Auto Update}: Die Outline wird bei Änderungen automatisch aktualisiert
                                 (z.B. Änderungen im Source Code Editor)
-  \end{itemgroup}
+  \end{itemize}
 }
 
 \myslide{Outline - Beispiel}
