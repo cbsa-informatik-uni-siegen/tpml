@@ -643,6 +643,20 @@ public class TypeInferenceNodeComponent extends JComponent
 
 		this.compoundExpression.setDefaultTypeSubstitutionList(this.substitutionList);
 		this.compoundExpression.setTypeFormulaList(this.allFormulasList);
+		
+		//TODO find out if there is an child or if it is proofen
+		try
+		{
+			// check if we have a next SmallStepProofNode
+			ProofNode node = this.proofNode.getChildAt(0);
+			this.compoundExpression.setDragndropeabled(false);
+		}
+		catch (ArrayIndexOutOfBoundsException exn)
+		{
+			this.compoundExpression.setDragndropeabled(true);
+		}
+		
+	
 
 		// check if the expressions contain syntactic sugar
 

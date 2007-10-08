@@ -69,6 +69,8 @@ public class CompoundExpressionTypeInference extends JComponent
 	 */
 	// private int mousePositionPressedY ;
 	
+	private boolean dragndropeabled = true;
+	
 	/**
 	 * the element where the mouse starts dragging
 	 */
@@ -184,31 +186,34 @@ public class CompoundExpressionTypeInference extends JComponent
 			@Override
 			public void mouseDragged(MouseEvent event)
 			{
-				// testAusgabe ( "Die Maus wurde gedragged..." ) ;
-				// if the User started dragging on an Typformula
-				if (CompoundExpressionTypeInference.this.dragged)
+				if (CompoundExpressionTypeInference.this.isDragndropeabled())
 				{
-					// be shure the Component repaints the Component to render the
-					// draggedString
-					repaint();
-					// change the Cursor to the Hand
-					Cursor c = new Cursor(Cursor.HAND_CURSOR);
-					getParent().getParent().setCursor(c);
-					// tell the renderer where the draggedString will be renderd
-					//CompoundExpressionTypeInference.this.draggedX = event.getX() + 5;
-					//CompoundExpressionTypeInference.this.draggedY = event.getY() + 5;
-					CompoundExpressionTypeInference.this.setDraggedBesideMousePointer(event.getPoint());
-					if (event.getX() >= getWidth() - 50)
+					// if the User started dragging on an Typformula
+					if (CompoundExpressionTypeInference.this.dragged)
 					{
-						//CompoundExpressionTypeInference.this.draggedX = event.getX() - (50 - (getWidth() - event.getX()));
-						CompoundExpressionTypeInference.this.getDraggedBesideMousePointer().x = event.getX() - (50 - (getWidth() - event.getX()));
-					}
-					if (event.getY() <= 10)
-					{
-						//CompoundExpressionTypeInference.this.draggedY = event.getY() + 15;
-						CompoundExpressionTypeInference.this.getDraggedBesideMousePointer().y = event.getY() + 15;
+						// be shure the Component repaints the Component to render the
+						// draggedString
+						repaint();
+						// change the Cursor to the Hand
+						Cursor c = new Cursor(Cursor.HAND_CURSOR);
+						getParent().getParent().setCursor(c);
+						// tell the renderer where the draggedString will be renderd
+						//CompoundExpressionTypeInference.this.draggedX = event.getX() + 5;
+						//CompoundExpressionTypeInference.this.draggedY = event.getY() + 5;
+						CompoundExpressionTypeInference.this.setDraggedBesideMousePointer(event.getPoint());
+						if (event.getX() >= getWidth() - 50)
+						{
+							//CompoundExpressionTypeInference.this.draggedX = event.getX() - (50 - (getWidth() - event.getX()));
+							CompoundExpressionTypeInference.this.getDraggedBesideMousePointer().x = event.getX() - (50 - (getWidth() - event.getX()));
+						}
+						if (event.getY() <= 10)
+						{
+							//CompoundExpressionTypeInference.this.draggedY = event.getY() + 15;
+							CompoundExpressionTypeInference.this.getDraggedBesideMousePointer().y = event.getY() + 15;
+						}
 					}
 				}
+				
 			}
 		});
 		
@@ -266,7 +271,7 @@ public class CompoundExpressionTypeInference extends JComponent
 		}
 
 		// if we have a dragg'n'drop
-		if (CompoundExpressionTypeInference.this.dragged && (this.rectPressed != this.rectReleased) && (this.rectPressed != -1) && (this.rectReleased != -1))
+		if (isDragndropeabled() && CompoundExpressionTypeInference.this.dragged && (this.rectPressed != this.rectReleased) && (this.rectPressed != -1) && (this.rectReleased != -1))
 		{
 			CompoundExpressionTypeInference.this.typeFormularRenderer.draggNDropp(this.rectReleased, this.rectPressed);
 		}
@@ -282,31 +287,36 @@ public class CompoundExpressionTypeInference extends JComponent
 	 */
 	protected void handelMousePressed(MouseEvent event)
 	{
-		// remember the position. If the user dragges thes point to another,
-		// they will be switched
-		Point mousePressedPosition = event.getPoint();
-
-		// look up if there is a typeformula at the point mousePosition.
-		// if ther is no typformular, ther will be no dragg'n'drop
-		ArrayList<Rectangle> rects = CompoundExpressionTypeInference.this.typeFormularRenderer.getTypeFormularPositions();
-		for (int i = 0; i < rects.size(); i++)
+		if (isDragndropeabled())
 		{
-			if (isIn(rects.get(i), mousePressedPosition))
+			// remember the position. If the user dragges thes point to another,
+			// they will be switched
+			Point mousePressedPosition = event.getPoint();
+
+			// look up if there is a typeformula at the point mousePosition.
+			// if ther is no typformular, ther will be no dragg'n'drop
+			ArrayList<Rectangle> rects = CompoundExpressionTypeInference.this.typeFormularRenderer.getTypeFormularPositions();
+			for (int i = 0; i < rects.size(); i++)
 			{
-				// set the rectPressed
-				this.rectPressed = i;
-
-				// set the String shown next to the mouse while dragging
-				CompoundExpressionTypeInference.this.draggedString = CompoundExpressionTypeInference.this.typeFormulaList.get(i).toString();
-
-				// if the String is to large shorter it
-				if (CompoundExpressionTypeInference.this.draggedString.length() > 13)
+				if (isIn(rects.get(i), mousePressedPosition))
 				{
-					CompoundExpressionTypeInference.this.draggedString = CompoundExpressionTypeInference.this.draggedString.substring(0, 10) + "...";
+					// set the rectPressed
+					this.rectPressed = i;
+
+					// set the String shown next to the mouse while dragging
+					CompoundExpressionTypeInference.this.draggedString = CompoundExpressionTypeInference.this.typeFormulaList.get(i).toString();
+
+					// if the String is to large shorter it
+					if (CompoundExpressionTypeInference.this.draggedString.length() > 13)
+					{
+						CompoundExpressionTypeInference.this.draggedString = CompoundExpressionTypeInference.this.draggedString.substring(0, 10) + "...";
+					}
+					CompoundExpressionTypeInference.this.dragged = true;
 				}
-				CompoundExpressionTypeInference.this.dragged = true;
 			}
 		}
+		
+
 		
 	}
 
@@ -851,5 +861,23 @@ public class CompoundExpressionTypeInference extends JComponent
 	public void setDraggedBesideMousePointer(Point pDraggedBesideMousePointer)
 	{
 		this.draggedBesideMousePointer = pDraggedBesideMousePointer;
+	}
+
+	/**
+	 * @return the dragndropeabled
+	 */
+	public boolean isDragndropeabled()
+	{
+		return this.dragndropeabled;
+	}
+
+	/**
+	 * sets the ability to disable the dragg'n'drop. This happens if the node is prooven.
+	 * The user should not be able to switch expressions of one node after if is prooven.
+	 * @param pDragndropeabled the dragndropeabled to set
+	 */
+	public void setDragndropeabled(boolean pDragndropeabled)
+	{
+		this.dragndropeabled = pDragndropeabled;
 	}
 }
