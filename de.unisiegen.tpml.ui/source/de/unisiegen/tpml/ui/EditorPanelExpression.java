@@ -374,7 +374,6 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 			
 
 		} catch (Exception e) {
-			e.printStackTrace ( );
 			logger.error("Could not create new MinimalTypingView", e);
 			JOptionPane.showMessageDialog(mypanel,
 					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotMinimalType")+
