@@ -604,7 +604,7 @@ public class BigStepNodeComponent extends JComponent implements
 		posX = labelSize.width + this.spacing;
 		if (this.proofNode.getRule() != null)
 		{
-			this.ruleLabel.setText("(" + this.proofNode.getRule() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+			this.ruleLabel.setText(this.proofNode.getRule().toString()); //$NON-NLS-1$ //$NON-NLS-2$
 			Dimension ruleLabelSize = this.ruleLabel.getPreferredSize();
 			this.ruleLabel.setBounds(posX, this.dimension.height + this.spacing, ruleLabelSize.width,
 					ruleLabelSize.height);
