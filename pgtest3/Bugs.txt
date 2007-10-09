@@ -1,6 +1,5 @@
 *** Christoph ***
 - Shortcut für´s Drucken und für alle Beweiswerkzeuge
-- AboutDialog mit Netbeans neu machen
 
 
 *** Michael ***
@@ -8,7 +7,6 @@
   "unregister.cmd" aus pgtest3 entfernen
 - Typeinference: verschieben für Knoten verbieten, auf die schon
 	eine Regel angewendet wurde.
-- Bei den Rules die doppelten Klammern entfernen.
         
 
 *** Christian ***
