@@ -413,7 +413,7 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
 		posX = labelSize.width + this.spacing;
 		if ( this.proofNode.isProven ( ) ) {
 			// place the menu label
-			this.ruleLabel.setText ( "(" + this.proofNode.getRule ( ) + ")" ); //$NON-NLS-1$ //$NON-NLS-2$
+			this.ruleLabel.setText ( this.proofNode.getRule ( ).toString ( ) );
 			Dimension ruleLabelSize = this.ruleLabel.getPreferredSize ( );
 			this.ruleLabel.setBounds ( posX, this.dimension.height + this.spacing, ruleLabelSize.width,
 					ruleLabelSize.height );
