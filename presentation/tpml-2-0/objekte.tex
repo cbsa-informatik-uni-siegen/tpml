@@ -1,8 +1,31 @@
 \myslide{Objekte - Übersicht}
 {
-  \begin{itemize}{}
-    \item Blablabla ...
-  \end{itemize}
+  \textbf{Aufgabenstellung:}\\[2mm]
+  Erweiterung der Sprache \LTWO\ um objektorientierte Konzepte
+
+  \animate{1}
+  {
+    \begin{itemgroup}{Lösung:}
+      \item Einführung einer neuen Sprache \LTWOO
+      \item Erweiterung des Scanners und des Parsers
+      \item Implementierung neuer Ausdrücke und Typen
+      \item Erweiterung aller Beweiswerkzeuge (SmallStep Interpreter, ...)
+      \item Umbau der internen Strukturen, da diese den neuen Anforderungen der
+            Theorie nicht genügten (z.B. disjunkte Mengen der verschiedenen Identifier-Gruppen)
+    \end{itemgroup}
+  }
+}
+
+\myslide{Objekte - Interne Struktur}
+{
+  Identifier werden in Mengen unterteilt: $x \in Var$, $m \in Method$, $a \in Attribute$ 
+  und $self \in Self$. Es wird gefordert, dass diese Mengen disjunkt sein müssen,
+  dazu müssen die Bindungen zwischen den Identifiern bestimmt werden. Folgendes
+  Beispiel ist nicht mehr zulässig:
+
+  \begin{center}
+    \includegraphics[height=10cm]{images/object_disjunction.png}
+  \end{center}
 }
 
 \myslide{Objekte - Erweiterung der Produktionen}
