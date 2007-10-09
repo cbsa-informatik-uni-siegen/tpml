@@ -8,21 +8,23 @@
     \begin{itemgroup}{Lösung:}
       \item Einführung einer neuen Sprache \LTWOO
       \item Erweiterung des Scanners und des Parsers
-      \item Implementierung neuer Ausdrücke (Methodenaufruf, Objekt, Duplikation, Reihe)
-            und Typen (Objekttyp, Reihentyp)
+      \item Implementierung neuer Ausdrücke (Methodenaufruf, Objekt, Duplikation und Reihe)
+            und Typen (Objekttyp und Reihentyp)
       \item Erweiterung aller Beweiswerkzeuge (Small-Step, ...)
-      \item Umbau der internen Strukturen, da diese den neuen Anforderungen der
-            Theorie nicht genügten (z.B. disjunkte Mengen der verschiedenen Identifier-Gruppen)
+      \item Umbau der internen Strukturen, da diese den neuen Anforderungen
+            nicht genügten (z.B. disjunkte Identifier Mengen)
+      \item Anpassung von JavaCUP, da der erzeugte Java-Code zu groß war
+            und somit nicht mehr kompiliert werden konnte
     \end{itemgroup}
   }
 }
 
 \myslide{Objekte - Interne Struktur}
 {
-  Identifier werden in Mengen unterteilt: $x \in Var$, $m \in Method$, $a \in Attribute$ 
-  und $self \in Self$. Es wird gefordert, dass diese Mengen disjunkt sein müssen,
-  dazu müssen die Bindungen zwischen den Identifiern bestimmt werden. Folgendes
-  Beispiel ist nicht mehr zulässig:
+  Identifier $id \in Id$ werden in Mengen unterteilt: $x \in Var$, $m \in Method$, $a \in Attribute$ 
+  und $self \in Self$. Es wird gefordert, dass diese Mengen disjunkt sein müssen.
+  Dazu müssen die Bindungen zwischen den Identifiern bestimmt werden. Folgendes
+  Beispiel ist deshalb nicht zulässig:
 
   \begin{center}
     \includegraphics[height=10cm]{images/object_disjunction.png}
@@ -46,7 +48,7 @@
            & $\mid$ & $\ExprMethod{\ExprIdentifier{m}}{\TypeTypeVariable{\tau}}{e}\ r_1$
                     & \mbox{Methode}\\[5mm]
 
-    $\tau$ & ::=    & $\TypeRowType{\phi}$
+    $\tau$ & ::=    & $\TypeObjectType{\TypeRowType{\phi}}$
                     & \mbox{Objekttyp}\\[5mm]
 
     $\phi$ & ::=    & $\TypeRowType{\emptyset}$

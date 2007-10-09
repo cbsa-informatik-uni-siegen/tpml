@@ -1,15 +1,15 @@
 \myslide{Klassen - Übersicht}
 {
   \textbf{Aufgabenstellung:}\\[2mm]
-  Erweiterung der Sprache \LTWOO\ um Klassen und Vererbung
+  Erweiterung der Sprache \LTWOO\ um Klassen mit Vererbung
 
   \animate{1}
   {
     \begin{itemgroup}{Lösung:}
       \item Einführung einer neuen Sprache \LTWOC
       \item Erweiterung des Scanners und des Parsers
-      \item Implementierung neuer Ausdrücke (Klasse, New, Inherit) und
-            Typen (Klassentyp, Attribut-Reihentyp)
+      \item Implementierung neuer Ausdrücke (Klasse, New und Inherit) und
+            Typen (Klassentyp und Attribut-Reihentyp)
       \item Erweiterung der Beweiswerkzeuge Small-Step und Big-Step
     \end{itemgroup}
   }
@@ -20,7 +20,7 @@
   \begin{tabular}{lrp{12.0cm}l}
     e      & ::=    & $\ExprClass{\ExprIdentifier{self}}{\TypeTypeVariable{\tau}}{b\ }$
                     & \mbox{Klasse}\\
-           & $\mid$ & \ExprNew{e}
+           & $\mid$ & $\ExprNew{e}$
                     & \mbox{New}\\[5mm]
 
     b      & ::=    & $\ExprInherit{\ExprIdentifier{$a_1$},\ \ldots\ ,\ExprIdentifier{$a_k$}}{e}{b}$

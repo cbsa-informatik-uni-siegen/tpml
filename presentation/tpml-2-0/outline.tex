@@ -4,9 +4,9 @@
     \item Von Ausdrücken und Typen kann der Ableitungsbaum betrachtet werden
           (z.B. $\TypeArrowType{\TypeIntegerType}{\TypeArrowType{\TypeIntegerType}{\TypeIntegerType}}$)
     \item Schwierige Ausdrücke können so besser verstanden werden
-    \item Name der Ausdücke und Typen wird dargestellt (z.B. Let)
+    \item Name der Ausdrücke und Typen wird dargestellt (z.B. Let)
     \item Menge der Ausdrücke und Typen wird dargestellt (z.B. op)
-    \item Der Index der Kinder wird eingeblendet (z.B. $e_1$)
+    \item Der Index der Kind-Knoten wird eingeblendet (z.B. e$_1$)
     \item Bindungen von Identifiern (z.B. $\ExprLet{\ExprIdentifierBinding{x}}{}{\ExprConstant{2}}
           {\ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprIdentifierBound{x}}{\ExprConstant{1}}}$)
     \item Die Outline muss bei neu implementierten Ausdrücken nicht angepasst
@@ -19,9 +19,10 @@
 \myslide{Outline - Einstellungen}
 {
   \begin{itemize}
-    \item \textbf{Hervorheben}: Selektierte Knoten werden in höheren Knoten farblich 
+    \item \textbf{Hervorheben}: Selektierte Knoten werden in höheren Knoten farblich
                                 hervorgehoben
-    \item \textbf{Gebundene}: Gebundene Identifier werden markiert
+    \item \textbf{Gebundene}: Die an den selektierten Identifier gebundene Identifier
+                              werden in höheren Knoten farblich markiert
     \item \textbf{Freie}: Frei vorkommende Identifier werden markiert
     \item \textbf{Ersetzen}: Selektierte Knoten werden in höheren Knoten durch
                              \glqq\textbf{...}\grqq\ ersetzt, dadurch wird die Ansicht

@@ -2,7 +2,8 @@
 {
   \textbf{Aufgabenstellung:}\\[2mm]
   Ausdrücke werden nicht erst ausgewertet, sondern direkt eingesetzt,
-  dadurch kann es zu unterschiedlichen Ergebnissen kommen
+  dadurch kann es zu unterschiedlichen Wegen kommen, auf denen ein Ergebnis
+  zustande kommt, aber auch zu verschiedenen Ergebnissen.
 
   \animate{1}
   {
@@ -10,7 +11,6 @@
       \item Einführung neuer Sprachen \LZEROCBN, \LONECBN\ und \LTWOCBN\ mit Call by Name Semantik
       \item Änderung der Small Step Semantik
       \item Änderung der Big Step Semantik
-      \item Einführung eigener Dateiendungen (.l2cbn, ...)
       \item Relevant für die Prüfung \glqq \TPONE \grqq
     \end{itemgroup}
   }
@@ -32,13 +32,10 @@
                                       e_2[e_1/\ExprIdentifier{id}]$ \\[3mm]
   \end{tabular}
 
-  \animate{1}
-  {
-    Die Regel (APP-RIGHT) muss verändert werden, da sonst auf den Ausdruck \glqq
-    $\ExprApplication{\Parenthesis{\ExprLambda{\ExprIdentifier{x}}{}{\ExprIdentifier{x}}}}
-    {\ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprConstant{1}}{\ExprConstant{1}}}$\grqq\ 
-    außer (APP-RIGHT) auch (BETA) anwendbar wäre.
-  }
+  Die Regel (APP-RIGHT) muss verändert werden, da sonst auf den Ausdruck \glqq
+  $\ExprApplication{\Parenthesis{\ExprLambda{\ExprIdentifier{x}}{}{\ExprIdentifier{x}}}}
+  {\Parenthesis{\ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprConstant{1}}{\ExprConstant{1}}}}$\grqq\ 
+  außer (APP-RIGHT) auch (BETA) anwendbar wäre.
 }
 
 
@@ -65,7 +62,7 @@
 {
   {\bf Unterschiedlicher Weg - gleiches Ergebnis}\\[5mm]
   \begin{tabular}{p{5.5cm}@{}p{6.0cm}@{}p{12.0cm}@{}}
-     Call by Value   & & $
+     \textbf{Call by Value}   & & $
                          \ExprLet{\ExprIdentifier{x}}{}
                          {\ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprConstant{1}}{\ExprConstant{1}}}
                          {\ExprIdentifier{x}}
@@ -88,7 +85,7 @@
                          \end{tabular}$}$ & $
                          \ExprConstant{2}
                          $\\[10mm]
-     Call by Name    & & $
+     \textbf{Call by Name}    & & $
                          \ExprLet{\ExprIdentifier{x}}{}
                          {\ExprInfixOperation{\ExprBinaryOperator{+}}{\ExprConstant{1}}{\ExprConstant{1}}}
                          {\ExprIdentifier{x}}
@@ -117,7 +114,7 @@
 {
   {\bf Unterschiedliches Ergebnis}\\[5mm]
   \begin{tabular}{p{5.5cm}@{}p{6.5cm}@{}p{11.5cm}@{}}
-     Call by Value   & & $
+     \textbf{Call by Value}   & & $
                          \ExprLet{\ExprIdentifier{x}}{}
                          {\ExprInfixOperation{\ExprBinaryOperator{/}}{\ExprConstant{1}}{\ExprConstant{0}}}
                          {\ExprConstant{2}}
@@ -130,7 +127,7 @@
                          \end{tabular}$}$ & $
                          \ExprExn{divide\_by\_zero}
                          $\\[10mm]
-     Call by Name    & & $
+     \textbf{Call by Name}    & & $
                          \ExprLet{\ExprIdentifier{x}}{}
                          {\ExprInfixOperation{\ExprBinaryOperator{/}}{\ExprConstant{1}}{\ExprConstant{0}}}
                          {\ExprConstant{2}}
