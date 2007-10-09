@@ -720,7 +720,7 @@ GeneralLaTex gl = new GeneralLaTex(this.getFrames()[0]);
     {
       for ( Component component : this.tabbedPane.getComponents ( ) )
       {
-        if ( component instanceof EditorPanel )
+        if ( component instanceof EditorPanelForm )
         {
           EditorPanel editorPanel = (( EditorPanelForm ) component ).getCaller();
           editorPanel.setAdvanced ( true ) ;
@@ -735,7 +735,7 @@ GeneralLaTex gl = new GeneralLaTex(this.getFrames()[0]);
     {
       for ( Component component : this.tabbedPane.getComponents ( ) )
       {
-        if ( component instanceof EditorPanel )
+        if ( component instanceof EditorPanelForm )
         {
           EditorPanel editorPanel = (( EditorPanelForm ) component ).getCaller();
           editorPanel.setAdvanced ( false ) ;
