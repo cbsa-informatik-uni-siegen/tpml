@@ -1,28 +1,99 @@
-\myslide{Einleitung}
+\myslide{Die Vorlesungen \glqq\TPONE \grqq\ und \glqq\TPTWO \grqq}{
+  \begin{itemgroup}{\glqq\TPONE \grqq}
+    \item Vermittelt Grundlagen von Programmiersprachen anhand einfacher funktionaler Programmiersprache (orientiert an O'Caml)
+    \item Operationelle Semantik anhand von small und big steps
+    \item Rekursion
+    \item Pflichtveranstaltung für Informatik-Studenten
+  \end{itemgroup}
+}
+
+\myslide{Die Vorlesungen \glqq\TPONE \grqq\ und \glqq\TPTWO \grqq}{
+	\begin{itemgroup}{\glqq\TPTWO \grqq}
+	 \item Polymorphie
+	 \item Typinferenz
+	 \item Objekte und Klassen
+	\end{itemgroup}
+}
+
+\myslide{Die Sprachen I}{
+  \begin{itemgroup}{TPML modular/erweiterbar}
+    \item Vorlesungen beginnt mit einfachem Sprachen
+    \item Inkrementelle Erweiterung
+    \item Bis zu imperativen und objekt-orientierten Konzepten
+    \item Lernprogramm soll diese Lernkurve wiederspiegeln
+  \end{itemgroup}
+}
+
+\myslide{Die Sprachen II}{
+  \begin{itemgroup}{Die Sprachen im Überblick}
+    \item ${\cal L}_0$ - ungetypter $\lambda$-Kalkül.
+    \item ${\cal L}_1$ - einfach getypter $\lambda$-Kalkül.
+    \item ${\cal L}_2$ - ${\cal L}_1$ mit Rekursion.
+    \item ${\cal L}_3$ - polymorph getypte Sprache mit Listen und Tupeln.
+    \item ${\cal L}_4$ - imperative Konzepte (Speicher, Schleifen).
+  \end{itemgroup}
+
+\myslide{Sie Sprachen III}
+	\begin{itemgroup}{Spracherweiterungen}
+	\item{Call-by-Name}
+	\item{Subtyping}
+	\item{Objekte und Klassen}
+	\end{itemgroup}
+
+\myslide{Die Sprachen III}{
+  \begin{itemgroup}{Realisierung}
+    \item Benutzer wählt beim Erstellen neuer Datei eine Sprache.
+    \item Sprache bestimmt dann Programmverhalten (Typregeln,\\ Semantikregeln, Syntaxhighlighting, \ldots).
+  \end{itemgroup}
+
+}
+
+\myslide{Motivation I}{
+  {\bf Frage:} Warum ein Programm zur \glqq Theorie der Programmierung\grqq?
+
+  \animate{1}{
+    \begin{itemgroup}{Gründe}
+      \item Erleichterter Zugang zu theoretischen Inhalten.
+      \item Regelwerk durch \glqqpraktisches Arbeiten\grqq\ besser zu verstehen.
+      \item \glqq Gefühl\grqq\ für Interpreter und Typsysteme vermitteln.
+      \item Hilfestellung bei der Prüfungsvorbereitung ($\to$ nicht auf Beispiele aus Übung/Vorlesung beschränken)
+      \item Verständnis für Zusammenhang von Programmtext und Ausführung auf einer Maschine.
+    \end{itemgroup}
+  }
+}
+
+\myslide{Motivation II}{
+  \begin{itemgroup}{Warum nicht O'Caml?}
+    \item \glqq Echte Implementierungen\grqq\ ungeeignet.
+    \item Abläufe nicht sichtbar für den Benutzer
+    \item Typfehler von O'Caml schwer verständlich
+    \item Semantik nicht zugänglich\\ ($\to$ wird in Byte/native Code kompiliert)
+    \item Fehlende formale Spezifikation!
+  \end{itemgroup}
+
+  \animate{1}{
+    {\bf Folgerung:} Spezielles Lernprogramm besser geeignet.
+  }
+}
+
+\myslide{Projektgruppe TPML 2.0.0}
+{
+	\begin{itemgroup}{TPML 1.0.0}
+	\item Unterstützt L0 - L4
+	\item keine Unterstützung der Spracherweiterungen
+	\item kein Export / Ausdruck der geführten Beweise
+}
+
+\myslide{Projektgruppe TPML 2.0.0}
 {
   \begin{itemgroup}{Ziele der Entwicklung}
     \item Erweiterung der Funktionalität anhand des noch verbliebenen
         Stoffs der Vorlesung \glqq\TPONE \grqq
     \item Erweiterung der Funktionalität anhand von Stoff der 
         Vorlesungen \glqq\TPTWO \grqq
-    \item Studierenden ein Werkzeug zum besseren Verständnis und zur 
+    \item Studierenden ein komplettes Werkzeug zum besseren Verständnis und zur 
         Prüfungsvorbereitung zur Verfügung stellen.
     \item Unterstützung des Dozenten und der Übungsleiter bei Vorbereitung 
         der Vorlesungen und Übungen.
-  \end{itemgroup}
-}
-
-\myslide{Einleitung}
-{
-  \begin{itemgroup}{Vorgehensweise bei der Entwicklung}
-    \item Einarbeitung durch Quellcodeanalyse und unzählige Fragen an
-        frühere Projektgruppenteilnehmer.
-    \item Absprechen von Meilensteinen und verteilen von Unterprojekten.
-  \end{itemgroup}
-
-  \begin{itemgroup}{Entwickler (Ansprechpartner f"ur nachfolgende Gruppen)}
-    \item {\tt de.unisiegen.tpml.core}      - Christian Fehler, Benjamin Mies
-    \item {\tt de.unisiegen.tpml.graphics}  - Michael Oeste
-    \item {\tt de.unisiegen.tpml.ui}        - Christoph Fehling
   \end{itemgroup}
 }
