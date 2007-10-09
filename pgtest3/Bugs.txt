@@ -1,13 +1,10 @@
 *** Christoph ***
-- Shortcut für´s Drucken und für alle Beweiswerkzeuge
 
 
 *** Michael ***
 - Die Dateien "build.xml", "tpml.xml", "register.cmd" und 
   "unregister.cmd" aus pgtest3 entfernen
-- Typeinference: verschieben für Knoten verbieten, auf die schon
-	eine Regel angewendet wurde.
-        
+      
 
 *** Christian ***
 
