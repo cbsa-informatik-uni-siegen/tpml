@@ -371,6 +371,7 @@ public class MainWindow
       }
       else
       {
+	setChangeState (editor.isSaveStatus());
         setEditorFunctions ( false ) ;
       }
     }
