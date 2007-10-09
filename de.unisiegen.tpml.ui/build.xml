@@ -5,6 +5,7 @@
 	Copyright (c) 2006 Benedikt Meurer <benny@xfce.org>
 -->
 <project name="de.unisiegen.tpml.ui" default="dist" basedir=".">
+	
 	<description>
 		Buildfile for the de.unisiegen.tpml.ui subproject.
 	</description>
@@ -34,7 +35,7 @@
 			<fileset dir="${core.distdir}" includes="*.jar" />
 			<fileset dir="${graphics.distdir}" includes="*.jar" />
 			<fileset dir="${distdir}" includes="*.jar" />
-			<fileset dir="${distdir}/lib" includes="*.jar" />
+			<fileset dir="${basedir}/lib" includes="*.jar" />
 			<fileset dir="${basedir}/doc" includes="LICENSE" />
 		</copy>
 		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${basedir}/tpml.sh">
@@ -85,20 +86,73 @@
 		</javac>
 	</target>
 	
+	
+	
+	
 	<target name="version-check" depends="dist-compile">
 
-					<javac 
-										  
-										 includes="JOpFrame.java,MsgFrame.java,Start.java"
-										 debug="on" 
-										 destdir="${classesdir}" 
-										 optimize="on" 
-										 source="1.2" 
-										 target="1.1"
-										 failonerror="false">
-								<src path="${basedir}/source/de/unisiegen/tpml/ui" />
+					
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+					<javac 										  
+							 
+							 includes="MsgFrame.java,Start.java"
+							 debug="on" 
+							 destdir="${classesdir}" 
+							 optimize="on" 
+							 source="1.2" 
+							 target="1.1"
+							 failonerror="false">
+		 					 <src path="${basedir}/source/de/unisiegen/tpml/ui" />
+						
 						</javac>
+		
+					<javac
+						
+							 includes="JOpFrame.java"
+							 debug="on" 
+							 destdir="${classesdir}" 
+							 optimize="on" 
+							 source="1.2" 
+							 target="1.2"
+							 failonerror="false">
+						
+							 <src path="${basedir}/source/de/unisiegen/tpml/ui" />
+					</javac>
 		</target>
+	
 	
 	<target name="dist-jar" depends="dist-compile">
 		<manifest file="${distdir}/MANIFEST.MF">
@@ -149,8 +203,7 @@
 		<delete dir="${classesdir}" />
 	</target>
 	
-	
-	
+		
 	<!--
 		Autogenerating files (Versions.java)
 	-->

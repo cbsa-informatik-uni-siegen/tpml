@@ -390,6 +390,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         fileMenu.add(saveAllItem);
 
+        printItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         printItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
         printItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("PrintItemMnemonic").charAt(0));
         printItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("printItem"));
@@ -401,6 +402,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         fileMenu.add(printItem);
 
+        latexExportItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         latexExportItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
         latexExportItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("latexExport"));
         latexExportItem.addActionListener(new java.awt.event.ActionListener() {
@@ -535,7 +537,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         runMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("ProofMnemonic").charAt(0));
         runMenu.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Proof"));
-        smallstepItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
+        smallstepItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
         smallstepItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SmallStepMnemonic").charAt(0));
         smallstepItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SmallStep"));
         smallstepItem.addActionListener(new java.awt.event.ActionListener() {
@@ -546,7 +548,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         runMenu.add(smallstepItem);
 
-        bigstepItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, 0));
+        bigstepItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
         bigstepItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("BigStepMnemonic").charAt(0));
         bigstepItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("BigStep"));
         bigstepItem.addActionListener(new java.awt.event.ActionListener() {
@@ -557,7 +559,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         runMenu.add(bigstepItem);
 
-        typecheckerItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
+        typecheckerItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
         typecheckerItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("TypeCheckerMnemonic").charAt(0));
         typecheckerItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("TypeChecker"));
         typecheckerItem.addActionListener(new java.awt.event.ActionListener() {
@@ -568,6 +570,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         runMenu.add(typecheckerItem);
 
+        typeinferenceItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, 0));
         typeinferenceItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("TypeInferenceMnemonic").charAt(0));
         typeinferenceItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("TypeInference"));
         typeinferenceItem.addActionListener(new java.awt.event.ActionListener() {
@@ -578,6 +581,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         runMenu.add(typeinferenceItem);
 
+        minimaltypingItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
         minimaltypingItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("minimaltyping"));
         minimaltypingItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -587,6 +591,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         runMenu.add(minimaltypingItem);
 
+        subtypingItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
         subtypingItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SubtypMnemonic").charAt(0));
         subtypingItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Subtyping"));
         subtypingItem.addActionListener(new java.awt.event.ActionListener() {
@@ -597,6 +602,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         runMenu.add(subtypingItem);
 
+        subtypingrecItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
         subtypingrecItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("subtypingrecMnemonic").charAt(0));
         subtypingrecItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SubTypingRec"));
         subtypingrecItem.addActionListener(new java.awt.event.ActionListener() {
