@@ -193,8 +193,6 @@ row_type_without_epsilon_l2c	::= IDENTIFIER:id COLON type:tau SEMI row_type_l2c:
 									   System.arraycopy ( r.getTypes() , 0 , types , 1 , r.getTypes().length );
 									   RESULT = new RowType (identifiers, types, aleft, rright) ;
 									:}
-								|	row_type_l2c_error
-									{: :}
 								;
 
 row_type_l2c_error				::= IDENTIFIER:id epsilon

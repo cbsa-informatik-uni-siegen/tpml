@@ -174,8 +174,6 @@ row_type_without_epsilon		::= IDENTIFIER:id COLON type:tau SEMI row_type:r
 									   System.arraycopy ( r.getTypes() , 0 , types , 1 , r.getTypes().length );
 									   RESULT = new RowType (identifiers, types, idleft, rright) ;
 									:}
-								|	row_type_error
-									{: :}
 								;
 
 row_type_error					::= IDENTIFIER:id epsilon
