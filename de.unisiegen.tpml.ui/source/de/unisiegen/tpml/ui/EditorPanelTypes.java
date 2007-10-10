@@ -335,7 +335,7 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
     }
     catch ( Exception e )
     {
-      logger.error ( "Could not create new SubTypingView" , e ) ; //$NON-NLS-1$
+      logger.debug ( "Could not create new SubTypingView" , e ) ; //$NON-NLS-1$
       JOptionPane
           .showMessageDialog (
               mypanel ,

@@ -7,9 +7,7 @@
 package de.unisiegen.tpml.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedWriter;
@@ -18,16 +16,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.filechooser.FileFilter;
-
 import org.apache.log4j.Logger;
-
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
@@ -41,9 +36,7 @@ import de.unisiegen.tpml.core.util.beans.AbstractBean;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
 import de.unisiegen.tpml.graphics.EditorComponent;
 import de.unisiegen.tpml.graphics.ProofViewFactory;
-import de.unisiegen.tpml.graphics.StyledLanguageEditor;
 import de.unisiegen.tpml.graphics.editor.TextEditorPanel;
-import de.unisiegen.tpml.graphics.pong.PongView;
 import de.unisiegen.tpml.ui.netbeans.EditorPanelForm;
 import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 
@@ -293,7 +286,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 			
 
 		} catch (Exception e) {
-			logger.error("Could not create new BigStepView", e);
+			logger.debug("Could not create new BigStepView", e);
 			JOptionPane.showMessageDialog(mypanel,
 					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotBigStep")+
 					"\n"+e.getMessage()+".", "Big Step",
@@ -319,7 +312,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 			
 
 		} catch (Exception e) {
-			logger.error("Could not create new TypeCheckerView", e);
+			logger.debug("Could not create new TypeCheckerView", e);
 			JOptionPane.showMessageDialog(mypanel,
 					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotTypeChecker")+
 					"\n"+e.getMessage()+".",
@@ -348,7 +341,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 			
 
 		} catch (Exception e) {
-			logger.error("Could not create new TypeInferenceView", e);
+			logger.debug("Could not create new TypeInferenceView", e);
 			JOptionPane.showMessageDialog(mypanel,
 					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotTypeInference")+
 					"\n"+e.getMessage()+".",
@@ -374,7 +367,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 			
 
 		} catch (Exception e) {
-			logger.error("Could not create new MinimalTypingView", e);
+			logger.debug("Could not create new MinimalTypingView", e);
 			JOptionPane.showMessageDialog(mypanel,
 					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotMinimalType")+
 					"\n"+e.getMessage()+".", "Minimal Typing",
