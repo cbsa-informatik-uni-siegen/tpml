@@ -12,9 +12,11 @@ beispielsweise "Offnen und Schlie"sen. Weiterhin kann unter {\bf
 Zuletzt benutzt} schnell auf die aktuellsten Dateien zugegriffen
 werden. Unter {\bf Bearbeiten} sind Editorfunktionen enthalten. Die
 einzelnen Komponenten werden in Kapitel~\ref{Qelltexteditor}
-und~\ref{Beweiswerkzeuge} genauer betrachtet. "Uber Latex Export
-kann man den Quelltext oder die Beweise in eine Tex-Datei
-exportieren. Mehr dazu im Kapitel~\ref{Latexexport}. Mit {\bf
+und~\ref{Beweiswerkzeuge} genauer betrachtet. Mit {\bf PDF Export} l"asst 
+sich der derzeitig Geführte Beweis bzw. der editierte Quellcode einfach
+in eine PDF Datei speichern. Siehe dazu auch Kapitel ~\ref{PDF-Export}. "Uber {\bf Latex Export}
+kann man dies in eine Tex-Datei
+exportieren. Mehr dazu im Kapitel~\ref{Latex-Export}. Mit {\bf
 Einstellungen...} k"onnen die
 Einf"arbung von Schl"usselworten im
 Quelltexteditor~\ref{Qelltexteditor} und andere Farben eingestellt werden. Das Men"u {\bf Beweis}
@@ -33,11 +35,12 @@ Jeder Datei ist eine Sprache fest zugeordnet. M"ochte man einen
 Ausdruck in einer anderen Sprache beweisen, so kann man hierf"ur
 einen neuen Editor "offnen und den Ausdruck kopieren. Alternativ
 kann auch die Dateiendung einer gespeicherten Datei ge"andert
-werden. Ist ein eingegebener Ausdruck fehlerhaft, so wird dies links
-von der betroffenen Zeile durch ein Error-Icon markiert. Zus"atzlich 
-wird der fehlerhafte Teil rot unterstrichen. 
+werden. 
 
-Bewegt man den Mauszeiger "uber den markierten Text oder das Error-Icon,
+Ist ein eingegebener Ausdruck fehlerhaft, so wird dies links
+von der betroffenen Zeile durch ein Error-Icon markiert. Zus"atzlich 
+wird der fehlerhafte Teil rot unterstrichen. Bewegt man den Mauszeiger 
+"uber den markierten Text oder das Error-Icon,
 so erscheint ein Tooltip, der den Fehler genauer beschreibt. Ein Klick
 auf das Error-Icon bewirkt, dass der fehlerhafte Text markiert wird. Wird
 nun noch einmal auf das Error-Icon geklickt, wird der markierte Text
@@ -102,14 +105,14 @@ in ihrer Baumansicht zu betrachten. Der Anwender ist somit in der Lage
 zu erkennen, aus welchen Teilen ein Ausdruck oder Typ besteht. So ist zum
 Beispiel bei dem Ausdruck \glqq$\infix{+}{\infix{+}{1}{1}}{1}$\grqq\ nicht 
 auf den ersten Blick ersichtlich, wie sich die Applikationen zusammensetzen. 
-In der Outline wird sichtbar, dass der Ausdruck wie folgt geklammert gesehen
+In der Outline wird sichtbar, dass der Ausdruck als wie folgt geklammert gesehen
 werden kann: \glqq$\infix{+}{(\infix{+}{1}{1})}{1}$\grqq. Dieses Resultat ist nicht
 besonders "uberraschend, betrachtet man aber den Funktions-Typen
 \glqq$\arrowtype{\inttype}{\arrowtype{\inttype}{\inttype}}$\grqq, so ergibt sich
 folgende Klammerung \glqq$\arrowtype{\inttype}{(\arrowtype{\inttype}{\inttype})}$\grqq.
 Der Anwender kann dar"uber hinaus erkennen, um welche Ausdr"ucke es sich
 handelt, da der Name in der Outline dargestellt wird. Vor dem Namen des
-Ausdrucks steht immer die Menge zu der er geh"ort, diese Menge ist zumeist
+Ausdrucks steht immer die Menge zu der er geh"ort. Diese Menge ist zumeist
 \glqq{\bf e}\grqq\ oder \glqq{\bf v}\grqq, falls es sich um einen Wert handelt.
 Es sind aber f"ur Identifier, Reihen, Typen etc. auch viele andere Mengen
 vorhanden. Neben der Menge, zu der ein Ausdruck oder Typ geh"ort, wird auch
@@ -172,8 +175,9 @@ Option ist nur bei den Quelltexteditoren verf"ugbar und nicht bei den
 verschiedenen Beweiswerkzeugen.
 
 {\bf Auto Update} steht daf"ur, dass die Outline automatisch geladen wird,
-wenn sich etwas "andert. Dies geschieht nach einer gewollten Verz"ogerung,
-die n"otig ist, damit sich nicht zu viele "Anderungen ergeben. Diese Option
+wenn sich etwas "andert. Dies geschieht nach einer gewissen Verz"ogerung,
+die n"otig ist, damit sich nicht zu viele Updates bei einer Benutzereingabe 
+berechnet werden müssen. Diese Option
 ist nur in Ansichten aktiv, in denen "Anderungen eindeutig sind, also in den
 Quelltexteditoren und im Small Step Interpreter. In den anderen
 Beweiswerkzeugen k"onnen bei einem Schritt mehrere Knoten erzeugt werden,
@@ -186,20 +190,20 @@ Quelltexteditor im Moment kein g"ultiger Ausdruck geladen, wird die Outline
 rot umrandet.
 
 \section {PDF-Export}
+\label{PDF-Export}
 "Uber den PDF-Export lassen sich Quelltext und Beweisschritte in eine PDF-Datei
-exportieren die optisch nahezu der Progammausgabe entsprechen. Um einen Quelltext
+exportieren, die optisch nahezu der Progammausgabe entsprechen. Um einen Quelltext
 oder eine Beweisf"uhrung in eine PDF-Datei zu exportieren w"ahlt man einfach
-den entsprechenden Men"ueintrag unter Datei aus oder klickt auf den entsprechenden Button
-in der Symbolleiste. Hier hat der Benutzer die Wahl zwischen dem Hoch- und
-dem Querformat. Auf diese Weise kann die "Ubersicht der einzelnen Ausdr"ucke 
-erh"oht werden wenn diese ausgedruckt werden.
+den entsprechenden Men"ueintrag unter {\bf Datei} aus oder klickt auf den 
+entsprechenden Button in der Symbolleiste. Der Benutzer hat nun die Wahl zwischen dem Hoch- und
+dem Querformat. Letzerer kann bei längeren Ausdrücken sinnvoll sein.
 
 \section {\LaTeX -Export}
+\label{Latex-Export}
 "Uber den \LaTeX -Export lassen sich Quelltext und Beweisschritte in eine TeX-Datei
-exportieren. Welche dann in ein pdf mit Syntaxhighlighting "uberf"uhrt werden kann.
+exportieren. Welche dann in eine PDF Datei mit Syntaxhighlighting "uberf"uhrt werden kann.
 Bei dem Quelltext gibt es die Einschr"ankung, dass nur g"ultige Ausdr"ucke exportiert
-werden k"onnen. Das bedeutet, dass der Quelltext vor dem Export geparset wird, und dann
-eine Expression, bzw. ein Subtype exportiert wird. Erstellt man ein pdf aus exportierten
+werden k"onnen. Erstellt man ein PDF aus exportierten
 Beweisschritten, so erh"alt man eine Optik, welche stark an die \TPML\ Ausgabe angelehnt ist.
 Weiterhin besteht die M"oglichkeit sich "uber den Men"ueintrag {\bf TPML.TEX erstellen...}
 eine Datei generieren zu lassen, welche alle Commands, die in \TPML\ verwendet werden, enth"alt.
@@ -232,7 +236,7 @@ ben"otigt, entstehen am Ende eine entsprechende Anzahl an wei"sen Seiten, welche
 eigene Angabe einer Seitenanzahl entfernt werden k"onnen.\\
 Leider ist es nicht m"oglich ein Dokument
 in Baumstruktur "uber Latex in ein pdf zu konvertieren, welches die Grenze von 13 Seiten 
-"uberschreitet. Dies kann allerdings "uber den Standard pdf-Export erzeugt werden.
+"uberschreitet. Dies kann allerdings "uber den Standard PDF-Export erzeugt werden.
 
 
 
