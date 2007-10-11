@@ -6,16 +6,45 @@
 
 package de.unisiegen.tpml.ui.netbeans;
 
+import java.io.File;
+import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
+import javax.swing.filechooser.FileFilter;
+
 /**
  *
  * @author  cfehling
  */
 public class PdfDialog extends javax.swing.JDialog {
     
+
+    private Preferences preferences;
+    
     /** Creates new form PdfDialog */
     public PdfDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        preferences = Preferences.userNodeForPackage ( PdfDialog.class ) ;
+        
+        filechooser.setCurrentDirectory(new File ( preferences.get (
+        "lastDir" , "." ) ) ) ;
+            filechooser.setFileFilter ( new FileFilter ( )
+    {
+      @ Override
+      public boolean accept ( File pFile )
+      {
+        return ( pFile.isDirectory ( ) )
+            || ( pFile.getName ( ).toLowerCase ( ).endsWith ( ".pdf" ) ) ; //$NON-NLS-1$
+      }
+
+
+      @ Override
+      public String getDescription ( )
+      {
+        return ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+            .getString ( "Pdf.FileFilter" ) ; //$NON-NLS-1$
+      }
+    } ) ;
     }
     
     /** This method is called from within the constructor to
@@ -143,6 +172,8 @@ public class PdfDialog extends javax.swing.JDialog {
             this.dispose();
         } else
             if (evt.getActionCommand().equals("ApproveSelection")){
+                Preferences preferences = Preferences.userNodeForPackage ( PdfDialog.class ) ;
+                preferences.put ( "lastDir" , filechooser.getSelectedFile().getAbsolutePath() ) ;
                 this.dispose();
             }
     }//GEN-LAST:event_filechooserActionPerformed

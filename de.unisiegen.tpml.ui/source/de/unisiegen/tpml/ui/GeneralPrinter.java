@@ -72,7 +72,7 @@ public class GeneralPrinter {
     }
     
     public void print (TypeEditorPanel editorPanel){
-	System.out.println("TypeEditorPanel print!");
+	//System.out.println("TypeEditorPanel print!");
 	if(!openDiaglog()) return;
 	try {
 	    createSplitPage(0);
@@ -81,7 +81,8 @@ public class GeneralPrinter {
 	    closePage();
 	    this.concatenatePages(1);
 	    this.deleteFiles(1);
-	    System.out.println("TypeEditorPanel print!");
+	    //System.out.println("TypeEditorPanel print!");
+	    JOptionPane.showMessageDialog(caller, "Document has been printed!");
 	} catch (FileNotFoundException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
