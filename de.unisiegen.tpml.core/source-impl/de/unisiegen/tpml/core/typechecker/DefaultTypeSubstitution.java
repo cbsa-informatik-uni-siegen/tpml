@@ -348,4 +348,9 @@ public final class DefaultTypeSubstitution implements TypeSubstitution
   {
     return toPrettyString ( ).toString ( ) ;
   }
+
+
+public TypeVariable getTvar ( ) {
+	return this.tvar;
+}
 }

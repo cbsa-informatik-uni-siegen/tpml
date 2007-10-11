@@ -48,4 +48,6 @@ public interface TypeSubstitution extends PrettyPrintable, LatexPrintable {
 	 * @throws NullPointerException if <code>tvar</code> is <code>null</code>.
 	 */
 	public MonoType get ( TypeVariable tvar );
+	
+	public TypeVariable getTvar ( );
 }

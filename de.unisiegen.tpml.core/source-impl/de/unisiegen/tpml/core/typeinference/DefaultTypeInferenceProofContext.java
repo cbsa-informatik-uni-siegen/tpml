@@ -175,7 +175,7 @@ public class DefaultTypeInferenceProofContext implements TypeInferenceProofConte
 	 */
 	public void addSubstitution ( TypeSubstitution s ) {
 		this.substitutionList.remove ( s );
-		this.substitutionList.add (0, s );
+		this.substitutionList.add ( 0, s );
 	}
 
 	/**
@@ -429,10 +429,9 @@ public class DefaultTypeInferenceProofContext implements TypeInferenceProofConte
 	final MonoType type, boolean mode, DefaultTypeInferenceProofNode node ) throws ProofRuleException {
 
 		// collect all type substitutions of the parent node
-		for (TypeSubstitution sub : node.getSubstitution ( )){
+		for ( TypeSubstitution sub : node.getSubstitution ( ) ) {
 			addSubstitution ( sub );
 		}
-		
 
 		// create a typechecker proof node with the actual formula
 		AbstractTypeCheckerProofNode typeNode = null;
@@ -461,6 +460,23 @@ public class DefaultTypeInferenceProofContext implements TypeInferenceProofConte
 
 		// apply the substitution to all type formulas
 		ArrayList < TypeFormula > newFormulas = getNewFormulas ( formula );
+
+		if ( newFormulas.size ( ) == 0 ) {
+			DefaultTypeInferenceProofNode root = node.getRoot ( );
+
+			TypeSubstitution first = null;
+			MonoType rootType = root.getFirstFormula ( ).getType ( );
+			ArrayList < TypeSubstitution > subs = this.substitutionList;
+			for ( TypeSubstitution s : subs ) {
+				if ( s.getTvar ( ).equals ( rootType ) )
+					first = s;
+			}
+			int index = subs.indexOf ( first );
+			if ( index > 0 ) {
+				subs.remove ( index );
+				subs.add ( 0, first );
+			}
+		}
 
 		//	create the new node
 		this.model.contextAddProofNode ( newFormulas, this.substitutionList );
