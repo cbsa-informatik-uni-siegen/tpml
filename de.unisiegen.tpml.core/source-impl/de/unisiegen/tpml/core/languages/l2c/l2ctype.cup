@@ -253,6 +253,15 @@ row_type_l2c_error				::= IDENTIFIER:id COLON:c epsilon
 									{: Error.expect("Row-Type", ": \u03C4 ; ", aleft, idright, ":"," ","\u03C4"," ",";"); :}
 								;
 
+class_type						::= ZETA:z LPAREN type:t COLON row_type_l2c:row RPAREN:r
+									{: 
+									   MultipleIdentifier.check(row);
+									   RESULT = new ClassType (t, row, zleft, rright) ;
+									:}
+								|	class_type_error
+									{: :}
+								;
+
 class_type_error				::= ZETA:z epsilon
 									{: Error.expect("Class-Type", "(int : m: int ;)", zleft, zright, "(","\u03C4"," ",":"," ","\u03D5",")"); :}
 								|	ZETA:z LPAREN:l epsilon
