@@ -13,6 +13,7 @@
 	 \item Polymorphie
 	 \item Typinferenz
 	 \item Objekte und Klassen
+	 \item bald: Subtyping
 	 \item Wahlveranstaltungen im Bereich theoretische Informatik
 	\end{itemgroup}
 }
@@ -63,6 +64,7 @@
 
 \myslide{Die Sprachen II}{
   \begin{itemgroup}{Die Sprachen im Überblick}
+% Liste der verfügbaren Sprachklassen
     \item ${\cal L}_0$ - ungetypter $\lambda$-Kalkül.
     \item ${\cal L}_1$ - einfach getypter $\lambda$-Kalkül.
     \item ${\cal L}_2$ - ${\cal L}_1$ mit Rekursion.
@@ -73,7 +75,7 @@
 
 \myslide{Die Sprachen III}
 {
-%
+% Wo sinnvoll existiert für jede Sprache eine "Untersprache" für diese Erweiterungen
 	\begin{itemgroup}{Spracherweiterungen}
 	\item{Call-by-Name Semantik}
 	\item{Objekte und Klassen}
@@ -83,6 +85,8 @@
 
 \myslide{Die Sprachen IV}{
   \begin{itemgroup}{Realisierung}
+  % Durch Auswahl der Sprache legt der Benutzer die Komplexität des Tools implizit fest.
+  % So ist gewährleistet,dass die Komplexität des Tools mit der Kompetenz des Users wächst. 
     \item Benutzer wählt beim Erstellen neuer Datei eine Sprache.
     \item Sprache bestimmt dann Programmverhalten (Typregeln,\\ Semantikregeln, Syntaxhighlighting, \ldots).
 	\item Ausgewählte Sprache beeinflusst verfügbare Beweiswerkzeuge.
@@ -93,6 +97,9 @@
 
 \myslide{Projektgruppe TPML 2.0.0}
 {
+  % Bei TPML 1.0 nur die Sprachklasse aswählbar.
+  % nicht kompletter Vorlesungsstoff abgedeckt
+  % persistenz fehlt
 	\begin{itemgroup}{Ausgangspunkt TPML 1.0.0}
 	\item Unterstützt ${\cal L}_0$ - ${\cal L}_4$
 	\item keine Unterstützung der Spracherweiterungen
@@ -101,8 +108,12 @@
 	\end{itemgroup}
 }
 
+%ZIELE
+
 \myslide{Projektgruppe TPML 2.0.0}
 {
+% Ziel: Tool insbesondere dann sinnvoll wenn der komplette Stoff unterstützt wird
+% sonst doch eher frustrierend
   \begin{itemgroup}{Ziel: Abdeckung des Vorlesungsstoffes}
     \item Vollständige Unterstützung von \glqq\TPONE \grqq
 	\catchword{Call-by-Name}
@@ -119,12 +130,14 @@
   \begin{itemgroup}{Ziel: Übersichtlichkeit}
 	\item Darstellung von Variablenbindungen
 	%Visualisierung bei Mouse Over
+	%Eine der ersten Sachen, die in der Vorlesung besprochen werden.
 	\item intelligenteres Umbrechen von langen Ausdrücken
 	%bisher maximal ein Umbruch
 	%Variablenbindungen sonst nicht sichbar
 	\item Darstellung des Syntaxbaumes
 	%Strukturiertere Darstellung von großen Ausdrücken
 	%Einfacheres Erkennen der nun zu verwendenden Regel
+	%Erkennen wie ein konkreter Ausdruck aus Items der Abstrakten Syntax aufgebaut ist.
   \end{itemgroup}
 }
 
@@ -134,9 +147,10 @@
 	\item Persistenz der geführten Beweise
 	\catchword{PDF Export}
 	%target: dau, der drucken will was er sieht
-	\catchword{Latex Export}
+	\catchword{\LaTeX Export}
 	%target: übungsgruppenleiter, klausurerstellung, da ausgabe bearbeitet werden kann
 	\item Autovervollständigung von Ausdrücken
+	%Erleichtert schreiben von Ausdrücken
 	\item Verbesserung der Errormessages
   \end{itemgroup}
 }
