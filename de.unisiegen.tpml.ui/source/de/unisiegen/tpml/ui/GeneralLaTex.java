@@ -109,7 +109,7 @@ public class GeneralLaTex
   {
     this.dialog = new TexDialog (
         ( JFrame ) this.parent.getTopLevelAncestor ( ) , true ) ;
-    Preferences preferences = Preferences.userNodeForPackage ( Outline.class ) ;
+    Preferences preferences = Preferences.userNodeForPackage ( GeneralLaTex.class ) ;
     this.dialog.filechooser.setCurrentDirectory ( new File ( preferences.get (
         "lastDir" , "." ) ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     this.dialog.filechooser.setFileFilter ( new FileFilter ( )
