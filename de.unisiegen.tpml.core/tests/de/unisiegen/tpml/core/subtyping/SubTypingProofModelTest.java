@@ -214,7 +214,7 @@ public class SubTypingProofModelTest extends JFrame
     {
       public void actionPerformed ( ActionEvent event )
       {
-        model.setMode ( false ) ;
+        model.setAdvanced ( false ) ;
         ItemListener temp = combo1.getItemListeners ( ) [ 0 ] ;
         combo1.removeItemListener ( temp ) ;
         combo1.removeAllItems ( ) ;
@@ -232,7 +232,7 @@ public class SubTypingProofModelTest extends JFrame
     {
       public void actionPerformed ( ActionEvent event )
       {
-        model.setMode ( true ) ;
+        model.setAdvanced ( true ) ;
         ItemListener temp = combo1.getItemListeners ( ) [ 0 ] ;
         combo1.removeItemListener ( temp ) ;
         combo1.removeAllItems ( ) ;

@@ -51,4 +51,6 @@ public interface SubTypingModel extends ProofModel {
 	 * @see de.unisiegen.tpml.core.ProofModel#getRoot()
 	 */
 	public SubTypingNode getRoot ( );
+	
+	public void setAdvanced(boolean advanced);
 }

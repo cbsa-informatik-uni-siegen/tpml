@@ -18,7 +18,9 @@ import javax.swing.SwingUtilities;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.subtyping.SubTypingModel;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode;
@@ -32,11 +34,14 @@ import de.unisiegen.tpml.graphics.components.MenuGuessItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.NailSymbolComponent;
+import de.unisiegen.tpml.graphics.components.RulesMenu;
 import de.unisiegen.tpml.graphics.components.TypeComponent;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringToHTML;
+import de.unisiegen.tpml.graphics.smallstep.SmallStepComponent;
 import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
+import de.unisiegen.tpml.graphics.typeinference.TypeInferenceComponent;
 
 /**
  * Graphical representation of a {@link SubTypingProofNode }.<br>
@@ -167,6 +172,17 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
 	 * has been evaluated.
 	 */
 	private JLabel ruleLabel;
+	
+	/**
+	 * containing the rules it may contain submenus if to many (set in TOMANY)
+	 * rules are in the popupmenu
+	 */
+	private JPopupMenu menu;
+
+	/**
+	 * The Manager for teh RulesMenus
+	 */
+	private RulesMenu rulesMenu = new RulesMenu();
 
 	/**
 	 * Constructor for a SubTypingNodeComponent<br>
@@ -222,7 +238,7 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
 		/*
 		 * Create the PopupMenu for the menu button
 		 */
-		JPopupMenu menu = new JPopupMenu ( );
+		menu = new JPopupMenu ( );
 		ProofRule[] rules = this.proofModel.getRules ( );
 		if ( rules.length > 0 ) {
 			int group = rules[0].getGroup ( );
@@ -621,5 +637,42 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
 	 */
 	public JLabel getIndexLabel ( ) {
 		return this.indexLabel;
+	}
+	
+	/**
+	 * Sets whether the small step view operates in advanced or beginner mode.
+	 * 
+	 * @param pAdvanced
+	 *          <code>true</code> to display only axiom rules in the menu.
+	 * 
+	 * @see TypeInferenceComponent#setAdvanced(boolean)
+	 */
+	void setAdvanced(boolean pAdvanced)
+	{
+		((SubTypingModel) this.proofModel).setAdvanced ( pAdvanced );
+		// Fill the menu with menuitems
+		JPopupMenu newMenu = new JPopupMenu();
+		ProofRule[] rulesOfModel = this.proofModel.getRules();
+		if (rulesOfModel.length > 0)
+		{
+			int group = rulesOfModel[0].getGroup();
+			for (ProofRule r : rulesOfModel)
+			{
+				{
+					if (r.getGroup() != group)
+					{
+						newMenu.addSeparator();
+					}
+
+					newMenu.add(new MenuRuleItem(r));
+					group = r.getGroup();
+				}
+			}
+		}
+		newMenu.addSeparator();
+		newMenu.add(new MenuGuessItem());
+		newMenu.add(new MenuGuessTreeItem());//this.rules.getMenuButton().setMenu(this.menu);
+		//this.rules.getMenuButton().setMenu(menu);
+		this.ruleButton.setMenu ( newMenu );
 	}
 }

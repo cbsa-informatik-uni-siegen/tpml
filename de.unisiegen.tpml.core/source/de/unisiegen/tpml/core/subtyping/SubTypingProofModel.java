@@ -598,12 +598,12 @@ public class SubTypingProofModel extends AbstractProofModel implements
    * 
    * @param pMode boolean, true means advanced, false beginner mode
    */
-  public void setMode ( boolean pMode )
+  public void setAdvanced ( boolean pMode )
   {
     if ( this.mode != pMode )
     {
       this.mode = pMode ;
-      if ( this.ruleSet.getLanguage ( ).getName ( ).equalsIgnoreCase ( "l2o" ) ) { //$NON-NLS-1$
+      if ( this.ruleSet.getLanguage ( ).getName ( ).equalsIgnoreCase ( "l2osub" ) ) { //$NON-NLS-1$
         if ( pMode )
         {
           this.ruleSet.unregister ( "TRANS" ) ; //$NON-NLS-1$

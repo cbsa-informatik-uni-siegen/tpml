@@ -811,4 +811,43 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
   {
     return toPrettyString ( ).toString ( ) ;
   }
+  
+  /**
+   * Set the mode (Beginner, Advanced) of choosen by the user
+   * 
+   * @param pMode boolean, true means advanced, false beginner mode
+   */
+  public void setAdvanced ( boolean pMode )
+  {
+    if ( this.mode != pMode )
+    {
+      this.mode = pMode ;
+      if ( this.ruleSet.getLanguage ( ).getName ( ).equalsIgnoreCase ( "l2osub" ) ) { //$NON-NLS-1$
+        if ( pMode )
+        {
+          this.ruleSet.unregister ( "TRANS" ) ; //$NON-NLS-1$
+          this.ruleSet.unregister ( "OBJECT-WIDTH" ) ; //$NON-NLS-1$
+          this.ruleSet.unregister ( "OBJECT-DEPTH" ) ; //$NON-NLS-1$
+          this.ruleSet.unregister ( "REFL" ) ; //$NON-NLS-1$
+          this.ruleSet.registerByMethodName ( L2OLanguage.L2O ,
+              "OBJECT" , "applyObject" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+          this.ruleSet.registerByMethodName ( L1Language.L1 ,
+              "REFL" , "applyRefl" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        else
+        {
+          this.ruleSet.unregister ( "OBJECT" ) ; //$NON-NLS-1$
+          this.ruleSet.unregister ( "REFL" ) ; //$NON-NLS-1$
+          this.ruleSet.registerByMethodName ( L2OLanguage.L2O ,
+              "TRANS" , "applyTrans" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+          this.ruleSet.registerByMethodName ( L2OLanguage.L2O ,
+              "OBJECT-WIDTH" , "applyObjectWidth" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+          this.ruleSet.registerByMethodName ( L2OLanguage.L2O ,
+              "OBJECT-DEPTH" , "applyObjectDepth" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+          this.ruleSet.registerByMethodName ( L1Language.L1 ,
+              "REFL" , "applyRefl" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        }
+      }
+    }
+  }
 }

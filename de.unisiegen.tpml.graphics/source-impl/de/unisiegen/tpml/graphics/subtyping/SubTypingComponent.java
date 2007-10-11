@@ -15,10 +15,10 @@ import de.unisiegen.tpml.core.AbstractProofModel;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.subtyping.SubTypingModel;
+import de.unisiegen.tpml.core.subtyping.SubTypingNode;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
-import de.unisiegen.tpml.graphics.bigstep.BigStepComponent;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 import de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer;
@@ -455,6 +455,25 @@ public class SubTypingComponent extends AbstractProofComponent implements Scroll
 	{
 		// TODO größe setzen...
 		doRelayout();
-		
+	}
+	
+	/**
+	 * Sets whether the small step view operates in advanced or beginner mode.
+	 * 
+	 * @param advanced <code>true</code> to display only axiom rules in the
+	 *          menu.
+	 * @see SubTypingComponent#setAdvanced(boolean)
+	 */
+	void setAdvanced(boolean advanced)
+	{
+		((SubTypingModel) this.proofModel).setAdvanced ( advanced );
+		// update all active nodes
+		Enumeration<ProofNode> enumeration = this.proofModel.getRoot().postorderEnumeration();
+		while (enumeration.hasMoreElements()) {
+			// tell the component belonging to this node, that we have a new advanced state
+			SubTypingNode node = (SubTypingNode)enumeration.nextElement();
+			SubTypingNodeComponent component = (SubTypingNodeComponent)node.getUserObject();
+			component.setAdvanced(advanced);
+		}
 	}
 }
