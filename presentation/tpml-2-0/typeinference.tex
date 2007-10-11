@@ -1,7 +1,7 @@
 \myslide{Type Inference - Implementierung}
 { 
-    \begin{itemgroup}{Der Typinferenzalgorithmus arbeitet auf einer Liste von TypeFormulas. \\[10mm] 
-	TypeFormula:\\[-4mm]}
+    \begin{itemgroup}{Der Typinferenzalgorithmus arbeitet auf einer Liste von TypeFormulas. \\[8mm] 
+	TypeFormula:\\[-6mm]}
     
     \item \textbf{Typeequation} 	$\to$	$\SeenTypes{}\ \vdash\ \TypeEquationTypeInference
 	{\TypeTypeVariable{\alpha3}} {\TypeIntegerType} $ 
@@ -10,6 +10,10 @@
     \item \textbf{Subtype}	$\to$	$\TypeSubType {\TypeIntegerType} {\TypeBooleanType} $  \\[-3mm]
 
     \end{itemgroup}
+
+  \begin{itemgroup}{Jeder Knoten enthält eine Menge mit den bereits gesammelten Type Substitutions\\[-6mm]}
+    \item \textbf{Type Substitution}	$\to$ $\TypeSubstitution{\TypeIntegerType}{\TypeTypeVariable{\alpha5}}$
+  \end{itemgroup}
 }
 
 \myslide{Type Inference - Implementierung}
