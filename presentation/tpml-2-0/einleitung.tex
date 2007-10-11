@@ -9,7 +9,7 @@
 
 \myslide{Die Vorlesungen}{
 	\begin{itemgroup}{\glqq\TPTWO \grqq}
-	 \item Erweiterung um weitere Konzepte
+	 \item Erweiterung um zusätzliche Konzepte:
 	 \item Polymorphie
 	 \item Typinferenz
 	 \item Objekte und Klassen
@@ -17,9 +17,43 @@
 	\end{itemgroup}
 }
 
+\myslide{Motivation I}{
+  {\bf Frage:} Warum ein Programm zur \glqq Theorie der Programmierung\grqq?
+
+  \animate{1}{
+    \begin{itemgroup}{Gründe}
+      \item Erleichterter Zugang zu theoretischen Inhalten.
+      \item Regelwerk durch \glqq praktisches Arbeiten\grqq\ besser verständlich.
+      \item \glqq Gefühl\grqq\ für Interpreter und Typsysteme vermitteln.
+      \item Hilfestellung bei der Prüfungsvorbereitung ($\to$ nicht auf Beispiele aus Übung/Vorlesung beschränken)
+      \item Verständnis für Zusammenhang von Programmtext und Ausführung auf einer Maschine.
+    \end{itemgroup}
+  }
+}
+
+\myslide{Motivation II}{
+  \begin{itemgroup}{Warum nicht O'Caml?}
+  % Voller Funktionsumfang von Anfang an Sichtbar
+  % Es ist vor allem eine schrittweise, interaktive Beweisführung gewünscht. Diese ist mit O'Caml nicht möglich
+  % Weiterhin ist ein Commandozeilentool nicht intuitiv genug. Das Erstellen von GUIs für O'Caml allerdings noch nicht sehr komfortabel.
+    \item \glqq Echte Implementierungen\grqq\ ungeeignet.
+    \item Abläufe nicht sichtbar für den Benutzer
+    \item Typfehler von O'Caml schwer verständlich
+    \item Semantik nicht zugänglich\\ ($\to$ wird in Byte/native Code kompiliert)
+    \item Fehlende formale Spezifikation!
+  \end{itemgroup}
+
+  \animate{1}{
+    {\bf Folgerung:} Spezielles Lernprogramm besser geeignet.
+  }
+}
+
 \myslide{Die Sprachen I}{
   \begin{itemgroup}{TPML modular/erweiterbar}
-    \item Beginn mit einfachen Sprachen
+  % Genau wie die Vorlesung soll in TPML mit einfachen Sprachen begonnen werden,
+  % die Schritt für Schritt erweitert werden.
+  % Bei jedem Leistungsstand soll das Tool gleichermaßen einfach bedienbar sein.
+    \item Beginn mit  einfachen Sprachen
     \item Inkrementelle Erweiterung
     \item Bis zu imperativen und objekt-orientierten Konzepten
     \item Lernprogramm soll diese Lernkurve wiederspiegeln
@@ -39,6 +73,7 @@
 
 \myslide{Die Sprachen III}
 {
+%
 	\begin{itemgroup}{Spracherweiterungen}
 	\item{Call-by-Name Semantik}
 	\item{Objekte und Klassen}
@@ -55,37 +90,10 @@
 
 }
 
-\myslide{Motivation I}{
-  {\bf Frage:} Warum ein Programm zur \glqq Theorie der Programmierung\grqq?
-
-  \animate{1}{
-    \begin{itemgroup}{Gründe}
-      \item Erleichterter Zugang zu theoretischen Inhalten.
-      \item Regelwerk durch \glqq praktisches Arbeiten\grqq\ besser verständlich.
-      \item \glqq Gefühl\grqq\ für Interpreter und Typsysteme vermitteln.
-      \item Hilfestellung bei der Prüfungsvorbereitung ($\to$ nicht auf Beispiele aus Übung/Vorlesung beschränken)
-      \item Verständnis für Zusammenhang von Programmtext und Ausführung auf einer Maschine.
-    \end{itemgroup}
-  }
-}
-
-\myslide{Motivation II}{
-  \begin{itemgroup}{Warum nicht O'Caml?}
-    \item \glqq Echte Implementierungen\grqq\ ungeeignet.
-    \item Abläufe nicht sichtbar für den Benutzer
-    \item Typfehler von O'Caml schwer verständlich
-    \item Semantik nicht zugänglich\\ ($\to$ wird in Byte/native Code kompiliert)
-    \item Fehlende formale Spezifikation!
-  \end{itemgroup}
-
-  \animate{1}{
-    {\bf Folgerung:} Spezielles Lernprogramm besser geeignet.
-  }
-}
 
 \myslide{Projektgruppe TPML 2.0.0}
 {
-	\begin{itemgroup}{TPML 1.0.0}
+	\begin{itemgroup}{Ausgangspunkt TPML 1.0.0}
 	\item Unterstützt ${\cal L}_0$ - ${\cal L}_4$
 	\item keine Unterstützung der Spracherweiterungen
 	\item große Ausdrücke teilweise unübersichtlich
@@ -95,16 +103,41 @@
 
 \myslide{Projektgruppe TPML 2.0.0}
 {
-  \begin{itemgroup}{Ziele der Entwicklung}
-    \item Erweiterung der Funktionalität anhand des noch verbliebenen
-        Stoffs der Vorlesung \glqq\TPONE \grqq
-    \item Erweiterung der Funktionalität anhand von Stoff der 
-        Vorlesungen \glqq\TPTWO \grqq
-    \item Studierenden ein komplettes Werkzeug zum besseren Verständnis und zur 
-        Prüfungsvorbereitung zur Verfügung stellen.
-    \item Unterstützung des Dozenten und der Übungsleiter bei Vorbereitung 
-        der Vorlesungen und Übungen.
-	\item Export zu PDF und \LaTeX
+  \begin{itemgroup}{Ziel: Abdeckung des Vorlesungsstoffes}
+    \item Vollständige Unterstützung von \glqq\TPONE \grqq
+	\catchword{Call-by-Name}
+	\catchword{Typinferenz}
+	\catchword{Objekte}
+    \item Erweiterung um die Inhalte von \glqq\TPTWO \grqq
+	\catchword{Klassen}
+	\catchword{Subtyping}
+  \end{itemgroup}
+}
+
+\myslide{Projektgruppe TPML 2.0.0}
+{
+  \begin{itemgroup}{Ziel: Übersichtlichkeit}
+	\item Darstellung von Variablenbindungen
+	%Visualisierung bei Mouse Over
+	\item intelligenteres Umbrechen von langen Ausdrücken
+	%bisher maximal ein Umbruch
+	%Variablenbindungen sonst nicht sichbar
+	\item Darstellung des Syntaxbaumes
+	%Strukturiertere Darstellung von großen Ausdrücken
+	%Einfacheres Erkennen der nun zu verwendenden Regel
+  \end{itemgroup}
+}
+
+\myslide{Projektgruppe TPML 2.0.0}
+{
+  \begin{itemgroup}{Ziel: Komfortfunktionen}
+	\item Persistenz der geführten Beweise
+	\catchword{PDF Export}
+	%target: dau, der drucken will was er sieht
+	\catchword{Latex Export}
+	%target: übungsgruppenleiter, klausurerstellung, da ausgabe bearbeitet werden kann
+	\item Autovervollständigung von Ausdrücken
+	\item Verbesserung der Errormessages
   \end{itemgroup}
 }
 
@@ -115,5 +148,4 @@
     \item Benutzerinterface und PDF Export - Christoph Fehling
   \end{itemgroup}
 }
-
 
