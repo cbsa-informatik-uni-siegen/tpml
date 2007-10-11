@@ -1526,11 +1526,11 @@ row_type_without_epsilon		::= IDENTIFIER:id COLON type:tau SEMI row_type:r
 									   System.arraycopy ( r.getTypes() , 0 , types , 1 , r.getTypes().length );
 									   RESULT = new RowType (identifiers, types, idleft, rright) ;
 									:}
+								|	row_type_error
+									{: :}
 								;
 
-row_type_error					::= IDENTIFIER:id epsilon
-									{: Error.expect("Row-Type", ": \u03C4 ;", idleft, idright, ":"," ","\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
-								|	IDENTIFIER:id COLON:c epsilon
+row_type_error					::= IDENTIFIER:id COLON:c epsilon
 									{: Error.expect("Row-Type", " \u03C4 ;", idleft, cright, "\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
 								|	IDENTIFIER:id COLON type:t epsilon
 									{: Error.expect("Row-Type", " ;", idleft, tright, ";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
@@ -1543,9 +1543,6 @@ row_type_error					::= IDENTIFIER:id epsilon
 								// Missing semi
 								|	IDENTIFIER:id COLON type:tau row_type_without_epsilon
 									{: Error.expect("Row-Type", " ; ", idleft, tauright, ";"); :}									
-								// Missing colon and type
-								|	IDENTIFIER:id SEMI
-									{: Error.expect("Row-Type", ": \u03C4 ", idleft, idright, ":"," ","\u03C4"); :}
 								// Missing type and semi
 								|	IDENTIFIER:id COLON:c row_type_without_epsilon
 									{: Error.expect("Row-Type", " \u03C4 ; ", idleft, cright, "\u03C4"," ",";"); :}								
