@@ -12,7 +12,14 @@ missverstanden werden\footnote{Es mag wiederum allerdings n"utzlich als Grundlag
 Auflistung des Regelwerks darstellt, welches jedoch nicht hundertprozentig mit dem Vorlesungsinhalt "ubereinstimmt.}.
 
 Die Sprachen \LZERO\ bis \LFOUR\ sind strikt hierarchisch aufgebaut, das hei"st die Sprache $\mathcal{L}_{n+1}$ erweitert die Sprache
-$\mathcal{L}_n$ ($0 \le n < 4$), beinhaltet also alle Merkmale der Sprache $\mathcal{L}_n$. Die Sprachen entsprechen im Wesentlichen
+$\mathcal{L}_n$ ($0 \le n < 4$), beinhaltet also alle Merkmale der Sprache $\mathcal{L}_n$.
+Zus"atzlich dazu gibt es die Sprache \LTWOO, welche die Sprache \LTWO\ um objektorientierte Konzepte erweitert
+und die Sprache \LTWOC, welche die Sprache \LTWOO\ um Klassen mit Vererbung erweitert.
+Zu den Sprachen \LZERO\ bis \LTWO\ gibt es noch die Varianten mit Call by Name Semantik \LZEROCBN\ bis \LTWOCBN,
+die ausgew"ahlt werden k"onnen.
+Es existieren zu allen Sprachen, die ein Typsystem enthalten die entsprechenden Subtyping Sprachen
+$\mathcal{L}_n^{SUB}$.
+Die Sprachen entsprechen im Wesentlichen
 den in der Vorlesung behandelten Sprachen. Kleinere Abweichungen sind jedoch m"oglich und stellenweise nicht vermeidbar. In der "Ubung
 werden, falls notwendig, diese Abweichungen herausgestellt und erl"autert.
 
@@ -38,7 +45,7 @@ definiert.
 
 \subsection{Big step Semantik von \LZERO}
 
-Ein \define{big step} ist eine Formel der Gestalt $e \eval v$ mit $r \in Val$. Ein big step hei"st g"ultig f"ur \LZERO, wenn
+Ein \define{big step} ist eine Formel der Gestalt $e \eval v$ mit $v \in Val$. Ein big step hei"st g"ultig f"ur \LZERO, wenn
 er sich mit den Regeln\\[5mm]
   \begin{tabular}{ll}
      \mbox{(VAL)}         & $v \eval v$ \\[3mm]
@@ -225,7 +232,7 @@ Ein \notation{small step} hei"st g"ultig f"ur \LONE, wenn er sich mit den small 
     \mbox{(COERCE)}       & $\coercion{e}{\tau}{\tau'} \to e$
   \end{tabular}\\[7mm]
 und mit den zugeh"origen exception-Regeln herleiten l"asst. Diese exceptions-Regeln erh"alt man - "ahnlich wie
-bei der big step Seminatik - aus den obigen Regeln, indem man f"ur jede Regel der Form\\[2mm]
+bei der big step Semantik - aus den obigen Regeln, indem man f"ur jede Regel der Form\\[2mm]
   \begin{tabular}{ll}
     \mbox{(R)} & $\regel{e_1 \to e'_1}{e_2 \to e'_2}$
   \end{tabular}\\[3mm]
@@ -293,22 +300,22 @@ definiert. Beim Type Checker werden diese Regeln f"ur Konstanten nicht angegeben
   Ein Typurteil $\Tjm{\Gamma}{e}{\tau}$ oder $\Tjm{\Gamma}{r}{\phi}$ hei"st g\"ultig f\"ur \Lom,
   wenn es sich mit den Typregeln  \\[5mm]
   \begin{tabular}{ll} 
-    \mbox{(Id)\ }           & $\Tjm{\Gamma}{\id}{\tau} \quad \text{falls } \id\in\dom{\Gamma} \wedge \Gamma(\id) = \tau$ \\[1mm]
-    \mbox{(Const)\ }        & $\RULE{\tj{c}{\tau}}
+    \mbox{(ID)\ }           & $\Tjm{\Gamma}{\id}{\tau} \quad \text{falls } \id\in\dom{\Gamma} \wedge \Gamma(\id) = \tau$ \\[1mm]
+    \mbox{(CONST)\ }        & $\RULE{\tj{c}{\tau}}
                               {\Tjm{\Gamma}{c}{\tau}}$ \\[4mm]
-    \mbox{(App-Subsume)\ }  & $\RULE{\Tjm{\Gamma}{e_1}{\typeArrow{\tau_2'}{\tau}}
+    \mbox{(APP-SUBSUME)\ }  & $\RULE{\Tjm{\Gamma}{e_1}{\typeArrow{\tau_2'}{\tau}}
                                \quad
                                \Tj{\Gamma}{e_2}{\tau_2}
                                \quad
                                \subtype{\tau_2} {\tau_2'}}
                               {\Tjm{\Gamma}{\expApp{e_1}{e_2}}{\tau}}$ \\[4mm]
-    \mbox{(Abstr)\ }        & $\RULE{\Tjm{\Gamma\SUB{\tau}{x}}{e}{\tau'}}
+    \mbox{(ABSTR)\ }        & $\RULE{\Tjm{\Gamma\SUB{\tau}{x}}{e}{\tau'}}
                               {\Tjm{\Gamma}{\expAbstr{x:\tau}{e}}{\typeArrow{\tau}{\tau'}}}$ \\[4mm]
-    \mbox{(Let)\ }          & $\RULE{\Tjm{\Gamma}{e_1}{\tau_1}
+    \mbox{(LET)\ }          & $\RULE{\Tjm{\Gamma}{e_1}{\tau_1}
                                \quad
                                \Tjm{\Gamma\SUB{\tau_1}{x}}{e_2}{\tau_2}}
                               {\Tjm{\Gamma}{\expLet{x}{e_1}{e_2}}{\tau_2}}$ \\[4mm]
-   \mbox{(Cond-Subsume)\ } & $\RULE{\Tjm{\Gamma}{e_0}{\bool}
+   \mbox{(COND-SUBSUME)\ } & $\RULE{\Tjm{\Gamma}{e_0}{\bool}
                                \quad
                                \Tjm{\Gamma}{e_1}{\tau_1}
                                \quad
@@ -328,7 +335,7 @@ definiert. Beim Type Checker werden diese Regeln f"ur Konstanten nicht angegeben
 
 \subsection{Syntaktischer Zucker}
 
-Die Sprache \LONE\ und alle folgenden Sprachen enthalten \Define{syntaktischen Zucker}{syntaktischer Zucker} um das Schreiben
+Die Sprache \LONE\ und alle folgenden Sprachen enthalten \Define{syntaktischen Zucker}{syntaktischer Zucker}, um das Schreiben
 von Programmen zu vereinfachen. Der syntaktische Zucker l"asst sich dann anschlie"send in Kernsyntax "ubersetzen oder direkt
 verarbeiten. Hierbei wurden aus Gr"unden der "Ubersichtlichkeit nicht immer abgeleitete Regeln f"ur den syntaktischen Zucker eingef"uhrt,
 sondern es wird implizit eine Konvertierung des betreffenden Teilausdrucks in \notation{Kernsyntax} vorgenommen. F"ur \LONE\ betrifft dies
@@ -413,8 +420,8 @@ Die Sprache \LONESUB beschr"ankt sich auf das Typsystem von \LONE.
 
 Ein Beweisschritt f"ur Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \\[5mm]
   \begin{tabular}{ll}
-    \mbox{(S-Refl)\ }       & $\subtype{\tau}{\tau}$  \\[1mm]
-    \mbox{(S-Arrow)\ }      & $\RULE{\subtype{\tau_1'} {\tau_1} \quad \subtype {\tau_2} {\tau_2'}}
+    \mbox{(S-REFL)\ }       & $\subtype{\tau}{\tau}$  \\[1mm]
+    \mbox{(S-ARROW)\ }      & $\RULE{\subtype{\tau_1'} {\tau_1} \quad \subtype {\tau_2} {\tau_2'}}
                               {\subtype{\typeArrow{\tau_1}{\tau_2}} {\typeArrow{\tau_1'}{\tau_2'}}}$ \\[4mm]
   \end{tabular} \\[7mm]
 
@@ -424,21 +431,21 @@ herleiten l\"asst.
 
 Ein Beweisschritt f"ur Rec Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \\[5mm]
  \begin{tabular}{lll}
-            \mbox{(S-Refl)\ } & $A \vdash \subtype{\tau}{\tau}$ \\[1mm]
-            \mbox{(S-Assume)\ } & $\RULE{(\subtype{\tau_1} {\tau_2)} \in A}
+            \mbox{(S-REFL)\ } & $A \vdash \subtype{\tau}{\tau}$ \\[1mm]
+            \mbox{(S-ASSUME)\ } & $\RULE{(\subtype{\tau_1} {\tau_2)} \in A}
                                    {A \vdash \subtype{\tau_1} {\tau_2}}$ \\[2mm]
-            \mbox{(S-Arrow)\ } & $\RULE{A' \vdash \subtype{\tau_1} {\tau_1'}
+            \mbox{(S-ARROW)\ } & $\RULE{A' \vdash \subtype{\tau_1} {\tau_1'}
                                    \quad
                                    A' \vdash \subtype{\tau_2} {\tau_2'}}
                                   {A \vdash \subtype{\typeArrow{\tau_1}{\tau_2}}
                                    {\typeArrow{\tau_1'}{\tau_2'}}}$ 
                                   & mit $A' = A \cup \{\subtype{\typeArrow{\tau_1}{\tau_2}}
                                    {\typeArrow{\tau_1'}{\tau_2'}}\}$ \\[2mm]
-            \mbox{(S-Mu-Left)\ } & $\RULE{A' \vdash \subtype{\tau_1\SUB{\typeRec{t}{\tau_1}}{t}}
+            \mbox{(S-MU-LEFT)\ } & $\RULE{A' \vdash \subtype{\tau_1\SUB{\typeRec{t}{\tau_1}}{t}}
                                      {\tau_2}}
                                     {A \vdash \subtype{\typeRec{t}{\tau_1}} {\tau_2}}$
                                    & mit $A' = A \cup \{\subtype{\typeRec{t}{\tau_1}} {\tau_2\}}$ \\[2mm]
-            \mbox{(S-Mu-Right)\ } & $\RULE{A' \vdash \subtype{\tau_1}
+            \mbox{(S-MU-RIGHT)\ } & $\RULE{A' \vdash \subtype{\tau_1}
                                      {\tau_2\SUB{\typeRec{t}{\tau_2}}{t}}}
                                     {A \vdash \subtype{\tau_1} {\typeRec{t}{\tau_2}}}$
                                    & mit $A' = A \cup \{\subtype{\tau_1} {\typeRec{t}{\tau_2}\}}$ \\[2mm]
@@ -497,10 +504,10 @@ bestimmt.
 
 \subsection{Minimal Typing Semantik von \LTWO}
 
-  Ein Typurteil $\Tjm{\Gamma}{e}{\tau}$ oder $\Tjm{\Gamma}{r}{\phi}$ hei"st g\"ultig f\"ur \Lom,
+  Ein Typurteil $\Tjm{\Gamma}{e}{\tau}$ oder $\Tjm{\Gamma}{r}{\phi}$ hei"st g\"ultig f\"ur \LTWO,
   wenn es sich mit den Typregeln \\[5mm]
   \begin{tabular}{ll} 
-    \mbox{(Rec-Subsume)\ }  & $\RULE{\Tjm{\Gamma\SUB{\tau}{x}}{e}{\tau'} \quad \tau' \le \tau}
+    \mbox{(REC-SUBSUME)\ }  & $\RULE{\Tjm{\Gamma\SUB{\tau}{x}}{e}{\tau'} \quad \tau' \le \tau}
                               {\Tjm{\Gamma}{\expRec{x:\tau}{e}}{\tau}}$ \\[4mm]
   \end{tabular} \\[7mm]
   und den Suptyping Regeln herleiten l\"asst.
@@ -573,7 +580,7 @@ und den ge"anderten bzw. gel"oschten Regeln\\[5mm]
 herleiten l"asst.
 
 \section{Die Sprache \LTWOSUB}
-Die Sprache \LTWOSUB erweitert die Sprache \LONE um das Typsystem der Sprache \LTWO. 
+Die Sprache \LTWOSUB erweitert die Sprache \LONE\ um das Typsystem der Sprache \LTWO. 
 
 \section{Die Sprache \LTWOO}
 \index{Objekte}
@@ -585,7 +592,7 @@ e \is (\send{e}{m})                                                 & & \mbox{Me
   \al \duplication{a_1 = e_1;\ \ldots\ ;a_n = e_n}                  & & \mbox{Duplikation}
 \egram
 erweitert.
-Die Menge \notation{$\Row$} aller \name{Reihen} r von \LTWOO\ ist definiert durch die kontextfreie Grammatik:
+Die Menge \notation{$\Row$} aller \name{Reihen} $r$ von \LTWOO\ ist definiert durch die kontextfreie Grammatik:
 \bgram
 r \is \eps                                                          & & \mbox{leere Reihe}
   \al \attr {a}{e}\ r_1                                             & & \mbox{Attribut}
@@ -697,24 +704,24 @@ die nicht zu einem Objekt oder Attribut geh"oren.
   wenn es sich mit den  Typregeln \\[5mm]
 
      \begin{tabular}{ll}
-    \mbox{(Send)\ }         & $\RULE{\Tjm{\Gamma}{e}{\typeObject{\rtypeMethod{m}{\tau}{\phi}}}}
+    \mbox{(SEND)\ }         & $\RULE{\Tjm{\Gamma}{e}{\typeObject{\rtypeMethod{m}{\tau}{\phi}}}}
                               {\Tjm{\Gamma}{\expSend{e}{m}}{\tau}}$ \\[4mm]
-    \mbox{(Object)\ }       & $\RULE{\Tjm{\Gamma^\star\SUB{\tau}{\self}}{r}{\phi}
+    \mbox{(OBJECT)\ }       & $\RULE{\Tjm{\Gamma^\star\SUB{\tau}{\self}}{r}{\phi}
                                \quad
                                \tau = \typeObject{\phi}}
                               {\Tjm{\Gamma}{\expObject{\self:\tau}{r}}{\tau}}$ \\[4mm]
-    \mbox{(Dupl-Subsume)\ } & $\RULE{\Tjm{\Gamma}{\self}{\tau}
+    \mbox{(DUPL-SUBSUME)\ } & $\RULE{\Tjm{\Gamma}{\self}{\tau}
                                \quad
                                \forall i:\Tjm{\Gamma}{a_i}{\tau_i}
                                              \wedge \Tjm{\Gamma}{e_i}{\tau_i'}
                                              \wedge \tau_i' \le \tau_i}
                               {\Tjm{\Gamma}{\expDupl{a_1=e_1;\ldots;a_n=e_n}}{\tau}}$\\[4mm]
-    \mbox{(Empty)\ }          & $\Tjm{\Gamma}{\rowEpsilon}{\rtypeEmpty}$ \\[2mm]
-    \mbox{(Attr)\ }           & $\RULE{\Tjm{\Gamma^\star}{e}{\tau}
+    \mbox{(EMPTY)\ }          & $\Tjm{\Gamma}{\rowEpsilon}{\rtypeEmpty}$ \\[2mm]
+    \mbox{(ATTR)\ }           & $\RULE{\Tjm{\Gamma^\star}{e}{\tau}
                                  \quad
                                  \Tjm{\Gamma\SUB{\tau}{a}}{r_1}{\phi}}
                                 {\Tjm{\Gamma}{\rowVal{a}{e}{r_1}}{\phi}}$ \\[4mm]
-    \mbox{(Method-Subsume)\ } & $\RULE{\Tjm{\Gamma}{\self}{\typeObject{\rtypeMethod{m}{\tau}{\phi'}}}
+    \mbox{(METHOD-SUBSUME)\ } & $\RULE{\Tjm{\Gamma}{\self}{\typeObject{\rtypeMethod{m}{\tau}{\phi'}}}
                                  \quad
                                  \Tjm{\Gamma}{e}{\tau'}
                                  \quad
@@ -747,14 +754,14 @@ Die Sprache \LTWOOSUB erweitert die Sprache \LTWOSUB um das Typsystem von \LTWOO
 
 Ein Beweisschritt f"ur Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \\[5mm]
   \begin{tabular}{ll}
-    \mbox{(S-Trans)\ }      & $\RULE{\subtype{\tau_1} {\tau_2} \quad \subtype{\tau_2} {\tau_3}}
+    \mbox{(S-TRANS)\ }      & $\RULE{\subtype{\tau_1} {\tau_2} \quad \subtype{\tau_2} {\tau_3}}
                               {\subtype{\tau_1} {\tau_3}}$ \\[4mm]
-    \mbox{(S-Obj-Width)\ }  & $\subtype{\typeObject{m_1:\tau_1;\ldots;m_{n+k}:\tau_{n+k}}}
+    \mbox{(S-OBJ-WIDTH)\ }  & $\subtype{\typeObject{m_1:\tau_1;\ldots;m_{n+k}:\tau_{n+k}}}
                           {\typeObject{m_1:\tau_1;\ldots;m_n:\tau_n}}$ \\[2mm]
-    \mbox{(S-Obj-Depth)\ }  & $\RULE{\subtype{\tau_i} {\tau_i'} \text{ f\"ur } i=1,\ldots,n}
+    \mbox{(S-OBJ-DEPTH)\ }  & $\RULE{\subtype{\tau_i} {\tau_i'} \text{ f\"ur } i=1,\ldots,n}
                               {\subtype{\typeObject{m_1:\tau_1;\ldots;m_n:\tau_n}}
                                {\typeObject{m_1:\tau_1';\ldots;m_n:\tau_n'}}}$ \\[5mm]
-    \mbox{(S-Object)\ }    & $\RULE{\subtype{\tau_i} {_m \tau_j'} \text{ f\"ur alle } i,j \text{ mit } m_i = m_j'}
+    \mbox{(S-OBJECT)\ }    & $\RULE{\subtype{\tau_i} {_m \tau_j'} \text{ f\"ur alle } i,j \text{ mit } m_i = m_j'}
                               {\subtype{\typeObject{m_1:\tau_1;\ldots;m_k:\tau_k}}
                                {_m \typeObject{m_1':\tau_1';\ldots;m_l':\tau_l'}}}$ \\[4mm]
                       & $\text{falls } \{m_1',\ldots,m_l'\} \subseteq \{m_1,\ldots,m_k\}$
@@ -766,16 +773,16 @@ herleiten l\"asst.
 
 Ein Beweisschritt f"ur Rec Sub Typing hei"st g"ultig, wenn er sich mit den Regeln  \\[5mm]
  \begin{tabular}{lll}
-    \mbox{(S-Trans)\ }      & $\RULE{\subtype{A \vdash \tau_1} {\tau_2} \quad \subtype{A \vdash \tau_2} {\tau_3}}
+    \mbox{(S-TRANS)\ }      & $\RULE{\subtype{A \vdash \tau_1} {\tau_2} \quad \subtype{A \vdash \tau_2} {\tau_3}}
                               {A \vdash \subtype{\tau_1} {\tau_3}}$ \\[4mm]
-    \mbox{(S-Obj-Width)\ }  & $A \vdash \subtype{\typeObject{m_1:\tau_1;\ldots;m_{n+k}:\tau_{n+k}}}
+    \mbox{(S-OBJ-WIDTH)\ }  & $A \vdash \subtype{\typeObject{m_1:\tau_1;\ldots;m_{n+k}:\tau_{n+k}}}
                           {\typeObject{m_1:\tau_1;\ldots;m_n:\tau_n}}$ \\[2mm]
-    \mbox{(S-Obj-Depth)\ }  & $\RULE{A' \vdash \subtype{\tau_i} {\tau_i'} \text{ f\"ur } i=1,\ldots,n}
+    \mbox{(S-OBJ-DEPTH)\ }  & $\RULE{A' \vdash \subtype{\tau_i} {\tau_i'} \text{ f\"ur } i=1,\ldots,n}
                               {A \vdash \subtype{\typeObject{m_1:\tau_1;\ldots;m_n:\tau_n}}
                                {\typeObject{m_1:\tau_1';\ldots;m_n:\tau_n'}}}$ \\[5mm]
 				& mit $A' = A \cup \{\subtype{\typeObject{m_1:\tau_1;\ldots;m_n:\tau_n}}
                                {\typeObject{m_1:\tau_1';\ldots;m_n:\tau_n'}}\}$\\[5mm]
-    \mbox{(S-Object)\ }    & $\RULE{A' \vdash \subtype{\tau_i} {_m \tau_j'} \text{ f\"ur alle } i,j \text{ mit } m_i = m_j'}
+    \mbox{(S-OBJECT)\ }    & $\RULE{A' \vdash \subtype{\tau_i} {_m \tau_j'} \text{ f\"ur alle } i,j \text{ mit } m_i = m_j'}
                               {\subtype{\typeObject{m_1:\tau_1;\ldots;m_k:\tau_k}}
                                {_m \typeObject{m_1':\tau_1';\ldots;m_l':\tau_l'}}}$ \\[4mm]
 				& mit $A' = A \cup \{\subtype{\typeObject{m_1:\tau_1;\ldots;m_k:\tau_k}}
@@ -797,7 +804,7 @@ e \is \class{self: \tau}{b}                                         & & \mbox{Kl
 \egram
 erweitert.
 
-Die Menge \notation{\Body} aller \name{Klassenr"umpfe} b von \LTWOC\ ist definiert durch die
+Die Menge \notation{\Body} aller \name{Klassenr"umpfe} $b$ von \LTWOC\ ist definiert durch die
 kontextfreie Grammatik:
 \bgram
 b \is \inherit{a_1,\ \ldots\ ,a_k}{e}{b}                            & & \mbox{Inherit}
@@ -1016,7 +1023,7 @@ hinzugenommen.
 
 \subsection{Minimal Typing Semantik von \LTHREE}
 
-  Ein Typurteil $\Tjm{\Gamma}{e}{\tau}$ oder $\Tjm{\Gamma}{r}{\phi}$ heisst g\"ultig f\"ur \Lom,
+  Ein Typurteil $\Tjm{\Gamma}{e}{\tau}$ oder $\Tjm{\Gamma}{r}{\phi}$ heisst g\"ultig f\"ur \LTHREE,
   wenn es sich mit den  Typregeln \\[5mm]
 
      \begin{tabular}{ll}
@@ -1163,7 +1170,7 @@ herleiten l"asst.
 
 \subsection{Typechecker Semantik von \LFOUR}
 
-Ein \notation{Typurteil} hei"st g"ultig f"ur \LTWO, wenn es sich mit den Typregeln von \LONE\ und den Regeln\\[3mm]
+Ein \notation{Typurteil} hei"st g"ultig f"ur \LFOUR, wenn es sich mit den Typregeln von \LTHREE\ und den Regeln\\[3mm]
 \begin{tabular}{ll}
 \mbox{(SEQ)\ }    & $\regel{\Tj{\Gamma}{e_1}{\tau_1} \quad \Tj{\Gamma}{e_2}{\tau_2}}
                            {\Tj{\Gamma}{e_1\,;\,e_2}{\tau_2}}$ \\[5mm]
@@ -1231,7 +1238,7 @@ herleiten l\"asst.
 Da es mitunter nicht mit jeder herk"ommlichen Tastatur m"oglich ist, griechische Buchstaben zu tippen,
 k"onnen die aufgef"uhrten Schl"usselw"orter als Ersatz benutzt werden. Ebenso ist es nicht so einfach
 Unicode Zeichen einzugeben, auch hierf"ur gibt es die entsprechenden Abk"urzungen. Unterscheidungen,
-die nur in er Theorie m"oglich sind, in der Praxis aber nicht unterscheidbar sind, m"ussen mit
+die nur in der Theorie m"oglich sind, in der Praxis aber nicht unterscheidbar sind, m"ussen mit
 Schl"usselw"ortern unterschieden werden.\\[5mm]
 \begin{tabular}{lll}
   \mbox{$\lambda$}                            & $\textbf{lambda}$                        & Lambda Ausdruck\\
@@ -1239,7 +1246,7 @@ Schl"usselw"ortern unterschieden werden.\\[5mm]
   \mbox{$\zeta$}                              & $\textbf{zeta}$                          & Klassentypen\\
   \mbox{$\alpha,\ \beta,\ \ldots$}            & $\texttt{'a}$, $\texttt{'b}$, $\ldots$   & Typvariablen\\
   \mbox{$\to$}                                & $\texttt{->}$                            & Funktionstypen\\
-  \mbox{$a: \tau_1;\ m: \tau_2;\ \phi \quad$} & $\texttt{attr}\ a: \tau_1;\ m: \tau_2;\ \phi \quad$
+  \mbox{$a: \tau_1;\ m: \tau_2;\ \phi \quad$} & $\textbf{attr}\ a: \tau_1;\ m: \tau_2;\ \phi \quad$
                                                                                          & Reihentypen\\
 \end{tabular}\\[5mm]
 Bei den Reihentypen muss eine Entscheidung getroffen werden, ob es sich bei einem eingegebenen Identifier
