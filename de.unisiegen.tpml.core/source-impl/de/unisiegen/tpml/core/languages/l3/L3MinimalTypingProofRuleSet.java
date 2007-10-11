@@ -1,9 +1,11 @@
 package de.unisiegen.tpml.core.languages.l3;
 
-import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Tuple;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.languages.l2.L2MinimalTypingProofRuleSet;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingExpressionProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingTypesProofNode;
@@ -57,24 +59,20 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 * @param pNode the minimal typing proof node.
 	 */
 	public void applyTuple ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
-		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
+		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
+		Tuple tuple = (Tuple) node.getExpression ( );
 		TupleType type;
-		TupleType type2;
-
 		type = ( TupleType ) node.getType ( );
-		type2 = ( TupleType ) node.getType2 ( );
 
-		MonoType[] types = type.getTypes ( );
-		MonoType[] types2 = type2.getTypes ( );
-
-		if ( types.length == types2.length ) {
+		for (Expression e : tuple.getExpressions ( ) )
+			context.addProofNode (node, node.getEnvironment ( ), e);
+		/*
+		if ( types.length == types.length ) {
 			//	for ( int i = 0; i < types.length; i++ ) {
 			// generate new child node
 			context.addProofNode ( node, types[0], types2[0] );
-			node.getSeenTypes ( ).add ( new DefaultSubType( node.getType ( ), node.getType2 ( )) );
 			//}
-		} else
-			throw new RuntimeException ( Messages.getString ( "SubTypingException.5" ) ); //$NON-NLS-1$
+		} */
 	}
 
 	/**
@@ -85,19 +83,23 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 * @param pNode the node to update according to <b>(TUPLE)</b>.
 	 */
 	public void updateTuple ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
-		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
-		TupleType type;
+		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
+		/*TupleType type;
 		TupleType type2;
 
 		type = ( TupleType ) node.getType ( );
 		type2 = ( TupleType ) node.getType2 ( );
 
 		MonoType[] types = type.getTypes ( );
-		MonoType[] types2 = type2.getTypes ( );
+		MonoType[] types2 = type2.getTypes ( );*/
 
-		if ( node.isFinished ( ) && node.getChildCount ( ) < types.length ) {
+		if ( node.isFinished ( )  ) {
 			// generate new child node
-			context.addProofNode ( node, types[node.getChildCount ( )], types2[node.getChildCount ( )] );
+			//context.addProofNode ( node, types[node.getChildCount ( )], types2[node.getChildCount ( )] );
+			MonoType [] type = new MonoType[node.getChildCount ( )];
+			for (int i= 0; i< node.getChildCount ( ); i++)
+				type[i] = node.getChildAt ( i ).getType ( );
+			context.setNodeType ( node, new TupleType(type) );
 		}
 	}
 

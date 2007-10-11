@@ -409,7 +409,7 @@ public class L1MinimalTypingProofRuleSet extends AbstractMinimalTypingProofRuleS
 			Let let = ( Let ) node.getExpression ( );
 
 			// check if the user entered a type
-			if ( let.getTau ( ) == null )
+			if ( (let.getTau ( ) == null) && false )
 				throw new RuntimeException ( MessageFormat.format (
 						Messages.getString ( "MinimalTypingException.2" ), let.toString ( ) ) ); //$NON-NLS-1$
 			context.addProofNode ( node, node.getEnvironment ( ), let.getE1 ( ) );
@@ -467,7 +467,7 @@ public class L1MinimalTypingProofRuleSet extends AbstractMinimalTypingProofRuleS
 				Let let = ( Let ) node.getExpression ( );
 				TypeEnvironment environment = node.getEnvironment ( );
 				// generate new child node
-				context.addProofNode ( node, environment.extend ( let.getId ( ), let.getTau ( ) ), let.getE2 ( ) );
+				context.addProofNode ( node, environment.extend ( let.getId ( ), node.getFirstChild ( ).getType ( ) ), let.getE2 ( ) );
 			} else if ( expression instanceof MultiLet ) {
 				MultiLet let = ( MultiLet ) expression;
 				MinimalTypingExpressionProofNode child = ( MinimalTypingExpressionProofNode ) node.getFirstChild ( );
@@ -498,7 +498,7 @@ public class L1MinimalTypingProofRuleSet extends AbstractMinimalTypingProofRuleS
 			if ( expression instanceof Let || expression instanceof CurriedLetRec ) {
 				MonoType type = node.getChildAt ( 1 ).getType ( );
 				context.setNodeType ( node, type );
-			} else {
+			} else if (expression instanceof CurriedLet){
 				CurriedLet let = ( CurriedLet ) expression;
 				MonoType type = node.getChildAt ( 1 ).getType ( );
 				MonoType type2 = let.getTypes ( )[0];
@@ -510,6 +510,9 @@ public class L1MinimalTypingProofRuleSet extends AbstractMinimalTypingProofRuleS
 					// generate new child node
 					context.addProofNode ( node, type, type2 );
 				}
+			}
+			else {
+				context.setNodeType ( node, node.getLastChild ( ).getType ( ) );
 			}
 		} else if ( node.getChildCount ( ) == 3 && node.getChildAt ( 2 ).isFinished ( ) ) {
 			MonoType type = node.getChildAt ( 1 ).getType ( );
