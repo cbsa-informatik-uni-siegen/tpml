@@ -561,7 +561,9 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	}
 	
 	public boolean isSaveStatus() {
+	    if (this.isTexteditor())
 		return undoStatus;
+	    return false;
 	}
 
 	public void setUndoStatus(boolean undoStatus) {
