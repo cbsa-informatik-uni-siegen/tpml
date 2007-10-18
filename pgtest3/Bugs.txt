@@ -1,9 +1,0 @@
-- Jahreszahl in den Copyright Dateien
-
-- B.M.: ich habe gerade versucht das neue TPML auf dem ubuntu laptop von der theo inf
-  laufen zu lassen... bei ubuntu ist das GTK Look'n'Feel standard hat leider zur
-  folge das sich z.B. die outline nicht mehr verkleinern lässt und ähnliche spässe
-  könntet ihr das umstellen, dass das native look'n'feel nur dann genommen wird,
-  wenns nicht das GTK ist? oder umgekehrt, nur unter Windows das native look'n'feel
-  benutzen, sonst Metal mit Ocean? weil das ist ja vermutlich auch nur mit Metal
-  und dem Windows Native LAF wirklich getestet worden
