@@ -70,7 +70,7 @@ public class AboutDialog extends javax.swing.JDialog
     headerPanel.setLayout ( new java.awt.GridBagLayout ( ) ) ;
     headerPanel.setBackground ( new java.awt.Color ( 255 , 255 , 255 ) ) ;
     textLabel.setFont ( new java.awt.Font ( "Dialog" , 1 , 30 ) ) ;
-    textLabel.setText ( "TPML 0.2.5" ) ;
+    textLabel.setText ( "TPML" ) ;
     textLabel.setVerticalAlignment ( javax.swing.SwingConstants.BOTTOM ) ;
     gridBagConstraints = new java.awt.GridBagConstraints ( ) ;
     gridBagConstraints.gridx = 1 ;
@@ -123,14 +123,14 @@ public class AboutDialog extends javax.swing.JDialog
     gridBagConstraints.insets = new java.awt.Insets ( 12 , 12 , 6 , 6 ) ;
     bodyPanel.add ( websiteLabel , gridBagConstraints ) ;
     websiteLabelTarget
-        .setText ( "http://www.informatik.uni-siegen.de/theo/tpml/" ) ;
+        .setText ( "http://theoinf.math.uni-siegen.de/tpml/" ) ;
     gridBagConstraints = new java.awt.GridBagConstraints ( ) ;
     gridBagConstraints.gridwidth = 2 ;
     gridBagConstraints.gridx = 1 ;
     gridBagConstraints.gridy = 0 ;
     gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL ;
     gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST ;
-    gridBagConstraints.insets = new java.awt.Insets ( 12 , 6 , 6 , 12 ) ;
+    gridBagConstraints.insets = new java.awt.Insets ( 12 , 6 , 6 , 24 ) ;
     bodyPanel.add ( websiteLabelTarget , gridBagConstraints ) ;
     authorsLabel.setText ( java.util.ResourceBundle.getBundle (
         "de/unisiegen/tpml/ui/ui" ).getString ( "AuthorsLabel" ) ) ;
@@ -205,6 +205,7 @@ public class AboutDialog extends javax.swing.JDialog
         "de/unisiegen/tpml/ui/ui" ).getString ( "CloseMnemonic" ).charAt ( 0 ) ) ;
     closeButton.setText ( java.util.ResourceBundle.getBundle (
         "de/unisiegen/tpml/ui/ui" ).getString ( "Close" ) ) ;
+    closeButton.setFocusable ( false );
     closeButton.addActionListener ( new java.awt.event.ActionListener ( )
     {
       public void actionPerformed ( java.awt.event.ActionEvent evt )
@@ -217,6 +218,7 @@ public class AboutDialog extends javax.swing.JDialog
     buttonPanel.add ( closeButton , gridBagConstraints ) ;
     getContentPane ( ).add ( buttonPanel , java.awt.BorderLayout.SOUTH ) ;
     pack ( ) ;
+    this.setResizable ( false );
   }// </editor-fold>//GEN-END:initComponents
 
 
