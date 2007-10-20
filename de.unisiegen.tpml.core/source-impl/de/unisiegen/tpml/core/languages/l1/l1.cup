@@ -391,9 +391,9 @@ lambda							::= LAMBDA:l IDENTIFIER:id DOT seq_expr:e
 								;
 
 lambda_error					::= LAMBDA:l epsilon
-									{: Error.expect("Lambda", " id.e", lleft, lright, "id",":"," ","\u03C4",".","e" ); :}
+									{: Error.expect("Lambda", " id.e", lleft, lright, "id","[",":"," ","\u03C4","]",".","e" ); :}
 								|	LAMBDA:l IDENTIFIER:i epsilon
-									{: Error.expect("Lambda", ".e", lleft, iright, ":"," ","\u03C4",".","e" ); :}
+									{: Error.expect("Lambda", ".e", lleft, iright, "[",":"," ","\u03C4","]",".","e" ); :}
 								|	LAMBDA:l IDENTIFIER DOT:d epsilon
 									{: Error.expect("Lambda", "e", lleft, dright, "e" ); :}
 								|	LAMBDA:l IDENTIFIER COLON:c epsilon
@@ -435,9 +435,9 @@ let								::= LET:l IDENTIFIER:id EQUAL seq_expr:e1 IN seq_expr:e2
 								;
 
 let_error						::= LET:l epsilon
-									{: Error.expect("Let", " id = e1 in e2", lleft, lright, "id",":"," ","\u03C4"," ","="," ","e1"," ","in"," ","e2" ); :}
+									{: Error.expect("Let", " id = e1 in e2", lleft, lright, "id","[",":"," ","\u03C4","]"," ","="," ","e1"," ","in"," ","e2" ); :}
 								|	LET:l IDENTIFIER:i epsilon
-									{: Error.expect("Let", " = e1 in e2", lleft, iright, ":"," ","\u03C4"," ","="," ","e1"," ","in"," ","e2" ); :}			
+									{: Error.expect("Let", " = e1 in e2", lleft, iright, "[",":"," ","\u03C4","]"," ","="," ","e1"," ","in"," ","e2" ); :}			
 								|	LET:l IDENTIFIER COLON:c epsilon
 									{: Error.expect("Let", " \u03C4 = e1 in e2", lleft, cright, "\u03C4"," ","="," ","e1"," ","in"," ","e2" ); :}	
 								|	LET:l IDENTIFIER COLON type:t epsilon
@@ -522,7 +522,7 @@ curried_let						::= LET:l IDENTIFIER:id curried_let_list:itl EQUAL seq_expr:e1 
 								;
 
 curried_let_error				::= LET:l IDENTIFIER curried_let_list:c epsilon
-									{: Error.expect("Curried-Let", " = e1 in e2", lleft, cright, ":"," ","\u03C4"," ","="," ","e1"," ","in"," ","e2"  ); :}
+									{: Error.expect("Curried-Let", " = e1 in e2", lleft, cright, "[",":"," ","\u03C4","]"," ","="," ","e1"," ","in"," ","e2"  ); :}
 								|	LET:l IDENTIFIER curried_let_list COLON:c epsilon
 									{: Error.expect("Curried-Let", " \u03C4 = e1 in e2", lleft, cright, "\u03C4"," ","="," ","e1"," ","in"," ","e2" ); :}
 								|	LET:l IDENTIFIER curried_let_list COLON type:t epsilon
@@ -585,9 +585,9 @@ curried_let_pair				::= LPAREN IDENTIFIER:id COLON type:tau RPAREN
 								;
 
 curried_let_pair_error			::= LPAREN:l epsilon
-									{: Error.expect("Curried-Let", "id: \u03C4)", lleft, lright, "id",":"," ","\u03C4",")" ); :}
+									{: Error.expect("Curried-Let", "id: \u03C4)", lleft, lright, "id","[",":"," ","\u03C4","]",")" ); :}
 								|	LPAREN:l IDENTIFIER:i epsilon
-									{: Error.expect("Curried-Let", ": \u03C4)", lleft, iright, ":"," ","\u03C4",")" ); :}
+									{: Error.expect("Curried-Let", ": \u03C4)", lleft, iright, "[",":"," ","\u03C4","]",")" ); :}
 								|	LPAREN:l IDENTIFIER COLON:c epsilon
 									{: Error.expect("Curried-Let", " \u03C4)", lleft, cright, "\u03C4",")" ); :}
 								|	LPAREN:l IDENTIFIER COLON type:t epsilon
