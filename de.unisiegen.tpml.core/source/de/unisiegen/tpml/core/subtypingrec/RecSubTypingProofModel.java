@@ -1,37 +1,40 @@
-package de.unisiegen.tpml.core.subtypingrec ;
+package de.unisiegen.tpml.core.subtypingrec;
 
 
-import java.text.MessageFormat ;
-import java.util.ArrayList ;
-import org.apache.log4j.Logger ;
-import de.unisiegen.tpml.core.AbstractProofModel ;
-import de.unisiegen.tpml.core.AbstractProofNode ;
-import de.unisiegen.tpml.core.AbstractProofRuleSet ;
-import de.unisiegen.tpml.core.Messages ;
-import de.unisiegen.tpml.core.ProofGuessException ;
-import de.unisiegen.tpml.core.ProofNode ;
-import de.unisiegen.tpml.core.ProofRule ;
-import de.unisiegen.tpml.core.ProofRuleException ;
-import de.unisiegen.tpml.core.languages.l1.L1Language ;
-import de.unisiegen.tpml.core.languages.l2o.L2OLanguage ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.subtyping.ProofStep ;
-import de.unisiegen.tpml.core.subtyping.SubTypingModel ;
-import de.unisiegen.tpml.core.typechecker.SeenTypes ;
-import de.unisiegen.tpml.core.types.MonoType ;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
+
+import de.unisiegen.tpml.core.AbstractProofModel;
+import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.ProofGuessException;
+import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.languages.l1.L1Language;
+import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.subtyping.ProofStep;
+import de.unisiegen.tpml.core.subtyping.SubTypingModel;
+import de.unisiegen.tpml.core.typechecker.SeenTypes;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofContext;
+import de.unisiegen.tpml.core.types.MonoType;
 
 
 /**
@@ -47,6 +50,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
 public class RecSubTypingProofModel extends AbstractProofModel implements
     SubTypingModel
 {
+
   //
   // Constants
   //
@@ -56,7 +60,7 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * @see Logger
    */
   private static final Logger logger = Logger
-      .getLogger ( RecSubTypingProofModel.class ) ;
+      .getLogger ( RecSubTypingProofModel.class );
 
 
   /**
@@ -64,20 +68,20 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_MKTREE , 1 ,
-        "\\stepcounter{tree} #1 \\arrowstrue #1 \\arrowsfalse" , "tree" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_MKTREE, 1,
+        "\\stepcounter{tree} #1 \\arrowstrue #1 \\arrowsfalse", "tree" ) ); //$NON-NLS-1$//$NON-NLS-2$
     commands
         .add ( new DefaultLatexCommand (
-            LATEX_ARROW ,
-            3 ,
+            LATEX_ARROW,
+            3,
             "\\ifarrows" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\ncangle[angleA=-90,angleB=#1]{<-}{\\thetree.#2}{\\thetree.#3}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\else" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\fi" , "angle" , "from" , "to" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
-    return commands ;
+                + "\\fi", "angle", "from", "to" ) ); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+    return commands;
   }
 
 
@@ -86,22 +90,22 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static LatexInstructionList getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ) ; //$NON-NLS-1$
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ); //$NON-NLS-1$
     instructions
-        .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ) ; //$NON-NLS-1$
+        .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
-        "\\newlength{\\treeindent}" ) ) ; //$NON-NLS-1$
+        "\\newlength{\\treeindent}" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
-        "\\newlength{\\nodeindent}" ) ) ; //$NON-NLS-1$
+        "\\newlength{\\nodeindent}" ) ); //$NON-NLS-1$
     instructions
-        .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ) ; //$NON-NLS-1$
+        .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
         "\\newif\\ifarrows" + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
-            + "\\arrowsfalse" ) ) ; //$NON-NLS-1$
-    return instructions ;
+            + "\\arrowsfalse" ) ); //$NON-NLS-1$
+    return instructions;
   }
 
 
@@ -110,41 +114,41 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.AMSMATH ) ;
-    packages.add ( LatexPackage.AMSTEXT ) ;
-    packages.add ( LatexPackage.LONGTABLE ) ;
-    packages.add ( LatexPackage.COLOR ) ;
-    packages.add ( LatexPackage.PSTNODE ) ;
-    packages.add ( LatexPackage.PSTRICKS ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.AMSMATH );
+    packages.add ( LatexPackage.AMSTEXT );
+    packages.add ( LatexPackage.LONGTABLE );
+    packages.add ( LatexPackage.COLOR );
+    packages.add ( LatexPackage.PSTNODE );
+    packages.add ( LatexPackage.PSTRICKS );
+    return packages;
   }
 
 
   /**
    * The side overlapping for latex export
    */
-  int overlap = 0 ;
+  int overlap = 0;
 
 
   /**
    * The number of pages for latex export
    */
-  int pages = 5 ;
+  int pages = 5;
 
 
   /**
    * The choosen mode (advanced or beginner)
    */
-  private boolean mode = true ;
+  private boolean mode = true;
 
 
   /**
    * The ruleSet for this proof model
    */
-  AbstractRecSubTypingProofRuleSet ruleSet ;
+  AbstractRecSubTypingProofRuleSet ruleSet;
 
 
   //
@@ -164,13 +168,13 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    *
    * @see AbstractProofModel#AbstractProofModel(AbstractProofNode, AbstractProofRuleSet)
    */
-  public RecSubTypingProofModel ( MonoType type , MonoType type2 ,
-      AbstractRecSubTypingProofRuleSet pRuleSet , boolean pMode )
+  public RecSubTypingProofModel ( MonoType type, MonoType type2,
+      AbstractRecSubTypingProofRuleSet pRuleSet, boolean pMode )
   {
-    super ( new DefaultRecSubTypingProofNode ( type , type2 ,
-        new SeenTypes < DefaultSubType > ( ) ) , pRuleSet ) ;
-    this.ruleSet = pRuleSet ;
-    this.mode = pMode ;
+    super ( new DefaultRecSubTypingProofNode ( type, type2,
+        new SeenTypes < DefaultSubType > () ), pRuleSet );
+    this.ruleSet = pRuleSet;
+    this.mode = pMode;
   }
 
 
@@ -188,64 +192,67 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * @see #guess(ProofNode)
    * @see #prove(ProofRule, ProofNode)
    */
-  private void applyInternal ( RecSubTypingProofRule rule ,
+  private void applyInternal ( RecSubTypingProofRule rule,
       DefaultRecSubTypingProofNode node ) throws ProofRuleException
   {
     // allocate a new TypeCheckerContext
     DefaultRecSubTypingProofContext context = new DefaultRecSubTypingProofContext (
-        this , node ) ;
+        this, node );
     try
     {
-      context.apply ( rule , node ) ;
+      context.apply ( rule, node );
       // check if we are finished
-      final DefaultRecSubTypingProofNode modelRoot = getRoot ( ) ;
-      context.addRedoAction ( new Runnable ( )
+      final DefaultRecSubTypingProofNode modelRoot = getRoot ();
+      context.addRedoAction ( new Runnable ()
       {
-        @ SuppressWarnings ( "synthetic-access" )
-        public void run ( )
+
+        @SuppressWarnings ( "synthetic-access" )
+        public void run ()
         {
-          setFinished ( modelRoot.isFinished ( ) ) ;
+          setFinished ( modelRoot.isFinished () );
         }
-      } ) ;
-      context.addUndoAction ( new Runnable ( )
+      } );
+      context.addUndoAction ( new Runnable ()
       {
-        @ SuppressWarnings ( "synthetic-access" )
-        public void run ( )
+
+        @SuppressWarnings ( "synthetic-access" )
+        public void run ()
         {
-          setFinished ( false ) ;
+          setFinished ( false );
         }
-      } ) ;
+      } );
       // determine the redo and undo actions from the context
-      final Runnable redoActions = context.getRedoActions ( ) ;
-      final Runnable undoActions = context.getUndoActions ( ) ;
+      final Runnable redoActions = context.getRedoActions ();
+      final Runnable undoActions = context.getUndoActions ();
       // record the undo edit action for this proof step
-      addUndoableTreeEdit ( new UndoableTreeEdit ( )
+      addUndoableTreeEdit ( new UndoableTreeEdit ()
       {
-        public void redo ( )
+
+        public void redo ()
         {
-          redoActions.run ( ) ;
+          redoActions.run ();
         }
 
 
-        public void undo ( )
+        public void undo ()
         {
-          undoActions.run ( ) ;
+          undoActions.run ();
         }
-      } ) ;
+      } );
     }
     catch ( ProofRuleException e )
     {
       // revert the actions performed so far
-      context.revert ( ) ;
+      context.revert ();
       // re-throw the exception
-      throw e ;
+      throw e;
     }
     catch ( RuntimeException e )
     {
       // revert the actions performed so far
-      context.revert ( ) ;
+      context.revert ();
       // re-throw the exception
-      throw e ;
+      throw e;
     }
   }
 
@@ -270,43 +277,45 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    *           tree.
    * @throws NullPointerException if any of the parameters is <code>null</code>.
    */
-  void contextAddProofNode ( final DefaultRecSubTypingProofContext context ,
-      final RecSubTypingProofNode pNode , final MonoType type ,
-      final MonoType type2 , final SeenTypes < DefaultSubType > seenTypes )
+  void contextAddProofNode ( final DefaultRecSubTypingProofContext context,
+      final RecSubTypingProofNode pNode, final MonoType type,
+      final MonoType type2, final SeenTypes < DefaultSubType > seenTypes )
   {
-    final DefaultRecSubTypingProofNode node = ( DefaultRecSubTypingProofNode ) pNode ;
+    final DefaultRecSubTypingProofNode node = ( DefaultRecSubTypingProofNode ) pNode;
     final DefaultRecSubTypingProofNode child = new DefaultRecSubTypingProofNode (
-        type , type2 , seenTypes ) ;
+        type, type2, seenTypes );
     // add redo and undo options
-    context.addRedoAction ( new Runnable ( )
+    context.addRedoAction ( new Runnable ()
     {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
       {
-        node.add ( child ) ;
-        nodesWereInserted ( node , new int [ ]
-        { node.getIndex ( child ) } ) ;
+        node.add ( child );
+        nodesWereInserted ( node, new int []
+        { node.getIndex ( child ) } );
       }
-    } ) ;
-    context.addUndoAction ( new Runnable ( )
+    } );
+    context.addUndoAction ( new Runnable ()
     {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
       {
-        int index = node.getIndex ( child ) ;
-        node.remove ( index ) ;
-        nodesWereRemoved ( node , new int [ ]
-        { index } , new Object [ ]
-        { child } ) ;
+        int index = node.getIndex ( child );
+        node.remove ( index );
+        nodesWereRemoved ( node, new int []
+        { index }, new Object []
+        { child } );
       }
-    } ) ;
+    } );
   }
 
 
   /**
    * Used to implement the
    * {@link DefaultRecSubTypingProofContext#apply(RecSubTypingProofRule, DefaultRecSubTypingProofNode)}
-   * method of the {@link DefaultTypeInferenceProofContext} class.
+   * method of the {@link TypeInferenceProofContext} class.
    * 
    * @param context the type inference proof context.
    * @param node the type inference node.
@@ -314,34 +323,36 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * @see DefaultRecSubTypingProofContext#apply(RecSubTypingProofRule,
    *      DefaultRecSubTypingProofNode)
    */
-  void contextSetProofNodeRule ( DefaultRecSubTypingProofContext context ,
-      final DefaultRecSubTypingProofNode node , final RecSubTypingProofRule rule )
+  void contextSetProofNodeRule ( DefaultRecSubTypingProofContext context,
+      final DefaultRecSubTypingProofNode node, final RecSubTypingProofRule rule )
   {
-    final ProofStep [ ] oldSteps = node.getSteps ( ) ;
-    context.addRedoAction ( new Runnable ( )
+    final ProofStep [] oldSteps = node.getSteps ();
+    context.addRedoAction ( new Runnable ()
     {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
       {
-        node.setSteps ( new ProofStep [ ]
-        { new ProofStep ( node.getLeft ( ) , node.getRight ( ) , rule ) } ) ;
-        ProofRule [ ] rules = new ProofRule [ 1 ] ;
-        rules [ 0 ] = rule ;
-        node.setRules ( rules ) ;
-        nodeChanged ( node ) ;
+        node.setSteps ( new ProofStep []
+        { new ProofStep ( node.getLeft (), node.getRight (), rule ) } );
+        ProofRule [] rules = new ProofRule [ 1 ];
+        rules [ 0 ] = rule;
+        node.setRules ( rules );
+        nodeChanged ( node );
       }
-    } ) ;
-    context.addUndoAction ( new Runnable ( )
+    } );
+    context.addUndoAction ( new Runnable ()
     {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
       {
-        node.setSteps ( oldSteps ) ;
-        ProofRule [ ] rules = null ;
-        node.setRules ( rules ) ;
-        nodeChanged ( node ) ;
+        node.setSteps ( oldSteps );
+        ProofRule [] rules = null;
+        node.setRules ( rules );
+        nodeChanged ( node );
       }
-    } ) ;
+    } );
   }
 
 
@@ -353,14 +364,14 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    */
   private ArrayList < PrettyString > getDescription ( ProofNode pCurrentNode )
   {
-    ArrayList < PrettyString > descriptionList = new ArrayList < PrettyString > ( ) ;
-    descriptionList.add ( pCurrentNode.toPrettyString ( ) ) ;
-    for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
+    ArrayList < PrettyString > descriptionList = new ArrayList < PrettyString > ();
+    descriptionList.add ( pCurrentNode.toPrettyString () );
+    for ( int i = 0 ; i < pCurrentNode.getChildCount () ; i++ )
     {
       descriptionList
-          .addAll ( getDescription ( pCurrentNode.getChildAt ( i ) ) ) ;
+          .addAll ( getDescription ( pCurrentNode.getChildAt ( i ) ) );
     }
-    return descriptionList ;
+    return descriptionList;
   }
 
 
@@ -369,13 +380,13 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * 
    * @see LatexPrintable#getLatexCommands()
    */
-  public LatexCommandList getLatexCommands ( )
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
     commands
-        .add ( getLatexCommandsInternal ( ( RecSubTypingProofNode ) this.root ) ) ;
-    return commands ;
+        .add ( getLatexCommandsInternal ( ( RecSubTypingProofNode ) this.root ) );
+    return commands;
   }
 
 
@@ -390,14 +401,14 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
   private LatexCommandList getLatexCommandsInternal (
       RecSubTypingProofNode pNode )
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( pNode ) ;
-    commands.add ( pNode.getRule ( ) ) ;
-    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( pNode );
+    commands.add ( pNode.getRule () );
+    for ( int i = 0 ; i < pNode.getChildCount () ; i++ )
     {
-      commands.add ( getLatexCommandsInternal ( pNode.getChildAt ( i ) ) ) ;
+      commands.add ( getLatexCommandsInternal ( pNode.getChildAt ( i ) ) );
     }
-    return commands ;
+    return commands;
   }
 
 
@@ -406,13 +417,13 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * 
    * @see LatexPrintable#getLatexInstructions()
    */
-  public LatexInstructionList getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( getLatexInstructionsStatic ( ) ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
     instructions
-        .add ( getLatexInstructionsInternal ( ( RecSubTypingProofNode ) this.root ) ) ;
-    return instructions ;
+        .add ( getLatexInstructionsInternal ( ( RecSubTypingProofNode ) this.root ) );
+    return instructions;
   }
 
 
@@ -427,15 +438,15 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
   private LatexInstructionList getLatexInstructionsInternal (
       RecSubTypingProofNode pNode )
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( pNode ) ;
-    instructions.add ( pNode.getRule ( ) ) ;
-    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( pNode );
+    instructions.add ( pNode.getRule () );
+    for ( int i = 0 ; i < pNode.getChildCount () ; i++ )
     {
       instructions
-          .add ( getLatexInstructionsInternal ( pNode.getChildAt ( i ) ) ) ;
+          .add ( getLatexInstructionsInternal ( pNode.getChildAt ( i ) ) );
     }
-    return instructions ;
+    return instructions;
   }
 
 
@@ -444,13 +455,13 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * 
    * @see LatexPrintable#getLatexPackages()
    */
-  public LatexPackageList getLatexPackages ( )
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( getLatexPackagesStatic () );
     packages
-        .add ( getLatexPackagesInternal ( ( RecSubTypingProofNode ) this.root ) ) ;
-    return packages ;
+        .add ( getLatexPackagesInternal ( ( RecSubTypingProofNode ) this.root ) );
+    return packages;
   }
 
 
@@ -465,14 +476,14 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
   private LatexPackageList getLatexPackagesInternal (
       RecSubTypingProofNode pNode )
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( pNode.getLatexPackages ( ) ) ;
-    packages.add ( pNode.getRule ( ) ) ;
-    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( pNode.getLatexPackages () );
+    packages.add ( pNode.getRule () );
+    for ( int i = 0 ; i < pNode.getChildCount () ; i++ )
     {
-      packages.add ( getLatexPackagesInternal ( pNode.getChildAt ( i ) ) ) ;
+      packages.add ( getLatexPackagesInternal ( pNode.getChildAt ( i ) ) );
     }
-    return packages ;
+    return packages;
   }
 
 
@@ -481,10 +492,10 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * 
    * @see de.unisiegen.tpml.core.AbstractProofModel#getRoot()
    */
-  @ Override
-  public DefaultRecSubTypingProofNode getRoot ( )
+  @Override
+  public DefaultRecSubTypingProofNode getRoot ()
   {
-    return ( DefaultRecSubTypingProofNode ) super.getRoot ( ) ;
+    return ( DefaultRecSubTypingProofNode ) super.getRoot ();
   }
 
 
@@ -494,10 +505,10 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * @return ProofRuleSet[] with all rules
    * @see de.unisiegen.tpml.core.AbstractProofModel#getRules()
    */
-  @ Override
-  public ProofRule [ ] getRules ( )
+  @Override
+  public ProofRule [] getRules ()
   {
-    return this.ruleSet.getRules ( ) ;
+    return this.ruleSet.getRules ();
   }
 
 
@@ -506,11 +517,11 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * 
    * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
    */
-  @ Override
+  @Override
   public void guess ( ProofNode pNode ) throws ProofGuessException
   {
-    DefaultRecSubTypingProofNode node = ( DefaultRecSubTypingProofNode ) pNode ;
-    guessInternal ( node ) ;
+    DefaultRecSubTypingProofNode node = ( DefaultRecSubTypingProofNode ) pNode;
+    guessInternal ( node );
   }
 
 
@@ -531,43 +542,43 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
   {
     if ( node == null )
     {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
     }
-    if ( node.getSteps ( ).length > 0 )
+    if ( node.getSteps ().length > 0 )
     {
       throw new IllegalArgumentException ( MessageFormat.format ( Messages
-          .getString ( "IllegalArgumentException.0" ) , node ) ) ; //$NON-NLS-1$
+          .getString ( "IllegalArgumentException.0" ), node ) ); //$NON-NLS-1$
     }
-    if ( ! this.root.isNodeRelated ( node ) )
+    if ( !this.root.isNodeRelated ( node ) )
     {
       throw new IllegalArgumentException ( MessageFormat.format ( Messages
-          .getString ( "IllegalArgumentException.1" ) , node ) ) ; //$NON-NLS-1$
+          .getString ( "IllegalArgumentException.1" ), node ) ); //$NON-NLS-1$
     }
     // try to guess the next rule
-    logger.debug ( "Trying to guess a rule for " + node ) ; //$NON-NLS-1$
-    for ( ProofRule rule : this.ruleSet.getRules ( ) )
+    logger.debug ( "Trying to guess a rule for " + node ); //$NON-NLS-1$
+    for ( ProofRule rule : this.ruleSet.getRules () )
     {
       try
       {
         // try to apply the rule to the specified node
-        applyInternal ( ( RecSubTypingProofRule ) rule , node ) ;
+        applyInternal ( ( RecSubTypingProofRule ) rule, node );
         // remember that the user cheated
-        setCheating ( true ) ;
+        setCheating ( true );
         // yep, we did it
-        logger.debug ( "Successfully applied (" + rule + ") to " + node ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        return ;
+        logger.debug ( "Successfully applied (" + rule + ") to " + node ); //$NON-NLS-1$ //$NON-NLS-2$
+        return;
       }
       catch ( ProofRuleException e )
       {
         // rule failed to apply... so, next one, please
-        logger.debug ( "Failed to apply (" + rule + ") to " + node , e ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        continue ;
+        logger.debug ( "Failed to apply (" + rule + ") to " + node, e ); //$NON-NLS-1$ //$NON-NLS-2$
+        continue;
       }
     }
     // unable to guess next step
-    logger.debug ( "Failed to find rule to apply to " + node ) ; //$NON-NLS-1$
+    logger.debug ( "Failed to find rule to apply to " + node ); //$NON-NLS-1$
     throw new ProofGuessException ( MessageFormat.format ( Messages
-        .getString ( "ProofGuessException.0" ) , node ) , node ) ; //$NON-NLS-1$
+        .getString ( "ProofGuessException.0" ), node ), node ); //$NON-NLS-1$
   }
 
 
@@ -577,25 +588,25 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule,
    *      de.unisiegen.tpml.core.ProofNode)
    */
-  @ Override
-  public void prove ( ProofRule rule , ProofNode pNode )
+  @Override
+  public void prove ( ProofRule rule, ProofNode pNode )
       throws ProofRuleException
   {
-    if ( ! this.ruleSet.contains ( rule ) )
+    if ( !this.ruleSet.contains ( rule ) )
     {
-      throw new IllegalArgumentException ( "The rule is invalid for the model" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The rule is invalid for the model" ); //$NON-NLS-1$
     }
-    if ( ! this.root.isNodeRelated ( pNode ) )
+    if ( !this.root.isNodeRelated ( pNode ) )
     {
-      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
     }
-    if ( pNode.getRules ( ).length > 0 )
+    if ( pNode.getRules ().length > 0 )
     {
-      throw new IllegalArgumentException ( "The node is already completed" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The node is already completed" ); //$NON-NLS-1$
     }
-    DefaultRecSubTypingProofNode node = ( DefaultRecSubTypingProofNode ) pNode ;
+    DefaultRecSubTypingProofNode node = ( DefaultRecSubTypingProofNode ) pNode;
     // try to apply the rule to the specified node
-    applyInternal ( ( RecSubTypingProofRule ) rule , node ) ;
+    applyInternal ( ( RecSubTypingProofRule ) rule, node );
   }
 
 
@@ -608,31 +619,31 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
   {
     if ( this.mode != pMode )
     {
-      this.mode = pMode ;
-      if ( this.ruleSet.getLanguage ( ).getName ( ).equalsIgnoreCase ( "l2o" ) ) { //$NON-NLS-1$
+      this.mode = pMode;
+      if ( this.ruleSet.getLanguage ().getName ().equalsIgnoreCase ( "l2o" ) ) { //$NON-NLS-1$
         if ( pMode )
         {
-          this.ruleSet.unregister ( "TRANS" ) ; //$NON-NLS-1$
-          this.ruleSet.unregister ( "OBJECT-WIDTH" ) ; //$NON-NLS-1$
-          this.ruleSet.unregister ( "OBJECT-DEPTH" ) ; //$NON-NLS-1$
-          this.ruleSet.unregister ( "REFL" ) ; //$NON-NLS-1$
-          this.ruleSet.registerByMethodName ( L2OLanguage.L2O ,
-              "OBJECT" , "applyObject" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-          this.ruleSet.registerByMethodName ( L1Language.L1 ,
-              "REFL" , "applyRefl" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+          this.ruleSet.unregister ( "TRANS" ); //$NON-NLS-1$
+          this.ruleSet.unregister ( "OBJECT-WIDTH" ); //$NON-NLS-1$
+          this.ruleSet.unregister ( "OBJECT-DEPTH" ); //$NON-NLS-1$
+          this.ruleSet.unregister ( "REFL" ); //$NON-NLS-1$
+          this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
+              "OBJECT", "applyObject" ); //$NON-NLS-1$ //$NON-NLS-2$
+          this.ruleSet.registerByMethodName ( L1Language.L1,
+              "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else
         {
-          this.ruleSet.unregister ( "OBJECT" ) ; //$NON-NLS-1$
-          this.ruleSet.unregister ( "REFL" ) ; //$NON-NLS-1$
-          this.ruleSet.registerByMethodName ( L2OLanguage.L2O ,
-              "TRANS" , "applyTrans" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-          this.ruleSet.registerByMethodName ( L2OLanguage.L2O ,
-              "OBJECT-WIDTH" , "applyObjectWidth" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-          this.ruleSet.registerByMethodName ( L2OLanguage.L2O ,
-              "OBJECT-DEPTH" , "applyObjectDepth" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-          this.ruleSet.registerByMethodName ( L1Language.L1 ,
-              "REFL" , "applyRefl" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+          this.ruleSet.unregister ( "OBJECT" ); //$NON-NLS-1$
+          this.ruleSet.unregister ( "REFL" ); //$NON-NLS-1$
+          this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
+              "TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
+          this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
+              "OBJECT-WIDTH", "applyObjectWidth" ); //$NON-NLS-1$ //$NON-NLS-2$
+          this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
+              "OBJECT-DEPTH", "applyObjectDepth" ); //$NON-NLS-1$ //$NON-NLS-2$
+          this.ruleSet.registerByMethodName ( L1Language.L1,
+              "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
       }
     }
@@ -646,7 +657,7 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    */
   public void setOverlap ( int pOverlap )
   {
-    this.overlap = pOverlap ;
+    this.overlap = pOverlap;
   }
 
 
@@ -657,7 +668,7 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    */
   public void setPages ( int pPages )
   {
-    this.pages = pPages ;
+    this.pages = pPages;
   }
 
 
@@ -668,10 +679,10 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * @param type2 second MonoType of the new root
    * @param seenTypes list of the already seen subtypes
    */
-  public void setRoot ( MonoType type , MonoType type2 ,
+  public void setRoot ( MonoType type, MonoType type2,
       SeenTypes < DefaultSubType > seenTypes )
   {
-    this.root = new DefaultRecSubTypingProofNode ( type , type2 , seenTypes ) ;
+    this.root = new DefaultRecSubTypingProofNode ( type, type2, seenTypes );
   }
 
 
@@ -680,10 +691,10 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public LatexString toLatexString ( )
+  public LatexString toLatexString ()
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -693,43 +704,43 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    ArrayList < PrettyString > descriptionList = new ArrayList < PrettyString > ( ) ;
-    descriptionList.add ( this.toPrettyString ( ) ) ;
-    descriptionList.addAll ( getDescription ( this.root ) ) ;
-    String [ ] description = new String [ descriptionList.size ( ) ] ;
-    for ( int i = 0 ; i < descriptionList.size ( ) ; i ++ )
+    ArrayList < PrettyString > descriptionList = new ArrayList < PrettyString > ();
+    descriptionList.add ( this.toPrettyString () );
+    descriptionList.addAll ( getDescription ( this.root ) );
+    String [] description = new String [ descriptionList.size () ];
+    for ( int i = 0 ; i < descriptionList.size () ; i++ )
     {
-      description [ i ] = descriptionList.get ( i ).toString ( ) ;
+      description [ i ] = descriptionList.get ( i ).toString ();
     }
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        pIndent , description ) ;
-    builder.addText ( "\\treeindent=0mm" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\nodeindent=7mm" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\nodesep=2mm" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
+        pIndent, description );
+    builder.addText ( "\\treeindent=0mm" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "\\nodeindent=7mm" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "\\nodesep=2mm" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
     builder
-        .addText ( "\\newcommand{\\longtext}[1]{\\oddsidemargin=#1\\enlargethispage{840mm}" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\mktree{" ) ; //$NON-NLS-1$
-    toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
-        this.root , pIndent + LATEX_INDENT , - 1 ) ;
-    builder.addText ( "}" ) ; //$NON-NLS-1$
-    builder.addText ( "}" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\longtext{0mm}" ) ; //$NON-NLS-1$
-    for ( int i = 1 ; i < this.pages ; i ++ )
+        .addText ( "\\newcommand{\\longtext}[1]{\\oddsidemargin=#1\\enlargethispage{840mm}" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "\\mktree{" ); //$NON-NLS-1$
+    toLatexStringBuilderInternal ( pLatexStringBuilderFactory, builder,
+        this.root, pIndent + LATEX_INDENT, -1 );
+    builder.addText ( "}" ); //$NON-NLS-1$
+    builder.addText ( "}" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "\\longtext{0mm}" ); //$NON-NLS-1$
+    for ( int i = 1 ; i < this.pages ; i++ )
     {
-      builder.addSourceCodeBreak ( 0 ) ;
-      builder.addText ( "\\newpage" ) ; //$NON-NLS-1$
-      builder.addSourceCodeBreak ( 0 ) ;
-      int page  = ( - 210 + this.overlap ) * i ;
-      builder.addText ( "\\longtext{" + page + "mm}" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+      builder.addSourceCodeBreak ( 0 );
+      builder.addText ( "\\newpage" ); //$NON-NLS-1$
+      builder.addSourceCodeBreak ( 0 );
+      int page = ( -210 + this.overlap ) * i;
+      builder.addText ( "\\longtext{" + page + "mm}" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
-    return builder ;
+    return builder;
   }
 
 
@@ -744,26 +755,26 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * @param pDepth the depth of the actual node
    */
   public final void toLatexStringBuilderInternal (
-      LatexStringBuilderFactory pLatexStringBuilderFactory ,
-      LatexStringBuilder pLatexStringBuilder , ProofNode pCurrentNode ,
-      int pIndent , int pDepth )
+      LatexStringBuilderFactory pLatexStringBuilderFactory,
+      LatexStringBuilder pLatexStringBuilder, ProofNode pCurrentNode,
+      int pIndent, int pDepth )
   {
-    int depth = pDepth + 1 ;
+    int depth = pDepth + 1;
     pLatexStringBuilder.addBuilder ( pCurrentNode.toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent ) , 0 ) ;
-    int value = 180 ;
-    for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
+        pLatexStringBuilderFactory, pIndent ), 0 );
+    int value = 180;
+    for ( int i = 0 ; i < pCurrentNode.getChildCount () ; i++ )
     {
       pLatexStringBuilder.addText ( "\\arrow{" + value + "}{" //$NON-NLS-1$//$NON-NLS-2$
-          + pCurrentNode.getId ( ) + "}{" //$NON-NLS-1$
-          + pCurrentNode.getChildAt ( i ).getId ( ) + "}" ) ; //$NON-NLS-1$
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+          + pCurrentNode.getId () + "}{" //$NON-NLS-1$
+          + pCurrentNode.getChildAt ( i ).getId () + "}" ); //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
     }
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    for ( int i = 0 ; i < pCurrentNode.getChildCount () ; i++ )
     {
-      toLatexStringBuilderInternal ( pLatexStringBuilderFactory ,
-          pLatexStringBuilder , pCurrentNode.getChildAt ( i ) , pIndent , depth ) ;
+      toLatexStringBuilderInternal ( pLatexStringBuilderFactory,
+          pLatexStringBuilder, pCurrentNode.getChildAt ( i ), pIndent, depth );
     }
   }
 
@@ -773,10 +784,10 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ( )
+  public final PrettyString toPrettyString ()
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -789,12 +800,12 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , 0 ) ;
+        this, 0 );
     builder.addBuilder ( this.root
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    builder.addText ( PRETTY_LINE_BREAK ) ;
-    builder.addText ( PRETTY_CONTINUATION ) ;
-    return builder ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+    builder.addText ( PRETTY_LINE_BREAK );
+    builder.addText ( PRETTY_CONTINUATION );
+    return builder;
   }
 
 
@@ -806,12 +817,13 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
    * @see #toPrettyString()
    * @see Object#toString()
    */
-  @ Override
-  public final String toString ( )
+  @Override
+  public final String toString ()
   {
-    return toPrettyString ( ).toString ( ) ;
+    return toPrettyString ().toString ();
   }
-  
+
+
   /**
    * Set the mode (Beginner, Advanced) of choosen by the user
    * 
@@ -821,31 +833,31 @@ public class RecSubTypingProofModel extends AbstractProofModel implements
   {
     if ( this.mode != pMode )
     {
-      this.mode = pMode ;
-      if ( this.ruleSet.getLanguage ( ).getName ( ).equalsIgnoreCase ( "l2osub" ) ) { //$NON-NLS-1$
+      this.mode = pMode;
+      if ( this.ruleSet.getLanguage ().getName ().equalsIgnoreCase ( "l2osub" ) ) { //$NON-NLS-1$
         if ( pMode )
         {
-          this.ruleSet.unregister ( "TRANS" ) ; //$NON-NLS-1$
-          this.ruleSet.unregister ( "OBJECT-WIDTH" ) ; //$NON-NLS-1$
-          this.ruleSet.unregister ( "OBJECT-DEPTH" ) ; //$NON-NLS-1$
-          this.ruleSet.unregister ( "REFL" ) ; //$NON-NLS-1$
-          this.ruleSet.registerByMethodName ( L2OLanguage.L2O ,
-              "OBJECT" , "applyObject" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-          this.ruleSet.registerByMethodName ( L1Language.L1 ,
-              "REFL" , "applyRefl" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+          this.ruleSet.unregister ( "TRANS" ); //$NON-NLS-1$
+          this.ruleSet.unregister ( "OBJECT-WIDTH" ); //$NON-NLS-1$
+          this.ruleSet.unregister ( "OBJECT-DEPTH" ); //$NON-NLS-1$
+          this.ruleSet.unregister ( "REFL" ); //$NON-NLS-1$
+          this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
+              "OBJECT", "applyObject" ); //$NON-NLS-1$ //$NON-NLS-2$
+          this.ruleSet.registerByMethodName ( L1Language.L1,
+              "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else
         {
-          this.ruleSet.unregister ( "OBJECT" ) ; //$NON-NLS-1$
-          this.ruleSet.unregister ( "REFL" ) ; //$NON-NLS-1$
-          this.ruleSet.registerByMethodName ( L2OLanguage.L2O ,
-              "TRANS" , "applyTrans" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-          this.ruleSet.registerByMethodName ( L2OLanguage.L2O ,
-              "OBJECT-WIDTH" , "applyObjectWidth" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-          this.ruleSet.registerByMethodName ( L2OLanguage.L2O ,
-              "OBJECT-DEPTH" , "applyObjectDepth" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-          this.ruleSet.registerByMethodName ( L1Language.L1 ,
-              "REFL" , "applyRefl" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+          this.ruleSet.unregister ( "OBJECT" ); //$NON-NLS-1$
+          this.ruleSet.unregister ( "REFL" ); //$NON-NLS-1$
+          this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
+              "TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
+          this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
+              "OBJECT-WIDTH", "applyObjectWidth" ); //$NON-NLS-1$ //$NON-NLS-2$
+          this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
+              "OBJECT-DEPTH", "applyObjectDepth" ); //$NON-NLS-1$ //$NON-NLS-2$
+          this.ruleSet.registerByMethodName ( L1Language.L1,
+              "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
       }
     }
