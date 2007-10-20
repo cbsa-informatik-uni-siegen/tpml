@@ -1,3 +1,2 @@
 - Alte Versionen in den Beweiswerkzeugen farblich und mit Hinweiß markieren
 - Im Parser optionale Klammern einfügen, wenn der Typ opional ist
-- Bindungen im Source Code überarbeiten und auf TypeNames erweitern

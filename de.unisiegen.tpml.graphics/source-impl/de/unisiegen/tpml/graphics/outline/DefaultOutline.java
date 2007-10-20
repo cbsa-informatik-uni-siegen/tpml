@@ -85,6 +85,12 @@ public final class DefaultOutline implements Outline
 
 
   /**
+   * The bound type name attribute set name.
+   */
+  private static final String TYPE_NAME = "type_name"; //$NON-NLS-1$
+
+
+  /**
    * The {@link OutlineUI}.
    * 
    * @see #getUI()
@@ -1842,71 +1848,112 @@ public final class DefaultOutline implements Outline
         {
           identifier = identifier.getBoundToIdentifier ();
         }
-        if ( identifier.getBoundToIdentifier () == null )
+        if ( ( identifier.getParent () ) != null
+            && ( identifier.getParent () instanceof BoundIdentifiers ) )
         {
           // Binding
-          SimpleAttributeSet freeSet = new SimpleAttributeSet ();
-          StyleConstants.setForeground ( freeSet, Theme.currentTheme ()
+          SimpleAttributeSet bindingSet = new SimpleAttributeSet ();
+          StyleConstants.setForeground ( bindingSet, Theme.currentTheme ()
               .getBindingIdColor () );
-          StyleConstants.setBold ( freeSet, true );
-          freeSet.addAttribute ( IDENTIFER, IDENTIFER );
+          StyleConstants.setBold ( bindingSet, true );
+          bindingSet.addAttribute ( IDENTIFER, IDENTIFER );
           document.setCharacterAttributes ( identifier.getParserStartOffset (),
               identifier.getParserEndOffset ()
-                  - identifier.getParserStartOffset (), freeSet, false );
-          if ( identifier.getParent () instanceof BoundIdentifiers )
+                  - identifier.getParserStartOffset (), bindingSet, false );
+          BoundIdentifiers parent = ( BoundIdentifiers ) identifier
+              .getParent ();
+          ArrayList < ArrayList < Identifier >> identifiersBound = parent
+              .getIdentifiersBound ();
+          for ( int i = 0 ; i < parent.getIdentifiers ().length ; i++ )
           {
-            BoundIdentifiers parent = ( BoundIdentifiers ) identifier
-                .getParent ();
-            ArrayList < ArrayList < Identifier >> identifiersBound = parent
-                .getIdentifiersBound ();
-            for ( int i = 0 ; i < parent.getIdentifiers ().length ; i++ )
+            if ( identifier == parent.getIdentifiers () [ i ] )
             {
-              if ( identifier == parent.getIdentifiers () [ i ] )
+              for ( Identifier current : identifiersBound.get ( i ) )
               {
-                for ( Identifier current : identifiersBound.get ( i ) )
-                {
-                  // Bound
-                  SimpleAttributeSet boundSet = new SimpleAttributeSet ();
-                  StyleConstants.setForeground ( boundSet, Theme
-                      .currentTheme ().getBoundIdColor () );
-                  StyleConstants.setBold ( boundSet, true );
-                  boundSet.addAttribute ( IDENTIFER, IDENTIFER );
-                  document.setCharacterAttributes ( current
-                      .getParserStartOffset (), current.getParserEndOffset ()
-                      - current.getParserStartOffset (), boundSet, false );
+                // Bound
+                SimpleAttributeSet boundSet = new SimpleAttributeSet ();
+                StyleConstants.setForeground ( boundSet, Theme.currentTheme ()
+                    .getBoundIdColor () );
+                StyleConstants.setBold ( boundSet, true );
+                boundSet.addAttribute ( IDENTIFER, IDENTIFER );
+                document.setCharacterAttributes ( current
+                    .getParserStartOffset (), current.getParserEndOffset ()
+                    - current.getParserStartOffset (), boundSet, false );
 
-                }
-                break;
               }
+              break;
             }
           }
         }
       }
-      else
-        if ( outlineNode.getExpressionOrType () instanceof Expression )
+      if ( outlineNode.getExpressionOrType () instanceof Expression )
+      {
+        Expression expression = ( Expression ) outlineNode
+            .getExpressionOrType ();
+        SimpleAttributeSet freeSet = new SimpleAttributeSet ();
+        StyleConstants.setBackground ( freeSet, Theme.currentTheme ()
+            .getHighlightSourceCodeColor () );
+        freeSet.addAttribute ( SELECTED, SELECTED );
+        document.setCharacterAttributes ( expression.getParserStartOffset (),
+            expression.getParserEndOffset ()
+                - expression.getParserStartOffset (), freeSet, false );
+      }
+      if ( outlineNode.getExpressionOrType () instanceof TypeName )
+      {
+        TypeName typeName = ( TypeName ) outlineNode.getExpressionOrType ();
+        if ( typeName.getBoundToTypeName () != null )
         {
-          Expression expression = ( Expression ) outlineNode
-              .getExpressionOrType ();
-          SimpleAttributeSet freeSet = new SimpleAttributeSet ();
-          StyleConstants.setBackground ( freeSet, Theme.currentTheme ()
-              .getHighlightSourceCodeColor () );
-          freeSet.addAttribute ( SELECTED, SELECTED );
-          document.setCharacterAttributes ( expression.getParserStartOffset (),
-              expression.getParserEndOffset ()
-                  - expression.getParserStartOffset (), freeSet, false );
+          typeName = typeName.getBoundToTypeName ();
         }
-        else
-          if ( outlineNode.getExpressionOrType () instanceof Type )
+        if ( ( typeName.getParent () ) != null
+            && ( typeName.getParent () instanceof BoundTypeNames ) )
+        {
+          // Binding
+          SimpleAttributeSet bindingSet = new SimpleAttributeSet ();
+          StyleConstants.setForeground ( bindingSet, Theme.currentTheme ()
+              .getBindingIdColor () );
+          StyleConstants.setBold ( bindingSet, true );
+          bindingSet.addAttribute ( TYPE_NAME, TYPE_NAME );
+          document
+              .setCharacterAttributes ( typeName.getParserStartOffset (),
+                  typeName.getParserEndOffset ()
+                      - typeName.getParserStartOffset (), bindingSet, false );
+          BoundTypeNames parent = ( BoundTypeNames ) typeName.getParent ();
+          ArrayList < ArrayList < TypeName >> typeNamesBound = parent
+              .getTypeNamesBound ();
+          for ( int i = 0 ; i < parent.getTypeNames ().length ; i++ )
           {
-            Type type = ( Type ) outlineNode.getExpressionOrType ();
-            SimpleAttributeSet freeSet = new SimpleAttributeSet ();
-            StyleConstants.setBackground ( freeSet, Theme.currentTheme ()
-                .getHighlightSourceCodeColor () );
-            freeSet.addAttribute ( SELECTED, SELECTED );
-            document.setCharacterAttributes ( type.getParserStartOffset (),
-                type.getParserEndOffset () - type.getParserStartOffset (),
-                freeSet, false );
+            if ( typeName == parent.getTypeNames () [ i ] )
+            {
+              for ( TypeName current : typeNamesBound.get ( i ) )
+              {
+                // Bound
+                SimpleAttributeSet boundSet = new SimpleAttributeSet ();
+                StyleConstants.setForeground ( boundSet, Theme.currentTheme ()
+                    .getBoundIdColor () );
+                StyleConstants.setBold ( boundSet, true );
+                boundSet.addAttribute ( TYPE_NAME, TYPE_NAME );
+                document.setCharacterAttributes ( current
+                    .getParserStartOffset (), current.getParserEndOffset ()
+                    - current.getParserStartOffset (), boundSet, false );
+
+              }
+              break;
+            }
           }
+        }
+      }
+      if ( outlineNode.getExpressionOrType () instanceof Type )
+      {
+        Type type = ( Type ) outlineNode.getExpressionOrType ();
+        SimpleAttributeSet freeSet = new SimpleAttributeSet ();
+        StyleConstants.setBackground ( freeSet, Theme.currentTheme ()
+            .getHighlightSourceCodeColor () );
+        freeSet.addAttribute ( SELECTED, SELECTED );
+        document.setCharacterAttributes ( type.getParserStartOffset (), type
+            .getParserEndOffset ()
+            - type.getParserStartOffset (), freeSet, false );
+      }
     }
   }
 
