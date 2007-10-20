@@ -7,6 +7,7 @@
 package de.unisiegen.tpml.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -16,22 +17,31 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.filechooser.FileFilter;
+
 import org.apache.log4j.Logger;
+
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
 import de.unisiegen.tpml.core.util.beans.AbstractBean;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
 import de.unisiegen.tpml.graphics.EditorComponent;
@@ -70,6 +80,8 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	private EditorComponent activeEditorComponent;
 
 	private PropertyChangeListener editorComponentListener;
+	
+	private Color buttonColor = new Color (238, 238, 238);
 
 	/**
 	 * Filename displayed in the tab.
@@ -800,7 +812,7 @@ public void selectTypeChecker() {
 	setComponent(typechecker);
 	deselectButtons();
 	mypanel.typecheckerButton.setSelected(true);
-    
+   checkSourceCode ( );
 }
 
 public void selectTypeInference() {
@@ -808,7 +820,7 @@ public void selectTypeInference() {
 	setComponent(typeinference);
 	deselectButtons();
 	mypanel.typeinferenceButton.setSelected(true);
-    
+	checkSourceCode ( ); 
 }
 
 public void selectBigStep(){
@@ -816,6 +828,7 @@ public void selectBigStep(){
 	setComponent(bigstep);
 	deselectButtons();
 	mypanel.bigstepButton.setSelected(true);
+	checkSourceCode ( );
 }
 
 public void selectMinimalTyping(){
@@ -823,6 +836,7 @@ public void selectMinimalTyping(){
 	setComponent(minimaltyping);
 	deselectButtons();
 	mypanel.minimalTypingButton.setSelected(true);
+	checkSourceCode ( );
 }
 
 public void selectSmallStep(){
@@ -830,6 +844,8 @@ public void selectSmallStep(){
 	setComponent(smallstep);
 	deselectButtons();
 	mypanel.smallstepButton.setSelected(true);
+	checkSourceCode();
+	checkSourceCode ( );
 }
 
 public void selectCode(){
@@ -848,6 +864,69 @@ public JPanel getPanel() {
     return this.mypanel;
     
 }
+
+	public void checkSourceCode ( ) {
+		try {
+			if ( ! ( ( ( SmallStepProofNode ) ( ( ProofViewComponent ) smallstep ).getModel ( ).getRoot ( ) )
+					.getExpression ( ).equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
+				mypanel.smallstepButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
+						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
+				mypanel.smallstepButton.setToolTipText ( "Sourcecode has changed" );
+			} else {
+				mypanel.smallstepButton.setBackground ( this.buttonColor );
+				mypanel.smallstepButton.setIcon ( null );
+				mypanel.smallstepButton.setToolTipText ( "" );
+			}
+
+			if ( ! ( ( ( BigStepProofNode ) ( ( ProofViewComponent ) bigstep ).getModel ( ).getRoot ( ) ).getExpression ( )
+					.equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
+				mypanel.bigstepButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
+						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
+				mypanel.bigstepButton.setToolTipText ( "Sourcecode has changed" );
+			} else {
+				mypanel.bigstepButton.setBackground ( this.buttonColor );
+				mypanel.bigstepButton.setIcon ( null );
+				mypanel.bigstepButton.setToolTipText ( "" );
+			}
+			
+			if ( ! ( ( ( TypeCheckerProofNode ) ( ( ProofViewComponent ) typechecker ).getModel ( ).getRoot ( ) ).getExpression ( )
+					.equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
+				mypanel.typecheckerButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
+						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
+				mypanel.typecheckerButton.setToolTipText ( "Sourcecode has changed" );
+			} else {
+				mypanel.typecheckerButton.setBackground ( this.buttonColor );
+				mypanel.typecheckerButton.setIcon ( null );
+				mypanel.typecheckerButton.setToolTipText ( "" );
+			}
+			
+			if ( ! ( ( ( TypeInferenceProofNode ) ( ( ProofViewComponent ) typeinference ).getModel ( ).getRoot ( ) ).getFirstFormula ( ).getExpression ( )
+					.equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
+				mypanel.typeinferenceButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
+						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
+				mypanel.typeinferenceButton.setToolTipText ( "Sourcecode has changed" );
+			} else {
+				mypanel.typeinferenceButton.setBackground ( this.buttonColor );
+				mypanel.typeinferenceButton.setIcon ( null );
+				mypanel.typeinferenceButton.setToolTipText ( "" );
+			}
+			
+			if ( ! ( ( ( MinimalTypingProofNode ) ( ( ProofViewComponent ) minimaltyping ).getModel ( ).getRoot ( ) ).getExpression ( )
+					.equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
+				mypanel.minimalTypingButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
+						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
+				mypanel.minimalTypingButton.setToolTipText ( "Sourcecode has changed" );
+			} else {
+				mypanel.minimalTypingButton.setBackground ( this.buttonColor );
+				mypanel.minimalTypingButton.setIcon ( null );
+				mypanel.minimalTypingButton.setToolTipText ( "" );
+			}
+
+		} catch ( Exception e ) {
+			//Nothing to do here
+		}
+
+	}
 
 
 }
