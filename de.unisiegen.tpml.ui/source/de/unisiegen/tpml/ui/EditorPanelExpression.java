@@ -56,7 +56,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
  * 
  * @author Christoph Fehling
  */
-  @SuppressWarnings("all")public class EditorPanelExpression extends AbstractBean implements EditorPanel{
+  public class EditorPanelExpression extends AbstractBean implements EditorPanel{
 	private static final Logger logger = Logger.getLogger(EditorPanelExpression.class);
 
 	private MainWindow window;
@@ -867,8 +867,9 @@ public JPanel getPanel() {
 
 	public void checkSourceCode ( ) {
 		try {
-			if ( ! ( ( ( SmallStepProofNode ) ( ( ProofViewComponent ) smallstep ).getModel ( ).getRoot ( ) )
-					.getExpression ( ).equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
+			if ( smallstep != null
+					&& ! ( ( ( SmallStepProofNode ) ( ( ProofViewComponent ) smallstep ).getModel ( ).getRoot ( ) )
+							.getExpression ( ).equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
 				mypanel.smallstepButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
 						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
 				mypanel.smallstepButton.setToolTipText ( "Sourcecode has changed" );
@@ -878,8 +879,9 @@ public JPanel getPanel() {
 				mypanel.smallstepButton.setToolTipText ( "" );
 			}
 
-			if ( ! ( ( ( BigStepProofNode ) ( ( ProofViewComponent ) bigstep ).getModel ( ).getRoot ( ) ).getExpression ( )
-					.equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
+			if ( bigstep != null
+					&& ! ( ( ( BigStepProofNode ) ( ( ProofViewComponent ) bigstep ).getModel ( ).getRoot ( ) )
+							.getExpression ( ).equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
 				mypanel.bigstepButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
 						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
 				mypanel.bigstepButton.setToolTipText ( "Sourcecode has changed" );
@@ -888,9 +890,10 @@ public JPanel getPanel() {
 				mypanel.bigstepButton.setIcon ( null );
 				mypanel.bigstepButton.setToolTipText ( "" );
 			}
-			
-			if ( ! ( ( ( TypeCheckerProofNode ) ( ( ProofViewComponent ) typechecker ).getModel ( ).getRoot ( ) ).getExpression ( )
-					.equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
+
+			if ( typechecker != null
+					&& ! ( ( ( TypeCheckerProofNode ) ( ( ProofViewComponent ) typechecker ).getModel ( ).getRoot ( ) )
+							.getExpression ( ).equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
 				mypanel.typecheckerButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
 						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
 				mypanel.typecheckerButton.setToolTipText ( "Sourcecode has changed" );
@@ -899,9 +902,10 @@ public JPanel getPanel() {
 				mypanel.typecheckerButton.setIcon ( null );
 				mypanel.typecheckerButton.setToolTipText ( "" );
 			}
-			
-			if ( ! ( ( ( TypeInferenceProofNode ) ( ( ProofViewComponent ) typeinference ).getModel ( ).getRoot ( ) ).getFirstFormula ( ).getExpression ( )
-					.equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
+
+			if ( typeinference != null
+					&& ! ( ( ( TypeInferenceProofNode ) ( ( ProofViewComponent ) typeinference ).getModel ( ).getRoot ( ) )
+							.getFirstFormula ( ).getExpression ( ).equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
 				mypanel.typeinferenceButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
 						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
 				mypanel.typeinferenceButton.setToolTipText ( "Sourcecode has changed" );
@@ -910,9 +914,10 @@ public JPanel getPanel() {
 				mypanel.typeinferenceButton.setIcon ( null );
 				mypanel.typeinferenceButton.setToolTipText ( "" );
 			}
-			
-			if ( ! ( ( ( MinimalTypingProofNode ) ( ( ProofViewComponent ) minimaltyping ).getModel ( ).getRoot ( ) ).getExpression ( )
-					.equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
+
+			if ( minimaltyping != null
+					&& ! ( ( ( MinimalTypingProofNode ) ( ( ProofViewComponent ) minimaltyping ).getModel ( ).getRoot ( ) )
+							.getExpression ( ).equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
 				mypanel.minimalTypingButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
 						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
 				mypanel.minimalTypingButton.setToolTipText ( "Sourcecode has changed" );
@@ -923,6 +928,7 @@ public JPanel getPanel() {
 			}
 
 		} catch ( Exception e ) {
+			e.printStackTrace ( );
 			//Nothing to do here
 		}
 
