@@ -56,12 +56,13 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
  * 
  * @author Christoph Fehling
  */
-  public class EditorPanelExpression extends AbstractBean implements EditorPanel{
-	private static final Logger logger = Logger.getLogger(EditorPanelExpression.class);
+public class EditorPanelExpression extends AbstractBean implements EditorPanel {
+	private static final Logger logger = Logger.getLogger ( EditorPanelExpression.class );
 
 	private MainWindow window;
 
 	private EditorPanelForm mypanel;
+
 	/**
 	 * 
 	 */
@@ -72,16 +73,16 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	private EditorComponent bigstep;
 
 	private EditorComponent typechecker;
-	
+
 	private EditorComponent typeinference;
-	
+
 	private EditorComponent minimaltyping;
 
 	private EditorComponent activeEditorComponent;
 
 	private PropertyChangeListener editorComponentListener;
-	
-	private Color buttonColor = new Color (238, 238, 238);
+
+	private Color buttonColor = new Color ( 238, 238, 238 );
 
 	/**
 	 * Filename displayed in the tab.
@@ -92,7 +93,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * static number counting the new files with default name.
 	 */
 	static private int num = 0;
-	
+
 	private boolean advanced;
 
 	/**
@@ -109,7 +110,6 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * Indicated if the file was changed.
 	 */
 	//private boolean changed;
-
 	/**
 	 * Indicates the status of the Undo function.
 	 */
@@ -125,6 +125,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * 
 	 */
 	private boolean texteditor;
+
 	/**
 	 * The serial version UID
 	 * 
@@ -132,58 +133,59 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	private static final long serialVersionUID = -272175525193942130L;
 
 	/** Creates new form EditorPanelExpression */
-	public EditorPanelExpression(Language language, MainWindow window) {
+	public EditorPanelExpression ( Language language, MainWindow window ) {
 		//initComponents();
-	    	mypanel = new EditorPanelForm(this);
+		mypanel = new EditorPanelForm ( this );
 
 		this.window = window;
 		// setting the default button states
 		mypanel.nextButton.setVisible ( false );
 		mypanel.pongButton.setVisible ( false );
-		mypanel.smallstepButton.setVisible(false);
-		mypanel.bigstepButton.setVisible(false);
-		mypanel.typecheckerButton.setVisible(false);
-		mypanel.typeinferenceButton.setVisible(false);
-		mypanel.minimalTypingButton.setVisible(false);
+		mypanel.smallstepButton.setVisible ( false );
+		mypanel.bigstepButton.setVisible ( false );
+		mypanel.typecheckerButton.setVisible ( false );
+		mypanel.typeinferenceButton.setVisible ( false );
+		mypanel.minimalTypingButton.setVisible ( false );
 		mypanel.subTypingButton.setVisible ( false );
 		mypanel.subTypingRecButton.setVisible ( false );
 		//finished setting the default states
 
-                // hack to get consistent heights
-		mypanel.codeButton.setPreferredSize(new Dimension(mypanel.codeButton.getPreferredSize().width, mypanel.pongButton.getPreferredSize().height));
-		mypanel.smallstepButton.setPreferredSize(new Dimension(mypanel.smallstepButton.getPreferredSize().width, mypanel.pongButton.getPreferredSize().height));
-		mypanel.bigstepButton.setPreferredSize(new Dimension(mypanel.bigstepButton.getPreferredSize().width, mypanel.pongButton.getPreferredSize().height));
-		mypanel.typecheckerButton.setPreferredSize(new Dimension(mypanel.typecheckerButton.getPreferredSize().width, mypanel.pongButton.getPreferredSize().height));
-		mypanel.typeinferenceButton.setPreferredSize(new Dimension(mypanel.typeinferenceButton.getPreferredSize().width, mypanel.pongButton.getPreferredSize().height));
-		mypanel.minimalTypingButton.setPreferredSize(new Dimension(mypanel.minimalTypingButton.getPreferredSize().width, mypanel.pongButton.getPreferredSize().height));
-                //There will be no SubTypingButton
-                //TODO vielleicht auch machen müssen
-		
+		// hack to get consistent heights
+		mypanel.codeButton.setPreferredSize ( new Dimension ( mypanel.codeButton.getPreferredSize ( ).width,
+				mypanel.pongButton.getPreferredSize ( ).height ) );
+		mypanel.smallstepButton.setPreferredSize ( new Dimension ( mypanel.smallstepButton.getPreferredSize ( ).width,
+				mypanel.pongButton.getPreferredSize ( ).height ) );
+		mypanel.bigstepButton.setPreferredSize ( new Dimension ( mypanel.bigstepButton.getPreferredSize ( ).width,
+				mypanel.pongButton.getPreferredSize ( ).height ) );
+		mypanel.typecheckerButton.setPreferredSize ( new Dimension (
+				mypanel.typecheckerButton.getPreferredSize ( ).width, mypanel.pongButton.getPreferredSize ( ).height ) );
+		mypanel.typeinferenceButton.setPreferredSize ( new Dimension (
+				mypanel.typeinferenceButton.getPreferredSize ( ).width, mypanel.pongButton.getPreferredSize ( ).height ) );
+		mypanel.minimalTypingButton.setPreferredSize ( new Dimension (
+				mypanel.minimalTypingButton.getPreferredSize ( ).width, mypanel.pongButton.getPreferredSize ( ).height ) );
+		//There will be no SubTypingButton
+		//TODO vielleicht auch machen müssen
+
 		this.language = language;
-		
+
 		//TODO PREFERENCES get this from the preferences
-		setAdvanced(false);
-		
-		setFileName("newfile" + num + "." + language.getName());
-		num++;
-		editorComponentListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				componentStatusChanged(evt.getPropertyName(), evt.getNewValue());
+		setAdvanced ( false );
+
+		setFileName ( "newfile" + num + "." + language.getName ( ) );
+		num++ ;
+		editorComponentListener = new PropertyChangeListener ( ) {
+			public void propertyChange ( PropertyChangeEvent evt ) {
+				componentStatusChanged ( evt.getPropertyName ( ), evt.getNewValue ( ) );
 			}
 		};
-		initEditor();
+		initEditor ( );
 
-
-		mypanel.addComponentListener(new java.awt.event.ComponentAdapter() {
-			public void componentShown(java.awt.event.ComponentEvent evt) {
-				code.getEditor().requestFocus();
+		mypanel.addComponentListener ( new java.awt.event.ComponentAdapter ( ) {
+			public void componentShown ( java.awt.event.ComponentEvent evt ) {
+				code.getEditor ( ).requestFocus ( );
 			}
-		});
+		} );
 	}
-
-
-
-
 
 	/**
 	 * Is called when a status of the displayed component in changed
@@ -193,30 +195,30 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * @param newValue
 	 *            new value of the status
 	 */
-	private void componentStatusChanged(String ident, Object newValue) {
-		if (ident.equals("nextStatus")) {
-		    mypanel.nextButton.setEnabled((Boolean) newValue);
-		} else if (ident.equals("pongStatus")) {
-		    mypanel.pongButton.setVisible((Boolean) newValue);
-		} else if (ident.equals("redoStatus")) {
-			setRedoStatus((Boolean) newValue);
-		} else if (ident.equals("title")) {
-			setFileName((String) newValue);
-		} else if (ident.equals("undoStatus")) {
-			setUndoStatus((Boolean) newValue);
-		} else if (ident.equals("changed")) {
+	private void componentStatusChanged ( String ident, Object newValue ) {
+		if ( ident.equals ( "nextStatus" ) ) {
+			mypanel.nextButton.setEnabled ( ( Boolean ) newValue );
+		} else if ( ident.equals ( "pongStatus" ) ) {
+			mypanel.pongButton.setVisible ( ( Boolean ) newValue );
+		} else if ( ident.equals ( "redoStatus" ) ) {
+			setRedoStatus ( ( Boolean ) newValue );
+		} else if ( ident.equals ( "title" ) ) {
+			setFileName ( ( String ) newValue );
+		} else if ( ident.equals ( "undoStatus" ) ) {
+			setUndoStatus ( ( Boolean ) newValue );
+		} else if ( ident.equals ( "changed" ) ) {
 			//setChanged((Boolean) newValue);
-			setUndoStatus((Boolean) newValue);
+			setUndoStatus ( ( Boolean ) newValue );
 		}
 
 	}
 
-	private void updateComponentStates(EditorComponent comp) {
-		setRedoStatus(comp.isRedoStatus());
-		setUndoStatus(comp.isUndoStatus());
-		mypanel.nextButton.setEnabled(comp.isNextStatus());
-		mypanel.nextButton.setVisible(comp != this.code);
-		mypanel.pongButton.setVisible(comp.isPongStatus());
+	private void updateComponentStates ( EditorComponent comp ) {
+		setRedoStatus ( comp.isRedoStatus ( ) );
+		setUndoStatus ( comp.isUndoStatus ( ) );
+		mypanel.nextButton.setEnabled ( comp.isNextStatus ( ) );
+		mypanel.nextButton.setVisible ( comp != this.code );
+		mypanel.pongButton.setVisible ( comp.isPongStatus ( ) );
 	}
 
 	/**
@@ -224,179 +226,164 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * 
 	 * @param comp
 	 */
-	private void setComponent(EditorComponent comp) {
-		
-	    mypanel.editorPanel.removeAll();
-	    mypanel.editorPanel.add((JComponent) comp, BorderLayout.CENTER);
+	private void setComponent ( EditorComponent comp ) {
+
+		mypanel.editorPanel.removeAll ( );
+		mypanel.editorPanel.add ( ( JComponent ) comp, BorderLayout.CENTER );
 		activeEditorComponent = comp;
-		updateComponentStates(comp);
-		mypanel.paintAll(mypanel.getGraphics());
+		updateComponentStates ( comp );
+		mypanel.paintAll ( mypanel.getGraphics ( ) );
 	}
-	
-	private EditorComponent getComponent() {
-		return (EditorComponent) mypanel.editorPanel.getComponent(0);
+
+	private EditorComponent getComponent ( ) {
+		return ( EditorComponent ) mypanel.editorPanel.getComponent ( 0 );
 	}
 
 	/**
 	 * This method is called from within the constructor to initialize the
 	 * source editor.
 	 */
-	private void initEditor() {
-		code = new TextEditorPanel(language);
+	private void initEditor ( ) {
+		code = new TextEditorPanel ( language );
 
-		mypanel.editorPanel.removeAll();
-		mypanel.editorPanel.add((JPanel) code, BorderLayout.CENTER);
-		((JPanel) code).addPropertyChangeListener(editorComponentListener);
-		code.setDefaultStates();
-		updateComponentStates(code);
-		deselectButtons();
-		mypanel.codeButton.setSelected(true);
-		mypanel.codeButton.setEnabled(true);
+		mypanel.editorPanel.removeAll ( );
+		mypanel.editorPanel.add ( ( JPanel ) code, BorderLayout.CENTER );
+		( ( JPanel ) code ).addPropertyChangeListener ( editorComponentListener );
+		code.setDefaultStates ( );
+		updateComponentStates ( code );
+		deselectButtons ( );
+		mypanel.codeButton.setSelected ( true );
+		mypanel.codeButton.setEnabled ( true );
 
-		mypanel.paintAll(mypanel.getGraphics());
+		mypanel.paintAll ( mypanel.getGraphics ( ) );
 	}
 
 	/**
 	 * Starts the Small Step Interpreter.
 	 * 
 	 */
-	public void handleSmallStep() {
-		setTexteditor(false);
+	public void handleSmallStep ( ) {
+		setTexteditor ( false );
 		try {
-			SmallStepProofModel model = language.newSmallStepProofModel(code
-					.getDocument().getExpression());
-			smallstep = new ProofViewComponent(ProofViewFactory
-					.newSmallStepView(model), model);
-			mypanel.editorPanel.removeAll();
-			activateFunction(mypanel.smallstepButton, smallstep);
-			smallstep.setAdvanced(this.advanced);
-			mypanel.paintAll(mypanel.getGraphics());
-			
+			SmallStepProofModel model = language.newSmallStepProofModel ( code.getDocument ( ).getExpression ( ) );
+			smallstep = new ProofViewComponent ( ProofViewFactory.newSmallStepView ( model ), model );
+			mypanel.editorPanel.removeAll ( );
+			activateFunction ( mypanel.smallstepButton, smallstep );
+			smallstep.setAdvanced ( this.advanced );
+			mypanel.smallstepButton.setIcon ( null );
+			mypanel.paintAll ( mypanel.getGraphics ( ) );
 
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(mypanel,
-					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotSmallStep")+
-					"\n"+e.getMessage()+".",
-					"Small Step", JOptionPane.ERROR_MESSAGE);
+		} catch ( Exception e ) {
+			JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+					.getString ( "CouldNotSmallStep" )
+					+ "\n" + e.getMessage ( ) + ".", "Small Step", JOptionPane.ERROR_MESSAGE );
 		}
 	}
 
 	/**
 	 * Starts the Big Step Interpreter.
 	 */
-	public void handleBigStep() {
-		setTexteditor(false);
+	public void handleBigStep ( ) {
+		setTexteditor ( false );
 		try {
-			BigStepProofModel model = language.newBigStepProofModel(code
-					.getDocument().getExpression());
-			bigstep = new ProofViewComponent(ProofViewFactory
-					.newBigStepView(model), model);
-			mypanel.editorPanel.removeAll();
-			activateFunction(mypanel.bigstepButton, bigstep);
-			bigstep.setAdvanced(this.advanced);
-			mypanel.paintAll(mypanel.getGraphics());
-			
+			BigStepProofModel model = language.newBigStepProofModel ( code.getDocument ( ).getExpression ( ) );
+			bigstep = new ProofViewComponent ( ProofViewFactory.newBigStepView ( model ), model );
+			mypanel.editorPanel.removeAll ( );
+			activateFunction ( mypanel.bigstepButton, bigstep );
+			bigstep.setAdvanced ( this.advanced );
+			mypanel.bigstepButton.setIcon ( null );
+			mypanel.paintAll ( mypanel.getGraphics ( ) );
 
-		} catch (Exception e) {
-			logger.debug("Could not create new BigStepView", e);
-			JOptionPane.showMessageDialog(mypanel,
-					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotBigStep")+
-					"\n"+e.getMessage()+".", "Big Step",
-					JOptionPane.ERROR_MESSAGE);
+		} catch ( Exception e ) {
+			logger.debug ( "Could not create new BigStepView", e );
+			JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+					.getString ( "CouldNotBigStep" )
+					+ "\n" + e.getMessage ( ) + ".", "Big Step", JOptionPane.ERROR_MESSAGE );
 		}
 	}
 
 	/**
 	 * Starts the Type Checker.
 	 */
-	public void handleTypeChecker() {
-		setTexteditor(false);
+	public void handleTypeChecker ( ) {
+		setTexteditor ( false );
 		try {
-			TypeCheckerProofModel model = language
-					.newTypeCheckerProofModel(code.getDocument()
-							.getExpression());
-			typechecker = new ProofViewComponent(ProofViewFactory
-					.newTypeCheckerView(model), model);
-			mypanel.editorPanel.removeAll();
-			activateFunction(mypanel.typecheckerButton, typechecker);
-			typechecker.setAdvanced(this.advanced);
-			mypanel.paintAll(mypanel.getGraphics());
-			
+			TypeCheckerProofModel model = language.newTypeCheckerProofModel ( code.getDocument ( ).getExpression ( ) );
+			typechecker = new ProofViewComponent ( ProofViewFactory.newTypeCheckerView ( model ), model );
+			mypanel.editorPanel.removeAll ( );
+			activateFunction ( mypanel.typecheckerButton, typechecker );
+			typechecker.setAdvanced ( this.advanced );
+			mypanel.typecheckerButton.setIcon ( null );
+			mypanel.paintAll ( mypanel.getGraphics ( ) );
 
-		} catch (Exception e) {
-			logger.debug("Could not create new TypeCheckerView", e);
-			JOptionPane.showMessageDialog(mypanel,
-					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotTypeChecker")+
-					"\n"+e.getMessage()+".",
-					"Type Checker", JOptionPane.ERROR_MESSAGE);
+		} catch ( Exception e ) {
+			logger.debug ( "Could not create new TypeCheckerView", e );
+			JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+					.getString ( "CouldNotTypeChecker" )
+					+ "\n" + e.getMessage ( ) + ".", "Type Checker", JOptionPane.ERROR_MESSAGE );
 		}
 	}
-	
+
 	/**
 	 * Starts the TypeInference.
 	 */
-	public void handleTypInference() {
-		setTexteditor(false);
-		
+	public void handleTypInference ( ) {
+		setTexteditor ( false );
+
 		try {
-			TypeInferenceProofModel model = language.newTypeInferenceProofModel(code.getDocument()
-							.getExpression());
+			TypeInferenceProofModel model = language.newTypeInferenceProofModel ( code.getDocument ( ).getExpression ( ) );
 			//typechecker = new ProofViewComponent(ProofViewFactory
 			//		.newTypeCheckerView(model), model);
-			
-			typeinference = new ProofViewComponent(ProofViewFactory.newTypeInferenceView(model), model);
-			mypanel.editorPanel.removeAll();
-			//activateFunction(typecheckerButton, typechecker);
-			activateFunction(mypanel.typeinferenceButton, typeinference);
-			typeinference.setAdvanced(this.advanced);
-			mypanel.paintAll(mypanel.getGraphics());
-			
 
-		} catch (Exception e) {
-			logger.debug("Could not create new TypeInferenceView", e);
-			JOptionPane.showMessageDialog(mypanel,
-					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotTypeInference")+
-					"\n"+e.getMessage()+".",
-					"Type Inference", JOptionPane.ERROR_MESSAGE);
+			typeinference = new ProofViewComponent ( ProofViewFactory.newTypeInferenceView ( model ), model );
+			mypanel.editorPanel.removeAll ( );
+			//activateFunction(typecheckerButton, typechecker);
+			activateFunction ( mypanel.typeinferenceButton, typeinference );
+			typeinference.setAdvanced ( this.advanced );
+			mypanel.typeinferenceButton.setIcon ( null );
+			mypanel.paintAll ( mypanel.getGraphics ( ) );
+
+		} catch ( Exception e ) {
+			logger.debug ( "Could not create new TypeInferenceView", e );
+			JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+					.getString ( "CouldNotTypeInference" )
+					+ "\n" + e.getMessage ( ) + ".", "Type Inference", JOptionPane.ERROR_MESSAGE );
 		}
 	}
-	
-	
+
 	/**
 	 * Starts the MinimalTyping Interpreter.
 	 */
-	public void handleMinimalTyping() {
-		setTexteditor(false);
+	public void handleMinimalTyping ( ) {
+		setTexteditor ( false );
 		try {
-			MinimalTypingProofModel model = language.newMinimalTypingProofModel(code
-					.getDocument().getExpression(), isAdvaced ( ));
-			minimaltyping = new ProofViewComponent(ProofViewFactory
-					.newMinimalTypingView(model), model);
-			mypanel.editorPanel.removeAll();
-			activateFunction(mypanel.minimalTypingButton, minimaltyping);
-			minimaltyping.setAdvanced(this.advanced);
-			mypanel.paintAll(mypanel.getGraphics());
-			
+			MinimalTypingProofModel model = language.newMinimalTypingProofModel ( code.getDocument ( ).getExpression ( ),
+					isAdvaced ( ) );
+			minimaltyping = new ProofViewComponent ( ProofViewFactory.newMinimalTypingView ( model ), model );
+			mypanel.editorPanel.removeAll ( );
+			activateFunction ( mypanel.minimalTypingButton, minimaltyping );
+			minimaltyping.setAdvanced ( this.advanced );
+			mypanel.minimalTypingButton.setIcon ( null );
+			mypanel.paintAll ( mypanel.getGraphics ( ) );
 
-		} catch (Exception e) {
-			logger.debug("Could not create new MinimalTypingView", e);
-			JOptionPane.showMessageDialog(mypanel,
-					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotMinimalType")+
-					"\n"+e.getMessage()+".", "Minimal Typing",
-					JOptionPane.ERROR_MESSAGE);
+		} catch ( Exception e ) {
+			logger.debug ( "Could not create new MinimalTypingView", e );
+			JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+					.getString ( "CouldNotMinimalType" )
+					+ "\n" + e.getMessage ( ) + ".", "Minimal Typing", JOptionPane.ERROR_MESSAGE );
 		}
 	}
 
-	public void handleCut() {
-		this.code.handleCut();
+	public void handleCut ( ) {
+		this.code.handleCut ( );
 	}
 
-	public void handleCopy() {
-		this.code.handleCopy();
+	public void handleCopy ( ) {
+		this.code.handleCopy ( );
 	}
 
-	public void handlePaste() {
-		this.code.handlePaste();
+	public void handlePaste ( ) {
+		this.code.handlePaste ( );
 	}
 
 	/**
@@ -408,19 +395,18 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * @param comp
 	 *            the component related to that button
 	 */
-	private void activateFunction(JToggleButton button, EditorComponent comp) {
-		comp.setDefaultStates();
-		((JComponent) comp).addPropertyChangeListener(editorComponentListener);
-		setComponent(comp);
-		deselectButtons();
-		if (button != null)
-		{
-			button.setSelected(true);
-			button.setVisible(true);
-			mypanel.nextButton.setVisible(true);
-			
+	private void activateFunction ( JToggleButton button, EditorComponent comp ) {
+		comp.setDefaultStates ( );
+		( ( JComponent ) comp ).addPropertyChangeListener ( editorComponentListener );
+		setComponent ( comp );
+		deselectButtons ( );
+		if ( button != null ) {
+			button.setSelected ( true );
+			button.setVisible ( true );
+			mypanel.nextButton.setVisible ( true );
+
 		}
-		
+
 	}
 
 	/**
@@ -428,13 +414,13 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * buttons to false.
 	 * 
 	 */
-	private void deselectButtons() {
-	    mypanel.codeButton.setSelected(false);
-	    mypanel.smallstepButton.setSelected(false);
-	    mypanel.bigstepButton.setSelected(false);
-	    mypanel.typecheckerButton.setSelected(false);
-	    mypanel.typeinferenceButton.setSelected(false);
-	    mypanel.minimalTypingButton.setSelected ( false );
+	private void deselectButtons ( ) {
+		mypanel.codeButton.setSelected ( false );
+		mypanel.smallstepButton.setSelected ( false );
+		mypanel.bigstepButton.setSelected ( false );
+		mypanel.typecheckerButton.setSelected ( false );
+		mypanel.typeinferenceButton.setSelected ( false );
+		mypanel.minimalTypingButton.setSelected ( false );
 	}
 
 	/**
@@ -442,7 +428,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * 
 	 * @return true if redo is available
 	 */
-	public boolean isRedoStatus() {
+	public boolean isRedoStatus ( ) {
 		return redoStatus;
 	}
 
@@ -452,10 +438,10 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * @param redoStatus
 	 *            redo status to be set.
 	 */
-	public void setRedoStatus(boolean redoStatus) {
+	public void setRedoStatus ( boolean redoStatus ) {
 		boolean oldRedoStatus = this.redoStatus;
 		this.redoStatus = redoStatus;
-		firePropertyChange("redoStatus", oldRedoStatus, redoStatus);
+		firePropertyChange ( "redoStatus", oldRedoStatus, redoStatus );
 	}
 
 	/**
@@ -463,7 +449,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * 
 	 * @return the file name.
 	 */
-	public String getFileName() {
+	public String getFileName ( ) {
 		return filename;
 	}
 
@@ -476,12 +462,12 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * @exception NullPointerException
 	 *                if <code>filename</code> is <code>null</code>
 	 */
-	public void setFileName(String filename) {
-		if (filename == null)
-			throw new NullPointerException("filename is null");
+	public void setFileName ( String filename ) {
+		if ( filename == null )
+			throw new NullPointerException ( "filename is null" );
 		String oldFilename = this.filename;
 		this.filename = filename;
-		firePropertyChange("filename", oldFilename, filename);
+		firePropertyChange ( "filename", oldFilename, filename );
 	}
 
 	/**
@@ -489,7 +475,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * 
 	 * @return the file name.
 	 */
-	public File getFile() {
+	public File getFile ( ) {
 		return file;
 	}
 
@@ -502,14 +488,14 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * @throws NullPointerException
 	 *             if the <code>File</code> is <code>null</code>.
 	 */
-	public void setFile(File file) {
-		if (file == null)
-			throw new NullPointerException("File is null");
+	public void setFile ( File file ) {
+		if ( file == null )
+			throw new NullPointerException ( "File is null" );
 		//if (this.file != null) window.removeRecentlyUsed(this.file);
 		this.file = file;
-		window.addRecentlyUsed(new HistoryItem (this.file));
-		setFileName(file.getName());
-		
+		window.addRecentlyUsed ( new HistoryItem ( this.file ) );
+		setFileName ( file.getName ( ) );
+
 	}
 
 	/**
@@ -517,22 +503,22 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * 
 	 * @return the language used.
 	 */
-	public Language getLanguage() {
+	public Language getLanguage ( ) {
 		return language;
 	}
-	
-	public EditorComponent getActiveEditorComponent(){
-	    return activeEditorComponent;
+
+	public EditorComponent getActiveEditorComponent ( ) {
+		return activeEditorComponent;
 	}
 
-//	/**
-//	 *  add documentation here
-//	 * 
-//	 * @return <code>true</code> if the editor's document was changed.
-//	 */
-////	public boolean isChanged() {
-////		return this.changed;
-////	}
+	//	/**
+	//	 *  add documentation here
+	//	 * 
+	//	 * @return <code>true</code> if the editor's document was changed.
+	//	 */
+	////	public boolean isChanged() {
+	////		return this.changed;
+	////	}
 
 	/**
 	 * Sets the change status of the editor
@@ -540,27 +526,26 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * @param changed
 	 *            true if the editor's document was changed.
 	 */
-//	public void setChanged(boolean changed) {
-//		firePropertyChange("changed", this.changed, changed);
-//		this.changed = changed;
-//	}
-
-	public boolean isTexteditor() {
+	//	public void setChanged(boolean changed) {
+	//		firePropertyChange("changed", this.changed, changed);
+	//		this.changed = changed;
+	//	}
+	public boolean isTexteditor ( ) {
 		return this.texteditor;
 	}
 
-	public void setTexteditor(boolean texteditor) {
-	   firePropertyChange("texteditor", this.texteditor, texteditor);
-		logger.debug("Texteditor is active");
+	public void setTexteditor ( boolean texteditor ) {
+		firePropertyChange ( "texteditor", this.texteditor, texteditor );
+		logger.debug ( "Texteditor is active" );
 		this.texteditor = texteditor;
 	}
 
-	public String getEditorText() {
-		return code.getText();
+	public String getEditorText ( ) {
+		return code.getText ( );
 	}
 
-	public void setEditorText(String text) {
-		code.setText(text);
+	public void setEditorText ( String text ) {
+		code.setText ( text );
 	}
 
 	/**
@@ -568,56 +553,62 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * 
 	 * @return true if the undo function is available
 	 */
-	public boolean isUndoStatus() {
+	public boolean isUndoStatus ( ) {
 		return undoStatus;
-	}
-	
-	public boolean isSaveStatus() {
-	    if (this.isTexteditor())
-		return undoStatus;
-	    return false;
 	}
 
-	public void setUndoStatus(boolean undoStatus) {
-		if (this.undoStatus != undoStatus) {
-			logger.debug("UndoStatus of EditorPanelExpression set to "+undoStatus);
+	public boolean isSaveStatus ( ) {
+		if ( this.isTexteditor ( ) )
+			return undoStatus;
+		return false;
+	}
+
+	public void setUndoStatus ( boolean undoStatus ) {
+		if ( this.undoStatus != undoStatus ) {
+			logger.debug ( "UndoStatus of EditorPanelExpression set to " + undoStatus );
 			boolean oldUndoStatus = this.undoStatus;
 			this.undoStatus = undoStatus;
-			firePropertyChange("undoStatus", oldUndoStatus, undoStatus);
-			if (this.isTexteditor()) firePropertyChange("changed", oldUndoStatus, undoStatus);
+			firePropertyChange ( "undoStatus", oldUndoStatus, undoStatus );
+			if ( this.isTexteditor ( ) )
+				firePropertyChange ( "changed", oldUndoStatus, undoStatus );
 		}
 	}
-	
-	public void setAdvanced(boolean state){
-		if (bigstep != null) bigstep.setAdvanced(state);
-		if (smallstep != null) smallstep.setAdvanced(state);
-		if (typechecker != null) typechecker.setAdvanced(state);
-		if (typeinference != null) typeinference.setAdvanced(state);
-		if (minimaltyping != null) minimaltyping.setAdvanced(state);
+
+	public void setAdvanced ( boolean state ) {
+		if ( bigstep != null )
+			bigstep.setAdvanced ( state );
+		if ( smallstep != null )
+			smallstep.setAdvanced ( state );
+		if ( typechecker != null )
+			typechecker.setAdvanced ( state );
+		if ( typeinference != null )
+			typeinference.setAdvanced ( state );
+		if ( minimaltyping != null )
+			minimaltyping.setAdvanced ( state );
 		this.advanced = state;
 	}
-	
-	public boolean isAdvaced (){
+
+	public boolean isAdvaced ( ) {
 		return this.advanced;
 	}
-	
-	public boolean shouldBeSaved(){
-		return code.isUndoStatus();
+
+	public boolean shouldBeSaved ( ) {
+		return code.isUndoStatus ( );
 	}
 
-	public void handleUndo() {
-		getComponent().handleUndo();
+	public void handleUndo ( ) {
+		getComponent ( ).handleUndo ( );
 	};
 
-	public void handleRedo() {
-		getComponent().handleRedo();
+	public void handleRedo ( ) {
+		getComponent ( ).handleRedo ( );
 	};
 
-	public boolean handleSave() {
-		if (file == null)
-			return handleSaveAs();
+	public boolean handleSave ( ) {
+		if ( file == null )
+			return handleSaveAs ( );
 		else
-			return writeFile();
+			return writeFile ( );
 	};
 
 	/**
@@ -625,254 +616,234 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 	 * 
 	 * @return true if the file could be saved.
 	 */
-	public boolean handleSaveAs() {
+	public boolean handleSaveAs ( ) {
 		// setup the file chooser
-		final LanguageFactory factory = LanguageFactory.newInstance();
-		PreferenceManager prefmanager = PreferenceManager.get();
-		JFileChooser chooser = new JFileChooser(prefmanager.getWorkingPath());
-		chooser.addChoosableFileFilter(new FileFilter() {
+		final LanguageFactory factory = LanguageFactory.newInstance ( );
+		PreferenceManager prefmanager = PreferenceManager.get ( );
+		JFileChooser chooser = new JFileChooser ( prefmanager.getWorkingPath ( ) );
+		chooser.addChoosableFileFilter ( new FileFilter ( ) {
 			@Override
-			public boolean accept(File f) {
-				if (f.isDirectory()) {
+			public boolean accept ( File f ) {
+				if ( f.isDirectory ( ) ) {
 					return true;
 				}
 				try {
-					factory.getLanguageByFile(f);
+					factory.getLanguageByFile ( f );
 					return true;
-				} catch (NoSuchLanguageException e) {
+				} catch ( NoSuchLanguageException e ) {
 					return false;
 				}
 			}
 
 			@Override
-			public String getDescription() {
-				Language[] languages = factory.getAvailableLanguages();
-				StringBuilder builder = new StringBuilder(128);
-				builder.append("Source Files (");
-				for (int n = 0; n < languages.length; ++n) {
-					if (n > 0) {
-						builder.append("; ");
+			public String getDescription ( ) {
+				Language[] languages = factory.getAvailableLanguages ( );
+				StringBuilder builder = new StringBuilder ( 128 );
+				builder.append ( "Source Files (" );
+				for ( int n = 0; n < languages.length; ++n ) {
+					if ( n > 0 ) {
+						builder.append ( "; " );
 					}
-					builder.append("*.");
-					builder.append(languages[n].getName().toLowerCase());
+					builder.append ( "*." );
+					builder.append ( languages[n].getName ( ).toLowerCase ( ) );
 				}
-				builder.append(')');
-				return builder.toString();
+				builder.append ( ')' );
+				return builder.toString ( );
 			}
-		});
-		chooser.setAcceptAllFileFilterUsed(false);
-		prefmanager.setWorkingPath(chooser.getCurrentDirectory().getAbsolutePath());
-		
+		} );
+		chooser.setAcceptAllFileFilterUsed ( false );
+		prefmanager.setWorkingPath ( chooser.getCurrentDirectory ( ).getAbsolutePath ( ) );
+
 		// determine the file name
 		File outfile;
-		for (;;) {
+		for ( ;; ) {
 			// run the dialog
-			int n = chooser.showSaveDialog(mypanel.getParent());
-			
-			if (n != JFileChooser.APPROVE_OPTION) {
-				logger.debug("Save as dialog cancelled");
+			int n = chooser.showSaveDialog ( mypanel.getParent ( ) );
+
+			if ( n != JFileChooser.APPROVE_OPTION ) {
+				logger.debug ( "Save as dialog cancelled" );
 				return false;
 			}
 
 			// check the extension
-			File f = chooser.getSelectedFile();
-			String name = f.getName();
-			int i = name.lastIndexOf('.');
-			if (i > 0 && i < name.length()) {
-				if (!name.substring(i + 1).equalsIgnoreCase(
-						this.language.getName())) {
-					JOptionPane.showMessageDialog(mypanel,
-							java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("FileMustEndWith")+" \"."
-									+ this.language.getName().toLowerCase()
-									+ "\".", java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Save"), JOptionPane.ERROR_MESSAGE);
+			File f = chooser.getSelectedFile ( );
+			String name = f.getName ( );
+			int i = name.lastIndexOf ( '.' );
+			if ( i > 0 && i < name.length ( ) ) {
+				if ( !name.substring ( i + 1 ).equalsIgnoreCase ( this.language.getName ( ) ) ) {
+					JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+							.getString ( "FileMustEndWith" )
+							+ " \"." + this.language.getName ( ).toLowerCase ( ) + "\".", java.util.ResourceBundle.getBundle (
+							"de/unisiegen/tpml/ui/ui" ).getString ( "Save" ), JOptionPane.ERROR_MESSAGE );
 					continue;
 				}
 			} else {
-				name = name + "." + this.language.getName().toLowerCase();
+				name = name + "." + this.language.getName ( ).toLowerCase ( );
 			}
 
 			// try to create the new file
 			try {
-				outfile = new File(f.getParent(), name);
-				if (!outfile.createNewFile()) {
+				outfile = new File ( f.getParent ( ), name );
+				if ( !outfile.createNewFile ( ) ) {
 					// TODO: Christoph, this doesn't work propertly!
-					int j = JOptionPane
-							.showConfirmDialog(
-								mypanel,
-									java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("The_File")+" \""
-											+ outfile.getName()
-											+ "\" " +java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("alreadyExists"),
-									java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Overwrite"),
-									JOptionPane.YES_NO_CANCEL_OPTION,
-									JOptionPane.QUESTION_MESSAGE);
-					if (j == JFileChooser.CANCEL_OPTION) {
-						logger.debug("Cancelled overwrite of \""
-								+ outfile.getName() + "\"");
+					int j = JOptionPane.showConfirmDialog ( mypanel, java.util.ResourceBundle.getBundle (
+							"de/unisiegen/tpml/ui/ui" ).getString ( "The_File" )
+							+ " \""
+							+ outfile.getName ( )
+							+ "\" "
+							+ java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "alreadyExists" ),
+							java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "Overwrite" ),
+							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE );
+					if ( j == JFileChooser.CANCEL_OPTION ) {
+						logger.debug ( "Cancelled overwrite of \"" + outfile.getName ( ) + "\"" );
 						return false;
-					} else if (j == JOptionPane.NO_OPTION) {
+					} else if ( j == JOptionPane.NO_OPTION ) {
 						// next try
 						continue;
 					}
 				}
 
 				// save to the new file
-				setFile(outfile);
-				setFileName(outfile.getName());
-				return writeFile();
-			} catch (IOException e) {
-				logger.error("Selected file could not be created.", e);
-				JOptionPane.showMessageDialog(mypanel,
-						java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("FileCantBeCreated"), java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Save"),
-						JOptionPane.ERROR_MESSAGE);
+				setFile ( outfile );
+				setFileName ( outfile.getName ( ) );
+				return writeFile ( );
+			} catch ( IOException e ) {
+				logger.error ( "Selected file could not be created.", e );
+				JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+						.getString ( "FileCantBeCreated" ), java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+						.getString ( "Save" ), JOptionPane.ERROR_MESSAGE );
 				return false;
 			}
 		}
 	}
 
-  /**
-   * Writes content of the source panel to a specified file.
-   * 
-   * @return true if the file could be written
-   */
-  private boolean writeFile ( )
-  {
-    try
-    {
-      BufferedWriter out = new BufferedWriter ( new OutputStreamWriter (
-          new FileOutputStream ( file ) , "UTF8" ) ) ; //$NON-NLS-1$
-      out.write ( code.getText ( ) ) ;
-      out.close ( ) ;
-      // TODO: Christoph, what about this one?
-      code.clearHistory ( ) ;
-      return true ;
-    }
-    catch ( UnsupportedEncodingException e )
-    {
-      logger.error ( "Could not write to file" , e ) ;
-      JOptionPane.showMessageDialog ( mypanel , java.util.ResourceBundle
-          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-              "CouldNotWriteToFile" ) , java.util.ResourceBundle.getBundle (
-          "de/unisiegen/tpml/ui/ui" ).getString ( "WriteFile" ) ,
-          JOptionPane.ERROR_MESSAGE ) ;
-      return false ;
-    }
-    catch ( IOException e )
-    {
-      logger.error ( "Could not write to file" , e ) ;
-      JOptionPane.showMessageDialog ( mypanel , java.util.ResourceBundle
-          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-              "CouldNotWriteToFile" ) , java.util.ResourceBundle.getBundle (
-          "de/unisiegen/tpml/ui/ui" ).getString ( "WriteFile" ) ,
-          JOptionPane.ERROR_MESSAGE ) ;
-      return false ;
-    }
-  }
-
-public void handlePrint() {
-	  GeneralPrinter printer = new GeneralPrinter(mypanel);
-	  if (this.isTexteditor()){
-	      printer.print(code.getEditor());
-	  } else{
-	      printer.print(((AbstractProofComponent)getComponent().getPrintPart()));
-	  }
-	  
-}
-
-//TODO Einbau der Latex-komponente... by Michgael
-public void handleLatexExport (){
-	if  (this.isTexteditor()){
-		try
-		{
-			Expression exp = this.code.getDocument().getExpression();
-			GeneralLaTex laTex = new GeneralLaTex(exp, mypanel);
-			laTex.export();
-		}
-		catch (Exception e)
-		{
-			// no real expression
-			
-			JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) 
-					.getString ( "CouldNotLaTeXExpression" ), "Editor", JOptionPane.ERROR_MESSAGE ); 
-			
-			//JOptionPane.showMessageDialog(mypanel, "Sorry, no Expression enterd!");
+	/**
+	 * Writes content of the source panel to a specified file.
+	 * 
+	 * @return true if the file could be written
+	 */
+	private boolean writeFile ( ) {
+		try {
+			BufferedWriter out = new BufferedWriter ( new OutputStreamWriter ( new FileOutputStream ( file ), "UTF8" ) ); //$NON-NLS-1$
+			out.write ( code.getText ( ) );
+			out.close ( );
+			// TODO: Christoph, what about this one?
+			code.clearHistory ( );
+			return true;
+		} catch ( UnsupportedEncodingException e ) {
+			logger.error ( "Could not write to file", e );
+			JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+					.getString ( "CouldNotWriteToFile" ), java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+					.getString ( "WriteFile" ), JOptionPane.ERROR_MESSAGE );
+			return false;
+		} catch ( IOException e ) {
+			logger.error ( "Could not write to file", e );
+			JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+					.getString ( "CouldNotWriteToFile" ), java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+					.getString ( "WriteFile" ), JOptionPane.ERROR_MESSAGE );
+			return false;
 		}
 	}
-	else
-	{
-		GeneralLaTex laTex = new GeneralLaTex(((ProofViewComponent)getComponent()).getModel(), mypanel);
-		laTex.export();
+
+	public void handlePrint ( ) {
+		GeneralPrinter printer = new GeneralPrinter ( mypanel );
+		if ( this.isTexteditor ( ) ) {
+			printer.print ( code.getEditor ( ) );
+		} else {
+			printer.print ( ( ( AbstractProofComponent ) getComponent ( ).getPrintPart ( ) ) );
+		}
+
 	}
-	
-	
-	
-}
 
-public void selectTypeChecker() {
-	setTexteditor(false);
-	setComponent(typechecker);
-	deselectButtons();
-	mypanel.typecheckerButton.setSelected(true);
-   checkSourceCode ( );
-}
+	//TODO Einbau der Latex-komponente... by Michgael
+	public void handleLatexExport ( ) {
+		if ( this.isTexteditor ( ) ) {
+			try {
+				Expression exp = this.code.getDocument ( ).getExpression ( );
+				GeneralLaTex laTex = new GeneralLaTex ( exp, mypanel );
+				laTex.export ( );
+			} catch ( Exception e ) {
+				// no real expression
 
-public void selectTypeInference() {
-    	setTexteditor(false);
-	setComponent(typeinference);
-	deselectButtons();
-	mypanel.typeinferenceButton.setSelected(true);
-	checkSourceCode ( ); 
-}
+				JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+						.getString ( "CouldNotLaTeXExpression" ), "Editor", JOptionPane.ERROR_MESSAGE );
 
-public void selectBigStep(){
-	setTexteditor(false);
-	setComponent(bigstep);
-	deselectButtons();
-	mypanel.bigstepButton.setSelected(true);
-	checkSourceCode ( );
-}
+				//JOptionPane.showMessageDialog(mypanel, "Sorry, no Expression enterd!");
+			}
+		} else {
+			GeneralLaTex laTex = new GeneralLaTex ( ( ( ProofViewComponent ) getComponent ( ) ).getModel ( ), mypanel );
+			laTex.export ( );
+		}
 
-public void selectMinimalTyping(){
-	setTexteditor(false);
-	setComponent(minimaltyping);
-	deselectButtons();
-	mypanel.minimalTypingButton.setSelected(true);
-	checkSourceCode ( );
-}
+	}
 
-public void selectSmallStep(){
-	setTexteditor(false);
-	setComponent(smallstep);
-	deselectButtons();
-	mypanel.smallstepButton.setSelected(true);
-	checkSourceCode();
-	checkSourceCode ( );
-}
+	public void selectTypeChecker ( ) {
+		setTexteditor ( false );
+		setComponent ( typechecker );
+		deselectButtons ( );
+		mypanel.typecheckerButton.setSelected ( true );
+		checkSourceCode ( );
+	}
 
-public void selectCode(){
-	setTexteditor(true);
-	setComponent(code);
-	deselectButtons();
-	mypanel.codeButton.setSelected(true);
-	code.getEditor().requestFocus();
-}
+	public void selectTypeInference ( ) {
+		setTexteditor ( false );
+		setComponent ( typeinference );
+		deselectButtons ( );
+		mypanel.typeinferenceButton.setSelected ( true );
+		checkSourceCode ( );
+	}
 
+	public void selectBigStep ( ) {
+		setTexteditor ( false );
+		setComponent ( bigstep );
+		deselectButtons ( );
+		mypanel.bigstepButton.setSelected ( true );
+		checkSourceCode ( );
+	}
 
+	public void selectMinimalTyping ( ) {
+		setTexteditor ( false );
+		setComponent ( minimaltyping );
+		deselectButtons ( );
+		mypanel.minimalTypingButton.setSelected ( true );
+		checkSourceCode ( );
+	}
 
+	public void selectSmallStep ( ) {
+		setTexteditor ( false );
+		setComponent ( smallstep );
+		deselectButtons ( );
+		mypanel.smallstepButton.setSelected ( true );
+		checkSourceCode ( );
+		checkSourceCode ( );
+	}
 
+	public void selectCode ( ) {
+		setTexteditor ( true );
+		setComponent ( code );
+		deselectButtons ( );
+		mypanel.codeButton.setSelected ( true );
+		code.getEditor ( ).requestFocus ( );
+	}
 
-public JPanel getPanel() {
-    return this.mypanel;
-    
-}
+	public JPanel getPanel ( ) {
+		return this.mypanel;
+
+	}
 
 	public void checkSourceCode ( ) {
+		Dimension dimension;
 		try {
+			//TODO warning is ok but check tooltiptext
 			if ( smallstep != null
 					&& ! ( ( ( SmallStepProofNode ) ( ( ProofViewComponent ) smallstep ).getModel ( ).getRoot ( ) )
 							.getExpression ( ).equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
 				mypanel.smallstepButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
 						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
-				mypanel.smallstepButton.setToolTipText ( "Sourcecode has changed" );
+				mypanel.minimalTypingButton.setToolTipText ( java.util.ResourceBundle
+						.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );
+				dimension = mypanel.smallstepButton.getMinimumSize ( );
+				mypanel.smallstepButton.setPreferredSize ( new Dimension ( dimension.width + 20, dimension.height ) );
 			} else {
 				mypanel.smallstepButton.setBackground ( this.buttonColor );
 				mypanel.smallstepButton.setIcon ( null );
@@ -884,11 +855,15 @@ public JPanel getPanel() {
 							.getExpression ( ).equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
 				mypanel.bigstepButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
 						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
-				mypanel.bigstepButton.setToolTipText ( "Sourcecode has changed" );
+				mypanel.minimalTypingButton.setToolTipText ( java.util.ResourceBundle
+						.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );
+				dimension = mypanel.bigstepButton.getMinimumSize ( );
+				mypanel.bigstepButton.setPreferredSize ( new Dimension ( dimension.width + 20, dimension.height ) );
 			} else {
 				mypanel.bigstepButton.setBackground ( this.buttonColor );
 				mypanel.bigstepButton.setIcon ( null );
 				mypanel.bigstepButton.setToolTipText ( "" );
+
 			}
 
 			if ( typechecker != null
@@ -896,7 +871,10 @@ public JPanel getPanel() {
 							.getExpression ( ).equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
 				mypanel.typecheckerButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
 						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
-				mypanel.typecheckerButton.setToolTipText ( "Sourcecode has changed" );
+				mypanel.minimalTypingButton.setToolTipText ( java.util.ResourceBundle
+						.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );
+				dimension = mypanel.typecheckerButton.getMinimumSize ( );
+				mypanel.typecheckerButton.setPreferredSize ( new Dimension ( dimension.width + 20, dimension.height ) );
 			} else {
 				mypanel.typecheckerButton.setBackground ( this.buttonColor );
 				mypanel.typecheckerButton.setIcon ( null );
@@ -908,7 +886,11 @@ public JPanel getPanel() {
 							.getFirstFormula ( ).getExpression ( ).equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
 				mypanel.typeinferenceButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
 						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
-				mypanel.typeinferenceButton.setToolTipText ( "Sourcecode has changed" );
+				mypanel.typeinferenceButton.repaint ( );
+				mypanel.minimalTypingButton.setToolTipText ( java.util.ResourceBundle
+						.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );
+				dimension = mypanel.typeinferenceButton.getMinimumSize ( );
+				mypanel.typeinferenceButton.setPreferredSize ( new Dimension ( dimension.width + 20, dimension.height ) );
 			} else {
 				mypanel.typeinferenceButton.setBackground ( this.buttonColor );
 				mypanel.typeinferenceButton.setIcon ( null );
@@ -920,7 +902,10 @@ public JPanel getPanel() {
 							.getExpression ( ).equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
 				mypanel.minimalTypingButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
 						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
-				mypanel.minimalTypingButton.setToolTipText ( "Sourcecode has changed" );
+				dimension = mypanel.minimalTypingButton.getMinimumSize ( );
+				mypanel.minimalTypingButton.setPreferredSize ( new Dimension ( dimension.width + 20, dimension.height ) );
+				mypanel.minimalTypingButton.setToolTipText ( java.util.ResourceBundle
+						.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );
 			} else {
 				mypanel.minimalTypingButton.setBackground ( this.buttonColor );
 				mypanel.minimalTypingButton.setIcon ( null );
@@ -928,11 +913,8 @@ public JPanel getPanel() {
 			}
 
 		} catch ( Exception e ) {
-			e.printStackTrace ( );
 			//Nothing to do here
 		}
-
 	}
-
 
 }
