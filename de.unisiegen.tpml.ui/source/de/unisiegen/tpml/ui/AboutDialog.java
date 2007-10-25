@@ -217,7 +217,9 @@ public class AboutDialog extends javax.swing.JDialog
     gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END ;
     buttonPanel.add ( closeButton , gridBagConstraints ) ;
     getContentPane ( ).add ( buttonPanel , java.awt.BorderLayout.SOUTH ) ;
-    pack ( ) ;
+    
+    this.setBounds (0 , 0 , 450 , 300 );
+    
     this.setResizable ( false );
   }// </editor-fold>//GEN-END:initComponents
 
