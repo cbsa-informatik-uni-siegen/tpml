@@ -206,6 +206,7 @@ public class SmallStepNodeComponent extends JComponent
 		DIRECTION_CHILD,
 	}
 
+  private boolean advanced ;
 	/**
 	 * Constructs a SmallStepNodeComponent.<br>
 	 * <br>
@@ -227,6 +228,7 @@ public class SmallStepNodeComponent extends JComponent
 		this.proofNode = pProofNode;
 		this.proofModel = pProofModel;
 		this.translator = pTranslator;
+    this.advanced = advanced ;
 		this.currentUnderlineExpression = null;
 		// the dimension for the rules initialy (0, 0)
 		this.ruleDimension = new Dimension(0, 0);
@@ -417,6 +419,7 @@ public class SmallStepNodeComponent extends JComponent
 	 */
 	void setAdvanced(boolean advanced)
 	{
+    this.advanced = advanced ;
 		// Fill the menu with menuitems
 		ProofRule[] rulesFromModel = this.proofModel.getRules();
 		Language lang = this.proofModel.getLanguage();
@@ -481,7 +484,14 @@ public class SmallStepNodeComponent extends JComponent
 		{
 			return;
 		}
-		updateUnderlineExpression(steps[0].getExpression());
+    if ( this.advanced)
+    {
+		  updateUnderlineExpression(steps[steps.length-1].getExpression());
+    }
+    else
+    {
+      updateUnderlineExpression(steps[0].getExpression());
+    }
 	}
 
 	/**
