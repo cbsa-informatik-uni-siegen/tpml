@@ -4,6 +4,13 @@
 package de.unisiegen.tpml.ui ;
 
 
+import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.net.URI;
+
+
 /**
  * @author TPPool15
  * @author Christian Fehler
@@ -122,8 +129,48 @@ public class AboutDialog extends javax.swing.JDialog
     gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST ;
     gridBagConstraints.insets = new java.awt.Insets ( 12 , 12 , 6 , 6 ) ;
     bodyPanel.add ( websiteLabel , gridBagConstraints ) ;
-    websiteLabelTarget
-        .setText ( "http://theoinf.math.uni-siegen.de/tpml/" ) ;
+    final String webpage = "http://theoinf.math.uni-siegen.de/tpml/" ;
+    websiteLabelTarget.setForeground ( Color.BLUE );
+    websiteLabelTarget.setText ( webpage ) ;
+    websiteLabelTarget.addMouseListener ( new MouseListener ( )
+    {
+      public void mouseClicked ( MouseEvent event )
+      {
+        try
+        {
+          Desktop.getDesktop ( ).browse (
+              new URI ( webpage ) ) ;
+        }
+        catch ( Exception e )
+        {
+          // Do nothing
+        }
+      }
+
+
+      public void mouseEntered ( MouseEvent e )
+      {
+        // TODO Auto-generated method stub
+      }
+
+
+      public void mouseExited ( MouseEvent e )
+      {
+        // TODO Auto-generated method stub
+      }
+
+
+      public void mousePressed ( MouseEvent e )
+      {
+        // TODO Auto-generated method stub
+      }
+
+
+      public void mouseReleased ( MouseEvent e )
+      {
+        // TODO Auto-generated method stub
+      }
+    } ) ;
     gridBagConstraints = new java.awt.GridBagConstraints ( ) ;
     gridBagConstraints.gridwidth = 2 ;
     gridBagConstraints.gridx = 1 ;
@@ -205,7 +252,7 @@ public class AboutDialog extends javax.swing.JDialog
         "de/unisiegen/tpml/ui/ui" ).getString ( "CloseMnemonic" ).charAt ( 0 ) ) ;
     closeButton.setText ( java.util.ResourceBundle.getBundle (
         "de/unisiegen/tpml/ui/ui" ).getString ( "Close" ) ) ;
-    closeButton.setFocusable ( false );
+    closeButton.setFocusable ( false ) ;
     closeButton.addActionListener ( new java.awt.event.ActionListener ( )
     {
       public void actionPerformed ( java.awt.event.ActionEvent evt )
@@ -217,10 +264,8 @@ public class AboutDialog extends javax.swing.JDialog
     gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END ;
     buttonPanel.add ( closeButton , gridBagConstraints ) ;
     getContentPane ( ).add ( buttonPanel , java.awt.BorderLayout.SOUTH ) ;
-    
-    this.setBounds (0 , 0 , 450 , 300 );
-    
-    this.setResizable ( false );
+    this.setBounds ( 0 , 0 , 450 , 300 ) ;
+    this.setResizable ( false ) ;
   }// </editor-fold>//GEN-END:initComponents
 
 
