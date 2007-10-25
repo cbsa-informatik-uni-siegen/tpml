@@ -4,11 +4,10 @@
 package de.unisiegen.tpml.ui ;
 
 
-import java.awt.Color;
-import java.awt.Desktop;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.net.URI;
+import java.awt.Color ;
+import java.awt.event.MouseEvent ;
+import java.awt.event.MouseListener ;
+import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
 
 
 /**
@@ -130,21 +129,15 @@ public class AboutDialog extends javax.swing.JDialog
     gridBagConstraints.insets = new java.awt.Insets ( 12 , 12 , 6 , 6 ) ;
     bodyPanel.add ( websiteLabel , gridBagConstraints ) ;
     final String webpage = "http://theoinf.math.uni-siegen.de/tpml/" ;
-    websiteLabelTarget.setForeground ( Color.BLUE );
+    websiteLabelTarget.setForeground ( Color.BLUE ) ;
     websiteLabelTarget.setText ( webpage ) ;
+    websiteLabelTarget.setToolTipText ( java.util.ResourceBundle.getBundle (
+        "de/unisiegen/tpml/ui/ui" ).getString ( "Webpage.ToolTip" ) ) ;
     websiteLabelTarget.addMouseListener ( new MouseListener ( )
     {
       public void mouseClicked ( MouseEvent event )
       {
-        try
-        {
-          Desktop.getDesktop ( ).browse (
-              new URI ( webpage ) ) ;
-        }
-        catch ( Exception e )
-        {
-          // Do nothing
-        }
+        OutlineClipboard.getInstance ( ).copy ( webpage ) ;
       }
 
 
