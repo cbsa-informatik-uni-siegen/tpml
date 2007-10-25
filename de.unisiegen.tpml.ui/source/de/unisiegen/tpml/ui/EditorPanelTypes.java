@@ -914,17 +914,21 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
   }
   
   public void checkSourceCode ( ) {
+    Dimension dimension;
 		try {
 			SubTypingNode node = ( SubTypingNode ) ( ( ProofViewComponent ) subTyping ).getModel ( ).getRoot ( ) ;
 			if ( subTyping != null
 					&& ( !node.getLeft ( ).equals ( code.getType ( ) ) || !node.getRight ( ).equals ( code.getType2 ( ) ) ) ) {
 				mypanel.subTypingButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
 						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
-				mypanel.subTypingButton.setToolTipText ( "Sourcecode has changed" );
+        dimension = mypanel.subTypingButton.getMinimumSize ( );
+        mypanel.subTypingButton.setPreferredSize ( new Dimension ( dimension.width + 20, dimension.height ) );
+				mypanel.subTypingButton.setToolTipText ( java.util.ResourceBundle
+            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );
 			} else {
 				mypanel.subTypingButton.setBackground ( this.buttonColor );
 				mypanel.subTypingButton.setIcon ( null );
-				mypanel.subTypingButton.setToolTipText ( "" );
+				mypanel.subTypingButton.setToolTipText ( null );
 			}
 			
 			node = ( SubTypingNode ) ( ( ProofViewComponent ) subTypingRec ).getModel ( ).getRoot ( ) ;
@@ -933,15 +937,17 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
 					&& ( !node.getLeft ( ).equals ( code.getType ( ) ) || !node.getRight ( ).equals ( code.getType2 ( ) ) ) ) {
 				mypanel.subTypingRecButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
 						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
-				mypanel.subTypingRecButton.setToolTipText ( "Sourcecode has changed" );
+        dimension = mypanel.subTypingRecButton.getMinimumSize ( );
+        mypanel.subTypingRecButton.setPreferredSize ( new Dimension ( dimension.width + 20, dimension.height ) );
+				mypanel.subTypingRecButton.setToolTipText ( java.util.ResourceBundle
+            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );
 			} else {
 				mypanel.subTypingRecButton.setBackground ( this.buttonColor );
 				mypanel.subTypingRecButton.setIcon ( null );
-				mypanel.subTypingRecButton.setToolTipText ( "" );
+				mypanel.subTypingRecButton.setToolTipText ( null );
 			}
 
 		} catch ( Exception e ) {
-			e.printStackTrace ( );
 			//Nothing to do here
 		}
 

@@ -834,20 +834,19 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel {
 	public void checkSourceCode ( ) {
 		Dimension dimension;
 		try {
-			//TODO warning is ok but check tooltiptext
 			if ( smallstep != null
 					&& ! ( ( ( SmallStepProofNode ) ( ( ProofViewComponent ) smallstep ).getModel ( ).getRoot ( ) )
 							.getExpression ( ).equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
 				mypanel.smallstepButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
 						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
-				mypanel.minimalTypingButton.setToolTipText ( java.util.ResourceBundle
+				mypanel.smallstepButton.setToolTipText ( java.util.ResourceBundle
 						.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );
 				dimension = mypanel.smallstepButton.getMinimumSize ( );
 				mypanel.smallstepButton.setPreferredSize ( new Dimension ( dimension.width + 20, dimension.height ) );
 			} else {
 				mypanel.smallstepButton.setBackground ( this.buttonColor );
 				mypanel.smallstepButton.setIcon ( null );
-				mypanel.smallstepButton.setToolTipText ( "" );
+				mypanel.smallstepButton.setToolTipText ( null );
 			}
 
 			if ( bigstep != null
@@ -855,14 +854,14 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel {
 							.getExpression ( ).equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
 				mypanel.bigstepButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
 						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
-				mypanel.minimalTypingButton.setToolTipText ( java.util.ResourceBundle
+				mypanel.bigstepButton.setToolTipText ( java.util.ResourceBundle
 						.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );
 				dimension = mypanel.bigstepButton.getMinimumSize ( );
 				mypanel.bigstepButton.setPreferredSize ( new Dimension ( dimension.width + 20, dimension.height ) );
 			} else {
 				mypanel.bigstepButton.setBackground ( this.buttonColor );
 				mypanel.bigstepButton.setIcon ( null );
-				mypanel.bigstepButton.setToolTipText ( "" );
+				mypanel.bigstepButton.setToolTipText ( null );
 
 			}
 
@@ -871,14 +870,14 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel {
 							.getExpression ( ).equals ( code.getDocument ( ).getExpression ( ) ) ) ) {
 				mypanel.typecheckerButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
 						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
-				mypanel.minimalTypingButton.setToolTipText ( java.util.ResourceBundle
+				mypanel.typecheckerButton.setToolTipText ( java.util.ResourceBundle
 						.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );
 				dimension = mypanel.typecheckerButton.getMinimumSize ( );
 				mypanel.typecheckerButton.setPreferredSize ( new Dimension ( dimension.width + 20, dimension.height ) );
 			} else {
 				mypanel.typecheckerButton.setBackground ( this.buttonColor );
 				mypanel.typecheckerButton.setIcon ( null );
-				mypanel.typecheckerButton.setToolTipText ( "" );
+				mypanel.typecheckerButton.setToolTipText ( null );
 			}
 
 			if ( typeinference != null
@@ -887,14 +886,14 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel {
 				mypanel.typeinferenceButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
 						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
 				mypanel.typeinferenceButton.repaint ( );
-				mypanel.minimalTypingButton.setToolTipText ( java.util.ResourceBundle
+				mypanel.typeinferenceButton.setToolTipText ( java.util.ResourceBundle
 						.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );
 				dimension = mypanel.typeinferenceButton.getMinimumSize ( );
 				mypanel.typeinferenceButton.setPreferredSize ( new Dimension ( dimension.width + 20, dimension.height ) );
 			} else {
 				mypanel.typeinferenceButton.setBackground ( this.buttonColor );
 				mypanel.typeinferenceButton.setIcon ( null );
-				mypanel.typeinferenceButton.setToolTipText ( "" );
+				mypanel.typeinferenceButton.setToolTipText ( null );
 			}
 
 			if ( minimaltyping != null
@@ -909,7 +908,7 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel {
 			} else {
 				mypanel.minimalTypingButton.setBackground ( this.buttonColor );
 				mypanel.minimalTypingButton.setIcon ( null );
-				mypanel.minimalTypingButton.setToolTipText ( "" );
+				mypanel.minimalTypingButton.setToolTipText ( null );
 			}
 
 		} catch ( Exception e ) {
