@@ -198,12 +198,16 @@
 			<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${distdir}/tpml.exe">
 			</copy>
 		</target>
+
+	<target name="exe_use_old" depends="dist-jar">
+ 		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${basedir}/old/tpml.exe">
+			</copy>
+	</target>
 	
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
 	</target>
-	
-		
+
 	<!--
 		Autogenerating files (Versions.java)
 	-->
