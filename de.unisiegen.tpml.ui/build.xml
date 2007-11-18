@@ -38,6 +38,9 @@
 			<fileset dir="${basedir}/lib" includes="*.jar" />
 			<fileset dir="${basedir}/doc" includes="LICENSE" />
 		</copy>
+		<signjar alias="tpml_key" keystore="tpml.keystore" storepass="ao93iw2l">
+			<fileset dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" includes="*.jar" />
+		</signjar>
 		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${basedir}/tpml.sh">
 			<filterset>
 				<filter token="de.unisiegen.tpml.ui.version" value="${de.unisiegen.tpml.ui.version}" />
@@ -185,8 +188,8 @@
 	<target name="exe" depends="dist-jar">
 			<copy todir="${distdir}" file="${basedir}/dist_build/tpml.xml">
 				<filterset>
-								<filter token="de.unisiegen.tpml.ui.version" value="${de.unisiegen.tpml.ui.version}" />
-					      <filter token="path" value="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" />
+					<filter token="de.unisiegen.tpml.ui.version" value="${de.unisiegen.tpml.ui.version}" />
+					<filter token="path" value="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" />
 				</filterset>
 			</copy>
 			<taskdef name="launch4j"
@@ -194,15 +197,10 @@
 			    	classpath="${basedir}/dist_build/launch4j.jar:${basedir}/dist_build/lib/xstream.jar" 
 			/>
 			<launch4j configFile="${distdir}/tpml.xml" />
-			
 			<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${distdir}/tpml.exe">
 			</copy>
+		    <delete file="${distdir}/tpml.xml" />
 		</target>
-
-	<target name="exe_use_old" depends="dist-jar">
- 		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${basedir}/old/tpml.exe">
-			</copy>
-	</target>
 	
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
