@@ -29,7 +29,7 @@ import de.unisiegen.tpml.graphics.outline.Outline;
  * 
  * @author Marcell Fischbach
  * @author Christian Fehler
- * @version $Rev: 995 $
+ * @version $Rev$
  * @see de.unisiegen.tpml.graphics.AbstractProofView
  */
 public class MinimalTypingView extends AbstractProofView

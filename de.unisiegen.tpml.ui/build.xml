@@ -60,6 +60,12 @@
 				<include name="tpml-${de.unisiegen.tpml.ui.version}**/*" />
 			</fileset>
 		</zip>
+		<!-- move files -->
+		<move todir="${distdir}">
+			<fileset dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" includes="*"/>
+		</move>
+		<!-- chmod gtitool.sh -->
+		<chmod file="${distdir}/gtitool.sh" perm="755"/>
 		<delete dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" includeemptydirs="true" />
 		<echo message="Distribution ready in ${distdir}/tpml-${de.unisiegen.tpml.ui.version}.tar.bz2 and ${distdir}/tpml-${de.unisiegen.tpml.ui.version}.zip" />
 	</target>

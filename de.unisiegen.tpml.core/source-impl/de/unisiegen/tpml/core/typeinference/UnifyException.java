@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.types.Type;
  * equation could not be unified.
  *
  * @author Benedikt Meurer
- * @version $Rev: 1194 $
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker#unify()
  */

@@ -89,7 +89,7 @@ public abstract class AbstractExpressionProofModel extends AbstractProofModel
     // translate the expression to core syntax
     final Expression expression = node.getExpression ( ) ;
     final Expression coreExpression = this.translator.translateToCoreSyntax (
-        expression , recursive ) ;
+        expression , recursive ).clone () ;
     // create the undoable edit
     UndoableTreeEdit edit = new UndoableTreeEdit ( )
     {

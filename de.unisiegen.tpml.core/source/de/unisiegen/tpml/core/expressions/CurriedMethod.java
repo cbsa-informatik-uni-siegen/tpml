@@ -27,7 +27,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * Instances of this class represent curried method expressions.
  * 
  * @author Christian Fehler
- * @version $Rev: 1067 $
+ * @version $Rev$
  */
 public final class CurriedMethod extends Expression implements
     BoundIdentifiers , DefaultTypes , DefaultExpressions

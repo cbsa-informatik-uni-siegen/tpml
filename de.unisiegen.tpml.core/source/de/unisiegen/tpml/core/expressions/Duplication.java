@@ -24,7 +24,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * 
  * @author Christian Fehler
  * @author Christian Fehler
- * @version $Rev: 1066 $
+ * @version $Rev$
  */
 public final class Duplication extends Expression implements
     DefaultIdentifiers , DefaultExpressions , SortedChildren
