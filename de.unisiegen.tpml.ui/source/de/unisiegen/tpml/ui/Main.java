@@ -9,7 +9,7 @@ import javax.swing.UIManager ;
  * The main starter class for the TPML project.
  * 
  * @author Benedikt Meurer
- * @version $Rev: 445 $
+ * @version $Rev$
  * @see de.unisiegen.tpml.ui.MainWindow
  */
 public final class Main

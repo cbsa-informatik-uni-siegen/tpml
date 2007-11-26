@@ -13,7 +13,7 @@ import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
 /**
  * @author TPPool15
  * @author Christian Fehler
- * @version $Rev: 995 $
+ * @version $Rev$
  */
 public class AboutDialog extends javax.swing.JDialog
 {
