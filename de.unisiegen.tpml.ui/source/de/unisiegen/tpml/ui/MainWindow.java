@@ -89,6 +89,7 @@ public class MainWindow
     window.cutButton.setEnabled ( false ) ;
     window.copyButton.setEnabled ( false ) ;
     window.pasteButton.setEnabled ( false ) ;
+    window.printButton.setEnabled ( false ) ;
     // Finished setting the states.
     window.addWindowListener ( new WindowAdapter ( )
     {
@@ -300,6 +301,10 @@ public class MainWindow
 	  window.copyButton.setEnabled ( state ) ;
 	  window.pasteItem.setEnabled ( state ) ;
 	  window.pasteButton.setEnabled ( state ) ;
+	  window.printButton.setEnabled ( state ) ;
+	  window.printItem.setEnabled ( state ) ;
+	  window.latexExportItem.setEnabled ( state ) ;
+	  window.latexExportButton.setEnabled ( state ) ;
     setUndoState ( state ) ;
     setRedoState ( state ) ;
   }

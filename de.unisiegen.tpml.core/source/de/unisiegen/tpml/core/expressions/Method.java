@@ -22,7 +22,7 @@ import de.unisiegen.tpml.core.types.Type;
  * Instances of this class represent method expressions.
  * 
  * @author Christian Fehler
- * @version $Rev: 1067 $
+ * @version $Rev$
  */
 public class Method extends Expression implements DefaultIdentifiers ,
     DefaultTypes , DefaultExpressions

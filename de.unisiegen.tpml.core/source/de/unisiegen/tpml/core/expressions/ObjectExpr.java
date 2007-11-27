@@ -23,7 +23,7 @@ import de.unisiegen.tpml.core.types.Type ;
  * Instances of this class represent object expressions.
  * 
  * @author Christian Fehler
- * @version $Rev: 1066 $
+ * @version $Rev$
  */
 public final class ObjectExpr extends Expression implements BoundIdentifiers ,
     DefaultTypes , DefaultExpressions

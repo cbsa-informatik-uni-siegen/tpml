@@ -123,7 +123,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBar1.setBorderPainted(false);
         jToolBar1.setOpaque(false);
         newButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/new24.png")));
-        newButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("New_File"));
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui"); // NOI18N
+        newButton.setToolTipText(bundle.getString("New_File")); // NOI18N
         newButton.setBorderPainted(false);
         newButton.setFocusPainted(false);
         newButton.setFocusable(false);
@@ -137,7 +138,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBar1.add(newButton);
 
         openButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/open24.png")));
-        openButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Open_File"));
+        openButton.setToolTipText(bundle.getString("Open_File")); // NOI18N
         openButton.setBorderPainted(false);
         openButton.setFocusPainted(false);
         openButton.setFocusable(false);
@@ -151,7 +152,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBar1.add(openButton);
 
         saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/save24.png")));
-        saveButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Save_File"));
+        saveButton.setToolTipText(bundle.getString("Save_File")); // NOI18N
         saveButton.setBorderPainted(false);
         saveButton.setFocusPainted(false);
         saveButton.setFocusable(false);
@@ -174,7 +175,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBar1.add(saveButton);
 
         saveAsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/saveas24.png")));
-        saveAsButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Save_File_As..."));
+        saveAsButton.setToolTipText(bundle.getString("Save_File_As...")); // NOI18N
         saveAsButton.setBorderPainted(false);
         saveAsButton.setFocusPainted(false);
         saveAsButton.setFocusable(false);
@@ -188,6 +189,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBar1.add(saveAsButton);
 
         latexExportButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/latexexport_klein_.gif")));
+        latexExportButton.setToolTipText(bundle.getString("LatexToolTip")); // NOI18N
         latexExportButton.setBorderPainted(false);
         latexExportButton.setFocusPainted(false);
         latexExportButton.setFocusable(false);
@@ -201,6 +203,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBar1.add(latexExportButton);
 
         printButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/pdfexport_klein.gif")));
+        printButton.setToolTipText(bundle.getString("PdfToolTip")); // NOI18N
         printButton.setBorderPainted(false);
         printButton.setFocusPainted(false);
         printButton.setFocusable(false);
@@ -223,7 +226,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         editToolBar.setBorderPainted(false);
         editToolBar.setOpaque(false);
         cutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/cut24.gif")));
-        cutButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Cut"));
+        cutButton.setToolTipText(bundle.getString("Cut")); // NOI18N
         cutButton.setBorderPainted(false);
         cutButton.setFocusPainted(false);
         cutButton.setFocusable(false);
@@ -237,7 +240,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         editToolBar.add(cutButton);
 
         copyButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/copy24.gif")));
-        copyButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Copy"));
+        copyButton.setToolTipText(bundle.getString("Copy")); // NOI18N
         copyButton.setBorderPainted(false);
         copyButton.setFocusPainted(false);
         copyButton.setFocusable(false);
@@ -251,7 +254,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         editToolBar.add(copyButton);
 
         pasteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/paste24.gif")));
-        pasteButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Paste"));
+        pasteButton.setToolTipText(bundle.getString("Paste")); // NOI18N
         pasteButton.setBorderPainted(false);
         pasteButton.setFocusPainted(false);
         pasteButton.setFocusable(false);
@@ -265,7 +268,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         editToolBar.add(pasteButton);
 
         undoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/undo24.gif")));
-        undoButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Undo_the_last_step."));
+        undoButton.setToolTipText(bundle.getString("Undo_the_last_step.")); // NOI18N
         undoButton.setBorderPainted(false);
         undoButton.setFocusPainted(false);
         undoButton.setFocusable(false);
@@ -279,7 +282,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         editToolBar.add(undoButton);
 
         redoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/redo24.gif")));
-        redoButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Redo_the_last_step."));
+        redoButton.setToolTipText(bundle.getString("Redo_the_last_step.")); // NOI18N
         redoButton.setBorderPainted(false);
         redoButton.setFocusPainted(false);
         redoButton.setFocusable(false);
@@ -310,7 +313,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         getContentPane().add(tabbedPane, java.awt.BorderLayout.CENTER);
 
         fileMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("FileMnemonic").charAt(0));
-        fileMenu.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("File"));
+        fileMenu.setText(bundle.getString("File")); // NOI18N
         fileMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileMenuActionPerformed(evt);
@@ -320,7 +323,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         newItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         newItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/new16.gif")));
         newItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("NewMnemonic").charAt(0));
-        newItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("New"));
+        newItem.setText(bundle.getString("New")); // NOI18N
         newItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newItemActionPerformed(evt);
@@ -332,7 +335,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         openItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         openItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/open16.png")));
         openItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("OpenMnemonic").charAt(0));
-        openItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Open"));
+        openItem.setText(bundle.getString("Open")); // NOI18N
         openItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openItemActionPerformed(evt);
@@ -344,7 +347,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         closeItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
         closeItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
         closeItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CloseMnemonic").charAt(0));
-        closeItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Close"));
+        closeItem.setText(bundle.getString("Close")); // NOI18N
         closeItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeItemActionPerformed(evt);
@@ -358,7 +361,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         saveItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/save16.png")));
         saveItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SaveMnemonic").charAt(0));
-        saveItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Save"));
+        saveItem.setText(bundle.getString("Save")); // NOI18N
         saveItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveItemActionPerformed(evt);
@@ -369,7 +372,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         saveAsItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/saveas16.png")));
         saveAsItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SaveAsMnemonic").charAt(0));
-        saveAsItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Save_As..."));
+        saveAsItem.setText(bundle.getString("Save_As...")); // NOI18N
         saveAsItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveAsItemActionPerformed(evt);
@@ -381,7 +384,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         saveAllItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         saveAllItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/saveAll16.gif")));
         saveAllItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SaveAllMnemonic").charAt(0));
-        saveAllItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Save_All"));
+        saveAllItem.setText(bundle.getString("Save_All")); // NOI18N
         saveAllItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveAllItemActionPerformed(evt);
@@ -393,7 +396,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         printItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         printItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
         printItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("PrintItemMnemonic").charAt(0));
-        printItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("printItem"));
+        printItem.setText(bundle.getString("printItem")); // NOI18N
         printItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 printItemActionPerformed(evt);
@@ -404,7 +407,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         latexExportItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         latexExportItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
-        latexExportItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("latexExport"));
+        latexExportItem.setText(bundle.getString("latexExport")); // NOI18N
         latexExportItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 latexExportItemActionPerformed(evt);
@@ -414,7 +417,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         fileMenu.add(latexExportItem);
 
         tpmlTEXItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
-        tpmlTEXItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("BuilTPML"));
+        tpmlTEXItem.setText(bundle.getString("BuilTPML")); // NOI18N
         tpmlTEXItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tpmlTEXItemActionPerformed(evt);
@@ -427,7 +430,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         recentFilesMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
         recentFilesMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("RecentlyUsedMnemonic").charAt(0));
-        recentFilesMenu.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Recently_Used"));
+        recentFilesMenu.setText(bundle.getString("Recently_Used")); // NOI18N
         fileMenu.add(recentFilesMenu);
 
         fileMenuSeperator3.addAncestorListener(new javax.swing.event.AncestorListener() {
@@ -445,7 +448,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         quitItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         quitItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
         quitItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("QuitMnemonic").charAt(0));
-        quitItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Quit"));
+        quitItem.setText(bundle.getString("Quit")); // NOI18N
         quitItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 quitItemActionPerformed(evt);
@@ -457,11 +460,11 @@ public class MainWindowForm extends javax.swing.JFrame {
         MainMenuBar.add(fileMenu);
 
         editMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("EditMnemonic").charAt(0));
-        editMenu.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Edit"));
+        editMenu.setText(bundle.getString("Edit")); // NOI18N
         undoItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         undoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/undo16.gif")));
         undoItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("UndoMnemonic").charAt(0));
-        undoItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Undo"));
+        undoItem.setText(bundle.getString("Undo")); // NOI18N
         undoItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 undoItemActionPerformed(evt);
@@ -473,7 +476,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         redoItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         redoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/redo16.gif")));
         redoItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("RedoMnemonic").charAt(0));
-        redoItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Redo"));
+        redoItem.setText(bundle.getString("Redo")); // NOI18N
         redoItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 redoItemActionPerformed(evt);
@@ -487,7 +490,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         cutItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         cutItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/cut16.gif")));
         cutItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CutMnemonic").charAt(0));
-        cutItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Cut"));
+        cutItem.setText(bundle.getString("Cut")); // NOI18N
         cutItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cutItemActionPerformed(evt);
@@ -499,7 +502,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         copyItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         copyItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/copy16.gif")));
         copyItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CopyMnemonic").charAt(0));
-        copyItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Copy"));
+        copyItem.setText(bundle.getString("Copy")); // NOI18N
         copyItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 copyItemActionPerformed(evt);
@@ -511,7 +514,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         pasteItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
         pasteItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/paste16.gif")));
         pasteItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("PasteMnemonic").charAt(0));
-        pasteItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Paste"));
+        pasteItem.setText(bundle.getString("Paste")); // NOI18N
         pasteItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pasteItemActionPerformed(evt);
@@ -524,7 +527,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         preferencesItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
         preferencesItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("PreferencesMnemonic").charAt(0));
-        preferencesItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Preferences"));
+        preferencesItem.setText(bundle.getString("Preferences")); // NOI18N
         preferencesItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 preferencesItemActionPerformed(evt);
@@ -536,10 +539,10 @@ public class MainWindowForm extends javax.swing.JFrame {
         MainMenuBar.add(editMenu);
 
         runMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("ProofMnemonic").charAt(0));
-        runMenu.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Proof"));
+        runMenu.setText(bundle.getString("Proof")); // NOI18N
         smallstepItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
         smallstepItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SmallStepMnemonic").charAt(0));
-        smallstepItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SmallStep"));
+        smallstepItem.setText(bundle.getString("SmallStep")); // NOI18N
         smallstepItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 smallstepItemActionPerformed(evt);
@@ -550,7 +553,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         bigstepItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
         bigstepItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("BigStepMnemonic").charAt(0));
-        bigstepItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("BigStep"));
+        bigstepItem.setText(bundle.getString("BigStep")); // NOI18N
         bigstepItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bigstepItemActionPerformed(evt);
@@ -561,7 +564,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         typecheckerItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
         typecheckerItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("TypeCheckerMnemonic").charAt(0));
-        typecheckerItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("TypeChecker"));
+        typecheckerItem.setText(bundle.getString("TypeChecker")); // NOI18N
         typecheckerItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 typecheckerItemActionPerformed(evt);
@@ -572,7 +575,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         typeinferenceItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, 0));
         typeinferenceItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("TypeInferenceMnemonic").charAt(0));
-        typeinferenceItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("TypeInference"));
+        typeinferenceItem.setText(bundle.getString("TypeInference")); // NOI18N
         typeinferenceItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 typeinferenceItemActionPerformed(evt);
@@ -582,7 +585,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         runMenu.add(typeinferenceItem);
 
         minimaltypingItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
-        minimaltypingItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("minimaltyping"));
+        minimaltypingItem.setText(bundle.getString("minimaltyping")); // NOI18N
         minimaltypingItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 minimaltypingItemActionPerformed(evt);
@@ -593,7 +596,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         subtypingItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
         subtypingItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SubtypMnemonic").charAt(0));
-        subtypingItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Subtyping"));
+        subtypingItem.setText(bundle.getString("Subtyping")); // NOI18N
         subtypingItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 subtypingItemActionPerformed(evt);
@@ -604,7 +607,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         subtypingrecItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
         subtypingrecItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("subtypingrecMnemonic").charAt(0));
-        subtypingrecItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SubTypingRec"));
+        subtypingrecItem.setText(bundle.getString("SubTypingRec")); // NOI18N
         subtypingrecItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 subtypingrecItemActionPerformed(evt);
@@ -618,7 +621,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         modeSettingsGroup.add(beginnerRadioButton);
         beginnerRadioButton.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("BeginnerMnemonic").charAt(0));
         beginnerRadioButton.setSelected(true);
-        beginnerRadioButton.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Beginner"));
+        beginnerRadioButton.setText(bundle.getString("Beginner")); // NOI18N
         beginnerRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 beginnerRadioButtonStateChanged(evt);
@@ -629,7 +632,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         modeSettingsGroup.add(advancedRadioButton);
         advancedRadioButton.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("AdvancedMnemonic").charAt(0));
-        advancedRadioButton.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Advanced"));
+        advancedRadioButton.setText(bundle.getString("Advanced")); // NOI18N
         advancedRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 advancedRadioButtonStateChanged(evt);
@@ -641,10 +644,10 @@ public class MainWindowForm extends javax.swing.JFrame {
         MainMenuBar.add(runMenu);
 
         helpMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("HelpMnemonic").charAt(0));
-        helpMenu.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Help"));
+        helpMenu.setText(bundle.getString("Help")); // NOI18N
         aboutItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         aboutItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("AboutMnemonic").charAt(0));
-        aboutItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("About..."));
+        aboutItem.setText(bundle.getString("About...")); // NOI18N
         aboutItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutItemActionPerformed(evt);
@@ -907,8 +910,8 @@ GeneralLaTex gl = new GeneralLaTex(this.getFrames()[0]);
     public javax.swing.JSeparator fileMenuSeperator3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JButton latexExportButton;
-    private javax.swing.JMenuItem latexExportItem;
+    public javax.swing.JButton latexExportButton;
+    public javax.swing.JMenuItem latexExportItem;
     public javax.swing.JMenuItem minimaltypingItem;
     private javax.swing.ButtonGroup modeSettingsGroup;
     public javax.swing.JButton pasteButton;

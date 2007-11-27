@@ -61,8 +61,8 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	public void applyTuple ( MinimalTypingProofContext context, MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
 		Tuple tuple = (Tuple) node.getExpression ( );
-		TupleType type;
-		type = ( TupleType ) node.getType ( );
+		//TupleType type;
+		//type = ( TupleType ) node.getType ( );
 
 		for (Expression e : tuple.getExpressions ( ) )
 			context.addProofNode (node, node.getEnvironment ( ), e);

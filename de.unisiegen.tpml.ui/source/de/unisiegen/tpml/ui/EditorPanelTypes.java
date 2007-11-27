@@ -4,42 +4,46 @@
 package de.unisiegen.tpml.ui ;
 
 
-import java.awt.BorderLayout ;
-import java.awt.Dimension ;
-import java.beans.PropertyChangeEvent ;
-import java.beans.PropertyChangeListener ;
-import java.io.BufferedWriter ;
-import java.io.File ;
-import java.io.FileOutputStream ;
-import java.io.IOException ;
-import java.io.OutputStreamWriter ;
-import java.io.StringReader ;
-import java.io.UnsupportedEncodingException ;
-import javax.swing.JComponent ;
-import javax.swing.JFileChooser ;
-import javax.swing.JOptionPane ;
-import javax.swing.JPanel ;
-import javax.swing.JToggleButton ;
-import javax.swing.filechooser.FileFilter ;
-import org.apache.log4j.Logger ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.core.languages.LanguageFactory ;
-import de.unisiegen.tpml.core.languages.LanguageTypeParser ;
-import de.unisiegen.tpml.core.languages.NoSuchLanguageException ;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofModel ;
-import de.unisiegen.tpml.core.subtypingrec.DefaultSubType ;
-import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.Type ;
-import de.unisiegen.tpml.core.util.beans.AbstractBean ;
-import de.unisiegen.tpml.graphics.AbstractProofComponent ;
-import de.unisiegen.tpml.graphics.EditorComponent ;
-import de.unisiegen.tpml.graphics.ProofViewFactory ;
-import de.unisiegen.tpml.graphics.editor.TypeEditorPanel ;
-import de.unisiegen.tpml.ui.netbeans.EditorPanelForm ;
-import de.unisiegen.tpml.ui.proofview.ProofViewComponent ;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import javax.swing.filechooser.FileFilter;
+
+import org.apache.log4j.Logger;
+
+import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageFactory;
+import de.unisiegen.tpml.core.languages.LanguageTypeParser;
+import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
+import de.unisiegen.tpml.core.subtyping.SubTypingNode;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
+import de.unisiegen.tpml.core.subtypingrec.DefaultSubType;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.util.beans.AbstractBean;
+import de.unisiegen.tpml.graphics.AbstractProofComponent;
+import de.unisiegen.tpml.graphics.EditorComponent;
+import de.unisiegen.tpml.graphics.ProofViewFactory;
+import de.unisiegen.tpml.graphics.editor.TypeEditorPanel;
+import de.unisiegen.tpml.ui.netbeans.EditorPanelForm;
+import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 
 
 /**
@@ -49,7 +53,6 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent ;
  * @author Christoph Fehling
  * @author Benjamin Mies
  */
-@ SuppressWarnings ( "all" )
 public class EditorPanelTypes extends AbstractBean implements EditorPanel
 {
   /**
@@ -57,6 +60,7 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
    */
   private static final long serialVersionUID = - 272175525193942130L ;
 
+  private Color buttonColor = new Color (238, 238, 238);
 
   /** Creates new form EditorPanelExpression */
   public EditorPanelTypes ( Language language , MainWindow window )
@@ -880,6 +884,7 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
     setComponent ( this.subTyping ) ;
     deselectButtons ( ) ;
     mypanel.subTypingButton.setSelected ( true ) ;
+    checkSourceCode ( );
   }
 
 
@@ -889,6 +894,7 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
     setComponent ( this.subTypingRec ) ;
     deselectButtons ( ) ;
     mypanel.subTypingRecButton.setSelected ( true ) ;
+    checkSourceCode ( );
   }
 
 
@@ -906,4 +912,45 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
   {
     return this.mypanel ;
   }
+  
+  public void checkSourceCode ( ) {
+    Dimension dimension;
+		try {
+			SubTypingNode node = ( SubTypingNode ) ( ( ProofViewComponent ) subTyping ).getModel ( ).getRoot ( ) ;
+			if ( subTyping != null
+					&& ( !node.getLeft ( ).equals ( code.getType ( ) ) || !node.getRight ( ).equals ( code.getType2 ( ) ) ) ) {
+				mypanel.subTypingButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
+						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
+        dimension = mypanel.subTypingButton.getMinimumSize ( );
+        mypanel.subTypingButton.setPreferredSize ( new Dimension ( dimension.width + 20, dimension.height ) );
+				mypanel.subTypingButton.setToolTipText ( java.util.ResourceBundle
+            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );
+			} else {
+				mypanel.subTypingButton.setBackground ( this.buttonColor );
+				mypanel.subTypingButton.setIcon ( null );
+				mypanel.subTypingButton.setToolTipText ( null );
+			}
+			
+			node = ( SubTypingNode ) ( ( ProofViewComponent ) subTypingRec ).getModel ( ).getRoot ( ) ;
+
+			if ( subTypingRec != null
+					&& ( !node.getLeft ( ).equals ( code.getType ( ) ) || !node.getRight ( ).equals ( code.getType2 ( ) ) ) ) {
+				mypanel.subTypingRecButton.setIcon ( new ImageIcon ( getClass ( ).getResource (
+						"/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
+        dimension = mypanel.subTypingRecButton.getMinimumSize ( );
+        mypanel.subTypingRecButton.setPreferredSize ( new Dimension ( dimension.width + 20, dimension.height ) );
+				mypanel.subTypingRecButton.setToolTipText ( java.util.ResourceBundle
+            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );
+			} else {
+				mypanel.subTypingRecButton.setBackground ( this.buttonColor );
+				mypanel.subTypingRecButton.setIcon ( null );
+				mypanel.subTypingRecButton.setToolTipText ( null );
+			}
+
+		} catch ( Exception e ) {
+			//Nothing to do here
+		}
+
+	}
+
 }

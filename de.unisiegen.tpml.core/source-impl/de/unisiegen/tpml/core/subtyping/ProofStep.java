@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * {@link de.unisiegen.tpml.core.expressions.Expression}.
  *
  * @author Benedikt Meurer
- * @version $Rev: 471 $
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.expressions.Expression
  * @see de.unisiegen.tpml.core.ProofRule

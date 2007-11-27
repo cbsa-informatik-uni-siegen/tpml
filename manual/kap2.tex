@@ -13,7 +13,7 @@ Zuletzt benutzt} schnell auf die aktuellsten Dateien zugegriffen
 werden. Unter {\bf Bearbeiten} sind Editorfunktionen enthalten. Die
 einzelnen Komponenten werden in Kapitel~\ref{Qelltexteditor}
 und~\ref{Beweiswerkzeuge} genauer betrachtet. Mit {\bf PDF Export} l"asst 
-sich der derzeitig Geführte Beweis bzw. der editierte Quellcode einfach
+sich der derzeitig gef"uhrte Beweis bzw. der editierte Quellcode einfach
 in eine PDF Datei speichern. Siehe dazu auch Kapitel ~\ref{PDF-Export}. "Uber {\bf Latex Export}
 kann man dies in eine Tex-Datei
 exportieren. Mehr dazu im Kapitel~\ref{Latex-Export}. Mit {\bf
@@ -162,7 +162,7 @@ vorkommend ist. Es werden allerdings nur Identifier und Typ-Namen
 hervorgehoben, die in dem Wurzelknoten frei vorkommend sind, und nicht
 alle in den jeweiligen Knoten frei vorkommenden Identifier oder Typ-Namen.
 
-Die Option {\bf Ersetzen} steht daf"ur, dass der selektierte Ausdruck
+Die Option {\bf Kompakt} steht daf"ur, dass der selektierte Ausdruck
 in h"oheren Knoten durch \glqq...\grqq\ ersetzt wird. Dadurch
 werden h"ohere Knoten kompakter dargestellt, was bei gr"o"seren Ausdr"ucken
 von Vorteil ist.
@@ -177,7 +177,7 @@ verschiedenen Beweiswerkzeugen.
 {\bf Auto Update} steht daf"ur, dass die Outline automatisch geladen wird,
 wenn sich etwas "andert. Dies geschieht nach einer gewissen Verz"ogerung,
 die n"otig ist, damit sich nicht zu viele Updates bei einer Benutzereingabe 
-berechnet werden müssen. Diese Option
+berechnet werden m"ussen. Diese Option
 ist nur in Ansichten aktiv, in denen "Anderungen eindeutig sind, also in den
 Quelltexteditoren und im Small Step Interpreter. In den anderen
 Beweiswerkzeugen k"onnen bei einem Schritt mehrere Knoten erzeugt werden,
@@ -196,7 +196,7 @@ exportieren, die optisch nahezu der Progammausgabe entsprechen. Um einen Quellte
 oder eine Beweisf"uhrung in eine PDF-Datei zu exportieren w"ahlt man einfach
 den entsprechenden Men"ueintrag unter {\bf Datei} aus oder klickt auf den 
 entsprechenden Button in der Symbolleiste. Der Benutzer hat nun die Wahl zwischen dem Hoch- und
-dem Querformat. Letzerer kann bei längeren Ausdrücken sinnvoll sein.
+dem Querformat. Letzerer kann bei l"angeren Ausdr"ucken sinnvoll sein.
 
 \section {\LaTeX -Export}
 \label{Latex-Export}
@@ -269,9 +269,8 @@ die "Ubersicht. Folgendes Beispiel soll dies verdeutlichen:
 Wie man leicht sieht, ist der Identifier \glqq$x$\grqq\ doppelt verwendet. 
 In noch gr"o"seren Beispielen w"are es nicht mehr einfach zu "uberschauen, an welches \glqq$x$\grqq\ welches gebunden ist. 
 Um dies zu vereinfachen kann man einfach mit dem Mauszeiger "uber eines der \glqq$x$\grqq\ fahren, 
-und die dazugeh"origen \glqq$x$\grqq\ werden farbig hervorgehoben. Zus"atzlich wird der Identifier, 
-an den die anderen gebunden sind, extra durch eine andere Farbe hervorgehoben\footnote{Die Farben, sowohl f"ur gebundenen als auch bindende Identifier k"onnen "uber Einstellungen... im Men"u Bearbeiten eingestellt werden.}. Im gegebenen Beispiel w"urde das \glqq$x$\grqq\ nach dem \glqq$let$\grqq\ zusammen mit den letzten beiden \glqq$x$\grqq\ hervorgehoben, 
-w"ahrend das \glqq$x$\grqq\ nach dem \glqq$lambda$\grqq\ zusammen mit den folgenden beiden \glqq$x$\grqq\ hervorgehoben w"urde.
+und die dazugeh"origen \glqq$x$\grqq\ werden farbig hervorgehoben. Es werden zwei verschiedene Farben
+\footnote{Die Farben, sowohl f"ur gebundenen als auch bindende Identifier k"onnen "uber Einstellungen... im Men"u Bearbeiten eingestellt werden.} benutzt, je nachdem, ob es sich bei dem Identifier um den bindenden Identifier handelt, oder um einen, der an einen anderen gebunden ist. Im gegebenen Beispiel w"urde das \glqq$x$\grqq\ nach dem \glqq$let$\grqq\ zusammen mit den letzten beiden \glqq$x$\grqq\ hervorgehoben.
 
 Identifier, die keine Bindungen haben, aber Bindungen haben k"onnten, werden ebenfalls hervorgehoben. 
 Anders Identifier, die gar keine Bindungen haben k"onnen, wie es bei Namen f"ur Methoden der Fall ist. 
