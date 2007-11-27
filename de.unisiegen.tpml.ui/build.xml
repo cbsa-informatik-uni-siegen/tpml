@@ -38,7 +38,7 @@
 			<fileset dir="${basedir}/lib" includes="*.jar" />
 			<fileset dir="${basedir}/doc" includes="LICENSE" />
 		</copy>
-		<signjar alias="tpml_key" keystore="tpml.keystore" storepass="ao93iw2l">
+		<signjar alias="tpml" keystore="keystore" storepass="ao93iw2l">
 			<fileset dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" includes="*.jar" />
 		</signjar>
 		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${basedir}/tpml.sh">
