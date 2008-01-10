@@ -76,7 +76,7 @@ public class L2LanguageTranslator extends L1LanguageTranslator
         tau = null ;
       }
       // generate the let expression
-      return new Let ( identifiers [ 0 ] , types [ 0 ] , new Recursion (
+      return new Let ( identifiers [ 0 ] , null , new Recursion (
           identifiers [ 0 ] , tau , e1 ) , e2 ) ;
     }
     else if ( expression instanceof LetRec )
@@ -92,7 +92,7 @@ public class L2LanguageTranslator extends L1LanguageTranslator
         e2 = this.translateToCoreSyntax ( e2 , true ) ;
       }
       // generate the let expression
-      return new Let ( letRec.getId ( ) , letRec.getTau ( ) , new Recursion (
+      return new Let ( letRec.getId ( ) , null , new Recursion (
           letRec.getId ( ) , letRec.getTau ( ) , e1 ) , e2 ) ;
     }
     else if ( ( expression instanceof Recursion ) && recursive )

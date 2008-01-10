@@ -70,7 +70,7 @@ public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet
     context.addProofStep ( getRuleByName ( "LET-EVAL" ) , curriedLetRec ) ; //$NON-NLS-1$
     context.addProofStep ( getRuleByName ( "UNFOLD" ) , curriedLetRec ) ; //$NON-NLS-1$
     // generate the new (LET) expression
-    return new Let ( identifiers [ 0 ] , types [ 0 ] , e1 , e2 ) ;
+    return new Let ( identifiers [ 0 ] , null , e1 , e2 ) ;
   }
 
 
@@ -95,7 +95,7 @@ public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet
     context.addProofStep ( getRuleByName ( "LET-EVAL" ) , letRec ) ; //$NON-NLS-1$
     context.addProofStep ( getRuleByName ( "UNFOLD" ) , letRec ) ; //$NON-NLS-1$
     // generate the new (LET) expression
-    return new Let ( letRec.getId ( ) , letRec.getTau ( ) , e1 , e2 ) ;
+    return new Let ( letRec.getId ( ) , null , e1 , e2 ) ;
   }
 
 
