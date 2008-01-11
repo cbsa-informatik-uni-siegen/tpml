@@ -70,7 +70,7 @@
 		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
 	
-	<target name="dist-3rdparty" description="Copy 3rd party jar files">
+	<target name="dist-3rdparty">
 		<copy file="${libdir}/java-cup-11a-runtime.jar" todir="${distdir}" />
 		<copy file="${libdir}/log4j-1.2.14.jar" todir="${distdir}" />
 	</target>
@@ -121,9 +121,9 @@
 		<delete dir="${generateddir}/de/unisiegen/tpml/core/languages/l4" />
 	</target>
 	
-	<target name="l0" depends="l0-expression" description="Generates lexer and parser for L0" />
+	<target name="l0" depends="l0-expression"/>
 		
-	<target name="l0-expression" description="Generates lexer and parser for L0 expression">
+	<target name="l0-expression">
 		<jflex 
 	   		file="${impldir}/de/unisiegen/tpml/core/languages/l0/l0.flex"
 	   		destdir="${generateddir}"
@@ -143,9 +143,9 @@
 			dump_grammar="no" />
 	</target>
 		
-	<target name="l1" depends="l1-expression,l1-type" description="Generates lexer and parser for L1" />
+	<target name="l1" depends="l1-expression,l1-type"/>
 
-	<target name="l1-expression" description="Generates lexer and parser for L1 expression">
+	<target name="l1-expression">
 		<jflex 
 	   		file="${impldir}/de/unisiegen/tpml/core/languages/l1/l1.flex"
 	   		destdir="${generateddir}"
@@ -165,7 +165,7 @@
 			dump_grammar="no" />
 	</target>
 
-	<target name="l1-type" description="Generates lexer and parser for L1 type">
+	<target name="l1-type">
 		<jflex 
 	   		file="${impldir}/de/unisiegen/tpml/core/languages/l1/l1type.flex"
 	   		destdir="${generateddir}"
@@ -185,9 +185,9 @@
 			dump_grammar="no" />
 	</target>
 		
-	<target name="l2" depends="l2-expression,l2-type" description="Generates lexer and parser for L2" />
+	<target name="l2" depends="l2-expression,l2-type"/>
 		
-	<target name="l2-expression" description="Generates lexer and parser for L2 expression">
+	<target name="l2-expression">
 		<jflex 
 	   		file="${impldir}/de/unisiegen/tpml/core/languages/l2/l2.flex"
 	   		destdir="${generateddir}"
@@ -207,7 +207,7 @@
 			dump_grammar="no" />
 	</target>
 
-	<target name="l2-type" description="Generates lexer and parser for L2 type">
+	<target name="l2-type">
 		<jflex 
     		file="${impldir}/de/unisiegen/tpml/core/languages/l2/l2type.flex"
     		destdir="${generateddir}"
@@ -227,9 +227,9 @@
 			dump_grammar="no" />
 	</target>
 		
-	<target name="l2o" depends="l2o-expression,l2o-type" description="Generates lexer and parser for L2O" />
+	<target name="l2o" depends="l2o-expression,l2o-type"/>
 		
-	<target name="l2o-expression" description="Generates lexer and parser for L2O expression">
+	<target name="l2o-expression">
 		<jflex 
 	    	file="${impldir}/de/unisiegen/tpml/core/languages/l2o/l2o.flex"
 	    	destdir="${generateddir}"
@@ -249,7 +249,7 @@
 			dump_grammar="no" />
 	</target>
 
-	<target name="l2o-type" description="Generates lexer and parser for L2O type">
+	<target name="l2o-type">
 		<jflex 
 	   		file="${impldir}/de/unisiegen/tpml/core/languages/l2o/l2otype.flex"
 	   		destdir="${generateddir}"
@@ -269,9 +269,9 @@
 			dump_grammar="no" />
 	</target>
 		
-	<target name="l2c" depends="l2c-expression,l2c-type" description="Generates lexer and parser for L2C" />
+	<target name="l2c" depends="l2c-expression,l2c-type"/>
 		
-	<target name="l2c-expression" description="Generates lexer and parser for L2C expression">
+	<target name="l2c-expression">
 		<jflex 
 		    file="${impldir}/de/unisiegen/tpml/core/languages/l2c/l2c.flex"
 		    destdir="${generateddir}"
@@ -291,7 +291,7 @@
 			dump_grammar="no" />
 	</target>
 
-	<target name="l2c-type" description="Generates lexer and parser for L2C type">
+	<target name="l2c-type">
 		<jflex 
 	    	file="${impldir}/de/unisiegen/tpml/core/languages/l2c/l2ctype.flex"
 	    	destdir="${generateddir}"
@@ -311,9 +311,9 @@
 			dump_grammar="no" />
 	</target>
 		
-	<target name="l3" depends="l3-expression,l3-type" description="Generates lexer and parser for L3" />
+	<target name="l3" depends="l3-expression,l3-type"/>
 		
-	<target name="l3-expression" description="Generates lexer and parser for L3 expression">
+	<target name="l3-expression">
 		<jflex 
     		file="${impldir}/de/unisiegen/tpml/core/languages/l3/l3.flex"
     		destdir="${generateddir}"
@@ -333,7 +333,7 @@
 			dump_grammar="no" />
 	</target>
 
-	<target name="l3-type" description="Generates lexer and parser for L3 type">
+	<target name="l3-type">
 		<jflex 
     		file="${impldir}/de/unisiegen/tpml/core/languages/l3/l3type.flex"
     		destdir="${generateddir}"
@@ -353,9 +353,9 @@
 			dump_grammar="no" />
 	</target>
 		
-	<target name="l4" depends="l4-expression,l4-type" description="Generates lexer and parser for L4" />
+	<target name="l4" depends="l4-expression,l4-type"/>
 		
-	<target name="l4-expression" description="Generates lexer and parser for L4 expression">
+	<target name="l4-expression">
 		<jflex 
     		file="${impldir}/de/unisiegen/tpml/core/languages/l4/l4.flex"
     		destdir="${generateddir}"
@@ -375,7 +375,7 @@
 			dump_grammar="no" />
 	</target>
 
-	<target name="l4-type" description="Generates lexer and parser for L4 type">
+	<target name="l4-type">
 		<jflex 
     		file="${impldir}/de/unisiegen/tpml/core/languages/l4/l4type.flex"
     		destdir="${generateddir}"
