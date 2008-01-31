@@ -1,0 +1,4 @@
+CF		- L1 und L2 ohne RecType und dann ohne A darstellen
+		- TypeChecker: Typ nachträglich eingeben können
+BM		- [β/α] [int/β]    [int/α, int/β]
+		- TypeInference: Subtype Label anpassen
