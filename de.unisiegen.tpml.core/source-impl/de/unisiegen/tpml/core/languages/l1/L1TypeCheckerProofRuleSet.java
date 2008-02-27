@@ -347,7 +347,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 			MonoType tau2l = arrow2.getTau1 ( );
 			MonoType tau2r = arrow2.getTau2 ( );
 
-			subtypeInternal ( taul, tau2l );
+			subtypeInternal (  tau2l, taul );
 			subtypeInternal ( taur, tau2r );
 			return;
 		} else if ( type instanceof RefType && type2 instanceof RefType ) {
