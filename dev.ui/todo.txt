@@ -1,0 +1,10 @@
+		- Save Button komplett neu schreiben
+CU		- AboutDialog mit Netbeans neu schreiben
+CU		- PreferenceDialog mit Netbeans neu schreiben
+		- Dynamische Sprachänderung (siehe GTITool unter
+		  http://theoinf.math.uni-siegen.de/gtitool/)
+		- Dynamische Änderung des Look and Feel
+		- Die Info-Dialoge mit Netbeans neu schreiben, da die Message
+		  nicht umgebrochen wird
+		- Internationalisierung überprüfen (viele Meldungen sind nur
+		  englisch)

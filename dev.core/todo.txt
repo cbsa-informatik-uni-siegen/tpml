@@ -1,0 +1,2 @@
+		- Die angezeigten Fehler muessen verbesset werden
+		  (SmallStep gar nicht vorhanden, BigStep wenig aussagekräftig)
