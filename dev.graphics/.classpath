@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="source"/>
+	<classpathentry kind="src" path="source-impl"/>
+	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/tpml.dev.core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/de.unisiegen.tpml.graphics"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/de.unisiegen.tpml.core"/>
+	<classpathentry kind="output" path="build"/>
+</classpath>
