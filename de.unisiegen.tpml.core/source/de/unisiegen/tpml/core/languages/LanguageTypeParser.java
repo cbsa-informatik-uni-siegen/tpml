@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.languages ;
+package de.unisiegen.tpml.core.languages;
 
 
-import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.MonoType;
 
 
 /**
@@ -18,6 +18,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  */
 public interface LanguageTypeParser
 {
+
   //
   // Primitives
   //
@@ -30,5 +31,5 @@ public interface LanguageTypeParser
    * @throws Exception if an error occurrs while parsing the token stream of the
    *           associated scanner.
    */
-  public MonoType parse ( ) throws Exception ;
+  public MonoType parse () throws Exception;
 }

@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
 /**
@@ -9,11 +9,12 @@ package de.unisiegen.tpml.core.latex ;
  */
 public interface LatexString
 {
+
   /**
    * Returns the string representation of the latex string.
    * 
    * @return The string representation of the latex string.
    * @see Object#toString()
    */
-  public String toString ( ) ;
+  public String toString ();
 }

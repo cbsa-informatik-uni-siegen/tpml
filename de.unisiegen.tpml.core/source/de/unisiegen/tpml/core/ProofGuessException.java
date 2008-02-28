@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core ;
+package de.unisiegen.tpml.core;
 
 
 /**
@@ -12,13 +12,14 @@ package de.unisiegen.tpml.core ;
  */
 public final class ProofGuessException extends Exception
 {
+
   //
   // Constants
   //
   /**
    * The unique serialization identifier for this class.
    */
-  private static final long serialVersionUID = 8678802810950005887L ;
+  private static final long serialVersionUID = 8678802810950005887L;
 
 
   //
@@ -29,7 +30,7 @@ public final class ProofGuessException extends Exception
    * 
    * @see #getNode()
    */
-  private ProofNode node ;
+  private ProofNode node;
 
 
   //
@@ -45,7 +46,7 @@ public final class ProofGuessException extends Exception
    */
   public ProofGuessException ( ProofNode pNode )
   {
-    this ( pNode , null ) ;
+    this ( pNode, null );
   }
 
 
@@ -58,9 +59,9 @@ public final class ProofGuessException extends Exception
    * @throws NullPointerException if <code>message</code> or <code>node</code>
    *           is <code>null</code>.
    */
-  public ProofGuessException ( String message , ProofNode pNode )
+  public ProofGuessException ( String message, ProofNode pNode )
   {
-    this ( message , pNode , null ) ;
+    this ( message, pNode, null );
   }
 
 
@@ -76,9 +77,9 @@ public final class ProofGuessException extends Exception
    *          unknown.
    * @throws NullPointerException if <code>node</code> is <code>null</code>.
    */
-  public ProofGuessException ( ProofNode pNode , Throwable cause )
+  public ProofGuessException ( ProofNode pNode, Throwable cause )
   {
-    this ( Messages.getString ( "ProofGuessException.1" ) , pNode , cause ) ; //$NON-NLS-1$
+    this ( Messages.getString ( "ProofGuessException.1" ), pNode, cause ); //$NON-NLS-1$
   }
 
 
@@ -96,19 +97,18 @@ public final class ProofGuessException extends Exception
    * @throws NullPointerException if <code>message</code> or <code>node</code>
    *           is <code>null</code>.
    */
-  public ProofGuessException ( String message , ProofNode pNode ,
-      Throwable cause )
+  public ProofGuessException ( String message, ProofNode pNode, Throwable cause )
   {
-    super ( message , cause ) ;
+    super ( message, cause );
     if ( message == null )
     {
-      throw new NullPointerException ( "Message is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "Message is null" ); //$NON-NLS-1$
     }
     if ( pNode == null )
     {
-      throw new NullPointerException ( "Node is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "Node is null" ); //$NON-NLS-1$
     }
-    this.node = pNode ;
+    this.node = pNode;
   }
 
 
@@ -120,8 +120,8 @@ public final class ProofGuessException extends Exception
    * 
    * @return the proof node.
    */
-  public ProofNode getNode ( )
+  public ProofNode getNode ()
   {
-    return this.node ;
+    return this.node;
   }
 }

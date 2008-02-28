@@ -1,20 +1,20 @@
-package de.unisiegen.tpml.core.languages.l2o ;
+package de.unisiegen.tpml.core.languages.l2o;
 
 
-import de.unisiegen.tpml.core.bigstep.BigStepProofContext ;
-import de.unisiegen.tpml.core.bigstep.BigStepProofNode ;
-import de.unisiegen.tpml.core.expressions.Attribute ;
-import de.unisiegen.tpml.core.expressions.CurriedMethod ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.Lambda ;
-import de.unisiegen.tpml.core.expressions.Method ;
-import de.unisiegen.tpml.core.expressions.ObjectExpr ;
-import de.unisiegen.tpml.core.expressions.Row ;
-import de.unisiegen.tpml.core.expressions.Send ;
-import de.unisiegen.tpml.core.languages.l2.L2BigStepProofRuleSet ;
-import de.unisiegen.tpml.core.languages.l2.L2Language ;
-import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.bigstep.BigStepProofContext;
+import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
+import de.unisiegen.tpml.core.expressions.Attribute;
+import de.unisiegen.tpml.core.expressions.CurriedMethod;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.Lambda;
+import de.unisiegen.tpml.core.expressions.Method;
+import de.unisiegen.tpml.core.expressions.ObjectExpr;
+import de.unisiegen.tpml.core.expressions.Row;
+import de.unisiegen.tpml.core.expressions.Send;
+import de.unisiegen.tpml.core.languages.l2.L2BigStepProofRuleSet;
+import de.unisiegen.tpml.core.languages.l2.L2Language;
+import de.unisiegen.tpml.core.types.MonoType;
 
 
 /**
@@ -26,6 +26,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  */
 public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
 {
+
   /**
    * Allocates a new <code>L2OBigStepProofRuleSet</code> with the specified
    * <code>language</code>, which is the <b>L2O</b> or a derived language.
@@ -37,22 +38,22 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    */
   public L2OBigStepProofRuleSet ( L2OLanguage pL2OLanguage )
   {
-    super ( pL2OLanguage ) ;
-    registerByMethodName ( L2OLanguage.L2O , "OBJECT" , "applyObject" , //$NON-NLS-1$ //$NON-NLS-2$
-        "updateObject" ) ; //$NON-NLS-1$
-    registerByMethodName ( L2OLanguage.L2O , "SEND" , "applySend" , //$NON-NLS-1$ //$NON-NLS-2$
-        "updateSend" ) ; //$NON-NLS-1$
-    registerByMethodName ( L2OLanguage.L2O , "SEND-ATTR" , "applySendAttr" , //$NON-NLS-1$ //$NON-NLS-2$
-        "updateSendAttr" ) ; //$NON-NLS-1$
-    registerByMethodName ( L2OLanguage.L2O , "SEND-SKIP" , "applySendSkip" , //$NON-NLS-1$ //$NON-NLS-2$
-        "updateSendSkip" ) ; //$NON-NLS-1$
-    registerByMethodName ( L2OLanguage.L2O , "SEND-EXEC" , "applySendExec" , //$NON-NLS-1$ //$NON-NLS-2$
-        "updateSendExec" ) ; //$NON-NLS-1$
-    registerByMethodName ( L2OLanguage.L2O , "OMEGA" , "applyOmega" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    registerByMethodName ( L2OLanguage.L2O , "ATTR" , "applyAttr" , //$NON-NLS-1$ //$NON-NLS-2$
-        "updateAttr" ) ; //$NON-NLS-1$
-    registerByMethodName ( L2OLanguage.L2O , "METHOD" , "applyMethod" , //$NON-NLS-1$ //$NON-NLS-2$
-        "updateMethod" ) ; //$NON-NLS-1$
+    super ( pL2OLanguage );
+    registerByMethodName ( L2OLanguage.L2O, "OBJECT", "applyObject", //$NON-NLS-1$ //$NON-NLS-2$
+        "updateObject" ); //$NON-NLS-1$
+    registerByMethodName ( L2OLanguage.L2O, "SEND", "applySend", //$NON-NLS-1$ //$NON-NLS-2$
+        "updateSend" ); //$NON-NLS-1$
+    registerByMethodName ( L2OLanguage.L2O, "SEND-ATTR", "applySendAttr", //$NON-NLS-1$ //$NON-NLS-2$
+        "updateSendAttr" ); //$NON-NLS-1$
+    registerByMethodName ( L2OLanguage.L2O, "SEND-SKIP", "applySendSkip", //$NON-NLS-1$ //$NON-NLS-2$
+        "updateSendSkip" ); //$NON-NLS-1$
+    registerByMethodName ( L2OLanguage.L2O, "SEND-EXEC", "applySendExec", //$NON-NLS-1$ //$NON-NLS-2$
+        "updateSendExec" ); //$NON-NLS-1$
+    registerByMethodName ( L2OLanguage.L2O, "OMEGA", "applyOmega" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L2OLanguage.L2O, "ATTR", "applyAttr", //$NON-NLS-1$ //$NON-NLS-2$
+        "updateAttr" ); //$NON-NLS-1$
+    registerByMethodName ( L2OLanguage.L2O, "METHOD", "applyMethod", //$NON-NLS-1$ //$NON-NLS-2$
+        "updateMethod" ); //$NON-NLS-1$
   }
 
 
@@ -63,13 +64,13 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext The big step proof pContext.
    * @param pNode The node to apply the <b>(ATTR)</b> rule to.
    */
-  public void applyAttr ( BigStepProofContext pContext , BigStepProofNode pNode )
+  public void applyAttr ( BigStepProofContext pContext, BigStepProofNode pNode )
   {
-    Row row = ( Row ) pNode.getExpression ( ) ;
-    Expression [ ] rowExpressions = row.getExpressions ( ) ;
-    Attribute attribute = ( Attribute ) rowExpressions [ 0 ] ;
-    pContext.addProofNode ( pNode , attribute.getE ( ) ) ;
-    pContext.addProofNode ( pNode , row.tailRow ( ) ) ;
+    Row row = ( Row ) pNode.getExpression ();
+    Expression [] rowExpressions = row.getExpressions ();
+    Attribute attribute = ( Attribute ) rowExpressions [ 0 ];
+    pContext.addProofNode ( pNode, attribute.getE () );
+    pContext.addProofNode ( pNode, row.tailRow () );
   }
 
 
@@ -80,17 +81,16 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext The big step proof pContext.
    * @param pNode The node to apply the <b>(METHOD)</b> rule to.
    */
-  public void applyMethod ( BigStepProofContext pContext ,
-      BigStepProofNode pNode )
+  public void applyMethod ( BigStepProofContext pContext, BigStepProofNode pNode )
   {
-    Row row = ( Row ) pNode.getExpression ( ) ;
-    Expression [ ] rowExpressions = row.getExpressions ( ) ;
+    Row row = ( Row ) pNode.getExpression ();
+    Expression [] rowExpressions = row.getExpressions ();
     if ( ( ! ( rowExpressions [ 0 ] instanceof Method ) )
         && ( ! ( rowExpressions [ 0 ] instanceof CurriedMethod ) ) )
     {
-      throw new IllegalArgumentException ( "Can not apply METHOD" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "Can not apply METHOD" ); //$NON-NLS-1$
     }
-    pContext.addProofNode ( pNode , row.tailRow ( ) ) ;
+    pContext.addProofNode ( pNode, row.tailRow () );
   }
 
 
@@ -101,16 +101,15 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext The big step proof pContext.
    * @param pNode The node to apply the <b>(OBJECT)</b> rule to.
    */
-  public void applyObject ( BigStepProofContext pContext ,
-      BigStepProofNode pNode )
+  public void applyObject ( BigStepProofContext pContext, BigStepProofNode pNode )
   {
-    ObjectExpr objectExpr = ( ObjectExpr ) pNode.getExpression ( ) ;
-    Row row = objectExpr.getRow ( ) ;
-    if ( row.isValue ( ) )
+    ObjectExpr objectExpr = ( ObjectExpr ) pNode.getExpression ();
+    Row row = objectExpr.getRow ();
+    if ( row.isValue () )
     {
-      throw new IllegalArgumentException ( "Can not apply OBJECT" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "Can not apply OBJECT" ); //$NON-NLS-1$
     }
-    pContext.addProofNode ( pNode , row ) ;
+    pContext.addProofNode ( pNode, row );
   }
 
 
@@ -121,14 +120,14 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext The big step proof pContext.
    * @param pNode The node to apply the <b>(OMEGA)</b> rule to.
    */
-  public void applyOmega ( BigStepProofContext pContext , BigStepProofNode pNode )
+  public void applyOmega ( BigStepProofContext pContext, BigStepProofNode pNode )
   {
-    Row row = ( Row ) pNode.getExpression ( ) ;
-    if ( ! row.isValue ( ) )
+    Row row = ( Row ) pNode.getExpression ();
+    if ( !row.isValue () )
     {
-      throw new IllegalArgumentException ( "Can not apply OMEGA" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "Can not apply OMEGA" ); //$NON-NLS-1$
     }
-    pContext.setProofNodeResult ( pNode , row ) ;
+    pContext.setProofNodeResult ( pNode, row );
   }
 
 
@@ -139,14 +138,14 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext The big step proof pContext.
    * @param pNode The node to apply the <b>(SEND)</b> rule to.
    */
-  public void applySend ( BigStepProofContext pContext , BigStepProofNode pNode )
+  public void applySend ( BigStepProofContext pContext, BigStepProofNode pNode )
   {
-    Send send = ( Send ) pNode.getExpression ( ) ;
-    if ( send.getE ( ) instanceof Row )
+    Send send = ( Send ) pNode.getExpression ();
+    if ( send.getE () instanceof Row )
     {
-      throw new IllegalArgumentException ( "Can not apply SEND" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "Can not apply SEND" ); //$NON-NLS-1$
     }
-    pContext.addProofNode ( pNode , send.getE ( ) ) ;
+    pContext.addProofNode ( pNode, send.getE () );
   }
 
 
@@ -157,25 +156,25 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext The big step proof pContext.
    * @param pNode The node to apply the <b>(SEND-ATTR)</b> rule to.
    */
-  public void applySendAttr ( BigStepProofContext pContext ,
+  public void applySendAttr ( BigStepProofContext pContext,
       BigStepProofNode pNode )
   {
-    Send send = ( Send ) pNode.getExpression ( ) ;
-    Row row = ( Row ) send.getE ( ) ;
-    if ( ! row.isValue ( ) )
+    Send send = ( Send ) pNode.getExpression ();
+    Row row = ( Row ) send.getE ();
+    if ( !row.isValue () )
     {
-      throw new IllegalArgumentException ( "Can not apply SEND-ATTR" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "Can not apply SEND-ATTR" ); //$NON-NLS-1$
     }
-    Expression [ ] rowExpressions = row.getExpressions ( ) ;
-    Attribute attribute = ( Attribute ) rowExpressions [ 0 ] ;
-    Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length - 1 ] ;
-    for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
+    Expression [] rowExpressions = row.getExpressions ();
+    Attribute attribute = ( Attribute ) rowExpressions [ 0 ];
+    Expression [] newRowExpressions = new Expression [ row.getExpressions ().length - 1 ];
+    for ( int i = 0 ; i < newRowExpressions.length ; i++ )
     {
       newRowExpressions [ i ] = rowExpressions [ i + 1 ].substitute ( attribute
-          .getId ( ) , attribute.getE ( ) ) ;
+          .getId (), attribute.getE () );
     }
-    pContext.addProofNode ( pNode , new Send ( new Row ( newRowExpressions ) ,
-        send.getId ( ) ) ) ;
+    pContext.addProofNode ( pNode, new Send ( new Row ( newRowExpressions ),
+        send.getId () ) );
   }
 
 
@@ -186,70 +185,70 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext The big step proof pContext.
    * @param pNode The node to apply the <b>(SEND-EXEC)</b> rule to.
    */
-  public void applySendExec ( BigStepProofContext pContext ,
+  public void applySendExec ( BigStepProofContext pContext,
       BigStepProofNode pNode )
   {
-    Send send = ( Send ) pNode.getExpression ( ) ;
-    Row row = ( Row ) send.getE ( ) ;
-    if ( ! row.isValue ( ) )
+    Send send = ( Send ) pNode.getExpression ();
+    Row row = ( Row ) send.getE ();
+    if ( !row.isValue () )
     {
-      throw new IllegalArgumentException ( "Can not apply SEND-EXEC" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "Can not apply SEND-EXEC" ); //$NON-NLS-1$
     }
-    Expression [ ] rowExpressions = row.getExpressions ( ) ;
-    Identifier methodName ;
-    Expression methodExpression ;
+    Expression [] rowExpressions = row.getExpressions ();
+    Identifier methodName;
+    Expression methodExpression;
     if ( rowExpressions [ 0 ] instanceof Method )
     {
-      Method method = ( Method ) rowExpressions [ 0 ] ;
-      methodExpression = method.getE ( ) ;
-      methodName = method.getId ( ) ;
+      Method method = ( Method ) rowExpressions [ 0 ];
+      methodExpression = method.getE ();
+      methodName = method.getId ();
     }
     else if ( rowExpressions [ 0 ] instanceof CurriedMethod )
     {
-      CurriedMethod curriedMethod = ( CurriedMethod ) rowExpressions [ 0 ] ;
-      methodExpression = curriedMethod.getE ( ) ;
-      Identifier [ ] identifiers = curriedMethod.getIdentifiers ( ) ;
-      MonoType [ ] types = curriedMethod.getTypes ( ) ;
-      for ( int i = identifiers.length - 1 ; i > 0 ; i -- )
+      CurriedMethod curriedMethod = ( CurriedMethod ) rowExpressions [ 0 ];
+      methodExpression = curriedMethod.getE ();
+      Identifier [] identifiers = curriedMethod.getIdentifiers ();
+      MonoType [] types = curriedMethod.getTypes ();
+      for ( int i = identifiers.length - 1 ; i > 0 ; i-- )
       {
-        methodExpression = new Lambda ( identifiers [ i ] , types [ i ] ,
-            methodExpression ) ;
+        methodExpression = new Lambda ( identifiers [ i ], types [ i ],
+            methodExpression );
       }
-      methodName = identifiers [ 0 ] ;
+      methodName = identifiers [ 0 ];
     }
     else
     {
-      throw new IllegalArgumentException ( "Can not apply SEND-EXEC" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "Can not apply SEND-EXEC" ); //$NON-NLS-1$
     }
-    if ( ! ( send.getId ( ).equals ( methodName ) ) )
+    if ( ! ( send.getId ().equals ( methodName ) ) )
     {
-      throw new IllegalArgumentException ( "Can not apply SEND-EXEC" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "Can not apply SEND-EXEC" ); //$NON-NLS-1$
     }
-    boolean definedLater = false ;
-    for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
+    boolean definedLater = false;
+    for ( int i = 1 ; i < row.getExpressions ().length ; i++ )
     {
-      Expression rowChild = rowExpressions [ i ] ;
+      Expression rowChild = rowExpressions [ i ];
       if ( ( rowChild instanceof Method )
-          && ( ( ( Method ) rowChild ).getId ( ).equals ( send.getId ( ) ) ) )
+          && ( ( ( Method ) rowChild ).getId ().equals ( send.getId () ) ) )
       {
-        definedLater = true ;
-        break ;
+        definedLater = true;
+        break;
       }
       else if ( ( rowChild instanceof CurriedMethod )
-          && ( ( ( CurriedMethod ) rowChild ).getIdentifiers ( ) [ 0 ]
-              .equals ( send.getId ( ) ) ) )
+          && ( ( ( CurriedMethod ) rowChild ).getIdentifiers () [ 0 ]
+              .equals ( send.getId () ) ) )
       {
-        definedLater = true ;
-        break ;
+        definedLater = true;
+        break;
       }
     }
-    if ( ! definedLater )
+    if ( !definedLater )
     {
-      pContext.addProofNode ( pNode , methodExpression ) ;
+      pContext.addProofNode ( pNode, methodExpression );
     }
     else
     {
-      throw new IllegalArgumentException ( "Can not apply SEND-EXEC" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "Can not apply SEND-EXEC" ); //$NON-NLS-1$
     }
   }
 
@@ -261,57 +260,57 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext The big step proof pContext.
    * @param pNode The node to apply the <b>(SEND-SKIP)</b> rule to.
    */
-  public void applySendSkip ( BigStepProofContext pContext ,
+  public void applySendSkip ( BigStepProofContext pContext,
       BigStepProofNode pNode )
   {
-    Send send = ( Send ) pNode.getExpression ( ) ;
-    Row row = ( Row ) send.getE ( ) ;
-    if ( ! row.isValue ( ) )
+    Send send = ( Send ) pNode.getExpression ();
+    Row row = ( Row ) send.getE ();
+    if ( !row.isValue () )
     {
-      throw new IllegalArgumentException ( "Can not apply SEND-SKIP" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "Can not apply SEND-SKIP" ); //$NON-NLS-1$
     }
-    Expression [ ] rowExpressions = row.getExpressions ( ) ;
-    Identifier methodName ;
+    Expression [] rowExpressions = row.getExpressions ();
+    Identifier methodName;
     if ( rowExpressions [ 0 ] instanceof Method )
     {
-      Method method = ( Method ) rowExpressions [ 0 ] ;
-      methodName = method.getId ( ) ;
+      Method method = ( Method ) rowExpressions [ 0 ];
+      methodName = method.getId ();
     }
     else if ( rowExpressions [ 0 ] instanceof CurriedMethod )
     {
-      CurriedMethod curriedMethod = ( CurriedMethod ) rowExpressions [ 0 ] ;
-      methodName = curriedMethod.getIdentifiers ( ) [ 0 ] ;
+      CurriedMethod curriedMethod = ( CurriedMethod ) rowExpressions [ 0 ];
+      methodName = curriedMethod.getIdentifiers () [ 0 ];
     }
     else
     {
-      throw new IllegalArgumentException ( "Can not apply SEND-SKIP" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "Can not apply SEND-SKIP" ); //$NON-NLS-1$
     }
-    boolean definedLater = false ;
-    for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
+    boolean definedLater = false;
+    for ( int i = 1 ; i < row.getExpressions ().length ; i++ )
     {
-      Expression rowChild = rowExpressions [ i ] ;
+      Expression rowChild = rowExpressions [ i ];
       if ( ( rowChild instanceof Method )
-          && ( ( ( Method ) rowChild ).getId ( ).equals ( send.getId ( ) ) ) )
+          && ( ( ( Method ) rowChild ).getId ().equals ( send.getId () ) ) )
       {
-        definedLater = true ;
-        break ;
+        definedLater = true;
+        break;
       }
       else if ( ( rowChild instanceof CurriedMethod )
-          && ( ( ( CurriedMethod ) rowChild ).getIdentifiers ( ) [ 0 ]
-              .equals ( send.getId ( ) ) ) )
+          && ( ( ( CurriedMethod ) rowChild ).getIdentifiers () [ 0 ]
+              .equals ( send.getId () ) ) )
       {
-        definedLater = true ;
-        break ;
+        definedLater = true;
+        break;
       }
     }
-    if ( ( definedLater ) || ( ! ( send.getId ( ).equals ( methodName ) ) ) )
+    if ( ( definedLater ) || ( ! ( send.getId ().equals ( methodName ) ) ) )
     {
-      pContext.addProofNode ( pNode , new Send ( row.tailRow ( ) , send
-          .getId ( ) ) ) ;
+      pContext
+          .addProofNode ( pNode, new Send ( row.tailRow (), send.getId () ) );
     }
     else
     {
-      throw new IllegalArgumentException ( "Can not apply SEND-SKIP" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "Can not apply SEND-SKIP" ); //$NON-NLS-1$
     }
   }
 
@@ -323,15 +322,15 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext The big step proof pContext.
    * @param pNode The node to apply the <b>(VAL)</b> rule to.
    */
-  @ Override
-  public void applyValue ( BigStepProofContext pContext , BigStepProofNode pNode )
+  @Override
+  public void applyValue ( BigStepProofContext pContext, BigStepProofNode pNode )
   {
-    if ( ( ! pNode.getExpression ( ).isValue ( ) )
-        || ( pNode.getExpression ( ) instanceof Row ) )
+    if ( ( !pNode.getExpression ().isValue () )
+        || ( pNode.getExpression () instanceof Row ) )
     {
-      throw new IllegalArgumentException ( "Can not apply VAL" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "Can not apply VAL" ); //$NON-NLS-1$
     }
-    pContext.setProofNodeResult ( pNode , pNode.getExpression ( ) ) ;
+    pContext.setProofNodeResult ( pNode, pNode.getExpression () );
   }
 
 
@@ -342,26 +341,26 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext The big step proof context.
    * @param pNode The node to update according to <b>(ATTR)</b>.
    */
-  public void updateAttr ( BigStepProofContext pContext , BigStepProofNode pNode )
+  public void updateAttr ( BigStepProofContext pContext, BigStepProofNode pNode )
   {
-    if ( ( pNode.getChildCount ( ) == 2 )
-        && ( pNode.getChildAt ( 0 ).isProven ( ) )
-        && ( pNode.getChildAt ( 1 ).isProven ( ) ) )
+    if ( ( pNode.getChildCount () == 2 )
+        && ( pNode.getChildAt ( 0 ).isProven () )
+        && ( pNode.getChildAt ( 1 ).isProven () ) )
     {
-      Row row = ( Row ) pNode.getExpression ( ) ;
-      Expression childExpression = pNode.getChildAt ( 0 ).getResult ( )
-          .getValue ( ) ;
-      Row childRow = ( Row ) pNode.getChildAt ( 1 ).getResult ( ).getValue ( ) ;
-      Attribute attribute = ( Attribute ) row.getExpressions ( ) [ 0 ] ;
-      Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length ] ;
-      Attribute newAttribute = new Attribute ( attribute.getId ( ) ,
-          childExpression ) ;
-      newRowExpressions [ 0 ] = newAttribute ;
-      for ( int i = 1 ; i < newRowExpressions.length ; i ++ )
+      Row row = ( Row ) pNode.getExpression ();
+      Expression childExpression = pNode.getChildAt ( 0 ).getResult ()
+          .getValue ();
+      Row childRow = ( Row ) pNode.getChildAt ( 1 ).getResult ().getValue ();
+      Attribute attribute = ( Attribute ) row.getExpressions () [ 0 ];
+      Expression [] newRowExpressions = new Expression [ row.getExpressions ().length ];
+      Attribute newAttribute = new Attribute ( attribute.getId (),
+          childExpression );
+      newRowExpressions [ 0 ] = newAttribute;
+      for ( int i = 1 ; i < newRowExpressions.length ; i++ )
       {
-        newRowExpressions [ i ] = childRow.getExpressions ( ) [ i - 1 ] ;
+        newRowExpressions [ i ] = childRow.getExpressions () [ i - 1 ];
       }
-      pContext.setProofNodeResult ( pNode , new Row ( newRowExpressions ) ) ;
+      pContext.setProofNodeResult ( pNode, new Row ( newRowExpressions ) );
     }
   }
 
@@ -373,21 +372,21 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext The big step proof context.
    * @param pNode The node to update according to <b>(METHOD)</b>.
    */
-  public void updateMethod ( BigStepProofContext pContext ,
+  public void updateMethod ( BigStepProofContext pContext,
       BigStepProofNode pNode )
   {
-    if ( ( pNode.getChildCount ( ) == 1 )
-        && ( pNode.getChildAt ( 0 ).isProven ( ) ) )
+    if ( ( pNode.getChildCount () == 1 )
+        && ( pNode.getChildAt ( 0 ).isProven () ) )
     {
-      Row row = ( Row ) pNode.getExpression ( ) ;
-      Row childRow = ( Row ) pNode.getChildAt ( 0 ).getResult ( ).getValue ( ) ;
-      Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length ] ;
-      newRowExpressions [ 0 ] = row.getExpressions ( ) [ 0 ] ;
-      for ( int i = 1 ; i < newRowExpressions.length ; i ++ )
+      Row row = ( Row ) pNode.getExpression ();
+      Row childRow = ( Row ) pNode.getChildAt ( 0 ).getResult ().getValue ();
+      Expression [] newRowExpressions = new Expression [ row.getExpressions ().length ];
+      newRowExpressions [ 0 ] = row.getExpressions () [ 0 ];
+      for ( int i = 1 ; i < newRowExpressions.length ; i++ )
       {
-        newRowExpressions [ i ] = childRow.getExpressions ( ) [ i - 1 ] ;
+        newRowExpressions [ i ] = childRow.getExpressions () [ i - 1 ];
       }
-      pContext.setProofNodeResult ( pNode , new Row ( newRowExpressions ) ) ;
+      pContext.setProofNodeResult ( pNode, new Row ( newRowExpressions ) );
     }
   }
 
@@ -399,16 +398,16 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext The big step proof context.
    * @param pNode The node to update according to <b>(OBJECT)</b>.
    */
-  public void updateObject ( BigStepProofContext pContext ,
+  public void updateObject ( BigStepProofContext pContext,
       BigStepProofNode pNode )
   {
-    if ( ( pNode.getChildCount ( ) == 1 )
-        && ( pNode.getChildAt ( 0 ).isProven ( ) ) )
+    if ( ( pNode.getChildCount () == 1 )
+        && ( pNode.getChildAt ( 0 ).isProven () ) )
     {
-      ObjectExpr oldObjectExpr = ( ObjectExpr ) pNode.getExpression ( ) ;
-      Row row = ( Row ) pNode.getChildAt ( 0 ).getResult ( ).getValue ( ) ;
-      pContext.setProofNodeResult ( pNode , new ObjectExpr ( oldObjectExpr
-          .getId ( ) , oldObjectExpr.getTau ( ) , row ) ) ;
+      ObjectExpr oldObjectExpr = ( ObjectExpr ) pNode.getExpression ();
+      Row row = ( Row ) pNode.getChildAt ( 0 ).getResult ().getValue ();
+      pContext.setProofNodeResult ( pNode, new ObjectExpr ( oldObjectExpr
+          .getId (), oldObjectExpr.getTau (), row ) );
     }
   }
 
@@ -420,25 +419,24 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext The big step proof context.
    * @param pNode The node to update according to <b>(SEND)</b>.
    */
-  public void updateSend ( BigStepProofContext pContext , BigStepProofNode pNode )
+  public void updateSend ( BigStepProofContext pContext, BigStepProofNode pNode )
   {
-    if ( ( pNode.getChildCount ( ) == 1 )
-        && ( pNode.getChildAt ( 0 ).isProven ( ) ) )
+    if ( ( pNode.getChildCount () == 1 )
+        && ( pNode.getChildAt ( 0 ).isProven () ) )
     {
-      Send send = ( Send ) pNode.getExpression ( ) ;
+      Send send = ( Send ) pNode.getExpression ();
       ObjectExpr objectExpr = ( ObjectExpr ) pNode.getChildAt ( 0 )
-          .getResult ( ).getValue ( ) ;
-      Row row = objectExpr.getRow ( ) ;
-      Expression newRow ;
-      newRow = row.substitute ( objectExpr.getId ( ) , objectExpr ) ;
-      pContext.addProofNode ( pNode , new Send ( newRow , send.getId ( ) ) ) ;
+          .getResult ().getValue ();
+      Row row = objectExpr.getRow ();
+      Expression newRow;
+      newRow = row.substitute ( objectExpr.getId (), objectExpr );
+      pContext.addProofNode ( pNode, new Send ( newRow, send.getId () ) );
     }
-    else if ( ( pNode.getChildCount ( ) == 2 )
-        && ( pNode.getChildAt ( 0 ).isProven ( ) )
-        && ( pNode.getChildAt ( 1 ).isProven ( ) ) )
+    else if ( ( pNode.getChildCount () == 2 )
+        && ( pNode.getChildAt ( 0 ).isProven () )
+        && ( pNode.getChildAt ( 1 ).isProven () ) )
     {
-      pContext
-          .setProofNodeResult ( pNode , pNode.getChildAt ( 1 ).getResult ( ) ) ;
+      pContext.setProofNodeResult ( pNode, pNode.getChildAt ( 1 ).getResult () );
     }
   }
 
@@ -450,13 +448,12 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext The big step proof context.
    * @param pNode The node to update according to <b>(SEND-ATTR)</b>.
    */
-  public void updateSendAttr ( BigStepProofContext pContext ,
+  public void updateSendAttr ( BigStepProofContext pContext,
       BigStepProofNode pNode )
   {
-    if ( pNode.getChildAt ( 0 ).isProven ( ) )
+    if ( pNode.getChildAt ( 0 ).isProven () )
     {
-      pContext
-          .setProofNodeResult ( pNode , pNode.getChildAt ( 0 ).getResult ( ) ) ;
+      pContext.setProofNodeResult ( pNode, pNode.getChildAt ( 0 ).getResult () );
     }
   }
 
@@ -468,13 +465,12 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext The big step proof context.
    * @param pNode The node to update according to <b>(SEND-EXEC)</b>.
    */
-  public void updateSendExec ( BigStepProofContext pContext ,
+  public void updateSendExec ( BigStepProofContext pContext,
       BigStepProofNode pNode )
   {
-    if ( pNode.getChildAt ( 0 ).isProven ( ) )
+    if ( pNode.getChildAt ( 0 ).isProven () )
     {
-      pContext
-          .setProofNodeResult ( pNode , pNode.getChildAt ( 0 ).getResult ( ) ) ;
+      pContext.setProofNodeResult ( pNode, pNode.getChildAt ( 0 ).getResult () );
     }
   }
 
@@ -486,13 +482,12 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext The big step proof context.
    * @param pNode The node to update according to <b>(SEND-SKIP)</b>.
    */
-  public void updateSendSkip ( BigStepProofContext pContext ,
+  public void updateSendSkip ( BigStepProofContext pContext,
       BigStepProofNode pNode )
   {
-    if ( pNode.getChildAt ( 0 ).isProven ( ) )
+    if ( pNode.getChildAt ( 0 ).isProven () )
     {
-      pContext
-          .setProofNodeResult ( pNode , pNode.getChildAt ( 0 ).getResult ( ) ) ;
+      pContext.setProofNodeResult ( pNode, pNode.getChildAt ( 0 ).getResult () );
     }
   }
 }

@@ -1,10 +1,6 @@
-/*
- * MainWindowForm.java
- *
- * Created on May 29, 2007, 3:26 PM
- */
-
 package de.unisiegen.tpml.ui.netbeans;
+
+import java.awt.Component;
 
 import de.unisiegen.tpml.ui.AboutDialog;
 import de.unisiegen.tpml.ui.EditorPanel;
@@ -13,14 +9,12 @@ import de.unisiegen.tpml.ui.EditorPanelTypes;
 import de.unisiegen.tpml.ui.GeneralLaTex;
 import de.unisiegen.tpml.ui.MainWindow;
 import de.unisiegen.tpml.ui.PreferenceDialog;
-import java.awt.Component;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
 
 /**
  *
  * @author  Christoph Fehling
  */
+@ SuppressWarnings ( "all" )
 public class MainWindowForm extends javax.swing.JFrame {
     
     /** Creates new form MainWindowForm */

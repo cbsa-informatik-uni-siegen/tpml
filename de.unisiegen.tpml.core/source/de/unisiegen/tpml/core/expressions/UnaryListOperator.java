@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -12,16 +12,17 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public abstract class UnaryListOperator extends UnaryOperator
 {
+
   /**
    * The assign operator exception string.
    */
-  private static final String HANDLED = "list operator must be handled by the interpreter" ; //$NON-NLS-1$
+  private static final String HANDLED = "list operator must be handled by the interpreter"; //$NON-NLS-1$
 
 
   /**
    * The unused string.
    */
-  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+  private static final String UNUSED = "unused"; //$NON-NLS-1$
 
 
   /**
@@ -33,7 +34,7 @@ public abstract class UnaryListOperator extends UnaryOperator
    */
   protected UnaryListOperator ( String pText )
   {
-    super ( pText ) ;
+    super ( pText );
   }
 
 
@@ -45,12 +46,12 @@ public abstract class UnaryListOperator extends UnaryOperator
    * @throws UnsupportedOperationException on every invocation.
    * @see UnaryOperator#applyTo(Expression)
    */
-  @ SuppressWarnings ( UNUSED )
-  @ Override
-  public Expression applyTo ( @ SuppressWarnings ( UNUSED )
+  @SuppressWarnings ( UNUSED )
+  @Override
+  public Expression applyTo ( @SuppressWarnings ( UNUSED )
   Expression pExpression ) throws UnaryOperatorException
   {
-    throw new UnsupportedOperationException ( HANDLED ) ;
+    throw new UnsupportedOperationException ( HANDLED );
   }
 
 
@@ -59,13 +60,13 @@ public abstract class UnaryListOperator extends UnaryOperator
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public abstract UnaryListOperator clone ( ) ;
+  @Override
+  public abstract UnaryListOperator clone ();
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public abstract String getCaption ( ) ;
+  @Override
+  public abstract String getCaption ();
 }

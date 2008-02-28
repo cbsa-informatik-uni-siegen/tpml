@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages ;
+package de.unisiegen.tpml.core.languages;
 
 
 /**

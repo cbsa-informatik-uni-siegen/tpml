@@ -1,8 +1,9 @@
-package de.unisiegen.tpml.core.smallstep ;
+package de.unisiegen.tpml.core.smallstep;
 
 
-import javax.swing.tree.TreeNode ;
-import de.unisiegen.tpml.core.interpreters.InterpreterProofNode ;
+import javax.swing.tree.TreeNode;
+
+import de.unisiegen.tpml.core.interpreters.InterpreterProofNode;
 
 
 /**
@@ -16,6 +17,7 @@ import de.unisiegen.tpml.core.interpreters.InterpreterProofNode ;
  */
 public interface SmallStepProofNode extends InterpreterProofNode
 {
+
   //
   // Primitives
   //
@@ -24,7 +26,7 @@ public interface SmallStepProofNode extends InterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getChildAt(int)
    */
-  public SmallStepProofNode getChildAt ( int childIndex ) ;
+  public SmallStepProofNode getChildAt ( int childIndex );
 
 
   /**
@@ -32,7 +34,7 @@ public interface SmallStepProofNode extends InterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getParent()
    */
-  public SmallStepProofNode getParent ( ) ;
+  public SmallStepProofNode getParent ();
 
 
   //
@@ -43,7 +45,7 @@ public interface SmallStepProofNode extends InterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getRoot()
    */
-  public SmallStepProofNode getRoot ( ) ;
+  public SmallStepProofNode getRoot ();
 
 
   //
@@ -54,7 +56,7 @@ public interface SmallStepProofNode extends InterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getFirstChild()
    */
-  public SmallStepProofNode getFirstChild ( ) ;
+  public SmallStepProofNode getFirstChild ();
 
 
   /**
@@ -62,7 +64,7 @@ public interface SmallStepProofNode extends InterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getLastChild()
    */
-  public SmallStepProofNode getLastChild ( ) ;
+  public SmallStepProofNode getLastChild ();
 
 
   /**
@@ -70,7 +72,7 @@ public interface SmallStepProofNode extends InterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getChildAfter(javax.swing.tree.TreeNode)
    */
-  public SmallStepProofNode getChildAfter ( TreeNode aChild ) ;
+  public SmallStepProofNode getChildAfter ( TreeNode aChild );
 
 
   /**
@@ -78,7 +80,7 @@ public interface SmallStepProofNode extends InterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getChildBefore(javax.swing.tree.TreeNode)
    */
-  public SmallStepProofNode getChildBefore ( TreeNode aChild ) ;
+  public SmallStepProofNode getChildBefore ( TreeNode aChild );
 
 
   //
@@ -89,7 +91,7 @@ public interface SmallStepProofNode extends InterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getFirstLeaf()
    */
-  public SmallStepProofNode getFirstLeaf ( ) ;
+  public SmallStepProofNode getFirstLeaf ();
 
 
   /**
@@ -97,5 +99,5 @@ public interface SmallStepProofNode extends InterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getLastLeaf()
    */
-  public SmallStepProofNode getLastLeaf ( ) ;
+  public SmallStepProofNode getLastLeaf ();
 }

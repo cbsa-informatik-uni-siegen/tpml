@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages ;
+package de.unisiegen.tpml.core.languages;
 
 
 /**
@@ -11,10 +11,11 @@ package de.unisiegen.tpml.core.languages ;
  */
 public class LanguageParserException extends LanguageScannerException
 {
+
   /**
    * The unique serialization identifier of this class.
    */
-  private static final long serialVersionUID = - 5267613216858473920L ;
+  private static final long serialVersionUID = -5267613216858473920L;
 
 
   /**
@@ -27,8 +28,8 @@ public class LanguageParserException extends LanguageScannerException
    * @see LanguageScannerException#getLeft()
    * @see LanguageScannerException#getRight()
    */
-  public LanguageParserException ( String message , int left , int right )
+  public LanguageParserException ( String message, int left, int right )
   {
-    super ( left , right , message ) ;
+    super ( left, right, message );
   }
 }

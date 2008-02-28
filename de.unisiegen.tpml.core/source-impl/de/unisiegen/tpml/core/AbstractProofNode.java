@@ -1,10 +1,11 @@
-package de.unisiegen.tpml.core ;
+package de.unisiegen.tpml.core;
 
 
-import java.util.Enumeration ;
-import java.util.NoSuchElementException ;
-import java.util.Vector ;
-import javax.swing.tree.TreeNode ;
+import java.util.Enumeration;
+import java.util.NoSuchElementException;
+import java.util.Vector;
+
+import javax.swing.tree.TreeNode;
 
 
 /**
@@ -21,6 +22,7 @@ import javax.swing.tree.TreeNode ;
  */
 public abstract class AbstractProofNode implements ProofNode
 {
+
   //
   // Constants
   //
@@ -28,39 +30,40 @@ public abstract class AbstractProofNode implements ProofNode
    * Empty {@link ProofRule} array which is returned from {@link #getRules()}
    * when no steps have been added to a proof node.
    */
-  private static final ProofRule [ ] EMPTY_ARRAY = new ProofRule [ 0 ] ;
-  
+  private static final ProofRule [] EMPTY_ARRAY = new ProofRule [ 0 ];
+
+
   /**
-   * The identifier counter.
-   * Needed to give an unique id to every proof node.
+   * The identifier counter. Needed to give an unique id to every proof node.
    */
   private static int idCounter = 1;
-  
+
+
   /**
    * The unique id of this proof node
    */
   private int id;
-  
 
 
   /**
    * An enumeration that is always empty. This is used when an enumeration of a
    * leaf node's children is requested.
    */
-  @ SuppressWarnings ( "unchecked" )
-  protected static final Enumeration EMPTY_ENUMERATION = new Enumeration ( )
+  @SuppressWarnings ( "unchecked" )
+  protected static final Enumeration EMPTY_ENUMERATION = new Enumeration ()
   {
-    public boolean hasMoreElements ( )
+
+    public boolean hasMoreElements ()
     {
-      return false ;
+      return false;
     }
 
 
-    public Object nextElement ( )
+    public Object nextElement ()
     {
-      throw new NoSuchElementException ( "No more elements" ) ; //$NON-NLS-1$
+      throw new NoSuchElementException ( "No more elements" ); //$NON-NLS-1$
     }
-  } ;
+  };
 
 
   //
@@ -74,7 +77,7 @@ public abstract class AbstractProofNode implements ProofNode
    * @see #getChildAt(int)
    * @see #getChildCount()
    */
-  protected Vector < AbstractProofNode > children ;
+  protected Vector < AbstractProofNode > children;
 
 
   /**
@@ -84,7 +87,7 @@ public abstract class AbstractProofNode implements ProofNode
    * @see #getParent()
    * @see #setParent(AbstractProofNode)
    */
-  protected AbstractProofNode parent ;
+  protected AbstractProofNode parent;
 
 
   /**
@@ -94,7 +97,7 @@ public abstract class AbstractProofNode implements ProofNode
    * @see #getRules()
    * @see #setRules(ProofRule[])
    */
-  private ProofRule [ ] rules ;
+  private ProofRule [] rules;
 
 
   /**
@@ -103,7 +106,7 @@ public abstract class AbstractProofNode implements ProofNode
    * @see #getUserObject()
    * @see #setUserObject(Object)
    */
-  private transient Object userObject ;
+  private transient Object userObject;
 
 
   //
@@ -113,10 +116,10 @@ public abstract class AbstractProofNode implements ProofNode
    * Allocates a new {@link AbstractProofNode} without any children and no link
    * to a parent.
    */
-  protected AbstractProofNode ( )
+  protected AbstractProofNode ()
   {
-    this.rules = EMPTY_ARRAY ;
-    this.id = AbstractProofNode.idCounter++;
+    this.rules = EMPTY_ARRAY;
+    this.id = AbstractProofNode.idCounter++ ;
   }
 
 
@@ -128,9 +131,9 @@ public abstract class AbstractProofNode implements ProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getRules()
    */
-  public ProofRule [ ] getRules ( )
+  public ProofRule [] getRules ()
   {
-    return this.rules ;
+    return this.rules;
   }
 
 
@@ -141,9 +144,9 @@ public abstract class AbstractProofNode implements ProofNode
    * 
    * @param pRules the new proof rules for this node.
    */
-  public void setRules ( ProofRule [ ] pRules )
+  public void setRules ( ProofRule [] pRules )
   {
-    this.rules = ( pRules != null ) ? pRules : EMPTY_ARRAY ;
+    this.rules = ( pRules != null ) ? pRules : EMPTY_ARRAY;
   }
 
 
@@ -155,14 +158,14 @@ public abstract class AbstractProofNode implements ProofNode
    * @return an {@link Enumeration} of this node's children
    * @see javax.swing.tree.TreeNode#children()
    */
-  @ SuppressWarnings ( "unchecked" )
-  public Enumeration children ( )
+  @SuppressWarnings ( "unchecked" )
+  public Enumeration children ()
   {
     if ( this.children == null )
     {
-      return EMPTY_ENUMERATION ;
+      return EMPTY_ENUMERATION;
     }
-    return this.children.elements ( ) ;
+    return this.children.elements ();
   }
 
 
@@ -175,9 +178,9 @@ public abstract class AbstractProofNode implements ProofNode
   {
     if ( this.children == null )
     {
-      throw new ArrayIndexOutOfBoundsException ( "node has no children" ) ; //$NON-NLS-1$
+      throw new ArrayIndexOutOfBoundsException ( "node has no children" ); //$NON-NLS-1$
     }
-    return this.children.elementAt ( childIndex ) ;
+    return this.children.elementAt ( childIndex );
   }
 
 
@@ -187,13 +190,13 @@ public abstract class AbstractProofNode implements ProofNode
    * @return an integer giving the number of children of this node.
    * @see javax.swing.tree.TreeNode#getChildCount()
    */
-  public int getChildCount ( )
+  public int getChildCount ()
   {
     if ( this.children == null )
     {
-      return 0 ;
+      return 0;
     }
-    return this.children.size ( ) ;
+    return this.children.size ();
   }
 
 
@@ -202,9 +205,9 @@ public abstract class AbstractProofNode implements ProofNode
    * 
    * @see ProofNode#getParent()
    */
-  public AbstractProofNode getParent ( )
+  public AbstractProofNode getParent ()
   {
-    return this.parent ;
+    return this.parent;
   }
 
 
@@ -219,7 +222,7 @@ public abstract class AbstractProofNode implements ProofNode
    */
   public void setParent ( AbstractProofNode pParent )
   {
-    this.parent = pParent ;
+    this.parent = pParent;
   }
 
 
@@ -241,13 +244,13 @@ public abstract class AbstractProofNode implements ProofNode
   {
     if ( aChild == null )
     {
-      throw new IllegalArgumentException ( "argument is null" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "argument is null" ); //$NON-NLS-1$
     }
-    if ( ! isNodeChild ( aChild ) )
+    if ( !isNodeChild ( aChild ) )
     {
-      return - 1 ;
+      return -1;
     }
-    return this.children.indexOf ( aChild ) ;
+    return this.children.indexOf ( aChild );
   }
 
 
@@ -258,9 +261,9 @@ public abstract class AbstractProofNode implements ProofNode
    *         <code>false</code>.
    * @see javax.swing.tree.TreeNode#getAllowsChildren()
    */
-  public boolean getAllowsChildren ( )
+  public boolean getAllowsChildren ()
   {
-    return true ;
+    return true;
   }
 
 
@@ -272,9 +275,9 @@ public abstract class AbstractProofNode implements ProofNode
    * 
    * @see ProofNode#getUserObject()
    */
-  public Object getUserObject ( )
+  public Object getUserObject ()
   {
-    return this.userObject ;
+    return this.userObject;
   }
 
 
@@ -285,7 +288,7 @@ public abstract class AbstractProofNode implements ProofNode
    */
   public void setUserObject ( Object pUserObject )
   {
-    this.userObject = pUserObject ;
+    this.userObject = pUserObject;
   }
 
 
@@ -301,18 +304,18 @@ public abstract class AbstractProofNode implements ProofNode
   {
     if ( anotherNode == null )
     {
-      return false ;
+      return false;
     }
-    TreeNode ancestor = this ;
+    TreeNode ancestor = this;
     do
     {
       if ( ancestor == anotherNode )
       {
-        return true ;
+        return true;
       }
     }
-    while ( ( ancestor = ancestor.getParent ( ) ) != null ) ;
-    return false ;
+    while ( ( ancestor = ancestor.getParent () ) != null );
+    return false;
   }
 
 
@@ -323,8 +326,9 @@ public abstract class AbstractProofNode implements ProofNode
    */
   public boolean isNodeDescendant ( ProofNode anotherNode )
   {
-    if ( anotherNode == null ) return false ;
-    return anotherNode.isNodeAncestor ( this ) ;
+    if ( anotherNode == null )
+      return false;
+    return anotherNode.isNodeAncestor ( this );
   }
 
 
@@ -335,7 +339,7 @@ public abstract class AbstractProofNode implements ProofNode
    */
   public boolean isNodeRelated ( ProofNode aNode )
   {
-    return ( aNode != null ) && ( getRoot ( ) == aNode.getRoot ( ) ) ;
+    return ( aNode != null ) && ( getRoot () == aNode.getRoot () );
   }
 
 
@@ -344,17 +348,17 @@ public abstract class AbstractProofNode implements ProofNode
    * 
    * @see ProofNode#getRoot()
    */
-  public AbstractProofNode getRoot ( )
+  public AbstractProofNode getRoot ()
   {
-    AbstractProofNode ancestor = this ;
-    AbstractProofNode previous ;
+    AbstractProofNode ancestor = this;
+    AbstractProofNode previous;
     do
     {
-      previous = ancestor ;
-      ancestor = ancestor.getParent ( ) ;
+      previous = ancestor;
+      ancestor = ancestor.getParent ();
     }
-    while ( ancestor != null ) ;
-    return previous ;
+    while ( ancestor != null );
+    return previous;
   }
 
 
@@ -363,9 +367,9 @@ public abstract class AbstractProofNode implements ProofNode
    * 
    * @see ProofNode#isRoot()
    */
-  public boolean isRoot ( )
+  public boolean isRoot ()
   {
-    return ( getParent ( ) == null ) ;
+    return ( getParent () == null );
   }
 
 
@@ -375,9 +379,9 @@ public abstract class AbstractProofNode implements ProofNode
    * @see PostorderEnumeration
    * @see ProofNode#postorderEnumeration()
    */
-  public Enumeration < ProofNode > postorderEnumeration ( )
+  public Enumeration < ProofNode > postorderEnumeration ()
   {
-    return new PostorderEnumeration ( this ) ;
+    return new PostorderEnumeration ( this );
   }
 
 
@@ -391,23 +395,23 @@ public abstract class AbstractProofNode implements ProofNode
    */
   public boolean isNodeChild ( TreeNode aNode )
   {
-    boolean retval ;
+    boolean retval;
     if ( aNode == null )
     {
-      retval = false ;
+      retval = false;
     }
     else
     {
-      if ( getChildCount ( ) == 0 )
+      if ( getChildCount () == 0 )
       {
-        retval = false ;
+        retval = false;
       }
       else
       {
-        retval = ( aNode.getParent ( ) == this ) ;
+        retval = ( aNode.getParent () == this );
       }
     }
-    return retval ;
+    return retval;
   }
 
 
@@ -416,13 +420,13 @@ public abstract class AbstractProofNode implements ProofNode
    * 
    * @see ProofNode#getFirstChild()
    */
-  public AbstractProofNode getFirstChild ( )
+  public AbstractProofNode getFirstChild ()
   {
-    if ( getChildCount ( ) == 0 )
+    if ( getChildCount () == 0 )
     {
-      throw new NoSuchElementException ( "node has no children" ) ; //$NON-NLS-1$
+      throw new NoSuchElementException ( "node has no children" ); //$NON-NLS-1$
     }
-    return getChildAt ( 0 ) ;
+    return getChildAt ( 0 );
   }
 
 
@@ -431,13 +435,13 @@ public abstract class AbstractProofNode implements ProofNode
    * 
    * @see ProofNode#getLastChild()
    */
-  public AbstractProofNode getLastChild ( )
+  public AbstractProofNode getLastChild ()
   {
-    if ( getChildCount ( ) == 0 )
+    if ( getChildCount () == 0 )
     {
-      throw new NoSuchElementException ( "node has no children" ) ; //$NON-NLS-1$
+      throw new NoSuchElementException ( "node has no children" ); //$NON-NLS-1$
     }
-    return getChildAt ( getChildCount ( ) - 1 ) ;
+    return getChildAt ( getChildCount () - 1 );
   }
 
 
@@ -450,18 +454,18 @@ public abstract class AbstractProofNode implements ProofNode
   {
     if ( aChild == null )
     {
-      throw new IllegalArgumentException ( "argument is null" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "argument is null" ); //$NON-NLS-1$
     }
-    int index = getIndex ( aChild ) ;
-    if ( index == - 1 )
+    int index = getIndex ( aChild );
+    if ( index == -1 )
     {
-      throw new IllegalArgumentException ( "node is not a child" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "node is not a child" ); //$NON-NLS-1$
     }
-    if ( index < getChildCount ( ) - 1 )
+    if ( index < getChildCount () - 1 )
     {
-      return getChildAt ( index + 1 ) ;
+      return getChildAt ( index + 1 );
     }
-    return null ;
+    return null;
   }
 
 
@@ -474,18 +478,18 @@ public abstract class AbstractProofNode implements ProofNode
   {
     if ( aChild == null )
     {
-      throw new IllegalArgumentException ( "argument is null" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "argument is null" ); //$NON-NLS-1$
     }
-    int index = getIndex ( aChild ) ;
-    if ( index == - 1 )
+    int index = getIndex ( aChild );
+    if ( index == -1 )
     {
-      throw new IllegalArgumentException ( "argument is not a child" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "argument is not a child" ); //$NON-NLS-1$
     }
     if ( index > 0 )
     {
-      return getChildAt ( index - 1 ) ;
+      return getChildAt ( index - 1 );
     }
-    return null ;
+    return null;
   }
 
 
@@ -502,9 +506,9 @@ public abstract class AbstractProofNode implements ProofNode
    * @see #getAllowsChildren()
    * @see javax.swing.tree.TreeNode#isLeaf()
    */
-  public boolean isLeaf ( )
+  public boolean isLeaf ()
   {
-    return ( getChildCount ( ) == 0 ) ;
+    return ( getChildCount () == 0 );
   }
 
 
@@ -513,14 +517,14 @@ public abstract class AbstractProofNode implements ProofNode
    * 
    * @see ProofNode#getFirstLeaf()
    */
-  public AbstractProofNode getFirstLeaf ( )
+  public AbstractProofNode getFirstLeaf ()
   {
-    AbstractProofNode node = this ;
-    while ( ! node.isLeaf ( ) )
+    AbstractProofNode node = this;
+    while ( !node.isLeaf () )
     {
-      node = node.getFirstChild ( ) ;
+      node = node.getFirstChild ();
     }
-    return node ;
+    return node;
   }
 
 
@@ -529,14 +533,14 @@ public abstract class AbstractProofNode implements ProofNode
    * 
    * @see ProofNode#getLastLeaf()
    */
-  public AbstractProofNode getLastLeaf ( )
+  public AbstractProofNode getLastLeaf ()
   {
-    AbstractProofNode node = this ;
-    while ( ! node.isLeaf ( ) )
+    AbstractProofNode node = this;
+    while ( !node.isLeaf () )
     {
-      node = node.getLastChild ( ) ;
+      node = node.getLastChild ();
     }
-    return node ;
+    return node;
   }
 
 
@@ -554,13 +558,13 @@ public abstract class AbstractProofNode implements ProofNode
    */
   public void add ( AbstractProofNode newChild )
   {
-    if ( newChild != null && newChild.getParent ( ) == this )
+    if ( newChild != null && newChild.getParent () == this )
     {
-      insert ( newChild , getChildCount ( ) - 1 ) ;
+      insert ( newChild, getChildCount () - 1 );
     }
     else
     {
-      insert ( newChild , getChildCount ( ) ) ;
+      insert ( newChild, getChildCount () );
     }
   }
 
@@ -581,31 +585,31 @@ public abstract class AbstractProofNode implements ProofNode
    *           an ancestor of this node.
    * @see #isNodeDescendant(ProofNode)
    */
-  public void insert ( AbstractProofNode newChild , int childIndex )
+  public void insert ( AbstractProofNode newChild, int childIndex )
   {
     if ( newChild == null )
     {
-      throw new IllegalArgumentException ( "new child is null" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "new child is null" ); //$NON-NLS-1$
     }
     else if ( isNodeAncestor ( newChild ) )
     {
-      throw new IllegalArgumentException ( "new child is an ancestor" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "new child is an ancestor" ); //$NON-NLS-1$
     }
     // unlink from the old parent
-    AbstractProofNode oldParent = newChild.getParent ( ) ;
+    AbstractProofNode oldParent = newChild.getParent ();
     if ( oldParent != null )
     {
-      oldParent.remove ( newChild ) ;
+      oldParent.remove ( newChild );
     }
     // link to the new parent
-    newChild.setParent ( this ) ;
+    newChild.setParent ( this );
     // allocate the list of children on demand
     if ( this.children == null )
     {
-      this.children = new Vector < AbstractProofNode > ( ) ;
+      this.children = new Vector < AbstractProofNode > ();
     }
     // add to the list of children
-    this.children.insertElementAt ( newChild , childIndex ) ;
+    this.children.insertElementAt ( newChild, childIndex );
   }
 
 
@@ -621,9 +625,9 @@ public abstract class AbstractProofNode implements ProofNode
    */
   public void remove ( int childIndex )
   {
-    AbstractProofNode child = getChildAt ( childIndex ) ;
-    this.children.removeElementAt ( childIndex ) ;
-    child.setParent ( null ) ;
+    AbstractProofNode child = getChildAt ( childIndex );
+    this.children.removeElementAt ( childIndex );
+    child.setParent ( null );
   }
 
 
@@ -639,13 +643,13 @@ public abstract class AbstractProofNode implements ProofNode
   {
     if ( aChild == null )
     {
-      throw new IllegalArgumentException ( "argument is null" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "argument is null" ); //$NON-NLS-1$
     }
-    if ( ! isNodeChild ( aChild ) )
+    if ( !isNodeChild ( aChild ) )
     {
-      throw new IllegalArgumentException ( "argument is not a child" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "argument is not a child" ); //$NON-NLS-1$
     }
-    remove ( getIndex ( aChild ) ) ;
+    remove ( getIndex ( aChild ) );
   }
 
 
@@ -654,11 +658,11 @@ public abstract class AbstractProofNode implements ProofNode
    * <code>null</code>. If this node has no children, this method does
    * nothing.
    */
-  public void removeAllChildren ( )
+  public void removeAllChildren ()
   {
-    for ( int i = getChildCount ( ) - 1 ; i >= 0 ; -- i )
+    for ( int i = getChildCount () - 1 ; i >= 0 ; --i )
     {
-      remove ( i ) ;
+      remove ( i );
     }
   }
 
@@ -668,12 +672,12 @@ public abstract class AbstractProofNode implements ProofNode
    * <code>null</code> parent. Does nothing if this node is the root of its
    * tree.
    */
-  public void removeFromParent ( )
+  public void removeFromParent ()
   {
-    AbstractProofNode tmpParent = getParent ( ) ;
+    AbstractProofNode tmpParent = getParent ();
     if ( tmpParent != null )
     {
-      tmpParent.remove ( this ) ;
+      tmpParent.remove ( this );
     }
   }
 
@@ -691,24 +695,25 @@ public abstract class AbstractProofNode implements ProofNode
   private static final class PostorderEnumeration implements
       Enumeration < ProofNode >
   {
+
     /**
      * The root.
      */
-    protected AbstractProofNode root ;
+    protected AbstractProofNode root;
 
 
     /**
      * The children.
      */
-    @ SuppressWarnings ( "unchecked" )
-    protected Enumeration children ;
+    @SuppressWarnings ( "unchecked" )
+    protected Enumeration children;
 
 
     /**
      * the sub tree.
      */
-    @ SuppressWarnings ( "unchecked" )
-    protected Enumeration subtree ;
+    @SuppressWarnings ( "unchecked" )
+    protected Enumeration subtree;
 
 
     /**
@@ -718,10 +723,10 @@ public abstract class AbstractProofNode implements ProofNode
      */
     PostorderEnumeration ( AbstractProofNode pRoot )
     {
-      super ( ) ;
-      this.root = pRoot ;
-      this.children = pRoot.children ( ) ;
-      this.subtree = EMPTY_ENUMERATION ;
+      super ();
+      this.root = pRoot;
+      this.children = pRoot.children ();
+      this.subtree = EMPTY_ENUMERATION;
     }
 
 
@@ -731,9 +736,9 @@ public abstract class AbstractProofNode implements ProofNode
      * @return True, if the enumeration has more elements.
      * @see java.util.Enumeration#hasMoreElements()
      */
-    public boolean hasMoreElements ( )
+    public boolean hasMoreElements ()
     {
-      return ( this.root != null ) ;
+      return ( this.root != null );
     }
 
 
@@ -743,35 +748,36 @@ public abstract class AbstractProofNode implements ProofNode
      * @return The next AbstractProofNode.
      * @see java.util.Enumeration#nextElement()
      */
-    public AbstractProofNode nextElement ( )
+    public AbstractProofNode nextElement ()
     {
-      AbstractProofNode node ;
-      if ( this.subtree.hasMoreElements ( ) )
+      AbstractProofNode node;
+      if ( this.subtree.hasMoreElements () )
       {
-        node = ( AbstractProofNode ) this.subtree.nextElement ( ) ;
+        node = ( AbstractProofNode ) this.subtree.nextElement ();
       }
-      else if ( this.children.hasMoreElements ( ) )
+      else if ( this.children.hasMoreElements () )
       {
         this.subtree = new PostorderEnumeration (
-            ( AbstractProofNode ) this.children.nextElement ( ) ) ;
-        node = ( AbstractProofNode ) this.subtree.nextElement ( ) ;
+            ( AbstractProofNode ) this.children.nextElement () );
+        node = ( AbstractProofNode ) this.subtree.nextElement ();
       }
       else
       {
-        node = this.root ;
-        this.root = null ;
+        node = this.root;
+        this.root = null;
       }
-      return node ;
+      return node;
     }
   }
 
-/**
- * 
- * Get the unique id of this proof node
- *
- * @return int unique id
- */
-public int getId ( ) {
-	return this.id;
-}
+
+  /**
+   * Get the unique id of this proof node
+   * 
+   * @return int unique id
+   */
+  public int getId ()
+  {
+    return this.id;
+  }
 }

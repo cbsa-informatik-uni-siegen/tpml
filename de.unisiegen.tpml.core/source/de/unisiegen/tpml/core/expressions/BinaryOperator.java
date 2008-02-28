@@ -1,12 +1,12 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
 
 /**
@@ -20,17 +20,18 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  */
 public abstract class BinaryOperator extends Constant
 {
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_BINARY_OPERATOR , 1 ,
-        "\\textbf{\\color{" + LATEX_COLOR_CONSTANT + "}{$#1$}}" , "op" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_BINARY_OPERATOR, 1,
+        "\\textbf{\\color{" + LATEX_COLOR_CONSTANT + "}{$#1$}}", "op" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    return commands;
   }
 
 
@@ -41,7 +42,7 @@ public abstract class BinaryOperator extends Constant
    * @see #getPrettyPriority()
    * @see InfixOperation
    */
-  private int prettyPriority ;
+  private int prettyPriority;
 
 
   /**
@@ -53,10 +54,10 @@ public abstract class BinaryOperator extends Constant
    * @param pPrettyPriority the pretty print priority for infix operations.
    * @throws NullPointerException if <code>text</code> is <code>null</code>.
    */
-  protected BinaryOperator ( String pText , int pPrettyPriority )
+  protected BinaryOperator ( String pText, int pPrettyPriority )
   {
-    super ( pText ) ;
-    this.prettyPriority = pPrettyPriority ;
+    super ( pText );
+    this.prettyPriority = pPrettyPriority;
   }
 
 
@@ -74,8 +75,8 @@ public abstract class BinaryOperator extends Constant
    * @throws NullPointerException if <code>e1</code> or <code>e2</code> is
    *           <code>null</code>.
    */
-  public abstract Expression applyTo ( Expression pExpression1 ,
-      Expression pExpression2 ) throws BinaryOperatorException ;
+  public abstract Expression applyTo ( Expression pExpression1,
+      Expression pExpression2 ) throws BinaryOperatorException;
 
 
   /**
@@ -83,15 +84,15 @@ public abstract class BinaryOperator extends Constant
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public abstract BinaryOperator clone ( ) ;
+  @Override
+  public abstract BinaryOperator clone ();
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public abstract String getCaption ( ) ;
+  @Override
+  public abstract String getCaption ();
 
 
   /**
@@ -99,12 +100,12 @@ public abstract class BinaryOperator extends Constant
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -114,14 +115,14 @@ public abstract class BinaryOperator extends Constant
    * @return The prefix of this {@link Expression}.
    * @see #prefix
    */
-  @ Override
-  public String getPrefix ( )
+  @Override
+  public String getPrefix ()
   {
     if ( this.prefix == null )
     {
-      this.prefix = PREFIX_BINARYOPERATOR ;
+      this.prefix = PREFIX_BINARYOPERATOR;
     }
-    return this.prefix ;
+    return this.prefix;
   }
 
 
@@ -131,9 +132,9 @@ public abstract class BinaryOperator extends Constant
    * 
    * @return the base pretty print priority for this binary operator.
    */
-  public int getPrettyPriority ( )
+  public int getPrettyPriority ()
   {
-    return this.prettyPriority ;
+    return this.prettyPriority;
   }
 
 
@@ -142,25 +143,25 @@ public abstract class BinaryOperator extends Constant
    * 
    * @see Constant#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_CONSTANT , LATEX_BINARY_OPERATOR , pIndent , this
-            .toPrettyString ( ).toString ( ) ) ;
-    builder.addText ( "{" ) ; //$NON-NLS-1$
+        PRIO_CONSTANT, LATEX_BINARY_OPERATOR, pIndent, this.toPrettyString ()
+            .toString () );
+    builder.addText ( "{" ); //$NON-NLS-1$
     if ( ! ( this.parent instanceof InfixOperation ) )
     {
-      builder.addText ( LATEX_LPAREN ) ;
+      builder.addText ( LATEX_LPAREN );
     }
-    builder.addText ( this.text.replaceAll ( "_" , "\\\\_" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    builder.addText ( this.text.replaceAll ( "_", "\\\\_" ) ); //$NON-NLS-1$//$NON-NLS-2$
     if ( ! ( this.parent instanceof InfixOperation ) )
     {
-      builder.addText ( LATEX_RPAREN ) ;
+      builder.addText ( LATEX_RPAREN );
     }
-    builder.addText ( "}" ) ; //$NON-NLS-1$
-    return builder ;
+    builder.addText ( "}" ); //$NON-NLS-1$
+    return builder;
   }
 
 
@@ -169,24 +170,24 @@ public abstract class BinaryOperator extends Constant
    * 
    * @see Constant#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_CONSTANT ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_CONSTANT );
       if ( ! ( this.parent instanceof InfixOperation ) )
       {
-        this.prettyStringBuilder.addText ( PRETTY_LPAREN ) ;
+        this.prettyStringBuilder.addText ( PRETTY_LPAREN );
       }
-      this.prettyStringBuilder.addConstant ( this.text ) ;
+      this.prettyStringBuilder.addConstant ( this.text );
       if ( ! ( this.parent instanceof InfixOperation ) )
       {
-        this.prettyStringBuilder.addText ( PRETTY_RPAREN ) ;
+        this.prettyStringBuilder.addText ( PRETTY_RPAREN );
       }
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

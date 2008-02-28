@@ -1,8 +1,8 @@
-package de.unisiegen.tpml.core.prettyprinter ;
+package de.unisiegen.tpml.core.prettyprinter;
 
 
-import java.util.List ;
-import java.util.Map ;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -17,6 +17,7 @@ import java.util.Map ;
  */
 abstract class AbstractItem
 {
+
   //
   // Primitives
   //
@@ -26,9 +27,9 @@ abstract class AbstractItem
    * @param breakOffsets
    * @param styles
    */
-  abstract void determineString ( StringBuilder buffer ,
-      Map < PrettyPrintable , PrettyAnnotation > annotations ,
-      List < Integer > breakOffsets , PrettyStyle [ ] styles ) ;
+  abstract void determineString ( StringBuilder buffer,
+      Map < PrettyPrintable, PrettyAnnotation > annotations,
+      List < Integer > breakOffsets, PrettyStyle [] styles );
 
 
   /**
@@ -38,5 +39,5 @@ abstract class AbstractItem
    * @return the required string length.
    * @see #determineString(StringBuilder, Map, List, PrettyStyle[])
    */
-  abstract int determineStringLength ( ) ;
+  abstract int determineStringLength ();
 }

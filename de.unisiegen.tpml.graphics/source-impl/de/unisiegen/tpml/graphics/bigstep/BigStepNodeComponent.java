@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.bigstep ;
+package de.unisiegen.tpml.graphics.bigstep;
 
 
 import java.awt.Color;
@@ -85,23 +85,24 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 public class BigStepNodeComponent extends JComponent implements
     TreeNodeComponent
 {
+
   /**
    * 
    */
-  private static final long serialVersionUID = - 2050381804392542081L ;
+  private static final long serialVersionUID = -2050381804392542081L;
 
 
   /**
    * The {@link BigStepProofModel} that will get used to apply the actions on.
    */
-  private BigStepProofModel proofModel ;
+  private BigStepProofModel proofModel;
 
 
   /**
    * The origin {@link BigStepProofNode}. Contains the information this node
    * gives a graphics representation.
    */
-  private BigStepProofNode proofNode ;
+  private BigStepProofNode proofNode;
 
 
   /**
@@ -109,14 +110,15 @@ public class BigStepNodeComponent extends JComponent implements
    * {@link #placeElements(int)} is called <i>dimension</i> is filled with
    * proppert values.
    */
-  private Dimension dimension ;
+  private Dimension dimension;
 
 
   /**
    * Amount of pixels that will be left free between the elements of the node.
    */
-  private int spacing ;
-  
+  private int spacing;
+
+
   /**
    * Amount of pixels that will be left free between the elements of the node.
    */
@@ -126,64 +128,64 @@ public class BigStepNodeComponent extends JComponent implements
   /**
    * Label that will contain the index at the front.
    */
-  private JLabel indexLabel ;
+  private JLabel indexLabel;
 
 
   /**
    * Component containing the expression and the store.
    */
-  private CompoundExpression < Location , Expression > compoundExpression ;
+  private CompoundExpression < Location, Expression > compoundExpression;
 
 
   /**
    * Label containing the down-directed double-arrow separating the Expression
    * and the Resul-Expression.
    */
-  private JLabel downArrowLabel ;
+  private JLabel downArrowLabel;
 
 
   /**
    * Component containing the result-expression and the result-store.
    */
-  private CompoundExpression < Location , Expression > resultCompoundExpression ;
+  private CompoundExpression < Location, Expression > resultCompoundExpression;
 
 
   /**
    * The Button with its DropDownMenu used to perform the userinteraction.
    */
-  private MenuButton ruleButton ;
+  private MenuButton ruleButton;
 
 
   /**
    * Label that will be used to show the evaluated rule.
    */
-  private JLabel ruleLabel ;
+  private JLabel ruleLabel;
 
 
   /**
    * The "Translate to core syntax" item in the context menu.
    */
-  private MenuTranslateItem menuTranslateItem ;
+  private MenuTranslateItem menuTranslateItem;
 
 
   /**
    * The translator will be used to determine whether the expression contains
    * syntactical sugar.
    */
-  private LanguageTranslator translator ;
+  private LanguageTranslator translator;
 
 
   /**
    * containing the rules it may contain submenus if to many (set in TOMANY)
    * rules are in the popupmenu
    */
-  private JPopupMenu menu ;
+  private JPopupMenu menu;
 
 
   /**
    * Manages the RulesMenu
    */
-  private RulesMenu rm = new RulesMenu ( ) ;
+  private RulesMenu rm = new RulesMenu ();
 
 
   /**
@@ -191,101 +193,104 @@ public class BigStepNodeComponent extends JComponent implements
    * @param model The model
    * @param pTranslator The translator from the model
    */
-  public BigStepNodeComponent ( BigStepProofNode node ,
-      BigStepProofModel model , LanguageTranslator pTranslator )
+  public BigStepNodeComponent ( BigStepProofNode node, BigStepProofModel model,
+      LanguageTranslator pTranslator )
   {
-    super ( ) ;
-    this.proofNode = node ;
-    this.proofModel = model ;
-    this.translator = pTranslator ;
-    this.dimension = new Dimension ( 0 , 0 ) ;
-    this.spacing = 10 ;
+    super ();
+    this.proofNode = node;
+    this.proofModel = model;
+    this.translator = pTranslator;
+    this.dimension = new Dimension ( 0, 0 );
+    this.spacing = 10;
     /*
      * Create and add the components needed to render this node
      */
-    this.indexLabel = new JLabel ( ) ;
-    this.indexLabel.addMouseListener ( new OutlineMouseListener ( this ) ) ;
-    add ( this.indexLabel ) ;
-    this.compoundExpression = new CompoundExpression < Location , Expression > ( ) ;
+    this.indexLabel = new JLabel ();
+    this.indexLabel.addMouseListener ( new OutlineMouseListener ( this ) );
+    add ( this.indexLabel );
+    this.compoundExpression = new CompoundExpression < Location, Expression > ();
     this.compoundExpression
-        .addMouseListener ( new OutlineMouseListener ( this ) ) ;
-    add ( this.compoundExpression ) ;
-    this.downArrowLabel = new JLabel ( ) ;
-    add ( this.downArrowLabel ) ;
-    this.downArrowLabel.setText ( " \u21d3 " ) ; //$NON-NLS-1$
-    this.resultCompoundExpression = new CompoundExpression < Location , Expression > ( ) ;
+        .addMouseListener ( new OutlineMouseListener ( this ) );
+    add ( this.compoundExpression );
+    this.downArrowLabel = new JLabel ();
+    add ( this.downArrowLabel );
+    this.downArrowLabel.setText ( " \u21d3 " ); //$NON-NLS-1$
+    this.resultCompoundExpression = new CompoundExpression < Location, Expression > ();
     this.resultCompoundExpression.addMouseListener ( new OutlineMouseListener (
-        this ) ) ;
-    add ( this.resultCompoundExpression ) ;
-    this.resultCompoundExpression.setAlternativeColor ( Color.LIGHT_GRAY ) ;
-    this.ruleButton = new MenuButton ( ) ;
-    add ( this.ruleButton ) ;
-    this.ruleButton.setVisible ( true ) ;
-    this.ruleLabel = new JLabel ( ) ;
-    add ( this.ruleLabel ) ;
-    this.ruleLabel.setVisible ( false ) ;
+        this ) );
+    add ( this.resultCompoundExpression );
+    this.resultCompoundExpression.setAlternativeColor ( Color.LIGHT_GRAY );
+    this.ruleButton = new MenuButton ();
+    add ( this.ruleButton );
+    this.ruleButton.setVisible ( true );
+    this.ruleLabel = new JLabel ();
+    add ( this.ruleLabel );
+    this.ruleLabel.setVisible ( false );
     /*
      * Create the PopupMenu for the menu button
      */
     // Fill the menu with menuitems
-    ProofRule [ ] rules = this.proofModel.getRules ( ) ;
-    Language lang = this.proofModel.getLanguage ( ) ;
-    this.menu = new JPopupMenu ( ) ;
-    
-    this.menu = this.rm.getMenu ( rules , rules , lang , this , "bigstep" , false ) ;
+    ProofRule [] rules = this.proofModel.getRules ();
+    Language lang = this.proofModel.getLanguage ();
+    this.menu = new JPopupMenu ();
 
-    this.menu.addSeparator ( ) ;
-    
-    this.menu.add ( this.menuTranslateItem = new MenuTranslateItem ( ) ) ;
-    this.ruleButton.setMenu ( this.menu ) ;
+    this.menu = this.rm.getMenu ( rules, rules, lang, this, "bigstep", false );
+
+    this.menu.addSeparator ();
+
+    this.menu.add ( this.menuTranslateItem = new MenuTranslateItem () );
+    this.ruleButton.setMenu ( this.menu );
     /*
      * Connect the handling of the ruleButton
      */
-    this.ruleButton.addMenuButtonListener ( new MenuButtonListener ( )
+    this.ruleButton.addMenuButtonListener ( new MenuButtonListener ()
     {
+
       public void menuClosed ( MenuButton button )
       {
-      	//empty block
+        // empty block
       }
 
 
-      public void menuItemActivated ( MenuButton button , final JMenuItem source )
+      public void menuItemActivated ( MenuButton button, final JMenuItem source )
       {
         // setup a wait cursor for the toplevel ancestor
-        final Container toplevel = getTopLevelAncestor ( ) ;
-        final Cursor cursor = toplevel.getCursor ( ) ;
-        toplevel.setCursor ( new Cursor ( Cursor.WAIT_CURSOR ) ) ;
+        final Container toplevel = getTopLevelAncestor ();
+        final Cursor cursor = toplevel.getCursor ();
+        toplevel.setCursor ( new Cursor ( Cursor.WAIT_CURSOR ) );
         // avoid blocking the popup menu
-        SwingUtilities.invokeLater ( new Runnable ( )
+        SwingUtilities.invokeLater ( new Runnable ()
         {
-          public void run ( )
+
+          public void run ()
           {
             // handle the menu action
-            BigStepNodeComponent.this.handleMenuActivated ( source ) ;
+            BigStepNodeComponent.this.handleMenuActivated ( source );
             // wait for the repaint before resetting the cursor
-            SwingUtilities.invokeLater ( new Runnable ( )
+            SwingUtilities.invokeLater ( new Runnable ()
             {
-              public void run ( )
+
+              public void run ()
               {
                 // reset the cursor
-                toplevel.setCursor ( cursor ) ;
+                toplevel.setCursor ( cursor );
               }
-            } ) ;
+            } );
           }
-        } ) ;
+        } );
       }
-    } ) ;
-    changeNode ( ) ;
+    } );
+    changeNode ();
   }
 
 
   /**
    * Causes the expression and the resultexpression to recalculate their layout.
    */
-  public void reset ( )
+  public void reset ()
   {
-    this.compoundExpression.reset ( ) ;
-    this.resultCompoundExpression.reset ( ) ;
+    this.compoundExpression.reset ();
+    this.resultCompoundExpression.reset ();
   }
 
 
@@ -296,7 +301,7 @@ public class BigStepNodeComponent extends JComponent implements
    */
   public void addBigStepNodeListener ( BigStepNodeListener listener )
   {
-    this.listenerList.add ( BigStepNodeListener.class , listener ) ;
+    this.listenerList.add ( BigStepNodeListener.class, listener );
   }
 
 
@@ -307,7 +312,7 @@ public class BigStepNodeComponent extends JComponent implements
    */
   public void removeBigStepNodeListener ( BigStepNodeListener listener )
   {
-    this.listenerList.remove ( BigStepNodeListener.class , listener ) ;
+    this.listenerList.remove ( BigStepNodeListener.class, listener );
   }
 
 
@@ -315,30 +320,30 @@ public class BigStepNodeComponent extends JComponent implements
    * Calls the {@link BigStepNodeListener#nodeChanged(BigStepNodeComponent)} of
    * all listeners.
    */
-  private void fireNodeChanged ( )
+  private void fireNodeChanged ()
   {
-    Object [ ] listeners = this.listenerList.getListenerList ( ) ;
+    Object [] listeners = this.listenerList.getListenerList ();
     for ( int i = 0 ; i < listeners.length ; i += 2 )
     {
       if ( listeners [ i ] != BigStepNodeListener.class )
       {
-        continue ;
+        continue;
       }
-      ( ( BigStepNodeListener ) listeners [ i + 1 ] ).nodeChanged ( this ) ;
+      ( ( BigStepNodeListener ) listeners [ i + 1 ] ).nodeChanged ( this );
     }
   }
 
 
   private void fireRequestJumpToNode ( ProofNode node )
   {
-    Object [ ] listeners = this.listenerList.getListenerList ( ) ;
+    Object [] listeners = this.listenerList.getListenerList ();
     for ( int i = 0 ; i < listeners.length ; i += 2 )
     {
       if ( listeners [ i ] != BigStepNodeListener.class )
       {
-        continue ;
+        continue;
       }
-      ( ( BigStepNodeListener ) listeners [ i + 1 ] ).requestJumpToNode ( node ) ;
+      ( ( BigStepNodeListener ) listeners [ i + 1 ] ).requestJumpToNode ( node );
     }
   }
 
@@ -363,99 +368,101 @@ public class BigStepNodeComponent extends JComponent implements
   {
     if ( item instanceof MenuRuleItem )
     {
-      MenuRuleItem ruleItem = ( MenuRuleItem ) item ;
-      ProofRule rule = ruleItem.getRule ( ) ;
+      MenuRuleItem ruleItem = ( MenuRuleItem ) item;
+      ProofRule rule = ruleItem.getRule ();
       try
       {
-        this.proofModel.prove ( rule , this.proofNode ) ;
-        this.ruleButton.setToolTipText ( null ) ;
+        this.proofModel.prove ( rule, this.proofNode );
+        this.ruleButton.setToolTipText ( null );
       }
       catch ( Throwable e )
       {
         // revert the menu
-        this.rm.revertMenu ( ) ;
+        this.rm.revertMenu ();
         // when the node could not be prooven with the selected
         // rule the menu button gets labeled with the given rule
         // and will be displayed in red
-        this.ruleButton.setText ( "(" + rule.getName ( ) + ")" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        this.ruleButton.setTextColor ( Color.RED ) ;
+        this.ruleButton.setText ( "(" + rule.getName () + ")" ); //$NON-NLS-1$ //$NON-NLS-2$
+        this.ruleButton.setTextColor ( Color.RED );
         // determine the error message for the tooltip
-        this.ruleButton.setToolTipText ( e.getMessage ( ) ) ;
+        this.ruleButton.setToolTipText ( e.getMessage () );
       }
     }
     else if ( item instanceof MenuTranslateItem )
     {
-      int answer = 1 ;
-      if ( this.proofModel.containsSyntacticSugar ( this.proofNode , false ) )
+      int answer = 1;
+      if ( this.proofModel.containsSyntacticSugar ( this.proofNode, false ) )
       {
-        String [ ] answers =
+        String [] answers =
         {
-            Messages.getString ( "NodeComponent.0" ) , Messages.getString ( "NodeComponent.1" ) , Messages.getString ( "NodeComponent.2" ) } ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            Messages.getString ( "NodeComponent.0" ), Messages.getString ( "NodeComponent.1" ), Messages.getString ( "NodeComponent.2" ) }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         answer = JOptionPane.showOptionDialog (
-            getTopLevelAncestor ( ) ,
-            Messages.getString ( "NodeComponent.3" ) , //$NON-NLS-1$
-            Messages.getString ( "NodeComponent.4" ) , //$NON-NLS-1$
-            JOptionPane.YES_NO_CANCEL_OPTION , JOptionPane.QUESTION_MESSAGE ,
-            null , answers , answers [ 0 ] ) ;
+            getTopLevelAncestor (),
+            Messages.getString ( "NodeComponent.3" ), //$NON-NLS-1$
+            Messages.getString ( "NodeComponent.4" ), //$NON-NLS-1$
+            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
+            null, answers, answers [ 0 ] );
       }
       switch ( answer )
       {
         case 0 :
-          this.proofModel.translateToCoreSyntax ( this.proofNode , false ) ;
-          break ;
+          this.proofModel.translateToCoreSyntax ( this.proofNode, false );
+          break;
         case 1 :
-          this.proofModel.translateToCoreSyntax ( this.proofNode , true ) ;
-          break ;
+          this.proofModel.translateToCoreSyntax ( this.proofNode, true );
+          break;
         case 2 :
-          break ;
+          break;
       }
-      fireNodeChanged ( ) ;
+      fireNodeChanged ();
     }
     else if ( item instanceof MenuGuessItem )
     {
       try
       {
-        this.proofModel.guess ( this.proofNode ) ;
+        this.proofModel.guess ( this.proofNode );
       }
       catch ( final ProofGuessException e )
       {
-        fireRequestJumpToNode ( e.getNode ( ) ) ;
-        SwingUtilities.invokeLater ( new Runnable ( )
+        fireRequestJumpToNode ( e.getNode () );
+        SwingUtilities.invokeLater ( new Runnable ()
         {
-          public void run ( )
+
+          public void run ()
           {
             JOptionPane
                 .showMessageDialog (
-                    getTopLevelAncestor ( ) ,
+                    getTopLevelAncestor (),
                     MessageFormat.format ( Messages
-                        .getString ( "NodeComponent.5" ) , e.getMessage ( ) ) , Messages.getString ( "NodeComponent.6" ) , JOptionPane.ERROR_MESSAGE ) ; //$NON-NLS-1$ //$NON-NLS-2$
+                        .getString ( "NodeComponent.5" ), e.getMessage () ), Messages.getString ( "NodeComponent.6" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$ //$NON-NLS-2$
           }
-        } ) ;
+        } );
       }
     }
     else if ( item instanceof MenuGuessTreeItem )
     {
       try
       {
-        this.proofModel.complete ( this.proofNode ) ;
+        this.proofModel.complete ( this.proofNode );
       }
       catch ( final ProofGuessException e )
       {
-        fireRequestJumpToNode ( e.getNode ( ) ) ;
-        SwingUtilities.invokeLater ( new Runnable ( )
+        fireRequestJumpToNode ( e.getNode () );
+        SwingUtilities.invokeLater ( new Runnable ()
         {
-          public void run ( )
+
+          public void run ()
           {
             JOptionPane
                 .showMessageDialog (
-                    getTopLevelAncestor ( ) ,
+                    getTopLevelAncestor (),
                     MessageFormat.format ( Messages
-                        .getString ( "NodeComponent.7" ) , e.getMessage ( ) ) , Messages.getString ( "NodeComponent.8" ) , JOptionPane.ERROR_MESSAGE ) ; //$NON-NLS-1$ //$NON-NLS-2$
+                        .getString ( "NodeComponent.7" ), e.getMessage () ), Messages.getString ( "NodeComponent.8" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$ //$NON-NLS-2$
           }
-        } ) ;
+        } );
       }
     }
-    fireNodeChanged ( ) ;
+    fireNodeChanged ();
   }
 
 
@@ -466,7 +473,7 @@ public class BigStepNodeComponent extends JComponent implements
    */
   public void setIndex ( int index )
   {
-    this.indexLabel.setText ( "(" + index + ")" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    this.indexLabel.setText ( "(" + index + ")" ); //$NON-NLS-1$ //$NON-NLS-2$
   }
 
 
@@ -475,205 +482,226 @@ public class BigStepNodeComponent extends JComponent implements
    * Resets the expression and the environment (if there is one). That causes
    * the PrettyStringRenderer to recheck the breakoints.
    */
-  public void changeNode ( )
+  public void changeNode ()
   {
-    this.compoundExpression.setExpression ( this.proofNode.getExpression ( ) ) ;
+    this.compoundExpression.setExpression ( this.proofNode.getExpression () );
     // only if memory is enabled set the store because the
     // store is always valid
-    if ( this.proofModel.isMemoryEnabled ( ) )
+    if ( this.proofModel.isMemoryEnabled () )
     {
-      this.compoundExpression.setEnvironment ( this.proofNode.getStore ( ) ) ;
+      this.compoundExpression.setEnvironment ( this.proofNode.getStore () );
     }
     else
     {
-      this.compoundExpression.setEnvironment ( null ) ;
+      this.compoundExpression.setEnvironment ( null );
     }
-    if ( this.proofNode.getResult ( ) != null )
+    if ( this.proofNode.getResult () != null )
     {
-      this.resultCompoundExpression.setExpression ( this.proofNode.getResult ( )
-          .getValue ( ) ) ;
-      if ( this.proofModel.isMemoryEnabled ( ) )
+      this.resultCompoundExpression.setExpression ( this.proofNode.getResult ()
+          .getValue () );
+      if ( this.proofModel.isMemoryEnabled () )
       {
         this.resultCompoundExpression.setEnvironment ( this.proofNode
-            .getResult ( ).getStore ( ) ) ;
+            .getResult ().getStore () );
       }
       else
       {
-        this.resultCompoundExpression.setEnvironment ( null ) ;
+        this.resultCompoundExpression.setEnvironment ( null );
       }
     }
     else
     {
-      this.resultCompoundExpression.setExpression ( null ) ;
-      this.resultCompoundExpression.setEnvironment ( null ) ;
+      this.resultCompoundExpression.setExpression ( null );
+      this.resultCompoundExpression.setEnvironment ( null );
     }
   }
 
 
   /**
-	 * Places all elements of the current node.<br>
-	 * Just places one element after the other. 1st the index, 2nd the compoundExpression 3rd the
-	 * double-sidded-down-directed arrow. When the node is proven (that is if there is already an evaluated result, it
-	 * will be placed behind the arrow.<br>
-	 * <br>
-	 * If the the nodes is evaluated the ruleLabel is placed with a bit spacing below the expression. If the node is
-	 * not evaluated the menuButton is placed at the same size.<br>
-	 * <br>
-	 * After the placing is done the {@link #dimension} contains the needed size of this node.
-	 * 
-	 * @param maxWidth
-	 *          The maximum width that is available for the current node.
-	 */
-	private void placeElements(int pMaxWidth)
-	{
-		int maxWidth = pMaxWidth;
-		// get the size for the index at the beginning: (x)
-		FontMetrics fm = AbstractRenderer.getTextFontMetrics();
-		Dimension labelSize = new Dimension(fm.stringWidth(this.indexLabel.getText()), fm.getHeight());
-		this.dimension.setSize(labelSize.width, labelSize.height);
-		// there will be a bit spacing between the index label and the expression
-		this.dimension.width += this.spacing;
-		// the index shrinkens the max size for the expression
-		maxWidth -= labelSize.width;
-		// get the needed size for the expression
-		Dimension expSize = this.compoundExpression.getNeededSize(maxWidth - this.dimension.width);
-		this.dimension.width += expSize.width;
-		this.dimension.height = Math.max(expSize.height, this.dimension.height);
-		Dimension arrowSize = this.downArrowLabel.getPreferredSize();
-		this.dimension.width += arrowSize.width;
-		this.dimension.height = Math.max(arrowSize.height, this.dimension.height);
-		Dimension resultSize = new Dimension(0, 0);
-		//get the size of the Result if there is no linebrake
-		resultSize = this.resultCompoundExpression.getNeededSize(maxWidth - this.dimension.width);
-		
-		boolean breakNeeded = false;
-		// if the expression is braken the result will be meshed mesPix pixels
-		//break if the result dose not fit
-		if ((maxWidth - this.dimension.width) < resultSize.width)
-		{
-			breakNeeded = true;
-		}
-		
-		if (!breakNeeded)
-		{			
-			// if the result is higher than the hight of one line the result will be
-			// in the next line
-			if (resultSize.height > AbstractRenderer.getAbsoluteHeight())
-			{
-				breakNeeded = true;
-			}
-		}
-		if (breakNeeded)
-		{
-			//get the new resultsiz in the next line
-			resultSize = this.resultCompoundExpression.getNeededSize(maxWidth - this.meshPix);
-			//the hight will be lager
-			this.dimension.height = expSize.height + resultSize.height;
-		}
-		if (!breakNeeded)
-		{
-			this.dimension.width += resultSize.width;
-			this.dimension.height = Math.max(resultSize.height, this.dimension.height);
-		}
-		else
-		{
-			this.dimension.width = Math.max((resultSize.width + this.meshPix), this.dimension.width);
-		}
-		
-		// now place the elements
-		int posX = 0;
-		this.indexLabel.setBounds(posX, 0, labelSize.width, this.dimension.height);
-		posX += labelSize.width + this.spacing;
-		this.compoundExpression.setBounds(posX, 0, expSize.width, expSize.height);
-		posX += expSize.width;
-		this.downArrowLabel.setBounds(posX, 0, arrowSize.width, expSize.height);
-		posX += arrowSize.width;
-		if (!breakNeeded)
-		{
-			this.resultCompoundExpression.setBounds(posX, 0, resultSize.width, resultSize.height);
-		}
-		else
-		{
-			this.resultCompoundExpression.setBounds(this.meshPix, (this.dimension.height - resultSize.height),
-					resultSize.width, resultSize.height);
-		}
-		/*
-		 * Check whether this is node is evaluated. If it is evaluated only the Label needs to get placed, if it is not
-		 * evaluated yet the MenuButton needs to get placed.
-		 */
-		posX = labelSize.width + this.spacing;
-		if (this.proofNode.getRule() != null)
-		{
-			this.ruleLabel.setText(this.proofNode.getRule().toString()); //$NON-NLS-1$ //$NON-NLS-2$
-			Dimension ruleLabelSize = this.ruleLabel.getPreferredSize();
-			this.ruleLabel.setBounds(posX, this.dimension.height + this.spacing, ruleLabelSize.width,
-					ruleLabelSize.height);
-			this.dimension.height += this.spacing + ruleLabelSize.height;
-			this.dimension.width = Math.max(this.dimension.width, ruleLabelSize.width + posX);
-			// display only the label not the button
-			this.ruleLabel.setVisible(true);
-			this.ruleButton.setVisible(false);
-		}
-		else
-		{
-			// place the menu button
-			Dimension buttonSize = this.ruleButton.getNeededSize();
-			this.ruleButton.setBounds(posX, this.dimension.height + this.spacing, buttonSize.width, buttonSize.height);
-			this.dimension.height += this.spacing + buttonSize.height;
-			this.dimension.width = Math.max(this.dimension.width, buttonSize.width + posX);
-			// display only the button not the label
-			this.ruleLabel.setVisible(false);
-			this.ruleButton.setVisible(true);
-		}
-	}
+   * Places all elements of the current node.<br>
+   * Just places one element after the other. 1st the index, 2nd the
+   * compoundExpression 3rd the double-sidded-down-directed arrow. When the node
+   * is proven (that is if there is already an evaluated result, it will be
+   * placed behind the arrow.<br>
+   * <br>
+   * If the the nodes is evaluated the ruleLabel is placed with a bit spacing
+   * below the expression. If the node is not evaluated the menuButton is placed
+   * at the same size.<br>
+   * <br>
+   * After the placing is done the {@link #dimension} contains the needed size
+   * of this node.
+   * 
+   * @param maxWidth The maximum width that is available for the current node.
+   */
+  private void placeElements ( int pMaxWidth )
+  {
+    int maxWidth = pMaxWidth;
+    // get the size for the index at the beginning: (x)
+    FontMetrics fm = AbstractRenderer.getTextFontMetrics ();
+    Dimension labelSize = new Dimension ( fm.stringWidth ( this.indexLabel
+        .getText () ), fm.getHeight () );
+    this.dimension.setSize ( labelSize.width, labelSize.height );
+    // there will be a bit spacing between the index label and the expression
+    this.dimension.width += this.spacing;
+    // the index shrinkens the max size for the expression
+    maxWidth -= labelSize.width;
+    // get the needed size for the expression
+    Dimension expSize = this.compoundExpression.getNeededSize ( maxWidth
+        - this.dimension.width );
+    this.dimension.width += expSize.width;
+    this.dimension.height = Math.max ( expSize.height, this.dimension.height );
+    Dimension arrowSize = this.downArrowLabel.getPreferredSize ();
+    this.dimension.width += arrowSize.width;
+    this.dimension.height = Math.max ( arrowSize.height, this.dimension.height );
+    Dimension resultSize = new Dimension ( 0, 0 );
+    // get the size of the Result if there is no linebrake
+    resultSize = this.resultCompoundExpression.getNeededSize ( maxWidth
+        - this.dimension.width );
+
+    boolean breakNeeded = false;
+    // if the expression is braken the result will be meshed mesPix pixels
+    // break if the result dose not fit
+    if ( ( maxWidth - this.dimension.width ) < resultSize.width )
+    {
+      breakNeeded = true;
+    }
+
+    if ( !breakNeeded )
+    {
+      // if the result is higher than the hight of one line the result will be
+      // in the next line
+      if ( resultSize.height > AbstractRenderer.getAbsoluteHeight () )
+      {
+        breakNeeded = true;
+      }
+    }
+    if ( breakNeeded )
+    {
+      // get the new resultsiz in the next line
+      resultSize = this.resultCompoundExpression.getNeededSize ( maxWidth
+          - this.meshPix );
+      // the hight will be lager
+      this.dimension.height = expSize.height + resultSize.height;
+    }
+    if ( !breakNeeded )
+    {
+      this.dimension.width += resultSize.width;
+      this.dimension.height = Math.max ( resultSize.height,
+          this.dimension.height );
+    }
+    else
+    {
+      this.dimension.width = Math.max ( ( resultSize.width + this.meshPix ),
+          this.dimension.width );
+    }
+
+    // now place the elements
+    int posX = 0;
+    this.indexLabel
+        .setBounds ( posX, 0, labelSize.width, this.dimension.height );
+    posX += labelSize.width + this.spacing;
+    this.compoundExpression.setBounds ( posX, 0, expSize.width, expSize.height );
+    posX += expSize.width;
+    this.downArrowLabel.setBounds ( posX, 0, arrowSize.width, expSize.height );
+    posX += arrowSize.width;
+    if ( !breakNeeded )
+    {
+      this.resultCompoundExpression.setBounds ( posX, 0, resultSize.width,
+          resultSize.height );
+    }
+    else
+    {
+      this.resultCompoundExpression.setBounds ( this.meshPix,
+          ( this.dimension.height - resultSize.height ), resultSize.width,
+          resultSize.height );
+    }
+    /*
+     * Check whether this is node is evaluated. If it is evaluated only the
+     * Label needs to get placed, if it is not evaluated yet the MenuButton
+     * needs to get placed.
+     */
+    posX = labelSize.width + this.spacing;
+    if ( this.proofNode.getRule () != null )
+    {
+      this.ruleLabel.setText ( this.proofNode.getRule ().toString () ); //$NON-NLS-1$ //$NON-NLS-2$
+      Dimension ruleLabelSize = this.ruleLabel.getPreferredSize ();
+      this.ruleLabel.setBounds ( posX, this.dimension.height + this.spacing,
+          ruleLabelSize.width, ruleLabelSize.height );
+      this.dimension.height += this.spacing + ruleLabelSize.height;
+      this.dimension.width = Math.max ( this.dimension.width,
+          ruleLabelSize.width + posX );
+      // display only the label not the button
+      this.ruleLabel.setVisible ( true );
+      this.ruleButton.setVisible ( false );
+    }
+    else
+    {
+      // place the menu button
+      Dimension buttonSize = this.ruleButton.getNeededSize ();
+      this.ruleButton.setBounds ( posX, this.dimension.height + this.spacing,
+          buttonSize.width, buttonSize.height );
+      this.dimension.height += this.spacing + buttonSize.height;
+      this.dimension.width = Math.max ( this.dimension.width, buttonSize.width
+          + posX );
+      // display only the button not the label
+      this.ruleLabel.setVisible ( false );
+      this.ruleButton.setVisible ( true );
+    }
+  }
 
 
   /*
-	 * Implementation of the TreeNodeComponent interface
-	 */
+   * Implementation of the TreeNodeComponent interface
+   */
   public Dimension update ( int maxWidth )
   {
-    placeElements ( maxWidth ) ;
+    placeElements ( maxWidth );
     this.menuTranslateItem.setEnabled ( this.translator.containsSyntacticSugar (
-        this.proofNode.getExpression ( ) , true ) ) ;
-    return this.dimension ;
+        this.proofNode.getExpression (), true ) );
+    return this.dimension;
   }
 
-  /**
-	 * Returns the point at the bottom of the node where the layout should attach the arrow.
-	 */
-	public Point getBottomArrowConnection()
-	{
-		return new Point(this.getX() + this.indexLabel.getWidth() / 2, this.getY() + (this.dimension.height / 2));
-	}
 
   /**
-	 * Returns the point at the left of the node where the layout should attach the line to its parent.
-	 */
-  public Point getLeftArrowConnection ( )
+   * Returns the point at the bottom of the node where the layout should attach
+   * the arrow.
+   */
+  public Point getBottomArrowConnection ()
   {
-    return new Point ( this.getX ( ) , this.getY ( ) + this.indexLabel.getY ( )
-        + this.indexLabel.getHeight ( ) / 2 ) ;
+    return new Point ( this.getX () + this.indexLabel.getWidth () / 2, this
+        .getY ()
+        + ( this.dimension.height / 2 ) );
+  }
+
+
+  /**
+   * Returns the point at the left of the node where the layout should attach
+   * the line to its parent.
+   */
+  public Point getLeftArrowConnection ()
+  {
+    return new Point ( this.getX (), this.getY () + this.indexLabel.getY ()
+        + this.indexLabel.getHeight () / 2 );
   }
 
 
   /**
    * Returns the number of pixels the children should be displayed indentated.
    */
-  public int getIndentationWidth ( )
+  public int getIndentationWidth ()
   {
     // XXX: calculate the indentation
-    return this.indexLabel.getWidth ( ) ;
+    return this.indexLabel.getWidth ();
   }
 
 
   /**
    * Just calls setBounds of the super class.
    */
-  @ Override
-  public void setBounds ( int x , int y , int width , int height )
+  @Override
+  public void setBounds ( int x, int y, int width, int height )
   {
-    super.setBounds ( x , y , width , height ) ;
+    super.setBounds ( x, y, width, height );
   }
 
 
@@ -683,9 +711,9 @@ public class BigStepNodeComponent extends JComponent implements
    * @return The indexLabel.
    * @see #indexLabel
    */
-  public JLabel getIndexLabel ( )
+  public JLabel getIndexLabel ()
   {
-    return this.indexLabel ;
+    return this.indexLabel;
   }
 
 
@@ -695,9 +723,9 @@ public class BigStepNodeComponent extends JComponent implements
    * @return The compoundExpression.
    * @see #compoundExpression
    */
-  public CompoundExpression < Location , Expression > getCompoundExpression ( )
+  public CompoundExpression < Location, Expression > getCompoundExpression ()
   {
-    return this.compoundExpression ;
+    return this.compoundExpression;
   }
 
 
@@ -707,8 +735,8 @@ public class BigStepNodeComponent extends JComponent implements
    * @return The resultCompoundExpression.
    * @see #resultCompoundExpression
    */
-  public CompoundExpression < Location , Expression > getResultCompoundExpression ( )
+  public CompoundExpression < Location, Expression > getResultCompoundExpression ()
   {
-    return this.resultCompoundExpression ;
+    return this.resultCompoundExpression;
   }
 }

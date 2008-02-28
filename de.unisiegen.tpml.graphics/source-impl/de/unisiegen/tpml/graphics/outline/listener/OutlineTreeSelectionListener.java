@@ -1,11 +1,12 @@
-package de.unisiegen.tpml.graphics.outline.listener ;
+package de.unisiegen.tpml.graphics.outline.listener;
 
 
-import javax.swing.event.TreeSelectionEvent ;
-import javax.swing.event.TreeSelectionListener ;
-import javax.swing.tree.TreePath ;
-import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
-import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
+
+import de.unisiegen.tpml.graphics.outline.DefaultOutline;
+import de.unisiegen.tpml.graphics.outline.node.OutlineNode;
 
 
 /**
@@ -18,10 +19,11 @@ import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
 public final class OutlineTreeSelectionListener implements
     TreeSelectionListener
 {
+
   /**
    * The {@link DefaultOutline}.
    */
-  private DefaultOutline defaultOutline ;
+  private DefaultOutline defaultOutline;
 
 
   /**
@@ -32,7 +34,7 @@ public final class OutlineTreeSelectionListener implements
    */
   public OutlineTreeSelectionListener ( DefaultOutline pDefaultOutline )
   {
-    this.defaultOutline = pDefaultOutline ;
+    this.defaultOutline = pDefaultOutline;
   }
 
 
@@ -45,25 +47,23 @@ public final class OutlineTreeSelectionListener implements
   public final void valueChanged ( TreeSelectionEvent pTreeSelectionEvent )
   {
     // Outline Tree
-    if ( pTreeSelectionEvent.getSource ( )
-        .equals (
-            this.defaultOutline.getUI ( ).getJTreeOutline ( )
-                .getSelectionModel ( ) ) )
+    if ( pTreeSelectionEvent.getSource ().equals (
+        this.defaultOutline.getUI ().getJTreeOutline ().getSelectionModel () ) )
     {
-      TreePath newTreePath = pTreeSelectionEvent.getPath ( ) ;
+      TreePath newTreePath = pTreeSelectionEvent.getPath ();
       if ( newTreePath == null )
       {
-        return ;
+        return;
       }
-      this.defaultOutline.update ( newTreePath ) ;
-      TreePath oldTreePath = pTreeSelectionEvent.getOldLeadSelectionPath ( ) ;
+      this.defaultOutline.update ( newTreePath );
+      TreePath oldTreePath = pTreeSelectionEvent.getOldLeadSelectionPath ();
       if ( oldTreePath != null )
       {
-        Object [ ] objects = oldTreePath.getPath ( ) ;
-        for ( int i = 0 ; i < objects.length ; i ++ )
+        Object [] objects = oldTreePath.getPath ();
+        for ( int i = 0 ; i < objects.length ; i++ )
         {
-          this.defaultOutline.getUI ( ).getTreeModel ( ).nodeChanged (
-              ( OutlineNode ) objects [ i ] ) ;
+          this.defaultOutline.getUI ().getTreeModel ().nodeChanged (
+              ( OutlineNode ) objects [ i ] );
         }
       }
     }

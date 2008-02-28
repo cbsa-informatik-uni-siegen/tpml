@@ -1,9 +1,9 @@
-package de.unisiegen.tpml.core.exceptions ;
+package de.unisiegen.tpml.core.exceptions;
 
 
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.languages.LanguageParserException ;
-import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.languages.LanguageParserException;
+import de.unisiegen.tpml.core.types.Type;
 
 
 /**
@@ -16,16 +16,17 @@ import de.unisiegen.tpml.core.types.Type ;
 public final class LanguageParserWarningException extends
     LanguageParserException
 {
+
   /**
    * The unique serialization identifier of this class.
    */
-  private static final long serialVersionUID = 4128074579334924253L ;
+  private static final long serialVersionUID = 4128074579334924253L;
 
 
   /**
    * The text, which should be inserted.
    */
-  private String insertText ;
+  private String insertText;
 
 
   /**
@@ -35,10 +36,10 @@ public final class LanguageParserWarningException extends
    * @param pParserStartOffset The parser start offset.
    * @param pParserEndOffset The parser end offset.
    */
-  public LanguageParserWarningException ( String pMessages ,
-      int pParserStartOffset , int pParserEndOffset )
+  public LanguageParserWarningException ( String pMessages,
+      int pParserStartOffset, int pParserEndOffset )
   {
-    this ( pMessages , pParserStartOffset , pParserEndOffset , "" ) ; //$NON-NLS-1$
+    this ( pMessages, pParserStartOffset, pParserEndOffset, "" ); //$NON-NLS-1$
   }
 
 
@@ -50,11 +51,11 @@ public final class LanguageParserWarningException extends
    * @param pParserEndOffset The parser end offset.
    * @param pInsertText The text, which should be inserted.
    */
-  public LanguageParserWarningException ( String pMessages ,
-      int pParserStartOffset , int pParserEndOffset , String pInsertText )
+  public LanguageParserWarningException ( String pMessages,
+      int pParserStartOffset, int pParserEndOffset, String pInsertText )
   {
-    super ( pMessages , pParserStartOffset , pParserEndOffset ) ;
-    this.insertText = pInsertText ;
+    super ( pMessages, pParserStartOffset, pParserEndOffset );
+    this.insertText = pInsertText;
   }
 
 
@@ -64,8 +65,8 @@ public final class LanguageParserWarningException extends
    * @return The insertText.
    * @see #insertText
    */
-  public String getInsertText ( )
+  public String getInsertText ()
   {
-    return this.insertText ;
+    return this.insertText;
   }
 }

@@ -1,4 +1,4 @@
-package java_cup.runtime ;
+package java_cup.runtime;
 
 
 /**
@@ -19,49 +19,50 @@ package java_cup.runtime ;
  ******************************************************************************/
 public class Symbol
 {
+
   // TUM 20060327: Added new Constructor to provide more flexible way
   // for location handling
   /*******************************
    *******************************/
-  public Symbol ( int id , Symbol left , Symbol right , Object o )
+  public Symbol ( int id, Symbol left, Symbol right, Object o )
   {
-    this ( id , left.left , right.right , o ) ;
+    this ( id, left.left, right.right, o );
   }
 
 
-  public Symbol ( int id , Symbol left , Symbol right )
+  public Symbol ( int id, Symbol left, Symbol right )
   {
-    this ( id , left.left , right.right ) ;
+    this ( id, left.left, right.right );
   }
 
 
   /*****************************************************************************
    * Constructor for l,r values
    ****************************************************************************/
-  public Symbol ( int id , int l , int r , Object o )
+  public Symbol ( int id, int l, int r, Object o )
   {
-    this ( id ) ;
-    left = l ;
-    right = r ;
-    value = o ;
+    this ( id );
+    left = l;
+    right = r;
+    value = o;
   }
 
 
   /*****************************************************************************
    * Constructor for no l,r values
    ****************************************************************************/
-  public Symbol ( int id , Object o )
+  public Symbol ( int id, Object o )
   {
-    this ( id , - 1 , - 1 , o ) ;
+    this ( id, -1, -1, o );
   }
 
 
   /*****************************************************************************
    * Constructor for no value
    ****************************************************************************/
-  public Symbol ( int id , int l , int r )
+  public Symbol ( int id, int l, int r )
   {
-    this ( id , l , r , null ) ;
+    this ( id, l, r, null );
   }
 
 
@@ -70,25 +71,25 @@ public class Symbol
    ****************************************************************************/
   public Symbol ( int sym_num )
   {
-    this ( sym_num , - 1 ) ;
-    left = - 1 ;
-    right = - 1 ;
+    this ( sym_num, -1 );
+    left = -1;
+    right = -1;
   }
 
 
   /*****************************************************************************
    * Constructor to give a start state
    ****************************************************************************/
-  Symbol ( int sym_num , int state )
+  Symbol ( int sym_num, int state )
   {
-    sym = sym_num ;
-    parse_state = state ;
+    sym = sym_num;
+    parse_state = state;
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** The symbol number of the terminal or non terminal being represented */
-  public int sym ;
+  public int sym;
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
@@ -97,30 +98,30 @@ public class Symbol
    * field is for the convenience of the parser and shouldn't be modified except
    * by the parser.
    */
-  public int parse_state ;
+  public int parse_state;
 
 
   /**
    * This allows us to catch some errors caused by scanners recycling symbols.
    * For the use of the parser only. [CSA, 23-Jul-1999]
    */
-  boolean used_by_parser = false ;
+  boolean used_by_parser = false;
 
 
   /*****************************************************************************
    * The data passed to parser
    ****************************************************************************/
-  public int left , right ;
+  public int left, right;
 
 
-  public Object value ;
+  public Object value;
 
 
   /*****************************************************************************
    * Printing this token out. (Override for pretty-print).
    ****************************************************************************/
-  public String toString ( )
+  public String toString ()
   {
-    return "#" + sym ;
+    return "#" + sym;
   }
 }

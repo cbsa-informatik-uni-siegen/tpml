@@ -1,24 +1,25 @@
-package de.unisiegen.tpml.core.languages ;
+package de.unisiegen.tpml.core.languages;
 
 
-import java.io.File ;
-import java.lang.reflect.InvocationTargetException ;
-import de.unisiegen.tpml.core.languages.l0.L0Language ;
-import de.unisiegen.tpml.core.languages.l0cbn.L0CBNLanguage ;
-import de.unisiegen.tpml.core.languages.l1.L1Language ;
-import de.unisiegen.tpml.core.languages.l1cbn.L1CBNLanguage ;
-import de.unisiegen.tpml.core.languages.l1sub.L1SUBLanguage ;
-import de.unisiegen.tpml.core.languages.l2.L2Language ;
-import de.unisiegen.tpml.core.languages.l2c.L2CLanguage ;
-import de.unisiegen.tpml.core.languages.l2cbn.L2CBNLanguage ;
-import de.unisiegen.tpml.core.languages.l2csub.L2CSUBLanguage ;
-import de.unisiegen.tpml.core.languages.l2o.L2OLanguage ;
-import de.unisiegen.tpml.core.languages.l2osub.L2OSUBLanguage ;
-import de.unisiegen.tpml.core.languages.l2sub.L2SUBLanguage ;
-import de.unisiegen.tpml.core.languages.l3.L3Language ;
-import de.unisiegen.tpml.core.languages.l3sub.L3SUBLanguage ;
-import de.unisiegen.tpml.core.languages.l4.L4Language ;
-import de.unisiegen.tpml.core.languages.l4sub.L4SUBLanguage ;
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+
+import de.unisiegen.tpml.core.languages.l0.L0Language;
+import de.unisiegen.tpml.core.languages.l0cbn.L0CBNLanguage;
+import de.unisiegen.tpml.core.languages.l1.L1Language;
+import de.unisiegen.tpml.core.languages.l1cbn.L1CBNLanguage;
+import de.unisiegen.tpml.core.languages.l1sub.L1SUBLanguage;
+import de.unisiegen.tpml.core.languages.l2.L2Language;
+import de.unisiegen.tpml.core.languages.l2c.L2CLanguage;
+import de.unisiegen.tpml.core.languages.l2cbn.L2CBNLanguage;
+import de.unisiegen.tpml.core.languages.l2csub.L2CSUBLanguage;
+import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
+import de.unisiegen.tpml.core.languages.l2osub.L2OSUBLanguage;
+import de.unisiegen.tpml.core.languages.l2sub.L2SUBLanguage;
+import de.unisiegen.tpml.core.languages.l3.L3Language;
+import de.unisiegen.tpml.core.languages.l3sub.L3SUBLanguage;
+import de.unisiegen.tpml.core.languages.l4.L4Language;
+import de.unisiegen.tpml.core.languages.l4sub.L4SUBLanguage;
 
 
 /**
@@ -31,15 +32,16 @@ import de.unisiegen.tpml.core.languages.l4sub.L4SUBLanguage ;
  */
 public final class LanguageFactory
 {
+
   //
   // Constructor (private)
   //
   /**
    * Allocates a new <code>LanguageFactory</code>.
    */
-  private LanguageFactory ( )
+  private LanguageFactory ()
   {
-    super ( ) ;
+    super ();
   }
 
 
@@ -51,9 +53,9 @@ public final class LanguageFactory
    * 
    * @return a newly allocated <code>LanguageFactory</code>.
    */
-  public static LanguageFactory newInstance ( )
+  public static LanguageFactory newInstance ()
   {
-    return new LanguageFactory ( ) ;
+    return new LanguageFactory ();
   }
 
 
@@ -66,15 +68,15 @@ public final class LanguageFactory
    * 
    * @return an array with all available {@link Language}s.
    */
-  public Language [ ] getAvailableLanguages ( )
+  public Language [] getAvailableLanguages ()
   {
-    return new Language [ ]
-    { new L0Language ( ) , new L0CBNLanguage ( ) , new L1Language ( ) ,
-        new L1SUBLanguage ( ) , new L1CBNLanguage ( ) , new L2Language ( ) ,
-        new L2SUBLanguage ( ) , new L2CBNLanguage ( ) , new L2OLanguage ( ) ,
-        new L2OSUBLanguage ( ) , new L2CLanguage ( ) , new L2CSUBLanguage ( ) ,
-        new L3Language ( ) , new L3SUBLanguage ( ) , new L4Language ( ) ,
-        new L4SUBLanguage ( ) } ;
+    return new Language []
+    { new L0Language (), new L0CBNLanguage (), new L1Language (),
+        new L1SUBLanguage (), new L1CBNLanguage (), new L2Language (),
+        new L2SUBLanguage (), new L2CBNLanguage (), new L2OLanguage (),
+        new L2OSUBLanguage (), new L2CLanguage (), new L2CSUBLanguage (),
+        new L3Language (), new L3SUBLanguage (), new L4Language (),
+        new L4SUBLanguage () };
   }
 
 
@@ -92,8 +94,8 @@ public final class LanguageFactory
   public Language getLanguageByFile ( File file )
       throws NoSuchLanguageException
   {
-    String [ ] components = file.getName ( ).split ( "\\." ) ; //$NON-NLS-1$
-    return getLanguageById ( components [ components.length - 1 ] ) ;
+    String [] components = file.getName ().split ( "\\." ); //$NON-NLS-1$
+    return getLanguageById ( components [ components.length - 1 ] );
   }
 
 
@@ -112,33 +114,33 @@ public final class LanguageFactory
     try
     {
       // determine the class name for the language class
-      String clazzName = getClass ( ).getPackage ( ).getName ( ) + "." //$NON-NLS-1$
-          + id.toLowerCase ( ) + "." + id.toUpperCase ( ) + "Language" ; //$NON-NLS-1$//$NON-NLS-2$
+      String clazzName = getClass ().getPackage ().getName () + "." //$NON-NLS-1$
+          + id.toLowerCase () + "." + id.toUpperCase () + "Language"; //$NON-NLS-1$//$NON-NLS-2$
       // determine the language class
-      Class < ? > clazz = Class.forName ( clazzName ) ;
+      Class < ? > clazz = Class.forName ( clazzName );
       // instantiate the language class
       return ( Language ) clazz.getConstructor ( new Class [ 0 ] ).newInstance (
-          new Object [ 0 ] ) ;
+          new Object [ 0 ] );
     }
     catch ( ClassNotFoundException e )
     {
-      throw new NoSuchLanguageException ( id , e ) ;
+      throw new NoSuchLanguageException ( id, e );
     }
     catch ( IllegalAccessException e )
     {
-      throw new NoSuchLanguageException ( id , e ) ;
+      throw new NoSuchLanguageException ( id, e );
     }
     catch ( InstantiationException e )
     {
-      throw new NoSuchLanguageException ( id , e ) ;
+      throw new NoSuchLanguageException ( id, e );
     }
     catch ( InvocationTargetException e )
     {
-      throw new NoSuchLanguageException ( id , e ) ;
+      throw new NoSuchLanguageException ( id, e );
     }
     catch ( NoSuchMethodException e )
     {
-      throw new NoSuchLanguageException ( id , e ) ;
+      throw new NoSuchLanguageException ( id, e );
     }
   }
 }

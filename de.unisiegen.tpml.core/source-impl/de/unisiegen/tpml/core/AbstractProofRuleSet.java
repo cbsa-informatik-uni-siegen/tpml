@@ -1,11 +1,12 @@
-package de.unisiegen.tpml.core ;
+package de.unisiegen.tpml.core;
 
 
-import java.util.Iterator ;
-import java.util.LinkedList ;
-import java.util.List ;
-import java.util.NoSuchElementException ;
-import de.unisiegen.tpml.core.languages.Language ;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+import de.unisiegen.tpml.core.languages.Language;
 
 
 /**
@@ -19,6 +20,7 @@ import de.unisiegen.tpml.core.languages.Language ;
  */
 public abstract class AbstractProofRuleSet implements ProofRuleSet
 {
+
   //
   // Constants
   //
@@ -28,7 +30,7 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet
    * 
    * @see #getRules()
    */
-  private static final ProofRule [ ] EMPTY_ARRAY = new ProofRule [ 0 ] ;
+  private static final ProofRule [] EMPTY_ARRAY = new ProofRule [ 0 ];
 
 
   //
@@ -39,7 +41,7 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet
    * 
    * @see #getLanguage()
    */
-  private Language language ;
+  private Language language;
 
 
   /**
@@ -47,7 +49,7 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet
    * 
    * @see #getRules()
    */
-  protected List < AbstractProofRule > rules = new LinkedList < AbstractProofRule > ( ) ;
+  protected List < AbstractProofRule > rules = new LinkedList < AbstractProofRule > ();
 
 
   //
@@ -66,9 +68,9 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet
   {
     if ( pLanguage == null )
     {
-      throw new NullPointerException ( "language is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "language is null" ); //$NON-NLS-1$
     }
-    this.language = pLanguage ;
+    this.language = pLanguage;
   }
 
 
@@ -80,9 +82,9 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet
    * 
    * @see de.unisiegen.tpml.core.ProofRuleSet#getLanguage()
    */
-  public Language getLanguage ( )
+  public Language getLanguage ()
   {
-    return this.language ;
+    return this.language;
   }
 
 
@@ -91,9 +93,9 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet
    * 
    * @see de.unisiegen.tpml.core.ProofRuleSet#getRules()
    */
-  public ProofRule [ ] getRules ( )
+  public ProofRule [] getRules ()
   {
-    return this.rules.toArray ( EMPTY_ARRAY ) ;
+    return this.rules.toArray ( EMPTY_ARRAY );
   }
 
 
@@ -113,16 +115,16 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet
   {
     if ( name == null )
     {
-      throw new NullPointerException ( "name is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
     }
     for ( AbstractProofRule rule : this.rules )
     {
-      if ( rule.getName ( ).equals ( name ) )
+      if ( rule.getName ().equals ( name ) )
       {
-        return rule ;
+        return rule;
       }
     }
-    throw new NoSuchElementException ( "No such rule of name " + name ) ; //$NON-NLS-1$
+    throw new NoSuchElementException ( "No such rule of name " + name ); //$NON-NLS-1$
   }
 
 
@@ -136,7 +138,7 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet
    */
   public boolean contains ( ProofRule rule )
   {
-    return this.rules.contains ( rule ) ;
+    return this.rules.contains ( rule );
   }
 
 
@@ -145,31 +147,32 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet
    * 
    * @see java.lang.Iterable#iterator()
    */
-  public final Iterator < ProofRule > iterator ( )
+  public final Iterator < ProofRule > iterator ()
   {
-    return new Iterator < ProofRule > ( )
+    return new Iterator < ProofRule > ()
     {
+
       private Iterator < AbstractProofRule > iterator = AbstractProofRuleSet.this.rules
-          .iterator ( ) ;
+          .iterator ();
 
 
-      public boolean hasNext ( )
+      public boolean hasNext ()
       {
-        return this.iterator.hasNext ( ) ;
+        return this.iterator.hasNext ();
       }
 
 
-      public ProofRule next ( )
+      public ProofRule next ()
       {
-        return this.iterator.next ( ) ;
+        return this.iterator.next ();
       }
 
 
-      public void remove ( )
+      public void remove ()
       {
-        throw new UnsupportedOperationException ( ) ;
+        throw new UnsupportedOperationException ();
       }
-    } ;
+    };
   }
 
 
@@ -192,12 +195,12 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet
   {
     if ( rule == null )
     {
-      throw new NullPointerException ( "rule is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "rule is null" ); //$NON-NLS-1$
     }
     // unregister any previous rule with the same name
-    this.rules.remove ( rule ) ;
+    this.rules.remove ( rule );
     // register the new rule
-    this.rules.add ( 0 , rule ) ;
+    this.rules.add ( 0, rule );
   }
 
 
@@ -212,9 +215,9 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet
   {
     if ( rule == null )
     {
-      throw new NullPointerException ( "rule is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "rule is null" ); //$NON-NLS-1$
     }
     // unregister the rule
-    this.rules.remove ( rule ) ;
+    this.rules.remove ( rule );
   }
 }

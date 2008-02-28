@@ -1,18 +1,19 @@
-package de.unisiegen.tpml.core.types ;
+package de.unisiegen.tpml.core.types;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypeNames ;
-import de.unisiegen.tpml.core.interfaces.IdentifierOrTypeName ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.interfaces.DefaultTypeNames;
+import de.unisiegen.tpml.core.interfaces.IdentifierOrTypeName;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -23,22 +24,23 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  */
 public final class TypeName extends MonoType implements IdentifierOrTypeName
 {
+
   /**
    * String for the case that the type substitution is null.
    */
-  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = Type.getCaption ( TypeName.class ) ;
+  private static final String CAPTION = Type.getCaption ( TypeName.class );
 
 
   /**
    * String for the case that the name is null.
    */
-  private static final String NAME_NULL = "name is null" ; //$NON-NLS-1$
+  private static final String NAME_NULL = "name is null"; //$NON-NLS-1$
 
 
   /**
@@ -46,19 +48,19 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_NAME , 1 ,
-        "\\mbox{\\color{" + LATEX_COLOR_IDENTIFIER + "}{#1}}" , "t" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_NAME, 1,
+        "\\mbox{\\color{" + LATEX_COLOR_IDENTIFIER + "}{#1}}", "t" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     commands
         .add ( new DefaultLatexCommand (
-            LATEX_TYPE_NAME_BINDING ,
-            1 ,
-            "\\mbox{\\textbf{\\color{" + LATEX_COLOR_BINDING_ID + "}{#1}}}" , "id" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_NAME_BOUND , 1 ,
-        "\\mbox{\\textbf{\\color{" + LATEX_COLOR_BOUND_ID + "}{#1}}}" , "id" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    return commands ;
+            LATEX_TYPE_NAME_BINDING,
+            1,
+            "\\mbox{\\textbf{\\color{" + LATEX_COLOR_BINDING_ID + "}{#1}}}", "id" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_NAME_BOUND, 1,
+        "\\mbox{\\textbf{\\color{" + LATEX_COLOR_BOUND_ID + "}{#1}}}", "id" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    return commands;
   }
 
 
@@ -68,7 +70,7 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * @see #getBoundToType()
    * @see #setBoundTo(Type,TypeName)
    */
-  private Type boundToType ;
+  private Type boundToType;
 
 
   /**
@@ -77,7 +79,7 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * @see #getBoundToTypeName()
    * @see #setBoundTo(Type,TypeName)
    */
-  private TypeName boundToTypeName ;
+  private TypeName boundToTypeName;
 
 
   /**
@@ -85,7 +87,7 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * 
    * @see #getName()
    */
-  private String name ;
+  private String name;
 
 
   /**
@@ -97,9 +99,9 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
   {
     if ( pName == null )
     {
-      throw new NullPointerException ( NAME_NULL ) ;
+      throw new NullPointerException ( NAME_NULL );
     }
-    this.name = pName ;
+    this.name = pName;
   }
 
 
@@ -112,11 +114,11 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * @param pParserEndOffset The end offset of this {@link Type} in the source
    *          code.
    */
-  public TypeName ( String pName , int pParserStartOffset , int pParserEndOffset )
+  public TypeName ( String pName, int pParserStartOffset, int pParserEndOffset )
   {
-    this ( pName ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pName );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -125,10 +127,10 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * 
    * @see Type#clone()
    */
-  @ Override
-  public TypeName clone ( )
+  @Override
+  public TypeName clone ()
   {
-    return new TypeName ( this.name ) ;
+    return new TypeName ( this.name );
   }
 
 
@@ -137,15 +139,15 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * 
    * @see Type#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object obj )
   {
     if ( obj instanceof TypeName )
     {
-      TypeName other = ( TypeName ) obj ;
-      return this.name.equals ( other.name ) ;
+      TypeName other = ( TypeName ) obj;
+      return this.name.equals ( other.name );
     }
-    return false ;
+    return false;
   }
 
 
@@ -156,9 +158,9 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * @see #boundToType
    * @see #setBoundTo(Type,TypeName)
    */
-  public Type getBoundToType ( )
+  public Type getBoundToType ()
   {
-    return this.boundToType ;
+    return this.boundToType;
   }
 
 
@@ -169,19 +171,19 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * @see #boundToTypeName
    * @see #setBoundTo(Type,TypeName)
    */
-  public TypeName getBoundToTypeName ( )
+  public TypeName getBoundToTypeName ()
   {
-    return this.boundToTypeName ;
+    return this.boundToTypeName;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -190,12 +192,12 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -204,9 +206,9 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * 
    * @return the name of the {@link TypeName}.
    */
-  public String getName ( )
+  public String getName ()
   {
-    return this.name ;
+    return this.name;
   }
 
 
@@ -216,28 +218,28 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * @return The prefix of this {@link Expression}.
    * @see #prefix
    */
-  @ Override
-  public String getPrefix ( )
+  @Override
+  public String getPrefix ()
   {
     if ( this.prefix == null )
     {
       if ( ( this.parent != null )
           && ( this.parent instanceof DefaultTypeNames ) )
       {
-        TypeName [ ] typeNames = ( ( DefaultTypeNames ) this.parent )
-            .getTypeNames ( ) ;
+        TypeName [] typeNames = ( ( DefaultTypeNames ) this.parent )
+            .getTypeNames ();
         for ( TypeName typeName : typeNames )
         {
           if ( typeName == this )
           {
-            this.prefix = PREFIX_TYPE_NAME ;
-            return this.prefix ;
+            this.prefix = PREFIX_TYPE_NAME;
+            return this.prefix;
           }
         }
       }
-      this.prefix = PREFIX_TAU ;
+      this.prefix = PREFIX_TAU;
     }
-    return this.prefix ;
+    return this.prefix;
   }
 
 
@@ -246,15 +248,15 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * 
    * @return A list of the free {@link TypeName}s in this {@link Type}.
    */
-  @ Override
-  public ArrayList < TypeName > getTypeNamesFree ( )
+  @Override
+  public ArrayList < TypeName > getTypeNamesFree ()
   {
     if ( this.typeNamesFree == null )
     {
-      this.typeNamesFree = new ArrayList < TypeName > ( ) ;
-      this.typeNamesFree.add ( this ) ;
+      this.typeNamesFree = new ArrayList < TypeName > ();
+      this.typeNamesFree.add ( this );
     }
-    return this.typeNamesFree ;
+    return this.typeNamesFree;
   }
 
 
@@ -263,10 +265,10 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * 
    * @see Type#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.name.hashCode ( ) ;
+    return this.name.hashCode ();
   }
 
 
@@ -281,21 +283,21 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * @see #boundToTypeName
    * @see #getBoundToTypeName()
    */
-  public void setBoundTo ( Type pBoundToType , TypeName pBoundToTypeName )
+  public void setBoundTo ( Type pBoundToType, TypeName pBoundToTypeName )
   {
     if ( ( this.boundToTypeName != null )
         && ( this.boundToTypeName != pBoundToTypeName ) )
     {
       System.err
-          .println ( "An TypeName can not be bound to more than one Type!" ) ; //$NON-NLS-1$
-      System.err.println ( "TypeName: " + this ) ; //$NON-NLS-1$
-      System.err.println ( "Old boundToType: " + this.boundToType ) ; //$NON-NLS-1$
-      System.err.println ( "New boundToType: " + pBoundToType ) ; //$NON-NLS-1$
-      System.err.println ( "Old boundToTypeName: " + this.boundToTypeName ) ; //$NON-NLS-1$
-      System.err.println ( "New boundToTypeName: " + pBoundToTypeName ) ; //$NON-NLS-1$
+          .println ( "An TypeName can not be bound to more than one Type!" ); //$NON-NLS-1$
+      System.err.println ( "TypeName: " + this ); //$NON-NLS-1$
+      System.err.println ( "Old boundToType: " + this.boundToType ); //$NON-NLS-1$
+      System.err.println ( "New boundToType: " + pBoundToType ); //$NON-NLS-1$
+      System.err.println ( "Old boundToTypeName: " + this.boundToTypeName ); //$NON-NLS-1$
+      System.err.println ( "New boundToTypeName: " + pBoundToTypeName ); //$NON-NLS-1$
     }
-    this.boundToType = pBoundToType ;
-    this.boundToTypeName = pBoundToTypeName ;
+    this.boundToType = pBoundToType;
+    this.boundToTypeName = pBoundToTypeName;
   }
 
 
@@ -309,8 +311,8 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * @param pTau The {@link MonoType}.
    * @return The resulting {@link Type}.
    */
-  @ Override
-  public MonoType substitute ( TypeName pTypeName , MonoType pTau )
+  @Override
+  public MonoType substitute ( TypeName pTypeName, MonoType pTau )
   {
     if ( pTypeName.equals ( this ) )
     {
@@ -318,9 +320,9 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
        * We need to clone the type here to make sure we can distinguish an type
        * in the pretty printer that is substituted multiple times
        */
-      return pTau.clone ( ) ;
+      return pTau.clone ();
     }
-    return this ;
+    return this;
   }
 
 
@@ -329,14 +331,14 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * 
    * @see Type#substitute(TypeSubstitution)
    */
-  @ Override
+  @Override
   public TypeName substitute ( TypeSubstitution pTypeSubstitution )
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL );
     }
-    return this ;
+    return this;
   }
 
 
@@ -345,16 +347,16 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * 
    * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_TYPE_NAME , LATEX_TYPE_NAME , pIndent , this.toPrettyString ( )
-            .toString ( ) ) ;
+        PRIO_TYPE_NAME, LATEX_TYPE_NAME, pIndent, this.toPrettyString ()
+            .toString () );
     builder.addText ( "{" //$NON-NLS-1$
-        + this.name.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    return builder ;
+        + this.name.replaceAll ( "_", "\\\\_" ) + "}" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    return builder;
   }
 
 
@@ -363,15 +365,15 @@ public final class TypeName extends MonoType implements IdentifierOrTypeName
    * 
    * @see Type#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory factory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = factory.newBuilder ( this , PRIO_TYPE_NAME ) ;
-      this.prettyStringBuilder.addIdentifier ( this.name ) ;
+      this.prettyStringBuilder = factory.newBuilder ( this, PRIO_TYPE_NAME );
+      this.prettyStringBuilder.addIdentifier ( this.name );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

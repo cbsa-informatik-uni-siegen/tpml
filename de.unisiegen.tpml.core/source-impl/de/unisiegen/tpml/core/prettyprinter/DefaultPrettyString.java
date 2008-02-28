@@ -1,8 +1,8 @@
-package de.unisiegen.tpml.core.prettyprinter ;
+package de.unisiegen.tpml.core.prettyprinter;
 
 
-import java.util.Collection ;
-import java.util.Map ;
+import java.util.Collection;
+import java.util.Map;
 
 
 /**
@@ -21,6 +21,7 @@ import java.util.Map ;
  */
 final class DefaultPrettyString implements PrettyString
 {
+
   //
   // Attributes
   //
@@ -29,7 +30,7 @@ final class DefaultPrettyString implements PrettyString
    * 
    * @see #toString()
    */
-  private String content ;
+  private String content;
 
 
   /**
@@ -38,7 +39,7 @@ final class DefaultPrettyString implements PrettyString
    * @see #getAnnotations()
    * @see PrettyAnnotation
    */
-  private Map < PrettyPrintable , PrettyAnnotation > annotations ;
+  private Map < PrettyPrintable, PrettyAnnotation > annotations;
 
 
   /**
@@ -47,7 +48,7 @@ final class DefaultPrettyString implements PrettyString
    * @see #toCharacterIterator()
    * @see PrettyStyle
    */
-  private PrettyStyle [ ] styles ;
+  private PrettyStyle [] styles;
 
 
   //
@@ -65,13 +66,13 @@ final class DefaultPrettyString implements PrettyString
    *          <code>content</code> the <code>PrettyStyle</code> to use.
    * @see DefaultPrettyStringBuilder#toPrettyString()
    */
-  DefaultPrettyString ( String pContent ,
-      Map < PrettyPrintable , PrettyAnnotation > pAnnotations ,
-      PrettyStyle [ ] pStyles )
+  DefaultPrettyString ( String pContent,
+      Map < PrettyPrintable, PrettyAnnotation > pAnnotations,
+      PrettyStyle [] pStyles )
   {
-    this.content = pContent ;
-    this.annotations = pAnnotations ;
-    this.styles = pStyles ;
+    this.content = pContent;
+    this.annotations = pAnnotations;
+    this.styles = pStyles;
   }
 
 
@@ -80,9 +81,9 @@ final class DefaultPrettyString implements PrettyString
    * 
    * @see PrettyString#getAnnotations()
    */
-  public Collection < PrettyAnnotation > getAnnotations ( )
+  public Collection < PrettyAnnotation > getAnnotations ()
   {
-    return this.annotations.values ( ) ;
+    return this.annotations.values ();
   }
 
 
@@ -94,12 +95,12 @@ final class DefaultPrettyString implements PrettyString
   public PrettyAnnotation getAnnotationForPrintable ( PrettyPrintable printable )
       throws IllegalArgumentException
   {
-    PrettyAnnotation annotation = this.annotations.get ( printable ) ;
+    PrettyAnnotation annotation = this.annotations.get ( printable );
     if ( annotation == null )
     {
-      throw new IllegalArgumentException ( "printable is invalid" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "printable is invalid" ); //$NON-NLS-1$
     }
-    return annotation ;
+    return annotation;
   }
 
 
@@ -108,10 +109,10 @@ final class DefaultPrettyString implements PrettyString
    * 
    * @see PrettyString#toCharacterIterator()
    */
-  public PrettyCharIterator toCharacterIterator ( )
+  public PrettyCharIterator toCharacterIterator ()
   {
-    return new DefaultPrettyCharIterator ( this.content , this.annotations ,
-        this.styles ) ;
+    return new DefaultPrettyCharIterator ( this.content, this.annotations,
+        this.styles );
   }
 
 
@@ -128,17 +129,17 @@ final class DefaultPrettyString implements PrettyString
    *         string.
    * @see java.lang.Object#equals(java.lang.Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object obj )
   {
     if ( obj instanceof DefaultPrettyString )
     {
-      DefaultPrettyString other = ( DefaultPrettyString ) obj ;
+      DefaultPrettyString other = ( DefaultPrettyString ) obj;
       return ( this.annotations.equals ( other.annotations )
           && this.content.equals ( other.content ) && this.styles
-          .equals ( other.styles ) ) ;
+          .equals ( other.styles ) );
     }
-    return false ;
+    return false;
   }
 
 
@@ -148,11 +149,11 @@ final class DefaultPrettyString implements PrettyString
    * @return a hash value for this pretty string.
    * @see java.lang.Object#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.annotations.hashCode ( ) + this.content.hashCode ( )
-        + this.styles.hashCode ( ) ;
+    return this.annotations.hashCode () + this.content.hashCode ()
+        + this.styles.hashCode ();
   }
 
 
@@ -163,9 +164,9 @@ final class DefaultPrettyString implements PrettyString
    * @return the string representation of the pretty string.
    * @see java.lang.Object#toString()
    */
-  @ Override
-  public String toString ( )
+  @Override
+  public String toString ()
   {
-    return this.content ;
+    return this.content;
   }
 }

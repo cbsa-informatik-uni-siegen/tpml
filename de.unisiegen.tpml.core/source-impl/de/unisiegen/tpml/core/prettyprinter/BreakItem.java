@@ -1,8 +1,8 @@
-package de.unisiegen.tpml.core.prettyprinter ;
+package de.unisiegen.tpml.core.prettyprinter;
 
 
-import java.util.List ;
-import java.util.Map ;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -18,6 +18,7 @@ import java.util.Map ;
  */
 final class BreakItem extends AbstractItem
 {
+
   //
   // Constants
   //
@@ -26,7 +27,7 @@ final class BreakItem extends AbstractItem
    * reduce the overhead of allocating several (empty) <code>BreakItem</code>
    * instances.
    */
-  public static final BreakItem BREAK_ITEM = new BreakItem ( ) ;
+  public static final BreakItem BREAK_ITEM = new BreakItem ();
 
 
   //
@@ -35,7 +36,7 @@ final class BreakItem extends AbstractItem
   /**
    * Allocates a new <code>BreakItem</code> instance.
    */
-  private BreakItem ( )
+  private BreakItem ()
   {
     // nothing to do here...
   }
@@ -50,14 +51,14 @@ final class BreakItem extends AbstractItem
    * @see de.unisiegen.tpml.core.prettyprinter.AbstractItem#determineString(StringBuilder,
    *      Map, List, PrettyStyle[])
    */
-  @ Override
-  void determineString ( StringBuilder buffer , @ SuppressWarnings ( "unused" )
-  Map < PrettyPrintable , PrettyAnnotation > annotations ,
-      List < Integer > breakOffsets , @ SuppressWarnings ( "unused" )
-      PrettyStyle [ ] styles )
+  @Override
+  void determineString ( StringBuilder buffer, @SuppressWarnings ( "unused" )
+  Map < PrettyPrintable, PrettyAnnotation > annotations,
+      List < Integer > breakOffsets, @SuppressWarnings ( "unused" )
+      PrettyStyle [] styles )
   {
     // just add a break offset at the current buffer position
-    breakOffsets.add ( new Integer ( buffer.length ( ) ) ) ;
+    breakOffsets.add ( new Integer ( buffer.length () ) );
   }
 
 
@@ -66,10 +67,10 @@ final class BreakItem extends AbstractItem
    * 
    * @see de.unisiegen.tpml.core.prettyprinter.AbstractItem#determineStringLength()
    */
-  @ Override
-  int determineStringLength ( )
+  @Override
+  int determineStringLength ()
   {
     // breaks don't consume any additional space
-    return 0 ;
+    return 0;
   }
 }

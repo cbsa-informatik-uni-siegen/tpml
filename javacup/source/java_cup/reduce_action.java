@@ -1,4 +1,4 @@
-package java_cup ;
+package java_cup;
 
 
 /**
@@ -11,6 +11,7 @@ package java_cup ;
  */
 public class reduce_action extends parse_action
 {
+
   /*-----------------------------------------------------------*/
   /*--- Constructor(s) ----------------------------------------*/
   /*-----------------------------------------------------------*/
@@ -24,8 +25,8 @@ public class reduce_action extends parse_action
     /* sanity check */
     if ( prod == null )
       throw new internal_error (
-          "Attempt to create a reduce_action with a null production" ) ;
-    _reduce_with = prod ;
+          "Attempt to create a reduce_action with a null production" );
+    _reduce_with = prod;
   }
 
 
@@ -33,13 +34,13 @@ public class reduce_action extends parse_action
   /*--- (Access to) Instance Variables ------------------------*/
   /*-----------------------------------------------------------*/
   /** The production we reduce with. */
-  protected production _reduce_with ;
+  protected production _reduce_with;
 
 
   /** The production we reduce with. */
-  public production reduce_with ( )
+  public production reduce_with ()
   {
-    return _reduce_with ;
+    return _reduce_with;
   }
 
 
@@ -47,9 +48,9 @@ public class reduce_action extends parse_action
   /*--- General Methods ---------------------------------------*/
   /*-----------------------------------------------------------*/
   /** Quick access to type of action. */
-  public int kind ( )
+  public int kind ()
   {
-    return REDUCE ;
+    return REDUCE;
   }
 
 
@@ -57,7 +58,7 @@ public class reduce_action extends parse_action
   /** Equality test. */
   public boolean equals ( reduce_action other )
   {
-    return other != null && other.reduce_with ( ) == reduce_with ( ) ;
+    return other != null && other.reduce_with () == reduce_with ();
   }
 
 
@@ -66,24 +67,25 @@ public class reduce_action extends parse_action
   public boolean equals ( Object other )
   {
     if ( other instanceof reduce_action )
-      return equals ( ( reduce_action ) other ) ;
-    else return false ;
+      return equals ( ( reduce_action ) other );
+    else
+      return false;
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Compute a hash code. */
-  public int hashCode ( )
+  public int hashCode ()
   {
     /* use the hash code of the production we are reducing with */
-    return reduce_with ( ).hashCode ( ) ;
+    return reduce_with ().hashCode ();
   }
 
 
   /** Convert to string. */
-  public String toString ( )
+  public String toString ()
   {
-    return "REDUCE(with prod " + reduce_with ( ).index ( ) + ")" ;
+    return "REDUCE(with prod " + reduce_with ().index () + ")";
   }
   /*-----------------------------------------------------------*/
 }

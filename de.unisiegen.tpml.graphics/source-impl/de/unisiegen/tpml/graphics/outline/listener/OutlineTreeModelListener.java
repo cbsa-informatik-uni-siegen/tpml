@@ -1,24 +1,26 @@
-package de.unisiegen.tpml.graphics.outline.listener ;
+package de.unisiegen.tpml.graphics.outline.listener;
 
 
-import java.util.ArrayList ;
-import javax.swing.event.TreeModelEvent ;
-import javax.swing.event.TreeModelListener ;
-import de.unisiegen.tpml.core.ExpressionProofModel ;
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel ;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofModel ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
-import de.unisiegen.tpml.core.typeinference.TypeFormula ;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel ;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode ;
-import de.unisiegen.tpml.core.typeinference.TypeJudgement ;
-import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
-import de.unisiegen.tpml.graphics.outline.Outline ;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingView ;
+import java.util.ArrayList;
+
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+
+import de.unisiegen.tpml.core.ExpressionProofModel;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
+import de.unisiegen.tpml.core.typeinference.TypeFormula;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
+import de.unisiegen.tpml.core.typeinference.TypeJudgement;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline;
+import de.unisiegen.tpml.graphics.outline.Outline;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingView;
 
 
 /**
@@ -29,34 +31,35 @@ import de.unisiegen.tpml.graphics.subtyping.SubTypingView ;
  */
 public final class OutlineTreeModelListener implements TreeModelListener
 {
+
   /**
    * The unused <code>String</code> for the <code>SuppressWarnings</code>.
    */
-  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+  private static final String UNUSED = "unused"; //$NON-NLS-1$
 
 
   /**
    * The {@link DefaultOutline}.
    */
-  private DefaultOutline defaultOutline = null ;
+  private DefaultOutline defaultOutline = null;
 
 
   /**
    * The {@link ExpressionProofModel}.
    */
-  private ExpressionProofModel expressionProofModel = null ;
+  private ExpressionProofModel expressionProofModel = null;
 
 
   /**
    * The {@link TypeInferenceProofModel}.
    */
-  private TypeInferenceProofModel typeInferenceProofModel = null ;
+  private TypeInferenceProofModel typeInferenceProofModel = null;
 
 
   /**
    * The {@link SubTypingView}.
    */
-  private SubTypingView subTypingView = null ;
+  private SubTypingView subTypingView = null;
 
 
   /**
@@ -66,11 +69,11 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * @param pDefaultOutline The {@link DefaultOutline}.
    * @param pExpressionProofModel The {@link ExpressionProofModel}.
    */
-  public OutlineTreeModelListener ( DefaultOutline pDefaultOutline ,
+  public OutlineTreeModelListener ( DefaultOutline pDefaultOutline,
       ExpressionProofModel pExpressionProofModel )
   {
-    this.defaultOutline = pDefaultOutline ;
-    this.expressionProofModel = pExpressionProofModel ;
+    this.defaultOutline = pDefaultOutline;
+    this.expressionProofModel = pExpressionProofModel;
   }
 
 
@@ -81,11 +84,11 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * @param pDefaultOutline The {@link DefaultOutline}.
    * @param pSubTypingView The {@link SubTypingView}.
    */
-  public OutlineTreeModelListener ( DefaultOutline pDefaultOutline ,
+  public OutlineTreeModelListener ( DefaultOutline pDefaultOutline,
       SubTypingView pSubTypingView )
   {
-    this.defaultOutline = pDefaultOutline ;
-    this.subTypingView = pSubTypingView ;
+    this.defaultOutline = pDefaultOutline;
+    this.subTypingView = pSubTypingView;
   }
 
 
@@ -96,11 +99,11 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * @param pDefaultOutline The {@link DefaultOutline}.
    * @param pTypeInferenceProofModel The {@link TypeInferenceProofModel}.
    */
-  public OutlineTreeModelListener ( DefaultOutline pDefaultOutline ,
+  public OutlineTreeModelListener ( DefaultOutline pDefaultOutline,
       TypeInferenceProofModel pTypeInferenceProofModel )
   {
-    this.defaultOutline = pDefaultOutline ;
-    this.typeInferenceProofModel = pTypeInferenceProofModel ;
+    this.defaultOutline = pDefaultOutline;
+    this.typeInferenceProofModel = pTypeInferenceProofModel;
   }
 
 
@@ -112,67 +115,66 @@ public final class OutlineTreeModelListener implements TreeModelListener
   private final void handleEvent ( TreeModelEvent pTreeModelEvent )
   {
     // SmallStepProofModel
-    if ( pTreeModelEvent.getSource ( ) instanceof SmallStepProofModel )
+    if ( pTreeModelEvent.getSource () instanceof SmallStepProofModel )
     {
-      this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) ,
-          Outline.ExecuteAutoChange.SMALLSTEP ) ;
+      this.defaultOutline
+          .load ( this.expressionProofModel.getRoot ().getLastLeaf ()
+              .getExpression (), Outline.ExecuteAutoChange.SMALLSTEP );
     }
     // BigStepProofModel
-    else if ( pTreeModelEvent.getSource ( ) instanceof BigStepProofModel )
+    else if ( pTreeModelEvent.getSource () instanceof BigStepProofModel )
     {
-      this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) ,
-          Outline.ExecuteAutoChange.BIGSTEP ) ;
+      this.defaultOutline.load ( this.expressionProofModel.getRoot ()
+          .getLastLeaf ().getExpression (), Outline.ExecuteAutoChange.BIGSTEP );
     }
     // TypeChecker
-    else if ( pTreeModelEvent.getSource ( ) instanceof TypeCheckerProofModel )
+    else if ( pTreeModelEvent.getSource () instanceof TypeCheckerProofModel )
     {
-      this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) ,
-          Outline.ExecuteAutoChange.TYPECHECKER ) ;
+      this.defaultOutline.load ( this.expressionProofModel.getRoot ()
+          .getLastLeaf ().getExpression (),
+          Outline.ExecuteAutoChange.TYPECHECKER );
     }
     // MinimalTyping
-    else if ( pTreeModelEvent.getSource ( ) instanceof MinimalTypingProofModel )
+    else if ( pTreeModelEvent.getSource () instanceof MinimalTypingProofModel )
     {
-      this.defaultOutline.load ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) ,
-          Outline.ExecuteAutoChange.MINIMALTYPING ) ;
+      this.defaultOutline.load ( this.expressionProofModel.getRoot ()
+          .getLastLeaf ().getExpression (),
+          Outline.ExecuteAutoChange.MINIMALTYPING );
     }
     // SubTyping
-    else if ( pTreeModelEvent.getSource ( ) instanceof SubTypingProofModel )
+    else if ( pTreeModelEvent.getSource () instanceof SubTypingProofModel )
     {
-      if ( this.defaultOutline == this.subTypingView.getOutline1 ( ) )
+      if ( this.defaultOutline == this.subTypingView.getOutline1 () )
       {
-        this.defaultOutline.load ( this.subTypingView.getSubTypingModel ( )
-            .getRoot ( ).getLastLeaf ( ).getLeft ( ) ,
-            Outline.ExecuteAutoChange.SUBTYPING ) ;
+        this.defaultOutline.load ( this.subTypingView.getSubTypingModel ()
+            .getRoot ().getLastLeaf ().getLeft (),
+            Outline.ExecuteAutoChange.SUBTYPING );
       }
       else
       {
-        this.defaultOutline.load ( this.subTypingView.getSubTypingModel ( )
-            .getRoot ( ).getLastLeaf ( ).getRight ( ) ,
-            Outline.ExecuteAutoChange.SUBTYPING ) ;
+        this.defaultOutline.load ( this.subTypingView.getSubTypingModel ()
+            .getRoot ().getLastLeaf ().getRight (),
+            Outline.ExecuteAutoChange.SUBTYPING );
       }
     }
     // TypeInference
-    else if ( pTreeModelEvent.getSource ( ) instanceof TypeInferenceProofModel )
+    else if ( pTreeModelEvent.getSource () instanceof TypeInferenceProofModel )
     {
       ArrayList < TypeFormula > list = ( ( TypeInferenceProofNode ) this.typeInferenceProofModel
-          .getRoot ( ).getLastLeaf ( ) ).getAllFormulas ( ) ;
-      if ( list.size ( ) > 0 )
+          .getRoot ().getLastLeaf () ).getAllFormulas ();
+      if ( list.size () > 0 )
       {
-        TypeFormula typeFormula = list.get ( 0 ) ;
+        TypeFormula typeFormula = list.get ( 0 );
         if ( typeFormula instanceof TypeJudgement )
         {
           this.defaultOutline.load ( ( ( TypeJudgement ) typeFormula )
-              .getExpression ( ) , Outline.ExecuteAutoChange.TYPEINFERENCE ) ;
+              .getExpression (), Outline.ExecuteAutoChange.TYPEINFERENCE );
         }
         else if ( typeFormula instanceof TypeEquationTypeInference )
         {
           this.defaultOutline.load (
-              ( ( TypeEquationTypeInference ) typeFormula ).getLeft ( ) ,
-              Outline.ExecuteAutoChange.TYPEINFERENCE ) ;
+              ( ( TypeEquationTypeInference ) typeFormula ).getLeft (),
+              Outline.ExecuteAutoChange.TYPEINFERENCE );
         }
       }
     }
@@ -185,10 +187,10 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeNodesChanged(TreeModelEvent)
    */
-  public final void treeNodesChanged ( @ SuppressWarnings ( UNUSED )
+  public final void treeNodesChanged ( @SuppressWarnings ( UNUSED )
   TreeModelEvent pTreeModelEvent )
   {
-    handleEvent ( pTreeModelEvent ) ;
+    handleEvent ( pTreeModelEvent );
   }
 
 
@@ -198,7 +200,7 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeNodesInserted(TreeModelEvent)
    */
-  public final void treeNodesInserted ( @ SuppressWarnings ( UNUSED )
+  public final void treeNodesInserted ( @SuppressWarnings ( UNUSED )
   TreeModelEvent pTreeModelEvent )
   {
     // Do Nothing
@@ -211,7 +213,7 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeNodesRemoved(TreeModelEvent)
    */
-  public final void treeNodesRemoved ( @ SuppressWarnings ( UNUSED )
+  public final void treeNodesRemoved ( @SuppressWarnings ( UNUSED )
   TreeModelEvent pTreeModelEvent )
   {
     // Do Nothing
@@ -224,7 +226,7 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeStructureChanged(TreeModelEvent)
    */
-  public final void treeStructureChanged ( @ SuppressWarnings ( UNUSED )
+  public final void treeStructureChanged ( @SuppressWarnings ( UNUSED )
   TreeModelEvent pTreeModelEvent )
   {
     // Do Nothing

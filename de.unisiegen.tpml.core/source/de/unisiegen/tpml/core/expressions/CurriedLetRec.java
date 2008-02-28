@@ -1,22 +1,23 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.util.BoundRenaming ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.util.BoundRenaming;
 
 
 /**
@@ -30,13 +31,14 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @see CurriedLet
  */
 public final class CurriedLetRec extends CurriedLet implements
-    BoundIdentifiers , DefaultTypes , DefaultExpressions
+    BoundIdentifiers, DefaultTypes, DefaultExpressions
 {
+
   /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( CurriedLetRec.class ) ;
+      .getCaption ( CurriedLetRec.class );
 
 
   /**
@@ -44,25 +46,25 @@ public final class CurriedLetRec extends CurriedLet implements
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_LET , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{let}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_REC , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{rec}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_IN , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{in}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_CURRIED_LET_REC , 4 ,
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_LET, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{let}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_REC, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{rec}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_IN, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{in}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_CURRIED_LET_REC, 4,
         "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
             + "{\\color{" + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_LET //$NON-NLS-1$ //$NON-NLS-2$
             + "\\ \\" + LATEX_KEY_REC + "\\ #1\\ =\\ #3\\ \\" + LATEX_KEY_IN //$NON-NLS-1$//$NON-NLS-2$
             + "\\ #4}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\color{" //$NON-NLS-1$//$NON-NLS-2$
             + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_LET //$NON-NLS-1$
             + "\\ \\" + LATEX_KEY_REC //$NON-NLS-1$
-            + "\\ #1\\colon\\ #2\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}" , //$NON-NLS-1$ //$NON-NLS-2$
-        "id (id1: tau1) ... (idn: taun)" , "tau" , "e1" , "e2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
-    return commands ;
+            + "\\ #1\\colon\\ #2\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}", //$NON-NLS-1$ //$NON-NLS-2$
+        "id (id1: tau1) ... (idn: taun)", "tau", "e1", "e2" ) ); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+    return commands;
   }
 
 
@@ -86,10 +88,10 @@ public final class CurriedLetRec extends CurriedLet implements
    * @see CurriedLet#CurriedLet(Identifier[], MonoType[], Expression,
    *      Expression)
    */
-  public CurriedLetRec ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes ,
-      Expression pExpression1 , Expression pExpression2 )
+  public CurriedLetRec ( Identifier [] pIdentifiers, MonoType [] pTypes,
+      Expression pExpression1, Expression pExpression2 )
   {
-    super ( pIdentifiers , pTypes , pExpression1 , pExpression2 ) ;
+    super ( pIdentifiers, pTypes, pExpression1, pExpression2 );
   }
 
 
@@ -117,85 +119,85 @@ public final class CurriedLetRec extends CurriedLet implements
    * @see CurriedLet#CurriedLet(Identifier[], MonoType[], Expression,
    *      Expression)
    */
-  public CurriedLetRec ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes ,
-      Expression pExpression1 , Expression pExpression2 ,
-      int pParserStartOffset , int pParserEndOffset )
+  public CurriedLetRec ( Identifier [] pIdentifiers, MonoType [] pTypes,
+      Expression pExpression1, Expression pExpression2, int pParserStartOffset,
+      int pParserEndOffset )
   {
-    this ( pIdentifiers , pTypes , pExpression1 , pExpression2 ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pIdentifiers, pTypes, pExpression1, pExpression2 );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
   /**
    * Checks the disjunction of the {@link Identifier} sets.
    */
-  @ Override
-  protected void checkDisjunction ( )
+  @Override
+  protected void checkDisjunction ()
   {
     // Identifier 0
-    ArrayList < Identifier > allIdentifiers = new ArrayList < Identifier > ( ) ;
-    allIdentifiers.addAll ( this.expressions [ 0 ].getIdentifiersAll ( ) ) ;
-    allIdentifiers.addAll ( this.expressions [ 1 ].getIdentifiersAll ( ) ) ;
-    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
+    ArrayList < Identifier > allIdentifiers = new ArrayList < Identifier > ();
+    allIdentifiers.addAll ( this.expressions [ 0 ].getIdentifiersAll () );
+    allIdentifiers.addAll ( this.expressions [ 1 ].getIdentifiersAll () );
+    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ();
     for ( Identifier allId : allIdentifiers )
     {
       if ( ( this.identifiers [ 0 ].equals ( allId ) )
-          && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet ( ) ) || ( Identifier.Set.METHOD
-              .equals ( allId.getSet ( ) ) ) ) ) ) )
+          && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet () ) || ( Identifier.Set.METHOD
+              .equals ( allId.getSet () ) ) ) ) ) )
       {
-        negativeIdentifiers.add ( allId ) ;
+        negativeIdentifiers.add ( allId );
       }
     }
     /*
      * Throw an exception, if the negative identifier list contains one or more
      * identifiers. If this happens, all Identifiers are added.
      */
-    if ( negativeIdentifiers.size ( ) > 0 )
+    if ( negativeIdentifiers.size () > 0 )
     {
-      negativeIdentifiers.clear ( ) ;
+      negativeIdentifiers.clear ();
       for ( Identifier allId : allIdentifiers )
       {
         if ( this.identifiers [ 0 ].equals ( allId ) )
         {
-          negativeIdentifiers.add ( allId ) ;
+          negativeIdentifiers.add ( allId );
         }
       }
-      negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
+      negativeIdentifiers.add ( this.identifiers [ 0 ] );
       LanguageParserMultiException
-          .throwExceptionDisjunction ( negativeIdentifiers ) ;
+          .throwExceptionDisjunction ( negativeIdentifiers );
     }
     // Identifier 1-n
-    allIdentifiers = this.expressions [ 0 ].getIdentifiersAll ( ) ;
-    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    allIdentifiers = this.expressions [ 0 ].getIdentifiersAll ();
+    for ( int i = 1 ; i < this.identifiers.length ; i++ )
     {
-      negativeIdentifiers.clear ( ) ;
+      negativeIdentifiers.clear ();
       for ( Identifier allId : allIdentifiers )
       {
         if ( ( this.identifiers [ i ].equals ( allId ) )
-            && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet ( ) ) || ( Identifier.Set.METHOD
-                .equals ( allId.getSet ( ) ) ) ) ) ) )
+            && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet () ) || ( Identifier.Set.METHOD
+                .equals ( allId.getSet () ) ) ) ) ) )
         {
-          negativeIdentifiers.add ( allId ) ;
+          negativeIdentifiers.add ( allId );
         }
       }
       /*
        * Throw an exception, if the negative identifier list contains one or
        * more identifiers. If this happens, all Identifiers are added.
        */
-      if ( negativeIdentifiers.size ( ) > 0 )
+      if ( negativeIdentifiers.size () > 0 )
       {
-        negativeIdentifiers.clear ( ) ;
+        negativeIdentifiers.clear ();
         for ( Identifier allId : allIdentifiers )
         {
           if ( this.identifiers [ i ].equals ( allId ) )
           {
-            negativeIdentifiers.add ( allId ) ;
+            negativeIdentifiers.add ( allId );
           }
         }
-        negativeIdentifiers.add ( this.identifiers [ i ] ) ;
+        negativeIdentifiers.add ( this.identifiers [ i ] );
         LanguageParserMultiException
-            .throwExceptionDisjunction ( negativeIdentifiers ) ;
+            .throwExceptionDisjunction ( negativeIdentifiers );
       }
     }
   }
@@ -206,32 +208,32 @@ public final class CurriedLetRec extends CurriedLet implements
    * 
    * @see CurriedLet#clone()
    */
-  @ Override
-  public CurriedLetRec clone ( )
+  @Override
+  public CurriedLetRec clone ()
   {
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    Identifier [] newIdentifiers = new Identifier [ this.identifiers.length ];
+    for ( int i = 0 ; i < newIdentifiers.length ; i++ )
     {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ();
     }
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
-    for ( int i = 0 ; i < newTypes.length ; i ++ )
+    MonoType [] newTypes = new MonoType [ this.types.length ];
+    for ( int i = 0 ; i < newTypes.length ; i++ )
     {
       newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
-          .clone ( ) ;
+          .clone ();
     }
-    return new CurriedLetRec ( newIdentifiers , newTypes ,
-        this.expressions [ 0 ].clone ( ) , this.expressions [ 1 ].clone ( ) ) ;
+    return new CurriedLetRec ( newIdentifiers, newTypes, this.expressions [ 0 ]
+        .clone (), this.expressions [ 1 ].clone () );
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -242,18 +244,18 @@ public final class CurriedLetRec extends CurriedLet implements
    * @return A list of lists of in this {@link Expression} bound
    *         {@link Identifier}s.
    */
-  @ Override
-  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
+  @Override
+  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ()
   {
     if ( this.boundIdentifiers == null )
     {
       this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> (
-          this.identifiers.length ) ;
+          this.identifiers.length );
       ArrayList < Identifier > boundE1 = this.expressions [ 0 ]
-          .getIdentifiersFree ( ) ;
+          .getIdentifiersFree ();
       ArrayList < Identifier > boundE2 = this.expressions [ 1 ]
-          .getIdentifiersFree ( ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+          .getIdentifiersFree ();
+      for ( int i = 0 ; i < this.identifiers.length ; i++ )
       {
         if ( i == 0 )
         {
@@ -261,24 +263,24 @@ public final class CurriedLetRec extends CurriedLet implements
            * Check, if the bindings should be searched in E1 and E2 or only in
            * E2. Example: let x x = x in x.
            */
-          boolean searchInE1 = true ;
-          for ( int j = 1 ; j < this.identifiers.length ; j ++ )
+          boolean searchInE1 = true;
+          for ( int j = 1 ; j < this.identifiers.length ; j++ )
           {
             if ( this.identifiers [ 0 ].equals ( this.identifiers [ j ] ) )
             {
-              searchInE1 = false ;
-              break ;
+              searchInE1 = false;
+              break;
             }
           }
-          ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
+          ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ();
           if ( searchInE1 )
           {
             for ( Identifier freeId : boundE1 )
             {
               if ( this.identifiers [ 0 ].equals ( freeId ) )
               {
-                freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
-                boundIdList.add ( freeId ) ;
+                freeId.setBoundTo ( this, this.identifiers [ 0 ] );
+                boundIdList.add ( freeId );
               }
             }
           }
@@ -286,11 +288,11 @@ public final class CurriedLetRec extends CurriedLet implements
           {
             if ( this.identifiers [ 0 ].equals ( freeId ) )
             {
-              freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
-              boundIdList.add ( freeId ) ;
+              freeId.setBoundTo ( this, this.identifiers [ 0 ] );
+              boundIdList.add ( freeId );
             }
           }
-          this.boundIdentifiers.add ( boundIdList ) ;
+          this.boundIdentifiers.add ( boundIdList );
         }
         else
         {
@@ -298,32 +300,32 @@ public final class CurriedLetRec extends CurriedLet implements
            * An Identifier has no binding, if an Identifier after him has the
            * same name. Example: let rec f x x = x + 1 in f 1 2.
            */
-          boolean hasBinding = true ;
-          for ( int j = i + 1 ; j < this.identifiers.length ; j ++ )
+          boolean hasBinding = true;
+          for ( int j = i + 1 ; j < this.identifiers.length ; j++ )
           {
             if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
             {
-              hasBinding = false ;
-              break ;
+              hasBinding = false;
+              break;
             }
           }
-          ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
+          ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ();
           if ( hasBinding )
           {
             for ( Identifier freeId : boundE1 )
             {
               if ( this.identifiers [ i ].equals ( freeId ) )
               {
-                freeId.setBoundTo ( this , this.identifiers [ i ] ) ;
-                boundIdList.add ( freeId ) ;
+                freeId.setBoundTo ( this, this.identifiers [ i ] );
+                boundIdList.add ( freeId );
               }
             }
           }
-          this.boundIdentifiers.add ( boundIdList ) ;
+          this.boundIdentifiers.add ( boundIdList );
         }
       }
     }
-    return this.boundIdentifiers ;
+    return this.boundIdentifiers;
   }
 
 
@@ -332,31 +334,31 @@ public final class CurriedLetRec extends CurriedLet implements
    * 
    * @see CurriedLet#getIdentifiersFree()
    */
-  @ Override
-  public ArrayList < Identifier > getIdentifiersFree ( )
+  @Override
+  public ArrayList < Identifier > getIdentifiersFree ()
   {
     if ( this.identifiersFree == null )
     {
-      this.identifiersFree = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > freeE1 = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > freeE2 = new ArrayList < Identifier > ( ) ;
-      freeE1.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      this.identifiersFree = new ArrayList < Identifier > ();
+      ArrayList < Identifier > freeE1 = new ArrayList < Identifier > ();
+      ArrayList < Identifier > freeE2 = new ArrayList < Identifier > ();
+      freeE1.addAll ( this.expressions [ 0 ].getIdentifiersFree () );
+      for ( int i = 0 ; i < this.identifiers.length ; i++ )
       {
         while ( freeE1.remove ( this.identifiers [ i ] ) )
         {
           // Remove all Identifiers with the same name
         }
       }
-      freeE2.addAll ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
+      freeE2.addAll ( this.expressions [ 1 ].getIdentifiersFree () );
       while ( freeE2.remove ( this.identifiers [ 0 ] ) )
       {
         // Remove all Identifiers with the same name
       }
-      this.identifiersFree.addAll ( freeE1 ) ;
-      this.identifiersFree.addAll ( freeE2 ) ;
+      this.identifiersFree.addAll ( freeE1 );
+      this.identifiersFree.addAll ( freeE2 );
     }
-    return this.identifiersFree ;
+    return this.identifiersFree;
   }
 
 
@@ -365,12 +367,12 @@ public final class CurriedLetRec extends CurriedLet implements
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -379,118 +381,118 @@ public final class CurriedLetRec extends CurriedLet implements
    * 
    * @see CurriedLet#substitute(Identifier, Expression)
    */
-  @ Override
-  public CurriedLetRec substitute ( Identifier pId , Expression pExpression )
+  @Override
+  public CurriedLetRec substitute ( Identifier pId, Expression pExpression )
   {
-    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    if ( pExpression.getIdentifierFreeNotOnlyVariable () )
     {
-      throw new NotOnlyFreeVariableException ( ) ;
+      throw new NotOnlyFreeVariableException ();
     }
     if ( this.identifiers [ 0 ].equals ( pId ) )
     {
-      return this ;
+      return this;
     }
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    Identifier [] newIdentifiers = new Identifier [ this.identifiers.length ];
+    for ( int i = 0 ; i < newIdentifiers.length ; i++ )
     {
-      newIdentifiers [ i ] = this.identifiers [ i ] ;
+      newIdentifiers [ i ] = this.identifiers [ i ];
     }
-    Expression newE1 = this.expressions [ 0 ] ;
-    Expression newE2 = this.expressions [ 1 ] ;
-    boolean sameIdAs0 = false ;
-    boolean substInE1 = true ;
-    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    Expression newE1 = this.expressions [ 0 ];
+    Expression newE2 = this.expressions [ 1 ];
+    boolean sameIdAs0 = false;
+    boolean substInE1 = true;
+    for ( int i = 1 ; i < this.identifiers.length ; i++ )
     {
       if ( this.identifiers [ i ].equals ( pId ) )
       {
-        substInE1 = false ;
-        break ;
+        substInE1 = false;
+        break;
       }
     }
-    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    for ( int i = 1 ; i < this.identifiers.length ; i++ )
     {
       if ( this.identifiers [ i ].equals ( this.identifiers [ 0 ] ) )
       {
-        sameIdAs0 = true ;
-        break ;
+        sameIdAs0 = true;
+        break;
       }
     }
     if ( substInE1 )
     {
-      for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
+      for ( int i = 1 ; i < newIdentifiers.length ; i++ )
       {
-        BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
-        boundRenaming.add ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
-        boundRenaming.remove ( newIdentifiers [ i ] ) ;
-        boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
-        boundRenaming.add ( pId ) ;
+        BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ();
+        boundRenaming.add ( this.expressions [ 0 ].getIdentifiersFree () );
+        boundRenaming.remove ( newIdentifiers [ i ] );
+        boundRenaming.add ( pExpression.getIdentifiersFree () );
+        boundRenaming.add ( pId );
         /*
          * The new Identifier should not be equal to an other Identifier.
          */
         if ( boundRenaming.contains ( newIdentifiers [ i ] ) )
         {
-          for ( int j = 1 ; j < newIdentifiers.length ; j ++ )
+          for ( int j = 1 ; j < newIdentifiers.length ; j++ )
           {
             if ( i != j )
             {
-              boundRenaming.add ( newIdentifiers [ j ] ) ;
+              boundRenaming.add ( newIdentifiers [ j ] );
             }
           }
         }
-        Identifier newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
+        Identifier newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] );
         /*
          * Search for an Identifier before the current Identifier with the same
          * name. For example: "let a = b in let rec f b b = b a in f".
          */
-        for ( int j = 1 ; j < i ; j ++ )
+        for ( int j = 1 ; j < i ; j++ )
         {
           if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
           {
-            newId = newIdentifiers [ j ] ;
+            newId = newIdentifiers [ j ];
           }
         }
         /*
          * Substitute the old Identifier only with the new Identifier, if they
          * are different.
          */
-        if ( ! newIdentifiers [ i ].equals ( newId ) )
+        if ( !newIdentifiers [ i ].equals ( newId ) )
         {
-          newE1 = newE1.substitute ( newIdentifiers [ i ] , newId ) ;
-          newIdentifiers [ i ] = newId ;
+          newE1 = newE1.substitute ( newIdentifiers [ i ], newId );
+          newIdentifiers [ i ] = newId;
         }
       }
     }
-    BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
-    boundRenaming.add ( this.getIdentifiersFree ( ) ) ;
-    boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
-    boundRenaming.add ( pId ) ;
-    if ( ! sameIdAs0 )
+    BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ();
+    boundRenaming.add ( this.getIdentifiersFree () );
+    boundRenaming.add ( pExpression.getIdentifiersFree () );
+    boundRenaming.add ( pId );
+    if ( !sameIdAs0 )
     {
-      for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
+      for ( int i = 1 ; i < newIdentifiers.length ; i++ )
       {
-        boundRenaming.add ( this.identifiers [ i ] ) ;
+        boundRenaming.add ( this.identifiers [ i ] );
       }
     }
-    Identifier newId = boundRenaming.newIdentifier ( this.identifiers [ 0 ] ) ;
-    if ( ! this.identifiers [ 0 ].equals ( newId ) )
+    Identifier newId = boundRenaming.newIdentifier ( this.identifiers [ 0 ] );
+    if ( !this.identifiers [ 0 ].equals ( newId ) )
     {
-      if ( ! sameIdAs0 )
+      if ( !sameIdAs0 )
       {
-        newE1 = newE1.substitute ( this.identifiers [ 0 ] , newId ) ;
-        newIdentifiers [ 0 ] = newId ;
+        newE1 = newE1.substitute ( this.identifiers [ 0 ], newId );
+        newIdentifiers [ 0 ] = newId;
       }
-      newE2 = newE2.substitute ( this.identifiers [ 0 ] , newId ) ;
-      newIdentifiers [ 0 ] = newId ;
+      newE2 = newE2.substitute ( this.identifiers [ 0 ], newId );
+      newIdentifiers [ 0 ] = newId;
     }
-    if ( ( ! sameIdAs0 ) || ( substInE1 ) )
+    if ( ( !sameIdAs0 ) || ( substInE1 ) )
     {
-      newE1 = newE1.substitute ( pId , pExpression ) ;
+      newE1 = newE1.substitute ( pId, pExpression );
     }
     /*
      * Perform the substitution in e2.
      */
-    newE2 = newE2.substitute ( pId , pExpression ) ;
-    return new CurriedLetRec ( newIdentifiers , this.types , newE1 , newE2 ) ;
+    newE2 = newE2.substitute ( pId, pExpression );
+    return new CurriedLetRec ( newIdentifiers, this.types, newE1, newE2 );
   }
 
 
@@ -499,18 +501,18 @@ public final class CurriedLetRec extends CurriedLet implements
    * 
    * @see CurriedLet#substitute(TypeSubstitution)
    */
-  @ Override
+  @Override
   public CurriedLetRec substitute ( TypeSubstitution pTypeSubstitution )
   {
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
-    for ( int i = 0 ; i < newTypes.length ; i ++ )
+    MonoType [] newTypes = new MonoType [ this.types.length ];
+    for ( int i = 0 ; i < newTypes.length ; i++ )
     {
       newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
-          .substitute ( pTypeSubstitution ) ;
+          .substitute ( pTypeSubstitution );
     }
-    return new CurriedLetRec ( this.identifiers , newTypes ,
-        this.expressions [ 0 ].substitute ( pTypeSubstitution ) ,
-        this.expressions [ 1 ].substitute ( pTypeSubstitution ) ) ;
+    return new CurriedLetRec ( this.identifiers, newTypes,
+        this.expressions [ 0 ].substitute ( pTypeSubstitution ),
+        this.expressions [ 1 ].substitute ( pTypeSubstitution ) );
   }
 
 
@@ -519,100 +521,99 @@ public final class CurriedLetRec extends CurriedLet implements
    * 
    * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    StringBuilder identifier = new StringBuilder ( ) ;
-    identifier.append ( this.identifiers [ 0 ].toPrettyString ( ).toString ( ) ) ;
-    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    StringBuilder identifier = new StringBuilder ();
+    identifier.append ( this.identifiers [ 0 ].toPrettyString ().toString () );
+    for ( int i = 1 ; i < this.identifiers.length ; i++ )
     {
-      identifier.append ( PRETTY_SPACE ) ;
+      identifier.append ( PRETTY_SPACE );
       if ( this.types [ i ] != null )
       {
-        identifier.append ( PRETTY_LPAREN ) ;
+        identifier.append ( PRETTY_LPAREN );
       }
-      identifier
-          .append ( this.identifiers [ i ].toPrettyString ( ).toString ( ) ) ;
+      identifier.append ( this.identifiers [ i ].toPrettyString ().toString () );
       if ( this.types [ i ] != null )
       {
-        identifier.append ( PRETTY_COLON ) ;
-        identifier.append ( PRETTY_SPACE ) ;
-        identifier.append ( this.types [ i ].toPrettyString ( ).toString ( ) ) ;
-        identifier.append ( PRETTY_RPAREN ) ;
+        identifier.append ( PRETTY_COLON );
+        identifier.append ( PRETTY_SPACE );
+        identifier.append ( this.types [ i ].toPrettyString ().toString () );
+        identifier.append ( PRETTY_RPAREN );
       }
     }
     String descriptions[] = new String [ 2 + this.identifiers.length
-        + this.types.length + this.expressions.length ] ;
-    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
-    descriptions [ 1 ] = identifier.toString ( ) ;
-    descriptions [ 2 ] = this.identifiers [ 0 ].toString ( ) ;
-    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+        + this.types.length + this.expressions.length ];
+    descriptions [ 0 ] = this.toPrettyString ().toString ();
+    descriptions [ 1 ] = identifier.toString ();
+    descriptions [ 2 ] = this.identifiers [ 0 ].toString ();
+    for ( int i = 1 ; i < this.identifiers.length ; i++ )
     {
-      descriptions [ 1 + i * 2 ] = this.identifiers [ i ].toPrettyString ( )
-          .toString ( ) ;
+      descriptions [ 1 + i * 2 ] = this.identifiers [ i ].toPrettyString ()
+          .toString ();
       descriptions [ 2 + i * 2 ] = this.types [ i ] == null ? LATEX_NO_TYPE
-          : this.types [ i ].toPrettyString ( ).toString ( ) ;
+          : this.types [ i ].toPrettyString ().toString ();
     }
     descriptions [ descriptions.length - 3 ] = this.types [ 0 ] == null ? LATEX_NO_TYPE
-        : this.types [ 0 ].toPrettyString ( ).toString ( ) ;
+        : this.types [ 0 ].toPrettyString ().toString ();
     descriptions [ descriptions.length - 2 ] = this.expressions [ 0 ]
-        .toPrettyString ( ).toString ( ) ;
+        .toPrettyString ().toString ();
     descriptions [ descriptions.length - 1 ] = this.expressions [ 1 ]
-        .toPrettyString ( ).toString ( ) ;
+        .toPrettyString ().toString ();
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_LET , LATEX_CURRIED_LET_REC , pIndent , descriptions ) ;
-    builder.addBuilderBegin ( ) ;
+        PRIO_LET, LATEX_CURRIED_LET_REC, pIndent, descriptions );
+    builder.addBuilderBegin ();
     builder.addBuilder ( this.identifiers [ 0 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , PRIO_ID ) ;
-    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ), PRIO_ID );
+    for ( int i = 1 ; i < this.identifiers.length ; i++ )
     {
-      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
           + LATEX_INDENT )
-          + LATEX_SPACE ) ;
+          + LATEX_SPACE );
       if ( this.types [ i ] != null )
       {
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
             + LATEX_INDENT )
-            + LATEX_LPAREN ) ;
+            + LATEX_LPAREN );
       }
       builder.addBuilder ( this.identifiers [ i ].toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , PRIO_ID ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ), PRIO_ID );
       if ( this.types [ i ] != null )
       {
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
             + LATEX_INDENT )
-            + LATEX_COLON ) ;
-        builder.addText ( LATEX_SPACE ) ;
+            + LATEX_COLON );
+        builder.addText ( LATEX_SPACE );
         builder.addBuilder ( this.types [ i ].toLatexStringBuilder (
-            pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) ,
-            PRIO_LET_TAU ) ;
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+            pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ),
+            PRIO_LET_TAU );
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
             + LATEX_INDENT )
-            + LATEX_RPAREN ) ;
+            + LATEX_RPAREN );
       }
     }
-    builder.addBuilderEnd ( ) ;
+    builder.addBuilderEnd ();
     if ( this.types [ 0 ] == null )
     {
-      builder.addEmptyBuilder ( ) ;
+      builder.addEmptyBuilder ();
     }
     else
     {
       builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_LET_TAU ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), PRIO_LET_TAU );
     }
-    builder.addBreak ( ) ;
+    builder.addBreak ();
     builder.addBuilder ( this.expressions [ 0 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_LET_E1 ) ;
-    builder.addBreak ( ) ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), PRIO_LET_E1 );
+    builder.addBreak ();
     builder.addBuilder ( this.expressions [ 1 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_LET_E2 ) ;
-    return builder ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), PRIO_LET_E2 );
+    return builder;
   }
 
 
@@ -621,60 +622,60 @@ public final class CurriedLetRec extends CurriedLet implements
    * 
    * @see CurriedLet#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_LET ) ;
-      this.prettyStringBuilder.addKeyword ( PRETTY_LET ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-      this.prettyStringBuilder.addKeyword ( PRETTY_REC ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_LET );
+      this.prettyStringBuilder.addKeyword ( PRETTY_LET );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
+      this.prettyStringBuilder.addKeyword ( PRETTY_REC );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
-      for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), PRIO_ID );
+      for ( int i = 1 ; i < this.identifiers.length ; i++ )
       {
-        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SPACE );
         if ( this.types [ i ] != null )
         {
-          this.prettyStringBuilder.addText ( PRETTY_LPAREN ) ;
+          this.prettyStringBuilder.addText ( PRETTY_LPAREN );
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), PRIO_ID );
         if ( this.types [ i ] != null )
         {
-          this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
-          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+          this.prettyStringBuilder.addText ( PRETTY_COLON );
+          this.prettyStringBuilder.addText ( PRETTY_SPACE );
           this.prettyStringBuilder.addBuilder ( this.types [ i ]
-              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-              PRIO_LET_TAU ) ;
-          this.prettyStringBuilder.addText ( PRETTY_RPAREN ) ;
+              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+              PRIO_LET_TAU );
+          this.prettyStringBuilder.addText ( PRETTY_RPAREN );
         }
       }
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
-        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_COLON );
+        this.prettyStringBuilder.addText ( PRETTY_SPACE );
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_LET_TAU ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+            PRIO_LET_TAU );
       }
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-      this.prettyStringBuilder.addText ( PRETTY_EQUAL ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-      this.prettyStringBuilder.addBreak ( ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
+      this.prettyStringBuilder.addText ( PRETTY_EQUAL );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
+      this.prettyStringBuilder.addBreak ();
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-      this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( PRETTY_IN ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), PRIO_LET_E1 );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
+      this.prettyStringBuilder.addBreak ();
+      this.prettyStringBuilder.addKeyword ( PRETTY_IN );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), PRIO_LET_E2 );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

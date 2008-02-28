@@ -1,17 +1,19 @@
-package de.unisiegen.tpml.core ;
+package de.unisiegen.tpml.core;
 
 
-import java.util.Arrays ;
-import java.util.EventListener ;
-import java.util.LinkedList ;
-import javax.swing.event.EventListenerList ;
-import javax.swing.event.TreeModelEvent ;
-import javax.swing.event.TreeModelListener ;
-import javax.swing.tree.TreeNode ;
-import javax.swing.tree.TreePath ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.core.languages.LanguageTranslator ;
-import de.unisiegen.tpml.core.util.beans.AbstractBean ;
+import java.util.Arrays;
+import java.util.EventListener;
+import java.util.LinkedList;
+
+import javax.swing.event.EventListenerList;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageTranslator;
+import de.unisiegen.tpml.core.util.beans.AbstractBean;
 
 
 /**
@@ -30,6 +32,7 @@ import de.unisiegen.tpml.core.util.beans.AbstractBean ;
 public abstract class AbstractProofModel extends AbstractBean implements
     ProofModel
 {
+
   //
   // Attributes
   //
@@ -39,7 +42,7 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @see #isCheating()
    * @see #setCheating(boolean)
    */
-  private boolean cheating ;
+  private boolean cheating;
 
 
   /**
@@ -48,7 +51,7 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @see #isFinished()
    * @see #setFinished(boolean)
    */
-  private boolean finished ;
+  private boolean finished;
 
 
   /**
@@ -57,7 +60,7 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @see #addTreeModelListener(TreeModelListener)
    * @see #removeTreeModelListener(TreeModelListener)
    */
-  protected EventListenerList listenerList = new EventListenerList ( ) ;
+  protected EventListenerList listenerList = new EventListenerList ();
 
 
   /**
@@ -65,7 +68,7 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * 
    * @see #getRoot()
    */
-  protected AbstractProofNode root ;
+  protected AbstractProofNode root;
 
 
   /**
@@ -74,7 +77,7 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * 
    * @see #getRules()
    */
-  protected ProofRuleSet ruleSet ;
+  protected ProofRuleSet ruleSet;
 
 
   /**
@@ -82,7 +85,7 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * used to determine whether a given node contains syntactic sugar and
    * probably translate the expression for the node to core syntax.
    */
-  protected LanguageTranslator translator = null ;
+  protected LanguageTranslator translator = null;
 
 
   //
@@ -97,19 +100,19 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @throws NullPointerException if <code>root</code> or <code>ruleSet</code>
    *           is <code>null</code>.
    */
-  protected AbstractProofModel ( AbstractProofNode pRoot ,
+  protected AbstractProofModel ( AbstractProofNode pRoot,
       AbstractProofRuleSet pRuleSet )
   {
     if ( pRuleSet == null )
     {
-      throw new NullPointerException ( "ruleSet is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "ruleSet is null" ); //$NON-NLS-1$
     }
     if ( pRoot == null )
     {
-      throw new NullPointerException ( "root is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "root is null" ); //$NON-NLS-1$
     }
-    this.ruleSet = pRuleSet ;
-    this.root = pRoot ;
+    this.ruleSet = pRuleSet;
+    this.root = pRoot;
   }
 
 
@@ -121,9 +124,9 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * 
    * @see de.unisiegen.tpml.core.ProofModel#isCheating()
    */
-  public boolean isCheating ( )
+  public boolean isCheating ()
   {
-    return this.cheating ;
+    return this.cheating;
   }
 
 
@@ -139,9 +142,9 @@ public abstract class AbstractProofModel extends AbstractBean implements
   {
     if ( this.cheating != pCheating )
     {
-      boolean oldCheating = this.cheating ;
-      this.cheating = pCheating ;
-      firePropertyChange ( "cheating" , oldCheating , pCheating ) ; //$NON-NLS-1$
+      boolean oldCheating = this.cheating;
+      this.cheating = pCheating;
+      firePropertyChange ( "cheating", oldCheating, pCheating ); //$NON-NLS-1$
     }
   }
 
@@ -151,9 +154,9 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * 
    * @see de.unisiegen.tpml.core.ProofModel#isFinished()
    */
-  public boolean isFinished ( )
+  public boolean isFinished ()
   {
-    return this.finished ;
+    return this.finished;
   }
 
 
@@ -169,9 +172,9 @@ public abstract class AbstractProofModel extends AbstractBean implements
   {
     if ( this.finished != pFinished )
     {
-      boolean oldFinished = this.finished ;
-      this.finished = pFinished ;
-      firePropertyChange ( "finished" , oldFinished , pFinished ) ; //$NON-NLS-1$
+      boolean oldFinished = this.finished;
+      this.finished = pFinished;
+      firePropertyChange ( "finished", oldFinished, pFinished ); //$NON-NLS-1$
     }
   }
 
@@ -181,9 +184,9 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * 
    * @see de.unisiegen.tpml.core.ProofModel#getLanguage()
    */
-  public Language getLanguage ( )
+  public Language getLanguage ()
   {
-    return this.ruleSet.getLanguage ( ) ;
+    return this.ruleSet.getLanguage ();
   }
 
 
@@ -192,11 +195,11 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * 
    * @see ProofModel#getRules()
    */
-  public ProofRule [ ] getRules ( )
+  public ProofRule [] getRules ()
   {
-    ProofRule [ ] rules = this.ruleSet.getRules ( ) ;
-    Arrays.sort ( rules ) ;
-    return rules ;
+    ProofRule [] rules = this.ruleSet.getRules ();
+    Arrays.sort ( rules );
+    return rules;
   }
 
 
@@ -212,20 +215,20 @@ public abstract class AbstractProofModel extends AbstractBean implements
   {
     if ( node == null )
     {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
     }
     // check if we need to guess here
-    if ( ! node.isProven ( ) )
+    if ( !node.isProven () )
     {
-      guess ( node ) ;
+      guess ( node );
     }
     // check if we're done with the proof
-    if ( ! isFinished ( ) )
+    if ( !isFinished () )
     {
       // complete the child nodes
-      for ( int n = 0 ; n < node.getChildCount ( ) ; ++ n )
+      for ( int n = 0 ; n < node.getChildCount () ; ++n )
       {
-        complete ( node.getChildAt ( n ) ) ;
+        complete ( node.getChildAt ( n ) );
       }
     }
   }
@@ -236,7 +239,7 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * 
    * @see ProofModel#guess(ProofNode)
    */
-  public abstract void guess ( ProofNode node ) throws ProofGuessException ;
+  public abstract void guess ( ProofNode node ) throws ProofGuessException;
 
 
   /**
@@ -244,8 +247,8 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * 
    * @see ProofModel#prove(ProofRule, ProofNode)
    */
-  public abstract void prove ( ProofRule rule , ProofNode node )
-      throws ProofRuleException ;
+  public abstract void prove ( ProofRule rule, ProofNode node )
+      throws ProofRuleException;
 
 
   //
@@ -258,19 +261,20 @@ public abstract class AbstractProofModel extends AbstractBean implements
    */
   public static interface UndoableTreeEdit
   {
+
     /**
      * Performs the action of this tree edit. This method is invoked initially,
      * when the edit is added via
      * {@link AbstractProofModel#addUndoableTreeEdit(UndoableTreeEdit)}, and
      * when a previously undone change is redone.
      */
-    public void redo ( ) ;
+    public void redo ();
 
 
     /**
      * Undoes the effect of a previous call to {@link #redo()}.
      */
-    public void undo ( ) ;
+    public void undo ();
   }
 
 
@@ -280,7 +284,7 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @see #isRedoable()
    * @see #redo()
    */
-  private LinkedList < UndoableTreeEdit > redoEdits = new LinkedList < UndoableTreeEdit > ( ) ;
+  private LinkedList < UndoableTreeEdit > redoEdits = new LinkedList < UndoableTreeEdit > ();
 
 
   /**
@@ -289,7 +293,7 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @see #isUndoable()
    * @see #undo()
    */
-  private LinkedList < UndoableTreeEdit > undoEdits = new LinkedList < UndoableTreeEdit > ( ) ;
+  private LinkedList < UndoableTreeEdit > undoEdits = new LinkedList < UndoableTreeEdit > ();
 
 
   /**
@@ -302,20 +306,20 @@ public abstract class AbstractProofModel extends AbstractBean implements
   protected void addUndoableTreeEdit ( UndoableTreeEdit edit )
   {
     // remember the previous redoable/undoable properties
-    boolean oldRedoable = isRedoable ( ) ;
-    boolean oldUndoable = isUndoable ( ) ;
+    boolean oldRedoable = isRedoable ();
+    boolean oldUndoable = isUndoable ();
     // clear the redo history
-    this.redoEdits.clear ( ) ;
+    this.redoEdits.clear ();
     // add to the undo history
-    this.undoEdits.add ( 0 , edit ) ;
+    this.undoEdits.add ( 0, edit );
     // notify the redoable/undoable properties
-    if ( oldRedoable != isRedoable ( ) )
+    if ( oldRedoable != isRedoable () )
     {
-      firePropertyChange ( "redoable" , oldRedoable , isRedoable ( ) ) ; //$NON-NLS-1$
+      firePropertyChange ( "redoable", oldRedoable, isRedoable () ); //$NON-NLS-1$
     }
-    if ( oldUndoable != isUndoable ( ) )
+    if ( oldUndoable != isUndoable () )
     {
-      firePropertyChange ( "undoable" , oldUndoable , isUndoable ( ) ) ; //$NON-NLS-1$
+      firePropertyChange ( "undoable", oldUndoable, isUndoable () ); //$NON-NLS-1$
     }
   }
 
@@ -325,9 +329,9 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * 
    * @see ProofModel#isRedoable()
    */
-  public boolean isRedoable ( )
+  public boolean isRedoable ()
   {
-    return ( ! this.redoEdits.isEmpty ( ) ) ;
+    return ( !this.redoEdits.isEmpty () );
   }
 
 
@@ -336,9 +340,9 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * 
    * @see ProofModel#isUndoable()
    */
-  public boolean isUndoable ( )
+  public boolean isUndoable ()
   {
-    return ( ! this.undoEdits.isEmpty ( ) ) ;
+    return ( !this.undoEdits.isEmpty () );
   }
 
 
@@ -347,27 +351,27 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * 
    * @see ProofModel#redo()
    */
-  public void redo ( ) throws CannotRedoException
+  public void redo () throws CannotRedoException
   {
-    if ( this.redoEdits.isEmpty ( ) )
+    if ( this.redoEdits.isEmpty () )
     {
-      throw new CannotRedoException ( "nothing to redo" ) ; //$NON-NLS-1$
+      throw new CannotRedoException ( "nothing to redo" ); //$NON-NLS-1$
     }
     // remember the previous redoable/undoable properties
-    boolean oldRedoable = isRedoable ( ) ;
-    boolean oldUndoable = isUndoable ( ) ;
+    boolean oldRedoable = isRedoable ();
+    boolean oldUndoable = isUndoable ();
     // redo the most recent tree edit
-    UndoableTreeEdit edit = this.redoEdits.poll ( ) ;
-    this.undoEdits.add ( 0 , edit ) ;
-    edit.redo ( ) ;
+    UndoableTreeEdit edit = this.redoEdits.poll ();
+    this.undoEdits.add ( 0, edit );
+    edit.redo ();
     // notify the redoable/undoable properties
-    if ( oldRedoable != isRedoable ( ) )
+    if ( oldRedoable != isRedoable () )
     {
-      firePropertyChange ( "redoable" , oldRedoable , isRedoable ( ) ) ; //$NON-NLS-1$
+      firePropertyChange ( "redoable", oldRedoable, isRedoable () ); //$NON-NLS-1$
     }
-    if ( oldUndoable != isUndoable ( ) )
+    if ( oldUndoable != isUndoable () )
     {
-      firePropertyChange ( "undoable" , oldUndoable , isUndoable ( ) ) ; //$NON-NLS-1$
+      firePropertyChange ( "undoable", oldUndoable, isUndoable () ); //$NON-NLS-1$
     }
   }
 
@@ -377,27 +381,27 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * 
    * @see ProofModel#undo()
    */
-  public void undo ( ) throws CannotUndoException
+  public void undo () throws CannotUndoException
   {
-    if ( this.undoEdits.isEmpty ( ) )
+    if ( this.undoEdits.isEmpty () )
     {
-      throw new CannotUndoException ( "nothing to undo" ) ; //$NON-NLS-1$
+      throw new CannotUndoException ( "nothing to undo" ); //$NON-NLS-1$
     }
     // remember the previous redoable/undoable properties
-    boolean oldRedoable = isRedoable ( ) ;
-    boolean oldUndoable = isUndoable ( ) ;
+    boolean oldRedoable = isRedoable ();
+    boolean oldUndoable = isUndoable ();
     // undo the most recent tree edit
-    UndoableTreeEdit edit = this.undoEdits.poll ( ) ;
-    this.redoEdits.add ( 0 , edit ) ;
-    edit.undo ( ) ;
+    UndoableTreeEdit edit = this.undoEdits.poll ();
+    this.redoEdits.add ( 0, edit );
+    edit.undo ();
     // notify the redoable/undoable properties
-    if ( oldRedoable != isRedoable ( ) )
+    if ( oldRedoable != isRedoable () )
     {
-      firePropertyChange ( "redoable" , oldRedoable , isRedoable ( ) ) ; //$NON-NLS-1$
+      firePropertyChange ( "redoable", oldRedoable, isRedoable () ); //$NON-NLS-1$
     }
-    if ( oldUndoable != isUndoable ( ) )
+    if ( oldUndoable != isUndoable () )
     {
-      firePropertyChange ( "undoable" , oldUndoable , isUndoable ( ) ) ; //$NON-NLS-1$
+      firePropertyChange ( "undoable", oldUndoable, isUndoable () ); //$NON-NLS-1$
     }
   }
 
@@ -412,9 +416,9 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @return the root of the proof tree.
    * @see javax.swing.tree.TreeModel#getRoot()
    */
-  public AbstractProofNode getRoot ( )
+  public AbstractProofNode getRoot ()
   {
-    return this.root ;
+    return this.root;
   }
 
 
@@ -431,9 +435,9 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @return the child of <code>parent</code> at index <code>index</code>.
    * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
    */
-  public ProofNode getChild ( Object parent , int index )
+  public ProofNode getChild ( Object parent, int index )
   {
-    return ( ( ProofNode ) parent ).getChildAt ( index ) ;
+    return ( ( ProofNode ) parent ).getChildAt ( index );
   }
 
 
@@ -449,7 +453,7 @@ public abstract class AbstractProofModel extends AbstractBean implements
    */
   public int getChildCount ( Object parent )
   {
-    return ( ( ProofNode ) parent ).getChildCount ( ) ;
+    return ( ( ProofNode ) parent ).getChildCount ();
   }
 
 
@@ -466,10 +470,11 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object,
    *      java.lang.Object)
    */
-  public int getIndexOfChild ( Object parent , Object child )
+  public int getIndexOfChild ( Object parent, Object child )
   {
-    if ( parent == null || child == null ) return - 1 ;
-    return ( ( ProofNode ) parent ).getIndex ( ( ProofNode ) child ) ;
+    if ( parent == null || child == null )
+      return -1;
+    return ( ( ProofNode ) parent ).getIndex ( ( ProofNode ) child );
   }
 
 
@@ -478,9 +483,9 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * 
    * @see ProofModel#getPathToRoot(TreeNode)
    */
-  public TreeNode [ ] getPathToRoot ( TreeNode aNode )
+  public TreeNode [] getPathToRoot ( TreeNode aNode )
   {
-    return getPathToRoot ( aNode , 0 ) ;
+    return getPathToRoot ( aNode, 0 );
   }
 
 
@@ -495,9 +500,9 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @return an array of {@link TreeNode}s giving the path from the root to the
    *         specified node.
    */
-  protected TreeNode [ ] getPathToRoot ( TreeNode aNode , int depth )
+  protected TreeNode [] getPathToRoot ( TreeNode aNode, int depth )
   {
-    TreeNode [ ] nodes ;
+    TreeNode [] nodes;
     // This method recurses, traversing towards the root in order
     // size the array. On the way back, it fills in the nodes,
     // starting from the root and working back to the original node.
@@ -505,24 +510,25 @@ public abstract class AbstractProofModel extends AbstractBean implements
      * Check for null, in case someone passed in a null node, or they passed in
      * an element that isn't rooted at root.
      */
-    int newDepth = depth ;
+    int newDepth = depth;
     if ( aNode == null )
     {
       if ( newDepth == 0 )
       {
-        return null ;
+        return null;
       }
-      nodes = new TreeNode [ newDepth ] ;
+      nodes = new TreeNode [ newDepth ];
     }
     else
     {
-      newDepth += 1 ;
+      newDepth += 1;
       if ( aNode == this.root )
-        nodes = new TreeNode [ newDepth ] ;
-      else nodes = getPathToRoot ( aNode.getParent ( ) , newDepth ) ;
-      nodes [ nodes.length - newDepth ] = aNode ;
+        nodes = new TreeNode [ newDepth ];
+      else
+        nodes = getPathToRoot ( aNode.getParent (), newDepth );
+      nodes [ nodes.length - newDepth ] = aNode;
     }
-    return nodes ;
+    return nodes;
   }
 
 
@@ -540,7 +546,7 @@ public abstract class AbstractProofModel extends AbstractBean implements
    */
   public boolean isLeaf ( Object node )
   {
-    return ( ( ProofNode ) node ).isLeaf ( ) ;
+    return ( ( ProofNode ) node ).isLeaf ();
   }
 
 
@@ -555,11 +561,11 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @see javax.swing.tree.TreeModel#valueForPathChanged(javax.swing.tree.TreePath,
    *      java.lang.Object)
    */
-  public void valueForPathChanged ( @ SuppressWarnings ( "unused" )
-  TreePath path , @ SuppressWarnings ( "unused" )
+  public void valueForPathChanged ( @SuppressWarnings ( "unused" )
+  TreePath path, @SuppressWarnings ( "unused" )
   Object newValue )
   {
-    throw new UnsupportedOperationException ( "method not implemented" ) ; //$NON-NLS-1$
+    throw new UnsupportedOperationException ( "method not implemented" ); //$NON-NLS-1$
   }
 
 
@@ -577,7 +583,7 @@ public abstract class AbstractProofModel extends AbstractBean implements
    */
   public void addTreeModelListener ( TreeModelListener l )
   {
-    this.listenerList.add ( TreeModelListener.class , l ) ;
+    this.listenerList.add ( TreeModelListener.class, l );
   }
 
 
@@ -592,7 +598,7 @@ public abstract class AbstractProofModel extends AbstractBean implements
    */
   public void removeTreeModelListener ( TreeModelListener l )
   {
-    this.listenerList.remove ( TreeModelListener.class , l ) ;
+    this.listenerList.remove ( TreeModelListener.class, l );
   }
 
 
@@ -601,9 +607,9 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * 
    * @see ProofModel#getTreeModelListeners()
    */
-  public TreeModelListener [ ] getTreeModelListeners ( )
+  public TreeModelListener [] getTreeModelListeners ()
   {
-    return this.listenerList.getListeners ( TreeModelListener.class ) ;
+    return this.listenerList.getListeners ( TreeModelListener.class );
   }
 
 
@@ -612,10 +618,10 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * 
    * @see ProofModel#getListeners(Class)
    */
-  public < T extends EventListener > T [ ] getListeners (
+  public < T extends EventListener > T [] getListeners (
       Class < T > listenerType )
   {
-    return this.listenerList.getListeners ( listenerType ) ;
+    return this.listenerList.getListeners ( listenerType );
   }
 
 
@@ -630,12 +636,12 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @param children the changed elements
    * @see EventListenerList
    */
-  protected void fireTreeNodesChanged ( Object source , Object [ ] path ,
-      int [ ] childIndices , Object [ ] children )
+  protected void fireTreeNodesChanged ( Object source, Object [] path,
+      int [] childIndices, Object [] children )
   {
     // Guaranteed to return a non-null array
-    Object [ ] listeners = this.listenerList.getListenerList ( ) ;
-    TreeModelEvent e = null ;
+    Object [] listeners = this.listenerList.getListenerList ();
+    TreeModelEvent e = null;
     // Process the listeners last to first, notifying
     // those that are interested in this event
     for ( int i = listeners.length - 2 ; i >= 0 ; i -= 2 )
@@ -644,8 +650,8 @@ public abstract class AbstractProofModel extends AbstractBean implements
       {
         // Lazily create the event:
         if ( e == null )
-          e = new TreeModelEvent ( source , path , childIndices , children ) ;
-        ( ( TreeModelListener ) listeners [ i + 1 ] ).treeNodesChanged ( e ) ;
+          e = new TreeModelEvent ( source, path, childIndices, children );
+        ( ( TreeModelListener ) listeners [ i + 1 ] ).treeNodesChanged ( e );
       }
     }
   }
@@ -662,12 +668,12 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @param children the new elements
    * @see EventListenerList
    */
-  protected void fireTreeNodesInserted ( Object source , Object [ ] path ,
-      int [ ] childIndices , Object [ ] children )
+  protected void fireTreeNodesInserted ( Object source, Object [] path,
+      int [] childIndices, Object [] children )
   {
     // Guaranteed to return a non-null array
-    Object [ ] listeners = this.listenerList.getListenerList ( ) ;
-    TreeModelEvent e = null ;
+    Object [] listeners = this.listenerList.getListenerList ();
+    TreeModelEvent e = null;
     // Process the listeners last to first, notifying
     // those that are interested in this event
     for ( int i = listeners.length - 2 ; i >= 0 ; i -= 2 )
@@ -676,8 +682,8 @@ public abstract class AbstractProofModel extends AbstractBean implements
       {
         // Lazily create the event:
         if ( e == null )
-          e = new TreeModelEvent ( source , path , childIndices , children ) ;
-        ( ( TreeModelListener ) listeners [ i + 1 ] ).treeNodesInserted ( e ) ;
+          e = new TreeModelEvent ( source, path, childIndices, children );
+        ( ( TreeModelListener ) listeners [ i + 1 ] ).treeNodesInserted ( e );
       }
     }
   }
@@ -694,12 +700,12 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @param children the removed elements
    * @see EventListenerList
    */
-  protected void fireTreeNodesRemoved ( Object source , Object [ ] path ,
-      int [ ] childIndices , Object [ ] children )
+  protected void fireTreeNodesRemoved ( Object source, Object [] path,
+      int [] childIndices, Object [] children )
   {
     // Guaranteed to return a non-null array
-    Object [ ] listeners = this.listenerList.getListenerList ( ) ;
-    TreeModelEvent e = null ;
+    Object [] listeners = this.listenerList.getListenerList ();
+    TreeModelEvent e = null;
     // Process the listeners last to first, notifying
     // those that are interested in this event
     for ( int i = listeners.length - 2 ; i >= 0 ; i -= 2 )
@@ -708,8 +714,8 @@ public abstract class AbstractProofModel extends AbstractBean implements
       {
         // Lazily create the event:
         if ( e == null )
-          e = new TreeModelEvent ( source , path , childIndices , children ) ;
-        ( ( TreeModelListener ) listeners [ i + 1 ] ).treeNodesRemoved ( e ) ;
+          e = new TreeModelEvent ( source, path, childIndices, children );
+        ( ( TreeModelListener ) listeners [ i + 1 ] ).treeNodesRemoved ( e );
       }
     }
   }
@@ -726,12 +732,12 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @param children the affected elements
    * @see EventListenerList
    */
-  protected void fireTreeStructureChanged ( Object source , Object [ ] path ,
-      int [ ] childIndices , Object [ ] children )
+  protected void fireTreeStructureChanged ( Object source, Object [] path,
+      int [] childIndices, Object [] children )
   {
     // Guaranteed to return a non-null array
-    Object [ ] listeners = this.listenerList.getListenerList ( ) ;
-    TreeModelEvent e = null ;
+    Object [] listeners = this.listenerList.getListenerList ();
+    TreeModelEvent e = null;
     // Process the listeners last to first, notifying
     // those that are interested in this event
     for ( int i = listeners.length - 2 ; i >= 0 ; i -= 2 )
@@ -740,8 +746,8 @@ public abstract class AbstractProofModel extends AbstractBean implements
       {
         // Lazily create the event:
         if ( e == null )
-          e = new TreeModelEvent ( source , path , childIndices , children ) ;
-        ( ( TreeModelListener ) listeners [ i + 1 ] ).treeStructureChanged ( e ) ;
+          e = new TreeModelEvent ( source, path, childIndices, children );
+        ( ( TreeModelListener ) listeners [ i + 1 ] ).treeStructureChanged ( e );
       }
     }
   }
@@ -761,21 +767,21 @@ public abstract class AbstractProofModel extends AbstractBean implements
     if ( this.listenerList != null && node != null )
     {
       // determine the parent node
-      TreeNode parent = node.getParent ( ) ;
+      TreeNode parent = node.getParent ();
       if ( parent != null )
       {
         // determine the index of the node
-        int anIndex = parent.getIndex ( node ) ;
-        if ( anIndex != - 1 )
+        int anIndex = parent.getIndex ( node );
+        if ( anIndex != -1 )
         {
-          int [ ] cIndexs = new int [ 1 ] ;
-          cIndexs [ 0 ] = anIndex ;
-          nodesChanged ( parent , cIndexs ) ;
+          int [] cIndexs = new int [ 1 ];
+          cIndexs [ 0 ] = anIndex;
+          nodesChanged ( parent, cIndexs );
         }
       }
-      else if ( node == getRoot ( ) )
+      else if ( node == getRoot () )
       {
-        nodesChanged ( node , null ) ;
+        nodesChanged ( node, null );
       }
     }
   }
@@ -788,28 +794,28 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @param node a {@link TreeNode} within this proof model.
    * @param childIndices the indices of the children that changed.
    */
-  protected void nodesChanged ( TreeNode node , int [ ] childIndices )
+  protected void nodesChanged ( TreeNode node, int [] childIndices )
   {
     if ( node != null )
     {
       if ( childIndices != null )
       {
         // check if any child indices were supplied
-        int cCount = childIndices.length ;
+        int cCount = childIndices.length;
         if ( cCount > 0 )
         {
           // collect the child nodes
-          Object [ ] cChildren = new Object [ cCount ] ;
-          for ( int counter = 0 ; counter < cCount ; ++ counter )
-            cChildren [ counter ] = node.getChildAt ( childIndices [ counter ] ) ;
+          Object [] cChildren = new Object [ cCount ];
+          for ( int counter = 0 ; counter < cCount ; ++counter )
+            cChildren [ counter ] = node.getChildAt ( childIndices [ counter ] );
           // notify the view
-          fireTreeNodesChanged ( this , getPathToRoot ( node ) , childIndices ,
-              cChildren ) ;
+          fireTreeNodesChanged ( this, getPathToRoot ( node ), childIndices,
+              cChildren );
         }
       }
-      else if ( node == getRoot ( ) )
+      else if ( node == getRoot () )
       {
-        fireTreeNodesChanged ( this , getPathToRoot ( node ) , null , null ) ;
+        fireTreeNodesChanged ( this, getPathToRoot ( node ), null, null );
       }
     }
   }
@@ -823,17 +829,17 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @param node a node in the proof model.
    * @param childIndices the indices of the children that were inserted.
    */
-  protected void nodesWereInserted ( TreeNode node , int [ ] childIndices )
+  protected void nodesWereInserted ( TreeNode node, int [] childIndices )
   {
     if ( this.listenerList != null && node != null && childIndices != null
         && childIndices.length > 0 )
     {
-      int cCount = childIndices.length ;
-      Object [ ] newChildren = new Object [ cCount ] ;
-      for ( int counter = 0 ; counter < cCount ; ++ counter )
-        newChildren [ counter ] = node.getChildAt ( childIndices [ counter ] ) ;
-      fireTreeNodesInserted ( this , getPathToRoot ( node ) , childIndices ,
-          newChildren ) ;
+      int cCount = childIndices.length;
+      Object [] newChildren = new Object [ cCount ];
+      for ( int counter = 0 ; counter < cCount ; ++counter )
+        newChildren [ counter ] = node.getChildAt ( childIndices [ counter ] );
+      fireTreeNodesInserted ( this, getPathToRoot ( node ), childIndices,
+          newChildren );
     }
   }
 
@@ -848,13 +854,13 @@ public abstract class AbstractProofModel extends AbstractBean implements
    * @param childIndices the indices of the children that were removed.
    * @param removedChildren the removed children.
    */
-  protected void nodesWereRemoved ( TreeNode node , int [ ] childIndices ,
-      Object [ ] removedChildren )
+  protected void nodesWereRemoved ( TreeNode node, int [] childIndices,
+      Object [] removedChildren )
   {
     if ( node != null && childIndices != null )
     {
-      fireTreeNodesRemoved ( this , getPathToRoot ( node ) , childIndices ,
-          removedChildren ) ;
+      fireTreeNodesRemoved ( this, getPathToRoot ( node ), childIndices,
+          removedChildren );
     }
   }
 }

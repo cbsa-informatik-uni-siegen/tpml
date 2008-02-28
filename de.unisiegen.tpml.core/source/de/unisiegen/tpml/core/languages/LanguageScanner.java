@@ -1,10 +1,11 @@
-package de.unisiegen.tpml.core.languages ;
+package de.unisiegen.tpml.core.languages;
 
 
-import java.io.IOException ;
-import java.io.Reader ;
-import java_cup.runtime.Scanner ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
+import java.io.IOException;
+import java.io.Reader;
+
+import java_cup.runtime.Scanner;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStyle;
 
 
 /**
@@ -21,6 +22,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
  */
 public interface LanguageScanner extends Scanner
 {
+
   /**
    * Returns the {@link PrettyStyle} for the <code>symbol</code>, for example
    * {@link PrettyStyle#CONSTANT} if the <code>symbol</code> is a parsed
@@ -31,7 +33,7 @@ public interface LanguageScanner extends Scanner
    * @throws NullPointerException if the <code>symbol</code> is
    *           <code>null</code>.
    */
-  public PrettyStyle getStyleBySymbol ( LanguageSymbol symbol ) ;
+  public PrettyStyle getStyleBySymbol ( LanguageSymbol symbol );
 
 
   /**
@@ -45,8 +47,8 @@ public interface LanguageScanner extends Scanner
    * @throws LanguageScannerException if a syntax error occurred while trying to
    *           scan the input stream.
    */
-  public LanguageSymbol nextSymbol ( ) throws IOException ,
-      LanguageScannerException ;
+  public LanguageSymbol nextSymbol () throws IOException,
+      LanguageScannerException;
 
 
   /**
@@ -57,5 +59,5 @@ public interface LanguageScanner extends Scanner
    * @param reader the new {@link Reader}.
    * @throws NullPointerException if <code>reader</code> is <code>null</code>.
    */
-  public void restart ( Reader reader ) ;
+  public void restart ( Reader reader );
 }

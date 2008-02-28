@@ -1,17 +1,17 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
-import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
-import de.unisiegen.tpml.core.interfaces.SortedChildren ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType;
+import de.unisiegen.tpml.core.interfaces.SortedChildren;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -28,38 +28,39 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @see Expression
  */
 public final class InfixOperation extends Expression implements
-    DefaultExpressions , SortedChildren
+    DefaultExpressions, SortedChildren
 {
+
   /**
    * Indeces of the child {@link Expression}s.
    */
-  private static final int [ ] INDICES_E = new int [ ]
-  { - 1 , 1 , 2 } ;
+  private static final int [] INDICES_E = new int []
+  { -1, 1, 2 };
 
 
   /**
    * String for the case that e1 is null.
    */
-  private static final String E1_NULL = "e1 is null" ; //$NON-NLS-1$
+  private static final String E1_NULL = "e1 is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that e2 is null.
    */
-  private static final String E2_NULL = "e2 is null" ; //$NON-NLS-1$
+  private static final String E2_NULL = "e2 is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that op is null.
    */
-  private static final String OP_NULL = "op is null" ; //$NON-NLS-1$
+  private static final String OP_NULL = "op is null"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( InfixOperation.class ) ;
+      .getCaption ( InfixOperation.class );
 
 
   /**
@@ -67,20 +68,20 @@ public final class InfixOperation extends Expression implements
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_INFIX_OPERATION , 3 ,
-        "\\color{" + LATEX_COLOR_EXPRESSION + "}#2\\ #1\\ #3" , "op" , "e1" , //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
-        "e2" ) ) ; //$NON-NLS-1$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_INFIX_OPERATION, 3,
+        "\\color{" + LATEX_COLOR_EXPRESSION + "}#2\\ #1\\ #3", "op", "e1", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+        "e2" ) ); //$NON-NLS-1$
+    return commands;
   }
 
 
   /**
    * The expressions.
    */
-  private Expression [ ] expressions ;
+  private Expression [] expressions;
 
 
   /**
@@ -93,26 +94,26 @@ public final class InfixOperation extends Expression implements
    * @throws NullPointerException if <code>op</code>, <code>e1</code> or
    *           <code>e2</code> is <code>null</code>.
    */
-  public InfixOperation ( BinaryOperator pBinaryOperator ,
-      Expression pExpression1 , Expression pExpression2 )
+  public InfixOperation ( BinaryOperator pBinaryOperator,
+      Expression pExpression1, Expression pExpression2 )
   {
     if ( pBinaryOperator == null )
     {
-      throw new NullPointerException ( OP_NULL ) ;
+      throw new NullPointerException ( OP_NULL );
     }
     if ( pExpression1 == null )
     {
-      throw new NullPointerException ( E1_NULL ) ;
+      throw new NullPointerException ( E1_NULL );
     }
     if ( pExpression2 == null )
     {
-      throw new NullPointerException ( E2_NULL ) ;
+      throw new NullPointerException ( E2_NULL );
     }
-    this.expressions = new Expression [ ]
-    { pBinaryOperator , pExpression1 , pExpression2 } ;
-    this.expressions [ 0 ].setParent ( this ) ;
-    this.expressions [ 1 ].setParent ( this ) ;
-    this.expressions [ 2 ].setParent ( this ) ;
+    this.expressions = new Expression []
+    { pBinaryOperator, pExpression1, pExpression2 };
+    this.expressions [ 0 ].setParent ( this );
+    this.expressions [ 1 ].setParent ( this );
+    this.expressions [ 2 ].setParent ( this );
   }
 
 
@@ -130,13 +131,13 @@ public final class InfixOperation extends Expression implements
    * @throws NullPointerException if <code>op</code>, <code>e1</code> or
    *           <code>e2</code> is <code>null</code>.
    */
-  public InfixOperation ( BinaryOperator pBinaryOperator ,
-      Expression pExpression1 , Expression pExpression2 ,
-      int pParserStartOffset , int pParserEndOffset )
+  public InfixOperation ( BinaryOperator pBinaryOperator,
+      Expression pExpression1, Expression pExpression2, int pParserStartOffset,
+      int pParserEndOffset )
   {
-    this ( pBinaryOperator , pExpression1 , pExpression2 ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pBinaryOperator, pExpression1, pExpression2 );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -145,12 +146,12 @@ public final class InfixOperation extends Expression implements
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public InfixOperation clone ( )
+  @Override
+  public InfixOperation clone ()
   {
     return new InfixOperation ( ( BinaryOperator ) this.expressions [ 0 ]
-        .clone ( ) , this.expressions [ 1 ].clone ( ) , this.expressions [ 2 ]
-        .clone ( ) ) ;
+        .clone (), this.expressions [ 1 ].clone (), this.expressions [ 2 ]
+        .clone () );
   }
 
 
@@ -159,27 +160,27 @@ public final class InfixOperation extends Expression implements
    * 
    * @see Expression#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof InfixOperation )
     {
-      InfixOperation other = ( InfixOperation ) pObject ;
+      InfixOperation other = ( InfixOperation ) pObject;
       return ( ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) )
           && ( this.expressions [ 1 ].equals ( other.expressions [ 1 ] ) ) && ( this.expressions [ 2 ]
-          .equals ( other.expressions [ 2 ] ) ) ) ;
+          .equals ( other.expressions [ 2 ] ) ) );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -190,9 +191,9 @@ public final class InfixOperation extends Expression implements
    * @see #getOp()
    * @see #getE2()
    */
-  public Expression getE1 ( )
+  public Expression getE1 ()
   {
-    return this.expressions [ 1 ] ;
+    return this.expressions [ 1 ];
   }
 
 
@@ -203,9 +204,9 @@ public final class InfixOperation extends Expression implements
    * @see #getOp()
    * @see #getE1()
    */
-  public Expression getE2 ( )
+  public Expression getE2 ()
   {
-    return this.expressions [ 2 ] ;
+    return this.expressions [ 2 ];
   }
 
 
@@ -214,9 +215,9 @@ public final class InfixOperation extends Expression implements
    * 
    * @return the sub expressions.
    */
-  public Expression [ ] getExpressions ( )
+  public Expression [] getExpressions ()
   {
-    return this.expressions ;
+    return this.expressions;
   }
 
 
@@ -225,9 +226,9 @@ public final class InfixOperation extends Expression implements
    * 
    * @return The indices of the child {@link Expression}s.
    */
-  public int [ ] getExpressionsIndex ( )
+  public int [] getExpressionsIndex ()
   {
-    return INDICES_E ;
+    return INDICES_E;
   }
 
 
@@ -236,12 +237,12 @@ public final class InfixOperation extends Expression implements
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -253,9 +254,9 @@ public final class InfixOperation extends Expression implements
    * @see #getE1()
    * @see #getE2()
    */
-  public BinaryOperator getOp ( )
+  public BinaryOperator getOp ()
   {
-    return ( BinaryOperator ) this.expressions [ 0 ] ;
+    return ( BinaryOperator ) this.expressions [ 0 ];
   }
 
 
@@ -265,11 +266,11 @@ public final class InfixOperation extends Expression implements
    * @return The {@link Expression}s in the right sorting.
    * @see SortedChildren#getSortedChildren()
    */
-  public ExpressionOrType [ ] getSortedChildren ( )
+  public ExpressionOrType [] getSortedChildren ()
   {
-    ExpressionOrType [ ] result = new ExpressionOrType [ ]
-    { this.expressions [ 1 ] , this.expressions [ 0 ] , this.expressions [ 2 ] } ;
-    return result ;
+    ExpressionOrType [] result = new ExpressionOrType []
+    { this.expressions [ 1 ], this.expressions [ 0 ], this.expressions [ 2 ] };
+    return result;
   }
 
 
@@ -278,12 +279,12 @@ public final class InfixOperation extends Expression implements
    * 
    * @see Expression#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.expressions [ 0 ].hashCode ( )
-        + this.expressions [ 1 ].hashCode ( )
-        + this.expressions [ 2 ].hashCode ( ) ;
+    return this.expressions [ 0 ].hashCode ()
+        + this.expressions [ 1 ].hashCode ()
+        + this.expressions [ 2 ].hashCode ();
   }
 
 
@@ -292,17 +293,17 @@ public final class InfixOperation extends Expression implements
    * 
    * @see Expression#substitute(Identifier, Expression)
    */
-  @ Override
-  public InfixOperation substitute ( Identifier pId , Expression pExpression )
+  @Override
+  public InfixOperation substitute ( Identifier pId, Expression pExpression )
   {
-    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    if ( pExpression.getIdentifierFreeNotOnlyVariable () )
     {
-      throw new NotOnlyFreeVariableException ( ) ;
+      throw new NotOnlyFreeVariableException ();
     }
-    Expression newE1 = this.expressions [ 1 ].substitute ( pId , pExpression ) ;
-    Expression newE2 = this.expressions [ 2 ].substitute ( pId , pExpression ) ;
-    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 0 ] ,
-        newE1 , newE2 ) ;
+    Expression newE1 = this.expressions [ 1 ].substitute ( pId, pExpression );
+    Expression newE2 = this.expressions [ 2 ].substitute ( pId, pExpression );
+    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 0 ],
+        newE1, newE2 );
   }
 
 
@@ -311,13 +312,13 @@ public final class InfixOperation extends Expression implements
    * 
    * @see Expression#substitute(TypeSubstitution)
    */
-  @ Override
+  @Override
   public InfixOperation substitute ( TypeSubstitution pTypeSubstitution )
   {
-    Expression newE1 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
-    Expression newE2 = this.expressions [ 2 ].substitute ( pTypeSubstitution ) ;
-    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 0 ] ,
-        newE1 , newE2 ) ;
+    Expression newE1 = this.expressions [ 1 ].substitute ( pTypeSubstitution );
+    Expression newE2 = this.expressions [ 2 ].substitute ( pTypeSubstitution );
+    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 0 ],
+        newE1, newE2 );
   }
 
 
@@ -326,29 +327,27 @@ public final class InfixOperation extends Expression implements
    * 
    * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ,
-        LATEX_INFIX_OPERATION , pIndent , this.toPrettyString ( ).toString ( ) ,
-        this.expressions [ 0 ].toPrettyString ( ).toString ( ) ,
-        this.expressions [ 1 ].toPrettyString ( ).toString ( ) ,
-        this.expressions [ 2 ].toPrettyString ( ).toString ( ) ) ;
+        ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority (),
+        LATEX_INFIX_OPERATION, pIndent, this.toPrettyString ().toString (),
+        this.expressions [ 0 ].toPrettyString ().toString (),
+        this.expressions [ 1 ].toPrettyString ().toString (),
+        this.expressions [ 2 ].toPrettyString ().toString () );
     builder.addBuilder ( this.expressions [ 0 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
-        ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ) ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ),
+        ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority () );
     builder.addBuilder ( this.expressions [ 1 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
-        ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ) ;
-    builder.addBreak ( ) ;
-    builder
-        .addBuilder (
-            this.expressions [ 2 ].toLatexStringBuilder (
-                pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
-            ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) + 1 ) ;
-    return builder ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ),
+        ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority () );
+    builder.addBreak ();
+    builder.addBuilder ( this.expressions [ 2 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ),
+        ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority () + 1 );
+    return builder;
   }
 
 
@@ -357,29 +356,29 @@ public final class InfixOperation extends Expression implements
    * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority () );
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+          ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority () );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority ( ) ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-      this.prettyStringBuilder.addBreak ( ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+          ( ( BinaryOperator ) this.expressions [ 0 ] ).getPrettyPriority () );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
+      this.prettyStringBuilder.addBreak ();
       this.prettyStringBuilder
           .addBuilder ( this.expressions [ 2 ]
-              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
               ( ( BinaryOperator ) this.expressions [ 0 ] )
-                  .getPrettyPriority ( ) + 1 ) ;
+                  .getPrettyPriority () + 1 );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

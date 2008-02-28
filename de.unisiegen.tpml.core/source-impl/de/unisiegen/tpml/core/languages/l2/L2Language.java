@@ -1,5 +1,4 @@
-package de.unisiegen.tpml.core.languages.l2 ;
-
+package de.unisiegen.tpml.core.languages.l2;
 
 
 import java.io.Reader;
@@ -22,7 +21,6 @@ import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
 
 
-
 /**
  * This class represents the language L2, which serves as a factory class for L2
  * related functionality, and extends the L1 language.
@@ -38,20 +36,21 @@ import de.unisiegen.tpml.core.types.MonoType;
  */
 public class L2Language extends L1Language
 {
+
   /**
    * The group id for proof rules of this language.
    * 
    * @see de.unisiegen.tpml.core.AbstractProofRule#getGroup()
    */
-  public static final int L2 = L1Language.L1 + 10 ;
+  public static final int L2 = L1Language.L1 + 10;
 
 
   /**
    * Allocates a new <code>L2Language</code> instance.
    */
-  public L2Language ( )
+  public L2Language ()
   {
-    super ( ) ;
+    super ();
   }
 
 
@@ -60,10 +59,10 @@ public class L2Language extends L1Language
    * 
    * @see Language#getDescription()
    */
-  @ Override
-  public String getDescription ( )
+  @Override
+  public String getDescription ()
   {
-    return Messages.getString ( "L2Language.0" ) ; //$NON-NLS-1$
+    return Messages.getString ( "L2Language.0" ); //$NON-NLS-1$
   }
 
 
@@ -72,10 +71,10 @@ public class L2Language extends L1Language
    * 
    * @see Language#getTitle()
    */
-  @ Override
-  public int getId ( )
+  @Override
+  public int getId ()
   {
-    return L2Language.L2 ;
+    return L2Language.L2;
   }
 
 
@@ -84,10 +83,10 @@ public class L2Language extends L1Language
    * 
    * @see Language#getName()
    */
-  @ Override
-  public String getName ( )
+  @Override
+  public String getName ()
   {
-    return "L2" ; //$NON-NLS-1$
+    return "L2"; //$NON-NLS-1$
   }
 
 
@@ -96,10 +95,10 @@ public class L2Language extends L1Language
    * 
    * @see Language#getTitle()
    */
-  @ Override
-  public String getTitle ( )
+  @Override
+  public String getTitle ()
   {
-    return Messages.getString ( "L2Language.1" ) ; //$NON-NLS-1$
+    return Messages.getString ( "L2Language.1" ); //$NON-NLS-1$
   }
 
 
@@ -108,11 +107,11 @@ public class L2Language extends L1Language
    * 
    * @see de.unisiegen.tpml.core.languages.Language#newBigStepProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
-  @ Override
+  @Override
   public BigStepProofModel newBigStepProofModel ( Expression expression )
   {
-    return new BigStepProofModel ( expression , new L2BigStepProofRuleSet (
-        this ) ) ;
+    return new BigStepProofModel ( expression,
+        new L2BigStepProofRuleSet ( this ) );
   }
 
 
@@ -121,36 +120,38 @@ public class L2Language extends L1Language
    * 
    * @see Language#newParser(LanguageScanner)
    */
-  @ Override
+  @Override
   public LanguageParser newParser ( LanguageScanner scanner )
   {
     if ( scanner == null )
     {
-      throw new NullPointerException ( "scanner is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "scanner is null" ); //$NON-NLS-1$
     }
-    final lr_parser parser = new L2Parser ( scanner ) ;
-    return new LanguageParser ( )
+    final lr_parser parser = new L2Parser ( scanner );
+    return new LanguageParser ()
     {
-      public Expression parse ( ) throws Exception
+
+      public Expression parse () throws Exception
       {
-        return ( Expression ) parser.parse ( ).value ;
+        return ( Expression ) parser.parse ().value;
       }
-    } ;
+    };
   }
+
 
   /**
    * {@inheritDoc}
    * 
    * @see Language#newScanner(java.io.Reader)
    */
-  @ Override
+  @Override
   public LanguageScanner newScanner ( Reader reader )
   {
     if ( reader == null )
     {
-      throw new NullPointerException ( "reader is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "reader is null" ); //$NON-NLS-1$
     }
-    return new L2Scanner ( reader ) ;
+    return new L2Scanner ( reader );
   }
 
 
@@ -159,23 +160,23 @@ public class L2Language extends L1Language
    * 
    * @see de.unisiegen.tpml.core.languages.Language#newSmallStepProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
-  @ Override
+  @Override
   public SmallStepProofModel newSmallStepProofModel ( Expression expression )
   {
-    return new SmallStepProofModel ( expression , new L2SmallStepProofRuleSet (
-        this ) ) ;
+    return new SmallStepProofModel ( expression, new L2SmallStepProofRuleSet (
+        this ) );
   }
 
-  
+
   /**
    * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.languages.Language#newTranslator()
    */
-  @ Override
-  public LanguageTranslator newTranslator ( )
+  @Override
+  public LanguageTranslator newTranslator ()
   {
-    return new L2LanguageTranslator ( ) ;
+    return new L2LanguageTranslator ();
   }
 
 
@@ -184,11 +185,11 @@ public class L2Language extends L1Language
    * 
    * @see de.unisiegen.tpml.core.languages.l1.L1Language#newTypeCheckerProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
-  @ Override
+  @Override
   public TypeCheckerProofModel newTypeCheckerProofModel ( Expression expression )
   {
-    return new TypeCheckerProofModel ( expression ,
-        new L2TypeCheckerProofRuleSet ( this ) ) ;
+    return new TypeCheckerProofModel ( expression,
+        new L2TypeCheckerProofRuleSet ( this ) );
   }
 
 
@@ -197,23 +198,27 @@ public class L2Language extends L1Language
    * 
    * @see de.unisiegen.tpml.core.languages.l1.L1Language#newTypeInferenceProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
-  @ Override
+  @Override
   public TypeInferenceProofModel newTypeInferenceProofModel (
       Expression expression )
   {
-    return new TypeInferenceProofModel ( expression ,
-        new L2TypeInferenceProofRuleSet ( this ) ) ;
+    return new TypeInferenceProofModel ( expression,
+        new L2TypeInferenceProofRuleSet ( this ) );
   }
-  
+
+
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newMinimalTypingProofModel(de.unisiegen.tpml.core.expressions.Expression, Boolean)
+   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newMinimalTypingProofModel(de.unisiegen.tpml.core.expressions.Expression,
+   *      Boolean)
    */
-  @ Override
-  public MinimalTypingProofModel newMinimalTypingProofModel ( Expression expression, boolean mode )
+  @Override
+  public MinimalTypingProofModel newMinimalTypingProofModel (
+      Expression expression, boolean mode )
   {
-    return new MinimalTypingProofModel ( expression , new L2MinimalTypingProofRuleSet(this, mode), mode);
+    return new MinimalTypingProofModel ( expression,
+        new L2MinimalTypingProofRuleSet ( this, mode ), mode );
   }
 
 
@@ -222,21 +227,22 @@ public class L2Language extends L1Language
    * 
    * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeParser(de.unisiegen.tpml.core.languages.LanguageTypeScanner)
    */
-  @ Override
+  @Override
   public LanguageTypeParser newTypeParser ( LanguageTypeScanner scanner )
   {
     if ( scanner == null )
     {
-      throw new NullPointerException ( "scanner is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "scanner is null" ); //$NON-NLS-1$
     }
-    final lr_parser parser = new L2TypeParser ( scanner ) ;
-    return new LanguageTypeParser ( )
+    final lr_parser parser = new L2TypeParser ( scanner );
+    return new LanguageTypeParser ()
     {
-      public MonoType parse ( ) throws Exception
+
+      public MonoType parse () throws Exception
       {
-        return ( MonoType ) parser.parse ( ).value ;
+        return ( MonoType ) parser.parse ().value;
       }
-    } ;
+    };
   }
 
 
@@ -245,13 +251,13 @@ public class L2Language extends L1Language
    * 
    * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeScanner(java.io.Reader)
    */
-  @ Override
+  @Override
   public LanguageTypeScanner newTypeScanner ( Reader reader )
   {
     if ( reader == null )
     {
-      throw new NullPointerException ( "reader is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "reader is null" ); //$NON-NLS-1$
     }
-    return new L2TypeScanner ( reader ) ;
+    return new L2TypeScanner ( reader );
   }
 }

@@ -1,15 +1,16 @@
-package de.unisiegen.tpml.core.interpreters ;
+package de.unisiegen.tpml.core.interpreters;
 
 
-import java.util.Arrays ;
-import de.unisiegen.tpml.core.AbstractExpressionProofModel ;
-import de.unisiegen.tpml.core.AbstractProofModel ;
-import de.unisiegen.tpml.core.AbstractProofNode ;
-import de.unisiegen.tpml.core.AbstractProofRuleSet ;
-import de.unisiegen.tpml.core.Messages ;
-import de.unisiegen.tpml.core.ProofGuessException ;
-import de.unisiegen.tpml.core.ProofNode ;
-import de.unisiegen.tpml.core.ProofRule ;
+import java.util.Arrays;
+
+import de.unisiegen.tpml.core.AbstractExpressionProofModel;
+import de.unisiegen.tpml.core.AbstractProofModel;
+import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.ProofGuessException;
+import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofRule;
 
 
 /**
@@ -24,6 +25,7 @@ import de.unisiegen.tpml.core.ProofRule ;
 public abstract class AbstractInterpreterProofModel extends
     AbstractExpressionProofModel implements InterpreterProofModel
 {
+
   //
   // Attributes
   //
@@ -33,7 +35,7 @@ public abstract class AbstractInterpreterProofModel extends
    * @see #isMemoryEnabled()
    * @see #setMemoryEnabled(boolean)
    */
-  private boolean memoryEnabled ;
+  private boolean memoryEnabled;
 
 
   //
@@ -55,12 +57,12 @@ public abstract class AbstractInterpreterProofModel extends
    *      AbstractProofRuleSet)
    * @see #setMemoryEnabled(boolean)
    */
-  protected AbstractInterpreterProofModel ( AbstractInterpreterProofNode pRoot ,
+  protected AbstractInterpreterProofModel ( AbstractInterpreterProofNode pRoot,
       AbstractProofRuleSet pRuleSet )
   {
-    super ( pRoot , pRuleSet ) ;
+    super ( pRoot, pRuleSet );
     // check if we have memory operations according to the expression
-    setMemoryEnabled ( pRoot.getExpression ( ).containsMemoryOperations ( ) ) ;
+    setMemoryEnabled ( pRoot.getExpression ().containsMemoryOperations () );
   }
 
 
@@ -72,37 +74,37 @@ public abstract class AbstractInterpreterProofModel extends
    * 
    * @see de.unisiegen.tpml.core.AbstractProofModel#complete(de.unisiegen.tpml.core.ProofNode)
    */
-  @ Override
+  @Override
   public void complete ( ProofNode node ) throws ProofGuessException
   {
     // check if we're not at the root, as we want to avoid endless diversion
-    if ( node != null && ! node.isRoot ( ) )
+    if ( node != null && !node.isRoot () )
     {
       // start at the parent node and look for a pattern
-      ProofNode current = node.getParent ( ) ;
-      ProofNode parent = current.getParent ( ) ;
+      ProofNode current = node.getParent ();
+      ProofNode parent = current.getParent ();
       // determine the current sequence of rules
-      ProofRule [ ] rules = current.getRules ( ) ;
-      for ( int count = 0 ; parent != null ; parent = parent.getParent ( ) )
+      ProofRule [] rules = current.getRules ();
+      for ( int count = 0 ; parent != null ; parent = parent.getParent () )
       {
         // check if the same sequence of rules was applied to this node
-        if ( Arrays.equals ( rules , parent.getRules ( ) ) )
+        if ( Arrays.equals ( rules, parent.getRules () ) )
         {
           // yet another time...
-          count += 1 ;
+          count += 1;
           // ...maybe already too often
           if ( count >= 20 )
           {
             // stop the automatic completion, warn the user and suggest manual
             // checkin
             throw new ProofGuessException ( Messages
-                .getString ( "AbstractInterpreterProofModel.0" ) , node ) ; //$NON-NLS-1$
+                .getString ( "AbstractInterpreterProofModel.0" ), node ); //$NON-NLS-1$
           }
         }
       }
     }
     // otherwise, try to complete the proof
-    super.complete ( node ) ;
+    super.complete ( node );
   }
 
 
@@ -115,9 +117,9 @@ public abstract class AbstractInterpreterProofModel extends
    * @see #setMemoryEnabled(boolean)
    * @see de.unisiegen.tpml.core.interpreters.InterpreterProofModel#isMemoryEnabled()
    */
-  public boolean isMemoryEnabled ( )
+  public boolean isMemoryEnabled ()
   {
-    return this.memoryEnabled ;
+    return this.memoryEnabled;
   }
 
 
@@ -135,9 +137,9 @@ public abstract class AbstractInterpreterProofModel extends
   {
     if ( this.memoryEnabled != pMemoryEnabled )
     {
-      boolean oldMemoryEnabled = this.memoryEnabled ;
-      this.memoryEnabled = pMemoryEnabled ;
-      firePropertyChange ( "memoryEnabled" , oldMemoryEnabled , pMemoryEnabled ) ; //$NON-NLS-1$
+      boolean oldMemoryEnabled = this.memoryEnabled;
+      this.memoryEnabled = pMemoryEnabled;
+      firePropertyChange ( "memoryEnabled", oldMemoryEnabled, pMemoryEnabled ); //$NON-NLS-1$
     }
   }
 }

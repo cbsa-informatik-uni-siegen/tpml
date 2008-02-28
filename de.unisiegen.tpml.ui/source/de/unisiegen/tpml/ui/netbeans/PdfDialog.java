@@ -1,20 +1,16 @@
-/*
- * PdfDialog.java
- *
- * Created on 8. August 2007, 16:34
- */
-
 package de.unisiegen.tpml.ui.netbeans;
 
 import java.io.File;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
+
 import javax.swing.filechooser.FileFilter;
 
 /**
  *
  * @author  cfehling
  */
+@ SuppressWarnings ( "all" )
 public class PdfDialog extends javax.swing.JDialog {
     
 

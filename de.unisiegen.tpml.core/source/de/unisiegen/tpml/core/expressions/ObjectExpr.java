@@ -1,22 +1,23 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.Type ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
 
 
 /**
@@ -25,53 +26,54 @@ import de.unisiegen.tpml.core.types.Type ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public final class ObjectExpr extends Expression implements BoundIdentifiers ,
-    DefaultTypes , DefaultExpressions
+public final class ObjectExpr extends Expression implements BoundIdentifiers,
+    DefaultTypes, DefaultExpressions
 {
+
   /**
    * Indeces of the child {@link Expression}s.
    */
-  private static final int [ ] INDICES_E = new int [ ]
-  { - 1 } ;
+  private static final int [] INDICES_E = new int []
+  { -1 };
 
 
   /**
    * Indeces of the child {@link Identifier}s.
    */
-  private static final int [ ] INDICES_ID = new int [ ]
-  { - 1 } ;
+  private static final int [] INDICES_ID = new int []
+  { -1 };
 
 
   /**
    * Indeces of the child {@link Type}s.
    */
-  private static final int [ ] INDICES_TYPE = new int [ ]
-  { - 1 } ;
+  private static final int [] INDICES_TYPE = new int []
+  { -1 };
 
 
   /**
    * The identifier has the wrong set.
    */
-  private static final String WRONG_SET = "the set of the identifier has to be 'self'" ; //$NON-NLS-1$
+  private static final String WRONG_SET = "the set of the identifier has to be 'self'"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the identifier is null.
    */
-  private static final String IDENTIFIER_NULL = "identifier is null" ; //$NON-NLS-1$
+  private static final String IDENTIFIER_NULL = "identifier is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the row is null.
    */
-  private static final String ROW_NULL = "row is null" ; //$NON-NLS-1$
+  private static final String ROW_NULL = "row is null"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( ObjectExpr.class ) ;
+      .getCaption ( ObjectExpr.class );
 
 
   /**
@@ -79,22 +81,22 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_OBJECT , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{object}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_END , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{end}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_OBJECT_EXPR , 3 ,
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_OBJECT, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{object}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_END, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{end}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_OBJECT_EXPR, 3,
         "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
             + "{\\color{" + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_OBJECT //$NON-NLS-1$//$NON-NLS-2$
             + "\\ (#1)\\ #3\\ \\" + LATEX_KEY_END + "}" //$NON-NLS-1$ //$NON-NLS-2$
             + LATEX_LINE_BREAK_NEW_COMMAND + "{\\color{" //$NON-NLS-1$
             + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_OBJECT //$NON-NLS-1$
-            + "\\ (#1\\colon\\ #2)\\ #3\\ \\" + LATEX_KEY_END + "}" , "self" , //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        "tau" , "r" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-    return commands ;
+            + "\\ (#1\\colon\\ #2)\\ #3\\ \\" + LATEX_KEY_END + "}", "self", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        "tau", "r" ) ); //$NON-NLS-1$//$NON-NLS-2$
+    return commands;
   }
 
 
@@ -103,18 +105,18 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.IFTHEN ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.IFTHEN );
+    return packages;
   }
 
 
   /**
    * The expression.
    */
-  private Expression [ ] expressions ;
+  private Expression [] expressions;
 
 
   /**
@@ -122,7 +124,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @see #getIdentifiers()
    */
-  private Identifier [ ] identifiers ;
+  private Identifier [] identifiers;
 
 
   /**
@@ -130,7 +132,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @see #getTypes()
    */
-  private MonoType [ ] types ;
+  private MonoType [] types;
 
 
   /**
@@ -140,35 +142,35 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * @param pTau The {@link Type}.
    * @param pRow The child {@link Row}.
    */
-  public ObjectExpr ( Identifier pIdentifier , MonoType pTau , Row pRow )
+  public ObjectExpr ( Identifier pIdentifier, MonoType pTau, Row pRow )
   {
     if ( pIdentifier == null )
     {
-      throw new NullPointerException ( IDENTIFIER_NULL ) ;
+      throw new NullPointerException ( IDENTIFIER_NULL );
     }
-    if ( ! Identifier.Set.SELF.equals ( pIdentifier.getSet ( ) ) )
+    if ( !Identifier.Set.SELF.equals ( pIdentifier.getSet () ) )
     {
-      throw new IllegalArgumentException ( WRONG_SET ) ;
+      throw new IllegalArgumentException ( WRONG_SET );
     }
     if ( pRow == null )
     {
-      throw new NullPointerException ( ROW_NULL ) ;
+      throw new NullPointerException ( ROW_NULL );
     }
     // Identifier
-    this.identifiers = new Identifier [ ]
-    { pIdentifier } ;
-    this.identifiers [ 0 ].setParent ( this ) ;
+    this.identifiers = new Identifier []
+    { pIdentifier };
+    this.identifiers [ 0 ].setParent ( this );
     // Type
-    this.types = new MonoType [ ]
-    { pTau } ;
+    this.types = new MonoType []
+    { pTau };
     if ( this.types [ 0 ] != null )
     {
-      this.types [ 0 ].setParent ( this ) ;
+      this.types [ 0 ].setParent ( this );
     }
     // Expression
-    this.expressions = new Expression [ ]
-    { pRow } ;
-    this.expressions [ 0 ].setParent ( this ) ;
+    this.expressions = new Expression []
+    { pRow };
+    this.expressions [ 0 ].setParent ( this );
   }
 
 
@@ -183,52 +185,52 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public ObjectExpr ( Identifier pIdentifier , MonoType pTau , Row pRow ,
-      int pParserStartOffset , int pParserEndOffset )
+  public ObjectExpr ( Identifier pIdentifier, MonoType pTau, Row pRow,
+      int pParserStartOffset, int pParserEndOffset )
   {
-    this ( pIdentifier , pTau , pRow ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pIdentifier, pTau, pRow );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public ObjectExpr clone ( )
+  @Override
+  public ObjectExpr clone ()
   {
-    return new ObjectExpr ( this.identifiers [ 0 ].clone ( ) ,
-        this.types [ 0 ] == null ? null : this.types [ 0 ].clone ( ) ,
-        ( Row ) this.expressions [ 0 ].clone ( ) ) ;
+    return new ObjectExpr ( this.identifiers [ 0 ].clone (),
+        this.types [ 0 ] == null ? null : this.types [ 0 ].clone (),
+        ( Row ) this.expressions [ 0 ].clone () );
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof ObjectExpr )
     {
-      ObjectExpr other = ( ObjectExpr ) pObject ;
+      ObjectExpr other = ( ObjectExpr ) pObject;
       return ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) )
           && ( ( this.types [ 0 ] == null ) ? ( other.types [ 0 ] == null )
               : ( this.types [ 0 ].equals ( other.types [ 0 ] ) )
-                  && ( this.identifiers [ 0 ].equals ( other.identifiers [ 0 ] ) ) ) ;
+                  && ( this.identifiers [ 0 ].equals ( other.identifiers [ 0 ] ) ) );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -237,9 +239,9 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return the sub {@link Expression}s.
    */
-  public Expression [ ] getExpressions ( )
+  public Expression [] getExpressions ()
   {
-    return this.expressions ;
+    return this.expressions;
   }
 
 
@@ -248,9 +250,9 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return The indices of the child {@link Expression}s.
    */
-  public int [ ] getExpressionsIndex ( )
+  public int [] getExpressionsIndex ()
   {
-    return INDICES_E ;
+    return INDICES_E;
   }
 
 
@@ -259,9 +261,9 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return The {@link Identifier} of this {@link Expression}.
    */
-  public Identifier getId ( )
+  public Identifier getId ()
   {
-    return this.identifiers [ 0 ] ;
+    return this.identifiers [ 0 ];
   }
 
 
@@ -270,9 +272,9 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return The {@link Identifier}s of this {@link Expression}.
    */
-  public Identifier [ ] getIdentifiers ( )
+  public Identifier [] getIdentifiers ()
   {
-    return this.identifiers ;
+    return this.identifiers;
   }
 
 
@@ -281,45 +283,45 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return A list of in this {@link Expression} bound {@link Identifier}s.
    */
-  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
+  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ()
   {
     if ( this.boundIdentifiers == null )
     {
-      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( 1 ) ;
-      ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( 1 );
+      ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ();
       ArrayList < Identifier > boundE = this.expressions [ 0 ]
-          .getIdentifiersFree ( ) ;
+          .getIdentifiersFree ();
       for ( Identifier freeId : boundE )
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
         {
-          freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
-          boundIdList.add ( freeId ) ;
+          freeId.setBoundTo ( this, this.identifiers [ 0 ] );
+          boundIdList.add ( freeId );
         }
       }
-      this.boundIdentifiers.add ( boundIdList ) ;
+      this.boundIdentifiers.add ( boundIdList );
     }
-    return this.boundIdentifiers ;
+    return this.boundIdentifiers;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public ArrayList < Identifier > getIdentifiersFree ( )
+  @Override
+  public ArrayList < Identifier > getIdentifiersFree ()
   {
     if ( this.identifiersFree == null )
     {
-      this.identifiersFree = new ArrayList < Identifier > ( ) ;
+      this.identifiersFree = new ArrayList < Identifier > ();
       this.identifiersFree.addAll ( this.expressions [ 0 ]
-          .getIdentifiersFree ( ) ) ;
+          .getIdentifiersFree () );
       while ( this.identifiersFree.remove ( this.identifiers [ 0 ] ) )
       {
         // Remove all Identifiers with the same name
       }
     }
-    return this.identifiersFree ;
+    return this.identifiersFree;
   }
 
 
@@ -328,9 +330,9 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return The indices of the child {@link Identifier}s.
    */
-  public int [ ] getIdentifiersIndex ( )
+  public int [] getIdentifiersIndex ()
   {
-    return INDICES_ID ;
+    return INDICES_ID;
   }
 
 
@@ -339,12 +341,12 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -353,12 +355,12 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  @ Override
-  public LatexPackageList getLatexPackages ( )
+  @Override
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = super.getLatexPackages ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
-    return packages ;
+    LatexPackageList packages = super.getLatexPackages ();
+    packages.add ( getLatexPackagesStatic () );
+    return packages;
   }
 
 
@@ -367,9 +369,9 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return the sub {@link Row}.
    */
-  public Row getRow ( )
+  public Row getRow ()
   {
-    return ( Row ) this.expressions [ 0 ] ;
+    return ( Row ) this.expressions [ 0 ];
   }
 
 
@@ -378,9 +380,9 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return the sub {@link Type}.
    */
-  public MonoType getTau ( )
+  public MonoType getTau ()
   {
-    return this.types [ 0 ] ;
+    return this.types [ 0 ];
   }
 
 
@@ -389,9 +391,9 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return the sub {@link Type}s.
    */
-  public MonoType [ ] getTypes ( )
+  public MonoType [] getTypes ()
   {
-    return this.types ;
+    return this.types;
   }
 
 
@@ -400,56 +402,56 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return The indices of the child {@link Type}s.
    */
-  public int [ ] getTypesIndex ( )
+  public int [] getTypesIndex ()
   {
-    return INDICES_TYPE ;
+    return INDICES_TYPE;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.identifiers [ 0 ].hashCode ( )
-        + this.expressions [ 0 ].hashCode ( )
-        + ( this.types [ 0 ] == null ? 0 : this.types [ 0 ].hashCode ( ) ) ;
+    return this.identifiers [ 0 ].hashCode ()
+        + this.expressions [ 0 ].hashCode ()
+        + ( this.types [ 0 ] == null ? 0 : this.types [ 0 ].hashCode () );
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public boolean isValue ( )
+  @Override
+  public boolean isValue ()
   {
-    return this.expressions [ 0 ].isValue ( ) ;
+    return this.expressions [ 0 ].isValue ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public ObjectExpr substitute ( Identifier pId , Expression pExpression )
+  @Override
+  public ObjectExpr substitute ( Identifier pId, Expression pExpression )
   {
-    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    if ( pExpression.getIdentifierFreeNotOnlyVariable () )
     {
-      throw new NotOnlyFreeVariableException ( ) ;
+      throw new NotOnlyFreeVariableException ();
     }
     /*
      * Do not substitute, if the Identifiers are equal.
      */
-    if ( Identifier.Set.SELF.equals ( pId.getSet ( ) ) )
+    if ( Identifier.Set.SELF.equals ( pId.getSet () ) )
     {
-      return this ;
+      return this;
     }
     /*
      * Perform the substitution.
      */
-    Row newRow = ( Row ) this.expressions [ 0 ].substitute ( pId , pExpression ) ;
-    return new ObjectExpr ( this.identifiers [ 0 ] , this.types [ 0 ] , newRow ) ;
+    Row newRow = ( Row ) this.expressions [ 0 ].substitute ( pId, pExpression );
+    return new ObjectExpr ( this.identifiers [ 0 ], this.types [ 0 ], newRow );
   }
 
 
@@ -458,13 +460,13 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @see Expression#substitute(TypeSubstitution)
    */
-  @ Override
+  @Override
   public ObjectExpr substitute ( TypeSubstitution pTypeSubstitution )
   {
     MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
-        .substitute ( pTypeSubstitution ) ;
-    Row newRow = ( Row ) this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    return new ObjectExpr ( this.identifiers [ 0 ] , newTau , newRow ) ;
+        .substitute ( pTypeSubstitution );
+    Row newRow = ( Row ) this.expressions [ 0 ].substitute ( pTypeSubstitution );
+    return new ObjectExpr ( this.identifiers [ 0 ], newTau, newRow );
   }
 
 
@@ -473,33 +475,33 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_OBJECTEXPR , LATEX_OBJECT_EXPR , pIndent , this.toPrettyString ( )
-            .toString ( ) , this.identifiers [ 0 ].toPrettyString ( )
-            .toString ( ) , this.types [ 0 ] == null ? LATEX_NO_TYPE
-            : this.types [ 0 ].toPrettyString ( ).toString ( ) ,
-        this.expressions [ 0 ].toPrettyString ( ).toString ( ) ) ;
+        PRIO_OBJECTEXPR, LATEX_OBJECT_EXPR, pIndent, this.toPrettyString ()
+            .toString (), this.identifiers [ 0 ].toPrettyString ().toString (),
+        this.types [ 0 ] == null ? LATEX_NO_TYPE : this.types [ 0 ]
+            .toPrettyString ().toString (), this.expressions [ 0 ]
+            .toPrettyString ().toString () );
     builder.addBuilder ( this.identifiers [ 0 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_ID ) ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), PRIO_ID );
     if ( this.types [ 0 ] == null )
     {
-      builder.addEmptyBuilder ( ) ;
+      builder.addEmptyBuilder ();
     }
     else
     {
       builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
-          PRIO_OBJECTEXPR_TAU ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT ),
+          PRIO_OBJECTEXPR_TAU );
     }
-    builder.addBreak ( ) ;
+    builder.addBreak ();
     builder.addBuilder ( this.expressions [ 0 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
-        PRIO_OBJECTEXPR_ROW ) ;
-    return builder ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ),
+        PRIO_OBJECTEXPR_ROW );
+    return builder;
   }
 
 
@@ -508,37 +510,37 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_OBJECTEXPR ) ;
-      this.prettyStringBuilder.addKeyword ( PRETTY_OBJECT ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-      this.prettyStringBuilder.addText ( PRETTY_LPAREN ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_OBJECTEXPR );
+      this.prettyStringBuilder.addKeyword ( PRETTY_OBJECT );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
+      this.prettyStringBuilder.addText ( PRETTY_LPAREN );
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), PRIO_ID );
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
-        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_COLON );
+        this.prettyStringBuilder.addText ( PRETTY_SPACE );
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_OBJECTEXPR_TAU ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+            PRIO_OBJECTEXPR_TAU );
       }
-      this.prettyStringBuilder.addText ( PRETTY_RPAREN ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-      this.prettyStringBuilder.addBreak ( ) ;
+      this.prettyStringBuilder.addText ( PRETTY_RPAREN );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
+      this.prettyStringBuilder.addBreak ();
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_OBJECTEXPR_ROW ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-      this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( PRETTY_END ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+          PRIO_OBJECTEXPR_ROW );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
+      this.prettyStringBuilder.addBreak ();
+      this.prettyStringBuilder.addKeyword ( PRETTY_END );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

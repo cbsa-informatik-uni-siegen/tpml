@@ -1,10 +1,10 @@
-package de.unisiegen.tpml.core.types ;
+package de.unisiegen.tpml.core.types;
 
 
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
 
 
 /**
@@ -14,16 +14,17 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
  */
 public class UnifyType extends PrimitiveType
 {
+
   /**
    * The keyword <code>bool</code>.
    */
-  private static final String UNIFY = "unify" ; //$NON-NLS-1$
+  private static final String UNIFY = "unify"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = Type.getCaption ( UnifyType.class ) ;
+  private static final String CAPTION = Type.getCaption ( UnifyType.class );
 
 
   /**
@@ -31,23 +32,23 @@ public class UnifyType extends PrimitiveType
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_UNIFY , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{unify}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_UNIFY_TYPE , 0 , "\\" //$NON-NLS-1$
-        + LATEX_KEY_UNIFY ) ) ;
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_UNIFY, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{unify}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_UNIFY_TYPE, 0, "\\" //$NON-NLS-1$
+        + LATEX_KEY_UNIFY ) );
+    return commands;
   }
 
 
   /**
    * Allocates a new <code>UnitType</code> instance.
    */
-  public UnifyType ( )
+  public UnifyType ()
   {
-    super ( UNIFY ) ;
+    super ( UNIFY );
   }
 
 
@@ -56,20 +57,20 @@ public class UnifyType extends PrimitiveType
    * 
    * @see Type#clone()
    */
-  @ Override
-  public UnifyType clone ( )
+  @Override
+  public UnifyType clone ()
   {
-    return new UnifyType ( ) ;
+    return new UnifyType ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -78,12 +79,12 @@ public class UnifyType extends PrimitiveType
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -92,13 +93,13 @@ public class UnifyType extends PrimitiveType
    * 
    * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_PRIMITIVE , LATEX_UNIFY_TYPE , pIndent , this.toPrettyString ( )
-            .toString ( ) ) ;
-    return builder ;
+        PRIO_PRIMITIVE, LATEX_UNIFY_TYPE, pIndent, this.toPrettyString ()
+            .toString () );
+    return builder;
   }
 }

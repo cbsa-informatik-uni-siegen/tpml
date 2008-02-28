@@ -1,12 +1,12 @@
-package de.unisiegen.tpml.core.languages.l2cbn ;
+package de.unisiegen.tpml.core.languages.l2cbn;
 
 
-import de.unisiegen.tpml.core.Messages ;
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.core.languages.l2.L2Language ;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.l2.L2Language;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 
 
 /**
@@ -25,20 +25,21 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
  */
 public class L2CBNLanguage extends L2Language
 {
+
   /**
    * The group id for proof rules of this language.
    * 
    * @see de.unisiegen.tpml.core.AbstractProofRule#getGroup()
    */
-  public static final int L2CBN = L2Language.L2 + 1 ;
+  public static final int L2CBN = L2Language.L2 + 1;
 
 
   /**
    * Allocates a new <code>L2CBNLanguage</code> instance.
    */
-  public L2CBNLanguage ( )
+  public L2CBNLanguage ()
   {
-    super ( ) ;
+    super ();
   }
 
 
@@ -47,10 +48,10 @@ public class L2CBNLanguage extends L2Language
    * 
    * @see de.unisiegen.tpml.core.languages.Language#getDescription()
    */
-  @ Override
-  public String getDescription ( )
+  @Override
+  public String getDescription ()
   {
-    return Messages.getString ( "L2CBNLanguage.0" ) ; //$NON-NLS-1$
+    return Messages.getString ( "L2CBNLanguage.0" ); //$NON-NLS-1$
   }
 
 
@@ -59,10 +60,10 @@ public class L2CBNLanguage extends L2Language
    * 
    * @see de.unisiegen.tpml.core.languages.Language#getName()
    */
-  @ Override
-  public String getName ( )
+  @Override
+  public String getName ()
   {
-    return "L2CBN" ; //$NON-NLS-1$
+    return "L2CBN"; //$NON-NLS-1$
   }
 
 
@@ -71,10 +72,10 @@ public class L2CBNLanguage extends L2Language
    * 
    * @see Language#getTitle()
    */
-  @ Override
-  public int getId ( )
+  @Override
+  public int getId ()
   {
-    return L2CBNLanguage.L2CBN ;
+    return L2CBNLanguage.L2CBN;
   }
 
 
@@ -83,10 +84,10 @@ public class L2CBNLanguage extends L2Language
    * 
    * @see de.unisiegen.tpml.core.languages.Language#getTitle()
    */
-  @ Override
-  public String getTitle ( )
+  @Override
+  public String getTitle ()
   {
-    return Messages.getString ( "L2CBNLanguage.1" ) ; //$NON-NLS-1$
+    return Messages.getString ( "L2CBNLanguage.1" ); //$NON-NLS-1$
   }
 
 
@@ -98,11 +99,11 @@ public class L2CBNLanguage extends L2Language
    * 
    * @see de.unisiegen.tpml.core.languages.Language#newBigStepProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
-  @ Override
+  @Override
   public BigStepProofModel newBigStepProofModel ( Expression expression )
   {
-    return new BigStepProofModel ( expression , new L2CBNBigStepProofRuleSet (
-        this ) ) ;
+    return new BigStepProofModel ( expression, new L2CBNBigStepProofRuleSet (
+        this ) );
   }
 
 
@@ -111,10 +112,10 @@ public class L2CBNLanguage extends L2Language
    * 
    * @see de.unisiegen.tpml.core.languages.Language#newSmallStepProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
-  @ Override
+  @Override
   public SmallStepProofModel newSmallStepProofModel ( Expression expression )
   {
-    return new SmallStepProofModel ( expression ,
-        new L2CBNSmallStepProofRuleSet ( this ) ) ;
+    return new SmallStepProofModel ( expression,
+        new L2CBNSmallStepProofRuleSet ( this ) );
   }
 }

@@ -1,18 +1,18 @@
-package de.unisiegen.tpml.core.languages.l0 ;
+package de.unisiegen.tpml.core.languages.l0;
 
 
-import de.unisiegen.tpml.core.Messages ;
-import de.unisiegen.tpml.core.bigstep.AbstractBigStepProofRuleSet ;
-import de.unisiegen.tpml.core.bigstep.BigStepProofContext ;
-import de.unisiegen.tpml.core.bigstep.BigStepProofNode ;
-import de.unisiegen.tpml.core.bigstep.BigStepProofResult ;
-import de.unisiegen.tpml.core.expressions.Application ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.InfixOperation ;
-import de.unisiegen.tpml.core.expressions.Lambda ;
-import de.unisiegen.tpml.core.expressions.MultiLambda ;
-import de.unisiegen.tpml.core.expressions.Projection ;
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.bigstep.AbstractBigStepProofRuleSet;
+import de.unisiegen.tpml.core.bigstep.BigStepProofContext;
+import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
+import de.unisiegen.tpml.core.bigstep.BigStepProofResult;
+import de.unisiegen.tpml.core.expressions.Application;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.InfixOperation;
+import de.unisiegen.tpml.core.expressions.Lambda;
+import de.unisiegen.tpml.core.expressions.MultiLambda;
+import de.unisiegen.tpml.core.expressions.Projection;
 
 
 /**
@@ -25,6 +25,7 @@ import de.unisiegen.tpml.core.expressions.Projection ;
  */
 public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet
 {
+
   /**
    * Allocates a new <code>L0BigStepProofRuleSet</code> with the specified
    * <code>language</code>, which is the <b>L0</b> or a derived language.
@@ -35,13 +36,13 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet
    */
   public L0BigStepProofRuleSet ( L0Language pL0Language )
   {
-    super ( pL0Language ) ;
+    super ( pL0Language );
     // register the big step rules (order is important for guessing!)
-    registerByMethodName ( L0Language.L0 ,
-        "APP" , "applyApplication" , "updateApplication" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    registerByMethodName ( L0Language.L0 ,
-        "BETA-V" , "applyBetaValue" , "updateBetaValue" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    registerByMethodName ( L0Language.L0 , "VAL" , "applyValue" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L0Language.L0,
+        "APP", "applyApplication", "updateApplication" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName ( L0Language.L0,
+        "BETA-V", "applyBetaValue", "updateBetaValue" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName ( L0Language.L0, "VAL", "applyValue" ); //$NON-NLS-1$ //$NON-NLS-2$
   }
 
 
@@ -52,32 +53,32 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet
    * @param context the big step proof context.
    * @param node the node to apply the <b>(APP)</b> rule to.
    */
-  public void applyApplication ( BigStepProofContext context ,
+  public void applyApplication ( BigStepProofContext context,
       BigStepProofNode node )
   {
     // check which type of "application" we have here
-    Expression e = node.getExpression ( ) ;
+    Expression e = node.getExpression ();
     if ( e instanceof Application )
     {
       // add the first node for the application
-      Application application = ( Application ) e ;
-      context.addProofNode ( node , application.getE1 ( ) ) ;
+      Application application = ( Application ) e;
+      context.addProofNode ( node, application.getE1 () );
       // we can add the second node as well if memory is disabled
-      if ( ! context.isMemoryEnabled ( ) )
+      if ( !context.isMemoryEnabled () )
       {
-        context.addProofNode ( node , application.getE2 ( ) ) ;
+        context.addProofNode ( node, application.getE2 () );
       }
     }
     else
     {
       // otherwise it must be an infix operation
-      InfixOperation infixOperation = ( InfixOperation ) e ;
-      context.addProofNode ( node , new Application ( infixOperation.getOp ( ) ,
-          infixOperation.getE1 ( ) ) ) ;
+      InfixOperation infixOperation = ( InfixOperation ) e;
+      context.addProofNode ( node, new Application ( infixOperation.getOp (),
+          infixOperation.getE1 () ) );
       // we can add the second as well if memory is disabled
-      if ( ! context.isMemoryEnabled ( ) )
+      if ( !context.isMemoryEnabled () )
       {
-        context.addProofNode ( node , infixOperation.getE2 ( ) ) ;
+        context.addProofNode ( node, infixOperation.getE2 () );
       }
     }
   }
@@ -90,51 +91,51 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet
    * @param context the big step proof context.
    * @param node the node to update according to <b>(APP)</b>.
    */
-  public void updateApplication ( BigStepProofContext context ,
+  public void updateApplication ( BigStepProofContext context,
       BigStepProofNode node )
   {
     // determine the expression for the node
-    Expression e = node.getExpression ( ) ;
+    Expression e = node.getExpression ();
     // further operation depends on the number of child nodes
-    if ( node.getChildCount ( ) == 1 && node.getChildAt ( 0 ).isProven ( ) )
+    if ( node.getChildCount () == 1 && node.getChildAt ( 0 ).isProven () )
     {
       // determine the first child node
-      BigStepProofNode node0 = node.getChildAt ( 0 ) ;
+      BigStepProofNode node0 = node.getChildAt ( 0 );
       // add the second child node for the application/infixOperation
       if ( e instanceof Application )
       {
         // the Application case
-        Application application = ( Application ) e ;
-        context.addProofNode ( node , application.getE2 ( ) , node0
-            .getResult ( ).getStore ( ) ) ;
+        Application application = ( Application ) e;
+        context.addProofNode ( node, application.getE2 (), node0.getResult ()
+            .getStore () );
       }
       else
       {
         // the InfixOperation case
-        InfixOperation infixOperation = ( InfixOperation ) e ;
-        context.addProofNode ( node , infixOperation.getE2 ( ) , node0
-            .getResult ( ).getStore ( ) ) ;
+        InfixOperation infixOperation = ( InfixOperation ) e;
+        context.addProofNode ( node, infixOperation.getE2 (), node0
+            .getResult ().getStore () );
       }
     }
-    else if ( node.getChildCount ( ) == 2 )
+    else if ( node.getChildCount () == 2 )
     {
       // check if both child nodes are proven
-      BigStepProofNode node0 = node.getChildAt ( 0 ) ;
-      BigStepProofNode node1 = node.getChildAt ( 1 ) ;
-      if ( node0.isProven ( ) && node1.isProven ( ) )
+      BigStepProofNode node0 = node.getChildAt ( 0 );
+      BigStepProofNode node1 = node.getChildAt ( 1 );
+      if ( node0.isProven () && node1.isProven () )
       {
         // add the third child node
-        BigStepProofResult result0 = node0.getResult ( ) ;
-        BigStepProofResult result1 = node1.getResult ( ) ;
-        Application application = new Application ( result0.getValue ( ) ,
-            result1.getValue ( ) ) ;
-        context.addProofNode ( node , application , result1.getStore ( ) ) ;
+        BigStepProofResult result0 = node0.getResult ();
+        BigStepProofResult result1 = node1.getResult ();
+        Application application = new Application ( result0.getValue (),
+            result1.getValue () );
+        context.addProofNode ( node, application, result1.getStore () );
       }
     }
-    else if ( node.getChildCount ( ) == 3 && node.getChildAt ( 2 ).isProven ( ) )
+    else if ( node.getChildCount () == 3 && node.getChildAt ( 2 ).isProven () )
     {
       // the result of the third child node is the result for this node
-      context.setProofNodeResult ( node , node.getChildAt ( 2 ).getResult ( ) ) ;
+      context.setProofNodeResult ( node, node.getChildAt ( 2 ).getResult () );
     }
   }
 
@@ -146,40 +147,40 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet
    * @param context the big step proof context.
    * @param node the node to apply the <b>(BETA-V)</b> rule to.
    */
-  public void applyBetaValue ( BigStepProofContext context ,
+  public void applyBetaValue ( BigStepProofContext context,
       BigStepProofNode node )
   {
     // the expression must be an application to a value...
-    Application application = ( Application ) node.getExpression ( ) ;
-    Expression e2 = application.getE2 ( ) ;
-    if ( ! e2.isValue ( ) )
+    Application application = ( Application ) node.getExpression ();
+    Expression e2 = application.getE2 ();
+    if ( !e2.isValue () )
     {
       throw new IllegalArgumentException ( Messages
-          .getString ( "L0BigStepProofRuleSet.0" ) ) ; //$NON-NLS-1$
+          .getString ( "L0BigStepProofRuleSet.0" ) ); //$NON-NLS-1$
     }
     // ...with a lambda or multi lambda expression
-    Expression e1 = application.getE1 ( ) ;
+    Expression e1 = application.getE1 ();
     if ( e1 instanceof MultiLambda )
     {
       // multi lambda is special
-      MultiLambda multiLambda = ( MultiLambda ) e1 ;
-      Expression e = multiLambda.getE ( ) ;
-      Identifier [ ] identifiers = multiLambda.getIdentifiers ( ) ;
+      MultiLambda multiLambda = ( MultiLambda ) e1;
+      Expression e = multiLambda.getE ();
+      Identifier [] identifiers = multiLambda.getIdentifiers ();
       // perform the required substitutions
-      for ( int n = 0 ; n < multiLambda.getIdentifiers ( ).length ; ++ n )
+      for ( int n = 0 ; n < multiLambda.getIdentifiers ().length ; ++n )
       {
         // substitute: (#l_n e2) for id
-        e = e.substitute ( identifiers [ n ] , new Application (
-            new Projection ( identifiers.length , n + 1 ) , e2 ) ) ;
+        e = e.substitute ( identifiers [ n ], new Application ( new Projection (
+            identifiers.length, n + 1 ), e2 ) );
       }
       // add the proof node for e
-      context.addProofNode ( node , e ) ;
+      context.addProofNode ( node, e );
     }
     else
     {
-      Lambda lambda = ( Lambda ) application.getE1 ( ) ;
-      context.addProofNode ( node , lambda.getE ( ).substitute (
-          lambda.getId ( ) , e2 ) ) ;
+      Lambda lambda = ( Lambda ) application.getE1 ();
+      context.addProofNode ( node, lambda.getE ().substitute ( lambda.getId (),
+          e2 ) );
     }
   }
 
@@ -191,11 +192,11 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet
    * @param context the big step proof context.
    * @param node the node to update according to <b>(BETA-V)</b>.
    */
-  public void updateBetaValue ( BigStepProofContext context ,
+  public void updateBetaValue ( BigStepProofContext context,
       BigStepProofNode node )
   {
     // forward the result of the first child node to this node (may be null)
-    context.setProofNodeResult ( node , node.getChildAt ( 0 ).getResult ( ) ) ;
+    context.setProofNodeResult ( node, node.getChildAt ( 0 ).getResult () );
   }
 
 
@@ -206,13 +207,13 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet
    * @param context the big step proof context.
    * @param node the node to apply the <b>(VAL)</b> rule to.
    */
-  public void applyValue ( BigStepProofContext context , BigStepProofNode node )
+  public void applyValue ( BigStepProofContext context, BigStepProofNode node )
   {
-    if ( ! node.getExpression ( ).isValue ( ) )
+    if ( !node.getExpression ().isValue () )
     {
       throw new IllegalArgumentException ( Messages
-          .getString ( "L0BigStepProofRuleSet.1" ) ) ; //$NON-NLS-1$
+          .getString ( "L0BigStepProofRuleSet.1" ) ); //$NON-NLS-1$
     }
-    context.setProofNodeResult ( node , node.getExpression ( ) ) ;
+    context.setProofNodeResult ( node, node.getExpression () );
   }
 }

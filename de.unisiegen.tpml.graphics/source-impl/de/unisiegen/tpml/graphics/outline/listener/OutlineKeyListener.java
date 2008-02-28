@@ -1,12 +1,13 @@
-package de.unisiegen.tpml.graphics.outline.listener ;
+package de.unisiegen.tpml.graphics.outline.listener;
 
 
-import java.awt.event.KeyEvent ;
-import java.awt.event.KeyListener ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
-import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
-import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline;
+import de.unisiegen.tpml.graphics.outline.node.OutlineNode;
+import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard;
 
 
 /**
@@ -18,16 +19,17 @@ import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
  */
 public final class OutlineKeyListener implements KeyListener
 {
+
   /**
    * The unused <code>String</code> for the <code>SuppressWarnings</code>.
    */
-  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+  private static final String UNUSED = "unused"; //$NON-NLS-1$
 
 
   /**
    * The {@link DefaultOutline}.
    */
-  private DefaultOutline defaultOutline ;
+  private DefaultOutline defaultOutline;
 
 
   /**
@@ -37,7 +39,7 @@ public final class OutlineKeyListener implements KeyListener
    */
   public OutlineKeyListener ( DefaultOutline pDefaultOutline )
   {
-    this.defaultOutline = pDefaultOutline ;
+    this.defaultOutline = pDefaultOutline;
   }
 
 
@@ -45,14 +47,13 @@ public final class OutlineKeyListener implements KeyListener
    * Copies the {@link Expression} as a <code>String</code> of the selected
    * node into the clipboard using the {@link OutlineClipboard}.
    */
-  public final void copy ( )
+  public final void copy ()
   {
-    OutlineNode outlineNode = ( OutlineNode ) this.defaultOutline
-        .getUI ( ).getJTreeOutline ( ).getSelectionPath ( )
-        .getLastPathComponent ( ) ;
+    OutlineNode outlineNode = ( OutlineNode ) this.defaultOutline.getUI ()
+        .getJTreeOutline ().getSelectionPath ().getLastPathComponent ();
     if ( outlineNode != null )
     {
-      OutlineClipboard.getInstance ( ).copy ( outlineNode.getPrettyString ( ) ) ;
+      OutlineClipboard.getInstance ().copy ( outlineNode.getPrettyString () );
     }
   }
 
@@ -64,19 +65,19 @@ public final class OutlineKeyListener implements KeyListener
    */
   private final void handleKeyEvent ( KeyEvent pKeyEvent )
   {
-    if ( pKeyEvent.getSource ( ).equals (
-        this.defaultOutline.getUI ( ).getJTreeOutline ( ) ) )
+    if ( pKeyEvent.getSource ().equals (
+        this.defaultOutline.getUI ().getJTreeOutline () ) )
     {
       /*
        * Copy the selected node as a string into the clipboard.
        */
-      if ( ( pKeyEvent.isControlDown ( ) )
-          && ( pKeyEvent.getKeyCode ( ) == KeyEvent.VK_C ) )
+      if ( ( pKeyEvent.isControlDown () )
+          && ( pKeyEvent.getKeyCode () == KeyEvent.VK_C ) )
       {
-        copy ( ) ;
+        copy ();
       }
     }
-    pKeyEvent.consume ( ) ;
+    pKeyEvent.consume ();
   }
 
 
@@ -88,7 +89,7 @@ public final class OutlineKeyListener implements KeyListener
    */
   public final void keyPressed ( KeyEvent pKeyEvent )
   {
-    handleKeyEvent ( pKeyEvent ) ;
+    handleKeyEvent ( pKeyEvent );
   }
 
 
@@ -100,7 +101,7 @@ public final class OutlineKeyListener implements KeyListener
    */
   public final void keyReleased ( KeyEvent pKeyEvent )
   {
-    handleKeyEvent ( pKeyEvent ) ;
+    handleKeyEvent ( pKeyEvent );
   }
 
 
@@ -110,7 +111,7 @@ public final class OutlineKeyListener implements KeyListener
    * @param pKeyEvent The <code>KeyEvent</code>.
    * @see KeyListener#keyTyped(KeyEvent)
    */
-  public final void keyTyped ( @ SuppressWarnings ( UNUSED )
+  public final void keyTyped ( @SuppressWarnings ( UNUSED )
   KeyEvent pKeyEvent )
   {
     // Do nothing.

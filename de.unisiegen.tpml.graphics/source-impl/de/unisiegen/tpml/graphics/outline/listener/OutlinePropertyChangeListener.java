@@ -1,15 +1,17 @@
-package de.unisiegen.tpml.graphics.outline.listener ;
+package de.unisiegen.tpml.graphics.outline.listener;
 
 
-import java.beans.PropertyChangeEvent ;
-import java.beans.PropertyChangeListener ;
-import javax.swing.JSplitPane ;
-import de.unisiegen.tpml.graphics.AbstractProofView ;
-import de.unisiegen.tpml.core.util.Theme ;
-import de.unisiegen.tpml.graphics.editor.TextEditorPanel ;
-import de.unisiegen.tpml.graphics.editor.TypeEditorPanel ;
-import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
-import de.unisiegen.tpml.graphics.outline.Outline ;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.JSplitPane;
+
+import de.unisiegen.tpml.core.util.Theme;
+import de.unisiegen.tpml.graphics.AbstractProofView;
+import de.unisiegen.tpml.graphics.editor.TextEditorPanel;
+import de.unisiegen.tpml.graphics.editor.TypeEditorPanel;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline;
+import de.unisiegen.tpml.graphics.outline.Outline;
 
 
 /**
@@ -23,22 +25,23 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
 public final class OutlinePropertyChangeListener implements
     PropertyChangeListener
 {
+
   /**
    * The <code>JSplitPane</code>.
    */
-  private JSplitPane jSplitPane ;
+  private JSplitPane jSplitPane;
 
 
   /**
    * Used to indicate that the <code>DividerLocation</code> was set before.
    */
-  private boolean setDivider ;
+  private boolean setDivider;
 
 
   /**
    * The {@link DefaultOutline}.
    */
-  private DefaultOutline defaultOutline ;
+  private DefaultOutline defaultOutline;
 
 
   /**
@@ -47,12 +50,12 @@ public final class OutlinePropertyChangeListener implements
    * @param pJSplitPane The <code>JSplitPane</code>.
    * @param pDefaultOutline The {@link Outline}.
    */
-  public OutlinePropertyChangeListener ( JSplitPane pJSplitPane ,
+  public OutlinePropertyChangeListener ( JSplitPane pJSplitPane,
       DefaultOutline pDefaultOutline )
   {
-    this.jSplitPane = pJSplitPane ;
-    this.defaultOutline = pDefaultOutline ;
-    this.setDivider = false ;
+    this.jSplitPane = pJSplitPane;
+    this.defaultOutline = pDefaultOutline;
+    this.setDivider = false;
   }
 
 
@@ -63,9 +66,9 @@ public final class OutlinePropertyChangeListener implements
    */
   public OutlinePropertyChangeListener ( DefaultOutline pDefaultOutline )
   {
-    this.jSplitPane = null ;
-    this.defaultOutline = pDefaultOutline ;
-    this.setDivider = false ;
+    this.jSplitPane = null;
+    this.defaultOutline = pDefaultOutline;
+    this.setDivider = false;
   }
 
 
@@ -79,22 +82,22 @@ public final class OutlinePropertyChangeListener implements
    */
   public final void propertyChange ( PropertyChangeEvent pPropertyChangeEvent )
   {
-    if ( ( pPropertyChangeEvent.getSource ( ) instanceof AbstractProofView )
-        || ( pPropertyChangeEvent.getSource ( ) instanceof TextEditorPanel )
-        || ( pPropertyChangeEvent.getSource ( ) instanceof TypeEditorPanel ) )
+    if ( ( pPropertyChangeEvent.getSource () instanceof AbstractProofView )
+        || ( pPropertyChangeEvent.getSource () instanceof TextEditorPanel )
+        || ( pPropertyChangeEvent.getSource () instanceof TypeEditorPanel ) )
     {
-      if ( ! this.setDivider )
+      if ( !this.setDivider )
       {
-        this.setDivider = true ;
+        this.setDivider = true;
         this.jSplitPane.setDividerLocation ( this.defaultOutline
-            .getPreferences ( ).getDividerLocation ( ) ) ;
+            .getPreferences ().getDividerLocation () );
       }
     }
-    else if ( pPropertyChangeEvent.getSource ( ) instanceof Theme )
+    else if ( pPropertyChangeEvent.getSource () instanceof Theme )
     {
-      if ( pPropertyChangeEvent.getPropertyName ( ).endsWith ( "Color" ) )//$NON-NLS-1$
+      if ( pPropertyChangeEvent.getPropertyName ().endsWith ( "Color" ) )//$NON-NLS-1$
       {
-        this.defaultOutline.propertyChanged ( ) ;
+        this.defaultOutline.propertyChanged ();
       }
     }
   }

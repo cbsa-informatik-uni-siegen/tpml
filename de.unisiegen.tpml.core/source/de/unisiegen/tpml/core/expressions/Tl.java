@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -15,24 +15,25 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class Tl extends UnaryListOperator
 {
+
   /**
    * The keyword <code>tl</code>.
    */
-  private static final String TL = "tl" ; //$NON-NLS-1$
+  private static final String TL = "tl"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = Expression.getCaption ( Tl.class ) ;
+  private static final String CAPTION = Expression.getCaption ( Tl.class );
 
 
   /**
    * Allocates a new <code>Tl</code> instance.
    */
-  public Tl ( )
+  public Tl ()
   {
-    super ( TL ) ;
+    super ( TL );
   }
 
 
@@ -44,11 +45,11 @@ public final class Tl extends UnaryListOperator
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Tl ( int pParserStartOffset , int pParserEndOffset )
+  public Tl ( int pParserStartOffset, int pParserEndOffset )
   {
-    this ( ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ();
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -57,19 +58,19 @@ public final class Tl extends UnaryListOperator
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public Tl clone ( )
+  @Override
+  public Tl clone ()
   {
-    return new Tl ( ) ;
+    return new Tl ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

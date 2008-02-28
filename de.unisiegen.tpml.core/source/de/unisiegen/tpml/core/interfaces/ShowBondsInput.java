@@ -1,10 +1,10 @@
-package de.unisiegen.tpml.core.interfaces ;
+package de.unisiegen.tpml.core.interfaces;
 
 
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
-import de.unisiegen.tpml.core.typeinference.TypeSubType ;
-import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
+import de.unisiegen.tpml.core.typeinference.TypeSubType;
+import de.unisiegen.tpml.core.types.Type;
 
 
 /**

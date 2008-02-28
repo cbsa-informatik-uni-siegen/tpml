@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.prettyprinter ;
+package de.unisiegen.tpml.core.prettyprinter;
 
 
 /**
@@ -14,25 +14,25 @@ public enum PrettyStyle
   /**
    * No special style.
    */
-  NONE ,
+  NONE,
   /**
    * Style for constants.
    */
-  CONSTANT ,
+  CONSTANT,
   /**
    * Style for keywords.
    */
-  KEYWORD ,
+  KEYWORD,
   /**
    * Style for comments.
    */
-  COMMENT ,
+  COMMENT,
   /**
    * Style for data types.
    */
-  TYPE ,
+  TYPE,
   /**
    * Style for data identifiers.
    */
-  IDENTIFIER ,
+  IDENTIFIER,
 }

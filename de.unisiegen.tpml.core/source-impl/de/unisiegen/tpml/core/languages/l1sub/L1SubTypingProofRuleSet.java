@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.languages.l1sub;
 
+
 import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
@@ -10,76 +11,84 @@ import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.MonoType;
 
+
 /**
  * The subtype proof rules for the <code>L1</code> language.
  * 
  * @author Benjamin Mies
  * @see de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet
  */
-public class L1SubTypingProofRuleSet extends AbstractSubTypingProofRuleSet {
+public class L1SubTypingProofRuleSet extends AbstractSubTypingProofRuleSet
+{
 
-	/**
-	 * Allocates a new <code>L1SubTypingProofRuleSet</code> for the specified
-	 * <code>language</code>.
-	 * 
-	 * @param language the <code>L1</code> or a derived language.
-	 * @param mode the mode chosen by the user
-	 * @throws NullPointerException if <code>language</code> is
-	 *           <code>null</code>.
-	 */
-	public L1SubTypingProofRuleSet ( Language language, boolean mode ) {
-		super ( language, mode );
+  /**
+   * Allocates a new <code>L1SubTypingProofRuleSet</code> for the specified
+   * <code>language</code>.
+   * 
+   * @param language the <code>L1</code> or a derived language.
+   * @param mode the mode chosen by the user
+   * @throws NullPointerException if <code>language</code> is
+   *           <code>null</code>.
+   */
+  public L1SubTypingProofRuleSet ( Language language, boolean mode )
+  {
+    super ( language, mode );
 
-		// register the type rules
-		registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
-		registerByMethodName ( L1Language.L1, "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
-	}
+    // register the type rules
+    registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1Language.L1, "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
+  }
 
-	/**
-	 * Applies the <b>(REFL)</b> rule to the <code>node</code> using the
-	 * <code>context</code>.
-	 * 
-	 * @param context the subtyping proof context.
-	 * @param node the subtyping proof node.
-	 * @throws SubTypingException throw Exception if rule can't be applied
-	 */
-	public void applyRefl ( @SuppressWarnings("unused")
-	SubTypingProofContext context, SubTypingProofNode node )
-			throws SubTypingException {
-		MonoType type;
-		MonoType type2;
 
-		type = node.getLeft ( );
-		type2 = node.getRight ( );
+  /**
+   * Applies the <b>(REFL)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   * @throws SubTypingException throw Exception if rule can't be applied
+   */
+  public void applyRefl ( @SuppressWarnings ( "unused" )
+  SubTypingProofContext context, SubTypingProofNode node )
+      throws SubTypingException
+  {
+    MonoType type;
+    MonoType type2;
 
-		if ( type.equals ( type2 ) )
-			return;
+    type = node.getLeft ();
+    type2 = node.getRight ();
 
-		throw new SubTypingException ( Messages.getString ( "SubTypingException.5" ), node ); //$NON-NLS-1$
+    if ( type.equals ( type2 ) )
+      return;
 
-	}
+    throw new SubTypingException (
+        Messages.getString ( "SubTypingException.5" ), node ); //$NON-NLS-1$
 
-	/**
-	 * Applies the <b>(ARROW)</b> rule to the <code>node</code> using the
-	 * <code>context</code>.
-	 * 
-	 * @param context the subtyping proof context.
-	 * @param node the subtyping proof node.
-	 */
-	public void applyArrow ( SubTypingProofContext context,
-			SubTypingProofNode node )  {
-		ArrowType type;
-		ArrowType type2;
-		type = ( ArrowType ) node.getLeft ( );
-		type2 = ( ArrowType ) node.getRight ( );
+  }
 
-		MonoType taul = type.getTau1 ( );
-		MonoType taur = type.getTau2 ( );
 
-		MonoType tau2l = type2.getTau1 ( );
-		MonoType tau2r = type2.getTau2 ( );
+  /**
+   * Applies the <b>(ARROW)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   */
+  public void applyArrow ( SubTypingProofContext context,
+      SubTypingProofNode node )
+  {
+    ArrowType type;
+    ArrowType type2;
+    type = ( ArrowType ) node.getLeft ();
+    type2 = ( ArrowType ) node.getRight ();
 
-		context.addProofNode ( node, taul, tau2l );
-		context.addProofNode ( node, taur, tau2r );
-	}
+    MonoType taul = type.getTau1 ();
+    MonoType taur = type.getTau2 ();
+
+    MonoType tau2l = type2.getTau1 ();
+    MonoType tau2r = type2.getTau2 ();
+
+    context.addProofNode ( node, taul, tau2l );
+    context.addProofNode ( node, taur, tau2r );
+  }
 }

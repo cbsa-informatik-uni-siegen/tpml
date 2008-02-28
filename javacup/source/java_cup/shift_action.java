@@ -1,4 +1,4 @@
-package java_cup ;
+package java_cup;
 
 
 /**
@@ -11,6 +11,7 @@ package java_cup ;
  */
 public class shift_action extends parse_action
 {
+
   /*-----------------------------------------------------------*/
   /*--- Constructor(s) ----------------------------------------*/
   /*-----------------------------------------------------------*/
@@ -24,8 +25,8 @@ public class shift_action extends parse_action
     /* sanity check */
     if ( shft_to == null )
       throw new internal_error (
-          "Attempt to create a shift_action to a null state" ) ;
-    _shift_to = shft_to ;
+          "Attempt to create a shift_action to a null state" );
+    _shift_to = shft_to;
   }
 
 
@@ -33,13 +34,13 @@ public class shift_action extends parse_action
   /*--- (Access to) Instance Variables ------------------------*/
   /*-----------------------------------------------------------*/
   /** The state we shift to. */
-  protected lalr_state _shift_to ;
+  protected lalr_state _shift_to;
 
 
   /** The state we shift to. */
-  public lalr_state shift_to ( )
+  public lalr_state shift_to ()
   {
-    return _shift_to ;
+    return _shift_to;
   }
 
 
@@ -47,9 +48,9 @@ public class shift_action extends parse_action
   /*--- General Methods ---------------------------------------*/
   /*-----------------------------------------------------------*/
   /** Quick access to type of action. */
-  public int kind ( )
+  public int kind ()
   {
-    return SHIFT ;
+    return SHIFT;
   }
 
 
@@ -57,7 +58,7 @@ public class shift_action extends parse_action
   /** Equality test. */
   public boolean equals ( shift_action other )
   {
-    return other != null && other.shift_to ( ) == shift_to ( ) ;
+    return other != null && other.shift_to () == shift_to ();
   }
 
 
@@ -66,25 +67,26 @@ public class shift_action extends parse_action
   public boolean equals ( Object other )
   {
     if ( other instanceof shift_action )
-      return equals ( ( shift_action ) other ) ;
-    else return false ;
+      return equals ( ( shift_action ) other );
+    else
+      return false;
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Compute a hash code. */
-  public int hashCode ( )
+  public int hashCode ()
   {
     /* use the hash code of the state we are shifting to */
-    return shift_to ( ).hashCode ( ) ;
+    return shift_to ().hashCode ();
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Convert to a string. */
-  public String toString ( )
+  public String toString ()
   {
-    return "SHIFT(to state " + shift_to ( ).index ( ) + ")" ;
+    return "SHIFT(to state " + shift_to ().index () + ")";
   }
   /*-----------------------------------------------------------*/
 }

@@ -1,9 +1,10 @@
-package de.unisiegen.tpml.core.interfaces ;
+package de.unisiegen.tpml.core.interfaces;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
 
 
 /**
@@ -15,6 +16,7 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
  */
 public interface BoundIdentifiers extends DefaultIdentifiers
 {
+
   /**
    * Returns a list of lists of in this {@link Expression} bound
    * {@link Identifier}s.
@@ -22,5 +24,5 @@ public interface BoundIdentifiers extends DefaultIdentifiers
    * @return A list of lists of in this {@link Expression} bound
    *         {@link Identifier}s.
    */
-  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( ) ;
+  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ();
 }

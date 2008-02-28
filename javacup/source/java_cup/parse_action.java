@@ -1,4 +1,4 @@
-package java_cup ;
+package java_cup;
 
 
 /**
@@ -14,11 +14,12 @@ package java_cup ;
  */
 public class parse_action
 {
+
   /*-----------------------------------------------------------*/
   /*--- Constructor(s) ----------------------------------------*/
   /*-----------------------------------------------------------*/
   /** Simple constructor. */
-  public parse_action ( )
+  public parse_action ()
   {
     /* nothing to do in the base class */
   }
@@ -28,31 +29,31 @@ public class parse_action
   /*--- (Access to) Static (Class) Variables ------------------*/
   /*-----------------------------------------------------------*/
   /** Constant for action type -- error action. */
-  public static final int ERROR = 0 ;
+  public static final int ERROR = 0;
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Constant for action type -- shift action. */
-  public static final int SHIFT = 1 ;
+  public static final int SHIFT = 1;
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Constants for action type -- reduce action. */
-  public static final int REDUCE = 2 ;
+  public static final int REDUCE = 2;
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Constants for action type -- reduce action. */
-  public static final int NONASSOC = 3 ;
+  public static final int NONASSOC = 3;
 
 
   /*-----------------------------------------------------------*/
   /*--- General Methods ---------------------------------------*/
   /*-----------------------------------------------------------*/
   /** Quick access to the type -- base class defaults to error. */
-  public int kind ( )
+  public int kind ()
   {
-    return ERROR ;
+    return ERROR;
   }
 
 
@@ -61,7 +62,7 @@ public class parse_action
   public boolean equals ( parse_action other )
   {
     /* we match all error actions */
-    return other != null && other.kind ( ) == ERROR ;
+    return other != null && other.kind () == ERROR;
   }
 
 
@@ -70,25 +71,26 @@ public class parse_action
   public boolean equals ( Object other )
   {
     if ( other instanceof parse_action )
-      return equals ( ( parse_action ) other ) ;
-    else return false ;
+      return equals ( ( parse_action ) other );
+    else
+      return false;
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Compute a hash code. */
-  public int hashCode ( )
+  public int hashCode ()
   {
     /* all objects of this class hash together */
-    return 0xCafe123 ;
+    return 0xCafe123;
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Convert to string. */
-  public String toString ( )
+  public String toString ()
   {
-    return "ERROR" ;
+    return "ERROR";
   }
   /*-----------------------------------------------------------*/
 }

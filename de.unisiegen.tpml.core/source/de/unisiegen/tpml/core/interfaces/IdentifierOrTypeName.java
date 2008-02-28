@@ -1,9 +1,9 @@
-package de.unisiegen.tpml.core.interfaces ;
+package de.unisiegen.tpml.core.interfaces;
 
 
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.types.TypeName ;
-import de.unisiegen.tpml.core.util.BoundRenaming ;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.types.TypeName;
+import de.unisiegen.tpml.core.util.BoundRenaming;
 
 
 /**

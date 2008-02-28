@@ -1,9 +1,9 @@
-package de.unisiegen.tpml.core.types ;
+package de.unisiegen.tpml.core.types;
 
 
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -18,22 +18,23 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  */
 public abstract class PrimitiveType extends MonoType
 {
+
   /**
    * The unused string.
    */
-  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+  private static final String UNUSED = "unused"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the type substitution is null.
    */
-  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null"; //$NON-NLS-1$
 
 
   /**
    * The name of this primitive type.
    */
-  protected String name ;
+  protected String name;
 
 
   /**
@@ -45,7 +46,7 @@ public abstract class PrimitiveType extends MonoType
    */
   protected PrimitiveType ( String pName )
   {
-    this.name = pName.intern ( ) ;
+    this.name = pName.intern ();
   }
 
 
@@ -54,8 +55,8 @@ public abstract class PrimitiveType extends MonoType
    * 
    * @see Type#clone()
    */
-  @ Override
-  public abstract PrimitiveType clone ( ) ;
+  @Override
+  public abstract PrimitiveType clone ();
 
 
   /**
@@ -68,23 +69,23 @@ public abstract class PrimitiveType extends MonoType
    *         <code>obj</code>.
    * @see Object#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof PrimitiveType )
     {
-      PrimitiveType other = ( PrimitiveType ) pObject ;
-      return this.name.equals ( other.name ) ;
+      PrimitiveType other = ( PrimitiveType ) pObject;
+      return this.name.equals ( other.name );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public abstract String getCaption ( ) ;
+  @Override
+  public abstract String getCaption ();
 
 
   /**
@@ -94,10 +95,10 @@ public abstract class PrimitiveType extends MonoType
    * @return a hash value for this primitive type.
    * @see Object#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.name.hashCode ( ) ;
+    return this.name.hashCode ();
   }
 
 
@@ -111,12 +112,12 @@ public abstract class PrimitiveType extends MonoType
    * @param pTau The {@link MonoType}.
    * @return The resulting {@link Type}.
    */
-  @ Override
-  public PrimitiveType substitute ( @ SuppressWarnings ( UNUSED )
-  TypeName pTypeName , @ SuppressWarnings ( UNUSED )
+  @Override
+  public PrimitiveType substitute ( @SuppressWarnings ( UNUSED )
+  TypeName pTypeName, @SuppressWarnings ( UNUSED )
   MonoType pTau )
   {
-    return this ;
+    return this;
   }
 
 
@@ -125,15 +126,15 @@ public abstract class PrimitiveType extends MonoType
    * 
    * @see Type#substitute(TypeSubstitution)
    */
-  @ Override
-  public PrimitiveType substitute ( @ SuppressWarnings ( UNUSED )
+  @Override
+  public PrimitiveType substitute ( @SuppressWarnings ( UNUSED )
   TypeSubstitution pTypeSubstitution )
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL );
     }
-    return this ;
+    return this;
   }
 
 
@@ -142,16 +143,16 @@ public abstract class PrimitiveType extends MonoType
    * 
    * @see Type#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_PRIMITIVE ) ;
-      this.prettyStringBuilder.addType ( this.name ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_PRIMITIVE );
+      this.prettyStringBuilder.addType ( this.name );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

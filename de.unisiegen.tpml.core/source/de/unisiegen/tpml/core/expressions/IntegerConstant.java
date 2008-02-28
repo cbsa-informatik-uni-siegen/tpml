@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -13,11 +13,12 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class IntegerConstant extends Constant
 {
+
   /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( IntegerConstant.class ) ;
+      .getCaption ( IntegerConstant.class );
 
 
   /**
@@ -25,7 +26,7 @@ public final class IntegerConstant extends Constant
    * 
    * @see #intValue()
    */
-  private int intValue ;
+  private int intValue;
 
 
   /**
@@ -37,8 +38,8 @@ public final class IntegerConstant extends Constant
    */
   public IntegerConstant ( int pIntValue )
   {
-    super ( String.valueOf ( pIntValue ) ) ;
-    this.intValue = pIntValue ;
+    super ( String.valueOf ( pIntValue ) );
+    this.intValue = pIntValue;
   }
 
 
@@ -53,12 +54,12 @@ public final class IntegerConstant extends Constant
    *          source code.
    * @see #intValue()
    */
-  public IntegerConstant ( int pIntValue , int pParserStartOffset ,
+  public IntegerConstant ( int pIntValue, int pParserStartOffset,
       int pParserEndOffset )
   {
-    this ( pIntValue ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pIntValue );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -67,20 +68,20 @@ public final class IntegerConstant extends Constant
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public IntegerConstant clone ( )
+  @Override
+  public IntegerConstant clone ()
   {
-    return new IntegerConstant ( this.intValue ) ;
+    return new IntegerConstant ( this.intValue );
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -91,8 +92,8 @@ public final class IntegerConstant extends Constant
    * @return the numeric value represented by this object after conversion to
    *         type <code>int</code>.
    */
-  public int intValue ( )
+  public int intValue ()
   {
-    return this.intValue ;
+    return this.intValue;
   }
 }

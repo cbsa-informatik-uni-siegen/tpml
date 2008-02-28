@@ -1,12 +1,13 @@
-package de.unisiegen.tpml.graphics.outline.util ;
+package de.unisiegen.tpml.graphics.outline.util;
 
 
-import java.util.prefs.Preferences ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.graphics.outline.Outline ;
-import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
+import java.util.prefs.Preferences;
+
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.graphics.outline.Outline;
+import de.unisiegen.tpml.graphics.outline.node.OutlineNode;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
 
 
 /**
@@ -20,10 +21,11 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
  */
 public final class OutlinePreferences
 {
+
   /**
    * The <code>String</code> dividerLocation.
    */
-  private static final String DIVIDERLOCATION = "dividerLocation" ; //$NON-NLS-1$
+  private static final String DIVIDERLOCATION = "dividerLocation"; //$NON-NLS-1$
 
 
   /**
@@ -33,7 +35,7 @@ public final class OutlinePreferences
    * @see #isReplace()
    * @see #setReplace(boolean)
    */
-  private boolean replace ;
+  private boolean replace;
 
 
   /**
@@ -43,7 +45,7 @@ public final class OutlinePreferences
    * @see #isBinding()
    * @see #setBinding(boolean)
    */
-  private boolean binding ;
+  private boolean binding;
 
 
   /**
@@ -53,7 +55,7 @@ public final class OutlinePreferences
    * @see #isFree()
    * @see #setFree(boolean)
    */
-  private boolean free ;
+  private boolean free;
 
 
   /**
@@ -63,7 +65,7 @@ public final class OutlinePreferences
    * @see #isSelection()
    * @see #setSelection(boolean)
    */
-  private boolean selection ;
+  private boolean selection;
 
 
   /**
@@ -73,7 +75,7 @@ public final class OutlinePreferences
    * @see #isAutoUpdate()
    * @see #setAutoUpdate(boolean)
    */
-  private boolean autoUpdate ;
+  private boolean autoUpdate;
 
 
   /**
@@ -83,13 +85,13 @@ public final class OutlinePreferences
    * @see #isHighlightSourceCode()
    * @see #setHighlightSourceCode(boolean)
    */
-  private boolean highlightSourceCode ;
+  private boolean highlightSourceCode;
 
 
   /**
    * The <code>Preferences</code>.
    */
-  private Preferences preferences ;
+  private Preferences preferences;
 
 
   /**
@@ -98,7 +100,7 @@ public final class OutlinePreferences
    * @see #getDividerLocation()
    * @see #setDividerLocation(int)
    */
-  private int dividerLocation ;
+  private int dividerLocation;
 
 
   /**
@@ -106,22 +108,21 @@ public final class OutlinePreferences
    * it. Set the replace, binding, free and selection value of the
    * {@link OutlineNode}.
    */
-  public OutlinePreferences ( )
+  public OutlinePreferences ()
   {
-    this.preferences = Preferences.userNodeForPackage ( Outline.class ) ;
-    this.replace = this.preferences.getBoolean ( OutlineUI.REPLACE , false ) ;
-    this.binding = this.preferences.getBoolean ( OutlineUI.BINDING , true ) ;
-    this.free = this.preferences.getBoolean ( OutlineUI.FREE , true ) ;
-    this.selection = this.preferences.getBoolean ( OutlineUI.SELECTION , true ) ;
+    this.preferences = Preferences.userNodeForPackage ( Outline.class );
+    this.replace = this.preferences.getBoolean ( OutlineUI.REPLACE, false );
+    this.binding = this.preferences.getBoolean ( OutlineUI.BINDING, true );
+    this.free = this.preferences.getBoolean ( OutlineUI.FREE, true );
+    this.selection = this.preferences.getBoolean ( OutlineUI.SELECTION, true );
     this.highlightSourceCode = this.preferences.getBoolean (
-        OutlineUI.HIGHLIGHTSOURCECODE , true ) ;
-    this.autoUpdate = this.preferences
-        .getBoolean ( OutlineUI.AUTOUPDATE , true ) ;
-    this.dividerLocation = this.preferences.getInt ( DIVIDERLOCATION , 300 ) ;
-    OutlineNode.setReplace ( this.replace ) ;
-    OutlineNode.setBinding ( this.binding ) ;
-    OutlineNode.setFree ( this.free ) ;
-    OutlineNode.setSelection ( this.selection ) ;
+        OutlineUI.HIGHLIGHTSOURCECODE, true );
+    this.autoUpdate = this.preferences.getBoolean ( OutlineUI.AUTOUPDATE, true );
+    this.dividerLocation = this.preferences.getInt ( DIVIDERLOCATION, 300 );
+    OutlineNode.setReplace ( this.replace );
+    OutlineNode.setBinding ( this.binding );
+    OutlineNode.setFree ( this.free );
+    OutlineNode.setSelection ( this.selection );
   }
 
 
@@ -132,9 +133,9 @@ public final class OutlinePreferences
    * @see #dividerLocation
    * @see #setDividerLocation(int)
    */
-  public final int getDividerLocation ( )
+  public final int getDividerLocation ()
   {
-    return this.dividerLocation ;
+    return this.dividerLocation;
   }
 
 
@@ -147,9 +148,9 @@ public final class OutlinePreferences
    * @see #autoUpdate
    * @see #setAutoUpdate(boolean)
    */
-  public final boolean isAutoUpdate ( )
+  public final boolean isAutoUpdate ()
   {
-    return this.autoUpdate ;
+    return this.autoUpdate;
   }
 
 
@@ -162,9 +163,9 @@ public final class OutlinePreferences
    * @see #binding
    * @see #setBinding(boolean)
    */
-  public final boolean isBinding ( )
+  public final boolean isBinding ()
   {
-    return this.binding ;
+    return this.binding;
   }
 
 
@@ -177,9 +178,9 @@ public final class OutlinePreferences
    * @see #free
    * @see #setFree(boolean)
    */
-  public final boolean isFree ( )
+  public final boolean isFree ()
   {
-    return this.free ;
+    return this.free;
   }
 
 
@@ -192,9 +193,9 @@ public final class OutlinePreferences
    * @see #highlightSourceCode
    * @see #setHighlightSourceCode (boolean)
    */
-  public final boolean isHighlightSourceCode ( )
+  public final boolean isHighlightSourceCode ()
   {
-    return this.highlightSourceCode ;
+    return this.highlightSourceCode;
   }
 
 
@@ -207,9 +208,9 @@ public final class OutlinePreferences
    * @see #replace
    * @see #setReplace(boolean)
    */
-  public final boolean isReplace ( )
+  public final boolean isReplace ()
   {
-    return this.replace ;
+    return this.replace;
   }
 
 
@@ -222,9 +223,9 @@ public final class OutlinePreferences
    * @see #selection
    * @see #setSelection(boolean)
    */
-  public final boolean isSelection ( )
+  public final boolean isSelection ()
   {
-    return this.selection ;
+    return this.selection;
   }
 
 
@@ -239,8 +240,8 @@ public final class OutlinePreferences
    */
   public final void setAutoUpdate ( boolean pAutoupdate )
   {
-    this.autoUpdate = pAutoupdate ;
-    this.preferences.putBoolean ( OutlineUI.AUTOUPDATE , pAutoupdate ) ;
+    this.autoUpdate = pAutoupdate;
+    this.preferences.putBoolean ( OutlineUI.AUTOUPDATE, pAutoupdate );
   }
 
 
@@ -255,8 +256,8 @@ public final class OutlinePreferences
    */
   public final void setBinding ( boolean pBinding )
   {
-    this.binding = pBinding ;
-    this.preferences.putBoolean ( OutlineUI.BINDING , pBinding ) ;
+    this.binding = pBinding;
+    this.preferences.putBoolean ( OutlineUI.BINDING, pBinding );
   }
 
 
@@ -271,8 +272,8 @@ public final class OutlinePreferences
    */
   public final void setDividerLocation ( int pDividerLocation )
   {
-    this.dividerLocation = pDividerLocation ;
-    this.preferences.putInt ( DIVIDERLOCATION , pDividerLocation ) ;
+    this.dividerLocation = pDividerLocation;
+    this.preferences.putInt ( DIVIDERLOCATION, pDividerLocation );
   }
 
 
@@ -286,8 +287,8 @@ public final class OutlinePreferences
    */
   public final void setFree ( boolean pFree )
   {
-    this.free = pFree ;
-    this.preferences.putBoolean ( OutlineUI.FREE , pFree ) ;
+    this.free = pFree;
+    this.preferences.putBoolean ( OutlineUI.FREE, pFree );
   }
 
 
@@ -301,9 +302,9 @@ public final class OutlinePreferences
    */
   public final void setHighlightSourceCode ( boolean pHighlightSourceCode )
   {
-    this.highlightSourceCode = pHighlightSourceCode ;
-    this.preferences.putBoolean ( OutlineUI.HIGHLIGHTSOURCECODE ,
-        pHighlightSourceCode ) ;
+    this.highlightSourceCode = pHighlightSourceCode;
+    this.preferences.putBoolean ( OutlineUI.HIGHLIGHTSOURCECODE,
+        pHighlightSourceCode );
   }
 
 
@@ -317,8 +318,8 @@ public final class OutlinePreferences
    */
   public final void setReplace ( boolean pReplace )
   {
-    this.replace = pReplace ;
-    this.preferences.putBoolean ( OutlineUI.REPLACE , pReplace ) ;
+    this.replace = pReplace;
+    this.preferences.putBoolean ( OutlineUI.REPLACE, pReplace );
   }
 
 
@@ -333,7 +334,7 @@ public final class OutlinePreferences
    */
   public final void setSelection ( boolean pSelection )
   {
-    this.selection = pSelection ;
-    this.preferences.putBoolean ( OutlineUI.SELECTION , pSelection ) ;
+    this.selection = pSelection;
+    this.preferences.putBoolean ( OutlineUI.SELECTION, pSelection );
   }
 }

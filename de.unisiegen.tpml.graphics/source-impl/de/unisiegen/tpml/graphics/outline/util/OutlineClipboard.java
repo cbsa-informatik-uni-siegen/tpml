@@ -1,14 +1,14 @@
-package de.unisiegen.tpml.graphics.outline.util ;
+package de.unisiegen.tpml.graphics.outline.util;
 
 
-import java.awt.Toolkit ;
-import java.awt.datatransfer.Clipboard ;
-import java.awt.datatransfer.ClipboardOwner ;
-import java.awt.datatransfer.DataFlavor ;
-import java.awt.datatransfer.StringSelection ;
-import java.awt.datatransfer.Transferable ;
-import java.awt.datatransfer.UnsupportedFlavorException ;
-import java.io.IOException ;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 
 
 /**
@@ -20,36 +20,37 @@ import java.io.IOException ;
  */
 public final class OutlineClipboard implements ClipboardOwner
 {
+
   /**
    * An empty <code>String</code>.
    */
-  private static final String EMPTY = "" ; //$NON-NLS-1$
+  private static final String EMPTY = ""; //$NON-NLS-1$
 
 
   /**
    * The unused <code>String</code> for the <code>SuppressWarnings</code>.
    */
-  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+  private static final String UNUSED = "unused"; //$NON-NLS-1$
 
 
   /**
    * The clipboard.
    */
-  private Clipboard clipboard ;
+  private Clipboard clipboard;
 
 
   /**
    * The single object of <code>OutlineClipboard</code>.
    */
-  private static OutlineClipboard outlineClipboard = null ;
+  private static OutlineClipboard outlineClipboard = null;
 
 
   /**
    * Initializes the <code>OutlineClipboard</code>.
    */
-  private OutlineClipboard ( )
+  private OutlineClipboard ()
   {
-    this.clipboard = Toolkit.getDefaultToolkit ( ).getSystemClipboard ( ) ;
+    this.clipboard = Toolkit.getDefaultToolkit ().getSystemClipboard ();
   }
 
 
@@ -58,13 +59,13 @@ public final class OutlineClipboard implements ClipboardOwner
    * 
    * @return The single object of <code>OutlineClipboard</code>.
    */
-  public final static OutlineClipboard getInstance ( )
+  public final static OutlineClipboard getInstance ()
   {
     if ( outlineClipboard == null )
     {
-      outlineClipboard = new OutlineClipboard ( ) ;
+      outlineClipboard = new OutlineClipboard ();
     }
-    return outlineClipboard ;
+    return outlineClipboard;
   }
 
 
@@ -75,8 +76,8 @@ public final class OutlineClipboard implements ClipboardOwner
    */
   public final void copy ( String pText )
   {
-    StringSelection stringSelection = new StringSelection ( pText ) ;
-    this.clipboard.setContents ( stringSelection , this ) ;
+    StringSelection stringSelection = new StringSelection ( pText );
+    this.clipboard.setContents ( stringSelection, this );
   }
 
 
@@ -87,8 +88,8 @@ public final class OutlineClipboard implements ClipboardOwner
    * @param pContents The <code>Contests</code>.
    * @see ClipboardOwner#lostOwnership(Clipboard, Transferable)
    */
-  public final void lostOwnership ( @ SuppressWarnings ( UNUSED )
-  Clipboard pClipboard , @ SuppressWarnings ( UNUSED )
+  public final void lostOwnership ( @SuppressWarnings ( UNUSED )
+  Clipboard pClipboard, @SuppressWarnings ( UNUSED )
   Transferable pContents )
   {
     // Do Nothing
@@ -102,12 +103,12 @@ public final class OutlineClipboard implements ClipboardOwner
    * @return The <code>String</code>, which is current saved in the
    *         clipboard.
    */
-  public final String paste ( )
+  public final String paste ()
   {
-    Transferable transfer = this.clipboard.getContents ( null ) ;
+    Transferable transfer = this.clipboard.getContents ( null );
     try
     {
-      return ( String ) transfer.getTransferData ( DataFlavor.stringFlavor ) ;
+      return ( String ) transfer.getTransferData ( DataFlavor.stringFlavor );
     }
     catch ( UnsupportedFlavorException e )
     {
@@ -117,6 +118,6 @@ public final class OutlineClipboard implements ClipboardOwner
     {
       // Do Nothing
     }
-    return EMPTY ;
+    return EMPTY;
   }
 }

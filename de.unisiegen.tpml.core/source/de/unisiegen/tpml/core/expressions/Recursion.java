@@ -1,24 +1,25 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.Type ;
-import de.unisiegen.tpml.core.util.BoundRenaming ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.core.util.BoundRenaming;
 
 
 /**
@@ -31,53 +32,54 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @version $Rev:1092 $
  * @see Expression
  */
-public final class Recursion extends Expression implements BoundIdentifiers ,
-    DefaultTypes , DefaultExpressions
+public final class Recursion extends Expression implements BoundIdentifiers,
+    DefaultTypes, DefaultExpressions
 {
+
   /**
    * Indeces of the child {@link Expression}s.
    */
-  private static final int [ ] INDICES_E = new int [ ]
-  { - 1 } ;
+  private static final int [] INDICES_E = new int []
+  { -1 };
 
 
   /**
    * Indeces of the child {@link Identifier}s.
    */
-  private static final int [ ] INDICES_ID = new int [ ]
-  { - 1 } ;
+  private static final int [] INDICES_ID = new int []
+  { -1 };
 
 
   /**
    * Indeces of the child {@link Type}s.
    */
-  private static final int [ ] INDICES_TYPE = new int [ ]
-  { - 1 } ;
+  private static final int [] INDICES_TYPE = new int []
+  { -1 };
 
 
   /**
    * String for the case that the identifier is null.
    */
-  private static final String IDENTIFIER_NULL = "identifier is null" ; //$NON-NLS-1$
+  private static final String IDENTIFIER_NULL = "identifier is null"; //$NON-NLS-1$
 
 
   /**
    * The identifier has the wrong set.
    */
-  private static final String WRONG_SET = "the set of the identifier has to be 'variable'" ; //$NON-NLS-1$
+  private static final String WRONG_SET = "the set of the identifier has to be 'variable'"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the expression is null.
    */
-  private static final String EXPRESSION_NULL = "expression is null" ; //$NON-NLS-1$
+  private static final String EXPRESSION_NULL = "expression is null"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( Recursion.class ) ;
+      .getCaption ( Recursion.class );
 
 
   /**
@@ -85,18 +87,18 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_REC , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{rec}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_RECURSION , 3 ,
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_REC, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{rec}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_RECURSION, 3,
         "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
             + "{\\color{" + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_REC //$NON-NLS-1$ //$NON-NLS-2$
             + "\\ #1.#3}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\color{" //$NON-NLS-1$ //$NON-NLS-2$
             + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_REC //$NON-NLS-1$
-            + "\\ #1\\colon\\ #2.#3}" , "id" , "tau" , "e" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
-    return commands ;
+            + "\\ #1\\colon\\ #2.#3}", "id", "tau", "e" ) ); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+    return commands;
   }
 
 
@@ -105,11 +107,11 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.IFTHEN ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.IFTHEN );
+    return packages;
   }
 
 
@@ -118,7 +120,7 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @see #getIdentifiers()
    */
-  private Identifier [ ] identifiers ;
+  private Identifier [] identifiers;
 
 
   /**
@@ -126,13 +128,13 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @see #getTypes()
    */
-  private MonoType [ ] types ;
+  private MonoType [] types;
 
 
   /**
    * The expression.
    */
-  private Expression [ ] expressions ;
+  private Expression [] expressions;
 
 
   /**
@@ -145,37 +147,37 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * @throws NullPointerException if <code>id</code> or <code>e</code> is
    *           <code>null</code>.
    */
-  public Recursion ( Identifier pIdentifier , MonoType pTau ,
+  public Recursion ( Identifier pIdentifier, MonoType pTau,
       Expression pExpression )
   {
     if ( pIdentifier == null )
     {
-      throw new NullPointerException ( IDENTIFIER_NULL ) ;
+      throw new NullPointerException ( IDENTIFIER_NULL );
     }
-    if ( ! Identifier.Set.VARIABLE.equals ( pIdentifier.getSet ( ) ) )
+    if ( !Identifier.Set.VARIABLE.equals ( pIdentifier.getSet () ) )
     {
-      throw new IllegalArgumentException ( WRONG_SET ) ;
+      throw new IllegalArgumentException ( WRONG_SET );
     }
     if ( pExpression == null )
     {
-      throw new NullPointerException ( EXPRESSION_NULL ) ;
+      throw new NullPointerException ( EXPRESSION_NULL );
     }
     // Identifier
-    this.identifiers = new Identifier [ ]
-    { pIdentifier } ;
-    this.identifiers [ 0 ].setParent ( this ) ;
+    this.identifiers = new Identifier []
+    { pIdentifier };
+    this.identifiers [ 0 ].setParent ( this );
     // Type
-    this.types = new MonoType [ ]
-    { pTau } ;
+    this.types = new MonoType []
+    { pTau };
     if ( this.types [ 0 ] != null )
     {
-      this.types [ 0 ].setParent ( this ) ;
+      this.types [ 0 ].setParent ( this );
     }
     // Expression
-    this.expressions = new Expression [ ]
-    { pExpression } ;
-    this.expressions [ 0 ].setParent ( this ) ;
-    checkDisjunction ( ) ;
+    this.expressions = new Expression []
+    { pExpression };
+    this.expressions [ 0 ].setParent ( this );
+    checkDisjunction ();
   }
 
 
@@ -193,49 +195,49 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * @throws NullPointerException if <code>id</code> or <code>e</code> is
    *           <code>null</code>.
    */
-  public Recursion ( Identifier pIdentifier , MonoType pTau ,
-      Expression pExpression , int pParserStartOffset , int pParserEndOffset )
+  public Recursion ( Identifier pIdentifier, MonoType pTau,
+      Expression pExpression, int pParserStartOffset, int pParserEndOffset )
   {
-    this ( pIdentifier , pTau , pExpression ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pIdentifier, pTau, pExpression );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
   /**
    * Checks the disjunction of the {@link Identifier} sets.
    */
-  private void checkDisjunction ( )
+  private void checkDisjunction ()
   {
     ArrayList < Identifier > allIdentifiers = this.expressions [ 0 ]
-        .getIdentifiersAll ( ) ;
-    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
+        .getIdentifiersAll ();
+    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ();
     for ( Identifier allId : allIdentifiers )
     {
       if ( ( this.identifiers [ 0 ].equals ( allId ) )
-          && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet ( ) ) || ( Identifier.Set.METHOD
-              .equals ( allId.getSet ( ) ) ) ) ) ) )
+          && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet () ) || ( Identifier.Set.METHOD
+              .equals ( allId.getSet () ) ) ) ) ) )
       {
-        negativeIdentifiers.add ( allId ) ;
+        negativeIdentifiers.add ( allId );
       }
     }
     /*
      * Throw an exception, if the negative identifier list contains one or more
      * identifiers. If this happens, all Identifiers are added.
      */
-    if ( negativeIdentifiers.size ( ) > 0 )
+    if ( negativeIdentifiers.size () > 0 )
     {
-      negativeIdentifiers.clear ( ) ;
+      negativeIdentifiers.clear ();
       for ( Identifier allId : allIdentifiers )
       {
         if ( this.identifiers [ 0 ].equals ( allId ) )
         {
-          negativeIdentifiers.add ( allId ) ;
+          negativeIdentifiers.add ( allId );
         }
       }
-      negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
+      negativeIdentifiers.add ( this.identifiers [ 0 ] );
       LanguageParserMultiException
-          .throwExceptionDisjunction ( negativeIdentifiers ) ;
+          .throwExceptionDisjunction ( negativeIdentifiers );
     }
   }
 
@@ -245,12 +247,12 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public Recursion clone ( )
+  @Override
+  public Recursion clone ()
   {
-    return new Recursion ( this.identifiers [ 0 ].clone ( ) ,
-        this.types [ 0 ] == null ? null : this.types [ 0 ].clone ( ) ,
-        this.expressions [ 0 ].clone ( ) ) ;
+    return new Recursion ( this.identifiers [ 0 ].clone (),
+        this.types [ 0 ] == null ? null : this.types [ 0 ].clone (),
+        this.expressions [ 0 ].clone () );
   }
 
 
@@ -259,27 +261,27 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @see Expression#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof Recursion )
     {
-      Recursion other = ( Recursion ) pObject ;
+      Recursion other = ( Recursion ) pObject;
       return ( ( this.identifiers [ 0 ].equals ( other.identifiers [ 0 ] ) )
           && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( ( this.types [ 0 ] == null ) ? ( other.types [ 0 ] == null )
-          : ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ) ) ;
+          : ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ) );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -288,9 +290,9 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @return the recursion body.
    */
-  public Expression getE ( )
+  public Expression getE ()
   {
-    return this.expressions [ 0 ] ;
+    return this.expressions [ 0 ];
   }
 
 
@@ -299,9 +301,9 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @return the sub expressions.
    */
-  public Expression [ ] getExpressions ( )
+  public Expression [] getExpressions ()
   {
-    return this.expressions ;
+    return this.expressions;
   }
 
 
@@ -310,9 +312,9 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @return The indices of the child {@link Expression}s.
    */
-  public int [ ] getExpressionsIndex ( )
+  public int [] getExpressionsIndex ()
   {
-    return INDICES_E ;
+    return INDICES_E;
   }
 
 
@@ -321,9 +323,9 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @return the identifier for the recursion.
    */
-  public Identifier getId ( )
+  public Identifier getId ()
   {
-    return this.identifiers [ 0 ] ;
+    return this.identifiers [ 0 ];
   }
 
 
@@ -332,9 +334,9 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @return The {@link Identifier}s of this {@link Expression}.
    */
-  public Identifier [ ] getIdentifiers ( )
+  public Identifier [] getIdentifiers ()
   {
-    return this.identifiers ;
+    return this.identifiers;
   }
 
 
@@ -343,25 +345,25 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @return A list of in this {@link Expression} bound {@link Identifier}s.
    */
-  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
+  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ()
   {
     if ( this.boundIdentifiers == null )
     {
-      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( 1 ) ;
-      ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( 1 );
+      ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ();
       ArrayList < Identifier > boundE = this.expressions [ 0 ]
-          .getIdentifiersFree ( ) ;
+          .getIdentifiersFree ();
       for ( Identifier freeId : boundE )
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
         {
-          freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
-          boundIdList.add ( freeId ) ;
+          freeId.setBoundTo ( this, this.identifiers [ 0 ] );
+          boundIdList.add ( freeId );
         }
       }
-      this.boundIdentifiers.add ( boundIdList ) ;
+      this.boundIdentifiers.add ( boundIdList );
     }
-    return this.boundIdentifiers ;
+    return this.boundIdentifiers;
   }
 
 
@@ -370,20 +372,20 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @see Expression#getIdentifiersFree()
    */
-  @ Override
-  public ArrayList < Identifier > getIdentifiersFree ( )
+  @Override
+  public ArrayList < Identifier > getIdentifiersFree ()
   {
     if ( this.identifiersFree == null )
     {
-      this.identifiersFree = new ArrayList < Identifier > ( ) ;
+      this.identifiersFree = new ArrayList < Identifier > ();
       this.identifiersFree.addAll ( this.expressions [ 0 ]
-          .getIdentifiersFree ( ) ) ;
+          .getIdentifiersFree () );
       while ( this.identifiersFree.remove ( this.identifiers [ 0 ] ) )
       {
         // Remove all Identifiers with the same name
       }
     }
-    return this.identifiersFree ;
+    return this.identifiersFree;
   }
 
 
@@ -392,9 +394,9 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @return The indices of the child {@link Identifier}s.
    */
-  public int [ ] getIdentifiersIndex ( )
+  public int [] getIdentifiersIndex ()
   {
-    return INDICES_ID ;
+    return INDICES_ID;
   }
 
 
@@ -403,12 +405,12 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -417,12 +419,12 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  @ Override
-  public LatexPackageList getLatexPackages ( )
+  @Override
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = super.getLatexPackages ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
-    return packages ;
+    LatexPackageList packages = super.getLatexPackages ();
+    packages.add ( getLatexPackagesStatic () );
+    return packages;
   }
 
 
@@ -432,9 +434,9 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @return the type for the identifier or <code>null</code>.
    */
-  public MonoType getTau ( )
+  public MonoType getTau ()
   {
-    return this.types [ 0 ] ;
+    return this.types [ 0 ];
   }
 
 
@@ -443,9 +445,9 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @return the types.
    */
-  public MonoType [ ] getTypes ( )
+  public MonoType [] getTypes ()
   {
-    return this.types ;
+    return this.types;
   }
 
 
@@ -454,9 +456,9 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @return The indices of the child {@link Type}s.
    */
-  public int [ ] getTypesIndex ( )
+  public int [] getTypesIndex ()
   {
-    return INDICES_TYPE ;
+    return INDICES_TYPE;
   }
 
 
@@ -465,12 +467,12 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @see Expression#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.identifiers [ 0 ].hashCode ( )
-        + ( ( this.types [ 0 ] == null ) ? 0 : this.types [ 0 ].hashCode ( ) )
-        + this.expressions [ 0 ].hashCode ( ) ;
+    return this.identifiers [ 0 ].hashCode ()
+        + ( ( this.types [ 0 ] == null ) ? 0 : this.types [ 0 ].hashCode () )
+        + this.expressions [ 0 ].hashCode ();
   }
 
 
@@ -479,42 +481,42 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @see Expression#substitute(Identifier, Expression)
    */
-  @ Override
-  public Recursion substitute ( Identifier pId , Expression pExpression )
+  @Override
+  public Recursion substitute ( Identifier pId, Expression pExpression )
   {
-    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    if ( pExpression.getIdentifierFreeNotOnlyVariable () )
     {
-      throw new NotOnlyFreeVariableException ( ) ;
+      throw new NotOnlyFreeVariableException ();
     }
     /*
      * Do not substitute, if the Identifiers are equal.
      */
     if ( this.identifiers [ 0 ].equals ( pId ) )
     {
-      return this ;
+      return this;
     }
     /*
      * Perform the bound renaming if required.
      */
-    BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
-    boundRenaming.add ( this.getIdentifiersFree ( ) ) ;
-    boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
-    boundRenaming.add ( pId ) ;
-    Identifier newId = boundRenaming.newIdentifier ( this.identifiers [ 0 ] ) ;
+    BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ();
+    boundRenaming.add ( this.getIdentifiersFree () );
+    boundRenaming.add ( pExpression.getIdentifiersFree () );
+    boundRenaming.add ( pId );
+    Identifier newId = boundRenaming.newIdentifier ( this.identifiers [ 0 ] );
     /*
      * Substitute the old Identifier only with the new Identifier, if they are
      * different.
      */
-    Expression newE = this.expressions [ 0 ] ;
-    if ( ! this.identifiers [ 0 ].equals ( newId ) )
+    Expression newE = this.expressions [ 0 ];
+    if ( !this.identifiers [ 0 ].equals ( newId ) )
     {
-      newE = newE.substitute ( this.identifiers [ 0 ] , newId ) ;
+      newE = newE.substitute ( this.identifiers [ 0 ], newId );
     }
     /*
      * Perform the substitution.
      */
-    newE = newE.substitute ( pId , pExpression ) ;
-    return new Recursion ( newId , this.types [ 0 ] , newE ) ;
+    newE = newE.substitute ( pId, pExpression );
+    return new Recursion ( newId, this.types [ 0 ], newE );
   }
 
 
@@ -523,13 +525,13 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @see Expression#substitute(TypeSubstitution)
    */
-  @ Override
+  @Override
   public Recursion substitute ( TypeSubstitution pTypeSubstitution )
   {
     MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
-        .substitute ( pTypeSubstitution ) ;
-    Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    return new Recursion ( this.identifiers [ 0 ] , newTau , newE ) ;
+        .substitute ( pTypeSubstitution );
+    Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution );
+    return new Recursion ( this.identifiers [ 0 ], newTau, newE );
   }
 
 
@@ -538,31 +540,31 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_REC , LATEX_RECURSION , pIndent , this.toPrettyString ( )
-            .toString ( ) , this.identifiers [ 0 ].toPrettyString ( )
-            .toString ( ) , this.types [ 0 ] == null ? LATEX_NO_TYPE
-            : this.types [ 0 ].toPrettyString ( ).toString ( ) ,
-        this.expressions [ 0 ].toPrettyString ( ).toString ( ) ) ;
+        PRIO_REC, LATEX_RECURSION, pIndent, this.toPrettyString ().toString (),
+        this.identifiers [ 0 ].toPrettyString ().toString (),
+        this.types [ 0 ] == null ? LATEX_NO_TYPE : this.types [ 0 ]
+            .toPrettyString ().toString (), this.expressions [ 0 ]
+            .toPrettyString ().toString () );
     builder.addBuilder ( this.identifiers [ 0 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_ID ) ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), PRIO_ID );
     if ( this.types [ 0 ] == null )
     {
-      builder.addEmptyBuilder ( ) ;
+      builder.addEmptyBuilder ();
     }
     else
     {
       builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_REC_TAU ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), PRIO_REC_TAU );
     }
-    builder.addBreak ( ) ;
+    builder.addBreak ();
     builder.addBuilder ( this.expressions [ 0 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_REC_E ) ;
-    return builder ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), PRIO_REC_E );
+    return builder;
   }
 
 
@@ -571,31 +573,31 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
    * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_REC ) ;
-      this.prettyStringBuilder.addKeyword ( PRETTY_REC ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_REC );
+      this.prettyStringBuilder.addKeyword ( PRETTY_REC );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), PRIO_ID );
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
-        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_COLON );
+        this.prettyStringBuilder.addText ( PRETTY_SPACE );
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_REC_TAU ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+            PRIO_REC_TAU );
       }
-      this.prettyStringBuilder.addText ( PRETTY_DOT ) ;
-      this.prettyStringBuilder.addBreak ( ) ;
+      this.prettyStringBuilder.addText ( PRETTY_DOT );
+      this.prettyStringBuilder.addBreak ();
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_REC_E ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), PRIO_REC_E );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

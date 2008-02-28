@@ -1,24 +1,24 @@
-package de.unisiegen.tpml.core.bigstep ;
+package de.unisiegen.tpml.core.bigstep;
 
 
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.interpreters.DefaultStore ;
-import de.unisiegen.tpml.core.interpreters.Store ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interpreters.DefaultStore;
+import de.unisiegen.tpml.core.interpreters.Store;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
 
 /**
@@ -31,20 +31,21 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  * @author Christian Fehler
  * @version $Rev:2491 $
  */
-public final class BigStepProofResult implements PrettyPrintable ,
+public final class BigStepProofResult implements PrettyPrintable,
     LatexPrintable
 {
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_BIG_STEP_PROOF_RESULT , 1 ,
-        "#1" , "body" ) ) ;//$NON-NLS-1$ //$NON-NLS-2$ 
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_BIG_STEP_PROOF_RESULT, 1,
+        "#1", "body" ) );//$NON-NLS-1$ //$NON-NLS-2$ 
+    return commands;
   }
 
 
@@ -53,13 +54,13 @@ public final class BigStepProofResult implements PrettyPrintable ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static LatexInstructionList getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
-    return instructions ;
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}", //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ); //$NON-NLS-1$
+    return instructions;
   }
 
 
@@ -68,12 +69,12 @@ public final class BigStepProofResult implements PrettyPrintable ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.COLOR ) ;
-    packages.add ( LatexPackage.IFTHEN ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.COLOR );
+    packages.add ( LatexPackage.IFTHEN );
+    return packages;
   }
 
 
@@ -82,7 +83,7 @@ public final class BigStepProofResult implements PrettyPrintable ,
    * 
    * @see #getStore()
    */
-  private Store store ;
+  private Store store;
 
 
   /**
@@ -90,7 +91,7 @@ public final class BigStepProofResult implements PrettyPrintable ,
    * 
    * @see #getValue()
    */
-  private Expression value ;
+  private Expression value;
 
 
   /**
@@ -103,14 +104,14 @@ public final class BigStepProofResult implements PrettyPrintable ,
    * @see #getStore()
    * @see #getValue()
    */
-  public BigStepProofResult ( Store pStore , Expression pValue )
+  public BigStepProofResult ( Store pStore, Expression pValue )
   {
     if ( pStore == null )
     {
-      throw new NullPointerException ( "store is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "store is null" ); //$NON-NLS-1$
     }
-    this.store = pStore ;
-    this.value = pValue ;
+    this.store = pStore;
+    this.value = pValue;
   }
 
 
@@ -119,13 +120,13 @@ public final class BigStepProofResult implements PrettyPrintable ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public LatexCommandList getLatexCommands ( )
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    commands.add ( this.value ) ;
-    commands.add ( this.store ) ;
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
+    commands.add ( this.value );
+    commands.add ( this.store );
+    return commands;
   }
 
 
@@ -134,13 +135,13 @@ public final class BigStepProofResult implements PrettyPrintable ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public LatexInstructionList getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( getLatexInstructionsStatic ( ) ) ;
-    instructions.add ( this.value ) ;
-    instructions.add ( this.store ) ;
-    return instructions ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
+    instructions.add ( this.value );
+    instructions.add ( this.store );
+    return instructions;
   }
 
 
@@ -149,13 +150,13 @@ public final class BigStepProofResult implements PrettyPrintable ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public LatexPackageList getLatexPackages ( )
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
-    packages.add ( this.value ) ;
-    packages.add ( this.store ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( getLatexPackagesStatic () );
+    packages.add ( this.value );
+    packages.add ( this.store );
+    return packages;
   }
 
 
@@ -169,9 +170,9 @@ public final class BigStepProofResult implements PrettyPrintable ,
    * @return the resulting store for a big step proof node.
    * @see Store
    */
-  public Store getStore ( )
+  public Store getStore ()
   {
-    return new DefaultStore ( ( DefaultStore ) this.store ) ;
+    return new DefaultStore ( ( DefaultStore ) this.store );
   }
 
 
@@ -181,9 +182,9 @@ public final class BigStepProofResult implements PrettyPrintable ,
    * @return the resulting value for a big step proof node.
    * @see Expression
    */
-  public Expression getValue ( )
+  public Expression getValue ()
   {
-    return this.value ;
+    return this.value;
   }
 
 
@@ -192,10 +193,10 @@ public final class BigStepProofResult implements PrettyPrintable ,
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public LatexString toLatexString ( )
+  public LatexString toLatexString ()
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -205,58 +206,58 @@ public final class BigStepProofResult implements PrettyPrintable ,
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    StringBuilder body = new StringBuilder ( ) ;
-    if ( this.value.containsMemoryOperations ( ) )
+    StringBuilder body = new StringBuilder ();
+    if ( this.value.containsMemoryOperations () )
     {
-      body.append ( this.value.toPrettyString ( ).toString ( ) ) ;
-      body.append ( PRETTY_SPACE ) ;
-      body.append ( PRETTY_SPACE ) ;
-      body.append ( this.store.toPrettyString ( ).toString ( ) ) ;
+      body.append ( this.value.toPrettyString ().toString () );
+      body.append ( PRETTY_SPACE );
+      body.append ( PRETTY_SPACE );
+      body.append ( this.store.toPrettyString ().toString () );
     }
     else
     {
-      body.append ( this.value.toPrettyString ( ).toString ( ) ) ;
+      body.append ( this.value.toPrettyString ().toString () );
     }
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_BIG_STEP_PROOF_RESULT , pIndent , this.toPrettyString ( )
-            .toString ( ) , body.toString ( ) , this.value.toPrettyString ( )
-            .toString ( ) , this.value.containsMemoryOperations ( ) ? this
-            .getStore ( ).toPrettyString ( ).toString ( ) : LATEX_NO_STORE ) ;
-    builder.addBuilderBegin ( ) ;
-    if ( this.value.containsMemoryOperations ( ) )
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
+        LATEX_BIG_STEP_PROOF_RESULT, pIndent, this.toPrettyString ()
+            .toString (), body.toString (), this.value.toPrettyString ()
+            .toString (), this.value.containsMemoryOperations () ? this
+            .getStore ().toPrettyString ().toString () : LATEX_NO_STORE );
+    builder.addBuilderBegin ();
+    if ( this.value.containsMemoryOperations () )
     {
-      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-          + LATEX_INDENT ) ) ;
-      builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-      builder.addText ( LATEX_LPAREN ) ;
-      builder.addText ( "}" ) ; //$NON-NLS-1$
+          + LATEX_INDENT ) );
+      builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ); //$NON-NLS-1$ //$NON-NLS-2$
+      builder.addText ( LATEX_LPAREN );
+      builder.addText ( "}" ); //$NON-NLS-1$
       builder.addBuilderWithoutBrackets ( this.value.toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-          + LATEX_INDENT ) ) ;
-      builder.addText ( LATEX_SPACE ) ;
-      builder.addText ( LATEX_SPACE ) ;
+          + LATEX_INDENT ) );
+      builder.addText ( LATEX_SPACE );
+      builder.addText ( LATEX_SPACE );
       builder.addBuilderWithoutBrackets ( this.store.toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-          + LATEX_INDENT ) ) ;
-      builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-      builder.addText ( LATEX_RPAREN ) ;
-      builder.addText ( "}" ) ; //$NON-NLS-1$
+          + LATEX_INDENT ) );
+      builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ); //$NON-NLS-1$ //$NON-NLS-2$
+      builder.addText ( LATEX_RPAREN );
+      builder.addText ( "}" ); //$NON-NLS-1$
     }
     else
     {
       builder.addBuilderWithoutBrackets ( this.value.toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-      builder.addEmptyBuilder ( ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+      builder.addEmptyBuilder ();
     }
-    builder.addBuilderEnd ( ) ;
-    return builder ;
+    builder.addBuilderEnd ();
+    return builder;
   }
 
 
@@ -265,10 +266,10 @@ public final class BigStepProofResult implements PrettyPrintable ,
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ( )
+  public final PrettyString toPrettyString ()
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -281,24 +282,24 @@ public final class BigStepProofResult implements PrettyPrintable ,
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , 0 ) ;
-    if ( this.value.containsMemoryOperations ( ) )
+        this, 0 );
+    if ( this.value.containsMemoryOperations () )
     {
-      builder.addText ( PRETTY_LPAREN ) ;
+      builder.addText ( PRETTY_LPAREN );
       builder.addBuilder ( this.value
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-      builder.addText ( PRETTY_SPACE ) ;
-      builder.addText ( PRETTY_SPACE ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+      builder.addText ( PRETTY_SPACE );
+      builder.addText ( PRETTY_SPACE );
       builder.addBuilder ( this.store
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-      builder.addText ( PRETTY_RPAREN ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+      builder.addText ( PRETTY_RPAREN );
     }
     else
     {
       builder.addBuilder ( this.value
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
     }
-    return builder ;
+    return builder;
   }
 
 
@@ -311,9 +312,9 @@ public final class BigStepProofResult implements PrettyPrintable ,
    * @see #toPrettyString()
    * @see Object#toString()
    */
-  @ Override
-  public final String toString ( )
+  @Override
+  public final String toString ()
   {
-    return toPrettyString ( ).toString ( ) ;
+    return toPrettyString ().toString ();
   }
 }

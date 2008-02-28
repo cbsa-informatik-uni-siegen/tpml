@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages ;
+package de.unisiegen.tpml.core.languages;
 
 
 /**
@@ -11,13 +11,14 @@ package de.unisiegen.tpml.core.languages ;
  */
 public class LanguageScannerException extends RuntimeException
 {
+
   //
   // Constants
   //
   /**
    * The unique serialization identifier of the class.
    */
-  private static final long serialVersionUID = 5806884058872318979L ;
+  private static final long serialVersionUID = 5806884058872318979L;
 
 
   //
@@ -28,7 +29,7 @@ public class LanguageScannerException extends RuntimeException
    * 
    * @see #getLeft()
    */
-  private int left ;
+  private int left;
 
 
   /**
@@ -36,7 +37,7 @@ public class LanguageScannerException extends RuntimeException
    * 
    * @see #getRight()
    */
-  private int right ;
+  private int right;
 
 
   //
@@ -53,11 +54,11 @@ public class LanguageScannerException extends RuntimeException
    * @see #getLeft()
    * @see #getRight()
    */
-  public LanguageScannerException ( int pLeft , int pRight , String message )
+  public LanguageScannerException ( int pLeft, int pRight, String message )
   {
-    super ( message ) ;
-    this.left = pLeft ;
-    this.right = pRight ;
+    super ( message );
+    this.left = pLeft;
+    this.right = pRight;
   }
 
 
@@ -71,12 +72,12 @@ public class LanguageScannerException extends RuntimeException
    * @param message the error message.
    * @param e the cause of the exception.
    */
-  public LanguageScannerException ( int pLeft , int pRight , String message ,
+  public LanguageScannerException ( int pLeft, int pRight, String message,
       Throwable e )
   {
-    super ( message , e ) ;
-    this.left = pLeft ;
-    this.right = pRight ;
+    super ( message, e );
+    this.left = pLeft;
+    this.right = pRight;
   }
 
 
@@ -88,9 +89,9 @@ public class LanguageScannerException extends RuntimeException
    * 
    * @return the left character offset in the source input stream.
    */
-  public int getLeft ( )
+  public int getLeft ()
   {
-    return this.left ;
+    return this.left;
   }
 
 
@@ -99,8 +100,8 @@ public class LanguageScannerException extends RuntimeException
    * 
    * @return the right character offset in the source input stream.
    */
-  public int getRight ( )
+  public int getRight ()
   {
-    return this.right ;
+    return this.right;
   }
 }

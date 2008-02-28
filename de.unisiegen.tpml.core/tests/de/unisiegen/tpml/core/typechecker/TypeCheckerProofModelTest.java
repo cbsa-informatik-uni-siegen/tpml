@@ -1,28 +1,30 @@
 package de.unisiegen.tpml.core.typechecker ;
 
 
-import java.awt.BorderLayout ;
-import java.awt.FlowLayout ;
-import java.awt.event.ActionEvent ;
-import java.awt.event.ActionListener ;
-import java.awt.event.WindowAdapter ;
-import java.awt.event.WindowEvent ;
-import java.beans.PropertyChangeEvent ;
-import java.beans.PropertyChangeListener ;
-import java.io.StringReader ;
-import java.util.LinkedList ;
-import javax.swing.BorderFactory ;
-import javax.swing.JButton ;
-import javax.swing.JFrame ;
-import javax.swing.JOptionPane ;
-import javax.swing.JPanel ;
-import javax.swing.JTree ;
-import javax.swing.tree.TreePath ;
-import de.unisiegen.tpml.core.ExpressionProofNode ;
-import de.unisiegen.tpml.core.ProofNode ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.core.languages.LanguageFactory ;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.StringReader;
+import java.util.LinkedList;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTree;
+import javax.swing.tree.TreePath;
+
+import de.unisiegen.tpml.core.ExpressionProofNode;
+import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageFactory;
 
 
 /**

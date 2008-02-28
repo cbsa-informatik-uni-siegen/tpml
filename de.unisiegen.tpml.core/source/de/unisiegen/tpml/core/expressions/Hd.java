@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -15,24 +15,25 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class Hd extends UnaryListOperator
 {
+
   /**
    * The keyword <code>hd</code>.
    */
-  private static final String HD = "hd" ; //$NON-NLS-1$
+  private static final String HD = "hd"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = Expression.getCaption ( Hd.class ) ;
+  private static final String CAPTION = Expression.getCaption ( Hd.class );
 
 
   /**
    * Allocates a new <code>Hd</code> instance.
    */
-  public Hd ( )
+  public Hd ()
   {
-    super ( HD ) ;
+    super ( HD );
   }
 
 
@@ -44,11 +45,11 @@ public final class Hd extends UnaryListOperator
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Hd ( int pParserStartOffset , int pParserEndOffset )
+  public Hd ( int pParserStartOffset, int pParserEndOffset )
   {
-    this ( ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ();
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -57,19 +58,19 @@ public final class Hd extends UnaryListOperator
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public Hd clone ( )
+  @Override
+  public Hd clone ()
   {
-    return new Hd ( ) ;
+    return new Hd ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

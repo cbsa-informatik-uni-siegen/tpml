@@ -1,24 +1,25 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.Type ;
-import de.unisiegen.tpml.core.util.BoundRenaming ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.core.util.BoundRenaming;
 
 
 /**
@@ -31,58 +32,59 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @see Expression
  * @see Lambda
  */
-public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
+public class Let extends Expression implements BoundIdentifiers, DefaultTypes,
     DefaultExpressions
 {
+
   /**
    * Indeces of the child {@link Expression}s.
    */
-  private static final int [ ] INDICES_E = new int [ ]
-  { 1 , 2 } ;
+  private static final int [] INDICES_E = new int []
+  { 1, 2 };
 
 
   /**
    * Indeces of the child {@link Identifier}s.
    */
-  private static final int [ ] INDICES_ID = new int [ ]
-  { - 1 } ;
+  private static final int [] INDICES_ID = new int []
+  { -1 };
 
 
   /**
    * Indeces of the child {@link Type}s.
    */
-  private static final int [ ] INDICES_TYPE = new int [ ]
-  { - 1 } ;
+  private static final int [] INDICES_TYPE = new int []
+  { -1 };
 
 
   /**
    * String for the case that the identifier is null.
    */
-  private static final String IDENTIFIER_NULL = "identifier is null" ; //$NON-NLS-1$
+  private static final String IDENTIFIER_NULL = "identifier is null"; //$NON-NLS-1$
 
 
   /**
    * The identifier has the wrong set.
    */
-  private static final String WRONG_SET = "the set of the identifier has to be 'variable'" ; //$NON-NLS-1$
+  private static final String WRONG_SET = "the set of the identifier has to be 'variable'"; //$NON-NLS-1$
 
 
   /**
    * String for the case that e1 is null.
    */
-  private static final String E1_NULL = "e1 is null" ; //$NON-NLS-1$
+  private static final String E1_NULL = "e1 is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that e2 is null.
    */
-  private static final String E2_NULL = "e2 is null" ; //$NON-NLS-1$
+  private static final String E2_NULL = "e2 is null"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = Expression.getCaption ( Let.class ) ;
+  private static final String CAPTION = Expression.getCaption ( Let.class );
 
 
   /**
@@ -90,22 +92,22 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_LET , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{let}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_IN , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{in}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_LET , 4 ,
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_LET, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{let}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_IN, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{in}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_LET, 4,
         "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
             + "{\\color{" + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_LET //$NON-NLS-1$ //$NON-NLS-2$
             + "\\ #1\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}"//$NON-NLS-1$ //$NON-NLS-2$
             + LATEX_LINE_BREAK_NEW_COMMAND + "{\\color{"//$NON-NLS-1$
             + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_LET//$NON-NLS-1$ 
-            + "\\ #1\\colon\\ #2\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}" ,//$NON-NLS-1$ //$NON-NLS-2$
-        "id" , "tau" , "e1" , "e2" ) ) ;//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    return commands ;
+            + "\\ #1\\colon\\ #2\\ =\\ #3\\ \\" + LATEX_KEY_IN + "\\ #4}",//$NON-NLS-1$ //$NON-NLS-2$
+        "id", "tau", "e1", "e2" ) );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    return commands;
   }
 
 
@@ -114,11 +116,11 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.IFTHEN ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.IFTHEN );
+    return packages;
   }
 
 
@@ -127,7 +129,7 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @see #getIdentifiers()
    */
-  protected Identifier [ ] identifiers ;
+  protected Identifier [] identifiers;
 
 
   /**
@@ -135,13 +137,13 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @see #getTypes()
    */
-  protected MonoType [ ] types ;
+  protected MonoType [] types;
 
 
   /**
    * The first and second expression.
    */
-  protected Expression [ ] expressions ;
+  protected Expression [] expressions;
 
 
   /**
@@ -156,42 +158,42 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * @throws NullPointerException if <code>id</code>, <code>e1</code> or
    *           <code>e2</code> is <code>null</code>.
    */
-  public Let ( Identifier pIdentifier , MonoType pTau ,
-      Expression pExpression1 , Expression pExpression2 )
+  public Let ( Identifier pIdentifier, MonoType pTau, Expression pExpression1,
+      Expression pExpression2 )
   {
     if ( pIdentifier == null )
     {
-      throw new NullPointerException ( IDENTIFIER_NULL ) ;
+      throw new NullPointerException ( IDENTIFIER_NULL );
     }
-    if ( ! Identifier.Set.VARIABLE.equals ( pIdentifier.getSet ( ) ) )
+    if ( !Identifier.Set.VARIABLE.equals ( pIdentifier.getSet () ) )
     {
-      throw new IllegalArgumentException ( WRONG_SET ) ;
+      throw new IllegalArgumentException ( WRONG_SET );
     }
     if ( pExpression1 == null )
     {
-      throw new NullPointerException ( E1_NULL ) ;
+      throw new NullPointerException ( E1_NULL );
     }
     if ( pExpression2 == null )
     {
-      throw new NullPointerException ( E2_NULL ) ;
+      throw new NullPointerException ( E2_NULL );
     }
     // Identifier
-    this.identifiers = new Identifier [ ]
-    { pIdentifier } ;
-    this.identifiers [ 0 ].setParent ( this ) ;
+    this.identifiers = new Identifier []
+    { pIdentifier };
+    this.identifiers [ 0 ].setParent ( this );
     // Type
-    this.types = new MonoType [ ]
-    { pTau } ;
+    this.types = new MonoType []
+    { pTau };
     if ( this.types [ 0 ] != null )
     {
-      this.types [ 0 ].setParent ( this ) ;
+      this.types [ 0 ].setParent ( this );
     }
     // Expression
-    this.expressions = new Expression [ ]
-    { pExpression1 , pExpression2 } ;
-    this.expressions [ 0 ].setParent ( this ) ;
-    this.expressions [ 1 ].setParent ( this ) ;
-    checkDisjunction ( ) ;
+    this.expressions = new Expression []
+    { pExpression1, pExpression2 };
+    this.expressions [ 0 ].setParent ( this );
+    this.expressions [ 1 ].setParent ( this );
+    checkDisjunction ();
   }
 
 
@@ -211,50 +213,49 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * @throws NullPointerException if <code>id</code>, <code>e1</code> or
    *           <code>e2</code> is <code>null</code>.
    */
-  public Let ( Identifier pIdentifier , MonoType pTau ,
-      Expression pExpression1 , Expression pExpression2 ,
-      int pParserStartOffset , int pParserEndOffset )
+  public Let ( Identifier pIdentifier, MonoType pTau, Expression pExpression1,
+      Expression pExpression2, int pParserStartOffset, int pParserEndOffset )
   {
-    this ( pIdentifier , pTau , pExpression1 , pExpression2 ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pIdentifier, pTau, pExpression1, pExpression2 );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
   /**
    * Checks the disjunction of the {@link Identifier} sets.
    */
-  protected void checkDisjunction ( )
+  protected void checkDisjunction ()
   {
     ArrayList < Identifier > allIdentifiers = this.expressions [ 1 ]
-        .getIdentifiersAll ( ) ;
-    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
+        .getIdentifiersAll ();
+    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ();
     for ( Identifier allId : allIdentifiers )
     {
       if ( ( this.identifiers [ 0 ].equals ( allId ) )
-          && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet ( ) ) || ( Identifier.Set.METHOD
-              .equals ( allId.getSet ( ) ) ) ) ) ) )
+          && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet () ) || ( Identifier.Set.METHOD
+              .equals ( allId.getSet () ) ) ) ) ) )
       {
-        negativeIdentifiers.add ( allId ) ;
+        negativeIdentifiers.add ( allId );
       }
     }
     /*
      * Throw an exception, if the negative identifier list contains one or more
      * identifiers. If this happens, all Identifiers are added.
      */
-    if ( negativeIdentifiers.size ( ) > 0 )
+    if ( negativeIdentifiers.size () > 0 )
     {
-      negativeIdentifiers.clear ( ) ;
+      negativeIdentifiers.clear ();
       for ( Identifier allId : allIdentifiers )
       {
         if ( this.identifiers [ 0 ].equals ( allId ) )
         {
-          negativeIdentifiers.add ( allId ) ;
+          negativeIdentifiers.add ( allId );
         }
       }
-      negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
+      negativeIdentifiers.add ( this.identifiers [ 0 ] );
       LanguageParserMultiException
-          .throwExceptionDisjunction ( negativeIdentifiers ) ;
+          .throwExceptionDisjunction ( negativeIdentifiers );
     }
   }
 
@@ -264,12 +265,12 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public Let clone ( )
+  @Override
+  public Let clone ()
   {
-    return new Let ( this.identifiers [ 0 ].clone ( ) ,
-        this.types [ 0 ] == null ? null : this.types [ 0 ].clone ( ) ,
-        this.expressions [ 0 ].clone ( ) , this.expressions [ 1 ].clone ( ) ) ;
+    return new Let ( this.identifiers [ 0 ].clone (),
+        this.types [ 0 ] == null ? null : this.types [ 0 ].clone (),
+        this.expressions [ 0 ].clone (), this.expressions [ 1 ].clone () );
   }
 
 
@@ -278,29 +279,29 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @see Expression#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( ( pObject instanceof Let )
-        && ( this.getClass ( ).equals ( pObject.getClass ( ) ) ) )
+        && ( this.getClass ().equals ( pObject.getClass () ) ) )
     {
-      Let other = ( Let ) pObject ;
+      Let other = ( Let ) pObject;
       return ( ( this.identifiers [ 0 ].equals ( other.identifiers [ 0 ] ) )
           && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) )
           && ( this.expressions [ 1 ].equals ( other.expressions [ 1 ] ) ) && ( ( this.types [ 0 ] == null ) ? ( other.types [ 0 ] == null )
-          : this.types [ 0 ].equals ( other.types [ 0 ] ) ) ) ;
+          : this.types [ 0 ].equals ( other.types [ 0 ] ) ) );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -309,9 +310,9 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @return the first expression.
    */
-  public Expression getE1 ( )
+  public Expression getE1 ()
   {
-    return this.expressions [ 0 ] ;
+    return this.expressions [ 0 ];
   }
 
 
@@ -320,9 +321,9 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @return the second expression.
    */
-  public Expression getE2 ( )
+  public Expression getE2 ()
   {
-    return this.expressions [ 1 ] ;
+    return this.expressions [ 1 ];
   }
 
 
@@ -331,9 +332,9 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @return the sub expressions.
    */
-  public Expression [ ] getExpressions ( )
+  public Expression [] getExpressions ()
   {
-    return this.expressions ;
+    return this.expressions;
   }
 
 
@@ -342,9 +343,9 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @return The indices of the child {@link Expression}s.
    */
-  public int [ ] getExpressionsIndex ( )
+  public int [] getExpressionsIndex ()
   {
-    return INDICES_E ;
+    return INDICES_E;
   }
 
 
@@ -353,9 +354,9 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @return the identifier of the <code>Let</code> expression.
    */
-  public Identifier getId ( )
+  public Identifier getId ()
   {
-    return this.identifiers [ 0 ] ;
+    return this.identifiers [ 0 ];
   }
 
 
@@ -364,9 +365,9 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @return The {@link Identifier}s of this {@link Expression}.
    */
-  public Identifier [ ] getIdentifiers ( )
+  public Identifier [] getIdentifiers ()
   {
-    return this.identifiers ;
+    return this.identifiers;
   }
 
 
@@ -375,25 +376,25 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @return A list of in this {@link Expression} bound {@link Identifier}s.
    */
-  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
+  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ()
   {
     if ( this.boundIdentifiers == null )
     {
-      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( 1 ) ;
-      ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( 1 );
+      ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ();
       ArrayList < Identifier > boundE2 = this.expressions [ 1 ]
-          .getIdentifiersFree ( ) ;
+          .getIdentifiersFree ();
       for ( Identifier freeId : boundE2 )
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
         {
-          freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
-          boundIdList.add ( freeId ) ;
+          freeId.setBoundTo ( this, this.identifiers [ 0 ] );
+          boundIdList.add ( freeId );
         }
       }
-      this.boundIdentifiers.add ( boundIdList ) ;
+      this.boundIdentifiers.add ( boundIdList );
     }
-    return this.boundIdentifiers ;
+    return this.boundIdentifiers;
   }
 
 
@@ -402,22 +403,22 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @see Expression#getIdentifiersFree()
    */
-  @ Override
-  public ArrayList < Identifier > getIdentifiersFree ( )
+  @Override
+  public ArrayList < Identifier > getIdentifiersFree ()
   {
     if ( this.identifiersFree == null )
     {
-      this.identifiersFree = new ArrayList < Identifier > ( ) ;
+      this.identifiersFree = new ArrayList < Identifier > ();
       this.identifiersFree.addAll ( this.expressions [ 1 ]
-          .getIdentifiersFree ( ) ) ;
+          .getIdentifiersFree () );
       while ( this.identifiersFree.remove ( this.identifiers [ 0 ] ) )
       {
         // Remove all Identifiers with the same name
       }
       this.identifiersFree.addAll ( this.expressions [ 0 ]
-          .getIdentifiersFree ( ) ) ;
+          .getIdentifiersFree () );
     }
-    return this.identifiersFree ;
+    return this.identifiersFree;
   }
 
 
@@ -426,9 +427,9 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @return The indices of the child {@link Identifier}s.
    */
-  public int [ ] getIdentifiersIndex ( )
+  public int [] getIdentifiersIndex ()
   {
-    return INDICES_ID ;
+    return INDICES_ID;
   }
 
 
@@ -437,12 +438,12 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -451,12 +452,12 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  @ Override
-  public LatexPackageList getLatexPackages ( )
+  @Override
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = super.getLatexPackages ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
-    return packages ;
+    LatexPackageList packages = super.getLatexPackages ();
+    packages.add ( getLatexPackagesStatic () );
+    return packages;
   }
 
 
@@ -467,9 +468,9 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @return the type for <code>id</code> or <code>null</code>.
    */
-  public MonoType getTau ( )
+  public MonoType getTau ()
   {
-    return this.types [ 0 ] ;
+    return this.types [ 0 ];
   }
 
 
@@ -478,9 +479,9 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @return the types.
    */
-  public MonoType [ ] getTypes ( )
+  public MonoType [] getTypes ()
   {
-    return this.types ;
+    return this.types;
   }
 
 
@@ -489,9 +490,9 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @return The indices of the child {@link Type}s.
    */
-  public int [ ] getTypesIndex ( )
+  public int [] getTypesIndex ()
   {
-    return INDICES_TYPE ;
+    return INDICES_TYPE;
   }
 
 
@@ -500,13 +501,13 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @see Expression#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.identifiers [ 0 ].hashCode ( )
-        + ( ( this.types [ 0 ] == null ) ? 0 : this.types [ 0 ].hashCode ( ) )
-        + this.expressions [ 0 ].hashCode ( )
-        + this.expressions [ 1 ].hashCode ( ) ;
+    return this.identifiers [ 0 ].hashCode ()
+        + ( ( this.types [ 0 ] == null ) ? 0 : this.types [ 0 ].hashCode () )
+        + this.expressions [ 0 ].hashCode ()
+        + this.expressions [ 1 ].hashCode ();
   }
 
 
@@ -515,49 +516,48 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @see Expression#substitute(Identifier, Expression)
    */
-  @ Override
-  public Let substitute ( Identifier pId , Expression pExpression )
+  @Override
+  public Let substitute ( Identifier pId, Expression pExpression )
   {
-    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    if ( pExpression.getIdentifierFreeNotOnlyVariable () )
     {
-      throw new NotOnlyFreeVariableException ( ) ;
+      throw new NotOnlyFreeVariableException ();
     }
     /*
      * Perform the substitution in e1.
      */
-    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
-    Expression newE2 = this.expressions [ 1 ] ;
+    Expression newE1 = this.expressions [ 0 ].substitute ( pId, pExpression );
+    Expression newE2 = this.expressions [ 1 ];
     /*
      * Do not substitute in e2 , if the Identifiers are equal.
      */
     if ( this.identifiers [ 0 ].equals ( pId ) )
     {
-      return new Let ( this.identifiers [ 0 ] , this.types [ 0 ] , newE1 ,
-          newE2 ) ;
+      return new Let ( this.identifiers [ 0 ], this.types [ 0 ], newE1, newE2 );
     }
     /*
      * Perform the bound renaming if required.
      */
-    ArrayList < Identifier > freeE2 = newE2.getIdentifiersFree ( ) ;
-    BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
-    boundRenaming.add ( freeE2 ) ;
-    boundRenaming.remove ( this.identifiers [ 0 ] ) ;
-    boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
-    boundRenaming.add ( pId ) ;
-    Identifier newId = boundRenaming.newIdentifier ( this.identifiers [ 0 ] ) ;
+    ArrayList < Identifier > freeE2 = newE2.getIdentifiersFree ();
+    BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ();
+    boundRenaming.add ( freeE2 );
+    boundRenaming.remove ( this.identifiers [ 0 ] );
+    boundRenaming.add ( pExpression.getIdentifiersFree () );
+    boundRenaming.add ( pId );
+    Identifier newId = boundRenaming.newIdentifier ( this.identifiers [ 0 ] );
     /*
      * Substitute the old Identifier only with the new Identifier, if they are
      * different.
      */
-    if ( ! this.identifiers [ 0 ].equals ( newId ) )
+    if ( !this.identifiers [ 0 ].equals ( newId ) )
     {
-      newE2 = newE2.substitute ( this.identifiers [ 0 ] , newId ) ;
+      newE2 = newE2.substitute ( this.identifiers [ 0 ], newId );
     }
     /*
      * Perform the substitution in e2.
      */
-    newE2 = newE2.substitute ( pId , pExpression ) ;
-    return new Let ( newId , this.types [ 0 ] , newE1 , newE2 ) ;
+    newE2 = newE2.substitute ( pId, pExpression );
+    return new Let ( newId, this.types [ 0 ], newE1, newE2 );
   }
 
 
@@ -566,14 +566,14 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @see Expression#substitute(TypeSubstitution)
    */
-  @ Override
+  @Override
   public Let substitute ( TypeSubstitution pTypeSubstitution )
   {
     MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
-        .substitute ( pTypeSubstitution ) ;
-    Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    Expression newE2 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
-    return new Let ( this.identifiers [ 0 ] , newTau , newE1 , newE2 ) ;
+        .substitute ( pTypeSubstitution );
+    Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution );
+    Expression newE2 = this.expressions [ 1 ].substitute ( pTypeSubstitution );
+    return new Let ( this.identifiers [ 0 ], newTau, newE1, newE2 );
   }
 
 
@@ -582,34 +582,34 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_LET , LATEX_LET , pIndent , this.toPrettyString ( ).toString ( ) ,
-        this.identifiers [ 0 ].toPrettyString ( ).toString ( ) ,
+        PRIO_LET, LATEX_LET, pIndent, this.toPrettyString ().toString (),
+        this.identifiers [ 0 ].toPrettyString ().toString (),
         this.types [ 0 ] == null ? LATEX_NO_TYPE : this.types [ 0 ]
-            .toPrettyString ( ).toString ( ) , this.expressions [ 0 ]
-            .toPrettyString ( ).toString ( ) , this.expressions [ 1 ]
-            .toPrettyString ( ).toString ( ) ) ;
+            .toPrettyString ().toString (), this.expressions [ 0 ]
+            .toPrettyString ().toString (), this.expressions [ 1 ]
+            .toPrettyString ().toString () );
     builder.addBuilder ( this.identifiers [ 0 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_ID ) ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), PRIO_ID );
     if ( this.types [ 0 ] == null )
     {
-      builder.addEmptyBuilder ( ) ;
+      builder.addEmptyBuilder ();
     }
     else
     {
       builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_LET_TAU ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), PRIO_LET_TAU );
     }
     builder.addBuilder ( this.expressions [ 0 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_LET_E1 ) ;
-    builder.addBreak ( ) ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), PRIO_LET_E1 );
+    builder.addBreak ();
     builder.addBuilder ( this.expressions [ 1 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_LET_E2 ) ;
-    return builder ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), PRIO_LET_E2 );
+    return builder;
   }
 
 
@@ -618,38 +618,38 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_LET ) ;
-      this.prettyStringBuilder.addKeyword ( PRETTY_LET ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_LET );
+      this.prettyStringBuilder.addKeyword ( PRETTY_LET );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), PRIO_ID );
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
-        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_COLON );
+        this.prettyStringBuilder.addText ( PRETTY_SPACE );
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_LET_TAU ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+            PRIO_LET_TAU );
       }
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-      this.prettyStringBuilder.addText ( PRETTY_EQUAL ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
+      this.prettyStringBuilder.addText ( PRETTY_EQUAL );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-      this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addKeyword ( PRETTY_IN ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), PRIO_LET_E1 );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
+      this.prettyStringBuilder.addBreak ();
+      this.prettyStringBuilder.addKeyword ( PRETTY_IN );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), PRIO_LET_E2 );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

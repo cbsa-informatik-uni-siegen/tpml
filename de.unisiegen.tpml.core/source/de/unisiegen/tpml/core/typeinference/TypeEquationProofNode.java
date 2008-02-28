@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.typeinference ;
+package de.unisiegen.tpml.core.typeinference;
 
 
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 
 
 /**
@@ -16,12 +16,13 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
  */
 public interface TypeEquationProofNode extends TypeCheckerProofNode
 {
+
   /**
    * Get the type equation of this node
    * 
    * @return equation type equation of this node
    */
-  public TypeEquationTypeInference getEquation ( ) ;
+  public TypeEquationTypeInference getEquation ();
 
 
   /**
@@ -29,5 +30,5 @@ public interface TypeEquationProofNode extends TypeCheckerProofNode
    * 
    * @return mode boolean - actual choosen mode
    */
-  public boolean getMode ( ) ;
+  public boolean getMode ();
 }

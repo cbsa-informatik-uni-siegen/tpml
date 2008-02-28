@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.languages ;
+package de.unisiegen.tpml.core.languages;
 
 
-import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Expression;
 
 
 /**
@@ -16,6 +16,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
  */
 public interface LanguageTranslator
 {
+
   //
   // Primitives
   //
@@ -38,8 +39,8 @@ public interface LanguageTranslator
    *           <code>null</code>.
    * @see #translateToCoreSyntax(Expression, boolean)
    */
-  public boolean containsSyntacticSugar ( Expression expression ,
-      boolean recursive ) ;
+  public boolean containsSyntacticSugar ( Expression expression,
+      boolean recursive );
 
 
   /**
@@ -61,6 +62,6 @@ public interface LanguageTranslator
    *           <code>null</code>.
    * @see #containsSyntacticSugar(Expression, boolean)
    */
-  public Expression translateToCoreSyntax ( Expression expression ,
-      boolean recursive ) ;
+  public Expression translateToCoreSyntax ( Expression expression,
+      boolean recursive );
 }

@@ -1,4 +1,4 @@
-package java_cup ;
+package java_cup;
 
 
 /**
@@ -17,6 +17,7 @@ package java_cup ;
  */
 public abstract class symbol
 {
+
   /*-----------------------------------------------------------*/
   /*--- Constructor(s) ----------------------------------------*/
   /*-----------------------------------------------------------*/
@@ -26,14 +27,16 @@ public abstract class symbol
    * @param nm the name of the symbol.
    * @param tp a string with the type name.
    */
-  public symbol ( String nm , String tp )
+  public symbol ( String nm, String tp )
   {
     /* sanity check */
-    if ( nm == null ) nm = "" ;
+    if ( nm == null )
+      nm = "";
     /* apply default if no type given */
-    if ( tp == null ) tp = "Object" ;
-    _name = nm ;
-    _stack_type = tp ;
+    if ( tp == null )
+      tp = "Object";
+    _name = nm;
+    _stack_type = tp;
   }
 
 
@@ -45,7 +48,7 @@ public abstract class symbol
    */
   public symbol ( String nm )
   {
-    this ( nm , null ) ;
+    this ( nm, null );
   }
 
 
@@ -53,44 +56,44 @@ public abstract class symbol
   /*--- (Access to) Instance Variables ------------------------*/
   /*-----------------------------------------------------------*/
   /** String for the human readable name of the symbol. */
-  protected String _name ;
+  protected String _name;
 
 
   /** String for the human readable name of the symbol. */
-  public String name ( )
+  public String name ()
   {
-    return _name ;
+    return _name;
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** String for the type of object used for the symbol on the parse stack. */
-  protected String _stack_type ;
+  protected String _stack_type;
 
 
   /** String for the type of object used for the symbol on the parse stack. */
-  public String stack_type ( )
+  public String stack_type ()
   {
-    return _stack_type ;
+    return _stack_type;
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Count of how many times the symbol appears in productions. */
-  protected int _use_count = 0 ;
+  protected int _use_count = 0;
 
 
   /** Count of how many times the symbol appears in productions. */
-  public int use_count ( )
+  public int use_count ()
   {
-    return _use_count ;
+    return _use_count;
   }
 
 
   /** Increment the use count. */
-  public void note_use ( )
+  public void note_use ()
   {
-    _use_count ++ ;
+    _use_count++ ;
   }
 
 
@@ -100,7 +103,7 @@ public abstract class symbol
    * indexes are unique among terminals and unique among non terminals, however,
    * a terminal may have the same index as a non-terminal, etc.
    */
-  protected int _index ;
+  protected int _index;
 
 
   /**
@@ -108,9 +111,9 @@ public abstract class symbol
    * indexes are unique among terminals and unique among non terminals, however,
    * a terminal may have the same index as a non-terminal, etc.
    */
-  public int index ( )
+  public int index ()
   {
-    return _index ;
+    return _index;
   }
 
 
@@ -119,14 +122,14 @@ public abstract class symbol
    * Indicate if this is a non-terminal. Here in the base class we don't know,
    * so this is abstract.
    */
-  public abstract boolean is_non_term ( ) ;
+  public abstract boolean is_non_term ();
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Convert to a string. */
-  public String toString ( )
+  public String toString ()
   {
-    return name ( ) ;
+    return name ();
   }
   /*-----------------------------------------------------------*/
 }

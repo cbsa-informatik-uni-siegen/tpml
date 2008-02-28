@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.prettyprinter ;
+package de.unisiegen.tpml.core.prettyprinter;
 
 
 /**
@@ -10,6 +10,7 @@ package de.unisiegen.tpml.core.prettyprinter ;
  */
 public interface PrettyPrintable extends PrettyCommandNames
 {
+
   /**
    * Returns a {@link PrettyString} that can be used to represent this printable
    * object, and extract information about possible other printables contained
@@ -18,7 +19,7 @@ public interface PrettyPrintable extends PrettyCommandNames
    * @return the pretty string for this printable.
    * @see java.lang.Object#toString()
    */
-  public PrettyString toPrettyString ( ) ;
+  public PrettyString toPrettyString ();
 
 
   /**
@@ -37,5 +38,5 @@ public interface PrettyPrintable extends PrettyCommandNames
    * @see PrettyStringBuilderFactory
    */
   public PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory ) ;
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory );
 }

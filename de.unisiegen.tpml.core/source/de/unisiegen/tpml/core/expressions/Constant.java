@@ -1,13 +1,13 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
 
 /**
@@ -21,16 +21,17 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  */
 public abstract class Constant extends Value
 {
+
   /**
    * The unused string.
    */
-  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+  private static final String UNUSED = "unused"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the text is null.
    */
-  private static final String TEXT_NULL = "text is null" ; //$NON-NLS-1$
+  private static final String TEXT_NULL = "text is null"; //$NON-NLS-1$
 
 
   /**
@@ -38,12 +39,12 @@ public abstract class Constant extends Value
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_CONSTANT , 1 ,
-        "\\mbox{\\textbf{\\color{" + LATEX_COLOR_CONSTANT + "}{#1}}}" , "c" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_CONSTANT, 1,
+        "\\mbox{\\textbf{\\color{" + LATEX_COLOR_CONSTANT + "}{#1}}}", "c" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    return commands;
   }
 
 
@@ -53,7 +54,7 @@ public abstract class Constant extends Value
    * @see #getText()
    * @see #toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  protected String text ;
+  protected String text;
 
 
   /**
@@ -67,9 +68,9 @@ public abstract class Constant extends Value
   {
     if ( pText == null )
     {
-      throw new NullPointerException ( TEXT_NULL ) ;
+      throw new NullPointerException ( TEXT_NULL );
     }
-    this.text = pText ;
+    this.text = pText;
   }
 
 
@@ -78,8 +79,8 @@ public abstract class Constant extends Value
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public abstract Constant clone ( ) ;
+  @Override
+  public abstract Constant clone ();
 
 
   /**
@@ -87,24 +88,24 @@ public abstract class Constant extends Value
    * 
    * @see Expression#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( ( pObject instanceof Constant )
-        && ( this.getClass ( ).equals ( pObject.getClass ( ) ) ) )
+        && ( this.getClass ().equals ( pObject.getClass () ) ) )
     {
-      Constant other = ( Constant ) pObject ;
-      return this.text.equals ( other.text ) ;
+      Constant other = ( Constant ) pObject;
+      return this.text.equals ( other.text );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public abstract String getCaption ( ) ;
+  @Override
+  public abstract String getCaption ();
 
 
   /**
@@ -112,12 +113,12 @@ public abstract class Constant extends Value
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -127,14 +128,14 @@ public abstract class Constant extends Value
    * @return The prefix of this {@link Expression}.
    * @see #prefix
    */
-  @ Override
-  public String getPrefix ( )
+  @Override
+  public String getPrefix ()
   {
     if ( this.prefix == null )
     {
-      this.prefix = PREFIX_CONST ;
+      this.prefix = PREFIX_CONST;
     }
-    return this.prefix ;
+    return this.prefix;
   }
 
 
@@ -145,9 +146,9 @@ public abstract class Constant extends Value
    * @return the text representation.
    * @see #toString()
    */
-  public String getText ( )
+  public String getText ()
   {
-    return this.text ;
+    return this.text;
   }
 
 
@@ -156,10 +157,10 @@ public abstract class Constant extends Value
    * 
    * @see Expression#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.text.hashCode ( ) + getClass ( ).hashCode ( ) ;
+    return this.text.hashCode () + getClass ().hashCode ();
   }
 
 
@@ -170,15 +171,15 @@ public abstract class Constant extends Value
    * 
    * @see Expression#substitute(Identifier, Expression)
    */
-  @ Override
-  public final Constant substitute ( @ SuppressWarnings ( UNUSED )
-  Identifier pId , Expression pExpression )
+  @Override
+  public final Constant substitute ( @SuppressWarnings ( UNUSED )
+  Identifier pId, Expression pExpression )
   {
-    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    if ( pExpression.getIdentifierFreeNotOnlyVariable () )
     {
-      throw new NotOnlyFreeVariableException ( ) ;
+      throw new NotOnlyFreeVariableException ();
     }
-    return this ;
+    return this;
   }
 
 
@@ -187,16 +188,16 @@ public abstract class Constant extends Value
    * 
    * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_CONSTANT , LATEX_CONSTANT , pIndent , this.toPrettyString ( )
-            .toString ( ) ) ;
+        PRIO_CONSTANT, LATEX_CONSTANT, pIndent, this.toPrettyString ()
+            .toString () );
     builder.addText ( "{" //$NON-NLS-1$
-        + this.text.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-    return builder ;
+        + this.text.replaceAll ( "_", "\\\\_" ) + "}" ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    return builder;
   }
 
 
@@ -205,16 +206,16 @@ public abstract class Constant extends Value
    * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  public @ Override
+  public @Override
   PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_CONSTANT ) ;
-      this.prettyStringBuilder.addConstant ( this.text ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_CONSTANT );
+      this.prettyStringBuilder.addConstant ( this.text );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

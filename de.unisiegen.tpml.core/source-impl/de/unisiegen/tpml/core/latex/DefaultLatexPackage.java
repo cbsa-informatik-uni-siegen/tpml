@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
 /**
@@ -8,10 +8,11 @@ package de.unisiegen.tpml.core.latex ;
  */
 public final class DefaultLatexPackage implements LatexPackage
 {
+
   /**
    * The name of the latex package.
    */
-  private String name ;
+  private String name;
 
 
   /**
@@ -22,7 +23,7 @@ public final class DefaultLatexPackage implements LatexPackage
    */
   public DefaultLatexPackage ( String pName )
   {
-    this.name = pName ;
+    this.name = pName;
   }
 
 
@@ -31,15 +32,15 @@ public final class DefaultLatexPackage implements LatexPackage
    * 
    * @see Object#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof DefaultLatexPackage )
     {
-      DefaultLatexPackage other = ( DefaultLatexPackage ) pObject ;
-      return this.name.equals ( other.name ) ;
+      DefaultLatexPackage other = ( DefaultLatexPackage ) pObject;
+      return this.name.equals ( other.name );
     }
-    return false ;
+    return false;
   }
 
 
@@ -49,9 +50,9 @@ public final class DefaultLatexPackage implements LatexPackage
    * @return The name.
    * @see #name
    */
-  public String getName ( )
+  public String getName ()
   {
-    return this.name ;
+    return this.name;
   }
 
 
@@ -60,14 +61,14 @@ public final class DefaultLatexPackage implements LatexPackage
    * 
    * @return The string value of this <code>DefaultLatexInstruction</code>.
    */
-  @ Override
-  public String toString ( )
+  @Override
+  public String toString ()
   {
-    StringBuilder result = new StringBuilder ( ) ;
-    result.append ( "\\usepackage" ) ; //$NON-NLS-1$
-    result.append ( "{" ) ; //$NON-NLS-1$
-    result.append ( this.name ) ;
-    result.append ( "}" ) ; //$NON-NLS-1$
-    return result.toString ( ) ;
+    StringBuilder result = new StringBuilder ();
+    result.append ( "\\usepackage" ); //$NON-NLS-1$
+    result.append ( "{" ); //$NON-NLS-1$
+    result.append ( this.name );
+    result.append ( "}" ); //$NON-NLS-1$
+    return result.toString ();
   }
 }

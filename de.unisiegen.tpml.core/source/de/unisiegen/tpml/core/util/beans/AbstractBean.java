@@ -1,9 +1,9 @@
-package de.unisiegen.tpml.core.util.beans ;
+package de.unisiegen.tpml.core.util.beans;
 
 
-import java.beans.PropertyChangeEvent ;
-import java.beans.PropertyChangeListener ;
-import java.beans.PropertyChangeSupport ;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 
 /**
@@ -18,6 +18,7 @@ import java.beans.PropertyChangeSupport ;
  */
 public abstract class AbstractBean implements Bean
 {
+
   /**
    * If any <code>PropertyChangeListeners</code> have been registered, the
    * <code>changeSupport</code> field describes them.
@@ -30,7 +31,7 @@ public abstract class AbstractBean implements Bean
    * @see #firePropertyChange(String, int, int)
    * @see #firePropertyChange(String, Object, Object)
    */
-  protected PropertyChangeSupport changeSupport ;
+  protected PropertyChangeSupport changeSupport;
 
 
   //
@@ -39,7 +40,7 @@ public abstract class AbstractBean implements Bean
   /**
    * Allocates a new <code>AbstractBean</code> instance.
    */
-  protected AbstractBean ( )
+  protected AbstractBean ()
   {
     // nothing to do here...
   }
@@ -63,13 +64,13 @@ public abstract class AbstractBean implements Bean
   {
     if ( listener == null )
     {
-      return ;
+      return;
     }
     if ( this.changeSupport == null )
     {
-      this.changeSupport = new PropertyChangeSupport ( this ) ;
+      this.changeSupport = new PropertyChangeSupport ( this );
     }
-    this.changeSupport.addPropertyChangeListener ( listener ) ;
+    this.changeSupport.addPropertyChangeListener ( listener );
   }
 
 
@@ -88,9 +89,9 @@ public abstract class AbstractBean implements Bean
   {
     if ( listener == null || this.changeSupport == null )
     {
-      return ;
+      return;
     }
-    this.changeSupport.removePropertyChangeListener ( listener ) ;
+    this.changeSupport.removePropertyChangeListener ( listener );
   }
 
 
@@ -103,13 +104,13 @@ public abstract class AbstractBean implements Bean
    * @see #addPropertyChangeListener(PropertyChangeListener)
    * @see #removePropertyChangeListener(PropertyChangeListener)
    */
-  public synchronized PropertyChangeListener [ ] getPropertyChangeListeners ( )
+  public synchronized PropertyChangeListener [] getPropertyChangeListeners ()
   {
     if ( this.changeSupport == null )
     {
-      return new PropertyChangeListener [ 0 ] ;
+      return new PropertyChangeListener [ 0 ];
     }
-    return this.changeSupport.getPropertyChangeListeners ( ) ;
+    return this.changeSupport.getPropertyChangeListeners ();
   }
 
 
@@ -124,18 +125,18 @@ public abstract class AbstractBean implements Bean
    * @see #removePropertyChangeListener(String, PropertyChangeListener)
    * @see #getPropertyChangeListeners(String)
    */
-  public synchronized void addPropertyChangeListener ( String propertyName ,
+  public synchronized void addPropertyChangeListener ( String propertyName,
       PropertyChangeListener listener )
   {
     if ( listener == null )
     {
-      return ;
+      return;
     }
     if ( this.changeSupport == null )
     {
-      this.changeSupport = new PropertyChangeSupport ( this ) ;
+      this.changeSupport = new PropertyChangeSupport ( this );
     }
-    this.changeSupport.addPropertyChangeListener ( propertyName , listener ) ;
+    this.changeSupport.addPropertyChangeListener ( propertyName, listener );
   }
 
 
@@ -151,14 +152,14 @@ public abstract class AbstractBean implements Bean
    * @see #addPropertyChangeListener(String, PropertyChangeListener)
    * @see #getPropertyChangeListeners(String)
    */
-  public synchronized void removePropertyChangeListener ( String propertyName ,
+  public synchronized void removePropertyChangeListener ( String propertyName,
       PropertyChangeListener listener )
   {
     if ( listener == null || this.changeSupport == null )
     {
-      return ;
+      return;
     }
-    this.changeSupport.removePropertyChangeListener ( propertyName , listener ) ;
+    this.changeSupport.removePropertyChangeListener ( propertyName, listener );
   }
 
 
@@ -170,14 +171,14 @@ public abstract class AbstractBean implements Bean
    * @return all of the {@link PropertyChangeListener}s associated with the
    *         named property or an empty array if no listeners have been added
    */
-  public synchronized PropertyChangeListener [ ] getPropertyChangeListeners (
+  public synchronized PropertyChangeListener [] getPropertyChangeListeners (
       String propertyName )
   {
     if ( this.changeSupport == null )
     {
-      return new PropertyChangeListener [ 0 ] ;
+      return new PropertyChangeListener [ 0 ];
     }
-    return this.changeSupport.getPropertyChangeListeners ( propertyName ) ;
+    return this.changeSupport.getPropertyChangeListeners ( propertyName );
   }
 
 
@@ -194,15 +195,15 @@ public abstract class AbstractBean implements Bean
    * @param oldValue the property's previous value.
    * @param newValue the property's new value.
    */
-  protected void firePropertyChange ( String propertyName , Object oldValue ,
+  protected void firePropertyChange ( String propertyName, Object oldValue,
       Object newValue )
   {
-    PropertyChangeSupport newChangeSupport = this.changeSupport ;
+    PropertyChangeSupport newChangeSupport = this.changeSupport;
     if ( newChangeSupport == null )
     {
-      return ;
+      return;
     }
-    newChangeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
+    newChangeSupport.firePropertyChange ( propertyName, oldValue, newValue );
   }
 
 
@@ -216,15 +217,15 @@ public abstract class AbstractBean implements Bean
    * @param oldValue the property's previous value.
    * @param newValue the property's new value.
    */
-  protected void firePropertyChange ( String propertyName , boolean oldValue ,
+  protected void firePropertyChange ( String propertyName, boolean oldValue,
       boolean newValue )
   {
-    PropertyChangeSupport newChangeSupport = this.changeSupport ;
+    PropertyChangeSupport newChangeSupport = this.changeSupport;
     if ( newChangeSupport == null )
     {
-      return ;
+      return;
     }
-    newChangeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
+    newChangeSupport.firePropertyChange ( propertyName, oldValue, newValue );
   }
 
 
@@ -238,14 +239,14 @@ public abstract class AbstractBean implements Bean
    * @param oldValue the property's previous value.
    * @param newValue the property's new value.
    */
-  protected void firePropertyChange ( String propertyName , int oldValue ,
+  protected void firePropertyChange ( String propertyName, int oldValue,
       int newValue )
   {
-    PropertyChangeSupport newChangeSupport = this.changeSupport ;
+    PropertyChangeSupport newChangeSupport = this.changeSupport;
     if ( newChangeSupport == null )
     {
-      return ;
+      return;
     }
-    newChangeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
+    newChangeSupport.firePropertyChange ( propertyName, oldValue, newValue );
   }
 }

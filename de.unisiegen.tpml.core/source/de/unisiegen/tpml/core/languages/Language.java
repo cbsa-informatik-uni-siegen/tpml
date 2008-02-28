@@ -1,16 +1,17 @@
-package de.unisiegen.tpml.core.languages ;
+package de.unisiegen.tpml.core.languages;
 
 
-import java.io.Reader ;
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel ;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofModel ;
-import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel ;
-import de.unisiegen.tpml.core.types.MonoType ;
+import java.io.Reader;
+
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
+import de.unisiegen.tpml.core.types.MonoType;
 
 
 /**
@@ -22,6 +23,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  */
 public interface Language
 {
+
   //
   // Accessors
   //
@@ -31,7 +33,7 @@ public interface Language
    * 
    * @return the description of this language.
    */
-  public String getDescription ( ) ;
+  public String getDescription ();
 
 
   /**
@@ -39,7 +41,7 @@ public interface Language
    * 
    * @return the name of the language.
    */
-  public String getName ( ) ;
+  public String getName ();
 
 
   /**
@@ -47,7 +49,7 @@ public interface Language
    * 
    * @return the id of the language
    */
-  public int getId ( ) ;
+  public int getId ();
 
 
   /**
@@ -56,7 +58,7 @@ public interface Language
    * 
    * @return the title of the language.
    */
-  public String getTitle ( ) ;
+  public String getTitle ();
 
 
   //
@@ -73,7 +75,7 @@ public interface Language
    *           <code>null</code>.
    * @see BigStepProofModel
    */
-  public BigStepProofModel newBigStepProofModel ( Expression expression ) ;
+  public BigStepProofModel newBigStepProofModel ( Expression expression );
 
 
   /**
@@ -87,7 +89,7 @@ public interface Language
    *           <code>null</code>.
    * @see SmallStepProofModel
    */
-  public SmallStepProofModel newSmallStepProofModel ( Expression expression ) ;
+  public SmallStepProofModel newSmallStepProofModel ( Expression expression );
 
 
   /**
@@ -103,7 +105,7 @@ public interface Language
    *           type system.
    * @see TypeCheckerProofModel
    */
-  public TypeCheckerProofModel newTypeCheckerProofModel ( Expression expression ) ;
+  public TypeCheckerProofModel newTypeCheckerProofModel ( Expression expression );
 
 
   /**
@@ -122,7 +124,7 @@ public interface Language
    * @see MinimalTypingProofModel
    */
   public MinimalTypingProofModel newMinimalTypingProofModel (
-      Expression expression , boolean mode ) ;
+      Expression expression, boolean mode );
 
 
   /**
@@ -140,7 +142,7 @@ public interface Language
    * @see TypeInferenceProofModel
    */
   public TypeInferenceProofModel newTypeInferenceProofModel (
-      Expression expression ) ;
+      Expression expression );
 
 
   /**
@@ -158,8 +160,8 @@ public interface Language
    *           type system.
    * @see SubTypingProofModel
    */
-  public SubTypingProofModel newSubTypingProofModel ( MonoType type ,
-      MonoType type2 , boolean mode ) ;
+  public SubTypingProofModel newSubTypingProofModel ( MonoType type,
+      MonoType type2, boolean mode );
 
 
   /**
@@ -177,8 +179,8 @@ public interface Language
    *           type system.
    * @see SubTypingProofModel
    */
-  public RecSubTypingProofModel newRecSubTypingProofModel ( MonoType type ,
-      MonoType type2 , boolean mode ) ;
+  public RecSubTypingProofModel newRecSubTypingProofModel ( MonoType type,
+      MonoType type2, boolean mode );
 
 
   /**
@@ -191,7 +193,7 @@ public interface Language
    * @return the newly allocated parser for this language.
    * @throws NullPointerException if <code>scanner</code> is <code>null</code>.
    */
-  public LanguageParser newParser ( LanguageScanner scanner ) ;
+  public LanguageParser newParser ( LanguageScanner scanner );
 
 
   /**
@@ -203,7 +205,7 @@ public interface Language
    * @return the newly allocated parser for this language.
    * @throws NullPointerException if <code>reader</code> is <code>null</code>.
    */
-  public LanguageParser newParser ( Reader reader ) ;
+  public LanguageParser newParser ( Reader reader );
 
 
   /**
@@ -214,7 +216,7 @@ public interface Language
    * @return a newly allocated scanner for this language.
    * @throws NullPointerException if <code>reader</code> is <code>null</code>.
    */
-  public LanguageScanner newScanner ( Reader reader ) ;
+  public LanguageScanner newScanner ( Reader reader );
 
 
   /**
@@ -224,7 +226,7 @@ public interface Language
    * @return a newly allocated language translator.
    * @see LanguageTranslator
    */
-  public LanguageTranslator newTranslator ( ) ;
+  public LanguageTranslator newTranslator ();
 
 
   /**
@@ -238,7 +240,7 @@ public interface Language
    * @return a newly allocated type parser for this language.
    * @throws NullPointerException if <code>scanner</code> is <code>null</code>.
    */
-  public LanguageTypeParser newTypeParser ( LanguageTypeScanner scanner ) ;
+  public LanguageTypeParser newTypeParser ( LanguageTypeScanner scanner );
 
 
   /**
@@ -250,7 +252,7 @@ public interface Language
    * @return the newly allocated type parser for this language.
    * @throws NullPointerException if <code>reader</code> is <code>null</code>.
    */
-  public LanguageTypeParser newTypeParser ( Reader reader ) ;
+  public LanguageTypeParser newTypeParser ( Reader reader );
 
 
   /**
@@ -263,7 +265,7 @@ public interface Language
    * @return a newly allocated scanner for this language.
    * @throws NullPointerException if <code>reader</code> is <code>null</code>.
    */
-  public LanguageTypeScanner newTypeScanner ( Reader reader ) ;
+  public LanguageTypeScanner newTypeScanner ( Reader reader );
 
 
   /**
@@ -272,5 +274,5 @@ public interface Language
    * 
    * @return true if this is a type language, else false
    */
-  public boolean isTypeLanguage ( ) ;
+  public boolean isTypeLanguage ();
 }

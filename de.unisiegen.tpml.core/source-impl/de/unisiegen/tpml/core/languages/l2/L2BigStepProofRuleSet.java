@@ -1,11 +1,11 @@
-package de.unisiegen.tpml.core.languages.l2 ;
+package de.unisiegen.tpml.core.languages.l2;
 
 
-import de.unisiegen.tpml.core.bigstep.BigStepProofContext ;
-import de.unisiegen.tpml.core.bigstep.BigStepProofNode ;
-import de.unisiegen.tpml.core.expressions.Recursion ;
-import de.unisiegen.tpml.core.languages.l1.L1BigStepProofRuleSet ;
-import de.unisiegen.tpml.core.languages.l1.L1Language ;
+import de.unisiegen.tpml.core.bigstep.BigStepProofContext;
+import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
+import de.unisiegen.tpml.core.expressions.Recursion;
+import de.unisiegen.tpml.core.languages.l1.L1BigStepProofRuleSet;
+import de.unisiegen.tpml.core.languages.l1.L1Language;
 
 
 /**
@@ -18,6 +18,7 @@ import de.unisiegen.tpml.core.languages.l1.L1Language ;
  */
 public class L2BigStepProofRuleSet extends L1BigStepProofRuleSet
 {
+
   /**
    * Allocates a new <code>L2BigStepProofRuleSet</code> with the specified
    * <code>language</code>, which is the <b>L1</b> or a derived language.
@@ -29,10 +30,10 @@ public class L2BigStepProofRuleSet extends L1BigStepProofRuleSet
    */
   public L2BigStepProofRuleSet ( L2Language language )
   {
-    super ( language ) ;
+    super ( language );
     // register the big step rules (order is important for guessing!)
-    registerByMethodName ( L2Language.L2 , "UNFOLD" , "applyUnfold" , //$NON-NLS-1$//$NON-NLS-2$
-        "updateUnfold" ) ; //$NON-NLS-1$
+    registerByMethodName ( L2Language.L2, "UNFOLD", "applyUnfold", //$NON-NLS-1$//$NON-NLS-2$
+        "updateUnfold" ); //$NON-NLS-1$
   }
 
 
@@ -43,12 +44,12 @@ public class L2BigStepProofRuleSet extends L1BigStepProofRuleSet
    * @param context the big step proof context.
    * @param node the node to apply the <b>(UNFOLD)</b> rule to.
    */
-  public void applyUnfold ( BigStepProofContext context , BigStepProofNode node )
+  public void applyUnfold ( BigStepProofContext context, BigStepProofNode node )
   {
     // can only be applied to Recursions
-    Recursion recursion = ( Recursion ) node.getExpression ( ) ;
-    context.addProofNode ( node , recursion.getE ( ).substitute (
-        recursion.getId ( ) , recursion ) ) ;
+    Recursion recursion = ( Recursion ) node.getExpression ();
+    context.addProofNode ( node, recursion.getE ().substitute (
+        recursion.getId (), recursion ) );
   }
 
 
@@ -59,9 +60,9 @@ public class L2BigStepProofRuleSet extends L1BigStepProofRuleSet
    * @param context the big step proof context.
    * @param node the node to update according to <b>(UNFOLD)</b>.
    */
-  public void updateUnfold ( BigStepProofContext context , BigStepProofNode node )
+  public void updateUnfold ( BigStepProofContext context, BigStepProofNode node )
   {
     // forward the result from the child node (may be null)
-    context.setProofNodeResult ( node , node.getChildAt ( 0 ).getResult ( ) ) ;
+    context.setProofNodeResult ( node, node.getChildAt ( 0 ).getResult () );
   }
 }

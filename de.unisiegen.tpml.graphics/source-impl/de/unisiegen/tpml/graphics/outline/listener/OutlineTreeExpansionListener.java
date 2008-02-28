@@ -1,9 +1,10 @@
-package de.unisiegen.tpml.graphics.outline.listener ;
+package de.unisiegen.tpml.graphics.outline.listener;
 
 
-import javax.swing.event.TreeExpansionEvent ;
-import javax.swing.event.TreeExpansionListener ;
-import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
+
+import de.unisiegen.tpml.graphics.outline.DefaultOutline;
 
 
 /**
@@ -15,10 +16,11 @@ import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 public final class OutlineTreeExpansionListener implements
     TreeExpansionListener
 {
+
   /**
    * The {@link DefaultOutline}.
    */
-  private DefaultOutline defaultOutline ;
+  private DefaultOutline defaultOutline;
 
 
   /**
@@ -29,7 +31,7 @@ public final class OutlineTreeExpansionListener implements
    */
   public OutlineTreeExpansionListener ( DefaultOutline pDefaultOutline )
   {
-    this.defaultOutline = pDefaultOutline ;
+    this.defaultOutline = pDefaultOutline;
   }
 
 
@@ -41,10 +43,10 @@ public final class OutlineTreeExpansionListener implements
    */
   public final void treeCollapsed ( TreeExpansionEvent pTreeExpansionEvent )
   {
-    if ( pTreeExpansionEvent.getSource ( ).equals (
-        this.defaultOutline.getUI ( ).getJTreeOutline ( ) ) )
+    if ( pTreeExpansionEvent.getSource ().equals (
+        this.defaultOutline.getUI ().getJTreeOutline () ) )
     {
-      this.defaultOutline.updateBreaks ( ) ;
+      this.defaultOutline.updateBreaks ();
     }
   }
 
@@ -57,10 +59,10 @@ public final class OutlineTreeExpansionListener implements
    */
   public final void treeExpanded ( TreeExpansionEvent pTreeExpansionEvent )
   {
-    if ( pTreeExpansionEvent.getSource ( ).equals (
-        this.defaultOutline.getUI ( ).getJTreeOutline ( ) ) )
+    if ( pTreeExpansionEvent.getSource ().equals (
+        this.defaultOutline.getUI ().getJTreeOutline () ) )
     {
-      this.defaultOutline.updateBreaks ( ) ;
+      this.defaultOutline.updateBreaks ();
     }
   }
 }

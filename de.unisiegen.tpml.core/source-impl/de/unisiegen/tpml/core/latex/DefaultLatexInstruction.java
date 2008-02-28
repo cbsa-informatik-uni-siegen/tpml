@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
 /**
@@ -6,19 +6,20 @@ package de.unisiegen.tpml.core.latex ;
  * 
  * @author Christian Fehler
  */
-public final class DefaultLatexInstruction implements LatexInstruction ,
+public final class DefaultLatexInstruction implements LatexInstruction,
     LatexCommandNames
 {
+
   /**
    * The text of the latex instruction.
    */
-  private String text ;
+  private String text;
 
 
   /**
    * The description of this instruction.
    */
-  private String description = null ;
+  private String description = null;
 
 
   /**
@@ -29,7 +30,7 @@ public final class DefaultLatexInstruction implements LatexInstruction ,
    */
   public DefaultLatexInstruction ( String pText )
   {
-    this.text = pText ;
+    this.text = pText;
   }
 
 
@@ -40,10 +41,10 @@ public final class DefaultLatexInstruction implements LatexInstruction ,
    * @param pText The text of the new latex instruction.
    * @param pDescription The description of this instruction.
    */
-  public DefaultLatexInstruction ( String pText , String pDescription )
+  public DefaultLatexInstruction ( String pText, String pDescription )
   {
-    this ( pText ) ;
-    this.description = pDescription ;
+    this ( pText );
+    this.description = pDescription;
   }
 
 
@@ -52,15 +53,15 @@ public final class DefaultLatexInstruction implements LatexInstruction ,
    * 
    * @see Object#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof DefaultLatexInstruction )
     {
-      DefaultLatexInstruction other = ( DefaultLatexInstruction ) pObject ;
-      return this.text.equals ( other.text ) ;
+      DefaultLatexInstruction other = ( DefaultLatexInstruction ) pObject;
+      return this.text.equals ( other.text );
     }
-    return false ;
+    return false;
   }
 
 
@@ -70,9 +71,9 @@ public final class DefaultLatexInstruction implements LatexInstruction ,
    * @return The text.
    * @see #text
    */
-  public String getText ( )
+  public String getText ()
   {
-    return this.text ;
+    return this.text;
   }
 
 
@@ -81,17 +82,17 @@ public final class DefaultLatexInstruction implements LatexInstruction ,
    * 
    * @return The string value of this <code>DefaultLatexInstruction</code>.
    */
-  @ Override
-  public String toString ( )
+  @Override
+  public String toString ()
   {
-    StringBuilder result = new StringBuilder ( ) ;
+    StringBuilder result = new StringBuilder ();
     if ( this.description != null )
     {
-      result.append ( "% " ) ; //$NON-NLS-1$
-      result.append ( this.description ) ;
-      result.append ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      result.append ( "% " ); //$NON-NLS-1$
+      result.append ( this.description );
+      result.append ( LATEX_LINE_BREAK_SOURCE_CODE );
     }
-    result.append ( this.text ) ;
-    return result.toString ( ) ;
+    result.append ( this.text );
+    return result.toString ();
   }
 }

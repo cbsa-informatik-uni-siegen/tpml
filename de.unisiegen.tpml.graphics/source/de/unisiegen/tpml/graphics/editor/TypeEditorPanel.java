@@ -1,38 +1,41 @@
 package de.unisiegen.tpml.graphics.editor ;
 
 
-import java.awt.GridBagConstraints ;
-import java.awt.GridBagLayout ;
-import java.awt.Insets ;
-import java.awt.datatransfer.Clipboard ;
-import java.awt.datatransfer.ClipboardOwner ;
-import java.awt.datatransfer.DataFlavor ;
-import java.awt.datatransfer.StringSelection ;
-import java.awt.datatransfer.Transferable ;
-import java.awt.event.FocusEvent ;
-import java.awt.event.FocusListener ;
-import java.io.StringReader ;
-import java.util.Stack ;
-import javax.swing.JComponent ;
-import javax.swing.JLabel ;
-import javax.swing.JPanel ;
-import javax.swing.JScrollPane ;
-import javax.swing.JSplitPane ;
-import javax.swing.event.DocumentEvent ;
-import javax.swing.event.DocumentListener ;
-import javax.swing.text.BadLocationException ;
-import org.apache.log4j.Logger ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.core.languages.LanguageTypeParser ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.graphics.EditorComponent ;
-import de.unisiegen.tpml.graphics.Messages ;
-import de.unisiegen.tpml.graphics.SideBar ;
-import de.unisiegen.tpml.graphics.SideBarListener ;
-import de.unisiegen.tpml.graphics.StyledLanguageEditor ;
-import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
-import de.unisiegen.tpml.graphics.outline.Outline ;
-import de.unisiegen.tpml.graphics.subtyping.StyledTypeEnterField ;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.io.StringReader;
+import java.util.Stack;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+
+import org.apache.log4j.Logger;
+
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageTypeParser;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.graphics.EditorComponent;
+import de.unisiegen.tpml.graphics.Messages;
+import de.unisiegen.tpml.graphics.SideBar;
+import de.unisiegen.tpml.graphics.SideBarListener;
+import de.unisiegen.tpml.graphics.StyledLanguageEditor;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline;
+import de.unisiegen.tpml.graphics.outline.Outline;
+import de.unisiegen.tpml.graphics.subtyping.StyledTypeEnterField;
 
 
 /**

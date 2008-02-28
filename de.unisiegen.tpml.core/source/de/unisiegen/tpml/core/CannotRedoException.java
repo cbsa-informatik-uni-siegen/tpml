@@ -1,36 +1,40 @@
 package de.unisiegen.tpml.core;
 
+
 /**
- * This exception is thrown whenever the users tries to invoke the {@link de.unisiegen.tpml.core.ProofModel#redo()}
- * method, but the change cannot be redone or the redo history is empty.
- *
+ * This exception is thrown whenever the users tries to invoke the
+ * {@link de.unisiegen.tpml.core.ProofModel#redo()} method, but the change
+ * cannot be redone or the redo history is empty.
+ * 
  * @author Benedikt Meurer
  * @version $Rev$
- * 
  * @see de.unisiegen.tpml.core.CannotUndoException
  */
-public final class CannotRedoException extends Exception {
+public final class CannotRedoException extends Exception
+{
+
   //
   // Constants
   //
-  
+
   /**
    * The unique serialization identifier for this class.
    */
   private static final long serialVersionUID = 3623984004272978001L;
 
-  
-  
+
   //
   // Constructor (package)
   //
-  
+
   /**
-   * Allocates a new <code>CannotRedoException</code> with the specified error <code>message</code>.
+   * Allocates a new <code>CannotRedoException</code> with the specified error
+   * <code>message</code>.
    * 
    * @param message the error message text.
    */
-  CannotRedoException(String message) {
-    super(message);
+  CannotRedoException ( String message )
+  {
+    super ( message );
   }
 }

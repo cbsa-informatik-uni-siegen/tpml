@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -14,36 +14,37 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class Deref extends UnaryOperator
 {
+
   /**
    * The keyword <code>!</code>.
    */
-  private static final String EXCLAMATION = "!" ; //$NON-NLS-1$
+  private static final String EXCLAMATION = "!"; //$NON-NLS-1$
 
 
   /**
    * The deref operator exception string.
    */
-  private static final String HANDLED = "deref operator must be handled by the interpreter" ; //$NON-NLS-1$
+  private static final String HANDLED = "deref operator must be handled by the interpreter"; //$NON-NLS-1$
 
 
   /**
    * The unused string.
    */
-  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+  private static final String UNUSED = "unused"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = Expression.getCaption ( Deref.class ) ;
+  private static final String CAPTION = Expression.getCaption ( Deref.class );
 
 
   /**
    * Allocates a new <code>Deref</code> instance.
    */
-  public Deref ( )
+  public Deref ()
   {
-    super ( EXCLAMATION ) ;
+    super ( EXCLAMATION );
   }
 
 
@@ -55,11 +56,11 @@ public final class Deref extends UnaryOperator
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Deref ( int pParserStartOffset , int pParserEndOffset )
+  public Deref ( int pParserStartOffset, int pParserEndOffset )
   {
-    this ( ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ();
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -73,12 +74,12 @@ public final class Deref extends UnaryOperator
    *           <code>!</code> operator must be handled by the interpreter.
    * @see UnaryOperator#applyTo(Expression)
    */
-  @ SuppressWarnings ( UNUSED )
-  @ Override
-  public Expression applyTo ( @ SuppressWarnings ( UNUSED )
+  @SuppressWarnings ( UNUSED )
+  @Override
+  public Expression applyTo ( @SuppressWarnings ( UNUSED )
   Expression pExpression ) throws UnaryOperatorException
   {
-    throw new UnsupportedOperationException ( HANDLED ) ;
+    throw new UnsupportedOperationException ( HANDLED );
   }
 
 
@@ -87,19 +88,19 @@ public final class Deref extends UnaryOperator
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public Deref clone ( )
+  @Override
+  public Deref clone ()
   {
-    return new Deref ( ) ;
+    return new Deref ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

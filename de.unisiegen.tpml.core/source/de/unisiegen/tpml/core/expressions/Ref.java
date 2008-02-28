@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -14,36 +14,37 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class Ref extends UnaryOperator
 {
+
   /**
    * The keyword <code>ref</code>.
    */
-  private static final String REF = "ref" ; //$NON-NLS-1$
+  private static final String REF = "ref"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = Expression.getCaption ( Ref.class ) ;
+  private static final String CAPTION = Expression.getCaption ( Ref.class );
 
 
   /**
    * The ref operator exception string.
    */
-  private static final String HANDLED = "ref operator must be handled by the interpreter" ; //$NON-NLS-1$
+  private static final String HANDLED = "ref operator must be handled by the interpreter"; //$NON-NLS-1$
 
 
   /**
    * The unused string.
    */
-  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+  private static final String UNUSED = "unused"; //$NON-NLS-1$
 
 
   /**
    * Allocates a new <code>Ref</code> instance.
    */
-  public Ref ( )
+  public Ref ()
   {
-    super ( REF ) ;
+    super ( REF );
   }
 
 
@@ -55,11 +56,11 @@ public final class Ref extends UnaryOperator
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Ref ( int pParserStartOffset , int pParserEndOffset )
+  public Ref ( int pParserStartOffset, int pParserEndOffset )
   {
-    this ( ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ();
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -73,12 +74,12 @@ public final class Ref extends UnaryOperator
    *           <code>ref</code> operator must be handled by the interpreter.
    * @see de.unisiegen.tpml.core.expressions.UnaryOperator#applyTo(de.unisiegen.tpml.core.expressions.Expression)
    */
-  @ SuppressWarnings ( UNUSED )
-  @ Override
-  public Expression applyTo ( @ SuppressWarnings ( UNUSED )
+  @SuppressWarnings ( UNUSED )
+  @Override
+  public Expression applyTo ( @SuppressWarnings ( UNUSED )
   Expression pExpression ) throws UnaryOperatorException
   {
-    throw new UnsupportedOperationException ( HANDLED ) ;
+    throw new UnsupportedOperationException ( HANDLED );
   }
 
 
@@ -87,19 +88,19 @@ public final class Ref extends UnaryOperator
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public Ref clone ( )
+  @Override
+  public Ref clone ()
   {
-    return new Ref ( ) ;
+    return new Ref ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

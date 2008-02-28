@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.types ;
+package de.unisiegen.tpml.core.types;
 
 
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -14,10 +14,11 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  */
 public abstract class MonoType extends Type
 {
+
   /**
    * Constructor for monomorphic types.
    */
-  protected MonoType ( )
+  protected MonoType ()
   {
     // Nothing to do here...
   }
@@ -28,8 +29,8 @@ public abstract class MonoType extends Type
    * 
    * @see Type#clone()
    */
-  @ Override
-  public abstract MonoType clone ( ) ;
+  @Override
+  public abstract MonoType clone ();
 
 
   /**
@@ -37,15 +38,15 @@ public abstract class MonoType extends Type
    * 
    * @see Object#equals(Object)
    */
-  @ Override
-  public abstract boolean equals ( Object pObject ) ;
+  @Override
+  public abstract boolean equals ( Object pObject );
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public abstract String getCaption ( ) ;
+  @Override
+  public abstract String getCaption ();
 
 
   /**
@@ -58,8 +59,8 @@ public abstract class MonoType extends Type
    * @param pTau The {@link MonoType}.
    * @return The resulting {@link Type}.
    */
-  @ Override
-  public abstract MonoType substitute ( TypeName pTypeName , MonoType pTau ) ;
+  @Override
+  public abstract MonoType substitute ( TypeName pTypeName, MonoType pTau );
 
 
   /**
@@ -67,6 +68,6 @@ public abstract class MonoType extends Type
    * 
    * @see Type#substitute(TypeSubstitution)
    */
-  @ Override
-  public abstract MonoType substitute ( TypeSubstitution pTypeSubstitution ) ;
+  @Override
+  public abstract MonoType substitute ( TypeSubstitution pTypeSubstitution );
 }

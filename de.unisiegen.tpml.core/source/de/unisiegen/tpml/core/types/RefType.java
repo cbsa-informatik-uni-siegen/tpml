@@ -1,16 +1,16 @@
-package de.unisiegen.tpml.core.types ;
+package de.unisiegen.tpml.core.types;
 
 
-import de.unisiegen.tpml.core.expressions.Location ;
-import de.unisiegen.tpml.core.expressions.Ref ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.expressions.Location;
+import de.unisiegen.tpml.core.expressions.Ref;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -28,29 +28,30 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  */
 public final class RefType extends MonoType implements DefaultTypes
 {
+
   /**
    * String for the case that the type substitution is null.
    */
-  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null"; //$NON-NLS-1$
 
 
   /**
    * Indeces of the child {@link Type}s.
    */
-  private static final int [ ] INDICES_TYPE = new int [ ]
-  { - 1 } ;
+  private static final int [] INDICES_TYPE = new int []
+  { -1 };
 
 
   /**
    * String for the case that tau is null.
    */
-  private static final String TAU_NULL = "tau is null" ; //$NON-NLS-1$
+  private static final String TAU_NULL = "tau is null"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = Type.getCaption ( RefType.class ) ;
+  private static final String CAPTION = Type.getCaption ( RefType.class );
 
 
   /**
@@ -58,21 +59,21 @@ public final class RefType extends MonoType implements DefaultTypes
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_REF , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{ref}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_REF_TYPE , 1 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}#1\\ \\" + LATEX_KEY_REF , "tau" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_REF, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{ref}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_REF_TYPE, 1, "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}#1\\ \\" + LATEX_KEY_REF, "tau" ) ); //$NON-NLS-1$//$NON-NLS-2$
+    return commands;
   }
 
 
   /**
    * The children {@link Type}s of this {@link Type}.
    */
-  private MonoType [ ] types ;
+  private MonoType [] types;
 
 
   /**
@@ -87,11 +88,11 @@ public final class RefType extends MonoType implements DefaultTypes
   {
     if ( pTau == null )
     {
-      throw new NullPointerException ( TAU_NULL ) ;
+      throw new NullPointerException ( TAU_NULL );
     }
-    this.types = new MonoType [ ]
-    { pTau } ;
-    this.types [ 0 ].setParent ( this ) ;
+    this.types = new MonoType []
+    { pTau };
+    this.types [ 0 ].setParent ( this );
   }
 
 
@@ -107,11 +108,11 @@ public final class RefType extends MonoType implements DefaultTypes
    *          code.
    * @throws NullPointerException if <code>tau</code> is <code>null</code>.
    */
-  public RefType ( MonoType pTau , int pParserStartOffset , int pParserEndOffset )
+  public RefType ( MonoType pTau, int pParserStartOffset, int pParserEndOffset )
   {
-    this ( pTau ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pTau );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -120,10 +121,10 @@ public final class RefType extends MonoType implements DefaultTypes
    * 
    * @see Type#clone()
    */
-  @ Override
-  public RefType clone ( )
+  @Override
+  public RefType clone ()
   {
-    return new RefType ( this.types [ 0 ].clone ( ) ) ;
+    return new RefType ( this.types [ 0 ].clone () );
   }
 
 
@@ -132,25 +133,25 @@ public final class RefType extends MonoType implements DefaultTypes
    * 
    * @see Object#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof RefType )
     {
-      RefType other = ( RefType ) pObject ;
-      return ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ;
+      RefType other = ( RefType ) pObject;
+      return ( this.types [ 0 ].equals ( other.types [ 0 ] ) );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -159,12 +160,12 @@ public final class RefType extends MonoType implements DefaultTypes
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -173,9 +174,9 @@ public final class RefType extends MonoType implements DefaultTypes
    * 
    * @return the base type.
    */
-  public MonoType getTau ( )
+  public MonoType getTau ()
   {
-    return this.types [ 0 ] ;
+    return this.types [ 0 ];
   }
 
 
@@ -184,9 +185,9 @@ public final class RefType extends MonoType implements DefaultTypes
    * 
    * @return the sub {@link Type}s.
    */
-  public MonoType [ ] getTypes ( )
+  public MonoType [] getTypes ()
   {
-    return this.types ;
+    return this.types;
   }
 
 
@@ -195,9 +196,9 @@ public final class RefType extends MonoType implements DefaultTypes
    * 
    * @return The indices of the child {@link Type}s.
    */
-  public int [ ] getTypesIndex ( )
+  public int [] getTypesIndex ()
   {
-    return INDICES_TYPE ;
+    return INDICES_TYPE;
   }
 
 
@@ -206,10 +207,10 @@ public final class RefType extends MonoType implements DefaultTypes
    * 
    * @see Object#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return ( ( this.types [ 0 ].hashCode ( ) + 13 ) * 17 ) / 7 ;
+    return ( ( this.types [ 0 ].hashCode () + 13 ) * 17 ) / 7;
   }
 
 
@@ -223,11 +224,11 @@ public final class RefType extends MonoType implements DefaultTypes
    * @param pTau The {@link MonoType}.
    * @return The resulting {@link Type}.
    */
-  @ Override
-  public RefType substitute ( TypeName pTypeName , MonoType pTau )
+  @Override
+  public RefType substitute ( TypeName pTypeName, MonoType pTau )
   {
-    MonoType newTau = this.types [ 0 ].substitute ( pTypeName , pTau ) ;
-    return new RefType ( newTau ) ;
+    MonoType newTau = this.types [ 0 ].substitute ( pTypeName, pTau );
+    return new RefType ( newTau );
   }
 
 
@@ -236,14 +237,14 @@ public final class RefType extends MonoType implements DefaultTypes
    * 
    * @see MonoType#substitute(TypeSubstitution)
    */
-  @ Override
+  @Override
   public MonoType substitute ( TypeSubstitution pTypeSubstitution )
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL );
     }
-    return new RefType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ) ;
+    return new RefType ( this.types [ 0 ].substitute ( pTypeSubstitution ) );
   }
 
 
@@ -252,16 +253,16 @@ public final class RefType extends MonoType implements DefaultTypes
    * 
    * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_REF , LATEX_REF_TYPE , pIndent , this.toPrettyString ( )
-            .toString ( ) , this.types [ 0 ].toPrettyString ( ).toString ( ) ) ;
+        PRIO_REF, LATEX_REF_TYPE, pIndent, this.toPrettyString ().toString (),
+        this.types [ 0 ].toPrettyString ().toString () );
     builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_REF_TAU ) ;
-    return builder ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), PRIO_REF_TAU );
+    return builder;
   }
 
 
@@ -270,21 +271,19 @@ public final class RefType extends MonoType implements DefaultTypes
    * 
    * @see Type#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_REF ) ;
-      this.prettyStringBuilder
-          .addBuilder ( this.types [ 0 ]
-              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-              PRIO_REF_TAU ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-      this.prettyStringBuilder.addType ( PRETTY_REF ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_REF );
+      this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), PRIO_REF_TAU );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
+      this.prettyStringBuilder.addType ( PRETTY_REF );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

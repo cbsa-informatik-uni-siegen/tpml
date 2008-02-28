@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
 /**
@@ -9,10 +9,11 @@ package de.unisiegen.tpml.core.latex ;
  */
 public final class LatexException extends Exception
 {
+
   /**
    * The serial version UID.
    */
-  private static final long serialVersionUID = - 2551220796746494338L ;
+  private static final long serialVersionUID = -2551220796746494338L;
 
 
   /**
@@ -22,6 +23,6 @@ public final class LatexException extends Exception
    */
   public LatexException ( String pText )
   {
-    super ( pText ) ;
+    super ( pText );
   }
 }

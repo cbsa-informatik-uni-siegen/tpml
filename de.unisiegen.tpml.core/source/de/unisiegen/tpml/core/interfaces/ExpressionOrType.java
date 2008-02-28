@@ -1,9 +1,9 @@
-package de.unisiegen.tpml.core.interfaces ;
+package de.unisiegen.tpml.core.interfaces;
 
 
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.types.Type;
 
 
 /**

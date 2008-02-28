@@ -1,10 +1,10 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
-import java.util.ArrayList ;
-import java.util.Collections ;
-import java.util.Comparator ;
-import java.util.Iterator ;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 
 
 /**
@@ -14,14 +14,16 @@ import java.util.Iterator ;
  */
 public class LatexCommandList implements Iterable < LatexCommand >
 {
+
   /**
    * This <code>Comparator</code> is used to sort the {@link LatexCommandList}.
    * 
    * @author Christian Fehler
    */
-  protected class LatexCommandComparator implements LatexCommandNames ,
+  protected class LatexCommandComparator implements LatexCommandNames,
       Comparator < LatexCommand >
   {
+
     /**
      * Compares its two arguments for order. Returns a negative integer, zero,
      * or a positive integer as the first argument is less than, equal to, or
@@ -33,27 +35,27 @@ public class LatexCommandList implements Iterable < LatexCommand >
      *         argument is less than, equal to, or greater than the second.
      * @see Comparator#compare(Object, Object)
      */
-    public int compare ( LatexCommand pLatexCommand1 ,
+    public int compare ( LatexCommand pLatexCommand1,
         LatexCommand pLatexCommand2 )
     {
-      if ( pLatexCommand1.getName ( ).startsWith ( LATEX_KEY ) )
+      if ( pLatexCommand1.getName ().startsWith ( LATEX_KEY ) )
       {
         // case 1
-        if ( pLatexCommand2.getName ( ).startsWith ( LATEX_KEY ) )
+        if ( pLatexCommand2.getName ().startsWith ( LATEX_KEY ) )
         {
-          return pLatexCommand1.getName ( ).compareTo (
-              pLatexCommand2.getName ( ) ) ;
+          return pLatexCommand1.getName ().compareTo (
+              pLatexCommand2.getName () );
         }
         // case 2
-        return - 1 ;
+        return -1;
       }
       // case 3
-      if ( pLatexCommand2.getName ( ).startsWith ( LATEX_KEY ) )
+      if ( pLatexCommand2.getName ().startsWith ( LATEX_KEY ) )
       {
-        return 1 ;
+        return 1;
       }
       // case 4
-      return pLatexCommand1.getName ( ).compareTo ( pLatexCommand2.getName ( ) ) ;
+      return pLatexCommand1.getName ().compareTo ( pLatexCommand2.getName () );
     }
   }
 
@@ -61,15 +63,15 @@ public class LatexCommandList implements Iterable < LatexCommand >
   /**
    * The internal used list.
    */
-  private ArrayList < LatexCommand > list ;
+  private ArrayList < LatexCommand > list;
 
 
   /**
    * Allocates a new <code>LatexCommandList</code>
    */
-  public LatexCommandList ( )
+  public LatexCommandList ()
   {
-    this.list = new ArrayList < LatexCommand > ( ) ;
+    this.list = new ArrayList < LatexCommand > ();
   }
 
 
@@ -87,12 +89,12 @@ public class LatexCommandList implements Iterable < LatexCommand >
       {
         if ( latexPrintable != null )
         {
-          for ( LatexCommand command : latexPrintable.getLatexCommands ( ) )
+          for ( LatexCommand command : latexPrintable.getLatexCommands () )
           {
-            if ( ! this.list.contains ( command ) )
+            if ( !this.list.contains ( command ) )
             {
-              this.list.add ( command ) ;
-              sort ( ) ;
+              this.list.add ( command );
+              sort ();
             }
           }
         }
@@ -110,10 +112,10 @@ public class LatexCommandList implements Iterable < LatexCommand >
   {
     if ( pLatexCommand != null )
     {
-      if ( ! this.list.contains ( pLatexCommand ) )
+      if ( !this.list.contains ( pLatexCommand ) )
       {
-        this.list.add ( pLatexCommand ) ;
-        sort ( ) ;
+        this.list.add ( pLatexCommand );
+        sort ();
       }
     }
   }
@@ -131,10 +133,10 @@ public class LatexCommandList implements Iterable < LatexCommand >
     {
       for ( LatexCommand command : pLatexCommandList )
       {
-        if ( ! this.list.contains ( command ) )
+        if ( !this.list.contains ( command ) )
         {
-          this.list.add ( command ) ;
-          sort ( ) ;
+          this.list.add ( command );
+          sort ();
         }
       }
     }
@@ -150,12 +152,12 @@ public class LatexCommandList implements Iterable < LatexCommand >
   {
     if ( pLatexPrintable != null )
     {
-      for ( LatexCommand command : pLatexPrintable.getLatexCommands ( ) )
+      for ( LatexCommand command : pLatexPrintable.getLatexCommands () )
       {
-        if ( ! this.list.contains ( command ) )
+        if ( !this.list.contains ( command ) )
         {
-          this.list.add ( command ) ;
-          sort ( ) ;
+          this.list.add ( command );
+          sort ();
         }
       }
     }
@@ -168,7 +170,7 @@ public class LatexCommandList implements Iterable < LatexCommand >
    * 
    * @param pLatexPrintables The {@link LatexPrintable}s.
    */
-  public void add ( LatexPrintable [ ] pLatexPrintables )
+  public void add ( LatexPrintable [] pLatexPrintables )
   {
     if ( pLatexPrintables != null )
     {
@@ -176,12 +178,12 @@ public class LatexCommandList implements Iterable < LatexCommand >
       {
         if ( latexPrintable != null )
         {
-          for ( LatexCommand command : latexPrintable.getLatexCommands ( ) )
+          for ( LatexCommand command : latexPrintable.getLatexCommands () )
           {
-            if ( ! this.list.contains ( command ) )
+            if ( !this.list.contains ( command ) )
             {
-              this.list.add ( command ) ;
-              sort ( ) ;
+              this.list.add ( command );
+              sort ();
             }
           }
         }
@@ -196,9 +198,9 @@ public class LatexCommandList implements Iterable < LatexCommand >
    * @return An iterator over the elements in this list in proper sequence.
    * @see Iterable#iterator()
    */
-  public Iterator < LatexCommand > iterator ( )
+  public Iterator < LatexCommand > iterator ()
   {
-    return this.list.iterator ( ) ;
+    return this.list.iterator ();
   }
 
 
@@ -207,17 +209,17 @@ public class LatexCommandList implements Iterable < LatexCommand >
    * 
    * @return the number of elements in this list.
    */
-  public int size ( )
+  public int size ()
   {
-    return this.list.size ( ) ;
+    return this.list.size ();
   }
 
 
   /**
    * Sorts the list.
    */
-  private void sort ( )
+  private void sort ()
   {
-    Collections.sort ( this.list , new LatexCommandComparator ( ) ) ;
+    Collections.sort ( this.list, new LatexCommandComparator () );
   }
 }

@@ -1,8 +1,9 @@
-package de.unisiegen.tpml.core ;
+package de.unisiegen.tpml.core;
 
 
-import javax.swing.tree.TreeNode ;
-import de.unisiegen.tpml.core.expressions.Expression ;
+import javax.swing.tree.TreeNode;
+
+import de.unisiegen.tpml.core.expressions.Expression;
 
 
 /**
@@ -19,6 +20,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 public abstract class AbstractExpressionProofNode extends AbstractProofNode
     implements ExpressionProofNode
 {
+
   //
   // Constants
   //
@@ -26,7 +28,7 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
    * Empty {@link ProofStep} array which is returned from {@link #getSteps()}
    * when no steps have been added to a proof node.
    */
-  private static final ProofStep [ ] EMPTY_ARRAY = new ProofStep [ 0 ] ;
+  private static final ProofStep [] EMPTY_ARRAY = new ProofStep [ 0 ];
 
 
   //
@@ -37,7 +39,7 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
    * 
    * @see #getExpression()
    */
-  protected Expression expression ;
+  protected Expression expression;
 
 
   /**
@@ -47,7 +49,7 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
    * @see #getSteps()
    * @see #setSteps(ProofStep[])
    */
-  private ProofStep [ ] steps ;
+  private ProofStep [] steps;
 
 
   //
@@ -66,9 +68,9 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
   {
     if ( pExpression == null )
     {
-      throw new NullPointerException ( "expression is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "expression is null" ); //$NON-NLS-1$
     }
-    this.expression = pExpression ;
+    this.expression = pExpression;
   }
 
 
@@ -80,9 +82,9 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
    * 
    * @see ExpressionProofNode#getExpression()
    */
-  public Expression getExpression ( )
+  public Expression getExpression ()
   {
-    return this.expression ;
+    return this.expression;
   }
 
 
@@ -96,7 +98,7 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
    */
   public void setExpression ( Expression pExpression )
   {
-    this.expression = pExpression ;
+    this.expression = pExpression;
   }
 
 
@@ -105,13 +107,13 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
    * 
    * @see de.unisiegen.tpml.core.ExpressionProofNode#getSteps()
    */
-  public ProofStep [ ] getSteps ( )
+  public ProofStep [] getSteps ()
   {
     if ( this.steps == null )
     {
-      return EMPTY_ARRAY ;
+      return EMPTY_ARRAY;
     }
-    return this.steps ;
+    return this.steps;
   }
 
 
@@ -127,28 +129,28 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
    * @throws NullPointerException if any of the items in the <code>steps</code>
    *           array is <code>null</code>.
    */
-  public void setSteps ( ProofStep [ ] pSteps )
+  public void setSteps ( ProofStep [] pSteps )
   {
     // check if we have new steps to set
     if ( this.steps != pSteps )
     {
-      this.steps = pSteps ;
+      this.steps = pSteps;
       // determine the new proof rules
-      ProofRule [ ] rules ;
+      ProofRule [] rules;
       if ( this.steps == null )
       {
-        rules = null ;
+        rules = null;
       }
       else
       {
         // determine the rules from the steps
-        rules = new ProofRule [ this.steps.length ] ;
-        for ( int n = 0 ; n < rules.length ; ++ n )
+        rules = new ProofRule [ this.steps.length ];
+        for ( int n = 0 ; n < rules.length ; ++n )
         {
-          rules [ n ] = this.steps [ n ].getRule ( ) ;
+          rules [ n ] = this.steps [ n ].getRule ();
         }
       }
-      setRules ( rules ) ;
+      setRules ( rules );
     }
   }
 
@@ -158,10 +160,10 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
    * 
    * @see de.unisiegen.tpml.core.ExpressionProofNode#getChildAt(int)
    */
-  @ Override
+  @Override
   public AbstractExpressionProofNode getChildAt ( int childIndex )
   {
-    return ( AbstractExpressionProofNode ) super.getChildAt ( childIndex ) ;
+    return ( AbstractExpressionProofNode ) super.getChildAt ( childIndex );
   }
 
 
@@ -170,10 +172,10 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
    * 
    * @see de.unisiegen.tpml.core.ExpressionProofNode#getParent()
    */
-  @ Override
-  public AbstractExpressionProofNode getParent ( )
+  @Override
+  public AbstractExpressionProofNode getParent ()
   {
-    return ( AbstractExpressionProofNode ) super.getParent ( ) ;
+    return ( AbstractExpressionProofNode ) super.getParent ();
   }
 
 
@@ -185,10 +187,10 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
    * 
    * @see de.unisiegen.tpml.core.ExpressionProofNode#getRoot()
    */
-  @ Override
-  public AbstractExpressionProofNode getRoot ( )
+  @Override
+  public AbstractExpressionProofNode getRoot ()
   {
-    return ( AbstractExpressionProofNode ) super.getRoot ( ) ;
+    return ( AbstractExpressionProofNode ) super.getRoot ();
   }
 
 
@@ -200,10 +202,10 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
    * 
    * @see de.unisiegen.tpml.core.ExpressionProofNode#getFirstChild()
    */
-  @ Override
-  public AbstractExpressionProofNode getFirstChild ( )
+  @Override
+  public AbstractExpressionProofNode getFirstChild ()
   {
-    return ( AbstractExpressionProofNode ) super.getFirstChild ( ) ;
+    return ( AbstractExpressionProofNode ) super.getFirstChild ();
   }
 
 
@@ -212,10 +214,10 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
    * 
    * @see de.unisiegen.tpml.core.ExpressionProofNode#getLastChild()
    */
-  @ Override
-  public AbstractExpressionProofNode getLastChild ( )
+  @Override
+  public AbstractExpressionProofNode getLastChild ()
   {
-    return ( AbstractExpressionProofNode ) super.getLastChild ( ) ;
+    return ( AbstractExpressionProofNode ) super.getLastChild ();
   }
 
 
@@ -224,10 +226,10 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
    * 
    * @see de.unisiegen.tpml.core.ExpressionProofNode#getChildAfter(javax.swing.tree.TreeNode)
    */
-  @ Override
+  @Override
   public AbstractExpressionProofNode getChildAfter ( TreeNode aChild )
   {
-    return ( AbstractExpressionProofNode ) super.getChildAfter ( aChild ) ;
+    return ( AbstractExpressionProofNode ) super.getChildAfter ( aChild );
   }
 
 
@@ -236,10 +238,10 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
    * 
    * @see de.unisiegen.tpml.core.ExpressionProofNode#getChildBefore(javax.swing.tree.TreeNode)
    */
-  @ Override
+  @Override
   public AbstractExpressionProofNode getChildBefore ( TreeNode aChild )
   {
-    return ( AbstractExpressionProofNode ) super.getChildBefore ( aChild ) ;
+    return ( AbstractExpressionProofNode ) super.getChildBefore ( aChild );
   }
 
 
@@ -251,10 +253,10 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
    * 
    * @see de.unisiegen.tpml.core.ExpressionProofNode#getFirstLeaf()
    */
-  @ Override
-  public AbstractExpressionProofNode getFirstLeaf ( )
+  @Override
+  public AbstractExpressionProofNode getFirstLeaf ()
   {
-    return ( AbstractExpressionProofNode ) super.getFirstLeaf ( ) ;
+    return ( AbstractExpressionProofNode ) super.getFirstLeaf ();
   }
 
 
@@ -263,9 +265,9 @@ public abstract class AbstractExpressionProofNode extends AbstractProofNode
    * 
    * @see de.unisiegen.tpml.core.ExpressionProofNode#getLastLeaf()
    */
-  @ Override
-  public AbstractExpressionProofNode getLastLeaf ( )
+  @Override
+  public AbstractExpressionProofNode getLastLeaf ()
   {
-    return ( AbstractExpressionProofNode ) super.getLastLeaf ( ) ;
+    return ( AbstractExpressionProofNode ) super.getLastLeaf ();
   }
 }

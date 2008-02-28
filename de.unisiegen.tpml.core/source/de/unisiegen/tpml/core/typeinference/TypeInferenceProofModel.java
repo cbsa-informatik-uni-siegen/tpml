@@ -1,44 +1,46 @@
-package de.unisiegen.tpml.core.typeinference ;
+package de.unisiegen.tpml.core.typeinference;
 
 
-import java.awt.Color ;
-import java.util.ArrayList ;
-import org.apache.log4j.Logger ;
-import de.unisiegen.tpml.core.AbstractProofModel ;
-import de.unisiegen.tpml.core.AbstractProofNode ;
-import de.unisiegen.tpml.core.AbstractProofRuleSet ;
-import de.unisiegen.tpml.core.CannotRedoException ;
-import de.unisiegen.tpml.core.CannotUndoException ;
-import de.unisiegen.tpml.core.ProofGuessException ;
-import de.unisiegen.tpml.core.ProofNode ;
-import de.unisiegen.tpml.core.ProofRule ;
-import de.unisiegen.tpml.core.ProofRuleException ;
-import de.unisiegen.tpml.core.ProofStep ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.IsEmpty ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.TypeVariable ;
-import de.unisiegen.tpml.core.util.Theme ;
+import java.awt.Color;
+import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
+
+import de.unisiegen.tpml.core.AbstractProofModel;
+import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.CannotRedoException;
+import de.unisiegen.tpml.core.CannotUndoException;
+import de.unisiegen.tpml.core.ProofGuessException;
+import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.IsEmpty;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.TypeVariable;
+import de.unisiegen.tpml.core.util.Theme;
 
 
 /**
@@ -54,13 +56,14 @@ import de.unisiegen.tpml.core.util.Theme ;
  */
 public final class TypeInferenceProofModel extends AbstractProofModel
 {
+
   /**
    * The {@link Logger} for this class.
    * 
    * @see Logger
    */
   private static final Logger logger = Logger
-      .getLogger ( TypeInferenceProofModel.class ) ;
+      .getLogger ( TypeInferenceProofModel.class );
 
 
   /**
@@ -68,34 +71,34 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_SOLVE , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{solve}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_SOLVE_LPAREN , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_NONE + "}{\\ \\{}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_SOLVE_RPAREN , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_NONE + "}{\\ \\}}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_SOLVE, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{solve}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_SOLVE_LPAREN, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_NONE + "}{\\ \\{}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_SOLVE_RPAREN, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_NONE + "}{\\ \\}}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand (
-        LATEX_TYPE_INFERENCE_SUBSTITUTIONS_BEGIN , 0 ,
-        "\\multicolumn{2}{p{23.5cm}}" ) ) ; //$NON-NLS-1$
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_NEW_NODE , 0 ,
-        "\\\\[10mm]" ) ) ; //$NON-NLS-1$
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_NEW_FORMULA ,
-        0 , "\\\\" ) ) ; //$NON-NLS-1$
+        LATEX_TYPE_INFERENCE_SUBSTITUTIONS_BEGIN, 0,
+        "\\multicolumn{2}{p{23.5cm}}" ) ); //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_NEW_NODE, 0,
+        "\\\\[10mm]" ) ); //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_NEW_FORMULA,
+        0, "\\\\" ) ); //$NON-NLS-1$
     commands.add ( new DefaultLatexCommand (
-        LATEX_TYPE_INFERENCE_RULES_COMPLETED , 0 , "&" ) ) ; //$NON-NLS-1$
+        LATEX_TYPE_INFERENCE_RULES_COMPLETED, 0, "&" ) ); //$NON-NLS-1$
     commands
         .add ( new DefaultLatexCommand (
-            LATEX_TYPE_INFERENCE_PROOF_MODEL ,
-            1 ,
-            "\\begin{longtable}{p{2cm}@{}p{23.5cm}@{}}#1\\end{longtable}" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_RULE , 1 ,
-        "\\mbox{\\centerline{\\scriptsize{#1}}}" , "rule" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_EQUAL , 0 ,
-        "\\mbox{\\centerline{\\LARGE=}}" ) ) ; //$NON-NLS-1$
-    return commands ;
+            LATEX_TYPE_INFERENCE_PROOF_MODEL,
+            1,
+            "\\begin{longtable}{p{2cm}@{}p{23.5cm}@{}}#1\\end{longtable}", "model" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_RULE, 1,
+        "\\mbox{\\centerline{\\scriptsize{#1}}}", "rule" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_EQUAL, 0,
+        "\\mbox{\\centerline{\\LARGE=}}" ) ); //$NON-NLS-1$
+    return commands;
   }
 
 
@@ -104,33 +107,33 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static LatexInstructionList getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
     instructions.add ( new DefaultLatexInstruction (
         "\\newenvironment{typeinferencenode}" //$NON-NLS-1$
-            + "{\\begin{tabular}[t]{p{1.7cm}@{}p{21.8cm}@{}}}{\\end{tabular}}" , //$NON-NLS-1$
-        "The environment of the type inference nodes" ) ) ; //$NON-NLS-1$
+            + "{\\begin{tabular}[t]{p{1.7cm}@{}p{21.8cm}@{}}}{\\end{tabular}}", //$NON-NLS-1$
+        "The environment of the type inference nodes" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
         "\\newenvironment{typeinferencerule}" //$NON-NLS-1$
-            + "{\\begin{tabular}[b]{p{2cm}@{}}}{\\end{tabular}}" , //$NON-NLS-1$
-        "The environment of the type inference rule" ) ) ; //$NON-NLS-1$
-    Color colorKeyword = Theme.currentTheme ( ).getKeywordColor ( ) ;
+            + "{\\begin{tabular}[b]{p{2cm}@{}}}{\\end{tabular}}", //$NON-NLS-1$
+        "The environment of the type inference rule" ) ); //$NON-NLS-1$
+    Color colorKeyword = Theme.currentTheme ().getKeywordColor ();
     float red = ( float ) Math
-        .round ( ( ( float ) colorKeyword.getRed ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorKeyword.getRed () ) / 255 * 100 ) / 100;
     float green = ( float ) Math
-        .round ( ( ( float ) colorKeyword.getGreen ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorKeyword.getGreen () ) / 255 * 100 ) / 100;
     float blue = ( float ) Math
-        .round ( ( ( float ) colorKeyword.getBlue ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorKeyword.getBlue () ) / 255 * 100 ) / 100;
     instructions.add ( new DefaultLatexInstruction (
         "\\definecolor{" + LATEX_COLOR_KEYWORD + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
             + red + "," //$NON-NLS-1$
             + green + "," //$NON-NLS-1$
-            + blue + "}" , LATEX_COLOR_KEYWORD + ": color of keywords" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+            + blue + "}", LATEX_COLOR_KEYWORD + ": color of keywords" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
-    return instructions ;
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}", //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ); //$NON-NLS-1$
+    return instructions;
   }
 
 
@@ -139,12 +142,12 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.AMSMATH ) ;
-    packages.add ( LatexPackage.LONGTABLE ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.AMSMATH );
+    packages.add ( LatexPackage.LONGTABLE );
+    return packages;
   }
 
 
@@ -157,13 +160,13 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @see TypeCheckerProofContext#newTypeVariable()
    * @see TypeVariable
    */
-  private int index = 1 ;
+  private int index = 1;
 
 
   /**
    * The new child to add
    */
-  DefaultTypeInferenceProofNode child ;
+  DefaultTypeInferenceProofNode child;
 
 
   /**
@@ -177,13 +180,12 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @see AbstractProofModel#AbstractProofModel(AbstractProofNode,
    *      AbstractProofRuleSet)
    */
-  public TypeInferenceProofModel ( Expression expression ,
+  public TypeInferenceProofModel ( Expression expression,
       AbstractProofRuleSet pRuleSet )
   {
-    super ( new DefaultTypeInferenceProofNode (
-        new TypeJudgement ( new DefaultTypeEnvironment ( ) , expression ,
-            new TypeVariable ( 1 , 0 ) ) ,
-        new ArrayList < TypeSubstitution > ( ) ) , pRuleSet ) ;
+    super ( new DefaultTypeInferenceProofNode ( new TypeJudgement (
+        new DefaultTypeEnvironment (), expression, new TypeVariable ( 1, 0 ) ),
+        new ArrayList < TypeSubstitution > () ), pRuleSet );
   }
 
 
@@ -192,13 +194,13 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * 
    * @see de.unisiegen.tpml.core.AbstractProofModel#addUndoableTreeEdit(de.unisiegen.tpml.core.AbstractProofModel.UndoableTreeEdit)
    */
-  @ Override
+  @Override
   public void addUndoableTreeEdit ( UndoableTreeEdit edit )
   {
     // perform the redo of the edit
-    edit.redo ( ) ;
+    edit.redo ();
     // add to the undo history
-    super.addUndoableTreeEdit ( edit ) ;
+    super.addUndoableTreeEdit ( edit );
   }
 
 
@@ -217,51 +219,52 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @see #guess(ProofNode)
    * @see #prove(ProofRule, ProofNode)
    */
-  private void applyInternal ( TypeCheckerProofRule rule ,
-      DefaultTypeInferenceProofNode node , MonoType type , TypeFormula form ,
+  private void applyInternal ( TypeCheckerProofRule rule,
+      DefaultTypeInferenceProofNode node, MonoType type, TypeFormula form,
       boolean mode ) throws ProofRuleException
   {
     // allocate a new TypeCheckerContext
     DefaultTypeInferenceProofContext context = new DefaultTypeInferenceProofContext (
-        this , node ) ;
-    this.index ++ ;
-    DefaultTypeInferenceProofNode typeNode = node ;
-    Exception e = null ;
+        this, node );
+    this.index++ ;
+    DefaultTypeInferenceProofNode typeNode = node;
+    Exception e = null;
     if ( form != null )
     {
       // try {
       // try to apply the rule to the specified node
       // context.setSubstitutions ( node.getSubstitution ( ) ) ;
-      context.apply ( rule , form , type , mode , node ) ;
-      ProofStep [ ] newSteps = new ProofStep [ 1 ] ;
-      newSteps [ 0 ] = new ProofStep ( new IsEmpty ( ) , rule ) ;
-      setUndoActions ( node , this.child , newSteps ) ;
-      return ;
+      context.apply ( rule, form, type, mode, node );
+      ProofStep [] newSteps = new ProofStep [ 1 ];
+      newSteps [ 0 ] = new ProofStep ( new IsEmpty (), rule );
+      setUndoActions ( node, this.child, newSteps );
+      return;
       /*
        * } catch (UnifyException e1){ context.revert ( ); throw new
        * ProofRuleException(e1.getMessage ( ), node, rule, e); }
        */
     }
     // Try actual Rule with all formulas of the actual node
-    for ( TypeFormula formula : typeNode.getFormula ( ) )
+    for ( TypeFormula formula : typeNode.getFormula () )
     {
       try
       {
         // try to apply the rule to the specified node
         // context.setSubstitutions ( node.getSubstitution ( ) ) ;
-        context.apply ( rule , formula , type , mode , node ) ;
-        ProofStep [ ] newSteps = new ProofStep [ 1 ] ;
-        newSteps [ 0 ] = new ProofStep ( new IsEmpty ( ) , rule ) ;
-        setUndoActions ( node , this.child , newSteps ) ;
-        return ;
+        context.apply ( rule, formula, type, mode, node );
+        ProofStep [] newSteps = new ProofStep [ 1 ];
+        newSteps [ 0 ] = new ProofStep ( new IsEmpty (), rule );
+        setUndoActions ( node, this.child, newSteps );
+        return;
       }
       catch ( ProofRuleException e1 )
       {
         // revert the actions performed so far
-        context.revert ( ) ;
+        context.revert ();
         // rembember first exception to rethrow
-        if ( e == null ) e = e1 ;
-        continue ;
+        if ( e == null )
+          e = e1;
+        continue;
       } /*
          * catch ( UnifyException e1 ) { context.revert ( ); if (e == null)
          * e=e1; }
@@ -272,21 +275,21 @@ public final class TypeInferenceProofModel extends AbstractProofModel
        * null ) e = e1 ; continue ; }
        */
     }
-    this.index -- ;
+    this.index-- ;
     if ( e instanceof ProofRuleException )
     {
       // rethrow exception
-      throw ( ProofRuleException ) e ;
+      throw ( ProofRuleException ) e;
     }
     else if ( e instanceof RuntimeException )
     {
       // rethrow exception
-      throw ( RuntimeException ) e ;
+      throw ( RuntimeException ) e;
     }
     else
     {
       // re-throw the exception as proof rule exception
-      throw new ProofRuleException ( node , rule , e ) ;
+      throw new ProofRuleException ( node, rule, e );
     }
   }
 
@@ -312,22 +315,22 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @see de.unisiegen.tpml.core.languages.LanguageTranslator#containsSyntacticSugar(Expression,
    *      boolean)
    */
-  public boolean containsSyntacticSugar ( TypeInferenceProofNode node ,
-      Expression expression , boolean recursive )
+  public boolean containsSyntacticSugar ( TypeInferenceProofNode node,
+      Expression expression, boolean recursive )
   {
     if ( node == null )
     {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
     }
-    if ( ! this.root.isNodeRelated ( node ) )
+    if ( !this.root.isNodeRelated ( node ) )
     {
-      throw new IllegalArgumentException ( "node is invalid" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "node is invalid" ); //$NON-NLS-1$
     }
     if ( this.translator == null )
     {
-      this.translator = this.ruleSet.getLanguage ( ).newTranslator ( ) ;
+      this.translator = this.ruleSet.getLanguage ().newTranslator ();
     }
-    return this.translator.containsSyntacticSugar ( expression , recursive ) ;
+    return this.translator.containsSyntacticSugar ( expression, recursive );
   }
 
 
@@ -342,10 +345,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    *           tree.
    * @throws NullPointerException if any of the parameters is <code>null</code>.
    */
-  void contextAddProofNode ( final ArrayList < TypeFormula > formulas ,
+  void contextAddProofNode ( final ArrayList < TypeFormula > formulas,
       final ArrayList < TypeSubstitution > subs )
   {
-    this.child = new DefaultTypeInferenceProofNode ( formulas , subs ) ;
+    this.child = new DefaultTypeInferenceProofNode ( formulas, subs );
   }
 
 
@@ -359,15 +362,15 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @param rule the type checker rule.
    * @param formula The {@link TypeFormula}.
    */
-  void contextSetProofNodeRule ( @ SuppressWarnings ( "unused" )
-  DefaultTypeInferenceProofContext context ,
-      final DefaultTypeInferenceProofNode node ,
-      final TypeCheckerProofRule rule , @ SuppressWarnings ( "unused" )
+  void contextSetProofNodeRule ( @SuppressWarnings ( "unused" )
+  DefaultTypeInferenceProofContext context,
+      final DefaultTypeInferenceProofNode node,
+      final TypeCheckerProofRule rule, @SuppressWarnings ( "unused" )
       TypeFormula formula )
   {
-    node.setSteps ( new ProofStep [ ]
-    { new ProofStep ( new IsEmpty ( ) , rule ) } ) ;
-    nodeChanged ( node ) ;
+    node.setSteps ( new ProofStep []
+    { new ProofStep ( new IsEmpty (), rule ) } );
+    nodeChanged ( node );
   }
 
 
@@ -381,9 +384,9 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @see TypeCheckerProofContext#newTypeVariable()
    * @see TypeVariable
    */
-  public int getIndex ( )
+  public int getIndex ()
   {
-    return this.index ;
+    return this.index;
   }
 
 
@@ -392,13 +395,13 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * 
    * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexCommands()
    */
-  public LatexCommandList getLatexCommands ( )
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
     commands
-        .add ( getLatexCommandsInternal ( ( TypeInferenceProofNode ) this.root ) ) ;
-    return commands ;
+        .add ( getLatexCommandsInternal ( ( TypeInferenceProofNode ) this.root ) );
+    return commands;
   }
 
 
@@ -413,14 +416,14 @@ public final class TypeInferenceProofModel extends AbstractProofModel
   private LatexCommandList getLatexCommandsInternal (
       TypeInferenceProofNode pNode )
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( pNode ) ;
-    commands.add ( pNode.getRule ( ) ) ;
-    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( pNode );
+    commands.add ( pNode.getRule () );
+    for ( int i = 0 ; i < pNode.getChildCount () ; i++ )
     {
-      commands.add ( getLatexCommandsInternal ( pNode.getChildAt ( i ) ) ) ;
+      commands.add ( getLatexCommandsInternal ( pNode.getChildAt ( i ) ) );
     }
-    return commands ;
+    return commands;
   }
 
 
@@ -429,13 +432,13 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * 
    * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexInstructions()
    */
-  public LatexInstructionList getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( getLatexInstructionsStatic ( ) ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
     instructions
-        .add ( getLatexInstructionsInternal ( ( TypeInferenceProofNode ) this.root ) ) ;
-    return instructions ;
+        .add ( getLatexInstructionsInternal ( ( TypeInferenceProofNode ) this.root ) );
+    return instructions;
   }
 
 
@@ -450,15 +453,15 @@ public final class TypeInferenceProofModel extends AbstractProofModel
   private LatexInstructionList getLatexInstructionsInternal (
       TypeInferenceProofNode pNode )
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( pNode ) ;
-    instructions.add ( pNode.getRule ( ) ) ;
-    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( pNode );
+    instructions.add ( pNode.getRule () );
+    for ( int i = 0 ; i < pNode.getChildCount () ; i++ )
     {
       instructions
-          .add ( getLatexInstructionsInternal ( pNode.getChildAt ( i ) ) ) ;
+          .add ( getLatexInstructionsInternal ( pNode.getChildAt ( i ) ) );
     }
-    return instructions ;
+    return instructions;
   }
 
 
@@ -467,18 +470,18 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * 
    * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexPackages()
    */
-  public LatexPackageList getLatexPackages ( )
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    for ( LatexPackage pack : getLatexPackagesStatic ( ) )
+    LatexPackageList packages = new LatexPackageList ();
+    for ( LatexPackage pack : getLatexPackagesStatic () )
     {
-      packages.add ( pack ) ;
+      packages.add ( pack );
     }
     for ( LatexPackage pack : getLatexPackagesInternal ( ( TypeInferenceProofNode ) this.root ) )
     {
-      packages.add ( pack ) ;
+      packages.add ( pack );
     }
-    return packages ;
+    return packages;
   }
 
 
@@ -493,14 +496,14 @@ public final class TypeInferenceProofModel extends AbstractProofModel
   private LatexPackageList getLatexPackagesInternal (
       TypeInferenceProofNode pNode )
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( pNode.getLatexPackages ( ) ) ;
-    packages.add ( pNode.getRule ( ) ) ;
-    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( pNode.getLatexPackages () );
+    packages.add ( pNode.getRule () );
+    for ( int i = 0 ; i < pNode.getChildCount () ; i++ )
     {
-      packages.add ( getLatexPackagesInternal ( pNode.getChildAt ( i ) ) ) ;
+      packages.add ( getLatexPackagesInternal ( pNode.getChildAt ( i ) ) );
     }
-    return packages ;
+    return packages;
   }
 
 
@@ -510,10 +513,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @return ProofRuleSet[] with all rules
    * @see de.unisiegen.tpml.core.AbstractProofModel#getRules()
    */
-  @ Override
-  public ProofRule [ ] getRules ( )
+  @Override
+  public ProofRule [] getRules ()
   {
-    return this.ruleSet.getRules ( ) ;
+    return this.ruleSet.getRules ();
   }
 
 
@@ -523,10 +526,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @see #guess(ProofNode, boolean)
    * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
    */
-  @ Override
+  @Override
   public void guess ( ProofNode node ) throws ProofGuessException
   {
-    guessInternal ( ( DefaultTypeInferenceProofNode ) node , null , false ) ;
+    guessInternal ( ( DefaultTypeInferenceProofNode ) node, null, false );
   }
 
 
@@ -538,10 +541,9 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @throws ProofGuessException
    * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
    */
-  public void guess ( ProofNode node , boolean mode )
-      throws ProofGuessException
+  public void guess ( ProofNode node, boolean mode ) throws ProofGuessException
   {
-    guessInternal ( ( DefaultTypeInferenceProofNode ) node , null , mode ) ;
+    guessInternal ( ( DefaultTypeInferenceProofNode ) node, null, mode );
   }
 
 
@@ -563,46 +565,45 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @see #guess(ProofNode)
    * @see #guess(ProofNode, boolean)
    */
-  private void guessInternal ( DefaultTypeInferenceProofNode node ,
-      MonoType type , boolean mode ) throws ProofGuessException
+  private void guessInternal ( DefaultTypeInferenceProofNode node,
+      MonoType type, boolean mode ) throws ProofGuessException
   {
     if ( node == null )
     {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
     }
-    if ( node.getSteps ( ).length > 0 )
+    if ( node.getSteps ().length > 0 )
     {
-      throw new IllegalArgumentException ( "The node is already completed" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The node is already completed" ); //$NON-NLS-1$
     }
-    if ( ! this.root.isNodeRelated ( node ) )
+    if ( !this.root.isNodeRelated ( node ) )
     {
-      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
     }
     // try to guess the next rule
-    logger.debug ( "Trying to guess a rule for " + node ) ; //$NON-NLS-1$
-    for ( ProofRule rule : this.ruleSet.getRules ( ) )
+    logger.debug ( "Trying to guess a rule for " + node ); //$NON-NLS-1$
+    for ( ProofRule rule : this.ruleSet.getRules () )
     {
       try
       {
         // try to apply the rule to the specified node
-        applyInternal ( ( TypeCheckerProofRule ) rule , node , type , null ,
-            mode ) ;
+        applyInternal ( ( TypeCheckerProofRule ) rule, node, type, null, mode );
         // remember that the user cheated
-        setCheating ( true ) ;
+        setCheating ( true );
         // yep, we did it
-        logger.debug ( "Successfully applied (" + rule + ") to " + node ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        return ;
+        logger.debug ( "Successfully applied (" + rule + ") to " + node ); //$NON-NLS-1$ //$NON-NLS-2$
+        return;
       }
       catch ( ProofRuleException e )
       {
         // rule failed to apply... so, next one, please
-        logger.debug ( "Failed to apply (" + rule + ") to " + node , e ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        continue ;
+        logger.debug ( "Failed to apply (" + rule + ") to " + node, e ); //$NON-NLS-1$ //$NON-NLS-2$
+        continue;
       }
     }
     // unable to guess next step
-    logger.debug ( "Failed to find rule to apply to " + node ) ; //$NON-NLS-1$
-    throw new ProofGuessException ( node ) ;
+    logger.debug ( "Failed to find rule to apply to " + node ); //$NON-NLS-1$
+    throw new ProofGuessException ( node );
   }
 
 
@@ -612,26 +613,26 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule,
    *      de.unisiegen.tpml.core.ProofNode)
    */
-  @ Override
-  public void prove ( ProofRule rule , ProofNode pNode )
+  @Override
+  public void prove ( ProofRule rule, ProofNode pNode )
       throws ProofRuleException
   {
-    if ( ! this.ruleSet.contains ( rule ) )
+    if ( !this.ruleSet.contains ( rule ) )
     {
-      throw new IllegalArgumentException ( "The rule is invalid for the model" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The rule is invalid for the model" ); //$NON-NLS-1$
     }
-    if ( ! this.root.isNodeRelated ( pNode ) )
+    if ( !this.root.isNodeRelated ( pNode ) )
     {
-      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
     }
-    if ( pNode.getRules ( ).length > 0 )
+    if ( pNode.getRules ().length > 0 )
     {
-      throw new IllegalArgumentException ( "The node is already completed" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The node is already completed" ); //$NON-NLS-1$
     }
-    DefaultTypeInferenceProofNode node = ( DefaultTypeInferenceProofNode ) pNode ;
+    DefaultTypeInferenceProofNode node = ( DefaultTypeInferenceProofNode ) pNode;
     // try to apply the rule to the specified node
-    applyInternal ( ( TypeCheckerProofRule ) rule , node , null , node
-        .getFirstFormula ( ) , false ) ;
+    applyInternal ( ( TypeCheckerProofRule ) rule, node, null, node
+        .getFirstFormula (), false );
   }
 
 
@@ -645,28 +646,28 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule,
    *      de.unisiegen.tpml.core.ProofNode)
    */
-  public void prove ( ProofRule rule , ProofNode pNode , boolean mode )
+  public void prove ( ProofRule rule, ProofNode pNode, boolean mode )
       throws ProofRuleException
   {
-    if ( ! this.ruleSet.contains ( rule ) )
+    if ( !this.ruleSet.contains ( rule ) )
     {
-      throw new IllegalArgumentException ( "The rule is invalid for the model" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The rule is invalid for the model" ); //$NON-NLS-1$
     }
-    if ( ! this.root.isNodeRelated ( pNode ) )
+    if ( !this.root.isNodeRelated ( pNode ) )
     {
-      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
     }
-    if ( pNode.getRules ( ).length > 0 )
+    if ( pNode.getRules ().length > 0 )
     {
-      throw new IllegalArgumentException ( "The node is already completed" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The node is already completed" ); //$NON-NLS-1$
     }
-    DefaultTypeInferenceProofNode node = ( DefaultTypeInferenceProofNode ) pNode ;
+    DefaultTypeInferenceProofNode node = ( DefaultTypeInferenceProofNode ) pNode;
     // try to apply the rule to the specified node
     if ( mode )
-      applyInternal ( ( TypeCheckerProofRule ) rule , node , null , node
-          .getFirstFormula ( ) , mode ) ;
-    else applyInternal ( ( TypeCheckerProofRule ) rule , node , null , null ,
-        mode ) ;
+      applyInternal ( ( TypeCheckerProofRule ) rule, node, null, node
+          .getFirstFormula (), mode );
+    else
+      applyInternal ( ( TypeCheckerProofRule ) rule, node, null, null, mode );
   }
 
 
@@ -680,25 +681,25 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule,
    *      de.unisiegen.tpml.core.ProofNode)
    */
-  public void prove ( ProofRule rule , ProofNode node ,
-      @ SuppressWarnings ( "unused" )
+  public void prove ( ProofRule rule, ProofNode node,
+      @SuppressWarnings ( "unused" )
       TypeFormula formula ) throws ProofRuleException
   {
-    if ( ! this.ruleSet.contains ( rule ) )
+    if ( !this.ruleSet.contains ( rule ) )
     {
-      throw new IllegalArgumentException ( "The rule is invalid for the model" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The rule is invalid for the model" ); //$NON-NLS-1$
     }
-    if ( ! this.root.isNodeRelated ( node ) )
+    if ( !this.root.isNodeRelated ( node ) )
     {
-      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
     }
-    if ( node.getRules ( ).length > 0 )
+    if ( node.getRules ().length > 0 )
     {
-      throw new IllegalArgumentException ( "The node is already completed" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The node is already completed" ); //$NON-NLS-1$
     }
     // try to apply the rule to the specified node
-    applyInternal ( ( TypeCheckerProofRule ) rule ,
-        ( DefaultTypeInferenceProofNode ) node , null , null , false ) ;
+    applyInternal ( ( TypeCheckerProofRule ) rule,
+        ( DefaultTypeInferenceProofNode ) node, null, null, false );
   }
 
 
@@ -707,11 +708,11 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * 
    * @see de.unisiegen.tpml.core.ProofModel#redo()
    */
-  @ Override
-  public void redo ( ) throws CannotRedoException
+  @Override
+  public void redo () throws CannotRedoException
   {
-    super.redo ( ) ;
-    this.index ++ ;
+    super.redo ();
+    this.index++ ;
   }
 
 
@@ -723,27 +724,29 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @param move the type formula which should be moved
    * @param pos the new position of the moved type formula
    */
-  public void resort ( final DefaultTypeInferenceProofNode node ,
-      final TypeFormula move , final int pos )
+  public void resort ( final DefaultTypeInferenceProofNode node,
+      final TypeFormula move, final int pos )
   {
-    final int oldPos = node.getFormula ( ).indexOf ( move ) ;
-    addUndoableTreeEdit ( new UndoableTreeEdit ( )
+    final int oldPos = node.getFormula ().indexOf ( move );
+    addUndoableTreeEdit ( new UndoableTreeEdit ()
     {
-      public void redo ( )
+
+      public void redo ()
       {
-        node.getFormula ( ).remove ( move ) ;
+        node.getFormula ().remove ( move );
         if ( pos < oldPos )
-          node.getFormula ( ).add ( pos , move ) ;
-        else node.getFormula ( ).add ( pos - 1 , move ) ;
+          node.getFormula ().add ( pos, move );
+        else
+          node.getFormula ().add ( pos - 1, move );
       }
 
 
-      public void undo ( )
+      public void undo ()
       {
-        node.getFormula ( ).remove ( move ) ;
-        node.getFormula ( ).add ( oldPos , move ) ;
+        node.getFormula ().remove ( move );
+        node.getFormula ().add ( oldPos, move );
       }
-    } ) ;
+    } );
   }
 
 
@@ -760,9 +763,9 @@ public final class TypeInferenceProofModel extends AbstractProofModel
   {
     if ( pIndex < 1 )
     {
-      throw new IllegalArgumentException ( "index is invalid" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "index is invalid" ); //$NON-NLS-1$
     }
-    this.index = pIndex ;
+    this.index = pIndex;
   }
 
 
@@ -771,10 +774,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * 
    * @see de.unisiegen.tpml.core.ProofModel#setOverlap(int)
    */
-  public void setOverlap ( @ SuppressWarnings ( "unused" )
+  public void setOverlap ( @SuppressWarnings ( "unused" )
   int pOverlap )
   {
-    throw new UnsupportedOperationException ( ) ;
+    throw new UnsupportedOperationException ();
   }
 
 
@@ -783,10 +786,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * 
    * @see de.unisiegen.tpml.core.ProofModel#setPages(int)
    */
-  public void setPages ( @ SuppressWarnings ( "unused" )
+  public void setPages ( @SuppressWarnings ( "unused" )
   int pPages )
   {
-    throw new UnsupportedOperationException ( ) ;
+    throw new UnsupportedOperationException ();
   }
 
 
@@ -797,42 +800,43 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @param pChild the child which is added
    * @param newSteps the new proof steps for the parent node
    */
-  private void setUndoActions ( final DefaultTypeInferenceProofNode pNode ,
-      final DefaultTypeInferenceProofNode pChild , final ProofStep [ ] newSteps )
+  private void setUndoActions ( final DefaultTypeInferenceProofNode pNode,
+      final DefaultTypeInferenceProofNode pChild, final ProofStep [] newSteps )
   {
-    final ProofStep [ ] oldSteps = pNode.getSteps ( ) ;
+    final ProofStep [] oldSteps = pNode.getSteps ();
     // add redo and undo options
-    addUndoableTreeEdit ( new UndoableTreeEdit ( )
+    addUndoableTreeEdit ( new UndoableTreeEdit ()
     {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void redo ( )
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void redo ()
       {
-        pNode.add ( pChild ) ;
+        pNode.add ( pChild );
         // contextSetProofNodeRule ( context , pNode , rule , formula ) ;
-        pNode.setSteps ( newSteps ) ;
-        nodesWereInserted ( pNode , new int [ ]
-        { pNode.getIndex ( pChild ) } ) ;
+        pNode.setSteps ( newSteps );
+        nodesWereInserted ( pNode, new int []
+        { pNode.getIndex ( pChild ) } );
         setFinished ( ( ( DefaultTypeInferenceProofNode ) TypeInferenceProofModel.this.root )
-            .isFinished ( ) ) ;
-        nodeChanged ( pNode ) ;
+            .isFinished () );
+        nodeChanged ( pNode );
       }
 
 
-      @ SuppressWarnings ( "synthetic-access" )
-      public void undo ( )
+      @SuppressWarnings ( "synthetic-access" )
+      public void undo ()
       {
         // update the "finished" state
-        setFinished ( false ) ;
+        setFinished ( false );
         // remove the child and revert the steps
-        int [ ] indices =
-        { pNode.getIndex ( pChild ) } ;
-        pNode.removeAllChildren ( ) ;
-        nodesWereRemoved ( pNode , indices , new Object [ ]
-        { pChild } ) ;
-        pNode.setSteps ( oldSteps ) ;
-        nodeChanged ( pNode ) ;
+        int [] indices =
+        { pNode.getIndex ( pChild ) };
+        pNode.removeAllChildren ();
+        nodesWereRemoved ( pNode, indices, new Object []
+        { pChild } );
+        pNode.setSteps ( oldSteps );
+        nodeChanged ( pNode );
       }
-    } ) ;
+    } );
   }
 
 
@@ -841,10 +845,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public final LatexString toLatexString ( )
+  public final LatexString toLatexString ()
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -854,51 +858,50 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_TYPE_INFERENCE_PROOF_MODEL , pIndent , this.toPrettyString ( )
-            .toString ( ) ) ;
-    builder.addBuilderBegin ( ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addComment ( "no type inference rule in the first node" ) ; //$NON-NLS-1$
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
+        LATEX_TYPE_INFERENCE_PROOF_MODEL, pIndent, this.toPrettyString ()
+            .toString () );
+    builder.addBuilderBegin ();
+    builder.addSourceCodeBreak ( 0 );
+    builder.addComment ( "no type inference rule in the first node" ); //$NON-NLS-1$
     builder.addText ( LATEX_PREFIX_COMMAND
-        + LATEX_TYPE_INFERENCE_RULES_COMPLETED ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\begin{typeinferencenode}" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_KEY_SOLVE ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SOLVE_LPAREN ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "&" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "$" ) ; //$NON-NLS-1$
-    DefaultTypeInferenceProofNode node = ( DefaultTypeInferenceProofNode ) this.root ;
-    builder.addBuilderWithoutBrackets ( node.getFormula ( ).get ( 0 )
-        .toLatexStringBuilder ( pLatexStringBuilderFactory ,
-            pIndent + LATEX_INDENT ) , 0 ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SOLVE_RPAREN ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "$" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\end{typeinferencenode}" ) ; //$NON-NLS-1$
-    if ( this.root.getChildCount ( ) > 0 )
+        + LATEX_TYPE_INFERENCE_RULES_COMPLETED );
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "\\begin{typeinferencenode}" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_KEY_SOLVE );
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SOLVE_LPAREN );
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "&" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "$" ); //$NON-NLS-1$
+    DefaultTypeInferenceProofNode node = ( DefaultTypeInferenceProofNode ) this.root;
+    builder.addBuilderWithoutBrackets ( node.getFormula ().get ( 0 )
+        .toLatexStringBuilder ( pLatexStringBuilderFactory,
+            pIndent + LATEX_INDENT ), 0 );
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SOLVE_RPAREN );
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "$" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "\\end{typeinferencenode}" ); //$NON-NLS-1$
+    if ( this.root.getChildCount () > 0 )
     {
-      builder.addSourceCodeBreak ( 0 ) ;
-      builder.addText ( LATEX_PREFIX_COMMAND + LATEX_TYPE_INFERENCE_NEW_NODE ) ;
-      builder.addSourceCodeBreak ( 0 ) ;
+      builder.addSourceCodeBreak ( 0 );
+      builder.addText ( LATEX_PREFIX_COMMAND + LATEX_TYPE_INFERENCE_NEW_NODE );
+      builder.addSourceCodeBreak ( 0 );
     }
-    for ( int i = 0 ; i < this.root.getChildCount ( ) ; i ++ )
+    for ( int i = 0 ; i < this.root.getChildCount () ; i++ )
     {
-      toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
-          ( DefaultTypeInferenceProofNode ) this.root ,
-          ( DefaultTypeInferenceProofNode ) this.root.getChildAt ( i ) ,
-          pIndent ) ;
+      toLatexStringBuilderInternal ( pLatexStringBuilderFactory, builder,
+          ( DefaultTypeInferenceProofNode ) this.root,
+          ( DefaultTypeInferenceProofNode ) this.root.getChildAt ( i ), pIndent );
     }
-    builder.addBuilderEnd ( ) ;
-    return builder ;
+    builder.addBuilderEnd ();
+    return builder;
   }
 
 
@@ -914,160 +917,160 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @param pIndent The indent of this object.
    */
   public final void toLatexStringBuilderInternal (
-      LatexStringBuilderFactory pLatexStringBuilderFactory ,
-      LatexStringBuilder pLatexStringBuilder ,
-      DefaultTypeInferenceProofNode pParentNode ,
-      DefaultTypeInferenceProofNode pCurrentNode , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory,
+      LatexStringBuilder pLatexStringBuilder,
+      DefaultTypeInferenceProofNode pParentNode,
+      DefaultTypeInferenceProofNode pCurrentNode, int pIndent )
   {
     // First column
-    pLatexStringBuilder.addText ( "\\begin{typeinferencerule}" ) ; //$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-    if ( pParentNode.getRule ( ) != null )
+    pLatexStringBuilder.addText ( "\\begin{typeinferencerule}" ); //$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+    if ( pParentNode.getRule () != null )
     {
       pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-          + LATEX_TYPE_INFERENCE_RULE ) ;
-      pLatexStringBuilder.addBuilder ( pParentNode.getRule ( )
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ,
-              pIndent + LATEX_INDENT * 2 ) , 0 ) ;
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+          + LATEX_TYPE_INFERENCE_RULE );
+      pLatexStringBuilder.addBuilder ( pParentNode.getRule ()
+          .toLatexStringBuilder ( pLatexStringBuilderFactory,
+              pIndent + LATEX_INDENT * 2 ), 0 );
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
     }
-    pLatexStringBuilder.addText ( "$" ) ;//$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
     pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-        + LATEX_TYPE_INFERENCE_NEW_FORMULA ) ;
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "$" ) ;//$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+        + LATEX_TYPE_INFERENCE_NEW_FORMULA );
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
     pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-        + LATEX_TYPE_INFERENCE_EQUAL ) ;
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "\\end{typeinferencerule}" ) ;//$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+        + LATEX_TYPE_INFERENCE_EQUAL );
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "\\end{typeinferencerule}" );//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
     pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-        + LATEX_TYPE_INFERENCE_RULES_COMPLETED ) ;
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+        + LATEX_TYPE_INFERENCE_RULES_COMPLETED );
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
     // Second column
-    pLatexStringBuilder.addText ( "\\begin{typeinferencenode}" ) ; //$NON-NLS-1$
-    if ( pCurrentNode.getSubstitution ( ).size ( ) > 0 )
+    pLatexStringBuilder.addText ( "\\begin{typeinferencenode}" ); //$NON-NLS-1$
+    if ( pCurrentNode.getSubstitution ().size () > 0 )
     {
       pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-          + LATEX_TYPE_INFERENCE_SUBSTITUTIONS_BEGIN ) ;
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-      pLatexStringBuilder.addText ( "{" ) ; //$NON-NLS-1$
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-      pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-      pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          + LATEX_TYPE_INFERENCE_SUBSTITUTIONS_BEGIN );
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "{" ); //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+      pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       pLatexStringBuilder.addText ( DefaultLatexStringBuilder
-          .getIndent ( pIndent + LATEX_INDENT ) ) ;
-      pLatexStringBuilder.addText ( LATEX_LBRACKET ) ;
-      for ( int i = 0 ; i < pCurrentNode.getSubstitution ( ).size ( ) ; i ++ )
+          .getIndent ( pIndent + LATEX_INDENT ) );
+      pLatexStringBuilder.addText ( LATEX_LBRACKET );
+      for ( int i = 0 ; i < pCurrentNode.getSubstitution ().size () ; i++ )
       {
         pLatexStringBuilder.addBuilderWithoutBrackets ( pCurrentNode
-            .getSubstitution ( ).get ( i ).toLatexStringBuilder (
-                pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-        if ( i < pCurrentNode.getSubstitution ( ).size ( ) - 1 )
+            .getSubstitution ().get ( i ).toLatexStringBuilder (
+                pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+        if ( i < pCurrentNode.getSubstitution ().size () - 1 )
         {
-          pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
           pLatexStringBuilder.addText ( DefaultLatexStringBuilder
-              .getIndent ( pIndent + LATEX_INDENT ) ) ;
-          pLatexStringBuilder.addText ( LATEX_COMMA ) ;
-          pLatexStringBuilder.addText ( LATEX_SPACE ) ;
-          pLatexStringBuilder.addBreak ( ) ;
+              .getIndent ( pIndent + LATEX_INDENT ) );
+          pLatexStringBuilder.addText ( LATEX_COMMA );
+          pLatexStringBuilder.addText ( LATEX_SPACE );
+          pLatexStringBuilder.addBreak ();
         }
       }
-      pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       pLatexStringBuilder.addText ( DefaultLatexStringBuilder
-          .getIndent ( pIndent + LATEX_INDENT ) ) ;
-      pLatexStringBuilder.addText ( LATEX_RBRACKET ) ;
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-      pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-      pLatexStringBuilder.addText ( "}" ) ; //$NON-NLS-1$
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-      pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-      if ( pCurrentNode.getFormula ( ).size ( ) > 0 )
+          .getIndent ( pIndent + LATEX_INDENT ) );
+      pLatexStringBuilder.addText ( LATEX_RBRACKET );
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "}" ); //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+      if ( pCurrentNode.getFormula ().size () > 0 )
       {
-        pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         pLatexStringBuilder.addText ( DefaultLatexStringBuilder
-            .getIndent ( pIndent + LATEX_INDENT ) ) ;
-        pLatexStringBuilder.addText ( "$" ) ;//$NON-NLS-1$
-        pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+            .getIndent ( pIndent + LATEX_INDENT ) );
+        pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+        pLatexStringBuilder.addSourceCodeBreak ( 0 );
         pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-            + LATEX_TYPE_INFERENCE_NEW_FORMULA ) ;
-        pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-        pLatexStringBuilder.addText ( "$" ) ;//$NON-NLS-1$
+            + LATEX_TYPE_INFERENCE_NEW_FORMULA );
+        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+        pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
       }
     }
     else
     {
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-      pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
     }
-    if ( pCurrentNode.getFormula ( ).size ( ) > 0 )
+    if ( pCurrentNode.getFormula ().size () > 0 )
     {
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-      pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_KEY_SOLVE ) ;
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_SOLVE_LPAREN ) ;
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_KEY_SOLVE );
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_SOLVE_LPAREN );
     }
-    for ( int i = 0 ; i < pCurrentNode.getFormula ( ).size ( ) ; i ++ )
+    for ( int i = 0 ; i < pCurrentNode.getFormula ().size () ; i++ )
     {
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-      pLatexStringBuilder.addText ( "&" ) ; //$NON-NLS-1$
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-      pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-      if ( pCurrentNode.getFormula ( ).get ( i ) instanceof TypeEquationTypeInference )
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "&" ); //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+      if ( pCurrentNode.getFormula ().get ( i ) instanceof TypeEquationTypeInference )
       {
         TypeEquationTypeInference equation = ( TypeEquationTypeInference ) pCurrentNode
-            .getFormula ( ).get ( i ) ;
+            .getFormula ().get ( i );
         pLatexStringBuilder.addBuilderWithoutBrackets ( equation
-            .getSeenTypes ( ).toLatexStringBuilder (
-                pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-        pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+            .getSeenTypes ().toLatexStringBuilder ( pLatexStringBuilderFactory,
+                pIndent + LATEX_INDENT ), 0 );
+        pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         pLatexStringBuilder.addText ( DefaultLatexStringBuilder
-            .getIndent ( pIndent + LATEX_INDENT ) ) ;
-        pLatexStringBuilder.addText ( LATEX_SPACE ) ;
-        pLatexStringBuilder.addText ( LATEX_NAIL ) ;
-        pLatexStringBuilder.addText ( LATEX_SPACE ) ;
-        pLatexStringBuilder.addText ( "\\linebreak[3]" ) ; //$NON-NLS-1$
+            .getIndent ( pIndent + LATEX_INDENT ) );
+        pLatexStringBuilder.addText ( LATEX_SPACE );
+        pLatexStringBuilder.addText ( LATEX_NAIL );
+        pLatexStringBuilder.addText ( LATEX_SPACE );
+        pLatexStringBuilder.addText ( "\\linebreak[3]" ); //$NON-NLS-1$
       }
       pLatexStringBuilder.addBuilderWithoutBrackets ( pCurrentNode
-          .getFormula ( ).get ( i ).toLatexStringBuilder (
-              pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-      if ( i < pCurrentNode.getFormula ( ).size ( ) - 1 )
+          .getFormula ().get ( i ).toLatexStringBuilder (
+              pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+      if ( i < pCurrentNode.getFormula ().size () - 1 )
       {
-        pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         pLatexStringBuilder.addText ( DefaultLatexStringBuilder
-            .getIndent ( pIndent + LATEX_INDENT ) ) ;
-        pLatexStringBuilder.addText ( "$" ) ;//$NON-NLS-1$
-        pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+            .getIndent ( pIndent + LATEX_INDENT ) );
+        pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+        pLatexStringBuilder.addSourceCodeBreak ( 0 );
         pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-            + LATEX_TYPE_INFERENCE_NEW_FORMULA ) ;
+            + LATEX_TYPE_INFERENCE_NEW_FORMULA );
       }
     }
-    if ( pCurrentNode.getFormula ( ).size ( ) > 0 )
+    if ( pCurrentNode.getFormula ().size () > 0 )
     {
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_SOLVE_RPAREN ) ;
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_SOLVE_RPAREN );
     }
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "$" ) ;//$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "\\end{typeinferencenode}" ) ;//$NON-NLS-1$
-    for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "\\end{typeinferencenode}" );//$NON-NLS-1$
+    for ( int i = 0 ; i < pCurrentNode.getChildCount () ; i++ )
     {
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
       pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-          + LATEX_TYPE_INFERENCE_NEW_NODE ) ;
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-      toLatexStringBuilderInternal ( pLatexStringBuilderFactory ,
-          pLatexStringBuilder , pCurrentNode , pCurrentNode.getChildAt ( i ) ,
-          pIndent ) ;
+          + LATEX_TYPE_INFERENCE_NEW_NODE );
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      toLatexStringBuilderInternal ( pLatexStringBuilderFactory,
+          pLatexStringBuilder, pCurrentNode, pCurrentNode.getChildAt ( i ),
+          pIndent );
     }
   }
 
@@ -1077,10 +1080,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ( )
+  public final PrettyString toPrettyString ()
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -1093,12 +1096,12 @@ public final class TypeInferenceProofModel extends AbstractProofModel
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , 0 ) ;
+        this, 0 );
     builder.addBuilder ( this.root
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    builder.addText ( PRETTY_LINE_BREAK ) ;
-    builder.addText ( PRETTY_CONTINUATION ) ;
-    return builder ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+    builder.addText ( PRETTY_LINE_BREAK );
+    builder.addText ( PRETTY_CONTINUATION );
+    return builder;
   }
 
 
@@ -1110,10 +1113,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @see #toPrettyString()
    * @see Object#toString()
    */
-  @ Override
-  public final String toString ( )
+  @Override
+  public final String toString ()
   {
-    return toPrettyString ( ).toString ( ) ;
+    return toPrettyString ().toString ();
   }
 
 
@@ -1138,24 +1141,24 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @see de.unisiegen.tpml.core.languages.LanguageTranslator#translateToCoreSyntax(Expression,
    *      boolean)
    */
-  public void translateToCoreSyntax ( TypeInferenceProofNode pNode ,
-      final boolean recursive , final boolean all )
+  public void translateToCoreSyntax ( TypeInferenceProofNode pNode,
+      final boolean recursive, final boolean all )
   {
-    final DefaultTypeInferenceProofNode node = ( DefaultTypeInferenceProofNode ) pNode ;
-    final ArrayList < TypeFormula > oldFormulas = pNode.getAllFormulas ( ) ;
+    final DefaultTypeInferenceProofNode node = ( DefaultTypeInferenceProofNode ) pNode;
+    final ArrayList < TypeFormula > oldFormulas = pNode.getAllFormulas ();
     if ( all )
     {
-      final ArrayList < TypeFormula > newFormulas = new ArrayList < TypeFormula > ( ) ;
-      for ( TypeFormula formula : node.getAllFormulas ( ) )
+      final ArrayList < TypeFormula > newFormulas = new ArrayList < TypeFormula > ();
+      for ( TypeFormula formula : node.getAllFormulas () )
       {
         if ( formula instanceof TypeJudgement )
         {
           try
           {
-            Expression expression = translateToCoreSyntaxInternal ( node ,
-                ( TypeJudgement ) formula , recursive ) ;
-            newFormulas.add ( new TypeJudgement ( formula.getEnvironment ( ) ,
-                expression , formula.getType ( ) ) ) ;
+            Expression expression = translateToCoreSyntaxInternal ( node,
+                ( TypeJudgement ) formula, recursive );
+            newFormulas.add ( new TypeJudgement ( formula.getEnvironment (),
+                expression, formula.getType () ) );
           }
           catch ( IllegalStateException e )
           {
@@ -1163,50 +1166,52 @@ public final class TypeInferenceProofModel extends AbstractProofModel
           }
         }
       }
-      addUndoableTreeEdit ( new UndoableTreeEdit ( )
+      addUndoableTreeEdit ( new UndoableTreeEdit ()
       {
-        @ SuppressWarnings ( "synthetic-access" )
-        public void redo ( )
+
+        @SuppressWarnings ( "synthetic-access" )
+        public void redo ()
         {
-          node.setFormula ( newFormulas ) ;
-          nodeChanged ( node ) ;
+          node.setFormula ( newFormulas );
+          nodeChanged ( node );
         }
 
 
-        @ SuppressWarnings ( "synthetic-access" )
-        public void undo ( )
+        @SuppressWarnings ( "synthetic-access" )
+        public void undo ()
         {
-          node.setFormula ( oldFormulas ) ;
-          nodeChanged ( node ) ;
+          node.setFormula ( oldFormulas );
+          nodeChanged ( node );
         }
-      } ) ;
+      } );
     }
     else
     {
-      if ( node.getFirstFormula ( ) instanceof TypeJudgement )
+      if ( node.getFirstFormula () instanceof TypeJudgement )
       {
         final TypeJudgement judgement = ( TypeJudgement ) node
-            .getFirstFormula ( ) ;
-        final Expression oldExpression = judgement.getExpression ( ) ;
-        final Expression newExpression = translateToCoreSyntaxInternal ( node ,
-            ( TypeJudgement ) node.getFirstFormula ( ) , recursive ) ;
-        addUndoableTreeEdit ( new UndoableTreeEdit ( )
+            .getFirstFormula ();
+        final Expression oldExpression = judgement.getExpression ();
+        final Expression newExpression = translateToCoreSyntaxInternal ( node,
+            ( TypeJudgement ) node.getFirstFormula (), recursive );
+        addUndoableTreeEdit ( new UndoableTreeEdit ()
         {
-          @ SuppressWarnings ( "synthetic-access" )
-          public void redo ( )
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void redo ()
           {
-            judgement.setExpression ( newExpression ) ;
-            nodeChanged ( node ) ;
+            judgement.setExpression ( newExpression );
+            nodeChanged ( node );
           }
 
 
-          @ SuppressWarnings ( "synthetic-access" )
-          public void undo ( )
+          @SuppressWarnings ( "synthetic-access" )
+          public void undo ()
           {
-            judgement.setExpression ( oldExpression ) ;
-            nodeChanged ( node ) ;
+            judgement.setExpression ( oldExpression );
+            nodeChanged ( node );
           }
-        } ) ;
+        } );
       }
     }
   }
@@ -1220,24 +1225,23 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * @param recursive True, if recursive.
    * @return The translated {@link Expression}.
    */
-  Expression translateToCoreSyntaxInternal ( TypeInferenceProofNode node ,
-      TypeJudgement judgement , boolean recursive )
+  Expression translateToCoreSyntaxInternal ( TypeInferenceProofNode node,
+      TypeJudgement judgement, boolean recursive )
   {
     // verify that the node actually contains syntactic sugar
-    if ( ! containsSyntacticSugar ( node , judgement.getExpression ( ) ,
-        recursive ) )
+    if ( !containsSyntacticSugar ( node, judgement.getExpression (), recursive ) )
     {
       throw new IllegalArgumentException (
-          "node does not contain syntactic sugar" ) ; //$NON-NLS-1$
+          "node does not contain syntactic sugar" ); //$NON-NLS-1$
     }
     // verify that no actions were performed on the node
-    if ( node.getSteps ( ).length > 0 )
+    if ( node.getSteps ().length > 0 )
     {
-      throw new IllegalStateException ( "steps have been performed on node" ) ; //$NON-NLS-1$
+      throw new IllegalStateException ( "steps have been performed on node" ); //$NON-NLS-1$
     }
     // translate the expression to core syntax
-    return this.translator.translateToCoreSyntax ( judgement.getExpression ( ) ,
-        recursive ) ;
+    return this.translator.translateToCoreSyntax ( judgement.getExpression (),
+        recursive );
   }
 
 
@@ -1246,10 +1250,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel
    * 
    * @see de.unisiegen.tpml.core.ProofModel#undo()
    */
-  @ Override
-  public void undo ( ) throws CannotUndoException
+  @Override
+  public void undo () throws CannotUndoException
   {
-    super.undo ( ) ;
-    this.index -- ;
+    super.undo ();
+    this.index-- ;
   }
 }

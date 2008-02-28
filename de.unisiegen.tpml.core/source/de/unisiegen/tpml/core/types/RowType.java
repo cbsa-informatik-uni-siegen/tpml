@@ -1,22 +1,23 @@
-package de.unisiegen.tpml.core.types ;
+package de.unisiegen.tpml.core.types;
 
 
-import java.util.ArrayList ;
-import java.util.Arrays ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
-import de.unisiegen.tpml.core.interfaces.SortedChildren ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType;
+import de.unisiegen.tpml.core.interfaces.SortedChildren;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -26,61 +27,62 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @version $Rev:420 $
  * @see ObjectType
  */
-public final class RowType extends MonoType implements DefaultIdentifiers ,
-    DefaultTypes , SortedChildren
+public final class RowType extends MonoType implements DefaultIdentifiers,
+    DefaultTypes, SortedChildren
 {
+
   /**
    * The row type union is not defined string.
    */
-  private static final String ROW_TYPE_UNION = "row type union is not defined" ; //$NON-NLS-1$
+  private static final String ROW_TYPE_UNION = "row type union is not defined"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the type substitution is null.
    */
-  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the identifiers are null.
    */
-  private static final String IDENTIFIERS_NULL = "identifiers is null" ; //$NON-NLS-1$
+  private static final String IDENTIFIERS_NULL = "identifiers is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that one identifier are null.
    */
-  private static final String IDENTIFIER_NULL = "one identifier is null" ; //$NON-NLS-1$
+  private static final String IDENTIFIER_NULL = "one identifier is null"; //$NON-NLS-1$
 
 
   /**
    * The identifier has the wrong set.
    */
-  private static final String WRONG_SET = "the set of the identifier has to be 'attribute' or 'method'" ; //$NON-NLS-1$
+  private static final String WRONG_SET = "the set of the identifier has to be 'attribute' or 'method'"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the types are null.
    */
-  private static final String TYPES_NULL = "types is null" ; //$NON-NLS-1$
+  private static final String TYPES_NULL = "types is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that one type is null.
    */
-  private static final String TYPE_NULL = "one type is null" ; //$NON-NLS-1$
+  private static final String TYPE_NULL = "one type is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the arity of identifiers and types doesn´t match.
    */
-  private static final String ARITY = "the arity of identifiers and types must match" ; //$NON-NLS-1$
+  private static final String ARITY = "the arity of identifiers and types must match"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = Type.getCaption ( RowType.class ) ;
+  private static final String CAPTION = Type.getCaption ( RowType.class );
 
 
   /**
@@ -88,15 +90,15 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_ATTR , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{attr}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_ROW_TYPE , 1 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}#1" , //$NON-NLS-1$
-        "epsilon | attr a : tau ; phi1 | m : tau ; phi1" ) ) ; //$NON-NLS-1$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_ATTR, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{attr}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_ROW_TYPE, 1, "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}#1", //$NON-NLS-1$
+        "epsilon | attr a : tau ; phi1 | m : tau ; phi1" ) ); //$NON-NLS-1$
+    return commands;
   }
 
 
@@ -112,27 +114,27 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * @return A new <code>RowType</code> which unions the method types from the
    *         input <code>RowTypes</code>.
    */
-  public static RowType union ( RowType pPhi1 , RowType pPhi2 )
+  public static RowType union ( RowType pPhi1, RowType pPhi2 )
   {
-    MonoType [ ] phi1Types = pPhi1.getTypes ( ) ;
-    MonoType [ ] phi2Types = pPhi2.getTypes ( ) ;
-    ArrayList < Identifier > phi1Identifiers = new ArrayList < Identifier > ( ) ;
-    for ( Identifier id : pPhi1.getIdentifiers ( ) )
+    MonoType [] phi1Types = pPhi1.getTypes ();
+    MonoType [] phi2Types = pPhi2.getTypes ();
+    ArrayList < Identifier > phi1Identifiers = new ArrayList < Identifier > ();
+    for ( Identifier id : pPhi1.getIdentifiers () )
     {
-      phi1Identifiers.add ( id ) ;
+      phi1Identifiers.add ( id );
     }
-    ArrayList < Identifier > phi2Identifiers = new ArrayList < Identifier > ( ) ;
-    for ( Identifier id : pPhi2.getIdentifiers ( ) )
+    ArrayList < Identifier > phi2Identifiers = new ArrayList < Identifier > ();
+    for ( Identifier id : pPhi2.getIdentifiers () )
     {
-      phi2Identifiers.add ( id ) ;
+      phi2Identifiers.add ( id );
     }
     // Result
-    ArrayList < Identifier > resultIdentifiers = new ArrayList < Identifier > ( ) ;
-    ArrayList < MonoType > resultTypes = new ArrayList < MonoType > ( ) ;
+    ArrayList < Identifier > resultIdentifiers = new ArrayList < Identifier > ();
+    ArrayList < MonoType > resultTypes = new ArrayList < MonoType > ();
     // Common method types
-    for ( int i = phi1Identifiers.size ( ) - 1 ; i >= 0 ; i -- )
+    for ( int i = phi1Identifiers.size () - 1 ; i >= 0 ; i-- )
     {
-      for ( int j = phi2Identifiers.size ( ) - 1 ; j >= 0 ; j -- )
+      for ( int j = phi2Identifiers.size () - 1 ; j >= 0 ; j-- )
       {
         if ( ( phi1Identifiers.get ( i ) != null )
             && ( phi2Identifiers.get ( j ) != null )
@@ -140,42 +142,42 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
         {
           if ( ! ( phi1Types [ i ].equals ( phi2Types [ j ] ) ) )
           {
-            throw new RuntimeException ( ROW_TYPE_UNION ) ;
+            throw new RuntimeException ( ROW_TYPE_UNION );
           }
-          resultIdentifiers.add ( 0 , phi1Identifiers.get ( i ) ) ;
-          resultTypes.add ( 0 , phi1Types [ i ] ) ;
-          phi1Identifiers.set ( i , null ) ;
-          phi2Identifiers.set ( j , null ) ;
+          resultIdentifiers.add ( 0, phi1Identifiers.get ( i ) );
+          resultTypes.add ( 0, phi1Types [ i ] );
+          phi1Identifiers.set ( i, null );
+          phi2Identifiers.set ( j, null );
         }
       }
     }
     // Method types from phi1
-    for ( int i = 0 ; i < phi1Identifiers.size ( ) ; i ++ )
+    for ( int i = 0 ; i < phi1Identifiers.size () ; i++ )
     {
       if ( phi1Identifiers.get ( i ) != null )
       {
-        resultIdentifiers.add ( phi1Identifiers.get ( i ) ) ;
-        resultTypes.add ( phi1Types [ i ] ) ;
+        resultIdentifiers.add ( phi1Identifiers.get ( i ) );
+        resultTypes.add ( phi1Types [ i ] );
       }
     }
     // Method types from phi2
-    for ( int i = 0 ; i < phi2Identifiers.size ( ) ; i ++ )
+    for ( int i = 0 ; i < phi2Identifiers.size () ; i++ )
     {
       if ( phi2Identifiers.get ( i ) != null )
       {
-        resultIdentifiers.add ( phi2Identifiers.get ( i ) ) ;
-        resultTypes.add ( phi2Types [ i ] ) ;
+        resultIdentifiers.add ( phi2Identifiers.get ( i ) );
+        resultTypes.add ( phi2Types [ i ] );
       }
     }
     // Create the new RowType
-    Identifier [ ] newIdentifiers = new Identifier [ resultIdentifiers.size ( ) ] ;
-    MonoType [ ] newTypes = new MonoType [ resultTypes.size ( ) ] ;
-    for ( int i = 0 ; i < resultIdentifiers.size ( ) ; i ++ )
+    Identifier [] newIdentifiers = new Identifier [ resultIdentifiers.size () ];
+    MonoType [] newTypes = new MonoType [ resultTypes.size () ];
+    for ( int i = 0 ; i < resultIdentifiers.size () ; i++ )
     {
-      newIdentifiers [ i ] = resultIdentifiers.get ( i ) ;
-      newTypes [ i ] = resultTypes.get ( i ) ;
+      newIdentifiers [ i ] = resultIdentifiers.get ( i );
+      newTypes [ i ] = resultTypes.get ( i );
     }
-    return new RowType ( newIdentifiers , newTypes ) ;
+    return new RowType ( newIdentifiers, newTypes );
   }
 
 
@@ -184,25 +186,25 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @see #getIdentifiers()
    */
-  private Identifier [ ] identifiers ;
+  private Identifier [] identifiers;
 
 
   /**
    * The children {@link Type}s of this {@link Type}.
    */
-  private MonoType [ ] types ;
+  private MonoType [] types;
 
 
   /**
    * Indeces of the child {@link Identifier}s.
    */
-  private int [ ] indicesId ;
+  private int [] indicesId;
 
 
   /**
    * Indeces of the child {@link Type}s.
    */
-  private int [ ] indicesType ;
+  private int [] indicesType;
 
 
   /**
@@ -210,7 +212,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @see #getRemainingRowType()
    */
-  private MonoType remainingRowType = null ;
+  private MonoType remainingRowType = null;
 
 
   /**
@@ -220,54 +222,54 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * @param pIdentifiers The {@link Identifier}s.
    * @param pTypes The {@link Type}s.
    */
-  public RowType ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes )
+  public RowType ( Identifier [] pIdentifiers, MonoType [] pTypes )
   {
     if ( pIdentifiers == null )
     {
-      throw new NullPointerException ( IDENTIFIERS_NULL ) ;
+      throw new NullPointerException ( IDENTIFIERS_NULL );
     }
     for ( Identifier id : pIdentifiers )
     {
       if ( id == null )
       {
-        throw new NullPointerException ( IDENTIFIER_NULL ) ;
+        throw new NullPointerException ( IDENTIFIER_NULL );
       }
-      if ( ( ! Identifier.Set.ATTRIBUTE.equals ( id.getSet ( ) ) )
-          && ( ! Identifier.Set.METHOD.equals ( id.getSet ( ) ) ) )
+      if ( ( !Identifier.Set.ATTRIBUTE.equals ( id.getSet () ) )
+          && ( !Identifier.Set.METHOD.equals ( id.getSet () ) ) )
       {
-        throw new IllegalArgumentException ( WRONG_SET ) ;
+        throw new IllegalArgumentException ( WRONG_SET );
       }
     }
     if ( pTypes == null )
     {
-      throw new NullPointerException ( TYPES_NULL ) ;
+      throw new NullPointerException ( TYPES_NULL );
     }
     if ( pIdentifiers.length != pTypes.length )
     {
-      throw new IllegalArgumentException ( ARITY ) ;
+      throw new IllegalArgumentException ( ARITY );
     }
     for ( MonoType type : pTypes )
     {
       if ( type == null )
       {
-        throw new NullPointerException ( TYPE_NULL ) ;
+        throw new NullPointerException ( TYPE_NULL );
       }
     }
     // Identifier
-    this.identifiers = pIdentifiers ;
-    this.indicesId = new int [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    this.identifiers = pIdentifiers;
+    this.indicesId = new int [ this.identifiers.length ];
+    for ( int i = 0 ; i < this.identifiers.length ; i++ )
     {
-      this.identifiers [ i ].setParent ( this ) ;
-      this.indicesId [ i ] = i + 1 ;
+      this.identifiers [ i ].setParent ( this );
+      this.indicesId [ i ] = i + 1;
     }
     // Type
-    this.types = pTypes ;
-    this.indicesType = new int [ this.types.length ] ;
-    for ( int i = 0 ; i < this.types.length ; i ++ )
+    this.types = pTypes;
+    this.indicesType = new int [ this.types.length ];
+    for ( int i = 0 ; i < this.types.length ; i++ )
     {
-      this.types [ i ].setParent ( this ) ;
-      this.indicesType [ i ] = i + 1 ;
+      this.types [ i ].setParent ( this );
+      this.indicesType [ i ] = i + 1;
     }
   }
 
@@ -283,12 +285,12 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * @param pParserEndOffset The end offset of this {@link Type} in the source
    *          code.
    */
-  public RowType ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes ,
-      int pParserStartOffset , int pParserEndOffset )
+  public RowType ( Identifier [] pIdentifiers, MonoType [] pTypes,
+      int pParserStartOffset, int pParserEndOffset )
   {
-    this ( pIdentifiers , pTypes ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pIdentifiers, pTypes );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -300,46 +302,46 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * @param pTypes The {@link Type}s.
    * @param pRemainingRowType The remaining {@link RowType}.
    */
-  public RowType ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes ,
+  public RowType ( Identifier [] pIdentifiers, MonoType [] pTypes,
       MonoType pRemainingRowType )
   {
-    this ( pIdentifiers , pTypes ) ;
+    this ( pIdentifiers, pTypes );
     if ( ( pRemainingRowType != null )
         && ( pRemainingRowType instanceof RowType ) )
     {
-      RowType rowType = ( RowType ) pRemainingRowType ;
+      RowType rowType = ( RowType ) pRemainingRowType;
       this.identifiers = new Identifier [ pIdentifiers.length
-          + rowType.getIdentifiers ( ).length ] ;
-      this.indicesId = new int [ this.identifiers.length ] ;
-      for ( int i = 0 ; i < pIdentifiers.length ; i ++ )
+          + rowType.getIdentifiers ().length ];
+      this.indicesId = new int [ this.identifiers.length ];
+      for ( int i = 0 ; i < pIdentifiers.length ; i++ )
       {
-        this.identifiers [ i ] = pIdentifiers [ i ] ;
-        this.indicesId [ i ] = i + 1 ;
+        this.identifiers [ i ] = pIdentifiers [ i ];
+        this.indicesId [ i ] = i + 1;
       }
-      for ( int i = 0 ; i < rowType.getIdentifiers ( ).length ; i ++ )
+      for ( int i = 0 ; i < rowType.getIdentifiers ().length ; i++ )
       {
         this.identifiers [ pIdentifiers.length + i ] = rowType
-            .getIdentifiers ( ) [ i ] ;
+            .getIdentifiers () [ i ];
         this.indicesId [ pIdentifiers.length + i ] = pIdentifiers.length + i
-            + 1 ;
+            + 1;
       }
-      this.types = new MonoType [ pTypes.length + rowType.getTypes ( ).length ] ;
-      this.indicesType = new int [ this.types.length ] ;
-      for ( int i = 0 ; i < pTypes.length ; i ++ )
+      this.types = new MonoType [ pTypes.length + rowType.getTypes ().length ];
+      this.indicesType = new int [ this.types.length ];
+      for ( int i = 0 ; i < pTypes.length ; i++ )
       {
-        this.types [ i ] = pTypes [ i ] ;
-        this.indicesType [ i ] = i + 1 ;
+        this.types [ i ] = pTypes [ i ];
+        this.indicesType [ i ] = i + 1;
       }
-      for ( int i = 0 ; i < rowType.getTypes ( ).length ; i ++ )
+      for ( int i = 0 ; i < rowType.getTypes ().length ; i++ )
       {
-        this.types [ pTypes.length + i ] = rowType.getTypes ( ) [ i ] ;
-        this.indicesType [ pTypes.length + i ] = pTypes.length + i + 1 ;
+        this.types [ pTypes.length + i ] = rowType.getTypes () [ i ];
+        this.indicesType [ pTypes.length + i ] = pTypes.length + i + 1;
       }
-      this.remainingRowType = rowType.getRemainingRowType ( ) ;
+      this.remainingRowType = rowType.getRemainingRowType ();
     }
     else
     {
-      this.remainingRowType = pRemainingRowType ;
+      this.remainingRowType = pRemainingRowType;
     }
   }
 
@@ -349,22 +351,22 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @see Type#clone()
    */
-  @ Override
-  public RowType clone ( )
+  @Override
+  public RowType clone ()
   {
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    Identifier [] newIdentifiers = new Identifier [ this.identifiers.length ];
+    for ( int i = 0 ; i < newIdentifiers.length ; i++ )
     {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ();
     }
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
-    for ( int i = 0 ; i < newTypes.length ; i ++ )
+    MonoType [] newTypes = new MonoType [ this.types.length ];
+    for ( int i = 0 ; i < newTypes.length ; i++ )
     {
-      newTypes [ i ] = this.types [ i ].clone ( ) ;
+      newTypes [ i ] = this.types [ i ].clone ();
     }
     MonoType newRemainingRowType = ( this.remainingRowType == null ) ? null
-        : this.remainingRowType.clone ( ) ;
-    return new RowType ( newIdentifiers , newTypes , newRemainingRowType ) ;
+        : this.remainingRowType.clone ();
+    return new RowType ( newIdentifiers, newTypes, newRemainingRowType );
   }
 
 
@@ -373,18 +375,18 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @see Object#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof RowType )
     {
-      RowType other = ( RowType ) pObject ;
-      return Arrays.equals ( this.identifiers , other.identifiers )
-          && Arrays.equals ( this.types , other.types )
+      RowType other = ( RowType ) pObject;
+      return Arrays.equals ( this.identifiers, other.identifiers )
+          && Arrays.equals ( this.types, other.types )
           && ( ( this.remainingRowType == null ) ? other.remainingRowType == null
-              : this.remainingRowType.equals ( other.remainingRowType ) ) ;
+              : this.remainingRowType.equals ( other.remainingRowType ) );
     }
-    return false ;
+    return false;
   }
 
 
@@ -400,39 +402,39 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   {
     if ( this.identifiers.length != pRowType.identifiers.length )
     {
-      return false ;
+      return false;
     }
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    for ( int i = 0 ; i < this.identifiers.length ; i++ )
     {
-      boolean found = false ;
-      for ( int j = 0 ; j < pRowType.identifiers.length ; j ++ )
+      boolean found = false;
+      for ( int j = 0 ; j < pRowType.identifiers.length ; j++ )
       {
         if ( this.identifiers [ i ].equals ( pRowType.identifiers [ j ] ) )
         {
-          found = true ;
-          if ( ! this.types [ i ].equals ( pRowType.types [ j ] ) )
+          found = true;
+          if ( !this.types [ i ].equals ( pRowType.types [ j ] ) )
           {
-            return false ;
+            return false;
           }
-          break ;
+          break;
         }
       }
-      if ( ! found )
+      if ( !found )
       {
-        return false ;
+        return false;
       }
     }
-    return true ;
+    return true;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -442,9 +444,9 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * @return The {@link Identifier}s of this {@link Expression}.
    * @see #identifiers
    */
-  public Identifier [ ] getIdentifiers ( )
+  public Identifier [] getIdentifiers ()
   {
-    return this.identifiers ;
+    return this.identifiers;
   }
 
 
@@ -453,9 +455,9 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @return The indices of the child {@link Identifier}s.
    */
-  public int [ ] getIdentifiersIndex ( )
+  public int [] getIdentifiersIndex ()
   {
-    return this.indicesId ;
+    return this.indicesId;
   }
 
 
@@ -469,14 +471,14 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    */
   public int getIndexOfIdentifier ( Identifier pIdentifier )
   {
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    for ( int i = 0 ; i < this.identifiers.length ; i++ )
     {
       if ( pIdentifier.equals ( this.identifiers [ i ] ) )
       {
-        return i ;
+        return i;
       }
     }
-    return - 1 ;
+    return -1;
   }
 
 
@@ -485,16 +487,16 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
     if ( this.remainingRowType != null )
     {
-      commands.add ( this.remainingRowType ) ;
+      commands.add ( this.remainingRowType );
     }
-    return commands ;
+    return commands;
   }
 
 
@@ -503,14 +505,14 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @see Type#getPrefix()
    */
-  @ Override
-  public String getPrefix ( )
+  @Override
+  public String getPrefix ()
   {
     if ( this.prefix == null )
     {
-      this.prefix = PREFIX_PHI ;
+      this.prefix = PREFIX_PHI;
     }
-    return this.prefix ;
+    return this.prefix;
   }
 
 
@@ -520,9 +522,9 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * @return The remaining {@link RowType}.
    * @see #remainingRowType
    */
-  public MonoType getRemainingRowType ( )
+  public MonoType getRemainingRowType ()
   {
-    return this.remainingRowType ;
+    return this.remainingRowType;
   }
 
 
@@ -532,35 +534,35 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * @return The {@link Identifier}s and {@link Type}s in the right sorting.
    * @see SortedChildren#getSortedChildren()
    */
-  public ExpressionOrType [ ] getSortedChildren ( )
+  public ExpressionOrType [] getSortedChildren ()
   {
-    ExpressionOrType [ ] result ;
+    ExpressionOrType [] result;
     if ( this.remainingRowType == null )
     {
       result = new ExpressionOrType [ this.identifiers.length
-          + this.types.length ] ;
+          + this.types.length ];
     }
     else
     {
       result = new ExpressionOrType [ this.identifiers.length
-          + this.types.length + 1 ] ;
+          + this.types.length + 1 ];
     }
-    for ( int i = 0 ; i < this.identifiers.length + this.types.length ; i ++ )
+    for ( int i = 0 ; i < this.identifiers.length + this.types.length ; i++ )
     {
       if ( i % 2 == 0 )
       {
-        result [ i ] = this.identifiers [ i / 2 ] ;
+        result [ i ] = this.identifiers [ i / 2 ];
       }
       else
       {
-        result [ i ] = this.types [ i / 2 ] ;
+        result [ i ] = this.types [ i / 2 ];
       }
     }
     if ( this.remainingRowType != null )
     {
-      result [ result.length - 1 ] = this.remainingRowType ;
+      result [ result.length - 1 ] = this.remainingRowType;
     }
-    return result ;
+    return result;
   }
 
 
@@ -569,22 +571,22 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @see Type#getTypeNamesFree()
    */
-  @ Override
-  public ArrayList < TypeName > getTypeNamesFree ( )
+  @Override
+  public ArrayList < TypeName > getTypeNamesFree ()
   {
     if ( this.typeNamesFree == null )
     {
-      this.typeNamesFree = new ArrayList < TypeName > ( ) ;
+      this.typeNamesFree = new ArrayList < TypeName > ();
       for ( MonoType type : this.types )
       {
-        this.typeNamesFree.addAll ( type.getTypeNamesFree ( ) ) ;
+        this.typeNamesFree.addAll ( type.getTypeNamesFree () );
       }
       if ( this.remainingRowType != null )
       {
-        this.typeNamesFree.addAll ( this.remainingRowType.getTypeNamesFree ( ) ) ;
+        this.typeNamesFree.addAll ( this.remainingRowType.getTypeNamesFree () );
       }
     }
-    return this.typeNamesFree ;
+    return this.typeNamesFree;
   }
 
 
@@ -593,9 +595,9 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @return the sub {@link Type}s.
    */
-  public MonoType [ ] getTypes ( )
+  public MonoType [] getTypes ()
   {
-    return this.types ;
+    return this.types;
   }
 
 
@@ -604,9 +606,9 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @return The indices of the child {@link Type}s.
    */
-  public int [ ] getTypesIndex ( )
+  public int [] getTypesIndex ()
   {
-    return this.indicesType ;
+    return this.indicesType;
   }
 
 
@@ -615,23 +617,23 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @see Type#getTypeVariablesFree()
    */
-  @ Override
-  public ArrayList < TypeVariable > getTypeVariablesFree ( )
+  @Override
+  public ArrayList < TypeVariable > getTypeVariablesFree ()
   {
     if ( this.typeVariablesFree == null )
     {
-      this.typeVariablesFree = new ArrayList < TypeVariable > ( ) ;
+      this.typeVariablesFree = new ArrayList < TypeVariable > ();
       for ( MonoType type : this.types )
       {
-        this.typeVariablesFree.addAll ( type.getTypeVariablesFree ( ) ) ;
+        this.typeVariablesFree.addAll ( type.getTypeVariablesFree () );
       }
       if ( this.remainingRowType != null )
       {
         this.typeVariablesFree.addAll ( this.remainingRowType
-            .getTypeVariablesFree ( ) ) ;
+            .getTypeVariablesFree () );
       }
     }
-    return this.typeVariablesFree ;
+    return this.typeVariablesFree;
   }
 
 
@@ -640,10 +642,10 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @see Object#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return Arrays.hashCode ( this.identifiers ) + Arrays.hashCode ( this.types ) ;
+    return Arrays.hashCode ( this.identifiers ) + Arrays.hashCode ( this.types );
   }
 
 
@@ -657,17 +659,17 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * @param pTau The {@link MonoType}.
    * @return The resulting {@link Type}.
    */
-  @ Override
-  public RowType substitute ( TypeName pTypeName , MonoType pTau )
+  @Override
+  public RowType substitute ( TypeName pTypeName, MonoType pTau )
   {
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
-    for ( int i = 0 ; i < newTypes.length ; i ++ )
+    MonoType [] newTypes = new MonoType [ this.types.length ];
+    for ( int i = 0 ; i < newTypes.length ; i++ )
     {
-      newTypes [ i ] = this.types [ i ].substitute ( pTypeName , pTau ) ;
+      newTypes [ i ] = this.types [ i ].substitute ( pTypeName, pTau );
     }
     MonoType newRemainingRowType = ( this.remainingRowType == null ) ? null
-        : this.remainingRowType.substitute ( pTypeName , pTau ) ;
-    return new RowType ( this.identifiers , newTypes , newRemainingRowType ) ;
+        : this.remainingRowType.substitute ( pTypeName, pTau );
+    return new RowType ( this.identifiers, newTypes, newRemainingRowType );
   }
 
 
@@ -676,29 +678,29 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @see Type#substitute(TypeSubstitution)
    */
-  @ Override
+  @Override
   public RowType substitute ( TypeSubstitution pTypeSubstitution )
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL );
     }
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
-    for ( int i = 0 ; i < newTypes.length ; i ++ )
+    MonoType [] newTypes = new MonoType [ this.types.length ];
+    for ( int i = 0 ; i < newTypes.length ; i++ )
     {
-      newTypes [ i ] = this.types [ i ].substitute ( pTypeSubstitution ) ;
+      newTypes [ i ] = this.types [ i ].substitute ( pTypeSubstitution );
     }
     MonoType newRemainingRowType = ( this.remainingRowType == null ) ? null
-        : this.remainingRowType.substitute ( pTypeSubstitution ) ;
+        : this.remainingRowType.substitute ( pTypeSubstitution );
     if ( newRemainingRowType instanceof RowType )
     {
-      RowType r = ( RowType ) newRemainingRowType ;
-      if ( r.getTypes ( ).length == 0 )
+      RowType r = ( RowType ) newRemainingRowType;
+      if ( r.getTypes ().length == 0 )
       {
-        newRemainingRowType = null ;
+        newRemainingRowType = null;
       }
     }
-    return new RowType ( this.identifiers , newTypes , newRemainingRowType ) ;
+    return new RowType ( this.identifiers, newTypes, newRemainingRowType );
   }
 
 
@@ -707,106 +709,106 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    StringBuilder body = new StringBuilder ( ) ;
-    for ( int i = 0 ; i < this.types.length ; i ++ )
+    StringBuilder body = new StringBuilder ();
+    for ( int i = 0 ; i < this.types.length ; i++ )
     {
       if ( i != 0 )
       {
-        body.append ( PRETTY_SPACE ) ;
+        body.append ( PRETTY_SPACE );
       }
-      if ( Identifier.Set.ATTRIBUTE.equals ( this.identifiers [ i ].getSet ( ) ) )
+      if ( Identifier.Set.ATTRIBUTE.equals ( this.identifiers [ i ].getSet () ) )
       {
-        body.append ( PRETTY_ATTR ) ;
-        body.append ( PRETTY_SPACE ) ;
+        body.append ( PRETTY_ATTR );
+        body.append ( PRETTY_SPACE );
       }
-      body.append ( this.identifiers [ i ].toPrettyString ( ).toString ( ) ) ;
-      body.append ( PRETTY_COLON ) ;
-      body.append ( PRETTY_SPACE ) ;
-      body.append ( this.types [ i ].toPrettyString ( ).toString ( ) ) ;
-      body.append ( PRETTY_SPACE ) ;
-      body.append ( PRETTY_SEMI ) ;
+      body.append ( this.identifiers [ i ].toPrettyString ().toString () );
+      body.append ( PRETTY_COLON );
+      body.append ( PRETTY_SPACE );
+      body.append ( this.types [ i ].toPrettyString ().toString () );
+      body.append ( PRETTY_SPACE );
+      body.append ( PRETTY_SEMI );
     }
     if ( this.remainingRowType != null )
     {
-      body.append ( PRETTY_SPACE ) ;
-      body.append ( this.remainingRowType.toPrettyString ( ).toString ( ) ) ;
+      body.append ( PRETTY_SPACE );
+      body.append ( this.remainingRowType.toPrettyString ().toString () );
     }
     if ( this.types.length == 0 )
     {
-      body.append ( PRETTY_EMPTY_SET ) ;
+      body.append ( PRETTY_EMPTY_SET );
     }
     String descriptions[] = new String [ 2 + this.identifiers.length
-        + this.types.length + ( this.remainingRowType == null ? 0 : 1 ) ] ;
-    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
-    descriptions [ 1 ] = body.toString ( ) ;
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+        + this.types.length + ( this.remainingRowType == null ? 0 : 1 ) ];
+    descriptions [ 0 ] = this.toPrettyString ().toString ();
+    descriptions [ 1 ] = body.toString ();
+    for ( int i = 0 ; i < this.identifiers.length ; i++ )
     {
-      descriptions [ 2 + i * 2 ] = this.identifiers [ i ].toPrettyString ( )
-          .toString ( ) ;
-      descriptions [ 3 + i * 2 ] = this.types [ i ].toPrettyString ( )
-          .toString ( ) ;
+      descriptions [ 2 + i * 2 ] = this.identifiers [ i ].toPrettyString ()
+          .toString ();
+      descriptions [ 3 + i * 2 ] = this.types [ i ].toPrettyString ()
+          .toString ();
     }
     if ( this.remainingRowType != null )
     {
       descriptions [ descriptions.length - 1 ] = this.remainingRowType
-          .toPrettyString ( ).toString ( ) ;
+          .toPrettyString ().toString ();
     }
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_ROW , LATEX_ROW_TYPE , pIndent , descriptions ) ;
-    builder.addBuilderBegin ( ) ;
-    for ( int i = 0 ; i < this.types.length ; i ++ )
+        PRIO_ROW, LATEX_ROW_TYPE, pIndent, descriptions );
+    builder.addBuilderBegin ();
+    for ( int i = 0 ; i < this.types.length ; i++ )
     {
       if ( i != 0 )
       {
-        builder.addText ( LATEX_SPACE ) ;
+        builder.addText ( LATEX_SPACE );
       }
-      if ( Identifier.Set.ATTRIBUTE.equals ( this.identifiers [ i ].getSet ( ) ) )
+      if ( Identifier.Set.ATTRIBUTE.equals ( this.identifiers [ i ].getSet () ) )
       {
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
             + LATEX_INDENT )
-            + LATEX_PREFIX_COMMAND + LATEX_KEY_ATTR ) ;
-        builder.addText ( LATEX_SPACE ) ;
+            + LATEX_PREFIX_COMMAND + LATEX_KEY_ATTR );
+        builder.addText ( LATEX_SPACE );
       }
       builder.addBuilder ( this.identifiers [ i ].toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , PRIO_ID ) ;
-      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ), PRIO_ID );
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
           + LATEX_INDENT )
-          + LATEX_COLON ) ;
-      builder.addText ( LATEX_SPACE ) ;
+          + LATEX_COLON );
+      builder.addText ( LATEX_SPACE );
       builder.addBuilder ( this.types [ i ].toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) ,
-          PRIO_ROW_TAU ) ;
-      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ),
+          PRIO_ROW_TAU );
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
           + LATEX_INDENT )
-          + LATEX_SPACE ) ;
-      builder.addText ( LATEX_SEMI ) ;
+          + LATEX_SPACE );
+      builder.addText ( LATEX_SEMI );
     }
     if ( this.types.length == 0 )
     {
-      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
           + LATEX_INDENT )
-          + LATEX_EMPTYSET ) ;
+          + LATEX_EMPTYSET );
     }
     if ( this.remainingRowType != null )
     {
-      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
           + LATEX_INDENT )
-          + LATEX_SPACE ) ;
-      this.prettyStringBuilder.addBreak ( ) ;
+          + LATEX_SPACE );
+      this.prettyStringBuilder.addBreak ();
       builder.addBuilder ( this.remainingRowType.toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ), 0 );
     }
-    builder.addBuilderEnd ( ) ;
-    return builder ;
+    builder.addBuilderEnd ();
+    return builder;
   }
 
 
@@ -815,52 +817,52 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @see Type#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_ROW ) ;
-      for ( int i = 0 ; i < this.types.length ; i ++ )
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_ROW );
+      for ( int i = 0 ; i < this.types.length ; i++ )
       {
         if ( i != 0 )
         {
-          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+          this.prettyStringBuilder.addText ( PRETTY_SPACE );
         }
         if ( Identifier.Set.ATTRIBUTE
-            .equals ( this.identifiers [ i ].getSet ( ) ) )
+            .equals ( this.identifiers [ i ].getSet () ) )
         {
-          this.prettyStringBuilder.addKeyword ( PRETTY_ATTR ) ;
-          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+          this.prettyStringBuilder.addKeyword ( PRETTY_ATTR );
+          this.prettyStringBuilder.addText ( PRETTY_SPACE );
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
-        this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
-        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), PRIO_ID );
+        this.prettyStringBuilder.addText ( PRETTY_COLON );
+        this.prettyStringBuilder.addText ( PRETTY_SPACE );
         this.prettyStringBuilder.addBuilder ( this.types [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_ROW_TAU ) ;
-        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-        this.prettyStringBuilder.addText ( PRETTY_SEMI ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+            PRIO_ROW_TAU );
+        this.prettyStringBuilder.addText ( PRETTY_SPACE );
+        this.prettyStringBuilder.addText ( PRETTY_SEMI );
         if ( i != this.types.length - 1 )
         {
-          this.prettyStringBuilder.addBreak ( ) ;
+          this.prettyStringBuilder.addBreak ();
         }
       }
       if ( this.types.length == 0 )
       {
-        this.prettyStringBuilder.addText ( PRETTY_EMPTY_SET ) ;
+        this.prettyStringBuilder.addText ( PRETTY_EMPTY_SET );
       }
       if ( this.remainingRowType != null )
       {
-        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-        this.prettyStringBuilder.addBreak ( ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SPACE );
+        this.prettyStringBuilder.addBreak ();
         this.prettyStringBuilder.addBuilder ( this.remainingRowType
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
       }
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

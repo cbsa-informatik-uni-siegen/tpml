@@ -1,4 +1,4 @@
-package java_cup ;
+package java_cup;
 
 
 /**
@@ -11,6 +11,7 @@ package java_cup ;
  */
 public class symbol_part extends production_part
 {
+
   /*-----------------------------------------------------------*/
   /*--- Constructor(s) ----------------------------------------*/
   /*-----------------------------------------------------------*/
@@ -20,13 +21,13 @@ public class symbol_part extends production_part
    * @param sym the symbol that this part is made up of.
    * @param lab an optional label string for the part.
    */
-  public symbol_part ( symbol sym , String lab ) throws internal_error
+  public symbol_part ( symbol sym, String lab ) throws internal_error
   {
-    super ( lab ) ;
+    super ( lab );
     if ( sym == null )
       throw new internal_error (
-          "Attempt to construct a symbol_part with a null symbol" ) ;
-    _the_symbol = sym ;
+          "Attempt to construct a symbol_part with a null symbol" );
+    _the_symbol = sym;
   }
 
 
@@ -38,7 +39,7 @@ public class symbol_part extends production_part
    */
   public symbol_part ( symbol sym ) throws internal_error
   {
-    this ( sym , null ) ;
+    this ( sym, null );
   }
 
 
@@ -46,13 +47,13 @@ public class symbol_part extends production_part
   /*--- (Access to) Instance Variables ------------------------*/
   /*-----------------------------------------------------------*/
   /** The symbol that this part is made up of. */
-  protected symbol _the_symbol ;
+  protected symbol _the_symbol;
 
 
   /** The symbol that this part is made up of. */
-  public symbol the_symbol ( )
+  public symbol the_symbol ()
   {
-    return _the_symbol ;
+    return _the_symbol;
   }
 
 
@@ -60,9 +61,9 @@ public class symbol_part extends production_part
   /*--- General Methods ---------------------------------------*/
   /*-----------------------------------------------------------*/
   /** Respond that we are not an action part. */
-  public boolean is_action ( )
+  public boolean is_action ()
   {
-    return false ;
+    return false;
   }
 
 
@@ -71,7 +72,7 @@ public class symbol_part extends production_part
   public boolean equals ( symbol_part other )
   {
     return other != null && super.equals ( other )
-        && the_symbol ( ).equals ( other.the_symbol ( ) ) ;
+        && the_symbol ().equals ( other.the_symbol () );
   }
 
 
@@ -80,27 +81,29 @@ public class symbol_part extends production_part
   public boolean equals ( Object other )
   {
     if ( ! ( other instanceof symbol_part ) )
-      return false ;
-    else return equals ( ( symbol_part ) other ) ;
+      return false;
+    else
+      return equals ( ( symbol_part ) other );
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Produce a hash code. */
-  public int hashCode ( )
+  public int hashCode ()
   {
-    return super.hashCode ( )
-        ^ ( the_symbol ( ) == null ? 0 : the_symbol ( ).hashCode ( ) ) ;
+    return super.hashCode ()
+        ^ ( the_symbol () == null ? 0 : the_symbol ().hashCode () );
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Convert to a string. */
-  public String toString ( )
+  public String toString ()
   {
-    if ( the_symbol ( ) != null )
-      return super.toString ( ) + the_symbol ( ) ;
-    else return super.toString ( ) + "$$MISSING-SYMBOL$$" ;
+    if ( the_symbol () != null )
+      return super.toString () + the_symbol ();
+    else
+      return super.toString () + "$$MISSING-SYMBOL$$";
   }
   /*-----------------------------------------------------------*/
 }

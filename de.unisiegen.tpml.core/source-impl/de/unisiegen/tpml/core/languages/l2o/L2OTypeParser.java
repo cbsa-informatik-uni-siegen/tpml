@@ -1,11 +1,12 @@
-package de.unisiegen.tpml.core.languages.l2o ;
+package de.unisiegen.tpml.core.languages.l2o;
 
 
-import java.text.MessageFormat ;
-import java_cup.runtime.Symbol ;
-import de.unisiegen.tpml.core.Messages ;
-import de.unisiegen.tpml.core.languages.LanguageParserException ;
-import de.unisiegen.tpml.core.languages.LanguageTypeScanner ;
+import java.text.MessageFormat;
+
+import java_cup.runtime.Symbol;
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.languages.LanguageParserException;
+import de.unisiegen.tpml.core.languages.LanguageTypeScanner;
 
 
 /**
@@ -17,6 +18,7 @@ import de.unisiegen.tpml.core.languages.LanguageTypeScanner ;
  */
 final class L2OTypeParser extends L2OAbstractTypeParser
 {
+
   /**
    * Allocates a new <code>L1TypeParser</code> that operates on tokens from
    * the specified <code>scanner</code>.
@@ -26,7 +28,7 @@ final class L2OTypeParser extends L2OAbstractTypeParser
    */
   L2OTypeParser ( LanguageTypeScanner scanner )
   {
-    super ( scanner ) ;
+    super ( scanner );
   }
 
 
@@ -36,16 +38,16 @@ final class L2OTypeParser extends L2OAbstractTypeParser
    * @see java_cup.runtime.lr_parser#report_error(java.lang.String,
    *      java.lang.Object)
    */
-  @ Override
-  public void report_error ( String message , Object info )
+  @Override
+  public void report_error ( String message, Object info )
   {
-    Symbol symbol = ( Symbol ) info ;
-    if ( symbol.sym == EOF_sym ( ) )
+    Symbol symbol = ( Symbol ) info;
+    if ( symbol.sym == EOF_sym () )
     {
       throw new LanguageParserException (
-          Messages.getString ( "Parser.0" ) , symbol.left , symbol.right ) ;//$NON-NLS-1$
+          Messages.getString ( "Parser.0" ), symbol.left, symbol.right );//$NON-NLS-1$
     }
-    throw new LanguageParserException ( message , symbol.left , symbol.right ) ;
+    throw new LanguageParserException ( message, symbol.left, symbol.right );
   }
 
 
@@ -55,11 +57,11 @@ final class L2OTypeParser extends L2OAbstractTypeParser
    * @see java_cup.runtime.lr_parser#report_fatal_error(java.lang.String,
    *      java.lang.Object)
    */
-  @ Override
-  public void report_fatal_error ( String message , Object info )
+  @Override
+  public void report_fatal_error ( String message, Object info )
       throws Exception
   {
-    report_error ( message , info ) ;
+    report_error ( message, info );
   }
 
 
@@ -68,10 +70,10 @@ final class L2OTypeParser extends L2OAbstractTypeParser
    * 
    * @see java_cup.runtime.lr_parser#syntax_error(java_cup.runtime.Symbol)
    */
-  @ Override
+  @Override
   public void syntax_error ( Symbol symbol )
   {
     report_error ( MessageFormat.format (
-        Messages.getString ( "Parser.1" ) , symbol.value ) , symbol ) ; //$NON-NLS-1$
+        Messages.getString ( "Parser.1" ), symbol.value ), symbol ); //$NON-NLS-1$
   }
 }

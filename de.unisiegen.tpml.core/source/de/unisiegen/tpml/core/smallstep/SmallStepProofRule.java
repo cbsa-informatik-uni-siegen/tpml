@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.smallstep ;
+package de.unisiegen.tpml.core.smallstep;
 
 
-import de.unisiegen.tpml.core.ProofRule ;
+import de.unisiegen.tpml.core.ProofRule;
 
 
 /**
@@ -13,6 +13,7 @@ import de.unisiegen.tpml.core.ProofRule ;
  */
 public interface SmallStepProofRule extends ProofRule
 {
+
   //
   // Accessors
   //
@@ -24,7 +25,7 @@ public interface SmallStepProofRule extends ProofRule
    * 
    * @return <code>true</code> if the proof rule has no premises.
    */
-  public boolean isAxiom ( ) ;
+  public boolean isAxiom ();
 
 
   //
@@ -38,5 +39,5 @@ public interface SmallStepProofRule extends ProofRule
    * 
    * @return the <b>EXN</b> rule for this meta rule.
    */
-  public SmallStepProofRule toExnRule ( ) ;
+  public SmallStepProofRule toExnRule ();
 }

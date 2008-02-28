@@ -1,21 +1,17 @@
-/*
- * EditorPanelForm.java
- *
- * Created on 8. August 2007, 09:03
- */
-
 package de.unisiegen.tpml.ui.netbeans;
+
+import java.awt.Frame;
 
 import de.unisiegen.tpml.graphics.pong.PongView;
 import de.unisiegen.tpml.ui.EditorPanel;
-import de.unisiegen.tpml.ui.EditorPanelTypes;
 import de.unisiegen.tpml.ui.EditorPanelExpression;
-import java.awt.Frame;
+import de.unisiegen.tpml.ui.EditorPanelTypes;
 
 /**
  *
  * @author  cfehling
  */
+@ SuppressWarnings ( "all" )
 public class EditorPanelForm extends javax.swing.JPanel {
     
     /** Creates new form EditorPanelForm */

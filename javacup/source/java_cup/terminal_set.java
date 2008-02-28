@@ -1,7 +1,7 @@
-package java_cup ;
+package java_cup;
 
 
-import java.util.BitSet ;
+import java.util.BitSet;
 
 
 /**
@@ -12,14 +12,15 @@ import java.util.BitSet ;
  */
 public class terminal_set
 {
+
   /*-----------------------------------------------------------*/
   /*--- Constructor(s) ----------------------------------------*/
   /*-----------------------------------------------------------*/
   /** Constructor for an empty set. */
-  public terminal_set ( )
+  public terminal_set ()
   {
     /* allocate the bitset at what is probably the right size */
-    _elements = new BitSet ( terminal.number ( ) ) ;
+    _elements = new BitSet ( terminal.number () );
   }
 
 
@@ -31,8 +32,8 @@ public class terminal_set
    */
   public terminal_set ( terminal_set other ) throws internal_error
   {
-    not_null ( other ) ;
-    _elements = ( BitSet ) other._elements.clone ( ) ;
+    not_null ( other );
+    _elements = ( BitSet ) other._elements.clone ();
   }
 
 
@@ -40,14 +41,14 @@ public class terminal_set
   /*--- (Access to) Static (Class) Variables ------------------*/
   /*-----------------------------------------------------------*/
   /** Constant for the empty set. */
-  public static final terminal_set EMPTY = new terminal_set ( ) ;
+  public static final terminal_set EMPTY = new terminal_set ();
 
 
   /*-----------------------------------------------------------*/
   /*--- (Access to) Instance Variables ------------------------*/
   /*-----------------------------------------------------------*/
   /** Bitset to implement the actual set. */
-  protected BitSet _elements ;
+  protected BitSet _elements;
 
 
   /*-----------------------------------------------------------*/
@@ -62,15 +63,15 @@ public class terminal_set
   protected void not_null ( Object obj ) throws internal_error
   {
     if ( obj == null )
-      throw new internal_error ( "Null object used in set operation" ) ;
+      throw new internal_error ( "Null object used in set operation" );
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Determine if the set is empty. */
-  public boolean empty ( )
+  public boolean empty ()
   {
-    return equals ( EMPTY ) ;
+    return equals ( EMPTY );
   }
 
 
@@ -82,8 +83,8 @@ public class terminal_set
    */
   public boolean contains ( terminal sym ) throws internal_error
   {
-    not_null ( sym ) ;
-    return _elements.get ( sym.index ( ) ) ;
+    not_null ( sym );
+    return _elements.get ( sym.index () );
   }
 
 
@@ -95,7 +96,7 @@ public class terminal_set
    */
   public boolean contains ( int indx )
   {
-    return _elements.get ( indx ) ;
+    return _elements.get ( indx );
   }
 
 
@@ -107,13 +108,13 @@ public class terminal_set
    */
   public boolean is_subset_of ( terminal_set other ) throws internal_error
   {
-    not_null ( other ) ;
+    not_null ( other );
     /* make a copy of the other set */
-    BitSet copy_other = ( BitSet ) other._elements.clone ( ) ;
+    BitSet copy_other = ( BitSet ) other._elements.clone ();
     /* and or in */
-    copy_other.or ( _elements ) ;
+    copy_other.or ( _elements );
     /* if it hasn't changed, we were a subset */
-    return copy_other.equals ( other._elements ) ;
+    return copy_other.equals ( other._elements );
   }
 
 
@@ -125,8 +126,8 @@ public class terminal_set
    */
   public boolean is_superset_of ( terminal_set other ) throws internal_error
   {
-    not_null ( other ) ;
-    return other.is_subset_of ( this ) ;
+    not_null ( other );
+    return other.is_subset_of ( this );
   }
 
 
@@ -139,13 +140,14 @@ public class terminal_set
    */
   public boolean add ( terminal sym ) throws internal_error
   {
-    boolean result ;
-    not_null ( sym ) ;
+    boolean result;
+    not_null ( sym );
     /* see if we already have this */
-    result = _elements.get ( sym.index ( ) ) ;
+    result = _elements.get ( sym.index () );
     /* if not we add it */
-    if ( ! result ) _elements.set ( sym.index ( ) ) ;
-    return result ;
+    if ( !result )
+      _elements.set ( sym.index () );
+    return result;
   }
 
 
@@ -157,8 +159,8 @@ public class terminal_set
    */
   public void remove ( terminal sym ) throws internal_error
   {
-    not_null ( sym ) ;
-    _elements.clear ( sym.index ( ) ) ;
+    not_null ( sym );
+    _elements.clear ( sym.index () );
   }
 
 
@@ -171,13 +173,13 @@ public class terminal_set
    */
   public boolean add ( terminal_set other ) throws internal_error
   {
-    not_null ( other ) ;
+    not_null ( other );
     /* make a copy */
-    BitSet copy = ( BitSet ) _elements.clone ( ) ;
+    BitSet copy = ( BitSet ) _elements.clone ();
     /* or in the other set */
-    _elements.or ( other._elements ) ;
+    _elements.or ( other._elements );
     /* changed if we are not the same as the copy */
-    return ! _elements.equals ( copy ) ;
+    return !_elements.equals ( copy );
   }
 
 
@@ -189,13 +191,13 @@ public class terminal_set
    */
   public boolean intersects ( terminal_set other ) throws internal_error
   {
-    not_null ( other ) ;
+    not_null ( other );
     /* make a copy of the other set */
-    BitSet copy = ( BitSet ) other._elements.clone ( ) ;
+    BitSet copy = ( BitSet ) other._elements.clone ();
     /* xor out our values */
-    copy.xor ( this._elements ) ;
+    copy.xor ( this._elements );
     /* see if its different */
-    return ! copy.equals ( other._elements ) ;
+    return !copy.equals ( other._elements );
   }
 
 
@@ -204,8 +206,9 @@ public class terminal_set
   public boolean equals ( terminal_set other )
   {
     if ( other == null )
-      return false ;
-    else return _elements.equals ( other._elements ) ;
+      return false;
+    else
+      return _elements.equals ( other._elements );
   }
 
 
@@ -214,31 +217,33 @@ public class terminal_set
   public boolean equals ( Object other )
   {
     if ( ! ( other instanceof terminal_set ) )
-      return false ;
-    else return equals ( ( terminal_set ) other ) ;
+      return false;
+    else
+      return equals ( ( terminal_set ) other );
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Convert to string. */
-  public String toString ( )
+  public String toString ()
   {
-    String result ;
-    boolean comma_flag ;
-    result = "{" ;
-    comma_flag = false ;
-    for ( int t = 0 ; t < terminal.number ( ) ; t ++ )
+    String result;
+    boolean comma_flag;
+    result = "{";
+    comma_flag = false;
+    for ( int t = 0 ; t < terminal.number () ; t++ )
     {
       if ( _elements.get ( t ) )
       {
         if ( comma_flag )
-          result += ", " ;
-        else comma_flag = true ;
-        result += terminal.find ( t ).name ( ) ;
+          result += ", ";
+        else
+          comma_flag = true;
+        result += terminal.find ( t ).name ();
       }
     }
-    result += "}" ;
-    return result ;
+    result += "}";
+    return result;
   }
   /*-----------------------------------------------------------*/
 }

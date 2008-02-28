@@ -1,10 +1,11 @@
-package de.unisiegen.tpml.core.bigstep ;
+package de.unisiegen.tpml.core.bigstep;
 
 
-import java.lang.reflect.Method ;
-import de.unisiegen.tpml.core.AbstractProofRule ;
-import de.unisiegen.tpml.core.AbstractProofRuleSet ;
-import de.unisiegen.tpml.core.languages.Language ;
+import java.lang.reflect.Method;
+
+import de.unisiegen.tpml.core.AbstractProofRule;
+import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.languages.Language;
 
 
 /**
@@ -19,6 +20,7 @@ import de.unisiegen.tpml.core.languages.Language ;
  */
 public abstract class AbstractBigStepProofRuleSet extends AbstractProofRuleSet
 {
+
   //
   // Constructor (protected)
   //
@@ -33,7 +35,7 @@ public abstract class AbstractBigStepProofRuleSet extends AbstractProofRuleSet
    */
   protected AbstractBigStepProofRuleSet ( Language language )
   {
-    super ( language ) ;
+    super ( language );
   }
 
 
@@ -57,9 +59,9 @@ public abstract class AbstractBigStepProofRuleSet extends AbstractProofRuleSet
    *           <code>applyMethod</code> is <code>null</code>.
    * @see #register(int, String, Method, Method)
    */
-  protected void register ( int group , String name , Method applyMethod )
+  protected void register ( int group, String name, Method applyMethod )
   {
-    register ( group , name , applyMethod , null ) ;
+    register ( group, name, applyMethod, null );
   }
 
 
@@ -81,39 +83,40 @@ public abstract class AbstractBigStepProofRuleSet extends AbstractProofRuleSet
    * @see #register(int, String, Method)
    * @see AbstractProofRuleSet#register(AbstractProofRule)
    */
-  protected void register ( int group , String name , final Method applyMethod ,
+  protected void register ( int group, String name, final Method applyMethod,
       final Method updateMethod )
   {
     if ( name == null )
     {
-      throw new NullPointerException ( "name is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
     }
     if ( applyMethod == null )
     {
-      throw new NullPointerException ( "applyMethod is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "applyMethod is null" ); //$NON-NLS-1$
     }
     // register a new proof rule with the name and methods
-    register ( new AbstractBigStepProofRule ( group , name )
+    register ( new AbstractBigStepProofRule ( group, name )
     {
-      @ Override
-      protected void applyInternal ( BigStepProofContext context ,
+
+      @Override
+      protected void applyInternal ( BigStepProofContext context,
           BigStepProofNode node ) throws Exception
       {
-        applyMethod.invoke ( AbstractBigStepProofRuleSet.this , context , node ) ;
+        applyMethod.invoke ( AbstractBigStepProofRuleSet.this, context, node );
       }
 
 
-      @ Override
-      protected void updateInternal ( BigStepProofContext context ,
+      @Override
+      protected void updateInternal ( BigStepProofContext context,
           BigStepProofNode node ) throws Exception
       {
         if ( updateMethod != null )
         {
-          updateMethod.invoke ( AbstractBigStepProofRuleSet.this , context ,
-              node ) ;
+          updateMethod
+              .invoke ( AbstractBigStepProofRuleSet.this, context, node );
         }
       }
-    } ) ;
+    } );
   }
 
 
@@ -134,10 +137,10 @@ public abstract class AbstractBigStepProofRuleSet extends AbstractProofRuleSet
    *           <code>applyMethodName</code> is <code>null</code>.
    * @see #register(int, String, Method)
    */
-  protected void registerByMethodName ( int group , String name ,
+  protected void registerByMethodName ( int group, String name,
       String applyMethodName )
   {
-    register ( group , name , getMethodByName ( applyMethodName ) ) ;
+    register ( group, name, getMethodByName ( applyMethodName ) );
   }
 
 
@@ -157,11 +160,11 @@ public abstract class AbstractBigStepProofRuleSet extends AbstractProofRuleSet
    *           is <code>null</code>.
    * @see #register(int, String, Method, Method)
    */
-  protected void registerByMethodName ( int group , String name ,
-      String applyMethodName , String updateMethodName )
+  protected void registerByMethodName ( int group, String name,
+      String applyMethodName, String updateMethodName )
   {
-    register ( group , name , getMethodByName ( applyMethodName ) ,
-        getMethodByName ( updateMethodName ) ) ;
+    register ( group, name, getMethodByName ( applyMethodName ),
+        getMethodByName ( updateMethodName ) );
   }
 
 
@@ -180,7 +183,7 @@ public abstract class AbstractBigStepProofRuleSet extends AbstractProofRuleSet
    */
   protected void unregister ( String name )
   {
-    unregister ( getRuleByName ( name ) ) ;
+    unregister ( getRuleByName ( name ) );
   }
 
 
@@ -200,24 +203,24 @@ public abstract class AbstractBigStepProofRuleSet extends AbstractProofRuleSet
   {
     if ( methodName == null )
     {
-      throw new NullPointerException ( "methodName is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "methodName is null" ); //$NON-NLS-1$
     }
     try
     {
       // lookup the method with the parameters BigStepProofContext and
       // BigStepProofNode
-      return getClass ( ).getMethod ( methodName , new Class [ ]
-      { BigStepProofContext.class , BigStepProofNode.class } ) ;
+      return getClass ().getMethod ( methodName, new Class []
+      { BigStepProofContext.class, BigStepProofNode.class } );
     }
     catch ( RuntimeException e )
     {
       // just re-throw the exception
-      throw e ;
+      throw e;
     }
     catch ( Exception e )
     {
       // translate the exception to a runtime exception
-      throw new RuntimeException ( "Method " + methodName + " not found" , e ) ; //$NON-NLS-1$ //$NON-NLS-2$
+      throw new RuntimeException ( "Method " + methodName + " not found", e ); //$NON-NLS-1$ //$NON-NLS-2$
     }
   }
 }

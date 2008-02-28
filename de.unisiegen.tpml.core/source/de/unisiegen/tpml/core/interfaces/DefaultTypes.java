@@ -1,8 +1,8 @@
-package de.unisiegen.tpml.core.interfaces ;
+package de.unisiegen.tpml.core.interfaces;
 
 
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
 
 
 /**
@@ -13,12 +13,13 @@ import de.unisiegen.tpml.core.types.Type ;
  */
 public interface DefaultTypes
 {
+
   /**
    * Returns the sub {@link Type}s.
    * 
    * @return the sub {@link Type}s.
    */
-  public MonoType [ ] getTypes ( ) ;
+  public MonoType [] getTypes ();
 
 
   /**
@@ -26,5 +27,5 @@ public interface DefaultTypes
    * 
    * @return The indices of the child {@link Type}s.
    */
-  public int [ ] getTypesIndex ( ) ;
+  public int [] getTypesIndex ();
 }

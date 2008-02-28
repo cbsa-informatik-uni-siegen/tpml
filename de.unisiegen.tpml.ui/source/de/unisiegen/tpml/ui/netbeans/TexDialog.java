@@ -1,20 +1,12 @@
-/*
- * PdfDialog.java
- *
- * Created on 8. August 2007, 16:34
- */
-
 package de.unisiegen.tpml.ui.netbeans;
 
-import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.NumberFormatter;
 
 /**
  *
  * @author  cfehling
  */
+@ SuppressWarnings ( "all" )
 public class TexDialog extends javax.swing.JDialog {
     
     /** Creates new form PdfDialog */

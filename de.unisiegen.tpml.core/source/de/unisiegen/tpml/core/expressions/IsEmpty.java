@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -15,24 +15,25 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class IsEmpty extends UnaryListOperator
 {
+
   /**
    * The string for the is empty.
    */
-  private static final String IS_EMPTY = "is_empty" ; //$NON-NLS-1$
+  private static final String IS_EMPTY = "is_empty"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = Expression.getCaption ( IsEmpty.class ) ;
+  private static final String CAPTION = Expression.getCaption ( IsEmpty.class );
 
 
   /**
    * Allocates a new <code>IsEmpty</code> instance.
    */
-  public IsEmpty ( )
+  public IsEmpty ()
   {
-    super ( IS_EMPTY ) ;
+    super ( IS_EMPTY );
   }
 
 
@@ -44,11 +45,11 @@ public final class IsEmpty extends UnaryListOperator
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public IsEmpty ( int pParserStartOffset , int pParserEndOffset )
+  public IsEmpty ( int pParserStartOffset, int pParserEndOffset )
   {
-    this ( ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ();
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -57,19 +58,19 @@ public final class IsEmpty extends UnaryListOperator
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public IsEmpty clone ( )
+  @Override
+  public IsEmpty clone ()
   {
-    return new IsEmpty ( ) ;
+    return new IsEmpty ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

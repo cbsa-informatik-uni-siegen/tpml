@@ -1,10 +1,11 @@
-package de.unisiegen.tpml.core.bigstep ;
+package de.unisiegen.tpml.core.bigstep;
 
 
-import java.util.LinkedList ;
-import de.unisiegen.tpml.core.ProofRuleException ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.interpreters.Store ;
+import java.util.LinkedList;
+
+import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interpreters.Store;
 
 
 /**
@@ -21,13 +22,14 @@ import de.unisiegen.tpml.core.interpreters.Store ;
  */
 final class DefaultBigStepProofContext implements BigStepProofContext
 {
+
   //
   // Attributes
   //
   /**
    * The big step proof model to which this context is connected.
    */
-  private BigStepProofModel model ;
+  private BigStepProofModel model;
 
 
   /**
@@ -36,7 +38,7 @@ final class DefaultBigStepProofContext implements BigStepProofContext
    * @see #addRedoAction(Runnable)
    * @see #getRedoActions()
    */
-  private LinkedList < Runnable > redoActions = new LinkedList < Runnable > ( ) ;
+  private LinkedList < Runnable > redoActions = new LinkedList < Runnable > ();
 
 
   /**
@@ -45,7 +47,7 @@ final class DefaultBigStepProofContext implements BigStepProofContext
    * @see #addUndoAction(Runnable)
    * @see #getUndoActions()
    */
-  private LinkedList < Runnable > undoActions = new LinkedList < Runnable > ( ) ;
+  private LinkedList < Runnable > undoActions = new LinkedList < Runnable > ();
 
 
   //
@@ -63,9 +65,9 @@ final class DefaultBigStepProofContext implements BigStepProofContext
   {
     if ( pModel == null )
     {
-      throw new NullPointerException ( "model is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "model is null" ); //$NON-NLS-1$
     }
-    this.model = pModel ;
+    this.model = pModel;
   }
 
 
@@ -78,21 +80,21 @@ final class DefaultBigStepProofContext implements BigStepProofContext
    * @see de.unisiegen.tpml.core.bigstep.BigStepProofContext#addProofNode(de.unisiegen.tpml.core.bigstep.BigStepProofNode,
    *      de.unisiegen.tpml.core.expressions.Expression)
    */
-  public void addProofNode ( BigStepProofNode node , Expression expression )
+  public void addProofNode ( BigStepProofNode node, Expression expression )
   {
     // default to inherit the store of the parent node
-    Store store = node.getStore ( ) ;
+    Store store = node.getStore ();
     // use the store of the last child node (if proven)
-    if ( node.getChildCount ( ) > 0 )
+    if ( node.getChildCount () > 0 )
     {
-      BigStepProofResult result = node.getLastChild ( ).getResult ( ) ;
+      BigStepProofResult result = node.getLastChild ().getResult ();
       if ( result != null )
       {
-        store = result.getStore ( ) ;
+        store = result.getStore ();
       }
     }
     // and add the new node
-    addProofNode ( node , expression , store ) ;
+    addProofNode ( node, expression, store );
   }
 
 
@@ -103,11 +105,11 @@ final class DefaultBigStepProofContext implements BigStepProofContext
    *      de.unisiegen.tpml.core.expressions.Expression,
    *      de.unisiegen.tpml.core.interpreters.Store)
    */
-  public void addProofNode ( BigStepProofNode node , Expression expression ,
+  public void addProofNode ( BigStepProofNode node, Expression expression,
       Store store )
   {
-    this.model.contextAddProofNode ( this , ( DefaultBigStepProofNode ) node ,
-        new DefaultBigStepProofNode ( expression , store ) ) ;
+    this.model.contextAddProofNode ( this, ( DefaultBigStepProofNode ) node,
+        new DefaultBigStepProofNode ( expression, store ) );
   }
 
 
@@ -116,9 +118,9 @@ final class DefaultBigStepProofContext implements BigStepProofContext
    * 
    * @see de.unisiegen.tpml.core.bigstep.BigStepProofContext#isMemoryEnabled()
    */
-  public boolean isMemoryEnabled ( )
+  public boolean isMemoryEnabled ()
   {
-    return this.model.isMemoryEnabled ( ) ;
+    return this.model.isMemoryEnabled ();
   }
 
 
@@ -129,7 +131,7 @@ final class DefaultBigStepProofContext implements BigStepProofContext
    */
   public BigStepProofRule newNoopRule ( String name )
   {
-    return AbstractBigStepProofRule.newNoopRule ( name ) ;
+    return AbstractBigStepProofRule.newNoopRule ( name );
   }
 
 
@@ -139,11 +141,11 @@ final class DefaultBigStepProofContext implements BigStepProofContext
    * @see de.unisiegen.tpml.core.bigstep.BigStepProofContext#setProofNodeResult(de.unisiegen.tpml.core.bigstep.BigStepProofNode,
    *      de.unisiegen.tpml.core.bigstep.BigStepProofResult)
    */
-  public void setProofNodeResult ( BigStepProofNode node ,
+  public void setProofNodeResult ( BigStepProofNode node,
       BigStepProofResult result )
   {
-    this.model.contextSetProofNodeResult ( this ,
-        ( DefaultBigStepProofNode ) node , result ) ;
+    this.model.contextSetProofNodeResult ( this,
+        ( DefaultBigStepProofNode ) node, result );
   }
 
 
@@ -153,21 +155,21 @@ final class DefaultBigStepProofContext implements BigStepProofContext
    * @see de.unisiegen.tpml.core.bigstep.BigStepProofContext#setProofNodeResult(de.unisiegen.tpml.core.bigstep.BigStepProofNode,
    *      de.unisiegen.tpml.core.expressions.Expression)
    */
-  public void setProofNodeResult ( BigStepProofNode node , Expression value )
+  public void setProofNodeResult ( BigStepProofNode node, Expression value )
   {
     // default to inhert the store of this node
-    Store store = node.getStore ( ) ;
+    Store store = node.getStore ();
     // use the store of the last child node (if proven)
-    if ( node.getChildCount ( ) > 0 )
+    if ( node.getChildCount () > 0 )
     {
-      BigStepProofResult result = node.getLastChild ( ).getResult ( ) ;
+      BigStepProofResult result = node.getLastChild ().getResult ();
       if ( result != null )
       {
-        store = result.getStore ( ) ;
+        store = result.getStore ();
       }
     }
     // add the result
-    setProofNodeResult ( node , value , store ) ;
+    setProofNodeResult ( node, value, store );
   }
 
 
@@ -178,10 +180,10 @@ final class DefaultBigStepProofContext implements BigStepProofContext
    *      de.unisiegen.tpml.core.expressions.Expression,
    *      de.unisiegen.tpml.core.interpreters.Store)
    */
-  public void setProofNodeResult ( BigStepProofNode node , Expression value ,
+  public void setProofNodeResult ( BigStepProofNode node, Expression value,
       Store store )
   {
-    setProofNodeResult ( node , new BigStepProofResult ( store , value ) ) ;
+    setProofNodeResult ( node, new BigStepProofResult ( store, value ) );
   }
 
 
@@ -191,10 +193,10 @@ final class DefaultBigStepProofContext implements BigStepProofContext
    * @see de.unisiegen.tpml.core.bigstep.BigStepProofContext#setProofNodeRule(de.unisiegen.tpml.core.bigstep.BigStepProofNode,
    *      de.unisiegen.tpml.core.bigstep.BigStepProofRule)
    */
-  public void setProofNodeRule ( BigStepProofNode node , BigStepProofRule rule )
+  public void setProofNodeRule ( BigStepProofNode node, BigStepProofRule rule )
   {
-    this.model.contextSetProofNodeRule ( this ,
-        ( DefaultBigStepProofNode ) node , rule ) ;
+    this.model.contextSetProofNodeRule ( this,
+        ( DefaultBigStepProofNode ) node, rule );
   }
 
 
@@ -215,25 +217,25 @@ final class DefaultBigStepProofContext implements BigStepProofContext
    * @throws ProofRuleException if the application of <code>rule</code> to
    *           <code>node</code> fails.
    */
-  void apply ( BigStepProofRule rule , BigStepProofNode node )
+  void apply ( BigStepProofRule rule, BigStepProofNode node )
       throws ProofRuleException
   {
     // record the proof step
-    setProofNodeRule ( node , rule ) ;
+    setProofNodeRule ( node, rule );
     // try to apply the rule to the node
-    rule.apply ( this , node ) ;
+    rule.apply ( this, node );
     // update all (unproven) super nodes
-    BigStepProofNode newNode = node ;
+    BigStepProofNode newNode = node;
     for ( ; ; )
     {
       // determine the parent node
-      newNode = newNode.getParent ( ) ;
+      newNode = newNode.getParent ();
       if ( newNode == null )
       {
-        break ;
+        break;
       }
       // update the parent node
-      updateNode ( newNode ) ;
+      updateNode ( newNode );
     }
   }
 
@@ -245,14 +247,14 @@ final class DefaultBigStepProofContext implements BigStepProofContext
    * performed actions, using the recorded undo actions. The recorded undo
    * actions will be cleared afterwards.
    */
-  void revert ( )
+  void revert ()
   {
     // undo all already performed changes
     for ( Runnable undoAction : this.undoActions )
     {
-      undoAction.run ( ) ;
+      undoAction.run ();
     }
-    this.undoActions.clear ( ) ;
+    this.undoActions.clear ();
   }
 
 
@@ -273,46 +275,46 @@ final class DefaultBigStepProofContext implements BigStepProofContext
   void updateNode ( BigStepProofNode node )
   {
     // skip the node if its already proven
-    if ( node.isProven ( ) )
+    if ( node.isProven () )
     {
-      return ;
+      return;
     }
     // check if all child nodes are finished...
-    boolean childrenFinished = true ;
-    for ( int n = 0 ; childrenFinished && n < node.getChildCount ( ) ; ++ n )
+    boolean childrenFinished = true;
+    for ( int n = 0 ; childrenFinished && n < node.getChildCount () ; ++n )
     {
       childrenFinished = ( childrenFinished && node.getChildAt ( n )
-          .isFinished ( ) ) ;
+          .isFinished () );
     }
     // ...and if so, check if any resulted in an exception
-    BigStepProofNode nodeWithExn = null ;
+    BigStepProofNode nodeWithExn = null;
     if ( childrenFinished )
     {
-      for ( int n = 0 ; n < node.getChildCount ( ) ; ++ n )
+      for ( int n = 0 ; n < node.getChildCount () ; ++n )
       {
-        nodeWithExn = node.getChildAt ( n ) ;
-        if ( nodeWithExn.getResult ( ).getValue ( ).isException ( ) )
+        nodeWithExn = node.getChildAt ( n );
+        if ( nodeWithExn.getResult ().getValue ().isException () )
         {
-          break ;
+          break;
         }
-        nodeWithExn = null ;
+        nodeWithExn = null;
       }
     }
     // determine the rule that was applied to the node
     AbstractBigStepProofRule rule = ( AbstractBigStepProofRule ) node
-        .getRule ( ) ;
+        .getRule ();
     // check if child node resulted in an exception
     if ( nodeWithExn != null )
     {
       // generate an exception rule for the node
-      setProofNodeRule ( node , rule.toExnRule ( node.getIndex ( nodeWithExn ) ) ) ;
+      setProofNodeRule ( node, rule.toExnRule ( node.getIndex ( nodeWithExn ) ) );
       // forward the exception value
-      setProofNodeResult ( node , nodeWithExn.getResult ( ) ) ;
+      setProofNodeResult ( node, nodeWithExn.getResult () );
     }
     else
     {
       // use the rule's update() mechanism
-      rule.update ( this , node ) ;
+      rule.update ( this, node );
     }
   }
 
@@ -334,12 +336,12 @@ final class DefaultBigStepProofContext implements BigStepProofContext
   {
     if ( redoAction == null )
     {
-      throw new NullPointerException ( "redoAction is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "redoAction is null" ); //$NON-NLS-1$
     }
     // perform the action
-    redoAction.run ( ) ;
+    redoAction.run ();
     // record the action
-    this.redoActions.add ( redoAction ) ;
+    this.redoActions.add ( redoAction );
   }
 
 
@@ -356,10 +358,10 @@ final class DefaultBigStepProofContext implements BigStepProofContext
   {
     if ( undoAction == null )
     {
-      throw new NullPointerException ( "undoAction is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "undoAction is null" ); //$NON-NLS-1$
     }
     // record the action
-    this.undoActions.add ( 0 , undoAction ) ;
+    this.undoActions.add ( 0, undoAction );
   }
 
 
@@ -371,19 +373,20 @@ final class DefaultBigStepProofContext implements BigStepProofContext
    * @see #addRedoAction(Runnable)
    * @see #getUndoActions()
    */
-  Runnable getRedoActions ( )
+  Runnable getRedoActions ()
   {
-    return new Runnable ( )
+    return new Runnable ()
     {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
       {
         for ( Runnable redoAction : DefaultBigStepProofContext.this.redoActions )
         {
-          redoAction.run ( ) ;
+          redoAction.run ();
         }
       }
-    } ;
+    };
   }
 
 
@@ -395,18 +398,19 @@ final class DefaultBigStepProofContext implements BigStepProofContext
    * @see #addUndoAction(Runnable)
    * @see #getRedoActions()
    */
-  Runnable getUndoActions ( )
+  Runnable getUndoActions ()
   {
-    return new Runnable ( )
+    return new Runnable ()
     {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
       {
         for ( Runnable undoAction : DefaultBigStepProofContext.this.undoActions )
         {
-          undoAction.run ( ) ;
+          undoAction.run ();
         }
       }
-    } ;
+    };
   }
 }

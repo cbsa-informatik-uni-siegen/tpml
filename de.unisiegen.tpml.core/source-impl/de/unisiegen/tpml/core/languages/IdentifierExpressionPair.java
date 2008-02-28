@@ -1,8 +1,8 @@
-package de.unisiegen.tpml.core.languages ;
+package de.unisiegen.tpml.core.languages;
 
 
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
 
 
 /**
@@ -12,16 +12,17 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
  */
 public class IdentifierExpressionPair
 {
+
   /**
    * The {@link Identifier}.
    */
-  private Identifier id ;
+  private Identifier id;
 
 
   /**
    * The {@link Expression}.
    */
-  private Expression e ;
+  private Expression e;
 
 
   /**
@@ -30,10 +31,10 @@ public class IdentifierExpressionPair
    * @param pId The input {@link Identifier}.
    * @param pExpression The input {@link Expression}.
    */
-  public IdentifierExpressionPair ( Identifier pId , Expression pExpression )
+  public IdentifierExpressionPair ( Identifier pId, Expression pExpression )
   {
-    this.id = pId ;
-    this.e = pExpression ;
+    this.id = pId;
+    this.e = pExpression;
   }
 
 
@@ -43,9 +44,9 @@ public class IdentifierExpressionPair
    * @return The id.
    * @see #id
    */
-  public Identifier getId ( )
+  public Identifier getId ()
   {
-    return this.id ;
+    return this.id;
   }
 
 
@@ -55,8 +56,8 @@ public class IdentifierExpressionPair
    * @return The expression.
    * @see #e
    */
-  public Expression getE ( )
+  public Expression getE ()
   {
-    return this.e ;
+    return this.e;
   }
 }

@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -11,6 +11,7 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public abstract class UnaryOperator extends Constant
 {
+
   /**
    * Allocates a new <code>UnaryOperator</code> with the specified string
    * representation <code>text</code>.
@@ -21,7 +22,7 @@ public abstract class UnaryOperator extends Constant
    */
   protected UnaryOperator ( String pText )
   {
-    super ( pText ) ;
+    super ( pText );
   }
 
 
@@ -37,7 +38,7 @@ public abstract class UnaryOperator extends Constant
    *           the expression <code>e</code>.
    */
   public abstract Expression applyTo ( Expression pExpression )
-      throws UnaryOperatorException ;
+      throws UnaryOperatorException;
 
 
   /**
@@ -45,13 +46,13 @@ public abstract class UnaryOperator extends Constant
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public abstract UnaryOperator clone ( ) ;
+  @Override
+  public abstract UnaryOperator clone ();
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public abstract String getCaption ( ) ;
+  @Override
+  public abstract String getCaption ();
 }

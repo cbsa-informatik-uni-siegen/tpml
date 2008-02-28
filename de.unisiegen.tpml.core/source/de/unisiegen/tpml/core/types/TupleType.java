@@ -1,16 +1,17 @@
-package de.unisiegen.tpml.core.types ;
+package de.unisiegen.tpml.core.types;
 
 
-import java.util.Arrays ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import java.util.Arrays;
+
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -24,34 +25,35 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  */
 public final class TupleType extends MonoType implements DefaultTypes
 {
+
   /**
    * String for the case that the type substitution is null.
    */
-  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the types are null.
    */
-  private static final String TYPES_NULL = "types is null" ; //$NON-NLS-1$
+  private static final String TYPES_NULL = "types is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that one type is null.
    */
-  private static final String TYPE_NULL = "one type is null" ; //$NON-NLS-1$
+  private static final String TYPE_NULL = "one type is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the types are to small.
    */
-  private static final String TO_SMALL = "types must contain at least two items" ; //$NON-NLS-1$
+  private static final String TO_SMALL = "types must contain at least two items"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = Type.getCaption ( TupleType.class ) ;
+  private static final String CAPTION = Type.getCaption ( TupleType.class );
 
 
   /**
@@ -59,25 +61,25 @@ public final class TupleType extends MonoType implements DefaultTypes
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_TUPLE_TYPE , 1 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}#1" , "tau1 * ... * taun" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_TUPLE_TYPE, 1, "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}#1", "tau1 * ... * taun" ) ); //$NON-NLS-1$//$NON-NLS-2$
+    return commands;
   }
 
 
   /**
    * The children {@link Type}s of this {@link Type}.
    */
-  private MonoType [ ] types ;
+  private MonoType [] types;
 
 
   /**
    * Indeces of the child {@link Type}s.
    */
-  private int [ ] indicesType ;
+  private int [] indicesType;
 
 
   /**
@@ -89,29 +91,29 @@ public final class TupleType extends MonoType implements DefaultTypes
    *           two elements.
    * @throws NullPointerException if <code>pTypes</code> is <code>null</code>.
    */
-  public TupleType ( MonoType [ ] pTypes )
+  public TupleType ( MonoType [] pTypes )
   {
     if ( pTypes == null )
     {
-      throw new NullPointerException ( TYPES_NULL ) ;
+      throw new NullPointerException ( TYPES_NULL );
     }
     if ( pTypes.length < 2 )
     {
-      throw new IllegalArgumentException ( TO_SMALL ) ;
+      throw new IllegalArgumentException ( TO_SMALL );
     }
     for ( MonoType type : pTypes )
     {
       if ( type == null )
       {
-        throw new NullPointerException ( TYPE_NULL ) ;
+        throw new NullPointerException ( TYPE_NULL );
       }
     }
-    this.types = pTypes ;
-    this.indicesType = new int [ this.types.length ] ;
-    for ( int i = 0 ; i < this.indicesType.length ; i ++ )
+    this.types = pTypes;
+    this.indicesType = new int [ this.types.length ];
+    for ( int i = 0 ; i < this.indicesType.length ; i++ )
     {
-      this.types [ i ].setParent ( this ) ;
-      this.indicesType [ i ] = i + 1 ;
+      this.types [ i ].setParent ( this );
+      this.indicesType [ i ] = i + 1;
     }
   }
 
@@ -129,12 +131,12 @@ public final class TupleType extends MonoType implements DefaultTypes
    *           two elements.
    * @throws NullPointerException if <code>pTypes</code> is <code>null</code>.
    */
-  public TupleType ( MonoType [ ] pTypes , int pParserStartOffset ,
+  public TupleType ( MonoType [] pTypes, int pParserStartOffset,
       int pParserEndOffset )
   {
-    this ( pTypes ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pTypes );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -143,15 +145,15 @@ public final class TupleType extends MonoType implements DefaultTypes
    * 
    * @see Type#clone()
    */
-  @ Override
-  public TupleType clone ( )
+  @Override
+  public TupleType clone ()
   {
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
-    for ( int i = 0 ; i < newTypes.length ; i ++ )
+    MonoType [] newTypes = new MonoType [ this.types.length ];
+    for ( int i = 0 ; i < newTypes.length ; i++ )
     {
-      newTypes [ i ] = this.types [ i ].clone ( ) ;
+      newTypes [ i ] = this.types [ i ].clone ();
     }
-    return new TupleType ( newTypes ) ;
+    return new TupleType ( newTypes );
   }
 
 
@@ -160,25 +162,25 @@ public final class TupleType extends MonoType implements DefaultTypes
    * 
    * @see Object#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof TupleType )
     {
-      TupleType other = ( TupleType ) pObject ;
-      return Arrays.equals ( this.types , other.types ) ;
+      TupleType other = ( TupleType ) pObject;
+      return Arrays.equals ( this.types, other.types );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -187,12 +189,12 @@ public final class TupleType extends MonoType implements DefaultTypes
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -201,9 +203,9 @@ public final class TupleType extends MonoType implements DefaultTypes
    * 
    * @return the sub {@link Type}s.
    */
-  public MonoType [ ] getTypes ( )
+  public MonoType [] getTypes ()
   {
-    return this.types ;
+    return this.types;
   }
 
 
@@ -212,9 +214,9 @@ public final class TupleType extends MonoType implements DefaultTypes
    * 
    * @return The indices of the child {@link Type}s.
    */
-  public int [ ] getTypesIndex ( )
+  public int [] getTypesIndex ()
   {
-    return this.indicesType ;
+    return this.indicesType;
   }
 
 
@@ -223,10 +225,10 @@ public final class TupleType extends MonoType implements DefaultTypes
    * 
    * @see Object#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return Arrays.hashCode ( this.types ) ;
+    return Arrays.hashCode ( this.types );
   }
 
 
@@ -240,15 +242,15 @@ public final class TupleType extends MonoType implements DefaultTypes
    * @param pTau The {@link MonoType}.
    * @return The resulting {@link Type}.
    */
-  @ Override
-  public TupleType substitute ( TypeName pTypeName , MonoType pTau )
+  @Override
+  public TupleType substitute ( TypeName pTypeName, MonoType pTau )
   {
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
-    for ( int i = 0 ; i < newTypes.length ; i ++ )
+    MonoType [] newTypes = new MonoType [ this.types.length ];
+    for ( int i = 0 ; i < newTypes.length ; i++ )
     {
-      newTypes [ i ] = this.types [ i ].substitute ( pTypeName , pTau ) ;
+      newTypes [ i ] = this.types [ i ].substitute ( pTypeName, pTau );
     }
-    return new TupleType ( newTypes ) ;
+    return new TupleType ( newTypes );
   }
 
 
@@ -257,19 +259,19 @@ public final class TupleType extends MonoType implements DefaultTypes
    * 
    * @see MonoType#substitute(TypeSubstitution)
    */
-  @ Override
+  @Override
   public TupleType substitute ( TypeSubstitution pTypeSubstitution )
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL );
     }
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
-    for ( int i = 0 ; i < newTypes.length ; i ++ )
+    MonoType [] newTypes = new MonoType [ this.types.length ];
+    for ( int i = 0 ; i < newTypes.length ; i++ )
     {
-      newTypes [ i ] = this.types [ i ].substitute ( pTypeSubstitution ) ;
+      newTypes [ i ] = this.types [ i ].substitute ( pTypeSubstitution );
     }
-    return new TupleType ( newTypes ) ;
+    return new TupleType ( newTypes );
   }
 
 
@@ -278,49 +280,49 @@ public final class TupleType extends MonoType implements DefaultTypes
    * 
    * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    StringBuilder body = new StringBuilder ( ) ;
-    for ( int i = 0 ; i < this.types.length ; i ++ )
+    StringBuilder body = new StringBuilder ();
+    for ( int i = 0 ; i < this.types.length ; i++ )
     {
       if ( i > 0 )
       {
-        body.append ( PRETTY_SPACE ) ;
-        body.append ( PRETTY_MULT ) ;
-        body.append ( PRETTY_SPACE ) ;
+        body.append ( PRETTY_SPACE );
+        body.append ( PRETTY_MULT );
+        body.append ( PRETTY_SPACE );
       }
-      body.append ( this.types [ i ].toPrettyString ( ).toString ( ) ) ;
+      body.append ( this.types [ i ].toPrettyString ().toString () );
     }
-    String descriptions[] = new String [ 2 + this.types.length ] ;
-    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
-    descriptions [ 1 ] = body.toString ( ) ;
-    for ( int i = 0 ; i < this.types.length ; i ++ )
+    String descriptions[] = new String [ 2 + this.types.length ];
+    descriptions [ 0 ] = this.toPrettyString ().toString ();
+    descriptions [ 1 ] = body.toString ();
+    for ( int i = 0 ; i < this.types.length ; i++ )
     {
-      descriptions [ 2 + i ] = this.types [ i ].toPrettyString ( ).toString ( ) ;
+      descriptions [ 2 + i ] = this.types [ i ].toPrettyString ().toString ();
     }
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_TUPLE , LATEX_TUPLE_TYPE , pIndent , descriptions ) ;
-    builder.addBuilderBegin ( ) ;
-    for ( int i = 0 ; i < this.types.length ; i ++ )
+        PRIO_TUPLE, LATEX_TUPLE_TYPE, pIndent, descriptions );
+    builder.addBuilderBegin ();
+    for ( int i = 0 ; i < this.types.length ; i++ )
     {
       if ( i > 0 )
       {
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
             + LATEX_INDENT )
-            + LATEX_SPACE ) ;
-        builder.addText ( LATEX_MULT ) ;
-        builder.addText ( LATEX_SPACE ) ;
-        builder.addBreak ( ) ;
+            + LATEX_SPACE );
+        builder.addText ( LATEX_MULT );
+        builder.addText ( LATEX_SPACE );
+        builder.addBreak ();
       }
       builder.addBuilder ( this.types [ i ].toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) ,
-          PRIO_TUPLE_TAU ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ),
+          PRIO_TUPLE_TAU );
     }
-    builder.addBuilderEnd ( ) ;
-    return builder ;
+    builder.addBuilderEnd ();
+    return builder;
   }
 
 
@@ -329,31 +331,31 @@ public final class TupleType extends MonoType implements DefaultTypes
    * 
    * @see Type#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_TUPLE ) ;
-      for ( int i = 0 ; i < this.types.length ; i ++ )
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_TUPLE );
+      for ( int i = 0 ; i < this.types.length ; i++ )
       {
         if ( i > 0 )
         {
-          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-          this.prettyStringBuilder.addText ( PRETTY_MULT ) ;
-          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+          this.prettyStringBuilder.addText ( PRETTY_SPACE );
+          this.prettyStringBuilder.addText ( PRETTY_MULT );
+          this.prettyStringBuilder.addText ( PRETTY_SPACE );
         }
         this.prettyStringBuilder.addBuilder ( this.types [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_TUPLE_TAU ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+            PRIO_TUPLE_TAU );
         if ( i != this.types.length - 1 )
         {
-          this.prettyStringBuilder.addBreak ( ) ;
+          this.prettyStringBuilder.addBreak ();
         }
       }
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

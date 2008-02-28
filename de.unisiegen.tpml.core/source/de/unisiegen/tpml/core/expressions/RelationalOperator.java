@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -14,59 +14,60 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class RelationalOperator extends BinaryOperator
 {
+
   /**
    * The equal string.
    */
-  private static final String EQUAL = "=" ; //$NON-NLS-1$
+  private static final String EQUAL = "="; //$NON-NLS-1$
 
 
   /**
    * The greater equal string.
    */
-  private static final String GREATER_EQUAL = ">=" ; //$NON-NLS-1$
+  private static final String GREATER_EQUAL = ">="; //$NON-NLS-1$
 
 
   /**
    * The greater string.
    */
-  private static final String GREATER = ">" ; //$NON-NLS-1$
+  private static final String GREATER = ">"; //$NON-NLS-1$
 
 
   /**
    * The lower equal string.
    */
-  private static final String LOWER_EQUAL = "<=" ; //$NON-NLS-1$
+  private static final String LOWER_EQUAL = "<="; //$NON-NLS-1$
 
 
   /**
    * The lower string.
    */
-  private static final String LOWER = "<" ; //$NON-NLS-1$
+  private static final String LOWER = "<"; //$NON-NLS-1$
 
 
   /**
    * String for the case that e1 is null.
    */
-  private static final String E1_NULL = "e1 is null" ; //$NON-NLS-1$
+  private static final String E1_NULL = "e1 is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that e2 is null.
    */
-  private static final String E2_NULL = "e2 is null" ; //$NON-NLS-1$
+  private static final String E2_NULL = "e2 is null"; //$NON-NLS-1$
 
 
   /**
    * The inconsistent exception string.
    */
-  private static final String INCONSISTENT = "inconsistent arithmetic operator class" ; //$NON-NLS-1$
+  private static final String INCONSISTENT = "inconsistent arithmetic operator class"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( RelationalOperator.class ) ;
+      .getCaption ( RelationalOperator.class );
 
 
   /**
@@ -74,9 +75,9 @@ public final class RelationalOperator extends BinaryOperator
    * 
    * @return the equals operator.
    */
-  public static final RelationalOperator newEquals ( )
+  public static final RelationalOperator newEquals ()
   {
-    return new RelationalOperator ( EQUAL ) ;
+    return new RelationalOperator ( EQUAL );
   }
 
 
@@ -89,11 +90,10 @@ public final class RelationalOperator extends BinaryOperator
    *          source code.
    * @return the equals operator.
    */
-  public static final RelationalOperator newEquals ( int pParserStartOffset ,
+  public static final RelationalOperator newEquals ( int pParserStartOffset,
       int pParserEndOffset )
   {
-    return new RelationalOperator ( EQUAL , pParserStartOffset ,
-        pParserEndOffset ) ;
+    return new RelationalOperator ( EQUAL, pParserStartOffset, pParserEndOffset );
   }
 
 
@@ -102,9 +102,9 @@ public final class RelationalOperator extends BinaryOperator
    * 
    * @return the greater-equal operator.
    */
-  public static final RelationalOperator newGreaterEqual ( )
+  public static final RelationalOperator newGreaterEqual ()
   {
-    return new RelationalOperator ( GREATER_EQUAL ) ;
+    return new RelationalOperator ( GREATER_EQUAL );
   }
 
 
@@ -118,10 +118,10 @@ public final class RelationalOperator extends BinaryOperator
    * @return the greater-equal operator.
    */
   public static final RelationalOperator newGreaterEqual (
-      int pParserStartOffset , int pParserEndOffset )
+      int pParserStartOffset, int pParserEndOffset )
   {
-    return new RelationalOperator ( GREATER_EQUAL , pParserStartOffset ,
-        pParserEndOffset ) ;
+    return new RelationalOperator ( GREATER_EQUAL, pParserStartOffset,
+        pParserEndOffset );
   }
 
 
@@ -130,9 +130,9 @@ public final class RelationalOperator extends BinaryOperator
    * 
    * @return the greater-than operator.
    */
-  public static final RelationalOperator newGreaterThan ( )
+  public static final RelationalOperator newGreaterThan ()
   {
-    return new RelationalOperator ( GREATER ) ;
+    return new RelationalOperator ( GREATER );
   }
 
 
@@ -146,10 +146,10 @@ public final class RelationalOperator extends BinaryOperator
    * @return the greater-than operator.
    */
   public static final RelationalOperator newGreaterThan (
-      int pParserStartOffset , int pParserEndOffset )
+      int pParserStartOffset, int pParserEndOffset )
   {
-    return new RelationalOperator ( GREATER , pParserStartOffset ,
-        pParserEndOffset ) ;
+    return new RelationalOperator ( GREATER, pParserStartOffset,
+        pParserEndOffset );
   }
 
 
@@ -158,9 +158,9 @@ public final class RelationalOperator extends BinaryOperator
    * 
    * @return the lower-equal operator.
    */
-  public static final RelationalOperator newLowerEqual ( )
+  public static final RelationalOperator newLowerEqual ()
   {
-    return new RelationalOperator ( LOWER_EQUAL ) ;
+    return new RelationalOperator ( LOWER_EQUAL );
   }
 
 
@@ -174,10 +174,10 @@ public final class RelationalOperator extends BinaryOperator
    * @return the lower-equal operator.
    */
   public static final RelationalOperator newLowerEqual (
-      int pParserStartOffset , int pParserEndOffset )
+      int pParserStartOffset, int pParserEndOffset )
   {
-    return new RelationalOperator ( LOWER_EQUAL , pParserStartOffset ,
-        pParserEndOffset ) ;
+    return new RelationalOperator ( LOWER_EQUAL, pParserStartOffset,
+        pParserEndOffset );
   }
 
 
@@ -186,9 +186,9 @@ public final class RelationalOperator extends BinaryOperator
    * 
    * @return the lower-than operator.
    */
-  public static final RelationalOperator newLowerThan ( )
+  public static final RelationalOperator newLowerThan ()
   {
-    return new RelationalOperator ( LOWER ) ;
+    return new RelationalOperator ( LOWER );
   }
 
 
@@ -201,11 +201,10 @@ public final class RelationalOperator extends BinaryOperator
    *          source code.
    * @return the lower-than operator.
    */
-  public static final RelationalOperator newLowerThan ( int pParserStartOffset ,
+  public static final RelationalOperator newLowerThan ( int pParserStartOffset,
       int pParserEndOffset )
   {
-    return new RelationalOperator ( LOWER , pParserStartOffset ,
-        pParserEndOffset ) ;
+    return new RelationalOperator ( LOWER, pParserStartOffset, pParserEndOffset );
   }
 
 
@@ -218,7 +217,7 @@ public final class RelationalOperator extends BinaryOperator
    */
   private RelationalOperator ( String pText )
   {
-    super ( pText , PRIO_RELATIONAL_OPERATOR ) ;
+    super ( pText, PRIO_RELATIONAL_OPERATOR );
   }
 
 
@@ -233,12 +232,12 @@ public final class RelationalOperator extends BinaryOperator
    *          source code.
    * @throws NullPointerException if <code>text</code> is <code>null</code>.
    */
-  private RelationalOperator ( String pText , int pParserStartOffset ,
+  private RelationalOperator ( String pText, int pParserStartOffset,
       int pParserEndOffset )
   {
-    super ( pText , PRIO_RELATIONAL_OPERATOR ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    super ( pText, PRIO_RELATIONAL_OPERATOR );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -247,54 +246,54 @@ public final class RelationalOperator extends BinaryOperator
    * 
    * @see BinaryOperator#applyTo(Expression, Expression)
    */
-  @ Override
-  public Expression applyTo ( Expression pExpression1 , Expression pExpression2 )
+  @Override
+  public Expression applyTo ( Expression pExpression1, Expression pExpression2 )
       throws BinaryOperatorException
   {
     if ( pExpression1 == null )
     {
-      throw new NullPointerException ( E1_NULL ) ;
+      throw new NullPointerException ( E1_NULL );
     }
     if ( pExpression2 == null )
     {
-      throw new NullPointerException ( E2_NULL ) ;
+      throw new NullPointerException ( E2_NULL );
     }
     try
     {
       // determine the numeric values of the operands
-      int n1 = ( ( IntegerConstant ) pExpression1 ).intValue ( ) ;
-      int n2 = ( ( IntegerConstant ) pExpression2 ).intValue ( ) ;
+      int n1 = ( ( IntegerConstant ) pExpression1 ).intValue ();
+      int n2 = ( ( IntegerConstant ) pExpression2 ).intValue ();
       // perform the requested comparison
-      if ( EQUAL.equals ( getText ( ) ) )
+      if ( EQUAL.equals ( getText () ) )
       {
-        return new BooleanConstant ( n1 == n2 ) ;
+        return new BooleanConstant ( n1 == n2 );
       }
-      else if ( LOWER.equals ( getText ( ) ) )
+      else if ( LOWER.equals ( getText () ) )
       {
-        return new BooleanConstant ( n1 < n2 ) ;
+        return new BooleanConstant ( n1 < n2 );
       }
-      else if ( GREATER.equals ( getText ( ) ) )
+      else if ( GREATER.equals ( getText () ) )
       {
-        return new BooleanConstant ( n1 > n2 ) ;
+        return new BooleanConstant ( n1 > n2 );
       }
-      else if ( LOWER_EQUAL.equals ( getText ( ) ) )
+      else if ( LOWER_EQUAL.equals ( getText () ) )
       {
-        return new BooleanConstant ( n1 <= n2 ) ;
+        return new BooleanConstant ( n1 <= n2 );
       }
-      else if ( GREATER_EQUAL.equals ( getText ( ) ) )
+      else if ( GREATER_EQUAL.equals ( getText () ) )
       {
-        return new BooleanConstant ( n1 >= n2 ) ;
+        return new BooleanConstant ( n1 >= n2 );
       }
       else
       {
         // programming error
-        throw new IllegalStateException ( INCONSISTENT ) ;
+        throw new IllegalStateException ( INCONSISTENT );
       }
     }
     catch ( ClassCastException e )
     {
       // one of the Expression to IntegerConstant casts failed
-      throw new BinaryOperatorException ( this , pExpression1 , pExpression2 ) ;
+      throw new BinaryOperatorException ( this, pExpression1, pExpression2 );
     }
   }
 
@@ -304,19 +303,19 @@ public final class RelationalOperator extends BinaryOperator
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public RelationalOperator clone ( )
+  @Override
+  public RelationalOperator clone ()
   {
-    return new RelationalOperator ( getText ( ) ) ;
+    return new RelationalOperator ( getText () );
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

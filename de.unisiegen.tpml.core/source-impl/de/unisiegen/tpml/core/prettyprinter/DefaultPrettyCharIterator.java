@@ -1,10 +1,10 @@
-package de.unisiegen.tpml.core.prettyprinter ;
+package de.unisiegen.tpml.core.prettyprinter;
 
 
-import java.text.CharacterIterator ;
-import java.util.Collection ;
-import java.util.Iterator ;
-import java.util.Map ;
+import java.text.CharacterIterator;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
 
 
 /**
@@ -18,6 +18,7 @@ import java.util.Map ;
  */
 final class DefaultPrettyCharIterator implements PrettyCharIterator
 {
+
   //
   // Attributes
   //
@@ -26,13 +27,13 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    * 
    * @see #getIndex()
    */
-  private int index ;
+  private int index;
 
 
   /**
    * The raw character content of the {@link PrettyString} we're iterating.
    */
-  private String content ;
+  private String content;
 
 
   /**
@@ -40,7 +41,7 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    * 
    * @see #getAnnotation()
    */
-  private Map < PrettyPrintable , PrettyAnnotation > annotations ;
+  private Map < PrettyPrintable, PrettyAnnotation > annotations;
 
 
   /**
@@ -48,7 +49,7 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    * 
    * @see #getStyle()
    */
-  private PrettyStyle [ ] styles ;
+  private PrettyStyle [] styles;
 
 
   //
@@ -66,11 +67,11 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    *           <code>annotations</code> or <code>styles</code> is
    *           <code>null</code>.
    */
-  DefaultPrettyCharIterator ( String pContent ,
-      Map < PrettyPrintable , PrettyAnnotation > pAnnotations ,
-      PrettyStyle [ ] pStyles )
+  DefaultPrettyCharIterator ( String pContent,
+      Map < PrettyPrintable, PrettyAnnotation > pAnnotations,
+      PrettyStyle [] pStyles )
   {
-    this ( pContent , pAnnotations , pStyles , 0 ) ;
+    this ( pContent, pAnnotations, pStyles, 0 );
   }
 
 
@@ -88,30 +89,30 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    *           <code>annotations</code> or <code>styles</code> is
    *           <code>null</code>.
    */
-  DefaultPrettyCharIterator ( String pContent ,
-      Map < PrettyPrintable , PrettyAnnotation > pAnnotations ,
-      PrettyStyle [ ] pStyles , int pIndex )
+  DefaultPrettyCharIterator ( String pContent,
+      Map < PrettyPrintable, PrettyAnnotation > pAnnotations,
+      PrettyStyle [] pStyles, int pIndex )
   {
     if ( pIndex < 0 )
     {
-      throw new IllegalArgumentException ( "index is negative" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "index is negative" ); //$NON-NLS-1$
     }
     if ( pContent == null )
     {
-      throw new NullPointerException ( "content is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "content is null" ); //$NON-NLS-1$
     }
     if ( pAnnotations == null )
     {
-      throw new NullPointerException ( "annotations is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "annotations is null" ); //$NON-NLS-1$
     }
     if ( pStyles == null )
     {
-      throw new NullPointerException ( "styles is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "styles is null" ); //$NON-NLS-1$
     }
-    this.index = pIndex ;
-    this.content = pContent ;
-    this.annotations = pAnnotations ;
-    this.styles = pStyles ;
+    this.index = pIndex;
+    this.content = pContent;
+    this.annotations = pAnnotations;
+    this.styles = pStyles;
   }
 
 
@@ -123,18 +124,19 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    * 
    * @see PrettyCharIterator#getAnnotation()
    */
-  public PrettyAnnotation getAnnotation ( )
+  public PrettyAnnotation getAnnotation ()
   {
-    Collection < PrettyAnnotation > tmpAnnotations = this.annotations.values ( ) ;
-    for ( Iterator < PrettyAnnotation > iterator = tmpAnnotations.iterator ( ) ; iterator
-        .hasNext ( ) ; )
+    Collection < PrettyAnnotation > tmpAnnotations = this.annotations.values ();
+    for ( Iterator < PrettyAnnotation > iterator = tmpAnnotations.iterator () ; iterator
+        .hasNext () ; )
     {
-      PrettyAnnotation annotation = iterator.next ( ) ;
-      if ( annotation.getStartOffset ( ) <= this.index
-          && this.index <= annotation.getEndOffset ( ) ) return annotation ;
+      PrettyAnnotation annotation = iterator.next ();
+      if ( annotation.getStartOffset () <= this.index
+          && this.index <= annotation.getEndOffset () )
+        return annotation;
     }
     // should never be reached
-    throw new IllegalStateException ( "character iterator index out of bounds" ) ; //$NON-NLS-1$
+    throw new IllegalStateException ( "character iterator index out of bounds" ); //$NON-NLS-1$
   }
 
 
@@ -143,13 +145,13 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    * 
    * @see PrettyCharIterator#getStyle()
    */
-  public PrettyStyle getStyle ( )
+  public PrettyStyle getStyle ()
   {
-    if ( this.index < getEndIndex ( ) )
+    if ( this.index < getEndIndex () )
     {
-      return this.styles [ this.index ] ;
+      return this.styles [ this.index ];
     }
-    return PrettyStyle.NONE ;
+    return PrettyStyle.NONE;
   }
 
 
@@ -161,9 +163,9 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    * 
    * @see java.text.CharacterIterator#first()
    */
-  public char first ( )
+  public char first ()
   {
-    return setIndex ( getBeginIndex ( ) ) ;
+    return setIndex ( getBeginIndex () );
   }
 
 
@@ -172,9 +174,9 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    * 
    * @see java.text.CharacterIterator#last()
    */
-  public char last ( )
+  public char last ()
   {
-    return setIndex ( getEndIndex ( ) ) ;
+    return setIndex ( getEndIndex () );
   }
 
 
@@ -183,13 +185,13 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    * 
    * @see java.text.CharacterIterator#current()
    */
-  public char current ( )
+  public char current ()
   {
-    if ( this.index == getEndIndex ( ) )
+    if ( this.index == getEndIndex () )
     {
-      return CharacterIterator.DONE ;
+      return CharacterIterator.DONE;
     }
-    return this.content.charAt ( this.index ) ;
+    return this.content.charAt ( this.index );
   }
 
 
@@ -198,13 +200,13 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    * 
    * @see java.text.CharacterIterator#next()
    */
-  public char next ( )
+  public char next ()
   {
-    if ( this.index == getEndIndex ( ) )
+    if ( this.index == getEndIndex () )
     {
-      return CharacterIterator.DONE ;
+      return CharacterIterator.DONE;
     }
-    return setIndex ( this.index + 1 ) ;
+    return setIndex ( this.index + 1 );
   }
 
 
@@ -213,13 +215,13 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    * 
    * @see java.text.CharacterIterator#previous()
    */
-  public char previous ( )
+  public char previous ()
   {
-    if ( this.index == getBeginIndex ( ) )
+    if ( this.index == getBeginIndex () )
     {
-      return CharacterIterator.DONE ;
+      return CharacterIterator.DONE;
     }
-    return setIndex ( this.index - 1 ) ;
+    return setIndex ( this.index - 1 );
   }
 
 
@@ -230,13 +232,13 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    */
   public char setIndex ( int position )
   {
-    if ( position < getBeginIndex ( ) || position > getEndIndex ( ) )
+    if ( position < getBeginIndex () || position > getEndIndex () )
     {
       throw new IllegalArgumentException (
-          "invalid character iterator position " + position ) ; //$NON-NLS-1$
+          "invalid character iterator position " + position ); //$NON-NLS-1$
     }
-    this.index = position ;
-    return current ( ) ;
+    this.index = position;
+    return current ();
   }
 
 
@@ -245,9 +247,9 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    * 
    * @see java.text.CharacterIterator#getBeginIndex()
    */
-  public int getBeginIndex ( )
+  public int getBeginIndex ()
   {
-    return 0 ;
+    return 0;
   }
 
 
@@ -256,9 +258,9 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    * 
    * @see java.text.CharacterIterator#getEndIndex()
    */
-  public int getEndIndex ( )
+  public int getEndIndex ()
   {
-    return this.content.length ( ) ;
+    return this.content.length ();
   }
 
 
@@ -267,9 +269,9 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    * 
    * @see java.text.CharacterIterator#getIndex()
    */
-  public int getIndex ( )
+  public int getIndex ()
   {
-    return this.index ;
+    return this.index;
   }
 
 
@@ -279,10 +281,10 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator
    * @return the cloned character iterator.
    * @see java.lang.Object#clone()
    */
-  @ Override
-  public Object clone ( )
+  @Override
+  public Object clone ()
   {
-    return new DefaultPrettyCharIterator ( this.content , this.annotations ,
-        this.styles , this.index ) ;
+    return new DefaultPrettyCharIterator ( this.content, this.annotations,
+        this.styles, this.index );
   }
 }

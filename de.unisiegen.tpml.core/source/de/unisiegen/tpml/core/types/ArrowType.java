@@ -1,14 +1,14 @@
-package de.unisiegen.tpml.core.types ;
+package de.unisiegen.tpml.core.types;
 
 
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -26,35 +26,36 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  */
 public final class ArrowType extends MonoType implements DefaultTypes
 {
+
   /**
    * Indeces of the child {@link Type}s.
    */
-  private static final int [ ] INDICES_TYPE = new int [ ]
-  { 1 , 2 } ;
+  private static final int [] INDICES_TYPE = new int []
+  { 1, 2 };
 
 
   /**
    * String for the case that tau1 is null.
    */
-  private static final String TAU1_NULL = "tau1 is null" ; //$NON-NLS-1$
+  private static final String TAU1_NULL = "tau1 is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that tau2 is null.
    */
-  private static final String TAU2_NULL = "tau2 is null" ; //$NON-NLS-1$
+  private static final String TAU2_NULL = "tau2 is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the type substitution is null.
    */
-  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = Type.getCaption ( ArrowType.class ) ;
+  private static final String CAPTION = Type.getCaption ( ArrowType.class );
 
 
   /**
@@ -62,19 +63,19 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_ARROW_TYPE , 2 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}#1\\ \\to\\ #2" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_ARROW_TYPE, 2, "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}#1\\ \\to\\ #2", "tau1", "tau2" ) ); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+    return commands;
   }
 
 
   /**
    * The children {@link Type}s of this {@link Type}.
    */
-  private MonoType [ ] types ;
+  private MonoType [] types;
 
 
   /**
@@ -87,20 +88,20 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * @throws NullPointerException if either <code>pTau1</code> or
    *           <code>pTau2</code> are <code>null</code>.
    */
-  public ArrowType ( MonoType pTau1 , MonoType pTau2 )
+  public ArrowType ( MonoType pTau1, MonoType pTau2 )
   {
     if ( pTau1 == null )
     {
-      throw new NullPointerException ( TAU1_NULL ) ;
+      throw new NullPointerException ( TAU1_NULL );
     }
     if ( pTau2 == null )
     {
-      throw new NullPointerException ( TAU2_NULL ) ;
+      throw new NullPointerException ( TAU2_NULL );
     }
-    this.types = new MonoType [ ]
-    { pTau1 , pTau2 } ;
-    this.types [ 0 ].setParent ( this ) ;
-    this.types [ 1 ].setParent ( this ) ;
+    this.types = new MonoType []
+    { pTau1, pTau2 };
+    this.types [ 0 ].setParent ( this );
+    this.types [ 1 ].setParent ( this );
   }
 
 
@@ -118,12 +119,12 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * @throws NullPointerException if either <code>pTau1</code> or
    *           <code>pTau2</code> are <code>null</code>.
    */
-  public ArrowType ( MonoType pTau1 , MonoType pTau2 , int pParserStartOffset ,
+  public ArrowType ( MonoType pTau1, MonoType pTau2, int pParserStartOffset,
       int pParserEndOffset )
   {
-    this ( pTau1 , pTau2 ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pTau1, pTau2 );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -132,11 +133,10 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * 
    * @see Type#clone()
    */
-  @ Override
-  public ArrowType clone ( )
+  @Override
+  public ArrowType clone ()
   {
-    return new ArrowType ( this.types [ 0 ].clone ( ) , this.types [ 1 ]
-        .clone ( ) ) ;
+    return new ArrowType ( this.types [ 0 ].clone (), this.types [ 1 ].clone () );
   }
 
 
@@ -150,26 +150,26 @@ public final class ArrowType extends MonoType implements DefaultTypes
    *         <code>obj</code>.
    * @see Object#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof ArrowType )
     {
-      ArrowType other = ( ArrowType ) pObject ;
+      ArrowType other = ( ArrowType ) pObject;
       return ( this.types [ 0 ].equals ( other.types [ 0 ] ) && this.types [ 1 ]
-          .equals ( other.types [ 1 ] ) ) ;
+          .equals ( other.types [ 1 ] ) );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -178,12 +178,12 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -193,9 +193,9 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * @return the parameter type <code>tau1</code>.
    * @see #getTau2()
    */
-  public MonoType getTau1 ( )
+  public MonoType getTau1 ()
   {
-    return this.types [ 0 ] ;
+    return this.types [ 0 ];
   }
 
 
@@ -205,9 +205,9 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * @return the result type <code>tau2</code>.
    * @see #getTau1()
    */
-  public MonoType getTau2 ( )
+  public MonoType getTau2 ()
   {
-    return this.types [ 1 ] ;
+    return this.types [ 1 ];
   }
 
 
@@ -216,9 +216,9 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * 
    * @return the sub {@link Type}s.
    */
-  public MonoType [ ] getTypes ( )
+  public MonoType [] getTypes ()
   {
-    return this.types ;
+    return this.types;
   }
 
 
@@ -227,9 +227,9 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * 
    * @return The indices of the child {@link Type}s.
    */
-  public int [ ] getTypesIndex ( )
+  public int [] getTypesIndex ()
   {
-    return INDICES_TYPE ;
+    return INDICES_TYPE;
   }
 
 
@@ -240,10 +240,10 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * @return a hash value for this arrow type.
    * @see Object#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.types [ 0 ].hashCode ( ) + this.types [ 1 ].hashCode ( ) ;
+    return this.types [ 0 ].hashCode () + this.types [ 1 ].hashCode ();
   }
 
 
@@ -257,12 +257,12 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * @param pTau The {@link MonoType}.
    * @return The resulting {@link Type}.
    */
-  @ Override
-  public ArrowType substitute ( TypeName pTypeName , MonoType pTau )
+  @Override
+  public ArrowType substitute ( TypeName pTypeName, MonoType pTau )
   {
-    MonoType newTau1 = this.types [ 0 ].substitute ( pTypeName , pTau ) ;
-    MonoType newTau2 = this.types [ 1 ].substitute ( pTypeName , pTau ) ;
-    return new ArrowType ( newTau1 , newTau2 ) ;
+    MonoType newTau1 = this.types [ 0 ].substitute ( pTypeName, pTau );
+    MonoType newTau2 = this.types [ 1 ].substitute ( pTypeName, pTau );
+    return new ArrowType ( newTau1, newTau2 );
   }
 
 
@@ -271,15 +271,15 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * 
    * @see Type#substitute(TypeSubstitution)
    */
-  @ Override
+  @Override
   public ArrowType substitute ( TypeSubstitution pTypeSubstitution )
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL );
     }
-    return new ArrowType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ,
-        this.types [ 1 ].substitute ( pTypeSubstitution ) ) ;
+    return new ArrowType ( this.types [ 0 ].substitute ( pTypeSubstitution ),
+        this.types [ 1 ].substitute ( pTypeSubstitution ) );
   }
 
 
@@ -288,23 +288,19 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * 
    * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_ARROW , LATEX_ARROW_TYPE , pIndent , this.toPrettyString ( )
-            .toString ( ) , this.types [ 0 ].toPrettyString ( ).toString ( ) ,
-        this.types [ 1 ].toPrettyString ( ).toString ( ) ) ;
-    builder
-        .addBuilder ( this.types [ 0 ].toLatexStringBuilder (
-            pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
-            PRIO_ARROW_TAU1 ) ;
-    builder
-        .addBuilder ( this.types [ 1 ].toLatexStringBuilder (
-            pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
-            PRIO_ARROW_TAU2 ) ;
-    return builder ;
+        PRIO_ARROW, LATEX_ARROW_TYPE, pIndent, this.toPrettyString ()
+            .toString (), this.types [ 0 ].toPrettyString ().toString (),
+        this.types [ 1 ].toPrettyString ().toString () );
+    builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), PRIO_ARROW_TAU1 );
+    builder.addBuilder ( this.types [ 1 ].toLatexStringBuilder (
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), PRIO_ARROW_TAU2 );
+    return builder;
   }
 
 
@@ -313,25 +309,25 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * 
    * @see Type#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_ARROW ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_ARROW );
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_ARROW_TAU1 ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-      this.prettyStringBuilder.addText ( PRETTY_ARROW ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-      this.prettyStringBuilder.addBreak ( ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+          PRIO_ARROW_TAU1 );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
+      this.prettyStringBuilder.addText ( PRETTY_ARROW );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
+      this.prettyStringBuilder.addBreak ();
       this.prettyStringBuilder.addBuilder ( this.types [ 1 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_ARROW_TAU2 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+          PRIO_ARROW_TAU2 );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

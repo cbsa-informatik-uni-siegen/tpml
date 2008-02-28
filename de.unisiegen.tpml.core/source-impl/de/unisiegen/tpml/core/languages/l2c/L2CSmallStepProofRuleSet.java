@@ -1,20 +1,21 @@
-package de.unisiegen.tpml.core.languages.l2c ;
+package de.unisiegen.tpml.core.languages.l2c;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
-import de.unisiegen.tpml.core.expressions.Attribute ;
-import de.unisiegen.tpml.core.expressions.Inherit ;
-import de.unisiegen.tpml.core.expressions.Class ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.New ;
-import de.unisiegen.tpml.core.expressions.ObjectExpr ;
-import de.unisiegen.tpml.core.expressions.Row ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.core.languages.l2o.L2OLanguage ;
-import de.unisiegen.tpml.core.languages.l2o.L2OSmallStepProofRuleSet ;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+import de.unisiegen.tpml.core.expressions.Attribute;
+import de.unisiegen.tpml.core.expressions.Class;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.Inherit;
+import de.unisiegen.tpml.core.expressions.New;
+import de.unisiegen.tpml.core.expressions.ObjectExpr;
+import de.unisiegen.tpml.core.expressions.Row;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
+import de.unisiegen.tpml.core.languages.l2o.L2OSmallStepProofRuleSet;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofContext;
 
 
 /**
@@ -26,40 +27,41 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
  */
 public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
 {
+
   /**
    * The string of the <code>CLASS-EVAL</code> rule.
    */
-  private static final String CLASS_EVAL = "CLASS-EVAL" ; //$NON-NLS-1$
+  private static final String CLASS_EVAL = "CLASS-EVAL"; //$NON-NLS-1$
 
 
   /**
    * The string of the <code>NEW-EVAL</code> rule.
    */
-  private static final String NEW_EVAL = "NEW-EVAL" ; //$NON-NLS-1$
+  private static final String NEW_EVAL = "NEW-EVAL"; //$NON-NLS-1$
 
 
   /**
    * The string of the <code>NEW-EXEC</code> rule.
    */
-  private static final String NEW_EXEC = "NEW-EXEC" ; //$NON-NLS-1$
+  private static final String NEW_EXEC = "NEW-EXEC"; //$NON-NLS-1$
 
 
   /**
    * The string of the <code>INHERIT-RIGHT</code> rule.
    */
-  private static final String INHERIT_RIGHT = "INHERIT-RIGHT" ; //$NON-NLS-1$
+  private static final String INHERIT_RIGHT = "INHERIT-RIGHT"; //$NON-NLS-1$
 
 
   /**
    * The string of the <code>INHERIT-LEFT</code> rule.
    */
-  private static final String INHERIT_LEFT = "INHERIT-LEFT" ; //$NON-NLS-1$
+  private static final String INHERIT_LEFT = "INHERIT-LEFT"; //$NON-NLS-1$
 
 
   /**
    * The string of the <code>INHERIT-EXEC</code> rule.
    */
-  private static final String INHERIT_EXEC = "INHERIT-EXEC" ; //$NON-NLS-1$
+  private static final String INHERIT_EXEC = "INHERIT-EXEC"; //$NON-NLS-1$
 
 
   /**
@@ -74,16 +76,16 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
    */
   public L2CSmallStepProofRuleSet ( L2CLanguage pL2CLanguage )
   {
-    super ( pL2CLanguage ) ;
+    super ( pL2CLanguage );
     // Class
-    register ( L2CLanguage.L2C , CLASS_EVAL , false ) ;
+    register ( L2CLanguage.L2C, CLASS_EVAL, false );
     // New
-    register ( L2CLanguage.L2C , NEW_EVAL , false ) ;
-    register ( L2CLanguage.L2C , NEW_EXEC , true ) ;
+    register ( L2CLanguage.L2C, NEW_EVAL, false );
+    register ( L2CLanguage.L2C, NEW_EXEC, true );
     // Inherit
-    register ( L2CLanguage.L2C , INHERIT_RIGHT , false ) ;
-    register ( L2CLanguage.L2C , INHERIT_LEFT , false ) ;
-    register ( L2CLanguage.L2C , INHERIT_EXEC , true ) ;
+    register ( L2CLanguage.L2C, INHERIT_RIGHT, false );
+    register ( L2CLanguage.L2C, INHERIT_LEFT, false );
+    register ( L2CLanguage.L2C, INHERIT_EXEC, true );
   }
 
 
@@ -94,19 +96,18 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
    * @param pClass The {@link Class}.
    * @return The resulting {@link Expression}.
    */
-  public Expression evaluateClass ( SmallStepProofContext pContext ,
-      Class pClass )
+  public Expression evaluateClass ( SmallStepProofContext pContext, Class pClass )
   {
     /*
      * If the Expression is a Class, we can only perform CLASS-EVAL.
      */
-    pContext.addProofStep ( getRuleByName ( CLASS_EVAL ) , pClass ) ;
-    Expression body = evaluate ( pContext , pClass.getBody ( ) ) ;
-    if ( body.isException ( ) )
+    pContext.addProofStep ( getRuleByName ( CLASS_EVAL ), pClass );
+    Expression body = evaluate ( pContext, pClass.getBody () );
+    if ( body.isException () )
     {
-      return body ;
+      return body;
     }
-    return new Class ( pClass.getId ( ) , pClass.getTau ( ) , body ) ;
+    return new Class ( pClass.getId (), pClass.getTau (), body );
   }
 
 
@@ -117,93 +118,91 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
    * @param pInherit The {@link Inherit}.
    * @return The resulting {@link Expression}.
    */
-  public Expression evaluateInherit ( SmallStepProofContext pContext ,
+  public Expression evaluateInherit ( SmallStepProofContext pContext,
       Inherit pInherit )
   {
     /*
      * If the Expression is a Inherit and the body of the Inherit is a Inherit,
      * we can perform INHERIT-RIGHT.
      */
-    if ( pInherit.getBody ( ) instanceof Inherit )
+    if ( pInherit.getBody () instanceof Inherit )
     {
-      pContext.addProofStep ( getRuleByName ( INHERIT_RIGHT ) , pInherit ) ;
-      Expression body = evaluate ( pContext , pInherit.getBody ( ) ) ;
-      if ( body.isException ( ) )
+      pContext.addProofStep ( getRuleByName ( INHERIT_RIGHT ), pInherit );
+      Expression body = evaluate ( pContext, pInherit.getBody () );
+      if ( body.isException () )
       {
-        return body ;
+        return body;
       }
-      return new Inherit ( pInherit.getIdentifiers ( ) , pInherit.getE ( ) ,
-          body ) ;
+      return new Inherit ( pInherit.getIdentifiers (), pInherit.getE (), body );
     }
     /*
      * If the Expression is a Inherit and the body of the Inherit is a Row and
      * the e of the Inherit is not yet a value, we can perform INHERIT-LEFT.
      */
-    else if ( ( pInherit.getBody ( ) instanceof Row )
-        && ( ! pInherit.getE ( ).isValue ( ) ) )
+    else if ( ( pInherit.getBody () instanceof Row )
+        && ( !pInherit.getE ().isValue () ) )
     {
-      pContext.addProofStep ( getRuleByName ( INHERIT_LEFT ) , pInherit ) ;
-      Expression e = evaluate ( pContext , pInherit.getE ( ) ) ;
-      if ( e.isException ( ) )
+      pContext.addProofStep ( getRuleByName ( INHERIT_LEFT ), pInherit );
+      Expression e = evaluate ( pContext, pInherit.getE () );
+      if ( e.isException () )
       {
-        return e ;
+        return e;
       }
-      return new Inherit ( pInherit.getIdentifiers ( ) , e , pInherit
-          .getBody ( ) ) ;
+      return new Inherit ( pInherit.getIdentifiers (), e, pInherit.getBody () );
     }
     /*
      * If the Expression is a Inherit and the body of the Inherit is a Row and
      * the e of the Inherit is a Class and the e of the Class is a Row, we can
      * perform INHERIT-EXEC.
      */
-    else if ( ( pInherit.getE ( ) instanceof Class )
-        && ( ( ( Class ) pInherit.getE ( ) ).getBody ( ) instanceof Row )
-        && ( pInherit.getBody ( ) instanceof Row ) )
+    else if ( ( pInherit.getE () instanceof Class )
+        && ( ( ( Class ) pInherit.getE () ).getBody () instanceof Row )
+        && ( pInherit.getBody () instanceof Row ) )
     {
-      Class tmpClass = ( Class ) pInherit.getE ( ) ;
-      Row r1 = ( Row ) tmpClass.getBody ( ) ;
-      Row r2 = ( Row ) pInherit.getBody ( ) ;
+      Class tmpClass = ( Class ) pInherit.getE ();
+      Row r1 = ( Row ) tmpClass.getBody ();
+      Row r2 = ( Row ) pInherit.getBody ();
       // dom_a(r1) = A
-      ArrayList < Identifier > attributeIdentifierR1 = new ArrayList < Identifier > ( ) ;
-      for ( Expression e : r1.getExpressions ( ) )
+      ArrayList < Identifier > attributeIdentifierR1 = new ArrayList < Identifier > ();
+      for ( Expression e : r1.getExpressions () )
       {
         if ( e instanceof Attribute )
         {
-          attributeIdentifierR1.add ( ( ( Attribute ) e ).getId ( ) ) ;
+          attributeIdentifierR1.add ( ( ( Attribute ) e ).getId () );
         }
       }
-      if ( attributeIdentifierR1.size ( ) != pInherit.getIdentifiers ( ).length )
+      if ( attributeIdentifierR1.size () != pInherit.getIdentifiers ().length )
       {
-        return pInherit ;
+        return pInherit;
       }
-      for ( Identifier a : pInherit.getIdentifiers ( ) )
+      for ( Identifier a : pInherit.getIdentifiers () )
       {
-        boolean found = false ;
+        boolean found = false;
         for ( Identifier attributeId : attributeIdentifierR1 )
         {
           if ( a.equals ( attributeId ) )
           {
-            found = true ;
-            break ;
+            found = true;
+            break;
           }
         }
-        if ( ! found )
+        if ( !found )
         {
-          return pInherit ;
+          return pInherit;
         }
       }
       try
       {
-        Row row = Row.union ( r1 , r2 ) ;
-        pContext.addProofStep ( getRuleByName ( INHERIT_EXEC ) , pInherit ) ;
-        return row ;
+        Row row = Row.union ( r1, r2 );
+        pContext.addProofStep ( getRuleByName ( INHERIT_EXEC ), pInherit );
+        return row;
       }
       catch ( LanguageParserMultiException e )
       {
-        return pInherit ;
+        return pInherit;
       }
     }
-    return pInherit ;
+    return pInherit;
   }
 
 
@@ -214,34 +213,34 @@ public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet
    * @param pNew The {@link New}.
    * @return The resulting {@link Expression}.
    */
-  public Expression evaluateNew ( SmallStepProofContext pContext , New pNew )
+  public Expression evaluateNew ( SmallStepProofContext pContext, New pNew )
   {
     /*
      * If the Expression is a New and the e of the New is not a value, we can
      * perform NEW-EVAL.
      */
-    if ( ! pNew.getE ( ).isValue ( ) )
+    if ( !pNew.getE ().isValue () )
     {
-      pContext.addProofStep ( getRuleByName ( NEW_EVAL ) , pNew ) ;
-      Expression e = evaluate ( pContext , pNew.getE ( ) ) ;
-      if ( e.isException ( ) )
+      pContext.addProofStep ( getRuleByName ( NEW_EVAL ), pNew );
+      Expression e = evaluate ( pContext, pNew.getE () );
+      if ( e.isException () )
       {
-        return e ;
+        return e;
       }
-      return new New ( e ) ;
+      return new New ( e );
     }
     /*
      * If the Expression is a New and the e of the New is a Class and the e of
      * the Class is a Row, we can perform NEW-EXEC.
      */
-    else if ( ( pNew.getE ( ) instanceof Class )
-        && ( ( ( Class ) pNew.getE ( ) ).getBody ( ) instanceof Row ) )
+    else if ( ( pNew.getE () instanceof Class )
+        && ( ( ( Class ) pNew.getE () ).getBody () instanceof Row ) )
     {
-      pContext.addProofStep ( getRuleByName ( NEW_EXEC ) , pNew ) ;
-      Class tmpClass = ( Class ) pNew.getE ( ) ;
-      Row row = ( Row ) tmpClass.getBody ( ) ;
-      return new ObjectExpr ( tmpClass.getId ( ) , tmpClass.getTau ( ) , row ) ;
+      pContext.addProofStep ( getRuleByName ( NEW_EXEC ), pNew );
+      Class tmpClass = ( Class ) pNew.getE ();
+      Row row = ( Row ) tmpClass.getBody ();
+      return new ObjectExpr ( tmpClass.getId (), tmpClass.getTau (), row );
     }
-    return pNew ;
+    return pNew;
   }
 }

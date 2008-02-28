@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l3 ;
+package de.unisiegen.tpml.core.languages.l3;
 
 
 import de.unisiegen.tpml.core.expressions.Constant;
@@ -37,6 +37,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  */
 public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
 {
+
   //
   // Constructor
   //
@@ -51,16 +52,16 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    */
   public L3TypeCheckerProofRuleSet ( L3Language language )
   {
-    super ( language ) ;
+    super ( language );
     // drop the (CONST) and (ID) type rules
-    unregister ( "CONST" ) ; //$NON-NLS-1$
-    unregister ( "ID" ) ; //$NON-NLS-1$
+    unregister ( "CONST" ); //$NON-NLS-1$
+    unregister ( "ID" ); //$NON-NLS-1$
     // register the additional type rules
-    registerByMethodName ( L3Language.L3 , "LIST" , "applyList" ) ; //$NON-NLS-1$//$NON-NLS-2$
-    registerByMethodName ( L3Language.L3 , "P-CONST" , "applyPConst" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    registerByMethodName ( L3Language.L3 , "P-ID" , "applyPId" ) ; //$NON-NLS-1$//$NON-NLS-2$
-    registerByMethodName ( L3Language.L3 , "P-LET" , "applyPLet" , "updatePLet" ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-    registerByMethodName ( L3Language.L3 , "TUPLE" , "applyTuple" ) ; //$NON-NLS-1$//$NON-NLS-2$
+    registerByMethodName ( L3Language.L3, "LIST", "applyList" ); //$NON-NLS-1$//$NON-NLS-2$
+    registerByMethodName ( L3Language.L3, "P-CONST", "applyPConst" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L3Language.L3, "P-ID", "applyPId" ); //$NON-NLS-1$//$NON-NLS-2$
+    registerByMethodName ( L3Language.L3, "P-LET", "applyPLet", "updatePLet" ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName ( L3Language.L3, "TUPLE", "applyTuple" ); //$NON-NLS-1$//$NON-NLS-2$
   }
 
 
@@ -74,19 +75,19 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    * @param context the type checker proof context.
    * @param pNode the type checker proof node.
    */
-  public void applyList ( TypeCheckerProofContext context ,
-		  TypeCheckerProofNode pNode )
+  public void applyList ( TypeCheckerProofContext context,
+      TypeCheckerProofNode pNode )
   {
-	  TypeCheckerExpressionProofNode node = (TypeCheckerExpressionProofNode) pNode;
-    Expression [ ] expressions = ( ( List ) node.getExpression ( ) )
-        .getExpressions ( ) ;
-    TypeVariable tau = context.newTypeVariable ( ) ;
-    for ( int n = 0 ; n < expressions.length ; ++ n )
+    TypeCheckerExpressionProofNode node = ( TypeCheckerExpressionProofNode ) pNode;
+    Expression [] expressions = ( ( List ) node.getExpression () )
+        .getExpressions ();
+    TypeVariable tau = context.newTypeVariable ();
+    for ( int n = 0 ; n < expressions.length ; ++n )
     {
-      context.addProofNode ( node , node.getEnvironment ( ) ,
-          expressions [ n ] , tau ) ;
+      context.addProofNode ( node, node.getEnvironment (), expressions [ n ],
+          tau );
     }
-    context.addEquation ( node.getType ( ) , new ListType ( tau ) ) ;
+    context.addEquation ( node.getType (), new ListType ( tau ) );
   }
 
 
@@ -100,12 +101,12 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    * @param context the type checker proof context.
    * @param node the type checker proof node.
    */
-  public void applyPConst ( TypeCheckerProofContext context ,
+  public void applyPConst ( TypeCheckerProofContext context,
       TypeCheckerProofNode node )
   {
-    Constant constant = ( Constant ) node.getExpression ( ) ;
-    context.addEquation ( node.getType ( ) , context.instantiate ( context
-        .getTypeForExpression ( constant ) ) ) ;
+    Constant constant = ( Constant ) node.getExpression ();
+    context.addEquation ( node.getType (), context.instantiate ( context
+        .getTypeForExpression ( constant ) ) );
   }
 
 
@@ -119,13 +120,13 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    * @param context the type checker proof context.
    * @param pNode the type checker proof node.
    */
-  public void applyPId ( TypeCheckerProofContext context ,
-		  TypeCheckerProofNode pNode )
+  public void applyPId ( TypeCheckerProofContext context,
+      TypeCheckerProofNode pNode )
   {
-	  TypeCheckerExpressionProofNode node = (TypeCheckerExpressionProofNode) pNode;
-    Type type = node.getEnvironment ( ).get (
-        ( Identifier ) node.getExpression ( ) ) ;
-    context.addEquation ( node.getType ( ) , context.instantiate ( type ) ) ;
+    TypeCheckerExpressionProofNode node = ( TypeCheckerExpressionProofNode ) pNode;
+    Type type = node.getEnvironment ().get (
+        ( Identifier ) node.getExpression () );
+    context.addEquation ( node.getType (), context.instantiate ( type ) );
   }
 
 
@@ -139,88 +140,88 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    * @param context the type checker proof context.
    * @param pNode the type checker proof node.
    */
-  public void applyPLet ( TypeCheckerProofContext context ,
-		  TypeCheckerProofNode pNode )
+  public void applyPLet ( TypeCheckerProofContext context,
+      TypeCheckerProofNode pNode )
   {
-	  TypeCheckerExpressionProofNode node = (TypeCheckerExpressionProofNode) pNode;
+    TypeCheckerExpressionProofNode node = ( TypeCheckerExpressionProofNode ) pNode;
     // determine the type environment
-    TypeEnvironment environment = node.getEnvironment ( ) ;
+    TypeEnvironment environment = node.getEnvironment ();
     // can be applied to LetRec, Let, MultiLet, CurriedLetRec and CurriedLet
-    Expression expression = node.getExpression ( ) ;
+    Expression expression = node.getExpression ();
     if ( expression instanceof Let )
     {
       // determine the first sub expression
-      Let let = ( Let ) expression ;
-      Expression e1 = let.getE1 ( ) ;
+      Let let = ( Let ) expression;
+      Expression e1 = let.getE1 ();
       // check if a type was specified
-      MonoType tau1 = let.getTau ( ) ;
+      MonoType tau1 = let.getTau ();
       if ( tau1 == null )
       {
-        tau1 = context.newTypeVariable ( ) ;
+        tau1 = context.newTypeVariable ();
       }
       // add the recursion for let rec
       if ( expression instanceof LetRec )
       {
         // add the recursion for e1
-        e1 = new Recursion ( let.getId ( ) , tau1 , e1 ) ;
+        e1 = new Recursion ( let.getId (), tau1, e1 );
       }
       // add only the first child node, the second one will be added
       // in updatePLet() once the first sub tree is finished.
-      context.addProofNode ( node , environment , e1 , tau1 ) ;
+      context.addProofNode ( node, environment, e1, tau1 );
     }
     else if ( expression instanceof MultiLet )
     {
       // determine the identifiers of the multi let
-      MultiLet multiLet = ( MultiLet ) expression ;
-      Identifier [ ] identifiers = multiLet.getIdentifiers ( ) ;
+      MultiLet multiLet = ( MultiLet ) expression;
+      Identifier [] identifiers = multiLet.getIdentifiers ();
       // generate the type for e1
-      TypeVariable [ ] typeVariables = new TypeVariable [ identifiers.length ] ;
-      for ( int n = 0 ; n < identifiers.length ; ++ n )
+      TypeVariable [] typeVariables = new TypeVariable [ identifiers.length ];
+      for ( int n = 0 ; n < identifiers.length ; ++n )
       {
-        typeVariables [ n ] = context.newTypeVariable ( ) ;
+        typeVariables [ n ] = context.newTypeVariable ();
       }
-      TupleType tau = new TupleType ( typeVariables ) ;
+      TupleType tau = new TupleType ( typeVariables );
       // add only the first child node, the second one will be added
       // in updatePLet() once the first sub tree is finished.
-      context.addProofNode ( node , environment , multiLet.getE1 ( ) , tau ) ;
+      context.addProofNode ( node, environment, multiLet.getE1 (), tau );
       // check if we have a type
-      if ( multiLet.getTau ( ) != null )
+      if ( multiLet.getTau () != null )
       {
         // add an equation for tau = multiLet.getTau()
-        context.addEquation ( tau , multiLet.getTau ( ) ) ;
+        context.addEquation ( tau, multiLet.getTau () );
       }
     }
     else
     {
       // determine the first sub expression
-      CurriedLet curriedLet = ( CurriedLet ) expression ;
-      Expression e1 = curriedLet.getE1 ( ) ;
+      CurriedLet curriedLet = ( CurriedLet ) expression;
+      Expression e1 = curriedLet.getE1 ();
       // generate the appropriate lambda abstractions
-      MonoType [ ] types = curriedLet.getTypes ( ) ;
-      Identifier [ ] identifiers = curriedLet.getIdentifiers ( ) ;
-      for ( int n = identifiers.length - 1 ; n > 0 ; -- n )
+      MonoType [] types = curriedLet.getTypes ();
+      Identifier [] identifiers = curriedLet.getIdentifiers ();
+      for ( int n = identifiers.length - 1 ; n > 0 ; --n )
       {
-        e1 = new Lambda ( identifiers [ n ] , types [ n ] , e1 ) ;
+        e1 = new Lambda ( identifiers [ n ], types [ n ], e1 );
       }
       // generate the type of the function
-      MonoType tau1 = types [ 0 ] ;
+      MonoType tau1 = types [ 0 ];
       if ( tau1 == null )
       {
-        tau1 = context.newTypeVariable ( ) ;
+        tau1 = context.newTypeVariable ();
       }
-      for ( int n = types.length - 1 ; n > 0 ; -- n )
+      for ( int n = types.length - 1 ; n > 0 ; --n )
       {
         tau1 = new ArrowType ( ( types [ n ] != null ) ? types [ n ] : context
-            .newTypeVariable ( ) , tau1 ) ;
+            .newTypeVariable (), tau1 );
       }
       // add the recursion for let rec
       if ( expression instanceof CurriedLetRec )
       {
-        e1 = new Recursion ( identifiers [ 0 ] , tau1 , e1 ) ;
+        e1 = new Recursion ( identifiers [ 0 ], tau1, e1 );
       }
       // add only the first child node, the second one will be added
       // in updatePLet() once the first sub tree is finished.
-      context.addProofNode ( node , environment , e1 , tau1 ) ;
+      context.addProofNode ( node, environment, e1, tau1 );
     }
   }
 
@@ -232,50 +233,50 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    * @param context the type checker proof context.
    * @param pNode the type checker proof node.
    */
-  public void updatePLet ( TypeCheckerProofContext context ,
-		  TypeCheckerProofNode pNode )
+  public void updatePLet ( TypeCheckerProofContext context,
+      TypeCheckerProofNode pNode )
   {
-	  TypeCheckerExpressionProofNode node = (TypeCheckerExpressionProofNode) pNode;
+    TypeCheckerExpressionProofNode node = ( TypeCheckerExpressionProofNode ) pNode;
     // check if the sub tree of the first child is finished now
-    if ( node.getChildCount ( ) == 1 && node.getChildAt ( 0 ).isFinished ( ) )
+    if ( node.getChildCount () == 1 && node.getChildAt ( 0 ).isFinished () )
     {
       // determine the type environment
-      TypeEnvironment environment = node.getEnvironment ( ) ;
+      TypeEnvironment environment = node.getEnvironment ();
       // can be applied to LetRec, Let, CurriedLetRec and CurriedLet
-      Expression expression = node.getExpression ( ) ;
+      Expression expression = node.getExpression ();
       if ( expression instanceof Let )
       {
-        Let let = ( Let ) expression ;
-        MonoType tau = node.getType ( ) ;
-        MonoType tau1 = node.getChildAt ( 0 ).getType ( ) ;
-        context.addProofNode ( node , environment.extend ( let.getId ( ) ,
-            environment.closure ( tau1 ) ) , let.getE2 ( ) , tau ) ;
+        Let let = ( Let ) expression;
+        MonoType tau = node.getType ();
+        MonoType tau1 = node.getChildAt ( 0 ).getType ();
+        context.addProofNode ( node, environment.extend ( let.getId (),
+            environment.closure ( tau1 ) ), let.getE2 (), tau );
       }
       else if ( expression instanceof MultiLet )
       {
-        MultiLet multiLet = ( MultiLet ) expression ;
-        Identifier [ ] identifiers = multiLet.getIdentifiers ( ) ;
-        TupleType tau = ( TupleType ) node.getChildAt ( 0 ).getType ( ) ;
-        MonoType [ ] types = tau.getTypes ( ) ;
+        MultiLet multiLet = ( MultiLet ) expression;
+        Identifier [] identifiers = multiLet.getIdentifiers ();
+        TupleType tau = ( TupleType ) node.getChildAt ( 0 ).getType ();
+        MonoType [] types = tau.getTypes ();
         // generate the environment for e2
-        TypeEnvironment environment2 = environment ;
-        for ( int n = 0 ; n < identifiers.length ; ++ n )
+        TypeEnvironment environment2 = environment;
+        for ( int n = 0 ; n < identifiers.length ; ++n )
         {
-          environment2 = environment2.extend ( identifiers [ n ] , environment
-              .closure ( types [ n ] ) ) ;
+          environment2 = environment2.extend ( identifiers [ n ], environment
+              .closure ( types [ n ] ) );
         }
         // add the second proof node (for e2)
-        context.addProofNode ( node , environment2 , multiLet.getE2 ( ) , node
-            .getType ( ) ) ;
+        context.addProofNode ( node, environment2, multiLet.getE2 (), node
+            .getType () );
       }
       else
       {
-        CurriedLet curriedLet = ( CurriedLet ) expression ;
-        MonoType tau = node.getType ( ) ;
-        MonoType tau1 = node.getChildAt ( 0 ).getType ( ) ;
-        context.addProofNode ( node , environment.extend ( curriedLet
-            .getIdentifiers ( ) [ 0 ] , environment.closure ( tau1 ) ) ,
-            curriedLet.getE2 ( ) , tau ) ;
+        CurriedLet curriedLet = ( CurriedLet ) expression;
+        MonoType tau = node.getType ();
+        MonoType tau1 = node.getChildAt ( 0 ).getType ();
+        context.addProofNode ( node, environment.extend ( curriedLet
+            .getIdentifiers () [ 0 ], environment.closure ( tau1 ) ),
+            curriedLet.getE2 (), tau );
       }
     }
   }
@@ -291,19 +292,19 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
    * @param context the type checker proof context.
    * @param pNode the type checker proof node.
    */
-  public void applyTuple ( TypeCheckerProofContext context ,
-		  TypeCheckerProofNode pNode )
+  public void applyTuple ( TypeCheckerProofContext context,
+      TypeCheckerProofNode pNode )
   {
-	  TypeCheckerExpressionProofNode node = (TypeCheckerExpressionProofNode) pNode;
-    Expression [ ] expressions = ( ( Tuple ) node.getExpression ( ) )
-        .getExpressions ( ) ;
-    TypeVariable [ ] typeVariables = new TypeVariable [ expressions.length ] ;
-    for ( int n = 0 ; n < expressions.length ; ++ n )
+    TypeCheckerExpressionProofNode node = ( TypeCheckerExpressionProofNode ) pNode;
+    Expression [] expressions = ( ( Tuple ) node.getExpression () )
+        .getExpressions ();
+    TypeVariable [] typeVariables = new TypeVariable [ expressions.length ];
+    for ( int n = 0 ; n < expressions.length ; ++n )
     {
-      typeVariables [ n ] = context.newTypeVariable ( ) ;
-      context.addProofNode ( node , node.getEnvironment ( ) ,
-          expressions [ n ] , typeVariables [ n ] ) ;
+      typeVariables [ n ] = context.newTypeVariable ();
+      context.addProofNode ( node, node.getEnvironment (), expressions [ n ],
+          typeVariables [ n ] );
     }
-    context.addEquation ( node.getType ( ) , new TupleType ( typeVariables ) ) ;
+    context.addEquation ( node.getType (), new TupleType ( typeVariables ) );
   }
 }

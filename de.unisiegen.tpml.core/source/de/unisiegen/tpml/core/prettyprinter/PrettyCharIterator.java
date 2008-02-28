@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.prettyprinter ;
+package de.unisiegen.tpml.core.prettyprinter;
 
 
-import java.text.CharacterIterator ;
+import java.text.CharacterIterator;
 
 
 /**
@@ -17,6 +17,7 @@ import java.text.CharacterIterator ;
  */
 public interface PrettyCharIterator extends CharacterIterator
 {
+
   //
   // Primitives
   //
@@ -30,7 +31,7 @@ public interface PrettyCharIterator extends CharacterIterator
    *           end index.
    * @see java.text.CharacterIterator#getIndex()
    */
-  public PrettyAnnotation getAnnotation ( ) ;
+  public PrettyAnnotation getAnnotation ();
 
 
   /**
@@ -41,5 +42,5 @@ public interface PrettyCharIterator extends CharacterIterator
    * @return the <code>PrettyStyle</code> for the current character.
    * @see java.text.CharacterIterator#getIndex()
    */
-  public PrettyStyle getStyle ( ) ;
+  public PrettyStyle getStyle ();
 }

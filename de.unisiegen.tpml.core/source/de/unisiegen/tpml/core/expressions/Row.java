@@ -1,22 +1,23 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
-import java.util.ArrayList ;
-import java.util.Arrays ;
-import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.exceptions.RowSubstitutionException ;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
-import de.unisiegen.tpml.core.languages.MultipleIdentifier ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.util.BoundRenaming ;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.exceptions.RowSubstitutionException;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
+import de.unisiegen.tpml.core.languages.MultipleIdentifier;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.util.BoundRenaming;
 
 
 /**
@@ -27,22 +28,23 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  */
 public final class Row extends Expression implements DefaultExpressions
 {
+
   /**
    * String for the case that the expressions are null.
    */
-  private static final String EXPRESSIONS_NULL = "expressions is null" ; //$NON-NLS-1$
+  private static final String EXPRESSIONS_NULL = "expressions is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that one expression are null.
    */
-  private static final String EXPRESSION_NULL = "one expression is null" ; //$NON-NLS-1$
+  private static final String EXPRESSION_NULL = "one expression is null"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = Expression.getCaption ( Row.class ) ;
+  private static final String CAPTION = Expression.getCaption ( Row.class );
 
 
   /**
@@ -50,13 +52,13 @@ public final class Row extends Expression implements DefaultExpressions
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_ROW , 1 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}#1" , //$NON-NLS-1$
-        "epsilon | val a = e; r1 | method m : τ = e ; r1" ) ) ; //$NON-NLS-1$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_ROW, 1, "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}#1", //$NON-NLS-1$
+        "epsilon | val a = e; r1 | method m : τ = e ; r1" ) ); //$NON-NLS-1$
+    return commands;
   }
 
 
@@ -67,35 +69,35 @@ public final class Row extends Expression implements DefaultExpressions
    * @param pR2 The second {@link Row}.
    * @return The union of the given first and second {@link Row}.
    */
-  public static Row union ( Row pR1 , Row pR2 )
+  public static Row union ( Row pR1, Row pR2 )
   {
-    Expression [ ] newExpressions = new Expression [ pR1.getExpressions ( ).length
-        + pR2.getExpressions ( ).length ] ;
-    for ( int i = 0 ; i < pR1.getExpressions ( ).length ; i ++ )
+    Expression [] newExpressions = new Expression [ pR1.getExpressions ().length
+        + pR2.getExpressions ().length ];
+    for ( int i = 0 ; i < pR1.getExpressions ().length ; i++ )
     {
-      newExpressions [ i ] = pR1.getExpressions ( ) [ i ] ;
+      newExpressions [ i ] = pR1.getExpressions () [ i ];
     }
-    for ( int i = 0 ; i < pR2.getExpressions ( ).length ; i ++ )
+    for ( int i = 0 ; i < pR2.getExpressions ().length ; i++ )
     {
-      newExpressions [ pR1.getExpressions ( ).length + i ] = pR2
-          .getExpressions ( ) [ i ] ;
+      newExpressions [ pR1.getExpressions ().length + i ] = pR2
+          .getExpressions () [ i ];
     }
-    Row row = new Row ( newExpressions ) ;
-    MultipleIdentifier.check ( row ) ;
-    return row ;
+    Row row = new Row ( newExpressions );
+    MultipleIdentifier.check ( row );
+    return row;
   }
 
 
   /**
    * Indeces of the child {@link Expression}s.
    */
-  private int [ ] indicesE ;
+  private int [] indicesE;
 
 
   /**
    * The expressions.
    */
-  private Expression [ ] expressions ;
+  private Expression [] expressions;
 
 
   /**
@@ -103,34 +105,34 @@ public final class Row extends Expression implements DefaultExpressions
    * 
    * @param pExpressions The child {@link Expression}.
    */
-  public Row ( Expression [ ] pExpressions )
+  public Row ( Expression [] pExpressions )
   {
     if ( pExpressions == null )
     {
-      throw new NullPointerException ( EXPRESSIONS_NULL ) ;
+      throw new NullPointerException ( EXPRESSIONS_NULL );
     }
     for ( Expression e : pExpressions )
     {
       if ( e == null )
       {
-        throw new NullPointerException ( EXPRESSION_NULL ) ;
+        throw new NullPointerException ( EXPRESSION_NULL );
       }
     }
-    this.expressions = pExpressions ;
-    this.indicesE = new int [ this.expressions.length ] ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    this.expressions = pExpressions;
+    this.indicesE = new int [ this.expressions.length ];
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
-      this.expressions [ i ].setParent ( this ) ;
-      this.indicesE [ i ] = i + 1 ;
+      this.expressions [ i ].setParent ( this );
+      this.indicesE [ i ] = i + 1;
     }
     for ( Expression child : this.expressions )
     {
       if ( child instanceof Attribute )
       {
-        ( ( Attribute ) child ).getIdentifiersBound ( ) ;
+        ( ( Attribute ) child ).getIdentifiersBound ();
       }
     }
-    checkDisjunction ( ) ;
+    checkDisjunction ();
   }
 
 
@@ -143,58 +145,58 @@ public final class Row extends Expression implements DefaultExpressions
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Row ( Expression [ ] pExpressions , int pParserStartOffset ,
+  public Row ( Expression [] pExpressions, int pParserStartOffset,
       int pParserEndOffset )
   {
-    this ( pExpressions ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pExpressions );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
   /**
    * Checks the disjunction of the {@link Identifier} sets.
    */
-  private void checkDisjunction ( )
+  private void checkDisjunction ()
   {
-    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
-    ArrayList < Identifier > allIdentifiers = new ArrayList < Identifier > ( ) ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ();
+    ArrayList < Identifier > allIdentifiers = new ArrayList < Identifier > ();
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
       if ( this.expressions [ i ] instanceof Attribute )
       {
-        Attribute attribute = ( Attribute ) this.expressions [ i ] ;
-        allIdentifiers.clear ( ) ;
-        negativeIdentifiers.clear ( ) ;
-        for ( int j = i + 1 ; j < this.expressions.length ; j ++ )
+        Attribute attribute = ( Attribute ) this.expressions [ i ];
+        allIdentifiers.clear ();
+        negativeIdentifiers.clear ();
+        for ( int j = i + 1 ; j < this.expressions.length ; j++ )
         {
-          allIdentifiers.addAll ( this.expressions [ j ].getIdentifiersAll ( ) ) ;
+          allIdentifiers.addAll ( this.expressions [ j ].getIdentifiersAll () );
         }
         for ( Identifier allId : allIdentifiers )
         {
-          if ( ( attribute.getId ( ).equals ( allId ) )
-              && ( ! ( Identifier.Set.ATTRIBUTE.equals ( allId.getSet ( ) ) ) ) )
+          if ( ( attribute.getId ().equals ( allId ) )
+              && ( ! ( Identifier.Set.ATTRIBUTE.equals ( allId.getSet () ) ) ) )
           {
-            negativeIdentifiers.add ( allId ) ;
+            negativeIdentifiers.add ( allId );
           }
         }
         /*
          * Throw an exception, if the negative identifier list contains one or
          * more identifiers. If this happens, all Identifiers are added.
          */
-        if ( negativeIdentifiers.size ( ) > 0 )
+        if ( negativeIdentifiers.size () > 0 )
         {
-          negativeIdentifiers.clear ( ) ;
+          negativeIdentifiers.clear ();
           for ( Identifier allId : allIdentifiers )
           {
-            if ( attribute.getId ( ).equals ( allId ) )
+            if ( attribute.getId ().equals ( allId ) )
             {
-              negativeIdentifiers.add ( allId ) ;
+              negativeIdentifiers.add ( allId );
             }
           }
-          negativeIdentifiers.add ( attribute.getId ( ) ) ;
+          negativeIdentifiers.add ( attribute.getId () );
           LanguageParserMultiException
-              .throwExceptionDisjunction ( negativeIdentifiers ) ;
+              .throwExceptionDisjunction ( negativeIdentifiers );
         }
       }
     }
@@ -204,40 +206,40 @@ public final class Row extends Expression implements DefaultExpressions
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public Row clone ( )
+  @Override
+  public Row clone ()
   {
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    Expression [] newExpressions = new Expression [ this.expressions.length ];
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
-      newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
+      newExpressions [ i ] = this.expressions [ i ].clone ();
     }
-    return new Row ( newExpressions ) ;
+    return new Row ( newExpressions );
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof Row )
     {
-      Row other = ( Row ) pObject ;
-      return Arrays.equals ( this.expressions , other.expressions ) ;
+      Row other = ( Row ) pObject;
+      return Arrays.equals ( this.expressions, other.expressions );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -246,9 +248,9 @@ public final class Row extends Expression implements DefaultExpressions
    * 
    * @return the sub {@link Expression}s.
    */
-  public Expression [ ] getExpressions ( )
+  public Expression [] getExpressions ()
   {
-    return this.expressions ;
+    return this.expressions;
   }
 
 
@@ -257,9 +259,9 @@ public final class Row extends Expression implements DefaultExpressions
    * 
    * @return The indices of the child {@link Expression}s.
    */
-  public int [ ] getExpressionsIndex ( )
+  public int [] getExpressionsIndex ()
   {
-    return this.indicesE ;
+    return this.indicesE;
   }
 
 
@@ -271,60 +273,60 @@ public final class Row extends Expression implements DefaultExpressions
    */
   protected ArrayList < Identifier > getIdentifiersBound ( Attribute pAttribute )
   {
-    ArrayList < Identifier > boundId = new ArrayList < Identifier > ( ) ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    ArrayList < Identifier > boundId = new ArrayList < Identifier > ();
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
       if ( pAttribute == this.expressions [ i ] )
       {
-        Attribute attribute = ( Attribute ) this.expressions [ i ] ;
-        for ( int j = i + 1 ; j < this.expressions.length ; j ++ )
+        Attribute attribute = ( Attribute ) this.expressions [ i ];
+        for ( int j = i + 1 ; j < this.expressions.length ; j++ )
         {
-          Expression child = this.expressions [ j ] ;
+          Expression child = this.expressions [ j ];
           ArrayList < Identifier > freeIdentifiers = child
-              .getIdentifiersFree ( ) ;
+              .getIdentifiersFree ();
           for ( Identifier freeId : freeIdentifiers )
           {
-            if ( attribute.getId ( ).equals ( freeId ) )
+            if ( attribute.getId ().equals ( freeId ) )
             {
-              freeId.setBoundTo ( attribute , attribute.getId ( ) ) ;
-              boundId.add ( freeId ) ;
+              freeId.setBoundTo ( attribute, attribute.getId () );
+              boundId.add ( freeId );
             }
           }
         }
-        return boundId ;
+        return boundId;
       }
     }
-    return boundId ;
+    return boundId;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public ArrayList < Identifier > getIdentifiersFree ( )
+  @Override
+  public ArrayList < Identifier > getIdentifiersFree ()
   {
     if ( this.identifiersFree == null )
     {
-      this.identifiersFree = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > newBound = new ArrayList < Identifier > ( ) ;
+      this.identifiersFree = new ArrayList < Identifier > ();
+      ArrayList < Identifier > newBound = new ArrayList < Identifier > ();
       for ( Expression expr : this.expressions )
       {
-        ArrayList < Identifier > freeCurrent = new ArrayList < Identifier > ( ) ;
-        freeCurrent.addAll ( expr.getIdentifiersFree ( ) ) ;
+        ArrayList < Identifier > freeCurrent = new ArrayList < Identifier > ();
+        freeCurrent.addAll ( expr.getIdentifiersFree () );
         while ( freeCurrent.removeAll ( newBound ) )
         {
           // Remove all Identifiers with the same name
         }
-        this.identifiersFree.addAll ( freeCurrent ) ;
+        this.identifiersFree.addAll ( freeCurrent );
         if ( expr instanceof Attribute )
         {
-          Attribute attribute = ( Attribute ) expr ;
-          newBound.add ( attribute.getId ( ) ) ;
+          Attribute attribute = ( Attribute ) expr;
+          newBound.add ( attribute.getId () );
         }
       }
     }
-    return this.identifiersFree ;
+    return this.identifiersFree;
   }
 
 
@@ -333,12 +335,12 @@ public final class Row extends Expression implements DefaultExpressions
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -347,17 +349,17 @@ public final class Row extends Expression implements DefaultExpressions
    * 
    * @return The number of child {@link Attribute}s.
    */
-  public int getNumberOfAttributes ( )
+  public int getNumberOfAttributes ()
   {
-    int count = 0 ;
+    int count = 0;
     for ( Expression expression : this.expressions )
     {
       if ( expression instanceof Attribute )
       {
-        count ++ ;
+        count++ ;
       }
     }
-    return count ;
+    return count;
   }
 
 
@@ -366,32 +368,32 @@ public final class Row extends Expression implements DefaultExpressions
    * 
    * @return The number of child {@link Method}s or {@link CurriedMethod}s.
    */
-  public int getNumberOfDifferentMethods ( )
+  public int getNumberOfDifferentMethods ()
   {
-    int count = 0 ;
-    ArrayList < Identifier > list = new ArrayList < Identifier > ( ) ;
+    int count = 0;
+    ArrayList < Identifier > list = new ArrayList < Identifier > ();
     for ( Expression expression : this.expressions )
     {
       if ( expression instanceof Method )
       {
-        Method method = ( Method ) expression ;
-        if ( ! list.contains ( method.getId ( ) ) )
+        Method method = ( Method ) expression;
+        if ( !list.contains ( method.getId () ) )
         {
-          list.add ( method.getId ( ) ) ;
-          count ++ ;
+          list.add ( method.getId () );
+          count++ ;
         }
       }
       else if ( expression instanceof CurriedMethod )
       {
-        CurriedMethod curriedMethod = ( CurriedMethod ) expression ;
-        if ( ! list.contains ( curriedMethod.getIdentifiers ( ) [ 0 ] ) )
+        CurriedMethod curriedMethod = ( CurriedMethod ) expression;
+        if ( !list.contains ( curriedMethod.getIdentifiers () [ 0 ] ) )
         {
-          list.add ( curriedMethod.getIdentifiers ( ) [ 0 ] ) ;
-          count ++ ;
+          list.add ( curriedMethod.getIdentifiers () [ 0 ] );
+          count++ ;
         }
       }
     }
-    return count ;
+    return count;
   }
 
 
@@ -400,18 +402,18 @@ public final class Row extends Expression implements DefaultExpressions
    * 
    * @return The number of child {@link Method}s or {@link CurriedMethod}s.
    */
-  public int getNumberOfMethods ( )
+  public int getNumberOfMethods ()
   {
-    int count = 0 ;
+    int count = 0;
     for ( Expression expression : this.expressions )
     {
       if ( ( expression instanceof Method )
           || ( expression instanceof CurriedMethod ) )
       {
-        count ++ ;
+        count++ ;
       }
     }
-    return count ;
+    return count;
   }
 
 
@@ -421,122 +423,122 @@ public final class Row extends Expression implements DefaultExpressions
    * @return The prefix of this {@link Expression}.
    * @see #prefix
    */
-  @ Override
-  public String getPrefix ( )
+  @Override
+  public String getPrefix ()
   {
     if ( this.prefix == null )
     {
       if ( ( this.parent instanceof Class )
           || ( this.parent instanceof Inherit ) )
       {
-        this.prefix = PREFIX_BODY ;
+        this.prefix = PREFIX_BODY;
       }
       else
       {
-        if ( this.isValue ( ) )
+        if ( this.isValue () )
         {
-          this.prefix = PREFIX_ROW_VALUE ;
+          this.prefix = PREFIX_ROW_VALUE;
         }
         else
         {
-          this.prefix = PREFIX_ROW ;
+          this.prefix = PREFIX_ROW;
         }
       }
     }
-    return this.prefix ;
+    return this.prefix;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.expressions.hashCode ( ) ;
+    return this.expressions.hashCode ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public boolean isValue ( )
+  @Override
+  public boolean isValue ()
   {
     for ( Expression expr : this.expressions )
     {
       if ( expr instanceof Attribute )
       {
-        Attribute attribute = ( Attribute ) expr ;
+        Attribute attribute = ( Attribute ) expr;
         /*
          * If an Attribute is not a value, this Row is not a value.
          */
-        if ( ! attribute.isValue ( ) )
+        if ( !attribute.isValue () )
         {
-          return false ;
+          return false;
         }
       }
     }
-    return true ;
+    return true;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public Row substitute ( Identifier pId , Expression pExpression )
+  @Override
+  public Row substitute ( Identifier pId, Expression pExpression )
   {
-    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    if ( pExpression.getIdentifierFreeNotOnlyVariable () )
     {
-      throw new NotOnlyFreeVariableException ( ) ;
+      throw new NotOnlyFreeVariableException ();
     }
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    Expression [] newExpressions = new Expression [ this.expressions.length ];
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
-      newExpressions [ i ] = this.expressions [ i ] ;
+      newExpressions [ i ] = this.expressions [ i ];
     }
-    if ( this.getIdentifiersFree ( ).contains ( pId ) )
+    if ( this.getIdentifiersFree ().contains ( pId ) )
     {
-      for ( int i = 0 ; i < newExpressions.length ; i ++ )
+      for ( int i = 0 ; i < newExpressions.length ; i++ )
       {
         if ( newExpressions [ i ] instanceof Attribute )
         {
-          Attribute attribute = ( Attribute ) newExpressions [ i ] ;
-          if ( pId.equals ( attribute.getId ( ) ) )
+          Attribute attribute = ( Attribute ) newExpressions [ i ];
+          if ( pId.equals ( attribute.getId () ) )
           {
-            newExpressions [ i ] = newExpressions [ i ].substitute ( pId ,
-                pExpression ) ;
-            break ;
+            newExpressions [ i ] = newExpressions [ i ].substitute ( pId,
+                pExpression );
+            break;
           }
-          BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
-          for ( int j = i + 1 ; j < newExpressions.length ; j ++ )
+          BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ();
+          for ( int j = i + 1 ; j < newExpressions.length ; j++ )
           {
-            boundRenaming.add ( newExpressions [ j ].getIdentifiersFree ( ) ) ;
+            boundRenaming.add ( newExpressions [ j ].getIdentifiersFree () );
           }
-          boundRenaming.remove ( attribute.getId ( ) ) ;
-          boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
-          boundRenaming.add ( pId ) ;
-          Identifier newId = boundRenaming.newIdentifier ( attribute.getId ( ) ) ;
-          if ( ! attribute.getId ( ).equals ( newId ) )
+          boundRenaming.remove ( attribute.getId () );
+          boundRenaming.add ( pExpression.getIdentifiersFree () );
+          boundRenaming.add ( pId );
+          Identifier newId = boundRenaming.newIdentifier ( attribute.getId () );
+          if ( !attribute.getId ().equals ( newId ) )
           {
-            for ( int j = i + 1 ; j < newExpressions.length ; j ++ )
+            for ( int j = i + 1 ; j < newExpressions.length ; j++ )
             {
               newExpressions [ j ] = newExpressions [ j ].substitute (
-                  attribute.getId ( ) , newId ) ;
+                  attribute.getId (), newId );
             }
           }
-          newExpressions [ i ] = new Attribute ( newId , attribute.getE ( )
-              .substitute ( pId , pExpression ) ) ;
+          newExpressions [ i ] = new Attribute ( newId, attribute.getE ()
+              .substitute ( pId, pExpression ) );
         }
         else
         {
-          newExpressions [ i ] = newExpressions [ i ].substitute ( pId ,
-              pExpression ) ;
+          newExpressions [ i ] = newExpressions [ i ].substitute ( pId,
+              pExpression );
         }
       }
     }
-    return new Row ( newExpressions ) ;
+    return new Row ( newExpressions );
   }
 
 
@@ -545,15 +547,15 @@ public final class Row extends Expression implements DefaultExpressions
    * 
    * @see Expression#substitute(TypeSubstitution)
    */
-  @ Override
+  @Override
   public Row substitute ( TypeSubstitution pTypeSubstitution )
   {
-    Expression [ ] newExpr = new Expression [ this.expressions.length ] ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    Expression [] newExpr = new Expression [ this.expressions.length ];
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
-      newExpr [ i ] = this.expressions [ i ].substitute ( pTypeSubstitution ) ;
+      newExpr [ i ] = this.expressions [ i ].substitute ( pTypeSubstitution );
     }
-    return new Row ( newExpr ) ;
+    return new Row ( newExpr );
   }
 
 
@@ -564,37 +566,37 @@ public final class Row extends Expression implements DefaultExpressions
    * @param pExpression The {@link Expression} to substitute.
    * @return The new {@link Row}.
    */
-  public Row substituteRow ( Identifier pId , Expression pExpression )
+  public Row substituteRow ( Identifier pId, Expression pExpression )
   {
-    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    if ( pExpression.getIdentifierFreeNotOnlyVariable () )
     {
-      throw new NotOnlyFreeVariableException ( ) ;
+      throw new NotOnlyFreeVariableException ();
     }
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    Expression [] newExpressions = new Expression [ this.expressions.length ];
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
-      newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
+      newExpressions [ i ] = this.expressions [ i ].clone ();
     }
-    boolean found = false ;
-    for ( int i = 0 ; i < newExpressions.length ; i ++ )
+    boolean found = false;
+    for ( int i = 0 ; i < newExpressions.length ; i++ )
     {
       if ( newExpressions [ i ] instanceof Attribute )
       {
-        Attribute attribute = ( Attribute ) newExpressions [ i ] ;
-        if ( pId.equals ( attribute.getId ( ) ) )
+        Attribute attribute = ( Attribute ) newExpressions [ i ];
+        if ( pId.equals ( attribute.getId () ) )
         {
-          newExpressions [ i ] = new Attribute ( attribute.getId ( ) ,
-              pExpression ) ;
-          found = true ;
-          break ;
+          newExpressions [ i ] = new Attribute ( attribute.getId (),
+              pExpression );
+          found = true;
+          break;
         }
       }
     }
-    if ( ! found )
+    if ( !found )
     {
-      throw new RowSubstitutionException ( ) ;
+      throw new RowSubstitutionException ();
     }
-    return new Row ( newExpressions ) ;
+    return new Row ( newExpressions );
   }
 
 
@@ -604,14 +606,14 @@ public final class Row extends Expression implements DefaultExpressions
    * 
    * @return The tail <code>Row</code>.
    */
-  public Row tailRow ( )
+  public Row tailRow ()
   {
-    Expression [ ] newRowExpressions = new Expression [ this.expressions.length - 1 ] ;
-    for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
+    Expression [] newRowExpressions = new Expression [ this.expressions.length - 1 ];
+    for ( int i = 0 ; i < newRowExpressions.length ; i++ )
     {
-      newRowExpressions [ i ] = this.expressions [ i + 1 ] ;
+      newRowExpressions [ i ] = this.expressions [ i + 1 ];
     }
-    return new Row ( newRowExpressions ) ;
+    return new Row ( newRowExpressions );
   }
 
 
@@ -620,57 +622,56 @@ public final class Row extends Expression implements DefaultExpressions
    * 
    * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    StringBuilder body = new StringBuilder ( ) ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    StringBuilder body = new StringBuilder ();
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
-      body.append ( this.expressions [ i ].toPrettyString ( ).toString ( ) ) ;
+      body.append ( this.expressions [ i ].toPrettyString ().toString () );
       if ( i != this.expressions.length - 1 )
       {
-        body.append ( PRETTY_SPACE ) ;
+        body.append ( PRETTY_SPACE );
       }
     }
     if ( this.expressions.length == 0 )
     {
-      body.append ( PRETTY_EPSILON ) ;
+      body.append ( PRETTY_EPSILON );
     }
-    String descriptions[] = new String [ 2 + this.expressions.length ] ;
-    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
-    descriptions [ 1 ] = body.toString ( ) ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    String descriptions[] = new String [ 2 + this.expressions.length ];
+    descriptions [ 0 ] = this.toPrettyString ().toString ();
+    descriptions [ 1 ] = body.toString ();
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
-      descriptions [ 2 + i ] = this.expressions [ i ].toPrettyString ( )
-          .toString ( ) ;
+      descriptions [ 2 + i ] = this.expressions [ i ].toPrettyString ()
+          .toString ();
     }
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_ROW , LATEX_ROW , pIndent , descriptions ) ;
-    builder.addBuilderBegin ( ) ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+        PRIO_ROW, LATEX_ROW, pIndent, descriptions );
+    builder.addBuilderBegin ();
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
       builder.addBuilder ( this.expressions [ i ].toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) ,
-          PRIO_ROW_E ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ), PRIO_ROW_E );
       if ( i != this.expressions.length - 1 )
       {
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
             + LATEX_INDENT )
-            + LATEX_SPACE ) ;
-        builder.addBreak ( ) ;
+            + LATEX_SPACE );
+        builder.addBreak ();
       }
     }
     if ( this.expressions.length == 0 )
     {
-      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-          + LATEX_INDENT ) ) ;
-      builder.addText ( LATEX_EPSILON ) ;
+          + LATEX_INDENT ) );
+      builder.addText ( LATEX_EPSILON );
     }
-    builder.addBuilderEnd ( ) ;
-    return builder ;
+    builder.addBuilderEnd ();
+    return builder;
   }
 
 
@@ -679,31 +680,29 @@ public final class Row extends Expression implements DefaultExpressions
    * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_ROW ) ;
-      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_ROW );
+      for ( int i = 0 ; i < this.expressions.length ; i++ )
       {
-        this.prettyStringBuilder
-            .addBuilder ( this.expressions [ i ]
-                .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-                PRIO_ROW_E ) ;
+        this.prettyStringBuilder.addBuilder ( this.expressions [ i ]
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), PRIO_ROW_E );
         if ( i != this.expressions.length - 1 )
         {
-          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-          this.prettyStringBuilder.addBreak ( ) ;
+          this.prettyStringBuilder.addText ( PRETTY_SPACE );
+          this.prettyStringBuilder.addBreak ();
         }
       }
       if ( this.expressions.length == 0 )
       {
-        this.prettyStringBuilder.addText ( PRETTY_EPSILON ) ;
+        this.prettyStringBuilder.addText ( PRETTY_EPSILON );
       }
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

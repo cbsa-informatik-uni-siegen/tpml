@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -12,25 +12,26 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class Snd extends Projection
 {
+
   /**
    * The keyword <code>snd</code>.
    */
-  private static final String SND = "snd" ; //$NON-NLS-1$
+  private static final String SND = "snd"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = Expression.getCaption ( Snd.class ) ;
+  private static final String CAPTION = Expression.getCaption ( Snd.class );
 
 
   /**
    * Allocates a new instance of the <code>snd</code> operator which is a
    * special case of the projection that returns the second item of a pair.
    */
-  public Snd ( )
+  public Snd ()
   {
-    super ( 2 , 2 , SND ) ;
+    super ( 2, 2, SND );
   }
 
 
@@ -43,11 +44,11 @@ public final class Snd extends Projection
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Snd ( int pParserStartOffset , int pParserEndOffset )
+  public Snd ( int pParserStartOffset, int pParserEndOffset )
   {
-    this ( ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ();
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -56,19 +57,19 @@ public final class Snd extends Projection
    * 
    * @see Projection#clone()
    */
-  @ Override
-  public Snd clone ( )
+  @Override
+  public Snd clone ()
   {
-    return new Snd ( ) ;
+    return new Snd ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

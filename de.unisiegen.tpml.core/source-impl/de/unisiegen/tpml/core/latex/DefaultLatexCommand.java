@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
 /**
@@ -6,31 +6,32 @@ package de.unisiegen.tpml.core.latex ;
  * 
  * @author Christian Fehler
  */
-public final class DefaultLatexCommand implements LatexCommand ,
+public final class DefaultLatexCommand implements LatexCommand,
     LatexCommandNames
 {
+
   /**
    * The name of the latex command.
    */
-  private String name ;
+  private String name;
 
 
   /**
    * The parameter count of the new latex command.
    */
-  private int parameterCount ;
+  private int parameterCount;
 
 
   /**
    * The body of the new latex command.
    */
-  private String body ;
+  private String body;
 
 
   /**
    * The array of parameter descriptions.
    */
-  private String [ ] parameterDescriptions = null ;
+  private String [] parameterDescriptions = null;
 
 
   /**
@@ -43,22 +44,22 @@ public final class DefaultLatexCommand implements LatexCommand ,
    * @param pBody The body of the new latex command.
    * @param pParameterDescriptions The array of parameter descriptions.
    */
-  public DefaultLatexCommand ( String pName , int pParameterCount ,
-      String pBody , String ... pParameterDescriptions )
+  public DefaultLatexCommand ( String pName, int pParameterCount, String pBody,
+      String ... pParameterDescriptions )
   {
-    this.name = pName ;
+    this.name = pName;
     if ( pParameterCount < 0 )
     {
-      throw new IllegalArgumentException ( "parameter is less than zero" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "parameter is less than zero" ); //$NON-NLS-1$
     }
-    this.parameterCount = pParameterCount ;
-    this.body = pBody ;
+    this.parameterCount = pParameterCount;
+    this.body = pBody;
     if ( pParameterCount != pParameterDescriptions.length )
     {
       throw new IllegalArgumentException (
-          "parameter count is not equal to the description count" ) ; //$NON-NLS-1$
+          "parameter count is not equal to the description count" ); //$NON-NLS-1$
     }
-    this.parameterDescriptions = pParameterDescriptions ;
+    this.parameterDescriptions = pParameterDescriptions;
   }
 
 
@@ -67,15 +68,15 @@ public final class DefaultLatexCommand implements LatexCommand ,
    * 
    * @see Object#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof DefaultLatexCommand )
     {
-      DefaultLatexCommand other = ( DefaultLatexCommand ) pObject ;
-      return this.name.equals ( other.name ) ;
+      DefaultLatexCommand other = ( DefaultLatexCommand ) pObject;
+      return this.name.equals ( other.name );
     }
-    return false ;
+    return false;
   }
 
 
@@ -85,9 +86,9 @@ public final class DefaultLatexCommand implements LatexCommand ,
    * @return The name.
    * @see #name
    */
-  public String getName ( )
+  public String getName ()
   {
-    return this.name ;
+    return this.name;
   }
 
 
@@ -96,40 +97,40 @@ public final class DefaultLatexCommand implements LatexCommand ,
    * 
    * @return The string value of this <code>DefaultLatexCommand</code>.
    */
-  @ Override
-  public String toString ( )
+  @Override
+  public String toString ()
   {
-    StringBuilder result = new StringBuilder ( ) ;
+    StringBuilder result = new StringBuilder ();
     if ( this.parameterDescriptions != null )
     {
-      result.append ( "% " ) ; //$NON-NLS-1$
-      result.append ( this.name ) ;
+      result.append ( "% " ); //$NON-NLS-1$
+      result.append ( this.name );
       for ( String descriptions : this.parameterDescriptions )
       {
-        result.append ( "{" ) ; //$NON-NLS-1$
-        result.append ( descriptions ) ;
-        result.append ( "}" ) ; //$NON-NLS-1$
+        result.append ( "{" ); //$NON-NLS-1$
+        result.append ( descriptions );
+        result.append ( "}" ); //$NON-NLS-1$
       }
-      result.append ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      result.append ( LATEX_LINE_BREAK_SOURCE_CODE );
     }
     else
     {
-      result.append ( "% " ) ; //$NON-NLS-1$
-      result.append ( this.name ) ;
-      result.append ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      result.append ( "% " ); //$NON-NLS-1$
+      result.append ( this.name );
+      result.append ( LATEX_LINE_BREAK_SOURCE_CODE );
     }
-    result.append ( "\\newcommand{\\" ) ; //$NON-NLS-1$
-    result.append ( this.name ) ;
-    result.append ( "}" ) ; //$NON-NLS-1$
+    result.append ( "\\newcommand{\\" ); //$NON-NLS-1$
+    result.append ( this.name );
+    result.append ( "}" ); //$NON-NLS-1$
     if ( this.parameterCount > 0 )
     {
-      result.append ( "[" ) ; //$NON-NLS-1$
-      result.append ( this.parameterCount ) ;
-      result.append ( "]" ) ; //$NON-NLS-1$
+      result.append ( "[" ); //$NON-NLS-1$
+      result.append ( this.parameterCount );
+      result.append ( "]" ); //$NON-NLS-1$
     }
-    result.append ( "{" ) ; //$NON-NLS-1$
-    result.append ( this.body ) ;
-    result.append ( "}" ) ; //$NON-NLS-1$
-    return result.toString ( ) ;
+    result.append ( "{" ); //$NON-NLS-1$
+    result.append ( this.body );
+    result.append ( "}" ); //$NON-NLS-1$
+    return result.toString ();
   }
 }

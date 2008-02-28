@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.languages.l2osub;
 
+
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
@@ -18,267 +19,312 @@ import de.unisiegen.tpml.core.types.ObjectType;
 import de.unisiegen.tpml.core.types.PrimitiveType;
 import de.unisiegen.tpml.core.types.RowType;
 
+
 /**
  * The type proof rules for the <code>L2O</code> language.
  * 
  * @author Benjamin Mies
  * @see de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet
  */
-public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
+public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet
+{
 
-	/**
-	 * Allocates a new <code>L2OSubTypingProofRuleSet</code> for the specified
-	 * <code>language</code>.
-	 * 
-	 * @param language the <code>L2O</code> or a derived language.
-	 * @param mode the mode chosen by the user
-	 * @throws NullPointerException if <code>language</code> is
-	 *           <code>null</code>.
-	 */
-	public L2ORecSubTypingProofRuleSet ( Language language, boolean mode ) {
-		super ( language, mode );
+  /**
+   * Allocates a new <code>L2OSubTypingProofRuleSet</code> for the specified
+   * <code>language</code>.
+   * 
+   * @param language the <code>L2O</code> or a derived language.
+   * @param mode the mode chosen by the user
+   * @throws NullPointerException if <code>language</code> is
+   *           <code>null</code>.
+   */
+  public L2ORecSubTypingProofRuleSet ( Language language, boolean mode )
+  {
+    super ( language, mode );
 
-		unregister ( "REFL" ); //$NON-NLS-1$
-		unregister ( "S-MU-LEFT" ); //$NON-NLS-1$
-		unregister ( "S-MU-RIGHT" ); //$NON-NLS-1$
-		unregister ("S-ASSUME"); //$NON-NLS-1$
-		unregister ("ARROW"); //$NON-NLS-1$
+    unregister ( "REFL" ); //$NON-NLS-1$
+    unregister ( "S-MU-LEFT" ); //$NON-NLS-1$
+    unregister ( "S-MU-RIGHT" ); //$NON-NLS-1$
+    unregister ( "S-ASSUME" ); //$NON-NLS-1$
+    unregister ( "ARROW" ); //$NON-NLS-1$
 
-		// register the type rules
+    // register the type rules
 
-		if ( mode ) {
-			registerByMethodName ( L2OLanguage.L2O, "OBJECT", "applyObject" ); //$NON-NLS-1$ //$NON-NLS-2$
-		} else {
-			registerByMethodName ( L2OLanguage.L2O, "TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
-			registerByMethodName ( L2OLanguage.L2O,
-					"OBJECT-WIDTH", "applyObjectWidth" ); //$NON-NLS-1$ //$NON-NLS-2$
-			registerByMethodName ( L2OLanguage.L2O,
-					"OBJECT-DEPTH", "applyObjectDepth" ); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+    if ( mode )
+    {
+      registerByMethodName ( L2OLanguage.L2O, "OBJECT", "applyObject" ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+    else
+    {
+      registerByMethodName ( L2OLanguage.L2O, "TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
+      registerByMethodName ( L2OLanguage.L2O,
+          "OBJECT-WIDTH", "applyObjectWidth" ); //$NON-NLS-1$ //$NON-NLS-2$
+      registerByMethodName ( L2OLanguage.L2O,
+          "OBJECT-DEPTH", "applyObjectDepth" ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
 
-		registerByMethodName ( L1Language.L1, "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
-		registerByMethodName ( L1Language.L1, "S-MU-LEFT", "applyMuLeft" ); //$NON-NLS-1$ //$NON-NLS-2$
-		registerByMethodName ( L1Language.L1, "S-MU-RIGHT", "applyMuRight" ); //$NON-NLS-1$ //$NON-NLS-2$
-		registerByMethodName ( L1Language.L1, "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
-		registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
-	}
+    registerByMethodName ( L1Language.L1, "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1Language.L1, "S-MU-LEFT", "applyMuLeft" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1Language.L1, "S-MU-RIGHT", "applyMuRight" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1Language.L1, "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
+  }
 
-	/**
-	 * Applies the <b>(TRANS)</b> rule to the <code>node</code> using the
-	 * <code>context</code>.
-	 * 
-	 * @param context the subtyping proof context.
-	 * @param node the subtyping proof node.
-	 * @throws SubTypingException throw Exception if rule can't be applied
-	 * @throws SubTypingException 
-	 */
-	public void applyTrans ( RecSubTypingProofContext context,
-			RecSubTypingProofNode node ) throws SubTypingException {
-		try {
-			ObjectType type = ( ObjectType ) node.getRight ( );
-			ObjectType type2 = ( ObjectType ) node.getLeft ( );
 
-			ArrayList < Identifier > newIds = new ArrayList < Identifier > ( );
-			ArrayList < MonoType > newTypes = new ArrayList < MonoType > ( );
+  /**
+   * Applies the <b>(TRANS)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   * @throws SubTypingException throw Exception if rule can't be applied
+   * @throws SubTypingException
+   */
+  public void applyTrans ( RecSubTypingProofContext context,
+      RecSubTypingProofNode node ) throws SubTypingException
+  {
+    try
+    {
+      ObjectType type = ( ObjectType ) node.getRight ();
+      ObjectType type2 = ( ObjectType ) node.getLeft ();
 
-			RowType r1 = ( RowType ) ( type ).getPhi ( );
-			RowType r2 = ( RowType ) ( type2 ).getPhi ( );
+      ArrayList < Identifier > newIds = new ArrayList < Identifier > ();
+      ArrayList < MonoType > newTypes = new ArrayList < MonoType > ();
 
-			Identifier[] ids1 = r1.getIdentifiers ( );
-			Identifier[] ids2 = r2.getIdentifiers ( );
+      RowType r1 = ( RowType ) ( type ).getPhi ();
+      RowType r2 = ( RowType ) ( type2 ).getPhi ();
 
-			MonoType[] types2 = r2.getTypes ( );
+      Identifier [] ids1 = r1.getIdentifiers ();
+      Identifier [] ids2 = r2.getIdentifiers ();
 
-			boolean goOn;
+      MonoType [] types2 = r2.getTypes ();
 
-			for ( int i = 0; i < ids1.length; i++ ) {
+      boolean goOn;
 
-				goOn = false;
-				for ( int j = 0; j < ids2.length; j++ ) {
-					if ( ids1[i].equals ( ids2[j] ) ) {
-						newIds.add ( ids2[j] );
-						newTypes.add ( types2[j] );
-						goOn = true;
-						break;
-					}
-				}
-				if ( goOn )
-					continue;
-				throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.0" ),type,type2), node ); //$NON-NLS-1$
-			}
+      for ( int i = 0 ; i < ids1.length ; i++ )
+      {
 
-			Identifier[] tmpIds = new Identifier[newIds.size ( )];
-			for ( int i = 0; i < newIds.size ( ); i++ ) {
-				tmpIds[i] = newIds.get ( i );
-			}
+        goOn = false;
+        for ( int j = 0 ; j < ids2.length ; j++ )
+        {
+          if ( ids1 [ i ].equals ( ids2 [ j ] ) )
+          {
+            newIds.add ( ids2 [ j ] );
+            newTypes.add ( types2 [ j ] );
+            goOn = true;
+            break;
+          }
+        }
+        if ( goOn )
+          continue;
+        throw new SubTypingException ( MessageFormat.format ( Messages
+            .getString ( "SubTypingException.0" ), type, type2 ), node ); //$NON-NLS-1$
+      }
 
-			MonoType[] tmpTypes = new MonoType[newTypes.size ( )];
-			for ( int i = 0; i < newTypes.size ( ); i++ ) {
-				tmpTypes[i] = newTypes.get ( i );
-			}
+      Identifier [] tmpIds = new Identifier [ newIds.size () ];
+      for ( int i = 0 ; i < newIds.size () ; i++ )
+      {
+        tmpIds [ i ] = newIds.get ( i );
+      }
 
-			//ObjectType newType = new ObjectType ( new RowType ( (Identifier[]) newIds.toArray ( ),(MonoType[]) newTypes.toArray ( ) ) );
-			ObjectType newType = new ObjectType ( new RowType ( tmpIds, tmpTypes ) );
-			context.addProofNode ( node, type2, newType );
-			context.addProofNode ( node, newType, type );
+      MonoType [] tmpTypes = new MonoType [ newTypes.size () ];
+      for ( int i = 0 ; i < newTypes.size () ; i++ )
+      {
+        tmpTypes [ i ] = newTypes.get ( i );
+      }
 
-		} catch ( ClassCastException e ) {
-			MonoType type = node.getLeft ( );
-			MonoType type2 = node.getRight ( );
-			// if both types instance of Primitive Type throw Exception
-			if ( type instanceof PrimitiveType && type2 instanceof PrimitiveType ){
-				throw new SubTypingException ( Messages.getString ( "SubTypingException.1" ), node ); //$NON-NLS-1$
-			}
-			context.addProofNode ( node, type, type );
-			context.addProofNode ( node, type, type2 );
+      // ObjectType newType = new ObjectType ( new RowType ( (Identifier[])
+      // newIds.toArray ( ),(MonoType[]) newTypes.toArray ( ) ) );
+      ObjectType newType = new ObjectType ( new RowType ( tmpIds, tmpTypes ) );
+      context.addProofNode ( node, type2, newType );
+      context.addProofNode ( node, newType, type );
 
-			SubTypingProofNode parent = ( SubTypingProofNode ) node.getParent ( );
-			int count = 0;
-			while ( parent != null ) {
-				if ( parent.getRule ( ).toString ( ).equals ( "TRANS" ) ){ //$NON-NLS-1$
-					count++ ;
-				}
-				else
-					break;
-				parent = (SubTypingProofNode) parent.getParent ( );
-			}
-			
-			if (count >= 15)
-				throw new SubTypingException (Messages.getString ( "SubTypingException.2" ), node ); //$NON-NLS-1$
-			
+    }
+    catch ( ClassCastException e )
+    {
+      MonoType type = node.getLeft ();
+      MonoType type2 = node.getRight ();
+      // if both types instance of Primitive Type throw Exception
+      if ( type instanceof PrimitiveType && type2 instanceof PrimitiveType )
+      {
+        throw new SubTypingException ( Messages
+            .getString ( "SubTypingException.1" ), node ); //$NON-NLS-1$
+      }
+      context.addProofNode ( node, type, type );
+      context.addProofNode ( node, type, type2 );
 
-		}
+      SubTypingProofNode parent = ( SubTypingProofNode ) node.getParent ();
+      int count = 0;
+      while ( parent != null )
+      {
+        if ( parent.getRule ().toString ().equals ( "TRANS" ) ) { //$NON-NLS-1$
+          count++ ;
+        }
+        else
+          break;
+        parent = ( SubTypingProofNode ) parent.getParent ();
+      }
 
-	}
+      if ( count >= 15 )
+        throw new SubTypingException ( Messages
+            .getString ( "SubTypingException.2" ), node ); //$NON-NLS-1$
 
-	/**
-	 * Applies the <b>(OBJECT-WIDTH)</b> rule to the <code>node</code> using the
-	 * <code>context</code>.
-	 * 
-	 * @param context the subtyping proof context.
-	 * @param node the subtyping proof node.
-	 * @throws SubTypingException throw Exception if rule can't be applied
-	 */
-	public void applyObjectWidth ( RecSubTypingProofContext context,
-			RecSubTypingProofNode node ) throws SubTypingException {
-		boolean goOn;
-		ObjectType type = ( ObjectType ) node.getLeft ( );
-		ObjectType type2 = ( ObjectType ) node.getRight ( );
+    }
 
-		RowType r1 = ( RowType ) ( type ).getPhi ( );
-		RowType r2 = ( RowType ) ( type2 ).getPhi ( );
+  }
 
-		Identifier[] ids1 = r1.getIdentifiers ( );
-		Identifier[] ids2 = r2.getIdentifiers ( );
 
-		MonoType[] types = r1.getTypes ( );
-		MonoType[] types2 = r2.getTypes ( );
+  /**
+   * Applies the <b>(OBJECT-WIDTH)</b> rule to the <code>node</code> using
+   * the <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   * @throws SubTypingException throw Exception if rule can't be applied
+   */
+  public void applyObjectWidth ( RecSubTypingProofContext context,
+      RecSubTypingProofNode node ) throws SubTypingException
+  {
+    boolean goOn;
+    ObjectType type = ( ObjectType ) node.getLeft ();
+    ObjectType type2 = ( ObjectType ) node.getRight ();
 
-		for ( int i = 0; i < ids2.length; i++ ) {
-			goOn = false;
-			for ( int j = 0; j < ids1.length; j++ ) {
-				if ( ids2[i].equals ( ids1[j] ) ) {
-					if ( ! ( types2[i].equals ( types[j] ) ) ) {
-						throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.3" ),type,type2), node ); //$NON-NLS-1$
-						}
-					goOn = true;
-					break;
-				}
-			}
-			if ( !goOn ) {
-				throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.4" ),type,type2), node ); //$NON-NLS-1$
-				}
-			context.addSeenType ( node.getLeft ( ), node.getRight ( ) );
-		}
-	}
+    RowType r1 = ( RowType ) ( type ).getPhi ();
+    RowType r2 = ( RowType ) ( type2 ).getPhi ();
 
-	/**
-	 * Applies the <b>(OBJECT-DEPTH)</b> rule to the <code>node</code> using the
-	 * <code>context</code>.
-	 * 
-	 * @param context the subtyping proof context.
-	 * @param node the subtyping proof node.
-	 * @throws SubTypingException throw Exception if rule can't be applied
-	 */
-	public void applyObjectDepth ( RecSubTypingProofContext context,
-			RecSubTypingProofNode node ) throws SubTypingException {
+    Identifier [] ids1 = r1.getIdentifiers ();
+    Identifier [] ids2 = r2.getIdentifiers ();
 
-		boolean goOn;
-		ObjectType type = ( ObjectType ) node.getLeft ( );
-		ObjectType type2 = ( ObjectType ) node.getRight ( );
+    MonoType [] types = r1.getTypes ();
+    MonoType [] types2 = r2.getTypes ();
 
-		RowType r1 = ( RowType ) ( type ).getPhi ( );
-		RowType r2 = ( RowType ) ( type2 ).getPhi ( );
+    for ( int i = 0 ; i < ids2.length ; i++ )
+    {
+      goOn = false;
+      for ( int j = 0 ; j < ids1.length ; j++ )
+      {
+        if ( ids2 [ i ].equals ( ids1 [ j ] ) )
+        {
+          if ( ! ( types2 [ i ].equals ( types [ j ] ) ) )
+          {
+            throw new SubTypingException ( MessageFormat.format ( Messages
+                .getString ( "SubTypingException.3" ), type, type2 ), node ); //$NON-NLS-1$
+          }
+          goOn = true;
+          break;
+        }
+      }
+      if ( !goOn )
+      {
+        throw new SubTypingException ( MessageFormat.format ( Messages
+            .getString ( "SubTypingException.4" ), type, type2 ), node ); //$NON-NLS-1$
+      }
+      context.addSeenType ( node.getLeft (), node.getRight () );
+    }
+  }
 
-		Identifier[] ids1 = r1.getIdentifiers ( );
-		Identifier[] ids2 = r2.getIdentifiers ( );
 
-		MonoType[] types = r1.getTypes ( );
-		MonoType[] types2 = r2.getTypes ( );
+  /**
+   * Applies the <b>(OBJECT-DEPTH)</b> rule to the <code>node</code> using
+   * the <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   * @throws SubTypingException throw Exception if rule can't be applied
+   */
+  public void applyObjectDepth ( RecSubTypingProofContext context,
+      RecSubTypingProofNode node ) throws SubTypingException
+  {
 
-		if ( ids1.length == ids2.length ) {
+    boolean goOn;
+    ObjectType type = ( ObjectType ) node.getLeft ();
+    ObjectType type2 = ( ObjectType ) node.getRight ();
 
-			for ( int i = 0; i < ids1.length; i++ ) {
-				goOn = false;
-				for ( int j = 0; j < ids2.length; j++ ) {
-					if ( ids1[i].equals ( ids2[j] ) ) {
-						context.addProofNode ( node, types[i], types2[j] );
-						goOn = true;
-					}
-				}
-				if ( goOn )
-					continue;
-				break;
-			}
-		} else
-			throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.0" ),type, type2), node ); //$NON-NLS-1$
-		context.addSeenType ( node.getLeft ( ), node.getRight ( ) );
-		}
+    RowType r1 = ( RowType ) ( type ).getPhi ();
+    RowType r2 = ( RowType ) ( type2 ).getPhi ();
 
-	/**
-	 * Applies the <b>(OBJECT)</b> rule to the <code>node</code> using the
-	 * <code>context</code>.
-	 * 
-	 * @param context the subtyping proof context.
-	 * @param node the subtyping proof node.
-	 * @throws SubTypingException throw Exception if rule can't be applied
-	 */
-	public void applyObject ( RecSubTypingProofContext context,
-			RecSubTypingProofNode node ) throws SubTypingException {
-		boolean goOn = false;
+    Identifier [] ids1 = r1.getIdentifiers ();
+    Identifier [] ids2 = r2.getIdentifiers ();
 
-		ObjectType type = ( ObjectType ) node.getLeft ( );
-		ObjectType type2 = ( ObjectType ) node.getRight ( );
+    MonoType [] types = r1.getTypes ();
+    MonoType [] types2 = r2.getTypes ();
 
-		RowType r1 = ( RowType ) type.getPhi ( );
-		RowType r2 = ( RowType ) type2.getPhi ( );
+    if ( ids1.length == ids2.length )
+    {
 
-		Identifier[] ids1 = null;
-		Identifier[] ids2 = null;
-		MonoType[] types1 = null;
-		MonoType[] types2 = null;
+      for ( int i = 0 ; i < ids1.length ; i++ )
+      {
+        goOn = false;
+        for ( int j = 0 ; j < ids2.length ; j++ )
+        {
+          if ( ids1 [ i ].equals ( ids2 [ j ] ) )
+          {
+            context.addProofNode ( node, types [ i ], types2 [ j ] );
+            goOn = true;
+          }
+        }
+        if ( goOn )
+          continue;
+        break;
+      }
+    }
+    else
+      throw new SubTypingException ( MessageFormat.format ( Messages
+          .getString ( "SubTypingException.0" ), type, type2 ), node ); //$NON-NLS-1$
+    context.addSeenType ( node.getLeft (), node.getRight () );
+  }
 
-		ids1 = r1.getIdentifiers ( );
-		ids2 = r2.getIdentifiers ( );
 
-		types1 = r1.getTypes ( );
-		types2 = r2.getTypes ( );
+  /**
+   * Applies the <b>(OBJECT)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   * @throws SubTypingException throw Exception if rule can't be applied
+   */
+  public void applyObject ( RecSubTypingProofContext context,
+      RecSubTypingProofNode node ) throws SubTypingException
+  {
+    boolean goOn = false;
 
-		for ( int i = 0; i < ids2.length; i++ ) {
-			goOn = false;
-			for ( int j = 0; j < ids1.length; j++ ) {
-				if ( ids2[i].equals ( ids1[j] ) ) {
-					//newIds.add (  ids1[j] );
-					//newTypes.add ( types1[j] );
-					context.addProofNode ( node, types1[j], types2[i] );
-					goOn = true;
-					break;
-				}
-			}
-			if ( !goOn ) {
-				throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.3" ),type,type2), node ); //$NON-NLS-1$
-				}
-		}
-		context.addSeenType ( node.getLeft ( ), node.getRight ( ) );
-	}
+    ObjectType type = ( ObjectType ) node.getLeft ();
+    ObjectType type2 = ( ObjectType ) node.getRight ();
+
+    RowType r1 = ( RowType ) type.getPhi ();
+    RowType r2 = ( RowType ) type2.getPhi ();
+
+    Identifier [] ids1 = null;
+    Identifier [] ids2 = null;
+    MonoType [] types1 = null;
+    MonoType [] types2 = null;
+
+    ids1 = r1.getIdentifiers ();
+    ids2 = r2.getIdentifiers ();
+
+    types1 = r1.getTypes ();
+    types2 = r2.getTypes ();
+
+    for ( int i = 0 ; i < ids2.length ; i++ )
+    {
+      goOn = false;
+      for ( int j = 0 ; j < ids1.length ; j++ )
+      {
+        if ( ids2 [ i ].equals ( ids1 [ j ] ) )
+        {
+          // newIds.add ( ids1[j] );
+          // newTypes.add ( types1[j] );
+          context.addProofNode ( node, types1 [ j ], types2 [ i ] );
+          goOn = true;
+          break;
+        }
+      }
+      if ( !goOn )
+      {
+        throw new SubTypingException ( MessageFormat.format ( Messages
+            .getString ( "SubTypingException.3" ), type, type2 ), node ); //$NON-NLS-1$
+      }
+    }
+    context.addSeenType ( node.getLeft (), node.getRight () );
+  }
 }

@@ -1,8 +1,9 @@
-package de.unisiegen.tpml.graphics.outline.ui ;
+package de.unisiegen.tpml.graphics.outline.ui;
 
 
-import java.util.TimerTask ;
-import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
+import java.util.TimerTask;
+
+import de.unisiegen.tpml.graphics.outline.DefaultOutline;
 
 
 /**
@@ -13,10 +14,11 @@ import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
  */
 public final class OutlineTimerTask extends TimerTask
 {
+
   /**
    * The {@link DefaultOutline}.
    */
-  private DefaultOutline defaultOutline ;
+  private DefaultOutline defaultOutline;
 
 
   /**
@@ -26,7 +28,7 @@ public final class OutlineTimerTask extends TimerTask
    */
   public OutlineTimerTask ( DefaultOutline pDefaultOutline )
   {
-    this.defaultOutline = pDefaultOutline ;
+    this.defaultOutline = pDefaultOutline;
   }
 
 
@@ -35,9 +37,9 @@ public final class OutlineTimerTask extends TimerTask
    * 
    * @see TimerTask#run()
    */
-  @ Override
-  public final void run ( )
+  @Override
+  public final void run ()
   {
-    this.defaultOutline.execute ( ) ;
+    this.defaultOutline.execute ();
   }
 }

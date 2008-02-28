@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core ;
+package de.unisiegen.tpml.core;
 
 
 import java.util.EventListener;
@@ -22,8 +22,9 @@ import de.unisiegen.tpml.core.util.beans.Bean;
  * @see de.unisiegen.tpml.core.AbstractProofModel
  * @see de.unisiegen.tpml.core.ProofNode
  */
-public interface ProofModel extends Bean , TreeModel, LatexPrintable
+public interface ProofModel extends Bean, TreeModel, LatexPrintable
 {
+
   //
   // Accessors
   //
@@ -36,7 +37,7 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    * @return <code>true</code> if the user cheated, <code>false</code>
    *         otherwise.
    */
-  public boolean isCheating ( ) ;
+  public boolean isCheating ();
 
 
   /**
@@ -46,7 +47,7 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    * 
    * @return <code>true</code> if the proof is finished.
    */
-  public boolean isFinished ( ) ;
+  public boolean isFinished ();
 
 
   /**
@@ -56,7 +57,7 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    * @see Language
    * @see ProofRuleSet#getLanguage()
    */
-  public Language getLanguage ( ) ;
+  public Language getLanguage ();
 
 
   /**
@@ -69,7 +70,7 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    * @return the {@link ProofRule}s to be displayed in the user interface.
    * @see ProofRuleSet#getRules()
    */
-  public ProofRule [ ] getRules ( ) ;
+  public ProofRule [] getRules ();
 
 
   //
@@ -84,7 +85,7 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    * @see #isUndoable()
    * @see #redo()
    */
-  public boolean isRedoable ( ) ;
+  public boolean isRedoable ();
 
 
   /**
@@ -96,7 +97,7 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    * @see #isRedoable()
    * @see #undo()
    */
-  public boolean isUndoable ( ) ;
+  public boolean isUndoable ();
 
 
   /**
@@ -108,7 +109,7 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    *           cannot be redone for some other reason.
    * @see #undo()
    */
-  public void redo ( ) throws CannotRedoException ;
+  public void redo () throws CannotRedoException;
 
 
   /**
@@ -119,7 +120,7 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    *           cannot be undone for some other reason.
    * @see #redo()
    */
-  public void undo ( ) throws CannotUndoException ;
+  public void undo () throws CannotUndoException;
 
 
   //
@@ -140,7 +141,7 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    * @throws NullPointerException if <code>node</code> is <code>null</code>.
    * @see #guess(ProofNode)
    */
-  public void complete ( ProofNode node ) throws ProofGuessException ;
+  public void complete ( ProofNode node ) throws ProofGuessException;
 
 
   /**
@@ -160,7 +161,7 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    * @see #complete(ProofNode)
    * @see #prove(ProofRule, ProofNode)
    */
-  public void guess ( ProofNode node ) throws ProofGuessException ;
+  public void guess ( ProofNode node ) throws ProofGuessException;
 
 
   /**
@@ -181,8 +182,8 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    *           the <code>node</code>.
    * @see #guess(ProofNode)
    */
-  public void prove ( ProofRule rule , ProofNode node )
-      throws ProofRuleException ;
+  public void prove ( ProofRule rule, ProofNode node )
+      throws ProofRuleException;
 
 
   //
@@ -195,7 +196,7 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    * @return the root of the proof tree.
    * @see javax.swing.tree.TreeModel#getRoot()
    */
-  public ProofNode getRoot ( ) ;
+  public ProofNode getRoot ();
 
 
   /**
@@ -211,7 +212,7 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    * @return the child of <code>parent</code> at index <code>index</code>.
    * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
    */
-  public ProofNode getChild ( Object parent , int index ) ;
+  public ProofNode getChild ( Object parent, int index );
 
 
   /**
@@ -223,7 +224,7 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    * @return the parents of <code>aNode</code> up to and including the root
    *         node.
    */
-  public TreeNode [ ] getPathToRoot ( TreeNode aNode ) ;
+  public TreeNode [] getPathToRoot ( TreeNode aNode );
 
 
   //
@@ -237,7 +238,7 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    * @see javax.swing.tree.TreeModel#addTreeModelListener(TreeModelListener)
    * @see javax.swing.tree.TreeModel#removeTreeModelListener(TreeModelListener)
    */
-  public TreeModelListener [ ] getTreeModelListeners ( ) ;
+  public TreeModelListener [] getTreeModelListeners ();
 
 
   /**
@@ -252,8 +253,8 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    * with the following code:
    * 
    * <pre>
-   * TreeModelListener [ ] tmls = ( TreeModelListener [ ] ) ( m
-   *     .getListeners ( TreeModelListener.class ) ) ;
+   * TreeModelListener [] tmls = ( TreeModelListener [] ) ( m
+   *     .getListeners ( TreeModelListener.class ) );
    * </pre>
    * 
    * If no such listeners exist, this method returns an empty array.
@@ -268,22 +269,22 @@ public interface ProofModel extends Bean , TreeModel, LatexPrintable
    *           class or interface that implements {@link EventListener}.
    * @see #getTreeModelListeners()
    */
-  public < T extends EventListener > T [ ] getListeners (
-      Class < T > listenerType ) ;
-  
-	/**
-	 * 
-	 * Set the actual side overlap for the exported latex file
-	 *
-	 * @param pOverlap the side overlapping
-	 */
-	public void setOverlap ( int pOverlap ) ;
+  public < T extends EventListener > T [] getListeners (
+      Class < T > listenerType );
 
-	/**
-	 * 
-	 * Set the number of pages for the exported latex file
-	 *
-	 * @param pPages number of pages
-	 */
-	public void setPages ( int pPages ) ;
+
+  /**
+   * Set the actual side overlap for the exported latex file
+   * 
+   * @param pOverlap the side overlapping
+   */
+  public void setOverlap ( int pOverlap );
+
+
+  /**
+   * Set the number of pages for the exported latex file
+   * 
+   * @param pPages number of pages
+   */
+  public void setPages ( int pPages );
 }

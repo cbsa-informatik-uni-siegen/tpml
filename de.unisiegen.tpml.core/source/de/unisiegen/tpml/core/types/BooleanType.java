@@ -1,10 +1,10 @@
-package de.unisiegen.tpml.core.types ;
+package de.unisiegen.tpml.core.types;
 
 
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
 
 
 /**
@@ -18,16 +18,17 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
  */
 public final class BooleanType extends PrimitiveType
 {
+
   /**
    * The keyword <code>bool</code>.
    */
-  private static final String BOOL = "bool" ; //$NON-NLS-1$
+  private static final String BOOL = "bool"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = Type.getCaption ( BooleanType.class ) ;
+  private static final String CAPTION = Type.getCaption ( BooleanType.class );
 
 
   /**
@@ -35,23 +36,23 @@ public final class BooleanType extends PrimitiveType
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_BOOL , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{bool}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_BOOLEAN_TYPE , 0 , "\\" //$NON-NLS-1$
-        + LATEX_KEY_BOOL ) ) ;
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_BOOL, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{bool}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_BOOLEAN_TYPE, 0, "\\" //$NON-NLS-1$
+        + LATEX_KEY_BOOL ) );
+    return commands;
   }
 
 
   /**
    * Allocates a new <code>BooleanType</code> instance.
    */
-  public BooleanType ( )
+  public BooleanType ()
   {
-    super ( BOOL ) ;
+    super ( BOOL );
   }
 
 
@@ -63,11 +64,11 @@ public final class BooleanType extends PrimitiveType
    * @param pParserEndOffset The end offset of this {@link Type} in the source
    *          code.
    */
-  public BooleanType ( int pParserStartOffset , int pParserEndOffset )
+  public BooleanType ( int pParserStartOffset, int pParserEndOffset )
   {
-    this ( ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ();
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -76,20 +77,20 @@ public final class BooleanType extends PrimitiveType
    * 
    * @see Type#clone()
    */
-  @ Override
-  public BooleanType clone ( )
+  @Override
+  public BooleanType clone ()
   {
-    return new BooleanType ( ) ;
+    return new BooleanType ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -98,12 +99,12 @@ public final class BooleanType extends PrimitiveType
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -112,13 +113,13 @@ public final class BooleanType extends PrimitiveType
    * 
    * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_PRIMITIVE , LATEX_BOOLEAN_TYPE , pIndent , this.toPrettyString ( )
-            .toString ( ) ) ;
-    return builder ;
+        PRIO_PRIMITIVE, LATEX_BOOLEAN_TYPE, pIndent, this.toPrettyString ()
+            .toString () );
+    return builder;
   }
 }

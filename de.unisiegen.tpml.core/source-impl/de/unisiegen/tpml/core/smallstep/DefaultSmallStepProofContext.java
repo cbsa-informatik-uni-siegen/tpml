@@ -1,13 +1,14 @@
-package de.unisiegen.tpml.core.smallstep ;
+package de.unisiegen.tpml.core.smallstep;
 
 
-import java.util.Vector ;
-import de.unisiegen.tpml.core.ProofRule ;
-import de.unisiegen.tpml.core.ProofRuleSet ;
-import de.unisiegen.tpml.core.ProofStep ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.interpreters.DefaultStore ;
-import de.unisiegen.tpml.core.interpreters.Store ;
+import java.util.Vector;
+
+import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.ProofRuleSet;
+import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interpreters.DefaultStore;
+import de.unisiegen.tpml.core.interpreters.Store;
 
 
 /**
@@ -19,6 +20,7 @@ import de.unisiegen.tpml.core.interpreters.Store ;
  */
 final class DefaultSmallStepProofContext implements SmallStepProofContext
 {
+
   //
   // Attributes
   //
@@ -27,7 +29,7 @@ final class DefaultSmallStepProofContext implements SmallStepProofContext
    * 
    * @see #getExpression()
    */
-  private Expression expression ;
+  private Expression expression;
 
 
   /**
@@ -35,7 +37,7 @@ final class DefaultSmallStepProofContext implements SmallStepProofContext
    * 
    * @see #getSteps()
    */
-  private Vector < ProofStep > steps = new Vector < ProofStep > ( ) ;
+  private Vector < ProofStep > steps = new Vector < ProofStep > ();
 
 
   /**
@@ -43,7 +45,7 @@ final class DefaultSmallStepProofContext implements SmallStepProofContext
    * 
    * @see #getStore()
    */
-  private DefaultStore store ;
+  private DefaultStore store;
 
 
   //
@@ -62,22 +64,22 @@ final class DefaultSmallStepProofContext implements SmallStepProofContext
    * @throws NullPointerException if <code>node</code> or <code>ruleSet</code>
    *           is <code>null</code>.
    */
-  DefaultSmallStepProofContext ( SmallStepProofNode node , ProofRuleSet ruleSet )
+  DefaultSmallStepProofContext ( SmallStepProofNode node, ProofRuleSet ruleSet )
   {
     if ( node == null )
     {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
     }
     if ( ruleSet == null )
     {
-      throw new NullPointerException ( "ruleSet is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "ruleSet is null" ); //$NON-NLS-1$
     }
     // setup the initial expression and store
-    this.expression = node.getExpression ( ) ;
-    this.store = new DefaultStore ( ( DefaultStore ) node.getStore ( ) ) ;
+    this.expression = node.getExpression ();
+    this.store = new DefaultStore ( ( DefaultStore ) node.getStore () );
     // evaluate the next steps
     this.expression = ( ( AbstractSmallStepProofRuleSet ) ruleSet ).evaluate (
-        this , this.expression ) ;
+        this, this.expression );
   }
 
 
@@ -89,9 +91,9 @@ final class DefaultSmallStepProofContext implements SmallStepProofContext
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofContext#getExpression()
    */
-  public Expression getExpression ( )
+  public Expression getExpression ()
   {
-    return this.expression ;
+    return this.expression;
   }
 
 
@@ -100,27 +102,27 @@ final class DefaultSmallStepProofContext implements SmallStepProofContext
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofContext#getSteps()
    */
-  public ProofStep [ ] getSteps ( )
+  public ProofStep [] getSteps ()
   {
     // return the steps in reversed order
-    ProofStep [ ] newSteps = new ProofStep [ this.steps.size ( ) ] ;
-    for ( int n = 0 ; n < newSteps.length ; ++ n )
+    ProofStep [] newSteps = new ProofStep [ this.steps.size () ];
+    for ( int n = 0 ; n < newSteps.length ; ++n )
     {
-      if ( this.expression.isException ( ) )
+      if ( this.expression.isException () )
       {
         // translate meta rules to the associated EXN rules
         SmallStepProofRule rule = ( SmallStepProofRule ) this.steps.elementAt (
-            n ).getRule ( ) ;
+            n ).getRule ();
         newSteps [ n ] = new ProofStep ( this.steps.elementAt ( n )
-            .getExpression ( ) , rule.toExnRule ( ) ) ;
+            .getExpression (), rule.toExnRule () );
       }
       else
       {
         // just use the proof step
-        newSteps [ n ] = this.steps.elementAt ( n ) ;
+        newSteps [ n ] = this.steps.elementAt ( n );
       }
     }
-    return newSteps ;
+    return newSteps;
   }
 
 
@@ -129,9 +131,9 @@ final class DefaultSmallStepProofContext implements SmallStepProofContext
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofContext#getStore()
    */
-  public Store getStore ( )
+  public Store getStore ()
   {
-    return this.store ;
+    return this.store;
   }
 
 
@@ -144,8 +146,8 @@ final class DefaultSmallStepProofContext implements SmallStepProofContext
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofContext#addProofStep(de.unisiegen.tpml.core.ProofRule,
    *      de.unisiegen.tpml.core.expressions.Expression)
    */
-  public void addProofStep ( ProofRule rule , Expression pExpression )
+  public void addProofStep ( ProofRule rule, Expression pExpression )
   {
-    this.steps.add ( new ProofStep ( pExpression , rule ) ) ;
+    this.steps.add ( new ProofStep ( pExpression, rule ) );
   }
 }

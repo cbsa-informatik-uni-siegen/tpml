@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l1 ;
+package de.unisiegen.tpml.core.languages.l1;
 
 
 import java.io.Reader;
@@ -35,20 +35,21 @@ import de.unisiegen.tpml.core.types.MonoType;
  */
 public class L1Language extends L0Language
 {
+
   /**
    * The group id for proof rules of this language.
    * 
    * @see de.unisiegen.tpml.core.AbstractProofRule#getGroup()
    */
-  public static final int L1 = L0Language.L0 + 10 ;
+  public static final int L1 = L0Language.L0 + 10;
 
 
   /**
    * Allocates a new <code>L1Language</code> instance.
    */
-  public L1Language ( )
+  public L1Language ()
   {
-    super ( ) ;
+    super ();
   }
 
 
@@ -57,10 +58,10 @@ public class L1Language extends L0Language
    * 
    * @see Language#getDescription()
    */
-  @ Override
-  public String getDescription ( )
+  @Override
+  public String getDescription ()
   {
-    return Messages.getString ( "L1Language.0" ) ; //$NON-NLS-1$
+    return Messages.getString ( "L1Language.0" ); //$NON-NLS-1$
   }
 
 
@@ -69,10 +70,10 @@ public class L1Language extends L0Language
    * 
    * @see Language#getName()
    */
-  @ Override
-  public String getName ( )
+  @Override
+  public String getName ()
   {
-    return "L1" ; //$NON-NLS-1$
+    return "L1"; //$NON-NLS-1$
   }
 
 
@@ -81,10 +82,10 @@ public class L1Language extends L0Language
    * 
    * @see Language#getTitle()
    */
-  @ Override
-  public int getId ( )
+  @Override
+  public int getId ()
   {
-    return L1Language.L1 ;
+    return L1Language.L1;
   }
 
 
@@ -93,10 +94,10 @@ public class L1Language extends L0Language
    * 
    * @see Language#getTitle()
    */
-  @ Override
-  public String getTitle ( )
+  @Override
+  public String getTitle ()
   {
-    return Messages.getString ( "L1Language.1" ) ; //$NON-NLS-1$
+    return Messages.getString ( "L1Language.1" ); //$NON-NLS-1$
   }
 
 
@@ -105,11 +106,11 @@ public class L1Language extends L0Language
    * 
    * @see Language#newBigStepProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
-  @ Override
+  @Override
   public BigStepProofModel newBigStepProofModel ( Expression expression )
   {
-    return new BigStepProofModel ( expression , new L1BigStepProofRuleSet (
-        this ) ) ;
+    return new BigStepProofModel ( expression,
+        new L1BigStepProofRuleSet ( this ) );
   }
 
 
@@ -118,11 +119,11 @@ public class L1Language extends L0Language
    * 
    * @see de.unisiegen.tpml.core.languages.Language#newSmallStepProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
-  @ Override
+  @Override
   public SmallStepProofModel newSmallStepProofModel ( Expression expression )
   {
-    return new SmallStepProofModel ( expression , new L1SmallStepProofRuleSet (
-        this ) ) ;
+    return new SmallStepProofModel ( expression, new L1SmallStepProofRuleSet (
+        this ) );
   }
 
 
@@ -131,36 +132,41 @@ public class L1Language extends L0Language
    * 
    * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeCheckerProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
-  @ Override
+  @Override
   public TypeCheckerProofModel newTypeCheckerProofModel ( Expression expression )
   {
-    return new TypeCheckerProofModel ( expression ,
-        new L1TypeCheckerProofRuleSet ( this ) ) ;
+    return new TypeCheckerProofModel ( expression,
+        new L1TypeCheckerProofRuleSet ( this ) );
   }
+
 
   /**
    * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeInferenceProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
-  @ Override
-  public TypeInferenceProofModel newTypeInferenceProofModel ( Expression expression )
+  @Override
+  public TypeInferenceProofModel newTypeInferenceProofModel (
+      Expression expression )
   {
-    return new TypeInferenceProofModel ( expression ,
-        new L1TypeInferenceProofRuleSet ( this ) ) ;
+    return new TypeInferenceProofModel ( expression,
+        new L1TypeInferenceProofRuleSet ( this ) );
   }
-  
+
+
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newMinimalTypingProofModel(de.unisiegen.tpml.core.expressions.Expression, Boolean)
+   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newMinimalTypingProofModel(de.unisiegen.tpml.core.expressions.Expression,
+   *      Boolean)
    */
-  @ Override
-  public MinimalTypingProofModel newMinimalTypingProofModel ( Expression expression, boolean mode )
+  @Override
+  public MinimalTypingProofModel newMinimalTypingProofModel (
+      Expression expression, boolean mode )
   {
-    return new MinimalTypingProofModel ( expression , new L1MinimalTypingProofRuleSet(this, mode), mode);
+    return new MinimalTypingProofModel ( expression,
+        new L1MinimalTypingProofRuleSet ( this, mode ), mode );
   }
-     
 
 
   /**
@@ -168,21 +174,22 @@ public class L1Language extends L0Language
    * 
    * @see Language#newParser(LanguageScanner)
    */
-  @ Override
+  @Override
   public LanguageParser newParser ( LanguageScanner scanner )
   {
     if ( scanner == null )
     {
-      throw new NullPointerException ( "scanner is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "scanner is null" ); //$NON-NLS-1$
     }
-    final lr_parser parser = new L1Parser ( scanner ) ;
-    return new LanguageParser ( )
+    final lr_parser parser = new L1Parser ( scanner );
+    return new LanguageParser ()
     {
-      public Expression parse ( ) throws Exception
+
+      public Expression parse () throws Exception
       {
-        return ( Expression ) parser.parse ( ).value ;
+        return ( Expression ) parser.parse ().value;
       }
-    } ;
+    };
   }
 
 
@@ -191,14 +198,14 @@ public class L1Language extends L0Language
    * 
    * @see de.unisiegen.tpml.core.languages.Language#newScanner(java.io.Reader)
    */
-  @ Override
+  @Override
   public LanguageScanner newScanner ( Reader reader )
   {
     if ( reader == null )
     {
-      throw new NullPointerException ( "reader is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "reader is null" ); //$NON-NLS-1$
     }
-    return new L1Scanner ( reader ) ;
+    return new L1Scanner ( reader );
   }
 
 
@@ -207,10 +214,10 @@ public class L1Language extends L0Language
    * 
    * @see de.unisiegen.tpml.core.languages.Language#newTranslator()
    */
-  @ Override
-  public LanguageTranslator newTranslator ( )
+  @Override
+  public LanguageTranslator newTranslator ()
   {
-    return new L1LanguageTranslator ( ) ;
+    return new L1LanguageTranslator ();
   }
 
 
@@ -219,21 +226,22 @@ public class L1Language extends L0Language
    * 
    * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeParser(de.unisiegen.tpml.core.languages.LanguageTypeScanner)
    */
-  @ Override
+  @Override
   public LanguageTypeParser newTypeParser ( LanguageTypeScanner scanner )
   {
     if ( scanner == null )
     {
-      throw new NullPointerException ( "scanner is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "scanner is null" ); //$NON-NLS-1$
     }
-    final lr_parser parser = new L1TypeParser ( scanner ) ;
-    return new LanguageTypeParser ( )
+    final lr_parser parser = new L1TypeParser ( scanner );
+    return new LanguageTypeParser ()
     {
-      public MonoType parse ( ) throws Exception
+
+      public MonoType parse () throws Exception
       {
-        return ( MonoType ) parser.parse ( ).value ;
+        return ( MonoType ) parser.parse ().value;
       }
-    } ;
+    };
   }
 
 
@@ -242,13 +250,13 @@ public class L1Language extends L0Language
    * 
    * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeScanner(java.io.Reader)
    */
-  @ Override
+  @Override
   public LanguageTypeScanner newTypeScanner ( Reader reader )
   {
     if ( reader == null )
     {
-      throw new NullPointerException ( "reader is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "reader is null" ); //$NON-NLS-1$
     }
-    return new L1TypeScanner ( reader ) ;
+    return new L1TypeScanner ( reader );
   }
 }

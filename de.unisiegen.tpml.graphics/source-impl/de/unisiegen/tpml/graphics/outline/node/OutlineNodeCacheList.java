@@ -1,10 +1,11 @@
-package de.unisiegen.tpml.graphics.outline.node ;
+package de.unisiegen.tpml.graphics.outline.node;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding;
 
 
 /**
@@ -14,18 +15,19 @@ import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
  */
 public final class OutlineNodeCacheList
 {
+
   /**
    * The list of {@link OutlineNodeCache}.
    */
-  private ArrayList < OutlineNodeCache > list ;
+  private ArrayList < OutlineNodeCache > list;
 
 
   /**
    * Initializes the <code>OutlineNodeCacheList</code>.
    */
-  public OutlineNodeCacheList ( )
+  public OutlineNodeCacheList ()
   {
-    this.list = new ArrayList < OutlineNodeCache > ( ) ;
+    this.list = new ArrayList < OutlineNodeCache > ();
   }
 
 
@@ -36,7 +38,7 @@ public final class OutlineNodeCacheList
    */
   public final void add ( OutlineNodeCache pOutlineNodeCache )
   {
-    this.list.add ( pOutlineNodeCache ) ;
+    this.list.add ( pOutlineNodeCache );
   }
 
 
@@ -44,9 +46,9 @@ public final class OutlineNodeCacheList
    * Removes all of the elements from this list. The list will be empty after
    * this call returns.
    */
-  public final void clear ( )
+  public final void clear ()
   {
-    this.list.clear ( ) ;
+    this.list.clear ();
   }
 
 
@@ -68,28 +70,28 @@ public final class OutlineNodeCacheList
    * @param pOutlineBinding The {@link OutlineBinding}.
    * @return The cached caption, or <code>null</code> if it was not cached.
    */
-  public final String getCaption ( int pSelectionStart , int pSelectionEnd ,
-      boolean pSelection , boolean pBinding , boolean pFree , boolean pReplace ,
-      int pBoundStart , int pBoundEnd , int pBreakCount ,
+  public final String getCaption ( int pSelectionStart, int pSelectionEnd,
+      boolean pSelection, boolean pBinding, boolean pFree, boolean pReplace,
+      int pBoundStart, int pBoundEnd, int pBreakCount,
       OutlineBinding < ? > pOutlineBinding )
   {
     for ( OutlineNodeCache current : this.list )
     {
-      if ( ( current.getSelectionStart ( ) == pSelectionStart )
-          && ( current.getSelectionEnd ( ) == pSelectionEnd )
-          && ( current.isSelection ( ) == pSelection )
-          && ( current.isBinding ( ) == pBinding )
-          && ( current.isFree ( ) == pFree )
-          && ( current.isReplace ( ) == pReplace )
-          && ( current.getBoundStart ( ) == pBoundStart )
-          && ( current.getBoundEnd ( ) == pBoundEnd )
-          && ( current.getBreakCount ( ) == pBreakCount )
-          && ( ( current.getOutlineBinding ( ) == null ) ? ( pOutlineBinding == null )
-              : current.getOutlineBinding ( ).equals ( pOutlineBinding ) ) )
+      if ( ( current.getSelectionStart () == pSelectionStart )
+          && ( current.getSelectionEnd () == pSelectionEnd )
+          && ( current.isSelection () == pSelection )
+          && ( current.isBinding () == pBinding )
+          && ( current.isFree () == pFree )
+          && ( current.isReplace () == pReplace )
+          && ( current.getBoundStart () == pBoundStart )
+          && ( current.getBoundEnd () == pBoundEnd )
+          && ( current.getBreakCount () == pBreakCount )
+          && ( ( current.getOutlineBinding () == null ) ? ( pOutlineBinding == null )
+              : current.getOutlineBinding ().equals ( pOutlineBinding ) ) )
       {
-        return current.getCaption ( ) ;
+        return current.getCaption ();
       }
     }
-    return null ;
+    return null;
   }
 }

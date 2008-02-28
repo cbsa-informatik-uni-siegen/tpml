@@ -1,16 +1,17 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.IdentifierOrTypeName ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers;
+import de.unisiegen.tpml.core.interfaces.IdentifierOrTypeName;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
 
 /**
@@ -24,6 +25,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  */
 public final class Identifier extends Value implements IdentifierOrTypeName
 {
+
   /**
    * The set of {@link Identifier}s.
    * 
@@ -34,15 +36,15 @@ public final class Identifier extends Value implements IdentifierOrTypeName
     /**
      * The set of variable {@link Identifier}s.
      */
-    VARIABLE ,
+    VARIABLE,
     /**
      * The set of attribute {@link Identifier}s.
      */
-    ATTRIBUTE ,
+    ATTRIBUTE,
     /**
      * The set of method {@link Identifier}s.
      */
-    METHOD ,
+    METHOD,
     /**
      * The set of self {@link Identifier}s.
      */
@@ -54,19 +56,19 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( Identifier.class ) ;
+      .getCaption ( Identifier.class );
 
 
   /**
    * String for the case that the name is null.
    */
-  private static final String NAME_NULL = "name is null" ; //$NON-NLS-1$
+  private static final String NAME_NULL = "name is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the set is null.
    */
-  private static final String SET_NULL = "set is null" ; //$NON-NLS-1$
+  private static final String SET_NULL = "set is null"; //$NON-NLS-1$
 
 
   /**
@@ -74,16 +76,19 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_IDENTIFIER , 1 ,
-        "\\mbox{\\color{" + LATEX_COLOR_IDENTIFIER + "}{#1}}" , "id" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    commands.add ( new DefaultLatexCommand ( LATEX_IDENTIFIER_BINDING , 1 ,
-        "\\mbox{\\textbf{\\color{" + LATEX_COLOR_BINDING_ID + "}{#1}}}" , "id" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    commands.add ( new DefaultLatexCommand ( LATEX_IDENTIFIER_BOUND , 1 ,
-        "\\mbox{\\textbf{\\color{" + LATEX_COLOR_BOUND_ID + "}{#1}}}" , "id" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_IDENTIFIER, 1,
+        "\\mbox{\\color{" + LATEX_COLOR_IDENTIFIER + "}{#1}}", "id" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    commands
+        .add ( new DefaultLatexCommand (
+            LATEX_IDENTIFIER_BINDING,
+            1,
+            "\\mbox{\\textbf{\\color{" + LATEX_COLOR_BINDING_ID + "}{#1}}}", "id" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    commands.add ( new DefaultLatexCommand ( LATEX_IDENTIFIER_BOUND, 1,
+        "\\mbox{\\textbf{\\color{" + LATEX_COLOR_BOUND_ID + "}{#1}}}", "id" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    return commands;
   }
 
 
@@ -93,7 +98,7 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * @see #getBoundToExpression()
    * @see #setBoundTo(Expression,Identifier)
    */
-  private Expression boundToExpression = null ;
+  private Expression boundToExpression = null;
 
 
   /**
@@ -102,13 +107,13 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * @see #getBoundToIdentifier()
    * @see #setBoundTo(Expression,Identifier)
    */
-  private Identifier boundToIdentifier = null ;
+  private Identifier boundToIdentifier = null;
 
 
   /**
    * The name of the {@link Identifier}.
    */
-  private String name ;
+  private String name;
 
 
   /**
@@ -117,7 +122,7 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * @see #getSet()
    * @see #setSet(Set)
    */
-  private Set set ;
+  private Set set;
 
 
   /**
@@ -126,18 +131,18 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * @param pName the name of the identifier.
    * @param pSet The set of this {@link Identifier}.
    */
-  public Identifier ( String pName , Set pSet )
+  public Identifier ( String pName, Set pSet )
   {
     if ( pName == null )
     {
-      throw new NullPointerException ( NAME_NULL ) ;
+      throw new NullPointerException ( NAME_NULL );
     }
     if ( pSet == null )
     {
-      throw new NullPointerException ( SET_NULL ) ;
+      throw new NullPointerException ( SET_NULL );
     }
-    this.name = pName ;
-    this.set = pSet ;
+    this.name = pName;
+    this.set = pSet;
   }
 
 
@@ -151,12 +156,12 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Identifier ( String pName , Set pSet , int pParserStartOffset ,
+  public Identifier ( String pName, Set pSet, int pParserStartOffset,
       int pParserEndOffset )
   {
-    this ( pName , pSet ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pName, pSet );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -165,10 +170,10 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public final Identifier clone ( )
+  @Override
+  public final Identifier clone ()
   {
-    return new Identifier ( this.name , this.set ) ;
+    return new Identifier ( this.name, this.set );
   }
 
 
@@ -177,15 +182,15 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * 
    * @see Expression#equals(Object)
    */
-  @ Override
+  @Override
   public final boolean equals ( Object obj )
   {
     if ( obj instanceof Identifier )
     {
-      Identifier other = ( Identifier ) obj ;
-      return this.name.equals ( other.name ) ;
+      Identifier other = ( Identifier ) obj;
+      return this.name.equals ( other.name );
     }
-    return false ;
+    return false;
   }
 
 
@@ -196,9 +201,9 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * @see #boundToExpression
    * @see #setBoundTo(Expression,Identifier)
    */
-  public final Expression getBoundToExpression ( )
+  public final Expression getBoundToExpression ()
   {
-    return this.boundToExpression ;
+    return this.boundToExpression;
   }
 
 
@@ -209,19 +214,19 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * @see #boundToIdentifier
    * @see #setBoundTo(Expression,Identifier)
    */
-  public final Identifier getBoundToIdentifier ( )
+  public final Identifier getBoundToIdentifier ()
   {
-    return this.boundToIdentifier ;
+    return this.boundToIdentifier;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public final String getCaption ( )
+  @Override
+  public final String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -232,15 +237,15 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * @return a set which contains the name of the identifier.
    * @see Expression#getIdentifiersFree()
    */
-  @ Override
-  public final ArrayList < Identifier > getIdentifiersFree ( )
+  @Override
+  public final ArrayList < Identifier > getIdentifiersFree ()
   {
     if ( this.identifiersFree == null )
     {
-      this.identifiersFree = new ArrayList < Identifier > ( ) ;
-      this.identifiersFree.add ( this ) ;
+      this.identifiersFree = new ArrayList < Identifier > ();
+      this.identifiersFree.add ( this );
     }
-    return this.identifiersFree ;
+    return this.identifiersFree;
   }
 
 
@@ -249,12 +254,12 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -264,16 +269,16 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * @return The prefix of this {@link Expression}.
    * @see #prefix
    */
-  @ Override
-  public final String getPrefix ( )
+  @Override
+  public final String getPrefix ()
   {
     if ( this.prefix == null )
     {
       if ( ( this.parent != null )
           && ( this.parent instanceof DefaultIdentifiers ) )
       {
-        Identifier [ ] identifiers = ( ( DefaultIdentifiers ) this.parent )
-            .getIdentifiers ( ) ;
+        Identifier [] identifiers = ( ( DefaultIdentifiers ) this.parent )
+            .getIdentifiers ();
         for ( Identifier id : identifiers )
         {
           if ( id == this )
@@ -282,31 +287,31 @@ public final class Identifier extends Value implements IdentifierOrTypeName
             {
               case VARIABLE :
               {
-                this.prefix = PREFIX_ID_V ;
-                return this.prefix ;
+                this.prefix = PREFIX_ID_V;
+                return this.prefix;
               }
               case ATTRIBUTE :
               {
-                this.prefix = PREFIX_ID_A ;
-                return this.prefix ;
+                this.prefix = PREFIX_ID_A;
+                return this.prefix;
               }
               case METHOD :
               {
-                this.prefix = PREFIX_ID_M ;
-                return this.prefix ;
+                this.prefix = PREFIX_ID_M;
+                return this.prefix;
               }
               case SELF :
               {
-                this.prefix = PREFIX_ID_S ;
-                return this.prefix ;
+                this.prefix = PREFIX_ID_S;
+                return this.prefix;
               }
             }
           }
         }
       }
-      this.prefix = PREFIX_VALUE ;
+      this.prefix = PREFIX_VALUE;
     }
-    return this.prefix ;
+    return this.prefix;
   }
 
 
@@ -317,9 +322,9 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * @see #set
    * @see #setSet(Set)
    */
-  public final Set getSet ( )
+  public final Set getSet ()
   {
-    return this.set ;
+    return this.set;
   }
 
 
@@ -328,10 +333,10 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * 
    * @see Expression#hashCode()
    */
-  @ Override
-  public final int hashCode ( )
+  @Override
+  public final int hashCode ()
   {
-    return this.name.hashCode ( ) ;
+    return this.name.hashCode ();
   }
 
 
@@ -346,22 +351,22 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * @see #boundToIdentifier
    * @see #getBoundToIdentifier()
    */
-  public final void setBoundTo ( Expression pBoundToExpression ,
+  public final void setBoundTo ( Expression pBoundToExpression,
       Identifier pBoundToIdentifier )
   {
     if ( ( this.boundToIdentifier != null )
         && ( this.boundToIdentifier != pBoundToIdentifier ) )
     {
       System.err
-          .println ( "An Identifier can not be bound to more than one Expression!" ) ; //$NON-NLS-1$
-      System.err.println ( "Identifier: " + this ) ; //$NON-NLS-1$
-      System.err.println ( "Old boundToExpression: " + this.boundToExpression ) ; //$NON-NLS-1$
-      System.err.println ( "New boundToExpression: " + pBoundToExpression ) ; //$NON-NLS-1$
-      System.err.println ( "Old boundToIdentifier: " + this.boundToIdentifier ) ; //$NON-NLS-1$
-      System.err.println ( "New boundToIdentifier: " + pBoundToIdentifier ) ; //$NON-NLS-1$
+          .println ( "An Identifier can not be bound to more than one Expression!" ); //$NON-NLS-1$
+      System.err.println ( "Identifier: " + this ); //$NON-NLS-1$
+      System.err.println ( "Old boundToExpression: " + this.boundToExpression ); //$NON-NLS-1$
+      System.err.println ( "New boundToExpression: " + pBoundToExpression ); //$NON-NLS-1$
+      System.err.println ( "Old boundToIdentifier: " + this.boundToIdentifier ); //$NON-NLS-1$
+      System.err.println ( "New boundToIdentifier: " + pBoundToIdentifier ); //$NON-NLS-1$
     }
-    this.boundToExpression = pBoundToExpression ;
-    this.boundToIdentifier = pBoundToIdentifier ;
+    this.boundToExpression = pBoundToExpression;
+    this.boundToIdentifier = pBoundToIdentifier;
   }
 
 
@@ -374,7 +379,7 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    */
   public final void setSet ( Set pSet )
   {
-    this.set = pSet ;
+    this.set = pSet;
   }
 
 
@@ -385,12 +390,12 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * @return <code>e</code> if <code>id</code> equals the name of the
    *         identifier, else the identifier itself.
    */
-  @ Override
-  public final Expression substitute ( Identifier pId , Expression pExpression )
+  @Override
+  public final Expression substitute ( Identifier pId, Expression pExpression )
   {
-    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    if ( pExpression.getIdentifierFreeNotOnlyVariable () )
     {
-      throw new NotOnlyFreeVariableException ( ) ;
+      throw new NotOnlyFreeVariableException ();
     }
     if ( pId.equals ( this ) )
     {
@@ -398,9 +403,9 @@ public final class Identifier extends Value implements IdentifierOrTypeName
        * We need to clone the expression here to make sure we can distinguish an
        * expression in the pretty printer that is substituted multiple times
        */
-      return pExpression.clone ( ) ;
+      return pExpression.clone ();
     }
-    return this ;
+    return this;
   }
 
 
@@ -409,16 +414,16 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * 
    * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_IDENTIFIER , LATEX_IDENTIFIER , pIndent , this.toPrettyString ( )
-            .toString ( ) ) ;
+        PRIO_IDENTIFIER, LATEX_IDENTIFIER, pIndent, this.toPrettyString ()
+            .toString () );
     builder.addText ( "{" //$NON-NLS-1$
-        + this.name.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-    return builder ;
+        + this.name.replaceAll ( "_", "\\\\_" ) + "}" ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    return builder;
   }
 
 
@@ -427,16 +432,16 @@ public final class Identifier extends Value implements IdentifierOrTypeName
    * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public final PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_IDENTIFIER ) ;
-      this.prettyStringBuilder.addIdentifier ( this.name ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_IDENTIFIER );
+      this.prettyStringBuilder.addIdentifier ( this.name );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

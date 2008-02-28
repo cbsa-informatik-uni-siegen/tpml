@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.util.beans ;
+package de.unisiegen.tpml.core.util.beans;
 
 
-import java.beans.PropertyChangeListener ;
+import java.beans.PropertyChangeListener;
 
 
 /**
@@ -18,6 +18,7 @@ import java.beans.PropertyChangeListener ;
  */
 public interface Bean
 {
+
   /**
    * Adds a {@link PropertyChangeListener} to the listener list. The listener is
    * registered for all bound properties of the derived class. If
@@ -28,7 +29,7 @@ public interface Bean
    * @see #getPropertyChangeListeners()
    * @see #removePropertyChangeListener(PropertyChangeListener)
    */
-  public void addPropertyChangeListener ( PropertyChangeListener listener ) ;
+  public void addPropertyChangeListener ( PropertyChangeListener listener );
 
 
   /**
@@ -41,7 +42,7 @@ public interface Bean
    * @see #addPropertyChangeListener(PropertyChangeListener)
    * @see #getPropertyChangeListeners()
    */
-  public void removePropertyChangeListener ( PropertyChangeListener listener ) ;
+  public void removePropertyChangeListener ( PropertyChangeListener listener );
 
 
   /**
@@ -53,7 +54,7 @@ public interface Bean
    * @see #addPropertyChangeListener(PropertyChangeListener)
    * @see #removePropertyChangeListener(PropertyChangeListener)
    */
-  public PropertyChangeListener [ ] getPropertyChangeListeners ( ) ;
+  public PropertyChangeListener [] getPropertyChangeListeners ();
 
 
   /**
@@ -67,8 +68,8 @@ public interface Bean
    * @see #removePropertyChangeListener(String, PropertyChangeListener)
    * @see #getPropertyChangeListeners(String)
    */
-  public void addPropertyChangeListener ( String propertyName ,
-      PropertyChangeListener listener ) ;
+  public void addPropertyChangeListener ( String propertyName,
+      PropertyChangeListener listener );
 
 
   /**
@@ -83,8 +84,8 @@ public interface Bean
    * @see #addPropertyChangeListener(String, PropertyChangeListener)
    * @see #getPropertyChangeListeners(String)
    */
-  public void removePropertyChangeListener ( String propertyName ,
-      PropertyChangeListener listener ) ;
+  public void removePropertyChangeListener ( String propertyName,
+      PropertyChangeListener listener );
 
 
   /**
@@ -95,6 +96,6 @@ public interface Bean
    * @return all of the {@link PropertyChangeListener}s associated with the
    *         named property or an empty array if no listeners have been added
    */
-  public PropertyChangeListener [ ] getPropertyChangeListeners (
-      String propertyName ) ;
+  public PropertyChangeListener [] getPropertyChangeListeners (
+      String propertyName );
 }

@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.interpreters ;
+package de.unisiegen.tpml.core.interpreters;
 
 
-import de.unisiegen.tpml.core.ExpressionProofNode ;
+import de.unisiegen.tpml.core.ExpressionProofNode;
 
 
 /**
@@ -15,6 +15,7 @@ import de.unisiegen.tpml.core.ExpressionProofNode ;
  */
 public interface InterpreterProofNode extends ExpressionProofNode
 {
+
   //
   // Accessors
   //
@@ -32,5 +33,5 @@ public interface InterpreterProofNode extends ExpressionProofNode
    * @see Store
    * @see InterpreterProofModel#isMemoryEnabled()
    */
-  public Store getStore ( ) ;
+  public Store getStore ();
 }

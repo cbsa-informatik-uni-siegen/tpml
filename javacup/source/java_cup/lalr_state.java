@@ -1,9 +1,9 @@
-package java_cup ;
+package java_cup;
 
 
-import java.util.Enumeration ;
-import java.util.Hashtable ;
-import java.util.Stack ;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Stack;
 
 
 /**
@@ -55,6 +55,7 @@ import java.util.Stack ;
  */
 public class lalr_state
 {
+
   /*-----------------------------------------------------------*/
   /*--- Constructor(s) ----------------------------------------*/
   /*-----------------------------------------------------------*/
@@ -68,15 +69,15 @@ public class lalr_state
     /* don't allow null or duplicate item sets */
     if ( itms == null )
       throw new internal_error (
-          "Attempt to construct an LALR state from a null item set" ) ;
+          "Attempt to construct an LALR state from a null item set" );
     if ( find_state ( itms ) != null )
-      throw new internal_error ( "Attempt to construct a duplicate LALR state" ) ;
+      throw new internal_error ( "Attempt to construct a duplicate LALR state" );
     /* assign a unique index */
-    _index = next_index ++ ;
+    _index = next_index++ ;
     /* store the items */
-    _items = itms ;
+    _items = itms;
     /* add to the global collection, keyed with its item set */
-    _all.put ( _items , this ) ;
+    _all.put ( _items, this );
   }
 
 
@@ -84,30 +85,30 @@ public class lalr_state
   /*--- (Access to) Static (Class) Variables ------------------*/
   /*-----------------------------------------------------------*/
   /** Collection of all states. */
-  protected static Hashtable _all = new Hashtable ( ) ;
+  protected static Hashtable _all = new Hashtable ();
 
 
   /** Collection of all states. */
-  public static Enumeration all ( )
+  public static Enumeration all ()
   {
-    return _all.elements ( ) ;
+    return _all.elements ();
   }
 
 
   // Hm Added clear to clear all static fields
-  public static void clear ( )
+  public static void clear ()
   {
-    _all.clear ( ) ;
-    _all_kernels.clear ( ) ;
-    next_index = 0 ;
+    _all.clear ();
+    _all_kernels.clear ();
+    next_index = 0;
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Indicate total number of states there are. */
-  public static int number ( )
+  public static int number ()
   {
-    return _all.size ( ) ;
+    return _all.size ();
   }
 
 
@@ -117,7 +118,7 @@ public class lalr_state
    * set of items -- which uniquely define the state). This table stores state
    * objects using (a copy of) their kernel item sets as keys.
    */
-  protected static Hashtable _all_kernels = new Hashtable ( ) ;
+  protected static Hashtable _all_kernels = new Hashtable ();
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
@@ -133,51 +134,52 @@ public class lalr_state
   public static lalr_state find_state ( lalr_item_set itms )
   {
     if ( itms == null )
-      return null ;
-    else return ( lalr_state ) _all.get ( itms ) ;
+      return null;
+    else
+      return ( lalr_state ) _all.get ( itms );
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Static counter for assigning unique state indexes. */
-  protected static int next_index = 0 ;
+  protected static int next_index = 0;
 
 
   /*-----------------------------------------------------------*/
   /*--- (Access to) Instance Variables ------------------------*/
   /*-----------------------------------------------------------*/
   /** The item set for this state. */
-  protected lalr_item_set _items ;
+  protected lalr_item_set _items;
 
 
   /** The item set for this state. */
-  public lalr_item_set items ( )
+  public lalr_item_set items ()
   {
-    return _items ;
+    return _items;
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** List of transitions out of this state. */
-  protected lalr_transition _transitions = null ;
+  protected lalr_transition _transitions = null;
 
 
   /** List of transitions out of this state. */
-  public lalr_transition transitions ( )
+  public lalr_transition transitions ()
   {
-    return _transitions ;
+    return _transitions;
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Index of this state in the parse tables */
-  protected int _index ;
+  protected int _index;
 
 
   /** Index of this state in the parse tables */
-  public int index ( )
+  public int index ()
   {
-    return _index ;
+    return _index;
   }
 
 
@@ -190,36 +192,38 @@ public class lalr_state
    */
   protected static void dump_state ( lalr_state st ) throws internal_error
   {
-    lalr_item_set itms ;
-    lalr_item itm ;
-    production_part part ;
+    lalr_item_set itms;
+    lalr_item itm;
+    production_part part;
     if ( st == null )
     {
-      System.out.println ( "NULL lalr_state" ) ;
-      return ;
+      System.out.println ( "NULL lalr_state" );
+      return;
     }
-    System.out.println ( "lalr_state [" + st.index ( ) + "] {" ) ;
-    itms = st.items ( ) ;
-    for ( Enumeration e = itms.all ( ) ; e.hasMoreElements ( ) ; )
+    System.out.println ( "lalr_state [" + st.index () + "] {" );
+    itms = st.items ();
+    for ( Enumeration e = itms.all () ; e.hasMoreElements () ; )
     {
-      itm = ( lalr_item ) e.nextElement ( ) ;
-      System.out.print ( "  [" ) ;
-      System.out
-          .print ( itm.the_production ( ).lhs ( ).the_symbol ( ).name ( ) ) ;
-      System.out.print ( " ::= " ) ;
-      for ( int i = 0 ; i < itm.the_production ( ).rhs_length ( ) ; i ++ )
+      itm = ( lalr_item ) e.nextElement ();
+      System.out.print ( "  [" );
+      System.out.print ( itm.the_production ().lhs ().the_symbol ().name () );
+      System.out.print ( " ::= " );
+      for ( int i = 0 ; i < itm.the_production ().rhs_length () ; i++ )
       {
-        if ( i == itm.dot_pos ( ) ) System.out.print ( "(*) " ) ;
-        part = itm.the_production ( ).rhs ( i ) ;
-        if ( part.is_action ( ) )
-          System.out.print ( "{action} " ) ;
-        else System.out.print ( ( ( symbol_part ) part ).the_symbol ( ).name ( )
-            + " " ) ;
+        if ( i == itm.dot_pos () )
+          System.out.print ( "(*) " );
+        part = itm.the_production ().rhs ( i );
+        if ( part.is_action () )
+          System.out.print ( "{action} " );
+        else
+          System.out.print ( ( ( symbol_part ) part ).the_symbol ().name ()
+              + " " );
       }
-      if ( itm.dot_at_end ( ) ) System.out.print ( "(*) " ) ;
-      System.out.println ( "]" ) ;
+      if ( itm.dot_at_end () )
+        System.out.print ( "(*) " );
+      System.out.println ( "]" );
     }
-    System.out.println ( "}" ) ;
+    System.out.println ( "}" );
   }
 
 
@@ -232,13 +236,13 @@ public class lalr_state
    * item to be included in other items that it was used to directly or
    * indirectly create.
    */
-  protected static void propagate_all_lookaheads ( ) throws internal_error
+  protected static void propagate_all_lookaheads () throws internal_error
   {
     /* iterate across all states */
-    for ( Enumeration st = all ( ) ; st.hasMoreElements ( ) ; )
+    for ( Enumeration st = all () ; st.hasMoreElements () ; )
     {
       /* propagate lookaheads out of that state */
-      ( ( lalr_state ) st.nextElement ( ) ).propagate_lookaheads ( ) ;
+      ( ( lalr_state ) st.nextElement () ).propagate_lookaheads ();
     }
   }
 
@@ -252,13 +256,13 @@ public class lalr_state
    * @param on_sym the symbol the transition is under.
    * @param to_st the state the transition goes to.
    */
-  public void add_transition ( symbol on_sym , lalr_state to_st )
+  public void add_transition ( symbol on_sym, lalr_state to_st )
       throws internal_error
   {
-    lalr_transition trans ;
+    lalr_transition trans;
     /* create a new transition object and put it in our list */
-    trans = new lalr_transition ( on_sym , to_st , _transitions ) ;
-    _transitions = trans ;
+    trans = new lalr_transition ( on_sym, to_st, _transitions );
+    _transitions = trans;
   }
 
 
@@ -308,118 +312,118 @@ public class lalr_state
   public static lalr_state build_machine ( production start_prod )
       throws internal_error
   {
-    lalr_state start_state ;
-    lalr_item_set start_items ;
-    lalr_item_set new_items ;
-    lalr_item_set linked_items ;
-    lalr_item_set kernel ;
-    Stack work_stack = new Stack ( ) ;
-    lalr_state st , new_st ;
-    symbol_set outgoing ;
-    lalr_item itm , new_itm , existing , fix_itm ;
-    symbol sym , sym2 ;
-    Enumeration i , s , fix ;
+    lalr_state start_state;
+    lalr_item_set start_items;
+    lalr_item_set new_items;
+    lalr_item_set linked_items;
+    lalr_item_set kernel;
+    Stack work_stack = new Stack ();
+    lalr_state st, new_st;
+    symbol_set outgoing;
+    lalr_item itm, new_itm, existing, fix_itm;
+    symbol sym, sym2;
+    Enumeration i, s, fix;
     /* sanity check */
     if ( start_prod == null )
       throw new internal_error (
-          "Attempt to build viable prefix recognizer using a null production" ) ;
+          "Attempt to build viable prefix recognizer using a null production" );
     /* build item with dot at front of start production and EOF lookahead */
-    start_items = new lalr_item_set ( ) ;
-    itm = new lalr_item ( start_prod ) ;
-    itm.lookahead ( ).add ( terminal.EOF ) ;
-    start_items.add ( itm ) ;
+    start_items = new lalr_item_set ();
+    itm = new lalr_item ( start_prod );
+    itm.lookahead ().add ( terminal.EOF );
+    start_items.add ( itm );
     /* create copy the item set to form the kernel */
-    kernel = new lalr_item_set ( start_items ) ;
+    kernel = new lalr_item_set ( start_items );
     /* create the closure from that item set */
-    start_items.compute_closure ( ) ;
+    start_items.compute_closure ();
     /* build a state out of that item set and put it in our work set */
-    start_state = new lalr_state ( start_items ) ;
-    work_stack.push ( start_state ) ;
+    start_state = new lalr_state ( start_items );
+    work_stack.push ( start_state );
     /* enter the state using the kernel as the key */
-    _all_kernels.put ( kernel , start_state ) ;
+    _all_kernels.put ( kernel, start_state );
     /* continue looking at new states until we have no more work to do */
-    while ( ! work_stack.empty ( ) )
+    while ( !work_stack.empty () )
     {
       /* remove a state from the work set */
-      st = ( lalr_state ) work_stack.pop ( ) ;
+      st = ( lalr_state ) work_stack.pop ();
       /* gather up all the symbols that appear before dots */
-      outgoing = new symbol_set ( ) ;
-      for ( i = st.items ( ).all ( ) ; i.hasMoreElements ( ) ; )
+      outgoing = new symbol_set ();
+      for ( i = st.items ().all () ; i.hasMoreElements () ; )
       {
-        itm = ( lalr_item ) i.nextElement ( ) ;
+        itm = ( lalr_item ) i.nextElement ();
         /* add the symbol before the dot (if any) to our collection */
-        sym = itm.symbol_after_dot ( ) ;
-        if ( sym != null ) outgoing.add ( sym ) ;
+        sym = itm.symbol_after_dot ();
+        if ( sym != null )
+          outgoing.add ( sym );
       }
       /* now create a transition out for each individual symbol */
-      for ( s = outgoing.all ( ) ; s.hasMoreElements ( ) ; )
+      for ( s = outgoing.all () ; s.hasMoreElements () ; )
       {
-        sym = ( symbol ) s.nextElement ( ) ;
+        sym = ( symbol ) s.nextElement ();
         /* will be keeping the set of items with propagate links */
-        linked_items = new lalr_item_set ( ) ;
+        linked_items = new lalr_item_set ();
         /*
          * gather up shifted versions of all the items that have this symbol
          * before the dot
          */
-        new_items = new lalr_item_set ( ) ;
-        for ( i = st.items ( ).all ( ) ; i.hasMoreElements ( ) ; )
+        new_items = new lalr_item_set ();
+        for ( i = st.items ().all () ; i.hasMoreElements () ; )
         {
-          itm = ( lalr_item ) i.nextElement ( ) ;
+          itm = ( lalr_item ) i.nextElement ();
           /* if this is the symbol we are working on now, add to set */
-          sym2 = itm.symbol_after_dot ( ) ;
+          sym2 = itm.symbol_after_dot ();
           if ( sym.equals ( sym2 ) )
           {
             /* add to the kernel of the new state */
-            new_items.add ( itm.shift ( ) ) ;
+            new_items.add ( itm.shift () );
             /* remember that itm has propagate link to it */
-            linked_items.add ( itm ) ;
+            linked_items.add ( itm );
           }
         }
         /* use new items as state kernel */
-        kernel = new lalr_item_set ( new_items ) ;
+        kernel = new lalr_item_set ( new_items );
         /* have we seen this one already? */
-        new_st = ( lalr_state ) _all_kernels.get ( kernel ) ;
+        new_st = ( lalr_state ) _all_kernels.get ( kernel );
         /* if we haven't, build a new state out of the item set */
         if ( new_st == null )
         {
           /* compute closure of the kernel for the full item set */
-          new_items.compute_closure ( ) ;
+          new_items.compute_closure ();
           /* build the new state */
-          new_st = new lalr_state ( new_items ) ;
+          new_st = new lalr_state ( new_items );
           /* add the new state to our work set */
-          work_stack.push ( new_st ) ;
+          work_stack.push ( new_st );
           /* put it in our kernel table */
-          _all_kernels.put ( kernel , new_st ) ;
+          _all_kernels.put ( kernel, new_st );
         }
         /* otherwise relink propagation to items in existing state */
         else
         {
           /* walk through the items that have links to the new state */
-          for ( fix = linked_items.all ( ) ; fix.hasMoreElements ( ) ; )
+          for ( fix = linked_items.all () ; fix.hasMoreElements () ; )
           {
-            fix_itm = ( lalr_item ) fix.nextElement ( ) ;
+            fix_itm = ( lalr_item ) fix.nextElement ();
             /* look at each propagate link out of that item */
-            for ( int l = 0 ; l < fix_itm.propagate_items ( ).size ( ) ; l ++ )
+            for ( int l = 0 ; l < fix_itm.propagate_items ().size () ; l++ )
             {
               /* pull out item linked to in the new state */
-              new_itm = ( lalr_item ) fix_itm.propagate_items ( )
-                  .elementAt ( l ) ;
+              new_itm = ( lalr_item ) fix_itm.propagate_items ().elementAt ( l );
               /* find corresponding item in the existing state */
-              existing = new_st.items ( ).find ( new_itm ) ;
+              existing = new_st.items ().find ( new_itm );
               /* fix up the item so it points to the existing set */
               if ( existing != null )
-                fix_itm.propagate_items ( ).setElementAt ( existing , l ) ;
+                fix_itm.propagate_items ().setElementAt ( existing, l );
             }
           }
         }
         /* add a transition from current state to that state */
-        st.add_transition ( sym , new_st ) ;
+        st.add_transition ( sym, new_st );
       }
     }
     /* all done building states */
     /* propagate complete lookahead sets throughout the states */
-    propagate_all_lookaheads ( ) ;
-    return start_state ;
+    propagate_all_lookaheads ();
+    return start_state;
   }
 
 
@@ -428,11 +432,11 @@ public class lalr_state
    * Propagate lookahead sets out of this state. This recursively propagates to
    * all items that have propagation links from some item in this state.
    */
-  protected void propagate_lookaheads ( ) throws internal_error
+  protected void propagate_lookaheads () throws internal_error
   {
     /* recursively propagate out from each item in the state */
-    for ( Enumeration itm = items ( ).all ( ) ; itm.hasMoreElements ( ) ; )
-      ( ( lalr_item ) itm.nextElement ( ) ).propagate_lookaheads ( null ) ;
+    for ( Enumeration itm = items ().all () ; itm.hasMoreElements () ; )
+      ( ( lalr_item ) itm.nextElement () ).propagate_lookaheads ( null );
   }
 
 
@@ -459,105 +463,107 @@ public class lalr_state
    * @param act_table the action table to put entries in.
    * @param reduce_table the reduce-goto table to put entries in.
    */
-  public void build_table_entries ( parse_action_table act_table ,
+  public void build_table_entries ( parse_action_table act_table,
       parse_reduce_table reduce_table ) throws internal_error
   {
-    parse_action_row our_act_row ;
-    parse_reduce_row our_red_row ;
-    lalr_item itm ;
-    parse_action act , other_act ;
-    symbol sym ;
-    terminal_set conflict_set = new terminal_set ( ) ;
+    parse_action_row our_act_row;
+    parse_reduce_row our_red_row;
+    lalr_item itm;
+    parse_action act, other_act;
+    symbol sym;
+    terminal_set conflict_set = new terminal_set ();
     /* pull out our rows from the tables */
-    our_act_row = act_table.under_state [ index ( ) ] ;
-    our_red_row = reduce_table.under_state [ index ( ) ] ;
+    our_act_row = act_table.under_state [ index () ];
+    our_red_row = reduce_table.under_state [ index () ];
     /* consider each item in our state */
-    for ( Enumeration i = items ( ).all ( ) ; i.hasMoreElements ( ) ; )
+    for ( Enumeration i = items ().all () ; i.hasMoreElements () ; )
     {
-      itm = ( lalr_item ) i.nextElement ( ) ;
+      itm = ( lalr_item ) i.nextElement ();
       /* if its completed (dot at end) then reduce under the lookahead */
-      if ( itm.dot_at_end ( ) )
+      if ( itm.dot_at_end () )
       {
-        act = new reduce_action ( itm.the_production ( ) ) ;
+        act = new reduce_action ( itm.the_production () );
         /* consider each lookahead symbol */
-        for ( int t = 0 ; t < terminal.number ( ) ; t ++ )
+        for ( int t = 0 ; t < terminal.number () ; t++ )
         {
           /* skip over the ones not in the lookahead */
-          if ( ! itm.lookahead ( ).contains ( t ) ) continue ;
+          if ( !itm.lookahead ().contains ( t ) )
+            continue;
           /* if we don't already have an action put this one in */
-          if ( our_act_row.under_term [ t ].kind ( ) == parse_action.ERROR )
+          if ( our_act_row.under_term [ t ].kind () == parse_action.ERROR )
           {
-            our_act_row.under_term [ t ] = act ;
+            our_act_row.under_term [ t ] = act;
           }
           else
           {
             /* we now have at least one conflict */
-            terminal term = terminal.find ( t ) ;
-            other_act = our_act_row.under_term [ t ] ;
+            terminal term = terminal.find ( t );
+            other_act = our_act_row.under_term [ t ];
             /* if the other act was not a shift */
-            if ( ( other_act.kind ( ) != parse_action.SHIFT )
-                && ( other_act.kind ( ) != parse_action.NONASSOC ) )
+            if ( ( other_act.kind () != parse_action.SHIFT )
+                && ( other_act.kind () != parse_action.NONASSOC ) )
             {
               /* if we have lower index hence priority, replace it */
-              if ( itm.the_production ( ).index ( ) < ( ( reduce_action ) other_act )
-                  .reduce_with ( ).index ( ) )
+              if ( itm.the_production ().index () < ( ( reduce_action ) other_act )
+                  .reduce_with ().index () )
               {
                 /* replace the action */
-                our_act_row.under_term [ t ] = act ;
+                our_act_row.under_term [ t ] = act;
               }
             }
             else
             {
               /* Check precedences,see if problem is correctable */
-              if ( fix_with_precedence ( itm.the_production ( ) , t ,
-                  our_act_row , act ) )
+              if ( fix_with_precedence ( itm.the_production (), t, our_act_row,
+                  act ) )
               {
-                term = null ;
+                term = null;
               }
             }
             if ( term != null )
             {
-              conflict_set.add ( term ) ;
+              conflict_set.add ( term );
             }
           }
         }
       }
     }
     /* consider each outgoing transition */
-    for ( lalr_transition trans = transitions ( ) ; trans != null ; trans = trans
-        .next ( ) )
+    for ( lalr_transition trans = transitions () ; trans != null ; trans = trans
+        .next () )
     {
       /* if its on an terminal add a shift entry */
-      sym = trans.on_symbol ( ) ;
-      if ( ! sym.is_non_term ( ) )
+      sym = trans.on_symbol ();
+      if ( !sym.is_non_term () )
       {
-        act = new shift_action ( trans.to_state ( ) ) ;
+        act = new shift_action ( trans.to_state () );
         /* if we don't already have an action put this one in */
-        if ( our_act_row.under_term [ sym.index ( ) ].kind ( ) == parse_action.ERROR )
+        if ( our_act_row.under_term [ sym.index () ].kind () == parse_action.ERROR )
         {
-          our_act_row.under_term [ sym.index ( ) ] = act ;
+          our_act_row.under_term [ sym.index () ] = act;
         }
         else
         {
           /* we now have at least one conflict */
           production p = ( ( reduce_action ) our_act_row.under_term [ sym
-              .index ( ) ] ).reduce_with ( ) ;
+              .index () ] ).reduce_with ();
           /* shift always wins */
-          if ( ! fix_with_precedence ( p , sym.index ( ) , our_act_row , act ) )
+          if ( !fix_with_precedence ( p, sym.index (), our_act_row, act ) )
           {
-            our_act_row.under_term [ sym.index ( ) ] = act ;
-            conflict_set.add ( terminal.find ( sym.index ( ) ) ) ;
+            our_act_row.under_term [ sym.index () ] = act;
+            conflict_set.add ( terminal.find ( sym.index () ) );
           }
         }
       }
       else
       {
         /* for non terminals add an entry to the reduce-goto table */
-        our_red_row.under_non_term [ sym.index ( ) ] = trans.to_state ( ) ;
+        our_red_row.under_non_term [ sym.index () ] = trans.to_state ();
       }
     }
     /* if we end up with conflict(s), report them */
-    if ( ! conflict_set.empty ( ) ) report_conflicts ( conflict_set ) ;
+    if ( !conflict_set.empty () )
+      report_conflicts ( conflict_set );
   }
 
 
@@ -579,26 +585,26 @@ public class lalr_state
    * @param parse_action_row a row of the action table
    * @param act the rule in conflict with the table entry
    */
-  protected boolean fix_with_precedence ( production p , int term_index ,
-      parse_action_row table_row , parse_action act ) throws internal_error
+  protected boolean fix_with_precedence ( production p, int term_index,
+      parse_action_row table_row, parse_action act ) throws internal_error
   {
-    terminal term = terminal.find ( term_index ) ;
+    terminal term = terminal.find ( term_index );
     /* if the production has a precedence number, it can be fixed */
-    if ( p.precedence_num ( ) > assoc.no_prec )
+    if ( p.precedence_num () > assoc.no_prec )
     {
       /* if production precedes terminal, put reduce in table */
-      if ( p.precedence_num ( ) > term.precedence_num ( ) )
+      if ( p.precedence_num () > term.precedence_num () )
       {
         table_row.under_term [ term_index ] = insert_reduce (
-            table_row.under_term [ term_index ] , act ) ;
-        return true ;
+            table_row.under_term [ term_index ], act );
+        return true;
       }
       /* if terminal precedes rule, put shift in table */
-      else if ( p.precedence_num ( ) < term.precedence_num ( ) )
+      else if ( p.precedence_num () < term.precedence_num () )
       {
         table_row.under_term [ term_index ] = insert_shift (
-            table_row.under_term [ term_index ] , act ) ;
-        return true ;
+            table_row.under_term [ term_index ], act );
+        return true;
       }
       else
       { /* they are == precedence */
@@ -606,32 +612,32 @@ public class lalr_state
          * equal precedences have equal sides, so only need to look at one: if
          * it is right, put shift in table
          */
-        if ( term.precedence_side ( ) == assoc.right )
+        if ( term.precedence_side () == assoc.right )
         {
           table_row.under_term [ term_index ] = insert_shift (
-              table_row.under_term [ term_index ] , act ) ;
-          return true ;
+              table_row.under_term [ term_index ], act );
+          return true;
         }
         /* if it is left, put reduce in table */
-        else if ( term.precedence_side ( ) == assoc.left )
+        else if ( term.precedence_side () == assoc.left )
         {
           table_row.under_term [ term_index ] = insert_reduce (
-              table_row.under_term [ term_index ] , act ) ;
-          return true ;
+              table_row.under_term [ term_index ], act );
+          return true;
         }
         /*
          * if it is nonassoc, we're not allowed to have two nonassocs of equal
          * precedence in a row, so put in NONASSOC
          */
-        else if ( term.precedence_side ( ) == assoc.nonassoc )
+        else if ( term.precedence_side () == assoc.nonassoc )
         {
-          table_row.under_term [ term_index ] = new nonassoc_action ( ) ;
-          return true ;
+          table_row.under_term [ term_index ] = new nonassoc_action ();
+          return true;
         }
         else
         {
           /* something really went wrong */
-          throw new internal_error ( "Unable to resolve conflict correctly" ) ;
+          throw new internal_error ( "Unable to resolve conflict correctly" );
         }
       }
     }
@@ -639,17 +645,17 @@ public class lalr_state
      * check if terminal has precedence, if so, shift, since rule does not have
      * precedence
      */
-    else if ( term.precedence_num ( ) > assoc.no_prec )
+    else if ( term.precedence_num () > assoc.no_prec )
     {
       table_row.under_term [ term_index ] = insert_shift (
-          table_row.under_term [ term_index ] , act ) ;
-      return true ;
+          table_row.under_term [ term_index ], act );
+      return true;
     }
     /*
      * otherwise, neither the rule nor the terminal has a precedence, so it
      * can't be fixed.
      */
-    return false ;
+    return false;
   }
 
 
@@ -659,41 +665,41 @@ public class lalr_state
    * type. give an error if they are of the same action, because that should
    * never have tried to be fixed
    */
-  protected parse_action insert_action ( parse_action a1 , parse_action a2 ,
+  protected parse_action insert_action ( parse_action a1, parse_action a2,
       int act_type ) throws internal_error
   {
-    if ( ( a1.kind ( ) == act_type ) && ( a2.kind ( ) == act_type ) )
+    if ( ( a1.kind () == act_type ) && ( a2.kind () == act_type ) )
     {
-      throw new internal_error ( "Conflict resolution of bogus actions" ) ;
+      throw new internal_error ( "Conflict resolution of bogus actions" );
     }
-    else if ( a1.kind ( ) == act_type )
+    else if ( a1.kind () == act_type )
     {
-      return a1 ;
+      return a1;
     }
-    else if ( a2.kind ( ) == act_type )
+    else if ( a2.kind () == act_type )
     {
-      return a2 ;
+      return a2;
     }
     else
     {
-      throw new internal_error ( "Conflict resolution of bogus actions" ) ;
+      throw new internal_error ( "Conflict resolution of bogus actions" );
     }
   }
 
 
   /* find the shift in the two actions */
-  protected parse_action insert_shift ( parse_action a1 , parse_action a2 )
+  protected parse_action insert_shift ( parse_action a1, parse_action a2 )
       throws internal_error
   {
-    return insert_action ( a1 , a2 , parse_action.SHIFT ) ;
+    return insert_action ( a1, a2, parse_action.SHIFT );
   }
 
 
   /* find the reduce in the two actions */
-  protected parse_action insert_reduce ( parse_action a1 , parse_action a2 )
+  protected parse_action insert_reduce ( parse_action a1, parse_action a2 )
       throws internal_error
   {
-    return insert_action ( a1 , a2 , parse_action.REDUCE ) ;
+    return insert_action ( a1, a2, parse_action.REDUCE );
   }
 
 
@@ -702,43 +708,45 @@ public class lalr_state
   protected void report_conflicts ( terminal_set conflict_set )
       throws internal_error
   {
-    lalr_item itm , compare ;
-    symbol shift_sym ;
-    boolean after_itm ;
+    lalr_item itm, compare;
+    symbol shift_sym;
+    boolean after_itm;
     /* consider each element */
-    for ( Enumeration itms = items ( ).all ( ) ; itms.hasMoreElements ( ) ; )
+    for ( Enumeration itms = items ().all () ; itms.hasMoreElements () ; )
     {
-      itm = ( lalr_item ) itms.nextElement ( ) ;
+      itm = ( lalr_item ) itms.nextElement ();
       /* clear the S/R conflict set for this item */
       /* if it results in a reduce, it could be a conflict */
-      if ( itm.dot_at_end ( ) )
+      if ( itm.dot_at_end () )
       {
         /* not yet after itm */
-        after_itm = false ;
+        after_itm = false;
         /* compare this item against all others looking for conflicts */
-        for ( Enumeration comps = items ( ).all ( ) ; comps.hasMoreElements ( ) ; )
+        for ( Enumeration comps = items ().all () ; comps.hasMoreElements () ; )
         {
-          compare = ( lalr_item ) comps.nextElement ( ) ;
+          compare = ( lalr_item ) comps.nextElement ();
           /* if this is the item, next one is after it */
-          if ( itm == compare ) after_itm = true ;
+          if ( itm == compare )
+            after_itm = true;
           /* only look at it if its not the same item */
           if ( itm != compare )
           {
             /* is it a reduce */
-            if ( compare.dot_at_end ( ) )
+            if ( compare.dot_at_end () )
             {
               /* only look at reduces after itm */
               if ( after_itm )
-              /* does the comparison item conflict? */
-              if ( compare.lookahead ( ).intersects ( itm.lookahead ( ) ) )
-              /* report a reduce/reduce conflict */
-              report_reduce_reduce ( itm , compare ) ;
+                /* does the comparison item conflict? */
+                if ( compare.lookahead ().intersects ( itm.lookahead () ) )
+                  /* report a reduce/reduce conflict */
+                  report_reduce_reduce ( itm, compare );
             }
           }
         }
         /* report S/R conflicts under all the symbols we conflict under */
-        for ( int t = 0 ; t < terminal.number ( ) ; t ++ )
-          if ( conflict_set.contains ( t ) ) report_shift_reduce ( itm , t ) ;
+        for ( int t = 0 ; t < terminal.number () ; t++ )
+          if ( conflict_set.contains ( t ) )
+            report_shift_reduce ( itm, t );
       }
     }
   }
@@ -751,31 +759,32 @@ public class lalr_state
    * @param itm1 first item in conflict.
    * @param itm2 second item in conflict.
    */
-  protected void report_reduce_reduce ( lalr_item itm1 , lalr_item itm2 )
+  protected void report_reduce_reduce ( lalr_item itm1, lalr_item itm2 )
       throws internal_error
   {
-    boolean comma_flag = false ;
-    String message = "*** Reduce/Reduce conflict found in state #" + index ( )
-        + "\n" + "  between " + itm1.to_simple_string ( ) + "\n" + "  and     "
-        + itm2.to_simple_string ( ) + "\n" + "  under symbols: {" ;
-    for ( int t = 0 ; t < terminal.number ( ) ; t ++ )
+    boolean comma_flag = false;
+    String message = "*** Reduce/Reduce conflict found in state #" + index ()
+        + "\n" + "  between " + itm1.to_simple_string () + "\n" + "  and     "
+        + itm2.to_simple_string () + "\n" + "  under symbols: {";
+    for ( int t = 0 ; t < terminal.number () ; t++ )
     {
-      if ( itm1.lookahead ( ).contains ( t )
-          && itm2.lookahead ( ).contains ( t ) )
+      if ( itm1.lookahead ().contains ( t ) && itm2.lookahead ().contains ( t ) )
       {
         if ( comma_flag )
-          message += ( ", " ) ;
-        else comma_flag = true ;
-        message += ( terminal.find ( t ).name ( ) ) ;
+          message += ( ", " );
+        else
+          comma_flag = true;
+        message += ( terminal.find ( t ).name () );
       }
     }
-    message += "}\n  Resolved in favor of " ;
-    if ( itm1.the_production ( ).index ( ) < itm2.the_production ( ).index ( ) )
-      message += "the first production.\n" ;
-    else message += "the second production.\n" ;
+    message += "}\n  Resolved in favor of ";
+    if ( itm1.the_production ().index () < itm2.the_production ().index () )
+      message += "the first production.\n";
+    else
+      message += "the second production.\n";
     /* count the conflict */
-    emit.num_conflicts ++ ;
-    ErrorManager.getManager ( ).emit_warning ( message ) ;
+    emit.num_conflicts++ ;
+    ErrorManager.getManager ().emit_warning ( message );
   }
 
 
@@ -786,35 +795,35 @@ public class lalr_state
    * @param red_itm the item with the reduce.
    * @param conflict_sym the index of the symbol conflict occurs under.
    */
-  protected void report_shift_reduce ( lalr_item red_itm , int conflict_sym )
+  protected void report_shift_reduce ( lalr_item red_itm, int conflict_sym )
       throws internal_error
   {
-    lalr_item itm ;
-    symbol shift_sym ;
+    lalr_item itm;
+    symbol shift_sym;
     /* emit top part of message including the reduce item */
-    String message = "*** Shift/Reduce conflict found in state #" + index ( )
-        + "\n" + "  between " + red_itm.to_simple_string ( ) + "\n" ;
+    String message = "*** Shift/Reduce conflict found in state #" + index ()
+        + "\n" + "  between " + red_itm.to_simple_string () + "\n";
     /* find and report on all items that shift under our conflict symbol */
-    for ( Enumeration itms = items ( ).all ( ) ; itms.hasMoreElements ( ) ; )
+    for ( Enumeration itms = items ().all () ; itms.hasMoreElements () ; )
     {
-      itm = ( lalr_item ) itms.nextElement ( ) ;
+      itm = ( lalr_item ) itms.nextElement ();
       /* only look if its not the same item and not a reduce */
-      if ( itm != red_itm && ! itm.dot_at_end ( ) )
+      if ( itm != red_itm && !itm.dot_at_end () )
       {
         /* is it a shift on our conflicting terminal */
-        shift_sym = itm.symbol_after_dot ( ) ;
-        if ( ! shift_sym.is_non_term ( ) && shift_sym.index ( ) == conflict_sym )
+        shift_sym = itm.symbol_after_dot ();
+        if ( !shift_sym.is_non_term () && shift_sym.index () == conflict_sym )
         {
           /* yes, report on it */
-          message += "  and     " + itm.to_simple_string ( ) + "\n" ;
+          message += "  and     " + itm.to_simple_string () + "\n";
         }
       }
     }
-    message += "  under symbol " + terminal.find ( conflict_sym ).name ( )
-        + "\n" + "  Resolved in favor of shifting.\n" ;
+    message += "  under symbol " + terminal.find ( conflict_sym ).name ()
+        + "\n" + "  Resolved in favor of shifting.\n";
     /* count the conflict */
-    emit.num_conflicts ++ ;
-    ErrorManager.getManager ( ).emit_warning ( message ) ;
+    emit.num_conflicts++ ;
+    ErrorManager.getManager ().emit_warning ( message );
   }
 
 
@@ -823,7 +832,7 @@ public class lalr_state
   public boolean equals ( lalr_state other )
   {
     /* we are equal if our item sets are equal */
-    return other != null && items ( ).equals ( other.items ( ) ) ;
+    return other != null && items ().equals ( other.items () );
   }
 
 
@@ -832,35 +841,36 @@ public class lalr_state
   public boolean equals ( Object other )
   {
     if ( ! ( other instanceof lalr_state ) )
-      return false ;
-    else return equals ( ( lalr_state ) other ) ;
+      return false;
+    else
+      return equals ( ( lalr_state ) other );
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Produce a hash code. */
-  public int hashCode ( )
+  public int hashCode ()
   {
     /* just use the item set hash code */
-    return items ( ).hashCode ( ) ;
+    return items ().hashCode ();
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Convert to a string. */
-  public String toString ( )
+  public String toString ()
   {
-    String result ;
-    lalr_transition tr ;
+    String result;
+    lalr_transition tr;
     /* dump the item set */
-    result = "lalr_state [" + index ( ) + "]: " + _items + "\n" ;
+    result = "lalr_state [" + index () + "]: " + _items + "\n";
     /* do the transitions */
-    for ( tr = transitions ( ) ; tr != null ; tr = tr.next ( ) )
+    for ( tr = transitions () ; tr != null ; tr = tr.next () )
     {
-      result += tr ;
-      result += "\n" ;
+      result += tr;
+      result += "\n";
     }
-    return result ;
+    return result;
   }
   /*-----------------------------------------------------------*/
 }

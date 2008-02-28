@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -13,59 +13,60 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class ArithmeticOperator extends BinaryOperator
 {
+
   /**
    * The inconsistent exception string.
    */
-  private static final String INCONSISTENT = "inconsistent arithmetic operator class" ; //$NON-NLS-1$
+  private static final String INCONSISTENT = "inconsistent arithmetic operator class"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( ArithmeticOperator.class ) ;
+      .getCaption ( ArithmeticOperator.class );
 
 
   /**
    * String for the case that e1 is null.
    */
-  private static final String E1_NULL = "e1 is null" ; //$NON-NLS-1$
+  private static final String E1_NULL = "e1 is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that e2 is null.
    */
-  private static final String E2_NULL = "e2 is null" ; //$NON-NLS-1$
+  private static final String E2_NULL = "e2 is null"; //$NON-NLS-1$
 
 
   /**
    * The string <code>/</code>.
    */
-  private static final String DIV = "/" ; //$NON-NLS-1$
+  private static final String DIV = "/"; //$NON-NLS-1$
 
 
   /**
    * The string <code>+</code>.
    */
-  private static final String PLUS = "+" ; //$NON-NLS-1$
+  private static final String PLUS = "+"; //$NON-NLS-1$
 
 
   /**
    * The string <code>-</code>.
    */
-  private static final String MINUS = "-" ; //$NON-NLS-1$
+  private static final String MINUS = "-"; //$NON-NLS-1$
 
 
   /**
    * The string <code>mod</code>.
    */
-  private static final String MOD = "mod" ; //$NON-NLS-1$
+  private static final String MOD = "mod"; //$NON-NLS-1$
 
 
   /**
    * The string <code>*</code>.
    */
-  private static final String MULT = "*" ; //$NON-NLS-1$
+  private static final String MULT = "*"; //$NON-NLS-1$
 
 
   /**
@@ -73,9 +74,9 @@ public final class ArithmeticOperator extends BinaryOperator
    * 
    * @return a new instance of the div operator.
    */
-  public static final ArithmeticOperator newDiv ( )
+  public static final ArithmeticOperator newDiv ()
   {
-    return new ArithmeticOperator ( DIV , PRIO_DIV ) ;
+    return new ArithmeticOperator ( DIV, PRIO_DIV );
   }
 
 
@@ -88,11 +89,11 @@ public final class ArithmeticOperator extends BinaryOperator
    *          source code.
    * @return a new instance of the div operator.
    */
-  public static final ArithmeticOperator newDiv ( int pParserStartOffset ,
+  public static final ArithmeticOperator newDiv ( int pParserStartOffset,
       int pParserEndOffset )
   {
-    return new ArithmeticOperator ( DIV , PRIO_DIV , pParserStartOffset ,
-        pParserEndOffset ) ;
+    return new ArithmeticOperator ( DIV, PRIO_DIV, pParserStartOffset,
+        pParserEndOffset );
   }
 
 
@@ -101,9 +102,9 @@ public final class ArithmeticOperator extends BinaryOperator
    * 
    * @return a new instance of the minus operator.
    */
-  public static final ArithmeticOperator newMinus ( )
+  public static final ArithmeticOperator newMinus ()
   {
-    return new ArithmeticOperator ( MINUS , PRIO_MINUS ) ;
+    return new ArithmeticOperator ( MINUS, PRIO_MINUS );
   }
 
 
@@ -116,11 +117,11 @@ public final class ArithmeticOperator extends BinaryOperator
    *          source code.
    * @return a new instance of the minus operator.
    */
-  public static final ArithmeticOperator newMinus ( int pParserStartOffset ,
+  public static final ArithmeticOperator newMinus ( int pParserStartOffset,
       int pParserEndOffset )
   {
-    return new ArithmeticOperator ( MINUS , PRIO_MINUS , pParserStartOffset ,
-        pParserEndOffset ) ;
+    return new ArithmeticOperator ( MINUS, PRIO_MINUS, pParserStartOffset,
+        pParserEndOffset );
   }
 
 
@@ -129,9 +130,9 @@ public final class ArithmeticOperator extends BinaryOperator
    * 
    * @return a new instance of the mod operator.
    */
-  public static final ArithmeticOperator newMod ( )
+  public static final ArithmeticOperator newMod ()
   {
-    return new ArithmeticOperator ( MOD , PRIO_MOD ) ;
+    return new ArithmeticOperator ( MOD, PRIO_MOD );
   }
 
 
@@ -144,11 +145,11 @@ public final class ArithmeticOperator extends BinaryOperator
    *          source code.
    * @return a new instance of the mod operator.
    */
-  public static final ArithmeticOperator newMod ( int pParserStartOffset ,
+  public static final ArithmeticOperator newMod ( int pParserStartOffset,
       int pParserEndOffset )
   {
-    return new ArithmeticOperator ( MOD , PRIO_MOD , pParserStartOffset ,
-        pParserEndOffset ) ;
+    return new ArithmeticOperator ( MOD, PRIO_MOD, pParserStartOffset,
+        pParserEndOffset );
   }
 
 
@@ -157,9 +158,9 @@ public final class ArithmeticOperator extends BinaryOperator
    * 
    * @return a new instance of the mult operator.
    */
-  public static final ArithmeticOperator newMult ( )
+  public static final ArithmeticOperator newMult ()
   {
-    return new ArithmeticOperator ( MULT , PRIO_MULT ) ;
+    return new ArithmeticOperator ( MULT, PRIO_MULT );
   }
 
 
@@ -172,11 +173,11 @@ public final class ArithmeticOperator extends BinaryOperator
    *          source code.
    * @return a new instance of the mult operator.
    */
-  public static final ArithmeticOperator newMult ( int pParserStartOffset ,
+  public static final ArithmeticOperator newMult ( int pParserStartOffset,
       int pParserEndOffset )
   {
-    return new ArithmeticOperator ( MULT , PRIO_MULT , pParserStartOffset ,
-        pParserEndOffset ) ;
+    return new ArithmeticOperator ( MULT, PRIO_MULT, pParserStartOffset,
+        pParserEndOffset );
   }
 
 
@@ -185,9 +186,9 @@ public final class ArithmeticOperator extends BinaryOperator
    * 
    * @return a new instance of the plus operator.
    */
-  public static final ArithmeticOperator newPlus ( )
+  public static final ArithmeticOperator newPlus ()
   {
-    return new ArithmeticOperator ( PLUS , PRIO_PLUS ) ;
+    return new ArithmeticOperator ( PLUS, PRIO_PLUS );
   }
 
 
@@ -200,11 +201,11 @@ public final class ArithmeticOperator extends BinaryOperator
    *          source code.
    * @return a new instance of the plus operator.
    */
-  public static final ArithmeticOperator newPlus ( int pParserStartOffset ,
+  public static final ArithmeticOperator newPlus ( int pParserStartOffset,
       int pParserEndOffset )
   {
-    return new ArithmeticOperator ( PLUS , PRIO_PLUS , pParserStartOffset ,
-        pParserEndOffset ) ;
+    return new ArithmeticOperator ( PLUS, PRIO_PLUS, pParserStartOffset,
+        pParserEndOffset );
   }
 
 
@@ -218,9 +219,9 @@ public final class ArithmeticOperator extends BinaryOperator
    * @throws NullPointerException if <code>text</code> is <code>null</code>.
    * @see BinaryOperator#BinaryOperator(String, int)
    */
-  private ArithmeticOperator ( String pText , int pPrettyPriority )
+  private ArithmeticOperator ( String pText, int pPrettyPriority )
   {
-    super ( pText , pPrettyPriority ) ;
+    super ( pText, pPrettyPriority );
   }
 
 
@@ -238,12 +239,12 @@ public final class ArithmeticOperator extends BinaryOperator
    * @throws NullPointerException if <code>text</code> is <code>null</code>.
    * @see BinaryOperator#BinaryOperator(String, int)
    */
-  private ArithmeticOperator ( String pText , int pPrettyPriority ,
-      int pParserStartOffset , int pParserEndOffset )
+  private ArithmeticOperator ( String pText, int pPrettyPriority,
+      int pParserStartOffset, int pParserEndOffset )
   {
-    this ( pText , pPrettyPriority ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pText, pPrettyPriority );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -252,59 +253,59 @@ public final class ArithmeticOperator extends BinaryOperator
    * 
    * @see BinaryOperator#applyTo(Expression, Expression)
    */
-  @ Override
-  public Expression applyTo ( Expression pExpression1 , Expression pExpression2 )
+  @Override
+  public Expression applyTo ( Expression pExpression1, Expression pExpression2 )
       throws BinaryOperatorException
   {
     if ( pExpression1 == null )
     {
-      throw new NullPointerException ( E1_NULL ) ;
+      throw new NullPointerException ( E1_NULL );
     }
     if ( pExpression2 == null )
     {
-      throw new NullPointerException ( E2_NULL ) ;
+      throw new NullPointerException ( E2_NULL );
     }
     try
     {
       // determine the integer values of the operands
-      int n1 = ( ( IntegerConstant ) pExpression1 ).intValue ( ) ;
-      int n2 = ( ( IntegerConstant ) pExpression2 ).intValue ( ) ;
+      int n1 = ( ( IntegerConstant ) pExpression1 ).intValue ();
+      int n2 = ( ( IntegerConstant ) pExpression2 ).intValue ();
       // try to perform the application
-      if ( PLUS.equals ( getText ( ) ) )
+      if ( PLUS.equals ( getText () ) )
       {
-        return new IntegerConstant ( n1 + n2 ) ;
+        return new IntegerConstant ( n1 + n2 );
       }
-      else if ( MINUS.equals ( getText ( ) ) )
+      else if ( MINUS.equals ( getText () ) )
       {
-        return new IntegerConstant ( n1 - n2 ) ;
+        return new IntegerConstant ( n1 - n2 );
       }
-      else if ( MULT.equals ( getText ( ) ) )
+      else if ( MULT.equals ( getText () ) )
       {
-        return new IntegerConstant ( n1 * n2 ) ;
+        return new IntegerConstant ( n1 * n2 );
       }
-      else if ( DIV.equals ( getText ( ) ) )
+      else if ( DIV.equals ( getText () ) )
       {
-        return new IntegerConstant ( n1 / n2 ) ;
+        return new IntegerConstant ( n1 / n2 );
       }
-      else if ( MOD.equals ( getText ( ) ) )
+      else if ( MOD.equals ( getText () ) )
       {
-        return new IntegerConstant ( n1 % n2 ) ;
+        return new IntegerConstant ( n1 % n2 );
       }
       else
       {
         // programming error
-        throw new IllegalStateException ( INCONSISTENT ) ;
+        throw new IllegalStateException ( INCONSISTENT );
       }
     }
     catch ( ClassCastException e )
     {
       // one of the Expression to IntegerConstant casts failed
-      throw new BinaryOperatorException ( this , pExpression1 , pExpression2 ) ;
+      throw new BinaryOperatorException ( this, pExpression1, pExpression2 );
     }
     catch ( ArithmeticException e )
     {
       // internal Java operators throw this on divide-by-zero
-      return Exn.newDivideByZero ( ) ;
+      return Exn.newDivideByZero ();
     }
   }
 
@@ -314,19 +315,19 @@ public final class ArithmeticOperator extends BinaryOperator
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public ArithmeticOperator clone ( )
+  @Override
+  public ArithmeticOperator clone ()
   {
-    return new ArithmeticOperator ( getText ( ) , getPrettyPriority ( ) ) ;
+    return new ArithmeticOperator ( getText (), getPrettyPriority () );
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

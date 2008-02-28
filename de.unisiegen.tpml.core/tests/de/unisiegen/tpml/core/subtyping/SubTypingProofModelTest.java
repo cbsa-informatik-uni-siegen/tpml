@@ -1,31 +1,33 @@
 package de.unisiegen.tpml.core.subtyping ;
 
 
-import java.awt.BorderLayout ;
-import java.awt.FlowLayout ;
-import java.awt.event.ActionEvent ;
-import java.awt.event.ActionListener ;
-import java.awt.event.ItemEvent ;
-import java.awt.event.ItemListener ;
-import java.awt.event.WindowAdapter ;
-import java.awt.event.WindowEvent ;
-import java.beans.PropertyChangeEvent ;
-import java.beans.PropertyChangeListener ;
-import java.io.StringReader ;
-import java.util.LinkedList ;
-import javax.swing.BorderFactory ;
-import javax.swing.JButton ;
-import javax.swing.JComboBox ;
-import javax.swing.JFrame ;
-import javax.swing.JOptionPane ;
-import javax.swing.JPanel ;
-import javax.swing.JTree ;
-import de.unisiegen.tpml.core.ProofNode ;
-import de.unisiegen.tpml.core.ProofRule ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.core.languages.LanguageFactory ;
-import de.unisiegen.tpml.core.languages.LanguageTypeParser ;
-import de.unisiegen.tpml.core.types.MonoType ;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.StringReader;
+import java.util.LinkedList;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTree;
+
+import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageFactory;
+import de.unisiegen.tpml.core.languages.LanguageTypeParser;
+import de.unisiegen.tpml.core.types.MonoType;
 
 
 @ SuppressWarnings ( "all" )

@@ -1,27 +1,29 @@
-package de.unisiegen.tpml.core.typeinference ;
+package de.unisiegen.tpml.core.typeinference;
 
 
-import java.util.ArrayList ;
-import javax.swing.tree.TreeNode ;
-import de.unisiegen.tpml.core.AbstractProofNode ;
-import de.unisiegen.tpml.core.ProofStep ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import java.util.ArrayList;
+
+import javax.swing.tree.TreeNode;
+
+import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -37,17 +39,18 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
     TypeInferenceProofNode
 {
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_PROOF_NODE ,
-        1 , "#1" , "body" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_INFERENCE_PROOF_NODE,
+        1, "#1", "body" ) ); //$NON-NLS-1$//$NON-NLS-2$
+    return commands;
   }
 
 
@@ -56,13 +59,13 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static LatexInstructionList getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
-    return instructions ;
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}", //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ); //$NON-NLS-1$
+    return instructions;
   }
 
 
@@ -71,31 +74,31 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.AMSSYMB ) ;
-    packages.add ( LatexPackage.COLOR ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.AMSSYMB );
+    packages.add ( LatexPackage.COLOR );
+    return packages;
   }
 
 
   /**
    * list of all formulas of this node
    */
-  private ArrayList < TypeFormula > formula = new ArrayList < TypeFormula > ( ) ;
+  private ArrayList < TypeFormula > formula = new ArrayList < TypeFormula > ();
 
 
   /**
    * list of the collected type substitutions of this node
    */
-  private ArrayList < TypeSubstitution > substitutions = new ArrayList < TypeSubstitution > ( ) ;
+  private ArrayList < TypeSubstitution > substitutions = new ArrayList < TypeSubstitution > ();
 
 
   /**
    * list of proof steps of this node
    */
-  private ProofStep [ ] steps = new ProofStep [ 0 ] ;
+  private ProofStep [] steps = new ProofStep [ 0 ];
 
 
   /**
@@ -105,12 +108,12 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * @param subs subs substitutions of the node
    */
   public DefaultTypeInferenceProofNode (
-      final ArrayList < TypeFormula > judgement ,
+      final ArrayList < TypeFormula > judgement,
       final ArrayList < TypeSubstitution > subs )
   {
     // equations = eqns;
-    this.formula = judgement ;
-    this.substitutions = subs ;
+    this.formula = judgement;
+    this.substitutions = subs;
   }
 
 
@@ -120,12 +123,12 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * @param judgement type judgement of the node which will be added to formula
    * @param subs substitutions of the node
    */
-  public DefaultTypeInferenceProofNode ( final TypeJudgement judgement ,
+  public DefaultTypeInferenceProofNode ( final TypeJudgement judgement,
       final ArrayList < TypeSubstitution > subs )
   {
     // equations = eqns;
-    this.formula.add ( judgement ) ;
-    this.substitutions = subs ;
+    this.formula.add ( judgement );
+    this.substitutions = subs;
   }
 
 
@@ -135,9 +138,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * @return ArraList containing all type formulas
    * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode#getAllFormulas()
    */
-  public ArrayList < TypeFormula > getAllFormulas ( )
+  public ArrayList < TypeFormula > getAllFormulas ()
   {
-    return this.formula ;
+    return this.formula;
   }
 
 
@@ -146,10 +149,10 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildAfter(javax.swing.tree.TreeNode)
    */
-  @ Override
+  @Override
   public DefaultTypeInferenceProofNode getChildAfter ( final TreeNode aChild )
   {
-    return ( DefaultTypeInferenceProofNode ) super.getChildAfter ( aChild ) ;
+    return ( DefaultTypeInferenceProofNode ) super.getChildAfter ( aChild );
   }
 
 
@@ -158,10 +161,10 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildAt(int)
    */
-  @ Override
+  @Override
   public DefaultTypeInferenceProofNode getChildAt ( final int childIndex )
   {
-    return ( DefaultTypeInferenceProofNode ) super.getChildAt ( childIndex ) ;
+    return ( DefaultTypeInferenceProofNode ) super.getChildAt ( childIndex );
   }
 
 
@@ -170,10 +173,10 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildBefore(javax.swing.tree.TreeNode)
    */
-  @ Override
+  @Override
   public DefaultTypeInferenceProofNode getChildBefore ( final TreeNode aChild )
   {
-    return ( DefaultTypeInferenceProofNode ) super.getChildBefore ( aChild ) ;
+    return ( DefaultTypeInferenceProofNode ) super.getChildBefore ( aChild );
   }
 
 
@@ -182,10 +185,10 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getFirstChild()
    */
-  @ Override
-  public DefaultTypeInferenceProofNode getFirstChild ( )
+  @Override
+  public DefaultTypeInferenceProofNode getFirstChild ()
   {
-    return ( DefaultTypeInferenceProofNode ) super.getFirstChild ( ) ;
+    return ( DefaultTypeInferenceProofNode ) super.getFirstChild ();
   }
 
 
@@ -195,13 +198,13 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * @return the first type formula of the list or null if list is empty
    * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode#getFirstFormula()
    */
-  public TypeFormula getFirstFormula ( )
+  public TypeFormula getFirstFormula ()
   {
-    if ( ! this.formula.isEmpty ( ) )
+    if ( !this.formula.isEmpty () )
     {
-      return this.formula.get ( 0 ) ;
+      return this.formula.get ( 0 );
     }
-    return null ;
+    return null;
   }
 
 
@@ -210,10 +213,10 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getFirstLeaf()
    */
-  @ Override
-  public DefaultTypeInferenceProofNode getFirstLeaf ( )
+  @Override
+  public DefaultTypeInferenceProofNode getFirstLeaf ()
   {
-    return ( DefaultTypeInferenceProofNode ) super.getFirstLeaf ( ) ;
+    return ( DefaultTypeInferenceProofNode ) super.getFirstLeaf ();
   }
 
 
@@ -222,9 +225,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @return LinkedList<TypeFormula> formula
    */
-  public ArrayList < TypeFormula > getFormula ( )
+  public ArrayList < TypeFormula > getFormula ()
   {
-    return this.formula ;
+    return this.formula;
   }
 
 
@@ -233,10 +236,10 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getLastChild()
    */
-  @ Override
-  public DefaultTypeInferenceProofNode getLastChild ( )
+  @Override
+  public DefaultTypeInferenceProofNode getLastChild ()
   {
-    return ( DefaultTypeInferenceProofNode ) super.getLastChild ( ) ;
+    return ( DefaultTypeInferenceProofNode ) super.getLastChild ();
   }
 
 
@@ -245,10 +248,10 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getLastLeaf()
    */
-  @ Override
-  public DefaultTypeInferenceProofNode getLastLeaf ( )
+  @Override
+  public DefaultTypeInferenceProofNode getLastLeaf ()
   {
-    return ( DefaultTypeInferenceProofNode ) super.getLastLeaf ( ) ;
+    return ( DefaultTypeInferenceProofNode ) super.getLastLeaf ();
   }
 
 
@@ -257,21 +260,21 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public LatexCommandList getLatexCommands ( )
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    commands.add ( this.substitutions ) ;
-    commands.add ( this.formula ) ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
+    commands.add ( this.substitutions );
+    commands.add ( this.formula );
     for ( TypeFormula form : this.formula )
     {
       if ( form instanceof TypeEquationTypeInference )
       {
-        commands.add ( ( ( TypeEquationTypeInference ) form ).getSeenTypes ( )
-            .getLatexCommands ( ) ) ;
+        commands.add ( ( ( TypeEquationTypeInference ) form ).getSeenTypes ()
+            .getLatexCommands () );
       }
     }
-    return commands ;
+    return commands;
   }
 
 
@@ -280,21 +283,21 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public LatexInstructionList getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( getLatexInstructionsStatic ( ) ) ;
-    instructions.add ( this.substitutions ) ;
-    instructions.add ( this.formula ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
+    instructions.add ( this.substitutions );
+    instructions.add ( this.formula );
     for ( TypeFormula form : this.formula )
     {
       if ( form instanceof TypeEquationTypeInference )
       {
         instructions.add ( ( ( TypeEquationTypeInference ) form )
-            .getSeenTypes ( ).getLatexInstructions ( ) ) ;
+            .getSeenTypes ().getLatexInstructions () );
       }
     }
-    return instructions ;
+    return instructions;
   }
 
 
@@ -303,21 +306,21 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public LatexPackageList getLatexPackages ( )
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
-    packages.add ( this.substitutions ) ;
-    packages.add ( this.formula ) ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( getLatexPackagesStatic () );
+    packages.add ( this.substitutions );
+    packages.add ( this.formula );
     for ( TypeFormula form : this.formula )
     {
       if ( form instanceof TypeEquationTypeInference )
       {
-        packages.add ( ( ( TypeEquationTypeInference ) form ).getSeenTypes ( )
-            .getLatexPackages ( ) ) ;
+        packages.add ( ( ( TypeEquationTypeInference ) form ).getSeenTypes ()
+            .getLatexPackages () );
       }
     }
-    return packages ;
+    return packages;
   }
 
 
@@ -326,10 +329,10 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getParent()
    */
-  @ Override
-  public DefaultTypeInferenceProofNode getParent ( )
+  @Override
+  public DefaultTypeInferenceProofNode getParent ()
   {
-    return ( DefaultTypeInferenceProofNode ) super.getParent ( ) ;
+    return ( DefaultTypeInferenceProofNode ) super.getParent ();
   }
 
 
@@ -338,10 +341,10 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getRoot()
    */
-  @ Override
-  public DefaultTypeInferenceProofNode getRoot ( )
+  @Override
+  public DefaultTypeInferenceProofNode getRoot ()
   {
-    return ( DefaultTypeInferenceProofNode ) super.getRoot ( ) ;
+    return ( DefaultTypeInferenceProofNode ) super.getRoot ();
   }
 
 
@@ -351,14 +354,14 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * @return ProofStep[] steps or null
    * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode#getRule()
    */
-  public TypeCheckerProofRule getRule ( )
+  public TypeCheckerProofRule getRule ()
   {
-    final ProofStep [ ] newSteps = getSteps ( ) ;
+    final ProofStep [] newSteps = getSteps ();
     if ( newSteps.length > 0 )
     {
-      return ( TypeCheckerProofRule ) newSteps [ 0 ].getRule ( ) ;
+      return ( TypeCheckerProofRule ) newSteps [ 0 ].getRule ();
     }
-    return null ;
+    return null;
   }
 
 
@@ -367,9 +370,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @return ProofStep[] steps
    */
-  public ProofStep [ ] getSteps ( )
+  public ProofStep [] getSteps ()
   {
-    return this.steps ;
+    return this.steps;
   }
 
 
@@ -385,9 +388,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @return TypeSubstitutionList substitutions
    */
-  public ArrayList < TypeSubstitution > getSubstitution ( )
+  public ArrayList < TypeSubstitution > getSubstitution ()
   {
-    return this.substitutions ;
+    return this.substitutions;
   }
 
 
@@ -396,9 +399,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @see TypeInferenceProofNode#isFinished()
    */
-  public boolean isFinished ( )
+  public boolean isFinished ()
   {
-    return getLastLeaf ( ).getFormula ( ).size ( ) < 1 ;
+    return getLastLeaf ().getFormula ().size () < 1;
   }
 
 
@@ -407,9 +410,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.ProofNode#isProven()
    */
-  public boolean isProven ( )
+  public boolean isProven ()
   {
-    return ( getSteps ( ).length > 0 ) ;
+    return ( getSteps ().length > 0 );
   }
 
 
@@ -420,7 +423,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    */
   public void setFormula ( ArrayList < TypeFormula > pFormula )
   {
-    this.formula = pFormula ;
+    this.formula = pFormula;
   }
 
 
@@ -429,9 +432,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @param pSteps new proof steps for this node
    */
-  public void setSteps ( final ProofStep [ ] pSteps )
+  public void setSteps ( final ProofStep [] pSteps )
   {
-    this.steps = pSteps ;
+    this.steps = pSteps;
   }
 
 
@@ -440,10 +443,10 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public final LatexString toLatexString ( )
+  public final LatexString toLatexString ()
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -453,135 +456,134 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    int countEquation = 0 ;
-    for ( int i = 0 ; i < this.formula.size ( ) ; i ++ )
+    int countEquation = 0;
+    for ( int i = 0 ; i < this.formula.size () ; i++ )
     {
       if ( this.formula.get ( i ) instanceof TypeEquationTypeInference )
       {
-        countEquation ++ ;
+        countEquation++ ;
       }
     }
-    StringBuilder body1 = new StringBuilder ( ) ;
-    if ( this.substitutions.size ( ) > 0 )
+    StringBuilder body1 = new StringBuilder ();
+    if ( this.substitutions.size () > 0 )
     {
-      body1.append ( PRETTY_LBRACKET ) ;
-      for ( int i = 0 ; i < this.substitutions.size ( ) ; i ++ )
+      body1.append ( PRETTY_LBRACKET );
+      for ( int i = 0 ; i < this.substitutions.size () ; i++ )
       {
-        body1.append ( this.substitutions.get ( i ).toPrettyString ( )
-            .toString ( ) ) ;
-        if ( i < this.substitutions.size ( ) - 1 )
+        body1.append ( this.substitutions.get ( i ).toPrettyString ()
+            .toString () );
+        if ( i < this.substitutions.size () - 1 )
         {
-          body1.append ( PRETTY_COMMA ) ;
-          body1.append ( PRETTY_SPACE ) ;
+          body1.append ( PRETTY_COMMA );
+          body1.append ( PRETTY_SPACE );
         }
       }
-      body1.append ( PRETTY_RBRACKET ) ;
+      body1.append ( PRETTY_RBRACKET );
     }
-    StringBuilder body2 = new StringBuilder ( ) ;
-    for ( int i = 0 ; i < this.formula.size ( ) ; i ++ )
+    StringBuilder body2 = new StringBuilder ();
+    for ( int i = 0 ; i < this.formula.size () ; i++ )
     {
       if ( this.formula.get ( i ) instanceof TypeEquationTypeInference )
       {
         TypeEquationTypeInference equation = ( TypeEquationTypeInference ) this.formula
-            .get ( i ) ;
-        body2
-            .append ( equation.getSeenTypes ( ).toPrettyString ( ).toString ( ) ) ;
-        body2.append ( PRETTY_SPACE ) ;
-        body2.append ( PRETTY_NAIL ) ;
-        body2.append ( PRETTY_SPACE ) ;
+            .get ( i );
+        body2.append ( equation.getSeenTypes ().toPrettyString ().toString () );
+        body2.append ( PRETTY_SPACE );
+        body2.append ( PRETTY_NAIL );
+        body2.append ( PRETTY_SPACE );
       }
-      body2.append ( this.formula.get ( i ).toPrettyString ( ).toString ( ) ) ;
-      if ( i < this.formula.size ( ) - 1 )
+      body2.append ( this.formula.get ( i ).toPrettyString ().toString () );
+      if ( i < this.formula.size () - 1 )
       {
-        body2.append ( PRETTY_LINE_BREAK ) ;
+        body2.append ( PRETTY_LINE_BREAK );
       }
     }
-    String descriptions[] = new String [ 3 + this.substitutions.size ( )
-        + this.formula.size ( ) + countEquation ] ;
-    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
-    descriptions [ 1 ] = body1.toString ( ) ;
-    for ( int i = 0 ; i < this.substitutions.size ( ) ; i ++ )
+    String descriptions[] = new String [ 3 + this.substitutions.size ()
+        + this.formula.size () + countEquation ];
+    descriptions [ 0 ] = this.toPrettyString ().toString ();
+    descriptions [ 1 ] = body1.toString ();
+    for ( int i = 0 ; i < this.substitutions.size () ; i++ )
     {
-      descriptions [ 2 + i ] = this.substitutions.get ( i ).toPrettyString ( )
-          .toString ( ) ;
+      descriptions [ 2 + i ] = this.substitutions.get ( i ).toPrettyString ()
+          .toString ();
     }
-    descriptions [ 2 + this.substitutions.size ( ) ] = body2.toString ( ) ;
-    int tmpCountEquation = 0 ;
-    for ( int i = 0 ; i < this.formula.size ( ) ; i ++ )
+    descriptions [ 2 + this.substitutions.size () ] = body2.toString ();
+    int tmpCountEquation = 0;
+    for ( int i = 0 ; i < this.formula.size () ; i++ )
     {
       if ( this.formula.get ( i ) instanceof TypeEquationTypeInference )
       {
         TypeEquationTypeInference equation = ( TypeEquationTypeInference ) this.formula
-            .get ( i ) ;
-        descriptions [ 3 + this.substitutions.size ( ) + i + tmpCountEquation ] = equation
-            .getSeenTypes ( ).toPrettyString ( ).toString ( ) ;
-        tmpCountEquation ++ ;
+            .get ( i );
+        descriptions [ 3 + this.substitutions.size () + i + tmpCountEquation ] = equation
+            .getSeenTypes ().toPrettyString ().toString ();
+        tmpCountEquation++ ;
       }
-      descriptions [ 3 + this.substitutions.size ( ) + i + tmpCountEquation ] = this.formula
-          .get ( i ).toPrettyString ( ).toString ( ) ;
+      descriptions [ 3 + this.substitutions.size () + i + tmpCountEquation ] = this.formula
+          .get ( i ).toPrettyString ().toString ();
     }
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_TYPE_INFERENCE_PROOF_NODE , pIndent , descriptions ) ;
-    builder.addBuilderBegin ( ) ;
-    if ( this.substitutions.size ( ) > 0 )
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
+        LATEX_TYPE_INFERENCE_PROOF_NODE, pIndent, descriptions );
+    builder.addBuilderBegin ();
+    if ( this.substitutions.size () > 0 )
     {
-      builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-      builder.addText ( LATEX_LBRACKET ) ;
-      builder.addText ( "}" ) ; //$NON-NLS-1$
-      for ( int i = 0 ; i < this.substitutions.size ( ) ; i ++ )
+      builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ); //$NON-NLS-1$ //$NON-NLS-2$
+      builder.addText ( LATEX_LBRACKET );
+      builder.addText ( "}" ); //$NON-NLS-1$
+      for ( int i = 0 ; i < this.substitutions.size () ; i++ )
       {
         builder.addBuilder ( this.substitutions.get ( i ).toLatexStringBuilder (
-            pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
-        if ( i < this.substitutions.size ( ) - 1 )
+            pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ), 0 );
+        if ( i < this.substitutions.size () - 1 )
         {
-          builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
           builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-              + LATEX_INDENT ) ) ;
-          builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-          builder.addText ( LATEX_COMMA ) ;
-          builder.addText ( LATEX_SPACE ) ;
-          builder.addText ( "}" ) ; //$NON-NLS-1$
+              + LATEX_INDENT ) );
+          builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ); //$NON-NLS-1$ //$NON-NLS-2$
+          builder.addText ( LATEX_COMMA );
+          builder.addText ( LATEX_SPACE );
+          builder.addText ( "}" ); //$NON-NLS-1$
         }
       }
-      builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-      builder.addText ( LATEX_RBRACKET ) ;
-      builder.addText ( "}" ) ; //$NON-NLS-1$
-      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ); //$NON-NLS-1$ //$NON-NLS-2$
+      builder.addText ( LATEX_RBRACKET );
+      builder.addText ( "}" ); //$NON-NLS-1$
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-          + LATEX_INDENT ) ) ;
-      builder.addText ( LATEX_NEW_LINE ) ;
+          + LATEX_INDENT ) );
+      builder.addText ( LATEX_NEW_LINE );
     }
-    for ( int i = 0 ; i < this.formula.size ( ) ; i ++ )
+    for ( int i = 0 ; i < this.formula.size () ; i++ )
     {
       if ( this.formula.get ( i ) instanceof TypeEquationTypeInference )
       {
         TypeEquationTypeInference equation = ( TypeEquationTypeInference ) this.formula
-            .get ( i ) ;
-        builder.addBuilder ( equation.getSeenTypes ( ).toLatexStringBuilder (
-            pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+            .get ( i );
+        builder.addBuilder ( equation.getSeenTypes ().toLatexStringBuilder (
+            pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ), 0 );
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-            + LATEX_INDENT ) ) ;
-        builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        builder.addText ( LATEX_SPACE ) ;
-        builder.addText ( LATEX_NAIL ) ;
-        builder.addText ( LATEX_SPACE ) ;
-        builder.addText ( "}" ) ; //$NON-NLS-1$
+            + LATEX_INDENT ) );
+        builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ); //$NON-NLS-1$ //$NON-NLS-2$
+        builder.addText ( LATEX_SPACE );
+        builder.addText ( LATEX_NAIL );
+        builder.addText ( LATEX_SPACE );
+        builder.addText ( "}" ); //$NON-NLS-1$
       }
       builder.addBuilder ( this.formula.get ( i ).toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
-      if ( i < this.formula.size ( ) - 1 )
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ), 0 );
+      if ( i < this.formula.size () - 1 )
       {
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-            + LATEX_INDENT ) ) ;
-        builder.addText ( LATEX_NEW_LINE ) ;
+            + LATEX_INDENT ) );
+        builder.addText ( LATEX_NEW_LINE );
       }
     }
-    builder.addBuilderEnd ( ) ;
-    return builder ;
+    builder.addBuilderEnd ();
+    return builder;
   }
 
 
@@ -590,10 +592,10 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public PrettyString toPrettyString ( )
+  public PrettyString toPrettyString ()
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -606,43 +608,43 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , 0 ) ;
-    if ( this.substitutions.size ( ) > 0 )
+        this, 0 );
+    if ( this.substitutions.size () > 0 )
     {
-      builder.addText ( PRETTY_LBRACKET ) ;
-      for ( int i = 0 ; i < this.substitutions.size ( ) ; i ++ )
+      builder.addText ( PRETTY_LBRACKET );
+      for ( int i = 0 ; i < this.substitutions.size () ; i++ )
       {
         builder.addBuilder ( this.substitutions.get ( i )
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-        if ( i < this.substitutions.size ( ) - 1 )
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+        if ( i < this.substitutions.size () - 1 )
         {
-          builder.addText ( PRETTY_COMMA ) ;
-          builder.addText ( PRETTY_SPACE ) ;
+          builder.addText ( PRETTY_COMMA );
+          builder.addText ( PRETTY_SPACE );
         }
       }
-      builder.addText ( PRETTY_RBRACKET ) ;
-      builder.addText ( PRETTY_LINE_BREAK ) ;
+      builder.addText ( PRETTY_RBRACKET );
+      builder.addText ( PRETTY_LINE_BREAK );
     }
-    for ( int i = 0 ; i < this.formula.size ( ) ; i ++ )
+    for ( int i = 0 ; i < this.formula.size () ; i++ )
     {
       if ( this.formula.get ( i ) instanceof TypeEquationTypeInference )
       {
         TypeEquationTypeInference equation = ( TypeEquationTypeInference ) this.formula
-            .get ( i ) ;
-        builder.addBuilder ( equation.getSeenTypes ( ).toPrettyStringBuilder (
-            pPrettyStringBuilderFactory ) , 0 ) ;
-        builder.addText ( PRETTY_SPACE ) ;
-        builder.addText ( PRETTY_NAIL ) ;
-        builder.addText ( PRETTY_SPACE ) ;
+            .get ( i );
+        builder.addBuilder ( equation.getSeenTypes ().toPrettyStringBuilder (
+            pPrettyStringBuilderFactory ), 0 );
+        builder.addText ( PRETTY_SPACE );
+        builder.addText ( PRETTY_NAIL );
+        builder.addText ( PRETTY_SPACE );
       }
       builder.addBuilder ( this.formula.get ( i ).toPrettyStringBuilder (
-          pPrettyStringBuilderFactory ) , 0 ) ;
-      if ( i < this.formula.size ( ) - 1 )
+          pPrettyStringBuilderFactory ), 0 );
+      if ( i < this.formula.size () - 1 )
       {
-        builder.addText ( PRETTY_LINE_BREAK ) ;
+        builder.addText ( PRETTY_LINE_BREAK );
       }
     }
-    return builder ;
+    return builder;
   }
 
 
@@ -655,9 +657,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * @see #toPrettyString()
    * @see Object#toString()
    */
-  @ Override
-  public final String toString ( )
+  @Override
+  public final String toString ()
   {
-    return toPrettyString ( ).toString ( ) ;
+    return toPrettyString ().toString ();
   }
 }

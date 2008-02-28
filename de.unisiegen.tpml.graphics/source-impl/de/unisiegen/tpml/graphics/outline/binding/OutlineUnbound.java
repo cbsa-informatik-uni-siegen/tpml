@@ -1,10 +1,11 @@
-package de.unisiegen.tpml.graphics.outline.binding ;
+package de.unisiegen.tpml.graphics.outline.binding;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
-import de.unisiegen.tpml.core.types.Type ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType;
+import de.unisiegen.tpml.core.types.Type;
 
 
 /**
@@ -15,10 +16,11 @@ import de.unisiegen.tpml.core.types.Type ;
  */
 public final class OutlineUnbound
 {
+
   /**
    * The list of unbound {@link ExpressionOrType}s.
    */
-  private ArrayList < ExpressionOrType > list ;
+  private ArrayList < ExpressionOrType > list;
 
 
   /**
@@ -28,7 +30,7 @@ public final class OutlineUnbound
    */
   private OutlineUnbound ( ArrayList < ExpressionOrType > pList )
   {
-    this.list = pList ;
+    this.list = pList;
   }
 
 
@@ -39,9 +41,9 @@ public final class OutlineUnbound
    */
   public OutlineUnbound ( Expression pExpression )
   {
-    this.list = new ArrayList < ExpressionOrType > ( ) ;
-    this.list.addAll ( pExpression.getIdentifiersFree ( ) ) ;
-    this.list.addAll ( pExpression.getTypeNamesFree ( ) ) ;
+    this.list = new ArrayList < ExpressionOrType > ();
+    this.list.addAll ( pExpression.getIdentifiersFree () );
+    this.list.addAll ( pExpression.getTypeNamesFree () );
   }
 
 
@@ -52,8 +54,8 @@ public final class OutlineUnbound
    */
   public OutlineUnbound ( Type pType )
   {
-    this.list = new ArrayList < ExpressionOrType > ( ) ;
-    this.list.addAll ( pType.getTypeNamesFree ( ) ) ;
+    this.list = new ArrayList < ExpressionOrType > ();
+    this.list.addAll ( pType.getTypeNamesFree () );
   }
 
 
@@ -65,7 +67,7 @@ public final class OutlineUnbound
    */
   public final ExpressionOrType get ( int pIndex )
   {
-    return this.list.get ( pIndex ) ;
+    return this.list.get ( pIndex );
   }
 
 
@@ -82,23 +84,23 @@ public final class OutlineUnbound
   public final OutlineUnbound reduce ( ExpressionOrType pExpressionOrType )
   {
     OutlineUnbound result = new OutlineUnbound (
-        new ArrayList < ExpressionOrType > ( this.list ) ) ;
-    for ( int i = result.list.size ( ) - 1 ; i >= 0 ; i -- )
+        new ArrayList < ExpressionOrType > ( this.list ) );
+    for ( int i = result.list.size () - 1 ; i >= 0 ; i-- )
     {
       try
       {
-        pExpressionOrType.toPrettyString ( ).getAnnotationForPrintable (
-            result.list.get ( i ) ) ;
+        pExpressionOrType.toPrettyString ().getAnnotationForPrintable (
+            result.list.get ( i ) );
       }
       catch ( IllegalArgumentException e )
       {
-        result.list.remove ( i ) ;
+        result.list.remove ( i );
         /*
          * Happens if the unbound Identifier or TypeName is not in this node.
          */
       }
     }
-    return result ;
+    return result;
   }
 
 
@@ -108,8 +110,8 @@ public final class OutlineUnbound
    * 
    * @return The number of unbound {@link ExpressionOrType}s.
    */
-  public final int size ( )
+  public final int size ()
   {
-    return this.list.size ( ) ;
+    return this.list.size ();
   }
 }

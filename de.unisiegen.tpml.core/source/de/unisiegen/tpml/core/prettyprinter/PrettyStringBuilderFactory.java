@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.prettyprinter ;
+package de.unisiegen.tpml.core.prettyprinter;
 
 
 /**
@@ -14,6 +14,7 @@ package de.unisiegen.tpml.core.prettyprinter ;
  */
 public final class PrettyStringBuilderFactory
 {
+
   //
   // Constructor (private)
   //
@@ -23,7 +24,7 @@ public final class PrettyStringBuilderFactory
    * 
    * @see #newInstance()
    */
-  private PrettyStringBuilderFactory ( )
+  private PrettyStringBuilderFactory ()
   {
     // nothing to do here...
   }
@@ -40,9 +41,9 @@ public final class PrettyStringBuilderFactory
    *         instance.
    * @see #newBuilder(PrettyPrintable,int)
    */
-  public static PrettyStringBuilderFactory newInstance ( )
+  public static PrettyStringBuilderFactory newInstance ()
   {
-    return new PrettyStringBuilderFactory ( ) ;
+    return new PrettyStringBuilderFactory ();
   }
 
 
@@ -65,9 +66,9 @@ public final class PrettyStringBuilderFactory
    * @see PrettyString
    * @see PrettyStringBuilder
    */
-  public PrettyStringBuilder newBuilder ( PrettyPrintable printable ,
+  public PrettyStringBuilder newBuilder ( PrettyPrintable printable,
       int returnPriority )
   {
-    return new DefaultPrettyStringBuilder ( printable , returnPriority ) ;
+    return new DefaultPrettyStringBuilder ( printable, returnPriority );
   }
 }

@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
 /**
@@ -10,10 +10,11 @@ package de.unisiegen.tpml.core.latex ;
  */
 final class BreakLatexItem extends AbstractLatexItem
 {
+
   /**
    * Allocates a new <code>BreakLatexItem</code>.
    */
-  protected BreakLatexItem ( )
+  protected BreakLatexItem ()
   {
     // nothing to do here
   }
@@ -24,9 +25,9 @@ final class BreakLatexItem extends AbstractLatexItem
    * 
    * @see AbstractLatexItem#determineString(StringBuilder,int)
    */
-  @ Override
-  protected void determineString ( @ SuppressWarnings ( "unused" )
-  StringBuilder pBuffer , @ SuppressWarnings ( "unused" )
+  @Override
+  protected void determineString ( @SuppressWarnings ( "unused" )
+  StringBuilder pBuffer, @SuppressWarnings ( "unused" )
   int pIndent )
   {
     // nothing to do here

@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.languages ;
+package de.unisiegen.tpml.core.languages;
 
 
-import java_cup.runtime.Symbol ;
+import java_cup.runtime.Symbol;
 
 
 /**
@@ -15,6 +15,7 @@ import java_cup.runtime.Symbol ;
  */
 public final class LanguageSymbol extends Symbol
 {
+
   //
   // Attributes
   //
@@ -23,7 +24,7 @@ public final class LanguageSymbol extends Symbol
    * 
    * @see #getName()
    */
-  private String name ;
+  private String name;
 
 
   //
@@ -47,11 +48,10 @@ public final class LanguageSymbol extends Symbol
    * @see #getRight()
    * @see #getName()
    */
-  LanguageSymbol ( String pName , int pId , int pLeft , int pRight ,
-      Object pValue )
+  LanguageSymbol ( String pName, int pId, int pLeft, int pRight, Object pValue )
   {
-    super ( pId , pLeft , pRight , pValue ) ;
-    this.name = pName ;
+    super ( pId, pLeft, pRight, pValue );
+    this.name = pName;
   }
 
 
@@ -63,9 +63,9 @@ public final class LanguageSymbol extends Symbol
    * 
    * @return the unique identifier of this symbol.
    */
-  public int getId ( )
+  public int getId ()
   {
-    return this.sym ;
+    return this.sym;
   }
 
 
@@ -76,9 +76,9 @@ public final class LanguageSymbol extends Symbol
    * @return the left position of the symbol, or <code>-1</code>.
    * @see #getRight()
    */
-  public int getLeft ( )
+  public int getLeft ()
   {
-    return this.left ;
+    return this.left;
   }
 
 
@@ -89,9 +89,9 @@ public final class LanguageSymbol extends Symbol
    * @return the right position of the symbol, or <code>-1</code>.
    * @see #getLeft()
    */
-  public int getRight ( )
+  public int getRight ()
   {
-    return this.right ;
+    return this.right;
   }
 
 
@@ -101,9 +101,9 @@ public final class LanguageSymbol extends Symbol
    * 
    * @return the name of the symbol.
    */
-  public String getName ( )
+  public String getName ()
   {
-    return this.name ;
+    return this.name;
   }
 
 
@@ -117,9 +117,9 @@ public final class LanguageSymbol extends Symbol
    * @return the string representation for this symbol.
    * @see Object#toString()
    */
-  @ Override
-  public String toString ( )
+  @Override
+  public String toString ()
   {
-    return this.name ;
+    return this.name;
   }
 }

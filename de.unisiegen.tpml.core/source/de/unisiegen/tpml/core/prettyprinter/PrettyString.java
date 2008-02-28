@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.prettyprinter ;
+package de.unisiegen.tpml.core.prettyprinter;
 
 
-import java.util.Collection ;
+import java.util.Collection;
 
 
 /**
@@ -18,6 +18,7 @@ import java.util.Collection ;
  */
 public interface PrettyString
 {
+
   //
   // Primitives
   //
@@ -27,7 +28,7 @@ public interface PrettyString
    * @return the annotations contained within the pretty string.
    * @see PrettyAnnotation
    */
-  public Collection < PrettyAnnotation > getAnnotations ( ) ;
+  public Collection < PrettyAnnotation > getAnnotations ();
 
 
   /**
@@ -45,7 +46,7 @@ public interface PrettyString
    * @see PrettyAnnotation
    */
   public PrettyAnnotation getAnnotationForPrintable ( PrettyPrintable printable )
-      throws IllegalArgumentException ;
+      throws IllegalArgumentException;
 
 
   /**
@@ -56,7 +57,7 @@ public interface PrettyString
    * @return the character iterator for the pretty string.
    * @see PrettyCharIterator
    */
-  public PrettyCharIterator toCharacterIterator ( ) ;
+  public PrettyCharIterator toCharacterIterator ();
 
 
   //
@@ -69,5 +70,5 @@ public interface PrettyString
    * @return the string representation of the pretty string.
    * @see java.lang.Object#toString()
    */
-  public String toString ( ) ;
+  public String toString ();
 }

@@ -1,26 +1,27 @@
-package de.unisiegen.tpml.core.bigstep ;
+package de.unisiegen.tpml.core.bigstep;
 
 
-import javax.swing.tree.TreeNode ;
-import de.unisiegen.tpml.core.ProofStep ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode ;
-import de.unisiegen.tpml.core.interpreters.DefaultStore ;
-import de.unisiegen.tpml.core.interpreters.Store ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import javax.swing.tree.TreeNode;
+
+import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode;
+import de.unisiegen.tpml.core.interpreters.DefaultStore;
+import de.unisiegen.tpml.core.interpreters.Store;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
 
 /**
@@ -35,20 +36,21 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
     implements BigStepProofNode
 {
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_BYRULE , 1 ,
-        "\\hspace{-5mm}\\mbox{\\scriptsize\\ #1}" , "rule" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_BYRULE, 1,
+        "\\hspace{-5mm}\\mbox{\\scriptsize\\ #1}", "rule" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     commands
         .add ( new DefaultLatexCommand (
-            LATEX_BIG_STEP_PROOF_NODE ,
-            7 ,
+            LATEX_BIG_STEP_PROOF_NODE,
+            7,
             LATEX_LINE_BREAK_NEW_COMMAND
                 + "\\ifarrows" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND
@@ -73,9 +75,9 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
                 // end of the node variables
                 + LATEX_LINE_BREAK_NEW_COMMAND + "$\\end{tabular}$" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND + "\\vspace{\\nodesep}" //$NON-NLS-1$
-                + LATEX_LINE_BREAK_NEW_COMMAND + "\\fi" , "depth" , "id" , "e" , //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            "store" , "result" , "proofrule" , "space" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
-    return commands ;
+                + LATEX_LINE_BREAK_NEW_COMMAND + "\\fi", "depth", "id", "e", //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            "store", "result", "proofrule", "space" ) ); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+    return commands;
   }
 
 
@@ -84,25 +86,25 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static LatexInstructionList getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ) ; //$NON-NLS-1$
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ); //$NON-NLS-1$
     instructions
-        .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ) ; //$NON-NLS-1$
+        .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
-        "\\newlength{\\treeindent}" ) ) ; //$NON-NLS-1$
+        "\\newlength{\\treeindent}" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
-        "\\newlength{\\nodeindent}" ) ) ; //$NON-NLS-1$
+        "\\newlength{\\nodeindent}" ) ); //$NON-NLS-1$
     instructions
-        .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ) ; //$NON-NLS-1$
+        .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
         "\\newif\\ifarrows" + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
-            + "\\arrowsfalse" ) ) ; //$NON-NLS-1$
+            + "\\arrowsfalse" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
-    return instructions ;
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}", //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ); //$NON-NLS-1$
+    return instructions;
   }
 
 
@@ -111,16 +113,16 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.AMSMATH ) ;
-    packages.add ( LatexPackage.AMSTEXT ) ;
-    packages.add ( LatexPackage.COLOR ) ;
-    packages.add ( LatexPackage.IFTHEN ) ;
-    packages.add ( LatexPackage.PSTNODE ) ;
-    packages.add ( LatexPackage.PSTRICKS ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.AMSMATH );
+    packages.add ( LatexPackage.AMSTEXT );
+    packages.add ( LatexPackage.COLOR );
+    packages.add ( LatexPackage.IFTHEN );
+    packages.add ( LatexPackage.PSTNODE );
+    packages.add ( LatexPackage.PSTRICKS );
+    return packages;
   }
 
 
@@ -133,7 +135,7 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * @see #getResult()
    * @see #setResult(BigStepProofResult)
    */
-  private BigStepProofResult result ;
+  private BigStepProofResult result;
 
 
   /**
@@ -146,7 +148,7 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    */
   public DefaultBigStepProofNode ( Expression pExpression )
   {
-    this ( pExpression , new DefaultStore ( ) ) ;
+    this ( pExpression, new DefaultStore () );
   }
 
 
@@ -159,9 +161,9 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * @throws NullPointerException if either <code>expression</code> or
    *           <code>store</code> is <code>null</code>.
    */
-  public DefaultBigStepProofNode ( Expression pExpression , Store store )
+  public DefaultBigStepProofNode ( Expression pExpression, Store store )
   {
-    super ( pExpression , store ) ;
+    super ( pExpression, store );
   }
 
 
@@ -170,10 +172,10 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.AbstractProofNode#getChildAfter(javax.swing.tree.TreeNode)
    */
-  @ Override
+  @Override
   public DefaultBigStepProofNode getChildAfter ( TreeNode aChild )
   {
-    return ( DefaultBigStepProofNode ) super.getChildAfter ( aChild ) ;
+    return ( DefaultBigStepProofNode ) super.getChildAfter ( aChild );
   }
 
 
@@ -182,10 +184,10 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.AbstractProofNode#getChildAt(int)
    */
-  @ Override
+  @Override
   public DefaultBigStepProofNode getChildAt ( int childIndex )
   {
-    return ( DefaultBigStepProofNode ) super.getChildAt ( childIndex ) ;
+    return ( DefaultBigStepProofNode ) super.getChildAt ( childIndex );
   }
 
 
@@ -194,10 +196,10 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.AbstractProofNode#getChildBefore(javax.swing.tree.TreeNode)
    */
-  @ Override
+  @Override
   public DefaultBigStepProofNode getChildBefore ( TreeNode aChild )
   {
-    return ( DefaultBigStepProofNode ) super.getChildBefore ( aChild ) ;
+    return ( DefaultBigStepProofNode ) super.getChildBefore ( aChild );
   }
 
 
@@ -206,10 +208,10 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.AbstractProofNode#getFirstChild()
    */
-  @ Override
-  public DefaultBigStepProofNode getFirstChild ( )
+  @Override
+  public DefaultBigStepProofNode getFirstChild ()
   {
-    return ( DefaultBigStepProofNode ) super.getFirstChild ( ) ;
+    return ( DefaultBigStepProofNode ) super.getFirstChild ();
   }
 
 
@@ -218,10 +220,10 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.AbstractProofNode#getFirstLeaf()
    */
-  @ Override
-  public DefaultBigStepProofNode getFirstLeaf ( )
+  @Override
+  public DefaultBigStepProofNode getFirstLeaf ()
   {
-    return ( DefaultBigStepProofNode ) super.getFirstLeaf ( ) ;
+    return ( DefaultBigStepProofNode ) super.getFirstLeaf ();
   }
 
 
@@ -230,10 +232,10 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.AbstractProofNode#getLastChild()
    */
-  @ Override
-  public DefaultBigStepProofNode getLastChild ( )
+  @Override
+  public DefaultBigStepProofNode getLastChild ()
   {
-    return ( DefaultBigStepProofNode ) super.getLastChild ( ) ;
+    return ( DefaultBigStepProofNode ) super.getLastChild ();
   }
 
 
@@ -242,10 +244,10 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.AbstractProofNode#getLastLeaf()
    */
-  @ Override
-  public DefaultBigStepProofNode getLastLeaf ( )
+  @Override
+  public DefaultBigStepProofNode getLastLeaf ()
   {
-    return ( DefaultBigStepProofNode ) super.getLastLeaf ( ) ;
+    return ( DefaultBigStepProofNode ) super.getLastLeaf ();
   }
 
 
@@ -254,15 +256,15 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public LatexCommandList getLatexCommands ( )
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    commands.add ( this.expression ) ;
-    commands.add ( getStore ( ) ) ;
-    commands.add ( this.result ) ;
-    commands.add ( getRule ( ) ) ;
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
+    commands.add ( this.expression );
+    commands.add ( getStore () );
+    commands.add ( this.result );
+    commands.add ( getRule () );
+    return commands;
   }
 
 
@@ -271,15 +273,15 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public LatexInstructionList getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( getLatexInstructionsStatic ( ) ) ;
-    instructions.add ( this.expression ) ;
-    instructions.add ( this.getStore ( ) ) ;
-    instructions.add ( this.result ) ;
-    instructions.add ( getRule ( ) ) ;
-    return instructions ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
+    instructions.add ( this.expression );
+    instructions.add ( this.getStore () );
+    instructions.add ( this.result );
+    instructions.add ( getRule () );
+    return instructions;
   }
 
 
@@ -288,15 +290,15 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public LatexPackageList getLatexPackages ( )
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
-    packages.add ( this.expression ) ;
-    packages.add ( this.getStore ( ) ) ;
-    packages.add ( this.result ) ;
-    packages.add ( getRule ( ) ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( getLatexPackagesStatic () );
+    packages.add ( this.expression );
+    packages.add ( this.getStore () );
+    packages.add ( this.result );
+    packages.add ( getRule () );
+    return packages;
   }
 
 
@@ -305,10 +307,10 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.AbstractProofNode#getParent()
    */
-  @ Override
-  public DefaultBigStepProofNode getParent ( )
+  @Override
+  public DefaultBigStepProofNode getParent ()
   {
-    return ( DefaultBigStepProofNode ) super.getParent ( ) ;
+    return ( DefaultBigStepProofNode ) super.getParent ();
   }
 
 
@@ -317,9 +319,9 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.bigstep.BigStepProofNode#getResult()
    */
-  public BigStepProofResult getResult ( )
+  public BigStepProofResult getResult ()
   {
-    return this.result ;
+    return this.result;
   }
 
 
@@ -328,10 +330,10 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.AbstractProofNode#getRoot()
    */
-  @ Override
-  public DefaultBigStepProofNode getRoot ( )
+  @Override
+  public DefaultBigStepProofNode getRoot ()
   {
-    return ( DefaultBigStepProofNode ) super.getRoot ( ) ;
+    return ( DefaultBigStepProofNode ) super.getRoot ();
   }
 
 
@@ -340,14 +342,14 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.bigstep.BigStepProofNode#getRule()
    */
-  public BigStepProofRule getRule ( )
+  public BigStepProofRule getRule ()
   {
-    ProofStep [ ] steps = getSteps ( ) ;
+    ProofStep [] steps = getSteps ();
     if ( steps.length > 0 )
     {
-      return ( BigStepProofRule ) steps [ 0 ].getRule ( ) ;
+      return ( BigStepProofRule ) steps [ 0 ].getRule ();
     }
-    return null ;
+    return null;
   }
 
 
@@ -356,20 +358,20 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.bigstep.BigStepProofNode#isFinished()
    */
-  public boolean isFinished ( )
+  public boolean isFinished ()
   {
-    if ( ! isProven ( ) )
+    if ( !isProven () )
     {
-      return false ;
+      return false;
     }
-    for ( int n = 0 ; n < getChildCount ( ) ; ++ n )
+    for ( int n = 0 ; n < getChildCount () ; ++n )
     {
-      if ( ! getChildAt ( n ).isFinished ( ) )
+      if ( !getChildAt ( n ).isFinished () )
       {
-        return false ;
+        return false;
       }
     }
-    return true ;
+    return true;
   }
 
 
@@ -379,9 +381,9 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#isProven()
    */
-  public boolean isProven ( )
+  public boolean isProven ()
   {
-    return ( this.result != null ) ;
+    return ( this.result != null );
   }
 
 
@@ -399,12 +401,12 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    */
   public void setResult ( BigStepProofResult pResult )
   {
-    if ( pResult != null && ! pResult.getValue ( ).isException ( )
-        && ! pResult.getValue ( ).isValue ( ) )
+    if ( pResult != null && !pResult.getValue ().isException ()
+        && !pResult.getValue ().isValue () )
     {
-      throw new IllegalArgumentException ( "result is invalid" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "result is invalid" ); //$NON-NLS-1$
     }
-    this.result = pResult ;
+    this.result = pResult;
   }
 
 
@@ -413,10 +415,10 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public LatexString toLatexString ( )
+  public LatexString toLatexString ()
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -426,59 +428,59 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    int depth = 0 ;
-    BigStepProofNode myParent = this.getParent ( ) ;
+    int depth = 0;
+    BigStepProofNode myParent = this.getParent ();
     while ( myParent != null )
     {
-      depth ++ ;
-      myParent = myParent.getParent ( ) ;
+      depth++ ;
+      myParent = myParent.getParent ();
     }
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_BIG_STEP_PROOF_NODE , pIndent , this.toPrettyString ( )
-            .toString ( ) , this.expression.toPrettyString ( ).toString ( ) ,
-        this.expression.containsMemoryOperations ( ) ? this.getStore ( )
-            .toPrettyString ( ).toString ( ) : LATEX_NO_STORE ,
-        this.result == null ? LATEX_NO_RESULT : this.result.toPrettyString ( )
-            .toString ( ) , this.getRule ( ) == null ? LATEX_NO_RULE : this
-            .getRule ( ).toPrettyString ( ).toString ( ) ) ;
-    builder.addText ( "{" + String.valueOf ( this.getId ( ) ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
-    builder.addText ( "{" + String.valueOf ( depth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
+        LATEX_BIG_STEP_PROOF_NODE, pIndent, this.toPrettyString ().toString (),
+        this.expression.toPrettyString ().toString (), this.expression
+            .containsMemoryOperations () ? this.getStore ().toPrettyString ()
+            .toString () : LATEX_NO_STORE,
+        this.result == null ? LATEX_NO_RESULT : this.result.toPrettyString ()
+            .toString (), this.getRule () == null ? LATEX_NO_RULE : this
+            .getRule ().toPrettyString ().toString () );
+    builder.addText ( "{" + String.valueOf ( this.getId () ) + "}" ); //$NON-NLS-1$//$NON-NLS-2$
+    builder.addText ( "{" + String.valueOf ( depth ) + "}" ); //$NON-NLS-1$//$NON-NLS-2$
     builder.addBuilder ( this.expression.toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    if ( this.expression.containsMemoryOperations ( ) )
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+    if ( this.expression.containsMemoryOperations () )
     {
-      builder.addBuilder ( getStore ( ).toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+      builder.addBuilder ( getStore ().toLatexStringBuilder (
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
     }
     else
     {
-      builder.addEmptyBuilder ( ) ;
+      builder.addEmptyBuilder ();
     }
     if ( this.result != null )
     {
       builder.addBuilder ( this.result.toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
     }
     else
     {
-      builder.addEmptyBuilder ( ) ;
+      builder.addEmptyBuilder ();
     }
-    if ( this.getRule ( ) != null )
+    if ( this.getRule () != null )
     {
-      builder.addBuilder ( this.getRule ( ).toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+      builder.addBuilder ( this.getRule ().toLatexStringBuilder (
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
     }
     else
     {
-      builder.addEmptyBuilder ( ) ;
+      builder.addEmptyBuilder ();
     }
-    int indent = 245 - depth * 7 ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addComment ( "width of the table" ) ; //$NON-NLS-1$
-    builder.addText ( "{" + indent + "mm}" ) ; //$NON-NLS-1$//$NON-NLS-2$
-    return builder ;
+    int indent = 245 - depth * 7;
+    builder.addSourceCodeBreak ( 0 );
+    builder.addComment ( "width of the table" ); //$NON-NLS-1$
+    builder.addText ( "{" + indent + "mm}" ); //$NON-NLS-1$//$NON-NLS-2$
+    return builder;
   }
 
 
@@ -487,10 +489,10 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ( )
+  public final PrettyString toPrettyString ()
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -503,29 +505,29 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , 0 ) ;
-    boolean memoryEnabled = getExpression ( ).containsMemoryOperations ( ) ;
+        this, 0 );
+    boolean memoryEnabled = getExpression ().containsMemoryOperations ();
     if ( memoryEnabled )
     {
-      builder.addText ( PRETTY_LPAREN ) ;
+      builder.addText ( PRETTY_LPAREN );
     }
-    builder.addBuilder ( this.getExpression ( ).toPrettyStringBuilder (
-        pPrettyStringBuilderFactory ) , 0 ) ;
+    builder.addBuilder ( this.getExpression ().toPrettyStringBuilder (
+        pPrettyStringBuilderFactory ), 0 );
     if ( memoryEnabled )
     {
-      builder.addText ( PRETTY_SPACE ) ;
-      builder.addText ( PRETTY_SPACE ) ;
-      builder.addBuilder ( this.getStore ( ).toPrettyStringBuilder (
-          pPrettyStringBuilderFactory ) , 0 ) ;
-      builder.addText ( PRETTY_RPAREN ) ;
+      builder.addText ( PRETTY_SPACE );
+      builder.addText ( PRETTY_SPACE );
+      builder.addBuilder ( this.getStore ().toPrettyStringBuilder (
+          pPrettyStringBuilderFactory ), 0 );
+      builder.addText ( PRETTY_RPAREN );
     }
-    builder.addText ( " \u21d3 " ) ; //$NON-NLS-1$
+    builder.addText ( " \u21d3 " ); //$NON-NLS-1$
     if ( this.result != null )
     {
       builder.addBuilder ( this.result
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
     }
-    return builder ;
+    return builder;
   }
 
 
@@ -534,37 +536,37 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
    * 
    * @see java.lang.Object#toString()
    */
-  @ Override
-  public String toString ( )
+  @Override
+  public String toString ()
   {
-    StringBuilder builder = new StringBuilder ( ) ;
-    boolean memoryEnabled = getExpression ( ).containsMemoryOperations ( ) ;
+    StringBuilder builder = new StringBuilder ();
+    boolean memoryEnabled = getExpression ().containsMemoryOperations ();
     if ( memoryEnabled )
     {
-      builder.append ( '(' ) ;
+      builder.append ( '(' );
     }
-    builder.append ( getExpression ( ) ) ;
+    builder.append ( getExpression () );
     if ( memoryEnabled )
     {
-      builder.append ( ", " ) ; //$NON-NLS-1$
-      builder.append ( getStore ( ) ) ;
-      builder.append ( ')' ) ;
+      builder.append ( ", " ); //$NON-NLS-1$
+      builder.append ( getStore () );
+      builder.append ( ')' );
     }
-    builder.append ( " \u21d3 " ) ; //$NON-NLS-1$
+    builder.append ( " \u21d3 " ); //$NON-NLS-1$
     if ( this.result != null )
     {
       if ( memoryEnabled )
       {
-        builder.append ( '(' ) ;
+        builder.append ( '(' );
       }
-      builder.append ( this.result.getValue ( ) ) ;
+      builder.append ( this.result.getValue () );
       if ( memoryEnabled )
       {
-        builder.append ( ", " ) ; //$NON-NLS-1$
-        builder.append ( this.result.getStore ( ) ) ;
-        builder.append ( ')' ) ;
+        builder.append ( ", " ); //$NON-NLS-1$
+        builder.append ( this.result.getStore () );
+        builder.append ( ')' );
       }
     }
-    return builder.toString ( ) ;
+    return builder.toString ();
   }
 }

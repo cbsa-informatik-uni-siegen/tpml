@@ -1,8 +1,8 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
-import java.util.ArrayList ;
-import java.util.Iterator ;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
@@ -12,18 +12,19 @@ import java.util.Iterator ;
  */
 public class LatexInstructionList implements Iterable < LatexInstruction >
 {
+
   /**
    * The internal used list.
    */
-  private ArrayList < LatexInstruction > list ;
+  private ArrayList < LatexInstruction > list;
 
 
   /**
    * Allocates a new <code>LatexInstructionList</code>
    */
-  public LatexInstructionList ( )
+  public LatexInstructionList ()
   {
-    this.list = new ArrayList < LatexInstruction > ( ) ;
+    this.list = new ArrayList < LatexInstruction > ();
   }
 
 
@@ -42,11 +43,11 @@ public class LatexInstructionList implements Iterable < LatexInstruction >
         if ( latexPrintable != null )
         {
           for ( LatexInstruction instruction : latexPrintable
-              .getLatexInstructions ( ) )
+              .getLatexInstructions () )
           {
-            if ( ! this.list.contains ( instruction ) )
+            if ( !this.list.contains ( instruction ) )
             {
-              this.list.add ( instruction ) ;
+              this.list.add ( instruction );
             }
           }
         }
@@ -64,9 +65,9 @@ public class LatexInstructionList implements Iterable < LatexInstruction >
   {
     if ( pLatexInstruction != null )
     {
-      if ( ! this.list.contains ( pLatexInstruction ) )
+      if ( !this.list.contains ( pLatexInstruction ) )
       {
-        this.list.add ( pLatexInstruction ) ;
+        this.list.add ( pLatexInstruction );
       }
     }
   }
@@ -84,9 +85,9 @@ public class LatexInstructionList implements Iterable < LatexInstruction >
     {
       for ( LatexInstruction instruction : pLatexInstructionList )
       {
-        if ( ! this.list.contains ( instruction ) )
+        if ( !this.list.contains ( instruction ) )
         {
-          this.list.add ( instruction ) ;
+          this.list.add ( instruction );
         }
       }
     }
@@ -104,11 +105,11 @@ public class LatexInstructionList implements Iterable < LatexInstruction >
     if ( pLatexPrintable != null )
     {
       for ( LatexInstruction instruction : pLatexPrintable
-          .getLatexInstructions ( ) )
+          .getLatexInstructions () )
       {
-        if ( ! this.list.contains ( instruction ) )
+        if ( !this.list.contains ( instruction ) )
         {
-          this.list.add ( instruction ) ;
+          this.list.add ( instruction );
         }
       }
     }
@@ -121,7 +122,7 @@ public class LatexInstructionList implements Iterable < LatexInstruction >
    * 
    * @param pLatexPrintables The {@link LatexPrintable}s.
    */
-  public void add ( LatexPrintable [ ] pLatexPrintables )
+  public void add ( LatexPrintable [] pLatexPrintables )
   {
     if ( pLatexPrintables != null )
     {
@@ -130,11 +131,11 @@ public class LatexInstructionList implements Iterable < LatexInstruction >
         if ( latexPrintable != null )
         {
           for ( LatexInstruction instruction : latexPrintable
-              .getLatexInstructions ( ) )
+              .getLatexInstructions () )
           {
-            if ( ! this.list.contains ( instruction ) )
+            if ( !this.list.contains ( instruction ) )
             {
-              this.list.add ( instruction ) ;
+              this.list.add ( instruction );
             }
           }
         }
@@ -149,9 +150,9 @@ public class LatexInstructionList implements Iterable < LatexInstruction >
    * @return An iterator over the elements in this list in proper sequence.
    * @see Iterable#iterator()
    */
-  public Iterator < LatexInstruction > iterator ( )
+  public Iterator < LatexInstruction > iterator ()
   {
-    return this.list.iterator ( ) ;
+    return this.list.iterator ();
   }
 
 
@@ -160,8 +161,8 @@ public class LatexInstructionList implements Iterable < LatexInstruction >
    * 
    * @return the number of elements in this list.
    */
-  public int size ( )
+  public int size ()
   {
-    return this.list.size ( ) ;
+    return this.list.size ();
   }
 }

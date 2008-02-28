@@ -1,10 +1,11 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
-import java.text.MessageFormat ;
-import de.unisiegen.tpml.core.Messages ;
-import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
-import de.unisiegen.tpml.core.languages.LanguageParserException ;
+import java.text.MessageFormat;
+
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+import de.unisiegen.tpml.core.languages.LanguageParserException;
 
 
 /**
@@ -17,23 +18,24 @@ import de.unisiegen.tpml.core.languages.LanguageParserException ;
  */
 public class Projection extends UnaryOperator
 {
+
   /**
    * The keyword <code>_</code>.
    */
-  private static final String UNDERLINE = "_" ; //$NON-NLS-1$
+  private static final String UNDERLINE = "_"; //$NON-NLS-1$
 
 
   /**
    * The keyword <code>#</code>.
    */
-  private static final String HASHKEY = "#" ; //$NON-NLS-1$
+  private static final String HASHKEY = "#"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( Projection.class ) ;
+      .getCaption ( Projection.class );
 
 
   /**
@@ -41,7 +43,7 @@ public class Projection extends UnaryOperator
    * 
    * @see #getArity()
    */
-  private int arity ;
+  private int arity;
 
 
   /**
@@ -49,7 +51,7 @@ public class Projection extends UnaryOperator
    * 
    * @see #getIndex()
    */
-  private int index ;
+  private int index;
 
 
   /**
@@ -63,9 +65,9 @@ public class Projection extends UnaryOperator
    * @throws IllegalArgumentException if the <code>arity</code> or the
    *           <code>index</code> is invalid.
    */
-  public Projection ( int pArity , int pIndex )
+  public Projection ( int pArity, int pIndex )
   {
-    this ( pArity , pIndex , HASHKEY + pArity + UNDERLINE + pIndex ) ;
+    this ( pArity, pIndex, HASHKEY + pArity + UNDERLINE + pIndex );
   }
 
 
@@ -92,15 +94,15 @@ public class Projection extends UnaryOperator
    * @throws IllegalArgumentException if the <code>arity</code> or the
    *           <code>index</code> is invalid.
    */
-  public Projection ( int pArity , int pIndex , int pParserArityStartOffset ,
-      int pParserArityEndOffset , int pParserIndexStartOffset ,
-      int pParserIndexEndOffset , int pParserStartOffset , int pParserEndOffset )
+  public Projection ( int pArity, int pIndex, int pParserArityStartOffset,
+      int pParserArityEndOffset, int pParserIndexStartOffset,
+      int pParserIndexEndOffset, int pParserStartOffset, int pParserEndOffset )
   {
-    this ( pArity , pIndex , HASHKEY + pArity + UNDERLINE + pIndex ,
-        pParserArityStartOffset , pParserArityEndOffset ,
-        pParserIndexStartOffset , pParserIndexEndOffset ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pArity, pIndex, HASHKEY + pArity + UNDERLINE + pIndex,
+        pParserArityStartOffset, pParserArityEndOffset,
+        pParserIndexStartOffset, pParserIndexEndOffset );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -117,28 +119,28 @@ public class Projection extends UnaryOperator
    * @throws IllegalArgumentException if the <code>arity</code> or the
    *           <code>index</code> is invalid.
    */
-  protected Projection ( int pArity , int pIndex , String pOp )
+  protected Projection ( int pArity, int pIndex, String pOp )
   {
-    super ( pOp ) ;
+    super ( pOp );
     // validate the settings
     if ( pArity <= 0 )
     {
       throw new IllegalArgumentException ( MessageFormat.format ( Messages
-          .getString ( "Exception.2" ) , String.valueOf ( pArity ) ) ) ; //$NON-NLS-1$
+          .getString ( "Exception.2" ), String.valueOf ( pArity ) ) ); //$NON-NLS-1$
     }
     else if ( pIndex <= 0 )
     {
       throw new IllegalArgumentException ( MessageFormat.format ( Messages
-          .getString ( "Exception.3" ) , String.valueOf ( pIndex ) ) ) ; //$NON-NLS-1$
+          .getString ( "Exception.3" ), String.valueOf ( pIndex ) ) ); //$NON-NLS-1$
     }
     else if ( pIndex > pArity )
     {
       throw new IllegalArgumentException ( MessageFormat.format ( Messages
-          .getString ( "Exception.4" ) , String.valueOf ( pIndex ) , String //$NON-NLS-1$
-          .valueOf ( pArity ) ) ) ;
+          .getString ( "Exception.4" ), String.valueOf ( pIndex ), String //$NON-NLS-1$
+          .valueOf ( pArity ) ) );
     }
-    this.arity = pArity ;
-    this.index = pIndex ;
+    this.arity = pArity;
+    this.index = pIndex;
   }
 
 
@@ -163,36 +165,36 @@ public class Projection extends UnaryOperator
    * @throws IllegalArgumentException if the <code>arity</code> or the
    *           <code>index</code> is invalid.
    */
-  protected Projection ( int pArity , int pIndex , String pOp ,
-      int pParserArityStartOffset , int pParserArityEndOffset ,
-      int pParserIndexStartOffset , int pParserIndexEndOffset )
+  protected Projection ( int pArity, int pIndex, String pOp,
+      int pParserArityStartOffset, int pParserArityEndOffset,
+      int pParserIndexStartOffset, int pParserIndexEndOffset )
   {
-    super ( pOp ) ;
+    super ( pOp );
     // validate the settings
     if ( pArity <= 0 )
     {
       throw new LanguageParserException ( MessageFormat.format ( Messages
-          .getString ( "Exception.2" ) , String.valueOf ( pArity ) ) , //$NON-NLS-1$
-          pParserArityStartOffset , pParserArityEndOffset ) ;
+          .getString ( "Exception.2" ), String.valueOf ( pArity ) ), //$NON-NLS-1$
+          pParserArityStartOffset, pParserArityEndOffset );
     }
     else if ( pIndex <= 0 )
     {
       throw new LanguageParserException ( MessageFormat.format ( Messages
-          .getString ( "Exception.3" ) , String.valueOf ( pIndex ) ) , //$NON-NLS-1$
-          pParserIndexStartOffset , pParserIndexEndOffset ) ;
+          .getString ( "Exception.3" ), String.valueOf ( pIndex ) ), //$NON-NLS-1$
+          pParserIndexStartOffset, pParserIndexEndOffset );
     }
     else if ( pIndex > pArity )
     {
-      throw new LanguageParserMultiException ( new String [ ]
-      { MessageFormat.format ( Messages.getString ( "Exception.4" ) , String //$NON-NLS-1$
-          .valueOf ( pArity ) , String.valueOf ( pIndex ) ) ,
-          MessageFormat.format ( Messages.getString ( "Exception.5" ) , String //$NON-NLS-1$
-              .valueOf ( pIndex ) , String.valueOf ( pArity ) ) } , new int [ ]
-      { pParserArityStartOffset , pParserIndexStartOffset } , new int [ ]
-      { pParserArityEndOffset , pParserIndexEndOffset } ) ;
+      throw new LanguageParserMultiException ( new String []
+      { MessageFormat.format ( Messages.getString ( "Exception.4" ), String //$NON-NLS-1$
+          .valueOf ( pArity ), String.valueOf ( pIndex ) ),
+          MessageFormat.format ( Messages.getString ( "Exception.5" ), String //$NON-NLS-1$
+              .valueOf ( pIndex ), String.valueOf ( pArity ) ) }, new int []
+      { pParserArityStartOffset, pParserIndexStartOffset }, new int []
+      { pParserArityEndOffset, pParserIndexEndOffset } );
     }
-    this.arity = pArity ;
-    this.index = pIndex ;
+    this.arity = pArity;
+    this.index = pIndex;
   }
 
 
@@ -201,27 +203,27 @@ public class Projection extends UnaryOperator
    * 
    * @see UnaryOperator#applyTo(Expression)
    */
-  @ Override
+  @Override
   public Expression applyTo ( Expression pExpression )
       throws UnaryOperatorException
   {
     try
     {
-      Expression [ ] expressions = ( ( Tuple ) pExpression ).getExpressions ( ) ;
-      if ( ! pExpression.isValue ( ) )
+      Expression [] expressions = ( ( Tuple ) pExpression ).getExpressions ();
+      if ( !pExpression.isValue () )
       {
-        throw new UnaryOperatorException ( this , pExpression ) ;
+        throw new UnaryOperatorException ( this, pExpression );
       }
       if ( this.arity != expressions.length )
       {
-        throw new UnaryOperatorException ( this , pExpression ) ;
+        throw new UnaryOperatorException ( this, pExpression );
       }
-      return expressions [ this.index - 1 ] ;
+      return expressions [ this.index - 1 ];
     }
     catch ( ClassCastException cause )
     {
       // cast of expression to tuple failed
-      throw new UnaryOperatorException ( this , pExpression , cause ) ;
+      throw new UnaryOperatorException ( this, pExpression, cause );
     }
   }
 
@@ -231,10 +233,10 @@ public class Projection extends UnaryOperator
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public Projection clone ( )
+  @Override
+  public Projection clone ()
   {
-    return new Projection ( this.arity , this.index , getText ( ) ) ;
+    return new Projection ( this.arity, this.index, getText () );
   }
 
 
@@ -243,19 +245,19 @@ public class Projection extends UnaryOperator
    * 
    * @return the arity.
    */
-  public int getArity ( )
+  public int getArity ()
   {
-    return this.arity ;
+    return this.arity;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -264,8 +266,8 @@ public class Projection extends UnaryOperator
    * 
    * @return the index.
    */
-  public int getIndex ( )
+  public int getIndex ()
   {
-    return this.index ;
+    return this.index;
   }
 }

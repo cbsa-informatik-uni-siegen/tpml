@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.editor ;
+package de.unisiegen.tpml.graphics.editor;
 
 
 import java.awt.BorderLayout;
@@ -47,39 +47,41 @@ import de.unisiegen.tpml.graphics.outline.Outline;
  * @version $Rev$
  * @see de.unisiegen.tpml.ui.EditorComponent
  */
-@SuppressWarnings("all")
-public class TextEditorPanel extends JPanel implements EditorComponent ,
+@SuppressWarnings ( "all" )
+public class TextEditorPanel extends JPanel implements EditorComponent,
     ClipboardOwner
 {
+
   private class MenuListener implements ActionListener
   {
+
     public void actionPerformed ( ActionEvent evt )
     {
-      String command = evt.getActionCommand ( ) ;
+      String command = evt.getActionCommand ();
       if ( command.equals ( java.util.ResourceBundle.getBundle (
           "de/unisiegen/tpml/ui/ui" ).getString ( "Copy" ) ) ) //$NON-NLS-1$ //$NON-NLS-2$
       {
-        handleCopy ( ) ;
+        handleCopy ();
       }
       else if ( command.equals ( java.util.ResourceBundle.getBundle (
           "de/unisiegen/tpml/ui/ui" ).getString ( "Cut" ) ) ) //$NON-NLS-1$ //$NON-NLS-2$
       {
-        handleCut ( ) ;
+        handleCut ();
       }
       else if ( command.equals ( java.util.ResourceBundle.getBundle (
           "de/unisiegen/tpml/ui/ui" ).getString ( "Paste" ) ) ) //$NON-NLS-1$ //$NON-NLS-2$
       {
-        handlePaste ( ) ;
+        handlePaste ();
       }
       else if ( command.equals ( java.util.ResourceBundle.getBundle (
           "de/unisiegen/tpml/ui/ui" ).getString ( "Undo" ) ) ) //$NON-NLS-1$ //$NON-NLS-2$
       {
-        handleUndo ( ) ;
+        handleUndo ();
       }
       else if ( command.equals ( java.util.ResourceBundle.getBundle (
           "de/unisiegen/tpml/ui/ui" ).getString ( "Redo" ) ) ) //$NON-NLS-1$ //$NON-NLS-2$
       {
-        handleRedo ( ) ;
+        handleRedo ();
       }
     }
   }
@@ -87,81 +89,83 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
 
   private class PopupListener extends MouseAdapter
   {
+
     private void maybeShowPopup ( MouseEvent e )
     {
-      if ( e.isPopupTrigger ( ) )
+      if ( e.isPopupTrigger () )
       {
-        TextEditorPanel.this.popup.show ( e.getComponent ( ) , e.getX ( ) , e
-            .getY ( ) ) ;
+        TextEditorPanel.this.popup.show ( e.getComponent (), e.getX (), e
+            .getY () );
       }
     }
 
 
-    @ Override
+    @Override
     public void mousePressed ( MouseEvent e )
     {
-      maybeShowPopup ( e ) ;
+      maybeShowPopup ( e );
     }
 
 
-    @ Override
+    @Override
     public void mouseReleased ( MouseEvent e )
     {
-      maybeShowPopup ( e ) ;
+      maybeShowPopup ( e );
     }
   }
 
 
   private class TextDocumentListener implements DocumentListener
   {
+
     public void changedUpdate ( DocumentEvent arg0 )
     {
-      logger.debug ( "Document was changed" ) ; //$NON-NLS-1$
+      logger.debug ( "Document was changed" ); //$NON-NLS-1$
     }
 
 
     public void insertUpdate ( DocumentEvent arg0 )
     {
-      logger.debug ( "Text inserted into document" ) ; //$NON-NLS-1$
+      logger.debug ( "Text inserted into document" ); //$NON-NLS-1$
       try
       {
-        TextEditorPanel.this.setUndoStatus ( true ) ;
-        String doctext = arg0.getDocument ( ).getText ( 0 ,
-            arg0.getDocument ( ).getLength ( ) ) ;
+        TextEditorPanel.this.setUndoStatus ( true );
+        String doctext = arg0.getDocument ().getText ( 0,
+            arg0.getDocument ().getLength () );
         if ( doctext.endsWith ( " " ) )
         {
-          TextEditorPanel.this.undohistory.push ( doctext ) ;
-          logger.debug ( "history added: " + doctext ) ;
+          TextEditorPanel.this.undohistory.push ( doctext );
+          logger.debug ( "history added: " + doctext );
         }
-        setRedoStatus ( false ) ;
-        TextEditorPanel.this.redohistory.clear ( ) ;
-        TextEditorPanel.this.currentContent = doctext ;
-        loadOutlineExpression ( Outline.ExecuteAutoChange.EDITOR ) ;
+        setRedoStatus ( false );
+        TextEditorPanel.this.redohistory.clear ();
+        TextEditorPanel.this.currentContent = doctext;
+        loadOutlineExpression ( Outline.ExecuteAutoChange.EDITOR );
       }
       catch ( BadLocationException e )
       {
-        logger.error ( "Failed to add text to undo history" , e ) ;
+        logger.error ( "Failed to add text to undo history", e );
       }
     }
 
 
     public void removeUpdate ( DocumentEvent arg0 )
     {
-      logger.debug ( "Text removed from document" ) ;
+      logger.debug ( "Text removed from document" );
       try
       {
-        TextEditorPanel.this.setUndoStatus ( true ) ;
+        TextEditorPanel.this.setUndoStatus ( true );
         TextEditorPanel.this.undohistory
-            .push ( TextEditorPanel.this.currentContent ) ;
-        setRedoStatus ( false ) ;
-        TextEditorPanel.this.redohistory.clear ( ) ;
-        TextEditorPanel.this.currentContent = arg0.getDocument ( ).getText ( 0 ,
-            arg0.getDocument ( ).getLength ( ) ) ;
-        loadOutlineExpression ( Outline.ExecuteAutoChange.EDITOR ) ;
+            .push ( TextEditorPanel.this.currentContent );
+        setRedoStatus ( false );
+        TextEditorPanel.this.redohistory.clear ();
+        TextEditorPanel.this.currentContent = arg0.getDocument ().getText ( 0,
+            arg0.getDocument ().getLength () );
+        loadOutlineExpression ( Outline.ExecuteAutoChange.EDITOR );
       }
       catch ( BadLocationException e )
       {
-        logger.error ( "Failed to add text to undo history" , e ) ;
+        logger.error ( "Failed to add text to undo history", e );
       }
     }
   }
@@ -173,79 +177,79 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
   /**
    * The {@link Logger} for this class.
    */
-  static final Logger logger = Logger.getLogger ( TextEditorPanel.class ) ;
+  static final Logger logger = Logger.getLogger ( TextEditorPanel.class );
 
 
   /**
    * The serial version Identifier.
    */
-  private static final long serialVersionUID = - 4886621661465144817L ;
+  private static final long serialVersionUID = -4886621661465144817L;
 
 
   //
   // Attributes
   //
-  private StyledLanguageEditor editor ;
+  private StyledLanguageEditor editor;
 
 
-  private StyledLanguageDocument document ;
+  private StyledLanguageDocument document;
 
 
-  private JScrollPane scrollpane ;
+  private JScrollPane scrollpane;
 
 
-  private SideBar sideBar ;
+  private SideBar sideBar;
 
 
   /**
    * The initial content of this file
    */
-  private String initialContent = "" ;
+  private String initialContent = "";
 
 
-  private String currentContent = "" ;
+  private String currentContent = "";
 
 
-  private Stack < String > undohistory = new Stack < String > ( ) ;
+  private Stack < String > undohistory = new Stack < String > ();
 
 
-  private Stack < String > redohistory = new Stack < String > ( ) ;
+  private Stack < String > redohistory = new Stack < String > ();
 
 
-  private TextDocumentListener doclistener = new TextDocumentListener ( ) ;
+  private TextDocumentListener doclistener = new TextDocumentListener ();
 
 
-  private boolean nextStatus ;
+  private boolean nextStatus;
 
 
-  private boolean redoStatus ;
+  private boolean redoStatus;
 
 
-  private boolean undoStatus ;
+  private boolean undoStatus;
 
 
-  private boolean changed ;
+  private boolean changed;
 
 
-  private JPopupMenu popup ;
+  private JPopupMenu popup;
 
 
-  private JMenuItem undoItem ;
+  private JMenuItem undoItem;
 
 
-  private JMenuItem redoItem ;
+  private JMenuItem redoItem;
 
 
   /**
    * The {@link Outline} of this view.
    */
-  private Outline outline ;
+  private Outline outline;
 
 
   /**
    * The <code>JSplitPane</code> for the <code>component</code>.
    */
-  private JSplitPane jSplitPane ;
+  private JSplitPane jSplitPane;
 
 
   /**
@@ -254,29 +258,29 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
   public TextEditorPanel ( Language language )
   {
     if ( language == null )
-      throw new NullPointerException ( "language is null" ) ;
-    setLayout ( new BorderLayout ( ) ) ;
-    initComponents ( language ) ;
+      throw new NullPointerException ( "language is null" );
+    setLayout ( new BorderLayout () );
+    initComponents ( language );
   }
 
 
-  public void clearHistory ( )
+  public void clearHistory ()
   {
-    undohistory.clear ( ) ;
-    redohistory.clear ( ) ;
-    setUndoStatus ( false ) ;
+    undohistory.clear ();
+    redohistory.clear ();
+    setUndoStatus ( false );
   }
 
 
-  public StyledLanguageDocument getDocument ( )
+  public StyledLanguageDocument getDocument ()
   {
-    return this.document ;
+    return this.document;
   }
 
 
-  public StyledLanguageEditor getEditor ( )
+  public StyledLanguageEditor getEditor ()
   {
-    return this.editor ;
+    return this.editor;
   }
 
 
@@ -286,9 +290,9 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
    * @return The jSplitPane.
    * @see #jSplitPane
    */
-  public JSplitPane getJSplitPane ( )
+  public JSplitPane getJSplitPane ()
   {
-    return this.jSplitPane ;
+    return this.jSplitPane;
   }
 
 
@@ -298,46 +302,46 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
    * @return The outline.
    * @see #outline
    */
-  public Outline getOutline ( )
+  public Outline getOutline ()
   {
-    return this.outline ;
+    return this.outline;
   }
 
 
-  public String getSelectedText ( )
+  public String getSelectedText ()
   {
-    return this.editor.getSelectedText ( ) ;
+    return this.editor.getSelectedText ();
   }
 
 
-  public String getText ( )
+  public String getText ()
   {
     try
     {
-      return this.document.getText ( 0 , this.document.getLength ( ) ) ;
+      return this.document.getText ( 0, this.document.getLength () );
     }
     catch ( BadLocationException e )
     {
-      logger.error ( "Cannot get Text from document" , e ) ;
+      logger.error ( "Cannot get Text from document", e );
     }
-    return "" ;
+    return "";
   }
 
 
-  public void handleCopy ( )
+  public void handleCopy ()
   {
-    Clipboard clipboard = getToolkit ( ).getSystemClipboard ( ) ;
-    StringSelection stringSelection = new StringSelection ( getSelectedText ( ) ) ;
-    clipboard.setContents ( stringSelection , this ) ;
+    Clipboard clipboard = getToolkit ().getSystemClipboard ();
+    StringSelection stringSelection = new StringSelection ( getSelectedText () );
+    clipboard.setContents ( stringSelection, this );
   }
 
 
-  public void handleCut ( )
+  public void handleCut ()
   {
-    Clipboard clipboard = getToolkit ( ).getSystemClipboard ( ) ;
-    StringSelection stringSelection = new StringSelection ( getSelectedText ( ) ) ;
-    clipboard.setContents ( stringSelection , this ) ;
-    removeSelectedText ( ) ;
+    Clipboard clipboard = getToolkit ().getSystemClipboard ();
+    StringSelection stringSelection = new StringSelection ( getSelectedText () );
+    clipboard.setContents ( stringSelection, this );
+    removeSelectedText ();
   }
 
 
@@ -347,120 +351,121 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
    * @author Christoph Fehling
    * @version $Rev$
    */
-  public void handleNext ( )
+  public void handleNext ()
   {
     // this function is not implemented here
   }
 
 
-  public void handlePaste ( )
+  public void handlePaste ()
   {
-    Clipboard clipboard = getToolkit ( ).getSystemClipboard ( ) ;
-    Transferable contents = clipboard.getContents ( null ) ;
+    Clipboard clipboard = getToolkit ().getSystemClipboard ();
+    Transferable contents = clipboard.getContents ( null );
     boolean hasTransferableText = ( contents != null )
-        && contents.isDataFlavorSupported ( DataFlavor.stringFlavor ) ;
+        && contents.isDataFlavorSupported ( DataFlavor.stringFlavor );
     if ( hasTransferableText )
     {
       try
       {
-        removeSelectedText ( ) ;
+        removeSelectedText ();
         insertText ( ( String ) contents
-            .getTransferData ( DataFlavor.stringFlavor ) ) ;
+            .getTransferData ( DataFlavor.stringFlavor ) );
       }
       catch ( UnsupportedFlavorException ex )
       {
-        logger.error ( "Can not paste from clipboard" , ex ) ;
+        logger.error ( "Can not paste from clipboard", ex );
       }
       catch ( IOException ex )
       {
-        logger.error ( "Can not paste from clipboard" , ex ) ;
+        logger.error ( "Can not paste from clipboard", ex );
       }
     }
   }
 
 
-  public void handleRedo ( )
+  public void handleRedo ()
   {
     try
     {
-      this.document.removeDocumentListener ( this.doclistener ) ;
-      this.undohistory.push ( this.document.getText ( 0 , this.document
-          .getLength ( ) ) ) ;
-      this.document.remove ( 0 , this.document.getLength ( ) ) ;
-      this.document.insertString ( 0 , this.redohistory.pop ( ) , null ) ;
-      setUndoStatus ( true ) ;
-      this.document.addDocumentListener ( this.doclistener ) ;
-      loadOutlineExpression ( Outline.ExecuteAutoChange.EDITOR ) ;
-      if ( this.redohistory.size ( ) == 0 )
+      this.document.removeDocumentListener ( this.doclistener );
+      this.undohistory.push ( this.document.getText ( 0, this.document
+          .getLength () ) );
+      this.document.remove ( 0, this.document.getLength () );
+      this.document.insertString ( 0, this.redohistory.pop (), null );
+      setUndoStatus ( true );
+      this.document.addDocumentListener ( this.doclistener );
+      loadOutlineExpression ( Outline.ExecuteAutoChange.EDITOR );
+      if ( this.redohistory.size () == 0 )
       {
-        setRedoStatus ( false ) ;
+        setRedoStatus ( false );
       }
     }
     catch ( BadLocationException e )
     {
-      logger.error ( "Cannot handle an undo" , e ) ;
+      logger.error ( "Cannot handle an undo", e );
     }
   }
 
 
-  public void handleUndo ( )
+  public void handleUndo ()
   {
     try
     {
-      this.document.removeDocumentListener ( this.doclistener ) ;
-      String doctext = this.document.getText ( 0 , this.document.getLength ( ) ) ;
-      String historytext ;
-      if ( this.undohistory.peek ( ).equals ( this.initialContent ) )
+      this.document.removeDocumentListener ( this.doclistener );
+      String doctext = this.document.getText ( 0, this.document.getLength () );
+      String historytext;
+      if ( this.undohistory.peek ().equals ( this.initialContent ) )
       {
-        historytext = this.undohistory.peek ( ) ;
-        setUndoStatus ( false ) ;
+        historytext = this.undohistory.peek ();
+        setUndoStatus ( false );
       }
       else
       {
-        historytext = this.undohistory.pop ( ) ;
+        historytext = this.undohistory.pop ();
       }
-      this.document.remove ( 0 , this.document.getLength ( ) ) ;
-      this.document.insertString ( 0 , historytext , null ) ;
-      this.redohistory.add ( doctext ) ;
-      setRedoStatus ( true ) ;
-      this.document.addDocumentListener ( this.doclistener ) ;
-      loadOutlineExpression ( Outline.ExecuteAutoChange.EDITOR ) ;
+      this.document.remove ( 0, this.document.getLength () );
+      this.document.insertString ( 0, historytext, null );
+      this.redohistory.add ( doctext );
+      setRedoStatus ( true );
+      this.document.addDocumentListener ( this.doclistener );
+      loadOutlineExpression ( Outline.ExecuteAutoChange.EDITOR );
     }
     catch ( BadLocationException e )
     {
-      logger.error ( "Cannot handle an undo" , e ) ;
+      logger.error ( "Cannot handle an undo", e );
     }
   }
 
 
   private void initComponents ( Language language )
   {
-    this.editor = new StyledLanguageEditor ( ) ;
-    this.document = new StyledLanguageDocument ( language ) ;
-    JPanel compoundPanel = new JPanel ( ) ;
-    compoundPanel.setLayout ( new BorderLayout ( ) ) ;
-    this.scrollpane = new JScrollPane ( ) ;
-    compoundPanel.add ( this.scrollpane , BorderLayout.CENTER ) ;
-    this.sideBar = new SideBar ( this.scrollpane , this.document , this.editor ) ;
-    this.sideBar.addSideBarListener ( new SideBarListener ( )
+    this.editor = new StyledLanguageEditor ();
+    this.document = new StyledLanguageDocument ( language );
+    JPanel compoundPanel = new JPanel ();
+    compoundPanel.setLayout ( new BorderLayout () );
+    this.scrollpane = new JScrollPane ();
+    compoundPanel.add ( this.scrollpane, BorderLayout.CENTER );
+    this.sideBar = new SideBar ( this.scrollpane, this.document, this.editor );
+    this.sideBar.addSideBarListener ( new SideBarListener ()
     {
+
       /**
        * Marks the text with the given offsets.
        * 
        * @param pLeft The left offset of the text which should be marked.
        * @param pRight The right offset of the text which should be marked.
        */
-      @ SuppressWarnings ( "synthetic-access" )
-      public void markText ( int pLeft , int pRight )
+      @SuppressWarnings ( "synthetic-access" )
+      public void markText ( int pLeft, int pRight )
       {
-        if ( ( TextEditorPanel.this.editor.getSelectionStart ( ) == pLeft )
-            && ( TextEditorPanel.this.editor.getSelectionEnd ( ) == pRight ) )
+        if ( ( TextEditorPanel.this.editor.getSelectionStart () == pLeft )
+            && ( TextEditorPanel.this.editor.getSelectionEnd () == pRight ) )
         {
-          TextEditorPanel.this.removeSelectedText ( ) ;
+          TextEditorPanel.this.removeSelectedText ();
         }
         else
         {
-          TextEditorPanel.this.selectErrorText ( pLeft , pRight ) ;
+          TextEditorPanel.this.selectErrorText ( pLeft, pRight );
         }
       }
 
@@ -471,16 +476,16 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
        * @param pIndex The index in the text, where the text should be inserted.
        * @param pInsertText The text which should be inserted.
        */
-      @ SuppressWarnings ( "synthetic-access" )
-      public void insertText ( int pIndex , String pInsertText )
+      @SuppressWarnings ( "synthetic-access" )
+      public void insertText ( int pIndex, String pInsertText )
       {
-        int countSpaces = 0 ;
+        int countSpaces = 0;
         try
         {
-          while ( TextEditorPanel.this.document.getText ( pIndex + countSpaces ,
+          while ( TextEditorPanel.this.document.getText ( pIndex + countSpaces,
               1 ).equals ( " " ) ) //$NON-NLS-1$
           {
-            countSpaces ++ ;
+            countSpaces++ ;
           }
         }
         catch ( BadLocationException e )
@@ -489,22 +494,22 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
         }
         try
         {
-          int offset = 0 ;
-          String text = pInsertText ;
+          int offset = 0;
+          String text = pInsertText;
           if ( ( countSpaces >= 1 )
-              && ( text.substring ( 0 , 1 ).equals ( " " ) ) ) //$NON-NLS-1$
+              && ( text.substring ( 0, 1 ).equals ( " " ) ) ) //$NON-NLS-1$
           {
-            text = text.substring ( 1 ) ;
-            offset ++ ;
-            countSpaces -- ;
+            text = text.substring ( 1 );
+            offset++ ;
+            countSpaces-- ;
           }
           if ( ( countSpaces >= 1 )
-              && ( text.substring ( text.length ( ) - 1 ).equals ( " " ) ) ) //$NON-NLS-1$
+              && ( text.substring ( text.length () - 1 ).equals ( " " ) ) ) //$NON-NLS-1$
           {
-            text = text.substring ( 0 , text.length ( ) - 1 ) ;
+            text = text.substring ( 0, text.length () - 1 );
           }
-          TextEditorPanel.this.document.insertString ( pIndex + offset , text ,
-              null ) ;
+          TextEditorPanel.this.document.insertString ( pIndex + offset, text,
+              null );
         }
         catch ( BadLocationException e )
         {
@@ -521,19 +526,18 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
        * @param pEnd The end offsets of the texts which should be renamed.
        * @param pReplaceText The replace text.
        */
-      @ SuppressWarnings ( "synthetic-access" )
-      public void replaceText ( int [ ] pStart , int [ ] pEnd ,
-          String pReplaceText )
+      @SuppressWarnings ( "synthetic-access" )
+      public void replaceText ( int [] pStart, int [] pEnd, String pReplaceText )
       {
-        int offset = 0 ;
-        for ( int i = 0 ; i < pStart.length ; i ++ )
+        int offset = 0;
+        for ( int i = 0 ; i < pStart.length ; i++ )
         {
           try
           {
-            int length = pEnd [ i ] - pStart [ i ] ;
-            TextEditorPanel.this.document.replace ( offset + pStart [ i ] ,
-                length , pReplaceText , null ) ;
-            offset += pReplaceText.length ( ) - length ;
+            int length = pEnd [ i ] - pStart [ i ];
+            TextEditorPanel.this.document.replace ( offset + pStart [ i ],
+                length, pReplaceText, null );
+            offset += pReplaceText.length () - length;
           }
           catch ( BadLocationException e )
           {
@@ -541,61 +545,61 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
           }
         }
       }
-    } ) ;
-    compoundPanel.add ( this.sideBar , BorderLayout.WEST ) ;
+    } );
+    compoundPanel.add ( this.sideBar, BorderLayout.WEST );
     // this.scrollpane.setHorizontalScrollBarPolicy (
     // JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS ) ;
-    this.scrollpane.setViewportView ( this.editor ) ;
-    this.editor.setDocument ( this.document ) ;
-    this.editor.setAutoscrolls ( false ) ;
-    this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
-    this.outline = new DefaultOutline ( this ) ;
-    JPanel jPanelOutline = this.outline.getPanel ( ) ;
-    this.jSplitPane.setLeftComponent ( compoundPanel ) ;
-    this.jSplitPane.setRightComponent ( jPanelOutline ) ;
-    this.jSplitPane.setOneTouchExpandable ( true ) ;
-    this.jSplitPane.setResizeWeight ( 0.5 ) ;
-    this.document.addDocumentListener ( this.doclistener ) ;
-    this.undohistory.push ( "" ) ;
+    this.scrollpane.setViewportView ( this.editor );
+    this.editor.setDocument ( this.document );
+    this.editor.setAutoscrolls ( false );
+    this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT );
+    this.outline = new DefaultOutline ( this );
+    JPanel jPanelOutline = this.outline.getPanel ();
+    this.jSplitPane.setLeftComponent ( compoundPanel );
+    this.jSplitPane.setRightComponent ( jPanelOutline );
+    this.jSplitPane.setOneTouchExpandable ( true );
+    this.jSplitPane.setResizeWeight ( 0.5 );
+    this.document.addDocumentListener ( this.doclistener );
+    this.undohistory.push ( "" );
     // the popup menu and listeners
-    this.popup = new JPopupMenu ( ) ;
-    MenuListener menulistener = new MenuListener ( ) ;
+    this.popup = new JPopupMenu ();
+    MenuListener menulistener = new MenuListener ();
     this.undoItem = new JMenuItem ( java.util.ResourceBundle.getBundle (
-        "de/unisiegen/tpml/ui/ui" ).getString ( "Undo" ) ) ;
+        "de/unisiegen/tpml/ui/ui" ).getString ( "Undo" ) );
     this.redoItem = new JMenuItem ( java.util.ResourceBundle.getBundle (
-        "de/unisiegen/tpml/ui/ui" ).getString ( "Redo" ) ) ;
-    JSeparator separator = new JSeparator ( ) ;
+        "de/unisiegen/tpml/ui/ui" ).getString ( "Redo" ) );
+    JSeparator separator = new JSeparator ();
     JMenuItem copyItem = new JMenuItem ( java.util.ResourceBundle.getBundle (
-        "de/unisiegen/tpml/ui/ui" ).getString ( "Copy" ) ) ;
+        "de/unisiegen/tpml/ui/ui" ).getString ( "Copy" ) );
     JMenuItem cutItem = new JMenuItem ( java.util.ResourceBundle.getBundle (
-        "de/unisiegen/tpml/ui/ui" ).getString ( "Cut" ) ) ;
+        "de/unisiegen/tpml/ui/ui" ).getString ( "Cut" ) );
     JMenuItem pasteItem = new JMenuItem ( java.util.ResourceBundle.getBundle (
-        "de/unisiegen/tpml/ui/ui" ).getString ( "Paste" ) ) ;
-    this.undoItem.addActionListener ( menulistener ) ;
-    this.undoItem.setEnabled ( false ) ;
-    this.undoItem.setIcon ( new javax.swing.ImageIcon ( getClass ( )
-        .getResource ( "/de/unisiegen/tpml/ui/icons/undo16.gif" ) ) ) ;
-    this.redoItem.addActionListener ( menulistener ) ;
-    this.redoItem.setEnabled ( false ) ;
-    this.redoItem.setIcon ( new javax.swing.ImageIcon ( getClass ( )
-        .getResource ( "/de/unisiegen/tpml/ui/icons/redo16.gif" ) ) ) ;
-    copyItem.addActionListener ( menulistener ) ;
-    copyItem.setIcon ( new javax.swing.ImageIcon ( getClass ( ).getResource (
-        "/de/unisiegen/tpml/ui/icons/copy16.gif" ) ) ) ;
-    cutItem.addActionListener ( menulistener ) ;
-    cutItem.setIcon ( new javax.swing.ImageIcon ( getClass ( ).getResource (
-        "/de/unisiegen/tpml/ui/icons/cut16.gif" ) ) ) ;
-    pasteItem.addActionListener ( menulistener ) ;
-    pasteItem.setIcon ( new javax.swing.ImageIcon ( getClass ( ).getResource (
-        "/de/unisiegen/tpml/ui/icons/paste16.gif" ) ) ) ;
-    this.popup.add ( this.undoItem ) ;
-    this.popup.add ( this.redoItem ) ;
-    this.popup.add ( separator ) ;
-    this.popup.add ( copyItem ) ;
-    this.popup.add ( cutItem ) ;
-    this.popup.add ( pasteItem ) ;
-    this.editor.addMouseListener ( new PopupListener ( ) ) ;
-    add ( this.jSplitPane , BorderLayout.CENTER ) ;
+        "de/unisiegen/tpml/ui/ui" ).getString ( "Paste" ) );
+    this.undoItem.addActionListener ( menulistener );
+    this.undoItem.setEnabled ( false );
+    this.undoItem.setIcon ( new javax.swing.ImageIcon ( getClass ()
+        .getResource ( "/de/unisiegen/tpml/ui/icons/undo16.gif" ) ) );
+    this.redoItem.addActionListener ( menulistener );
+    this.redoItem.setEnabled ( false );
+    this.redoItem.setIcon ( new javax.swing.ImageIcon ( getClass ()
+        .getResource ( "/de/unisiegen/tpml/ui/icons/redo16.gif" ) ) );
+    copyItem.addActionListener ( menulistener );
+    copyItem.setIcon ( new javax.swing.ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/tpml/ui/icons/copy16.gif" ) ) );
+    cutItem.addActionListener ( menulistener );
+    cutItem.setIcon ( new javax.swing.ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/tpml/ui/icons/cut16.gif" ) ) );
+    pasteItem.addActionListener ( menulistener );
+    pasteItem.setIcon ( new javax.swing.ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/tpml/ui/icons/paste16.gif" ) ) );
+    this.popup.add ( this.undoItem );
+    this.popup.add ( this.redoItem );
+    this.popup.add ( separator );
+    this.popup.add ( copyItem );
+    this.popup.add ( cutItem );
+    this.popup.add ( pasteItem );
+    this.editor.addMouseListener ( new PopupListener () );
+    add ( this.jSplitPane, BorderLayout.CENTER );
   }
 
 
@@ -603,12 +607,11 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
   {
     try
     {
-      this.document.insertString ( this.editor.getCaretPosition ( ) , text ,
-          null ) ;
+      this.document.insertString ( this.editor.getCaretPosition (), text, null );
     }
     catch ( BadLocationException e )
     {
-      logger.error ( "Text could not be inserted into document" , e ) ;
+      logger.error ( "Text could not be inserted into document", e );
     }
   }
 
@@ -617,15 +620,15 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
   // firePropertyChange("changed", this.changed, changeStatus);
   // this.changed = changeStatus;
   // }
-  public boolean isChanged ( )
+  public boolean isChanged ()
   {
-    return this.changed ;
+    return this.changed;
   }
 
 
-  public boolean isNextStatus ( )
+  public boolean isNextStatus ()
   {
-    return this.nextStatus ;
+    return this.nextStatus;
   }
 
 
@@ -635,21 +638,21 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
    * 
    * @see de.unisiegen.tpml.ui.EditorComponent#isPongStatus()
    */
-  public boolean isPongStatus ( )
+  public boolean isPongStatus ()
   {
-    return false ;
+    return false;
   }
 
 
-  public boolean isRedoStatus ( )
+  public boolean isRedoStatus ()
   {
-    return this.redoStatus ;
+    return this.redoStatus;
   }
 
 
-  public boolean isUndoStatus ( )
+  public boolean isUndoStatus ()
   {
-    return this.undoStatus ;
+    return this.undoStatus;
   }
 
 
@@ -662,46 +665,46 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
   {
     try
     {
-      this.outline.load ( this.document.getExpression ( ) , pExecute ) ;
+      this.outline.load ( this.document.getExpression (), pExecute );
     }
     catch ( Exception e )
     {
-      this.outline.load ( null , pExecute ) ;
+      this.outline.load ( null, pExecute );
     }
   }
 
 
-  public void lostOwnership ( Clipboard arg0 , Transferable arg1 )
+  public void lostOwnership ( Clipboard arg0, Transferable arg1 )
   {
     // we do not care so we do nothing
   }
 
 
-  public void removeSelectedText ( )
+  public void removeSelectedText ()
   {
-    int start = this.editor.getSelectionStart ( ) ;
-    int end = this.editor.getSelectionEnd ( ) ;
+    int start = this.editor.getSelectionStart ();
+    int end = this.editor.getSelectionEnd ();
     try
     {
       if ( start < end )
       {
-        this.document.remove ( start , ( end - start ) ) ;
+        this.document.remove ( start, ( end - start ) );
       }
       else
       {
-        this.document.remove ( end , ( start - end ) ) ;
+        this.document.remove ( end, ( start - end ) );
       }
     }
     catch ( BadLocationException e )
     {
-      logger.error ( "Cannot remove text from document" , e ) ;
+      logger.error ( "Cannot remove text from document", e );
     }
   }
 
 
-  private void selectErrorText ( int left , int right )
+  private void selectErrorText ( int left, int right )
   {
-    this.editor.select ( left , right ) ;
+    this.editor.select ( left, right );
   }
 
 
@@ -711,12 +714,12 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
   }
 
 
-  public void setDefaultStates ( )
+  public void setDefaultStates ()
   {
     // setChanged(false);
-    setUndoStatus ( false ) ;
-    setRedoStatus ( false ) ;
-    setNextStatus ( false ) ;
+    setUndoStatus ( false );
+    setRedoStatus ( false );
+    setNextStatus ( false );
   }
 
 
@@ -724,9 +727,9 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
   {
     if ( this.nextStatus != nextStatus )
     {
-      boolean oldNextStatus = this.nextStatus ;
-      this.nextStatus = nextStatus ;
-      firePropertyChange ( "nextStatus" , oldNextStatus , nextStatus ) ;
+      boolean oldNextStatus = this.nextStatus;
+      this.nextStatus = nextStatus;
+      firePropertyChange ( "nextStatus", oldNextStatus, nextStatus );
     }
   }
 
@@ -735,11 +738,11 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
   {
     if ( this.redoStatus != redoStatus )
     {
-      boolean oldRedoStatus = this.redoStatus ;
-      this.redoStatus = redoStatus ;
-      firePropertyChange ( "redoStatus" , oldRedoStatus , redoStatus ) ;
+      boolean oldRedoStatus = this.redoStatus;
+      this.redoStatus = redoStatus;
+      firePropertyChange ( "redoStatus", oldRedoStatus, redoStatus );
     }
-    this.redoItem.setEnabled ( this.redoStatus ) ;
+    this.redoItem.setEnabled ( this.redoStatus );
   }
 
 
@@ -747,22 +750,22 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
   {
     try
     {
-      this.initialContent = text ;
-      this.currentContent = text ;
-      this.document.removeDocumentListener ( this.doclistener ) ;
-      this.document.remove ( 0 , this.document.getLength ( ) ) ;
-      this.document.insertString ( 0 , text , null ) ;
-      setRedoStatus ( false ) ;
-      this.redohistory.clear ( ) ;
-      setUndoStatus ( false ) ;
-      this.undohistory.clear ( ) ;
-      this.undohistory.push ( text ) ;
-      this.document.addDocumentListener ( this.doclistener ) ;
-      loadOutlineExpression ( Outline.ExecuteInit.EDITOR ) ;
+      this.initialContent = text;
+      this.currentContent = text;
+      this.document.removeDocumentListener ( this.doclistener );
+      this.document.remove ( 0, this.document.getLength () );
+      this.document.insertString ( 0, text, null );
+      setRedoStatus ( false );
+      this.redohistory.clear ();
+      setUndoStatus ( false );
+      this.undohistory.clear ();
+      this.undohistory.push ( text );
+      this.document.addDocumentListener ( this.doclistener );
+      loadOutlineExpression ( Outline.ExecuteInit.EDITOR );
     }
     catch ( BadLocationException e )
     {
-      logger.error ( "Cannot set Text of the document" , e ) ;
+      logger.error ( "Cannot set Text of the document", e );
     }
   }
 
@@ -771,16 +774,16 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
   {
     if ( this.undoStatus != undoStatus )
     {
-      boolean oldUndoStatus = this.undoStatus ;
-      this.undoStatus = undoStatus ;
-      firePropertyChange ( "undoStatus" , oldUndoStatus , undoStatus ) ;
+      boolean oldUndoStatus = this.undoStatus;
+      this.undoStatus = undoStatus;
+      firePropertyChange ( "undoStatus", oldUndoStatus, undoStatus );
     }
-    this.undoItem.setEnabled ( this.undoStatus ) ;
+    this.undoItem.setEnabled ( this.undoStatus );
   }
 
 
-  public JComponent getPrintPart ( )
+  public JComponent getPrintPart ()
   {
-    return editor ;
+    return editor;
   }
 }

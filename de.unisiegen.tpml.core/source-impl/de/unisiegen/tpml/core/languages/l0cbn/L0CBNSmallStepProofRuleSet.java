@@ -1,12 +1,12 @@
-package de.unisiegen.tpml.core.languages.l0cbn ;
+package de.unisiegen.tpml.core.languages.l0cbn;
 
 
-import de.unisiegen.tpml.core.expressions.Application ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Lambda ;
-import de.unisiegen.tpml.core.languages.l0.L0Language ;
-import de.unisiegen.tpml.core.languages.l0.L0SmallStepProofRuleSet ;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
+import de.unisiegen.tpml.core.expressions.Application;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Lambda;
+import de.unisiegen.tpml.core.languages.l0.L0Language;
+import de.unisiegen.tpml.core.languages.l0.L0SmallStepProofRuleSet;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofContext;
 
 
 /**
@@ -18,6 +18,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
  */
 public class L0CBNSmallStepProofRuleSet extends L0SmallStepProofRuleSet
 {
+
   /**
    * Allocates a new <code>L0CBNSmallStepProofRuleSet</code> for the specified
    * <code>language</code>, which must be either <tt>L0CBN</tt> or a
@@ -30,13 +31,13 @@ public class L0CBNSmallStepProofRuleSet extends L0SmallStepProofRuleSet
    */
   public L0CBNSmallStepProofRuleSet ( L0Language language )
   {
-    super ( language ) ;
-    unregister ( "APP-LEFT" ) ; //$NON-NLS-1$
-    register ( L0Language.L0 , "APP-LEFT" , false ) ; //$NON-NLS-1$
-    unregister ( "APP-RIGHT" ) ; //$NON-NLS-1$
-    register ( L0CBNLanguage.L0CBN , "APP-RIGHT" , false ) ; //$NON-NLS-1$
-    unregister ( "BETA-V" ) ; //$NON-NLS-1$
-    register ( L0CBNLanguage.L0CBN , "BETA" , true ) ; //$NON-NLS-1$
+    super ( language );
+    unregister ( "APP-LEFT" ); //$NON-NLS-1$
+    register ( L0Language.L0, "APP-LEFT", false ); //$NON-NLS-1$
+    unregister ( "APP-RIGHT" ); //$NON-NLS-1$
+    register ( L0CBNLanguage.L0CBN, "APP-RIGHT", false ); //$NON-NLS-1$
+    unregister ( "BETA-V" ); //$NON-NLS-1$
+    register ( L0CBNLanguage.L0CBN, "BETA", true ); //$NON-NLS-1$
   }
 
 
@@ -49,13 +50,13 @@ public class L0CBNSmallStepProofRuleSet extends L0SmallStepProofRuleSet
    * @param e the second operand of the <code>application</code>.
    * @return the resulting expression.
    */
-  @ Override
-  public Expression applyLambda ( SmallStepProofContext context ,
-      Application application , Lambda lambda , Expression e )
+  @Override
+  public Expression applyLambda ( SmallStepProofContext context,
+      Application application, Lambda lambda, Expression e )
   {
-    Expression result = lambda.getE ( ).substitute ( lambda.getId ( ) , e ) ;
-    context.addProofStep ( getRuleByName ( "BETA" ) , application ) ; //$NON-NLS-1$
-    return result ;
+    Expression result = lambda.getE ().substitute ( lambda.getId (), e );
+    context.addProofStep ( getRuleByName ( "BETA" ), application ); //$NON-NLS-1$
+    return result;
   }
 
 
@@ -66,33 +67,33 @@ public class L0CBNSmallStepProofRuleSet extends L0SmallStepProofRuleSet
    * @param application the application to evaluate.
    * @return the resulting expression.
    */
-  @ Override
-  public Expression evaluateApplication ( SmallStepProofContext context ,
+  @Override
+  public Expression evaluateApplication ( SmallStepProofContext context,
       Application application )
   {
     // determine the sub expressions
-    Expression e1 = application.getE1 ( ) ;
-    Expression e2 = application.getE2 ( ) ;
+    Expression e1 = application.getE1 ();
+    Expression e2 = application.getE2 ();
     // check if e1 is not already a value
-    if ( ! e1.isValue ( ) )
+    if ( !e1.isValue () )
     {
       // we're about to perform (APP-LEFT)
-      context.addProofStep ( getRuleByName ( "APP-LEFT" ) , application ) ; //$NON-NLS-1$
+      context.addProofStep ( getRuleByName ( "APP-LEFT" ), application ); //$NON-NLS-1$
       // try to evaluate e1
-      e1 = evaluate ( context , e1 ) ;
+      e1 = evaluate ( context, e1 );
       // exceptions need special handling
-      return e1.isException ( ) ? e1 : new Application ( e1 , e2 ) ;
+      return e1.isException () ? e1 : new Application ( e1, e2 );
     }
     // check if e2 is not already a value and e1 is not an instance of Lambda
-    if ( ( ! e2.isValue ( ) ) && ( ! ( e1 instanceof Lambda ) ) )
+    if ( ( !e2.isValue () ) && ( ! ( e1 instanceof Lambda ) ) )
     {
       // we're about to perform (APP-RIGHT)
-      context.addProofStep ( getRuleByName ( "APP-RIGHT" ) , application ) ; //$NON-NLS-1$
+      context.addProofStep ( getRuleByName ( "APP-RIGHT" ), application ); //$NON-NLS-1$
       // try to evaluate e2
-      e2 = evaluate ( context , e2 ) ; // exceptions need special handling
-      return e2.isException ( ) ? e2 : new Application ( e1 , e2 ) ;
+      e2 = evaluate ( context, e2 ); // exceptions need special handling
+      return e2.isException () ? e2 : new Application ( e1, e2 );
     }
     // perform the application
-    return apply ( context , application , e1 , e2 ) ;
+    return apply ( context, application, e1, e2 );
   }
 }

@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
 /**
@@ -11,10 +11,11 @@ package de.unisiegen.tpml.core.latex ;
  */
 final class TextLatexItem extends AbstractLatexItem
 {
+
   /**
    * The text content.
    */
-  private String content ;
+  private String content;
 
 
   /**
@@ -29,9 +30,9 @@ final class TextLatexItem extends AbstractLatexItem
   {
     if ( pContent == null )
     {
-      throw new NullPointerException ( "content is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "content is null" ); //$NON-NLS-1$
     }
-    this.content = pContent ;
+    this.content = pContent;
   }
 
 
@@ -40,10 +41,10 @@ final class TextLatexItem extends AbstractLatexItem
    * 
    * @see AbstractLatexItem#determineString(StringBuilder,int)
    */
-  @ Override
-  protected void determineString ( StringBuilder pBuffer , int pIndent )
+  @Override
+  protected void determineString ( StringBuilder pBuffer, int pIndent )
   {
     pBuffer.append ( DefaultLatexStringBuilder.getIndent ( pIndent )
-        + this.content ) ;
+        + this.content );
   }
 }

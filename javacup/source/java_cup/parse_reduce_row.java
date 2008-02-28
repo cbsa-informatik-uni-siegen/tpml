@@ -1,4 +1,4 @@
-package java_cup ;
+package java_cup;
 
 
 /**
@@ -7,6 +7,7 @@ package java_cup ;
  */
 public class parse_reduce_row
 {
+
   /*-----------------------------------------------------------*/
   /*--- Constructor(s) ----------------------------------------*/
   /*-----------------------------------------------------------*/
@@ -14,12 +15,13 @@ public class parse_reduce_row
    * Simple constructor. Note: this should not be used until the number of
    * terminals in the grammar has been established.
    */
-  public parse_reduce_row ( )
+  public parse_reduce_row ()
   {
     /* make sure the size is set */
-    if ( _size <= 0 ) _size = non_terminal.number ( ) ;
+    if ( _size <= 0 )
+      _size = non_terminal.number ();
     /* allocate the array */
-    under_non_term = new lalr_state [ size ( ) ] ;
+    under_non_term = new lalr_state [ size () ];
   }
 
 
@@ -27,20 +29,20 @@ public class parse_reduce_row
   /*--- (Access to) Static (Class) Variables ------------------*/
   /*-----------------------------------------------------------*/
   /** Number of columns (non terminals) in every row. */
-  protected static int _size = 0 ;
+  protected static int _size = 0;
 
 
   /** Number of columns (non terminals) in every row. */
-  public static int size ( )
+  public static int size ()
   {
-    return _size ;
+    return _size;
   }
 
 
   // Hm Added clear to clear all static fields
-  public static void clear ( )
+  public static void clear ()
   {
-    _size = 0 ;
+    _size = 0;
   }
 
 
@@ -48,5 +50,5 @@ public class parse_reduce_row
   /*--- (Access to) Instance Variables ------------------------*/
   /*-----------------------------------------------------------*/
   /** Actual entries for the row. */
-  public lalr_state under_non_term[] ;
+  public lalr_state under_non_term[];
 }

@@ -1,11 +1,12 @@
-package de.unisiegen.tpml.core.languages.l1 ;
+package de.unisiegen.tpml.core.languages.l1;
 
 
-import java.text.MessageFormat ;
-import java_cup.runtime.Symbol ;
-import de.unisiegen.tpml.core.Messages ;
-import de.unisiegen.tpml.core.languages.LanguageParserException ;
-import de.unisiegen.tpml.core.languages.LanguageScanner ;
+import java.text.MessageFormat;
+
+import java_cup.runtime.Symbol;
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.languages.LanguageParserException;
+import de.unisiegen.tpml.core.languages.LanguageScanner;
 
 
 /**
@@ -17,6 +18,7 @@ import de.unisiegen.tpml.core.languages.LanguageScanner ;
  */
 final class L1Parser extends L1AbstractParser
 {
+
   //
   // Constructor (package)
   //
@@ -29,7 +31,7 @@ final class L1Parser extends L1AbstractParser
    */
   L1Parser ( LanguageScanner scanner )
   {
-    super ( scanner ) ;
+    super ( scanner );
   }
 
 
@@ -42,16 +44,16 @@ final class L1Parser extends L1AbstractParser
    * @see java_cup.runtime.lr_parser#report_error(java.lang.String,
    *      java.lang.Object)
    */
-  @ Override
-  public void report_error ( String message , Object info )
+  @Override
+  public void report_error ( String message, Object info )
   {
-    Symbol symbol = ( Symbol ) info ;
-    if ( symbol.sym == EOF_sym ( ) )
+    Symbol symbol = ( Symbol ) info;
+    if ( symbol.sym == EOF_sym () )
     {
-      throw new LanguageParserException ( Messages.getString ( "Parser.0" ) , //$NON-NLS-1$
-          symbol.left , symbol.right ) ;
+      throw new LanguageParserException ( Messages.getString ( "Parser.0" ), //$NON-NLS-1$
+          symbol.left, symbol.right );
     }
-    throw new LanguageParserException ( message , symbol.left , symbol.right ) ;
+    throw new LanguageParserException ( message, symbol.left, symbol.right );
   }
 
 
@@ -61,11 +63,11 @@ final class L1Parser extends L1AbstractParser
    * @see java_cup.runtime.lr_parser#report_fatal_error(java.lang.String,
    *      java.lang.Object)
    */
-  @ Override
-  public void report_fatal_error ( String message , Object info )
+  @Override
+  public void report_fatal_error ( String message, Object info )
       throws Exception
   {
-    report_error ( message , info ) ;
+    report_error ( message, info );
   }
 
 
@@ -74,10 +76,10 @@ final class L1Parser extends L1AbstractParser
    * 
    * @see java_cup.runtime.lr_parser#syntax_error(java_cup.runtime.Symbol)
    */
-  @ Override
+  @Override
   public void syntax_error ( Symbol symbol )
   {
     report_error ( MessageFormat.format (
-        Messages.getString ( "Parser.1" ) , symbol.value ) , symbol ) ; //$NON-NLS-1$
+        Messages.getString ( "Parser.1" ), symbol.value ), symbol ); //$NON-NLS-1$
   }
 }

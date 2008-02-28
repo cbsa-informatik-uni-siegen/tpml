@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.languages ;
+package de.unisiegen.tpml.core.languages;
 
 
-import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Expression;
 
 
 /**
@@ -16,6 +16,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
  */
 public interface LanguageParser
 {
+
   //
   // Primitives
   //
@@ -28,5 +29,5 @@ public interface LanguageParser
    * @throws Exception if an error occurs while parsing the token stream of the
    *           associated scanner.
    */
-  public Expression parse ( ) throws Exception ;
+  public Expression parse () throws Exception;
 }

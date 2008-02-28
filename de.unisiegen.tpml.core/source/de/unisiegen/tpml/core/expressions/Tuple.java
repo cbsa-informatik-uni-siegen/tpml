@@ -1,16 +1,17 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
-import java.util.Arrays ;
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import java.util.Arrays;
+
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
 
 /**
@@ -23,28 +24,29 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  */
 public final class Tuple extends Expression implements DefaultExpressions
 {
+
   /**
    * String for the case that the expressions are null.
    */
-  private static final String EXPRESSIONS_NULL = "expressions is null" ; //$NON-NLS-1$
+  private static final String EXPRESSIONS_NULL = "expressions is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that one expression are null.
    */
-  private static final String EXPRESSION_NULL = "one expression is null" ; //$NON-NLS-1$
+  private static final String EXPRESSION_NULL = "one expression is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the expressions are empty.
    */
-  private static final String EXPRESSIONS_EMPTY = "expressions is empty" ; //$NON-NLS-1$
+  private static final String EXPRESSIONS_EMPTY = "expressions is empty"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = Expression.getCaption ( Tuple.class ) ;
+  private static final String CAPTION = Expression.getCaption ( Tuple.class );
 
 
   /**
@@ -52,12 +54,12 @@ public final class Tuple extends Expression implements DefaultExpressions
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_TUPLE , 1 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}(#1)" , "e1, ... , en" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_TUPLE, 1, "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}(#1)", "e1, ... , en" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    return commands;
   }
 
 
@@ -66,13 +68,13 @@ public final class Tuple extends Expression implements DefaultExpressions
    * 
    * @see #getExpressions()
    */
-  private Expression [ ] expressions ;
+  private Expression [] expressions;
 
 
   /**
    * Indeces of the child {@link Expression}s.
    */
-  private int [ ] indicesE ;
+  private int [] indicesE;
 
 
   /**
@@ -84,29 +86,29 @@ public final class Tuple extends Expression implements DefaultExpressions
    *           <code>null</code>.
    * @throws IllegalArgumentException if <code>expressions</code> is empty.
    */
-  public Tuple ( Expression [ ] pExpressions )
+  public Tuple ( Expression [] pExpressions )
   {
     if ( pExpressions == null )
     {
-      throw new NullPointerException ( EXPRESSIONS_NULL ) ;
+      throw new NullPointerException ( EXPRESSIONS_NULL );
     }
     for ( Expression e : pExpressions )
     {
       if ( e == null )
       {
-        throw new NullPointerException ( EXPRESSION_NULL ) ;
+        throw new NullPointerException ( EXPRESSION_NULL );
       }
     }
     if ( pExpressions.length == 0 )
     {
-      throw new IllegalArgumentException ( EXPRESSIONS_EMPTY ) ;
+      throw new IllegalArgumentException ( EXPRESSIONS_EMPTY );
     }
-    this.expressions = pExpressions ;
-    this.indicesE = new int [ this.expressions.length ] ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    this.expressions = pExpressions;
+    this.indicesE = new int [ this.expressions.length ];
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
-      this.expressions [ i ].setParent ( this ) ;
-      this.indicesE [ i ] = i + 1 ;
+      this.expressions [ i ].setParent ( this );
+      this.indicesE [ i ] = i + 1;
     }
   }
 
@@ -124,12 +126,12 @@ public final class Tuple extends Expression implements DefaultExpressions
    *           <code>null</code>.
    * @throws IllegalArgumentException if <code>expressions</code> is empty.
    */
-  public Tuple ( Expression [ ] pExpressions , int pParserStartOffset ,
+  public Tuple ( Expression [] pExpressions, int pParserStartOffset,
       int pParserEndOffset )
   {
-    this ( pExpressions ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pExpressions );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -138,15 +140,15 @@ public final class Tuple extends Expression implements DefaultExpressions
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public Tuple clone ( )
+  @Override
+  public Tuple clone ()
   {
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int i = 0 ; i < newExpressions.length ; i ++ )
+    Expression [] newExpressions = new Expression [ this.expressions.length ];
+    for ( int i = 0 ; i < newExpressions.length ; i++ )
     {
-      newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
+      newExpressions [ i ] = this.expressions [ i ].clone ();
     }
-    return new Tuple ( newExpressions ) ;
+    return new Tuple ( newExpressions );
   }
 
 
@@ -155,25 +157,25 @@ public final class Tuple extends Expression implements DefaultExpressions
    * 
    * @see Expression#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof Tuple )
     {
-      Tuple other = ( Tuple ) pObject ;
-      return Arrays.equals ( this.expressions , other.expressions ) ;
+      Tuple other = ( Tuple ) pObject;
+      return Arrays.equals ( this.expressions, other.expressions );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -182,9 +184,9 @@ public final class Tuple extends Expression implements DefaultExpressions
    * 
    * @return the sub expressions.
    */
-  public Expression [ ] getExpressions ( )
+  public Expression [] getExpressions ()
   {
-    return this.expressions ;
+    return this.expressions;
   }
 
 
@@ -193,9 +195,9 @@ public final class Tuple extends Expression implements DefaultExpressions
    * 
    * @return The indices of the child {@link Expression}s.
    */
-  public int [ ] getExpressionsIndex ( )
+  public int [] getExpressionsIndex ()
   {
-    return this.indicesE ;
+    return this.indicesE;
   }
 
 
@@ -204,12 +206,12 @@ public final class Tuple extends Expression implements DefaultExpressions
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -218,10 +220,10 @@ public final class Tuple extends Expression implements DefaultExpressions
    * 
    * @see Expression#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.expressions.hashCode ( ) ;
+    return this.expressions.hashCode ();
   }
 
 
@@ -230,17 +232,17 @@ public final class Tuple extends Expression implements DefaultExpressions
    * 
    * @see Expression#isValue()
    */
-  @ Override
-  public boolean isValue ( )
+  @Override
+  public boolean isValue ()
   {
     for ( Expression e : this.expressions )
     {
-      if ( ! e.isValue ( ) )
+      if ( !e.isValue () )
       {
-        return false ;
+        return false;
       }
     }
-    return true ;
+    return true;
   }
 
 
@@ -249,20 +251,20 @@ public final class Tuple extends Expression implements DefaultExpressions
    * 
    * @see Expression#substitute(Identifier, Expression)
    */
-  @ Override
-  public Tuple substitute ( Identifier pId , Expression pExpression )
+  @Override
+  public Tuple substitute ( Identifier pId, Expression pExpression )
   {
-    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    if ( pExpression.getIdentifierFreeNotOnlyVariable () )
     {
-      throw new NotOnlyFreeVariableException ( ) ;
+      throw new NotOnlyFreeVariableException ();
     }
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int i = 0 ; i < newExpressions.length ; i ++ )
+    Expression [] newExpressions = new Expression [ this.expressions.length ];
+    for ( int i = 0 ; i < newExpressions.length ; i++ )
     {
-      newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
-          pExpression ) ;
+      newExpressions [ i ] = this.expressions [ i ].substitute ( pId,
+          pExpression );
     }
-    return new Tuple ( newExpressions ) ;
+    return new Tuple ( newExpressions );
   }
 
 
@@ -271,48 +273,48 @@ public final class Tuple extends Expression implements DefaultExpressions
    * 
    * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    StringBuilder body = new StringBuilder ( ) ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    StringBuilder body = new StringBuilder ();
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
       if ( i > 0 )
       {
-        body.append ( PRETTY_COMMA ) ;
-        body.append ( PRETTY_SPACE ) ;
+        body.append ( PRETTY_COMMA );
+        body.append ( PRETTY_SPACE );
       }
-      body.append ( this.expressions [ i ].toPrettyString ( ).toString ( ) ) ;
+      body.append ( this.expressions [ i ].toPrettyString ().toString () );
     }
-    String descriptions[] = new String [ 2 + this.expressions.length ] ;
-    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
-    descriptions [ 1 ] = body.toString ( ) ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    String descriptions[] = new String [ 2 + this.expressions.length ];
+    descriptions [ 0 ] = this.toPrettyString ().toString ();
+    descriptions [ 1 ] = body.toString ();
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
-      descriptions [ 2 + i ] = this.expressions [ i ].toPrettyString ( )
-          .toString ( ) ;
+      descriptions [ 2 + i ] = this.expressions [ i ].toPrettyString ()
+          .toString ();
     }
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_TUPLE , LATEX_TUPLE , pIndent , descriptions ) ;
-    builder.addBuilderBegin ( ) ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+        PRIO_TUPLE, LATEX_TUPLE, pIndent, descriptions );
+    builder.addBuilderBegin ();
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
       if ( i > 0 )
       {
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
             + LATEX_INDENT )
-            + LATEX_COMMA ) ;
-        builder.addText ( LATEX_SPACE ) ;
-        builder.addBreak ( ) ;
+            + LATEX_COMMA );
+        builder.addText ( LATEX_SPACE );
+        builder.addBreak ();
       }
       builder.addBuilder ( this.expressions [ i ].toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) ,
-          PRIO_TUPLE_E ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ),
+          PRIO_TUPLE_E );
     }
-    builder.addBuilderEnd ( ) ;
-    return builder ;
+    builder.addBuilderEnd ();
+    return builder;
   }
 
 
@@ -321,29 +323,29 @@ public final class Tuple extends Expression implements DefaultExpressions
    * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_TUPLE ) ;
-      this.prettyStringBuilder.addText ( PRETTY_LPAREN ) ;
-      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_TUPLE );
+      this.prettyStringBuilder.addText ( PRETTY_LPAREN );
+      for ( int i = 0 ; i < this.expressions.length ; i++ )
       {
         if ( i > 0 )
         {
-          this.prettyStringBuilder.addText ( PRETTY_COMMA ) ;
-          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-          this.prettyStringBuilder.addBreak ( ) ;
+          this.prettyStringBuilder.addText ( PRETTY_COMMA );
+          this.prettyStringBuilder.addText ( PRETTY_SPACE );
+          this.prettyStringBuilder.addBreak ();
         }
         this.prettyStringBuilder.addBuilder ( this.expressions [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_TUPLE_E ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+            PRIO_TUPLE_E );
       }
-      this.prettyStringBuilder.addText ( PRETTY_RPAREN ) ;
+      this.prettyStringBuilder.addText ( PRETTY_RPAREN );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

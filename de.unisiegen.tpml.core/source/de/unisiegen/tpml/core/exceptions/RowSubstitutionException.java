@@ -1,11 +1,11 @@
-package de.unisiegen.tpml.core.exceptions ;
+package de.unisiegen.tpml.core.exceptions;
 
 
-import de.unisiegen.tpml.core.Messages ;
-import de.unisiegen.tpml.core.expressions.Attribute ;
-import de.unisiegen.tpml.core.expressions.Duplication ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.Row ;
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.expressions.Attribute;
+import de.unisiegen.tpml.core.expressions.Duplication;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.Row;
 
 
 /**
@@ -17,17 +17,18 @@ import de.unisiegen.tpml.core.expressions.Row ;
  */
 public final class RowSubstitutionException extends RuntimeException
 {
+
   /**
    * The serial version UID.
    */
-  private static final long serialVersionUID = 4717084402322482294L ;
+  private static final long serialVersionUID = 4717084402322482294L;
 
 
   /**
    * Initializes the exception.
    */
-  public RowSubstitutionException ( )
+  public RowSubstitutionException ()
   {
-    super ( Messages.getString ( "Exception.1" ) ) ; //$NON-NLS-1$
+    super ( Messages.getString ( "Exception.1" ) ); //$NON-NLS-1$
   }
 }

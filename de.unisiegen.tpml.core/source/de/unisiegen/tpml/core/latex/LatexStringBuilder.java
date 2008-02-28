@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
 /**
@@ -12,11 +12,12 @@ package de.unisiegen.tpml.core.latex ;
  */
 public interface LatexStringBuilder extends LatexCommandNames
 {
+
   /**
    * Appends a break location to the string builder. A break marks the location
    * as possible newline insertion position for the latex export.
    */
-  public void addBreak ( ) ;
+  public void addBreak ();
 
 
   /**
@@ -35,20 +36,20 @@ public interface LatexStringBuilder extends LatexCommandNames
    *           implementation of this builder.
    * @throws NullPointerException If <code>builder</code> is <code>null</code>.
    */
-  public void addBuilder ( LatexStringBuilder pLatexStringBuilder ,
-      int pArgumentPriority ) ;
+  public void addBuilder ( LatexStringBuilder pLatexStringBuilder,
+      int pArgumentPriority );
 
 
   /**
    * Inserts the begin of a builder.
    */
-  public void addBuilderBegin ( ) ;
+  public void addBuilderBegin ();
 
 
   /**
    * Inserts the end of a builder.
    */
-  public void addBuilderEnd ( ) ;
+  public void addBuilderEnd ();
 
 
   /**
@@ -68,7 +69,7 @@ public interface LatexStringBuilder extends LatexCommandNames
    * @throws NullPointerException If <code>builder</code> is <code>null</code>.
    */
   public void addBuilderWithoutBrackets (
-      LatexStringBuilder pLatexStringBuilder , int pArgumentPriority ) ;
+      LatexStringBuilder pLatexStringBuilder, int pArgumentPriority );
 
 
   /**
@@ -78,14 +79,14 @@ public interface LatexStringBuilder extends LatexCommandNames
    * @param pText The text to append.
    * @throws NullPointerException If <code>pText</code> is <code>null</code>.
    */
-  public void addComment ( String pText ) ;
+  public void addComment ( String pText );
 
 
   /**
    * Inserts an empty builder at the end of our builder. This is used, if an
    * optinal argument is not used.
    */
-  public void addEmptyBuilder ( ) ;
+  public void addEmptyBuilder ();
 
 
   /**
@@ -93,7 +94,7 @@ public interface LatexStringBuilder extends LatexCommandNames
    * 
    * @param pIndentOffset The offset to the indent of this builder.
    */
-  public void addSourceCodeBreak ( int pIndentOffset ) ;
+  public void addSourceCodeBreak ( int pIndentOffset );
 
 
   /**
@@ -102,7 +103,7 @@ public interface LatexStringBuilder extends LatexCommandNames
    * @param pText The text to append.
    * @throws NullPointerException If <code>pText</code> is <code>null</code>.
    */
-  public void addText ( String pText ) ;
+  public void addText ( String pText );
 
 
   /**
@@ -114,5 +115,5 @@ public interface LatexStringBuilder extends LatexCommandNames
    * @return The <code>LatexString</code> for the current contents of the
    *         builder.
    */
-  public LatexString toLatexString ( ) ;
+  public LatexString toLatexString ();
 }

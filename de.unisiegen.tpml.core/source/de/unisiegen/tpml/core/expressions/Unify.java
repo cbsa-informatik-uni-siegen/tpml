@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -9,24 +9,25 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public class Unify extends Constant
 {
+
   /**
    * The keyword <code>unify</code>.
    */
-  private static final String UNIFY = "unify" ; //$NON-NLS-1$
+  private static final String UNIFY = "unify"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = Expression.getCaption ( Unify.class ) ;
+  private static final String CAPTION = Expression.getCaption ( Unify.class );
 
 
   /**
    * Allocates a new <code>Unify</code>.
    */
-  public Unify ( )
+  public Unify ()
   {
-    super ( UNIFY ) ;
+    super ( UNIFY );
   }
 
 
@@ -35,19 +36,19 @@ public class Unify extends Constant
    * 
    * @see Constant#clone()
    */
-  @ Override
-  public Unify clone ( )
+  @Override
+  public Unify clone ()
   {
-    return new Unify ( ) ;
+    return new Unify ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

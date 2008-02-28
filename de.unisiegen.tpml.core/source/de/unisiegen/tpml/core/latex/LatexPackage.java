@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
 /**
@@ -8,64 +8,65 @@ package de.unisiegen.tpml.core.latex ;
  */
 public interface LatexPackage
 {
+
   /**
    * The description.
    */
-  public static final String DESCRIPTION = "Needed latex packages" ; //$NON-NLS-1$
+  public static final String DESCRIPTION = "Needed latex packages"; //$NON-NLS-1$
 
 
   /**
    * The <code>amsmath</code> package.
    */
   public static final LatexPackage AMSMATH = new DefaultLatexPackage (
-      "amsmath" ) ; //$NON-NLS-1$
+      "amsmath" ); //$NON-NLS-1$
 
 
   /**
    * The <code>amssymb</code> package.
    */
   public static final LatexPackage AMSSYMB = new DefaultLatexPackage (
-      "amssymb" ) ; //$NON-NLS-1$
+      "amssymb" ); //$NON-NLS-1$
 
 
   /**
    * The <code>amstext</code> package.
    */
   public static final LatexPackage AMSTEXT = new DefaultLatexPackage (
-      "amstext" ) ; //$NON-NLS-1$
+      "amstext" ); //$NON-NLS-1$
 
 
   /**
    * The <code>color</code> package.
    */
-  public static final LatexPackage COLOR = new DefaultLatexPackage ( "color" ) ; //$NON-NLS-1$
+  public static final LatexPackage COLOR = new DefaultLatexPackage ( "color" ); //$NON-NLS-1$
 
 
   /**
    * The <code>ifthen</code> package.
    */
-  public static final LatexPackage IFTHEN = new DefaultLatexPackage ( "ifthen" ) ; //$NON-NLS-1$
+  public static final LatexPackage IFTHEN = new DefaultLatexPackage ( "ifthen" ); //$NON-NLS-1$
 
 
   /**
    * The <code>longtable</code> package.
    */
   public static final LatexPackage LONGTABLE = new DefaultLatexPackage (
-      "longtable" ) ; //$NON-NLS-1$
+      "longtable" ); //$NON-NLS-1$
 
 
   /**
    * The <code>pst-node</code> package.
    */
   public static final LatexPackage PSTNODE = new DefaultLatexPackage (
-      "pst-node" ) ; //$NON-NLS-1$
+      "pst-node" ); //$NON-NLS-1$
 
 
   /**
    * The <code>pstricks</code> package.
    */
   public static final LatexPackage PSTRICKS = new DefaultLatexPackage (
-      "pstricks" ) ; //$NON-NLS-1$
+      "pstricks" ); //$NON-NLS-1$
 
 
   /**
@@ -73,7 +74,7 @@ public interface LatexPackage
    * 
    * @return The name.
    */
-  public String getName ( ) ;
+  public String getName ();
 
 
   /**
@@ -81,5 +82,5 @@ public interface LatexPackage
    * 
    * @return The string value of this <code>LatexInstruction</code>.
    */
-  public String toString ( ) ;
+  public String toString ();
 }

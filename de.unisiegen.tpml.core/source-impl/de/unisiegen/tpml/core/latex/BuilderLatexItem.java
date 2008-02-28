@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
 /**
@@ -11,10 +11,11 @@ package de.unisiegen.tpml.core.latex ;
  */
 final class BuilderLatexItem extends AbstractLatexItem
 {
+
   /**
    * The latex string builder associated with this item.
    */
-  private DefaultLatexStringBuilder builder ;
+  private DefaultLatexStringBuilder builder;
 
 
   /**
@@ -30,9 +31,9 @@ final class BuilderLatexItem extends AbstractLatexItem
   {
     if ( pDefaultLatexStringBuilder == null )
     {
-      throw new NullPointerException ( "builder is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "builder is null" ); //$NON-NLS-1$
     }
-    this.builder = pDefaultLatexStringBuilder ;
+    this.builder = pDefaultLatexStringBuilder;
   }
 
 
@@ -41,9 +42,9 @@ final class BuilderLatexItem extends AbstractLatexItem
    * 
    * @see AbstractLatexItem#determineString(StringBuilder, int)
    */
-  @ Override
-  protected void determineString ( StringBuilder pBuffer , int pIndent )
+  @Override
+  protected void determineString ( StringBuilder pBuffer, int pIndent )
   {
-    this.builder.determineString ( pBuffer , pIndent ) ;
+    this.builder.determineString ( pBuffer, pIndent );
   }
 }

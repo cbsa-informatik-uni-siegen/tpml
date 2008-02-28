@@ -1,9 +1,10 @@
-package de.unisiegen.tpml.graphics.outline ;
+package de.unisiegen.tpml.graphics.outline;
 
 
-import javax.swing.JPanel ;
-import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
+import javax.swing.JPanel;
+
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
 
 
 /**
@@ -14,6 +15,7 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
  */
 public interface Outline
 {
+
   /**
    * An interface for all execute enums.
    * 
@@ -35,31 +37,31 @@ public interface Outline
     /**
      * Auto change from the <code>Editor</code>.
      */
-    EDITOR ,
+    EDITOR,
     /**
      * Auto change from the <code>SmallStep</code>.
      */
-    SMALLSTEP ,
+    SMALLSTEP,
     /**
      * Auto change from the <code>BigStep</code>.
      */
-    BIGSTEP ,
+    BIGSTEP,
     /**
      * Auto change from the <code>TypeChecker</code>.
      */
-    TYPECHECKER ,
+    TYPECHECKER,
     /**
      * Auto change from the <code>TypeInference</code>.
      */
-    TYPEINFERENCE ,
+    TYPEINFERENCE,
     /**
      * Auto change from the <code>Subtyping</code>.
      */
-    SUBTYPING ,
+    SUBTYPING,
     /**
      * Auto change from the <code>Subtyping source</code>.
      */
-    SUBTYPING_SOURCE ,
+    SUBTYPING_SOURCE,
     /**
      * Auto change from the <code>MinimalTyping</code>.
      */
@@ -77,31 +79,31 @@ public interface Outline
     /**
      * Initialized from the <code>Editor</code>.
      */
-    EDITOR ,
+    EDITOR,
     /**
      * Initialized from the <code>SmallStep</code>.
      */
-    SMALLSTEP ,
+    SMALLSTEP,
     /**
      * Initialized from the <code>BigStep</code>.
      */
-    BIGSTEP ,
+    BIGSTEP,
     /**
      * Initialized from the <code>TypeChecker</code>.
      */
-    TYPECHECKER ,
+    TYPECHECKER,
     /**
      * Initialized from the <code>TypeInference</code>.
      */
-    TYPEINFERENCE ,
+    TYPEINFERENCE,
     /**
      * Initialized from the <code>Subtyping</code>.
      */
-    SUBTYPING ,
+    SUBTYPING,
     /**
      * Initialized from the <code>Subtyping source</code>.
      */
-    SUBTYPING_SOURCE ,
+    SUBTYPING_SOURCE,
     /**
      * Initialized from the <code>MinimalTyping</code>.
      */
@@ -119,31 +121,31 @@ public interface Outline
     /**
      * Change by mouse cick from the <code>Editor</code>.
      */
-    EDITOR ,
+    EDITOR,
     /**
      * Change by mouse cick from the <code>SmallStep</code>.
      */
-    SMALLSTEP ,
+    SMALLSTEP,
     /**
      * Change by mouse cick from the <code>BigStep</code>.
      */
-    BIGSTEP ,
+    BIGSTEP,
     /**
      * Change by mouse cick from the <code>TypeChecker</code>.
      */
-    TYPECHECKER ,
+    TYPECHECKER,
     /**
      * Change by mouse cick from the <code>TypeInference</code>.
      */
-    TYPEINFERENCE ,
+    TYPEINFERENCE,
     /**
      * Change by mouse cick from the <code>Subtyping</code>.
      */
-    SUBTYPING ,
+    SUBTYPING,
     /**
      * Change by mouse cick from the <code>Subtyping source</code>.
      */
-    SUBTYPING_SOURCE ,
+    SUBTYPING_SOURCE,
     /**
      * Change by mouse cick from the <code>MinimalTyping</code>.
      */
@@ -161,7 +163,7 @@ public interface Outline
     /**
      * The outline is the first outline.
      */
-    FIRST ,
+    FIRST,
     /**
      * The outline is the second outline.
      */
@@ -174,7 +176,7 @@ public interface Outline
    * 
    * @return The <code>JPanel</code> of the {@link OutlineUI}.
    */
-  public JPanel getPanel ( ) ;
+  public JPanel getPanel ();
 
 
   /**
@@ -185,6 +187,6 @@ public interface Outline
    * @param pExpressionOrType The new {@link ExpressionOrType}.
    * @param pExecute The {@link Outline.Execute}.
    */
-  public void load ( ExpressionOrType pExpressionOrType ,
-      Outline.Execute pExecute ) ;
+  public void load ( ExpressionOrType pExpressionOrType,
+      Outline.Execute pExecute );
 }

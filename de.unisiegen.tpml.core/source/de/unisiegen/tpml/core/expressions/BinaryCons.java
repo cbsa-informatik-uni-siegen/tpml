@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -14,25 +14,26 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class BinaryCons extends BinaryOperator
 {
+
   /**
    * The keyword <code>::</code>.
    */
-  private static final String COLONCOLON = "::" ; //$NON-NLS-1$
+  private static final String COLONCOLON = "::"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( BinaryCons.class ) ;
+      .getCaption ( BinaryCons.class );
 
 
   /**
    * Allocates a new <code>BinaryCons</code> instances.
    */
-  public BinaryCons ( )
+  public BinaryCons ()
   {
-    super ( COLONCOLON , PRIO_BINARY_CONS ) ;
+    super ( COLONCOLON, PRIO_BINARY_CONS );
   }
 
 
@@ -44,11 +45,11 @@ public final class BinaryCons extends BinaryOperator
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public BinaryCons ( int pParserStartOffset , int pParserEndOffset )
+  public BinaryCons ( int pParserStartOffset, int pParserEndOffset )
   {
-    this ( ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ();
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -57,19 +58,19 @@ public final class BinaryCons extends BinaryOperator
    * 
    * @see BinaryOperator#applyTo(Expression, Expression)
    */
-  @ Override
-  public Expression applyTo ( Expression pExpression1 , Expression pExpression2 )
+  @Override
+  public Expression applyTo ( Expression pExpression1, Expression pExpression2 )
       throws BinaryOperatorException
   {
     try
     {
       // try to create a new list from e1 and e2
-      return new List ( pExpression1 , pExpression2 ) ;
+      return new List ( pExpression1, pExpression2 );
     }
     catch ( ClassCastException e )
     {
       // we're stuck
-      throw new BinaryOperatorException ( this , pExpression1 , pExpression2 ) ;
+      throw new BinaryOperatorException ( this, pExpression1, pExpression2 );
     }
   }
 
@@ -79,19 +80,19 @@ public final class BinaryCons extends BinaryOperator
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public BinaryCons clone ( )
+  @Override
+  public BinaryCons clone ()
   {
-    return new BinaryCons ( ) ;
+    return new BinaryCons ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

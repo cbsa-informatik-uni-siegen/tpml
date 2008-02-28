@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages ;
+package de.unisiegen.tpml.core.languages;
 
 
 import java.io.Reader;
@@ -24,10 +24,11 @@ import de.unisiegen.tpml.core.types.MonoType;
  */
 public abstract class AbstractLanguage implements Language
 {
+
   /**
    * Allocates a new <code>AbstractLanguage</code>.
    */
-  protected AbstractLanguage ( )
+  protected AbstractLanguage ()
   {
     // nothing to do here.
   }
@@ -39,25 +40,27 @@ public abstract class AbstractLanguage implements Language
    * @see de.unisiegen.tpml.core.languages.Language#newTypeCheckerProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
   public TypeCheckerProofModel newTypeCheckerProofModel (
-      @ SuppressWarnings ( "unused" )
+      @SuppressWarnings ( "unused" )
       Expression expression )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$
+        .getString ( "AbstractLanguage.0" ), getName () ) ); //$NON-NLS-1$
   }
-  
+
+
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.Language#newMinimalTypingProofModel(de.unisiegen.tpml.core.expressions.Expression, Boolean)
+   * @see de.unisiegen.tpml.core.languages.Language#newMinimalTypingProofModel(de.unisiegen.tpml.core.expressions.Expression,
+   *      Boolean)
    */
   public MinimalTypingProofModel newMinimalTypingProofModel (
-      @ SuppressWarnings ( "unused" )
-      Expression expression, @SuppressWarnings("unused")
-		boolean mode )
+      @SuppressWarnings ( "unused" )
+      Expression expression, @SuppressWarnings ( "unused" )
+      boolean mode )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$
+        .getString ( "AbstractLanguage.0" ), getName () ) ); //$NON-NLS-1$
   }
 
 
@@ -67,39 +70,45 @@ public abstract class AbstractLanguage implements Language
    * @see de.unisiegen.tpml.core.languages.Language#newTypeInferenceProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
   public TypeInferenceProofModel newTypeInferenceProofModel (
-      @ SuppressWarnings ( "unused" )
+      @SuppressWarnings ( "unused" )
       Expression expression )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$
+        .getString ( "AbstractLanguage.0" ), getName () ) ); //$NON-NLS-1$
   }
-  
+
+
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(MonoType, MonoType, boolean)
+   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(MonoType,
+   *      MonoType, boolean)
    */
-  public SubTypingProofModel newSubTypingProofModel ( 
-		  @SuppressWarnings("unused")	MonoType type, 
-		  @SuppressWarnings("unused") MonoType type2, 
-		  @SuppressWarnings("unused")	boolean mode )
+  public SubTypingProofModel newSubTypingProofModel (
+      @SuppressWarnings ( "unused" )
+      MonoType type, @SuppressWarnings ( "unused" )
+      MonoType type2, @SuppressWarnings ( "unused" )
+      boolean mode )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$
+        .getString ( "AbstractLanguage.0" ), getName () ) ); //$NON-NLS-1$
   }
-  
+
+
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.Language#newRecSubTypingProofModel(MonoType type, MonoType type2, boolean mode)
+   * @see de.unisiegen.tpml.core.languages.Language#newRecSubTypingProofModel(MonoType
+   *      type, MonoType type2, boolean mode)
    */
-  public RecSubTypingProofModel newRecSubTypingProofModel ( 
-		  @SuppressWarnings("unused")	MonoType type, 
-		  @SuppressWarnings("unused")	MonoType type2, 
-		  @SuppressWarnings("unused")	boolean mode )
+  public RecSubTypingProofModel newRecSubTypingProofModel (
+      @SuppressWarnings ( "unused" )
+      MonoType type, @SuppressWarnings ( "unused" )
+      MonoType type2, @SuppressWarnings ( "unused" )
+      boolean mode )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$
+        .getString ( "AbstractLanguage.0" ), getName () ) ); //$NON-NLS-1$
   }
 
 
@@ -110,7 +119,7 @@ public abstract class AbstractLanguage implements Language
    */
   public final LanguageParser newParser ( Reader reader )
   {
-    return newParser ( newScanner ( reader ) ) ;
+    return newParser ( newScanner ( reader ) );
   }
 
 
@@ -119,11 +128,11 @@ public abstract class AbstractLanguage implements Language
    * 
    * @see de.unisiegen.tpml.core.languages.Language#newTypeParser(de.unisiegen.tpml.core.languages.LanguageTypeScanner)
    */
-  public LanguageTypeParser newTypeParser ( @ SuppressWarnings ( "unused" )
+  public LanguageTypeParser newTypeParser ( @SuppressWarnings ( "unused" )
   LanguageTypeScanner scanner )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$
+        .getString ( "AbstractLanguage.0" ), getName () ) ); //$NON-NLS-1$
   }
 
 
@@ -134,7 +143,7 @@ public abstract class AbstractLanguage implements Language
    */
   public final LanguageTypeParser newTypeParser ( Reader reader )
   {
-    return newTypeParser ( newTypeScanner ( reader ) ) ;
+    return newTypeParser ( newTypeScanner ( reader ) );
   }
 
 
@@ -143,20 +152,21 @@ public abstract class AbstractLanguage implements Language
    * 
    * @see de.unisiegen.tpml.core.languages.Language#newTypeScanner(java.io.Reader)
    */
-  public LanguageTypeScanner newTypeScanner ( @ SuppressWarnings ( "unused" )
+  public LanguageTypeScanner newTypeScanner ( @SuppressWarnings ( "unused" )
   Reader reader )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$
+        .getString ( "AbstractLanguage.0" ), getName () ) ); //$NON-NLS-1$
   }
-  
+
+
   /**
-   * 
    * {@inheritDoc}
-   *
+   * 
    * @see de.unisiegen.tpml.core.languages.Language#isTypeLanguage()
    */
-  public boolean isTypeLanguage() {
-	  return false;
+  public boolean isTypeLanguage ()
+  {
+    return false;
   }
 }

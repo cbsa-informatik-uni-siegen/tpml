@@ -1,13 +1,14 @@
-package de.unisiegen.tpml.core.smallstep ;
+package de.unisiegen.tpml.core.smallstep;
 
 
-import java.lang.reflect.InvocationTargetException ;
-import java.lang.reflect.Method ;
-import de.unisiegen.tpml.core.AbstractProofRule ;
-import de.unisiegen.tpml.core.AbstractProofRuleSet ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.interpreters.Store ;
-import de.unisiegen.tpml.core.languages.Language ;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import de.unisiegen.tpml.core.AbstractProofRule;
+import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interpreters.Store;
+import de.unisiegen.tpml.core.languages.Language;
 
 
 /**
@@ -21,6 +22,7 @@ import de.unisiegen.tpml.core.languages.Language ;
 public abstract class AbstractSmallStepProofRuleSet extends
     AbstractProofRuleSet
 {
+
   //
   // Constructor (protected)
   //
@@ -35,7 +37,7 @@ public abstract class AbstractSmallStepProofRuleSet extends
    */
   protected AbstractSmallStepProofRuleSet ( Language language )
   {
-    super ( language ) ;
+    super ( language );
   }
 
 
@@ -53,9 +55,9 @@ public abstract class AbstractSmallStepProofRuleSet extends
    * @param axiom whether the new small step rule is an axiom.
    * @see SmallStepProofRule#isAxiom()
    */
-  protected void register ( int group , String name , boolean axiom )
+  protected void register ( int group, String name, boolean axiom )
   {
-    register ( new DefaultSmallStepProofRule ( group , name , axiom ) ) ;
+    register ( new DefaultSmallStepProofRule ( group, name, axiom ) );
   }
 
 
@@ -73,7 +75,7 @@ public abstract class AbstractSmallStepProofRuleSet extends
    */
   protected void unregister ( String name )
   {
-    unregister ( getRuleByName ( name ) ) ;
+    unregister ( getRuleByName ( name ) );
   }
 
 
@@ -102,46 +104,46 @@ public abstract class AbstractSmallStepProofRuleSet extends
    *           <code>expression</code> is <code>null</code>.
    * @see #lookupMethod(String, Class)
    */
-  public Expression evaluate ( SmallStepProofContext context ,
+  public Expression evaluate ( SmallStepProofContext context,
       Expression expression )
   {
     if ( context == null )
     {
-      throw new NullPointerException ( "context is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "context is null" ); //$NON-NLS-1$
     }
     if ( expression == null )
     {
-      throw new NullPointerException ( "expression is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "expression is null" ); //$NON-NLS-1$
     }
     try
     {
       // determine the specific evaluate method
-      Method method = lookupMethod ( "evaluate" , expression.getClass ( ) ) ; //$NON-NLS-1$
-      return ( Expression ) method.invoke ( this , context , expression ) ;
+      Method method = lookupMethod ( "evaluate", expression.getClass () ); //$NON-NLS-1$
+      return ( Expression ) method.invoke ( this, context, expression );
     }
     catch ( ClassCastException e )
     {
       // no way to further evaluate the expression
-      return expression ;
+      return expression;
     }
     catch ( NoSuchMethodException e )
     {
       // no way to further evaluate the expression
-      return expression ;
+      return expression;
     }
     catch ( RuntimeException e )
     {
       // rethrow the exception, as something is really completely broken
-      throw e ;
+      throw e;
     }
     catch ( InvocationTargetException e )
     {
-      throw new RuntimeException ( e.getTargetException ( ).getMessage ( ) ) ;
+      throw new RuntimeException ( e.getTargetException ().getMessage () );
     }
     catch ( Exception e )
     {
       // rethrow as runtime exception, something is really completely broken
-      throw new RuntimeException ( e ) ;
+      throw new RuntimeException ( e );
     }
   }
 
@@ -159,24 +161,24 @@ public abstract class AbstractSmallStepProofRuleSet extends
    * @throws NullPointerException if <code>baseName</code> or
    *           <code>clazz</code> is <code>null</code>.
    */
-  @ SuppressWarnings ( "unchecked" )
-  protected Method lookupMethod ( String baseName , Class clazz )
+  @SuppressWarnings ( "unchecked" )
+  protected Method lookupMethod ( String baseName, Class clazz )
       throws NoSuchMethodException
   {
     // try for this class and all super classes up to Expression
-    Class tmpClazz = clazz ;
+    Class tmpClazz = clazz;
     while ( tmpClazz != Expression.class )
     {
       // try to find a suitable method
-      for ( Method method : getClass ( ).getMethods ( ) )
+      for ( Method method : getClass ().getMethods () )
       {
-        if ( method.getName ( ).equals ( baseName + tmpClazz.getSimpleName ( ) ) )
+        if ( method.getName ().equals ( baseName + tmpClazz.getSimpleName () ) )
         {
-          return method ;
+          return method;
         }
       }
-      tmpClazz = tmpClazz.getSuperclass ( ) ;
+      tmpClazz = tmpClazz.getSuperclass ();
     }
-    throw new NoSuchMethodException ( baseName ) ;
+    throw new NoSuchMethodException ( baseName );
   }
 }

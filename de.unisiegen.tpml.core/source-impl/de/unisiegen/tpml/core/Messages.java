@@ -1,8 +1,8 @@
-package de.unisiegen.tpml.core ;
+package de.unisiegen.tpml.core;
 
 
-import java.util.MissingResourceException ;
-import java.util.ResourceBundle ;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 
 /**
@@ -14,11 +14,12 @@ import java.util.ResourceBundle ;
  */
 public class Messages
 {
+
   /**
    * The resource bundle.
    */
   private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
-      .getBundle ( "de.unisiegen.tpml.core.messages" ) ; //$NON-NLS-1$
+      .getBundle ( "de.unisiegen.tpml.core.messages" ); //$NON-NLS-1$
 
 
   /**
@@ -31,11 +32,11 @@ public class Messages
   {
     try
     {
-      return RESOURCE_BUNDLE.getString ( pKey ) ;
+      return RESOURCE_BUNDLE.getString ( pKey );
     }
     catch ( MissingResourceException e )
     {
-      return '!' + pKey + '!' ;
+      return '!' + pKey + '!';
     }
   }
 }

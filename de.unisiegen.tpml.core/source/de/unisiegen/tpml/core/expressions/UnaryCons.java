@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -12,25 +12,26 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class UnaryCons extends Constant
 {
+
   /**
    * The keyword <code>cons</code>.
    */
-  private static final String CONS = "cons" ; //$NON-NLS-1$
+  private static final String CONS = "cons"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( UnaryCons.class ) ;
+      .getCaption ( UnaryCons.class );
 
 
   /**
    * Constructs a new <code>UnaryCons</code> instance.
    */
-  public UnaryCons ( )
+  public UnaryCons ()
   {
-    super ( CONS ) ;
+    super ( CONS );
   }
 
 
@@ -42,11 +43,11 @@ public final class UnaryCons extends Constant
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public UnaryCons ( int pParserStartOffset , int pParserEndOffset )
+  public UnaryCons ( int pParserStartOffset, int pParserEndOffset )
   {
-    this ( ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ();
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -55,19 +56,19 @@ public final class UnaryCons extends Constant
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public UnaryCons clone ( )
+  @Override
+  public UnaryCons clone ()
   {
-    return new UnaryCons ( ) ;
+    return new UnaryCons ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

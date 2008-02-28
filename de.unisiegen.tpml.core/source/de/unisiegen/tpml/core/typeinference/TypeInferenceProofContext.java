@@ -1,9 +1,10 @@
-package de.unisiegen.tpml.core.typeinference ;
+package de.unisiegen.tpml.core.typeinference;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -16,12 +17,13 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  */
 public interface TypeInferenceProofContext extends TypeCheckerProofContext
 {
+
   /**
    * Adds a new {@link TypeEquationTypeInference}.
    * 
    * @param pTypeEquationTypeInference The new {@link TypeEquationTypeInference}.
    */
-  public void addEquation ( TypeEquationTypeInference pTypeEquationTypeInference ) ;
+  public void addEquation ( TypeEquationTypeInference pTypeEquationTypeInference );
 
 
   /**
@@ -29,7 +31,7 @@ public interface TypeInferenceProofContext extends TypeCheckerProofContext
    * 
    * @param s new TypeSubstitution
    */
-  public void addSubstitution ( TypeSubstitution s ) ;
+  public void addSubstitution ( TypeSubstitution s );
 
 
   /**
@@ -38,5 +40,5 @@ public interface TypeInferenceProofContext extends TypeCheckerProofContext
    * @return substitutions ArrayList < DefaultTypeSubstitution > with all type
    *         substitutions
    */
-  public ArrayList < TypeSubstitution > getSubstitution ( ) ;
+  public ArrayList < TypeSubstitution > getSubstitution ();
 }

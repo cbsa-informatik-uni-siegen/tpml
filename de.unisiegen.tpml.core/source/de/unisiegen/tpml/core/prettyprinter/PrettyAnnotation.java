@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.prettyprinter ;
+package de.unisiegen.tpml.core.prettyprinter;
 
 
 /**
@@ -13,6 +13,7 @@ package de.unisiegen.tpml.core.prettyprinter ;
  */
 public final class PrettyAnnotation
 {
+
   //
   // Attributes
   //
@@ -21,7 +22,7 @@ public final class PrettyAnnotation
    * 
    * @see #getBreakOffsets()
    */
-  private int [ ] breakOffsets ;
+  private int [] breakOffsets;
 
 
   /**
@@ -29,7 +30,7 @@ public final class PrettyAnnotation
    * 
    * @see #getStartOffset()
    */
-  private int startOffset ;
+  private int startOffset;
 
 
   /**
@@ -37,7 +38,7 @@ public final class PrettyAnnotation
    * 
    * @see #getEndOffset()
    */
-  private int endOffset ;
+  private int endOffset;
 
 
   //
@@ -53,11 +54,11 @@ public final class PrettyAnnotation
    *          character of the annotation).
    * @param pBreakOffsets the list of possible break offsets.
    */
-  PrettyAnnotation ( int pStartOffset , int pEndOffset , int [ ] pBreakOffsets )
+  PrettyAnnotation ( int pStartOffset, int pEndOffset, int [] pBreakOffsets )
   {
-    this.breakOffsets = pBreakOffsets ;
-    this.startOffset = pStartOffset ;
-    this.endOffset = pEndOffset ;
+    this.breakOffsets = pBreakOffsets;
+    this.startOffset = pStartOffset;
+    this.endOffset = pEndOffset;
   }
 
 
@@ -72,9 +73,9 @@ public final class PrettyAnnotation
    * 
    * @return the break offsets for this annotation.
    */
-  public int [ ] getBreakOffsets ( )
+  public int [] getBreakOffsets ()
   {
-    return this.breakOffsets ;
+    return this.breakOffsets;
   }
 
 
@@ -84,9 +85,9 @@ public final class PrettyAnnotation
    * 
    * @return the start offset of the annotation.
    */
-  public int getStartOffset ( )
+  public int getStartOffset ()
   {
-    return this.startOffset ;
+    return this.startOffset;
   }
 
 
@@ -96,8 +97,8 @@ public final class PrettyAnnotation
    * 
    * @return the end offset of the annotation.
    */
-  public int getEndOffset ( )
+  public int getEndOffset ()
   {
-    return this.endOffset ;
+    return this.endOffset;
   }
 }

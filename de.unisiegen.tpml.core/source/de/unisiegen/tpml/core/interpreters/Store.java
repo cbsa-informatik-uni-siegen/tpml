@@ -1,10 +1,11 @@
-package de.unisiegen.tpml.core.interpreters ;
+package de.unisiegen.tpml.core.interpreters;
 
 
-import java.util.Enumeration ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Location ;
-import de.unisiegen.tpml.core.util.Environment ;
+import java.util.Enumeration;
+
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Location;
+import de.unisiegen.tpml.core.util.Environment;
 
 
 /**
@@ -19,8 +20,9 @@ import de.unisiegen.tpml.core.util.Environment ;
  * @version $Rev$
  * @see de.unisiegen.tpml.core.expressions.Location
  */
-public interface Store extends Environment < Location , Expression >
+public interface Store extends Environment < Location, Expression >
 {
+
   //
   // Store queries
   //
@@ -37,7 +39,7 @@ public interface Store extends Environment < Location , Expression >
    * @see Environment#containsSymbol(Object)
    * @see Environment#get(Object)
    */
-  public boolean containsLocation ( Location location ) ;
+  public boolean containsLocation ( Location location );
 
 
   /**
@@ -48,7 +50,7 @@ public interface Store extends Environment < Location , Expression >
    * @return an enumeration of the {@link Location}s within this store.
    * @see Environment#symbols()
    */
-  public Enumeration < Location > locations ( ) ;
+  public Enumeration < Location > locations ();
 
 
   //
@@ -63,7 +65,7 @@ public interface Store extends Environment < Location , Expression >
    * @return a new {@link Location} within this store.
    * @see #containsLocation(Location)
    */
-  public Location alloc ( ) ;
+  public Location alloc ();
 
 
   /**
@@ -83,5 +85,5 @@ public interface Store extends Environment < Location , Expression >
    * @see Environment#get(Object)
    * @see Expression#isValue()
    */
-  public void put ( Location location , Expression expression ) ;
+  public void put ( Location location, Expression expression );
 }

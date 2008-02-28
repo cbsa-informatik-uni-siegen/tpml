@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -13,41 +13,42 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class UnaryOperatorException extends Exception
 {
+
   /**
    * The unique serial version id.
    */
-  private static final long serialVersionUID = 441799802323616930L ;
+  private static final long serialVersionUID = 441799802323616930L;
 
 
   /**
    * String for the case that the operator is null.
    */
-  private static final String OPERATOR_NULL = "operator is null" ; //$NON-NLS-1$
+  private static final String OPERATOR_NULL = "operator is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the expression is null.
    */
-  private static final String EXPRESSION_NULL = "expression is null" ; //$NON-NLS-1$
+  private static final String EXPRESSION_NULL = "expression is null"; //$NON-NLS-1$
 
 
   /**
    * Cannot apply exception string.
    */
-  private static final String CANNOT_APPLY_1 = "cannot apply " ; //$NON-NLS-1$
+  private static final String CANNOT_APPLY_1 = "cannot apply "; //$NON-NLS-1$
 
 
   /**
    * Cannot apply exception string.
    */
-  private static final String CANNOT_APPLY_2 = " to " ; //$NON-NLS-1$
+  private static final String CANNOT_APPLY_2 = " to "; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( UnaryOperatorException.class ) ;
+      .getCaption ( UnaryOperatorException.class );
 
 
   /**
@@ -55,7 +56,7 @@ public final class UnaryOperatorException extends Exception
    * 
    * @see #getOperator()
    */
-  private UnaryOperator operator ;
+  private UnaryOperator operator;
 
 
   /**
@@ -63,7 +64,7 @@ public final class UnaryOperatorException extends Exception
    * 
    * @see #getE()
    */
-  private Expression e ;
+  private Expression e;
 
 
   /**
@@ -76,10 +77,10 @@ public final class UnaryOperatorException extends Exception
    * @throws NullPointerException if <code>operator</code> or <code>e</code>
    *           is <code>null</code>.
    */
-  public UnaryOperatorException ( UnaryOperator pUnaryOperator ,
+  public UnaryOperatorException ( UnaryOperator pUnaryOperator,
       Expression pExpression )
   {
-    this ( pUnaryOperator , pExpression , null ) ;
+    this ( pUnaryOperator, pExpression, null );
   }
 
 
@@ -94,21 +95,21 @@ public final class UnaryOperatorException extends Exception
    * @throws NullPointerException if <code>operator</code> or <code>e</code>
    *           is <code>null</code>.
    */
-  public UnaryOperatorException ( UnaryOperator pUnaryOperator ,
-      Expression pExpression , Throwable cause )
+  public UnaryOperatorException ( UnaryOperator pUnaryOperator,
+      Expression pExpression, Throwable cause )
   {
-    super ( CANNOT_APPLY_1 + pUnaryOperator + CANNOT_APPLY_2 + pExpression ,
-        cause ) ;
+    super ( CANNOT_APPLY_1 + pUnaryOperator + CANNOT_APPLY_2 + pExpression,
+        cause );
     if ( pUnaryOperator == null )
     {
-      throw new NullPointerException ( OPERATOR_NULL ) ;
+      throw new NullPointerException ( OPERATOR_NULL );
     }
     if ( pExpression == null )
     {
-      throw new NullPointerException ( EXPRESSION_NULL ) ;
+      throw new NullPointerException ( EXPRESSION_NULL );
     }
-    this.operator = pUnaryOperator ;
-    this.e = pExpression ;
+    this.operator = pUnaryOperator;
+    this.e = pExpression;
   }
 
 
@@ -117,9 +118,9 @@ public final class UnaryOperatorException extends Exception
    * 
    * @return The caption of this {@link Expression}.
    */
-  public String getCaption ( )
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -128,9 +129,9 @@ public final class UnaryOperatorException extends Exception
    * 
    * @return the operand of the failed application.
    */
-  public Expression getE ( )
+  public Expression getE ()
   {
-    return this.e ;
+    return this.e;
   }
 
 
@@ -139,8 +140,8 @@ public final class UnaryOperatorException extends Exception
    * 
    * @return the unary operator that failed to apply.
    */
-  public UnaryOperator getOperator ( )
+  public UnaryOperator getOperator ()
   {
-    return this.operator ;
+    return this.operator;
   }
 }

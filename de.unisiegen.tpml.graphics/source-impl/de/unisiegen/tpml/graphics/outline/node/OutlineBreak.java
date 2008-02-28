@@ -1,13 +1,14 @@
-package de.unisiegen.tpml.graphics.outline.node ;
+package de.unisiegen.tpml.graphics.outline.node;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.Type ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType;
+import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
 
 
 /**
@@ -17,25 +18,26 @@ import de.unisiegen.tpml.core.types.Type ;
  */
 public final class OutlineBreak
 {
+
   /**
    * The list of breaks.
    */
-  private ArrayList < Integer > breakList ;
+  private ArrayList < Integer > breakList;
 
 
   /**
    * The list of child {@link OutlineBreak}s.
    */
-  private ArrayList < OutlineBreak > outlineBreakList ;
+  private ArrayList < OutlineBreak > outlineBreakList;
 
 
   /**
    * Initilizes the {@link OutlineBreak}.
    */
-  public OutlineBreak ( )
+  public OutlineBreak ()
   {
-    this.breakList = new ArrayList < Integer > ( ) ;
-    this.outlineBreakList = new ArrayList < OutlineBreak > ( ) ;
+    this.breakList = new ArrayList < Integer > ();
+    this.outlineBreakList = new ArrayList < OutlineBreak > ();
   }
 
 
@@ -46,15 +48,15 @@ public final class OutlineBreak
    */
   public OutlineBreak ( ExpressionOrType pExpressionOrType )
   {
-    this.breakList = new ArrayList < Integer > ( ) ;
-    this.outlineBreakList = new ArrayList < OutlineBreak > ( ) ;
+    this.breakList = new ArrayList < Integer > ();
+    this.outlineBreakList = new ArrayList < OutlineBreak > ();
     if ( pExpressionOrType instanceof Expression )
     {
-      calculate ( ( Expression ) pExpressionOrType ) ;
+      calculate ( ( Expression ) pExpressionOrType );
     }
     else if ( pExpressionOrType instanceof Type )
     {
-      calculate ( ( Type ) pExpressionOrType ) ;
+      calculate ( ( Type ) pExpressionOrType );
     }
   }
 
@@ -67,15 +69,15 @@ public final class OutlineBreak
    */
   private final void addOffset ( int pOffset )
   {
-    for ( int i = 0 ; i < this.breakList.size ( ) ; i ++ )
+    for ( int i = 0 ; i < this.breakList.size () ; i++ )
     {
-      this.breakList.set ( i , new Integer ( this.breakList.get ( i )
-          .intValue ( )
-          + pOffset ) ) ;
+      this.breakList.set ( i, new Integer ( this.breakList.get ( i )
+          .intValue ()
+          + pOffset ) );
     }
-    for ( int i = 0 ; i < this.outlineBreakList.size ( ) ; i ++ )
+    for ( int i = 0 ; i < this.outlineBreakList.size () ; i++ )
     {
-      this.outlineBreakList.get ( i ).addOffset ( pOffset ) ;
+      this.outlineBreakList.get ( i ).addOffset ( pOffset );
     }
   }
 
@@ -87,76 +89,76 @@ public final class OutlineBreak
    */
   private final void calculate ( Expression pExpression )
   {
-    PrettyAnnotation prettyAnnotation = pExpression.toPrettyString ( )
-        .getAnnotationForPrintable ( pExpression ) ;
-    int [ ] breaks = prettyAnnotation.getBreakOffsets ( ) ;
-    for ( int i = 0 ; i < breaks.length ; i ++ )
+    PrettyAnnotation prettyAnnotation = pExpression.toPrettyString ()
+        .getAnnotationForPrintable ( pExpression );
+    int [] breaks = prettyAnnotation.getBreakOffsets ();
+    for ( int i = 0 ; i < breaks.length ; i++ )
     {
-      this.breakList.add ( new Integer ( breaks [ i ] ) ) ;
+      this.breakList.add ( new Integer ( breaks [ i ] ) );
     }
-    ArrayList < Expression > children = pExpression.children ( ) ;
+    ArrayList < Expression > children = pExpression.children ();
     for ( Expression expr : children )
     {
-      PrettyAnnotation prettyAnnotationChild ;
+      PrettyAnnotation prettyAnnotationChild;
       try
       {
-        prettyAnnotationChild = pExpression.toPrettyString ( )
-            .getAnnotationForPrintable ( expr ) ;
+        prettyAnnotationChild = pExpression.toPrettyString ()
+            .getAnnotationForPrintable ( expr );
       }
       catch ( IllegalArgumentException e )
       {
-        continue ;
+        continue;
       }
-      OutlineBreak outlineBreakChild = new OutlineBreak ( expr ) ;
-      outlineBreakChild.addOffset ( prettyAnnotationChild.getStartOffset ( ) ) ;
+      OutlineBreak outlineBreakChild = new OutlineBreak ( expr );
+      outlineBreakChild.addOffset ( prettyAnnotationChild.getStartOffset () );
       if ( breaks.length > 0 )
       {
-        this.outlineBreakList.add ( outlineBreakChild ) ;
+        this.outlineBreakList.add ( outlineBreakChild );
       }
       else
       {
-        for ( int i = 0 ; i < outlineBreakChild.breakList.size ( ) ; i ++ )
+        for ( int i = 0 ; i < outlineBreakChild.breakList.size () ; i++ )
         {
-          this.breakList.add ( outlineBreakChild.breakList.get ( i ) ) ;
+          this.breakList.add ( outlineBreakChild.breakList.get ( i ) );
         }
-        for ( int i = 0 ; i < outlineBreakChild.outlineBreakList.size ( ) ; i ++ )
+        for ( int i = 0 ; i < outlineBreakChild.outlineBreakList.size () ; i++ )
         {
           this.outlineBreakList.add ( outlineBreakChild.outlineBreakList
-              .get ( i ) ) ;
+              .get ( i ) );
         }
       }
     }
     if ( pExpression instanceof DefaultTypes )
     {
-      MonoType [ ] types = ( ( DefaultTypes ) pExpression ).getTypes ( ) ;
+      MonoType [] types = ( ( DefaultTypes ) pExpression ).getTypes ();
       for ( MonoType tau : types )
       {
-        PrettyAnnotation prettyAnnotationChild ;
+        PrettyAnnotation prettyAnnotationChild;
         try
         {
-          prettyAnnotationChild = pExpression.toPrettyString ( )
-              .getAnnotationForPrintable ( tau ) ;
+          prettyAnnotationChild = pExpression.toPrettyString ()
+              .getAnnotationForPrintable ( tau );
         }
         catch ( IllegalArgumentException e )
         {
-          continue ;
+          continue;
         }
-        OutlineBreak outlineBreakChild = new OutlineBreak ( tau ) ;
-        outlineBreakChild.addOffset ( prettyAnnotationChild.getStartOffset ( ) ) ;
+        OutlineBreak outlineBreakChild = new OutlineBreak ( tau );
+        outlineBreakChild.addOffset ( prettyAnnotationChild.getStartOffset () );
         if ( breaks.length > 0 )
         {
-          this.outlineBreakList.add ( outlineBreakChild ) ;
+          this.outlineBreakList.add ( outlineBreakChild );
         }
         else
         {
-          for ( int i = 0 ; i < outlineBreakChild.breakList.size ( ) ; i ++ )
+          for ( int i = 0 ; i < outlineBreakChild.breakList.size () ; i++ )
           {
-            this.breakList.add ( outlineBreakChild.breakList.get ( i ) ) ;
+            this.breakList.add ( outlineBreakChild.breakList.get ( i ) );
           }
-          for ( int i = 0 ; i < outlineBreakChild.outlineBreakList.size ( ) ; i ++ )
+          for ( int i = 0 ; i < outlineBreakChild.outlineBreakList.size () ; i++ )
           {
             this.outlineBreakList.add ( outlineBreakChild.outlineBreakList
-                .get ( i ) ) ;
+                .get ( i ) );
           }
         }
       }
@@ -171,42 +173,42 @@ public final class OutlineBreak
    */
   private final void calculate ( Type pType )
   {
-    PrettyAnnotation prettyAnnotation = pType.toPrettyString ( )
-        .getAnnotationForPrintable ( pType ) ;
-    int [ ] breaks = prettyAnnotation.getBreakOffsets ( ) ;
-    for ( int i = 0 ; i < breaks.length ; i ++ )
+    PrettyAnnotation prettyAnnotation = pType.toPrettyString ()
+        .getAnnotationForPrintable ( pType );
+    int [] breaks = prettyAnnotation.getBreakOffsets ();
+    for ( int i = 0 ; i < breaks.length ; i++ )
     {
-      this.breakList.add ( new Integer ( breaks [ i ] ) ) ;
+      this.breakList.add ( new Integer ( breaks [ i ] ) );
     }
-    ArrayList < Type > children = pType.children ( ) ;
+    ArrayList < Type > children = pType.children ();
     for ( Type child : children )
     {
-      PrettyAnnotation prettyAnnotationChild ;
+      PrettyAnnotation prettyAnnotationChild;
       try
       {
-        prettyAnnotationChild = pType.toPrettyString ( )
-            .getAnnotationForPrintable ( child ) ;
+        prettyAnnotationChild = pType.toPrettyString ()
+            .getAnnotationForPrintable ( child );
       }
       catch ( IllegalArgumentException e )
       {
-        continue ;
+        continue;
       }
-      OutlineBreak outlineBreakChild = new OutlineBreak ( child ) ;
-      outlineBreakChild.addOffset ( prettyAnnotationChild.getStartOffset ( ) ) ;
+      OutlineBreak outlineBreakChild = new OutlineBreak ( child );
+      outlineBreakChild.addOffset ( prettyAnnotationChild.getStartOffset () );
       if ( breaks.length > 0 )
       {
-        this.outlineBreakList.add ( outlineBreakChild ) ;
+        this.outlineBreakList.add ( outlineBreakChild );
       }
       else
       {
-        for ( int i = 0 ; i < outlineBreakChild.breakList.size ( ) ; i ++ )
+        for ( int i = 0 ; i < outlineBreakChild.breakList.size () ; i++ )
         {
-          this.breakList.add ( outlineBreakChild.breakList.get ( i ) ) ;
+          this.breakList.add ( outlineBreakChild.breakList.get ( i ) );
         }
-        for ( int i = 0 ; i < outlineBreakChild.outlineBreakList.size ( ) ; i ++ )
+        for ( int i = 0 ; i < outlineBreakChild.outlineBreakList.size () ; i++ )
         {
           this.outlineBreakList.add ( outlineBreakChild.outlineBreakList
-              .get ( i ) ) ;
+              .get ( i ) );
         }
       }
     }
@@ -220,15 +222,15 @@ public final class OutlineBreak
    * @return The number of breaks of this {@link OutlineBreak}, including the
    *         breaks of children {@link OutlineBreak}s.
    */
-  public final int getBreakCountAll ( )
+  public final int getBreakCountAll ()
   {
-    int result = 0 ;
-    result += this.breakList.size ( ) ;
-    for ( int i = 0 ; i < this.outlineBreakList.size ( ) ; i ++ )
+    int result = 0;
+    result += this.breakList.size ();
+    for ( int i = 0 ; i < this.outlineBreakList.size () ; i++ )
     {
-      result += this.outlineBreakList.get ( i ).getBreakCountAll ( ) ;
+      result += this.outlineBreakList.get ( i ).getBreakCountAll ();
     }
-    return result ;
+    return result;
   }
 
 
@@ -239,9 +241,9 @@ public final class OutlineBreak
    * @return The number of breaks of this {@link OutlineBreak}, without the
    *         breaks of children {@link OutlineBreak}s.
    */
-  public final int getBreakCountOwn ( )
+  public final int getBreakCountOwn ()
   {
-    return this.breakList.size ( ) ;
+    return this.breakList.size ();
   }
 
 
@@ -255,26 +257,26 @@ public final class OutlineBreak
    */
   public final OutlineBreak getBreaks ( int pDepth )
   {
-    OutlineBreak result = new OutlineBreak ( ) ;
+    OutlineBreak result = new OutlineBreak ();
     if ( pDepth == 0 )
     {
-      return result ;
+      return result;
     }
     if ( pDepth == 1 )
     {
-      result.breakList.addAll ( this.breakList ) ;
-      result.outlineBreakList.addAll ( this.outlineBreakList ) ;
-      return result ;
+      result.breakList.addAll ( this.breakList );
+      result.outlineBreakList.addAll ( this.outlineBreakList );
+      return result;
     }
-    result.breakList.addAll ( this.breakList ) ;
-    for ( int i = 0 ; i < this.outlineBreakList.size ( ) ; i ++ )
+    result.breakList.addAll ( this.breakList );
+    for ( int i = 0 ; i < this.outlineBreakList.size () ; i++ )
     {
       OutlineBreak child = this.outlineBreakList.get ( i ).getBreaks (
-          pDepth - 1 ) ;
-      result.breakList.addAll ( child.breakList ) ;
-      result.outlineBreakList.addAll ( child.outlineBreakList ) ;
+          pDepth - 1 );
+      result.breakList.addAll ( child.breakList );
+      result.outlineBreakList.addAll ( child.outlineBreakList );
     }
-    return result ;
+    return result;
   }
 
 
@@ -285,22 +287,22 @@ public final class OutlineBreak
    * @return True, if this {@link OutlineBreak} has a break, or some children
    *         has a break. Otherwise false.
    */
-  public final boolean hasBreaksAll ( )
+  public final boolean hasBreaksAll ()
   {
-    if ( this.breakList.size ( ) > 0 )
+    if ( this.breakList.size () > 0 )
     {
-      return true ;
+      return true;
     }
-    boolean found ;
-    for ( int i = 0 ; i < this.outlineBreakList.size ( ) ; i ++ )
+    boolean found;
+    for ( int i = 0 ; i < this.outlineBreakList.size () ; i++ )
     {
-      found = this.outlineBreakList.get ( i ).hasBreaksAll ( ) ;
+      found = this.outlineBreakList.get ( i ).hasBreaksAll ();
       if ( found )
       {
-        return true ;
+        return true;
       }
     }
-    return false ;
+    return false;
   }
 
 
@@ -312,6 +314,6 @@ public final class OutlineBreak
    */
   public final boolean isBreak ( int pCharIndex )
   {
-    return this.breakList.contains ( new Integer ( pCharIndex ) ) ;
+    return this.breakList.contains ( new Integer ( pCharIndex ) );
   }
 }

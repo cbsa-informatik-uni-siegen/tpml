@@ -1,12 +1,14 @@
-package de.unisiegen.tpml.core.typeinference ;
+package de.unisiegen.tpml.core.typeinference;
 
 
-import java.util.ArrayList ;
-import javax.swing.tree.TreeNode ;
-import de.unisiegen.tpml.core.ProofNode ;
-import de.unisiegen.tpml.core.ProofStep ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import java.util.ArrayList;
+
+import javax.swing.tree.TreeNode;
+
+import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -19,6 +21,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  */
 public interface TypeInferenceProofNode extends ProofNode
 {
+
   //
   // Accessors
   //
@@ -29,7 +32,7 @@ public interface TypeInferenceProofNode extends ProofNode
    * 
    * @return <code>true</code> if finished.
    */
-  public boolean isFinished ( ) ;
+  public boolean isFinished ();
 
 
   /**
@@ -42,7 +45,7 @@ public interface TypeInferenceProofNode extends ProofNode
    * @see TypeCheckerProofRule
    * @see de.unisiegen.tpml.core.ProofStep
    */
-  public TypeCheckerProofRule getRule ( ) ;
+  public TypeCheckerProofRule getRule ();
 
 
   //
@@ -53,7 +56,7 @@ public interface TypeInferenceProofNode extends ProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getChildAt(int)
    */
-  public TypeInferenceProofNode getChildAt ( int childIndex ) ;
+  public TypeInferenceProofNode getChildAt ( int childIndex );
 
 
   /**
@@ -61,7 +64,7 @@ public interface TypeInferenceProofNode extends ProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getParent()
    */
-  public TypeInferenceProofNode getParent ( ) ;
+  public TypeInferenceProofNode getParent ();
 
 
   /**
@@ -69,7 +72,7 @@ public interface TypeInferenceProofNode extends ProofNode
    * 
    * @return ProofStep[] steps
    */
-  public ProofStep [ ] getSteps ( ) ;
+  public ProofStep [] getSteps ();
 
 
   //
@@ -80,7 +83,7 @@ public interface TypeInferenceProofNode extends ProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getParent()
    */
-  public TypeInferenceProofNode getRoot ( ) ;
+  public TypeInferenceProofNode getRoot ();
 
 
   //
@@ -91,7 +94,7 @@ public interface TypeInferenceProofNode extends ProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getFirstChild()
    */
-  public TypeInferenceProofNode getFirstChild ( ) ;
+  public TypeInferenceProofNode getFirstChild ();
 
 
   /**
@@ -99,7 +102,7 @@ public interface TypeInferenceProofNode extends ProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getLastChild()
    */
-  public TypeInferenceProofNode getLastChild ( ) ;
+  public TypeInferenceProofNode getLastChild ();
 
 
   /**
@@ -107,7 +110,7 @@ public interface TypeInferenceProofNode extends ProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getChildAfter(javax.swing.tree.TreeNode)
    */
-  public TypeInferenceProofNode getChildAfter ( TreeNode aChild ) ;
+  public TypeInferenceProofNode getChildAfter ( TreeNode aChild );
 
 
   /**
@@ -115,7 +118,7 @@ public interface TypeInferenceProofNode extends ProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getChildBefore(javax.swing.tree.TreeNode)
    */
-  public TypeInferenceProofNode getChildBefore ( TreeNode aChild ) ;
+  public TypeInferenceProofNode getChildBefore ( TreeNode aChild );
 
 
   //
@@ -126,7 +129,7 @@ public interface TypeInferenceProofNode extends ProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getFirstLeaf()
    */
-  public TypeInferenceProofNode getFirstLeaf ( ) ;
+  public TypeInferenceProofNode getFirstLeaf ();
 
 
   /**
@@ -134,7 +137,7 @@ public interface TypeInferenceProofNode extends ProofNode
    * 
    * @see de.unisiegen.tpml.core.ProofNode#getLastLeaf()
    */
-  public TypeInferenceProofNode getLastLeaf ( ) ;
+  public TypeInferenceProofNode getLastLeaf ();
 
 
   /**
@@ -142,7 +145,7 @@ public interface TypeInferenceProofNode extends ProofNode
    * 
    * @return TypeSubstitutionList substitutions
    */
-  public ArrayList < TypeSubstitution > getSubstitution ( ) ;
+  public ArrayList < TypeSubstitution > getSubstitution ();
 
 
   /**
@@ -150,7 +153,7 @@ public interface TypeInferenceProofNode extends ProofNode
    * 
    * @return TypeFormula first in list
    */
-  public TypeFormula getFirstFormula ( ) ;
+  public TypeFormula getFirstFormula ();
 
 
   /**
@@ -158,5 +161,5 @@ public interface TypeInferenceProofNode extends ProofNode
    * 
    * @return ArrayList with all type formulas
    */
-  public ArrayList < TypeFormula > getAllFormulas ( ) ;
+  public ArrayList < TypeFormula > getAllFormulas ();
 }

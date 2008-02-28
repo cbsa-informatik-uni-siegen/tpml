@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core ;
+package de.unisiegen.tpml.core;
 
 
-import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Expression;
 
 
 /**
@@ -15,6 +15,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
  */
 public interface ExpressionProofModel extends ProofModel
 {
+
   //
   // Actions
   //
@@ -37,8 +38,8 @@ public interface ExpressionProofModel extends ProofModel
    * @see de.unisiegen.tpml.core.languages.LanguageTranslator#containsSyntacticSugar(Expression,
    *      boolean)
    */
-  public boolean containsSyntacticSugar ( ExpressionProofNode node ,
-      boolean recursive ) ;
+  public boolean containsSyntacticSugar ( ExpressionProofNode node,
+      boolean recursive );
 
 
   /**
@@ -61,8 +62,8 @@ public interface ExpressionProofModel extends ProofModel
    * @see de.unisiegen.tpml.core.languages.LanguageTranslator#translateToCoreSyntax(Expression,
    *      boolean)
    */
-  public void translateToCoreSyntax ( ExpressionProofNode node ,
-      boolean recursive ) ;
+  public void translateToCoreSyntax ( ExpressionProofNode node,
+      boolean recursive );
 
 
   //
@@ -73,7 +74,7 @@ public interface ExpressionProofModel extends ProofModel
    * 
    * @see de.unisiegen.tpml.core.ProofModel#getRoot()
    */
-  public ExpressionProofNode getRoot ( ) ;
+  public ExpressionProofNode getRoot ();
 
 
   /**
@@ -81,5 +82,5 @@ public interface ExpressionProofModel extends ProofModel
    * 
    * @see de.unisiegen.tpml.core.ProofModel#getChild(java.lang.Object, int)
    */
-  public ExpressionProofNode getChild ( Object parent , int index ) ;
+  public ExpressionProofNode getChild ( Object parent, int index );
 }

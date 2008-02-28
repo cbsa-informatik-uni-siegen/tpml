@@ -1,9 +1,10 @@
-package de.unisiegen.tpml.core.util ;
+package de.unisiegen.tpml.core.util;
 
 
-import java.util.Enumeration ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import java.util.Enumeration;
+
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 
 
 /**
@@ -19,8 +20,9 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
  * @param <E> The entry.
  * @see de.unisiegen.tpml.core.util.AbstractEnvironment
  */
-public interface Environment < S , E > extends PrettyPrintable , LatexPrintable
+public interface Environment < S, E > extends PrettyPrintable, LatexPrintable
 {
+
   /**
    * Returns <code>true</code> if this environment contains an entry for the
    * specified <code>symbol</code>. Otherwise <code>false</code> is
@@ -35,7 +37,7 @@ public interface Environment < S , E > extends PrettyPrintable , LatexPrintable
    * @throws NullPointerException if <code>symbol</code> is <code>null</code>.
    * @see #get(Object)
    */
-  public boolean containsSymbol ( S symbol ) ;
+  public boolean containsSymbol ( S symbol );
 
 
   /**
@@ -52,7 +54,7 @@ public interface Environment < S , E > extends PrettyPrintable , LatexPrintable
    * @throws NullPointerException if <code>symbol</code> is <code>null</code>.
    * @see #containsSymbol(Object)
    */
-  public E get ( S symbol ) ;
+  public E get ( S symbol );
 
 
   /**
@@ -65,5 +67,5 @@ public interface Environment < S , E > extends PrettyPrintable , LatexPrintable
    *         symbols.
    * @see #get(Object)
    */
-  public Enumeration < S > symbols ( ) ;
+  public Enumeration < S > symbols ();
 }

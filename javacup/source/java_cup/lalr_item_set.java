@@ -1,8 +1,8 @@
-package java_cup ;
+package java_cup;
 
 
-import java.util.Enumeration ;
-import java.util.Hashtable ;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 
 /**
@@ -21,11 +21,12 @@ import java.util.Hashtable ;
  */
 public class lalr_item_set
 {
+
   /*-----------------------------------------------------------*/
   /*--- Constructor(s) ----------------------------------------*/
   /*-----------------------------------------------------------*/
   /** Constructor for an empty set. */
-  public lalr_item_set ( )
+  public lalr_item_set ()
   {
   }
 
@@ -38,8 +39,8 @@ public class lalr_item_set
    */
   public lalr_item_set ( lalr_item_set other ) throws internal_error
   {
-    not_null ( other ) ;
-    _all = ( Hashtable ) other._all.clone ( ) ;
+    not_null ( other );
+    _all = ( Hashtable ) other._all.clone ();
   }
 
 
@@ -50,26 +51,26 @@ public class lalr_item_set
    * A hash table to implement the set. We store the items using themselves as
    * keys.
    */
-  protected Hashtable _all = new Hashtable ( 11 ) ;
+  protected Hashtable _all = new Hashtable ( 11 );
 
 
   /** Access to all elements of the set. */
-  public Enumeration all ( )
+  public Enumeration all ()
   {
-    return _all.elements ( ) ;
+    return _all.elements ();
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Cached hashcode for this set. */
-  protected Integer hashcode_cache = null ;
+  protected Integer hashcode_cache = null;
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Size of the set */
-  public int size ( )
+  public int size ()
   {
-    return _all.size ( ) ;
+    return _all.size ();
   }
 
 
@@ -83,7 +84,7 @@ public class lalr_item_set
    */
   public boolean contains ( lalr_item itm )
   {
-    return _all.containsKey ( itm ) ;
+    return _all.containsKey ( itm );
   }
 
 
@@ -96,7 +97,7 @@ public class lalr_item_set
    */
   public lalr_item find ( lalr_item itm )
   {
-    return ( lalr_item ) _all.get ( itm ) ;
+    return ( lalr_item ) _all.get ( itm );
   }
 
 
@@ -108,12 +109,13 @@ public class lalr_item_set
    */
   public boolean is_subset_of ( lalr_item_set other ) throws internal_error
   {
-    not_null ( other ) ;
+    not_null ( other );
     /* walk down our set and make sure every element is in the other */
-    for ( Enumeration e = all ( ) ; e.hasMoreElements ( ) ; )
-      if ( ! other.contains ( ( lalr_item ) e.nextElement ( ) ) ) return false ;
+    for ( Enumeration e = all () ; e.hasMoreElements () ; )
+      if ( !other.contains ( ( lalr_item ) e.nextElement () ) )
+        return false;
     /* they were all there */
-    return true ;
+    return true;
   }
 
 
@@ -125,8 +127,8 @@ public class lalr_item_set
    */
   public boolean is_superset_of ( lalr_item_set other ) throws internal_error
   {
-    not_null ( other ) ;
-    return other.is_subset_of ( this ) ;
+    not_null ( other );
+    return other.is_subset_of ( this );
   }
 
 
@@ -139,23 +141,23 @@ public class lalr_item_set
    */
   public lalr_item add ( lalr_item itm ) throws internal_error
   {
-    lalr_item other ;
-    not_null ( itm ) ;
+    lalr_item other;
+    not_null ( itm );
     /* see if an item with a matching core is already there */
-    other = ( lalr_item ) _all.get ( itm ) ;
+    other = ( lalr_item ) _all.get ( itm );
     /* if so, merge this lookahead into the original and leave it */
     if ( other != null )
     {
-      other.lookahead ( ).add ( itm.lookahead ( ) ) ;
-      return other ;
+      other.lookahead ().add ( itm.lookahead () );
+      return other;
     }
     /* otherwise we just go in the set */
     else
     {
       /* invalidate cached hashcode */
-      hashcode_cache = null ;
-      _all.put ( itm , itm ) ;
-      return itm ;
+      hashcode_cache = null;
+      _all.put ( itm, itm );
+      return itm;
     }
   }
 
@@ -168,11 +170,11 @@ public class lalr_item_set
    */
   public void remove ( lalr_item itm ) throws internal_error
   {
-    not_null ( itm ) ;
+    not_null ( itm );
     /* invalidate cached hashcode */
-    hashcode_cache = null ;
+    hashcode_cache = null;
     /* remove it from hash table implementing set */
-    _all.remove ( itm ) ;
+    _all.remove ( itm );
   }
 
 
@@ -184,10 +186,10 @@ public class lalr_item_set
    */
   public void add ( lalr_item_set other ) throws internal_error
   {
-    not_null ( other ) ;
+    not_null ( other );
     /* walk down the other set and do the adds individually */
-    for ( Enumeration e = other.all ( ) ; e.hasMoreElements ( ) ; )
-      add ( ( lalr_item ) e.nextElement ( ) ) ;
+    for ( Enumeration e = other.all () ; e.hasMoreElements () ; )
+      add ( ( lalr_item ) e.nextElement () );
   }
 
 
@@ -199,27 +201,28 @@ public class lalr_item_set
    */
   public void remove ( lalr_item_set other ) throws internal_error
   {
-    not_null ( other ) ;
+    not_null ( other );
     /* walk down the other set and do the removes individually */
-    for ( Enumeration e = other.all ( ) ; e.hasMoreElements ( ) ; )
-      remove ( ( lalr_item ) e.nextElement ( ) ) ;
+    for ( Enumeration e = other.all () ; e.hasMoreElements () ; )
+      remove ( ( lalr_item ) e.nextElement () );
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Remove and return one item from the set (done in hash order). */
-  public lalr_item get_one ( ) throws internal_error
+  public lalr_item get_one () throws internal_error
   {
-    Enumeration the_set ;
-    lalr_item result ;
-    the_set = all ( ) ;
-    if ( the_set.hasMoreElements ( ) )
+    Enumeration the_set;
+    lalr_item result;
+    the_set = all ();
+    if ( the_set.hasMoreElements () )
     {
-      result = ( lalr_item ) the_set.nextElement ( ) ;
-      remove ( result ) ;
-      return result ;
+      result = ( lalr_item ) the_set.nextElement ();
+      remove ( result );
+      return result;
     }
-    else return null ;
+    else
+      return null;
   }
 
 
@@ -235,7 +238,7 @@ public class lalr_item_set
   protected void not_null ( Object obj ) throws internal_error
   {
     if ( obj == null )
-      throw new internal_error ( "Null object used in set operation" ) ;
+      throw new internal_error ( "Null object used in set operation" );
   }
 
 
@@ -262,47 +265,48 @@ public class lalr_item_set
    * that nullability and first sets have been computed for all productions
    * before it is called.
    */
-  public void compute_closure ( ) throws internal_error
+  public void compute_closure () throws internal_error
   {
-    lalr_item_set consider ;
-    lalr_item itm , new_itm , add_itm ;
-    non_terminal nt ;
-    terminal_set new_lookaheads ;
-    Enumeration p ;
-    production prod ;
-    boolean need_prop ;
+    lalr_item_set consider;
+    lalr_item itm, new_itm, add_itm;
+    non_terminal nt;
+    terminal_set new_lookaheads;
+    Enumeration p;
+    production prod;
+    boolean need_prop;
     /* invalidate cached hashcode */
-    hashcode_cache = null ;
+    hashcode_cache = null;
     /* each current element needs to be considered */
-    consider = new lalr_item_set ( this ) ;
+    consider = new lalr_item_set ( this );
     /* repeat this until there is nothing else to consider */
-    while ( consider.size ( ) > 0 )
+    while ( consider.size () > 0 )
     {
       /* get one item to consider */
-      itm = consider.get_one ( ) ;
+      itm = consider.get_one ();
       /* do we have a dot before a non terminal */
-      nt = itm.dot_before_nt ( ) ;
+      nt = itm.dot_before_nt ();
       if ( nt != null )
       {
         /* create the lookahead set based on first after dot */
-        new_lookaheads = itm.calc_lookahead ( itm.lookahead ( ) ) ;
+        new_lookaheads = itm.calc_lookahead ( itm.lookahead () );
         /* are we going to need to propagate our lookahead to new item */
-        need_prop = itm.lookahead_visible ( ) ;
+        need_prop = itm.lookahead_visible ();
         /* create items for each production of that non term */
-        for ( p = nt.productions ( ) ; p.hasMoreElements ( ) ; )
+        for ( p = nt.productions () ; p.hasMoreElements () ; )
         {
-          prod = ( production ) p.nextElement ( ) ;
+          prod = ( production ) p.nextElement ();
           /* create new item with dot at start and that lookahead */
-          new_itm = new lalr_item ( prod , new terminal_set ( new_lookaheads ) ) ;
+          new_itm = new lalr_item ( prod, new terminal_set ( new_lookaheads ) );
           /* add/merge item into the set */
-          add_itm = add ( new_itm ) ;
+          add_itm = add ( new_itm );
           /* if propagation is needed link to that item */
-          if ( need_prop ) itm.add_propagate ( add_itm ) ;
+          if ( need_prop )
+            itm.add_propagate ( add_itm );
           /* was this was a new item */
           if ( add_itm == new_itm )
           {
             /* that may need further closure, consider it also */
-            consider.add ( new_itm ) ;
+            consider.add ( new_itm );
           }
         }
       }
@@ -314,17 +318,18 @@ public class lalr_item_set
   /** Equality comparison. */
   public boolean equals ( lalr_item_set other )
   {
-    if ( other == null || other.size ( ) != size ( ) ) return false ;
+    if ( other == null || other.size () != size () )
+      return false;
     /* once we know they are the same size, then improper subset does test */
     try
     {
-      return is_subset_of ( other ) ;
+      return is_subset_of ( other );
     }
     catch ( internal_error e )
     {
       /* can't throw error from here (because superclass doesn't) so crash */
-      e.crash ( ) ;
-      return false ;
+      e.crash ();
+      return false;
     }
   }
 
@@ -334,18 +339,19 @@ public class lalr_item_set
   public boolean equals ( Object other )
   {
     if ( ! ( other instanceof lalr_item_set ) )
-      return false ;
-    else return equals ( ( lalr_item_set ) other ) ;
+      return false;
+    else
+      return equals ( ( lalr_item_set ) other );
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Return hash code. */
-  public int hashCode ( )
+  public int hashCode ()
   {
-    int result = 0 ;
-    Enumeration e ;
-    int cnt ;
+    int result = 0;
+    Enumeration e;
+    int cnt;
     /* only compute a new one if we don't have it cached */
     if ( hashcode_cache == null )
     {
@@ -353,26 +359,26 @@ public class lalr_item_set
       // CSA fix! we'd *like* to hash just a few elements, but
       // that means equal sets will have inequal hashcodes, which
       // we're not allowed (by contract) to do. So hash them all.
-      for ( e = all ( ) , cnt = 0 ; e.hasMoreElements ( ) /* && cnt<5 */; cnt ++ )
-        result ^= ( ( lalr_item ) e.nextElement ( ) ).hashCode ( ) ;
-      hashcode_cache = new Integer ( result ) ;
+      for ( e = all (), cnt = 0 ; e.hasMoreElements () /* && cnt<5 */; cnt++ )
+        result ^= ( ( lalr_item ) e.nextElement () ).hashCode ();
+      hashcode_cache = new Integer ( result );
     }
-    return hashcode_cache.intValue ( ) ;
+    return hashcode_cache.intValue ();
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Convert to string. */
-  public String toString ( )
+  public String toString ()
   {
-    StringBuffer result = new StringBuffer ( ) ;
-    result.append ( "{\n" ) ;
-    for ( Enumeration e = all ( ) ; e.hasMoreElements ( ) ; )
+    StringBuffer result = new StringBuffer ();
+    result.append ( "{\n" );
+    for ( Enumeration e = all () ; e.hasMoreElements () ; )
     {
-      result.append ( "  " + ( lalr_item ) e.nextElement ( ) + "\n" ) ;
+      result.append ( "  " + ( lalr_item ) e.nextElement () + "\n" );
     }
-    result.append ( "}" ) ;
-    return result.toString ( ) ;
+    result.append ( "}" );
+    return result.toString ();
   }
   /*-----------------------------------------------------------*/
 }

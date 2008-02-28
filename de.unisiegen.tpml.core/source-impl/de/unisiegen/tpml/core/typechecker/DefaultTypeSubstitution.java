@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.typechecker;
 
 import java.util.Set;
 import java.util.TreeSet;
+
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
 import de.unisiegen.tpml.core.latex.LatexCommandList;
@@ -214,17 +215,16 @@ public final class DefaultTypeSubstitution implements TypeSubstitution
       // reached the end of the substitution chain
       return pTvar;
     }
+    else if ( this.tvar.equals ( pTvar ) )
+    {
+      // we have a match here
+      return this.type;
+    }
     else
-      if ( this.tvar.equals ( pTvar ) )
-      {
-        // we have a match here
-        return this.type;
-      }
-      else
-      {
-        // check the parent substitution
-        return this.parent.get ( pTvar );
-      }
+    {
+      // check the parent substitution
+      return this.parent.get ( pTvar );
+    }
   }
 
 

@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.languages ;
+package de.unisiegen.tpml.core.languages;
 
 
-import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Expression;
 
 
 /**
@@ -18,6 +18,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
  */
 public abstract class AbstractLanguageTranslator implements LanguageTranslator
 {
+
   //
   // Primitives
   //
@@ -34,11 +35,11 @@ public abstract class AbstractLanguageTranslator implements LanguageTranslator
    * @see de.unisiegen.tpml.core.languages.LanguageTranslator#containsSyntacticSugar(de.unisiegen.tpml.core.expressions.Expression,
    *      boolean)
    */
-  public boolean containsSyntacticSugar ( final Expression expression ,
+  public boolean containsSyntacticSugar ( final Expression expression,
       final boolean recursive )
   {
-    return ! this.translateToCoreSyntax ( expression , recursive ).equals (
-        expression ) ;
+    return !this.translateToCoreSyntax ( expression, recursive ).equals (
+        expression );
   }
 
 
@@ -53,14 +54,14 @@ public abstract class AbstractLanguageTranslator implements LanguageTranslator
    * @see de.unisiegen.tpml.core.languages.LanguageTranslator#translateToCoreSyntax(de.unisiegen.tpml.core.expressions.Expression,
    *      boolean)
    */
-  public Expression translateToCoreSyntax ( final Expression expression ,
-      @ SuppressWarnings ( "unused" )
+  public Expression translateToCoreSyntax ( final Expression expression,
+      @SuppressWarnings ( "unused" )
       final boolean recursive )
   {
     if ( expression == null )
     {
-      throw new NullPointerException ( "expression is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "expression is null" ); //$NON-NLS-1$
     }
-    return expression.clone ( ) ;
+    return expression.clone ();
   }
 }

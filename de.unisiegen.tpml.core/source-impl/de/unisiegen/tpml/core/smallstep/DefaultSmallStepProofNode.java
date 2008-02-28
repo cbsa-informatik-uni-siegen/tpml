@@ -1,26 +1,27 @@
-package de.unisiegen.tpml.core.smallstep ;
+package de.unisiegen.tpml.core.smallstep;
 
 
-import javax.swing.tree.TreeNode ;
-import de.unisiegen.tpml.core.ProofRule ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode ;
-import de.unisiegen.tpml.core.interpreters.DefaultStore ;
-import de.unisiegen.tpml.core.interpreters.Store ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import javax.swing.tree.TreeNode;
+
+import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode;
+import de.unisiegen.tpml.core.interpreters.DefaultStore;
+import de.unisiegen.tpml.core.interpreters.Store;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
 
 /**
@@ -34,23 +35,23 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode
  */
 public final class DefaultSmallStepProofNode extends
-    AbstractInterpreterProofNode implements SmallStepProofNode ,
-    PrettyPrintable
+    AbstractInterpreterProofNode implements SmallStepProofNode, PrettyPrintable
 {
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_NODE , 2 ,
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_PROOF_NODE, 2,
         "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
             + "{#1}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\color{" //$NON-NLS-1$ //$NON-NLS-2$
             + LATEX_COLOR_NONE + "}{(}#1\\ \\ #2\\color{" //$NON-NLS-1$
-            + LATEX_COLOR_NONE + "}{)}}" , "e" , "store" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-    return commands ;
+            + LATEX_COLOR_NONE + "}{)}}", "e", "store" ) ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    return commands;
   }
 
 
@@ -59,13 +60,13 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static LatexInstructionList getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
-    return instructions ;
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}", //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ); //$NON-NLS-1$
+    return instructions;
   }
 
 
@@ -74,12 +75,12 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.COLOR ) ;
-    packages.add ( LatexPackage.IFTHEN ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.COLOR );
+    packages.add ( LatexPackage.IFTHEN );
+    return packages;
   }
 
 
@@ -94,7 +95,7 @@ public final class DefaultSmallStepProofNode extends
    */
   public DefaultSmallStepProofNode ( Expression pExpression )
   {
-    this ( pExpression , new DefaultStore ( ) ) ;
+    this ( pExpression, new DefaultStore () );
   }
 
 
@@ -107,9 +108,9 @@ public final class DefaultSmallStepProofNode extends
    * @throws NullPointerException if either <code>expression</code> or
    *           <code>store</code> is <code>null</code>.
    */
-  public DefaultSmallStepProofNode ( Expression pExpression , Store store )
+  public DefaultSmallStepProofNode ( Expression pExpression, Store store )
   {
-    super ( pExpression , store ) ;
+    super ( pExpression, store );
   }
 
 
@@ -118,10 +119,10 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildAfter(javax.swing.tree.TreeNode)
    */
-  @ Override
+  @Override
   public DefaultSmallStepProofNode getChildAfter ( TreeNode aChild )
   {
-    return ( DefaultSmallStepProofNode ) super.getChildAfter ( aChild ) ;
+    return ( DefaultSmallStepProofNode ) super.getChildAfter ( aChild );
   }
 
 
@@ -130,10 +131,10 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildAt(int)
    */
-  @ Override
+  @Override
   public DefaultSmallStepProofNode getChildAt ( int childIndex )
   {
-    return ( DefaultSmallStepProofNode ) super.getChildAt ( childIndex ) ;
+    return ( DefaultSmallStepProofNode ) super.getChildAt ( childIndex );
   }
 
 
@@ -142,10 +143,10 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildBefore(javax.swing.tree.TreeNode)
    */
-  @ Override
+  @Override
   public DefaultSmallStepProofNode getChildBefore ( TreeNode aChild )
   {
-    return ( DefaultSmallStepProofNode ) super.getChildBefore ( aChild ) ;
+    return ( DefaultSmallStepProofNode ) super.getChildBefore ( aChild );
   }
 
 
@@ -154,10 +155,10 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getFirstChild()
    */
-  @ Override
-  public DefaultSmallStepProofNode getFirstChild ( )
+  @Override
+  public DefaultSmallStepProofNode getFirstChild ()
   {
-    return ( DefaultSmallStepProofNode ) super.getFirstChild ( ) ;
+    return ( DefaultSmallStepProofNode ) super.getFirstChild ();
   }
 
 
@@ -166,10 +167,10 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getFirstLeaf()
    */
-  @ Override
-  public DefaultSmallStepProofNode getFirstLeaf ( )
+  @Override
+  public DefaultSmallStepProofNode getFirstLeaf ()
   {
-    return ( DefaultSmallStepProofNode ) super.getFirstLeaf ( ) ;
+    return ( DefaultSmallStepProofNode ) super.getFirstLeaf ();
   }
 
 
@@ -178,10 +179,10 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getLastChild()
    */
-  @ Override
-  public DefaultSmallStepProofNode getLastChild ( )
+  @Override
+  public DefaultSmallStepProofNode getLastChild ()
   {
-    return ( DefaultSmallStepProofNode ) super.getLastChild ( ) ;
+    return ( DefaultSmallStepProofNode ) super.getLastChild ();
   }
 
 
@@ -190,10 +191,10 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getLastLeaf()
    */
-  @ Override
-  public DefaultSmallStepProofNode getLastLeaf ( )
+  @Override
+  public DefaultSmallStepProofNode getLastLeaf ()
   {
-    return ( DefaultSmallStepProofNode ) super.getLastLeaf ( ) ;
+    return ( DefaultSmallStepProofNode ) super.getLastLeaf ();
   }
 
 
@@ -202,13 +203,13 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public LatexCommandList getLatexCommands ( )
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    commands.add ( getStore ( ) ) ;
-    commands.add ( getExpression ( ) ) ;
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
+    commands.add ( getStore () );
+    commands.add ( getExpression () );
+    return commands;
   }
 
 
@@ -217,13 +218,13 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public LatexInstructionList getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( getLatexInstructionsStatic ( ) ) ;
-    instructions.add ( getStore ( ) ) ;
-    instructions.add ( getExpression ( ) ) ;
-    return instructions ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
+    instructions.add ( getStore () );
+    instructions.add ( getExpression () );
+    return instructions;
   }
 
 
@@ -232,13 +233,13 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public LatexPackageList getLatexPackages ( )
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
-    packages.add ( getStore ( ) ) ;
-    packages.add ( getExpression ( ) ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( getLatexPackagesStatic () );
+    packages.add ( getStore () );
+    packages.add ( getExpression () );
+    return packages;
   }
 
 
@@ -247,10 +248,10 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getParent()
    */
-  @ Override
-  public DefaultSmallStepProofNode getParent ( )
+  @Override
+  public DefaultSmallStepProofNode getParent ()
   {
-    return ( DefaultSmallStepProofNode ) super.getParent ( ) ;
+    return ( DefaultSmallStepProofNode ) super.getParent ();
   }
 
 
@@ -259,10 +260,10 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getRoot()
    */
-  @ Override
-  public DefaultSmallStepProofNode getRoot ( )
+  @Override
+  public DefaultSmallStepProofNode getRoot ()
   {
-    return ( DefaultSmallStepProofNode ) super.getRoot ( ) ;
+    return ( DefaultSmallStepProofNode ) super.getRoot ();
   }
 
 
@@ -271,17 +272,17 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @see de.unisiegen.tpml.core.ProofNode#isProven()
    */
-  public boolean isProven ( )
+  public boolean isProven ()
   {
     // check if any axiom was applied
-    for ( ProofRule rule : getRules ( ) )
+    for ( ProofRule rule : getRules () )
     {
-      if ( ( ( SmallStepProofRule ) rule ).isAxiom ( ) )
+      if ( ( ( SmallStepProofRule ) rule ).isAxiom () )
       {
-        return true ;
+        return true;
       }
     }
-    return false ;
+    return false;
   }
 
 
@@ -290,10 +291,10 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public final LatexString toLatexString ( )
+  public final LatexString toLatexString ()
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -303,26 +304,25 @@ public final class DefaultSmallStepProofNode extends
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_SMALL_STEP_PROOF_NODE , pIndent , this.toPrettyString ( )
-            .toString ( ) , this.getExpression ( ).toPrettyString ( )
-            .toString ( ) ,
-        this.getExpression ( ).containsMemoryOperations ( ) ? this.getStore ( )
-            .toPrettyString ( ).toString ( ) : LATEX_NO_STORE ) ;
-    builder.addBuilder ( this.getExpression ( ).toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    if ( this.getExpression ( ).containsMemoryOperations ( ) )
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
+        LATEX_SMALL_STEP_PROOF_NODE, pIndent, this.toPrettyString ()
+            .toString (), this.getExpression ().toPrettyString ().toString (),
+        this.getExpression ().containsMemoryOperations () ? this.getStore ()
+            .toPrettyString ().toString () : LATEX_NO_STORE );
+    builder.addBuilder ( this.getExpression ().toLatexStringBuilder (
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+    if ( this.getExpression ().containsMemoryOperations () )
     {
-      builder.addBuilder ( this.getStore ( ).toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+      builder.addBuilder ( this.getStore ().toLatexStringBuilder (
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
     }
     else
     {
-      builder.addEmptyBuilder ( ) ;
+      builder.addEmptyBuilder ();
     }
-    return builder ;
+    return builder;
   }
 
 
@@ -331,10 +331,10 @@ public final class DefaultSmallStepProofNode extends
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ( )
+  public final PrettyString toPrettyString ()
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -347,24 +347,24 @@ public final class DefaultSmallStepProofNode extends
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , 0 ) ;
-    if ( this.getExpression ( ).containsMemoryOperations ( ) )
+        this, 0 );
+    if ( this.getExpression ().containsMemoryOperations () )
     {
-      builder.addText ( PRETTY_LPAREN ) ;
-      builder.addBuilder ( this.getExpression ( ).toPrettyStringBuilder (
-          pPrettyStringBuilderFactory ) , 0 ) ;
-      builder.addText ( PRETTY_SPACE ) ;
-      builder.addText ( PRETTY_SPACE ) ;
-      builder.addBuilder ( this.getStore ( ).toPrettyStringBuilder (
-          pPrettyStringBuilderFactory ) , 0 ) ;
-      builder.addText ( PRETTY_RPAREN ) ;
+      builder.addText ( PRETTY_LPAREN );
+      builder.addBuilder ( this.getExpression ().toPrettyStringBuilder (
+          pPrettyStringBuilderFactory ), 0 );
+      builder.addText ( PRETTY_SPACE );
+      builder.addText ( PRETTY_SPACE );
+      builder.addBuilder ( this.getStore ().toPrettyStringBuilder (
+          pPrettyStringBuilderFactory ), 0 );
+      builder.addText ( PRETTY_RPAREN );
     }
     else
     {
-      builder.addBuilder ( this.getExpression ( ).toPrettyStringBuilder (
-          pPrettyStringBuilderFactory ) , 0 ) ;
+      builder.addBuilder ( this.getExpression ().toPrettyStringBuilder (
+          pPrettyStringBuilderFactory ), 0 );
     }
-    return builder ;
+    return builder;
   }
 
 
@@ -377,9 +377,9 @@ public final class DefaultSmallStepProofNode extends
    * @see #toPrettyString()
    * @see Object#toString()
    */
-  @ Override
-  public final String toString ( )
+  @Override
+  public final String toString ()
   {
-    return toPrettyString ( ).toString ( ) ;
+    return toPrettyString ().toString ();
   }
 }

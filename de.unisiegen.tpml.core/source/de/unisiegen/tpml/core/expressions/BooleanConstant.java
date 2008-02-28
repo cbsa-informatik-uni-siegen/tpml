@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -14,23 +14,24 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class BooleanConstant extends Constant
 {
+
   /**
    * The keyword <code>false</code>.
    */
-  private static final String FALSE = "false" ; //$NON-NLS-1$
+  private static final String FALSE = "false"; //$NON-NLS-1$
 
 
   /**
    * The keyword <code>true</code>.
    */
-  private static final String TRUE = "true" ; //$NON-NLS-1$
+  private static final String TRUE = "true"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( BooleanConstant.class ) ;
+      .getCaption ( BooleanConstant.class );
 
 
   /**
@@ -38,7 +39,7 @@ public final class BooleanConstant extends Constant
    * 
    * @see #booleanValue()
    */
-  private boolean booleanValue ;
+  private boolean booleanValue;
 
 
   /**
@@ -50,8 +51,8 @@ public final class BooleanConstant extends Constant
    */
   public BooleanConstant ( boolean pBooleanValue )
   {
-    super ( pBooleanValue ? TRUE : FALSE ) ;
-    this.booleanValue = pBooleanValue ;
+    super ( pBooleanValue ? TRUE : FALSE );
+    this.booleanValue = pBooleanValue;
   }
 
 
@@ -66,12 +67,12 @@ public final class BooleanConstant extends Constant
    *          source code.
    * @see #booleanValue()
    */
-  public BooleanConstant ( boolean pBooleanValue , int pParserStartOffset ,
+  public BooleanConstant ( boolean pBooleanValue, int pParserStartOffset,
       int pParserEndOffset )
   {
-    this ( pBooleanValue ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pBooleanValue );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -81,9 +82,9 @@ public final class BooleanConstant extends Constant
    * 
    * @return the primitive <code>boolean</code> value of this object.
    */
-  public boolean booleanValue ( )
+  public boolean booleanValue ()
   {
-    return this.booleanValue ;
+    return this.booleanValue;
   }
 
 
@@ -92,19 +93,19 @@ public final class BooleanConstant extends Constant
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public BooleanConstant clone ( )
+  @Override
+  public BooleanConstant clone ()
   {
-    return new BooleanConstant ( this.booleanValue ) ;
+    return new BooleanConstant ( this.booleanValue );
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

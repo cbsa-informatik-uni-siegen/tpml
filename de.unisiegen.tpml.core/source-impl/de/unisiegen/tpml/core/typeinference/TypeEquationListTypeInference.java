@@ -1,21 +1,21 @@
-package de.unisiegen.tpml.core.typeinference ;
+package de.unisiegen.tpml.core.typeinference;
 
 
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
 
 /**
@@ -26,15 +26,16 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  * @author Christian Fehler
  * @see de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference
  */
-public final class TypeEquationListTypeInference implements PrettyPrintable ,
+public final class TypeEquationListTypeInference implements PrettyPrintable,
     LatexPrintable
 {
+
   /**
    * The empty equation list.
    * 
    * @see #TypeEquationListTypeInference()
    */
-  public static final TypeEquationListTypeInference EMPTY_LIST = new TypeEquationListTypeInference ( ) ;
+  public static final TypeEquationListTypeInference EMPTY_LIST = new TypeEquationListTypeInference ();
 
 
   /**
@@ -42,14 +43,14 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
+    LatexCommandList commands = new LatexCommandList ();
     commands.add ( new DefaultLatexCommand (
-        LATEX_TYPE_EQUATION_LIST_TYPE_INFERENCE , 1 , "\\color{" //$NON-NLS-1$
+        LATEX_TYPE_EQUATION_LIST_TYPE_INFERENCE, 1, "\\color{" //$NON-NLS-1$
             + LATEX_COLOR_NONE + "}{\\{}#1\\color{" //$NON-NLS-1$
-            + LATEX_COLOR_NONE + "}{\\}}" , "teqn1, ... , teqnn" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    return commands ;
+            + LATEX_COLOR_NONE + "}{\\}}", "teqn1, ... , teqnn" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    return commands;
   }
 
 
@@ -58,13 +59,13 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static LatexInstructionList getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
-    return instructions ;
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}", //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ); //$NON-NLS-1$
+    return instructions;
   }
 
 
@@ -73,24 +74,24 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.COLOR ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.COLOR );
+    return packages;
   }
 
 
   /**
    * The first equation in the list.
    */
-  private TypeEquationTypeInference first ;
+  private TypeEquationTypeInference first;
 
 
   /**
    * The remaining equations or <code>null</code>.
    */
-  private TypeEquationListTypeInference remaining ;
+  private TypeEquationListTypeInference remaining;
 
 
   /**
@@ -98,9 +99,9 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
    * 
    * @see #EMPTY_LIST
    */
-  private TypeEquationListTypeInference ( )
+  private TypeEquationListTypeInference ()
   {
-    super ( ) ;
+    super ();
   }
 
 
@@ -114,19 +115,19 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
    *           <code>remaining</code> is <code>null</code>.
    */
   private TypeEquationListTypeInference (
-      final TypeEquationTypeInference pFirst ,
+      final TypeEquationTypeInference pFirst,
       final TypeEquationListTypeInference pRemaining )
   {
     if ( pFirst == null )
     {
-      throw new NullPointerException ( "First is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "First is null" ); //$NON-NLS-1$
     }
     if ( pRemaining == null )
     {
-      throw new NullPointerException ( "Remaining is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "Remaining is null" ); //$NON-NLS-1$
     }
-    this.first = pFirst ;
-    this.remaining = pRemaining ;
+    this.first = pFirst;
+    this.remaining = pRemaining;
   }
 
 
@@ -143,8 +144,7 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
   public TypeEquationListTypeInference extend (
       TypeEquationTypeInference pTypeEquationTypeInference )
   {
-    return new TypeEquationListTypeInference ( pTypeEquationTypeInference ,
-        this ) ;
+    return new TypeEquationListTypeInference ( pTypeEquationTypeInference, this );
   }
 
 
@@ -153,9 +153,9 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
    * 
    * @return TypeEquation first
    */
-  public TypeEquationTypeInference getFirst ( )
+  public TypeEquationTypeInference getFirst ()
   {
-    return this.first ;
+    return this.first;
   }
 
 
@@ -164,15 +164,15 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public LatexCommandList getLatexCommands ( )
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
     for ( TypeEquationListTypeInference list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
-      commands.add ( list.first ) ;
+      commands.add ( list.first );
     }
-    return commands ;
+    return commands;
   }
 
 
@@ -181,15 +181,15 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public LatexInstructionList getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( getLatexInstructionsStatic ( ) ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
     for ( TypeEquationListTypeInference list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
-      instructions.add ( list.first ) ;
+      instructions.add ( list.first );
     }
-    return instructions ;
+    return instructions;
   }
 
 
@@ -198,15 +198,15 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public LatexPackageList getLatexPackages ( )
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( getLatexPackagesStatic () );
     for ( TypeEquationListTypeInference list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
-      packages.add ( list.first ) ;
+      packages.add ( list.first );
     }
-    return packages ;
+    return packages;
   }
 
 
@@ -215,9 +215,9 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
    * 
    * @return TypeEquationList remaining
    */
-  public TypeEquationListTypeInference getRemaining ( )
+  public TypeEquationListTypeInference getRemaining ()
   {
-    return this.remaining ;
+    return this.remaining;
   }
 
 
@@ -226,10 +226,10 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public final LatexString toLatexString ( )
+  public final LatexString toLatexString ()
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -239,52 +239,52 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    StringBuilder body = new StringBuilder ( ) ;
-    body.append ( PRETTY_CLPAREN ) ;
-    int count = 0 ;
+    StringBuilder body = new StringBuilder ();
+    body.append ( PRETTY_CLPAREN );
+    int count = 0;
     for ( TypeEquationListTypeInference list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       if ( list != this )
       {
-        body.append ( PRETTY_COMMA ) ;
-        body.append ( PRETTY_SPACE ) ;
+        body.append ( PRETTY_COMMA );
+        body.append ( PRETTY_SPACE );
       }
-      body.append ( list.first.toPrettyString ( ).toString ( ) ) ;
-      count ++ ;
+      body.append ( list.first.toPrettyString ().toString () );
+      count++ ;
     }
-    body.append ( PRETTY_CRPAREN ) ;
-    String descriptions[] = new String [ 2 + count ] ;
-    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
-    descriptions [ 1 ] = body.toString ( ) ;
-    count = 0 ;
+    body.append ( PRETTY_CRPAREN );
+    String descriptions[] = new String [ 2 + count ];
+    descriptions [ 0 ] = this.toPrettyString ().toString ();
+    descriptions [ 1 ] = body.toString ();
+    count = 0;
     for ( TypeEquationListTypeInference list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
-      descriptions [ 2 + count ] = list.first.toPrettyString ( ).toString ( ) ;
-      count ++ ;
+      descriptions [ 2 + count ] = list.first.toPrettyString ().toString ();
+      count++ ;
     }
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_TYPE_EQUATION_LIST_TYPE_INFERENCE , pIndent , descriptions ) ;
-    builder.addBuilderBegin ( ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
+        LATEX_TYPE_EQUATION_LIST_TYPE_INFERENCE, pIndent, descriptions );
+    builder.addBuilderBegin ();
     for ( TypeEquationListTypeInference list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       if ( list != this )
       {
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-            + LATEX_INDENT ) ) ;
-        builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        builder.addText ( LATEX_COMMA ) ;
-        builder.addText ( LATEX_SPACE ) ;
-        builder.addText ( "}" ) ; //$NON-NLS-1$
-        builder.addBreak ( ) ;
+            + LATEX_INDENT ) );
+        builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ); //$NON-NLS-1$ //$NON-NLS-2$
+        builder.addText ( LATEX_COMMA );
+        builder.addText ( LATEX_SPACE );
+        builder.addText ( "}" ); //$NON-NLS-1$
+        builder.addBreak ();
       }
       builder.addBuilder ( list.first.toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ), 0 );
     }
-    builder.addBuilderEnd ( ) ;
-    return builder ;
+    builder.addBuilderEnd ();
+    return builder;
   }
 
 
@@ -293,10 +293,10 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public PrettyString toPrettyString ( )
+  public PrettyString toPrettyString ()
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -309,20 +309,20 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , 0 ) ;
-    builder.addText ( PRETTY_CLPAREN ) ;
+        this, 0 );
+    builder.addText ( PRETTY_CLPAREN );
     for ( TypeEquationListTypeInference list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       if ( list != this )
       {
-        builder.addText ( PRETTY_COMMA ) ;
-        builder.addText ( PRETTY_SPACE ) ;
+        builder.addText ( PRETTY_COMMA );
+        builder.addText ( PRETTY_SPACE );
       }
       builder.addBuilder ( list.first
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
     }
-    builder.addText ( PRETTY_CRPAREN ) ;
-    return builder ;
+    builder.addText ( PRETTY_CRPAREN );
+    return builder;
   }
 
 
@@ -335,9 +335,9 @@ public final class TypeEquationListTypeInference implements PrettyPrintable ,
    * @see #toPrettyString()
    * @see Object#toString()
    */
-  @ Override
-  public final String toString ( )
+  @Override
+  public final String toString ()
   {
-    return toPrettyString ( ).toString ( ) ;
+    return toPrettyString ().toString ();
   }
 }

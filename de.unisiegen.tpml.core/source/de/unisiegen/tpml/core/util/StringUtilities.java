@@ -1,8 +1,8 @@
-package de.unisiegen.tpml.core.util ;
+package de.unisiegen.tpml.core.util;
 
 
-import java.util.Arrays ;
-import java.util.Collection ;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 /**
@@ -15,13 +15,14 @@ import java.util.Collection ;
  */
 public final class StringUtilities
 {
+
   //
   // Constructor (private)
   //
   /**
    * No instances of this class can be created.
    */
-  private StringUtilities ( )
+  private StringUtilities ()
   {
     // nothing to do here...
   }
@@ -41,7 +42,7 @@ public final class StringUtilities
    */
   public static String toCamelCase ( String string )
   {
-    return toCamelCase ( string , false ) ;
+    return toCamelCase ( string, false );
   }
 
 
@@ -65,23 +66,24 @@ public final class StringUtilities
    * @return the camel case version of <code>string</code>.
    * @see #toCamelCase(String)
    */
-  public static String toCamelCase ( String string , boolean lowerCase )
+  public static String toCamelCase ( String string, boolean lowerCase )
   {
     // verify that string contains atleast one character
-    if ( string.length ( ) == 0 ) return string ;
+    if ( string.length () == 0 )
+      return string;
     // allocate a string builder to generate the camel-case version
-    StringBuilder builder = new StringBuilder ( string.length ( ) ) ;
+    StringBuilder builder = new StringBuilder ( string.length () );
     // add the first character in upper-case
-    builder.append ( Character.toUpperCase ( string.charAt ( 0 ) ) ) ;
+    builder.append ( Character.toUpperCase ( string.charAt ( 0 ) ) );
     // append the remaining string (if not empty)
-    if ( string.length ( ) > 1 )
+    if ( string.length () > 1 )
     {
       // determine the remaining string
-      String remaining = string.substring ( 1 ) ;
+      String remaining = string.substring ( 1 );
       // append remaining string (lower-cased if requested)
-      builder.append ( lowerCase ? remaining.toLowerCase ( ) : remaining ) ;
+      builder.append ( lowerCase ? remaining.toLowerCase () : remaining );
     }
-    return builder.toString ( ) ;
+    return builder.toString ();
   }
 
 
@@ -101,9 +103,9 @@ public final class StringUtilities
    *         together with <code>separator</code> between them.
    * @see #join(String, Collection)
    */
-  public static String join ( String separator , String ... strings )
+  public static String join ( String separator, String ... strings )
   {
-    return join ( separator , Arrays.asList ( strings ) ) ;
+    return join ( separator, Arrays.asList ( strings ) );
   }
 
 
@@ -118,15 +120,15 @@ public final class StringUtilities
    *         together with <code>separator</code> between them.
    * @throws NullPointerException if <code>strings</code> is <code>null</code>.
    */
-  public static String join ( String separator , Collection < String > strings )
+  public static String join ( String separator, Collection < String > strings )
   {
-    StringBuilder builder = new StringBuilder ( ) ;
+    StringBuilder builder = new StringBuilder ();
     for ( String string : strings )
     {
-      if ( builder.length ( ) > 0 && separator != null )
-        builder.append ( separator ) ;
-      builder.append ( string ) ;
+      if ( builder.length () > 0 && separator != null )
+        builder.append ( separator );
+      builder.append ( string );
     }
-    return builder.toString ( ) ;
+    return builder.toString ();
   }
 }

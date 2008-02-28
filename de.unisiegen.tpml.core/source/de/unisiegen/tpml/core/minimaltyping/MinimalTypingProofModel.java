@@ -1,36 +1,38 @@
-package de.unisiegen.tpml.core.minimaltyping ;
+package de.unisiegen.tpml.core.minimaltyping;
 
 
-import java.util.ArrayList ;
-import org.apache.log4j.Logger ;
-import de.unisiegen.tpml.core.AbstractExpressionProofModel ;
-import de.unisiegen.tpml.core.AbstractProofModel ;
-import de.unisiegen.tpml.core.AbstractProofNode ;
-import de.unisiegen.tpml.core.AbstractProofRuleSet ;
-import de.unisiegen.tpml.core.ProofGuessException ;
-import de.unisiegen.tpml.core.ProofNode ;
-import de.unisiegen.tpml.core.ProofRule ;
-import de.unisiegen.tpml.core.ProofRuleException ;
-import de.unisiegen.tpml.core.ProofStep ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.languages.l1.L1Language ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
-import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
-import de.unisiegen.tpml.core.types.MonoType ;
+import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
+
+import de.unisiegen.tpml.core.AbstractExpressionProofModel;
+import de.unisiegen.tpml.core.AbstractProofModel;
+import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.ProofGuessException;
+import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.languages.l1.L1Language;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+import de.unisiegen.tpml.core.types.MonoType;
 
 
 /**
@@ -45,13 +47,14 @@ import de.unisiegen.tpml.core.types.MonoType ;
  */
 public class MinimalTypingProofModel extends AbstractExpressionProofModel
 {
+
   /**
    * The {@link Logger} for this class.
    * 
    * @see Logger
    */
   private static final Logger logger = Logger
-      .getLogger ( MinimalTypingProofModel.class ) ;
+      .getLogger ( MinimalTypingProofModel.class );
 
 
   /**
@@ -59,20 +62,20 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_MKTREE , 1 ,
-        "\\stepcounter{tree} #1 \\arrowstrue #1 \\arrowsfalse" , "tree" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_MKTREE, 1,
+        "\\stepcounter{tree} #1 \\arrowstrue #1 \\arrowsfalse", "tree" ) ); //$NON-NLS-1$//$NON-NLS-2$
     commands
         .add ( new DefaultLatexCommand (
-            LATEX_ARROW ,
-            3 ,
+            LATEX_ARROW,
+            3,
             "\\ifarrows" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\ncangle[angleA=-90,angleB=#1]{<-}{\\thetree.#2}{\\thetree.#3}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "\\else" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
-                + "\\fi" , "angle" , "from" , "to" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
-    return commands ;
+                + "\\fi", "angle", "from", "to" ) ); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+    return commands;
   }
 
 
@@ -81,22 +84,22 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static LatexInstructionList getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ) ; //$NON-NLS-1$
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ); //$NON-NLS-1$
     instructions
-        .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ) ; //$NON-NLS-1$
+        .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
-        "\\newlength{\\treeindent}" ) ) ; //$NON-NLS-1$
+        "\\newlength{\\treeindent}" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
-        "\\newlength{\\nodeindent}" ) ) ; //$NON-NLS-1$
+        "\\newlength{\\nodeindent}" ) ); //$NON-NLS-1$
     instructions
-        .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ) ; //$NON-NLS-1$
+        .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
         "\\newif\\ifarrows" + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
-            + "\\arrowsfalse" ) ) ; //$NON-NLS-1$
-    return instructions ;
+            + "\\arrowsfalse" ) ); //$NON-NLS-1$
+    return instructions;
   }
 
 
@@ -105,29 +108,29 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.AMSMATH ) ;
-    packages.add ( LatexPackage.AMSTEXT ) ;
-    packages.add ( LatexPackage.LONGTABLE ) ;
-    packages.add ( LatexPackage.COLOR ) ;
-    packages.add ( LatexPackage.PSTNODE ) ;
-    packages.add ( LatexPackage.PSTRICKS ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.AMSMATH );
+    packages.add ( LatexPackage.AMSTEXT );
+    packages.add ( LatexPackage.LONGTABLE );
+    packages.add ( LatexPackage.COLOR );
+    packages.add ( LatexPackage.PSTNODE );
+    packages.add ( LatexPackage.PSTRICKS );
+    return packages;
   }
 
 
   /**
    * The side overlapping for latex export
    */
-  int overlap = 0 ;
+  int overlap = 0;
 
 
   /**
    * The number of pages for latex export
    */
-  int pages = 5 ;
+  int pages = 5;
 
 
   /**
@@ -138,19 +141,19 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * @see #getIndex()
    * @see de.unisiegen.tpml.core.types.TypeVariable
    */
-  private int index = 1 ;
+  private int index = 1;
 
 
   /**
    * The rule set for this proof model
    */
-  AbstractMinimalTypingProofRuleSet ruleSet ;
+  AbstractMinimalTypingProofRuleSet ruleSet;
 
 
   /**
    * The choosen mode (advanced or beginner)
    */
-  private boolean mode ;
+  private boolean mode;
 
 
   /**
@@ -165,13 +168,13 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * @see AbstractProofModel#AbstractProofModel(AbstractProofNode,
    *      AbstractProofRuleSet)
    */
-  public MinimalTypingProofModel ( Expression expression ,
-      AbstractMinimalTypingProofRuleSet pRuleSet , boolean pMode )
+  public MinimalTypingProofModel ( Expression expression,
+      AbstractMinimalTypingProofRuleSet pRuleSet, boolean pMode )
   {
     super ( new DefaultMinimalTypingExpressionProofNode (
-        new DefaultTypeEnvironment ( ) , expression ) , pRuleSet ) ;
-    this.mode = pMode ;
-    this.ruleSet = pRuleSet ;
+        new DefaultTypeEnvironment (), expression ), pRuleSet );
+    this.mode = pMode;
+    this.ruleSet = pRuleSet;
   }
 
 
@@ -188,65 +191,68 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * @see #guess(ProofNode)
    * @see #prove(ProofRule, ProofNode)
    */
-  private void applyInternal ( MinimalTypingProofRule rule ,
-      MinimalTypingProofNode node , MonoType type ) throws ProofRuleException
+  private void applyInternal ( MinimalTypingProofRule rule,
+      MinimalTypingProofNode node, MonoType type ) throws ProofRuleException
   {
     // allocate a new TypeCheckerContext
-    DefaultMinimalTypingProofContext context ;
-    context = new DefaultMinimalTypingProofContext ( this ) ;
+    DefaultMinimalTypingProofContext context;
+    context = new DefaultMinimalTypingProofContext ( this );
     try
     {
       // try to apply the rule to the node
-      context.apply ( rule , node , type ) ;
+      context.apply ( rule, node, type );
       // check if we are finished
-      final MinimalTypingProofNode modelRoot = ( MinimalTypingProofNode ) getRoot ( ) ;
-      context.addRedoAction ( new Runnable ( )
+      final MinimalTypingProofNode modelRoot = ( MinimalTypingProofNode ) getRoot ();
+      context.addRedoAction ( new Runnable ()
       {
-        @ SuppressWarnings ( "synthetic-access" )
-        public void run ( )
+
+        @SuppressWarnings ( "synthetic-access" )
+        public void run ()
         {
-          setFinished ( modelRoot.isFinished ( ) ) ;
+          setFinished ( modelRoot.isFinished () );
         }
-      } ) ;
-      context.addUndoAction ( new Runnable ( )
+      } );
+      context.addUndoAction ( new Runnable ()
       {
-        @ SuppressWarnings ( "synthetic-access" )
-        public void run ( )
+
+        @SuppressWarnings ( "synthetic-access" )
+        public void run ()
         {
-          setFinished ( false ) ;
+          setFinished ( false );
         }
-      } ) ;
+      } );
       // determine the redo and undo actions from the context
-      final Runnable redoActions = context.getRedoActions ( ) ;
-      final Runnable undoActions = context.getUndoActions ( ) ;
+      final Runnable redoActions = context.getRedoActions ();
+      final Runnable undoActions = context.getUndoActions ();
       // record the undo edit action for this proof step
-      addUndoableTreeEdit ( new UndoableTreeEdit ( )
+      addUndoableTreeEdit ( new UndoableTreeEdit ()
       {
-        public void redo ( )
+
+        public void redo ()
         {
-          redoActions.run ( ) ;
+          redoActions.run ();
         }
 
 
-        public void undo ( )
+        public void undo ()
         {
-          undoActions.run ( ) ;
+          undoActions.run ();
         }
-      } ) ;
+      } );
     }
     catch ( ProofRuleException e )
     {
       // revert the actions performed so far
-      context.revert ( ) ;
+      context.revert ();
       // re-throw the exception
-      throw e ;
+      throw e;
     }
     catch ( RuntimeException e )
     {
       // revert the actions performed so far
-      context.revert ( ) ;
+      context.revert ();
       // re-throw the exception
-      throw e ;
+      throw e;
     }
   }
 
@@ -264,53 +270,55 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    *           tree.
    * @throws NullPointerException if any of the parameters is <code>null</code>.
    */
-  public void contextAddProofNode ( DefaultMinimalTypingProofContext context ,
-      final AbstractMinimalTypingProofNode node , MonoType type , MonoType type2 )
+  public void contextAddProofNode ( DefaultMinimalTypingProofContext context,
+      final AbstractMinimalTypingProofNode node, MonoType type, MonoType type2 )
   {
     if ( context == null )
     {
-      throw new NullPointerException ( "context is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "context is null" ); //$NON-NLS-1$
     }
     if ( node == null )
     {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
     }
     if ( type == null )
     {
-      throw new NullPointerException ( "type is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "type is null" ); //$NON-NLS-1$
     }
     if ( type2 == null )
     {
-      throw new NullPointerException ( "type2 is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "type2 is null" ); //$NON-NLS-1$
     }
-    if ( ! this.root.isNodeRelated ( node ) )
+    if ( !this.root.isNodeRelated ( node ) )
     {
-      throw new IllegalArgumentException ( "node is invalid" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "node is invalid" ); //$NON-NLS-1$
     }
     final DefaultMinimalTypingTypesProofNode child = new DefaultMinimalTypingTypesProofNode (
-        type , type2 ) ;
-    context.addRedoAction ( new Runnable ( )
+        type, type2 );
+    context.addRedoAction ( new Runnable ()
     {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
       {
-        node.add ( child ) ;
-        nodesWereInserted ( node , new int [ ]
-        { node.getIndex ( child ) } ) ;
+        node.add ( child );
+        nodesWereInserted ( node, new int []
+        { node.getIndex ( child ) } );
       }
-    } ) ;
-    context.addUndoAction ( new Runnable ( )
+    } );
+    context.addUndoAction ( new Runnable ()
     {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
       {
-        int finalIndex = node.getIndex ( child ) ;
-        node.remove ( finalIndex ) ;
-        nodesWereRemoved ( node , new int [ ]
-        { finalIndex } , new Object [ ]
-        { child } ) ;
+        int finalIndex = node.getIndex ( child );
+        node.remove ( finalIndex );
+        nodesWereRemoved ( node, new int []
+        { finalIndex }, new Object []
+        { child } );
       }
-    } ) ;
+    } );
   }
 
 
@@ -328,54 +336,56 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    *           tree.
    * @throws NullPointerException if any of the parameters is <code>null</code>.
    */
-  public void contextAddProofNode ( DefaultMinimalTypingProofContext context ,
-      final AbstractMinimalTypingProofNode node , TypeEnvironment environment ,
+  public void contextAddProofNode ( DefaultMinimalTypingProofContext context,
+      final AbstractMinimalTypingProofNode node, TypeEnvironment environment,
       Expression expression )
   {
     if ( context == null )
     {
-      throw new NullPointerException ( "context is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "context is null" ); //$NON-NLS-1$
     }
     if ( node == null )
     {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
     }
     if ( environment == null )
     {
-      throw new NullPointerException ( "environment is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "environment is null" ); //$NON-NLS-1$
     }
     if ( expression == null )
     {
-      throw new NullPointerException ( "expression is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "expression is null" ); //$NON-NLS-1$
     }
-    if ( ! this.root.isNodeRelated ( node ) )
+    if ( !this.root.isNodeRelated ( node ) )
     {
-      throw new IllegalArgumentException ( "node is invalid" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "node is invalid" ); //$NON-NLS-1$
     }
     final DefaultMinimalTypingExpressionProofNode child = new DefaultMinimalTypingExpressionProofNode (
-        environment , expression ) ;
-    context.addRedoAction ( new Runnable ( )
+        environment, expression );
+    context.addRedoAction ( new Runnable ()
     {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
       {
-        node.add ( child ) ;
-        nodesWereInserted ( node , new int [ ]
-        { node.getIndex ( child ) } ) ;
+        node.add ( child );
+        nodesWereInserted ( node, new int []
+        { node.getIndex ( child ) } );
       }
-    } ) ;
-    context.addUndoAction ( new Runnable ( )
+    } );
+    context.addUndoAction ( new Runnable ()
     {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
       {
-        int finalIndex = node.getIndex ( child ) ;
-        node.remove ( finalIndex ) ;
-        nodesWereRemoved ( node , new int [ ]
-        { finalIndex } , new Object [ ]
-        { child } ) ;
+        int finalIndex = node.getIndex ( child );
+        node.remove ( finalIndex );
+        nodesWereRemoved ( node, new int []
+        { finalIndex }, new Object []
+        { child } );
       }
-    } ) ;
+    } );
   }
 
 
@@ -391,30 +401,32 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    *      MinimalTypingProofNode, MonoType)
    */
   public void contextSetProofNodeRule (
-      DefaultMinimalTypingProofContext context ,
-      final AbstractMinimalTypingProofNode node ,
+      DefaultMinimalTypingProofContext context,
+      final AbstractMinimalTypingProofNode node,
       final MinimalTypingProofRule rule )
   {
-    final ProofStep [ ] oldSteps = node.getSteps ( ) ;
-    context.addRedoAction ( new Runnable ( )
+    final ProofStep [] oldSteps = node.getSteps ();
+    context.addRedoAction ( new Runnable ()
     {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
       {
-        node.setSteps ( new ProofStep [ ]
-        { new ProofStep ( node.getExpression ( ) , rule ) } ) ;
-        nodeChanged ( node ) ;
+        node.setSteps ( new ProofStep []
+        { new ProofStep ( node.getExpression (), rule ) } );
+        nodeChanged ( node );
       }
-    } ) ;
-    context.addUndoAction ( new Runnable ( )
+    } );
+    context.addUndoAction ( new Runnable ()
     {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
       {
-        node.setSteps ( oldSteps ) ;
-        nodeChanged ( node ) ;
+        node.setSteps ( oldSteps );
+        nodeChanged ( node );
       }
-    } ) ;
+    } );
   }
 
 
@@ -426,28 +438,30 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * @param type the new type
    */
   public void contextSetProofNodeType (
-      DefaultMinimalTypingProofContext context ,
-      AbstractMinimalTypingProofNode pNode , final MonoType type )
+      DefaultMinimalTypingProofContext context,
+      AbstractMinimalTypingProofNode pNode, final MonoType type )
   {
-    final DefaultMinimalTypingExpressionProofNode node = ( DefaultMinimalTypingExpressionProofNode ) pNode ;
-    context.addRedoAction ( new Runnable ( )
+    final DefaultMinimalTypingExpressionProofNode node = ( DefaultMinimalTypingExpressionProofNode ) pNode;
+    context.addRedoAction ( new Runnable ()
     {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
       {
-        node.setType ( type ) ;
-        nodeChanged ( node ) ;
+        node.setType ( type );
+        nodeChanged ( node );
       }
-    } ) ;
-    context.addUndoAction ( new Runnable ( )
+    } );
+    context.addUndoAction ( new Runnable ()
     {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
       {
-        node.setType ( null ) ;
-        nodeChanged ( node ) ;
+        node.setType ( null );
+        nodeChanged ( node );
       }
-    } ) ;
+    } );
   }
 
 
@@ -459,14 +473,14 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    */
   private ArrayList < PrettyString > getDescription ( ProofNode pCurrentNode )
   {
-    ArrayList < PrettyString > descriptionList = new ArrayList < PrettyString > ( ) ;
-    descriptionList.add ( pCurrentNode.toPrettyString ( ) ) ;
-    for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
+    ArrayList < PrettyString > descriptionList = new ArrayList < PrettyString > ();
+    descriptionList.add ( pCurrentNode.toPrettyString () );
+    for ( int i = 0 ; i < pCurrentNode.getChildCount () ; i++ )
     {
       descriptionList
-          .addAll ( getDescription ( pCurrentNode.getChildAt ( i ) ) ) ;
+          .addAll ( getDescription ( pCurrentNode.getChildAt ( i ) ) );
     }
-    return descriptionList ;
+    return descriptionList;
   }
 
 
@@ -478,9 +492,9 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * @return the current index of the proof model.
    * @see de.unisiegen.tpml.core.types.TypeVariable
    */
-  public int getIndex ( )
+  public int getIndex ()
   {
-    return this.index ;
+    return this.index;
   }
 
 
@@ -489,13 +503,13 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * 
    * @see LatexPrintable#getLatexCommands()
    */
-  public LatexCommandList getLatexCommands ( )
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
     commands
-        .add ( getLatexCommandsInternal ( ( MinimalTypingProofNode ) this.root ) ) ;
-    return commands ;
+        .add ( getLatexCommandsInternal ( ( MinimalTypingProofNode ) this.root ) );
+    return commands;
   }
 
 
@@ -510,14 +524,14 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
   private LatexCommandList getLatexCommandsInternal (
       MinimalTypingProofNode pNode )
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( pNode.getLatexCommands ( ) ) ;
-    commands.add ( pNode.getRule ( ) ) ;
-    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( pNode.getLatexCommands () );
+    commands.add ( pNode.getRule () );
+    for ( int i = 0 ; i < pNode.getChildCount () ; i++ )
     {
-      commands.add ( getLatexCommandsInternal ( pNode.getChildAt ( i ) ) ) ;
+      commands.add ( getLatexCommandsInternal ( pNode.getChildAt ( i ) ) );
     }
-    return commands ;
+    return commands;
   }
 
 
@@ -526,13 +540,13 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * 
    * @see LatexPrintable#getLatexInstructions()
    */
-  public LatexInstructionList getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( getLatexInstructionsStatic ( ) ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
     instructions
-        .add ( getLatexInstructionsInternal ( ( MinimalTypingProofNode ) this.root ) ) ;
-    return instructions ;
+        .add ( getLatexInstructionsInternal ( ( MinimalTypingProofNode ) this.root ) );
+    return instructions;
   }
 
 
@@ -547,15 +561,15 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
   private LatexInstructionList getLatexInstructionsInternal (
       MinimalTypingProofNode pNode )
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( pNode ) ;
-    instructions.add ( pNode.getRule ( ) ) ;
-    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( pNode );
+    instructions.add ( pNode.getRule () );
+    for ( int i = 0 ; i < pNode.getChildCount () ; i++ )
     {
       instructions
-          .add ( getLatexInstructionsInternal ( pNode.getChildAt ( i ) ) ) ;
+          .add ( getLatexInstructionsInternal ( pNode.getChildAt ( i ) ) );
     }
-    return instructions ;
+    return instructions;
   }
 
 
@@ -564,13 +578,13 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * 
    * @see LatexPrintable#getLatexPackages()
    */
-  public LatexPackageList getLatexPackages ( )
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( getLatexPackagesStatic () );
     packages
-        .add ( getLatexPackagesInternal ( ( MinimalTypingProofNode ) this.root ) ) ;
-    return packages ;
+        .add ( getLatexPackagesInternal ( ( MinimalTypingProofNode ) this.root ) );
+    return packages;
   }
 
 
@@ -585,14 +599,14 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
   private LatexPackageList getLatexPackagesInternal (
       MinimalTypingProofNode pNode )
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( pNode.getLatexPackages ( ) ) ;
-    packages.add ( pNode.getRule ( ) ) ;
-    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( pNode.getLatexPackages () );
+    packages.add ( pNode.getRule () );
+    for ( int i = 0 ; i < pNode.getChildCount () ; i++ )
     {
-      packages.add ( getLatexPackagesInternal ( pNode.getChildAt ( i ) ) ) ;
+      packages.add ( getLatexPackagesInternal ( pNode.getChildAt ( i ) ) );
     }
-    return packages ;
+    return packages;
   }
 
 
@@ -601,10 +615,10 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * 
    * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
    */
-  @ Override
+  @Override
   public void guess ( ProofNode node ) throws ProofGuessException
   {
-    guessInternal ( ( MinimalTypingProofNode ) node , null ) ;
+    guessInternal ( ( MinimalTypingProofNode ) node, null );
   }
 
 
@@ -623,49 +637,49 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * @throws ProofGuessException if the next proof step could not be guessed.
    * @see #guess(ProofNode)
    */
-  private void guessInternal ( MinimalTypingProofNode node , MonoType type )
+  private void guessInternal ( MinimalTypingProofNode node, MonoType type )
       throws ProofGuessException
   {
     if ( node == null )
     {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
     }
-    if ( node.getSteps ( ).length > 0 )
+    if ( node.getSteps ().length > 0 )
     {
-      throw new IllegalArgumentException ( "The node is already completed" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The node is already completed" ); //$NON-NLS-1$
     }
-    if ( ! this.root.isNodeRelated ( node ) )
+    if ( !this.root.isNodeRelated ( node ) )
     {
-      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
     }
     // try to guess the next rule
-    logger.debug ( "Trying to guess a rule for " + node ) ; //$NON-NLS-1$
-    for ( ProofRule rule : this.ruleSet.getRules ( ) )
+    logger.debug ( "Trying to guess a rule for " + node ); //$NON-NLS-1$
+    for ( ProofRule rule : this.ruleSet.getRules () )
     { // MUST be the getRules() from the ProofRuleSet
       try
       {
         // try to apply the rule to the specified node
-        applyInternal ( ( MinimalTypingProofRule ) rule , node , type ) ;
+        applyInternal ( ( MinimalTypingProofRule ) rule, node, type );
         // remember that the user cheated
-        setCheating ( true ) ;
+        setCheating ( true );
         // yep, we did it
-        logger.debug ( "Successfully applied (" + rule + ") to " + node ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        return ;
+        logger.debug ( "Successfully applied (" + rule + ") to " + node ); //$NON-NLS-1$ //$NON-NLS-2$
+        return;
       }
       catch ( ProofRuleException e )
       {
         // rule failed to apply... so, next one, please
-        logger.debug ( "Failed to apply (" + rule + ") to " + node , e ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        continue ;
+        logger.debug ( "Failed to apply (" + rule + ") to " + node, e ); //$NON-NLS-1$ //$NON-NLS-2$
+        continue;
       }
       catch ( RuntimeException e )
       {
-        throw new ProofGuessException ( e.getMessage ( ) , node ) ;
+        throw new ProofGuessException ( e.getMessage (), node );
       }
     }
     // unable to guess next step
-    logger.debug ( "Failed to find rule to apply to " + node ) ; //$NON-NLS-1$
-    throw new ProofGuessException ( node ) ;
+    logger.debug ( "Failed to find rule to apply to " + node ); //$NON-NLS-1$
+    throw new ProofGuessException ( node );
   }
 
 
@@ -675,25 +689,25 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule,
    *      de.unisiegen.tpml.core.ProofNode)
    */
-  @ Override
-  public void prove ( ProofRule rule , ProofNode node )
+  @Override
+  public void prove ( ProofRule rule, ProofNode node )
       throws ProofRuleException
   {
-    if ( ! this.ruleSet.contains ( rule ) )
+    if ( !this.ruleSet.contains ( rule ) )
     {
-      throw new IllegalArgumentException ( "The rule is invalid for the model" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The rule is invalid for the model" ); //$NON-NLS-1$
     }
-    if ( ! this.root.isNodeRelated ( node ) )
+    if ( !this.root.isNodeRelated ( node ) )
     {
-      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
     }
-    if ( node.getRules ( ).length > 0 )
+    if ( node.getRules ().length > 0 )
     {
-      throw new IllegalArgumentException ( "The node is already completed" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The node is already completed" ); //$NON-NLS-1$
     }
     // try to apply the rule to the specified node
-    applyInternal ( ( MinimalTypingProofRule ) rule ,
-        ( MinimalTypingProofNode ) node , null ) ;
+    applyInternal ( ( MinimalTypingProofRule ) rule,
+        ( MinimalTypingProofNode ) node, null );
   }
 
 
@@ -710,9 +724,9 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
   {
     if ( pIndex < 1 )
     {
-      throw new IllegalArgumentException ( "index is invalid" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "index is invalid" ); //$NON-NLS-1$
     }
-    this.index = pIndex ;
+    this.index = pIndex;
   }
 
 
@@ -725,30 +739,29 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
   {
     if ( this.mode != pMode )
     {
-      this.mode = pMode ;
+      this.mode = pMode;
       if ( pMode )
       {
-        this.ruleSet.unregister ( "ARROW" ) ; //$NON-NLS-1$
-        this.ruleSet.unregister ( "S-MU-LEFT" ) ; //$NON-NLS-1$
-        this.ruleSet.unregister ( "S-MU-RIGHT" ) ; //$NON-NLS-1$
-        this.ruleSet.unregister ( "REFL" ) ; //$NON-NLS-1$
-        this.ruleSet.unregister ( "S-ASSUME" ) ; //$NON-NLS-1$
-        this.ruleSet.registerByMethodName ( L1Language.L1 ,
-            "SUBTYPE" , "applySubtype" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        this.ruleSet.unregister ( "ARROW" ); //$NON-NLS-1$
+        this.ruleSet.unregister ( "S-MU-LEFT" ); //$NON-NLS-1$
+        this.ruleSet.unregister ( "S-MU-RIGHT" ); //$NON-NLS-1$
+        this.ruleSet.unregister ( "REFL" ); //$NON-NLS-1$
+        this.ruleSet.unregister ( "S-ASSUME" ); //$NON-NLS-1$
+        this.ruleSet.registerByMethodName ( L1Language.L1,
+            "SUBTYPE", "applySubtype" ); //$NON-NLS-1$ //$NON-NLS-2$
       }
       else
       {
-        this.ruleSet.unregister ( "SUBTYPE" ) ; //$NON-NLS-1$
-        this.ruleSet.registerByMethodName ( L1Language.L1 ,
-            "ARROW" , "applyArrow" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        this.ruleSet.registerByMethodName ( L1Language.L1 ,
-            "S-MU-LEFT" , "applyMuLeft" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        this.ruleSet.registerByMethodName ( L1Language.L1 ,
-            "S-MU-RIGHT" , "applyMuRight" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        this.ruleSet.registerByMethodName ( L1Language.L1 ,
-            "REFL" , "applyRefl" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        this.ruleSet.registerByMethodName ( L1Language.L1 ,
-            "S-ASSUME" , "applyAssume" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        this.ruleSet.unregister ( "SUBTYPE" ); //$NON-NLS-1$
+        this.ruleSet.registerByMethodName ( L1Language.L1,
+            "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
+        this.ruleSet.registerByMethodName ( L1Language.L1,
+            "S-MU-LEFT", "applyMuLeft" ); //$NON-NLS-1$ //$NON-NLS-2$
+        this.ruleSet.registerByMethodName ( L1Language.L1,
+            "S-MU-RIGHT", "applyMuRight" ); //$NON-NLS-1$ //$NON-NLS-2$
+        this.ruleSet.registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
+        this.ruleSet.registerByMethodName ( L1Language.L1,
+            "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
       }
     }
   }
@@ -761,7 +774,7 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    */
   public void setOverlap ( int pOverlap )
   {
-    this.overlap = pOverlap ;
+    this.overlap = pOverlap;
   }
 
 
@@ -772,7 +785,7 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    */
   public void setPages ( int pPages )
   {
-    this.pages = pPages ;
+    this.pages = pPages;
   }
 
 
@@ -781,10 +794,10 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public LatexString toLatexString ( )
+  public LatexString toLatexString ()
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -794,43 +807,43 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    ArrayList < PrettyString > descriptionList = new ArrayList < PrettyString > ( ) ;
-    descriptionList.add ( this.toPrettyString ( ) ) ;
-    descriptionList.addAll ( getDescription ( this.root ) ) ;
-    String [ ] description = new String [ descriptionList.size ( ) ] ;
-    for ( int i = 0 ; i < descriptionList.size ( ) ; i ++ )
+    ArrayList < PrettyString > descriptionList = new ArrayList < PrettyString > ();
+    descriptionList.add ( this.toPrettyString () );
+    descriptionList.addAll ( getDescription ( this.root ) );
+    String [] description = new String [ descriptionList.size () ];
+    for ( int i = 0 ; i < descriptionList.size () ; i++ )
     {
-      description [ i ] = descriptionList.get ( i ).toString ( ) ;
+      description [ i ] = descriptionList.get ( i ).toString ();
     }
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        pIndent , description ) ;
-    builder.addText ( "\\treeindent=0mm" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\nodeindent=7mm" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\nodesep=2mm" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
+        pIndent, description );
+    builder.addText ( "\\treeindent=0mm" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "\\nodeindent=7mm" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "\\nodesep=2mm" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
     builder
-        .addText ( "\\newcommand{\\longtext}[1]{\\oddsidemargin=#1\\enlargethispage{840mm}" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\mktree{" ) ; //$NON-NLS-1$
-    toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
-        this.root , pIndent + LATEX_INDENT , - 1 ) ;
-    builder.addText ( "}" ) ; //$NON-NLS-1$
-    builder.addText ( "}" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\longtext{0mm}" ) ; //$NON-NLS-1$
-    for ( int i = 1 ; i < this.pages ; i ++ )
+        .addText ( "\\newcommand{\\longtext}[1]{\\oddsidemargin=#1\\enlargethispage{840mm}" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "\\mktree{" ); //$NON-NLS-1$
+    toLatexStringBuilderInternal ( pLatexStringBuilderFactory, builder,
+        this.root, pIndent + LATEX_INDENT, -1 );
+    builder.addText ( "}" ); //$NON-NLS-1$
+    builder.addText ( "}" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "\\longtext{0mm}" ); //$NON-NLS-1$
+    for ( int i = 1 ; i < this.pages ; i++ )
     {
-      builder.addSourceCodeBreak ( 0 ) ;
-      builder.addText ( "\\newpage" ) ; //$NON-NLS-1$
-      builder.addSourceCodeBreak ( 0 ) ;
-      int page  = ( - 210 + this.overlap ) * i ;
-      builder.addText ( "\\longtext{" + page + "mm}" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+      builder.addSourceCodeBreak ( 0 );
+      builder.addText ( "\\newpage" ); //$NON-NLS-1$
+      builder.addSourceCodeBreak ( 0 );
+      int page = ( -210 + this.overlap ) * i;
+      builder.addText ( "\\longtext{" + page + "mm}" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
-    return builder ;
+    return builder;
   }
 
 
@@ -845,26 +858,26 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * @param pDepth the depth of the actual node
    */
   public final void toLatexStringBuilderInternal (
-      LatexStringBuilderFactory pLatexStringBuilderFactory ,
-      LatexStringBuilder pLatexStringBuilder , ProofNode pCurrentNode ,
-      int pIndent , int pDepth )
+      LatexStringBuilderFactory pLatexStringBuilderFactory,
+      LatexStringBuilder pLatexStringBuilder, ProofNode pCurrentNode,
+      int pIndent, int pDepth )
   {
-    int depth = pDepth + 1 ;
+    int depth = pDepth + 1;
     pLatexStringBuilder.addBuilder ( pCurrentNode.toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent ) , 0 ) ;
-    int value = 180 ;
-    for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
+        pLatexStringBuilderFactory, pIndent ), 0 );
+    int value = 180;
+    for ( int i = 0 ; i < pCurrentNode.getChildCount () ; i++ )
     {
       pLatexStringBuilder.addText ( "\\arrow{" + value + "}{" //$NON-NLS-1$//$NON-NLS-2$
-          + pCurrentNode.getId ( ) + "}{" //$NON-NLS-1$
-          + pCurrentNode.getChildAt ( i ).getId ( ) + "}" ) ; //$NON-NLS-1$
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+          + pCurrentNode.getId () + "}{" //$NON-NLS-1$
+          + pCurrentNode.getChildAt ( i ).getId () + "}" ); //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
     }
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    for ( int i = 0 ; i < pCurrentNode.getChildCount () ; i++ )
     {
-      toLatexStringBuilderInternal ( pLatexStringBuilderFactory ,
-          pLatexStringBuilder , pCurrentNode.getChildAt ( i ) , pIndent , depth ) ;
+      toLatexStringBuilderInternal ( pLatexStringBuilderFactory,
+          pLatexStringBuilder, pCurrentNode.getChildAt ( i ), pIndent, depth );
     }
   }
 
@@ -874,10 +887,10 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ( )
+  public final PrettyString toPrettyString ()
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -890,12 +903,12 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , 0 ) ;
+        this, 0 );
     builder.addBuilder ( this.root
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    builder.addText ( PRETTY_LINE_BREAK ) ;
-    builder.addText ( PRETTY_CONTINUATION ) ;
-    return builder ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+    builder.addText ( PRETTY_LINE_BREAK );
+    builder.addText ( PRETTY_CONTINUATION );
+    return builder;
   }
 
 
@@ -907,9 +920,9 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel
    * @see #toPrettyString()
    * @see Object#toString()
    */
-  @ Override
-  public final String toString ( )
+  @Override
+  public final String toString ()
   {
-    return toPrettyString ( ).toString ( ) ;
+    return toPrettyString ().toString ();
   }
 }

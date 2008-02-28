@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
 /**
@@ -12,12 +12,13 @@ package de.unisiegen.tpml.core.latex ;
  */
 final class DefaultLatexString implements LatexString
 {
+
   /**
    * The raw character content of the latex string.
    * 
    * @see #toString()
    */
-  private String content ;
+  private String content;
 
 
   /**
@@ -29,7 +30,7 @@ final class DefaultLatexString implements LatexString
    */
   DefaultLatexString ( String pContent )
   {
-    this.content = pContent ;
+    this.content = pContent;
   }
 
 
@@ -43,15 +44,15 @@ final class DefaultLatexString implements LatexString
    *         latex string.
    * @see Object#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof DefaultLatexString )
     {
-      DefaultLatexString other = ( DefaultLatexString ) pObject ;
-      return this.content.equals ( other.content ) ;
+      DefaultLatexString other = ( DefaultLatexString ) pObject;
+      return this.content.equals ( other.content );
     }
-    return false ;
+    return false;
   }
 
 
@@ -61,10 +62,10 @@ final class DefaultLatexString implements LatexString
    * @return a hash value for this latex string.
    * @see Object#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.content.hashCode ( ) ;
+    return this.content.hashCode ();
   }
 
 
@@ -74,9 +75,9 @@ final class DefaultLatexString implements LatexString
    * @return The string representation of the latex string.
    * @see Object#toString()
    */
-  @ Override
-  public String toString ( )
+  @Override
+  public String toString ()
   {
-    return this.content ;
+    return this.content;
   }
 }

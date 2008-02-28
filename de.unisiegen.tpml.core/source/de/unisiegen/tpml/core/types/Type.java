@@ -1,31 +1,32 @@
-package de.unisiegen.tpml.core.types ;
+package de.unisiegen.tpml.core.types;
 
 
-import java.awt.Color ;
-import java.util.ArrayList ;
-import java.util.MissingResourceException ;
-import java.util.ResourceBundle ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypeNames ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.util.Theme ;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers;
+import de.unisiegen.tpml.core.interfaces.DefaultTypeNames;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.interfaces.ShowBondsInput;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.util.Theme;
 
 
 /**
@@ -37,32 +38,33 @@ import de.unisiegen.tpml.core.util.Theme ;
  * @version $Rev:296 $
  * @see PrettyPrintable
  */
-public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
-    LatexPrintable , ShowBondsInput
+public abstract class Type implements PrettyPrintable, PrettyPrintPriorities,
+    LatexPrintable, ShowBondsInput
 {
+
   /**
    * The resource bundle.
    */
   private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
-      .getBundle ( "de.unisiegen.tpml.core.types.messages" ) ; //$NON-NLS-1$
+      .getBundle ( "de.unisiegen.tpml.core.types.messages" ); //$NON-NLS-1$
 
 
   /**
    * Prefix of tau {@link Type}s.
    */
-  public static final String PREFIX_TAU = "\u03C4" ; //$NON-NLS-1$
+  public static final String PREFIX_TAU = "\u03C4"; //$NON-NLS-1$
 
 
   /**
    * Prefix of {@link TypeName}s.
    */
-  public static final String PREFIX_TYPE_NAME = "t" ; //$NON-NLS-1$
+  public static final String PREFIX_TYPE_NAME = "t"; //$NON-NLS-1$
 
 
   /**
    * Prefix of phi {@link Type}s.
    */
-  public static final String PREFIX_PHI = "\u03A6" ; //$NON-NLS-1$
+  public static final String PREFIX_PHI = "\u03A6"; //$NON-NLS-1$
 
 
   /**
@@ -75,11 +77,11 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
   {
     try
     {
-      return RESOURCE_BUNDLE.getString ( pClass.getSimpleName ( ) ) ;
+      return RESOURCE_BUNDLE.getString ( pClass.getSimpleName () );
     }
     catch ( MissingResourceException e )
     {
-      return pClass.getSimpleName ( ) ;
+      return pClass.getSimpleName ();
     }
   }
 
@@ -89,12 +91,12 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_PARENTHESIS , 1 , "(#1)" , //$NON-NLS-1$
-        "tau" ) ) ; //$NON-NLS-1$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_PARENTHESIS, 1, "(#1)", //$NON-NLS-1$
+        "tau" ) ); //$NON-NLS-1$
+    return commands;
   }
 
 
@@ -103,85 +105,84 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static LatexInstructionList getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    Color colorExpression = Theme.currentTheme ( ).getExpressionColor ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    Color colorExpression = Theme.currentTheme ().getExpressionColor ();
     float red = ( float ) Math
-        .round ( ( ( float ) colorExpression.getRed ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorExpression.getRed () ) / 255 * 100 ) / 100;
     float green = ( float ) Math.round ( ( ( float ) colorExpression
-        .getGreen ( ) ) / 255 * 100 ) / 100 ;
+        .getGreen () ) / 255 * 100 ) / 100;
     float blue = ( float ) Math
-        .round ( ( ( float ) colorExpression.getBlue ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorExpression.getBlue () ) / 255 * 100 ) / 100;
     instructions
         .add ( new DefaultLatexInstruction (
             "\\definecolor{" + LATEX_COLOR_EXPRESSION + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
                 + red + "," //$NON-NLS-1$
                 + green + "," //$NON-NLS-1$
-                + blue + "}" , LATEX_COLOR_EXPRESSION + ": color of expression text" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    Color colorType = Theme.currentTheme ( ).getTypeColor ( ) ;
-    red = ( float ) Math
-        .round ( ( ( float ) colorType.getRed ( ) ) / 255 * 100 ) / 100 ;
+                + blue + "}", LATEX_COLOR_EXPRESSION + ": color of expression text" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    Color colorType = Theme.currentTheme ().getTypeColor ();
+    red = ( float ) Math.round ( ( ( float ) colorType.getRed () ) / 255 * 100 ) / 100;
     green = ( float ) Math
-        .round ( ( ( float ) colorType.getGreen ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorType.getGreen () ) / 255 * 100 ) / 100;
     blue = ( float ) Math
-        .round ( ( ( float ) colorType.getBlue ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorType.getBlue () ) / 255 * 100 ) / 100;
     instructions.add ( new DefaultLatexInstruction (
         "\\definecolor{" + LATEX_COLOR_TYPE + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
             + red + "," //$NON-NLS-1$
             + green + "," //$NON-NLS-1$
-            + blue + "}" , LATEX_COLOR_TYPE + ": color of types" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    Color colorKeyword = Theme.currentTheme ( ).getKeywordColor ( ) ;
+            + blue + "}", LATEX_COLOR_TYPE + ": color of types" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    Color colorKeyword = Theme.currentTheme ().getKeywordColor ();
     red = ( float ) Math
-        .round ( ( ( float ) colorKeyword.getRed ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorKeyword.getRed () ) / 255 * 100 ) / 100;
     green = ( float ) Math
-        .round ( ( ( float ) colorKeyword.getGreen ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorKeyword.getGreen () ) / 255 * 100 ) / 100;
     blue = ( float ) Math
-        .round ( ( ( float ) colorKeyword.getBlue ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorKeyword.getBlue () ) / 255 * 100 ) / 100;
     instructions.add ( new DefaultLatexInstruction (
         "\\definecolor{" + LATEX_COLOR_KEYWORD + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
             + red + "," //$NON-NLS-1$
             + green + "," //$NON-NLS-1$
-            + blue + "}" , LATEX_COLOR_KEYWORD + ": color of keywords" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    Color colorIdentifier = Theme.currentTheme ( ).getIdentifierColor ( ) ;
+            + blue + "}", LATEX_COLOR_KEYWORD + ": color of keywords" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    Color colorIdentifier = Theme.currentTheme ().getIdentifierColor ();
     red = ( float ) Math
-        .round ( ( ( float ) colorIdentifier.getRed ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorIdentifier.getRed () ) / 255 * 100 ) / 100;
     green = ( float ) Math
-        .round ( ( ( float ) colorIdentifier.getGreen ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorIdentifier.getGreen () ) / 255 * 100 ) / 100;
     blue = ( float ) Math
-        .round ( ( ( float ) colorIdentifier.getBlue ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorIdentifier.getBlue () ) / 255 * 100 ) / 100;
     instructions.add ( new DefaultLatexInstruction (
         "\\definecolor{" + LATEX_COLOR_IDENTIFIER + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
             + red + "," //$NON-NLS-1$
             + green + "," //$NON-NLS-1$
-            + blue + "}" , LATEX_COLOR_IDENTIFIER + ": color of keywords" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    Color colorBindingId = Theme.currentTheme ( ).getBindingIdColor ( ) ;
+            + blue + "}", LATEX_COLOR_IDENTIFIER + ": color of keywords" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    Color colorBindingId = Theme.currentTheme ().getBindingIdColor ();
     red = ( float ) Math
-        .round ( ( ( float ) colorBindingId.getRed ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorBindingId.getRed () ) / 255 * 100 ) / 100;
     green = ( float ) Math
-        .round ( ( ( float ) colorBindingId.getGreen ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorBindingId.getGreen () ) / 255 * 100 ) / 100;
     blue = ( float ) Math
-        .round ( ( ( float ) colorBindingId.getBlue ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorBindingId.getBlue () ) / 255 * 100 ) / 100;
     instructions
         .add ( new DefaultLatexInstruction (
             "\\definecolor{" + LATEX_COLOR_BINDING_ID + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
                 + red + "," //$NON-NLS-1$
                 + green + "," //$NON-NLS-1$
-                + blue + "}" , LATEX_COLOR_BINDING_ID + ": color of binding identifiers" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    Color colorBoundId = Theme.currentTheme ( ).getBoundIdColor ( ) ;
+                + blue + "}", LATEX_COLOR_BINDING_ID + ": color of binding identifiers" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    Color colorBoundId = Theme.currentTheme ().getBoundIdColor ();
     red = ( float ) Math
-        .round ( ( ( float ) colorBoundId.getRed ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorBoundId.getRed () ) / 255 * 100 ) / 100;
     green = ( float ) Math
-        .round ( ( ( float ) colorBoundId.getGreen ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorBoundId.getGreen () ) / 255 * 100 ) / 100;
     blue = ( float ) Math
-        .round ( ( ( float ) colorBoundId.getBlue ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorBoundId.getBlue () ) / 255 * 100 ) / 100;
     instructions
         .add ( new DefaultLatexInstruction (
             "\\definecolor{" + LATEX_COLOR_BOUND_ID + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
                 + red + "," //$NON-NLS-1$
                 + green + "," //$NON-NLS-1$
-                + blue + "}" , LATEX_COLOR_BOUND_ID + ": color of bound identifiers" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    return instructions ;
+                + blue + "}", LATEX_COLOR_BOUND_ID + ": color of bound identifiers" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    return instructions;
   }
 
 
@@ -190,11 +191,11 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.COLOR ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.COLOR );
+    return packages;
   }
 
 
@@ -204,13 +205,13 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @see #children()
    */
-  private ArrayList < Type > children = null ;
+  private ArrayList < Type > children = null;
 
 
   /**
    * The list of the free {@link TypeName}s in this {@link Type}.
    */
-  protected ArrayList < TypeName > typeNamesFree = null ;
+  protected ArrayList < TypeName > typeNamesFree = null;
 
 
   /**
@@ -220,7 +221,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @see #getTypeVariablesFree()
    */
-  protected ArrayList < TypeVariable > typeVariablesFree = null ;
+  protected ArrayList < TypeVariable > typeVariablesFree = null;
 
 
   /**
@@ -230,7 +231,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @see #toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  protected PrettyStringBuilder prettyStringBuilder = null ;
+  protected PrettyStringBuilder prettyStringBuilder = null;
 
 
   /**
@@ -239,7 +240,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @see #getParent()
    * @see #setParent(PrettyPrintable)
    */
-  protected PrettyPrintable parent = null ;
+  protected PrettyPrintable parent = null;
 
 
   /**
@@ -248,7 +249,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @see #getParserStartOffset()
    * @see #setParserStartOffset(int)
    */
-  protected int parserStartOffset = - 1 ;
+  protected int parserStartOffset = -1;
 
 
   /**
@@ -257,7 +258,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @see #getParserEndOffset()
    * @see #setParserEndOffset(int)
    */
-  protected int parserEndOffset = - 1 ;
+  protected int parserEndOffset = -1;
 
 
   /**
@@ -265,21 +266,21 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @see #getPrefix()
    */
-  protected String prefix = null ;
+  protected String prefix = null;
 
 
   /**
    * A list of lists of bound {@link TypeName}s in this {@link Type}.
    */
-  protected ArrayList < ArrayList < TypeName >> boundTypeNames = null ;
+  protected ArrayList < ArrayList < TypeName >> boundTypeNames = null;
 
 
   /**
    * Constructor for all types.
    */
-  protected Type ( )
+  protected Type ()
   {
-    super ( ) ;
+    super ();
   }
 
 
@@ -288,25 +289,25 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return An {@link ArrayList} of the child {@link Type}s.
    */
-  public final ArrayList < Type > children ( )
+  public final ArrayList < Type > children ()
   {
     if ( this.children == null )
     {
       if ( this instanceof DefaultTypes )
       {
-        Type [ ] types = ( ( DefaultTypes ) this ).getTypes ( ) ;
-        this.children = new ArrayList < Type > ( types.length ) ;
+        Type [] types = ( ( DefaultTypes ) this ).getTypes ();
+        this.children = new ArrayList < Type > ( types.length );
         for ( Type type : types )
         {
-          this.children.add ( type ) ;
+          this.children.add ( type );
         }
       }
       else
       {
-        this.children = new ArrayList < Type > ( 0 ) ;
+        this.children = new ArrayList < Type > ( 0 );
       }
     }
-    return this.children ;
+    return this.children;
   }
 
 
@@ -319,8 +320,8 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @return a deep clone of this object.
    * @see Object#clone()
    */
-  @ Override
-  public abstract Type clone ( ) ;
+  @Override
+  public abstract Type clone ();
 
 
   /**
@@ -328,8 +329,8 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @see Object#equals(Object)
    */
-  @ Override
-  public abstract boolean equals ( Object pObject ) ;
+  @Override
+  public abstract boolean equals ( Object pObject );
 
 
   /**
@@ -337,7 +338,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return The caption of this {@link Type}.
    */
-  public abstract String getCaption ( ) ;
+  public abstract String getCaption ();
 
 
   /**
@@ -345,23 +346,23 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public LatexCommandList getLatexCommands ( )
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
     if ( this instanceof DefaultTypes )
     {
-      commands.add ( ( ( DefaultTypes ) this ).getTypes ( ) ) ;
+      commands.add ( ( ( DefaultTypes ) this ).getTypes () );
     }
     if ( this instanceof DefaultIdentifiers )
     {
-      commands.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) ) ;
+      commands.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers () );
     }
     if ( this instanceof DefaultTypeNames )
     {
-      commands.add ( ( ( DefaultTypeNames ) this ).getTypeNames ( ) ) ;
+      commands.add ( ( ( DefaultTypeNames ) this ).getTypeNames () );
     }
-    return commands ;
+    return commands;
   }
 
 
@@ -370,23 +371,23 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public LatexInstructionList getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( getLatexInstructionsStatic ( ) ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
     if ( this instanceof DefaultTypes )
     {
-      instructions.add ( ( ( DefaultTypes ) this ).getTypes ( ) ) ;
+      instructions.add ( ( ( DefaultTypes ) this ).getTypes () );
     }
     if ( this instanceof DefaultIdentifiers )
     {
-      instructions.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) ) ;
+      instructions.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers () );
     }
     if ( this instanceof DefaultTypeNames )
     {
-      instructions.add ( ( ( DefaultTypeNames ) this ).getTypeNames ( ) ) ;
+      instructions.add ( ( ( DefaultTypeNames ) this ).getTypeNames () );
     }
-    return instructions ;
+    return instructions;
   }
 
 
@@ -395,23 +396,23 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public LatexPackageList getLatexPackages ( )
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( getLatexPackagesStatic () );
     if ( this instanceof DefaultTypes )
     {
-      packages.add ( ( ( DefaultTypes ) this ).getTypes ( ) ) ;
+      packages.add ( ( ( DefaultTypes ) this ).getTypes () );
     }
     if ( this instanceof DefaultIdentifiers )
     {
-      packages.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) ) ;
+      packages.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers () );
     }
     if ( this instanceof DefaultTypeNames )
     {
-      packages.add ( ( ( DefaultTypeNames ) this ).getTypeNames ( ) ) ;
+      packages.add ( ( ( DefaultTypeNames ) this ).getTypeNames () );
     }
-    return packages ;
+    return packages;
   }
 
 
@@ -422,9 +423,9 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @see #parent
    * @see #setParent(PrettyPrintable)
    */
-  public final PrettyPrintable getParent ( )
+  public final PrettyPrintable getParent ()
   {
-    return this.parent ;
+    return this.parent;
   }
 
 
@@ -435,9 +436,9 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @see #parserEndOffset
    * @see #setParserEndOffset(int)
    */
-  public int getParserEndOffset ( )
+  public int getParserEndOffset ()
   {
-    return this.parserEndOffset ;
+    return this.parserEndOffset;
   }
 
 
@@ -448,9 +449,9 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @see #parserStartOffset
    * @see #setParserStartOffset(int)
    */
-  public int getParserStartOffset ( )
+  public int getParserStartOffset ()
   {
-    return this.parserStartOffset ;
+    return this.parserStartOffset;
   }
 
 
@@ -460,13 +461,13 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @return The prefix of this {@link Type}.
    * @see #prefix
    */
-  public String getPrefix ( )
+  public String getPrefix ()
   {
     if ( this.prefix == null )
     {
-      this.prefix = PREFIX_TAU ;
+      this.prefix = PREFIX_TAU;
     }
-    return this.prefix ;
+    return this.prefix;
   }
 
 
@@ -475,17 +476,17 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return A list of the free {@link TypeName}s in this {@link Type}.
    */
-  public ArrayList < TypeName > getTypeNamesFree ( )
+  public ArrayList < TypeName > getTypeNamesFree ()
   {
     if ( this.typeNamesFree == null )
     {
-      this.typeNamesFree = new ArrayList < TypeName > ( ) ;
-      for ( Type child : children ( ) )
+      this.typeNamesFree = new ArrayList < TypeName > ();
+      for ( Type child : children () )
       {
-        this.typeNamesFree.addAll ( child.getTypeNamesFree ( ) ) ;
+        this.typeNamesFree.addAll ( child.getTypeNamesFree () );
       }
     }
-    return this.typeNamesFree ;
+    return this.typeNamesFree;
   }
 
 
@@ -494,17 +495,17 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @return A list of the free {@link TypeVariable}s in this {@link Type}.
    */
-  public ArrayList < TypeVariable > getTypeVariablesFree ( )
+  public ArrayList < TypeVariable > getTypeVariablesFree ()
   {
     if ( this.typeVariablesFree == null )
     {
-      this.typeVariablesFree = new ArrayList < TypeVariable > ( ) ;
-      for ( Type child : children ( ) )
+      this.typeVariablesFree = new ArrayList < TypeVariable > ();
+      for ( Type child : children () )
       {
-        this.typeVariablesFree.addAll ( child.getTypeVariablesFree ( ) ) ;
+        this.typeVariablesFree.addAll ( child.getTypeVariablesFree () );
       }
     }
-    return this.typeVariablesFree ;
+    return this.typeVariablesFree;
   }
 
 
@@ -517,7 +518,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    */
   public final void setParent ( PrettyPrintable pParent )
   {
-    this.parent = pParent ;
+    this.parent = pParent;
   }
 
 
@@ -530,7 +531,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    */
   public void setParserEndOffset ( int pParserEndOffset )
   {
-    this.parserEndOffset = pParserEndOffset ;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -543,7 +544,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    */
   public void setParserStartOffset ( int pParserStartOffset )
   {
-    this.parserStartOffset = pParserStartOffset ;
+    this.parserStartOffset = pParserStartOffset;
   }
 
 
@@ -557,7 +558,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @param pTau The {@link MonoType}.
    * @return The resulting {@link Type}.
    */
-  public abstract Type substitute ( TypeName pTypeName , MonoType pTau ) ;
+  public abstract Type substitute ( TypeName pTypeName, MonoType pTau );
 
 
   /**
@@ -572,7 +573,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @throws NullPointerException if the <code>pTypeSubstitution</code> is
    *           <code>null</code>.
    */
-  public abstract Type substitute ( TypeSubstitution pTypeSubstitution ) ;
+  public abstract Type substitute ( TypeSubstitution pTypeSubstitution );
 
 
   /**
@@ -580,10 +581,10 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public final LatexString toLatexString ( )
+  public final LatexString toLatexString ()
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -593,7 +594,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public abstract LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent ) ;
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent );
 
 
   /**
@@ -601,10 +602,10 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ( )
+  public final PrettyString toPrettyString ()
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -614,7 +615,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   public abstract PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory ) ;
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory );
 
 
   /**
@@ -625,9 +626,9 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities ,
    * @see #toPrettyString()
    * @see Object#toString()
    */
-  @ Override
-  public final String toString ( )
+  @Override
+  public final String toString ()
   {
-    return toPrettyString ( ).toString ( ) ;
+    return toPrettyString ().toString ();
   }
 }

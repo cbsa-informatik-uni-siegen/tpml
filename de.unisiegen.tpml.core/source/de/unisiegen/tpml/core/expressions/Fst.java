@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -12,25 +12,26 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class Fst extends Projection
 {
+
   /**
    * The keyword <code>fst</code>.
    */
-  private static final String FST = "fst" ; //$NON-NLS-1$
+  private static final String FST = "fst"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = Expression.getCaption ( Fst.class ) ;
+  private static final String CAPTION = Expression.getCaption ( Fst.class );
 
 
   /**
    * Allocates a new instance of the <code>fst</code> operator which is a
    * special case of the projection that returns the first item of a pair.
    */
-  public Fst ( )
+  public Fst ()
   {
-    super ( 2 , 1 , FST ) ;
+    super ( 2, 1, FST );
   }
 
 
@@ -43,11 +44,11 @@ public final class Fst extends Projection
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Fst ( int pParserStartOffset , int pParserEndOffset )
+  public Fst ( int pParserStartOffset, int pParserEndOffset )
   {
-    this ( ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ();
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -56,19 +57,19 @@ public final class Fst extends Projection
    * 
    * @see Projection#clone()
    */
-  @ Override
-  public Fst clone ( )
+  @Override
+  public Fst clone ()
   {
-    return new Fst ( ) ;
+    return new Fst ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

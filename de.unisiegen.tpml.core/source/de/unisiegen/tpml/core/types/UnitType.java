@@ -1,10 +1,10 @@
-package de.unisiegen.tpml.core.types ;
+package de.unisiegen.tpml.core.types;
 
 
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
 
 
 /**
@@ -17,16 +17,17 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
  */
 public final class UnitType extends PrimitiveType
 {
+
   /**
    * The keyword <code>unit</code>.
    */
-  private static final String UNIT = "unit" ; //$NON-NLS-1$
+  private static final String UNIT = "unit"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = Type.getCaption ( UnitType.class ) ;
+  private static final String CAPTION = Type.getCaption ( UnitType.class );
 
 
   /**
@@ -34,23 +35,23 @@ public final class UnitType extends PrimitiveType
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_UNIT , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{unit}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_UNIT_TYPE , 0 ,
-        "\\" + LATEX_KEY_UNIT ) ) ; //$NON-NLS-1$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_UNIT, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{unit}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_UNIT_TYPE, 0,
+        "\\" + LATEX_KEY_UNIT ) ); //$NON-NLS-1$
+    return commands;
   }
 
 
   /**
    * Allocates a new <code>UnitType</code> instance.
    */
-  public UnitType ( )
+  public UnitType ()
   {
-    super ( UNIT ) ;
+    super ( UNIT );
   }
 
 
@@ -62,11 +63,11 @@ public final class UnitType extends PrimitiveType
    * @param pParserEndOffset The end offset of this {@link Type} in the source
    *          code.
    */
-  public UnitType ( int pParserStartOffset , int pParserEndOffset )
+  public UnitType ( int pParserStartOffset, int pParserEndOffset )
   {
-    this ( ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ();
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -75,20 +76,20 @@ public final class UnitType extends PrimitiveType
    * 
    * @see Type#clone()
    */
-  @ Override
-  public UnitType clone ( )
+  @Override
+  public UnitType clone ()
   {
-    return new UnitType ( ) ;
+    return new UnitType ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -97,12 +98,12 @@ public final class UnitType extends PrimitiveType
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -111,13 +112,13 @@ public final class UnitType extends PrimitiveType
    * 
    * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_PRIMITIVE , LATEX_UNIT_TYPE , pIndent , this.toPrettyString ( )
-            .toString ( ) ) ;
-    return builder ;
+        PRIO_PRIMITIVE, LATEX_UNIT_TYPE, pIndent, this.toPrettyString ()
+            .toString () );
+    return builder;
   }
 }

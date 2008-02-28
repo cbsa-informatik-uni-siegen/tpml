@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
 /**
@@ -8,10 +8,11 @@ package de.unisiegen.tpml.core.latex ;
  */
 public interface LatexInstruction
 {
+
   /**
    * The description.
    */
-  public static final String DESCRIPTION = "Needed latex instructions" ; //$NON-NLS-1$
+  public static final String DESCRIPTION = "Needed latex instructions"; //$NON-NLS-1$
 
 
   /**
@@ -19,7 +20,7 @@ public interface LatexInstruction
    * 
    * @return The text.
    */
-  public String getText ( ) ;
+  public String getText ();
 
 
   /**
@@ -27,5 +28,5 @@ public interface LatexInstruction
    * 
    * @return The string value of this <code>LatexInstruction</code>.
    */
-  public String toString ( ) ;
+  public String toString ();
 }

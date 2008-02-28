@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
 /**
@@ -12,13 +12,14 @@ package de.unisiegen.tpml.core.latex ;
  */
 public final class LatexStringBuilderFactory
 {
+
   /**
    * Allocates a new <code>LatexStringBuilderFactory</code>, which can be
    * used to allocate new {@link LatexStringBuilder}s.
    * 
    * @see #newInstance()
    */
-  private LatexStringBuilderFactory ( )
+  private LatexStringBuilderFactory ()
   {
     // nothing to do here
   }
@@ -32,9 +33,9 @@ public final class LatexStringBuilderFactory
    *         instance.
    * @see #newBuilder(int,String,int,String ...)
    */
-  public static LatexStringBuilderFactory newInstance ( )
+  public static LatexStringBuilderFactory newInstance ()
   {
-    return new LatexStringBuilderFactory ( ) ;
+    return new LatexStringBuilderFactory ();
   }
 
 
@@ -56,14 +57,14 @@ public final class LatexStringBuilderFactory
    * @see LatexString
    * @see LatexStringBuilder
    */
-  public LatexStringBuilder newBuilder ( int pReturnPriority , String pName ,
-      int pIndent , String ... pParameterDescriptions )
+  public LatexStringBuilder newBuilder ( int pReturnPriority, String pName,
+      int pIndent, String ... pParameterDescriptions )
   {
-    return new DefaultLatexStringBuilder ( pReturnPriority , pName , pIndent ,
-        pParameterDescriptions ) ;
+    return new DefaultLatexStringBuilder ( pReturnPriority, pName, pIndent,
+        pParameterDescriptions );
   }
-  
-  
+
+
   /**
    * Allocates a new <code>LatexStringBuilder</code>, which will generate an
    * annotation for the <code>LatexPrintable</code> for the whole string
@@ -81,10 +82,10 @@ public final class LatexStringBuilderFactory
    * @see LatexString
    * @see LatexStringBuilder
    */
-  public LatexStringBuilder newBuilder ( int pReturnPriority ,
-      int pIndent , String ... pParameterDescriptions )
+  public LatexStringBuilder newBuilder ( int pReturnPriority, int pIndent,
+      String ... pParameterDescriptions )
   {
-    return new DefaultLatexStringBuilder ( pReturnPriority , pIndent ,
-        pParameterDescriptions ) ;
+    return new DefaultLatexStringBuilder ( pReturnPriority, pIndent,
+        pParameterDescriptions );
   }
 }

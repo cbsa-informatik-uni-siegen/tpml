@@ -1,19 +1,20 @@
-package de.unisiegen.tpml.graphics.components ;
+package de.unisiegen.tpml.graphics.components;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.BoundTypeNames ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
-import de.unisiegen.tpml.core.typeinference.TypeSubType ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.Type ;
-import de.unisiegen.tpml.core.types.TypeName ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers;
+import de.unisiegen.tpml.core.interfaces.BoundTypeNames;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.interfaces.ShowBondsInput;
+import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
+import de.unisiegen.tpml.core.typeinference.TypeSubType;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.core.types.TypeName;
 
 
 /**
@@ -24,16 +25,17 @@ import de.unisiegen.tpml.core.types.TypeName ;
  */
 public final class ShowBonds
 {
+
   /**
    * The loaded {@link ShowBondsInput}.
    */
-  private ShowBondsInput loaded = null ;
+  private ShowBondsInput loaded = null;
 
 
   /**
    * List of all Bonds in loaded {link Expression}.
    */
-  private ArrayList < Bonds > result = null ;
+  private ArrayList < Bonds > result = null;
 
 
   /**
@@ -45,32 +47,31 @@ public final class ShowBonds
   {
     if ( pExpression instanceof BoundIdentifiers )
     {
-      Identifier [ ] id = ( ( BoundIdentifiers ) pExpression )
-          .getIdentifiers ( ) ;
+      Identifier [] id = ( ( BoundIdentifiers ) pExpression ).getIdentifiers ();
       ArrayList < ArrayList < Identifier >> bound = ( ( BoundIdentifiers ) pExpression )
-          .getIdentifiersBound ( ) ;
+          .getIdentifiersBound ();
       // Create Bonds
       if ( bound == null )
       {
-        return ;
+        return;
       }
-      PrettyAnnotation current ;
-      for ( int i = 0 ; i < bound.size ( ) ; i ++ )
+      PrettyAnnotation current;
+      for ( int i = 0 ; i < bound.size () ; i++ )
       {
         if ( bound.get ( i ) == null )
         {
-          continue ;
+          continue;
         }
-        current = this.loaded.toPrettyString ( ).getAnnotationForPrintable (
-            id [ i ] ) ;
-        Bonds bonds = new Bonds ( current.getStartOffset ( ) , current
-            .getEndOffset ( ) ) ;
+        current = this.loaded.toPrettyString ().getAnnotationForPrintable (
+            id [ i ] );
+        Bonds bonds = new Bonds ( current.getStartOffset (), current
+            .getEndOffset () );
         for ( Identifier boundId : bound.get ( i ) )
         {
           try
           {
-            bonds.addPrettyAnnotation ( this.loaded.toPrettyString ( )
-                .getAnnotationForPrintable ( boundId ) ) ;
+            bonds.addPrettyAnnotation ( this.loaded.toPrettyString ()
+                .getAnnotationForPrintable ( boundId ) );
           }
           catch ( IllegalArgumentException e )
           {
@@ -83,23 +84,23 @@ public final class ShowBonds
              */
           }
         }
-        this.result.add ( bonds ) ;
+        this.result.add ( bonds );
       }
     }
     if ( pExpression instanceof DefaultTypes )
     {
-      MonoType [ ] types = ( ( DefaultTypes ) pExpression ).getTypes ( ) ;
+      MonoType [] types = ( ( DefaultTypes ) pExpression ).getTypes ();
       for ( MonoType tau : types )
       {
         if ( tau != null )
         {
-          check ( tau ) ;
+          check ( tau );
         }
       }
     }
-    for ( Expression expr : pExpression.children ( ) )
+    for ( Expression expr : pExpression.children () )
     {
-      check ( expr ) ;
+      check ( expr );
     }
   }
 
@@ -113,31 +114,31 @@ public final class ShowBonds
   {
     if ( pType instanceof BoundTypeNames )
     {
-      TypeName [ ] typeNames = ( ( BoundTypeNames ) pType ).getTypeNames ( ) ;
+      TypeName [] typeNames = ( ( BoundTypeNames ) pType ).getTypeNames ();
       ArrayList < ArrayList < TypeName >> bound = ( ( BoundTypeNames ) pType )
-          .getTypeNamesBound ( ) ;
+          .getTypeNamesBound ();
       // Create Bonds
       if ( bound == null )
       {
-        return ;
+        return;
       }
-      PrettyAnnotation current ;
-      for ( int i = 0 ; i < bound.size ( ) ; i ++ )
+      PrettyAnnotation current;
+      for ( int i = 0 ; i < bound.size () ; i++ )
       {
         if ( bound.get ( i ) == null )
         {
-          continue ;
+          continue;
         }
-        current = this.loaded.toPrettyString ( ).getAnnotationForPrintable (
-            typeNames [ i ] ) ;
-        Bonds bonds = new Bonds ( current.getStartOffset ( ) , current
-            .getEndOffset ( ) ) ;
+        current = this.loaded.toPrettyString ().getAnnotationForPrintable (
+            typeNames [ i ] );
+        Bonds bonds = new Bonds ( current.getStartOffset (), current
+            .getEndOffset () );
         for ( TypeName boundTypeNames : bound.get ( i ) )
         {
           try
           {
-            bonds.addPrettyAnnotation ( this.loaded.toPrettyString ( )
-                .getAnnotationForPrintable ( boundTypeNames ) ) ;
+            bonds.addPrettyAnnotation ( this.loaded.toPrettyString ()
+                .getAnnotationForPrintable ( boundTypeNames ) );
           }
           catch ( IllegalArgumentException e )
           {
@@ -146,12 +147,12 @@ public final class ShowBonds
              */
           }
         }
-        this.result.add ( bonds ) ;
+        this.result.add ( bonds );
       }
     }
-    for ( Type tau : pType.children ( ) )
+    for ( Type tau : pType.children () )
     {
-      check ( tau ) ;
+      check ( tau );
     }
   }
 
@@ -161,34 +162,34 @@ public final class ShowBonds
    * 
    * @return A list with all bonds in the loaded {@link Expression}.
    */
-  public final ArrayList < Bonds > getAnnotations ( )
+  public final ArrayList < Bonds > getAnnotations ()
   {
     if ( this.result == null )
     {
-      this.result = new ArrayList < Bonds > ( ) ;
+      this.result = new ArrayList < Bonds > ();
       if ( this.loaded != null )
       {
         if ( this.loaded instanceof Expression )
         {
-          check ( ( Expression ) this.loaded ) ;
+          check ( ( Expression ) this.loaded );
         }
         else if ( this.loaded instanceof Type )
         {
-          check ( ( Type ) this.loaded ) ;
+          check ( ( Type ) this.loaded );
         }
         else if ( this.loaded instanceof TypeEquationTypeInference )
         {
-          check ( ( ( TypeEquationTypeInference ) this.loaded ).getLeft ( ) ) ;
-          check ( ( ( TypeEquationTypeInference ) this.loaded ).getRight ( ) ) ;
+          check ( ( ( TypeEquationTypeInference ) this.loaded ).getLeft () );
+          check ( ( ( TypeEquationTypeInference ) this.loaded ).getRight () );
         }
         else if ( this.loaded instanceof TypeSubType )
         {
-          check ( ( ( TypeSubType ) this.loaded ).getType ( ) ) ;
-          check ( ( ( TypeSubType ) this.loaded ).getType2 ( ) ) ;
+          check ( ( ( TypeSubType ) this.loaded ).getType () );
+          check ( ( ( TypeSubType ) this.loaded ).getType2 () );
         }
       }
     }
-    return this.result ;
+    return this.result;
   }
 
 
@@ -199,7 +200,7 @@ public final class ShowBonds
    */
   public final void load ( ShowBondsInput pLoaded )
   {
-    this.loaded = pLoaded ;
+    this.loaded = pLoaded;
   }
 
 
@@ -208,18 +209,18 @@ public final class ShowBonds
    * 
    * @see Object#toString()
    */
-  @ Override
-  public final String toString ( )
+  @Override
+  public final String toString ()
   {
     if ( this.result == null )
     {
-      return "" ; //$NON-NLS-1$
+      return ""; //$NON-NLS-1$
     }
-    String s = "" ; //$NON-NLS-1$
+    String s = ""; //$NON-NLS-1$
     for ( Bonds item : this.result )
     {
-      s += item + "\n" ; //$NON-NLS-1$
+      s += item + "\n"; //$NON-NLS-1$
     }
-    return s ;
+    return s;
   }
 }

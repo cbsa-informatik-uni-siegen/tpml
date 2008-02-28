@@ -1,11 +1,13 @@
-package de.unisiegen.tpml.core.util ;
+package de.unisiegen.tpml.core.util;
 
 
-import java.awt.Color ;
-import java.awt.Font ;
-import java.util.prefs.Preferences ;
-import javax.swing.JComboBox ;
-import de.unisiegen.tpml.core.util.beans.AbstractBean ;
+import java.awt.Color;
+import java.awt.Font;
+import java.util.prefs.Preferences;
+
+import javax.swing.JComboBox;
+
+import de.unisiegen.tpml.core.util.beans.AbstractBean;
 
 
 /**
@@ -48,6 +50,7 @@ import de.unisiegen.tpml.core.util.beans.AbstractBean ;
  */
 public final class Theme extends AbstractBean
 {
+
   //
   // Class attributes
   //
@@ -57,7 +60,7 @@ public final class Theme extends AbstractBean
    * 
    * @see #currentTheme()
    */
-  private static Theme currentTheme ;
+  private static Theme currentTheme;
 
 
   //
@@ -70,13 +73,13 @@ public final class Theme extends AbstractBean
    * 
    * @return the current theme.
    */
-  public static Theme currentTheme ( )
+  public static Theme currentTheme ()
   {
     if ( currentTheme == null )
     {
-      currentTheme = new Theme ( ) ;
+      currentTheme = new Theme ();
     }
-    return currentTheme ;
+    return currentTheme;
   }
 
 
@@ -95,25 +98,25 @@ public final class Theme extends AbstractBean
   private static final String encodeColor ( Color color )
   {
     // encode the red channel
-    String red = Integer.toHexString ( color.getRed ( ) ) ;
-    if ( red.length ( ) < 2 )
+    String red = Integer.toHexString ( color.getRed () );
+    if ( red.length () < 2 )
     {
-      red = "0" + red ; //$NON-NLS-1$
+      red = "0" + red; //$NON-NLS-1$
     }
     // encode the green channel
-    String green = Integer.toHexString ( color.getGreen ( ) ) ;
-    if ( green.length ( ) < 2 )
+    String green = Integer.toHexString ( color.getGreen () );
+    if ( green.length () < 2 )
     {
-      green = "0" + green ; //$NON-NLS-1$
+      green = "0" + green; //$NON-NLS-1$
     }
     // encode the blue channel
-    String blue = Integer.toHexString ( color.getBlue ( ) ) ;
-    if ( blue.length ( ) < 2 )
+    String blue = Integer.toHexString ( color.getBlue () );
+    if ( blue.length () < 2 )
     {
-      blue = "0" + blue ; //$NON-NLS-1$
+      blue = "0" + blue; //$NON-NLS-1$
     }
     // combine the channels
-    return "#" + red + green + blue ; //$NON-NLS-1$
+    return "#" + red + green + blue; //$NON-NLS-1$
   }
 
 
@@ -126,7 +129,7 @@ public final class Theme extends AbstractBean
    * @see #getCommentColor()
    * @see #setCommentColor(Color)
    */
-  private Color commentColor ;
+  private Color commentColor;
 
 
   /**
@@ -135,7 +138,7 @@ public final class Theme extends AbstractBean
    * @see #getConstantColor()
    * @see #setConstantColor(Color)
    */
-  private Color constantColor ;
+  private Color constantColor;
 
 
   /**
@@ -145,7 +148,7 @@ public final class Theme extends AbstractBean
    * @see #getEnvironmentColor()
    * @see #setEnvironmentColor(Color)
    */
-  private Color environmentColor ;
+  private Color environmentColor;
 
 
   /**
@@ -154,7 +157,7 @@ public final class Theme extends AbstractBean
    * @see #getExpressionColor()
    * @see #setExpressionColor(Color)
    */
-  private Color expressionColor ;
+  private Color expressionColor;
 
 
   /**
@@ -163,7 +166,7 @@ public final class Theme extends AbstractBean
    * @see #getFont()
    * @see #setFont(Font)
    */
-  private Font font ;
+  private Font font;
 
 
   /**
@@ -172,7 +175,7 @@ public final class Theme extends AbstractBean
    * @see #getKeywordColor()
    * @see #setKeywordColor(Color)
    */
-  private Color keywordColor ;
+  private Color keywordColor;
 
 
   /**
@@ -181,7 +184,7 @@ public final class Theme extends AbstractBean
    * @see #getIdentifierColor()
    * @see #setIdentifierColor(Color)
    */
-  private Color identifierColor ;
+  private Color identifierColor;
 
 
   /**
@@ -190,7 +193,7 @@ public final class Theme extends AbstractBean
    * @see #getSelectionColor()
    * @see #setSelectionColor(Color)
    */
-  private Color selectionColor ;
+  private Color selectionColor;
 
 
   /**
@@ -199,7 +202,7 @@ public final class Theme extends AbstractBean
    * @see #getBoundIdColor()
    * @see #setBoundIdColor(Color)
    */
-  private Color boundIdColor ;
+  private Color boundIdColor;
 
 
   /**
@@ -208,7 +211,7 @@ public final class Theme extends AbstractBean
    * @see #getFreeIdColor()
    * @see #setFreeIdColor(Color)
    */
-  private Color freeIdColor ;
+  private Color freeIdColor;
 
 
   /**
@@ -217,7 +220,7 @@ public final class Theme extends AbstractBean
    * @see #getBindingIdColor()
    * @see #setBindingIdColor(Color)
    */
-  private Color bindingIdColor ;
+  private Color bindingIdColor;
 
 
   /**
@@ -226,7 +229,7 @@ public final class Theme extends AbstractBean
    * @see #getHighlightSourceCodeColor()
    * @see #setHighlightSourceCodeColor(Color)
    */
-  private Color highlightSourceCodeColor ;
+  private Color highlightSourceCodeColor;
 
 
   /**
@@ -235,7 +238,7 @@ public final class Theme extends AbstractBean
    * @see #getParserWarningColor()
    * @see #setParserWarningColor(Color)
    */
-  private Color parserWarningColor ;
+  private Color parserWarningColor;
 
 
   /**
@@ -243,7 +246,7 @@ public final class Theme extends AbstractBean
    * 
    * @see Preferences
    */
-  private Preferences preferences ;
+  private Preferences preferences;
 
 
   /**
@@ -252,7 +255,7 @@ public final class Theme extends AbstractBean
    * @see #getRuleColor()
    * @see #setRuleColor(Color)
    */
-  private Color ruleColor ;
+  private Color ruleColor;
 
 
   /**
@@ -261,7 +264,7 @@ public final class Theme extends AbstractBean
    * @see #getUnderlineColor()
    * @see #setUnderlineColor(Color)
    */
-  private Color underlineColor ;
+  private Color underlineColor;
 
 
   /**
@@ -270,7 +273,7 @@ public final class Theme extends AbstractBean
    * @see #getTypeColor()
    * @see #setTypeColor(Color)
    */
-  private Color typeColor ;
+  private Color typeColor;
 
 
   //
@@ -283,38 +286,38 @@ public final class Theme extends AbstractBean
    * 
    * @see #currentTheme()
    */
-  private Theme ( )
+  private Theme ()
   {
     // connect to the preferences
-    this.preferences = Preferences.userNodeForPackage ( Theme.class ) ;
+    this.preferences = Preferences.userNodeForPackage ( Theme.class );
     // load the commentColor setting
-    this.commentColor = Color.decode ( this.preferences.get ( "commentColor" , //$NON-NLS-1$
-        "#009900" ) ) ; //$NON-NLS-1$
+    this.commentColor = Color.decode ( this.preferences.get ( "commentColor", //$NON-NLS-1$
+        "#009900" ) ); //$NON-NLS-1$
     // load the constantColor setting
-    this.constantColor = Color.decode ( this.preferences.get ( "constantColor" , //$NON-NLS-1$
-        "#00007F" ) ) ; //$NON-NLS-1$
+    this.constantColor = Color.decode ( this.preferences.get ( "constantColor", //$NON-NLS-1$
+        "#00007F" ) ); //$NON-NLS-1$
     // load the environmentColor setting
     this.environmentColor = Color.decode ( this.preferences.get (
-        "environmentColor" , "#7F7F7F" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+        "environmentColor", "#7F7F7F" ) ); //$NON-NLS-1$//$NON-NLS-2$
     // load the expressionColor setting
     this.expressionColor = Color.decode ( this.preferences.get (
-        "expressionColor" , "#000000" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        "expressionColor", "#000000" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     // load the selectionColor setting
     this.selectionColor = Color.decode ( this.preferences.get (
-        "selectionColor" , "#FF0000" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        "selectionColor", "#FF0000" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     // load the boundIdColor setting
-    this.boundIdColor = Color.decode ( this.preferences.get ( "boundIdColor" , //$NON-NLS-1$
-        "#FFAA33" ) ) ; //$NON-NLS-1$
+    this.boundIdColor = Color.decode ( this.preferences.get ( "boundIdColor", //$NON-NLS-1$
+        "#FFAA33" ) ); //$NON-NLS-1$
     // load the freeIdColor setting
-    this.freeIdColor = Color.decode ( this.preferences.get ( "freeIdColor" , //$NON-NLS-1$
-        "#3333FF" ) ) ; //$NON-NLS-1$
+    this.freeIdColor = Color.decode ( this.preferences.get ( "freeIdColor", //$NON-NLS-1$
+        "#3333FF" ) ); //$NON-NLS-1$
     // load the bindingIdColor setting
     this.bindingIdColor = Color.decode ( this.preferences.get (
-        "bindingIdColor" , "#FF5519" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        "bindingIdColor", "#FF5519" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     this.highlightSourceCodeColor = Color.decode ( this.preferences.get (
-        "highlightSourceCodeColor" , "#FFFF00" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        "highlightSourceCodeColor", "#FFFF00" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parserWarningColor = Color.decode ( this.preferences.get (
-        "parserWarningColor" , "#E8F2FE" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        "parserWarningColor", "#E8F2FE" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     // load the font setting
     /*
      * FIXME: This doesn't work on Windows! (*surprise*) Font defaultFont = new
@@ -323,28 +326,28 @@ public final class Theme extends AbstractBean
      * defaultFont.getStyle()), this.preferences.getInt("fontSize",
      * defaultFont.getSize()));
      */
-    this.font = new JComboBox ( ).getFont ( ) ;
+    this.font = new JComboBox ().getFont ();
     // another Test: Under windows, the methode new JComboBox ( ).getFont ( ) ;
     // returns "Tahoma", nobody knows why,
     // but Tahoma dose not habe our UNI-Code-Chars. With this line, we get the
     // Font "Dialog" JAVA normaly uses. This
     // seems not to be a systemfont but works fine.
-    this.font = new Font ( "Dialog" , Font.PLAIN , this.font.getSize ( ) + 2 ) ; //$NON-NLS-1$
+    this.font = new Font ( "Dialog", Font.PLAIN, this.font.getSize () + 2 ); //$NON-NLS-1$
     // load the keywordColor setting
-    this.keywordColor = Color.decode ( this.preferences.get ( "keywordColor" , //$NON-NLS-1$
-        "#7F0000" ) ) ; //$NON-NLS-1$
+    this.keywordColor = Color.decode ( this.preferences.get ( "keywordColor", //$NON-NLS-1$
+        "#7F0000" ) ); //$NON-NLS-1$
     this.identifierColor = Color.decode ( this.preferences.get (
-        "identifierColor" , //$NON-NLS-1$
-        "#000066" ) ) ; //$NON-NLS-1$
+        "identifierColor", //$NON-NLS-1$
+        "#000066" ) ); //$NON-NLS-1$
     // load the ruleColor setting
-    this.ruleColor = Color.decode ( this.preferences.get ( "ruleColor" , //$NON-NLS-1$
-        "#000000" ) ) ; //$NON-NLS-1$
+    this.ruleColor = Color.decode ( this.preferences.get ( "ruleColor", //$NON-NLS-1$
+        "#000000" ) ); //$NON-NLS-1$
     // load the underlineColor setting
     this.underlineColor = Color.decode ( this.preferences.get (
-        "underlineColor" , "#FF0000" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+        "underlineColor", "#FF0000" ) ); //$NON-NLS-1$//$NON-NLS-2$
     // load the typeColor setting
-    this.typeColor = Color.decode ( this.preferences.get ( "typeColor" , //$NON-NLS-1$
-        "#009900" ) ) ; //$NON-NLS-1$
+    this.typeColor = Color.decode ( this.preferences.get ( "typeColor", //$NON-NLS-1$
+        "#009900" ) ); //$NON-NLS-1$
   }
 
 
@@ -355,9 +358,9 @@ public final class Theme extends AbstractBean
    * @see #setBindingIdColor(Color)
    * @see Color
    */
-  public Color getBindingIdColor ( )
+  public Color getBindingIdColor ()
   {
-    return this.bindingIdColor ;
+    return this.bindingIdColor;
   }
 
 
@@ -368,9 +371,9 @@ public final class Theme extends AbstractBean
    * @see #setBoundIdColor(Color)
    * @see Color
    */
-  public Color getBoundIdColor ( )
+  public Color getBoundIdColor ()
   {
-    return this.boundIdColor ;
+    return this.boundIdColor;
   }
 
 
@@ -384,9 +387,9 @@ public final class Theme extends AbstractBean
    * @see #setCommentColor(Color)
    * @see Color
    */
-  public Color getCommentColor ( )
+  public Color getCommentColor ()
   {
-    return this.commentColor ;
+    return this.commentColor;
   }
 
 
@@ -397,9 +400,9 @@ public final class Theme extends AbstractBean
    * @see #setConstantColor(Color)
    * @see Color
    */
-  public Color getConstantColor ( )
+  public Color getConstantColor ()
   {
-    return this.constantColor ;
+    return this.constantColor;
   }
 
 
@@ -412,9 +415,9 @@ public final class Theme extends AbstractBean
    * @see #setEnvironmentColor(Color)
    * @see Color
    */
-  public Color getEnvironmentColor ( )
+  public Color getEnvironmentColor ()
   {
-    return this.environmentColor ;
+    return this.environmentColor;
   }
 
 
@@ -425,9 +428,9 @@ public final class Theme extends AbstractBean
    * @see #setExpressionColor(Color)
    * @see Color
    */
-  public Color getExpressionColor ( )
+  public Color getExpressionColor ()
   {
-    return this.expressionColor ;
+    return this.expressionColor;
   }
 
 
@@ -438,9 +441,9 @@ public final class Theme extends AbstractBean
    * @see #setFont(Font)
    * @see Font
    */
-  public Font getFont ( )
+  public Font getFont ()
   {
-    return this.font ;
+    return this.font;
   }
 
 
@@ -451,9 +454,9 @@ public final class Theme extends AbstractBean
    * @see #setFreeIdColor(Color)
    * @see Color
    */
-  public Color getFreeIdColor ( )
+  public Color getFreeIdColor ()
   {
-    return this.freeIdColor ;
+    return this.freeIdColor;
   }
 
 
@@ -464,9 +467,9 @@ public final class Theme extends AbstractBean
    * @see #setHighlightSourceCodeColor(Color)
    * @see Color
    */
-  public Color getHighlightSourceCodeColor ( )
+  public Color getHighlightSourceCodeColor ()
   {
-    return this.highlightSourceCodeColor ;
+    return this.highlightSourceCodeColor;
   }
 
 
@@ -478,9 +481,9 @@ public final class Theme extends AbstractBean
    * @see #setIdentifierColor(Color)
    * @see Color
    */
-  public Color getIdentifierColor ( )
+  public Color getIdentifierColor ()
   {
-    return this.identifierColor ;
+    return this.identifierColor;
   }
 
 
@@ -492,9 +495,9 @@ public final class Theme extends AbstractBean
    * @see #setKeywordColor(Color)
    * @see Color
    */
-  public Color getKeywordColor ( )
+  public Color getKeywordColor ()
   {
-    return this.keywordColor ;
+    return this.keywordColor;
   }
 
 
@@ -505,9 +508,9 @@ public final class Theme extends AbstractBean
    * @see #setParserWarningColor(Color)
    * @see Color
    */
-  public Color getParserWarningColor ( )
+  public Color getParserWarningColor ()
   {
-    return this.parserWarningColor ;
+    return this.parserWarningColor;
   }
 
 
@@ -519,9 +522,9 @@ public final class Theme extends AbstractBean
    * @see #setRuleColor(Color)
    * @see Color
    */
-  public Color getRuleColor ( )
+  public Color getRuleColor ()
   {
-    return this.ruleColor ;
+    return this.ruleColor;
   }
 
 
@@ -532,9 +535,9 @@ public final class Theme extends AbstractBean
    * @see #setSelectionColor(Color)
    * @see Color
    */
-  public Color getSelectionColor ( )
+  public Color getSelectionColor ()
   {
-    return this.selectionColor ;
+    return this.selectionColor;
   }
 
 
@@ -545,9 +548,9 @@ public final class Theme extends AbstractBean
    * @see #setTypeColor(Color)
    * @see Color
    */
-  public Color getTypeColor ( )
+  public Color getTypeColor ()
   {
-    return this.typeColor ;
+    return this.typeColor;
   }
 
 
@@ -558,9 +561,9 @@ public final class Theme extends AbstractBean
    * @see #setUnderlineColor(Color)
    * @see Color
    */
-  public Color getUnderlineColor ( )
+  public Color getUnderlineColor ()
   {
-    return this.underlineColor ;
+    return this.underlineColor;
   }
 
 
@@ -578,15 +581,14 @@ public final class Theme extends AbstractBean
   {
     if ( pBindingIdColor == null )
     {
-      throw new NullPointerException ( "bindingIdColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "bindingIdColor is null" ); //$NON-NLS-1$
     }
-    if ( ! this.bindingIdColor.equals ( pBindingIdColor ) )
+    if ( !this.bindingIdColor.equals ( pBindingIdColor ) )
     {
-      Color oldIdColor = this.bindingIdColor ;
-      this.bindingIdColor = pBindingIdColor ;
-      firePropertyChange ( "bindingIdColor" , oldIdColor , pBindingIdColor ) ; //$NON-NLS-1$
-      this.preferences
-          .put ( "bindingIdColor" , encodeColor ( pBindingIdColor ) ) ; //$NON-NLS-1$
+      Color oldIdColor = this.bindingIdColor;
+      this.bindingIdColor = pBindingIdColor;
+      firePropertyChange ( "bindingIdColor", oldIdColor, pBindingIdColor ); //$NON-NLS-1$
+      this.preferences.put ( "bindingIdColor", encodeColor ( pBindingIdColor ) ); //$NON-NLS-1$
     }
   }
 
@@ -605,14 +607,14 @@ public final class Theme extends AbstractBean
   {
     if ( pBoundIdColor == null )
     {
-      throw new NullPointerException ( "pBindingColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "pBindingColor is null" ); //$NON-NLS-1$
     }
-    if ( ! this.boundIdColor.equals ( pBoundIdColor ) )
+    if ( !this.boundIdColor.equals ( pBoundIdColor ) )
     {
-      Color oldBindingColor = this.boundIdColor ;
-      this.boundIdColor = pBoundIdColor ;
-      firePropertyChange ( "boundIdColor" , oldBindingColor , pBoundIdColor ) ; //$NON-NLS-1$
-      this.preferences.put ( "boundIdColor" , encodeColor ( pBoundIdColor ) ) ; //$NON-NLS-1$
+      Color oldBindingColor = this.boundIdColor;
+      this.boundIdColor = pBoundIdColor;
+      firePropertyChange ( "boundIdColor", oldBindingColor, pBoundIdColor ); //$NON-NLS-1$
+      this.preferences.put ( "boundIdColor", encodeColor ( pBoundIdColor ) ); //$NON-NLS-1$
     }
   }
 
@@ -630,14 +632,14 @@ public final class Theme extends AbstractBean
   {
     if ( pCommentColor == null )
     {
-      throw new NullPointerException ( "commentColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "commentColor is null" ); //$NON-NLS-1$
     }
-    if ( ! this.commentColor.equals ( pCommentColor ) )
+    if ( !this.commentColor.equals ( pCommentColor ) )
     {
-      Color oldCommentColor = this.commentColor ;
-      this.commentColor = pCommentColor ;
-      firePropertyChange ( "commentColor" , oldCommentColor , pCommentColor ) ; //$NON-NLS-1$
-      this.preferences.put ( "commentColor" , encodeColor ( pCommentColor ) ) ; //$NON-NLS-1$
+      Color oldCommentColor = this.commentColor;
+      this.commentColor = pCommentColor;
+      firePropertyChange ( "commentColor", oldCommentColor, pCommentColor ); //$NON-NLS-1$
+      this.preferences.put ( "commentColor", encodeColor ( pCommentColor ) ); //$NON-NLS-1$
     }
   }
 
@@ -655,14 +657,14 @@ public final class Theme extends AbstractBean
   {
     if ( pConstantColor == null )
     {
-      throw new NullPointerException ( "constantColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "constantColor is null" ); //$NON-NLS-1$
     }
-    if ( ! this.constantColor.equals ( pConstantColor ) )
+    if ( !this.constantColor.equals ( pConstantColor ) )
     {
-      Color oldConstantColor = this.constantColor ;
-      this.constantColor = pConstantColor ;
-      firePropertyChange ( "constantColor" , oldConstantColor , pConstantColor ) ; //$NON-NLS-1$
-      this.preferences.put ( "constantColor" , encodeColor ( pConstantColor ) ) ; //$NON-NLS-1$
+      Color oldConstantColor = this.constantColor;
+      this.constantColor = pConstantColor;
+      firePropertyChange ( "constantColor", oldConstantColor, pConstantColor ); //$NON-NLS-1$
+      this.preferences.put ( "constantColor", encodeColor ( pConstantColor ) ); //$NON-NLS-1$
     }
   }
 
@@ -681,16 +683,16 @@ public final class Theme extends AbstractBean
   {
     if ( pEnvironmentColor == null )
     {
-      throw new NullPointerException ( "environmentColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "environmentColor is null" ); //$NON-NLS-1$
     }
-    if ( ! this.environmentColor.equals ( pEnvironmentColor ) )
+    if ( !this.environmentColor.equals ( pEnvironmentColor ) )
     {
-      Color oldEnvironmentColor = this.environmentColor ;
-      this.environmentColor = pEnvironmentColor ;
-      firePropertyChange ( "environmentColor" , oldEnvironmentColor , //$NON-NLS-1$
-          pEnvironmentColor ) ;
-      this.preferences.put ( "environmentColor" , //$NON-NLS-1$
-          encodeColor ( pEnvironmentColor ) ) ;
+      Color oldEnvironmentColor = this.environmentColor;
+      this.environmentColor = pEnvironmentColor;
+      firePropertyChange ( "environmentColor", oldEnvironmentColor, //$NON-NLS-1$
+          pEnvironmentColor );
+      this.preferences.put ( "environmentColor", //$NON-NLS-1$
+          encodeColor ( pEnvironmentColor ) );
     }
   }
 
@@ -709,16 +711,16 @@ public final class Theme extends AbstractBean
   {
     if ( pExpressionColor == null )
     {
-      throw new NullPointerException ( "expressionColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "expressionColor is null" ); //$NON-NLS-1$
     }
-    if ( ! this.expressionColor.equals ( pExpressionColor ) )
+    if ( !this.expressionColor.equals ( pExpressionColor ) )
     {
-      Color oldExpressionColor = this.expressionColor ;
-      this.expressionColor = pExpressionColor ;
-      firePropertyChange ( "expressionColor" , oldExpressionColor , //$NON-NLS-1$
-          pExpressionColor ) ;
-      this.preferences.put (
-          "expressionColor" , encodeColor ( pExpressionColor ) ) ; //$NON-NLS-1$
+      Color oldExpressionColor = this.expressionColor;
+      this.expressionColor = pExpressionColor;
+      firePropertyChange ( "expressionColor", oldExpressionColor, //$NON-NLS-1$
+          pExpressionColor );
+      this.preferences
+          .put ( "expressionColor", encodeColor ( pExpressionColor ) ); //$NON-NLS-1$
     }
   }
 
@@ -732,7 +734,7 @@ public final class Theme extends AbstractBean
    * @see #getFont()
    * @see Font
    */
-  public void setFont ( @ SuppressWarnings ( "unused" )
+  public void setFont ( @SuppressWarnings ( "unused" )
   Font pFont )
   {
     /*
@@ -745,7 +747,7 @@ public final class Theme extends AbstractBean
      * this.preferences.putInt("fontStyle", font.getStyle()); }
      */
     throw new UnsupportedOperationException (
-        "Setting custom fonts mess up TPML on Windows!" ) ; //$NON-NLS-1$
+        "Setting custom fonts mess up TPML on Windows!" ); //$NON-NLS-1$
   }
 
 
@@ -757,7 +759,7 @@ public final class Theme extends AbstractBean
    */
   public void setFontSize ( int size )
   {
-    this.font = this.font.deriveFont ( ( float ) size ) ;
+    this.font = this.font.deriveFont ( ( float ) size );
   }
 
 
@@ -775,14 +777,14 @@ public final class Theme extends AbstractBean
   {
     if ( pFreeIdColor == null )
     {
-      throw new NullPointerException ( "freeIdColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "freeIdColor is null" ); //$NON-NLS-1$
     }
-    if ( ! this.freeIdColor.equals ( pFreeIdColor ) )
+    if ( !this.freeIdColor.equals ( pFreeIdColor ) )
     {
-      Color oldUnboundColor = this.freeIdColor ;
-      this.freeIdColor = pFreeIdColor ;
-      firePropertyChange ( "freeIdColor" , oldUnboundColor , pFreeIdColor ) ; //$NON-NLS-1$
-      this.preferences.put ( "freeIdColor" , encodeColor ( pFreeIdColor ) ) ; //$NON-NLS-1$
+      Color oldUnboundColor = this.freeIdColor;
+      this.freeIdColor = pFreeIdColor;
+      firePropertyChange ( "freeIdColor", oldUnboundColor, pFreeIdColor ); //$NON-NLS-1$
+      this.preferences.put ( "freeIdColor", encodeColor ( pFreeIdColor ) ); //$NON-NLS-1$
     }
   }
 
@@ -801,17 +803,17 @@ public final class Theme extends AbstractBean
   {
     if ( pHighlightSourceCodeColor == null )
     {
-      throw new NullPointerException ( "highlightSourceCodeColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "highlightSourceCodeColor is null" ); //$NON-NLS-1$
     }
-    if ( ! this.highlightSourceCodeColor.equals ( pHighlightSourceCodeColor ) )
+    if ( !this.highlightSourceCodeColor.equals ( pHighlightSourceCodeColor ) )
     {
-      Color oldSourceColor = this.highlightSourceCodeColor ;
-      this.highlightSourceCodeColor = pHighlightSourceCodeColor ;
+      Color oldSourceColor = this.highlightSourceCodeColor;
+      this.highlightSourceCodeColor = pHighlightSourceCodeColor;
       firePropertyChange (
-          "highlightSourceCodeColor" , oldSourceColor , pHighlightSourceCodeColor ) ; //$NON-NLS-1$
+          "highlightSourceCodeColor", oldSourceColor, pHighlightSourceCodeColor ); //$NON-NLS-1$
       this.preferences
           .put (
-              "highlightSourceCodeColor" , encodeColor ( pHighlightSourceCodeColor ) ) ; //$NON-NLS-1$
+              "highlightSourceCodeColor", encodeColor ( pHighlightSourceCodeColor ) ); //$NON-NLS-1$
     }
   }
 
@@ -830,16 +832,16 @@ public final class Theme extends AbstractBean
   {
     if ( pIdentifierColor == null )
     {
-      throw new NullPointerException ( "identifierColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "identifierColor is null" ); //$NON-NLS-1$
     }
-    if ( ! this.identifierColor.equals ( pIdentifierColor ) )
+    if ( !this.identifierColor.equals ( pIdentifierColor ) )
     {
-      Color oldIdentifierColor = this.identifierColor ;
-      this.identifierColor = pIdentifierColor ;
+      Color oldIdentifierColor = this.identifierColor;
+      this.identifierColor = pIdentifierColor;
       firePropertyChange (
-          "identifierColor" , oldIdentifierColor , pIdentifierColor ) ; //$NON-NLS-1$
-      this.preferences.put (
-          "identifierColor" , encodeColor ( pIdentifierColor ) ) ; //$NON-NLS-1$
+          "identifierColor", oldIdentifierColor, pIdentifierColor ); //$NON-NLS-1$
+      this.preferences
+          .put ( "identifierColor", encodeColor ( pIdentifierColor ) ); //$NON-NLS-1$
     }
   }
 
@@ -858,14 +860,14 @@ public final class Theme extends AbstractBean
   {
     if ( pKeywordColor == null )
     {
-      throw new NullPointerException ( "keywordColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "keywordColor is null" ); //$NON-NLS-1$
     }
-    if ( ! this.keywordColor.equals ( pKeywordColor ) )
+    if ( !this.keywordColor.equals ( pKeywordColor ) )
     {
-      Color oldKeywordColor = this.keywordColor ;
-      this.keywordColor = pKeywordColor ;
-      firePropertyChange ( "keywordColor" , oldKeywordColor , pKeywordColor ) ; //$NON-NLS-1$
-      this.preferences.put ( "keywordColor" , encodeColor ( pKeywordColor ) ) ; //$NON-NLS-1$
+      Color oldKeywordColor = this.keywordColor;
+      this.keywordColor = pKeywordColor;
+      firePropertyChange ( "keywordColor", oldKeywordColor, pKeywordColor ); //$NON-NLS-1$
+      this.preferences.put ( "keywordColor", encodeColor ( pKeywordColor ) ); //$NON-NLS-1$
     }
   }
 
@@ -884,16 +886,16 @@ public final class Theme extends AbstractBean
   {
     if ( pParserWarningColor == null )
     {
-      throw new NullPointerException ( "parserWarningColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "parserWarningColor is null" ); //$NON-NLS-1$
     }
-    if ( ! this.parserWarningColor.equals ( pParserWarningColor ) )
+    if ( !this.parserWarningColor.equals ( pParserWarningColor ) )
     {
-      Color oldParserColor = this.parserWarningColor ;
-      this.parserWarningColor = pParserWarningColor ;
+      Color oldParserColor = this.parserWarningColor;
+      this.parserWarningColor = pParserWarningColor;
       firePropertyChange (
-          "parserWarningColor" , oldParserColor , pParserWarningColor ) ; //$NON-NLS-1$
+          "parserWarningColor", oldParserColor, pParserWarningColor ); //$NON-NLS-1$
       this.preferences.put (
-          "parserWarningColor" , encodeColor ( pParserWarningColor ) ) ; //$NON-NLS-1$
+          "parserWarningColor", encodeColor ( pParserWarningColor ) ); //$NON-NLS-1$
     }
   }
 
@@ -912,14 +914,14 @@ public final class Theme extends AbstractBean
   {
     if ( pRuleColor == null )
     {
-      throw new NullPointerException ( "ruleColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "ruleColor is null" ); //$NON-NLS-1$
     }
-    if ( ! this.ruleColor.equals ( pRuleColor ) )
+    if ( !this.ruleColor.equals ( pRuleColor ) )
     {
-      Color oldRuleColor = this.ruleColor ;
-      this.ruleColor = pRuleColor ;
-      firePropertyChange ( "ruleColor" , oldRuleColor , pRuleColor ) ; //$NON-NLS-1$
-      this.preferences.put ( "ruleColor" , encodeColor ( pRuleColor ) ) ; //$NON-NLS-1$
+      Color oldRuleColor = this.ruleColor;
+      this.ruleColor = pRuleColor;
+      firePropertyChange ( "ruleColor", oldRuleColor, pRuleColor ); //$NON-NLS-1$
+      this.preferences.put ( "ruleColor", encodeColor ( pRuleColor ) ); //$NON-NLS-1$
     }
   }
 
@@ -938,18 +940,16 @@ public final class Theme extends AbstractBean
   {
     if ( pSelectionColor == null )
     {
-      throw new NullPointerException ( "selectionColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "selectionColor is null" ); //$NON-NLS-1$
     }
-    if ( ! this.selectionColor.equals ( pSelectionColor ) )
+    if ( !this.selectionColor.equals ( pSelectionColor ) )
     {
       // update the selectionColor
-      Color oldSelectionColor = this.selectionColor ;
-      this.selectionColor = pSelectionColor ;
-      firePropertyChange (
-          "selectionColor" , oldSelectionColor , pSelectionColor ) ; //$NON-NLS-1$
+      Color oldSelectionColor = this.selectionColor;
+      this.selectionColor = pSelectionColor;
+      firePropertyChange ( "selectionColor", oldSelectionColor, pSelectionColor ); //$NON-NLS-1$
       // save the new setting
-      this.preferences
-          .put ( "selectionColor" , encodeColor ( pSelectionColor ) ) ; //$NON-NLS-1$
+      this.preferences.put ( "selectionColor", encodeColor ( pSelectionColor ) ); //$NON-NLS-1$
     }
   }
 
@@ -967,16 +967,16 @@ public final class Theme extends AbstractBean
   {
     if ( pTypeColor == null )
     {
-      throw new NullPointerException ( "typeColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "typeColor is null" ); //$NON-NLS-1$
     }
-    if ( ! this.typeColor.equals ( pTypeColor ) )
+    if ( !this.typeColor.equals ( pTypeColor ) )
     {
       // update the typeColor
-      Color oldTypeColor = this.typeColor ;
-      this.typeColor = pTypeColor ;
-      firePropertyChange ( "typeColor" , oldTypeColor , pTypeColor ) ; //$NON-NLS-1$
+      Color oldTypeColor = this.typeColor;
+      this.typeColor = pTypeColor;
+      firePropertyChange ( "typeColor", oldTypeColor, pTypeColor ); //$NON-NLS-1$
       // save the new setting
-      this.preferences.put ( "typeColor" , encodeColor ( pTypeColor ) ) ; //$NON-NLS-1$
+      this.preferences.put ( "typeColor", encodeColor ( pTypeColor ) ); //$NON-NLS-1$
     }
   }
 
@@ -995,18 +995,17 @@ public final class Theme extends AbstractBean
   {
     if ( pUnderlineColor == null )
     {
-      throw new NullPointerException ( "underlineColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "underlineColor is null" ); //$NON-NLS-1$
     }
-    if ( ! this.underlineColor.equals ( pUnderlineColor ) )
+    if ( !this.underlineColor.equals ( pUnderlineColor ) )
     {
       // update the underlineColor
-      Color oldUnderlineColor = this.underlineColor ;
-      this.underlineColor = pUnderlineColor ;
-      firePropertyChange ( "underlineColor" , oldUnderlineColor , //$NON-NLS-1$
-          pUnderlineColor ) ;
+      Color oldUnderlineColor = this.underlineColor;
+      this.underlineColor = pUnderlineColor;
+      firePropertyChange ( "underlineColor", oldUnderlineColor, //$NON-NLS-1$
+          pUnderlineColor );
       // save the new setting
-      this.preferences
-          .put ( "underlineColor" , encodeColor ( pUnderlineColor ) ) ; //$NON-NLS-1$
+      this.preferences.put ( "underlineColor", encodeColor ( pUnderlineColor ) ); //$NON-NLS-1$
     }
   }
 }

@@ -1,14 +1,15 @@
-package de.unisiegen.tpml.core.types ;
+package de.unisiegen.tpml.core.types;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
@@ -39,46 +40,47 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public final class TypeVariable extends MonoType implements
     Comparable < TypeVariable >
 {
+
   /**
    * The unused string.
    */
-  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+  private static final String UNUSED = "unused"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the offset is negative.
    */
-  private static final String OFFSET_NEGATIVE = "offset is negative" ; //$NON-NLS-1$
+  private static final String OFFSET_NEGATIVE = "offset is negative"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the index is negative.
    */
-  private static final String INDEX_NEGATIVE = "index is negative" ; //$NON-NLS-1$
+  private static final String INDEX_NEGATIVE = "index is negative"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the offset is invalid.
    */
-  private static final String OFFSET_INVALID = "Offset is invalid" ; //$NON-NLS-1$
+  private static final String OFFSET_INVALID = "Offset is invalid"; //$NON-NLS-1$
 
 
   /**
    * The type variable alpha.
    */
-  public static final TypeVariable ALPHA = new TypeVariable ( 0 , 0 ) ;
+  public static final TypeVariable ALPHA = new TypeVariable ( 0, 0 );
 
 
   /**
    * String for the case that the type substitution is null.
    */
-  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = Type.getCaption ( TypeVariable.class ) ;
+  private static final String CAPTION = Type.getCaption ( TypeVariable.class );
 
 
   /**
@@ -86,12 +88,12 @@ public final class TypeVariable extends MonoType implements
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_VARIABLE , 1 ,
-        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{$#1$}}" , "tvar" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_VARIABLE, 1,
+        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{$#1$}}", "tvar" ) ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    return commands;
   }
 
 
@@ -110,55 +112,55 @@ public final class TypeVariable extends MonoType implements
     switch ( pOffset )
     {
       case 0 :
-        return 'α' ;
+        return 'α';
       case 1 :
-        return 'β' ;
+        return 'β';
       case 2 :
-        return 'γ' ;
+        return 'γ';
       case 3 :
-        return 'δ' ;
+        return 'δ';
       case 4 :
-        return 'ε' ;
+        return 'ε';
       case 5 :
-        return 'ζ' ;
+        return 'ζ';
       case 6 :
-        return 'η' ;
+        return 'η';
       case 7 :
-        return 'θ' ;
+        return 'θ';
       case 8 :
-        return 'ι' ;
+        return 'ι';
       case 9 :
-        return 'κ' ;
+        return 'κ';
       case 10 :
-        return 'λ' ;
+        return 'λ';
       case 11 :
-        return 'μ' ;
+        return 'μ';
       case 12 :
-        return 'ν' ;
+        return 'ν';
       case 13 :
-        return 'ξ' ;
+        return 'ξ';
       case 14 :
-        return 'ο' ;
+        return 'ο';
       case 15 :
-        return 'π' ;
+        return 'π';
       case 16 :
-        return 'ρ' ;
+        return 'ρ';
       case 17 :
-        return 'σ' ;
+        return 'σ';
       case 18 :
-        return 'τ' ;
+        return 'τ';
       case 19 :
-        return 'υ' ;
+        return 'υ';
       case 20 :
-        return 'φ' ;
+        return 'φ';
       case 21 :
-        return 'χ' ;
+        return 'χ';
       case 22 :
-        return 'ψ' ;
+        return 'ψ';
       case 23 :
-        return 'ω' ;
+        return 'ω';
       default :
-        throw new IllegalArgumentException ( OFFSET_INVALID ) ;
+        throw new IllegalArgumentException ( OFFSET_INVALID );
     }
   }
 
@@ -178,56 +180,56 @@ public final class TypeVariable extends MonoType implements
     switch ( pOffset )
     {
       case 0 :
-        return "\\alpha" ;//$NON-NLS-1$
+        return "\\alpha";//$NON-NLS-1$
       case 1 :
-        return "\\beta" ;//$NON-NLS-1$
+        return "\\beta";//$NON-NLS-1$
       case 2 :
-        return "\\gamma" ;//$NON-NLS-1$
+        return "\\gamma";//$NON-NLS-1$
       case 3 :
-        return "\\delta" ;//$NON-NLS-1$
+        return "\\delta";//$NON-NLS-1$
       case 4 :
-        return "\\epsilon" ;//$NON-NLS-1$
+        return "\\epsilon";//$NON-NLS-1$
       case 5 :
-        return "\\zeta" ;//$NON-NLS-1$
+        return "\\zeta";//$NON-NLS-1$
       case 6 :
-        return "\\eta" ;//$NON-NLS-1$
+        return "\\eta";//$NON-NLS-1$
       case 7 :
-        return "\\theta" ;//$NON-NLS-1$
+        return "\\theta";//$NON-NLS-1$
       case 8 :
-        return "\\iota" ;//$NON-NLS-1$
+        return "\\iota";//$NON-NLS-1$
       case 9 :
-        return "\\kappa" ;//$NON-NLS-1$
+        return "\\kappa";//$NON-NLS-1$
       case 10 :
-        return "\\lambda" ;//$NON-NLS-1$
+        return "\\lambda";//$NON-NLS-1$
       case 11 :
-        return "\\mu" ;//$NON-NLS-1$
+        return "\\mu";//$NON-NLS-1$
       case 12 :
-        return "\\nu" ;//$NON-NLS-1$
+        return "\\nu";//$NON-NLS-1$
       case 13 :
-        return "\\xi" ;//$NON-NLS-1$
+        return "\\xi";//$NON-NLS-1$
       case 14 :
         // There is no latex command for omikron
-        return "o" ; //$NON-NLS-1$
+        return "o"; //$NON-NLS-1$
       case 15 :
-        return "\\pi" ;//$NON-NLS-1$
+        return "\\pi";//$NON-NLS-1$
       case 16 :
-        return "\\rho" ;//$NON-NLS-1$
+        return "\\rho";//$NON-NLS-1$
       case 17 :
-        return "\\sigma" ;//$NON-NLS-1$
+        return "\\sigma";//$NON-NLS-1$
       case 18 :
-        return "\\tau" ;//$NON-NLS-1$
+        return "\\tau";//$NON-NLS-1$
       case 19 :
-        return "\\upsilon" ;//$NON-NLS-1$
+        return "\\upsilon";//$NON-NLS-1$
       case 20 :
-        return "\\phi" ;//$NON-NLS-1$
+        return "\\phi";//$NON-NLS-1$
       case 21 :
-        return "\\chi" ;//$NON-NLS-1$
+        return "\\chi";//$NON-NLS-1$
       case 22 :
-        return "\\psi" ;//$NON-NLS-1$
+        return "\\psi";//$NON-NLS-1$
       case 23 :
-        return "\\omega" ;//$NON-NLS-1$
+        return "\\omega";//$NON-NLS-1$
       default :
-        throw new IllegalArgumentException ( OFFSET_INVALID ) ;
+        throw new IllegalArgumentException ( OFFSET_INVALID );
     }
   }
 
@@ -241,7 +243,7 @@ public final class TypeVariable extends MonoType implements
    * @see #getIndex()
    * @see #getOffset()
    */
-  private int index ;
+  private int index;
 
 
   /**
@@ -251,7 +253,7 @@ public final class TypeVariable extends MonoType implements
    * @see #getIndex()
    * @see #getOffset()
    */
-  private int offset ;
+  private int offset;
 
 
   /**
@@ -269,18 +271,18 @@ public final class TypeVariable extends MonoType implements
    * @see #index
    * @see #offset
    */
-  public TypeVariable ( int pIndex , int pOffset )
+  public TypeVariable ( int pIndex, int pOffset )
   {
     if ( pIndex < 0 )
     {
-      throw new IllegalArgumentException ( INDEX_NEGATIVE ) ;
+      throw new IllegalArgumentException ( INDEX_NEGATIVE );
     }
     if ( pOffset < 0 )
     {
-      throw new IllegalArgumentException ( OFFSET_NEGATIVE ) ;
+      throw new IllegalArgumentException ( OFFSET_NEGATIVE );
     }
-    this.index = pIndex ;
-    this.offset = pOffset ;
+    this.index = pIndex;
+    this.offset = pOffset;
   }
 
 
@@ -303,12 +305,12 @@ public final class TypeVariable extends MonoType implements
    * @see #index
    * @see #offset
    */
-  public TypeVariable ( int pIndex , int pOffset , int pParserStartOffset ,
+  public TypeVariable ( int pIndex, int pOffset, int pParserStartOffset,
       int pParserEndOffset )
   {
-    this ( pIndex , pOffset ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pIndex, pOffset );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -317,10 +319,10 @@ public final class TypeVariable extends MonoType implements
    * 
    * @see Type#clone()
    */
-  @ Override
-  public TypeVariable clone ( )
+  @Override
+  public TypeVariable clone ()
   {
-    return new TypeVariable ( this.index , this.offset ) ;
+    return new TypeVariable ( this.index, this.offset );
   }
 
 
@@ -333,23 +335,23 @@ public final class TypeVariable extends MonoType implements
   {
     if ( this.index < pTypeVariable.index )
     {
-      return - 1 ;
+      return -1;
     }
     else if ( this.index > pTypeVariable.index )
     {
-      return 1 ;
+      return 1;
     }
     else if ( this.offset < pTypeVariable.offset )
     {
-      return - 1 ;
+      return -1;
     }
     else if ( this.offset > pTypeVariable.offset )
     {
-      return 1 ;
+      return 1;
     }
     else
     {
-      return 0 ;
+      return 0;
     }
   }
 
@@ -365,25 +367,25 @@ public final class TypeVariable extends MonoType implements
    *         the same index and offset.
    * @see Object#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof TypeVariable )
     {
-      TypeVariable other = ( TypeVariable ) pObject ;
-      return ( this.index == other.index && this.offset == other.offset ) ;
+      TypeVariable other = ( TypeVariable ) pObject;
+      return ( this.index == other.index && this.offset == other.offset );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -397,9 +399,9 @@ public final class TypeVariable extends MonoType implements
    * @return the index of this variable.
    * @see #index
    */
-  public int getIndex ( )
+  public int getIndex ()
   {
-    return this.index ;
+    return this.index;
   }
 
 
@@ -408,12 +410,12 @@ public final class TypeVariable extends MonoType implements
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -425,9 +427,9 @@ public final class TypeVariable extends MonoType implements
    * @return the offset of this variable.
    * @see #offset
    */
-  public int getOffset ( )
+  public int getOffset ()
   {
-    return this.offset ;
+    return this.offset;
   }
 
 
@@ -436,15 +438,15 @@ public final class TypeVariable extends MonoType implements
    * 
    * @see Type#getTypeVariablesFree()
    */
-  @ Override
-  public ArrayList < TypeVariable > getTypeVariablesFree ( )
+  @Override
+  public ArrayList < TypeVariable > getTypeVariablesFree ()
   {
     if ( this.typeVariablesFree == null )
     {
-      this.typeVariablesFree = new ArrayList < TypeVariable > ( ) ;
-      this.typeVariablesFree.add ( this ) ;
+      this.typeVariablesFree = new ArrayList < TypeVariable > ();
+      this.typeVariablesFree.add ( this );
     }
-    return this.typeVariablesFree ;
+    return this.typeVariablesFree;
   }
 
 
@@ -455,10 +457,10 @@ public final class TypeVariable extends MonoType implements
    * @return a hash value for this type variable.
    * @see Object#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return ( this.index << 5 ) + this.offset ;
+    return ( this.index << 5 ) + this.offset;
   }
 
 
@@ -472,12 +474,12 @@ public final class TypeVariable extends MonoType implements
    * @param pTau The {@link MonoType}.
    * @return The resulting {@link Type}.
    */
-  @ Override
-  public TypeVariable substitute ( @ SuppressWarnings ( UNUSED )
-  TypeName pTypeName , @ SuppressWarnings ( UNUSED )
+  @Override
+  public TypeVariable substitute ( @SuppressWarnings ( UNUSED )
+  TypeName pTypeName, @SuppressWarnings ( UNUSED )
   MonoType pTau )
   {
-    return this ;
+    return this;
   }
 
 
@@ -486,21 +488,21 @@ public final class TypeVariable extends MonoType implements
    * 
    * @see Type#substitute(TypeSubstitution)
    */
-  @ Override
+  @Override
   public MonoType substitute ( TypeSubstitution pTypeSubstitution )
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL );
     }
     // perform the substitution on this type variable
-    MonoType tau = pTypeSubstitution.get ( this ) ;
-    if ( ! tau.equals ( this ) )
+    MonoType tau = pTypeSubstitution.get ( this );
+    if ( !tau.equals ( this ) )
     {
       // another type variable, substitute again
-      tau = tau.substitute ( pTypeSubstitution ) ;
+      tau = tau.substitute ( pTypeSubstitution );
     }
-    return tau ;
+    return tau;
   }
 
 
@@ -509,22 +511,21 @@ public final class TypeVariable extends MonoType implements
    * 
    * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_TYPE_VARIABLE , LATEX_TYPE_VARIABLE , pIndent , this
-            .toPrettyString ( ).toString ( ) ) ;
+        PRIO_TYPE_VARIABLE, LATEX_TYPE_VARIABLE, pIndent, this
+            .toPrettyString ().toString () );
     String type = offsetToGreekLetterLatex ( this.offset % 24 )
-        + ( ( this.index > 0 ) ? String.valueOf ( this.index )
-            : "" ) ; //$NON-NLS-1$
-    for ( int n = ( this.offset / 24 ) ; n > 0 ; -- n )
+        + ( ( this.index > 0 ) ? String.valueOf ( this.index ) : "" ); //$NON-NLS-1$
+    for ( int n = ( this.offset / 24 ) ; n > 0 ; --n )
     {
-      type = type + LATEX_BAR ;
+      type = type + LATEX_BAR;
     }
-    builder.addText ( "{" + type + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    return builder ;
+    builder.addText ( "{" + type + "}" ); //$NON-NLS-1$ //$NON-NLS-2$
+    return builder;
   }
 
 
@@ -533,23 +534,23 @@ public final class TypeVariable extends MonoType implements
    * 
    * @see Type#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_TYPE_VARIABLE ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_TYPE_VARIABLE );
       String type = offsetToGreekLetter ( this.offset % 24 )
           + ( ( this.index > 0 ) ? String.valueOf ( this.index )
-              : PRETTY_EMPTY_STRING ) ;
-      for ( int n = ( this.offset / 24 ) ; n > 0 ; -- n )
+              : PRETTY_EMPTY_STRING );
+      for ( int n = ( this.offset / 24 ) ; n > 0 ; --n )
       {
-        type = type + PRETTY_BAR ;
+        type = type + PRETTY_BAR;
       }
-      this.prettyStringBuilder.addType ( type ) ;
+      this.prettyStringBuilder.addType ( type );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

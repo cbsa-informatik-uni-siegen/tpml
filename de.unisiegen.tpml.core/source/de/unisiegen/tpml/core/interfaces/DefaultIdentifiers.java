@@ -1,8 +1,8 @@
-package de.unisiegen.tpml.core.interfaces ;
+package de.unisiegen.tpml.core.interfaces;
 
 
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
 
 
 /**
@@ -13,12 +13,13 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
  */
 public interface DefaultIdentifiers
 {
+
   /**
    * Returns the {@link Identifier}s of this {@link Expression}.
    * 
    * @return The {@link Identifier}s of this {@link Expression}.
    */
-  public Identifier [ ] getIdentifiers ( ) ;
+  public Identifier [] getIdentifiers ();
 
 
   /**
@@ -26,5 +27,5 @@ public interface DefaultIdentifiers
    * 
    * @return The indices of the child {@link Identifier}s.
    */
-  public int [ ] getIdentifiersIndex ( ) ;
+  public int [] getIdentifiersIndex ();
 }

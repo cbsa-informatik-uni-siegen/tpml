@@ -1,26 +1,27 @@
-package de.unisiegen.tpml.core.typeinference ;
+package de.unisiegen.tpml.core.typeinference;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.types.MonoType ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interfaces.ShowBondsInput;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.types.MonoType;
 
 
 /**
@@ -29,21 +30,22 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @author Benjamin Mies
  * @author Christian Fehler
  */
-public class TypeSubType implements ShowBondsInput , TypeFormula ,
-    PrettyPrintable , LatexPrintable
+public class TypeSubType implements ShowBondsInput, TypeFormula,
+    PrettyPrintable, LatexPrintable
 {
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_SUB_TYPE , 2 ,
-        "#1\\ \\color{" + LATEX_COLOR_NONE + "}{<:}\\ #2" , "tau1" , //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        "tau2" ) ) ; //$NON-NLS-1$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_SUB_TYPE, 2,
+        "#1\\ \\color{" + LATEX_COLOR_NONE + "}{<:}\\ #2", "tau1", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        "tau2" ) ); //$NON-NLS-1$
+    return commands;
   }
 
 
@@ -52,13 +54,13 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static LatexInstructionList getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
-    return instructions ;
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}", //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ); //$NON-NLS-1$
+    return instructions;
   }
 
 
@@ -67,24 +69,24 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.COLOR ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.COLOR );
+    return packages;
   }
 
 
   /**
    * The left type (subtype) of this type formula
    */
-  private MonoType left ;
+  private MonoType left;
 
 
   /**
    * The right type (supertype) of this type formula
    */
-  private MonoType right ;
+  private MonoType right;
 
 
   /**
@@ -93,10 +95,10 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
    * @param pType the first type of this sub type node
    * @param pType2 the second type of this sub type
    */
-  public TypeSubType ( MonoType pType , MonoType pType2 )
+  public TypeSubType ( MonoType pType, MonoType pType2 )
   {
-    this.left = pType ;
-    this.right = pType2 ;
+    this.left = pType;
+    this.right = pType2;
   }
 
 
@@ -105,9 +107,9 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
    * 
    * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getEnvironment()
    */
-  public DefaultTypeEnvironment getEnvironment ( )
+  public DefaultTypeEnvironment getEnvironment ()
   {
-    return new DefaultTypeEnvironment ( ) ;
+    return new DefaultTypeEnvironment ();
   }
 
 
@@ -116,9 +118,9 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
    * 
    * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getExpression()
    */
-  public Expression getExpression ( )
+  public Expression getExpression ()
   {
-    return null ;
+    return null;
   }
 
 
@@ -127,13 +129,13 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public LatexCommandList getLatexCommands ( )
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    commands.add ( this.left ) ;
-    commands.add ( this.right ) ;
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
+    commands.add ( this.left );
+    commands.add ( this.right );
+    return commands;
   }
 
 
@@ -142,13 +144,13 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public LatexInstructionList getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( getLatexInstructionsStatic ( ) ) ;
-    instructions.add ( this.left ) ;
-    instructions.add ( this.right ) ;
-    return instructions ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
+    instructions.add ( this.left );
+    instructions.add ( this.right );
+    return instructions;
   }
 
 
@@ -157,13 +159,13 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public LatexPackageList getLatexPackages ( )
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
-    packages.add ( this.left ) ;
-    packages.add ( this.right ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( getLatexPackagesStatic () );
+    packages.add ( this.left );
+    packages.add ( this.right );
+    return packages;
   }
 
 
@@ -172,9 +174,9 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
    * 
    * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getType()
    */
-  public MonoType getType ( )
+  public MonoType getType ()
   {
-    return this.left ;
+    return this.left;
   }
 
 
@@ -183,9 +185,9 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
    * 
    * @return the second type of this node.
    */
-  public MonoType getType2 ( )
+  public MonoType getType2 ()
   {
-    return this.right ;
+    return this.right;
   }
 
 
@@ -195,10 +197,10 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
    * @return this unchanged object.
    * @see de.unisiegen.tpml.core.typeinference.TypeFormula#substitute(java.util.ArrayList)
    */
-  public TypeSubType substitute ( @ SuppressWarnings ( "unused" )
+  public TypeSubType substitute ( @SuppressWarnings ( "unused" )
   ArrayList < TypeSubstitution > s )
   {
-    return this ;
+    return this;
   }
 
 
@@ -207,10 +209,10 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public final LatexString toLatexString ( )
+  public final LatexString toLatexString ()
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -220,18 +222,18 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_TYPE_SUB_TYPE , pIndent , this.toPrettyString ( ).toString ( ) ,
-        this.left.toPrettyString ( ).toString ( ) , this.right
-            .toPrettyString ( ).toString ( ) ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
+        LATEX_TYPE_SUB_TYPE, pIndent, this.toPrettyString ().toString (),
+        this.left.toPrettyString ().toString (), this.right.toPrettyString ()
+            .toString () );
     builder.addBuilder ( this.left.toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    builder.addBreak ( ) ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+    builder.addBreak ();
     builder.addBuilder ( this.right.toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    return builder ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+    return builder;
   }
 
 
@@ -240,10 +242,10 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
    * 
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ( )
+  public final PrettyString toPrettyString ()
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -256,15 +258,15 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , 0 ) ;
+        this, 0 );
     builder.addBuilder ( this.left
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    builder.addText ( PRETTY_SPACE ) ;
-    builder.addText ( PRETTY_SUBTYPE ) ;
-    builder.addText ( PRETTY_SPACE ) ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+    builder.addText ( PRETTY_SPACE );
+    builder.addText ( PRETTY_SUBTYPE );
+    builder.addText ( PRETTY_SPACE );
     builder.addBuilder ( this.right
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    return builder ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+    return builder;
   }
 
 
@@ -276,9 +278,9 @@ public class TypeSubType implements ShowBondsInput , TypeFormula ,
    * @see #toPrettyString()
    * @see Object#toString()
    */
-  @ Override
-  public final String toString ( )
+  @Override
+  public final String toString ()
   {
-    return toPrettyString ( ).toString ( ) ;
+    return toPrettyString ().toString ();
   }
 }

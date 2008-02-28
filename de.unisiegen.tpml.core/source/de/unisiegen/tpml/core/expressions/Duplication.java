@@ -1,22 +1,23 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
-import java.util.ArrayList ;
-import java.util.Arrays ;
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
-import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.ExpressionOrType ;
-import de.unisiegen.tpml.core.interfaces.SortedChildren ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.util.BoundRenaming ;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers;
+import de.unisiegen.tpml.core.interfaces.ExpressionOrType;
+import de.unisiegen.tpml.core.interfaces.SortedChildren;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.util.BoundRenaming;
 
 
 /**
@@ -27,56 +28,57 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @version $Rev$
  */
 public final class Duplication extends Expression implements
-    DefaultIdentifiers , DefaultExpressions , SortedChildren
+    DefaultIdentifiers, DefaultExpressions, SortedChildren
 {
+
   /**
    * String for the case that the identifiers are null.
    */
-  private static final String IDENTIFIERS_NULL = "identifiers is null" ; //$NON-NLS-1$
+  private static final String IDENTIFIERS_NULL = "identifiers is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that one identifier are null.
    */
-  private static final String IDENTIFIER_NULL = "one identifier is null" ; //$NON-NLS-1$
+  private static final String IDENTIFIER_NULL = "one identifier is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the expressions are null.
    */
-  private static final String EXPRESSIONS_NULL = "expressions is null" ; //$NON-NLS-1$
+  private static final String EXPRESSIONS_NULL = "expressions is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that one expression are null.
    */
-  private static final String EXPRESSION_NULL = "one expression is null" ; //$NON-NLS-1$
+  private static final String EXPRESSION_NULL = "one expression is null"; //$NON-NLS-1$
 
 
   /**
    * The identifier has the wrong set.
    */
-  private static final String WRONG_SET = "the set of the identifier has to be 'attribute'" ; //$NON-NLS-1$
+  private static final String WRONG_SET = "the set of the identifier has to be 'attribute'"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the arity of identifiers and expressions doesn´t
    * match.
    */
-  private static final String ARITY = "the arity of identifiers and expressions must match" ; //$NON-NLS-1$
+  private static final String ARITY = "the arity of identifiers and expressions must match"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( Duplication.class ) ;
+      .getCaption ( Duplication.class );
 
 
   /**
    * The string of an self identifier.
    */
-  private static final String SELF = "self" ; //$NON-NLS-1$
+  private static final String SELF = "self"; //$NON-NLS-1$
 
 
   /**
@@ -84,25 +86,25 @@ public final class Duplication extends Expression implements
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_DUPLICATION , 1 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}\\{<#1>\\}" , "a1 = e1 ; ... ; an = en" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_DUPLICATION, 1, "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}\\{<#1>\\}", "a1 = e1 ; ... ; an = en" ) ); //$NON-NLS-1$//$NON-NLS-2$
+    return commands;
   }
 
 
   /**
    * Indeces of the child {@link Expression}s.
    */
-  private int [ ] indicesE ;
+  private int [] indicesE;
 
 
   /**
    * Indeces of the child {@link Identifier}s.
    */
-  private int [ ] indicesId ;
+  private int [] indicesId;
 
 
   /**
@@ -110,7 +112,7 @@ public final class Duplication extends Expression implements
    * 
    * @see #getExpressions()
    */
-  private Expression [ ] expressions ;
+  private Expression [] expressions;
 
 
   /**
@@ -118,7 +120,7 @@ public final class Duplication extends Expression implements
    * 
    * @see #getIdentifiers()
    */
-  private Identifier [ ] identifiers ;
+  private Identifier [] identifiers;
 
 
   /**
@@ -127,52 +129,52 @@ public final class Duplication extends Expression implements
    * @param pIdentifiers The {@link Identifier}.
    * @param pExpressions The child {@link Expression}.
    */
-  public Duplication ( Identifier [ ] pIdentifiers , Expression [ ] pExpressions )
+  public Duplication ( Identifier [] pIdentifiers, Expression [] pExpressions )
   {
     if ( pIdentifiers == null )
     {
-      throw new NullPointerException ( IDENTIFIERS_NULL ) ;
+      throw new NullPointerException ( IDENTIFIERS_NULL );
     }
     for ( Identifier id : pIdentifiers )
     {
       if ( id == null )
       {
-        throw new NullPointerException ( IDENTIFIER_NULL ) ;
+        throw new NullPointerException ( IDENTIFIER_NULL );
       }
-      if ( ! Identifier.Set.ATTRIBUTE.equals ( id.getSet ( ) ) )
+      if ( !Identifier.Set.ATTRIBUTE.equals ( id.getSet () ) )
       {
-        throw new IllegalArgumentException ( WRONG_SET ) ;
+        throw new IllegalArgumentException ( WRONG_SET );
       }
     }
     if ( pExpressions == null )
     {
-      throw new NullPointerException ( EXPRESSIONS_NULL ) ;
+      throw new NullPointerException ( EXPRESSIONS_NULL );
     }
     for ( Expression e : pExpressions )
     {
       if ( e == null )
       {
-        throw new NullPointerException ( EXPRESSION_NULL ) ;
+        throw new NullPointerException ( EXPRESSION_NULL );
       }
     }
     if ( pIdentifiers.length != pExpressions.length )
     {
-      throw new IllegalArgumentException ( ARITY ) ;
+      throw new IllegalArgumentException ( ARITY );
     }
     // Identifier
-    this.identifiers = pIdentifiers ;
-    this.indicesId = new int [ this.identifiers.length ] ;
+    this.identifiers = pIdentifiers;
+    this.indicesId = new int [ this.identifiers.length ];
     // Expression
-    this.expressions = pExpressions ;
-    this.indicesE = new int [ this.expressions.length ] ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    this.expressions = pExpressions;
+    this.indicesE = new int [ this.expressions.length ];
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
       // Identifier
-      this.identifiers [ i ].setParent ( this ) ;
-      this.indicesId [ i ] = i + 1 ;
+      this.identifiers [ i ].setParent ( this );
+      this.indicesId [ i ] = i + 1;
       // Expression
-      this.expressions [ i ].setParent ( this ) ;
-      this.indicesE [ i ] = i + 1 ;
+      this.expressions [ i ].setParent ( this );
+      this.indicesE [ i ] = i + 1;
     }
   }
 
@@ -187,59 +189,58 @@ public final class Duplication extends Expression implements
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Duplication ( Identifier [ ] pIdentifiers ,
-      Expression [ ] pExpressions , int pParserStartOffset ,
-      int pParserEndOffset )
+  public Duplication ( Identifier [] pIdentifiers, Expression [] pExpressions,
+      int pParserStartOffset, int pParserEndOffset )
   {
-    this ( pIdentifiers , pExpressions ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pIdentifiers, pExpressions );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public Duplication clone ( )
+  @Override
+  public Duplication clone ()
   {
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    Expression [] newExpressions = new Expression [ this.expressions.length ];
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
-      newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
+      newExpressions [ i ] = this.expressions [ i ].clone ();
     }
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    Identifier [] newIdentifiers = new Identifier [ this.identifiers.length ];
+    for ( int i = 0 ; i < newIdentifiers.length ; i++ )
     {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ();
     }
-    return new Duplication ( newIdentifiers , newExpressions ) ;
+    return new Duplication ( newIdentifiers, newExpressions );
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof Duplication )
     {
-      Duplication other = ( Duplication ) pObject ;
-      return ( ( Arrays.equals ( this.expressions , other.expressions ) ) && ( Arrays
-          .equals ( this.identifiers , other.identifiers ) ) ) ;
+      Duplication other = ( Duplication ) pObject;
+      return ( ( Arrays.equals ( this.expressions, other.expressions ) ) && ( Arrays
+          .equals ( this.identifiers, other.identifiers ) ) );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -248,9 +249,9 @@ public final class Duplication extends Expression implements
    * 
    * @return the sub {@link Expression}s.
    */
-  public Expression [ ] getExpressions ( )
+  public Expression [] getExpressions ()
   {
-    return this.expressions ;
+    return this.expressions;
   }
 
 
@@ -259,9 +260,9 @@ public final class Duplication extends Expression implements
    * 
    * @return The indices of the child {@link Expression}s.
    */
-  public int [ ] getExpressionsIndex ( )
+  public int [] getExpressionsIndex ()
   {
-    return this.indicesE ;
+    return this.indicesE;
   }
 
 
@@ -270,31 +271,31 @@ public final class Duplication extends Expression implements
    * 
    * @return The {@link Identifier}s of this {@link Expression}.
    */
-  public Identifier [ ] getIdentifiers ( )
+  public Identifier [] getIdentifiers ()
   {
-    return this.identifiers ;
+    return this.identifiers;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public ArrayList < Identifier > getIdentifiersFree ( )
+  @Override
+  public ArrayList < Identifier > getIdentifiersFree ()
   {
     if ( this.identifiersFree == null )
     {
-      this.identifiersFree = new ArrayList < Identifier > ( ) ;
-      this.identifiersFree.add ( new Identifier ( SELF , Identifier.Set.SELF ) ) ;
-      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      this.identifiersFree = new ArrayList < Identifier > ();
+      this.identifiersFree.add ( new Identifier ( SELF, Identifier.Set.SELF ) );
+      for ( int i = 0 ; i < this.expressions.length ; i++ )
       {
         this.identifiersFree.addAll ( this.expressions [ i ]
-            .getIdentifiersFree ( ) ) ;
+            .getIdentifiersFree () );
         this.identifiersFree.addAll ( this.identifiers [ i ]
-            .getIdentifiersFree ( ) ) ;
+            .getIdentifiersFree () );
       }
     }
-    return this.identifiersFree ;
+    return this.identifiersFree;
   }
 
 
@@ -303,9 +304,9 @@ public final class Duplication extends Expression implements
    * 
    * @return The indices of the child {@link Identifier}s.
    */
-  public int [ ] getIdentifiersIndex ( )
+  public int [] getIdentifiersIndex ()
   {
-    return this.indicesId ;
+    return this.indicesId;
   }
 
 
@@ -314,12 +315,12 @@ public final class Duplication extends Expression implements
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -331,90 +332,89 @@ public final class Duplication extends Expression implements
    *         sorting.
    * @see SortedChildren#getSortedChildren()
    */
-  public ExpressionOrType [ ] getSortedChildren ( )
+  public ExpressionOrType [] getSortedChildren ()
   {
-    ExpressionOrType [ ] result = new ExpressionOrType [ this.identifiers.length
-        + this.expressions.length ] ;
-    for ( int i = 0 ; i < this.identifiers.length + this.expressions.length ; i ++ )
+    ExpressionOrType [] result = new ExpressionOrType [ this.identifiers.length
+        + this.expressions.length ];
+    for ( int i = 0 ; i < this.identifiers.length + this.expressions.length ; i++ )
     {
       if ( i % 2 == 0 )
       {
-        result [ i ] = this.identifiers [ i / 2 ] ;
+        result [ i ] = this.identifiers [ i / 2 ];
       }
       else
       {
-        result [ i ] = this.expressions [ i / 2 ] ;
+        result [ i ] = this.expressions [ i / 2 ];
       }
     }
-    return result ;
+    return result;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.identifiers.hashCode ( ) + this.expressions.hashCode ( ) ;
+    return this.identifiers.hashCode () + this.expressions.hashCode ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public Expression substitute ( Identifier pId , Expression pExpression )
+  @Override
+  public Expression substitute ( Identifier pId, Expression pExpression )
   {
-    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    if ( pExpression.getIdentifierFreeNotOnlyVariable () )
     {
-      throw new NotOnlyFreeVariableException ( ) ;
+      throw new NotOnlyFreeVariableException ();
     }
-    if ( ( Identifier.Set.SELF.equals ( pId.getSet ( ) ) )
+    if ( ( Identifier.Set.SELF.equals ( pId.getSet () ) )
         && ( pExpression instanceof ObjectExpr ) )
     {
-      ObjectExpr objectExpr = ( ObjectExpr ) pExpression ;
-      Row row = objectExpr.getRow ( ) ;
-      Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-      BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
-      boundRenaming.add ( row.getIdentifiersFree ( ) ) ;
+      ObjectExpr objectExpr = ( ObjectExpr ) pExpression;
+      Row row = objectExpr.getRow ();
+      Identifier [] newIdentifiers = new Identifier [ this.identifiers.length ];
+      BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ();
+      boundRenaming.add ( row.getIdentifiersFree () );
       for ( Expression e : this.expressions )
       {
-        boundRenaming.add ( e.getIdentifiersFree ( ) ) ;
+        boundRenaming.add ( e.getIdentifiersFree () );
       }
       for ( Identifier id : this.identifiers )
       {
-        boundRenaming.add ( id ) ;
+        boundRenaming.add ( id );
       }
-      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      for ( int i = 0 ; i < this.expressions.length ; i++ )
       {
         Identifier newId = boundRenaming
-            .newIdentifier ( this.identifiers [ i ] ) ;
-        boundRenaming.add ( newId ) ;
-        newIdentifiers [ i ] = newId ;
-        newIdentifiers [ i ].setSet ( Identifier.Set.VARIABLE ) ;
+            .newIdentifier ( this.identifiers [ i ] );
+        boundRenaming.add ( newId );
+        newIdentifiers [ i ] = newId;
+        newIdentifiers [ i ].setSet ( Identifier.Set.VARIABLE );
       }
-      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      for ( int i = 0 ; i < this.expressions.length ; i++ )
       {
-        row = row
-            .substituteRow ( this.identifiers [ i ] , newIdentifiers [ i ] ) ;
+        row = row.substituteRow ( this.identifiers [ i ], newIdentifiers [ i ] );
       }
-      Expression result = new ObjectExpr ( objectExpr.getId ( ) , objectExpr
-          .getTau ( ) , row ) ;
-      for ( int i = this.expressions.length - 1 ; i >= 0 ; i -- )
+      Expression result = new ObjectExpr ( objectExpr.getId (), objectExpr
+          .getTau (), row );
+      for ( int i = this.expressions.length - 1 ; i >= 0 ; i-- )
       {
-        result = new Let ( newIdentifiers [ i ].clone ( ) , null ,
-            this.expressions [ i ].substitute ( pId , pExpression ) , result ) ;
+        result = new Let ( newIdentifiers [ i ].clone (), null,
+            this.expressions [ i ].substitute ( pId, pExpression ), result );
       }
-      return result ;
+      return result;
     }
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    Expression [] newExpressions = new Expression [ this.expressions.length ];
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
-      newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
-          pExpression ) ;
+      newExpressions [ i ] = this.expressions [ i ].substitute ( pId,
+          pExpression );
     }
-    return new Duplication ( this.identifiers , newExpressions ) ;
+    return new Duplication ( this.identifiers, newExpressions );
   }
 
 
@@ -423,16 +423,16 @@ public final class Duplication extends Expression implements
    * 
    * @see Expression#substitute(TypeSubstitution)
    */
-  @ Override
+  @Override
   public Duplication substitute ( TypeSubstitution pTypeSubstitution )
   {
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    Expression [] newExpressions = new Expression [ this.expressions.length ];
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
       newExpressions [ i ] = this.expressions [ i ]
-          .substitute ( pTypeSubstitution ) ;
+          .substitute ( pTypeSubstitution );
     }
-    return new Duplication ( this.identifiers , newExpressions ) ;
+    return new Duplication ( this.identifiers, newExpressions );
   }
 
 
@@ -441,75 +441,75 @@ public final class Duplication extends Expression implements
    * 
    * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    StringBuilder body = new StringBuilder ( ) ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    StringBuilder body = new StringBuilder ();
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
-      body.append ( this.identifiers [ i ].toPrettyString ( ).toString ( ) ) ;
-      body.append ( PRETTY_SPACE ) ;
-      body.append ( PRETTY_EQUAL ) ;
-      body.append ( PRETTY_SPACE ) ;
-      body.append ( this.expressions [ i ].toPrettyString ( ).toString ( ) ) ;
+      body.append ( this.identifiers [ i ].toPrettyString ().toString () );
+      body.append ( PRETTY_SPACE );
+      body.append ( PRETTY_EQUAL );
+      body.append ( PRETTY_SPACE );
+      body.append ( this.expressions [ i ].toPrettyString ().toString () );
       if ( i != this.expressions.length - 1 )
       {
-        body.append ( PRETTY_SEMI ) ;
-        body.append ( PRETTY_SPACE ) ;
+        body.append ( PRETTY_SEMI );
+        body.append ( PRETTY_SPACE );
       }
     }
     String descriptions[] = new String [ 2 + this.identifiers.length
-        + this.expressions.length ] ;
-    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
-    descriptions [ 1 ] = body.toString ( ) ;
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+        + this.expressions.length ];
+    descriptions [ 0 ] = this.toPrettyString ().toString ();
+    descriptions [ 1 ] = body.toString ();
+    for ( int i = 0 ; i < this.identifiers.length ; i++ )
     {
-      descriptions [ 2 + i * 2 ] = this.identifiers [ i ].toPrettyString ( )
-          .toString ( ) ;
-      descriptions [ 3 + i * 2 ] = this.expressions [ i ].toPrettyString ( )
-          .toString ( ) ;
+      descriptions [ 2 + i * 2 ] = this.identifiers [ i ].toPrettyString ()
+          .toString ();
+      descriptions [ 3 + i * 2 ] = this.expressions [ i ].toPrettyString ()
+          .toString ();
     }
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_DUPLICATION , LATEX_DUPLICATION , pIndent , descriptions ) ;
-    builder.addBuilderBegin ( ) ;
-    builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        PRIO_DUPLICATION, LATEX_DUPLICATION, pIndent, descriptions );
+    builder.addBuilderBegin ();
+    builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
     builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
         + LATEX_INDENT )
-        + LATEX_SPACE ) ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+        + LATEX_SPACE );
+    for ( int i = 0 ; i < this.expressions.length ; i++ )
     {
       builder.addBuilder ( this.identifiers [ i ].toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , PRIO_ID ) ;
-      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ), PRIO_ID );
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
           + LATEX_INDENT )
-          + LATEX_SPACE ) ;
-      builder.addText ( LATEX_EQUAL ) ;
-      builder.addText ( LATEX_SPACE ) ;
+          + LATEX_SPACE );
+      builder.addText ( LATEX_EQUAL );
+      builder.addText ( LATEX_SPACE );
       builder.addBuilder ( this.expressions [ i ].toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) ,
-          PRIO_DUPLICATION_E ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ),
+          PRIO_DUPLICATION_E );
       if ( i != this.expressions.length - 1 )
       {
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
             + LATEX_INDENT )
-            + LATEX_SEMI ) ;
-        builder.addText ( LATEX_SPACE ) ;
-        builder.addBreak ( ) ;
+            + LATEX_SEMI );
+        builder.addText ( LATEX_SPACE );
+        builder.addBreak ();
       }
     }
     // Only one space for '{< >}'
     if ( this.expressions.length > 0 )
     {
-      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
           + LATEX_INDENT )
-          + LATEX_SPACE ) ;
+          + LATEX_SPACE );
     }
-    builder.addBuilderEnd ( ) ;
-    return builder ;
+    builder.addBuilderEnd ();
+    return builder;
   }
 
 
@@ -518,40 +518,40 @@ public final class Duplication extends Expression implements
    * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_DUPLICATION ) ;
-      this.prettyStringBuilder.addText ( PRETTY_DUPLBEGIN ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_DUPLICATION );
+      this.prettyStringBuilder.addText ( PRETTY_DUPLBEGIN );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
+      for ( int i = 0 ; i < this.expressions.length ; i++ )
       {
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
-        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-        this.prettyStringBuilder.addText ( PRETTY_EQUAL ) ;
-        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), PRIO_ID );
+        this.prettyStringBuilder.addText ( PRETTY_SPACE );
+        this.prettyStringBuilder.addText ( PRETTY_EQUAL );
+        this.prettyStringBuilder.addText ( PRETTY_SPACE );
         this.prettyStringBuilder.addBuilder ( this.expressions [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_DUPLICATION_E ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+            PRIO_DUPLICATION_E );
         if ( i != this.expressions.length - 1 )
         {
-          this.prettyStringBuilder.addText ( PRETTY_SEMI ) ;
-          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-          this.prettyStringBuilder.addBreak ( ) ;
+          this.prettyStringBuilder.addText ( PRETTY_SEMI );
+          this.prettyStringBuilder.addText ( PRETTY_SPACE );
+          this.prettyStringBuilder.addBreak ();
         }
       }
       // Only one space for '{< >}'
       if ( this.expressions.length > 0 )
       {
-        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_SPACE );
       }
-      this.prettyStringBuilder.addText ( PRETTY_DUPLEND ) ;
+      this.prettyStringBuilder.addText ( PRETTY_DUPLEND );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

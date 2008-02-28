@@ -1,37 +1,40 @@
-package de.unisiegen.tpml.graphics ;
+package de.unisiegen.tpml.graphics;
 
 
-import java.awt.Color ;
-import java.beans.PropertyChangeEvent ;
-import java.beans.PropertyChangeListener ;
-import java.beans.PropertyChangeSupport ;
-import java.io.IOException ;
-import java.io.Reader ;
-import java.io.StringReader ;
-import java.util.HashMap ;
-import java.util.LinkedList ;
-import javax.swing.text.AttributeSet ;
-import javax.swing.text.BadLocationException ;
-import javax.swing.text.DefaultStyledDocument ;
-import javax.swing.text.SimpleAttributeSet ;
-import javax.swing.text.StyleConstants ;
-import org.apache.log4j.Logger ;
-import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
-import de.unisiegen.tpml.core.exceptions.LanguageParserReplaceException ;
-import de.unisiegen.tpml.core.exceptions.LanguageParserWarningException ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.languages.AbstractLanguageScanner ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.core.languages.LanguageParser ;
-import de.unisiegen.tpml.core.languages.LanguageParserException ;
-import de.unisiegen.tpml.core.languages.LanguageScanner ;
-import de.unisiegen.tpml.core.languages.LanguageScannerException ;
-import de.unisiegen.tpml.core.languages.LanguageSymbol ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
-import de.unisiegen.tpml.core.types.TypeName ;
-import de.unisiegen.tpml.core.util.Theme ;
-import de.unisiegen.tpml.core.util.beans.Bean ;
+import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.HashMap;
+import java.util.LinkedList;
+
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+
+import org.apache.log4j.Logger;
+
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+import de.unisiegen.tpml.core.exceptions.LanguageParserReplaceException;
+import de.unisiegen.tpml.core.exceptions.LanguageParserWarningException;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.languages.AbstractLanguageScanner;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageParser;
+import de.unisiegen.tpml.core.languages.LanguageParserException;
+import de.unisiegen.tpml.core.languages.LanguageScanner;
+import de.unisiegen.tpml.core.languages.LanguageScannerException;
+import de.unisiegen.tpml.core.languages.LanguageSymbol;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStyle;
+import de.unisiegen.tpml.core.types.TypeName;
+import de.unisiegen.tpml.core.util.Theme;
+import de.unisiegen.tpml.core.util.beans.Bean;
 
 
 /**
@@ -47,13 +50,14 @@ import de.unisiegen.tpml.core.util.beans.Bean ;
 public class StyledLanguageDocument extends DefaultStyledDocument implements
     Bean
 {
+
   //
   // Constants
   //
   /**
    * Empty array of language exceptions.
    */
-  protected static final LanguageScannerException [ ] EMPTY_ARRAY = new LanguageScannerException [ 0 ] ;
+  protected static final LanguageScannerException [] EMPTY_ARRAY = new LanguageScannerException [ 0 ];
 
 
   /**
@@ -62,13 +66,13 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * @see Logger
    */
   protected static final Logger logger = Logger
-      .getLogger ( StyledLanguageDocument.class ) ;
+      .getLogger ( StyledLanguageDocument.class );
 
 
   /**
    * The unique serialization identifier of this class.
    */
-  protected static final long serialVersionUID = 5866657214159718809L ;
+  protected static final long serialVersionUID = 5866657214159718809L;
 
 
   //
@@ -87,13 +91,13 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * @see #firePropertyChange(String, int, int)
    * @see #firePropertyChange(String, Object, Object)
    */
-  protected PropertyChangeSupport changeSupport ;
+  protected PropertyChangeSupport changeSupport;
 
 
   /**
    * The {@link Language} for which this document was allocated.
    */
-  protected Language language ;
+  protected Language language;
 
 
   /**
@@ -102,19 +106,19 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * @see #getExceptions()
    * @see #getExceptions(int)
    */
-  protected LanguageScannerException exceptions[] ;
+  protected LanguageScannerException exceptions[];
 
 
   /**
    * The attributes default style.
    */
-  protected SimpleAttributeSet normalSet = new SimpleAttributeSet ( ) ;
+  protected SimpleAttributeSet normalSet = new SimpleAttributeSet ();
 
 
   /**
    * The attributes for the various {@link PrettyStyle}s.
    */
-  protected HashMap < PrettyStyle , SimpleAttributeSet > attributes = new HashMap < PrettyStyle , SimpleAttributeSet > ( ) ;
+  protected HashMap < PrettyStyle, SimpleAttributeSet > attributes = new HashMap < PrettyStyle, SimpleAttributeSet > ();
 
 
   /**
@@ -122,7 +126,7 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * 
    * @see Theme
    */
-  protected Theme theme = Theme.currentTheme ( ) ;
+  protected Theme theme = Theme.currentTheme ();
 
 
   //
@@ -142,53 +146,54 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
   {
     if ( pLanguage == null )
     {
-      throw new NullPointerException ( "Language is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "Language is null" ); //$NON-NLS-1$
     }
-    this.language = pLanguage ;
+    this.language = pLanguage;
     // setup the normal attribute set
-    StyleConstants.setForeground ( this.normalSet , Theme.currentTheme ( )
-        .getExpressionColor ( ) ) ;
-    StyleConstants.setBold ( this.normalSet , false ) ;
+    StyleConstants.setForeground ( this.normalSet, Theme.currentTheme ()
+        .getExpressionColor () );
+    StyleConstants.setBold ( this.normalSet, false );
     // setup the comment set
-    SimpleAttributeSet commentSet = new SimpleAttributeSet ( ) ;
-    StyleConstants.setItalic ( commentSet , true ) ;
-    this.attributes.put ( PrettyStyle.COMMENT , commentSet ) ;
+    SimpleAttributeSet commentSet = new SimpleAttributeSet ();
+    StyleConstants.setItalic ( commentSet, true );
+    this.attributes.put ( PrettyStyle.COMMENT, commentSet );
     // setup the constant set
-    SimpleAttributeSet constantSet = new SimpleAttributeSet ( ) ;
-    StyleConstants.setBold ( constantSet , true ) ;
-    this.attributes.put ( PrettyStyle.CONSTANT , constantSet ) ;
+    SimpleAttributeSet constantSet = new SimpleAttributeSet ();
+    StyleConstants.setBold ( constantSet, true );
+    this.attributes.put ( PrettyStyle.CONSTANT, constantSet );
     // setup the keyword set
-    SimpleAttributeSet keywordSet = new SimpleAttributeSet ( ) ;
-    StyleConstants.setBold ( keywordSet , true ) ;
-    this.attributes.put ( PrettyStyle.KEYWORD , keywordSet ) ;
+    SimpleAttributeSet keywordSet = new SimpleAttributeSet ();
+    StyleConstants.setBold ( keywordSet, true );
+    this.attributes.put ( PrettyStyle.KEYWORD, keywordSet );
     // setup the identifier set
-    SimpleAttributeSet identifierSet = new SimpleAttributeSet ( ) ;
-    this.attributes.put ( PrettyStyle.IDENTIFIER , identifierSet ) ;
+    SimpleAttributeSet identifierSet = new SimpleAttributeSet ();
+    this.attributes.put ( PrettyStyle.IDENTIFIER, identifierSet );
     // setup the type set
-    SimpleAttributeSet typeSet = new SimpleAttributeSet ( ) ;
-    StyleConstants.setBold ( typeSet , true ) ;
-    this.attributes.put ( PrettyStyle.TYPE , typeSet ) ;
+    SimpleAttributeSet typeSet = new SimpleAttributeSet ();
+    StyleConstants.setBold ( typeSet, true );
+    this.attributes.put ( PrettyStyle.TYPE, typeSet );
     // initially setup the attributes
-    initAttributes ( ) ;
+    initAttributes ();
     // update the attributes whenever the current theme changes
-    this.theme.addPropertyChangeListener ( new PropertyChangeListener ( )
+    this.theme.addPropertyChangeListener ( new PropertyChangeListener ()
     {
-      public void propertyChange ( @ SuppressWarnings ( "unused" )
+
+      public void propertyChange ( @SuppressWarnings ( "unused" )
       PropertyChangeEvent evt )
       {
         try
         {
           // reload the attributes
-          initAttributes ( ) ;
+          initAttributes ();
           // reprocess the document
-          processChanged ( ) ;
+          processChanged ();
         }
         catch ( BadLocationException e )
         {
           // just ignore...
         }
       }
-    } ) ;
+    } );
   }
 
 
@@ -210,13 +215,13 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
   {
     if ( listener == null )
     {
-      return ;
+      return;
     }
     if ( this.changeSupport == null )
     {
-      this.changeSupport = new PropertyChangeSupport ( this ) ;
+      this.changeSupport = new PropertyChangeSupport ( this );
     }
-    this.changeSupport.addPropertyChangeListener ( listener ) ;
+    this.changeSupport.addPropertyChangeListener ( listener );
   }
 
 
@@ -231,18 +236,18 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * @see #removePropertyChangeListener(String, PropertyChangeListener)
    * @see #getPropertyChangeListeners(String)
    */
-  public synchronized void addPropertyChangeListener ( String propertyName ,
+  public synchronized void addPropertyChangeListener ( String propertyName,
       PropertyChangeListener listener )
   {
     if ( listener == null )
     {
-      return ;
+      return;
     }
     if ( this.changeSupport == null )
     {
-      this.changeSupport = new PropertyChangeSupport ( this ) ;
+      this.changeSupport = new PropertyChangeSupport ( this );
     }
-    this.changeSupport.addPropertyChangeListener ( propertyName , listener ) ;
+    this.changeSupport.addPropertyChangeListener ( propertyName, listener );
   }
 
 
@@ -256,15 +261,15 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * @param oldValue the property's previous value.
    * @param newValue the property's new value.
    */
-  protected void firePropertyChange ( String propertyName , boolean oldValue ,
+  protected void firePropertyChange ( String propertyName, boolean oldValue,
       boolean newValue )
   {
-    PropertyChangeSupport tmpChangeSupport = this.changeSupport ;
+    PropertyChangeSupport tmpChangeSupport = this.changeSupport;
     if ( tmpChangeSupport == null )
     {
-      return ;
+      return;
     }
-    tmpChangeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
+    tmpChangeSupport.firePropertyChange ( propertyName, oldValue, newValue );
   }
 
 
@@ -278,15 +283,15 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * @param oldValue the property's previous value.
    * @param newValue the property's new value.
    */
-  protected void firePropertyChange ( String propertyName , int oldValue ,
+  protected void firePropertyChange ( String propertyName, int oldValue,
       int newValue )
   {
-    PropertyChangeSupport tmpChangeSupport = this.changeSupport ;
+    PropertyChangeSupport tmpChangeSupport = this.changeSupport;
     if ( tmpChangeSupport == null )
     {
-      return ;
+      return;
     }
-    tmpChangeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
+    tmpChangeSupport.firePropertyChange ( propertyName, oldValue, newValue );
   }
 
 
@@ -303,15 +308,15 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * @param oldValue the property's previous value.
    * @param newValue the property's new value.
    */
-  protected void firePropertyChange ( String propertyName , Object oldValue ,
+  protected void firePropertyChange ( String propertyName, Object oldValue,
       Object newValue )
   {
-    PropertyChangeSupport tmpChangeSupport = this.changeSupport ;
+    PropertyChangeSupport tmpChangeSupport = this.changeSupport;
     if ( tmpChangeSupport == null )
     {
-      return ;
+      return;
     }
-    tmpChangeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
+    tmpChangeSupport.firePropertyChange ( propertyName, oldValue, newValue );
   }
 
 
@@ -325,9 +330,9 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * @return the exceptions.
    * @see #getExceptions(int)
    */
-  public LanguageScannerException [ ] getExceptions ( )
+  public LanguageScannerException [] getExceptions ()
   {
-    return ( this.exceptions != null ) ? this.exceptions : EMPTY_ARRAY ;
+    return ( this.exceptions != null ) ? this.exceptions : EMPTY_ARRAY;
   }
 
 
@@ -342,7 +347,7 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    */
   public LanguageScannerException getExceptions ( int index )
   {
-    return getExceptions ( ) [ index ] ;
+    return getExceptions () [ index ];
   }
 
 
@@ -356,10 +361,10 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * @return the {@link Expression} for the program text.
    * @throws Exception
    */
-  public Expression getExpression ( ) throws Exception
+  public Expression getExpression () throws Exception
   {
     return this.language.newParser (
-        new StringReader ( getText ( 0 , getLength ( ) ) ) ).parse ( ) ;
+        new StringReader ( getText ( 0, getLength () ) ) ).parse ();
   }
 
 
@@ -372,13 +377,13 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * @see #addPropertyChangeListener(PropertyChangeListener)
    * @see #removePropertyChangeListener(PropertyChangeListener)
    */
-  public synchronized PropertyChangeListener [ ] getPropertyChangeListeners ( )
+  public synchronized PropertyChangeListener [] getPropertyChangeListeners ()
   {
     if ( this.changeSupport == null )
     {
-      return new PropertyChangeListener [ 0 ] ;
+      return new PropertyChangeListener [ 0 ];
     }
-    return this.changeSupport.getPropertyChangeListeners ( ) ;
+    return this.changeSupport.getPropertyChangeListeners ();
   }
 
 
@@ -390,14 +395,14 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * @return all of the {@link PropertyChangeListener}s associated with the
    *         named property or an empty array if no listeners have been added
    */
-  public synchronized PropertyChangeListener [ ] getPropertyChangeListeners (
+  public synchronized PropertyChangeListener [] getPropertyChangeListeners (
       String propertyName )
   {
     if ( this.changeSupport == null )
     {
-      return new PropertyChangeListener [ 0 ] ;
+      return new PropertyChangeListener [ 0 ];
     }
-    return this.changeSupport.getPropertyChangeListeners ( propertyName ) ;
+    return this.changeSupport.getPropertyChangeListeners ( propertyName );
   }
 
 
@@ -407,45 +412,45 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
   /**
    * Initializes the attributes to use the fonts from the current theme.
    */
-  protected void initAttributes ( )
+  protected void initAttributes ()
   {
     // determine the current font family and size
-    String fontFamily = this.theme.getFont ( ).getFamily ( ) ;
-    int fontSize = this.theme.getFont ( ).getSize ( ) ;
+    String fontFamily = this.theme.getFont ().getFamily ();
+    int fontSize = this.theme.getFont ().getSize ();
     // use the colors and font from the current theme
-    StyleConstants.setFontFamily ( this.normalSet , fontFamily ) ;
-    StyleConstants.setFontSize ( this.normalSet , fontSize ) ;
-    StyleConstants.setForeground ( this.attributes.get ( PrettyStyle.COMMENT ) ,
-        this.theme.getCommentColor ( ) ) ;
-    StyleConstants.setFontFamily ( this.attributes.get ( PrettyStyle.COMMENT ) ,
-        fontFamily ) ;
-    StyleConstants.setFontSize ( this.attributes.get ( PrettyStyle.COMMENT ) ,
-        fontSize ) ;
+    StyleConstants.setFontFamily ( this.normalSet, fontFamily );
+    StyleConstants.setFontSize ( this.normalSet, fontSize );
+    StyleConstants.setForeground ( this.attributes.get ( PrettyStyle.COMMENT ),
+        this.theme.getCommentColor () );
+    StyleConstants.setFontFamily ( this.attributes.get ( PrettyStyle.COMMENT ),
+        fontFamily );
+    StyleConstants.setFontSize ( this.attributes.get ( PrettyStyle.COMMENT ),
+        fontSize );
     StyleConstants.setForeground (
-        this.attributes.get ( PrettyStyle.CONSTANT ) , this.theme
-            .getConstantColor ( ) ) ;
+        this.attributes.get ( PrettyStyle.CONSTANT ), this.theme
+            .getConstantColor () );
     StyleConstants.setFontFamily (
-        this.attributes.get ( PrettyStyle.CONSTANT ) , fontFamily ) ;
-    StyleConstants.setFontSize ( this.attributes.get ( PrettyStyle.CONSTANT ) ,
-        fontSize ) ;
-    StyleConstants.setForeground ( this.attributes.get ( PrettyStyle.KEYWORD ) ,
-        this.theme.getKeywordColor ( ) ) ;
-    StyleConstants.setFontFamily ( this.attributes.get ( PrettyStyle.KEYWORD ) ,
-        fontFamily ) ;
-    StyleConstants.setFontSize ( this.attributes.get ( PrettyStyle.KEYWORD ) ,
-        fontSize ) ;
+        this.attributes.get ( PrettyStyle.CONSTANT ), fontFamily );
+    StyleConstants.setFontSize ( this.attributes.get ( PrettyStyle.CONSTANT ),
+        fontSize );
+    StyleConstants.setForeground ( this.attributes.get ( PrettyStyle.KEYWORD ),
+        this.theme.getKeywordColor () );
+    StyleConstants.setFontFamily ( this.attributes.get ( PrettyStyle.KEYWORD ),
+        fontFamily );
+    StyleConstants.setFontSize ( this.attributes.get ( PrettyStyle.KEYWORD ),
+        fontSize );
     StyleConstants.setForeground ( this.attributes
-        .get ( PrettyStyle.IDENTIFIER ) , this.theme.getIdentifierColor ( ) ) ;
+        .get ( PrettyStyle.IDENTIFIER ), this.theme.getIdentifierColor () );
     StyleConstants.setFontFamily ( this.attributes
-        .get ( PrettyStyle.IDENTIFIER ) , fontFamily ) ;
+        .get ( PrettyStyle.IDENTIFIER ), fontFamily );
     StyleConstants.setFontSize (
-        this.attributes.get ( PrettyStyle.IDENTIFIER ) , fontSize ) ;
-    StyleConstants.setForeground ( this.attributes.get ( PrettyStyle.TYPE ) ,
-        this.theme.getTypeColor ( ) ) ;
-    StyleConstants.setFontFamily ( this.attributes.get ( PrettyStyle.TYPE ) ,
-        fontFamily ) ;
-    StyleConstants.setFontSize ( this.attributes.get ( PrettyStyle.TYPE ) ,
-        fontSize ) ;
+        this.attributes.get ( PrettyStyle.IDENTIFIER ), fontSize );
+    StyleConstants.setForeground ( this.attributes.get ( PrettyStyle.TYPE ),
+        this.theme.getTypeColor () );
+    StyleConstants.setFontFamily ( this.attributes.get ( PrettyStyle.TYPE ),
+        fontFamily );
+    StyleConstants.setFontSize ( this.attributes.get ( PrettyStyle.TYPE ),
+        fontSize );
   }
 
 
@@ -458,12 +463,12 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * @see javax.swing.text.AbstractDocument#insertString(int, java.lang.String,
    *      javax.swing.text.AttributeSet)
    */
-  @ Override
-  public void insertString ( int offset , String str , AttributeSet set )
+  @Override
+  public void insertString ( int offset, String str, AttributeSet set )
       throws BadLocationException
   {
-    super.insertString ( offset , str , set ) ;
-    processChanged ( ) ;
+    super.insertString ( offset, str, set );
+    processChanged ();
   }
 
 
@@ -472,89 +477,89 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * 
    * @throws BadLocationException if the processing failed.
    */
-  @ SuppressWarnings (
-  { "unused" , "null" } )
-  public void processChanged ( ) throws BadLocationException
+  @SuppressWarnings (
+  { "unused", "null" } )
+  public void processChanged () throws BadLocationException
   {
     // reset the character attributes
-    setCharacterAttributes ( 0 , getLength ( ) , this.normalSet , true ) ;
+    setCharacterAttributes ( 0, getLength (), this.normalSet, true );
     // allocate a list to collect the exceptions
-    LanguageScannerException [ ] tmpExceptions = null ;
+    LanguageScannerException [] tmpExceptions = null;
     try
     {
       // start with first character
-      int offset = 0 ;
+      int offset = 0;
       // determine the document content
-      String content = getText ( offset , getLength ( ) ) ;
+      String content = getText ( offset, getLength () );
       // allocate the scanner (initially)
       final LanguageScanner scanner = this.language
-          .newScanner ( new StringReader ( content ) ) ;
+          .newScanner ( new StringReader ( content ) );
       // collect the tokens returned by the scanner
-      final LinkedList < LanguageSymbol > symbols = new LinkedList < LanguageSymbol > ( ) ;
+      final LinkedList < LanguageSymbol > symbols = new LinkedList < LanguageSymbol > ();
       // determine the tokens for the content
       while ( true )
       {
         try
         {
           // read the next token from the scanner
-          LanguageSymbol symbol = scanner.nextSymbol ( ) ;
+          LanguageSymbol symbol = scanner.nextSymbol ();
           if ( symbol == null )
           {
-            break ;
+            break;
           }
           // add the token to our list
-          symbols.add ( symbol ) ;
+          symbols.add ( symbol );
           // check if we have an attribute set for the token
           SimpleAttributeSet set = this.attributes.get ( scanner
-              .getStyleBySymbol ( symbol ) ) ;
+              .getStyleBySymbol ( symbol ) );
           if ( set == null )
           {
-            set = this.normalSet ;
+            set = this.normalSet;
           }
           // apply the character attribute set
-          setCharacterAttributes ( offset + symbol.getLeft ( ) , symbol
-              .getRight ( )
-              - symbol.getLeft ( ) , set , true ) ;
+          setCharacterAttributes ( offset + symbol.getLeft (), symbol
+              .getRight ()
+              - symbol.getLeft (), set, true );
         }
         catch ( LanguageScannerException e )
         {
           // calculate the new offset
-          int newOffset = offset + e.getRight ( ) ;
+          int newOffset = offset + e.getRight ();
           // skip the problematic characters
-          content = content.substring ( e.getRight ( ) ) ;
+          content = content.substring ( e.getRight () );
           // adjust the exception according to the offset
-          e = new LanguageScannerException ( offset + e.getLeft ( ) , offset
-              + e.getRight ( ) , e.getMessage ( ) , e.getCause ( ) ) ;
+          e = new LanguageScannerException ( offset + e.getLeft (), offset
+              + e.getRight (), e.getMessage (), e.getCause () );
           // setup the error attribute set
-          SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
-          StyleConstants.setFontFamily ( errorSet , this.theme.getFont ( )
-              .getFamily ( ) ) ;
-          StyleConstants.setFontSize ( errorSet , this.theme.getFont ( )
-              .getSize ( ) ) ;
-          StyleConstants.setForeground ( errorSet , Color.RED ) ;
-          StyleConstants.setUnderline ( errorSet , true ) ;
-          errorSet.addAttribute ( "exception" , e ) ; //$NON-NLS-1$
+          SimpleAttributeSet errorSet = new SimpleAttributeSet ();
+          StyleConstants.setFontFamily ( errorSet, this.theme.getFont ()
+              .getFamily () );
+          StyleConstants.setFontSize ( errorSet, this.theme.getFont ()
+              .getSize () );
+          StyleConstants.setForeground ( errorSet, Color.RED );
+          StyleConstants.setUnderline ( errorSet, true );
+          errorSet.addAttribute ( "exception", e ); //$NON-NLS-1$
           // apply the error character attribute set to indicate the syntax
           // error
-          setCharacterAttributes ( e.getLeft ( ) , e.getRight ( )
-              - e.getLeft ( ) , errorSet , false ) ;
+          setCharacterAttributes ( e.getLeft (), e.getRight () - e.getLeft (),
+              errorSet, false );
           // adjust the offset to point after the error
-          offset = newOffset ;
+          offset = newOffset;
           // restart the scanner after the error
-          scanner.restart ( new StringReader ( content ) ) ;
+          scanner.restart ( new StringReader ( content ) );
           // add the exception to our list
           if ( tmpExceptions == null )
           {
-            tmpExceptions = new LanguageScannerException [ ]
-            { e } ;
+            tmpExceptions = new LanguageScannerException []
+            { e };
           }
           else
           {
-            LanguageScannerException [ ] newExceptions = new LanguageScannerException [ tmpExceptions.length + 1 ] ;
-            System.arraycopy ( tmpExceptions , 0 , newExceptions , 0 ,
-                tmpExceptions.length ) ;
-            newExceptions [ tmpExceptions.length ] = e ;
-            tmpExceptions = newExceptions ;
+            LanguageScannerException [] newExceptions = new LanguageScannerException [ tmpExceptions.length + 1 ];
+            System.arraycopy ( tmpExceptions, 0, newExceptions, 0,
+                tmpExceptions.length );
+            newExceptions [ tmpExceptions.length ] = e;
+            tmpExceptions = newExceptions;
           }
         }
       }
@@ -565,182 +570,183 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
         // collected
         // tokens from the scanner step above...
         LanguageParser parser = this.language
-            .newParser ( new AbstractLanguageScanner ( )
+            .newParser ( new AbstractLanguageScanner ()
             {
+
               public void restart ( Reader reader )
               {
-                throw new UnsupportedOperationException ( ) ;
+                throw new UnsupportedOperationException ();
               }
 
 
-              public LanguageSymbol nextSymbol ( ) throws IOException ,
+              public LanguageSymbol nextSymbol () throws IOException,
                   LanguageScannerException
               {
-                return ( ! symbols.isEmpty ( ) ) ? symbols.poll ( ) : null ;
+                return ( !symbols.isEmpty () ) ? symbols.poll () : null;
               }
 
 
-              @ Override
+              @Override
               public PrettyStyle getStyleBySymbolId ( int id )
               {
                 return ( ( AbstractLanguageScanner ) scanner )
-                    .getStyleBySymbolId ( id ) ;
+                    .getStyleBySymbolId ( id );
               }
-            } ) ;
+            } );
         // ...and try to parse the token stream
         try
         {
-          Expression expression = parser.parse ( ) ;
-          for ( Identifier id : expression.getIdentifiersFree ( ) )
+          Expression expression = parser.parse ();
+          for ( Identifier id : expression.getIdentifiersFree () )
           {
-            SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
-            StyleConstants.setForeground ( freeSet , Theme.currentTheme ( )
-                .getFreeIdColor ( ) ) ;
-            StyleConstants.setBold ( freeSet , true ) ;
-            freeSet.addAttribute ( "Free Identifier" , "Free Identifier" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-            setCharacterAttributes ( id.getParserStartOffset ( ) , id
-                .getParserEndOffset ( )
-                - id.getParserStartOffset ( ) , freeSet , false ) ;
+            SimpleAttributeSet freeSet = new SimpleAttributeSet ();
+            StyleConstants.setForeground ( freeSet, Theme.currentTheme ()
+                .getFreeIdColor () );
+            StyleConstants.setBold ( freeSet, true );
+            freeSet.addAttribute ( "Free Identifier", "Free Identifier" ); //$NON-NLS-1$ //$NON-NLS-2$
+            setCharacterAttributes ( id.getParserStartOffset (), id
+                .getParserEndOffset ()
+                - id.getParserStartOffset (), freeSet, false );
           }
-          for ( TypeName typeName : expression.getTypeNamesFree ( ) )
+          for ( TypeName typeName : expression.getTypeNamesFree () )
           {
-            SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
-            StyleConstants.setForeground ( freeSet , Theme.currentTheme ( )
-                .getFreeIdColor ( ) ) ;
-            StyleConstants.setBold ( freeSet , true ) ;
-            freeSet.addAttribute ( "Free TypeName" , "Free TypeName" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-            setCharacterAttributes ( typeName.getParserStartOffset ( ) ,
-                typeName.getParserEndOffset ( )
-                    - typeName.getParserStartOffset ( ) , freeSet , false ) ;
+            SimpleAttributeSet freeSet = new SimpleAttributeSet ();
+            StyleConstants.setForeground ( freeSet, Theme.currentTheme ()
+                .getFreeIdColor () );
+            StyleConstants.setBold ( freeSet, true );
+            freeSet.addAttribute ( "Free TypeName", "Free TypeName" ); //$NON-NLS-1$ //$NON-NLS-2$
+            setCharacterAttributes ( typeName.getParserStartOffset (), typeName
+                .getParserEndOffset ()
+                - typeName.getParserStartOffset (), freeSet, false );
           }
         }
         catch ( LanguageParserReplaceException e )
         {
-          String [ ] messageRename = e.getMessagesReplace ( ) ;
-          int [ ] startOffsetRename = e.getParserStartOffsetReplace ( ) ;
-          int [ ] endOffsetRename = e.getParserEndOffsetReplace ( ) ;
-          String [ ] messageNegative = e.getMessagesNegative ( ) ;
-          int [ ] startOffsetNegative = e.getParserStartOffsetNegative ( ) ;
-          int [ ] endOffsetNegative = e.getParserEndOffsetNegative ( ) ;
+          String [] messageRename = e.getMessagesReplace ();
+          int [] startOffsetRename = e.getParserStartOffsetReplace ();
+          int [] endOffsetRename = e.getParserEndOffsetReplace ();
+          String [] messageNegative = e.getMessagesNegative ();
+          int [] startOffsetNegative = e.getParserStartOffsetNegative ();
+          int [] endOffsetNegative = e.getParserEndOffsetNegative ();
           tmpExceptions = new LanguageParserException [ startOffsetRename.length
-              + startOffsetNegative.length ] ;
-          for ( int i = 0 ; i < startOffsetRename.length ; i ++ )
+              + startOffsetNegative.length ];
+          for ( int i = 0 ; i < startOffsetRename.length ; i++ )
           {
             tmpExceptions [ i ] = new LanguageParserReplaceException (
-                messageRename [ i ] , startOffsetRename [ i ] ,
-                endOffsetRename [ i ] , e.getReplaceText ( ) ) ;
-            SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
-            StyleConstants.setForeground ( errorSet , Color.BLUE ) ;
-            StyleConstants.setUnderline ( errorSet , true ) ;
-            errorSet.addAttribute ( "exception" , tmpExceptions [ i ] ) ; //$NON-NLS-1$
-            setCharacterAttributes ( startOffsetRename [ i ] ,
-                endOffsetRename [ i ] - startOffsetRename [ i ] , errorSet ,
-                false ) ;
+                messageRename [ i ], startOffsetRename [ i ],
+                endOffsetRename [ i ], e.getReplaceText () );
+            SimpleAttributeSet errorSet = new SimpleAttributeSet ();
+            StyleConstants.setForeground ( errorSet, Color.BLUE );
+            StyleConstants.setUnderline ( errorSet, true );
+            errorSet.addAttribute ( "exception", tmpExceptions [ i ] ); //$NON-NLS-1$
+            setCharacterAttributes ( startOffsetRename [ i ],
+                endOffsetRename [ i ] - startOffsetRename [ i ], errorSet,
+                false );
           }
-          for ( int i = 0 ; i < startOffsetNegative.length ; i ++ )
+          for ( int i = 0 ; i < startOffsetNegative.length ; i++ )
           {
             tmpExceptions [ startOffsetRename.length + i ] = new LanguageParserException (
-                messageNegative [ i ] , startOffsetNegative [ i ] ,
-                endOffsetNegative [ i ] ) ;
-            SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
-            StyleConstants.setForeground ( errorSet , Color.RED ) ;
-            StyleConstants.setUnderline ( errorSet , true ) ;
+                messageNegative [ i ], startOffsetNegative [ i ],
+                endOffsetNegative [ i ] );
+            SimpleAttributeSet errorSet = new SimpleAttributeSet ();
+            StyleConstants.setForeground ( errorSet, Color.RED );
+            StyleConstants.setUnderline ( errorSet, true );
             errorSet.addAttribute (
-                "exception" , tmpExceptions [ startOffsetRename.length + i ] ) ; //$NON-NLS-1$
-            setCharacterAttributes ( startOffsetNegative [ i ] ,
-                endOffsetNegative [ i ] - startOffsetNegative [ i ] , errorSet ,
-                false ) ;
+                "exception", tmpExceptions [ startOffsetRename.length + i ] ); //$NON-NLS-1$
+            setCharacterAttributes ( startOffsetNegative [ i ],
+                endOffsetNegative [ i ] - startOffsetNegative [ i ], errorSet,
+                false );
           }
         }
         catch ( LanguageParserMultiException e )
         {
-          String [ ] message = e.getMessages ( ) ;
-          int [ ] startOffset = e.getParserStartOffset ( ) ;
-          int [ ] endOffset = e.getParserEndOffset ( ) ;
-          tmpExceptions = new LanguageParserException [ startOffset.length ] ;
-          for ( int i = 0 ; i < startOffset.length ; i ++ )
+          String [] message = e.getMessages ();
+          int [] startOffset = e.getParserStartOffset ();
+          int [] endOffset = e.getParserEndOffset ();
+          tmpExceptions = new LanguageParserException [ startOffset.length ];
+          for ( int i = 0 ; i < startOffset.length ; i++ )
           {
-            tmpExceptions [ i ] = new LanguageParserException ( message [ i ] ,
-                startOffset [ i ] , endOffset [ i ] ) ;
-            SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
-            StyleConstants.setForeground ( errorSet , Color.RED ) ;
-            StyleConstants.setUnderline ( errorSet , true ) ;
-            errorSet.addAttribute ( "exception" , tmpExceptions [ i ] ) ; //$NON-NLS-1$
-            setCharacterAttributes ( startOffset [ i ] , endOffset [ i ]
-                - startOffset [ i ] , errorSet , false ) ;
+            tmpExceptions [ i ] = new LanguageParserException ( message [ i ],
+                startOffset [ i ], endOffset [ i ] );
+            SimpleAttributeSet errorSet = new SimpleAttributeSet ();
+            StyleConstants.setForeground ( errorSet, Color.RED );
+            StyleConstants.setUnderline ( errorSet, true );
+            errorSet.addAttribute ( "exception", tmpExceptions [ i ] ); //$NON-NLS-1$
+            setCharacterAttributes ( startOffset [ i ], endOffset [ i ]
+                - startOffset [ i ], errorSet, false );
           }
         }
         catch ( LanguageParserWarningException e )
         {
           // setup the warning attribute set
-          SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
-          StyleConstants.setBackground ( errorSet , Theme.currentTheme ( )
-              .getParserWarningColor ( ) ) ;
-          errorSet.addAttribute ( "warning" , e ) ; //$NON-NLS-1$
+          SimpleAttributeSet errorSet = new SimpleAttributeSet ();
+          StyleConstants.setBackground ( errorSet, Theme.currentTheme ()
+              .getParserWarningColor () );
+          errorSet.addAttribute ( "warning", e ); //$NON-NLS-1$
           // check if this is unexpected end of file
-          if ( e.getLeft ( ) < 0 && e.getRight ( ) < 0 )
+          if ( e.getLeft () < 0 && e.getRight () < 0 )
           {
-            setCharacterAttributes ( getLength ( ) , getLength ( ) , errorSet ,
-                false ) ;
+            setCharacterAttributes ( getLength (), getLength (), errorSet,
+                false );
           }
           else
           {
             // apply the error character attribute set to indicate the syntax
             // error
-            setCharacterAttributes ( e.getLeft ( ) , e.getRight ( )
-                - e.getLeft ( ) , errorSet , false ) ;
+            setCharacterAttributes ( e.getLeft (),
+                e.getRight () - e.getLeft (), errorSet, false );
           }
           // add the exception to our list
           if ( tmpExceptions == null )
           {
-            tmpExceptions = new LanguageScannerException [ ]
-            { new LanguageParserWarningException ( e.getMessage ( ) , e
-                .getRight ( ) , e.getRight ( ) , e.getInsertText ( ) ) } ;
+            tmpExceptions = new LanguageScannerException []
+            { new LanguageParserWarningException ( e.getMessage (), e
+                .getRight (), e.getRight (), e.getInsertText () ) };
           }
           else
           {
-            LanguageScannerException [ ] newExceptions = new LanguageScannerException [ tmpExceptions.length + 1 ] ;
-            System.arraycopy ( tmpExceptions , 0 , newExceptions , 0 ,
-                tmpExceptions.length ) ;
+            LanguageScannerException [] newExceptions = new LanguageScannerException [ tmpExceptions.length + 1 ];
+            System.arraycopy ( tmpExceptions, 0, newExceptions, 0,
+                tmpExceptions.length );
             newExceptions [ tmpExceptions.length ] = new LanguageParserWarningException (
-                e.getMessage ( ) , e.getRight ( ) , e.getRight ( ) , e
-                    .getInsertText ( ) ) ;
-            tmpExceptions = newExceptions ;
+                e.getMessage (), e.getRight (), e.getRight (), e
+                    .getInsertText () );
+            tmpExceptions = newExceptions;
           }
         }
         catch ( LanguageParserException e )
         {
           // setup the error attribute set
-          SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
-          StyleConstants.setForeground ( errorSet , Color.RED ) ;
-          StyleConstants.setUnderline ( errorSet , true ) ;
-          errorSet.addAttribute ( "exception" , e ) ; //$NON-NLS-1$
+          SimpleAttributeSet errorSet = new SimpleAttributeSet ();
+          StyleConstants.setForeground ( errorSet, Color.RED );
+          StyleConstants.setUnderline ( errorSet, true );
+          errorSet.addAttribute ( "exception", e ); //$NON-NLS-1$
           // check if this is unexpected end of file
-          if ( e.getLeft ( ) < 0 && e.getRight ( ) < 0 )
+          if ( e.getLeft () < 0 && e.getRight () < 0 )
           {
-            setCharacterAttributes ( getLength ( ) , getLength ( ) , errorSet ,
-                false ) ;
+            setCharacterAttributes ( getLength (), getLength (), errorSet,
+                false );
           }
           else
           {
             // apply the error character attribute set to indicate the syntax
             // error
-            setCharacterAttributes ( e.getLeft ( ) , e.getRight ( )
-                - e.getLeft ( ) , errorSet , false ) ;
+            setCharacterAttributes ( e.getLeft (),
+                e.getRight () - e.getLeft (), errorSet, false );
           }
           // add the exception to our list
           if ( tmpExceptions == null )
           {
-            tmpExceptions = new LanguageScannerException [ ]
-            { e } ;
+            tmpExceptions = new LanguageScannerException []
+            { e };
           }
           else
           {
-            LanguageScannerException [ ] newExceptions = new LanguageScannerException [ tmpExceptions.length + 1 ] ;
-            System.arraycopy ( tmpExceptions , 0 , newExceptions , 0 ,
-                tmpExceptions.length ) ;
-            newExceptions [ tmpExceptions.length ] = e ;
-            tmpExceptions = newExceptions ;
+            LanguageScannerException [] newExceptions = new LanguageScannerException [ tmpExceptions.length + 1 ];
+            System.arraycopy ( tmpExceptions, 0, newExceptions, 0,
+                tmpExceptions.length );
+            newExceptions [ tmpExceptions.length ] = e;
+            tmpExceptions = newExceptions;
           }
         }
       }
@@ -748,14 +754,14 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
     catch ( Exception e )
     {
       logger.warn (
-          "Failed to process changes in the styled language document" , e ) ; //$NON-NLS-1$
+          "Failed to process changes in the styled language document", e ); //$NON-NLS-1$
     }
     // update the exceptions property if necessary
     if ( this.exceptions != tmpExceptions )
     {
-      LanguageScannerException [ ] oldExceptions = this.exceptions ;
-      this.exceptions = tmpExceptions ;
-      firePropertyChange ( "exceptions" , oldExceptions , this.exceptions ) ; //$NON-NLS-1$
+      LanguageScannerException [] oldExceptions = this.exceptions;
+      this.exceptions = tmpExceptions;
+      firePropertyChange ( "exceptions", oldExceptions, this.exceptions ); //$NON-NLS-1$
     }
   }
 
@@ -765,11 +771,11 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * 
    * @see javax.swing.text.Document#remove(int, int)
    */
-  @ Override
-  public void remove ( int offset , int length ) throws BadLocationException
+  @Override
+  public void remove ( int offset, int length ) throws BadLocationException
   {
-    super.remove ( offset , length ) ;
-    processChanged ( ) ;
+    super.remove ( offset, length );
+    processChanged ();
   }
 
 
@@ -788,9 +794,9 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
   {
     if ( listener == null || this.changeSupport == null )
     {
-      return ;
+      return;
     }
-    this.changeSupport.removePropertyChangeListener ( listener ) ;
+    this.changeSupport.removePropertyChangeListener ( listener );
   }
 
 
@@ -806,13 +812,13 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * @see #addPropertyChangeListener(String, PropertyChangeListener)
    * @see #getPropertyChangeListeners(String)
    */
-  public synchronized void removePropertyChangeListener ( String propertyName ,
+  public synchronized void removePropertyChangeListener ( String propertyName,
       PropertyChangeListener listener )
   {
     if ( listener == null || this.changeSupport == null )
     {
-      return ;
+      return;
     }
-    this.changeSupport.removePropertyChangeListener ( propertyName , listener ) ;
+    this.changeSupport.removePropertyChangeListener ( propertyName, listener );
   }
 }

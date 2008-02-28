@@ -1,13 +1,13 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
 
 /**
@@ -22,16 +22,17 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  */
 public final class Location extends Value
 {
+
   /**
    * The unused string.
    */
-  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+  private static final String UNUSED = "unused"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = Expression.getCaption ( Location.class ) ;
+  private static final String CAPTION = Expression.getCaption ( Location.class );
 
 
   /**
@@ -39,13 +40,13 @@ public final class Location extends Value
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_LOCATION , 1 ,
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_LOCATION, 1,
         "\\mbox{\\color{" //$NON-NLS-1$
-            + LATEX_COLOR_EXPRESSION + "}{#1}}" , "name" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ 
-    return commands ;
+            + LATEX_COLOR_EXPRESSION + "}{#1}}", "name" ) ); //$NON-NLS-1$//$NON-NLS-2$ 
+    return commands;
   }
 
 
@@ -54,7 +55,7 @@ public final class Location extends Value
    * 
    * @see #getName()
    */
-  private String name ;
+  private String name;
 
 
   /**
@@ -65,7 +66,7 @@ public final class Location extends Value
    */
   public Location ( String pName )
   {
-    this.name = pName ;
+    this.name = pName;
   }
 
 
@@ -79,11 +80,11 @@ public final class Location extends Value
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Location ( String pName , int pParserStartOffset , int pParserEndOffset )
+  public Location ( String pName, int pParserStartOffset, int pParserEndOffset )
   {
-    this ( pName ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pName );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -92,10 +93,10 @@ public final class Location extends Value
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public Location clone ( )
+  @Override
+  public Location clone ()
   {
-    return new Location ( this.name ) ;
+    return new Location ( this.name );
   }
 
 
@@ -104,25 +105,25 @@ public final class Location extends Value
    * 
    * @see Expression#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof Location )
     {
-      Location other = ( Location ) pObject ;
-      return this.name.equals ( other.name ) ;
+      Location other = ( Location ) pObject;
+      return this.name.equals ( other.name );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -131,12 +132,12 @@ public final class Location extends Value
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -145,9 +146,9 @@ public final class Location extends Value
    * 
    * @return the name of the memory location.
    */
-  public String getName ( )
+  public String getName ()
   {
-    return this.name ;
+    return this.name;
   }
 
 
@@ -156,10 +157,10 @@ public final class Location extends Value
    * 
    * @see Expression#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.name.hashCode ( ) ;
+    return this.name.hashCode ();
   }
 
 
@@ -169,15 +170,15 @@ public final class Location extends Value
    * 
    * @see Expression#substitute(Identifier, Expression)
    */
-  @ Override
-  public Location substitute ( @ SuppressWarnings ( UNUSED )
-  Identifier pId , Expression pExpression )
+  @Override
+  public Location substitute ( @SuppressWarnings ( UNUSED )
+  Identifier pId, Expression pExpression )
   {
-    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    if ( pExpression.getIdentifierFreeNotOnlyVariable () )
     {
-      throw new NotOnlyFreeVariableException ( ) ;
+      throw new NotOnlyFreeVariableException ();
     }
-    return this ;
+    return this;
   }
 
 
@@ -186,16 +187,16 @@ public final class Location extends Value
    * 
    * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_LOCATION , LATEX_LOCATION , pIndent , this.toPrettyString ( )
-            .toString ( ) ) ;
+        PRIO_LOCATION, LATEX_LOCATION, pIndent, this.toPrettyString ()
+            .toString () );
     builder.addText ( "{" //$NON-NLS-1$
-        + this.name.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    return builder ;
+        + this.name.replaceAll ( "_", "\\\\_" ) + "}" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    return builder;
   }
 
 
@@ -204,16 +205,16 @@ public final class Location extends Value
    * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_LOCATION ) ;
-      this.prettyStringBuilder.addText ( this.name ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_LOCATION );
+      this.prettyStringBuilder.addText ( this.name );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

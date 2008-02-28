@@ -1,4 +1,4 @@
-package java_cup ;
+package java_cup;
 
 
 /**
@@ -11,6 +11,7 @@ package java_cup ;
  */
 public class action_production extends production
 {
+
   /**
    * Constructor.
    * 
@@ -23,37 +24,37 @@ public class action_production extends production
    *          intermediate action on the stack relative to top, -1 if no
    *          previous action
    */
-  public action_production ( production base , non_terminal lhs_sym ,
-      production_part rhs_parts[] , int rhs_len , String action_str ,
+  public action_production ( production base, non_terminal lhs_sym,
+      production_part rhs_parts[], int rhs_len, String action_str,
       int indexOfIntermediateResult ) throws internal_error
   {
-    super ( lhs_sym , rhs_parts , rhs_len , action_str ) ;
-    _base_production = base ;
-    this.indexOfIntermediateResult = indexOfIntermediateResult ;
+    super ( lhs_sym, rhs_parts, rhs_len, action_str );
+    _base_production = base;
+    this.indexOfIntermediateResult = indexOfIntermediateResult;
   }
 
 
-  private int indexOfIntermediateResult ;
+  private int indexOfIntermediateResult;
 
 
   /**
    * @return the index of the result of the previous intermediate action on the
    *         stack relative to top, -1 if no previous action
    */
-  public int getIndexOfIntermediateResult ( )
+  public int getIndexOfIntermediateResult ()
   {
-    return indexOfIntermediateResult ;
+    return indexOfIntermediateResult;
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** The production we were taken out of. */
-  protected production _base_production ;
+  protected production _base_production;
 
 
   /** The production we were taken out of. */
-  public production base_production ( )
+  public production base_production ()
   {
-    return _base_production ;
+    return _base_production;
   }
 }

@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.interfaces ;
+package de.unisiegen.tpml.core.interfaces;
 
 
-import de.unisiegen.tpml.core.expressions.Duplication ;
+import de.unisiegen.tpml.core.expressions.Duplication;
 
 
 /**
@@ -13,10 +13,11 @@ import de.unisiegen.tpml.core.expressions.Duplication ;
  */
 public interface SortedChildren
 {
+
   /**
    * Returns the sorted sub {@link ExpressionOrType}s.
    * 
    * @return the sorted sub {@link ExpressionOrType}s.
    */
-  public ExpressionOrType [ ] getSortedChildren ( ) ;
+  public ExpressionOrType [] getSortedChildren ();
 }

@@ -1,31 +1,32 @@
-package de.unisiegen.tpml.core.smallstep ;
+package de.unisiegen.tpml.core.smallstep;
 
 
-import org.apache.log4j.Logger ;
-import de.unisiegen.tpml.core.AbstractProofRuleSet ;
-import de.unisiegen.tpml.core.Messages ;
-import de.unisiegen.tpml.core.ProofGuessException ;
-import de.unisiegen.tpml.core.ProofNode ;
-import de.unisiegen.tpml.core.ProofRule ;
-import de.unisiegen.tpml.core.ProofRuleException ;
-import de.unisiegen.tpml.core.ProofStep ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofModel ;
-import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import org.apache.log4j.Logger;
+
+import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.ProofGuessException;
+import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofModel;
+import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
 
 /**
@@ -41,13 +42,14 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  */
 public final class SmallStepProofModel extends AbstractInterpreterProofModel
 {
+
   /**
    * The {@link Logger} for this class.
    * 
    * @see Logger
    */
   private static final Logger logger = Logger
-      .getLogger ( SmallStepProofModel.class ) ;
+      .getLogger ( SmallStepProofModel.class );
 
 
   /**
@@ -55,27 +57,27 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_NEW_NODE , 0 ,
-        "\\\\[10mm]" ) ) ; //$NON-NLS-1$
-    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_NEW_RULE , 0 ,
-        "\\\\" ) ) ; //$NON-NLS-1$
-    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_RULES_COMPLETED ,
-        0 , "&" ) ) ; //$NON-NLS-1$
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_NEW_NODE, 0,
+        "\\\\[10mm]" ) ); //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_NEW_RULE, 0,
+        "\\\\" ) ); //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_RULES_COMPLETED,
+        0, "&" ) ); //$NON-NLS-1$
     commands
         .add ( new DefaultLatexCommand (
-            LATEX_SMALL_STEP_PROOF_MODEL ,
-            1 ,
-            "\\begin{longtable}{p{3.5cm}@{}p{22cm}@{}}#1\\end{longtable}" , "model" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_ARROW , 2 ,
+            LATEX_SMALL_STEP_PROOF_MODEL,
+            1,
+            "\\begin{longtable}{p{3.5cm}@{}p{22cm}@{}}#1\\end{longtable}", "model" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_SMALL_STEP_ARROW, 2,
         "\\xrightarrow" + LATEX_LINE_BREAK_NEW_COMMAND + "[\\mbox{\\color{" //$NON-NLS-1$//$NON-NLS-2$
             + LATEX_COLOR_RULE + "}{\\scriptsize{#2}}}]" //$NON-NLS-1$
             + LATEX_LINE_BREAK_NEW_COMMAND + "{\\mbox{\\color{" //$NON-NLS-1$
-            + LATEX_COLOR_RULE + "}{\\scriptsize{#1}}}}" , "not axiom rules" , //$NON-NLS-1$ //$NON-NLS-2$
-        "axiom rules" ) ) ; //$NON-NLS-1$
-    return commands ;
+            + LATEX_COLOR_RULE + "}{\\scriptsize{#1}}}}", "not axiom rules", //$NON-NLS-1$ //$NON-NLS-2$
+        "axiom rules" ) ); //$NON-NLS-1$
+    return commands;
   }
 
 
@@ -84,22 +86,22 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static LatexInstructionList getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
     instructions.add ( new DefaultLatexInstruction (
         "\\newenvironment{smallsteprulearrow}" //$NON-NLS-1$
-            + "{\\begin{tabular}[t]{p{3.5cm}@{}}}{\\end{tabular}}" , //$NON-NLS-1$
-        "The environment of the small step rules with the arrow" ) ) ; //$NON-NLS-1$
+            + "{\\begin{tabular}[t]{p{3.5cm}@{}}}{\\end{tabular}}", //$NON-NLS-1$
+        "The environment of the small step rules with the arrow" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
         "\\newenvironment{smallsteprules}" //$NON-NLS-1$
-            + "{\\begin{tabular}{p{2.5cm}@{}}}{\\end{tabular}}" , //$NON-NLS-1$
-        "The environment of the small step rules" ) ) ; //$NON-NLS-1$
+            + "{\\begin{tabular}{p{2.5cm}@{}}}{\\end{tabular}}", //$NON-NLS-1$
+        "The environment of the small step rules" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
         "\\newenvironment{smallstepnode}" //$NON-NLS-1$
-            + "{\\begin{tabular}[b]{p{22cm}@{}}}{\\end{tabular}}" , //$NON-NLS-1$
-        "The environment of the small step nodes" ) ) ; //$NON-NLS-1$
-    return instructions ;
+            + "{\\begin{tabular}[b]{p{22cm}@{}}}{\\end{tabular}}", //$NON-NLS-1$
+        "The environment of the small step nodes" ) ); //$NON-NLS-1$
+    return instructions;
   }
 
 
@@ -108,13 +110,13 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.AMSMATH ) ;
-    packages.add ( LatexPackage.COLOR ) ;
-    packages.add ( LatexPackage.LONGTABLE ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.AMSMATH );
+    packages.add ( LatexPackage.COLOR );
+    packages.add ( LatexPackage.LONGTABLE );
+    return packages;
   }
 
 
@@ -129,12 +131,12 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * @see AbstractInterpreterProofModel#AbstractInterpreterProofModel(AbstractInterpreterProofNode,
    *      AbstractProofRuleSet)
    */
-  public SmallStepProofModel ( Expression expression ,
+  public SmallStepProofModel ( Expression expression,
       AbstractSmallStepProofRuleSet pRuleSet )
   {
-    super ( new DefaultSmallStepProofNode ( expression ) , pRuleSet ) ;
+    super ( new DefaultSmallStepProofNode ( expression ), pRuleSet );
     // set the "finished" state initially
-    setFinished ( expression.isException ( ) || expression.isValue ( ) ) ;
+    setFinished ( expression.isException () || expression.isValue () );
   }
 
 
@@ -143,13 +145,13 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @see de.unisiegen.tpml.core.AbstractProofModel#addUndoableTreeEdit(de.unisiegen.tpml.core.AbstractProofModel.UndoableTreeEdit)
    */
-  @ Override
+  @Override
   protected void addUndoableTreeEdit ( UndoableTreeEdit edit )
   {
     // perform the redo of the edit
-    edit.redo ( ) ;
+    edit.redo ();
     // add to the undo history
-    super.addUndoableTreeEdit ( edit ) ;
+    super.addUndoableTreeEdit ( edit );
   }
 
 
@@ -165,122 +167,124 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * @see #apply(ProofRule, ProofNode)
    * @see #remaining(ProofNode)
    */
-  private void apply ( DefaultSmallStepProofRule rule ,
+  private void apply ( DefaultSmallStepProofRule rule,
       final DefaultSmallStepProofNode node ) throws ProofRuleException
   {
     // evaluate the expression and determine the proof steps
     DefaultSmallStepProofContext context = new DefaultSmallStepProofContext (
-        node , this.ruleSet ) ;
-    final Expression expression = context.getExpression ( ) ;
-    ProofStep [ ] evaluatedSteps = context.getSteps ( ) ;
+        node, this.ruleSet );
+    final Expression expression = context.getExpression ();
+    ProofStep [] evaluatedSteps = context.getSteps ();
     // determine the completed steps for the node
-    final ProofStep [ ] completedSteps = node.getSteps ( ) ;
+    final ProofStep [] completedSteps = node.getSteps ();
     // check if the node is already completed
     if ( completedSteps.length == evaluatedSteps.length )
     {
       // check if the interpreter is stuck
       SmallStepProofRule lastRule = ( SmallStepProofRule ) evaluatedSteps [ evaluatedSteps.length - 1 ]
-          .getRule ( ) ;
-      if ( ! lastRule.isAxiom ( ) )
+          .getRule ();
+      if ( !lastRule.isAxiom () )
       {
         // the proof is stuck
-        throw new ProofRuleException ( node , rule ) ;
+        throw new ProofRuleException ( node, rule );
       }
       // an internal error in the upper layers
-      throw new IllegalStateException ( "Cannot prove an already proven node" ) ; //$NON-NLS-1$
+      throw new IllegalStateException ( "Cannot prove an already proven node" ); //$NON-NLS-1$
     }
     else if ( completedSteps.length > evaluatedSteps.length )
     {
       // this is a bug then
-      throw new IllegalStateException ( "completedSteps > evaluatedSteps" ) ; //$NON-NLS-1$
+      throw new IllegalStateException ( "completedSteps > evaluatedSteps" ); //$NON-NLS-1$
     }
     // verify the completed steps
-    int n ;
-    for ( n = 0 ; n < completedSteps.length ; ++ n )
+    int n;
+    for ( n = 0 ; n < completedSteps.length ; ++n )
     {
-      if ( ! completedSteps [ n ].getRule ( ).equals (
-          evaluatedSteps [ n ].getRule ( ) ) )
+      if ( !completedSteps [ n ].getRule ().equals (
+          evaluatedSteps [ n ].getRule () ) )
         throw new IllegalStateException (
-            "Completed steps don't match evaluated steps" ) ; //$NON-NLS-1$
+            "Completed steps don't match evaluated steps" ); //$NON-NLS-1$
     }
     // check if the rule is valid, accepting regular meta-rules for EXN rules
-    int m ;
-    for ( m = n ; m < evaluatedSteps.length ; ++ m )
+    int m;
+    for ( m = n ; m < evaluatedSteps.length ; ++m )
     {
-      if ( evaluatedSteps [ m ].getRule ( ).equals ( rule )
-          || evaluatedSteps [ m ].getRule ( ).equals ( rule.toExnRule ( ) ) )
-        break ;
+      if ( evaluatedSteps [ m ].getRule ().equals ( rule )
+          || evaluatedSteps [ m ].getRule ().equals ( rule.toExnRule () ) )
+        break;
     }
     // check if rule is invalid
     if ( m >= evaluatedSteps.length )
     {
-      throw new ProofRuleException ( node , rule ) ;
+      throw new ProofRuleException ( node, rule );
     }
     // determine the new step(s) for the node
-    final ProofStep [ ] newSteps = new ProofStep [ m + 1 ] ;
-    System.arraycopy ( evaluatedSteps , 0 , newSteps , 0 , m + 1 ) ;
+    final ProofStep [] newSteps = new ProofStep [ m + 1 ];
+    System.arraycopy ( evaluatedSteps, 0, newSteps, 0, m + 1 );
     // check if the node is finished (the last
     // step is an application of an axiom rule)
-    if ( ( ( SmallStepProofRule ) newSteps [ m ].getRule ( ) ).isAxiom ( ) )
+    if ( ( ( SmallStepProofRule ) newSteps [ m ].getRule () ).isAxiom () )
     {
       // create the child node for the node
       final DefaultSmallStepProofNode child = new DefaultSmallStepProofNode (
-          expression , context.getStore ( ) ) ;
+          expression, context.getStore () );
       // add the undoable edit
-      addUndoableTreeEdit ( new UndoableTreeEdit ( )
+      addUndoableTreeEdit ( new UndoableTreeEdit ()
       {
-        @ SuppressWarnings ( "synthetic-access" )
-        public void redo ( )
+
+        @SuppressWarnings ( "synthetic-access" )
+        public void redo ()
         {
           // update the "finished" state
-          setFinished ( expression.isException ( ) || expression.isValue ( ) ) ;
+          setFinished ( expression.isException () || expression.isValue () );
           // apply the new steps and add the child
-          node.setSteps ( newSteps ) ;
-          node.add ( child ) ;
-          nodesWereInserted ( node , new int [ ]
-          { node.getIndex ( child ) } ) ;
-          nodeChanged ( node ) ;
+          node.setSteps ( newSteps );
+          node.add ( child );
+          nodesWereInserted ( node, new int []
+          { node.getIndex ( child ) } );
+          nodeChanged ( node );
         }
 
 
-        @ SuppressWarnings ( "synthetic-access" )
-        public void undo ( )
+        @SuppressWarnings ( "synthetic-access" )
+        public void undo ()
         {
           // update the "finished" state
-          setFinished ( false ) ;
+          setFinished ( false );
           // remove the child and revert the steps
-          int [ ] indices =
-          { node.getIndex ( child ) } ;
-          node.remove ( child ) ;
-          nodesWereRemoved ( node , indices , new Object [ ]
-          { child } ) ;
-          node.setSteps ( completedSteps ) ;
-          nodeChanged ( node ) ;
+          int [] indices =
+          { node.getIndex ( child ) };
+          node.remove ( child );
+          nodesWereRemoved ( node, indices, new Object []
+          { child } );
+          node.setSteps ( completedSteps );
+          nodeChanged ( node );
         }
-      } ) ;
+      } );
     }
     else
     {
       // add the undoable edit
-      addUndoableTreeEdit ( new UndoableTreeEdit ( )
+      addUndoableTreeEdit ( new UndoableTreeEdit ()
       {
-        @ SuppressWarnings ( "synthetic-access" )
-        public void redo ( )
+
+        @SuppressWarnings ( "synthetic-access" )
+        public void redo ()
         {
           // apply the new steps
-          node.setSteps ( newSteps ) ;
-          nodeChanged ( node ) ;
+          node.setSteps ( newSteps );
+          nodeChanged ( node );
         }
 
 
-        @ SuppressWarnings ( "synthetic-access" )
-        public void undo ( )
+        @SuppressWarnings ( "synthetic-access" )
+        public void undo ()
         {
           // revert to the previous steps
-          node.setSteps ( completedSteps ) ;
-          nodeChanged ( node ) ;
+          node.setSteps ( completedSteps );
+          nodeChanged ( node );
         }
-      } ) ;
+      } );
     }
   }
 
@@ -296,11 +300,11 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    *           the <code>node</code>.
    * @see #apply(DefaultSmallStepProofRule, DefaultSmallStepProofNode)
    */
-  private void apply ( ProofRule rule , ProofNode node )
+  private void apply ( ProofRule rule, ProofNode node )
       throws ProofRuleException
   {
-    apply ( ( DefaultSmallStepProofRule ) rule ,
-        ( DefaultSmallStepProofNode ) node ) ;
+    apply ( ( DefaultSmallStepProofRule ) rule,
+        ( DefaultSmallStepProofNode ) node );
   }
 
 
@@ -309,12 +313,12 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @see LatexPrintable#getLatexCommands()
    */
-  public LatexCommandList getLatexCommands ( )
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    commands.add ( getLatexCommandsInternal ( this.root ) ) ;
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
+    commands.add ( getLatexCommandsInternal ( this.root ) );
+    return commands;
   }
 
 
@@ -328,14 +332,14 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    */
   private LatexCommandList getLatexCommandsInternal ( ProofNode pNode )
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( pNode ) ;
-    commands.add ( pNode.getRules ( ) ) ;
-    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( pNode );
+    commands.add ( pNode.getRules () );
+    for ( int i = 0 ; i < pNode.getChildCount () ; i++ )
     {
-      commands.add ( getLatexCommandsInternal ( pNode.getChildAt ( i ) ) ) ;
+      commands.add ( getLatexCommandsInternal ( pNode.getChildAt ( i ) ) );
     }
-    return commands ;
+    return commands;
   }
 
 
@@ -344,12 +348,12 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @see LatexPrintable#getLatexInstructions()
    */
-  public LatexInstructionList getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( getLatexInstructionsStatic ( ) ) ;
-    instructions.add ( getLatexInstructionsInternal ( this.root ) ) ;
-    return instructions ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
+    instructions.add ( getLatexInstructionsInternal ( this.root ) );
+    return instructions;
   }
 
 
@@ -363,15 +367,15 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    */
   private LatexInstructionList getLatexInstructionsInternal ( ProofNode pNode )
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( pNode ) ;
-    instructions.add ( pNode.getRules ( ) ) ;
-    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( pNode );
+    instructions.add ( pNode.getRules () );
+    for ( int i = 0 ; i < pNode.getChildCount () ; i++ )
     {
       instructions
-          .add ( getLatexInstructionsInternal ( pNode.getChildAt ( i ) ) ) ;
+          .add ( getLatexInstructionsInternal ( pNode.getChildAt ( i ) ) );
     }
-    return instructions ;
+    return instructions;
   }
 
 
@@ -380,12 +384,12 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @see LatexPrintable#getLatexPackages()
    */
-  public LatexPackageList getLatexPackages ( )
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
-    packages.add ( getLatexPackagesInternal ( this.root ) ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( getLatexPackagesStatic () );
+    packages.add ( getLatexPackagesInternal ( this.root ) );
+    return packages;
   }
 
 
@@ -399,14 +403,14 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    */
   private LatexPackageList getLatexPackagesInternal ( ProofNode pNode )
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( pNode.getLatexPackages ( ) ) ;
-    packages.add ( pNode.getRules ( ) ) ;
-    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( pNode.getLatexPackages () );
+    packages.add ( pNode.getRules () );
+    for ( int i = 0 ; i < pNode.getChildCount () ; i++ )
     {
-      packages.add ( getLatexPackagesInternal ( pNode.getChildAt ( i ) ) ) ;
+      packages.add ( getLatexPackagesInternal ( pNode.getChildAt ( i ) ) );
     }
-    return packages ;
+    return packages;
   }
 
 
@@ -415,36 +419,36 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
    */
-  @ Override
+  @Override
   public void guess ( ProofNode node ) throws ProofGuessException
   {
     // guess the remaining steps for the node
-    ProofStep [ ] remainingSteps = remaining ( node ) ;
+    ProofStep [] remainingSteps = remaining ( node );
     // check if the node is already completed
     if ( remainingSteps.length == 0 )
     {
       // check if we are already completed
-      if ( node.isProven ( ) )
+      if ( node.isProven () )
       {
         // the node is already proven, programming error
-        throw new IllegalStateException ( "Cannot prove an already proven node" ) ; //$NON-NLS-1$
+        throw new IllegalStateException ( "Cannot prove an already proven node" ); //$NON-NLS-1$
       }
       // the evaluation got stuck
       throw new ProofGuessException ( Messages
-          .getString ( "InterpreterModel.0" ) , node ) ; //$NON-NLS-1$
+          .getString ( "InterpreterModel.0" ), node ); //$NON-NLS-1$
     }
     // try to prove using the guessed rule
     try
     {
       // apply the last rule of the remaining steps to the node
-      apply ( remainingSteps [ remainingSteps.length - 1 ].getRule ( ) , node ) ;
+      apply ( remainingSteps [ remainingSteps.length - 1 ].getRule (), node );
       // remember that the user cheated
-      setCheating ( true ) ;
+      setCheating ( true );
     }
     catch ( ProofRuleException e )
     {
       // failed to guess
-      throw new ProofGuessException ( node , e ) ;
+      throw new ProofGuessException ( node, e );
     }
   }
 
@@ -455,37 +459,37 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule,
    *      de.unisiegen.tpml.core.ProofNode)
    */
-  @ Override
-  public void prove ( ProofRule rule , ProofNode node )
+  @Override
+  public void prove ( ProofRule rule, ProofNode node )
       throws ProofRuleException
   {
     if ( node == null )
     {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
     }
     if ( rule == null )
     {
-      throw new NullPointerException ( "rule is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "rule is null" ); //$NON-NLS-1$
     }
-    if ( ! this.root.isNodeRelated ( node ) )
+    if ( !this.root.isNodeRelated ( node ) )
     {
-      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
     }
-    if ( ! this.ruleSet.contains ( rule ) )
+    if ( !this.ruleSet.contains ( rule ) )
     {
-      throw new IllegalArgumentException ( "The rule is invalid for the model" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The rule is invalid for the model" ); //$NON-NLS-1$
     }
     // apply the rule to the specified node
     try
     {
-      apply ( rule , node ) ;
+      apply ( rule, node );
     }
     catch ( RuntimeException e )
     {
       logger
           .error (
-              "An internal error occurred while proving " + node + " using (" + rule + ")" , e ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-      throw e ;
+              "An internal error occurred while proving " + node + " using (" + rule + ")", e ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+      throw e;
     }
   }
 
@@ -505,28 +509,28 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    *           the model.
    * @throws NullPointerException if <code>node</code> is <code>null</code>.
    */
-  public ProofStep [ ] remaining ( ProofNode node )
+  public ProofStep [] remaining ( ProofNode node )
   {
     if ( node == null )
     {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
     }
-    if ( ! this.root.isNodeRelated ( node ) )
+    if ( !this.root.isNodeRelated ( node ) )
     {
-      throw new IllegalArgumentException ( "The node is invalid for the model" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
     }
     // evaluate the next step for the node
     DefaultSmallStepProofContext context = new DefaultSmallStepProofContext (
-        ( SmallStepProofNode ) node , this.ruleSet ) ;
+        ( SmallStepProofNode ) node, this.ruleSet );
     // determine the completed/evaluated steps
-    ProofStep [ ] completedSteps = ( ( SmallStepProofNode ) node ).getSteps ( ) ;
-    ProofStep [ ] evaluatedSteps = context.getSteps ( ) ;
+    ProofStep [] completedSteps = ( ( SmallStepProofNode ) node ).getSteps ();
+    ProofStep [] evaluatedSteps = context.getSteps ();
     // generate the remaining steps
-    ProofStep [ ] remainingSteps = new ProofStep [ evaluatedSteps.length
-        - completedSteps.length ] ;
-    System.arraycopy ( evaluatedSteps , completedSteps.length , remainingSteps ,
-        0 , remainingSteps.length ) ;
-    return remainingSteps ;
+    ProofStep [] remainingSteps = new ProofStep [ evaluatedSteps.length
+        - completedSteps.length ];
+    System.arraycopy ( evaluatedSteps, completedSteps.length, remainingSteps,
+        0, remainingSteps.length );
+    return remainingSteps;
   }
 
 
@@ -535,10 +539,10 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @see de.unisiegen.tpml.core.ProofModel#setOverlap(int)
    */
-  public void setOverlap ( @ SuppressWarnings ( "unused" )
+  public void setOverlap ( @SuppressWarnings ( "unused" )
   int pOverlap )
   {
-    throw new UnsupportedOperationException ( ) ;
+    throw new UnsupportedOperationException ();
   }
 
 
@@ -547,10 +551,10 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @see de.unisiegen.tpml.core.ProofModel#setPages(int)
    */
-  public void setPages ( @ SuppressWarnings ( "unused" )
+  public void setPages ( @SuppressWarnings ( "unused" )
   int pPages )
   {
-    throw new UnsupportedOperationException ( ) ;
+    throw new UnsupportedOperationException ();
   }
 
 
@@ -559,10 +563,10 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public final LatexString toLatexString ( )
+  public final LatexString toLatexString ()
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -572,39 +576,39 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_SMALL_STEP_PROOF_MODEL , pIndent , this.toPrettyString ( )
-            .toString ( ) ) ;
-    builder.addBuilderBegin ( ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addComment ( "no small step rules in the first node" ) ; //$NON-NLS-1$
-    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SMALL_STEP_RULES_COMPLETED ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
+        LATEX_SMALL_STEP_PROOF_MODEL, pIndent, this.toPrettyString ()
+            .toString () );
+    builder.addBuilderBegin ();
+    builder.addSourceCodeBreak ( 0 );
+    builder.addComment ( "no small step rules in the first node" ); //$NON-NLS-1$
+    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SMALL_STEP_RULES_COMPLETED );
+    builder.addSourceCodeBreak ( 0 );
     // small steps
-    builder.addText ( "\\begin{smallstepnode}" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "$" ) ; //$NON-NLS-1$
+    builder.addText ( "\\begin{smallstepnode}" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "$" ); //$NON-NLS-1$
     builder.addBuilderWithoutBrackets ( this.root.toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "$" ) ; //$NON-NLS-1$
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addText ( "\\end{smallstepnode}" ) ; //$NON-NLS-1$
-    if ( this.root.getChildCount ( ) > 0 )
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "$" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "\\end{smallstepnode}" ); //$NON-NLS-1$
+    if ( this.root.getChildCount () > 0 )
     {
-      builder.addSourceCodeBreak ( 0 ) ;
-      builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SMALL_STEP_NEW_NODE ) ;
-      builder.addSourceCodeBreak ( 0 ) ;
+      builder.addSourceCodeBreak ( 0 );
+      builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SMALL_STEP_NEW_NODE );
+      builder.addSourceCodeBreak ( 0 );
     }
-    for ( int i = 0 ; i < this.root.getChildCount ( ) ; i ++ )
+    for ( int i = 0 ; i < this.root.getChildCount () ; i++ )
     {
-      toLatexStringBuilderInternal ( pLatexStringBuilderFactory , builder ,
-          this.root , this.root.getChildAt ( i ) , pIndent ) ;
+      toLatexStringBuilderInternal ( pLatexStringBuilderFactory, builder,
+          this.root, this.root.getChildAt ( i ), pIndent );
     }
-    builder.addBuilderEnd ( ) ;
-    return builder ;
+    builder.addBuilderEnd ();
+    return builder;
   }
 
 
@@ -620,147 +624,147 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * @param pIndent The indent of this object.
    */
   public final void toLatexStringBuilderInternal (
-      LatexStringBuilderFactory pLatexStringBuilderFactory ,
-      LatexStringBuilder pLatexStringBuilder , ProofNode pParentNode ,
-      ProofNode pCurrentNode , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory,
+      LatexStringBuilder pLatexStringBuilder, ProofNode pParentNode,
+      ProofNode pCurrentNode, int pIndent )
   {
-    ProofRule [ ] rules = pParentNode.getRules ( ) ;
-    pLatexStringBuilder.addText ( "\\begin{smallsteprulearrow}" ) ; //$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    ProofRule [] rules = pParentNode.getRules ();
+    pLatexStringBuilder.addText ( "\\begin{smallsteprulearrow}" ); //$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
     pLatexStringBuilder
-        .addText ( LATEX_PREFIX_COMMAND + LATEX_SMALL_STEP_ARROW ) ;
+        .addText ( LATEX_PREFIX_COMMAND + LATEX_SMALL_STEP_ARROW );
     // not axiom rules
-    pLatexStringBuilder.addBuilderBegin ( ) ;
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "\\begin{smallsteprules}" ) ; //$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-    int countNotAxiomRules = 0 ;
-    for ( int i = 0 ; i < rules.length ; i ++ )
+    pLatexStringBuilder.addBuilderBegin ();
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "\\begin{smallsteprules}" ); //$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+    int countNotAxiomRules = 0;
+    for ( int i = 0 ; i < rules.length ; i++ )
     {
-      DefaultSmallStepProofRule rule = ( DefaultSmallStepProofRule ) rules [ i ] ;
-      if ( ! rule.isAxiom ( ) )
+      DefaultSmallStepProofRule rule = ( DefaultSmallStepProofRule ) rules [ i ];
+      if ( !rule.isAxiom () )
       {
-        int sameRule = 1 ;
-        for ( int j = i + 1 ; j < rules.length ; j ++ )
+        int sameRule = 1;
+        for ( int j = i + 1 ; j < rules.length ; j++ )
         {
-          if ( rules [ j ].getName ( ).equals ( rule.getName ( ) ) )
+          if ( rules [ j ].getName ().equals ( rule.getName () ) )
           {
-            sameRule ++ ;
-            i = j ;
+            sameRule++ ;
+            i = j;
           }
           else
           {
-            break ;
+            break;
           }
         }
         if ( countNotAxiomRules > 0 )
         {
-          pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-          pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+          pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+          pLatexStringBuilder.addSourceCodeBreak ( 0 );
           pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-              + LATEX_SMALL_STEP_NEW_RULE ) ;
-          pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-          pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
+              + LATEX_SMALL_STEP_NEW_RULE );
+          pLatexStringBuilder.addSourceCodeBreak ( 0 );
+          pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
         }
         if ( sameRule > 1 )
         {
           pLatexStringBuilder.addBuilder ( rule.toLatexStringBuilder (
-              pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 3 ) , 0 ) ;
-          pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-          pLatexStringBuilder.addText ( "^" + sameRule ) ; //$NON-NLS-1$
-          pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+              pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 3 ), 0 );
+          pLatexStringBuilder.addSourceCodeBreak ( 0 );
+          pLatexStringBuilder.addText ( "^" + sameRule ); //$NON-NLS-1$
+          pLatexStringBuilder.addSourceCodeBreak ( 0 );
         }
         else
         {
           pLatexStringBuilder.addBuilder ( rule.toLatexStringBuilder (
-              pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 3 ) , 0 ) ;
-          pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+              pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 3 ), 0 );
+          pLatexStringBuilder.addSourceCodeBreak ( 0 );
         }
-        countNotAxiomRules ++ ;
+        countNotAxiomRules++ ;
       }
     }
     if ( countNotAxiomRules == 0 )
     {
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
     }
-    pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "\\end{smallsteprules}" ) ;//$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-    pLatexStringBuilder.addBuilderEnd ( ) ;
+    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "\\end{smallsteprules}" );//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+    pLatexStringBuilder.addBuilderEnd ();
     // axiom rules
-    pLatexStringBuilder.addBuilderBegin ( ) ;
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "\\begin{smallsteprules}" ) ;//$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-    int countAxiomRules = 0 ;
-    for ( int i = 0 ; i < rules.length ; i ++ )
+    pLatexStringBuilder.addBuilderBegin ();
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "\\begin{smallsteprules}" );//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+    int countAxiomRules = 0;
+    for ( int i = 0 ; i < rules.length ; i++ )
     {
-      DefaultSmallStepProofRule rule = ( DefaultSmallStepProofRule ) rules [ i ] ;
-      if ( rule.isAxiom ( ) )
+      DefaultSmallStepProofRule rule = ( DefaultSmallStepProofRule ) rules [ i ];
+      if ( rule.isAxiom () )
       {
         if ( countAxiomRules > 0 )
         {
-          pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-          pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+          pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+          pLatexStringBuilder.addSourceCodeBreak ( 0 );
           pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-              + LATEX_SMALL_STEP_NEW_RULE ) ;
-          pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-          pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
+              + LATEX_SMALL_STEP_NEW_RULE );
+          pLatexStringBuilder.addSourceCodeBreak ( 0 );
+          pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
         }
         pLatexStringBuilder.addBuilder ( rule.toLatexStringBuilder (
-            pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 3 ) , 0 ) ;
-        pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-        countAxiomRules ++ ;
+            pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 3 ), 0 );
+        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+        countAxiomRules++ ;
       }
     }
     if ( countAxiomRules == 0 )
     {
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
     }
-    pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "\\end{smallsteprules}" ) ;//$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-    pLatexStringBuilder.addBuilderEnd ( ) ;
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "\\end{smallsteprulearrow}" ) ;//$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "\\end{smallsteprules}" );//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+    pLatexStringBuilder.addBuilderEnd ();
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "\\end{smallsteprulearrow}" );//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
     pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-        + LATEX_SMALL_STEP_RULES_COMPLETED ) ;
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+        + LATEX_SMALL_STEP_RULES_COMPLETED );
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
     // small steps
-    pLatexStringBuilder.addText ( "\\begin{smallstepnode}" ) ;//$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
+    pLatexStringBuilder.addText ( "\\begin{smallstepnode}" );//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
     pLatexStringBuilder.addBuilderWithoutBrackets ( pCurrentNode
-        .toLatexStringBuilder ( pLatexStringBuilderFactory , pIndent
-            + LATEX_INDENT ) , 0 ) ;
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "$" ) ; //$NON-NLS-1$
-    pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-    pLatexStringBuilder.addText ( "\\end{smallstepnode}" ) ;//$NON-NLS-1$
-    for ( int i = 0 ; i < pCurrentNode.getChildCount ( ) ; i ++ )
+        .toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent
+            + LATEX_INDENT ), 0 );
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "\\end{smallstepnode}" );//$NON-NLS-1$
+    for ( int i = 0 ; i < pCurrentNode.getChildCount () ; i++ )
     {
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
       pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-          + LATEX_SMALL_STEP_NEW_NODE ) ;
-      pLatexStringBuilder.addSourceCodeBreak ( 0 ) ;
-      toLatexStringBuilderInternal ( pLatexStringBuilderFactory ,
-          pLatexStringBuilder , pCurrentNode , pCurrentNode.getChildAt ( i ) ,
-          pIndent ) ;
+          + LATEX_SMALL_STEP_NEW_NODE );
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      toLatexStringBuilderInternal ( pLatexStringBuilderFactory,
+          pLatexStringBuilder, pCurrentNode, pCurrentNode.getChildAt ( i ),
+          pIndent );
     }
   }
 
@@ -770,10 +774,10 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ( )
+  public final PrettyString toPrettyString ()
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -786,12 +790,12 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , 0 ) ;
+        this, 0 );
     builder.addBuilder ( this.root
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    builder.addText ( PRETTY_LINE_BREAK ) ;
-    builder.addText ( PRETTY_CONTINUATION ) ;
-    return builder ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+    builder.addText ( PRETTY_LINE_BREAK );
+    builder.addText ( PRETTY_CONTINUATION );
+    return builder;
   }
 
 
@@ -803,9 +807,9 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    * @see #toPrettyString()
    * @see Object#toString()
    */
-  @ Override
-  public final String toString ( )
+  @Override
+  public final String toString ()
   {
-    return toPrettyString ( ).toString ( ) ;
+    return toPrettyString ().toString ();
   }
 }

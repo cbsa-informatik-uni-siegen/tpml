@@ -1,10 +1,11 @@
-package de.unisiegen.tpml.core.util ;
+package de.unisiegen.tpml.core.util;
 
 
-import java.util.Iterator ;
-import java.util.NoSuchElementException ;
-import org.w3c.dom.Node ;
-import org.w3c.dom.NodeList ;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 
 /**
@@ -15,10 +16,10 @@ import org.w3c.dom.NodeList ;
  * following code fragment
  * 
  * <pre>
- * NodeList childNodes = parent.getChildNodes ( ) ;
- * for ( int i = 0 ; i &lt; childNodes ; ++ i )
+ * NodeList childNodes = parent.getChildNodes ();
+ * for ( int i = 0 ; i &lt; childNodes ; ++i )
  * {
- *   Node node = childNodes.item ( i ) ;
+ *   Node node = childNodes.item ( i );
  *   // process the node...
  * }
  * </pre>
@@ -39,8 +40,9 @@ import org.w3c.dom.NodeList ;
  * @see org.w3c.dom.Node
  * @see org.w3c.dom.NodeList
  */
-public final class IterableNodeList implements Iterable < Node > , NodeList
+public final class IterableNodeList implements Iterable < Node >, NodeList
 {
+
   /**
    * Allocates a new <code>IterableNodeList</code>, that decorates the
    * specified <code>NodeList</code> and provides an implementation of the
@@ -53,7 +55,7 @@ public final class IterableNodeList implements Iterable < Node > , NodeList
    */
   public IterableNodeList ( NodeList pDecorated )
   {
-    this.decorated = pDecorated ;
+    this.decorated = pDecorated;
   }
 
 
@@ -68,7 +70,7 @@ public final class IterableNodeList implements Iterable < Node > , NodeList
    */
   public IterableNodeList ( Node parent )
   {
-    this ( parent.getChildNodes ( ) ) ;
+    this ( parent.getChildNodes () );
   }
 
 
@@ -79,10 +81,10 @@ public final class IterableNodeList implements Iterable < Node > , NodeList
    * @return an iterator for the decorated <code>NodeList</code>.
    * @see java.lang.Iterable#iterator()
    */
-  @ SuppressWarnings ( "synthetic-access" )
-  public Iterator < Node > iterator ( )
+  @SuppressWarnings ( "synthetic-access" )
+  public Iterator < Node > iterator ()
   {
-    return new NodeListIterator ( ) ;
+    return new NodeListIterator ();
   }
 
 
@@ -97,7 +99,7 @@ public final class IterableNodeList implements Iterable < Node > , NodeList
    */
   public Node item ( int index )
   {
-    return this.decorated.item ( index ) ;
+    return this.decorated.item ( index );
   }
 
 
@@ -107,9 +109,9 @@ public final class IterableNodeList implements Iterable < Node > , NodeList
    * @return the number of <code>Node</code>s in the list.
    * @see org.w3c.dom.NodeList#getLength()
    */
-  public int getLength ( )
+  public int getLength ()
   {
-    return this.decorated.getLength ( ) ;
+    return this.decorated.getLength ();
   }
 
 
@@ -117,7 +119,7 @@ public final class IterableNodeList implements Iterable < Node > , NodeList
    * The {@link NodeList}.
    */
   // member attributes
-  private NodeList decorated ;
+  private NodeList decorated;
 
 
   /**
@@ -128,14 +130,15 @@ public final class IterableNodeList implements Iterable < Node > , NodeList
   // iterator implementation
   private class NodeListIterator implements Iterator < Node >
   {
+
     /**
      * {@inheritDoc}
      * 
      * @see java.util.Iterator#hasNext()
      */
-    public boolean hasNext ( )
+    public boolean hasNext ()
     {
-      return ( this.index < getLength ( ) - 1 ) ;
+      return ( this.index < getLength () - 1 );
     }
 
 
@@ -144,15 +147,16 @@ public final class IterableNodeList implements Iterable < Node > , NodeList
      * 
      * @see java.util.Iterator#next()
      */
-    public Node next ( )
+    public Node next ()
     {
       // advance to the next item
-      this.index += 1 ;
+      this.index += 1;
       // determine the node for that index
-      Node node = item ( this.index ) ;
-      if ( node != null ) return node ;
+      Node node = item ( this.index );
+      if ( node != null )
+        return node;
       // the index is invalid
-      throw new NoSuchElementException ( ) ;
+      throw new NoSuchElementException ();
     }
 
 
@@ -161,15 +165,15 @@ public final class IterableNodeList implements Iterable < Node > , NodeList
      * 
      * @see java.util.Iterator#remove()
      */
-    public void remove ( )
+    public void remove ()
     {
-      throw new UnsupportedOperationException ( ) ;
+      throw new UnsupportedOperationException ();
     }
 
 
     /**
      * The index of this iterator.
      */
-    private int index = - 1 ;
+    private int index = -1;
   }
 }

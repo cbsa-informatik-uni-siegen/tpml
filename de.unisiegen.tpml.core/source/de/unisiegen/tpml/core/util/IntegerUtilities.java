@@ -1,8 +1,8 @@
-package de.unisiegen.tpml.core.util ;
+package de.unisiegen.tpml.core.util;
 
 
-import java.util.Collection ;
-import java.util.Iterator ;
+import java.util.Collection;
+import java.util.Iterator;
 
 
 /**
@@ -15,6 +15,7 @@ import java.util.Iterator ;
  */
 public final class IntegerUtilities
 {
+
   /**
    * Transforms a <code>Collection</code> of <code>Integer</code> instances
    * to a simple <code>int</code> array.
@@ -23,16 +24,17 @@ public final class IntegerUtilities
    * @return an <code>int</code> array with the values from the specified
    *         <code>collection</code>.
    */
-  public static int [ ] toArray ( Collection < Integer > collection )
+  public static int [] toArray ( Collection < Integer > collection )
   {
     // check if we have an empty collection here
-    if ( collection.isEmpty ( ) ) return EMPTY_ARRAY ;
+    if ( collection.isEmpty () )
+      return EMPTY_ARRAY;
     // transform the collection into an array
-    int [ ] array = new int [ collection.size ( ) ] ;
-    Iterator < Integer > iterator = collection.iterator ( ) ;
-    for ( int n = 0 ; iterator.hasNext ( ) ; ++ n )
-      array [ n ] = iterator.next ( ).intValue ( ) ;
-    return array ;
+    int [] array = new int [ collection.size () ];
+    Iterator < Integer > iterator = collection.iterator ();
+    for ( int n = 0 ; iterator.hasNext () ; ++n )
+      array [ n ] = iterator.next ().intValue ();
+    return array;
   }
 
 
@@ -41,5 +43,5 @@ public final class IntegerUtilities
    * allocating empty integer arrays whenever one needs to present an empty
    * integer array.
    */
-  public static final int [ ] EMPTY_ARRAY = new int [ 0 ] ;
+  public static final int [] EMPTY_ARRAY = new int [ 0 ];
 }

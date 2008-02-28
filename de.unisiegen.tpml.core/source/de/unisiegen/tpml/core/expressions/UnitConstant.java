@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -13,25 +13,26 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class UnitConstant extends Constant
 {
+
   /**
    * The keyword <code>()</code>.
    */
-  private static final String UNIT = "()" ; //$NON-NLS-1$
+  private static final String UNIT = "()"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( UnitConstant.class ) ;
+      .getCaption ( UnitConstant.class );
 
 
   /**
    * Allocates a new <code>UnitConstant</code>.
    */
-  public UnitConstant ( )
+  public UnitConstant ()
   {
-    super ( UNIT ) ;
+    super ( UNIT );
   }
 
 
@@ -43,11 +44,11 @@ public final class UnitConstant extends Constant
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public UnitConstant ( int pParserStartOffset , int pParserEndOffset )
+  public UnitConstant ( int pParserStartOffset, int pParserEndOffset )
   {
-    this ( ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ();
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -56,19 +57,19 @@ public final class UnitConstant extends Constant
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public UnitConstant clone ( )
+  @Override
+  public UnitConstant clone ()
   {
-    return new UnitConstant ( ) ;
+    return new UnitConstant ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

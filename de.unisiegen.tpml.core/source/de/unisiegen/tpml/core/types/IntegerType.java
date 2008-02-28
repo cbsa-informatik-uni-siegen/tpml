@@ -1,10 +1,10 @@
-package de.unisiegen.tpml.core.types ;
+package de.unisiegen.tpml.core.types;
 
 
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
 
 
 /**
@@ -18,16 +18,17 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
  */
 public final class IntegerType extends PrimitiveType
 {
+
   /**
    * The keyword <code>int</code>.
    */
-  private static final String INT = "int" ; //$NON-NLS-1$
+  private static final String INT = "int"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = Type.getCaption ( IntegerType.class ) ;
+  private static final String CAPTION = Type.getCaption ( IntegerType.class );
 
 
   /**
@@ -35,23 +36,23 @@ public final class IntegerType extends PrimitiveType
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_INT , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{int}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_INTEGER_TYPE , 0 ,
-        "\\" + LATEX_KEY_INT ) ) ; //$NON-NLS-1$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_INT, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_TYPE + "}{int}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_INTEGER_TYPE, 0,
+        "\\" + LATEX_KEY_INT ) ); //$NON-NLS-1$
+    return commands;
   }
 
 
   /**
    * Allocates a new <code>IntegerType</code> instance.
    */
-  public IntegerType ( )
+  public IntegerType ()
   {
-    super ( INT ) ;
+    super ( INT );
   }
 
 
@@ -63,11 +64,11 @@ public final class IntegerType extends PrimitiveType
    * @param pParserEndOffset The end offset of this {@link Type} in the source
    *          code.
    */
-  public IntegerType ( int pParserStartOffset , int pParserEndOffset )
+  public IntegerType ( int pParserStartOffset, int pParserEndOffset )
   {
-    this ( ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ();
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -76,20 +77,20 @@ public final class IntegerType extends PrimitiveType
    * 
    * @see Type#clone()
    */
-  @ Override
-  public IntegerType clone ( )
+  @Override
+  public IntegerType clone ()
   {
-    return new IntegerType ( ) ;
+    return new IntegerType ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -98,12 +99,12 @@ public final class IntegerType extends PrimitiveType
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -112,13 +113,13 @@ public final class IntegerType extends PrimitiveType
    * 
    * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_PRIMITIVE , LATEX_INTEGER_TYPE , pIndent , this.toPrettyString ( )
-            .toString ( ) ) ;
-    return builder ;
+        PRIO_PRIMITIVE, LATEX_INTEGER_TYPE, pIndent, this.toPrettyString ()
+            .toString () );
+    return builder;
   }
 }

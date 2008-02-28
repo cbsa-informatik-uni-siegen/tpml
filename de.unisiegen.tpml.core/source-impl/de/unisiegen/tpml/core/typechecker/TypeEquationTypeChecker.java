@@ -1,21 +1,21 @@
-package de.unisiegen.tpml.core.typechecker ;
+package de.unisiegen.tpml.core.typechecker;
 
 
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.types.MonoType;
 
 
 /**
@@ -26,21 +26,22 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @version $Rev:838 $
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker
  */
-public final class TypeEquationTypeChecker implements PrettyPrintable ,
+public final class TypeEquationTypeChecker implements PrettyPrintable,
     LatexPrintable
 {
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_EQUATION_TYPE_CHECKER ,
-        2 , "#1\\ \\color{" + LATEX_COLOR_NONE + "}{=}\\ #2" , "tau1" , //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
-        "tau2" ) ) ; //$NON-NLS-1$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_EQUATION_TYPE_CHECKER,
+        2, "#1\\ \\color{" + LATEX_COLOR_NONE + "}{=}\\ #2", "tau1", //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+        "tau2" ) ); //$NON-NLS-1$
+    return commands;
   }
 
 
@@ -49,13 +50,13 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static LatexInstructionList getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
-    return instructions ;
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}", //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ); //$NON-NLS-1$
+    return instructions;
   }
 
 
@@ -64,11 +65,11 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.COLOR ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.COLOR );
+    return packages;
   }
 
 
@@ -77,7 +78,7 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * 
    * @see #getLeft()
    */
-  private MonoType left ;
+  private MonoType left;
 
 
   /**
@@ -85,13 +86,13 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * 
    * @see #getRight()
    */
-  private MonoType right ;
+  private MonoType right;
 
 
   /**
    * The {@link TypeEquationTypeChecker}s which were unified before.
    */
-  private SeenTypes < TypeEquationTypeChecker > seenTypes ;
+  private SeenTypes < TypeEquationTypeChecker > seenTypes;
 
 
   /**
@@ -105,24 +106,24 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * @throws NullPointerException if <code>left</code> or <code>right</code>
    *           is <code>null</code>.
    */
-  public TypeEquationTypeChecker ( MonoType pLeft , MonoType pRight ,
+  public TypeEquationTypeChecker ( MonoType pLeft, MonoType pRight,
       SeenTypes < TypeEquationTypeChecker > pSeenTypes )
   {
     if ( pLeft == null )
     {
-      throw new NullPointerException ( "Left is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "Left is null" ); //$NON-NLS-1$
     }
     if ( pRight == null )
     {
-      throw new NullPointerException ( "Right is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "Right is null" ); //$NON-NLS-1$
     }
     if ( pSeenTypes == null )
     {
-      throw new NullPointerException ( "SeenTypes is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "SeenTypes is null" ); //$NON-NLS-1$
     }
-    this.left = pLeft ;
-    this.right = pRight ;
-    this.seenTypes = pSeenTypes ;
+    this.left = pLeft;
+    this.right = pRight;
+    this.seenTypes = pSeenTypes;
   }
 
 
@@ -131,16 +132,16 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object obj )
   {
     if ( obj instanceof TypeEquationTypeChecker )
     {
-      TypeEquationTypeChecker other = ( TypeEquationTypeChecker ) obj ;
+      TypeEquationTypeChecker other = ( TypeEquationTypeChecker ) obj;
       return ( this.left.equals ( other.left ) && this.right
-          .equals ( other.right ) ) ;
+          .equals ( other.right ) );
     }
-    return false ;
+    return false;
   }
 
 
@@ -149,13 +150,13 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public LatexCommandList getLatexCommands ( )
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    commands.add ( this.left ) ;
-    commands.add ( this.right ) ;
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
+    commands.add ( this.left );
+    commands.add ( this.right );
+    return commands;
   }
 
 
@@ -164,13 +165,13 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public LatexInstructionList getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( getLatexInstructionsStatic ( ) ) ;
-    instructions.add ( this.left ) ;
-    instructions.add ( this.right ) ;
-    return instructions ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
+    instructions.add ( this.left );
+    instructions.add ( this.right );
+    return instructions;
   }
 
 
@@ -179,13 +180,13 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public LatexPackageList getLatexPackages ( )
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
-    packages.add ( this.left ) ;
-    packages.add ( this.right ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( getLatexPackagesStatic () );
+    packages.add ( this.left );
+    packages.add ( this.right );
+    return packages;
   }
 
 
@@ -194,9 +195,9 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * 
    * @return the left side type.
    */
-  public MonoType getLeft ( )
+  public MonoType getLeft ()
   {
-    return this.left ;
+    return this.left;
   }
 
 
@@ -205,9 +206,9 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * 
    * @return the right side type.
    */
-  public MonoType getRight ( )
+  public MonoType getRight ()
   {
-    return this.right ;
+    return this.right;
   }
 
 
@@ -217,9 +218,9 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * @return The seenTypes.
    * @see #seenTypes
    */
-  public SeenTypes < TypeEquationTypeChecker > getSeenTypes ( )
+  public SeenTypes < TypeEquationTypeChecker > getSeenTypes ()
   {
-    return this.seenTypes ;
+    return this.seenTypes;
   }
 
 
@@ -228,10 +229,10 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * 
    * @see java.lang.Object#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.left.hashCode ( ) + this.right.hashCode ( ) ;
+    return this.left.hashCode () + this.right.hashCode ();
   }
 
 
@@ -246,8 +247,8 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
   public TypeEquationTypeChecker substitute ( TypeSubstitution s )
   {
     // apply the substitution to the left and the right side
-    return new TypeEquationTypeChecker ( this.left.substitute ( s ) ,
-        this.right.substitute ( s ) , this.seenTypes ) ;
+    return new TypeEquationTypeChecker ( this.left.substitute ( s ), this.right
+        .substitute ( s ), this.seenTypes );
   }
 
 
@@ -256,10 +257,10 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public final LatexString toLatexString ( )
+  public final LatexString toLatexString ()
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -269,18 +270,18 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_TYPE_EQUATION_TYPE_CHECKER , pIndent , this.toPrettyString ( )
-            .toString ( ) , this.left.toPrettyString ( ).toString ( ) ,
-        this.right.toPrettyString ( ).toString ( ) ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
+        LATEX_TYPE_EQUATION_TYPE_CHECKER, pIndent, this.toPrettyString ()
+            .toString (), this.left.toPrettyString ().toString (), this.right
+            .toPrettyString ().toString () );
     builder.addBuilder ( this.left.toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    builder.addBreak ( ) ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+    builder.addBreak ();
     builder.addBuilder ( this.right.toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    return builder ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+    return builder;
   }
 
 
@@ -289,10 +290,10 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * 
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ( )
+  public final PrettyString toPrettyString ()
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -305,15 +306,15 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , 0 ) ;
+        this, 0 );
     builder.addBuilder ( this.left
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    builder.addText ( PRETTY_SPACE ) ;
-    builder.addText ( PRETTY_EQUAL ) ;
-    builder.addText ( PRETTY_SPACE ) ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+    builder.addText ( PRETTY_SPACE );
+    builder.addText ( PRETTY_EQUAL );
+    builder.addText ( PRETTY_SPACE );
     builder.addBuilder ( this.right
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    return builder ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+    return builder;
   }
 
 
@@ -325,9 +326,9 @@ public final class TypeEquationTypeChecker implements PrettyPrintable ,
    * @see #toPrettyString()
    * @see Object#toString()
    */
-  @ Override
-  public final String toString ( )
+  @Override
+  public final String toString ()
   {
-    return toPrettyString ( ).toString ( ) ;
+    return toPrettyString ().toString ();
   }
 }

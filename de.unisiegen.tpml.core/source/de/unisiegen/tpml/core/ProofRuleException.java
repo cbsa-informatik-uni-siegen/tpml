@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core ;
+package de.unisiegen.tpml.core;
 
 
-import java.text.MessageFormat ;
+import java.text.MessageFormat;
 
 
 /**
@@ -14,13 +14,14 @@ import java.text.MessageFormat ;
  */
 public final class ProofRuleException extends Exception
 {
+
   //
   // Constants
   //
   /**
    * The serial version id.
    */
-  private static final long serialVersionUID = - 765882201403684253L ;
+  private static final long serialVersionUID = -765882201403684253L;
 
 
   //
@@ -31,7 +32,7 @@ public final class ProofRuleException extends Exception
    * 
    * @see #getNode()
    */
-  private ProofNode node ;
+  private ProofNode node;
 
 
   /**
@@ -39,7 +40,7 @@ public final class ProofRuleException extends Exception
    * 
    * @see #getRule()
    */
-  private ProofRule rule ;
+  private ProofRule rule;
 
 
   //
@@ -56,9 +57,9 @@ public final class ProofRuleException extends Exception
    *           is <code>null</code>.
    * @see #ProofRuleException(ProofNode, ProofRule, Throwable)
    */
-  public ProofRuleException ( ProofNode pNode , ProofRule pRule )
+  public ProofRuleException ( ProofNode pNode, ProofRule pRule )
   {
-    this ( pNode , pRule , null ) ;
+    this ( pNode, pRule, null );
   }
 
 
@@ -77,13 +78,11 @@ public final class ProofRuleException extends Exception
    *           is <code>null</code>.
    * @see #ProofRuleException(String, ProofNode, ProofRule, Throwable)
    */
-  public ProofRuleException ( ProofNode pNode , ProofRule pRule ,
-      Throwable cause )
+  public ProofRuleException ( ProofNode pNode, ProofRule pRule, Throwable cause )
   {
-    this (
-        MessageFormat.format (
-            Messages.getString ( "ProofRuleException.0" ) , pRule , pNode ) , pNode , //$NON-NLS-1$
-        pRule , cause ) ;
+    this ( MessageFormat.format (
+        Messages.getString ( "ProofRuleException.0" ), pRule, pNode ), pNode, //$NON-NLS-1$
+        pRule, cause );
   }
 
 
@@ -104,24 +103,24 @@ public final class ProofRuleException extends Exception
    * @throws NullPointerException if <code>message</code>, <code>node</code>
    *           or <code>rule</code> is <code>null</code>.
    */
-  public ProofRuleException ( String message , ProofNode pNode ,
-      ProofRule pRule , Throwable cause )
+  public ProofRuleException ( String message, ProofNode pNode, ProofRule pRule,
+      Throwable cause )
   {
-    super ( message , cause ) ;
+    super ( message, cause );
     if ( message == null )
     {
-      throw new NullPointerException ( "message is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "message is null" ); //$NON-NLS-1$
     }
     if ( pNode == null )
     {
-      throw new NullPointerException ( "node is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
     }
     if ( pRule == null )
     {
-      throw new NullPointerException ( "rule is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "rule is null" ); //$NON-NLS-1$
     }
-    this.node = pNode ;
-    this.rule = pRule ;
+    this.node = pNode;
+    this.rule = pRule;
   }
 
 
@@ -133,9 +132,9 @@ public final class ProofRuleException extends Exception
    * 
    * @return the node on which a rule application failed.
    */
-  public ProofNode getNode ( )
+  public ProofNode getNode ()
   {
-    return this.node ;
+    return this.node;
   }
 
 
@@ -144,8 +143,8 @@ public final class ProofRuleException extends Exception
    * 
    * @return the rule that failed to apply.
    */
-  public ProofRule getRule ( )
+  public ProofRule getRule ()
   {
-    return this.rule ;
+    return this.rule;
   }
 }

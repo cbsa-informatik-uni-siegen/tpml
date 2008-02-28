@@ -1,8 +1,8 @@
-package de.unisiegen.tpml.core ;
+package de.unisiegen.tpml.core;
 
 
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 
 
 /**
@@ -14,9 +14,10 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
  * @version $Rev$
  * @see de.unisiegen.tpml.core.ProofRuleSet
  */
-public interface ProofRule extends Comparable < ProofRule > , PrettyPrintable ,
+public interface ProofRule extends Comparable < ProofRule >, PrettyPrintable,
     LatexPrintable
 {
+
   /**
    * Returns the group to which this proof rule belongs. The group is an
    * identifier used to sort the rules when displaying them to the user. The
@@ -25,7 +26,7 @@ public interface ProofRule extends Comparable < ProofRule > , PrettyPrintable ,
    * 
    * @return the group id for this proof rule.
    */
-  public int getGroup ( ) ;
+  public int getGroup ();
 
 
   /**
@@ -35,5 +36,5 @@ public interface ProofRule extends Comparable < ProofRule > , PrettyPrintable ,
    * 
    * @return the user visible rule name of the proof rule.
    */
-  public String getName ( ) ;
+  public String getName ();
 }

@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l4 ;
+package de.unisiegen.tpml.core.languages.l4;
 
 
 import de.unisiegen.tpml.core.expressions.Condition1;
@@ -24,6 +24,7 @@ import de.unisiegen.tpml.core.types.UnitType;
  */
 public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet
 {
+
   /**
    * Allocates a new <code>L4TypecheckerProofRuleSet</code> for the specified
    * <code>language</code>.
@@ -34,11 +35,11 @@ public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet
    */
   public L4TypeCheckerProofRuleSet ( L4Language language )
   {
-    super ( language ) ;
+    super ( language );
     // register the additional type rules
-    registerByMethodName ( L4Language.L4 , "COND-1" , "applyCond1" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    registerByMethodName ( L4Language.L4 , "SEQ" , "applySeq" ) ; //$NON-NLS-1$//$NON-NLS-2$
-    registerByMethodName ( L4Language.L4 , "WHILE" , "applyWhile" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L4Language.L4, "COND-1", "applyCond1" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L4Language.L4, "SEQ", "applySeq" ); //$NON-NLS-1$//$NON-NLS-2$
+    registerByMethodName ( L4Language.L4, "WHILE", "applyWhile" ); //$NON-NLS-1$ //$NON-NLS-2$
   }
 
 
@@ -49,16 +50,16 @@ public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet
    * @param context the type checker proof context.
    * @param pNode the type checker proof node.
    */
-  public void applyCond1 ( TypeCheckerProofContext context ,
-		  TypeCheckerProofNode pNode )
+  public void applyCond1 ( TypeCheckerProofContext context,
+      TypeCheckerProofNode pNode )
   {
-	  TypeCheckerExpressionProofNode node = (TypeCheckerExpressionProofNode) pNode;
-    Condition1 condition1 = ( Condition1 ) node.getExpression ( ) ;
-    context.addEquation ( node.getType ( ) , new UnitType ( ) ) ;
-    context.addProofNode ( node , node.getEnvironment ( ) ,
-        condition1.getE0 ( ) , new BooleanType ( ) ) ;
-    context.addProofNode ( node , node.getEnvironment ( ) ,
-        condition1.getE1 ( ) , node.getType ( ) ) ;
+    TypeCheckerExpressionProofNode node = ( TypeCheckerExpressionProofNode ) pNode;
+    Condition1 condition1 = ( Condition1 ) node.getExpression ();
+    context.addEquation ( node.getType (), new UnitType () );
+    context.addProofNode ( node, node.getEnvironment (), condition1.getE0 (),
+        new BooleanType () );
+    context.addProofNode ( node, node.getEnvironment (), condition1.getE1 (),
+        node.getType () );
   }
 
 
@@ -72,31 +73,31 @@ public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet
    * @see de.unisiegen.tpml.core.languages.l3.L3TypeCheckerProofRuleSet#applyPLet(de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext,
    *      de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode)
    */
-  @ Override
-  public void applyPLet ( TypeCheckerProofContext context ,
+  @Override
+  public void applyPLet ( TypeCheckerProofContext context,
       TypeCheckerProofNode node )
   {
     // for Let, LetRec and MultiLet, e1 must be a value
-    Expression expression = node.getExpression ( ) ;
+    Expression expression = node.getExpression ();
     if ( expression instanceof Let )
     {
-      Let let = ( Let ) expression ;
-      if ( ! let.getE1 ( ).isValue ( ) )
+      Let let = ( Let ) expression;
+      if ( !let.getE1 ().isValue () )
       {
         throw new IllegalArgumentException (
-            "(P-LET) can only be applied if e1 is a value" ) ; //$NON-NLS-1$
+            "(P-LET) can only be applied if e1 is a value" ); //$NON-NLS-1$
       }
     }
     else if ( expression instanceof MultiLet )
     {
-      MultiLet multiLet = ( MultiLet ) expression ;
-      if ( ! multiLet.getE1 ( ).isValue ( ) )
+      MultiLet multiLet = ( MultiLet ) expression;
+      if ( !multiLet.getE1 ().isValue () )
       {
         throw new IllegalArgumentException (
-            "(P-LET) can only be applied if e1 is a value" ) ; //$NON-NLS-1$
+            "(P-LET) can only be applied if e1 is a value" ); //$NON-NLS-1$
       }
     }
-    super.applyPLet ( context , node ) ;
+    super.applyPLet ( context, node );
   }
 
 
@@ -107,15 +108,15 @@ public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet
    * @param context the type checker proof context.
    * @param pNode the type checker proof node.
    */
-  public void applySeq ( TypeCheckerProofContext context ,
-		  TypeCheckerProofNode pNode )
+  public void applySeq ( TypeCheckerProofContext context,
+      TypeCheckerProofNode pNode )
   {
-	  TypeCheckerExpressionProofNode node = (TypeCheckerExpressionProofNode) pNode;
-    Sequence sequence = ( Sequence ) node.getExpression ( ) ;
-    context.addProofNode ( node , node.getEnvironment ( ) , sequence.getE1 ( ) ,
-        context.newTypeVariable ( ) ) ;
-    context.addProofNode ( node , node.getEnvironment ( ) , sequence.getE2 ( ) ,
-        node.getType ( ) ) ;
+    TypeCheckerExpressionProofNode node = ( TypeCheckerExpressionProofNode ) pNode;
+    Sequence sequence = ( Sequence ) node.getExpression ();
+    context.addProofNode ( node, node.getEnvironment (), sequence.getE1 (),
+        context.newTypeVariable () );
+    context.addProofNode ( node, node.getEnvironment (), sequence.getE2 (),
+        node.getType () );
   }
 
 
@@ -126,15 +127,15 @@ public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet
    * @param context the type checker proof context.
    * @param pNode the type checker proof context.
    */
-  public void applyWhile ( TypeCheckerProofContext context ,
-		  TypeCheckerProofNode pNode )
+  public void applyWhile ( TypeCheckerProofContext context,
+      TypeCheckerProofNode pNode )
   {
-	  TypeCheckerExpressionProofNode node = (TypeCheckerExpressionProofNode) pNode;
-    While loop = ( While ) node.getExpression ( ) ;
-    context.addEquation ( node.getType ( ) , new UnitType ( ) ) ;
-    context.addProofNode ( node , node.getEnvironment ( ) , loop.getE1 ( ) ,
-        new BooleanType ( ) ) ;
-    context.addProofNode ( node , node.getEnvironment ( ) , loop.getE2 ( ) ,
-        node.getType ( ) ) ;
+    TypeCheckerExpressionProofNode node = ( TypeCheckerExpressionProofNode ) pNode;
+    While loop = ( While ) node.getExpression ();
+    context.addEquation ( node.getType (), new UnitType () );
+    context.addProofNode ( node, node.getEnvironment (), loop.getE1 (),
+        new BooleanType () );
+    context.addProofNode ( node, node.getEnvironment (), loop.getE2 (), node
+        .getType () );
   }
 }

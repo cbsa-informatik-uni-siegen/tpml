@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.interfaces ;
+package de.unisiegen.tpml.core.interfaces;
 
 
-import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Expression;
 
 
 /**
@@ -12,12 +12,13 @@ import de.unisiegen.tpml.core.expressions.Expression ;
  */
 public interface DefaultExpressions
 {
+
   /**
    * Returns the child {@link Expression}s.
    * 
    * @return the child {@link Expression}s.
    */
-  public Expression [ ] getExpressions ( ) ;
+  public Expression [] getExpressions ();
 
 
   /**
@@ -25,5 +26,5 @@ public interface DefaultExpressions
    * 
    * @return The indices of the child {@link Expression}s.
    */
-  public int [ ] getExpressionsIndex ( ) ;
+  public int [] getExpressionsIndex ();
 }

@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core ;
+package de.unisiegen.tpml.core;
 
 
 /**
@@ -11,6 +11,7 @@ package de.unisiegen.tpml.core ;
  */
 public abstract class AbstractProofRule implements ProofRule
 {
+
   //
   // Attributes
   //
@@ -20,7 +21,7 @@ public abstract class AbstractProofRule implements ProofRule
    * 
    * @see #getGroup()
    */
-  private int group ;
+  private int group;
 
 
   /**
@@ -28,7 +29,7 @@ public abstract class AbstractProofRule implements ProofRule
    * 
    * @see #getName()
    */
-  private String name ;
+  private String name;
 
 
   //
@@ -43,14 +44,14 @@ public abstract class AbstractProofRule implements ProofRule
    * @param pName the name of the proof rule.
    * @throws NullPointerException if <code>name</code> is <code>null</code>.
    */
-  protected AbstractProofRule ( int pGroup , String pName )
+  protected AbstractProofRule ( int pGroup, String pName )
   {
     if ( pName == null )
     {
-      throw new NullPointerException ( "name is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
     }
-    this.group = pGroup ;
-    this.name = pName ;
+    this.group = pGroup;
+    this.name = pName;
   }
 
 
@@ -62,9 +63,9 @@ public abstract class AbstractProofRule implements ProofRule
    * 
    * @see de.unisiegen.tpml.core.ProofRule#getGroup()
    */
-  public int getGroup ( )
+  public int getGroup ()
   {
-    return this.group ;
+    return this.group;
   }
 
 
@@ -73,9 +74,9 @@ public abstract class AbstractProofRule implements ProofRule
    * 
    * @see de.unisiegen.tpml.core.ProofRule#getName()
    */
-  public String getName ( )
+  public String getName ()
   {
-    return this.name ;
+    return this.name;
   }
 
 
@@ -90,18 +91,18 @@ public abstract class AbstractProofRule implements ProofRule
   public int compareTo ( ProofRule other )
   {
     // compare groups first
-    if ( getGroup ( ) < other.getGroup ( ) )
+    if ( getGroup () < other.getGroup () )
     {
-      return - 1 ;
+      return -1;
     }
-    else if ( getGroup ( ) > other.getGroup ( ) )
+    else if ( getGroup () > other.getGroup () )
     {
-      return 1 ;
+      return 1;
     }
     else
     {
       // compare by name
-      return getName ( ).compareTo ( other.getName ( ) ) ;
+      return getName ().compareTo ( other.getName () );
     }
   }
 
@@ -115,10 +116,10 @@ public abstract class AbstractProofRule implements ProofRule
    * @see #getName()
    * @see java.lang.Object#toString()
    */
-  @ Override
-  public String toString ( )
+  @Override
+  public String toString ()
   {
-    return this.name ;
+    return this.name;
   }
 
 
@@ -128,16 +129,16 @@ public abstract class AbstractProofRule implements ProofRule
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object obj )
   {
     if ( obj instanceof AbstractProofRule )
     {
-      AbstractProofRule other = ( AbstractProofRule ) obj ;
-      return ( this.name.equals ( other.name ) && this.getClass ( ).equals (
-          other.getClass ( ) ) ) ;
+      AbstractProofRule other = ( AbstractProofRule ) obj;
+      return ( this.name.equals ( other.name ) && this.getClass ().equals (
+          other.getClass () ) );
     }
-    return false ;
+    return false;
   }
 
 
@@ -146,9 +147,9 @@ public abstract class AbstractProofRule implements ProofRule
    * 
    * @see java.lang.Object#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.name.hashCode ( ) + this.getClass ( ).hashCode ( ) ;
+    return this.name.hashCode () + this.getClass ().hashCode ();
   }
 }

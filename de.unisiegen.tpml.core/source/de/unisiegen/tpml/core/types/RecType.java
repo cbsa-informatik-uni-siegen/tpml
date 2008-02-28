@@ -1,21 +1,22 @@
-package de.unisiegen.tpml.core.types ;
+package de.unisiegen.tpml.core.types;
 
 
-import java.text.MessageFormat ;
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.Messages ;
-import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
-import de.unisiegen.tpml.core.interfaces.BoundTypeNames ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.languages.LanguageParserException ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.util.BoundRenaming ;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+import de.unisiegen.tpml.core.interfaces.BoundTypeNames;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.languages.LanguageParserException;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.util.BoundRenaming;
 
 
 /**
@@ -25,45 +26,46 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @version $Rev:420 $
  * @see #typeNames
  */
-public final class RecType extends MonoType implements DefaultTypes ,
+public final class RecType extends MonoType implements DefaultTypes,
     BoundTypeNames
 {
+
   /**
    * String for the case that the type substitution is null.
    */
-  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null"; //$NON-NLS-1$
 
 
   /**
    * Indeces of the child {@link Type}s.
    */
-  private static final int [ ] INDICES_TYPE = new int [ ]
-  { - 1 } ;
+  private static final int [] INDICES_TYPE = new int []
+  { -1 };
 
 
   /**
    * Indeces of the child {@link TypeName}s.
    */
-  private static final int [ ] INDICES_TYPE_NAME = new int [ ]
-  { - 1 } ;
+  private static final int [] INDICES_TYPE_NAME = new int []
+  { -1 };
 
 
   /**
    * String for the case that tau is null.
    */
-  private static final String TAU_NULL = "tau is null" ; //$NON-NLS-1$
+  private static final String TAU_NULL = "tau is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that type name is null.
    */
-  private static final String TYPE_NAME_NULL = "type name is null" ; //$NON-NLS-1$
+  private static final String TYPE_NAME_NULL = "type name is null"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = Type.getCaption ( RecType.class ) ;
+  private static final String CAPTION = Type.getCaption ( RecType.class );
 
 
   /**
@@ -71,15 +73,15 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_MU , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{$\\mu$}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_REC_TYPE , 2 , "\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_MU + "#1.#2" , "t" , //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        "tau" ) ) ; //$NON-NLS-1$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_MU, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{$\\mu$}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_REC_TYPE, 2, "\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_MU + "#1.#2", "t", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        "tau" ) ); //$NON-NLS-1$
+    return commands;
   }
 
 
@@ -88,13 +90,13 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * 
    * @see #getTypeNames()
    */
-  private TypeName [ ] typeNames ;
+  private TypeName [] typeNames;
 
 
   /**
    * The children {@link Type}s of this {@link Type}.
    */
-  private MonoType [ ] types ;
+  private MonoType [] types;
 
 
   /**
@@ -104,24 +106,24 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * @param pTypeName The {@link TypeName}.
    * @param pTau The {@link Type}.
    */
-  public RecType ( TypeName pTypeName , MonoType pTau )
+  public RecType ( TypeName pTypeName, MonoType pTau )
   {
     if ( pTypeName == null )
     {
-      throw new NullPointerException ( TYPE_NAME_NULL ) ;
+      throw new NullPointerException ( TYPE_NAME_NULL );
     }
     if ( pTau == null )
     {
-      throw new NullPointerException ( TAU_NULL ) ;
+      throw new NullPointerException ( TAU_NULL );
     }
     // TypeName
-    this.typeNames = new TypeName [ ]
-    { pTypeName } ;
-    this.typeNames [ 0 ].setParent ( this ) ;
+    this.typeNames = new TypeName []
+    { pTypeName };
+    this.typeNames [ 0 ].setParent ( this );
     // Type
-    this.types = new MonoType [ ]
-    { pTau } ;
-    this.types [ 0 ].setParent ( this ) ;
+    this.types = new MonoType []
+    { pTau };
+    this.types [ 0 ].setParent ( this );
   }
 
 
@@ -136,27 +138,27 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * @param pParserEndOffset The end offset of this {@link Type} in the source
    *          code.
    */
-  public RecType ( TypeName pTypeName , MonoType pTau , int pParserStartOffset ,
+  public RecType ( TypeName pTypeName, MonoType pTau, int pParserStartOffset,
       int pParserEndOffset )
   {
-    this ( pTypeName , pTau ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pTypeName, pTau );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
     if ( pTau.equals ( pTypeName ) )
     {
       String message = MessageFormat.format ( Messages
-          .getString ( "Exception.6" ) , pTypeName ) ; //$NON-NLS-1$
-      throw new LanguageParserMultiException ( new String [ ]
-      { message , message } , new int [ ]
-      { pTypeName.getParserStartOffset ( ) , pTau.getParserStartOffset ( ) } ,
-          new int [ ]
-          { pTypeName.getParserEndOffset ( ) , pTau.getParserEndOffset ( ) } ) ;
+          .getString ( "Exception.6" ), pTypeName ); //$NON-NLS-1$
+      throw new LanguageParserMultiException ( new String []
+      { message, message }, new int []
+      { pTypeName.getParserStartOffset (), pTau.getParserStartOffset () },
+          new int []
+          { pTypeName.getParserEndOffset (), pTau.getParserEndOffset () } );
     }
     if ( pTau instanceof RecType )
     {
       throw new LanguageParserException ( MessageFormat.format ( Messages
-          .getString ( "Exception.7" ) , this.toPrettyString ( ) ) , //$NON-NLS-1$
-          pParserStartOffset , pParserEndOffset ) ;
+          .getString ( "Exception.7" ), this.toPrettyString () ), //$NON-NLS-1$
+          pParserStartOffset, pParserEndOffset );
     }
   }
 
@@ -166,11 +168,11 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * 
    * @see Type#clone()
    */
-  @ Override
-  public RecType clone ( )
+  @Override
+  public RecType clone ()
   {
-    return new RecType ( this.typeNames [ 0 ].clone ( ) , this.types [ 0 ]
-        .clone ( ) ) ;
+    return new RecType ( this.typeNames [ 0 ].clone (), this.types [ 0 ]
+        .clone () );
   }
 
 
@@ -179,26 +181,26 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * 
    * @see Object#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof RecType )
     {
-      RecType other = ( RecType ) pObject ;
+      RecType other = ( RecType ) pObject;
       return ( this.typeNames [ 0 ].equals ( other.typeNames [ 0 ] ) )
-          && ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ;
+          && ( this.types [ 0 ].equals ( other.types [ 0 ] ) );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -207,12 +209,12 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -221,9 +223,9 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * 
    * @return The sub {@link Type}.
    */
-  public MonoType getTau ( )
+  public MonoType getTau ()
   {
-    return this.types [ 0 ] ;
+    return this.types [ 0 ];
   }
 
 
@@ -233,9 +235,9 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * @return The {@link TypeName} of this {@link Type}.
    * @see #typeNames
    */
-  public TypeName getTypeName ( )
+  public TypeName getTypeName ()
   {
-    return this.typeNames [ 0 ] ;
+    return this.typeNames [ 0 ];
   }
 
 
@@ -245,9 +247,9 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * @return The {@link TypeName}s of this {@link Type}.
    * @see #typeNames
    */
-  public TypeName [ ] getTypeNames ( )
+  public TypeName [] getTypeNames ()
   {
-    return this.typeNames ;
+    return this.typeNames;
   }
 
 
@@ -256,24 +258,24 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * 
    * @return A list of lists of in this {@link Type} bound {@link TypeName}s.
    */
-  public ArrayList < ArrayList < TypeName >> getTypeNamesBound ( )
+  public ArrayList < ArrayList < TypeName >> getTypeNamesBound ()
   {
     if ( this.boundTypeNames == null )
     {
-      this.boundTypeNames = new ArrayList < ArrayList < TypeName >> ( 1 ) ;
-      ArrayList < TypeName > boundTypeNamesList = new ArrayList < TypeName > ( ) ;
-      ArrayList < TypeName > boundTau = this.types [ 0 ].getTypeNamesFree ( ) ;
+      this.boundTypeNames = new ArrayList < ArrayList < TypeName >> ( 1 );
+      ArrayList < TypeName > boundTypeNamesList = new ArrayList < TypeName > ();
+      ArrayList < TypeName > boundTau = this.types [ 0 ].getTypeNamesFree ();
       for ( TypeName freeTypeName : boundTau )
       {
         if ( this.typeNames [ 0 ].equals ( freeTypeName ) )
         {
-          freeTypeName.setBoundTo ( this , this.typeNames [ 0 ] ) ;
-          boundTypeNamesList.add ( freeTypeName ) ;
+          freeTypeName.setBoundTo ( this, this.typeNames [ 0 ] );
+          boundTypeNamesList.add ( freeTypeName );
         }
       }
-      this.boundTypeNames.add ( boundTypeNamesList ) ;
+      this.boundTypeNames.add ( boundTypeNamesList );
     }
-    return this.boundTypeNames ;
+    return this.boundTypeNames;
   }
 
 
@@ -282,19 +284,19 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * 
    * @return A list of the free {@link TypeName}s in this {@link Type}.
    */
-  @ Override
-  public ArrayList < TypeName > getTypeNamesFree ( )
+  @Override
+  public ArrayList < TypeName > getTypeNamesFree ()
   {
     if ( this.typeNamesFree == null )
     {
-      this.typeNamesFree = new ArrayList < TypeName > ( ) ;
-      this.typeNamesFree.addAll ( this.types [ 0 ].getTypeNamesFree ( ) ) ;
+      this.typeNamesFree = new ArrayList < TypeName > ();
+      this.typeNamesFree.addAll ( this.types [ 0 ].getTypeNamesFree () );
       while ( this.typeNamesFree.remove ( this.typeNames [ 0 ] ) )
       {
         // Remove all TypeNames with the same name
       }
     }
-    return this.typeNamesFree ;
+    return this.typeNamesFree;
   }
 
 
@@ -303,9 +305,9 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * 
    * @return The indices of the child {@link Type}s.
    */
-  public int [ ] getTypeNamesIndex ( )
+  public int [] getTypeNamesIndex ()
   {
-    return INDICES_TYPE_NAME ;
+    return INDICES_TYPE_NAME;
   }
 
 
@@ -314,9 +316,9 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * 
    * @return the sub {@link Type}s.
    */
-  public MonoType [ ] getTypes ( )
+  public MonoType [] getTypes ()
   {
-    return this.types ;
+    return this.types;
   }
 
 
@@ -325,9 +327,9 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * 
    * @return The indices of the child {@link Type}s.
    */
-  public int [ ] getTypesIndex ( )
+  public int [] getTypesIndex ()
   {
-    return INDICES_TYPE ;
+    return INDICES_TYPE;
   }
 
 
@@ -336,10 +338,10 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * 
    * @see Object#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.typeNames [ 0 ].hashCode ( ) + this.types [ 0 ].hashCode ( ) ;
+    return this.typeNames [ 0 ].hashCode () + this.types [ 0 ].hashCode ();
   }
 
 
@@ -353,38 +355,38 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * @param pTau The {@link MonoType}.
    * @return The resulting {@link Type}.
    */
-  @ Override
-  public RecType substitute ( TypeName pTypeName , MonoType pTau )
+  @Override
+  public RecType substitute ( TypeName pTypeName, MonoType pTau )
   {
     /*
      * Do not substitute, if the TypeNames are equal.
      */
     if ( this.typeNames [ 0 ].equals ( pTypeName ) )
     {
-      return this ;
+      return this;
     }
     /*
      * Perform the bound renaming if required.
      */
-    BoundRenaming < TypeName > boundRenaming = new BoundRenaming < TypeName > ( ) ;
-    boundRenaming.add ( this.getTypeNamesFree ( ) ) ;
-    boundRenaming.add ( pTau.getTypeNamesFree ( ) ) ;
-    boundRenaming.add ( pTypeName ) ;
-    TypeName newTypeName = boundRenaming.newTypeName ( this.typeNames [ 0 ] ) ;
+    BoundRenaming < TypeName > boundRenaming = new BoundRenaming < TypeName > ();
+    boundRenaming.add ( this.getTypeNamesFree () );
+    boundRenaming.add ( pTau.getTypeNamesFree () );
+    boundRenaming.add ( pTypeName );
+    TypeName newTypeName = boundRenaming.newTypeName ( this.typeNames [ 0 ] );
     /*
      * Substitute the old Identifier only with the new Identifier, if they are
      * different.
      */
-    MonoType newTau = this.types [ 0 ] ;
-    if ( ! this.typeNames [ 0 ].equals ( newTypeName ) )
+    MonoType newTau = this.types [ 0 ];
+    if ( !this.typeNames [ 0 ].equals ( newTypeName ) )
     {
-      newTau = newTau.substitute ( this.typeNames [ 0 ] , newTypeName ) ;
+      newTau = newTau.substitute ( this.typeNames [ 0 ], newTypeName );
     }
     /*
      * Perform the substitution.
      */
-    newTau = newTau.substitute ( pTypeName , pTau ) ;
-    return new RecType ( newTypeName , newTau ) ;
+    newTau = newTau.substitute ( pTypeName, pTau );
+    return new RecType ( newTypeName, newTau );
   }
 
 
@@ -393,15 +395,15 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * 
    * @see Type#substitute(TypeSubstitution)
    */
-  @ Override
+  @Override
   public RecType substitute ( TypeSubstitution pTypeSubstitution )
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL );
     }
-    return new RecType ( this.typeNames [ 0 ] , this.types [ 0 ]
-        .substitute ( pTypeSubstitution ) ) ;
+    return new RecType ( this.typeNames [ 0 ], this.types [ 0 ]
+        .substitute ( pTypeSubstitution ) );
   }
 
 
@@ -410,24 +412,24 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * 
    * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_REC_TYPE , LATEX_REC_TYPE , pIndent , this.toPrettyString ( )
-            .toString ( ) ,
-        this.typeNames [ 0 ].toPrettyString ( ).toString ( ) , this
-            .toPrettyString ( ).toString ( ) , this.types [ 0 ]
-            .toPrettyString ( ).toString ( ) ) ;
+        PRIO_REC_TYPE, LATEX_REC_TYPE, pIndent, this.toPrettyString ()
+            .toString (), this.typeNames [ 0 ].toPrettyString ().toString (),
+        this.toPrettyString ().toString (), this.types [ 0 ].toPrettyString ()
+            .toString () );
     builder.addBuilder ( this.typeNames [ 0 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
-        PRIO_REC_TYPE_TYPE_NAME ) ;
-    this.prettyStringBuilder.addBreak ( ) ;
-    builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
-        PRIO_REC_TYPE_TAU ) ;
-    return builder ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ),
+        PRIO_REC_TYPE_TYPE_NAME );
+    this.prettyStringBuilder.addBreak ();
+    builder
+        .addBuilder ( this.types [ 0 ].toLatexStringBuilder (
+            pLatexStringBuilderFactory, pIndent + LATEX_INDENT ),
+            PRIO_REC_TYPE_TAU );
+    return builder;
   }
 
 
@@ -436,24 +438,24 @@ public final class RecType extends MonoType implements DefaultTypes ,
    * 
    * @see Type#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_REC_TYPE ) ;
-      this.prettyStringBuilder.addKeyword ( PRETTY_MU ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_REC_TYPE );
+      this.prettyStringBuilder.addKeyword ( PRETTY_MU );
       this.prettyStringBuilder.addBuilder ( this.typeNames [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_REC_TYPE_TYPE_NAME ) ;
-      this.prettyStringBuilder.addText ( PRETTY_DOT ) ;
-      this.prettyStringBuilder.addBreak ( ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+          PRIO_REC_TYPE_TYPE_NAME );
+      this.prettyStringBuilder.addText ( PRETTY_DOT );
+      this.prettyStringBuilder.addBreak ();
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_REC_TYPE_TAU ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+          PRIO_REC_TYPE_TAU );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

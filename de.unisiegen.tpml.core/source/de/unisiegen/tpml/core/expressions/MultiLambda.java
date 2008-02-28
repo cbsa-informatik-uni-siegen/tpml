@@ -1,26 +1,27 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
-import java.util.ArrayList ;
-import java.util.Arrays ;
-import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.Type ;
-import de.unisiegen.tpml.core.util.BoundRenaming ;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.core.util.BoundRenaming;
 
 
 /**
@@ -34,58 +35,59 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @see MultiLet
  * @see Value
  */
-public final class MultiLambda extends Value implements BoundIdentifiers ,
-    DefaultTypes , DefaultExpressions
+public final class MultiLambda extends Value implements BoundIdentifiers,
+    DefaultTypes, DefaultExpressions
 {
+
   /**
    * Indeces of the child {@link Expression}s.
    */
-  private static final int [ ] INDICES_E = new int [ ]
-  { - 1 } ;
+  private static final int [] INDICES_E = new int []
+  { -1 };
 
 
   /**
    * Indeces of the child {@link Type}s.
    */
-  private static final int [ ] INDICES_TYPE = new int [ ]
-  { - 1 } ;
+  private static final int [] INDICES_TYPE = new int []
+  { -1 };
 
 
   /**
    * String for the case that the identifiers are null.
    */
-  private static final String IDENTIFIERS_NULL = "identifiers is null" ; //$NON-NLS-1$
+  private static final String IDENTIFIERS_NULL = "identifiers is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that one identifier are null.
    */
-  private static final String IDENTIFIER_NULL = "one identifier is null" ; //$NON-NLS-1$
+  private static final String IDENTIFIER_NULL = "one identifier is null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the identifiers are empty.
    */
-  private static final String IDENTIFIERS_EMPTY = "identifiers is empty" ; //$NON-NLS-1$
+  private static final String IDENTIFIERS_EMPTY = "identifiers is empty"; //$NON-NLS-1$
 
 
   /**
    * The identifier has the wrong set.
    */
-  private static final String WRONG_SET = "the set of the identifier has to be 'variable'" ; //$NON-NLS-1$
+  private static final String WRONG_SET = "the set of the identifier has to be 'variable'"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the expression is null.
    */
-  private static final String EXPRESSION_NULL = "expression is null" ; //$NON-NLS-1$
+  private static final String EXPRESSION_NULL = "expression is null"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( MultiLambda.class ) ;
+      .getCaption ( MultiLambda.class );
 
 
   /**
@@ -93,18 +95,18 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_KEY_LAMBDA , 0 ,
-        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{$\\lambda$}}" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    commands.add ( new DefaultLatexCommand ( LATEX_MULTI_LAMBDA , 3 ,
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_LAMBDA, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{$\\lambda$}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_MULTI_LAMBDA, 3,
         "\\ifthenelse{\\equal{#2}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
             + "{\\color{" + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_LAMBDA //$NON-NLS-1$ //$NON-NLS-2$
             + "(#1).#3}" + LATEX_LINE_BREAK_NEW_COMMAND + "{\\color{" //$NON-NLS-1$//$NON-NLS-2$
             + LATEX_COLOR_EXPRESSION + "}\\" + LATEX_KEY_LAMBDA //$NON-NLS-1$
-            + "(#1)\\colon\\ #2.#3}" , "id1, ..., idn" , "tau" , "e" ) ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    return commands ;
+            + "(#1)\\colon\\ #2.#3}", "id1, ..., idn", "tau", "e" ) ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    return commands;
   }
 
 
@@ -113,18 +115,18 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.IFTHEN ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.IFTHEN );
+    return packages;
   }
 
 
   /**
    * Indeces of the child {@link Identifier}s.
    */
-  private int [ ] indicesId ;
+  private int [] indicesId;
 
 
   /**
@@ -132,7 +134,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @see #getIdentifiers()
    */
-  private Identifier [ ] identifiers ;
+  private Identifier [] identifiers;
 
 
   /**
@@ -140,13 +142,13 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @see #getTypes()
    */
-  private MonoType [ ] types ;
+  private MonoType [] types;
 
 
   /**
    * The expression.
    */
-  private Expression [ ] expressions ;
+  private Expression [] expressions;
 
 
   /**
@@ -161,52 +163,52 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * @throws NullPointerException if <code>identifiers</code> or
    *           <code>e</code> is <code>null</code>.
    */
-  public MultiLambda ( Identifier [ ] pIdentifiers , MonoType pTau ,
+  public MultiLambda ( Identifier [] pIdentifiers, MonoType pTau,
       Expression pExpression )
   {
     if ( pIdentifiers == null )
     {
-      throw new NullPointerException ( IDENTIFIERS_NULL ) ;
+      throw new NullPointerException ( IDENTIFIERS_NULL );
     }
     if ( pIdentifiers.length == 0 )
     {
-      throw new IllegalArgumentException ( IDENTIFIERS_EMPTY ) ;
+      throw new IllegalArgumentException ( IDENTIFIERS_EMPTY );
     }
     for ( Identifier id : pIdentifiers )
     {
       if ( id == null )
       {
-        throw new NullPointerException ( IDENTIFIER_NULL ) ;
+        throw new NullPointerException ( IDENTIFIER_NULL );
       }
-      if ( ! Identifier.Set.VARIABLE.equals ( id.getSet ( ) ) )
+      if ( !Identifier.Set.VARIABLE.equals ( id.getSet () ) )
       {
-        throw new IllegalArgumentException ( WRONG_SET ) ;
+        throw new IllegalArgumentException ( WRONG_SET );
       }
     }
     if ( pExpression == null )
     {
-      throw new NullPointerException ( EXPRESSION_NULL ) ;
+      throw new NullPointerException ( EXPRESSION_NULL );
     }
     // Identifier
-    this.identifiers = pIdentifiers ;
-    this.indicesId = new int [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    this.identifiers = pIdentifiers;
+    this.indicesId = new int [ this.identifiers.length ];
+    for ( int i = 0 ; i < this.identifiers.length ; i++ )
     {
-      this.identifiers [ i ].setParent ( this ) ;
-      this.indicesId [ i ] = i + 1 ;
+      this.identifiers [ i ].setParent ( this );
+      this.indicesId [ i ] = i + 1;
     }
     // Type
-    this.types = new MonoType [ 1 ] ;
-    this.types [ 0 ] = pTau ;
+    this.types = new MonoType [ 1 ];
+    this.types [ 0 ] = pTau;
     if ( this.types [ 0 ] != null )
     {
-      this.types [ 0 ].setParent ( this ) ;
+      this.types [ 0 ].setParent ( this );
     }
     // Expression
-    this.expressions = new Expression [ ]
-    { pExpression } ;
-    this.expressions [ 0 ].setParent ( this ) ;
-    checkDisjunction ( ) ;
+    this.expressions = new Expression []
+    { pExpression };
+    this.expressions [ 0 ].setParent ( this );
+    checkDisjunction ();
   }
 
 
@@ -226,52 +228,52 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * @throws NullPointerException if <code>identifiers</code> or
    *           <code>e</code> is <code>null</code>.
    */
-  public MultiLambda ( Identifier [ ] pIdentifiers , MonoType pTau ,
-      Expression pExpression , int pParserStartOffset , int pParserEndOffset )
+  public MultiLambda ( Identifier [] pIdentifiers, MonoType pTau,
+      Expression pExpression, int pParserStartOffset, int pParserEndOffset )
   {
-    this ( pIdentifiers , pTau , pExpression ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ( pIdentifiers, pTau, pExpression );
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
   /**
    * Checks the disjunction of the {@link Identifier} sets.
    */
-  private void checkDisjunction ( )
+  private void checkDisjunction ()
   {
     ArrayList < Identifier > allIdentifiers = this.expressions [ 0 ]
-        .getIdentifiersAll ( ) ;
-    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
+        .getIdentifiersAll ();
+    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ();
     for ( Identifier current : this.identifiers )
     {
-      negativeIdentifiers.clear ( ) ;
+      negativeIdentifiers.clear ();
       for ( Identifier allId : allIdentifiers )
       {
         if ( ( current.equals ( allId ) )
-            && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet ( ) ) || ( Identifier.Set.METHOD
-                .equals ( allId.getSet ( ) ) ) ) ) ) )
+            && ( ! ( ( Identifier.Set.VARIABLE.equals ( allId.getSet () ) || ( Identifier.Set.METHOD
+                .equals ( allId.getSet () ) ) ) ) ) )
         {
-          negativeIdentifiers.add ( allId ) ;
+          negativeIdentifiers.add ( allId );
         }
       }
       /*
        * Throw an exception, if the negative identifier list contains one or
        * more identifiers. If this happens, all Identifiers are added.
        */
-      if ( negativeIdentifiers.size ( ) > 0 )
+      if ( negativeIdentifiers.size () > 0 )
       {
-        negativeIdentifiers.clear ( ) ;
+        negativeIdentifiers.clear ();
         for ( Identifier allId : allIdentifiers )
         {
           if ( current.equals ( allId ) )
           {
-            negativeIdentifiers.add ( allId ) ;
+            negativeIdentifiers.add ( allId );
           }
         }
-        negativeIdentifiers.add ( current ) ;
+        negativeIdentifiers.add ( current );
         LanguageParserMultiException
-            .throwExceptionDisjunction ( negativeIdentifiers ) ;
+            .throwExceptionDisjunction ( negativeIdentifiers );
       }
     }
   }
@@ -282,16 +284,16 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public MultiLambda clone ( )
+  @Override
+  public MultiLambda clone ()
   {
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    Identifier [] newIdentifiers = new Identifier [ this.identifiers.length ];
+    for ( int i = 0 ; i < newIdentifiers.length ; i++ )
     {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ();
     }
-    return new MultiLambda ( newIdentifiers , this.types [ 0 ] == null ? null
-        : this.types [ 0 ].clone ( ) , this.expressions [ 0 ].clone ( ) ) ;
+    return new MultiLambda ( newIdentifiers, this.types [ 0 ] == null ? null
+        : this.types [ 0 ].clone (), this.expressions [ 0 ].clone () );
   }
 
 
@@ -300,27 +302,27 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @see Expression#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof MultiLambda )
     {
-      MultiLambda other = ( MultiLambda ) pObject ;
-      return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
+      MultiLambda other = ( MultiLambda ) pObject;
+      return ( ( Arrays.equals ( this.identifiers, other.identifiers ) )
           && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( ( this.types [ 0 ] == null ) ? ( other.types [ 0 ] == null )
-          : ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ) ) ;
+          : ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ) );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -329,9 +331,9 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @return the function body expression.
    */
-  public Expression getE ( )
+  public Expression getE ()
   {
-    return this.expressions [ 0 ] ;
+    return this.expressions [ 0 ];
   }
 
 
@@ -340,9 +342,9 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @return the sub expressions.
    */
-  public Expression [ ] getExpressions ( )
+  public Expression [] getExpressions ()
   {
-    return this.expressions ;
+    return this.expressions;
   }
 
 
@@ -351,9 +353,9 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @return The indices of the child {@link Expression}s.
    */
-  public int [ ] getExpressionsIndex ( )
+  public int [] getExpressionsIndex ()
   {
-    return INDICES_E ;
+    return INDICES_E;
   }
 
 
@@ -363,9 +365,9 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * @return the identifiers for the tuple parameter.
    * @see #getIdentifiers()
    */
-  public Identifier [ ] getIdentifiers ( )
+  public Identifier [] getIdentifiers ()
   {
-    return this.identifiers ;
+    return this.identifiers;
   }
 
 
@@ -376,44 +378,44 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * @return A list of lists of in this {@link Expression} bound
    *         {@link Identifier}s.
    */
-  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
+  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ()
   {
     if ( this.boundIdentifiers == null )
     {
-      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( 1 ) ;
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( 1 );
       ArrayList < Identifier > boundE = this.expressions [ 0 ]
-          .getIdentifiersFree ( ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+          .getIdentifiersFree ();
+      for ( int i = 0 ; i < this.identifiers.length ; i++ )
       {
         /*
          * An Identifier has no binding, if an Identifier after him has the same
          * name. Example: (λ(x, x).x) (1, 2).
          */
-        boolean hasBinding = true ;
-        for ( int j = i + 1 ; j < this.identifiers.length ; j ++ )
+        boolean hasBinding = true;
+        for ( int j = i + 1 ; j < this.identifiers.length ; j++ )
         {
           if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
           {
-            hasBinding = false ;
-            break ;
+            hasBinding = false;
+            break;
           }
         }
-        ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
+        ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ();
         if ( hasBinding )
         {
           for ( Identifier freeId : boundE )
           {
             if ( this.identifiers [ i ].equals ( freeId ) )
             {
-              freeId.setBoundTo ( this , this.identifiers [ i ] ) ;
-              boundIdList.add ( freeId ) ;
+              freeId.setBoundTo ( this, this.identifiers [ i ] );
+              boundIdList.add ( freeId );
             }
           }
         }
-        this.boundIdentifiers.add ( boundIdList ) ;
+        this.boundIdentifiers.add ( boundIdList );
       }
     }
-    return this.boundIdentifiers ;
+    return this.boundIdentifiers;
   }
 
 
@@ -422,15 +424,15 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @see Expression#getIdentifiersFree()
    */
-  @ Override
-  public ArrayList < Identifier > getIdentifiersFree ( )
+  @Override
+  public ArrayList < Identifier > getIdentifiersFree ()
   {
     if ( this.identifiersFree == null )
     {
-      this.identifiersFree = new ArrayList < Identifier > ( ) ;
+      this.identifiersFree = new ArrayList < Identifier > ();
       this.identifiersFree.addAll ( this.expressions [ 0 ]
-          .getIdentifiersFree ( ) ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+          .getIdentifiersFree () );
+      for ( int i = 0 ; i < this.identifiers.length ; i++ )
       {
         while ( this.identifiersFree.remove ( this.identifiers [ i ] ) )
         {
@@ -438,7 +440,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
         }
       }
     }
-    return this.identifiersFree ;
+    return this.identifiersFree;
   }
 
 
@@ -447,9 +449,9 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @return The indices of the child {@link Identifier}s.
    */
-  public int [ ] getIdentifiersIndex ( )
+  public int [] getIdentifiersIndex ()
   {
-    return this.indicesId ;
+    return this.indicesId;
   }
 
 
@@ -458,12 +460,12 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -472,12 +474,12 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  @ Override
-  public LatexPackageList getLatexPackages ( )
+  @Override
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = super.getLatexPackages ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
-    return packages ;
+    LatexPackageList packages = super.getLatexPackages ();
+    packages.add ( getLatexPackagesStatic () );
+    return packages;
   }
 
 
@@ -487,9 +489,9 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @return the type of the identifiers;
    */
-  public MonoType getTau ( )
+  public MonoType getTau ()
   {
-    return this.types [ 0 ] ;
+    return this.types [ 0 ];
   }
 
 
@@ -498,9 +500,9 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @return the types.
    */
-  public MonoType [ ] getTypes ( )
+  public MonoType [] getTypes ()
   {
-    return this.types ;
+    return this.types;
   }
 
 
@@ -509,9 +511,9 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @return The indices of the child {@link Type}s.
    */
-  public int [ ] getTypesIndex ( )
+  public int [] getTypesIndex ()
   {
-    return INDICES_TYPE ;
+    return INDICES_TYPE;
   }
 
 
@@ -520,12 +522,12 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @see Expression#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.identifiers.hashCode ( )
-        + ( ( this.types [ 0 ] == null ) ? 0 : this.types [ 0 ].hashCode ( ) )
-        + this.expressions [ 0 ].hashCode ( ) ;
+    return this.identifiers.hashCode ()
+        + ( ( this.types [ 0 ] == null ) ? 0 : this.types [ 0 ].hashCode () )
+        + this.expressions [ 0 ].hashCode ();
   }
 
 
@@ -534,75 +536,75 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @see Expression#substitute(Identifier, Expression)
    */
-  @ Override
-  public MultiLambda substitute ( Identifier pId , Expression pExpression )
+  @Override
+  public MultiLambda substitute ( Identifier pId, Expression pExpression )
   {
-    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    if ( pExpression.getIdentifierFreeNotOnlyVariable () )
     {
-      throw new NotOnlyFreeVariableException ( ) ;
+      throw new NotOnlyFreeVariableException ();
     }
     /*
      * Do not substitute, if the Identifiers are equal.
      */
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    for ( int i = 0 ; i < this.identifiers.length ; i++ )
     {
       if ( this.identifiers [ i ].equals ( pId ) )
       {
-        return this ;
+        return this;
       }
     }
-    Expression newE = this.expressions [ 0 ] ;
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    Expression newE = this.expressions [ 0 ];
+    Identifier [] newIdentifiers = new Identifier [ this.identifiers.length ];
+    for ( int i = 0 ; i < newIdentifiers.length ; i++ )
     {
-      newIdentifiers [ i ] = this.identifiers [ i ] ;
+      newIdentifiers [ i ] = this.identifiers [ i ];
     }
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    for ( int i = 0 ; i < newIdentifiers.length ; i++ )
     {
-      BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
-      boundRenaming.add ( this.getIdentifiersFree ( ) ) ;
-      boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
-      boundRenaming.add ( pId ) ;
+      BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ();
+      boundRenaming.add ( this.getIdentifiersFree () );
+      boundRenaming.add ( pExpression.getIdentifiersFree () );
+      boundRenaming.add ( pId );
       /*
        * The new Identifier should not be equal to an other Identifier.
        */
       if ( boundRenaming.contains ( newIdentifiers [ i ] ) )
       {
-        for ( int j = 0 ; j < newIdentifiers.length ; j ++ )
+        for ( int j = 0 ; j < newIdentifiers.length ; j++ )
         {
           if ( i != j )
           {
-            boundRenaming.add ( newIdentifiers [ j ] ) ;
+            boundRenaming.add ( newIdentifiers [ j ] );
           }
         }
       }
-      Identifier newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
+      Identifier newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] );
       /*
        * Search for an Identifier before the current Identifier with the same
        * name. For example: "let a = b in lambda (b,b).a".
        */
-      for ( int j = 0 ; j < i ; j ++ )
+      for ( int j = 0 ; j < i ; j++ )
       {
         if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
         {
-          newId = newIdentifiers [ j ] ;
+          newId = newIdentifiers [ j ];
         }
       }
       /*
        * Substitute the old Identifier only with the new Identifier, if they are
        * different.
        */
-      if ( ! newIdentifiers [ i ].equals ( newId ) )
+      if ( !newIdentifiers [ i ].equals ( newId ) )
       {
-        newE = newE.substitute ( newIdentifiers [ i ] , newId ) ;
-        newIdentifiers [ i ] = newId ;
+        newE = newE.substitute ( newIdentifiers [ i ], newId );
+        newIdentifiers [ i ] = newId;
       }
     }
     /*
      * Perform the substitution.
      */
-    newE = newE.substitute ( pId , pExpression ) ;
-    return new MultiLambda ( newIdentifiers , this.types [ 0 ] , newE ) ;
+    newE = newE.substitute ( pId, pExpression );
+    return new MultiLambda ( newIdentifiers, this.types [ 0 ], newE );
   }
 
 
@@ -611,13 +613,13 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @see Expression#substitute(TypeSubstitution)
    */
-  @ Override
+  @Override
   public MultiLambda substitute ( TypeSubstitution pTypeSubstitution )
   {
     MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
-        .substitute ( pTypeSubstitution ) ;
-    return new MultiLambda ( this.identifiers , newTau , this.expressions [ 0 ]
-        .substitute ( pTypeSubstitution ) ) ;
+        .substitute ( pTypeSubstitution );
+    return new MultiLambda ( this.identifiers, newTau, this.expressions [ 0 ]
+        .substitute ( pTypeSubstitution ) );
   }
 
 
@@ -626,65 +628,65 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    StringBuilder identifier = new StringBuilder ( ) ;
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    StringBuilder identifier = new StringBuilder ();
+    for ( int i = 0 ; i < this.identifiers.length ; i++ )
     {
-      identifier
-          .append ( this.identifiers [ i ].toPrettyString ( ).toString ( ) ) ;
+      identifier.append ( this.identifiers [ i ].toPrettyString ().toString () );
       if ( i != this.identifiers.length - 1 )
       {
-        identifier.append ( PRETTY_COMMA ) ;
-        identifier.append ( PRETTY_SPACE ) ;
+        identifier.append ( PRETTY_COMMA );
+        identifier.append ( PRETTY_SPACE );
       }
     }
     String descriptions[] = new String [ 2 + this.identifiers.length
-        + this.types.length + this.expressions.length ] ;
-    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
-    descriptions [ 1 ] = identifier.toString ( ) ;
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+        + this.types.length + this.expressions.length ];
+    descriptions [ 0 ] = this.toPrettyString ().toString ();
+    descriptions [ 1 ] = identifier.toString ();
+    for ( int i = 0 ; i < this.identifiers.length ; i++ )
     {
-      descriptions [ 2 + i ] = this.identifiers [ i ].toPrettyString ( )
-          .toString ( ) ;
+      descriptions [ 2 + i ] = this.identifiers [ i ].toPrettyString ()
+          .toString ();
     }
     descriptions [ descriptions.length - 2 ] = this.types [ 0 ] == null ? LATEX_NO_TYPE
-        : this.types [ 0 ].toPrettyString ( ).toString ( ) ;
+        : this.types [ 0 ].toPrettyString ().toString ();
     descriptions [ descriptions.length - 1 ] = this.expressions [ 0 ]
-        .toPrettyString ( ).toString ( ) ;
+        .toPrettyString ().toString ();
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_LAMBDA , LATEX_MULTI_LAMBDA , pIndent , descriptions ) ;
-    builder.addBuilderBegin ( ) ;
-    for ( int i = 0 ; i < this.identifiers.length ; ++ i )
+        PRIO_LAMBDA, LATEX_MULTI_LAMBDA, pIndent, descriptions );
+    builder.addBuilderBegin ();
+    for ( int i = 0 ; i < this.identifiers.length ; ++i )
     {
       if ( i > 0 )
       {
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
             + LATEX_INDENT )
-            + LATEX_COMMA ) ;
-        builder.addText ( LATEX_SPACE ) ;
+            + LATEX_COMMA );
+        builder.addText ( LATEX_SPACE );
       }
       builder.addBuilder ( this.identifiers [ i ].toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , PRIO_ID ) ;
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ), PRIO_ID );
     }
-    builder.addBuilderEnd ( ) ;
+    builder.addBuilderEnd ();
     if ( this.types [ 0 ] == null )
     {
-      builder.addEmptyBuilder ( ) ;
+      builder.addEmptyBuilder ();
     }
     else
     {
-      builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) ,
-          PRIO_LAMBDA_TAU ) ;
+      builder
+          .addBuilder ( this.types [ 0 ].toLatexStringBuilder (
+              pLatexStringBuilderFactory, pIndent + LATEX_INDENT ),
+              PRIO_LAMBDA_TAU );
     }
-    builder.addBreak ( ) ;
+    builder.addBreak ();
     builder.addBuilder ( this.expressions [ 0 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_LAMBDA_E ) ;
-    return builder ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), PRIO_LAMBDA_E );
+    return builder;
   }
 
 
@@ -693,41 +695,42 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_LAMBDA ) ;
-      this.prettyStringBuilder.addKeyword ( PRETTY_LAMBDA ) ;
-      this.prettyStringBuilder.addText ( PRETTY_LPAREN ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; ++ i )
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_LAMBDA );
+      this.prettyStringBuilder.addKeyword ( PRETTY_LAMBDA );
+      this.prettyStringBuilder.addText ( PRETTY_LPAREN );
+      for ( int i = 0 ; i < this.identifiers.length ; ++i )
       {
         if ( i > 0 )
         {
-          this.prettyStringBuilder.addText ( PRETTY_COMMA ) ;
-          this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+          this.prettyStringBuilder.addText ( PRETTY_COMMA );
+          this.prettyStringBuilder.addText ( PRETTY_SPACE );
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), PRIO_ID );
       }
-      this.prettyStringBuilder.addText ( PRETTY_RPAREN ) ;
+      this.prettyStringBuilder.addText ( PRETTY_RPAREN );
       if ( this.types [ 0 ] != null )
       {
-        this.prettyStringBuilder.addText ( PRETTY_COLON ) ;
-        this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+        this.prettyStringBuilder.addText ( PRETTY_COLON );
+        this.prettyStringBuilder.addText ( PRETTY_SPACE );
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_LAMBDA_TAU ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+            PRIO_LAMBDA_TAU );
       }
-      this.prettyStringBuilder.addText ( PRETTY_DOT ) ;
-      this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_LAMBDA_E ) ;
+      this.prettyStringBuilder.addText ( PRETTY_DOT );
+      this.prettyStringBuilder.addBreak ();
+      this.prettyStringBuilder
+          .addBuilder ( this.expressions [ 0 ]
+              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+              PRIO_LAMBDA_E );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

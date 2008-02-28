@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages ;
+package de.unisiegen.tpml.core.languages;
 
 
 /**
@@ -13,13 +13,14 @@ package de.unisiegen.tpml.core.languages ;
  */
 public final class NoSuchLanguageException extends Exception
 {
+
   //
   // Constants
   //
   /**
    * The unique serial version id of this class.
    */
-  private static final long serialVersionUID = 8717390857258643844L ;
+  private static final long serialVersionUID = 8717390857258643844L;
 
 
   //
@@ -33,8 +34,8 @@ public final class NoSuchLanguageException extends Exception
    * @param id the id of the language that could not be found.
    * @param e the exception leading to the error.
    */
-  NoSuchLanguageException ( String id , Throwable e )
+  NoSuchLanguageException ( String id, Throwable e )
   {
-    super ( "No such language \"" + id + "\"" , e ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    super ( "No such language \"" + id + "\"", e ); //$NON-NLS-1$ //$NON-NLS-2$
   }
 }

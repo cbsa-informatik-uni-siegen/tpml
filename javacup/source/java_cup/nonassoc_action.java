@@ -1,4 +1,4 @@
-package java_cup ;
+package java_cup;
 
 
 /**
@@ -12,13 +12,14 @@ package java_cup ;
  */
 public class nonassoc_action extends parse_action
 {
+
   /*-----------------------------------------------------------*/
   /*--- Constructor(s) ----------------------------------------*/
   /*-----------------------------------------------------------*/
   /**
    * Simple constructor.
    */
-  public nonassoc_action ( ) throws internal_error
+  public nonassoc_action () throws internal_error
   {
     /* don't need to set anything, since it signifies error */
   }
@@ -28,9 +29,9 @@ public class nonassoc_action extends parse_action
   /*--- General Methods ---------------------------------------*/
   /*-----------------------------------------------------------*/
   /** Quick access to type of action. */
-  public int kind ( )
+  public int kind ()
   {
-    return NONASSOC ;
+    return NONASSOC;
   }
 
 
@@ -38,7 +39,7 @@ public class nonassoc_action extends parse_action
   /** Equality test. */
   public boolean equals ( parse_action other )
   {
-    return other != null && other.kind ( ) == NONASSOC ;
+    return other != null && other.kind () == NONASSOC;
   }
 
 
@@ -47,24 +48,25 @@ public class nonassoc_action extends parse_action
   public boolean equals ( Object other )
   {
     if ( other instanceof parse_action )
-      return equals ( ( parse_action ) other ) ;
-    else return false ;
+      return equals ( ( parse_action ) other );
+    else
+      return false;
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Compute a hash code. */
-  public int hashCode ( )
+  public int hashCode ()
   {
     /* all objects of this class hash together */
-    return 0xCafe321 ;
+    return 0xCafe321;
   }
 
 
   /** Convert to string. */
-  public String toString ( )
+  public String toString ()
   {
-    return "NONASSOC" ;
+    return "NONASSOC";
   }
   /*-----------------------------------------------------------*/
 }

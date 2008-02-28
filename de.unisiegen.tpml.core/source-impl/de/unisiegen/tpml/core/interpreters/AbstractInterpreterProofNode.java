@@ -1,9 +1,9 @@
-package de.unisiegen.tpml.core.interpreters ;
+package de.unisiegen.tpml.core.interpreters;
 
 
-import de.unisiegen.tpml.core.AbstractExpressionProofNode ;
-import de.unisiegen.tpml.core.AbstractProofNode ;
-import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.AbstractExpressionProofNode;
+import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.expressions.Expression;
 
 
 /**
@@ -18,6 +18,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 public abstract class AbstractInterpreterProofNode extends
     AbstractExpressionProofNode implements InterpreterProofNode
 {
+
   //
   // Attributes
   //
@@ -27,7 +28,7 @@ public abstract class AbstractInterpreterProofNode extends
    * @see #getStore()
    * @see #setStore(Store)
    */
-  private Store store ;
+  private Store store;
 
 
   //
@@ -43,10 +44,10 @@ public abstract class AbstractInterpreterProofNode extends
    *           <code>store</code> is <code>null</code>.
    * @see AbstractProofNode#AbstractProofNode()
    */
-  protected AbstractInterpreterProofNode ( Expression pExpression , Store pStore )
+  protected AbstractInterpreterProofNode ( Expression pExpression, Store pStore )
   {
-    super ( pExpression ) ;
-    setStore ( pStore ) ;
+    super ( pExpression );
+    setStore ( pStore );
   }
 
 
@@ -58,9 +59,9 @@ public abstract class AbstractInterpreterProofNode extends
    * 
    * @see de.unisiegen.tpml.core.interpreters.InterpreterProofNode#getStore()
    */
-  public Store getStore ( )
+  public Store getStore ()
   {
-    return new DefaultStore ( ( DefaultStore ) this.store ) ;
+    return new DefaultStore ( ( DefaultStore ) this.store );
   }
 
 
@@ -75,8 +76,8 @@ public abstract class AbstractInterpreterProofNode extends
   {
     if ( pStore == null )
     {
-      throw new NullPointerException ( "store is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "store is null" ); //$NON-NLS-1$
     }
-    this.store = pStore ;
+    this.store = pStore;
   }
 }

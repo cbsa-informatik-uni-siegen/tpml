@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -12,20 +12,21 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public abstract class Value extends Expression
 {
+
   /**
    * {@inheritDoc}
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public abstract Value clone ( ) ;
+  @Override
+  public abstract Value clone ();
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public abstract String getCaption ( ) ;
+  @Override
+  public abstract String getCaption ();
 
 
   /**
@@ -34,14 +35,14 @@ public abstract class Value extends Expression
    * @return The prefix of this {@link Expression}.
    * @see #prefix
    */
-  @ Override
-  public String getPrefix ( )
+  @Override
+  public String getPrefix ()
   {
     if ( this.prefix == null )
     {
-      this.prefix = PREFIX_VALUE ;
+      this.prefix = PREFIX_VALUE;
     }
-    return this.prefix ;
+    return this.prefix;
   }
 
 
@@ -51,9 +52,9 @@ public abstract class Value extends Expression
    * 
    * @see Expression#isValue()
    */
-  @ Override
-  public final boolean isValue ( )
+  @Override
+  public final boolean isValue ()
   {
-    return true ;
+    return true;
   }
 }

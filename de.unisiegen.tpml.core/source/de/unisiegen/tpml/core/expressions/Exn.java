@@ -1,13 +1,13 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
 
 /**
@@ -21,34 +21,35 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  */
 public final class Exn extends Expression
 {
+
   /**
    * The unused string.
    */
-  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+  private static final String UNUSED = "unused"; //$NON-NLS-1$
 
 
   /**
    * The string for the <b>(EMPTY-LIST)</b> exception.
    */
-  private static final String EMPTY_LIST = "empty_list" ; //$NON-NLS-1$
+  private static final String EMPTY_LIST = "empty_list"; //$NON-NLS-1$
 
 
   /**
    * The string for the <b>(DIVIDE-BY-ZERO)</b> exception.
    */
-  private static final String DIVIDE_BY_ZERO = "divide_by_zero" ; //$NON-NLS-1$
+  private static final String DIVIDE_BY_ZERO = "divide_by_zero"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the name is null.
    */
-  private static final String NAME_NULL = "name is null" ; //$NON-NLS-1$
+  private static final String NAME_NULL = "name is null"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = Expression.getCaption ( Exn.class ) ;
+  private static final String CAPTION = Expression.getCaption ( Exn.class );
 
 
   /**
@@ -56,12 +57,12 @@ public final class Exn extends Expression
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_EXN , 1 , "\\mbox{\\color{" //$NON-NLS-1$
-        + LATEX_COLOR_EXPRESSION + "}{$\\uparrow$\\ #1}}" , "name" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_EXN, 1, "\\mbox{\\color{" //$NON-NLS-1$
+        + LATEX_COLOR_EXPRESSION + "}{$\\uparrow$\\ #1}}", "name" ) ); //$NON-NLS-1$//$NON-NLS-2$
+    return commands;
   }
 
 
@@ -70,9 +71,9 @@ public final class Exn extends Expression
    * 
    * @return A new <b>(DIVIDE-BY-ZERO)</b> exception.
    */
-  public static final Exn newDivideByZero ( )
+  public static final Exn newDivideByZero ()
   {
-    return new Exn ( DIVIDE_BY_ZERO ) ;
+    return new Exn ( DIVIDE_BY_ZERO );
   }
 
 
@@ -81,9 +82,9 @@ public final class Exn extends Expression
    * 
    * @return A new <b>(EMPTY-LIST)</b> exception.
    */
-  public static final Exn newEmptyList ( )
+  public static final Exn newEmptyList ()
   {
-    return new Exn ( EMPTY_LIST ) ;
+    return new Exn ( EMPTY_LIST );
   }
 
 
@@ -92,7 +93,7 @@ public final class Exn extends Expression
    * 
    * @see #toString()
    */
-  private String name ;
+  private String name;
 
 
   /**
@@ -106,9 +107,9 @@ public final class Exn extends Expression
   {
     if ( pName == null )
     {
-      throw new NullPointerException ( NAME_NULL ) ;
+      throw new NullPointerException ( NAME_NULL );
     }
-    this.name = pName ;
+    this.name = pName;
   }
 
 
@@ -118,10 +119,10 @@ public final class Exn extends Expression
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public Exn clone ( )
+  @Override
+  public Exn clone ()
   {
-    return this ;
+    return this;
   }
 
 
@@ -130,25 +131,25 @@ public final class Exn extends Expression
    * 
    * @see Expression#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof Exn )
     {
-      Exn other = ( Exn ) pObject ;
-      return this.name.equals ( other.name ) ;
+      Exn other = ( Exn ) pObject;
+      return this.name.equals ( other.name );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -157,12 +158,12 @@ public final class Exn extends Expression
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    return commands;
   }
 
 
@@ -171,9 +172,9 @@ public final class Exn extends Expression
    * 
    * @return the name of the exception.
    */
-  public String getName ( )
+  public String getName ()
   {
-    return this.name ;
+    return this.name;
   }
 
 
@@ -183,14 +184,14 @@ public final class Exn extends Expression
    * @return The prefix of this {@link Expression}.
    * @see #prefix
    */
-  @ Override
-  public String getPrefix ( )
+  @Override
+  public String getPrefix ()
   {
     if ( this.prefix == null )
     {
-      this.prefix = PREFIX_EXN ;
+      this.prefix = PREFIX_EXN;
     }
-    return this.prefix ;
+    return this.prefix;
   }
 
 
@@ -199,10 +200,10 @@ public final class Exn extends Expression
    * 
    * @see Expression#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.name.hashCode ( ) ;
+    return this.name.hashCode ();
   }
 
 
@@ -211,10 +212,10 @@ public final class Exn extends Expression
    * 
    * @see Expression#isException()
    */
-  @ Override
-  public boolean isException ( )
+  @Override
+  public boolean isException ()
   {
-    return true ;
+    return true;
   }
 
 
@@ -225,15 +226,15 @@ public final class Exn extends Expression
    * 
    * @see Expression#substitute(Identifier, Expression)
    */
-  @ Override
-  public Exn substitute ( @ SuppressWarnings ( UNUSED )
-  Identifier pId , Expression pExpression )
+  @Override
+  public Exn substitute ( @SuppressWarnings ( UNUSED )
+  Identifier pId, Expression pExpression )
   {
-    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    if ( pExpression.getIdentifierFreeNotOnlyVariable () )
     {
-      throw new NotOnlyFreeVariableException ( ) ;
+      throw new NotOnlyFreeVariableException ();
     }
-    return this ;
+    return this;
   }
 
 
@@ -242,15 +243,15 @@ public final class Exn extends Expression
    * 
    * @see Expression#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_EXN , LATEX_EXN , pIndent , this.toPrettyString ( ).toString ( ) ) ;
+        PRIO_EXN, LATEX_EXN, pIndent, this.toPrettyString ().toString () );
     builder.addText ( "{" //$NON-NLS-1$
-        + this.name.replaceAll ( "_" , "\\\\_" ) + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    return builder ;
+        + this.name.replaceAll ( "_", "\\\\_" ) + "}" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    return builder;
   }
 
 
@@ -259,18 +260,18 @@ public final class Exn extends Expression
    * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_EXN ) ;
-      this.prettyStringBuilder.addText ( PRETTY_EXCEPTION ) ;
-      this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
-      this.prettyStringBuilder.addText ( this.name ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_EXN );
+      this.prettyStringBuilder.addText ( PRETTY_EXCEPTION );
+      this.prettyStringBuilder.addText ( PRETTY_SPACE );
+      this.prettyStringBuilder.addText ( this.name );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

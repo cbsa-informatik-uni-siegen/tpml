@@ -1,18 +1,19 @@
-package de.unisiegen.tpml.core.languages.l0 ;
+package de.unisiegen.tpml.core.languages.l0;
 
 
-import java.io.Reader ;
-import java_cup.runtime.lr_parser ;
-import de.unisiegen.tpml.core.Messages ;
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.languages.AbstractLanguage ;
-import de.unisiegen.tpml.core.languages.AbstractLanguageTranslator ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.core.languages.LanguageParser ;
-import de.unisiegen.tpml.core.languages.LanguageScanner ;
-import de.unisiegen.tpml.core.languages.LanguageTranslator ;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
+import java.io.Reader;
+
+import java_cup.runtime.lr_parser;
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.languages.AbstractLanguage;
+import de.unisiegen.tpml.core.languages.AbstractLanguageTranslator;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageParser;
+import de.unisiegen.tpml.core.languages.LanguageScanner;
+import de.unisiegen.tpml.core.languages.LanguageTranslator;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 
 
 /**
@@ -29,18 +30,19 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
  */
 public class L0Language extends AbstractLanguage
 {
+
   /**
    * The group id for proof rules of this language.
    * 
    * @see de.unisiegen.tpml.core.AbstractProofRule#getGroup()
    */
-  public static final int L0 = 0 ;
+  public static final int L0 = 0;
 
 
   /**
    * Allocates a new <code>L0Language</code> instance.
    */
-  public L0Language ( )
+  public L0Language ()
   {
     // nothing to do here...
   }
@@ -51,9 +53,9 @@ public class L0Language extends AbstractLanguage
    * 
    * @see Language#getDescription()
    */
-  public String getDescription ( )
+  public String getDescription ()
   {
-    return Messages.getString ( "L0Language.0" ) ; //$NON-NLS-1$
+    return Messages.getString ( "L0Language.0" ); //$NON-NLS-1$
   }
 
 
@@ -62,9 +64,9 @@ public class L0Language extends AbstractLanguage
    * 
    * @see Language#getName()
    */
-  public String getName ( )
+  public String getName ()
   {
-    return "L0" ; //$NON-NLS-1$
+    return "L0"; //$NON-NLS-1$
   }
 
 
@@ -73,9 +75,9 @@ public class L0Language extends AbstractLanguage
    * 
    * @see Language#getTitle()
    */
-  public int getId ( )
+  public int getId ()
   {
-    return L0Language.L0 ;
+    return L0Language.L0;
   }
 
 
@@ -84,9 +86,9 @@ public class L0Language extends AbstractLanguage
    * 
    * @see Language#getTitle()
    */
-  public String getTitle ( )
+  public String getTitle ()
   {
-    return Messages.getString ( "L0Language.1" ) ; //$NON-NLS-1$
+    return Messages.getString ( "L0Language.1" ); //$NON-NLS-1$
   }
 
 
@@ -97,8 +99,8 @@ public class L0Language extends AbstractLanguage
    */
   public BigStepProofModel newBigStepProofModel ( Expression expression )
   {
-    return new BigStepProofModel ( expression , new L0BigStepProofRuleSet (
-        this ) ) ;
+    return new BigStepProofModel ( expression,
+        new L0BigStepProofRuleSet ( this ) );
   }
 
 
@@ -109,8 +111,8 @@ public class L0Language extends AbstractLanguage
    */
   public SmallStepProofModel newSmallStepProofModel ( Expression expression )
   {
-    return new SmallStepProofModel ( expression , new L0SmallStepProofRuleSet (
-        this ) ) ;
+    return new SmallStepProofModel ( expression, new L0SmallStepProofRuleSet (
+        this ) );
   }
 
 
@@ -123,16 +125,17 @@ public class L0Language extends AbstractLanguage
   {
     if ( scanner == null )
     {
-      throw new NullPointerException ( "scanner is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "scanner is null" ); //$NON-NLS-1$
     }
-    final lr_parser parser = new L0Parser ( scanner ) ;
-    return new LanguageParser ( )
+    final lr_parser parser = new L0Parser ( scanner );
+    return new LanguageParser ()
     {
-      public Expression parse ( ) throws Exception
+
+      public Expression parse () throws Exception
       {
-        return ( Expression ) parser.parse ( ).value ;
+        return ( Expression ) parser.parse ().value;
       }
-    } ;
+    };
   }
 
 
@@ -145,9 +148,9 @@ public class L0Language extends AbstractLanguage
   {
     if ( reader == null )
     {
-      throw new NullPointerException ( "reader is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "reader is null" ); //$NON-NLS-1$
     }
-    return new L0Scanner ( reader ) ;
+    return new L0Scanner ( reader );
   }
 
 
@@ -156,13 +159,12 @@ public class L0Language extends AbstractLanguage
    * 
    * @see Language#newTranslator()
    */
-  public LanguageTranslator newTranslator ( )
+  public LanguageTranslator newTranslator ()
   {
-    return new AbstractLanguageTranslator ( )
+    return new AbstractLanguageTranslator ()
     {
       // Nothing do do
-    } ;
+    };
   }
-  
- 
+
 }

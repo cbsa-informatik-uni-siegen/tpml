@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -12,24 +12,25 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class Not extends UnaryOperator
 {
+
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = Expression.getCaption ( Not.class ) ;
+  private static final String CAPTION = Expression.getCaption ( Not.class );
 
 
   /**
    * The keyword <code>not</code>.
    */
-  private static final String NOT = "not" ; //$NON-NLS-1$
+  private static final String NOT = "not"; //$NON-NLS-1$
 
 
   /**
    * Allocates a new <code>Not</code> operator.
    */
-  public Not ( )
+  public Not ()
   {
-    super ( NOT ) ;
+    super ( NOT );
   }
 
 
@@ -41,11 +42,11 @@ public final class Not extends UnaryOperator
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Not ( int pParserStartOffset , int pParserEndOffset )
+  public Not ( int pParserStartOffset, int pParserEndOffset )
   {
-    this ( ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ();
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -54,18 +55,18 @@ public final class Not extends UnaryOperator
    * 
    * @see UnaryOperator#applyTo(Expression)
    */
-  @ Override
+  @Override
   public Expression applyTo ( Expression pExpression )
       throws UnaryOperatorException
   {
     try
     {
       return new BooleanConstant ( ! ( ( BooleanConstant ) pExpression )
-          .booleanValue ( ) ) ;
+          .booleanValue () );
     }
     catch ( ClassCastException cause )
     {
-      throw new UnaryOperatorException ( this , pExpression , cause ) ;
+      throw new UnaryOperatorException ( this, pExpression, cause );
     }
   }
 
@@ -75,19 +76,19 @@ public final class Not extends UnaryOperator
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public Not clone ( )
+  @Override
+  public Not clone ()
   {
-    return new Not ( ) ;
+    return new Not ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

@@ -1,22 +1,23 @@
-package de.unisiegen.tpml.graphics.bigstep ;
+package de.unisiegen.tpml.graphics.bigstep;
 
 
-import java.awt.Color ;
-import java.awt.GridBagConstraints ;
-import java.awt.GridBagLayout ;
-import java.awt.Insets ;
-import java.awt.event.ComponentAdapter ;
-import java.awt.event.ComponentEvent ;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.JComponent;
-import javax.swing.JPanel ;
-import javax.swing.JScrollPane ;
-import javax.swing.JSplitPane ;
-import de.unisiegen.tpml.core.ProofGuessException ;
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
-import de.unisiegen.tpml.graphics.AbstractProofView ;
-import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
-import de.unisiegen.tpml.graphics.outline.Outline ;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+
+import de.unisiegen.tpml.core.ProofGuessException;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.graphics.AbstractProofView;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline;
+import de.unisiegen.tpml.graphics.outline.Outline;
 
 
 /**
@@ -30,28 +31,29 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
  */
 public class BigStepView extends AbstractProofView
 {
+
   /**
    * The unique serialization identifier for this class.
    */
-  private static final long serialVersionUID = - 8529052541636149376L ;
+  private static final long serialVersionUID = -8529052541636149376L;
 
 
   /**
    * The <code>BigStep</code> component.
    */
-  protected BigStepComponent component ;
+  protected BigStepComponent component;
 
 
   /**
    * The <code>JScrollPane</code> for the <code>component</code>.
    */
-  protected JScrollPane scrollPane ;
+  protected JScrollPane scrollPane;
 
 
   /**
    * The <code>JSplitPane</code> for the <code>component</code>.
    */
-  private JSplitPane jSplitPane ;
+  private JSplitPane jSplitPane;
 
 
   /**
@@ -59,13 +61,13 @@ public class BigStepView extends AbstractProofView
    * 
    * @see #getOutline()
    */
-  private Outline outline ;
+  private Outline outline;
 
 
   /**
    * The {@link BigStepProofModel}.
    */
-  private BigStepProofModel bigStepProofModel ;
+  private BigStepProofModel bigStepProofModel;
 
 
   /**
@@ -77,43 +79,44 @@ public class BigStepView extends AbstractProofView
    */
   public BigStepView ( BigStepProofModel pBigStepProofModel )
   {
-    super ( ) ;
-    this.bigStepProofModel = pBigStepProofModel ;
-    GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
-    this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
-    this.setLayout ( new GridBagLayout ( ) ) ;
-    this.scrollPane = new JScrollPane ( ) ;
-    this.component = new BigStepComponent ( this.bigStepProofModel ) ;
-    this.scrollPane.setViewportView ( this.component ) ;
-    //this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
-    this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
-    this.scrollPane.getViewport().setOpaque(true);
-    this.scrollPane.addComponentListener ( new ComponentAdapter ( )
+    super ();
+    this.bigStepProofModel = pBigStepProofModel;
+    GridBagConstraints gridBagConstraints = new GridBagConstraints ();
+    this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT );
+    this.setLayout ( new GridBagLayout () );
+    this.scrollPane = new JScrollPane ();
+    this.component = new BigStepComponent ( this.bigStepProofModel );
+    this.scrollPane.setViewportView ( this.component );
+    // this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
+    this.scrollPane.getViewport ().setBackground ( Color.WHITE );
+    this.scrollPane.getViewport ().setOpaque ( true );
+    this.scrollPane.addComponentListener ( new ComponentAdapter ()
     {
-      @ Override
-      public void componentResized ( @ SuppressWarnings ( "unused" )
+
+      @Override
+      public void componentResized ( @SuppressWarnings ( "unused" )
       ComponentEvent event )
       {
         BigStepView.this.component
-            .setAvailableWidth ( BigStepView.this.scrollPane.getViewport ( )
-                .getWidth ( ) ) ;
+            .setAvailableWidth ( BigStepView.this.scrollPane.getViewport ()
+                .getWidth () );
       }
-    } ) ;
-    this.outline = new DefaultOutline ( this ) ;
-    this.outline.load ( this.bigStepProofModel.getRoot ( )
-        .getLastLeaf ( ).getExpression ( ) , Outline.ExecuteInit.BIGSTEP ) ;
-    JPanel jPanelOutline = this.outline.getPanel ( ) ;
-    this.jSplitPane.setLeftComponent ( this.scrollPane ) ;
-    this.jSplitPane.setRightComponent ( jPanelOutline ) ;
-    this.jSplitPane.setOneTouchExpandable ( true ) ;
-    this.jSplitPane.setResizeWeight ( 0.5 ) ;
-    gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
-    gridBagConstraints.gridx = 0 ;
-    gridBagConstraints.gridy = 0 ;
-    gridBagConstraints.weightx = 10 ;
-    gridBagConstraints.weighty = 10 ;
-    this.add ( this.jSplitPane , gridBagConstraints ) ;
+    } );
+    this.outline = new DefaultOutline ( this );
+    this.outline.load ( this.bigStepProofModel.getRoot ().getLastLeaf ()
+        .getExpression (), Outline.ExecuteInit.BIGSTEP );
+    JPanel jPanelOutline = this.outline.getPanel ();
+    this.jSplitPane.setLeftComponent ( this.scrollPane );
+    this.jSplitPane.setRightComponent ( jPanelOutline );
+    this.jSplitPane.setOneTouchExpandable ( true );
+    this.jSplitPane.setResizeWeight ( 0.5 );
+    gridBagConstraints.fill = GridBagConstraints.BOTH;
+    gridBagConstraints.insets = new Insets ( 0, 0, 0, 0 );
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.weightx = 10;
+    gridBagConstraints.weighty = 10;
+    this.add ( this.jSplitPane, gridBagConstraints );
   }
 
 
@@ -123,9 +126,9 @@ public class BigStepView extends AbstractProofView
    * @return The bigStepProofModel.
    * @see #bigStepProofModel
    */
-  public BigStepProofModel getBigStepProofModel ( )
+  public BigStepProofModel getBigStepProofModel ()
   {
-    return this.bigStepProofModel ;
+    return this.bigStepProofModel;
   }
 
 
@@ -135,9 +138,9 @@ public class BigStepView extends AbstractProofView
    * @return The jSplitPane.
    * @see #jSplitPane
    */
-  public JSplitPane getJSplitPane ( )
+  public JSplitPane getJSplitPane ()
   {
-    return this.jSplitPane ;
+    return this.jSplitPane;
   }
 
 
@@ -146,9 +149,9 @@ public class BigStepView extends AbstractProofView
    * 
    * @return The <code>Outline</code> of this view.
    */
-  public Outline getOutline ( )
+  public Outline getOutline ()
   {
-    return this.outline ;
+    return this.outline;
   }
 
 
@@ -157,13 +160,14 @@ public class BigStepView extends AbstractProofView
    * 
    * @see de.unisiegen.tpml.graphics.ProofView#guess()
    */
-  public void guess ( ) throws IllegalStateException , ProofGuessException
+  public void guess () throws IllegalStateException, ProofGuessException
   {
-    this.component.guess ( ) ;
+    this.component.guess ();
   }
 
 
-public JComponent getPrintPart() {
-	return (JComponent)component.clone();
-}
+  public JComponent getPrintPart ()
+  {
+    return ( JComponent ) component.clone ();
+  }
 }

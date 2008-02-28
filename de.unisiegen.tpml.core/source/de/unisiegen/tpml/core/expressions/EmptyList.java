@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -13,25 +13,26 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class EmptyList extends Constant
 {
+
   /**
    * The keyword <code>[]</code>.
    */
-  private static final String BRACKETBRACKET = "[]" ; //$NON-NLS-1$
+  private static final String BRACKETBRACKET = "[]"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
   private static final String CAPTION = Expression
-      .getCaption ( EmptyList.class ) ;
+      .getCaption ( EmptyList.class );
 
 
   /**
    * Allocates a new <code>EmptyList</code> instance.
    */
-  public EmptyList ( )
+  public EmptyList ()
   {
-    super ( BRACKETBRACKET ) ;
+    super ( BRACKETBRACKET );
   }
 
 
@@ -43,11 +44,11 @@ public final class EmptyList extends Constant
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public EmptyList ( int pParserStartOffset , int pParserEndOffset )
+  public EmptyList ( int pParserStartOffset, int pParserEndOffset )
   {
-    this ( ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ();
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -56,19 +57,19 @@ public final class EmptyList extends Constant
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public EmptyList clone ( )
+  @Override
+  public EmptyList clone ()
   {
-    return new EmptyList ( ) ;
+    return new EmptyList ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

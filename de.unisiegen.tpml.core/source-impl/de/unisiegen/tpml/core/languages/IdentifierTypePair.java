@@ -1,8 +1,8 @@
-package de.unisiegen.tpml.core.languages ;
+package de.unisiegen.tpml.core.languages;
 
 
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.types.MonoType;
 
 
 /**
@@ -12,16 +12,17 @@ import de.unisiegen.tpml.core.types.MonoType ;
  */
 public class IdentifierTypePair
 {
+
   /**
    * The {@link Identifier}.
    */
-  private Identifier id ;
+  private Identifier id;
 
 
   /**
    * The {@link MonoType}.
    */
-  private MonoType tau ;
+  private MonoType tau;
 
 
   /**
@@ -30,10 +31,10 @@ public class IdentifierTypePair
    * @param pId The input {@link Identifier}.
    * @param pTau The input {@link MonoType}.
    */
-  public IdentifierTypePair ( Identifier pId , MonoType pTau )
+  public IdentifierTypePair ( Identifier pId, MonoType pTau )
   {
-    this.id = pId ;
-    this.tau = pTau ;
+    this.id = pId;
+    this.tau = pTau;
   }
 
 
@@ -43,9 +44,9 @@ public class IdentifierTypePair
    * @return The id.
    * @see #id
    */
-  public Identifier getId ( )
+  public Identifier getId ()
   {
-    return this.id ;
+    return this.id;
   }
 
 
@@ -55,8 +56,8 @@ public class IdentifierTypePair
    * @return The tau.
    * @see #tau
    */
-  public MonoType getTau ( )
+  public MonoType getTau ()
   {
-    return this.tau ;
+    return this.tau;
   }
 }

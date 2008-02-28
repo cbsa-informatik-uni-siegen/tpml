@@ -1,4 +1,4 @@
-package java_cup ;
+package java_cup;
 
 
 /**
@@ -14,13 +14,14 @@ package java_cup ;
  */
 public abstract class production_part
 {
+
   /*-----------------------------------------------------------*/
   /*--- Constructor(s) ----------------------------------------*/
   /*-----------------------------------------------------------*/
   /** Simple constructor. */
   public production_part ( String lab )
   {
-    _label = lab ;
+    _label = lab;
   }
 
 
@@ -31,16 +32,16 @@ public abstract class production_part
    * Optional label for referring to the part within an action (null for no
    * label).
    */
-  protected String _label ;
+  protected String _label;
 
 
   /**
    * Optional label for referring to the part within an action (null for no
    * label).
    */
-  public String label ( )
+  public String label ()
   {
-    return _label ;
+    return _label;
   }
 
 
@@ -51,18 +52,20 @@ public abstract class production_part
    * Indicate if this is an action (rather than a symbol). Here in the base
    * class, we don't this know yet, so its an abstract method.
    */
-  public abstract boolean is_action ( ) ;
+  public abstract boolean is_action ();
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Equality comparison. */
   public boolean equals ( production_part other )
   {
-    if ( other == null ) return false ;
+    if ( other == null )
+      return false;
     /* compare the labels */
-    if ( label ( ) != null )
-      return label ( ).equals ( other.label ( ) ) ;
-    else return other.label ( ) == null ;
+    if ( label () != null )
+      return label ().equals ( other.label () );
+    else
+      return other.label () == null;
   }
 
 
@@ -71,26 +74,28 @@ public abstract class production_part
   public boolean equals ( Object other )
   {
     if ( ! ( other instanceof production_part ) )
-      return false ;
-    else return equals ( ( production_part ) other ) ;
+      return false;
+    else
+      return equals ( ( production_part ) other );
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Produce a hash code. */
-  public int hashCode ( )
+  public int hashCode ()
   {
-    return label ( ) == null ? 0 : label ( ).hashCode ( ) ;
+    return label () == null ? 0 : label ().hashCode ();
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Convert to a string. */
-  public String toString ( )
+  public String toString ()
   {
-    if ( label ( ) != null )
-      return label ( ) + ":" ;
-    else return " " ;
+    if ( label () != null )
+      return label () + ":";
+    else
+      return " ";
   }
   /*-----------------------------------------------------------*/
 }

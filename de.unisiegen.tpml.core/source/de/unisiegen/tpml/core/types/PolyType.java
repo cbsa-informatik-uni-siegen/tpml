@@ -1,22 +1,23 @@
-package de.unisiegen.tpml.core.types ;
+package de.unisiegen.tpml.core.types;
 
 
-import java.util.ArrayList ;
-import java.util.Iterator ;
-import java.util.Set ;
-import java.util.TreeSet ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.typechecker.TypeUtilities ;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
+
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.TypeUtilities;
 
 
 /**
@@ -30,35 +31,36 @@ import de.unisiegen.tpml.core.typechecker.TypeUtilities ;
  */
 public final class PolyType extends Type implements DefaultTypes
 {
+
   /**
    * String for the case that the quantified variables are null.
    */
-  private static final String QUANTIFIED_VARIABLES_NULL = "quantified variables are null" ; //$NON-NLS-1$
+  private static final String QUANTIFIED_VARIABLES_NULL = "quantified variables are null"; //$NON-NLS-1$
 
 
   /**
    * String for the case that the type substitution is null.
    */
-  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null" ; //$NON-NLS-1$
+  private static final String TYPE_SUBSTITUTION_NULL = "type substitution is null"; //$NON-NLS-1$
 
 
   /**
    * Indeces of the child {@link Type}s.
    */
-  private static final int [ ] INDICES_TYPE = new int [ ]
-  { - 1 } ;
+  private static final int [] INDICES_TYPE = new int []
+  { -1 };
 
 
   /**
    * String for the case that tau is null.
    */
-  private static final String TAU_NULL = "tau is null" ; //$NON-NLS-1$
+  private static final String TAU_NULL = "tau is null"; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Type}.
    */
-  private static final String CAPTION = Type.getCaption ( PolyType.class ) ;
+  private static final String CAPTION = Type.getCaption ( PolyType.class );
 
 
   /**
@@ -66,16 +68,16 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_POLY_TYPE , 2 ,
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_POLY_TYPE, 2,
         "\\ifthenelse{\\equal{#1}{}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
             + "{\\color{" + LATEX_COLOR_EXPRESSION + "}#2}" //$NON-NLS-1$ //$NON-NLS-2$
             + LATEX_LINE_BREAK_NEW_COMMAND + "{\\color{" //$NON-NLS-1$
-            + LATEX_COLOR_EXPRESSION + "}#1.#2}" , //$NON-NLS-1$
-        "forall tvar1, ..., tvarn" , "tau" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    return commands ;
+            + LATEX_COLOR_EXPRESSION + "}#1.#2}", //$NON-NLS-1$
+        "forall tvar1, ..., tvarn", "tau" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    return commands;
   }
 
 
@@ -84,11 +86,11 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.IFTHEN ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.IFTHEN );
+    return packages;
   }
 
 
@@ -97,13 +99,13 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @see #getQuantifiedVariables()
    */
-  private Set < TypeVariable > quantifiedVariables ;
+  private Set < TypeVariable > quantifiedVariables;
 
 
   /**
    * The children {@link Type}s of this {@link Type}.
    */
-  private MonoType [ ] types ;
+  private MonoType [] types;
 
 
   /**
@@ -118,20 +120,20 @@ public final class PolyType extends Type implements DefaultTypes
    *           <code>pTau</code> is <code>null</code>.
    * @see MonoType
    */
-  public PolyType ( Set < TypeVariable > pQuantifiedVariables , MonoType pTau )
+  public PolyType ( Set < TypeVariable > pQuantifiedVariables, MonoType pTau )
   {
     if ( pQuantifiedVariables == null )
     {
-      throw new NullPointerException ( QUANTIFIED_VARIABLES_NULL ) ;
+      throw new NullPointerException ( QUANTIFIED_VARIABLES_NULL );
     }
     if ( pTau == null )
     {
-      throw new NullPointerException ( TAU_NULL ) ;
+      throw new NullPointerException ( TAU_NULL );
     }
-    this.quantifiedVariables = pQuantifiedVariables ;
-    this.types = new MonoType [ ]
-    { pTau } ;
-    this.types [ 0 ].setParent ( this ) ;
+    this.quantifiedVariables = pQuantifiedVariables;
+    this.types = new MonoType []
+    { pTau };
+    this.types [ 0 ].setParent ( this );
   }
 
 
@@ -140,16 +142,16 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @see Type#clone()
    */
-  @ Override
-  public PolyType clone ( )
+  @Override
+  public PolyType clone ()
   {
-    Set < TypeVariable > newQuantifiedVariables = new TreeSet < TypeVariable > ( ) ;
-    Iterator < TypeVariable > it = this.quantifiedVariables.iterator ( ) ;
-    while ( it.hasNext ( ) )
+    Set < TypeVariable > newQuantifiedVariables = new TreeSet < TypeVariable > ();
+    Iterator < TypeVariable > it = this.quantifiedVariables.iterator ();
+    while ( it.hasNext () )
     {
-      newQuantifiedVariables.add ( it.next ( ) ) ;
+      newQuantifiedVariables.add ( it.next () );
     }
-    return new PolyType ( newQuantifiedVariables , this.types [ 0 ].clone ( ) ) ;
+    return new PolyType ( newQuantifiedVariables, this.types [ 0 ].clone () );
   }
 
 
@@ -158,26 +160,26 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @see Object#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof PolyType )
     {
-      PolyType other = ( PolyType ) pObject ;
+      PolyType other = ( PolyType ) pObject;
       return ( this.quantifiedVariables.equals ( other.quantifiedVariables ) && this.types [ 0 ]
-          .equals ( other.types [ 0 ] ) ) ;
+          .equals ( other.types [ 0 ] ) );
     }
-    return false ;
+    return false;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 
 
@@ -186,13 +188,13 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  @ Override
-  public LatexCommandList getLatexCommands ( )
+  @Override
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = super.getLatexCommands ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    commands.add ( this.quantifiedVariables ) ;
-    return commands ;
+    LatexCommandList commands = super.getLatexCommands ();
+    commands.add ( getLatexCommandsStatic () );
+    commands.add ( this.quantifiedVariables );
+    return commands;
   }
 
 
@@ -201,12 +203,12 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  @ Override
-  public LatexPackageList getLatexPackages ( )
+  @Override
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = super.getLatexPackages ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
-    return packages ;
+    LatexPackageList packages = super.getLatexPackages ();
+    packages.add ( getLatexPackagesStatic () );
+    return packages;
   }
 
 
@@ -215,9 +217,9 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @return the quantified type variables.
    */
-  public Set < TypeVariable > getQuantifiedVariables ( )
+  public Set < TypeVariable > getQuantifiedVariables ()
   {
-    return this.quantifiedVariables ;
+    return this.quantifiedVariables;
   }
 
 
@@ -226,9 +228,9 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @return the monomorphic type.
    */
-  public MonoType getTau ( )
+  public MonoType getTau ()
   {
-    return this.types [ 0 ] ;
+    return this.types [ 0 ];
   }
 
 
@@ -237,9 +239,9 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @return the sub {@link Type}s.
    */
-  public MonoType [ ] getTypes ( )
+  public MonoType [] getTypes ()
   {
-    return this.types ;
+    return this.types;
   }
 
 
@@ -248,9 +250,9 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @return The indices of the child {@link Type}s.
    */
-  public int [ ] getTypesIndex ( )
+  public int [] getTypesIndex ()
   {
-    return INDICES_TYPE ;
+    return INDICES_TYPE;
   }
 
 
@@ -259,14 +261,13 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @see Type#getTypeVariablesFree()
    */
-  @ Override
-  public ArrayList < TypeVariable > getTypeVariablesFree ( )
+  @Override
+  public ArrayList < TypeVariable > getTypeVariablesFree ()
   {
     if ( this.typeVariablesFree == null )
     {
-      this.typeVariablesFree = new ArrayList < TypeVariable > ( ) ;
-      this.typeVariablesFree
-          .addAll ( this.types [ 0 ].getTypeVariablesFree ( ) ) ;
+      this.typeVariablesFree = new ArrayList < TypeVariable > ();
+      this.typeVariablesFree.addAll ( this.types [ 0 ].getTypeVariablesFree () );
       for ( TypeVariable tvar : this.quantifiedVariables )
       {
         while ( this.typeVariablesFree.remove ( tvar ) )
@@ -275,7 +276,7 @@ public final class PolyType extends Type implements DefaultTypes
         }
       }
     }
-    return this.typeVariablesFree ;
+    return this.typeVariablesFree;
   }
 
 
@@ -284,10 +285,10 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @see Object#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.quantifiedVariables.hashCode ( ) + this.types [ 0 ].hashCode ( ) ;
+    return this.quantifiedVariables.hashCode () + this.types [ 0 ].hashCode ();
   }
 
 
@@ -301,11 +302,11 @@ public final class PolyType extends Type implements DefaultTypes
    * @param pTau The {@link MonoType}.
    * @return The resulting {@link Type}.
    */
-  @ Override
-  public PolyType substitute ( TypeName pTypeName , MonoType pTau )
+  @Override
+  public PolyType substitute ( TypeName pTypeName, MonoType pTau )
   {
-    MonoType newTau = this.types [ 0 ].substitute ( pTypeName , pTau ) ;
-    return new PolyType ( this.quantifiedVariables , newTau ) ;
+    MonoType newTau = this.types [ 0 ].substitute ( pTypeName, pTau );
+    return new PolyType ( this.quantifiedVariables, newTau );
   }
 
 
@@ -314,39 +315,39 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @see Type#substitute(TypeSubstitution)
    */
-  @ Override
+  @Override
   public PolyType substitute ( TypeSubstitution pTypeSubstitution )
   {
     if ( pTypeSubstitution == null )
     {
-      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL ) ;
+      throw new NullPointerException ( TYPE_SUBSTITUTION_NULL );
     }
     // determine the monomorphic type
-    MonoType newTau = this.types [ 0 ] ;
+    MonoType newTau = this.types [ 0 ];
     // perform a bound rename on the type variables
-    TreeSet < TypeVariable > newQuantifiedVariables = new TreeSet < TypeVariable > ( ) ;
+    TreeSet < TypeVariable > newQuantifiedVariables = new TreeSet < TypeVariable > ();
     for ( TypeVariable tvar : this.quantifiedVariables )
     {
       // generate a type variable that is not present in the substitution
-      TypeVariable tvarn = tvar ;
-      while ( ! tvarn.substitute ( pTypeSubstitution ).equals ( tvarn ) )
+      TypeVariable tvarn = tvar;
+      while ( !tvarn.substitute ( pTypeSubstitution ).equals ( tvarn ) )
       {
-        tvarn = new TypeVariable ( tvarn.getIndex ( ) , tvarn.getOffset ( ) + 1 ) ;
+        tvarn = new TypeVariable ( tvarn.getIndex (), tvarn.getOffset () + 1 );
       }
       // check if we had to generate a new type variable
-      if ( ! tvar.equals ( tvarn ) )
+      if ( !tvar.equals ( tvarn ) )
       {
         // substitute tvarn for tvar in tau
-        newTau = newTau.substitute ( TypeUtilities.newSubstitution ( tvar ,
-            tvarn ) ) ;
+        newTau = newTau.substitute ( TypeUtilities.newSubstitution ( tvar,
+            tvarn ) );
       }
       // add the type variable to the set
-      newQuantifiedVariables.add ( tvarn ) ;
+      newQuantifiedVariables.add ( tvarn );
     }
     // apply the substitution to the monomorphic type
-    newTau = newTau.substitute ( pTypeSubstitution ) ;
+    newTau = newTau.substitute ( pTypeSubstitution );
     // generate the polymorphic type
-    return new PolyType ( newQuantifiedVariables , newTau ) ;
+    return new PolyType ( newQuantifiedVariables, newTau );
   }
 
 
@@ -355,75 +356,75 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @see Type#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
-  @ Override
+  @Override
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    StringBuilder body = new StringBuilder ( ) ;
-    if ( ! this.quantifiedVariables.isEmpty ( ) )
+    StringBuilder body = new StringBuilder ();
+    if ( !this.quantifiedVariables.isEmpty () )
     {
-      body.append ( PRETTY_FORALL ) ;
-      for ( Iterator < TypeVariable > it = this.quantifiedVariables.iterator ( ) ; it
-          .hasNext ( ) ; )
+      body.append ( PRETTY_FORALL );
+      for ( Iterator < TypeVariable > it = this.quantifiedVariables.iterator () ; it
+          .hasNext () ; )
       {
-        body.append ( it.next ( ).toPrettyString ( ).toString ( ) ) ;
-        if ( it.hasNext ( ) )
+        body.append ( it.next ().toPrettyString ().toString () );
+        if ( it.hasNext () )
         {
-          body.append ( PRETTY_COMMA ) ;
-          body.append ( PRETTY_SPACE ) ;
+          body.append ( PRETTY_COMMA );
+          body.append ( PRETTY_SPACE );
         }
       }
     }
     else
     {
-      body.append ( LATEX_NO_QUANTIFIED_VARIABLES ) ;
+      body.append ( LATEX_NO_QUANTIFIED_VARIABLES );
     }
-    String descriptions[] = new String [ 2 + this.quantifiedVariables.size ( )
-        + this.types.length ] ;
-    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
-    descriptions [ 1 ] = body.toString ( ) ;
-    int count = 2 ;
-    for ( Iterator < TypeVariable > it = this.quantifiedVariables.iterator ( ) ; it
-        .hasNext ( ) ; )
+    String descriptions[] = new String [ 2 + this.quantifiedVariables.size ()
+        + this.types.length ];
+    descriptions [ 0 ] = this.toPrettyString ().toString ();
+    descriptions [ 1 ] = body.toString ();
+    int count = 2;
+    for ( Iterator < TypeVariable > it = this.quantifiedVariables.iterator () ; it
+        .hasNext () ; )
     {
-      descriptions [ count ] = it.next ( ).toPrettyString ( ).toString ( ) ;
-      count ++ ;
+      descriptions [ count ] = it.next ().toPrettyString ().toString ();
+      count++ ;
     }
     descriptions [ descriptions.length - 1 ] = this.types [ 0 ]
-        .toPrettyString ( ).toString ( ) ;
+        .toPrettyString ().toString ();
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
-        PRIO_POLY , LATEX_POLY_TYPE , pIndent , descriptions ) ;
-    if ( ! this.quantifiedVariables.isEmpty ( ) )
+        PRIO_POLY, LATEX_POLY_TYPE, pIndent, descriptions );
+    if ( !this.quantifiedVariables.isEmpty () )
     {
-      builder.addBuilderBegin ( ) ;
-      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addBuilderBegin ();
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
           + LATEX_INDENT )
-          + LATEX_FORALL ) ;
-      for ( Iterator < TypeVariable > it = this.quantifiedVariables.iterator ( ) ; it
-          .hasNext ( ) ; )
+          + LATEX_FORALL );
+      for ( Iterator < TypeVariable > it = this.quantifiedVariables.iterator () ; it
+          .hasNext () ; )
       {
-        builder.addBuilder ( it.next ( ).toLatexStringBuilder (
-            pLatexStringBuilderFactory , pIndent + LATEX_INDENT * 2 ) , 0 ) ;
-        if ( it.hasNext ( ) )
+        builder.addBuilder ( it.next ().toLatexStringBuilder (
+            pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ), 0 );
+        if ( it.hasNext () )
         {
-          builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+          builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
           builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
               + LATEX_INDENT )
-              + LATEX_COMMA ) ;
-          builder.addText ( LATEX_SPACE ) ;
+              + LATEX_COMMA );
+          builder.addText ( LATEX_SPACE );
         }
       }
-      builder.addBuilderEnd ( ) ;
-      this.prettyStringBuilder.addBreak ( ) ;
+      builder.addBuilderEnd ();
+      this.prettyStringBuilder.addBreak ();
     }
     else
     {
-      builder.addEmptyBuilder ( ) ;
+      builder.addEmptyBuilder ();
     }
     builder.addBuilder ( this.types [ 0 ].toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , PRIO_POLY_TAU ) ;
-    return builder ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), PRIO_POLY_TAU );
+    return builder;
   }
 
 
@@ -432,35 +433,36 @@ public final class PolyType extends Type implements DefaultTypes
    * 
    * @see Type#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  @ Override
+  @Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_POLY ) ;
-      if ( ! this.quantifiedVariables.isEmpty ( ) )
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this,
+          PRIO_POLY );
+      if ( !this.quantifiedVariables.isEmpty () )
       {
-        this.prettyStringBuilder.addText ( PRETTY_FORALL ) ;
+        this.prettyStringBuilder.addText ( PRETTY_FORALL );
         for ( Iterator < TypeVariable > it = this.quantifiedVariables
-            .iterator ( ) ; it.hasNext ( ) ; )
+            .iterator () ; it.hasNext () ; )
         {
-          this.prettyStringBuilder.addBuilder ( it.next ( )
-              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-          if ( it.hasNext ( ) )
+          this.prettyStringBuilder.addBuilder ( it.next ()
+              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+          if ( it.hasNext () )
           {
-            this.prettyStringBuilder.addText ( PRETTY_COMMA ) ;
-            this.prettyStringBuilder.addText ( PRETTY_SPACE ) ;
+            this.prettyStringBuilder.addText ( PRETTY_COMMA );
+            this.prettyStringBuilder.addText ( PRETTY_SPACE );
           }
         }
-        this.prettyStringBuilder.addText ( PRETTY_DOT ) ;
-        this.prettyStringBuilder.addBreak ( ) ;
+        this.prettyStringBuilder.addText ( PRETTY_DOT );
+        this.prettyStringBuilder.addBreak ();
       }
-      this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_POLY_TAU ) ;
+      this.prettyStringBuilder
+          .addBuilder ( this.types [ 0 ]
+              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ),
+              PRIO_POLY_TAU );
     }
-    return this.prettyStringBuilder ;
+    return this.prettyStringBuilder;
   }
 }

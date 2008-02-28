@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.graphics.outline.ui ;
+package de.unisiegen.tpml.graphics.outline.ui;
 
 
-import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline;
 
 
 /**
@@ -12,10 +12,11 @@ import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
  */
 public final class OutlineDisplayTree implements Runnable
 {
+
   /**
    * The {@link DefaultOutline}.
    */
-  private DefaultOutline defaultOutline ;
+  private DefaultOutline defaultOutline;
 
 
   /**
@@ -25,7 +26,7 @@ public final class OutlineDisplayTree implements Runnable
    */
   public OutlineDisplayTree ( DefaultOutline pDefaultOutline )
   {
-    this.defaultOutline = pDefaultOutline ;
+    this.defaultOutline = pDefaultOutline;
   }
 
 
@@ -34,8 +35,8 @@ public final class OutlineDisplayTree implements Runnable
    * 
    * @see Runnable#run()
    */
-  public final void run ( )
+  public final void run ()
   {
-    this.defaultOutline.setRootNode ( ) ;
+    this.defaultOutline.setRootNode ();
   }
 }

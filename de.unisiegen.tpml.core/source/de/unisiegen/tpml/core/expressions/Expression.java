@@ -1,34 +1,35 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
-import java.awt.Color ;
-import java.util.ArrayList ;
-import java.util.Enumeration ;
-import java.util.LinkedList ;
-import java.util.MissingResourceException ;
-import java.util.ResourceBundle ;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
-import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
-import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.TypeName ;
-import de.unisiegen.tpml.core.util.Theme ;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes;
+import de.unisiegen.tpml.core.interfaces.ShowBondsInput;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.TypeName;
+import de.unisiegen.tpml.core.util.Theme;
 
 
 /**
@@ -39,9 +40,10 @@ import de.unisiegen.tpml.core.util.Theme ;
  * @version $Rev:1053 $
  * @see PrettyPrintable
  */
-public abstract class Expression implements Cloneable , PrettyPrintable ,
-    PrettyPrintPriorities , LatexPrintable , ShowBondsInput
+public abstract class Expression implements Cloneable, PrettyPrintable,
+    PrettyPrintPriorities, LatexPrintable, ShowBondsInput
 {
+
   /**
    * A level-order enumeration of the expressions within a given expression.
    * Used to implement the {@link Expression#levelOrderEnumeration()} method.
@@ -50,10 +52,11 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    */
   private class LevelOrderEnumeration implements Enumeration < Expression >
   {
+
     /**
      * The queue.
      */
-    private LinkedList < Expression > queue = new LinkedList < Expression > ( ) ;
+    private LinkedList < Expression > queue = new LinkedList < Expression > ();
 
 
     /**
@@ -63,7 +66,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
      */
     LevelOrderEnumeration ( Expression pExpression )
     {
-      this.queue.add ( pExpression ) ;
+      this.queue.add ( pExpression );
     }
 
 
@@ -73,9 +76,9 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
      * @return True, if there are more elements, otherwise false.
      * @see Enumeration#hasMoreElements()
      */
-    public boolean hasMoreElements ( )
+    public boolean hasMoreElements ()
     {
-      return ! this.queue.isEmpty ( ) ;
+      return !this.queue.isEmpty ();
     }
 
 
@@ -85,11 +88,11 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
      * @return The next element.
      * @see Enumeration#nextElement()
      */
-    public Expression nextElement ( )
+    public Expression nextElement ()
     {
-      Expression e = this.queue.poll ( ) ;
-      this.queue.addAll ( e.children ( ) ) ;
-      return e ;
+      Expression e = this.queue.poll ();
+      this.queue.addAll ( e.children () );
+      return e;
     }
   }
 
@@ -98,85 +101,85 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * The resource bundle.
    */
   private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
-      .getBundle ( "de.unisiegen.tpml.core.expressions.messages" ) ; //$NON-NLS-1$
+      .getBundle ( "de.unisiegen.tpml.core.expressions.messages" ); //$NON-NLS-1$
 
 
   /**
    * Prefix of the {@link Expression}.
    */
-  protected static final String PREFIX_EXPRESSION = "e" ; //$NON-NLS-1$
+  protected static final String PREFIX_EXPRESSION = "e"; //$NON-NLS-1$
 
 
   /**
    * Prefix of the {@link Expression} which is a value.
    */
-  protected static final String PREFIX_VALUE = "v" ; //$NON-NLS-1$
+  protected static final String PREFIX_VALUE = "v"; //$NON-NLS-1$
 
 
   /**
    * Prefix of the {@link Expression} which is a constant.
    */
-  protected static final String PREFIX_CONST = "c" ; //$NON-NLS-1$
+  protected static final String PREFIX_CONST = "c"; //$NON-NLS-1$
 
 
   /**
    * Prefix of the {@link Inherit}.
    */
-  protected static final String PREFIX_BODY = "b" ; //$NON-NLS-1$
+  protected static final String PREFIX_BODY = "b"; //$NON-NLS-1$
 
 
   /**
    * Prefix of the {@link Row}.
    */
-  protected static final String PREFIX_ROW = "r" ; //$NON-NLS-1$
+  protected static final String PREFIX_ROW = "r"; //$NON-NLS-1$
 
 
   /**
    * Prefix of the {@link Row} which is a value.
    */
-  protected static final String PREFIX_ROW_VALUE = "\u03C9" ; //$NON-NLS-1$
+  protected static final String PREFIX_ROW_VALUE = "\u03C9"; //$NON-NLS-1$
 
 
   /**
    * Prefix of {@link Identifier}s after the first.
    */
-  public static final String PREFIX_ID_V = "id" ; //$NON-NLS-1$
+  public static final String PREFIX_ID_V = "id"; //$NON-NLS-1$
 
 
   /**
    * Prefix of the first {@link Identifier} of {@link Method}s.
    */
-  public static final String PREFIX_ID_M = "m" ; //$NON-NLS-1$
+  public static final String PREFIX_ID_M = "m"; //$NON-NLS-1$
 
 
   /**
    * Prefix of the first {@link Identifier} of {@link Attribute}s.
    */
-  public static final String PREFIX_ID_A = "a" ; //$NON-NLS-1$
+  public static final String PREFIX_ID_A = "a"; //$NON-NLS-1$
 
 
   /**
    * Prefix of the first {@link Identifier} of {@link ObjectExpr}s.
    */
-  public static final String PREFIX_ID_S = "self" ; //$NON-NLS-1$
+  public static final String PREFIX_ID_S = "self"; //$NON-NLS-1$
 
 
   /**
    * Prefix of the {@link Exn}.
    */
-  protected static final String PREFIX_EXN = "ep" ; //$NON-NLS-1$
+  protected static final String PREFIX_EXN = "ep"; //$NON-NLS-1$
 
 
   /**
    * Prefix of the {@link BinaryOperator}.
    */
-  protected static final String PREFIX_BINARYOPERATOR = "op" ; //$NON-NLS-1$
+  protected static final String PREFIX_BINARYOPERATOR = "op"; //$NON-NLS-1$
 
 
   /**
    * The unused string.
    */
-  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+  private static final String UNUSED = "unused"; //$NON-NLS-1$
 
 
   /**
@@ -189,11 +192,11 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   {
     try
     {
-      return RESOURCE_BUNDLE.getString ( pClass.getSimpleName ( ) ) ;
+      return RESOURCE_BUNDLE.getString ( pClass.getSimpleName () );
     }
     catch ( MissingResourceException e )
     {
-      return pClass.getSimpleName ( ) ;
+      return pClass.getSimpleName ();
     }
   }
 
@@ -203,12 +206,12 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_PARENTHESIS , 1 , "(#1)" , //$NON-NLS-1$
-        "e" ) ) ; //$NON-NLS-1$
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_PARENTHESIS, 1, "(#1)", //$NON-NLS-1$
+        "e" ) ); //$NON-NLS-1$
+    return commands;
   }
 
 
@@ -217,85 +220,85 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static LatexInstructionList getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    Color colorExpression = Theme.currentTheme ( ).getExpressionColor ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    Color colorExpression = Theme.currentTheme ().getExpressionColor ();
     float red = ( float ) Math
-        .round ( ( ( float ) colorExpression.getRed ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorExpression.getRed () ) / 255 * 100 ) / 100;
     float green = ( float ) Math.round ( ( ( float ) colorExpression
-        .getGreen ( ) ) / 255 * 100 ) / 100 ;
+        .getGreen () ) / 255 * 100 ) / 100;
     float blue = ( float ) Math
-        .round ( ( ( float ) colorExpression.getBlue ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorExpression.getBlue () ) / 255 * 100 ) / 100;
     instructions
         .add ( new DefaultLatexInstruction (
             "\\definecolor{" + LATEX_COLOR_EXPRESSION + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
                 + red + "," //$NON-NLS-1$
                 + green + "," //$NON-NLS-1$
-                + blue + "}" , LATEX_COLOR_EXPRESSION + ": color of expression text" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    Color colorKeyword = Theme.currentTheme ( ).getKeywordColor ( ) ;
+                + blue + "}", LATEX_COLOR_EXPRESSION + ": color of expression text" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    Color colorKeyword = Theme.currentTheme ().getKeywordColor ();
     red = ( float ) Math
-        .round ( ( ( float ) colorKeyword.getRed ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorKeyword.getRed () ) / 255 * 100 ) / 100;
     green = ( float ) Math
-        .round ( ( ( float ) colorKeyword.getGreen ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorKeyword.getGreen () ) / 255 * 100 ) / 100;
     blue = ( float ) Math
-        .round ( ( ( float ) colorKeyword.getBlue ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorKeyword.getBlue () ) / 255 * 100 ) / 100;
     instructions.add ( new DefaultLatexInstruction (
         "\\definecolor{" + LATEX_COLOR_KEYWORD + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
             + red + "," //$NON-NLS-1$
             + green + "," //$NON-NLS-1$
-            + blue + "}" , LATEX_COLOR_KEYWORD + ": color of keywords" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    Color colorConstant = Theme.currentTheme ( ).getConstantColor ( ) ;
+            + blue + "}", LATEX_COLOR_KEYWORD + ": color of keywords" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    Color colorConstant = Theme.currentTheme ().getConstantColor ();
     red = ( float ) Math
-        .round ( ( ( float ) colorConstant.getRed ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorConstant.getRed () ) / 255 * 100 ) / 100;
     green = ( float ) Math
-        .round ( ( ( float ) colorConstant.getGreen ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorConstant.getGreen () ) / 255 * 100 ) / 100;
     blue = ( float ) Math
-        .round ( ( ( float ) colorConstant.getBlue ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorConstant.getBlue () ) / 255 * 100 ) / 100;
     instructions.add ( new DefaultLatexInstruction (
         "\\definecolor{" + LATEX_COLOR_CONSTANT + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
             + red + "," //$NON-NLS-1$
             + green + "," //$NON-NLS-1$
-            + blue + "}" , LATEX_COLOR_CONSTANT + ": color of constants" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    Color colorIdentifier = Theme.currentTheme ( ).getIdentifierColor ( ) ;
+            + blue + "}", LATEX_COLOR_CONSTANT + ": color of constants" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    Color colorIdentifier = Theme.currentTheme ().getIdentifierColor ();
     red = ( float ) Math
-        .round ( ( ( float ) colorIdentifier.getRed ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorIdentifier.getRed () ) / 255 * 100 ) / 100;
     green = ( float ) Math
-        .round ( ( ( float ) colorIdentifier.getGreen ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorIdentifier.getGreen () ) / 255 * 100 ) / 100;
     blue = ( float ) Math
-        .round ( ( ( float ) colorIdentifier.getBlue ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorIdentifier.getBlue () ) / 255 * 100 ) / 100;
     instructions.add ( new DefaultLatexInstruction (
         "\\definecolor{" + LATEX_COLOR_IDENTIFIER + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
             + red + "," //$NON-NLS-1$
             + green + "," //$NON-NLS-1$
-            + blue + "}" , LATEX_COLOR_IDENTIFIER + ": color of identifiers" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    Color colorBindingId = Theme.currentTheme ( ).getBindingIdColor ( ) ;
+            + blue + "}", LATEX_COLOR_IDENTIFIER + ": color of identifiers" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    Color colorBindingId = Theme.currentTheme ().getBindingIdColor ();
     red = ( float ) Math
-        .round ( ( ( float ) colorBindingId.getRed ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorBindingId.getRed () ) / 255 * 100 ) / 100;
     green = ( float ) Math
-        .round ( ( ( float ) colorBindingId.getGreen ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorBindingId.getGreen () ) / 255 * 100 ) / 100;
     blue = ( float ) Math
-        .round ( ( ( float ) colorBindingId.getBlue ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorBindingId.getBlue () ) / 255 * 100 ) / 100;
     instructions
         .add ( new DefaultLatexInstruction (
             "\\definecolor{" + LATEX_COLOR_BINDING_ID + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
                 + red + "," //$NON-NLS-1$
                 + green + "," //$NON-NLS-1$
-                + blue + "}" , LATEX_COLOR_BINDING_ID + ": color of binding identifiers" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    Color colorBoundId = Theme.currentTheme ( ).getBoundIdColor ( ) ;
+                + blue + "}", LATEX_COLOR_BINDING_ID + ": color of binding identifiers" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    Color colorBoundId = Theme.currentTheme ().getBoundIdColor ();
     red = ( float ) Math
-        .round ( ( ( float ) colorBoundId.getRed ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorBoundId.getRed () ) / 255 * 100 ) / 100;
     green = ( float ) Math
-        .round ( ( ( float ) colorBoundId.getGreen ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorBoundId.getGreen () ) / 255 * 100 ) / 100;
     blue = ( float ) Math
-        .round ( ( ( float ) colorBoundId.getBlue ( ) ) / 255 * 100 ) / 100 ;
+        .round ( ( ( float ) colorBoundId.getBlue () ) / 255 * 100 ) / 100;
     instructions
         .add ( new DefaultLatexInstruction (
             "\\definecolor{" + LATEX_COLOR_BOUND_ID + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
                 + red + "," //$NON-NLS-1$
                 + green + "," //$NON-NLS-1$
-                + blue + "}" , LATEX_COLOR_BOUND_ID + ": color of bound identifiers" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    return instructions ;
+                + blue + "}", LATEX_COLOR_BOUND_ID + ": color of bound identifiers" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    return instructions;
   }
 
 
@@ -304,11 +307,11 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.COLOR ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.COLOR );
+    return packages;
   }
 
 
@@ -319,7 +322,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @see #getIdentifiersFree()
    */
-  protected ArrayList < Identifier > identifiersFree = null ;
+  protected ArrayList < Identifier > identifiersFree = null;
 
 
   /**
@@ -327,7 +330,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @see #getIdentifiersAll()
    */
-  private ArrayList < Identifier > identifiersAll = null ;
+  private ArrayList < Identifier > identifiersAll = null;
 
 
   /**
@@ -337,13 +340,13 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @see #toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  protected PrettyStringBuilder prettyStringBuilder = null ;
+  protected PrettyStringBuilder prettyStringBuilder = null;
 
 
   /**
    * A list of lists of bound {@link Identifier}s in this {@link Expression}.
    */
-  protected ArrayList < ArrayList < Identifier >> boundIdentifiers = null ;
+  protected ArrayList < ArrayList < Identifier >> boundIdentifiers = null;
 
 
   /**
@@ -352,7 +355,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @see #children()
    */
-  private ArrayList < Expression > children = null ;
+  private ArrayList < Expression > children = null;
 
 
   /**
@@ -360,7 +363,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @see #getDomA()
    */
-  protected ArrayList < Identifier > domA = null ;
+  protected ArrayList < Identifier > domA = null;
 
 
   /**
@@ -369,7 +372,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @see #getParent()
    * @see #setParent(PrettyPrintable)
    */
-  protected PrettyPrintable parent = null ;
+  protected PrettyPrintable parent = null;
 
 
   /**
@@ -378,7 +381,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @see #getParserStartOffset()
    * @see #setParserStartOffset(int)
    */
-  protected int parserStartOffset = - 1 ;
+  protected int parserStartOffset = -1;
 
 
   /**
@@ -387,7 +390,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @see #getParserEndOffset()
    * @see #setParserEndOffset(int)
    */
-  protected int parserEndOffset = - 1 ;
+  protected int parserEndOffset = -1;
 
 
   /**
@@ -395,13 +398,13 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @see #getPrefix()
    */
-  protected String prefix = null ;
+  protected String prefix = null;
 
 
   /**
    * The list of the free {@link TypeName}s in this {@link Expression}.
    */
-  private ArrayList < TypeName > typeNamesFree = null ;
+  private ArrayList < TypeName > typeNamesFree = null;
 
 
   /**
@@ -409,26 +412,26 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return An {@link ArrayList} of the child {@link Expression}s.
    */
-  public final ArrayList < Expression > children ( )
+  public final ArrayList < Expression > children ()
   {
     if ( this.children == null )
     {
       if ( this instanceof DefaultExpressions )
       {
-        Expression [ ] expressions = ( ( DefaultExpressions ) this )
-            .getExpressions ( ) ;
-        this.children = new ArrayList < Expression > ( expressions.length ) ;
+        Expression [] expressions = ( ( DefaultExpressions ) this )
+            .getExpressions ();
+        this.children = new ArrayList < Expression > ( expressions.length );
         for ( Expression expression : expressions )
         {
-          this.children.add ( expression ) ;
+          this.children.add ( expression );
         }
       }
       else
       {
-        this.children = new ArrayList < Expression > ( 0 ) ;
+        this.children = new ArrayList < Expression > ( 0 );
       }
     }
-    return this.children ;
+    return this.children;
   }
 
 
@@ -442,8 +445,8 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @return a deep clone of this object.
    * @see Object#clone()
    */
-  @ Override
-  public abstract Expression clone ( ) ;
+  @Override
+  public abstract Expression clone ();
 
 
   /**
@@ -464,19 +467,19 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @see #children()
    * @see #levelOrderEnumeration()
    */
-  public final boolean containsMemoryOperations ( )
+  public final boolean containsMemoryOperations ()
   {
-    Enumeration < Expression > enumeration = levelOrderEnumeration ( ) ;
-    while ( enumeration.hasMoreElements ( ) )
+    Enumeration < Expression > enumeration = levelOrderEnumeration ();
+    while ( enumeration.hasMoreElements () )
     {
-      Expression e = enumeration.nextElement ( ) ;
+      Expression e = enumeration.nextElement ();
       if ( ( e instanceof Assign ) || ( e instanceof Deref )
           || ( e instanceof Ref ) )
       {
-        return true ;
+        return true;
       }
     }
-    return false ;
+    return false;
   }
 
 
@@ -485,8 +488,8 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @see Object#equals(Object)
    */
-  @ Override
-  public abstract boolean equals ( Object pObject ) ;
+  @Override
+  public abstract boolean equals ( Object pObject );
 
 
   /**
@@ -494,7 +497,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return The caption of this {@link Expression}.
    */
-  public abstract String getCaption ( ) ;
+  public abstract String getCaption ();
 
 
   /**
@@ -504,17 +507,17 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @return A list of all {@link Attribute} {@link Identifier}s in the domain
    *         of this {@link Expression}.
    */
-  public ArrayList < Identifier > getDomA ( )
+  public ArrayList < Identifier > getDomA ()
   {
     if ( this.domA == null )
     {
-      this.domA = new ArrayList < Identifier > ( ) ;
-      for ( Expression child : children ( ) )
+      this.domA = new ArrayList < Identifier > ();
+      for ( Expression child : children () )
       {
-        this.domA.addAll ( child.getDomA ( ) ) ;
+        this.domA.addAll ( child.getDomA () );
       }
     }
-    return this.domA ;
+    return this.domA;
   }
 
 
@@ -525,17 +528,17 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @return True, if a free Identifier is not a variable and not a method
    *         {@link Identifier}, otherwise false.
    */
-  public final boolean getIdentifierFreeNotOnlyVariable ( )
+  public final boolean getIdentifierFreeNotOnlyVariable ()
   {
-    for ( Identifier id : getIdentifiersFree ( ) )
+    for ( Identifier id : getIdentifiersFree () )
     {
-      if ( ! ( ( Identifier.Set.VARIABLE.equals ( id.getSet ( ) ) ) || ( Identifier.Set.METHOD
-          .equals ( id.getSet ( ) ) ) ) )
+      if ( ! ( ( Identifier.Set.VARIABLE.equals ( id.getSet () ) ) || ( Identifier.Set.METHOD
+          .equals ( id.getSet () ) ) ) )
       {
-        return true ;
+        return true;
       }
     }
-    return false ;
+    return false;
   }
 
 
@@ -548,31 +551,31 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @return A list of all {@link Identifier}s in this {@link Expression}.
    * @see #identifiersAll
    */
-  public final ArrayList < Identifier > getIdentifiersAll ( )
+  public final ArrayList < Identifier > getIdentifiersAll ()
   {
     if ( this.identifiersAll == null )
     {
-      this.identifiersAll = new ArrayList < Identifier > ( ) ;
+      this.identifiersAll = new ArrayList < Identifier > ();
       if ( this instanceof Identifier )
       {
-        this.identifiersAll.add ( ( Identifier ) this ) ;
-        return this.identifiersAll ;
+        this.identifiersAll.add ( ( Identifier ) this );
+        return this.identifiersAll;
       }
       if ( this instanceof DefaultIdentifiers )
       {
-        Identifier [ ] identifiers = ( ( DefaultIdentifiers ) this )
-            .getIdentifiers ( ) ;
+        Identifier [] identifiers = ( ( DefaultIdentifiers ) this )
+            .getIdentifiers ();
         for ( Identifier id : identifiers )
         {
-          this.identifiersAll.add ( id ) ;
+          this.identifiersAll.add ( id );
         }
       }
-      for ( Expression child : children ( ) )
+      for ( Expression child : children () )
       {
-        this.identifiersAll.addAll ( child.getIdentifiersAll ( ) ) ;
+        this.identifiersAll.addAll ( child.getIdentifiersAll () );
       }
     }
-    return this.identifiersAll ;
+    return this.identifiersAll;
   }
 
 
@@ -589,17 +592,17 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return the set of free (unbound) identifiers within the expression.
    */
-  public ArrayList < Identifier > getIdentifiersFree ( )
+  public ArrayList < Identifier > getIdentifiersFree ()
   {
     if ( this.identifiersFree == null )
     {
-      this.identifiersFree = new ArrayList < Identifier > ( ) ;
-      for ( Expression child : children ( ) )
+      this.identifiersFree = new ArrayList < Identifier > ();
+      for ( Expression child : children () )
       {
-        this.identifiersFree.addAll ( child.getIdentifiersFree ( ) ) ;
+        this.identifiersFree.addAll ( child.getIdentifiersFree () );
       }
     }
-    return this.identifiersFree ;
+    return this.identifiersFree;
   }
 
 
@@ -608,23 +611,23 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public LatexCommandList getLatexCommands ( )
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
     if ( this instanceof DefaultExpressions )
     {
-      commands.add ( ( ( DefaultExpressions ) this ).getExpressions ( ) ) ;
+      commands.add ( ( ( DefaultExpressions ) this ).getExpressions () );
     }
     if ( this instanceof DefaultIdentifiers )
     {
-      commands.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) ) ;
+      commands.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers () );
     }
     if ( this instanceof DefaultTypes )
     {
-      commands.add ( ( ( DefaultTypes ) this ).getTypes ( ) ) ;
+      commands.add ( ( ( DefaultTypes ) this ).getTypes () );
     }
-    return commands ;
+    return commands;
   }
 
 
@@ -635,23 +638,23 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @return A lsit of needed latex instructions for this latex printable
    *         object.
    */
-  public LatexInstructionList getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( getLatexInstructionsStatic ( ) ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
     if ( this instanceof DefaultExpressions )
     {
-      instructions.add ( ( ( DefaultExpressions ) this ).getExpressions ( ) ) ;
+      instructions.add ( ( ( DefaultExpressions ) this ).getExpressions () );
     }
     if ( this instanceof DefaultIdentifiers )
     {
-      instructions.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) ) ;
+      instructions.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers () );
     }
     if ( this instanceof DefaultTypes )
     {
-      instructions.add ( ( ( DefaultTypes ) this ).getTypes ( ) ) ;
+      instructions.add ( ( ( DefaultTypes ) this ).getTypes () );
     }
-    return instructions ;
+    return instructions;
   }
 
 
@@ -660,23 +663,23 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public LatexPackageList getLatexPackages ( )
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( getLatexPackagesStatic () );
     if ( this instanceof DefaultExpressions )
     {
-      packages.add ( ( ( DefaultExpressions ) this ).getExpressions ( ) ) ;
+      packages.add ( ( ( DefaultExpressions ) this ).getExpressions () );
     }
     if ( this instanceof DefaultIdentifiers )
     {
-      packages.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers ( ) ) ;
+      packages.add ( ( ( DefaultIdentifiers ) this ).getIdentifiers () );
     }
     if ( this instanceof DefaultTypes )
     {
-      packages.add ( ( ( DefaultTypes ) this ).getTypes ( ) ) ;
+      packages.add ( ( ( DefaultTypes ) this ).getTypes () );
     }
-    return packages ;
+    return packages;
   }
 
 
@@ -687,9 +690,9 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @see #parent
    * @see #setParent(PrettyPrintable)
    */
-  public final PrettyPrintable getParent ( )
+  public final PrettyPrintable getParent ()
   {
-    return this.parent ;
+    return this.parent;
   }
 
 
@@ -700,9 +703,9 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @see #parserEndOffset
    * @see #setParserEndOffset(int)
    */
-  public int getParserEndOffset ( )
+  public int getParserEndOffset ()
   {
-    return this.parserEndOffset ;
+    return this.parserEndOffset;
   }
 
 
@@ -713,9 +716,9 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @see #parserStartOffset
    * @see #setParserStartOffset(int)
    */
-  public int getParserStartOffset ( )
+  public int getParserStartOffset ()
   {
-    return this.parserStartOffset ;
+    return this.parserStartOffset;
   }
 
 
@@ -725,20 +728,20 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @return The prefix of this {@link Expression}.
    * @see #prefix
    */
-  public String getPrefix ( )
+  public String getPrefix ()
   {
     if ( this.prefix == null )
     {
-      if ( this.isValue ( ) )
+      if ( this.isValue () )
       {
-        this.prefix = PREFIX_VALUE ;
+        this.prefix = PREFIX_VALUE;
       }
       else
       {
-        this.prefix = PREFIX_EXPRESSION ;
+        this.prefix = PREFIX_EXPRESSION;
       }
     }
-    return this.prefix ;
+    return this.prefix;
   }
 
 
@@ -747,15 +750,15 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return A list of the free {@link TypeName}s in this {@link Expression}.
    */
-  public ArrayList < TypeName > getTypeNamesFree ( )
+  public ArrayList < TypeName > getTypeNamesFree ()
   {
     if ( this.typeNamesFree == null )
     {
-      this.typeNamesFree = new ArrayList < TypeName > ( ) ;
-      MonoType [ ] types = null ;
+      this.typeNamesFree = new ArrayList < TypeName > ();
+      MonoType [] types = null;
       if ( this instanceof DefaultTypes )
       {
-        types = ( ( DefaultTypes ) this ).getTypes ( ) ;
+        types = ( ( DefaultTypes ) this ).getTypes ();
       }
       if ( types != null )
       {
@@ -763,16 +766,16 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
         {
           if ( type != null )
           {
-            this.typeNamesFree.addAll ( type.getTypeNamesFree ( ) ) ;
+            this.typeNamesFree.addAll ( type.getTypeNamesFree () );
           }
         }
       }
-      for ( Expression child : children ( ) )
+      for ( Expression child : children () )
       {
-        this.typeNamesFree.addAll ( child.getTypeNamesFree ( ) ) ;
+        this.typeNamesFree.addAll ( child.getTypeNamesFree () );
       }
     }
-    return this.typeNamesFree ;
+    return this.typeNamesFree;
   }
 
 
@@ -781,8 +784,8 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @see Object#hashCode()
    */
-  @ Override
-  public abstract int hashCode ( ) ;
+  @Override
+  public abstract int hashCode ();
 
 
   /**
@@ -797,9 +800,9 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @return <code>true</code> if the expression is an exception,
    *         <code>false</code> otherwise.
    */
-  public boolean isException ( )
+  public boolean isException ()
   {
-    return false ;
+    return false;
   }
 
 
@@ -814,9 +817,9 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @return <code>true</code> if the expression is a value,
    *         <code>false</code> otherwise.
    */
-  public boolean isValue ( )
+  public boolean isValue ()
   {
-    return false ;
+    return false;
   }
 
 
@@ -828,9 +831,9 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @return a breadth first enumeration of all expressions within the
    *         expression hierarchy starting at this item.
    */
-  public Enumeration < Expression > levelOrderEnumeration ( )
+  public Enumeration < Expression > levelOrderEnumeration ()
   {
-    return new LevelOrderEnumeration ( this ) ;
+    return new LevelOrderEnumeration ( this );
   }
 
 
@@ -843,7 +846,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    */
   public final void setParent ( PrettyPrintable pParent )
   {
-    this.parent = pParent ;
+    this.parent = pParent;
   }
 
 
@@ -856,7 +859,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    */
   public void setParserEndOffset ( int pParserEndOffset )
   {
-    this.parserEndOffset = pParserEndOffset ;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -869,7 +872,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    */
   public void setParserStartOffset ( int pParserStartOffset )
   {
-    this.parserStartOffset = pParserStartOffset ;
+    this.parserStartOffset = pParserStartOffset;
   }
 
 
@@ -886,8 +889,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @throws NullPointerException if <code>id</code> or </code>e</code> is
    *           <code>null</code>.
    */
-  public abstract Expression substitute ( Identifier pId ,
-      Expression pExpression ) ;
+  public abstract Expression substitute ( Identifier pId, Expression pExpression );
 
 
   /**
@@ -901,10 +903,10 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @throws NullPointerException if <code>substitution</code> is
    *           <code>null</code>.
    */
-  public Expression substitute ( @ SuppressWarnings ( UNUSED )
+  public Expression substitute ( @SuppressWarnings ( UNUSED )
   TypeSubstitution pTypeSubstitution )
   {
-    return this ;
+    return this;
   }
 
 
@@ -913,10 +915,10 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public final LatexString toLatexString ( )
+  public final LatexString toLatexString ()
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -926,7 +928,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public abstract LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent ) ;
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent );
 
 
   /**
@@ -934,10 +936,10 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ( )
+  public final PrettyString toPrettyString ()
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -947,7 +949,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @see PrettyPrintable#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   public abstract PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory ) ;
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory );
 
 
   /**
@@ -958,9 +960,9 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @see #toPrettyString()
    * @see Object#toString()
    */
-  @ Override
-  public final String toString ( )
+  @Override
+  public final String toString ()
   {
-    return toPrettyString ( ).toString ( ) ;
+    return toPrettyString ().toString ();
   }
 }

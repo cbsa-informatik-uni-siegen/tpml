@@ -19,136 +19,144 @@ import de.unisiegen.tpml.core.types.RecType;
  * @see de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet
  */
 public class L1RecSubTypingProofRuleSet extends
-        AbstractRecSubTypingProofRuleSet {
+    AbstractRecSubTypingProofRuleSet
+{
 
-    /**
-     * Allocates a new <code>L1SubTypingProofRuleSet</code> for the specified
-     * <code>language</code>.
-     * 
-     * @param language the <code>L1</code> or a derived language.
-     * @param mode the mode chosen by the user
-     * @throws NullPointerException if <code>language</code> is
-     *             <code>null</code>.
-     */
-    public L1RecSubTypingProofRuleSet ( Language language, boolean mode ) {
-        super ( language, mode );
+  /**
+   * Allocates a new <code>L1SubTypingProofRuleSet</code> for the specified
+   * <code>language</code>.
+   * 
+   * @param language the <code>L1</code> or a derived language.
+   * @param mode the mode chosen by the user
+   * @throws NullPointerException if <code>language</code> is
+   *           <code>null</code>.
+   */
+  public L1RecSubTypingProofRuleSet ( Language language, boolean mode )
+  {
+    super ( language, mode );
 
-        // register the type rules
-        registerByMethodName ( L1Language.L1, "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
-        registerByMethodName ( L1Language.L1, "S-MU-LEFT", "applyMuLeft" ); //$NON-NLS-1$ //$NON-NLS-2$
-        registerByMethodName ( L1Language.L1, "S-MU-RIGHT", "applyMuRight" ); //$NON-NLS-1$ //$NON-NLS-2$
-        registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
-        registerByMethodName ( L1Language.L1, "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
+    // register the type rules
+    registerByMethodName ( L1Language.L1, "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1Language.L1, "S-MU-LEFT", "applyMuLeft" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1Language.L1, "S-MU-RIGHT", "applyMuRight" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1Language.L1, "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
+  }
+
+
+  /**
+   * Applies the <b>(REFL)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   * @throws SubTypingException throw Exception if rule can't be applied
+   */
+  public void applyRefl ( @SuppressWarnings ( "unused" )
+  RecSubTypingProofContext context, RecSubTypingProofNode node )
+      throws SubTypingException
+  {
+    MonoType type;
+    MonoType type2;
+
+    type = node.getLeft ();
+    type2 = node.getRight ();
+
+    if ( type.equals ( type2 ) )
+      return;
+
+    throw new SubTypingException ( "Types are not equal", node ); //$NON-NLS-1$
+
+  }
+
+
+  /**
+   * Applies the <b>(ARROW)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   */
+  public void applyArrow ( RecSubTypingProofContext context,
+      RecSubTypingProofNode node )
+  {
+    ArrowType type;
+    ArrowType type2;
+    type = ( ArrowType ) node.getLeft ();
+    type2 = ( ArrowType ) node.getRight ();
+
+    MonoType taul = type.getTau1 ();
+    MonoType taur = type.getTau2 ();
+
+    MonoType tau2l = type2.getTau1 ();
+    MonoType tau2r = type2.getTau2 ();
+
+    context.addProofNode ( node, tau2l, taul );
+    context.addProofNode ( node, taur, tau2r );
+
+    context.addSeenType ( node.getLeft (), node.getRight () );
+  }
+
+
+  /**
+   * Applies the <b>(S-ASSUME)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   * @throws SubTypingException throw Exception if rule can't be applied
+   */
+  public void applyAssume ( @SuppressWarnings ( "unused" )
+  RecSubTypingProofContext context, RecSubTypingProofNode node )
+      throws SubTypingException
+  {
+    if ( node.getSeenTypes ().contains ( node.getSubType () ) )
+    {
+      return;
     }
+    throw new SubTypingException ( "Types not seen before", node ); //$NON-NLS-1$
+  }
 
 
-    /**
-     * Applies the <b>(REFL)</b> rule to the <code>node</code> using the
-     * <code>context</code>.
-     * 
-     * @param context the subtyping proof context.
-     * @param node the subtyping proof node.
-     * @throws SubTypingException throw Exception if rule can't be applied
-     */
-    public void applyRefl ( @SuppressWarnings ( "unused" )
-    RecSubTypingProofContext context, RecSubTypingProofNode node )
-            throws SubTypingException {
-        MonoType type;
-        MonoType type2;
+  /**
+   * Applies the <b>(S-MU-LEFT)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   */
+  public void applyMuLeft ( RecSubTypingProofContext context,
+      RecSubTypingProofNode node )
+  {
+    RecType rec = ( RecType ) node.getLeft ();
 
-        type = node.getLeft ();
-        type2 = node.getRight ();
+    context.addProofNode ( node, rec.getTau ().substitute ( rec.getTypeName (),
+        rec ), node.getRight () );
 
-        if ( type.equals ( type2 ) )
-            return;
+    context.addSeenType ( node.getLeft (), node.getRight () );
+  }
 
-        throw new SubTypingException ( "Types are not equal", node ); //$NON-NLS-1$
 
+  /**
+   * Applies the <b>(S-MU-RIGHT)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   * @throws SubTypingException
+   */
+  public void applyMuRight ( RecSubTypingProofContext context,
+      RecSubTypingProofNode node ) throws SubTypingException
+  {
+    if ( node.getLeft () instanceof RecType )
+    {
+      throw new SubTypingException ( "The left side is also a rec type", node ); //$NON-NLS-1$
     }
+    RecType rec = ( RecType ) node.getRight ();
 
+    context.addProofNode ( node, node.getLeft (), rec.getTau ().substitute (
+        rec.getTypeName (), rec ) );
 
-    /**
-     * Applies the <b>(ARROW)</b> rule to the <code>node</code> using the
-     * <code>context</code>.
-     * 
-     * @param context the subtyping proof context.
-     * @param node the subtyping proof node.
-     */
-    public void applyArrow ( RecSubTypingProofContext context,
-            RecSubTypingProofNode node ) {
-        ArrowType type;
-        ArrowType type2;
-        type = ( ArrowType ) node.getLeft ();
-        type2 = ( ArrowType ) node.getRight ();
-
-        MonoType taul = type.getTau1 ();
-        MonoType taur = type.getTau2 ();
-
-        MonoType tau2l = type2.getTau1 ();
-        MonoType tau2r = type2.getTau2 ();
-
-        context.addProofNode ( node, tau2l, taul );
-        context.addProofNode ( node, taur, tau2r );
-
-        context.addSeenType ( node.getLeft (), node.getRight () );
-    }
-
-
-    /**
-     * Applies the <b>(S-ASSUME)</b> rule to the <code>node</code> using the
-     * <code>context</code>.
-     * 
-     * @param context the subtyping proof context.
-     * @param node the subtyping proof node.
-     * @throws SubTypingException throw Exception if rule can't be applied
-     */
-    public void applyAssume ( @SuppressWarnings ( "unused" )
-    RecSubTypingProofContext context, RecSubTypingProofNode node )
-            throws SubTypingException {
-        if ( node.getSeenTypes ().contains ( node.getSubType () ) ) {
-            return;
-        }
-        throw new SubTypingException ( "Types not seen before", node ); //$NON-NLS-1$
-    }
-
-
-    /**
-     * Applies the <b>(S-MU-LEFT)</b> rule to the <code>node</code> using the
-     * <code>context</code>.
-     * 
-     * @param context the subtyping proof context.
-     * @param node the subtyping proof node.
-     */
-    public void applyMuLeft ( RecSubTypingProofContext context,
-            RecSubTypingProofNode node ) {
-        RecType rec = ( RecType ) node.getLeft ();
-
-        context.addProofNode ( node, rec.getTau ().substitute (
-                rec.getTypeName (), rec ), node.getRight () );
-
-        context.addSeenType ( node.getLeft (), node.getRight () );
-    }
-
-
-    /**
-     * Applies the <b>(S-MU-RIGHT)</b> rule to the <code>node</code> using
-     * the <code>context</code>.
-     * 
-     * @param context the subtyping proof context.
-     * @param node the subtyping proof node.
-     * @throws SubTypingException
-     */
-    public void applyMuRight ( RecSubTypingProofContext context,
-            RecSubTypingProofNode node ) throws SubTypingException {
-        if ( node.getLeft () instanceof RecType ) {
-            throw new SubTypingException (
-                    "The left side is also a rec type", node ); //$NON-NLS-1$
-        }
-        RecType rec = ( RecType ) node.getRight ();
-
-        context.addProofNode ( node, node.getLeft (), rec.getTau ().substitute (
-                rec.getTypeName (), rec ) );
-
-        context.addSeenType ( node.getLeft (), node.getRight () );
-    }
+    context.addSeenType ( node.getLeft (), node.getRight () );
+  }
 }

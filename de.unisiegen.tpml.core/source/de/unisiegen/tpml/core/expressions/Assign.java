@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.expressions ;
+package de.unisiegen.tpml.core.expressions;
 
 
 /**
@@ -14,36 +14,37 @@ package de.unisiegen.tpml.core.expressions ;
  */
 public final class Assign extends BinaryOperator
 {
+
   /**
    * The assign operator exception string.
    */
-  private static final String HANDLED = "assign operator must be handled by the interpreter" ; //$NON-NLS-1$
+  private static final String HANDLED = "assign operator must be handled by the interpreter"; //$NON-NLS-1$
 
 
   /**
    * The unused string.
    */
-  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+  private static final String UNUSED = "unused"; //$NON-NLS-1$
 
 
   /**
    * The keyword <code>:=</code>.
    */
-  private static final String COLONEQUAL = ":=" ; //$NON-NLS-1$
+  private static final String COLONEQUAL = ":="; //$NON-NLS-1$
 
 
   /**
    * The caption of this {@link Expression}.
    */
-  private static final String CAPTION = Expression.getCaption ( Assign.class ) ;
+  private static final String CAPTION = Expression.getCaption ( Assign.class );
 
 
   /**
    * Allocates a new <code>Assign</code> operator.
    */
-  public Assign ( )
+  public Assign ()
   {
-    super ( COLONEQUAL , PRIO_ASSIGN ) ;
+    super ( COLONEQUAL, PRIO_ASSIGN );
   }
 
 
@@ -55,11 +56,11 @@ public final class Assign extends BinaryOperator
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Assign ( int pParserStartOffset , int pParserEndOffset )
+  public Assign ( int pParserStartOffset, int pParserEndOffset )
   {
-    this ( ) ;
-    this.parserStartOffset = pParserStartOffset ;
-    this.parserEndOffset = pParserEndOffset ;
+    this ();
+    this.parserStartOffset = pParserStartOffset;
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -73,13 +74,13 @@ public final class Assign extends BinaryOperator
    * @throws UnsupportedOperationException on every invokation.
    * @see BinaryOperator#applyTo(Expression, Expression)
    */
-  @ SuppressWarnings ( UNUSED )
-  @ Override
-  public Expression applyTo ( @ SuppressWarnings ( UNUSED )
-  Expression pExpression1 , @ SuppressWarnings ( UNUSED )
+  @SuppressWarnings ( UNUSED )
+  @Override
+  public Expression applyTo ( @SuppressWarnings ( UNUSED )
+  Expression pExpression1, @SuppressWarnings ( UNUSED )
   Expression pExpression2 ) throws BinaryOperatorException
   {
-    throw new UnsupportedOperationException ( HANDLED ) ;
+    throw new UnsupportedOperationException ( HANDLED );
   }
 
 
@@ -88,19 +89,19 @@ public final class Assign extends BinaryOperator
    * 
    * @see Expression#clone()
    */
-  @ Override
-  public Assign clone ( )
+  @Override
+  public Assign clone ()
   {
-    return new Assign ( ) ;
+    return new Assign ();
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @ Override
-  public String getCaption ( )
+  @Override
+  public String getCaption ()
   {
-    return CAPTION ;
+    return CAPTION;
   }
 }

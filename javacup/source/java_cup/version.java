@@ -1,4 +1,4 @@
-package java_cup ;
+package java_cup;
 
 
 /**
@@ -17,41 +17,42 @@ package java_cup ;
  */
 public class version
 {
+
   /** The major version number. */
-  public static final int major = 0 ;
+  public static final int major = 0;
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** The minor version number. */
-  public static final int minor = 11 ;
+  public static final int minor = 11;
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** The update letter. */
-  public static final String update = "a beta 20060608" ;
+  public static final String update = "a beta 20060608";
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** String for the current version. */
-  public static final String version_str = "v" + major + "." + minor + update ;
+  public static final String version_str = "v" + major + "." + minor + update;
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Full title of the system */
-  public static final String title_str = "CUP " + version_str ;
+  public static final String title_str = "CUP " + version_str;
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Name of the author */
-  public static final String author_str = "Scott E. Hudson, Frank Flannery, Andrea Flexeder, Michael Petter and C. Scott Ananian" ;
+  public static final String author_str = "Scott E. Hudson, Frank Flannery, Andrea Flexeder, Michael Petter and C. Scott Ananian";
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Name of the modifier */
-  public static final String modifier = "Christian Fehler" ;
+  public static final String modifier = "Christian Fehler";
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** The command name normally used to invoke this program */
-  public static final String program_name = "java_cup" ;
+  public static final String program_name = "java_cup";
 }

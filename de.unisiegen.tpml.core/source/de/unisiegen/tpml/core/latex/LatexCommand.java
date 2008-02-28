@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
 /**
@@ -8,10 +8,11 @@ package de.unisiegen.tpml.core.latex ;
  */
 public interface LatexCommand
 {
+
   /**
    * The description.
    */
-  public static final String DESCRIPTION = "Needed latex commands" ; //$NON-NLS-1$
+  public static final String DESCRIPTION = "Needed latex commands"; //$NON-NLS-1$
 
 
   /**
@@ -19,7 +20,7 @@ public interface LatexCommand
    * 
    * @see Object#equals(Object)
    */
-  public boolean equals ( Object pObject ) ;
+  public boolean equals ( Object pObject );
 
 
   /**
@@ -27,7 +28,7 @@ public interface LatexCommand
    * 
    * @return The name.
    */
-  public String getName ( ) ;
+  public String getName ();
 
 
   /**
@@ -35,5 +36,5 @@ public interface LatexCommand
    * 
    * @return The string value of this <code>LatexCommand</code>.
    */
-  public String toString ( ) ;
+  public String toString ();
 }

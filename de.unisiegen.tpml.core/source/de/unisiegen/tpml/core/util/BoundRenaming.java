@@ -1,10 +1,11 @@
-package de.unisiegen.tpml.core.util ;
+package de.unisiegen.tpml.core.util;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.interfaces.IdentifierOrTypeName ;
-import de.unisiegen.tpml.core.types.TypeName ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.interfaces.IdentifierOrTypeName;
+import de.unisiegen.tpml.core.types.TypeName;
 
 
 /**
@@ -15,20 +16,21 @@ import de.unisiegen.tpml.core.types.TypeName ;
  */
 public final class BoundRenaming < E extends IdentifierOrTypeName >
 {
+
   /**
    * The negative list, containing the {@link Identifier}s or {@link TypeName}s
    * which should not be returned as a new {@link Identifier} or
    * {@link TypeName}.
    */
-  private ArrayList < E > negativeList ;
+  private ArrayList < E > negativeList;
 
 
   /**
    * Initilizes the negative list.
    */
-  public BoundRenaming ( )
+  public BoundRenaming ()
   {
-    this.negativeList = new ArrayList < E > ( ) ;
+    this.negativeList = new ArrayList < E > ();
   }
 
 
@@ -41,7 +43,7 @@ public final class BoundRenaming < E extends IdentifierOrTypeName >
    */
   public final void add ( ArrayList < E > pIdentifiers )
   {
-    this.negativeList.addAll ( pIdentifiers ) ;
+    this.negativeList.addAll ( pIdentifiers );
   }
 
 
@@ -53,7 +55,7 @@ public final class BoundRenaming < E extends IdentifierOrTypeName >
    */
   public final void add ( E pId )
   {
-    this.negativeList.add ( pId ) ;
+    this.negativeList.add ( pId );
   }
 
 
@@ -64,11 +66,11 @@ public final class BoundRenaming < E extends IdentifierOrTypeName >
    * @param pIdentifiers The arry of {@link Identifier}s or {@link TypeName}s
    *          which should be added to the negative list.
    */
-  public final void add ( E [ ] pIdentifiers )
+  public final void add ( E [] pIdentifiers )
   {
     for ( E element : pIdentifiers )
     {
-      this.negativeList.add ( element ) ;
+      this.negativeList.add ( element );
     }
   }
 
@@ -76,9 +78,9 @@ public final class BoundRenaming < E extends IdentifierOrTypeName >
   /**
    * Clears the negative list.
    */
-  public final void clear ( )
+  public final void clear ()
   {
-    this.negativeList.clear ( ) ;
+    this.negativeList.clear ();
   }
 
 
@@ -93,7 +95,7 @@ public final class BoundRenaming < E extends IdentifierOrTypeName >
    */
   public final boolean contains ( E pId )
   {
-    return this.negativeList.contains ( pId ) ;
+    return this.negativeList.contains ( pId );
   }
 
 
@@ -108,13 +110,13 @@ public final class BoundRenaming < E extends IdentifierOrTypeName >
    */
   public final Identifier newIdentifier ( Identifier pOldIdentifier )
   {
-    Identifier newIdentifier = pOldIdentifier ;
+    Identifier newIdentifier = pOldIdentifier;
     while ( this.negativeList.contains ( newIdentifier ) )
     {
       newIdentifier = new Identifier (
-          newIdentifier + "'" , newIdentifier.getSet ( ) ) ; //$NON-NLS-1$
+          newIdentifier + "'", newIdentifier.getSet () ); //$NON-NLS-1$
     }
-    return newIdentifier ;
+    return newIdentifier;
   }
 
 
@@ -129,12 +131,12 @@ public final class BoundRenaming < E extends IdentifierOrTypeName >
    */
   public final TypeName newTypeName ( TypeName pOldTypeName )
   {
-    TypeName newTypeName = pOldTypeName ;
+    TypeName newTypeName = pOldTypeName;
     while ( this.negativeList.contains ( newTypeName ) )
     {
-      newTypeName = new TypeName ( newTypeName.getName ( ) + "'" ) ; //$NON-NLS-1$
+      newTypeName = new TypeName ( newTypeName.getName () + "'" ); //$NON-NLS-1$
     }
-    return newTypeName ;
+    return newTypeName;
   }
 
 

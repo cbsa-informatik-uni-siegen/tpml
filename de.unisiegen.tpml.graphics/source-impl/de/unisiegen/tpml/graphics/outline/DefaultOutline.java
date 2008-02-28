@@ -896,22 +896,20 @@ public final class DefaultOutline implements Outline
             outlineNodeId = new OutlineNode ( ( Identifier ) current, -1, null );
             pParent.add ( outlineNodeId );
           }
-          else
-            if ( current instanceof Type )
-            {
-              outlineNodeType = new OutlineNode ( ( Type ) current,
-                  this.outlineUnbound, -1 );
-              createType ( ( Type ) current, outlineNodeType );
-              pParent.add ( outlineNodeType );
-            }
-            else
-              if ( current instanceof Expression )
-              {
-                outlineNodeE = new OutlineNode ( ( Expression ) current,
-                    this.outlineUnbound, -1 );
-                createExpression ( ( Expression ) current, outlineNodeE );
-                pParent.add ( outlineNodeE );
-              }
+          else if ( current instanceof Type )
+          {
+            outlineNodeType = new OutlineNode ( ( Type ) current,
+                this.outlineUnbound, -1 );
+            createType ( ( Type ) current, outlineNodeType );
+            pParent.add ( outlineNodeType );
+          }
+          else if ( current instanceof Expression )
+          {
+            outlineNodeE = new OutlineNode ( ( Expression ) current,
+                this.outlineUnbound, -1 );
+            createExpression ( ( Expression ) current, outlineNodeE );
+            pParent.add ( outlineNodeE );
+          }
         }
       }
     }
@@ -1094,20 +1092,18 @@ public final class DefaultOutline implements Outline
             outlineNodeId = new OutlineNode ( ( Identifier ) current, -1, null );
             pParent.add ( outlineNodeId );
           }
-          else
-            if ( current instanceof TypeName )
-            {
-              outlineNodeId = new OutlineNode ( ( TypeName ) current, -1, null );
-              pParent.add ( outlineNodeId );
-            }
-            else
-              if ( current instanceof Type )
-              {
-                outlineNodeType = new OutlineNode ( ( Type ) current,
-                    this.outlineUnbound, -1 );
-                createType ( ( Type ) current, outlineNodeType );
-                pParent.add ( outlineNodeType );
-              }
+          else if ( current instanceof TypeName )
+          {
+            outlineNodeId = new OutlineNode ( ( TypeName ) current, -1, null );
+            pParent.add ( outlineNodeId );
+          }
+          else if ( current instanceof Type )
+          {
+            outlineNodeType = new OutlineNode ( ( Type ) current,
+                this.outlineUnbound, -1 );
+            createType ( ( Type ) current, outlineNodeType );
+            pParent.add ( outlineNodeType );
+          }
         }
       }
     }
@@ -1134,21 +1130,20 @@ public final class DefaultOutline implements Outline
       createExpression ( expression, this.rootNode );
     }
     // Load a new Type into the outline
+    else if ( this.loadedExpressionOrType instanceof Type )
+    {
+      Type type = ( Type ) this.loadedExpressionOrType;
+      this.outlineUnbound = new OutlineUnbound ( type );
+      this.rootNode = new OutlineNode ( type, this.outlineUnbound,
+          OutlineNode.NO_CHILD_INDEX );
+      createType ( type, this.rootNode );
+    }
+    // Throw an exception if something different should be loaded.
     else
-      if ( this.loadedExpressionOrType instanceof Type )
-      {
-        Type type = ( Type ) this.loadedExpressionOrType;
-        this.outlineUnbound = new OutlineUnbound ( type );
-        this.rootNode = new OutlineNode ( type, this.outlineUnbound,
-            OutlineNode.NO_CHILD_INDEX );
-        createType ( type, this.rootNode );
-      }
-      // Throw an exception if something different should be loaded.
-      else
-      {
-        throw new IllegalArgumentException (
-            "Outline: The input is not an Expression or Type!" ); //$NON-NLS-1$
-      }
+    {
+      throw new IllegalArgumentException (
+          "Outline: The input is not an Expression or Type!" ); //$NON-NLS-1$
+    }
     updateCaption ( this.rootNode );
     setError ( false );
     SwingUtilities.invokeLater ( new OutlineDisplayTree ( this ) );
@@ -1346,50 +1341,48 @@ public final class DefaultOutline implements Outline
         }
       }
     }
-    else
-      if ( pExecute instanceof Outline.ExecuteMouseClick )
+    else if ( pExecute instanceof Outline.ExecuteMouseClick )
+    {
+      Outline.ExecuteMouseClick execute = ( Outline.ExecuteMouseClick ) pExecute;
+      switch ( execute )
       {
-        Outline.ExecuteMouseClick execute = ( Outline.ExecuteMouseClick ) pExecute;
-        switch ( execute )
+        case EDITOR :
+        case SMALLSTEP :
+        case BIGSTEP :
+        case TYPECHECKER :
+        case TYPEINFERENCE :
+        case MINIMALTYPING :
+        case SUBTYPING_SOURCE :
+        case SUBTYPING :
         {
-          case EDITOR :
-          case SMALLSTEP :
-          case BIGSTEP :
-          case TYPECHECKER :
-          case TYPEINFERENCE :
-          case MINIMALTYPING :
-          case SUBTYPING_SOURCE :
-          case SUBTYPING :
-          {
-            execute ();
-            break;
-          }
+          execute ();
+          break;
         }
       }
-      else
-        if ( pExecute instanceof Outline.ExecuteAutoChange )
+    }
+    else if ( pExecute instanceof Outline.ExecuteAutoChange )
+    {
+      Outline.ExecuteAutoChange execute = ( Outline.ExecuteAutoChange ) pExecute;
+      switch ( execute )
+      {
+        case EDITOR :
+        case SUBTYPING_SOURCE :
         {
-          Outline.ExecuteAutoChange execute = ( Outline.ExecuteAutoChange ) pExecute;
-          switch ( execute )
-          {
-            case EDITOR :
-            case SUBTYPING_SOURCE :
-            {
-              executeTimerStart ( 500 );
-              break;
-            }
-            case SMALLSTEP :
-            case BIGSTEP :
-            case TYPECHECKER :
-            case TYPEINFERENCE :
-            case MINIMALTYPING :
-            case SUBTYPING :
-            {
-              executeTimerStart ( 250 );
-              break;
-            }
-          }
+          executeTimerStart ( 500 );
+          break;
         }
+        case SMALLSTEP :
+        case BIGSTEP :
+        case TYPECHECKER :
+        case TYPEINFERENCE :
+        case MINIMALTYPING :
+        case SUBTYPING :
+        {
+          executeTimerStart ( 250 );
+          break;
+        }
+      }
+    }
   }
 
 
@@ -1553,23 +1546,20 @@ public final class DefaultOutline implements Outline
       updateExpression ( list, pTreePath );
     }
     // Identifier
-    else
-      if ( selectedNode.isIdentifier () )
-      {
-        updateIdentifier ( list, pTreePath );
-      }
-      // Type
-      else
-        if ( selectedNode.isType () )
-        {
-          updateType ( list, pTreePath );
-        }
-        // TypeName
-        else
-          if ( selectedNode.isTypeName () )
-          {
-            updateTypeName ( list, pTreePath );
-          }
+    else if ( selectedNode.isIdentifier () )
+    {
+      updateIdentifier ( list, pTreePath );
+    }
+    // Type
+    else if ( selectedNode.isType () )
+    {
+      updateType ( list, pTreePath );
+    }
+    // TypeName
+    else if ( selectedNode.isTypeName () )
+    {
+      updateTypeName ( list, pTreePath );
+    }
     updateBreaks ();
   }
 
@@ -1800,29 +1790,27 @@ public final class DefaultOutline implements Outline
     {
       document = this.sourceView.getDocument ();
     }
-    else
-      if ( this.typeEditorPanel != null )
+    else if ( this.typeEditorPanel != null )
+    {
+      if ( this.typeEditorPanel.getOutline1 () == this )
       {
-        if ( this.typeEditorPanel.getOutline1 () == this )
-        {
-          document = ( StyledLanguageDocument ) this.typeEditorPanel
-              .getEditor ().getDocument ();
-        }
-        else
-          if ( this.typeEditorPanel.getOutline2 () == this )
-          {
-            document = ( StyledLanguageDocument ) this.typeEditorPanel
-                .getEditor2 ().getDocument ();
-          }
-          else
-          {
-            return;
-          }
+        document = ( StyledLanguageDocument ) this.typeEditorPanel.getEditor ()
+            .getDocument ();
+      }
+      else if ( this.typeEditorPanel.getOutline2 () == this )
+      {
+        document = ( StyledLanguageDocument ) this.typeEditorPanel
+            .getEditor2 ().getDocument ();
       }
       else
       {
         return;
       }
+    }
+    else
+    {
+      return;
+    }
     try
     {
       document.processChanged ();

@@ -1,7 +1,7 @@
-package java_cup.runtime ;
+package java_cup.runtime;
 
 
-import java.util.Stack ;
+import java.util.Stack;
 
 
 /**
@@ -21,6 +21,7 @@ import java.util.Stack ;
  */
 public class virtual_parse_stack
 {
+
   /*-----------------------------------------------------------*/
   /*--- Constructor(s) ----------------------------------------*/
   /*-----------------------------------------------------------*/
@@ -31,13 +32,13 @@ public class virtual_parse_stack
     /* sanity check */
     if ( shadowing_stack == null )
       throw new Exception (
-          "Internal parser error: attempt to create null virtual stack" ) ;
+          "Internal parser error: attempt to create null virtual stack" );
     /* set up our internals */
-    real_stack = shadowing_stack ;
-    vstack = new Stack ( ) ;
-    real_next = 0 ;
+    real_stack = shadowing_stack;
+    vstack = new Stack ();
+    real_next = 0;
     /* get one element onto the virtual portion of the stack */
-    get_from_real ( ) ;
+    get_from_real ();
   }
 
 
@@ -48,7 +49,7 @@ public class virtual_parse_stack
    * The real stack that we shadow. This is accessed when we move off the bottom
    * of the virtual portion of the stack, but is always left unmodified.
    */
-  protected Stack real_stack ;
+  protected Stack real_stack;
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
@@ -57,7 +58,7 @@ public class virtual_parse_stack
    * measured from top of stack, so 0 would indicate that no elements have been
    * "moved" from the real to virtual stack.
    */
-  protected int real_next ;
+  protected int real_next;
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
@@ -68,7 +69,7 @@ public class virtual_parse_stack
    * stack). When this portion of the stack becomes empty we transfer elements
    * from the underlying stack onto this stack.
    */
-  protected Stack vstack ;
+  protected Stack vstack;
 
 
   /*-----------------------------------------------------------*/
@@ -78,55 +79,57 @@ public class virtual_parse_stack
    * Transfer an element from the real to the virtual stack. This assumes that
    * the virtual stack is currently empty.
    */
-  protected void get_from_real ( )
+  protected void get_from_real ()
   {
-    Symbol stack_sym ;
+    Symbol stack_sym;
     /* don't transfer if the real stack is empty */
-    if ( real_next >= real_stack.size ( ) ) return ;
+    if ( real_next >= real_stack.size () )
+      return;
     /* get a copy of the first Symbol we have not transfered */
-    stack_sym = ( Symbol ) real_stack.elementAt ( real_stack.size ( ) - 1
-        - real_next ) ;
+    stack_sym = ( Symbol ) real_stack.elementAt ( real_stack.size () - 1
+        - real_next );
     /* record the transfer */
-    real_next ++ ;
+    real_next++ ;
     /* put the state number from the Symbol onto the virtual stack */
-    vstack.push ( new Integer ( stack_sym.parse_state ) ) ;
+    vstack.push ( new Integer ( stack_sym.parse_state ) );
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Indicate whether the stack is empty. */
-  public boolean empty ( )
+  public boolean empty ()
   {
     /*
      * if vstack is empty then we were unable to transfer onto it and the whole
      * thing is empty.
      */
-    return vstack.empty ( ) ;
+    return vstack.empty ();
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Return value on the top of the stack (without popping it). */
-  public int top ( ) throws java.lang.Exception
+  public int top () throws java.lang.Exception
   {
-    if ( vstack.empty ( ) )
+    if ( vstack.empty () )
       throw new Exception (
-          "Internal parser error: top() called on empty virtual stack" ) ;
-    return ( ( Integer ) vstack.peek ( ) ).intValue ( ) ;
+          "Internal parser error: top() called on empty virtual stack" );
+    return ( ( Integer ) vstack.peek () ).intValue ();
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Pop the stack. */
-  public void pop ( ) throws java.lang.Exception
+  public void pop () throws java.lang.Exception
   {
-    if ( vstack.empty ( ) )
+    if ( vstack.empty () )
       throw new Exception (
-          "Internal parser error: pop from empty virtual stack" ) ;
+          "Internal parser error: pop from empty virtual stack" );
     /* pop it */
-    vstack.pop ( ) ;
+    vstack.pop ();
     /* if we are now empty transfer an element (if there is one) */
-    if ( vstack.empty ( ) ) get_from_real ( ) ;
+    if ( vstack.empty () )
+      get_from_real ();
   }
 
 
@@ -134,7 +137,7 @@ public class virtual_parse_stack
   /** Push a state number onto the stack. */
   public void push ( int state_num )
   {
-    vstack.push ( new Integer ( state_num ) ) ;
+    vstack.push ( new Integer ( state_num ) );
   }
   /*-----------------------------------------------------------*/
 }

@@ -1,14 +1,15 @@
-package de.unisiegen.tpml.core.languages.l0 ;
+package de.unisiegen.tpml.core.languages.l0;
 
 
-import java.lang.reflect.InvocationTargetException ;
-import java.lang.reflect.Method ;
-import de.unisiegen.tpml.core.expressions.Application ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Lambda ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.core.smallstep.AbstractSmallStepProofRuleSet ;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import de.unisiegen.tpml.core.expressions.Application;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Lambda;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.smallstep.AbstractSmallStepProofRuleSet;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofContext;
 
 
 /**
@@ -22,6 +23,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
  */
 public class L0SmallStepProofRuleSet extends AbstractSmallStepProofRuleSet
 {
+
   /**
    * Allocates a new <code>L0SmallStepProofRuleSet</code> for the specified
    * <code>language</code>, which must be either <tt>L0</tt> or a derived
@@ -33,11 +35,11 @@ public class L0SmallStepProofRuleSet extends AbstractSmallStepProofRuleSet
    */
   public L0SmallStepProofRuleSet ( L0Language language )
   {
-    super ( language ) ;
+    super ( language );
     // register the small step rules
-    register ( L0Language.L0 , "APP-LEFT" , false ) ; //$NON-NLS-1$
-    register ( L0Language.L0 , "APP-RIGHT" , false ) ; //$NON-NLS-1$
-    register ( L0Language.L0 , "BETA-V" , true ) ; //$NON-NLS-1$
+    register ( L0Language.L0, "APP-LEFT", false ); //$NON-NLS-1$
+    register ( L0Language.L0, "APP-RIGHT", false ); //$NON-NLS-1$
+    register ( L0Language.L0, "BETA-V", true ); //$NON-NLS-1$
   }
 
 
@@ -61,45 +63,44 @@ public class L0SmallStepProofRuleSet extends AbstractSmallStepProofRuleSet
    * @return the resulting expression.
    * @see #evaluateApplication(SmallStepProofContext, Application)
    */
-  protected Expression apply ( SmallStepProofContext context ,
-      Application application , Expression e1 , Expression e2 )
+  protected Expression apply ( SmallStepProofContext context,
+      Application application, Expression e1, Expression e2 )
   {
     try
     {
       // determine the specific apply method
-      Method method = lookupMethod ( "apply" , e1.getClass ( ) ) ; //$NON-NLS-1$
+      Method method = lookupMethod ( "apply", e1.getClass () ); //$NON-NLS-1$
       // invoke the specific apply method
-      return ( Expression ) method.invoke ( this , context , application , e1 ,
-          e2 ) ;
+      return ( Expression ) method.invoke ( this, context, application, e1, e2 );
     }
     catch ( ClassCastException e )
     {
       // no way to further evaluate the application
-      return application ;
+      return application;
     }
     catch ( IllegalArgumentException e )
     {
       // no way to further evaluate the application
-      return application ;
+      return application;
     }
     catch ( NoSuchMethodException e )
     {
       // no way to further evaluate the application
-      return application ;
+      return application;
     }
     catch ( RuntimeException e )
     {
       // rethrow as something is really completely broken
-      throw e ;
+      throw e;
     }
     catch ( InvocationTargetException e )
     {
-      throw new RuntimeException ( e.getTargetException ( ).getMessage ( ) ) ;
+      throw new RuntimeException ( e.getTargetException ().getMessage () );
     }
     catch ( Exception e )
     {
       // rethrow as runtime exception, sombody b0rked it
-      throw new RuntimeException ( e ) ;
+      throw new RuntimeException ( e );
     }
   }
 
@@ -111,34 +112,34 @@ public class L0SmallStepProofRuleSet extends AbstractSmallStepProofRuleSet
    * @param application the application to evaluate.
    * @return the resulting expression.
    */
-  public Expression evaluateApplication ( SmallStepProofContext context ,
+  public Expression evaluateApplication ( SmallStepProofContext context,
       Application application )
   {
     // determine the sub expressions
-    Expression e1 = application.getE1 ( ) ;
-    Expression e2 = application.getE2 ( ) ;
+    Expression e1 = application.getE1 ();
+    Expression e2 = application.getE2 ();
     // check if e1 is not already a value
-    if ( ! e1.isValue ( ) )
+    if ( !e1.isValue () )
     {
       // we're about to perform (APP-LEFT)
-      context.addProofStep ( getRuleByName ( "APP-LEFT" ) , application ) ; //$NON-NLS-1$
+      context.addProofStep ( getRuleByName ( "APP-LEFT" ), application ); //$NON-NLS-1$
       // try to evaluate e1
-      e1 = evaluate ( context , e1 ) ;
+      e1 = evaluate ( context, e1 );
       // exceptions need special handling
-      return e1.isException ( ) ? e1 : new Application ( e1 , e2 ) ;
+      return e1.isException () ? e1 : new Application ( e1, e2 );
     }
     // check if e2 is not already a value
-    if ( ! e2.isValue ( ) )
+    if ( !e2.isValue () )
     {
       // we're about to perform (APP-RIGHT)
-      context.addProofStep ( getRuleByName ( "APP-RIGHT" ) , application ) ; //$NON-NLS-1$
+      context.addProofStep ( getRuleByName ( "APP-RIGHT" ), application ); //$NON-NLS-1$
       // try to evaluate e2
-      e2 = evaluate ( context , e2 ) ;
+      e2 = evaluate ( context, e2 );
       // exceptions need special handling
-      return e2.isException ( ) ? e2 : new Application ( e1 , e2 ) ;
+      return e2.isException () ? e2 : new Application ( e1, e2 );
     }
     // perform the application
-    return apply ( context , application , e1 , e2 ) ;
+    return apply ( context, application, e1, e2 );
   }
 
 
@@ -151,11 +152,11 @@ public class L0SmallStepProofRuleSet extends AbstractSmallStepProofRuleSet
    * @param v the second operand of the <code>application</code>.
    * @return the resulting expression.
    */
-  public Expression applyLambda ( SmallStepProofContext context ,
-      Application application , Lambda lambda , Expression v )
+  public Expression applyLambda ( SmallStepProofContext context,
+      Application application, Lambda lambda, Expression v )
   {
-    Expression result = lambda.getE ( ).substitute ( lambda.getId ( ) , v ) ;
-    context.addProofStep ( getRuleByName ( "BETA-V" ) , application ) ; //$NON-NLS-1$
-    return result ;
+    Expression result = lambda.getE ().substitute ( lambda.getId (), v );
+    context.addProofStep ( getRuleByName ( "BETA-V" ), application ); //$NON-NLS-1$
+    return result;
   }
 }

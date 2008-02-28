@@ -1,30 +1,31 @@
-package de.unisiegen.tpml.core.typeinference ;
+package de.unisiegen.tpml.core.typeinference;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.interfaces.ShowBondsInput ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexCommandNames ;
-import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
-import de.unisiegen.tpml.core.typechecker.SeenTypes ;
-import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.types.MonoType ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interfaces.ShowBondsInput;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexCommandNames;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.SeenTypes;
+import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.types.MonoType;
 
 
 /**
@@ -34,21 +35,22 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @author Christian Fehler
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker
  */
-public final class TypeEquationTypeInference implements ShowBondsInput ,
-    TypeFormula , PrettyPrintable , LatexCommandNames
+public final class TypeEquationTypeInference implements ShowBondsInput,
+    TypeFormula, PrettyPrintable, LatexCommandNames
 {
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
+    LatexCommandList commands = new LatexCommandList ();
     commands.add ( new DefaultLatexCommand (
-        LATEX_TYPE_EQUATION_TYPE_INFERENCE , 2 , "#1\\ \\color{" //$NON-NLS-1$
-            + LATEX_COLOR_NONE + "}{=}\\ #2" , "tau1" , "tau2" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    return commands ;
+        LATEX_TYPE_EQUATION_TYPE_INFERENCE, 2, "#1\\ \\color{" //$NON-NLS-1$
+            + LATEX_COLOR_NONE + "}{=}\\ #2", "tau1", "tau2" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    return commands;
   }
 
 
@@ -57,13 +59,13 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static LatexInstructionList getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
-    return instructions ;
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}", //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ); //$NON-NLS-1$
+    return instructions;
   }
 
 
@@ -72,11 +74,11 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.COLOR ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.COLOR );
+    return packages;
   }
 
 
@@ -85,7 +87,7 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @see #getLeft()
    */
-  private MonoType left ;
+  private MonoType left;
 
 
   /**
@@ -93,13 +95,13 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @see #getRight()
    */
-  private MonoType right ;
+  private MonoType right;
 
 
   /**
    * The {@link TypeEquationTypeInference}s which were unified before.
    */
-  private SeenTypes < TypeEquationTypeInference > seenTypes ;
+  private SeenTypes < TypeEquationTypeInference > seenTypes;
 
 
   /**
@@ -113,24 +115,24 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * @throws NullPointerException if <code>left</code> or <code>right</code>
    *           is <code>null</code>.
    */
-  public TypeEquationTypeInference ( final MonoType pLeft ,
-      final MonoType pRight , SeenTypes < TypeEquationTypeInference > pSeenTypes )
+  public TypeEquationTypeInference ( final MonoType pLeft,
+      final MonoType pRight, SeenTypes < TypeEquationTypeInference > pSeenTypes )
   {
     if ( pLeft == null )
     {
-      throw new NullPointerException ( "left is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "left is null" ); //$NON-NLS-1$
     }
     if ( pRight == null )
     {
-      throw new NullPointerException ( "right is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "right is null" ); //$NON-NLS-1$
     }
     if ( pSeenTypes == null )
     {
-      throw new NullPointerException ( "SeenTypes is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "SeenTypes is null" ); //$NON-NLS-1$
     }
-    this.left = pLeft ;
-    this.right = pRight ;
-    this.seenTypes = pSeenTypes ;
+    this.left = pLeft;
+    this.right = pRight;
+    this.seenTypes = pSeenTypes;
   }
 
 
@@ -141,11 +143,11 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * @return a clone of this object.
    * @see Object#clone()
    */
-  @ Override
-  public TypeEquationTypeInference clone ( )
+  @Override
+  public TypeEquationTypeInference clone ()
   {
-    return new TypeEquationTypeInference ( this.left , this.right ,
-        this.seenTypes ) ;
+    return new TypeEquationTypeInference ( this.left, this.right,
+        this.seenTypes );
   }
 
 
@@ -154,16 +156,16 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
-  @ Override
+  @Override
   public boolean equals ( final Object obj )
   {
     if ( obj instanceof TypeEquationTypeInference )
     {
-      final TypeEquationTypeInference other = ( TypeEquationTypeInference ) obj ;
+      final TypeEquationTypeInference other = ( TypeEquationTypeInference ) obj;
       return ( this.left.equals ( other.left ) && this.right
-          .equals ( other.right ) ) ;
+          .equals ( other.right ) );
     }
-    return false ;
+    return false;
   }
 
 
@@ -172,9 +174,9 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getEnvironment()
    */
-  public DefaultTypeEnvironment getEnvironment ( )
+  public DefaultTypeEnvironment getEnvironment ()
   {
-    return new DefaultTypeEnvironment ( ) ;
+    return new DefaultTypeEnvironment ();
   }
 
 
@@ -183,9 +185,9 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getExpression()
    */
-  public Expression getExpression ( )
+  public Expression getExpression ()
   {
-    return null ;
+    return null;
   }
 
 
@@ -194,13 +196,13 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public LatexCommandList getLatexCommands ( )
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    commands.add ( this.left ) ;
-    commands.add ( this.right ) ;
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
+    commands.add ( this.left );
+    commands.add ( this.right );
+    return commands;
   }
 
 
@@ -209,13 +211,13 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public LatexInstructionList getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( getLatexInstructionsStatic ( ) ) ;
-    instructions.add ( this.left ) ;
-    instructions.add ( this.right ) ;
-    return instructions ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
+    instructions.add ( this.left );
+    instructions.add ( this.right );
+    return instructions;
   }
 
 
@@ -224,13 +226,13 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public LatexPackageList getLatexPackages ( )
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
-    packages.add ( this.left ) ;
-    packages.add ( this.right ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( getLatexPackagesStatic () );
+    packages.add ( this.left );
+    packages.add ( this.right );
+    return packages;
   }
 
 
@@ -239,9 +241,9 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @return the left side type.
    */
-  public MonoType getLeft ( )
+  public MonoType getLeft ()
   {
-    return this.left ;
+    return this.left;
   }
 
 
@@ -250,9 +252,9 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @return the right side type.
    */
-  public MonoType getRight ( )
+  public MonoType getRight ()
   {
-    return this.right ;
+    return this.right;
   }
 
 
@@ -262,9 +264,9 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * @return The seenTypes.
    * @see #seenTypes
    */
-  public SeenTypes < TypeEquationTypeInference > getSeenTypes ( )
+  public SeenTypes < TypeEquationTypeInference > getSeenTypes ()
   {
-    return this.seenTypes ;
+    return this.seenTypes;
   }
 
 
@@ -273,9 +275,9 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getType()
    */
-  public MonoType getType ( )
+  public MonoType getType ()
   {
-    throw new RuntimeException ( "Do not use me!" ) ; //$NON-NLS-1$
+    throw new RuntimeException ( "Do not use me!" ); //$NON-NLS-1$
   }
 
 
@@ -284,10 +286,10 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @see java.lang.Object#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.left.hashCode ( ) + this.right.hashCode ( ) ;
+    return this.left.hashCode () + this.right.hashCode ();
   }
 
 
@@ -298,7 +300,7 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    */
   public void setLeft ( MonoType pLeft )
   {
-    this.left = pLeft ;
+    this.left = pLeft;
   }
 
 
@@ -309,7 +311,7 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    */
   public void setRight ( MonoType pRight )
   {
-    this.right = pRight ;
+    this.right = pRight;
   }
 
 
@@ -327,14 +329,14 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
   public TypeEquationTypeInference substitute (
       ArrayList < TypeSubstitution > substitutions )
   {
-    TypeEquationTypeInference newEqn = this.clone ( ) ;
+    TypeEquationTypeInference newEqn = this.clone ();
     for ( TypeSubstitution s : substitutions )
     {
-      newEqn.setLeft ( newEqn.getLeft ( ).substitute ( s ) ) ;
-      newEqn.setRight ( newEqn.getRight ( ).substitute ( s ) ) ;
+      newEqn.setLeft ( newEqn.getLeft ().substitute ( s ) );
+      newEqn.setRight ( newEqn.getRight ().substitute ( s ) );
     }
     // apply the substitution to the left and the right side
-    return newEqn ;
+    return newEqn;
   }
 
 
@@ -343,10 +345,10 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public final LatexString toLatexString ( )
+  public final LatexString toLatexString ()
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -356,18 +358,18 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_TYPE_EQUATION_TYPE_INFERENCE , pIndent , this.toPrettyString ( )
-            .toString ( ) , this.left.toPrettyString ( ).toString ( ) ,
-        this.right.toPrettyString ( ).toString ( ) ) ;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
+        LATEX_TYPE_EQUATION_TYPE_INFERENCE, pIndent, this.toPrettyString ()
+            .toString (), this.left.toPrettyString ().toString (), this.right
+            .toPrettyString ().toString () );
     builder.addBuilder ( this.left.toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    builder.addBreak ( ) ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+    builder.addBreak ();
     builder.addBuilder ( this.right.toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    return builder ;
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+    return builder;
   }
 
 
@@ -376,10 +378,10 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * 
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ( )
+  public final PrettyString toPrettyString ()
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -392,15 +394,15 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , 0 ) ;
+        this, 0 );
     builder.addBuilder ( this.left
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    builder.addText ( PRETTY_SPACE ) ;
-    builder.addText ( PRETTY_EQUAL ) ;
-    builder.addText ( PRETTY_SPACE ) ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+    builder.addText ( PRETTY_SPACE );
+    builder.addText ( PRETTY_EQUAL );
+    builder.addText ( PRETTY_SPACE );
     builder.addBuilder ( this.right
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    return builder ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+    return builder;
   }
 
 
@@ -412,9 +414,9 @@ public final class TypeEquationTypeInference implements ShowBondsInput ,
    * @see #toPrettyString()
    * @see Object#toString()
    */
-  @ Override
-  public final String toString ( )
+  @Override
+  public final String toString ()
   {
-    return toPrettyString ( ).toString ( ) ;
+    return toPrettyString ().toString ();
   }
 }

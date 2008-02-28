@@ -1,8 +1,9 @@
-package de.unisiegen.tpml.ui ;
+package de.unisiegen.tpml.ui;
 
 
-import java.io.File ;
-import javax.swing.UIManager ;
+import java.io.File;
+
+import javax.swing.UIManager;
 
 
 /**
@@ -14,6 +15,7 @@ import javax.swing.UIManager ;
  */
 public final class Main
 {
+
   /**
    * The main entry point for the TPML project, which allocates and runs a new
    * {@link MainWindow}. This method also sets up native look and feel for the
@@ -30,14 +32,14 @@ public final class Main
        * try to setup native look and feel for the platform if the native look
        * and feel is not GTKLookAndFeel.
        */
-      String nativeLAF = UIManager.getSystemLookAndFeelClassName ( ) ;
+      String nativeLAF = UIManager.getSystemLookAndFeelClassName ();
       if ( nativeLAF.contains ( "GTK" ) ) //$NON-NLS-1$
       {
-        UIManager.setLookAndFeel ( "javax.swing.plaf.metal.MetalLookAndFeel" ) ; //$NON-NLS-1$
+        UIManager.setLookAndFeel ( "javax.swing.plaf.metal.MetalLookAndFeel" ); //$NON-NLS-1$
       }
       else
       {
-        UIManager.setLookAndFeel ( UIManager.getSystemLookAndFeelClassName ( ) ) ;
+        UIManager.setLookAndFeel ( UIManager.getSystemLookAndFeelClassName () );
       }
     }
     catch ( Exception e )
@@ -45,28 +47,29 @@ public final class Main
       // just ignore the exception here
     }
     // run a new MainWindow
-    java.awt.EventQueue.invokeLater ( new Runnable ( )
+    java.awt.EventQueue.invokeLater ( new Runnable ()
     {
-      public void run ( )
+
+      public void run ()
       {
         // allocate the main window
-        MainWindow window = new MainWindow ( ) ;
+        MainWindow window = new MainWindow ();
         // check if any files are specified
         if ( args.length > 0 )
         {
           // open any specified files
           for ( String fileName : args )
           {
-            File file = new File ( fileName ) ;
-            window.openFile ( file ) ;
+            File file = new File ( fileName );
+            window.openFile ( file );
           }
         }
         else
         {
           // restore the files from the previous session
-          window.restoreOpenFiles ( ) ;
+          window.restoreOpenFiles ();
         }
       }
-    } ) ;
+    } );
   }
 }

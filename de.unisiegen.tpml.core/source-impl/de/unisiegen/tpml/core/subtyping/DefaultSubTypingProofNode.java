@@ -1,22 +1,22 @@
-package de.unisiegen.tpml.core.subtyping ;
+package de.unisiegen.tpml.core.subtyping;
 
 
-import de.unisiegen.tpml.core.AbstractProofNode ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.types.MonoType;
 
 
 /**
@@ -31,20 +31,21 @@ import de.unisiegen.tpml.core.types.MonoType ;
 public class DefaultSubTypingProofNode extends AbstractProofNode implements
     SubTypingProofNode
 {
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_BYRULE , 1 ,
-        "\\hspace{-5mm}\\mbox{\\scriptsize\\ #1}" , "rule" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_BYRULE, 1,
+        "\\hspace{-5mm}\\mbox{\\scriptsize\\ #1}", "rule" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     commands
         .add ( new DefaultLatexCommand (
-            LATEX_SUB_TYPING_PROOF_NODE ,
-            6 ,
+            LATEX_SUB_TYPING_PROOF_NODE,
+            6,
             LATEX_LINE_BREAK_NEW_COMMAND
                 + "\\ifarrows" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND
@@ -62,9 +63,9 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
                 // end of the node variables
                 + LATEX_LINE_BREAK_NEW_COMMAND + "$\\end{tabular}$" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND + "\\vspace{\\nodesep}" //$NON-NLS-1$
-                + LATEX_LINE_BREAK_NEW_COMMAND + "\\fi" , "depth" , "id" , //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-            "type" , "type2" , "rule" , "space" ) ) ; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
-    return commands ;
+                + LATEX_LINE_BREAK_NEW_COMMAND + "\\fi", "depth", "id", //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+            "type", "type2", "rule", "space" ) ); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+    return commands;
   }
 
 
@@ -73,25 +74,25 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static LatexInstructionList getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ) ; //$NON-NLS-1$
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ); //$NON-NLS-1$
     instructions
-        .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ) ; //$NON-NLS-1$
+        .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
-        "\\newlength{\\treeindent}" ) ) ; //$NON-NLS-1$
+        "\\newlength{\\treeindent}" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
-        "\\newlength{\\nodeindent}" ) ) ; //$NON-NLS-1$
+        "\\newlength{\\nodeindent}" ) ); //$NON-NLS-1$
     instructions
-        .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ) ; //$NON-NLS-1$
+        .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction (
         "\\newif\\ifarrows" + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
-            + "\\arrowsfalse" ) ) ; //$NON-NLS-1$
+            + "\\arrowsfalse" ) ); //$NON-NLS-1$
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
-    return instructions ;
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}", //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ); //$NON-NLS-1$
+    return instructions;
   }
 
 
@@ -100,34 +101,34 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.AMSMATH ) ;
-    packages.add ( LatexPackage.AMSTEXT ) ;
-    packages.add ( LatexPackage.COLOR ) ;
-    packages.add ( LatexPackage.PSTNODE ) ;
-    packages.add ( LatexPackage.PSTRICKS ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.AMSMATH );
+    packages.add ( LatexPackage.AMSTEXT );
+    packages.add ( LatexPackage.COLOR );
+    packages.add ( LatexPackage.PSTNODE );
+    packages.add ( LatexPackage.PSTRICKS );
+    return packages;
   }
 
 
   /**
    * The subtype of this proof node
    */
-  private MonoType left ;
+  private MonoType left;
 
 
   /**
    * The supertype of this proof node
    */
-  private MonoType right ;
+  private MonoType right;
 
 
   /**
    * list of proof steps of this node
    */
-  private ProofStep [ ] steps = new ProofStep [ 0 ] ;
+  private ProofStep [] steps = new ProofStep [ 0 ];
 
 
   /**
@@ -136,10 +137,10 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * @param pLeft the first MonoType of this node
    * @param pRight the second MonoType of this node
    */
-  public DefaultSubTypingProofNode ( MonoType pLeft , MonoType pRight )
+  public DefaultSubTypingProofNode ( MonoType pLeft, MonoType pRight )
   {
-    this.left = pLeft ;
-    this.right = pRight ;
+    this.left = pLeft;
+    this.right = pRight;
   }
 
 
@@ -148,10 +149,10 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getChildAt(int)
    */
-  @ Override
+  @Override
   public DefaultSubTypingProofNode getChildAt ( final int childIndex )
   {
-    return ( DefaultSubTypingProofNode ) super.getChildAt ( childIndex ) ;
+    return ( DefaultSubTypingProofNode ) super.getChildAt ( childIndex );
   }
 
 
@@ -160,10 +161,10 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.AbstractProofNode#getLastLeaf()
    */
-  @ Override
-  public DefaultSubTypingProofNode getLastLeaf ( )
+  @Override
+  public DefaultSubTypingProofNode getLastLeaf ()
   {
-    return ( DefaultSubTypingProofNode ) super.getLastLeaf ( ) ;
+    return ( DefaultSubTypingProofNode ) super.getLastLeaf ();
   }
 
 
@@ -172,14 +173,14 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public LatexCommandList getLatexCommands ( )
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    commands.add ( this.getLeft ( ) ) ;
-    commands.add ( this.getRight ( ) ) ;
-    commands.add ( getRule ( ) ) ;
-    return commands ;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
+    commands.add ( this.getLeft () );
+    commands.add ( this.getRight () );
+    commands.add ( getRule () );
+    return commands;
   }
 
 
@@ -188,14 +189,14 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public LatexInstructionList getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( getLatexInstructionsStatic ( ) ) ;
-    instructions.add ( this.getLeft ( ) ) ;
-    instructions.add ( this.getRight ( ) ) ;
-    instructions.add ( getRule ( ) ) ;
-    return instructions ;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
+    instructions.add ( this.getLeft () );
+    instructions.add ( this.getRight () );
+    instructions.add ( getRule () );
+    return instructions;
   }
 
 
@@ -204,14 +205,14 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public LatexPackageList getLatexPackages ( )
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
-    packages.add ( this.getLeft ( ) ) ;
-    packages.add ( this.getRight ( ) ) ;
-    packages.add ( getRule ( ) ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( getLatexPackagesStatic () );
+    packages.add ( this.getLeft () );
+    packages.add ( this.getRight () );
+    packages.add ( getRule () );
+    return packages;
   }
 
 
@@ -220,9 +221,9 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getLeft()
    */
-  public MonoType getLeft ( )
+  public MonoType getLeft ()
   {
-    return this.left ;
+    return this.left;
   }
 
 
@@ -231,9 +232,9 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getRight()
    */
-  public MonoType getRight ( )
+  public MonoType getRight ()
   {
-    return this.right ;
+    return this.right;
   }
 
 
@@ -242,12 +243,12 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getRule()
    */
-  public SubTypingProofRule getRule ( )
+  public SubTypingProofRule getRule ()
   {
-    ProofStep [ ] proofSteps = getSteps ( ) ;
+    ProofStep [] proofSteps = getSteps ();
     if ( proofSteps.length > 0 )
-      return ( SubTypingProofRule ) proofSteps [ 0 ].getRule ( ) ;
-    return null ;
+      return ( SubTypingProofRule ) proofSteps [ 0 ].getRule ();
+    return null;
   }
 
 
@@ -256,9 +257,9 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * 
    * @return ProofStep[] steps
    */
-  public ProofStep [ ] getSteps ( )
+  public ProofStep [] getSteps ()
   {
-    return this.steps ;
+    return this.steps;
   }
 
 
@@ -267,20 +268,20 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#isFinished()
    */
-  public boolean isFinished ( )
+  public boolean isFinished ()
   {
-    if ( ! isProven ( ) )
+    if ( !isProven () )
     {
-      return false ;
+      return false;
     }
-    for ( int n = 0 ; n < getChildCount ( ) ; ++ n )
+    for ( int n = 0 ; n < getChildCount () ; ++n )
     {
-      if ( ! ( getChildAt ( n ) ).isFinished ( ) )
+      if ( ! ( getChildAt ( n ) ).isFinished () )
       {
-        return false ;
+        return false;
       }
     }
-    return true ;
+    return true;
   }
 
 
@@ -289,9 +290,9 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * 
    * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#isProven()
    */
-  public boolean isProven ( )
+  public boolean isProven ()
   {
-    return ( getSteps ( ).length > 0 ) ;
+    return ( getSteps ().length > 0 );
   }
 
 
@@ -300,9 +301,9 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * 
    * @param pSteps new proof steps for this node
    */
-  public void setSteps ( ProofStep [ ] pSteps )
+  public void setSteps ( ProofStep [] pSteps )
   {
-    this.steps = pSteps ;
+    this.steps = pSteps;
   }
 
 
@@ -311,10 +312,10 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public final LatexString toLatexString ( )
+  public final LatexString toLatexString ()
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -324,41 +325,41 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public final LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    int depth = 0 ;
-    AbstractProofNode myParent = this.getParent ( ) ;
+    int depth = 0;
+    AbstractProofNode myParent = this.getParent ();
     while ( myParent != null )
     {
-      depth ++ ;
-      myParent = myParent.getParent ( ) ;
+      depth++ ;
+      myParent = myParent.getParent ();
     }
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_SUB_TYPING_PROOF_NODE , pIndent , this.toPrettyString ( )
-            .toString ( ) , this.getLeft ( ).toPrettyString ( ).toString ( ) ,
-        this.getRight ( ).toPrettyString ( ).toString ( ) ,
-        this.getRule ( ) == null ? LATEX_NO_RULE : this.getRule ( )
-            .toPrettyString ( ).toString ( ) ) ;
-    builder.addText ( "{" + String.valueOf ( this.getId ( ) ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
-    builder.addText ( "{" + String.valueOf ( depth ) + "}" ) ; //$NON-NLS-1$//$NON-NLS-2$
-    builder.addBuilder ( this.getLeft ( ).toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    builder.addBuilder ( this.getRight ( ).toLatexStringBuilder (
-        pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
-    if ( this.getRule ( ) != null )
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
+        LATEX_SUB_TYPING_PROOF_NODE, pIndent, this.toPrettyString ()
+            .toString (), this.getLeft ().toPrettyString ().toString (), this
+            .getRight ().toPrettyString ().toString (),
+        this.getRule () == null ? LATEX_NO_RULE : this.getRule ()
+            .toPrettyString ().toString () );
+    builder.addText ( "{" + String.valueOf ( this.getId () ) + "}" ); //$NON-NLS-1$//$NON-NLS-2$
+    builder.addText ( "{" + String.valueOf ( depth ) + "}" ); //$NON-NLS-1$//$NON-NLS-2$
+    builder.addBuilder ( this.getLeft ().toLatexStringBuilder (
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+    builder.addBuilder ( this.getRight ().toLatexStringBuilder (
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+    if ( this.getRule () != null )
     {
-      builder.addBuilder ( this.getRule ( ).toLatexStringBuilder (
-          pLatexStringBuilderFactory , pIndent + LATEX_INDENT ) , 0 ) ;
+      builder.addBuilder ( this.getRule ().toLatexStringBuilder (
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
     }
     else
     {
-      builder.addEmptyBuilder ( ) ;
+      builder.addEmptyBuilder ();
     }
-    int indent = 245 - depth * 7 ;
-    builder.addSourceCodeBreak ( 0 ) ;
-    builder.addComment ( "width of the table" ) ; //$NON-NLS-1$
-    builder.addText ( "{" + indent + "mm}" ) ; //$NON-NLS-1$//$NON-NLS-2$
-    return builder ;
+    int indent = 245 - depth * 7;
+    builder.addSourceCodeBreak ( 0 );
+    builder.addComment ( "width of the table" ); //$NON-NLS-1$
+    builder.addText ( "{" + indent + "mm}" ); //$NON-NLS-1$//$NON-NLS-2$
+    return builder;
   }
 
 
@@ -367,10 +368,10 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ( )
+  public final PrettyString toPrettyString ()
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -383,15 +384,15 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , 0 ) ;
+        this, 0 );
     builder.addBuilder ( this.left
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    builder.addText ( PRETTY_SPACE ) ;
-    builder.addText ( PRETTY_SUBTYPE ) ;
-    builder.addText ( PRETTY_SPACE ) ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+    builder.addText ( PRETTY_SPACE );
+    builder.addText ( PRETTY_SUBTYPE );
+    builder.addText ( PRETTY_SPACE );
     builder.addBuilder ( this.right
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-    return builder ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+    return builder;
   }
 
 
@@ -404,9 +405,9 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
    * @see #toPrettyString()
    * @see Object#toString()
    */
-  @ Override
-  public final String toString ( )
+  @Override
+  public final String toString ()
   {
-    return toPrettyString ( ).toString ( ) ;
+    return toPrettyString ().toString ();
   }
 }

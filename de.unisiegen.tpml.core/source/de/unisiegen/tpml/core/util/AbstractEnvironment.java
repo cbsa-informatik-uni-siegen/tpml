@@ -1,9 +1,9 @@
-package de.unisiegen.tpml.core.util ;
+package de.unisiegen.tpml.core.util;
 
 
-import java.util.Enumeration ;
-import java.util.Iterator ;
-import java.util.LinkedList ;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 
 /**
@@ -16,27 +16,29 @@ import java.util.LinkedList ;
  * @param <E> The entry.
  * @see de.unisiegen.tpml.core.util.Environment
  */
-public abstract class AbstractEnvironment < S , E > implements
-    Environment < S , E >
+public abstract class AbstractEnvironment < S, E > implements
+    Environment < S, E >
 {
+
   /**
    * The store mappings, mapping symbols to entries.
    * 
    * @param <S> The symbol.
    * @param <E> The entry.
    */
-  protected static class Mapping < S , E >
+  protected static class Mapping < S, E >
   {
+
     /**
      * The symbol.
      */
-    private S symbol ;
+    private S symbol;
 
 
     /**
      * The entry.
      */
-    private E entry ;
+    private E entry;
 
 
     /**
@@ -45,18 +47,18 @@ public abstract class AbstractEnvironment < S , E > implements
      * @param pSymbol The symbol.
      * @param pEntry The entry.
      */
-    public Mapping ( S pSymbol , E pEntry )
+    public Mapping ( S pSymbol, E pEntry )
     {
       if ( pSymbol == null )
       {
-        throw new NullPointerException ( "symbol is null" ) ; //$NON-NLS-1$
+        throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
       }
       if ( pEntry == null )
       {
-        throw new NullPointerException ( "entry is null" ) ; //$NON-NLS-1$
+        throw new NullPointerException ( "entry is null" ); //$NON-NLS-1$
       }
-      this.symbol = pSymbol ;
-      this.entry = pEntry ;
+      this.symbol = pSymbol;
+      this.entry = pEntry;
     }
 
 
@@ -65,9 +67,9 @@ public abstract class AbstractEnvironment < S , E > implements
      * 
      * @return The entry.
      */
-    public E getEntry ( )
+    public E getEntry ()
     {
-      return this.entry ;
+      return this.entry;
     }
 
 
@@ -76,9 +78,9 @@ public abstract class AbstractEnvironment < S , E > implements
      * 
      * @return The symbol.
      */
-    public S getSymbol ( )
+    public S getSymbol ()
     {
-      return this.symbol ;
+      return this.symbol;
     }
   }
 
@@ -86,16 +88,16 @@ public abstract class AbstractEnvironment < S , E > implements
   /**
    * The mappings, the symbol/entry pairs, within this environment.
    */
-  protected LinkedList < Mapping < S , E >> mappings ;
+  protected LinkedList < Mapping < S, E >> mappings;
 
 
   /**
    * Default constructor, creates a new empty environment with no mappings.
    */
-  protected AbstractEnvironment ( )
+  protected AbstractEnvironment ()
   {
     // start with an empty mapping
-    this.mappings = new LinkedList < Mapping < S , E >> ( ) ;
+    this.mappings = new LinkedList < Mapping < S, E >> ();
   }
 
 
@@ -108,14 +110,14 @@ public abstract class AbstractEnvironment < S , E > implements
    * @throws NullPointerException if the <code>environment</code> is
    *           <code>null</code>.
    */
-  protected AbstractEnvironment ( AbstractEnvironment < S , E > environment )
+  protected AbstractEnvironment ( AbstractEnvironment < S, E > environment )
   {
     if ( environment == null )
     {
-      throw new NullPointerException ( "environment is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "environment is null" ); //$NON-NLS-1$
     }
     // copy-on-write for the mappings
-    this.mappings = environment.mappings ;
+    this.mappings = environment.mappings;
   }
 
 
@@ -128,16 +130,16 @@ public abstract class AbstractEnvironment < S , E > implements
   {
     if ( symbol == null )
     {
-      throw new NullPointerException ( "symbol is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
     }
-    for ( Mapping < S , E > mapping : this.mappings )
+    for ( Mapping < S, E > mapping : this.mappings )
     {
-      if ( mapping.getSymbol ( ).equals ( symbol ) )
+      if ( mapping.getSymbol ().equals ( symbol ) )
       {
-        return true ;
+        return true;
       }
     }
-    return false ;
+    return false;
   }
 
 
@@ -150,16 +152,16 @@ public abstract class AbstractEnvironment < S , E > implements
   {
     if ( symbol == null )
     {
-      throw new NullPointerException ( "symbol is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
     }
-    for ( Mapping < S , E > mapping : this.mappings )
+    for ( Mapping < S, E > mapping : this.mappings )
     {
-      if ( mapping.getSymbol ( ).equals ( symbol ) )
+      if ( mapping.getSymbol ().equals ( symbol ) )
       {
-        return mapping.getEntry ( ) ;
+        return mapping.getEntry ();
       }
     }
-    throw new IllegalArgumentException ( "symbol is invalid" ) ; //$NON-NLS-1$
+    throw new IllegalArgumentException ( "symbol is invalid" ); //$NON-NLS-1$
   }
 
 
@@ -171,27 +173,27 @@ public abstract class AbstractEnvironment < S , E > implements
    * @param entry the entry for the new mapping.
    * @see #get(Object)
    */
-  protected void put ( S symbol , E entry )
+  protected void put ( S symbol, E entry )
   {
     if ( symbol == null )
     {
-      throw new NullPointerException ( "symbol is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
     }
     if ( entry == null )
     {
-      throw new NullPointerException ( "entry is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "entry is null" ); //$NON-NLS-1$
     }
     // copy-on-write semantics
-    LinkedList < Mapping < S , E >> newMappings = new LinkedList < Mapping < S , E >> ( ) ;
-    newMappings.add ( new Mapping < S , E > ( symbol , entry ) ) ;
-    for ( Mapping < S , E > mapping : this.mappings )
+    LinkedList < Mapping < S, E >> newMappings = new LinkedList < Mapping < S, E >> ();
+    newMappings.add ( new Mapping < S, E > ( symbol, entry ) );
+    for ( Mapping < S, E > mapping : this.mappings )
     {
-      if ( ! mapping.getSymbol ( ).equals ( symbol ) )
+      if ( !mapping.getSymbol ().equals ( symbol ) )
       {
-        newMappings.add ( mapping ) ;
+        newMappings.add ( mapping );
       }
     }
-    this.mappings = newMappings ;
+    this.mappings = newMappings;
   }
 
 
@@ -200,25 +202,26 @@ public abstract class AbstractEnvironment < S , E > implements
    * 
    * @see Environment#symbols()
    */
-  public Enumeration < S > symbols ( )
+  public Enumeration < S > symbols ()
   {
-    return new Enumeration < S > ( )
+    return new Enumeration < S > ()
     {
-      private Iterator < Mapping < S , E >> iterator = AbstractEnvironment.this.mappings
-          .iterator ( ) ;
+
+      private Iterator < Mapping < S, E >> iterator = AbstractEnvironment.this.mappings
+          .iterator ();
 
 
-      public boolean hasMoreElements ( )
+      public boolean hasMoreElements ()
       {
-        return this.iterator.hasNext ( ) ;
+        return this.iterator.hasNext ();
       }
 
 
-      public S nextElement ( )
+      public S nextElement ()
       {
-        return this.iterator.next ( ).getSymbol ( ) ;
+        return this.iterator.next ().getSymbol ();
       }
-    } ;
+    };
   }
 
 
@@ -229,19 +232,20 @@ public abstract class AbstractEnvironment < S , E > implements
    * @return the string representation.
    * @see Object#toString()
    */
-  @ Override
-  public String toString ( )
+  @Override
+  public String toString ()
   {
-    StringBuilder builder = new StringBuilder ( ) ;
-    builder.append ( '[' ) ;
-    for ( Mapping < S , E > mapping : this.mappings )
+    StringBuilder builder = new StringBuilder ();
+    builder.append ( '[' );
+    for ( Mapping < S, E > mapping : this.mappings )
     {
-      if ( builder.length ( ) > 1 ) builder.append ( ", " ) ; //$NON-NLS-1$
-      builder.append ( mapping.getSymbol ( ) ) ;
-      builder.append ( ": " ) ; //$NON-NLS-1$
-      builder.append ( mapping.getEntry ( ) ) ;
+      if ( builder.length () > 1 )
+        builder.append ( ", " ); //$NON-NLS-1$
+      builder.append ( mapping.getSymbol () );
+      builder.append ( ": " ); //$NON-NLS-1$
+      builder.append ( mapping.getEntry () );
     }
-    builder.append ( ']' ) ;
-    return builder.toString ( ) ;
+    builder.append ( ']' );
+    return builder.toString ();
   }
 }

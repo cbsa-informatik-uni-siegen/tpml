@@ -4,7 +4,7 @@
  * Created on 26. Juli 2006, 19:44
  */
 
-package de.unisiegen.tpml.ui;
+package de.unisiegen.tpml.ui.netbeans;
 
 import java.awt.Component;
 import java.awt.event.KeyEvent;
@@ -16,11 +16,13 @@ import javax.swing.JList;
 
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
+import de.unisiegen.tpml.ui.FileWizardLogic;
 
 /**
  *
  * @author  bmeurer
  */
+@ SuppressWarnings ( "all" )
 public class FileWizard extends javax.swing.JDialog {
   //
   // Inner classes
@@ -254,7 +256,6 @@ public class FileWizard extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowClosing
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-// 
         dispose();
     }//GEN-LAST:event_okButtonActionPerformed
 

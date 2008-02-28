@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
 /**
@@ -11,9 +11,10 @@ package de.unisiegen.tpml.core.latex ;
  */
 abstract class AbstractLatexItem
 {
+
   /**
    * @param pBuffer The string of the latex string.
    * @param pIndent The indent of this object.
    */
-  protected abstract void determineString ( StringBuilder pBuffer , int pIndent ) ;
+  protected abstract void determineString ( StringBuilder pBuffer, int pIndent );
 }

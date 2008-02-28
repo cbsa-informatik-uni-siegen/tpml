@@ -1,8 +1,8 @@
-package de.unisiegen.tpml.core.prettyprinter ;
+package de.unisiegen.tpml.core.prettyprinter;
 
 
-import java.util.List ;
-import java.util.Map ;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -16,13 +16,14 @@ import java.util.Map ;
  */
 final class BuilderItem extends AbstractItem
 {
+
   //
   // Attributes
   //
   /**
    * The pretty string builder associated with this item.
    */
-  private DefaultPrettyStringBuilder builder ;
+  private DefaultPrettyStringBuilder builder;
 
 
   //
@@ -40,9 +41,9 @@ final class BuilderItem extends AbstractItem
   {
     if ( pBuilder == null )
     {
-      throw new NullPointerException ( "builder is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "builder is null" ); //$NON-NLS-1$
     }
-    this.builder = pBuilder ;
+    this.builder = pBuilder;
   }
 
 
@@ -56,13 +57,13 @@ final class BuilderItem extends AbstractItem
    *      java.util.Map, java.util.List,
    *      de.unisiegen.tpml.core.prettyprinter.PrettyStyle[])
    */
-  @ Override
-  void determineString ( StringBuilder buffer ,
-      Map < PrettyPrintable , PrettyAnnotation > annotations ,
-      @ SuppressWarnings ( "unused" )
-      List < Integer > breakOffsets , PrettyStyle [ ] styles )
+  @Override
+  void determineString ( StringBuilder buffer,
+      Map < PrettyPrintable, PrettyAnnotation > annotations,
+      @SuppressWarnings ( "unused" )
+      List < Integer > breakOffsets, PrettyStyle [] styles )
   {
-    this.builder.determineString ( buffer , annotations , styles ) ;
+    this.builder.determineString ( buffer, annotations, styles );
   }
 
 
@@ -71,9 +72,9 @@ final class BuilderItem extends AbstractItem
    * 
    * @see de.unisiegen.tpml.core.prettyprinter.AbstractItem#determineStringLength()
    */
-  @ Override
-  int determineStringLength ( )
+  @Override
+  int determineStringLength ()
   {
-    return this.builder.determineStringLength ( ) ;
+    return this.builder.determineStringLength ();
   }
 }

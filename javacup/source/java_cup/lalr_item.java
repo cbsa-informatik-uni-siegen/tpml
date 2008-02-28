@@ -1,7 +1,7 @@
-package java_cup ;
+package java_cup;
 
 
-import java.util.Stack ;
+import java.util.Stack;
 
 
 /**
@@ -37,6 +37,7 @@ import java.util.Stack ;
  */
 public class lalr_item extends lr_item_core
 {
+
   /*-----------------------------------------------------------*/
   /*--- Constructor(s) ----------------------------------------*/
   /*-----------------------------------------------------------*/
@@ -47,13 +48,13 @@ public class lalr_item extends lr_item_core
    * @param pos the position of the "dot" within the production.
    * @param look the set of lookahead symbols.
    */
-  public lalr_item ( production prod , int pos , terminal_set look )
+  public lalr_item ( production prod, int pos, terminal_set look )
       throws internal_error
   {
-    super ( prod , pos ) ;
-    _lookahead = look ;
-    _propagate_items = new Stack ( ) ;
-    needs_propagation = true ;
+    super ( prod, pos );
+    _lookahead = look;
+    _propagate_items = new Stack ();
+    needs_propagation = true;
   }
 
 
@@ -64,10 +65,9 @@ public class lalr_item extends lr_item_core
    * @param prod the production for the item.
    * @param look the set of lookahead symbols.
    */
-  public lalr_item ( production prod , terminal_set look )
-      throws internal_error
+  public lalr_item ( production prod, terminal_set look ) throws internal_error
   {
-    this ( prod , 0 , look ) ;
+    this ( prod, 0, look );
   }
 
 
@@ -79,7 +79,7 @@ public class lalr_item extends lr_item_core
    */
   public lalr_item ( production prod ) throws internal_error
   {
-    this ( prod , 0 , new terminal_set ( ) ) ;
+    this ( prod, 0, new terminal_set () );
   }
 
 
@@ -87,25 +87,25 @@ public class lalr_item extends lr_item_core
   /*--- (Access to) Instance Variables ------------------------*/
   /*-----------------------------------------------------------*/
   /** The lookahead symbols of the item. */
-  protected terminal_set _lookahead ;
+  protected terminal_set _lookahead;
 
 
   /** The lookahead symbols of the item. */
-  public terminal_set lookahead ( )
+  public terminal_set lookahead ()
   {
-    return _lookahead ;
+    return _lookahead;
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Links to items that the lookahead needs to be propagated to. */
-  protected Stack _propagate_items ;
+  protected Stack _propagate_items;
 
 
   /** Links to items that the lookahead needs to be propagated to */
-  public Stack propagate_items ( )
+  public Stack propagate_items ()
   {
-    return _propagate_items ;
+    return _propagate_items;
   }
 
 
@@ -114,15 +114,15 @@ public class lalr_item extends lr_item_core
    * Flag to indicate that this item needs to propagate its lookahead (whether
    * it has changed or not).
    */
-  protected boolean needs_propagation ;
+  protected boolean needs_propagation;
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Add a new item to the set of items we propagate to. */
   public void add_propagate ( lalr_item prop_to )
   {
-    _propagate_items.push ( prop_to ) ;
-    needs_propagation = true ;
+    _propagate_items.push ( prop_to );
+    needs_propagation = true;
   }
 
 
@@ -138,25 +138,25 @@ public class lalr_item extends lr_item_core
   public void propagate_lookaheads ( terminal_set incoming )
       throws internal_error
   {
-    boolean change = false ;
+    boolean change = false;
     /* if we don't need to propagate, then bail out now */
-    if ( ! needs_propagation && ( incoming == null || incoming.empty ( ) ) )
-      return ;
+    if ( !needs_propagation && ( incoming == null || incoming.empty () ) )
+      return;
     /* if we have null incoming, treat as an empty set */
     if ( incoming != null )
     {
       /* add the incoming to the lookahead of this item */
-      change = lookahead ( ).add ( incoming ) ;
+      change = lookahead ().add ( incoming );
     }
     /* if we changed or need it anyway, propagate across our links */
     if ( change || needs_propagation )
     {
       /* don't need to propagate again */
-      needs_propagation = false ;
+      needs_propagation = false;
       /* propagate our lookahead into each item we are linked to */
-      for ( int i = 0 ; i < propagate_items ( ).size ( ) ; i ++ )
-        ( ( lalr_item ) propagate_items ( ).elementAt ( i ) )
-            .propagate_lookaheads ( lookahead ( ) ) ;
+      for ( int i = 0 ; i < propagate_items ().size () ; i++ )
+        ( ( lalr_item ) propagate_items ().elementAt ( i ) )
+            .propagate_lookaheads ( lookahead () );
     }
   }
 
@@ -166,18 +166,18 @@ public class lalr_item extends lr_item_core
    * Produce the new lalr_item that results from shifting the dot one position
    * to the right.
    */
-  public lalr_item shift ( ) throws internal_error
+  public lalr_item shift () throws internal_error
   {
-    lalr_item result ;
+    lalr_item result;
     /* can't shift if we have dot already at the end */
-    if ( dot_at_end ( ) )
-      throw new internal_error ( "Attempt to shift past end of an lalr_item" ) ;
+    if ( dot_at_end () )
+      throw new internal_error ( "Attempt to shift past end of an lalr_item" );
     /* create the new item w/ the dot shifted by one */
-    result = new lalr_item ( the_production ( ) , dot_pos ( ) + 1 ,
-        new terminal_set ( lookahead ( ) ) ) ;
+    result = new lalr_item ( the_production (), dot_pos () + 1,
+        new terminal_set ( lookahead () ) );
     /* change in our lookahead needs to be propagated to this item */
-    add_propagate ( result ) ;
-    return result ;
+    add_propagate ( result );
+    return result;
   }
 
 
@@ -191,36 +191,37 @@ public class lalr_item extends lr_item_core
   public terminal_set calc_lookahead ( terminal_set lookahead_after )
       throws internal_error
   {
-    terminal_set result ;
-    int pos ;
-    production_part part ;
-    symbol sym ;
+    terminal_set result;
+    int pos;
+    production_part part;
+    symbol sym;
     /* sanity check */
-    if ( dot_at_end ( ) )
+    if ( dot_at_end () )
       throw new internal_error (
-          "Attempt to calculate a lookahead set with a completed item" ) ;
+          "Attempt to calculate a lookahead set with a completed item" );
     /* start with an empty result */
-    result = new terminal_set ( ) ;
+    result = new terminal_set ();
     /* consider all nullable symbols after the one to the right of the dot */
-    for ( pos = dot_pos ( ) + 1 ; pos < the_production ( ).rhs_length ( ) ; pos ++ )
+    for ( pos = dot_pos () + 1 ; pos < the_production ().rhs_length () ; pos++ )
     {
-      part = the_production ( ).rhs ( pos ) ;
+      part = the_production ().rhs ( pos );
       /* consider what kind of production part it is -- skip actions */
-      if ( ! part.is_action ( ) )
+      if ( !part.is_action () )
       {
-        sym = ( ( symbol_part ) part ).the_symbol ( ) ;
+        sym = ( ( symbol_part ) part ).the_symbol ();
         /* if its a terminal add it in and we are done */
-        if ( ! sym.is_non_term ( ) )
+        if ( !sym.is_non_term () )
         {
-          result.add ( ( terminal ) sym ) ;
-          return result ;
+          result.add ( ( terminal ) sym );
+          return result;
         }
         else
         {
           /* otherwise add in first set of the non terminal */
-          result.add ( ( ( non_terminal ) sym ).first_set ( ) ) ;
+          result.add ( ( ( non_terminal ) sym ).first_set () );
           /* if its nullable we continue adding, if not, we are done */
-          if ( ! ( ( non_terminal ) sym ).nullable ( ) ) return result ;
+          if ( ! ( ( non_terminal ) sym ).nullable () )
+            return result;
         }
       }
     }
@@ -228,8 +229,8 @@ public class lalr_item extends lr_item_core
      * if we get here everything past the dot was nullable we add in the
      * lookahead for after the production and we are done
      */
-    result.add ( lookahead_after ) ;
-    return result ;
+    result.add ( lookahead_after );
+    return result;
   }
 
 
@@ -242,31 +243,34 @@ public class lalr_item extends lr_item_core
    * invoked until after first sets and nullability have been calculated for all
    * non terminals.
    */
-  public boolean lookahead_visible ( ) throws internal_error
+  public boolean lookahead_visible () throws internal_error
   {
-    production_part part ;
-    symbol sym ;
+    production_part part;
+    symbol sym;
     /*
      * if the dot is at the end, we have a problem, but the cleanest thing to do
      * is just return true.
      */
-    if ( dot_at_end ( ) ) return true ;
+    if ( dot_at_end () )
+      return true;
     /* walk down the rhs and bail if we get a non-nullable symbol */
-    for ( int pos = dot_pos ( ) + 1 ; pos < the_production ( ).rhs_length ( ) ; pos ++ )
+    for ( int pos = dot_pos () + 1 ; pos < the_production ().rhs_length () ; pos++ )
     {
-      part = the_production ( ).rhs ( pos ) ;
+      part = the_production ().rhs ( pos );
       /* skip actions */
-      if ( ! part.is_action ( ) )
+      if ( !part.is_action () )
       {
-        sym = ( ( symbol_part ) part ).the_symbol ( ) ;
+        sym = ( ( symbol_part ) part ).the_symbol ();
         /* if its a terminal we fail */
-        if ( ! sym.is_non_term ( ) ) return false ;
+        if ( !sym.is_non_term () )
+          return false;
         /* if its not nullable we fail */
-        if ( ! ( ( non_terminal ) sym ).nullable ( ) ) return false ;
+        if ( ! ( ( non_terminal ) sym ).nullable () )
+          return false;
       }
     }
     /* if we get here its all nullable */
-    return true ;
+    return true;
   }
 
 
@@ -278,8 +282,9 @@ public class lalr_item extends lr_item_core
    */
   public boolean equals ( lalr_item other )
   {
-    if ( other == null ) return false ;
-    return super.equals ( other ) ;
+    if ( other == null )
+      return false;
+    return super.equals ( other );
   }
 
 
@@ -288,8 +293,9 @@ public class lalr_item extends lr_item_core
   public boolean equals ( Object other )
   {
     if ( ! ( other instanceof lalr_item ) )
-      return false ;
-    else return equals ( ( lalr_item ) other ) ;
+      return false;
+    else
+      return equals ( ( lalr_item ) other );
   }
 
 
@@ -298,39 +304,40 @@ public class lalr_item extends lr_item_core
    * Return a hash code -- here we only hash the core since we only test core
    * matching in LALR items.
    */
-  public int hashCode ( )
+  public int hashCode ()
   {
-    return super.hashCode ( ) ;
+    return super.hashCode ();
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Convert to string. */
-  public String toString ( )
+  public String toString ()
   {
-    String result = "" ;
+    String result = "";
     // additional output for debugging:
     // result += "(" + obj_hash() + ")";
-    result += "[" ;
-    result += super.toString ( ) ;
-    result += ", " ;
-    if ( lookahead ( ) != null )
+    result += "[";
+    result += super.toString ();
+    result += ", ";
+    if ( lookahead () != null )
     {
-      result += "{" ;
-      for ( int t = 0 ; t < terminal.number ( ) ; t ++ )
-        if ( lookahead ( ).contains ( t ) )
-          result += terminal.find ( t ).name ( ) + " " ;
-      result += "}" ;
+      result += "{";
+      for ( int t = 0 ; t < terminal.number () ; t++ )
+        if ( lookahead ().contains ( t ) )
+          result += terminal.find ( t ).name () + " ";
+      result += "}";
     }
-    else result += "NULL LOOKAHEAD!!" ;
-    result += "]" ;
+    else
+      result += "NULL LOOKAHEAD!!";
+    result += "]";
     // additional output for debugging:
     // result += " -> ";
     // for (int i = 0; i<propagate_items().size(); i++)
     // result+=((lalr_item)(propagate_items().elementAt(i))).obj_hash()+" ";
     //
     // if (needs_propagation) result += " NP";
-    return result ;
+    return result;
   }
   /*-----------------------------------------------------------*/
 }

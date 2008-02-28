@@ -1,10 +1,11 @@
-package de.unisiegen.tpml.graphics.outline.binding ;
+package de.unisiegen.tpml.graphics.outline.binding;
 
 
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.types.TypeName ;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.types.TypeName;
 
 
 /**
@@ -16,6 +17,7 @@ import de.unisiegen.tpml.core.types.TypeName ;
  */
 public final class OutlineBinding < E >
 {
+
   /**
    * The list of {@link Identifier}s or {@link TypeName}s, which are bound by
    * the given {@link Identifier} or {@link TypeName} in the given
@@ -24,7 +26,7 @@ public final class OutlineBinding < E >
    * @see #get(int)
    * @see #size()
    */
-  private ArrayList < E > list ;
+  private ArrayList < E > list;
 
 
   /**
@@ -36,11 +38,11 @@ public final class OutlineBinding < E >
   {
     if ( pList == null )
     {
-      this.list = new ArrayList < E > ( ) ;
+      this.list = new ArrayList < E > ();
     }
     else
     {
-      this.list = pList ;
+      this.list = pList;
     }
   }
 
@@ -50,26 +52,26 @@ public final class OutlineBinding < E >
    * 
    * @see Object#equals(Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object pObject )
   {
     if ( pObject instanceof OutlineBinding )
     {
-      OutlineBinding < ? > other = ( OutlineBinding < ? > ) pObject ;
-      if ( this.list.size ( ) != other.list.size ( ) )
+      OutlineBinding < ? > other = ( OutlineBinding < ? > ) pObject;
+      if ( this.list.size () != other.list.size () )
       {
-        return false ;
+        return false;
       }
-      for ( int i = 0 ; i < this.list.size ( ) ; i ++ )
+      for ( int i = 0 ; i < this.list.size () ; i++ )
       {
         if ( this.list.get ( i ) != other.list.get ( i ) )
         {
-          return false ;
+          return false;
         }
       }
-      return true ;
+      return true;
     }
-    return false ;
+    return false;
   }
 
 
@@ -84,7 +86,7 @@ public final class OutlineBinding < E >
    */
   public final E get ( int pIndex )
   {
-    return this.list.get ( pIndex ) ;
+    return this.list.get ( pIndex );
   }
 
 
@@ -93,10 +95,10 @@ public final class OutlineBinding < E >
    * 
    * @see Object#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.list.hashCode ( ) ;
+    return this.list.hashCode ();
   }
 
 
@@ -108,7 +110,7 @@ public final class OutlineBinding < E >
    */
   public final E remove ( int pIndex )
   {
-    return this.list.remove ( pIndex ) ;
+    return this.list.remove ( pIndex );
   }
 
 
@@ -119,8 +121,8 @@ public final class OutlineBinding < E >
    * @return The number of {@link Identifier}s or {@link TypeName}.
    * @see #list
    */
-  public final int size ( )
+  public final int size ()
   {
-    return this.list.size ( ) ;
+    return this.list.size ();
   }
 }

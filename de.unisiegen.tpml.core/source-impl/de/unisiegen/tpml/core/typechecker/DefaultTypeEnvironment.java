@@ -1,30 +1,31 @@
-package de.unisiegen.tpml.core.typechecker ;
+package de.unisiegen.tpml.core.typechecker;
 
 
-import java.util.Enumeration ;
-import java.util.Set ;
-import java.util.TreeSet ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand ;
-import de.unisiegen.tpml.core.latex.DefaultLatexInstruction ;
-import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexCommandList ;
-import de.unisiegen.tpml.core.latex.LatexInstructionList ;
-import de.unisiegen.tpml.core.latex.LatexPackage ;
-import de.unisiegen.tpml.core.latex.LatexPackageList ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.latex.LatexString ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder ;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.PolyType ;
-import de.unisiegen.tpml.core.types.Type ;
-import de.unisiegen.tpml.core.types.TypeVariable ;
-import de.unisiegen.tpml.core.util.AbstractEnvironment ;
+import java.util.Enumeration;
+import java.util.Set;
+import java.util.TreeSet;
+
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.PolyType;
+import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.core.types.TypeVariable;
+import de.unisiegen.tpml.core.util.AbstractEnvironment;
 
 
 /**
@@ -37,20 +38,21 @@ import de.unisiegen.tpml.core.util.AbstractEnvironment ;
  * @see AbstractEnvironment
  */
 public final class DefaultTypeEnvironment extends
-    AbstractEnvironment < Identifier , Type > implements TypeEnvironment
+    AbstractEnvironment < Identifier, Type > implements TypeEnvironment
 {
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public static LatexCommandList getLatexCommandsStatic ( )
+  public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_ENVIRONMENT , 1 ,
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_ENVIRONMENT, 1,
         "\\color{" + LATEX_COLOR_NONE + "}{[}#1\\color{" //$NON-NLS-1$ //$NON-NLS-2$
-            + LATEX_COLOR_NONE + "}{]}" , "id1: tau1, ..., idn: taun" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
-    return commands ;
+            + LATEX_COLOR_NONE + "}{]}", "id1: tau1, ..., idn: taun" ) ); //$NON-NLS-1$//$NON-NLS-2$
+    return commands;
   }
 
 
@@ -59,13 +61,13 @@ public final class DefaultTypeEnvironment extends
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public static LatexInstructionList getLatexInstructionsStatic ( )
+  public static LatexInstructionList getLatexInstructionsStatic ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
+    LatexInstructionList instructions = new LatexInstructionList ();
     instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
-        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}" , //$NON-NLS-1$
-        LATEX_COLOR_NONE + ": color of normal text" ) ) ; //$NON-NLS-1$
-    return instructions ;
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}", //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ); //$NON-NLS-1$
+    return instructions;
   }
 
 
@@ -74,11 +76,11 @@ public final class DefaultTypeEnvironment extends
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public static LatexPackageList getLatexPackagesStatic ( )
+  public static LatexPackageList getLatexPackagesStatic ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( LatexPackage.COLOR ) ;
-    return packages ;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.COLOR );
+    return packages;
   }
 
 
@@ -87,9 +89,9 @@ public final class DefaultTypeEnvironment extends
    * 
    * @see AbstractEnvironment#AbstractEnvironment()
    */
-  public DefaultTypeEnvironment ( )
+  public DefaultTypeEnvironment ()
   {
-    super ( ) ;
+    super ();
   }
 
 
@@ -104,7 +106,7 @@ public final class DefaultTypeEnvironment extends
    */
   DefaultTypeEnvironment ( DefaultTypeEnvironment environment )
   {
-    super ( environment ) ;
+    super ( environment );
   }
 
 
@@ -116,11 +118,11 @@ public final class DefaultTypeEnvironment extends
   public PolyType closure ( MonoType tau )
   {
     // determine the quantified type variables
-    TreeSet < TypeVariable > quantifiedVariables = new TreeSet < TypeVariable > ( ) ;
-    quantifiedVariables.addAll ( tau.getTypeVariablesFree ( ) ) ;
-    quantifiedVariables.removeAll ( free ( ) ) ;
+    TreeSet < TypeVariable > quantifiedVariables = new TreeSet < TypeVariable > ();
+    quantifiedVariables.addAll ( tau.getTypeVariablesFree () );
+    quantifiedVariables.removeAll ( free () );
     // allocate the polymorphic type
-    return new PolyType ( quantifiedVariables , tau ) ;
+    return new PolyType ( quantifiedVariables, tau );
   }
 
 
@@ -131,7 +133,7 @@ public final class DefaultTypeEnvironment extends
    */
   public boolean containsIdentifier ( Identifier identifier )
   {
-    return containsSymbol ( identifier ) ;
+    return containsSymbol ( identifier );
   }
 
 
@@ -140,11 +142,11 @@ public final class DefaultTypeEnvironment extends
    * 
    * @see TypeEnvironment#extend(Identifier, Type)
    */
-  public TypeEnvironment extend ( Identifier identifier , Type type )
+  public TypeEnvironment extend ( Identifier identifier, Type type )
   {
-    DefaultTypeEnvironment environment = new DefaultTypeEnvironment ( this ) ;
-    environment.put ( identifier , type ) ;
-    return environment ;
+    DefaultTypeEnvironment environment = new DefaultTypeEnvironment ( this );
+    environment.put ( identifier, type );
+    return environment;
   }
 
 
@@ -153,14 +155,14 @@ public final class DefaultTypeEnvironment extends
    * 
    * @see TypeEnvironment#free()
    */
-  public Set < TypeVariable > free ( )
+  public Set < TypeVariable > free ()
   {
-    TreeSet < TypeVariable > free = new TreeSet < TypeVariable > ( ) ;
-    for ( Mapping < Identifier , Type > mapping : this.mappings )
+    TreeSet < TypeVariable > free = new TreeSet < TypeVariable > ();
+    for ( Mapping < Identifier, Type > mapping : this.mappings )
     {
-      free.addAll ( mapping.getEntry ( ).getTypeVariablesFree ( ) ) ;
+      free.addAll ( mapping.getEntry ().getTypeVariablesFree () );
     }
-    return free ;
+    return free;
   }
 
 
@@ -169,16 +171,16 @@ public final class DefaultTypeEnvironment extends
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public LatexCommandList getLatexCommands ( )
+  public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ( ) ;
-    commands.add ( getLatexCommandsStatic ( ) ) ;
-    for ( Mapping < Identifier , Type > mapping : this.mappings )
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
+    for ( Mapping < Identifier, Type > mapping : this.mappings )
     {
-      commands.add ( mapping.getSymbol ( ) ) ;
-      commands.add ( mapping.getEntry ( ) ) ;
+      commands.add ( mapping.getSymbol () );
+      commands.add ( mapping.getEntry () );
     }
-    return commands ;
+    return commands;
   }
 
 
@@ -187,16 +189,16 @@ public final class DefaultTypeEnvironment extends
    * 
    * @return A set of needed latex instructions for this latex printable object.
    */
-  public LatexInstructionList getLatexInstructions ( )
+  public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList ( ) ;
-    instructions.add ( getLatexInstructionsStatic ( ) ) ;
-    for ( Mapping < Identifier , Type > mapping : this.mappings )
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
+    for ( Mapping < Identifier, Type > mapping : this.mappings )
     {
-      instructions.add ( mapping.getSymbol ( ) ) ;
-      instructions.add ( mapping.getEntry ( ) ) ;
+      instructions.add ( mapping.getSymbol () );
+      instructions.add ( mapping.getEntry () );
     }
-    return instructions ;
+    return instructions;
   }
 
 
@@ -205,16 +207,16 @@ public final class DefaultTypeEnvironment extends
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public LatexPackageList getLatexPackages ( )
+  public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList ( ) ;
-    packages.add ( getLatexPackagesStatic ( ) ) ;
-    for ( Mapping < Identifier , Type > mapping : this.mappings )
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( getLatexPackagesStatic () );
+    for ( Mapping < Identifier, Type > mapping : this.mappings )
     {
-      packages.add ( mapping.getSymbol ( ) ) ;
-      packages.add ( mapping.getEntry ( ) ) ;
+      packages.add ( mapping.getSymbol () );
+      packages.add ( mapping.getEntry () );
     }
-    return packages ;
+    return packages;
   }
 
 
@@ -223,9 +225,9 @@ public final class DefaultTypeEnvironment extends
    * 
    * @see TypeEnvironment#identifiers()
    */
-  public Enumeration < Identifier > identifiers ( )
+  public Enumeration < Identifier > identifiers ()
   {
-    return symbols ( ) ;
+    return symbols ();
   }
 
 
@@ -234,19 +236,19 @@ public final class DefaultTypeEnvironment extends
    * 
    * @see TypeEnvironment#star()
    */
-  public TypeEnvironment star ( )
+  public TypeEnvironment star ()
   {
-    DefaultTypeEnvironment environment = new DefaultTypeEnvironment ( ) ;
-    for ( Mapping < Identifier , Type > mapping : this.mappings )
+    DefaultTypeEnvironment environment = new DefaultTypeEnvironment ();
+    for ( Mapping < Identifier, Type > mapping : this.mappings )
     {
-      Identifier id = mapping.getSymbol ( ) ;
-      if ( ( ! id.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) )
-          && ( ! id.getSet ( ).equals ( Identifier.Set.SELF ) ) )
+      Identifier id = mapping.getSymbol ();
+      if ( ( !id.getSet ().equals ( Identifier.Set.ATTRIBUTE ) )
+          && ( !id.getSet ().equals ( Identifier.Set.SELF ) ) )
       {
-        environment.put ( id , mapping.getEntry ( ) ) ;
+        environment.put ( id, mapping.getEntry () );
       }
     }
-    return environment ;
+    return environment;
   }
 
 
@@ -258,21 +260,21 @@ public final class DefaultTypeEnvironment extends
   public TypeEnvironment substitute ( TypeSubstitution s )
   {
     // create a new environment with the (possibly) new types
-    DefaultTypeEnvironment environment = new DefaultTypeEnvironment ( ) ;
-    for ( Mapping < Identifier , Type > mapping : this.mappings )
+    DefaultTypeEnvironment environment = new DefaultTypeEnvironment ();
+    for ( Mapping < Identifier, Type > mapping : this.mappings )
     {
-      Type newType = mapping.getEntry ( ).substitute ( s ) ;
-      if ( ! newType.equals ( mapping.getEntry ( ) ) )
+      Type newType = mapping.getEntry ().substitute ( s );
+      if ( !newType.equals ( mapping.getEntry () ) )
       {
-        environment.mappings.add ( new Mapping < Identifier , Type > ( mapping
-            .getSymbol ( ) , newType ) ) ;
+        environment.mappings.add ( new Mapping < Identifier, Type > ( mapping
+            .getSymbol (), newType ) );
       }
       else
       {
-        environment.mappings.add ( mapping ) ;
+        environment.mappings.add ( mapping );
       }
     }
-    return environment ;
+    return environment;
   }
 
 
@@ -281,10 +283,10 @@ public final class DefaultTypeEnvironment extends
    * 
    * @see LatexPrintable#toLatexString()
    */
-  public final LatexString toLatexString ( )
+  public final LatexString toLatexString ()
   {
-    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance ( ) , 0 )
-        .toLatexString ( ) ;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -294,66 +296,66 @@ public final class DefaultTypeEnvironment extends
    * @see LatexPrintable#toLatexStringBuilder(LatexStringBuilderFactory,int)
    */
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
-    StringBuilder body = new StringBuilder ( ) ;
-    body.append ( PRETTY_LBRACKET ) ;
-    for ( int i = 0 ; i < this.mappings.size ( ) ; i ++ )
+    StringBuilder body = new StringBuilder ();
+    body.append ( PRETTY_LBRACKET );
+    for ( int i = 0 ; i < this.mappings.size () ; i++ )
     {
-      body.append ( this.mappings.get ( i ).getSymbol ( ).toPrettyString ( )
-          .toString ( ) ) ;
-      body.append ( PRETTY_COLON ) ;
-      body.append ( PRETTY_SPACE ) ;
-      body.append ( this.mappings.get ( i ).getEntry ( ).toPrettyString ( )
-          .toString ( ) ) ;
-      if ( i != this.mappings.size ( ) - 1 )
+      body.append ( this.mappings.get ( i ).getSymbol ().toPrettyString ()
+          .toString () );
+      body.append ( PRETTY_COLON );
+      body.append ( PRETTY_SPACE );
+      body.append ( this.mappings.get ( i ).getEntry ().toPrettyString ()
+          .toString () );
+      if ( i != this.mappings.size () - 1 )
       {
-        body.append ( PRETTY_COMMA ) ;
-        body.append ( PRETTY_SPACE ) ;
+        body.append ( PRETTY_COMMA );
+        body.append ( PRETTY_SPACE );
       }
     }
-    body.append ( PRETTY_RBRACKET ) ;
-    String descriptions[] = new String [ 2 + this.mappings.size ( ) * 2 ] ;
-    descriptions [ 0 ] = this.toPrettyString ( ).toString ( ) ;
-    descriptions [ 1 ] = body.toString ( ) ;
-    for ( int i = 0 ; i < this.mappings.size ( ) ; i ++ )
+    body.append ( PRETTY_RBRACKET );
+    String descriptions[] = new String [ 2 + this.mappings.size () * 2 ];
+    descriptions [ 0 ] = this.toPrettyString ().toString ();
+    descriptions [ 1 ] = body.toString ();
+    for ( int i = 0 ; i < this.mappings.size () ; i++ )
     {
-      descriptions [ 2 + i * 2 ] = this.mappings.get ( i ).getSymbol ( )
-          .toPrettyString ( ).toString ( ) ;
-      descriptions [ 3 + i * 2 ] = this.mappings.get ( i ).getEntry ( )
-          .toPrettyString ( ).toString ( ) ;
+      descriptions [ 2 + i * 2 ] = this.mappings.get ( i ).getSymbol ()
+          .toPrettyString ().toString ();
+      descriptions [ 3 + i * 2 ] = this.mappings.get ( i ).getEntry ()
+          .toPrettyString ().toString ();
     }
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0 ,
-        LATEX_TYPE_ENVIRONMENT , pIndent , descriptions ) ;
-    builder.addBuilderBegin ( ) ;
-    for ( int i = 0 ; i < this.mappings.size ( ) ; i ++ )
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
+        LATEX_TYPE_ENVIRONMENT, pIndent, descriptions );
+    builder.addBuilderBegin ();
+    for ( int i = 0 ; i < this.mappings.size () ; i++ )
     {
-      builder.addBuilder ( this.mappings.get ( i ).getSymbol ( )
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ,
-              pIndent + LATEX_INDENT * 2 ) , 0 ) ;
-      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+      builder.addBuilder ( this.mappings.get ( i ).getSymbol ()
+          .toLatexStringBuilder ( pLatexStringBuilderFactory,
+              pIndent + LATEX_INDENT * 2 ), 0 );
+      builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-          + LATEX_INDENT ) ) ;
-      builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-      builder.addText ( LATEX_COLON ) ;
-      builder.addText ( LATEX_SPACE ) ;
-      builder.addText ( "}" ) ; //$NON-NLS-1$
-      builder.addBuilder ( this.mappings.get ( i ).getEntry ( )
-          .toLatexStringBuilder ( pLatexStringBuilderFactory ,
-              pIndent + LATEX_INDENT * 2 ) , 0 ) ;
-      if ( i < this.mappings.size ( ) - 1 )
+          + LATEX_INDENT ) );
+      builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ); //$NON-NLS-1$ //$NON-NLS-2$
+      builder.addText ( LATEX_COLON );
+      builder.addText ( LATEX_SPACE );
+      builder.addText ( "}" ); //$NON-NLS-1$
+      builder.addBuilder ( this.mappings.get ( i ).getEntry ()
+          .toLatexStringBuilder ( pLatexStringBuilderFactory,
+              pIndent + LATEX_INDENT * 2 ), 0 );
+      if ( i < this.mappings.size () - 1 )
       {
-        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE ) ;
+        builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent
-            + LATEX_INDENT ) ) ;
-        builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-        builder.addText ( LATEX_COMMA ) ;
-        builder.addText ( LATEX_SPACE ) ;
-        builder.addText ( "}" ) ; //$NON-NLS-1$
+            + LATEX_INDENT ) );
+        builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ); //$NON-NLS-1$ //$NON-NLS-2$
+        builder.addText ( LATEX_COMMA );
+        builder.addText ( LATEX_SPACE );
+        builder.addText ( "}" ); //$NON-NLS-1$
       }
     }
-    builder.addBuilderEnd ( ) ;
-    return builder ;
+    builder.addBuilderEnd ();
+    return builder;
   }
 
 
@@ -362,10 +364,10 @@ public final class DefaultTypeEnvironment extends
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ( )
+  public final PrettyString toPrettyString ()
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -378,24 +380,24 @@ public final class DefaultTypeEnvironment extends
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , 0 ) ;
-    builder.addText ( PRETTY_LBRACKET ) ;
-    for ( int i = 0 ; i < this.mappings.size ( ) ; i ++ )
+        this, 0 );
+    builder.addText ( PRETTY_LBRACKET );
+    for ( int i = 0 ; i < this.mappings.size () ; i++ )
     {
-      builder.addBuilder ( this.mappings.get ( i ).getSymbol ( )
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-      builder.addText ( PRETTY_COLON ) ;
-      builder.addText ( PRETTY_SPACE ) ;
-      builder.addBuilder ( this.mappings.get ( i ).getEntry ( )
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
-      if ( i != this.mappings.size ( ) - 1 )
+      builder.addBuilder ( this.mappings.get ( i ).getSymbol ()
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+      builder.addText ( PRETTY_COLON );
+      builder.addText ( PRETTY_SPACE );
+      builder.addBuilder ( this.mappings.get ( i ).getEntry ()
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+      if ( i != this.mappings.size () - 1 )
       {
-        builder.addText ( PRETTY_COMMA ) ;
-        builder.addText ( PRETTY_SPACE ) ;
+        builder.addText ( PRETTY_COMMA );
+        builder.addText ( PRETTY_SPACE );
       }
     }
-    builder.addText ( PRETTY_RBRACKET ) ;
-    return builder ;
+    builder.addText ( PRETTY_RBRACKET );
+    return builder;
   }
 
 
@@ -407,9 +409,9 @@ public final class DefaultTypeEnvironment extends
    * @see #toPrettyString()
    * @see Object#toString()
    */
-  @ Override
-  public final String toString ( )
+  @Override
+  public final String toString ()
   {
-    return toPrettyString ( ).toString ( ) ;
+    return toPrettyString ().toString ();
   }
 }

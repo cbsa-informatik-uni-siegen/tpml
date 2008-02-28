@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core ;
+package de.unisiegen.tpml.core;
 
 
-import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Expression;
 
 
 /**
@@ -16,6 +16,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
  */
 public final class ProofStep
 {
+
   //
   // Attributes
   //
@@ -24,7 +25,7 @@ public final class ProofStep
    * 
    * @see #getExpression()
    */
-  private Expression expression ;
+  private Expression expression;
 
 
   /**
@@ -33,7 +34,7 @@ public final class ProofStep
    * 
    * @see #getRule()
    */
-  private ProofRule rule ;
+  private ProofRule rule;
 
 
   //
@@ -48,18 +49,18 @@ public final class ProofStep
    * @throws NullPointerException if <code>expression</code> or
    *           <code>rule</code> is <code>null</code>.
    */
-  public ProofStep ( Expression pExpression , ProofRule pRule )
+  public ProofStep ( Expression pExpression, ProofRule pRule )
   {
     if ( pRule == null )
     {
-      throw new NullPointerException ( "rule is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "rule is null" ); //$NON-NLS-1$
     }
     if ( pExpression == null )
     {
-      throw new NullPointerException ( "expression is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "expression is null" ); //$NON-NLS-1$
     }
-    this.expression = pExpression ;
-    this.rule = pRule ;
+    this.expression = pExpression;
+    this.rule = pRule;
   }
 
 
@@ -72,9 +73,9 @@ public final class ProofStep
    * 
    * @return the expression.
    */
-  public Expression getExpression ( )
+  public Expression getExpression ()
   {
-    return this.expression ;
+    return this.expression;
   }
 
 
@@ -85,9 +86,9 @@ public final class ProofStep
    * @return the proof rule that was applied in this step.
    * @see #getExpression()
    */
-  public ProofRule getRule ( )
+  public ProofRule getRule ()
   {
-    return this.rule ;
+    return this.rule;
   }
 
 
@@ -99,16 +100,16 @@ public final class ProofStep
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
-  @ Override
+  @Override
   public boolean equals ( Object obj )
   {
     if ( obj instanceof ProofStep )
     {
-      ProofStep other = ( ProofStep ) obj ;
+      ProofStep other = ( ProofStep ) obj;
       return ( this.expression.equals ( other.expression ) || this.rule
-          .equals ( other.rule ) ) ;
+          .equals ( other.rule ) );
     }
-    return false ;
+    return false;
   }
 
 
@@ -117,9 +118,9 @@ public final class ProofStep
    * 
    * @see java.lang.Object#hashCode()
    */
-  @ Override
-  public int hashCode ( )
+  @Override
+  public int hashCode ()
   {
-    return this.expression.hashCode ( ) + this.rule.hashCode ( ) ;
+    return this.expression.hashCode () + this.rule.hashCode ();
   }
 }

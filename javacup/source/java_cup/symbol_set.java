@@ -1,8 +1,8 @@
-package java_cup ;
+package java_cup;
 
 
-import java.util.Enumeration ;
-import java.util.Hashtable ;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 
 /**
@@ -15,11 +15,12 @@ import java.util.Hashtable ;
  */
 public class symbol_set
 {
+
   /*-----------------------------------------------------------*/
   /*--- Constructor(s) ----------------------------------------*/
   /*-----------------------------------------------------------*/
   /** Constructor for an empty set. */
-  public symbol_set ( )
+  public symbol_set ()
   {
   }
 
@@ -31,8 +32,8 @@ public class symbol_set
    */
   public symbol_set ( symbol_set other ) throws internal_error
   {
-    not_null ( other ) ;
-    _all = ( Hashtable ) other._all.clone ( ) ;
+    not_null ( other );
+    _all = ( Hashtable ) other._all.clone ();
   }
 
 
@@ -42,20 +43,20 @@ public class symbol_set
   /**
    * A hash table to hold the set. Symbols are keyed using their name string.
    */
-  protected Hashtable _all = new Hashtable ( 11 ) ;
+  protected Hashtable _all = new Hashtable ( 11 );
 
 
   /** Access to all elements of the set. */
-  public Enumeration all ( )
+  public Enumeration all ()
   {
-    return _all.elements ( ) ;
+    return _all.elements ();
   }
 
 
   /** size of the set */
-  public int size ( )
+  public int size ()
   {
-    return _all.size ( ) ;
+    return _all.size ();
   }
 
 
@@ -71,7 +72,7 @@ public class symbol_set
   protected void not_null ( Object obj ) throws internal_error
   {
     if ( obj == null )
-      throw new internal_error ( "Null object used in set operation" ) ;
+      throw new internal_error ( "Null object used in set operation" );
   }
 
 
@@ -83,7 +84,7 @@ public class symbol_set
    */
   public boolean contains ( symbol sym )
   {
-    return _all.containsKey ( sym.name ( ) ) ;
+    return _all.containsKey ( sym.name () );
   }
 
 
@@ -95,12 +96,13 @@ public class symbol_set
    */
   public boolean is_subset_of ( symbol_set other ) throws internal_error
   {
-    not_null ( other ) ;
+    not_null ( other );
     /* walk down our set and make sure every element is in the other */
-    for ( Enumeration e = all ( ) ; e.hasMoreElements ( ) ; )
-      if ( ! other.contains ( ( symbol ) e.nextElement ( ) ) ) return false ;
+    for ( Enumeration e = all () ; e.hasMoreElements () ; )
+      if ( !other.contains ( ( symbol ) e.nextElement () ) )
+        return false;
     /* they were all there */
-    return true ;
+    return true;
   }
 
 
@@ -112,8 +114,8 @@ public class symbol_set
    */
   public boolean is_superset_of ( symbol_set other ) throws internal_error
   {
-    not_null ( other ) ;
-    return other.is_subset_of ( this ) ;
+    not_null ( other );
+    return other.is_subset_of ( this );
   }
 
 
@@ -126,12 +128,12 @@ public class symbol_set
    */
   public boolean add ( symbol sym ) throws internal_error
   {
-    Object previous ;
-    not_null ( sym ) ;
+    Object previous;
+    not_null ( sym );
     /* put the object in */
-    previous = _all.put ( sym.name ( ) , sym ) ;
+    previous = _all.put ( sym.name (), sym );
     /* if we had a previous, this is no change */
-    return previous == null ;
+    return previous == null;
   }
 
 
@@ -143,8 +145,8 @@ public class symbol_set
    */
   public void remove ( symbol sym ) throws internal_error
   {
-    not_null ( sym ) ;
-    _all.remove ( sym.name ( ) ) ;
+    not_null ( sym );
+    _all.remove ( sym.name () );
   }
 
 
@@ -157,12 +159,12 @@ public class symbol_set
    */
   public boolean add ( symbol_set other ) throws internal_error
   {
-    boolean result = false ;
-    not_null ( other ) ;
+    boolean result = false;
+    not_null ( other );
     /* walk down the other set and do the adds individually */
-    for ( Enumeration e = other.all ( ) ; e.hasMoreElements ( ) ; )
-      result = add ( ( symbol ) e.nextElement ( ) ) || result ;
-    return result ;
+    for ( Enumeration e = other.all () ; e.hasMoreElements () ; )
+      result = add ( ( symbol ) e.nextElement () ) || result;
+    return result;
   }
 
 
@@ -174,10 +176,10 @@ public class symbol_set
    */
   public void remove ( symbol_set other ) throws internal_error
   {
-    not_null ( other ) ;
+    not_null ( other );
     /* walk down the other set and do the removes individually */
-    for ( Enumeration e = other.all ( ) ; e.hasMoreElements ( ) ; )
-      remove ( ( symbol ) e.nextElement ( ) ) ;
+    for ( Enumeration e = other.all () ; e.hasMoreElements () ; )
+      remove ( ( symbol ) e.nextElement () );
   }
 
 
@@ -185,17 +187,18 @@ public class symbol_set
   /** Equality comparison. */
   public boolean equals ( symbol_set other )
   {
-    if ( other == null || other.size ( ) != size ( ) ) return false ;
+    if ( other == null || other.size () != size () )
+      return false;
     /* once we know they are the same size, then improper subset does test */
     try
     {
-      return is_subset_of ( other ) ;
+      return is_subset_of ( other );
     }
     catch ( internal_error e )
     {
       /* can't throw the error (because super class doesn't), so we crash */
-      e.crash ( ) ;
-      return false ;
+      e.crash ();
+      return false;
     }
   }
 
@@ -205,42 +208,44 @@ public class symbol_set
   public boolean equals ( Object other )
   {
     if ( ! ( other instanceof symbol_set ) )
-      return false ;
-    else return equals ( ( symbol_set ) other ) ;
+      return false;
+    else
+      return equals ( ( symbol_set ) other );
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Compute a hash code. */
-  public int hashCode ( )
+  public int hashCode ()
   {
-    int result = 0 ;
-    int cnt ;
-    Enumeration e ;
+    int result = 0;
+    int cnt;
+    Enumeration e;
     /* hash together codes from at most first 5 elements */
-    for ( e = all ( ) , cnt = 0 ; e.hasMoreElements ( ) && cnt < 5 ; cnt ++ )
-      result ^= ( ( symbol ) e.nextElement ( ) ).hashCode ( ) ;
-    return result ;
+    for ( e = all (), cnt = 0 ; e.hasMoreElements () && cnt < 5 ; cnt++ )
+      result ^= ( ( symbol ) e.nextElement () ).hashCode ();
+    return result;
   }
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
   /** Convert to a string. */
-  public String toString ( )
+  public String toString ()
   {
-    String result ;
-    boolean comma_flag ;
-    result = "{" ;
-    comma_flag = false ;
-    for ( Enumeration e = all ( ) ; e.hasMoreElements ( ) ; )
+    String result;
+    boolean comma_flag;
+    result = "{";
+    comma_flag = false;
+    for ( Enumeration e = all () ; e.hasMoreElements () ; )
     {
       if ( comma_flag )
-        result += ", " ;
-      else comma_flag = true ;
-      result += ( ( symbol ) e.nextElement ( ) ).name ( ) ;
+        result += ", ";
+      else
+        comma_flag = true;
+      result += ( ( symbol ) e.nextElement () ).name ();
     }
-    result += "}" ;
-    return result ;
+    result += "}";
+    return result;
   }
   /*-----------------------------------------------------------*/
 }

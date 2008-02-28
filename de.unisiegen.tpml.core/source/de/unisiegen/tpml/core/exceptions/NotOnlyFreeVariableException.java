@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.exceptions ;
+package de.unisiegen.tpml.core.exceptions;
 
 
-import de.unisiegen.tpml.core.Messages ;
+import de.unisiegen.tpml.core.Messages;
 
 
 /**
@@ -12,17 +12,18 @@ import de.unisiegen.tpml.core.Messages ;
  */
 public final class NotOnlyFreeVariableException extends RuntimeException
 {
+
   /**
    * The serial version UID.
    */
-  private static final long serialVersionUID = - 8872896954392140509L ;
+  private static final long serialVersionUID = -8872896954392140509L;
 
 
   /**
    * Initializes the exception.
    */
-  public NotOnlyFreeVariableException ( )
+  public NotOnlyFreeVariableException ()
   {
-    super ( Messages.getString ( "Exception.0" ) ) ; //$NON-NLS-1$
+    super ( Messages.getString ( "Exception.0" ) ); //$NON-NLS-1$
   }
 }

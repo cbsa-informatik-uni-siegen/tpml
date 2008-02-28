@@ -1,13 +1,14 @@
-package de.unisiegen.tpml.core.exceptions ;
+package de.unisiegen.tpml.core.exceptions;
 
 
-import java.text.MessageFormat ;
-import java.util.ArrayList ;
-import de.unisiegen.tpml.core.Messages ;
-import de.unisiegen.tpml.core.expressions.Attribute ;
-import de.unisiegen.tpml.core.expressions.Inherit ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.languages.LanguageParserException ;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.expressions.Attribute;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.Inherit;
+import de.unisiegen.tpml.core.languages.LanguageParserException;
 
 
 /**
@@ -21,15 +22,17 @@ import de.unisiegen.tpml.core.languages.LanguageParserException ;
 public final class LanguageParserReplaceException extends
     LanguageParserException
 {
+
   /**
    * The serial version UID.
    */
-  private static final long serialVersionUID = 2588539895990502861L ;
+  private static final long serialVersionUID = 2588539895990502861L;
 
 
   /**
-   * Throws a <code>LanguageParserReplaceException</code> if the {@link Inherit}
-   * consist of {@link Attribute}s with the same {@link Identifier}.
+   * Throws a <code>LanguageParserReplaceException</code> if the
+   * {@link Inherit} consist of {@link Attribute}s with the same
+   * {@link Identifier}.
    * 
    * @param pNegativeIdentifiers The input list of negative {@link Identifier}s.
    * @param pReplaceIdentifiers The input list of {@link Identifier}s which
@@ -37,79 +40,79 @@ public final class LanguageParserReplaceException extends
    * @param pReplaceText The new text of the {@link Identifier}s.
    */
   public static void throwExceptionBody (
-      ArrayList < Identifier > pNegativeIdentifiers ,
-      ArrayList < Identifier > pReplaceIdentifiers , String pReplaceText )
+      ArrayList < Identifier > pNegativeIdentifiers,
+      ArrayList < Identifier > pReplaceIdentifiers, String pReplaceText )
   {
-    String [ ] messageNegative = new String [ pNegativeIdentifiers.size ( ) ] ;
-    int [ ] startOffsetNegative = new int [ pNegativeIdentifiers.size ( ) ] ;
-    int [ ] endOffsetNegative = new int [ pNegativeIdentifiers.size ( ) ] ;
-    for ( int j = 0 ; j < pNegativeIdentifiers.size ( ) ; j ++ )
+    String [] messageNegative = new String [ pNegativeIdentifiers.size () ];
+    int [] startOffsetNegative = new int [ pNegativeIdentifiers.size () ];
+    int [] endOffsetNegative = new int [ pNegativeIdentifiers.size () ];
+    for ( int j = 0 ; j < pNegativeIdentifiers.size () ; j++ )
     {
       messageNegative [ j ] = MessageFormat.format ( Messages
-          .getString ( "Parser.20" ) , pNegativeIdentifiers.get ( j ) ) ; //$NON-NLS-1$
+          .getString ( "Parser.20" ), pNegativeIdentifiers.get ( j ) ); //$NON-NLS-1$
       startOffsetNegative [ j ] = pNegativeIdentifiers.get ( j )
-          .getParserStartOffset ( ) ;
+          .getParserStartOffset ();
       endOffsetNegative [ j ] = pNegativeIdentifiers.get ( j )
-          .getParserEndOffset ( ) ;
+          .getParserEndOffset ();
     }
-    String [ ] messageReplace = new String [ pReplaceIdentifiers.size ( ) ] ;
-    int [ ] startOffsetReplace = new int [ pReplaceIdentifiers.size ( ) ] ;
-    int [ ] endOffsetReplace = new int [ pReplaceIdentifiers.size ( ) ] ;
-    for ( int j = 0 ; j < pReplaceIdentifiers.size ( ) ; j ++ )
+    String [] messageReplace = new String [ pReplaceIdentifiers.size () ];
+    int [] startOffsetReplace = new int [ pReplaceIdentifiers.size () ];
+    int [] endOffsetReplace = new int [ pReplaceIdentifiers.size () ];
+    for ( int j = 0 ; j < pReplaceIdentifiers.size () ; j++ )
     {
       messageReplace [ j ] = MessageFormat.format ( Messages
-          .getString ( "Parser.21" ) , pReplaceIdentifiers.get ( j ) ) ; //$NON-NLS-1$
+          .getString ( "Parser.21" ), pReplaceIdentifiers.get ( j ) ); //$NON-NLS-1$
       startOffsetReplace [ j ] = pReplaceIdentifiers.get ( j )
-          .getParserStartOffset ( ) ;
+          .getParserStartOffset ();
       endOffsetReplace [ j ] = pReplaceIdentifiers.get ( j )
-          .getParserEndOffset ( ) ;
+          .getParserEndOffset ();
     }
-    throw new LanguageParserReplaceException ( messageNegative ,
-        startOffsetNegative , endOffsetNegative , messageReplace ,
-        startOffsetReplace , endOffsetReplace , pReplaceText ) ;
+    throw new LanguageParserReplaceException ( messageNegative,
+        startOffsetNegative, endOffsetNegative, messageReplace,
+        startOffsetReplace, endOffsetReplace, pReplaceText );
   }
 
 
   /**
    * The array of shown negative {@link Identifier} messages.
    */
-  private String [ ] messagesNegative ;
+  private String [] messagesNegative;
 
 
   /**
    * The array of negative {@link Identifier} parser start offsets.
    */
-  private int [ ] parserStartOffsetNegative ;
+  private int [] parserStartOffsetNegative;
 
 
   /**
    * The array of negative {@link Identifier} parser end offsets.
    */
-  private int [ ] parserEndOffsetNegative ;
+  private int [] parserEndOffsetNegative;
 
 
   /**
    * The array of shown replace {@link Identifier} messages.
    */
-  private String [ ] messagesReplace ;
+  private String [] messagesReplace;
 
 
   /**
    * The array of replace {@link Identifier} parser start offsets.
    */
-  private int [ ] parserStartOffsetReplace ;
+  private int [] parserStartOffsetReplace;
 
 
   /**
    * The array of replace {@link Identifier} parser end offsets.
    */
-  private int [ ] parserEndOffsetReplace ;
+  private int [] parserEndOffsetReplace;
 
 
   /**
    * The new text of the {@link Identifier}s.
    */
-  private String replaceText ;
+  private String replaceText;
 
 
   /**
@@ -120,18 +123,18 @@ public final class LanguageParserReplaceException extends
    * @param pParserEndOffsetRename The array of parser end offsets.
    * @param pReplaceText The new text of the {@link Identifier}s.
    */
-  public LanguageParserReplaceException ( String pMessagesRename ,
-      int pParserStartOffsetRename , int pParserEndOffsetRename ,
+  public LanguageParserReplaceException ( String pMessagesRename,
+      int pParserStartOffsetRename, int pParserEndOffsetRename,
       String pReplaceText )
   {
-    super ( pMessagesRename , pParserStartOffsetRename , pParserEndOffsetRename ) ;
-    this.messagesReplace = new String [ ]
-    { pMessagesRename } ;
-    this.parserStartOffsetReplace = new int [ ]
-    { pParserStartOffsetRename } ;
-    this.parserEndOffsetReplace = new int [ ]
-    { pParserEndOffsetRename } ;
-    this.replaceText = pReplaceText ;
+    super ( pMessagesRename, pParserStartOffsetRename, pParserEndOffsetRename );
+    this.messagesReplace = new String []
+    { pMessagesRename };
+    this.parserStartOffsetReplace = new int []
+    { pParserStartOffsetRename };
+    this.parserEndOffsetReplace = new int []
+    { pParserEndOffsetRename };
+    this.replaceText = pReplaceText;
   }
 
 
@@ -148,20 +151,20 @@ public final class LanguageParserReplaceException extends
    * @param pParserEndOffsetReplace The array of parser end offsets.
    * @param pReplaceText The new text of the {@link Identifier}s.
    */
-  public LanguageParserReplaceException ( String [ ] pMessagesNegative ,
-      int [ ] pParserStartOffsetNegative , int [ ] pParserEndOffsetNegative ,
-      String [ ] pMessagesReplace , int [ ] pParserStartOffsetReplace ,
-      int [ ] pParserEndOffsetReplace , String pReplaceText )
+  public LanguageParserReplaceException ( String [] pMessagesNegative,
+      int [] pParserStartOffsetNegative, int [] pParserEndOffsetNegative,
+      String [] pMessagesReplace, int [] pParserStartOffsetReplace,
+      int [] pParserEndOffsetReplace, String pReplaceText )
   {
-    super ( pMessagesNegative [ 0 ] , pParserStartOffsetNegative [ 0 ] ,
-        pParserEndOffsetNegative [ 0 ] ) ;
-    this.messagesNegative = pMessagesNegative ;
-    this.parserStartOffsetNegative = pParserStartOffsetNegative ;
-    this.parserEndOffsetNegative = pParserEndOffsetNegative ;
-    this.messagesReplace = pMessagesReplace ;
-    this.parserStartOffsetReplace = pParserStartOffsetReplace ;
-    this.parserEndOffsetReplace = pParserEndOffsetReplace ;
-    this.replaceText = pReplaceText ;
+    super ( pMessagesNegative [ 0 ], pParserStartOffsetNegative [ 0 ],
+        pParserEndOffsetNegative [ 0 ] );
+    this.messagesNegative = pMessagesNegative;
+    this.parserStartOffsetNegative = pParserStartOffsetNegative;
+    this.parserEndOffsetNegative = pParserEndOffsetNegative;
+    this.messagesReplace = pMessagesReplace;
+    this.parserStartOffsetReplace = pParserStartOffsetReplace;
+    this.parserEndOffsetReplace = pParserEndOffsetReplace;
+    this.replaceText = pReplaceText;
   }
 
 
@@ -171,9 +174,9 @@ public final class LanguageParserReplaceException extends
    * @return The messagesNegative.
    * @see #messagesNegative
    */
-  public String [ ] getMessagesNegative ( )
+  public String [] getMessagesNegative ()
   {
-    return this.messagesNegative ;
+    return this.messagesNegative;
   }
 
 
@@ -183,9 +186,9 @@ public final class LanguageParserReplaceException extends
    * @return The messagesReplace.
    * @see #messagesReplace
    */
-  public String [ ] getMessagesReplace ( )
+  public String [] getMessagesReplace ()
   {
-    return this.messagesReplace ;
+    return this.messagesReplace;
   }
 
 
@@ -195,9 +198,9 @@ public final class LanguageParserReplaceException extends
    * @return The parserEndOffsetNegative.
    * @see #parserEndOffsetNegative
    */
-  public int [ ] getParserEndOffsetNegative ( )
+  public int [] getParserEndOffsetNegative ()
   {
-    return this.parserEndOffsetNegative ;
+    return this.parserEndOffsetNegative;
   }
 
 
@@ -207,9 +210,9 @@ public final class LanguageParserReplaceException extends
    * @return The parserEndOffsetReplace.
    * @see #parserEndOffsetReplace
    */
-  public int [ ] getParserEndOffsetReplace ( )
+  public int [] getParserEndOffsetReplace ()
   {
-    return this.parserEndOffsetReplace ;
+    return this.parserEndOffsetReplace;
   }
 
 
@@ -219,9 +222,9 @@ public final class LanguageParserReplaceException extends
    * @return The parserStartOffsetNegative.
    * @see #parserStartOffsetNegative
    */
-  public int [ ] getParserStartOffsetNegative ( )
+  public int [] getParserStartOffsetNegative ()
   {
-    return this.parserStartOffsetNegative ;
+    return this.parserStartOffsetNegative;
   }
 
 
@@ -231,9 +234,9 @@ public final class LanguageParserReplaceException extends
    * @return The parserStartOffsetReplace.
    * @see #parserStartOffsetReplace
    */
-  public int [ ] getParserStartOffsetReplace ( )
+  public int [] getParserStartOffsetReplace ()
   {
-    return this.parserStartOffsetReplace ;
+    return this.parserStartOffsetReplace;
   }
 
 
@@ -243,8 +246,8 @@ public final class LanguageParserReplaceException extends
    * @return The replaceText.
    * @see #replaceText
    */
-  public String getReplaceText ( )
+  public String getReplaceText ()
   {
-    return this.replaceText ;
+    return this.replaceText;
   }
 }

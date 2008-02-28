@@ -1,11 +1,13 @@
-package de.unisiegen.tpml.core ;
+package de.unisiegen.tpml.core;
 
 
-import java.util.Enumeration ;
-import java.util.NoSuchElementException ;
-import javax.swing.tree.TreeNode ;
-import de.unisiegen.tpml.core.latex.LatexPrintable ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import java.util.Enumeration;
+import java.util.NoSuchElementException;
+
+import javax.swing.tree.TreeNode;
+
+import de.unisiegen.tpml.core.latex.LatexPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 
 
 /**
@@ -17,8 +19,9 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
  * @version $Rev$
  * @see javax.swing.tree.TreeNode
  */
-public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
+public interface ProofNode extends TreeNode, PrettyPrintable, LatexPrintable
 {
+
   /**
    * Returns the child in this node's child array that immediately follows
    * <code>aChild</code>, which must be a child of this node. If
@@ -35,7 +38,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * @see javax.swing.tree.TreeNode#children()
    * @see #getChildBefore(TreeNode)
    */
-  public ProofNode getChildAfter ( TreeNode aChild ) ;
+  public ProofNode getChildAfter ( TreeNode aChild );
 
 
   /**
@@ -48,7 +51,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    *           of bounds.
    * @see javax.swing.tree.TreeNode#getChildAt(int)
    */
-  public ProofNode getChildAt ( int childIndex ) ;
+  public ProofNode getChildAt ( int childIndex );
 
 
   /**
@@ -66,7 +69,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * @see javax.swing.tree.TreeNode#children()
    * @see #getChildAfter(TreeNode)
    */
-  public ProofNode getChildBefore ( TreeNode aChild ) ;
+  public ProofNode getChildBefore ( TreeNode aChild );
 
 
   /**
@@ -77,7 +80,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * @throws NoSuchElementException if this node has no children.
    * @see #getLastChild()
    */
-  public ProofNode getFirstChild ( ) ;
+  public ProofNode getFirstChild ();
 
 
   /**
@@ -89,7 +92,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * @see javax.swing.tree.TreeNode#isLeaf()
    * @see #isNodeDescendant(ProofNode)
    */
-  public ProofNode getFirstLeaf ( ) ;
+  public ProofNode getFirstLeaf ();
 
 
   /**
@@ -100,7 +103,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * @throws NoSuchElementException if this node has no children.
    * @see #getFirstChild()
    */
-  public ProofNode getLastChild ( ) ;
+  public ProofNode getLastChild ();
 
 
   /**
@@ -111,7 +114,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * @see javax.swing.tree.TreeNode#isLeaf()
    * @see #isNodeDescendant(ProofNode)
    */
-  public ProofNode getLastLeaf ( ) ;
+  public ProofNode getLastLeaf ();
 
 
   /**
@@ -122,7 +125,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    *         this node has no parent.
    * @see javax.swing.tree.TreeNode#getParent()
    */
-  public ProofNode getParent ( ) ;
+  public ProofNode getParent ();
 
 
   /**
@@ -133,7 +136,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * @see #isNodeAncestor(TreeNode)
    * @see #isRoot()
    */
-  public ProofNode getRoot ( ) ;
+  public ProofNode getRoot ();
 
 
   /**
@@ -144,7 +147,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * @return the already applied {@link ProofRule}s.
    * @see ProofRule
    */
-  public ProofRule [ ] getRules ( ) ;
+  public ProofRule [] getRules ();
 
 
   /**
@@ -155,7 +158,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * @return the user object set for this proof node or <code>null</code>.
    * @see #setUserObject(Object)
    */
-  public Object getUserObject ( ) ;
+  public Object getUserObject ();
 
 
   /**
@@ -172,7 +175,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * @see #isNodeChild(TreeNode)
    * @see #isNodeDescendant(ProofNode)
    */
-  public boolean isNodeAncestor ( TreeNode anotherNode ) ;
+  public boolean isNodeAncestor ( TreeNode anotherNode );
 
 
   /**
@@ -186,7 +189,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    *         <code>null</code>.
    * @see #isNodeAncestor(TreeNode)
    */
-  public boolean isNodeChild ( TreeNode aNode ) ;
+  public boolean isNodeChild ( TreeNode aNode );
 
 
   /**
@@ -203,7 +206,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * @see #isNodeAncestor(TreeNode)
    * @see #isNodeChild(TreeNode)
    */
-  public boolean isNodeDescendant ( ProofNode anotherNode ) ;
+  public boolean isNodeDescendant ( ProofNode anotherNode );
 
 
   /**
@@ -217,7 +220,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * 
    * @see #getRoot()
    */
-  public boolean isNodeRelated ( ProofNode aNode ) ;
+  public boolean isNodeRelated ( ProofNode aNode );
 
 
   /**
@@ -229,7 +232,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * @return <code>true</code> if this node is already proven.
    * @see #getRules()
    */
-  public boolean isProven ( ) ;
+  public boolean isProven ();
 
 
   /**
@@ -240,7 +243,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * @return <code>true</code> if this node is the root of its tree.
    * @see #getRoot()
    */
-  public boolean isRoot ( ) ;
+  public boolean isRoot ();
 
 
   /**
@@ -252,7 +255,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * 
    * @return an enumeration for traversing the tree in post-order.
    */
-  public Enumeration < ProofNode > postorderEnumeration ( ) ;
+  public Enumeration < ProofNode > postorderEnumeration ();
 
 
   /**
@@ -263,7 +266,7 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * @param userObject the new user object to associate with this proof node.
    * @see #getUserObject()
    */
-  public void setUserObject ( Object userObject ) ;
+  public void setUserObject ( Object userObject );
 
 
   /**
@@ -271,5 +274,5 @@ public interface ProofNode extends TreeNode , PrettyPrintable , LatexPrintable
    * 
    * @return int unique id
    */
-  public int getId ( ) ;
+  public int getId ();
 }

@@ -1,10 +1,10 @@
-package de.unisiegen.tpml.core.smallstep ;
+package de.unisiegen.tpml.core.smallstep;
 
 
-import de.unisiegen.tpml.core.ProofRule ;
-import de.unisiegen.tpml.core.ProofStep ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.interpreters.Store ;
+import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interpreters.Store;
 
 
 /**
@@ -18,6 +18,7 @@ import de.unisiegen.tpml.core.interpreters.Store ;
  */
 public interface SmallStepProofContext
 {
+
   //
   // Accessors
   //
@@ -32,7 +33,7 @@ public interface SmallStepProofContext
    * @return the resulting {@link Expression}.
    * @see Expression
    */
-  public Expression getExpression ( ) ;
+  public Expression getExpression ();
 
 
   /**
@@ -41,7 +42,7 @@ public interface SmallStepProofContext
    * @return the evaluation steps.
    * @see ProofStep
    */
-  public ProofStep [ ] getSteps ( ) ;
+  public ProofStep [] getSteps ();
 
 
   /**
@@ -52,7 +53,7 @@ public interface SmallStepProofContext
    * @return the resulting {@link Store}.
    * @see Store
    */
-  public Store getStore ( ) ;
+  public Store getStore ();
 
 
   //
@@ -68,5 +69,5 @@ public interface SmallStepProofContext
    *           <code>expression</code> is <code>null</code>.
    * @see #getSteps()
    */
-  public void addProofStep ( ProofRule rule , Expression expression ) ;
+  public void addProofStep ( ProofRule rule, Expression expression );
 }

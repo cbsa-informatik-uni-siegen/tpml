@@ -1,10 +1,10 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
-import java.util.ArrayList ;
-import java.util.Collections ;
-import java.util.Comparator ;
-import java.util.Iterator ;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 
 
 /**
@@ -14,14 +14,16 @@ import java.util.Iterator ;
  */
 public class LatexPackageList implements Iterable < LatexPackage >
 {
+
   /**
    * This <code>Comparator</code> is used to sort the {@link LatexPackageList}.
    * 
    * @author Christian Fehler
    */
-  protected class LatexPackageComparator implements LatexCommandNames ,
+  protected class LatexPackageComparator implements LatexCommandNames,
       Comparator < LatexPackage >
   {
+
     /**
      * Compares its two arguments for order. Returns a negative integer, zero,
      * or a positive integer as the first argument is less than, equal to, or
@@ -33,10 +35,10 @@ public class LatexPackageList implements Iterable < LatexPackage >
      *         argument is less than, equal to, or greater than the second.
      * @see Comparator#compare(Object, Object)
      */
-    public int compare ( LatexPackage pLatexPackage1 ,
+    public int compare ( LatexPackage pLatexPackage1,
         LatexPackage pLatexPackage2 )
     {
-      return pLatexPackage1.getName ( ).compareTo ( pLatexPackage2.getName ( ) ) ;
+      return pLatexPackage1.getName ().compareTo ( pLatexPackage2.getName () );
     }
   }
 
@@ -44,15 +46,15 @@ public class LatexPackageList implements Iterable < LatexPackage >
   /**
    * The internal used list.
    */
-  private ArrayList < LatexPackage > list ;
+  private ArrayList < LatexPackage > list;
 
 
   /**
    * Allocates a new <code>LatexPackageList</code>
    */
-  public LatexPackageList ( )
+  public LatexPackageList ()
   {
-    this.list = new ArrayList < LatexPackage > ( ) ;
+    this.list = new ArrayList < LatexPackage > ();
   }
 
 
@@ -70,12 +72,12 @@ public class LatexPackageList implements Iterable < LatexPackage >
       {
         if ( latexPrintable != null )
         {
-          for ( LatexPackage pack : latexPrintable.getLatexPackages ( ) )
+          for ( LatexPackage pack : latexPrintable.getLatexPackages () )
           {
-            if ( ! this.list.contains ( pack ) )
+            if ( !this.list.contains ( pack ) )
             {
-              this.list.add ( pack ) ;
-              sort ( ) ;
+              this.list.add ( pack );
+              sort ();
             }
           }
         }
@@ -93,10 +95,10 @@ public class LatexPackageList implements Iterable < LatexPackage >
   {
     if ( pLatexPackage != null )
     {
-      if ( ! this.list.contains ( pLatexPackage ) )
+      if ( !this.list.contains ( pLatexPackage ) )
       {
-        this.list.add ( pLatexPackage ) ;
-        sort ( ) ;
+        this.list.add ( pLatexPackage );
+        sort ();
       }
     }
   }
@@ -114,10 +116,10 @@ public class LatexPackageList implements Iterable < LatexPackage >
     {
       for ( LatexPackage pack : pLatexPackageList )
       {
-        if ( ! this.list.contains ( pack ) )
+        if ( !this.list.contains ( pack ) )
         {
-          this.list.add ( pack ) ;
-          sort ( ) ;
+          this.list.add ( pack );
+          sort ();
         }
       }
     }
@@ -133,12 +135,12 @@ public class LatexPackageList implements Iterable < LatexPackage >
   {
     if ( pLatexPrintable != null )
     {
-      for ( LatexPackage pack : pLatexPrintable.getLatexPackages ( ) )
+      for ( LatexPackage pack : pLatexPrintable.getLatexPackages () )
       {
-        if ( ! this.list.contains ( pack ) )
+        if ( !this.list.contains ( pack ) )
         {
-          this.list.add ( pack ) ;
-          sort ( ) ;
+          this.list.add ( pack );
+          sort ();
         }
       }
     }
@@ -151,7 +153,7 @@ public class LatexPackageList implements Iterable < LatexPackage >
    * 
    * @param pLatexPrintables The {@link LatexPrintable}s.
    */
-  public void add ( LatexPrintable [ ] pLatexPrintables )
+  public void add ( LatexPrintable [] pLatexPrintables )
   {
     if ( pLatexPrintables != null )
     {
@@ -159,12 +161,12 @@ public class LatexPackageList implements Iterable < LatexPackage >
       {
         if ( latexPrintable != null )
         {
-          for ( LatexPackage pack : latexPrintable.getLatexPackages ( ) )
+          for ( LatexPackage pack : latexPrintable.getLatexPackages () )
           {
-            if ( ! this.list.contains ( pack ) )
+            if ( !this.list.contains ( pack ) )
             {
-              this.list.add ( pack ) ;
-              sort ( ) ;
+              this.list.add ( pack );
+              sort ();
             }
           }
         }
@@ -179,9 +181,9 @@ public class LatexPackageList implements Iterable < LatexPackage >
    * @return An iterator over the elements in this list in proper sequence.
    * @see Iterable#iterator()
    */
-  public Iterator < LatexPackage > iterator ( )
+  public Iterator < LatexPackage > iterator ()
   {
-    return this.list.iterator ( ) ;
+    return this.list.iterator ();
   }
 
 
@@ -190,17 +192,17 @@ public class LatexPackageList implements Iterable < LatexPackage >
    * 
    * @return the number of elements in this list.
    */
-  public int size ( )
+  public int size ()
   {
-    return this.list.size ( ) ;
+    return this.list.size ();
   }
 
 
   /**
    * Sorts the list.
    */
-  private void sort ( )
+  private void sort ()
   {
-    Collections.sort ( this.list , new LatexPackageComparator ( ) ) ;
+    Collections.sort ( this.list, new LatexPackageComparator () );
   }
 }

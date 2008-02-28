@@ -1,8 +1,10 @@
 package de.unisiegen.tpml.graphics.components;
 
+
 import javax.swing.JMenuItem;
 
 import de.unisiegen.tpml.graphics.Messages;
+
 
 /**
  * An item that can be added to the menu of the MenuButton.<br>
@@ -10,19 +12,21 @@ import de.unisiegen.tpml.graphics.Messages;
  * This one is only used within the type checker.
  * 
  * @author marcell
- *
  */
-public class MenuEnterTypeItem extends JMenuItem {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5464136166948202537L;
+public class MenuEnterTypeItem extends JMenuItem
+{
 
-	public MenuEnterTypeItem () {
-		super ();
-		
-		init (Messages.getString("MenuEnterTypeItem.0"), null); //$NON-NLS-1$
-	}
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -5464136166948202537L;
+
+
+  public MenuEnterTypeItem ()
+  {
+    super ();
+
+    init ( Messages.getString ( "MenuEnterTypeItem.0" ), null ); //$NON-NLS-1$
+  }
 
 }

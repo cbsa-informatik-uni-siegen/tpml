@@ -1,10 +1,11 @@
-package de.unisiegen.tpml.core.prettyprinter ;
+package de.unisiegen.tpml.core.prettyprinter;
 
 
-import java.util.ArrayList ;
-import java.util.IdentityHashMap ;
-import java.util.Map ;
-import de.unisiegen.tpml.core.util.IntegerUtilities ;
+import java.util.ArrayList;
+import java.util.IdentityHashMap;
+import java.util.Map;
+
+import de.unisiegen.tpml.core.util.IntegerUtilities;
 
 
 /**
@@ -18,6 +19,7 @@ import de.unisiegen.tpml.core.util.IntegerUtilities ;
  */
 final class DefaultPrettyStringBuilder implements PrettyStringBuilder
 {
+
   //
   // Attributes
   //
@@ -26,7 +28,7 @@ final class DefaultPrettyStringBuilder implements PrettyStringBuilder
    * 
    * @see AbstractItem
    */
-  private ArrayList < AbstractItem > items = new ArrayList < AbstractItem > ( ) ;
+  private ArrayList < AbstractItem > items = new ArrayList < AbstractItem > ();
 
 
   /**
@@ -36,13 +38,13 @@ final class DefaultPrettyStringBuilder implements PrettyStringBuilder
    * @see PrettyPrintable
    * @see PrettyString
    */
-  private PrettyPrintable printable ;
+  private PrettyPrintable printable;
 
 
   /**
    * The return priority of the printable according to the priority grammar.
    */
-  private int returnPriority ;
+  private int returnPriority;
 
 
   //
@@ -60,14 +62,14 @@ final class DefaultPrettyStringBuilder implements PrettyStringBuilder
    * @throws NullPointerException if <code>printable</code> is
    *           <code>null</code>.
    */
-  DefaultPrettyStringBuilder ( PrettyPrintable pPrintable , int pReturnPriority )
+  DefaultPrettyStringBuilder ( PrettyPrintable pPrintable, int pReturnPriority )
   {
     if ( pPrintable == null )
     {
-      throw new NullPointerException ( "printable is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "printable is null" ); //$NON-NLS-1$
     }
-    this.printable = pPrintable ;
-    this.returnPriority = pReturnPriority ;
+    this.printable = pPrintable;
+    this.returnPriority = pReturnPriority;
   }
 
 
@@ -79,9 +81,9 @@ final class DefaultPrettyStringBuilder implements PrettyStringBuilder
    * 
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder#addBreak()
    */
-  public void addBreak ( )
+  public void addBreak ()
   {
-    this.items.add ( BreakItem.BREAK_ITEM ) ;
+    this.items.add ( BreakItem.BREAK_ITEM );
   }
 
 
@@ -91,25 +93,25 @@ final class DefaultPrettyStringBuilder implements PrettyStringBuilder
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder#addBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder,
    *      int)
    */
-  public void addBuilder ( PrettyStringBuilder builder , int argumentPriority )
+  public void addBuilder ( PrettyStringBuilder builder, int argumentPriority )
   {
     if ( builder == null )
     {
-      throw new NullPointerException ( "builder is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "builder is null" ); //$NON-NLS-1$
     }
     // cast to a default pretty string builder
-    DefaultPrettyStringBuilder defaultBuilder = ( DefaultPrettyStringBuilder ) builder ;
+    DefaultPrettyStringBuilder defaultBuilder = ( DefaultPrettyStringBuilder ) builder;
     // check if we need parenthesis
-    boolean parenthesis = ( defaultBuilder.returnPriority < argumentPriority ) ;
+    boolean parenthesis = ( defaultBuilder.returnPriority < argumentPriority );
     // add the required items
     if ( parenthesis )
     {
-      this.items.add ( new TextItem ( "(" , PrettyStyle.NONE ) ) ; //$NON-NLS-1$
+      this.items.add ( new TextItem ( "(", PrettyStyle.NONE ) ); //$NON-NLS-1$
     }
-    this.items.add ( new BuilderItem ( defaultBuilder ) ) ;
+    this.items.add ( new BuilderItem ( defaultBuilder ) );
     if ( parenthesis )
     {
-      this.items.add ( new TextItem ( ")" , PrettyStyle.NONE ) ) ; //$NON-NLS-1$
+      this.items.add ( new TextItem ( ")", PrettyStyle.NONE ) ); //$NON-NLS-1$
     }
   }
 
@@ -121,7 +123,7 @@ final class DefaultPrettyStringBuilder implements PrettyStringBuilder
    */
   public void addConstant ( String constant )
   {
-    this.items.add ( new TextItem ( constant , PrettyStyle.CONSTANT ) ) ;
+    this.items.add ( new TextItem ( constant, PrettyStyle.CONSTANT ) );
   }
 
 
@@ -132,7 +134,7 @@ final class DefaultPrettyStringBuilder implements PrettyStringBuilder
    */
   public void addIdentifier ( String identifier )
   {
-    this.items.add ( new TextItem ( identifier , PrettyStyle.IDENTIFIER ) ) ;
+    this.items.add ( new TextItem ( identifier, PrettyStyle.IDENTIFIER ) );
   }
 
 
@@ -143,7 +145,7 @@ final class DefaultPrettyStringBuilder implements PrettyStringBuilder
    */
   public void addKeyword ( String keyword )
   {
-    this.items.add ( new TextItem ( keyword , PrettyStyle.KEYWORD ) ) ;
+    this.items.add ( new TextItem ( keyword, PrettyStyle.KEYWORD ) );
   }
 
 
@@ -154,7 +156,7 @@ final class DefaultPrettyStringBuilder implements PrettyStringBuilder
    */
   public void addText ( String text )
   {
-    this.items.add ( new TextItem ( text , PrettyStyle.NONE ) ) ;
+    this.items.add ( new TextItem ( text, PrettyStyle.NONE ) );
   }
 
 
@@ -165,7 +167,7 @@ final class DefaultPrettyStringBuilder implements PrettyStringBuilder
    */
   public void addType ( String type )
   {
-    this.items.add ( new TextItem ( type , PrettyStyle.TYPE ) ) ;
+    this.items.add ( new TextItem ( type, PrettyStyle.TYPE ) );
   }
 
 
@@ -174,19 +176,19 @@ final class DefaultPrettyStringBuilder implements PrettyStringBuilder
    * 
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder#toPrettyString()
    */
-  public PrettyString toPrettyString ( )
+  public PrettyString toPrettyString ()
   {
     // determine the final string length for the builder contents
-    int length = determineStringLength ( ) ;
+    int length = determineStringLength ();
     // allocate a styles map
-    PrettyStyle styles[] = new PrettyStyle [ length ] ;
+    PrettyStyle styles[] = new PrettyStyle [ length ];
     // allocate the string buffer
-    StringBuilder buffer = new StringBuilder ( length ) ;
+    StringBuilder buffer = new StringBuilder ( length );
     // allocate an empty annotations map
-    Map < PrettyPrintable , PrettyAnnotation > annotations = new IdentityHashMap < PrettyPrintable , PrettyAnnotation > ( ) ;
+    Map < PrettyPrintable, PrettyAnnotation > annotations = new IdentityHashMap < PrettyPrintable, PrettyAnnotation > ();
     // determine the string representation and place it into the string buffer
-    determineString ( buffer , annotations , styles ) ;
-    return new DefaultPrettyString ( buffer.toString ( ) , annotations , styles ) ;
+    determineString ( buffer, annotations, styles );
+    return new DefaultPrettyString ( buffer.toString (), annotations, styles );
   }
 
 
@@ -204,23 +206,23 @@ final class DefaultPrettyStringBuilder implements PrettyStringBuilder
    * @param pAnnotations map to store the annotations to.
    * @param styles array to store the highlighting styles to (per character).
    */
-  void determineString ( StringBuilder buffer ,
-      Map < PrettyPrintable , PrettyAnnotation > pAnnotations ,
-      PrettyStyle [ ] styles )
+  void determineString ( StringBuilder buffer,
+      Map < PrettyPrintable, PrettyAnnotation > pAnnotations,
+      PrettyStyle [] styles )
   {
     // remember the start offset for the annotation constructor
-    int startOffset = buffer.length ( ) ;
+    int startOffset = buffer.length ();
     // allocate the list for the break offsets
-    ArrayList < Integer > breakOffsets = new ArrayList < Integer > ( ) ;
+    ArrayList < Integer > breakOffsets = new ArrayList < Integer > ();
     // process all items for this string builder
     for ( AbstractItem item : this.items )
     {
       // determine the string representation for the item
-      item.determineString ( buffer , pAnnotations , breakOffsets , styles ) ;
+      item.determineString ( buffer, pAnnotations, breakOffsets, styles );
     }
     // add the annotation for the current builder
-    pAnnotations.put ( this.printable , new PrettyAnnotation ( startOffset ,
-        buffer.length ( ) - 1 , IntegerUtilities.toArray ( breakOffsets ) ) ) ;
+    pAnnotations.put ( this.printable, new PrettyAnnotation ( startOffset,
+        buffer.length () - 1, IntegerUtilities.toArray ( breakOffsets ) ) );
   }
 
 
@@ -230,13 +232,13 @@ final class DefaultPrettyStringBuilder implements PrettyStringBuilder
    * 
    * @return the number of characters in the generated pretty string.
    */
-  int determineStringLength ( )
+  int determineStringLength ()
   {
-    int length = 0 ;
+    int length = 0;
     for ( AbstractItem item : this.items )
     {
-      length += item.determineStringLength ( ) ;
+      length += item.determineStringLength ();
     }
-    return length ;
+    return length;
   }
 }

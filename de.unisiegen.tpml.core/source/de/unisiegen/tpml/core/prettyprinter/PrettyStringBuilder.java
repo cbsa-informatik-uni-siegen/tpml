@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.prettyprinter ;
+package de.unisiegen.tpml.core.prettyprinter;
 
 
 /**
@@ -16,6 +16,7 @@ package de.unisiegen.tpml.core.prettyprinter ;
  */
 public interface PrettyStringBuilder
 {
+
   //
   // Primitives
   //
@@ -23,7 +24,7 @@ public interface PrettyStringBuilder
    * Appends a break location to the string builder. A break marks the location
    * as possible newline insertion position for the presenter.
    */
-  public void addBreak ( ) ;
+  public void addBreak ();
 
 
   /**
@@ -40,7 +41,7 @@ public interface PrettyStringBuilder
    *           this builder.
    * @throws NullPointerException if <code>builder</code> is <code>null</code>.
    */
-  public void addBuilder ( PrettyStringBuilder builder , int argumentPriority ) ;
+  public void addBuilder ( PrettyStringBuilder builder, int argumentPriority );
 
 
   /**
@@ -55,7 +56,7 @@ public interface PrettyStringBuilder
    * @see #addText(String)
    * @see PrettyStyle#CONSTANT
    */
-  public void addConstant ( String constant ) ;
+  public void addConstant ( String constant );
 
 
   /**
@@ -69,7 +70,7 @@ public interface PrettyStringBuilder
    * @see #addText(String)
    * @see PrettyStyle#IDENTIFIER
    */
-  public void addIdentifier ( String identifier ) ;
+  public void addIdentifier ( String identifier );
 
 
   /**
@@ -83,7 +84,7 @@ public interface PrettyStringBuilder
    * @see #addText(String)
    * @see PrettyStyle#KEYWORD
    */
-  public void addKeyword ( String keyword ) ;
+  public void addKeyword ( String keyword );
 
 
   /**
@@ -98,7 +99,7 @@ public interface PrettyStringBuilder
    * @see #addKeyword(String)
    * @see PrettyStyle#NONE
    */
-  public void addText ( String text ) ;
+  public void addText ( String text );
 
 
   /**
@@ -111,7 +112,7 @@ public interface PrettyStringBuilder
    * @see #addKeyword(String)
    * @see PrettyStyle#TYPE
    */
-  public void addType ( String type ) ;
+  public void addType ( String type );
 
 
   /**
@@ -123,5 +124,5 @@ public interface PrettyStringBuilder
    * @return the <code>PrettyString</code> for the current contents of the
    *         builder.
    */
-  public PrettyString toPrettyString ( ) ;
+  public PrettyString toPrettyString ();
 }

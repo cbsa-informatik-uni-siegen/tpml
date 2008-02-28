@@ -1,7 +1,7 @@
-package de.unisiegen.tpml.core.latex ;
+package de.unisiegen.tpml.core.latex;
 
 
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 
 
 /**
@@ -9,14 +9,15 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
  * 
  * @author Christian Fehler
  */
-public interface LatexPrintable extends PrettyPrintable , LatexCommandNames
+public interface LatexPrintable extends PrettyPrintable, LatexCommandNames
 {
+
   /**
    * Returns a set of needed latex commands for this latex printable object.
    * 
    * @return A set of needed latex commands for this latex printable object.
    */
-  public LatexCommandList getLatexCommands ( ) ;
+  public LatexCommandList getLatexCommands ();
 
 
   /**
@@ -26,7 +27,7 @@ public interface LatexPrintable extends PrettyPrintable , LatexCommandNames
    * @return A lsit of needed latex instructions for this latex printable
    *         object.
    */
-  public LatexInstructionList getLatexInstructions ( ) ;
+  public LatexInstructionList getLatexInstructions ();
 
 
   /**
@@ -34,7 +35,7 @@ public interface LatexPrintable extends PrettyPrintable , LatexCommandNames
    * 
    * @return A set of needed latex packages for this latex printable object.
    */
-  public LatexPackageList getLatexPackages ( ) ;
+  public LatexPackageList getLatexPackages ();
 
 
   /**
@@ -44,7 +45,7 @@ public interface LatexPrintable extends PrettyPrintable , LatexCommandNames
    * @return A {@link LatexString} that can be used to export this latex
    *         printable object.
    */
-  public LatexString toLatexString ( ) ;
+  public LatexString toLatexString ();
 
 
   /**
@@ -64,5 +65,5 @@ public interface LatexPrintable extends PrettyPrintable , LatexCommandNames
    * @see LatexStringBuilderFactory
    */
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory , int pIndent ) ;
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent );
 }
