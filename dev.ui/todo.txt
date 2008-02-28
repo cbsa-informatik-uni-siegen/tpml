@@ -1,10 +1,17 @@
 		- Save Button komplett neu schreiben
-CU		- AboutDialog mit Netbeans neu schreiben
+CU		- AboutDialog mit Netbeans neu schreiben (Entwickler in TPML
+		  1.0, 2.0 und 3.0 unterteilen)
 CU		- PreferenceDialog mit Netbeans neu schreiben
 		- Dynamische Sprachänderung (siehe GTITool unter
 		  http://theoinf.math.uni-siegen.de/gtitool/)
 		- Dynamische Änderung des Look and Feel
 		- Die Info-Dialoge mit Netbeans neu schreiben, da die Message
-		  nicht umgebrochen wird
+		  im Moment nicht umgebrochen wird.
 		- Internationalisierung überprüfen (viele Meldungen sind nur
-		  englisch)
+		  englisch, betrifft alle Projekte)
+		- PDF Print Dialog überarbeiten (Internationalisierung ...)
+		- Im Neu-Dialog nur die Sprachen expandieren, die der Benutzer beim
+		  letzten Mal offen hatte (Siehe GTITool: Farbeinstellungen)
+		- Die Breite des OpenDialogs beschränken (Einen eigenen mit Netbeans
+		  implementieren)
+		- Die Beschreibung im Neu Dialog kleiner machen

@@ -1,0 +1,4 @@
+		- Den Renderer der Outline umbauen, so dass dort auch der
+		  PrettyPrinter benutzt wird, dazu muss der Pretty Style
+		  angepasst werden, damit das Selektieren von Ausdrücken
+		  möglich ist.
