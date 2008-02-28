@@ -7,7 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -23,6 +22,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline;
 import de.unisiegen.tpml.graphics.outline.Outline;
 
@@ -53,6 +53,12 @@ public final class OutlineUI
    * The copy <code>Icon</code> path.
    */
   private static final String COPYICON = "/de/unisiegen/tpml/ui/icons/copy16.gif"; //$NON-NLS-1$
+
+
+  /**
+   * The {@link Outline} prefix.
+   */
+  public static final String OUTLINE_PREFIX = "Outline."; //$NON-NLS-1$
 
 
   /**
@@ -102,12 +108,6 @@ public final class OutlineUI
    * and the <code>ResourceBundle</code>.
    */
   public static final String EXPAND = "expand"; //$NON-NLS-1$
-
-
-  /**
-   * The <code>ResourceBundle</code> path.
-   */
-  private static final String RESOURCE = "de/unisiegen/tpml/graphics/outline/outline"; //$NON-NLS-1$
 
 
   /**
@@ -279,12 +279,6 @@ public final class OutlineUI
 
 
   /**
-   * The <code>ResourceBundle</code>.
-   */
-  private ResourceBundle resourceBundle;
-
-
-  /**
    * The <code>JPopupMenu</code>.
    * 
    * @see #getJPopupMenu()
@@ -418,28 +412,26 @@ public final class OutlineUI
     this.defaultOutline = pDefaultOutline;
     // Insets
     this.insets = new Insets ( 0, 0, 0, 0 );
-    // Preferences
-    this.resourceBundle = ResourceBundle.getBundle ( RESOURCE );
     // PopupMenu
     this.jPopupMenu = new JPopupMenu ();
     // MenuItem Expand
-    this.jMenuItemExpand = new JMenuItem ( this.resourceBundle
-        .getString ( EXPAND ) );
-    this.jMenuItemExpand.setMnemonic ( this.resourceBundle.getString (
-        EXPAND + MNEMONIC ).charAt ( 0 ) );
-    this.jMenuItemExpand.setToolTipText ( this.resourceBundle
-        .getString ( EXPAND + TOOLTIP ) );
+    this.jMenuItemExpand = new JMenuItem ( Messages.getString ( OUTLINE_PREFIX
+        + EXPAND ) );
+    this.jMenuItemExpand.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + EXPAND + MNEMONIC ).charAt ( 0 ) );
+    this.jMenuItemExpand.setToolTipText ( Messages.getString ( OUTLINE_PREFIX
+        + EXPAND + TOOLTIP ) );
     this.jMenuItemExpand.setIcon ( new ImageIcon ( getClass ().getResource (
         EMPTYICON ) ) );
     this.jMenuItemExpand.setActionCommand ( EXPAND );
     this.jPopupMenu.add ( this.jMenuItemExpand );
     // MenuItem ExpandAll
-    this.jMenuItemExpandAll = new JMenuItem ( this.resourceBundle
-        .getString ( EXPANDALL ) );
-    this.jMenuItemExpandAll.setMnemonic ( this.resourceBundle.getString (
-        EXPANDALL + MNEMONIC ).charAt ( 0 ) );
-    this.jMenuItemExpandAll.setToolTipText ( this.resourceBundle
-        .getString ( EXPANDALL + TOOLTIP ) );
+    this.jMenuItemExpandAll = new JMenuItem ( Messages
+        .getString ( OUTLINE_PREFIX + EXPANDALL ) );
+    this.jMenuItemExpandAll.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + EXPANDALL + MNEMONIC ).charAt ( 0 ) );
+    this.jMenuItemExpandAll.setToolTipText ( Messages
+        .getString ( OUTLINE_PREFIX + EXPANDALL + TOOLTIP ) );
     this.jMenuItemExpandAll.setIcon ( new ImageIcon ( getClass ().getResource (
         EMPTYICON ) ) );
     this.jMenuItemExpandAll.setActionCommand ( EXPANDALL );
@@ -447,23 +439,23 @@ public final class OutlineUI
     // Separator
     this.jPopupMenu.addSeparator ();
     // MenuItem Collapse
-    this.jMenuItemCollapse = new JMenuItem ( this.resourceBundle
-        .getString ( COLLAPSE ) );
-    this.jMenuItemCollapse.setMnemonic ( this.resourceBundle.getString (
-        COLLAPSE + MNEMONIC ).charAt ( 0 ) );
-    this.jMenuItemCollapse.setToolTipText ( this.resourceBundle
-        .getString ( COLLAPSE + TOOLTIP ) );
+    this.jMenuItemCollapse = new JMenuItem ( Messages
+        .getString ( OUTLINE_PREFIX + COLLAPSE ) );
+    this.jMenuItemCollapse.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + COLLAPSE + MNEMONIC ).charAt ( 0 ) );
+    this.jMenuItemCollapse.setToolTipText ( Messages.getString ( OUTLINE_PREFIX
+        + COLLAPSE + TOOLTIP ) );
     this.jMenuItemCollapse.setIcon ( new ImageIcon ( getClass ().getResource (
         EMPTYICON ) ) );
     this.jMenuItemCollapse.setActionCommand ( COLLAPSE );
     this.jPopupMenu.add ( this.jMenuItemCollapse );
     // MenuItem CollapseAll
-    this.jMenuItemCollapseAll = new JMenuItem ( this.resourceBundle
-        .getString ( COLLAPSEALL ) );
-    this.jMenuItemCollapseAll.setMnemonic ( this.resourceBundle.getString (
-        COLLAPSEALL + MNEMONIC ).charAt ( 0 ) );
-    this.jMenuItemCollapseAll.setToolTipText ( this.resourceBundle
-        .getString ( COLLAPSEALL + TOOLTIP ) );
+    this.jMenuItemCollapseAll = new JMenuItem ( Messages
+        .getString ( OUTLINE_PREFIX + COLLAPSEALL ) );
+    this.jMenuItemCollapseAll.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + COLLAPSEALL + MNEMONIC ).charAt ( 0 ) );
+    this.jMenuItemCollapseAll.setToolTipText ( Messages
+        .getString ( OUTLINE_PREFIX + COLLAPSEALL + TOOLTIP ) );
     this.jMenuItemCollapseAll.setIcon ( new ImageIcon ( getClass ()
         .getResource ( EMPTYICON ) ) );
     this.jMenuItemCollapseAll.setActionCommand ( COLLAPSEALL );
@@ -471,23 +463,23 @@ public final class OutlineUI
     // Separator
     this.jPopupMenu.addSeparator ();
     // MenuItem Close
-    this.jMenuItemClose = new JMenuItem ( this.resourceBundle
-        .getString ( CLOSE ) );
-    this.jMenuItemClose.setMnemonic ( this.resourceBundle.getString (
-        CLOSE + MNEMONIC ).charAt ( 0 ) );
-    this.jMenuItemClose.setToolTipText ( this.resourceBundle.getString ( CLOSE
-        + TOOLTIP ) );
+    this.jMenuItemClose = new JMenuItem ( Messages.getString ( OUTLINE_PREFIX
+        + CLOSE ) );
+    this.jMenuItemClose.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + CLOSE + MNEMONIC ).charAt ( 0 ) );
+    this.jMenuItemClose.setToolTipText ( Messages.getString ( OUTLINE_PREFIX
+        + CLOSE + TOOLTIP ) );
     this.jMenuItemClose.setIcon ( new ImageIcon ( getClass ().getResource (
         EMPTYICON ) ) );
     this.jMenuItemClose.setActionCommand ( CLOSE );
     this.jPopupMenu.add ( this.jMenuItemClose );
     // MenuItem CloseAll
-    this.jMenuItemCloseAll = new JMenuItem ( this.resourceBundle
-        .getString ( CLOSEALL ) );
-    this.jMenuItemCloseAll.setMnemonic ( this.resourceBundle.getString (
-        CLOSEALL + MNEMONIC ).charAt ( 0 ) );
-    this.jMenuItemCloseAll.setToolTipText ( this.resourceBundle
-        .getString ( CLOSEALL + TOOLTIP ) );
+    this.jMenuItemCloseAll = new JMenuItem ( Messages
+        .getString ( OUTLINE_PREFIX + CLOSEALL ) );
+    this.jMenuItemCloseAll.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + CLOSEALL + MNEMONIC ).charAt ( 0 ) );
+    this.jMenuItemCloseAll.setToolTipText ( Messages.getString ( OUTLINE_PREFIX
+        + CLOSEALL + TOOLTIP ) );
     this.jMenuItemCloseAll.setIcon ( new ImageIcon ( getClass ().getResource (
         EMPTYICON ) ) );
     this.jMenuItemCloseAll.setActionCommand ( CLOSEALL );
@@ -495,11 +487,12 @@ public final class OutlineUI
     // Separator
     this.jPopupMenu.addSeparator ();
     // MenuItem Copy
-    this.jMenuItemCopy = new JMenuItem ( this.resourceBundle.getString ( COPY ) );
-    this.jMenuItemCopy.setMnemonic ( this.resourceBundle.getString (
-        COPY + MNEMONIC ).charAt ( 0 ) );
-    this.jMenuItemCopy.setToolTipText ( this.resourceBundle.getString ( COPY
-        + TOOLTIP ) );
+    this.jMenuItemCopy = new JMenuItem ( Messages.getString ( OUTLINE_PREFIX
+        + COPY ) );
+    this.jMenuItemCopy.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + COPY + MNEMONIC ).charAt ( 0 ) );
+    this.jMenuItemCopy.setToolTipText ( Messages.getString ( OUTLINE_PREFIX
+        + COPY + TOOLTIP ) );
     this.jMenuItemCopy.setIcon ( new ImageIcon ( getClass ().getResource (
         COPYICON ) ) );
     this.jMenuItemCopy.setActionCommand ( COPY );
@@ -509,76 +502,76 @@ public final class OutlineUI
     // Separator
     this.jPopupMenu.addSeparator ();
     // MenuItem Preferences
-    this.jMenuPreferences = new JMenu ( this.resourceBundle
-        .getString ( PREFERENCES ) );
-    this.jMenuPreferences.setMnemonic ( this.resourceBundle.getString (
-        PREFERENCES + MNEMONIC ).charAt ( 0 ) );
+    this.jMenuPreferences = new JMenu ( Messages.getString ( OUTLINE_PREFIX
+        + PREFERENCES ) );
+    this.jMenuPreferences.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + PREFERENCES + MNEMONIC ).charAt ( 0 ) );
     this.jMenuPreferences.setIcon ( new ImageIcon ( getClass ().getResource (
         EMPTYICON ) ) );
     this.jMenuPreferences.setActionCommand ( PREFERENCES );
     this.jPopupMenu.add ( this.jMenuPreferences );
     // MenuItem Selection
-    this.jMenuItemSelection = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( SELECTION ) );
-    this.jMenuItemSelection.setMnemonic ( this.resourceBundle.getString (
-        SELECTION + MNEMONIC ).charAt ( 0 ) );
-    this.jMenuItemSelection.setToolTipText ( this.resourceBundle
-        .getString ( SELECTION + TOOLTIP ) );
+    this.jMenuItemSelection = new JCheckBoxMenuItem ( Messages
+        .getString ( OUTLINE_PREFIX + SELECTION ) );
+    this.jMenuItemSelection.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + SELECTION + MNEMONIC ).charAt ( 0 ) );
+    this.jMenuItemSelection.setToolTipText ( Messages
+        .getString ( OUTLINE_PREFIX + SELECTION + TOOLTIP ) );
     this.jMenuItemSelection.setActionCommand ( SELECTION );
     this.jMenuItemSelection.setSelected ( this.defaultOutline.getPreferences ()
         .isSelection () );
     this.jMenuPreferences.add ( this.jMenuItemSelection );
     // MenuItem Binding
-    this.jMenuItemBinding = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( BINDING ) );
-    this.jMenuItemBinding.setMnemonic ( this.resourceBundle.getString (
-        BINDING + MNEMONIC ).charAt ( 0 ) );
-    this.jMenuItemBinding.setToolTipText ( this.resourceBundle
-        .getString ( BINDING + TOOLTIP ) );
+    this.jMenuItemBinding = new JCheckBoxMenuItem ( Messages
+        .getString ( OUTLINE_PREFIX + BINDING ) );
+    this.jMenuItemBinding.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + BINDING + MNEMONIC ).charAt ( 0 ) );
+    this.jMenuItemBinding.setToolTipText ( Messages.getString ( OUTLINE_PREFIX
+        + BINDING + TOOLTIP ) );
     this.jMenuItemBinding.setActionCommand ( BINDING );
     this.jMenuItemBinding.setSelected ( this.defaultOutline.getPreferences ()
         .isBinding () );
     this.jMenuPreferences.add ( this.jMenuItemBinding );
     // MenuItem Unbound
-    this.jMenuItemFree = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( FREE ) );
-    this.jMenuItemFree.setMnemonic ( this.resourceBundle.getString (
-        FREE + MNEMONIC ).charAt ( 0 ) );
-    this.jMenuItemFree.setToolTipText ( this.resourceBundle.getString ( FREE
-        + TOOLTIP ) );
+    this.jMenuItemFree = new JCheckBoxMenuItem ( Messages
+        .getString ( OUTLINE_PREFIX + FREE ) );
+    this.jMenuItemFree.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + FREE + MNEMONIC ).charAt ( 0 ) );
+    this.jMenuItemFree.setToolTipText ( Messages.getString ( OUTLINE_PREFIX
+        + FREE + TOOLTIP ) );
     this.jMenuItemFree.setActionCommand ( FREE );
     this.jMenuItemFree.setSelected ( this.defaultOutline.getPreferences ()
         .isFree () );
     this.jMenuPreferences.add ( this.jMenuItemFree );
     // MenuItem Replace
-    this.jMenuItemReplace = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( REPLACE ) );
-    this.jMenuItemReplace.setMnemonic ( this.resourceBundle.getString (
-        REPLACE + MNEMONIC ).charAt ( 0 ) );
-    this.jMenuItemReplace.setToolTipText ( this.resourceBundle
-        .getString ( REPLACE + TOOLTIP ) );
+    this.jMenuItemReplace = new JCheckBoxMenuItem ( Messages
+        .getString ( OUTLINE_PREFIX + REPLACE ) );
+    this.jMenuItemReplace.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + REPLACE + MNEMONIC ).charAt ( 0 ) );
+    this.jMenuItemReplace.setToolTipText ( Messages.getString ( OUTLINE_PREFIX
+        + REPLACE + TOOLTIP ) );
     this.jMenuItemReplace.setActionCommand ( REPLACE );
     this.jMenuItemReplace.setSelected ( this.defaultOutline.getPreferences ()
         .isReplace () );
     this.jMenuPreferences.add ( this.jMenuItemReplace );
     // MenuItem HighlightSourceCode
-    this.jMenuItemHighlightSourceCode = new JCheckBoxMenuItem (
-        this.resourceBundle.getString ( HIGHLIGHTSOURCECODE ) );
-    this.jMenuItemHighlightSourceCode.setMnemonic ( this.resourceBundle
-        .getString ( HIGHLIGHTSOURCECODE + MNEMONIC ).charAt ( 0 ) );
-    this.jMenuItemHighlightSourceCode.setToolTipText ( this.resourceBundle
-        .getString ( HIGHLIGHTSOURCECODE + TOOLTIP ) );
+    this.jMenuItemHighlightSourceCode = new JCheckBoxMenuItem ( Messages
+        .getString ( OUTLINE_PREFIX + HIGHLIGHTSOURCECODE ) );
+    this.jMenuItemHighlightSourceCode.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + HIGHLIGHTSOURCECODE + MNEMONIC ).charAt ( 0 ) );
+    this.jMenuItemHighlightSourceCode.setToolTipText ( Messages
+        .getString ( OUTLINE_PREFIX + HIGHLIGHTSOURCECODE + TOOLTIP ) );
     this.jMenuItemHighlightSourceCode.setActionCommand ( HIGHLIGHTSOURCECODE );
     this.jMenuItemHighlightSourceCode.setSelected ( this.defaultOutline
         .getPreferences ().isHighlightSourceCode () );
     this.jMenuPreferences.add ( this.jMenuItemHighlightSourceCode );
     // MenuItem AutoUpdate
-    this.jMenuItemAutoUpdate = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( AUTOUPDATE ) );
-    this.jMenuItemAutoUpdate.setMnemonic ( this.resourceBundle.getString (
-        AUTOUPDATE + MNEMONIC ).charAt ( 0 ) );
-    this.jMenuItemAutoUpdate.setToolTipText ( this.resourceBundle
-        .getString ( AUTOUPDATE + TOOLTIP ) );
+    this.jMenuItemAutoUpdate = new JCheckBoxMenuItem ( Messages
+        .getString ( OUTLINE_PREFIX + AUTOUPDATE ) );
+    this.jMenuItemAutoUpdate.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + AUTOUPDATE + MNEMONIC ).charAt ( 0 ) );
+    this.jMenuItemAutoUpdate.setToolTipText ( Messages
+        .getString ( OUTLINE_PREFIX + AUTOUPDATE + TOOLTIP ) );
     this.jMenuItemAutoUpdate.setActionCommand ( AUTOUPDATE );
     this.jMenuItemAutoUpdate.setSelected ( this.defaultOutline
         .getPreferences ().isAutoUpdate () );
@@ -590,12 +583,12 @@ public final class OutlineUI
     this.jPanelPreferences = new JPanel ();
     this.jPanelPreferences.setLayout ( this.gridBagLayout );
     // CheckBox Selection
-    this.jCheckBoxSelection = new JCheckBox ( this.resourceBundle
-        .getString ( SELECTION ) );
-    this.jCheckBoxSelection.setMnemonic ( this.resourceBundle.getString (
-        SELECTION + MNEMONIC ).charAt ( 0 ) );
-    this.jCheckBoxSelection.setToolTipText ( this.resourceBundle
-        .getString ( SELECTION + TOOLTIP ) );
+    this.jCheckBoxSelection = new JCheckBox ( Messages
+        .getString ( OUTLINE_PREFIX + SELECTION ) );
+    this.jCheckBoxSelection.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + SELECTION + MNEMONIC ).charAt ( 0 ) );
+    this.jCheckBoxSelection.setToolTipText ( Messages
+        .getString ( OUTLINE_PREFIX + SELECTION + TOOLTIP ) );
     this.jCheckBoxSelection.setSelected ( this.defaultOutline.getPreferences ()
         .isSelection () );
     this.jCheckBoxSelection.setFocusable ( false );
@@ -609,12 +602,12 @@ public final class OutlineUI
     this.jPanelPreferences.add ( this.jCheckBoxSelection,
         this.gridBagConstraints );
     // CheckBox Binding
-    this.jCheckBoxBinding = new JCheckBox ( this.resourceBundle
-        .getString ( BINDING ) );
-    this.jCheckBoxBinding.setMnemonic ( this.resourceBundle.getString (
-        BINDING + MNEMONIC ).charAt ( 0 ) );
-    this.jCheckBoxBinding.setToolTipText ( this.resourceBundle
-        .getString ( BINDING + TOOLTIP ) );
+    this.jCheckBoxBinding = new JCheckBox ( Messages.getString ( OUTLINE_PREFIX
+        + BINDING ) );
+    this.jCheckBoxBinding.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + BINDING + MNEMONIC ).charAt ( 0 ) );
+    this.jCheckBoxBinding.setToolTipText ( Messages.getString ( OUTLINE_PREFIX
+        + BINDING + TOOLTIP ) );
     this.jCheckBoxBinding.setSelected ( this.defaultOutline.getPreferences ()
         .isBinding () );
     this.jCheckBoxBinding.setFocusable ( false );
@@ -628,11 +621,12 @@ public final class OutlineUI
     this.jPanelPreferences
         .add ( this.jCheckBoxBinding, this.gridBagConstraints );
     // CheckBox Free
-    this.jCheckBoxFree = new JCheckBox ( this.resourceBundle.getString ( FREE ) );
-    this.jCheckBoxFree.setMnemonic ( this.resourceBundle.getString (
-        FREE + MNEMONIC ).charAt ( 0 ) );
-    this.jCheckBoxFree.setToolTipText ( this.resourceBundle.getString ( FREE
-        + TOOLTIP ) );
+    this.jCheckBoxFree = new JCheckBox ( Messages.getString ( OUTLINE_PREFIX
+        + FREE ) );
+    this.jCheckBoxFree.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + FREE + MNEMONIC ).charAt ( 0 ) );
+    this.jCheckBoxFree.setToolTipText ( Messages.getString ( OUTLINE_PREFIX
+        + FREE + TOOLTIP ) );
     this.jCheckBoxFree.setSelected ( this.defaultOutline.getPreferences ()
         .isFree () );
     this.jCheckBoxFree.setFocusable ( false );
@@ -645,12 +639,12 @@ public final class OutlineUI
     this.gridBagConstraints.weighty = 10;
     this.jPanelPreferences.add ( this.jCheckBoxFree, this.gridBagConstraints );
     // CheckBox Replace
-    this.jCheckBoxReplace = new JCheckBox ( this.resourceBundle
-        .getString ( REPLACE ) );
-    this.jCheckBoxReplace.setMnemonic ( this.resourceBundle.getString (
-        REPLACE + MNEMONIC ).charAt ( 0 ) );
-    this.jCheckBoxReplace.setToolTipText ( this.resourceBundle
-        .getString ( REPLACE + TOOLTIP ) );
+    this.jCheckBoxReplace = new JCheckBox ( Messages.getString ( OUTLINE_PREFIX
+        + REPLACE ) );
+    this.jCheckBoxReplace.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + REPLACE + MNEMONIC ).charAt ( 0 ) );
+    this.jCheckBoxReplace.setToolTipText ( Messages.getString ( OUTLINE_PREFIX
+        + REPLACE + TOOLTIP ) );
     this.jCheckBoxReplace.setSelected ( this.defaultOutline.getPreferences ()
         .isReplace () );
     this.jCheckBoxReplace.setFocusable ( false );
@@ -664,12 +658,12 @@ public final class OutlineUI
     this.jPanelPreferences
         .add ( this.jCheckBoxReplace, this.gridBagConstraints );
     // CheckBox HighlightSourceCode
-    this.jCheckBoxHighlightSourceCode = new JCheckBox ( this.resourceBundle
-        .getString ( HIGHLIGHTSOURCECODE ) );
-    this.jCheckBoxHighlightSourceCode.setMnemonic ( this.resourceBundle
-        .getString ( HIGHLIGHTSOURCECODE + MNEMONIC ).charAt ( 0 ) );
-    this.jCheckBoxHighlightSourceCode.setToolTipText ( this.resourceBundle
-        .getString ( HIGHLIGHTSOURCECODE + TOOLTIP ) );
+    this.jCheckBoxHighlightSourceCode = new JCheckBox ( Messages
+        .getString ( OUTLINE_PREFIX + HIGHLIGHTSOURCECODE ) );
+    this.jCheckBoxHighlightSourceCode.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + HIGHLIGHTSOURCECODE + MNEMONIC ).charAt ( 0 ) );
+    this.jCheckBoxHighlightSourceCode.setToolTipText ( Messages
+        .getString ( OUTLINE_PREFIX + HIGHLIGHTSOURCECODE + TOOLTIP ) );
     this.jCheckBoxHighlightSourceCode.setSelected ( this.defaultOutline
         .getPreferences ().isHighlightSourceCode () );
     this.jCheckBoxHighlightSourceCode.setFocusable ( false );
@@ -683,12 +677,12 @@ public final class OutlineUI
     this.jPanelPreferences.add ( this.jCheckBoxHighlightSourceCode,
         this.gridBagConstraints );
     // CheckBox AutoUpdate
-    this.jCheckBoxAutoUpdate = new JCheckBox ( this.resourceBundle
-        .getString ( AUTOUPDATE ) );
-    this.jCheckBoxAutoUpdate.setMnemonic ( this.resourceBundle.getString (
-        AUTOUPDATE + MNEMONIC ).charAt ( 0 ) );
-    this.jCheckBoxAutoUpdate.setToolTipText ( this.resourceBundle
-        .getString ( AUTOUPDATE + TOOLTIP ) );
+    this.jCheckBoxAutoUpdate = new JCheckBox ( Messages
+        .getString ( OUTLINE_PREFIX + AUTOUPDATE ) );
+    this.jCheckBoxAutoUpdate.setMnemonic ( Messages.getString (
+        OUTLINE_PREFIX + AUTOUPDATE + MNEMONIC ).charAt ( 0 ) );
+    this.jCheckBoxAutoUpdate.setToolTipText ( Messages
+        .getString ( OUTLINE_PREFIX + AUTOUPDATE + TOOLTIP ) );
     this.jCheckBoxAutoUpdate.setSelected ( this.defaultOutline
         .getPreferences ().isAutoUpdate () );
     this.jCheckBoxAutoUpdate.setFocusable ( false );
