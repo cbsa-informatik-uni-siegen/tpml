@@ -1,4 +1,0 @@
-new class (self)
-  inherit a from let x = (class (self) val a = 0 ; end) in x ;
-      inherit b from (class (self) val b = 0 ; end) ; method add = 0 ;
-end

@@ -1,4 +1,0 @@
-object (self: mu t.< inc: t ; > )
- val a = 0 ;
- method inc = {< a = 1 >}  ;
-end

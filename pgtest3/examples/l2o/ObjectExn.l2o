@@ -1,1 +1,0 @@
-object (self) val a = 4 ; method m x = x + 1 ; val b = 1/0 ; end

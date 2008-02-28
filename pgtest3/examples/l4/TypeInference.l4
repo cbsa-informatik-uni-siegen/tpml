@@ -1,1 +1,0 @@
-lambda f:'a->'b. lambda x.f (f x)

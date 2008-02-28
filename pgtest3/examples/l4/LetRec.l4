@@ -1,1 +1,0 @@
-let a = f in let rec f x = f a in f a

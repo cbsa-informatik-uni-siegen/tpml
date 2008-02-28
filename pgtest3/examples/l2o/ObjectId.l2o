@@ -1,1 +1,0 @@
-(object (self) val a =2 ; method sub = a -1 ; method add = a ; val b = a ; end) # add

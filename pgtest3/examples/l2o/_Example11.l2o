@@ -1,7 +1,0 @@
-(object (self)
-     val x = 1;
-     val y = object (self)
-              method dup = {<>};
-             end;
-     method dup = {<x=x+1; y={<x=x+1>}>};
-    end)#dup

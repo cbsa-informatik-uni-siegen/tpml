@@ -1,1 +1,0 @@
-let function x y = x + y in function (1+2) (3+4)

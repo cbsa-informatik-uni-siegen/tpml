@@ -1,1 +1,0 @@
-let hungry = object (self) val a = 0 ; method eat = lambda i.{<a = a+i>} ; method spit = a ; end in (((hungry # eat 1) # eat 2 ) # eat 3 ) # spit

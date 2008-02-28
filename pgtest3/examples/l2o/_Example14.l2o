@@ -1,6 +1,0 @@
-(object (self) 
- val a = 0 ;
- val b = 1 ;
- method fib = {< a = b ; b = a + b >} ;
- method get = a ;
-end) # fib # fib # fib # fib # fib # fib # fib # fib # get

@@ -1,5 +1,0 @@
-new (class (self)
-  inherit a, b from 
-  (class (self) val a = 0 ; val b = 1 ; method m = a ; method n = b ; end) ; 
-  method o = 1 ;
-end)

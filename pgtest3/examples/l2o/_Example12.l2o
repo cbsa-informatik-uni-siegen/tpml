@@ -1,5 +1,0 @@
-(object (self)
-     val x = 1 ;
-     val y = 2 ;
-     method toggle = {< x = y ; y = x >} ;
-    end) # toggle # toggle

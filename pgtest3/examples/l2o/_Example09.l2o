@@ -1,1 +1,0 @@
-(object (self) method ld x = if x = 1 then 0 else 1 + self # ld (x/2) ; end) # ld 8

@@ -1,6 +1,0 @@
-let rec map f l = if is_empty l then [] else (f (hd l)) :: map f (tl l) in
-let rec append l1 l2 = if is_empty l1 then l2 else hd l1 :: append (tl
-l1) l2 in
-let rec power_set l = if is_empty l then [[]] else let p = power_set (tl
-l) in append p (map ((::) (hd l)) p) in
-power_set [1;2]

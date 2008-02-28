@@ -1,6 +1,0 @@
-object (self)
-  val a = 0 ;
-  method b = object (self)
-                          method c = a ;
-                        end ;
-end

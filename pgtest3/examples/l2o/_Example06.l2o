@@ -1,1 +1,0 @@
-let x = object (self) val a = 1 ; end in (object (self) val a = 2 ; method f = {<a=a+1>} ; method g = a+1 ; end ) #f #g

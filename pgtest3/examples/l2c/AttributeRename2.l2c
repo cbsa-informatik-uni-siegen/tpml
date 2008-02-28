@@ -1,7 +1,0 @@
-class (self)
-  inherit a from 
-    (class (self) val a = 0 ; end) ;
-      inherit b from (class (self) end) ; 
-        val a = 0 ;
-        method m = a + a ;
-end
