@@ -23,6 +23,8 @@ package java_cup;
  * @version last updated: 11/25/95
  * @author Scott Hudson
  */
+@SuppressWarnings (
+{ "all" } )
 public class lr_item_core
 {
 

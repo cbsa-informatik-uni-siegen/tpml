@@ -19,6 +19,8 @@ import java.util.Hashtable;
  * @version last updated: 3/6/96
  * @author Scott Hudson
  */
+@SuppressWarnings (
+{ "all", "unchecked" } )
 public class lalr_item_set
 {
 

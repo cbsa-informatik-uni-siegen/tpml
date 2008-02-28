@@ -35,6 +35,8 @@ import java.util.Stack;
  * @version last updated: 11/25/95
  * @author Scott Hudson
  */
+@SuppressWarnings (
+{ "all", "unchecked" } )
 public class lalr_item extends lr_item_core
 {
 
@@ -133,7 +135,7 @@ public class lalr_item extends lr_item_core
    * Propagate incoming lookaheads through this item to others need to be
    * changed.
    * 
-   * @params incoming symbols to potentially be added to lookahead of this item.
+   * @param incoming symbols to potentially be added to lookahead of this item.
    */
   public void propagate_lookaheads ( terminal_set incoming )
       throws internal_error

@@ -5,30 +5,30 @@
 	Copyright (c) 2006 Benedikt Meurer <benny@xfce.org>
 -->
 <project name="de.unisiegen.tpml.ui" default="dist" basedir=".">
-	
+
 	<description>
 		Buildfile for the de.unisiegen.tpml.ui subproject.
 	</description>
 
 	<property file="${basedir}/build.properties" />
-	
+
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.tpml.core" />
 	<property name="core.distdir" value="${core.basedir}/dist" />
 	<property file="${core.basedir}/build.properties" />
-	
+
 	<property name="graphics.basedir" value="${basedir}/../de.unisiegen.tpml.graphics" />
 	<property name="graphics.distdir" value="${graphics.basedir}/dist" />
 	<property file="${graphics.basedir}/build.properties" />
-	
 
-	
+
+
 	<!--
 		Build distributions
 	-->
-	
+
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
-	
+
 	<target name="dist" depends="generate,dist-graphics,dist-preclean,dist-compile,version-check,dist-jar,exe,dist-clean" description="Build distribution">
 		<mkdir dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" />
 		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}">
@@ -62,14 +62,14 @@
 		</zip>
 		<!-- move files -->
 		<move todir="${distdir}">
-			<fileset dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" includes="*"/>
+			<fileset dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" includes="*" />
 		</move>
 		<!-- chmod gtitool.sh -->
-		<chmod file="${distdir}/gtitool.sh" perm="755"/>
+		<chmod file="${distdir}/gtitool.sh" perm="755" />
 		<delete dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" includeemptydirs="true" />
 		<echo message="Distribution ready in ${distdir}/tpml-${de.unisiegen.tpml.ui.version}.tar.bz2 and ${distdir}/tpml-${de.unisiegen.tpml.ui.version}.zip" />
 	</target>
-	
+
 	<target name="dist-graphics">
 		<ant dir="${graphics.basedir}" target="dist" inheritall="false" />
 	</target>
@@ -78,11 +78,11 @@
 		<delete dir="${distdir}" includeemptydirs="true" />
 		<mkdir dir="${distdir}" />
 	</target>
-		
+
 	<target name="dist-compile">
 		<delete dir="${classesdir}" includeemptydirs="true" />
 		<mkdir dir="${classesdir}" />
-		<javac excludes="JOpFrame.java,MsgFrame.java,Start.java" debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5" >
+		<javac excludes="JOpFrame.java,MsgFrame.java,Start.java" debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
 			<src path="${basedir}/source" />
 			<src path="${basedir}/source-generated" />
 			<classpath>
@@ -94,75 +94,59 @@
 			</classpath>
 		</javac>
 	</target>
-	
-	
-	
-	
+
+
+
+
 	<target name="version-check" depends="dist-compile">
 
-					
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-					<javac 										  
-							 
-							 includes="MsgFrame.java,Start.java"
-							 debug="on" 
-							 destdir="${classesdir}" 
-							 optimize="on" 
-							 source="1.2" 
-							 target="1.1"
-							 failonerror="false">
-		 					 <src path="${basedir}/source/de/unisiegen/tpml/ui" />
-						
-						</javac>
-		
-					<javac
-						
-							 includes="JOpFrame.java"
-							 debug="on" 
-							 destdir="${classesdir}" 
-							 optimize="on" 
-							 source="1.2" 
-							 target="1.2"
-							 failonerror="false">
-						
-							 <src path="${basedir}/source/de/unisiegen/tpml/ui" />
-					</javac>
-		</target>
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<javac includes="MsgFrame.java,Start.java" debug="on" destdir="${classesdir}" optimize="on" source="1.2" target="1.1" failonerror="false">
+			<src path="${basedir}/source/de/unisiegen/tpml/ui" />
+
+		</javac>
+
+		<javac includes="JOpFrame.java" debug="on" destdir="${classesdir}" optimize="on" source="1.2" target="1.2" failonerror="false">
+
+			<src path="${basedir}/source/de/unisiegen/tpml/ui" />
+		</javac>
+	</target>
+
+
 	<target name="dist-jar" depends="dist-compile">
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Built-By" value="${user.name}" />
@@ -182,32 +166,29 @@
 		<jar jarfile="${distdir}/de.unisiegen.tpml.ui-${de.unisiegen.tpml.ui.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${basedir}/source">
-				<include name="**/*.gif"/>
-				<include name="**/*.png"/>
-				<include name="**/*.properties"/>
+				<include name="**/*.gif" />
+				<include name="**/*.png" />
+				<include name="**/*.properties" />
 				<include name="log4j.xml" />
 			</fileset>
 		</jar>
 		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
-	
+
 	<target name="exe" depends="dist-jar">
-			<copy todir="${distdir}" file="${basedir}/dist_build/tpml.xml">
-				<filterset>
-					<filter token="de.unisiegen.tpml.ui.version" value="${de.unisiegen.tpml.ui.version}" />
-					<filter token="path" value="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" />
-				</filterset>
-			</copy>
-			<taskdef name="launch4j"
-			    	classname="net.sf.launch4j.ant.Launch4jTask"
-			    	classpath="${basedir}/dist_build/launch4j.jar:${basedir}/dist_build/lib/xstream.jar" 
-			/>
-			<launch4j configFile="${distdir}/tpml.xml" />
-			<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${distdir}/tpml.exe">
-			</copy>
-		    <delete file="${distdir}/tpml.xml" />
-		</target>
-	
+		<copy todir="${distdir}" file="${basedir}/dist_build/tpml.xml">
+			<filterset>
+				<filter token="de.unisiegen.tpml.ui.version" value="${de.unisiegen.tpml.ui.version}" />
+				<filter token="path" value="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" />
+			</filterset>
+		</copy>
+		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${basedir}/dist_build/launch4j.jar:${basedir}/dist_build/lib/xstream.jar" />
+		<launch4j configFile="${distdir}/tpml.xml" />
+		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${distdir}/tpml.exe">
+		</copy>
+		<delete file="${distdir}/tpml.xml" />
+	</target>
+
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
 	</target>
@@ -217,7 +198,7 @@
 	-->
 
 	<property name="generateddir" value="${basedir}/source-generated" />
-	
+
 	<target name="generate" description="Generate the Versions interface">
 		<mkdir dir="${generateddir}/de/unisiegen/tpml/ui" />
 		<echo file="${generateddir}/de/unisiegen/tpml/ui/Versions.java" append="false">package de.unisiegen.tpml.ui ;

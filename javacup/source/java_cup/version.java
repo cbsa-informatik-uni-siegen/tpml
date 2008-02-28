@@ -15,6 +15,8 @@ package java_cup;
  * @version last updated: 12/22/97 [CSA]
  * @author Frank Flannery
  */
+@SuppressWarnings (
+{ "all" } )
 public class version
 {
 

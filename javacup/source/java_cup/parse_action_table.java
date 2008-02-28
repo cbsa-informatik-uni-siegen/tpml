@@ -14,6 +14,8 @@ import java.util.Enumeration;
  * @version last updated: 11/25/95
  * @author Scott Hudson
  */
+@SuppressWarnings (
+{ "all" } )
 public class parse_action_table
 {
 

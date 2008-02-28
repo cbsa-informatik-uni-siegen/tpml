@@ -9,6 +9,8 @@ package java_cup;
  * @version last updated: 11/25/95
  * @author Scott Hudson
  */
+@SuppressWarnings (
+{ "all" } )
 public class action_production extends production
 {
 

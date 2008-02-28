@@ -9,6 +9,8 @@ package java_cup;
  * @version last updated: 11/25/95
  * @author Scott Hudson
  */
+@SuppressWarnings (
+{ "all" } )
 public class symbol_part extends production_part
 {
 

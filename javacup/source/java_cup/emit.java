@@ -51,7 +51,6 @@ import java.util.Stack;
  * This class is "static" (contains only static data and methods).
  * <p>
  * 
- * @see java_cup.main
  * @version last update: 11/25/95
  * @author Scott Hudson
  * @author Christian Fehler
@@ -84,6 +83,8 @@ import java.util.Stack;
  * symbols. _time - a series of symbols indicating how long various sub-parts of
  * code generation took (used to produce optional time reports in main).
  */
+@SuppressWarnings (
+{ "all", "unchecked" } )
 public class emit
 {
 
@@ -314,6 +315,7 @@ public class emit
     /* class header */
     out.println ( "/** CUP generated " + class_or_interface
         + " containing symbol constants. */" );
+    out.println ( "@ SuppressWarnings ( value = { \"all\" } )" );
     out.println ( "public " + class_or_interface + " "
         + symbol_const_class_name + " {" );
     out.println ( "  /* terminals */" );

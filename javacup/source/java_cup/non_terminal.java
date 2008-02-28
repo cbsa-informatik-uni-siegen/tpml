@@ -14,6 +14,8 @@ import java.util.Hashtable;
  * @version last updated: 11/25/95
  * @author Scott Hudson
  */
+@SuppressWarnings (
+{ "all", "unchecked" } )
 public class non_terminal extends symbol
 {
 

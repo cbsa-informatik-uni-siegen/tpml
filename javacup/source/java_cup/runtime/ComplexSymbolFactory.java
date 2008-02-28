@@ -10,6 +10,8 @@ package java_cup.runtime;
 /*******************************************************************************
  * class DefaultSymbolFactory interface for creating new symbols
  ******************************************************************************/
+@SuppressWarnings (
+{ "all" } )
 public class ComplexSymbolFactory implements SymbolFactory
 {
 

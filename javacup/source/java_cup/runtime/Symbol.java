@@ -17,6 +17,8 @@ package java_cup.runtime;
  * xleft: is the left position Object in the original input file xright: is the
  * left position Object in the original input file
  ******************************************************************************/
+@SuppressWarnings (
+{ "all" } )
 public class Symbol
 {
 

@@ -11,6 +11,8 @@ package java_cup;
  * @version last update: 11/25/95
  * @author Scott Hudson
  */
+@SuppressWarnings (
+{ "all" } )
 public class action_part extends production_part
 {
 

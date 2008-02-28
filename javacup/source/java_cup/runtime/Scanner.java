@@ -15,6 +15,8 @@ package java_cup.runtime;
  * can be indicated either by returning
  * <code>new Symbol(lr_parser.EOF_sym())</code> or <code>null</code>.
  ******************************************************************************/
+@SuppressWarnings (
+{ "all" } )
 public interface Scanner
 {
 

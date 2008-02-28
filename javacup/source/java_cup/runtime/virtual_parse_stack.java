@@ -19,6 +19,8 @@ import java.util.Stack;
  * @version last updated: 7/3/96
  * @author Frank Flannery
  */
+@SuppressWarnings (
+{ "all" } )
 public class virtual_parse_stack
 {
 

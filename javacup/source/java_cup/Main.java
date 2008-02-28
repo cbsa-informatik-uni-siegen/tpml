@@ -72,6 +72,8 @@ import java_cup.runtime.ComplexSymbolFactory;
  * @version last updated: 7/3/96
  * @author Frank Flannery
  */
+@SuppressWarnings (
+{ "all" } )
 public class Main
 {
 

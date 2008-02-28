@@ -107,6 +107,8 @@ import java.util.Stack;
  * @version last updated: 7/3/96
  * @author Frank Flannery
  */
+@SuppressWarnings (
+{ "all", "deprecation", "unchecked" } )
 public abstract class lr_parser
 {
 

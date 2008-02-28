@@ -15,6 +15,8 @@ package java_cup;
  * @version last updated: 7/3/96
  * @author Frank Flannery
  */
+@SuppressWarnings (
+{ "all" } )
 public abstract class symbol
 {
 

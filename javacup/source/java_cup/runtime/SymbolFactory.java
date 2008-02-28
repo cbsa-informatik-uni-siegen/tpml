@@ -12,6 +12,8 @@ package java_cup.runtime;
  * this interface for your own callback hooks Declare Your own factory methods
  * for creation of Objects in Your scanner!
  ******************************************************************************/
+@SuppressWarnings (
+{ "all" } )
 public interface SymbolFactory
 {
 

@@ -13,6 +13,8 @@ import java.util.Hashtable;
  * @version last updated: 11/25/95
  * @author Scott Hudson
  */
+@SuppressWarnings (
+{ "all" } )
 public class symbol_set
 {
 

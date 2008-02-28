@@ -5,6 +5,8 @@ package java_cup;
  * This class represents one row (corresponding to one machine state) of the
  * reduce-goto parse table.
  */
+@SuppressWarnings (
+{ "all" } )
 public class parse_reduce_row
 {
 

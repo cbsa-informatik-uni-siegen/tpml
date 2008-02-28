@@ -2,6 +2,8 @@ package java_cup;
 
 
 /** Exception subclass for reporting internal errors in JavaCup. */
+@SuppressWarnings (
+{ "all" } )
 public class internal_error extends Exception
 {
 

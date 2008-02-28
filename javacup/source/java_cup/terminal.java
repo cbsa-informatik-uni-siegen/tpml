@@ -14,6 +14,8 @@ import java.util.Hashtable;
  * @version last updated: 7/3/96
  * @author Frank Flannery
  */
+@SuppressWarnings (
+{ "all", "unchecked" } )
 public class terminal extends symbol
 {
 

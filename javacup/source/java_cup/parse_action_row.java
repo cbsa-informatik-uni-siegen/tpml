@@ -5,6 +5,8 @@ package java_cup;
  * This class represents one row (corresponding to one machine state) of the
  * parse action table.
  */
+@SuppressWarnings (
+{ "all" } )
 public class parse_action_row
 {
 

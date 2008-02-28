@@ -7,6 +7,8 @@ import java.lang.reflect.Modifier;
 import java_cup.runtime.Symbol;
 
 
+@SuppressWarnings (
+{ "all" } )
 public class ErrorManager
 {
 
@@ -57,7 +59,6 @@ public class ErrorManager
   }
 
 
-  // TODO: migrate to java.util.logging
   /**
    * Error message format: ERRORLEVEL at (LINE/COLUMN)@SYMBOL: MESSAGE
    * ERRORLEVEL : MESSAGE

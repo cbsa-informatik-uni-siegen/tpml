@@ -24,6 +24,8 @@ import java.util.Hashtable;
  * @version last updated: 7/3/96
  * @author Frank Flannery
  */
+@SuppressWarnings (
+{ "all", "unchecked" } )
 public class production
 {
 
@@ -442,7 +444,6 @@ public class production
    * 
    * @param labelname the label name
    * @param stack_type the stack type of label?
-   * @author frankf
    */
   protected String make_declaration ( String labelname, String stack_type,
       int offset )
@@ -492,7 +493,6 @@ public class production
    * @param rhs array of RHS parts.
    * @param rhs_len how much of rhs to consider valid.
    * @param final_action the final action string of the production.
-   * @param lhs_type the object type associated with the LHS symbol.
    */
   protected String declare_labels ( production_part rhs[], int rhs_len,
       String final_action )

@@ -12,6 +12,8 @@ package java_cup;
  * @version last updated: 7/2/96
  * @author Frank Flannery
  */
+@SuppressWarnings (
+{ "all" } )
 public class parse_action
 {
 
