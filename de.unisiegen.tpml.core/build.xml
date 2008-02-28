@@ -91,7 +91,7 @@
 	<property name="generateddir" value="${basedir}/source-generated" />
 
 	<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11a-tpml.jar" />
-	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/JFlex-1.4.1.jar" />
+	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/JFlex-1.4.1-tpml.jar" />
 
 	<target name="clean-l0">
 		<delete dir="${generateddir}/de/unisiegen/tpml/core/languages/l0" />
