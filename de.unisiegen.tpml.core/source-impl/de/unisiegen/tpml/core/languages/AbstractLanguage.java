@@ -52,7 +52,7 @@ public abstract class AbstractLanguage implements Language
    * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.languages.Language#newMinimalTypingProofModel(de.unisiegen.tpml.core.expressions.Expression,
-   *      Boolean)
+   *      boolean)
    */
   public MinimalTypingProofModel newMinimalTypingProofModel (
       @SuppressWarnings ( "unused" )

@@ -162,7 +162,7 @@ public class L3Language extends L2Language
    * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newMinimalTypingProofModel(de.unisiegen.tpml.core.expressions.Expression,
-   *      Boolean)
+   *      boolean)
    */
   @Override
   public MinimalTypingProofModel newMinimalTypingProofModel (
