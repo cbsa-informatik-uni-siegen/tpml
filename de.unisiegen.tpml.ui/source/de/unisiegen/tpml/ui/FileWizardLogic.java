@@ -70,7 +70,7 @@ public class FileWizardLogic
     // setup the tree with the available languages
     // every languageclass gets its own category
     // every class gets a leaf
-    DefaultMutableTreeNode root = new DefaultMutableTreeNode ( "Languages" );
+    DefaultMutableTreeNode root = new DefaultMutableTreeNode ( "Languages" ); //$NON-NLS-1$
 
     // save the actual category. If it changes, a new category will be created
     int actualCategory = -1;
@@ -79,9 +79,9 @@ public class FileWizardLogic
     {
       // buil up the name: "l0 (balbalba)"
       String name = language.getName ();
-      name += " (";
+      name += " ("; //$NON-NLS-1$
       name += language.getTitle ();
-      name += ")";
+      name += ")"; //$NON-NLS-1$
 
       // get the new Category: it will be parsed out of the 2nd digit of the
       // name.
@@ -90,23 +90,23 @@ public class FileWizardLogic
       int newCategory = -1;
       try
       {
-        newCategory = Integer.parseInt ( "" + name.toCharArray () [ 1 ] );
+        newCategory = Integer.parseInt ( "" + name.toCharArray () [ 1 ] ); //$NON-NLS-1$
       }
       catch ( IndexOutOfBoundsException iofb )
       {
         System.out
-            .println ( "Language Name dose not start with LX for X is a number." );
+            .println ( "Language Name dose not start with LX for X is a number." ); //$NON-NLS-1$
       }
       catch ( NumberFormatException nfe )
       {
         System.out
-            .println ( "Language Name dose not start with LX for X is a number." );
+            .println ( "Language Name dose not start with LX for X is a number." ); //$NON-NLS-1$
       }
 
       // if the category is different, create a new one
       if ( actualCategory != newCategory )
       {
-        DefaultMutableTreeNode next = new DefaultMutableTreeNode ( "L"
+        DefaultMutableTreeNode next = new DefaultMutableTreeNode ( "L" //$NON-NLS-1$
             + name.toCharArray () [ 1 ] );
         root.add ( next );
         actualCategory = newCategory;
@@ -204,6 +204,7 @@ public class FileWizardLogic
     this.fileWizard.languagesTree.addKeyListener ( new KeyAdapter ()
     {
 
+      @Override
       public void keyPressed ( java.awt.event.KeyEvent event )
       {
         keyPressedHandler ( event );
@@ -215,6 +216,7 @@ public class FileWizardLogic
     this.fileWizard.languagesTree.addMouseListener ( new MouseAdapter ()
     {
 
+      @Override
       public void mouseClicked ( MouseEvent event )
       {
         mouseClickHandler ( event );
@@ -223,13 +225,13 @@ public class FileWizardLogic
 
     // set the selected element. The first time the nothing will be selced.
     // This will only function if the collapsed state is reorganized
-    int selected = this.preferences.getInt ( "SelectedElement", 0 );
+    int selected = this.preferences.getInt ( "SelectedElement", 0 ); //$NON-NLS-1$
 
     // -1 stand for nothing selected. If the a row is selected that is bigger
     // than the rowCount
     // of the tree nothing will be selected
-    if ( selected != -1
-        && selected <= this.fileWizard.languagesTree.getRowCount () )
+    if ( ( selected != -1 )
+        && ( selected <= this.fileWizard.languagesTree.getRowCount () ) )
     {
       this.fileWizard.languagesTree.setSelectionRow ( selected );
 
@@ -248,7 +250,8 @@ public class FileWizardLogic
    * 
    * @param event
    */
-  protected void treeCollapesedHandler ( TreeExpansionEvent event )
+  protected void treeCollapesedHandler ( @SuppressWarnings ( "unused" )
+  TreeExpansionEvent event )
   {
     // save the expanded states
     int i = 0;
@@ -266,13 +269,13 @@ public class FileWizardLogic
     // save the selected one once again because the rownumbaer has changed
     try
     {
-      this.preferences.putInt ( "SelectedElement",
+      this.preferences.putInt ( "SelectedElement", //$NON-NLS-1$
           this.fileWizard.languagesTree.getSelectionRows () [ 0 ] );
     }
     catch ( NullPointerException npe )
     {
       // if theN ullPointerException is throughn there was no element selected
-      this.preferences.putInt ( "SelectedElement", -1 );
+      this.preferences.putInt ( "SelectedElement", -1 ); //$NON-NLS-1$
     }
 
   }
@@ -335,12 +338,12 @@ public class FileWizardLogic
     // sroll to the selected element
     this.fileWizard.languagesTree.scrollPathToVisible ( tp );
     //
-    if ( tp != null
+    if ( ( tp != null )
         && ( ( DefaultMutableTreeNode ) tp.getLastPathComponent () ).isLeaf () )
     {
       // save the selceted element...
       // this.preferences.putInt("SelectedElement", tp.getPathCount());
-      this.preferences.putInt ( "SelectedElement",
+      this.preferences.putInt ( "SelectedElement", //$NON-NLS-1$
           this.fileWizard.languagesTree.getSelectionRows () [ 0 ] );
 
       // find the correct language
@@ -359,12 +362,12 @@ public class FileWizardLogic
 
       for ( Language language : available )
       {
-        String toCompare = "";
-        String [] tmp = tp.toString ().split ( "," );
+        String toCompare = ""; //$NON-NLS-1$
+        String [] tmp = tp.toString ().split ( "," ); //$NON-NLS-1$
         toCompare = tmp [ 2 ];
         toCompare = toCompare.trim ();
-        if ( toCompare.equals ( language.getName () + " ("
-            + language.getTitle () + ")]" ) )
+        if ( toCompare.equals ( language.getName () + " (" //$NON-NLS-1$
+            + language.getTitle () + ")]" ) ) //$NON-NLS-1$
         {
           newLanguage = language;
           break;
@@ -381,17 +384,15 @@ public class FileWizardLogic
       else
       {
         this.fileWizard.language = null;
-        this.fileWizard.descriptionTextArea.setText ( "" );
+        this.fileWizard.descriptionTextArea.setText ( "" ); //$NON-NLS-1$
         this.fileWizard.okButton.setEnabled ( false );
       }
     }
     else
     {
       this.fileWizard.language = null;
-      this.fileWizard.descriptionTextArea.setText ( "" );
+      this.fileWizard.descriptionTextArea.setText ( "" ); //$NON-NLS-1$
       this.fileWizard.okButton.setEnabled ( false );
     }
-
   }
-
 }

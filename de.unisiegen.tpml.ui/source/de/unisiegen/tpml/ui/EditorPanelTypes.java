@@ -1,6 +1,3 @@
-/*
- * EditorPanelExpression.java Created on 17. September 2006, 14:59
- */
 package de.unisiegen.tpml.ui;
 
 
@@ -61,36 +58,44 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
   private static final long serialVersionUID = -272175525193942130L;
 
 
+  /**
+   * TODO
+   */
   private Color buttonColor = new Color ( 238, 238, 238 );
 
 
-  /** Creates new form EditorPanelExpression */
+  /**
+   * Creates new form EditorPanelExpression
+   * 
+   * @param language
+   * @param window
+   */
   public EditorPanelTypes ( Language language, MainWindow window )
   {
     // initComponents ( );
     this.window = window;
-    mypanel = new EditorPanelForm ( this );
+    this.mypanel = new EditorPanelForm ( this );
     // setting the default button states
-    mypanel.nextButton.setVisible ( false );
-    mypanel.pongButton.setVisible ( false );
-    mypanel.smallstepButton.setVisible ( false );
-    mypanel.bigstepButton.setVisible ( false );
-    mypanel.typecheckerButton.setVisible ( false );
-    mypanel.typeinferenceButton.setVisible ( false );
-    mypanel.minimalTypingButton.setVisible ( false );
-    mypanel.subTypingButton.setVisible ( false );
-    mypanel.subTypingRecButton.setVisible ( false );
+    this.mypanel.nextButton.setVisible ( false );
+    this.mypanel.pongButton.setVisible ( false );
+    this.mypanel.smallstepButton.setVisible ( false );
+    this.mypanel.bigstepButton.setVisible ( false );
+    this.mypanel.typecheckerButton.setVisible ( false );
+    this.mypanel.typeinferenceButton.setVisible ( false );
+    this.mypanel.minimalTypingButton.setVisible ( false );
+    this.mypanel.subTypingButton.setVisible ( false );
+    this.mypanel.subTypingRecButton.setVisible ( false );
     // finished setting the default states
     // hack to get consistent heights
-    mypanel.codeButton.setPreferredSize ( new Dimension ( mypanel.codeButton
-        .getPreferredSize ().width,
-        mypanel.pongButton.getPreferredSize ().height ) );
-    mypanel.subTypingButton.setPreferredSize ( new Dimension (
-        mypanel.subTypingButton.getPreferredSize ().width, mypanel.pongButton
-            .getPreferredSize ().height ) );
-    mypanel.subTypingRecButton.setPreferredSize ( new Dimension (
-        mypanel.subTypingRecButton.getPreferredSize ().width,
-        mypanel.pongButton.getPreferredSize ().height ) );
+    this.mypanel.codeButton.setPreferredSize ( new Dimension (
+        this.mypanel.codeButton.getPreferredSize ().width,
+        this.mypanel.pongButton.getPreferredSize ().height ) );
+    this.mypanel.subTypingButton.setPreferredSize ( new Dimension (
+        this.mypanel.subTypingButton.getPreferredSize ().width,
+        this.mypanel.pongButton.getPreferredSize ().height ) );
+    this.mypanel.subTypingRecButton.setPreferredSize ( new Dimension (
+        this.mypanel.subTypingRecButton.getPreferredSize ().width,
+        this.mypanel.pongButton.getPreferredSize ().height ) );
     this.language = language;
     // TODO PREFERENCES get this from the preferences
     setAdvanced ( false );
@@ -99,30 +104,43 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
     this.editorComponentListener = new PropertyChangeListener ()
     {
 
+      @SuppressWarnings ( "synthetic-access" )
       public void propertyChange ( PropertyChangeEvent evt )
       {
         componentStatusChanged ( evt.getPropertyName (), evt.getNewValue () );
       }
     };
     initEditor ();
-    mypanel.addComponentListener ( new java.awt.event.ComponentAdapter ()
+    this.mypanel.addComponentListener ( new java.awt.event.ComponentAdapter ()
     {
 
-      public void componentShown ( java.awt.event.ComponentEvent evt )
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void componentShown ( @SuppressWarnings ( "unused" )
+      java.awt.event.ComponentEvent evt )
       {
-        code.getEditor ().requestFocus ();
+        EditorPanelTypes.this.code.getEditor ().requestFocus ();
       }
     } );
   }
 
 
+  /**
+   * TODO
+   */
   private static final Logger logger = Logger
       .getLogger ( EditorPanelTypes.class );
 
 
+  /**
+   * TODO
+   */
   private MainWindow window;
 
 
+  /**
+   * TODO
+   */
   private EditorPanelForm mypanel;
 
 
@@ -132,15 +150,27 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
   private TypeEditorPanel code;
 
 
+  /**
+   * TODO
+   */
   private EditorComponent subTyping;
 
 
+  /**
+   * TODO
+   */
   private EditorComponent subTypingRec;
 
 
+  /**
+   * TODO
+   */
   private EditorComponent activeEditorComponent;
 
 
+  /**
+   * TODO
+   */
   private PropertyChangeListener editorComponentListener;
 
 
@@ -156,6 +186,9 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
   static private int num = 0;
 
 
+  /**
+   * TODO
+   */
   private boolean advanced;
 
 
@@ -203,34 +236,41 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
   private void componentStatusChanged ( String ident, Object newValue )
   {
     if ( ident.equals ( "nextStatus" ) ) { //$NON-NLS-1$
-      mypanel.nextButton.setEnabled ( ( Boolean ) newValue );
+      this.mypanel.nextButton.setEnabled ( ( ( Boolean ) newValue )
+          .booleanValue () );
     }
     else if ( ident.equals ( "pongStatus" ) ) { //$NON-NLS-1$
-      mypanel.pongButton.setVisible ( ( Boolean ) newValue );
+      this.mypanel.pongButton.setVisible ( ( ( Boolean ) newValue )
+          .booleanValue () );
     }
     else if ( ident.equals ( "redoStatus" ) ) { //$NON-NLS-1$
-      setRedoStatus ( ( Boolean ) newValue );
+      setRedoStatus ( ( ( Boolean ) newValue ).booleanValue () );
     }
     else if ( ident.equals ( "title" ) ) { //$NON-NLS-1$
       setFileName ( ( String ) newValue );
     }
     else if ( ident.equals ( "undoStatus" ) ) { //$NON-NLS-1$
-      setUndoStatus ( ( Boolean ) newValue );
+      setUndoStatus ( ( ( Boolean ) newValue ).booleanValue () );
     }
     else if ( ident.equals ( "changed" ) ) { //$NON-NLS-1$
       // setChanged((Boolean) newValue);
-      setUndoStatus ( ( Boolean ) newValue );
+      setUndoStatus ( ( ( Boolean ) newValue ).booleanValue () );
     }
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param comp
+   */
   private void updateComponentStates ( EditorComponent comp )
   {
     setRedoStatus ( comp.isRedoStatus () );
     setUndoStatus ( comp.isUndoStatus () );
-    mypanel.nextButton.setEnabled ( comp.isNextStatus () );
-    mypanel.nextButton.setVisible ( comp != this.code );
-    mypanel.pongButton.setVisible ( comp.isPongStatus () );
+    this.mypanel.nextButton.setEnabled ( comp.isNextStatus () );
+    this.mypanel.nextButton.setVisible ( comp != this.code );
+    this.mypanel.pongButton.setVisible ( comp.isPongStatus () );
   }
 
 
@@ -241,17 +281,22 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
    */
   private void setComponent ( EditorComponent comp )
   {
-    mypanel.editorPanel.removeAll ();
-    mypanel.editorPanel.add ( ( JComponent ) comp, BorderLayout.CENTER );
+    this.mypanel.editorPanel.removeAll ();
+    this.mypanel.editorPanel.add ( ( JComponent ) comp, BorderLayout.CENTER );
     this.activeEditorComponent = comp;
     updateComponentStates ( comp );
-    mypanel.paintAll ( mypanel.getGraphics () );
+    this.mypanel.paintAll ( this.mypanel.getGraphics () );
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   private EditorComponent getComponent ()
   {
-    return ( EditorComponent ) mypanel.editorPanel.getComponent ( 0 );
+    return ( EditorComponent ) this.mypanel.editorPanel.getComponent ( 0 );
   }
 
 
@@ -262,16 +307,16 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
   private void initEditor ()
   {
     this.code = new TypeEditorPanel ( this.language );
-    mypanel.editorPanel.removeAll ();
-    mypanel.editorPanel.add ( this.code, BorderLayout.CENTER );
+    this.mypanel.editorPanel.removeAll ();
+    this.mypanel.editorPanel.add ( this.code, BorderLayout.CENTER );
     ( ( JPanel ) this.code )
         .addPropertyChangeListener ( this.editorComponentListener );
     this.code.setDefaultStates ();
     updateComponentStates ( this.code );
     deselectButtons ();
-    mypanel.codeButton.setSelected ( true );
-    mypanel.codeButton.setEnabled ( true );
-    mypanel.paintAll ( mypanel.getGraphics () );
+    this.mypanel.codeButton.setSelected ( true );
+    this.mypanel.codeButton.setEnabled ( true );
+    this.mypanel.paintAll ( this.mypanel.getGraphics () );
   }
 
 
@@ -283,20 +328,20 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
     setTexteditor ( false );
     try
     {
-      if ( this.getEditorType () != null && this.getEditorType2 () != null )
+      if ( ( getEditorType () != null ) && ( getEditorType2 () != null ) )
       {
-        SubTypingProofModel model = this.language.newSubTypingProofModel ( this
-            .getEditorType (), this.getEditorType2 (), this.advanced );
+        SubTypingProofModel model = this.language.newSubTypingProofModel (
+            getEditorType (), getEditorType2 (), this.advanced );
         this.subTyping = new ProofViewComponent ( ProofViewFactory
             .newSubTypingView ( model ), model );
-        mypanel.editorPanel.removeAll ();
-        activateFunction ( mypanel.subTypingButton, this.subTyping );
+        this.mypanel.editorPanel.removeAll ();
+        activateFunction ( this.mypanel.subTypingButton, this.subTyping );
         this.subTyping.setAdvanced ( this.advanced );
-        mypanel.paintAll ( mypanel.getGraphics () );
+        this.mypanel.paintAll ( this.mypanel.getGraphics () );
       }
       else
       {
-        JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle
+        JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
             .getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
             .getString ( "CouldNotSubType" ) //$NON-NLS-1$
             , "Sub Typing", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
@@ -306,7 +351,7 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
     {
       JOptionPane
           .showMessageDialog (
-              mypanel,
+              this.mypanel,
               java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
                   .getString ( "CouldNotSubType" ) //$NON-NLS-1$
                   + "\n" + e.getMessage () + ".", "Sub Typing", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
@@ -322,20 +367,20 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
     setTexteditor ( false );
     try
     {
-      if ( this.getEditorType () != null && this.getEditorType2 () != null )
+      if ( ( getEditorType () != null ) && ( getEditorType2 () != null ) )
       {
         RecSubTypingProofModel model = this.language.newRecSubTypingProofModel (
-            this.getEditorType (), this.getEditorType2 (), this.advanced );
+            getEditorType (), getEditorType2 (), this.advanced );
         this.subTypingRec = new ProofViewComponent ( ProofViewFactory
             .newSubTypingRecView ( model ), model );
-        mypanel.editorPanel.removeAll ();
-        this.activateFunction ( mypanel.subTypingRecButton, this.subTypingRec );
+        this.mypanel.editorPanel.removeAll ();
+        activateFunction ( this.mypanel.subTypingRecButton, this.subTypingRec );
         this.subTypingRec.setAdvanced ( this.advanced );
-        mypanel.paintAll ( mypanel.getGraphics () );
+        this.mypanel.paintAll ( this.mypanel.getGraphics () );
       }
       else
       {
-        JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle
+        JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
             .getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
             .getString ( "CouldNotSubType" ) //$NON-NLS-1$
             , "Sub Typing", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
@@ -346,10 +391,10 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
       logger.debug ( "Could not create new SubTypingView", e ); //$NON-NLS-1$
       JOptionPane
           .showMessageDialog (
-              mypanel,
+              this.mypanel,
               java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
                   .getString ( "CouldNotSubType" ) //$NON-NLS-1$
-                  + "\n" + e.getMessage () + ".", "Sub Typing", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-2$
+                  + "\n" + e.getMessage () + ".", "Sub Typing", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     }
   }
 
@@ -365,14 +410,14 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
   {
     comp.setDefaultStates ();
     ( ( JComponent ) comp )
-        .addPropertyChangeListener ( editorComponentListener );
+        .addPropertyChangeListener ( this.editorComponentListener );
     setComponent ( comp );
     deselectButtons ();
     if ( button != null )
     {
       button.setSelected ( true );
       button.setVisible ( true );
-      mypanel.nextButton.setVisible ( true );
+      this.mypanel.nextButton.setVisible ( true );
     }
   }
 
@@ -383,9 +428,9 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
    */
   private void deselectButtons ()
   {
-    mypanel.codeButton.setSelected ( false );
-    mypanel.subTypingButton.setSelected ( false );
-    mypanel.subTypingRecButton.setSelected ( false );
+    this.mypanel.codeButton.setSelected ( false );
+    this.mypanel.subTypingButton.setSelected ( false );
+    this.mypanel.subTypingRecButton.setSelected ( false );
   }
 
 
@@ -396,7 +441,7 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
    */
   public boolean isRedoStatus ()
   {
-    return redoStatus;
+    return this.redoStatus;
   }
 
 
@@ -409,7 +454,7 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
   {
     boolean oldRedoStatus = this.redoStatus;
     this.redoStatus = redoStatus;
-    firePropertyChange ( "redoStatus", oldRedoStatus, redoStatus );
+    firePropertyChange ( "redoStatus", oldRedoStatus, redoStatus ); //$NON-NLS-1$
   }
 
 
@@ -420,7 +465,7 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
    */
   public String getFileName ()
   {
-    return filename;
+    return this.filename;
   }
 
 
@@ -434,10 +479,12 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
   public void setFileName ( String filename )
   {
     if ( filename == null )
-      throw new NullPointerException ( "filename is null" );
+    {
+      throw new NullPointerException ( "filename is null" ); //$NON-NLS-1$
+    }
     String oldFilename = this.filename;
     this.filename = filename;
-    firePropertyChange ( "filename", oldFilename, filename );
+    firePropertyChange ( "filename", oldFilename, filename ); //$NON-NLS-1$
   }
 
 
@@ -448,7 +495,7 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
    */
   public File getFile ()
   {
-    return file;
+    return this.file;
   }
 
 
@@ -462,10 +509,12 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
   public void setFile ( File file )
   {
     if ( file == null )
-      throw new NullPointerException ( "File is null" );
+    {
+      throw new NullPointerException ( "File is null" ); //$NON-NLS-1$
+    }
     // if (this.file != null) window.removeRecentlyUsed(this.file);
     this.file = file;
-    window.addRecentlyUsed ( new HistoryItem ( this.file ) );
+    this.window.addRecentlyUsed ( new HistoryItem ( this.file ) );
     setFileName ( file.getName () );
   }
 
@@ -477,50 +526,55 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
    */
   public Language getLanguage ()
   {
-    return language;
+    return this.language;
   }
 
 
-  // /**
-  // * add documentation here
-  // *
-  // * @return <code>true</code> if the editor's document was changed.
-  // */
-  // // public boolean isChanged() {
-  // // return this.changed;
-  // // }
   /**
-   * Sets the change status of the editor
+   * TODO
    * 
-   * @param changed true if the editor's document was changed.
+   * @return TODO
+   * @see de.unisiegen.tpml.ui.EditorPanel#isTexteditor()
    */
-  // public void setChanged(boolean changed) {
-  // firePropertyChange("changed", this.changed, changed);
-  // this.changed = changed;
-  // }
   public boolean isTexteditor ()
   {
     return this.texteditor;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param texteditor
+   * @see de.unisiegen.tpml.ui.EditorPanel#setTexteditor(boolean)
+   */
   public void setTexteditor ( boolean texteditor )
   {
-    firePropertyChange ( "texteditor", this.texteditor, texteditor );
-    logger.debug ( "Texteditor is active" );
+    firePropertyChange ( "texteditor", this.texteditor, texteditor ); //$NON-NLS-1$
+    logger.debug ( "Texteditor is active" ); //$NON-NLS-1$
     this.texteditor = texteditor;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public MonoType getEditorType ()
   {
-    return code.getType ();
+    return this.code.getType ();
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public MonoType getEditorType2 ()
   {
-    return code.getType2 ();
+    return this.code.getType2 ();
   }
 
 
@@ -536,68 +590,119 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see de.unisiegen.tpml.ui.EditorPanel#isSaveStatus()
+   */
   public boolean isSaveStatus ()
   {
-    return code.isSaveStatus ();
+    return this.code.isSaveStatus ();
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param undoStatus
+   */
   public void setUndoStatus ( boolean undoStatus )
   {
     if ( this.undoStatus != undoStatus )
     {
       logger
-          .debug ( "UndoStatus of EditorPanelExpression set to " + undoStatus );
+          .debug ( "UndoStatus of EditorPanelExpression set to " + undoStatus ); //$NON-NLS-1$
       boolean oldUndoStatus = this.undoStatus;
       this.undoStatus = undoStatus;
-      firePropertyChange ( "undoStatus", oldUndoStatus, undoStatus );
-      if ( this.isTexteditor () )
-        firePropertyChange ( "changed", oldUndoStatus, undoStatus );
+      firePropertyChange ( "undoStatus", oldUndoStatus, undoStatus ); //$NON-NLS-1$
+      if ( isTexteditor () )
+      {
+        firePropertyChange ( "changed", oldUndoStatus, undoStatus ); //$NON-NLS-1$
+      }
     }
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param state
+   * @see de.unisiegen.tpml.ui.EditorPanel#setAdvanced(boolean)
+   */
   public void setAdvanced ( boolean state )
   {
-    if ( subTyping != null )
-      subTyping.setAdvanced ( state );
-    if ( subTypingRec != null )
-      subTypingRec.setAdvanced ( state );
+    if ( this.subTyping != null )
+    {
+      this.subTyping.setAdvanced ( state );
+    }
+    if ( this.subTypingRec != null )
+    {
+      this.subTypingRec.setAdvanced ( state );
+    }
     this.advanced = state;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public boolean isAdvaced ()
   {
     return this.advanced;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see de.unisiegen.tpml.ui.EditorPanel#shouldBeSaved()
+   */
   public boolean shouldBeSaved ()
   {
-    return code.isUndoStatus ();
+    return this.code.isUndoStatus ();
   }
 
 
+  /**
+   * TODO
+   * 
+   * @see de.unisiegen.tpml.ui.EditorPanel#handleUndo()
+   */
   public void handleUndo ()
   {
     getComponent ().handleUndo ();
-  };
+  }
 
 
+  /**
+   * TODO
+   * 
+   * @see de.unisiegen.tpml.ui.EditorPanel#handleRedo()
+   */
   public void handleRedo ()
   {
     getComponent ().handleRedo ();
-  };
+  }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see de.unisiegen.tpml.ui.EditorPanel#handleSave()
+   */
   public boolean handleSave ()
   {
-    if ( file == null )
+    if ( this.file == null )
+    {
       return handleSaveAs ();
-    else
-      return writeFile ();
-  };
+    }
+    return writeFile ();
+  }
 
 
   /**
@@ -638,14 +743,14 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
       {
         Language [] languages = factory.getAvailableLanguages ();
         StringBuilder builder = new StringBuilder ( 128 );
-        builder.append ( "Source Files (" );
+        builder.append ( "Source Files (" ); //$NON-NLS-1$
         for ( int n = 0 ; n < languages.length ; ++n )
         {
           if ( n > 0 )
           {
-            builder.append ( "; " );
+            builder.append ( "; " ); //$NON-NLS-1$
           }
-          builder.append ( "*." );
+          builder.append ( "*." ); //$NON-NLS-1$
           builder.append ( languages [ n ].getName ().toLowerCase () );
         }
         builder.append ( ')' );
@@ -660,33 +765,33 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
     for ( ; ; )
     {
       // run the dialog
-      int n = chooser.showSaveDialog ( mypanel.getParent () );
+      int n = chooser.showSaveDialog ( this.mypanel.getParent () );
       if ( n != JFileChooser.APPROVE_OPTION )
       {
-        logger.debug ( "Save as dialog cancelled" );
+        logger.debug ( "Save as dialog cancelled" ); //$NON-NLS-1$
         return false;
       }
       // check the extension
       File f = chooser.getSelectedFile ();
       String name = f.getName ();
       int i = name.lastIndexOf ( '.' );
-      if ( i > 0 && i < name.length () )
+      if ( ( i > 0 ) && ( i < name.length () ) )
       {
         if ( !name.substring ( i + 1 ).equalsIgnoreCase (
             this.language.getName () ) )
         {
-          JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle
-              .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-                  "FileMustEndWith" )
-              + " \"." + this.language.getName ().toLowerCase () + "\".",
-              java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-                  .getString ( "Save" ), JOptionPane.ERROR_MESSAGE );
+          JOptionPane.showMessageDialog ( this.mypanel,
+              java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+                  .getString ( "FileMustEndWith" ) //$NON-NLS-1$
+                  + " \"." + this.language.getName ().toLowerCase () + "\".", //$NON-NLS-1$ //$NON-NLS-2$
+              java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+                  .getString ( "Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
           continue;
         }
       }
       else
       {
-        name = name + "." + this.language.getName ().toLowerCase ();
+        name = name + "." + this.language.getName ().toLowerCase ();//$NON-NLS-1$
       }
       // try to create the new file
       try
@@ -696,22 +801,22 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
         {
           // TODO: Christoph, this doesn't work propertly!
           int j = JOptionPane
-              .showConfirmDialog ( mypanel,
+              .showConfirmDialog ( this.mypanel,
                   java.util.ResourceBundle.getBundle (
-                      "de/unisiegen/tpml/ui/ui" ).getString ( "The_File" )
-                      + " \""
+                      "de/unisiegen/tpml/ui/ui" ).getString ( "The_File" )//$NON-NLS-1$ //$NON-NLS-2$
+                      + " \""//$NON-NLS-1$
                       + outfile.getName ()
-                      + "\" "
+                      + "\" "//$NON-NLS-1$
                       + java.util.ResourceBundle.getBundle (
-                          "de/unisiegen/tpml/ui/ui" ).getString (
-                          "alreadyExists" ), java.util.ResourceBundle
-                      .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-                          "Overwrite" ), JOptionPane.YES_NO_CANCEL_OPTION,
+                          "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+                          "alreadyExists" ), java.util.ResourceBundle//$NON-NLS-1$
+                      .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+                          "Overwrite" ), JOptionPane.YES_NO_CANCEL_OPTION, //$NON-NLS-1$
                   JOptionPane.QUESTION_MESSAGE );
           if ( j == JFileChooser.CANCEL_OPTION )
           {
-            logger.debug ( "Cancelled overwrite of \"" + outfile.getName ()
-                + "\"" );
+            logger.debug ( "Cancelled overwrite of \"" + outfile.getName ()//$NON-NLS-1$
+                + "\"" ); //$NON-NLS-1$
             return false;
           }
           else if ( j == JOptionPane.NO_OPTION )
@@ -727,11 +832,11 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
       }
       catch ( IOException e )
       {
-        logger.error ( "Selected file could not be created.", e );
-        JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle
-            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-                "FileCantBeCreated" ), java.util.ResourceBundle.getBundle (
-            "de/unisiegen/tpml/ui/ui" ).getString ( "Save" ),
+        logger.error ( "Selected file could not be created.", e );//$NON-NLS-1$
+        JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
+            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+                "FileCantBeCreated" ), java.util.ResourceBundle.getBundle ( //$NON-NLS-1$
+            "de/unisiegen/tpml/ui/ui" ).getString ( "Save" ),//$NON-NLS-1$ //$NON-NLS-2$
             JOptionPane.ERROR_MESSAGE );
         return false;
       }
@@ -749,59 +854,80 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
     try
     {
       BufferedWriter out = new BufferedWriter ( new OutputStreamWriter (
-          new FileOutputStream ( file ), "UTF8" ) ); //$NON-NLS-1$
+          new FileOutputStream ( this.file ), "UTF8" ) ); //$NON-NLS-1$
       // if ( code.getType() != null )
-      out.write ( code.getText ().toString () );
-      out.write ( "°" );
+      out.write ( this.code.getText ().toString () );
+      out.write ( "°" );//$NON-NLS-1$
       // if ( code.getType2 ( ) != null )
-      out.write ( code.getText2 ().toString () );
+      out.write ( this.code.getText2 ().toString () );
       out.close ();
-      code.clearHistory ();
-      firePropertyChange ( "changed", true, false );
+      this.code.clearHistory ();
+      firePropertyChange ( "changed", true, false );//$NON-NLS-1$
       // this.window.setChangeState ( false );
       return true;
     }
     catch ( UnsupportedEncodingException e )
     {
-      logger.error ( "Could not write to file", e );
-      JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle
-          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-              "CouldNotWriteToFile" ), java.util.ResourceBundle.getBundle (
-          "de/unisiegen/tpml/ui/ui" ).getString ( "WriteFile" ),
+      logger.error ( "Could not write to file", e );//$NON-NLS-1$
+      JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
+          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+              "CouldNotWriteToFile" ), java.util.ResourceBundle.getBundle ( //$NON-NLS-1$
+          "de/unisiegen/tpml/ui/ui" ).getString ( "WriteFile" ),//$NON-NLS-1$ //$NON-NLS-2$
           JOptionPane.ERROR_MESSAGE );
       return false;
     }
     catch ( IOException e )
     {
-      logger.error ( "Could not write to file", e );
-      JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle
-          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-              "CouldNotWriteToFile" ), java.util.ResourceBundle.getBundle (
-          "de/unisiegen/tpml/ui/ui" ).getString ( "WriteFile" ),
+      logger.error ( "Could not write to file", e );//$NON-NLS-1$
+      JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
+          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+              "CouldNotWriteToFile" ), java.util.ResourceBundle.getBundle ( //$NON-NLS-1$
+          "de/unisiegen/tpml/ui/ui" ).getString ( "WriteFile" ),//$NON-NLS-1$ //$NON-NLS-2$
           JOptionPane.ERROR_MESSAGE );
       return false;
     }
   }
 
 
+  /**
+   * TODO
+   * 
+   * @see de.unisiegen.tpml.ui.EditorPanel#handleCopy()
+   */
   public void handleCopy ()
   {
     this.code.handleCopy ();
   }
 
 
+  /**
+   * TODO
+   * 
+   * @see de.unisiegen.tpml.ui.EditorPanel#handleCut()
+   */
   public void handleCut ()
   {
     this.code.handleCut ();
   }
 
 
+  /**
+   * TODO
+   * 
+   * @see de.unisiegen.tpml.ui.EditorPanel#handlePaste()
+   */
   public void handlePaste ()
   {
     this.code.handlePaste ();
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param string
+   * @see de.unisiegen.tpml.ui.EditorPanel#setEditorText(java.lang.String)
+   */
   public void setEditorText ( String string )
   {
     String [] components = string.split ( "°" ); //$NON-NLS-1$
@@ -809,8 +935,8 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
     {
       LanguageTypeParser parser = this.language
           .newTypeParser ( new StringReader ( components [ 0 ] ) );
-      code.setType ( parser.parse () );
-      code.setText ( components [ 0 ] );
+      this.code.setType ( parser.parse () );
+      this.code.setText ( components [ 0 ] );
     }
     catch ( Exception e )
     {
@@ -820,8 +946,8 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
     {
       LanguageTypeParser parser = this.language
           .newTypeParser ( new StringReader ( components [ 1 ] ) );
-      code.setType2 ( parser.parse () );
-      code.setText2 ( components [ 1 ] );
+      this.code.setType2 ( parser.parse () );
+      this.code.setText2 ( components [ 1 ] );
     }
     catch ( Exception e )
     {
@@ -830,12 +956,17 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
   }
 
 
+  /**
+   * TODO
+   * 
+   * @see de.unisiegen.tpml.ui.EditorPanel#handlePrint()
+   */
   public void handlePrint ()
   {
-    GeneralPrinter printer = new GeneralPrinter ( mypanel );
-    if ( this.isTexteditor () )
+    GeneralPrinter printer = new GeneralPrinter ( this.mypanel );
+    if ( isTexteditor () )
     {
-      printer.print ( code );
+      printer.print ( this.code );
     }
     else
     {
@@ -845,10 +976,14 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
   }
 
 
-  // TODO Einbau der Latex-komponente... by Michgael
+  /**
+   * TODO
+   * 
+   * @see de.unisiegen.tpml.ui.EditorPanel#handleLatexExport()
+   */
   public void handleLatexExport ()
   {
-    if ( this.isTexteditor () )
+    if ( isTexteditor () )
     {
       try
       {
@@ -859,125 +994,148 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
           throw new NullPointerException ();
         }
         DefaultSubType subtype = new DefaultSubType ( type1, type2 );
-        GeneralLaTex laTex = new GeneralLaTex ( subtype, mypanel );
+        GeneralLaTex laTex = new GeneralLaTex ( subtype, this.mypanel );
         laTex.export ();
       }
       catch ( Exception e )
       {
         // no real expression
-        JOptionPane.showMessageDialog ( mypanel, java.util.ResourceBundle
-            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-                "CouldNotLaTeXTyp" ), "Sub Typing", JOptionPane.ERROR_MESSAGE );
+        JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
+            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+                "CouldNotLaTeXTyp" ), "Sub Typing", JOptionPane.ERROR_MESSAGE );//$NON-NLS-1$ //$NON-NLS-2$
         // JOptionPane.showMessageDialog(mypanel, "Sorry, no Types enterd!");
       }
     }
     else
     {
       GeneralLaTex laTex = new GeneralLaTex (
-          ( ( ProofViewComponent ) getComponent () ).getModel (), mypanel );
+          ( ( ProofViewComponent ) getComponent () ).getModel (), this.mypanel );
       laTex.export ();
     }
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see de.unisiegen.tpml.ui.EditorPanel#getActiveEditorComponent()
+   */
   public EditorComponent getActiveEditorComponent ()
   {
-    return activeEditorComponent;
+    return this.activeEditorComponent;
   }
 
 
+  /**
+   * TODO
+   */
   public void selectSubTyping ()
   {
     setTexteditor ( false );
     setComponent ( this.subTyping );
     deselectButtons ();
-    mypanel.subTypingButton.setSelected ( true );
+    this.mypanel.subTypingButton.setSelected ( true );
     checkSourceCode ();
   }
 
 
+  /**
+   * TODO
+   */
   public void selectSubTypingRec ()
   {
     setTexteditor ( false );
     setComponent ( this.subTypingRec );
     deselectButtons ();
-    mypanel.subTypingRecButton.setSelected ( true );
+    this.mypanel.subTypingRecButton.setSelected ( true );
     checkSourceCode ();
   }
 
 
+  /**
+   * TODO
+   * 
+   * @see de.unisiegen.tpml.ui.EditorPanel#selectCode()
+   */
   public void selectCode ()
   {
     setTexteditor ( true );
     setComponent ( this.code );
     deselectButtons ();
-    mypanel.codeButton.setSelected ( true );
+    this.mypanel.codeButton.setSelected ( true );
     this.code.getEditor ().requestFocus ();
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see de.unisiegen.tpml.ui.EditorPanel#getPanel()
+   */
   public JPanel getPanel ()
   {
     return this.mypanel;
   }
 
 
+  /**
+   * TODO
+   */
   public void checkSourceCode ()
   {
     Dimension dimension;
     try
     {
-      SubTypingNode node = ( SubTypingNode ) ( ( ProofViewComponent ) subTyping )
+      SubTypingNode node = ( SubTypingNode ) ( ( ProofViewComponent ) this.subTyping )
           .getModel ().getRoot ();
-      if ( subTyping != null
-          && ( !node.getLeft ().equals ( code.getType () ) || !node.getRight ()
-              .equals ( code.getType2 () ) ) )
+      if ( ( this.subTyping != null )
+          && ( !node.getLeft ().equals ( this.code.getType () ) || !node
+              .getRight ().equals ( this.code.getType2 () ) ) )
       {
-        mypanel.subTypingButton.setIcon ( new ImageIcon ( getClass ()
-            .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
-        dimension = mypanel.subTypingButton.getMinimumSize ();
-        mypanel.subTypingButton.setPreferredSize ( new Dimension (
+        this.mypanel.subTypingButton.setIcon ( new ImageIcon ( getClass ()
+            .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );//$NON-NLS-1$
+        dimension = this.mypanel.subTypingButton.getMinimumSize ();
+        this.mypanel.subTypingButton.setPreferredSize ( new Dimension (
             dimension.width + 20, dimension.height ) );
-        mypanel.subTypingButton.setToolTipText ( java.util.ResourceBundle
-            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-                "SourcecodeChanged" ) );
+        this.mypanel.subTypingButton.setToolTipText ( java.util.ResourceBundle
+            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+                "SourcecodeChanged" ) );//$NON-NLS-1$
       }
       else
       {
-        mypanel.subTypingButton.setBackground ( this.buttonColor );
-        mypanel.subTypingButton.setIcon ( null );
-        mypanel.subTypingButton.setToolTipText ( null );
+        this.mypanel.subTypingButton.setBackground ( this.buttonColor );
+        this.mypanel.subTypingButton.setIcon ( null );
+        this.mypanel.subTypingButton.setToolTipText ( null );
       }
 
-      node = ( SubTypingNode ) ( ( ProofViewComponent ) subTypingRec )
+      node = ( SubTypingNode ) ( ( ProofViewComponent ) this.subTypingRec )
           .getModel ().getRoot ();
 
-      if ( subTypingRec != null
-          && ( !node.getLeft ().equals ( code.getType () ) || !node.getRight ()
-              .equals ( code.getType2 () ) ) )
+      if ( ( this.subTypingRec != null )
+          && ( !node.getLeft ().equals ( this.code.getType () ) || !node
+              .getRight ().equals ( this.code.getType2 () ) ) )
       {
-        mypanel.subTypingRecButton.setIcon ( new ImageIcon ( getClass ()
-            .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );
-        dimension = mypanel.subTypingRecButton.getMinimumSize ();
-        mypanel.subTypingRecButton.setPreferredSize ( new Dimension (
+        this.mypanel.subTypingRecButton.setIcon ( new ImageIcon ( getClass ()
+            .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );//$NON-NLS-1$
+        dimension = this.mypanel.subTypingRecButton.getMinimumSize ();
+        this.mypanel.subTypingRecButton.setPreferredSize ( new Dimension (
             dimension.width + 20, dimension.height ) );
-        mypanel.subTypingRecButton.setToolTipText ( java.util.ResourceBundle
-            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-                "SourcecodeChanged" ) );
+        this.mypanel.subTypingRecButton
+            .setToolTipText ( java.util.ResourceBundle.getBundle (
+                "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );//$NON-NLS-1$ //$NON-NLS-2$
       }
       else
       {
-        mypanel.subTypingRecButton.setBackground ( this.buttonColor );
-        mypanel.subTypingRecButton.setIcon ( null );
-        mypanel.subTypingRecButton.setToolTipText ( null );
+        this.mypanel.subTypingRecButton.setBackground ( this.buttonColor );
+        this.mypanel.subTypingRecButton.setIcon ( null );
+        this.mypanel.subTypingRecButton.setToolTipText ( null );
       }
-
     }
     catch ( Exception e )
     {
       // Nothing to do here
     }
-
   }
-
 }

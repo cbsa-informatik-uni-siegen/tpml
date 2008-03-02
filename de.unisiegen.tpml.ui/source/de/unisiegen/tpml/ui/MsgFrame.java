@@ -41,7 +41,7 @@ public class MsgFrame extends Dialog implements ActionListener
   public MsgFrame ( String titel, String message )
   {
     super ( new Frame (), true );
-    this.setTitle ( titel );
+    setTitle ( titel );
     setLayout ( new BorderLayout () );
     setBackground ( Color.lightGray );
 

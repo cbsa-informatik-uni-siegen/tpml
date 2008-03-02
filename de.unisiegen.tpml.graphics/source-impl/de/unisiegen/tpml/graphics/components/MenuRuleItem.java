@@ -22,9 +22,17 @@ public class MenuRuleItem extends JMenuItem
   private static final long serialVersionUID = 2904952709239466196L;
 
 
+  /**
+   * TODO
+   */
   private ProofRule rule;
 
 
+  /**
+   * TODO
+   * 
+   * @param rule
+   */
   public MenuRuleItem ( ProofRule rule )
   {
     super ();
@@ -34,6 +42,11 @@ public class MenuRuleItem extends JMenuItem
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public ProofRule getRule ()
   {
     return this.rule;

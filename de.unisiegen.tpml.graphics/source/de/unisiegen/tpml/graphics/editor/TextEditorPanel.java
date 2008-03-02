@@ -258,7 +258,9 @@ public class TextEditorPanel extends JPanel implements EditorComponent,
   public TextEditorPanel ( Language language )
   {
     if ( language == null )
+    {
       throw new NullPointerException ( "language is null" );
+    }
     setLayout ( new BorderLayout () );
     initComponents ( language );
   }
@@ -266,8 +268,8 @@ public class TextEditorPanel extends JPanel implements EditorComponent,
 
   public void clearHistory ()
   {
-    undohistory.clear ();
-    redohistory.clear ();
+    this.undohistory.clear ();
+    this.redohistory.clear ();
     setUndoStatus ( false );
   }
 
@@ -784,6 +786,6 @@ public class TextEditorPanel extends JPanel implements EditorComponent,
 
   public JComponent getPrintPart ()
   {
-    return editor;
+    return this.editor;
   }
 }

@@ -234,7 +234,7 @@ public class BigStepNodeComponent extends JComponent implements
     Language lang = this.proofModel.getLanguage ();
     this.menu = new JPopupMenu ();
 
-    this.menu = this.rm.getMenu ( rules, rules, lang, this, "bigstep", false );
+    this.menu = this.rm.getMenu ( rules, rules, lang, this, "bigstep", false ); //$NON-NLS-1$
 
     this.menu.addSeparator ();
 
@@ -246,13 +246,15 @@ public class BigStepNodeComponent extends JComponent implements
     this.ruleButton.addMenuButtonListener ( new MenuButtonListener ()
     {
 
-      public void menuClosed ( MenuButton button )
+      public void menuClosed ( @SuppressWarnings ( "unused" )
+      MenuButton button )
       {
         // empty block
       }
 
 
-      public void menuItemActivated ( MenuButton button, final JMenuItem source )
+      public void menuItemActivated ( @SuppressWarnings ( "unused" )
+      MenuButton button, final JMenuItem source )
       {
         // setup a wait cursor for the toplevel ancestor
         final Container toplevel = getTopLevelAncestor ();
@@ -334,6 +336,11 @@ public class BigStepNodeComponent extends JComponent implements
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param node
+   */
   private void fireRequestJumpToNode ( ProofNode node )
   {
     Object [] listeners = this.listenerList.getListenerList ();
@@ -531,7 +538,7 @@ public class BigStepNodeComponent extends JComponent implements
    * After the placing is done the {@link #dimension} contains the needed size
    * of this node.
    * 
-   * @param maxWidth The maximum width that is available for the current node.
+   * @param pMaxWidth The maximum width that is available for the current node.
    */
   private void placeElements ( int pMaxWidth )
   {
@@ -623,7 +630,7 @@ public class BigStepNodeComponent extends JComponent implements
     posX = labelSize.width + this.spacing;
     if ( this.proofNode.getRule () != null )
     {
-      this.ruleLabel.setText ( this.proofNode.getRule ().toString () ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.ruleLabel.setText ( this.proofNode.getRule ().toString () );
       Dimension ruleLabelSize = this.ruleLabel.getPreferredSize ();
       this.ruleLabel.setBounds ( posX, this.dimension.height + this.spacing,
           ruleLabelSize.width, ruleLabelSize.height );
@@ -650,8 +657,11 @@ public class BigStepNodeComponent extends JComponent implements
   }
 
 
-  /*
+  /**
    * Implementation of the TreeNodeComponent interface
+   * 
+   * @param maxWidth
+   * @return TODO
    */
   public Dimension update ( int maxWidth )
   {
@@ -665,11 +675,12 @@ public class BigStepNodeComponent extends JComponent implements
   /**
    * Returns the point at the bottom of the node where the layout should attach
    * the arrow.
+   * 
+   * @return TODO
    */
   public Point getBottomArrowConnection ()
   {
-    return new Point ( this.getX () + this.indexLabel.getWidth () / 2, this
-        .getY ()
+    return new Point ( getX () + this.indexLabel.getWidth () / 2, getY ()
         + ( this.dimension.height / 2 ) );
   }
 
@@ -677,16 +688,20 @@ public class BigStepNodeComponent extends JComponent implements
   /**
    * Returns the point at the left of the node where the layout should attach
    * the line to its parent.
+   * 
+   * @return TODO
    */
   public Point getLeftArrowConnection ()
   {
-    return new Point ( this.getX (), this.getY () + this.indexLabel.getY ()
+    return new Point ( getX (), getY () + this.indexLabel.getY ()
         + this.indexLabel.getHeight () / 2 );
   }
 
 
   /**
    * Returns the number of pixels the children should be displayed indentated.
+   * 
+   * @return TODO
    */
   public int getIndentationWidth ()
   {

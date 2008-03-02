@@ -75,7 +75,8 @@ public class PongView extends JWindow
     closeButton.addActionListener ( new ActionListener ()
     {
 
-      public void actionPerformed ( ActionEvent e )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent e )
       {
         dispose ();
       }
@@ -83,11 +84,12 @@ public class PongView extends JWindow
     closeButton.addKeyListener ( new KeyAdapter ()
     {
 
+      @Override
       public void keyPressed ( KeyEvent e )
       {
-        if ( ( e.getKeyCode () == KeyEvent.VK_ESCAPE
-            || e.getKeyCode () == KeyEvent.VK_SPACE
-            || e.getKeyCode () == KeyEvent.VK_END || e.getKeyCode () == KeyEvent.VK_ENTER ) )
+        if ( ( ( e.getKeyCode () == KeyEvent.VK_ESCAPE )
+            || ( e.getKeyCode () == KeyEvent.VK_SPACE )
+            || ( e.getKeyCode () == KeyEvent.VK_END ) || ( e.getKeyCode () == KeyEvent.VK_ENTER ) ) )
         {
           dispose ();
         }
@@ -99,8 +101,8 @@ public class PongView extends JWindow
     // GraphicsEnvironment.getLocalGraphicsEnvironment();
     // GraphicsDevice gs = ge.getDefaultScreenDevice();
     // gs.setFullScreenWindow(this);
-    this.setAlwaysOnTop ( true );
-    this.validate ();
+    setAlwaysOnTop ( true );
+    validate ();
     // setSize(640, 480);
     Dimension fullscreen = java.awt.Toolkit.getDefaultToolkit ()
         .getScreenSize ();

@@ -28,21 +28,16 @@ import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
  * first all nodes within the tree are check if they have an
  * {@link de.unisiegen.tpml.graphics.typeinference.TypeInferenceNodeComponent}
  * assigned to them. Then the tree is scanned for the node with the widest
- * {@link de.unisiegen.tpml.graphics.typeinference.TypeInferenceComponent#rules}.
+ * {@link de.unisiegen.tpml.graphics.typeinference.TypeInferenceComponent}.
  * This value is assigned to each node, this way all nodes know the maximum
  * width of all rules and they can use this for their own width. By doing so,
  * all nodes will be horizontaly aligned.<br>
  * <br>
  * When this all is done the actual placing of the nodes is done.
- * {@see #placeNode(TypeInferenceProofNode, int, int)} for this.
  * 
  * @author michael
  * @version $Rev$
  * @see de.unisiegen.tpml.graphics.AbstractProofComponent
- * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceView
- * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceNodeComponent
- * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceRulesComponent
- * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceRuleLabel
  */
 public class TypeInferenceComponent extends AbstractProofComponent implements
     Scrollable, Cloneable
@@ -189,7 +184,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements
    * If the node has no children, <i>null</i> is returned.
    * 
    * @param node
-   * @return
+   * @return TODO
    */
   private TypeInferenceProofNode getFirstChild ( TypeInferenceProofNode node )
   {
@@ -234,7 +229,8 @@ public class TypeInferenceComponent extends AbstractProofComponent implements
           .addTypeInferenceNodeListener ( new TypeInferenceNodeListener ()
           {
 
-            public void nodeChanged ( TypeInferenceNodeComponent node )
+            public void nodeChanged ( @SuppressWarnings ( "unused" )
+            TypeInferenceNodeComponent node )
             {
               TypeInferenceComponent.this.relayout ();
             }
@@ -270,6 +266,8 @@ public class TypeInferenceComponent extends AbstractProofComponent implements
    * <br>
    * Resetting means that every {@link PrettyStringRenderer} and
    * {@link EnvironmentRenderer} recalculates their needed font sizes.
+   * 
+   * @param node
    */
   private void resetUserObject ( TypeInferenceProofNode node )
   {
@@ -301,7 +299,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements
    * 
    * @param node When calling this method: the rootNode of the tree.
    * @param pCurrentWidth Used internaly. Should be set to <b>0</b>.
-   * @return
+   * @return TODO
    */
   int checkMaxRuleWidth ( TypeInferenceProofNode node, int pCurrentWidth )
   {
@@ -700,7 +698,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements
 
 
   /**
-   * Causes an {@link TypeInferenceNodeComponent#update() on all nodes that have
+   * Causes an {@link TypeInferenceNodeComponent} on all nodes that have
    * changed.<br>
    * <br>
    * When all updates are done relayouts the View.
@@ -733,11 +731,11 @@ public class TypeInferenceComponent extends AbstractProofComponent implements
     }
     else
     {
-      for ( int i = 0 ; i < children.length ; i++ )
+      for ( Object element : children )
       {
-        if ( children [ i ] instanceof ProofNode )
+        if ( element instanceof ProofNode )
         {
-          TypeInferenceProofNode proofNode = ( TypeInferenceProofNode ) children [ i ];
+          TypeInferenceProofNode proofNode = ( TypeInferenceProofNode ) element;
 
           TypeInferenceNodeComponent nodeComponent = ( TypeInferenceNodeComponent ) proofNode
               .getUserObject ();
@@ -768,11 +766,11 @@ public class TypeInferenceComponent extends AbstractProofComponent implements
     {
       return;
     }
-    for ( int i = 0 ; i < children.length ; i++ )
+    for ( Object element : children )
     {
-      if ( children [ i ] instanceof ProofNode )
+      if ( element instanceof ProofNode )
       {
-        TypeInferenceProofNode proofNode = ( TypeInferenceProofNode ) children [ i ];
+        TypeInferenceProofNode proofNode = ( TypeInferenceProofNode ) element;
 
         TypeInferenceNodeComponent nodeComponent = ( TypeInferenceNodeComponent ) proofNode
             .getUserObject ();
@@ -819,7 +817,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements
         return;
       }
     }
-    throw new IllegalStateException ( "Unable to find next node" );
+    throw new IllegalStateException ( "Unable to find next node" ); //$NON-NLS-1$
   }
 
 
@@ -845,7 +843,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements
 
     // get the visible rect to ensure the x coordinate is in the
     // visible area. only vertical scolling is requested
-    Rectangle visibleRect = this.getVisibleRect ();
+    Rectangle visibleRect = getVisibleRect ();
 
     Rectangle rect = new Rectangle ();
     rect.x = visibleRect.x;
@@ -853,7 +851,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements
     rect.width = 1;
     rect.height = node.getHeight ();
 
-    this.scrollRectToVisible ( rect );
+    scrollRectToVisible ( rect );
 
     this.jumpNode = null;
   }
@@ -862,6 +860,12 @@ public class TypeInferenceComponent extends AbstractProofComponent implements
   //
   // Methods for painting purposes
   //
+  /**
+   * TODO
+   * 
+   * @param gc
+   * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+   */
   @Override
   protected void paintComponent ( Graphics gc )
   {
@@ -874,32 +878,74 @@ public class TypeInferenceComponent extends AbstractProofComponent implements
   // Implementation of the Scrollable interface
   //
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see javax.swing.Scrollable#getPreferredScrollableViewportSize()
+   */
   public Dimension getPreferredScrollableViewportSize ()
   {
     return getPreferredSize ();
   }
 
 
-  public int getScrollableUnitIncrement ( Rectangle visibleRect,
-      int orientation, int direction )
+  /**
+   * TODO
+   * 
+   * @param visibleRect
+   * @param orientation
+   * @param direction
+   * @return TODO
+   * @see javax.swing.Scrollable#getScrollableUnitIncrement(java.awt.Rectangle,
+   *      int, int)
+   */
+  public int getScrollableUnitIncrement ( @SuppressWarnings ( "unused" )
+  Rectangle visibleRect, @SuppressWarnings ( "unused" )
+  int orientation, @SuppressWarnings ( "unused" )
+  int direction )
   {
     return 10;
   }
 
 
-  public int getScrollableBlockIncrement ( Rectangle visibleRect,
-      int orientation, int direction )
+  /**
+   * TODO
+   * 
+   * @param visibleRect
+   * @param orientation
+   * @param direction
+   * @return TODO
+   * @see javax.swing.Scrollable#getScrollableBlockIncrement(java.awt.Rectangle,
+   *      int, int)
+   */
+  public int getScrollableBlockIncrement ( @SuppressWarnings ( "unused" )
+  Rectangle visibleRect, @SuppressWarnings ( "unused" )
+  int orientation, @SuppressWarnings ( "unused" )
+  int direction )
   {
     return 25;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see javax.swing.Scrollable#getScrollableTracksViewportWidth()
+   */
   public boolean getScrollableTracksViewportWidth ()
   {
     return false;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see javax.swing.Scrollable#getScrollableTracksViewportHeight()
+   */
   public boolean getScrollableTracksViewportHeight ()
   {
     return false;
@@ -924,6 +970,13 @@ public class TypeInferenceComponent extends AbstractProofComponent implements
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see java.lang.Object#clone()
+   */
+  @Override
   public TypeInferenceComponent clone ()
   {
     try
@@ -937,11 +990,14 @@ public class TypeInferenceComponent extends AbstractProofComponent implements
   }
 
 
+  /**
+   * TODO
+   * 
+   * @see de.unisiegen.tpml.graphics.AbstractProofComponent#forcedRelayout()
+   */
   @Override
   protected void forcedRelayout ()
   {
     doRelayout ();
-
   }
-
 }

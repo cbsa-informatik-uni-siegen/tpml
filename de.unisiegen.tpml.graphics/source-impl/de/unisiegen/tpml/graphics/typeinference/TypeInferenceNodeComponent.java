@@ -60,10 +60,6 @@ import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
  * 
  * @author michael
  * @version $Rev$
- * @see de.unisiegen.tpml.graphics.typeiference.TypeInferenceView
- * @see de.unisiegen.tpml.graphics.typeiference.TypeInferenceComponent
- * @see de.unisiegen.tpml.graphics.typeiference.TypeInferenceRulesComponent
- * @see de.unisiegen.tpml.graphics.typeiference.TypeInferenceRuleLabel
  * @see de.unisiegen.tpml.graphics.components.CompoundExpressionTypeInference
  */
 public class TypeInferenceNodeComponent extends JComponent
@@ -191,7 +187,14 @@ public class TypeInferenceNodeComponent extends JComponent
    */
   private enum Direction
   {
-    DIRECTION_PARENT, DIRECTION_CHILD,
+    /**
+     * TODO
+     */
+    DIRECTION_PARENT,
+    /**
+     * TODO
+     */
+    DIRECTION_CHILD;
   }
 
 
@@ -211,6 +214,7 @@ public class TypeInferenceNodeComponent extends JComponent
    */
   public TypeInferenceNodeComponent ( TypeInferenceProofNode pProofNode,
       TypeInferenceProofModel pProofModel, LanguageTranslator pTranslator,
+      @SuppressWarnings ( "unused" )
       int pSpacing, boolean pAdvaced )
   {
     super ();
@@ -250,14 +254,15 @@ public class TypeInferenceNodeComponent extends JComponent
         new MenuButtonListener ()
         {
 
-          public void menuClosed ( MenuButton source )
+          public void menuClosed ( @SuppressWarnings ( "unused" )
+          MenuButton source )
           {
             // nothing todo
           }
 
 
-          public void menuItemActivated ( MenuButton source,
-              final JMenuItem item )
+          public void menuItemActivated ( @SuppressWarnings ( "unused" )
+          MenuButton source, final JMenuItem item )
           {
             // setup a wait cursor for the toplevel ancestor
             final Container toplevel = getTopLevelAncestor ();
@@ -296,14 +301,15 @@ public class TypeInferenceNodeComponent extends JComponent
     {
 
       @Override
-      public void mouseMoved ( MouseEvent event )
+      public void mouseMoved ( @SuppressWarnings ( "unused" )
+      MouseEvent event )
       {
         // TypeInferenceNodeComponent.this.updateUnderlineExpression((Expression)
         // null);
       }
     };
 
-    this.addMouseMotionListener ( underlineThisAdapter );
+    addMouseMotionListener ( underlineThisAdapter );
     this.compoundExpression.addMouseMotionListener ( underlineThisAdapter );
 
     // apply the advanced setting
@@ -327,6 +333,12 @@ public class TypeInferenceNodeComponent extends JComponent
 
 
   // WORKAROUND: START
+  /**
+   * TODO
+   * 
+   * @param e
+   * @see javax.swing.JComponent#processMouseEvent(java.awt.event.MouseEvent)
+   */
   @Override
   protected void processMouseEvent ( MouseEvent e )
   {
@@ -371,6 +383,12 @@ public class TypeInferenceNodeComponent extends JComponent
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param e
+   * @see javax.swing.JComponent#processMouseMotionEvent(java.awt.event.MouseEvent)
+   */
   @Override
   protected void processMouseMotionEvent ( MouseEvent e )
   {
@@ -432,7 +450,8 @@ public class TypeInferenceNodeComponent extends JComponent
    *          menu.
    * @see TypeInferenceComponent#setAdvanced(boolean)
    */
-  void setAdvanced ( boolean pAdvanced )
+  void setAdvanced ( @SuppressWarnings ( "unused" )
+  boolean pAdvanced )
   {
     // Fill the menu with menuitems
     JPopupMenu menu = new JPopupMenu ();
@@ -561,11 +580,11 @@ public class TypeInferenceNodeComponent extends JComponent
       if ( count > 1 )
       {
         String [] a =
-        { Messages.getString ( "TI.All" ), Messages.getString ( "TI.First" ),
-            Messages.getString ( "TI.Cancel" ) };
+        { Messages.getString ( "TI.All" ), Messages.getString ( "TI.First" ), //$NON-NLS-1$ //$NON-NLS-2$
+            Messages.getString ( "TI.Cancel" ) }; //$NON-NLS-1$
         an = JOptionPane.showOptionDialog ( getTopLevelAncestor (), Messages
-            .getString ( "TI.AllOrFirst" ), Messages
-            .getString ( "NodeComponent.4" ), JOptionPane.YES_NO_CANCEL_OPTION,
+            .getString ( "TI.AllOrFirst" ), Messages //$NON-NLS-1$
+            .getString ( "NodeComponent.4" ), JOptionPane.YES_NO_CANCEL_OPTION, //$NON-NLS-1$
             JOptionPane.QUESTION_MESSAGE, null, a, a [ 0 ] );
       }
       if ( an == 0 )
@@ -582,7 +601,7 @@ public class TypeInferenceNodeComponent extends JComponent
         {
           if ( this.proofNode == null )
           {
-            System.out.println ( "Null!!!!" );
+            System.out.println ( "Null!!!!" ); //$NON-NLS-1$
             return;
           }
 
@@ -624,7 +643,7 @@ public class TypeInferenceNodeComponent extends JComponent
                   catch ( IllegalArgumentException exp )
                   {
                     JOptionPane.showMessageDialog ( getTopLevelAncestor (), exp
-                        .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
+                        .getMessage (), "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
                   }
                   break;
                 case 1 :
@@ -636,7 +655,7 @@ public class TypeInferenceNodeComponent extends JComponent
                   catch ( IllegalArgumentException exp )
                   {
                     JOptionPane.showMessageDialog ( getTopLevelAncestor (), exp
-                        .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
+                        .getMessage (), "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
                   }
 
                   break;
@@ -714,6 +733,7 @@ public class TypeInferenceNodeComponent extends JComponent
     try
     {
       // check if we have a next SmallStepProofNode
+      @SuppressWarnings ( "unused" )
       ProofNode node = this.proofNode.getChildAt ( 0 );
       this.compoundExpression.setDragndropeabled ( false );
     }
@@ -818,7 +838,7 @@ public class TypeInferenceNodeComponent extends JComponent
    * That actualy is the bottom position of the {@link #compoundExpression}
    * added with some {@link #spacing}.
    * 
-   * @return
+   * @return TODO
    */
   public int getRuleTop ()
   {
@@ -948,12 +968,12 @@ public class TypeInferenceNodeComponent extends JComponent
   // 
 
   /**
-   * Returns the minimum size needed to correctly render the {@link expression}.
+   * Returns the minimum size needed to correctly render the {@link Expression}.
    * The {@link #actualExpressionHeight} is initiated with the heigth of the
    * minimum size.
    * 
    * @param pMaxWidth Max width is given for the entire component.
-   * @return
+   * @return TODO
    */
   public Dimension checkNeededExpressionSize ( int pMaxWidth )
   {
@@ -974,7 +994,7 @@ public class TypeInferenceNodeComponent extends JComponent
   /**
    * Returns the size of the expression.
    * 
-   * @return
+   * @return TODO
    */
   public Dimension getExpressionSize ()
   {
@@ -996,7 +1016,7 @@ public class TypeInferenceNodeComponent extends JComponent
   /**
    * Returns the actual height of the expression.
    * 
-   * @return
+   * @return TODO
    */
   public int getActualExpressionHeight ()
   {
@@ -1027,12 +1047,22 @@ public class TypeInferenceNodeComponent extends JComponent
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param listener
+   */
   public void addTypeInferenceNodeListener ( TypeInferenceNodeListener listener )
   {
     this.listenerList.add ( TypeInferenceNodeListener.class, listener );
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param listener
+   */
   public void removeTypeInferenceNodeListener (
       TypeInferenceNodeListener listener )
   {
@@ -1040,6 +1070,9 @@ public class TypeInferenceNodeComponent extends JComponent
   }
 
 
+  /**
+   * TODO
+   */
   private void fireNodeChanged ()
   {
     Object [] listeners = this.listenerList.getListenerList ();
@@ -1055,6 +1088,11 @@ public class TypeInferenceNodeComponent extends JComponent
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param node
+   */
   private void fireRequstJumpToNode ( ProofNode node )
   {
     Object [] listeners = this.listenerList.getListenerList ();
@@ -1087,5 +1125,4 @@ public class TypeInferenceNodeComponent extends JComponent
   {
     this.spacing = spacing;
   }
-
 }

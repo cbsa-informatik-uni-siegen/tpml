@@ -10,6 +10,9 @@ import javax.swing.JMenuItem;
 import org.apache.log4j.Logger;
 
 
+/**
+ * TODO
+ */
 public class HistoryItem extends JMenuItem
 {
 
@@ -19,23 +22,39 @@ public class HistoryItem extends JMenuItem
   private static final long serialVersionUID = -2506446517048657839L;
 
 
+  /**
+   * TODO
+   */
   private static final Logger logger = Logger.getLogger ( HistoryItem.class );
 
 
+  /**
+   * TODO
+   */
   private File file;
 
 
+  /**
+   * TODO
+   */
   private MainWindow window;
 
 
+  /**
+   * TODO
+   * 
+   * @param file
+   */
   public HistoryItem ( File file )
   {
     this.file = file;
-    this.setText ( this.file.getName () );
-    this.addActionListener ( new ActionListener ()
+    setText ( this.file.getName () );
+    addActionListener ( new ActionListener ()
     {
 
-      public void actionPerformed ( ActionEvent arg0 )
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent arg0 )
       {
         try
         {
@@ -44,7 +63,7 @@ public class HistoryItem extends JMenuItem
         }
         catch ( Exception e )
         {
-          logger.error ( "Window is null! History Item cannot open the file!",
+          logger.error ( "Window is null! History Item cannot open the file!", //$NON-NLS-1$
               e );
         }
       }
@@ -53,21 +72,35 @@ public class HistoryItem extends JMenuItem
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public File getFile ()
   {
     return this.file;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public MainWindow getWindow ()
   {
     return this.window;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param window
+   */
   public void setWindow ( MainWindow window )
   {
     this.window = window;
   }
-
 }

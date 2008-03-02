@@ -151,7 +151,7 @@ public class TypeCheckerComponent extends AbstractProofComponent implements
         return;
       }
     }
-    throw new IllegalStateException ( "Unable to find next node" );
+    throw new IllegalStateException ( "Unable to find next node" ); //$NON-NLS-1$
   }
 
 
@@ -180,6 +180,9 @@ public class TypeCheckerComponent extends AbstractProofComponent implements
   }
 
 
+  /**
+   * TODO
+   */
   protected void doRelayout ()
   {
     TypeCheckerProofNode rootNode = ( TypeCheckerProofNode ) TypeCheckerComponent.this.proofModel
@@ -255,13 +258,15 @@ public class TypeCheckerComponent extends AbstractProofComponent implements
       nodeComponent.addTypeCheckerNodeListener ( new TypeCheckerNodeListener ()
       {
 
-        public void nodeChanged ( TypeCheckerNodeComponent pNode )
+        public void nodeChanged ( @SuppressWarnings ( "unused" )
+        TypeCheckerNodeComponent pNode )
         {
           TypeCheckerComponent.this.relayout ();
         }
 
 
-        public void requestTypeEnter ( TypeCheckerNodeComponent pNode )
+        public void requestTypeEnter ( @SuppressWarnings ( "unused" )
+        TypeCheckerNodeComponent pNode )
         {
           // empty
 
@@ -401,11 +406,11 @@ public class TypeCheckerComponent extends AbstractProofComponent implements
       }
       return;
     }
-    for ( int i = 0 ; i < children.length ; i++ )
+    for ( Object element : children )
     {
-      if ( children [ i ] instanceof ProofNode )
+      if ( element instanceof ProofNode )
       {
-        TypeCheckerProofNode proofNode = ( TypeCheckerProofNode ) children [ i ];
+        TypeCheckerProofNode proofNode = ( TypeCheckerProofNode ) element;
 
         TypeCheckerNodeComponent nodeComponent = ( TypeCheckerNodeComponent ) proofNode
             .getUserObject ();
@@ -426,11 +431,11 @@ public class TypeCheckerComponent extends AbstractProofComponent implements
   protected void nodesRemoved ( TreeModelEvent event )
   {
     Object [] children = event.getChildren ();
-    for ( int i = 0 ; i < children.length ; i++ )
+    for ( Object element : children )
     {
-      if ( children [ i ] instanceof ProofNode )
+      if ( element instanceof ProofNode )
       {
-        TypeCheckerProofNode proofNode = ( TypeCheckerProofNode ) children [ i ];
+        TypeCheckerProofNode proofNode = ( TypeCheckerProofNode ) element;
 
         TypeCheckerNodeComponent nodeComponent = ( TypeCheckerNodeComponent ) proofNode
             .getUserObject ();
@@ -485,7 +490,7 @@ public class TypeCheckerComponent extends AbstractProofComponent implements
 
     // get the visible rect to ensure the x coordinate is in the
     // visible area. only vertical scolling is requested
-    Rectangle visibleRect = this.getVisibleRect ();
+    Rectangle visibleRect = getVisibleRect ();
 
     Rectangle rect = new Rectangle ();
     rect.x = visibleRect.x;
@@ -493,14 +498,16 @@ public class TypeCheckerComponent extends AbstractProofComponent implements
     rect.width = 1;
     rect.height = node.getHeight ();
 
-    this.scrollRectToVisible ( rect );
+    scrollRectToVisible ( rect );
 
     this.jumpNode = null;
   }
 
 
-  /*
+  /**
    * Implementation of the Scrollable interface
+   * 
+   * @return TODO
    */
   public Dimension getPreferredScrollableViewportSize ()
   {
@@ -508,34 +515,75 @@ public class TypeCheckerComponent extends AbstractProofComponent implements
   }
 
 
-  public int getScrollableBlockIncrement ( Rectangle visibleRect,
-      int orientation, int direction )
+  /**
+   * TODO
+   * 
+   * @param visibleRect
+   * @param orientation
+   * @param direction
+   * @return TODO
+   * @see javax.swing.Scrollable#getScrollableBlockIncrement(java.awt.Rectangle,
+   *      int, int)
+   */
+  public int getScrollableBlockIncrement ( @SuppressWarnings ( "unused" )
+  Rectangle visibleRect, @SuppressWarnings ( "unused" )
+  int orientation, @SuppressWarnings ( "unused" )
+  int direction )
   {
-    // XXX: Dynamic block increment
     return 25;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see javax.swing.Scrollable#getScrollableTracksViewportHeight()
+   */
   public boolean getScrollableTracksViewportHeight ()
   {
     return false;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see javax.swing.Scrollable#getScrollableTracksViewportWidth()
+   */
   public boolean getScrollableTracksViewportWidth ()
   {
     return false;
   }
 
 
-  public int getScrollableUnitIncrement ( Rectangle visibleRect,
-      int orientation, int direction )
+  /**
+   * TODO
+   * 
+   * @param visibleRect
+   * @param orientation
+   * @param direction
+   * @return TODO
+   * @see javax.swing.Scrollable#getScrollableUnitIncrement(java.awt.Rectangle,
+   *      int, int)
+   */
+  public int getScrollableUnitIncrement ( @SuppressWarnings ( "unused" )
+  Rectangle visibleRect, @SuppressWarnings ( "unused" )
+  int orientation, @SuppressWarnings ( "unused" )
+  int direction )
   {
-    // XXX: Dynamic unit increment
     return 10;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see java.lang.Object#clone()
+   */
+  @Override
   public TypeCheckerComponent clone ()
   {
     try
@@ -592,11 +640,15 @@ public class TypeCheckerComponent extends AbstractProofComponent implements
   }
 
 
+  /**
+   * TODO
+   * 
+   * @see de.unisiegen.tpml.graphics.AbstractProofComponent#forcedRelayout()
+   */
   @Override
   protected void forcedRelayout ()
   {
     // TODO größe setzen...
     doRelayout ();
-
   }
 }

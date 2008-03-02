@@ -146,7 +146,7 @@ public class SmallStepRulesComponent extends JComponent
    */
   public void setWrongRule ( ProofRule rule )
   {
-    this.menuButton.setText ( "(" + rule.getName () + ")" );
+    this.menuButton.setText ( "(" + rule.getName () + ")" ); //$NON-NLS-1$//$NON-NLS-2$
     this.menuButton.setTextColor ( Color.RED );
   }
 
@@ -156,7 +156,7 @@ public class SmallStepRulesComponent extends JComponent
    */
   public void setRightRule ()
   {
-    this.menuButton.setText ( "" );
+    this.menuButton.setText ( "" ); //$NON-NLS-1$
     this.menuButton.setTextColor ( Color.BLACK );
   }
 
@@ -171,12 +171,12 @@ public class SmallStepRulesComponent extends JComponent
    */
   public void setActualWidth ( int width )
   {
-    Dimension size = new Dimension ( width, this.size.height );
+    Dimension newSize = new Dimension ( width, this.size.height );
 
-    setSize ( size );
-    setPreferredSize ( size );
-    setMinimumSize ( size );
-    setMaximumSize ( size );
+    setSize ( newSize );
+    setPreferredSize ( newSize );
+    setMinimumSize ( newSize );
+    setMaximumSize ( newSize );
   }
 
 
@@ -203,7 +203,7 @@ public class SmallStepRulesComponent extends JComponent
    * below the mouse, so the corresponding expression could be underlined.
    * 
    * @param adapter
-   * @return
+   * @return TODO
    */
   public Dimension getNeededSize ( MouseMotionAdapter adapter )
   {

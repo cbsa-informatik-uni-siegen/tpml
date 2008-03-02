@@ -32,57 +32,107 @@ import de.unisiegen.tpml.graphics.editor.TypeEditorPanel;
 import de.unisiegen.tpml.ui.netbeans.PdfDialog;
 
 
+/**
+ * TODO
+ */
 public class GeneralPrinter
 {
 
+  /**
+   * TODO
+   */
   private Document document;
 
 
+  /**
+   * TODO
+   */
   private JPanel caller;
 
 
+  /**
+   * TODO
+   */
   private AbstractProofComponent comp;
 
 
+  /**
+   * TODO
+   */
   private Rectangle pageFormat;
 
 
+  /**
+   * TODO
+   */
   private java.awt.Graphics2D g1;
 
 
+  /**
+   * TODO
+   */
   private java.awt.Graphics2D g2;
 
 
+  /**
+   * TODO
+   */
   private java.awt.Graphics2D g3;
 
 
+  /**
+   * TODO
+   */
   private java.awt.Graphics2D g4;
 
 
+  /**
+   * TODO
+   */
   LinkedList < LinkedList < Component >> pages;
 
 
+  /**
+   * TODO
+   */
   private double scale = .6;
 
 
+  /**
+   * TODO
+   */
   private int right = 40;
 
 
+  /**
+   * TODO
+   */
   private int above = 40;
 
 
-  private int naturalright = 20;
-
-
+  /**
+   * TODO
+   */
   private int naturalabove = 20;
 
 
+  /**
+   * TODO
+   */
   private String tmpdir;
 
 
+  /**
+   * TODO
+   */
   private String filename;
 
 
+  /**
+   * TODO
+   * 
+   * @param caller
+   */
   public GeneralPrinter ( JPanel caller )
   {
     // document = new Document(PageSize.A4);
@@ -91,21 +141,29 @@ public class GeneralPrinter
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param editorPanel
+   */
   public void print ( TypeEditorPanel editorPanel )
   {
     // System.out.println("TypeEditorPanel print!");
     if ( !openDiaglog () )
+    {
       return;
+    }
     try
     {
       createSplitPage ( 0 );
-      editorPanel.getEditor ().paint ( g3 );
-      editorPanel.getEditor2 ().paint ( g4 );
+      editorPanel.getEditor ().paint ( this.g3 );
+      editorPanel.getEditor2 ().paint ( this.g4 );
       closePage ();
-      this.concatenatePages ( 1 );
-      this.deleteFiles ( 1 );
+      concatenatePages ( 1 );
+      deleteFiles ( 1 );
       // System.out.println("TypeEditorPanel print!");
-      JOptionPane.showMessageDialog ( caller, "Document has been printed!" );
+      JOptionPane
+          .showMessageDialog ( this.caller, "Document has been printed!" ); //$NON-NLS-1$
     }
     catch ( FileNotFoundException e )
     {
@@ -120,47 +178,56 @@ public class GeneralPrinter
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param editor
+   */
   public void print ( StyledLanguageEditor editor )
   {
     if ( !openDiaglog () )
+    {
       return;
+    }
     boolean l33t = false;
 
     try
     {
+      @SuppressWarnings ( "unused" )
       JPanel printarea = createPage ( 0 );
       Graphics remember = editor.getGraphics ();
-      l33t = editor.getSize ().height > g2.getClipBounds ().height;
-      editor.paint ( g2 );
+      l33t = editor.getSize ().height > this.g2.getClipBounds ().height;
+      editor.paint ( this.g2 );
       editor.paint ( remember );
       closePage ();
 
       // concatenate the temporary pages
-      this.concatenatePages ( 1 );
+      concatenatePages ( 1 );
 
       // remove the temporary pages now
-      this.deleteFiles ( 1 );
+      deleteFiles ( 1 );
       if ( l33t )
       {
         JOptionPane
             .showMessageDialog (
-                caller,
-                "Your Sourcecode is too long to be printed properly...\n"
-                    + "I give up, you are too elite.\n"
-                    + "Actually you are most likely Kurt or Ben...\n"
-                    + "It's lonely at the top. But you may get yourself a coffe now\n"
-                    + "and enjoy the comfort to look down upon everyone at the bottom." );
+                this.caller,
+                "Your Sourcecode is too long to be printed properly...\n" //$NON-NLS-1$
+                    + "I give up, you are too elite.\n" //$NON-NLS-1$
+                    + "Actually you are most likely Kurt or Ben...\n" //$NON-NLS-1$
+                    + "It's lonely at the top. But you may get yourself a coffe now\n" //$NON-NLS-1$
+                    + "and enjoy the comfort to look down upon everyone at the bottom." ); //$NON-NLS-1$
       }
       else
       {
-        JOptionPane.showMessageDialog ( caller, "Document has been printed!" );
+        JOptionPane.showMessageDialog ( this.caller,
+            "Document has been printed!" ); //$NON-NLS-1$
       }
 
     }
     catch ( FileNotFoundException e )
     {
-      JOptionPane.showMessageDialog ( caller,
-          "Can not access the file, might be open" );
+      JOptionPane.showMessageDialog ( this.caller,
+          "Can not access the file, might be open" ); //$NON-NLS-1$
 
       e.printStackTrace ();
     }
@@ -173,17 +240,24 @@ public class GeneralPrinter
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param icomp
+   */
   public void print ( AbstractProofComponent icomp )
   {
 
     if ( !openDiaglog () )
+    {
       return;
+    }
 
     this.comp = icomp;
-    comp.setBackground ( new Color ( 255, 255, 255 ) );
+    this.comp.setBackground ( new Color ( 255, 255, 255 ) );
     // changed by Michael
     // comp.setOpaque(false);
-    comp.setOpaque ( true );
+    this.comp.setOpaque ( true );
     // xchanged by Michael
 
     try
@@ -203,11 +277,11 @@ public class GeneralPrinter
 
         if ( nop == -1 )
         {
-          comp.setAvailableWidth ( g2.getClipBounds ().width );
-          comp.setAvailableHeight ( g2.getClipBounds ().height );
-          nop = ( comp.getHeight () / printarea.getHeight () + 1 );
+          this.comp.setAvailableWidth ( this.g2.getClipBounds ().width );
+          this.comp.setAvailableHeight ( this.g2.getClipBounds ().height );
+          nop = ( this.comp.getHeight () / printarea.getHeight () + 1 );
         }
-        printarea.add ( comp );
+        printarea.add ( this.comp );
 
         // on the first page we will have to eliminate the natural top spacing
         // TODO setze hier _nicht_ die bounds von comp, sondern erstelle ein
@@ -226,17 +300,17 @@ public class GeneralPrinter
         Graphics2D offsetted;
         if ( i == 0 )
         {
-          offsetted = ( Graphics2D ) g2.create ( 0, -naturalabove - i
-              * g2.getClipBounds ().height, g2.getClipBounds ().width, comp
-              .getHeight () );
+          offsetted = ( Graphics2D ) this.g2.create ( 0, -this.naturalabove - i
+              * this.g2.getClipBounds ().height,
+              this.g2.getClipBounds ().width, this.comp.getHeight () );
         }
         else
         {
-          offsetted = ( Graphics2D ) g2.create ( 0, -i
-              * g2.getClipBounds ().height, g2.getClipBounds ().width, comp
-              .getHeight () );
+          offsetted = ( Graphics2D ) this.g2.create ( 0, -i
+              * this.g2.getClipBounds ().height,
+              this.g2.getClipBounds ().width, this.comp.getHeight () );
         }
-        comp.paint ( offsetted );
+        this.comp.paint ( offsetted );
 
         closePage ();
         i++ ;
@@ -244,12 +318,13 @@ public class GeneralPrinter
       while ( i < nop );
 
       // concatenate the temporary pages
-      this.concatenatePages ( nop );
+      concatenatePages ( nop );
 
       // remove the temporary pages now
-      this.deleteFiles ( nop );
+      deleteFiles ( nop );
 
-      JOptionPane.showMessageDialog ( caller, "Document has been printed!" );
+      JOptionPane
+          .showMessageDialog ( this.caller, "Document has been printed!" ); //$NON-NLS-1$
 
     }
     catch ( Exception de )
@@ -259,116 +334,153 @@ public class GeneralPrinter
   }
 
 
+  /**
+   * TODO
+   */
   private void closePage ()
   {
-    g2.dispose ();
-    g1.dispose ();
-    document.close ();
+    this.g2.dispose ();
+    this.g1.dispose ();
+    this.document.close ();
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param i
+   * @return TODO
+   * @throws DocumentException
+   * @throws FileNotFoundException
+   */
   private JPanel createPage ( int i ) throws DocumentException,
       FileNotFoundException
   {
-    document = new Document ( pageFormat );
-    PdfWriter writer = PdfWriter.getInstance ( document, new FileOutputStream (
-        tmpdir + "/tmp" + i + ".pdf" ) );
-    document.open ();
+    this.document = new Document ( this.pageFormat );
+    PdfWriter writer = PdfWriter.getInstance ( this.document,
+        new FileOutputStream ( this.tmpdir + "/tmp" + i + ".pdf" ) ); //$NON-NLS-1$//$NON-NLS-2$
+    this.document.open ();
     PdfContentByte cb = writer.getDirectContent ();
     // do not use the scale factor in the next one!
-    g1 = cb.createGraphicsShapes ( pageFormat.getWidth (), pageFormat
-        .getHeight () );
-    g1.setBackground ( new Color ( 255, 255, 255 ) );
-    g1.scale ( scale, scale );
+    this.g1 = cb.createGraphicsShapes ( this.pageFormat.getWidth (),
+        this.pageFormat.getHeight () );
+    this.g1.setBackground ( new Color ( 255, 255, 255 ) );
+    this.g1.scale ( this.scale, this.scale );
     // g2.setClip(right, above,
     // g2.getClipBounds().width,g2.getClipBounds().height);
-    g2 = ( Graphics2D ) g1.create ( right, above, g1.getClipBounds ().width - 2
-        * right, g1.getClipBounds ().height - 2 * above );
-    g2.setBackground ( new Color ( 255, 255, 255 ) );
+    this.g2 = ( Graphics2D ) this.g1.create ( this.right, this.above, this.g1
+        .getClipBounds ().width
+        - 2 * this.right, this.g1.getClipBounds ().height - 2 * this.above );
+    this.g2.setBackground ( new Color ( 255, 255, 255 ) );
     JPanel j1 = new JPanel ();
-    j1.setSize ( g2.getClipBounds ().width, g2.getClipBounds ().height );
+    j1.setSize ( this.g2.getClipBounds ().width,
+        this.g2.getClipBounds ().height );
     j1.setBackground ( new Color ( 255, 255, 255 ) );
     j1.setOpaque ( true );
     return j1;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param i
+   * @throws DocumentException
+   * @throws FileNotFoundException
+   */
   private void createSplitPage ( int i ) throws DocumentException,
       FileNotFoundException
   {
-    document = new Document ( pageFormat );
-    PdfWriter writer = PdfWriter.getInstance ( document, new FileOutputStream (
-        tmpdir + "/tmp" + i + ".pdf" ) );
-    document.open ();
+    this.document = new Document ( this.pageFormat );
+    PdfWriter writer = PdfWriter.getInstance ( this.document,
+        new FileOutputStream ( this.tmpdir + "/tmp" + i + ".pdf" ) ); //$NON-NLS-1$//$NON-NLS-2$
+    this.document.open ();
     PdfContentByte cb = writer.getDirectContent ();
     // do not use the scale factor in the next one!
-    g1 = cb.createGraphicsShapes ( pageFormat.getWidth (), pageFormat
-        .getHeight () );
-    g1.setBackground ( new Color ( 255, 255, 255 ) );
-    g1.scale ( scale, scale );
+    this.g1 = cb.createGraphicsShapes ( this.pageFormat.getWidth (),
+        this.pageFormat.getHeight () );
+    this.g1.setBackground ( new Color ( 255, 255, 255 ) );
+    this.g1.scale ( this.scale, this.scale );
     // g2.setClip(right, above,
     // g2.getClipBounds().width,g2.getClipBounds().height);
-    g2 = ( Graphics2D ) g1.create ( right, above, g1.getClipBounds ().width - 2
-        * right, g1.getClipBounds ().height - 2 * above );
-    g3 = ( Graphics2D ) g2.create ( 0, 0, g2.getClipBounds ().width, g2
-        .getClipBounds ().height / 2 - 5 );
-    g4 = ( Graphics2D ) g2.create ( 0, g2.getClipBounds ().height / 2 + 5, g2
-        .getClipBounds ().width, g2.getClipBounds ().height / 2 - 5 );
-    g2.drawRect ( 0, g2.getClipBounds ().height / 2, g2.getClipBounds ().width,
-        1 );
+    this.g2 = ( Graphics2D ) this.g1.create ( this.right, this.above, this.g1
+        .getClipBounds ().width
+        - 2 * this.right, this.g1.getClipBounds ().height - 2 * this.above );
+    this.g3 = ( Graphics2D ) this.g2
+        .create ( 0, 0, this.g2.getClipBounds ().width, this.g2
+            .getClipBounds ().height / 2 - 5 );
+    this.g4 = ( Graphics2D ) this.g2
+        .create ( 0, this.g2.getClipBounds ().height / 2 + 5, this.g2
+            .getClipBounds ().width, this.g2.getClipBounds ().height / 2 - 5 );
+    this.g2.drawRect ( 0, this.g2.getClipBounds ().height / 2, this.g2
+        .getClipBounds ().width, 1 );
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   private boolean openDiaglog ()
   {
-    PdfDialog dialog = new PdfDialog (
-        ( JFrame ) caller.getTopLevelAncestor (), true );
+    PdfDialog dialog = new PdfDialog ( ( JFrame ) this.caller
+        .getTopLevelAncestor (), true );
 
-    dialog.setLocationRelativeTo ( caller );
+    dialog.setLocationRelativeTo ( this.caller );
     dialog.setVisible ( true );
     // System.out.println(dialog.filechooser.getSelectedFile());
     // System.out.println(dialog.landscape);
 
     if ( dialog.cancelled )
+    {
       return false;
+    }
 
     this.filename = dialog.filechooser.getSelectedFile ().getAbsolutePath ();
-    if ( !this.filename.substring ( filename.length () - 4 ).equalsIgnoreCase (
-        ".pdf" ) )
+    if ( !this.filename.substring ( this.filename.length () - 4 )
+        .equalsIgnoreCase ( ".pdf" ) ) //$NON-NLS-1$
     {
-      this.filename = this.filename + ".pdf";
+      this.filename = this.filename + ".pdf"; //$NON-NLS-1$
     }
-    tmpdir = dialog.filechooser.getSelectedFile ().getParent ();
+    this.tmpdir = dialog.filechooser.getSelectedFile ().getParent ();
 
     if ( dialog.landscape )
     {
-      pageFormat = PageSize.A4.rotate ();
+      this.pageFormat = PageSize.A4.rotate ();
     }
     else
     {
-      pageFormat = PageSize.A4;
+      this.pageFormat = PageSize.A4;
     }
     return true;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param nop
+   */
   private void concatenatePages ( int nop )
   {
     if ( nop < 1 )
+    {
       return; // nothing to concatenate...
+    }
     // concatenate temporary files here
     try
     {
       int pageOffset = 0;
-      ArrayList master = new ArrayList ();
+      ArrayList < Object > master = new ArrayList < Object > ();
       int f = 0;
-      String outFile = filename;
-      Document document = null;
+      String outFile = this.filename;
+      Document newDocument = null;
       PdfCopy writer = null;
       while ( f < nop )
       {
         // we create a reader for a certain document
-        PdfReader reader = new PdfReader ( tmpdir + "/tmp" + f + ".pdf" );
+        PdfReader reader = new PdfReader ( this.tmpdir + "/tmp" + f + ".pdf" ); //$NON-NLS-1$ //$NON-NLS-2$
         reader.consolidateNamedDestinations ();
         // we retrieve the total number of pages
         int n = reader.getNumberOfPages ();
@@ -378,30 +490,46 @@ public class GeneralPrinter
         if ( f == 0 )
         {
           // step 1: creation of a document-object
-          document = new Document ( reader.getPageSizeWithRotation ( 1 ) );
+          newDocument = new Document ( reader.getPageSizeWithRotation ( 1 ) );
           // step 2: we create a writer that listens to the
           // document
-          writer = new PdfCopy ( document, new FileOutputStream ( outFile ) );
+          writer = new PdfCopy ( newDocument, new FileOutputStream ( outFile ) );
           // step 3: we open the document
-          document.open ();
+          newDocument.open ();
         }
         // step 4: we add content
         PdfImportedPage page;
         for ( int i = 0 ; i < n ; )
         {
           ++i;
-          page = writer.getImportedPage ( reader, i );
-          writer.addPage ( page );
+          if ( writer != null )
+          {
+            page = writer.getImportedPage ( reader, i );
+            writer.addPage ( page );
+          }
         }
         PRAcroForm form = reader.getAcroForm ();
         if ( form != null )
-          writer.copyAcroForm ( reader );
+        {
+          if ( writer != null )
+          {
+            writer.copyAcroForm ( reader );
+          }
+        }
         f++ ;
       }
       if ( !master.isEmpty () )
-        writer.setOutlines ( master );
+      {
+        if ( writer != null )
+        {
+          writer.setOutlines ( master );
+        }
+      }
       // step 5: we close the document
-      document.close ();
+      if ( newDocument != null )
+      {
+        newDocument.close ();
+      }
     }
     catch ( Exception e )
     {
@@ -410,13 +538,20 @@ public class GeneralPrinter
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param nop
+   */
   private void deleteFiles ( int nop )
   {
     if ( nop < 1 )
+    {
       return; // nothing to delete
+    }
     for ( int i = 0 ; i < nop ; i++ )
     {
-      File f = new File ( tmpdir + "/tmp" + i + ".pdf" );
+      File f = new File ( this.tmpdir + "/tmp" + i + ".pdf" ); //$NON-NLS-1$ //$NON-NLS-2$
       f.delete ();
     }
   }

@@ -229,6 +229,9 @@ public class SmallStepNodeComponent extends JComponent
   }
 
 
+  /**
+   * TODO
+   */
   private boolean advanced;
 
 
@@ -248,6 +251,7 @@ public class SmallStepNodeComponent extends JComponent
    */
   public SmallStepNodeComponent ( SmallStepProofNode pProofNode,
       SmallStepProofModel pProofModel, LanguageTranslator pTranslator,
+      @SuppressWarnings ( "unused" )
       int pSpacing, boolean advanced )
   {
     super ();
@@ -274,14 +278,15 @@ public class SmallStepNodeComponent extends JComponent
         new MenuButtonListener ()
         {
 
-          public void menuClosed ( MenuButton source )
+          public void menuClosed ( @SuppressWarnings ( "unused" )
+          MenuButton source )
           {
             // empty
           }
 
 
-          public void menuItemActivated ( MenuButton source,
-              final JMenuItem item )
+          public void menuItemActivated ( @SuppressWarnings ( "unused" )
+          MenuButton source, final JMenuItem item )
           {
             // setup a wait cursor for the toplevel ancestor
             final Container toplevel = getTopLevelAncestor ();
@@ -315,7 +320,8 @@ public class SmallStepNodeComponent extends JComponent
     {
 
       @Override
-      public void mouseMoved ( MouseEvent event )
+      public void mouseMoved ( @SuppressWarnings ( "unused" )
+      MouseEvent event )
       {
         SmallStepNodeComponent.this
             .updateUnderlineExpression ( ( Expression ) null );
@@ -346,12 +352,12 @@ public class SmallStepNodeComponent extends JComponent
         }
       }
     };
-    this.addMouseMotionListener ( underlineThisAdapter );
+    addMouseMotionListener ( underlineThisAdapter );
     this.compoundExpression.addMouseMotionListener ( underlineThisAdapter );
     this.compoundExpression.addMouseMotionListener ( this.underlineRuleAdapter );
     this.rules.getMenuButton ().addMouseMotionListener (
         this.underlineRuleAdapter );
-    this.addMouseMotionListener ( underlineThisAdapter );
+    addMouseMotionListener ( underlineThisAdapter );
     // apply the advanced setting
     setAdvanced ( advanced );
   }
@@ -376,6 +382,12 @@ public class SmallStepNodeComponent extends JComponent
   // react on MouseEvents so they must be handed out to the other
   // CompoundExpressions
   // WORKAROUND: START
+  /**
+   * TODO
+   * 
+   * @param e
+   * @see javax.swing.JComponent#processMouseEvent(java.awt.event.MouseEvent)
+   */
   @Override
   protected void processMouseEvent ( MouseEvent e )
   {
@@ -415,6 +427,12 @@ public class SmallStepNodeComponent extends JComponent
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param e
+   * @see javax.swing.JComponent#processMouseMotionEvent(java.awt.event.MouseEvent)
+   */
   @Override
   protected void processMouseMotionEvent ( MouseEvent e )
   {
@@ -480,7 +498,7 @@ public class SmallStepNodeComponent extends JComponent
     Language lang = this.proofModel.getLanguage ();
     this.menu = new JPopupMenu ();
     this.menu = this.rulesMenu.getMenu ( rulesFromModel, rulesFromModel, lang,
-        this, "smallstep", advanced );
+        this, "smallstep", advanced ); //$NON-NLS-1$
     // menu = new JPopupMenu();
     // if to many rules we will devide in menu and submenus, otherwise there
     // will be only seperators
@@ -537,7 +555,8 @@ public class SmallStepNodeComponent extends JComponent
    * 
    * @param button The button from the {@link SmallStepRulesComponent}.
    */
-  void updateUnderlineExpression ( MenuButton button )
+  void updateUnderlineExpression ( @SuppressWarnings ( "unused" )
+  MenuButton button )
   {
     ProofStep [] steps = this.proofModel.remaining ( this.proofNode );
     if ( steps.length == 0 )
@@ -700,6 +719,8 @@ public class SmallStepNodeComponent extends JComponent
    * The position comes directly from the {@link #origin}. The size is a
    * compined needed dimension of the {@link #ruleDimension} and the
    * {@link #expressionDimension}.
+   * 
+   * @param space
    */
   public void setBounds ( int space )
   {
@@ -806,7 +827,7 @@ public class SmallStepNodeComponent extends JComponent
    * That actualy is the bottom position of the {@link #compoundExpression}
    * added with some {@link #spacing}.
    * 
-   * @return
+   * @return TODO
    */
   public int getRuleTop ()
   {
@@ -919,12 +940,12 @@ public class SmallStepNodeComponent extends JComponent
   // Stuff for the expressions
   // 
   /**
-   * Returns the minimum size needed to correctly render the {@link expression}.
+   * Returns the minimum size needed to correctly render the {@link Expression}.
    * The {@link #actualExpressionHeight} is initiated with the heigth of the
    * minimum size.
    * 
    * @param pMaxWidth Max width is given for the entire component.
-   * @return
+   * @return TODO
    */
   public Dimension checkNeededExpressionSize ( int pMaxWidth )
   {
@@ -942,7 +963,7 @@ public class SmallStepNodeComponent extends JComponent
   /**
    * Returns the size of the expression.
    * 
-   * @return
+   * @return TODO
    */
   public Dimension getExpressionSize ()
   {
@@ -964,7 +985,7 @@ public class SmallStepNodeComponent extends JComponent
   /**
    * Returns the actual height of the expression.
    * 
-   * @return
+   * @return TODO
    */
   public int getActualExpressionHeight ()
   {
@@ -1034,7 +1055,9 @@ public class SmallStepNodeComponent extends JComponent
   }
 
 
-  /***/
+  /**
+   * @param node
+   */
   private void fireRequstJumpToNode ( ProofNode node )
   {
     Object [] listeners = this.listenerList.getListenerList ();

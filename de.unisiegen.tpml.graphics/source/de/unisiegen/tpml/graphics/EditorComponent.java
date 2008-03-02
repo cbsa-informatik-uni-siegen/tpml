@@ -86,5 +86,10 @@ public interface EditorComponent
   public void setAdvanced ( boolean status );
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public JComponent getPrintPart ();
 }

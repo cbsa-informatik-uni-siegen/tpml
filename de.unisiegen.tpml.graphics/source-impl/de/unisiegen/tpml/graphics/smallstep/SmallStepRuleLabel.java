@@ -77,11 +77,11 @@ public class SmallStepRuleLabel extends JComponent
 
     JLabel ruleLabel = new JLabel ();
     add ( ruleLabel );
-    ruleLabel.setText ( "(" + ruleName + ")" );
+    ruleLabel.setText ( "(" + ruleName + ")" ); //$NON-NLS-1$//$NON-NLS-2$
 
     JLabel exponentLabel = new JLabel ();
     add ( exponentLabel );
-    exponentLabel.setText ( "" + ruleCount );
+    exponentLabel.setText ( "" + ruleCount ); //$NON-NLS-1$
 
     // scale the font down to 0.75
     Font expFont = exponentLabel.getFont ();
@@ -126,7 +126,7 @@ public class SmallStepRuleLabel extends JComponent
   /**
    * Returns the number of the exponent
    * 
-   * @return
+   * @return TODO
    */
   public int getRuleCount ()
   {
@@ -149,7 +149,7 @@ public class SmallStepRuleLabel extends JComponent
   /**
    * Returns the current {@link #stepExpression}
    * 
-   * @return
+   * @return TODO
    */
   public Expression getStepExpression ()
   {
@@ -161,13 +161,13 @@ public class SmallStepRuleLabel extends JComponent
    * Creates a dummy Expression with a placeholder rule name <i>RULE</i> to
    * determine the height.
    * 
-   * @return
+   * @return TODO
    */
   public static int getLabelHeight ()
   {
 
     // just create a label that can calculate the height
-    SmallStepRuleLabel l = new SmallStepRuleLabel ( "RULE", 1 );
+    SmallStepRuleLabel l = new SmallStepRuleLabel ( "RULE", 1 ); //$NON-NLS-1$
     return l.getHeight ();
   }
 

@@ -173,7 +173,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
   /**
    * The String for the label
    */
-  private static final String doubleColonString = "  ::  ";
+  private static final String doubleColonString = "  ::  "; //$NON-NLS-1$
 
 
   /**
@@ -319,13 +319,15 @@ public class TypeCheckerNodeComponent extends JComponent implements
     this.ruleButton.addMenuButtonListener ( new MenuButtonListener ()
     {
 
-      public void menuClosed ( MenuButton button )
+      public void menuClosed ( @SuppressWarnings ( "unused" )
+      MenuButton button )
       {
         // nothing to do
       }
 
 
-      public void menuItemActivated ( MenuButton button, final JMenuItem source )
+      public void menuItemActivated ( @SuppressWarnings ( "unused" )
+      MenuButton button, final JMenuItem source )
       {
         // setup a wait cursor for the toplevel ancestor
         final Container toplevel = getTopLevelAncestor ();
@@ -434,9 +436,9 @@ public class TypeCheckerNodeComponent extends JComponent implements
    * Places all elements one after another.<br>
    * <br>
    * First the label, the expression and the "::" will be placed, if the node is
-   * already prooven the {@link #typeLabel} will be placed aswell. The
-   * {@link #dimension} will be rescaled with every item that is placed and with
-   * all items, the height of the dimension will set to the current maximum.<br>
+   * already prooven the typeLabel will be placed aswell. The {@link #dimension}
+   * will be rescaled with every item that is placed and with all items, the
+   * height of the dimension will set to the current maximum.<br>
    * <br>
    * When all item of the top row are placed the {@link #ruleButton},
    * {@link #ruleLabel} or {@link #typeEnter} will be placed depending whether
@@ -496,7 +498,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
       // remember if it is neccessary to break
       boolean broke = false;
       if ( ( this.dimension.width + typeSize.width ) > maxWidth ) // dose not
-                                                                  // fit
+      // fit
       {
         // update the dimension
         this.dimension.width = Math.max ( this.dimension.width, typeSize.width );
@@ -640,7 +642,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
       this.dimension.height = Math.max ( resultSize.height,
           this.dimension.height );
 
-      this.dimension.width += ( " <: " ).length ();
+      this.dimension.width += ( " <: " ).length ();//$NON-NLS-1$
 
       // now place the elements
       int posX = 0;
@@ -710,6 +712,8 @@ public class TypeCheckerNodeComponent extends JComponent implements
    * using a {@link Language} and a {@link LanguageParser} to get a
    * {@link MonoType} that will be applied to the node using
    * {@link TypeCheckerProofModel#guessWithType(ProofNode, MonoType)}.
+   * 
+   * @param type
    */
   void handleTypeEntered ( String type )
   {
@@ -760,18 +764,31 @@ public class TypeCheckerNodeComponent extends JComponent implements
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param listener
+   */
   public void addTypeCheckerNodeListener ( TypeCheckerNodeListener listener )
   {
     this.listenerList.add ( TypeCheckerNodeListener.class, listener );
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param listener
+   */
   public void removeTypeCheckerNodeListener ( TypeCheckerNodeListener listener )
   {
     this.listenerList.remove ( TypeCheckerNodeListener.class, listener );
   }
 
 
+  /**
+   * TODO
+   */
   private void fireNodeChanged ()
   {
     Object [] listeners = this.listenerList.getListenerList ();
@@ -786,6 +803,11 @@ public class TypeCheckerNodeComponent extends JComponent implements
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param node
+   */
   private void fireRequestJumpToNode ( ProofNode node )
   {
     Object [] listeners = this.listenerList.getListenerList ();
@@ -924,6 +946,9 @@ public class TypeCheckerNodeComponent extends JComponent implements
    * Performs an update for the Entire Node. All elements get rearanged based on
    * the given maximum with, the menu items will be checked if they are still
    * available.
+   * 
+   * @param maxWidth
+   * @return TODO
    */
   public Dimension update ( int maxWidth )
   {
@@ -936,10 +961,11 @@ public class TypeCheckerNodeComponent extends JComponent implements
 
   /**
    * Returns the number of pixels the children should be displayed indentated.
+   * 
+   * @return TODO
    */
   public int getIndentationWidth ()
   {
-    // XXX: calculate the indentation
     return this.indexLabel.getWidth ();
   }
 
@@ -947,11 +973,12 @@ public class TypeCheckerNodeComponent extends JComponent implements
   /**
    * Returns the point at the bottom of the node where the layout should attach
    * the arrow.
+   * 
+   * @return TODO
    */
   public Point getBottomArrowConnection ()
   {
-    return new Point ( this.getX () + this.indexLabel.getWidth () / 2, this
-        .getY ()
+    return new Point ( getX () + this.indexLabel.getWidth () / 2, getY ()
         + ( this.dimension.height / 2 ) );
   }
 
@@ -959,10 +986,12 @@ public class TypeCheckerNodeComponent extends JComponent implements
   /**
    * Returns the point at the left of the node where the layout should attach
    * the line to its parent.
+   * 
+   * @return TODO
    */
   public Point getLeftArrowConnection ()
   {
-    return new Point ( this.getX (), this.getY () + this.indexLabel.getY ()
+    return new Point ( getX (), getY () + this.indexLabel.getY ()
         + this.indexLabel.getHeight () / 2 );
   }
 
@@ -981,7 +1010,6 @@ public class TypeCheckerNodeComponent extends JComponent implements
    * Returns the typeLabel.
    * 
    * @return The typeLabel.
-   * @see #typeLabel
    */
   public TypeComponent getTypeComponent ()
   {
@@ -1033,8 +1061,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
   public void setAdvanced ( boolean advancedP )
   {
     this.advanced = advancedP;
-    this.placeElements ( this.lastMaxWidth );
-
+    placeElements ( this.lastMaxWidth );
   }
 
 

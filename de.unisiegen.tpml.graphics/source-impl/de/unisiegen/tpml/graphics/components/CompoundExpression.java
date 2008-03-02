@@ -105,7 +105,7 @@ public class CompoundExpression < S, E > extends JComponent
    * when used within the
    * {@link de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent}
    */
-  private static String arrowStr = " \u22b3 ";
+  private static String arrowStr = " \u22b3 "; //$NON-NLS-1$
 
 
   /**
@@ -134,7 +134,7 @@ public class CompoundExpression < S, E > extends JComponent
     this.alternativeColor = null;
     this.braceSize = 10;
     this.underlineExpression = null;
-    this.addMouseMotionListener ( new MouseMotionAdapter ()
+    addMouseMotionListener ( new MouseMotionAdapter ()
     {
 
       @Override
@@ -143,11 +143,12 @@ public class CompoundExpression < S, E > extends JComponent
         handleMouseMoved ( event );
       }
     } );
-    this.addMouseListener ( new MouseAdapter ()
+    addMouseListener ( new MouseAdapter ()
     {
 
       @Override
-      public void mouseExited ( MouseEvent e )
+      public void mouseExited ( @SuppressWarnings ( "unused" )
+      MouseEvent e )
       {
         CompoundExpression.this.getToListenForMouse ().reset ();
         CompoundExpression.this.getToListenForMouse ().setMark ( false );
@@ -268,11 +269,11 @@ public class CompoundExpression < S, E > extends JComponent
       CompoundExpression.this.repaint ();
     }
 
-    if ( this.environmentRenderer != null
+    if ( ( this.environmentRenderer != null )
         && this.environmentRenderer.isCollapsed () )
     {
       Rectangle r = this.environmentRenderer.getCollapsedArea ();
-      if ( event.getX () >= r.x && event.getX () <= r.x + r.width )
+      if ( ( event.getX () >= r.x ) && ( event.getX () <= r.x + r.width ) )
       {
         setToolTipText ( this.environmentRenderer.getCollapsedString () );
       }
@@ -377,7 +378,7 @@ public class CompoundExpression < S, E > extends JComponent
    * Calculates the size needed to propperly render the compoundExpression
    * 
    * @param pMaxWidth
-   * @return
+   * @return TODO
    */
   public Dimension getNeededSize ( int pMaxWidth )
   {
@@ -432,7 +433,7 @@ public class CompoundExpression < S, E > extends JComponent
         maxWidth -= result.width;
       }
     }
-    if ( this.expression != null && this.expressionRenderer != null )
+    if ( ( this.expression != null ) && ( this.expressionRenderer != null ) )
     {
       // now check the size still available for the expression
       this.expressionSize = this.expressionRenderer
@@ -500,7 +501,7 @@ public class CompoundExpression < S, E > extends JComponent
     // if there is no environment or the environment is of type
     // Store, the entire expression (with environment) will begin
     // with the expression
-    if ( this.environment == null || this.environment instanceof Store )
+    if ( ( this.environment == null ) || ( this.environment instanceof Store ) )
     {
       // this.expressionRenderer.render ( posX , posY , getHeight ( ) , gc ,
       // bonds , toListenForMouse ) ;

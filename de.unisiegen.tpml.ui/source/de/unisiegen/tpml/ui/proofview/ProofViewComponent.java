@@ -91,12 +91,16 @@ public class ProofViewComponent extends JComponent implements EditorComponent
 
   /**
    * TODO Add documentation here.
+   * 
+   * @param view The {@link ProofView}.
+   * @param model The {@link ProofModel}.
    */
+  @SuppressWarnings ( "synthetic-access" )
   public ProofViewComponent ( ProofView view, ProofModel model )
   {
     if ( model == null || view == null )
     {
-      throw new NullPointerException ( "model or view are null" );
+      throw new NullPointerException ( "model or view are null" ); //$NON-NLS-1$
     }
     setLayout ( new BorderLayout () );
     this.view = view;
@@ -112,11 +116,12 @@ public class ProofViewComponent extends JComponent implements EditorComponent
    * 
    * @param m the modle
    */
+  @SuppressWarnings ( "synthetic-access" )
   public void setModel ( ProofModel m )
   {
-    model = m;
+    this.model = m;
     this.model.addPropertyChangeListener ( new ModelChangeListener () );
-    add ( ( JComponent ) view, BorderLayout.CENTER );
+    add ( ( JComponent ) this.view, BorderLayout.CENTER );
     setDefaultStates ();
     // setPongStatus ( false );
 
@@ -155,7 +160,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent
     {
       boolean oldNextStatus = this.nextStatus;
       this.nextStatus = nextStatus;
-      firePropertyChange ( "nextStatus", oldNextStatus, nextStatus );
+      firePropertyChange ( "nextStatus", oldNextStatus, nextStatus ); //$NON-NLS-1$
     }
   }
 
@@ -184,7 +189,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent
     {
       boolean oldPongStatus = this.pongStatus;
       this.pongStatus = pongStatus;
-      firePropertyChange ( "pongStatus", oldPongStatus, pongStatus );
+      firePropertyChange ( "pongStatus", oldPongStatus, pongStatus ); //$NON-NLS-1$
     }
   }
 
@@ -213,7 +218,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent
     {
       boolean oldRedoStatus = this.redoStatus;
       this.redoStatus = redoStatus;
-      firePropertyChange ( "redoStatus", oldRedoStatus, redoStatus );
+      firePropertyChange ( "redoStatus", oldRedoStatus, redoStatus ); //$NON-NLS-1$
     }
   }
 
@@ -242,7 +247,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent
     {
       boolean oldUndoStatus = this.undoStatus;
       this.undoStatus = undoStatus;
-      firePropertyChange ( "undoStatus", oldUndoStatus, undoStatus );
+      firePropertyChange ( "undoStatus", oldUndoStatus, undoStatus ); //$NON-NLS-1$
     }
   }
 
@@ -282,7 +287,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent
           .showMessageDialog (
               getTopLevelAncestor (),
               MessageFormat.format ( java.util.ResourceBundle.getBundle (
-                  "de/unisiegen/tpml/ui/ui" ).getString ( "NodeComponent.5" ),
+                  "de/unisiegen/tpml/ui/ui" ).getString ( "NodeComponent.5" ), //$NON-NLS-1$//$NON-NLS-2$
                   e.getMessage () ),
               java.util.ResourceBundle
                   .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "NodeComponent.6" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -304,7 +309,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent
     }
     catch ( CannotRedoException e )
     {
-      logger.error ( "Can not redo on this model", e );
+      logger.error ( "Can not redo on this model", e ); //$NON-NLS-1$
     }
   }
 
@@ -322,9 +327,8 @@ public class ProofViewComponent extends JComponent implements EditorComponent
     }
     catch ( CannotUndoException e )
     {
-      logger.error ( "Can not undo on this model", e );
+      logger.error ( "Can not undo on this model", e ); //$NON-NLS-1$
     }
-
   }
 
 
@@ -335,27 +339,34 @@ public class ProofViewComponent extends JComponent implements EditorComponent
   private class ModelChangeListener implements PropertyChangeListener
   {
 
+    /**
+     * TODO
+     * 
+     * @param evt
+     * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
+     */
+    @SuppressWarnings ( "synthetic-access" )
     public void propertyChange ( PropertyChangeEvent evt )
     {
       // determine the name of the changed property
       String propertyName = evt.getPropertyName ().intern ();
 
       // the undo/redo/next stati
-      if ( propertyName == "undoable" )
+      if ( propertyName == "undoable" ) //$NON-NLS-1$
       {
-        setUndoStatus ( ( Boolean ) evt.getNewValue () );
+        setUndoStatus ( ( ( Boolean ) evt.getNewValue () ).booleanValue () );
       }
-      else if ( propertyName == "redoable" )
+      else if ( propertyName == "redoable" ) //$NON-NLS-1$
       {
-        setRedoStatus ( ( Boolean ) evt.getNewValue () );
+        setRedoStatus ( ( ( Boolean ) evt.getNewValue () ).booleanValue () );
       }
-      else if ( propertyName == "finished" )
+      else if ( propertyName == "finished" ) //$NON-NLS-1$
       {
-        setNextStatus ( !( Boolean ) evt.getNewValue () );
+        setNextStatus ( ! ( ( Boolean ) evt.getNewValue () ).booleanValue () );
       }
 
       // the pong status
-      if ( propertyName == "cheating" || propertyName == "finished" )
+      if ( propertyName == "cheating" || propertyName == "finished" ) //$NON-NLS-1$ //$NON-NLS-2$
       {
         setPongStatus ( !ProofViewComponent.this.model.isCheating ()
             && ProofViewComponent.this.model.isFinished () );
@@ -375,16 +386,24 @@ public class ProofViewComponent extends JComponent implements EditorComponent
   }
 
 
+  /**
+   * Returns the model.
+   * 
+   * @return The model.
+   */
   public ProofModel getModel ()
   {
     return this.model;
-
   }
 
 
+  /**
+   * Returns the print part.
+   * 
+   * @see EditorComponent#getPrintPart()
+   */
   public JComponent getPrintPart ()
   {
-
-    return view.getPrintPart ();
+    return this.view.getPrintPart ();
   }
 }

@@ -14,10 +14,6 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * It is nearly the same as the SmallStepRuleLabel but without an exponent.
  * 
  * @author michael
- * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceView
- * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceComponent
- * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceNodeComponent
- * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceRulesComponent
  */
 public class TypeInferenceRuleLabel extends JComponent
 {
@@ -44,7 +40,9 @@ public class TypeInferenceRuleLabel extends JComponent
    * @param ruleName The name of the rule
    * @param ruleCount The number that should be shown in the exponent.
    */
-  public TypeInferenceRuleLabel ( String ruleName, int ruleCount )
+  public TypeInferenceRuleLabel ( String ruleName,
+      @SuppressWarnings ( "unused" )
+      int ruleCount )
   {
     super ();
 
@@ -54,7 +52,7 @@ public class TypeInferenceRuleLabel extends JComponent
 
     JLabel ruleLabel = new JLabel ();
     add ( ruleLabel );
-    ruleLabel.setText ( "(" + ruleName + ")" );
+    ruleLabel.setText ( "(" + ruleName + ")" ); //$NON-NLS-1$//$NON-NLS-2$
 
     Dimension size = null;
 
@@ -91,7 +89,7 @@ public class TypeInferenceRuleLabel extends JComponent
   /**
    * Returns the current {@link #stepExpression}
    * 
-   * @return
+   * @return TODO
    */
   public Expression getStepExpression ()
   {
@@ -103,14 +101,13 @@ public class TypeInferenceRuleLabel extends JComponent
    * Creates a dummy Expression with a placeholder rule name <i>RULE</i> to
    * determine the height.
    * 
-   * @return
+   * @return TODO
    */
   public static int getLabelHeight ()
   {
 
     // just create a label that can calculate the height
-    TypeInferenceRuleLabel l = new TypeInferenceRuleLabel ( "RULE", 1 );
+    TypeInferenceRuleLabel l = new TypeInferenceRuleLabel ( "RULE", 1 ); //$NON-NLS-1$
     return l.getHeight ();
   }
-
 }

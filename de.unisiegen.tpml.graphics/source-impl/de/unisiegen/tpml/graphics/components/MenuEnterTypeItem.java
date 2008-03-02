@@ -22,6 +22,9 @@ public class MenuEnterTypeItem extends JMenuItem
   private static final long serialVersionUID = -5464136166948202537L;
 
 
+  /**
+   * TODO
+   */
   public MenuEnterTypeItem ()
   {
     super ();

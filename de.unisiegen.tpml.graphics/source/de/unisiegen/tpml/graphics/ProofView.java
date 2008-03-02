@@ -55,6 +55,7 @@ public interface ProofView
    * Determines the first unproven node and tries to guess a proof rule to apply
    * to that node.
    * 
+   * @throws IllegalStateException
    * @throws ProofGuessException if the proof model failes to guess the next
    *           rule.
    */

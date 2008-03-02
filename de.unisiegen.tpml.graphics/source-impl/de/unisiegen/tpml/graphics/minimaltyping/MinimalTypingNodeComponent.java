@@ -165,7 +165,7 @@ public class MinimalTypingNodeComponent extends JComponent implements
   /**
    * The String for the label
    */
-  private static final String doubleColonString = "  ::  ";
+  private static final String doubleColonString = "  ::  "; //$NON-NLS-1$
 
 
   /**
@@ -481,7 +481,7 @@ public class MinimalTypingNodeComponent extends JComponent implements
       if ( this.proofNode.isProven () )
       {
         // place the menu label
-        this.ruleLabel.setText ( this.proofNode.getRule ().toString () ); //$NON-NLS-1$ //$NON-NLS-2$
+        this.ruleLabel.setText ( this.proofNode.getRule ().toString () );
         Dimension ruleLabelSize = this.ruleLabel.getPreferredSize ();
         this.ruleLabel.setBounds ( posX, this.dimension.height + this.spacing,
             ruleLabelSize.width, ruleLabelSize.height );
@@ -614,6 +614,9 @@ public class MinimalTypingNodeComponent extends JComponent implements
   }
 
 
+  /**
+   * TODO
+   */
   private void fireNodeChanged ()
   {
     Object [] listeners = this.listenerList.getListenerList ();
@@ -628,6 +631,11 @@ public class MinimalTypingNodeComponent extends JComponent implements
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param node
+   */
   private void fireRequestJumpToNode ( ProofNode node )
   {
     Object [] listeners = this.listenerList.getListenerList ();
@@ -764,6 +772,9 @@ public class MinimalTypingNodeComponent extends JComponent implements
    * Performs an update for the Entire Node. All elements get rearanged based on
    * the given maximum with, the menu items will be checked if they are still
    * available.
+   * 
+   * @param maxWidth
+   * @return TODO
    */
   public Dimension update ( int maxWidth )
   {
@@ -776,10 +787,11 @@ public class MinimalTypingNodeComponent extends JComponent implements
 
   /**
    * Returns the number of pixels the children should be displayed indentated.
+   * 
+   * @return TODO
    */
   public int getIndentationWidth ()
   {
-    // XXX: calculate the indentation
     return this.indexLabel.getWidth ();
   }
 
@@ -787,11 +799,12 @@ public class MinimalTypingNodeComponent extends JComponent implements
   /**
    * Returns the point at the bottom of the node where the layout should attach
    * the arrow.
+   * 
+   * @return TODO
    */
   public Point getBottomArrowConnection ()
   {
-    return new Point ( this.getX () + this.indexLabel.getWidth () / 2, this
-        .getY ()
+    return new Point ( getX () + this.indexLabel.getWidth () / 2, getY ()
         + this.indexLabel.getHeight () );
   }
 
@@ -799,10 +812,12 @@ public class MinimalTypingNodeComponent extends JComponent implements
   /**
    * Returns the point at the left of the node where the layout should attach
    * the line to its parent.
+   * 
+   * @return TODO
    */
   public Point getLeftArrowConnection ()
   {
-    return new Point ( this.getX (), this.getY () + this.indexLabel.getY ()
+    return new Point ( getX (), getY () + this.indexLabel.getY ()
         + this.indexLabel.getHeight () / 2 );
   }
 
@@ -821,7 +836,6 @@ public class MinimalTypingNodeComponent extends JComponent implements
    * Returns the typeLabel.
    * 
    * @return The typeLabel.
-   * @see #typeLabel
    */
   public TypeComponent getTypeComponent ()
   {
@@ -886,7 +900,6 @@ public class MinimalTypingNodeComponent extends JComponent implements
   /**
    * Get the second
    * 
-   * @link TypeComponent of this Component
    * @return the second type component
    */
   public TypeComponent getTypeComponent2 ()

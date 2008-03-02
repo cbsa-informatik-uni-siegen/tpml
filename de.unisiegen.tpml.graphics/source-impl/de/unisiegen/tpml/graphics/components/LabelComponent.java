@@ -95,7 +95,7 @@ public class LabelComponent extends JComponent
     Dimension result = new Dimension ( 0, 0 );
     result.width += AbstractRenderer.getTextFontMetrics ().stringWidth (
         this.label.toString () );
-    if ( this.label != null && this.typeRenderer != null )
+    if ( ( this.label != null ) && ( this.typeRenderer != null ) )
     {
       this.labelSize = this.typeRenderer.getNeededSizeAll_ ( maxWidth );
       result.width += this.labelSize.width;

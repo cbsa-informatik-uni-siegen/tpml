@@ -58,18 +58,18 @@ public class PrettyStringToHTML
   public static String toHTMLString ( PrettyString s )
   {
     // build the result
-    String result = "";
+    String result = ""; //$NON-NLS-1$
 
     // for performance, use the Stringbuilder
     StringBuilder rb = new StringBuilder ();
 
     // the first font will be clesed directly
-    rb.append ( "<font color=\"#FFFFFF\">" );
+    rb.append ( "<font color=\"#FFFFFF\">" ); //$NON-NLS-1$
 
     // these Strings will be inserted everytime a char is inserted
     // if the Font is with style BOLD, they will get <b> and </b>
-    String boldAnte = "";
-    String boldPost = "";
+    String boldAnte = ""; //$NON-NLS-1$
+    String boldPost = ""; //$NON-NLS-1$
 
     // lets walk throug the PrettySting, char by char
     int charIndex = 0;
@@ -95,21 +95,21 @@ public class PrettyStringToHTML
             // save the new style
             lastStyle = it.getStyle ();
             // buld up the color from theme
-            rb.append ( "</font>" );
+            rb.append ( "</font>" ); //$NON-NLS-1$
             Color col = Theme.currentTheme ().getKeywordColor ();
             String colH = getHTMLColor ( col );
-            rb.append ( "<font color=\"#" + colH + "\">" );
+            rb.append ( "<font color=\"#" + colH + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
             // set the boldString if the style ist BOLD
             if ( AbstractRenderer.keywordFont.getStyle () == Font.BOLD )
             {
-              boldAnte = "<b>";
-              boldPost = "</b>";
+              boldAnte = "<b>"; //$NON-NLS-1$
+              boldPost = "</b>"; //$NON-NLS-1$
             }
             // reset the BoldStrings if the style is not BOLD
             else
             {
-              boldAnte = "";
-              boldPost = "";
+              boldAnte = ""; //$NON-NLS-1$
+              boldPost = ""; //$NON-NLS-1$
             }
             rb.append ( boldAnte + getHTMLCode ( c ) + boldPost );
 
@@ -123,20 +123,20 @@ public class PrettyStringToHTML
           }
           else
           {
-            rb.append ( "</font>" );
+            rb.append ( "</font>" ); //$NON-NLS-1$
             lastStyle = it.getStyle ();
             Color col = Theme.currentTheme ().getIdentifierColor ();
             String colH = getHTMLColor ( col );
-            rb.append ( "<font color=\"#" + colH + "\">" );
+            rb.append ( "<font color=\"#" + colH + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
             if ( AbstractRenderer.identifierFont.getStyle () == Font.BOLD )
             {
-              boldAnte = "<b>";
-              boldPost = "</b>";
+              boldAnte = "<b>"; //$NON-NLS-1$
+              boldPost = "</b>"; //$NON-NLS-1$
             }
             else
             {
-              boldAnte = "";
-              boldPost = "";
+              boldAnte = ""; //$NON-NLS-1$
+              boldPost = ""; //$NON-NLS-1$
             }
             rb.append ( boldAnte + getHTMLCode ( c ) + boldPost );
           }
@@ -148,20 +148,20 @@ public class PrettyStringToHTML
           }
           else
           {
-            rb.append ( "</font>" );
+            rb.append ( "</font>" ); //$NON-NLS-1$
             lastStyle = it.getStyle ();
             Color col = Theme.currentTheme ().getExpressionColor ();
             String colH = getHTMLColor ( col );
-            rb.append ( "<font color=\"#" + colH + "\">" );
+            rb.append ( "<font color=\"#" + colH + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
             if ( AbstractRenderer.expFont.getStyle () == Font.BOLD )
             {
-              boldAnte = "<b>";
-              boldPost = "</b>";
+              boldAnte = "<b>"; //$NON-NLS-1$
+              boldPost = "</b>"; //$NON-NLS-1$
             }
             else
             {
-              boldAnte = "";
-              boldPost = "";
+              boldAnte = ""; //$NON-NLS-1$
+              boldPost = ""; //$NON-NLS-1$
             }
             rb.append ( boldAnte + getHTMLCode ( c ) + boldPost );
           }
@@ -173,20 +173,20 @@ public class PrettyStringToHTML
           }
           else
           {
-            rb.append ( "</font>" );
+            rb.append ( "</font>" ); //$NON-NLS-1$
             lastStyle = it.getStyle ();
             Color col = Theme.currentTheme ().getConstantColor ();
             String colH = getHTMLColor ( col );
-            rb.append ( "<font color=\"#" + colH + "\">" );
+            rb.append ( "<font color=\"#" + colH + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
             if ( AbstractRenderer.constantFont.getStyle () == Font.BOLD )
             {
-              boldAnte = "<b>";
-              boldPost = "</b>";
+              boldAnte = "<b>"; //$NON-NLS-1$
+              boldPost = "</b>"; //$NON-NLS-1$
             }
             else
             {
-              boldAnte = "";
-              boldPost = "";
+              boldAnte = ""; //$NON-NLS-1$
+              boldPost = ""; //$NON-NLS-1$
             }
             rb.append ( boldAnte + getHTMLCode ( c ) + boldPost );
           }
@@ -200,20 +200,20 @@ public class PrettyStringToHTML
           }
           else
           {
-            rb.append ( "</font>" );
+            rb.append ( "</font>" ); //$NON-NLS-1$
             lastStyle = it.getStyle ();
             Color col = Theme.currentTheme ().getTypeColor ();
             String colH = getHTMLColor ( col );
-            rb.append ( "<font color=\"#" + colH + "\">" );
+            rb.append ( "<font color=\"#" + colH + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
             if ( AbstractRenderer.typeFont.getStyle () == Font.BOLD )
             {
-              boldAnte = "<b>";
-              boldPost = "</b>";
+              boldAnte = "<b>"; //$NON-NLS-1$
+              boldPost = "</b>"; //$NON-NLS-1$
             }
             else
             {
-              boldAnte = "";
-              boldPost = "";
+              boldAnte = ""; //$NON-NLS-1$
+              boldPost = ""; //$NON-NLS-1$
             }
             rb.append ( boldAnte + getHTMLCode ( c ) + boldPost );
           }
@@ -221,7 +221,7 @@ public class PrettyStringToHTML
       }
     }
 
-    rb.append ( "</font>" );
+    rb.append ( "</font>" ); //$NON-NLS-1$
 
     result = rb.toString ();
 

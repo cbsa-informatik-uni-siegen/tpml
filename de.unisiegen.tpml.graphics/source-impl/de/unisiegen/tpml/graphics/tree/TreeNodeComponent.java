@@ -18,7 +18,7 @@ public interface TreeNodeComponent
    * Should return the bottom position of the object where the arrow should be
    * placed
    * 
-   * @return
+   * @return TODO
    */
   public Point getBottomArrowConnection ();
 
@@ -27,7 +27,7 @@ public interface TreeNodeComponent
    * Should return the left position where the lines of the tree should be
    * connected
    * 
-   * @return
+   * @return TODO
    */
   public Point getLeftArrowConnection ();
 
@@ -36,7 +36,7 @@ public interface TreeNodeComponent
    * Should trigger an update for the node with the given maximum width.
    * 
    * @param maxWidth
-   * @return
+   * @return TODO
    */
   public Dimension update ( int maxWidth );
 
@@ -44,7 +44,7 @@ public interface TreeNodeComponent
   /**
    * Should return the number of pixels any child node should be indentated.
    * 
-   * @return
+   * @return TODO
    */
   public int getIndentationWidth ();
 

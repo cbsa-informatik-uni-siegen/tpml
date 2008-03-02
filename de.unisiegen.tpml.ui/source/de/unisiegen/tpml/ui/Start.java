@@ -49,11 +49,10 @@ public class Start
     int lengthWihtoutDiv = toDivC.length;
     // lets count the split-char
     int countdiv = 0;
-    // walk through the array
-    for ( int i = 0 ; i < toDivC.length ; i++ )
+    for ( char element : toDivC )
     {
       // div-char is found
-      if ( toDivC [ i ] == div )
+      if ( element == div )
       {
         // because the div-chars will not be returned
         lengthWihtoutDiv-- ;
@@ -131,7 +130,7 @@ public class Start
     {
       return true;
     }
-    if ( first == neededMaster && second >= neededSlave )
+    if ( ( first == neededMaster ) && ( second >= neededSlave ) )
     {
       return true;
     }
@@ -154,9 +153,9 @@ public class Start
 
     if ( countArgs > 0 )
     {
-      for ( int i = 0 ; i < args.length ; i++ )
+      for ( String element : args )
       {
-        if ( args [ i ].equalsIgnoreCase ( "-f" ) )//$NON-NLS-1$
+        if ( element.equalsIgnoreCase ( "-f" ) )//$NON-NLS-1$
         {
           force = true;
         }
@@ -168,16 +167,16 @@ public class Start
       // build the other arguments to provide open files
       String Arguments[] = new String [ args.length - 1 ];
       int j = 0;
-      for ( int i = 0 ; i < args.length ; i++ )
+      for ( String element : args )
       {
         // the -f will be ignored because the main.class dose not use it
-        if ( args [ i ].equalsIgnoreCase ( "-f" ) )//$NON-NLS-1$
+        if ( element.equalsIgnoreCase ( "-f" ) )//$NON-NLS-1$
         {
           // nothing to do, do not copy to Arguments
         }
         else
         {
-          Arguments [ j ] = args [ i ];
+          Arguments [ j ] = element;
           j++ ;
         }
       }

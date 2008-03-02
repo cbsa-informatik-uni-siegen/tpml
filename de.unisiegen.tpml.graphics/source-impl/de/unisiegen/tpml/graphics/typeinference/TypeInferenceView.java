@@ -99,7 +99,7 @@ public class TypeInferenceView extends AbstractProofView
     this.typeInferenceProofModel = pTypeInferenceProofModel;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ();
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT );
-    this.setLayout ( new GridBagLayout () );
+    setLayout ( new GridBagLayout () );
     this.scrollPane = new JScrollPane ();
     this.component = new TypeInferenceComponent ( this.typeInferenceProofModel,
         isAdvanced () );
@@ -205,9 +205,14 @@ public class TypeInferenceView extends AbstractProofView
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see de.unisiegen.tpml.graphics.ProofView#getPrintPart()
+   */
   public JComponent getPrintPart ()
   {
-
-    return ( JComponent ) component.clone ();
+    return this.component.clone ();
   }
 }

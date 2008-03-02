@@ -91,9 +91,9 @@ public class TypeComponent extends JComponent
     this.bonds = new ShowBonds ();
     this.toListenForMouse = new ToListenForMouseContainer ();
     this.alternativeColor = null;
-    this.text = "";
+    this.text = ""; //$NON-NLS-1$
 
-    this.addMouseMotionListener ( new MouseMotionAdapter ()
+    addMouseMotionListener ( new MouseMotionAdapter ()
     {
 
       @Override
@@ -102,11 +102,12 @@ public class TypeComponent extends JComponent
         handleMouseMoved ( event );
       }
     } );
-    this.addMouseListener ( new MouseAdapter ()
+    addMouseListener ( new MouseAdapter ()
     {
 
       @Override
-      public void mouseExited ( MouseEvent e )
+      public void mouseExited ( @SuppressWarnings ( "unused" )
+      MouseEvent e )
       {
         resetMouseContainer ();
 
@@ -206,7 +207,6 @@ public class TypeComponent extends JComponent
    * Sets the type that should rendered.
    * 
    * @param typeP the type to render
-   * @param expression
    */
   public void setType ( Type typeP )
   {
@@ -262,8 +262,8 @@ public class TypeComponent extends JComponent
         this.text );
     if ( this.type instanceof RowType )
     {
-      result.width += AbstractRenderer.getTextFontMetrics ().stringWidth ( "(" );
-      result.width += AbstractRenderer.getTextFontMetrics ().stringWidth ( ")" );
+      result.width += AbstractRenderer.getTextFontMetrics ().stringWidth ( "(" ); //$NON-NLS-1$
+      result.width += AbstractRenderer.getTextFontMetrics ().stringWidth ( ")" ); //$NON-NLS-1$
     }
 
     // TODO Testen
@@ -349,8 +349,8 @@ public class TypeComponent extends JComponent
       {
         gc.setFont ( AbstractRenderer.getTextFont () );
         gc.setColor ( Theme.currentTheme ().getExpressionColor () );
-        gc.drawString ( "(", posX, posY + AbstractRenderer.getFontAscent () );
-        posX += AbstractRenderer.getTextFontMetrics ().stringWidth ( "(" );
+        gc.drawString ( "(", posX, posY + AbstractRenderer.getFontAscent () ); //$NON-NLS-1$
+        posX += AbstractRenderer.getTextFontMetrics ().stringWidth ( "(" ); //$NON-NLS-1$
       }
 
     }
@@ -363,8 +363,8 @@ public class TypeComponent extends JComponent
       {
         gc.setFont ( AbstractRenderer.getTextFont () );
         gc.setColor ( Theme.currentTheme ().getExpressionColor () );
-        gc.drawString ( ")", posX, posY + AbstractRenderer.getFontAscent () );
-        posX += AbstractRenderer.getTextFontMetrics ().stringWidth ( ")" );
+        gc.drawString ( ")", posX, posY + AbstractRenderer.getFontAscent () ); //$NON-NLS-1$
+        posX += AbstractRenderer.getTextFontMetrics ().stringWidth ( ")" ); //$NON-NLS-1$
       }
     }
 

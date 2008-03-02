@@ -157,7 +157,7 @@ public class CompoundExpressionTypeInference extends JComponent
   /**
    * the string the renderer will show beside the mousepointer
    */
-  private String draggedString = "";
+  private String draggedString = ""; //$NON-NLS-1$
 
 
   /**
@@ -195,7 +195,7 @@ public class CompoundExpressionTypeInference extends JComponent
     // the MouseMotionListner only implements the text shown next to the
     // mouspointer while dragging
     // and changing the mousePointer
-    this.addMouseMotionListener ( new MouseMotionAdapter ()
+    addMouseMotionListener ( new MouseMotionAdapter ()
     {
 
       @Override
@@ -249,9 +249,10 @@ public class CompoundExpressionTypeInference extends JComponent
       }
     } );
 
-    this.addMouseListener ( new MouseAdapter ()
+    addMouseListener ( new MouseAdapter ()
     {
 
+      @Override
       public final void mouseClicked ( MouseEvent pMouseEvent )
       {
         handelMouseClicked ( pMouseEvent );
@@ -259,7 +260,8 @@ public class CompoundExpressionTypeInference extends JComponent
 
 
       @Override
-      public void mouseExited ( MouseEvent e )
+      public void mouseExited ( @SuppressWarnings ( "unused" )
+      MouseEvent e )
       {
         // tell the toListenForMouse that the mose is gone
         resetMouseContainer ();
@@ -356,7 +358,7 @@ public class CompoundExpressionTypeInference extends JComponent
           {
             CompoundExpressionTypeInference.this.draggedString = CompoundExpressionTypeInference.this.draggedString
                 .substring ( 0, 10 )
-                + "...";
+                + "..."; //$NON-NLS-1$
           }
           CompoundExpressionTypeInference.this.dragged = true;
         }
@@ -521,12 +523,12 @@ public class CompoundExpressionTypeInference extends JComponent
       Rectangle rectOfActualA = rectsOfAPositions.get ( i );
 
       if ( isIn ( rectOfActualA, pointMousePosition ) ) // if (x >= r.x && x <=
-                                                        // r.x+r.width && y >=
-                                                        // r.y && y <=
+      // r.x+r.width && y >=
+      // r.y && y <=
       // r.y+r.width)
       {
         // genereate the TooltioText
-        String genreateTooltip = "";
+        String genreateTooltip = ""; //$NON-NLS-1$
 
         // get the Infos about the tooltip from the typeFormularRenderer
         ArrayList < ArrayList < PrettyString >> list = this.typeFormularRenderer
@@ -534,7 +536,7 @@ public class CompoundExpressionTypeInference extends JComponent
         ArrayList < PrettyString > prettyStrings = list.get ( i );
 
         // build up the html
-        genreateTooltip += ( "<html>" );
+        genreateTooltip += ( "<html>" ); //$NON-NLS-1$
 
         for ( int l = 0 ; l < prettyStrings.size () ; l++ )
         {
@@ -542,16 +544,16 @@ public class CompoundExpressionTypeInference extends JComponent
               .get ( l ) );
           if ( l < ( prettyStrings.size () - 1 ) )
           {
-            genreateTooltip += " <br> ";
+            genreateTooltip += " <br> "; //$NON-NLS-1$
           }
         }
 
         if ( prettyStrings.size () == 0 )
         {
-          genreateTooltip += ( "<font size=+1>\u00D8</font>" );
+          genreateTooltip += ( "<font size=+1>\u00D8</font>" ); //$NON-NLS-1$
         }
 
-        genreateTooltip += ( "</html>" );
+        genreateTooltip += ( "</html>" ); //$NON-NLS-1$
         setToolTipText ( genreateTooltip );
       }
     }
@@ -741,8 +743,8 @@ public class CompoundExpressionTypeInference extends JComponent
       maxWidth = Integer.MAX_VALUE;
     }
     // check whether there is Substitution...
-    if ( this.defaultTypeSubstitutionList != null
-        && this.defaultTypeSubstitutionList.size () > 0 )
+    if ( ( this.defaultTypeSubstitutionList != null )
+        && ( this.defaultTypeSubstitutionList.size () > 0 ) )
     {
       // The dimension the rendere needs to render the Substitutions
       this.substitutionSize = this.substitutionRenderer.getNeededSize ();
@@ -752,7 +754,8 @@ public class CompoundExpressionTypeInference extends JComponent
       result.width += this.spaceInFrontOf;
     }
     // check whether there are typformulars...
-    if ( this.typeFormulaList != null && this.typeFormulaList.size () > 0 )
+    if ( ( this.typeFormulaList != null )
+        && ( this.typeFormulaList.size () > 0 ) )
     {
       // TODO printing...
       this.typeFormulaSize = this.typeFormularRenderer
@@ -914,7 +917,7 @@ public class CompoundExpressionTypeInference extends JComponent
    * 
    * @param r the Rectangle
    * @param p the Point
-   * @return
+   * @return TODO
    */
   private static boolean isIn ( Rectangle r, Point p )
   {
@@ -945,7 +948,7 @@ public class CompoundExpressionTypeInference extends JComponent
   /**
    * @return the list of TypeFormulas
    */
-  public ArrayList getTypeFormulaList ()
+  public ArrayList < TypeFormula > getTypeFormulaList ()
   {
     return this.typeFormulaList;
   }

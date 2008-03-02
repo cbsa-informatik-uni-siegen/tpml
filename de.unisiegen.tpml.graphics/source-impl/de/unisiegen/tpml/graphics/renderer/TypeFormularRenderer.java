@@ -6,9 +6,9 @@ import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Enumeration;
 
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
@@ -40,7 +40,7 @@ public class TypeFormularRenderer extends AbstractRenderer
   /**
    * the Renderer for the environments
    */
-  private EnvironmentRenderer environmentRenderer;
+  private EnvironmentRenderer < Identifier, Type > environmentRenderer;
 
 
   /**
@@ -130,19 +130,19 @@ public class TypeFormularRenderer extends AbstractRenderer
   /**
    * The Arrow renderd between typeenvironment and the expression
    */
-  private static final String arrowString = "  " + "\u22b3" + "  ";
+  private static final String arrowString = "  " + "\u22b3" + "  "; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 
 
   /**
    * The String renderd between the expressions and the Types
    */
-  private static final String doubleColon = "  " + "::" + "  ";
+  private static final String doubleColon = "  " + "::" + "  "; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 
   /**
    * The String renderd for the As "A |- "
    */
-  private static final String As = "A";
+  private static final String As = "A"; //$NON-NLS-1$
 
 
   // their is no nice nail avialble at the unicode (unbelivable) so the nail is
@@ -357,8 +357,8 @@ public class TypeFormularRenderer extends AbstractRenderer
     {
       // first we need the space for the solve
       int insertSpace = AbstractRenderer.keywordFontMetrics
-          .stringWidth ( "solve " );
-      insertSpace += AbstractRenderer.expFontMetrics.stringWidth ( "{" );
+          .stringWidth ( "solve " ); //$NON-NLS-1$
+      insertSpace += AbstractRenderer.expFontMetrics.stringWidth ( "{" ); //$NON-NLS-1$
 
       // the prettyStingRender is needed here to find out the needed space
       PrettyStringRenderer prettyStringrenderer;
@@ -400,7 +400,7 @@ public class TypeFormularRenderer extends AbstractRenderer
           Expression expression = t.getExpression ();
           Type type = t.getType ();
 
-          this.environmentRenderer = new EnvironmentRenderer < Enumeration, Enumeration > ();
+          this.environmentRenderer = new EnvironmentRenderer < Identifier, Type > ();
           this.environmentRenderer.setEnvironment ( environment );
           Dimension environmentDim = this.environmentRenderer.getNeededSize ();
 
@@ -496,9 +496,9 @@ public class TypeFormularRenderer extends AbstractRenderer
           // The width for the nail + the space arround it (The width of the
           // nail will be as big as the width
           // of the String "--"
-          lineWidthEnvironment += keywordFontMetrics.stringWidth ( " " );
-          lineWidthEnvironment += keywordFontMetrics.stringWidth ( "--" );
-          lineWidthEnvironment += keywordFontMetrics.stringWidth ( " " );
+          lineWidthEnvironment += keywordFontMetrics.stringWidth ( " " ); //$NON-NLS-1$
+          lineWidthEnvironment += keywordFontMetrics.stringWidth ( "--" ); //$NON-NLS-1$
+          lineWidthEnvironment += keywordFontMetrics.stringWidth ( " " ); //$NON-NLS-1$
           lineHeightTypeFormula += prettyStringrenderer
               .getNeededSize ( Integer.MAX_VALUE ).height;
         }
@@ -515,9 +515,9 @@ public class TypeFormularRenderer extends AbstractRenderer
           // The width for the nail + the space arround it (The width of the
           // nail will be as big as the width
           // of the String "--"
-          lineWidthEnvironment += keywordFontMetrics.stringWidth ( " " );
-          lineWidthEnvironment += keywordFontMetrics.stringWidth ( "--" );
-          lineWidthEnvironment += keywordFontMetrics.stringWidth ( " " );
+          lineWidthEnvironment += keywordFontMetrics.stringWidth ( " " ); //$NON-NLS-1$
+          lineWidthEnvironment += keywordFontMetrics.stringWidth ( "--" ); //$NON-NLS-1$
+          lineWidthEnvironment += keywordFontMetrics.stringWidth ( " " ); //$NON-NLS-1$
           lineHeightTypeFormula += prettyStringrenderer
               .getNeededSize ( Integer.MAX_VALUE ).height;
         }
@@ -554,7 +554,8 @@ public class TypeFormularRenderer extends AbstractRenderer
    * @param gc
    */
   @SuppressWarnings ( "unchecked" )
-  public void renderer ( int x, int y, int width, int height, Graphics gc )
+  public void renderer ( int x, int y, int width, @SuppressWarnings ( "unused" )
+  int height, Graphics gc )
   {
     // TODO for debugging
     // gc.setColor(this.alternativeColor != null ? this.alternativeColor :
@@ -580,14 +581,14 @@ public class TypeFormularRenderer extends AbstractRenderer
       gc.setColor ( this.alternativeColor != null ? this.alternativeColor
           : AbstractRenderer.keywordColor ); // if then else
 
-      gc.drawString ( "solve", posX, posY );
-      posX += AbstractRenderer.keywordFontMetrics.stringWidth ( "solve " );
+      gc.drawString ( "solve", posX, posY ); //$NON-NLS-1$
+      posX += AbstractRenderer.keywordFontMetrics.stringWidth ( "solve " ); //$NON-NLS-1$
 
       gc.setFont ( AbstractRenderer.expFont );
       gc.setColor ( this.alternativeColor != null ? this.alternativeColor
           : AbstractRenderer.expColor ); // if then else
-      gc.drawString ( "{", posX, posY );
-      posX += AbstractRenderer.expFontMetrics.stringWidth ( "{" );
+      gc.drawString ( "{", posX, posY ); //$NON-NLS-1$
+      posX += AbstractRenderer.expFontMetrics.stringWidth ( "{" ); //$NON-NLS-1$
 
       spaceToNexEntry = Math.max ( ( keywordFontMetrics.getHeight () ),
           expFontMetrics.getHeight () );
@@ -604,7 +605,7 @@ public class TypeFormularRenderer extends AbstractRenderer
         this.leftTypePositions.add ( new Rectangle ( 0, 0, 0, 0 ) );
         this.rightTypePositions.add ( new Rectangle ( 0, 0, 0, 0 ) );
         this.aPositions.add ( new Rectangle ( 0, 0, 0, 0 ) );
-        this.aStrings.add ( "" );
+        this.aStrings.add ( "" ); //$NON-NLS-1$
         this.aPrettyStrings.add ( new ArrayList < PrettyString > () );
       }
 
@@ -641,7 +642,7 @@ public class TypeFormularRenderer extends AbstractRenderer
           // render the A
           posX += AbstractRenderer.keywordFontMetrics.stringWidth ( As );
           // render the nail and the space arround the nail
-          posX += AbstractRenderer.keywordFontMetrics.stringWidth ( " " );
+          posX += AbstractRenderer.keywordFontMetrics.stringWidth ( " " ); //$NON-NLS-1$
 
           // The nail as Polygon
           Polygon polygon = new Polygon ();
@@ -654,7 +655,7 @@ public class TypeFormularRenderer extends AbstractRenderer
           polygon.addPoint ( posX, posY - AbstractRenderer.fontHeight / 2
               + fontDescent );
           polygon.addPoint ( posX
-              + AbstractRenderer.keywordFontMetrics.stringWidth ( "--" ), posY
+              + AbstractRenderer.keywordFontMetrics.stringWidth ( "--" ), posY //$NON-NLS-1$
               - AbstractRenderer.fontHeight / 2 + fontDescent );
           polygon.addPoint ( posX, posY - AbstractRenderer.fontHeight / 2
               + fontDescent );
@@ -663,7 +664,7 @@ public class TypeFormularRenderer extends AbstractRenderer
           gc.drawPolygon ( polygon );
 
           posX += polygon.getBounds ().width;
-          posX += AbstractRenderer.keywordFontMetrics.stringWidth ( " " );
+          posX += AbstractRenderer.keywordFontMetrics.stringWidth ( " " ); //$NON-NLS-1$
 
           // get the seentyps and provide the String for the Tooltip
           SeenTypes < TypeEquationTypeInference > typeEquSeenTypes = ( ( TypeEquationTypeInference ) t )
@@ -758,7 +759,7 @@ public class TypeFormularRenderer extends AbstractRenderer
           posX += AbstractRenderer.keywordFontMetrics.stringWidth ( As );
 
           // render the nail and the space arround the nail
-          posX += AbstractRenderer.keywordFontMetrics.stringWidth ( " " );
+          posX += AbstractRenderer.keywordFontMetrics.stringWidth ( " " ); //$NON-NLS-1$
 
           // the nail as Polygon
           Polygon polygon = new Polygon ();
@@ -771,7 +772,7 @@ public class TypeFormularRenderer extends AbstractRenderer
           polygon.addPoint ( posX, posY - AbstractRenderer.fontHeight / 2
               + fontDescent );
           polygon.addPoint ( posX
-              + AbstractRenderer.keywordFontMetrics.stringWidth ( "--" ), posY
+              + AbstractRenderer.keywordFontMetrics.stringWidth ( "--" ), posY //$NON-NLS-1$
               - AbstractRenderer.fontHeight / 2 + fontDescent );
           polygon.addPoint ( posX, posY - AbstractRenderer.fontHeight / 2
               + fontDescent );
@@ -780,7 +781,7 @@ public class TypeFormularRenderer extends AbstractRenderer
           gc.drawPolygon ( polygon );
 
           posX += polygon.getBounds ().width;
-          posX += AbstractRenderer.keywordFontMetrics.stringWidth ( " " );
+          posX += AbstractRenderer.keywordFontMetrics.stringWidth ( " " ); //$NON-NLS-1$
 
           // tell the Rendere the PrettyString
           typeEquationStringrenderer.setPrettyString ( subType
@@ -839,7 +840,7 @@ public class TypeFormularRenderer extends AbstractRenderer
           int startWidht = 0;
           int startHeight = 0;
 
-          this.environmentRenderer = new EnvironmentRenderer < Enumeration, Enumeration > ();
+          this.environmentRenderer = new EnvironmentRenderer < Identifier, Type > ();
           PrettyStringRenderer expressionRenderer = new PrettyStringRenderer ();
           PrettyStringRenderer typeRenderer = new PrettyStringRenderer ();
 
@@ -1015,8 +1016,8 @@ public class TypeFormularRenderer extends AbstractRenderer
 
       gc.setColor ( expColor );
       gc.setFont ( AbstractRenderer.expFont );
-      gc.drawString ( "}", posX, posY );
-      posX += AbstractRenderer.expFontMetrics.stringWidth ( "}" );
+      gc.drawString ( "}", posX, posY ); //$NON-NLS-1$
+      posX += AbstractRenderer.expFontMetrics.stringWidth ( "}" ); //$NON-NLS-1$
 
       if ( this.markedArea != null )
       {

@@ -83,7 +83,7 @@ public class BigStepView extends AbstractProofView
     this.bigStepProofModel = pBigStepProofModel;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ();
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT );
-    this.setLayout ( new GridBagLayout () );
+    setLayout ( new GridBagLayout () );
     this.scrollPane = new JScrollPane ();
     this.component = new BigStepComponent ( this.bigStepProofModel );
     this.scrollPane.setViewportView ( this.component );
@@ -166,8 +166,14 @@ public class BigStepView extends AbstractProofView
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see de.unisiegen.tpml.graphics.ProofView#getPrintPart()
+   */
   public JComponent getPrintPart ()
   {
-    return ( JComponent ) component.clone ();
+    return this.component.clone ();
   }
 }

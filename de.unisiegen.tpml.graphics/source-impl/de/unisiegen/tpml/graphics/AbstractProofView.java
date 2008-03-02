@@ -55,7 +55,7 @@ public abstract class AbstractProofView extends JComponent implements ProofView
 
       public void propertyChange ( java.beans.PropertyChangeEvent evt )
       {
-        if ( evt.getPropertyName ().endsWith ( "Color" ) )
+        if ( evt.getPropertyName ().endsWith ( "Color" ) ) //$NON-NLS-1$
         {
           repaint ();
         }
@@ -90,7 +90,7 @@ public abstract class AbstractProofView extends JComponent implements ProofView
     {
       boolean oldAdvanced = this.advanced;
       this.advanced = advanced;
-      firePropertyChange ( "advanced", oldAdvanced, advanced );
+      firePropertyChange ( "advanced", oldAdvanced, advanced ); //$NON-NLS-1$
     }
   }
 }

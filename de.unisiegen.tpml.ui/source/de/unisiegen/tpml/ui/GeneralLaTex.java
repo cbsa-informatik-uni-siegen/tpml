@@ -10,13 +10,10 @@ import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JTextArea;
 import javax.swing.filechooser.FileFilter;
 
 import de.unisiegen.tpml.core.ProofModel;
@@ -52,24 +49,6 @@ public class GeneralLaTex
    * the parent of the shown dialogs
    */
   private Frame parentFrame;
-
-
-  /**
-   * TODO vielleicht gibt es irgendwann eien Statusdialog
-   */
-  private JDialog status;
-
-
-  /**
-   * TODO Textarea des Stustusses
-   */
-  private JTextArea text;
-
-
-  /**
-   * TODO Prograssbar, alles nur Test im Moment
-   */
-  private JProgressBar progress;
 
 
   /**

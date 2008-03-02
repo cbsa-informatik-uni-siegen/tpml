@@ -33,13 +33,11 @@ import de.unisiegen.tpml.graphics.components.MenuGuessItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.NailSymbolComponent;
-import de.unisiegen.tpml.graphics.components.RulesMenu;
 import de.unisiegen.tpml.graphics.components.TypeComponent;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringToHTML;
 import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
-import de.unisiegen.tpml.graphics.typeinference.TypeInferenceComponent;
 
 
 /**
@@ -196,12 +194,6 @@ public class SubTypingNodeComponent extends JComponent implements
 
 
   /**
-   * The Manager for teh RulesMenus
-   */
-  private RulesMenu rulesMenu = new RulesMenu ();
-
-
-  /**
    * Constructor for a SubTypingNodeComponent<br>
    * <br>
    * All elements needed within the node will be created and added to the
@@ -256,7 +248,7 @@ public class SubTypingNodeComponent extends JComponent implements
     /*
      * Create the PopupMenu for the menu button
      */
-    menu = new JPopupMenu ();
+    this.menu = new JPopupMenu ();
     ProofRule [] rules = this.proofModel.getRules ();
     if ( rules.length > 0 )
     {
@@ -265,17 +257,17 @@ public class SubTypingNodeComponent extends JComponent implements
       {
         if ( r.getGroup () != group )
         {
-          menu.addSeparator ();
+          this.menu.addSeparator ();
         }
-        menu.add ( new MenuRuleItem ( r ) );
+        this.menu.add ( new MenuRuleItem ( r ) );
         group = r.getGroup ();
       }
     }
-    menu.addSeparator ();
-    menu.add ( new MenuEnterTypeItem () );
-    menu.add ( new MenuGuessItem () );
-    menu.add ( new MenuGuessTreeItem () );
-    this.ruleButton.setMenu ( menu );
+    this.menu.addSeparator ();
+    this.menu.add ( new MenuEnterTypeItem () );
+    this.menu.add ( new MenuGuessItem () );
+    this.menu.add ( new MenuGuessTreeItem () );
+    this.ruleButton.setMenu ( this.menu );
     /*
      * Connect the handling of the ruleButton
      */
@@ -409,7 +401,7 @@ public class SubTypingNodeComponent extends JComponent implements
     this.dimension.width += labelComponentSize.width + this.spacing;
     Dimension lcSubtypeSize = new Dimension ( fm.stringWidth ( this.subType
         .getText () ), fm.getHeight () );
-    Dimension nailComponentSize = new Dimension ( fm.stringWidth ( "--" ), fm
+    Dimension nailComponentSize = new Dimension ( fm.stringWidth ( "--" ), fm //$NON-NLS-1$
         .getHeight () );
     this.dimension.width += nailComponentSize.width + this.spacing;
     this.dimension.width += lcSubtypeSize.width + this.spacing;
@@ -434,8 +426,8 @@ public class SubTypingNodeComponent extends JComponent implements
 
     boolean broke = false;
     if ( ( this.dimension.width + typeSize.width + this.spacing ) > maxWidth ) // passt
-                                                                                // nicht
-                                                                                // mehr
+    // nicht
+    // mehr
     {
       this.dimension.width = Math.max ( this.dimension.width, expSize.width );
       this.dimension.height += typeSize.height;
@@ -548,6 +540,9 @@ public class SubTypingNodeComponent extends JComponent implements
   }
 
 
+  /**
+   * TODO
+   */
   private void fireNodeChanged ()
   {
     Object [] listeners = this.listenerList.getListenerList ();
@@ -562,6 +557,11 @@ public class SubTypingNodeComponent extends JComponent implements
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param node
+   */
   private void fireRequestJumpToNode ( ProofNode node )
   {
     Object [] listeners = this.listenerList.getListenerList ();
@@ -666,6 +666,9 @@ public class SubTypingNodeComponent extends JComponent implements
    * Performs an update for the Entire Node. All elements get rearanged based on
    * the given maximum with, the menu items will be checked if they are still
    * available.
+   * 
+   * @param maxWidth
+   * @return TODO
    */
   public Dimension update ( int maxWidth )
   {
@@ -680,10 +683,11 @@ public class SubTypingNodeComponent extends JComponent implements
 
   /**
    * Returns the number of pixels the children should be displayed indentated.
+   * 
+   * @return TODO
    */
   public int getIndentationWidth ()
   {
-    // XXX: calculate the indentation
     return this.indexLabel.getWidth ();
   }
 
@@ -691,11 +695,11 @@ public class SubTypingNodeComponent extends JComponent implements
   /**
    * Returns the point at the bottom of the node where the layout should attach
    * the arrow.
+   * @return TODO
    */
   public Point getBottomArrowConnection ()
   {
-    return new Point ( this.getX () + this.indexLabel.getWidth () / 2, this
-        .getY ()
+    return new Point ( getX () + this.indexLabel.getWidth () / 2, getY ()
         + ( this.dimension.height / 2 ) );
   }
 
@@ -703,10 +707,11 @@ public class SubTypingNodeComponent extends JComponent implements
   /**
    * Returns the point at the left of the node where the layout should attach
    * the line to its parent.
+   * @return TODO
    */
   public Point getLeftArrowConnection ()
   {
-    return new Point ( this.getX (), this.getY () + this.indexLabel.getY ()
+    return new Point ( getX (), getY () + this.indexLabel.getY ()
         + this.indexLabel.getHeight () / 2 );
   }
 
@@ -774,11 +779,10 @@ public class SubTypingNodeComponent extends JComponent implements
    * 
    * @param pAdvanced <code>true</code> to display only axiom rules in the
    *          menu.
-   * @see TypeInferenceComponent#setAdvanced(boolean)
    */
   void setAdvanced ( boolean pAdvanced )
   {
-    ( ( SubTypingModel ) this.proofModel ).setAdvanced ( pAdvanced );
+    ( this.proofModel ).setAdvanced ( pAdvanced );
     // Fill the menu with menuitems
     JPopupMenu newMenu = new JPopupMenu ();
     ProofRule [] rulesOfModel = this.proofModel.getRules ();

@@ -305,7 +305,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
     gridBagConstraints.fill = GridBagConstraints.HORIZONTAL ;
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
-    this.setLayout ( new GridBagLayout ( ) ) ;
+    setLayout ( new GridBagLayout ( ) ) ;
     this.source = new JPanel ( new GridBagLayout ( ) ) ;
     this.sourceLabel = new JLabel ( Messages.getString ( "firstType" ) ) ; //$NON-NLS-1$
     gridBagConstraints.insets = new Insets ( 5 , 21 , 0 , 10 ) ;
@@ -1025,7 +1025,9 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
   public String getSelectedText ( )
   {
     if ( this.editor.equals ( this.editor1 ) )
+    {
       return this.editor1.getSelectedText ( ) ;
+    }
     return this.editor2.getSelectedText ( ) ;
   }
 
@@ -1056,7 +1058,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
         this.type = eventHandling ( this.editor1 , this.outline ) ;
         // this.window.setChangeState ( Boolean.TRUE ) ;
         firePropertyChange ( "editor" , false , true ) ;
-        this.setUndoStatus ( true ) ;
+        setUndoStatus ( true ) ;
         this.undohistory.push ( this.currentContent1 ) ;
         setRedoStatus ( false ) ;
         this.redohistory.clear ( ) ;
@@ -1069,7 +1071,7 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
         this.type2 = eventHandling ( this.editor2 , this.outline2 ) ;
         // this.window.setChangeState ( Boolean.TRUE ) ;
         firePropertyChange ( "editor" , false , true ) ;
-        this.setUndoStatus ( true ) ;
+        setUndoStatus ( true ) ;
         this.undohistory2.push ( this.currentContent2 ) ;
         setRedoStatus ( false ) ;
         this.redohistory2.clear ( ) ;
@@ -1292,10 +1294,10 @@ public class TypeEditorPanel extends JPanel // AbstractProofView
   {
     this.redoStatus1 = false ;
     this.redoStatus2 = false ;
-    undohistory.clear ( ) ;
-    redohistory.clear ( ) ;
-    undohistory2.clear ( ) ;
-    redohistory2.clear ( ) ;
+    this.undohistory.clear ( ) ;
+    this.redohistory.clear ( ) ;
+    this.undohistory2.clear ( ) ;
+    this.redohistory2.clear ( ) ;
     this.undoStatus = this.undoStatus1 ;
     setUndoStatus ( false ) ;
     this.undoStatus1 = false ;

@@ -62,7 +62,7 @@ public class EnvironmentRenderer < S, E > extends AbstractRenderer
   /**
    * 
    */
-  private static final String collapsString = ", ...";
+  private static final String collapsString = ", ..."; //$NON-NLS-1$
 
 
   /**
@@ -73,7 +73,7 @@ public class EnvironmentRenderer < S, E > extends AbstractRenderer
   {
     // this.bracketSize = AbstractRenderer.fontDescent;
     // let the bracket be as width as
-    this.bracketSize = AbstractRenderer.expFontMetrics.stringWidth ( "[" );
+    this.bracketSize = AbstractRenderer.expFontMetrics.stringWidth ( "[" ); //$NON-NLS-1$
     this.collapsed = false;
     this.collapsedArea = new Rectangle ();
   }
@@ -97,14 +97,14 @@ public class EnvironmentRenderer < S, E > extends AbstractRenderer
     {
       S s = env.nextElement ();
       E e = pEnvironment.get ( s );
-      this.collapsedString = s.toString () + ": " + e.toString ();
+      this.collapsedString = s.toString () + ": " + e.toString (); //$NON-NLS-1$
 
       while ( env.hasMoreElements () )
       {
         s = env.nextElement ();
         e = pEnvironment.get ( s );
 
-        this.collapsedString += ", " + s.toString () + ": " + e.toString ();
+        this.collapsedString += ", " + s.toString () + ": " + e.toString (); //$NON-NLS-1$//$NON-NLS-2$
       }
     }
   }
@@ -113,7 +113,7 @@ public class EnvironmentRenderer < S, E > extends AbstractRenderer
   /**
    * Returns whether the environment was collapsed.
    * 
-   * @return
+   * @return TODO
    */
   public boolean isCollapsed ()
   {
@@ -124,7 +124,7 @@ public class EnvironmentRenderer < S, E > extends AbstractRenderer
   /**
    * Returns the area whre the ", ..." is diplayed.
    * 
-   * @return
+   * @return TODO
    */
   public Rectangle getCollapsedArea ()
   {
@@ -135,7 +135,7 @@ public class EnvironmentRenderer < S, E > extends AbstractRenderer
   /**
    * Returns the information of the environment that are not displayed.
    * 
-   * @return
+   * @return TODO
    */
   public String getCollapsedString ()
   {
@@ -169,7 +169,7 @@ public class EnvironmentRenderer < S, E > extends AbstractRenderer
 
       result.width += AbstractRenderer.keywordFontMetrics.stringWidth ( s
           .toString ()
-          + ": " );
+          + ": " ); //$NON-NLS-1$
       result.width += AbstractRenderer.envFontMetrics.stringWidth ( e
           .toString () );
 
@@ -227,13 +227,12 @@ public class EnvironmentRenderer < S, E > extends AbstractRenderer
     if ( true )
     {
       gc.setFont ( expFont );
-      gc.drawString ( "[", x, posY );
-      posX += expFontMetrics.stringWidth ( "[" );
+      gc.drawString ( "[", x, posY ); //$NON-NLS-1$
+      posX += expFontMetrics.stringWidth ( "[" ); //$NON-NLS-1$
 
       // the right one
-      gc
-          .drawString ( "]", x + width - expFontMetrics.stringWidth ( "]" ),
-              posY );
+      gc.drawString ( "]", x + width - expFontMetrics.stringWidth ( "]" ), //$NON-NLS-1$ //$NON-NLS-2$
+          posY );
 
     }
     else
@@ -266,9 +265,9 @@ public class EnvironmentRenderer < S, E > extends AbstractRenderer
       gc.setColor ( this.alternativeColor != null ? this.alternativeColor
           : AbstractRenderer.keywordColor );
       gc.setFont ( AbstractRenderer.keywordFont );
-      gc.drawString ( s.toString () + ": ", posX, posY );
+      gc.drawString ( s.toString () + ": ", posX, posY ); //$NON-NLS-1$
       posX += AbstractRenderer.keywordFontMetrics.stringWidth ( s.toString ()
-          + ": " );
+          + ": " ); //$NON-NLS-1$
 
       // render the entry
       gc.setColor ( this.alternativeColor != null ? this.alternativeColor
@@ -286,11 +285,9 @@ public class EnvironmentRenderer < S, E > extends AbstractRenderer
         this.collapsedArea.width = ( posX - this.collapsedArea.x );
 
         // this.collapsedArea.y = posY-(AbstractRenderer.getAbsoluteHeight()-2);
-        this.collapsedArea.y = posY - ( AbstractRenderer.fontAscent );
+        this.collapsedArea.y = posY - ( AbstractRenderer.fontAscent  );
         this.collapsedArea.height = AbstractRenderer.getAbsoluteHeight ();
       }
-
     }
-
   }
 }

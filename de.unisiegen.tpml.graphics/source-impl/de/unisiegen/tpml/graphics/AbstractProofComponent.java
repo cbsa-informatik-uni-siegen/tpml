@@ -14,6 +14,9 @@ import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.util.Theme;
 
 
+/**
+ * TODO
+ */
 public abstract class AbstractProofComponent extends JComponent
 {
 
@@ -23,15 +26,27 @@ public abstract class AbstractProofComponent extends JComponent
   private static final long serialVersionUID = 4038129211367836077L;
 
 
+  /**
+   * TODO
+   */
   protected AbstractProofModel proofModel;
 
 
+  /**
+   * TODO
+   */
   protected LanguageTranslator translator;
 
 
+  /**
+   * TODO
+   */
   protected boolean currentlyLayouting;
 
 
+  /**
+   * TODO
+   */
   protected int availableWidth;
 
 
@@ -48,9 +63,17 @@ public abstract class AbstractProofComponent extends JComponent
   protected int actualPageSpaceCounter = 0;
 
 
+  /**
+   * TODO
+   */
   private Theme theme;
 
 
+  /**
+   * TODO
+   * 
+   * @param proofModel
+   */
   public AbstractProofComponent ( AbstractProofModel proofModel )
   {
     super ();
@@ -85,7 +108,8 @@ public abstract class AbstractProofComponent extends JComponent
       }
 
 
-      public void treeStructureChanged ( TreeModelEvent e )
+      public void treeStructureChanged ( @SuppressWarnings ( "unused" )
+      TreeModelEvent e )
       {
         AbstractProofComponent.this.treeContentChanged ();
       }
@@ -93,11 +117,12 @@ public abstract class AbstractProofComponent extends JComponent
 
     // reset the layout whenever the font changes
     this.theme = Theme.currentTheme ();
-    this.theme.addPropertyChangeListener ( "font",
+    this.theme.addPropertyChangeListener ( "font", //$NON-NLS-1$
         new PropertyChangeListener ()
         {
 
-          public void propertyChange ( PropertyChangeEvent evt )
+          public void propertyChange ( @SuppressWarnings ( "unused" )
+          PropertyChangeEvent evt )
           {
             SwingUtilities.invokeLater ( new Runnable ()
             {
@@ -113,27 +138,59 @@ public abstract class AbstractProofComponent extends JComponent
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param event
+   */
   protected abstract void nodesInserted ( TreeModelEvent event );
 
 
+  /**
+   * TODO
+   * 
+   * @param event
+   */
   protected abstract void nodesChanged ( TreeModelEvent event );
 
 
+  /**
+   * TODO
+   * 
+   * @param event
+   */
   protected abstract void nodesRemoved ( TreeModelEvent event );
 
 
+  /**
+   * TODO
+   */
   protected abstract void treeContentChanged ();
 
 
+  /**
+   * TODO
+   */
   protected abstract void relayout ();
 
 
+  /**
+   * TODO
+   */
   protected abstract void forcedRelayout ();
 
 
+  /**
+   * TODO
+   */
   protected abstract void resetLayout ();
 
 
+  /**
+   * TODO
+   * 
+   * @param availableWidth
+   */
   public void setAvailableWidth ( int availableWidth )
   {
     this.availableWidth = availableWidth;
@@ -156,8 +213,6 @@ public abstract class AbstractProofComponent extends JComponent
 
   /**
    * resets the availableHeight
-   * 
-   * @param pAvailableHeight
    */
   public void resetAvailableHeight ()
   {

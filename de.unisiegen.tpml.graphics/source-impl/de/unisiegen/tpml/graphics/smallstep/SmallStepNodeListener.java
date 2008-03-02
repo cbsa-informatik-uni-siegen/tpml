@@ -6,6 +6,9 @@ import java.util.EventListener;
 import de.unisiegen.tpml.core.ProofNode;
 
 
+/**
+ * TODO
+ */
 public interface SmallStepNodeListener extends EventListener
 {
 
@@ -25,6 +28,8 @@ public interface SmallStepNodeListener extends EventListener
 
   /**
    * Requests the SmallStepComponent to scroll to given node
+   * 
+   * @param node
    */
   public void requestJumpToNode ( ProofNode node );
 }

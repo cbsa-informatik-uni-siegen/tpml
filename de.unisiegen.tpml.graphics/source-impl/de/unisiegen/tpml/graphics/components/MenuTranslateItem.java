@@ -23,6 +23,9 @@ public class MenuTranslateItem extends JMenuItem
   private static final long serialVersionUID = -874935881714839506L;
 
 
+  /**
+   * TODO
+   */
   public MenuTranslateItem ()
   {
     super ();

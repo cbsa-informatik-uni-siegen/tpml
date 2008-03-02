@@ -13,25 +13,39 @@ import java.util.LinkedList;
 import javax.swing.JComponent;
 
 
+/**
+ * TODO
+ */
 public class PrintHandler
 {
 
+  /**
+   * TODO
+   */
   JComponent comp;
 
 
+  /**
+   * TODO
+   * 
+   * @param comp
+   */
   public PrintHandler ( JComponent comp )
   {
     this.comp = comp;
   }
 
 
+  /**
+   * TODO
+   */
   public void print ()
   {
 
     PrinterJob job = PrinterJob.getPrinterJob ();
 
     // It is first called to tell it what object will print each page.
-    job.setPrintable ( new PrintObject ( comp ) );
+    job.setPrintable ( new PrintObject ( this.comp ) );
 
     // Then it is called to display the standard print options dialog.
     if ( job.printDialog () )
@@ -55,25 +69,49 @@ public class PrintHandler
 }
 
 
+/**
+ * TODO
+ */
 class PrintObject implements Printable
 {
 
+  /**
+   * TODO
+   */
   JComponent comp;
 
 
   // fuck my brain up:
+  /**
+   * TODO
+   */
   LinkedList < LinkedList < Component >> pages;
 
 
+  /**
+   * TODO
+   * 
+   * @param comp
+   */
   public PrintObject ( JComponent comp )
   {
     this.comp = comp;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param g
+   * @param f
+   * @param pageIndex
+   * @return TODO
+   * @see java.awt.print.Printable#print(java.awt.Graphics,
+   *      java.awt.print.PageFormat, int)
+   */
   public int print ( Graphics g, PageFormat f, int pageIndex )
   {
-    System.out.println ( "Method print was called" );
+    System.out.println ( "Method print was called" ); //$NON-NLS-1$
     System.out.println ( pageIndex );
 
     // create new grafic area to print on:
@@ -88,26 +126,30 @@ class PrintObject implements Printable
     // visible.scale(0.5, 0.5);
 
     // if this is the first call get and sort all components of the view:
-    if ( pages == null )
+    if ( this.pages == null )
     {
-      this.buildPageLists ( visible.getClipBounds ().height );
+      buildPageLists ( visible.getClipBounds ().height );
 
     }
 
-    if ( pageIndex >= pages.size () )
+    if ( pageIndex >= this.pages.size () )
     {
       return NO_SUCH_PAGE;
     }
-    else
-    {
-      printPage ( pages.get ( pageIndex ), visible, pageIndex );
-      return PAGE_EXISTS;
-    }
-
+    printPage ( this.pages.get ( pageIndex ), visible, pageIndex );
+    return PAGE_EXISTS;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param components
+   * @param g
+   * @param PageIndex
+   */
   private void printPage ( LinkedList < Component > components, Graphics2D g,
+      @SuppressWarnings ( "unused" )
       int PageIndex )
   {
     Component last = components.get ( 0 );
@@ -135,54 +177,54 @@ class PrintObject implements Printable
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param maxheight
+   */
   private void buildPageLists ( int maxheight )
   {
-    Component [] components = comp.getComponents ();
+    Component [] components = this.comp.getComponents ();
     LinkedList < Component > children = new LinkedList < Component > ();
-    pages = new LinkedList < LinkedList < Component >> ();
+    this.pages = new LinkedList < LinkedList < Component >> ();
 
-    for ( int i = 0 ; i < components.length ; i++ )
+    for ( Component element : components )
     {
       int size = children.size ();
-      Component tosort = components [ i ];
+      Component tosort = element;
       for ( int ii = 0 ; ii <= size ; ii++ )
       {
         if ( ii == children.size () )
         {
-          children.add ( components [ i ] );
+          children.add ( element );
           break;
         }
-        else
+        if ( tosort.getLocation ().y < children.get ( ii ).getLocation ().y )
         {
-          if ( tosort.getLocation ().y < children.get ( ii ).getLocation ().y )
-          {
-            children.add ( ii - 1, tosort );
-            break;
-          }
+          children.add ( ii - 1, tosort );
+          break;
         }
       }
     }
-    System.out.println ( "Size of Children: " + children.size () );
+    System.out.println ( "Size of Children: " + children.size () ); //$NON-NLS-1$
 
     LinkedList < Component > thispage = new LinkedList < Component > ();
     for ( int outer = 0 ; outer < children.size () ; outer++ )
     {
       Component tmp = children.get ( outer );
-      if ( tmp.getLocation ().y + tmp.getHeight () < ( pages.size () + 1 )
+      if ( tmp.getLocation ().y + tmp.getHeight () < ( this.pages.size () + 1 )
           * maxheight )
       {
         thispage.addLast ( tmp );
       }
       else
       {
-        pages.add ( thispage );
+        this.pages.add ( thispage );
         thispage = new LinkedList < Component > ();
         outer-- ;
       }
 
     }
-    pages.add ( thispage );
-
+    this.pages.add ( thispage );
   }
-
 }

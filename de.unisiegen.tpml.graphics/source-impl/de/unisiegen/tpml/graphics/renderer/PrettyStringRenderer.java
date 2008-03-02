@@ -255,7 +255,7 @@ public class PrettyStringRenderer extends AbstractRenderer
     // wide
     // calculate the normal one to
     Dimension dimOfOne = getNeededSize ( maxWidth );
-    if ( dimOfOne.width <= maxWidth || maxWidth < 20 )
+    if ( ( dimOfOne.width <= maxWidth ) || ( maxWidth < 20 ) )
     {
       // so use it
       return dimOfOne;
@@ -334,13 +334,13 @@ public class PrettyStringRenderer extends AbstractRenderer
           it.setIndex ( indexOfActualC - 1 );
         }
         else if ( allBreakPoints.get ( 0 ).intValue () > indexOfActualC - 1 ) // The
-                                                                              // first
-                                                                              // breakpoint
-                                                                              // is
-                                                                              // after
-                                                                              // the
-                                                                              // actual
-                                                                              // position
+        // first
+        // breakpoint
+        // is
+        // after
+        // the
+        // actual
+        // position
         {
           useBreakPoints.add ( new Integer ( indexOfActualC - 1 ) );
           indexOfActualC-- ;
@@ -451,7 +451,7 @@ public class PrettyStringRenderer extends AbstractRenderer
               resultToReturn.sizeOfResult.width );
           resultToReturn.rows++ ;
           // let the next line be to big fonts indentated
-          w = AbstractRenderer.expFontMetrics.stringWidth ( "GG" );
+          w = AbstractRenderer.expFontMetrics.stringWidth ( "GG" ); //$NON-NLS-1$
           break;
         }
       }
@@ -652,10 +652,10 @@ public class PrettyStringRenderer extends AbstractRenderer
     boolean highlight = false;
     if ( ( lineCount >= 1 )
         && ( lineCount <= height / AbstractRenderer.getAbsoluteHeight () ) ) // schon
-                                                                              // mal
-                                                                              // die
-                                                                              // richtige
-                                                                              // Zeile
+    // mal
+    // die
+    // richtige
+    // Zeile
     {
       if ( ( mousePosition.x > x ) && ( mousePosition.x <= x + width )
           && ( mousePosition.y > y ) && ( mousePosition.y <= y + height ) )
@@ -715,7 +715,7 @@ public class PrettyStringRenderer extends AbstractRenderer
           break;
       }
 
-      int charWidth = fm.stringWidth ( "" + c );
+      int charWidth = fm.stringWidth ( "" + c ); //$NON-NLS-1$
 
       charPosition = charPosition + charWidth;
       if ( charPosition > mousePosition.x )
@@ -754,16 +754,16 @@ public class PrettyStringRenderer extends AbstractRenderer
     // everey char
     for ( char c = it.first () ; c != CharacterIterator.DONE ; c = it.next () , i++ )
     {
-      for ( int j = 0 ; j < breakOffsets.length ; j++ )
+      for ( int element : breakOffsets )
       {
-        if ( breakOffsets [ j ] == i )
+        if ( element == i )
         {
           posY += AbstractRenderer.getAbsoluteHeight ();
           posX = x;
         }
       }
       fm = AbstractRenderer.expFontMetrics;
-      int charWidth = fm.stringWidth ( "" + c );
+      int charWidth = fm.stringWidth ( "" + c ); //$NON-NLS-1$
       // just corrects the posY to start at baseline instead of the middel
       int posYC = posY
           - ( AbstractRenderer.getAbsoluteHeight () - fm.getDescent () );
@@ -869,10 +869,9 @@ public class PrettyStringRenderer extends AbstractRenderer
         gc.setColor ( this.alternativeColor );
       }
       // draw the character and move the position
-      gc.drawString ( "" + c, posX, posY );
-      posX += fm.stringWidth ( "" + c );
+      gc.drawString ( "" + c, posX, posY ); //$NON-NLS-1$
+      posX += fm.stringWidth ( "" + c ); //$NON-NLS-1$
       // go on to the next character
     }
   }
-
 }

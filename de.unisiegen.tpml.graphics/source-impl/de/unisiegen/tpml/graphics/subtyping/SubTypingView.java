@@ -97,7 +97,7 @@ public class SubTypingView extends AbstractProofView
     this.subTypingModel = pSubTypingModel;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ();
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT );
-    this.setLayout ( new GridBagLayout () );
+    setLayout ( new GridBagLayout () );
     this.scrollPane = new JScrollPane ();
     this.component = new SubTypingComponent ( this.subTypingModel );
     this.scrollPane.setViewportView ( this.component );
@@ -232,9 +232,15 @@ public class SubTypingView extends AbstractProofView
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see de.unisiegen.tpml.graphics.ProofView#getPrintPart()
+   */
   public JComponent getPrintPart ()
   {
-    return ( JComponent ) component.clone ();
+    return this.component.clone ();
   }
 
 

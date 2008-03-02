@@ -119,14 +119,18 @@ public class StyledTypeEnterField extends StyledLanguageDocument
           // read the next token from the scanner
           LanguageSymbol symbol = scanner.nextSymbol ();
           if ( symbol == null )
+          {
             break;
+          }
           // add the token to our list
           symbols.add ( symbol );
           // check if we have an attribute set for the token
           SimpleAttributeSet set = this.attributes.get ( scanner
               .getStyleBySymbol ( symbol ) );
           if ( set == null )
+          {
             set = this.normalSet;
+          }
           // apply the character attribute set
           setCharacterAttributes ( offset + symbol.getLeft (), symbol
               .getRight ()
@@ -284,7 +288,7 @@ public class StyledTypeEnterField extends StyledLanguageDocument
               .getParserWarningColor () );
           errorSet.addAttribute ( "warning", e ); //$NON-NLS-1$
           // check if this is unexpected end of file
-          if ( e.getLeft () < 0 && e.getRight () < 0 )
+          if ( ( e.getLeft () < 0 ) && ( e.getRight () < 0 ) )
           {
             setCharacterAttributes ( getLength (), getLength (), errorSet,
                 false );
@@ -322,7 +326,7 @@ public class StyledTypeEnterField extends StyledLanguageDocument
           StyleConstants.setUnderline ( errorSet, true );
           errorSet.addAttribute ( "exception", e ); //$NON-NLS-1$
           // check if this is unexpected end of file
-          if ( e.getLeft () < 0 && e.getRight () < 0 )
+          if ( ( e.getLeft () < 0 ) && ( e.getRight () < 0 ) )
           {
             setCharacterAttributes ( getLength (), getLength (), errorSet,
                 false );

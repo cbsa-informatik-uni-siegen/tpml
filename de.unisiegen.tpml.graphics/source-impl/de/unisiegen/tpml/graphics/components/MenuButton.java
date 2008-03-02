@@ -20,6 +20,9 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 
+/**
+ * TODO
+ */
 public class MenuButton extends JComponent
 {
 
@@ -60,6 +63,9 @@ public class MenuButton extends JComponent
   private int dimension;
 
 
+  /**
+   * TODO
+   */
   public MenuButton ()
   {
 
@@ -73,7 +79,7 @@ public class MenuButton extends JComponent
     this.dimension = fm.getHeight ();
 
     // initially the text will be empty
-    this.text = "";
+    this.text = ""; //$NON-NLS-1$
     this.textColor = Color.BLACK;
 
     /*
@@ -83,6 +89,7 @@ public class MenuButton extends JComponent
     this.listener = new ActionListener ()
     {
 
+      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( ActionEvent event )
       {
         // just delegate the event to a method of the surrounding class.
@@ -91,9 +98,10 @@ public class MenuButton extends JComponent
       }
     };
 
-    this.addMouseListener ( new MouseAdapter ()
+    addMouseListener ( new MouseAdapter ()
     {
 
+      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mousePressed ( MouseEvent event )
       {
@@ -104,15 +112,25 @@ public class MenuButton extends JComponent
   }
 
 
-  public void addMenuButtonListener ( MenuButtonListener listener )
+  /**
+   * TODO
+   * 
+   * @param l
+   */
+  public void addMenuButtonListener ( MenuButtonListener l )
   {
-    this.listenerList.add ( MenuButtonListener.class, listener );
+    this.listenerList.add ( MenuButtonListener.class, l );
   }
 
 
-  public void removeMenuButtonListener ( MenuButtonListener listener )
+  /**
+   * TODO
+   * 
+   * @param l
+   */
+  public void removeMenuButtonListener ( MenuButtonListener l )
   {
-    this.listenerList.remove ( MenuButtonListener.class, listener );
+    this.listenerList.remove ( MenuButtonListener.class, l );
   }
 
 
@@ -133,17 +151,23 @@ public class MenuButton extends JComponent
     this.menu.addPopupMenuListener ( new PopupMenuListener ()
     {
 
-      public void popupMenuCanceled ( PopupMenuEvent event )
+      public void popupMenuCanceled ( @SuppressWarnings ( "unused" )
+      PopupMenuEvent event )
       {
+        // Do nothing
       }
 
 
-      public void popupMenuWillBecomeVisible ( PopupMenuEvent event )
+      public void popupMenuWillBecomeVisible ( @SuppressWarnings ( "unused" )
+      PopupMenuEvent event )
       {
+        // Do nothing
       }
 
 
-      public void popupMenuWillBecomeInvisible ( PopupMenuEvent event )
+      @SuppressWarnings ( "synthetic-access" )
+      public void popupMenuWillBecomeInvisible ( @SuppressWarnings ( "unused" )
+      PopupMenuEvent event )
       {
         MenuButton.this.fireMenuClosed ();
       }
@@ -191,7 +215,7 @@ public class MenuButton extends JComponent
     result.width = this.dimension;
     result.height = this.dimension;
 
-    if ( this.text != null && this.text.length () != 0 )
+    if ( ( this.text != null ) && ( this.text.length () != 0 ) )
     {
 
       FontMetrics fm = getFontMetrics ( getFont () );
@@ -239,7 +263,7 @@ public class MenuButton extends JComponent
         / 12 );
     gc.fillPolygon ( polygon );
 
-    if ( this.text != null && this.text.length () != 0 )
+    if ( ( this.text != null ) && ( this.text.length () != 0 ) )
     {
       FontMetrics fm = getFontMetrics ( getFont () );
       posX += this.dimension + this.dimension / 2;

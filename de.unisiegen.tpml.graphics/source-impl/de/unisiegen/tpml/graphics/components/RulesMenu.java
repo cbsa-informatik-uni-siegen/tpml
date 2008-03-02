@@ -123,12 +123,12 @@ public class RulesMenu
       Language lang, final JComponent tnc, final String callBy, boolean advanced )
   {
     // first of all load the correct preferences
-    if ( callBy.equalsIgnoreCase ( "bigstep" ) )
+    if ( callBy.equalsIgnoreCase ( "bigstep" ) ) //$NON-NLS-1$
     {
       this.preferences = Preferences
           .userNodeForPackage ( BigStepNodeComponent.class );
     }
-    else if ( callBy.equalsIgnoreCase ( "smallstep" ) )
+    else if ( callBy.equalsIgnoreCase ( "smallstep" ) ) //$NON-NLS-1$
     {
       this.preferences = Preferences
           .userNodeForPackage ( SmallStepNodeComponent.class );
@@ -142,8 +142,8 @@ public class RulesMenu
 
     // now we want to have the ability to enable or dissable the subgrouping
     // till now it is not implemented by prefferenc
-    final JRadioButtonMenuItem test = new JRadioButtonMenuItem ( "Submenus" );
-    this.submenus = this.preferences.getBoolean ( "submenu", false );
+    final JRadioButtonMenuItem test = new JRadioButtonMenuItem ( "Submenus" ); //$NON-NLS-1$
+    this.submenus = this.preferences.getBoolean ( "submenu", false ); //$NON-NLS-1$
     // TODO till now the submenus are always enabled
     if ( false ) // if (!submenus)
     {
@@ -162,7 +162,8 @@ public class RulesMenu
     ActionListener al1 = new ActionListener ()
     {
 
-      public void actionPerformed ( ActionEvent e )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent e )
       {
         // if the Radiobutton is pressed, we will find out, if the Option was
         // set or not
@@ -171,14 +172,14 @@ public class RulesMenu
           RulesMenu.this.submenus = true;
           setTomany ( Integer.MAX_VALUE );
           // RulesMenu.this.getPreferences().put("submenu", "true");
-          RulesMenu.this.getPreferences ().putBoolean ( "submenu",
+          RulesMenu.this.getPreferences ().putBoolean ( "submenu", //$NON-NLS-1$
               RulesMenu.this.submenus );
         }
         else
         {
           RulesMenu.this.submenus = false;
           setTomany ( 15 );
-          RulesMenu.this.getPreferences ().putBoolean ( "submenu",
+          RulesMenu.this.getPreferences ().putBoolean ( "submenu", //$NON-NLS-1$
               RulesMenu.this.submenus );
           // RulesMenu.this.getPreferences().put("submenu", "false");
         }
@@ -205,9 +206,9 @@ public class RulesMenu
         // backwards to save the ordering
         for ( int i = MAX - 1 ; i >= 0 ; i-- )
         {
-          String name = this.preferences.get ( "rule" + i, "" );
+          String name = this.preferences.get ( "rule" + i, "" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-          if ( name.equalsIgnoreCase ( "" ) )
+          if ( name.equalsIgnoreCase ( "" ) ) //$NON-NLS-1$
           {
             // do nothing if the rule has no name, the rule dose not exist
           }
@@ -248,8 +249,8 @@ public class RulesMenu
                   tmp.addActionListener ( al );
                   // inset at the top of the meun (the preferences are walked
                   // throu
-                  if ( ( callBy.equalsIgnoreCase ( "bigstep" ) )
-                      || ( callBy.equalsIgnoreCase ( "smallstep" ) && ( ( ( SmallStepProofRule ) a )
+                  if ( ( callBy.equalsIgnoreCase ( "bigstep" ) ) //$NON-NLS-1$
+                      || ( callBy.equalsIgnoreCase ( "smallstep" ) && ( ( ( SmallStepProofRule ) a ) //$NON-NLS-1$
                           .isAxiom () || !advanced ) ) )
                   {
                     this.menu.insert ( tmp, 0 );
@@ -281,16 +282,13 @@ public class RulesMenu
         // evry rule
         for ( final ProofRule r : rules )
         {
-          if ( ( callBy.equalsIgnoreCase ( "bigstep" ) )
-              || ( callBy.equalsIgnoreCase ( "smallstep" ) && ( ( ( SmallStepProofRule ) r )
+          if ( ( callBy.equalsIgnoreCase ( "bigstep" ) ) //$NON-NLS-1$
+              || ( callBy.equalsIgnoreCase ( "smallstep" ) && ( ( ( SmallStepProofRule ) r ) //$NON-NLS-1$
                   .isAxiom () || !advanced ) ) )
           {
             if ( r.getGroup () != group )
             {
-              if ( subMenu != null )
-              {
-                this.menu.add ( subMenu );
-              }
+              this.menu.add ( subMenu );
               subMenu = new JMenu ( names.get ( new Integer ( r.getGroup () ) ) );
             }
             MenuRuleItem tmp = new MenuRuleItem ( r );
@@ -333,13 +331,13 @@ public class RulesMenu
                       // the action must be called manualy if the element is in
                       // a submenu
                       // menuItemActivated((JMenuItem) e.getSource());
-                      if ( callBy.equals ( "bigstep" ) )
+                      if ( callBy.equals ( "bigstep" ) ) //$NON-NLS-1$
                       {
                         ( ( BigStepNodeComponent ) tnc )
                             .handleMenuActivated ( ( JMenuItem ) ae
                                 .getSource () );
                       }
-                      else if ( callBy.equals ( "smallstep" ) )
+                      else if ( callBy.equals ( "smallstep" ) ) //$NON-NLS-1$
                       {
                         ( ( SmallStepNodeComponent ) tnc )
                             .handleMenuActivated ( ( JMenuItem ) ae
@@ -422,12 +420,12 @@ public class RulesMenu
 
                 // the action must be called manualy if the element is in a
                 // submenu
-                if ( callBy.equals ( "bigstep" ) )
+                if ( callBy.equals ( "bigstep" ) ) //$NON-NLS-1$
                 {
                   ( ( BigStepNodeComponent ) tnc )
                       .handleMenuActivated ( ( JMenuItem ) e.getSource () );
                 }
-                else if ( callBy.equals ( "smallstep" ) )
+                else if ( callBy.equals ( "smallstep" ) )//$NON-NLS-1$
                 {
                   ( ( SmallStepNodeComponent ) tnc )
                       .handleMenuActivated ( ( JMenuItem ) e.getSource () );
@@ -453,8 +451,8 @@ public class RulesMenu
         int group = rules [ 0 ].getGroup ();
         for ( ProofRule r : rules )
         {
-          if ( ( callBy.equalsIgnoreCase ( "bigstep" ) )
-              || ( callBy.equalsIgnoreCase ( "smallstep" ) && ( ( ( SmallStepProofRule ) r )
+          if ( ( callBy.equalsIgnoreCase ( "bigstep" ) )//$NON-NLS-1$
+              || ( callBy.equalsIgnoreCase ( "smallstep" ) && ( ( ( SmallStepProofRule ) r )//$NON-NLS-1$
                   .isAxiom () || !advanced ) ) )
           {
             if ( r.getGroup () != group )
@@ -503,7 +501,7 @@ public class RulesMenu
    * gets the names of the languages connected to the group of all languages
    * including the given language and every extended one
    * 
-   * @param language the language of wich the group should start
+   * @param pLanguage the language of wich the group should start
    * @return the HashMap containing the LanguageName and the group
    */
   private HashMap < Number, String > getLanguageNames ( Language pLanguage )
@@ -593,7 +591,7 @@ public class RulesMenu
   {
     for ( int i = 0 ; i < this.lastUsedElements.size () ; i++ )
     {
-      this.preferences.put ( "rule" + i, this.lastUsedElements.get ( i )
+      this.preferences.put ( "rule" + i, this.lastUsedElements.get ( i ) //$NON-NLS-1$
           .getText () );
     }
   }
@@ -689,7 +687,7 @@ public class RulesMenu
    * @param list the list contaning the item or not
    * @return a boolean
    */
-  boolean isIn ( String label, ArrayList list )
+  boolean isIn ( String label, ArrayList < MenuRuleItem > list )
   {
     boolean isIn = false;
 

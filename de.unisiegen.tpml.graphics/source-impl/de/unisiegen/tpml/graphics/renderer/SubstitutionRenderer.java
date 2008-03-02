@@ -56,7 +56,7 @@ public class SubstitutionRenderer extends AbstractRenderer
    * collapsed. <br>
    * When the mouse is over it the rest will be whown.
    */
-  private static final String collapsString = ", ...";
+  private static final String collapsString = ", ..."; //$NON-NLS-1$
 
 
   /**
@@ -68,7 +68,7 @@ public class SubstitutionRenderer extends AbstractRenderer
   /**
    * The String isertedt between the singel substitutions in the tootltip
    */
-  private static final String betweenTypSubstitutions = ",  ";
+  private static final String betweenTypSubstitutions = ",  ";//$NON-NLS-1$
 
 
   /**
@@ -85,7 +85,6 @@ public class SubstitutionRenderer extends AbstractRenderer
    * Sets the substitution.
    * 
    * @param defaultTypeSubstitutionListP
-   * @param substitution
    */
   public void setDefaultTypeSubstitutionList (
       ArrayList < TypeSubstitution > defaultTypeSubstitutionListP )
@@ -100,7 +99,7 @@ public class SubstitutionRenderer extends AbstractRenderer
       // count the chars to break the tooltip if it gets to wide
       int count = 0;
       // html is needed to format the tooltip
-      this.collapsedString = "<html>";
+      this.collapsedString = "<html>";//$NON-NLS-1$
       for ( int i = 0 ; i < this.defaultTypeSubstitutionList.size () ; i++ )
       {
         TypeSubstitution thisDetaultTypeSubstitution = this.defaultTypeSubstitutionList
@@ -120,11 +119,11 @@ public class SubstitutionRenderer extends AbstractRenderer
         // every but the las line becomes a linebraek ("<br>")
         if ( count >= maxTooltipWidht )
         {
-          this.collapsedString += "<br>";
+          this.collapsedString += "<br>";//$NON-NLS-1$
           count = 0;
         }
       }
-      this.collapsedString += "</html>";
+      this.collapsedString += "</html>";//$NON-NLS-1$
     }
   }
 
@@ -193,8 +192,8 @@ public class SubstitutionRenderer extends AbstractRenderer
         result.width += AbstractRenderer.expFontMetrics
             .stringWidth ( SubstitutionRenderer.collapsString );
       }
-      result.width += AbstractRenderer.expFontMetrics.stringWidth ( "[" );
-      result.width += AbstractRenderer.expFontMetrics.stringWidth ( "]" );
+      result.width += AbstractRenderer.expFontMetrics.stringWidth ( "[" );//$NON-NLS-1$
+      result.width += AbstractRenderer.expFontMetrics.stringWidth ( "]" );//$NON-NLS-1$
     }
     return result;
   }
@@ -228,7 +227,9 @@ public class SubstitutionRenderer extends AbstractRenderer
    * @param height The Height the renderer is given to render the substitution.
    * @param gc The Graphics used to render
    */
-  public void renderer ( int x, int y, int width, int height, Graphics gc )
+  public void renderer ( int x, int y, @SuppressWarnings ( "unused" )
+  int width, @SuppressWarnings ( "unused" )
+  int height, Graphics gc )
   {
     gc.setColor ( this.alternativeColor != null ? this.alternativeColor
         : Color.BLACK );
@@ -247,8 +248,8 @@ public class SubstitutionRenderer extends AbstractRenderer
       gc.setFont ( AbstractRenderer.expFont );
 
       // Render the "["
-      gc.drawString ( "[", posX, posY );
-      posX += AbstractRenderer.expFontMetrics.stringWidth ( "[" );
+      gc.drawString ( "[", posX, posY ); //$NON-NLS-1$
+      posX += AbstractRenderer.expFontMetrics.stringWidth ( "[" ); //$NON-NLS-1$
 
       // get the first element
       TypeSubstitution s = this.defaultTypeSubstitutionList.get ( 0 );
@@ -279,10 +280,8 @@ public class SubstitutionRenderer extends AbstractRenderer
       }
 
       // Render the "]"
-      gc.drawString ( "]", posX, posY );
-      posX += AbstractRenderer.expFontMetrics.stringWidth ( "]" );
-
+      gc.drawString ( "]", posX, posY ); //$NON-NLS-1$
+      posX += AbstractRenderer.expFontMetrics.stringWidth ( "]" ); //$NON-NLS-1$
     }
-
   }
 }

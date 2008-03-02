@@ -195,7 +195,8 @@ public abstract class AbstractRenderer
     theme.addPropertyChangeListener ( new PropertyChangeListener ()
     {
 
-      public void propertyChange ( PropertyChangeEvent evt )
+      public void propertyChange ( @SuppressWarnings ( "unused" )
+      PropertyChangeEvent evt )
       {
         setTheme ( getTheme (), new JLabel () );
       }
@@ -283,12 +284,12 @@ public abstract class AbstractRenderer
   {
     AbstractRenderer.expColor = pTheme.getExpressionColor ();
     AbstractRenderer.expFont = pTheme.getFont ();// ;.deriveFont ( Font.PLAIN )
-                                                  // ;
+    // ;
     AbstractRenderer.expFontMetrics = reference
         .getFontMetrics ( AbstractRenderer.expFont );
     AbstractRenderer.identifierColor = pTheme.getIdentifierColor ();
     AbstractRenderer.identifierFont = pTheme.getFont ();// ( ).deriveFont (
-                                                        // Font.PLAIN ) ;
+    // Font.PLAIN ) ;
     AbstractRenderer.identifierFontMetrics = reference
         .getFontMetrics ( AbstractRenderer.identifierFont );
     AbstractRenderer.keywordColor = pTheme.getKeywordColor ();

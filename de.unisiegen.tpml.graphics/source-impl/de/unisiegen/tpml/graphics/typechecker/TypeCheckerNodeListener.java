@@ -6,6 +6,9 @@ import java.util.EventListener;
 import de.unisiegen.tpml.core.ProofNode;
 
 
+/**
+ * TODO
+ */
 public interface TypeCheckerNodeListener extends EventListener
 {
 

@@ -41,10 +41,6 @@ import de.unisiegen.tpml.graphics.components.MenuButton;
  * <br>
  * 
  * @author michael
- * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceView
- * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceComponent
- * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceNodeComponent
- * @see de.unisiegen.tpml.graphics.TypeInference.TypeInferenceRuleLabel
  */
 public class TypeInferenceRulesComponent extends JComponent
 {
@@ -144,7 +140,7 @@ public class TypeInferenceRulesComponent extends JComponent
    */
   public void setWrongRule ( ProofRule rule )
   {
-    this.menuButton.setText ( "(" + rule.getName () + ")" );
+    this.menuButton.setText ( "(" + rule.getName () + ")" ); //$NON-NLS-1$//$NON-NLS-2$
     this.menuButton.setTextColor ( Color.RED );
   }
 
@@ -154,7 +150,7 @@ public class TypeInferenceRulesComponent extends JComponent
    */
   public void setRightRule ()
   {
-    this.menuButton.setText ( "" );
+    this.menuButton.setText ( "" ); //$NON-NLS-1$
     this.menuButton.setTextColor ( Color.BLACK );
   }
 
@@ -191,7 +187,7 @@ public class TypeInferenceRulesComponent extends JComponent
    * {@link #menuButton} is placed in the SmallStepRulesComponent.
    * 
    * @param adapter
-   * @return
+   * @return TODO
    */
   public Dimension getNeededSize ( MouseMotionAdapter adapter )
   {

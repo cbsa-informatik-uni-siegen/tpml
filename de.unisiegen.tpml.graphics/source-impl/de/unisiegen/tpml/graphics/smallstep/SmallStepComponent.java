@@ -33,13 +33,13 @@ import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
  * first all nodes within the tree are check if they have an
  * {@link de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent} assigned
  * to them. Then the tree is scanned for the node with the widest
- * {@link de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent#rules}.
- * This value is assigned to each node, this way all nodes know the maximum
- * width of all rules and they can use this for their own width. By doing so,
- * all nodes will be horizontaly aligned.<br>
+ * {@link de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent}. This
+ * value is assigned to each node, this way all nodes know the maximum width of
+ * all rules and they can use this for their own width. By doing so, all nodes
+ * will be horizontaly aligned.<br>
  * <br>
  * When this all is done the actual placing of the nodes is done.
- * {@see #placeNode(SmallStepProofNode, int, int)} for this.
+ * {@link #placeNode(SmallStepProofNode, int, int)} for this.
  * 
  * @author Marcell Fischbach
  * @author Benedikt Meurer
@@ -191,7 +191,7 @@ public class SmallStepComponent extends AbstractProofComponent implements
    * If the node has no children, <i>null</i> is returned.
    * 
    * @param node
-   * @return
+   * @return TODO
    */
   private SmallStepProofNode getFirstChild ( SmallStepProofNode node )
   {
@@ -235,7 +235,8 @@ public class SmallStepComponent extends AbstractProofComponent implements
       nodeComponent.addSmallStepNodeListener ( new SmallStepNodeListener ()
       {
 
-        public void nodeChanged ( SmallStepNodeComponent pNode )
+        public void nodeChanged ( @SuppressWarnings ( "unused" )
+        SmallStepNodeComponent pNode )
         {
           SmallStepComponent.this.relayout ();
         }
@@ -271,6 +272,8 @@ public class SmallStepComponent extends AbstractProofComponent implements
    * <br>
    * Resetting means that every {@link PrettyStringRenderer} and
    * {@link EnvironmentRenderer} recalculates their needed font sizes.
+   * 
+   * @param node
    */
   private void resetUserObject ( SmallStepProofNode node )
   {
@@ -302,7 +305,7 @@ public class SmallStepComponent extends AbstractProofComponent implements
    * 
    * @param node When calling this method: the rootNode of the tree.
    * @param pCurrentWidth Used internaly. Should be set to <b>0</b>.
-   * @return
+   * @return TODO
    */
   int checkMaxRuleWidth ( SmallStepProofNode node, int pCurrentWidth )
   {
@@ -388,7 +391,7 @@ public class SmallStepComponent extends AbstractProofComponent implements
    * rules must be placed directly because there is no child node that would
    * place them.
    * 
-   * @param node The rootNode
+   * @param pNode The rootNode
    * @param pX The horizontal start position
    * @param pY Ther vertical start position
    * @return The size needed to show all the nodes.
@@ -670,8 +673,7 @@ public class SmallStepComponent extends AbstractProofComponent implements
 
 
   /**
-   * Causes an {@link SmallStepNodeComponent#update() on all nodes that have
-   * changed.<br>
+   * Causes an {@link SmallStepNodeComponent} on all nodes that have changed.<br>
    * <br>
    * When all updates are done relayouts the View.
    * 
@@ -702,11 +704,11 @@ public class SmallStepComponent extends AbstractProofComponent implements
     }
     else
     {
-      for ( int i = 0 ; i < children.length ; i++ )
+      for ( Object element : children )
       {
-        if ( children [ i ] instanceof ProofNode )
+        if ( element instanceof ProofNode )
         {
-          SmallStepProofNode proofNode = ( SmallStepProofNode ) children [ i ];
+          SmallStepProofNode proofNode = ( SmallStepProofNode ) element;
 
           SmallStepNodeComponent nodeComponent = ( SmallStepNodeComponent ) proofNode
               .getUserObject ();
@@ -737,11 +739,11 @@ public class SmallStepComponent extends AbstractProofComponent implements
     {
       return;
     }
-    for ( int i = 0 ; i < children.length ; i++ )
+    for ( Object element : children )
     {
-      if ( children [ i ] instanceof ProofNode )
+      if ( element instanceof ProofNode )
       {
-        SmallStepProofNode proofNode = ( SmallStepProofNode ) children [ i ];
+        SmallStepProofNode proofNode = ( SmallStepProofNode ) element;
 
         SmallStepNodeComponent nodeComponent = ( SmallStepNodeComponent ) proofNode
             .getUserObject ();
@@ -788,7 +790,7 @@ public class SmallStepComponent extends AbstractProofComponent implements
         return;
       }
     }
-    throw new IllegalStateException ( "Unable to find next node" );
+    throw new IllegalStateException ( "Unable to find next node" ); //$NON-NLS-1$
   }
 
 
@@ -814,7 +816,7 @@ public class SmallStepComponent extends AbstractProofComponent implements
 
     // get the visible rect to ensure the x coordinate is in the
     // visible area. only vertical scolling is requested
-    Rectangle visibleRect = this.getVisibleRect ();
+    Rectangle visibleRect = getVisibleRect ();
 
     Rectangle rect = new Rectangle ();
     rect.x = visibleRect.x;
@@ -822,7 +824,7 @@ public class SmallStepComponent extends AbstractProofComponent implements
     rect.width = 1;
     rect.height = node.getHeight ();
 
-    this.scrollRectToVisible ( rect );
+    scrollRectToVisible ( rect );
 
     this.jumpNode = null;
   }
@@ -831,6 +833,12 @@ public class SmallStepComponent extends AbstractProofComponent implements
   //
   // Methods for painting purposes
   //
+  /**
+   * TODO
+   * 
+   * @param gc
+   * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+   */
   @Override
   protected void paintComponent ( Graphics gc )
   {
@@ -845,38 +853,87 @@ public class SmallStepComponent extends AbstractProofComponent implements
   // Implementation of the Scrollable interface
   //
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see javax.swing.Scrollable#getPreferredScrollableViewportSize()
+   */
   public Dimension getPreferredScrollableViewportSize ()
   {
     return getPreferredSize ();
   }
 
 
-  public int getScrollableUnitIncrement ( Rectangle visibleRect,
-      int orientation, int direction )
+  /**
+   * TODO
+   * 
+   * @param visibleRect
+   * @param orientation
+   * @param direction
+   * @return TODO
+   * @see javax.swing.Scrollable#getScrollableUnitIncrement(java.awt.Rectangle,
+   *      int, int)
+   */
+  public int getScrollableUnitIncrement ( @SuppressWarnings ( "unused" )
+  Rectangle visibleRect, @SuppressWarnings ( "unused" )
+  int orientation, @SuppressWarnings ( "unused" )
+  int direction )
   {
     return 10;
   }
 
 
-  public int getScrollableBlockIncrement ( Rectangle visibleRect,
-      int orientation, int direction )
+  /**
+   * TODO
+   * 
+   * @param visibleRect
+   * @param orientation
+   * @param direction
+   * @return TODO
+   * @see javax.swing.Scrollable#getScrollableBlockIncrement(java.awt.Rectangle,
+   *      int, int)
+   */
+  public int getScrollableBlockIncrement ( @SuppressWarnings ( "unused" )
+  Rectangle visibleRect, @SuppressWarnings ( "unused" )
+  int orientation, @SuppressWarnings ( "unused" )
+  int direction )
   {
     return 25;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see javax.swing.Scrollable#getScrollableTracksViewportWidth()
+   */
   public boolean getScrollableTracksViewportWidth ()
   {
     return false;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see javax.swing.Scrollable#getScrollableTracksViewportHeight()
+   */
   public boolean getScrollableTracksViewportHeight ()
   {
     return false;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see java.lang.Object#clone()
+   */
+  @Override
   public SmallStepComponent clone ()
   {
     try
@@ -908,11 +965,14 @@ public class SmallStepComponent extends AbstractProofComponent implements
   }
 
 
+  /**
+   * TODO
+   * 
+   * @see de.unisiegen.tpml.graphics.AbstractProofComponent#forcedRelayout()
+   */
   @Override
   protected void forcedRelayout ()
   {
     doRelayout ();
-
   }
-
 }

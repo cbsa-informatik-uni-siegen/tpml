@@ -1,10 +1,8 @@
-/*
- * MainWindow.java Created on 15. September 2006, 14:56
- */
 package de.unisiegen.tpml.ui;
 
 
 import java.awt.Component;
+import java.awt.Frame;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -25,7 +23,6 @@ import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -59,6 +56,9 @@ public class MainWindow
   private static final long serialVersionUID = -3820623104618482450L;
 
 
+  /**
+   * TODO
+   */
   private MainWindowForm window;
 
 
@@ -75,33 +75,34 @@ public class MainWindow
    */
   public MainWindow ()
   {
-    window = new MainWindowForm ();
-    window.setMainWindow ( this );
+    this.window = new MainWindowForm ();
+    this.window.setMainWindow ( this );
 
     // initComponents ( ) ;
-    window.setTitle ( "TPML " + Versions.UI );
+    this.window.setTitle ( "TPML " + Versions.UI ); //$NON-NLS-1$
     // position the window
     PreferenceManager prefmanager = PreferenceManager.get ();
-    window.setBounds ( prefmanager.getWindowBounds () );
-    window.setVisible ( true );
+    this.window.setBounds ( prefmanager.getWindowBounds () );
+    this.window.setVisible ( true );
     // Setting the default states
     setGeneralStates ( false );
-    window.saveItem.setEnabled ( false );
-    window.saveButton.setEnabled ( false );
-    window.preferencesItem.setEnabled ( true );
-    window.copyItem.setEnabled ( false );
-    window.pasteItem.setEnabled ( false );
-    window.recentFilesMenu.setVisible ( false );
-    window.cutButton.setEnabled ( false );
-    window.copyButton.setEnabled ( false );
-    window.pasteButton.setEnabled ( false );
-    window.printButton.setEnabled ( false );
+    this.window.saveItem.setEnabled ( false );
+    this.window.saveButton.setEnabled ( false );
+    this.window.preferencesItem.setEnabled ( true );
+    this.window.copyItem.setEnabled ( false );
+    this.window.pasteItem.setEnabled ( false );
+    this.window.recentFilesMenu.setVisible ( false );
+    this.window.cutButton.setEnabled ( false );
+    this.window.copyButton.setEnabled ( false );
+    this.window.pasteButton.setEnabled ( false );
+    this.window.printButton.setEnabled ( false );
     // Finished setting the states.
-    window.addWindowListener ( new WindowAdapter ()
+    this.window.addWindowListener ( new WindowAdapter ()
     {
 
       @Override
-      public void windowClosing ( WindowEvent e )
+      public void windowClosing ( @SuppressWarnings ( "unused" )
+      WindowEvent e )
       {
         MainWindow.this.handleQuit ();
       }
@@ -110,6 +111,7 @@ public class MainWindow
         .addKeyEventDispatcher ( new KeyEventDispatcher ()
         {
 
+          @SuppressWarnings ( "synthetic-access" )
           public boolean dispatchKeyEvent ( KeyEvent evt )
           {
             if ( ( evt.getID () == KeyEvent.KEY_PRESSED ) )
@@ -119,39 +121,33 @@ public class MainWindow
                   || ( ( evt.getKeyCode () == KeyEvent.VK_PAGE_DOWN ) && evt
                       .isControlDown () ) )
               {
-                if ( window.tabbedPane.getSelectedIndex () + 1 == window.tabbedPane
+                if ( MainWindow.this.window.tabbedPane.getSelectedIndex () + 1 == MainWindow.this.window.tabbedPane
                     .getTabCount () )
                 {
-                  window.tabbedPane.setSelectedIndex ( 0 );
+                  MainWindow.this.window.tabbedPane.setSelectedIndex ( 0 );
                   return true;
                 }
-                else
-                {
-                  window.tabbedPane.setSelectedIndex ( window.tabbedPane
-                      .getSelectedIndex () + 1 );
-                  return true;
-                }
+                MainWindow.this.window.tabbedPane
+                    .setSelectedIndex ( MainWindow.this.window.tabbedPane
+                        .getSelectedIndex () + 1 );
+                return true;
               }
-              else
+              if ( ( ( evt.getKeyCode () == KeyEvent.VK_LEFT ) && evt
+                  .isAltDown () )
+                  || ( ( evt.getKeyCode () == KeyEvent.VK_PAGE_UP ) && evt
+                      .isControlDown () ) )
               {
-                if ( ( ( evt.getKeyCode () == KeyEvent.VK_LEFT ) && evt
-                    .isAltDown () )
-                    || ( ( evt.getKeyCode () == KeyEvent.VK_PAGE_UP ) && evt
-                        .isControlDown () ) )
+                if ( MainWindow.this.window.tabbedPane.getSelectedIndex () == 0 )
                 {
-                  if ( window.tabbedPane.getSelectedIndex () == 0 )
-                  {
-                    window.tabbedPane.setSelectedIndex ( window.tabbedPane
-                        .getTabCount () - 1 );
-                    return true;
-                  }
-                  else
-                  {
-                    window.tabbedPane.setSelectedIndex ( window.tabbedPane
-                        .getSelectedIndex () - 1 );
-                    return true;
-                  }
+                  MainWindow.this.window.tabbedPane
+                      .setSelectedIndex ( MainWindow.this.window.tabbedPane
+                          .getTabCount () - 1 );
+                  return true;
                 }
+                MainWindow.this.window.tabbedPane
+                    .setSelectedIndex ( MainWindow.this.window.tabbedPane
+                        .getSelectedIndex () - 1 );
+                return true;
               }
             }
             return false;
@@ -160,62 +156,79 @@ public class MainWindow
     this.editorPanelListener = new PropertyChangeListener ()
     {
 
+      @SuppressWarnings ( "synthetic-access" )
       public void propertyChange ( PropertyChangeEvent evt )
       {
-
         editorStatusChange ( evt.getPropertyName (), evt.getNewValue () );
       }
     };
     this.recentlyUsed = prefmanager.getRecentlyUsed ();
     // TODO this is ugly :(
-    for ( int i = 0 ; i < recentlyUsed.size () ; i++ )
+    for ( int i = 0 ; i < this.recentlyUsed.size () ; i++ )
     {
-      recentlyUsed.get ( i ).setWindow ( this );
+      this.recentlyUsed.get ( i ).setWindow ( this );
     }
     updateRecentlyUsed ();
     // apply the last "advanced mode" setting
     boolean advanced = prefmanager.getAdvanced ();
-    window.advancedRadioButton.setSelected ( advanced );
-    window.beginnerRadioButton.setSelected ( !advanced );
+    this.window.advancedRadioButton.setSelected ( advanced );
+    this.window.beginnerRadioButton.setSelected ( !advanced );
     // apply the last maximization state
     if ( prefmanager.getWindowMaximized () )
     {
 
       // set to maximized
-      window.setExtendedState ( window.getExtendedState ()
-          | JFrame.MAXIMIZED_BOTH );
+      this.window.setExtendedState ( this.window.getExtendedState ()
+          | Frame.MAXIMIZED_BOTH );
     }
   }
 
 
+  /**
+   * TODO
+   */
   // End of variables declaration//GEN-END:variables
   private PropertyChangeListener editorPanelListener;
 
 
+  /**
+   * TODO
+   */
   private static final Logger logger = Logger.getLogger ( MainWindow.class );
 
 
   // private PreferenceManager prefmanager;
+  /**
+   * TODO
+   */
   private static int historyLength = 9;
 
 
+  /**
+   * TODO
+   */
   private LinkedList < HistoryItem > recentlyUsed;
 
 
   // Self-defined methods:
+  /**
+   * TODO
+   * 
+   * @param file
+   */
   void openFile ( File file )
   {
     if ( file == null )
     {
-      throw new NullPointerException ( "file is null" );
+      throw new NullPointerException ( "file is null" ); //$NON-NLS-1$
     }
     try
     {
       // check if we already have an editor panel for the file
       EditorPanel editorPanel = null;
-      for ( Component component : window.tabbedPane.getComponents () )
+      for ( Component component : this.window.tabbedPane.getComponents () )
       {
-        if ( component instanceof EditorPanelForm
+        if ( ( component instanceof EditorPanelForm )
             && file.equals ( ( ( ( EditorPanelForm ) component ).getCaller () )
                 .getFile () ) )
         {
@@ -228,13 +241,12 @@ public class MainWindow
       {
         LanguageFactory langfactory = LanguageFactory.newInstance ();
         Language language = langfactory.getLanguageByFile ( file );
-        String str = null;
         StringBuilder buffer = new StringBuilder ();
         int onechar;
         try
         {
           BufferedReader in = new BufferedReader ( new InputStreamReader (
-              new FileInputStream ( file ), "UTF8" ) );
+              new FileInputStream ( file ), "UTF8" ) ); //$NON-NLS-1$
           while ( ( onechar = in.read () ) != -1 )
           {
             buffer.append ( ( char ) onechar );
@@ -243,7 +255,7 @@ public class MainWindow
         }
         catch ( UnsupportedEncodingException e )
         {
-          System.err.println ( "UnsupportedEncodingException" );
+          System.err.println ( "UnsupportedEncodingException" ); //$NON-NLS-1$
         }
         if ( language.isTypeLanguage () )
         {
@@ -253,78 +265,91 @@ public class MainWindow
         {
           editorPanel = new EditorPanelExpression ( language, this );
         }
-        window.tabbedPane.add ( ( Component ) editorPanel.getPanel () );
-        editorPanel.setAdvanced ( window.advancedRadioButton.isSelected () );
+        this.window.tabbedPane.add ( editorPanel.getPanel () );
+        editorPanel
+            .setAdvanced ( this.window.advancedRadioButton.isSelected () );
         editorPanel.setFileName ( file.getName () );
         editorPanel.setEditorText ( buffer.toString () );
         editorPanel.setFile ( file );
-        editorPanel.addPropertyChangeListener ( editorPanelListener );
+        editorPanel.addPropertyChangeListener ( this.editorPanelListener );
         editorPanel.setTexteditor ( true );
       }
-      window.tabbedPane.setSelectedComponent ( ( Component ) editorPanel
-          .getPanel () );
+      this.window.tabbedPane.setSelectedComponent ( editorPanel.getPanel () );
       setGeneralStates ( true );
       updateEditorStates ( editorPanel );
     }
     catch ( NoSuchLanguageException e )
     {
-      logger.error ( "Language does not exist.", e );
-      JOptionPane.showMessageDialog ( window, java.util.ResourceBundle
-          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-              "FileNotSupported" ), java.util.ResourceBundle.getBundle (
-          "de/unisiegen/tpml/ui/ui" ).getString ( "Open_File" ),
+      logger.error ( "Language does not exist.", e ); //$NON-NLS-1$
+      JOptionPane.showMessageDialog ( this.window, java.util.ResourceBundle
+          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+              "FileNotSupported" ), java.util.ResourceBundle.getBundle ( //$NON-NLS-1$
+          "de/unisiegen/tpml/ui/ui" ).getString ( "Open_File" ), //$NON-NLS-1$ //$NON-NLS-2$
           JOptionPane.ERROR_MESSAGE );
     }
     catch ( FileNotFoundException e )
     {
-      logger.error ( "File specified could not be found", e );
-      JOptionPane.showMessageDialog ( window, java.util.ResourceBundle
-          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-              "FileCannotBeFound" ), java.util.ResourceBundle.getBundle (
-          "de/unisiegen/tpml/ui/ui" ).getString ( "Open_File" ),
+      logger.error ( "File specified could not be found", e ); //$NON-NLS-1$
+      JOptionPane.showMessageDialog ( this.window, java.util.ResourceBundle
+          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+              "FileCannotBeFound" ), java.util.ResourceBundle.getBundle ( //$NON-NLS-1$
+          "de/unisiegen/tpml/ui/ui" ).getString ( "Open_File" ), //$NON-NLS-1$//$NON-NLS-2$
           JOptionPane.ERROR_MESSAGE );
     }
     catch ( IOException e )
     {
-      logger.error ( "Could not read from the file specified", e );
-      JOptionPane.showMessageDialog ( window, java.util.ResourceBundle
-          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-              "FileCannotBeRead" ), java.util.ResourceBundle.getBundle (
-          "de/unisiegen/tpml/ui/ui" ).getString ( "Open_File" ),
+      logger.error ( "Could not read from the file specified", e ); //$NON-NLS-1$
+      JOptionPane.showMessageDialog ( this.window, java.util.ResourceBundle
+          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+              "FileCannotBeRead" ), java.util.ResourceBundle.getBundle ( //$NON-NLS-1$
+          "de/unisiegen/tpml/ui/ui" ).getString ( "Open_File" ), //$NON-NLS-1$//$NON-NLS-2$
           JOptionPane.ERROR_MESSAGE );
     }
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param state
+   */
   private void setGeneralStates ( boolean state )
   {
-    window.smallstepItem.setEnabled ( state );
-    window.bigstepItem.setEnabled ( state );
-    window.typecheckerItem.setEnabled ( state );
-    window.minimaltypingItem.setEnabled ( state );
-    window.typeinferenceItem.setEnabled ( state );
-    window.subtypingItem.setEnabled ( state );
-    window.subtypingrecItem.setEnabled ( state );
-    window.saveAsItem.setEnabled ( state );
-    window.saveAsButton.setEnabled ( state );
-    window.saveAllItem.setEnabled ( state );
-    window.closeItem.setEnabled ( state );
-    window.cutItem.setEnabled ( state );
-    window.cutButton.setEnabled ( state );
-    window.copyItem.setEnabled ( state );
-    window.copyButton.setEnabled ( state );
-    window.pasteItem.setEnabled ( state );
-    window.pasteButton.setEnabled ( state );
-    window.printButton.setEnabled ( state );
-    window.printItem.setEnabled ( state );
-    window.latexExportItem.setEnabled ( state );
-    window.latexExportButton.setEnabled ( state );
-    setUndoState ( state );
-    setRedoState ( state );
+    this.window.smallstepItem.setEnabled ( state );
+    this.window.bigstepItem.setEnabled ( state );
+    this.window.typecheckerItem.setEnabled ( state );
+    this.window.minimaltypingItem.setEnabled ( state );
+    this.window.typeinferenceItem.setEnabled ( state );
+    this.window.subtypingItem.setEnabled ( state );
+    this.window.subtypingrecItem.setEnabled ( state );
+    this.window.saveAsItem.setEnabled ( state );
+    this.window.saveAsButton.setEnabled ( state );
+    this.window.saveAllItem.setEnabled ( state );
+    this.window.closeItem.setEnabled ( state );
+    this.window.cutItem.setEnabled ( state );
+    this.window.cutButton.setEnabled ( state );
+    this.window.copyItem.setEnabled ( state );
+    this.window.copyButton.setEnabled ( state );
+    this.window.pasteItem.setEnabled ( state );
+    this.window.pasteButton.setEnabled ( state );
+    this.window.printButton.setEnabled ( state );
+    this.window.printItem.setEnabled ( state );
+    this.window.latexExportItem.setEnabled ( state );
+    this.window.latexExportButton.setEnabled ( state );
+    setUndoState ( new Boolean ( state ) );
+    setRedoState ( new Boolean ( state ) );
   }
 
 
-  private void editorStatusChange ( String ident, Object newValue )
+  /**
+   * TODO
+   * 
+   * @param ident
+   * @param newValue
+   */
+  private void editorStatusChange ( @SuppressWarnings ( "unused" )
+  String ident, @SuppressWarnings ( "unused" )
+  Object newValue )
   {
     // logger.debug ( "Editor status changed: " + ident ) ;
     // if ( ident.equals ( "redoStatus" ) )
@@ -361,17 +386,27 @@ public class MainWindow
     // pasteItem.setEnabled ( ( Boolean ) newValue ) ;
     // pasteButton.setEnabled ( ( Boolean ) newValue ) ;
     // }
-    updateEditorStates ( ( EditorPanel ) ( ( EditorPanelForm ) window.tabbedPane
+    updateEditorStates ( ( ( EditorPanelForm ) this.window.tabbedPane
         .getSelectedComponent () ).getCaller () );
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param editor
+   */
   public void updateEditorStates ( EditorPanel editor )
   {
     updateEditorStates ( ( EditorPanelForm ) editor.getPanel () );
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param editorform
+   */
   public void updateEditorStates ( EditorPanelForm editorform )
   {
     if ( editorform == null )
@@ -384,67 +419,81 @@ public class MainWindow
     else
     {
       EditorPanel editor = editorform.getCaller ();
-      setRedoState ( editor.isRedoStatus () );
-      setUndoState ( editor.isUndoStatus () );
+      setRedoState ( new Boolean ( editor.isRedoStatus () ) );
+      setUndoState ( new Boolean ( editor.isUndoStatus () ) );
       // setSaveState(editor.isUndoStatus());
       if ( editor.isTexteditor () )
       {
-        setChangeState ( editor.isSaveStatus () );
+        setChangeState ( new Boolean ( editor.isSaveStatus () ) );
         setEditorFunctions ( true );
       }
       else
       {
-        setChangeState ( editor.isSaveStatus () );
+        setChangeState ( new Boolean ( editor.isSaveStatus () ) );
         setEditorFunctions ( false );
       }
     }
-    if ( this.getActiveEditor () instanceof EditorPanelExpression )
+    if ( getActiveEditor () instanceof EditorPanelExpression )
+    {
       setExpressionMode ();
+    }
     else
+    {
       setTypeMode ();
+    }
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param state
+   */
   private void setEditorFunctions ( boolean state )
   {
-    window.cutButton.setEnabled ( state );
-    window.cutItem.setEnabled ( state );
-    window.copyButton.setEnabled ( state );
-    window.copyItem.setEnabled ( state );
-    window.pasteButton.setEnabled ( state );
-    window.pasteItem.setEnabled ( state );
+    this.window.cutButton.setEnabled ( state );
+    this.window.cutItem.setEnabled ( state );
+    this.window.copyButton.setEnabled ( state );
+    this.window.copyItem.setEnabled ( state );
+    this.window.pasteButton.setEnabled ( state );
+    this.window.pasteItem.setEnabled ( state );
   }
 
 
+  /**
+   * TODO
+   */
   private void updateRecentlyUsed ()
   {
     final int length = ( this.recentlyUsed.size () > historyLength ) ? historyLength
         : this.recentlyUsed.size ();
     if ( length > historyLength )
     {
-      logger.error ( "Error: The list of recently used files is larger than "
+      logger.error ( "Error: The list of recently used files is larger than " //$NON-NLS-1$
           + historyLength );
     }
     HistoryItem item;
-    window.recentFilesMenu.setVisible ( length > 0 );
-    window.fileMenuSeperator3.setVisible ( length > 0 );
-    window.recentFilesMenu.removeAll ();
+    this.window.recentFilesMenu.setVisible ( length > 0 );
+    this.window.fileMenuSeperator3.setVisible ( length > 0 );
+    this.window.recentFilesMenu.removeAll ();
     for ( int i = 0 ; i < length ; i++ )
     {
       item = this.recentlyUsed.get ( i );
-      item.setText ( "" + ( i + 1 ) + ". " + item.getFile ().getName () );
-      window.recentFilesMenu.add ( item );
+      item.setText ( "" + ( i + 1 ) + ". " + item.getFile ().getName () ); //$NON-NLS-1$//$NON-NLS-2$
+      this.window.recentFilesMenu.add ( item );
     }
-    window.recentFilesMenu.addSeparator ();
+    this.window.recentFilesMenu.addSeparator ();
     JMenuItem openAllItem = new JMenuItem ( ResourceBundle.getBundle (
-        "de/unisiegen/tpml/ui/ui" ).getString ( "OpenAll" ) );
-    openAllItem
-        .setMnemonic ( ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-            .getString ( "OpenAllMnemonic" ).charAt ( 0 ) );
+        "de/unisiegen/tpml/ui/ui" ).getString ( "OpenAll" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    openAllItem.setMnemonic ( ResourceBundle.getBundle (
+        "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+        .getString ( "OpenAllMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     openAllItem.addActionListener ( new ActionListener ()
     {
 
-      public void actionPerformed ( ActionEvent e )
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent e )
       {
         for ( int i = 0 ; i < length ; ++i )
         {
@@ -453,90 +502,131 @@ public class MainWindow
         }
       }
     } );
-    window.recentFilesMenu.add ( openAllItem );
+    this.window.recentFilesMenu.add ( openAllItem );
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param historyItem
+   */
   public void addRecentlyUsed ( HistoryItem historyItem )
   {
     boolean alreadyPresent = false;
     // check if a similar entry in the history already exists:
-    for ( int i = 0 ; i < recentlyUsed.size () ; i++ )
+    for ( int i = 0 ; i < this.recentlyUsed.size () ; i++ )
     {
-      if ( recentlyUsed.get ( i ).getFile ().toURI ().equals (
+      if ( this.recentlyUsed.get ( i ).getFile ().toURI ().equals (
           historyItem.getFile ().toURI () ) )
       {
         alreadyPresent = true;
       }
     }
     if ( !alreadyPresent )
-      recentlyUsed.addFirst ( historyItem );
+    {
+      this.recentlyUsed.addFirst ( historyItem );
+    }
     historyItem.setWindow ( this );
-    if ( recentlyUsed.size () > historyLength )
-      recentlyUsed.removeLast ();
+    if ( this.recentlyUsed.size () > historyLength )
+    {
+      this.recentlyUsed.removeLast ();
+    }
     updateRecentlyUsed ();
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param state
+   */
   private void setRedoState ( Boolean state )
   {
-    window.redoButton.setEnabled ( state );
-    window.redoItem.setEnabled ( state );
+    this.window.redoButton.setEnabled ( state.booleanValue () );
+    this.window.redoItem.setEnabled ( state.booleanValue () );
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param state
+   */
   private void setUndoState ( Boolean state )
   {
-    logger.debug ( "UndoStatus of MainWindow set to " + state );
-    window.undoButton.setEnabled ( state );
-    window.undoItem.setEnabled ( state );
+    logger.debug ( "UndoStatus of MainWindow set to " + state ); //$NON-NLS-1$
+    this.window.undoButton.setEnabled ( state.booleanValue () );
+    this.window.undoItem.setEnabled ( state.booleanValue () );
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param state
+   */
   private void setSaveState ( Boolean state )
   {
-    window.saveButton.setEnabled ( state );
-    window.saveItem.setEnabled ( state );
+    this.window.saveButton.setEnabled ( state.booleanValue () );
+    this.window.saveItem.setEnabled ( state.booleanValue () );
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param state
+   */
   private void setChangeState ( Boolean state )
   {
-    if ( state )
+    if ( state.booleanValue () )
     {
-      window.tabbedPane.setTitleAt ( window.tabbedPane.getSelectedIndex (),
-          "*"
-              + ( ( ( EditorPanelForm ) window.tabbedPane
-                  .getSelectedComponent () ) ).getCaller ().getFileName () );
-      setSaveState ( true );
+      this.window.tabbedPane.setTitleAt ( this.window.tabbedPane
+          .getSelectedIndex (), "*" //$NON-NLS-1$
+          + ( ( ( EditorPanelForm ) this.window.tabbedPane
+              .getSelectedComponent () ) ).getCaller ().getFileName () );
+      setSaveState ( Boolean.TRUE );
     }
     else
     {
-      window.tabbedPane.setTitleAt ( window.tabbedPane.getSelectedIndex (),
-          ( ( ( EditorPanelForm ) window.tabbedPane.getSelectedComponent () ) )
-              .getCaller ().getFileName () );
-      setSaveState ( false );
+      this.window.tabbedPane.setTitleAt ( this.window.tabbedPane
+          .getSelectedIndex (), ( ( ( EditorPanelForm ) this.window.tabbedPane
+          .getSelectedComponent () ) ).getCaller ().getFileName () );
+      setSaveState ( Boolean.FALSE );
     }
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public EditorPanel getActiveEditor ()
   {
-    if ( window.tabbedPane.getSelectedComponent () == null )
+    if ( this.window.tabbedPane.getSelectedComponent () == null )
+    {
       return null;
-    return ( ( EditorPanelForm ) window.tabbedPane.getSelectedComponent () )
+    }
+    return ( ( EditorPanelForm ) this.window.tabbedPane.getSelectedComponent () )
         .getCaller ();
   }
 
 
+  /**
+   * TODO
+   */
   public void handleNew ()
   {
-    FileWizard wizard = new FileWizard ( window, true );
-    wizard.setLocationRelativeTo ( window );
+    FileWizard wizard = new FileWizard ( this.window, true );
+    wizard.setLocationRelativeTo ( this.window );
     wizard.setVisible ( true );
     Language language = wizard.getLanguage ();
     if ( language == null )
+    {
       return;
+    }
 
     EditorPanel newEditorPanel = null;
     if ( !language.isTypeLanguage () )
@@ -550,42 +640,50 @@ public class MainWindow
       setTypeMode ();
     }
 
-    window.tabbedPane.add ( ( Component ) newEditorPanel.getPanel () );
-    newEditorPanel.setAdvanced ( window.advancedRadioButton.isSelected () );
-    window.tabbedPane.setSelectedComponent ( ( Component ) newEditorPanel
-        .getPanel () );
-    newEditorPanel.addPropertyChangeListener ( editorPanelListener );
+    this.window.tabbedPane.add ( newEditorPanel.getPanel () );
+    newEditorPanel.setAdvanced ( this.window.advancedRadioButton.isSelected () );
+    this.window.tabbedPane.setSelectedComponent ( newEditorPanel.getPanel () );
+    newEditorPanel.addPropertyChangeListener ( this.editorPanelListener );
     newEditorPanel.setTexteditor ( true );
     setGeneralStates ( true );
     updateEditorStates ( newEditorPanel );
   }
 
 
+  /**
+   * TODO
+   */
   private void setTypeMode ()
   {
-    window.smallstepItem.setVisible ( false );
-    window.bigstepItem.setVisible ( false );
-    window.typecheckerItem.setVisible ( false );
-    window.minimaltypingItem.setVisible ( false );
-    window.typeinferenceItem.setVisible ( false );
-    window.subtypingItem.setVisible ( true );
-    window.subtypingrecItem.setVisible ( true );
+    this.window.smallstepItem.setVisible ( false );
+    this.window.bigstepItem.setVisible ( false );
+    this.window.typecheckerItem.setVisible ( false );
+    this.window.minimaltypingItem.setVisible ( false );
+    this.window.typeinferenceItem.setVisible ( false );
+    this.window.subtypingItem.setVisible ( true );
+    this.window.subtypingrecItem.setVisible ( true );
   }
 
 
+  /**
+   * TODO
+   */
   private void setExpressionMode ()
   {
 
-    window.smallstepItem.setVisible ( true );
-    window.bigstepItem.setVisible ( true );
-    window.typecheckerItem.setVisible ( true );
-    window.minimaltypingItem.setVisible ( true );
-    window.typeinferenceItem.setVisible ( true );
-    window.subtypingItem.setVisible ( false );
-    window.subtypingrecItem.setVisible ( false );
+    this.window.smallstepItem.setVisible ( true );
+    this.window.bigstepItem.setVisible ( true );
+    this.window.typecheckerItem.setVisible ( true );
+    this.window.minimaltypingItem.setVisible ( true );
+    this.window.typeinferenceItem.setVisible ( true );
+    this.window.subtypingItem.setVisible ( false );
+    this.window.subtypingrecItem.setVisible ( false );
   }
 
 
+  /**
+   * TODO
+   */
   public void handleOpen ()
   {
     PreferenceManager prefmanager = PreferenceManager.get ();
@@ -619,14 +717,14 @@ public class MainWindow
       {
         Language [] languages = factory.getAvailableLanguages ();
         StringBuilder builder = new StringBuilder ( 128 );
-        builder.append ( "Source Files (" );
+        builder.append ( "Source Files (" ); //$NON-NLS-1$
         for ( int n = 0 ; n < languages.length ; ++n )
         {
           if ( n > 0 )
           {
-            builder.append ( "; " );
+            builder.append ( "; " ); //$NON-NLS-1$
           }
-          builder.append ( "*." );
+          builder.append ( "*." ); //$NON-NLS-1$
           builder.append ( languages [ n ].getName ().toLowerCase () );
         }
         builder.append ( ')' );
@@ -634,13 +732,13 @@ public class MainWindow
       }
     } );
     chooser.setAcceptAllFileFilterUsed ( false );
-    int returnVal = chooser.showOpenDialog ( window );
+    int returnVal = chooser.showOpenDialog ( this.window );
     if ( returnVal == JFileChooser.APPROVE_OPTION )
     {
       File [] files = chooser.getSelectedFiles ();
-      for ( int i = 0 ; i < files.length ; i++ )
+      for ( File element : files )
       {
-        openFile ( files [ i ] );
+        openFile ( element );
       }
     }
     prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
@@ -648,10 +746,13 @@ public class MainWindow
   }
 
 
+  /**
+   * TODO
+   */
   public void handleQuit ()
   {
     // be sure to save all files first
-    for ( Component component : window.tabbedPane.getComponents () )
+    for ( Component component : this.window.tabbedPane.getComponents () )
     {
       if ( component instanceof EditorPanelForm )
       {
@@ -663,25 +764,27 @@ public class MainWindow
         }
         // Custom button text
         Object [] options =
-        {
-            java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-                .getString ( "Yes" ),
-            java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-                .getString ( "No" ),
-            java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-                .getString ( "Cancel" ) };
-        int n = JOptionPane.showOptionDialog ( window, editorPanel
-            .getFileName ()
-            + " "
-            + java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-                .getString ( "WantTosave" ), java.util.ResourceBundle
-            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "Save_File" ),
-            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
-            null, options, options [ 2 ] );
+        { java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+            .getString ( "Yes" ), //$NON-NLS-1$
+            java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+                .getString ( "No" ), //$NON-NLS-1$
+            java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+                .getString ( "Cancel" ) }; //$NON-NLS-1$
+        int n = JOptionPane
+            .showOptionDialog (
+                this.window,
+                editorPanel.getFileName ()
+                    + " " //$NON-NLS-1$
+                    + java.util.ResourceBundle.getBundle (
+                        "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+                        .getString ( "WantTosave" ), java.util.ResourceBundle //$NON-NLS-1$
+                    .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( "Save_File" ), //$NON-NLS-1$ //$NON-NLS-2$
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
+                null, options, options [ 2 ] );
         switch ( n )
         {
           case 0 : // Save changes
-            logger.debug ( "Quit dialog: YES" );
+            logger.debug ( "Quit dialog: YES" ); //$NON-NLS-1$
             if ( !editorPanel.handleSave () )
             {
               // abort the quit
@@ -689,10 +792,10 @@ public class MainWindow
             }
             break;
           case 1 : // Do not save changes
-            logger.debug ( "Quit dialog: NO" );
+            logger.debug ( "Quit dialog: NO" ); //$NON-NLS-1$
             break;
           default : // Cancelled
-            logger.debug ( "Quit dialog: CANCEL" );
+            logger.debug ( "Quit dialog: CANCEL" ); //$NON-NLS-1$
             return;
         }
       }
@@ -701,11 +804,11 @@ public class MainWindow
     saveOpenFiles ();
     // remember the settings
     PreferenceManager prefmanager = PreferenceManager.get ();
-    prefmanager.setAdvanced ( window.advancedRadioButton.isSelected () );
+    prefmanager.setAdvanced ( this.window.advancedRadioButton.isSelected () );
     // remember the history
-    prefmanager.setRecentlyUsed ( recentlyUsed );
+    prefmanager.setRecentlyUsed ( this.recentlyUsed );
     // remember window state
-    prefmanager.setWindowPreferences ( window );
+    prefmanager.setWindowPreferences ( this.window );
     // terminate the application
     System.exit ( 0 );
   }
@@ -716,6 +819,8 @@ public class MainWindow
    * 
    * @return true if the active editor could be closed.
    */
+  @SuppressWarnings (
+  { "fallthrough", "fallthrough" } )
   public boolean handleClose ()
   {
     EditorPanel selectedEditor = getActiveEditor ();
@@ -723,38 +828,39 @@ public class MainWindow
     if ( selectedEditor.shouldBeSaved () )
     {
       Object [] options =
-      {
-          java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-              .getString ( "Yes" ),
-          java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-              .getString ( "No" ),
-          java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-              .getString ( "Cancel" ) };
-      int n = JOptionPane.showOptionDialog ( window, selectedEditor
+      { java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+          .getString ( "Yes" ), //$NON-NLS-1$
+          java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+              .getString ( "No" ), //$NON-NLS-1$
+          java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+              .getString ( "Cancel" ) }; //$NON-NLS-1$
+      int n = JOptionPane.showOptionDialog ( this.window, selectedEditor
           .getFileName ()
-          + java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-              .getString ( "WantTosave" ), java.util.ResourceBundle.getBundle (
-          "de/unisiegen/tpml/ui/ui" ).getString ( "Save_File" ),
+          + java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+              .getString ( "WantTosave" ), java.util.ResourceBundle.getBundle ( //$NON-NLS-1$
+              "de/unisiegen/tpml/ui/ui" ).getString ( "Save_File" ), //$NON-NLS-1$ //$NON-NLS-2$
           JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
           options, options [ 2 ] );
       switch ( n )
       {
         case 0 : // Save Changes
-          logger.debug ( "Close dialog: YES" );
+          logger.debug ( "Close dialog: YES" ); //$NON-NLS-1$
           success = selectedEditor.handleSave ();
           if ( success )
           {
-            window.tabbedPane.remove ( window.tabbedPane.getSelectedIndex () );
-            window.repaint ();
+            this.window.tabbedPane.remove ( this.window.tabbedPane
+                .getSelectedIndex () );
+            this.window.repaint ();
           }
           return success;
         case 1 : // Do not save changes
-          logger.debug ( "Close dialog: NO" );
-          window.tabbedPane.remove ( window.tabbedPane.getSelectedIndex () );
-          window.repaint ();
+          logger.debug ( "Close dialog: NO" ); //$NON-NLS-1$
+          this.window.tabbedPane.remove ( this.window.tabbedPane
+              .getSelectedIndex () );
+          this.window.repaint ();
           success = true;
         case 2 : // Cancelled.
-          logger.debug ( "Close dialog: CANCEL" );
+          logger.debug ( "Close dialog: CANCEL" ); //$NON-NLS-1$
           success = false;
         default :
           success = false;
@@ -762,28 +868,34 @@ public class MainWindow
     }
     else
     {
-      window.tabbedPane.remove ( window.tabbedPane.getSelectedIndex () );
-      window.repaint ();
+      this.window.tabbedPane.remove ( this.window.tabbedPane
+          .getSelectedIndex () );
+      this.window.repaint ();
       success = true;
     }
     if ( getActiveEditor () == null )
     {
       setGeneralStates ( false );
-      window.saveItem.setEnabled ( false );
-      window.saveButton.setEnabled ( false );
+      this.window.saveItem.setEnabled ( false );
+      this.window.saveButton.setEnabled ( false );
     }
     return success;
   }
 
 
+  /**
+   * TODO
+   */
   public void handleSaveAll ()
   {
-    int tabcount = window.tabbedPane.getComponentCount ();
+    int tabcount = this.window.tabbedPane.getComponentCount ();
     for ( int i = 0 ; i < tabcount ; i++ )
     {
-      if ( ! ( ( ( EditorPanelForm ) window.tabbedPane.getComponentAt ( i ) ) )
+      if ( ! ( ( ( EditorPanelForm ) this.window.tabbedPane.getComponentAt ( i ) ) )
           .getCaller ().handleSave () )
+      {
         return;
+      }
     }
   }
 
@@ -798,12 +910,12 @@ public class MainWindow
    */
   public void saveOpenFiles ()
   {
-    int tabcount = window.tabbedPane.getComponentCount ();
+    int tabcount = this.window.tabbedPane.getComponentCount ();
     LinkedList < File > filelist = new LinkedList < File > ();
     File file;
     for ( int i = 0 ; i < tabcount ; i++ )
     {
-      file = ( ( EditorPanelForm ) window.tabbedPane.getComponentAt ( i ) )
+      file = ( ( EditorPanelForm ) this.window.tabbedPane.getComponentAt ( i ) )
           .getCaller ().getFile ();
       if ( file != null )
       {

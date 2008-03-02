@@ -75,6 +75,9 @@ public class TypeCheckerEnterType extends JComponent
   private ComponentAdapter componentAdapter;
 
 
+  /**
+   * TODO
+   */
   public TypeCheckerEnterType ()
   {
     super ();
@@ -103,6 +106,7 @@ public class TypeCheckerEnterType extends JComponent
     this.textField.addKeyListener ( new KeyAdapter ()
     {
 
+      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void keyReleased ( KeyEvent event )
       {
@@ -113,6 +117,7 @@ public class TypeCheckerEnterType extends JComponent
     this.textField.addActionListener ( new ActionListener ()
     {
 
+      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( ActionEvent event )
       {
         TypeCheckerEnterType.this.actionPerformed ( event );
@@ -123,7 +128,8 @@ public class TypeCheckerEnterType extends JComponent
     {
 
       @Override
-      public void componentShown ( ComponentEvent event )
+      public void componentShown ( @SuppressWarnings ( "unused" )
+      ComponentEvent event )
       {
         TypeCheckerEnterType.this.requestTextFocus ();
       }
@@ -149,6 +155,11 @@ public class TypeCheckerEnterType extends JComponent
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param listener
+   */
   public void addTypeCheckerTypeEnterListener (
       TypeCheckerTypeEnterListener listener )
   {
@@ -156,6 +167,11 @@ public class TypeCheckerEnterType extends JComponent
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param listener
+   */
   public void removeTypeCheckerTypeEnterListener (
       TypeCheckerTypeEnterListener listener )
   {
@@ -163,6 +179,11 @@ public class TypeCheckerEnterType extends JComponent
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param type
+   */
   private void fireTypeEntered ( String type )
   {
     Object [] listeners = this.listenerList.getListenerList ();
@@ -177,6 +198,9 @@ public class TypeCheckerEnterType extends JComponent
   }
 
 
+  /**
+   * TODO
+   */
   private void fireCanceled ()
   {
     Object [] listeners = this.listenerList.getListenerList ();
@@ -251,7 +275,8 @@ public class TypeCheckerEnterType extends JComponent
    * 
    * @param event
    */
-  private void actionPerformed ( ActionEvent event )
+  private void actionPerformed ( @SuppressWarnings ( "unused" )
+  ActionEvent event )
   {
     fireTypeEntered ( this.textField.getText () );
   }

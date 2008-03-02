@@ -51,30 +51,49 @@ public class PreferenceDialog extends javax.swing.JDialog
   private class ColorItem
   {
 
+    /**
+     * TODO
+     */
     private String id;
 
 
+    /**
+     * TODO
+     * 
+     * @param id
+     */
     public ColorItem ( String id )
     {
       if ( id == null )
       {
-        throw new NullPointerException ( "id is null" );
+        throw new NullPointerException ( "id is null" ); //$NON-NLS-1$
       }
       this.id = id;
     }
 
 
+    /**
+     * TODO
+     * 
+     * @return TODO
+     */
     public String getId ()
     {
       return this.id;
     }
 
 
+    /**
+     * TODO
+     * 
+     * @return TODO
+     */
+    @SuppressWarnings ( "synthetic-access" )
     public Color getColor ()
     {
       try
       {
-        Method method = Theme.class.getMethod ( "get"
+        Method method = Theme.class.getMethod ( "get" //$NON-NLS-1$
             + StringUtilities.toCamelCase ( this.id ) );
         return ( Color ) method.invoke ( PreferenceDialog.this.theme );
       }
@@ -89,11 +108,17 @@ public class PreferenceDialog extends javax.swing.JDialog
     }
 
 
+    /**
+     * TODO
+     * 
+     * @param color
+     */
+    @SuppressWarnings ( "synthetic-access" )
     public void setColor ( Color color )
     {
       try
       {
-        Method method = Theme.class.getMethod ( "set"
+        Method method = Theme.class.getMethod ( "set" //$NON-NLS-1$
             + StringUtilities.toCamelCase ( this.id ), Color.class );
         method.invoke ( PreferenceDialog.this.theme, color );
       }
@@ -108,6 +133,11 @@ public class PreferenceDialog extends javax.swing.JDialog
     }
 
 
+    /**
+     * TODO
+     * 
+     * @return TODO
+     */
     public ImageIcon getIcon ()
     {
       BufferedImage image = new BufferedImage ( 16, 10,
@@ -121,9 +151,14 @@ public class PreferenceDialog extends javax.swing.JDialog
     }
 
 
+    /**
+     * TODO
+     * 
+     * @return TODO
+     */
     public String getName ()
     {
-      return ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
+      return ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
           this.id );
     }
   }
@@ -135,6 +170,24 @@ public class PreferenceDialog extends javax.swing.JDialog
   private static class ColorItemRenderer extends DefaultListCellRenderer
   {
 
+    /**
+     * TODO
+     */
+    private static final long serialVersionUID = 1157551190855404150L;
+
+
+    /**
+     * TODO
+     * 
+     * @param list
+     * @param value
+     * @param index
+     * @param isSelected
+     * @param cellHasFocus
+     * @return TODO
+     * @see javax.swing.DefaultListCellRenderer#getListCellRendererComponent(javax.swing.JList,
+     *      java.lang.Object, int, boolean, boolean)
+     */
     @Override
     public Component getListCellRendererComponent ( JList list, Object value,
         int index, boolean isSelected, boolean cellHasFocus )
@@ -171,6 +224,7 @@ public class PreferenceDialog extends javax.swing.JDialog
    * @param modal <code>true</code> to place the dialog modal above
    *          <code>parent</code>.
    */
+  @SuppressWarnings ( "synthetic-access" )
   public PreferenceDialog ( java.awt.Frame parent, boolean modal )
   {
     super ( parent, modal );
@@ -188,10 +242,7 @@ public class PreferenceDialog extends javax.swing.JDialog
               dispose ();
               return true;
             }
-            else
-            {
-              return false;
-            }
+            return false;
           }
         } );
     // connect the font button to the theme
@@ -208,21 +259,21 @@ public class PreferenceDialog extends javax.swing.JDialog
      */
     // setup the colors list
     DefaultListModel colorsModel = new DefaultListModel ();
-    colorsModel.addElement ( new ColorItem ( "expressionColor" ) );
-    colorsModel.addElement ( new ColorItem ( "keywordColor" ) );
-    colorsModel.addElement ( new ColorItem ( "constantColor" ) );
-    colorsModel.addElement ( new ColorItem ( "identifierColor" ) );
-    colorsModel.addElement ( new ColorItem ( "typeColor" ) );
-    colorsModel.addElement ( new ColorItem ( "commentColor" ) );
-    colorsModel.addElement ( new ColorItem ( "environmentColor" ) );
-    colorsModel.addElement ( new ColorItem ( "underlineColor" ) );
-    colorsModel.addElement ( new ColorItem ( "ruleColor" ) );
-    colorsModel.addElement ( new ColorItem ( "selectionColor" ) );
-    colorsModel.addElement ( new ColorItem ( "boundIdColor" ) );
-    colorsModel.addElement ( new ColorItem ( "bindingIdColor" ) );
-    colorsModel.addElement ( new ColorItem ( "freeIdColor" ) );
-    colorsModel.addElement ( new ColorItem ( "highlightSourceCodeColor" ) );
-    colorsModel.addElement ( new ColorItem ( "parserWarningColor" ) );
+    colorsModel.addElement ( new ColorItem ( "expressionColor" ) ); //$NON-NLS-1$
+    colorsModel.addElement ( new ColorItem ( "keywordColor" ) ); //$NON-NLS-1$
+    colorsModel.addElement ( new ColorItem ( "constantColor" ) ); //$NON-NLS-1$
+    colorsModel.addElement ( new ColorItem ( "identifierColor" ) ); //$NON-NLS-1$
+    colorsModel.addElement ( new ColorItem ( "typeColor" ) ); //$NON-NLS-1$
+    colorsModel.addElement ( new ColorItem ( "commentColor" ) ); //$NON-NLS-1$
+    colorsModel.addElement ( new ColorItem ( "environmentColor" ) ); //$NON-NLS-1$
+    colorsModel.addElement ( new ColorItem ( "underlineColor" ) ); //$NON-NLS-1$
+    colorsModel.addElement ( new ColorItem ( "ruleColor" ) ); //$NON-NLS-1$
+    colorsModel.addElement ( new ColorItem ( "selectionColor" ) ); //$NON-NLS-1$
+    colorsModel.addElement ( new ColorItem ( "boundIdColor" ) ); //$NON-NLS-1$
+    colorsModel.addElement ( new ColorItem ( "bindingIdColor" ) ); //$NON-NLS-1$
+    colorsModel.addElement ( new ColorItem ( "freeIdColor" ) ); //$NON-NLS-1$
+    colorsModel.addElement ( new ColorItem ( "highlightSourceCodeColor" ) ); //$NON-NLS-1$
+    colorsModel.addElement ( new ColorItem ( "parserWarningColor" ) ); //$NON-NLS-1$
     this.colorsList.setCellRenderer ( new ColorItemRenderer () );
     this.colorsList.setModel ( colorsModel );
   }
@@ -248,20 +299,21 @@ public class PreferenceDialog extends javax.swing.JDialog
     mainPanel = new javax.swing.JPanel ();
     colorLabel = new javax.swing.JLabel ();
     colorsScrollPane = new javax.swing.JScrollPane ();
-    colorsList = new javax.swing.JList ();
+    this.colorsList = new javax.swing.JList ();
     setDefaultCloseOperation ( javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-    setTitle ( java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-        .getString ( "Preferences" ) );
+    setTitle ( java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ) //$NON-NLS-1$
+        .getString ( "Preferences" ) ); //$NON-NLS-1$
     southPanel.setLayout ( new java.awt.GridBagLayout () );
     southPanel.setBorder ( javax.swing.BorderFactory.createEmptyBorder ( 10,
         10, 10, 10 ) );
     closeButton.setMnemonic ( java.util.ResourceBundle.getBundle (
-        "de/unisiegen/tpml/ui/ui" ).getString ( "CloseMnemonic" ).charAt ( 0 ) );
+        "de/unisiegen/tpml/ui/ui" ).getString ( "CloseMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$ //$NON-NLS-2$
     closeButton.setText ( java.util.ResourceBundle.getBundle (
-        "de/unisiegen/tpml/ui/ui" ).getString ( "Close" ) );
+        "de/unisiegen/tpml/ui/ui" ).getString ( "Close" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     closeButton.addActionListener ( new java.awt.event.ActionListener ()
     {
 
+      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( java.awt.event.ActionEvent evt )
       {
         closeButtonActionPerformed ( evt );
@@ -271,40 +323,48 @@ public class PreferenceDialog extends javax.swing.JDialog
     getContentPane ().add ( southPanel, java.awt.BorderLayout.SOUTH );
     mainPanel.setLayout ( new java.awt.GridBagLayout () );
     colorLabel.setText ( java.util.ResourceBundle.getBundle (
-        "de/unisiegen/tpml/ui/ui" ).getString ( "Colors" ) );
+        "de/unisiegen/tpml/ui/ui" ).getString ( "Colors" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     gridBagConstraints = new java.awt.GridBagConstraints ();
     gridBagConstraints.gridx = 0;
     gridBagConstraints.gridy = 0;
     gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
     gridBagConstraints.insets = new java.awt.Insets ( 18, 18, 12, 0 );
     mainPanel.add ( colorLabel, gridBagConstraints );
-    colorsList.setModel ( new javax.swing.AbstractListModel ()
+    this.colorsList.setModel ( new javax.swing.AbstractListModel ()
     {
 
+      /**
+       * TODO
+       */
+      private static final long serialVersionUID = 8461854233165792196L;
+
+
       String [] strings =
-      { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+      { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" }; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$
 
 
       public int getSize ()
       {
-        return strings.length;
+        return this.strings.length;
       }
 
 
       public Object getElementAt ( int i )
       {
-        return strings [ i ];
+        return this.strings [ i ];
       }
     } );
-    colorsList.addMouseListener ( new java.awt.event.MouseAdapter ()
+    this.colorsList.addMouseListener ( new java.awt.event.MouseAdapter ()
     {
 
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
       public void mouseClicked ( java.awt.event.MouseEvent evt )
       {
         colorsListMouseClicked ( evt );
       }
     } );
-    colorsScrollPane.setViewportView ( colorsList );
+    colorsScrollPane.setViewportView ( this.colorsList );
     gridBagConstraints = new java.awt.GridBagConstraints ();
     gridBagConstraints.gridx = 0;
     gridBagConstraints.gridy = 3;
@@ -320,6 +380,11 @@ public class PreferenceDialog extends javax.swing.JDialog
   }// </editor-fold>//GEN-END:initComponents
 
 
+  /**
+   * TODO
+   * 
+   * @param evt
+   */
   private void colorsListMouseClicked ( java.awt.event.MouseEvent evt )
   {// GEN-FIRST:event_colorsListMouseClicked
     // check if this is a double-click
@@ -330,8 +395,8 @@ public class PreferenceDialog extends javax.swing.JDialog
       {
         // let the user select a new color
         Color color = JColorChooser.showDialog ( this, java.util.ResourceBundle
-            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString (
-                "Select_a_color" ), item.getColor () );
+            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+                "Select_a_color" ), item.getColor () ); //$NON-NLS-1$
         if ( color != null )
         {
           // set the new color for the item
@@ -344,13 +409,22 @@ public class PreferenceDialog extends javax.swing.JDialog
   }// GEN-LAST:event_colorsListMouseClicked
 
 
-  private void closeButtonActionPerformed ( java.awt.event.ActionEvent evt )
+  /**
+   * TODO
+   * 
+   * @param evt
+   */
+  private void closeButtonActionPerformed ( @SuppressWarnings ( "unused" )
+  java.awt.event.ActionEvent evt )
   {// GEN-FIRST:event_closeButtonActionPerformed
     dispose ();
   }// GEN-LAST:event_closeButtonActionPerformed
 
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
+  /**
+   * TODO
+   */
   private javax.swing.JList colorsList;
   // End of variables declaration//GEN-END:variables
 }

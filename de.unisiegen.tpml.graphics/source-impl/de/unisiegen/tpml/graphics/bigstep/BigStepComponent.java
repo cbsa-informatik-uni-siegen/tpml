@@ -157,7 +157,7 @@ public class BigStepComponent extends AbstractProofComponent implements
         return;
       }
     }
-    throw new IllegalStateException ( "Unable to find next node" );
+    throw new IllegalStateException ( "Unable to find next node" ); //$NON-NLS-1$
 
   }
 
@@ -203,7 +203,8 @@ public class BigStepComponent extends AbstractProofComponent implements
       nodeComponent.addBigStepNodeListener ( new BigStepNodeListener ()
       {
 
-        public void nodeChanged ( BigStepNodeComponent pNode )
+        public void nodeChanged ( @SuppressWarnings ( "unused" )
+        BigStepNodeComponent pNode )
         {
           BigStepComponent.this.relayout ();
         }
@@ -236,6 +237,8 @@ public class BigStepComponent extends AbstractProofComponent implements
    * <br>
    * Resetting means that every {@link PrettyStringRenderer} and
    * {@link EnvironmentRenderer} recalculates their needed font sizes.
+   * 
+   * @param node
    */
   private void resetUserObject ( BigStepProofNode node )
   {
@@ -335,11 +338,11 @@ public class BigStepComponent extends AbstractProofComponent implements
       }
       return;
     }
-    for ( int i = 0 ; i < children.length ; i++ )
+    for ( Object element : children )
     {
-      if ( children [ i ] instanceof ProofNode )
+      if ( element instanceof ProofNode )
       {
-        BigStepProofNode proofNode = ( BigStepProofNode ) children [ i ];
+        BigStepProofNode proofNode = ( BigStepProofNode ) element;
 
         BigStepNodeComponent nodeComponent = ( BigStepNodeComponent ) proofNode
             .getUserObject ();
@@ -376,11 +379,11 @@ public class BigStepComponent extends AbstractProofComponent implements
     {
       return;
     }
-    for ( int i = 0 ; i < children.length ; i++ )
+    for ( Object element : children )
     {
-      if ( children [ i ] instanceof ProofNode )
+      if ( element instanceof ProofNode )
       {
-        BigStepProofNode proofNode = ( BigStepProofNode ) children [ i ];
+        BigStepProofNode proofNode = ( BigStepProofNode ) element;
 
         BigStepNodeComponent nodeComponent = ( BigStepNodeComponent ) proofNode
             .getUserObject ();
@@ -419,10 +422,10 @@ public class BigStepComponent extends AbstractProofComponent implements
    * <br>
    * Reimplementation of the {@link AbstractProofComponent#relayout()} Method.<br>
    * <br>
-   * The actual placement of the nodes is done by the {@link TreeNodeLayout. The
-   * <i>TreeNodeLayout</i> returns the bottom-right-point of the entire layout.
-   * Size position widened by the border used to determine the size of the
-   * component.<br>
+   * The actual placement of the nodes is done by the {@link TreeNodeLayout}.
+   * The <i>TreeNodeLayout</i> returns the bottom-right-point of the entire
+   * layout. Size position widened by the border used to determine the size of
+   * the component.<br>
    * Right after setting the size of the component the jump to a possible new
    * node takes place. (See {@link #jumpToNodeVisible()})<br>
    */
@@ -560,7 +563,7 @@ public class BigStepComponent extends AbstractProofComponent implements
 
     // get the visible rect to ensure the x coordinate is in the
     // visible area. only vertical scolling is requested
-    Rectangle visibleRect = this.getVisibleRect ();
+    Rectangle visibleRect = getVisibleRect ();
 
     Rectangle rect = new Rectangle ();
     rect.x = visibleRect.x;
@@ -568,14 +571,16 @@ public class BigStepComponent extends AbstractProofComponent implements
     rect.width = 1;
     rect.height = node.getHeight ();
 
-    this.scrollRectToVisible ( rect );
+    scrollRectToVisible ( rect );
 
     this.jumpNode = null;
   }
 
 
-  /*
+  /**
    * Implementation of the Scrollable interface
+   * 
+   * @return TODO
    */
   public Dimension getPreferredScrollableViewportSize ()
   {
@@ -583,28 +588,62 @@ public class BigStepComponent extends AbstractProofComponent implements
   }
 
 
-  public int getScrollableBlockIncrement ( Rectangle visibleRect,
-      int orientation, int direction )
+  /**
+   * TODO
+   * 
+   * @param visibleRect
+   * @param orientation
+   * @param direction
+   * @return TODO
+   * @see Scrollable#getScrollableBlockIncrement(Rectangle, int, int)
+   */
+  public int getScrollableBlockIncrement ( @SuppressWarnings ( "unused" )
+  Rectangle visibleRect, @SuppressWarnings ( "unused" )
+  int orientation, @SuppressWarnings ( "unused" )
+  int direction )
   {
-    // XXX: Dynamic block increment
     return 25;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see javax.swing.Scrollable#getScrollableTracksViewportHeight()
+   */
   public boolean getScrollableTracksViewportHeight ()
   {
     return false;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see javax.swing.Scrollable#getScrollableTracksViewportWidth()
+   */
   public boolean getScrollableTracksViewportWidth ()
   {
     return false;
   }
 
 
-  public int getScrollableUnitIncrement ( Rectangle visibleRect,
-      int orientation, int direction )
+  /**
+   * TODO
+   * 
+   * @param visibleRect
+   * @param orientation
+   * @param direction
+   * @return TODO
+   * @see javax.swing.Scrollable#getScrollableUnitIncrement(java.awt.Rectangle,
+   *      int, int)
+   */
+  public int getScrollableUnitIncrement ( @SuppressWarnings ( "unused" )
+  Rectangle visibleRect, @SuppressWarnings ( "unused" )
+  int orientation, @SuppressWarnings ( "unused" )
+  int direction )
   {
     // XXX: Dynamic unit increment
     return 10;
@@ -629,6 +668,13 @@ public class BigStepComponent extends AbstractProofComponent implements
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see java.lang.Object#clone()
+   */
+  @Override
   public BigStepComponent clone ()
   {
     try

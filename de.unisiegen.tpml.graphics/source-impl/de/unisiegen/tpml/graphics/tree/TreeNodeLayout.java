@@ -48,12 +48,20 @@ public class TreeNodeLayout
   private int spacing;
 
 
+  /**
+   * TODO
+   */
   public TreeNodeLayout ()
   {
     this.spacing = 10;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param spacing
+   */
   public TreeNodeLayout ( int spacing )
   {
     this.spacing = spacing;
@@ -74,7 +82,7 @@ public class TreeNodeLayout
   /**
    * Returns the spacing
    * 
-   * @return
+   * @return TODO
    */
   public int getSpacing ()
   {
@@ -89,14 +97,15 @@ public class TreeNodeLayout
    * @param posX Left position where the root node should be placed
    * @param posY Top position where the root node should be placed
    * @param pAvailableWidth The maximum width available for the layout.
-   * @return
+   * @param pAvailableHeight
+   * @return TODO
    */
   public Point placeNodes ( ProofNode root, int posX, int posY,
       int pAvailableWidth, int pAvailableHeight )
   {
     this.availableWidth = pAvailableWidth;
     this.availableHeight = pAvailableHeight;
-    actualPageCounter = 0;
+    this.actualPageCounter = 0;
 
     return placeNode ( root, posX, posY, new Point ( -1, -1 ) );
   }
@@ -108,11 +117,14 @@ public class TreeNodeLayout
    * @param node The node that should be
    * @param posX The left position of the node
    * @param posY The top position of the node
+   * @param rightBottomPos
    * @return The right bottom pos of the needed width
    */
   private Point placeNode ( ProofNode node, int posX, int posY,
       Point rightBottomPos )
   {
+    int newPosY = posY;
+    int newPoyX = posX;
 
     TreeNodeComponent nodeComponent = ( TreeNodeComponent ) node
         .getUserObject ();
@@ -125,8 +137,8 @@ public class TreeNodeLayout
 
     // the available width is shrinked by the already spended
     // space by indentating the node
-    int availableWidth = this.availableWidth - posX;
-    Dimension size = nodeComponent.update ( availableWidth );
+    int newAvailableWidth = this.availableWidth - newPoyX;
+    Dimension size = nodeComponent.update ( newAvailableWidth );
 
     // add the needed height to the tmpPaper, if it gets bigger than
     // availableHeight, pagebreak
@@ -136,7 +148,7 @@ public class TreeNodeLayout
       {
         // add the rest of space on the page to to posY... So the next node will
         // get to next page
-        posY += this.availableHeight - this.actualPageCounter;
+        newPosY += this.availableHeight - this.actualPageCounter;
         // posY += 10;
 
         // the actualPageCounter restarts
@@ -148,40 +160,37 @@ public class TreeNodeLayout
     this.actualPageCounter += size.height;
 
     // do the real positioning of the node
-    nodeComponent.setBounds ( posX, posY, size.width, size.height );
+    nodeComponent.setBounds ( newPoyX, newPosY, size.width, size.height );
 
     // let some spacing between two nodes
-    posY += this.spacing;
+    newPosY += this.spacing;
     this.actualPageCounter += this.spacing;
 
     //
     // change the resulting point
     //
     // check if this node widens the resulting area
-    if ( posX + size.width > rightBottomPos.x )
+    if ( newPoyX + size.width > rightBottomPos.x )
     {
-      rightBottomPos.x = posX + size.width;
+      rightBottomPos.x = newPoyX + size.width;
     }
 
     // we will always go down so the new yPos is always bigger
-    rightBottomPos.y = posY + size.height;
+    rightBottomPos.y = newPosY + size.height;
 
-    posY += size.height;
-    posX += nodeComponent.getIndentationWidth ();
+    newPosY += size.height;
+    newPoyX += nodeComponent.getIndentationWidth ();
 
     // delegate the rest to the other nodes
     for ( int i = 0 ; i < node.getChildCount () ; i++ )
     {
       ProofNode pNode = node.getChildAt ( i );
 
-      placeNode ( pNode, posX, posY, rightBottomPos );
+      placeNode ( pNode, newPoyX, newPosY, rightBottomPos );
 
       // increment the posY for the next node
-      posY = rightBottomPos.y;
-
+      newPosY = rightBottomPos.y;
     }
-
     return rightBottomPos;
   }
-
 }

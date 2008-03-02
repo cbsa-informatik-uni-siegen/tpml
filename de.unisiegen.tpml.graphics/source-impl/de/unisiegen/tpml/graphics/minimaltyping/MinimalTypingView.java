@@ -86,7 +86,7 @@ public class MinimalTypingView extends AbstractProofView
     this.proofModel = pMinimalTypingProofModel;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ();
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT );
-    this.setLayout ( new GridBagLayout () );
+    setLayout ( new GridBagLayout () );
     this.scrollPane = new JScrollPane ();
     this.component = new MinimalTypingComponent ( this.proofModel );
     this.scrollPane.setViewportView ( this.component );
@@ -192,8 +192,14 @@ public class MinimalTypingView extends AbstractProofView
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see de.unisiegen.tpml.graphics.ProofView#getPrintPart()
+   */
   public JComponent getPrintPart ()
   {
-    return ( JComponent ) component.clone ();
+    return this.component.clone ();
   }
 }
