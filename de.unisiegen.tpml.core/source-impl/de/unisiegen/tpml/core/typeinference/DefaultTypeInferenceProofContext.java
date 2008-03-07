@@ -198,7 +198,13 @@ public class DefaultTypeInferenceProofContext implements
   public void addSubstitution ( TypeSubstitution s )
   {
     this.substitutionList.remove ( s );
+    ArrayList < TypeSubstitution > newList = new ArrayList < TypeSubstitution > ();
+    for (TypeSubstitution current : this.substitutionList){
+      newList.add ( current.substitute ( s ) );
+    }
+    newList.add ( 0, s );
     this.substitutionList.add ( 0, s );
+    this.substitutionList = newList;
   }
 
 

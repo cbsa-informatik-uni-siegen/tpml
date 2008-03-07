@@ -18,3 +18,5 @@
 		- TypeChecker: Typ nachträglich eingeben können bei Lambda & Rec
 CU		- Unify
 		- Umgebungssemantik
+		- Tooltip im Typinferenz Beweiswerkzeug überarbeiten (Syntax Highlighting,
+		  Zeilenumbruch)

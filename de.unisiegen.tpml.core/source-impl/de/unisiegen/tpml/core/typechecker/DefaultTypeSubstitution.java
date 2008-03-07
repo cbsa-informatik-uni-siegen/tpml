@@ -361,4 +361,53 @@ public final class DefaultTypeSubstitution implements TypeSubstitution
   {
     return this.tvar;
   }
+
+  /**
+   * Applies the {@link TypeSubstitution} <code>s</code> to the types on both
+   * sides of the substitution and returns the resulting substitution.
+   * 
+   * @param substitution The {@link DefaultTypeSubstitution}.
+   * 
+   * @return the resulting substitution
+   */
+  public TypeSubstitution substitute ( TypeSubstitution substitution )
+  {
+   DefaultTypeSubstitution newSubstitution = this.clone ();
+   newSubstitution.setType ( this.type.substitute ( substitution ) );
+   return newSubstitution;
+  }
+  
+  
+  /**
+   * Clones this type substitution, so that the result is an type substitution equal to
+   * this type substitution.
+   * 
+   * @return a clone of this object.
+   * @see Object#clone()
+   */
+  @Override
+  public DefaultTypeSubstitution clone()
+  {
+    return new DefaultTypeSubstitution(this.tvar, this.type, this.parent);
+  }
+  
+  /**
+   * Set a new TypeVariable for this substitution.
+   * 
+   * @param pTvar the new TypeVariable.
+   */
+  public void setTypeVariable ( TypeVariable pTvar )
+  {
+    this.tvar = pTvar;
+  }
+  
+  /**
+   * Set a new MonoType for this substitution.
+   * 
+   * @param pType the new MonoType.
+   */
+  public void setType (MonoType pType)
+  {
+    this.type = pType;
+  }
 }
