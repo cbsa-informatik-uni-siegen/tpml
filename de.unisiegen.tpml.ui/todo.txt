@@ -1,7 +1,1 @@
 CF		- L1 und L2 ohne RecType und dann ohne A darstellen
-BM		- [β/α] [int/β]    [int/α, int/β]
-BM		- Bugs:
-          if true then object (self: <m:int;>) method m = 1; end
-                  else object (self: <n:bool;>) method n = true; end
-          if true then object (self: <m:int;>) method m = 1; end
-                  else object (self: <m:bool;>) method m = true; end

@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.languages.l1;
 
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 
 import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.expressions.And;
@@ -802,7 +803,49 @@ public class L1MinimalTypingProofRuleSet extends
       return new ArrowType ( supremum ( arrow.getTau1 (), arrow2.getTau1 () ),
           infimum ( arrow.getTau2 (), arrow2.getTau2 () ) );
     }
-
+    if (type instanceof ObjectType && type2 instanceof ObjectType)
+    {
+      ArrayList < Identifier > ids = new ArrayList < Identifier >();
+      ArrayList < MonoType > types = new ArrayList < MonoType >();
+      
+      // Get the containing row types
+      RowType rowType1 = ( RowType ) ( ( ObjectType ) type ).getPhi ();
+      RowType rowType2 = ( RowType ) ( ( ObjectType ) type2 ).getPhi ();
+      
+      // Search for equal method identifier with compatible types
+      for (Identifier id1 : rowType1.getIdentifiers ())
+      {
+        for (Identifier id2 : rowType2.getIdentifiers ())
+        {
+          if (id1.equals ( id2 ))
+          {
+            int indexType1 = rowType1.getIndexOfIdentifier ( id1 );
+            int indexType2 = rowType2.getIndexOfIdentifier ( id2 );
+            try {
+              MonoType resultType = supremum(rowType1.getTypes ()[indexType1], rowType2.getTypes ()[indexType2]);
+              // Add the id and type to create the new object type as result
+              ids.add ( id1 );
+              types.add ( resultType );
+            }
+            catch (Exception e)
+            {
+              // Types not compatible. Do nothing!
+            }
+          }
+        }
+      }
+      Identifier [] idArray = new Identifier [ids.size ()];
+      for ( int i = 0 ; i < ids.size (); i++)
+      {
+        idArray[i] = ids.get ( i );
+      }
+      MonoType [] typeArray = new MonoType [types.size ()];
+      for ( int i = 0 ; i < types.size (); i++)
+      {
+        typeArray[i] = types.get ( i );
+      }
+      return new ObjectType(new RowType(idArray, typeArray));
+    }
     throw new RuntimeException ( "supremum type error" ); //$NON-NLS-1$
   }
 
