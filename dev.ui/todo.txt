@@ -1,7 +1,7 @@
 		- Save Button komplett neu schreiben
-CU		- AboutDialog mit Netbeans neu schreiben (Entwickler in TPML
+		- AboutDialog mit Netbeans neu schreiben (Entwickler in TPML
 		  1.0, 2.0 und 3.0 unterteilen)
-CU		- PreferenceDialog mit Netbeans neu schreiben
+		- PreferenceDialog mit Netbeans neu schreiben
 		- Dynamische Sprachänderung (siehe GTITool unter
 		  http://theoinf.math.uni-siegen.de/gtitool/)
 		- Dynamische Änderung des Look and Feel
@@ -15,3 +15,6 @@ CU		- PreferenceDialog mit Netbeans neu schreiben
 		- Die Breite des OpenDialogs beschränken (Einen eigenen mit Netbeans
 		  implementieren)
 		- Die Beschreibung im Neu Dialog kleiner machen
+		- TypeChecker: Typ nachträglich eingeben können bei Lambda & Rec
+CU		- Unify
+		- Umgebungssemantik
