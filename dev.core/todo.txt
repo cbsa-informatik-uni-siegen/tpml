@@ -1,2 +1,4 @@
 		- Die angezeigten Fehler muessen verbesset werden
 		  (SmallStep gar nicht vorhanden, BigStep wenig aussagekräftig)
+CU		- Die Parser müssen um die Fehlerbehandlung erweitert werden
+CU		- Die komplexe ParserTest Klasse muss erweitert werden

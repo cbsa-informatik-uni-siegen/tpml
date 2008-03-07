@@ -18,5 +18,8 @@
 		- TypeChecker: Typ nachträglich eingeben können bei Lambda & Rec
 CU		- Unify
 		- Umgebungssemantik
-		- Tooltip im Typinferenz Beweiswerkzeug überarbeiten (Syntax Highlighting,
-		  Zeilenumbruch)
+		- Tooltip im Typinferenz Beweiswerkzeug überarbeiten (Zeilenumbruch)
+		- Liste der Substitutionen muss mit Syntax-Highlighting versehen werden
+		  (PrettyPrinter ist schon implementiert)
+		- L1 und L2 besitzen jetzt keine RecTypes mehr, die Menge A soll
+		  nicht mehr dargestellt werden

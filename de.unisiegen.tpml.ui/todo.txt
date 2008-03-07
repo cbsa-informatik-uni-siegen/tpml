@@ -1,1 +1,1 @@
-CF		- L1 und L2 ohne RecType und dann ohne A darstellen
+CF		- L1 und L2 ohne RecType
