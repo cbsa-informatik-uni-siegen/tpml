@@ -23,3 +23,6 @@ CU		- Unify
 		  (PrettyPrinter ist schon implementiert)
 		- L1 und L2 besitzen jetzt keine RecTypes mehr, die Menge A soll
 		  nicht mehr dargestellt werden
+		- Beim Type Checker kann ein Typ eingegeben werden. Anstelle eines
+		  normalen Eingabefeldes muss hier ein Parser verwendet werden, damit
+		  das Syntax Highlighting funktioniert
