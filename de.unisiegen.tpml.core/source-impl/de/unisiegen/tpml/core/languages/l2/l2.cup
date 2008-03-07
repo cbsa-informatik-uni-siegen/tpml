@@ -71,7 +71,6 @@ terminal			REC;
 terminal			BOOL;
 terminal			INT;
 terminal			UNIT;
-terminal			MU;
 
 /* Special */
 terminal String		IDENTIFIER;
@@ -124,8 +123,6 @@ non terminal IntegerType			integer_type;
 non terminal UnitType				unit_type;
 non terminal TypeVariable			type_variable;
 non terminal ArrowType				arrow_type;
-non terminal TypeName				type_name;
-non terminal RecType				rec_type;
 
 /* Non terminal - Helper */
 non terminal IdentifierTypePair[]			curried_let_list;
@@ -156,7 +153,6 @@ non terminal  		infix_operation_greater_equal_error;
 non terminal		coercion_error;
 non terminal 		simple_type_error;
 non terminal 		arrow_type_error;
-non terminal		rec_type_error;
 non terminal 		recursion_error;
 non terminal 		let_rec_error;
 non terminal 		curried_let_rec_error;
@@ -1002,10 +998,6 @@ simple_type						::=	LPAREN:l type:t RPAREN:r
 									{: RESULT = u; :}
 								|	type_variable:t
 									{: RESULT = t; :}
-								|	type_name:t
-									{: RESULT = t; :}
-								|	rec_type:r
-									{: RESULT = r; :}
 								|	simple_type_error
 									{: :}
 								;
@@ -1040,22 +1032,4 @@ unit_type						::= UNIT:u
 
 type_variable					::= TYPEVARIABLE:t
 									{: RESULT = new TypeVariable(0, t, tleft, tright); :}
-								;
-
-type_name						::= IDENTIFIER:id
-									{: RESULT = new TypeName(id, idleft, idright); :}
-								;
-
-rec_type						::= MU:m IDENTIFIER:id DOT type:t
-									{: RESULT = new RecType(new TypeName(id, idleft, idright), t, mleft, tright); :}
-								|	rec_type_error
-									{: :}								
-								;
-
-rec_type_error					::= MU:m epsilon
-									{: Error.expect("Rec-Type", " t.\u03C4", mleft, mright, "t",".","\u03C4"); :}
-								|	MU:m IDENTIFIER:i epsilon
-									{: Error.expect("Rec-Type", ".\u03C4", mleft, iright, ".","\u03C4"); :}
-								|	MU:m IDENTIFIER DOT:d epsilon
-									{: Error.expect("Rec-Type", "\u03C4", mleft, dright, "\u03C4"); :}
 								;

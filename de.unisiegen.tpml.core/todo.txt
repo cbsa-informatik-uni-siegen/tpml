@@ -1,0 +1,1 @@
+CF		- L1 und L2 ohne RecType (Parser Test Klasse)
