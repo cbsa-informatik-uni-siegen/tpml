@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.typechecker;
 
 
+import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
 import de.unisiegen.tpml.core.latex.LatexCommandList;
@@ -93,6 +94,24 @@ public final class TypeEquationTypeChecker implements PrettyPrintable,
    * The {@link TypeEquationTypeChecker}s which were unified before.
    */
   private SeenTypes < TypeEquationTypeChecker > seenTypes;
+
+
+  /**
+   * The start offset of this {@link Expression} in the source code.
+   * 
+   * @see #getParserStartOffset()
+   * @see #setParserStartOffset(int)
+   */
+  private int parserStartOffset = -1;
+
+
+  /**
+   * The end offset of this {@link Expression} in the source code.
+   * 
+   * @see #getParserEndOffset()
+   * @see #setParserEndOffset(int)
+   */
+  private int parserEndOffset = -1;
 
 
   /**
@@ -202,6 +221,32 @@ public final class TypeEquationTypeChecker implements PrettyPrintable,
 
 
   /**
+   * Returns the parserEndOffset.
+   * 
+   * @return The parserEndOffset.
+   * @see #parserEndOffset
+   * @see #setParserEndOffset(int)
+   */
+  public int getParserEndOffset ()
+  {
+    return this.parserEndOffset;
+  }
+
+
+  /**
+   * Returns the parserStartOffset.
+   * 
+   * @return The parserStartOffset.
+   * @see #parserStartOffset
+   * @see #setParserStartOffset(int)
+   */
+  public int getParserStartOffset ()
+  {
+    return this.parserStartOffset;
+  }
+
+
+  /**
    * Returns the monomorphic type on the right side.
    * 
    * @return the right side type.
@@ -233,6 +278,32 @@ public final class TypeEquationTypeChecker implements PrettyPrintable,
   public int hashCode ()
   {
     return this.left.hashCode () + this.right.hashCode ();
+  }
+
+
+  /**
+   * Sets the parser end offset.
+   * 
+   * @param pParserEndOffset The new parser end offset.
+   * @see #getParserEndOffset()
+   * @see #parserEndOffset
+   */
+  public void setParserEndOffset ( int pParserEndOffset )
+  {
+    this.parserEndOffset = pParserEndOffset;
+  }
+
+
+  /**
+   * Sets the parser start offset.
+   * 
+   * @param pParserStartOffset The new parser start offset.
+   * @see #getParserStartOffset()
+   * @see #parserStartOffset
+   */
+  public void setParserStartOffset ( int pParserStartOffset )
+  {
+    this.parserStartOffset = pParserStartOffset;
   }
 
 

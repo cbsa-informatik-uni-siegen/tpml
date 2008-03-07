@@ -5,6 +5,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 
 import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
@@ -110,6 +111,24 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
 
 
   /**
+   * The start offset of this {@link Expression} in the source code.
+   * 
+   * @see #getParserStartOffset()
+   * @see #setParserStartOffset(int)
+   */
+  private int parserStartOffset = -1;
+
+
+  /**
+   * The end offset of this {@link Expression} in the source code.
+   * 
+   * @see #getParserEndOffset()
+   * @see #setParserEndOffset(int)
+   */
+  private int parserEndOffset = -1;
+
+
+  /**
    * Allocates a new empty equation list.
    * 
    * @see #EMPTY_LIST
@@ -210,6 +229,58 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
       packages.add ( list.first );
     }
     return packages;
+  }
+
+
+  /**
+   * Returns the parserEndOffset.
+   * 
+   * @return The parserEndOffset.
+   * @see #parserEndOffset
+   * @see #setParserEndOffset(int)
+   */
+  public int getParserEndOffset ()
+  {
+    return this.parserEndOffset;
+  }
+
+
+  /**
+   * Returns the parserStartOffset.
+   * 
+   * @return The parserStartOffset.
+   * @see #parserStartOffset
+   * @see #setParserStartOffset(int)
+   */
+  public int getParserStartOffset ()
+  {
+    return this.parserStartOffset;
+  }
+
+
+  /**
+   * Sets the parser end offset.
+   * 
+   * @param pParserEndOffset The new parser end offset.
+   * @see #getParserEndOffset()
+   * @see #parserEndOffset
+   */
+  public void setParserEndOffset ( int pParserEndOffset )
+  {
+    this.parserEndOffset = pParserEndOffset;
+  }
+
+
+  /**
+   * Sets the parser start offset.
+   * 
+   * @param pParserStartOffset The new parser start offset.
+   * @see #getParserStartOffset()
+   * @see #parserStartOffset
+   */
+  public void setParserStartOffset ( int pParserStartOffset )
+  {
+    this.parserStartOffset = pParserStartOffset;
   }
 
 

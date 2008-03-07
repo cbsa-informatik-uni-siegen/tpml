@@ -1,0 +1,167 @@
+import de.unisiegen.tpml.core.languages.Error;
+import de.unisiegen.tpml.core.typechecker.SeenTypes;
+import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker;
+import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker;
+import de.unisiegen.tpml.core.types.ArrowType;
+import de.unisiegen.tpml.core.types.BooleanType;
+import de.unisiegen.tpml.core.types.IntegerType;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.TypeName;
+import de.unisiegen.tpml.core.types.TypeVariable;
+import de.unisiegen.tpml.core.types.UnitType;
+
+
+/* Syntactic */
+terminal			ARROW;
+terminal			LPAREN;
+terminal			RPAREN;
+terminal			LBRACKET;
+terminal			RBRACKET;
+terminal			COMMA;
+terminal			EQUAL;
+
+/* Types */
+terminal			BOOL;
+terminal			INT;
+terminal			UNIT;
+
+/* Special */
+terminal Integer	TYPEVARIABLE;
+terminal String		IDENTIFIER;
+terminal			COMMENT;
+
+/* Non terminal - Type */
+non terminal MonoType				type;
+non terminal MonoType				simple_type;
+non terminal BooleanType			boolean_type;
+non terminal IntegerType			integer_type;
+non terminal UnitType				unit_type;
+non terminal TypeVariable			type_variable;
+non terminal ArrowType				arrow_type;
+non terminal TypeName				type_name;
+non terminal TypeEquationTypeChecker		type_equation;
+non terminal TypeEquationTypeChecker[]		type_equation_array;
+non terminal TypeEquationListTypeChecker		type_equation_list;
+
+/* Non terminal - Error */
+non terminal 		epsilon;
+non terminal 		simple_type_error;
+non terminal 		arrow_type_error;
+
+/* Precedence */
+precedence right	ARROW;
+
+
+/*********
+ * Types *
+ *********/
+
+
+type_equation_list				::= LBRACKET:l type_equation_array:tea RBRACKET:r
+								    {:
+								       RESULT = TypeEquationListTypeChecker.EMPTY_LIST ;
+								       for (int i = 0; i < tea.length ; i++)
+								       {
+								         RESULT = RESULT.extend(tea[i]);
+								       }
+								      RESULT.setParserStartOffset(lleft);
+								      RESULT.setParserEndOffset(rright);
+								    :}
+								 |  type_equation_array:tea
+								    {:
+								       RESULT = TypeEquationListTypeChecker.EMPTY_LIST ;
+								       for (int i = 0; i < tea.length ; i++)
+								       {
+								         RESULT = RESULT.extend(tea[i]);
+								       }
+								      RESULT.setParserStartOffset(tealeft);
+								      RESULT.setParserEndOffset(tearight);
+								    :}
+								 ;
+
+
+type_equation_array				::=	type_equation:te COMMA type_equation_array:tea
+								    {:
+								       RESULT = new TypeEquationTypeChecker[tea.length + 1];
+									   System.arraycopy(tea, 0, RESULT, 1, tea.length);
+									   RESULT[0] = te;
+								    :}
+								|   type_equation:te
+								    {:
+								       RESULT = new TypeEquationTypeChecker[]{te};
+								    :}
+								;
+
+type_equation					::= type:t1 EQUAL type:t2
+								    {:
+								      RESULT = new TypeEquationTypeChecker(t1, t2, new SeenTypes());
+								      RESULT.setParserStartOffset(t1left);
+								      RESULT.setParserEndOffset(t2right);
+								    :}
+								;
+
+type							::=	simple_type:t
+									{: RESULT = t; :}
+								|	arrow_type:a
+									{: RESULT = a; :}
+								;
+
+simple_type						::=	LPAREN:l type:t RPAREN:r
+									{: 
+									   t.setParserStartOffset(lleft);
+									   t.setParserEndOffset(rright);
+									   RESULT = t;
+									:}
+								|	boolean_type:b
+									{: RESULT = b; :}
+								|	integer_type:i
+									{: RESULT = i; :}
+								|	unit_type:u
+									{: RESULT = u; :}
+								|	type_variable:t
+									{: RESULT = t; :}
+								|	type_name:t
+									{: RESULT = t; :}
+								|	simple_type_error
+									{: :}
+								;
+
+simple_type_error				::= LPAREN:l epsilon
+									{: Error.expect("Type", "\u03C4)", lleft, lright, "\u03C4",")"); :}
+								|	LPAREN:l type:t epsilon
+									{: Error.expect("Type", ")", lleft, tright, ")"); :}
+								;
+
+arrow_type						::= type:t1 ARROW type:t2
+									{: RESULT = new ArrowType(t1, t2, t1left, t2right); :}
+								|	arrow_type_error
+									{: :}
+								;
+
+arrow_type_error				::= type:t ARROW:a epsilon 
+									{: Error.expect("Arrow-Type", " \u03C4", tleft, aright, "\u03C4"); :}
+								;
+
+boolean_type					::= BOOL:b
+									{: RESULT = new BooleanType(bleft, bright); :}
+								;
+
+integer_type					::= INT:i
+									{: RESULT = new IntegerType(ileft, iright); :}
+								;
+
+unit_type						::= UNIT:u
+									{: RESULT = new UnitType(uleft, uright); :}
+								;
+
+type_variable					::= TYPEVARIABLE:t
+									{: RESULT = new TypeVariable(0, t, tleft, tright); :}
+								;
+
+type_name						::= IDENTIFIER:id
+									{: RESULT = new TypeName(id, idleft, idright); :}
+								;
+
+epsilon							::= /* epsilon */
+									{: :}	
+								;

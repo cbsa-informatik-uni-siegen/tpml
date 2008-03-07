@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+	$Id: build.xml 2764 2008-02-28 20:23:12Z fehler $
+	
+	Copyright (c) 2008 Christian Fehler
+-->
+<project name="tpml.dev.core" default="dist" basedir=".">
+	<description>
+		Buildfile for tpml.dev.core subproject.
+    </description>
+
+	<property file="${basedir}/build.properties" />
+	<property name="libdir" value="${basedir}/../de.unisiegen.tpml.core/lib" />
+
+	<property name="impldir" value="${basedir}/source-impl" />
+	<property name="generateddir" value="${basedir}/source-generated" />
+
+	<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11a-tpml.jar" />
+	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/JFlex-1.4.1-tpml.jar" />
+
+	<target name="dist" depends="generate" />
+	
+	<target name="generate" depends="l1" description="Generate parsers and lexers" />
+	
+	<target name="l1" depends="l1-unify" />
+
+	<target name="l1-unify">
+		<jflex file="${impldir}/de/unisiegen/tpml/core/languages/l1unify/l1unify.flex" destdir="${generateddir}" nobak="yes" />
+		<cup srcfile="${impldir}/de/unisiegen/tpml/core/languages/l1unify/l1unify.cup" destdir="${generateddir}/de/unisiegen/tpml/core/languages/l1unify" package="de.unisiegen.tpml.core.languages.l1unify" parser="L1UnifyAbstractParser" symbols="L1UnifyTerminals" interface="yes" debug="no" expect="1000000" nonterms="no" nopositions="no" compact_red="yes" dump_grammar="no" />
+	</target>
+</project>
