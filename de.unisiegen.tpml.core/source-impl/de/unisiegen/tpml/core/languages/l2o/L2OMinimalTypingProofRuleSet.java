@@ -56,6 +56,10 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet
     // register the type rules
     if ( !mode )
     { // beginner mode
+      registerByMethodName ( L2OLanguage.L2O, "S-MU-LEFT", "applyMuLeft" ); //$NON-NLS-1$ //$NON-NLS-2$
+      registerByMethodName ( L2OLanguage.L2O, "S-MU-RIGHT", "applyMuRight" ); //$NON-NLS-1$ //$NON-NLS-2$
+      registerByMethodName ( L2OLanguage.L2O, "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
+      
       registerByMethodName ( L2OLanguage.L2O, "TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
       registerByMethodName ( L2OLanguage.L2O,
           "OBJECT-WIDTH", "applyObjectWidth" ); //$NON-NLS-1$ //$NON-NLS-2$

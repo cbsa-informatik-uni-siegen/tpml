@@ -4,7 +4,6 @@ package de.unisiegen.tpml.core.languages.l3;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Tuple;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
-import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.languages.l2.L2MinimalTypingProofRuleSet;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingExpressionProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext;
@@ -41,17 +40,22 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet
     if ( !mode )
     { // beginner mode
       unregister ( "REFL" ); //$NON-NLS-1$
-      unregister ( "S-ASSUME" ); //$NON-NLS-1$
 
       // register the type rules
       registerByMethodName ( L3Language.L3,
           "TUPLE", "applyTuple", "updateTuple" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
       registerByMethodName ( L3Language.L3, "LIST", "applyList" ); //$NON-NLS-1$ //$NON-NLS-2$
       registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
-      registerByMethodName ( L1Language.L1, "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-    registerByMethodName ( L2Language.L2, "TUPLE", "applyTuple", "updateTuple" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
+      registerByMethodName ( L3Language.L3, "S-MU-LEFT", "applyMuLeft" ); //$NON-NLS-1$ //$NON-NLS-2$
+      registerByMethodName ( L3Language.L3, "S-MU-RIGHT", "applyMuRight" ); //$NON-NLS-1$ //$NON-NLS-2$
+      registerByMethodName ( L3Language.L3, "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+    else
+    {
+      registerByMethodName ( L3Language.L3,
+          "TUPLE", "applyTuple", "updateTuple" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
   }
 
 

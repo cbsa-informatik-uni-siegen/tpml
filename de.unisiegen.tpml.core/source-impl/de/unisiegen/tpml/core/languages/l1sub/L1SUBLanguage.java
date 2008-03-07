@@ -22,7 +22,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * This class represents the language L1Subtype, which serves as a factory class
  * for L1 subtype related functionality.
  * 
- * @author Benjamin MIes
+ * @author Benjamin Mies
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageTypeParser
  * @see de.unisiegen.tpml.core.languages.LanguageTypeScanner

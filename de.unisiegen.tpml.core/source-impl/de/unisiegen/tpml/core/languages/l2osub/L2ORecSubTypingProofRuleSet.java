@@ -43,9 +43,6 @@ public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet
     super ( language, mode );
 
     unregister ( "REFL" ); //$NON-NLS-1$
-    unregister ( "S-MU-LEFT" ); //$NON-NLS-1$
-    unregister ( "S-MU-RIGHT" ); //$NON-NLS-1$
-    unregister ( "S-ASSUME" ); //$NON-NLS-1$
     unregister ( "ARROW" ); //$NON-NLS-1$
 
     // register the type rules
@@ -64,9 +61,9 @@ public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet
     }
 
     registerByMethodName ( L1Language.L1, "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
-    registerByMethodName ( L1Language.L1, "S-MU-LEFT", "applyMuLeft" ); //$NON-NLS-1$ //$NON-NLS-2$
-    registerByMethodName ( L1Language.L1, "S-MU-RIGHT", "applyMuRight" ); //$NON-NLS-1$ //$NON-NLS-2$
-    registerByMethodName ( L1Language.L1, "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L2OLanguage.L2O, "S-MU-LEFT", "applyMuLeft" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L2OLanguage.L2O, "S-MU-RIGHT", "applyMuRight" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L2OLanguage.L2O, "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
     registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
   }
 

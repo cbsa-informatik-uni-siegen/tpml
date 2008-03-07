@@ -67,10 +67,7 @@ public class L1MinimalTypingProofRuleSet extends
     else
     { // beginner mode
       registerByMethodName ( L1Language.L1, "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
-      registerByMethodName ( L1Language.L1, "S-MU-LEFT", "applyMuLeft" ); //$NON-NLS-1$ //$NON-NLS-2$
-      registerByMethodName ( L1Language.L1, "S-MU-RIGHT", "applyMuRight" ); //$NON-NLS-1$ //$NON-NLS-2$
       registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
-      registerByMethodName ( L1Language.L1, "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
     registerByMethodName ( L1Language.L1, "LET", "applyLet", "updateLet" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     registerByMethodName ( L1Language.L1,
