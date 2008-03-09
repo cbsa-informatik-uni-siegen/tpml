@@ -1,1 +1,0 @@
-CF		- Parser Test Klasse anpassen
