@@ -26,7 +26,7 @@ public abstract class AbstractEnvironment < S, E > implements
    * @param <S> The symbol.
    * @param <E> The entry.
    */
-  protected static class Mapping < S, E >
+  public static class Mapping < S, E >
   {
 
     /**
@@ -166,6 +166,18 @@ public abstract class AbstractEnvironment < S, E > implements
 
 
   /**
+   * Returns the mappings.
+   * 
+   * @return The mappings.
+   * @see #mappings
+   */
+  public final LinkedList < Mapping < S, E >> getMappings ()
+  {
+    return this.mappings;
+  }
+
+
+  /**
    * Adds a new mapping from <code>symbol</code> to <code>entry</code>. Any
    * previous mapping for <code>symbol</code> will be removed.
    * 
@@ -207,6 +219,7 @@ public abstract class AbstractEnvironment < S, E > implements
     return new Enumeration < S > ()
     {
 
+      @SuppressWarnings ( "synthetic-access" )
       private Iterator < Mapping < S, E >> iterator = AbstractEnvironment.this.mappings
           .iterator ();
 
