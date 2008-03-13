@@ -28,3 +28,4 @@ CU		- Unify
 		- Beim Type Checker kann ein Typ eingegeben werden. Anstelle eines
 		  normalen Eingabefeldes muss hier ein Parser verwendet werden, damit
 		  das Syntax Highlighting funktioniert
+		- Drucken ohne vorheriges Exportieren in eine pdf Datei
