@@ -1,0 +1,55 @@
+**
+** Abhängigkeiten in Netbeans
+**
+
+
+*** de.unisiegen.tpml.core ***
+- Bibliotheken:
+  - de.unisiegen.tpml.core/lib/java-cup-11a-tpml-runtime.jar
+  - de.unisiegen.tpml.core/lib/log4j-1.2.14.jar
+
+
+*** de.unisiegen.tpml.graphics ***
+- Bibliotheken:
+  - de.unisiegen.tpml.core/lib/java-cup-11a-tpml-runtime.jar
+  - de.unisiegen.tpml.core/lib/log4j-1.2.14.jar
+- Projekte:
+  - de.unisiegen.tpml.core
+
+
+*** de.unisiegen.tpml.ui ***
+- Bibliotheken:
+  - de.unisiegen.tpml.ui/lib/itext-2.0.4.jar
+  - de.unisiegen.tpml.core/lib/log4j-1.2.14.jar
+- Projekte:
+  - de.unisiegen.tpml.core
+  - de.unisiegen.tpml.graphics
+
+
+*** tpml.dev.core ***
+- Bibliotheken:
+  - de.unisiegen.tpml.core/lib/java-cup-11a-tpml-runtime.jar
+  - de.unisiegen.tpml.core/lib/log4j-1.2.14.jar
+- Projekte:
+  - de.unisiegen.tpml.core
+
+
+*** tpml.dev.graphics ***
+- Bibliotheken:
+  - de.unisiegen.tpml.core/lib/java-cup-11a-tpml-runtime.jar
+  - de.unisiegen.tpml.core/lib/log4j-1.2.14.jar
+- Projekte:
+  - tpml.dev.core
+  - de.unisiegen.tpml.core
+  - de.unisiegen.tpml.graphics
+
+*** tpml.dev.ui ***
+- Bibliotheken:
+  - de.unisiegen.tpml.ui/lib/itext-2.0.4.jar
+  - de.unisiegen.tpml.core/lib/log4j-1.2.14.jar
+- Projekte:
+  - tpml.dev.core
+  - de.unisiegen.tpml.core
+  - tpml.dev.graphics
+  - de.unisiegen.tpml.graphics
+  - de.unisiegen.tpml.ui
