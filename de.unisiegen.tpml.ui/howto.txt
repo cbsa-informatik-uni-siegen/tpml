@@ -1,4 +1,16 @@
 **
+** Projekte in Netbeans anlegen
+**
+
+
+- "Java Project from Existing Sources" anlegen
+- Den gleichen Namen für die Projekte vergeben wie unter Eclipse
+- Als Source Folder alle Quellordner aus dem Eclipse Ordner angeben
+- Abhängigkeiten einstellen
+- de.unisiegen.tpml.ui und tpml.dev.ui kompilieren
+
+
+**
 ** Abhängigkeiten in Netbeans
 **
 
