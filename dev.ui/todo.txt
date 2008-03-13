@@ -12,6 +12,8 @@
 		- PDF Print Dialog überarbeiten (Internationalisierung ...)
 		- Im Neu-Dialog nur die Sprachen expandieren, die der Benutzer beim
 		  letzten Mal offen hatte (Siehe GTITool: Farbeinstellungen)
+		- Im Neu-Dialog einen Filter einrichten, für den Stoff der verschiedenen
+		  Vorlesungen (TP I, TP II, Sonstiges)
 		- Die Breite des OpenDialogs beschränken (Einen eigenen mit Netbeans
 		  implementieren)
 		- Die Beschreibung im Neu Dialog kleiner machen
