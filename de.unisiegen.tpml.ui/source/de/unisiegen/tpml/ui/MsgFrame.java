@@ -37,7 +37,6 @@ public class MsgFrame extends Dialog implements ActionListener
    * @param titel the titel of the window
    * @param message the message that should displayed
    */
-  @SuppressWarnings ( "deprecation" )
   public MsgFrame ( String titel, String message )
   {
     super ( new Frame (), true );
@@ -65,9 +64,7 @@ public class MsgFrame extends Dialog implements ActionListener
     addWindowListener ( new WindowAdapter ()
     {
 
-      @Override
-      public void windowClosing ( @SuppressWarnings ( "unused" )
-      WindowEvent e )
+      public void windowClosing ( WindowEvent e )
       {
         dispose ();
         System.exit ( 1 );

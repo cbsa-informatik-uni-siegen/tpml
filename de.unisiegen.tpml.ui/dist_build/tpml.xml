@@ -1,7 +1,7 @@
 <launch4jConfig>
   <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>de.unisiegen.tpml.ui-@de.unisiegen.tpml.ui.version@.jar</jar>
+  <jar>de.unisiegen.tpml.ui-@tpml.version@.jar</jar>
   <outfile>tpml.exe</outfile>
   <errTitle>Wrong JAVA found</errTitle>
   <cmdLine></cmdLine>
@@ -21,12 +21,12 @@
     <maxHeapSize>0</maxHeapSize>
   </jre>
   <versionInfo>
-    <fileVersion>@de.unisiegen.tpml.ui.version@.0</fileVersion>
-    <txtFileVersion>@de.unisiegen.tpml.ui.version@.0</txtFileVersion>
+    <fileVersion>@tpml.version@.0</fileVersion>
+    <txtFileVersion>@tpml.version@.0</txtFileVersion>
     <fileDescription>TPML</fileDescription>
     <copyright>(C) 2007</copyright>
-    <productVersion>@de.unisiegen.tpml.ui.version@.0</productVersion>
-    <txtProductVersion>@de.unisiegen.tpml.ui.version@.0</txtProductVersion>
+    <productVersion>@tpml.version@.0</productVersion>
+    <txtProductVersion>@tpml.version@.0</txtProductVersion>
     <productName>TPML</productName>
     <companyName>University of Siegen, Department of Theoretical Computer Science</companyName>
     <internalName>TPML</internalName>
