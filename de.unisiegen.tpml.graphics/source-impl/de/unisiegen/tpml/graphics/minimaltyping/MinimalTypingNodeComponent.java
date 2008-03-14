@@ -81,6 +81,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
  * 
  * @author marcell
  * @author michael
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingView
  * @see de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingComponent
  * @see de.unisiegen.tpml.graphics.tree.TreeNodeComponent

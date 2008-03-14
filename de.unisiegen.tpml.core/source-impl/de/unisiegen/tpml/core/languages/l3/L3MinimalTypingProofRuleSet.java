@@ -19,6 +19,7 @@ import de.unisiegen.tpml.core.types.TupleType;
  * The minimal type proof rules for the <code>L1</code> language.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.minimaltyping.AbstractMinimalTypingProofRuleSet
  */
 public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet

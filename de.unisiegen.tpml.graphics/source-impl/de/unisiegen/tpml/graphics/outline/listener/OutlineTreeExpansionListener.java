@@ -12,6 +12,7 @@ import de.unisiegen.tpml.graphics.outline.DefaultOutline;
  * breaks of the visible nodes.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public final class OutlineTreeExpansionListener implements
     TreeExpansionListener

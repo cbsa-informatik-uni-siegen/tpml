@@ -6,7 +6,7 @@ package de.unisiegen.tpml.core.languages;
  * {@link de.unisiegen.tpml.core.languages.LanguageTypeScanner} interface.
  * 
  * @author Benedikt Meurer
- * @version $Rev:380 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.AbstractLanguageScanner
  * @see de.unisiegen.tpml.core.languages.LanguageTypeScanner
  */

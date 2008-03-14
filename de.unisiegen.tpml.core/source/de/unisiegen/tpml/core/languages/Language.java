@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * parsers for a specific language.
  * 
  * @author Benedikt Meurer
- * @version $Rev:1125 $
+ * @version $Id$
  */
 public interface Language
 {

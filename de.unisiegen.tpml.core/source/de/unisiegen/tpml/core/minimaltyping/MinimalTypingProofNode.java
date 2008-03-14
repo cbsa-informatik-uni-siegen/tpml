@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * {@link de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel}.
  * 
  * @author Benedikt Meurer
- * @version $Rev:878 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.ExpressionProofNode
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel
  */

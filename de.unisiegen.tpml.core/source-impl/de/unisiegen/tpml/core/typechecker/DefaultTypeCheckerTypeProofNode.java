@@ -24,6 +24,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * subtype relations between this two given types.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  */
 public class DefaultTypeCheckerTypeProofNode extends
     AbstractTypeCheckerProofNode implements TypeCheckerTypeProofNode

@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.languages.LanguageScanner;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:415 $
+ * @version $Id$
  */
 final class L0Parser extends L0AbstractParser
 {

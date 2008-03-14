@@ -21,7 +21,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * Big step proof rules for the <b>L2O</b> and derived languages.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  * @see L2BigStepProofRuleSet
  */
 public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet

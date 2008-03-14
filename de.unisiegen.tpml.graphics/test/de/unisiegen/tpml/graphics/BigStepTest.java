@@ -15,6 +15,9 @@ import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView;
 
 
+/**
+ * @version $Id$
+ */
 @SuppressWarnings ( "all" )
 public class BigStepTest
 {

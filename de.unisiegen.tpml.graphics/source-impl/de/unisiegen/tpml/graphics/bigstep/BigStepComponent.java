@@ -58,11 +58,12 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * {@link de.unisiegen.tpml.graphics.bigstep.BigStepView} scrolls to a place the
  * stored node gets visible.
  * 
+ * @author marcell
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.bigstep.BigStepView
  * @see de.unisiegen.tpml.graphics.bigstep.BigStepNodeComponent
  * @see de.unisiegen.tpml.graphics.tree.TreeNodeLayout
  * @see de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer
- * @author marcell
  */
 public class BigStepComponent extends AbstractProofComponent implements
     Scrollable, Cloneable

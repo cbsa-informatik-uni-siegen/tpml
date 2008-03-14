@@ -10,6 +10,7 @@ import de.unisiegen.tpml.core.ProofNode;
  * The Interface to the sub typing node listener.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  */
 public interface SubTypingNodeListener extends EventListener
 {

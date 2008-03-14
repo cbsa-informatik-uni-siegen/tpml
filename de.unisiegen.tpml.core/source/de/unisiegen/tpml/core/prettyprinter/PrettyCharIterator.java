@@ -10,7 +10,7 @@ import java.text.CharacterIterator;
  * information about the style and annotations for a given character.
  * 
  * @author Benedikt Meurer
- * @version $Rev:277 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyString
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyStyle

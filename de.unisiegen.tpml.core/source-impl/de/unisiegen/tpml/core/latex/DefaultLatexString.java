@@ -6,6 +6,7 @@ package de.unisiegen.tpml.core.latex;
  * {@link DefaultLatexStringBuilder}s.
  * 
  * @author Christian Fehler
+ * @version $Id$
  * @see LatexString
  * @see LatexStringBuilder
  * @see DefaultLatexStringBuilder

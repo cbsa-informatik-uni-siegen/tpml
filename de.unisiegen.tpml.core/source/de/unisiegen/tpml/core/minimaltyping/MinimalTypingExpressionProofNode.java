@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
  * {@link de.unisiegen.tpml.core.types.MonoType}.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  */
 public interface MinimalTypingExpressionProofNode extends
     MinimalTypingProofNode

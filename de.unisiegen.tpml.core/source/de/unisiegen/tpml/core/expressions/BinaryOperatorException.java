@@ -8,7 +8,7 @@ package de.unisiegen.tpml.core.expressions;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1053 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.expressions.BinaryOperator
  */
 public final class BinaryOperatorException extends Exception

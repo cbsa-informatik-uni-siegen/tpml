@@ -50,6 +50,7 @@ import de.unisiegen.tpml.graphics.components.MenuButton;
  * 
  *  
  * @author marcell
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepView
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepComponent
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent

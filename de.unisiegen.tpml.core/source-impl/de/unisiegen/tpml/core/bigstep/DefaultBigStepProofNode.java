@@ -29,7 +29,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  * class for nodes in a {@link de.unisiegen.tpml.core.bigstep.BigStepProofModel}.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.bigstep.BigStepProofNode
  * @see de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode
  */

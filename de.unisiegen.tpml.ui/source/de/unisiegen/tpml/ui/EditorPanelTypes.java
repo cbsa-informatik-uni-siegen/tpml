@@ -48,6 +48,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
  * 
  * @author Christoph Fehling
  * @author Benjamin Mies
+ * @version $Id$
  */
 public class EditorPanelTypes extends AbstractBean implements EditorPanel
 {

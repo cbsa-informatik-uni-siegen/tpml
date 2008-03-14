@@ -24,6 +24,7 @@ import de.unisiegen.tpml.core.types.RowType;
  * The type proof rules for the <code>L2O</code> language.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet
  */
 public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet

@@ -22,6 +22,7 @@ import de.unisiegen.tpml.core.types.TypeName;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  */
 public final class ShowBonds
 {

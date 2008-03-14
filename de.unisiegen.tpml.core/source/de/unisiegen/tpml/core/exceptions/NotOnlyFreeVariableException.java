@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.Messages;
  * defined because of free attribute- or self-identifiers.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public final class NotOnlyFreeVariableException extends RuntimeException
 {

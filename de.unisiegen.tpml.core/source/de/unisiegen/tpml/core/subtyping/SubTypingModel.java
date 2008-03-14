@@ -13,6 +13,7 @@ import de.unisiegen.tpml.core.ProofRuleException;
  * is used to realize sub typing and sub typing rec in one view.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  */
 public interface SubTypingModel extends ProofModel
 {

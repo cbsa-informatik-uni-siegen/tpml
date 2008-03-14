@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * expression is syntactic sugar for a given language.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.expressions.Expression
  * @see de.unisiegen.tpml.core.languages.Language
  */

@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:420 $
+ * @version $Id$
  * @see BooleanType
  * @see IntegerType
  * @see MonoType

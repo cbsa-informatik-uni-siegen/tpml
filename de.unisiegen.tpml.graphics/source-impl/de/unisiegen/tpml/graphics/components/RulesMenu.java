@@ -31,6 +31,7 @@ import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent;
  * rules.
  * 
  * @author Michael
+ * @version $Id$
  */
 public class RulesMenu
 {

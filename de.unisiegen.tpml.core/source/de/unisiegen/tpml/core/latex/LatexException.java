@@ -6,6 +6,7 @@ package de.unisiegen.tpml.core.latex;
  * not work.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public final class LatexException extends Exception
 {

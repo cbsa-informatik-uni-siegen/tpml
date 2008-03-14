@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  * @see javax.swing.tree.TreeNode
  */
 public interface ProofNode extends TreeNode, PrettyPrintable, LatexPrintable

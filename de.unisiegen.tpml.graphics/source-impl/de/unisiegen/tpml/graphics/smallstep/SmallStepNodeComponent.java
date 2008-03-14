@@ -81,7 +81,7 @@ import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
  * @author Marcell Fischbach
  * @author Benedikt Meurer
  * @author Michael Oeste
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepView
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepComponent
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepRulesComponent

@@ -25,7 +25,7 @@ import de.unisiegen.tpml.graphics.AbstractProofComponent;
 
 
 /**
- * TODO
+ * @version $Id$
  */
 public class SmallStepPrinter
 {

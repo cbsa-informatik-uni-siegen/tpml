@@ -10,7 +10,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
 
 /**
- * TODO
+ * @version $Id$
  */
 public class TreeArrowRenderer
 {

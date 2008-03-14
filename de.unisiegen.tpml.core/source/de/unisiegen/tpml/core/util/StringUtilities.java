@@ -10,7 +10,7 @@ import java.util.Collection;
  * strings.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see java.lang.String
  */
 public final class StringUtilities

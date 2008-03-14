@@ -23,7 +23,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * Small step proof rules for the <code>L2CBN</code> language.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.l0.L0SmallStepProofRuleSet
  * @see de.unisiegen.tpml.core.languages.l1.L1SmallStepProofRuleSet
  * @see de.unisiegen.tpml.core.languages.l2.L2SmallStepProofRuleSet

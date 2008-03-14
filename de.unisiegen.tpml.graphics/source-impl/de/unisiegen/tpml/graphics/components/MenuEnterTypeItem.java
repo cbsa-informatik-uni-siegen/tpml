@@ -12,6 +12,7 @@ import de.unisiegen.tpml.graphics.Messages;
  * This one is only used within the type checker.
  * 
  * @author marcell
+ * @version $Id$
  */
 public class MenuEnterTypeItem extends JMenuItem
 {

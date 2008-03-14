@@ -31,6 +31,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * height.
  * 
  * @author marcell
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepView
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepComponent
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent

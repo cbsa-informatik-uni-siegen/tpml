@@ -11,7 +11,7 @@ import java.beans.PropertyChangeListener;
  * or by deriving from the {@link AbstractBean}.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see AbstractBean
  * @see java.beans.PropertyChangeListener
  * @see java.beans.PropertyChangeSupport

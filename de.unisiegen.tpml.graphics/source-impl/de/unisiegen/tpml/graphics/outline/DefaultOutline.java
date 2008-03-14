@@ -67,7 +67,7 @@ import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView;
  * {@link Expression}s.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  */
 public final class DefaultOutline implements Outline
 {

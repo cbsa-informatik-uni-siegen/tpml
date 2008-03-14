@@ -33,7 +33,7 @@ import de.unisiegen.tpml.core.languages.l2.L2Language;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1132 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.l2.L2BigStepProofRuleSet
  */
 public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet

@@ -15,7 +15,7 @@ import javax.swing.text.StyledEditorKit;
  * tooltips for parser and lexer errors detected by the document.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.StyledLanguageDocument
  */
 public final class StyledLanguageEditor extends JEditorPane

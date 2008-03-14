@@ -22,6 +22,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * class for L2C subtype related functionality, which extends the L2OSubType
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageTypeParser
  * @see de.unisiegen.tpml.core.languages.LanguageTypeScanner

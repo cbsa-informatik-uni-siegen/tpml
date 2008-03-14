@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:419 $
+ * @version $Id$
  * @see L1Language
  */
 public class L2LanguageTranslator extends L1LanguageTranslator

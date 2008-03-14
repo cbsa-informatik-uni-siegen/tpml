@@ -7,7 +7,7 @@ package de.unisiegen.tpml.core;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:467 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.ProofRuleException
  */
 public final class ProofGuessException extends Exception

@@ -33,6 +33,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  * @see de.unisiegen.tpml.core.entities.TypeEquationList
  */
 public final class DefaultTypeEquation implements TypeEquation, TypeFormula, ShowBondsInput,

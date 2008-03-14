@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:277 $
+ * @version $Id$
  * @param <S> The symbol.
  * @param <E> The entry.
  * @see de.unisiegen.tpml.core.util.AbstractEnvironment

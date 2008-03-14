@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.entities.TypeEquation;
  * {@link LanguageScanner}, but is solely used as a <i>marker</i> interface.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  */
 public interface LanguageUnifyScanner extends LanguageScanner
 {

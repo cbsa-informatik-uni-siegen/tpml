@@ -25,7 +25,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * related functionality, and extends the L3 language.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageParser
  * @see de.unisiegen.tpml.core.languages.LanguageScanner

@@ -17,6 +17,7 @@ import de.unisiegen.tpml.core.languages.LanguageParserException;
  * {@link Identifier}s should be replaced.
  * 
  * @author Christian Fehler
+ * @version $Id$
  * @see LanguageParserException
  */
 public final class LanguageParserReplaceException extends

@@ -20,7 +20,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1056 $
+ * @version $Id$
  * @see Value
  */
 public final class Identifier extends Value implements IdentifierOrTypeName

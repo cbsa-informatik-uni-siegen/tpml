@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.entities;
 
+
 import de.unisiegen.tpml.core.latex.LatexPrintable;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
@@ -12,11 +13,12 @@ import de.unisiegen.tpml.core.typechecker.UnificationException;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  * @see de.unisiegen.tpml.core.entities.TypeEquation
  */
-public interface TypeEquationList extends PrettyPrintable,
-LatexPrintable
+public interface TypeEquationList extends PrettyPrintable, LatexPrintable
 {
+
   /**
    * Returns the parserEndOffset.
    * 
@@ -32,6 +34,7 @@ LatexPrintable
    */
   public int getParserStartOffset ();
 
+
   /**
    * Sets the parser end offset.
    * 
@@ -46,6 +49,8 @@ LatexPrintable
    * @param pParserStartOffset The new parser start offset.
    */
   public void setParserStartOffset ( int pParserStartOffset );
+
+
   /**
    * Allocates a new {@link DefaultTypeEquationList}, which extends this
    * equation list with a new {@link TypeEquation} for <code>left</code> and
@@ -58,6 +63,7 @@ LatexPrintable
    */
   TypeEquationList extend ( TypeEquation typeEquation );
 
+
   /**
    * Returns the head of the type equation list.
    * 
@@ -65,12 +71,14 @@ LatexPrintable
    */
   public TypeEquation getFirst ();
 
+
   /**
    * Returns the tail of the type equation list.
    * 
    * @return TypeEquationList remaining.
    */
   TypeEquationList getRemaining ();
+
 
   /**
    * Applies the {@link TypeSubstitution} <code>s</code> to all equations

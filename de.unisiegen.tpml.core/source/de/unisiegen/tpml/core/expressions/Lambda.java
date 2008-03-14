@@ -29,7 +29,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1092 $
+ * @version $Id$
  * @see Application
  * @see Expression
  * @see Value

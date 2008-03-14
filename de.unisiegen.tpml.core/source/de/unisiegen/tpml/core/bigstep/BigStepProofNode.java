@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.interpreters.InterpreterProofNode;
  * {@link de.unisiegen.tpml.core.bigstep.BigStepProofModel}.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.interpreters.InterpreterProofNode
  */
 public interface BigStepProofNode extends InterpreterProofNode

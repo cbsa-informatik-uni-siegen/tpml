@@ -17,7 +17,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:277 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.types.TypeVariable
  */
 public interface TypeSubstitution extends PrettyPrintable, LatexPrintable

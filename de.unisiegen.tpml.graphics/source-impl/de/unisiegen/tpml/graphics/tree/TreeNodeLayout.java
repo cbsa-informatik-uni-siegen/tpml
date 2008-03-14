@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.ProofNode;
  * BigStep-GUI are handled with this.
  * 
  * @author marcell
+ * @version $Id$
  */
 public class TreeNodeLayout
 {

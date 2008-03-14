@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * Instances of this class represent new expressions.
  * 
  * @author Christian Fehler
- * @version $Rev:1053 $
+ * @version $Id$
  * @see Class
  */
 public final class New extends Expression implements DefaultExpressions

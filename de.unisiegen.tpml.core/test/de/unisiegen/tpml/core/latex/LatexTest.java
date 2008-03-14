@@ -78,6 +78,7 @@ import de.unisiegen.tpml.core.types.UnitType;
  * 
  * @author Christian Fehler
  * @author Benjamin Mies
+ * @version $Id$
  */
 @SuppressWarnings ( value =
 { "all" } )

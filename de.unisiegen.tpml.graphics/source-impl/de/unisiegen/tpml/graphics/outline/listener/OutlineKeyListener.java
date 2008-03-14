@@ -15,7 +15,7 @@ import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard;
  * node as a <code>String</code> into the clipboard.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  */
 public final class OutlineKeyListener implements KeyListener
 {

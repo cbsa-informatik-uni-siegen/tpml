@@ -22,9 +22,9 @@ import de.unisiegen.tpml.graphics.Messages;
 /**
  * no dokumentation for this stuff
  * 
- * @version $Rev$
  * @author Marcell Fischbach
  * @author Michael
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.pong.Pong
  */
 public class PongView extends JWindow

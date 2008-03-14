@@ -21,6 +21,7 @@ import java.awt.event.WindowEvent;
  * compatibility to old versions This class should be compiled with target 1.1.
  * 
  * @author Michael Oeste
+ * @version $Id$
  */
 public class MsgFrame extends Dialog implements ActionListener
 {

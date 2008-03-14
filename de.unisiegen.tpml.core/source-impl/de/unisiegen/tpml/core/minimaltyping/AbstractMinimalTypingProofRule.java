@@ -31,6 +31,7 @@ import de.unisiegen.tpml.core.util.Theme;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofRule
  * @see de.unisiegen.tpml.core.AbstractProofRule
  */

@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.interpreters.Store;
  * {@link de.unisiegen.tpml.core.smallstep.AbstractSmallStepProofRuleSet}.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.smallstep.AbstractSmallStepProofRuleSet
  */
 public interface SmallStepProofContext

@@ -79,6 +79,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
  * 
  * @author marcell
  * @author michael
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.subtyping.SubTypingView
  * @see de.unisiegen.tpml.graphics.subtyping.SubTypingComponent
  * @see de.unisiegen.tpml.graphics.tree.TreeNodeComponent

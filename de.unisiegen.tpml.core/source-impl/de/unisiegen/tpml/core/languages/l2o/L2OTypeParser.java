@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.languages.LanguageTypeScanner;
  * The type parser class for the <code>L2O</code> language.
  * 
  * @author Christian Fehler
- * @version $Rev:415 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.l1.L1AbstractTypeParser
  */
 final class L2OTypeParser extends L2OAbstractTypeParser

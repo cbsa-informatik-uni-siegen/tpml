@@ -36,6 +36,7 @@ import de.unisiegen.tpml.core.types.RowType;
  * The minimal type proof rules for the <code>L1</code> language.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.minimaltyping.AbstractMinimalTypingProofRuleSet
  */
 public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet

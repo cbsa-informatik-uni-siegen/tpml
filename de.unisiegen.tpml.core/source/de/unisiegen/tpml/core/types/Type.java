@@ -35,7 +35,7 @@ import de.unisiegen.tpml.core.util.Theme;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:296 $
+ * @version $Id$
  * @see PrettyPrintable
  */
 public abstract class Type implements PrettyPrintable, PrettyPrintPriorities,

@@ -21,6 +21,7 @@ import de.unisiegen.tpml.core.util.Theme;
  * 
  * @author marcell
  * @author michael
+ * @version $Id$
  */
 public abstract class AbstractRenderer
 {

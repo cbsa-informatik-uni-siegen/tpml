@@ -9,6 +9,7 @@ import java.util.Iterator;
  * Implements the {@link LatexInstruction} list.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public class LatexInstructionList implements Iterable < LatexInstruction >
 {

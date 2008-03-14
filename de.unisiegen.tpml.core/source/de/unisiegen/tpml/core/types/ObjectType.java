@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * This class represents {@link ObjectType} in our type systems.
  * 
  * @author Christian Fehler
- * @version $Rev:420 $
+ * @version $Id$
  * @see RowType
  */
 public final class ObjectType extends MonoType implements DefaultTypes

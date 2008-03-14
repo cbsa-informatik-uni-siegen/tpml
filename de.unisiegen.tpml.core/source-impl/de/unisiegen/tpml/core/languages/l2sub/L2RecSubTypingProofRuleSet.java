@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.languages.l1sub.L1RecSubTypingProofRuleSet;
  * The subtype proof rules for the <code>L1</code> language.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet
  */
 public class L2RecSubTypingProofRuleSet extends L1RecSubTypingProofRuleSet

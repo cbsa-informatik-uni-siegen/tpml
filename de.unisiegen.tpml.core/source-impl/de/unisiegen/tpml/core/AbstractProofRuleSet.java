@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.languages.Language;
  * interface.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.ProofRule
  * @see de.unisiegen.tpml.core.ProofRuleSet
  */

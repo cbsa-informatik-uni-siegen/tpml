@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.languages.Language;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:377 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.AbstractProofRuleSet
  */
 public abstract class AbstractSmallStepProofRuleSet extends

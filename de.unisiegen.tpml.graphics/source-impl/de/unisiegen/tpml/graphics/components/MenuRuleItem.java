@@ -11,8 +11,8 @@ import de.unisiegen.tpml.core.ProofRule;
  * This item provides the entry text of the given rule.<br>
  * 
  * @author marcell
+ * @version $Id$
  */
-
 public class MenuRuleItem extends JMenuItem
 {
 

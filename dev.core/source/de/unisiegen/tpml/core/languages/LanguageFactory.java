@@ -28,7 +28,7 @@ import de.unisiegen.tpml.core.languages.l4sub.L4SUBLanguage;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:2760M $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.Language
  */
 public final class LanguageFactory

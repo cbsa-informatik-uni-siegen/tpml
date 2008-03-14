@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.expressions.Identifier;
  * A helper class for the parser.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public class IdentifierExpressionPair
 {

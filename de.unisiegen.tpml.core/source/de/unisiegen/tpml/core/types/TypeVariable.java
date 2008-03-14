@@ -34,7 +34,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:538 $
+ * @version $Id$
  * @see Type
  */
 public final class TypeVariable extends MonoType implements

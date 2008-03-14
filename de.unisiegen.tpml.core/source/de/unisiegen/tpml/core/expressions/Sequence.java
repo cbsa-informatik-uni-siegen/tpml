@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1053 $
+ * @version $Id$
  * @see Expression
  */
 public final class Sequence extends Expression implements DefaultExpressions

@@ -36,7 +36,7 @@ import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
  * When this all is done the actual placing of the nodes is done.
  * 
  * @author michael
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.AbstractProofComponent
  */
 public class TypeInferenceComponent extends AbstractProofComponent implements

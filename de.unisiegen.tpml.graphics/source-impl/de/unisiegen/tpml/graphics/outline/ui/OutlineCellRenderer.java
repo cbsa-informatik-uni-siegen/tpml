@@ -18,7 +18,7 @@ import de.unisiegen.tpml.graphics.outline.node.OutlineNode;
  * This class renders a cell in the {@link Outline}.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  */
 public final class OutlineCellRenderer extends DefaultTreeCellRenderer
 {

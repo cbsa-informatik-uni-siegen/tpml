@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * algorithm to check subtype relations between this two given types.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  */
 public interface TypeCheckerTypeProofNode extends TypeCheckerProofNode
 {

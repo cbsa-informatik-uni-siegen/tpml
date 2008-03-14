@@ -33,6 +33,8 @@ import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView;
 
 /**
  * this class renders the coumpoundexpression of the TypeInference
+ * 
+ * @version $Id$
  */
 public class CompoundExpressionTypeInference extends JComponent
 {

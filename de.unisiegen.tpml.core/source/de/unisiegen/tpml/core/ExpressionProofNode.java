@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * {@link de.unisiegen.tpml.core.ExpressionProofModel}s.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.ExpressionProofModel
  * @see de.unisiegen.tpml.core.ProofNode
  */

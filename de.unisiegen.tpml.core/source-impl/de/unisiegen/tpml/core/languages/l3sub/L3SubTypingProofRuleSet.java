@@ -18,6 +18,7 @@ import de.unisiegen.tpml.core.types.TupleType;
  * The type proof rules for the <code>L3</code> language.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet
  */
 public class L3SubTypingProofRuleSet extends L2SubTypingProofRuleSet

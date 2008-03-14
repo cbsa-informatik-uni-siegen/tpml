@@ -29,7 +29,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:2491 $
+ * @version $Id$
  */
 public final class BigStepProofResult implements PrettyPrintable,
     LatexPrintable

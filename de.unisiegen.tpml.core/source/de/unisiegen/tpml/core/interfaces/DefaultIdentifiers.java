@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.expressions.Identifier;
  * Interface for classes whose instances have child {@link Identifier}s.
  * 
  * @author Christian Fehler
- * @version $Rev:1350 $
+ * @version $Id$
  */
 public interface DefaultIdentifiers
 {

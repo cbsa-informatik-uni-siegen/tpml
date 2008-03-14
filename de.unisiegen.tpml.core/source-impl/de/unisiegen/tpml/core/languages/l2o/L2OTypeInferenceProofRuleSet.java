@@ -33,6 +33,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  */
 public class L2OTypeInferenceProofRuleSet extends L2OTypeCheckerProofRuleSet
 {

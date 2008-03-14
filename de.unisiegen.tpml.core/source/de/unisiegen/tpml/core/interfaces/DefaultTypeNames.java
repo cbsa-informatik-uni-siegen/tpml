@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.types.TypeName;
  * Interface for classes whose instances have child {@link TypeName}s.
  * 
  * @author Christian Fehler
- * @version $Rev:1350 $
+ * @version $Id$
  */
 public interface DefaultTypeNames
 {

@@ -7,7 +7,7 @@ package de.unisiegen.tpml.core;
  * cannot be redone or the redo history is empty.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.CannotUndoException
  */
 public final class CannotRedoException extends Exception

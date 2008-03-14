@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle;
  * expression tree.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageParser
  */

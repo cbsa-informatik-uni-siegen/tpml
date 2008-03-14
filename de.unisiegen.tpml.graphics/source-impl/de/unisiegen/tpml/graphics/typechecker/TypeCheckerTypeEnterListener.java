@@ -1,6 +1,3 @@
-/**
- * 
- */
 package de.unisiegen.tpml.graphics.typechecker;
 
 
@@ -9,6 +6,7 @@ import java.util.EventListener;
 
 /**
  * @author marcell
+ * @version $Id$
  */
 public interface TypeCheckerTypeEnterListener extends EventListener
 {

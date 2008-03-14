@@ -40,7 +40,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  * make up the big step proof.
  * 
  * @author Benedikt Meurer
- * @version $Rev:878 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.bigstep.BigStepProofNode
  * @see de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofModel
  */

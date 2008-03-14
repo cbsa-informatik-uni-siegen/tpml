@@ -21,7 +21,7 @@ import javax.swing.event.PopupMenuListener;
 
 
 /**
- * TODO
+ * @version $Id$
  */
 public class MenuButton extends JComponent
 {

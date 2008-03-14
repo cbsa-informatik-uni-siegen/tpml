@@ -22,7 +22,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1159 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageParser
  * @see de.unisiegen.tpml.core.languages.LanguageScanner

@@ -15,6 +15,9 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView;
 
 
+/**
+ * @version $Id$
+ */
 @SuppressWarnings ( "all" )
 public class TypeCheckerTest
 {

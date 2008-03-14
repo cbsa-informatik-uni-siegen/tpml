@@ -31,7 +31,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * The type proof rules for the <code>L2O</code> language.
  * 
  * @author Christian Fehler
- * @version $Rev:1132 $
+ * @version $Id$
  * @see L2TypeCheckerProofRuleSet
  */
 public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet

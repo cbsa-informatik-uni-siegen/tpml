@@ -31,7 +31,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1194 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.typechecker.TypeSubstitution
  */
 public final class DefaultTypeSubstitution implements TypeSubstitution

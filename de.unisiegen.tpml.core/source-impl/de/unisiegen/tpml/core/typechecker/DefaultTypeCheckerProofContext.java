@@ -46,7 +46,7 @@ import de.unisiegen.tpml.core.types.UnitType;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:511M $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext
  */
 public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext

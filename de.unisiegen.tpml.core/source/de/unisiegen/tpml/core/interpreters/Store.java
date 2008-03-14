@@ -17,7 +17,7 @@ import de.unisiegen.tpml.core.util.Environment;
  * be determined.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.expressions.Location
  */
 public interface Store extends Environment < Location, Expression >

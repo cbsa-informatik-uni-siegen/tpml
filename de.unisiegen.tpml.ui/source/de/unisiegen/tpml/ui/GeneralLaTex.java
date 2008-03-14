@@ -29,6 +29,7 @@ import de.unisiegen.tpml.ui.netbeans.TexDialog;
  * proofviews and the tpml.tex
  * 
  * @author michael
+ * @version $Id$
  */
 public class GeneralLaTex
 {

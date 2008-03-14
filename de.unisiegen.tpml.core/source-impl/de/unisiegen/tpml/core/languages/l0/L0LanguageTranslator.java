@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.languages.AbstractLanguageTranslator;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:304 $
+ * @version $Id$
  * @see AbstractLanguageTranslator
  * @see L0Language
  */

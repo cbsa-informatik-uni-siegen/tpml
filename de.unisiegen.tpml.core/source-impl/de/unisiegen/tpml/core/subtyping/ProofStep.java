@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * {@link de.unisiegen.tpml.core.expressions.Expression}.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.expressions.Expression
  * @see de.unisiegen.tpml.core.ProofRule
  */

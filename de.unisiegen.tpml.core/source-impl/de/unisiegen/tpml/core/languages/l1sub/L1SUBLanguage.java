@@ -23,6 +23,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * for L1 subtype related functionality.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageTypeParser
  * @see de.unisiegen.tpml.core.languages.LanguageTypeScanner

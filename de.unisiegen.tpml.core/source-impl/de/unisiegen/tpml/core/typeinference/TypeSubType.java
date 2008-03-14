@@ -29,6 +29,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  */
 public class TypeSubType implements ShowBondsInput, TypeFormula,
     PrettyPrintable, LatexPrintable

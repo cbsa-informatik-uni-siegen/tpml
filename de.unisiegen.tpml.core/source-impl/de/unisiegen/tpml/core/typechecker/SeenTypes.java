@@ -26,6 +26,7 @@ import de.unisiegen.tpml.core.types.Type;
  * A list of seen {@link Type}s.
  * 
  * @author Christian Fehler
+ * @version $Id$
  * @param <E>
  */
 public final class SeenTypes < E extends PrettyPrintable & LatexPrintable >

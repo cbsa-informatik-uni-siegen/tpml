@@ -34,6 +34,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  * @see de.unisiegen.tpml.core.AbstractProofNode
  * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode
  */

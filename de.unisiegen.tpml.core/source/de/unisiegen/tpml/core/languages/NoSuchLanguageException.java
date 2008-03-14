@@ -7,7 +7,7 @@ package de.unisiegen.tpml.core.languages;
  * a given language id.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageFactory
  */

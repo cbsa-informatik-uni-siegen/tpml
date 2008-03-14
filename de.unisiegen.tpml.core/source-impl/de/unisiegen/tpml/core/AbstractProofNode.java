@@ -16,7 +16,7 @@ import javax.swing.tree.TreeNode;
  * {@link de.unisiegen.tpml.core.ProofNode} interface.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see ProofNode
  * @see javax.swing.tree.TreeNode
  */

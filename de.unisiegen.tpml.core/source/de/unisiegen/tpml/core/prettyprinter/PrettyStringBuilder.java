@@ -10,7 +10,7 @@ package de.unisiegen.tpml.core.prettyprinter;
  * fashion.
  * 
  * @author Benedikt Meurer
- * @version $Rev:835 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyString
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory
  */

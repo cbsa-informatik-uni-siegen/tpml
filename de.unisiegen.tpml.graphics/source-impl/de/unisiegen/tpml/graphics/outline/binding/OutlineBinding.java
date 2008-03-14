@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.types.TypeName;
  * Finds the bound {@link Identifier}s in a given {@link Expression}.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  * @param <E> The {@link Identifier} or {@link TypeName}.
  */
 public final class OutlineBinding < E >

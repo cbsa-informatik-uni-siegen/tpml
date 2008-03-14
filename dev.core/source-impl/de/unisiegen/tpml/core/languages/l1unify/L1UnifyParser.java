@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.languages.LanguageScanner;
  * The unify parser class for the <code>L1</code> language.
  * 
  * @author Christian Fehler
- * @version $Rev:415 $
+ * @version $Id$
  * @see L1UnifyAbstractParser
  */
 final class L1UnifyParser extends L1UnifyAbstractParser

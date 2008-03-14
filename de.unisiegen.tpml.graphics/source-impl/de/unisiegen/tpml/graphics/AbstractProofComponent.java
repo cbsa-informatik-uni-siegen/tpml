@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.util.Theme;
 
 
 /**
- * TODO
+ * @version $Id$
  */
 public abstract class AbstractProofComponent extends JComponent
 {

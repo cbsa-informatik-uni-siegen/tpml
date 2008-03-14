@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * This class represents class types in our type systems.
  * 
  * @author Christian Fehler
- * @version $Rev:1850 $
+ * @version $Id$
  */
 public final class ClassType extends MonoType implements DefaultTypes
 {

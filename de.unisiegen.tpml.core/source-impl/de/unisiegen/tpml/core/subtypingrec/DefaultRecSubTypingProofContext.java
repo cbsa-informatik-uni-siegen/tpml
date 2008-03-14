@@ -13,6 +13,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * interface.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofContext
  */
 public class DefaultRecSubTypingProofContext implements

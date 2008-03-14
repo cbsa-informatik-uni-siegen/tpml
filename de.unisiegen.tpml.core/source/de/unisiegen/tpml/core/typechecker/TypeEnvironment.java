@@ -17,7 +17,7 @@ import de.unisiegen.tpml.core.util.Environment;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:296 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.util.Environment
  */
 public interface TypeEnvironment extends Environment < Identifier, Type >

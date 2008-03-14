@@ -9,7 +9,7 @@ import java_cup.runtime.Symbol;
  * {@link de.unisiegen.tpml.core.languages.LanguageScanner}s.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see java_cup.runtime.Symbol
  * @see de.unisiegen.tpml.core.languages.LanguageScanner
  */

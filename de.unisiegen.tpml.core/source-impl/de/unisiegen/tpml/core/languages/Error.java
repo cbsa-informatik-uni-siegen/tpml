@@ -15,6 +15,7 @@ import de.unisiegen.tpml.core.util.Theme;
  * A helper class for the parser.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public abstract class Error
 {

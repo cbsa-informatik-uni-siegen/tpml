@@ -8,7 +8,7 @@ package de.unisiegen.tpml.core.prettyprinter;
  * generate new {@link de.unisiegen.tpml.core.prettyprinter.PrettyString}s.
  * 
  * @author Benedikt Meurer
- * @version $Rev:277 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyString
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder
  */

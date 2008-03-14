@@ -32,7 +32,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:458 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.l2.L2TypeCheckerProofRuleSet
  */
 public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet

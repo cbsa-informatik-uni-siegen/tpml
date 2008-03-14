@@ -7,7 +7,7 @@ package de.unisiegen.tpml.core;
  * the change cannot be undo or the undo history is empty.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.CannotRedoException
  */
 public class CannotUndoException extends Exception

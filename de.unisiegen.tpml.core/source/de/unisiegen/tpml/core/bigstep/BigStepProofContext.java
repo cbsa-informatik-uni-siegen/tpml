@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.interpreters.Store;
  * application.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.bigstep.BigStepProofRule
  */
 public interface BigStepProofContext

@@ -32,7 +32,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * L2C related functionality, and extends the L2O language.
  * 
  * @author Christian Fehler
- * @version $Rev:1159 $
+ * @version $Id$
  * @see Language
  * @see LanguageParser
  * @see LanguageScanner

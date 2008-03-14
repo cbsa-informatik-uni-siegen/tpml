@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author  cfehling
+ * @version $Id$
  */
 @ SuppressWarnings ( "all" )
 public class TexDialog extends javax.swing.JDialog {

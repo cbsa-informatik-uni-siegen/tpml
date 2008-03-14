@@ -33,7 +33,7 @@ import de.unisiegen.tpml.core.util.AbstractEnvironment;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:511M $
+ * @version $Id$
  * @see TypeEnvironment
  * @see AbstractEnvironment
  */

@@ -51,6 +51,7 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
  * all {@link de.unisiegen.tpml.graphics.EditorComponent}s open for that file.
  * 
  * @author Christoph Fehling
+ * @version $Id$
  */
 public class EditorPanelExpression extends AbstractBean implements EditorPanel
 {

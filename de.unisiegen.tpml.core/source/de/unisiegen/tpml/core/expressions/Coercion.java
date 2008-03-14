@@ -26,7 +26,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * Represents the <b>(COERCION)</b> expression in the expression hierarchy.
  * 
  * @author Christian Fehler
- * @version $Rev:1092 $
+ * @version $Id$
  * @see Expression
  */
 public final class Coercion extends Expression implements DefaultTypes,

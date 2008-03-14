@@ -7,7 +7,7 @@ package de.unisiegen.tpml.core.expressions;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1053 $
+ * @version $Id$
  * @see UnaryOperator
  */
 public abstract class UnaryListOperator extends UnaryOperator

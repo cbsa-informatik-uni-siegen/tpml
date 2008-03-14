@@ -24,6 +24,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  */
 public class DefaultSubType implements PrettyPrintable, LatexPrintable
 {

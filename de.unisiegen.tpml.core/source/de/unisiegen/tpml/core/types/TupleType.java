@@ -20,7 +20,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:340 $
+ * @version $Id$
  * @see MonoType
  */
 public final class TupleType extends MonoType implements DefaultTypes

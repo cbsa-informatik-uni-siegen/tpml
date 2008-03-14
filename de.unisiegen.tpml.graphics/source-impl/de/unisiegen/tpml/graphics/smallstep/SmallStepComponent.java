@@ -43,7 +43,7 @@ import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
  * 
  * @author Marcell Fischbach
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.AbstractProofComponent
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepView
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent

@@ -14,7 +14,7 @@ import javax.swing.JComponent;
 
 
 /**
- * TODO
+ * @version $Id$
  */
 public class PrintHandler
 {

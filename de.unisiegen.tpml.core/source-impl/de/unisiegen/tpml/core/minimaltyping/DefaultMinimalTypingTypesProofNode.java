@@ -28,14 +28,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
- * @see AbstractMinimalTypingProofNode
- */
-/**
- * The Types Proof Node for the Minimal Typing Algorithm. Containing a seen
- * types and a sub type.
- * 
- * @author Benjamin Mies
- * @author Christian Fehler
+ * @version $Id$
  * @see AbstractMinimalTypingProofNode
  */
 public class DefaultMinimalTypingTypesProofNode extends

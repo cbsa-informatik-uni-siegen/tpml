@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.ProofRuleSet
  */
 public interface ProofRule extends Comparable < ProofRule >, PrettyPrintable,

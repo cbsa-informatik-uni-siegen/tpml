@@ -12,8 +12,8 @@ import de.unisiegen.tpml.graphics.Messages;
  * syntax.<br>
  * 
  * @author marcell
+ * @version $Id$
  */
-
 public class MenuTranslateItem extends JMenuItem
 {
 

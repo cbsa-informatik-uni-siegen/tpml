@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.ProofRuleException;
  * step interpreter.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.ProofRule
  */
 public interface RecSubTypingProofRule extends ProofRule

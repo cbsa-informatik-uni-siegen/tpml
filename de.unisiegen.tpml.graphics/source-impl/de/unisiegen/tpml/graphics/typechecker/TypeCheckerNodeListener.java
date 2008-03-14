@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.ProofNode;
 
 
 /**
- * TODO
+ * @version $Id$
  */
 public interface TypeCheckerNodeListener extends EventListener
 {

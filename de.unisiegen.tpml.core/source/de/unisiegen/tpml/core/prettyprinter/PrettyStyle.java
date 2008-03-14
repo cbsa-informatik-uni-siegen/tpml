@@ -6,7 +6,7 @@ package de.unisiegen.tpml.core.prettyprinter;
  * {@link de.unisiegen.tpml.core.prettyprinter.PrettyString}.
  * 
  * @author Benedikt Meurer
- * @version $Rev:1094 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyString
  */
 public enum PrettyStyle

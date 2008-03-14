@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
  * less then 1.2. This file must be compild with source and target 1.2
  * 
  * @author Feivel
+ * @version $Id$
  */
 public class JOpFrame
 {

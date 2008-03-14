@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * Default implementation of the <code>SubTypingProofContext</code> interface.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofContext
  */
 public class DefaultSubTypingProofContext implements SubTypingProofContext

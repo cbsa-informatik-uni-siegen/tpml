@@ -19,6 +19,7 @@ import de.unisiegen.tpml.graphics.components.CompoundExpressionTypeInference;
  * the <html> and </html> are missing and must be added.
  * 
  * @author Feivel
+ * @version $Id$
  */
 public class PrettyStringToHTML
 {

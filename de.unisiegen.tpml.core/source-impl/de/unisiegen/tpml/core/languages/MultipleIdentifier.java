@@ -19,6 +19,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming;
  * A helper class for the parser.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public class MultipleIdentifier
 {

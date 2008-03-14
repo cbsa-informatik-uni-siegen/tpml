@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
  * Type for the type equation in the unification algorithm
  * 
  * @author Benjamin Mies
+ * @version $Id$
  */
 public class UnifyType extends PrimitiveType
 {

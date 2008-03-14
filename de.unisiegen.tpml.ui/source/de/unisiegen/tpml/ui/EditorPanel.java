@@ -10,7 +10,7 @@ import de.unisiegen.tpml.graphics.EditorComponent;
 
 
 /**
- * TODO
+ * @version $Id$
  */
 public interface EditorPanel
 {

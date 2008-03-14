@@ -14,6 +14,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * 
  * @author Benjammin Mies
  * @author Christian Fehler
+ * @version $Id$
  * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel
  */
 public interface TypeInferenceProofContext extends TypeCheckerProofContext

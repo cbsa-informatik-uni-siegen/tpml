@@ -5,6 +5,7 @@ package de.unisiegen.tpml.core.latex;
  * This class is used for latex commands.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public final class DefaultLatexCommand implements LatexCommand,
     LatexCommandNames

@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * {@link de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel}.
  * 
  * @author Benedikt Meurer
- * @version $Rev:878M $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.AbstractExpressionProofNode
  * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode
  */

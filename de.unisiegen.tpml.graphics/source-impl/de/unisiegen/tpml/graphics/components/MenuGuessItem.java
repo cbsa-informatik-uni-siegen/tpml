@@ -11,6 +11,7 @@ import de.unisiegen.tpml.graphics.Messages;
  * This item provides the entry text to guess the node.<br>
  * 
  * @author marcell
+ * @version $Id$
  */
 public class MenuGuessItem extends JMenuItem
 {

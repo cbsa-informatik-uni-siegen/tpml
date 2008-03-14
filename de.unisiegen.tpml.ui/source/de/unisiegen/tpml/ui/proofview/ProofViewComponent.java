@@ -23,7 +23,7 @@ import de.unisiegen.tpml.graphics.ProofView;
  * the model (core) and visualization.
  * 
  * @author Christoph Fehling
- * @version $Rev$
+ * @version $Id$
  */
 public class ProofViewComponent extends JComponent implements EditorComponent
 {

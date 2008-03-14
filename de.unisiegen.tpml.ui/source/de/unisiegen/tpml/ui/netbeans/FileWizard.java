@@ -1,9 +1,3 @@
-/*
- * FileWizard.java
- *
- * Created on 26. Juli 2006, 19:44
- */
-
 package de.unisiegen.tpml.ui.netbeans;
 
 import java.awt.Component;
@@ -21,6 +15,7 @@ import de.unisiegen.tpml.ui.FileWizardLogic;
 /**
  *
  * @author  bmeurer
+ * @version $Id$
  */
 @ SuppressWarnings ( "all" )
 public class FileWizard extends javax.swing.JDialog {

@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.interpreters.Store;
  * Default implementation of the <code>SmallStepProofContext</code> interface.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.smallstep.SmallStepProofContext
  */
 final class DefaultSmallStepProofContext implements SmallStepProofContext

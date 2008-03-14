@@ -10,7 +10,7 @@ import de.unisiegen.tpml.graphics.Messages;
  * TODO Add documentation here.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.components.MenuGuessItem
  */
 public final class MenuGuessTreeItem extends JMenuItem

@@ -5,6 +5,7 @@ package de.unisiegen.tpml.core.latex;
  * This class represents a possible break in the latex export.
  * 
  * @author Christian Fehler
+ * @version $Id$
  * @see AbstractLatexItem
  * @see DefaultLatexStringBuilder
  */

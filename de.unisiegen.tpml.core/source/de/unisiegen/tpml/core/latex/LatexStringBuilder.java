@@ -7,6 +7,7 @@ package de.unisiegen.tpml.core.latex;
  * {@link LatexString}s in an incremental fashion.
  * 
  * @author Christian Fehler
+ * @version $Id$
  * @see LatexString
  * @see LatexStringBuilderFactory
  */

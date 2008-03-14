@@ -7,10 +7,10 @@ import javax.swing.JMenuItem;
 
 
 /**
- * TODO Add documentation here.
+ * Add documentation here.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.components.MenuButton
  */
 public interface MenuButtonListener extends EventListener

@@ -33,6 +33,7 @@ import de.unisiegen.tpml.core.languages.LanguageScannerException;
  * 
  * @author Marcell Fischbach
  * @author Christian Fehler
+ * @version $Id$
  */
 public class SideBar extends JComponent
 {

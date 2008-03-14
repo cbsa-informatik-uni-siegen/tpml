@@ -29,7 +29,7 @@ import de.unisiegen.tpml.core.util.AbstractEnvironment;
  * class.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.interpreters.Store
  * @see de.unisiegen.tpml.core.util.AbstractEnvironment
  */

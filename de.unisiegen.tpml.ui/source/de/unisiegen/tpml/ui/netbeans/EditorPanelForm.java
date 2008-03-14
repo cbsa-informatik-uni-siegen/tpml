@@ -10,6 +10,7 @@ import de.unisiegen.tpml.ui.EditorPanelTypes;
 /**
  *
  * @author  cfehling
+ * @version $Id$
  */
 @ SuppressWarnings ( "all" )
 public class EditorPanelForm extends javax.swing.JPanel {

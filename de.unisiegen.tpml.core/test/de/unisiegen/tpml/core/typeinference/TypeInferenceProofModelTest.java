@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.typeinference ;
+package de.unisiegen.tpml.core.typeinference;
 
 
 import java.awt.BorderLayout;
@@ -42,9 +42,10 @@ import de.unisiegen.tpml.core.languages.LanguageFactory;
  * @version $Id$
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel
  */
-@ SuppressWarnings ( "all" )
+@SuppressWarnings ( "all" )
 public final class TypeInferenceProofModelTest extends JFrame
 {
+
   /**
    * Simple test expression.
    */
@@ -52,13 +53,13 @@ public final class TypeInferenceProofModelTest extends JFrame
   // "(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)";
   // private static final String SIMPLE = "let f f = let f f = f in f in let f f
   // = f in f"; //$NON-NLS-1$
-  private static final String SIMPLE = "(1 : int <: int)" ;
+  private static final String SIMPLE = "(1 : int <: int)";
 
 
-  private JScrollPane jScrollPane ;
+  private JScrollPane jScrollPane;
 
 
-  ProofRule choosen = null ;
+  ProofRule choosen = null;
 
 
   // private TypeCheckerProofModel typechecker;
@@ -71,230 +72,237 @@ public final class TypeInferenceProofModelTest extends JFrame
   public TypeInferenceProofModelTest ( final TypeInferenceProofModel model )
   {
     // setup the frame
-    setLayout ( new BorderLayout ( ) ) ;
-    setSize ( 630 , 580 ) ;
-    setTitle ( "TypeInferenceProofModel Test" ) ;
+    setLayout ( new BorderLayout () );
+    setSize ( 630, 580 );
+    setTitle ( "TypeInferenceProofModel Test" );
     // setup the tree panel
-    JPanel treePanel = new JPanel ( new BorderLayout ( ) ) ;
-    treePanel.setBorder ( BorderFactory.createEtchedBorder ( ) ) ;
-    add ( treePanel , BorderLayout.CENTER ) ;
+    JPanel treePanel = new JPanel ( new BorderLayout () );
+    treePanel.setBorder ( BorderFactory.createEtchedBorder () );
+    add ( treePanel, BorderLayout.CENTER );
     // setup the tree
-    final JTree tree = new JTree ( model ) ;
-    treePanel.add ( tree , BorderLayout.CENTER ) ;
-    tree.setRowHeight ( 0 ) ;
+    final JTree tree = new JTree ( model );
+    treePanel.add ( tree, BorderLayout.CENTER );
+    tree.setRowHeight ( 0 );
     DefaultTreeCellRenderer dtcr = ( DefaultTreeCellRenderer ) tree
-        .getCellRenderer ( ) ;
-    dtcr.setBorder ( new LineBorder ( Color.black ) ) ;
-    this.jScrollPane = new JScrollPane ( treePanel ) ;
-    this.add ( jScrollPane ) ;
+        .getCellRenderer ();
+    dtcr.setBorder ( new LineBorder ( Color.black ) );
+    this.jScrollPane = new JScrollPane ( treePanel );
+    this.add ( jScrollPane );
     // setup the button panel
-    JPanel buttons = new JPanel ( new FlowLayout ( ) ) ;
-    add ( buttons , BorderLayout.SOUTH ) ;
+    JPanel buttons = new JPanel ( new FlowLayout () );
+    add ( buttons, BorderLayout.SOUTH );
     // setup the guess button
-    JButton guessButton = new JButton ( "Guess" ) ;
-    guessButton.addActionListener ( new ActionListener ( )
+    JButton guessButton = new JButton ( "Guess" );
+    guessButton.addActionListener ( new ActionListener ()
     {
+
       public void actionPerformed ( ActionEvent event )
       {
         try
         {
           {
-            model.guess ( nextNode ( model ) ) ;
+            model.guess ( nextNode ( model ) );
             // expand to the all nodes
-            for ( int n = 0 ; n < tree.getRowCount ( ) ; ++ n )
+            for ( int n = 0 ; n < tree.getRowCount () ; ++n )
             {
-              tree.expandRow ( n ) ;
+              tree.expandRow ( n );
             }
           }
         }
         catch ( Exception e )
         {
-          JOptionPane.showMessageDialog ( TypeInferenceProofModelTest.this , e
-              .getMessage ( ) , "Error" , JOptionPane.ERROR_MESSAGE ) ;
+          JOptionPane.showMessageDialog ( TypeInferenceProofModelTest.this, e
+              .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
       }
-    } ) ;
-    buttons.add ( guessButton ) ;
+    } );
+    buttons.add ( guessButton );
     // setup the guess all button
-    JButton guessAllButton = new JButton ( "Guess all" ) ;
-    guessAllButton.addActionListener ( new ActionListener ( )
+    JButton guessAllButton = new JButton ( "Guess all" );
+    guessAllButton.addActionListener ( new ActionListener ()
     {
+
       public void actionPerformed ( ActionEvent event )
       {
         try
         {
           while ( nextNode ( model ) != null )
           {
-            model.guess ( nextNode ( model ) ) ;
+            model.guess ( nextNode ( model ) );
             // expand to the all nodes
-            for ( int n = 0 ; n < tree.getRowCount ( ) ; ++ n )
+            for ( int n = 0 ; n < tree.getRowCount () ; ++n )
             {
-              tree.expandRow ( n ) ;
+              tree.expandRow ( n );
             }
           }
         }
         catch ( Exception e )
         {
-          JOptionPane.showMessageDialog ( TypeInferenceProofModelTest.this , e
-              .getMessage ( ) , "Error" , JOptionPane.ERROR_MESSAGE ) ;
+          JOptionPane.showMessageDialog ( TypeInferenceProofModelTest.this, e
+              .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
       }
-    } ) ;
-    buttons.add ( guessAllButton ) ;
+    } );
+    buttons.add ( guessAllButton );
     // Setup combo box for prove
-    JComboBox combo1 = new JComboBox ( ) ;
-    for ( ProofRule rule : model.getRules ( ) )
+    JComboBox combo1 = new JComboBox ();
+    for ( ProofRule rule : model.getRules () )
     {
-      combo1.addItem ( rule.getName ( ) ) ;
+      combo1.addItem ( rule.getName () );
     }
-    buttons.add ( combo1 ) ;
-    combo1.addItemListener ( new ItemListener ( )
+    buttons.add ( combo1 );
+    combo1.addItemListener ( new ItemListener ()
     {
+
       public void itemStateChanged ( ItemEvent e )
       {
-        JComboBox selectedChoice = ( JComboBox ) e.getSource ( ) ;
-        if ( e.getStateChange ( ) == 1 )
+        JComboBox selectedChoice = ( JComboBox ) e.getSource ();
+        if ( e.getStateChange () == 1 )
         {
-          for ( ProofRule rules : model.getRules ( ) )
+          for ( ProofRule rules : model.getRules () )
           {
-            if ( rules.getName ( ).equals ( selectedChoice.getSelectedItem ( ) ) )
+            if ( rules.getName ().equals ( selectedChoice.getSelectedItem () ) )
             {
-              choosen = rules ;
-              break ;
+              choosen = rules;
+              break;
             }
           }
           try
           {
             // prove the last node
-            model.prove ( choosen , nextNode ( model ) ) ;
+            model.prove ( choosen, nextNode ( model ) );
             // expand to the all nodes
-            for ( int n = 0 ; n < tree.getRowCount ( ) ; ++ n )
+            for ( int n = 0 ; n < tree.getRowCount () ; ++n )
             {
-              tree.expandRow ( n ) ;
+              tree.expandRow ( n );
             }
           }
           catch ( Exception e1 )
           {
-            JOptionPane.showMessageDialog ( TypeInferenceProofModelTest.this ,
-                e1.getMessage ( ) , "Error" , JOptionPane.ERROR_MESSAGE ) ;
+            JOptionPane.showMessageDialog ( TypeInferenceProofModelTest.this,
+                e1.getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
           }
         }
       }
-    } ) ;
+    } );
     // setup the undo button
-    final JButton undoButton = new JButton ( "Undo" ) ;
-    undoButton.setEnabled ( false ) ;
-    undoButton.addActionListener ( new ActionListener ( )
+    final JButton undoButton = new JButton ( "Undo" );
+    undoButton.setEnabled ( false );
+    undoButton.addActionListener ( new ActionListener ()
     {
+
       public void actionPerformed ( ActionEvent event )
       {
         try
         {
           // undo the last change
-          model.undo ( ) ;
+          model.undo ();
         }
         catch ( Exception e )
         {
-          JOptionPane.showMessageDialog ( TypeInferenceProofModelTest.this , e
-              .getMessage ( ) , "Error" , JOptionPane.ERROR_MESSAGE ) ;
+          JOptionPane.showMessageDialog ( TypeInferenceProofModelTest.this, e
+              .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
       }
-    } ) ;
-    model.addPropertyChangeListener ( "undoable" ,
-        new PropertyChangeListener ( )
-        {
-          public void propertyChange ( PropertyChangeEvent event )
-          {
-            undoButton.setEnabled ( model.isUndoable ( ) ) ;
-          }
-        } ) ;
-    buttons.add ( undoButton ) ;
-    // setup the redo button
-    final JButton redoButton = new JButton ( "Redo" ) ;
-    redoButton.setEnabled ( false ) ;
-    redoButton.addActionListener ( new ActionListener ( )
+    } );
+    model.addPropertyChangeListener ( "undoable", new PropertyChangeListener ()
     {
+
+      public void propertyChange ( PropertyChangeEvent event )
+      {
+        undoButton.setEnabled ( model.isUndoable () );
+      }
+    } );
+    buttons.add ( undoButton );
+    // setup the redo button
+    final JButton redoButton = new JButton ( "Redo" );
+    redoButton.setEnabled ( false );
+    redoButton.addActionListener ( new ActionListener ()
+    {
+
       public void actionPerformed ( ActionEvent event )
       {
         try
         {
           // redo the last undone change
-          model.redo ( ) ;
+          model.redo ();
           // expand to the last node
-          for ( int n = 0 ; n < tree.getRowCount ( ) ; ++ n )
+          for ( int n = 0 ; n < tree.getRowCount () ; ++n )
           {
-            tree.expandRow ( n ) ;
+            tree.expandRow ( n );
           }
         }
         catch ( Exception e )
         {
-          JOptionPane.showMessageDialog ( TypeInferenceProofModelTest.this , e
-              .getMessage ( ) , "Error" , JOptionPane.ERROR_MESSAGE ) ;
+          JOptionPane.showMessageDialog ( TypeInferenceProofModelTest.this, e
+              .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
       }
-    } ) ;
-    model.addPropertyChangeListener ( "redoable" ,
-        new PropertyChangeListener ( )
-        {
-          public void propertyChange ( PropertyChangeEvent event )
-          {
-            redoButton.setEnabled ( model.isRedoable ( ) ) ;
-          }
-        } ) ;
-    buttons.add ( redoButton ) ;
-    // setup the translate button
-    JButton translateButton = new JButton ( "Translate" ) ;
-    translateButton.addActionListener ( new ActionListener ( )
+    } );
+    model.addPropertyChangeListener ( "redoable", new PropertyChangeListener ()
     {
+
+      public void propertyChange ( PropertyChangeEvent event )
+      {
+        redoButton.setEnabled ( model.isRedoable () );
+      }
+    } );
+    buttons.add ( redoButton );
+    // setup the translate button
+    JButton translateButton = new JButton ( "Translate" );
+    translateButton.addActionListener ( new ActionListener ()
+    {
+
       public void actionPerformed ( ActionEvent event )
       {
         try
         {
           // translate the last node
-          TreePath path = tree.getSelectionPath ( ) ;
+          TreePath path = tree.getSelectionPath ();
           {
             model.translateToCoreSyntax (
-                ( TypeInferenceProofNode ) nextNode ( model ) , true , true ) ;
+                ( TypeInferenceProofNode ) nextNode ( model ), true, true );
           }
         }
         catch ( Exception e )
         {
-          JOptionPane.showMessageDialog ( TypeInferenceProofModelTest.this , e
-              .getMessage ( ) , "Error" , JOptionPane.ERROR_MESSAGE ) ;
+          JOptionPane.showMessageDialog ( TypeInferenceProofModelTest.this, e
+              .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
       }
-    } ) ;
-    buttons.add ( translateButton ) ;
+    } );
+    buttons.add ( translateButton );
     // setup the close button
-    JButton closeButton = new JButton ( "Close" ) ;
-    closeButton.addActionListener ( new ActionListener ( )
+    JButton closeButton = new JButton ( "Close" );
+    closeButton.addActionListener ( new ActionListener ()
     {
+
       public void actionPerformed ( ActionEvent event )
       {
         // System.exit(0);
       }
-    } ) ;
-    buttons.add ( closeButton ) ;
+    } );
+    buttons.add ( closeButton );
   }
 
 
   private static ProofNode nextNode ( TypeInferenceProofModel model )
   {
-    LinkedList < TypeInferenceProofNode > nodes = new LinkedList < TypeInferenceProofNode > ( ) ;
-    nodes.add ( ( TypeInferenceProofNode ) model.getRoot ( ) ) ;
-    while ( ! nodes.isEmpty ( ) )
+    LinkedList < TypeInferenceProofNode > nodes = new LinkedList < TypeInferenceProofNode > ();
+    nodes.add ( ( TypeInferenceProofNode ) model.getRoot () );
+    while ( !nodes.isEmpty () )
     {
-      TypeInferenceProofNode node = nodes.poll ( ) ;
-      if ( node.getSteps ( ).length == 0 )
+      TypeInferenceProofNode node = nodes.poll ();
+      if ( node.getSteps ().length == 0 )
       {
-        return node ;
+        return node;
       }
-      for ( int n = 0 ; n < node.getChildCount ( ) ; ++ n )
+      for ( int n = 0 ; n < node.getChildCount () ; ++n )
       {
-        nodes.add ( node.getChildAt ( n ) ) ;
+        nodes.add ( node.getChildAt ( n ) );
       }
     }
-    throw new IllegalStateException ( "Unable to find next node" ) ;
+    throw new IllegalStateException ( "Unable to find next node" );
   }
 
 
@@ -306,34 +314,35 @@ public final class TypeInferenceProofModelTest extends JFrame
    * 
    * @param args the command line arguments.
    */
-  public static void main ( String [ ] args )
+  public static void main ( String [] args )
   {
     try
     {
       // parse the program (using L4)
-      LanguageFactory factory = LanguageFactory.newInstance ( ) ;
-      Language language = factory.getLanguageById ( "l4" ) ;
+      LanguageFactory factory = LanguageFactory.newInstance ();
+      Language language = factory.getLanguageById ( "l4" );
       Expression expression = language.newParser ( new StringReader ( SIMPLE ) )
-          .parse ( ) ;
+          .parse ();
       TypeInferenceProofModel model = language
-          .newTypeInferenceProofModel ( expression ) ;
+          .newTypeInferenceProofModel ( expression );
       // evaluate the resulting small step expression
       TypeInferenceProofModelTest window = new TypeInferenceProofModelTest (
-          model ) ;
+          model );
       // window.typechecker= language.newTypeCheckerProofModel(expression);
-      window.addWindowListener ( new WindowAdapter ( )
+      window.addWindowListener ( new WindowAdapter ()
       {
-        @ Override
+
+        @Override
         public void windowClosing ( WindowEvent e )
         {
-          System.exit ( 0 ) ;
+          System.exit ( 0 );
         }
-      } ) ;
-      window.setVisible ( true ) ;
+      } );
+      window.setVisible ( true );
     }
     catch ( Exception e )
     {
-      e.printStackTrace ( ) ;
+      e.printStackTrace ();
     }
   }
 }

@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:277 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageTranslator
  */

@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1053 $
+ * @version $Id$
  * @see Value
  */
 public abstract class Constant extends Value

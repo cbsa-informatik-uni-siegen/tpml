@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.languages.Language;
  * Abstract base class for type checker proof rule sets.
  * 
  * @author Benedikt Meurer
- * @version $Rev:377 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.AbstractProofRuleSet
  */
 public abstract class AbstractMinimalTypingProofRuleSet extends

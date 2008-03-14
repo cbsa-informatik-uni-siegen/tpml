@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * to the proof model for the type rules.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofModel
  */
 public interface SubTypingProofContext

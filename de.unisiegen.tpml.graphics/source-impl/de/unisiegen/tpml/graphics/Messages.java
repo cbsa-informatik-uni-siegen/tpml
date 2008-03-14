@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:415 $
+ * @version $Id$
  */
 public class Messages
 {

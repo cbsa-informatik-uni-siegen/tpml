@@ -15,7 +15,7 @@ import java.util.Map;
  * <code>addText()</code>.
  * 
  * @author Benedikt Meurer
- * @version $Rev:277 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.prettyprinter.AbstractItem
  * @see de.unisiegen.tpml.core.prettyprinter.DefaultPrettyStringBuilder
  */

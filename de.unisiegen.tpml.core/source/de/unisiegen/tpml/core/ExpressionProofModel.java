@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * for proofs based on {@link de.unisiegen.tpml.core.expressions.Expression}s.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.ExpressionProofNode
  * @see de.unisiegen.tpml.core.ProofModel
  */

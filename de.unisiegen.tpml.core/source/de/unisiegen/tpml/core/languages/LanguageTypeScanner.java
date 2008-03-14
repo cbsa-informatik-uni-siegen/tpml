@@ -14,7 +14,7 @@ package de.unisiegen.tpml.core.languages;
  * as a <i>marker</i> interface.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageTypeParser
  */

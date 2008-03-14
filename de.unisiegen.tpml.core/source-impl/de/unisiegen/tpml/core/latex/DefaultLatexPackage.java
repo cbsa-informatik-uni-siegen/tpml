@@ -5,6 +5,7 @@ package de.unisiegen.tpml.core.latex;
  * This class is used for latex packages.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public final class DefaultLatexPackage implements LatexPackage
 {

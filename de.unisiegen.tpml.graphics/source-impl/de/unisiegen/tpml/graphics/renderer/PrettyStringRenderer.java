@@ -27,6 +27,7 @@ import de.unisiegen.tpml.graphics.components.ShowBonds;
  * 
  * @author marcell
  * @author michael
+ * @version $Id$
  */
 public class PrettyStringRenderer extends AbstractRenderer
 {

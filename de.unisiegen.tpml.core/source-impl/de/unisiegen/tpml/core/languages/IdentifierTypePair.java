@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * A helper class for the parser.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public class IdentifierTypePair
 {

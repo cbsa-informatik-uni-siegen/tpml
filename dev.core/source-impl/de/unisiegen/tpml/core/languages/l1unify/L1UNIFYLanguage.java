@@ -17,7 +17,7 @@ import de.unisiegen.tpml.core.languages.l1sub.L1SUBLanguage;
  * related functionality, which extends the L0 language.
  * 
  * @author Christian Fehler
- * @version $Rev:1159 $
+ * @version $Id$
  */
 public class L1UNIFYLanguage extends AbstractLanguage
 {

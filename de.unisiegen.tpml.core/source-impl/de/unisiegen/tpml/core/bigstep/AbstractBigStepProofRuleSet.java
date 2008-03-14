@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.languages.Language;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:377M $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.AbstractProofRuleSet
  * @see de.unisiegen.tpml.core.bigstep.BigStepProofModel
  */

@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
  * without having to explicitly use this interface each time.
  * 
  * @author Benedikt Meurer
- * @version $Rev:339 $
+ * @version $Id$
  * @see Type
  * @see PrettyStringBuilder
  */

@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.languages.LanguageTypeScanner;
  * The type parser class for the <code>L2</code> language.
  * 
  * @author Christian Fehler
- * @version $Rev:415 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.l2.L2AbstractTypeParser
  */
 final class L2TypeParser extends L2AbstractTypeParser

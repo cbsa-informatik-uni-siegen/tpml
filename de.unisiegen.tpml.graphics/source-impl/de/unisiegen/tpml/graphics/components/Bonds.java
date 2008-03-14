@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  */
 public final class Bonds
 {

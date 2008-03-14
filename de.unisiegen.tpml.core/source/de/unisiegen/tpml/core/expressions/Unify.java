@@ -6,6 +6,7 @@ package de.unisiegen.tpml.core.expressions;
  * formula has an expression, but type equation typical don't have one.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  */
 public class Unify extends Constant
 {

@@ -26,7 +26,7 @@ import de.unisiegen.tpml.graphics.outline.Outline;
  * 
  * @author Marcell Fischbach
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.AbstractProofView
  */
 public class SubTypingView extends AbstractProofView

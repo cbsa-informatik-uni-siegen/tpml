@@ -20,7 +20,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * Language translator for the <code>L2O</code> language.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  * @see L2Language
  */
 public class L2OLanguageTranslator extends L2LanguageTranslator

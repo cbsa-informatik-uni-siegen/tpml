@@ -6,7 +6,7 @@ package de.unisiegen.tpml.core.languages;
  * language.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.LanguageScanner
  */
 public class LanguageScannerException extends RuntimeException

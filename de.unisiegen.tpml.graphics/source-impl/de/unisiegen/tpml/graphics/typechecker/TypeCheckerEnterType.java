@@ -31,6 +31,7 @@ import de.unisiegen.tpml.graphics.Messages;
  * user selectes Enter Type.
  * 
  * @author marcell
+ * @version $Id$
  */
 public class TypeCheckerEnterType extends JComponent
 {

@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.types.Type;
  * and {@link TypeSubType}s.
  * 
  * @author Christian Fehler
- * @version $Rev:1350 $
+ * @version $Id$
  */
 public interface ShowBondsInput extends ExpressionOrType
 {

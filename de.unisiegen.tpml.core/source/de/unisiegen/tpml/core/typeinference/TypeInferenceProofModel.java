@@ -51,6 +51,7 @@ import de.unisiegen.tpml.core.util.Theme;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  * @see de.unisiegen.tpml.core.AbstractProofModel
  * @see de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext
  * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode

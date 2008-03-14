@@ -20,7 +20,7 @@ import de.unisiegen.tpml.core.expressions.Projection;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1132 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.bigstep.AbstractBigStepProofRuleSet
  */
 public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet

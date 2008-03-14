@@ -27,7 +27,7 @@ import de.unisiegen.tpml.graphics.outline.Outline;
  * @author Marcell Fischbach
  * @author Christian Fehler
  * @author michael
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.AbstractProofView
  */
 public class TypeCheckerView extends AbstractProofView

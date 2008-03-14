@@ -20,7 +20,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * Represents an type name in the type hierarchy.
  * 
  * @author Christian Fehler
- * @version $Rev:1056 $
+ * @version $Id$
  */
 public final class TypeName extends MonoType implements IdentifierOrTypeName
 {

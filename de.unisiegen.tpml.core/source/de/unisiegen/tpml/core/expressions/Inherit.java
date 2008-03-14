@@ -22,7 +22,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * Instances of this class represent inherit expressions.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  */
 public final class Inherit extends Expression implements BoundIdentifiers,
     DefaultExpressions

@@ -62,6 +62,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * stored node gets visible.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.subtyping.SubTypingView
  * @see de.unisiegen.tpml.graphics.subtyping.SubTypingNodeComponent
  */

@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.languages.LanguageScanner;
  * The parser class for the <code>L3</code> language.
  * 
  * @author Benedikt Meurer
- * @version $Rev:415 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.l3.L3AbstractParser
  */
 final class L3Parser extends L3AbstractParser

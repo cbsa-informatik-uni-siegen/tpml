@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
  * algorithm
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.ProofNode
  * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode

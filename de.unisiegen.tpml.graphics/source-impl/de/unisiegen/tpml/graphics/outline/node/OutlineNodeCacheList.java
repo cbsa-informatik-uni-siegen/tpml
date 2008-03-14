@@ -12,6 +12,7 @@ import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding;
  * List of the {@link OutlineNodeCache}.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public final class OutlineNodeCacheList
 {

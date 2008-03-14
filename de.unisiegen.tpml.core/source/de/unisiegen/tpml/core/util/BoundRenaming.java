@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.types.TypeName;
  * This class implements the bound renaming.
  * 
  * @author Christian Fehler
+ * @version $Id$
  * @param <E> The {@link Identifier} or {@link TypeName}.
  */
 public final class BoundRenaming < E extends IdentifierOrTypeName >

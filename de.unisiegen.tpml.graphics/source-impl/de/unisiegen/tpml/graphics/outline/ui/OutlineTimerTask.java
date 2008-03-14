@@ -10,7 +10,7 @@ import de.unisiegen.tpml.graphics.outline.DefaultOutline;
  * Invokes the execute method in the {@link DefaultOutline}.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  */
 public final class OutlineTimerTask extends TimerTask
 {

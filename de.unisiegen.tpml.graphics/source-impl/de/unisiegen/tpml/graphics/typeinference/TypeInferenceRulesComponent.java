@@ -41,6 +41,7 @@ import de.unisiegen.tpml.graphics.components.MenuButton;
  * <br>
  * 
  * @author michael
+ * @version $Id$
  */
 public class TypeInferenceRulesComponent extends JComponent
 {

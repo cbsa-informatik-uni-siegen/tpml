@@ -29,6 +29,7 @@ import de.unisiegen.tpml.ui.netbeans.FileWizard;
  * It also hadels to save the expandedstaes of the tree-elements
  * 
  * @author michael
+ * @version $Id$
  */
 public class FileWizardLogic
 {

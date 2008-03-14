@@ -9,6 +9,7 @@ import javax.swing.filechooser.FileFilter;
 /**
  *
  * @author  cfehling
+ * @version $Id$
  */
 @ SuppressWarnings ( "all" )
 public class PdfDialog extends javax.swing.JDialog {

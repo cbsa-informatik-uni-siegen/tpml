@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.languages.Language;
  * Abstract base class for subtyping proof rule sets.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.AbstractProofRuleSet
  */
 public abstract class AbstractSubTypingProofRuleSet extends

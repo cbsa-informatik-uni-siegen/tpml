@@ -28,7 +28,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1166 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.l0.L0SmallStepProofRuleSet
  * @see de.unisiegen.tpml.core.languages.l1.L1Language
  */

@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:277 $
+ * @version $Id$
  * @see Type
  */
 public abstract class MonoType extends Type

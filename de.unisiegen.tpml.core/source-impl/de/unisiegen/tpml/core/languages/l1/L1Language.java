@@ -26,7 +26,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * related functionality, which extends the L0 language.
  * 
  * @author Benedikt Meurer
- * @version $Rev:1159 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageParser
  * @see de.unisiegen.tpml.core.languages.LanguageScanner

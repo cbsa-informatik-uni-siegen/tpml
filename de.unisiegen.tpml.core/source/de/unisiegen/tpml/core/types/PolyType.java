@@ -26,7 +26,7 @@ import de.unisiegen.tpml.core.typechecker.TypeUtilities;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:511 $
+ * @version $Id$
  * @see Type
  */
 public final class PolyType extends Type implements DefaultTypes

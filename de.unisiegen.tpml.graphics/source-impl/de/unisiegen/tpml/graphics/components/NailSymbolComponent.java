@@ -17,6 +17,7 @@ import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
  * this class renders the Nail Symbol
  * 
  * @author Benjamin Mies
+ * @version $Id$
  */
 public class NailSymbolComponent extends JComponent
 {

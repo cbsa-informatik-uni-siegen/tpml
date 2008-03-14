@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:277 $
+ * @version $Id$
  */
 public final class UnitType extends PrimitiveType
 {

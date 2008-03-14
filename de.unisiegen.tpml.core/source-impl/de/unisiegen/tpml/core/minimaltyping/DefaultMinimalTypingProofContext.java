@@ -41,7 +41,8 @@ import de.unisiegen.tpml.core.types.UnitType;
  * Default implementation of the <code>MinimalTypingProofContext</code>
  * interface.
  * 
- * @author Benjamin MIes
+ * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext
  */
 public class DefaultMinimalTypingProofContext implements

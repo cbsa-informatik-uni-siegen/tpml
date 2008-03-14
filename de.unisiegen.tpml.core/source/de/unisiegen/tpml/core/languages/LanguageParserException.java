@@ -6,7 +6,7 @@ package de.unisiegen.tpml.core.languages;
  * {@link LanguageParser}.
  * 
  * @author Benedikt Meurer
- * @version $Rev:291M $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.LanguageScannerException
  */
 public class LanguageParserException extends LanguageScannerException

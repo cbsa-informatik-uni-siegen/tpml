@@ -5,6 +5,7 @@ package de.unisiegen.tpml.core.latex;
  * This interface is used for latex instructions.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public interface LatexInstruction
 {

@@ -77,6 +77,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
  * method {@link #placeElements(int)}.<br>
  * 
  * @author marcell
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.bigstep.BigStepView
  * @see de.unisiegen.tpml.graphics.bigstep.BigStepComponent
  * @see de.unisiegen.tpml.graphics.tree.TreeNodeComponent

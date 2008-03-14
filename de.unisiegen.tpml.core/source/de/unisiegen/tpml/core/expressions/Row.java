@@ -24,7 +24,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming;
  * Instances of this class represent row expressions.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  */
 public final class Row extends Expression implements DefaultExpressions
 {

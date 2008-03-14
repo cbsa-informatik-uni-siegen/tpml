@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 
 
 /**
- * TODO
+ * @version $Id$
  */
 public class HistoryItem extends JMenuItem
 {

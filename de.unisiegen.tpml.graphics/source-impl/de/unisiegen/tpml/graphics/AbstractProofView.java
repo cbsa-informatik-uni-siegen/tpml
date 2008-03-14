@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.util.Theme;
  * Abstract base class for all {@link de.unisiegen.tpml.graphics.ProofView}s.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.ProofView
  */
 public abstract class AbstractProofView extends JComponent implements ProofView

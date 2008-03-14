@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * interface.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  */
 public abstract class AbstractExpressionProofNode extends AbstractProofNode
     implements ExpressionProofNode

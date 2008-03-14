@@ -27,6 +27,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  */
 public class TypeSubstitutionList implements PrettyPrintable, LatexPrintable
 {

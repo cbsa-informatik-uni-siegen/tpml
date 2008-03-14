@@ -18,7 +18,7 @@ import de.unisiegen.tpml.core.ProofRule;
  * <code>InterpreterProofModel</code> interface.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.interpreters.InterpreterProofModel
  * @see de.unisiegen.tpml.core.AbstractExpressionProofModel
  */

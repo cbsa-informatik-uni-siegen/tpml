@@ -6,7 +6,7 @@ package de.unisiegen.tpml.core.languages;
  * {@link LanguageUnifyScanner} interface.
  * 
  * @author Christian Fehler
- * @version $Rev:380 $
+ * @version $Id$
  */
 public abstract class AbstractLanguageUnifyScanner extends
     AbstractLanguageScanner implements LanguageUnifyScanner

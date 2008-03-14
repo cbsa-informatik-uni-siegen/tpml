@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.languages.LanguageTypeScanner;
  * The type parser class for the <code>L2C</code> language.
  * 
  * @author Christian Fehler
- * @version $Rev:415 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.l2c.L2CAbstractTypeParser
  */
 final class L2CTypeParser extends L2CAbstractTypeParser

@@ -25,6 +25,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * {@link de.unisiegen.tpml.core.subtyping.SubTypingProofModel}.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.AbstractProofNode
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode
  */

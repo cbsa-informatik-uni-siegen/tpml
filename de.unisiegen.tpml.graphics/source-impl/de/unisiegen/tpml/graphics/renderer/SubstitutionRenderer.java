@@ -16,6 +16,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * substitutions of the type inference view.
  * 
  * @author michael
+ * @version $Id$
  */
 public class SubstitutionRenderer extends AbstractRenderer
 {

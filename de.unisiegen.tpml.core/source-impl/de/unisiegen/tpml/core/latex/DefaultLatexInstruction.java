@@ -5,6 +5,7 @@ package de.unisiegen.tpml.core.latex;
  * This class is used for latex instructions.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public final class DefaultLatexInstruction implements LatexInstruction,
     LatexCommandNames

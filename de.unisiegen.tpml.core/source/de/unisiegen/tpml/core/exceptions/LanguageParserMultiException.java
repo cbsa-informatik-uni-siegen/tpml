@@ -20,6 +20,7 @@ import de.unisiegen.tpml.core.types.RowType;
  * be highlighted in the source code view.
  * 
  * @author Christian Fehler
+ * @version $Id$
  * @see LanguageParserException
  */
 public class LanguageParserMultiException extends LanguageParserException

@@ -43,6 +43,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * that is passed to the constructor.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.AbstractProofModel
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofContext
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode

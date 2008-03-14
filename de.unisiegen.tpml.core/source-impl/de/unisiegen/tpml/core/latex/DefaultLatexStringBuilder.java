@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyCommandNames;
  * which is the heart of the latex printer.
  * 
  * @author Christian Fehler
+ * @version $Id$
  * @see LatexStringBuilder
  * @see LatexStringBuilderFactory
  */

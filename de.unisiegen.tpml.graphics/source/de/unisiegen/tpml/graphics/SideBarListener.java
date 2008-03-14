@@ -9,6 +9,7 @@ import java.util.EventListener;
  * 
  * @author Marcell Fischbach
  * @author Christian Fehler
+ * @version $Id$
  */
 public interface SideBarListener extends EventListener
 {

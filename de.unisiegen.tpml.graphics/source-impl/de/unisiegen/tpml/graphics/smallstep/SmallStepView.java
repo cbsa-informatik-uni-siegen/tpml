@@ -27,7 +27,7 @@ import de.unisiegen.tpml.graphics.outline.Outline;
  * @author Marcell Fischbach
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.AbstractProofView
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepComponent
  */

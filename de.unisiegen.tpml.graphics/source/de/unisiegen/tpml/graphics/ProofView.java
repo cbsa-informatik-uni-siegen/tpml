@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.ProofGuessException;
  * 
  * @author Marcell Fischbach
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.ProofModel
  * @see de.unisiegen.tpml.graphics.ProofViewFactory
  */

@@ -10,7 +10,7 @@ import java.util.Iterator;
  * integers and related constructs.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see java.lang.Integer
  */
 public final class IntegerUtilities

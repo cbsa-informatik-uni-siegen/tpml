@@ -10,6 +10,7 @@ import de.unisiegen.tpml.core.ProofRule;
  * {@link de.unisiegen.tpml.core.subtyping.SubTypingProofModel}.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.ProofNode
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofModel
  */

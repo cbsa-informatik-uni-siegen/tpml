@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * Instances of this class represent send expressions.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  */
 public final class Send extends Expression implements DefaultIdentifiers,
     DefaultExpressions, SortedChildren

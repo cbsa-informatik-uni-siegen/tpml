@@ -16,6 +16,7 @@ import de.unisiegen.tpml.core.util.Environment;
  * 
  * @author marcell
  * @author michael
+ * @version $Id$
  * @param <S>
  * @param <E>
  */

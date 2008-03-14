@@ -22,7 +22,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:415 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.Language
  */
 public abstract class AbstractLanguage implements Language

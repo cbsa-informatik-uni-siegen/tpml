@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * i.e.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  */
 public final class SubTypingException extends Exception
 {

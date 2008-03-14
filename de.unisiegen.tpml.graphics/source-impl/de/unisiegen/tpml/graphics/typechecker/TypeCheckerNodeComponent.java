@@ -90,6 +90,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
  * 
  * @author marcell
  * @author michael
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.typechecker.TypeCheckerView
  * @see de.unisiegen.tpml.graphics.typechecker.TypeCheckerComponent
  * @see de.unisiegen.tpml.graphics.tree.TreeNodeComponent

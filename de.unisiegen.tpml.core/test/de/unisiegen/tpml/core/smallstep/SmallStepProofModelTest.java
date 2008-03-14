@@ -31,8 +31,7 @@ import de.unisiegen.tpml.core.languages.LanguageFactory;
  * Test class for the small step interpreter.
  * 
  * @author Benedikt Meurer
- * @version $Id: SmallStepProofModelTest.java 2159 2007-08-06 15:10:57Z
- *          christian $
+ * @version $Id$
  */
 @SuppressWarnings ( "all" )
 public class SmallStepProofModelTest extends JFrame

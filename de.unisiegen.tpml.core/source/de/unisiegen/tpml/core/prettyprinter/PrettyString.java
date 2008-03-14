@@ -11,7 +11,7 @@ import java.util.Collection;
  * pretty string.
  * 
  * @author Benedikt Meurer
- * @version $Rev:277 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable

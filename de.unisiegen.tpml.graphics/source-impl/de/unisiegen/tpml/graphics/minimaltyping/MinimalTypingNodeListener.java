@@ -10,6 +10,7 @@ import de.unisiegen.tpml.core.ProofNode;
  * Listener for MinimalTypingNodes
  * 
  * @author Benjamin Mies
+ * @version $Id$
  */
 public interface MinimalTypingNodeListener extends EventListener
 {

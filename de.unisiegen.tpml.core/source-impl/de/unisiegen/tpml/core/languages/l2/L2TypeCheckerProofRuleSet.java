@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * The type proof rules for the <code>L2</code> language.
  * 
  * @author Benedikt Meurer
- * @version $Id:L2TypeCheckerProofRuleSet.java 419 2006-10-12 09:09:37Z benny $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.l1.L1TypeCheckerProofRuleSet
  */
 public class L2TypeCheckerProofRuleSet extends L1TypeCheckerProofRuleSet

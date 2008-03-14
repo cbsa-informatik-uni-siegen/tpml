@@ -40,7 +40,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * that is passed to the constructor.
  * 
  * @author Benedikt Meurer
- * @version $Rev:878M $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.AbstractExpressionProofModel
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode

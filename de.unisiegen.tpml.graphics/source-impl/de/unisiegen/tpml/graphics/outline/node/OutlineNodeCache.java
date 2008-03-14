@@ -10,6 +10,7 @@ import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding;
  * Cache of the caption of a node.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public final class OutlineNodeCache
 {

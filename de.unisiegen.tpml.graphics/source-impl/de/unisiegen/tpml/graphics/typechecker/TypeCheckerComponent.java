@@ -60,6 +60,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * 
  * @author marcell
  * @author michael
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.typechecker.TypeCheckerView
  * @see de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent
  * @see de.unisiegen.tpml.graphics.typechecker.TypeCheckerEnterType

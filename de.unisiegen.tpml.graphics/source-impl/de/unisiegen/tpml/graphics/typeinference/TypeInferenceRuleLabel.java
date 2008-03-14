@@ -14,6 +14,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * It is nearly the same as the SmallStepRuleLabel but without an exponent.
  * 
  * @author michael
+ * @version $Id$
  */
 public class TypeInferenceRuleLabel extends JComponent
 {

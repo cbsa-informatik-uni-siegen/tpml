@@ -10,13 +10,13 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 
+/**
+ * @version $Id$
+ */
 @SuppressWarnings ( "all" )
 public class TestDialog extends JDialog
 {
 
-  /**
-   * 
-   */
   private static final long serialVersionUID = 8927517104220650542L;
 
 

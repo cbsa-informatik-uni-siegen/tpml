@@ -44,7 +44,7 @@ import de.unisiegen.tpml.graphics.outline.Outline;
  * 
  * @author Christoph Fehling
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.ui.EditorComponent
  */
 @SuppressWarnings ( "all" )

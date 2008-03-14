@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle;
  * {@link de.unisiegen.tpml.core.languages.LanguageScanner} interface.
  * 
  * @author Benedikt Meurer
- * @version $Rev:380 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.LanguageScanner
  */
 public abstract class AbstractLanguageScanner implements LanguageScanner

@@ -16,6 +16,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * The subtype proof rules for the <code>L1</code> language.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet
  */
 public class L1SubTypingProofRuleSet extends AbstractSubTypingProofRuleSet

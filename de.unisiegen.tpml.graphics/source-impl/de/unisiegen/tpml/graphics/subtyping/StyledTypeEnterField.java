@@ -35,6 +35,7 @@ import de.unisiegen.tpml.graphics.StyledLanguageDocument;
  * {@link de.unisiegen.tpml.core.languages.Language}.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see javax.swing.text.DefaultStyledDocument
  */
 public class StyledTypeEnterField extends StyledLanguageDocument

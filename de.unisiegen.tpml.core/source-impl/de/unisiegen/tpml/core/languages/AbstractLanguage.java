@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * {@link de.unisiegen.tpml.core.languages.Language} interface.
  * 
  * @author Benedikt Meurer
- * @version $Rev:415 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.Language
  */
 public abstract class AbstractLanguage implements Language

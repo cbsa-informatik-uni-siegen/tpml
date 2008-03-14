@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.expressions.Identifier;
  * bound other {@link Identifier}s.
  * 
  * @author Christian Fehler
- * @version $Rev:1350 $
+ * @version $Id$
  */
 public interface BoundIdentifiers extends DefaultIdentifiers
 {

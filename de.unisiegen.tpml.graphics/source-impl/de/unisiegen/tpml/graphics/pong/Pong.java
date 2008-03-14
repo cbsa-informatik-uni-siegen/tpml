@@ -31,6 +31,7 @@ import javax.swing.JWindow;
  * 
  * @author marcell
  * @author Michael
+ * @version $Id$
  */
 @SuppressWarnings ( "all" )
 public class Pong extends JComponent

@@ -13,6 +13,7 @@ import de.unisiegen.tpml.ui.PreferenceDialog;
 /**
  *
  * @author  Christoph Fehling
+ * @version $Id$
  */
 @ SuppressWarnings ( "all" )
 public class MainWindowForm extends javax.swing.JFrame {

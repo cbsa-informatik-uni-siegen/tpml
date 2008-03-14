@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * CompoundExpression (compoundExpressionTypeInference, TypeCompounent)
  * 
  * @author michael
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.components.CompoundExpression
  * @see de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer
  */

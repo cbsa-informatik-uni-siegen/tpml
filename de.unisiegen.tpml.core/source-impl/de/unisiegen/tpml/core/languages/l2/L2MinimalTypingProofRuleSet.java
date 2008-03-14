@@ -17,6 +17,7 @@ import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
  * The minimal type proof rules for the <code>L1</code> language.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.minimaltyping.AbstractMinimalTypingProofRuleSet
  */
 public class L2MinimalTypingProofRuleSet extends L1MinimalTypingProofRuleSet

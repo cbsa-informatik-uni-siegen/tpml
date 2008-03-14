@@ -47,7 +47,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * @author Benedikt Meurer
  * @author Benjamin Mies
  * @version $Id$
- * @see de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet
+ * @see AbstractTypeCheckerProofRuleSet
  */
 public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
 {

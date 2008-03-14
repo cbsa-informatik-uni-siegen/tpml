@@ -26,6 +26,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  * @see AbstractMinimalTypingProofNode
  */
 public class DefaultMinimalTypingExpressionProofNode extends

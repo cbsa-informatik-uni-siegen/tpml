@@ -14,6 +14,7 @@ import de.unisiegen.tpml.core.expressions.Row;
  * in the {@link Row}.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public final class RowSubstitutionException extends RuntimeException
 {

@@ -6,6 +6,7 @@ package de.unisiegen.tpml.core.typechecker;
  * checker algorithm, containing an evironment. an expression and a type.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  */
 public interface TypeCheckerExpressionProofNode extends TypeCheckerProofNode
 {

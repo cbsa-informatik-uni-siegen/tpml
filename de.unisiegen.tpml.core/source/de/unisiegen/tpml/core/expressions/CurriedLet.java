@@ -30,7 +30,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1080 $
+ * @version $Id$
  * @see Let
  * @see Lambda
  */

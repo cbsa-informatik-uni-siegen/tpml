@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.types.Type;
  * Finds the unbound {@link ExpressionOrType}s in a given {@link Expression}.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  */
 public final class OutlineUnbound
 {

@@ -27,7 +27,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1092 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.expressions.Let
  */
 public final class LetRec extends Let implements BoundIdentifiers,

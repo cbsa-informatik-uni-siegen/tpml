@@ -24,7 +24,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * This class represents {@link RowType} in our type systems.
  * 
  * @author Christian Fehler
- * @version $Rev:420 $
+ * @version $Id$
  * @see ObjectType
  */
 public final class RowType extends MonoType implements DefaultIdentifiers,

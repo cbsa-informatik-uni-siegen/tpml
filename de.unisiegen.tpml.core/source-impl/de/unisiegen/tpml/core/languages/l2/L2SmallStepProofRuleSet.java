@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1132 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.l1.L1SmallStepProofRuleSet
  */
 public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet

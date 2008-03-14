@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.entities.TypeEquationList;
  * representations to a {@link TypeEquation} hierarchy.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  */
 public interface LanguageUnifyParser
 {

@@ -8,6 +8,7 @@ import de.unisiegen.tpml.core.ProofNode;
 
 /**
  * @author marcell
+ * @version $Id$
  */
 public interface BigStepNodeListener extends EventListener
 {

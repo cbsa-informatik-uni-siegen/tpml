@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.typechecker ;
+package de.unisiegen.tpml.core.typechecker;
 
 
 import java.awt.BorderLayout;
@@ -35,13 +35,14 @@ import de.unisiegen.tpml.core.languages.LanguageFactory;
  * @version $Id$
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel
  */
-@ SuppressWarnings ( "all" )
+@SuppressWarnings ( "all" )
 public final class TypeCheckerProofModelTest extends JFrame
 {
+
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)" ;
+  private static final String SIMPLE = "(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)";
 
 
   //
@@ -53,158 +54,163 @@ public final class TypeCheckerProofModelTest extends JFrame
   public TypeCheckerProofModelTest ( final TypeCheckerProofModel model )
   {
     // setup the frame
-    setLayout ( new BorderLayout ( ) ) ;
-    setSize ( 630 , 580 ) ;
-    setTitle ( "TypeCheckerProofModel Test" ) ;
+    setLayout ( new BorderLayout () );
+    setSize ( 630, 580 );
+    setTitle ( "TypeCheckerProofModel Test" );
     // setup the tree panel
-    JPanel treePanel = new JPanel ( new BorderLayout ( ) ) ;
-    treePanel.setBorder ( BorderFactory.createEtchedBorder ( ) ) ;
-    add ( treePanel , BorderLayout.CENTER ) ;
+    JPanel treePanel = new JPanel ( new BorderLayout () );
+    treePanel.setBorder ( BorderFactory.createEtchedBorder () );
+    add ( treePanel, BorderLayout.CENTER );
     // setup the tree
-    final JTree tree = new JTree ( model ) ;
-    treePanel.add ( tree , BorderLayout.CENTER ) ;
+    final JTree tree = new JTree ( model );
+    treePanel.add ( tree, BorderLayout.CENTER );
     // setup the button panel
-    JPanel buttons = new JPanel ( new FlowLayout ( ) ) ;
-    add ( buttons , BorderLayout.SOUTH ) ;
+    JPanel buttons = new JPanel ( new FlowLayout () );
+    add ( buttons, BorderLayout.SOUTH );
     // setup the guess button
-    JButton guessButton = new JButton ( "Guess" ) ;
-    guessButton.addActionListener ( new ActionListener ( )
+    JButton guessButton = new JButton ( "Guess" );
+    guessButton.addActionListener ( new ActionListener ()
     {
+
       public void actionPerformed ( ActionEvent event )
       {
         try
         {
           // guess the last node
-          model.guess ( nextNode ( model ) ) ;
+          model.guess ( nextNode ( model ) );
           // expand to the all nodes
-          for ( int n = 0 ; n < tree.getRowCount ( ) ; ++ n )
+          for ( int n = 0 ; n < tree.getRowCount () ; ++n )
           {
-            tree.expandRow ( n ) ;
+            tree.expandRow ( n );
           }
         }
         catch ( Exception e )
         {
-          JOptionPane.showMessageDialog ( TypeCheckerProofModelTest.this , e
-              .getMessage ( ) , "Error" , JOptionPane.ERROR_MESSAGE ) ;
+          JOptionPane.showMessageDialog ( TypeCheckerProofModelTest.this, e
+              .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
       }
-    } ) ;
-    buttons.add ( guessButton ) ;
+    } );
+    buttons.add ( guessButton );
     // setup the undo button
-    final JButton undoButton = new JButton ( "Undo" ) ;
-    undoButton.setEnabled ( false ) ;
-    undoButton.addActionListener ( new ActionListener ( )
+    final JButton undoButton = new JButton ( "Undo" );
+    undoButton.setEnabled ( false );
+    undoButton.addActionListener ( new ActionListener ()
     {
+
       public void actionPerformed ( ActionEvent event )
       {
         try
         {
           // undo the last change
-          model.undo ( ) ;
+          model.undo ();
         }
         catch ( Exception e )
         {
-          JOptionPane.showMessageDialog ( TypeCheckerProofModelTest.this , e
-              .getMessage ( ) , "Error" , JOptionPane.ERROR_MESSAGE ) ;
+          JOptionPane.showMessageDialog ( TypeCheckerProofModelTest.this, e
+              .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
       }
-    } ) ;
-    model.addPropertyChangeListener ( "undoable" ,
-        new PropertyChangeListener ( )
-        {
-          public void propertyChange ( PropertyChangeEvent event )
-          {
-            undoButton.setEnabled ( model.isUndoable ( ) ) ;
-          }
-        } ) ;
-    buttons.add ( undoButton ) ;
-    // setup the redo button
-    final JButton redoButton = new JButton ( "Redo" ) ;
-    redoButton.setEnabled ( false ) ;
-    redoButton.addActionListener ( new ActionListener ( )
+    } );
+    model.addPropertyChangeListener ( "undoable", new PropertyChangeListener ()
     {
+
+      public void propertyChange ( PropertyChangeEvent event )
+      {
+        undoButton.setEnabled ( model.isUndoable () );
+      }
+    } );
+    buttons.add ( undoButton );
+    // setup the redo button
+    final JButton redoButton = new JButton ( "Redo" );
+    redoButton.setEnabled ( false );
+    redoButton.addActionListener ( new ActionListener ()
+    {
+
       public void actionPerformed ( ActionEvent event )
       {
         try
         {
           // redo the last undone change
-          model.redo ( ) ;
+          model.redo ();
           // expand to the last node
-          for ( int n = 0 ; n < tree.getRowCount ( ) ; ++ n )
+          for ( int n = 0 ; n < tree.getRowCount () ; ++n )
           {
-            tree.expandRow ( n ) ;
+            tree.expandRow ( n );
           }
         }
         catch ( Exception e )
         {
-          JOptionPane.showMessageDialog ( TypeCheckerProofModelTest.this , e
-              .getMessage ( ) , "Error" , JOptionPane.ERROR_MESSAGE ) ;
+          JOptionPane.showMessageDialog ( TypeCheckerProofModelTest.this, e
+              .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
       }
-    } ) ;
-    model.addPropertyChangeListener ( "redoable" ,
-        new PropertyChangeListener ( )
-        {
-          public void propertyChange ( PropertyChangeEvent event )
-          {
-            redoButton.setEnabled ( model.isRedoable ( ) ) ;
-          }
-        } ) ;
-    buttons.add ( redoButton ) ;
-    // setup the translate button
-    JButton translateButton = new JButton ( "Translate" ) ;
-    translateButton.addActionListener ( new ActionListener ( )
+    } );
+    model.addPropertyChangeListener ( "redoable", new PropertyChangeListener ()
     {
+
+      public void propertyChange ( PropertyChangeEvent event )
+      {
+        redoButton.setEnabled ( model.isRedoable () );
+      }
+    } );
+    buttons.add ( redoButton );
+    // setup the translate button
+    JButton translateButton = new JButton ( "Translate" );
+    translateButton.addActionListener ( new ActionListener ()
+    {
+
       public void actionPerformed ( ActionEvent event )
       {
         try
         {
           // translate the last node
-          TreePath path = tree.getSelectionPath ( ) ;
+          TreePath path = tree.getSelectionPath ();
           if ( path != null )
           {
             model.translateToCoreSyntax ( ( ExpressionProofNode ) path
-                .getLastPathComponent ( ) , false ) ;
+                .getLastPathComponent (), false );
           }
         }
         catch ( Exception e )
         {
-          JOptionPane.showMessageDialog ( TypeCheckerProofModelTest.this , e
-              .getMessage ( ) , "Error" , JOptionPane.ERROR_MESSAGE ) ;
+          JOptionPane.showMessageDialog ( TypeCheckerProofModelTest.this, e
+              .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
       }
-    } ) ;
-    buttons.add ( translateButton ) ;
+    } );
+    buttons.add ( translateButton );
     // setup the close button
-    JButton closeButton = new JButton ( "Close" ) ;
-    closeButton.addActionListener ( new ActionListener ( )
+    JButton closeButton = new JButton ( "Close" );
+    closeButton.addActionListener ( new ActionListener ()
     {
+
       public void actionPerformed ( ActionEvent event )
       {
-        System.exit ( 0 ) ;
+        System.exit ( 0 );
       }
-    } ) ;
-    buttons.add ( closeButton ) ;
+    } );
+    buttons.add ( closeButton );
   }
 
 
   private static ProofNode nextNode ( TypeCheckerProofModel model )
   {
-    LinkedList < ProofNode > nodes = new LinkedList < ProofNode > ( ) ;
-    nodes.add ( model.getRoot ( ) ) ;
-    while ( ! nodes.isEmpty ( ) )
+    LinkedList < ProofNode > nodes = new LinkedList < ProofNode > ();
+    nodes.add ( model.getRoot () );
+    while ( !nodes.isEmpty () )
     {
-      ProofNode node = nodes.poll ( ) ;
-      if ( node.getRules ( ).length == 0 )
+      ProofNode node = nodes.poll ();
+      if ( node.getRules ().length == 0 )
       {
-        return node ;
+        return node;
       }
-      for ( int n = 0 ; n < node.getChildCount ( ) ; ++ n )
+      for ( int n = 0 ; n < node.getChildCount () ; ++n )
       {
-        nodes.add ( node.getChildAt ( n ) ) ;
+        nodes.add ( node.getChildAt ( n ) );
       }
     }
-    throw new IllegalStateException ( "Unable to find next node" ) ;
+    throw new IllegalStateException ( "Unable to find next node" );
   }
 
 
@@ -216,32 +222,33 @@ public final class TypeCheckerProofModelTest extends JFrame
    * 
    * @param args the command line arguments.
    */
-  public static void main ( String [ ] args )
+  public static void main ( String [] args )
   {
     try
     {
       // parse the program (using L4)
-      LanguageFactory factory = LanguageFactory.newInstance ( ) ;
-      Language language = factory.getLanguageById ( "l4" ) ;
+      LanguageFactory factory = LanguageFactory.newInstance ();
+      Language language = factory.getLanguageById ( "l4" );
       Expression expression = language.newParser ( new StringReader ( SIMPLE ) )
-          .parse ( ) ;
+          .parse ();
       TypeCheckerProofModel model = language
-          .newTypeCheckerProofModel ( expression ) ;
+          .newTypeCheckerProofModel ( expression );
       // evaluate the resulting small step expression
-      TypeCheckerProofModelTest window = new TypeCheckerProofModelTest ( model ) ;
-      window.addWindowListener ( new WindowAdapter ( )
+      TypeCheckerProofModelTest window = new TypeCheckerProofModelTest ( model );
+      window.addWindowListener ( new WindowAdapter ()
       {
-        @ Override
+
+        @Override
         public void windowClosing ( WindowEvent e )
         {
-          System.exit ( 0 ) ;
+          System.exit ( 0 );
         }
-      } ) ;
-      window.setVisible ( true ) ;
+      } );
+      window.setVisible ( true );
     }
     catch ( Exception e )
     {
-      e.printStackTrace ( ) ;
+      e.printStackTrace ();
     }
   }
 }

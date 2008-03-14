@@ -23,7 +23,7 @@ import de.unisiegen.tpml.core.util.beans.AbstractBean;
  * @author Benedikt Meurer
  * @author Christian Fehler
  * @author michael
- * @version $Rev:1175 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.util.beans.Bean
  * @see java.beans.PropertyChangeListener
  */

@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.types.Type;
  * {@link  Expression} or {@link Type} is noz complete.
  * 
  * @author Christian Fehler
+ * @version $Id$
  * @see LanguageParserException
  */
 public final class LanguageParserWarningException extends

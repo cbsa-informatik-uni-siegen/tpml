@@ -9,7 +9,7 @@ import javax.swing.JComponent;
  * window.
  * 
  * @author Christoph Fehling
- * @version $Rev:483 $
+ * @version $Id$
  */
 public interface EditorComponent
 {

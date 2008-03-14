@@ -6,7 +6,7 @@ package de.unisiegen.tpml.core;
  * interface.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.ProofRule
  */
 public abstract class AbstractProofRule implements ProofRule

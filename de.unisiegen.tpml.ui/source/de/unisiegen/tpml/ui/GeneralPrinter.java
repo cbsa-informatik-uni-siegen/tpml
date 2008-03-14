@@ -33,7 +33,7 @@ import de.unisiegen.tpml.ui.netbeans.PdfDialog;
 
 
 /**
- * TODO
+ * @version $Id$
  */
 public class GeneralPrinter
 {

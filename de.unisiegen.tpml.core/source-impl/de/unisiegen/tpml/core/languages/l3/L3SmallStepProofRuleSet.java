@@ -34,7 +34,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofContext;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1132 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.l2.L2SmallStepProofRuleSet
  */
 public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet

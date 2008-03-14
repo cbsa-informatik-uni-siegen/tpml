@@ -22,6 +22,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * for L3 subtype related functionality, which extends the L2SubType.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageTypeParser
  * @see de.unisiegen.tpml.core.languages.LanguageTypeScanner

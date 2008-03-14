@@ -16,6 +16,7 @@ import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
  * this class renders JLabels
  * 
  * @author Benjamin Mies
+ * @version $Id$
  */
 public class LabelComponent extends JComponent
 {

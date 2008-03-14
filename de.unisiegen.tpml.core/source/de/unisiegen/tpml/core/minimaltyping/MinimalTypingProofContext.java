@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.types.Type;
  * interface to the proof model for the type rules.
  * 
  * @author Benedikt Meurer
- * @version $Rev:1309 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel
  */
 public interface MinimalTypingProofContext

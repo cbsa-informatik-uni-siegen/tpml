@@ -37,7 +37,7 @@ import de.unisiegen.tpml.core.util.Theme;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1053 $
+ * @version $Id$
  * @see PrettyPrintable
  */
 public abstract class Expression implements Cloneable, PrettyPrintable,

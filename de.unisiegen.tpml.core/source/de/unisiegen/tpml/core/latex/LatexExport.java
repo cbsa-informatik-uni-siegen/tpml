@@ -103,6 +103,7 @@ import de.unisiegen.tpml.core.types.UnitType;
  * {@link LatexPrintable} to the given {@link File}.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public abstract class LatexExport implements LatexCommandNames
 {

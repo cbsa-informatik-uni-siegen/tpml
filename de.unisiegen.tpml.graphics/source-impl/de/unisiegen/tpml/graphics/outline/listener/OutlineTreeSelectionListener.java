@@ -14,7 +14,7 @@ import de.unisiegen.tpml.graphics.outline.node.OutlineNode;
  * caption of the selected and higher nodes.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  */
 public final class OutlineTreeSelectionListener implements
     TreeSelectionListener

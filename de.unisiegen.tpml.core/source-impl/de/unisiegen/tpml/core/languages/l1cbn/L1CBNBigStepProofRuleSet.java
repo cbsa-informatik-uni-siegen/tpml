@@ -25,7 +25,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * Big step proof rules for the <b>L1CBN</b> and derived languages.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  */
 public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
 {

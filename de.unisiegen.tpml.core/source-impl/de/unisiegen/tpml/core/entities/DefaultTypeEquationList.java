@@ -42,6 +42,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  * @see de.unisiegen.tpml.core.entities.TypeEquation
  */
 public final class DefaultTypeEquationList implements TypeEquationList,

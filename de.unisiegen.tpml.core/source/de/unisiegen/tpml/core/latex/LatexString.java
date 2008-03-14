@@ -5,6 +5,7 @@ package de.unisiegen.tpml.core.latex;
  * Provides the functionality to latex print a {@link LatexPrintable}..
  * 
  * @author Christian Fehler
+ * @version $Id$
  * @see LatexPrintable
  */
 public interface LatexString

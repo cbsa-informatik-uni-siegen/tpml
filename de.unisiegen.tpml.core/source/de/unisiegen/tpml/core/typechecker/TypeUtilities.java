@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * general.
  * 
  * @author Benedikt Meurer
- * @version $Rev:296 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.types.Type
  */
 public final class TypeUtilities

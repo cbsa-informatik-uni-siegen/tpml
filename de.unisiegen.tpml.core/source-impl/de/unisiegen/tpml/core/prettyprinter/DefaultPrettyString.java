@@ -12,7 +12,7 @@ import java.util.Map;
  * {@link de.unisiegen.tpml.core.prettyprinter.DefaultPrettyStringBuilder}s.
  * 
  * @author Benedikt Meurer
- * @version $Rev:277 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyString

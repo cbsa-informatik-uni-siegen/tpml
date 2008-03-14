@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * the {@link de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofModel}s.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.interpreters.InterpreterProofNode
  * @see de.unisiegen.tpml.core.AbstractProofNode
  */

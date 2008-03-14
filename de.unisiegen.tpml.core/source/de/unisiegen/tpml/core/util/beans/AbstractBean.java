@@ -11,7 +11,7 @@ import java.beans.PropertyChangeSupport;
  * with change listener support.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see Bean
  * @see java.beans.PropertyChangeListener
  * @see java.beans.PropertyChangeSupport

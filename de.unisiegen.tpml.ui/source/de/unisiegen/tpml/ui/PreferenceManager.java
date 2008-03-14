@@ -14,7 +14,7 @@ import javax.swing.JFrame;
  * Manages the preferences for the user interface.
  * 
  * @author Christoph Fehling
- * @version $Rev$
+ * @version $Id$
  * @see java.util.prefs.Preferences
  */
 public class PreferenceManager

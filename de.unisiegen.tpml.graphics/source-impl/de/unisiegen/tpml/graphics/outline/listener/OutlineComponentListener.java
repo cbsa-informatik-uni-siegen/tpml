@@ -16,7 +16,7 @@ import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences;
  * component was resized.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  */
 public final class OutlineComponentListener implements ComponentListener
 {

@@ -23,7 +23,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming;
  * This class represents {@link RecType} in our type systems.
  * 
  * @author Christian Fehler
- * @version $Rev:420 $
+ * @version $Id$
  * @see #typeNames
  */
 public final class RecType extends MonoType implements DefaultTypes,

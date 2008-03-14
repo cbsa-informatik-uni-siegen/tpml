@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * subtype, and the second the overtype.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  */
 public interface MinimalTypingTypesProofNode extends MinimalTypingProofNode
 {

@@ -10,6 +10,7 @@ import java.awt.Point;
  * Interface for an node that should layouted in a tree.<br>
  * 
  * @author marcell
+ * @version $Id$
  */
 public interface TreeNodeComponent
 {

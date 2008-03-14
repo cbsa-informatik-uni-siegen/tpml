@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.ProofRuleException;
  * the type checker.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.ProofRule
  */
 public interface BigStepProofRule extends ProofRule

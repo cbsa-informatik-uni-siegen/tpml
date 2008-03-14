@@ -7,7 +7,8 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 /**
  * Base interface for classes whose instances can be printed in latex.
  * 
- * @author Christian Fehler
+ * @author Christian Fehler#
+ * @version $Id$
  */
 public interface LatexPrintable extends PrettyPrintable, LatexCommandNames
 {

@@ -40,7 +40,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1132 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.l0.L0BigStepProofRuleSet
  */
 public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet

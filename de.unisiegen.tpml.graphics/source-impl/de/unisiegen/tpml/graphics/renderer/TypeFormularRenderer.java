@@ -26,6 +26,7 @@ import de.unisiegen.tpml.graphics.components.ShowBonds;
  * TypeFormulars
  * 
  * @author michael
+ * @version $Id$
  */
 public class TypeFormularRenderer extends AbstractRenderer
 {

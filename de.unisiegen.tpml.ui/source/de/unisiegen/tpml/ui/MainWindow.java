@@ -41,7 +41,7 @@ import de.unisiegen.tpml.ui.netbeans.MainWindowForm;
  * The main programm window.
  * 
  * @author Christoph Fehling
- * @version $Rev:499 $
+ * @version $Id$
  * @see de.unisiegen.tpml.ui.Main
  */
 public class MainWindow

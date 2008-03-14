@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.types.UnitType;
  * The type proof rules for the <code>L4</code> language.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.l3.L3TypeCheckerProofRuleSet
  */
 public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet

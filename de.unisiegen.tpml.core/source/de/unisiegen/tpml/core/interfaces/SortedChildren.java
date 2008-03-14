@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.expressions.Duplication;
  * For example {@link Duplication}.
  * 
  * @author Christian Fehler
- * @version $Rev:1350 $
+ * @version $Id$
  */
 public interface SortedChildren
 {

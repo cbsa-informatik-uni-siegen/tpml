@@ -31,7 +31,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * L2O related functionality, and extends the L2 language.
  * 
  * @author Christian Fehler
- * @version $Rev:1159 $
+ * @version $Id$
  * @see Language
  * @see LanguageParser
  * @see LanguageScanner

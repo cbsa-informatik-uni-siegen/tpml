@@ -11,6 +11,7 @@ import java.util.Iterator;
  * Implements the {@link LatexPackage} list.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public class LatexPackageList implements Iterable < LatexPackage >
 {

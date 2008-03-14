@@ -6,6 +6,7 @@ package de.unisiegen.tpml.core.prettyprinter;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
+ * @version $Id$
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyString
  */
 public interface PrettyPrintable extends PrettyCommandNames

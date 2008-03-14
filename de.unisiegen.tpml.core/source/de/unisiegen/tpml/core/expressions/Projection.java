@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.languages.LanguageParserException;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:1053 $
+ * @version $Id$
  * @see UnaryOperator
  */
 public class Projection extends UnaryOperator

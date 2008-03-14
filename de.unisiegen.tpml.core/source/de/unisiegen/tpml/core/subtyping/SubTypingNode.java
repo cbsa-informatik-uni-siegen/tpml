@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * used to realize sub typing and sub typing rec in one view.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  */
 public interface SubTypingNode extends ProofNode, ExpressionOrType
 {

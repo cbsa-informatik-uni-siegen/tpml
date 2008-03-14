@@ -57,6 +57,7 @@ import de.unisiegen.tpml.core.types.UnitType;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  * @see TypeCheckerProofContext
  */
 public class DefaultTypeInferenceProofContext implements

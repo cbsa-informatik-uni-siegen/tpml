@@ -27,7 +27,7 @@ import de.unisiegen.tpml.graphics.subtyping.SubTypingView;
  * Sets the new {@link Expression} in the {@link Outline}, if a node changed.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  */
 public final class OutlineTreeModelListener implements TreeModelListener
 {

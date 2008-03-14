@@ -11,6 +11,7 @@ import java.util.Iterator;
  * Implements the {@link LatexCommand} list.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public class LatexCommandList implements Iterable < LatexCommand >
 {

@@ -59,7 +59,7 @@ import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
  * <code>actualExpressionHeight</code>. <br>
  * 
  * @author michael
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.graphics.components.CompoundExpressionTypeInference
  */
 public class TypeInferenceNodeComponent extends JComponent

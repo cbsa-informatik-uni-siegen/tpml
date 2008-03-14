@@ -31,7 +31,7 @@ import de.unisiegen.tpml.graphics.outline.Outline;
  * This class creates the UI of the {@link Outline}.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  */
 public final class OutlineUI
 {

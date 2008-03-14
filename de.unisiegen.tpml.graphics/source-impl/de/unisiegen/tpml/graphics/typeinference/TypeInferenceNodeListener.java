@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.ProofNode;
  * TypeInference
  * 
  * @author michael
+ * @version $Id$
  */
 public interface TypeInferenceNodeListener extends EventListener
 {

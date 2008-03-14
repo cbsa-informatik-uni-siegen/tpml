@@ -33,6 +33,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  * @see de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet
  */
 public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet

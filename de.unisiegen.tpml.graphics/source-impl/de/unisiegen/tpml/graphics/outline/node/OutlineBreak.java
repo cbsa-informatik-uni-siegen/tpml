@@ -15,6 +15,7 @@ import de.unisiegen.tpml.core.types.Type;
  * In this class the breaks of the {@link OutlineNode}s are saved.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public final class OutlineBreak
 {

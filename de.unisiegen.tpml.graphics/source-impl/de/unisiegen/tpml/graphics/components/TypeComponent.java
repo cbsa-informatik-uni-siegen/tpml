@@ -23,6 +23,8 @@ import de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent;
 
 /**
  * this class renders the types in the TypeChecker
+ * 
+ * @version $Id$
  */
 public class TypeComponent extends JComponent
 {

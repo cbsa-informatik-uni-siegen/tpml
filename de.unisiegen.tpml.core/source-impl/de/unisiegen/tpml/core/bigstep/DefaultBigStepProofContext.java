@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.interpreters.Store;
  * and collect the actions later.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.bigstep.AbstractBigStepProofRuleSet
  * @see de.unisiegen.tpml.core.bigstep.BigStepProofContext
  */

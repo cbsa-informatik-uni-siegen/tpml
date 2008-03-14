@@ -8,7 +8,7 @@ import de.unisiegen.tpml.core.languages.Language;
  * A set of <code>ProofRule</code>s.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.ProofRule
  */
 public interface ProofRuleSet extends Iterable < ProofRule >

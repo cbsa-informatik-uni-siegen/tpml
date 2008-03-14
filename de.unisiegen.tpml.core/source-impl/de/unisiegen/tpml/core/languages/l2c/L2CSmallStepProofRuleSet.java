@@ -22,7 +22,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofContext;
  * Small step proof rules for the <code>L2C</code> language.
  * 
  * @author Christian Fehler
- * @version $Rev:1132 $
+ * @version $Id$
  * @see L2OSmallStepProofRuleSet
  */
 public class L2CSmallStepProofRuleSet extends L2OSmallStepProofRuleSet

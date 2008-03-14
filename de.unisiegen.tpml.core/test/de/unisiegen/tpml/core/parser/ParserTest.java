@@ -18,6 +18,7 @@ import de.unisiegen.tpml.core.types.Type;
  * A test class for the expression and type parsers.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 @SuppressWarnings ( value =
 { "all" } )

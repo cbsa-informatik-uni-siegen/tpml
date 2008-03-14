@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
  * language L2, but uses Call By Name.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageParser
  * @see de.unisiegen.tpml.core.languages.LanguageScanner

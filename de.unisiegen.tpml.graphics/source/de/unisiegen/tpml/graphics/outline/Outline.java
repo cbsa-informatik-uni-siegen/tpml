@@ -11,7 +11,7 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
  * This interface is the main interface of the <code>Outline</code>.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Id$
  */
 public interface Outline
 {

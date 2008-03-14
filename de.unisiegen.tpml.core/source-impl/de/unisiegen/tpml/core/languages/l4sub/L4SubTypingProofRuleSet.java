@@ -14,6 +14,7 @@ import de.unisiegen.tpml.core.types.RefType;
  * The subtype proof rules for the <code>L4</code> language.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet
  */
 public class L4SubTypingProofRuleSet extends L3SubTypingProofRuleSet

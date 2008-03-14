@@ -27,9 +27,10 @@ import de.unisiegen.tpml.core.types.MonoType;
 /**
  * Represents an judgemnet for unification
  * 
- * @see TypeFormula
  * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
+ * @see TypeFormula
  */
 public class TypeJudgement implements TypeFormula
 {

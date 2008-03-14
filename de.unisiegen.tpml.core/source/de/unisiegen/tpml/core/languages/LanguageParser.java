@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * expression tree.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.expressions.Expression
  * @see de.unisiegen.tpml.core.languages.Language
  */

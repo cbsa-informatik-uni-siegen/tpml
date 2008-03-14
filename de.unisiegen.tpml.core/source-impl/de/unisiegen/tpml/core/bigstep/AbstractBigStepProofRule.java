@@ -32,7 +32,7 @@ import de.unisiegen.tpml.core.util.Theme;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:415M $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.bigstep.BigStepProofRule
  * @see de.unisiegen.tpml.core.AbstractProofRule
  */

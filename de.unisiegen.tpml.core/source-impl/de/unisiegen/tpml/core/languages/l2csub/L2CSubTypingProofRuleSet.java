@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.languages.l2osub.L2OSubTypingProofRuleSet;
  * The subtype proof rules for the <code>L2</code> language.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  * @see de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet
  */
 public class L2CSubTypingProofRuleSet extends L2OSubTypingProofRuleSet

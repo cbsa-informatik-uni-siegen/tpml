@@ -20,7 +20,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * Small step proof rules for the <code>L2O</code> language.
  * 
  * @author Christian Fehler
- * @version $Rev:1132 $
+ * @version $Id$
  * @see L2SmallStepProofRuleSet
  */
 public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet

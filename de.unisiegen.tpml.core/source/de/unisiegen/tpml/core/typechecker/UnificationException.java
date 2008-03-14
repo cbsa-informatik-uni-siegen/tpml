@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.types.Type;
  * algorithm, i.e. that a type equation could not be unified.
  * 
  * @author Benedikt Meurer
- * @version $Rev:1194 $
+ * @version $Id$
  * @see TypeEquationList#unify()
  */
 public final class UnificationException extends Exception

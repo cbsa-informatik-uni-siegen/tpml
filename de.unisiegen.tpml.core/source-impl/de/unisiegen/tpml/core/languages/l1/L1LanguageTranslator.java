@@ -23,7 +23,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:822 $
+ * @version $Id$
  * @see AbstractLanguageTranslator
  * @see L1Language
  * @see L1LanguageTranslator

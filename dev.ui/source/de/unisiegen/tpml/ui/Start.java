@@ -7,6 +7,7 @@ package de.unisiegen.tpml.ui;
  * compiled with target 1.1.
  * 
  * @author michael
+ * @version $Id$
  */
 public class Start
 {

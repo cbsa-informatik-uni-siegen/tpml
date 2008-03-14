@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * the type checker user interface to enter the type for an expression directly.
  * 
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Id$
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageParser
  * @see de.unisiegen.tpml.core.languages.LanguageScanner

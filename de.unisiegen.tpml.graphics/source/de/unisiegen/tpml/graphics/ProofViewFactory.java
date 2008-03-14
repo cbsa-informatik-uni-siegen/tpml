@@ -17,7 +17,11 @@ import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView;
 
 
 /**
- * TODO
+ * The proof view factory.
+ * 
+ * @author Marcell Fischbach
+ * @author Benedikt Meurer
+ * @version $Id$
  */
 public class ProofViewFactory
 {

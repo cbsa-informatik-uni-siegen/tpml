@@ -44,7 +44,7 @@ import de.unisiegen.tpml.core.util.beans.Bean;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Id:StyledLanguageDocument.java 526M 2006-10-27 16:12:51Z (local) $
+ * @version $Id$
  * @see javax.swing.text.DefaultStyledDocument
  */
 public class StyledLanguageDocument extends DefaultStyledDocument implements

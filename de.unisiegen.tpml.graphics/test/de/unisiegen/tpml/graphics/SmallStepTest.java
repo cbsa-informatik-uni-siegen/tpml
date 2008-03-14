@@ -15,6 +15,9 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView;
 
 
+/**
+ * @version $Id$
+ */
 @SuppressWarnings ( "all" )
 public class SmallStepTest
 {

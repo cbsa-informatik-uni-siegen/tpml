@@ -24,6 +24,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * an evironment. an expression and a type.
  * 
  * @author Benjamin Mies
+ * @version $Id$
  */
 public class DefaultTypeCheckerExpressionProofNode extends
     AbstractTypeCheckerProofNode implements TypeCheckerExpressionProofNode

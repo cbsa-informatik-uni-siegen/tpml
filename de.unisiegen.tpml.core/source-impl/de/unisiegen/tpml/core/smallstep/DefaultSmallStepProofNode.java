@@ -31,6 +31,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
+ * @version $Id$
  * @see de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode
  * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode
  */

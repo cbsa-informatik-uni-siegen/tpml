@@ -25,7 +25,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:822 $
+ * @version $Id$
  * @see L2Language
  * @see L2LanguageTranslator
  * @see L3Language

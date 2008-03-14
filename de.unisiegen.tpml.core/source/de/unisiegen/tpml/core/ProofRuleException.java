@@ -9,7 +9,7 @@ import java.text.MessageFormat;
  * applied to a node.
  * 
  * @author Benedikt Meurer
- * @version $Rev:415 $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.ProofGuessException
  */
 public final class ProofRuleException extends Exception
