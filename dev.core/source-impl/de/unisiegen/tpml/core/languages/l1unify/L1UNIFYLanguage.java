@@ -4,12 +4,12 @@ package de.unisiegen.tpml.core.languages.l1unify;
 import java.io.Reader;
 
 import java_cup.runtime.lr_parser;
+import de.unisiegen.tpml.core.entities.TypeEquationList;
 import de.unisiegen.tpml.core.languages.AbstractLanguage;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageUnifyParser;
 import de.unisiegen.tpml.core.languages.LanguageUnifyScanner;
 import de.unisiegen.tpml.core.languages.l1sub.L1SUBLanguage;
-import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker;
 
 
 /**
@@ -101,9 +101,9 @@ public class L1UNIFYLanguage extends AbstractLanguage
     return new LanguageUnifyParser ()
     {
 
-      public TypeEquationListTypeChecker parse () throws Exception
+      public TypeEquationList parse () throws Exception
       {
-        return ( TypeEquationListTypeChecker ) parser.parse ().value;
+        return ( TypeEquationList ) parser.parse ().value;
       }
     };
   }

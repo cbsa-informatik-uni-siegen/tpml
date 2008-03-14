@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.typeinference;
 
 import java.util.ArrayList;
 
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
@@ -19,11 +20,11 @@ public interface TypeInferenceProofContext extends TypeCheckerProofContext
 {
 
   /**
-   * Adds a new {@link TypeEquationTypeInference}.
+   * Adds a new {@link TypeEquation}.
    * 
-   * @param pTypeEquationTypeInference The new {@link TypeEquationTypeInference}.
+   * @param pTypeEquationTypeInference The new {@link TypeEquation}.
    */
-  public void addEquation ( TypeEquationTypeInference pTypeEquationTypeInference );
+  public void addEquation ( TypeEquation pTypeEquationTypeInference );
 
 
   /**

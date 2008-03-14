@@ -14,9 +14,9 @@ import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.TypeFormula;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement;
 import de.unisiegen.tpml.core.typeinference.TypeSubType;
@@ -410,9 +410,9 @@ public class CompoundExpressionTypeInference extends JComponent
               Outline.ExecuteMouseClick.TYPEINFERENCE );
         }
       }
-      else if ( t instanceof TypeEquationTypeInference )
+      else if ( t instanceof TypeEquation )
       {
-        TypeEquationTypeInference typeEquation = ( TypeEquationTypeInference ) t;
+        TypeEquation typeEquation = ( TypeEquation ) t;
         // Left type
         if ( isIn ( leftType.get ( i ), pos ) )
         {

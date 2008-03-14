@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.typechecker;
 import java.text.MessageFormat;
 
 import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.types.Type;
 
 
@@ -13,7 +14,7 @@ import de.unisiegen.tpml.core.types.Type;
  * 
  * @author Benedikt Meurer
  * @version $Rev:1194 $
- * @see de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker#unify()
+ * @see de.unisiegen.tpml.core.typechecker.TypeEquationList#unify()
  */
 public final class UnificationException extends Exception
 {
@@ -31,12 +32,12 @@ public final class UnificationException extends Exception
   // Attributes
   //
   /**
-   * The {@link TypeEquationTypeChecker} that failed to unify.
+   * The {@link TypeEquation} that failed to unify.
    * 
    * @see #getTau1()
    * @see #getTau2()
    */
-  private TypeEquationTypeChecker equation;
+  private TypeEquation equation;
 
 
   //
@@ -44,13 +45,11 @@ public final class UnificationException extends Exception
   //
   /**
    * Allocates a new {@link UnificationException} object to indicate that the
-   * unification of the {@link TypeEquationTypeChecker} <code>equationn</code>
-   * failed.
+   * unification of the {@link TypeEquation} <code>equationn</code> failed.
    * 
-   * @param pTypeEquation the {@link TypeEquationTypeChecker} that could not be
-   *          unified.
+   * @param pTypeEquation the {@link TypeEquation} that could not be unified.
    */
-  public UnificationException ( TypeEquationTypeChecker pTypeEquation )
+  public UnificationException ( TypeEquation pTypeEquation )
   {
     super (
         MessageFormat

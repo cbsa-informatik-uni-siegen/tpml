@@ -5,6 +5,8 @@ import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.bigstep.BigStepProofResult;
 import de.unisiegen.tpml.core.bigstep.BigStepProofRule;
 import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode;
+import de.unisiegen.tpml.core.entities.TypeEquation;
+import de.unisiegen.tpml.core.entities.TypeEquationList;
 import de.unisiegen.tpml.core.expressions.And;
 import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.Attribute;
@@ -56,11 +58,7 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerTypeProofNode;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
-import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker;
-import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
-import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement;
@@ -912,7 +910,7 @@ public interface LatexCommandNames
 
 
   /**
-   * The latex print command for {@link TypeEquationTypeChecker}.
+   * The latex print command for {@link TypeEquation}.
    */
   public static final String LATEX_TYPE_EQUATION_TYPE_CHECKER = "TypeEquationTypeChecker"; //$NON-NLS-1$
 
@@ -924,15 +922,15 @@ public interface LatexCommandNames
 
 
   /**
-   * The latex print command for {@link TypeEquationListTypeChecker}.
+   * The latex print command for {@link TypeEquationList}.
    */
   public static final String LATEX_TYPE_EQUATION_LIST_TYPE_CHECKER = "TypeEquationListTypeChecker"; //$NON-NLS-1$
 
 
   /**
-   * The latex print command for {@link TypeEquationTypeInference}.
+   * The latex print command for {@link TypeEquation}.
    */
-  public static final String LATEX_TYPE_EQUATION_TYPE_INFERENCE = "TypeEquationTypeInference"; //$NON-NLS-1$
+  public static final String LATEX_TYPE_EQUATION = "TypeEquation"; //$NON-NLS-1$
 
 
   /**
@@ -942,9 +940,9 @@ public interface LatexCommandNames
 
 
   /**
-   * The latex print command for {@link TypeEquationListTypeInference}.
+   * The latex print command for {@link TypeEquationList}.
    */
-  public static final String LATEX_TYPE_EQUATION_LIST_TYPE_INFERENCE = "TypeEquationListTypeInference"; //$NON-NLS-1$
+  public static final String LATEX_TYPE_EQUATION_LIST = "TypeEquationList"; //$NON-NLS-1$
 
 
   /**

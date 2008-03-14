@@ -16,6 +16,7 @@ import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.IsEmpty;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
@@ -1024,10 +1025,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel
       pLatexStringBuilder.addText ( "&" ); //$NON-NLS-1$
       pLatexStringBuilder.addSourceCodeBreak ( 0 );
       pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
-      if ( pCurrentNode.getFormula ().get ( i ) instanceof TypeEquationTypeInference )
+      if ( pCurrentNode.getFormula ().get ( i ) instanceof TypeEquation )
       {
-        TypeEquationTypeInference equation = ( TypeEquationTypeInference ) pCurrentNode
-            .getFormula ().get ( i );
+        TypeEquation equation = ( TypeEquation ) pCurrentNode.getFormula ()
+            .get ( i );
         pLatexStringBuilder.addBuilderWithoutBrackets ( equation
             .getSeenTypes ().toLatexStringBuilder ( pLatexStringBuilderFactory,
                 pIndent + LATEX_INDENT ), 0 );

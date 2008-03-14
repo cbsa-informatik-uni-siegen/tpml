@@ -1,9 +1,7 @@
 package de.unisiegen.tpml.core.unify;
 
 
-import javax.swing.tree.TreeNode;
-
-import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker;
+import de.unisiegen.tpml.core.entities.TypeEquationList;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
 
 
@@ -27,7 +25,7 @@ public abstract class AbstractUnifyProofNode implements UnifyProofNode
   /**
    * the list of type equations
    */
-  private TypeEquationListTypeChecker equations;
+  private TypeEquationList equations;
 
 
   /**
@@ -35,10 +33,10 @@ public abstract class AbstractUnifyProofNode implements UnifyProofNode
    * substitutions and type equations
    * 
    * @param substs the {@link TypeSubstitutionList} for this node
-   * @param eqns the {@link TypeEquationListTypeChecker} for this node
+   * @param eqns the {@link TypeEquationList} for this node
    */
   public AbstractUnifyProofNode ( TypeSubstitutionList substs,
-      TypeEquationListTypeChecker eqns )
+      TypeEquationList eqns )
   {
     this.substitutions = substs;
     this.equations = eqns;
@@ -61,7 +59,7 @@ public abstract class AbstractUnifyProofNode implements UnifyProofNode
    * 
    * @see de.unisiegen.tpml.core.unify.UnifyProofNode#getTypeEquationList()
    */
-  public TypeEquationListTypeChecker getTypeEquationList ()
+  public TypeEquationList getTypeEquationList ()
   {
     return this.equations;
   }

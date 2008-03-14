@@ -3,9 +3,9 @@ package de.unisiegen.tpml.core.typechecker;
 
 import java.util.Set;
 
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.latex.LatexPrintable;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.TypeVariable;
 
@@ -65,13 +65,14 @@ public interface TypeSubstitution extends PrettyPrintable, LatexPrintable
    */
   public TypeVariable getTvar ();
 
+
   /**
    * Applies the {@link TypeSubstitution} <code>s</code> to the types on both
    * sides of the substitution and returns the resulting substitution.
    * 
    * @param substitution The {@link DefaultTypeSubstitution}.
-   * @return the resulting {@link TypeEquationTypeInference}.
+   * @return the resulting {@link TypeEquation}.
    * @see de.unisiegen.tpml.core.types.Type#substitute(TypeSubstitution)
    */
-  public TypeSubstitution substitute ( TypeSubstitution  substitution );
+  public TypeSubstitution substitute ( TypeSubstitution substitution );
 }

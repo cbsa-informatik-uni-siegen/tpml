@@ -7,6 +7,7 @@ import javax.swing.tree.TreeNode;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
@@ -268,9 +269,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
     commands.add ( this.formula );
     for ( TypeFormula form : this.formula )
     {
-      if ( form instanceof TypeEquationTypeInference )
+      if ( form instanceof TypeEquation )
       {
-        commands.add ( ( ( TypeEquationTypeInference ) form ).getSeenTypes ()
+        commands.add ( ( ( TypeEquation ) form ).getSeenTypes ()
             .getLatexCommands () );
       }
     }
@@ -291,9 +292,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
     instructions.add ( this.formula );
     for ( TypeFormula form : this.formula )
     {
-      if ( form instanceof TypeEquationTypeInference )
+      if ( form instanceof TypeEquation )
       {
-        instructions.add ( ( ( TypeEquationTypeInference ) form )
+        instructions.add ( ( ( TypeEquation ) form )
             .getSeenTypes ().getLatexInstructions () );
       }
     }
@@ -314,9 +315,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
     packages.add ( this.formula );
     for ( TypeFormula form : this.formula )
     {
-      if ( form instanceof TypeEquationTypeInference )
+      if ( form instanceof TypeEquation )
       {
-        packages.add ( ( ( TypeEquationTypeInference ) form ).getSeenTypes ()
+        packages.add ( ( ( TypeEquation ) form ).getSeenTypes ()
             .getLatexPackages () );
       }
     }
@@ -461,7 +462,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
     int countEquation = 0;
     for ( int i = 0 ; i < this.formula.size () ; i++ )
     {
-      if ( this.formula.get ( i ) instanceof TypeEquationTypeInference )
+      if ( this.formula.get ( i ) instanceof TypeEquation )
       {
         countEquation++ ;
       }
@@ -485,9 +486,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
     StringBuilder body2 = new StringBuilder ();
     for ( int i = 0 ; i < this.formula.size () ; i++ )
     {
-      if ( this.formula.get ( i ) instanceof TypeEquationTypeInference )
+      if ( this.formula.get ( i ) instanceof TypeEquation )
       {
-        TypeEquationTypeInference equation = ( TypeEquationTypeInference ) this.formula
+        TypeEquation equation = ( TypeEquation ) this.formula
             .get ( i );
         body2.append ( equation.getSeenTypes ().toPrettyString ().toString () );
         body2.append ( PRETTY_SPACE );
@@ -513,9 +514,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
     int tmpCountEquation = 0;
     for ( int i = 0 ; i < this.formula.size () ; i++ )
     {
-      if ( this.formula.get ( i ) instanceof TypeEquationTypeInference )
+      if ( this.formula.get ( i ) instanceof TypeEquation )
       {
-        TypeEquationTypeInference equation = ( TypeEquationTypeInference ) this.formula
+        TypeEquation equation = ( TypeEquation ) this.formula
             .get ( i );
         descriptions [ 3 + this.substitutions.size () + i + tmpCountEquation ] = equation
             .getSeenTypes ().toPrettyString ().toString ();
@@ -557,9 +558,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
     }
     for ( int i = 0 ; i < this.formula.size () ; i++ )
     {
-      if ( this.formula.get ( i ) instanceof TypeEquationTypeInference )
+      if ( this.formula.get ( i ) instanceof TypeEquation )
       {
-        TypeEquationTypeInference equation = ( TypeEquationTypeInference ) this.formula
+        TypeEquation equation = ( TypeEquation ) this.formula
             .get ( i );
         builder.addBuilder ( equation.getSeenTypes ().toLatexStringBuilder (
             pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ), 0 );
@@ -627,9 +628,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
     }
     for ( int i = 0 ; i < this.formula.size () ; i++ )
     {
-      if ( this.formula.get ( i ) instanceof TypeEquationTypeInference )
+      if ( this.formula.get ( i ) instanceof TypeEquation )
       {
-        TypeEquationTypeInference equation = ( TypeEquationTypeInference ) this.formula
+        TypeEquation equation = ( TypeEquation ) this.formula
             .get ( i );
         builder.addBuilder ( equation.getSeenTypes ().toPrettyStringBuilder (
             pPrettyStringBuilderFactory ), 0 );

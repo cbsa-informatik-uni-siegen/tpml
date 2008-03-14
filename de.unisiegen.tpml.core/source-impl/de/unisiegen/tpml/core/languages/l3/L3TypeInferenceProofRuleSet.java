@@ -5,6 +5,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 
 import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.entities.DefaultTypeEquation;
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
@@ -13,7 +15,6 @@ import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typeinference.TypeEquationProofNode;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofContext;
 import de.unisiegen.tpml.core.typeinference.UnifyException;
 import de.unisiegen.tpml.core.types.ArrowType;
@@ -93,7 +94,7 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet
     // convert in needed types
     TypeInferenceProofContext context = ( TypeInferenceProofContext ) pContext;
     TypeEquationProofNode node = ( TypeEquationProofNode ) pNode;
-    TypeEquationTypeInference eqn = node.getEquation ();
+    TypeEquation eqn = node.getEquation ();
     unify ( context, node, eqn );
   }
 
@@ -109,8 +110,7 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet
    * @throws UnifyException
    */
   public void unify ( TypeInferenceProofContext context,
-      TypeEquationProofNode node, TypeEquationTypeInference eqn )
-      throws UnifyException
+      TypeEquationProofNode node, TypeEquation eqn ) throws UnifyException
   {
     // empty equation is not longer possible so this rule is not implemented
     MonoType left = eqn.getLeft ();
@@ -129,7 +129,7 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet
     else if ( left instanceof RecType )
     {
       RecType recType = ( RecType ) left;
-      context.addEquation ( new TypeEquationTypeInference ( recType.getTau ()
+      context.addEquation ( new DefaultTypeEquation ( recType.getTau ()
           .substitute ( recType.getTypeName (), recType ), right, eqn
           .getSeenTypes ().clone () ) );
       return;
@@ -138,9 +138,9 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet
     else if ( right instanceof RecType )
     {
       RecType recType = ( RecType ) right;
-      context.addEquation ( new TypeEquationTypeInference ( left, recType
-          .getTau ().substitute ( recType.getTypeName (), recType ), eqn
-          .getSeenTypes ().clone () ) );
+      context.addEquation ( new DefaultTypeEquation ( left, recType.getTau ()
+          .substitute ( recType.getTypeName (), recType ), eqn.getSeenTypes ()
+          .clone () ) );
       return;
     }
     // VAR
@@ -170,34 +170,30 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet
       {
         // advanced mode is choosen
         // unify tau1 = tau1', tau2 = tau2'
-        SeenTypes < TypeEquationTypeInference > seenTypes1 = eqn
-            .getSeenTypes ().clone ();
+        SeenTypes < TypeEquation > seenTypes1 = eqn.getSeenTypes ().clone ();
         seenTypes1.add ( eqn );
-        unify ( context, node, new TypeEquationTypeInference ( taul.getTau2 (),
-            taur.getTau2 (), seenTypes1 ) );
-        SeenTypes < TypeEquationTypeInference > seenTypes2 = eqn
-            .getSeenTypes ().clone ();
+        unify ( context, node, new DefaultTypeEquation ( taul.getTau2 (), taur
+            .getTau2 (), seenTypes1 ) );
+        SeenTypes < TypeEquation > seenTypes2 = eqn.getSeenTypes ().clone ();
         seenTypes2.add ( eqn );
-        TypeEquationTypeInference eqn2 = new TypeEquationTypeInference ( taul
-            .getTau1 (), taur.getTau1 (), seenTypes2 );
-        eqn2 = eqn2.substitute ( context.getSubstitution () );
+        TypeEquation eqn2 = new DefaultTypeEquation ( taul.getTau1 (), taur
+            .getTau1 (), seenTypes2 );
+        eqn2 = ( TypeEquation ) eqn2.substitute ( context.getSubstitution () );
         unify ( context, node, eqn2 );
       }
       else
       {
         // beginner mode is choosen
         // equations are added to list and will be unified later
-        SeenTypes < TypeEquationTypeInference > seenTypes1 = eqn
-            .getSeenTypes ().clone ();
+        SeenTypes < TypeEquation > seenTypes1 = eqn.getSeenTypes ().clone ();
         seenTypes1.add ( eqn );
-        TypeEquationTypeInference eqn1 = new TypeEquationTypeInference ( taul
-            .getTau1 (), taur.getTau1 (), seenTypes1 );
+        TypeEquation eqn1 = new DefaultTypeEquation ( taul.getTau1 (), taur
+            .getTau1 (), seenTypes1 );
         context.addEquation ( eqn1 );
-        SeenTypes < TypeEquationTypeInference > seenTypes2 = eqn
-            .getSeenTypes ().clone ();
+        SeenTypes < TypeEquation > seenTypes2 = eqn.getSeenTypes ().clone ();
         seenTypes2.add ( eqn );
-        TypeEquationTypeInference eqn2 = new TypeEquationTypeInference ( taul
-            .getTau2 (), taur.getTau2 (), seenTypes2 );
+        TypeEquation eqn2 = new DefaultTypeEquation ( taul.getTau2 (), taur
+            .getTau2 (), seenTypes2 );
         context.addEquation ( eqn2 );
       }
       return;
@@ -218,10 +214,9 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet
         // context.setEquations(eqns.getRemaining());
         for ( int n = 0 ; n < typesl.length ; ++n )
         {
-          SeenTypes < TypeEquationTypeInference > seenTypes = eqn
-              .getSeenTypes ().clone ();
+          SeenTypes < TypeEquation > seenTypes = eqn.getSeenTypes ().clone ();
           seenTypes.add ( eqn );
-          context.addEquation ( new TypeEquationTypeInference ( typesl [ n ],
+          context.addEquation ( new DefaultTypeEquation ( typesl [ n ],
               typesr [ n ], seenTypes ) );
         }
         return;
@@ -235,11 +230,10 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet
       // cast to ListType instances (tau and tau')
       ListType taul = ( ListType ) left;
       ListType taur = ( ListType ) right;
-      SeenTypes < TypeEquationTypeInference > seenTypes = eqn.getSeenTypes ()
-          .clone ();
+      SeenTypes < TypeEquation > seenTypes = eqn.getSeenTypes ().clone ();
       seenTypes.add ( eqn );
-      context.addEquation ( new TypeEquationTypeInference ( taul.getTau (),
-          taur.getTau (), seenTypes ) );
+      context.addEquation ( new DefaultTypeEquation ( taul.getTau (), taur
+          .getTau (), seenTypes ) );
       return;
     }
     // REF
@@ -248,11 +242,10 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet
       // cast to RefType instances (tau and tau')
       RefType taul = ( RefType ) left;
       RefType taur = ( RefType ) right;
-      SeenTypes < TypeEquationTypeInference > seenTypes = eqn.getSeenTypes ()
-          .clone ();
+      SeenTypes < TypeEquation > seenTypes = eqn.getSeenTypes ().clone ();
       seenTypes.add ( eqn );
-      context.addEquation ( new TypeEquationTypeInference ( taul.getTau (),
-          taur.getTau (), seenTypes ) );
+      context.addEquation ( new DefaultTypeEquation ( taul.getTau (), taur
+          .getTau (), seenTypes ) );
       return;
     }
     // OBJECT
@@ -260,11 +253,10 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet
     {
       ObjectType tau1 = ( ObjectType ) left;
       ObjectType tau2 = ( ObjectType ) right;
-      SeenTypes < TypeEquationTypeInference > seenTypes = eqn.getSeenTypes ()
-          .clone ();
+      SeenTypes < TypeEquation > seenTypes = eqn.getSeenTypes ().clone ();
       seenTypes.add ( eqn );
-      TypeEquationTypeInference newEqn = new TypeEquationTypeInference ( tau1
-          .getPhi (), tau2.getPhi (), seenTypes );
+      TypeEquation newEqn = new DefaultTypeEquation ( tau1.getPhi (), tau2
+          .getPhi (), seenTypes );
       context.addEquation ( newEqn );
       return;
     }
@@ -300,11 +292,10 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet
         {
           if ( tau1Identifiers.get ( i ).equals ( tau2Identifiers.get ( j ) ) )
           {
-            SeenTypes < TypeEquationTypeInference > seenTypes = eqn
-                .getSeenTypes ().clone ();
+            SeenTypes < TypeEquation > seenTypes = eqn.getSeenTypes ().clone ();
             seenTypes.add ( eqn );
-            context.addEquation ( new TypeEquationTypeInference ( tau1Types
-                .get ( i ), tau2Types.get ( j ), seenTypes ) );
+            context.addEquation ( new DefaultTypeEquation (
+                tau1Types.get ( i ), tau2Types.get ( j ), seenTypes ) );
             tau1Identifiers.remove ( i );
             tau1Types.remove ( i );
             tau2Identifiers.remove ( j );
@@ -324,10 +315,9 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet
           throw new RuntimeException ( MessageFormat.format ( Messages
               .getString ( "UnificationException.3" ), left, right ) ); //$NON-NLS-1$
         }
-        SeenTypes < TypeEquationTypeInference > seenTypes = eqn.getSeenTypes ()
-            .clone ();
+        SeenTypes < TypeEquation > seenTypes = eqn.getSeenTypes ().clone ();
         seenTypes.add ( eqn );
-        context.addEquation ( new TypeEquationTypeInference ( tau1RemainingRow,
+        context.addEquation ( new DefaultTypeEquation ( tau1RemainingRow,
             tau2RemainingRow, seenTypes ) );
         return;
       }
@@ -347,11 +337,10 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet
             tau2Types.remove ( i );
           }
           RowType newRowType = new RowType ( newIdentifiers, newTypes );
-          SeenTypes < TypeEquationTypeInference > seenTypes = eqn
-              .getSeenTypes ().clone ();
+          SeenTypes < TypeEquation > seenTypes = eqn.getSeenTypes ().clone ();
           seenTypes.add ( eqn );
-          context.addEquation ( new TypeEquationTypeInference (
-              tau1RemainingRow, newRowType, seenTypes ) );
+          context.addEquation ( new DefaultTypeEquation ( tau1RemainingRow,
+              newRowType, seenTypes ) );
         }
       }
       // Second remaining RowType
@@ -370,10 +359,9 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet
             tau1Types.remove ( i );
           }
           RowType newRowType = new RowType ( newIdentifiers, newTypes );
-          SeenTypes < TypeEquationTypeInference > seenTypes = eqn
-              .getSeenTypes ().clone ();
+          SeenTypes < TypeEquation > seenTypes = eqn.getSeenTypes ().clone ();
           seenTypes.add ( eqn );
-          context.addEquation ( new TypeEquationTypeInference ( newRowType,
+          context.addEquation ( new DefaultTypeEquation ( newRowType,
               tau2RemainingRow, seenTypes ) );
         }
       }

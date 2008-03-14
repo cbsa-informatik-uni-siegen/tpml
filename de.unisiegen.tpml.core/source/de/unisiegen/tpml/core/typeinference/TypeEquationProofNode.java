@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.typeinference;
 
 
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 
 
@@ -22,7 +23,7 @@ public interface TypeEquationProofNode extends TypeCheckerProofNode
    * 
    * @return equation type equation of this node
    */
-  public TypeEquationTypeInference getEquation ();
+  public TypeEquation getEquation ();
 
 
   /**

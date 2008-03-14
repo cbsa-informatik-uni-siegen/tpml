@@ -8,12 +8,12 @@ import javax.swing.event.TreeModelListener;
 
 import de.unisiegen.tpml.core.ExpressionProofModel;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.TypeFormula;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
@@ -170,11 +170,10 @@ public final class OutlineTreeModelListener implements TreeModelListener
           this.defaultOutline.load ( ( ( TypeJudgement ) typeFormula )
               .getExpression (), Outline.ExecuteAutoChange.TYPEINFERENCE );
         }
-        else if ( typeFormula instanceof TypeEquationTypeInference )
+        else if ( typeFormula instanceof TypeEquation )
         {
-          this.defaultOutline.load (
-              ( ( TypeEquationTypeInference ) typeFormula ).getLeft (),
-              Outline.ExecuteAutoChange.TYPEINFERENCE );
+          this.defaultOutline.load ( ( ( TypeEquation ) typeFormula )
+              .getLeft (), Outline.ExecuteAutoChange.TYPEINFERENCE );
         }
       }
     }

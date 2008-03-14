@@ -3,9 +3,9 @@ package de.unisiegen.tpml.core;
 
 import java.io.StringReader;
 
+import de.unisiegen.tpml.core.entities.TypeEquationList;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
-import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker;
 
 
 /**
@@ -27,8 +27,8 @@ public class UnifyParserTest
 
       String text = "{int = bool, 'a -> int = 'b -> bool}";
 
-      TypeEquationListTypeChecker t = language.newUnifyParser (
-          new StringReader ( text ) ).parse ();
+      TypeEquationList t = language.newUnifyParser ( new StringReader ( text ) )
+          .parse ();
 
       System.out.println ( t.toPrettyString () );
     }

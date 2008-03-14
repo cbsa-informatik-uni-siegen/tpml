@@ -3,6 +3,7 @@ package de.unisiegen.tpml.graphics.components;
 
 import java.util.ArrayList;
 
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers;
@@ -10,7 +11,6 @@ import de.unisiegen.tpml.core.interfaces.BoundTypeNames;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes;
 import de.unisiegen.tpml.core.interfaces.ShowBondsInput;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.TypeSubType;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.Type;
@@ -177,10 +177,10 @@ public final class ShowBonds
         {
           check ( ( Type ) this.loaded );
         }
-        else if ( this.loaded instanceof TypeEquationTypeInference )
+        else if ( this.loaded instanceof TypeEquation )
         {
-          check ( ( ( TypeEquationTypeInference ) this.loaded ).getLeft () );
-          check ( ( ( TypeEquationTypeInference ) this.loaded ).getRight () );
+          check ( ( ( TypeEquation ) this.loaded ).getLeft () );
+          check ( ( ( TypeEquation ) this.loaded ).getRight () );
         }
         else if ( this.loaded instanceof TypeSubType )
         {

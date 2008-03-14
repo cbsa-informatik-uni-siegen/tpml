@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core.unify;
 import javax.swing.tree.TreeNode;
 
 import de.unisiegen.tpml.core.ProofNode;
-import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker;
+import de.unisiegen.tpml.core.entities.TypeEquationList;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
 
 
@@ -31,7 +31,7 @@ public interface UnifyProofNode extends ProofNode
    * 
    * @return the list of type equations for this node
    */
-  public TypeEquationListTypeChecker getTypeEquationList ();
+  public TypeEquationList getTypeEquationList ();
 
 
   /**

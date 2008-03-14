@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.typeinference;
 import java.text.MessageFormat;
 
 import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.types.Type;
 
 
@@ -13,7 +14,7 @@ import de.unisiegen.tpml.core.types.Type;
  * 
  * @author Benedikt Meurer
  * @version $Rev$
- * @see de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker#unify()
+ * @see de.unisiegen.tpml.core.entities.TypeEquationList#unify()
  */
 public final class UnifyException extends Exception
 {
@@ -33,12 +34,12 @@ public final class UnifyException extends Exception
   //
 
   /**
-   * The {@link TypeEquationTypeInference} that failed to unify.
+   * The {@link TypeEquation} that failed to unify.
    * 
    * @see #getTau1()
    * @see #getTau2()
    */
-  private TypeEquationTypeInference equation;
+  private TypeEquation equation;
 
 
   //
@@ -47,13 +48,13 @@ public final class UnifyException extends Exception
 
   /**
    * Allocates a new {@link UnifyException} object to indicate that the
-   * unification of the {@link TypeEquationTypeInference} <code>equationn</code>
+   * unification of the {@link TypeEquation} <code>equationn</code>
    * failed.
    * 
-   * @param pEquation the {@link TypeEquationTypeInference} that could not be
+   * @param pEquation the {@link TypeEquation} that could not be
    *          unified.
    */
-  public UnifyException ( final TypeEquationTypeInference pEquation )
+  public UnifyException ( final TypeEquation pEquation )
   {
 
     super (

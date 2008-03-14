@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.typeinference;
 
 
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
@@ -34,7 +35,7 @@ implements TypeEquationProofNode
   /**
    * list of collected type equations
    */
-  private TypeEquationTypeInference equation;
+  private TypeEquation equation;
 
 
   /**
@@ -57,7 +58,7 @@ implements TypeEquationProofNode
    */
   public DefaultTypeEquationProofNode ( final TypeEnvironment pEnvironment1,
       final Expression pExpression1, final MonoType pType1,
-      final TypeEquationTypeInference eqns, boolean pMode )
+      final TypeEquation eqns, boolean pMode )
   {
     super ( pEnvironment1, pExpression1, pType1 );
     this.equation = eqns;
@@ -84,7 +85,7 @@ implements TypeEquationProofNode
    * 
    * @return equations TypeEquationList equations
    */
-  public TypeEquationTypeInference getEquation ()
+  public TypeEquation getEquation ()
   {
     return this.equation;
   }

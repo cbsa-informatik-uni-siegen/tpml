@@ -7,12 +7,12 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.TypeFormula;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement;
 import de.unisiegen.tpml.core.typeinference.TypeSubType;
@@ -482,12 +482,11 @@ public class TypeFormularRenderer extends AbstractRenderer
             }
           }
         }
-        else if ( t instanceof TypeEquationTypeInference )
+        else if ( t instanceof TypeEquation )
         {
           prettyStringrenderer = new PrettyStringRenderer ();
-          prettyStringrenderer
-              .setPrettyString ( ( ( TypeEquationTypeInference ) t )
-                  .toPrettyString () );
+          prettyStringrenderer.setPrettyString ( ( ( TypeEquation ) t )
+              .toPrettyString () );
 
           lineWidthEnvironment += prettyStringrenderer
               .getNeededSize ( Integer.MAX_VALUE ).width;
@@ -614,7 +613,7 @@ public class TypeFormularRenderer extends AbstractRenderer
         remainingSpace = width - indentSpace;
 
         t = this.typeFormulaList.get ( i );
-        if ( t instanceof TypeEquationTypeInference )
+        if ( t instanceof TypeEquation )
         {
           // save the posX where the render starts to render to find out the
           // size later
@@ -623,7 +622,7 @@ public class TypeFormularRenderer extends AbstractRenderer
           // the renderer for the typeEquations
           PrettyStringRenderer typeEquationStringrenderer = new PrettyStringRenderer ();
 
-          TypeEquationTypeInference s = ( TypeEquationTypeInference ) t;
+          TypeEquation s = ( TypeEquation ) t;
 
           // get the highlight informations
           ShowBonds bondTypeEquation = new ShowBonds ();
@@ -667,7 +666,7 @@ public class TypeFormularRenderer extends AbstractRenderer
           posX += AbstractRenderer.keywordFontMetrics.stringWidth ( " " ); //$NON-NLS-1$
 
           // get the seentyps and provide the String for the Tooltip
-          SeenTypes < TypeEquationTypeInference > typeEquSeenTypes = ( ( TypeEquationTypeInference ) t )
+          SeenTypes < TypeEquation > typeEquSeenTypes = ( ( TypeEquation ) t )
               .getSeenTypes ();
           this.aStrings.set ( i, typeEquSeenTypes.toString () );
 
@@ -675,7 +674,7 @@ public class TypeFormularRenderer extends AbstractRenderer
 
           for ( int z = 0 ; z < typeEquSeenTypes.size () ; z++ )
           {
-            TypeEquationTypeInference tqti = typeEquSeenTypes.get ( z );
+            TypeEquation tqti = typeEquSeenTypes.get ( z );
             PrettyString ps = tqti.toPrettyString ();
 
             tmp.add ( ps );

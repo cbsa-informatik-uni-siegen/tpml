@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.entities.DefaultTypeEquation;
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
 import de.unisiegen.tpml.core.expressions.Assign;
 import de.unisiegen.tpml.core.expressions.BinaryCons;
@@ -79,9 +81,9 @@ public class DefaultTypeInferenceProofContext implements
   /**
    * The list of type equations that has been collected for this context
    * 
-   * @see TypeEquationTypeInference
+   * @see TypeEquation
    */
-  private final ArrayList < TypeEquationTypeInference > equationList = new ArrayList < TypeEquationTypeInference > ();
+  private final ArrayList < TypeEquation > equationList = new ArrayList < TypeEquation > ();
 
 
   /**
@@ -169,8 +171,8 @@ public class DefaultTypeInferenceProofContext implements
    */
   public void addEquation ( MonoType left, MonoType right )
   {
-    addEquation ( new TypeEquationTypeInference ( left, right,
-        new SeenTypes < TypeEquationTypeInference > () ) );
+    addEquation ( new DefaultTypeEquation ( left, right,
+        new SeenTypes < TypeEquation > () ) );
   }
 
 
@@ -182,7 +184,7 @@ public class DefaultTypeInferenceProofContext implements
    * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#addEquation(de.unisiegen.tpml.core.types.MonoType,
    *      de.unisiegen.tpml.core.types.MonoType)
    */
-  public void addEquation ( TypeEquationTypeInference pTypeEquationTypeInference )
+  public void addEquation ( TypeEquation pTypeEquationTypeInference )
   {
     this.equationList.remove ( pTypeEquationTypeInference );
     this.equationList.add ( 0, pTypeEquationTypeInference );
@@ -199,7 +201,8 @@ public class DefaultTypeInferenceProofContext implements
   {
     this.substitutionList.remove ( s );
     ArrayList < TypeSubstitution > newList = new ArrayList < TypeSubstitution > ();
-    for (TypeSubstitution current : this.substitutionList){
+    for ( TypeSubstitution current : this.substitutionList )
+    {
       newList.add ( current.substitute ( s ) );
     }
     newList.add ( 0, s );
@@ -566,11 +569,10 @@ public class DefaultTypeInferenceProofContext implements
       typeNode = new DefaultTypeCheckerTypeProofNode ( subType.getType (),
           subType.getType2 () );
     }
-    else if ( formula instanceof TypeEquationTypeInference )
+    else if ( formula instanceof TypeEquation )
     {
       typeNode = new DefaultTypeEquationProofNode ( formula.getEnvironment (),
-          new Unify (), new UnifyType (),
-          ( TypeEquationTypeInference ) formula, mode );
+          new Unify (), new UnifyType (), ( TypeEquation ) formula, mode );
     }
     else
     {
@@ -628,9 +630,9 @@ public class DefaultTypeInferenceProofContext implements
       {
         this.judgementList.add ( ( TypeJudgement ) formula );
       }
-      else if ( formula instanceof TypeEquationTypeInference )
+      else if ( formula instanceof TypeEquation )
       {
-        this.equationList.add ( ( TypeEquationTypeInference ) formula );
+        this.equationList.add ( ( TypeEquation ) formula );
       }
       else
       {
@@ -659,7 +661,7 @@ public class DefaultTypeInferenceProofContext implements
     {
       formulas.add ( subType.substitute ( this.substitutionList ) );
     }
-    for ( TypeEquationTypeInference teqn : this.equationList )
+    for ( TypeEquation teqn : this.equationList )
     {
       if ( !formulas.contains ( teqn.substitute ( this.substitutionList ) ) )
         formulas.add ( teqn.substitute ( this.substitutionList ) );

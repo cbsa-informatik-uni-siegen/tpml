@@ -1,7 +1,9 @@
 import de.unisiegen.tpml.core.languages.Error;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;
-import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker;
-import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker;
+import de.unisiegen.tpml.core.entities.TypeEquationList;
+import de.unisiegen.tpml.core.entities.TypeEquation;
+import de.unisiegen.tpml.core.entities.DefaultTypeEquationList;
+import de.unisiegen.tpml.core.entities.DefaultTypeEquation;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
 import de.unisiegen.tpml.core.types.IntegerType;
@@ -39,9 +41,9 @@ non terminal UnitType				unit_type;
 non terminal TypeVariable			type_variable;
 non terminal ArrowType				arrow_type;
 non terminal TypeName				type_name;
-non terminal TypeEquationTypeChecker		type_equation;
-non terminal TypeEquationTypeChecker[]		type_equation_array;
-non terminal TypeEquationListTypeChecker		type_equation_list;
+non terminal TypeEquation			type_equation;
+non terminal TypeEquation[]			type_equation_array;
+non terminal TypeEquationList		type_equation_list;
 
 /* Non terminal - Error */
 non terminal 		epsilon;
@@ -59,7 +61,7 @@ precedence right	ARROW;
 
 type_equation_list				::= LBRACKET:l type_equation_array:tea RBRACKET:r
 								    {:
-								       RESULT = TypeEquationListTypeChecker.EMPTY_LIST ;
+								       RESULT = DefaultTypeEquationList.EMPTY_LIST ;
 								       for (int i = 0; i < tea.length ; i++)
 								       {
 								         RESULT = RESULT.extend(tea[i]);
@@ -69,7 +71,7 @@ type_equation_list				::= LBRACKET:l type_equation_array:tea RBRACKET:r
 								    :}
 								 |  type_equation_array:tea
 								    {:
-								       RESULT = TypeEquationListTypeChecker.EMPTY_LIST ;
+								       RESULT = DefaultTypeEquationList.EMPTY_LIST ;
 								       for (int i = 0; i < tea.length ; i++)
 								       {
 								         RESULT = RESULT.extend(tea[i]);
@@ -82,19 +84,19 @@ type_equation_list				::= LBRACKET:l type_equation_array:tea RBRACKET:r
 
 type_equation_array				::=	type_equation:te COMMA type_equation_array:tea
 								    {:
-								       RESULT = new TypeEquationTypeChecker[tea.length + 1];
+								       RESULT = new TypeEquation[tea.length + 1];
 									   System.arraycopy(tea, 0, RESULT, 1, tea.length);
 									   RESULT[0] = te;
 								    :}
 								|   type_equation:te
 								    {:
-								       RESULT = new TypeEquationTypeChecker[]{te};
+								       RESULT = new TypeEquation[]{te};
 								    :}
 								;
 
 type_equation					::= type:t1 EQUAL type:t2
 								    {:
-								      RESULT = new TypeEquationTypeChecker(t1, t2, new SeenTypes());
+								      RESULT = new DefaultTypeEquation(t1, t2, new SeenTypes());
 								      RESULT.setParserStartOffset(t1left);
 								      RESULT.setParserEndOffset(t2right);
 								    :}

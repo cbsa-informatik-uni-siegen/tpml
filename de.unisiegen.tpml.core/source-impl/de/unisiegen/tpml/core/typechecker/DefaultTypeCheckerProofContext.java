@@ -6,6 +6,10 @@ import java.util.LinkedList;
 import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.entities.DefaultTypeEquation;
+import de.unisiegen.tpml.core.entities.TypeEquation;
+import de.unisiegen.tpml.core.entities.TypeEquationList;
+import de.unisiegen.tpml.core.entities.DefaultTypeEquationList;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
 import de.unisiegen.tpml.core.expressions.Assign;
 import de.unisiegen.tpml.core.expressions.BinaryCons;
@@ -64,9 +68,9 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
    * The list of type equations that has been collected for this context and
    * will be used as input for the unification algorithm.
    * 
-   * @see TypeEquationTypeChecker
+   * @see TypeEquation
    */
-  private TypeEquationListTypeChecker equations = TypeEquationListTypeChecker.EMPTY_LIST;
+  private TypeEquationList equations = DefaultTypeEquationList.EMPTY_LIST;
 
 
   /**
@@ -143,8 +147,8 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
    */
   public void addEquation ( MonoType left, MonoType right )
   {
-    this.equations = this.equations.extend ( new TypeEquationTypeChecker (
-        left, right, new SeenTypes < TypeEquationTypeChecker > () ) );
+    this.equations = this.equations.extend ( new DefaultTypeEquation ( left,
+        right, new SeenTypes < TypeEquation > () ) );
   }
 
 

@@ -4,13 +4,13 @@ package de.unisiegen.tpml.core.languages;
 import java.io.Reader;
 
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
-import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
 
@@ -282,7 +282,7 @@ public interface Language
    * Allocates a new {@link LanguageUnifyParser} for this language, using the
    * specified <code>scanner</code> as token source for the newly allocated
    * parser. The parser can then be used to parse the tokens returned from the
-   * <code>scanner</code> into a valid {@link TypeEquationTypeChecker}.
+   * <code>scanner</code> into a valid {@link TypeEquation}.
    * 
    * @param scanner the scanner from which to read the tokens.
    * @return a newly allocated type parser for this language.
@@ -305,8 +305,8 @@ public interface Language
 
   /**
    * Allocates a new {@link LanguageUnifyScanner}, a lexer, for this language,
-   * which parses tokens that may appear in a {@link TypeEquationTypeChecker}s
-   * string representation from the specified <code>reader</code>.
+   * which parses tokens that may appear in a {@link TypeEquation}s string
+   * representation from the specified <code>reader</code>.
    * 
    * @param reader the {@link Reader} for the source input stream.
    * @return a newly allocated scanner for this language.

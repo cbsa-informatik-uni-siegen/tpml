@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.typechecker;
 
 
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.Type;
@@ -27,7 +28,7 @@ public interface TypeCheckerProofContext
    * 
    * @param left the monomorphic type on the left side.
    * @param right the monomorphic type on the right side.
-   * @see TypeEquationTypeChecker
+   * @see TypeEquation
    */
   public void addEquation ( MonoType left, MonoType right );
 

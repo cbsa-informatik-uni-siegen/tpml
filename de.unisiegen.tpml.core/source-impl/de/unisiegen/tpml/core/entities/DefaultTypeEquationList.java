@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.typechecker;
+package de.unisiegen.tpml.core.entities;
 
 
 import java.text.MessageFormat;
@@ -22,6 +22,10 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.SeenTypes;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.UnificationException;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.ListType;
 import de.unisiegen.tpml.core.types.MonoType;
@@ -37,21 +41,81 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * A list of <code>TypeEquation</code>s, in the same fashion as a list in
  * OCaml.
  * 
- * @author Benedikt Meurer
+ * @author Benjamin Mies
  * @author Christian Fehler
- * @version $Rev:926M $
- * @see de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker
+ * @see de.unisiegen.tpml.core.entities.TypeEquation
  */
-public final class TypeEquationListTypeChecker implements PrettyPrintable,
-    LatexPrintable
+public final class DefaultTypeEquationList implements TypeEquationList,
+    PrettyPrintable, LatexPrintable
 {
+  /**
+   * Sets the parser end offset.
+   * 
+   * @param pParserEndOffset The new parser end offset.
+   * @see #getParserEndOffset()
+   * @see #parserEndOffset
+   */
+  public void setParserEndOffset ( int pParserEndOffset )
+  {
+    this.parserEndOffset = pParserEndOffset;
+  }
+  /**
+   * Returns the parserEndOffset.
+   * 
+   * @return The parserEndOffset.
+   * @see #parserEndOffset
+   * @see #setParserEndOffset(int)
+   */
+  public int getParserEndOffset ()
+  {
+    return this.parserEndOffset;
+  }
 
+  /**
+   * The start offset of this {@link DefaultTypeEquationList} in the source code.
+   * 
+   * @see #getParserStartOffset()
+   * @see #setParserStartOffset(int)
+   */
+  protected int parserStartOffset = -1;
+
+
+  /**
+   * The end offset of this {@link DefaultTypeEquationList} in the source code.
+   * 
+   * @see #getParserEndOffset()
+   * @see #setParserEndOffset(int)
+   */
+  protected int parserEndOffset = -1;
+  /**
+   * Returns the parserStartOffset.
+   * 
+   * @return The parserStartOffset.
+   * @see #parserStartOffset
+   * @see #setParserStartOffset(int)
+   */
+  public int getParserStartOffset ()
+  {
+    return this.parserStartOffset;
+  }
+
+  /**
+   * Sets the parser start offset.
+   * 
+   * @param pParserStartOffset The new parser start offset.
+   * @see #getParserStartOffset()
+   * @see #parserStartOffset
+   */
+  public void setParserStartOffset ( int pParserStartOffset )
+  {
+    this.parserStartOffset = pParserStartOffset;
+  }
   /**
    * The empty equation list.
    * 
-   * @see #TypeEquationListTypeChecker()
+   * @see #DefaultTypeEquationList()
    */
-  public static final TypeEquationListTypeChecker EMPTY_LIST = new TypeEquationListTypeChecker ();
+  public static final TypeEquationList EMPTY_LIST = new DefaultTypeEquationList ();
 
 
   /**
@@ -63,9 +127,9 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
   {
     LatexCommandList commands = new LatexCommandList ();
     commands.add ( new DefaultLatexCommand (
-        LATEX_TYPE_EQUATION_LIST_TYPE_CHECKER, 1, "\\color{" //$NON-NLS-1$
+        LATEX_TYPE_EQUATION_LIST, 1, "\\color{" //$NON-NLS-1$
             + LATEX_COLOR_NONE + "}{\\{}#1\\color{" //$NON-NLS-1$
-            + LATEX_COLOR_NONE + "}{\\}}", "teqn1, ... , teqnn" ) ); //$NON-NLS-1$//$NON-NLS-2$
+            + LATEX_COLOR_NONE + "}{\\}}", "teqn1, ... , teqnn" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     return commands;
   }
 
@@ -101,31 +165,13 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
   /**
    * The first equation in the list.
    */
-  public TypeEquationTypeChecker first;
+  private TypeEquation first;
 
 
   /**
    * The remaining equations or <code>null</code>.
    */
-  public TypeEquationListTypeChecker remaining;
-
-
-  /**
-   * The start offset of this {@link Expression} in the source code.
-   * 
-   * @see #getParserStartOffset()
-   * @see #setParserStartOffset(int)
-   */
-  private int parserStartOffset = -1;
-
-
-  /**
-   * The end offset of this {@link Expression} in the source code.
-   * 
-   * @see #getParserEndOffset()
-   * @see #setParserEndOffset(int)
-   */
-  private int parserEndOffset = -1;
+  private TypeEquationList remaining;
 
 
   /**
@@ -133,7 +179,7 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
    * 
    * @see #EMPTY_LIST
    */
-  private TypeEquationListTypeChecker ()
+  private DefaultTypeEquationList ()
   {
     super ();
   }
@@ -141,23 +187,23 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
 
   /**
    * Allocates a new equation list, which basicly extends <code>remaining</code>
-   * with a new {@link TypeEquationTypeChecker} <code>first</code>.
+   * with a new {@link TypeEquation} <code>first</code>.
    * 
-   * @param pFirst the new {@link TypeEquationTypeChecker}.
-   * @param pRemaining an existing {@link TypeEquationListTypeChecker}
+   * @param pFirst the new {@link TypeEquation}.
+   * @param pRemaining an existing {@link DefaultTypeEquationList}
    * @throws NullPointerException if <code>first</code> or
    *           <code>remaining</code> is <code>null</code>.
    */
-  private TypeEquationListTypeChecker ( TypeEquationTypeChecker pFirst,
-      TypeEquationListTypeChecker pRemaining )
+  private DefaultTypeEquationList ( final TypeEquation pFirst,
+      final TypeEquationList pRemaining )
   {
     if ( pFirst == null )
     {
-      throw new NullPointerException ( "first is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "First is null" ); //$NON-NLS-1$
     }
     if ( pRemaining == null )
     {
-      throw new NullPointerException ( "remaining is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "Remaining is null" ); //$NON-NLS-1$
     }
     this.first = pFirst;
     this.remaining = pRemaining;
@@ -165,19 +211,25 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
 
 
   /**
-   * Allocates a new {@link TypeEquationListTypeChecker}, which extends this
-   * equation list with a new {@link TypeEquationTypeChecker} for
-   * <code>left</code> and <code>right</code>.
+   * {@inheritDoc}
    * 
-   * @param pTypeEquationTypeChecker The new equation.
-   * @return the extended {@link TypeEquationListTypeChecker}.
-   * @throws NullPointerException if <code>left</code> or <code>right</code>
-   *           is <code>null</code>.
+   * @see TypeEquationList#extend(TypeEquation)
    */
-  public TypeEquationListTypeChecker extend (
-      TypeEquationTypeChecker pTypeEquationTypeChecker )
+  public DefaultTypeEquationList extend (
+      TypeEquation pTypeEquation )
   {
-    return new TypeEquationListTypeChecker ( pTypeEquationTypeChecker, this );
+    return new DefaultTypeEquationList ( pTypeEquation, this );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see TypeEquationList#getFirst()
+   */
+  public TypeEquation getFirst ()
+  {
+    return this.first;
   }
 
 
@@ -190,9 +242,10 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
   {
     LatexCommandList commands = new LatexCommandList ();
     commands.add ( getLatexCommandsStatic () );
-    for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
+    for ( TypeEquationList list = this ; list != EMPTY_LIST ; list = list
+        .getRemaining () )
     {
-      commands.add ( list.first );
+      commands.add ( list.getFirst () );
     }
     return commands;
   }
@@ -207,9 +260,10 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
   {
     LatexInstructionList instructions = new LatexInstructionList ();
     instructions.add ( getLatexInstructionsStatic () );
-    for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
+    for ( TypeEquationList list = this ; list != EMPTY_LIST ; list = list
+        .getRemaining () )
     {
-      instructions.add ( list.first );
+      instructions.add ( list.getFirst () );
     }
     return instructions;
   }
@@ -224,74 +278,32 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
   {
     LatexPackageList packages = new LatexPackageList ();
     packages.add ( getLatexPackagesStatic () );
-    for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
+    for ( TypeEquationList list = this ; list != EMPTY_LIST ; list = list
+        .getRemaining () )
     {
-      packages.add ( list.first );
+      packages.add ( list.getFirst () );
     }
     return packages;
   }
 
 
   /**
-   * Returns the parserEndOffset.
+   * {@inheritDoc}
    * 
-   * @return The parserEndOffset.
-   * @see #parserEndOffset
-   * @see #setParserEndOffset(int)
+   * @see TypeEquationList#getRemaining()
    */
-  public int getParserEndOffset ()
+  public TypeEquationList getRemaining ()
   {
-    return this.parserEndOffset;
+    return this.remaining;
   }
 
 
   /**
-   * Returns the parserStartOffset.
+   * {@inheritDoc}
    * 
-   * @return The parserStartOffset.
-   * @see #parserStartOffset
-   * @see #setParserStartOffset(int)
+   * @see TypeEquationList#substitute(TypeSubstitution)
    */
-  public int getParserStartOffset ()
-  {
-    return this.parserStartOffset;
-  }
-
-
-  /**
-   * Sets the parser end offset.
-   * 
-   * @param pParserEndOffset The new parser end offset.
-   * @see #getParserEndOffset()
-   * @see #parserEndOffset
-   */
-  public void setParserEndOffset ( int pParserEndOffset )
-  {
-    this.parserEndOffset = pParserEndOffset;
-  }
-
-
-  /**
-   * Sets the parser start offset.
-   * 
-   * @param pParserStartOffset The new parser start offset.
-   * @see #getParserStartOffset()
-   * @see #parserStartOffset
-   */
-  public void setParserStartOffset ( int pParserStartOffset )
-  {
-    this.parserStartOffset = pParserStartOffset;
-  }
-
-
-  /**
-   * Applies the {@link TypeSubstitution} <code>s</code> to all equations
-   * contained within this list.
-   * 
-   * @param s the {@link TypeSubstitution} to apply.
-   * @return the resulting list of equations.
-   */
-  public TypeEquationListTypeChecker substitute ( TypeSubstitution s )
+  public TypeEquationList substitute ( TypeSubstitution s )
   {
     // nothing to substitute on the empty list
     if ( this == EMPTY_LIST )
@@ -299,7 +311,7 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
       return this;
     }
     // apply the substitution to the first and the remaining equations
-    return new TypeEquationListTypeChecker ( this.first.substitute ( s ),
+    return new DefaultTypeEquationList ( this.first.substitute ( s ),
         this.remaining.substitute ( s ) );
   }
 
@@ -327,14 +339,15 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
     StringBuilder body = new StringBuilder ();
     body.append ( PRETTY_CLPAREN );
     int count = 0;
-    for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
+    for ( TypeEquationList list = this ; list != EMPTY_LIST ; list = list
+        .getRemaining () )
     {
       if ( list != this )
       {
         body.append ( PRETTY_COMMA );
         body.append ( PRETTY_SPACE );
       }
-      body.append ( list.first.toPrettyString ().toString () );
+      body.append ( list.getFirst ().toPrettyString ().toString () );
       count++ ;
     }
     body.append ( PRETTY_CRPAREN );
@@ -342,15 +355,18 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
     descriptions [ 0 ] = this.toPrettyString ().toString ();
     descriptions [ 1 ] = body.toString ();
     count = 0;
-    for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
+    for ( TypeEquationList list = this ; list != EMPTY_LIST ; list = list
+        .getRemaining () )
     {
-      descriptions [ 2 + count ] = list.first.toPrettyString ().toString ();
+      descriptions [ 2 + count ] = list.getFirst ().toPrettyString ()
+          .toString ();
       count++ ;
     }
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
-        LATEX_TYPE_EQUATION_LIST_TYPE_CHECKER, pIndent, descriptions );
+        LATEX_TYPE_EQUATION_LIST, pIndent, descriptions );
     builder.addBuilderBegin ();
-    for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
+    for ( TypeEquationList list = this ; list != EMPTY_LIST ; list = list
+        .getRemaining () )
     {
       if ( list != this )
       {
@@ -363,7 +379,7 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
         builder.addText ( "}" ); //$NON-NLS-1$
         builder.addBreak ();
       }
-      builder.addBuilder ( list.first.toLatexStringBuilder (
+      builder.addBuilder ( list.getFirst ().toLatexStringBuilder (
           pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ), 0 );
     }
     builder.addBuilderEnd ();
@@ -394,15 +410,16 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this, 0 );
     builder.addText ( PRETTY_CLPAREN );
-    for ( TypeEquationListTypeChecker list = this ; list != EMPTY_LIST ; list = list.remaining )
+    for ( TypeEquationList list = this ; list != EMPTY_LIST ; list = list
+        .getRemaining () )
     {
       if ( list != this )
       {
         builder.addText ( PRETTY_COMMA );
         builder.addText ( PRETTY_SPACE );
       }
-      builder.addBuilder ( list.first
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
+      builder.addBuilder ( list.getFirst ().toPrettyStringBuilder (
+          pPrettyStringBuilderFactory ), 0 );
     }
     builder.addText ( PRETTY_CRPAREN );
     return builder;
@@ -426,14 +443,11 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
 
 
   /**
-   * This method is the heart of the unification algorithm implementation. It
-   * returns the unificator for this type equation list.
+   * {@inheritDoc}
    * 
-   * @return the unificator for this type equation.
-   * @throws UnificationException if one of the equations contained within this
-   *           list could not be unified.
+   * @see TypeEquationList#unify()
    */
-  public DefaultTypeSubstitution unify () throws UnificationException
+  public TypeSubstitution unify () throws UnificationException
   {
     // EMPTY
     if ( this == EMPTY_LIST )
@@ -457,8 +471,8 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
     else if ( left instanceof RecType )
     {
       RecType recType = ( RecType ) left;
-      TypeEquationListTypeChecker eqns = this.remaining;
-      eqns = eqns.extend ( new TypeEquationTypeChecker ( recType.getTau ()
+      TypeEquationList eqns = this.remaining;
+      eqns = eqns.extend ( new DefaultTypeEquation ( recType.getTau ()
           .substitute ( recType.getTypeName (), recType ), right, this.first
           .getSeenTypes ().clone () ) );
       return eqns.unify ();
@@ -467,9 +481,9 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
     else if ( right instanceof RecType )
     {
       RecType recType = ( RecType ) right;
-      TypeEquationListTypeChecker eqns = this.remaining;
-      eqns = eqns.extend ( new TypeEquationTypeChecker ( left, recType
-          .getTau ().substitute ( recType.getTypeName (), recType ), this.first
+      TypeEquationList eqns = this.remaining;
+      eqns = eqns.extend ( new DefaultTypeEquation ( left, recType.getTau ()
+          .substitute ( recType.getTypeName (), recType ), this.first
           .getSeenTypes ().clone () ) );
       return eqns.unify ();
     }
@@ -485,8 +499,8 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
       if ( ( tvar.equals ( tau ) )
           || ( !tau.getTypeVariablesFree ().contains ( tvar ) ) )
       {
-        DefaultTypeSubstitution s1 = new DefaultTypeSubstitution ( tvar, tau );
-        DefaultTypeSubstitution s2 = this.remaining.substitute ( s1 ).unify ();
+        TypeSubstitution s1 = new DefaultTypeSubstitution ( tvar, tau );
+        TypeSubstitution s2 = this.remaining.substitute ( s1 ).unify ();
         return s1.compose ( s2 );
       }
       // Error, because of a recursive type like: alpha1 = int -> alpha1
@@ -500,16 +514,16 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
       ArrowType taul = ( ArrowType ) left;
       ArrowType taur = ( ArrowType ) right;
       // we need to check {tau1 = tau1', tau2 = tau2'} as well
-      TypeEquationListTypeChecker eqns = this.remaining;
-      SeenTypes < TypeEquationTypeChecker > seenTypes1 = this.first
-          .getSeenTypes ().clone ();
+      TypeEquationList eqns = this.remaining;
+      SeenTypes < TypeEquation > seenTypes1 = this.first.getSeenTypes ()
+          .clone ();
       seenTypes1.add ( this.first );
-      eqns = eqns.extend ( new TypeEquationTypeChecker ( taul.getTau2 (), taur
+      eqns = eqns.extend ( new DefaultTypeEquation ( taul.getTau2 (), taur
           .getTau2 (), seenTypes1 ) );
-      SeenTypes < TypeEquationTypeChecker > seenTypes2 = this.first
-          .getSeenTypes ().clone ();
+      SeenTypes < TypeEquation > seenTypes2 = this.first.getSeenTypes ()
+          .clone ();
       seenTypes2.add ( this.first );
-      eqns = eqns.extend ( new TypeEquationTypeChecker ( taul.getTau1 (), taur
+      eqns = eqns.extend ( new DefaultTypeEquation ( taul.getTau1 (), taur
           .getTau1 (), seenTypes2 ) );
       return eqns.unify ();
     }
@@ -526,13 +540,13 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
       if ( typesl.length == typesr.length )
       {
         // check all sub types
-        TypeEquationListTypeChecker eqns = this.remaining;
+        TypeEquationList eqns = this.remaining;
         for ( int n = 0 ; n < typesl.length ; ++n )
         {
-          SeenTypes < TypeEquationTypeChecker > seenTypes = this.first
-              .getSeenTypes ().clone ();
+          SeenTypes < TypeEquation > seenTypes = this.first.getSeenTypes ()
+              .clone ();
           seenTypes.add ( this.first );
-          eqns = eqns.extend ( new TypeEquationTypeChecker ( typesl [ n ],
+          eqns = eqns.extend ( new DefaultTypeEquation ( typesl [ n ],
               typesr [ n ], seenTypes ) );
         }
         return eqns.unify ();
@@ -547,11 +561,11 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
       ListType taul = ( ListType ) left;
       ListType taur = ( ListType ) right;
       // we need to check {tau = tau'} as well
-      TypeEquationListTypeChecker eqns = this.remaining;
-      SeenTypes < TypeEquationTypeChecker > seenTypes = this.first
-          .getSeenTypes ().clone ();
+      TypeEquationList eqns = this.remaining;
+      SeenTypes < TypeEquation > seenTypes = this.first.getSeenTypes ()
+          .clone ();
       seenTypes.add ( this.first );
-      eqns = eqns.extend ( new TypeEquationTypeChecker ( taul.getTau (), taur
+      eqns = eqns.extend ( new DefaultTypeEquation ( taul.getTau (), taur
           .getTau (), seenTypes ) );
       return eqns.unify ();
     }
@@ -562,11 +576,11 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
       RefType taul = ( RefType ) left;
       RefType taur = ( RefType ) right;
       // we need to check {tau = tau'} as well
-      TypeEquationListTypeChecker eqns = this.remaining;
-      SeenTypes < TypeEquationTypeChecker > seenTypes = this.first
-          .getSeenTypes ().clone ();
+      TypeEquationList eqns = this.remaining;
+      SeenTypes < TypeEquation > seenTypes = this.first.getSeenTypes ()
+          .clone ();
       seenTypes.add ( this.first );
-      eqns = eqns.extend ( new TypeEquationTypeChecker ( taul.getTau (), taur
+      eqns = eqns.extend ( new DefaultTypeEquation ( taul.getTau (), taur
           .getTau (), seenTypes ) );
       return eqns.unify ();
     }
@@ -575,11 +589,11 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
     {
       ObjectType tau1 = ( ObjectType ) left;
       ObjectType tau2 = ( ObjectType ) right;
-      TypeEquationListTypeChecker eqns = this.remaining;
-      SeenTypes < TypeEquationTypeChecker > seenTypes = this.first
-          .getSeenTypes ().clone ();
+      TypeEquationList eqns = this.remaining;
+      SeenTypes < TypeEquation > seenTypes = this.first.getSeenTypes ()
+          .clone ();
       seenTypes.add ( this.first );
-      eqns = eqns.extend ( new TypeEquationTypeChecker ( tau1.getPhi (), tau2
+      eqns = eqns.extend ( new DefaultTypeEquation ( tau1.getPhi (), tau2
           .getPhi (), seenTypes ) );
       return eqns.unify ();
     }
@@ -588,7 +602,7 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
     {
       RowType tau1 = ( RowType ) left;
       RowType tau2 = ( RowType ) right;
-      TypeEquationListTypeChecker eqns = this.remaining;
+      TypeEquationList eqns = this.remaining;
       ArrayList < Identifier > tau1Identifiers = new ArrayList < Identifier > ();
       for ( Identifier id : tau1.getIdentifiers () )
       {
@@ -616,11 +630,11 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
         {
           if ( tau1Identifiers.get ( i ).equals ( tau2Identifiers.get ( j ) ) )
           {
-            SeenTypes < TypeEquationTypeChecker > seenTypes = this.first
-                .getSeenTypes ().clone ();
+            SeenTypes < TypeEquation > seenTypes = this.first.getSeenTypes ()
+                .clone ();
             seenTypes.add ( this.first );
-            eqns = eqns.extend ( new TypeEquationTypeChecker ( tau1Types
-                .get ( i ), tau2Types.get ( j ), seenTypes ) );
+            eqns = eqns.extend ( new DefaultTypeEquation ( tau1Types.get ( i ),
+                tau2Types.get ( j ), seenTypes ) );
             tau1Identifiers.remove ( i );
             tau1Types.remove ( i );
             tau2Identifiers.remove ( j );
@@ -635,10 +649,10 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
       // First and second remaining RowTypes
       if ( ( tau1RemainingRow != null ) && ( tau2RemainingRow != null ) )
       {
-        SeenTypes < TypeEquationTypeChecker > seenTypes = this.first
-            .getSeenTypes ().clone ();
+        SeenTypes < TypeEquation > seenTypes = this.first.getSeenTypes ()
+            .clone ();
         seenTypes.add ( this.first );
-        eqns = eqns.extend ( new TypeEquationTypeChecker ( tau1RemainingRow,
+        eqns = eqns.extend ( new DefaultTypeEquation ( tau1RemainingRow,
             tau2RemainingRow, seenTypes ) );
         if ( ( tau1Identifiers.size () > 0 ) || ( tau2Identifiers.size () > 0 ) )
         {
@@ -663,10 +677,10 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
             tau2Types.remove ( i );
           }
           RowType newRowType = new RowType ( newIdentifiers, newTypes );
-          SeenTypes < TypeEquationTypeChecker > seenTypes = this.first
-              .getSeenTypes ().clone ();
+          SeenTypes < TypeEquation > seenTypes = this.first.getSeenTypes ()
+              .clone ();
           seenTypes.add ( this.first );
-          eqns = eqns.extend ( new TypeEquationTypeChecker ( tau1RemainingRow,
+          eqns = eqns.extend ( new DefaultTypeEquation ( tau1RemainingRow,
               newRowType, seenTypes ) );
         }
       }
@@ -686,10 +700,10 @@ public final class TypeEquationListTypeChecker implements PrettyPrintable,
             tau1Types.remove ( i );
           }
           RowType newRowType = new RowType ( newIdentifiers, newTypes );
-          SeenTypes < TypeEquationTypeChecker > seenTypes = this.first
-              .getSeenTypes ().clone ();
+          SeenTypes < TypeEquation > seenTypes = this.first.getSeenTypes ()
+              .clone ();
           seenTypes.add ( this.first );
-          eqns = eqns.extend ( new TypeEquationTypeChecker ( newRowType,
+          eqns = eqns.extend ( new DefaultTypeEquation ( newRowType,
               tau2RemainingRow, seenTypes ) );
         }
       }

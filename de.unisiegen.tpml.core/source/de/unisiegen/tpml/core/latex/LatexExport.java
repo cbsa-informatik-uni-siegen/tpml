@@ -16,6 +16,8 @@ import de.unisiegen.tpml.core.bigstep.AbstractBigStepProofRule;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.bigstep.BigStepProofResult;
 import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode;
+import de.unisiegen.tpml.core.entities.DefaultTypeEquation;
+import de.unisiegen.tpml.core.entities.DefaultTypeEquationList;
 import de.unisiegen.tpml.core.expressions.And;
 import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.Attribute;
@@ -73,11 +75,7 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
-import de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker;
-import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode;
-import de.unisiegen.tpml.core.typeinference.TypeEquationListTypeInference;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement;
 import de.unisiegen.tpml.core.typeinference.TypeSubType;
@@ -523,15 +521,15 @@ public abstract class LatexExport implements LatexCommandNames
     commands.add ( AbstractTypeCheckerProofRule.getLatexCommandsStatic () );
     commands.add ( SeenTypes.getLatexCommandsStatic () );
     commands.add ( DefaultTypeSubstitution.getLatexCommandsStatic () );
-    commands.add ( TypeEquationTypeChecker.getLatexCommandsStatic () );
-    commands.add ( TypeEquationListTypeChecker.getLatexCommandsStatic () );
+    commands.add ( DefaultTypeEquation.getLatexCommandsStatic () );
+    commands.add ( DefaultTypeEquationList.getLatexCommandsStatic () );
     commands.add ( DefaultTypeCheckerExpressionProofNode
         .getLatexCommandsStatic () );
     commands.add ( DefaultTypeCheckerTypeProofNode.getLatexCommandsStatic () );
     commands.add ( TypeCheckerProofModel.getLatexCommandsStatic () );
     // TypeInference
-    commands.add ( TypeEquationTypeInference.getLatexCommandsStatic () );
-    commands.add ( TypeEquationListTypeInference.getLatexCommandsStatic () );
+    commands.add ( DefaultTypeEquation.getLatexCommandsStatic () );
+    commands.add ( DefaultTypeEquationList.getLatexCommandsStatic () );
     commands.add ( TypeSubstitutionList.getLatexCommandsStatic () );
     commands.add ( TypeJudgement.getLatexCommandsStatic () );
     commands.add ( TypeSubType.getLatexCommandsStatic () );
@@ -587,8 +585,8 @@ public abstract class LatexExport implements LatexCommandNames
         .getLatexInstructionsStatic () );
     instructions.add ( SeenTypes.getLatexInstructionsStatic () );
     instructions.add ( DefaultTypeSubstitution.getLatexInstructionsStatic () );
-    instructions.add ( TypeEquationTypeChecker.getLatexInstructionsStatic () );
-    instructions.add ( TypeEquationListTypeChecker
+    instructions.add ( DefaultTypeEquation.getLatexInstructionsStatic () );
+    instructions.add ( DefaultTypeEquationList
         .getLatexInstructionsStatic () );
     instructions.add ( DefaultTypeCheckerExpressionProofNode
         .getLatexInstructionsStatic () );
@@ -596,8 +594,8 @@ public abstract class LatexExport implements LatexCommandNames
         .getLatexInstructionsStatic () );
     instructions.add ( TypeCheckerProofModel.getLatexInstructionsStatic () );
     // TypeInference
-    instructions.add ( TypeEquationTypeInference.getLatexInstructionsStatic () );
-    instructions.add ( TypeEquationListTypeInference
+    instructions.add ( DefaultTypeEquation.getLatexInstructionsStatic () );
+    instructions.add ( DefaultTypeEquationList
         .getLatexInstructionsStatic () );
     instructions.add ( TypeSubstitutionList.getLatexInstructionsStatic () );
     instructions.add ( TypeJudgement.getLatexInstructionsStatic () );
@@ -668,15 +666,15 @@ public abstract class LatexExport implements LatexCommandNames
     packages.add ( AbstractTypeCheckerProofRule.getLatexPackagesStatic () );
     packages.add ( SeenTypes.getLatexPackagesStatic () );
     packages.add ( DefaultTypeSubstitution.getLatexPackagesStatic () );
-    packages.add ( TypeEquationTypeChecker.getLatexPackagesStatic () );
-    packages.add ( TypeEquationListTypeChecker.getLatexPackagesStatic () );
+    packages.add ( DefaultTypeEquation.getLatexPackagesStatic () );
+    packages.add ( DefaultTypeEquationList.getLatexPackagesStatic () );
     packages.add ( DefaultTypeCheckerExpressionProofNode
         .getLatexPackagesStatic () );
     packages.add ( DefaultTypeCheckerTypeProofNode.getLatexPackagesStatic () );
     packages.add ( TypeCheckerProofModel.getLatexPackagesStatic () );
     // TypeInference
-    packages.add ( TypeEquationTypeInference.getLatexPackagesStatic () );
-    packages.add ( TypeEquationListTypeInference.getLatexPackagesStatic () );
+    packages.add ( DefaultTypeEquation.getLatexPackagesStatic () );
+    packages.add ( DefaultTypeEquationList.getLatexPackagesStatic () );
     packages.add ( TypeSubstitutionList.getLatexPackagesStatic () );
     packages.add ( TypeJudgement.getLatexPackagesStatic () );
     packages.add ( TypeSubType.getLatexPackagesStatic () );

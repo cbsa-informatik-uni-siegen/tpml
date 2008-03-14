@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.typeinference;
 
 
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
@@ -22,7 +23,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 /**
  * List of collected {@link TypeSubstitution}s needed in type inference
- * algorithm to perform the {@link TypeEquationTypeInference}s.
+ * algorithm to perform the {@link TypeEquation}s.
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
