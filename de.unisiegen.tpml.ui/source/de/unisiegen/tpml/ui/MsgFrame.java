@@ -17,9 +17,10 @@ import java.awt.event.WindowEvent;
 
 
 /**
- * @author Michael Oeste this class will be used instead of JOptionPane();
- *         because of the compatibility to old versions This class should be
- *         compiled with target 1.1
+ * this class will be used instead of JOptionPane(); because of the
+ * compatibility to old versions This class should be compiled with target 1.1.
+ * 
+ * @author Michael Oeste
  */
 public class MsgFrame extends Dialog implements ActionListener
 {
@@ -64,6 +65,7 @@ public class MsgFrame extends Dialog implements ActionListener
     addWindowListener ( new WindowAdapter ()
     {
 
+      // Java version 1.1
       public void windowClosing ( WindowEvent e )
       {
         dispose ();
@@ -78,7 +80,7 @@ public class MsgFrame extends Dialog implements ActionListener
     int x = ( dimSystem.width - dimFrame.width ) / 2;
     setLocation ( x, y );
 
-    // to be compatible with early java versions
+    // Java version 1.1
     show ();
   }
 

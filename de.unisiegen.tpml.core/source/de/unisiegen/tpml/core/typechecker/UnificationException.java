@@ -5,6 +5,7 @@ import java.text.MessageFormat;
 
 import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.entities.TypeEquation;
+import de.unisiegen.tpml.core.entities.TypeEquationList;
 import de.unisiegen.tpml.core.types.Type;
 
 
@@ -14,7 +15,7 @@ import de.unisiegen.tpml.core.types.Type;
  * 
  * @author Benedikt Meurer
  * @version $Rev:1194 $
- * @see de.unisiegen.tpml.core.typechecker.TypeEquationList#unify()
+ * @see TypeEquationList#unify()
  */
 public final class UnificationException extends Exception
 {

@@ -5,7 +5,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 
 import de.unisiegen.tpml.core.Messages;
-import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
 import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
@@ -48,6 +47,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
 public final class DefaultTypeEquationList implements TypeEquationList,
     PrettyPrintable, LatexPrintable
 {
+
   /**
    * Sets the parser end offset.
    * 
@@ -59,6 +59,8 @@ public final class DefaultTypeEquationList implements TypeEquationList,
   {
     this.parserEndOffset = pParserEndOffset;
   }
+
+
   /**
    * Returns the parserEndOffset.
    * 
@@ -71,8 +73,10 @@ public final class DefaultTypeEquationList implements TypeEquationList,
     return this.parserEndOffset;
   }
 
+
   /**
-   * The start offset of this {@link DefaultTypeEquationList} in the source code.
+   * The start offset of this {@link DefaultTypeEquationList} in the source
+   * code.
    * 
    * @see #getParserStartOffset()
    * @see #setParserStartOffset(int)
@@ -87,6 +91,8 @@ public final class DefaultTypeEquationList implements TypeEquationList,
    * @see #setParserEndOffset(int)
    */
   protected int parserEndOffset = -1;
+
+
   /**
    * Returns the parserStartOffset.
    * 
@@ -99,6 +105,7 @@ public final class DefaultTypeEquationList implements TypeEquationList,
     return this.parserStartOffset;
   }
 
+
   /**
    * Sets the parser start offset.
    * 
@@ -110,6 +117,8 @@ public final class DefaultTypeEquationList implements TypeEquationList,
   {
     this.parserStartOffset = pParserStartOffset;
   }
+
+
   /**
    * The empty equation list.
    * 
@@ -126,8 +135,8 @@ public final class DefaultTypeEquationList implements TypeEquationList,
   public static LatexCommandList getLatexCommandsStatic ()
   {
     LatexCommandList commands = new LatexCommandList ();
-    commands.add ( new DefaultLatexCommand (
-        LATEX_TYPE_EQUATION_LIST, 1, "\\color{" //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_TYPE_EQUATION_LIST, 1,
+        "\\color{" //$NON-NLS-1$
             + LATEX_COLOR_NONE + "}{\\{}#1\\color{" //$NON-NLS-1$
             + LATEX_COLOR_NONE + "}{\\}}", "teqn1, ... , teqnn" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     return commands;
@@ -215,8 +224,7 @@ public final class DefaultTypeEquationList implements TypeEquationList,
    * 
    * @see TypeEquationList#extend(TypeEquation)
    */
-  public DefaultTypeEquationList extend (
-      TypeEquation pTypeEquation )
+  public DefaultTypeEquationList extend ( TypeEquation pTypeEquation )
   {
     return new DefaultTypeEquationList ( pTypeEquation, this );
   }
