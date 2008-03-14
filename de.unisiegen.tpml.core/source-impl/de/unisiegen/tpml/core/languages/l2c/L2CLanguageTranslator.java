@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.languages.l2o.L2OLanguageTranslator;
  * Language translator for the <code>L2C</code> language.
  * 
  * @author Christian Fehler
- * @version $Rev: 1066 $
+ * @version $Rev$
  * @see L2OLanguage
  */
 public class L2CLanguageTranslator extends L2OLanguageTranslator

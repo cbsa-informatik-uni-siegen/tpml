@@ -17,7 +17,7 @@ import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard;
  * methods for closing, collapsing and expanding the current node and all nodes.
  * 
  * @author Christian Fehler
- * @version $Rev: 995 $
+ * @version $Rev$
  */
 public final class OutlineActionListener implements ActionListener
 {

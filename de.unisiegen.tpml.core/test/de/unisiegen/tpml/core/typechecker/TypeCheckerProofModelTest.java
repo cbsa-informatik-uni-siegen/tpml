@@ -32,7 +32,7 @@ import de.unisiegen.tpml.core.languages.LanguageFactory;
  * {@link de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel} class.
  * 
  * @author Benedikt Meurer
- * @version $Id: BigStepProofModelTest.java 268 2006-09-19 12:45:02Z benny $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel
  */
 @ SuppressWarnings ( "all" )

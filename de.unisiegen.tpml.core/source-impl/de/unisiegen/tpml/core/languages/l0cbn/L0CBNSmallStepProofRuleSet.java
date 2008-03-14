@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofContext;
  * Small step proof rules for the <code>L0CBN</code> language.
  * 
  * @author Christian Fehler
- * @version $Rev: 995 $
+ * @version $Rev$
  * @see de.unisiegen.tpml.core.languages.l0.L0SmallStepProofRuleSet
  */
 public class L0CBNSmallStepProofRuleSet extends L0SmallStepProofRuleSet

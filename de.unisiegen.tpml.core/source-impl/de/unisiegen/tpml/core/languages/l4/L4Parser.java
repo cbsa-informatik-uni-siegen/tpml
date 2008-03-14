@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.languages.LanguageScanner;
  * The parser class for the <code>L4</code> language.
  * 
  * @author Benedikt Meurer
- * @version $Rev: 286 $
+ * @version $Rev$
  * @see de.unisiegen.tpml.core.languages.l4.L4AbstractParser
  */
 final class L4Parser extends L4AbstractParser

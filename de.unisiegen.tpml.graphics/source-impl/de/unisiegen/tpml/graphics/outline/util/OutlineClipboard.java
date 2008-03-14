@@ -16,7 +16,7 @@ import java.io.IOException;
  * which is current saved in the clipboard.
  * 
  * @author Christian Fehler
- * @version $Rev: 995 $
+ * @version $Rev$
  */
 public final class OutlineClipboard implements ClipboardOwner
 {

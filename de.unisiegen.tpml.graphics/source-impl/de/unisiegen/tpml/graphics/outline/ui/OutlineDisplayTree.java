@@ -8,7 +8,7 @@ import de.unisiegen.tpml.graphics.outline.DefaultOutline;
  * Displays the tree in the {@link OutlineUI}.
  * 
  * @author Christian Fehler
- * @version $Rev: 995 $
+ * @version $Rev$
  */
 public final class OutlineDisplayTree implements Runnable
 {

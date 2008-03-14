@@ -23,7 +23,7 @@ import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
  * Big step proof rules for the <b>L2C</b> and derived languages.
  * 
  * @author Christian Fehler
- * @version $Rev: 1066 $
+ * @version $Rev$
  * @see L2OBigStepProofRuleSet
  */
 public class L2CBigStepProofRuleSet extends L2OBigStepProofRuleSet

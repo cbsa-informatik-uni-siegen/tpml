@@ -46,7 +46,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * 
  * @author Benedikt Meurer
  * @author Benjamin Mies
- * @version $Id: Lt1TypeCheckerProofRuleSet.java 272 2006-09-19 15:55:48Z benny $
+ * @version $Id$
  * @see de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet
  */
 public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet

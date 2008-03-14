@@ -15,7 +15,7 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
  * {@link OutlineNode} values replace, binding, unbound and autoupdate.
  * 
  * @author Christian Fehler
- * @version $Rev: 995 $
+ * @version $Rev$
  */
 public final class OutlineItemListener implements ItemListener
 {

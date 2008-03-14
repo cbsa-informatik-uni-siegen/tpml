@@ -153,7 +153,13 @@
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
 	</target>
-	
+
+	<!-- svn-keywords -->
+	<target name="svn-keywords" description="Set svn keywords">
+		<exec dir="${basedir}" os="Linux" executable="./keywords.sh" />
+		<echo message="Set svn keywords finished" />
+	</target>
+
 	<!-- svn-version -->
 	<target name="svn-version">
 		<delete dir="${tmpdir}" includeemptydirs="true" />

@@ -24,7 +24,7 @@ import de.unisiegen.tpml.core.languages.l3.L3Language;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev: 287 $
+ * @version $Rev$
  * @see de.unisiegen.tpml.core.languages.l3.L3BigStepProofRuleSet
  */
 public class L4BigStepProofRuleSet extends L3BigStepProofRuleSet

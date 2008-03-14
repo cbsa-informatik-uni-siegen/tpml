@@ -17,7 +17,7 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
  * <code>JSplitPane</code>.
  * 
  * @author Christian Fehler
- * @version $Rev: 1075 $
+ * @version $Rev$
  */
 public final class OutlinePreferences
 {
