@@ -10,6 +10,7 @@
     </description>
 
 	<property file="${basedir}/build.properties" />
+	<property name="tpml.version" value="${tpml.version.major}.${tpml.version.minor}.${tpml.version.micro}" />
 	<property name="libdir" value="${basedir}/lib" />
 
 
@@ -22,7 +23,7 @@
 	<property name="classesdir" value="${distdir}/classes" />
 
 	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-3rdparty,dist-clean" description="Build distribution">
-		<echo message="Distribution ready in ${distdir}/de.unisiegen.tpml.core-${de.unisiegen.tpml.core.version}.jar" />
+		<echo message="Distribution ready in ${distdir}/de.unisiegen.tpml.core-${tpml.version}.jar" />
 	</target>
 
 	<target name="dist-preclean">
@@ -49,16 +50,16 @@
 			<attribute name="Built-By" value="${user.name}" />
 			<section name="de.unisiegen.tpml.core">
 				<attribute name="Specification-Title" value="TPML Core" />
-				<attribute name="Specification-Version" value="${de.unisiegen.tpml.core.version}" />
+				<attribute name="Specification-Version" value="${tpml.version}" />
 				<attribute name="Specification-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
 				<attribute name="Implementation-Title" value="de.unisiegen.tpml.core" />
-				<attribute name="Implementation-Version" value="${de.unisiegen.tpml.core.version} ${TODAY}" />
+				<attribute name="Implementation-Version" value="${tpml.version} ${TODAY}" />
 				<attribute name="Implementation-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
 			</section>
 		</manifest>
 		<mkdir dir="${classesdir}/META-INF" />
 		<copy todir="${classesdir}/META-INF" file="${basedir}/doc/LICENSE" />
-		<jar jarfile="${distdir}/de.unisiegen.tpml.core-${de.unisiegen.tpml.core.version}.jar" manifest="${distdir}/MANIFEST.MF">
+		<jar jarfile="${distdir}/de.unisiegen.tpml.core-${tpml.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${basedir}/source">
 				<include name="**/*.properties" />
@@ -199,4 +200,34 @@
 		<jflex file="${impldir}/de/unisiegen/tpml/core/languages/l4/l4type.flex" destdir="${generateddir}" nobak="yes" />
 		<cup srcfile="${impldir}/de/unisiegen/tpml/core/languages/l4/l4type.cup" destdir="${generateddir}/de/unisiegen/tpml/core/languages/l4" package="de.unisiegen.tpml.core.languages.l4" parser="L4AbstractTypeParser" symbols="L4TypeTerminals" interface="yes" debug="no" expect="1000000" nonterms="no" nopositions="no" compact_red="yes" dump_grammar="no" />
 	</target>
+
+	<target name="javadoc">
+		<javadoc access="package" author="true" version="true" classpath="lib/java-cup-11a-runtime.jar:lib/log4j-1.2.14.jar" destdir="doc/manual" source="1.5" windowtitle="TPML Core Reference Manual" encoding="UTF-8" overview="doc/overview.html">
+
+			<doctitle>
+				<![CDATA[<h1>TPML Core Reference Manual</h1>]]></doctitle>
+		<bottom>
+			<![CDATA[Copyright (c) 2005-2006 University of Siegen]]>
+		</bottom>
+
+		<fileset dir="source">
+			<include name="de/unisiegen/tpml/core/**/*.java" />
+		</fileset>
+		<fileset dir="source-impl">
+			<include name="de/unisiegen/tpml/core/**/*.java" />
+		</fileset>
+		<fileset dir="source-generated">
+			<include name="de/unisiegen/tpml/core/**/*.java" />
+		</fileset>
+
+		<group title="Basics" packages="de.unisiegen.tpml.core:de.unisiegen.tpml.core.languages:de.unisiegen.tpml.core.prettyprinter" />
+		<group title="Utilities" packages="de.unisiegen.tpml.core.util*" />
+		<group title="Expression and Type Hierarchy" packages="de.unisiegen.tpml.core.expressions:de.unisiegen.tpml.core.types" />
+		<group title="Interpreters and Type Checker" packages="de.unisiegen.tpml.core.interpreters:de.unisiegen.tpml.core.bigstep:de.unisiegen.tpml.core.smallstep:de.unisiegen.tpml.core.typechecker" />
+		<group title="Language Implementations" packages="de.unisiegen.tpml.core.languages.l*" />
+
+		<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
+
+	</javadoc>
+</target>
 </project>

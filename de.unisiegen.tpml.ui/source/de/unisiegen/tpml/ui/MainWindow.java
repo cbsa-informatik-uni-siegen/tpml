@@ -79,7 +79,8 @@ public class MainWindow
     this.window.setMainWindow ( this );
 
     // initComponents ( ) ;
-    this.window.setTitle ( "TPML " + Versions.UI ); //$NON-NLS-1$
+    this.window.setTitle ( "TPML " + Version.MAJOR + "." + Version.MINOR //$NON-NLS-1$ //$NON-NLS-2$
+        + "." + Version.MICRO ); //$NON-NLS-1$
     // position the window
     PreferenceManager prefmanager = PreferenceManager.get ();
     this.window.setBounds ( prefmanager.getWindowBounds () );

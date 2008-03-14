@@ -32,7 +32,8 @@ public class AboutDialog extends javax.swing.JDialog
   {
     super ( parent, modal );
     initComponents ();
-    this.textLabel.setText ( "TPML " + Versions.UI ); //$NON-NLS-1$
+    this.textLabel.setText ( "TPML " + Version.MAJOR + "." + Version.MINOR //$NON-NLS-1$ //$NON-NLS-2$
+        + "." + Version.MICRO ); //$NON-NLS-1$
   }
 
 

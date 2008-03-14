@@ -9,7 +9,8 @@
 		Buildfile for tpml.dev.core subproject.
     </description>
 
-	<property file="${basedir}/build.properties" />
+	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
+	<property file="${core.basedir}/build.properties" />
 	<property name="libdir" value="${basedir}/../de.unisiegen.tpml.core/lib" />
 
 	<property name="impldir" value="${basedir}/source-impl" />

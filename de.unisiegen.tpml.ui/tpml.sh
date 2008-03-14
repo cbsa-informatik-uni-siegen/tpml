@@ -53,7 +53,7 @@ Encoding=UTF-8
 Version=1.0
 Type=Application
 NoDisplay=false
-Name=TPML @de.unisiegen.tpml.ui.version@
+Name=TPML @tpml.version@
 Comment=TPML education tool
 Comment[de]=TPML Lernwerkzeug
 TryExec="$REALPATH/tpml.sh"
@@ -65,4 +65,4 @@ EOF
 update-desktop-database "$XDG_DATA_HOME/applications" > /dev/null
 
 # execute the application
-exec java -jar "$REALPATH/de.unisiegen.tpml.ui-@de.unisiegen.tpml.ui.version@.jar" "$@"
+exec java -jar "$REALPATH/de.unisiegen.tpml.ui-@tpml.version@.jar" "$@"

@@ -9,13 +9,10 @@
 		Buildfile for the de.unisiegen.tpml.graphics subproject.
 	</description>
 
-	<property file="${basedir}/build.properties" />
-
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.tpml.core" />
 	<property name="core.distdir" value="${core.basedir}/dist" />
 	<property file="${core.basedir}/build.properties" />
-
-
+	<property name="tpml.version" value="${tpml.version.major}.${tpml.version.minor}.${tpml.version.micro}" />
 
 	<!--
 		Build distributions
@@ -25,7 +22,7 @@
 	<property name="classesdir" value="${distdir}/classes" />
 
 	<target name="dist" depends="dist-core,dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
-		<echo message="Distribution ready in ${distdir}/de.unisiegen.tpml.graphics-${de.unisiegen.tpml.graphics.version}.jar" />
+		<echo message="Distribution ready in ${distdir}/de.unisiegen.tpml.graphics-${tpml.version}.jar" />
 	</target>
 
 	<target name="dist-core">
@@ -44,7 +41,7 @@
 			<src path="${basedir}/source" />
 			<src path="${basedir}/source-impl" />
 			<classpath>
-				<pathelement location="${core.distdir}/de.unisiegen.tpml.core-${de.unisiegen.tpml.core.version}.jar" />
+				<pathelement location="${core.distdir}/de.unisiegen.tpml.core-${tpml.version}.jar" />
 				<pathelement location="${core.distdir}/java-cup-11a-runtime.jar" />
 				<pathelement location="${core.distdir}/log4j-1.2.14.jar" />
 			</classpath>
@@ -56,16 +53,16 @@
 			<attribute name="Built-By" value="${user.name}" />
 			<section name="de.unisiegen.tpml.ui">
 				<attribute name="Specification-Title" value="TPML Graphics" />
-				<attribute name="Specification-Version" value="${de.unisiegen.tpml.graphics.version}" />
+				<attribute name="Specification-Version" value="${tpml.version}" />
 				<attribute name="Specification-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
 				<attribute name="Implementation-Title" value="de.unisiegen.tpml.graphics" />
-				<attribute name="Implementation-Version" value="${de.unisiegen.tpml.graphics.version} ${TODAY}" />
+				<attribute name="Implementation-Version" value="${tpml.version} ${TODAY}" />
 				<attribute name="Implementation-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
 			</section>
 		</manifest>
 		<mkdir dir="${classesdir}/META-INF" />
 		<copy todir="${classesdir}/META-INF" file="${basedir}/doc/LICENSE" />
-		<jar jarfile="${distdir}/de.unisiegen.tpml.graphics-${de.unisiegen.tpml.graphics.version}.jar" manifest="${distdir}/MANIFEST.MF">
+		<jar jarfile="${distdir}/de.unisiegen.tpml.graphics-${tpml.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${basedir}/source-impl">
 				<include name="**/*.gif" />
@@ -78,4 +75,32 @@
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
 	</target>
+
+	<target name="javadoc">
+		<javadoc access="private" author="true" version="true" classpath="lib/java-cup-11a-runtime.jar:lib/log4j-1.2.14.jar" destdir="doc/manual" source="1.5" windowtitle="TPML Graphics Reference Manual" encoding="UTF-8">
+
+			<doctitle>
+				<![CDATA[<h1>TPML Graphics Reference Manual</h1>]]></doctitle>
+		<bottom>
+			<![CDATA[Copyright (c) 2005-2007 University of Siegen]]>
+		</bottom>
+
+		<fileset dir="source">
+			<include name="de/unisiegen/tpml/graphics/**/*.java" />
+		</fileset>
+		<fileset dir="source-impl">
+			<include name="de/unisiegen/tpml/graphics/**/*.java" />
+		</fileset>
+
+		<!--
+			<group title="Basics" packages="de.unisiegen.tpml.core:de.unisiegen.tpml.core.languages:de.unisiegen.tpml.core.prettyprinter" />
+			<group title="Utilities" packages="de.unisiegen.tpml.core.util*" />
+			<group title="Expression and Type Hierarchy" packages="de.unisiegen.tpml.core.expressions:de.unisiegen.tpml.core.types" />
+			<group title="Interpreters and Type Checker" packages="de.unisiegen.tpml.core.interpreters:de.unisiegen.tpml.core.bigstep:de.unisiegen.tpml.core.smallstep:de.unisiegen.tpml.core.typechecker" />
+			<group title="Language Implementations" packages="de.unisiegen.tpml.core.languages.l*" />
+			-->
+		<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
+
+	</javadoc>
+</target>
 </project>
