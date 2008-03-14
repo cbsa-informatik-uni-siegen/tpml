@@ -49,7 +49,6 @@ public class Start
     int lengthWihtoutDiv = toDivC.length;
     // lets count the split-char
     int countdiv = 0;
-    // walk through the array
     for ( int i = 0 ; i < toDivC.length ; i++ )
     {
       // div-char is found
@@ -131,7 +130,7 @@ public class Start
     {
       return true;
     }
-    if ( first == neededMaster && second >= neededSlave )
+    if ( ( first == neededMaster ) && ( second >= neededSlave ) )
     {
       return true;
     }
@@ -166,7 +165,7 @@ public class Start
     if ( force )
     {
       // build the other arguments to provide open files
-      String Arguments[] = new String [ args.length - 1 ];
+      String arguments[] = new String [ args.length - 1 ];
       int j = 0;
       for ( int i = 0 ; i < args.length ; i++ )
       {
@@ -177,11 +176,11 @@ public class Start
         }
         else
         {
-          Arguments [ j ] = args [ i ];
+          arguments [ j ] = args [ i ];
           j++ ;
         }
       }
-      Main.main ( Arguments );
+      Main.main ( arguments );
     }
     else
     // no force, check
