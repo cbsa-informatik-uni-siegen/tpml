@@ -111,19 +111,19 @@ public final class SVNVersion
     // ui
     newVersion = getVersion ( new File ( "../de.unisiegen.tpml.ui" ) ); //$NON-NLS-1$
     version = newVersion > version ? newVersion : version;
-    
+
     // dev core
     newVersion = getVersion ( new File ( "../tpml.dev.core" ) ); //$NON-NLS-1$
     version = newVersion > version ? newVersion : version;
-    
+
     // dev graphics
     newVersion = getVersion ( new File ( "../tpml.dev.graphics" ) ); //$NON-NLS-1$
     version = newVersion > version ? newVersion : version;
-    
+
     // dev ui
     newVersion = getVersion ( new File ( "../tpml.dev.ui" ) ); //$NON-NLS-1$
     version = newVersion > version ? newVersion : version;
-    
+
     // htdocs
     newVersion = getVersion ( new File ( "../tpml.htdocs" ) ); //$NON-NLS-1$
     version = newVersion > version ? newVersion : version;
@@ -131,15 +131,15 @@ public final class SVNVersion
     // javacup
     newVersion = getVersion ( new File ( "../tpml.javacup" ) ); //$NON-NLS-1$
     version = newVersion > version ? newVersion : version;
-    
+
     // manual
     newVersion = getVersion ( new File ( "../tpml.manual" ) ); //$NON-NLS-1$
     version = newVersion > version ? newVersion : version;
-    
+
     // presentation
     newVersion = getVersion ( new File ( "../tpml.presentation" ) ); //$NON-NLS-1$
     version = newVersion > version ? newVersion : version;
-    
+
     return version;
   }
 
@@ -221,6 +221,7 @@ public final class SVNVersion
               }
               newVersion = Integer.parseInt ( s );
               version = newVersion > version ? newVersion : version;
+              break;
             }
           }
         }
