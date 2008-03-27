@@ -10,8 +10,7 @@ import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
  * base interface to nodes in a UnifyProofModel
  * 
  * @author Christian Uhrhan
- * @version $Id: UnifyProofNode.java 2792 2008-03-14 12:25:20Z mies $
- * @see de.unisiegen.tpml.core.unify.UnifyProofModel
+ * @version $Id$
  */
 public interface UnifyProofContext
 {
