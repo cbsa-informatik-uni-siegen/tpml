@@ -121,10 +121,12 @@ public abstract class LatexExport implements LatexCommandNames
    * @param pLatexFile The latex {@link File}.
    * @param pOneFile If true, only one file is exported, otherwise the tpml file
    *          is used as an import.
+   * @param sourceCode Flag that indicates if the source code should be printed.
    * @throws LatexException If something in the latex export does not work.
    */
   public final static void export ( LatexPrintable pLatexPrintable,
-      File pLatexFile, boolean pOneFile ) throws LatexException
+      File pLatexFile, boolean pOneFile, boolean sourceCode )
+      throws LatexException
   {
     if ( pLatexPrintable == null )
     {
@@ -138,7 +140,7 @@ public abstract class LatexExport implements LatexCommandNames
     {
       throw new IllegalArgumentException ( "input file is not a normal file" ); //$NON-NLS-1$
     }
-    // eateregg
+    // esteregg
     if ( pLatexPrintable.toLatexString ().toString ().contains ( "\\" //$NON-NLS-1$
         + LATEX_IDENTIFIER + "{spiderschwein}" ) ) //$NON-NLS-1$
     {
@@ -146,7 +148,7 @@ public abstract class LatexExport implements LatexCommandNames
     }
     else
     {
-      exportLatex ( pLatexPrintable, pLatexFile, pOneFile );
+      exportLatex ( pLatexPrintable, pLatexFile, pOneFile, sourceCode );
     }
   }
 
@@ -230,10 +232,12 @@ public abstract class LatexExport implements LatexCommandNames
    * @param pLatexFile The latex {@link File}.
    * @param pOneFile If true, only one file is exported, otherwise the tpml file
    *          is used as an import.
+   * @param sourceCode Flag that indicates if the source code should be printed.
    * @throws LatexException If something in the latex export does not work.
    */
   private final static void exportLatex ( LatexPrintable pLatexPrintable,
-      File pLatexFile, boolean pOneFile ) throws LatexException
+      File pLatexFile, boolean pOneFile, boolean sourceCode )
+      throws LatexException
   {
     BufferedWriter writer;
     try
@@ -260,7 +264,14 @@ public abstract class LatexExport implements LatexCommandNames
     println ( writer, "\\setlength{\\parindent}{0pt}" ); //$NON-NLS-1$
     println ( writer, "\\pagestyle{empty}" ); //$NON-NLS-1$
     println ( writer, "\\oddsidemargin=-30pt" ); //$NON-NLS-1$
-    println ( writer, "\\topmargin=-60pt" ); //$NON-NLS-1$
+    if ( sourceCode )
+    {
+      println ( writer, "\\topmargin=-120pt" ); //$NON-NLS-1$
+    }
+    else
+    {
+      println ( writer, "\\topmargin=-60pt" ); //$NON-NLS-1$
+    }
     println ( writer, "\\textwidth=510pt" ); //$NON-NLS-1$
     println ( writer, "\\textheight=750pt" ); //$NON-NLS-1$
     println ( writer );
@@ -587,8 +598,7 @@ public abstract class LatexExport implements LatexCommandNames
     instructions.add ( SeenTypes.getLatexInstructionsStatic () );
     instructions.add ( DefaultTypeSubstitution.getLatexInstructionsStatic () );
     instructions.add ( DefaultTypeEquation.getLatexInstructionsStatic () );
-    instructions.add ( DefaultTypeEquationList
-        .getLatexInstructionsStatic () );
+    instructions.add ( DefaultTypeEquationList.getLatexInstructionsStatic () );
     instructions.add ( DefaultTypeCheckerExpressionProofNode
         .getLatexInstructionsStatic () );
     instructions.add ( DefaultTypeCheckerTypeProofNode
@@ -596,8 +606,7 @@ public abstract class LatexExport implements LatexCommandNames
     instructions.add ( TypeCheckerProofModel.getLatexInstructionsStatic () );
     // TypeInference
     instructions.add ( DefaultTypeEquation.getLatexInstructionsStatic () );
-    instructions.add ( DefaultTypeEquationList
-        .getLatexInstructionsStatic () );
+    instructions.add ( DefaultTypeEquationList.getLatexInstructionsStatic () );
     instructions.add ( TypeSubstitutionList.getLatexInstructionsStatic () );
     instructions.add ( TypeJudgement.getLatexInstructionsStatic () );
     instructions.add ( TypeSubType.getLatexInstructionsStatic () );

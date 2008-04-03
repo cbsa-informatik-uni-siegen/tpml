@@ -995,7 +995,7 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
           throw new NullPointerException ();
         }
         DefaultSubType subtype = new DefaultSubType ( type1, type2 );
-        GeneralLaTex laTex = new GeneralLaTex ( subtype, this.mypanel );
+        GeneralLaTex laTex = new GeneralLaTex ( subtype, this.mypanel, true );
         laTex.export ();
       }
       catch ( Exception e )
@@ -1010,7 +1010,8 @@ public class EditorPanelTypes extends AbstractBean implements EditorPanel
     else
     {
       GeneralLaTex laTex = new GeneralLaTex (
-          ( ( ProofViewComponent ) getComponent () ).getModel (), this.mypanel );
+          ( ( ProofViewComponent ) getComponent () ).getModel (), this.mypanel,
+          false );
       laTex.export ();
     }
   }

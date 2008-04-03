@@ -590,6 +590,12 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     builder.addText ( "\\begin{smallstepnode}" ); //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 );
     builder.addText ( "$" ); //$NON-NLS-1$
+
+    boolean useStore = ( ( SmallStepProofNode ) this.root ).getExpression ()
+        .containsMemoryOperations ();
+    ( ( DefaultSmallStepProofNode ) this.root )
+        .setUseLatexExportStore ( useStore );
+
     builder.addBuilderWithoutBrackets ( this.root.toLatexStringBuilder (
         pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
     builder.addSourceCodeBreak ( 0 );
@@ -604,8 +610,11 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     }
     for ( int i = 0 ; i < this.root.getChildCount () ; i++ )
     {
+      DefaultSmallStepProofNode child = ( DefaultSmallStepProofNode ) this.root
+          .getChildAt ( i );
+      child.setUseLatexExportStore ( useStore );
       toLatexStringBuilderInternal ( pLatexStringBuilderFactory, builder,
-          this.root, this.root.getChildAt ( i ), pIndent );
+          this.root, child, pIndent, useStore );
     }
     builder.addBuilderEnd ();
     return builder;
@@ -622,11 +631,12 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
    *          is needed because of his {@link ProofNode}s.
    * @param pCurrentNode The current {@link ProofNode}.
    * @param pIndent The indent of this object.
+   * @param useStore Flag that indicates if the store should be latex exported.
    */
   public final void toLatexStringBuilderInternal (
       LatexStringBuilderFactory pLatexStringBuilderFactory,
       LatexStringBuilder pLatexStringBuilder, ProofNode pParentNode,
-      ProofNode pCurrentNode, int pIndent )
+      ProofNode pCurrentNode, int pIndent, boolean useStore )
   {
     ProofRule [] rules = pParentNode.getRules ();
     pLatexStringBuilder.addText ( "\\begin{smallsteprulearrow}" ); //$NON-NLS-1$
@@ -749,6 +759,11 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
     pLatexStringBuilder.addText ( "\\begin{smallstepnode}" );//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 );
     pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+
+    // Set the use store flag
+    ( ( DefaultSmallStepProofNode ) pCurrentNode )
+        .setUseLatexExportStore ( useStore );
+
     pLatexStringBuilder.addBuilderWithoutBrackets ( pCurrentNode
         .toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent
             + LATEX_INDENT ), 0 );
@@ -764,7 +779,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel
       pLatexStringBuilder.addSourceCodeBreak ( 0 );
       toLatexStringBuilderInternal ( pLatexStringBuilderFactory,
           pLatexStringBuilder, pCurrentNode, pCurrentNode.getChildAt ( i ),
-          pIndent );
+          pIndent, useStore );
     }
   }
 

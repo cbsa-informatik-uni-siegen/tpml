@@ -256,7 +256,7 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel
 
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public void componentShown ( @SuppressWarnings("unused")
+      public void componentShown ( @SuppressWarnings ( "unused" )
       java.awt.event.ComponentEvent evt )
       {
         EditorPanelExpression.this.code.getEditor ().requestFocus ();
@@ -275,15 +275,17 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel
   {
     if ( ident.equals ( "nextStatus" ) ) //$NON-NLS-1$
     {
-      this.mypanel.nextButton.setEnabled ( (( Boolean ) newValue).booleanValue () );
+      this.mypanel.nextButton.setEnabled ( ( ( Boolean ) newValue )
+          .booleanValue () );
     }
     else if ( ident.equals ( "pongStatus" ) )//$NON-NLS-1$
     {
-      this.mypanel.pongButton.setVisible ( (( Boolean ) newValue).booleanValue () );
+      this.mypanel.pongButton.setVisible ( ( ( Boolean ) newValue )
+          .booleanValue () );
     }
     else if ( ident.equals ( "redoStatus" ) )//$NON-NLS-1$
     {
-      setRedoStatus ( (( Boolean ) newValue).booleanValue () );
+      setRedoStatus ( ( ( Boolean ) newValue ).booleanValue () );
     }
     else if ( ident.equals ( "title" ) )//$NON-NLS-1$
     {
@@ -291,12 +293,12 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel
     }
     else if ( ident.equals ( "undoStatus" ) )//$NON-NLS-1$
     {
-      setUndoStatus ( (( Boolean ) newValue).booleanValue () );
+      setUndoStatus ( ( ( Boolean ) newValue ).booleanValue () );
     }
     else if ( ident.equals ( "changed" ) )//$NON-NLS-1$
     {
       // setChanged((Boolean) newValue);
-      setUndoStatus ( (( Boolean ) newValue).booleanValue () );
+      setUndoStatus ( ( ( Boolean ) newValue ).booleanValue () );
     }
 
   }
@@ -304,7 +306,7 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel
 
   /**
    * TODO
-   *
+   * 
    * @param comp
    */
   private void updateComponentStates ( EditorComponent comp )
@@ -1114,7 +1116,7 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel
       try
       {
         Expression exp = this.code.getDocument ().getExpression ();
-        GeneralLaTex laTex = new GeneralLaTex ( exp, this.mypanel );
+        GeneralLaTex laTex = new GeneralLaTex ( exp, this.mypanel, true );
         laTex.export ();
       }
       catch ( Exception e )
@@ -1133,7 +1135,8 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel
     else
     {
       GeneralLaTex laTex = new GeneralLaTex (
-          ( ( ProofViewComponent ) getComponent () ).getModel (), this.mypanel );
+          ( ( ProofViewComponent ) getComponent () ).getModel (), this.mypanel,
+          false );
       laTex.export ();
     }
 

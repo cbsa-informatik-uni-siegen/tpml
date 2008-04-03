@@ -79,6 +79,12 @@ public final class BigStepProofResult implements PrettyPrintable,
 
 
   /**
+   * Flag that indicates if the store should be latex exported.
+   */
+  private boolean useLatexExportStore = false;
+
+
+  /**
    * The resulting store of a proof node.
    * 
    * @see #getStore()
@@ -189,6 +195,30 @@ public final class BigStepProofResult implements PrettyPrintable,
 
 
   /**
+   * Returns the useLatexExportStore.
+   * 
+   * @return The useLatexExportStore.
+   * @see #useLatexExportStore
+   */
+  public final boolean isUseLatexExportStore ()
+  {
+    return this.useLatexExportStore;
+  }
+
+
+  /**
+   * Sets the useLatexExportStore.
+   * 
+   * @param useLatexExportStore The useLatexExportStore to set.
+   * @see #useLatexExportStore
+   */
+  public final void setUseLatexExportStore ( boolean useLatexExportStore )
+  {
+    this.useLatexExportStore = useLatexExportStore;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see LatexPrintable#toLatexString()
@@ -209,7 +239,7 @@ public final class BigStepProofResult implements PrettyPrintable,
       LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
     StringBuilder body = new StringBuilder ();
-    if ( this.value.containsMemoryOperations () )
+    if ( this.useLatexExportStore )
     {
       body.append ( this.value.toPrettyString ().toString () );
       body.append ( PRETTY_SPACE );
@@ -223,10 +253,10 @@ public final class BigStepProofResult implements PrettyPrintable,
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
         LATEX_BIG_STEP_PROOF_RESULT, pIndent, this.toPrettyString ()
             .toString (), body.toString (), this.value.toPrettyString ()
-            .toString (), this.value.containsMemoryOperations () ? this
-            .getStore ().toPrettyString ().toString () : LATEX_NO_STORE );
+            .toString (), this.useLatexExportStore ? this.getStore ()
+            .toPrettyString ().toString () : LATEX_NO_STORE );
     builder.addBuilderBegin ();
-    if ( this.value.containsMemoryOperations () )
+    if ( this.useLatexExportStore )
     {
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( pIndent

@@ -645,8 +645,12 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
         .addText ( "\\newcommand{\\longtext}[1]{\\oddsidemargin=#1\\enlargethispage{2730mm}" ); //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 );
     builder.addText ( "\\mktree{" ); //$NON-NLS-1$
+
+    boolean useStore = ( ( BigStepProofNode ) this.root ).getExpression ()
+        .containsMemoryOperations ();
+
     toLatexStringBuilderInternal ( pLatexStringBuilderFactory, builder,
-        this.root, pIndent, -1 );
+        this.root, pIndent, -1, useStore );
     builder.addText ( "}" ); //$NON-NLS-1$
     builder.addText ( "}" ); //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 );
@@ -672,13 +676,19 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
    * @param pCurrentNode The current {@link ProofNode}.
    * @param pIndent The indent of this object.
    * @param pDepth the depth of the actual node
+   * @param useStore Flag that indicates if the store should be latex exported.
    */
   public final void toLatexStringBuilderInternal (
       LatexStringBuilderFactory pLatexStringBuilderFactory,
       LatexStringBuilder pLatexStringBuilder, ProofNode pCurrentNode,
-      int pIndent, int pDepth )
+      int pIndent, int pDepth, boolean useStore )
   {
     int depth = pDepth + 1;
+
+    // Set the use store flag
+    ( ( DefaultBigStepProofNode ) pCurrentNode )
+        .setUseLatexExportStore ( useStore );
+
     pLatexStringBuilder.addBuilder ( pCurrentNode.toLatexStringBuilder (
         pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
     int value = 180;
@@ -695,7 +705,8 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel
     for ( int i = 0 ; i < pCurrentNode.getChildCount () ; i++ )
     {
       toLatexStringBuilderInternal ( pLatexStringBuilderFactory,
-          pLatexStringBuilder, pCurrentNode.getChildAt ( i ), pIndent, depth );
+          pLatexStringBuilder, pCurrentNode.getChildAt ( i ), pIndent, depth,
+          useStore );
     }
   }
 

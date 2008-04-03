@@ -86,6 +86,12 @@ public final class DefaultSmallStepProofNode extends
 
 
   /**
+   * Flag that indicates if the store should be latex exported.
+   */
+  private boolean useLatexExportStore = false;
+
+
+  /**
    * Convenience wrapper for
    * {@link #DefaultSmallStepProofNode(Expression, Store)}, which passes an
    * empty {@link Store} for the <code>store</code> parameter.
@@ -288,6 +294,30 @@ public final class DefaultSmallStepProofNode extends
 
 
   /**
+   * Returns the useLatexExportStore.
+   * 
+   * @return The useLatexExportStore.
+   * @see #useLatexExportStore
+   */
+  public final boolean isUseLatexExportStore ()
+  {
+    return this.useLatexExportStore;
+  }
+
+
+  /**
+   * Sets the useLatexExportStore.
+   * 
+   * @param useLatexExportStore The useLatexExportStore to set.
+   * @see #useLatexExportStore
+   */
+  public final void setUseLatexExportStore ( boolean useLatexExportStore )
+  {
+    this.useLatexExportStore = useLatexExportStore;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see LatexPrintable#toLatexString()
@@ -310,11 +340,11 @@ public final class DefaultSmallStepProofNode extends
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
         LATEX_SMALL_STEP_PROOF_NODE, pIndent, this.toPrettyString ()
             .toString (), this.getExpression ().toPrettyString ().toString (),
-        this.getExpression ().containsMemoryOperations () ? this.getStore ()
-            .toPrettyString ().toString () : LATEX_NO_STORE );
+        this.useLatexExportStore ? this.getStore ().toPrettyString ()
+            .toString () : LATEX_NO_STORE );
     builder.addBuilder ( this.getExpression ().toLatexStringBuilder (
         pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
-    if ( this.getExpression ().containsMemoryOperations () )
+    if ( this.useLatexExportStore )
     {
       builder.addBuilder ( this.getStore ().toLatexStringBuilder (
           pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );

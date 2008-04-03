@@ -139,6 +139,12 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
 
 
   /**
+   * Flag that indicates if the store should be latex exported.
+   */
+  private boolean useLatexExportStore = false;
+
+
+  /**
    * Convenience wrapper for {@link #DefaultBigStepProofNode(Expression, Store)},
    * which passes an empty {@link Store} for the <code>store</code> parameter.
    * 
@@ -388,6 +394,18 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
 
 
   /**
+   * Returns the useLatexExportStore.
+   * 
+   * @return The useLatexExportStore.
+   * @see #useLatexExportStore
+   */
+  public final boolean isUseLatexExportStore ()
+  {
+    return this.useLatexExportStore;
+  }
+
+
+  /**
    * Sets the result for the expression at this node. The <code>result</code>
    * must be either <code>null</code> or a {@link BigStepProofResult} with a
    * valid store and a value or an exception (according to the semantics of the
@@ -407,6 +425,18 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
       throw new IllegalArgumentException ( "result is invalid" ); //$NON-NLS-1$
     }
     this.result = pResult;
+  }
+
+
+  /**
+   * Sets the useLatexExportStore.
+   * 
+   * @param useLatexExportStore The useLatexExportStore to set.
+   * @see #useLatexExportStore
+   */
+  public final void setUseLatexExportStore ( boolean useLatexExportStore )
+  {
+    this.useLatexExportStore = useLatexExportStore;
   }
 
 
@@ -439,8 +469,8 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
     }
     LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
         LATEX_BIG_STEP_PROOF_NODE, pIndent, this.toPrettyString ().toString (),
-        this.expression.toPrettyString ().toString (), this.expression
-            .containsMemoryOperations () ? this.getStore ().toPrettyString ()
+        this.expression.toPrettyString ().toString (),
+        this.useLatexExportStore ? this.getStore ().toPrettyString ()
             .toString () : LATEX_NO_STORE,
         this.result == null ? LATEX_NO_RESULT : this.result.toPrettyString ()
             .toString (), this.getRule () == null ? LATEX_NO_RULE : this
@@ -449,7 +479,7 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
     builder.addText ( "{" + String.valueOf ( depth ) + "}" ); //$NON-NLS-1$//$NON-NLS-2$
     builder.addBuilder ( this.expression.toLatexStringBuilder (
         pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
-    if ( this.expression.containsMemoryOperations () )
+    if ( this.useLatexExportStore )
     {
       builder.addBuilder ( getStore ().toLatexStringBuilder (
           pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
@@ -460,6 +490,7 @@ public final class DefaultBigStepProofNode extends AbstractInterpreterProofNode
     }
     if ( this.result != null )
     {
+      this.result.setUseLatexExportStore ( this.useLatexExportStore );
       builder.addBuilder ( this.result.toLatexStringBuilder (
           pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
     }

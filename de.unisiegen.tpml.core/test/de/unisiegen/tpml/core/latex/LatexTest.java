@@ -18,9 +18,9 @@ import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.bigstep.BigStepProofResult;
 import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode;
 import de.unisiegen.tpml.core.entities.DefaultTypeEquation;
+import de.unisiegen.tpml.core.entities.DefaultTypeEquationList;
 import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.entities.TypeEquationList;
-import de.unisiegen.tpml.core.entities.DefaultTypeEquationList;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
@@ -449,7 +449,7 @@ public class LatexTest
           .parse ();
       BigStepProofModel model = language.newBigStepProofModel ( expression );
       model.complete ( nextNode ( model ) );
-      LatexExport.export ( model, pLatexFile, oneFile );
+      LatexExport.export ( model, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -479,7 +479,7 @@ public class LatexTest
       store2.put ( new Location ( "a" ), new IntegerConstant ( 1 ) );
       BigStepProofResult result = new BigStepProofResult ( store2, new Ref () );
       node.setResult ( result );
-      LatexExport.export ( node, pLatexFile, oneFile );
+      LatexExport.export ( node, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -510,7 +510,7 @@ public class LatexTest
         {
         }
       };
-      LatexExport.export ( rule, pLatexFile, oneFile );
+      LatexExport.export ( rule, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -529,7 +529,7 @@ public class LatexTest
       store.put ( new Location ( "Y" ), new IntegerConstant ( 2 ) );
       store.put ( new Location ( "Z" ), new IntegerConstant ( 1 ) );
       BigStepProofResult result = new BigStepProofResult ( store, new Ref () );
-      LatexExport.export ( result, pLatexFile, oneFile );
+      LatexExport.export ( result, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -549,7 +549,7 @@ public class LatexTest
       Language language = factory.getLanguageById ( "l4" );
       Expression expression = language.newParser ( new StringReader ( text ) )
           .parse ();
-      LatexExport.export ( expression, pLatexFile, oneFile );
+      LatexExport.export ( expression, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -577,7 +577,7 @@ public class LatexTest
       DefaultMinimalTypingExpressionProofNode node = new DefaultMinimalTypingExpressionProofNode (
           environment, expression );
       node.setType ( type );
-      LatexExport.export ( node, pLatexFile, oneFile );
+      LatexExport.export ( node, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -599,7 +599,7 @@ public class LatexTest
       MinimalTypingProofModel model = language.newMinimalTypingProofModel (
           expression, false );
       model.complete ( nextNode ( model ) );
-      LatexExport.export ( model, pLatexFile, oneFile );
+      LatexExport.export ( model, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -630,7 +630,7 @@ public class LatexTest
         {
         }
       };
-      LatexExport.export ( rule, pLatexFile, oneFile );
+      LatexExport.export ( rule, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -646,7 +646,7 @@ public class LatexTest
     {
       DefaultMinimalTypingTypesProofNode node = new DefaultMinimalTypingTypesProofNode (
           new IntegerType (), new BooleanType () );
-      LatexExport.export ( node, pLatexFile, oneFile );
+      LatexExport.export ( node, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -669,7 +669,7 @@ public class LatexTest
       RecSubTypingProofModel model = language.newRecSubTypingProofModel ( type,
           type2, false );
       model.complete ( nextNode ( model ) );
-      LatexExport.export ( model, pLatexFile, oneFile );
+      LatexExport.export ( model, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -689,7 +689,7 @@ public class LatexTest
           new IntegerType (), new BooleanType () ) );
       DefaultRecSubTypingProofNode node = new DefaultRecSubTypingProofNode (
           type, type2, new SeenTypes < DefaultSubType > () );
-      LatexExport.export ( node, pLatexFile, oneFile );
+      LatexExport.export ( node, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -713,7 +713,7 @@ public class LatexTest
         {
         }
       };
-      LatexExport.export ( rule, pLatexFile, oneFile );
+      LatexExport.export ( rule, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -733,7 +733,7 @@ public class LatexTest
           new BooleanType (), seenTypes2 ) );
       seenTypes1.add ( new DefaultTypeEquation ( new BooleanType (),
           new UnitType (), seenTypes2 ) );
-      LatexExport.export ( seenTypes1, pLatexFile, oneFile );
+      LatexExport.export ( seenTypes1, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -756,7 +756,7 @@ public class LatexTest
           .parse ();
       SmallStepProofModel model = language.newSmallStepProofModel ( expression );
       model.complete ( nextNode ( model ) );
-      LatexExport.export ( model, pLatexFile, oneFile );
+      LatexExport.export ( model, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -780,7 +780,7 @@ public class LatexTest
           new IntegerConstant ( 3 ) ) );
       DefaultSmallStepProofNode node = new DefaultSmallStepProofNode (
           expression );
-      LatexExport.export ( node, pLatexFile, oneFile );
+      LatexExport.export ( node, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -796,7 +796,7 @@ public class LatexTest
     {
       DefaultSmallStepProofRule rule = new DefaultSmallStepProofRule ( 0,
           "SMALL-STEP-RULE", true );
-      LatexExport.export ( rule, pLatexFile, oneFile );
+      LatexExport.export ( rule, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -814,7 +814,7 @@ public class LatexTest
       store.put ( new Location ( "c" ), new IntegerConstant ( 3 ) );
       store.put ( new Location ( "b" ), new IntegerConstant ( 2 ) );
       store.put ( new Location ( "a" ), new IntegerConstant ( 1 ) );
-      LatexExport.export ( store, pLatexFile, oneFile );
+      LatexExport.export ( store, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -830,7 +830,7 @@ public class LatexTest
     {
       DefaultSubType subType = new DefaultSubType ( new IntegerType (),
           new BooleanType () );
-      LatexExport.export ( subType, pLatexFile, oneFile );
+      LatexExport.export ( subType, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -853,7 +853,7 @@ public class LatexTest
       SubTypingProofModel model = language.newSubTypingProofModel ( type,
           type2, false );
       model.complete ( nextNode ( model ) );
-      LatexExport.export ( model, pLatexFile, oneFile );
+      LatexExport.export ( model, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -873,7 +873,7 @@ public class LatexTest
           new IntegerType (), new IntegerType () ) );
       DefaultSubTypingProofNode node = new DefaultSubTypingProofNode ( type,
           type2 );
-      LatexExport.export ( node, pLatexFile, oneFile );
+      LatexExport.export ( node, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -897,7 +897,7 @@ public class LatexTest
         {
         }
       };
-      LatexExport.export ( rule, pLatexFile, oneFile );
+      LatexExport.export ( rule, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -922,7 +922,7 @@ public class LatexTest
        * TypeVariable ( 0 , 1 ) ) ; quantified.add ( new TypeVariable ( 0 , 2 ) ) ;
        * type = new PolyType ( quantified , new IntegerType ( ) ) ;
        */
-      LatexExport.export ( type, pLatexFile, oneFile );
+      LatexExport.export ( type, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -948,7 +948,7 @@ public class LatexTest
           new IntegerType (), new IntegerType () ) );
       DefaultTypeCheckerExpressionProofNode node = new DefaultTypeCheckerExpressionProofNode (
           environment, expression, type );
-      LatexExport.export ( node, pLatexFile, oneFile );
+      LatexExport.export ( node, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -970,7 +970,7 @@ public class LatexTest
       TypeCheckerProofModel model = language
           .newTypeCheckerProofModel ( expression );
       model.complete ( nextNode ( model ) );
-      LatexExport.export ( model, pLatexFile, oneFile );
+      LatexExport.export ( model, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -1001,7 +1001,7 @@ public class LatexTest
         {
         }
       };
-      LatexExport.export ( rule, pLatexFile, oneFile );
+      LatexExport.export ( rule, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -1021,7 +1021,7 @@ public class LatexTest
           new IntegerType (), new IntegerType () ) );
       DefaultTypeCheckerTypeProofNode node = new DefaultTypeCheckerTypeProofNode (
           type, type2 );
-      LatexExport.export ( node, pLatexFile, oneFile );
+      LatexExport.export ( node, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -1042,7 +1042,7 @@ public class LatexTest
           new Identifier ( "b", Identifier.Set.VARIABLE ), new BooleanType () );
       environment = ( DefaultTypeEnvironment ) environment.extend (
           new Identifier ( "a", Identifier.Set.VARIABLE ), new UnitType () );
-      LatexExport.export ( environment, pLatexFile, oneFile );
+      LatexExport.export ( environment, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -1064,7 +1064,7 @@ public class LatexTest
           new BooleanType (), new UnitType (), seenTypes );
       equationList = equationList.extend ( typeEquation1 );
       equationList = equationList.extend ( typeEquation2 );
-      LatexExport.export ( equationList, pLatexFile, oneFile );
+      LatexExport.export ( equationList, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -1086,7 +1086,7 @@ public class LatexTest
           new BooleanType (), new UnitType (), seenTypes );
       equationList = equationList.extend ( typeEquation1 );
       equationList = equationList.extend ( typeEquation2 );
-      LatexExport.export ( equationList, pLatexFile, oneFile );
+      LatexExport.export ( equationList, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -1103,7 +1103,7 @@ public class LatexTest
       SeenTypes < TypeEquation > seenTypes = new SeenTypes < TypeEquation > ();
       TypeEquation typeEquation = new DefaultTypeEquation ( new IntegerType (),
           new BooleanType (), seenTypes );
-      LatexExport.export ( typeEquation, pLatexFile, oneFile );
+      LatexExport.export ( typeEquation, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -1120,7 +1120,7 @@ public class LatexTest
       SeenTypes < TypeEquation > seenTypes = new SeenTypes < TypeEquation > ();
       TypeEquation typeEquation = new DefaultTypeEquation ( new IntegerType (),
           new BooleanType (), seenTypes );
-      LatexExport.export ( typeEquation, pLatexFile, oneFile );
+      LatexExport.export ( typeEquation, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -1144,7 +1144,7 @@ public class LatexTest
       TypeInferenceProofModel model = language
           .newTypeInferenceProofModel ( expression );
       model.complete ( nextNode ( model ) );
-      LatexExport.export ( model, pLatexFile, oneFile );
+      LatexExport.export ( model, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -1200,7 +1200,7 @@ public class LatexTest
       substitutions.add ( typeSubstitution3 );
       DefaultTypeInferenceProofNode node = new DefaultTypeInferenceProofNode (
           formulas, substitutions );
-      LatexExport.export ( node, pLatexFile, oneFile );
+      LatexExport.export ( node, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -1226,7 +1226,7 @@ public class LatexTest
           new IntegerType (), new IntegerType () ) );
       TypeJudgement judgement = new TypeJudgement ( environment, expression,
           type );
-      LatexExport.export ( judgement, pLatexFile, oneFile );
+      LatexExport.export ( judgement, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -1242,7 +1242,7 @@ public class LatexTest
     {
       DefaultTypeSubstitution typeSubstitution = new DefaultTypeSubstitution (
           new TypeVariable ( 0, 0 ), new BooleanType () );
-      LatexExport.export ( typeSubstitution, pLatexFile, oneFile );
+      LatexExport.export ( typeSubstitution, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -1263,7 +1263,7 @@ public class LatexTest
           new TypeVariable ( 0, 1 ), new IntegerType () );
       substitionList = substitionList.extend ( typeSubstitution1 );
       substitionList = substitionList.extend ( typeSubstitution2 );
-      LatexExport.export ( substitionList, pLatexFile, oneFile );
+      LatexExport.export ( substitionList, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {
@@ -1279,7 +1279,7 @@ public class LatexTest
     {
       TypeSubType typeSubType = new TypeSubType ( new IntegerType (),
           new BooleanType () );
-      LatexExport.export ( typeSubType, pLatexFile, oneFile );
+      LatexExport.export ( typeSubType, pLatexFile, oneFile, false );
     }
     catch ( Exception e )
     {

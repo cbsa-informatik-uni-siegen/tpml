@@ -59,6 +59,12 @@ public class GeneralLaTex
 
 
   /**
+   * Flag that indicates if the source code should be printed.
+   */
+  private boolean sourceCode = false;
+
+
+  /**
    * the default constructor
    * 
    * @param pParent - the parent frame
@@ -74,11 +80,14 @@ public class GeneralLaTex
    * 
    * @param pLaTexPrintable
    * @param pParent
+   * @param sourceCode Flag that indicates if the source code should be printed.
    */
-  public GeneralLaTex ( LatexPrintable pLaTexPrintable, JPanel pParent )
+  public GeneralLaTex ( LatexPrintable pLaTexPrintable, JPanel pParent,
+      boolean sourceCode )
   {
     this.laTexPrintable = pLaTexPrintable;
     this.parent = pParent;
+    this.sourceCode = sourceCode;
   }
 
 
@@ -317,7 +326,7 @@ public class GeneralLaTex
             return;
           }
         }
-        LatexExport.export ( this.laTexPrintable, file, all );
+        LatexExport.export ( this.laTexPrintable, file, all, this.sourceCode );
         // this.status.dispose();
         JOptionPane.showMessageDialog ( this.parent, ResourceBundle.getBundle (
             "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.Done" ) ); //$NON-NLS-1$//$NON-NLS-2$
