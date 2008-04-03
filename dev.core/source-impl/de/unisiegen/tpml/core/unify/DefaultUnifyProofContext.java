@@ -48,20 +48,19 @@ public class DefaultUnifyProofContext implements UnifyProofContext
    */
   private LinkedList < Runnable > undoActions = new LinkedList < Runnable > ();
 
-  
+
   /**
-   * Allocates a new <code>DefaultUnifyProofContext</code> with the
-   * specified <code>model</code>. This constructor automatically increments
-   * the index of the <code>model</code> using a redo/undo pair, via the
+   * Allocates a new <code>DefaultUnifyProofContext</code> with the specified
+   * <code>model</code>. This constructor automatically increments the index
+   * of the <code>model</code> using a redo/undo pair, via the
    * {@link UnifyProofModel#setIndex(int)} method.
    * 
-   * @param pUnifyProofModel the type checker proof model with which the
-   *          context is associated.
+   * @param pUnifyProofModel the type checker proof model with which the context
+   *          is associated.
    * @throws NullPointerException if <code>model</code> is <code>null</code>.
    * @see TypeCheckerProofModel#setIndex(int)
    */
-  public DefaultUnifyProofContext (
-      final UnifyProofModel pUnifyProofModel )
+  public DefaultUnifyProofContext ( final UnifyProofModel pUnifyProofModel )
   {
     if ( pUnifyProofModel == null )
     {
@@ -88,6 +87,7 @@ public class DefaultUnifyProofContext implements UnifyProofContext
     } );
   }
 
+
   /**
    * {@inheritDoc}
    * 
@@ -102,14 +102,28 @@ public class DefaultUnifyProofContext implements UnifyProofContext
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.unify.UnifyProofContext#addProofNode(de.unisiegen.tpml.core.unify.UnifyProofNode,
+   * @see de.unisiegen.tpml.core.unify.UnifyProofContext#addProofNode(
+   *      de.unisiegen.tpml.core.unify.UnifyProofNode,
    *      de.unisiegen.tpml.core.typeinference.TypeSubstitutionList,
    *      de.unisiegen.tpml.core.entities.TypeEquationList)
    */
   public void addProofNode ( UnifyProofNode node, TypeSubstitutionList substs,
       TypeEquationList eqns )
   {
-    this.model.contextAddProofNode ( node, substs, eqns );
+    this.model.contextAddProofNode ( this, ( AbstractUnifyProofNode ) node,
+        substs, eqns );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.unify.UnifyProofContext#addProofNode(
+   *      de.unisiegen.tpml.core.unify.UnifyProofNode)
+   */
+  public void addProofNode ( UnifyProofNode node )
+  {
+    
   }
 
 

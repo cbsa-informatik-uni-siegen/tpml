@@ -24,9 +24,9 @@ public interface UnifyProofContext
 
 
   /**
-   * adds a new child node below the <code>node</code>. <code>substs</code> is
-   * the list of substition we got so far and <code>eqns</code> is the rest of
-   * the set of equations
+   * adds a new child node below the <code>node</code>. <code>substs</code>
+   * is the list of substition we got so far and <code>eqns</code> is the rest
+   * of the set of equations
    * 
    * @param node the parent node
    * @param substs list of substitution we got so far
@@ -34,4 +34,13 @@ public interface UnifyProofContext
    */
   public void addProofNode ( UnifyProofNode node, TypeSubstitutionList substs,
       TypeEquationList eqns );
+
+
+  /**
+   * adds a new child node below the <code>node</code> with the empty type
+   * substitution
+   * 
+   * @param node the parent node
+   */
+  public void addProofNode ( UnifyProofNode node );
 }

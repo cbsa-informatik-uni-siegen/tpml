@@ -18,9 +18,7 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
 
 
@@ -118,14 +116,67 @@ public class UnifyProofModel extends AbstractProofModel
 
 
   /**
-   * TODO
+   * Adds a new child proof node below the <code>node</code> using the
+   * <code>context</code> for the <code>substs</code> and <code>eqns</code>
    * 
-   * @param node
-   * @param substs
-   * @param eqns
+   * @param context the context calling this method
+   * @param node the parent node to add the this child node to
+   * @param substs already collected list of type substitutions (from earlier
+   *          (VAR) rules)
+   * @param eqns a list of type equations
    */
-  public void contextAddProofNode ( UnifyProofNode node,
-      TypeSubstitutionList substs, TypeEquationList eqns )
+  public void contextAddProofNode ( DefaultUnifyProofContext context,
+      final AbstractUnifyProofNode node, TypeSubstitutionList substs,
+      TypeEquationList eqns )
+  {
+    if ( context == null )
+      throw new NullPointerException ( "context is null" ); //$NON-NLS-1$
+    if ( node == null )
+      throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
+    if ( substs == null )
+      throw new NullPointerException ( "substs is null" ); //$NON-NLS-1$
+    if ( eqns == null )
+      throw new NullPointerException ( "eqns is null" ); //$NON-NLS-1$
+
+    final DefaultUnifyProofNode child = new DefaultUnifyProofNode ( substs,
+        eqns );
+    context.addRedoAction ( new Runnable ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
+      {
+        node.add ( child );
+        nodesWereInserted ( node, new int []
+        { node.getIndex ( child ) } );
+      }
+    } );
+    context.addUndoAction ( new Runnable ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
+      {
+        int nodeIndex = node.getIndex ( child );
+        node.remove ( nodeIndex );
+        nodesWereRemoved ( node, new int []
+        { nodeIndex }, new Object []
+        { child } );
+      }
+    } );
+  }
+
+
+  /**
+   * 
+   * Adds a new child proof node below the <code>node</code> using the
+   * <code>context</code> for the empty typesubstition
+   *
+   * @param context
+   * @param node
+   */
+  public void contextAddProofNode ( DefaultUnifyProofContext context,
+      DefaultUnifyProofNode node )
   {
 
   }
@@ -133,8 +184,7 @@ public class UnifyProofModel extends AbstractProofModel
 
   /**
    * Sets the current proof model index. This is a support operation, called by
-   * {@link DefaultUnifyProofContext} whenever a new proof context is
-   * allocated.
+   * {@link DefaultUnifyProofContext} whenever a new proof context is allocated.
    * 
    * @param pIndex the new index for the proof model.
    * @see #getIndex()
