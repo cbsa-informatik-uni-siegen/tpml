@@ -61,7 +61,8 @@ precedence right	ARROW;
 
 type_equation_list				::= LBRACKET:l type_equation_array:tea RBRACKET:r
 								    {:
-								       RESULT = DefaultTypeEquationList.EMPTY_LIST ;
+								       //FIXME: check wheather the new DefaultTypeEquationList code is correct: RESULT = DefaultTypeEquationList.EMPTY_LIST ;
+								       RESULT = new DefaultTypeEquationList();
 								       for (int i = 0; i < tea.length ; i++)
 								       {
 								         RESULT = RESULT.extend(tea[i]);
@@ -71,7 +72,8 @@ type_equation_list				::= LBRACKET:l type_equation_array:tea RBRACKET:r
 								    :}
 								 |  type_equation_array:tea
 								    {:
-								       RESULT = DefaultTypeEquationList.EMPTY_LIST ;
+								       //FIXME: check wheather the new DefaultTypeEquationList code is correct: RESULT = DefaultTypeEquationList.EMPTY_LIST ;
+								       RESULT = new DefaultTypeEquationList();
 								       for (int i = 0; i < tea.length ; i++)
 								       {
 								         RESULT = RESULT.extend(tea[i]);

@@ -41,6 +41,7 @@ public interface UnifyProofContext
    * substitution
    * 
    * @param node the parent node
+   * @param substs list of substitution we got so far
    */
-  public void addProofNode ( UnifyProofNode node );
+  public void addProofNode ( UnifyProofNode node, TypeSubstitutionList substs );
 }

@@ -168,17 +168,51 @@ public class UnifyProofModel extends AbstractProofModel
 
 
   /**
-   * 
    * Adds a new child proof node below the <code>node</code> using the
    * <code>context</code> for the empty typesubstition
-   *
-   * @param context
-   * @param node
+   * 
+   * @param context the context calling this method
+   * @param node the parent node to add the this child node to
+   * @param substs already collected list of type substitutions (from earlier
+   *          (VAR) rules)
    */
   public void contextAddProofNode ( DefaultUnifyProofContext context,
-      DefaultUnifyProofNode node )
+      final AbstractUnifyProofNode node, TypeSubstitutionList substs )
   {
+    if ( context == null )
+      throw new NullPointerException ( "context is null" ); //$NON-NLS-1$
+    if ( node == null )
+      throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
+    if ( substs == null )
+      throw new NullPointerException ( "substs is null" ); //$NON-NLS-1$
 
+    final DefaultUnifyProofNode child = new DefaultUnifyProofNode ( substs,
+        null );
+
+    context.addRedoAction ( new Runnable ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
+      {
+        node.add ( child );
+        nodesWereInserted ( node, new int []
+        { node.getIndex ( child ) } );
+      }
+    } );
+    context.addUndoAction ( new Runnable ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
+      {
+        int nodeIndex = node.getIndex ( child );
+        node.remove ( nodeIndex );
+        nodesWereRemoved ( node, new int []
+        { nodeIndex }, new Object []
+        { child } );
+      }
+    } );
   }
 
 

@@ -22,7 +22,7 @@ public class DefaultUnifyProofContext implements UnifyProofContext
   /**
    * List of type equations we've collected so far.
    */
-  private TypeEquationList equations = DefaultTypeEquationList.EMPTY_LIST;
+  private TypeEquationList equations = new DefaultTypeEquationList ();
 
 
   /**
@@ -119,11 +119,13 @@ public class DefaultUnifyProofContext implements UnifyProofContext
    * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.unify.UnifyProofContext#addProofNode(
-   *      de.unisiegen.tpml.core.unify.UnifyProofNode)
+   *      de.unisiegen.tpml.core.unify.UnifyProofNode,
+   *      de.unisiegen.tpml.core.typeinference.TypeSubstitutionList)
    */
-  public void addProofNode ( UnifyProofNode node )
+  public void addProofNode ( UnifyProofNode node, TypeSubstitutionList substs )
   {
-    
+    this.model.contextAddProofNode ( this, ( AbstractUnifyProofNode ) node,
+        substs );
   }
 
 

@@ -84,7 +84,7 @@ public abstract class AbstractUnifyProofNode extends AbstractProofNode
      * equations is already empty so here we're actual
      * are finished one rule to earlier
      */
-    return (this.equations == DefaultTypeEquationList.EMPTY_LIST);
+    return this.equations.isEmpty ();
   }
 
 
