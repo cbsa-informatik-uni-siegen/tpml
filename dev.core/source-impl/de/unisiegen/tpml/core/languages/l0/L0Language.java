@@ -6,6 +6,7 @@ import java.io.Reader;
 import java_cup.runtime.lr_parser;
 import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.AbstractLanguage;
 import de.unisiegen.tpml.core.languages.AbstractLanguageTranslator;
@@ -103,6 +104,11 @@ public class L0Language extends AbstractLanguage
         new L0BigStepProofRuleSet ( this ) );
   }
 
+  public BigStepClosureProofModel newBigStepClosureProofModel (Expression expression)
+  {
+    return new BigStepClosureProofModel ( expression,
+        new L0BigStepClosureProofRuleSet (this) );
+  }
 
   /**
    * {@inheritDoc}
