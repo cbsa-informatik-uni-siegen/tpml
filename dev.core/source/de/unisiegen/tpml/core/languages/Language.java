@@ -13,6 +13,7 @@ import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
 
 
 /**
@@ -87,7 +88,14 @@ public interface Language
    */
   public BigStepProofModel newBigStepProofModel ( Expression expression );
 
-
+  /**
+   * 
+   * TODO
+   * 
+   * @param expression the {@link Expression} for the big step closure proof model.
+   * @return the newly allocated big step closure proof model.
+   */
+  public BigStepClosureProofModel newBigStepClosureProofModel ( Expression expression );
   /**
    * Allocates a new {@link MinimalTypingProofModel} for the
    * <code>expression</code> in this language, which is used to prove that
