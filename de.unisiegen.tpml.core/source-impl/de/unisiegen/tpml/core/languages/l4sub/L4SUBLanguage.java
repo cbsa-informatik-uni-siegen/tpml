@@ -36,7 +36,7 @@ public class L4SUBLanguage extends L4Language
    * 
    * @see de.unisiegen.tpml.core.AbstractProofRule#getGroup()
    */
-  public static final int L4SubType = L4Language.L4 + 1;
+  public static final int L4SubType = L4Language.L4 + 2;
 
 
   /**
