@@ -1,6 +1,7 @@
-package de.unisiegen.tpml.core.environmentsemantics;
+package de.unisiegen.tpml.core;
 import de.unisiegen.tpml.core.util.AbstractEnvironment;
 import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;

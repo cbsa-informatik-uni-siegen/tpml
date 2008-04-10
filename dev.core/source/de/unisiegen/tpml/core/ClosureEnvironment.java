@@ -1,5 +1,6 @@
-package de.unisiegen.tpml.core.environmentsemantics;
+package de.unisiegen.tpml.core;
 import de.unisiegen.tpml.core.util.Environment;
+import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.expressions.Identifier;
 
 /**
