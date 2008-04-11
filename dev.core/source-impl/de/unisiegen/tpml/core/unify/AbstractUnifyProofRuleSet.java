@@ -6,9 +6,6 @@ import java.lang.reflect.Method;
 import de.unisiegen.tpml.core.AbstractProofRule;
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
 import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRule;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 
 
 /**
@@ -93,26 +90,27 @@ public abstract class AbstractUnifyProofRuleSet extends AbstractProofRuleSet
     }
 
     // register a new proof rule with the name and methods
-    register ( new AbstractTypeCheckerProofRule ( group, name )
+    register ( new AbstractUnifyProofRule ( group, name )
     {
 
       @Override
-      protected void applyInternal ( TypeCheckerProofContext context,
-          TypeCheckerProofNode node ) throws Exception
+      protected void applyInternal ( UnifyProofContext context,
+          UnifyProofNode node ) throws Exception
       {
         applyMethod.invoke ( AbstractUnifyProofRuleSet.this, context, node );
       }
 
-
+/*
       @Override
-      protected void updateInternal ( TypeCheckerProofContext context,
-          TypeCheckerProofNode node ) throws Exception
+      protected void updateInternal ( UnifyProofContext context,
+          UnifyProofNode node ) throws Exception
       {
         if ( updateMethod != null )
         {
           updateMethod.invoke ( AbstractUnifyProofRuleSet.this, context, node );
         }
       }
+*/
     } );
   }
 
@@ -205,7 +203,7 @@ public abstract class AbstractUnifyProofRuleSet extends AbstractProofRuleSet
       // lookup the method with the parameters BigStepProofContext and
       // BigStepProofNode
       return getClass ().getMethod ( methodName, new Class []
-      { TypeCheckerProofContext.class, TypeCheckerProofNode.class } );
+      { UnifyProofContext.class, UnifyProofNode.class } );
     }
     catch ( RuntimeException e )
     {

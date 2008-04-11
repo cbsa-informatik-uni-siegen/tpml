@@ -117,4 +117,8 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
     return null;
   }
 
+  @Override
+  public String toString() {
+    return getTypeEquationList ().toPrettyString ().toString ();
+  }
 }

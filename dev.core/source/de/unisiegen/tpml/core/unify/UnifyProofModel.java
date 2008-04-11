@@ -19,6 +19,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
 
 
@@ -84,7 +85,7 @@ public class UnifyProofModel extends AbstractProofModel
    * @param root
    * @param ruleSet
    */
-  protected UnifyProofModel ( AbstractProofNode root,
+  public UnifyProofModel ( AbstractProofNode root,
       AbstractProofRuleSet ruleSet )
   {
     super ( root, ruleSet );
@@ -112,6 +113,7 @@ public class UnifyProofModel extends AbstractProofModel
   public void prove ( ProofRule rule, ProofNode node )
       throws ProofRuleException
   {
+    //applyInternal ( ( UnifyProofRule ) rule, node, null, null );
   }
 
 

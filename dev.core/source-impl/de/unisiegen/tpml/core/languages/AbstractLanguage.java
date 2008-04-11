@@ -7,6 +7,7 @@ import java.text.MessageFormat;
 import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
+import de.unisiegen.tpml.core.entities.TypeEquationList;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
@@ -15,6 +16,7 @@ import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.unify.UnifyProofModel;
 
 
 /**
@@ -62,17 +64,20 @@ public abstract class AbstractLanguage implements Language
         .getString ( "AbstractLanguage.0" ), getName () ) ); //$NON-NLS-1$
   }
 
+
   /**
    * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.languages.Language#newBigStepClosureProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
-  public BigStepClosureProofModel newBigStepClosureProofModel ( @SuppressWarnings ("unused")
-  Expression expression )
+  public BigStepClosureProofModel newBigStepClosureProofModel (
+      @SuppressWarnings ( "unused" )
+      Expression expression )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "AbstractLanguage.0" ), getName() ) );
+        .getString ( "AbstractLanguage.0" ), getName () ) );
   }
+
 
   /**
    * {@inheritDoc}
@@ -290,6 +295,19 @@ public abstract class AbstractLanguage implements Language
   Reader reader )
   {
     // TODO i18n
+    throw new UnsupportedOperationException ( MessageFormat.format ( Messages
+        .getString ( "AbstractLanguage.0" ), getName () ) ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.languages.Language#newUnifyProofModel(de.unisiegen.tpml.core.entities.TypeEquationList)
+   */
+  public UnifyProofModel newUnifyProofModel ( @SuppressWarnings("unused")
+  TypeEquationList eqns )
+  {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
         .getString ( "AbstractLanguage.0" ), getName () ) ); //$NON-NLS-1$
   }

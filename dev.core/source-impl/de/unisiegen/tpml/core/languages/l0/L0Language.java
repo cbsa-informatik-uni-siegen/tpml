@@ -7,6 +7,7 @@ import java_cup.runtime.lr_parser;
 import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
+import de.unisiegen.tpml.core.entities.TypeEquationList;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.AbstractLanguage;
 import de.unisiegen.tpml.core.languages.AbstractLanguageTranslator;
@@ -14,7 +15,11 @@ import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.core.languages.LanguageScanner;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
+import de.unisiegen.tpml.core.languages.l1unify.L1UnifyProofRuleSet;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
+import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
+import de.unisiegen.tpml.core.unify.DefaultUnifyProofNode;
+import de.unisiegen.tpml.core.unify.UnifyProofModel;
 
 
 /**
@@ -104,11 +109,14 @@ public class L0Language extends AbstractLanguage
         new L0BigStepProofRuleSet ( this ) );
   }
 
-  public BigStepClosureProofModel newBigStepClosureProofModel (Expression expression)
+
+  public BigStepClosureProofModel newBigStepClosureProofModel (
+      Expression expression )
   {
     return new BigStepClosureProofModel ( expression,
-        new L0BigStepClosureProofRuleSet (this) );
+        new L0BigStepClosureProofRuleSet ( this ) );
   }
+
 
   /**
    * {@inheritDoc}
@@ -172,5 +180,4 @@ public class L0Language extends AbstractLanguage
       // Nothing do do
     };
   }
-
 }

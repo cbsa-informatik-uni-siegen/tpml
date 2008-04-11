@@ -3,7 +3,6 @@ package de.unisiegen.tpml.core.languages.l1unify;
 
 import de.unisiegen.tpml.core.entities.DefaultTypeEquation;
 import de.unisiegen.tpml.core.entities.DefaultTypeEquationList;
-import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
 import de.unisiegen.tpml.core.types.ArrowType;
@@ -32,15 +31,15 @@ public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
    * @throws NullPointerException if <code>language</code> is
    *           <code>null</code>.
    */
-  public L1UnifyProofRuleSet ( L1Language language )
+  public L1UnifyProofRuleSet ( L1UNIFYLanguage language )
   {
     super ( language );
     // register the type rules
-    registerByMethodName ( L1Language.L1, "EMPTY", "applyEmpty" ); //$NON-NLS-1$ //$NON-NLS-2$
-    registerByMethodName ( L1Language.L1, "TRIV", "applyTriv" ); //$NON-NLS-1$ //$NON-NLS-2$
-    registerByMethodName ( L1Language.L1, "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
-    registerByMethodName ( L1Language.L1, "VAR", "applyVar" ); //$NON-NLS-1$ //$NON-NLS-2$
-    registerByMethodName ( L1Language.L1, "STRUCT", "applyStruct" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "EMPTY", "applyEmpty" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "TRIV", "applyTriv" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "VAR", "applyVar" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "STRUCT", "applyStruct" ); //$NON-NLS-1$ //$NON-NLS-2$
 
   }
 
@@ -145,13 +144,13 @@ public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
      * substitution (2) apply the substitution to the remaining type equation
      * list and (3) create a new proof node
      */
-    
-    //(1)
+
+    // (1)
     TypeSubstitutionList dts = pNode.getTypeSubstitutions ();
-    DefaultTypeSubstitution s = new DefaultTypeSubstitution(typevar, type); 
+    DefaultTypeSubstitution s = new DefaultTypeSubstitution ( typevar, type );
     dts.extend ( s );
-    
-    //(2) and (3)
+
+    // (2) and (3)
     context.addProofNode ( pNode, dts, dtel.getRemaining ().substitute ( s ) );
   }
 
@@ -166,6 +165,7 @@ public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
   public void applyStruct ( UnifyProofContext context, UnifyProofNode pNode )
   {
     DefaultTypeEquationList dtel = ( DefaultTypeEquationList ) pNode
-    .getTypeEquationList ();
+        .getTypeEquationList ();
+
   }
 }

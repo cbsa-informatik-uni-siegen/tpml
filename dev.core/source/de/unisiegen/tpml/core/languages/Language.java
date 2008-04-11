@@ -4,7 +4,9 @@ package de.unisiegen.tpml.core.languages;
 import java.io.Reader;
 
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
 import de.unisiegen.tpml.core.entities.TypeEquation;
+import de.unisiegen.tpml.core.entities.TypeEquationList;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
@@ -13,7 +15,7 @@ import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
+import de.unisiegen.tpml.core.unify.UnifyProofModel;
 
 
 /**
@@ -88,14 +90,18 @@ public interface Language
    */
   public BigStepProofModel newBigStepProofModel ( Expression expression );
 
+
   /**
-   * 
    * TODO
    * 
-   * @param expression the {@link Expression} for the big step closure proof model.
+   * @param expression the {@link Expression} for the big step closure proof
+   *          model.
    * @return the newly allocated big step closure proof model.
    */
-  public BigStepClosureProofModel newBigStepClosureProofModel ( Expression expression );
+  public BigStepClosureProofModel newBigStepClosureProofModel (
+      Expression expression );
+
+
   /**
    * Allocates a new {@link MinimalTypingProofModel} for the
    * <code>expression</code> in this language, which is used to prove that
@@ -321,4 +327,13 @@ public interface Language
    * @throws NullPointerException if <code>reader</code> is <code>null</code>.
    */
   public LanguageUnifyScanner newUnifyScanner ( Reader reader );
+
+
+  /**
+   * Allocates a new {@link UnifyProofModel} for the <code>eqns</code>
+   *
+   * @param eqns a list of type equations
+   * @return a newly allocated unify proof model
+   */
+  public UnifyProofModel newUnifyProofModel ( TypeEquationList eqns );
 }

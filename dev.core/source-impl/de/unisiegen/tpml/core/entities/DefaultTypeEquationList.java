@@ -207,7 +207,8 @@ public class DefaultTypeEquationList implements TypeEquationList
    */
   public PrettyString toPrettyString ()
   {
-    return null;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -219,7 +220,22 @@ public class DefaultTypeEquationList implements TypeEquationList
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory prettyStringBuilderFactory )
   {
-    return null;
+    PrettyStringBuilder builder = prettyStringBuilderFactory.newBuilder ( this,
+        0 );
+    builder.addText ( PRETTY_CLPAREN );
+   
+    for ( TypeEquation it : this.equations )
+    {
+      if ( it != getFirst () )
+      {
+        builder.addText ( PRETTY_COMMA );
+        builder.addText ( PRETTY_SPACE );
+      }
+      builder.addBuilder ( it
+          .toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
+    }
+    builder.addText ( PRETTY_CRPAREN );
+    return builder;
   }
 
 

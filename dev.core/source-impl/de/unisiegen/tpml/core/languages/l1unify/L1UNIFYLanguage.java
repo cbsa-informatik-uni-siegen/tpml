@@ -10,6 +10,9 @@ import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageUnifyParser;
 import de.unisiegen.tpml.core.languages.LanguageUnifyScanner;
 import de.unisiegen.tpml.core.languages.l1sub.L1SUBLanguage;
+import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
+import de.unisiegen.tpml.core.unify.DefaultUnifyProofNode;
+import de.unisiegen.tpml.core.unify.UnifyProofModel;
 
 
 /**
@@ -122,5 +125,19 @@ public class L1UNIFYLanguage extends AbstractLanguage
       throw new NullPointerException ( "reader is null" ); //$NON-NLS-1$
     }
     return new L1UnifyScanner ( reader );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.languages.Language#newUnifyProofModel(de.unisiegen.tpml.core.entities.TypeEquationList)
+   */
+  @Override
+  public UnifyProofModel newUnifyProofModel ( TypeEquationList eqns )
+  {
+    return new UnifyProofModel ( new DefaultUnifyProofNode (
+        TypeSubstitutionList.EMPTY_LIST, eqns ),
+        new L1UnifyProofRuleSet ( this ) );
   }
 }
