@@ -83,5 +83,4 @@ public class BigStepClosureProofModel extends AbstractInterpreterProofModel
   {
     return null;
   }
-  //public toLatexStringBuilder()
 }

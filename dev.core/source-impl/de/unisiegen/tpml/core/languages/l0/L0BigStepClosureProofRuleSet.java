@@ -12,5 +12,6 @@ public class L0BigStepClosureProofRuleSet extends AbstractBigStepClosureProofRul
   public L0BigStepClosureProofRuleSet(L0Language language)
   {
     super(language);
+    
   }
 }
