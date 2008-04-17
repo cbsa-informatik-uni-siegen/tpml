@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.unify;
 
 import java.util.LinkedList;
 
+import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.entities.DefaultTypeEquationList;
 import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.entities.TypeEquationList;
@@ -85,6 +86,27 @@ public class DefaultUnifyProofContext implements UnifyProofContext
         pUnifyProofModel.setIndex ( index );
       }
     } );
+  }
+
+
+  /**
+   * Applies the specified proof <code>rule</code> to the given
+   * <code>node</code>.
+   * 
+   * @param rule the proof rule to apply to the <code>node</code>.
+   * @param node the proof node to which to apply the <code>rule</code>.
+   * @throws NullPointerException if <code>rule</code> or <code>node</code>
+   *           is <code>null</code>.
+   * @throws ProofRuleException if the application of the <code>rule</code> to
+   *           the <code>node</code> failed for some reason.
+   */
+  void apply ( UnifyProofRule rule, UnifyProofNode node )
+      throws ProofRuleException
+  {
+    this.model.contextSetProofNodeRule ( this, ( AbstractUnifyProofNode ) node,
+        rule );
+    rule.apply ( this, node );
+    //TODO: update substitution list ??
   }
 
 

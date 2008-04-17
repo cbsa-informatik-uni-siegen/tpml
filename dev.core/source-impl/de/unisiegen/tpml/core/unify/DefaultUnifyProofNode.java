@@ -117,6 +117,11 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
     return null;
   }
 
+  /**
+   * @inheritDoc
+   *
+   * @see java.lang.Object#toString()
+   */
   @Override
   public String toString() {
     return getTypeEquationList ().toPrettyString ().toString ();

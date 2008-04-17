@@ -5,7 +5,8 @@ import javax.swing.tree.TreeNode;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.ProofNode;
-import de.unisiegen.tpml.core.entities.DefaultTypeEquationList;
+import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.UnifyProofStep;
 import de.unisiegen.tpml.core.entities.TypeEquationList;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
 
@@ -32,6 +33,26 @@ public abstract class AbstractUnifyProofNode extends AbstractProofNode
    * the list of type equations
    */
   private TypeEquationList equations;
+
+
+  //
+  // Constants
+  //
+  /**
+   * Empty {@link UnifyProofStep} array which is returned from {@link #getSteps()}
+   * when no steps have been added to a proof node.
+   */
+  private static final UnifyProofStep [] EMPTY_ARRAY = new UnifyProofStep [ 0 ];
+
+
+  /**
+   * The proof steps that were already performed on this {@link ProofNode},
+   * which consist of both the {@link ProofRule}.
+   * 
+   * @see #getSteps()
+   * @see #setSteps(UnifyProofStep[])
+   */
+  private UnifyProofStep [] steps;
 
 
   /**
@@ -74,17 +95,104 @@ public abstract class AbstractUnifyProofNode extends AbstractProofNode
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.tpml.core.ExpressionProofNode#getSteps()
+   */
+  public UnifyProofStep [] getSteps ()
+  {
+    if ( this.steps == null )
+    {
+      return EMPTY_ARRAY;
+    }
+    return this.steps;
+  }
+
+
+  /**
+   * Sets the {@link UnifyProofStep}s which should be marked as completed for this
+   * proof node. This method should only be used by proof node and model
+   * implementations. Other modules, like the user interface, should never try
+   * to explicitly set the steps for a node.
+   * 
+   * @param pSteps list of {@link UnifyProofStep}s that should be marked as
+   *          completed for this node.
+   * @see #getSteps()
+   * @throws NullPointerException if any of the items in the <code>steps</code>
+   *           array is <code>null</code>.
+   */
+  public void setSteps ( UnifyProofStep [] pSteps )
+  {
+    // check if we have new steps to set
+    if ( this.steps != pSteps )
+    {
+      this.steps = pSteps;
+      // determine the new proof rules
+      ProofRule [] rules;
+      if ( this.steps == null )
+      {
+        rules = null;
+      }
+      else
+      {
+        // determine the rules from the steps
+        rules = new ProofRule [ this.steps.length ];
+        for ( int n = 0 ; n < rules.length ; ++n )
+        {
+          rules [ n ] = this.steps [ n ].getRule ();
+        }
+      }
+      setRules ( rules );
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode#isFinished()
+   */
+  public boolean isFinished ()
+  {
+    if ( !isProven () )
+    {
+      return false;
+    }
+    for ( int n = 0 ; n < getChildCount () ; ++n )
+    {
+      if ( !getChildAt ( n ).isFinished () )
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see de.unisiegen.tpml.core.ProofNode#isProven()
    */
   public boolean isProven ()
   {
-    /*
-     * FIXME:
-     * last rule have to be (EMPTY) but for this rule
-     * equations is already empty so here we're actual
-     * are finished one rule to earlier
-     */
-    return this.equations.isEmpty ();
+    return ( getSteps ().length > 0 );
+  }
+
+
+  /**
+   * wrapper for getSteps which returns the rule that was applied to this node
+   * or <code>null</code> if there was no rule applied to this node so far
+   * 
+   * @return the unify proof rule that was applied to this node or
+   *         <code>null</code> if no rule was applied to this node
+   */
+  public UnifyProofRule getRule ()
+  {
+    UnifyProofStep [] my_steps = getSteps ();
+    if ( my_steps.length > 0 )
+    {
+      return ( UnifyProofRule ) my_steps [ 0 ].getRule ();
+    }
+    return null;
   }
 
 

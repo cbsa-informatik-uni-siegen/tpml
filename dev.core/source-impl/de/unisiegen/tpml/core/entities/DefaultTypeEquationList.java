@@ -70,7 +70,7 @@ public class DefaultTypeEquationList implements TypeEquationList
 
 
   /**
-   * {inheritDoc}
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.entities.TypeEquationList#isEmpty()
    */
@@ -81,19 +81,21 @@ public class DefaultTypeEquationList implements TypeEquationList
 
 
   /**
-   * {inheritDoc}
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.entities.TypeEquationList#extend(de.unisiegen.tpml.core.entities.TypeEquation)
    */
   public TypeEquationList extend ( TypeEquation typeEquation )
   {
-    this.equations.add ( typeEquation );
-    return new DefaultTypeEquationList ( this.equations );
+    ArrayList < TypeEquation > result = new ArrayList < TypeEquation > ();
+    result.addAll ( this.equations );
+    result.add ( typeEquation );
+    return new DefaultTypeEquationList ( result );
   }
 
 
   /**
-   * {inheritDoc}
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.entities.TypeEquationList#getFirst()
    */
@@ -158,7 +160,7 @@ public class DefaultTypeEquationList implements TypeEquationList
 
 
   /**
-   * {inheritDoc}
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.entities.TypeEquationList#getRemaining()
    */
@@ -166,15 +168,19 @@ public class DefaultTypeEquationList implements TypeEquationList
   {
     if ( isEmpty () )
     {
-      return this;
+      return new DefaultTypeEquationList ( new ArrayList < TypeEquation > () );
     }
-    this.equations.remove ( 0 );
-    return new DefaultTypeEquationList ( this.equations );
+
+    ArrayList < TypeEquation > result = new ArrayList < TypeEquation > ();
+    result.addAll ( this.equations );
+    result.remove ( 0 );
+
+    return new DefaultTypeEquationList ( result );
   }
 
 
   /**
-   * {inheritDoc}
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.entities.TypeEquationList#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
    */
@@ -190,7 +196,7 @@ public class DefaultTypeEquationList implements TypeEquationList
 
 
   /**
-   * {inheritDoc}
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.entities.TypeEquationList#unify()
    */
@@ -201,7 +207,7 @@ public class DefaultTypeEquationList implements TypeEquationList
 
 
   /**
-   * {inheritDoc}
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
    */
@@ -213,7 +219,7 @@ public class DefaultTypeEquationList implements TypeEquationList
 
 
   /**
-   * {inheritDoc}
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
@@ -223,7 +229,7 @@ public class DefaultTypeEquationList implements TypeEquationList
     PrettyStringBuilder builder = prettyStringBuilderFactory.newBuilder ( this,
         0 );
     builder.addText ( PRETTY_CLPAREN );
-   
+
     for ( TypeEquation it : this.equations )
     {
       if ( it != getFirst () )
@@ -240,7 +246,7 @@ public class DefaultTypeEquationList implements TypeEquationList
 
 
   /**
-   * {inheritDoc}
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexCommands()
    */
@@ -251,7 +257,7 @@ public class DefaultTypeEquationList implements TypeEquationList
 
 
   /**
-   * {inheritDoc}
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexInstructions()
    */
@@ -262,7 +268,7 @@ public class DefaultTypeEquationList implements TypeEquationList
 
 
   /**
-   * {inheritDoc}
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexPackages()
    */
@@ -273,7 +279,7 @@ public class DefaultTypeEquationList implements TypeEquationList
 
 
   /**
-   * {inheritDoc}
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.latex.LatexPrintable#toLatexString()
    */
@@ -284,7 +290,7 @@ public class DefaultTypeEquationList implements TypeEquationList
 
 
   /**
-   * {inheritDoc}
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.latex.LatexPrintable#toLatexStringBuilder(de.unisiegen.tpml.core.latex.LatexStringBuilderFactory,
    *      int)
@@ -297,7 +303,7 @@ public class DefaultTypeEquationList implements TypeEquationList
 
 
   /**
-   * {inheritDoc}
+   * {@inheritDoc}
    * 
    * @see java.lang.Iterable#iterator()
    */
