@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.bigstepclosure;
 
+import de.unisiegen.tpml.core.ClosureEnvironment;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode;
 import de.unisiegen.tpml.core.interpreters.DefaultStore;
@@ -70,4 +71,11 @@ public class DefaultBigStepClosureProofNode extends AbstractInterpreterProofNode
   {
     return null;
   }
+  
+  public ClosureEnvironment getEnvironment()
+  {
+    return environment;
+  }
+  
+  private ClosureEnvironment environment;
 }

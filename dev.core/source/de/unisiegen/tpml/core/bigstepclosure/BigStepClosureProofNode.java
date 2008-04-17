@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.core.bigstepclosure;
 
+import de.unisiegen.tpml.core.ClosureEnvironment;
+
 
 /**
  * TODO
@@ -7,5 +9,5 @@ package de.unisiegen.tpml.core.bigstepclosure;
  */
 public interface BigStepClosureProofNode
 {
-
+  public ClosureEnvironment getEnvironment();
 }

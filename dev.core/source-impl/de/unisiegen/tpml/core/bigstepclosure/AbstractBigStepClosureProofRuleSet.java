@@ -37,4 +37,48 @@ public class AbstractBigStepClosureProofRuleSet extends AbstractProofRuleSet
       }
     });
   }
+
+  protected void register ( int group, String name, Method applyMethod )
+  {
+    register ( group, name, applyMethod, null );
+  }
+
+  protected void unregister ( String name )
+  {
+    unregister ( getRuleByName ( name ) );
+  }
+  
+  protected void registerByMethodName ( int group, String name,
+      String applyMethodName )
+  {
+    register ( group, name, getMethodByName ( applyMethodName ) );
+  }
+  
+  protected void registerByMethodName ( int group, String name,
+      String applyMethodName, String updateMethodName )
+  {
+    register ( group, name, getMethodByName ( applyMethodName ),
+        getMethodByName ( updateMethodName ) );
+  }
+  
+  private Method getMethodByName ( String methodName )
+  {
+    try
+    {
+      // lookup the method with the parameters BigStepProofContext and
+      // BigStepProofNode
+      return getClass ().getMethod ( methodName, new Class []
+      { BigStepProofContext.class, BigStepProofNode.class } );
+    }
+    catch ( RuntimeException e )
+    {
+      // just re-throw the exception
+      throw e;
+    }
+    catch ( Exception e )
+    {
+      // translate the exception to a runtime exception
+      throw new RuntimeException ( "Method " + methodName + " not found", e ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+  }
 }
