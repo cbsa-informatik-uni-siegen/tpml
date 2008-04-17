@@ -51,11 +51,7 @@ public final class UnifyProofModelTest extends JFrame
   /**
    * Simple test expression.
    */
-  // private static final String SIMPLE =
-  // "(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)";
-  // private static final String SIMPLE = "let f f = let f f = f in f in let f f
-  // = f in f"; //$NON-NLS-1$
-  private static final String SIMPLE = "{int = int}";
+  private static final String SIMPLE = "{int = int, int -> int = int -> int}";
 
 
   private JScrollPane jScrollPane;
@@ -64,10 +60,6 @@ public final class UnifyProofModelTest extends JFrame
   ProofRule choosen = null;
 
 
-  // private TypeCheckerProofModel typechecker;
-  // lambda f:'a->'b. lambda x.f (f x
-  // Constructor
-  //
   /**
    * Default constructor.
    */
@@ -250,17 +242,7 @@ public final class UnifyProofModelTest extends JFrame
       }
     } );
     buttons.add ( redoButton );
-    // setup the translate button
-    /*
-     * JButton translateButton = new JButton ( "Translate" );
-     * translateButton.addActionListener ( new ActionListener () { public void
-     * actionPerformed ( ActionEvent event ) { try { // translate the last node
-     * TreePath path = tree.getSelectionPath (); { model.translateToCoreSyntax ( (
-     * UnifyProofNode ) nextNode ( model ), true, true ); } } catch ( Exception
-     * e ) { JOptionPane.showMessageDialog ( UnifyProofModelTest.this, e
-     * .getMessage (), "Error", JOptionPane.ERROR_MESSAGE ); } } } );
-     * buttons.add ( translateButton );
-     */
+
     // setup the close button
     JButton closeButton = new JButton ( "Close" );
     closeButton.addActionListener ( new ActionListener ()
@@ -282,8 +264,8 @@ public final class UnifyProofModelTest extends JFrame
     while ( !nodes.isEmpty () )
     {
       UnifyProofNode node = nodes.poll ();
-      //if ( node.getSteps ().length == 0 )
-      if(!node.isProven ())
+      // if ( node.getSteps ().length == 0 )
+      if ( !node.isProven () )
       {
         return node;
       }
