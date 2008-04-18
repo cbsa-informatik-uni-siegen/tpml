@@ -149,6 +149,17 @@ public class DefaultUnifyProofContext implements UnifyProofContext
     this.model.contextAddProofNode ( this, ( AbstractUnifyProofNode ) node,
         substs );
   }
+  
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.unify.UnifyProofContext#addProofNode(de.unisiegen.tpml.core.unify.UnifyProofNode)
+   */
+  public void addProofNode(UnifyProofNode node)
+  {
+    this.model.contextAddProofNode ( this, (AbstractUnifyProofNode) node);
+  }
 
 
   /**

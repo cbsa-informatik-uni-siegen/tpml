@@ -33,6 +33,12 @@ public abstract class AbstractUnifyProofNode extends AbstractProofNode
    * the list of type equations
    */
   private TypeEquationList equations;
+  
+  
+  /**
+   * is this node provable? we assume yes until we know it better
+   */
+  private boolean provable = true;
 
 
   //
@@ -193,6 +199,28 @@ public abstract class AbstractUnifyProofNode extends AbstractProofNode
       return ( UnifyProofRule ) my_steps [ 0 ].getRule ();
     }
     return null;
+  }
+  
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.unify.UnifyProofNode#isProvable()
+   */
+  public boolean isProvable()
+  {
+    return this.provable;
+  }
+  
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.unify.UnifyProofNode#setProvable(boolean)
+   */
+  public void setProvable(final boolean provable)
+  {
+    this.provable = provable;
   }
 
 

@@ -57,6 +57,22 @@ public interface UnifyProofNode extends ProofNode
    * @return <code>true</code> if finished.
    */
   public boolean isFinished ();
+  
+  
+  /**
+   * Returns <code>true</code> if this node is provable
+   *
+   * @return true if this node is provable, false otherwise
+   */
+  public boolean isProvable();
+  
+  
+  /**
+   * sets the provable state of this node
+   *
+   * @param provable indicates wheather this node is provable or not
+   */
+  public void setProvable(boolean provable);
 
 
   /**

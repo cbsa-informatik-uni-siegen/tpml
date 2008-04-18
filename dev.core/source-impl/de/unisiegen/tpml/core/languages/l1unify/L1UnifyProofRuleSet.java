@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.types.TypeVariable;
 import de.unisiegen.tpml.core.unify.AbstractUnifyProofRuleSet;
 import de.unisiegen.tpml.core.unify.UnifyProofContext;
@@ -67,10 +68,9 @@ public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
    */
   public void applyEmpty ( UnifyProofContext context, UnifyProofNode pNode )
   {
-    if ( checkEmptyRuleAppliable ( pNode ) )
-      context.addProofNode ( pNode, pNode.getTypeSubstitutions () );
-    throw new RuntimeException (
-        "non empty type substitution list within applyEmpty" ); //$NON-NLS-1$
+    if ( !checkEmptyRuleAppliable ( pNode ) )
+      throw new RuntimeException (
+          "non empty type equation list within applyEmpty" ); //$NON-NLS-1$
   }
 
 
@@ -145,23 +145,35 @@ public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
       ArrowType left = ( ArrowType ) dtel.getFirst ().getLeft ();
       ArrowType right = ( ArrowType ) dtel.getFirst ().getRight ();
 
-      /*
-       * TODO: remove after testing the new error checking code if(left.equals (
-       * right )) throw new RuntimeException( "(ARROW) not applieable ");
-       * //$NON-NLS-1$
-       */
-
       // add new type equations
-      dtel.extend ( new DefaultTypeEquation ( left.getTau1 (),
-          right.getTau1 (), new SeenTypes < TypeEquation > () ) );
-      dtel.extend ( new DefaultTypeEquation ( left.getTau2 (),
-          right.getTau2 (), new SeenTypes < TypeEquation > () ) );
+      dtel = ( DefaultTypeEquationList ) dtel
+          .extend ( new DefaultTypeEquation ( left.getTau1 (),
+              right.getTau1 (), new SeenTypes < TypeEquation > () ) );
+      dtel = ( DefaultTypeEquationList ) dtel
+          .extend ( new DefaultTypeEquation ( left.getTau2 (),
+              right.getTau2 (), new SeenTypes < TypeEquation > () ) );
 
       context.addProofNode ( pNode, pNode.getTypeSubstitutions (), dtel
           .getRemaining () );
     }
     else
       throw new RuntimeException ( "(ARROW) not applieable " ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * checks wheather the type variable <code>tau</code> is part of
+   * <code>type</code>
+   * 
+   * @param tau the type variable
+   * @param type a type
+   * @return true if tau appears in type, false otherwise
+   */
+  private boolean typevarRecrusion ( TypeVariable tau, Type type )
+  {
+    if ( tau.equals ( type ) )
+      return true;
+    return type.getTypeVariablesFree ().contains ( tau );
   }
 
 
@@ -175,8 +187,10 @@ public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
   {
     DefaultTypeEquationList dtel = ( DefaultTypeEquationList ) node
         .getTypeEquationList ();
-    return dtel.getFirst ().getLeft () instanceof TypeVariable
-        || dtel.getFirst ().getRight () instanceof TypeVariable;
+    MonoType left = dtel.getFirst ().getLeft ();
+    MonoType right = dtel.getFirst ().getRight ();
+    return !left.equals ( right )
+        && ( left instanceof TypeVariable || right instanceof TypeVariable );
   }
 
 
@@ -216,19 +230,25 @@ public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
       else
         throw new RuntimeException ( "either left nor right is a type variable" ); //$NON-NLS-1$
 
-      /*
-       * ok, we have our type variable and monotype now we (1) create a new type
-       * substitution (2) apply the substitution to the remaining type equation
-       * list and (3) create a new proof node
-       */
+      if ( typevarRecrusion ( typevar, type ) )
+        context.addProofNode ( pNode );
+      else
+      {
+        /*
+         * ok, we have our type variable and monotype now we (1) create a new
+         * type substitution (2) apply the substitution to the remaining type
+         * equation list and (3) create a new proof node
+         */
 
-      // (1)
-      TypeSubstitutionList dts = pNode.getTypeSubstitutions ();
-      DefaultTypeSubstitution s = new DefaultTypeSubstitution ( typevar, type );
-      dts.extend ( s );
+        // (1)
+        TypeSubstitutionList dts = pNode.getTypeSubstitutions ();
+        DefaultTypeSubstitution s = new DefaultTypeSubstitution ( typevar, type );
+        dts = dts.extend ( s );
 
-      // (2) and (3)
-      context.addProofNode ( pNode, dts, dtel.getRemaining ().substitute ( s ) );
+        // (2) and (3)
+        context
+            .addProofNode ( pNode, dts, dtel.getRemaining ().substitute ( s ) );
+      }
     }
     else
       throw new RuntimeException ( "either left nor right is a type variable" ); //$NON-NLS-1$
@@ -245,8 +265,9 @@ public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
   public void applyStruct ( UnifyProofContext context, UnifyProofNode pNode )
   {
     if ( !checkEmptyRuleAppliable ( pNode ) && !checkTrivRuleAppliable ( pNode )
-        && !checkArrowRuleAppliable ( pNode )
-        && !checkVarRuleAppliable ( pNode ) )
-      ; //TODO: print "nicht loesbar"
+        && checkArrowRuleAppliable ( pNode ) && !checkVarRuleAppliable ( pNode ) )
+      context.addProofNode ( pNode );
+    else
+      throw new RuntimeException ( "struct is not appliable" ); //$NON-NLS-1$
   }
 }

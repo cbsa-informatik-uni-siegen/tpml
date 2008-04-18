@@ -44,4 +44,13 @@ public interface UnifyProofContext
    * @param substs list of substitution we got so far
    */
   public void addProofNode ( UnifyProofNode node, TypeSubstitutionList substs );
+  
+  
+  /**
+   * adds a new child node below the <code>node</code> with the hint that
+   * the parent node is not provable
+   *
+   * @param node the parent node
+   */
+  public void addProofNode(UnifyProofNode node);
 }

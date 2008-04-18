@@ -117,13 +117,17 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
     return null;
   }
 
+
   /**
    * @inheritDoc
-   *
    * @see java.lang.Object#toString()
    */
   @Override
-  public String toString() {
-    return getTypeEquationList ().toPrettyString ().toString ();
+  public String toString ()
+  {
+    if ( !isProvable() )
+      return "Nicht lösbar"; //$NON-NLS-1$
+    return getTypeSubstitutions ().toString ()
+        + " " + PRETTY_CONCAT + " unify(" + getTypeEquationList ().toPrettyString ().toString () + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
   }
 }

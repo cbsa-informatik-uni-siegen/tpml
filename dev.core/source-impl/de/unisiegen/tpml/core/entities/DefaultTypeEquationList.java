@@ -186,12 +186,14 @@ public class DefaultTypeEquationList implements TypeEquationList
    */
   public TypeEquationList substitute ( TypeSubstitution s )
   {
+    ArrayList < TypeEquation > result = new ArrayList < TypeEquation > ();
+
     for ( TypeEquation it : this.equations )
     {
-      it.substitute ( s );
+      result.add ( it.substitute ( s ) );
     }
 
-    return this;
+    return new DefaultTypeEquationList ( result );
   }
 
 

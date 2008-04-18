@@ -1,7 +1,7 @@
 package de.unisiegen.tpml.core.unify;
 
 
-import java.util.Enumeration;
+import org.apache.log4j.Logger;
 
 import de.unisiegen.tpml.core.AbstractProofModel;
 import de.unisiegen.tpml.core.AbstractProofNode;
@@ -12,7 +12,6 @@ import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.UnifyProofStep;
 import de.unisiegen.tpml.core.entities.TypeEquationList;
-import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.latex.LatexCommandList;
 import de.unisiegen.tpml.core.latex.LatexInstructionList;
 import de.unisiegen.tpml.core.latex.LatexPackageList;
@@ -22,17 +21,9 @@ import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
-import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofNode;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerExpressionProofNode;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
-import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
-import de.unisiegen.tpml.core.typechecker.UnificationException;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
-import de.unisiegen.tpml.core.types.MonoType;
 
 
 /**
@@ -44,6 +35,15 @@ import de.unisiegen.tpml.core.types.MonoType;
  */
 public class UnifyProofModel extends AbstractProofModel
 {
+
+  /**
+   * The {@link Logger} for this class.
+   * 
+   * @see Logger
+   */
+  private static final Logger logger = Logger
+      .getLogger ( UnifyProofModel.class );
+
 
   /**
    * The side overlapping for latex export
@@ -111,6 +111,52 @@ public class UnifyProofModel extends AbstractProofModel
   @Override
   public void guess ( ProofNode node ) throws ProofGuessException
   {
+    guessInternal ( ( DefaultUnifyProofNode ) node );
+  }
+
+
+  /**
+   * Implementation of the {@link #guess(ProofNode)} and
+   * {@link #guess(ProofNode)} methods.
+   *
+   * @param node the proof node for which to guess the next step.
+   * @throws ProofGuessException
+   */
+  private void guessInternal ( DefaultUnifyProofNode node ) throws ProofGuessException
+  {
+    if ( node == null )
+      throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
+    if ( !this.root.isNodeRelated ( node ) )
+    {
+      throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
+    }
+
+    // try to guess the next rule
+    logger.debug ( "Trying to guess a rule for " + node ); //$NON-NLS-1$
+
+    for ( ProofRule rule : this.ruleSet.getRules () )
+    {
+      try
+      {
+        // try to apply the rule to the specified node
+        applyInternal ( ( UnifyProofRule ) rule, node );
+
+        // remember that we guessed
+        setCheating ( true );
+
+        logger.debug ( "Successfully applied (" + rule + ") to " + node ); //$NON-NLS-1$ //$NON-NLS-2$
+        return;
+      }
+      catch ( ProofRuleException e )
+      {
+        // rule failed to apply... so, next one, please
+        logger.debug ( "Failed to apply (" + rule + ") to " + node, e ); //$NON-NLS-1$ //$NON-NLS-2$
+        continue;
+      }
+    }
+    // unable to guess next step
+    logger.debug ( "Failed to find rule to apply to " + node ); //$NON-NLS-1$
+    throw new ProofGuessException ( node );
   }
 
 
@@ -208,14 +254,10 @@ public class UnifyProofModel extends AbstractProofModel
       throw e;
     }
     /*
-    catch ( UnificationException e )
-    {
-      // revert the actions performed so far
-      context.revert ();
-      // re-throw the exception as proof rule exception
-      throw new ProofRuleException ( node, rule, e );
-    }
-    */
+     * catch ( UnificationException e ) { // revert the actions performed so far
+     * context.revert (); // re-throw the exception as proof rule exception
+     * throw new ProofRuleException ( node, rule, e ); }
+     */
     catch ( RuntimeException e )
     {
       // revert the actions performed so far
@@ -231,7 +273,7 @@ public class UnifyProofModel extends AbstractProofModel
    * <code>context</code> for the <code>substs</code> and <code>eqns</code>
    * 
    * @param context the context calling this method
-   * @param node the parent node to add the this child node to
+   * @param node the parent node to add the child node to
    * @param substs already collected list of type substitutions (from earlier
    *          (VAR) rules)
    * @param eqns a list of type equations
@@ -283,7 +325,7 @@ public class UnifyProofModel extends AbstractProofModel
    * <code>context</code> for the empty typesubstition
    * 
    * @param context the context calling this method
-   * @param node the parent node to add the this child node to
+   * @param node the parent node to add the child node to
    * @param substs already collected list of type substitutions (from earlier
    *          (VAR) rules)
    */
@@ -325,8 +367,54 @@ public class UnifyProofModel extends AbstractProofModel
       }
     } );
   }
-  
-  //FIXME: implement
+
+
+  /**
+   * Adds a new child proof node below the <code>node</code> using the
+   * <code>context</code>. Here the node is not provable
+   * 
+   * @param context the context calling this method
+   * @param node the parent node to add the child node to
+   */
+  public void contextAddProofNode ( final DefaultUnifyProofContext context,
+      final AbstractUnifyProofNode node )
+  {
+    if ( context == null )
+      throw new NullPointerException ( "context is null" ); //$NON-NLS-1$
+    if ( node == null )
+      throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
+
+    final DefaultUnifyProofNode child = new DefaultUnifyProofNode ( null, null );
+    child.setProvable ( false );
+
+    context.addRedoAction ( new Runnable ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
+      {
+        node.add ( child );
+        nodesWereInserted ( node, new int []
+        { node.getIndex ( child ) } );
+      }
+    } );
+    context.addUndoAction ( new Runnable ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
+      {
+        int nodeIndex = node.getIndex ( child );
+        node.remove ( nodeIndex );
+        nodesWereRemoved ( node, new int []
+        { nodeIndex }, new Object []
+        { child } );
+      }
+    } );
+  }
+
+
+  // FIXME: implement
   /**
    * Perform the given substitution to the given node
    * 
@@ -334,70 +422,43 @@ public class UnifyProofModel extends AbstractProofModel
    * @param s the {@link TypeSubstitution} to apply to all nodes in the proof
    *          tree.
    * @throws NullPointerException if <code>s</code> is <code>null</code>.
-   
-  @SuppressWarnings ( "unchecked" )
-  void contextApplySubstitution ( DefaultTypeCheckerProofContext context,
-      TypeSubstitution s )
-  {
-    if ( s == null )
-    {
-      throw new NullPointerException ( "s is null" ); //$NON-NLS-1$
-    }
-    // apply the substitution s to all nodes in the proof node
-    Enumeration nodes = this.root.postorderEnumeration ();
-    while ( nodes.hasMoreElements () )
-    {
-      // determine the previous settings for the node
-      final AbstractTypeCheckerProofNode nextNode = ( AbstractTypeCheckerProofNode ) nodes
-          .nextElement ();
-      if ( nextNode instanceof DefaultTypeCheckerExpressionProofNode )
-      {
-        final DefaultTypeCheckerExpressionProofNode node = ( DefaultTypeCheckerExpressionProofNode ) nextNode;
-        final TypeEnvironment oldEnvironment = node.getEnvironment ();
-        final Expression oldExpression = node.getExpression ();
-        final MonoType oldType = node.getType ();
-        // determine the new settings for the node
-        final TypeEnvironment newEnvironment = oldEnvironment.substitute ( s );
-        final Expression newExpression = oldExpression.substitute ( s );
-        final MonoType newType = oldType.substitute ( s );
-        // check if the old and new settings differ
-        if ( !oldEnvironment.equals ( newEnvironment )
-            || !oldExpression.equals ( newExpression )
-            || !oldType.equals ( newType ) )
-        {
-          // add the redo action for the substitution
-          context.addRedoAction ( new Runnable ()
-          {
+   * @SuppressWarnings ( "unchecked" ) void contextApplySubstitution (
+   *                   DefaultTypeCheckerProofContext context, TypeSubstitution
+   *                   s ) { if ( s == null ) { throw new NullPointerException (
+   *                   "s is null" ); //$NON-NLS-1$ } // apply the substitution
+   *                   s to all nodes in the proof node Enumeration nodes =
+   *                   this.root.postorderEnumeration (); while (
+   *                   nodes.hasMoreElements () ) { // determine the previous
+   *                   settings for the node final AbstractTypeCheckerProofNode
+   *                   nextNode = ( AbstractTypeCheckerProofNode ) nodes
+   *                   .nextElement (); if ( nextNode instanceof
+   *                   DefaultTypeCheckerExpressionProofNode ) { final
+   *                   DefaultTypeCheckerExpressionProofNode node = (
+   *                   DefaultTypeCheckerExpressionProofNode ) nextNode; final
+   *                   TypeEnvironment oldEnvironment = node.getEnvironment ();
+   *                   final Expression oldExpression = node.getExpression ();
+   *                   final MonoType oldType = node.getType (); // determine
+   *                   the new settings for the node final TypeEnvironment
+   *                   newEnvironment = oldEnvironment.substitute ( s ); final
+   *                   Expression newExpression = oldExpression.substitute ( s );
+   *                   final MonoType newType = oldType.substitute ( s ); //
+   *                   check if the old and new settings differ if (
+   *                   !oldEnvironment.equals ( newEnvironment ) ||
+   *                   !oldExpression.equals ( newExpression ) ||
+   *                   !oldType.equals ( newType ) ) { // add the redo action
+   *                   for the substitution context.addRedoAction ( new Runnable () {
+   * @SuppressWarnings ( "synthetic-access" ) public void run () {
+   *                   node.setEnvironment ( newEnvironment );
+   *                   node.setExpression ( newExpression ); node.setType (
+   *                   newType ); nodeChanged ( node ); } } ); // add the undo
+   *                   action for the substitution context.addUndoAction ( new
+   *                   Runnable () {
+   * @SuppressWarnings ( "synthetic-access" ) public void run () {
+   *                   node.setEnvironment ( oldEnvironment );
+   *                   node.setExpression ( oldExpression ); node.setType (
+   *                   oldType ); nodeChanged ( node ); } } ); } } } }
+   */
 
-            @SuppressWarnings ( "synthetic-access" )
-            public void run ()
-            {
-              node.setEnvironment ( newEnvironment );
-              node.setExpression ( newExpression );
-              node.setType ( newType );
-              nodeChanged ( node );
-            }
-          } );
-          // add the undo action for the substitution
-          context.addUndoAction ( new Runnable ()
-          {
-
-            @SuppressWarnings ( "synthetic-access" )
-            public void run ()
-            {
-              node.setEnvironment ( oldEnvironment );
-              node.setExpression ( oldExpression );
-              node.setType ( oldType );
-              nodeChanged ( node );
-            }
-          } );
-        }
-      }
-    }
-  }
-  */
-  
-  
   /**
    * Used to implement the
    * {@link DefaultUnifyProofContext#apply(UnifyProofRule, UnifyProofNode)}
@@ -406,8 +467,7 @@ public class UnifyProofModel extends AbstractProofModel
    * @param context the type checker proof context.
    * @param node the type checker node.
    * @param rule the type checker rule.
-   * @see DefaultUnifyProofContext#apply(UnifyProofRule,
-   *      UnifyProofNode)
+   * @see DefaultUnifyProofContext#apply(UnifyProofRule, UnifyProofNode)
    */
   public void contextSetProofNodeRule ( DefaultUnifyProofContext context,
       final AbstractUnifyProofNode node, final UnifyProofRule rule )
