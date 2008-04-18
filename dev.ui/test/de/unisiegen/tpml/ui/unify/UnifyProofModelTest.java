@@ -51,7 +51,10 @@ public final class UnifyProofModelTest extends JFrame
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "{int = int, int -> int = int -> int}";
+  //int = int, int -> int = int -> int
+  //'a -> int = int -> 'b, 'a = int
+  //int = int, int = bool
+  private static final String SIMPLE = "{ 'a = 'a }";
 
 
   private JScrollPane jScrollPane;
