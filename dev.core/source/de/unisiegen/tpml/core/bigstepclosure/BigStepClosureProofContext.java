@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.bigstepclosure;
 
+import de.unisiegen.tpml.core.ClosureEnvironment;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.Store;
 
@@ -12,6 +13,8 @@ public interface BigStepClosureProofContext
   public void addProofNode (BigStepClosureProofNode node, Expression expression);
   
   public void addProofNode (BigStepClosureProofNode node, Expression expression, Store store);
+  
+  public void addProofNode (BigStepClosureProofNode node, Expression expression, Store store, ClosureEnvironment environment);
   
   public boolean isMemoryEnabled();
   

@@ -31,7 +31,8 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
     this ( pExpression, new DefaultStore (),  new DefaultClosureEnvironment());
   }
   
-  public DefaultBigStepClosureProofNode(Expression pExpression, Store store, ClosureEnvironment environment)
+  public DefaultBigStepClosureProofNode(Expression pExpression,
+      Store store, ClosureEnvironment environment)
   {
     super(pExpression, store);
     this.environment = environment;
