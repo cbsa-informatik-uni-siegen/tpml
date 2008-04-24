@@ -14,6 +14,16 @@ public class Closure
     this.env = env;
   }
   
+  public Expression getExpression()
+  {
+    return exp;
+  }
+  
+  public ClosureEnvironment getEnvironment()
+  {
+    return env;
+  }
+  
   private Expression exp;
   private ClosureEnvironment env;
 }

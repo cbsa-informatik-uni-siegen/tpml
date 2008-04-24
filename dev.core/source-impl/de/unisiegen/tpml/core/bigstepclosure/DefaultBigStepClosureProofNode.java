@@ -5,21 +5,21 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode;
 import de.unisiegen.tpml.core.interpreters.DefaultStore;
 import de.unisiegen.tpml.core.interpreters.Store;
+import de.unisiegen.tpml.core.latex.LatexCommandList;
+import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackageList;
+import de.unisiegen.tpml.core.latex.LatexString;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
-import de.unisiegen.tpml.core.latex.LatexInstructionList;
-import de.unisiegen.tpml.core.latex.LatexStringBuilder;
-import de.unisiegen.tpml.core.latex.LatexCommandList;
-import de.unisiegen.tpml.core.latex.LatexString;
-import de.unisiegen.tpml.core.latex.LatexPackageList;
-import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
 
 /**
  * TODO
  *
  */
-public class DefaultBigStepClosureProofNode extends AbstractInterpreterProofNode
+public final class DefaultBigStepClosureProofNode extends AbstractInterpreterProofNode
     implements BigStepClosureProofNode
 {
   public DefaultBigStepClosureProofNode ( Expression pExpression )
@@ -34,9 +34,9 @@ public class DefaultBigStepClosureProofNode extends AbstractInterpreterProofNode
   
   public boolean isProven()
   {
-    return false;
+    return this.result != null;
   }
-  
+
   public PrettyString toPrettyString()
   {
     return null;
@@ -76,6 +76,8 @@ public class DefaultBigStepClosureProofNode extends AbstractInterpreterProofNode
   {
     return environment;
   }
+  
+  private BigStepClosureProofResult result;
   
   private ClosureEnvironment environment;
 }
