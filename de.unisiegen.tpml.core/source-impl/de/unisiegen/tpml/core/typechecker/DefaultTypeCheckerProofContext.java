@@ -7,9 +7,9 @@ import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.entities.DefaultTypeEquation;
+import de.unisiegen.tpml.core.entities.DefaultTypeEquationList;
 import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.entities.TypeEquationList;
-import de.unisiegen.tpml.core.entities.DefaultTypeEquationList;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
 import de.unisiegen.tpml.core.expressions.Assign;
 import de.unisiegen.tpml.core.expressions.BinaryCons;
@@ -313,8 +313,7 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
       MonoType tau = polyType.getTau ();
       for ( TypeVariable tvar : polyType.getQuantifiedVariables () )
       {
-        tau = tau.substitute ( TypeUtilities.newSubstitution ( tvar,
-            newTypeVariable () ) );
+        tau = tau.substitute ( TypeUtilities.newSubstitution ( tvar, newTypeVariable () ) );
       }
       return tau;
     }
@@ -329,7 +328,8 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
    */
   public TypeVariable newTypeVariable ()
   {
-    return new TypeVariable ( this.model.getIndex (), this.offset++ );
+    
+    return new TypeVariable ( this.model.getIndex (), ++this.offset );
   }
 
 
