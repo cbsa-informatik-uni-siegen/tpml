@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.languages.l0;
 import de.unisiegen.tpml.core.bigstepclosure.AbstractBigStepClosureProofRuleSet;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofContext;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofNode;
+import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofResult;
 import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
@@ -63,11 +64,14 @@ public class L0BigStepClosureProofRuleSet extends AbstractBigStepClosureProofRul
       BigStepClosureProofNode node)
   {
     Expression e = node.getExpression ();
-    if(e instanceof Application)
+    if(node.getChildCount() == 1 && node.getChildAt ( 0 ).isProven())
     {
-      if(node.getChildCount() == 1 && node.getChildAt ( 0 ).isProven())
+      BigStepClosureProofNode node0 = node.getChildAt ( 0 );
+      if(e instanceof Application)
       {
-        
+        Application application = (Application)e;
+        BigStepClosureProofResult result = node0.getResult ();
+        //context.addProofNode ( node, application.getE2(), result.getStore (), result.getEnvironment() );
       }
     }
   }

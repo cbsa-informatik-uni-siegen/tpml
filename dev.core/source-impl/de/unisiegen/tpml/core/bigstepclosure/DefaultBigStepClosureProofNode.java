@@ -1,6 +1,10 @@
 package de.unisiegen.tpml.core.bigstepclosure;
 
+import javax.swing.tree.TreeNode;
+
 import de.unisiegen.tpml.core.ClosureEnvironment;
+import de.unisiegen.tpml.core.DefaultClosureEnvironment;
+import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode;
 import de.unisiegen.tpml.core.interpreters.DefaultStore;
@@ -24,12 +28,71 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
 {
   public DefaultBigStepClosureProofNode ( Expression pExpression )
   {
-    this ( pExpression, new DefaultStore () );
+    this ( pExpression, new DefaultStore (),  new DefaultClosureEnvironment());
   }
   
-  public DefaultBigStepClosureProofNode(Expression pExpression, Store store)
+  public DefaultBigStepClosureProofNode(Expression pExpression, Store store, ClosureEnvironment environment)
   {
     super(pExpression, store);
+    this.environment = environment;
+  }
+  
+  public BigStepClosureProofResult getResult()
+  {
+    return result;
+  }
+  
+  public BigStepClosureProofRule getRule ()
+  {
+    ProofStep [] steps = getSteps ();
+    return steps.length == 0
+        ? null
+        : ( BigStepClosureProofRule ) steps [ 0 ].getRule ();
+  }
+  
+  public DefaultBigStepClosureProofNode getParent ()
+  {
+    return (DefaultBigStepClosureProofNode)super.getParent ();
+  }
+  
+  public DefaultBigStepClosureProofNode getRoot ()
+  {
+    return (DefaultBigStepClosureProofNode)super.getRoot();
+  }
+  
+  public DefaultBigStepClosureProofNode getFirstChild ()
+  {
+    return (DefaultBigStepClosureProofNode)super.getFirstChild();
+  }
+  
+  public DefaultBigStepClosureProofNode getLastChild ()
+  {
+    return (DefaultBigStepClosureProofNode)super.getLastChild ();
+  }
+  
+  public DefaultBigStepClosureProofNode getChildAfter ( TreeNode aChild )
+  {
+    return (DefaultBigStepClosureProofNode)super.getChildAfter ( aChild );
+  }
+  
+  public DefaultBigStepClosureProofNode getChildBefore ( TreeNode aChild )
+  {
+    return (DefaultBigStepClosureProofNode)super.getChildBefore(aChild);
+  }
+  
+  public DefaultBigStepClosureProofNode getChildAt(int index)
+  {
+    return (DefaultBigStepClosureProofNode)super.getChildAt ( index );
+  }
+  
+  public DefaultBigStepClosureProofNode getFirstLeaf ()
+  {
+    return (DefaultBigStepClosureProofNode)super.getFirstLeaf ();
+  }
+  
+  public DefaultBigStepClosureProofNode getLastLeaf ()
+  {
+    return (DefaultBigStepClosureProofNode)super.getLastLeaf ();
   }
   
   public boolean isProven()
@@ -74,7 +137,7 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
   
   public ClosureEnvironment getEnvironment()
   {
-    return environment;
+    return this.environment;
   }
   
   private BigStepClosureProofResult result;
