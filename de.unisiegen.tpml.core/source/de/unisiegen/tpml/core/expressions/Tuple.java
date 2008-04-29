@@ -307,7 +307,8 @@ public final class Tuple extends Expression implements DefaultExpressions
             + LATEX_INDENT )
             + LATEX_COMMA );
         builder.addText ( LATEX_SPACE );
-        builder.addBreak ();
+        // TODOCF Check this
+        // builder.addBreak ();
       }
       builder.addBuilder ( this.expressions [ i ].toLatexStringBuilder (
           pLatexStringBuilderFactory, pIndent + LATEX_INDENT * 2 ),
