@@ -55,8 +55,6 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle;
 		case UNIT:
 		case TYPEVARIABLE:
 		  return PrettyStyle.TYPE;
-		case IDENTIFIER:
-		  return PrettyStyle.IDENTIFIER;
 		default:
 		  return PrettyStyle.NONE;
 	  }
@@ -74,7 +72,6 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle;
 
 LineTerminator	= \r|\n|\r\n
 WhiteSpace		= {LineTerminator} | [ \t\f]
-Identifier		= [a-zA-Z] [a-zA-Z0-9_]* '*
 LetterAX		= [a-x]
 LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 
@@ -105,7 +102,6 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 						  }
 						  return symbol("TYPEVARIABLE", TYPEVARIABLE, (int)(c - '\u03b1'));
 						}
-	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
 	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENTINIT); }
 	{WhiteSpace}		{ /* Ignore */ }
 }

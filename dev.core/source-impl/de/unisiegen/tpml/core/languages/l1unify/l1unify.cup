@@ -29,7 +29,6 @@ terminal			UNIT;
 
 /* Special */
 terminal Integer	TYPEVARIABLE;
-terminal String		IDENTIFIER;
 terminal			COMMENT;
 
 /* Non terminal - Type */
@@ -124,8 +123,6 @@ simple_type						::=	LPAREN:l type:t RPAREN:r
 									{: RESULT = u; :}
 								|	type_variable:t
 									{: RESULT = t; :}
-								|	type_name:t
-									{: RESULT = t; :}
 								|	simple_type_error
 									{: :}
 								;
@@ -160,10 +157,6 @@ unit_type						::= UNIT:u
 
 type_variable					::= TYPEVARIABLE:t
 									{: RESULT = new TypeVariable(0, t, tleft, tright); :}
-								;
-
-type_name						::= IDENTIFIER:id
-									{: RESULT = new TypeName(id, idleft, idright); :}
 								;
 
 epsilon							::= /* epsilon */
