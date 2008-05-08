@@ -40,7 +40,7 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
   
   public BigStepClosureProofResult getResult()
   {
-    return result;
+    return this.result;
   }
   
   public BigStepClosureProofRule getRule ()
@@ -144,10 +144,9 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
   public boolean isFinished()
   {
     //for( BigStepClosureProofNode node : children())
-    //{
-      //if(!node.isProven())
-      //  return false;
-    //}
+    for(int i = 0; i < getChildCount(); ++i)
+      if(!getChildAt ( i ).isProven())
+        return false;
     return true;
   }
   

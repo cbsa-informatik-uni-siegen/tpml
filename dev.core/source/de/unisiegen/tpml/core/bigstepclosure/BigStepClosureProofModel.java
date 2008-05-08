@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  * TODO
  *
  */
-public class BigStepClosureProofModel extends AbstractInterpreterProofModel
+public final class BigStepClosureProofModel extends AbstractInterpreterProofModel
 {
   public BigStepClosureProofModel( Expression expression,
       AbstractProofRuleSet pRuleSet)
@@ -44,6 +44,12 @@ public class BigStepClosureProofModel extends AbstractInterpreterProofModel
   }
   
   public void prove(ProofRule node, ProofNode result)
+  {
+    
+  }
+  
+  public void contextAddProofNode ( DefaultBigStepClosureProofContext context,
+      final DefaultBigStepClosureProofNode node, final DefaultBigStepClosureProofNode child )
   {
     
   }

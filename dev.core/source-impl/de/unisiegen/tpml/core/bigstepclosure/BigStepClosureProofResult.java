@@ -36,9 +36,9 @@ public class BigStepClosureProofResult implements PrettyPrintable, LatexPrintabl
     return new DefaultStore ( ( DefaultStore ) this.store );
   }
   
-  public Expression getExpression()
+  public Expression getValue ()
   {
-    return expression;
+    return this.expression;
   }
   
   public ClosureEnvironment getEnvironment()

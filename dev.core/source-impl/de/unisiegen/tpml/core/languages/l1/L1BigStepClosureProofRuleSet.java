@@ -4,9 +4,12 @@ import de.unisiegen.tpml.core.ClosureEnvironment;
 import de.unisiegen.tpml.core.bigstepclosure.AbstractBigStepClosureProofRuleSet;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofContext;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofNode;
+import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofResult;
+import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofRule;
 import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.BinaryOperator;
 import de.unisiegen.tpml.core.expressions.BinaryOperatorException;
+import de.unisiegen.tpml.core.expressions.BooleanConstant;
 import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.expressions.Condition;
 import de.unisiegen.tpml.core.expressions.Condition1;
@@ -20,7 +23,7 @@ import de.unisiegen.tpml.core.expressions.Value;
  * TODO
  *
  */
-public class L1BigStepClosureProofRuleSet extends AbstractBigStepClosureProofRuleSet
+public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosureProofRuleSet
 {
   public L1BigStepClosureProofRuleSet(L1Language language)
   {
@@ -56,7 +59,7 @@ public class L1BigStepClosureProofRuleSet extends AbstractBigStepClosureProofRul
     ClosureEnvironment env = node.getEnvironment ();
     if(env.containsSymbol ( id ))
       throw new RuntimeException("Identifier not applicable!");
-    context.addProofNode ( node, new Closure(id, env ));
+    context.setProofNodeResult ( node, new Closure(id, env) );
   }
   
   public void applyOP1(BigStepClosureProofContext context,
@@ -79,7 +82,8 @@ public class L1BigStepClosureProofRuleSet extends AbstractBigStepClosureProofRul
     UnaryOperator op1 = (UnaryOperator)child0.getExpression ();
     Expression operand = child1.getExpression();
     
-    context.setProofNodeResult ( node, op1.applyTo ( operand ));
+    // shouldn't we extract the identifier here?
+   // context.setProofNodeResult ( node, op1.applyTo ( operand ), new ClosureEnvironment());
   }
   
   public void applyOP2(BigStepClosureProofContext context,
@@ -138,6 +142,32 @@ public class L1BigStepClosureProofRuleSet extends AbstractBigStepClosureProofRul
   public void updateCondF(BigStepClosureProofContext context,
       BigStepClosureProofNode node)
   {
+    if (!(node.getChildCount () == 1 && node.getChildAt ( 0 ).isProven () ))
+    {
+      BigStepClosureProofNode child = node.getChildAt ( 1 );
+      context.setProofNodeResult ( node, new Closure(
+          child.getExpression (), child.getEnvironment() ));
+      return;
+    }
     
+    BigStepClosureProofResult result0 = node.getChildAt ( 0 ).getResult ();
+    try
+    {
+      BooleanConstant value0 = ( BooleanConstant ) result0.getValue ();
+      if ( value0.booleanValue () )
+      {
+        context.setProofNodeRule ( node,
+            ( BigStepClosureProofRule ) getRuleByName ( "COND-T" ) ); //$NON-NLS-1$
+        updateCondT ( context, node );
+      }
+      else
+      {
+        
+      }
+    }
+    catch(ClassCastException e)
+    {
+      
+    }
   }
 }

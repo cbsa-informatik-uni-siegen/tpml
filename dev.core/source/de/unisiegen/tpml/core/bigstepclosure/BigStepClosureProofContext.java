@@ -30,5 +30,7 @@ public interface BigStepClosureProofContext
   public void setProofNodeResult ( BigStepClosureProofNode node, Expression value,
       Store store );
   
+  public void setProofNodeResult ( BigStepClosureProofNode node, Closure closure);
+  
   public void setProofNodeRule ( BigStepClosureProofNode node, BigStepClosureProofRule rule );
 }
