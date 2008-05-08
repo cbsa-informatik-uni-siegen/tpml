@@ -196,7 +196,8 @@ public abstract class Constant extends Value
         PRIO_CONSTANT, LATEX_CONSTANT, pIndent, this.toPrettyString ()
             .toString () );
     builder.addText ( "{" //$NON-NLS-1$
-        + this.text.replaceAll ( "_", "\\\\_" ) + "}" ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+        + this.text.replaceAll ( "_", "\\\\_" ).replaceAll ( "#", "\\\\#" )//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        + "}" );//$NON-NLS-1$
     return builder;
   }
 
