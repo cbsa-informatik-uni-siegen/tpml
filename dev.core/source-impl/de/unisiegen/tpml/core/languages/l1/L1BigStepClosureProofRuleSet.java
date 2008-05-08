@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l0;
+package de.unisiegen.tpml.core.languages.l1;
 
 import de.unisiegen.tpml.core.ClosureEnvironment;
 import de.unisiegen.tpml.core.bigstepclosure.AbstractBigStepClosureProofRuleSet;
@@ -12,17 +12,17 @@ import de.unisiegen.tpml.core.expressions.Value;
  * TODO
  *
  */
-public class L0BigStepClosureProofRuleSet extends AbstractBigStepClosureProofRuleSet
+public class L1BigStepClosureProofRuleSet extends AbstractBigStepClosureProofRuleSet
 {
-  public L0BigStepClosureProofRuleSet(L0Language language)
+  public L1BigStepClosureProofRuleSet(L1Language language)
   {
     super(language);
    
-    registerByMethodName( L0Language.L0,
+    registerByMethodName( L1Language.L1,
         "VAL", "applyVal");
-    registerByMethodName( L0Language.L0,
+    registerByMethodName( L1Language.L1,
         "ID", "applyId");
-    registerByMethodName( L0Language.L0,
+    registerByMethodName( L1Language.L1,
         "BETA-V", "applyBetaV", "updateBetaV");
   }
   
