@@ -5,7 +5,6 @@ import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofModel;
-import de.unisiegen.tpml.core.languages.l0.L0BigStepClosureProofRuleSet;
 import de.unisiegen.tpml.core.latex.LatexCommandList;
 import de.unisiegen.tpml.core.latex.LatexInstructionList;
 import de.unisiegen.tpml.core.latex.LatexPackageList;
