@@ -37,4 +37,6 @@ public interface BigStepClosureProofNode extends InterpreterProofNode
   public BigStepClosureProofNode getFirstLeaf ();
   
   public BigStepClosureProofNode getLastLeaf ();
+  
+  public boolean isFinished ();
 }

@@ -141,6 +141,16 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
     return this.environment;
   }
   
+  public boolean isFinished()
+  {
+    //for( BigStepClosureProofNode node : children())
+    //{
+      //if(!node.isProven())
+      //  return false;
+    //}
+    return true;
+  }
+  
   private BigStepClosureProofResult result;
   
   private ClosureEnvironment environment;
