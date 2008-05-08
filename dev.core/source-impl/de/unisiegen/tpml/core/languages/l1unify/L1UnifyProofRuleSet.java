@@ -237,17 +237,20 @@ public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
         /*
          * ok, we have our type variable and monotype now we (1) create a new
          * type substitution (2) apply the substitution to the remaining type
-         * equation list and (3) create a new proof node
+         * substitution list and extend those list and (3) apply the substitution
+         * to the remaining type equation list and (4) create a new proof node
          */
 
         // (1)
         TypeSubstitutionList dts = pNode.getTypeSubstitutions ();
         DefaultTypeSubstitution s = new DefaultTypeSubstitution ( typevar, type );
+        
+        // (2)
+        dts = dts.substitute ( s );
         dts = dts.extend ( s );
 
-        // (2) and (3)
-        context
-            .addProofNode ( pNode, dts, dtel.getRemaining ().substitute ( s ) );
+        // (3) and (4)
+        context.addProofNode ( pNode, dts, dtel.getRemaining ().substitute ( s ) );
       }
     }
     else

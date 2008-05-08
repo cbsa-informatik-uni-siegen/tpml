@@ -21,12 +21,47 @@
 
 	<target name="dist" depends="generate" />
 	
-	<target name="generate" depends="l1" description="Generate parsers and lexers" />
+	<target name="generate" depends="l1,l2unify,l2cunify,l2ounify,l3unify,l4unify" description="Generate parsers and lexers" />
 	
 	<target name="l1" depends="l1-unify" />
 
 	<target name="l1-unify">
 		<jflex file="${impldir}/de/unisiegen/tpml/core/languages/l1unify/l1unify.flex" destdir="${generateddir}" nobak="yes" />
 		<cup srcfile="${impldir}/de/unisiegen/tpml/core/languages/l1unify/l1unify.cup" destdir="${generateddir}/de/unisiegen/tpml/core/languages/l1unify" package="de.unisiegen.tpml.core.languages.l1unify" parser="L1UnifyAbstractParser" symbols="L1UnifyTerminals" interface="yes" debug="no" expect="1000000" nonterms="no" nopositions="no" compact_red="yes" dump_grammar="no" />
+	</target>
+	
+	<target name="l2" depends="l2unify" />
+		
+	<target name="l2unify">
+		<jflex file="${impldir}/de/unisiegen/tpml/core/languages/l2unify/l2unify.flex" destdir="${generateddir}" nobak="yes" />
+		<cup srcfile="${impldir}/de/unisiegen/tpml/core/languages/l2unify/l2unify.cup" destdir="${generateddir}/de/unisiegen/tpml/core/languages/l2unify" package="de.unisiegen.tpml.core.languages.l2unify" parser="L2UnifyAbstractParser" symbols="L2UnifyTerminals" interface="yes" debug="no" expect="1000000" nonterms="no" nopositions="no" compact_red="yes" dump_grammar="no" />
+	</target>
+	
+	<target name="l2c" depends="l2cunify" />
+			
+	<target name="l2cunify">
+		<jflex file="${impldir}/de/unisiegen/tpml/core/languages/l2cunify/l2cunify.flex" destdir="${generateddir}" nobak="yes" />
+		<cup srcfile="${impldir}/de/unisiegen/tpml/core/languages/l2cunify/l2cunify.cup" destdir="${generateddir}/de/unisiegen/tpml/core/languages/l2cunify" package="de.unisiegen.tpml.core.languages.l2cunify" parser="L2CUnifyAbstractParser" symbols="L2CUnifyTerminals" interface="yes" debug="no" expect="1000000" nonterms="no" nopositions="no" compact_red="yes" dump_grammar="no" />
+	</target>
+	
+	<target name="l2o" depends="l2ounify" />
+				
+	<target name="l2ounify">
+		<jflex file="${impldir}/de/unisiegen/tpml/core/languages/l2ounify/l2ounify.flex" destdir="${generateddir}" nobak="yes" />
+		<cup srcfile="${impldir}/de/unisiegen/tpml/core/languages/l2ounify/l2ounify.cup" destdir="${generateddir}/de/unisiegen/tpml/core/languages/l2ounify" package="de.unisiegen.tpml.core.languages.l2ounify" parser="L2OUnifyAbstractParser" symbols="L2OUnifyTerminals" interface="yes" debug="no" expect="1000000" nonterms="no" nopositions="no" compact_red="yes" dump_grammar="no" />
+	</target>
+	
+	<target name="l3" depends="l3unify" />
+					
+	<target name="l3unify">
+		<jflex file="${impldir}/de/unisiegen/tpml/core/languages/l3unify/l3unify.flex" destdir="${generateddir}" nobak="yes" />
+		<cup srcfile="${impldir}/de/unisiegen/tpml/core/languages/l3unify/l3unify.cup" destdir="${generateddir}/de/unisiegen/tpml/core/languages/l3unify" package="de.unisiegen.tpml.core.languages.l3unify" parser="L3UnifyAbstractParser" symbols="L3UnifyTerminals" interface="yes" debug="no" expect="1000000" nonterms="no" nopositions="no" compact_red="yes" dump_grammar="no" />
+	</target>
+	
+	<target name="l4" depends="l4unify" />
+					
+	<target name="l4unify">
+		<jflex file="${impldir}/de/unisiegen/tpml/core/languages/l4unify/l4unify.flex" destdir="${generateddir}" nobak="yes" />
+		<cup srcfile="${impldir}/de/unisiegen/tpml/core/languages/l4unify/l4unify.cup" destdir="${generateddir}/de/unisiegen/tpml/core/languages/l4unify" package="de.unisiegen.tpml.core.languages.l4unify" parser="L4UnifyAbstractParser" symbols="L4UnifyTerminals" interface="yes" debug="no" expect="1000000" nonterms="no" nopositions="no" compact_red="yes" dump_grammar="no" />
 	</target>
 </project>

@@ -1,0 +1,361 @@
+import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.languages.Error ;
+import de.unisiegen.tpml.core.languages.MultipleIdentifier ;
+import de.unisiegen.tpml.core.typechecker.SeenTypes;
+import de.unisiegen.tpml.core.entities.TypeEquationList;
+import de.unisiegen.tpml.core.entities.TypeEquation;
+import de.unisiegen.tpml.core.entities.DefaultTypeEquationList;
+import de.unisiegen.tpml.core.entities.DefaultTypeEquation;
+import de.unisiegen.tpml.core.types.ArrowType ;
+import de.unisiegen.tpml.core.types.BooleanType ;
+import de.unisiegen.tpml.core.types.ClassType ;
+import de.unisiegen.tpml.core.types.IntegerType ;
+import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.ObjectType ;
+import de.unisiegen.tpml.core.types.RecType ;
+import de.unisiegen.tpml.core.types.RowType ;
+import de.unisiegen.tpml.core.types.TypeName ;
+import de.unisiegen.tpml.core.types.TypeVariable ;
+import de.unisiegen.tpml.core.types.UnitType ;
+
+
+/* Syntactic */
+terminal			ARROW;
+terminal			LPAREN;
+terminal			RPAREN;
+terminal			LBRACKET;
+terminal			RBRACKET;
+terminal			COMMA;
+terminal			EQUAL;
+terminal			DOT;
+
+/* Keywords */
+terminal			ATTR;
+
+/* Types */
+terminal			BOOL;
+terminal			INT;
+terminal			UNIT;
+terminal			MU;
+terminal			LESS;
+terminal			GREATER;
+terminal			COLON;
+terminal			SEMI;
+terminal			ZETA;
+
+/* Special */
+terminal Integer	TYPEVARIABLE;
+terminal String		IDENTIFIER;
+terminal			COMMENT;
+
+/* Non terminal - Type */
+non terminal MonoType				type;
+non terminal MonoType				simple_type;
+non terminal BooleanType			boolean_type;
+non terminal IntegerType			integer_type;
+non terminal UnitType				unit_type;
+non terminal TypeVariable			type_variable;
+non terminal ArrowType				arrow_type;
+non terminal TypeName				type_name;
+non terminal TypeEquation			type_equation;
+non terminal TypeEquation[]			type_equation_array;
+non terminal TypeEquationList		type_equation_list;
+non terminal RecType				rec_type;
+non terminal ObjectType				object_type;
+non terminal RowType				row_type_l2c;
+non terminal RowType				row_type_without_epsilon_l2c;
+non terminal ClassType				class_type;
+
+/* Non terminal - Error */
+non terminal 		epsilon;
+non terminal 		simple_type_error;
+non terminal 		arrow_type_error;
+non terminal		rec_type_error;
+non terminal 		object_type_error;
+non terminal		row_type_l2c_error;
+non terminal		class_type_error;
+
+/* Precedence */
+precedence right	ARROW;
+
+
+/*********
+ * Types *
+ *********/
+
+
+type_equation_list				::= LBRACKET:l type_equation_array:tea RBRACKET:r
+								    {:
+								       //FIXME: check wheather the new DefaultTypeEquationList code is correct: RESULT = DefaultTypeEquationList.EMPTY_LIST ;
+								       RESULT = new DefaultTypeEquationList();
+								       for (int i = 0; i < tea.length ; i++)
+								       {
+								         RESULT = RESULT.extend(tea[i]);
+								       }
+								      RESULT.setParserStartOffset(lleft);
+								      RESULT.setParserEndOffset(rright);
+								    :}
+								 |  type_equation_array:tea
+								    {:
+								       //FIXME: check wheather the new DefaultTypeEquationList code is correct: RESULT = DefaultTypeEquationList.EMPTY_LIST ;
+								       RESULT = new DefaultTypeEquationList();
+								       for (int i = 0; i < tea.length ; i++)
+								       {
+								         RESULT = RESULT.extend(tea[i]);
+								       }
+								      RESULT.setParserStartOffset(tealeft);
+								      RESULT.setParserEndOffset(tearight);
+								    :}
+								 ;
+
+
+type_equation_array				::=	type_equation:te COMMA type_equation_array:tea
+								    {:
+								       RESULT = new TypeEquation[tea.length + 1];
+									   System.arraycopy(tea, 0, RESULT, 1, tea.length);
+									   RESULT[0] = te;
+								    :}
+								|   type_equation:te
+								    {:
+								       RESULT = new TypeEquation[]{te};
+								    :}
+								;
+
+type_equation					::= type:t1 EQUAL type:t2
+								    {:
+								      RESULT = new DefaultTypeEquation(t1, t2, new SeenTypes());
+								      RESULT.setParserStartOffset(t1left);
+								      RESULT.setParserEndOffset(t2right);
+								    :}
+								;
+								
+type							::=	simple_type:t
+									{: RESULT = t; :}
+								|	arrow_type:a
+									{: RESULT = a; :}
+								;
+
+simple_type						::=	LPAREN:l type:t RPAREN:r
+									{: 
+									   t.setParserStartOffset(lleft);
+									   t.setParserEndOffset(rright);
+									   RESULT = t;
+									:}
+								|	boolean_type:b
+									{: RESULT = b; :}
+								|	integer_type:i
+									{: RESULT = i; :}
+								|	unit_type:u
+									{: RESULT = u; :}
+								|	type_variable:t
+									{: RESULT = t; :}
+								|	type_name:t
+									{: RESULT = t; :}
+								|	rec_type:r
+									{: RESULT = r; :}
+								|	object_type:t
+									{: RESULT = t; :}
+								|	class_type:c
+									{: RESULT = c; :}
+								|	simple_type_error
+									{: :}
+								;
+
+simple_type_error				::= LPAREN:l epsilon
+									{: Error.expect("Type", "\u03C4)", lleft, lright, "\u03C4",")"); :}
+								|	LPAREN:l type:t epsilon
+									{: Error.expect("Type", ")", lleft, tright, ")"); :}
+								;
+
+arrow_type						::= type:t1 ARROW type:t2
+									{: RESULT = new ArrowType(t1, t2, t1left, t2right); :}
+								|	arrow_type_error
+									{: :}
+								;
+
+arrow_type_error				::= type:t ARROW:a epsilon 
+									{: Error.expect("Arrow-Type", " \u03C4", tleft, aright, "\u03C4"); :}
+								;
+
+boolean_type					::= BOOL:b
+									{: RESULT = new BooleanType(bleft, bright); :}
+								;
+
+integer_type					::= INT:i
+									{: RESULT = new IntegerType(ileft, iright); :}
+								;
+
+unit_type						::= UNIT:u
+									{: RESULT = new UnitType(uleft, uright); :}
+								;
+
+type_variable					::= TYPEVARIABLE:t
+									{: RESULT = new TypeVariable(0, t, tleft, tright); :}
+								;
+
+type_name						::= IDENTIFIER:id
+									{: RESULT = new TypeName(id, idleft, idright); :}
+								;
+
+rec_type						::= MU:m IDENTIFIER:id DOT type:t
+									{: RESULT = new RecType(new TypeName(id, idleft, idright), t, mleft, tright); :}
+								|	rec_type_error
+									{: :}								
+								;
+
+rec_type_error					::= MU:m epsilon
+									{: Error.expect("Rec-Type", " t.\u03C4", mleft, mright, "t",".","\u03C4"); :}
+								|	MU:m IDENTIFIER:i epsilon
+									{: Error.expect("Rec-Type", ".\u03C4", mleft, iright, ".","\u03C4"); :}
+								|	MU:m IDENTIFIER DOT:d epsilon
+									{: Error.expect("Rec-Type", "\u03C4", mleft, dright, "\u03C4"); :}
+								;
+
+object_type						::= LESS:l row_type_l2c:r GREATER:g
+									{: 
+									   MultipleIdentifier.check(r);
+									   RESULT = new ObjectType ( r, lleft, gright);
+									:}
+								|	object_type_error
+									{: :}
+								;
+
+object_type_error				::= LESS:l row_type_l2c:r epsilon
+									{: Error.expect("Object-Type", " >", lleft, rright, "..."," ","m_n",":"," ","\u03C4",";"," ",">"); :}
+								;
+
+row_type_l2c					::= epsilon
+									{: RESULT = new RowType (new Identifier[0], new MonoType[0]) ; :}
+								|	row_type_without_epsilon_l2c:r
+									{: RESULT = r; :}
+								;
+
+row_type_without_epsilon_l2c	::= IDENTIFIER:id COLON type:tau SEMI row_type_l2c:r
+									{:
+									   Identifier [] identifiers = new Identifier [r.getIdentifiers().length + 1];
+									   identifiers [0] = new Identifier (id,Identifier.Set.METHOD,idleft,idright);
+									   System.arraycopy ( r.getIdentifiers() , 0 , identifiers , 1 , r.getIdentifiers().length );
+									   MonoType [] types = new MonoType [r.getTypes().length + 1];
+									   types [0] = tau;
+									   System.arraycopy ( r.getTypes() , 0 , types , 1 , r.getTypes().length );
+									   RESULT = new RowType (identifiers, types, idleft, rright) ;
+									:}
+								|	ATTR:a IDENTIFIER:id COLON type:tau SEMI row_type_l2c:r
+									{:
+									   Identifier [] identifiers = new Identifier [r.getIdentifiers().length + 1];
+									   identifiers [0] = new Identifier (id,Identifier.Set.ATTRIBUTE,idleft,idright);
+									   System.arraycopy ( r.getIdentifiers() , 0 , identifiers , 1 , r.getIdentifiers().length );
+									   MonoType [] types = new MonoType [r.getTypes().length + 1];
+									   types [0] = tau;
+									   System.arraycopy ( r.getTypes() , 0 , types , 1 , r.getTypes().length );
+									   RESULT = new RowType (identifiers, types, aleft, rright) ;
+									:}
+								|	row_type_l2c_error
+									{: :}
+								;
+
+row_type_l2c_error				::= IDENTIFIER:id COLON:c epsilon
+									{: Error.expect("Row-Type", " \u03C4 ;", idleft, cright, "\u03C4"," ",";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
+								|	IDENTIFIER:id COLON type:t epsilon
+									{: Error.expect("Row-Type", " ;", idleft, tright, ";"," ","..."," ","m_n",":"," ","\u03C4"," ",";"); :}
+								// Missing colon
+								|	IDENTIFIER:id type
+									{: Error.expect("Row-Type", ": ", idleft, idright, ":"); :}
+								// Missing type
+								|	IDENTIFIER:id COLON:c SEMI
+									{: Error.expect("Row-Type", " \u03C4 ", idleft, cright, "\u03C4"); :}								
+								// Missing semi
+								|	IDENTIFIER:id COLON type:tau row_type_without_epsilon_l2c
+									{: Error.expect("Row-Type", " ; ", idleft, tauright, ";"); :}									
+								// Missing type and semi
+								|	IDENTIFIER:id COLON:c row_type_without_epsilon_l2c
+									{: Error.expect("Row-Type", " \u03C4 ; ", idleft, cright, "\u03C4"," ",";"); :}								
+								// Missing colon, type and semi
+								|	IDENTIFIER:id row_type_without_epsilon_l2c
+									{: Error.expect("Row-Type", ": \u03C4 ; ", idleft, idright, ":"," ","\u03C4"," ",";"); :}
+								// Attribute identifier
+								|	ATTR:a epsilon
+									{: Error.expect("Row-Type", " a: \u03C4 ;", aleft, aright, "a",":"," ","\u03C4"," ",";"," ","..."," ","a_n",":"," ","\u03C4"," ",";"); :}
+								|	ATTR:a IDENTIFIER:i epsilon
+									{: Error.expect("Row-Type", ": \u03C4 ;", aleft, iright, ":"," ","\u03C4"," ",";"," ","..."," ","a_n",":"," ","\u03C4"," ",";"); :}
+								|	ATTR:a IDENTIFIER:i COLON:c epsilon
+									{: Error.expect("Row-Type", " \u03C4 ;", aleft, cright, "\u03C4"," ",";"," ","..."," ","a_n",":"," ","\u03C4"," ",";"); :}
+								|	ATTR:a IDENTIFIER:i COLON type:t epsilon
+									{: Error.expect("Row-Type", " ;", aleft, tright, ";"," ","..."," ","a_n",":"," ","\u03C4"," ",";"); :}
+								// Missing identifier
+								|	ATTR:a COLON
+									{: Error.expect("Row-Type", " a", aleft, aright, "a"); :}
+								|	ATTR:a COLON type
+									{: Error.expect("Row-Type", " a", aleft, aright, "a"); :}
+								// Missing colon
+								|	ATTR:a IDENTIFIER:id type
+									{: Error.expect("Row-Type", ": ", aleft, idright, ":"); :}
+								// Missing type
+								|	ATTR:a IDENTIFIER:id COLON:c SEMI
+									{: Error.expect("Row-Type", " \u03C4 ", aleft, cright, "\u03C4"); :}								
+								// Missing semi
+								|	ATTR:a IDENTIFIER:id COLON type:tau row_type_without_epsilon_l2c
+									{: Error.expect("Row-Type", " ; ", aleft, tauright, ";"); :}
+								// Missing colon and type
+								|	ATTR:a IDENTIFIER:id SEMI
+									{: Error.expect("Row-Type", ": \u03C4 ", aleft, idright, ":"," ","\u03C4"); :}
+								// Missing type and semi
+								|	ATTR:a IDENTIFIER:id COLON:c row_type_without_epsilon_l2c
+									{: Error.expect("Row-Type", " \u03C4 ; ", aleft, cright, "\u03C4"," ",";"); :}
+								// Missing identifier, colon and type
+								|	ATTR:a SEMI
+									{: Error.expect("Row-Type", " a: \u03C4 ", aleft, aright, "a",":"," ","\u03C4"); :}
+								// Missing colon, type and semi
+								|	ATTR:a IDENTIFIER:id row_type_without_epsilon_l2c
+									{: Error.expect("Row-Type", ": \u03C4 ; ", aleft, idright, ":"," ","\u03C4"," ",";"); :}
+								;
+
+class_type						::= ZETA:z LPAREN type:t COLON row_type_l2c:row RPAREN:r
+									{: 
+									   MultipleIdentifier.check(row);
+									   RESULT = new ClassType (t, row, zleft, rright) ;
+									:}
+								|	class_type_error
+									{: :}
+								;
+
+class_type_error				::= ZETA:z epsilon
+									{: Error.expect("Class-Type", "(int : m: int ;)", zleft, zright, "(","\u03C4"," ",":"," ","\u03D5",")"); :}
+								|	ZETA:z LPAREN:l epsilon
+									{: Error.expect("Class-Type", "int : m: int ;)", zleft, lright, "\u03C4"," ",":"," ","\u03D5",")"); :}
+								|	ZETA:z LPAREN type:t epsilon
+									{: Error.expect("Class-Type", " : m: int ;)", zleft, tright, ":"," ","\u03D5",")"); :}
+								|	ZETA:z LPAREN type COLON row_type_l2c:row epsilon
+									{: Error.expect("Class-Type", ")", zleft, rowright, ")"); :}
+								// Missing left paren							
+								|	ZETA:z type COLON
+									{: Error.expect("Class-Type", "(", zleft, zright, "("); :}
+								// Missing type								
+								|	ZETA:z LPAREN:l COLON
+									{: Error.expect("Class-Type", "\u03C4 ", zleft, lright, "\u03C4"); :}
+								// Missing colon								
+								|	ZETA:z LPAREN type:t row_type_without_epsilon_l2c
+									{: Error.expect("Class-Type", " : ", zleft, tright, ":"); :}									
+								// Missing left paren and type
+								|	ZETA:z COLON
+									{: Error.expect("Class-Type", "(\u03C4", zleft, zright, "(","\u03C4"); :}
+								// Missing type and colon
+								|	ZETA:z LPAREN:l row_type_without_epsilon_l2c
+									{: Error.expect("Class-Type", "\u03C4 : ", zleft, lright, "\u03C4"," ",":"); :}																
+								// Missing colon and phi						
+								|	ZETA:z LPAREN type:t RPAREN
+									{: Error.expect("Class-Type", " : m: int ;", zleft, tright, ":"," ","\u03D5"); :}		
+								// Missing left paren, type and colon
+								|	ZETA:z row_type_without_epsilon_l2c
+									{: Error.expect("Class-Type", "(\u03C4 : ", zleft, zright, "(","\u03C4"," ",":"); :}	
+								// Missing type, colon and phi
+								|	ZETA:z LPAREN:l RPAREN
+									{: Error.expect("Class-Type", "\u03C4 : m: int ;", zleft, lright, "\u03C4"," ",":"," ","\u03D5"); :}										
+								// Missing left paren, type, colon and phi
+								|	ZETA:z RPAREN
+									{: Error.expect("Class-Type", "(\u03C4 : m: int ;", zleft, zright, "(","\u03C4"," ",":"," ","\u03D5"); :}	
+								;
+
+epsilon							::= /* epsilon */
+									{: :}	
+								;
