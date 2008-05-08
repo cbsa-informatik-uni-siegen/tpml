@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.bigstepclosure;
 
 import de.unisiegen.tpml.core.ClosureEnvironment;
+import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.Store;
 
@@ -40,6 +41,11 @@ final class DefaultBigStepClosureProofContext implements BigStepClosureProofCont
   }
   
   public void addProofNode(BigStepClosureProofNode node, Expression expression)
+  {
+    
+  }
+  
+  public void addProofNode(BigStepClosureProofNode node, Closure closure)
   {
     
   }
