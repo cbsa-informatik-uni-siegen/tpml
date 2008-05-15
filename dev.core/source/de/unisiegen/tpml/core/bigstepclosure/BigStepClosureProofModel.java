@@ -54,6 +54,12 @@ public final class BigStepClosureProofModel extends AbstractInterpreterProofMode
     
   }
   
+  public void contextSetProofNodeResult ( DefaultBigStepClosureProofContext context,
+      final DefaultBigStepClosureProofNode node, final BigStepClosureProofResult result )
+  {
+    
+  }
+  
   public LatexPackageList getLatexPackages()
   {
     return null;

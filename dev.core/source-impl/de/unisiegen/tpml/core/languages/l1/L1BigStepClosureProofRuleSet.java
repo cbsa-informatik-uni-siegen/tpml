@@ -15,6 +15,8 @@ import de.unisiegen.tpml.core.expressions.Condition;
 import de.unisiegen.tpml.core.expressions.Condition1;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.Lambda;
+import de.unisiegen.tpml.core.expressions.MultiLambda;
 import de.unisiegen.tpml.core.expressions.UnaryOperator;
 import de.unisiegen.tpml.core.expressions.UnaryOperatorException;
 import de.unisiegen.tpml.core.expressions.Value;
@@ -49,7 +51,7 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
       BigStepClosureProofNode node)
   {
     Value val = (Value)node.getExpression();
-    // TODO: do we have to add a new node here?
+    context.setProofNodeResult ( node, new Closure(val, node.getEnvironment()) );
   }
   
   public void applyId(BigStepClosureProofContext context,
@@ -83,7 +85,7 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
     Expression operand = child1.getExpression();
     
     // shouldn't we extract the identifier here?
-   // context.setProofNodeResult ( node, op1.applyTo ( operand ), new ClosureEnvironment());
+    context.setProofNodeResult ( node, op1.applyTo ( operand ));
   }
   
   public void applyOP2(BigStepClosureProofContext context,
@@ -113,14 +115,39 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
   public void applyBetaV(BigStepClosureProofContext context,
       BigStepClosureProofNode node)
   {
-    applyOP1(context, node);
+    Application application = (Application)node.getExpression();
+    Expression e1 = application.getE1 ();
+    if(e1 instanceof MultiLambda)
+    {
+      // TODO:
+      return;
+    }
     
+    //Lambda lambda = (Lambda)e1;
+    //Expression e2 = application.getE2 ();
+    //context.addProofNode ( node, lambda.getE ().substitute ( lambda.getId (),
+    //    e2 ) );
   }
   
   public void updateBetaV(BigStepClosureProofContext context,
       BigStepClosureProofNode node)
   {
-    
+    BigStepClosureProofNode child0 = node.getFirstChild (),
+                            child1 = node.getChildAt ( 1 );
+    if(child0.isFinished() && child1.isFinished())
+    {
+      Lambda lambda = (Lambda)child0.getExpression ();
+      Closure closure = child1.getClosure ();
+      ClosureEnvironment environment = node.getEnvironment ();
+      environment.put ( lambda.getId (), closure);
+      context.addProofNode ( node, new Closure(lambda.getE (), environment) );
+    }
+    else if(node.getChildCount() == 3)
+    {
+      BigStepClosureProofNode child2 = node.getChildAt ( 2 );
+      if(child2.isFinished())
+        context.setProofNodeResult ( node, child2.getClosure() );
+    }
   }
  
   public void applyCond(BigStepClosureProofContext context,
@@ -136,7 +163,16 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
   public void updateCondT(BigStepClosureProofContext context,
       BigStepClosureProofNode node)
   {
-    
+    if(node.getChildCount() == 1 && node.getChildAt ( 0 ).isFinished()) 
+    {
+      BigStepClosureProofNode child0 = node.getChildAt ( 0 );
+      if(((BooleanConstant)child0.getResult ().getValue()).booleanValue())
+        context.setProofNodeResult(node, child0.getResult());
+      else
+        updateCondF(context, node);
+    }
+    else if(node.getChildCount() == 2 && node.getChildAt ( 1 ).isFinished())
+      context.setProofNodeResult ( node, node.getChildAt(1).getResult());
   }
   
   public void updateCondF(BigStepClosureProofContext context,

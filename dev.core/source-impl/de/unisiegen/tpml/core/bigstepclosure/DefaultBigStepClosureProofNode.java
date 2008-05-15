@@ -5,6 +5,7 @@ import javax.swing.tree.TreeNode;
 import de.unisiegen.tpml.core.ClosureEnvironment;
 import de.unisiegen.tpml.core.DefaultClosureEnvironment;
 import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode;
 import de.unisiegen.tpml.core.interpreters.DefaultStore;
@@ -139,6 +140,11 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
   public ClosureEnvironment getEnvironment()
   {
     return this.environment;
+  }
+  
+  public Closure getClosure()
+  {
+    return new Closure(getExpression(), getEnvironment());
   }
   
   public boolean isFinished()

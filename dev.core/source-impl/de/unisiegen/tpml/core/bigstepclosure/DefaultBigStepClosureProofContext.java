@@ -1,9 +1,10 @@
 package de.unisiegen.tpml.core.bigstepclosure;
 
 import de.unisiegen.tpml.core.ClosureEnvironment;
-import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode;
+import de.unisiegen.tpml.core.DefaultClosureEnvironment;
 import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interpreters.DefaultStore;
 import de.unisiegen.tpml.core.interpreters.Store;
 
 /**
@@ -19,22 +20,23 @@ final class DefaultBigStepClosureProofContext implements BigStepClosureProofCont
   
   public void setProofNodeResult(BigStepClosureProofNode node, Expression expression)
   {
-    
+    setProofNodeResult(node, new BigStepClosureProofResult(new DefaultStore(), new Closure(expression, new DefaultClosureEnvironment())));
   }
   
   public void setProofNodeResult(BigStepClosureProofNode node, BigStepClosureProofResult result)
   {
-    
+    this.model.contextSetProofNodeResult ( this,
+        ( DefaultBigStepClosureProofNode ) node, result );
   }
   
   public void setProofNodeResult(BigStepClosureProofNode node, Expression expression, Store store)
   {
-    
+    setProofNodeResult(node, new BigStepClosureProofResult(store, new Closure(expression, new DefaultClosureEnvironment())));
   }
  
   public void setProofNodeResult(BigStepClosureProofNode node, Closure closure)
   {
-    
+    setProofNodeResult(node, new BigStepClosureProofResult(new DefaultStore(), closure));
   }
   
   public void setProofNodeRule(BigStepClosureProofNode node, BigStepClosureProofRule rule)

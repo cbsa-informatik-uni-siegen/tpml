@@ -20,6 +20,11 @@ public final class DefaultClosureEnvironment
   extends AbstractEnvironment<Identifier, Closure>
   implements ClosureEnvironment 
 {
+  public void put(Identifier identifier, Closure closure)
+  {
+    
+  }
+  
   public PrettyString toPrettyString()
   {
     return null; // FIXME

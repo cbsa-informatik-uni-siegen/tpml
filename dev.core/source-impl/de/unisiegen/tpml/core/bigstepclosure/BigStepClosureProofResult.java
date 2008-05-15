@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.bigstepclosure;
 
 import de.unisiegen.tpml.core.ClosureEnvironment;
+import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.DefaultStore;
 import de.unisiegen.tpml.core.interpreters.Store;
@@ -24,11 +25,10 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 public class BigStepClosureProofResult implements PrettyPrintable, LatexPrintable
 {
   public BigStepClosureProofResult(Store store,
-      Expression expression, ClosureEnvironment environment)
+      Closure closure)
   {
     this.store = store;
-    this.expression = expression;
-    this.environment = environment;
+    this.closure = closure;
   }
   
   public Store getStore ()
@@ -36,14 +36,19 @@ public class BigStepClosureProofResult implements PrettyPrintable, LatexPrintabl
     return new DefaultStore ( ( DefaultStore ) this.store );
   }
   
+  public Closure getClosure()
+  {
+    return this.closure;
+  }
+  
   public Expression getValue ()
   {
-    return this.expression;
+    return this.getClosure().getExpression();
   }
   
   public ClosureEnvironment getEnvironment()
   {
-    return environment;
+    return this.getClosure().getEnvironment();
   }
   
   public LatexStringBuilder toLatexStringBuilder(LatexStringBuilderFactory factory, int i)
@@ -81,9 +86,6 @@ public class BigStepClosureProofResult implements PrettyPrintable, LatexPrintabl
     return null;
   }
   
-
-  
   private Store store;
-  private Expression expression;
-  private ClosureEnvironment environment;
+  private Closure closure;
 }
