@@ -135,20 +135,21 @@ public class TypeSubstitutionList implements PrettyPrintable, LatexPrintable
   {
     return new TypeSubstitutionList ( s, this );
   }
-  
+
+
   /**
    * applies a type substitution to all substitutions in the list
-   *
+   * 
    * @param s the substitution we want to apply to all substitutions in the list
    * @return substituted list
    */
-  public TypeSubstitutionList substitute(final DefaultTypeSubstitution s)
+  public TypeSubstitutionList substitute ( final DefaultTypeSubstitution s )
   {
-    TypeSubstitutionList result = new TypeSubstitutionList();
-    
-      for(TypeSubstitutionList l = this; l != EMPTY_LIST; l = l.remaining)
-        result = l.extend ( (DefaultTypeSubstitution)l.first.substitute ( s ) );
-    
+    TypeSubstitutionList result = TypeSubstitutionList.EMPTY_LIST;
+
+    for ( TypeSubstitutionList l = this ; l != EMPTY_LIST ; l = l.remaining )
+      result = l.extend ( ( DefaultTypeSubstitution ) l.first.substitute ( s ) );
+
     return result;
   }
 

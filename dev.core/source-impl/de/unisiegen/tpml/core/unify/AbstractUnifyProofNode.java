@@ -26,7 +26,7 @@ public abstract class AbstractUnifyProofNode extends AbstractProofNode
   /**
    * the list of substitutions
    */
-  private TypeSubstitutionList substitutions;
+  private TypeSubstitutionList substitutions = TypeSubstitutionList.EMPTY_LIST;
 
 
   /**

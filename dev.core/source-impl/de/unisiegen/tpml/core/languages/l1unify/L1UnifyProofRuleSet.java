@@ -246,6 +246,8 @@ public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
         DefaultTypeSubstitution s = new DefaultTypeSubstitution ( typevar, type );
         
         // (2)
+        //TODO: { 'a -> int = int -> 'b, 'a = int }  will result in a list with two
+        //      int/'a substitutions; we have to correct TypeSubstitutionList.substitute !!!
         dts = dts.substitute ( s );
         dts = dts.extend ( s );
 
