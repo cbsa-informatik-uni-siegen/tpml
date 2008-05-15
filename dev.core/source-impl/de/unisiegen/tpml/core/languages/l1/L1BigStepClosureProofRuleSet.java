@@ -4,8 +4,6 @@ import de.unisiegen.tpml.core.ClosureEnvironment;
 import de.unisiegen.tpml.core.bigstepclosure.AbstractBigStepClosureProofRuleSet;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofContext;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofNode;
-import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofResult;
-import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofRule;
 import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.BinaryOperator;
 import de.unisiegen.tpml.core.expressions.BinaryOperatorException;
@@ -136,9 +134,10 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
                             child1 = node.getChildAt ( 1 );
     if(child0.isFinished() && child1.isFinished())
     {
-      Lambda lambda = (Lambda)child0.getExpression ();
-      Closure closure = child1.getClosure ();
-      ClosureEnvironment environment = node.getEnvironment ();
+      Closure result0 = child0.getResult ().getClosure();
+      Lambda lambda = (Lambda)result0.getExpression ();
+      Closure closure = child1.getResult().getClosure ();
+      ClosureEnvironment environment = result0.getEnvironment ();
       environment.put ( lambda.getId (), closure);
       context.addProofNode ( node, new Closure(lambda.getE (), environment) );
     }
@@ -146,7 +145,7 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
     {
       BigStepClosureProofNode child2 = node.getChildAt ( 2 );
       if(child2.isFinished())
-        context.setProofNodeResult ( node, child2.getClosure() );
+        context.setProofNodeResult ( node, child2.getResult().getClosure() );
     }
   }
  
@@ -166,10 +165,19 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
     if(node.getChildCount() == 1 && node.getChildAt ( 0 ).isFinished()) 
     {
       BigStepClosureProofNode child0 = node.getChildAt ( 0 );
-      if(((BooleanConstant)child0.getResult ().getValue()).booleanValue())
-        context.setProofNodeResult(node, child0.getResult());
-      else
+      if(!((BooleanConstant)child0.getResult ().getValue()).booleanValue())
+      {
         updateCondF(context, node);
+        return;
+      }
+      
+      Expression expression = node.getExpression ();
+      context.addProofNode ( node,
+          new Closure(
+              expression instanceof Condition 
+              ? ((Condition)expression).getE1 ()
+              : ((Condition1)expression).getE1(),
+              node.getEnvironment()));
     }
     else if(node.getChildCount() == 2 && node.getChildAt ( 1 ).isFinished())
       context.setProofNodeResult ( node, node.getChildAt(1).getResult());
@@ -178,32 +186,13 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
   public void updateCondF(BigStepClosureProofContext context,
       BigStepClosureProofNode node)
   {
-    if (!(node.getChildCount () == 1 && node.getChildAt ( 0 ).isProven () ))
+    if(node.getChildCount() == 1 && node.getChildAt ( 0 ).isFinished())
     {
-      BigStepClosureProofNode child = node.getChildAt ( 1 );
-      context.setProofNodeResult ( node, new Closure(
-          child.getExpression (), child.getEnvironment() ));
-      return;
-    }
-    
-    BigStepClosureProofResult result0 = node.getChildAt ( 0 ).getResult ();
-    try
-    {
-      BooleanConstant value0 = ( BooleanConstant ) result0.getValue ();
-      if ( value0.booleanValue () )
+      BigStepClosureProofNode child0 = node.getChildAt ( 0 );
+      if(!((BooleanConstant)child0.getResult ().getValue()).booleanValue())
       {
-        context.setProofNodeRule ( node,
-            ( BigStepClosureProofRule ) getRuleByName ( "COND-T" ) ); //$NON-NLS-1$
-        updateCondT ( context, node );
+        return;
       }
-      else
-      {
-        
-      }
-    }
-    catch(ClassCastException e)
-    {
-      
     }
   }
 }
