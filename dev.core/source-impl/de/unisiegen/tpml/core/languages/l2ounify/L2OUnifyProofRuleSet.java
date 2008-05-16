@@ -8,10 +8,10 @@ import de.unisiegen.tpml.core.unify.AbstractUnifyProofRuleSet;
  * The type proof rules for the <code>L1</code> language.
  * 
  * @author Christian Uhrhan
- * @version $Id: L1UnifyProofRuleSet.java 2851 2008-05-08 15:28:12Z uhrhan $
+ * @version $Id$
  * @see AbstractUnifyProofRuleSet
  */
-public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
+public class L2OUnifyProofRuleSet extends AbstractUnifyProofRuleSet
 {
 
   /**
@@ -22,7 +22,7 @@ public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
    * @throws NullPointerException if <code>language</code> is
    *           <code>null</code>.
    */
-  public L1UnifyProofRuleSet ( L2OUNIFYLanguage language )
+  public L2OUnifyProofRuleSet ( L2OUNIFYLanguage language )
   {
     super ( language );
     // register the type rules

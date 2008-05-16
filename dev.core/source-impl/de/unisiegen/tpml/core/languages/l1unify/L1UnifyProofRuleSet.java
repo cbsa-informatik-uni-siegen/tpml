@@ -98,16 +98,8 @@ public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
   public void applyTriv ( UnifyProofContext context, UnifyProofNode pNode )
   {
     if ( checkTrivRuleAppliable ( pNode ) )
-    {
-      /*
-       * TODO: remove after testing the new error checking code
-       * DefaultTypeEquationList dtel = ( DefaultTypeEquationList ) pNode
-       * .getTypeEquationList (); MonoType left = dtel.getFirst ().getLeft ();
-       * MonoType right = dtel.getFirst ().getRight (); if ( left.equals ( right ) )
-       */
       context.addProofNode ( pNode, pNode.getTypeSubstitutions (), pNode
           .getTypeEquationList ().getRemaining () );
-    }
     else
       throw new RuntimeException ( "type mismatch in applyTriv" ); //$NON-NLS-1$
   }

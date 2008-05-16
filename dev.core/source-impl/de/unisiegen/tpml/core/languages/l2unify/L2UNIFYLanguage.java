@@ -21,7 +21,7 @@ import de.unisiegen.tpml.core.unify.UnifyProofModel;
  * related functionality, which extends the L1Unify language.
  * 
  * @author Christian Fehler
- * @version $Id: L2UNIFYLanguage.java 2815 2008-04-11 13:50:41Z uhrhan $
+ * @version $Id$
  */
 public class L2UNIFYLanguage extends L1UNIFYLanguage
 {

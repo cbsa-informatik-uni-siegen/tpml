@@ -1,6 +1,9 @@
 package de.unisiegen.tpml.core.languages.l2cunify;
 
 
+import de.unisiegen.tpml.core.entities.DefaultTypeEquation;
+import de.unisiegen.tpml.core.entities.DefaultTypeEquationList;
+import de.unisiegen.tpml.core.types.RecType;
 import de.unisiegen.tpml.core.unify.AbstractUnifyProofRuleSet;
 import de.unisiegen.tpml.core.unify.UnifyProofContext;
 import de.unisiegen.tpml.core.unify.UnifyProofNode;
@@ -10,7 +13,7 @@ import de.unisiegen.tpml.core.unify.UnifyProofNode;
  * The type proof rules for the <code>L1</code> language.
  * 
  * @author Christian Uhrhan
- * @version $Id: L1UnifyProofRuleSet.java 2851 2008-05-08 15:28:12Z uhrhan $
+ * @version $Id$
  * @see AbstractUnifyProofRuleSet
  */
 public class L2CUnifyProofRuleSet extends AbstractUnifyProofRuleSet
@@ -43,6 +46,15 @@ public class L2CUnifyProofRuleSet extends AbstractUnifyProofRuleSet
    */
   public void applyMULeft ( UnifyProofContext context, UnifyProofNode pNode )
   {
+    DefaultTypeEquationList dtel = ( DefaultTypeEquationList ) pNode
+        .getTypeEquationList ();
+    RecType recType = ( RecType ) dtel.getFirst ().getLeft ();
+    dtel = ( DefaultTypeEquationList ) dtel
+        .extend ( new DefaultTypeEquation ( recType.getTau ().substitute (
+            recType.getTypeName (), recType ), dtel.getFirst ().getRight (),
+            dtel.getFirst ().getSeenTypes ().clone () ) );
+    context.addProofNode ( pNode, pNode.getTypeSubstitutions (), dtel
+        .getRemaining () );
   }
 
 
@@ -55,5 +67,12 @@ public class L2CUnifyProofRuleSet extends AbstractUnifyProofRuleSet
    */
   public void applyMURight ( UnifyProofContext context, UnifyProofNode pNode )
   {
+    DefaultTypeEquationList dtel = ( DefaultTypeEquationList ) pNode
+        .getTypeEquationList ();
+    RecType recType = ( RecType ) dtel.getFirst ().getRight ();
+    dtel = ( DefaultTypeEquationList ) dtel.extend ( new DefaultTypeEquation (
+        dtel.getFirst ().getLeft (), recType.getTau ().substitute (
+            recType.getTypeName (), recType ), dtel.getFirst ().getSeenTypes ()
+            .clone () ) );
   }
 }

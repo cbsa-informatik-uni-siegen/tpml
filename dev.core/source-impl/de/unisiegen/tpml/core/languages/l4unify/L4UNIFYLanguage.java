@@ -20,7 +20,7 @@ import de.unisiegen.tpml.core.unify.UnifyProofModel;
  * for L4Unify related functionality, which extends the L0 language.
  * 
  * @author Christian Fehler
- * @version $Id: L4UNIFYLanguage.java 2815 2008-04-11 13:50:41Z uhrhan $
+ * @version $Id$
  */
 public class L4UNIFYLanguage extends AbstractLanguage
 {

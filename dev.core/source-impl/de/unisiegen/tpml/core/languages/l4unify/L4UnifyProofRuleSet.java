@@ -8,7 +8,7 @@ import de.unisiegen.tpml.core.unify.AbstractUnifyProofRuleSet;
  * The type proof rules for the <code>L4</code> language.
  * 
  * @author Christian Uhrhan
- * @version $Id: L4UnifyProofRuleSet.java 2851 2008-05-08 15:28:12Z uhrhan $
+ * @version $Id$
  * @see AbstractUnifyProofRuleSet
  */
 public class L4UnifyProofRuleSet extends AbstractUnifyProofRuleSet

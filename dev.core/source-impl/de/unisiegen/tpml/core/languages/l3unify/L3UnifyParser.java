@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.languages.LanguageScanner;
  * The unify parser class for the <code>L3</code> language.
  * 
  * @author Christian Fehler
- * @version $Id: L3UnifyParser.java 2796 2008-03-14 19:13:11Z fehler $
+ * @version $Id$
  * @see L3UnifyAbstractParser
  */
 final class L3UnifyParser extends L3UnifyAbstractParser

@@ -6,20 +6,20 @@ import de.unisiegen.tpml.core.unify.AbstractUnifyProofRuleSet;
 
 
 /**
- * The type proof rules for the <code>L1</code> language.
+ * The type proof rules for the <code>L2Unify</code> language.
  * 
  * @author Christian Uhrhan
- * @version $Id: L1UnifyProofRuleSet.java 2851 2008-05-08 15:28:12Z uhrhan $
+ * @version $Id$
  * @see AbstractUnifyProofRuleSet
  */
 public class L2UnifyProofRuleSet extends L1UnifyProofRuleSet
 {
 
   /**
-   * Allocates a new <code>L1UnifyProofRuleSet</code> for the specified
+   * Allocates a new <code>L2UnifyProofRuleSet</code> for the specified
    * <code>language</code>.
    * 
-   * @param language the <code>L1</code> or a derived language.
+   * @param language the <code>L2Unify</code> or a derived language.
    * @throws NullPointerException if <code>language</code> is
    *           <code>null</code>.
    */

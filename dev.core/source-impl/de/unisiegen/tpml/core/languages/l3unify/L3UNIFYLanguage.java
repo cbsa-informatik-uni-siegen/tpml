@@ -20,7 +20,7 @@ import de.unisiegen.tpml.core.unify.UnifyProofModel;
  * related functionality, which extends the L2 language.
  * 
  * @author Christian Fehler
- * @version $Id: L3UNIFYLanguage.java 2815 2008-04-11 13:50:41Z uhrhan $
+ * @version $Id$
  */
 public class L3UNIFYLanguage extends AbstractLanguage
 {
