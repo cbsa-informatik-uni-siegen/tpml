@@ -189,7 +189,7 @@
 		<cup srcfile="${impldir}/de/unisiegen/tpml/core/languages/l3/l3type.cup" destdir="${generateddir}/de/unisiegen/tpml/core/languages/l3" package="de.unisiegen.tpml.core.languages.l3" parser="L3AbstractTypeParser" symbols="L3TypeTerminals" interface="yes" debug="no" expect="1000000" nonterms="no" nopositions="no" compact_red="yes" dump_grammar="no" />
 	</target>
 
-	<target name="l4" depends="l4-expression,l4-type" />
+	<target name="l4" depends="l4-expression,l4-type,l4o-expression,l4o-type" />
 
 	<target name="l4-expression">
 		<jflex file="${impldir}/de/unisiegen/tpml/core/languages/l4/l4.flex" destdir="${generateddir}" nobak="yes" />
@@ -199,6 +199,16 @@
 	<target name="l4-type">
 		<jflex file="${impldir}/de/unisiegen/tpml/core/languages/l4/l4type.flex" destdir="${generateddir}" nobak="yes" />
 		<cup srcfile="${impldir}/de/unisiegen/tpml/core/languages/l4/l4type.cup" destdir="${generateddir}/de/unisiegen/tpml/core/languages/l4" package="de.unisiegen.tpml.core.languages.l4" parser="L4AbstractTypeParser" symbols="L4TypeTerminals" interface="yes" debug="no" expect="1000000" nonterms="no" nopositions="no" compact_red="yes" dump_grammar="no" />
+	</target>
+	
+	<target name="l4o-expression">
+		<jflex file="${impldir}/de/unisiegen/tpml/core/languages/l4o/l4o.flex" destdir="${generateddir}" nobak="yes" />
+		<cup srcfile="${impldir}/de/unisiegen/tpml/core/languages/l4o/l4o.cup" destdir="${generateddir}/de/unisiegen/tpml/core/languages/l4o" package="de.unisiegen.tpml.core.languages.l4o" parser="L4OAbstractParser" symbols="L4OTerminals" interface="yes" debug="no" expect="1000000" nonterms="no" nopositions="no" compact_red="yes" dump_grammar="no" />
+	</target>
+
+	<target name="l4o-type">
+		<jflex file="${impldir}/de/unisiegen/tpml/core/languages/l4o/l4otype.flex" destdir="${generateddir}" nobak="yes" />
+		<cup srcfile="${impldir}/de/unisiegen/tpml/core/languages/l4o/l4otype.cup" destdir="${generateddir}/de/unisiegen/tpml/core/languages/l4o" package="de.unisiegen.tpml.core.languages.l4o" parser="L4OAbstractTypeParser" symbols="L4OTypeTerminals" interface="yes" debug="no" expect="1000000" nonterms="no" nopositions="no" compact_red="yes" dump_grammar="no" />
 	</target>
 
 	<target name="javadoc">
