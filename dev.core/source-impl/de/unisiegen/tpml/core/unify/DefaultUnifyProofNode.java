@@ -45,7 +45,8 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
    */
   public PrettyString toPrettyString ()
   {
-    return null;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+    .toPrettyString ();
   }
 
 
@@ -57,7 +58,11 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory prettyStringBuilderFactory )
   {
-    return null;
+    PrettyStringBuilder builder = prettyStringBuilderFactory.newBuilder (
+        this, 0 );
+      builder.addBuilder ( getTypeSubstitutions ().toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
+      builder.addBuilder ( getTypeEquationList ().toPrettyStringBuilder ( prettyStringBuilderFactory ), 1 );
+    return builder;
   }
 
 
