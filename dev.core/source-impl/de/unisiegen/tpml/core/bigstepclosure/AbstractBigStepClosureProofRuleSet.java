@@ -3,8 +3,6 @@ package de.unisiegen.tpml.core.bigstepclosure;
 import java.lang.reflect.Method;
 
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
-import de.unisiegen.tpml.core.bigstep.BigStepProofContext;
-import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.languages.Language;
 
 
@@ -66,9 +64,9 @@ public class AbstractBigStepClosureProofRuleSet extends AbstractProofRuleSet
     try
     {
       // lookup the method with the parameters BigStepProofContext and
-      // BigStepProofNode
+      // BigStepClosureProofNode
       return getClass ().getMethod ( methodName, new Class []
-      { BigStepProofContext.class, BigStepProofNode.class } );
+      { BigStepClosureProofContext.class, BigStepClosureProofNode.class } );
     }
     catch ( RuntimeException e )
     {

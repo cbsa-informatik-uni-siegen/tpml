@@ -5,6 +5,7 @@ import javax.swing.tree.TreeNode;
 import de.unisiegen.tpml.core.ClosureEnvironment;
 import de.unisiegen.tpml.core.DefaultClosureEnvironment;
 import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.bigstep.BigStepProofResult;
 import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode;
@@ -29,13 +30,13 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
 {
   public DefaultBigStepClosureProofNode ( Expression pExpression )
   {
-    this ( pExpression, new DefaultStore (),  new DefaultClosureEnvironment());
+    this ( new Closure(pExpression, new DefaultClosureEnvironment()), new DefaultStore());
   }
   
-  public DefaultBigStepClosureProofNode(Expression pExpression,
-      Store store, ClosureEnvironment environment)
+  public DefaultBigStepClosureProofNode(Closure closure,
+      Store store)
   {
-    super(pExpression, store);
+    super(closure.getExpression(), store);
     this.environment = environment;
   }
   
@@ -99,7 +100,9 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
   
   public boolean isProven()
   {
-    return this.result != null;
+    final boolean ret = getChildCount() > 0 || this.result != null;
+    System.err.println("isProven: " + ret);
+    return ret;
   }
 
   public PrettyString toPrettyString()
@@ -154,6 +157,50 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
       if(!getChildAt ( i ).isProven())
         return false;
     return true;
+  }
+  
+  public void setResult ( BigStepClosureProofResult pResult )
+  {
+    if ( pResult != null && !pResult.getValue ().isException ()
+        && !pResult.getValue ().isValue () )
+    {
+      throw new IllegalArgumentException ( "result is invalid" ); //$NON-NLS-1$
+    }
+    this.result = pResult;
+  }
+
+  @Override
+  public String toString ()
+  {
+    StringBuilder builder = new StringBuilder ();
+    boolean memoryEnabled = getExpression ().containsMemoryOperations ();
+    if ( memoryEnabled )
+    {
+      builder.append ( '(' );
+    }
+    builder.append ( getExpression () );
+    if ( memoryEnabled )
+    {
+      builder.append ( ", " ); //$NON-NLS-1$
+      builder.append ( getStore () );
+      builder.append ( ')' );
+    }
+    builder.append ( " \u21d3 " ); //$NON-NLS-1$
+    if ( this.result != null )
+    {
+      if ( memoryEnabled )
+      {
+        builder.append ( '(' );
+      }
+      builder.append ( this.result.getValue () );
+      if ( memoryEnabled )
+      {
+        builder.append ( ", " ); //$NON-NLS-1$
+        builder.append ( this.result.getStore () );
+        builder.append ( ')' );
+      }
+    }
+    return builder.toString ();
   }
   
   private BigStepClosureProofResult result;
