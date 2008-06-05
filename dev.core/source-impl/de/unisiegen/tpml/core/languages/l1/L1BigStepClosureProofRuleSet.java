@@ -65,7 +65,6 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
   public void applyOP1(BigStepClosureProofContext context,
       BigStepClosureProofNode node)
   {
-    System.err.println ( "applyOP1 to: " + node.toString() );
     Application app = (Application)node.getExpression ();
     context.addProofNode ( node, app.getE1() );
     context.addProofNode ( node, app.getE2() );
@@ -76,30 +75,31 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
   {
     BigStepClosureProofNode child0 = node.getChildAt ( 0 ),
                             child1 = node.getChildAt ( 1 );
-   
-    System.err.println("updateOP1");
     
     if(!(child0.isFinished() && child1.isFinished()))
       return;
     
-    UnaryOperator op1 = (UnaryOperator)child0.getExpression ();
-    Expression operand = child1.getExpression();
+    try
+    {
+      UnaryOperator op1 = (UnaryOperator)child0.getResult().getClosure().getExpression();
+      Expression operand = child1.getResult().getClosure ().getExpression();
     
-    // shouldn't we extract the identifier here?
-    context.setProofNodeResult ( node, op1.applyTo ( operand ));
+      // shouldn't we extract the identifier here?
+      context.setProofNodeResult ( node, op1.applyTo ( operand ));
+    }
+    catch(ClassCastException e)
+    {
+      // must be a binary operator, just forward the result here
+      context.setProofNodeResult ( node, node.getExpression() );
+    }
+    
+    System.err.println("updateOP1");
   }
   
   public void applyOP2(BigStepClosureProofContext context,
       BigStepClosureProofNode node) throws BinaryOperatorException
   {
     applyOP1(context, node);
-    /*Application app = (Application)node.getExpression();
-    Application prem1 = (Application)app.getE1 ();
-    BinaryOperator op2 = (BinaryOperator)prem1.getE1 ();
-    Expression operand1 = app.getE2(),
-               operand2 = prem1.getE2 ();
-  
-    context.setProofNodeResult ( node, op2.applyTo ( operand1, operand2 ) );*/
   }
   
   public void updateOP2(BigStepClosureProofContext context,
@@ -110,20 +110,15 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
     
     System.err.println("updateOP2");
     
-    if(child0.isFinished() && child1.isFinished())
-    {
-      Application app = (Application)child0.getExpression();
-      BinaryOperator op2 = (BinaryOperator)app.getE1 ();
-      Expression operand1 = app.getE2(),
-                 operand2 = child1.getExpression ();
+    if(!(child0.isFinished() && child1.isFinished()))
+      return;
     
-      context.setProofNodeResult ( node, op2.applyTo ( operand1, operand2 ) );
-    }
-    /*else if(child0.isFinished()) // child 1 is not ready yet
-    {
-      BinaryOperator op1 = (BinaryOperator)child0.getFirstChild();
-    }*/
+    Application app = (Application)child0.getExpression();
+    BinaryOperator op2 = (BinaryOperator)app.getE1 ();
+    Expression operand1 = app.getE2(),
+               operand2 = child1.getExpression ();
     
+    context.setProofNodeResult ( node, op2.applyTo ( operand1, operand2 ) );    
   }
   
   public void applyBetaV(BigStepClosureProofContext context,

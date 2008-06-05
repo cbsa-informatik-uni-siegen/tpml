@@ -24,13 +24,11 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofNode;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
-import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModelTest;
 
 /**
  * TODO
@@ -104,7 +102,7 @@ public final class BigStepClosureTest extends JFrame
       LanguageFactory factory = LanguageFactory.newInstance ();
       Language language = factory.getLanguageById ( "l1" );
       
-      String testexpr = "(+) 1 1";
+      String testexpr = "(+) 13 1";
       
       Expression expression = language.newParser ( new StringReader ( testexpr ) )
           .parse ();
@@ -165,7 +163,7 @@ public final class BigStepClosureTest extends JFrame
         }
         catch ( Exception e )
         {
-          e.printStackTrace ();
+          //e.printStackTrace ();
           JOptionPane.showMessageDialog ( BigStepClosureTest.this, e
               .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
@@ -192,7 +190,7 @@ public final class BigStepClosureTest extends JFrame
         }
         catch ( Exception e )
         {
-          e.printStackTrace ();
+          //e.printStackTrace ();
           JOptionPane.showMessageDialog ( BigStepClosureTest.this, e
               .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
@@ -214,7 +212,7 @@ public final class BigStepClosureTest extends JFrame
         }
         catch ( Exception e )
         {
-          e.printStackTrace ();
+          //e.printStackTrace ();
           JOptionPane.showMessageDialog ( BigStepClosureTest.this, e
               .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
@@ -249,7 +247,7 @@ public final class BigStepClosureTest extends JFrame
         }
         catch ( Exception e )
         {
-          e.printStackTrace ();
+          //e.printStackTrace ();
           JOptionPane.showMessageDialog ( BigStepClosureTest.this, e
               .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
@@ -283,7 +281,7 @@ public final class BigStepClosureTest extends JFrame
         }
         catch ( Exception e )
         {
-          e.printStackTrace ();
+          //e.printStackTrace ();
           JOptionPane.showMessageDialog ( BigStepClosureTest.this, e
               .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
@@ -328,20 +326,18 @@ public final class BigStepClosureTest extends JFrame
           }
           catch ( Exception e1 )
           {
-            e1.printStackTrace();
+           // e1.printStackTrace();
             JOptionPane.showMessageDialog ( BigStepClosureTest.this,
                 e1.getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
           }
         }
       }
     } );
-    
-    
+   
     // setup the close button
     JButton closeButton = new JButton ( "Close" );
     closeButton.addActionListener ( new ActionListener ()
     {
-
       public void actionPerformed ( ActionEvent event )
       {
         System.exit ( 0 );

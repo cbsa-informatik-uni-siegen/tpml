@@ -100,9 +100,7 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
   
   public boolean isProven()
   {
-    final boolean ret = getChildCount() > 0 || this.result != null;
-    System.err.println("isProven: " + ret);
-    return ret;
+    return getChildCount() > 0 || this.result != null;
   }
 
   public PrettyString toPrettyString()
@@ -156,7 +154,7 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
     for(int i = 0; i < getChildCount(); ++i)
       if(!getChildAt ( i ).isProven())
         return false;
-    return true;
+    return isProven();
   }
   
   public void setResult ( BigStepClosureProofResult pResult )

@@ -122,12 +122,12 @@ final class DefaultBigStepClosureProofContext implements BigStepClosureProofCont
       return;
     }*/
     // check if all child nodes are finished...
-    boolean childrenFinished = true;
-    for ( int n = 0 ; childrenFinished && n < node.getChildCount () ; ++n )
+    boolean childrenFinished = node.isFinished (); //true;
+    /*for ( int n = 0 ; childrenFinished && n < node.getChildCount () ; ++n )
     {
       childrenFinished = ( childrenFinished && node.getChildAt ( n )
           .isFinished () );
-    }
+    }*/
     // ...and if so, check if any resulted in an exception
     BigStepClosureProofNode nodeWithExn = null;
     if ( childrenFinished )
@@ -136,9 +136,7 @@ final class DefaultBigStepClosureProofContext implements BigStepClosureProofCont
       {
         nodeWithExn = node.getChildAt ( n );
         if ( nodeWithExn.getResult ().getValue ().isException () )
-        {
           break;
-        }
         nodeWithExn = null;
       }
     }
