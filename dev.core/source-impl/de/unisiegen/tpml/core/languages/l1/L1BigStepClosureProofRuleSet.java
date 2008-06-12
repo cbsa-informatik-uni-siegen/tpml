@@ -34,11 +34,11 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
     registerByMethodName( L1Language.L1,
         "ID", "applyId");
     registerByMethodName( L1Language.L1,
-        "OP-1", "applyOP1", "updateOP1");
+        "OP-1", "applyApp", "updateOP1");
     registerByMethodName (L1Language.L1,
-        "OP-2", "applyOP2", "updateOP2");
+        "OP-2", "applyApp", "updateOP2");
     registerByMethodName( L1Language.L1,
-        "BETA-V", "applyBetaV", "updateBetaV");
+        "BETA-V", "applyApp", "updateBetaV");
     registerByMethodName( L1Language.L1,
         "COND-T", "applyCond", "updateCondT");
     registerByMethodName( L1Language.L1,
@@ -48,7 +48,11 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
   public void applyVal(BigStepClosureProofContext context,
       BigStepClosureProofNode node)
   {
-    Value val = (Value)node.getExpression();
+    Expression expression = node.getExpression ();
+    if(expression instanceof Identifier)
+      throw new RuntimeException("An Identifier is not a Value!");
+    Value val = (Value)expression;
+    System.err.println ("applyVal: " + node.getEnvironment () );
     context.setProofNodeResult ( node, new Closure(val, node.getEnvironment()) );
   }
   
@@ -57,12 +61,10 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
   {
     Identifier id = (Identifier)node.getExpression ();
     ClosureEnvironment env = node.getEnvironment ();
-    if(env.containsSymbol ( id ))
-      throw new RuntimeException("Identifier not applicable!");
-    context.setProofNodeResult ( node, new Closure(id, env) );
+    context.setProofNodeResult ( node, env.get ( id ) );
   }
   
-  public void applyOP1(BigStepClosureProofContext context,
+  public void applyApp(BigStepClosureProofContext context,
       BigStepClosureProofNode node)
   {
     Application app = (Application)node.getExpression ();
@@ -79,27 +81,8 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
     if(!(child0.isFinished() && child1.isFinished()))
       return;
     
-    try
-    {
-      UnaryOperator op1 = (UnaryOperator)child0.getResult().getClosure().getExpression();
-      Expression operand = child1.getResult().getClosure ().getExpression();
-    
-      // shouldn't we extract the identifier here?
-      context.setProofNodeResult ( node, op1.applyTo ( operand ));
-    }
-    catch(ClassCastException e)
-    {
-      // must be a binary operator, just forward the result here
-      context.setProofNodeResult ( node, node.getExpression() );
-    }
-    
-    System.err.println("updateOP1");
-  }
-  
-  public void applyOP2(BigStepClosureProofContext context,
-      BigStepClosureProofNode node) throws BinaryOperatorException
-  {
-    applyOP1(context, node);
+    // op1 n is a value, don't evaluate it here
+    context.setProofNodeResult ( node, node.getExpression() );
   }
   
   public void updateOP2(BigStepClosureProofContext context,
@@ -121,14 +104,6 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
     context.setProofNodeResult ( node, op2.applyTo ( operand1, operand2 ) );    
   }
   
-  public void applyBetaV(BigStepClosureProofContext context,
-      BigStepClosureProofNode node)
-  {
-    Application application = (Application)node.getExpression();
-    context.addProofNode (node, application.getE1());
-    context.addProofNode (node, application.getE2() );
-  }
-  
   public void updateBetaV(BigStepClosureProofContext context,
       BigStepClosureProofNode node)
   {
@@ -145,6 +120,7 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
     }
     else if(node.getChildCount() == 3)
     {
+      System.err.println("updateBetaV 2");
       BigStepClosureProofNode child2 = node.getChildAt ( 2 );
       if(child2.isFinished())
         context.setProofNodeResult ( node, child2.getResult().getClosure() );

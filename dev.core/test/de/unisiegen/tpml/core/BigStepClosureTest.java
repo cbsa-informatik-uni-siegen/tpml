@@ -102,7 +102,7 @@ public final class BigStepClosureTest extends JFrame
       LanguageFactory factory = LanguageFactory.newInstance ();
       Language language = factory.getLanguageById ( "l1" );
       
-      String testexpr = "(+) 13 1";
+      String testexpr = "(lambda x.(+) 5 x) 2 ";
       
       Expression expression = language.newParser ( new StringReader ( testexpr ) )
           .parse ();

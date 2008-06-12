@@ -22,7 +22,7 @@ public final class DefaultClosureEnvironment
 {
   public void put(Identifier identifier, Closure closure)
   {
-    
+    super.put ( identifier, closure );
   }
   
   public PrettyString toPrettyString()

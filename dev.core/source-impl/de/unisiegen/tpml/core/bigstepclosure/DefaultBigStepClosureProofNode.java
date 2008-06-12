@@ -37,7 +37,7 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
       Store store)
   {
     super(closure.getExpression(), store);
-    this.environment = environment;
+    this.environment = closure.getEnvironment();
   }
   
   public BigStepClosureProofResult getResult()
