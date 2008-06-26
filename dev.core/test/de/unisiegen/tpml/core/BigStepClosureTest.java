@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
@@ -111,7 +112,8 @@ public final class BigStepClosureTest extends JFrame
       LanguageFactory factory = LanguageFactory.newInstance ();
       Language language = factory.getLanguageById ( "l1" );
       
-      String testexpr = "(lambda x.(+) 5 x) 2 ";
+      //String testexpr = "(lambda x.(+) 5 x) 2 ";
+      final String testexpr = "if (=) 1 0 then 10 else 20";
       
       Expression expression = language.newParser ( new StringReader ( testexpr ) )
           .parse ();
@@ -354,6 +356,7 @@ public final class BigStepClosureTest extends JFrame
           JOptionPane.showMessageDialog ( BigStepClosureTest.this,
               e1.getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
+        ((DefaultTreeModel)tree.getModel()).nodeChanged(null);
       }
     });
     buttons.add ( applyButton );

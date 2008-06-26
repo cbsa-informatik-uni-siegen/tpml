@@ -97,8 +97,6 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
     
     if(!(child0.isProven() && child1.isProven()))
       return;
-   
-    System.err.println("Try update op 2!");
     
     Application app = (Application)child0.getResult().getClosure ().getExpression();
     BinaryOperator op2 = (BinaryOperator)app.getE1 ();
@@ -136,17 +134,25 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
   public void applyCond(BigStepClosureProofContext context,
       BigStepClosureProofNode node)
   {
-    Expression e = node.getExpression ();
-    if(!(e instanceof Condition)
-    && !(e instanceof Condition1))
-        throw new RuntimeException("applyCond can only be used with Condition or Condition1!");
-    context.addProofNode(node, e);
+    final Expression e = node.getExpression ();
+    if(e instanceof Condition)
+    {
+      final Condition cond = (Condition)e;
+      context.addProofNode ( node, cond.getE0() );
+    }
+    else if(e instanceof Condition1)
+    {
+      final Condition1 cond = (Condition1)e;
+      context.addProofNode (node, cond.getE0() );
+    }
+    else
+      throw new RuntimeException("applyCond can only be used with Condition or Condition1!");
   }
   
   public void updateCondT(BigStepClosureProofContext context,
       BigStepClosureProofNode node)
   {
-    if(node.getChildCount() == 1 && node.getChildAt ( 0 ).isFinished()) 
+    if(node.getChildCount() == 1 && node.getChildAt ( 0 ).isProven()) 
     {
       BigStepClosureProofNode child0 = node.getChildAt ( 0 );
       if(!((BooleanConstant)child0.getResult ().getValue()).booleanValue())
@@ -163,17 +169,17 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
               : ((Condition1)expression).getE1(),
               node.getEnvironment()));
     }
-    else if(node.getChildCount() == 2 && node.getChildAt ( 1 ).isFinished())
+    else if(node.getChildCount() == 2 && node.getChildAt ( 1 ).isProven())
       context.setProofNodeResult ( node, node.getChildAt(1).getResult());
   }
   
   public void updateCondF(BigStepClosureProofContext context,
       BigStepClosureProofNode node)
   {
-    if(node.getChildCount() == 1 && node.getChildAt ( 0 ).isFinished())
+    if(node.getChildCount() == 1 && node.getChildAt ( 0 ).isProven())
     {
       BigStepClosureProofNode child0 = node.getChildAt ( 0 );
-      if(!((BooleanConstant)child0.getResult ().getValue()).booleanValue())
+      if(((BooleanConstant)child0.getResult ().getValue()).booleanValue())
       {
         updateCondT(context, node);
         return;
@@ -187,7 +193,7 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
               : new UnitConstant(),
               node.getEnvironment()));
     }
-    else if(node.getChildCount() == 2 && node.getChildAt ( 1 ).isFinished())
+    else if(node.getChildCount() == 2 && node.getChildAt ( 1 ).isProven())
       context.setProofNodeResult ( node, node.getChildAt(1).getResult());
   }
 }
