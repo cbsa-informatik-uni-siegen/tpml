@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -22,15 +23,25 @@ import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
-import de.unisiegen.tpml.core.unify.UnifyProofModel;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
 import de.unisiegen.tpml.core.util.beans.AbstractBean;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
 import de.unisiegen.tpml.graphics.EditorComponent;
-import de.unisiegen.tpml.graphics.editor.UnifyEditorPanel;
+import de.unisiegen.tpml.graphics.ProofViewFactory;
+import de.unisiegen.tpml.graphics.editor.TextEditorPanel;
 import de.unisiegen.tpml.ui.netbeans.EditorPanelForm;
 import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 
@@ -42,14 +53,14 @@ import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
  * @author Christoph Fehling
  * @version $Id$
  */
-public class EditorPanelUnify extends AbstractBean implements EditorPanel
+public class EditorPanelExpression extends AbstractBean implements EditorPanel
 {
 
   /**
    * TODO
    */
   private static final Logger logger = Logger
-      .getLogger ( EditorPanelUnify.class );
+      .getLogger ( EditorPanelExpression.class );
 
 
   /**
@@ -67,7 +78,7 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
   /**
    * 
    */
-  private UnifyEditorPanel code;
+  private TextEditorPanel code;
 
 
   /**
@@ -98,12 +109,6 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
    * TODO
    */
   private EditorComponent minimaltyping;
-
-
-  /**
-   * TODO
-   */
-  private EditorComponent unify;
 
 
   /**
@@ -188,7 +193,7 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
    * @param language
    * @param window
    */
-  public EditorPanelUnify ( Language language, MainWindow window )
+  public EditorPanelExpression ( Language language, MainWindow window )
   {
     // initComponents();
     this.mypanel = new EditorPanelForm ( this );
@@ -255,7 +260,7 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
       public void componentShown ( @SuppressWarnings ( "unused" )
       java.awt.event.ComponentEvent evt )
       {
-        EditorPanelUnify.this.code.getEditor ().requestFocus ();
+        EditorPanelExpression.this.code.getEditor ().requestFocus ();
       }
     } );
   }
@@ -348,7 +353,7 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
    */
   private void initEditor ()
   {
-    this.code = new UnifyEditorPanel ( this.language );
+    this.code = new TextEditorPanel ( this.language );
 
     this.mypanel.editorPanel.removeAll ();
     this.mypanel.editorPanel.add ( this.code, BorderLayout.CENTER );
@@ -364,190 +369,161 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
   }
 
 
-  // /**
-  // * Starts the Small Step Interpreter.
-  // */
-  // public void handleSmallStep ()
-  // {
-  // setTexteditor ( false );
-  // try
-  // {
-  // SmallStepProofModel model = this.language
-  // .newSmallStepProofModel ( this.code.getDocument ().getExpression () );
-  // this.smallstep = new ProofViewComponent ( ProofViewFactory
-  // .newSmallStepView ( model ), model );
-  // this.mypanel.editorPanel.removeAll ();
-  // activateFunction ( this.mypanel.smallstepButton, this.smallstep );
-  // this.smallstep.setAdvanced ( this.advanced );
-  // this.mypanel.smallstepButton.setIcon ( null );
-  // this.mypanel.paintAll ( this.mypanel.getGraphics () );
-  //
-  // }
-  // catch ( Exception e )
-  // {
-  // JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
-  // .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
-  // "CouldNotSmallStep" )//$NON-NLS-1$
-  // + "\n" + e.getMessage () + ".", "Small Step",//$NON-NLS-1$ //$NON-NLS-2$
-  // //$NON-NLS-3$
-  // JOptionPane.ERROR_MESSAGE );
-  // }
-  // }
-  //
-  //
-  // /**
-  // * Starts the Big Step Interpreter.
-  // */
-  // public void handleBigStep ()
-  // {
-  // setTexteditor ( false );
-  // try
-  // {
-  // BigStepProofModel model = this.language.newBigStepProofModel ( this.code
-  // .getDocument ().getExpression () );
-  // this.bigstep = new ProofViewComponent ( ProofViewFactory
-  // .newBigStepView ( model ), model );
-  // this.mypanel.editorPanel.removeAll ();
-  // activateFunction ( this.mypanel.bigstepButton, this.bigstep );
-  // this.bigstep.setAdvanced ( this.advanced );
-  // this.mypanel.bigstepButton.setIcon ( null );
-  // this.mypanel.paintAll ( this.mypanel.getGraphics () );
-  //
-  // }
-  // catch ( Exception e )
-  // {
-  // logger.debug ( "Could not create new BigStepView", e );//$NON-NLS-1$
-  // JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
-  // .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
-  // "CouldNotBigStep" )//$NON-NLS-1$
-  // + "\n" + e.getMessage () + ".", "Big Step",//$NON-NLS-1$ //$NON-NLS-2$
-  // //$NON-NLS-3$
-  // JOptionPane.ERROR_MESSAGE );
-  // }
-  // }
-  //
-  //
-  // /**
-  // * Starts the Type Checker.
-  // */
-  // public void handleTypeChecker ()
-  // {
-  // setTexteditor ( false );
-  // try
-  // {
-  // TypeCheckerProofModel model = this.language
-  // .newTypeCheckerProofModel ( this.code.getDocument ().getExpression () );
-  // this.typechecker = new ProofViewComponent ( ProofViewFactory
-  // .newTypeCheckerView ( model ), model );
-  // this.mypanel.editorPanel.removeAll ();
-  // activateFunction ( this.mypanel.typecheckerButton, this.typechecker );
-  // this.typechecker.setAdvanced ( this.advanced );
-  // this.mypanel.typecheckerButton.setIcon ( null );
-  // this.mypanel.paintAll ( this.mypanel.getGraphics () );
-  //
-  // }
-  // catch ( Exception e )
-  // {
-  // logger.debug ( "Could not create new TypeCheckerView", e );//$NON-NLS-1$
-  // JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
-  // .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
-  // "CouldNotTypeChecker" )//$NON-NLS-1$
-  // + "\n" + e.getMessage () + ".", "Type Checker",//$NON-NLS-1$ //$NON-NLS-2$
-  // //$NON-NLS-3$
-  // JOptionPane.ERROR_MESSAGE );
-  // }
-  // }
-  //
-  //
-  // /**
-  // * Starts the TypeInference.
-  // */
-  // public void handleTypInference ()
-  // {
-  // setTexteditor ( false );
-  //
-  // try
-  // {
-  // TypeInferenceProofModel model = this.language
-  // .newTypeInferenceProofModel ( this.code.getDocument ()
-  // .getExpression () );
-  // // typechecker = new ProofViewComponent(ProofViewFactory
-  // // .newTypeCheckerView(model), model);
-  //
-  // this.typeinference = new ProofViewComponent ( ProofViewFactory
-  // .newTypeInferenceView ( model ), model );
-  // this.mypanel.editorPanel.removeAll ();
-  // // activateFunction(typecheckerButton, typechecker);
-  // activateFunction ( this.mypanel.typeinferenceButton, this.typeinference );
-  // this.typeinference.setAdvanced ( this.advanced );
-  // this.mypanel.typeinferenceButton.setIcon ( null );
-  // this.mypanel.paintAll ( this.mypanel.getGraphics () );
-  //
-  // }
-  // catch ( Exception e )
-  // {
-  // logger.debug ( "Could not create new TypeInferenceView", e );//$NON-NLS-1$
-  // JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
-  // .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
-  // "CouldNotTypeInference" )//$NON-NLS-1$
-  // + "\n" + e.getMessage () + ".", "Type Inference",//$NON-NLS-1$
-  // //$NON-NLS-2$ //$NON-NLS-3$
-  // JOptionPane.ERROR_MESSAGE );
-  // }
-  // }
-  //
-  //
-  // /**
-  // * Starts the MinimalTyping Interpreter.
-  // */
-  // public void handleMinimalTyping ()
-  // {
-  // setTexteditor ( false );
-  // try
-  // {
-  // MinimalTypingProofModel model = this.language.newMinimalTypingProofModel (
-  // this.code.getDocument ().getExpression (), isAdvaced () );
-  // this.minimaltyping = new ProofViewComponent ( ProofViewFactory
-  // .newMinimalTypingView ( model ), model );
-  // this.mypanel.editorPanel.removeAll ();
-  // activateFunction ( this.mypanel.minimalTypingButton, this.minimaltyping );
-  // this.minimaltyping.setAdvanced ( this.advanced );
-  // this.mypanel.minimalTypingButton.setIcon ( null );
-  // this.mypanel.paintAll ( this.mypanel.getGraphics () );
-  //
-  // }
-  // catch ( Exception e )
-  // {
-  // logger.debug ( "Could not create new MinimalTypingView", e );//$NON-NLS-1$
-  // JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
-  // .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
-  // "CouldNotMinimalType" )//$NON-NLS-1$
-  // + "\n" + e.getMessage () + ".", "Minimal Typing",//$NON-NLS-1$
-  // //$NON-NLS-2$ //$NON-NLS-3$
-  // JOptionPane.ERROR_MESSAGE );
-  // }
-  // }
-
   /**
-   * TODO: implement
+   * Starts the Small Step Interpreter.
    */
-  public void handleUnify ()
+  public void handleSmallStep ()
   {
     setTexteditor ( false );
     try
     {
-      UnifyProofModel model = this.language.newUnifyProofModel ( this.code
-          .getDocument ().getTypeEquation () );
-      
+      SmallStepProofModel model = this.language
+          .newSmallStepProofModel ( this.code.getDocument ().getExpression () );
+      this.smallstep = new ProofViewComponent ( ProofViewFactory
+          .newSmallStepView ( model ), model );
+      this.mypanel.editorPanel.removeAll ();
+      activateFunction ( this.mypanel.smallstepButton, this.smallstep );
+      this.smallstep.setAdvanced ( this.advanced );
+      this.mypanel.smallstepButton.setIcon ( null );
+      this.mypanel.paintAll ( this.mypanel.getGraphics () );
+
     }
     catch ( Exception e )
     {
-      logger.debug ( "Could not create new UnifyView", e ); //$NON-NLS-1$
       JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
           .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
-              "CouldNotUnify" )//$NON-NLS-1$
-          + "\n" + e.getMessage () + ".", "Unifikation",//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-          //$NON-NLS-2$ //$NON-NLS-3$
+              "CouldNotSmallStep" )//$NON-NLS-1$
+          + "\n" + e.getMessage () + ".", "Small Step",//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+          JOptionPane.ERROR_MESSAGE );
+    }
+  }
+
+
+  /**
+   * Starts the Big Step Interpreter.
+   */
+  public void handleBigStep ()
+  {
+    setTexteditor ( false );
+    try
+    {
+      BigStepProofModel model = this.language.newBigStepProofModel ( this.code
+          .getDocument ().getExpression () );
+      this.bigstep = new ProofViewComponent ( ProofViewFactory
+          .newBigStepView ( model ), model );
+      this.mypanel.editorPanel.removeAll ();
+      activateFunction ( this.mypanel.bigstepButton, this.bigstep );
+      this.bigstep.setAdvanced ( this.advanced );
+      this.mypanel.bigstepButton.setIcon ( null );
+      this.mypanel.paintAll ( this.mypanel.getGraphics () );
+
+    }
+    catch ( Exception e )
+    {
+      logger.debug ( "Could not create new BigStepView", e );//$NON-NLS-1$
+      JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
+          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+              "CouldNotBigStep" )//$NON-NLS-1$
+          + "\n" + e.getMessage () + ".", "Big Step",//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+          JOptionPane.ERROR_MESSAGE );
+    }
+  }
+
+
+  /**
+   * Starts the Type Checker.
+   */
+  public void handleTypeChecker ()
+  {
+    setTexteditor ( false );
+    try
+    {
+      TypeCheckerProofModel model = this.language
+          .newTypeCheckerProofModel ( this.code.getDocument ().getExpression () );
+      this.typechecker = new ProofViewComponent ( ProofViewFactory
+          .newTypeCheckerView ( model ), model );
+      this.mypanel.editorPanel.removeAll ();
+      activateFunction ( this.mypanel.typecheckerButton, this.typechecker );
+      this.typechecker.setAdvanced ( this.advanced );
+      this.mypanel.typecheckerButton.setIcon ( null );
+      this.mypanel.paintAll ( this.mypanel.getGraphics () );
+
+    }
+    catch ( Exception e )
+    {
+      logger.debug ( "Could not create new TypeCheckerView", e );//$NON-NLS-1$
+      JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
+          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+              "CouldNotTypeChecker" )//$NON-NLS-1$
+          + "\n" + e.getMessage () + ".", "Type Checker",//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+          JOptionPane.ERROR_MESSAGE );
+    }
+  }
+
+
+  /**
+   * Starts the TypeInference.
+   */
+  public void handleTypInference ()
+  {
+    setTexteditor ( false );
+
+    try
+    {
+      TypeInferenceProofModel model = this.language
+          .newTypeInferenceProofModel ( this.code.getDocument ()
+              .getExpression () );
+      // typechecker = new ProofViewComponent(ProofViewFactory
+      // .newTypeCheckerView(model), model);
+
+      this.typeinference = new ProofViewComponent ( ProofViewFactory
+          .newTypeInferenceView ( model ), model );
+      this.mypanel.editorPanel.removeAll ();
+      // activateFunction(typecheckerButton, typechecker);
+      activateFunction ( this.mypanel.typeinferenceButton, this.typeinference );
+      this.typeinference.setAdvanced ( this.advanced );
+      this.mypanel.typeinferenceButton.setIcon ( null );
+      this.mypanel.paintAll ( this.mypanel.getGraphics () );
+
+    }
+    catch ( Exception e )
+    {
+      logger.debug ( "Could not create new TypeInferenceView", e );//$NON-NLS-1$
+      JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
+          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+              "CouldNotTypeInference" )//$NON-NLS-1$
+          + "\n" + e.getMessage () + ".", "Type Inference",//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+          JOptionPane.ERROR_MESSAGE );
+    }
+  }
+
+
+  /**
+   * Starts the MinimalTyping Interpreter.
+   */
+  public void handleMinimalTyping ()
+  {
+    setTexteditor ( false );
+    try
+    {
+      MinimalTypingProofModel model = this.language.newMinimalTypingProofModel (
+          this.code.getDocument ().getExpression (), isAdvaced () );
+      this.minimaltyping = new ProofViewComponent ( ProofViewFactory
+          .newMinimalTypingView ( model ), model );
+      this.mypanel.editorPanel.removeAll ();
+      activateFunction ( this.mypanel.minimalTypingButton, this.minimaltyping );
+      this.minimaltyping.setAdvanced ( this.advanced );
+      this.mypanel.minimalTypingButton.setIcon ( null );
+      this.mypanel.paintAll ( this.mypanel.getGraphics () );
+
+    }
+    catch ( Exception e )
+    {
+      logger.debug ( "Could not create new MinimalTypingView", e );//$NON-NLS-1$
+      JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
+          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+              "CouldNotMinimalType" )//$NON-NLS-1$
+          + "\n" + e.getMessage () + ".", "Minimal Typing",//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
           JOptionPane.ERROR_MESSAGE );
     }
   }
@@ -607,6 +583,7 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
       this.mypanel.nextButton.setVisible ( true );
 
     }
+
   }
 
 
@@ -859,10 +836,6 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
     if ( this.minimaltyping != null )
     {
       this.minimaltyping.setAdvanced ( state );
-    }
-    if ( this.unify != null )
-    {
-      this.unify.setAdvanced ( state );
     }
     this.advanced = state;
   }
@@ -1171,80 +1144,69 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
   }
 
 
-  // /**
-  // * TODO
-  // */
-  // public void selectTypeChecker ()
-  // {
-  // setTexteditor ( false );
-  // setComponent ( this.typechecker );
-  // deselectButtons ();
-  // this.mypanel.typecheckerButton.setSelected ( true );
-  // checkSourceCode ();
-  // }
-  //
-  //
-  // /**
-  // * TODO
-  // */
-  // public void selectTypeInference ()
-  // {
-  // setTexteditor ( false );
-  // setComponent ( this.typeinference );
-  // deselectButtons ();
-  // this.mypanel.typeinferenceButton.setSelected ( true );
-  // checkSourceCode ();
-  // }
-  //
-  //
-  // /**
-  // * TODO
-  // */
-  // public void selectBigStep ()
-  // {
-  // setTexteditor ( false );
-  // setComponent ( this.bigstep );
-  // deselectButtons ();
-  // this.mypanel.bigstepButton.setSelected ( true );
-  // checkSourceCode ();
-  // }
-  //
-  //
-  // /**
-  // * TODO
-  // */
-  // public void selectMinimalTyping ()
-  // {
-  // setTexteditor ( false );
-  // setComponent ( this.minimaltyping );
-  // deselectButtons ();
-  // this.mypanel.minimalTypingButton.setSelected ( true );
-  // checkSourceCode ();
-  // }
-  //
-  //
-  // /**
-  // * TODO
-  // */
-  // public void selectSmallStep ()
-  // {
-  // setTexteditor ( false );
-  // setComponent ( this.smallstep );
-  // deselectButtons ();
-  // this.mypanel.smallstepButton.setSelected ( true );
-  // checkSourceCode ();
-  // checkSourceCode ();
-  // }
-
   /**
-   * TODO: implement, checkSourceCode ??
+   * TODO
    */
-  public void selectUnify ()
+  public void selectTypeChecker ()
   {
     setTexteditor ( false );
-    setComponent ( this.unify );
+    setComponent ( this.typechecker );
     deselectButtons ();
-    this.mypanel.unifyButton.setSelected ( true );
+    this.mypanel.typecheckerButton.setSelected ( true );
+    checkSourceCode ();
+  }
+
+
+  /**
+   * TODO
+   */
+  public void selectTypeInference ()
+  {
+    setTexteditor ( false );
+    setComponent ( this.typeinference );
+    deselectButtons ();
+    this.mypanel.typeinferenceButton.setSelected ( true );
+    checkSourceCode ();
+  }
+
+
+  /**
+   * TODO
+   */
+  public void selectBigStep ()
+  {
+    setTexteditor ( false );
+    setComponent ( this.bigstep );
+    deselectButtons ();
+    this.mypanel.bigstepButton.setSelected ( true );
+    checkSourceCode ();
+  }
+
+
+  /**
+   * TODO
+   */
+  public void selectMinimalTyping ()
+  {
+    setTexteditor ( false );
+    setComponent ( this.minimaltyping );
+    deselectButtons ();
+    this.mypanel.minimalTypingButton.setSelected ( true );
+    checkSourceCode ();
+  }
+
+
+  /**
+   * TODO
+   */
+  public void selectSmallStep ()
+  {
+    setTexteditor ( false );
+    setComponent ( this.smallstep );
+    deselectButtons ();
+    this.mypanel.smallstepButton.setSelected ( true );
+    checkSourceCode ();
+    checkSourceCode ();
   }
 
 
@@ -1275,136 +1237,126 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
 
   }
 
-  // /**
-  // * TODO
-  // */
-  // public void checkSourceCode ()
-  // {
-  // Dimension dimension;
-  // try
-  // {
-  // if ( ( this.smallstep != null )
-  // && ! ( ( ( SmallStepProofNode ) ( ( ProofViewComponent ) this.smallstep )
-  // .getModel ().getRoot () ).getExpression ().equals ( this.code
-  // .getDocument ().getExpression () ) ) )
-  // {
-  // this.mypanel.smallstepButton.setIcon ( new ImageIcon ( getClass ()
-  // .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) )
-  // );//$NON-NLS-1$
-  // this.mypanel.smallstepButton.setToolTipText ( java.util.ResourceBundle
-  // .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
-  // "SourcecodeChanged" ) );//$NON-NLS-1$
-  // dimension = this.mypanel.smallstepButton.getMinimumSize ();
-  // this.mypanel.smallstepButton.setPreferredSize ( new Dimension (
-  // dimension.width + 20, dimension.height ) );
-  // }
-  // else
-  // {
-  // this.mypanel.smallstepButton.setBackground ( this.buttonColor );
-  // this.mypanel.smallstepButton.setIcon ( null );
-  // this.mypanel.smallstepButton.setToolTipText ( null );
-  // }
-  //
-  // if ( ( this.bigstep != null )
-  // && ! ( ( ( BigStepProofNode ) ( ( ProofViewComponent ) this.bigstep )
-  // .getModel ().getRoot () ).getExpression ().equals ( this.code
-  // .getDocument ().getExpression () ) ) )
-  // {
-  // this.mypanel.bigstepButton.setIcon ( new ImageIcon ( getClass ()
-  // .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) )
-  // );//$NON-NLS-1$
-  // this.mypanel.bigstepButton.setToolTipText ( java.util.ResourceBundle
-  // .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
-  // "SourcecodeChanged" ) );//$NON-NLS-1$
-  // dimension = this.mypanel.bigstepButton.getMinimumSize ();
-  // this.mypanel.bigstepButton.setPreferredSize ( new Dimension (
-  // dimension.width + 20, dimension.height ) );
-  // }
-  // else
-  // {
-  // this.mypanel.bigstepButton.setBackground ( this.buttonColor );
-  // this.mypanel.bigstepButton.setIcon ( null );
-  // this.mypanel.bigstepButton.setToolTipText ( null );
-  //
-  // }
-  //
-  // if ( ( this.typechecker != null )
-  // && ! ( ( ( TypeCheckerProofNode ) ( ( ProofViewComponent ) this.typechecker
-  // )
-  // .getModel ().getRoot () ).getExpression ().equals ( this.code
-  // .getDocument ().getExpression () ) ) )
-  // {
-  // this.mypanel.typecheckerButton.setIcon ( new ImageIcon ( getClass ()
-  // .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) )
-  // );//$NON-NLS-1$
-  // this.mypanel.typecheckerButton
-  // .setToolTipText ( java.util.ResourceBundle.getBundle (
-  // "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" )
-  // );//$NON-NLS-1$//$NON-NLS-2$
-  // dimension = this.mypanel.typecheckerButton.getMinimumSize ();
-  // this.mypanel.typecheckerButton.setPreferredSize ( new Dimension (
-  // dimension.width + 20, dimension.height ) );
-  // }
-  // else
-  // {
-  // this.mypanel.typecheckerButton.setBackground ( this.buttonColor );
-  // this.mypanel.typecheckerButton.setIcon ( null );
-  // this.mypanel.typecheckerButton.setToolTipText ( null );
-  // }
-  //
-  // if ( ( this.typeinference != null )
-  // && ! ( ( ( TypeInferenceProofNode ) ( ( ProofViewComponent )
-  // this.typeinference )
-  // .getModel ().getRoot () ).getFirstFormula ().getExpression ()
-  // .equals ( this.code.getDocument ().getExpression () ) ) )
-  // {
-  // this.mypanel.typeinferenceButton.setIcon ( new ImageIcon ( getClass ()
-  // .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) )
-  // );//$NON-NLS-1$
-  // this.mypanel.typeinferenceButton.repaint ();
-  // this.mypanel.typeinferenceButton
-  // .setToolTipText ( java.util.ResourceBundle.getBundle (
-  // "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" )
-  // );//$NON-NLS-1$//$NON-NLS-2$
-  // dimension = this.mypanel.typeinferenceButton.getMinimumSize ();
-  // this.mypanel.typeinferenceButton.setPreferredSize ( new Dimension (
-  // dimension.width + 20, dimension.height ) );
-  // }
-  // else
-  // {
-  // this.mypanel.typeinferenceButton.setBackground ( this.buttonColor );
-  // this.mypanel.typeinferenceButton.setIcon ( null );
-  // this.mypanel.typeinferenceButton.setToolTipText ( null );
-  // }
-  //
-  // if ( ( this.minimaltyping != null )
-  // && ! ( ( ( MinimalTypingProofNode ) ( ( ProofViewComponent )
-  // this.minimaltyping )
-  // .getModel ().getRoot () ).getExpression ().equals ( this.code
-  // .getDocument ().getExpression () ) ) )
-  // {
-  // this.mypanel.minimalTypingButton.setIcon ( new ImageIcon ( getClass ()
-  // .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) )
-  // );//$NON-NLS-1$
-  // dimension = this.mypanel.minimalTypingButton.getMinimumSize ();
-  // this.mypanel.minimalTypingButton.setPreferredSize ( new Dimension (
-  // dimension.width + 20, dimension.height ) );
-  // this.mypanel.minimalTypingButton
-  // .setToolTipText ( java.util.ResourceBundle.getBundle (
-  // "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" )
-  // );//$NON-NLS-1$ //$NON-NLS-2$
-  // }
-  // else
-  // {
-  // this.mypanel.minimalTypingButton.setBackground ( this.buttonColor );
-  // this.mypanel.minimalTypingButton.setIcon ( null );
-  // this.mypanel.minimalTypingButton.setToolTipText ( null );
-  // }
-  //
-  // }
-  // catch ( Exception e )
-  // {
-  // // Nothing to do here
-  // }
-  // }
+
+  /**
+   * TODO
+   */
+  public void checkSourceCode ()
+  {
+    Dimension dimension;
+    try
+    {
+      if ( ( this.smallstep != null )
+          && ! ( ( ( SmallStepProofNode ) ( ( ProofViewComponent ) this.smallstep )
+              .getModel ().getRoot () ).getExpression ().equals ( this.code
+              .getDocument ().getExpression () ) ) )
+      {
+        this.mypanel.smallstepButton.setIcon ( new ImageIcon ( getClass ()
+            .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );//$NON-NLS-1$
+        this.mypanel.smallstepButton.setToolTipText ( java.util.ResourceBundle
+            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+                "SourcecodeChanged" ) );//$NON-NLS-1$
+        dimension = this.mypanel.smallstepButton.getMinimumSize ();
+        this.mypanel.smallstepButton.setPreferredSize ( new Dimension (
+            dimension.width + 20, dimension.height ) );
+      }
+      else
+      {
+        this.mypanel.smallstepButton.setBackground ( this.buttonColor );
+        this.mypanel.smallstepButton.setIcon ( null );
+        this.mypanel.smallstepButton.setToolTipText ( null );
+      }
+
+      if ( ( this.bigstep != null )
+          && ! ( ( ( BigStepProofNode ) ( ( ProofViewComponent ) this.bigstep )
+              .getModel ().getRoot () ).getExpression ().equals ( this.code
+              .getDocument ().getExpression () ) ) )
+      {
+        this.mypanel.bigstepButton.setIcon ( new ImageIcon ( getClass ()
+            .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );//$NON-NLS-1$
+        this.mypanel.bigstepButton.setToolTipText ( java.util.ResourceBundle
+            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+                "SourcecodeChanged" ) );//$NON-NLS-1$
+        dimension = this.mypanel.bigstepButton.getMinimumSize ();
+        this.mypanel.bigstepButton.setPreferredSize ( new Dimension (
+            dimension.width + 20, dimension.height ) );
+      }
+      else
+      {
+        this.mypanel.bigstepButton.setBackground ( this.buttonColor );
+        this.mypanel.bigstepButton.setIcon ( null );
+        this.mypanel.bigstepButton.setToolTipText ( null );
+
+      }
+
+      if ( ( this.typechecker != null )
+          && ! ( ( ( TypeCheckerProofNode ) ( ( ProofViewComponent ) this.typechecker )
+              .getModel ().getRoot () ).getExpression ().equals ( this.code
+              .getDocument ().getExpression () ) ) )
+      {
+        this.mypanel.typecheckerButton.setIcon ( new ImageIcon ( getClass ()
+            .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );//$NON-NLS-1$
+        this.mypanel.typecheckerButton
+            .setToolTipText ( java.util.ResourceBundle.getBundle (
+                "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );//$NON-NLS-1$//$NON-NLS-2$
+        dimension = this.mypanel.typecheckerButton.getMinimumSize ();
+        this.mypanel.typecheckerButton.setPreferredSize ( new Dimension (
+            dimension.width + 20, dimension.height ) );
+      }
+      else
+      {
+        this.mypanel.typecheckerButton.setBackground ( this.buttonColor );
+        this.mypanel.typecheckerButton.setIcon ( null );
+        this.mypanel.typecheckerButton.setToolTipText ( null );
+      }
+
+      if ( ( this.typeinference != null )
+          && ! ( ( ( TypeInferenceProofNode ) ( ( ProofViewComponent ) this.typeinference )
+              .getModel ().getRoot () ).getFirstFormula ().getExpression ()
+              .equals ( this.code.getDocument ().getExpression () ) ) )
+      {
+        this.mypanel.typeinferenceButton.setIcon ( new ImageIcon ( getClass ()
+            .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );//$NON-NLS-1$
+        this.mypanel.typeinferenceButton.repaint ();
+        this.mypanel.typeinferenceButton
+            .setToolTipText ( java.util.ResourceBundle.getBundle (
+                "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );//$NON-NLS-1$//$NON-NLS-2$
+        dimension = this.mypanel.typeinferenceButton.getMinimumSize ();
+        this.mypanel.typeinferenceButton.setPreferredSize ( new Dimension (
+            dimension.width + 20, dimension.height ) );
+      }
+      else
+      {
+        this.mypanel.typeinferenceButton.setBackground ( this.buttonColor );
+        this.mypanel.typeinferenceButton.setIcon ( null );
+        this.mypanel.typeinferenceButton.setToolTipText ( null );
+      }
+
+      if ( ( this.minimaltyping != null )
+          && ! ( ( ( MinimalTypingProofNode ) ( ( ProofViewComponent ) this.minimaltyping )
+              .getModel ().getRoot () ).getExpression ().equals ( this.code
+              .getDocument ().getExpression () ) ) )
+      {
+        this.mypanel.minimalTypingButton.setIcon ( new ImageIcon ( getClass ()
+            .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) ) );//$NON-NLS-1$
+        dimension = this.mypanel.minimalTypingButton.getMinimumSize ();
+        this.mypanel.minimalTypingButton.setPreferredSize ( new Dimension (
+            dimension.width + 20, dimension.height ) );
+        this.mypanel.minimalTypingButton
+            .setToolTipText ( java.util.ResourceBundle.getBundle (
+                "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" ) );//$NON-NLS-1$ //$NON-NLS-2$
+      }
+      else
+      {
+        this.mypanel.minimalTypingButton.setBackground ( this.buttonColor );
+        this.mypanel.minimalTypingButton.setIcon ( null );
+        this.mypanel.minimalTypingButton.setToolTipText ( null );
+      }
+
+    }
+    catch ( Exception e )
+    {
+      // Nothing to do here
+    }
+  }
 }
