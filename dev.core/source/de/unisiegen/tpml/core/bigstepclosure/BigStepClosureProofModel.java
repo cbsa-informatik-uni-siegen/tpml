@@ -205,7 +205,7 @@ public final class BigStepClosureProofModel extends AbstractInterpreterProofMode
     } );
   }
   
-  public void contextSetProofNodeResult ( DefaultBigStepClosureProofContext context,
+  public void contextSetProofNodeResult ( final DefaultBigStepClosureProofContext context,
       final DefaultBigStepClosureProofNode node, final BigStepClosureProofResult result )
   {
     final BigStepClosureProofResult oldResult = node.getResult ();
@@ -234,6 +234,8 @@ public final class BigStepClosureProofModel extends AbstractInterpreterProofMode
   void contextSetProofNodeRule ( DefaultBigStepClosureProofContext context,
       final DefaultBigStepClosureProofNode node, final BigStepClosureProofRule rule )
   {
+    System.err.println("rule: " + rule.toString());
+    
     final ProofStep [] oldSteps = node.getSteps ();
     context.addRedoAction ( new Runnable ()
     {

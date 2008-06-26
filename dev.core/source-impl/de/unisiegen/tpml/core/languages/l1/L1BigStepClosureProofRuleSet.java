@@ -52,7 +52,6 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
     if(expression instanceof Identifier)
       throw new RuntimeException("An Identifier is not a Value!");
     Value val = (Value)expression;
-    System.err.println ("applyVal: " + node.getEnvironment () );
     context.setProofNodeResult ( node, new Closure(val, node.getEnvironment()) );
   }
   
@@ -68,8 +67,8 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
       BigStepClosureProofNode node)
   {
     Application app = (Application)node.getExpression ();
-    context.addProofNode ( node, app.getE1() );
-    context.addProofNode ( node, app.getE2() );
+    context.addProofNode ( node, new Closure( app.getE1(), node.getEnvironment()) );
+    context.addProofNode ( node, new Closure( app.getE2(), node.getEnvironment()) );
   }
   
   public void updateOP1(BigStepClosureProofContext context,
@@ -90,8 +89,6 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
   {
     BigStepClosureProofNode child0 = node.getChildAt ( 0 ),
                             child1 = node.getChildAt ( 1 );
-    
-    System.err.println("updateOP2");
     
     if(!(child0.isFinished() && child1.isFinished()))
       return;
@@ -120,7 +117,6 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
     }
     else if(node.getChildCount() == 3)
     {
-      System.err.println("updateBetaV 2");
       BigStepClosureProofNode child2 = node.getChildAt ( 2 );
       if(child2.isFinished())
         context.setProofNodeResult ( node, child2.getResult().getClosure() );

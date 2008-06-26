@@ -73,10 +73,6 @@ final class DefaultBigStepClosureProofContext implements BigStepClosureProofCont
   
   private Store getDefaultStore(BigStepClosureProofNode node)
   {
-    System.err.println (node.getChildCount ());
-    System.err.println (node.getChildCount() > 0
-    ? node.getFirstChild ().getStore()
-    : node.getStore());
     return node.getChildCount() > 0
     ? node.getFirstChild ().getStore()
     : node.getStore();

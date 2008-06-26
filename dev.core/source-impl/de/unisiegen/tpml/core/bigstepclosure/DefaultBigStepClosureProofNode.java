@@ -169,7 +169,7 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
 
   @Override
   public String toString ()
-  {
+  { 
     StringBuilder builder = new StringBuilder ();
     boolean memoryEnabled = getExpression ().containsMemoryOperations ();
     if ( memoryEnabled )
@@ -183,6 +183,10 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
       builder.append ( getStore () );
       builder.append ( ')' );
     }
+    
+    builder.append (' ');
+    builder.append ( getClosure().getEnvironment ().toString() );
+    
     builder.append ( " \u21d3 " ); //$NON-NLS-1$
     if ( this.result != null )
     {
@@ -198,6 +202,8 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
         builder.append ( ')' );
       }
     }
+    System.err.println(builder.toString());
+    
     return builder.toString ();
   }
   

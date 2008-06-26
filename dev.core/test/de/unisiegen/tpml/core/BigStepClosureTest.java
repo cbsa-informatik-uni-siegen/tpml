@@ -290,7 +290,7 @@ public final class BigStepClosureTest extends JFrame
     buttons.add ( translateButton );
     
     // Setup combo box for prove
-    JComboBox combo1 = new JComboBox ();
+    combo1 = new JComboBox ();
     for ( ProofRule rule : model.getRules () )
     {
       combo1.addItem ( rule.getName () );
@@ -298,9 +298,6 @@ public final class BigStepClosureTest extends JFrame
     buttons.add ( combo1 );
     combo1.addItemListener ( new ItemListener ()
     {
-
-      ProofRule chosen = null;
-      
       public void itemStateChanged ( ItemEvent e )
       {
         JComboBox selectedChoice = ( JComboBox ) e.getSource ();
@@ -314,26 +311,44 @@ public final class BigStepClosureTest extends JFrame
               break;
             }
           }
-          try
-          {
-            // prove the last node
-            model.prove ( chosen, nextNode ( model ) );
-            // expand to the all nodes
-            for ( int n = 0 ; n < tree.getRowCount () ; ++n )
-            {
-              tree.expandRow ( n );
-            }
-          }
-          catch ( Exception e1 )
-          {
-           // e1.printStackTrace();
-            JOptionPane.showMessageDialog ( BigStepClosureTest.this,
-                e1.getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
-          }
         }
       }
     } );
    
+    JButton applyButton = new JButton ("Apply");
+    applyButton.addActionListener ( new ActionListener()
+    {
+      public void actionPerformed (ActionEvent event)
+      {
+        JComboBox selectedChoice = combo1;
+        for ( ProofRule rules : model.getRules () )
+        {
+          if ( rules.getName ().equals ( selectedChoice.getSelectedItem () ) )
+          {
+            chosen = rules;
+            break;
+          }
+        }
+        try
+        {
+          // prove the last node
+          model.prove ( chosen, nextNode ( model ) );
+          // expand to the all nodes
+          for ( int n = 0 ; n < tree.getRowCount () ; ++n )
+          {
+            tree.expandRow ( n );
+          }
+        }
+        catch ( Exception e1 )
+        {
+         // e1.printStackTrace();
+          JOptionPane.showMessageDialog ( BigStepClosureTest.this,
+              e1.getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
+        }
+      }
+    });
+    buttons.add ( applyButton );
+    
     // setup the close button
     JButton closeButton = new JButton ( "Close" );
     closeButton.addActionListener ( new ActionListener ()
@@ -345,7 +360,9 @@ public final class BigStepClosureTest extends JFrame
     } );
     buttons.add ( closeButton );
   }
-
+  
+  private JComboBox combo1;
+  private ProofRule chosen;
 
   private static ProofNode nextNode ( BigStepClosureProofModel model )
   {

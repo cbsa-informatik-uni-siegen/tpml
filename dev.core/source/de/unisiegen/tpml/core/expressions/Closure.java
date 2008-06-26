@@ -10,8 +10,6 @@ public class Closure
 {
   public Closure(Expression exp, ClosureEnvironment env)
   {
-    System.err.println ("Constructor");
-    System.err.println (env);
     this.exp = exp;
     this.env = env;
   }
@@ -23,7 +21,6 @@ public class Closure
   
   public ClosureEnvironment getEnvironment()
   {
-    System.err.println ("getEnvironment: " + env);
     return env;
   }
   

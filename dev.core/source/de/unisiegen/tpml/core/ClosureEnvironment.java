@@ -10,4 +10,5 @@ import de.unisiegen.tpml.core.expressions.Identifier;
 public interface ClosureEnvironment extends Environment<Identifier, Closure>
 {
   public void put(Identifier identifier, Closure closure);
+  public String toString();
 }
