@@ -60,6 +60,7 @@ import de.unisiegen.tpml.graphics.smallstep.SmallStepView;
 import de.unisiegen.tpml.graphics.subtyping.SubTypingView;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView;
 import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView;
+import de.unisiegen.tpml.graphics.unify.UnifyView;
 
 
 /**
@@ -694,8 +695,19 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * TODO
+   * TODO: implement
    *
+   * @param unifyView
+   */
+  public DefaultOutline ( UnifyView unifyView )
+  {
+
+  }
+
+
+  /**
+   * TODO
+   * 
    * @param unifyEditorPanel
    */
   public DefaultOutline ( UnifyEditorPanel unifyEditorPanel )
@@ -705,9 +717,10 @@ public final class DefaultOutline implements Outline
     this.uI.deactivateAutoUpdate ();
     this.uI.deactivateHighlightSourceCode ();
     // ComponentListener
-    this.uI.getJScrollPaneOutline ().addComponentListener (
-        new OutlineComponentListener ( unifyEditorPanel.getJSplitPane (),
-            this ) );
+    this.uI.getJScrollPaneOutline ()
+        .addComponentListener (
+            new OutlineComponentListener ( unifyEditorPanel.getJSplitPane (),
+                this ) );
     // PropertyChangeListener
     unifyEditorPanel
         .addPropertyChangeListener ( new OutlinePropertyChangeListener (
@@ -715,11 +728,11 @@ public final class DefaultOutline implements Outline
     Theme.currentTheme ().addPropertyChangeListener (
         new OutlinePropertyChangeListener ( this ) );
     // TreeModelListener
-    //TODO: assign model
-//    pTypeInferenceView.getTypeInferenceProofModel ().addTreeModelListener (
-//        new OutlineTreeModelListener ( this, pTypeInferenceView
-//            .getTypeInferenceProofModel () ) );
-//    
+    // TODO: assign model
+    // pTypeInferenceView.getTypeInferenceProofModel ().addTreeModelListener (
+    // new OutlineTreeModelListener ( this, pTypeInferenceView
+    // .getTypeInferenceProofModel () ) );
+    //    
     this.uI.getJTreeOutline ().addMouseListener (
         new OutlineMouseListener ( this ) );
     // ActionListener
