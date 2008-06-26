@@ -24,6 +24,11 @@ public class Closure
     return env;
   }
   
+  public String toString()
+  {
+    return exp.toString(); // maybe print this recursive?
+  }
+  
   private Expression exp;
   private ClosureEnvironment env;
 }

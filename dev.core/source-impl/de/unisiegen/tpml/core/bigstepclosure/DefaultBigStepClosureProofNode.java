@@ -100,7 +100,7 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
   
   public boolean isProven()
   {
-    return getChildCount() > 0 || this.result != null;
+    return this.result != null;
   }
 
   public PrettyString toPrettyString()
@@ -150,11 +150,13 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
   
   public boolean isFinished()
   {
-    //for( BigStepClosureProofNode node : children())
-    for(int i = 0; i < getChildCount(); ++i)
-      if(!getChildAt ( i ).isProven())
+    if ( !isProven () )
+      return false;
+    
+    for ( int n = 0 ; n < getChildCount () ; ++n )
+      if ( !getChildAt ( n ).isFinished () )
         return false;
-    return isProven();
+    return true;
   }
   
   public void setResult ( BigStepClosureProofResult pResult )
@@ -202,7 +204,6 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
         builder.append ( ')' );
       }
     }
-    System.err.println(builder.toString());
     
     return builder.toString ();
   }

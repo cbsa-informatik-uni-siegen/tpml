@@ -53,7 +53,7 @@ public final class BigStepClosureTest extends JFrame
           row, hasFocus );
       BigStepClosureProofNode node = ( BigStepClosureProofNode ) value;
       StringBuilder builder = new StringBuilder ();
-      boolean memoryEnabled = ( ( BigStepClosureProofModel ) tree.getModel () )
+      /*boolean memoryEnabled = ( ( BigStepClosureProofModel ) tree.getModel () )
           .isMemoryEnabled ();
       builder.append ( '[' );
       for ( int n = 0 ; n < node.getSteps ().length ; ++n )
@@ -88,7 +88,16 @@ public final class BigStepClosureTest extends JFrame
           builder.append ( node.getResult ().getStore () );
           builder.append ( ')' );
         }
+      }*/
+      
+      for ( int n = 0 ; n < node.getSteps ().length ; ++n )
+      {
+        if ( n > 0 )
+          builder.append ( ", " );
+        builder.append ( node.getSteps () [ n ].getRule ().getName () );
       }
+      builder.append (' ');
+      builder.append ( node.toString() );
       setText ( builder.toString () );
       return this;
     }
@@ -190,7 +199,7 @@ public final class BigStepClosureTest extends JFrame
         }
         catch ( Exception e )
         {
-          //e.printStackTrace ();
+          e.printStackTrace ();
           JOptionPane.showMessageDialog ( BigStepClosureTest.this, e
               .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
@@ -212,7 +221,7 @@ public final class BigStepClosureTest extends JFrame
         }
         catch ( Exception e )
         {
-          //e.printStackTrace ();
+          e.printStackTrace ();
           JOptionPane.showMessageDialog ( BigStepClosureTest.this, e
               .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
@@ -247,7 +256,7 @@ public final class BigStepClosureTest extends JFrame
         }
         catch ( Exception e )
         {
-          //e.printStackTrace ();
+          e.printStackTrace ();
           JOptionPane.showMessageDialog ( BigStepClosureTest.this, e
               .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
@@ -281,7 +290,7 @@ public final class BigStepClosureTest extends JFrame
         }
         catch ( Exception e )
         {
-          //e.printStackTrace ();
+          e.printStackTrace ();
           JOptionPane.showMessageDialog ( BigStepClosureTest.this, e
               .getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
@@ -341,7 +350,7 @@ public final class BigStepClosureTest extends JFrame
         }
         catch ( Exception e1 )
         {
-         // e1.printStackTrace();
+          e1.printStackTrace();
           JOptionPane.showMessageDialog ( BigStepClosureTest.this,
               e1.getMessage (), "Error", JOptionPane.ERROR_MESSAGE );
         }
@@ -371,7 +380,7 @@ public final class BigStepClosureTest extends JFrame
     while ( !nodes.isEmpty () )
     {
       ProofNode node = nodes.poll ();
-      if ( !node.isProven()) //getRules ().length == 0 )
+      if(node.getRules ().length == 0)
       {
         return node;
       }

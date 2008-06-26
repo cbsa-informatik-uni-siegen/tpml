@@ -74,29 +74,36 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
   public void updateOP1(BigStepClosureProofContext context,
       BigStepClosureProofNode node) throws UnaryOperatorException
   {
+    if(node.getChildCount() < 2)
+      return;
     BigStepClosureProofNode child0 = node.getChildAt ( 0 ),
                             child1 = node.getChildAt ( 1 );
     
-    if(!(child0.isFinished() && child1.isFinished()))
+    if(!(child0.isProven() && child1.isProven()))
       return;
     
     // op1 n is a value, don't evaluate it here
-    context.setProofNodeResult ( node, node.getExpression() );
+    context.setProofNodeResult ( node, new Application(child0.getExpression (), child1.getExpression()));
   }
   
   public void updateOP2(BigStepClosureProofContext context,
       BigStepClosureProofNode node) throws BinaryOperatorException
   {
+    if(node.getChildCount() < 2)
+      return;
+    
     BigStepClosureProofNode child0 = node.getChildAt ( 0 ),
                             child1 = node.getChildAt ( 1 );
     
-    if(!(child0.isFinished() && child1.isFinished()))
+    if(!(child0.isProven() && child1.isProven()))
       return;
+   
+    System.err.println("Try update op 2!");
     
-    Application app = (Application)child0.getExpression();
+    Application app = (Application)child0.getResult().getClosure ().getExpression();
     BinaryOperator op2 = (BinaryOperator)app.getE1 ();
     Expression operand1 = app.getE2(),
-               operand2 = child1.getExpression ();
+               operand2 = child1.getResult().getClosure ().getExpression ();
     
     context.setProofNodeResult ( node, op2.applyTo ( operand1, operand2 ) );    
   }
@@ -104,9 +111,12 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
   public void updateBetaV(BigStepClosureProofContext context,
       BigStepClosureProofNode node)
   {
+    if(node.getChildCount() < 2)
+      return;
+    
     BigStepClosureProofNode child0 = node.getFirstChild (),
                             child1 = node.getChildAt ( 1 );
-    if(child0.isFinished() && child1.isFinished())
+    if(node.getChildCount() == 2 && child0.isProven() && child1.isProven())
     {
       Closure result0 = child0.getResult ().getClosure();
       Lambda lambda = (Lambda)result0.getExpression ();
@@ -118,7 +128,7 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
     else if(node.getChildCount() == 3)
     {
       BigStepClosureProofNode child2 = node.getChildAt ( 2 );
-      if(child2.isFinished())
+      if(child2.isProven())
         context.setProofNodeResult ( node, child2.getResult().getClosure() );
     }
   }

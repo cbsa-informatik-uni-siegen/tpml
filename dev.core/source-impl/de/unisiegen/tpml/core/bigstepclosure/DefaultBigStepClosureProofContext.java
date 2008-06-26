@@ -95,10 +95,14 @@ final class DefaultBigStepClosureProofContext implements BigStepClosureProofCont
   void apply ( BigStepClosureProofRule rule, BigStepClosureProofNode node )
     throws ProofRuleException
   {
-    // record the proof step
-    setProofNodeRule ( node, rule );
+    // REMARK: apply the rule first, set the result after!
+    
     // try to apply the rule to the node
     rule.apply ( this, node );
+    
+    // record the proof step
+    setProofNodeRule ( node, rule );
+    
     // update all (unproven) super nodes
     BigStepClosureProofNode newNode = node;
     for ( ; ; )
@@ -116,18 +120,18 @@ final class DefaultBigStepClosureProofContext implements BigStepClosureProofCont
   
   void updateNode ( BigStepClosureProofNode node )
   {
-    // skip the node if its already proven
-    /*if ( node.isFinished() )
-    {
+    // skip the node if it is already proven
+    if ( node.isFinished() )
       return;
-    }*/
+    
     // check if all child nodes are finished...
-    boolean childrenFinished = node.isFinished (); //true;
-    /*for ( int n = 0 ; childrenFinished && n < node.getChildCount () ; ++n )
+    //boolean childrenFinished = node.isFinished (); //true;
+    boolean childrenFinished = true;
+    for ( int n = 0 ; childrenFinished && n < node.getChildCount () ; ++n )
     {
       childrenFinished = ( childrenFinished && node.getChildAt ( n )
           .isFinished () );
-    }*/
+    }
     // ...and if so, check if any resulted in an exception
     BigStepClosureProofNode nodeWithExn = null;
     if ( childrenFinished )
