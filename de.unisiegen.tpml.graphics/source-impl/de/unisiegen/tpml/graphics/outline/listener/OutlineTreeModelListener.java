@@ -27,7 +27,8 @@ import de.unisiegen.tpml.graphics.subtyping.SubTypingView;
  * Sets the new {@link Expression} in the {@link Outline}, if a node changed.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: OutlineTreeModelListener.java 2796 2008-03-14 19:13:11Z fehler
+ *          $
  */
 public final class OutlineTreeModelListener implements TreeModelListener
 {
@@ -186,8 +187,7 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeNodesChanged(TreeModelEvent)
    */
-  public final void treeNodesChanged ( @SuppressWarnings ( UNUSED )
-  TreeModelEvent pTreeModelEvent )
+  public final void treeNodesChanged ( TreeModelEvent pTreeModelEvent )
   {
     handleEvent ( pTreeModelEvent );
   }
@@ -199,8 +199,8 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeNodesInserted(TreeModelEvent)
    */
-  public final void treeNodesInserted ( @SuppressWarnings ( UNUSED )
-  TreeModelEvent pTreeModelEvent )
+  public final void treeNodesInserted (
+      @SuppressWarnings ( UNUSED ) TreeModelEvent pTreeModelEvent )
   {
     // Do Nothing
   }
@@ -212,8 +212,8 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeNodesRemoved(TreeModelEvent)
    */
-  public final void treeNodesRemoved ( @SuppressWarnings ( UNUSED )
-  TreeModelEvent pTreeModelEvent )
+  public final void treeNodesRemoved (
+      @SuppressWarnings ( UNUSED ) TreeModelEvent pTreeModelEvent )
   {
     // Do Nothing
   }
@@ -225,8 +225,8 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeStructureChanged(TreeModelEvent)
    */
-  public final void treeStructureChanged ( @SuppressWarnings ( UNUSED )
-  TreeModelEvent pTreeModelEvent )
+  public final void treeStructureChanged (
+      @SuppressWarnings ( UNUSED ) TreeModelEvent pTreeModelEvent )
   {
     // Do Nothing
   }

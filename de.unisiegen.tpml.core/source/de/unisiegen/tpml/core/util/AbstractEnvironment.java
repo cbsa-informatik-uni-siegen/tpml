@@ -105,8 +105,8 @@ public abstract class AbstractEnvironment < S, E > implements
    * Creates a new environment, based on the mappings from the specified
    * <code>environment</code>.
    * 
-   * @param environment another <code>AbstractEnvironment</code> to inherit
-   *          the mappings from.
+   * @param environment another <code>AbstractEnvironment</code> to inherit the
+   *          mappings from.
    * @throws NullPointerException if the <code>environment</code> is
    *           <code>null</code>.
    */
@@ -219,7 +219,6 @@ public abstract class AbstractEnvironment < S, E > implements
     return new Enumeration < S > ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       private Iterator < Mapping < S, E >> iterator = AbstractEnvironment.this.mappings
           .iterator ();
 

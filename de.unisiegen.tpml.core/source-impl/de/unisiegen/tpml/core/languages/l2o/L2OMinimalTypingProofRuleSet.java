@@ -36,20 +36,20 @@ import de.unisiegen.tpml.core.types.RowType;
  * The minimal type proof rules for the <code>L1</code> language.
  * 
  * @author Benjamin Mies
- * @version $Id$
+ * @version $Id: L2OMinimalTypingProofRuleSet.java 2796 2008-03-14 19:13:11Z
+ *          fehler $
  * @see de.unisiegen.tpml.core.minimaltyping.AbstractMinimalTypingProofRuleSet
  */
 public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet
 {
 
   /**
-   * Allocates a new <code>L1MinimalTypingProofRuleSet</code> for the
-   * specified <code>language</code>.
+   * Allocates a new <code>L1MinimalTypingProofRuleSet</code> for the specified
+   * <code>language</code>.
    * 
    * @param language the <code>L1</code> or a derived language.
    * @param mode the actual choosen mode
-   * @throws NullPointerException if <code>language</code> is
-   *           <code>null</code>.
+   * @throws NullPointerException if <code>language</code> is <code>null</code>.
    */
   public L2OMinimalTypingProofRuleSet ( L1Language language, boolean mode )
   {
@@ -60,7 +60,7 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet
       registerByMethodName ( L2OLanguage.L2O, "S-MU-LEFT", "applyMuLeft" ); //$NON-NLS-1$ //$NON-NLS-2$
       registerByMethodName ( L2OLanguage.L2O, "S-MU-RIGHT", "applyMuRight" ); //$NON-NLS-1$ //$NON-NLS-2$
       registerByMethodName ( L2OLanguage.L2O, "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
-      
+
       registerByMethodName ( L2OLanguage.L2O, "TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
       registerByMethodName ( L2OLanguage.L2O,
           "OBJECT-WIDTH", "applyObjectWidth" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -104,8 +104,8 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet
    * @param context the minimal typing proof context.
    * @param pNode the node to update according to <b>(SEND)</b>.
    */
-  public void updateSend ( @SuppressWarnings ( "unused" )
-  MinimalTypingProofContext context, MinimalTypingProofNode pNode )
+  public void updateSend ( MinimalTypingProofContext context,
+      MinimalTypingProofNode pNode )
   {
     MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
     Send send = ( Send ) node.getExpression ();
@@ -307,8 +307,8 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet
 
 
   /**
-   * Updates the <code>node</code> to which <b>(METHOD-SUBSUME)</b> was
-   * applied previously.
+   * Updates the <code>node</code> to which <b>(METHOD-SUBSUME)</b> was applied
+   * previously.
    * 
    * @param context the minimal typing proof context.
    * @param pNode the node to update according to <b>(METHOD-SUBSUME)</b>.
@@ -637,14 +637,15 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet
 
 
   /**
-   * Applies the <b>(OBJECT-WIDTH)</b> rule to the <code>node</code> using
-   * the <code>context</code>.
+   * Applies the <b>(OBJECT-WIDTH)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
    * 
    * @param context the minimal typing proof context.
    * @param pNode the minimal typing proof node.
    */
-  public void applyObjectWidth ( @SuppressWarnings ( "unused" )
-  MinimalTypingProofContext context, MinimalTypingProofNode pNode )
+  public void applyObjectWidth (
+      @SuppressWarnings ( "unused" ) MinimalTypingProofContext context,
+      MinimalTypingProofNode pNode )
   {
     MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
     boolean goOn;
@@ -684,8 +685,8 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet
 
 
   /**
-   * Applies the <b>(OBJECT-DEPTH)</b> rule to the <code>node</code> using
-   * the <code>context</code>.
+   * Applies the <b>(OBJECT-DEPTH)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
    * 
    * @param context the minimal typing proof context.
    * @param pNode the minimal typing proof node.

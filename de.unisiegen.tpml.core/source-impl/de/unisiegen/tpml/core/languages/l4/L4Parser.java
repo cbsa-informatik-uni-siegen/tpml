@@ -60,7 +60,6 @@ final class L4Parser extends L4AbstractParser
    */
   @Override
   public void report_fatal_error ( String message, Object info )
-      throws Exception
   {
     report_error ( message, info );
   }

@@ -113,8 +113,8 @@ public class L1SUBLanguage extends L1Language
    * {@inheritDoc}
    */
   @Override
-  public BigStepProofModel newBigStepProofModel ( @SuppressWarnings ( "unused" )
-  Expression pExpression )
+  public BigStepProofModel newBigStepProofModel (
+      @SuppressWarnings ( "unused" ) Expression pExpression )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
         .getString ( "Exception.8" ), new Integer ( getId () ) ) ); //$NON-NLS-1$
@@ -129,9 +129,8 @@ public class L1SUBLanguage extends L1Language
    */
   @Override
   public MinimalTypingProofModel newMinimalTypingProofModel (
-      @SuppressWarnings ( "unused" )
-      Expression expression, @SuppressWarnings ( "unused" )
-      boolean mode )
+      @SuppressWarnings ( "unused" ) Expression expression,
+      @SuppressWarnings ( "unused" ) boolean mode )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
         .getString ( "Exception.9" ), new Integer ( getId () ) ) ); //$NON-NLS-1$
@@ -144,11 +143,8 @@ public class L1SUBLanguage extends L1Language
    * @see Language#newSubTypingProofModel(MonoType, MonoType, boolean)
    */
   @Override
-  public RecSubTypingProofModel newRecSubTypingProofModel (
-      @SuppressWarnings ( "unused" )
-      MonoType type, @SuppressWarnings ( "unused" )
-      MonoType type2, @SuppressWarnings ( "unused" )
-      boolean mode )
+  public RecSubTypingProofModel newRecSubTypingProofModel ( MonoType type,
+      MonoType type2, boolean mode )
   {
     return new RecSubTypingProofModel ( type, type2,
         new L1RecSubTypingProofRuleSet ( this, mode ), mode );
@@ -160,8 +156,7 @@ public class L1SUBLanguage extends L1Language
    */
   @Override
   public SmallStepProofModel newSmallStepProofModel (
-      @SuppressWarnings ( "unused" )
-      Expression pExpression )
+      @SuppressWarnings ( "unused" ) Expression pExpression )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
         .getString ( "Exception.14" ), new Integer ( getId () ) ) ); //$NON-NLS-1$
@@ -174,11 +169,8 @@ public class L1SUBLanguage extends L1Language
    * @see Language#newSubTypingProofModel(MonoType, MonoType, boolean)
    */
   @Override
-  public SubTypingProofModel newSubTypingProofModel (
-      @SuppressWarnings ( "unused" )
-      MonoType type, @SuppressWarnings ( "unused" )
-      MonoType type2, @SuppressWarnings ( "unused" )
-      boolean mode )
+  public SubTypingProofModel newSubTypingProofModel ( MonoType type,
+      MonoType type2, boolean mode )
   {
     return new SubTypingProofModel ( type, type2, new L1SubTypingProofRuleSet (
         this, mode ), mode );
@@ -190,8 +182,7 @@ public class L1SUBLanguage extends L1Language
    */
   @Override
   public TypeCheckerProofModel newTypeCheckerProofModel (
-      @SuppressWarnings ( "unused" )
-      Expression pExpression )
+      @SuppressWarnings ( "unused" ) Expression pExpression )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
         .getString ( "Exception.10" ), new Integer ( getId () ) ) ); //$NON-NLS-1$
@@ -203,8 +194,7 @@ public class L1SUBLanguage extends L1Language
    */
   @Override
   public TypeInferenceProofModel newTypeInferenceProofModel (
-      @SuppressWarnings ( "unused" )
-      Expression expression )
+      @SuppressWarnings ( "unused" ) Expression expression )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
         .getString ( "Exception.13" ), new Integer ( getId () ) ) ); //$NON-NLS-1$

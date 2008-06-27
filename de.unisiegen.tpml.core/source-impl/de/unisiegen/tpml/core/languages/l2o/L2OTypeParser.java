@@ -20,8 +20,8 @@ final class L2OTypeParser extends L2OAbstractTypeParser
 {
 
   /**
-   * Allocates a new <code>L1TypeParser</code> that operates on tokens from
-   * the specified <code>scanner</code>.
+   * Allocates a new <code>L1TypeParser</code> that operates on tokens from the
+   * specified <code>scanner</code>.
    * 
    * @param scanner the {@link LanguageTypeScanner} to query the tokens from.
    * @throws NullPointerException if <code>scanner</code> is <code>null</code>.
@@ -59,7 +59,6 @@ final class L2OTypeParser extends L2OAbstractTypeParser
    */
   @Override
   public void report_fatal_error ( String message, Object info )
-      throws Exception
   {
     report_error ( message, info );
   }

@@ -23,6 +23,12 @@ public abstract class AbstractProofView extends JComponent implements ProofView
   //
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 2390282418867787517L;
+
+
+  /**
    * Whether to operate in advanced or beginner mode.
    * 
    * @see #isAdvanced()
@@ -32,8 +38,8 @@ public abstract class AbstractProofView extends JComponent implements ProofView
 
 
   /**
-   * The currently active {@link Theme}. Used to repaint the proof view
-   * whenever the current theme changes.
+   * The currently active {@link Theme}. Used to repaint the proof view whenever
+   * the current theme changes.
    */
   private Theme theme = Theme.currentTheme ();
 

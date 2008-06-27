@@ -25,18 +25,19 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
 
 /**
- * Default implementation of the <code>SmallStepProofNode</code> interface.
- * The class for nodes in a
+ * Default implementation of the <code>SmallStepProofNode</code> interface. The
+ * class for nodes in a
  * {@link de.unisiegen.tpml.core.smallstep.SmallStepProofModel}.
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: DefaultSmallStepProofNode.java 2803 2008-04-03 14:40:28Z fehler
+ *          $
  * @see de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode
  * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode
  */
 public final class DefaultSmallStepProofNode extends
-    AbstractInterpreterProofNode implements SmallStepProofNode, PrettyPrintable
+    AbstractInterpreterProofNode implements SmallStepProofNode
 {
 
   /**

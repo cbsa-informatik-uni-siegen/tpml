@@ -76,8 +76,8 @@ public final class Deref extends UnaryOperator
    */
   @SuppressWarnings ( UNUSED )
   @Override
-  public Expression applyTo ( @SuppressWarnings ( UNUSED )
-  Expression pExpression ) throws UnaryOperatorException
+  public Expression applyTo ( Expression pExpression )
+      throws UnaryOperatorException
   {
     throw new UnsupportedOperationException ( HANDLED );
   }

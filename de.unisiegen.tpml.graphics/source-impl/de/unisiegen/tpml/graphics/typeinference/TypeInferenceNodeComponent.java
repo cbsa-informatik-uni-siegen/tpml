@@ -51,15 +51,15 @@ import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
  * as the size of itself). The <code>rules</code> of the parent node needs to
  * get verticaly centered and aligned with the <code>expression</code> of this
  * node. Usualy the <code>rules</code> are higher than the
- * <code>expression</code>s. So the height of the
- * {@link #expressionDimension} is less than the {@link #actualExpressionHeight}.
- * When the <code>expression</code> gets placed the
- * <code>actualExpressionHeight</code> is used for the height. The
- * {@link #actualRuleHeight} of the parent node than is the same as this
- * <code>actualExpressionHeight</code>. <br>
+ * <code>expression</code>s. So the height of the {@link #expressionDimension}
+ * is less than the {@link #actualExpressionHeight}. When the
+ * <code>expression</code> gets placed the <code>actualExpressionHeight</code>
+ * is used for the height. The {@link #actualRuleHeight} of the parent node than
+ * is the same as this <code>actualExpressionHeight</code>. <br>
  * 
  * @author michael
- * @version $Id$
+ * @version $Id: TypeInferenceNodeComponent.java 2796 2008-03-14 19:13:11Z
+ *          fehler $
  * @see de.unisiegen.tpml.graphics.components.CompoundExpressionTypeInference
  */
 public class TypeInferenceNodeComponent extends JComponent
@@ -181,7 +181,8 @@ public class TypeInferenceNodeComponent extends JComponent
    * Used internaly. When the underlining is cleared it will be done recursively
    * over the entire tree. It needs to be done in two times one time directed to
    * the parent and one time directed to the children. This enum is used by
-   * {@link TypeInferenceNodeComponent#freeUnderliningSibling(boolean, Direction)};
+   * {@link TypeInferenceNodeComponent#freeUnderliningSibling(boolean, Direction)}
+   * ;
    * 
    * @author marcell
    */
@@ -214,8 +215,7 @@ public class TypeInferenceNodeComponent extends JComponent
    */
   public TypeInferenceNodeComponent ( TypeInferenceProofNode pProofNode,
       TypeInferenceProofModel pProofModel, LanguageTranslator pTranslator,
-      @SuppressWarnings ( "unused" )
-      int pSpacing, boolean pAdvaced )
+      @SuppressWarnings ( "unused" ) int pSpacing, boolean pAdvaced )
   {
     super ();
 
@@ -254,15 +254,16 @@ public class TypeInferenceNodeComponent extends JComponent
         new MenuButtonListener ()
         {
 
-          public void menuClosed ( @SuppressWarnings ( "unused" )
-          MenuButton source )
+          public void menuClosed (
+              @SuppressWarnings ( "unused" ) MenuButton source )
           {
             // nothing todo
           }
 
 
-          public void menuItemActivated ( @SuppressWarnings ( "unused" )
-          MenuButton source, final JMenuItem item )
+          public void menuItemActivated (
+              @SuppressWarnings ( "unused" ) MenuButton source,
+              final JMenuItem item )
           {
             // setup a wait cursor for the toplevel ancestor
             final Container toplevel = getTopLevelAncestor ();
@@ -301,10 +302,9 @@ public class TypeInferenceNodeComponent extends JComponent
     {
 
       @Override
-      public void mouseMoved ( @SuppressWarnings ( "unused" )
-      MouseEvent event )
+      public void mouseMoved ( @SuppressWarnings ( "unused" ) MouseEvent event )
       {
-        // TypeInferenceNodeComponent.this.updateUnderlineExpression((Expression)
+        //TypeInferenceNodeComponent.this.updateUnderlineExpression((Expression)
         // null);
       }
     };
@@ -446,12 +446,10 @@ public class TypeInferenceNodeComponent extends JComponent
   /**
    * Sets whether the small step view operates in advanced or beginner mode.
    * 
-   * @param pAdvanced <code>true</code> to display only axiom rules in the
-   *          menu.
+   * @param pAdvanced <code>true</code> to display only axiom rules in the menu.
    * @see TypeInferenceComponent#setAdvanced(boolean)
    */
-  void setAdvanced ( @SuppressWarnings ( "unused" )
-  boolean pAdvanced )
+  void setAdvanced ( @SuppressWarnings ( "unused" ) boolean pAdvanced )
   {
     // Fill the menu with menuitems
     JPopupMenu menu = new JPopupMenu ();
@@ -926,6 +924,7 @@ public class TypeInferenceNodeComponent extends JComponent
    * @param ignoreThis Whether the current node should not be freed aswell.
    * @param direction The direction how the freeing should be done.
    */
+  @SuppressWarnings ( "unused" )
   private void freeUnderliningSibling ( boolean ignoreThis, Direction direction )
   {
     if ( !ignoreThis )

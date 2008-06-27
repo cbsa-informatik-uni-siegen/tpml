@@ -32,7 +32,8 @@ import de.unisiegen.tpml.core.util.Theme;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: AbstractBigStepProofRule.java 2796 2008-03-14 19:13:11Z fehler
+ *          $
  * @see de.unisiegen.tpml.core.bigstep.BigStepProofRule
  * @see de.unisiegen.tpml.core.AbstractProofRule
  */
@@ -99,8 +100,8 @@ public abstract class AbstractBigStepProofRule extends AbstractProofRule
    * {@link #update(BigStepProofContext, BigStepProofNode)} are noops.
    * 
    * @param name the name of the rule to allocate.
-   * @return a newly allocated <code>BigStepProofRule</code> with the
-   *         specified <code>name</code>, that does nothing.
+   * @return a newly allocated <code>BigStepProofRule</code> with the specified
+   *         <code>name</code>, that does nothing.
    * @see #toExnRule(int)
    */
   public static BigStepProofRule newNoopRule ( String name )
@@ -109,18 +110,19 @@ public abstract class AbstractBigStepProofRule extends AbstractProofRule
     {
 
       @Override
-      protected void applyInternal ( @SuppressWarnings ( "unused" )
-      BigStepProofContext context, @SuppressWarnings ( "unused" )
-      BigStepProofNode node ) throws Exception
+      protected void applyInternal (
+          @SuppressWarnings ( "unused" ) BigStepProofContext context,
+          @SuppressWarnings ( "unused" ) BigStepProofNode node )
+          throws Exception
       {
         throw new IllegalArgumentException ( "Cannot apply noop rules" ); //$NON-NLS-1$
       }
 
 
       @Override
-      protected void updateInternal ( @SuppressWarnings ( "unused" )
-      BigStepProofContext context, @SuppressWarnings ( "unused" )
-      BigStepProofNode node ) throws Exception
+      protected void updateInternal (
+          @SuppressWarnings ( "unused" ) BigStepProofContext context,
+          @SuppressWarnings ( "unused" ) BigStepProofNode node )
       {
         // nothing to do here...
       }
@@ -144,8 +146,8 @@ public abstract class AbstractBigStepProofRule extends AbstractProofRule
 
 
   /**
-   * Applies this big step proof rule to the specified <code>node</code> via
-   * the given <code>context</code>.
+   * Applies this big step proof rule to the specified <code>node</code> via the
+   * given <code>context</code>.
    * 
    * @param context the big step proof context via which the application of this
    *          rule to the <code>node</code> should be performed.
@@ -345,13 +347,13 @@ public abstract class AbstractBigStepProofRule extends AbstractProofRule
 
   /**
    * Updates the specified <code>node</code> as part of a previous rule
-   * application for <code>context</code>. This method is only interesting
-   * for non-axiom rules, like <b>(APP)</b> or <b>(LET)</b>, that need to
-   * update their created proof nodes even after applications of other proof
-   * rules to subtrees. This method is only invoked for proof nodes that are not
-   * already proven (see {@link de.unisiegen.tpml.core.ProofNode#isProven()}).
-   * If <code>node</code> is proven, this represents a bug in the big step
-   * proof model logic.
+   * application for <code>context</code>. This method is only interesting for
+   * non-axiom rules, like <b>(APP)</b> or <b>(LET)</b>, that need to update
+   * their created proof nodes even after applications of other proof rules to
+   * subtrees. This method is only invoked for proof nodes that are not already
+   * proven (see {@link de.unisiegen.tpml.core.ProofNode#isProven()}). If
+   * <code>node</code> is proven, this represents a bug in the big step proof
+   * model logic.
    * 
    * @param context the main proof context, which was previously specified as
    *          parameter to an

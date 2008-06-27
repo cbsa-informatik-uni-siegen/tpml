@@ -5,9 +5,6 @@ import java.util.ArrayList;
 
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
-import de.unisiegen.tpml.core.interfaces.BoundIdentifiers;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
 import de.unisiegen.tpml.core.latex.LatexCommandList;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder;
@@ -20,8 +17,8 @@ import de.unisiegen.tpml.core.util.BoundRenaming;
 
 
 /**
- * Represents the <code>let rec</code> expression, which is syntactic sugar
- * for <b>(LET)</b> and <b>(REC)</b>. The expression
+ * Represents the <code>let rec</code> expression, which is syntactic sugar for
+ * <b>(LET)</b> and <b>(REC)</b>. The expression
  * <code>let rec id = e1 in e2</code> is equal to
  * <code>let id = rec id.e1 in e2</code>
  * 
@@ -30,8 +27,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming;
  * @version $Id$
  * @see de.unisiegen.tpml.core.expressions.Let
  */
-public final class LetRec extends Let implements BoundIdentifiers,
-    DefaultTypes, DefaultExpressions
+public final class LetRec extends Let
 {
 
   /**

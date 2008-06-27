@@ -76,9 +76,8 @@ public final class Assign extends BinaryOperator
    */
   @SuppressWarnings ( UNUSED )
   @Override
-  public Expression applyTo ( @SuppressWarnings ( UNUSED )
-  Expression pExpression1, @SuppressWarnings ( UNUSED )
-  Expression pExpression2 ) throws BinaryOperatorException
+  public Expression applyTo ( Expression pExpression1, Expression pExpression2 )
+      throws BinaryOperatorException
   {
     throw new UnsupportedOperationException ( HANDLED );
   }

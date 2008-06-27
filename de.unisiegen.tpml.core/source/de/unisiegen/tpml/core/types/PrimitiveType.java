@@ -7,8 +7,8 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 
 /**
- * Abstract base class for primitive types, such as <tt>bool</tt>,
- * <tt>int</tt> and <tt>unit</tt>.
+ * Abstract base class for primitive types, such as <tt>bool</tt>, <tt>int</tt>
+ * and <tt>unit</tt>.
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
@@ -41,8 +41,8 @@ public abstract class PrimitiveType extends MonoType
    * Allocates a new <code>PrimitiveType</code> with the specified
    * <code>name</code>.
    * 
-   * @param pName the name of the primitive type, for example <tt>"bool"</tt>
-   *          or <tt>"int"</tt>.
+   * @param pName the name of the primitive type, for example <tt>"bool"</tt> or
+   *          <tt>"int"</tt>.
    */
   protected PrimitiveType ( String pName )
   {
@@ -61,8 +61,8 @@ public abstract class PrimitiveType extends MonoType
 
   /**
    * Compares this primitive type to the <code>obj</code>. Returns
-   * <code>true</code> if the <code>obj</code> is a
-   * <code>PrimitiveType</code> with the same name as this instance.
+   * <code>true</code> if the <code>obj</code> is a <code>PrimitiveType</code>
+   * with the same name as this instance.
    * 
    * @param pObject another object.
    * @return <code>true</code> if this instance is equal to the specified
@@ -105,17 +105,17 @@ public abstract class PrimitiveType extends MonoType
   /**
    * Substitutes the type <code>pTau</code> for the {@link TypeName}
    * <code>pTypeName</code> in this type, and returns the resulting type. The
-   * resulting type may be a new <code>Type</code> object or if no
-   * substitution took place, the same object. The method operates recursively.
+   * resulting type may be a new <code>Type</code> object or if no substitution
+   * took place, the same object. The method operates recursively.
    * 
    * @param pTypeName The {@link TypeName}.
    * @param pTau The {@link MonoType}.
    * @return The resulting {@link Type}.
    */
   @Override
-  public PrimitiveType substitute ( @SuppressWarnings ( UNUSED )
-  TypeName pTypeName, @SuppressWarnings ( UNUSED )
-  MonoType pTau )
+  public PrimitiveType substitute (
+      @SuppressWarnings ( UNUSED ) TypeName pTypeName,
+      @SuppressWarnings ( UNUSED ) MonoType pTau )
   {
     return this;
   }
@@ -127,8 +127,7 @@ public abstract class PrimitiveType extends MonoType
    * @see Type#substitute(TypeSubstitution)
    */
   @Override
-  public PrimitiveType substitute ( @SuppressWarnings ( UNUSED )
-  TypeSubstitution pTypeSubstitution )
+  public PrimitiveType substitute ( TypeSubstitution pTypeSubstitution )
   {
     if ( pTypeSubstitution == null )
     {

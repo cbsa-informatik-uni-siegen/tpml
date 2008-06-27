@@ -49,9 +49,9 @@ public class StyledTypeEnterField extends StyledLanguageDocument
 
   /**
    * Allocates a new <code>StyledTypeEnterDocument</code> for the given
-   * <code>language</code>, where the <code>language</code> is used to
-   * determine the scanner (aka lexer) for the documents content and thereby
-   * dictates the syntax highlighting.
+   * <code>language</code>, where the <code>language</code> is used to determine
+   * the scanner (aka lexer) for the documents content and thereby dictates the
+   * syntax highlighting.
    * 
    * @param pLanguage the {@link Language} for which to allocate a document.
    * @throws NullPointerException if the <code>language</code> is
@@ -94,7 +94,7 @@ public class StyledTypeEnterField extends StyledLanguageDocument
    */
   @Override
   @SuppressWarnings (
-  { "null", "unused" } )
+  { "unused" } )
   public void processChanged () throws BadLocationException
   {
     // reset the character attributes

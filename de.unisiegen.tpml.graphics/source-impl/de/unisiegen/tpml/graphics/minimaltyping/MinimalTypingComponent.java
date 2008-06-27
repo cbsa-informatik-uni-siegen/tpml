@@ -161,7 +161,6 @@ public class MinimalTypingComponent extends AbstractProofComponent implements
     SwingUtilities.invokeLater ( new Runnable ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void run ()
       {
         doRelayout ();

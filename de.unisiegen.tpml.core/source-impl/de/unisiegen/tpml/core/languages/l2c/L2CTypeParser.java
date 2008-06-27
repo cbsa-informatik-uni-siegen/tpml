@@ -59,7 +59,6 @@ final class L2CTypeParser extends L2CAbstractTypeParser
    */
   @Override
   public void report_fatal_error ( String message, Object info )
-      throws Exception
   {
     report_error ( message, info );
   }

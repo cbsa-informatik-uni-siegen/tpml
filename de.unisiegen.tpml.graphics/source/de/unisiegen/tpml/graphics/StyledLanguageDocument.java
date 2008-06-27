@@ -478,7 +478,7 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * @throws BadLocationException if the processing failed.
    */
   @SuppressWarnings (
-  { "unused", "null" } )
+  { "unused" } )
   public void processChanged () throws BadLocationException
   {
     // reset the character attributes

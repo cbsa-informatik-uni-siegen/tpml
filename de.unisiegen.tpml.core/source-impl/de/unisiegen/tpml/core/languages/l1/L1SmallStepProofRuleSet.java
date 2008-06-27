@@ -44,8 +44,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
    * language.
    * 
    * @param language the {@link de.unisiegen.tpml.core.languages.Language}.
-   * @throws NullPointerException if <code>language</code> is
-   *           <code>null</code>.
+   * @throws NullPointerException if <code>language</code> is <code>null</code>.
    * @see L0SmallStepProofRuleSet#L0SmallStepProofRuleSet(L0Language)
    */
   public L1SmallStepProofRuleSet ( L1Language language )
@@ -88,16 +87,15 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
 
 
   /**
-   * Applies the <code>op</code> to <code>e1</code> and <code>e2</code>
-   * using the <code>context</code>.
+   * Applies the <code>op</code> to <code>e1</code> and <code>e2</code> using
+   * the <code>context</code>.
    * 
    * @param context the {@link SmallStepProofContext} for the application of
    *          <code>op</code>.
    * @param applicationOrInfix the
    *          {@link de.unisiegen.tpml.core.expressions.Application} or the
    *          {@link de.unisiegen.tpml.core.expressions.InfixOperation} to which
-   *          the <code>op</code>, <code>e1</code> and <code>e2</code>
-   *          belong.
+   *          the <code>op</code>, <code>e1</code> and <code>e2</code> belong.
    * @param op the binary operator to apply to <code>e1</code> and
    *          <code>e2</code>.
    * @param e1 the first operand for <code>op</code>.
@@ -123,8 +121,8 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
 
   /**
    * Applies the {@link de.unisiegen.tpml.core.expressions.Not} operator
-   * <code>e1</code> to the {@link BooleanConstant} <code>e2</code> using
-   * the <code>context</code>.
+   * <code>e1</code> to the {@link BooleanConstant} <code>e2</code> using the
+   * <code>context</code>.
    * 
    * @param context the small step proof context.
    * @param application the application.
@@ -191,8 +189,8 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
    * @param pCoercion The {@link Coercion} expression to evaluate.
    * @return The resulting expression.
    */
-  public Expression evaluateCoercion ( @SuppressWarnings ( "unused" )
-  SmallStepProofContext context, Coercion pCoercion )
+  public Expression evaluateCoercion ( SmallStepProofContext context,
+      Coercion pCoercion )
   {
     context.addProofStep ( getRuleByName ( "COERCE" ), pCoercion ); //$NON-NLS-1$
     return pCoercion.getE ();

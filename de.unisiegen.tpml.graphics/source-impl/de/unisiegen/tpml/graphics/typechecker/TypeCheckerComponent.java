@@ -33,8 +33,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * <br>
  * The entire placing of the nodes is done within the method {@link #relayout()}
  * but actualy the layouting is passed over to the
- * {@link de.unisiegen.tpml.graphics.tree.TreeNodeLayout} to place the nodes.
- * <br>
+ * {@link de.unisiegen.tpml.graphics.tree.TreeNodeLayout} to place the nodes. <br>
  * <br>
  * The lines and arrows of the tree are rendered using the
  * {@link de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer}, so all nodes
@@ -53,8 +52,8 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * When nodes get removed only the userobject of that nodes needs to get
  * release.<br>
  * When nodes get inserted, the first of them is stored in the {@link #jumpNode}
- * so the next time the component gets layouted the {@link #jumpToNodeVisible()}-method
- * is called and the scrollview of the
+ * so the next time the component gets layouted the {@link #jumpToNodeVisible()}
+ * -method is called and the scrollview of the
  * {@link de.unisiegen.tpml.graphics.bigstep.BigStepView} scrolls to a place the
  * stored node gets visible.
  * 
@@ -172,7 +171,6 @@ public class TypeCheckerComponent extends AbstractProofComponent implements
     SwingUtilities.invokeLater ( new Runnable ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void run ()
       {
         doRelayout ();
@@ -259,15 +257,15 @@ public class TypeCheckerComponent extends AbstractProofComponent implements
       nodeComponent.addTypeCheckerNodeListener ( new TypeCheckerNodeListener ()
       {
 
-        public void nodeChanged ( @SuppressWarnings ( "unused" )
-        TypeCheckerNodeComponent pNode )
+        public void nodeChanged (
+            @SuppressWarnings ( "unused" ) TypeCheckerNodeComponent pNode )
         {
           TypeCheckerComponent.this.relayout ();
         }
 
 
-        public void requestTypeEnter ( @SuppressWarnings ( "unused" )
-        TypeCheckerNodeComponent pNode )
+        public void requestTypeEnter (
+            @SuppressWarnings ( "unused" ) TypeCheckerNodeComponent pNode )
         {
           // empty
 
@@ -526,10 +524,10 @@ public class TypeCheckerComponent extends AbstractProofComponent implements
    * @see javax.swing.Scrollable#getScrollableBlockIncrement(java.awt.Rectangle,
    *      int, int)
    */
-  public int getScrollableBlockIncrement ( @SuppressWarnings ( "unused" )
-  Rectangle visibleRect, @SuppressWarnings ( "unused" )
-  int orientation, @SuppressWarnings ( "unused" )
-  int direction )
+  public int getScrollableBlockIncrement (
+      @SuppressWarnings ( "unused" ) Rectangle visibleRect,
+      @SuppressWarnings ( "unused" ) int orientation,
+      @SuppressWarnings ( "unused" ) int direction )
   {
     return 25;
   }
@@ -569,10 +567,10 @@ public class TypeCheckerComponent extends AbstractProofComponent implements
    * @see javax.swing.Scrollable#getScrollableUnitIncrement(java.awt.Rectangle,
    *      int, int)
    */
-  public int getScrollableUnitIncrement ( @SuppressWarnings ( "unused" )
-  Rectangle visibleRect, @SuppressWarnings ( "unused" )
-  int orientation, @SuppressWarnings ( "unused" )
-  int direction )
+  public int getScrollableUnitIncrement (
+      @SuppressWarnings ( "unused" ) Rectangle visibleRect,
+      @SuppressWarnings ( "unused" ) int orientation,
+      @SuppressWarnings ( "unused" ) int direction )
   {
     return 10;
   }

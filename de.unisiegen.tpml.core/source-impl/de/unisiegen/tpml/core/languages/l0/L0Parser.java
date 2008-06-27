@@ -60,7 +60,6 @@ final class L0Parser extends L0AbstractParser
    */
   @Override
   public void report_fatal_error ( String pMessage, Object pInfo )
-      throws Exception
   {
     report_error ( pMessage, pInfo );
   }

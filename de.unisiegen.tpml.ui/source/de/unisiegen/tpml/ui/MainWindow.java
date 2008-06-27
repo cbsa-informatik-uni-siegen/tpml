@@ -821,7 +821,7 @@ public class MainWindow
    * @return true if the active editor could be closed.
    */
   @SuppressWarnings (
-  { "fallthrough", "fallthrough" } )
+  { "fallthrough" } )
   public boolean handleClose ()
   {
     EditorPanel selectedEditor = getActiveEditor ();

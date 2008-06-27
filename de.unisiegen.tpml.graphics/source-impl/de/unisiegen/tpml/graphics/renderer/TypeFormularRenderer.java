@@ -344,7 +344,6 @@ public class TypeFormularRenderer extends AbstractRenderer
    * @param maxWidth
    * @return The size needed to render the environment.
    */
-  @SuppressWarnings ( "unchecked" )
   public Dimension getNeededSize ( int maxWidth )
   {
 
@@ -544,8 +543,8 @@ public class TypeFormularRenderer extends AbstractRenderer
   /**
    * Renders the Typeformulas.<br>
    * <br>
-   * The Typeformulas are rendered line by lien. They will appear starting <i>y</i>
-   * and ending <i>(y + height></i>.
+   * The Typeformulas are rendered line by lien. They will appear starting
+   * <i>y</i> and ending <i>(y + height></i>.
    * 
    * @param x The left position where the environment should be displayed
    * @param y The top position where the environment should be displayed.
@@ -553,9 +552,8 @@ public class TypeFormularRenderer extends AbstractRenderer
    * @param height The Height the renderer is given to render the envionment.
    * @param gc
    */
-  @SuppressWarnings ( "unchecked" )
-  public void renderer ( int x, int y, int width, @SuppressWarnings ( "unused" )
-  int height, Graphics gc )
+  public void renderer ( int x, int y, int width,
+      @SuppressWarnings ( "unused" ) int height, Graphics gc )
   {
     // TODO for debugging
     // gc.setColor(this.alternativeColor != null ? this.alternativeColor :

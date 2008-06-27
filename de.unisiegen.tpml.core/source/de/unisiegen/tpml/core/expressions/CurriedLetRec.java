@@ -5,9 +5,6 @@ import java.util.ArrayList;
 
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
-import de.unisiegen.tpml.core.interfaces.BoundIdentifiers;
-import de.unisiegen.tpml.core.interfaces.DefaultExpressions;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
 import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
 import de.unisiegen.tpml.core.latex.LatexCommandList;
@@ -30,8 +27,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming;
  * @see LetRec
  * @see CurriedLet
  */
-public final class CurriedLetRec extends CurriedLet implements
-    BoundIdentifiers, DefaultTypes, DefaultExpressions
+public final class CurriedLetRec extends CurriedLet
 {
 
   /**
@@ -80,8 +76,7 @@ public final class CurriedLetRec extends CurriedLet implements
    * @param pExpression2 the second expression.
    * @throws IllegalArgumentException if the <code>identifiers</code> array
    *           contains less than two identifiers, or the arity of
-   *           <code>identifiers</code> and <code>types</code> does not
-   *           match.
+   *           <code>identifiers</code> and <code>types</code> does not match.
    * @throws NullPointerException if <code>identifiers</code>,
    *           <code>types</code>, <code>e1</code> or <code>e2</code> is
    *           <code>null</code>.
@@ -111,8 +106,7 @@ public final class CurriedLetRec extends CurriedLet implements
    *          source code.
    * @throws IllegalArgumentException if the <code>identifiers</code> array
    *           contains less than two identifiers, or the arity of
-   *           <code>identifiers</code> and <code>types</code> does not
-   *           match.
+   *           <code>identifiers</code> and <code>types</code> does not match.
    * @throws NullPointerException if <code>identifiers</code>,
    *           <code>types</code>, <code>e1</code> or <code>e2</code> is
    *           <code>null</code>.

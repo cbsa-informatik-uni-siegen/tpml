@@ -67,8 +67,8 @@ public final class Ref extends UnaryOperator
   /**
    * {@inheritDoc} This method always throws
    * {@link UnsupportedOperationException} to indicate that it should not be
-   * called. Instead the <code>ref</code> operator requires special handling
-   * in the interpreter.
+   * called. Instead the <code>ref</code> operator requires special handling in
+   * the interpreter.
    * 
    * @throws UnsupportedOperationException on every invocation, because the
    *           <code>ref</code> operator must be handled by the interpreter.
@@ -76,8 +76,8 @@ public final class Ref extends UnaryOperator
    */
   @SuppressWarnings ( UNUSED )
   @Override
-  public Expression applyTo ( @SuppressWarnings ( UNUSED )
-  Expression pExpression ) throws UnaryOperatorException
+  public Expression applyTo ( Expression pExpression )
+      throws UnaryOperatorException
   {
     throw new UnsupportedOperationException ( HANDLED );
   }

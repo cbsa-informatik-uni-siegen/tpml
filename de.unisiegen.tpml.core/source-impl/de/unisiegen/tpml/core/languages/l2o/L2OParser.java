@@ -61,7 +61,6 @@ final class L2OParser extends L2OAbstractParser
    */
   @Override
   public void report_fatal_error ( String pMessage, Object pInfo )
-      throws Exception
   {
     report_error ( pMessage, pInfo );
   }
