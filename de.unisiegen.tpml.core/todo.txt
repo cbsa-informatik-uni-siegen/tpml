@@ -1,2 +1,3 @@
 CF		- LaTeX Export Ränder überprüfen
 CF		- LaTeX Export von Tuple überprüfen
+BM		- Beim TPML.tex schreiben fehlt die Überprüfung ob das File ein Ordner ist
