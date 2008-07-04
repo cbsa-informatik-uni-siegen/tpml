@@ -89,7 +89,7 @@ public class L1SubTypingProofRuleSet extends AbstractSubTypingProofRuleSet
     MonoType tau2l = type2.getTau1 ();
     MonoType tau2r = type2.getTau2 ();
 
-    context.addProofNode ( node, taul, tau2l );
+    context.addProofNode ( node, tau2l, taul );
     context.addProofNode ( node, taur, tau2r );
   }
 }
