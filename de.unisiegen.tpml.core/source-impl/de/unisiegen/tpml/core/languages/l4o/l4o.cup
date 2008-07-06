@@ -365,6 +365,8 @@ sequence_error					::= expr:e1 SEMI:s epsilon
 
 identifier						::= IDENTIFIER:id
 									{: RESULT = new Identifier (id,Identifier.Set.VARIABLE,idleft,idright); :}
+								|	SELF:s
+									{: RESULT = new Identifier (s,Identifier.Set.SELF,sleft,sright); :}
 								;
 
 application						::= simple_expr:e simple_expr_list:l
