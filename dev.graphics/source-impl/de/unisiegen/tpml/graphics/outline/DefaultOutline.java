@@ -36,6 +36,7 @@ import de.unisiegen.tpml.core.types.TypeName;
 import de.unisiegen.tpml.core.util.Theme;
 import de.unisiegen.tpml.graphics.StyledLanguageDocument;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView;
+import de.unisiegen.tpml.graphics.bigstepclosure.BigStepClosureView;
 import de.unisiegen.tpml.graphics.editor.TextEditorPanel;
 import de.unisiegen.tpml.graphics.editor.TypeEditorPanel;
 import de.unisiegen.tpml.graphics.editor.UnifyEditorPanel;
@@ -224,6 +225,10 @@ public final class DefaultOutline implements Outline
         new OutlineTreeSelectionListener ( this ) );
   }
 
+  public DefaultOutline (BigStepClosureView pBigClosureStepView)
+  {
+    // TODO
+  }
 
   /**
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
