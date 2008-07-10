@@ -13,8 +13,8 @@ import de.unisiegen.tpml.core.expressions.Condition;
 import de.unisiegen.tpml.core.expressions.Condition1;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.InfixOperation;
 import de.unisiegen.tpml.core.expressions.Lambda;
-import de.unisiegen.tpml.core.expressions.UnaryOperator;
 import de.unisiegen.tpml.core.expressions.UnaryOperatorException;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
 import de.unisiegen.tpml.core.expressions.Value;
@@ -36,7 +36,7 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
     registerByMethodName( L1Language.L1,
         "OP-1", "applyApp", "updateOP1");
     registerByMethodName (L1Language.L1,
-        "OP-2", "applyApp", "updateOP2");
+        "OP-2", "applyOP2", "updateOP2");
     registerByMethodName( L1Language.L1,
         "BETA-V", "applyApp", "updateBetaV");
     registerByMethodName( L1Language.L1,
@@ -71,6 +71,21 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
     context.addProofNode ( node, new Closure( app.getE2(), node.getEnvironment()) );
   }
   
+  public void applyOP2(BigStepClosureProofContext context,
+      BigStepClosureProofNode node)  throws BinaryOperatorException
+  {
+    Expression e = node.getExpression();
+    if(e instanceof Application)
+    {
+      applyApp(context, node);
+      return;
+    }
+    
+    InfixOperation io = (InfixOperation)e;
+    context.addProofNode (node, new Closure( io.getE1(), node.getEnvironment()));
+    context.addProofNode (node, new Closure( io.getE2(), node.getEnvironment()));
+  }
+  
   public void updateOP1(BigStepClosureProofContext context,
       BigStepClosureProofNode node) throws UnaryOperatorException
   {
@@ -98,10 +113,26 @@ public final class L1BigStepClosureProofRuleSet extends AbstractBigStepClosurePr
     if(!(child0.isProven() && child1.isProven()))
       return;
     
-    Application app = (Application)child0.getResult().getClosure ().getExpression();
-    BinaryOperator op2 = (BinaryOperator)app.getE1 ();
-    Expression operand1 = app.getE2(),
-               operand2 = child1.getResult().getClosure ().getExpression ();
+    Expression operand1,
+               operand2;
+    BinaryOperator op2;
+    
+    Expression e = node.getExpression ();
+    if(e instanceof Application)
+    {
+      Application app = (Application)child0.getResult().getClosure ().getExpression();
+      op2 = (BinaryOperator)app.getE1 ();
+      operand1 = app.getE2();
+      operand2 = child1.getResult().getClosure ().getExpression ();
+    }
+    else
+    {
+      // otherweise we must have an infix operation, pull op2 out of node itself
+      InfixOperation inf = (InfixOperation)node.getExpression();
+      op2 = inf.getOp ();
+      operand1 = child0.getResult ().getClosure ().getExpression ();
+      operand2 = child1.getResult ().getClosure ().getExpression ();
+    }
     
     context.setProofNodeResult ( node, op2.applyTo ( operand1, operand2 ) );    
   }
