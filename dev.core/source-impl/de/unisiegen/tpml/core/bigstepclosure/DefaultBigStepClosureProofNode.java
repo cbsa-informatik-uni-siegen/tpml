@@ -105,12 +105,18 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
 
   public PrettyString toPrettyString()
   {
-    return null;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+    .toPrettyString ();
   }
   
   public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory fac)
   {
-    return null;
+    PrettyStringBuilder builder = fac.newBuilder (
+        this, 0 );
+    
+    builder.addBuilder(getExpression().toPrettyStringBuilder ( fac ), 0);
+    
+    return builder;
   }
   
   public LatexInstructionList getLatexInstructions()

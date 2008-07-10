@@ -30,7 +30,6 @@ public final class DefaultClosureEnvironment
   
   public Closure get(final Identifier identifier)
   {
-    System.err.println("get " + identifier.toString());
     if(!super.containsSymbol ( identifier ))
       throw new RuntimeException(identifier.toString() + " not found!");
     return super.get ( identifier );
@@ -38,12 +37,34 @@ public final class DefaultClosureEnvironment
   
   public PrettyString toPrettyString()
   {
-    return null; // FIXME
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+    .toPrettyString ();
   }
  
   public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory fac)
   {
-    return null; // FIXME
+    PrettyStringBuilder builder = fac.newBuilder (
+        this, 0 );
+    
+    builder.addText ( PRETTY_LBRACKET );
+    
+    Enumeration<Identifier> e = this.symbols();
+    while(e.hasMoreElements())
+    {
+      Identifier id = e.nextElement ();
+      Closure closure = this.get ( id );
+      
+      builder.addBuilder( id.toPrettyStringBuilder(fac), 0);
+      builder.addText ( PRETTY_COLON );
+      builder.addBuilder ( closure.toPrettyStringBuilder ( fac ), 1 );
+      
+      if(e.hasMoreElements())
+        builder.addText ( PRETTY_COMMA );
+    }
+    
+    builder.addText ( PRETTY_RBRACKET );
+    
+    return builder;
   }
   
   public LatexString toLatexString()

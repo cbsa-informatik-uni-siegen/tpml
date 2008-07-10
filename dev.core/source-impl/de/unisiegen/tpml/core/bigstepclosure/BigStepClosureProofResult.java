@@ -78,12 +78,17 @@ public class BigStepClosureProofResult implements PrettyPrintable, LatexPrintabl
   
   public PrettyString toPrettyString()
   {
-    return null;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+    .toPrettyString ();
   }
   
   public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory)
   {
-    return null;
+    PrettyStringBuilder builder = factory.newBuilder (
+        this, 0 );
+    builder.addBuilder ( this.closure.toPrettyStringBuilder ( factory ), 0 );
+    
+    return builder;
   }
   
   private Store store;
