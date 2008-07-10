@@ -18,9 +18,6 @@ import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
-import de.unisiegen.tpml.graphics.bigstep.BigStepComponent;
-import de.unisiegen.tpml.graphics.bigstep.BigStepNodeComponent;
-import de.unisiegen.tpml.graphics.bigstep.BigStepNodeListener;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 import de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer;
@@ -245,14 +242,14 @@ public class BigStepClosureComponent extends AbstractProofComponent implements
    * 
    * @param node
    */
-  private void resetUserObject ( BigStepProofNode node )
+  private void resetUserObject ( BigStepClosureProofNode node )
   {
     if ( node == null )
     {
       return;
     }
 
-    BigStepNodeComponent nodeComponent = ( BigStepNodeComponent ) node
+    BigStepClosureNodeComponent nodeComponent = ( BigStepClosureNodeComponent ) node
         .getUserObject ();
     if ( nodeComponent == null )
     {
@@ -263,7 +260,7 @@ public class BigStepClosureComponent extends AbstractProofComponent implements
 
     for ( int i = 0 ; i < node.getChildCount () ; i++ )
     {
-      BigStepProofNode pNode = node.getChildAt ( i );
+      BigStepClosureProofNode pNode = node.getChildAt ( i );
 
       resetUserObject ( pNode );
     }
@@ -333,8 +330,8 @@ public class BigStepClosureComponent extends AbstractProofComponent implements
       // this element is the root node.
       if ( event.getPath ().length == 1 )
       {
-        BigStepProofNode proofNode = ( BigStepProofNode ) event.getPath () [ 0 ];
-        BigStepNodeComponent nodeComponent = ( BigStepNodeComponent ) proofNode
+        BigStepClosureProofNode proofNode = ( BigStepClosureProofNode ) event.getPath () [ 0 ];
+        BigStepClosureNodeComponent nodeComponent = ( BigStepClosureNodeComponent ) proofNode
             .getUserObject ();
         if ( nodeComponent != null )
         {
@@ -347,9 +344,9 @@ public class BigStepClosureComponent extends AbstractProofComponent implements
     {
       if ( element instanceof ProofNode )
       {
-        BigStepProofNode proofNode = ( BigStepProofNode ) element;
+        BigStepClosureProofNode proofNode = ( BigStepClosureProofNode ) element;
 
-        BigStepNodeComponent nodeComponent = ( BigStepNodeComponent ) proofNode
+        BigStepClosureNodeComponent nodeComponent = ( BigStepClosureNodeComponent ) proofNode
             .getUserObject ();
         if ( nodeComponent != null )
         {
@@ -388,9 +385,9 @@ public class BigStepClosureComponent extends AbstractProofComponent implements
     {
       if ( element instanceof ProofNode )
       {
-        BigStepProofNode proofNode = ( BigStepProofNode ) element;
+        BigStepClosureProofNode proofNode = ( BigStepClosureProofNode ) element;
 
-        BigStepNodeComponent nodeComponent = ( BigStepNodeComponent ) proofNode
+        BigStepClosureNodeComponent nodeComponent = ( BigStepClosureNodeComponent ) proofNode
             .getUserObject ();
         if ( nodeComponent != null )
         {
@@ -471,7 +468,7 @@ public class BigStepClosureComponent extends AbstractProofComponent implements
    */
   protected void doRelayout ()
   {
-    BigStepProofNode rootNode = ( BigStepProofNode ) BigStepClosureComponent.this
+    BigStepClosureProofNode rootNode = ( BigStepClosureProofNode ) BigStepClosureComponent.this
         .getProofModel ().getRoot ();
 
     Point rightBottomPos = BigStepClosureComponent.this.getTreeNodeLayout ()
@@ -517,7 +514,7 @@ public class BigStepClosureComponent extends AbstractProofComponent implements
   protected void resetLayout ()
   {
     // apply the reset on the root node
-    resetUserObject ( ( BigStepProofNode ) this.proofModel.getRoot () );
+    resetUserObject ( ( BigStepClosureProofNode ) this.proofModel.getRoot () );
   }
 
 
@@ -559,7 +556,7 @@ public class BigStepClosureComponent extends AbstractProofComponent implements
 
     // get the Component nodes to evaluate the positions
     // on the viewport
-    BigStepNodeComponent node = ( BigStepNodeComponent ) this.jumpNode
+    BigStepClosureNodeComponent node = ( BigStepClosureNodeComponent ) this.jumpNode
         .getUserObject ();
     if ( node == null )
     {
@@ -680,11 +677,11 @@ public class BigStepClosureComponent extends AbstractProofComponent implements
    * @see java.lang.Object#clone()
    */
   @Override
-  public BigStepComponent clone ()
+  public BigStepClosureComponent clone ()
   {
     try
     {
-      return ( BigStepComponent ) super.clone ();
+      return ( BigStepClosureComponent ) super.clone ();
     }
     catch ( CloneNotSupportedException e )
     {

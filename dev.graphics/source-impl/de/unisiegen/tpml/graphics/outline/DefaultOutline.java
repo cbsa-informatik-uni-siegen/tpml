@@ -224,10 +224,66 @@ public final class DefaultOutline implements Outline
     this.uI.getJTreeOutline ().getSelectionModel ().addTreeSelectionListener (
         new OutlineTreeSelectionListener ( this ) );
   }
-
-  public DefaultOutline (BigStepClosureView pBigClosureStepView)
+  
+  /**
+   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
+   * 
+   * @param pBigStepClosureView The {@link BigStepClosureView}.
+   */
+  public DefaultOutline (BigStepClosureView pBigStepClosureView)
   {
-    // TODO
+    this.preferences = new OutlinePreferences ();
+    this.uI = new OutlineUI ( this );
+    this.uI.deactivateAutoUpdate ();
+    this.uI.deactivateHighlightSourceCode ();
+    // ComponentListener
+    this.uI.getJScrollPaneOutline ().addComponentListener (
+        new OutlineComponentListener ( pBigStepClosureView.getJSplitPane (), this ) );
+    // PropertyChangeListener
+    pBigStepClosureView.addPropertyChangeListener ( new OutlinePropertyChangeListener (
+        pBigStepClosureView.getJSplitPane (), this ) );
+    Theme.currentTheme ().addPropertyChangeListener (
+        new OutlinePropertyChangeListener ( this ) );
+    // TreeModelListener
+    pBigStepClosureView.getBigStepProofModel ().addTreeModelListener (
+        new OutlineTreeModelListener ( this, pBigStepClosureView
+            .getBigStepProofModel () ) );
+    // MouseListener
+    this.uI.getJTreeOutline ().addMouseListener (
+        new OutlineMouseListener ( this ) );
+    // ActionListener
+    OutlineActionListener outlineActionListener = new OutlineActionListener (
+        this );
+    this.uI.getJMenuItemExpand ().addActionListener ( outlineActionListener );
+    this.uI.getJMenuItemExpandAll ().addActionListener ( outlineActionListener );
+    this.uI.getJMenuItemCollapse ().addActionListener ( outlineActionListener );
+    this.uI.getJMenuItemCollapseAll ().addActionListener (
+        outlineActionListener );
+    this.uI.getJMenuItemClose ().addActionListener ( outlineActionListener );
+    this.uI.getJMenuItemCloseAll ().addActionListener ( outlineActionListener );
+    this.uI.getJMenuItemCopy ().addActionListener ( outlineActionListener );
+    this.uI.getJMenuItemSelection ().addActionListener ( outlineActionListener );
+    this.uI.getJMenuItemBinding ().addActionListener ( outlineActionListener );
+    this.uI.getJMenuItemFree ().addActionListener ( outlineActionListener );
+    this.uI.getJMenuItemReplace ().addActionListener ( outlineActionListener );
+    // ComponentListener
+    this.uI.getJPanelMain ().addComponentListener (
+        new OutlineComponentListener ( this ) );
+    // ItemListener
+    this.itemListener = new OutlineItemListener ( this );
+    this.uI.getJCheckBoxSelection ().addItemListener ( this.itemListener );
+    this.uI.getJCheckBoxBinding ().addItemListener ( this.itemListener );
+    this.uI.getJCheckBoxFree ().addItemListener ( this.itemListener );
+    this.uI.getJCheckBoxReplace ().addItemListener ( this.itemListener );
+    // KeyListener
+    this.uI.getJTreeOutline ()
+        .addKeyListener ( new OutlineKeyListener ( this ) );
+    // TreeExpansionListener
+    this.uI.getJTreeOutline ().addTreeExpansionListener (
+        new OutlineTreeExpansionListener ( this ) );
+    // TreeSelectionListener
+    this.uI.getJTreeOutline ().getSelectionModel ().addTreeSelectionListener (
+        new OutlineTreeSelectionListener ( this ) );
   }
 
   /**

@@ -19,8 +19,6 @@ import javax.swing.SwingUtilities;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
-import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofNode;
 import de.unisiegen.tpml.core.expressions.Expression;
@@ -28,8 +26,6 @@ import de.unisiegen.tpml.core.expressions.Location;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.graphics.Messages;
-import de.unisiegen.tpml.graphics.bigstep.BigStepComponent;
-import de.unisiegen.tpml.graphics.bigstep.BigStepNodeListener;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
@@ -67,7 +63,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
  * The bit of free space between the top and the bottom row aswell as between
  * the indexLabel and the expression is given in pixels in the {@link #spacing}.
  * <br>
- * Within the {@link BigStepComponent} the
+ * Within the {@link BigStepClosureComponent} the
  * {@link de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer} will be used to
  * draw the lines and the arrow of the tree. The TreeArrowRenderer uses
  * {@link TreeNodeComponent}s to located the points where the lines and the
@@ -98,13 +94,13 @@ public class BigStepClosureNodeComponent extends JComponent implements
 
 
   /**
-   * The {@link BigStepProofModel} that will get used to apply the actions on.
+   * The {@link BigStepClosureProofModel} that will get used to apply the actions on.
    */
   private BigStepClosureProofModel proofModel;
 
 
   /**
-   * The origin {@link BigStepProofNode}. Contains the information this node
+   * The origin {@link BigStepClosureProofNode}. Contains the information this node
    * gives a graphics representation.
    */
   private BigStepClosureProofNode proofNode;
@@ -302,7 +298,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
 
 
   /**
-   * Adds a new {@link BigStepNodeListener} to the <i>SmallStepNodeComponent</i>
+   * Adds a new {@link BigStepClosureNodeListener} to the <i>SmallStepNodeComponent</i>
    * 
    * @param listener The listener to be added
    */
@@ -324,7 +320,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
 
 
   /**
-   * Calls the {@link BigStepNodeListener#nodeChanged(BigStepClosureNodeComponent)} of
+   * Calls the {@link BigStepClosureNodeListener#nodeChanged(BigStepClosureNodeComponent)} of
    * all listeners.
    */
   private void fireNodeChanged ()
@@ -332,7 +328,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
     Object [] listeners = this.listenerList.getListenerList ();
     for ( int i = 0 ; i < listeners.length ; i += 2 )
     {
-      if ( listeners [ i ] != BigStepNodeListener.class )
+      if ( listeners [ i ] != BigStepClosureNodeListener.class )
       {
         continue;
       }
@@ -351,11 +347,11 @@ public class BigStepClosureNodeComponent extends JComponent implements
     Object [] listeners = this.listenerList.getListenerList ();
     for ( int i = 0 ; i < listeners.length ; i += 2 )
     {
-      if ( listeners [ i ] != BigStepNodeListener.class )
+      if ( listeners [ i ] != BigStepClosureNodeListener.class )
       {
         continue;
       }
-      ( ( BigStepNodeListener ) listeners [ i + 1 ] ).requestJumpToNode ( node );
+      ( ( BigStepClosureNodeListener ) listeners [ i + 1 ] ).requestJumpToNode ( node );
     }
   }
 

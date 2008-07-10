@@ -14,10 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import de.unisiegen.tpml.core.ProofGuessException;
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
 import de.unisiegen.tpml.graphics.AbstractProofView;
-import de.unisiegen.tpml.graphics.bigstep.BigStepComponent;
-import de.unisiegen.tpml.graphics.bigstep.BigStepView;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline;
 import de.unisiegen.tpml.graphics.outline.Outline;
 
@@ -43,7 +41,7 @@ public class BigStepClosureView extends AbstractProofView
   /**
    * The <code>BigStep</code> component.
    */
-  protected BigStepComponent component;
+  protected BigStepClosureComponent component;
 
 
   /**
@@ -67,27 +65,27 @@ public class BigStepClosureView extends AbstractProofView
 
 
   /**
-   * The {@link BigStepProofModel}.
+   * The {@link BigStepClosureProofModel}.
    */
-  private BigStepProofModel bigStepProofModel;
+  private BigStepClosureProofModel bigStepClosureProofModel;
 
 
   /**
    * Allocates a new <code>BigStepView</code> for the specified
-   * {@link BigStepProofModel}.
+   * {@link BigStepClosureProofModel}.
    * 
-   * @param pBigStepProofModel The {@link BigStepProofModel} for the
+   * @param pBigStepClosureProofModel The {@link BigStepClosureProofModel} for the
    *          <code>BigStepView</code>.
    */
-  public BigStepClosureView ( BigStepProofModel pBigStepProofModel )
+  public BigStepClosureView ( BigStepClosureProofModel pBigStepClosureProofModel )
   {
     super ();
-    this.bigStepProofModel = pBigStepProofModel;
+    this.bigStepClosureProofModel = pBigStepClosureProofModel;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ();
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT );
     setLayout ( new GridBagLayout () );
     this.scrollPane = new JScrollPane ();
-    this.component = new BigStepComponent ( this.bigStepProofModel );
+    this.component = new BigStepClosureComponent ( this.bigStepClosureProofModel );
     this.scrollPane.setViewportView ( this.component );
     // this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
     this.scrollPane.getViewport ().setBackground ( Color.WHITE );
@@ -105,7 +103,7 @@ public class BigStepClosureView extends AbstractProofView
       }
     } );
     this.outline = new DefaultOutline ( this );
-    this.outline.load ( this.bigStepProofModel.getRoot ().getLastLeaf ()
+    this.outline.load ( this.bigStepClosureProofModel.getRoot ().getLastLeaf ()
         .getExpression (), Outline.ExecuteInit.BIGSTEP );
     JPanel jPanelOutline = this.outline.getPanel ();
     this.jSplitPane.setLeftComponent ( this.scrollPane );
@@ -126,11 +124,11 @@ public class BigStepClosureView extends AbstractProofView
    * Returns the bigStepProofModel.
    * 
    * @return The bigStepProofModel.
-   * @see #bigStepProofModel
+   * @see #bigStepClosureProofModel
    */
-  public BigStepProofModel getBigStepProofModel ()
+  public BigStepClosureProofModel getBigStepProofModel ()
   {
-    return this.bigStepProofModel;
+    return this.bigStepClosureProofModel;
   }
 
 
