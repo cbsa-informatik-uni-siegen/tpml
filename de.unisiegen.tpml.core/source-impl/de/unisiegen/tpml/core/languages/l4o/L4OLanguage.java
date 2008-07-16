@@ -113,11 +113,11 @@ public class L4OLanguage extends L4RLanguage
    * @see de.unisiegen.tpml.core.languages.Language#newBigStepProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
   @Override
-  public BigStepProofModel newBigStepProofModel ( @SuppressWarnings ( "unused" )
-  Expression expression )
+  public BigStepProofModel newBigStepProofModel (
+      @SuppressWarnings ( "unused" ) Expression expression )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "Exception.8" ), new Integer ( getName () ) ) ); //$NON-NLS-1$
+        .getString ( "Exception.8" ), getName () ) ); //$NON-NLS-1$
   }
 
 
@@ -129,9 +129,8 @@ public class L4OLanguage extends L4RLanguage
    */
   @Override
   public MinimalTypingProofModel newMinimalTypingProofModel (
-      @SuppressWarnings ( "unused" )
-      Expression expression, @SuppressWarnings ( "unused" )
-      boolean mode )
+      @SuppressWarnings ( "unused" ) Expression expression,
+      @SuppressWarnings ( "unused" ) boolean mode )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
         .getString ( "Exception.9" ), getName () ) ); //$NON-NLS-1$
@@ -210,11 +209,10 @@ public class L4OLanguage extends L4RLanguage
    */
   @Override
   public TypeCheckerProofModel newTypeCheckerProofModel (
-      @SuppressWarnings ( "unused" )
-      Expression expression )
+      @SuppressWarnings ( "unused" ) Expression expression )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "Exception.10" ), new Integer ( getName () ) ) ); //$NON-NLS-1$
+        .getString ( "Exception.10" ), getName () ) ); //$NON-NLS-1$
   }
 
 
@@ -225,11 +223,10 @@ public class L4OLanguage extends L4RLanguage
    */
   @Override
   public TypeInferenceProofModel newTypeInferenceProofModel (
-      @SuppressWarnings ( "unused" )
-      Expression expression )
+      @SuppressWarnings ( "unused" ) Expression expression )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
-        .getString ( "Exception.13" ), new Integer ( getName () ) ) ); //$NON-NLS-1$
+        .getString ( "Exception.13" ), getName () ) ); //$NON-NLS-1$
   }
 
 
