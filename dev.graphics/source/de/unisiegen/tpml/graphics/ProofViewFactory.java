@@ -2,6 +2,7 @@ package de.unisiegen.tpml.graphics;
 
 
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
@@ -10,6 +11,7 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.unify.UnifyProofModel;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView;
+import de.unisiegen.tpml.graphics.bigstepclosure.BigStepClosureView;
 import de.unisiegen.tpml.graphics.minimaltyping.MinimalTypingView;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView;
 import de.unisiegen.tpml.graphics.subtyping.SubTypingView;
@@ -116,12 +118,24 @@ public class ProofViewFactory
 
   /**
    * TODO
-   *
+   * 
    * @param model
    * @return TODO
    */
   public static ProofView newUnifyView ( UnifyProofModel model )
   {
     return new UnifyView ( model );
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param model
+   * @return TODO
+   */
+  public static ProofView newBigStepClosureView ( BigStepClosureProofModel model )
+  {
+    return new BigStepClosureView ( model );
   }
 }
