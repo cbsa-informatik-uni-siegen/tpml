@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
+import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
@@ -210,6 +211,7 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel
     this.mypanel.subTypingButton.setVisible ( false );
     this.mypanel.subTypingRecButton.setVisible ( false );
     this.mypanel.unifyButton.setVisible ( false );
+    this.mypanel.bigstepclosureButton.setVisible ( false );
     // finished setting the default states
 
     // hack to get consistent heights
@@ -429,7 +431,36 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel
     }
   }
 
+  /**
+   * Starts the Big Step Closure Interpreter.
+   */
+  public void handleBigStepClosure ()
+  {
+    setTexteditor ( false );
+    try
+    {
+      BigStepClosureProofModel model = this.language.newBigStepClosureProofModel ( this.code
+          .getDocument ().getExpression () );
+      this.bigstep = new ProofViewComponent ( ProofViewFactory
+          .newBigStepClosureView ( model ), model );
+      this.mypanel.editorPanel.removeAll ();
+      activateFunction ( this.mypanel.bigstepclosureButton, this.bigstep );
+      this.bigstep.setAdvanced ( this.advanced );
+      this.mypanel.bigstepclosureButton.setIcon ( null );
+      this.mypanel.paintAll ( this.mypanel.getGraphics () );
 
+    }
+    catch ( Exception e )
+    {
+      logger.debug ( "Could not create new BigStepClosureView", e );//$NON-NLS-1$
+      JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
+          .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+              "CouldNotBigStepClosure" )//$NON-NLS-1$
+          + "\n" + e.getMessage () + ".", "Big Step",//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+          JOptionPane.ERROR_MESSAGE );
+    }
+  }
+  
   /**
    * Starts the Type Checker.
    */

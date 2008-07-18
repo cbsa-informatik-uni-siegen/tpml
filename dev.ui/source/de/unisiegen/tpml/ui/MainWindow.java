@@ -323,6 +323,8 @@ public class MainWindow
     this.window.typeinferenceItem.setEnabled ( state );
     this.window.subtypingItem.setEnabled ( state );
     this.window.subtypingrecItem.setEnabled ( state );
+    this.window.unificationItem.setEnabled ( state );
+    this.window.bigstepclosureItem.setEnabled ( state );
     this.window.saveAsItem.setEnabled ( state );
     this.window.saveAsButton.setEnabled ( state );
     this.window.saveAllItem.setEnabled ( state );
@@ -676,6 +678,7 @@ public class MainWindow
     this.window.subtypingItem.setVisible ( true );
     this.window.subtypingrecItem.setVisible ( true );
     this.window.unificationItem.setVisible ( false );
+    this.window.bigstepclosureItem.setVisible ( false );
   }
 
 
@@ -693,6 +696,7 @@ public class MainWindow
     this.window.subtypingItem.setVisible ( false );
     this.window.subtypingrecItem.setVisible ( false );
     this.window.unificationItem.setVisible ( false );
+    this.window.bigstepclosureItem.setVisible ( true );
   }
   
   
@@ -709,6 +713,7 @@ public class MainWindow
     this.window.subtypingItem.setVisible ( false );
     this.window.subtypingrecItem.setVisible ( false );
     this.window.unificationItem.setVisible ( true );
+    this.window.bigstepclosureItem.setVisible ( false );
   }
 
 
