@@ -139,11 +139,11 @@ public class UnifyView extends AbstractProofView
      * TODO: implement outline
      */
     
-    /*
-    JPanel jPanelOutline = this.outline.getPanel ();
-    jPanelOutline.getPreferredSize ().getHeight ();
+    
+    // JPanel jPanelOutline = this.outline.getPanel ();
+    // jPanelOutline.getPreferredSize ().getHeight ();
     this.jSplitPane.setLeftComponent ( this.scrollPane );
-    this.jSplitPane.setRightComponent ( jPanelOutline );
+    // this.jSplitPane.setRightComponent ( jPanelOutline );
     this.jSplitPane.setOneTouchExpandable ( true );
     this.jSplitPane.setResizeWeight ( 0.5 );
     gridBagConstraints.fill = GridBagConstraints.BOTH;
@@ -153,7 +153,6 @@ public class UnifyView extends AbstractProofView
     gridBagConstraints.weightx = 10;
     gridBagConstraints.weighty = 10;
     this.add ( this.jSplitPane, gridBagConstraints );
-    */
   }
 
 
