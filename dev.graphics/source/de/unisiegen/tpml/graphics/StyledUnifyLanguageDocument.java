@@ -111,7 +111,7 @@ public class StyledUnifyLanguageDocument extends StyledLanguageDocument
       String content = getText ( offset, getLength () );
       // allocate the scanner (initially)
       final LanguageScanner scanner = this.language
-          .newScanner ( new StringReader ( content ) );
+          .newUnifyScanner ( new StringReader ( content ) );
       // collect the tokens returned by the scanner
       final LinkedList < LanguageSymbol > symbols = new LinkedList < LanguageSymbol > ();
       // determine the tokens for the content

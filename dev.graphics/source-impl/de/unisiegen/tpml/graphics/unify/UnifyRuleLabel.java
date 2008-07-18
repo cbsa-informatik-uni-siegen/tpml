@@ -6,7 +6,7 @@ import java.awt.Dimension;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.entities.TypeEquation;
 
 
 /**
@@ -29,9 +29,9 @@ public class UnifyRuleLabel extends JComponent
    * The expression that may be associated with this rule.<br>
    * <br>
    * This expression is used to determin the part of the current expression of
-   * the {@link TypeInferenceNodeComponent} that needs to get underlines.
+   * the {@link UnifyNodeComponent} that needs to get underlines.
    */
-  private Expression stepExpression;
+  private TypeEquation stepEquation;
 
 
   /**
@@ -41,9 +41,8 @@ public class UnifyRuleLabel extends JComponent
    * @param ruleName The name of the rule
    * @param ruleCount The number that should be shown in the exponent.
    */
-  public UnifyRuleLabel ( String ruleName,
-      @SuppressWarnings ( "unused" )
-      int ruleCount )
+  public UnifyRuleLabel ( String ruleName, @SuppressWarnings ( "unused" )
+  int ruleCount )
   {
     super ();
 
@@ -65,7 +64,7 @@ public class UnifyRuleLabel extends JComponent
 
     ruleLabel.setVisible ( true );
 
-    this.stepExpression = null;
+    this.stepEquation = null;
 
     // set the size for this component
     setSize ( size );
@@ -78,23 +77,23 @@ public class UnifyRuleLabel extends JComponent
   /**
    * Sets a new expression this rule should be associated to.
    * 
-   * @param pStepExpression
-   * @see #stepExpression
+   * @param pStepEquation
+   * @see #stepEquation
    */
-  public void setStepExpression ( Expression pStepExpression )
+  public void setStepEquation ( TypeEquation pStepEquation )
   {
-    this.stepExpression = pStepExpression;
+    this.stepEquation = pStepEquation;
   }
 
 
   /**
-   * Returns the current {@link #stepExpression}
+   * Returns the current {@link #stepEquation}
    * 
    * @return TODO
    */
-  public Expression getStepExpression ()
+  public TypeEquation getStepEquation ()
   {
-    return this.stepExpression;
+    return this.stepEquation;
   }
 
 

@@ -15,7 +15,6 @@ import javax.swing.event.TreeModelEvent;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
 import de.unisiegen.tpml.core.unify.UnifyProofModel;
 import de.unisiegen.tpml.core.unify.UnifyProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
@@ -29,9 +28,9 @@ import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView;
  * the Sammlstepper because of the same reasons.<br>
  * When layouting this component (that is done in the {@link #relayout()}-method)
  * first all nodes within the tree are check if they have an
- * {@link de.unisiegen.tpml.graphics.typeinference.TypeInferenceNodeComponent}
+ * {@link de.unisiegen.tpml.graphics.unify.UnifyNodeComponent}
  * assigned to them. Then the tree is scanned for the node with the widest
- * {@link de.unisiegen.tpml.graphics.typeinference.TypeInferenceComponent}.
+ * {@link de.unisiegen.tpml.graphics.unify.UnifyComponent}.
  * This value is assigned to each node, this way all nodes know the maximum
  * width of all rules and they can use this for their own width. By doing so,
  * all nodes will be horizontaly aligned.<br>
@@ -149,8 +148,7 @@ public class UnifyComponent extends AbstractProofComponent implements
       // inform the nodevomponent
 
       // make sure all nodes have valid user objects
-      checkForUserObject ( ( UnifyProofNode ) this.proofModel
-          .getRoot () );
+      checkForUserObject ( ( UnifyProofNode ) this.proofModel.getRoot () );
 
       // update all active nodes
       Enumeration < ProofNode > enumeration = this.proofModel.getRoot ()
@@ -159,8 +157,7 @@ public class UnifyComponent extends AbstractProofComponent implements
       {
         // tell the component belonging to this node, that we have a new
         // advanced state
-        UnifyProofNode node = ( UnifyProofNode ) enumeration
-            .nextElement ();
+        UnifyProofNode node = ( UnifyProofNode ) enumeration.nextElement ();
         UnifyNodeComponent component = ( UnifyNodeComponent ) node
             .getUserObject ();
         component.setAdvanced ( pAdvanced );
@@ -203,10 +200,10 @@ public class UnifyComponent extends AbstractProofComponent implements
 
 
   /**
-   * Traversing the ProofTree recursivly and adds a TypeInferenceNodeComponent
+   * Traversing the ProofTree recursivly and adds a UnifyNodeComponent
    * where none is.<br>
    * <br>
-   * Usualy only at newly added nodes the TypeInferenceNodeComponent is missing.
+   * Usualy only at newly added nodes the UnifyNodeComponent is missing.
    * 
    * @param pNode When calling this method: the rootNode of the tree.
    */
@@ -222,12 +219,12 @@ public class UnifyComponent extends AbstractProofComponent implements
     if ( nodeComponent == null )
     {
 
-      // create the noded that has not been there yet
+      // create the node that has not been there yet
       nodeComponent = new UnifyNodeComponent ( pNode, this.model,
-          this.translator, this.spacing, this.advanced );
+          this.spacing, this.advanced );
 
       // add the needed listener
-      nodeComponent.addTypeInferenceNodeListener ( new UnifyNodeListener ()
+      nodeComponent.addUnifyNodeListener ( new UnifyNodeListener ()
       {
 
         public void nodeChanged ( @SuppressWarnings ( "unused" )
@@ -667,9 +664,8 @@ public class UnifyComponent extends AbstractProofComponent implements
 
 
   /**
-   * Resets all user objects by calling
-   * {@link #resetUserObject(UnifyProofNode)} on the rootNode of the
-   * model. <br>
+   * Resets all user objects by calling {@link #resetUserObject(UnifyProofNode)}
+   * on the rootNode of the model. <br>
    * This will cause the {@link PrettyStringRenderer} to update all fonts an to
    * recalculate the line wrappings etc...
    */
@@ -718,8 +714,7 @@ public class UnifyComponent extends AbstractProofComponent implements
       // this element is the root node.
       if ( event.getPath ().length == 1 )
       {
-        UnifyProofNode proofNode = ( UnifyProofNode ) event
-            .getPath () [ 0 ];
+        UnifyProofNode proofNode = ( UnifyProofNode ) event.getPath () [ 0 ];
         UnifyNodeComponent nodeComponent = ( UnifyNodeComponent ) proofNode
             .getUserObject ();
         if ( nodeComponent != null )

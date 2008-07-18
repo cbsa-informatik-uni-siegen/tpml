@@ -22,8 +22,8 @@ import javax.swing.SwingUtilities;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.typeinference.TypeFormula;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
@@ -31,14 +31,12 @@ import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
 import de.unisiegen.tpml.core.unify.UnifyProofModel;
 import de.unisiegen.tpml.core.unify.UnifyProofNode;
 import de.unisiegen.tpml.graphics.Messages;
-import de.unisiegen.tpml.graphics.components.CompoundExpressionTypeInference;
+import de.unisiegen.tpml.graphics.components.CompoundEquationUnify;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
 import de.unisiegen.tpml.graphics.components.MenuGuessItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
-import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
-import de.unisiegen.tpml.graphics.typeinference.TypeInferenceComponent;
 
 
 /**
@@ -64,7 +62,7 @@ import de.unisiegen.tpml.graphics.typeinference.TypeInferenceComponent;
  * @author michael
  * @version $Id: TypeInferenceNodeComponent.java 2796 2008-03-14 19:13:11Z
  *          fehler $
- * @see de.unisiegen.tpml.graphics.components.CompoundExpressionTypeInference
+ * @see de.unisiegen.tpml.graphics.components.CompoundEquationUnify
  */
 public class UnifyNodeComponent extends JComponent
 {
@@ -110,13 +108,13 @@ public class UnifyNodeComponent extends JComponent
   /**
    * The compound expression that is used to display the TypeInferenceProofNode
    */
-  private CompoundExpressionTypeInference compoundExpression;
+  private CompoundEquationUnify compoundExpression;
 
 
   /**
    * an <code>ArrayList</code> containing all {@link TypeFormula}
    */
-  private ArrayList < TypeFormula > allFormulasList;
+  private ArrayList < TypeEquation > allFormulasList;
 
 
   /**
@@ -157,15 +155,7 @@ public class UnifyNodeComponent extends JComponent
    * 
    * @see #update()
    */
-  private MenuTranslateItem translateItem;
-
-
-  /**
-   * Translator that is used to determine whether the expression contains
-   * syntactical sugar.
-   */
-  private LanguageTranslator translator;
-
+  // private MenuTranslateItem translateItem;
 
   /**
    * Adapter that is used to get added to every object that can cause the gui to
@@ -203,22 +193,19 @@ public class UnifyNodeComponent extends JComponent
 
 
   /**
-   * Constructs a TypeInferenceNodeComponent.<br>
+   * Constructs a UnifyNodeComponent.<br>
    * <br>
-   * All objects needed for one TypeInferenceNodeComponent are created and added
-   * to the {@link JComponent}.
+   * All objects needed for one UnifyNodeComponent are created and added to the
+   * {@link JComponent}.
    * 
    * @param pProofNode The origin node from the model.
    * @param pProofModel The model.
-   * @param pTranslator The translator that should be used to determine whether
-   *          the Expression of this node contains syntactical sugar.
    * @param pSpacing The spacing between the elements of the node.
    * @param pAdvaced Whether the small step view operates in advanced or
    *          beginner mode.
    */
   public UnifyNodeComponent ( UnifyProofNode pProofNode,
-      UnifyProofModel pProofModel, LanguageTranslator pTranslator,
-      @SuppressWarnings ( "unused" )
+      UnifyProofModel pProofModel, @SuppressWarnings ( "unused" )
       int pSpacing, boolean pAdvaced )
   {
     super ();
@@ -229,8 +216,6 @@ public class UnifyNodeComponent extends JComponent
 
     this.proofModel = pProofModel;
 
-    this.translator = pTranslator;
-
     // this.currentUnderlineExpression = null;
 
     // the dimension for the rules initialy (0, 0)
@@ -239,7 +224,7 @@ public class UnifyNodeComponent extends JComponent
     // the dimension for the expression initialy (0, 0)
     this.expressionDimension = new Dimension ( 0, 0 );
 
-    this.compoundExpression = new CompoundExpressionTypeInference ();
+    this.compoundExpression = new CompoundEquationUnify ();
     add ( this.compoundExpression );
 
     this.rules = new UnifyRulesComponent ( pProofNode );
@@ -247,7 +232,7 @@ public class UnifyNodeComponent extends JComponent
 
     this.spacing = 10;
 
-    this.translateItem = new MenuTranslateItem ();
+    // this.translateItem = new MenuTranslateItem ();
 
     // WORAROUND belongs to Workaround coming later...
     // needed
@@ -452,7 +437,7 @@ public class UnifyNodeComponent extends JComponent
    * 
    * @param pAdvanced <code>true</code> to display only axiom rules in the
    *          menu.
-   * @see TypeInferenceComponent#setAdvanced(boolean)
+   * @see UnifyComponent#setAdvanced(boolean)
    */
   void setAdvanced ( @SuppressWarnings ( "unused" )
   boolean pAdvanced )
@@ -479,7 +464,6 @@ public class UnifyNodeComponent extends JComponent
     menu.addSeparator ();
     menu.add ( new MenuGuessItem () );
     menu.add ( new MenuGuessTreeItem () );
-    menu.add ( this.translateItem );
 
     this.rules.getMenuButton ().setMenu ( menu );
   }
@@ -608,24 +592,19 @@ public class UnifyNodeComponent extends JComponent
   // this.spacing+space);
   // }
   /**
-   * Causes an update of the {@link #compoundExpression} and the
-   * {@link #translateItem}.<br>
+   * Causes an update of the {@link #compoundExpression}<br>
    * Hands the store to the expression if memory is enabled.<br>
-   * Whether the expression of the {@link #proofNode} contains syntactical sugar
-   * the {@link #translateItem} is enabled or disabled at this point.
-   * 
    * TODO: implement
    */
   public void update ()
   {
     /*
-    this.allFormulasList = this.proofNode.getAllFormulas ();
-    this.substitutionList = this.proofNode.getSubstitution ();
-    */
+     * this.allFormulasList = this.proofNode.getAllFormulas ();
+     * this.substitutionList = this.proofNode.getSubstitution ();
+     */
 
     this.compoundExpression
         .setDefaultTypeSubstitutionList ( this.substitutionList );
-    this.compoundExpression.setTypeFormulaList ( this.allFormulasList );
 
     // TODO find out if there is an child or if it is proofen
     try
@@ -638,22 +617,6 @@ public class UnifyNodeComponent extends JComponent
     catch ( ArrayIndexOutOfBoundsException exn )
     {
       this.compoundExpression.setDragndropeabled ( true );
-    }
-
-    // check if the expressions contain syntactic sugar
-
-    // First, disable the Translator Item
-    this.translateItem.setEnabled ( false );
-
-    for ( int i = 0 ; i < this.allFormulasList.size () ; i++ )
-    {
-      Expression exp = this.allFormulasList.get ( i ).getExpression ();
-      if ( ( exp != null )
-          && this.translator.containsSyntacticSugar ( exp, true ) )
-      {
-        this.translateItem.setEnabled ( true );
-        break;
-      }
     }
 
     this.compoundExpression.repaint ();
@@ -950,7 +913,7 @@ public class UnifyNodeComponent extends JComponent
    * 
    * @param listener
    */
-  public void addTypeInferenceNodeListener ( UnifyNodeListener listener )
+  public void addUnifyNodeListener ( UnifyNodeListener listener )
   {
     this.listenerList.add ( UnifyNodeListener.class, listener );
   }
@@ -961,7 +924,7 @@ public class UnifyNodeComponent extends JComponent
    * 
    * @param listener
    */
-  public void removeTypeInferenceNodeListener ( UnifyNodeListener listener )
+  public void removeUnifyNodeListener ( UnifyNodeListener listener )
   {
     this.listenerList.remove ( UnifyNodeListener.class, listener );
   }

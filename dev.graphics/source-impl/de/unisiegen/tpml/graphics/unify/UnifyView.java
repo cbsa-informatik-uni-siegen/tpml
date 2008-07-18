@@ -86,19 +86,19 @@ public class UnifyView extends AbstractProofView
   // Constructor
   //
   /**
-   * Allocates a new <code>TypeInferenceView</code> for the specified
+   * Allocates a new <code>UnifyView</code> for the specified
    * <code>model</code>.
    * 
-   * @param pTypeInferenceProofModel the proof model for the TypeInferenceView.
+   * @param punifyProofModel the proof model for the UnifyView.
    * @throws NullPointerException if <code>model</code> is <code>null</code>.
    */
-  public UnifyView ( UnifyProofModel pTypeInferenceProofModel )
+  public UnifyView ( UnifyProofModel punifyProofModel )
   {
-    if ( pTypeInferenceProofModel == null )
+    if ( punifyProofModel == null )
     {
       throw new NullPointerException ( "model is null" ); //$NON-NLS-1$
     }
-    this.unifyProofModel = pTypeInferenceProofModel;
+    this.unifyProofModel = punifyProofModel;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ();
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT );
     setLayout ( new GridBagLayout () );
@@ -120,6 +120,11 @@ public class UnifyView extends AbstractProofView
       }
     } );
     this.outline = new DefaultOutline ( this );
+    
+    /**
+     * TODO: connect the outline with our unify expression
+     */
+    /*
     TypeFormula t = ( ( TypeInferenceProofNode ) this.unifyProofModel
         .getRoot ().getLastLeaf () ).getAllFormulas ().get ( 0 );
     if ( t instanceof TypeJudgement )
@@ -128,6 +133,13 @@ public class UnifyView extends AbstractProofView
       this.outline.load ( typeJudgement.getExpression (),
           Outline.ExecuteInit.TYPEINFERENCE );
     }
+    */
+    
+    /*
+     * TODO: implement outline
+     */
+    
+    /*
     JPanel jPanelOutline = this.outline.getPanel ();
     jPanelOutline.getPreferredSize ().getHeight ();
     this.jSplitPane.setLeftComponent ( this.scrollPane );
@@ -141,6 +153,7 @@ public class UnifyView extends AbstractProofView
     gridBagConstraints.weightx = 10;
     gridBagConstraints.weighty = 10;
     this.add ( this.jSplitPane, gridBagConstraints );
+    */
   }
 
 
