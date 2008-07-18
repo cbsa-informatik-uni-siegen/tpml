@@ -30,6 +30,7 @@ import de.unisiegen.tpml.core.unify.UnifyProofModel;
 import de.unisiegen.tpml.core.util.beans.AbstractBean;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
 import de.unisiegen.tpml.graphics.EditorComponent;
+import de.unisiegen.tpml.graphics.ProofViewFactory;
 import de.unisiegen.tpml.graphics.editor.UnifyEditorPanel;
 import de.unisiegen.tpml.ui.netbeans.EditorPanelForm;
 import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
@@ -538,10 +539,15 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
     {
       UnifyProofModel model = this.language.newUnifyProofModel ( this.code
           .getDocument ().getTypeEquation () );
-      
+      this.unify = new ProofViewComponent(ProofViewFactory.newUnifyView ( model ), model);
+      this.mypanel.editorPanel.removeAll ();
+      activateFunction ( this.mypanel.unifyButton, this.unify );
+      this.mypanel.unifyButton.setIcon ( null );
+      this.mypanel.paintAll ( this.mypanel.getGraphics () );
     }
     catch ( Exception e )
     {
+      e.printStackTrace ();
       logger.debug ( "Could not create new UnifyView", e ); //$NON-NLS-1$
       JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
           .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
