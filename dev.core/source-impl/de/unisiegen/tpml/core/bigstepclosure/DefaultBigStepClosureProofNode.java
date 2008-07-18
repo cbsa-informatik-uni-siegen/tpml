@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.bigstepclosure;
 
+
 import javax.swing.tree.TreeNode;
 
 import de.unisiegen.tpml.core.ClosureEnvironment;
@@ -21,150 +22,178 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
+
 /**
  * TODO
- *
  */
-public final class DefaultBigStepClosureProofNode extends AbstractInterpreterProofNode
-    implements BigStepClosureProofNode
+public final class DefaultBigStepClosureProofNode extends
+    AbstractInterpreterProofNode implements BigStepClosureProofNode
 {
-  public DefaultBigStepClosureProofNode ( Expression pExpression )
+
+  public DefaultBigStepClosureProofNode ( final Expression pExpression )
   {
-    this ( new Closure(pExpression, new DefaultClosureEnvironment()), new DefaultStore());
+    this ( new Closure ( pExpression, new DefaultClosureEnvironment () ),
+        new DefaultStore () );
   }
-  
-  public DefaultBigStepClosureProofNode(Closure closure,
-      Store store)
+
+
+  public DefaultBigStepClosureProofNode ( final Closure closure,
+      final Store store )
   {
-    super(closure.getExpression(), store);
-    this.environment = closure.getEnvironment();
+    super ( closure.getExpression (), store );
+    this.environment = closure.getEnvironment ();
   }
-  
-  public BigStepClosureProofResult getResult()
+
+
+  public BigStepClosureProofResult getResult ()
   {
     return this.result;
   }
-  
+
+
   public BigStepClosureProofRule getRule ()
   {
     ProofStep [] steps = getSteps ();
-    return steps.length == 0
-        ? null
-        : ( BigStepClosureProofRule ) steps [ 0 ].getRule ();
+    return steps.length == 0 ? null : ( BigStepClosureProofRule ) steps [ 0 ]
+        .getRule ();
   }
-  
+
+
   public DefaultBigStepClosureProofNode getParent ()
   {
-    return (DefaultBigStepClosureProofNode)super.getParent ();
+    return ( DefaultBigStepClosureProofNode ) super.getParent ();
   }
-  
+
+
   public DefaultBigStepClosureProofNode getRoot ()
   {
-    return (DefaultBigStepClosureProofNode)super.getRoot();
+    return ( DefaultBigStepClosureProofNode ) super.getRoot ();
   }
-  
+
+
   public DefaultBigStepClosureProofNode getFirstChild ()
   {
-    return (DefaultBigStepClosureProofNode)super.getFirstChild();
+    return ( DefaultBigStepClosureProofNode ) super.getFirstChild ();
   }
-  
+
+
   public DefaultBigStepClosureProofNode getLastChild ()
   {
-    return (DefaultBigStepClosureProofNode)super.getLastChild ();
+    return ( DefaultBigStepClosureProofNode ) super.getLastChild ();
   }
-  
+
+
   public DefaultBigStepClosureProofNode getChildAfter ( TreeNode aChild )
   {
-    return (DefaultBigStepClosureProofNode)super.getChildAfter ( aChild );
+    return ( DefaultBigStepClosureProofNode ) super.getChildAfter ( aChild );
   }
-  
+
+
   public DefaultBigStepClosureProofNode getChildBefore ( TreeNode aChild )
   {
-    return (DefaultBigStepClosureProofNode)super.getChildBefore(aChild);
+    return ( DefaultBigStepClosureProofNode ) super.getChildBefore ( aChild );
   }
-  
-  public DefaultBigStepClosureProofNode getChildAt(int index)
+
+
+  public DefaultBigStepClosureProofNode getChildAt ( int index )
   {
-    return (DefaultBigStepClosureProofNode)super.getChildAt ( index );
+    return ( DefaultBigStepClosureProofNode ) super.getChildAt ( index );
   }
-  
+
+
   public DefaultBigStepClosureProofNode getFirstLeaf ()
   {
-    return (DefaultBigStepClosureProofNode)super.getFirstLeaf ();
+    return ( DefaultBigStepClosureProofNode ) super.getFirstLeaf ();
   }
-  
+
+
   public DefaultBigStepClosureProofNode getLastLeaf ()
   {
-    return (DefaultBigStepClosureProofNode)super.getLastLeaf ();
+    return ( DefaultBigStepClosureProofNode ) super.getLastLeaf ();
   }
-  
-  public boolean isProven()
+
+
+  public boolean isProven ()
   {
     return this.result != null;
   }
 
-  public PrettyString toPrettyString()
+
+  public PrettyString toPrettyString ()
   {
     return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
-    .toPrettyString ();
+        .toPrettyString ();
   }
-  
-  public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory fac)
+
+
+  public PrettyStringBuilder toPrettyStringBuilder (
+      PrettyStringBuilderFactory fac )
   {
-    PrettyStringBuilder builder = fac.newBuilder (
-        this, 0 );
+    System.err.println("testtest" );
     
-    builder.addBuilder(getExpression().toPrettyStringBuilder ( fac ), 0);
-    
+    PrettyStringBuilder builder = fac.newBuilder ( this, 0 );
+
+    builder.addBuilder ( getClosure ().toPrettyStringBuilder ( fac ), 0 );
+
     return builder;
   }
-  
-  public LatexInstructionList getLatexInstructions()
+
+
+  public LatexInstructionList getLatexInstructions ()
   {
     return null;
   }
-  
-  public LatexStringBuilder toLatexStringBuilder(LatexStringBuilderFactory fac, int i)
+
+
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory fac, int i )
   {
     return null;
   }
-  
-  public LatexCommandList getLatexCommands()
+
+
+  public LatexCommandList getLatexCommands ()
   {
     return null;
   }
-  
-  public LatexString toLatexString()
+
+
+  public LatexString toLatexString ()
   {
     return null;
   }
-  
-  public LatexPackageList getLatexPackages()
+
+
+  public LatexPackageList getLatexPackages ()
   {
     return null;
   }
-  
-  public ClosureEnvironment getEnvironment()
+
+
+  public ClosureEnvironment getEnvironment ()
   {
     return this.environment;
   }
-  
-  public Closure getClosure()
+
+
+  public Closure getClosure ()
   {
-    return new Closure(getExpression(), getEnvironment());
+    return new Closure ( getExpression (), getEnvironment () );
   }
-  
-  public boolean isFinished()
+
+
+  public boolean isFinished ()
   {
     if ( !isProven () )
       return false;
-    
+
     for ( int n = 0 ; n < getChildCount () ; ++n )
       if ( !getChildAt ( n ).isFinished () )
         return false;
     return true;
   }
-  
+
+
   public void setResult ( BigStepClosureProofResult pResult )
   {
     if ( pResult != null && !pResult.getValue ().isException ()
@@ -175,9 +204,10 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
     this.result = pResult;
   }
 
+
   @Override
   public String toString ()
-  { 
+  {
     StringBuilder builder = new StringBuilder ();
     boolean memoryEnabled = getExpression ().containsMemoryOperations ();
     if ( memoryEnabled )
@@ -191,10 +221,10 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
       builder.append ( getStore () );
       builder.append ( ')' );
     }
-    
-    builder.append (' ');
-    builder.append ( getClosure().getEnvironment ().toString() );
-    
+
+    builder.append ( ' ' );
+    builder.append ( getClosure ().getEnvironment ().toString () );
+
     builder.append ( " \u21d3 " ); //$NON-NLS-1$
     if ( this.result != null )
     {
@@ -210,11 +240,13 @@ public final class DefaultBigStepClosureProofNode extends AbstractInterpreterPro
         builder.append ( ')' );
       }
     }
-    
+
     return builder.toString ();
   }
-  
+
+
   private BigStepClosureProofResult result;
-  
+
+
   private ClosureEnvironment environment;
 }

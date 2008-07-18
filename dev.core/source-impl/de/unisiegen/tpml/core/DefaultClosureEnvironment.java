@@ -1,4 +1,6 @@
 package de.unisiegen.tpml.core;
+
+
 import java.util.Enumeration;
 
 import de.unisiegen.tpml.core.expressions.Closure;
@@ -14,103 +16,114 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.core.util.AbstractEnvironment;
 
+
 /**
  * TODO
- *
  */
-public final class DefaultClosureEnvironment
-  extends AbstractEnvironment<Identifier, Closure>
-  implements ClosureEnvironment 
+public final class DefaultClosureEnvironment extends
+    AbstractEnvironment < Identifier, Closure > implements ClosureEnvironment
 {
-  public void put(final Identifier identifier, final Closure closure)
+
+  public void put ( final Identifier identifier, final Closure closure )
   {
-    System.err.println("put " + identifier.toString());
     super.put ( identifier, closure );
   }
-  
-  public Closure get(final Identifier identifier)
+
+
+  public Closure get ( final Identifier identifier )
   {
-    if(!super.containsSymbol ( identifier ))
-      throw new RuntimeException(identifier.toString() + " not found!");
+    if ( !super.containsSymbol ( identifier ) )
+      throw new RuntimeException ( identifier.toString () + " not found!" );
     return super.get ( identifier );
   }
-  
-  public PrettyString toPrettyString()
+
+
+  public PrettyString toPrettyString ()
   {
     return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
-    .toPrettyString ();
+        .toPrettyString ();
   }
- 
-  public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory fac)
+
+
+  public PrettyStringBuilder toPrettyStringBuilder (
+      final PrettyStringBuilderFactory fac )
   {
-    PrettyStringBuilder builder = fac.newBuilder (
-        this, 0 );
-    
+    PrettyStringBuilder builder = fac.newBuilder ( this, 0 );
+
     builder.addText ( PRETTY_LBRACKET );
-    
-    Enumeration<Identifier> e = this.symbols();
-    while(e.hasMoreElements())
+
+    Enumeration < Identifier > e = this.symbols ();
+    int idx = 0;
+    while ( e.hasMoreElements () )
     {
       Identifier id = e.nextElement ();
       Closure closure = this.get ( id );
-      
-      builder.addBuilder( id.toPrettyStringBuilder(fac), 0);
+
+      builder.addBuilder ( id.toPrettyStringBuilder ( fac ), idx++ );
       builder.addText ( PRETTY_COLON );
-      builder.addBuilder ( closure.toPrettyStringBuilder ( fac ), 1 );
-      
-      if(e.hasMoreElements())
+      builder.addBuilder ( closure.toPrettyStringBuilder ( fac ), idx++ );
+
+      if ( e.hasMoreElements () )
         builder.addText ( PRETTY_COMMA );
     }
-    
+
     builder.addText ( PRETTY_RBRACKET );
-    
+
     return builder;
   }
-  
-  public LatexString toLatexString()
+
+
+  public LatexString toLatexString ()
   {
     return null; // FIXME
   }
-  
-  public LatexCommandList getLatexCommands()
+
+
+  public LatexCommandList getLatexCommands ()
   {
     return null; // FIXME
   }
-  
-  public LatexStringBuilder toLatexStringBuilder(LatexStringBuilderFactory fac, int i)
+
+
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory fac, int i )
   {
     return null; // FIXME
   }
-  
-  public LatexPackageList getLatexPackages()
+
+
+  public LatexPackageList getLatexPackages ()
   {
     return null; // FIXME
   }
-  
-  public LatexInstructionList getLatexInstructions()
+
+
+  public LatexInstructionList getLatexInstructions ()
   {
     return null; // FIXME
   }
-  
-  public String toString()
+
+
+  public String toString ()
   {
-    StringBuilder builder = new StringBuilder();
+    StringBuilder builder = new StringBuilder ();
     builder.append ( '[' );
-    Enumeration<Identifier> e = super.symbols ();
-    while(e.hasMoreElements())
+    Enumeration < Identifier > e = super.symbols ();
+    while ( e.hasMoreElements () )
     {
-      final Identifier id = e.nextElement();
-      builder.append(id.toString());
+      final Identifier id = e.nextElement ();
+      builder.append ( id.toString () );
       builder.append ( ": " );
-      builder.append ( super.get ( id ).toString());
+      builder.append ( super.get ( id ).toString () );
       builder.append ( ' ' );
     }
     builder.append ( ']' );
-    return builder.toString();
+    return builder.toString ();
   }
-  
-  public static final DefaultClosureEnvironment empty()
+
+
+  public static final DefaultClosureEnvironment empty ()
   {
-    return new DefaultClosureEnvironment();
+    return new DefaultClosureEnvironment ();
   }
 }
