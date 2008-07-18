@@ -7,6 +7,7 @@ import java_cup.runtime.lr_parser;
 import de.unisiegen.tpml.core.entities.TypeEquationList;
 import de.unisiegen.tpml.core.languages.AbstractLanguage;
 import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.languages.LanguageUnifyParser;
 import de.unisiegen.tpml.core.languages.LanguageUnifyScanner;
 import de.unisiegen.tpml.core.languages.l1sub.L1SUBLanguage;
@@ -139,5 +140,17 @@ public class L1UNIFYLanguage extends AbstractLanguage
     return new UnifyProofModel ( new DefaultUnifyProofNode (
         TypeSubstitutionList.EMPTY_LIST, eqns ),
         new L1UnifyProofRuleSet ( this ) );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.languages.Language#newTranslator()
+   */
+  @Override
+  public LanguageTranslator newTranslator ()
+  {
+    return new L1UnifyLanguageTranslator ();
   }
 }

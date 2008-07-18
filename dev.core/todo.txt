@@ -6,3 +6,14 @@ CU
 		- implement L2CUnifyProofRuleSet.applyMULeft
 		- implement L2CUnifyProofRuleSet.applyMURight
 -----------------------------------------------------------------------
+		- connect outline with unify in UnifyView.UnifyView()
+		- check whether we need 'advanced' in UnifyComponent
+		- implement UnifyNodeComponent.update correctly
+		- do we need a CompoundExpressionUnify ?? CompoundExpressionTypeInference is used
+		  in UnifyNodeComponent
+		- implement CompoundEquationUnify.handelMouseClicked
+		- rename CompoundEquationUnify.setTypeFormulaList to CompoundEquationUnify.setTypeEquationList
+		  and implement it
+		- correct CompoundEquationUnify.getTypeFormulaList
+		- implement missing functionality of UnifyNodeComponent
+		- implement usage of the outline in UnifyView.UnifyView
