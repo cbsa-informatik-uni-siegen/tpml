@@ -108,4 +108,9 @@ public final class DefaultClosureEnvironment
     builder.append ( ']' );
     return builder.toString();
   }
+  
+  public static final DefaultClosureEnvironment empty()
+  {
+    return new DefaultClosureEnvironment();
+  }
 }

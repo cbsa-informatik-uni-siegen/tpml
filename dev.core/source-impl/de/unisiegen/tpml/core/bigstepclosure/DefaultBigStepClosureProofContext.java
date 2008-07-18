@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.bigstepclosure;
 
+
 import java.util.LinkedList;
 
 import de.unisiegen.tpml.core.ClosureEnvironment;
@@ -11,98 +12,87 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.DefaultStore;
 import de.unisiegen.tpml.core.interpreters.Store;
 
-final class DefaultBigStepClosureProofContext implements BigStepClosureProofContext
+
+final class DefaultBigStepClosureProofContext implements
+    BigStepClosureProofContext
 {
-  public DefaultBigStepClosureProofContext(BigStepClosureProofModel model)
+
+  public DefaultBigStepClosureProofContext ( BigStepClosureProofModel model )
   {
     this.model = model;
   }
-  
-  public BigStepClosureProofRule newNoopRule(String name)
+
+
+  public BigStepClosureProofRule newNoopRule ( String name )
   {
     return null;
   }
-  
-  public void setProofNodeResult(BigStepClosureProofNode node, Expression expression)
-  {
-    setProofNodeResult(node, new BigStepClosureProofResult(new DefaultStore(), new Closure(expression, new DefaultClosureEnvironment())));
-  }
-  
-  public void setProofNodeResult(BigStepClosureProofNode node, BigStepClosureProofResult result)
+
+
+  public void setProofNodeResult ( final BigStepClosureProofNode node,
+      final BigStepClosureProofResult result )
   {
     this.model.contextSetProofNodeResult ( this,
         ( DefaultBigStepClosureProofNode ) node, result );
   }
-  
-  public void setProofNodeResult(BigStepClosureProofNode node, Expression expression, Store store)
+
+
+  public void setProofNodeResult ( final BigStepClosureProofNode node,
+      final Closure closure )
   {
-    setProofNodeResult(node, new BigStepClosureProofResult(store, new Closure(expression, new DefaultClosureEnvironment())));
+    setProofNodeResult ( node, new BigStepClosureProofResult (
+        new DefaultStore (), closure ) );
   }
- 
-  public void setProofNodeResult(BigStepClosureProofNode node, Closure closure)
-  {
-    setProofNodeResult(node, new BigStepClosureProofResult(new DefaultStore(), closure));
-  }
-  
-  public void setProofNodeRule(BigStepClosureProofNode node, BigStepClosureProofRule rule)
+
+
+  public void setProofNodeRule ( final BigStepClosureProofNode node,
+      final BigStepClosureProofRule rule )
   {
     this.model.contextSetProofNodeRule ( this,
         ( DefaultBigStepClosureProofNode ) node, rule );
   }
- 
-  public boolean isMemoryEnabled()
+
+
+  public boolean isMemoryEnabled ()
   {
     return false;
   }
-  
-  public void addProofNode(BigStepClosureProofNode node, Expression expression)
+
+
+  public void addProofNode ( final BigStepClosureProofNode node,
+      final Closure closure )
   {
-    addProofNode(
-        node,
-        expression,
-        getDefaultStore(node));
+    addProofNode ( node, closure, getDefaultStore ( node ) );
   }
-  
-  public void addProofNode(BigStepClosureProofNode node, Closure closure)
+
+
+  private Store getDefaultStore ( final BigStepClosureProofNode node )
   {
-    addProofNode(
-        node,
-        closure,
-        getDefaultStore(node));
+    return node.getChildCount () > 0 ? node.getFirstChild ().getStore () : node
+        .getStore ();
   }
-  
-  private Store getDefaultStore(BigStepClosureProofNode node)
+
+
+  public void addProofNode ( final BigStepClosureProofNode node,
+      final Closure closure, final Store store )
   {
-    return node.getChildCount() > 0
-    ? node.getFirstChild ().getStore()
-    : node.getStore();
+    this.model.contextAddProofNode ( this,
+        ( DefaultBigStepClosureProofNode ) node,
+        new DefaultBigStepClosureProofNode ( closure, store ) );
   }
-  
-  public void addProofNode(BigStepClosureProofNode node, Expression expression, Store store)
-  {
-    addProofNode(node, new Closure(expression, new DefaultClosureEnvironment()), store);
-  }
-  
-  public void addProofNode(
-      BigStepClosureProofNode node,
-      Closure closure,
-      Store store)
-  {
-    this.model.contextAddProofNode ( this, (DefaultBigStepClosureProofNode)node,
-        new DefaultBigStepClosureProofNode ( closure, store) );
-  }
-  
+
+
   void apply ( BigStepClosureProofRule rule, BigStepClosureProofNode node )
-    throws ProofRuleException
+      throws ProofRuleException
   {
     // REMARK: apply the rule first, set the result after!
-    
+
     // try to apply the rule to the node
     rule.apply ( this, node );
-    
+
     // record the proof step
     setProofNodeRule ( node, rule );
-    
+
     // update all (unproven) super nodes
     BigStepClosureProofNode newNode = node;
     for ( ; ; )
@@ -117,15 +107,16 @@ final class DefaultBigStepClosureProofContext implements BigStepClosureProofCont
       updateNode ( newNode );
     }
   }
-  
+
+
   void updateNode ( BigStepClosureProofNode node )
   {
     // skip the node if it is already proven
-    if ( node.isFinished() )
+    if ( node.isFinished () )
       return;
-    
+
     // check if all child nodes are finished...
-    //boolean childrenFinished = node.isFinished (); //true;
+    // boolean childrenFinished = node.isFinished (); //true;
     boolean childrenFinished = true;
     for ( int n = 0 ; childrenFinished && n < node.getChildCount () ; ++n )
     {
@@ -161,12 +152,14 @@ final class DefaultBigStepClosureProofContext implements BigStepClosureProofCont
       rule.update ( this, node );
     }
   }
-  
-  public void revert()
+
+
+  public void revert ()
   {
-    
+
   }
-  
+
+
   void addRedoAction ( Runnable redoAction )
   {
     // perform the action
@@ -244,10 +237,13 @@ final class DefaultBigStepClosureProofContext implements BigStepClosureProofCont
       }
     };
   }
-  
+
+
   private BigStepClosureProofModel model;
-  
+
+
   private LinkedList < Runnable > redoActions = new LinkedList < Runnable > ();
+
 
   private LinkedList < Runnable > undoActions = new LinkedList < Runnable > ();
 }
