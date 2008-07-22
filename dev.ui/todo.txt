@@ -1,3 +1,8 @@
+		- Neu Dialog: Man könnte doch eine Art Wizard einbauen, ähnlich wie beim
+		  gtitool, der als erstes nach der Vorlesung fragt, also z.B. "TP1 2007/08"
+		  oder "TP2 2008" und dann nach dem Thema zu dem man üben möchte also z.B.
+		  "Subtyping" oder "Rekursive Typen"..., zusätzlich zum normalen "Neu-Dialog".
+		  Vielleicht einfach über ne XML Datei gesteuert
 		- Save Button komplett neu schreiben
 		- AboutDialog mit Netbeans neu schreiben (Entwickler in TPML
 		  1.0, 2.0 und 3.0 unterteilen)
