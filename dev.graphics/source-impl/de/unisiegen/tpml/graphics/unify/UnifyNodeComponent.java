@@ -11,7 +11,6 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -22,12 +21,13 @@ import javax.swing.SwingUtilities;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
-import de.unisiegen.tpml.core.entities.TypeEquation;
+import de.unisiegen.tpml.core.entities.TypeEquationList;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.typeinference.TypeFormula;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
+import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
 import de.unisiegen.tpml.core.unify.UnifyProofModel;
 import de.unisiegen.tpml.core.unify.UnifyProofNode;
 import de.unisiegen.tpml.graphics.Messages;
@@ -114,13 +114,15 @@ public class UnifyNodeComponent extends JComponent
   /**
    * an <code>ArrayList</code> containing all {@link TypeFormula}
    */
-  private ArrayList < TypeEquation > allFormulasList;
+  // private ArrayList < TypeEquation > allFormulasList;
+  private TypeEquationList equationList;
 
 
   /**
    * an <code>ArrayList</code> containing all {@link TypeSubstitution}
    */
-  private ArrayList < TypeSubstitution > substitutionList;
+  // private ArrayList < TypeSubstitution > substitutionList;
+  private TypeSubstitutionList substitutionList;
 
 
   /**
@@ -156,7 +158,6 @@ public class UnifyNodeComponent extends JComponent
    * @see #update()
    */
   // private MenuTranslateItem translateItem;
-
   /**
    * Adapter that is used to get added to every object that can cause the gui to
    * underline an expression. It is bound to every {@link UnifyRuleLabel} and to
@@ -602,9 +603,12 @@ public class UnifyNodeComponent extends JComponent
      * this.allFormulasList = this.proofNode.getAllFormulas ();
      * this.substitutionList = this.proofNode.getSubstitution ();
      */
+    this.equationList = this.proofNode.getTypeEquationList ();
+    this.substitutionList = this.proofNode.getTypeSubstitutions ();
 
     this.compoundExpression
         .setDefaultTypeSubstitutionList ( this.substitutionList );
+    this.compoundExpression.setTypeEquationList ( this.equationList );
 
     // TODO find out if there is an child or if it is proofen
     try

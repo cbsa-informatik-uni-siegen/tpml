@@ -10,25 +10,15 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
-import de.unisiegen.tpml.core.entities.TypeEquation;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
-import de.unisiegen.tpml.core.typeinference.TypeFormula;
-import de.unisiegen.tpml.core.typeinference.TypeJudgement;
-import de.unisiegen.tpml.core.typeinference.TypeSubType;
-import de.unisiegen.tpml.graphics.outline.Outline;
+import de.unisiegen.tpml.core.entities.TypeEquationList;
+import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
-import de.unisiegen.tpml.graphics.renderer.PrettyStringToHTML;
-import de.unisiegen.tpml.graphics.renderer.SubstitutionRenderer;
 import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
-import de.unisiegen.tpml.graphics.renderer.TypeFormularRenderer;
-import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView;
 
 
 /**
@@ -38,6 +28,7 @@ import de.unisiegen.tpml.graphics.typeinference.TypeInferenceView;
  */
 public class CompoundEquationUnify extends JComponent
 {
+
   /**
    * TODO
    */
@@ -47,13 +38,13 @@ public class CompoundEquationUnify extends JComponent
   /**
    * Renderer that is used to render the expressions
    */
-  private PrettyStringRenderer equationRenderer;
+  private PrettyStringRenderer renderer;
 
 
   /**
    * The size of the Typformulars.
    */
-  private Dimension typeFormulaSize;
+  private Dimension equationSize;
 
 
   /**
@@ -88,13 +79,15 @@ public class CompoundEquationUnify extends JComponent
   /**
    * The current list of DefaultTypeSubsititutions that are rendered.
    */
-  private ArrayList < TypeSubstitution > defaultTypeSubstitutionList;
+  // private ArrayList < TypeSubstitution > defaultTypeSubstitutionList;
+  private TypeSubstitutionList defaultTypeSubstitutionList;
 
 
   /**
    * the current Typformulars
    */
-  private ArrayList < TypeEquation > typeEquationList;
+  // private ArrayList < TypeEquation > typeEquationList;
+  private TypeEquationList typeEquationList;
 
 
   /**
@@ -130,7 +123,9 @@ public class CompoundEquationUnify extends JComponent
    * The braces have a size of 10 pixes, no underlining and the color of the
    * {@link AbstractRenderer} are ignored.
    */
-  // private ShowBonds bonds;
+  private ShowBonds bonds;
+
+
   /**
    * the list of points where the mouseovereffect will be react
    */
@@ -172,9 +167,9 @@ public class CompoundEquationUnify extends JComponent
   public CompoundEquationUnify ()
   {
     super ();
-    // this.bonds = new ShowBonds();
+    this.bonds = new ShowBonds ();
     this.substitutionSize = new Dimension ( 0, 0 );
-    this.typeFormulaSize = new Dimension ( 0, 0 );
+    this.equationSize = new Dimension ( 0, 0 );
     this.toListenForMouse = new ToListenForMouseContainer ();
     this.alternativeColor = null;
     this.spaceInFrontOf = 10;
@@ -215,22 +210,22 @@ public class CompoundEquationUnify extends JComponent
             // tell the renderer where the draggedString will be renderd
             // CompoundExpressionTypeInference.this.draggedX = event.getX() + 5;
             // CompoundExpressionTypeInference.this.draggedY = event.getY() + 5;
-            CompoundEquationUnify.this
-                .setDraggedBesideMousePointer ( event.getPoint () );
+            CompoundEquationUnify.this.setDraggedBesideMousePointer ( event
+                .getPoint () );
             if ( event.getX () >= getWidth () - 50 )
             {
               // CompoundExpressionTypeInference.this.draggedX = event.getX() -
               // (50 - (getWidth() - event.getX()));
-              CompoundEquationUnify.this
-                  .getDraggedBesideMousePointer ().x = event.getX ()
+              CompoundEquationUnify.this.getDraggedBesideMousePointer ().x = event
+                  .getX ()
                   - ( 50 - ( getWidth () - event.getX () ) );
             }
             if ( event.getY () <= 10 )
             {
               // CompoundExpressionTypeInference.this.draggedY = event.getY() +
               // 15;
-              CompoundEquationUnify.this
-                  .getDraggedBesideMousePointer ().y = event.getY () + 15;
+              CompoundEquationUnify.this.getDraggedBesideMousePointer ().y = event
+                  .getY () + 15;
             }
           }
         }
@@ -285,32 +280,20 @@ public class CompoundEquationUnify extends JComponent
   protected void handelMouseReleased ( MouseEvent event )
   {
     /*
-    // point whre the mouse was released
+     * // point whre the mouse was released Point mouseReleased = event.getPoint
+     * (); // resette ArrayList < Rectangle > rects = this.typeFormularRenderer
+     * .getTypeFormularPositions (); for ( int i = 0 ; i < rects.size () ; i++ ) {
+     * if ( isIn ( rects.get ( i ), mouseReleased ) ) { // set the rectReleased
+     * this.rectReleased = i; } } // if we have a dragg'n'drop if (
+     * isDragndropeabled () && CompoundEquationUnify.this.dragged && (
+     * this.rectPressed != this.rectReleased ) && ( this.rectPressed != -1 ) && (
+     * this.rectReleased != -1 ) ) {
+     * CompoundEquationUnify.this.typeFormularRenderer.draggNDropp (
+     * this.rectReleased, this.rectPressed ); }
+     * CompoundEquationUnify.this.dragged = false;
+     */
     Point mouseReleased = event.getPoint ();
-
-    // resette
-    ArrayList < Rectangle > rects = this.typeFormularRenderer
-        .getTypeFormularPositions ();
-    for ( int i = 0 ; i < rects.size () ; i++ )
-    {
-      if ( isIn ( rects.get ( i ), mouseReleased ) )
-      {
-        // set the rectReleased
-        this.rectReleased = i;
-      }
-    }
-
-    // if we have a dragg'n'drop
-    if ( isDragndropeabled () && CompoundEquationUnify.this.dragged
-        && ( this.rectPressed != this.rectReleased )
-        && ( this.rectPressed != -1 ) && ( this.rectReleased != -1 ) )
-    {
-      CompoundEquationUnify.this.typeFormularRenderer.draggNDropp (
-          this.rectReleased, this.rectPressed );
-    }
-    CompoundEquationUnify.this.dragged = false;
     repaint ();
-    */
   }
 
 
@@ -324,119 +307,66 @@ public class CompoundEquationUnify extends JComponent
   protected void handelMousePressed ( MouseEvent event )
   {
     /*
-    if ( isDragndropeabled () )
-    {
-      // remember the position. If the user dragges thes point to another,
-      // they will be switched
-      Point mousePressedPosition = event.getPoint ();
-
-      // look up if there is a typeformula at the point mousePosition.
-      // if ther is no typformular, ther will be no dragg'n'drop
-      ArrayList < Rectangle > rects = CompoundEquationUnify.this.typeFormularRenderer
-          .getTypeFormularPositions ();
-      for ( int i = 0 ; i < rects.size () ; i++ )
-      {
-        if ( isIn ( rects.get ( i ), mousePressedPosition ) )
-        {
-          // set the rectPressed
-          this.rectPressed = i;
-
-          // set the String shown next to the mouse while dragging
-          CompoundEquationUnify.this.draggedString = CompoundEquationUnify.this.typeEquationList
-              .get ( i ).toString ();
-
-          // if the String is to large shorter it
-          if ( CompoundEquationUnify.this.draggedString.length () > 13 )
-          {
-            CompoundEquationUnify.this.draggedString = CompoundEquationUnify.this.draggedString
-                .substring ( 0, 10 )
-                + "..."; //$NON-NLS-1$
-          }
-          CompoundEquationUnify.this.dragged = true;
-        }
-      }
-    }
-    */
+     * if ( isDragndropeabled () ) { // remember the position. If the user
+     * dragges thes point to another, // they will be switched Point
+     * mousePressedPosition = event.getPoint (); // look up if there is a
+     * typeformula at the point mousePosition. // if ther is no typformular,
+     * ther will be no dragg'n'drop ArrayList < Rectangle > rects =
+     * CompoundEquationUnify.this.typeFormularRenderer .getTypeFormularPositions
+     * (); for ( int i = 0 ; i < rects.size () ; i++ ) { if ( isIn ( rects.get (
+     * i ), mousePressedPosition ) ) { // set the rectPressed this.rectPressed =
+     * i; // set the String shown next to the mouse while dragging
+     * CompoundEquationUnify.this.draggedString =
+     * CompoundEquationUnify.this.typeEquationList .get ( i ).toString (); // if
+     * the String is to large shorter it if (
+     * CompoundEquationUnify.this.draggedString.length () > 13 ) {
+     * CompoundEquationUnify.this.draggedString =
+     * CompoundEquationUnify.this.draggedString .substring ( 0, 10 ) + "...";
+     * //$NON-NLS-1$ } CompoundEquationUnify.this.dragged = true; } } }
+     */
   }
 
 
   /**
-   * Handels the MosueEvents for the outline. The
-   * {@link CompoundEquationUnify} provides the positions of the
-   * different Components.
+   * Handels the MosueEvents for the outline. The {@link CompoundEquationUnify}
+   * provides the positions of the different Components.
    * 
    * @param pMouseEvent
    */
   protected void handelMouseClicked ( MouseEvent pMouseEvent )
   {
     /*
-    Point pos = pMouseEvent.getPoint ();
-    ArrayList < Rectangle > leftType = CompoundEquationUnify.this.typeFormularRenderer
-        .getLeftTypePositions ();
-    ArrayList < Rectangle > rightType = CompoundEquationUnify.this.typeFormularRenderer
-        .getRightTypePositions ();
-    ArrayList < Rectangle > expressionPositions = CompoundEquationUnify.this.typeFormularRenderer
-        .getExpressionPositions ();
-    ArrayList < Rectangle > typePositions = CompoundEquationUnify.this.typeFormularRenderer
-        .getTypePositions ();
-    Outline outline = ( ( TypeInferenceView ) CompoundEquationUnify.this
-        .getParent ().getParent ().getParent ().getParent ().getParent ()
-        .getParent () ).getOutline ();
-    for ( int i = 0 ; i < CompoundEquationUnify.this.typeEquationList
-        .size () ; i++ )
-    {
-      TypeFormula t = CompoundEquationUnify.this.typeEquationList
-          .get ( i );
-      if ( t instanceof TypeJudgement )
-      {
-        TypeJudgement typeJudgement = ( TypeJudgement ) t;
-        // Expression
-        if ( isIn ( expressionPositions.get ( i ), pos ) )
-        {
-          outline.load ( typeJudgement.getExpression (),
-              Outline.ExecuteMouseClick.TYPEINFERENCE );
-        }
-        // Type
-        else if ( isIn ( typePositions.get ( i ), pos ) )
-        {
-          outline.load ( typeJudgement.getType (),
-              Outline.ExecuteMouseClick.TYPEINFERENCE );
-        }
-      }
-      else if ( t instanceof TypeEquation )
-      {
-        TypeEquation typeEquation = ( TypeEquation ) t;
-        // Left type
-        if ( isIn ( leftType.get ( i ), pos ) )
-        {
-          outline.load ( typeEquation.getLeft (),
-              Outline.ExecuteMouseClick.TYPEINFERENCE );
-        }
-        // Right type
-        else if ( isIn ( rightType.get ( i ), pos ) )
-        {
-          outline.load ( typeEquation.getRight (),
-              Outline.ExecuteMouseClick.TYPEINFERENCE );
-        }
-      }
-      else if ( t instanceof TypeSubType )
-      {
-        TypeSubType subType = ( TypeSubType ) t;
-        // Left type
-        if ( isIn ( leftType.get ( i ), pos ) )
-        {
-          outline.load ( subType.getType (),
-              Outline.ExecuteMouseClick.TYPEINFERENCE );
-        }
-        // Right type
-        else if ( isIn ( rightType.get ( i ), pos ) )
-        {
-          outline.load ( subType.getType2 (),
-              Outline.ExecuteMouseClick.TYPEINFERENCE );
-        }
-      }
-    }
-    */
+     * Point pos = pMouseEvent.getPoint (); ArrayList < Rectangle > leftType =
+     * CompoundEquationUnify.this.typeFormularRenderer .getLeftTypePositions ();
+     * ArrayList < Rectangle > rightType =
+     * CompoundEquationUnify.this.typeFormularRenderer .getRightTypePositions
+     * (); ArrayList < Rectangle > expressionPositions =
+     * CompoundEquationUnify.this.typeFormularRenderer .getExpressionPositions
+     * (); ArrayList < Rectangle > typePositions =
+     * CompoundEquationUnify.this.typeFormularRenderer .getTypePositions ();
+     * Outline outline = ( ( TypeInferenceView ) CompoundEquationUnify.this
+     * .getParent ().getParent ().getParent ().getParent ().getParent ()
+     * .getParent () ).getOutline (); for ( int i = 0 ; i <
+     * CompoundEquationUnify.this.typeEquationList .size () ; i++ ) {
+     * TypeFormula t = CompoundEquationUnify.this.typeEquationList .get ( i );
+     * if ( t instanceof TypeJudgement ) { TypeJudgement typeJudgement = (
+     * TypeJudgement ) t; // Expression if ( isIn ( expressionPositions.get ( i ),
+     * pos ) ) { outline.load ( typeJudgement.getExpression (),
+     * Outline.ExecuteMouseClick.TYPEINFERENCE ); } // Type else if ( isIn (
+     * typePositions.get ( i ), pos ) ) { outline.load ( typeJudgement.getType
+     * (), Outline.ExecuteMouseClick.TYPEINFERENCE ); } } else if ( t instanceof
+     * TypeEquation ) { TypeEquation typeEquation = ( TypeEquation ) t; // Left
+     * type if ( isIn ( leftType.get ( i ), pos ) ) { outline.load (
+     * typeEquation.getLeft (), Outline.ExecuteMouseClick.TYPEINFERENCE ); } //
+     * Right type else if ( isIn ( rightType.get ( i ), pos ) ) { outline.load (
+     * typeEquation.getRight (), Outline.ExecuteMouseClick.TYPEINFERENCE ); } }
+     * else if ( t instanceof TypeSubType ) { TypeSubType subType = (
+     * TypeSubType ) t; // Left type if ( isIn ( leftType.get ( i ), pos ) ) {
+     * outline.load ( subType.getType (),
+     * Outline.ExecuteMouseClick.TYPEINFERENCE ); } // Right type else if ( isIn (
+     * rightType.get ( i ), pos ) ) { outline.load ( subType.getType2 (),
+     * Outline.ExecuteMouseClick.TYPEINFERENCE ); } } }
+     */
   }
 
 
@@ -451,16 +381,14 @@ public class CompoundEquationUnify extends JComponent
   public void setAlternativeColor ( Color color )
   {
     this.alternativeColor = color;
-    if ( this.equationRenderer != null )
+    if ( this.renderer != null )
     {
-      this.equationRenderer.setAlternativeColor ( color );
+      this.renderer.setAlternativeColor ( color );
     }
     /*
-    if ( this.substitutionRenderer != null )
-    {
-      this.substitutionRenderer.setAlternativeColor ( color );
-    }
-    */
+     * if ( this.substitutionRenderer != null ) {
+     * this.substitutionRenderer.setAlternativeColor ( color ); }
+     */
   }
 
 
@@ -469,9 +397,9 @@ public class CompoundEquationUnify extends JComponent
    */
   public void reset ()
   {
-    if ( this.equationRenderer != null )
+    if ( this.renderer != null )
     {
-      this.equationRenderer.checkLinewraps ();
+      this.renderer.checkLinewraps ();
     }
   }
 
@@ -485,129 +413,56 @@ public class CompoundEquationUnify extends JComponent
   void handleMouseMoved ( MouseEvent event )
   {
     /*
-    // the point where the mosue is
-    Point pointMousePosition = event.getPoint ();
-
-    // first, we do not want to have an tooltip
-    setToolTipText ( null );
-
-    // find out if the mosue is over an A
-    ArrayList < Rectangle > rectsOfAPositions = this.typeFormularRenderer
-        .getAPositions ();
-
-    for ( int i = 0 ; i < rectsOfAPositions.size () ; i++ )
-    {
-      Rectangle rectOfActualA = rectsOfAPositions.get ( i );
-
-      if ( isIn ( rectOfActualA, pointMousePosition ) ) // if (x >= r.x && x <=
-      // r.x+r.width && y >=
-      // r.y && y <=
-      // r.y+r.width)
-      {
-        // genereate the TooltioText
-        String genreateTooltip = ""; //$NON-NLS-1$
-
-        // get the Infos about the tooltip from the typeFormularRenderer
-        ArrayList < ArrayList < PrettyString >> list = this.typeFormularRenderer
-            .getAPrettyStrings ();
-        ArrayList < PrettyString > prettyStrings = list.get ( i );
-
-        // build up the html
-        genreateTooltip += ( "<html>" ); //$NON-NLS-1$
-
-        for ( int l = 0 ; l < prettyStrings.size () ; l++ )
-        {
-          genreateTooltip += PrettyStringToHTML.toHTMLString ( prettyStrings
-              .get ( l ) );
-          if ( l < ( prettyStrings.size () - 1 ) )
-          {
-            genreateTooltip += " <br> "; //$NON-NLS-1$
-          }
-        }
-
-        if ( prettyStrings.size () == 0 )
-        {
-          genreateTooltip += ( "<font size=+1>\u00D8</font>" ); //$NON-NLS-1$
-        }
-
-        genreateTooltip += ( "</html>" ); //$NON-NLS-1$
-        setToolTipText ( genreateTooltip );
-      }
-    }
-
-    // tell the PrettyStringRenderer where the mouse pointer is
-    this.toListenForMouse.setHereIam ( pointMousePosition );
-
-    // first, we do not want to mark anything, we are waiting for mouse pointer
-    // is over one bounded id
-    this.toListenForMouse.setMark ( false );
-    CompoundEquationUnify.this.repaint ();
-
-    // note if to mark or not to mark
-    boolean mark = false;
-
-    // walk throu the postions where to mark
-    for ( int t = 0 ; t < this.toListenForMouse.size () ; t++ )
-    {
-      // get position of pointer, these are rectangles. These positions are made
-      // by the PrettyStringRenderer
-      Rectangle r = this.toListenForMouse.get ( t );
-      int pX = r.x;
-      int pX1 = r.x + r.width;
-      int pY = r.y;
-      int pY1 = r.y + r.height;
-
-      // fnde out if pointer is on one of the chars to mark
-      if ( ( event.getX () >= pX ) && ( event.getX () <= pX1 )
-          && ( event.getY () >= pY ) && ( event.getY () <= pY1 ) )
-      // if ( ( event.getX ( ) >= pX ) && ( event.getX ( ) <= pX1 ) )
-      {
-        // just note it
-        mark = true;
-      }
-    }
-
-    // if the pointer is on one of the bounded chars
-    if ( mark )
-    {
-      // we want to habe marked
-      this.toListenForMouse.setMark ( true );
-      CompoundEquationUnify.this.repaint ();
-    }
-    else
-    {
-      // we do not want to see anything marked
-      resetMouseContainer ();
-    }
-
-    if ( ( this.substitutionRenderer != null )
-        && this.substitutionRenderer.isCollapsed () )
-    {
-      Rectangle r = this.substitutionRenderer.getCollapsedArea ();
-
-      if ( isIn ( r, pointMousePosition ) )
-      {
-        setToolTipText ( this.substitutionRenderer.getCollapsedString () );
-      }
-    }
-
-    // tooltip for the single typeenvironments of every item
-    if ( this.typeFormularRenderer != null )
-    {
-      ArrayList < Rectangle > rectsOfCollapsedAreasPositions = this.typeFormularRenderer
-          .getCollapsedTypeEnvironmentAreas ();
-
-      for ( int i = 0 ; i < rectsOfCollapsedAreasPositions.size () ; i++ )
-      {
-        Rectangle r = rectsOfCollapsedAreasPositions.get ( i );
-        if ( isIn ( r, pointMousePosition ) )
-        {
-          setToolTipText ( this.typeFormularRenderer
-              .getCollapsedTypeEnvironmentsStrings ().get ( i ) );
-        }
-      }
-    }
-    */
+     * // the point where the mosue is Point pointMousePosition = event.getPoint
+     * (); // first, we do not want to have an tooltip setToolTipText ( null ); //
+     * find out if the mosue is over an A ArrayList < Rectangle >
+     * rectsOfAPositions = this.typeFormularRenderer .getAPositions (); for (
+     * int i = 0 ; i < rectsOfAPositions.size () ; i++ ) { Rectangle
+     * rectOfActualA = rectsOfAPositions.get ( i ); if ( isIn ( rectOfActualA,
+     * pointMousePosition ) ) // if (x >= r.x && x <= // r.x+r.width && y >= //
+     * r.y && y <= // r.y+r.width) { // genereate the TooltioText String
+     * genreateTooltip = ""; //$NON-NLS-1$ // get the Infos about the tooltip
+     * from the typeFormularRenderer ArrayList < ArrayList < PrettyString >>
+     * list = this.typeFormularRenderer .getAPrettyStrings (); ArrayList <
+     * PrettyString > prettyStrings = list.get ( i ); // build up the html
+     * genreateTooltip += ( "<html>" ); //$NON-NLS-1$ for ( int l = 0 ; l <
+     * prettyStrings.size () ; l++ ) { genreateTooltip +=
+     * PrettyStringToHTML.toHTMLString ( prettyStrings .get ( l ) ); if ( l < (
+     * prettyStrings.size () - 1 ) ) { genreateTooltip += " <br> ";
+     * //$NON-NLS-1$ } } if ( prettyStrings.size () == 0 ) { genreateTooltip += ( "<font
+     * size=+1>\u00D8</font>" ); //$NON-NLS-1$ } genreateTooltip += ( "</html>" );
+     * //$NON-NLS-1$ setToolTipText ( genreateTooltip ); } } // tell the
+     * PrettyStringRenderer where the mouse pointer is
+     * this.toListenForMouse.setHereIam ( pointMousePosition ); // first, we do
+     * not want to mark anything, we are waiting for mouse pointer // is over
+     * one bounded id this.toListenForMouse.setMark ( false );
+     * CompoundEquationUnify.this.repaint (); // note if to mark or not to mark
+     * boolean mark = false; // walk throu the postions where to mark for ( int
+     * t = 0 ; t < this.toListenForMouse.size () ; t++ ) { // get position of
+     * pointer, these are rectangles. These positions are made // by the
+     * PrettyStringRenderer Rectangle r = this.toListenForMouse.get ( t ); int
+     * pX = r.x; int pX1 = r.x + r.width; int pY = r.y; int pY1 = r.y +
+     * r.height; // fnde out if pointer is on one of the chars to mark if ( (
+     * event.getX () >= pX ) && ( event.getX () <= pX1 ) && ( event.getY () >=
+     * pY ) && ( event.getY () <= pY1 ) ) // if ( ( event.getX ( ) >= pX ) && (
+     * event.getX ( ) <= pX1 ) ) { // just note it mark = true; } } // if the
+     * pointer is on one of the bounded chars if ( mark ) { // we want to habe
+     * marked this.toListenForMouse.setMark ( true );
+     * CompoundEquationUnify.this.repaint (); } else { // we do not want to see
+     * anything marked resetMouseContainer (); } if ( (
+     * this.substitutionRenderer != null ) &&
+     * this.substitutionRenderer.isCollapsed () ) { Rectangle r =
+     * this.substitutionRenderer.getCollapsedArea (); if ( isIn ( r,
+     * pointMousePosition ) ) { setToolTipText (
+     * this.substitutionRenderer.getCollapsedString () ); } } // tooltip for the
+     * single typeenvironments of every item if ( this.typeFormularRenderer !=
+     * null ) { ArrayList < Rectangle > rectsOfCollapsedAreasPositions =
+     * this.typeFormularRenderer .getCollapsedTypeEnvironmentAreas (); for ( int
+     * i = 0 ; i < rectsOfCollapsedAreasPositions.size () ; i++ ) { Rectangle r =
+     * rectsOfCollapsedAreasPositions.get ( i ); if ( isIn ( r,
+     * pointMousePosition ) ) { setToolTipText ( this.typeFormularRenderer
+     * .getCollapsedTypeEnvironmentsStrings ().get ( i ) ); } } }
+     */
   }
 
 
@@ -639,71 +494,81 @@ public class CompoundEquationUnify extends JComponent
    * @param defaultTypeSubstitutionListP
    */
   public void setDefaultTypeSubstitutionList (
-      ArrayList < TypeSubstitution > defaultTypeSubstitutionListP )
+      TypeSubstitutionList defaultTypeSubstitutionListP )
   {
     /*
-    // check if we have a new environment
+     * // check if we have a new environment if (
+     * this.defaultTypeSubstitutionList != defaultTypeSubstitutionListP ) { //
+     * update to the new environment this.defaultTypeSubstitutionList =
+     * defaultTypeSubstitutionListP; // check what to do with the renderer if (
+     * this.defaultTypeSubstitutionList == null ) { this.substitutionRenderer =
+     * null; } else { if ( this.substitutionRenderer == null ) {
+     * this.substitutionRenderer = new SubstitutionRenderer ();
+     * this.substitutionRenderer .setAlternativeColor ( this.alternativeColor ); }
+     * this.substitutionRenderer .setDefaultTypeSubstitutionList (
+     * this.defaultTypeSubstitutionList ); } // be sure to schedule a repaint }
+     */
     if ( this.defaultTypeSubstitutionList != defaultTypeSubstitutionListP )
     {
-      // update to the new environment
       this.defaultTypeSubstitutionList = defaultTypeSubstitutionListP;
-      // check what to do with the renderer
       if ( this.defaultTypeSubstitutionList == null )
       {
-        this.substitutionRenderer = null;
+        this.renderer = null;
       }
       else
       {
-        if ( this.substitutionRenderer == null )
+        if ( this.renderer == null )
         {
-          this.substitutionRenderer = new SubstitutionRenderer ();
-          this.substitutionRenderer
-              .setAlternativeColor ( this.alternativeColor );
+          this.renderer = new PrettyStringRenderer ();
+          this.renderer.setAlternativeColor ( this.alternativeColor );
         }
-        this.substitutionRenderer
-            .setDefaultTypeSubstitutionList ( this.defaultTypeSubstitutionList );
+        this.renderer.setPrettyString ( this.defaultTypeSubstitutionList
+            .toPrettyString () );
       }
-      // be sure to schedule a repaint
-      repaint ();
     }
-    */
+    repaint ();
   }
 
 
   /**
-   * Sets the environment taht should be rendered.
+   * Sets the environment that should be rendered.
    * 
-   * @param typeFormulaListP
+   * @param typeEquationListP the type equation list
    */
-  public void setTypeFormulaList ( ArrayList < TypeFormula > typeFormulaListP )
+  public void setTypeEquationList ( TypeEquationList typeEquationListP )
   {
     /*
-    // check if we have a new environment
-    if ( this.typeEquationList != typeFormulaListP )
+     * // check if we have a new environment if ( this.typeEquationList !=
+     * typeFormulaListP ) { // update to the new environment
+     * this.typeEquationList = typeFormulaListP; // check what to do with the
+     * renderer if ( this.typeEquationList == null ) { this.typeFormularRenderer =
+     * null; } else { if ( this.typeFormularRenderer == null ) {
+     * this.typeFormularRenderer = new TypeFormularRenderer ();
+     * this.typeFormularRenderer .setToListenForMoudeContainer (
+     * this.toListenForMouse ); this.typeFormularRenderer .setAlternativeColor (
+     * this.alternativeColor ); } this.typeFormularRenderer.setTypeFormulaList (
+     * this.typeEquationList ); } // be sure to schedule a repaint }
+     */
+    if ( this.typeEquationList != null )
     {
-      // update to the new environment
-      this.typeEquationList = typeFormulaListP;
-      // check what to do with the renderer
-      if ( this.typeEquationList == null )
+      this.typeEquationList = typeEquationListP;
+      if ( this.typeEquationList == null
+          && this.defaultTypeSubstitutionList == null )
       {
-        this.typeFormularRenderer = null;
+        this.renderer = null;
       }
       else
       {
-        if ( this.typeFormularRenderer == null )
+        if ( this.renderer == null )
         {
-          this.typeFormularRenderer = new TypeFormularRenderer ();
-          this.typeFormularRenderer
-              .setToListenForMoudeContainer ( this.toListenForMouse );
-          this.typeFormularRenderer
-              .setAlternativeColor ( this.alternativeColor );
+          this.renderer = new PrettyStringRenderer ();
+          this.renderer.setAlternativeColor ( this.alternativeColor );
         }
-        this.typeFormularRenderer.setTypeFormulaList ( this.typeEquationList );
+        this.renderer
+            .setPrettyString ( this.typeEquationList.toPrettyString () );
       }
-      // be sure to schedule a repaint
-      repaint ();
     }
-    */
+    repaint ();
   }
 
 
@@ -715,10 +580,9 @@ public class CompoundEquationUnify extends JComponent
    */
   public Dimension getNeededSize ( int pMaxWidth )
   {
-    
- //   int maxWidth = pMaxWidth;
+
+    int maxWidth = pMaxWidth;
     Dimension result = new Dimension ( 0, 0 );
-    /*
     // to guaranty that no line wrapping should be performed
     // set the maxWidth = MAX_INT
     if ( this.noLineWrapping )
@@ -727,28 +591,44 @@ public class CompoundEquationUnify extends JComponent
     }
     // check whether there is Substitution...
     if ( ( this.defaultTypeSubstitutionList != null )
-        && ( this.defaultTypeSubstitutionList.size () > 0 ) )
+    // && ( this.defaultTypeSubstitutionList.size () > 0 ) )
+        && ( this.defaultTypeSubstitutionList.getFirst () != null ) )
     {
+      /*
+       * TODO: cu - test this code
+       */
+      this.renderer.setPrettyString ( this.defaultTypeSubstitutionList
+          .toPrettyString () );
       // The dimension the rendere needs to render the Substitutions
-      this.substitutionSize = this.substitutionRenderer.getNeededSize ();
+      // this.substitutionSize = this.substitutionRenderer.getNeededSize ();
+      this.substitutionSize = this.renderer.getNeededSize ( maxWidth );
       // The higth is simpel
       result.height = this.substitutionSize.height;
       result.width = this.substitutionSize.width;
       result.width += this.spaceInFrontOf;
     }
-    // check whether there are typformulars...
+    // check whether there are type equations...
     if ( ( this.typeEquationList != null )
-        && ( this.typeEquationList.size () > 0 ) )
+    // && ( this.typeEquationList.size () > 0 ) )
+        && ( this.typeEquationList.getFirst () != null ) )
     {
+      /*
+       * TODO: cu - test this code
+       */
+      this.renderer.setPrettyString ( this.typeEquationList.toPrettyString () );
+      this.equationSize = this.renderer.getNeededSize ( maxWidth );
+      result.width += Math.max ( this.equationSize.width + this.spaceInFrontOf,
+          result.width );
+      result.height = this.equationSize.height + this.substitutionSize.height;
       // TODO printing...
-      this.typeFormulaSize = this.typeFormularRenderer
-          .getNeededSize ( maxWidth );
-      result.width += Math.max ( this.typeFormulaSize.width
-          + this.spaceInFrontOf, result.width );
-      result.height = this.typeFormulaSize.height
-          + this.substitutionSize.height;
+      /*
+       * this.typeFormulaSize = this.typeFormularRenderer .getNeededSize (
+       * maxWidth ); result.width += Math.max ( this.typeFormulaSize.width +
+       * this.spaceInFrontOf, result.width ); result.height =
+       * this.typeFormulaSize.height + this.substitutionSize.height;
+       */
+
     }
-    */
     return result;
   }
 
@@ -850,44 +730,48 @@ public class CompoundEquationUnify extends JComponent
      * just to get reminded: no environment: expression storeenvironment:
      * (expression [env]) typeenvironment: [env] |> expression
      */
-    /*
     int posX = 0;
     int posY = 0;
-    // if there is an substitution render it now
-    if ( ( this.defaultTypeSubstitutionList != null )
-        && ( this.defaultTypeSubstitutionList.size () > 0 ) )
+
+    if ( this.defaultTypeSubstitutionList != TypeSubstitutionList.EMPTY_LIST )
     {
       posX += this.spaceInFrontOf;
-      this.substitutionRenderer.renderer ( posX, posY,
-          this.substitutionSize.width, getHeight (), gc );
+      this.renderer.render ( posX, posY, this.substitutionSize.width,
+          getHeight (), gc, this.bonds, this.toListenForMouse );
       posY += this.substitutionSize.height;
     }
-    // else if (this.defaultTypeSubstitutionList instanceof TypeEnvironment)
-    // {
-    // // draw the environment first
-    // this.substitutionRenderer.renderer(posX, posY,
-    // this.substitutionSize.width, getHeight(), gc);
-    // posX += this.substitutionSize.width;
-    // // draw the arrow character in the vertical center
-    // int centerV = getHeight() / 2;
-    // centerV += AbstractRenderer.getTextFontMetrics().getAscent() / 2;
-    // gc.setFont(AbstractRenderer.getTextFont());
-    // gc.setColor(AbstractRenderer.getTextColor());
-    // gc.drawString(CompoundExpressionTypeInference.arrowStr, posX, centerV);
-    // posX +=
-    // AbstractRenderer.getTextFontMetrics().stringWidth(CompoundExpressionTypeInference.arrowStr);
-    // // draw the expression at the last position.
-    // this.expressionRenderer.render(posX, posY, getWidth(), getHeight(), gc,
-    // this.bonds, this.toListenForMouse);
-    // }
-    if ( this.typeEquationList != null )
+
+    if ( !this.typeEquationList.isEmpty () )
     {
-      // this.typeFormularRenderer.renderer( posX, posY,
-      // this.typeFormulaSize.width, getHeight (), gc) ;
-      this.typeFormularRenderer.renderer ( posX, posY,
-          this.typeFormulaSize.width, this.typeFormulaSize.height, gc );
+      this.renderer.render ( posX, posY, this.equationSize.width, getHeight (),
+          gc, this.bonds, this.toListenForMouse );
     }
-    */
+    /*
+     * int posX = 0; int posY = 0; // if there is an substitution render it now
+     * if ( ( this.defaultTypeSubstitutionList != null ) && (
+     * this.defaultTypeSubstitutionList.size () > 0 ) ) { posX +=
+     * this.spaceInFrontOf; this.substitutionRenderer.renderer ( posX, posY,
+     * this.substitutionSize.width, getHeight (), gc ); posY +=
+     * this.substitutionSize.height; } // else if
+     * (this.defaultTypeSubstitutionList instanceof TypeEnvironment) // { // //
+     * draw the environment first // this.substitutionRenderer.renderer(posX,
+     * posY, // this.substitutionSize.width, getHeight(), gc); // posX +=
+     * this.substitutionSize.width; // // draw the arrow character in the
+     * vertical center // int centerV = getHeight() / 2; // centerV +=
+     * AbstractRenderer.getTextFontMetrics().getAscent() / 2; //
+     * gc.setFont(AbstractRenderer.getTextFont()); //
+     * gc.setColor(AbstractRenderer.getTextColor()); //
+     * gc.drawString(CompoundExpressionTypeInference.arrowStr, posX, centerV); //
+     * posX += //
+     * AbstractRenderer.getTextFontMetrics().stringWidth(CompoundExpressionTypeInference.arrowStr); // //
+     * draw the expression at the last position. //
+     * this.expressionRenderer.render(posX, posY, getWidth(), getHeight(), gc, //
+     * this.bonds, this.toListenForMouse); // } if ( this.typeEquationList !=
+     * null ) { // this.typeFormularRenderer.renderer( posX, posY, //
+     * this.typeFormulaSize.width, getHeight (), gc) ;
+     * this.typeFormularRenderer.renderer ( posX, posY,
+     * this.typeFormulaSize.width, this.typeFormulaSize.height, gc ); }
+     */
 
     // last render the string besinde the mousepointer
     if ( this.dragged )
@@ -930,7 +814,6 @@ public class CompoundEquationUnify extends JComponent
   // g.drawRect(r.x, r.y, r.width, r.height);
   // // Rectangle rect = new Rectangle()
   // }
-
 
   /**
    * @return the draggedBesideMousePointer
