@@ -129,8 +129,6 @@ public final class DefaultBigStepClosureProofNode extends
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory fac )
   {
-    System.err.println("testtest" );
-    
     PrettyStringBuilder builder = fac.newBuilder ( this, 0 );
 
     builder.addBuilder ( getClosure ().toPrettyStringBuilder ( fac ), 0 );

@@ -19,13 +19,16 @@ import javax.swing.SwingUtilities;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofNode;
+import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Location;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.graphics.Messages;
+import de.unisiegen.tpml.graphics.bigstep.BigStepNodeListener;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
@@ -135,7 +138,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
   /**
    * Component containing the expression and the store.
    */
-  private CompoundExpression < Location, Expression > compoundExpression;
+  private CompoundExpression < Location, Closure > compoundExpression;
 
 
   /**
@@ -148,7 +151,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
   /**
    * Component containing the result-expression and the result-store.
    */
-  private CompoundExpression < Location, Expression > resultCompoundExpression;
+  private CompoundExpression < Location, Closure > resultCompoundExpression;
 
 
   /**
@@ -209,14 +212,14 @@ public class BigStepClosureNodeComponent extends JComponent implements
     this.indexLabel = new JLabel ();
     this.indexLabel.addMouseListener ( new OutlineMouseListener ( this ) );
     add ( this.indexLabel );
-    this.compoundExpression = new CompoundExpression < Location, Expression > ();
+    this.compoundExpression = new CompoundExpression < Location, Closure > ();
     this.compoundExpression
         .addMouseListener ( new OutlineMouseListener ( this ) );
     add ( this.compoundExpression );
     this.downArrowLabel = new JLabel ();
     add ( this.downArrowLabel );
     this.downArrowLabel.setText ( " \u21d3 " ); //$NON-NLS-1$
-    this.resultCompoundExpression = new CompoundExpression < Location, Expression > ();
+    this.resultCompoundExpression = new CompoundExpression < Location, Closure > ();
     this.resultCompoundExpression.addMouseListener ( new OutlineMouseListener (
         this ) );
     add ( this.resultCompoundExpression );
@@ -495,11 +498,11 @@ public class BigStepClosureNodeComponent extends JComponent implements
     this.compoundExpression.setExpression ( this.proofNode.getExpression () );
     // only if memory is enabled set the store because the
     // store is always valid
-    if ( this.proofModel.isMemoryEnabled () )
-    {
-      this.compoundExpression.setEnvironment ( this.proofNode.getStore () );
-    }
-    else
+   // if ( this.proofModel.isMemoryEnabled () )
+   // {
+   //   this.compoundExpression.setEnvironment ( this.proofNode.getStore () );
+   // }
+   // else
     {
       this.compoundExpression.setEnvironment ( null );
     }
@@ -507,12 +510,12 @@ public class BigStepClosureNodeComponent extends JComponent implements
     {
       this.resultCompoundExpression.setExpression ( this.proofNode.getResult ()
           .getValue () );
-      if ( this.proofModel.isMemoryEnabled () )
-      {
-        this.resultCompoundExpression.setEnvironment ( this.proofNode
-            .getResult ().getStore () );
-      }
-      else
+      //if ( this.proofModel.isMemoryEnabled () )
+      //{
+      //  this.resultCompoundExpression.setEnvironment ( this.proofNode
+      //      .getResult ().getStore () );
+      //}
+      //else
       {
         this.resultCompoundExpression.setEnvironment ( null );
       }
@@ -739,7 +742,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
    * @return The compoundExpression.
    * @see #compoundExpression
    */
-  public CompoundExpression < Location, Expression > getCompoundExpression ()
+  public CompoundExpression < Location, Closure > getCompoundExpression ()
   {
     return this.compoundExpression;
   }
@@ -751,7 +754,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
    * @return The resultCompoundExpression.
    * @see #resultCompoundExpression
    */
-  public CompoundExpression < Location, Expression > getResultCompoundExpression ()
+  public CompoundExpression < Location, Closure > getResultCompoundExpression ()
   {
     return this.resultCompoundExpression;
   }
