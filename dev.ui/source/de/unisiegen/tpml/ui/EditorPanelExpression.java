@@ -452,6 +452,7 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel
     }
     catch ( Exception e )
     {
+      e.printStackTrace();
       logger.debug ( "Could not create new BigStepClosureView", e );//$NON-NLS-1$
       JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
           .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$

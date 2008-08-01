@@ -19,17 +19,13 @@ import javax.swing.SwingUtilities;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
-import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofNode;
-import de.unisiegen.tpml.core.expressions.Closure;
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.expressions.Location;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.bigstep.BigStepNodeListener;
-import de.unisiegen.tpml.graphics.components.CompoundExpression;
+import de.unisiegen.tpml.graphics.components.CompoundExpressionBigStepClosure;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
 import de.unisiegen.tpml.graphics.components.MenuGuessItem;
@@ -43,7 +39,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
 
 /**
- * Graphics representation of a {@link BigStepProofNode} <br>
+ * Graphics representation of a {@link BigStepClosureProofNode} <br>
  * <br>
  * A usual look of a node may be given in the following pictur. It shows the
  * second node within the tree of the BigStepper of the Expression:
@@ -138,7 +134,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
   /**
    * Component containing the expression and the store.
    */
-  private CompoundExpression < Location, Closure > compoundExpression;
+  private CompoundExpressionBigStepClosure compoundExpression;
 
 
   /**
@@ -151,7 +147,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
   /**
    * Component containing the result-expression and the result-store.
    */
-  private CompoundExpression < Location, Closure > resultCompoundExpression;
+  private CompoundExpressionBigStepClosure resultCompoundExpression;
 
 
   /**
@@ -212,14 +208,14 @@ public class BigStepClosureNodeComponent extends JComponent implements
     this.indexLabel = new JLabel ();
     this.indexLabel.addMouseListener ( new OutlineMouseListener ( this ) );
     add ( this.indexLabel );
-    this.compoundExpression = new CompoundExpression < Location, Closure > ();
+    this.compoundExpression = new CompoundExpressionBigStepClosure ();
     this.compoundExpression
         .addMouseListener ( new OutlineMouseListener ( this ) );
     add ( this.compoundExpression );
     this.downArrowLabel = new JLabel ();
     add ( this.downArrowLabel );
     this.downArrowLabel.setText ( " \u21d3 " ); //$NON-NLS-1$
-    this.resultCompoundExpression = new CompoundExpression < Location, Closure > ();
+    this.resultCompoundExpression = new CompoundExpressionBigStepClosure  ();
     this.resultCompoundExpression.addMouseListener ( new OutlineMouseListener (
         this ) );
     add ( this.resultCompoundExpression );
@@ -495,36 +491,13 @@ public class BigStepClosureNodeComponent extends JComponent implements
    */
   public void changeNode ()
   {
-    this.compoundExpression.setExpression ( this.proofNode.getExpression () );
-    // only if memory is enabled set the store because the
-    // store is always valid
-   // if ( this.proofModel.isMemoryEnabled () )
-   // {
-   //   this.compoundExpression.setEnvironment ( this.proofNode.getStore () );
-   // }
-   // else
-    {
-      this.compoundExpression.setEnvironment ( null );
-    }
-    if ( this.proofNode.getResult () != null )
-    {
-      this.resultCompoundExpression.setExpression ( this.proofNode.getResult ()
-          .getValue () );
-      //if ( this.proofModel.isMemoryEnabled () )
-      //{
-      //  this.resultCompoundExpression.setEnvironment ( this.proofNode
-      //      .getResult ().getStore () );
-      //}
-      //else
-      {
-        this.resultCompoundExpression.setEnvironment ( null );
-      }
-    }
-    else
-    {
-      this.resultCompoundExpression.setExpression ( null );
-      this.resultCompoundExpression.setEnvironment ( null );
-    }
+    if(this.proofNode.getClosure() != null)
+      this.compoundExpression.setClosure ( this.proofNode.getClosure () );
+
+    this.resultCompoundExpression.setClosure (
+        this.proofNode.getResult() == null
+        ? null
+        : this.proofNode.getResult ().getClosure ());
   }
 
 
@@ -742,7 +715,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
    * @return The compoundExpression.
    * @see #compoundExpression
    */
-  public CompoundExpression < Location, Closure > getCompoundExpression ()
+  public CompoundExpressionBigStepClosure getCompoundExpression ()
   {
     return this.compoundExpression;
   }
@@ -754,7 +727,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
    * @return The resultCompoundExpression.
    * @see #resultCompoundExpression
    */
-  public CompoundExpression < Location, Closure > getResultCompoundExpression ()
+  public CompoundExpressionBigStepClosure getResultCompoundExpression ()
   {
     return this.resultCompoundExpression;
   }

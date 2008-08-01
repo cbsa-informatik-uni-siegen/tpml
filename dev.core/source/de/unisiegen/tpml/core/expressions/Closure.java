@@ -79,7 +79,7 @@ public class Closure implements PrettyPrintable, LatexPrintable
         this, 0 );
     builder.addBuilder ( getExpression().toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
     builder.addBuilder ( getEnvironment().toPrettyStringBuilder ( prettyStringBuilderFactory), 1 );
-    return null;
+    return builder;
   }
 
 
