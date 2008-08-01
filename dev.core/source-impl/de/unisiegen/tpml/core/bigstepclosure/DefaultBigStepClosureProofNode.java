@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode;
+import de.unisiegen.tpml.core.interpreters.DefaultStore;
 import de.unisiegen.tpml.core.latex.LatexCommandList;
 import de.unisiegen.tpml.core.latex.LatexInstructionList;
 import de.unisiegen.tpml.core.latex.LatexPackageList;
@@ -35,7 +36,9 @@ public final class DefaultBigStepClosureProofNode extends
 
   public DefaultBigStepClosureProofNode ( final Closure closure )
   {
-    super ( closure.getExpression (), null );
+    super ( closure.getExpression (), new DefaultStore () ); // FIXME: we can't
+                                                              // get rid of the
+                                                              // store here
     this.environment = closure.getEnvironment ();
   }
 

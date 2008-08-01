@@ -98,6 +98,7 @@ public final class L1BigStepClosureProofRuleSet extends
   {
     if ( node.getChildCount () < 2 )
       return;
+    
     BigStepClosureProofNode child0 = node.getChildAt ( 0 ), child1 = node
         .getChildAt ( 1 );
 
@@ -162,7 +163,7 @@ public final class L1BigStepClosureProofRuleSet extends
       Closure result0 = child0.getResult ().getClosure ();
       Lambda lambda = ( Lambda ) result0.getExpression ();
       Closure closure = child1.getResult ().getClosure ();
-      ClosureEnvironment environment = result0.getEnvironment ();
+      ClosureEnvironment environment = result0.cloneEnvironment ();
       environment.put ( lambda.getId (), closure );
       context.addProofNode ( node, new Closure ( lambda.getE (), environment ) );
     }

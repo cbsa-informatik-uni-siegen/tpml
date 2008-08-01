@@ -39,6 +39,10 @@ public class Closure implements PrettyPrintable, LatexPrintable
     return env;
   }
 
+  public ClosureEnvironment cloneEnvironment()
+  {
+    return (ClosureEnvironment)getEnvironment().clone ();
+  }
 
   public String toString ()
   {
@@ -78,7 +82,7 @@ public class Closure implements PrettyPrintable, LatexPrintable
     PrettyStringBuilder builder = prettyStringBuilderFactory.newBuilder (
         this, 0 );
     builder.addBuilder ( getExpression().toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
-    builder.addBuilder ( getEnvironment().toPrettyStringBuilder ( prettyStringBuilderFactory), 1 );
+    builder.addBuilder ( getEnvironment().toPrettyStringBuilder ( prettyStringBuilderFactory), 0 );
     return builder;
   }
 

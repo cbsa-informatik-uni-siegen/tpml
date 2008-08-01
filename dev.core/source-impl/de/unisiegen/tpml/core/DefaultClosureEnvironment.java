@@ -53,15 +53,17 @@ public final class DefaultClosureEnvironment extends
     builder.addText ( PRETTY_LBRACKET );
 
     Enumeration < Identifier > e = this.symbols ();
-    int idx = 0;
     while ( e.hasMoreElements () )
     {
       Identifier id = e.nextElement ();
       Closure closure = this.get ( id );
+      
+      if(closure.getEnvironment() == this)
+        continue;
 
-      builder.addBuilder ( id.toPrettyStringBuilder ( fac ), idx++ );
+      builder.addBuilder ( id.toPrettyStringBuilder ( fac ), 0 );
       builder.addText ( PRETTY_COLON );
-      builder.addBuilder ( closure.toPrettyStringBuilder ( fac ), idx++ );
+      builder.addBuilder ( closure.toPrettyStringBuilder ( fac ), 0 );
 
       if ( e.hasMoreElements () )
         builder.addText ( PRETTY_COMMA );
@@ -126,4 +128,17 @@ public final class DefaultClosureEnvironment extends
   {
     return new DefaultClosureEnvironment ();
   }
+  
+  public Object clone()
+  {
+    DefaultClosureEnvironment cl = new DefaultClosureEnvironment();
+    Enumeration < Identifier > e = super.symbols ();
+    while ( e.hasMoreElements () )
+    {
+      final Identifier id = e.nextElement ();
+      cl.put(id, this.get ( id ));
+    }
+    return cl;
+  }
 }
+

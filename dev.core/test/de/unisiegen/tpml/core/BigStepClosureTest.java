@@ -54,42 +54,6 @@ public final class BigStepClosureTest extends JFrame
           row, hasFocus );
       BigStepClosureProofNode node = ( BigStepClosureProofNode ) value;
       StringBuilder builder = new StringBuilder ();
-      /*boolean memoryEnabled = ( ( BigStepClosureProofModel ) tree.getModel () )
-          .isMemoryEnabled ();
-      builder.append ( '[' );
-      for ( int n = 0 ; n < node.getSteps ().length ; ++n )
-      {
-        if ( n > 0 )
-          builder.append ( ", " );
-        builder.append ( node.getSteps () [ n ].getRule ().getName () );
-      }
-      builder.append ( "] -> " );
-      if ( memoryEnabled )
-      {
-        builder.append ( '(' );
-      }
-      builder.append ( node.getExpression () );
-      if ( memoryEnabled )
-      {
-        builder.append ( ", " );
-        builder.append ( node.getStore () );
-        builder.append ( ')' );
-      }
-      builder.append ( " \u21d3 " );
-      if ( node.getResult () != null )
-      {
-        if ( memoryEnabled )
-        {
-          builder.append ( '(' );
-        }
-        builder.append ( node.getResult ().getValue () );
-        if ( memoryEnabled )
-        {
-          builder.append ( ", " );
-          builder.append ( node.getResult ().getStore () );
-          builder.append ( ')' );
-        }
-      }*/
       
       for ( int n = 0 ; n < node.getSteps ().length ; ++n )
       {
@@ -113,7 +77,7 @@ public final class BigStepClosureTest extends JFrame
       Language language = factory.getLanguageById ( "l1" );
       
       //final String testexpr = "(lambda x.(+) 5 x) 2 ";
-      final String testexpr = "(lambda x. if (=) x 0 then 42 else 1337) 1";
+      final String testexpr = "(lambda x. if 0 then x else 1337) 1";
       //final String testexpr = "if (=) 1 0 then 42 else 1337 ";
       
       Expression expression = language.newParser ( new StringReader ( testexpr ) )
