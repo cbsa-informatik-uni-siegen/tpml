@@ -13,6 +13,7 @@ import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JComponent;
 
+import de.unisiegen.tpml.core.entities.DefaultUnifyProofExpression;
 import de.unisiegen.tpml.core.entities.TypeEquationList;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
@@ -38,20 +39,27 @@ public class CompoundEquationUnify extends JComponent
   /**
    * Renderer that is used to render the expressions
    */
+  // private PrettyStringRenderer equationRenderer;
+  // private PrettyStringRenderer substitutionRenderer;
   private PrettyStringRenderer renderer;
 
 
-  /**
-   * The size of the Typformulars.
-   */
-  private Dimension equationSize;
+  private DefaultUnifyProofExpression unifyProofExpression;
 
 
-  /**
-   * The size of the Subistitutions.
-   */
-  private Dimension substitutionSize;
+  private Dimension renderSize;
 
+
+  // /**
+  // * The size of the Typformulars.
+  // */
+  // private Dimension equationSize;
+  //
+  //
+  // /**
+  // * The size of the Subistitutions.
+  // */
+  // private Dimension substitutionSize;
 
   /**
    * saves the position where the mouse starts the dragging
@@ -168,12 +176,14 @@ public class CompoundEquationUnify extends JComponent
   {
     super ();
     this.bonds = new ShowBonds ();
-    this.substitutionSize = new Dimension ( 0, 0 );
-    this.equationSize = new Dimension ( 0, 0 );
+    // this.substitutionSize = new Dimension ( 0, 0 );
+    // this.equationSize = new Dimension ( 0, 0 );
+    this.renderSize = new Dimension ( 0, 0 );
     this.toListenForMouse = new ToListenForMouseContainer ();
     this.alternativeColor = null;
     this.spaceInFrontOf = 10;
     this.draggedBesideMousePointer = new Point ( 0, 0 );
+    this.unifyProofExpression = new DefaultUnifyProofExpression ();
     // this.underlineExpression = null ;
     CompoundEquationUnify.this.setDoubleBuffered ( true );
     // the MouseMotionListner only implements the text shown next to the
@@ -381,14 +391,14 @@ public class CompoundEquationUnify extends JComponent
   public void setAlternativeColor ( Color color )
   {
     this.alternativeColor = color;
+    // if ( this.equationRenderer != null )
+    // {
+    // this.equationRenderer.setAlternativeColor ( color );
+    // }
+    // if(this.substitutionRenderer != null)
+    // this.substitutionRenderer.setAlternativeColor ( color );
     if ( this.renderer != null )
-    {
       this.renderer.setAlternativeColor ( color );
-    }
-    /*
-     * if ( this.substitutionRenderer != null ) {
-     * this.substitutionRenderer.setAlternativeColor ( color ); }
-     */
   }
 
 
@@ -397,10 +407,14 @@ public class CompoundEquationUnify extends JComponent
    */
   public void reset ()
   {
+    // if ( this.equationRenderer != null )
+    // {
+    // this.equationRenderer.checkLinewraps ();
+    // }
+    // if(this.substitutionRenderer != null)
+    // this.substitutionRenderer.checkLinewraps ();
     if ( this.renderer != null )
-    {
       this.renderer.checkLinewraps ();
-    }
   }
 
 
@@ -496,25 +510,30 @@ public class CompoundEquationUnify extends JComponent
   public void setDefaultTypeSubstitutionList (
       TypeSubstitutionList defaultTypeSubstitutionListP )
   {
-    /*
-     * // check if we have a new environment if (
-     * this.defaultTypeSubstitutionList != defaultTypeSubstitutionListP ) { //
-     * update to the new environment this.defaultTypeSubstitutionList =
-     * defaultTypeSubstitutionListP; // check what to do with the renderer if (
-     * this.defaultTypeSubstitutionList == null ) { this.substitutionRenderer =
-     * null; } else { if ( this.substitutionRenderer == null ) {
-     * this.substitutionRenderer = new SubstitutionRenderer ();
-     * this.substitutionRenderer .setAlternativeColor ( this.alternativeColor ); }
-     * this.substitutionRenderer .setDefaultTypeSubstitutionList (
-     * this.defaultTypeSubstitutionList ); } // be sure to schedule a repaint }
-     */
+    // if ( this.defaultTypeSubstitutionList != defaultTypeSubstitutionListP )
+    // {
+    // this.defaultTypeSubstitutionList = defaultTypeSubstitutionListP;
+    // if ( this.defaultTypeSubstitutionList == null )
+    // {
+    // this.substitutionRenderer = null;
+    // }
+    // else
+    // {
+    // if ( this.substitutionRenderer == null )
+    // {
+    // this.substitutionRenderer = new PrettyStringRenderer ();
+    // this.substitutionRenderer.setAlternativeColor ( this.alternativeColor );
+    // }
+    // this.substitutionRenderer.setPrettyString (
+    // this.defaultTypeSubstitutionList
+    // .toPrettyString () );
+    // }
+    // }
     if ( this.defaultTypeSubstitutionList != defaultTypeSubstitutionListP )
     {
       this.defaultTypeSubstitutionList = defaultTypeSubstitutionListP;
       if ( this.defaultTypeSubstitutionList == null )
-      {
         this.renderer = null;
-      }
       else
       {
         if ( this.renderer == null )
@@ -522,10 +541,11 @@ public class CompoundEquationUnify extends JComponent
           this.renderer = new PrettyStringRenderer ();
           this.renderer.setAlternativeColor ( this.alternativeColor );
         }
-        this.renderer.setPrettyString ( this.defaultTypeSubstitutionList
-            .toPrettyString () );
+        this.unifyProofExpression
+            .setSubstitutionList ( this.defaultTypeSubstitutionList );
       }
     }
+
     repaint ();
   }
 
@@ -537,26 +557,31 @@ public class CompoundEquationUnify extends JComponent
    */
   public void setTypeEquationList ( TypeEquationList typeEquationListP )
   {
-    /*
-     * // check if we have a new environment if ( this.typeEquationList !=
-     * typeFormulaListP ) { // update to the new environment
-     * this.typeEquationList = typeFormulaListP; // check what to do with the
-     * renderer if ( this.typeEquationList == null ) { this.typeFormularRenderer =
-     * null; } else { if ( this.typeFormularRenderer == null ) {
-     * this.typeFormularRenderer = new TypeFormularRenderer ();
-     * this.typeFormularRenderer .setToListenForMoudeContainer (
-     * this.toListenForMouse ); this.typeFormularRenderer .setAlternativeColor (
-     * this.alternativeColor ); } this.typeFormularRenderer.setTypeFormulaList (
-     * this.typeEquationList ); } // be sure to schedule a repaint }
-     */
-    if ( this.typeEquationList != null )
+    // if ( this.typeEquationList != typeEquationListP )
+    // {
+    // this.typeEquationList = typeEquationListP;
+    // if ( this.typeEquationList == null
+    // && this.defaultTypeSubstitutionList == null )
+    // {
+    // this.equationRenderer = null;
+    // }
+    // else
+    // {
+    // if ( this.equationRenderer == null )
+    // {
+    // this.equationRenderer = new PrettyStringRenderer ();
+    // this.equationRenderer.setAlternativeColor ( this.alternativeColor );
+    // }
+    // this.equationRenderer
+    // .setPrettyString ( this.typeEquationList.toPrettyString () );
+    // }
+    // }
+    if ( this.typeEquationList != typeEquationListP )
     {
       this.typeEquationList = typeEquationListP;
       if ( this.typeEquationList == null
           && this.defaultTypeSubstitutionList == null )
-      {
         this.renderer = null;
-      }
       else
       {
         if ( this.renderer == null )
@@ -564,8 +589,7 @@ public class CompoundEquationUnify extends JComponent
           this.renderer = new PrettyStringRenderer ();
           this.renderer.setAlternativeColor ( this.alternativeColor );
         }
-        this.renderer
-            .setPrettyString ( this.typeEquationList.toPrettyString () );
+        this.unifyProofExpression.setTypeEquationList ( this.typeEquationList );
       }
     }
     repaint ();
@@ -589,46 +613,65 @@ public class CompoundEquationUnify extends JComponent
     {
       maxWidth = Integer.MAX_VALUE;
     }
-    // check whether there is Substitution...
-    if ( ( this.defaultTypeSubstitutionList != null )
-    // && ( this.defaultTypeSubstitutionList.size () > 0 ) )
-        && ( this.defaultTypeSubstitutionList.getFirst () != null ) )
-    {
-      /*
-       * TODO: cu - test this code
-       */
-      this.renderer.setPrettyString ( this.defaultTypeSubstitutionList
-          .toPrettyString () );
-      // The dimension the rendere needs to render the Substitutions
-      // this.substitutionSize = this.substitutionRenderer.getNeededSize ();
-      this.substitutionSize = this.renderer.getNeededSize ( maxWidth );
-      // The higth is simpel
-      result.height = this.substitutionSize.height;
-      result.width = this.substitutionSize.width;
-      result.width += this.spaceInFrontOf;
-    }
-    // check whether there are type equations...
-    if ( ( this.typeEquationList != null )
-    // && ( this.typeEquationList.size () > 0 ) )
-        && ( this.typeEquationList.getFirst () != null ) )
-    {
-      /*
-       * TODO: cu - test this code
-       */
-      this.renderer.setPrettyString ( this.typeEquationList.toPrettyString () );
-      this.equationSize = this.renderer.getNeededSize ( maxWidth );
-      result.width += Math.max ( this.equationSize.width + this.spaceInFrontOf,
-          result.width );
-      result.height = this.equationSize.height + this.substitutionSize.height;
-      // TODO printing...
-      /*
-       * this.typeFormulaSize = this.typeFormularRenderer .getNeededSize (
-       * maxWidth ); result.width += Math.max ( this.typeFormulaSize.width +
-       * this.spaceInFrontOf, result.width ); result.height =
-       * this.typeFormulaSize.height + this.substitutionSize.height;
-       */
-
-    }
+    this.renderer
+        .setPrettyString ( this.unifyProofExpression.toPrettyString () );
+    this.renderSize = this.renderer.getNeededSize ( maxWidth );
+    result.height = this.renderSize.height;
+    result.width = this.renderSize.width;
+    // // check whether there is Substitution...
+    // if ( ( this.defaultTypeSubstitutionList != null )
+    // // && ( this.defaultTypeSubstitutionList.size () > 0 ) )
+    // && ( this.defaultTypeSubstitutionList.getFirst () != null ) )
+    // {
+    // /*
+    // * TODO: cu - test this code
+    // */
+    // // this.substitutionRenderer.setPrettyString (
+    // this.defaultTypeSubstitutionList
+    // // .toPrettyString () );
+    // // this.substitutionSize = this.substitutionRenderer.getNeededSize (
+    // maxWidth );
+    // this.renderer.setPrettyString ( this.unifyProofExpression.toPrettyString
+    // () );
+    // this.renderSize = this.renderer.getNeededSize ( maxWidth );
+    //      
+    // // The higth is simpel
+    // // result.height = this.substitutionSize.height;
+    // // result.width = this.substitutionSize.width;
+    // result.height = this.renderSize.height;
+    // result.width = this.renderSize.width;
+    // result.width += this.spaceInFrontOf;
+    // }
+    // // check whether there are type equations...
+    // if ( ( this.typeEquationList != null )
+    // // && ( this.typeEquationList.size () > 0 ) )
+    // && ( this.typeEquationList.getFirst () != null ) )
+    // {
+    // /*
+    // * TODO: cu - test this code
+    // */
+    // // this.equationRenderer.setPrettyString (
+    // this.typeEquationList.toPrettyString () );
+    // // this.equationSize = this.equationRenderer.getNeededSize ( maxWidth );
+    // this.renderer.setPrettyString ( this.unifyProofExpression.toPrettyString
+    // () );
+    // this.renderSize = this.renderer.getNeededSize ( maxWidth );
+    //      
+    // // result.width += Math.max ( this.equationSize.width +
+    // this.spaceInFrontOf,
+    // // result.width );
+    // // result.height = this.equationSize.height +
+    // this.substitutionSize.height;
+    //      
+    // // TODO printing...
+    // /*
+    // * this.typeFormulaSize = this.typeFormularRenderer .getNeededSize (
+    // * maxWidth ); result.width += Math.max ( this.typeFormulaSize.width +
+    // * this.spaceInFrontOf, result.width ); result.height =
+    // * this.typeFormulaSize.height + this.substitutionSize.height;
+    // */
+    //
+    // }
     return result;
   }
 
@@ -733,45 +776,25 @@ public class CompoundEquationUnify extends JComponent
     int posX = 0;
     int posY = 0;
 
-    if ( this.defaultTypeSubstitutionList != TypeSubstitutionList.EMPTY_LIST )
-    {
-      posX += this.spaceInFrontOf;
-      this.renderer.render ( posX, posY, this.substitutionSize.width,
-          getHeight (), gc, this.bonds, this.toListenForMouse );
-      posY += this.substitutionSize.height;
-    }
-
-    if ( !this.typeEquationList.isEmpty () )
-    {
-      this.renderer.render ( posX, posY, this.equationSize.width, getHeight (),
+    // if ( this.defaultTypeSubstitutionList != null )
+    // {
+    // posX += this.spaceInFrontOf;
+    // this.substitutionRenderer.render ( posX, posY,
+    // this.substitutionSize.width,
+    // getHeight (), gc, this.bonds, this.toListenForMouse );
+    // posY += this.substitutionSize.height;
+    // }
+    //
+    // if ( this.typeEquationList != null )
+    // {
+    // this.equationRenderer.render ( posX, posY, this.equationSize.width,
+    // getHeight (),
+    // gc, this.bonds, this.toListenForMouse );
+    // }
+    if ( this.defaultTypeSubstitutionList != null
+        && this.typeEquationList != null )
+      this.renderer.render ( posX, posY, this.renderSize.width, getHeight (),
           gc, this.bonds, this.toListenForMouse );
-    }
-    /*
-     * int posX = 0; int posY = 0; // if there is an substitution render it now
-     * if ( ( this.defaultTypeSubstitutionList != null ) && (
-     * this.defaultTypeSubstitutionList.size () > 0 ) ) { posX +=
-     * this.spaceInFrontOf; this.substitutionRenderer.renderer ( posX, posY,
-     * this.substitutionSize.width, getHeight (), gc ); posY +=
-     * this.substitutionSize.height; } // else if
-     * (this.defaultTypeSubstitutionList instanceof TypeEnvironment) // { // //
-     * draw the environment first // this.substitutionRenderer.renderer(posX,
-     * posY, // this.substitutionSize.width, getHeight(), gc); // posX +=
-     * this.substitutionSize.width; // // draw the arrow character in the
-     * vertical center // int centerV = getHeight() / 2; // centerV +=
-     * AbstractRenderer.getTextFontMetrics().getAscent() / 2; //
-     * gc.setFont(AbstractRenderer.getTextFont()); //
-     * gc.setColor(AbstractRenderer.getTextColor()); //
-     * gc.drawString(CompoundExpressionTypeInference.arrowStr, posX, centerV); //
-     * posX += //
-     * AbstractRenderer.getTextFontMetrics().stringWidth(CompoundExpressionTypeInference.arrowStr); // //
-     * draw the expression at the last position. //
-     * this.expressionRenderer.render(posX, posY, getWidth(), getHeight(), gc, //
-     * this.bonds, this.toListenForMouse); // } if ( this.typeEquationList !=
-     * null ) { // this.typeFormularRenderer.renderer( posX, posY, //
-     * this.typeFormulaSize.width, getHeight (), gc) ;
-     * this.typeFormularRenderer.renderer ( posX, posY,
-     * this.typeFormulaSize.width, this.typeFormulaSize.height, gc ); }
-     */
 
     // last render the string besinde the mousepointer
     if ( this.dragged )
