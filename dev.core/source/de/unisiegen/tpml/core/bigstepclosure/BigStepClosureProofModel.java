@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.bigstepclosure;
 
+
 import java.text.MessageFormat;
 
 import org.apache.log4j.Logger;
@@ -23,25 +24,28 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
+
 /**
  * TODO
- *
  */
-public final class BigStepClosureProofModel extends AbstractInterpreterProofModel
+public final class BigStepClosureProofModel extends
+    AbstractInterpreterProofModel
 {
-  public BigStepClosureProofModel( Expression expression,
-      AbstractProofRuleSet pRuleSet)
+
+  public BigStepClosureProofModel ( Expression expression,
+      AbstractProofRuleSet pRuleSet )
   {
-    super( new DefaultBigStepClosureProofNode (expression), pRuleSet);
+    super ( new DefaultBigStepClosureProofNode ( expression ), pRuleSet );
   }
 
 
-  public void setOverlap(int i)
+  public void setOverlap ( int i )
   {
-    
+
   }
-  
-  public void guess(ProofNode node) throws ProofGuessException
+
+
+  public void guess ( ProofNode node ) throws ProofGuessException
   {
     if ( node == null )
     {
@@ -107,22 +111,28 @@ public final class BigStepClosureProofModel extends AbstractInterpreterProofMode
     throw new ProofGuessException (
         Messages.getString ( "InterpreterModel.0" ), node ); //$NON-NLS-1$
   }
-  
-  public void setPages(int i)
+
+
+  public void setPages ( int i )
   {
-    
+
   }
-  
-  public void prove(ProofRule rule, ProofNode node) throws ProofRuleException
+
+
+  public void prove ( ProofRule rule, ProofNode node )
+      throws ProofRuleException
   {
-    apply ( ( BigStepClosureProofRule ) rule, ( DefaultBigStepClosureProofNode ) node );
+    apply ( ( BigStepClosureProofRule ) rule,
+        ( DefaultBigStepClosureProofNode ) node );
   }
-  
+
+
   private void apply ( final BigStepClosureProofRule rule,
       final DefaultBigStepClosureProofNode node ) throws ProofRuleException
   {
     // allocate a new big step proof context
-    DefaultBigStepClosureProofContext context = new DefaultBigStepClosureProofContext ( this );
+    DefaultBigStepClosureProofContext context = new DefaultBigStepClosureProofContext (
+        this );
     try
     {
       // try to apply the rule to the node
@@ -175,9 +185,11 @@ public final class BigStepClosureProofModel extends AbstractInterpreterProofMode
       throw e;
     }
   }
-  
+
+
   public void contextAddProofNode ( DefaultBigStepClosureProofContext context,
-      final DefaultBigStepClosureProofNode node, final DefaultBigStepClosureProofNode child )
+      final DefaultBigStepClosureProofNode node,
+      final DefaultBigStepClosureProofNode child )
   {
     context.addRedoAction ( new Runnable ()
     {
@@ -204,9 +216,12 @@ public final class BigStepClosureProofModel extends AbstractInterpreterProofMode
       }
     } );
   }
-  
-  public void contextSetProofNodeResult ( final DefaultBigStepClosureProofContext context,
-      final DefaultBigStepClosureProofNode node, final BigStepClosureProofResult result )
+
+
+  public void contextSetProofNodeResult (
+      final DefaultBigStepClosureProofContext context,
+      final DefaultBigStepClosureProofNode node,
+      final BigStepClosureProofResult result )
   {
     final BigStepClosureProofResult oldResult = node.getResult ();
     context.addRedoAction ( new Runnable ()
@@ -230,12 +245,12 @@ public final class BigStepClosureProofModel extends AbstractInterpreterProofMode
       }
     } );
   }
-  
+
+
   void contextSetProofNodeRule ( DefaultBigStepClosureProofContext context,
-      final DefaultBigStepClosureProofNode node, final BigStepClosureProofRule rule )
+      final DefaultBigStepClosureProofNode node,
+      final BigStepClosureProofRule rule )
   {
-    System.err.println("rule: " + rule.toString());
-    
     final ProofStep [] oldSteps = node.getSteps ();
     context.addRedoAction ( new Runnable ()
     {
@@ -259,42 +274,52 @@ public final class BigStepClosureProofModel extends AbstractInterpreterProofMode
       }
     } );
   }
-  
-  public LatexPackageList getLatexPackages()
+
+
+  public LatexPackageList getLatexPackages ()
   {
     return null;
   }
-  
-  public LatexCommandList getLatexCommands()
+
+
+  public LatexCommandList getLatexCommands ()
   {
     return null;
   }
-  
-  public LatexInstructionList getLatexInstructions()
+
+
+  public LatexInstructionList getLatexInstructions ()
   {
     return null;
   }
-  
-  public LatexStringBuilder toLatexStringBuilder(LatexStringBuilderFactory fac, int i)
+
+
+  public LatexStringBuilder toLatexStringBuilder (
+      LatexStringBuilderFactory fac, int i )
   {
     return null;
   }
-  
-  public LatexString toLatexString()
+
+
+  public LatexString toLatexString ()
   {
     return null;
   }
-  
-  public PrettyString toPrettyString()
+
+
+  public PrettyString toPrettyString ()
   {
     return null;
   }
-  
-  public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory fac)
+
+
+  public PrettyStringBuilder toPrettyStringBuilder (
+      PrettyStringBuilderFactory fac )
   {
     return null;
   }
-  
+
+
   private static final Logger logger = Logger
-  .getLogger ( BigStepClosureProofModel.class );
+      .getLogger ( BigStepClosureProofModel.class );
 }

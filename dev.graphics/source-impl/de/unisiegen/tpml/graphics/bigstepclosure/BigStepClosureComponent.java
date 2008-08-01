@@ -538,9 +538,15 @@ public class BigStepClosureComponent extends AbstractProofComponent implements
 
     gc.setColor ( Color.BLACK );
     ProofNode rootNode = this.proofModel.getRoot ();
+    try
+    {
     TreeArrowRenderer.renderArrows ( rootNode, this.treeNodeLayout
         .getSpacing (), gc );
-
+    }
+    catch(Exception e)
+    {
+      e.printStackTrace();
+    }
   }
 
 

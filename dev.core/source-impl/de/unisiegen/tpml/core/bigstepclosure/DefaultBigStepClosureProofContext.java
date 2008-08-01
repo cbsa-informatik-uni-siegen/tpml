@@ -59,13 +59,6 @@ final class DefaultBigStepClosureProofContext implements
   }
 
 
-  public void addProofNode ( final BigStepClosureProofNode node,
-      final Closure closure )
-  {
-    addProofNode ( node, closure, getDefaultStore ( node ) );
-  }
-
-
   private Store getDefaultStore ( final BigStepClosureProofNode node )
   {
     return node.getChildCount () > 0 ? node.getFirstChild ().getStore () : node
@@ -74,11 +67,11 @@ final class DefaultBigStepClosureProofContext implements
 
 
   public void addProofNode ( final BigStepClosureProofNode node,
-      final Closure closure, final Store store )
+      final Closure closure )
   {
     this.model.contextAddProofNode ( this,
         ( DefaultBigStepClosureProofNode ) node,
-        new DefaultBigStepClosureProofNode ( closure, store ) );
+        new DefaultBigStepClosureProofNode ( closure ) );
   }
 
 

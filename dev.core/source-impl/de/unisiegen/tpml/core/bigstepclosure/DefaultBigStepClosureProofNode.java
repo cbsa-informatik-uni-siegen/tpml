@@ -6,12 +6,9 @@ import javax.swing.tree.TreeNode;
 import de.unisiegen.tpml.core.ClosureEnvironment;
 import de.unisiegen.tpml.core.DefaultClosureEnvironment;
 import de.unisiegen.tpml.core.ProofStep;
-import de.unisiegen.tpml.core.bigstep.BigStepProofResult;
 import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode;
-import de.unisiegen.tpml.core.interpreters.DefaultStore;
-import de.unisiegen.tpml.core.interpreters.Store;
 import de.unisiegen.tpml.core.latex.LatexCommandList;
 import de.unisiegen.tpml.core.latex.LatexInstructionList;
 import de.unisiegen.tpml.core.latex.LatexPackageList;
@@ -32,15 +29,13 @@ public final class DefaultBigStepClosureProofNode extends
 
   public DefaultBigStepClosureProofNode ( final Expression pExpression )
   {
-    this ( new Closure ( pExpression, new DefaultClosureEnvironment () ),
-        new DefaultStore () );
+    this ( new Closure ( pExpression, new DefaultClosureEnvironment () ) );
   }
 
 
-  public DefaultBigStepClosureProofNode ( final Closure closure,
-      final Store store )
+  public DefaultBigStepClosureProofNode ( final Closure closure )
   {
-    super ( closure.getExpression (), store );
+    super ( closure.getExpression (), null );
     this.environment = closure.getEnvironment ();
   }
 
@@ -207,37 +202,12 @@ public final class DefaultBigStepClosureProofNode extends
   public String toString ()
   {
     StringBuilder builder = new StringBuilder ();
-    boolean memoryEnabled = getExpression ().containsMemoryOperations ();
-    if ( memoryEnabled )
-    {
-      builder.append ( '(' );
-    }
     builder.append ( getExpression () );
-    if ( memoryEnabled )
-    {
-      builder.append ( ", " ); //$NON-NLS-1$
-      builder.append ( getStore () );
-      builder.append ( ')' );
-    }
-
     builder.append ( ' ' );
     builder.append ( getClosure ().getEnvironment ().toString () );
-
     builder.append ( " \u21d3 " ); //$NON-NLS-1$
     if ( this.result != null )
-    {
-      if ( memoryEnabled )
-      {
-        builder.append ( '(' );
-      }
       builder.append ( this.result.getValue () );
-      if ( memoryEnabled )
-      {
-        builder.append ( ", " ); //$NON-NLS-1$
-        builder.append ( this.result.getStore () );
-        builder.append ( ')' );
-      }
-    }
 
     return builder.toString ();
   }

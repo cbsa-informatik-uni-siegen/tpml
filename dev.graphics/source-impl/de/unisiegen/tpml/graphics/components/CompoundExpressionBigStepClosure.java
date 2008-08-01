@@ -49,6 +49,7 @@ public class CompoundExpressionBigStepClosure extends JComponent
    */
   private Expression underlineExpression;
 
+
   /**
    * Whether the expression should be wrapped if there is not enough space to
    * render it in on line.<br>
@@ -114,7 +115,8 @@ public class CompoundExpressionBigStepClosure extends JComponent
       MouseEvent e )
       {
         CompoundExpressionBigStepClosure.this.getToListenForMouse ().reset ();
-        CompoundExpressionBigStepClosure.this.getToListenForMouse ().setMark ( false );
+        CompoundExpressionBigStepClosure.this.getToListenForMouse ().setMark (
+            false );
         CompoundExpressionBigStepClosure.this.repaint ();
       }
     } );
@@ -124,8 +126,8 @@ public class CompoundExpressionBigStepClosure extends JComponent
   /**
    * Sets an alternative color.<br>
    * <br>
-   * Both renderers, the {@link PrettyStringRenderer}
-   * is updated with this color.
+   * Both renderers, the {@link PrettyStringRenderer} is updated with this
+   * color.
    * 
    * @param color The alternative color.
    */
@@ -246,31 +248,33 @@ public class CompoundExpressionBigStepClosure extends JComponent
    */
   public void setClosure ( final Closure pClosure )
   {
-    // check if we have a new expression
-    if ( this.closure == pClosure)
+    // check if we have a new closure
+    if ( this.closure == pClosure )
       return;
-    
-    // update to the new expression
+
     this.closure = pClosure;
 
-      // because of the bounds are cached we need a new one. The expression
-      // might change by translating in coresyntax
-    this.bonds = new ShowBonds ();
-    this.bonds.load ( this.closure.getExpression() ); // FIXME: is this right?
-
+    // because of the bounds are cached we need a new one. The expression
+    // might change by translating in coresyntax
     // check what to do with the renderer
     if ( this.closure == null )
+    {
       this.expressionRenderer = null;
+      this.bonds = null;
+    }
     else
     {
+      this.bonds = new ShowBonds ();
+      this.bonds.load ( this.closure.getExpression () ); // FIXME: is this
+                                                          // right?
+
       if ( this.expressionRenderer == null )
       {
         this.expressionRenderer = new PrettyStringRenderer ();
         this.expressionRenderer.setAlternativeColor ( this.alternativeColor );
       }
-      this.expressionRenderer.setPrettyString ( this.closure
-          .toPrettyString () );
-        // reset the underlineExpression
+      this.expressionRenderer.setPrettyString ( this.closure.toPrettyString () );
+      // reset the underlineExpression
       setUnderlineExpression ( this.underlineExpression );
     }
     // be sure to schedule a repaint
@@ -281,35 +285,30 @@ public class CompoundExpressionBigStepClosure extends JComponent
   /**
    * Calculates the size needed to propperly render the compoundExpression
    * 
-   * @param maxWidth
+   * @param pMaxWidth
    * @return TODO
    */
-  public Dimension getNeededSize ( int maxWidth )
+  public Dimension getNeededSize ( final int pMaxWidth )
   {
+    int maxWidth = pMaxWidth;
     Dimension result = new Dimension ( 0, 0 );
-    if(( this.closure == null ) || ( this.expressionRenderer == null ))
+    if ( ( this.closure == null ) || ( this.expressionRenderer == null ) )
       return result;
-    
-    Dimension neededSize = this.expressionRenderer.getNeededSize(maxWidth);
+
+    Dimension neededSize = this.expressionRenderer.getNeededSize ( maxWidth );
     result.width = neededSize.width;
     result.height = neededSize.height;
-    
+
     if ( this.noLineWrapping )
     {
       // to guaranty that no line wrapping should be performed
       // set the maxWidth = MAX_INT
-      maxWidth = Integer.MAX_VALUE; // yes, it should
+      maxWidth = Integer.MAX_VALUE;
     }
-
-    final Dimension expressionSize = this.expressionRenderer
-        .getNeededSizeAll_ ( maxWidth );
-
-    result.width += expressionSize.width;
 
     result.width += AbstractRenderer.getTextFontMetrics ().stringWidth (
         CompoundExpressionBigStepClosure.arrowStr );
 
-    result.height = Math.max ( result.height, expressionSize.height );
     return result;
   }
 
@@ -340,13 +339,13 @@ public class CompoundExpressionBigStepClosure extends JComponent
         + AbstractRenderer.getFontAscent () );
     posX += AbstractRenderer.getTextFontMetrics ().stringWidth (
         CompoundExpressionBigStepClosure.arrowStr );
-      // draw the expression at the last position.
+    // draw the expression at the last position.
 
-    this.expressionRenderer.render ( posX, posY, getWidth (), getHeight (),
-        gc, this.bonds, this.toListenForMouse );
-      // this.expressionRenderer.render ( posX , posY , getWidth()
-      // ,AbstractRenderer.getAbsoluteHeight (), gc , bonds , toListenForMouse )
-      // ;
+    this.expressionRenderer.render ( posX, posY, getWidth (), getHeight (), gc,
+        this.bonds, this.toListenForMouse );
+    // this.expressionRenderer.render ( posX , posY , getWidth()
+    // ,AbstractRenderer.getAbsoluteHeight (), gc , bonds , toListenForMouse )
+    // ;
 
     // TODO DEbugging
     // gc.setColor (Color.YELLOW);

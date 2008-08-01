@@ -93,14 +93,15 @@ public class BigStepClosureNodeComponent extends JComponent implements
 
 
   /**
-   * The {@link BigStepClosureProofModel} that will get used to apply the actions on.
+   * The {@link BigStepClosureProofModel} that will get used to apply the
+   * actions on.
    */
   private BigStepClosureProofModel proofModel;
 
 
   /**
-   * The origin {@link BigStepClosureProofNode}. Contains the information this node
-   * gives a graphics representation.
+   * The origin {@link BigStepClosureProofNode}. Contains the information this
+   * node gives a graphics representation.
    */
   private BigStepClosureProofNode proofNode;
 
@@ -193,8 +194,8 @@ public class BigStepClosureNodeComponent extends JComponent implements
    * @param model The model
    * @param pTranslator The translator from the model
    */
-  public BigStepClosureNodeComponent ( BigStepClosureProofNode node, BigStepClosureProofModel model,
-      LanguageTranslator pTranslator )
+  public BigStepClosureNodeComponent ( BigStepClosureProofNode node,
+      BigStepClosureProofModel model, LanguageTranslator pTranslator )
   {
     super ();
     this.proofNode = node;
@@ -215,7 +216,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
     this.downArrowLabel = new JLabel ();
     add ( this.downArrowLabel );
     this.downArrowLabel.setText ( " \u21d3 " ); //$NON-NLS-1$
-    this.resultCompoundExpression = new CompoundExpressionBigStepClosure  ();
+    this.resultCompoundExpression = new CompoundExpressionBigStepClosure ();
     this.resultCompoundExpression.addMouseListener ( new OutlineMouseListener (
         this ) );
     add ( this.resultCompoundExpression );
@@ -297,7 +298,8 @@ public class BigStepClosureNodeComponent extends JComponent implements
 
 
   /**
-   * Adds a new {@link BigStepClosureNodeListener} to the <i>SmallStepNodeComponent</i>
+   * Adds a new {@link BigStepClosureNodeListener} to the
+   * <i>SmallStepNodeComponent</i>
    * 
    * @param listener The listener to be added
    */
@@ -319,8 +321,9 @@ public class BigStepClosureNodeComponent extends JComponent implements
 
 
   /**
-   * Calls the {@link BigStepClosureNodeListener#nodeChanged(BigStepClosureNodeComponent)} of
-   * all listeners.
+   * Calls the
+   * {@link BigStepClosureNodeListener#nodeChanged(BigStepClosureNodeComponent)}
+   * of all listeners.
    */
   private void fireNodeChanged ()
   {
@@ -331,7 +334,8 @@ public class BigStepClosureNodeComponent extends JComponent implements
       {
         continue;
       }
-      ( ( BigStepClosureNodeListener ) listeners [ i + 1 ] ).nodeChanged ( this );
+      ( ( BigStepClosureNodeListener ) listeners [ i + 1 ] )
+          .nodeChanged ( this );
     }
   }
 
@@ -350,7 +354,8 @@ public class BigStepClosureNodeComponent extends JComponent implements
       {
         continue;
       }
-      ( ( BigStepClosureNodeListener ) listeners [ i + 1 ] ).requestJumpToNode ( node );
+      ( ( BigStepClosureNodeListener ) listeners [ i + 1 ] )
+          .requestJumpToNode ( node );
     }
   }
 
@@ -491,13 +496,12 @@ public class BigStepClosureNodeComponent extends JComponent implements
    */
   public void changeNode ()
   {
-    if(this.proofNode.getClosure() != null)
+    if ( this.proofNode.getClosure () != null )
       this.compoundExpression.setClosure ( this.proofNode.getClosure () );
 
-    this.resultCompoundExpression.setClosure (
-        this.proofNode.getResult() == null
-        ? null
-        : this.proofNode.getResult ().getClosure ());
+    this.resultCompoundExpression
+        .setClosure ( this.proofNode.getResult () == null ? null
+            : this.proofNode.getResult ().getClosure () );
   }
 
 
