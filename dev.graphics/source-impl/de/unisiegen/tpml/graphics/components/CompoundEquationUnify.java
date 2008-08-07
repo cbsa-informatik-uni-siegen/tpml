@@ -39,27 +39,19 @@ public class CompoundEquationUnify extends JComponent
   /**
    * Renderer that is used to render the expressions
    */
-  // private PrettyStringRenderer equationRenderer;
-  // private PrettyStringRenderer substitutionRenderer;
   private PrettyStringRenderer renderer;
 
 
+  /**
+   * represents the expression we want to render
+   */
   private DefaultUnifyProofExpression unifyProofExpression;
 
 
+  /**
+   * in which area shall we render?
+   */
   private Dimension renderSize;
-
-
-  // /**
-  // * The size of the Typformulars.
-  // */
-  // private Dimension equationSize;
-  //
-  //
-  // /**
-  // * The size of the Subistitutions.
-  // */
-  // private Dimension substitutionSize;
 
   /**
    * saves the position where the mouse starts the dragging
@@ -87,14 +79,12 @@ public class CompoundEquationUnify extends JComponent
   /**
    * The current list of DefaultTypeSubsititutions that are rendered.
    */
-  // private ArrayList < TypeSubstitution > defaultTypeSubstitutionList;
   private TypeSubstitutionList defaultTypeSubstitutionList;
 
 
   /**
    * the current Typformulars
    */
-  // private ArrayList < TypeEquation > typeEquationList;
   private TypeEquationList typeEquationList;
 
 
@@ -176,8 +166,6 @@ public class CompoundEquationUnify extends JComponent
   {
     super ();
     this.bonds = new ShowBonds ();
-    // this.substitutionSize = new Dimension ( 0, 0 );
-    // this.equationSize = new Dimension ( 0, 0 );
     this.renderSize = new Dimension ( 0, 0 );
     this.toListenForMouse = new ToListenForMouseContainer ();
     this.alternativeColor = null;
@@ -383,36 +371,22 @@ public class CompoundEquationUnify extends JComponent
   /**
    * Sets an alternative color.<br>
    * <br>
-   * Both renderers, the {@link PrettyStringRenderer} and the
-   * {@link EnvironmentRenderer}, are updated with this color.
+   * The {@link PrettyStringRenderer} will be updated with this color.
    * 
    * @param color The alternative color.
    */
   public void setAlternativeColor ( Color color )
   {
     this.alternativeColor = color;
-    // if ( this.equationRenderer != null )
-    // {
-    // this.equationRenderer.setAlternativeColor ( color );
-    // }
-    // if(this.substitutionRenderer != null)
-    // this.substitutionRenderer.setAlternativeColor ( color );
     if ( this.renderer != null )
       this.renderer.setAlternativeColor ( color );
   }
 
 
   /**
-   * Causes the PrettyStringRenderer to recheck the linewraps
+   * Causes the PrettyStringRenderer to recheck the line wraps
    */
-  public void reset ()
-  {
-    // if ( this.equationRenderer != null )
-    // {
-    // this.equationRenderer.checkLinewraps ();
-    // }
-    // if(this.substitutionRenderer != null)
-    // this.substitutionRenderer.checkLinewraps ();
+  public void reset () {
     if ( this.renderer != null )
       this.renderer.checkLinewraps ();
   }
@@ -510,25 +484,6 @@ public class CompoundEquationUnify extends JComponent
   public void setDefaultTypeSubstitutionList (
       TypeSubstitutionList defaultTypeSubstitutionListP )
   {
-    // if ( this.defaultTypeSubstitutionList != defaultTypeSubstitutionListP )
-    // {
-    // this.defaultTypeSubstitutionList = defaultTypeSubstitutionListP;
-    // if ( this.defaultTypeSubstitutionList == null )
-    // {
-    // this.substitutionRenderer = null;
-    // }
-    // else
-    // {
-    // if ( this.substitutionRenderer == null )
-    // {
-    // this.substitutionRenderer = new PrettyStringRenderer ();
-    // this.substitutionRenderer.setAlternativeColor ( this.alternativeColor );
-    // }
-    // this.substitutionRenderer.setPrettyString (
-    // this.defaultTypeSubstitutionList
-    // .toPrettyString () );
-    // }
-    // }
     if ( this.defaultTypeSubstitutionList != defaultTypeSubstitutionListP )
     {
       this.defaultTypeSubstitutionList = defaultTypeSubstitutionListP;
@@ -557,25 +512,6 @@ public class CompoundEquationUnify extends JComponent
    */
   public void setTypeEquationList ( TypeEquationList typeEquationListP )
   {
-    // if ( this.typeEquationList != typeEquationListP )
-    // {
-    // this.typeEquationList = typeEquationListP;
-    // if ( this.typeEquationList == null
-    // && this.defaultTypeSubstitutionList == null )
-    // {
-    // this.equationRenderer = null;
-    // }
-    // else
-    // {
-    // if ( this.equationRenderer == null )
-    // {
-    // this.equationRenderer = new PrettyStringRenderer ();
-    // this.equationRenderer.setAlternativeColor ( this.alternativeColor );
-    // }
-    // this.equationRenderer
-    // .setPrettyString ( this.typeEquationList.toPrettyString () );
-    // }
-    // }
     if ( this.typeEquationList != typeEquationListP )
     {
       this.typeEquationList = typeEquationListP;
@@ -618,60 +554,7 @@ public class CompoundEquationUnify extends JComponent
     this.renderSize = this.renderer.getNeededSize ( maxWidth );
     result.height = this.renderSize.height;
     result.width = this.renderSize.width;
-    // // check whether there is Substitution...
-    // if ( ( this.defaultTypeSubstitutionList != null )
-    // // && ( this.defaultTypeSubstitutionList.size () > 0 ) )
-    // && ( this.defaultTypeSubstitutionList.getFirst () != null ) )
-    // {
-    // /*
-    // * TODO: cu - test this code
-    // */
-    // // this.substitutionRenderer.setPrettyString (
-    // this.defaultTypeSubstitutionList
-    // // .toPrettyString () );
-    // // this.substitutionSize = this.substitutionRenderer.getNeededSize (
-    // maxWidth );
-    // this.renderer.setPrettyString ( this.unifyProofExpression.toPrettyString
-    // () );
-    // this.renderSize = this.renderer.getNeededSize ( maxWidth );
-    //      
-    // // The higth is simpel
-    // // result.height = this.substitutionSize.height;
-    // // result.width = this.substitutionSize.width;
-    // result.height = this.renderSize.height;
-    // result.width = this.renderSize.width;
-    // result.width += this.spaceInFrontOf;
-    // }
-    // // check whether there are type equations...
-    // if ( ( this.typeEquationList != null )
-    // // && ( this.typeEquationList.size () > 0 ) )
-    // && ( this.typeEquationList.getFirst () != null ) )
-    // {
-    // /*
-    // * TODO: cu - test this code
-    // */
-    // // this.equationRenderer.setPrettyString (
-    // this.typeEquationList.toPrettyString () );
-    // // this.equationSize = this.equationRenderer.getNeededSize ( maxWidth );
-    // this.renderer.setPrettyString ( this.unifyProofExpression.toPrettyString
-    // () );
-    // this.renderSize = this.renderer.getNeededSize ( maxWidth );
-    //      
-    // // result.width += Math.max ( this.equationSize.width +
-    // this.spaceInFrontOf,
-    // // result.width );
-    // // result.height = this.equationSize.height +
-    // this.substitutionSize.height;
-    //      
-    // // TODO printing...
-    // /*
-    // * this.typeFormulaSize = this.typeFormularRenderer .getNeededSize (
-    // * maxWidth ); result.width += Math.max ( this.typeFormulaSize.width +
-    // * this.spaceInFrontOf, result.width ); result.height =
-    // * this.typeFormulaSize.height + this.substitutionSize.height;
-    // */
-    //
-    // }
+
     return result;
   }
 
@@ -776,21 +659,6 @@ public class CompoundEquationUnify extends JComponent
     int posX = 0;
     int posY = 0;
 
-    // if ( this.defaultTypeSubstitutionList != null )
-    // {
-    // posX += this.spaceInFrontOf;
-    // this.substitutionRenderer.render ( posX, posY,
-    // this.substitutionSize.width,
-    // getHeight (), gc, this.bonds, this.toListenForMouse );
-    // posY += this.substitutionSize.height;
-    // }
-    //
-    // if ( this.typeEquationList != null )
-    // {
-    // this.equationRenderer.render ( posX, posY, this.equationSize.width,
-    // getHeight (),
-    // gc, this.bonds, this.toListenForMouse );
-    // }
     if ( this.defaultTypeSubstitutionList != null
         && this.typeEquationList != null )
       this.renderer.render ( posX, posY, this.renderSize.width, getHeight (),

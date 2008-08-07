@@ -107,8 +107,11 @@ public class DefaultUnifyProofExpression implements UnifyProofExpression
     builder.addText ( PRETTY_CONCAT );
     builder.addText ( PRETTY_SPACE );
     builder.addText ( "unify( " ); //$NON-NLS-1$
-    builder.addBuilder ( this.equations
-        .toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
+    if ( this.equations.isEmpty () )
+      builder.addText ( PRETTY_EMPTY_SET );
+    else
+      builder.addBuilder ( this.equations
+          .toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
     builder.addText ( ") " ); //$NON-NLS-1$
     return builder;
   }
