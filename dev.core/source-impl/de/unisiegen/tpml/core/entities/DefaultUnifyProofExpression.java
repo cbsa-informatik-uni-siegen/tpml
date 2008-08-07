@@ -18,7 +18,7 @@ import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
  * pretty string in form of '<substitions> CONCAT unify(<equations>)'
  * 
  * @author Christian Uhrhan
- * @version $Id: UnifyProofStep.java 2825 2008-04-17 17:30:28Z uhrhan $
+ * @version $Id$
  */
 public class DefaultUnifyProofExpression implements UnifyProofExpression
 {

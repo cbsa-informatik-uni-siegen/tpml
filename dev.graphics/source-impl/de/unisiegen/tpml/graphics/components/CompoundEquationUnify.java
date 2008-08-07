@@ -17,7 +17,6 @@ import de.unisiegen.tpml.core.entities.DefaultUnifyProofExpression;
 import de.unisiegen.tpml.core.entities.TypeEquationList;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
-import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
 
@@ -52,6 +51,7 @@ public class CompoundEquationUnify extends JComponent
    * in which area shall we render?
    */
   private Dimension renderSize;
+
 
   /**
    * saves the position where the mouse starts the dragging
@@ -109,12 +109,6 @@ public class CompoundEquationUnify extends JComponent
   private Color alternativeColor;
 
 
-  /**
-   * The arrow symbol that is used between the environment and the expression
-   * when used within the
-   * {@link de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent}
-   */
-  // private static String arrowStr = " \u22b3 ";
   /**
    * Initialises the CompoundExpression with the default values.<br>
    * <br>
@@ -369,6 +363,29 @@ public class CompoundEquationUnify extends JComponent
 
 
   /**
+   * TODO implement
+   * 
+   * @return the source index of the type equation we want to drag and drop
+   */
+  public int getTypeEquationListDNDSourceIndex ()
+  {
+    return 0;
+  }
+
+
+  /**
+   * Returns the type equation lists hash code which is used to identify
+   * {@code typeEquationList} during drag and drop
+   * 
+   * @return the type equation list hash code
+   */
+  public int getTypeEquationListHashCode ()
+  {
+    return this.typeEquationList.hashCode ();
+  }
+
+
+  /**
    * Sets an alternative color.<br>
    * <br>
    * The {@link PrettyStringRenderer} will be updated with this color.
@@ -386,7 +403,8 @@ public class CompoundEquationUnify extends JComponent
   /**
    * Causes the PrettyStringRenderer to recheck the line wraps
    */
-  public void reset () {
+  public void reset ()
+  {
     if ( this.renderer != null )
       this.renderer.checkLinewraps ();
   }
