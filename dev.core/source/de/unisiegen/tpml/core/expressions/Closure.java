@@ -2,8 +2,10 @@ package de.unisiegen.tpml.core.expressions;
 
 
 import de.unisiegen.tpml.core.ClosureEnvironment;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
 import de.unisiegen.tpml.core.latex.LatexCommandList;
 import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
 import de.unisiegen.tpml.core.latex.LatexPackageList;
 import de.unisiegen.tpml.core.latex.LatexPrintable;
 import de.unisiegen.tpml.core.latex.LatexString;
@@ -21,7 +23,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 public class Closure implements PrettyPrintable, LatexPrintable
 {
 
-  public Closure ( Expression exp, ClosureEnvironment env )
+  public Closure ( final Expression exp, final ClosureEnvironment env )
   {
     this.exp = exp;
     this.env = env;
@@ -39,10 +41,12 @@ public class Closure implements PrettyPrintable, LatexPrintable
     return env;
   }
 
-  public ClosureEnvironment cloneEnvironment()
+
+  public ClosureEnvironment cloneEnvironment ()
   {
-    return (ClosureEnvironment)getEnvironment().clone ();
+    return ( ClosureEnvironment ) getEnvironment ().clone ();
   }
+
 
   public String toString ()
   {
@@ -65,7 +69,7 @@ public class Closure implements PrettyPrintable, LatexPrintable
   public PrettyString toPrettyString ()
   {
     return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
-    .toPrettyString ();
+        .toPrettyString ();
   }
 
 
@@ -79,10 +83,12 @@ public class Closure implements PrettyPrintable, LatexPrintable
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory prettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = prettyStringBuilderFactory.newBuilder (
-        this, 0 );
-    builder.addBuilder ( getExpression().toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
-    builder.addBuilder ( getEnvironment().toPrettyStringBuilder ( prettyStringBuilderFactory), 0 );
+    PrettyStringBuilder builder = prettyStringBuilderFactory.newBuilder ( this,
+        0 );
+    builder.addBuilder ( getExpression ().toPrettyStringBuilder (
+        prettyStringBuilderFactory ), 0 );
+    builder.addBuilder ( getEnvironment ().toPrettyStringBuilder (
+        prettyStringBuilderFactory ), 0 );
     return builder;
   }
 
@@ -95,7 +101,11 @@ public class Closure implements PrettyPrintable, LatexPrintable
    */
   public LatexCommandList getLatexCommands ()
   {
-    return null;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
+    commands.add ( this.getExpression () );
+    commands.add ( this.getEnvironment () );
+    return commands;
   }
 
 
@@ -107,7 +117,11 @@ public class Closure implements PrettyPrintable, LatexPrintable
    */
   public LatexInstructionList getLatexInstructions ()
   {
-    return null;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
+    instructions.add ( this.getExpression () );
+    instructions.add ( this.getEnvironment () );
+    return instructions;
   }
 
 
@@ -119,7 +133,11 @@ public class Closure implements PrettyPrintable, LatexPrintable
    */
   public LatexPackageList getLatexPackages ()
   {
-    return null;
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( getLatexPackagesStatic () );
+    packages.add ( this.getExpression () );
+    packages.add ( this.getEnvironment () );
+    return packages;
   }
 
 
@@ -131,7 +149,8 @@ public class Closure implements PrettyPrintable, LatexPrintable
    */
   public LatexString toLatexString ()
   {
-    return null;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -145,8 +164,47 @@ public class Closure implements PrettyPrintable, LatexPrintable
    *      int)
    */
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory latexStringBuilderFactory, int indent )
+      final LatexStringBuilderFactory pLatexStringBuilderFactory,
+      final int pIndent )
   {
-    return null;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
+        LATEX_CLOSURE, pIndent, this.toPrettyString ().toString () );
+    builder.addBuilder ( this.getExpression ().toLatexStringBuilder (
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+    builder.addBuilder ( this.getEnvironment ().toLatexStringBuilder (
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+    return builder;
+  }
+
+
+  public static LatexCommandList getLatexCommandsStatic ()
+  {
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_BYRULE, 1,
+        "\\hspace{-5mm}\\mbox{\\scriptsize\\ #1}", "rule" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_CLOSURE, 2, LATEX_LPAREN
+        + "#1" + LATEX_COMMA + "#2" + LATEX_RPAREN, "expression", "environment" ));
+    return commands;
+  }
+
+
+  public static LatexInstructionList getLatexInstructionsStatic ()
+  {
+    // FIXME
+    LatexInstructionList instructions = new LatexInstructionList();
+    return instructions;
+  }
+
+
+  public static LatexPackageList getLatexPackagesStatic ()
+  {
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.AMSMATH );
+    packages.add ( LatexPackage.AMSTEXT );
+    packages.add ( LatexPackage.COLOR );
+    packages.add ( LatexPackage.IFTHEN );
+    packages.add ( LatexPackage.PSTNODE );
+    packages.add ( LatexPackage.PSTRICKS );
+    return packages;
   }
 }

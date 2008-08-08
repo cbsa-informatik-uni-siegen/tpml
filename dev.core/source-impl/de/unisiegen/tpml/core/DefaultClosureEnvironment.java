@@ -57,8 +57,8 @@ public final class DefaultClosureEnvironment extends
     {
       Identifier id = e.nextElement ();
       Closure closure = this.get ( id );
-      
-      if(closure.getEnvironment() == this)
+
+      if ( closure.getEnvironment () == this )
         continue;
 
       builder.addBuilder ( id.toPrettyStringBuilder ( fac ), 0 );
@@ -77,32 +77,41 @@ public final class DefaultClosureEnvironment extends
 
   public LatexString toLatexString ()
   {
-    return null; // FIXME
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
   public LatexCommandList getLatexCommands ()
   {
-    return null; // FIXME
+    LatexCommandList commands = new LatexCommandList();
+    return commands; // FIXME
   }
 
 
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory fac, int i )
+      LatexStringBuilderFactory fac, int pIndent )
   {
-    return null; // FIXME
+    LatexStringBuilder builder = fac.newBuilder ( 0, LATEX_CLOSURE_ENVIRONMENT,
+        pIndent, this.toPrettyString ().toString () );
+
+    // FIXME
+    
+    return builder;
   }
 
 
   public LatexPackageList getLatexPackages ()
   {
-    return null; // FIXME
+    LatexPackageList packages = new LatexPackageList();
+    return packages; // FIXME
   }
 
 
   public LatexInstructionList getLatexInstructions ()
   {
-    return null; // FIXME
+    LatexInstructionList instructions = new LatexInstructionList();
+    return instructions; // FIXME
   }
 
 
@@ -118,6 +127,7 @@ public final class DefaultClosureEnvironment extends
       builder.append ( ": " );
       builder.append ( super.get ( id ).toString () );
       builder.append ( ' ' );
+   
     }
     builder.append ( ']' );
     return builder.toString ();
@@ -128,17 +138,17 @@ public final class DefaultClosureEnvironment extends
   {
     return new DefaultClosureEnvironment ();
   }
-  
-  public Object clone()
+
+
+  public Object clone ()
   {
-    DefaultClosureEnvironment cl = new DefaultClosureEnvironment();
+    DefaultClosureEnvironment cl = new DefaultClosureEnvironment ();
     Enumeration < Identifier > e = super.symbols ();
     while ( e.hasMoreElements () )
     {
       final Identifier id = e.nextElement ();
-      cl.put(id, this.get ( id ));
+      cl.put ( id, this.get ( id ) );
     }
     return cl;
   }
 }
-
