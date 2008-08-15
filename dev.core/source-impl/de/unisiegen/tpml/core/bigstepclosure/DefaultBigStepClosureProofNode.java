@@ -142,8 +142,8 @@ public final class DefaultBigStepClosureProofNode extends
   {
     LatexInstructionList instructions = new LatexInstructionList ();
     instructions.add ( getLatexInstructionsStatic () );
-    instructions.add ( getClosure() );
-    instructions.add ( getResult() );
+    instructions.add ( getClosure () );
+    instructions.add ( getResult () );
     instructions.add ( getRule () );
     return instructions;
   }
@@ -163,11 +163,14 @@ public final class DefaultBigStepClosureProofNode extends
             .toPrettyString ().toString () );
     builder.addText ( "{" + String.valueOf ( this.getId () ) + "}" ); //$NON-NLS-1$//$NON-NLS-2$
     builder.addText ( "{" + String.valueOf ( depth ) + "}" ); //$NON-NLS-1$//$NON-NLS-2$
-    builder.addBuilder ( getClosure().toLatexStringBuilder (
+    builder.addBuilder ( getClosure ().toLatexStringBuilder (
         pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
 
-    // TODO: emptyBuilder 2x necessary here?
-
+    if (this.getResult() != null)
+      builder.addBuilder ( getResult().toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent + LATEX_INDENT), 0 );
+    else
+      builder.addEmptyBuilder();
+    
     if ( this.getRule () != null )
       builder.addBuilder ( this.getRule ().toLatexStringBuilder (
           pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
@@ -316,7 +319,7 @@ public final class DefaultBigStepClosureProofNode extends
     commands
         .add ( new DefaultLatexCommand (
             LATEX_BIG_STEP_CLOSURE_PROOF_NODE,
-            7,
+            6,
             LATEX_LINE_BREAK_NEW_COMMAND
                 + "\\ifarrows" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND
@@ -326,23 +329,23 @@ public final class DefaultBigStepClosureProofNode extends
                 + LATEX_LINE_BREAK_NEW_COMMAND
                 + "\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND
-                + "$\\begin{tabular}[t]{p{#7}}$" //$NON-NLS-1$
+                + "$\\begin{tabular}[t]{p{#6}}$" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND_INDENT1
                 + "\\ifthenelse{\\equal{#4}{}}" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND_INDENT2
                 // begin of the node variables
-                + "{#3\\ \\color{" + LATEX_COLOR_NONE + "}{\\Downarrow}\\ #5}" //$NON-NLS-1$ //$NON-NLS-2$
+                + "{#3\\ \\color{" + LATEX_COLOR_NONE + "}{\\Downarrow}\\ #4}" //$NON-NLS-1$ //$NON-NLS-2$
                 + LATEX_LINE_BREAK_NEW_COMMAND_INDENT2 + "{\\color{" //$NON-NLS-1$
-                + LATEX_COLOR_NONE + "}{(}#3\\ \\ #4\\color{" //$NON-NLS-1$
+                + LATEX_COLOR_NONE + "}{(}#3\\ \\color{" //$NON-NLS-1$
                 + LATEX_COLOR_NONE + "}{)}\\ \\color{" + LATEX_COLOR_NONE //$NON-NLS-1$
-                + "}{\\Downarrow}\\ #5}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "}{\\Downarrow}\\ #4}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "$\\\\$" + LATEX_LINE_BREAK_NEW_COMMAND_INDENT1 //$NON-NLS-1$
-                + "\\byrule{#6}" //$NON-NLS-1$
+                + "\\byrule{#5}" //$NON-NLS-1$
                 // end of the node variables
                 + LATEX_LINE_BREAK_NEW_COMMAND + "$\\end{tabular}$" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND + "\\vspace{\\nodesep}" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND + "\\fi", "depth", "id", "e", //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            "store", "result", "proofrule", "space" ) ); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+            "result", "proofrule", "space" ) ); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
     return commands;
   }
 

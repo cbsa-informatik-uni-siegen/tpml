@@ -1135,7 +1135,7 @@ public interface LatexCommandNames
   /**
    * The latex print command for {@link ClosureEnvironment}.
    */
-  public static final String LATEX_CLOSURE_ENVIRONMENT = "closure environment"; // $NON
+  public static final String LATEX_CLOSURE_ENVIRONMENT = "closureenvironment"; //$NON-NLS-1$
 
 
   /**

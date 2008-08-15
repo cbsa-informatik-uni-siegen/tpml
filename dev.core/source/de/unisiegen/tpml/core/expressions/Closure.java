@@ -180,8 +180,6 @@ public class Closure implements PrettyPrintable, LatexPrintable
   public static LatexCommandList getLatexCommandsStatic ()
   {
     LatexCommandList commands = new LatexCommandList ();
-    commands.add ( new DefaultLatexCommand ( LATEX_BYRULE, 1,
-        "\\hspace{-5mm}\\mbox{\\scriptsize\\ #1}", "rule" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     commands.add ( new DefaultLatexCommand ( LATEX_CLOSURE, 2, LATEX_LPAREN
         + "#1" + LATEX_COMMA + "#2" + LATEX_RPAREN, "expression", "environment" ));
     return commands;

@@ -13,6 +13,7 @@ import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofModel;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
@@ -75,7 +76,7 @@ public final class BigStepClosureProofModel extends
     { // MUST be the getRules() from the ProofRuleSet
       try
       {
-        // cast node to a DefaultBigStepProofNode
+        // cast node to a DefaultBigStepClosureProofNode
         DefaultBigStepClosureProofNode current = ( DefaultBigStepClosureProofNode ) node;
         // (APP) is a special case, because (APP) can always be applied to
         // applications,
@@ -333,26 +334,37 @@ public final class BigStepClosureProofModel extends
     return commands;
   }
 
-
-  public LatexInstructionList getLatexInstructions ()
+  public LatexInstructionList getLatexInstructions()
   {
     LatexInstructionList instructions = new LatexInstructionList ();
-    instructions.add ( new DefaultLatexInstruction ( "\\newcounter{tree}" ) ); //$NON-NLS-1$
+    instructions.add ( getLatexInstructionsStatic () );
     instructions
-        .add ( new DefaultLatexInstruction ( "\\newcounter{node}[tree]" ) ); //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newlength{\\treeindent}" ) ); //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newlength{\\nodeindent}" ) ); //$NON-NLS-1$
-    instructions
-        .add ( new DefaultLatexInstruction ( "\\newlength{\\nodesep}" ) ); //$NON-NLS-1$
-    instructions.add ( new DefaultLatexInstruction (
-        "\\newif\\ifarrows" + LATEX_LINE_BREAK_SOURCE_CODE //$NON-NLS-1$
-            + "\\arrowsfalse" ) ); //$NON-NLS-1$
+        .add ( getLatexInstructionsInternal ( ( BigStepClosureProofNode ) this.root ) );
     return instructions;
   }
 
-
+  /**
+   * Returns a set of needed latex instructions for the given latex printable
+   * {@link ProofNode}.
+   * 
+   * @param pNode The input {@link ProofNode}.
+   * @return A set of needed latex instructions for the given latex printable
+   *         {@link ProofNode}.
+   */
+  private LatexInstructionList getLatexInstructionsInternal (
+      BigStepClosureProofNode pNode )
+  {
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( pNode );
+    instructions.add ( pNode.getRule () );
+    for ( int i = 0 ; i < pNode.getChildCount () ; i++ )
+    {
+      instructions
+          .add ( getLatexInstructionsInternal ( pNode.getChildAt ( i ) ) );
+    }
+    return instructions;
+  }
+  
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {

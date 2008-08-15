@@ -5,6 +5,7 @@ import java.util.Enumeration;
 
 import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
 import de.unisiegen.tpml.core.latex.LatexCommandList;
 import de.unisiegen.tpml.core.latex.LatexInstructionList;
 import de.unisiegen.tpml.core.latex.LatexPackageList;
@@ -85,16 +86,27 @@ public final class DefaultClosureEnvironment extends
   public LatexCommandList getLatexCommands ()
   {
     LatexCommandList commands = new LatexCommandList();
-    return commands; // FIXME
+    commands.add ( getLatexCommandsStatic() );
+    return commands;
+  }
+  
+  public static LatexCommandList getLatexCommandsStatic ()
+  {
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_CLOSURE_ENVIRONMENT, 0, ""));
+    //2, LATEX_LPAREN
+    //    + "#1" + LATEX_COMMA + "#2" + LATEX_RPAREN, "expression", "environment" ));
+    return commands;
   }
 
 
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory fac, int pIndent )
   {
-    LatexStringBuilder builder = fac.newBuilder ( 0, LATEX_CLOSURE_ENVIRONMENT,
-        pIndent, this.toPrettyString ().toString () );
+     LatexStringBuilder builder = fac.newBuilder ( 0, LATEX_CLOSURE_ENVIRONMENT,
+        pIndent); // FIXME
 
+     builder.addText ( toPrettyString().toString() );
     // FIXME
     
     return builder;
