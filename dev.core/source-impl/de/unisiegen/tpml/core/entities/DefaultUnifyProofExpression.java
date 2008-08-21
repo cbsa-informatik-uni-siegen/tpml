@@ -101,18 +101,26 @@ public class DefaultUnifyProofExpression implements UnifyProofExpression
   {
     PrettyStringBuilder builder = prettyStringBuilderFactory.newBuilder ( this,
         0 );
-    builder.addBuilder ( this.substitutions
-        .toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
+    if(this.substitutions != TypeSubstitutionList.EMPTY_LIST)
+      builder.addBuilder ( this.substitutions
+          .toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
+    else
+    {
+      builder.addText ( PRETTY_CLPAREN );
+      builder.addText ( PRETTY_CRPAREN );
+    }
     builder.addText ( PRETTY_SPACE );
     builder.addText ( PRETTY_CONCAT );
     builder.addText ( PRETTY_SPACE );
-    builder.addText ( "unify( " ); //$NON-NLS-1$
+    builder.addText ( "unify(" ); //$NON-NLS-1$
+    builder.addText ( PRETTY_SPACE );
     if ( this.equations.isEmpty () )
       builder.addText ( PRETTY_EMPTY_SET );
     else
       builder.addBuilder ( this.equations
           .toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
-    builder.addText ( ") " ); //$NON-NLS-1$
+    builder.addText ( PRETTY_SPACE );
+    builder.addText ( ")" ); //$NON-NLS-1$
     return builder;
   }
 

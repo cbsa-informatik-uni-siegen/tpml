@@ -1,6 +1,8 @@
 package de.unisiegen.tpml.core.unify;
 
 
+import java.awt.Color;
+
 import org.apache.log4j.Logger;
 
 import de.unisiegen.tpml.core.AbstractProofModel;
@@ -11,9 +13,14 @@ import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.UnifyProofStep;
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.entities.TypeEquationList;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
+import de.unisiegen.tpml.core.latex.DefaultLatexInstruction;
+import de.unisiegen.tpml.core.latex.DefaultLatexStringBuilder;
 import de.unisiegen.tpml.core.latex.LatexCommandList;
 import de.unisiegen.tpml.core.latex.LatexInstructionList;
+import de.unisiegen.tpml.core.latex.LatexPackage;
 import de.unisiegen.tpml.core.latex.LatexPackageList;
 import de.unisiegen.tpml.core.latex.LatexString;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder;
@@ -24,6 +31,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
+import de.unisiegen.tpml.core.util.Theme;
 
 
 /**
@@ -118,11 +126,12 @@ public class UnifyProofModel extends AbstractProofModel
   /**
    * Implementation of the {@link #guess(ProofNode)} and
    * {@link #guess(ProofNode)} methods.
-   *
+   * 
    * @param node the proof node for which to guess the next step.
    * @throws ProofGuessException
    */
-  private void guessInternal ( DefaultUnifyProofNode node ) throws ProofGuessException
+  private void guessInternal ( DefaultUnifyProofNode node )
+      throws ProofGuessException
   {
     if ( node == null )
       throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
@@ -539,13 +548,121 @@ public class UnifyProofModel extends AbstractProofModel
 
 
   /**
+   * Returns a set of needed latex commands for this latex printable object.
+   * 
+   * @return A set of needed latex commands for this latex printable object.
+   */
+  public static LatexCommandList getLatexCommandsStatic ()
+  {
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_KEY_UNIFY, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_KEYWORD + "}{unify}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_UNIFY_LPAREN, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_NONE + "}{\\ \\{}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_UNIFY_RPAREN, 0,
+        "\\textbf{\\color{" + LATEX_COLOR_NONE + "}{\\ \\}}}" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_UNIFY_SUBSTITUTIONS_BEGIN,
+        0, "\\multicolumn{2}{p{23.5cm}}" ) ); //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_UNIFY_NEW_NODE, 0,
+        "\\\\[10mm]" ) ); //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_UNIFY_NEW_EQUATION, 0,
+        "\\\\" ) ); //$NON-NLS-1$
+    commands.add ( new DefaultLatexCommand ( LATEX_UNIFY_RULES_COMPLETED, 0,
+        "&" ) ); //$NON-NLS-1$
+    commands
+        .add ( new DefaultLatexCommand (
+            LATEX_UNIFY_PROOF_MODEL,
+            1,
+            "\\begin{longtable}{p{2cm}@{}p{23.5cm}@{}}#1\\end{longtable}", "model" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_UNIFY_RULE, 1,
+        "\\mbox{\\centerline{\\scriptsize{#1}}}", "rule" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    commands.add ( new DefaultLatexCommand ( LATEX_UNIFY_EQUAL, 0,
+        "\\mbox{\\centerline{\\LARGE=}}" ) ); //$NON-NLS-1$
+    return commands;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for this latex printable object.
+   * 
+   * @return A set of needed latex instructions for this latex printable object.
+   */
+  public static LatexInstructionList getLatexInstructionsStatic ()
+  {
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newenvironment{unifynode}" //$NON-NLS-1$
+            + "{\\begin{tabular}[t]{p{1.7cm}@{}p{21.8cm}@{}}}{\\end{tabular}}", //$NON-NLS-1$
+        "The environment of the unify nodes" ) ); //$NON-NLS-1$
+    instructions.add ( new DefaultLatexInstruction (
+        "\\newenvironment{unifyrule}" //$NON-NLS-1$
+            + "{\\begin{tabular}[b]{p{2cm}@{}}}{\\end{tabular}}", //$NON-NLS-1$
+        "The environment of the unify rule" ) ); //$NON-NLS-1$
+    Color colorKeyword = Theme.currentTheme ().getKeywordColor ();
+    float red = ( float ) Math
+        .round ( ( ( float ) colorKeyword.getRed () ) / 255 * 100 ) / 100;
+    float green = ( float ) Math
+        .round ( ( ( float ) colorKeyword.getGreen () ) / 255 * 100 ) / 100;
+    float blue = ( float ) Math
+        .round ( ( ( float ) colorKeyword.getBlue () ) / 255 * 100 ) / 100;
+    instructions.add ( new DefaultLatexInstruction (
+        "\\definecolor{" + LATEX_COLOR_KEYWORD + "}{rgb}{" //$NON-NLS-1$ //$NON-NLS-2$
+            + red + "," //$NON-NLS-1$
+            + green + "," //$NON-NLS-1$
+            + blue + "}", LATEX_COLOR_KEYWORD + ": color of keywords" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    instructions.add ( new DefaultLatexInstruction ( "\\definecolor{" //$NON-NLS-1$
+        + LATEX_COLOR_NONE + "}{rgb}{0.0,0.0,0.0}", //$NON-NLS-1$
+        LATEX_COLOR_NONE + ": color of normal text" ) ); //$NON-NLS-1$
+    return instructions;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for this latex printable object.
+   * 
+   * @return A set of needed latex packages for this latex printable object.
+   */
+  public static LatexPackageList getLatexPackagesStatic ()
+  {
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( LatexPackage.AMSMATH );
+    packages.add ( LatexPackage.LONGTABLE );
+    return packages;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.latex.LatexPrintable#getLatexCommands()
    */
   public LatexCommandList getLatexCommands ()
   {
-    return null;
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
+    commands.add ( getLatexCommandsInternal ( ( UnifyProofNode ) this.root ) );
+    return commands;
+  }
+
+
+  /**
+   * Returns a set of needed latex commands for the given latex printable
+   * {@link ProofNode}.
+   * 
+   * @param pNode The input {@link ProofNode}.
+   * @return A set of needed latex commands for the given latex printable
+   *         {@link ProofNode}.
+   */
+  private LatexCommandList getLatexCommandsInternal ( UnifyProofNode pNode )
+  {
+    LatexCommandList commands = new LatexCommandList ();
+    commands.add ( pNode );
+    commands.add ( pNode.getRule () );
+    for ( int i = 0 ; i < pNode.getChildCount () ; i++ )
+    {
+      commands.add ( getLatexCommandsInternal ( pNode.getChildAt ( i ) ) );
+    }
+    return commands;
   }
 
 
@@ -556,7 +673,34 @@ public class UnifyProofModel extends AbstractProofModel
    */
   public LatexInstructionList getLatexInstructions ()
   {
-    return null;
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( getLatexInstructionsStatic () );
+    instructions
+        .add ( getLatexInstructionsInternal ( ( UnifyProofNode ) this.root ) );
+    return instructions;
+  }
+
+
+  /**
+   * Returns a set of needed latex instructions for the given latex printable
+   * {@link ProofNode}.
+   * 
+   * @param pNode The input {@link ProofNode}.
+   * @return A set of needed latex instructions for the given latex printable
+   *         {@link ProofNode}.
+   */
+  private LatexInstructionList getLatexInstructionsInternal (
+      UnifyProofNode pNode )
+  {
+    LatexInstructionList instructions = new LatexInstructionList ();
+    instructions.add ( pNode );
+    instructions.add ( pNode.getRule () );
+    for ( int i = 0 ; i < pNode.getChildCount () ; i++ )
+    {
+      instructions
+          .add ( getLatexInstructionsInternal ( pNode.getChildAt ( i ) ) );
+    }
+    return instructions;
   }
 
 
@@ -567,7 +711,37 @@ public class UnifyProofModel extends AbstractProofModel
    */
   public LatexPackageList getLatexPackages ()
   {
-    return null;
+    LatexPackageList packages = new LatexPackageList ();
+    for ( LatexPackage pack : getLatexPackagesStatic () )
+    {
+      packages.add ( pack );
+    }
+    for ( LatexPackage pack : getLatexPackagesInternal ( ( UnifyProofNode ) this.root ) )
+    {
+      packages.add ( pack );
+    }
+    return packages;
+  }
+
+
+  /**
+   * Returns a set of needed latex packages for the given latex printable
+   * {@link ProofNode}.
+   * 
+   * @param pNode The input {@link ProofNode}.
+   * @return A set of needed latex packages for the given latex printable
+   *         {@link ProofNode}.
+   */
+  private LatexPackageList getLatexPackagesInternal ( UnifyProofNode pNode )
+  {
+    LatexPackageList packages = new LatexPackageList ();
+    packages.add ( pNode.getLatexPackages () );
+    packages.add ( pNode.getRule () );
+    for ( int i = 0 ; i < pNode.getChildCount () ; i++ )
+    {
+      packages.add ( getLatexPackagesInternal ( pNode.getChildAt ( i ) ) );
+    }
+    return packages;
   }
 
 
@@ -578,7 +752,8 @@ public class UnifyProofModel extends AbstractProofModel
    */
   public LatexString toLatexString ()
   {
-    return null;
+    return toLatexStringBuilder ( LatexStringBuilderFactory.newInstance (), 0 )
+        .toLatexString ();
   }
 
 
@@ -591,9 +766,216 @@ public class UnifyProofModel extends AbstractProofModel
    *      int)
    */
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory latexStringBuilderFactory, int indent )
+      LatexStringBuilderFactory pLatexStringBuilderFactory, int indent )
   {
-    return null;
+    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
+        LATEX_UNIFY_PROOF_MODEL, indent, this.toPrettyString ().toString () );
+    builder.addBuilderBegin ();
+    builder.addSourceCodeBreak ( 0 );
+    builder.addComment ( "no type inference rule in the first node" ); //$NON-NLS-1$
+    builder.addText ( LATEX_PREFIX_COMMAND
+        + LATEX_TYPE_INFERENCE_RULES_COMPLETED );
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "\\begin{unifynode}" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_KEY_SOLVE );
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SOLVE_LPAREN );
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "&" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "$" ); //$NON-NLS-1$
+    DefaultUnifyProofNode node = ( DefaultUnifyProofNode ) this.root;
+    builder.addBuilderWithoutBrackets ( node.getTypeEquationList ().getFirst ()
+        .toLatexStringBuilder ( pLatexStringBuilderFactory,
+            indent + LATEX_INDENT ), 0 );
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SOLVE_RPAREN );
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "$" ); //$NON-NLS-1$
+    builder.addSourceCodeBreak ( 0 );
+    builder.addText ( "\\end{unifynode}" ); //$NON-NLS-1$
+    if ( this.root.getChildCount () > 0 )
+    {
+      builder.addSourceCodeBreak ( 0 );
+      builder.addText ( LATEX_PREFIX_COMMAND + LATEX_TYPE_INFERENCE_NEW_NODE );
+      builder.addSourceCodeBreak ( 0 );
+    }
+    for ( int i = 0 ; i < this.root.getChildCount () ; i++ )
+    {
+      toLatexStringBuilderInternal ( pLatexStringBuilderFactory, builder,
+          ( DefaultUnifyProofNode ) this.root,
+          ( DefaultUnifyProofNode ) this.root.getChildAt ( i ), indent );
+    }
+    builder.addBuilderEnd ();
+    return builder;
+  }
+
+
+  /**
+   * Build the latex string for the given <code>pCurrentNode</code>.
+   * 
+   * @param pLatexStringBuilderFactory The factory which should be used.
+   * @param pLatexStringBuilder The {@link LatexStringBuilder} which should be
+   *          completed.
+   * @param pParentNode The parent of the current {@link ProofNode}. This node
+   *          is needed because of his {@link ProofNode}s.
+   * @param pCurrentNode The current {@link ProofNode}.
+   * @param pIndent The indent of this object.
+   */
+  public final void toLatexStringBuilderInternal (
+      LatexStringBuilderFactory pLatexStringBuilderFactory,
+      LatexStringBuilder pLatexStringBuilder,
+      DefaultUnifyProofNode pParentNode, DefaultUnifyProofNode pCurrentNode,
+      int pIndent )
+  {
+    // First column
+    pLatexStringBuilder.addText ( "\\begin{unifyrule}" ); //$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+    if ( pParentNode.getRule () != null )
+    {
+      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_RULE );
+      pLatexStringBuilder.addBuilder ( pParentNode.getRule ()
+          .toLatexStringBuilder ( pLatexStringBuilderFactory,
+              pIndent + LATEX_INDENT * 2 ), 0 );
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    }
+    // pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+    // pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    // pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+    // + LATEX_TYPE_INFERENCE_NEW_FORMULA );
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_EQUAL );
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "\\end{unifyrule}" );//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+        + LATEX_UNIFY_RULES_COMPLETED );
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    // Second column
+    pLatexStringBuilder.addText ( "\\begin{unifynode}" ); //$NON-NLS-1$
+
+    if ( pCurrentNode.getTypeSubstitutions () != TypeSubstitutionList.EMPTY_LIST )
+    {
+      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+          + LATEX_UNIFY_SUBSTITUTIONS_BEGIN );
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "{" ); //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+      pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
+      pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+          .getIndent ( pIndent + LATEX_INDENT ) );
+      pLatexStringBuilder.addText ( LATEX_LBRACKET );
+
+      TypeSubstitutionList ll = pCurrentNode.getTypeSubstitutions ();
+      while ( ll.hasNext () )
+      {
+        pLatexStringBuilder.addBuilderWithoutBrackets ( ll.getFirst ()
+            .toLatexStringBuilder ( pLatexStringBuilderFactory,
+                pIndent + LATEX_INDENT ), 0 );
+        pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
+        pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+            .getIndent ( pIndent + LATEX_INDENT ) );
+        pLatexStringBuilder.addText ( LATEX_COMMA );
+        pLatexStringBuilder.addText ( LATEX_SPACE );
+        pLatexStringBuilder.addBreak ();
+      }
+
+      pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
+      pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+          .getIndent ( pIndent + LATEX_INDENT ) );
+      pLatexStringBuilder.addText ( LATEX_RBRACKET );
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "}" ); //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+      if ( pCurrentNode.getTypeEquationList ().size () > 0 )
+      {
+        pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
+        pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+            .getIndent ( pIndent + LATEX_INDENT ) );
+        pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+        pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+            + LATEX_UNIFY_NEW_EQUATION );
+        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+        pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+      }
+    }
+    else
+    {
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+    }
+
+    if ( pCurrentNode.getTypeEquationList ().size () > 0 )
+    {
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_KEY_UNIFY );
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_LPAREN );
+    }
+
+    for ( TypeEquation equation : pCurrentNode.getTypeEquationList () )
+    {
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "&" ); //$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+
+      pLatexStringBuilder.addBuilderWithoutBrackets ( equation.getSeenTypes ()
+          .toLatexStringBuilder ( pLatexStringBuilderFactory,
+              pIndent + LATEX_INDENT ), 0 );
+      pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
+      pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+          .getIndent ( pIndent + LATEX_INDENT ) );
+      pLatexStringBuilder.addText ( LATEX_SPACE );
+      pLatexStringBuilder.addText ( LATEX_NAIL );
+      pLatexStringBuilder.addText ( LATEX_SPACE );
+      pLatexStringBuilder.addText ( "\\linebreak[3]" ); //$NON-NLS-1$
+
+      pLatexStringBuilder.addBuilderWithoutBrackets ( equation
+          .toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent
+              + LATEX_INDENT ), 0 );
+
+      pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
+      pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+          .getIndent ( pIndent + LATEX_INDENT ) );
+      pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+          + LATEX_UNIFY_NEW_EQUATION );
+    }
+
+    if ( pCurrentNode.getTypeEquationList ().size () > 0 )
+    {
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_RPAREN );
+    }
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( "\\end{unifynode}" );//$NON-NLS-1$
+    for ( int i = 0 ; i < pCurrentNode.getChildCount () ; i++ )
+    {
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      pLatexStringBuilder
+          .addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_NEW_NODE );
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      toLatexStringBuilderInternal ( pLatexStringBuilderFactory,
+          pLatexStringBuilder, pCurrentNode,
+          ( DefaultUnifyProofNode ) pCurrentNode.getChildAt ( i ), pIndent );
+    }
   }
 
 
@@ -604,7 +986,8 @@ public class UnifyProofModel extends AbstractProofModel
    */
   public PrettyString toPrettyString ()
   {
-    return null;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance () )
+        .toPrettyString ();
   }
 
 
@@ -617,7 +1000,13 @@ public class UnifyProofModel extends AbstractProofModel
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory prettyStringBuilderFactory )
   {
-    return null;
+    PrettyStringBuilder builder = prettyStringBuilderFactory.newBuilder ( this,
+        0 );
+    builder.addBuilder ( this.root
+        .toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
+    builder.addText ( PRETTY_LINE_BREAK );
+    builder.addText ( PRETTY_CONTINUATION );
+    return builder;
   }
 
 }

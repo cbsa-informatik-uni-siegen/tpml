@@ -21,14 +21,14 @@ public interface UnifyProofNode extends ProofNode
 {
 
   /**
-   * Returns the {@link UnifyProofStep}s which were already performed on this proof
-   * node. The steps represent the {@link ProofRule}s that were applied to this
-   * node already and the associated expressions (which may be sub expressions
-   * of the expression associated with this proof node), to which the rules were
-   * applied.
+   * Returns the {@link UnifyProofStep}s which were already performed on this
+   * proof node. The steps represent the {@link ProofRule}s that were applied
+   * to this node already and the associated expressions (which may be sub
+   * expressions of the expression associated with this proof node), to which
+   * the rules were applied.
    * 
-   * @return the {@link UnifyProofStep}s or an empty array if no rules were applied
-   *         to this node yet.
+   * @return the {@link UnifyProofStep}s or an empty array if no rules were
+   *         applied to this node yet.
    * @see #getRules()
    */
   public UnifyProofStep [] getSteps ();
@@ -57,22 +57,22 @@ public interface UnifyProofNode extends ProofNode
    * @return <code>true</code> if finished.
    */
   public boolean isFinished ();
-  
-  
+
+
   /**
    * Returns <code>true</code> if this node is provable
-   *
+   * 
    * @return true if this node is provable, false otherwise
    */
-  public boolean isProvable();
-  
-  
+  public boolean isProvable ();
+
+
   /**
    * sets the provable state of this node
-   *
+   * 
    * @param provable indicates wheather this node is provable or not
    */
-  public void setProvable(boolean provable);
+  public void setProvable ( boolean provable );
 
 
   /**
@@ -145,4 +145,12 @@ public interface UnifyProofNode extends ProofNode
    * @see de.unisiegen.tpml.core.ProofNode#getRoot()
    */
   public UnifyProofNode getRoot ();
+
+
+  /**
+   * get the rules applied to this node
+   * 
+   */
+  public UnifyProofRule getRule ();
+
 }

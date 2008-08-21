@@ -192,6 +192,12 @@ public interface LatexCommandNames
    * The latex print command for a new node in the type inference.
    */
   public static final String LATEX_TYPE_INFERENCE_NEW_NODE = "TypeInferenceNewNode"; //$NON-NLS-1$
+  
+  
+  /**
+   * The latex print command for a new node in the type inference.
+   */
+  public static final String LATEX_UNIFY_NEW_NODE = "UnifyNewNode"; //$NON-NLS-1$
 
 
   /**
@@ -199,12 +205,22 @@ public interface LatexCommandNames
    */
   public static final String LATEX_TYPE_INFERENCE_NEW_FORMULA = "TypeInferenceNewFormula"; //$NON-NLS-1$
 
+  
+  /**
+   * The latex print command for a new formula in the type inference.
+   */
+  public static final String LATEX_UNIFY_NEW_EQUATION = "UnifyNewEquation"; //$NON-NLS-1$
 
   /**
    * The latex print command for the completed rules.
    */
   public static final String LATEX_TYPE_INFERENCE_RULES_COMPLETED = "TypeInferenceRulesCompleted"; //$NON-NLS-1$
 
+  
+  /**
+   * The latex print command for the completed rules.
+   */
+  public static final String LATEX_UNIFY_RULES_COMPLETED = "UnifyRulesCompleted"; //$NON-NLS-1$
 
   /**
    * The latex print command for a new node in the small step interpreter.
@@ -417,6 +433,20 @@ public interface LatexCommandNames
 
 
   /**
+   * The latex print command for the left paren of the keyword
+   * <code>solve</code>.
+   */
+  public static final String LATEX_UNIFY_LPAREN = "UnifyLeftParen"; //$NON-NLS-1$
+
+
+  /**
+   * The latex print command for the right paren of the keyword
+   * <code>solve</code>.
+   */
+  public static final String LATEX_UNIFY_RPAREN = "UnifyRightParen"; //$NON-NLS-1$
+
+  
+  /**
    * The latex print command for the keyword <code>solve</code>.
    */
   public static final String LATEX_KEY_SOLVE = LATEX_KEY + "Solve"; //$NON-NLS-1$
@@ -435,12 +465,16 @@ public interface LatexCommandNames
    */
   public static final String LATEX_SOLVE_RPAREN = "SolveRightParen"; //$NON-NLS-1$
 
-
   /**
    * The latex print command for the substitutions begin.
    */
   public static final String LATEX_TYPE_INFERENCE_SUBSTITUTIONS_BEGIN = "TypeInferenceSubstitutionBegin"; //$NON-NLS-1$
 
+  
+  /**
+   * The latex print command for the substitutions begin.
+   */
+  public static final String LATEX_UNIFY_SUBSTITUTIONS_BEGIN = "UnifySubstitutionBegin"; //$NON-NLS-1$
 
   /**
    * The latex print command for parentheis.
@@ -1053,6 +1087,11 @@ public interface LatexCommandNames
    */
   public static final String LATEX_TYPE_INFERENCE_PROOF_MODEL = "TypeInferenceProofModel"; //$NON-NLS-1$
 
+  
+  /**
+   * The latex print command for {@link TypeInferenceProofModel}.
+   */
+  public static final String LATEX_UNIFY_PROOF_MODEL = "UnifyProofModel"; //$NON-NLS-1$
 
   /**
    * The latex print command for small step arrow.
@@ -1065,11 +1104,21 @@ public interface LatexCommandNames
    */
   public static final String LATEX_TYPE_INFERENCE_EQUAL = "TypeInferenceEqual"; //$NON-NLS-1$
 
+  /**
+   * The latex print command for a type inference equal.
+   */
+  public static final String LATEX_UNIFY_EQUAL = "UnifyEqual"; //$NON-NLS-1$
 
   /**
    * The latex print command for a type inference rule.
    */
   public static final String LATEX_TYPE_INFERENCE_RULE = "TypeInferenceRule"; //$NON-NLS-1$
+  
+  
+  /**
+   * The latex print command for a type inference rule.
+   */
+  public static final String LATEX_UNIFY_RULE = "UnifyRule"; //$NON-NLS-1$
 
 
   /**
@@ -1119,6 +1168,11 @@ public interface LatexCommandNames
    */
   public static final String LATEX_TYPE_CHECKER_PROOF_RULE = "TypeCheckerProofRule"; //$NON-NLS-1$
 
+  
+  /**
+   * The latex print command for {@link TypeCheckerProofRule}.
+   */
+  public static final String LATEX_UNIFY_PROOF_RULE = "UnifyProofRule"; //$NON-NLS-1$
 
   /**
    * The latex print command for {@link BigStepProofRule}.

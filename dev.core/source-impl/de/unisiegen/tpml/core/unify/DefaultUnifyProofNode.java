@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.unify;
 
 
+import de.unisiegen.tpml.core.UnifyProofStep;
 import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.entities.TypeEquationList;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
@@ -323,5 +324,15 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
       return "Nicht lösbar"; //$NON-NLS-1$
     return getTypeSubstitutions ().toString ()
         + " " + PRETTY_CONCAT + " unify(" + getTypeEquationList ().toPrettyString ().toString () + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+  }
+  
+  public UnifyProofRule getRule()
+  {
+    final UnifyProofStep [] newSteps = getSteps ();
+    if ( newSteps.length > 0 )
+    {
+      return ( UnifyProofRule ) newSteps [ 0 ].getRule ();
+    }
+    return null;
   }
 }
