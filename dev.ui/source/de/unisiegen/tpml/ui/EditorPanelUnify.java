@@ -206,6 +206,7 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
     this.mypanel.subTypingButton.setVisible ( false );
     this.mypanel.subTypingRecButton.setVisible ( false );
     this.mypanel.unifyButton.setVisible ( false );
+    this.mypanel.bigstepclosureButton.setVisible ( false );
     // finished setting the default states
 
     // hack to get consistent heights
@@ -539,7 +540,8 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
     {
       UnifyProofModel model = this.language.newUnifyProofModel ( this.code
           .getDocument ().getTypeEquation () );
-      this.unify = new ProofViewComponent(ProofViewFactory.newUnifyView ( model ), model);
+      this.unify = new ProofViewComponent ( ProofViewFactory
+          .newUnifyView ( model ), model );
       this.mypanel.editorPanel.removeAll ();
       activateFunction ( this.mypanel.unifyButton, this.unify );
       this.mypanel.unifyButton.setIcon ( null );
