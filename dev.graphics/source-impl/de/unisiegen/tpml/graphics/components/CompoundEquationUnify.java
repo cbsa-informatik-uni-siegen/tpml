@@ -7,14 +7,23 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
 
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
+import javax.swing.TransferHandler;
 
 import de.unisiegen.tpml.core.entities.DefaultUnifyProofExpression;
 import de.unisiegen.tpml.core.entities.TypeEquationList;
+import de.unisiegen.tpml.core.entities.TypeEquationTransferableObject;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
@@ -40,7 +49,6 @@ public class CompoundEquationUnify extends JComponent
    */
   private PrettyStringRenderer renderer;
 
-
   /**
    * represents the expression we want to render
    */
@@ -51,29 +59,6 @@ public class CompoundEquationUnify extends JComponent
    * in which area shall we render?
    */
   private Dimension renderSize;
-
-
-  /**
-   * saves the position where the mouse starts the dragging
-   */
-  // private int mousePositionPressedX ;
-  /**
-   * saves the position where the mouse starts the dragging
-   */
-  // private int mousePositionPressedY ;
-  private boolean dragndropeabled = true;
-
-
-  /**
-   * the element where the mouse starts dragging
-   */
-  private int rectPressed = -1;
-
-
-  /**
-   * the element where the mouse ends dragging
-   */
-  private int rectReleased = -1;
 
 
   /**
@@ -137,15 +122,17 @@ public class CompoundEquationUnify extends JComponent
 
 
   /**
-   * the position beside the mousepointer where the renderer will render the
-   * draggedString
+   * The drag enabled value.
    */
-  // private int draggedX = 0;
+  private boolean dragEnabled = false;
+
+
   /**
-   * the position beside the mousepointer where the renderer will render the
-   * draggedString
+   * the drop point
    */
-  // private int draggedY = 0;
+  private Point dropPoint = null;
+
+
   /**
    * the position beside the mousepointer where the renderer will render the
    * draggedString
@@ -158,7 +145,7 @@ public class CompoundEquationUnify extends JComponent
    */
   public CompoundEquationUnify ()
   {
-    super ();
+    super ();    
     this.bonds = new ShowBonds ();
     this.renderSize = new Dimension ( 0, 0 );
     this.toListenForMouse = new ToListenForMouseContainer ();
@@ -184,45 +171,44 @@ public class CompoundEquationUnify extends JComponent
         handleMouseMoved ( event );
       }
 
-
-      @Override
-      public void mouseDragged ( MouseEvent event )
-      {
-        if ( CompoundEquationUnify.this.isDragndropeabled () )
-        {
-          // if the User started dragging on an Typformula
-          if ( CompoundEquationUnify.this.dragged )
-          {
-            // be shure the Component repaints the Component to render the
-            // draggedString
-            repaint ();
-            // change the Cursor to the Hand
-            Cursor c = new Cursor ( Cursor.HAND_CURSOR );
-            getParent ().getParent ().setCursor ( c );
-            // tell the renderer where the draggedString will be renderd
-            // CompoundExpressionTypeInference.this.draggedX = event.getX() + 5;
-            // CompoundExpressionTypeInference.this.draggedY = event.getY() + 5;
-            CompoundEquationUnify.this.setDraggedBesideMousePointer ( event
-                .getPoint () );
-            if ( event.getX () >= getWidth () - 50 )
-            {
-              // CompoundExpressionTypeInference.this.draggedX = event.getX() -
-              // (50 - (getWidth() - event.getX()));
-              CompoundEquationUnify.this.getDraggedBesideMousePointer ().x = event
-                  .getX ()
-                  - ( 50 - ( getWidth () - event.getX () ) );
-            }
-            if ( event.getY () <= 10 )
-            {
-              // CompoundExpressionTypeInference.this.draggedY = event.getY() +
-              // 15;
-              CompoundEquationUnify.this.getDraggedBesideMousePointer ().y = event
-                  .getY () + 15;
-            }
-          }
-        }
-
-      }
+      // @Override
+      // public void mouseDragged ( MouseEvent event )
+      // {
+      // if ( CompoundEquationUnify.this.isDragndropeabled () )
+      // {
+      // // if the User started dragging on an Typformula
+      // if ( CompoundEquationUnify.this.dragged )
+      // {
+      // // be shure the Component repaints the Component to render the
+      // // draggedString
+      // repaint ();
+      // // change the Cursor to the Hand
+      // Cursor c = new Cursor ( Cursor.HAND_CURSOR );
+      // getParent ().getParent ().setCursor ( c );
+      // // tell the renderer where the draggedString will be renderd
+      // // CompoundExpressionTypeInference.this.draggedX = event.getX() + 5;
+      // // CompoundExpressionTypeInference.this.draggedY = event.getY() + 5;
+      // CompoundEquationUnify.this.setDraggedBesideMousePointer ( event
+      // .getPoint () );
+      // if ( event.getX () >= getWidth () - 50 )
+      // {
+      // // CompoundExpressionTypeInference.this.draggedX = event.getX() -
+      // // (50 - (getWidth() - event.getX()));
+      // CompoundEquationUnify.this.getDraggedBesideMousePointer ().x = event
+      // .getX ()
+      // - ( 50 - ( getWidth () - event.getX () ) );
+      // }
+      // if ( event.getY () <= 10 )
+      // {
+      // // CompoundExpressionTypeInference.this.draggedY = event.getY() +
+      // // 15;
+      // CompoundEquationUnify.this.getDraggedBesideMousePointer ().y = event
+      // .getY () + 15;
+      // }
+      // }
+      // }
+      //
+      // }
     } );
 
     addMouseListener ( new MouseAdapter ()
@@ -258,8 +244,146 @@ public class CompoundEquationUnify extends JComponent
       }
     } );
 
+    setTransferHandler ( new CompoundEquationUnifyTransferHandler (
+        TransferHandler.MOVE )
+    {
+
+      @Override
+      public boolean importTypeEquationTransferableObect ( int targetIndex,
+          TypeEquationTransferableObject transferableObject )
+      {
+        return false;
+      }
+
+    } );
+
   }
 
+
+  //  
+  //  
+  //
+  // 
+  // drag and drop handling routines
+  //
+  //   
+  //   
+  //   
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see DropTargetListener#dragEnter(DropTargetDragEvent)
+   */
+  public final void dragEnter ( DropTargetDragEvent event )
+  {
+    event.acceptDrag ( event.getDropAction () );
+    this.dropPoint = event.getLocation ();
+    repaint ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see DropTargetListener#dragExit(DropTargetEvent)
+   */
+  public final void dragExit ( @SuppressWarnings ( "unused" )
+  DropTargetEvent event )
+  {
+    this.dropPoint = null;
+    repaint ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see DropTargetListener#dragOver(DropTargetDragEvent)
+   */
+  public final void dragOver ( DropTargetDragEvent event )
+  {
+    TypeEquationTransferableObject transferableObject;
+    try
+    {
+      transferableObject = ( TypeEquationTransferableObject ) event
+          .getTransferable ().getTransferData (
+              CompoundEquationUnifyTransferable.dataFlavor );
+      if ( CompoundEquationUnify.this.typeEquationList.hashCode () != transferableObject.typeEquationListHashCode )
+      {
+        event.rejectDrag ();
+        this.dropPoint = null;
+        repaint ();
+        return;
+      }
+
+      // reject drag if the mouse is not within our type equation list
+
+    }
+    catch ( UnsupportedFlavorException exc )
+    {
+      event.rejectDrag ();
+      this.dropPoint = null;
+      repaint ();
+      return;
+    }
+    catch ( IOException exc )
+    {
+      event.rejectDrag ();
+      this.dropPoint = null;
+      repaint ();
+      return;
+    }
+
+    event.acceptDrag ( event.getDropAction () );
+    this.dropPoint = event.getLocation ();
+    repaint ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see DropTargetListener#drop(DropTargetDropEvent)
+   */
+  public final void drop ( DropTargetDropEvent event )
+  {
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see DropTargetListener#dropActionChanged(DropTargetDragEvent)
+   */
+  public final void dropActionChanged ( DropTargetDragEvent event )
+  {
+    event.acceptDrag ( event.getDropAction () );
+    this.dropPoint = event.getLocation ();
+    repaint ();
+  }
+
+
+  /**
+   * Returns the drag enabled value.
+   * 
+   * @return The drag enabled value.
+   */
+  public final boolean getDragEnabled ()
+  {
+    return this.dragEnabled;
+  }
+
+
+  //
+  //  
+  //  
+  //  
+  // end of drag and drop handling implementation
+  //
+  //    
+  //    
+  //    
 
   /**
    * handels the MouseReleased event. If the mouse is released the Points there
@@ -739,27 +863,5 @@ public class CompoundEquationUnify extends JComponent
   public void setDraggedBesideMousePointer ( Point pDraggedBesideMousePointer )
   {
     this.draggedBesideMousePointer = pDraggedBesideMousePointer;
-  }
-
-
-  /**
-   * @return the dragndropeabled
-   */
-  public boolean isDragndropeabled ()
-  {
-    return this.dragndropeabled;
-  }
-
-
-  /**
-   * sets the ability to disable the dragg'n'drop. This happens if the node is
-   * prooven. The user should not be able to switch expressions of one node
-   * after if is prooven.
-   * 
-   * @param pDragndropeabled the dragndropeabled to set
-   */
-  public void setDragndropeabled ( boolean pDragndropeabled )
-  {
-    this.dragndropeabled = pDragndropeabled;
   }
 }

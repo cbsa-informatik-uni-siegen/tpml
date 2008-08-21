@@ -106,5 +106,12 @@ public interface TypeEquationList extends PrettyPrintable, LatexPrintable, Itera
    *           list could not be unified.
    */
   TypeSubstitution unify () throws UnificationException;
+  
+  /**
+   * returns the number of type equations
+   *
+   * @return number of type equations
+   */
+  int size();
 
 }

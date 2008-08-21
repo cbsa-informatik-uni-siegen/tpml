@@ -3,6 +3,8 @@ package de.unisiegen.tpml.graphics.components;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
@@ -91,6 +93,18 @@ public abstract class CompoundEquationUnifyTransferHandler extends
   {
     return this.sourceActions;
   }
+  
+  
+  /**
+   * TODO document
+   *
+   * @param sourceIndex
+   * @param targetIndex
+   * @param jComponen
+   * @return
+   */
+  public abstract boolean importTypeEquationTransferableObect(final int targetIndex,
+      TypeEquationTransferableObject transferableObject);
 
 
   /**
@@ -102,6 +116,20 @@ public abstract class CompoundEquationUnifyTransferHandler extends
   public final boolean importData ( JComponent jComponent,
       Transferable transferable )
   {
+    CompoundEquationUnify compoundEquationUnify = ( CompoundEquationUnify ) jComponent;
+    try
+    {
+      TypeEquationTransferableObject transferableObject = ( TypeEquationTransferableObject ) transferable
+          .getTransferData ( CompoundEquationUnifyTransferable.dataFlavor );
+    }
+    catch ( IOException ioe )
+    {
+      throw new RuntimeException ( ioe );
+    }
+    catch ( UnsupportedFlavorException ufe )
+    {
+      throw new RuntimeException ( ufe );
+    }
     // JGTITabbedPane jGTITabbedPane = ( JGTITabbedPane ) jComponent;
     // try
     // {

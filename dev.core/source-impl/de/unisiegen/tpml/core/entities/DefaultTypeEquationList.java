@@ -314,4 +314,15 @@ public class DefaultTypeEquationList implements TypeEquationList
     return this.equations.iterator ();
   }
 
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.entities.TypeEquationList#size()
+   */
+  public int size ()
+  {
+    return this.equations.size ();
+  }
+
 }

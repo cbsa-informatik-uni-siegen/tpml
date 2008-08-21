@@ -1013,6 +1013,12 @@ public interface LatexCommandNames
 
 
   /**
+   * The latex print command for {@link TypeInferenceProofNode}.
+   */
+  public static final String LATEX_UNIFY_PROOF_NODE = "UnifyProofNode"; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for {@link DefaultSubTypingProofNode}.
    */
   public static final String LATEX_SUB_TYPING_PROOF_NODE = "SubTypingProofNode"; //$NON-NLS-1$

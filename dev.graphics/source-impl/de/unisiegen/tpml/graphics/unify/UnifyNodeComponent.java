@@ -599,10 +599,6 @@ public class UnifyNodeComponent extends JComponent
    */
   public void update ()
   {
-    /*
-     * this.allFormulasList = this.proofNode.getAllFormulas ();
-     * this.substitutionList = this.proofNode.getSubstitution ();
-     */
     this.equationList = this.proofNode.getTypeEquationList ();
     this.substitutionList = this.proofNode.getTypeSubstitutions ();
 
@@ -616,11 +612,11 @@ public class UnifyNodeComponent extends JComponent
       // check if we have a next SmallStepProofNode
       @SuppressWarnings ( "unused" )
       ProofNode node = this.proofNode.getChildAt ( 0 );
-      this.compoundExpression.setDragndropeabled ( false );
+      //this.compoundExpression.setDragndropeabled ( false );
     }
     catch ( ArrayIndexOutOfBoundsException exn )
     {
-      this.compoundExpression.setDragndropeabled ( true );
+      ;//this.compoundExpression.setDragndropeabled ( true );
     }
 
     this.compoundExpression.repaint ();
