@@ -772,15 +772,15 @@ public class UnifyProofModel extends AbstractProofModel
         LATEX_UNIFY_PROOF_MODEL, indent, this.toPrettyString ().toString () );
     builder.addBuilderBegin ();
     builder.addSourceCodeBreak ( 0 );
-    builder.addComment ( "no type inference rule in the first node" ); //$NON-NLS-1$
+    builder.addComment ( "no unify rule in the first node" ); //$NON-NLS-1$
     builder.addText ( LATEX_PREFIX_COMMAND
-        + LATEX_TYPE_INFERENCE_RULES_COMPLETED );
+        + LATEX_UNIFY_RULES_COMPLETED );
     builder.addSourceCodeBreak ( 0 );
     builder.addText ( "\\begin{unifynode}" ); //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 );
-    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_KEY_SOLVE );
+    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_KEY_UNIFY );
     builder.addSourceCodeBreak ( 0 );
-    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SOLVE_LPAREN );
+    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_LPAREN );
     builder.addSourceCodeBreak ( 0 );
     builder.addText ( "&" ); //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 );
@@ -790,7 +790,7 @@ public class UnifyProofModel extends AbstractProofModel
         .toLatexStringBuilder ( pLatexStringBuilderFactory,
             indent + LATEX_INDENT ), 0 );
     builder.addSourceCodeBreak ( 0 );
-    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_SOLVE_RPAREN );
+    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_RPAREN );
     builder.addSourceCodeBreak ( 0 );
     builder.addText ( "$" ); //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 );
@@ -798,7 +798,7 @@ public class UnifyProofModel extends AbstractProofModel
     if ( this.root.getChildCount () > 0 )
     {
       builder.addSourceCodeBreak ( 0 );
-      builder.addText ( LATEX_PREFIX_COMMAND + LATEX_TYPE_INFERENCE_NEW_NODE );
+      builder.addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_NEW_NODE );
       builder.addSourceCodeBreak ( 0 );
     }
     for ( int i = 0 ; i < this.root.getChildCount () ; i++ )
