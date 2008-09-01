@@ -106,7 +106,7 @@ public final class DefaultClosureEnvironment extends
      LatexStringBuilder builder = fac.newBuilder ( 0, LATEX_CLOSURE_ENVIRONMENT,
         pIndent); // FIXME
 
-     builder.addText ( toPrettyString().toString() );
+     builder.addText ( "{" + toPrettyString().toString() + "}");
     // FIXME
     
     return builder;
