@@ -29,7 +29,7 @@ public class BigStepClosureProofResult implements PrettyPrintable,
     LatexPrintable
 {
 
-  public BigStepClosureProofResult ( Store store, Closure closure )
+  public BigStepClosureProofResult ( final Store store, final Closure closure )
   {
     this.store = store;
     this.closure = closure;
@@ -64,19 +64,8 @@ public class BigStepClosureProofResult implements PrettyPrintable,
       final LatexStringBuilderFactory pLatexStringBuilderFactory,
       final int pIndent )
   {
-    StringBuilder body = new StringBuilder ();
-    body.append ( this.closure.toPrettyString ().toString () );
-
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
-        LATEX_BIG_STEP_PROOF_RESULT, pIndent, this.toPrettyString ()
-            .toString (), body.toString (), this.closure.toPrettyString ()
-            .toString (), LATEX_NO_STORE );
-    builder.addBuilderBegin ();
-    builder.addBuilderWithoutBrackets ( this.closure.toLatexStringBuilder (
-        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
-    builder.addEmptyBuilder ();
-    builder.addBuilderEnd ();
-    return builder;
+    return getClosure ().toLatexStringBuilder ( pLatexStringBuilderFactory,
+        pIndent );
   }
 
 
@@ -139,8 +128,8 @@ public class BigStepClosureProofResult implements PrettyPrintable,
   public static LatexCommandList getLatexCommandsStatic ()
   {
     LatexCommandList commands = new LatexCommandList ();
-    commands.add ( new DefaultLatexCommand ( LATEX_BIG_STEP_PROOF_RESULT, 1,
-        "#1", "body" ) );//$NON-NLS-1$ //$NON-NLS-2$ 
+    commands.add ( new DefaultLatexCommand (
+        LATEX_BIG_STEP_CLOSURE_PROOF_RESULT, 1, "#1", "body" ) );//$NON-NLS-1$ //$NON-NLS-2$ 
     return commands;
   }
 
