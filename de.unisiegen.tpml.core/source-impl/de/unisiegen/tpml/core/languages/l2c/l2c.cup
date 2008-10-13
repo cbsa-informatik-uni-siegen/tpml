@@ -232,16 +232,9 @@ non terminal		class_type_error;
 precedence right	ARROW;
 precedence right	BARBAR;
 precedence right	AMPERAMPER;
-precedence left		EQUAL;
-precedence left		LESS;
-precedence left		GREATER;
-precedence left		LESSEQUAL;
-precedence left		GREATEREQUAL;
-precedence left		PLUS;
-precedence left		MINUS;
-precedence left		STAR;
-precedence left		SLASH;
-precedence left		MOD;
+precedence left		EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
+precedence left		PLUS, MINUS;
+precedence left		STAR, SLASH, MOD;
 
 
 /***************
