@@ -1,1 +1,0 @@
-BM		- Beim TPML.tex schreiben fehlt die Überprüfung ob das File ein Ordner ist

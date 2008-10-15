@@ -383,7 +383,7 @@ public class GeneralLaTex
     fc.setCurrentDirectory ( new File ( preferences.get ( "lastDir", "." ) ) ); //$NON-NLS-1$//$NON-NLS-2$
     fc.showDialog ( this.parentFrame, ResourceBundle.getBundle (
         "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.Export" ) ); //$NON-NLS-1$//$NON-NLS-2$
-    if ( fc.getSelectedFile () != null )
+    if ( fc.getSelectedFile () != null && fc.getSelectedFile ().isDirectory () )
     {
       try
       {
@@ -413,6 +413,11 @@ public class GeneralLaTex
             ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
                 "Latex.Error" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
       }
+    }
+    else {
+      System.err.println (this.parent);
+      JOptionPane.showMessageDialog ( this.parent, ResourceBundle.getBundle (
+      "de/unisiegen/tpml/ui/ui" ).getString ( "Latex.NotDirectory" ) ); //$NON-NLS-1$//$NON-NLS-2$
     }
   }
 }

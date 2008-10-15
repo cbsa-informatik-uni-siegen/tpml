@@ -34,3 +34,6 @@ CU		- Unify
 		  normalen Eingabefeldes muss hier ein Parser verwendet werden, damit
 		  das Syntax Highlighting funktioniert
 		- Drucken ohne vorheriges Exportieren in eine pdf Datei
+		- Beim erzeugen der TPML.tex Datei: Bei den Dialogen ob der Export funktioniert hat
+		  wird zwar ein parent mitgegeben, dieser ist aber null. Dadurch wird das Fenster in der
+		  Bildschirmmitte angezeigt und nicht in der Mitte des MainWindows.
