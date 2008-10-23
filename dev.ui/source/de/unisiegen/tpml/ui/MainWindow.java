@@ -262,6 +262,10 @@ public class MainWindow
         {
           editorPanel = new EditorPanelTypes ( language, this );
         }
+        else if ( language.isUnifyLanguage () )
+        {
+          editorPanel = new EditorPanelUnify ( language, this );
+        }
         else
         {
           editorPanel = new EditorPanelExpression ( language, this );
@@ -440,8 +444,8 @@ public class MainWindow
     {
       setExpressionMode ();
     }
-    //TODO: keep it?
-    else if(getActiveEditor () instanceof EditorPanelUnify)
+    // TODO: keep it?
+    else if ( getActiveEditor () instanceof EditorPanelUnify )
     {
       setUnifyMode ();
     }
@@ -637,12 +641,13 @@ public class MainWindow
     }
 
     EditorPanel newEditorPanel = null;
-    
-    //TODO: very bad; only for testing ok!!!
-    if ( language.getName ().contains ( "Unify" ) ) //$NON-NLS-1$
+
+    // TODO: very bad; only for testing ok!!!
+    // if ( language.getName ().contains ( "Unify" ) ) //$NON-NLS-1$
+    if ( language.isUnifyLanguage () )
     {
       newEditorPanel = new EditorPanelUnify ( language, this );
-      setUnifyMode();
+      setUnifyMode ();
     }
     else if ( !language.isTypeLanguage () )
     {
@@ -698,16 +703,15 @@ public class MainWindow
     this.window.unificationItem.setVisible ( false );
     this.window.bigstepclosureItem.setVisible ( true );
   }
-  
-  
+
+
   /**
    * TODO
-   *
    */
-  private void setUnifyMode()
+  private void setUnifyMode ()
   {
     this.window.smallstepItem.setVisible ( false );
-    this.window.bigstepItem.setVisible ( false);
+    this.window.bigstepItem.setVisible ( false );
     this.window.typecheckerItem.setVisible ( false );
     this.window.typeinferenceItem.setVisible ( false );
     this.window.subtypingItem.setVisible ( false );
