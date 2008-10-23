@@ -87,7 +87,7 @@ public abstract class AbstractBigStepClosureProofRule extends AbstractProofRule
     }
     catch ( Exception e )
     {
-      // TODO
+      e.printStackTrace();
     }
   }
 

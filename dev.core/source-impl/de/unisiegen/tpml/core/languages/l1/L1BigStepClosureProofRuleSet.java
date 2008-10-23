@@ -6,8 +6,8 @@ import de.unisiegen.tpml.core.DefaultClosureEnvironment;
 import de.unisiegen.tpml.core.bigstepclosure.AbstractBigStepClosureProofRuleSet;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofContext;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofNode;
+import de.unisiegen.tpml.core.bigstepclosure.BinaryOpArgs;
 import de.unisiegen.tpml.core.expressions.Application;
-import de.unisiegen.tpml.core.expressions.BinaryOperator;
 import de.unisiegen.tpml.core.expressions.BinaryOperatorException;
 import de.unisiegen.tpml.core.expressions.BooleanConstant;
 import de.unisiegen.tpml.core.expressions.Closure;
@@ -17,6 +17,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.expressions.InfixOperation;
 import de.unisiegen.tpml.core.expressions.Lambda;
+import de.unisiegen.tpml.core.expressions.UnaryOperator;
 import de.unisiegen.tpml.core.expressions.UnaryOperatorException;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
 import de.unisiegen.tpml.core.expressions.Value;
@@ -99,16 +100,34 @@ public final class L1BigStepClosureProofRuleSet extends
     if ( node.getChildCount () < 2 )
       return;
     
-    BigStepClosureProofNode child0 = node.getChildAt ( 0 ), child1 = node
+    final BigStepClosureProofNode child0 = node.getChildAt ( 0 ), child1 = node
         .getChildAt ( 1 );
 
     if ( ! ( child0.isProven () && child1.isProven () ) )
       return;
-
-    context.setProofNodeResult ( node, new Closure (
-        new Application ( child0.getExpression (), child1.getResult ()
-            .getClosure ().getExpression () ), DefaultClosureEnvironment
-            .empty () ) );
+  
+    // if the parent is a BinaryOperator we have to defer the evaluation
+    try
+    {
+      final Expression parentExp = node.getParent ().getExpression();
+      if(parentExp instanceof Application || parentExp instanceof InfixOperation)
+      {
+        context.setProofNodeResult ( node, new Closure (
+          new Application ( child0.getExpression (), child1.getResult ()
+              .getClosure ().getExpression () ), DefaultClosureEnvironment
+              .empty () ) );
+        return;
+      }
+    }
+    catch(final Exception e)
+    {
+      e.printStackTrace();
+    }
+   
+    final UnaryOperator uop = (UnaryOperator)child0.getExpression ();
+    context.setProofNodeResult(
+        node, new Closure(uop.applyTo(child1.getExpression()), DefaultClosureEnvironment.empty())
+      );
   }
 
 
@@ -124,6 +143,8 @@ public final class L1BigStepClosureProofRuleSet extends
     if ( ! ( child0.isProven () && child1.isProven () ) )
       return;
 
+    final BinaryOpArgs args = new BinaryOpArgs(node);
+    /*
     Expression operand1, operand2;
     BinaryOperator op2;
 
@@ -143,10 +164,10 @@ public final class L1BigStepClosureProofRuleSet extends
       op2 = inf.getOp ();
       operand1 = child0.getResult ().getClosure ().getExpression ();
       operand2 = child1.getResult ().getClosure ().getExpression ();
-    }
+    }*/
 
-    context.setProofNodeResult ( node, new Closure ( op2.applyTo ( operand1,
-        operand2 ), DefaultClosureEnvironment.empty () ) );
+    context.setProofNodeResult ( node, new Closure ( args.getOperator().applyTo ( args.getOperand1(),
+        args.getOperand2() ), DefaultClosureEnvironment.empty () ) );
   }
 
 
