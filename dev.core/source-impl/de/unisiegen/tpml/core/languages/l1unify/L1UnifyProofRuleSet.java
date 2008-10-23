@@ -38,11 +38,11 @@ public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
   {
     super ( language );
     // register the type rules
-    registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "EMPTY", "applyEmpty" ); //$NON-NLS-1$ //$NON-NLS-2$
-    registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "TRIV", "applyTriv" ); //$NON-NLS-1$ //$NON-NLS-2$
-    registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
-    registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "VAR", "applyVar" ); //$NON-NLS-1$ //$NON-NLS-2$
     registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "STRUCT", "applyStruct" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "VAR", "applyVar" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "TRIV", "applyTriv" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "EMPTY", "applyEmpty" ); //$NON-NLS-1$ //$NON-NLS-2$
 
   }
 

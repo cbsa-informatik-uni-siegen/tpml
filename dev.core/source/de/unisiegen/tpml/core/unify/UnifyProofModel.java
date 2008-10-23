@@ -143,7 +143,9 @@ public class UnifyProofModel extends AbstractProofModel
     // try to guess the next rule
     logger.debug ( "Trying to guess a rule for " + node ); //$NON-NLS-1$
 
+//    ProofRule[] rules = this.ruleSet.getRules ();
     for ( ProofRule rule : this.ruleSet.getRules () )
+//    for(int i = 0; i < rules.length; ++i)
     {
       try
       {
