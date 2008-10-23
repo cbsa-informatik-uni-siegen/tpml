@@ -49,6 +49,17 @@ public abstract class AbstractLanguage implements Language
   {
     return false;
   }
+  
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.languages.Language#isUnifyLanguage()
+   */
+  public boolean isUnifyLanguage()
+  {
+    return false;
+  }
 
 
   /**

@@ -72,6 +72,14 @@ public interface Language
    * @return true if this is a type language, else false
    */
   public boolean isTypeLanguage ();
+  
+  
+  /**
+   * Gives information if this language is a unify language
+   * 
+   * @return true if this is a unify language, else false
+   */
+  public boolean isUnifyLanguage();
 
 
   //

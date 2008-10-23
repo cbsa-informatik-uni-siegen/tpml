@@ -16,8 +16,8 @@ import de.unisiegen.tpml.core.unify.UnifyProofModel;
 
 
 /**
- * This class represents the language L2OUnify, which serves as a factory class for L2OUnify
- * related functionality, which extends the L0 language.
+ * This class represents the language L2OUnify, which serves as a factory class
+ * for L2OUnify related functionality, which extends the L0 language.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -137,7 +137,7 @@ public class L2OUNIFYLanguage extends AbstractLanguage
   public UnifyProofModel newUnifyProofModel ( TypeEquationList eqns )
   {
     return new UnifyProofModel ( new DefaultUnifyProofNode (
-        TypeSubstitutionList.EMPTY_LIST, eqns ),
-        new L2OUnifyProofRuleSet ( this ) );
+        TypeSubstitutionList.EMPTY_LIST, eqns ), new L2OUnifyProofRuleSet (
+        this ) );
   }
 }

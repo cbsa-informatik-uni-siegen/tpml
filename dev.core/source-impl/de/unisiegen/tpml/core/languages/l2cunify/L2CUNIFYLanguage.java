@@ -17,8 +17,8 @@ import de.unisiegen.tpml.core.unify.UnifyProofModel;
 
 
 /**
- * This class represents the language L2CUnify, which serves as a factory class for L2Unify
- * related functionality, which extends the L2Unify language.
+ * This class represents the language L2CUnify, which serves as a factory class
+ * for L2Unify related functionality, which extends the L2Unify language.
  * 
  * @author Christian Fehler
  * @version $Id$

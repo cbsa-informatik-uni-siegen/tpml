@@ -37,6 +37,18 @@ public class L4UNIFYLanguage extends AbstractLanguage
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.tpml.core.languages.Language#isUnifyLanguage()
+   */
+  @Override
+  public boolean isUnifyLanguage ()
+  {
+    return true;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Language#getDescription()
    */
   public String getDescription ()
