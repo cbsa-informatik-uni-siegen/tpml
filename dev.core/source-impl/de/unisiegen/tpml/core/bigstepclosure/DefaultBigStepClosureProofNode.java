@@ -299,7 +299,7 @@ public final class DefaultBigStepClosureProofNode extends
     packages.add ( LatexPackage.AMSMATH );
     packages.add ( LatexPackage.AMSTEXT );
     packages.add ( LatexPackage.COLOR );
-    packages.add ( LatexPackage.IFTHEN );
+    packages.add ( LatexPackage.XIFTHEN );
     packages.add ( LatexPackage.PSTNODE );
     packages.add ( LatexPackage.PSTRICKS );
     return packages;
@@ -331,7 +331,7 @@ public final class DefaultBigStepClosureProofNode extends
                 + LATEX_LINE_BREAK_NEW_COMMAND
                 + "$\\begin{tabular}[t]{p{#6}}$" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND_INDENT1
-                + "\\ifthenelse{\\equal{#4}{}}" //$NON-NLS-1$
+                + "\\ifthenelse{\\isempty{#4}}" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND_INDENT2
                 // begin of the node variables
                 + "{#3\\ \\color{" + LATEX_COLOR_NONE + "}{\\Downarrow}\\ #4}" //$NON-NLS-1$ //$NON-NLS-2$

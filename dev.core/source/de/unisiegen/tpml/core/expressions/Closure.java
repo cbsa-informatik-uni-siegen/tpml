@@ -181,7 +181,7 @@ public class Closure implements PrettyPrintable, LatexPrintable
   {
     LatexCommandList commands = new LatexCommandList ();
     commands.add ( new DefaultLatexCommand ( LATEX_CLOSURE, 2, LATEX_LPAREN
-        + "#1" + LATEX_COMMA + "#2" + LATEX_RPAREN, "expression", "environment" ));
+        + "#1" + LATEX_SPACE + "#2" + LATEX_RPAREN, "expression", "environment" ));
     return commands;
   }
 
