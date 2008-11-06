@@ -17,6 +17,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.expressions.InfixOperation;
 import de.unisiegen.tpml.core.expressions.Lambda;
+import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.UnaryOperator;
 import de.unisiegen.tpml.core.expressions.UnaryOperatorException;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
@@ -41,6 +42,7 @@ public final class L1BigStepClosureProofRuleSet extends
     registerByMethodName ( L1Language.L1, "BETA-V", "applyApp", "updateBetaV" );
     registerByMethodName ( L1Language.L1, "COND-T", "applyCond", "updateCondT" );
     registerByMethodName ( L1Language.L1, "COND-F", "applyCond", "updateCondF" );
+    registerByMethodName ( L1Language.L1, "LET", "applyLet", "updateLet" );
   }
 
 
@@ -144,27 +146,6 @@ public final class L1BigStepClosureProofRuleSet extends
       return;
 
     final BinaryOpArgs args = new BinaryOpArgs(node);
-    /*
-    Expression operand1, operand2;
-    BinaryOperator op2;
-
-    Expression e = node.getExpression ();
-    if ( e instanceof Application )
-    {
-      Application app = ( Application ) child0.getResult ().getClosure ()
-          .getExpression ();
-      op2 = ( BinaryOperator ) app.getE1 ();
-      operand1 = app.getE2 ();
-      operand2 = child1.getResult ().getClosure ().getExpression ();
-    }
-    else
-    {
-      // otherweise we must have an infix operation, pull op2 out of node itself
-      InfixOperation inf = ( InfixOperation ) node.getExpression ();
-      op2 = inf.getOp ();
-      operand1 = child0.getResult ().getClosure ().getExpression ();
-      operand2 = child1.getResult ().getClosure ().getExpression ();
-    }*/
 
     context.setProofNodeResult ( node, new Closure ( args.getOperator().applyTo ( args.getOperand1(),
         args.getOperand2() ), DefaultClosureEnvironment.empty () ) );
@@ -263,5 +244,37 @@ public final class L1BigStepClosureProofRuleSet extends
     }
     else if ( node.getChildCount () == 2 && node.getChildAt ( 1 ).isProven () )
       context.setProofNodeResult ( node, node.getChildAt ( 1 ).getResult () );
+  }
+  
+  public void applyLet(
+      BigStepClosureProofContext context, BigStepClosureProofNode node)
+  {
+    final Let let = (Let)node.getExpression ();
+    context.addProofNode ( node, new Closure(let.getE1 (), node.getEnvironment() ));
+  }
+  
+  public void updateLet(
+      BigStepClosureProofContext context, BigStepClosureProofNode node)
+  {
+    final Let let = (Let)node.getExpression ();
+    if(node.getChildCount() == 1)
+    {
+      final BigStepClosureProofNode child0 = node.getChildAt ( 0 );
+      if(child0.isProven())
+      {
+        Closure closure = child0.getResult ().getClosure ();
+        ClosureEnvironment environment = child0.getClosure ().cloneEnvironment();
+        environment.put ( let.getId(), closure );
+        context.addProofNode ( node, new Closure( let.getE2 (), environment ) );
+      }
+      return;
+    }
+    
+    if(node.getChildCount() == 2)
+    {
+      final BigStepClosureProofNode child1 = node.getChildAt ( 1 );
+      if(child1.isProven())
+        context.setProofNodeResult ( node, child1.getResult().getClosure());
+    }
   }
 }
