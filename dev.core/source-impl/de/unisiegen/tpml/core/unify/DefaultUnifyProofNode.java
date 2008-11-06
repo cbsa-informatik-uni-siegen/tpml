@@ -200,9 +200,9 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
       LatexStringBuilderFactory latexStringBuilderFactory, int indent )
   {
     StringBuilder body1 = new StringBuilder ();
+    body1.append ( PRETTY_LBRACKET );
     if ( this.getTypeSubstitutions () != TypeSubstitutionList.EMPTY_LIST )
     {
-      body1.append ( PRETTY_LBRACKET );
       TypeSubstitutionList ll = this.getTypeSubstitutions ();
       while ( ll != TypeSubstitutionList.EMPTY_LIST )
       {
@@ -211,18 +211,17 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
         {
           body1.append ( PRETTY_COMMA );
           body1.append ( PRETTY_SPACE );
+          ll = ll.getRemaining ();
         }
-        body1.append ( PRETTY_RBRACKET );
       }
     }
+    body1.append ( PRETTY_RBRACKET );
 
     StringBuilder body2 = new StringBuilder ();
     for ( TypeEquation equation : this.getTypeEquationList () )
     {
       body2.append ( equation.getSeenTypes ().toPrettyString ().toString () );
-      body2.append ( PRETTY_SPACE );
-      body2.append ( PRETTY_NAIL );
-      body2.append ( PRETTY_SPACE );
+      body2.append ( PRETTY_COMMA );
     }
     body2.append ( PRETTY_LINE_BREAK );
 
@@ -276,6 +275,7 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
           builder.addText ( LATEX_SPACE );
           builder.addText ( "}" ); //$NON-NLS-1$
         }
+        ll = ll.getRemaining ();
       }
 
       builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -294,11 +294,11 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( indent
           + LATEX_INDENT ) );
-      builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ); //$NON-NLS-1$ //$NON-NLS-2$
-      builder.addText ( LATEX_SPACE );
-      builder.addText ( LATEX_NAIL );
-      builder.addText ( LATEX_SPACE );
-      builder.addText ( "}" ); //$NON-NLS-1$
+//      builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ); //$NON-NLS-1$ //$NON-NLS-2$
+//      builder.addText ( LATEX_SPACE );
+//      builder.addText ( LATEX_NAIL );
+//      builder.addText ( LATEX_SPACE );
+//      builder.addText ( "}" ); //$NON-NLS-1$
       builder.addBuilder ( equation.toLatexStringBuilder (
           latexStringBuilderFactory, indent + LATEX_INDENT * 2 ), 0 );
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
@@ -325,8 +325,14 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
     return getTypeSubstitutions ().toString ()
         + " " + PRETTY_CONCAT + " unify(" + getTypeEquationList ().toPrettyString ().toString () + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
   }
-  
-  public UnifyProofRule getRule()
+
+
+  /**
+   * @inheritDoc
+   * @see de.unisiegen.tpml.core.unify.AbstractUnifyProofNode#getRule()
+   */
+  @Override
+  public UnifyProofRule getRule ()
   {
     final UnifyProofStep [] newSteps = getSteps ();
     if ( newSteps.length > 0 )

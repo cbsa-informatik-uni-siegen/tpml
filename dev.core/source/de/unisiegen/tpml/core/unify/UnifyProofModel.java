@@ -841,10 +841,9 @@ public class UnifyProofModel extends AbstractProofModel
               pIndent + LATEX_INDENT * 2 ), 0 );
       pLatexStringBuilder.addSourceCodeBreak ( 0 );
     }
-    // pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
-    // pLatexStringBuilder.addSourceCodeBreak ( 0 );
-    // pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-    // + LATEX_TYPE_INFERENCE_NEW_FORMULA );
+    pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+    pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_NEW_EQUATION );
     pLatexStringBuilder.addSourceCodeBreak ( 0 );
     pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 );
@@ -933,15 +932,9 @@ public class UnifyProofModel extends AbstractProofModel
       pLatexStringBuilder.addSourceCodeBreak ( 0 );
       pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
 
-      pLatexStringBuilder.addBuilderWithoutBrackets ( equation.getSeenTypes ()
-          .toLatexStringBuilder ( pLatexStringBuilderFactory,
-              pIndent + LATEX_INDENT ), 0 );
       pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       pLatexStringBuilder.addText ( DefaultLatexStringBuilder
           .getIndent ( pIndent + LATEX_INDENT ) );
-      pLatexStringBuilder.addText ( LATEX_SPACE );
-      pLatexStringBuilder.addText ( LATEX_NAIL );
-      pLatexStringBuilder.addText ( LATEX_SPACE );
       pLatexStringBuilder.addText ( "\\linebreak[3]" ); //$NON-NLS-1$
 
       pLatexStringBuilder.addBuilderWithoutBrackets ( equation
@@ -960,6 +953,10 @@ public class UnifyProofModel extends AbstractProofModel
     if ( pCurrentNode.getTypeEquationList ().size () > 0 )
     {
       pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      
+      pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+      
       pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_RPAREN );
     }
     pLatexStringBuilder.addSourceCodeBreak ( 0 );
