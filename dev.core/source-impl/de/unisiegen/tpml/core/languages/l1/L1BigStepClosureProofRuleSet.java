@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.bigstepclosure.AbstractBigStepClosureProofRuleSet;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofContext;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofNode;
 import de.unisiegen.tpml.core.bigstepclosure.BinaryOpArgs;
+import de.unisiegen.tpml.core.expressions.And;
 import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.BinaryOperatorException;
 import de.unisiegen.tpml.core.expressions.BooleanConstant;
@@ -43,6 +44,8 @@ public final class L1BigStepClosureProofRuleSet extends
     registerByMethodName ( L1Language.L1, "COND-T", "applyCond", "updateCondT" );
     registerByMethodName ( L1Language.L1, "COND-F", "applyCond", "updateCondF" );
     registerByMethodName ( L1Language.L1, "LET", "applyLet", "updateLet" );
+    registerByMethodName ( L1Language.L1, "AND-T", "applyAnd", "updateAndT" );
+    registerByMethodName ( L1Language.L1, "AND-F", "applyAnd", "updateAndF" );
   }
 
 
@@ -101,35 +104,34 @@ public final class L1BigStepClosureProofRuleSet extends
   {
     if ( node.getChildCount () < 2 )
       return;
-    
+
     final BigStepClosureProofNode child0 = node.getChildAt ( 0 ), child1 = node
         .getChildAt ( 1 );
 
     if ( ! ( child0.isProven () && child1.isProven () ) )
       return;
-  
+
     // if the parent is a BinaryOperator we have to defer the evaluation
     try
     {
-      final Expression parentExp = node.getParent ().getExpression();
-      if(parentExp instanceof Application || parentExp instanceof InfixOperation)
+      final Expression parentExp = node.getParent ().getExpression ();
+      if ( parentExp instanceof Application
+          || parentExp instanceof InfixOperation )
       {
-        context.setProofNodeResult ( node, new Closure (
-          new Application ( child0.getExpression (), child1.getResult ()
-              .getClosure ().getExpression () ), DefaultClosureEnvironment
-              .empty () ) );
+        context.setProofNodeResult ( node, new Closure ( new Application (
+            child0.getExpression (), child1.getResult ().getClosure ()
+                .getExpression () ), DefaultClosureEnvironment.empty () ) );
         return;
       }
     }
-    catch(final Exception e)
+    catch ( final Exception e )
     {
-      e.printStackTrace();
+      e.printStackTrace ();
     }
-   
-    final UnaryOperator uop = (UnaryOperator)child0.getExpression ();
-    context.setProofNodeResult(
-        node, new Closure(uop.applyTo(child1.getExpression()), DefaultClosureEnvironment.empty())
-      );
+
+    final UnaryOperator uop = ( UnaryOperator ) child0.getExpression ();
+    context.setProofNodeResult ( node, new Closure ( uop.applyTo ( child1
+        .getExpression () ), DefaultClosureEnvironment.empty () ) );
   }
 
 
@@ -145,10 +147,11 @@ public final class L1BigStepClosureProofRuleSet extends
     if ( ! ( child0.isProven () && child1.isProven () ) )
       return;
 
-    final BinaryOpArgs args = new BinaryOpArgs(node);
+    final BinaryOpArgs args = new BinaryOpArgs ( node );
 
-    context.setProofNodeResult ( node, new Closure ( args.getOperator().applyTo ( args.getOperand1(),
-        args.getOperand2() ), DefaultClosureEnvironment.empty () ) );
+    context.setProofNodeResult ( node, new Closure ( args.getOperator ()
+        .applyTo ( args.getOperand1 (), args.getOperand2 () ),
+        DefaultClosureEnvironment.empty () ) );
   }
 
 
@@ -245,36 +248,112 @@ public final class L1BigStepClosureProofRuleSet extends
     else if ( node.getChildCount () == 2 && node.getChildAt ( 1 ).isProven () )
       context.setProofNodeResult ( node, node.getChildAt ( 1 ).getResult () );
   }
-  
-  public void applyLet(
-      BigStepClosureProofContext context, BigStepClosureProofNode node)
+
+
+  public void applyLet ( BigStepClosureProofContext context,
+      BigStepClosureProofNode node )
   {
-    final Let let = (Let)node.getExpression ();
-    context.addProofNode ( node, new Closure(let.getE1 (), node.getEnvironment() ));
+    final Let let = ( Let ) node.getExpression ();
+    context.addProofNode ( node, new Closure ( let.getE1 (), node
+        .getEnvironment () ) );
   }
-  
-  public void updateLet(
-      BigStepClosureProofContext context, BigStepClosureProofNode node)
+
+
+  public void updateLet ( BigStepClosureProofContext context,
+      BigStepClosureProofNode node )
   {
-    final Let let = (Let)node.getExpression ();
-    if(node.getChildCount() == 1)
+    final Let let = ( Let ) node.getExpression ();
+    if ( node.getChildCount () == 1 )
     {
       final BigStepClosureProofNode child0 = node.getChildAt ( 0 );
-      if(child0.isProven())
+      if ( child0.isProven () )
       {
         Closure closure = child0.getResult ().getClosure ();
-        ClosureEnvironment environment = child0.getClosure ().cloneEnvironment();
-        environment.put ( let.getId(), closure );
-        context.addProofNode ( node, new Closure( let.getE2 (), environment ) );
+        ClosureEnvironment environment = child0.getClosure ()
+            .cloneEnvironment ();
+        environment.put ( let.getId (), closure );
+        context.addProofNode ( node, new Closure ( let.getE2 (), environment ) );
       }
+      return;
+    }
+
+    if ( node.getChildCount () == 2 )
+    {
+      final BigStepClosureProofNode child1 = node.getChildAt ( 1 );
+      if ( child1.isProven () )
+        context.setProofNodeResult ( node, child1.getResult ().getClosure () );
+    }
+  }
+
+
+  public void applyAnd ( BigStepClosureProofContext context,
+      BigStepClosureProofNode node )
+  {
+    context.addProofNode ( node, new Closure ( ( ( And ) node.getExpression () )
+        .getE1 (), node.getEnvironment () ) );
+  }
+
+
+  public void updateAndT(BigStepClosureProofContext context, BigStepClosureProofNode node)
+  {
+    if(node.getChildCount() == 1)
+    {
+      BigStepClosureProofNode child0 = node.getChildAt ( 0 );
+      if(!child0.isProven())
+        return;
+      
+      if ( !( ( BooleanConstant ) child0.getResult ().getValue () )
+          .booleanValue () )
+      {
+        updateAndF ( context, node );
+        return;
+      }
+      
+      
+      final And expr = (And)node.getExpression ();
+      context.addProofNode( node, new Closure ( expr.getE2(), child0.getEnvironment() ));
+      
       return;
     }
     
     if(node.getChildCount() == 2)
     {
-      final BigStepClosureProofNode child1 = node.getChildAt ( 1 );
-      if(child1.isProven())
-        context.setProofNodeResult ( node, child1.getResult().getClosure());
+      BigStepClosureProofNode child1 = node.getChildAt ( 1 );
+      if(!child1.isProven())
+        return;
+     
+      context.setProofNodeResult ( node, child1.getResult().getClosure());
+    }
+  }
+
+
+  public void updateAndF ( BigStepClosureProofContext context,
+      BigStepClosureProofNode node )
+  {
+    if(node.getChildCount() == 1)
+    {
+      BigStepClosureProofNode child0 = node.getChildAt ( 0 );
+      if(!child0.isProven())
+        return;
+      
+      if ( ( ( BooleanConstant ) child0.getResult ().getValue () )
+          .booleanValue () )
+      {
+        updateAndT ( context, node );
+        return;
+      }
+      
+      context.addProofNode( node, new Closure(new BooleanConstant(false), child0.getEnvironment() ));
+      return;
+    }
+    
+    if(node.getChildCount() == 2)
+    {
+      BigStepClosureProofNode child1 = node.getChildAt ( 1 );
+      if(!child1.isProven())
+        return;
+     
+      context.setProofNodeResult ( node, child1.getResult().getClosure());
     }
   }
 }
