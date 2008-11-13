@@ -253,6 +253,7 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
     LatexStringBuilder builder = latexStringBuilderFactory.newBuilder ( 0,
         LATEX_UNIFY_PROOF_NODE, indent, descriptions );
     builder.addBuilderBegin ();
+    
     if ( this.getTypeSubstitutions ().size () > 0 )
     {
       builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -294,11 +295,7 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
       builder.addText ( DefaultLatexStringBuilder.getIndent ( indent
           + LATEX_INDENT ) );
-//      builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ); //$NON-NLS-1$ //$NON-NLS-2$
-//      builder.addText ( LATEX_SPACE );
-//      builder.addText ( LATEX_NAIL );
-//      builder.addText ( LATEX_SPACE );
-//      builder.addText ( "}" ); //$NON-NLS-1$
+
       builder.addBuilder ( equation.toLatexStringBuilder (
           latexStringBuilderFactory, indent + LATEX_INDENT * 2 ), 0 );
       builder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );

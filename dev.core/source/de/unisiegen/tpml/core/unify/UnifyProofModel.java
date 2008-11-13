@@ -859,8 +859,20 @@ public class UnifyProofModel extends AbstractProofModel
     // Second column
     pLatexStringBuilder.addText ( "\\begin{unifynode}" ); //$NON-NLS-1$
 
+//    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//    pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+//        + LATEX_UNIFY_SUBSTITUTIONS_BEGIN );
+//    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//    pLatexStringBuilder.addText ( "{" ); //$NON-NLS-1$
+//    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+//    pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
+//    pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+//        .getIndent ( pIndent + LATEX_INDENT ) );
+//    pLatexStringBuilder.addText ( LATEX_LBRACKET );
     if ( pCurrentNode.getTypeSubstitutions () != TypeSubstitutionList.EMPTY_LIST )
     {
+      pLatexStringBuilder.addSourceCodeBreak ( 0 );
       pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
           + LATEX_UNIFY_SUBSTITUTIONS_BEGIN );
       pLatexStringBuilder.addSourceCodeBreak ( 0 );
@@ -873,7 +885,7 @@ public class UnifyProofModel extends AbstractProofModel
       pLatexStringBuilder.addText ( LATEX_LBRACKET );
 
       TypeSubstitutionList ll = pCurrentNode.getTypeSubstitutions ();
-      while ( ll.hasNext () )
+      while ( ll.getFirst () != null )
       {
         pLatexStringBuilder.addBuilderWithoutBrackets ( ll.getFirst ()
             .toLatexStringBuilder ( pLatexStringBuilderFactory,
@@ -881,9 +893,12 @@ public class UnifyProofModel extends AbstractProofModel
         pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         pLatexStringBuilder.addText ( DefaultLatexStringBuilder
             .getIndent ( pIndent + LATEX_INDENT ) );
-        pLatexStringBuilder.addText ( LATEX_COMMA );
+        if(ll.getRemaining () != TypeSubstitutionList.EMPTY_LIST) {
+          pLatexStringBuilder.addText ( LATEX_COMMA );
+        }
         pLatexStringBuilder.addText ( LATEX_SPACE );
         pLatexStringBuilder.addBreak ();
+        ll = ll.getRemaining ();
       }
 
       pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
@@ -911,6 +926,12 @@ public class UnifyProofModel extends AbstractProofModel
     }
     else
     {
+//      pLatexStringBuilder.addText ( LATEX_RBRACKET );
+//      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+//      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//      pLatexStringBuilder.addText ( "}" ); //$NON-NLS-1$
+      
       pLatexStringBuilder.addSourceCodeBreak ( 0 );
       pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
     }
