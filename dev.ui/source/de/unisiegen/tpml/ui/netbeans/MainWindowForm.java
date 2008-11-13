@@ -93,13 +93,13 @@ public class MainWindowForm extends javax.swing.JFrame {
         runMenu = new javax.swing.JMenu();
         smallstepItem = new javax.swing.JMenuItem();
         bigstepItem = new javax.swing.JMenuItem();
+        bigstepclosureItem = new javax.swing.JMenuItem();
         typecheckerItem = new javax.swing.JMenuItem();
         typeinferenceItem = new javax.swing.JMenuItem();
         minimaltypingItem = new javax.swing.JMenuItem();
         subtypingItem = new javax.swing.JMenuItem();
         subtypingrecItem = new javax.swing.JMenuItem();
         unificationItem = new javax.swing.JMenuItem();
-        bigstepclosureItem = new javax.swing.JMenuItem();
         runMenuSeparator1 = new javax.swing.JSeparator();
         beginnerRadioButton = new javax.swing.JRadioButtonMenuItem();
         advancedRadioButton = new javax.swing.JRadioButtonMenuItem();
@@ -559,7 +559,18 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         runMenu.add(bigstepItem);
 
-        typecheckerItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
+        bigstepclosureItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
+        bigstepclosureItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("BigStepClosureMnemonic").charAt(0));
+        bigstepclosureItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("BigStepClosure"));
+        bigstepclosureItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bigstepclosureItemActionPerformed(evt);
+            }
+        });
+
+        runMenu.add(bigstepclosureItem);
+
+        typecheckerItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0));
         typecheckerItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("TypeCheckerMnemonic").charAt(0));
         typecheckerItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("TypeChecker"));
         typecheckerItem.addActionListener(new java.awt.event.ActionListener() {
@@ -624,17 +635,6 @@ public class MainWindowForm extends javax.swing.JFrame {
         });
 
         runMenu.add(unificationItem);
-
-        bigstepclosureItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
-        bigstepclosureItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("BigStepClosure"));
-        bigstepclosureItem.setActionCommand("Big Step Closure");
-        bigstepclosureItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bigstepclosureItemActionPerformed(evt);
-            }
-        });
-
-        runMenu.add(bigstepclosureItem);
 
         runMenu.add(runMenuSeparator1);
 
