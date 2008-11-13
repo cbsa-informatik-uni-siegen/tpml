@@ -29,7 +29,7 @@ import de.unisiegen.tpml.core.expressions.Value;
 /**
  * TODO
  */
-public final class L1BigStepClosureProofRuleSet extends
+public class L1BigStepClosureProofRuleSet extends
     AbstractBigStepClosureProofRuleSet
 {
 
@@ -38,27 +38,29 @@ public final class L1BigStepClosureProofRuleSet extends
     super ( language );
 
     registerByMethodName ( L1Language.L1, "VAL", "applyVal" );
-    registerByMethodName ( L1Language.L1, "ID", "applyId" );
+    registerByMethodName ( L1Language.L1, "ID", "applyId", "updateId" );
     registerByMethodName ( L1Language.L1, "OP-1", "applyApp", "updateOP1" );
     registerByMethodName ( L1Language.L1, "OP-2", "applyOP2", "updateOP2" );
     registerByMethodName ( L1Language.L1, "BETA-V", "applyApp", "updateBetaV" );
-    registerByMethodName ( L1Language.L1, "COND-T", "applyCond", "updateCondT" );
-    registerByMethodName ( L1Language.L1, "COND-F", "applyCond", "updateCondF" );
+    registerByMethodName ( L1Language.L1, "COND-TRUE", "applyCond",
+        "updateCondT" );
+    registerByMethodName ( L1Language.L1, "COND-FALSE", "applyCond",
+        "updateCondF" );
     registerByMethodName ( L1Language.L1, "LET", "applyLet", "updateLet" );
-    registerByMethodName ( L1Language.L1, "AND-T", "applyAnd", "updateAndT" );
-    registerByMethodName ( L1Language.L1, "AND-F", "applyAnd", "updateAndF" );
-    registerByMethodName ( L1Language.L1, "OR-T", "applyOr", "updateOrT");
-    registerByMethodName ( L1Language.L1, "OR-F", "applyOr", "updateOrF");
+    registerByMethodName ( L1Language.L1, "AND-TRUE", "applyAnd", "updateAndT" );
+    registerByMethodName ( L1Language.L1, "AND-FALSE", "applyAnd", "updateAndF" );
+    registerByMethodName ( L1Language.L1, "OR-TRUE", "applyOr", "updateOrT" );
+    registerByMethodName ( L1Language.L1, "OR-FALSE", "applyOr", "updateOrF" );
   }
 
 
   public void applyVal ( BigStepClosureProofContext context,
       BigStepClosureProofNode node )
   {
-    Expression expression = node.getExpression ();
+    final Expression expression = node.getExpression ();
     if ( expression instanceof Identifier )
       throw new RuntimeException ( "An Identifier is not a Value!" );
-    Value val = ( Value ) expression;
+    final Value val = ( Value ) expression;
     context.setProofNodeResult ( node, new Closure ( val, node
         .getEnvironment () ) );
   }
@@ -67,9 +69,18 @@ public final class L1BigStepClosureProofRuleSet extends
   public void applyId ( BigStepClosureProofContext context,
       BigStepClosureProofNode node )
   {
-    Identifier id = ( Identifier ) node.getExpression ();
-    ClosureEnvironment env = node.getEnvironment ();
-    context.setProofNodeResult ( node, env.get ( id ) );
+    final Identifier id = ( Identifier ) node.getExpression ();
+    final ClosureEnvironment env = node.getEnvironment ();
+    context.addProofNode (  node, env.get ( id ) );
+  }
+
+
+  public void updateId ( BigStepClosureProofContext context,
+      BigStepClosureProofNode node )
+  {
+    final BigStepClosureProofNode child0 = node.getChildAt ( 0 );
+    if(child0.isProven())
+      context.setProofNodeResult ( node, child0.getResult() );
   }
 
 
@@ -297,35 +308,36 @@ public final class L1BigStepClosureProofRuleSet extends
   }
 
 
-  public void updateAndT(BigStepClosureProofContext context, BigStepClosureProofNode node)
+  public void updateAndT ( BigStepClosureProofContext context,
+      BigStepClosureProofNode node )
   {
-    if(node.getChildCount() == 1)
+    if ( node.getChildCount () == 1 )
     {
       BigStepClosureProofNode child0 = node.getChildAt ( 0 );
-      if(!child0.isProven())
+      if ( !child0.isProven () )
         return;
-      
-      if ( !( ( BooleanConstant ) child0.getResult ().getValue () )
+
+      if ( ! ( ( BooleanConstant ) child0.getResult ().getValue () )
           .booleanValue () )
       {
         updateAndF ( context, node );
         return;
       }
-      
-      
-      final And expr = (And)node.getExpression ();
-      context.addProofNode( node, new Closure ( expr.getE2(), child0.getEnvironment() ));
-      
+
+      final And expr = ( And ) node.getExpression ();
+      context.addProofNode ( node, new Closure ( expr.getE2 (), child0
+          .getEnvironment () ) );
+
       return;
     }
-    
-    if(node.getChildCount() == 2)
+
+    if ( node.getChildCount () == 2 )
     {
       BigStepClosureProofNode child1 = node.getChildAt ( 1 );
-      if(!child1.isProven())
+      if ( !child1.isProven () )
         return;
-     
-      context.setProofNodeResult ( node, child1.getResult().getClosure());
+
+      context.setProofNodeResult ( node, child1.getResult ().getClosure () );
     }
   }
 
@@ -333,68 +345,72 @@ public final class L1BigStepClosureProofRuleSet extends
   public void updateAndF ( BigStepClosureProofContext context,
       BigStepClosureProofNode node )
   {
-    if(node.getChildCount() == 1)
+    if ( node.getChildCount () == 1 )
     {
       BigStepClosureProofNode child0 = node.getChildAt ( 0 );
-      if(!child0.isProven())
+      if ( !child0.isProven () )
         return;
-      
+
       if ( ( ( BooleanConstant ) child0.getResult ().getValue () )
           .booleanValue () )
       {
         updateAndT ( context, node );
         return;
       }
-      
-      context.addProofNode( node, new Closure(new BooleanConstant(false), child0.getEnvironment() ));
+
+      context.addProofNode ( node, new Closure ( new BooleanConstant ( false ),
+          child0.getEnvironment () ) );
       return;
     }
-    
-    if(node.getChildCount() == 2)
+
+    if ( node.getChildCount () == 2 )
     {
       BigStepClosureProofNode child1 = node.getChildAt ( 1 );
-      if(!child1.isProven())
+      if ( !child1.isProven () )
         return;
-     
-      context.setProofNodeResult ( node, child1.getResult().getClosure());
+
+      context.setProofNodeResult ( node, child1.getResult ().getClosure () );
     }
   }
-  
+
+
   public void applyOr ( BigStepClosureProofContext context,
       BigStepClosureProofNode node )
   {
     context.addProofNode ( node, new Closure ( ( ( Or ) node.getExpression () )
         .getE1 (), node.getEnvironment () ) );
   }
-  
-  
-  public void updateOrT(BigStepClosureProofContext context, BigStepClosureProofNode node)
+
+
+  public void updateOrT ( BigStepClosureProofContext context,
+      BigStepClosureProofNode node )
   {
-    if(node.getChildCount() == 1)
+    if ( node.getChildCount () == 1 )
     {
       BigStepClosureProofNode child0 = node.getChildAt ( 0 );
-      if(!child0.isProven())
+      if ( !child0.isProven () )
         return;
-      
-      if ( !( ( BooleanConstant ) child0.getResult ().getValue () )
+
+      if ( ! ( ( BooleanConstant ) child0.getResult ().getValue () )
           .booleanValue () )
       {
         updateOrF ( context, node );
         return;
       }
-      
-      context.addProofNode( node, new Closure(new BooleanConstant(true), child0.getEnvironment() ));
-      
+
+      context.addProofNode ( node, new Closure ( new BooleanConstant ( true ),
+          child0.getEnvironment () ) );
+
       return;
     }
-    
-    if(node.getChildCount() == 2)
+
+    if ( node.getChildCount () == 2 )
     {
       BigStepClosureProofNode child1 = node.getChildAt ( 1 );
-      if(!child1.isProven())
+      if ( !child1.isProven () )
         return;
-     
-      context.setProofNodeResult ( node, child1.getResult().getClosure());
+
+      context.setProofNodeResult ( node, child1.getResult ().getClosure () );
     }
   }
 
@@ -402,31 +418,32 @@ public final class L1BigStepClosureProofRuleSet extends
   public void updateOrF ( BigStepClosureProofContext context,
       BigStepClosureProofNode node )
   {
-    if(node.getChildCount() == 1)
+    if ( node.getChildCount () == 1 )
     {
       BigStepClosureProofNode child0 = node.getChildAt ( 0 );
-      if(!child0.isProven())
+      if ( !child0.isProven () )
         return;
-      
+
       if ( ( ( BooleanConstant ) child0.getResult ().getValue () )
           .booleanValue () )
       {
         updateOrT ( context, node );
         return;
       }
-      
-      final Or expr = (Or)node.getExpression ();
-      context.addProofNode( node, new  Closure ( expr.getE2(), child0.getEnvironment() ));      
+
+      final Or expr = ( Or ) node.getExpression ();
+      context.addProofNode ( node, new Closure ( expr.getE2 (), child0
+          .getEnvironment () ) );
       return;
     }
-    
-    if(node.getChildCount() == 2)
+
+    if ( node.getChildCount () == 2 )
     {
       BigStepClosureProofNode child1 = node.getChildAt ( 1 );
-      if(!child1.isProven())
+      if ( !child1.isProven () )
         return;
-     
-      context.setProofNodeResult ( node, child1.getResult().getClosure());
+
+      context.setProofNodeResult ( node, child1.getResult ().getClosure () );
     }
   }
 }
