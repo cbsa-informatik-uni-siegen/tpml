@@ -92,8 +92,14 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel
    * TODO
    */
   private EditorComponent bigstep;
-
-
+  
+  
+  /**
+   * TODO
+   */
+  private EditorComponent bigstepclosure;
+  
+  
   /**
    * TODO
    */
@@ -441,11 +447,11 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel
     {
       BigStepClosureProofModel model = this.language.newBigStepClosureProofModel ( this.code
           .getDocument ().getExpression () );
-      this.bigstep = new ProofViewComponent ( ProofViewFactory
+      this.bigstepclosure = new ProofViewComponent ( ProofViewFactory
           .newBigStepClosureView ( model ), model );
       this.mypanel.editorPanel.removeAll ();
-      activateFunction ( this.mypanel.bigstepclosureButton, this.bigstep );
-      this.bigstep.setAdvanced ( this.advanced );
+      activateFunction ( this.mypanel.bigstepclosureButton, this.bigstepclosure );
+      this.bigstepclosure.setAdvanced ( this.advanced );
       this.mypanel.bigstepclosureButton.setIcon ( null );
       this.mypanel.paintAll ( this.mypanel.getGraphics () );
 
@@ -628,9 +634,11 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel
     this.mypanel.codeButton.setSelected ( false );
     this.mypanel.smallstepButton.setSelected ( false );
     this.mypanel.bigstepButton.setSelected ( false );
+    this.mypanel.bigstepclosureButton.setSelected ( false );
     this.mypanel.typecheckerButton.setSelected ( false );
     this.mypanel.typeinferenceButton.setSelected ( false );
     this.mypanel.minimalTypingButton.setSelected ( false );
+    this.mypanel.unifyButton.setSelected ( false );
   }
 
 
@@ -850,6 +858,10 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel
   public void setAdvanced ( boolean state )
   {
     if ( this.bigstep != null )
+    {
+      this.bigstep.setAdvanced ( state );
+    }
+    if (this.bigstepclosure != null)
     {
       this.bigstep.setAdvanced ( state );
     }
@@ -1214,6 +1226,17 @@ public class EditorPanelExpression extends AbstractBean implements EditorPanel
     checkSourceCode ();
   }
 
+  
+  public void selectBigStepClosure ()
+  {
+    setTexteditor ( false );
+    setComponent ( this.bigstepclosure );
+    deselectButtons ();
+    this.mypanel.bigstepclosureButton.setSelected ( true );
+    checkSourceCode ();
+  }
+
+  
 
   /**
    * TODO

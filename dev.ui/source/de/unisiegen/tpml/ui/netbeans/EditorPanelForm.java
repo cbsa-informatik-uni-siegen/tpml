@@ -201,7 +201,7 @@ public class EditorPanelForm extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bigstepclosureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bigstepclosureButtonActionPerformed
-// TODO add your handling code here:
+      ((EditorPanelExpression)caller).selectBigStepClosure();
     }//GEN-LAST:event_bigstepclosureButtonActionPerformed
 
     private void unifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unifyButtonActionPerformed
