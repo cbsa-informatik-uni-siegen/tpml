@@ -228,6 +228,10 @@ public abstract class AbstractBigStepClosureProofRule extends AbstractProofRule
         .toPrettyString ();
   }
 
+  public final String toString ()
+  {
+    return toPrettyString ().toString ();
+  }
 
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )

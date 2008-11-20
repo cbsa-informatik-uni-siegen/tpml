@@ -13,7 +13,6 @@ import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.ProofStep;
-import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofModel;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
@@ -64,7 +63,7 @@ public final class BigStepClosureProofModel extends
     }
     if ( node.getRules ().length > 0 )
     {
-      throw new IllegalArgumentException ( Messages.getString ( "BigStep.0" ) ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( Messages.getString ( "BigStepClosure.0" ) ); //$NON-NLS-1$
     }
     if ( !this.root.isNodeRelated ( node ) )
     {

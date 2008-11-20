@@ -63,7 +63,7 @@ public class AbstractBigStepClosureProofRuleSet extends AbstractProofRuleSet
   {
     try
     {
-      // lookup the method with the parameters BigStepProofContext and
+      // lookup the method with the parameters BigStepClosureProofContext and
       // BigStepClosureProofNode
       return getClass ().getMethod ( methodName, new Class []
       { BigStepClosureProofContext.class, BigStepClosureProofNode.class } );

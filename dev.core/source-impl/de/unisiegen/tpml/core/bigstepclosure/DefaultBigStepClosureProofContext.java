@@ -3,12 +3,8 @@ package de.unisiegen.tpml.core.bigstepclosure;
 
 import java.util.LinkedList;
 
-import de.unisiegen.tpml.core.ClosureEnvironment;
-import de.unisiegen.tpml.core.DefaultClosureEnvironment;
 import de.unisiegen.tpml.core.ProofRuleException;
-import de.unisiegen.tpml.core.bigstep.DefaultBigStepProofNode;
 import de.unisiegen.tpml.core.expressions.Closure;
-import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.DefaultStore;
 import de.unisiegen.tpml.core.interpreters.Store;
 
@@ -25,7 +21,7 @@ final class DefaultBigStepClosureProofContext implements
 
   public BigStepClosureProofRule newNoopRule ( String name )
   {
-    return null;
+    return AbstractBigStepClosureProofRule.newNoopRule ( name );
   }
 
 
@@ -183,8 +179,8 @@ final class DefaultBigStepClosureProofContext implements
 
 
   /**
-   * Returns a single <code>Runnable</code> that runs all previously
-   * registered redo actions.
+   * Returns a single <code>Runnable</code> that runs all previously registered
+   * redo actions.
    * 
    * @return a single <code>Runnable</code> to run all redo actions.
    * @see #addRedoAction(Runnable)
@@ -208,8 +204,8 @@ final class DefaultBigStepClosureProofContext implements
 
 
   /**
-   * Returns a single <code>Runnable</code> that runs all previously
-   * registered undo actions.
+   * Returns a single <code>Runnable</code> that runs all previously registered
+   * undo actions.
    * 
    * @return a single <code>Runnable</code> to run all undo actions.
    * @see #addUndoAction(Runnable)
