@@ -714,18 +714,6 @@ public class CompoundEquationUnify extends JComponent
     gc.setColor ( Color.WHITE );
     gc.fillRect ( -1, -1, getWidth () + 5, getHeight () + 5 );
 
-    // --------------------------------
-    // make sure that we have an expression renderer
-    // if ( this.expressionRenderer == null )
-    // {
-    // return ;
-    // }
-    // assuming the size of the component will suffice, no testing
-    // of any sizes will happen.
-    /*
-     * just to get reminded: no environment: expression storeenvironment:
-     * (expression [env]) typeenvironment: [env] |> expression
-     */
     int posX = 0;
     int posY = 0;
 
