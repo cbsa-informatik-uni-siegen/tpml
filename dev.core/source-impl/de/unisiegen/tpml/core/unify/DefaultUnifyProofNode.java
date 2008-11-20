@@ -48,6 +48,25 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.tpml.core.unify.AbstractUnifyProofNode#isFinished()
+   */
+  @Override
+  public boolean isFinished ()
+  {
+    DefaultUnifyProofNode node = ( DefaultUnifyProofNode ) getLastLeaf ()
+        .getParent ();
+
+    if ( node.getTypeEquationList ().size () == 0 && node.getChildCount () > 0 )
+    {
+      return true;
+    }
+    return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
    */
   public PrettyString toPrettyString ()
@@ -253,7 +272,7 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
     LatexStringBuilder builder = latexStringBuilderFactory.newBuilder ( 0,
         LATEX_UNIFY_PROOF_NODE, indent, descriptions );
     builder.addBuilderBegin ();
-    
+
     if ( this.getTypeSubstitutions ().size () > 0 )
     {
       builder.addText ( "\\color{" + LATEX_COLOR_NONE + "}{" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -319,12 +338,13 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
   {
     if ( !isProvable () )
       return "Nicht lösbar"; //$NON-NLS-1$
-//    if (this.isProven ())
-//      return getTypeSubstitutions().toString ();
-//    if (getRule().getName ().equals ( "EMPTY" )) //$NON-NLS-1$
-      return getTypeSubstitutions ().toString ()
-          + " " + PRETTY_CONCAT + " unify(" + getTypeEquationList ().toPrettyString ().toString () + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-//    return "unify(" + getTypeEquationList().toPrettyString ().toString () + ")";  //$NON-NLS-1$//$NON-NLS-2$
+      // if (this.isProven ())
+      // return getTypeSubstitutions().toString ();
+      // if (getRule().getName ().equals ( "EMPTY" )) //$NON-NLS-1$
+    return getTypeSubstitutions ().toString ()
+        + " " + PRETTY_CONCAT + " unify(" + getTypeEquationList ().toPrettyString ().toString () + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    // return "unify(" + getTypeEquationList().toPrettyString ().toString () +
+    // ")"; //$NON-NLS-1$//$NON-NLS-2$
   }
 
 

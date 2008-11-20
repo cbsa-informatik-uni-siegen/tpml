@@ -709,78 +709,6 @@ public class CompoundEquationUnify extends JComponent
   @Override
   protected void paintComponent ( Graphics gc )
   {
-    // TODO test the different coponents of the renderer:
-    // gc.setColor(Color.ORANGE);
-    // gc.drawRect(0,0,neededSize.width-1, neededSize.height-1);
-    // gc.setColor(Color.CYAN);
-    // gc.drawRect(0,0,substitutionSize.width, substitutionSize.height);
-    //		
-    // gc.setColor(Color.RED);
-    // for (int i = 0; i <
-    // this.typeFormularRenderer.getTypeFormularPositions().size(); i++)
-    // {
-    // drawRectAngle(this.typeFormularRenderer.getTypeFormularPositions().get(i),
-    // gc);
-    // }
-    //
-    // gc.setColor(Color.GREEN);
-    // for (int i = 0; i <
-    // this.typeFormularRenderer.getLeftTypePositions().size(); i++)
-    // {
-    // drawRectAngle(this.typeFormularRenderer.getLeftTypePositions().get(i),
-    // gc);
-    // }
-    //
-    // gc.setColor(Color.GREEN);
-    // for (int i = 0; i <
-    // this.typeFormularRenderer.getRightTypePositions().size(); i++)
-    // {
-    // drawRectAngle(this.typeFormularRenderer.getRightTypePositions().get(i),
-    // gc);
-    // }
-    //
-    // gc.setColor(Color.YELLOW);
-    // for (int i = 0; i < this.typeFormularRenderer.getTypePositions().size();
-    // i++)
-    // {
-    // drawRectAngle(this.typeFormularRenderer.getTypePositions().get(i), gc);
-    // }
-    //
-    // gc.setColor(Color.BLUE);
-    // for (int i = 0; i <
-    // this.typeFormularRenderer.getExpressionPositions().size(); i++)
-    // {
-    // drawRectAngle(this.typeFormularRenderer.getExpressionPositions().get(i),
-    // gc);
-    // }
-    //
-    // gc.setColor(Color.PINK);
-    // for (int i = 0; i <
-    // this.typeFormularRenderer.getCollapsedTypeEnvironmentAreas().size(); i++)
-    // {
-    // drawRectAngle(this.typeFormularRenderer.getCollapsedTypeEnvironmentAreas().get(i),
-    // gc);
-    // }
-
-    // testAusgabe ( "paintComponent wurde aufgerufen..." ) ;
-    // TODO Only for test to make yompoundexpression visible
-    // it also displays how often the exptresso is rednerd while srolling...
-
-    // --------------------------------
-    // Color [] test = new Color [10];
-    // test[0] = Color.yellow;
-    // test[1] = Color.red;
-    // test[2] = Color.green;
-    // test[3] = Color.cyan;
-    // test[4] = Color.green;
-    // test[5] = Color.lightGray;
-    // test[6] = Color.blue;
-    // test[7] = Color.gray;
-    // test[8] = Color.magenta;
-    // test[9] = Color.orange;
-    // double get = Math.random();
-    // int getR = (int) (get*10);
-    // gc.setColor (test[getR]);
     // TODO Workaround printing: if this ist not done nothing is readabel in PDF
 
     gc.setColor ( Color.WHITE );
@@ -802,7 +730,7 @@ public class CompoundEquationUnify extends JComponent
     int posY = 0;
 
     if ( this.defaultTypeSubstitutionList != null
-        && this.typeEquationList != null )
+        || this.typeEquationList != null )
       this.renderer.render ( posX, posY, this.renderSize.width, getHeight (),
           gc, this.bonds, this.toListenForMouse );
 
