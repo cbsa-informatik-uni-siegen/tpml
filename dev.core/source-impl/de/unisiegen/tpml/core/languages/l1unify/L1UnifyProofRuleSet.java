@@ -43,7 +43,6 @@ public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
     registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
     registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "TRIV", "applyTriv" ); //$NON-NLS-1$ //$NON-NLS-2$
     registerByMethodName ( L1UNIFYLanguage.L1_UNIFY, "EMPTY", "applyEmpty" ); //$NON-NLS-1$ //$NON-NLS-2$
-
   }
 
 
@@ -71,6 +70,7 @@ public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
     if ( !checkEmptyRuleAppliable ( pNode ) )
       throw new RuntimeException (
           "non empty type equation list within applyEmpty" ); //$NON-NLS-1$
+    context.addProofNode ( pNode, pNode.getTypeSubstitutions () );
   }
 
 
@@ -229,22 +229,26 @@ public class L1UnifyProofRuleSet extends AbstractUnifyProofRuleSet
         /*
          * ok, we have our type variable and monotype now we (1) create a new
          * type substitution (2) apply the substitution to the remaining type
-         * substitution list and extend those list and (3) apply the substitution
-         * to the remaining type equation list and (4) create a new proof node
+         * substitution list and extend those list and (3) apply the
+         * substitution to the remaining type equation list and (4) create a new
+         * proof node
          */
 
         // (1)
         TypeSubstitutionList dts = pNode.getTypeSubstitutions ();
         DefaultTypeSubstitution s = new DefaultTypeSubstitution ( typevar, type );
-        
+
         // (2)
-        //TODO: { 'a -> int = int -> 'b, 'a = int }  will result in a list with two
-        //      int/'a substitutions; we have to correct TypeSubstitutionList.substitute !!!
+        // TODO: { 'a -> int = int -> 'b, 'a = int } will result in a list with
+        // two
+        // int/'a substitutions; we have to correct
+        // TypeSubstitutionList.substitute !!!
         dts = dts.substitute ( s );
         dts = dts.extend ( s );
 
         // (3) and (4)
-        context.addProofNode ( pNode, dts, dtel.getRemaining ().substitute ( s ) );
+        context
+            .addProofNode ( pNode, dts, dtel.getRemaining ().substitute ( s ) );
       }
     }
     else

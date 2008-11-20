@@ -158,18 +158,25 @@ public abstract class AbstractUnifyProofNode extends AbstractProofNode
    */
   public boolean isFinished ()
   {
-    if ( !isProven () )
-    {
-      return false;
-    }
-    for ( int n = 0 ; n < getChildCount () ; ++n )
-    {
-      if ( !getChildAt ( n ).isFinished () )
-      {
-        return false;
-      }
-    }
-    return true;
+//    if(!isProven())
+//      return false;
+//    for(int n = 0; n < getChildCount(); ++n)
+//      if(!getChildAt(n).getRule ().getName ().equals ( "EMPTY" )) //$NON-NLS-1$
+//        return false;
+//    return true;
+//    if ( !isProven () )
+//    {
+//      return false;
+//    }
+//    for ( int n = 0 ; n < getChildCount () ; ++n )
+//    {
+//      if ( !getChildAt ( n ).isFinished () )
+//      {
+//        return false;
+//      }
+//    }
+//    return true;
+    return getLastLeaf().getRule ().getName ().equals ( "EMPTY" ); //$NON-NLS-1$
   }
 
 

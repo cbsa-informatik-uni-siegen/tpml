@@ -18,7 +18,8 @@ import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
  * pretty string in form of '<substitions> CONCAT unify(<equations>)'
  * 
  * @author Christian Uhrhan
- * @version $Id$
+ * @version $Id: DefaultUnifyProofExpression.java 2905 2008-08-21 15:39:38Z
+ *          uhrhan $
  */
 public class DefaultUnifyProofExpression implements UnifyProofExpression
 {
@@ -101,26 +102,43 @@ public class DefaultUnifyProofExpression implements UnifyProofExpression
   {
     PrettyStringBuilder builder = prettyStringBuilderFactory.newBuilder ( this,
         0 );
-    if(this.substitutions != TypeSubstitutionList.EMPTY_LIST)
-      builder.addBuilder ( this.substitutions
-          .toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
+    if ( this.equations != null )
+    {
+      builder.addText ( "unify(" ); //$NON-NLS-1$
+      builder.addText ( PRETTY_SPACE );
+      if ( this.equations.isEmpty () )
+        builder.addText ( PRETTY_EMPTY_SET );
+      else
+        builder.addBuilder ( this.equations
+            .toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
+      builder.addText ( PRETTY_SPACE );
+      builder.addText ( ")" ); //$NON-NLS-1$
+    }
     else
     {
-      builder.addText ( PRETTY_CLPAREN );
-      builder.addText ( PRETTY_CRPAREN );
-    }
-    builder.addText ( PRETTY_SPACE );
-    builder.addText ( PRETTY_CONCAT );
-    builder.addText ( PRETTY_SPACE );
-    builder.addText ( "unify(" ); //$NON-NLS-1$
-    builder.addText ( PRETTY_SPACE );
-    if ( this.equations.isEmpty () )
-      builder.addText ( PRETTY_EMPTY_SET );
-    else
-      builder.addBuilder ( this.equations
+      builder.addBuilder ( this.substitutions
           .toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
-    builder.addText ( PRETTY_SPACE );
-    builder.addText ( ")" ); //$NON-NLS-1$
+    }
+    // if(this.substitutions != TypeSubstitutionList.EMPTY_LIST)
+    // builder.addBuilder ( this.substitutions
+    // .toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
+    // else
+    // {
+    // builder.addText ( PRETTY_LBRACKET );
+    // builder.addText ( PRETTY_RBRACKET );
+    // }
+    // builder.addText ( PRETTY_SPACE );
+    // builder.addText ( PRETTY_CONCAT );
+    // builder.addText ( PRETTY_SPACE );
+    // builder.addText ( "unify(" ); //$NON-NLS-1$
+    // builder.addText ( PRETTY_SPACE );
+    // if ( this.equations.isEmpty () )
+    // builder.addText ( PRETTY_EMPTY_SET );
+    // else
+    // builder.addBuilder ( this.equations
+    // .toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
+    // builder.addText ( PRETTY_SPACE );
+    // builder.addText ( ")" ); //$NON-NLS-1$
     return builder;
   }
 

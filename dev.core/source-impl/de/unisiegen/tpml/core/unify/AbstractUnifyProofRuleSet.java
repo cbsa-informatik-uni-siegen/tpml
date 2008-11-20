@@ -99,18 +99,6 @@ public abstract class AbstractUnifyProofRuleSet extends AbstractProofRuleSet
       {
         applyMethod.invoke ( AbstractUnifyProofRuleSet.this, context, node );
       }
-
-/*
-      @Override
-      protected void updateInternal ( UnifyProofContext context,
-          UnifyProofNode node ) throws Exception
-      {
-        if ( updateMethod != null )
-        {
-          updateMethod.invoke ( AbstractUnifyProofRuleSet.this, context, node );
-        }
-      }
-*/
     } );
   }
 

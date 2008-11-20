@@ -316,7 +316,7 @@ public class TypeSubstitutionList implements PrettyPrintable, LatexPrintable
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this, 0 );
-    builder.addText ( PRETTY_CLPAREN );
+    builder.addText ( PRETTY_LBRACKET );
     for ( TypeSubstitutionList list = this ; list != EMPTY_LIST ; list = list.remaining )
     {
       if ( list != this )
@@ -327,7 +327,7 @@ public class TypeSubstitutionList implements PrettyPrintable, LatexPrintable
       builder.addBuilder ( list.first
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ), 0 );
     }
-    builder.addText ( PRETTY_CRPAREN );
+    builder.addText ( PRETTY_RBRACKET );
     return builder;
   }
 

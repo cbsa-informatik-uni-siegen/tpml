@@ -350,7 +350,7 @@ public class UnifyProofModel extends AbstractProofModel
 
     final DefaultUnifyProofNode child = new DefaultUnifyProofNode ( substs,
         null );
-
+    child.setProvable ( false );
     context.addRedoAction ( new Runnable ()
     {
 

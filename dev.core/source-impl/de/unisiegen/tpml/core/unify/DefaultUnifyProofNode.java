@@ -319,8 +319,12 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
   {
     if ( !isProvable () )
       return "Nicht lösbar"; //$NON-NLS-1$
-    return getTypeSubstitutions ().toString ()
-        + " " + PRETTY_CONCAT + " unify(" + getTypeEquationList ().toPrettyString ().toString () + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+//    if (this.isProven ())
+//      return getTypeSubstitutions().toString ();
+//    if (getRule().getName ().equals ( "EMPTY" )) //$NON-NLS-1$
+      return getTypeSubstitutions ().toString ()
+          + " " + PRETTY_CONCAT + " unify(" + getTypeEquationList ().toPrettyString ().toString () + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+//    return "unify(" + getTypeEquationList().toPrettyString ().toString () + ")";  //$NON-NLS-1$//$NON-NLS-2$
   }
 
 
