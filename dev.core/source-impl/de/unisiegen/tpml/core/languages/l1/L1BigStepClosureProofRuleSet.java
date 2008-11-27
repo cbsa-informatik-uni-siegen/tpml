@@ -24,11 +24,13 @@ import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.LetRec;
 import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Or;
+import de.unisiegen.tpml.core.expressions.Projection;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.expressions.UnaryOperator;
 import de.unisiegen.tpml.core.expressions.UnaryOperatorException;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
 import de.unisiegen.tpml.core.expressions.Value;
+import de.unisiegen.tpml.core.types.MonoType;
 
 
 /**
@@ -310,31 +312,61 @@ public class L1BigStepClosureProofRuleSet extends
   private void applyCurriedLet ( BigStepClosureProofContext context,
       BigStepClosureProofNode node )
   {
+    // determine the first sub expression
+    final Expression e = node.getExpression ();
+    final CurriedLet curriedLet = ( CurriedLet ) e;
+    Expression e1 = curriedLet.getE1 ();
+    // generate the appropriate lambda abstractions
+    final Identifier [] identifiers = curriedLet.getIdentifiers ();
+    final MonoType [] types = curriedLet.getTypes ();
+    for ( int n = identifiers.length - 1 ; n > 0 ; --n )
+      e1 = new Lambda ( identifiers [ n ], types [ n ], e1 );
 
+    // add the recursion for letrec
+    if ( e instanceof CurriedLetRec )
+      e1 = new Recursion ( identifiers [ 0 ], null, e1 );
+
+    // TODO: is this right?
+    context.addProofNode ( node, new Closure ( e1, node.getEnvironment () ) );
   }
 
 
   private void applyMultiLet ( BigStepClosureProofContext context,
       BigStepClosureProofNode node )
   {
+    context.addProofNode ( node, new Closure ( ( ( MultiLet ) node
+        .getExpression () ).getE1 (), node.getEnvironment () ) );
   }
 
 
   public void updateLet ( BigStepClosureProofContext context,
       BigStepClosureProofNode node )
   {
-    final Let let = ( Let ) node.getExpression ();
+    final Expression e = node.getExpression ();
     if ( node.getChildCount () == 1 )
     {
       final BigStepClosureProofNode child0 = node.getChildAt ( 0 );
-      if ( child0.isProven () )
+      if ( !child0.isProven () )
+        return;
+
+      if ( e instanceof MultiLet )
       {
-        Closure closure = child0.getResult ().getClosure ();
-        ClosureEnvironment environment = child0.getClosure ()
-            .cloneEnvironment ();
-        environment.put ( let.getId (), closure );
-        context.addProofNode ( node, new Closure ( let.getE2 (), environment ) );
+        updateMultiLet1 ( context, node );
+        return;
       }
+
+      if ( e instanceof CurriedLet )
+      {
+        updateCurriedLet1 ( context, node );
+        return;
+      }
+
+      final Let let = ( Let ) e;
+
+      final Closure closure = child0.getResult ().getClosure ();
+      final ClosureEnvironment environment = closure.cloneEnvironment ();
+      environment.put ( let.getId (), closure );
+      context.addProofNode ( node, new Closure ( let.getE2 (), environment ) );
       return;
     }
 
@@ -344,6 +376,49 @@ public class L1BigStepClosureProofRuleSet extends
       if ( child1.isProven () )
         context.setProofNodeResult ( node, child1.getResult ().getClosure () );
     }
+  }
+
+
+  private void updateMultiLet1 ( BigStepClosureProofContext context,
+      BigStepClosureProofNode node )
+  {
+    final MultiLet multiLet = ( MultiLet ) node.getExpression ();
+    // Expression e2 = multiLet.getE2 ();
+
+    final Closure closure = node.getChildAt ( 0 ).getResult ().getClosure ();
+    final ClosureEnvironment environment = closure.cloneEnvironment ();
+    // environment.put ( let.getId (), closure );
+    // context.addProofNode ( node, new Closure ( let.getE2 (), environment ) );
+
+    Identifier [] identifiers = multiLet.getIdentifiers ();
+    for ( int n = 0 ; n < identifiers.length ; ++n )
+    {
+      // substitute: (#l_n value0) for id
+      // TODO: what to do here?
+      environment.put ( identifiers [ n ], closure );
+      // e2 = e2.substitute ( identifiers [ n ], new Application (
+      // new Projection ( identifiers.length, n + 1 ), value0 ) );
+    }
+    // add a proof node for e2
+    context
+        .addProofNode ( node, new Closure ( multiLet.getE2 (), environment ) );
+    // context.addProofNode ( node, e2 );*/
+  }
+
+
+  private void updateCurriedLet1 ( BigStepClosureProofContext context,
+      BigStepClosureProofNode node )
+  {
+    final BigStepClosureProofNode child0 = node.getChildAt ( 0 );
+    final Expression value0 = child0.getResult ().getValue ();
+
+    final CurriedLet curriedLet = ( CurriedLet ) node.getExpression ();
+
+    final Closure closure = child0.getResult ().getClosure ();
+    final ClosureEnvironment environment = closure.cloneEnvironment ();
+    environment.put ( curriedLet.getIdentifiers () [ 0 ], closure );
+    context.addProofNode ( node,
+        new Closure ( curriedLet.getE2 (), environment ) );
   }
 
 
