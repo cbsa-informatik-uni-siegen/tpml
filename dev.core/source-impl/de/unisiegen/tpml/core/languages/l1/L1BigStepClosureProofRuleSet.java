@@ -24,7 +24,6 @@ import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.LetRec;
 import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Or;
-import de.unisiegen.tpml.core.expressions.Projection;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.expressions.UnaryOperator;
 import de.unisiegen.tpml.core.expressions.UnaryOperatorException;
@@ -34,47 +33,65 @@ import de.unisiegen.tpml.core.types.MonoType;
 
 
 /**
- * TODO
+ * BigStep Closure proof rules for L1 and derived languages
+ * @author Philipp Reh
  */
 public class L1BigStepClosureProofRuleSet extends
     AbstractBigStepClosureProofRuleSet
 {
 
-  public L1BigStepClosureProofRuleSet ( L1Language language )
+  /**
+   * Allocates a new <code>L1BigStepClosureProofRuleSet</code> with the
+   * specified <code>language</code>, which is the <b>L1</b> or a derived
+   * language.
+   * 
+   * @param language the language for the proof rule set
+   */
+  public L1BigStepClosureProofRuleSet ( final L1Language language )
   {
     super ( language );
 
-    registerByMethodName ( L1Language.L1, "VAL", "applyVal" );
-    registerByMethodName ( L1Language.L1, "ID", "applyId", "updateId" );
-    registerByMethodName ( L1Language.L1, "OP-1", "applyApp", "updateOP1" );
-    registerByMethodName ( L1Language.L1, "OP-2", "applyOP2", "updateOP2" );
-    registerByMethodName ( L1Language.L1, "BETA-V", "applyApp", "updateBetaV" );
-    registerByMethodName ( L1Language.L1, "COND-TRUE", "applyCond",
-        "updateCondT" );
-    registerByMethodName ( L1Language.L1, "COND-FALSE", "applyCond",
-        "updateCondF" );
-    registerByMethodName ( L1Language.L1, "LET", "applyLet", "updateLet" );
-    registerByMethodName ( L1Language.L1, "AND-TRUE", "applyAnd", "updateAndT" );
-    registerByMethodName ( L1Language.L1, "AND-FALSE", "applyAnd", "updateAndF" );
-    registerByMethodName ( L1Language.L1, "OR-TRUE", "applyOr", "updateOrT" );
-    registerByMethodName ( L1Language.L1, "OR-FALSE", "applyOr", "updateOrF" );
+    registerByMethodName ( L1Language.L1, "VAL", "applyVal" ); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1Language.L1, "ID", "applyId", "updateId" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName ( L1Language.L1, "OP-1", "applyApp", "updateOP1" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName ( L1Language.L1, "OP-2", "applyOP2", "updateOP2" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName ( L1Language.L1, "BETA-V", "applyApp", "updateBetaV" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName ( L1Language.L1, "COND-TRUE", "applyCond", //$NON-NLS-1$ //$NON-NLS-2$
+        "updateCondT" ); //$NON-NLS-1$
+    registerByMethodName ( L1Language.L1, "COND-FALSE", "applyCond", //$NON-NLS-1$ //$NON-NLS-2$
+        "updateCondF" ); //$NON-NLS-1$
+    registerByMethodName ( L1Language.L1, "LET", "applyLet", "updateLet" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName ( L1Language.L1, "AND-TRUE", "applyAnd", "updateAndT" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName ( L1Language.L1, "AND-FALSE", "applyAnd", "updateAndF" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName ( L1Language.L1, "OR-TRUE", "applyOr", "updateOrT" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName ( L1Language.L1, "OR-FALSE", "applyOr", "updateOrF" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
   }
 
 
-  public void applyVal ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  
+  /**
+   * Applies the rule (VAL) to a closure
+   *
+   * @param context
+   * @param node
+   */
+  public void applyVal ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
-    final Expression expression = node.getExpression ();
-    if ( expression instanceof Identifier )
-      throw new RuntimeException ( "An Identifier is not a Value!" );
-    final Value val = ( Value ) expression;
+    final Value val = ( Value ) node.getExpression ();
     context.setProofNodeResult ( node, new Closure ( val, node
         .getEnvironment () ) );
   }
 
 
-  public void applyId ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  /**
+   * Applies the rule (ID) to a closure
+   * Creates a new proof node with the expression found for id in the closure
+   * @param context
+   * @param node
+   */
+  public void applyId ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     final Identifier id = ( Identifier ) node.getExpression ();
     final ClosureEnvironment env = node.getEnvironment ();
@@ -82,8 +99,15 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  public void updateId ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  /**
+   * Checks whether the first child of the (ID) rule is
+   * already a value
+   *
+   * @param context
+   * @param node
+   */
+  public void updateId ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     final BigStepClosureProofNode child0 = node.getChildAt ( 0 );
     if ( child0.isProven () )
@@ -91,8 +115,16 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  public void applyApp ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  
+  /**
+   * Applies a general application.
+   * It is used for (OP-1), (OP-2) (in case of a prefix operator)
+   * and (BETA-V).
+   * @param context
+   * @param node
+   */
+  public void applyApp ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     Application app = ( Application ) node.getExpression ();
     context.addProofNode ( node, new Closure ( app.getE1 (), node
@@ -102,10 +134,16 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  public void applyOP2 ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node ) throws BinaryOperatorException
+  /**
+   * Applies the rule (OP-2) to a closure.
+   * Uses special handling for an InfixOperation.
+   * @param context
+   * @param node
+   */
+  public void applyOP2 ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
-    Expression e = node.getExpression ();
+    final Expression e = node.getExpression ();
     if ( e instanceof Application )
     {
       applyApp ( context, node );
@@ -120,8 +158,17 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  public void updateOP1 ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node ) throws UnaryOperatorException
+  /**
+   * Checks if both children an (OP-1) are already proven.
+   * Defers the evaluation if the node's parent is an (OP-2)
+   * because the operator's result cannot be calculated by
+   * (OP-1) in this case.
+   * @param context
+   * @param node
+   * @throws UnaryOperatorException
+   */
+  public void updateOP1 ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node ) throws UnaryOperatorException
   {
     if ( node.getChildCount () < 2 )
       return;
@@ -156,13 +203,20 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  public void updateOP2 ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node ) throws BinaryOperatorException
+  /**
+   * Cheks if both children if an (OP-2) are already proven.
+   * If so it simply calculates the result.
+   * @param context
+   * @param node
+   * @throws BinaryOperatorException
+   */
+  public void updateOP2 ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node ) throws BinaryOperatorException
   {
     if ( node.getChildCount () < 2 )
       return;
 
-    BigStepClosureProofNode child0 = node.getChildAt ( 0 ), child1 = node
+    final BigStepClosureProofNode child0 = node.getChildAt ( 0 ), child1 = node
         .getChildAt ( 1 );
 
     if ( ! ( child0.isProven () && child1.isProven () ) )
@@ -176,8 +230,17 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  public void updateBetaV ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  /**
+   * Tries to update (BETA-V).
+   * If the first two children are proven,
+   * the third child is created which inserts the identifier
+   * of the lambda into the closure of child1, which is
+   * then used to proof the final child.
+   * @param context
+   * @param node
+   */
+  public void updateBetaV ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     if ( node.getChildCount () < 2 )
       return;
@@ -186,22 +249,28 @@ public class L1BigStepClosureProofRuleSet extends
         .getChildAt ( 1 );
     if ( node.getChildCount () == 2 && child0.isProven () && child1.isProven () )
     {
-      Closure result0 = child0.getResult ().getClosure ();
-      Lambda lambda = ( Lambda ) result0.getExpression ();
-      Closure closure = child1.getResult ().getClosure ();
-      ClosureEnvironment environment = result0.cloneEnvironment ();
+      final Closure result0 = child0.getResult ().getClosure ();
+      final Lambda lambda = ( Lambda ) result0.getExpression ();
+      final Closure closure = child1.getResult ().getClosure ();
+      final ClosureEnvironment environment = result0.cloneEnvironment ();
       environment.put ( lambda.getId (), closure );
       context.addProofNode ( node, new Closure ( lambda.getE (), environment ) );
     }
     else if ( node.getChildCount () == 3 )
     {
-      BigStepClosureProofNode child2 = node.getChildAt ( 2 );
+      final BigStepClosureProofNode child2 = node.getChildAt ( 2 );
       if ( child2.isProven () )
         context.setProofNodeResult ( node, child2.getResult ().getClosure () );
     }
   }
 
 
+  /**
+   * Applies rule (COND-TRUE) or (COND-FALSE) to a closure.
+   * Can also be used if the 'else part' is missing.
+   * @param context
+   * @param node
+   */
   public void applyCond ( final BigStepClosureProofContext context,
       final BigStepClosureProofNode node )
   {
@@ -220,16 +289,22 @@ public class L1BigStepClosureProofRuleSet extends
     }
     else
       throw new RuntimeException (
-          "applyCond can only be used with Condition or Condition1!" );
+          "applyCond can only be used with Condition or Condition1!" ); //$NON-NLS-1$
   }
 
 
-  public void updateCondT ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  /**
+   * Tries to update (COND-TRUE)
+   * If the result is actually false, it will call delegate to updateCondF.
+   * @param context
+   * @param node
+   */
+  public void updateCondT ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     if ( node.getChildCount () == 1 && node.getChildAt ( 0 ).isProven () )
     {
-      BigStepClosureProofNode child0 = node.getChildAt ( 0 );
+      final BigStepClosureProofNode child0 = node.getChildAt ( 0 );
       if ( ! ( ( BooleanConstant ) child0.getResult ().getValue () )
           .booleanValue () )
       {
@@ -237,7 +312,7 @@ public class L1BigStepClosureProofRuleSet extends
         return;
       }
 
-      Expression expression = node.getExpression ();
+      final Expression expression = node.getExpression ();
       context.addProofNode ( node, new Closure (
           expression instanceof Condition ? ( ( Condition ) expression )
               .getE1 () : ( ( Condition1 ) expression ).getE1 (), node
@@ -248,12 +323,18 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  public void updateCondF ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  /**
+   * Tries to update (COND-FALSE)
+   * If the result is actually true, it will call delegate to updateCondT.
+   * @param context
+   * @param node
+   */
+  public void updateCondF ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     if ( node.getChildCount () == 1 && node.getChildAt ( 0 ).isProven () )
     {
-      BigStepClosureProofNode child0 = node.getChildAt ( 0 );
+      final BigStepClosureProofNode child0 = node.getChildAt ( 0 );
       if ( ( ( BooleanConstant ) child0.getResult ().getValue () )
           .booleanValue () )
       {
@@ -261,7 +342,7 @@ public class L1BigStepClosureProofRuleSet extends
         return;
       }
 
-      Expression expression = node.getExpression ();
+      final Expression expression = node.getExpression ();
       context.addProofNode ( node, new Closure (
           expression instanceof Condition ? ( ( Condition ) expression )
               .getE2 () : new UnitConstant (), node.getEnvironment () ) );
@@ -271,8 +352,17 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  public void applyLet ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  /**
+   * Applies the rule (LET) to a closure.
+   * It only handles a normal Let expression itself.
+   * CurriedLet, CurriedLetRec, MultiLet and LetRec
+   * are delegated to other methods.
+   * 
+   * @param context
+   * @param node
+   */
+  public void applyLet ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     final Expression e = node.getExpression ();
     if ( e instanceof CurriedLet || e instanceof CurriedLetRec )
@@ -299,18 +389,29 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  private void applyLetRec ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  /**
+   * Applies (LET) with a LetRec expression to a closure.
+   *
+   * @param context
+   * @param node
+   */
+  private void applyLetRec ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     final Expression e = node.getExpression ();
-    LetRec letRec = ( LetRec ) e;
+    final LetRec letRec = ( LetRec ) e;
     context.addProofNode ( node, new Closure ( new Recursion ( letRec.getId (),
         null, ( ( Let ) e ).getE1 () ), node.getEnvironment () ) );
   }
 
-
-  private void applyCurriedLet ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  /**
+   * Applies (LET) with a CurriedLet or a CurriedLetRec expression to a closure.
+   *
+   * @param context
+   * @param node
+   */
+  private void applyCurriedLet ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     // determine the first sub expression
     final Expression e = node.getExpression ();
@@ -331,16 +432,31 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  private void applyMultiLet ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  /**
+   * Applies (LET) with a MultiLet expression to a closure.
+   *
+   * @param context
+   * @param node
+   */
+  private void applyMultiLet ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     context.addProofNode ( node, new Closure ( ( ( MultiLet ) node
         .getExpression () ).getE1 (), node.getEnvironment () ) );
   }
 
 
-  public void updateLet ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  /**
+   * Tries to update a (LET) node.
+   * If the first child is proven, it puts the identifier
+   * into the result of the first child with which the second
+   * child will be tried to be proven then.
+   * Delegates MultiLet, CurriedLet and CurriedLetRec to other methods.
+   * @param context
+   * @param node
+   */
+  public void updateLet ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     final Expression e = node.getExpression ();
     if ( node.getChildCount () == 1 )
@@ -379,8 +495,13 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  private void updateMultiLet1 ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  /**
+   * Updates a (LET) from a MultiLet expression whose first child is proven.
+   * @param context
+   * @param node
+   */
+  private void updateMultiLet1 ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     final MultiLet multiLet = ( MultiLet ) node.getExpression ();
     // Expression e2 = multiLet.getE2 ();
@@ -406,11 +527,18 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  private void updateCurriedLet1 ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  
+  /**
+   * Updates a (LET) from a CurriedLet or CurriedLetRect expression
+   * whose first child is already proven.
+   *
+   * @param context
+   * @param node
+   */
+  private void updateCurriedLet1 ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     final BigStepClosureProofNode child0 = node.getChildAt ( 0 );
-    final Expression value0 = child0.getResult ().getValue ();
 
     final CurriedLet curriedLet = ( CurriedLet ) node.getExpression ();
 
@@ -422,20 +550,32 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  public void applyAnd ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  /**
+   * Applies the rule (AND-TRUE) or (AND-FALSE) to a closure.
+   *
+   * @param context
+   * @param node
+   */
+  public void applyAnd ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     context.addProofNode ( node, new Closure ( ( ( And ) node.getExpression () )
         .getE1 (), node.getEnvironment () ) );
   }
 
 
-  public void updateAndT ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  /**
+   * Tries to update (AND-TRUE).
+   * If the first child's result is actually false it delegates to updateAndF.
+   * @param context
+   * @param node
+   */
+  public void updateAndT ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     if ( node.getChildCount () == 1 )
     {
-      BigStepClosureProofNode child0 = node.getChildAt ( 0 );
+      final BigStepClosureProofNode child0 = node.getChildAt ( 0 );
       if ( !child0.isProven () )
         return;
 
@@ -455,7 +595,7 @@ public class L1BigStepClosureProofRuleSet extends
 
     if ( node.getChildCount () == 2 )
     {
-      BigStepClosureProofNode child1 = node.getChildAt ( 1 );
+      final BigStepClosureProofNode child1 = node.getChildAt ( 1 );
       if ( !child1.isProven () )
         return;
 
@@ -463,7 +603,12 @@ public class L1BigStepClosureProofRuleSet extends
     }
   }
 
-
+  /**
+   * Tries to update (AND-FALSE).
+   * If the first child's result is actually true it delegates to updateAndT.
+   * @param context
+   * @param node
+   */
   public void updateAndF ( BigStepClosureProofContext context,
       BigStepClosureProofNode node )
   {
@@ -496,20 +641,32 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  public void applyOr ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  /**
+   * Applies the rule (OR-TRUE) or (OR-FALSE) to a closure.
+   *
+   * @param context
+   * @param node
+   */
+  public void applyOr ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     context.addProofNode ( node, new Closure ( ( ( Or ) node.getExpression () )
         .getE1 (), node.getEnvironment () ) );
   }
 
 
-  public void updateOrT ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  /**
+   * Tries to update (OR-TRUE).
+   * If the first child's result is actually false it delegates to updateOrF.
+   * @param context
+   * @param node
+   */
+  public void updateOrT ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     if ( node.getChildCount () == 1 )
     {
-      BigStepClosureProofNode child0 = node.getChildAt ( 0 );
+      final BigStepClosureProofNode child0 = node.getChildAt ( 0 );
       if ( !child0.isProven () )
         return;
 
@@ -528,7 +685,7 @@ public class L1BigStepClosureProofRuleSet extends
 
     if ( node.getChildCount () == 2 )
     {
-      BigStepClosureProofNode child1 = node.getChildAt ( 1 );
+      final BigStepClosureProofNode child1 = node.getChildAt ( 1 );
       if ( !child1.isProven () )
         return;
 
@@ -536,13 +693,18 @@ public class L1BigStepClosureProofRuleSet extends
     }
   }
 
-
-  public void updateOrF ( BigStepClosureProofContext context,
-      BigStepClosureProofNode node )
+  /**
+   * Tries to update (OR-FALSE).
+   * If the first child's result is actually true it delegates to updateOrT.
+   * @param context
+   * @param node
+   */
+  public void updateOrF ( final BigStepClosureProofContext context,
+      final BigStepClosureProofNode node )
   {
     if ( node.getChildCount () == 1 )
     {
-      BigStepClosureProofNode child0 = node.getChildAt ( 0 );
+      final BigStepClosureProofNode child0 = node.getChildAt ( 0 );
       if ( !child0.isProven () )
         return;
 
@@ -561,7 +723,7 @@ public class L1BigStepClosureProofRuleSet extends
 
     if ( node.getChildCount () == 2 )
     {
-      BigStepClosureProofNode child1 = node.getChildAt ( 1 );
+      final BigStepClosureProofNode child1 = node.getChildAt ( 1 );
       if ( !child1.isProven () )
         return;
 
