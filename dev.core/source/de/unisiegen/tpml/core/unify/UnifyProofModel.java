@@ -773,8 +773,7 @@ public class UnifyProofModel extends AbstractProofModel
     builder.addBuilderBegin ();
     builder.addSourceCodeBreak ( 0 );
     builder.addComment ( "no unify rule in the first node" ); //$NON-NLS-1$
-    builder.addText ( LATEX_PREFIX_COMMAND
-        + LATEX_UNIFY_RULES_COMPLETED );
+    builder.addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_RULES_COMPLETED );
     builder.addSourceCodeBreak ( 0 );
     builder.addText ( "\\begin{unifynode}" ); //$NON-NLS-1$
     builder.addSourceCodeBreak ( 0 );
@@ -843,7 +842,8 @@ public class UnifyProofModel extends AbstractProofModel
     }
     pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 );
-    pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_NEW_EQUATION );
+    pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+        + LATEX_UNIFY_NEW_EQUATION );
     pLatexStringBuilder.addSourceCodeBreak ( 0 );
     pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 );
@@ -858,132 +858,133 @@ public class UnifyProofModel extends AbstractProofModel
     pLatexStringBuilder.addSourceCodeBreak ( 0 );
     // Second column
     pLatexStringBuilder.addText ( "\\begin{unifynode}" ); //$NON-NLS-1$
-
-//    pLatexStringBuilder.addSourceCodeBreak ( 0 );
-//    pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-//        + LATEX_UNIFY_SUBSTITUTIONS_BEGIN );
-//    pLatexStringBuilder.addSourceCodeBreak ( 0 );
-//    pLatexStringBuilder.addText ( "{" ); //$NON-NLS-1$
-//    pLatexStringBuilder.addSourceCodeBreak ( 0 );
-//    pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
-//    pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
-//    pLatexStringBuilder.addText ( DefaultLatexStringBuilder
-//        .getIndent ( pIndent + LATEX_INDENT ) );
-//    pLatexStringBuilder.addText ( LATEX_LBRACKET );
-    if ( pCurrentNode.getTypeSubstitutions () != TypeSubstitutionList.EMPTY_LIST )
+    
+    //there are type equations
+    if(pCurrentNode.getTypeEquationList () != null)
     {
-      pLatexStringBuilder.addSourceCodeBreak ( 0 );
-      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-          + LATEX_UNIFY_SUBSTITUTIONS_BEGIN );
-      pLatexStringBuilder.addSourceCodeBreak ( 0 );
-      pLatexStringBuilder.addText ( "{" ); //$NON-NLS-1$
-      pLatexStringBuilder.addSourceCodeBreak ( 0 );
-      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
-      pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
-      pLatexStringBuilder.addText ( DefaultLatexStringBuilder
-          .getIndent ( pIndent + LATEX_INDENT ) );
-      pLatexStringBuilder.addText ( LATEX_LBRACKET );
-
-      TypeSubstitutionList ll = pCurrentNode.getTypeSubstitutions ();
-      while ( ll.getFirst () != null )
+      //do we have type substitutions?
+      //if so => print [<comma seperated substituion list>] \concat_op
+      if(pCurrentNode.getTypeSubstitutions () != TypeSubstitutionList.EMPTY_LIST)
       {
-        pLatexStringBuilder.addBuilderWithoutBrackets ( ll.getFirst ()
-            .toLatexStringBuilder ( pLatexStringBuilderFactory,
-                pIndent + LATEX_INDENT ), 0 );
+        //the latex code
+        //1. open up the unify substitution environment
+        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+        pLatexStringBuilder.addText(LATEX_PREFIX_COMMAND + LATEX_UNIFY_SUBSTITUTIONS_BEGIN);
+        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+        pLatexStringBuilder.addText ( "{" ); //$NON-NLS-1$
+        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+        pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
         pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         pLatexStringBuilder.addText ( DefaultLatexStringBuilder
             .getIndent ( pIndent + LATEX_INDENT ) );
-        if(ll.getRemaining () != TypeSubstitutionList.EMPTY_LIST) {
-          pLatexStringBuilder.addText ( LATEX_COMMA );
+        pLatexStringBuilder.addText ( LATEX_LBRACKET );
+        
+        //2. print the type substitutions
+        TypeSubstitutionList substList = pCurrentNode.getTypeSubstitutions ();
+        while(substList != TypeSubstitutionList.EMPTY_LIST)
+        {
+          pLatexStringBuilder.addBuilderWithoutBrackets ( substList.getFirst ()
+              .toLatexStringBuilder ( pLatexStringBuilderFactory,
+                  pIndent + LATEX_INDENT ), 0 );
+          pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
+          pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+              .getIndent ( pIndent + LATEX_INDENT ) );
+          if ( substList.getRemaining () != TypeSubstitutionList.EMPTY_LIST )
+          {
+            pLatexStringBuilder.addText ( LATEX_COMMA );
+          }
+          pLatexStringBuilder.addText ( LATEX_SPACE );
+          pLatexStringBuilder.addBreak ();
+          substList = substList.getRemaining ();
         }
+        
+        //append space + concat_op + space
         pLatexStringBuilder.addText ( LATEX_SPACE );
-        pLatexStringBuilder.addBreak ();
-        ll = ll.getRemaining ();
-      }
-
-      pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
-      pLatexStringBuilder.addText ( DefaultLatexStringBuilder
-          .getIndent ( pIndent + LATEX_INDENT ) );
-      pLatexStringBuilder.addText ( LATEX_RBRACKET );
-      pLatexStringBuilder.addSourceCodeBreak ( 0 );
-      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
-      pLatexStringBuilder.addSourceCodeBreak ( 0 );
-      pLatexStringBuilder.addText ( "}" ); //$NON-NLS-1$
-      pLatexStringBuilder.addSourceCodeBreak ( 0 );
-      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
-      if ( pCurrentNode.getTypeEquationList ().size () > 0 )
-      {
+        pLatexStringBuilder.addText ( LATEX_CONCAT );
+        pLatexStringBuilder.addText ( LATEX_SPACE );
+        
+        //3. close the unify substitution environment
         pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
         pLatexStringBuilder.addText ( DefaultLatexStringBuilder
             .getIndent ( pIndent + LATEX_INDENT ) );
-        pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+        pLatexStringBuilder.addText ( LATEX_RBRACKET );
         pLatexStringBuilder.addSourceCodeBreak ( 0 );
-        pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-            + LATEX_UNIFY_NEW_EQUATION );
+        pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
         pLatexStringBuilder.addSourceCodeBreak ( 0 );
-        pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+        pLatexStringBuilder.addText ( "}" ); //$NON-NLS-1$
       }
-    }
-    else
-    {
-//      pLatexStringBuilder.addText ( LATEX_RBRACKET );
-//      pLatexStringBuilder.addSourceCodeBreak ( 0 );
-//      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
-//      pLatexStringBuilder.addSourceCodeBreak ( 0 );
-//      pLatexStringBuilder.addText ( "}" ); //$NON-NLS-1$
       
-      pLatexStringBuilder.addSourceCodeBreak ( 0 );
-      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
-    }
-
-    if ( pCurrentNode.getTypeEquationList ().size () > 0 )
-    {
+      //print the unify function with all of its type equations (if present)
+      
+      //1. open up unify environment
       pLatexStringBuilder.addSourceCodeBreak ( 0 );
       pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
       pLatexStringBuilder.addSourceCodeBreak ( 0 );
       pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_KEY_UNIFY );
       pLatexStringBuilder.addSourceCodeBreak ( 0 );
-      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_LPAREN );
-    }
-
-    for ( TypeEquation equation : pCurrentNode.getTypeEquationList () )
-    {
+      pLatexStringBuilder
+          .addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_LPAREN );
+      
+      //2. print as arguments of the unify function
+      //2.1 emptyset if no more type equations are present or
+      //2.2 the list of type equations
+      if(pCurrentNode.getTypeEquationList ().isEmpty ())
+      {
+        //there are no more type equations => print unify(\emptyset)
+        pLatexStringBuilder.addText ( LATEX_SPACE );
+        pLatexStringBuilder.addText ( LATEX_EMPTYSET );
+        pLatexStringBuilder.addText ( LATEX_SPACE );
+      }
+      else
+      {
+        //there still more type equations => print them
+        for ( TypeEquation equation : pCurrentNode.getTypeEquationList () )
+        {
+          pLatexStringBuilder.addSourceCodeBreak ( 0 );
+          pLatexStringBuilder.addText ( "&" ); //$NON-NLS-1$
+          pLatexStringBuilder.addSourceCodeBreak ( 0 );
+  
+          pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
+          pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+              .getIndent ( pIndent + LATEX_INDENT ) );
+          pLatexStringBuilder.addText ( "\\linebreak[3]" ); //$NON-NLS-1$
+  
+          pLatexStringBuilder.addBuilderWithoutBrackets ( equation
+              .toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent
+                  + LATEX_INDENT ), 0 );
+  
+          pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
+          pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+              .getIndent ( pIndent + LATEX_INDENT ) );
+          pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+          pLatexStringBuilder.addSourceCodeBreak ( 0 );
+          pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+              + LATEX_UNIFY_NEW_EQUATION );
+          pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+        }
+      }
+      
+      //3. close the unify environment
       pLatexStringBuilder.addSourceCodeBreak ( 0 );
-      pLatexStringBuilder.addText ( "&" ); //$NON-NLS-1$
-      pLatexStringBuilder.addSourceCodeBreak ( 0 );
-      pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
-
-      pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
-      pLatexStringBuilder.addText ( DefaultLatexStringBuilder
-          .getIndent ( pIndent + LATEX_INDENT ) );
-      pLatexStringBuilder.addText ( "\\linebreak[3]" ); //$NON-NLS-1$
-
-      pLatexStringBuilder.addBuilderWithoutBrackets ( equation
-          .toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent
-              + LATEX_INDENT ), 0 );
-
-      pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
-      pLatexStringBuilder.addText ( DefaultLatexStringBuilder
-          .getIndent ( pIndent + LATEX_INDENT ) );
       pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
       pLatexStringBuilder.addSourceCodeBreak ( 0 );
-      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
-          + LATEX_UNIFY_NEW_EQUATION );
+      pLatexStringBuilder
+          .addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_RPAREN );
     }
-
-    if ( pCurrentNode.getTypeEquationList ().size () > 0 )
+    else
     {
-      pLatexStringBuilder.addSourceCodeBreak ( 0 );
-      
-      pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
-      pLatexStringBuilder.addSourceCodeBreak ( 0 );
-      
-      pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_RPAREN );
+      //no type equations, so the only thing to do is to print
+      //the type substitution list (which can be empty). in this
+      //condition we only come to when the rule EMPTY is applied
     }
+    
+
     pLatexStringBuilder.addSourceCodeBreak ( 0 );
     pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
     pLatexStringBuilder.addSourceCodeBreak ( 0 );
     pLatexStringBuilder.addText ( "\\end{unifynode}" );//$NON-NLS-1$
+    
+    
     for ( int i = 0 ; i < pCurrentNode.getChildCount () ; i++ )
     {
       pLatexStringBuilder.addSourceCodeBreak ( 0 );
@@ -994,6 +995,133 @@ public class UnifyProofModel extends AbstractProofModel
           pLatexStringBuilder, pCurrentNode,
           ( DefaultUnifyProofNode ) pCurrentNode.getChildAt ( i ), pIndent );
     }
+//    if ( pCurrentNode.getTypeEquationList () != null )
+//    {
+//
+//      if ( pCurrentNode.getTypeSubstitutions () != TypeSubstitutionList.EMPTY_LIST )
+//      {
+//        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//        pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+//            + LATEX_UNIFY_SUBSTITUTIONS_BEGIN );
+//        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//        pLatexStringBuilder.addText ( "{" ); //$NON-NLS-1$
+//        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//        pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+//        pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
+//        pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+//            .getIndent ( pIndent + LATEX_INDENT ) );
+//        pLatexStringBuilder.addText ( LATEX_LBRACKET );
+//
+//        TypeSubstitutionList ll = pCurrentNode.getTypeSubstitutions ();
+//        while ( ll.getFirst () != null )
+//        {
+//          pLatexStringBuilder.addBuilderWithoutBrackets ( ll.getFirst ()
+//              .toLatexStringBuilder ( pLatexStringBuilderFactory,
+//                  pIndent + LATEX_INDENT ), 0 );
+//          pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
+//          pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+//              .getIndent ( pIndent + LATEX_INDENT ) );
+//          if ( ll.getRemaining () != TypeSubstitutionList.EMPTY_LIST )
+//          {
+//            pLatexStringBuilder.addText ( LATEX_COMMA );
+//          }
+//          pLatexStringBuilder.addText ( LATEX_SPACE );
+//          pLatexStringBuilder.addBreak ();
+//          ll = ll.getRemaining ();
+//        }
+//
+//        pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
+//        pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+//            .getIndent ( pIndent + LATEX_INDENT ) );
+//        pLatexStringBuilder.addText ( LATEX_RBRACKET );
+//        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//        pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+//        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//        pLatexStringBuilder.addText ( "}" ); //$NON-NLS-1$
+//        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//        pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+//        if ( pCurrentNode.getTypeEquationList ().size () > 0 )
+//        {
+//          pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
+//          pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+//              .getIndent ( pIndent + LATEX_INDENT ) );
+//          pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+//          pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//          pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+//              + LATEX_UNIFY_NEW_EQUATION );
+//          pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//          pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+//        }
+//      }
+//      else
+//      {
+//        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//        pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+//      }
+//
+//      if ( pCurrentNode.getTypeEquationList ().size () > 0 )
+//      {
+//        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//        pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+//        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//        pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND + LATEX_KEY_UNIFY );
+//        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//        pLatexStringBuilder
+//            .addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_LPAREN );
+//      }
+//
+//      for ( TypeEquation equation : pCurrentNode.getTypeEquationList () )
+//      {
+//        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//        pLatexStringBuilder.addText ( "&" ); //$NON-NLS-1$
+//        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//        pLatexStringBuilder.addText ( "$" ); //$NON-NLS-1$
+//
+//        pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
+//        pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+//            .getIndent ( pIndent + LATEX_INDENT ) );
+//        pLatexStringBuilder.addText ( "\\linebreak[3]" ); //$NON-NLS-1$
+//
+//        pLatexStringBuilder.addBuilderWithoutBrackets ( equation
+//            .toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent
+//                + LATEX_INDENT ), 0 );
+//
+//        pLatexStringBuilder.addText ( LATEX_LINE_BREAK_SOURCE_CODE );
+//        pLatexStringBuilder.addText ( DefaultLatexStringBuilder
+//            .getIndent ( pIndent + LATEX_INDENT ) );
+//        pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+//        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//        pLatexStringBuilder.addText ( LATEX_PREFIX_COMMAND
+//            + LATEX_UNIFY_NEW_EQUATION );
+//      }
+//
+//      if ( pCurrentNode.getTypeEquationList ().size () > 0 )
+//      {
+//        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//
+//        pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+//        pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//
+//        pLatexStringBuilder
+//            .addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_RPAREN );
+//      }
+//
+//    }//end if pCurrentNode.getTypeEquationList() != null
+//
+//    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//    pLatexStringBuilder.addText ( "$" );//$NON-NLS-1$
+//    pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//    pLatexStringBuilder.addText ( "\\end{unifynode}" );//$NON-NLS-1$
+//    for ( int i = 0 ; i < pCurrentNode.getChildCount () ; i++ )
+//    {
+//      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//      pLatexStringBuilder
+//          .addText ( LATEX_PREFIX_COMMAND + LATEX_UNIFY_NEW_NODE );
+//      pLatexStringBuilder.addSourceCodeBreak ( 0 );
+//      toLatexStringBuilderInternal ( pLatexStringBuilderFactory,
+//          pLatexStringBuilder, pCurrentNode,
+//          ( DefaultUnifyProofNode ) pCurrentNode.getChildAt ( i ), pIndent );
+//    }
   }
 
 

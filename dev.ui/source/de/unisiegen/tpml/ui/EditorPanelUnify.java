@@ -656,7 +656,7 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
 
 
   /**
-   * TODO
+   * sets the undo status
    * 
    * @param undoStatus
    */
@@ -678,7 +678,7 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
 
 
   /**
-   * TODO
+   * sets the advanced state
    * 
    * @param state
    * @see de.unisiegen.tpml.ui.EditorPanel#setAdvanced(boolean)
@@ -714,20 +714,9 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
 
 
   /**
-   * TODO
+   * requests whether its safe to save the file or not
    * 
-   * @return TODO
-   */
-  public boolean isAdvaced ()
-  {
-    return this.advanced;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
+   * @return true when its safe to save the file, false otherwise
    * @see de.unisiegen.tpml.ui.EditorPanel#shouldBeSaved()
    */
   public boolean shouldBeSaved ()
@@ -737,7 +726,7 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
 
 
   /**
-   * TODO
+   * handles the undo
    * 
    * @see de.unisiegen.tpml.ui.EditorPanel#handleUndo()
    */
@@ -748,7 +737,7 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
 
 
   /**
-   * TODO
+   * handles the redo
    * 
    * @see de.unisiegen.tpml.ui.EditorPanel#handleRedo()
    */
@@ -759,9 +748,9 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
 
 
   /**
-   * TODO
+   * handles the save
    * 
-   * @return TODO
+   * @return whether saving the file was successfully
    * @see de.unisiegen.tpml.ui.EditorPanel#handleSave()
    */
   public boolean handleSave ()
@@ -957,7 +946,7 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
 
 
   /**
-   * TODO
+   * prints the current editor content
    * 
    * @see de.unisiegen.tpml.ui.EditorPanel#handlePrint()
    */
@@ -978,7 +967,7 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
 
 
   /**
-   * TODO
+   * handles the latex export
    * 
    * @see de.unisiegen.tpml.ui.EditorPanel#handleLatexExport()
    */
@@ -1016,71 +1005,6 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
   }
 
 
-  // /**
-  // * TODO
-  // */
-  // public void selectTypeChecker ()
-  // {
-  // setTexteditor ( false );
-  // setComponent ( this.typechecker );
-  // deselectButtons ();
-  // this.mypanel.typecheckerButton.setSelected ( true );
-  // checkSourceCode ();
-  // }
-  //
-  //
-  // /**
-  // * TODO
-  // */
-  // public void selectTypeInference ()
-  // {
-  // setTexteditor ( false );
-  // setComponent ( this.typeinference );
-  // deselectButtons ();
-  // this.mypanel.typeinferenceButton.setSelected ( true );
-  // checkSourceCode ();
-  // }
-  //
-  //
-  // /**
-  // * TODO
-  // */
-  // public void selectBigStep ()
-  // {
-  // setTexteditor ( false );
-  // setComponent ( this.bigstep );
-  // deselectButtons ();
-  // this.mypanel.bigstepButton.setSelected ( true );
-  // checkSourceCode ();
-  // }
-  //
-  //
-  // /**
-  // * TODO
-  // */
-  // public void selectMinimalTyping ()
-  // {
-  // setTexteditor ( false );
-  // setComponent ( this.minimaltyping );
-  // deselectButtons ();
-  // this.mypanel.minimalTypingButton.setSelected ( true );
-  // checkSourceCode ();
-  // }
-  //
-  //
-  // /**
-  // * TODO
-  // */
-  // public void selectSmallStep ()
-  // {
-  // setTexteditor ( false );
-  // setComponent ( this.smallstep );
-  // deselectButtons ();
-  // this.mypanel.smallstepButton.setSelected ( true );
-  // checkSourceCode ();
-  // checkSourceCode ();
-  // }
-
   /**
    * TODO: implement, checkSourceCode ??
    */
@@ -1094,7 +1018,7 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
 
 
   /**
-   * TODO
+   * selects the panel containing the source code input
    * 
    * @see de.unisiegen.tpml.ui.EditorPanel#selectCode()
    */
@@ -1109,9 +1033,9 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
 
 
   /**
-   * TODO
+   * requests the underlying panel
    * 
-   * @return TODO
+   * @return the underlying panel
    * @see de.unisiegen.tpml.ui.EditorPanel#getPanel()
    */
   public JPanel getPanel ()
@@ -1119,137 +1043,4 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
     return this.mypanel;
 
   }
-
-  // /**
-  // * TODO
-  // */
-  // public void checkSourceCode ()
-  // {
-  // Dimension dimension;
-  // try
-  // {
-  // if ( ( this.smallstep != null )
-  // && ! ( ( ( SmallStepProofNode ) ( ( ProofViewComponent ) this.smallstep )
-  // .getModel ().getRoot () ).getExpression ().equals ( this.code
-  // .getDocument ().getExpression () ) ) )
-  // {
-  // this.mypanel.smallstepButton.setIcon ( new ImageIcon ( getClass ()
-  // .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) )
-  // );//$NON-NLS-1$
-  // this.mypanel.smallstepButton.setToolTipText ( java.util.ResourceBundle
-  // .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
-  // "SourcecodeChanged" ) );//$NON-NLS-1$
-  // dimension = this.mypanel.smallstepButton.getMinimumSize ();
-  // this.mypanel.smallstepButton.setPreferredSize ( new Dimension (
-  // dimension.width + 20, dimension.height ) );
-  // }
-  // else
-  // {
-  // this.mypanel.smallstepButton.setBackground ( this.buttonColor );
-  // this.mypanel.smallstepButton.setIcon ( null );
-  // this.mypanel.smallstepButton.setToolTipText ( null );
-  // }
-  //
-  // if ( ( this.bigstep != null )
-  // && ! ( ( ( BigStepProofNode ) ( ( ProofViewComponent ) this.bigstep )
-  // .getModel ().getRoot () ).getExpression ().equals ( this.code
-  // .getDocument ().getExpression () ) ) )
-  // {
-  // this.mypanel.bigstepButton.setIcon ( new ImageIcon ( getClass ()
-  // .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) )
-  // );//$NON-NLS-1$
-  // this.mypanel.bigstepButton.setToolTipText ( java.util.ResourceBundle
-  // .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
-  // "SourcecodeChanged" ) );//$NON-NLS-1$
-  // dimension = this.mypanel.bigstepButton.getMinimumSize ();
-  // this.mypanel.bigstepButton.setPreferredSize ( new Dimension (
-  // dimension.width + 20, dimension.height ) );
-  // }
-  // else
-  // {
-  // this.mypanel.bigstepButton.setBackground ( this.buttonColor );
-  // this.mypanel.bigstepButton.setIcon ( null );
-  // this.mypanel.bigstepButton.setToolTipText ( null );
-  //
-  // }
-  //
-  // if ( ( this.typechecker != null )
-  // && ! ( ( ( TypeCheckerProofNode ) ( ( ProofViewComponent ) this.typechecker
-  // )
-  // .getModel ().getRoot () ).getExpression ().equals ( this.code
-  // .getDocument ().getExpression () ) ) )
-  // {
-  // this.mypanel.typecheckerButton.setIcon ( new ImageIcon ( getClass ()
-  // .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) )
-  // );//$NON-NLS-1$
-  // this.mypanel.typecheckerButton
-  // .setToolTipText ( java.util.ResourceBundle.getBundle (
-  // "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" )
-  // );//$NON-NLS-1$//$NON-NLS-2$
-  // dimension = this.mypanel.typecheckerButton.getMinimumSize ();
-  // this.mypanel.typecheckerButton.setPreferredSize ( new Dimension (
-  // dimension.width + 20, dimension.height ) );
-  // }
-  // else
-  // {
-  // this.mypanel.typecheckerButton.setBackground ( this.buttonColor );
-  // this.mypanel.typecheckerButton.setIcon ( null );
-  // this.mypanel.typecheckerButton.setToolTipText ( null );
-  // }
-  //
-  // if ( ( this.typeinference != null )
-  // && ! ( ( ( TypeInferenceProofNode ) ( ( ProofViewComponent )
-  // this.typeinference )
-  // .getModel ().getRoot () ).getFirstFormula ().getExpression ()
-  // .equals ( this.code.getDocument ().getExpression () ) ) )
-  // {
-  // this.mypanel.typeinferenceButton.setIcon ( new ImageIcon ( getClass ()
-  // .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) )
-  // );//$NON-NLS-1$
-  // this.mypanel.typeinferenceButton.repaint ();
-  // this.mypanel.typeinferenceButton
-  // .setToolTipText ( java.util.ResourceBundle.getBundle (
-  // "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" )
-  // );//$NON-NLS-1$//$NON-NLS-2$
-  // dimension = this.mypanel.typeinferenceButton.getMinimumSize ();
-  // this.mypanel.typeinferenceButton.setPreferredSize ( new Dimension (
-  // dimension.width + 20, dimension.height ) );
-  // }
-  // else
-  // {
-  // this.mypanel.typeinferenceButton.setBackground ( this.buttonColor );
-  // this.mypanel.typeinferenceButton.setIcon ( null );
-  // this.mypanel.typeinferenceButton.setToolTipText ( null );
-  // }
-  //
-  // if ( ( this.minimaltyping != null )
-  // && ! ( ( ( MinimalTypingProofNode ) ( ( ProofViewComponent )
-  // this.minimaltyping )
-  // .getModel ().getRoot () ).getExpression ().equals ( this.code
-  // .getDocument ().getExpression () ) ) )
-  // {
-  // this.mypanel.minimalTypingButton.setIcon ( new ImageIcon ( getClass ()
-  // .getResource ( "/de/unisiegen/tpml/ui/icons/warning.gif" ) )
-  // );//$NON-NLS-1$
-  // dimension = this.mypanel.minimalTypingButton.getMinimumSize ();
-  // this.mypanel.minimalTypingButton.setPreferredSize ( new Dimension (
-  // dimension.width + 20, dimension.height ) );
-  // this.mypanel.minimalTypingButton
-  // .setToolTipText ( java.util.ResourceBundle.getBundle (
-  // "de/unisiegen/tpml/ui/ui" ).getString ( "SourcecodeChanged" )
-  // );//$NON-NLS-1$ //$NON-NLS-2$
-  // }
-  // else
-  // {
-  // this.mypanel.minimalTypingButton.setBackground ( this.buttonColor );
-  // this.mypanel.minimalTypingButton.setIcon ( null );
-  // this.mypanel.minimalTypingButton.setToolTipText ( null );
-  // }
-  //
-  // }
-  // catch ( Exception e )
-  // {
-  // // Nothing to do here
-  // }
-  // }
 }

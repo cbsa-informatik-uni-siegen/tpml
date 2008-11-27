@@ -149,9 +149,12 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
     commands.add ( this.getTypeSubstitutions () );
     LatexPrintable workarround = this.getTypeEquationList ();
     commands.add ( workarround );
-    for ( TypeEquation equation : this.getTypeEquationList () )
+    if(this.getTypeEquationList () != null)
     {
-      commands.add ( equation.getSeenTypes ().getLatexCommands () );
+      for ( TypeEquation equation : this.getTypeEquationList () )
+      {
+        commands.add ( equation.getSeenTypes ().getLatexCommands () );
+      }
     }
     return commands;
   }
@@ -168,10 +171,13 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
     instructions.add ( getLatexInstructionsStatic () );
     instructions.add ( this.getTypeSubstitutions () );
     LatexPrintable workarround = this.getTypeEquationList ();
-    instructions.add ( workarround );
-    for ( TypeEquation equation : this.getTypeEquationList () )
+    if(this.getTypeEquationList () != null)
     {
-      instructions.add ( equation.getSeenTypes ().getLatexInstructions () );
+      instructions.add ( workarround );
+      for ( TypeEquation equation : this.getTypeEquationList () )
+      {
+        instructions.add ( equation.getSeenTypes ().getLatexInstructions () );
+      }
     }
     return instructions;
   }
@@ -187,11 +193,14 @@ public class DefaultUnifyProofNode extends AbstractUnifyProofNode
     LatexPackageList packages = new LatexPackageList ();
     packages.add ( getLatexPackagesStatic () );
     packages.add ( this.getTypeSubstitutions () );
-    LatexPrintable workarround = this.getTypeEquationList ();
-    packages.add ( workarround );
-    for ( TypeEquation equation : this.getTypeEquationList () )
+    if(this.getTypeEquationList () != null)
     {
-      packages.add ( equation.getSeenTypes ().getLatexPackages () );
+      LatexPrintable workarround = this.getTypeEquationList ();
+      packages.add ( workarround );
+      for ( TypeEquation equation : this.getTypeEquationList () )
+      {
+        packages.add ( equation.getSeenTypes ().getLatexPackages () );
+      }
     }
     return packages;
   }
