@@ -17,7 +17,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
@@ -48,6 +47,7 @@ public class CompoundEquationUnify extends JComponent
    * Renderer that is used to render the expressions
    */
   private PrettyStringRenderer renderer;
+
 
   /**
    * represents the expression we want to render
@@ -145,7 +145,7 @@ public class CompoundEquationUnify extends JComponent
    */
   public CompoundEquationUnify ()
   {
-    super ();    
+    super ();
     this.bonds = new ShowBonds ();
     this.renderSize = new Dimension ( 0, 0 );
     this.toListenForMouse = new ToListenForMouseContainer ();
@@ -153,7 +153,6 @@ public class CompoundEquationUnify extends JComponent
     this.spaceInFrontOf = 10;
     this.draggedBesideMousePointer = new Point ( 0, 0 );
     this.unifyProofExpression = new DefaultUnifyProofExpression ();
-    // this.underlineExpression = null ;
     CompoundEquationUnify.this.setDoubleBuffered ( true );
     // the MouseMotionListner only implements the text shown next to the
     // mouspointer while dragging
@@ -751,18 +750,6 @@ public class CompoundEquationUnify extends JComponent
     return false;
   }
 
-
-  // /**
-  // * TODO TESTMETHODE
-  // *
-  // * @param r
-  // * @param g
-  // */
-  // public void drawRectAngle(Rectangle r, Graphics g)
-  // {
-  // g.drawRect(r.x, r.y, r.width, r.height);
-  // // Rectangle rect = new Rectangle()
-  // }
 
   /**
    * @return the draggedBesideMousePointer

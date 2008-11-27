@@ -104,6 +104,13 @@ public class DefaultUnifyProofExpression implements UnifyProofExpression
         0 );
     if ( this.equations != null )
     {
+      if(this.substitutions != null && this.substitutions != TypeSubstitutionList.EMPTY_LIST) {
+        builder.addBuilder ( this.substitutions
+            .toPrettyStringBuilder ( prettyStringBuilderFactory ), 0 );
+        builder.addText ( PRETTY_SPACE );
+        builder.addText ( PRETTY_CONCAT );
+        builder.addText ( PRETTY_SPACE );
+      }
       builder.addText ( "unify(" ); //$NON-NLS-1$
       builder.addText ( PRETTY_SPACE );
       if ( this.equations.isEmpty () )
@@ -200,14 +207,16 @@ public class DefaultUnifyProofExpression implements UnifyProofExpression
   {
     this.equations = ( DefaultTypeEquationList ) equations;
   }
-  
+
+
   /**
    * {@inheritDoc}
    * 
    * @see java.lang.Object#toString()
    */
   @Override
-  public String toString() {
+  public String toString ()
+  {
     return toPrettyString ().toString ();
   }
 
