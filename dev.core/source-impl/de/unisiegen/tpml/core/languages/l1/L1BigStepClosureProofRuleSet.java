@@ -14,12 +14,17 @@ import de.unisiegen.tpml.core.expressions.BooleanConstant;
 import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.expressions.Condition;
 import de.unisiegen.tpml.core.expressions.Condition1;
+import de.unisiegen.tpml.core.expressions.CurriedLet;
+import de.unisiegen.tpml.core.expressions.CurriedLetRec;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.expressions.InfixOperation;
 import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
+import de.unisiegen.tpml.core.expressions.LetRec;
+import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Or;
+import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.expressions.UnaryOperator;
 import de.unisiegen.tpml.core.expressions.UnaryOperatorException;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
@@ -71,7 +76,7 @@ public class L1BigStepClosureProofRuleSet extends
   {
     final Identifier id = ( Identifier ) node.getExpression ();
     final ClosureEnvironment env = node.getEnvironment ();
-    context.addProofNode (  node, env.get ( id ) );
+    context.addProofNode ( node, env.get ( id ) );
   }
 
 
@@ -79,8 +84,8 @@ public class L1BigStepClosureProofRuleSet extends
       BigStepClosureProofNode node )
   {
     final BigStepClosureProofNode child0 = node.getChildAt ( 0 );
-    if(child0.isProven())
-      context.setProofNodeResult ( node, child0.getResult() );
+    if ( child0.isProven () )
+      context.setProofNodeResult ( node, child0.getResult () );
   }
 
 
@@ -105,7 +110,7 @@ public class L1BigStepClosureProofRuleSet extends
       return;
     }
 
-    InfixOperation io = ( InfixOperation ) e;
+    final InfixOperation io = ( InfixOperation ) e;
     context.addProofNode ( node, new Closure ( io.getE1 (), node
         .getEnvironment () ) );
     context.addProofNode ( node, new Closure ( io.getE2 (), node
@@ -267,9 +272,51 @@ public class L1BigStepClosureProofRuleSet extends
   public void applyLet ( BigStepClosureProofContext context,
       BigStepClosureProofNode node )
   {
+    final Expression e = node.getExpression ();
+    if ( e instanceof CurriedLet || e instanceof CurriedLetRec )
+    {
+      applyCurriedLet ( context, node );
+      return;
+    }
+
+    if ( e instanceof MultiLet )
+    {
+      applyMultiLet ( context, node );
+      return;
+    }
+
+    if ( e instanceof LetRec )
+    {
+      applyLetRec ( context, node );
+      return;
+    }
+
     final Let let = ( Let ) node.getExpression ();
     context.addProofNode ( node, new Closure ( let.getE1 (), node
         .getEnvironment () ) );
+  }
+
+
+  private void applyLetRec ( BigStepClosureProofContext context,
+      BigStepClosureProofNode node )
+  {
+    final Expression e = node.getExpression ();
+    LetRec letRec = ( LetRec ) e;
+    context.addProofNode ( node, new Closure ( new Recursion ( letRec.getId (),
+        null, ( ( Let ) e ).getE1 () ), node.getEnvironment () ) );
+  }
+
+
+  private void applyCurriedLet ( BigStepClosureProofContext context,
+      BigStepClosureProofNode node )
+  {
+
+  }
+
+
+  private void applyMultiLet ( BigStepClosureProofContext context,
+      BigStepClosureProofNode node )
+  {
   }
 
 
