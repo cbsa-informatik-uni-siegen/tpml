@@ -24,6 +24,7 @@ import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.LetRec;
 import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Or;
+import de.unisiegen.tpml.core.expressions.Projection;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.expressions.UnaryOperator;
 import de.unisiegen.tpml.core.expressions.UnaryOperatorException;
@@ -34,6 +35,7 @@ import de.unisiegen.tpml.core.types.MonoType;
 
 /**
  * BigStep Closure proof rules for L1 and derived languages
+ * 
  * @author Philipp Reh
  */
 public class L1BigStepClosureProofRuleSet extends
@@ -68,10 +70,9 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  
   /**
    * Applies the rule (VAL) to a closure
-   *
+   * 
    * @param context
    * @param node
    */
@@ -85,8 +86,9 @@ public class L1BigStepClosureProofRuleSet extends
 
 
   /**
-   * Applies the rule (ID) to a closure
-   * Creates a new proof node with the expression found for id in the closure
+   * Applies the rule (ID) to a closure Creates a new proof node with the
+   * expression found for id in the closure
+   * 
    * @param context
    * @param node
    */
@@ -100,9 +102,8 @@ public class L1BigStepClosureProofRuleSet extends
 
 
   /**
-   * Checks whether the first child of the (ID) rule is
-   * already a value
-   *
+   * Checks whether the first child of the (ID) rule is already a value
+   * 
    * @param context
    * @param node
    */
@@ -115,11 +116,10 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  
   /**
-   * Applies a general application.
-   * It is used for (OP-1), (OP-2) (in case of a prefix operator)
-   * and (BETA-V).
+   * Applies a general application. It is used for (OP-1), (OP-2) (in case of a
+   * prefix operator) and (BETA-V).
+   * 
    * @param context
    * @param node
    */
@@ -135,8 +135,9 @@ public class L1BigStepClosureProofRuleSet extends
 
 
   /**
-   * Applies the rule (OP-2) to a closure.
-   * Uses special handling for an InfixOperation.
+   * Applies the rule (OP-2) to a closure. Uses special handling for an
+   * InfixOperation.
+   * 
    * @param context
    * @param node
    */
@@ -159,10 +160,10 @@ public class L1BigStepClosureProofRuleSet extends
 
 
   /**
-   * Checks if both children an (OP-1) are already proven.
-   * Defers the evaluation if the node's parent is an (OP-2)
-   * because the operator's result cannot be calculated by
-   * (OP-1) in this case.
+   * Checks if both children an (OP-1) are already proven. Defers the evaluation
+   * if the node's parent is an (OP-2) because the operator's result cannot be
+   * calculated by (OP-1) in this case.
+   * 
    * @param context
    * @param node
    * @throws UnaryOperatorException
@@ -204,8 +205,9 @@ public class L1BigStepClosureProofRuleSet extends
 
 
   /**
-   * Cheks if both children if an (OP-2) are already proven.
-   * If so it simply calculates the result.
+   * Cheks if both children if an (OP-2) are already proven. If so it simply
+   * calculates the result.
+   * 
    * @param context
    * @param node
    * @throws BinaryOperatorException
@@ -231,11 +233,10 @@ public class L1BigStepClosureProofRuleSet extends
 
 
   /**
-   * Tries to update (BETA-V).
-   * If the first two children are proven,
-   * the third child is created which inserts the identifier
-   * of the lambda into the closure of child1, which is
-   * then used to proof the final child.
+   * Tries to update (BETA-V). If the first two children are proven, the third
+   * child is created which inserts the identifier of the lambda into the
+   * closure of child1, which is then used to proof the final child.
+   * 
    * @param context
    * @param node
    */
@@ -266,8 +267,9 @@ public class L1BigStepClosureProofRuleSet extends
 
 
   /**
-   * Applies rule (COND-TRUE) or (COND-FALSE) to a closure.
-   * Can also be used if the 'else part' is missing.
+   * Applies rule (COND-TRUE) or (COND-FALSE) to a closure. Can also be used if
+   * the 'else part' is missing.
+   * 
    * @param context
    * @param node
    */
@@ -294,8 +296,9 @@ public class L1BigStepClosureProofRuleSet extends
 
 
   /**
-   * Tries to update (COND-TRUE)
-   * If the result is actually false, it will call delegate to updateCondF.
+   * Tries to update (COND-TRUE) If the result is actually false, it will call
+   * delegate to updateCondF.
+   * 
    * @param context
    * @param node
    */
@@ -324,8 +327,9 @@ public class L1BigStepClosureProofRuleSet extends
 
 
   /**
-   * Tries to update (COND-FALSE)
-   * If the result is actually true, it will call delegate to updateCondT.
+   * Tries to update (COND-FALSE) If the result is actually true, it will call
+   * delegate to updateCondT.
+   * 
    * @param context
    * @param node
    */
@@ -353,10 +357,9 @@ public class L1BigStepClosureProofRuleSet extends
 
 
   /**
-   * Applies the rule (LET) to a closure.
-   * It only handles a normal Let expression itself.
-   * CurriedLet, CurriedLetRec, MultiLet and LetRec
-   * are delegated to other methods.
+   * Applies the rule (LET) to a closure. It only handles a normal Let
+   * expression itself. CurriedLet, CurriedLetRec, MultiLet and LetRec are
+   * delegated to other methods.
    * 
    * @param context
    * @param node
@@ -391,7 +394,7 @@ public class L1BigStepClosureProofRuleSet extends
 
   /**
    * Applies (LET) with a LetRec expression to a closure.
-   *
+   * 
    * @param context
    * @param node
    */
@@ -404,9 +407,10 @@ public class L1BigStepClosureProofRuleSet extends
         null, ( ( Let ) e ).getE1 () ), node.getEnvironment () ) );
   }
 
+
   /**
    * Applies (LET) with a CurriedLet or a CurriedLetRec expression to a closure.
-   *
+   * 
    * @param context
    * @param node
    */
@@ -434,7 +438,7 @@ public class L1BigStepClosureProofRuleSet extends
 
   /**
    * Applies (LET) with a MultiLet expression to a closure.
-   *
+   * 
    * @param context
    * @param node
    */
@@ -447,11 +451,11 @@ public class L1BigStepClosureProofRuleSet extends
 
 
   /**
-   * Tries to update a (LET) node.
-   * If the first child is proven, it puts the identifier
-   * into the result of the first child with which the second
-   * child will be tried to be proven then.
-   * Delegates MultiLet, CurriedLet and CurriedLetRec to other methods.
+   * Tries to update a (LET) node. If the first child is proven, it puts the
+   * identifier into the result of the first child with which the second child
+   * will be tried to be proven then. Delegates MultiLet, CurriedLet and
+   * CurriedLetRec to other methods.
+   * 
    * @param context
    * @param node
    */
@@ -497,6 +501,7 @@ public class L1BigStepClosureProofRuleSet extends
 
   /**
    * Updates a (LET) from a MultiLet expression whose first child is proven.
+   * 
    * @param context
    * @param node
    */
@@ -508,15 +513,15 @@ public class L1BigStepClosureProofRuleSet extends
 
     final Closure closure = node.getChildAt ( 0 ).getResult ().getClosure ();
     final ClosureEnvironment environment = closure.cloneEnvironment ();
-    // environment.put ( let.getId (), closure );
-    // context.addProofNode ( node, new Closure ( let.getE2 (), environment ) );
 
-    Identifier [] identifiers = multiLet.getIdentifiers ();
+    final Identifier [] identifiers = multiLet.getIdentifiers ();
     for ( int n = 0 ; n < identifiers.length ; ++n )
     {
       // substitute: (#l_n value0) for id
       // TODO: what to do here?
-      environment.put ( identifiers [ n ], closure );
+      environment.put ( identifiers [ n ], new Closure ( new Application (
+          new Projection ( identifiers.length, n + 1 ), closure
+              .getExpression () ), closure.getEnvironment () ) );
       // e2 = e2.substitute ( identifiers [ n ], new Application (
       // new Projection ( identifiers.length, n + 1 ), value0 ) );
     }
@@ -527,11 +532,10 @@ public class L1BigStepClosureProofRuleSet extends
   }
 
 
-  
   /**
-   * Updates a (LET) from a CurriedLet or CurriedLetRect expression
-   * whose first child is already proven.
-   *
+   * Updates a (LET) from a CurriedLet or CurriedLetRect expression whose first
+   * child is already proven.
+   * 
    * @param context
    * @param node
    */
@@ -552,7 +556,7 @@ public class L1BigStepClosureProofRuleSet extends
 
   /**
    * Applies the rule (AND-TRUE) or (AND-FALSE) to a closure.
-   *
+   * 
    * @param context
    * @param node
    */
@@ -565,8 +569,9 @@ public class L1BigStepClosureProofRuleSet extends
 
 
   /**
-   * Tries to update (AND-TRUE).
-   * If the first child's result is actually false it delegates to updateAndF.
+   * Tries to update (AND-TRUE). If the first child's result is actually false
+   * it delegates to updateAndF.
+   * 
    * @param context
    * @param node
    */
@@ -603,9 +608,11 @@ public class L1BigStepClosureProofRuleSet extends
     }
   }
 
+
   /**
-   * Tries to update (AND-FALSE).
-   * If the first child's result is actually true it delegates to updateAndT.
+   * Tries to update (AND-FALSE). If the first child's result is actually true
+   * it delegates to updateAndT.
+   * 
    * @param context
    * @param node
    */
@@ -643,7 +650,7 @@ public class L1BigStepClosureProofRuleSet extends
 
   /**
    * Applies the rule (OR-TRUE) or (OR-FALSE) to a closure.
-   *
+   * 
    * @param context
    * @param node
    */
@@ -656,8 +663,9 @@ public class L1BigStepClosureProofRuleSet extends
 
 
   /**
-   * Tries to update (OR-TRUE).
-   * If the first child's result is actually false it delegates to updateOrF.
+   * Tries to update (OR-TRUE). If the first child's result is actually false it
+   * delegates to updateOrF.
+   * 
    * @param context
    * @param node
    */
@@ -693,9 +701,11 @@ public class L1BigStepClosureProofRuleSet extends
     }
   }
 
+
   /**
-   * Tries to update (OR-FALSE).
-   * If the first child's result is actually true it delegates to updateOrT.
+   * Tries to update (OR-FALSE). If the first child's result is actually true it
+   * delegates to updateOrT.
+   * 
    * @param context
    * @param node
    */
