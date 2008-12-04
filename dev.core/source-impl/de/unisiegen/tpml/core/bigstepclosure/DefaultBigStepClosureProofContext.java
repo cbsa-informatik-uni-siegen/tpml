@@ -148,6 +148,10 @@ final class DefaultBigStepClosureProofContext implements
 
   }
 
+  public int envNumber()
+  {
+    return nextEnvNumber++;
+  }
 
   void addRedoAction ( Runnable redoAction )
   {
@@ -182,7 +186,7 @@ final class DefaultBigStepClosureProofContext implements
    * Returns a single <code>Runnable</code> that runs all previously registered
    * redo actions.
    * 
-   * @return a single <code>Runnable</code> to run all redo actions.
+   * @republic int envNumber(); turn a single <code>Runnable</code> to run all redo actions.
    * @see #addRedoAction(Runnable)
    * @see #getUndoActions()
    */
@@ -227,6 +231,7 @@ final class DefaultBigStepClosureProofContext implements
     };
   }
 
+  private int nextEnvNumber = 0;
 
   private BigStepClosureProofModel model;
 

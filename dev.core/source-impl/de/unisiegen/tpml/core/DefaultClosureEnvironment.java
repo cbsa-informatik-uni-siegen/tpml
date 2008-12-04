@@ -25,6 +25,17 @@ public final class DefaultClosureEnvironment extends
     AbstractEnvironment < Identifier, Closure > implements ClosureEnvironment
 {
 
+  // TODO: remove later
+  public DefaultClosureEnvironment()
+  {
+    this.name = "";
+  }
+  
+  public DefaultClosureEnvironment(final String name)
+  {
+    this.name = name;
+  }
+  
   public void put ( final Identifier identifier, final Closure closure )
   {
     super.put ( identifier, closure );
@@ -163,4 +174,6 @@ public final class DefaultClosureEnvironment extends
     }
     return cl;
   }
+  
+  private String name;
 }

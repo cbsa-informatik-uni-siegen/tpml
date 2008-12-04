@@ -445,6 +445,15 @@ public class L1BigStepClosureProofRuleSet extends
   private void applyMultiLet ( final BigStepClosureProofContext context,
       final BigStepClosureProofNode node )
   {
+    final MultiLet multiLet = ( MultiLet ) node.getExpression ();
+    final Identifier [] identifiers = multiLet.getIdentifiers ();
+
+    final ClosureEnvironment env = node.getClosure ().cloneEnvironment ();
+    for ( int i = 0 ; i < identifiers.length ; ++i )
+      env.put ( identifiers [ i ], new Closure ( new Application (
+          new Projection ( identifiers.length, i + 1 ), multiLet.getE1 () ),
+          node.getEnvironment () ) );
+
     context.addProofNode ( node, new Closure ( ( ( MultiLet ) node
         .getExpression () ).getE1 (), node.getEnvironment () ) );
   }
@@ -508,27 +517,9 @@ public class L1BigStepClosureProofRuleSet extends
   private void updateMultiLet1 ( final BigStepClosureProofContext context,
       final BigStepClosureProofNode node )
   {
-    final MultiLet multiLet = ( MultiLet ) node.getExpression ();
-    // Expression e2 = multiLet.getE2 ();
-
-    final Closure closure = node.getChildAt ( 0 ).getResult ().getClosure ();
-    final ClosureEnvironment environment = closure.cloneEnvironment ();
-
-    final Identifier [] identifiers = multiLet.getIdentifiers ();
-    for ( int n = 0 ; n < identifiers.length ; ++n )
-    {
-      // substitute: (#l_n value0) for id
-      // TODO: what to do here?
-      environment.put ( identifiers [ n ], new Closure ( new Application (
-          new Projection ( identifiers.length, n + 1 ), closure
-              .getExpression () ), closure.getEnvironment () ) );
-      // e2 = e2.substitute ( identifiers [ n ], new Application (
-      // new Projection ( identifiers.length, n + 1 ), value0 ) );
-    }
-    // add a proof node for e2
-    context
-        .addProofNode ( node, new Closure ( multiLet.getE2 (), environment ) );
-    // context.addProofNode ( node, e2 );*/
+    final BigStepClosureProofNode child0 = node.getChildAt ( 0 );
+    if ( child0.isProven () )
+      context.setProofNodeResult ( node, child0.getResult () );
   }
 
 

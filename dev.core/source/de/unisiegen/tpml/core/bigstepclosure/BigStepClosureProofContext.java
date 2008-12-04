@@ -35,4 +35,13 @@ public interface BigStepClosureProofContext
 
   public void setProofNodeRule ( BigStepClosureProofNode node,
       BigStepClosureProofRule rule );
+  
+  
+  /**
+   * 
+   * The next free environment index
+   *
+   * @return the index
+   */
+  public int envNumber(); 
 }
