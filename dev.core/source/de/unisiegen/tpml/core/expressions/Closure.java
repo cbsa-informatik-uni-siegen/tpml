@@ -42,9 +42,9 @@ public class Closure implements PrettyPrintable, LatexPrintable
   }
 
 
-  public ClosureEnvironment cloneEnvironment ()
+  public ClosureEnvironment cloneEnvironment (final int newIndex)
   {
-    return ( ClosureEnvironment ) getEnvironment ().clone ();
+    return ( ClosureEnvironment ) getEnvironment ().clone (newIndex);
   }
 
 

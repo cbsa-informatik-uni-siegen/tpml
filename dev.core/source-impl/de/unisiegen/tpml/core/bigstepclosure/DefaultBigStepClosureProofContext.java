@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.bigstepclosure;
 
 import java.util.LinkedList;
 
+import de.unisiegen.tpml.core.ClosureEnvironment;
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.interpreters.DefaultStore;
@@ -148,11 +149,6 @@ final class DefaultBigStepClosureProofContext implements
 
   }
 
-  public int envNumber()
-  {
-    return nextEnvNumber++;
-  }
-
   void addRedoAction ( Runnable redoAction )
   {
     // perform the action
@@ -218,7 +214,10 @@ final class DefaultBigStepClosureProofContext implements
   Runnable getUndoActions ()
   {
     return new Runnable ()
+    {  public int envNumber()
     {
+      return nextEnvNumber++;
+    }
 
       @SuppressWarnings ( "synthetic-access" )
       public void run ()
@@ -229,6 +228,12 @@ final class DefaultBigStepClosureProofContext implements
         }
       }
     };
+  }
+  
+  public ClosureEnvironment cloneEnvironment(
+      final ClosureEnvironment old)
+  {
+    return (ClosureEnvironment)old.clone(this.nextEnvNumber++);
   }
 
   private int nextEnvNumber = 0;

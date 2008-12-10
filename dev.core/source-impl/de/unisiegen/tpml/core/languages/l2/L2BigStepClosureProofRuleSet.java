@@ -28,7 +28,7 @@ public class L2BigStepClosureProofRuleSet extends L1BigStepClosureProofRuleSet
       BigStepClosureProofNode node )
   {
       final Recursion e = (Recursion)node.getExpression ();
-      final ClosureEnvironment env = node.getClosure ().cloneEnvironment();
+      final ClosureEnvironment env = context.cloneEnvironment(node.getClosure ().getEnvironment());
       env.put ( e.getId(), node.getClosure());
       context.addProofNode ( node, new Closure(e.getE(), env ));
   }

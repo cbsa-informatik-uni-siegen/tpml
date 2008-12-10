@@ -25,17 +25,12 @@ public final class DefaultClosureEnvironment extends
     AbstractEnvironment < Identifier, Closure > implements ClosureEnvironment
 {
 
-  // TODO: remove later
-  public DefaultClosureEnvironment()
+  public DefaultClosureEnvironment ( final int index )
   {
-    this.name = "";
+    this.index = index;
   }
-  
-  public DefaultClosureEnvironment(final String name)
-  {
-    this.name = name;
-  }
-  
+
+
   public void put ( final Identifier identifier, final Closure closure )
   {
     super.put ( identifier, closure );
@@ -60,27 +55,28 @@ public final class DefaultClosureEnvironment extends
   public PrettyStringBuilder toPrettyStringBuilder (
       final PrettyStringBuilderFactory fac )
   {
-    PrettyStringBuilder builder = fac.newBuilder ( this, 0 );
+    final PrettyStringBuilder builder = fac.newBuilder ( this, 0 );
+
+    // don't name empty environments
+    /*
+     * if(this.mappings.isEmpty()) builder.addText ( PRETTY_LBRACKET +
+     * PRETTY_RBRACKET ); else builder.addText ( getName() ); //$NON-NLS-1$
+     */
 
     builder.addText ( PRETTY_LBRACKET );
-
     Enumeration < Identifier > e = this.symbols ();
     while ( e.hasMoreElements () )
     {
       Identifier id = e.nextElement ();
       Closure closure = this.get ( id );
-
       if ( closure.getEnvironment () == this )
         continue;
-
       builder.addBuilder ( id.toPrettyStringBuilder ( fac ), 0 );
       builder.addText ( PRETTY_COLON );
       builder.addBuilder ( closure.toPrettyStringBuilder ( fac ), 0 );
-
       if ( e.hasMoreElements () )
         builder.addText ( PRETTY_COMMA );
     }
-
     builder.addText ( PRETTY_RBRACKET );
 
     return builder;
@@ -96,17 +92,20 @@ public final class DefaultClosureEnvironment extends
 
   public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList();
-    commands.add ( getLatexCommandsStatic() );
+    final LatexCommandList commands = new LatexCommandList ();
+    commands.add ( getLatexCommandsStatic () );
     return commands;
   }
-  
+
+
   public static LatexCommandList getLatexCommandsStatic ()
   {
     LatexCommandList commands = new LatexCommandList ();
-    commands.add ( new DefaultLatexCommand ( LATEX_CLOSURE_ENVIRONMENT, 0, ""));
-    //2, LATEX_LPAREN
-    //    + "#1" + LATEX_COMMA + "#2" + LATEX_RPAREN, "expression", "environment" ));
+    commands
+        .add ( new DefaultLatexCommand ( LATEX_CLOSURE_ENVIRONMENT, 0, "" ) );
+    // 2, LATEX_LPAREN
+    // + "#1" + LATEX_COMMA + "#2" + LATEX_RPAREN, "expression", "environment"
+    // ));
     return commands;
   }
 
@@ -114,26 +113,26 @@ public final class DefaultClosureEnvironment extends
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory fac, int pIndent )
   {
-     LatexStringBuilder builder = fac.newBuilder ( 0, LATEX_CLOSURE_ENVIRONMENT,
-        pIndent); // FIXME
+    LatexStringBuilder builder = fac.newBuilder ( 0, LATEX_CLOSURE_ENVIRONMENT,
+        pIndent ); // FIXME
 
-     builder.addText ( "{" + toPrettyString().toString() + "}");
+    builder.addText ( "{" + toPrettyString ().toString () + "}" );
     // FIXME
-    
+
     return builder;
   }
 
 
   public LatexPackageList getLatexPackages ()
   {
-    LatexPackageList packages = new LatexPackageList();
+    LatexPackageList packages = new LatexPackageList ();
     return packages; // FIXME
   }
 
 
   public LatexInstructionList getLatexInstructions ()
   {
-    LatexInstructionList instructions = new LatexInstructionList();
+    LatexInstructionList instructions = new LatexInstructionList ();
     return instructions; // FIXME
   }
 
@@ -150,7 +149,7 @@ public final class DefaultClosureEnvironment extends
       builder.append ( ": " );
       builder.append ( super.get ( id ).toString () );
       builder.append ( ' ' );
-   
+
     }
     builder.append ( ']' );
     return builder.toString ();
@@ -159,13 +158,13 @@ public final class DefaultClosureEnvironment extends
 
   public static final DefaultClosureEnvironment empty ()
   {
-    return new DefaultClosureEnvironment ();
+    return new DefaultClosureEnvironment ( -1 );
   }
 
 
-  public Object clone ()
+  public Object clone ( final int newIndex )
   {
-    DefaultClosureEnvironment cl = new DefaultClosureEnvironment ();
+    DefaultClosureEnvironment cl = new DefaultClosureEnvironment ( newIndex );
     Enumeration < Identifier > e = super.symbols ();
     while ( e.hasMoreElements () )
     {
@@ -174,6 +173,24 @@ public final class DefaultClosureEnvironment extends
     }
     return cl;
   }
-  
-  private String name;
+
+
+  public String getName ()
+  {
+    return PRETTY_ETA + this.index;
+  }
+
+
+  public boolean isNotPrinted ()
+  {
+    final boolean ret = this.notPrinted;
+    this.notPrinted = false;
+    return ret;
+  }
+
+
+  private int index;
+
+
+  private boolean notPrinted = true;
 }

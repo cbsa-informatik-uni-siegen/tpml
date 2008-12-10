@@ -33,7 +33,7 @@ public final class DefaultBigStepClosureProofNode extends
 
   public DefaultBigStepClosureProofNode ( final Expression pExpression )
   {
-    this ( new Closure ( pExpression, new DefaultClosureEnvironment () ) );
+    this ( new Closure ( pExpression, DefaultClosureEnvironment.empty () ) );
   }
 
 
@@ -128,11 +128,16 @@ public final class DefaultBigStepClosureProofNode extends
 
 
   public PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory fac )
+      final PrettyStringBuilderFactory fac )
   {
-    PrettyStringBuilder builder = fac.newBuilder ( this, 0 );
-
-    builder.addBuilder ( getClosure ().toPrettyStringBuilder ( fac ), 0 );
+    final PrettyStringBuilder builder = fac.newBuilder ( this, 0 );
+    
+    /*
+     * builder.addBuilder ( getClosure ().toPrettyStringBuilder ( fac ), 0 );
+     * final ClosureEnvironment env = getClosure().getEnvironment();
+     * if(env.isNotPrinted()) { builder.addText ( env.getName() + PRETTY_EQUAL
+     * ); builder.addBuilder ( env.toPrettyStringBuilder ( fac ), 0 ); }
+     */
 
     return builder;
   }
@@ -166,11 +171,12 @@ public final class DefaultBigStepClosureProofNode extends
     builder.addBuilder ( getClosure ().toLatexStringBuilder (
         pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
 
-    if (this.getResult() != null)
-      builder.addBuilder ( getResult().toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent + LATEX_INDENT), 0 );
+    if ( this.getResult () != null )
+      builder.addBuilder ( getResult ().toLatexStringBuilder (
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
     else
-      builder.addEmptyBuilder();
-    
+      builder.addEmptyBuilder ();
+
     if ( this.getRule () != null )
       builder.addBuilder ( this.getRule ().toLatexStringBuilder (
           pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
@@ -251,13 +257,13 @@ public final class DefaultBigStepClosureProofNode extends
   @Override
   public String toString ()
   {
-    StringBuilder builder = new StringBuilder ();
-    builder.append ( getClosure () );
-    builder.append ( " \u21d3 " ); //$NON-NLS-1$
-    if ( this.result != null )
-      builder.append ( this.result.getValue () );
-
-    return builder.toString ();
+    return toPrettyString ().toString ();
+    /*
+     * StringBuilder builder = new StringBuilder (); builder.append ( getClosure
+     * () ); builder.append ( " \u21d3 " ); //$NON-NLS-1$ if ( this.result !=
+     * null ) builder.append ( this.result.getValue () ); return
+     * builder.toString ();
+     */
   }
 
 

@@ -273,6 +273,12 @@ public interface PrettyCommandNames
    */
   public static final String PRETTY_ARROW = "\u2192"; //$NON-NLS-1$
 
+  
+  /**
+   * The pretty print keyword <code>eta</code>.
+   */
+  public static final String PRETTY_ETA = "\u03B7"; //$NON-NLS-1$
+  
 
   /**
    * The pretty print keyword <code>zeta</code>.
@@ -295,7 +301,7 @@ public interface PrettyCommandNames
   /**
    * The pretty print lower string.
    */
-  public static final String PRETTY_LOWER = "<"; //$NON-NLS-1$
+  public static final String PRETTY_LESS = "<"; //$NON-NLS-1$
 
 
   /**

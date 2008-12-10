@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.bigstepclosure;
 
 
+import de.unisiegen.tpml.core.ClosureEnvironment;
 import de.unisiegen.tpml.core.expressions.Closure;
 
 
@@ -37,11 +38,6 @@ public interface BigStepClosureProofContext
       BigStepClosureProofRule rule );
   
   
-  /**
-   * 
-   * The next free environment index
-   *
-   * @return the index
-   */
-  public int envNumber(); 
+  public ClosureEnvironment cloneEnvironment(
+      ClosureEnvironment old);
 }

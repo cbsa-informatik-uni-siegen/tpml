@@ -11,5 +11,7 @@ public interface ClosureEnvironment extends Environment<Identifier, Closure>, Cl
 {
   public void put(Identifier identifier, Closure closure);
   public String toString();
-  public Object clone();
+  public Object clone(int newIndex);
+  public String getName();
+  public boolean isNotPrinted(); 
 }

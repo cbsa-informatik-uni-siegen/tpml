@@ -126,7 +126,7 @@ public class L1BigStepClosureProofRuleSet extends
   public void applyApp ( final BigStepClosureProofContext context,
       final BigStepClosureProofNode node )
   {
-    Application app = ( Application ) node.getExpression ();
+    final Application app = ( Application ) node.getExpression ();
     context.addProofNode ( node, new Closure ( app.getE1 (), node
         .getEnvironment () ) );
     context.addProofNode ( node, new Closure ( app.getE2 (), node
@@ -253,7 +253,7 @@ public class L1BigStepClosureProofRuleSet extends
       final Closure result0 = child0.getResult ().getClosure ();
       final Lambda lambda = ( Lambda ) result0.getExpression ();
       final Closure closure = child1.getResult ().getClosure ();
-      final ClosureEnvironment environment = result0.cloneEnvironment ();
+      final ClosureEnvironment environment = context.cloneEnvironment (result0.getEnvironment());
       environment.put ( lambda.getId (), closure );
       context.addProofNode ( node, new Closure ( lambda.getE (), environment ) );
     }
@@ -448,7 +448,7 @@ public class L1BigStepClosureProofRuleSet extends
     final MultiLet multiLet = ( MultiLet ) node.getExpression ();
     final Identifier [] identifiers = multiLet.getIdentifiers ();
 
-    final ClosureEnvironment env = node.getClosure ().cloneEnvironment ();
+    final ClosureEnvironment env = context.cloneEnvironment ( node.getClosure ().getEnvironment ());
     for ( int i = 0 ; i < identifiers.length ; ++i )
       env.put ( identifiers [ i ], new Closure ( new Application (
           new Projection ( identifiers.length, i + 1 ), multiLet.getE1 () ),
@@ -493,7 +493,7 @@ public class L1BigStepClosureProofRuleSet extends
       final Let let = ( Let ) e;
 
       final Closure closure = child0.getResult ().getClosure ();
-      final ClosureEnvironment environment = closure.cloneEnvironment ();
+      final ClosureEnvironment environment = context.cloneEnvironment ( closure.getEnvironment ());
       environment.put ( let.getId (), closure );
       context.addProofNode ( node, new Closure ( let.getE2 (), environment ) );
       return;
@@ -538,7 +538,7 @@ public class L1BigStepClosureProofRuleSet extends
     final CurriedLet curriedLet = ( CurriedLet ) node.getExpression ();
 
     final Closure closure = child0.getResult ().getClosure ();
-    final ClosureEnvironment environment = closure.cloneEnvironment ();
+    final ClosureEnvironment environment = context.cloneEnvironment ( closure.getEnvironment ());
     environment.put ( curriedLet.getIdentifiers () [ 0 ], closure );
     context.addProofNode ( node,
         new Closure ( curriedLet.getE2 (), environment ) );
