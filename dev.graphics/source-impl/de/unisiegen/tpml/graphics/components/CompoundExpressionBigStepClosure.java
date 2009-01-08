@@ -330,6 +330,7 @@ public class CompoundExpressionBigStepClosure extends JComponent
      * just to get reminded: no environment: expression storeenvironment:
      * (expression [env]) typeenvironment: [env] |> expression
      */
+    
     int posX = 0;
     int posY = 0;
 

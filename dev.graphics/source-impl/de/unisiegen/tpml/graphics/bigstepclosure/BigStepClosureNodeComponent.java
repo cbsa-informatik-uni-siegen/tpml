@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
+import de.unisiegen.tpml.core.ClosureEnvironment;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
@@ -41,7 +42,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 /**
  * Graphics representation of a {@link BigStepClosureProofNode} <br>
  * <br>
- * A usual look of a node may be given in the following pictur. It shows the
+ * A usual look of a node may be given in the following picture. It shows the
  * second node within the tree of the BigStepper of the Expression:
  * <code>let rec f = lambda x. if x = 0 then 1 else x * f (x-1) in f 3</code><br>
  * <img src="../../../../../../images/bigstepnode.png" /><br>
@@ -50,7 +51,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
  * illustrates the layouting of the single components.<br>
  * <img src="../../../../../../images/bigstepnode_scheme.png" /><br>
  * <br>
- * The first rectangle represents the {@link #indexLabel}. The second rectanle
+ * The first rectangle represents the {@link #indexLabel}. The second rectangle
  * represents the {@link #compoundExpression}. The third is the down-directed
  * arrow this is the {@link #downArrowLabel}. The last element in the first row
  * is the {@link #resultCompoundExpression} containing the resulting expression,
@@ -60,8 +61,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
  * node has not been evaluated with a rule there would be located the
  * {@link #ruleButton}.<br>
  * The bit of free space between the top and the bottom row aswell as between
- * the indexLabel and the expression is given in pixels in the {@link #spacing}.
- * <br>
+ * the indexLabel and the expression is given in pixels in the {@link #spacing}. <br>
  * Within the {@link BigStepClosureComponent} the
  * {@link de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer} will be used to
  * draw the lines and the arrow of the tree. The TreeArrowRenderer uses
@@ -164,6 +164,12 @@ public class BigStepClosureNodeComponent extends JComponent implements
 
 
   /**
+   * Label that will be used to show the environments created.
+   */
+  private JLabel envLabel;
+
+
+  /**
    * The "Translate to core syntax" item in the context menu.
    */
   private MenuTranslateItem menuTranslateItem;
@@ -227,6 +233,12 @@ public class BigStepClosureNodeComponent extends JComponent implements
     this.ruleLabel = new JLabel ();
     add ( this.ruleLabel );
     this.ruleLabel.setVisible ( false );
+
+    // create the env label
+    this.envLabel = new JLabel ();
+    add ( this.envLabel );
+    this.envLabel.setVisible ( false );
+
     /*
      * Create the PopupMenu for the menu button
      */
@@ -247,15 +259,15 @@ public class BigStepClosureNodeComponent extends JComponent implements
     this.ruleButton.addMenuButtonListener ( new MenuButtonListener ()
     {
 
-      public void menuClosed ( @SuppressWarnings ( "unused" )
-      MenuButton button )
+      public void menuClosed ( @SuppressWarnings ( "unused" ) MenuButton button )
       {
         // empty block
       }
 
 
-      public void menuItemActivated ( @SuppressWarnings ( "unused" )
-      MenuButton button, final JMenuItem source )
+      public void menuItemActivated (
+          @SuppressWarnings ( "unused" ) MenuButton button,
+          final JMenuItem source )
       {
         // setup a wait cursor for the toplevel ancestor
         final Container toplevel = getTopLevelAncestor ();
@@ -310,7 +322,8 @@ public class BigStepClosureNodeComponent extends JComponent implements
 
 
   /**
-   * Removes a {@link BigStepNodeListener} from the <i>SmallStepNodeComponent</i>
+   * Removes a {@link BigStepNodeListener} from the
+   * <i>SmallStepNodeComponent</i>
    * 
    * @param listener The listener to be removed.
    */
@@ -492,7 +505,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
   /**
    * Does an update on the compound expression.<br>
    * Resets the expression and the environment (if there is one). That causes
-   * the PrettyStringRenderer to recheck the breakoints.
+   * the PrettyStringRenderer to recheck the breakpoints.
    */
   public void changeNode ()
   {
@@ -565,7 +578,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
     }
     if ( breakNeeded )
     {
-      // get the new resultsiz in the next line
+      // get the new resultsize in the next line
       resultSize = this.resultCompoundExpression.getNeededSize ( maxWidth
           - this.meshPix );
       // the hight will be lager
@@ -634,6 +647,37 @@ public class BigStepClosureNodeComponent extends JComponent implements
       // display only the button not the label
       this.ruleLabel.setVisible ( false );
       this.ruleButton.setVisible ( true );
+    }
+
+    final ClosureEnvironment expEnv = this.proofNode.getClosure ()
+        .getEnvironment ();
+    if ( expEnv.isNotPrinted () )
+    {
+      this.envLabel.setText ( this.envLabel.getText () + ' '
+          + expEnv.getName () + '=' + expEnv.toString () );
+      this.envLabel.setVisible ( true );
+    }
+
+    if ( this.proofNode.getResult () != null )
+    {
+      final ClosureEnvironment resEnv = this.proofNode.getResult ()
+          .getClosure ().getEnvironment ();
+      if ( resEnv.isNotPrinted () )
+      {
+        this.envLabel.setText ( this.envLabel.getText () + ' '
+            + resEnv.getName () + '=' + resEnv.toString () );
+        this.envLabel.setVisible ( true );
+      }
+    }
+
+    if ( this.envLabel.isVisible () )
+    {
+      final Dimension envLabelSize = this.envLabel.getPreferredSize ();
+      this.envLabel.setBounds ( posX, this.dimension.height + this.spacing,
+          envLabelSize.width, envLabelSize.height );
+      this.dimension.width = Math.max ( this.dimension.width,
+          envLabelSize.width + posX );
+      this.dimension.height += this.spacing + this.envLabel.getHeight ();
     }
   }
 

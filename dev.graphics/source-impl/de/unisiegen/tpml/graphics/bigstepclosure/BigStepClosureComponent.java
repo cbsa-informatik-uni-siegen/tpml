@@ -14,7 +14,6 @@ import javax.swing.event.TreeModelEvent;
 
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
-import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
@@ -46,7 +45,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
  * stored using the <i>Userobject</i> provided by the
  * {@link de.unisiegen.tpml.core.ProofNode}.<br>
  * Everytime the content of the tree changes ({@link #treeContentChanged()} is
- * called) the {@link #checkForUserObject(BigStepProofNode)}-method is called.
+ * called) the {@link #checkForUserObject(BigStepClosureProofNode)}-method is called.
  * This causes a recursive traversing of the entire tree to check if every node
  * has its corresponding
  * {@link de.unisiegen.tpml.graphics.bigstepclosure.BigStepClosureNodeComponent}.<br>
