@@ -3,6 +3,7 @@ package de.unisiegen.tpml.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -973,34 +974,39 @@ public class EditorPanelUnify extends AbstractBean implements EditorPanel
    */
   public void handleLatexExport ()
   {
-    if ( isTexteditor () )
-    {
-      try
-      {
-        Expression exp = this.code.getDocument ().getExpression ();
-        GeneralLaTex laTex = new GeneralLaTex ( exp, this.mypanel, true );
-        laTex.export ();
-      }
-      catch ( Exception e )
-      {
-        // no real expression
-
-        JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
-            .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
-                "CouldNotLaTeXExpression" ), "Editor",//$NON-NLS-1$//$NON-NLS-2$
-            JOptionPane.ERROR_MESSAGE );
-
-        // JOptionPane.showMessageDialog(mypanel, "Sorry, no Expression
-        // enterd!");
-      }
-    }
-    else
-    {
-      GeneralLaTex laTex = new GeneralLaTex (
-          ( ( ProofViewComponent ) getComponent () ).getModel (), this.mypanel,
-          false );
-      laTex.export ();
-    }
+    JOptionPane
+        .showConfirmDialog (
+            ( Component ) this.unify,
+            "Latex export on unify is disabled", "Latex Export disabled", JOptionPane.OK_OPTION ); //$NON-NLS-1$ //$NON-NLS-2$
+    return;
+    // if ( isTexteditor () )
+    // {
+    // try
+    // {
+    // Expression exp = this.code.getDocument ().getExpression ();
+    // GeneralLaTex laTex = new GeneralLaTex ( exp, this.mypanel, true );
+    // laTex.export ();
+    // }
+    // catch ( Exception e )
+    // {
+    // // no real expression
+    //
+    // JOptionPane.showMessageDialog ( this.mypanel, java.util.ResourceBundle
+    // .getBundle ( "de/unisiegen/tpml/ui/ui" ).getString ( //$NON-NLS-1$
+    // "CouldNotLaTeXExpression" ), "Editor",//$NON-NLS-1$//$NON-NLS-2$
+    // JOptionPane.ERROR_MESSAGE );
+    //
+    // // JOptionPane.showMessageDialog(mypanel, "Sorry, no Expression
+    // // enterd!");
+    // }
+    // }
+    // else
+    // {
+    // GeneralLaTex laTex = new GeneralLaTex (
+    // ( ( ProofViewComponent ) getComponent () ).getModel (), this.mypanel,
+    // false );
+    // laTex.export ();
+    // }
 
   }
 
