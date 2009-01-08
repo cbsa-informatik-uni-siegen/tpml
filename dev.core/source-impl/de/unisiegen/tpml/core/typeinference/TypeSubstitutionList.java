@@ -137,6 +137,15 @@ public class TypeSubstitutionList implements PrettyPrintable, LatexPrintable
   }
 
 
+  private boolean hasElement ( final DefaultTypeSubstitution s )
+  {
+    for ( TypeSubstitutionList l = this ; l != EMPTY_LIST ; l = l.remaining )
+      if ( s.equals ( l.getFirst () ) )
+        return true;
+    return false;
+  }
+
+
   /**
    * applies a type substitution to all substitutions in the list
    * 
@@ -346,31 +355,33 @@ public class TypeSubstitutionList implements PrettyPrintable, LatexPrintable
   {
     return toPrettyString ().toString ();
   }
-  
+
+
   /**
    * requests whether we have more substitutions in the list or not
-   *
+   * 
    * @return true if we have more elements; false otherwise
    */
-  public final boolean hasNext()
+  public final boolean hasNext ()
   {
     return this.remaining != TypeSubstitutionList.EMPTY_LIST;
   }
-  
+
+
   /**
    * returns the number of type substitutions
-   *
+   * 
    * @return the number of type substitutions
    */
-  public final int size()
+  public final int size ()
   {
     int result = 0;
     TypeSubstitutionList ll = this;
-      while(ll.hasNext ())
-      {
-        ll = ll.getRemaining ();
-        ++result;
-      }
+    while ( ll.hasNext () )
+    {
+      ll = ll.getRemaining ();
+      ++result;
+    }
     return result;
   }
 }

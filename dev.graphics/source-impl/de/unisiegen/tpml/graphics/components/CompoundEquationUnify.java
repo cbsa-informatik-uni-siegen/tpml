@@ -20,7 +20,9 @@ import java.io.IOException;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
+import de.unisiegen.tpml.core.entities.DefaultTypeEquationList;
 import de.unisiegen.tpml.core.entities.DefaultUnifyProofExpression;
+import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.entities.TypeEquationList;
 import de.unisiegen.tpml.core.entities.TypeEquationTransferableObject;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
@@ -247,11 +249,49 @@ public class CompoundEquationUnify extends JComponent
         TransferHandler.MOVE )
     {
 
+      /**
+       * TODO
+       */
+      private static final long serialVersionUID = -153715027779910398L;
+
       @Override
       public boolean importTypeEquationTransferableObect ( int targetIndex,
           TypeEquationTransferableObject transferableObject )
       {
-        return false;
+        if(CompoundEquationUnify.this.typeEquationList.hashCode () != transferableObject.typeEquationListHashCode)
+          return false;
+        
+          //build new list
+          DefaultTypeEquationList newTypeEquationList = new DefaultTypeEquationList();
+          TypeEquationList tmpTypeEquationList = new DefaultTypeEquationList();
+          TypeEquationList cnt = CompoundEquationUnify.this.typeEquationList;
+          TypeEquation tmp = null;
+          int i = 0;
+          while(cnt.getFirst () != null) {
+            if(i == transferableObject.sourceIndex) {
+              tmp = cnt.getFirst ();
+              cnt = cnt.getRemaining ();
+              int j = i + 1;
+              while(cnt.getFirst () != null) {
+                if(j == targetIndex) {
+                  newTypeEquationList = (DefaultTypeEquationList)newTypeEquationList.extend ( cnt.getFirst () );
+                  for(TypeEquation t : tmpTypeEquationList)
+                    newTypeEquationList = (DefaultTypeEquationList)newTypeEquationList.extend ( t );
+                  newTypeEquationList = (DefaultTypeEquationList)newTypeEquationList.extend ( tmp );
+                  i = j;
+                  break;
+                }
+                tmpTypeEquationList = tmpTypeEquationList.extend ( cnt.getFirst () );
+                cnt = cnt.getRemaining ();
+                ++j;
+              }
+            } else 
+              newTypeEquationList = (DefaultTypeEquationList)newTypeEquationList.extend ( cnt.getFirst () );
+            cnt = cnt.getRemaining ();
+            ++i;
+          }
+          
+        return true;
       }
 
     } );
