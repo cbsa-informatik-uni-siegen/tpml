@@ -52,32 +52,30 @@ public final class DefaultClosureEnvironment extends
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param fac
+   * @return
+   * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
+   */
   public PrettyStringBuilder toPrettyStringBuilder (
       final PrettyStringBuilderFactory fac )
   {
     final PrettyStringBuilder builder = fac.newBuilder ( this, 0 );
 
-    // don't name empty environments
-    /*
-     * if(this.mappings.isEmpty()) builder.addText ( PRETTY_LBRACKET +
-     * PRETTY_RBRACKET ); else builder.addText ( getName() ); //$NON-NLS-1$
-     */
+    builder.addText ( getName () );
 
-    builder.addText ( PRETTY_LBRACKET );
-    Enumeration < Identifier > e = this.symbols ();
-    while ( e.hasMoreElements () )
-    {
-      Identifier id = e.nextElement ();
-      Closure closure = this.get ( id );
-      if ( closure.getEnvironment () == this )
-        continue;
-      builder.addBuilder ( id.toPrettyStringBuilder ( fac ), 0 );
-      builder.addText ( PRETTY_COLON );
-      builder.addBuilder ( closure.toPrettyStringBuilder ( fac ), 0 );
-      if ( e.hasMoreElements () )
-        builder.addText ( PRETTY_COMMA );
-    }
-    builder.addText ( PRETTY_RBRACKET );
+    /*
+     * builder.addText ( PRETTY_LBRACKET ); Enumeration < Identifier > e =
+     * this.symbols (); while ( e.hasMoreElements () ) { Identifier id =
+     * e.nextElement (); Closure closure = this.get ( id ); if (
+     * closure.getEnvironment () == this ) continue; builder.addBuilder (
+     * id.toPrettyStringBuilder ( fac ), 0 ); builder.addText ( PRETTY_COLON );
+     * builder.addBuilder ( closure.toPrettyStringBuilder ( fac ), 0 ); if (
+     * e.hasMoreElements () ) builder.addText ( PRETTY_COMMA ); }
+     * builder.addText ( PRETTY_RBRACKET );
+     */
 
     return builder;
   }
@@ -101,8 +99,8 @@ public final class DefaultClosureEnvironment extends
   public static LatexCommandList getLatexCommandsStatic ()
   {
     LatexCommandList commands = new LatexCommandList ();
-    commands
-        .add ( new DefaultLatexCommand ( LATEX_CLOSURE_ENVIRONMENT, 0, "" ) );
+    //commands
+    //    .add ( new DefaultLatexCommand ( LATEX_CLOSURE_ENVIRONMENT, 0, "" ) );
     // 2, LATEX_LPAREN
     // + "#1" + LATEX_COMMA + "#2" + LATEX_RPAREN, "expression", "environment"
     // ));
@@ -111,13 +109,12 @@ public final class DefaultClosureEnvironment extends
 
 
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory fac, int pIndent )
+      final LatexStringBuilderFactory fac, final int pIndent )
   {
-    LatexStringBuilder builder = fac.newBuilder ( 0, LATEX_CLOSURE_ENVIRONMENT,
-        pIndent ); // FIXME
-
-    builder.addText ( "{" + toPrettyString ().toString () + "}" );
-    // FIXME
+    final LatexStringBuilder builder = fac.newBuilder ( 0, LATEX_CLOSURE_ENVIRONMENT,
+        pIndent );
+    
+    builder.addText ( LATEX_ETA + "_{" + this.index + '}' ); //$NON-NLS-1$
 
     return builder;
   }
@@ -156,15 +153,30 @@ public final class DefaultClosureEnvironment extends
   }
 
 
-  public static final DefaultClosureEnvironment empty ()
+  /**
+   * Creates a new empty environment with a new index. We start with an empty
+   * environment, and (OP-1) and (OP-2) can produce empty environments as well
+   * 
+   * @param index The new environment's index
+   * @return The new empty environment
+   */
+  public static final DefaultClosureEnvironment empty ( final int index )
   {
-    return new DefaultClosureEnvironment ( -1 );
+    return new DefaultClosureEnvironment ( index );
   }
 
 
+  /**
+   * Clones the current environment, but gives the new environment a new index
+   * 
+   * @param newIndex The new environment's index
+   * @return The new environment
+   * @see de.unisiegen.tpml.core.ClosureEnvironment#clone(int)
+   */
   public Object clone ( final int newIndex )
   {
-    DefaultClosureEnvironment cl = new DefaultClosureEnvironment ( newIndex );
+    final DefaultClosureEnvironment cl = new DefaultClosureEnvironment (
+        newIndex );
     Enumeration < Identifier > e = super.symbols ();
     while ( e.hasMoreElements () )
     {
@@ -175,12 +187,20 @@ public final class DefaultClosureEnvironment extends
   }
 
 
+  /**
+   * @return The name of this environment (like etha_0)
+   * @see de.unisiegen.tpml.core.ClosureEnvironment#getName()
+   */
   public String getName ()
   {
     return PRETTY_ETA + this.index;
   }
 
 
+  /**
+   * @return Tells whether this environment has to be printed
+   * @see de.unisiegen.tpml.core.ClosureEnvironment#isNotPrinted()
+   */
   public boolean isNotPrinted ()
   {
     final boolean ret = this.notPrinted;
@@ -189,8 +209,14 @@ public final class DefaultClosureEnvironment extends
   }
 
 
+  /**
+   * This environment's index, like 0, 1, 2, ...
+   */
   private int index;
 
 
+  /**
+   * Tells if this environment should be printed
+   */
   private boolean notPrinted = true;
 }

@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.bigstepclosure;
 import java.util.LinkedList;
 
 import de.unisiegen.tpml.core.ClosureEnvironment;
+import de.unisiegen.tpml.core.DefaultClosureEnvironment;
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.interpreters.DefaultStore;
@@ -14,7 +15,8 @@ final class DefaultBigStepClosureProofContext implements
     BigStepClosureProofContext
 {
 
-  public DefaultBigStepClosureProofContext ( BigStepClosureProofModel model )
+  public DefaultBigStepClosureProofContext (
+      final BigStepClosureProofModel model )
   {
     this.model = model;
   }
@@ -99,7 +101,7 @@ final class DefaultBigStepClosureProofContext implements
   }
 
 
-  void updateNode ( BigStepClosureProofNode node )
+  void updateNode ( final BigStepClosureProofNode node )
   {
     // skip the node if it is already proven
     if ( node.isFinished () )
@@ -149,6 +151,7 @@ final class DefaultBigStepClosureProofContext implements
 
   }
 
+
   void addRedoAction ( Runnable redoAction )
   {
     // perform the action
@@ -182,7 +185,8 @@ final class DefaultBigStepClosureProofContext implements
    * Returns a single <code>Runnable</code> that runs all previously registered
    * redo actions.
    * 
-   * @republic int envNumber(); turn a single <code>Runnable</code> to run all redo actions.
+   * @republic int envNumber(); turn a single <code>Runnable</code> to run all
+   *           redo actions.
    * @see #addRedoAction(Runnable)
    * @see #getUndoActions()
    */
@@ -214,10 +218,7 @@ final class DefaultBigStepClosureProofContext implements
   Runnable getUndoActions ()
   {
     return new Runnable ()
-    {  public int envNumber()
     {
-      return nextEnvNumber++;
-    }
 
       @SuppressWarnings ( "synthetic-access" )
       public void run ()
@@ -229,14 +230,19 @@ final class DefaultBigStepClosureProofContext implements
       }
     };
   }
-  
-  public ClosureEnvironment cloneEnvironment(
-      final ClosureEnvironment old)
+
+
+  public ClosureEnvironment cloneEnvironment ( final ClosureEnvironment old )
   {
-    return (ClosureEnvironment)old.clone(this.nextEnvNumber++);
+    return ( ClosureEnvironment ) old.clone ( this.model.getNextEnvNumber () );
   }
 
-  private int nextEnvNumber = 0;
+
+  public ClosureEnvironment emptyEnvironment ()
+  {
+    return DefaultClosureEnvironment.empty ( this.model.getNextEnvNumber () );
+  }
+
 
   private BigStepClosureProofModel model;
 

@@ -4,10 +4,8 @@ package de.unisiegen.tpml.core.bigstepclosure;
 import javax.swing.tree.TreeNode;
 
 import de.unisiegen.tpml.core.ClosureEnvironment;
-import de.unisiegen.tpml.core.DefaultClosureEnvironment;
 import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.Closure;
-import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode;
 import de.unisiegen.tpml.core.interpreters.DefaultStore;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
@@ -31,12 +29,11 @@ public final class DefaultBigStepClosureProofNode extends
     AbstractInterpreterProofNode implements BigStepClosureProofNode
 {
 
-  public DefaultBigStepClosureProofNode ( final Expression pExpression )
-  {
-    this ( new Closure ( pExpression, DefaultClosureEnvironment.empty () ) );
-  }
-
-
+  /**
+   * Constructrs a new proof node from a closure
+   * 
+   * @param closure The node's closure
+   */
   public DefaultBigStepClosureProofNode ( final Closure closure )
   {
     super ( closure.getExpression (), new DefaultStore () ); // FIXME: we can't
@@ -131,7 +128,7 @@ public final class DefaultBigStepClosureProofNode extends
       final PrettyStringBuilderFactory fac )
   {
     final PrettyStringBuilder builder = fac.newBuilder ( this, 0 );
-    
+
     /*
      * builder.addBuilder ( getClosure ().toPrettyStringBuilder ( fac ), 0 );
      * final ClosureEnvironment env = getClosure().getEnvironment();
@@ -155,7 +152,8 @@ public final class DefaultBigStepClosureProofNode extends
 
 
   public LatexStringBuilder toLatexStringBuilder (
-      LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
+      final LatexStringBuilderFactory pLatexStringBuilderFactory,
+      final int pIndent )
   {
     final int depth = getDepth ();
 
@@ -193,7 +191,7 @@ public final class DefaultBigStepClosureProofNode extends
 
   public LatexCommandList getLatexCommands ()
   {
-    LatexCommandList commands = new LatexCommandList ();
+    final LatexCommandList commands = new LatexCommandList ();
     commands.add ( getLatexCommandsStatic () );
     commands.add ( getClosure () );
     commands.add ( getResult () );
@@ -258,12 +256,6 @@ public final class DefaultBigStepClosureProofNode extends
   public String toString ()
   {
     return toPrettyString ().toString ();
-    /*
-     * StringBuilder builder = new StringBuilder (); builder.append ( getClosure
-     * () ); builder.append ( " \u21d3 " ); //$NON-NLS-1$ if ( this.result !=
-     * null ) builder.append ( this.result.getValue () ); return
-     * builder.toString ();
-     */
   }
 
 

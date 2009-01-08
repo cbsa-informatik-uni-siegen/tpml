@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.DefaultClosureEnvironment;
 import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofModel;
 import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
@@ -45,7 +47,12 @@ public final class BigStepClosureProofModel extends
   public BigStepClosureProofModel ( final Expression expression,
       final AbstractProofRuleSet pRuleSet )
   {
-    super ( new DefaultBigStepClosureProofNode ( expression ), pRuleSet );
+    super ( new DefaultBigStepClosureProofNode (
+          new Closure(
+                expression,
+                DefaultClosureEnvironment.empty ( 0 )
+          )), pRuleSet );
+    this.nextEnvNumber = 1;
   }
 
 
@@ -63,7 +70,8 @@ public final class BigStepClosureProofModel extends
     }
     if ( node.getRules ().length > 0 )
     {
-      throw new IllegalArgumentException ( Messages.getString ( "BigStepClosure.0" ) ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( Messages
+          .getString ( "BigStepClosure.0" ) ); //$NON-NLS-1$
     }
     if ( !this.root.isNodeRelated ( node ) )
     {
@@ -77,28 +85,6 @@ public final class BigStepClosureProofModel extends
       {
         // cast node to a DefaultBigStepClosureProofNode
         DefaultBigStepClosureProofNode current = ( DefaultBigStepClosureProofNode ) node;
-        // (APP) is a special case, because (APP) can always be applied to
-        // applications,
-        // which can turn into trouble for expressions such as "1 + true"
-        if ( rule.getName ().equals ( "APP" ) ) //$NON-NLS-1$
-        {
-          // determine the parent node
-          BigStepClosureProofNode parent = current.getParent ();
-          // in order to avoid endless guessing of (APP) for said expressions,
-          // we check if the
-          // parent node has exactly the same expression and (APP) was applied
-          // to it, and if
-          // so, skip the (APP) rule here
-          if ( parent != null && parent.getRule ().equals ( rule )
-              && parent.getExpression ().equals ( current.getExpression () ) )
-          {
-            // log the details of the problem...
-            logger.debug ( MessageFormat.format (
-                "Detected endless guessing of ({0}) for {1}", rule, current ) ); //$NON-NLS-1$
-            // ...and skip the (APP) rule for the guess operation
-            continue;
-          }
-        }
         // try to apply the rule to the specified node
         apply ( ( BigStepClosureProofRule ) rule, current );
         // remember that the user cheated
@@ -333,7 +319,8 @@ public final class BigStepClosureProofModel extends
     return commands;
   }
 
-  public LatexInstructionList getLatexInstructions()
+
+  public LatexInstructionList getLatexInstructions ()
   {
     LatexInstructionList instructions = new LatexInstructionList ();
     instructions.add ( getLatexInstructionsStatic () );
@@ -341,6 +328,7 @@ public final class BigStepClosureProofModel extends
         .add ( getLatexInstructionsInternal ( ( BigStepClosureProofNode ) this.root ) );
     return instructions;
   }
+
 
   /**
    * Returns a set of needed latex instructions for the given latex printable
@@ -363,7 +351,8 @@ public final class BigStepClosureProofModel extends
     }
     return instructions;
   }
-  
+
+
   public LatexStringBuilder toLatexStringBuilder (
       LatexStringBuilderFactory pLatexStringBuilderFactory, int pIndent )
   {
@@ -538,8 +527,17 @@ public final class BigStepClosureProofModel extends
   }
 
 
+  public int getNextEnvNumber ()
+  {
+    return this.nextEnvNumber++ ;
+  }
+
+
   private static final Logger logger = Logger
       .getLogger ( BigStepClosureProofModel.class );
+
+
+  private int nextEnvNumber = 0;
 
 
   /**

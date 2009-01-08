@@ -40,4 +40,6 @@ public interface BigStepClosureProofContext
   
   public ClosureEnvironment cloneEnvironment(
       ClosureEnvironment old);
+  
+  public ClosureEnvironment emptyEnvironment ();
 }

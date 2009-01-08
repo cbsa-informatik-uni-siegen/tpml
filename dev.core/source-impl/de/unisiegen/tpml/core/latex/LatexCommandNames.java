@@ -577,6 +577,12 @@ public interface LatexCommandNames
 
 
   /**
+   * The latex print command for Eta
+   */
+  public static final String LATEX_ETA = "\\eta"; //$NON-NLS-1$
+
+
+  /**
    * The latex print command for {@link Identifier}.
    */
   public static final String LATEX_IDENTIFIER = "ExprIdentifier"; //$NON-NLS-1$
