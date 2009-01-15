@@ -47,11 +47,8 @@ public final class BigStepClosureProofModel extends
   public BigStepClosureProofModel ( final Expression expression,
       final AbstractProofRuleSet pRuleSet )
   {
-    super ( new DefaultBigStepClosureProofNode (
-          new Closure(
-                expression,
-                DefaultClosureEnvironment.empty ( 0 )
-          )), pRuleSet );
+    super ( new DefaultBigStepClosureProofNode ( new Closure ( expression,
+        DefaultClosureEnvironment.empty ( 0 ) ) ), pRuleSet );
     this.nextEnvNumber = 1;
   }
 

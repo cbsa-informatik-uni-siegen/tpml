@@ -5,7 +5,6 @@ import java.util.Enumeration;
 
 import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.expressions.Identifier;
-import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
 import de.unisiegen.tpml.core.latex.LatexCommandList;
 import de.unisiegen.tpml.core.latex.LatexInstructionList;
 import de.unisiegen.tpml.core.latex.LatexPackageList;
@@ -62,9 +61,7 @@ public final class DefaultClosureEnvironment extends
   public PrettyStringBuilder toPrettyStringBuilder (
       final PrettyStringBuilderFactory fac )
   {
-    final PrettyStringBuilder builder = fac.newBuilder ( this, 0 );
-
-    builder.addText ( getName () );
+    return getNameBuilder ();
 
     /*
      * builder.addText ( PRETTY_LBRACKET ); Enumeration < Identifier > e =
@@ -76,8 +73,6 @@ public final class DefaultClosureEnvironment extends
      * e.hasMoreElements () ) builder.addText ( PRETTY_COMMA ); }
      * builder.addText ( PRETTY_RBRACKET );
      */
-
-    return builder;
   }
 
 
@@ -99,8 +94,8 @@ public final class DefaultClosureEnvironment extends
   public static LatexCommandList getLatexCommandsStatic ()
   {
     LatexCommandList commands = new LatexCommandList ();
-    //commands
-    //    .add ( new DefaultLatexCommand ( LATEX_CLOSURE_ENVIRONMENT, 0, "" ) );
+    // commands
+    // .add ( new DefaultLatexCommand ( LATEX_CLOSURE_ENVIRONMENT, 0, "" ) );
     // 2, LATEX_LPAREN
     // + "#1" + LATEX_COMMA + "#2" + LATEX_RPAREN, "expression", "environment"
     // ));
@@ -111,9 +106,9 @@ public final class DefaultClosureEnvironment extends
   public LatexStringBuilder toLatexStringBuilder (
       final LatexStringBuilderFactory fac, final int pIndent )
   {
-    final LatexStringBuilder builder = fac.newBuilder ( 0, LATEX_CLOSURE_ENVIRONMENT,
-        pIndent );
-    
+    final LatexStringBuilder builder = fac.newBuilder ( 0,
+        LATEX_CLOSURE_ENVIRONMENT, pIndent );
+
     builder.addText ( LATEX_ETA + "_{" + this.index + '}' ); //$NON-NLS-1$
 
     return builder;
@@ -136,20 +131,37 @@ public final class DefaultClosureEnvironment extends
 
   public String toString ()
   {
-    StringBuilder builder = new StringBuilder ();
-    builder.append ( '[' );
+    return toPrettyString ().toString ();
+  }
+
+
+  public PrettyString toPrettyFullString ()
+  {
+    return toPrettyFullStringBuilder ().toPrettyString ();
+  }
+
+
+  public PrettyStringBuilder toPrettyFullStringBuilder ()
+  {
+    final PrettyStringBuilderFactory fac = PrettyStringBuilderFactory
+        .newInstance ();
+    final PrettyStringBuilder builder = fac.newBuilder ( this, 0 );
+
+    builder.addText ( PRETTY_LBRACKET );
     Enumeration < Identifier > e = super.symbols ();
     while ( e.hasMoreElements () )
     {
       final Identifier id = e.nextElement ();
-      builder.append ( id.toString () );
-      builder.append ( ": " );
-      builder.append ( super.get ( id ).toString () );
-      builder.append ( ' ' );
+      builder.addBuilder ( id.toPrettyStringBuilder ( fac ), 0 );
+      builder.addText ( PRETTY_COLON );
+      builder.addText ( PRETTY_SPACE );
+      builder.addBuilder ( super.get ( id ).toPrettyStringBuilder ( fac ), 0 );
+      if ( e.hasMoreElements () )
+        builder.addText ( PRETTY_SPACE );
 
     }
-    builder.append ( ']' );
-    return builder.toString ();
+    builder.addText ( PRETTY_RBRACKET );
+    return builder;
   }
 
 
@@ -191,9 +203,21 @@ public final class DefaultClosureEnvironment extends
    * @return The name of this environment (like etha_0)
    * @see de.unisiegen.tpml.core.ClosureEnvironment#getName()
    */
-  public String getName ()
+  public PrettyString getName ()
   {
-    return PRETTY_ETA + this.index;
+    return getNameBuilder ().toPrettyString ();
+  }
+
+
+  public PrettyStringBuilder getNameBuilder ()
+  {
+    final PrettyStringBuilderFactory fac = PrettyStringBuilderFactory
+        .newInstance ();
+    final PrettyStringBuilder builder = fac.newBuilder ( this, 0 );
+
+    builder.addText ( PRETTY_ETA );
+    builder.addText ( String.valueOf ( this.index ) );
+    return builder;
   }
 
 
