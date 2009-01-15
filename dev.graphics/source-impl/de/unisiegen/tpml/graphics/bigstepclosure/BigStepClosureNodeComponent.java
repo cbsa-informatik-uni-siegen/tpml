@@ -120,7 +120,8 @@ public class BigStepClosureNodeComponent extends JComponent implements
 
 
   /**
-   * Amount of pixels that will be left free between the elements of the node.
+   * Amount of pixels that wiArrayll be left free between the elements of the
+   * node.
    */
   private int spacing;
 
@@ -198,12 +199,6 @@ public class BigStepClosureNodeComponent extends JComponent implements
    * Manages the RulesMenu
    */
   private RulesMenu rm = new RulesMenu ();
-
-
-  /**
-   * The list of environments already printed
-   */
-  private ArrayList < PrettyString > printedEnvironments = new ArrayList < PrettyString > ();
 
 
   /**
@@ -660,32 +655,26 @@ public class BigStepClosureNodeComponent extends JComponent implements
       this.ruleButton.setVisible ( true );
     }
 
-    final ClosureEnvironment expEnv = this.proofNode.getClosure ()
-        .getEnvironment ();
-    if ( expEnv.isNotPrinted () )
-      this.printedEnvironments.add ( makeEnvironmentString ( expEnv ) );
+    /*
+     * final ClosureEnvironment expEnv = this.proofNode.getClosure ()
+     * .getEnvironment (); if ( expEnv.isNotPrinted () )
+     * this.printedEnvironments.add ( makeEnvironmentString ( expEnv ) ); if (
+     * this.proofNode.getResult () != null ) { final ClosureEnvironment resEnv =
+     * this.proofNode.getResult () .getClosure ().getEnvironment (); if (
+     * resEnv.isNotPrinted () ) { this.printedEnvironments.add (
+     * makeEnvironmentString ( resEnv ) ); this.envLabel.setVisible ( true ); }
+     * } // if we have printed the result, but it has disappeared because of an
+     * undo // we remove it from the list else if (
+     * this.printedEnvironments.size () > 1 ) { this.printedEnvironments.remove
+     * ( this.printedEnvironments.size () - 1 ); }
+     */
 
-    if ( this.proofNode.getResult () != null )
-    {
-      final ClosureEnvironment resEnv = this.proofNode.getResult ()
-          .getClosure ().getEnvironment ();
-      if ( resEnv.isNotPrinted () )
-      {
-        this.printedEnvironments.add ( makeEnvironmentString ( resEnv ) );
-        this.envLabel.setVisible ( true );
-      }
-    }
-    // if we have printed the result, but it has disappeared because of an undo
-    // we remove it from the list
-    else if ( this.printedEnvironments.size () > 1 )
-    {
-      this.printedEnvironments.remove ( this.printedEnvironments.size () - 1 );
-    }
-
-    if ( this.printedEnvironments.size () != 0 )
+    ArrayList < PrettyString > printedEnvironments = this.proofNode
+        .printedEnvironments ();
+    if ( printedEnvironments.size () != 0 )
     {
       this.envLabel.setText ( "" );
-      for ( PrettyString p : this.printedEnvironments )
+      for ( PrettyString p : printedEnvironments )
       {
         if ( this.envLabel.getText ().length () > 0 )
           this.envLabel.setText ( this.envLabel.getText () + ", " );
