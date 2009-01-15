@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Point;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -24,6 +25,10 @@ import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofModel;
 import de.unisiegen.tpml.core.bigstepclosure.BigStepClosureProofNode;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
+import de.unisiegen.tpml.core.prettyprinter.PrettyCommandNames;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.bigstep.BigStepNodeListener;
 import de.unisiegen.tpml.graphics.components.CompoundExpressionBigStepClosure;
@@ -193,6 +198,12 @@ public class BigStepClosureNodeComponent extends JComponent implements
    * Manages the RulesMenu
    */
   private RulesMenu rm = new RulesMenu ();
+
+
+  /**
+   * The list of environments already printed
+   */
+  private ArrayList < PrettyString > printedEnvironments = new ArrayList < PrettyString > ();
 
 
   /**
@@ -652,11 +663,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
     final ClosureEnvironment expEnv = this.proofNode.getClosure ()
         .getEnvironment ();
     if ( expEnv.isNotPrinted () )
-    {
-      this.envLabel.setText ( this.envLabel.getText () + ' '
-          + expEnv.getName () + '=' + expEnv.toString () );
-      this.envLabel.setVisible ( true );
-    }
+      this.printedEnvironments.add ( makeEnvironmentString ( expEnv ) );
 
     if ( this.proofNode.getResult () != null )
     {
@@ -664,14 +671,28 @@ public class BigStepClosureNodeComponent extends JComponent implements
           .getClosure ().getEnvironment ();
       if ( resEnv.isNotPrinted () )
       {
-        this.envLabel.setText ( this.envLabel.getText () + ' '
-            + resEnv.getName () + '=' + resEnv.toString () );
+        this.printedEnvironments.add ( makeEnvironmentString ( resEnv ) );
         this.envLabel.setVisible ( true );
       }
     }
-
-    if ( this.envLabel.isVisible () )
+    // if we have printed the result, but it has disappeared because of an undo
+    // we remove it from the list
+    else if ( this.printedEnvironments.size () > 1 )
     {
+      this.printedEnvironments.remove ( this.printedEnvironments.size () - 1 );
+    }
+
+    if ( this.printedEnvironments.size () != 0 )
+    {
+      this.envLabel.setText ( "" );
+      for ( PrettyString p : this.printedEnvironments )
+      {
+        if ( this.envLabel.getText ().length () > 0 )
+          this.envLabel.setText ( this.envLabel.getText () + ", " );
+        this.envLabel.setText ( this.envLabel.getText () + p );
+      }
+
+      this.envLabel.setVisible ( true );
       final Dimension envLabelSize = this.envLabel.getPreferredSize ();
       this.envLabel.setBounds ( posX, this.dimension.height + this.spacing,
           envLabelSize.width, envLabelSize.height );
@@ -679,6 +700,18 @@ public class BigStepClosureNodeComponent extends JComponent implements
           envLabelSize.width + posX );
       this.dimension.height += this.spacing + this.envLabel.getHeight ();
     }
+  }
+
+
+  private PrettyString makeEnvironmentString ( final ClosureEnvironment env )
+  {
+    final PrettyStringBuilderFactory fac = PrettyStringBuilderFactory
+        .newInstance ();
+    final PrettyStringBuilder builder = fac.newBuilder ( env, 0 );
+    builder.addBuilder ( env.getNameBuilder (), 0 );
+    builder.addText ( PrettyCommandNames.PRETTY_EQUAL );
+    builder.addBuilder ( env.toPrettyFullStringBuilder (), 0 );
+    return builder.toPrettyString ();
   }
 
 
