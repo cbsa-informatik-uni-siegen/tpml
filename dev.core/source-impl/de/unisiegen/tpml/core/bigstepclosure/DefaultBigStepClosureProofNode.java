@@ -1,6 +1,8 @@
 package de.unisiegen.tpml.core.bigstepclosure;
 
 
+import java.util.ArrayList;
+
 import javax.swing.tree.TreeNode;
 
 import de.unisiegen.tpml.core.ClosureEnvironment;
@@ -17,6 +19,7 @@ import de.unisiegen.tpml.core.latex.LatexPackageList;
 import de.unisiegen.tpml.core.latex.LatexString;
 import de.unisiegen.tpml.core.latex.LatexStringBuilder;
 import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
+import de.unisiegen.tpml.core.prettyprinter.PrettyCommandNames;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
@@ -40,6 +43,8 @@ public final class DefaultBigStepClosureProofNode extends
     // get rid of the
     // store here
     this.environment = closure.getEnvironment ();
+    if(this.environment.isNotPrinted())
+      this.printedEnvironments.add ( makeEnvironmentString(this.environment) );
   }
 
 
@@ -249,8 +254,26 @@ public final class DefaultBigStepClosureProofNode extends
       throw new IllegalArgumentException ( "result is invalid" ); //$NON-NLS-1$
     }
     this.result = pResult;
+    if(result != null)
+    {
+      final ClosureEnvironment env = this.result.getEnvironment(); 
+      if ( env.isNotPrinted () )
+        this.printedEnvironments.add ( makeEnvironmentString ( env ));
+    }
+    else if(this.printedEnvironments.size() > 1)
+      this.printedEnvironments.remove ( this.printedEnvironments.size() -1 );
   }
 
+  private PrettyString makeEnvironmentString ( final ClosureEnvironment env )
+  {
+    final PrettyStringBuilderFactory fac = PrettyStringBuilderFactory
+        .newInstance ();
+    final PrettyStringBuilder builder = fac.newBuilder ( env, 0 );
+    builder.addBuilder ( env.getNameBuilder (), 0 );
+    builder.addText ( PrettyCommandNames.PRETTY_EQUAL );
+    builder.addBuilder ( env.toPrettyFullStringBuilder (), 0 );
+    return builder.toPrettyString ();
+  }
 
   @Override
   public String toString ()
@@ -348,6 +371,12 @@ public final class DefaultBigStepClosureProofNode extends
   }
 
 
+  public ArrayList < PrettyString > printedEnvironments ()
+  {
+    return this.printedEnvironments;
+  }
+
+
   /**
    * Calculates the depth of this node.
    * 
@@ -370,4 +399,7 @@ public final class DefaultBigStepClosureProofNode extends
 
 
   private ClosureEnvironment environment;
+
+
+  private ArrayList < PrettyString > printedEnvironments = new ArrayList < PrettyString > ();
 }

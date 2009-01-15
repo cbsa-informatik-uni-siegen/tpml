@@ -77,7 +77,7 @@ public class Closure implements PrettyPrintable, LatexPrintable
    * TODO
    * 
    * @param prettyStringBuilderFactory
-   * @return
+   * @return The PrettyStringBuilder
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
   public PrettyStringBuilder toPrettyStringBuilder (
