@@ -5,6 +5,7 @@ import java.util.Enumeration;
 
 import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.latex.DefaultLatexCommand;
 import de.unisiegen.tpml.core.latex.LatexCommandList;
 import de.unisiegen.tpml.core.latex.LatexInstructionList;
 import de.unisiegen.tpml.core.latex.LatexPackageList;
@@ -62,17 +63,6 @@ public final class DefaultClosureEnvironment extends
       final PrettyStringBuilderFactory fac )
   {
     return getNameBuilder ();
-
-    /*
-     * builder.addText ( PRETTY_LBRACKET ); Enumeration < Identifier > e =
-     * this.symbols (); while ( e.hasMoreElements () ) { Identifier id =
-     * e.nextElement (); Closure closure = this.get ( id ); if (
-     * closure.getEnvironment () == this ) continue; builder.addBuilder (
-     * id.toPrettyStringBuilder ( fac ), 0 ); builder.addText ( PRETTY_COLON );
-     * builder.addBuilder ( closure.toPrettyStringBuilder ( fac ), 0 ); if (
-     * e.hasMoreElements () ) builder.addText ( PRETTY_COMMA ); }
-     * builder.addText ( PRETTY_RBRACKET );
-     */
   }
 
 
@@ -93,12 +83,10 @@ public final class DefaultClosureEnvironment extends
 
   public static LatexCommandList getLatexCommandsStatic ()
   {
-    LatexCommandList commands = new LatexCommandList ();
-    // commands
-    // .add ( new DefaultLatexCommand ( LATEX_CLOSURE_ENVIRONMENT, 0, "" ) );
-    // 2, LATEX_LPAREN
-    // + "#1" + LATEX_COMMA + "#2" + LATEX_RPAREN, "expression", "environment"
-    // ));
+    final LatexCommandList commands = new LatexCommandList ();
+    commands.add ( new DefaultLatexCommand ( LATEX_CLOSURE_ENVIRONMENT, 1,
+        "#1", "name") );
+    commands.add ( new DefaultLatexCommand ("clousreenvironmentfull", 1, "#1", "content") );
     return commands;
   }
 
@@ -109,8 +97,31 @@ public final class DefaultClosureEnvironment extends
     final LatexStringBuilder builder = fac.newBuilder ( 0,
         LATEX_CLOSURE_ENVIRONMENT, pIndent );
 
-    builder.addText ( LATEX_ETA + "_{" + this.index + '}' ); //$NON-NLS-1$
+    builder.addText ( "{"+ LATEX_ETA + "_{" + this.index + "}}" ); //$NON-NLS-1$
 
+    return builder;
+  }
+  
+  public LatexStringBuilder toLatexFullStringBuilder(
+      final LatexStringBuilderFactory fac, final int pIndent)
+  {
+    final LatexStringBuilder builder = fac.newBuilder ( 0,
+        "clousreenvironmentfull"/*LATEX_CLOSURE_ENVIRONMENT_FULL*/, pIndent );
+    
+    //builder.addText ( LATEX_LBRACKET );
+    Enumeration < Identifier > e = super.symbols ();
+    while ( e.hasMoreElements () )
+    {
+      final Identifier id = e.nextElement ();
+      builder.addBuilder ( id.toLatexStringBuilder ( fac, pIndent ), 0 );
+      builder.addText ( LATEX_COLON );
+      builder.addText ( LATEX_SPACE );
+      builder.addBuilder ( super.get ( id ).toLatexStringBuilder ( fac, pIndent ), 0 );
+      if ( e.hasMoreElements () )
+        builder.addText ( LATEX_SPACE );
+
+    }
+    //builder.addText ( LATEX_RBRACKET );
     return builder;
   }
 

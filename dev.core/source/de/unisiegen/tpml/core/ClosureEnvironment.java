@@ -3,6 +3,8 @@ package de.unisiegen.tpml.core;
 
 import de.unisiegen.tpml.core.expressions.Closure;
 import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.latex.LatexStringBuilder;
+import de.unisiegen.tpml.core.latex.LatexStringBuilderFactory;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.util.Environment;
@@ -61,4 +63,15 @@ public interface ClosureEnvironment extends
    * @return The string builder for the environment's content.
    */
   public PrettyStringBuilder toPrettyFullStringBuilder ();
+  
+  /**
+   * 
+   * TODO
+   *
+   * @param fac
+   * @param pIndent
+   * @return
+   */
+  public LatexStringBuilder toLatexFullStringBuilder(
+      final LatexStringBuilderFactory fac, final int pIndent);
 }

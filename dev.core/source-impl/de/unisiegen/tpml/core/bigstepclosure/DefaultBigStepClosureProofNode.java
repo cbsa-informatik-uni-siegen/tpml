@@ -43,8 +43,8 @@ public final class DefaultBigStepClosureProofNode extends
     // get rid of the
     // store here
     this.environment = closure.getEnvironment ();
-    if(this.environment.isNotPrinted())
-      this.printedEnvironments.add ( makeEnvironmentString(this.environment) );
+    if ( this.environment.isNotPrinted () )
+      this.printedEnvironments.add ( this.environment );
   }
 
 
@@ -135,8 +135,8 @@ public final class DefaultBigStepClosureProofNode extends
     final PrettyStringBuilder builder = fac.newBuilder ( this, 0 );
 
     /*
-     * builder.addBuilder ( getClosure ().toPrettyStringBuilder ( fac ), 0 );
-     * final ClosureEnvironment env = getClosure().getEnvironment();
+     * pIndent builder.addBuilder ( getClosure ().toPrettyStringBuilder ( fac ),
+     * 0 ); final ClosureEnvironment env = getClosure().getEnvironment();
      * if(env.isNotPrinted()) { builder.addText ( env.getName() + PRETTY_EQUAL
      * ); builder.addBuilder ( env.toPrettyStringBuilder ( fac ), 0 ); }
      */
@@ -162,13 +162,19 @@ public final class DefaultBigStepClosureProofNode extends
   {
     final int depth = getDepth ();
 
-    LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder ( 0,
-        LATEX_BIG_STEP_CLOSURE_PROOF_NODE, pIndent, this.toPrettyString ()
+    final LatexStringBuilder builder = pLatexStringBuilderFactory.newBuilder (
+        0, LATEX_BIG_STEP_CLOSURE_PROOF_NODE, pIndent, this.toPrettyString ()
             .toString (), this.getClosure ().toPrettyString ().toString (),
         LATEX_NO_STORE, this.result == null ? LATEX_NO_RESULT : this.result
             .toPrettyString ().toString (),
         this.getRule () == null ? LATEX_NO_RULE : this.getRule ()
-            .toPrettyString ().toString () );
+            .toPrettyString ().toString (),
+            LATEX_NO_RESULT,
+            LATEX_NO_RESULT);
+        //this.printedEnvironments.size () == 0 ? LATEX_NO_RESULT : this
+        //    .printedEnvironments ().get ( 0 ).toString (),
+        //this.printedEnvironments.size () < 2 ? LATEX_NO_RESULT : this
+        //    .printedEnvironments ().get ( 1 ).toString () );
     builder.addText ( "{" + String.valueOf ( this.getId () ) + "}" ); //$NON-NLS-1$//$NON-NLS-2$
     builder.addText ( "{" + String.valueOf ( depth ) + "}" ); //$NON-NLS-1$//$NON-NLS-2$
     builder.addBuilder ( getClosure ().toLatexStringBuilder (
@@ -186,7 +192,24 @@ public final class DefaultBigStepClosureProofNode extends
     else
       builder.addEmptyBuilder ();
 
-    int indent = 245 - depth * 7;
+    builder.addEmptyBuilder();
+    builder.addEmptyBuilder();
+    /*
+    if ( this.printedEnvironments ().isEmpty () )
+      builder.addEmptyBuilder ();
+    else
+      builder.addText(this.getClosure ().getEnvironment().toLatexString().toString());*/
+      //builder.addBuilder ( this.getClosure ().getEnvironment ()
+      //    .toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent + LATEX_INDENT  ), 0 );
+
+    /*if ( this.printedEnvironments ().size () <= 1 )
+      builder.addEmptyBuilder ();
+    else
+      builder.addText(this.getResult ().getEnvironment().toLatexString().toString());*/
+      //builder.addBuilder ( this.getResult ().getEnvironment ()
+      //    .toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent + LATEX_INDENT  ), 0 );
+
+    final int indent = 245 - depth * 7;
     builder.addSourceCodeBreak ( 0 );
     builder.addComment ( "width of the table" ); //$NON-NLS-1$
     builder.addText ( "{" + indent + "mm}" ); //$NON-NLS-1$//$NON-NLS-2$
@@ -254,15 +277,16 @@ public final class DefaultBigStepClosureProofNode extends
       throw new IllegalArgumentException ( "result is invalid" ); //$NON-NLS-1$
     }
     this.result = pResult;
-    if(result != null)
+    if ( this.result != null )
     {
-      final ClosureEnvironment env = this.result.getEnvironment(); 
+      final ClosureEnvironment env = this.result.getEnvironment ();
       if ( env.isNotPrinted () )
-        this.printedEnvironments.add ( makeEnvironmentString ( env ));
+        this.printedEnvironments.add ( env );
     }
-    else if(this.printedEnvironments.size() > 1)
-      this.printedEnvironments.remove ( this.printedEnvironments.size() -1 );
+    else if ( this.printedEnvironments.size () > 1 )
+      this.printedEnvironments.remove ( this.printedEnvironments.size () - 1 );
   }
+
 
   private PrettyString makeEnvironmentString ( final ClosureEnvironment env )
   {
@@ -274,6 +298,7 @@ public final class DefaultBigStepClosureProofNode extends
     builder.addBuilder ( env.toPrettyFullStringBuilder (), 0 );
     return builder.toPrettyString ();
   }
+
 
   @Override
   public String toString ()
@@ -340,7 +365,7 @@ public final class DefaultBigStepClosureProofNode extends
     commands
         .add ( new DefaultLatexCommand (
             LATEX_BIG_STEP_CLOSURE_PROOF_NODE,
-            6,
+            8,
             LATEX_LINE_BREAK_NEW_COMMAND
                 + "\\ifarrows" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND
@@ -350,7 +375,7 @@ public final class DefaultBigStepClosureProofNode extends
                 + LATEX_LINE_BREAK_NEW_COMMAND
                 + "\\rnode{\\thetree.#1}{\\makebox[6mm]{(\\thenode)}}\\label{\\thetree.#1}" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND
-                + "$\\begin{tabular}[t]{p{#6}}$" //$NON-NLS-1$
+                + "$\\begin{tabular}[t]{p{#8}}$" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND_INDENT1
                 + "\\ifthenelse{\\isempty{#4}}" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND_INDENT2
@@ -366,14 +391,17 @@ public final class DefaultBigStepClosureProofNode extends
                 + LATEX_LINE_BREAK_NEW_COMMAND + "$\\end{tabular}$" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND + "\\vspace{\\nodesep}" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND + "\\fi", "depth", "id", "e", //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            "result", "proofrule", "space" ) ); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+            "result", "proofrule", "env_expr", "env_res", "space" ) ); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     return commands;
   }
 
 
   public ArrayList < PrettyString > printedEnvironments ()
   {
-    return this.printedEnvironments;
+    final ArrayList < PrettyString > ret = new ArrayList < PrettyString > ();
+    for ( ClosureEnvironment env : this.printedEnvironments )
+      ret.add ( this.makeEnvironmentString ( env ) );
+    return ret;
   }
 
 
@@ -401,5 +429,5 @@ public final class DefaultBigStepClosureProofNode extends
   private ClosureEnvironment environment;
 
 
-  private ArrayList < PrettyString > printedEnvironments = new ArrayList < PrettyString > ();
+  private ArrayList < ClosureEnvironment > printedEnvironments = new ArrayList < ClosureEnvironment > ();
 }

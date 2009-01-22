@@ -83,8 +83,8 @@ public class Closure implements PrettyPrintable, LatexPrintable
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory prettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = prettyStringBuilderFactory.newBuilder ( this,
-        0 );
+    final PrettyStringBuilder builder = prettyStringBuilderFactory.newBuilder (
+        this, 0 );
     builder.addText ( PRETTY_LPAREN );
     builder.addBuilder ( getExpression ().toPrettyStringBuilder (
         prettyStringBuilderFactory ), 0 );
@@ -174,9 +174,8 @@ public class Closure implements PrettyPrintable, LatexPrintable
         0, LATEX_CLOSURE, pIndent, this.toPrettyString ().toString () );
     builder.addBuilder ( this.getExpression ().toLatexStringBuilder (
         pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
-    builder.addText ( LATEX_COMMA );
     builder.addBuilder ( this.getEnvironment ().toLatexStringBuilder (
-        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
+        pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 1 );
     return builder;
   }
 
@@ -186,7 +185,7 @@ public class Closure implements PrettyPrintable, LatexPrintable
     LatexCommandList commands = new LatexCommandList ();
     commands
         .add ( new DefaultLatexCommand ( LATEX_CLOSURE, 2, LATEX_LPAREN + "#1"
-            + LATEX_SPACE + "#2" + LATEX_RPAREN, "expression", "environment" ) );
+            + LATEX_COMMA + "#2" + LATEX_RPAREN, "expression", "environment" ) );
     return commands;
   }
 
