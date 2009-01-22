@@ -655,21 +655,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
       this.ruleButton.setVisible ( true );
     }
 
-    /*
-     * final ClosureEnvironment expEnv = this.proofNode.getClosure ()
-     * .getEnvironment (); if ( expEnv.isNotPrinted () )
-     * this.printedEnvironments.add ( makeEnvironmentString ( expEnv ) ); if (
-     * this.proofNode.getResult () != null ) { final ClosureEnvironment resEnv =
-     * this.proofNode.getResult () .getClosure ().getEnvironment (); if (
-     * resEnv.isNotPrinted () ) { this.printedEnvironments.add (
-     * makeEnvironmentString ( resEnv ) ); this.envLabel.setVisible ( true ); }
-     * } // if we have printed the result, but it has disappeared because of an
-     * undo // we remove it from the list else if (
-     * this.printedEnvironments.size () > 1 ) { this.printedEnvironments.remove
-     * ( this.printedEnvironments.size () - 1 ); }
-     */
-
-    ArrayList < PrettyString > printedEnvironments = this.proofNode
+    final ArrayList < PrettyString > printedEnvironments = this.proofNode
         .printedEnvironments ();
     if ( printedEnvironments.size () != 0 )
     {
