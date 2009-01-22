@@ -169,12 +169,10 @@ public final class DefaultBigStepClosureProofNode extends
             .toPrettyString ().toString (),
         this.getRule () == null ? LATEX_NO_RULE : this.getRule ()
             .toPrettyString ().toString (),
-            LATEX_NO_RESULT,
-            LATEX_NO_RESULT);
-        //this.printedEnvironments.size () == 0 ? LATEX_NO_RESULT : this
-        //    .printedEnvironments ().get ( 0 ).toString (),
-        //this.printedEnvironments.size () < 2 ? LATEX_NO_RESULT : this
-        //    .printedEnvironments ().get ( 1 ).toString () );
+        this.printedEnvironments.size () == 0 ? LATEX_NO_RESULT : this
+            .printedEnvironments ().get ( 0 ).toString (),
+        this.printedEnvironments.size () < 2 ? LATEX_NO_RESULT : this
+            .printedEnvironments ().get ( 1 ).toString () );
     builder.addText ( "{" + String.valueOf ( this.getId () ) + "}" ); //$NON-NLS-1$//$NON-NLS-2$
     builder.addText ( "{" + String.valueOf ( depth ) + "}" ); //$NON-NLS-1$//$NON-NLS-2$
     builder.addBuilder ( getClosure ().toLatexStringBuilder (
@@ -192,22 +190,12 @@ public final class DefaultBigStepClosureProofNode extends
     else
       builder.addEmptyBuilder ();
 
-    builder.addEmptyBuilder();
-    builder.addEmptyBuilder();
-    /*
-    if ( this.printedEnvironments ().isEmpty () )
-      builder.addEmptyBuilder ();
-    else
-      builder.addText(this.getClosure ().getEnvironment().toLatexString().toString());*/
-      //builder.addBuilder ( this.getClosure ().getEnvironment ()
-      //    .toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent + LATEX_INDENT  ), 0 );
+    for ( ClosureEnvironment p : this.printedEnvironments )
+      builder.addBuilder ( p.toLatexFullStringBuilder (
+          pLatexStringBuilderFactory, pIndent + LATEX_INDENT ), 0 );
 
-    /*if ( this.printedEnvironments ().size () <= 1 )
+    for ( int i = this.printedEnvironments.size () ; i < 2 ; ++i )
       builder.addEmptyBuilder ();
-    else
-      builder.addText(this.getResult ().getEnvironment().toLatexString().toString());*/
-      //builder.addBuilder ( this.getResult ().getEnvironment ()
-      //    .toLatexStringBuilder ( pLatexStringBuilderFactory, pIndent + LATEX_INDENT  ), 0 );
 
     final int indent = 245 - depth * 7;
     builder.addSourceCodeBreak ( 0 );
@@ -381,14 +369,18 @@ public final class DefaultBigStepClosureProofNode extends
                 + LATEX_LINE_BREAK_NEW_COMMAND_INDENT2
                 // begin of the node variables
                 + "{#3\\ \\color{" + LATEX_COLOR_NONE + "}{\\Downarrow}\\ #4}" //$NON-NLS-1$ //$NON-NLS-2$
-                + LATEX_LINE_BREAK_NEW_COMMAND_INDENT2 + "{\\color{" //$NON-NLS-1$
-                + LATEX_COLOR_NONE + "}{(}#3\\ \\color{" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND_INDENT2
+                + "{\\color{" //$NON-NLS-1$
+                + LATEX_COLOR_NONE
+                + "}{(}#3\\ \\color{" //$NON-NLS-1$
                 + LATEX_COLOR_NONE + "}{)}\\ \\color{" + LATEX_COLOR_NONE //$NON-NLS-1$
                 + "}{\\Downarrow}\\ #4}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "$\\\\$" + LATEX_LINE_BREAK_NEW_COMMAND_INDENT1 //$NON-NLS-1$
                 + "\\byrule{#5}" //$NON-NLS-1$
                 // end of the node variables
-                + LATEX_LINE_BREAK_NEW_COMMAND + "$\\end{tabular}$" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND + "\\ifthenelse{\\isempty{#6}}{}{$\\\\$ {#6}}" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND + "\\ifthenelse{\\isempty{#7}}{}{$\\\\$ {#7}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + "$\\end{tabular}$" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND + "\\vspace{\\nodesep}" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND + "\\fi", "depth", "id", "e", //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             "result", "proofrule", "env_expr", "env_res", "space" ) ); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$

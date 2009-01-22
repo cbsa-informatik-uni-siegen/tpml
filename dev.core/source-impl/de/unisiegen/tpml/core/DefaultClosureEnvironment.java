@@ -85,8 +85,9 @@ public final class DefaultClosureEnvironment extends
   {
     final LatexCommandList commands = new LatexCommandList ();
     commands.add ( new DefaultLatexCommand ( LATEX_CLOSURE_ENVIRONMENT, 1,
-        "#1", "name") );
-    commands.add ( new DefaultLatexCommand ("clousreenvironmentfull", 1, "#1", "content") );
+        "#1", "name" ) );
+    commands.add ( new DefaultLatexCommand ( "clousreenvironmentfull", 1, "#1",
+        "content" ) );
     return commands;
   }
 
@@ -97,31 +98,39 @@ public final class DefaultClosureEnvironment extends
     final LatexStringBuilder builder = fac.newBuilder ( 0,
         LATEX_CLOSURE_ENVIRONMENT, pIndent );
 
-    builder.addText ( "{"+ LATEX_ETA + "_{" + this.index + "}}" ); //$NON-NLS-1$
+    builder.addText ( "{" + LATEX_ETA + "_{" + this.index + "}}" ); //$NON-NLS-1$
 
     return builder;
   }
-  
-  public LatexStringBuilder toLatexFullStringBuilder(
-      final LatexStringBuilderFactory fac, final int pIndent)
+
+
+  public LatexStringBuilder toLatexFullStringBuilder (
+      final LatexStringBuilderFactory fac, final int pIndent )
   {
     final LatexStringBuilder builder = fac.newBuilder ( 0,
-        "clousreenvironmentfull"/*LATEX_CLOSURE_ENVIRONMENT_FULL*/, pIndent );
-    
-    //builder.addText ( LATEX_LBRACKET );
+        "clousreenvironmentfull"/* LATEX_CLOSURE_ENVIRONMENT_FULL */, pIndent );
+
+    builder.addText ( "{" );
+    builder.addText(this.toLatexStringBuilder(fac, pIndent).toLatexString ().toString());
+    builder.addText ( LATEX_EQUAL + LATEX_LBRACKET );
     Enumeration < Identifier > e = super.symbols ();
     while ( e.hasMoreElements () )
     {
       final Identifier id = e.nextElement ();
-      builder.addBuilder ( id.toLatexStringBuilder ( fac, pIndent ), 0 );
+      // builder.addBuilder ( id.toLatexStringBuilder ( fac, pIndent ), 0 );
+      builder.addText ( id.toLatexStringBuilder ( fac, pIndent )
+          .toLatexString ().toString () );
       builder.addText ( LATEX_COLON );
       builder.addText ( LATEX_SPACE );
-      builder.addBuilder ( super.get ( id ).toLatexStringBuilder ( fac, pIndent ), 0 );
+      builder.addText ( super.get ( id ).toLatexString ().toString () );
+      // builder.addBuilder ( super.get ( id ).toLatexStringBuilder ( fac,
+      // pIndent ), 0 );
       if ( e.hasMoreElements () )
         builder.addText ( LATEX_SPACE );
 
     }
-    //builder.addText ( LATEX_RBRACKET );
+    builder.addText ( LATEX_RBRACKET );
+    builder.addText ( "}" );
     return builder;
   }
 
