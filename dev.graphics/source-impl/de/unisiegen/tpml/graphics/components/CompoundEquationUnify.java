@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
@@ -15,20 +14,107 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.io.IOException;
+import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
-import javax.swing.TransferHandler;
 
-import de.unisiegen.tpml.core.entities.DefaultTypeEquationList;
 import de.unisiegen.tpml.core.entities.DefaultUnifyProofExpression;
 import de.unisiegen.tpml.core.entities.TypeEquation;
 import de.unisiegen.tpml.core.entities.TypeEquationList;
-import de.unisiegen.tpml.core.entities.TypeEquationTransferableObject;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
+
+
+// this.renderer
+// .setPrettyString ( this.unifyProofExpression.toPrettyString () );
+// this.renderSize = this.renderer.getNeededSize ( maxWidth );
+// result.height = this.renderSize.height;
+// result.width = this.renderSize.width;
+
+class TypeEquationComponent extends JComponent
+{
+
+  private PrettyStringRenderer renderer;
+
+
+  private TypeEquation eqn;
+
+
+  private Dimension dim;
+
+
+  private ShowBonds bonds;
+
+
+  public TypeEquationComponent ( final TypeEquation eqn )
+  {
+    super ();
+    this.renderer = new PrettyStringRenderer ();
+    this.eqn = eqn;
+    this.renderer.setPrettyString ( toPrettyString () );
+    this.dim = this.renderer.getNeededSize ( Integer.MAX_VALUE );
+    this.bonds = new ShowBonds ();
+    this.setBounds ( 0, 0, this.dim.width, this.dim.height );
+  }
+
+
+  public PrettyString toPrettyString ()
+  {
+    return this.eqn.toPrettyString ();
+  }
+
+
+  public String toString ()
+  {
+    return toPrettyString ().toString ();
+  }
+
+
+  @Override
+  protected void paintComponent ( Graphics gc )
+  {
+    gc.setColor ( Color.WHITE );
+    gc.fillRect ( -1, -1, getWidth () + 5, getHeight () + 5 );
+
+    int x = 0;
+    int y = 0;
+
+    // this.renderer.render ( x, y, dim.width, getHeight(), gc, this.bonds, new
+    // ToListenForMouseContainer() );
+    this.renderer.render ( x, y, this.dim.width, this.dim.height, gc,
+        this.bonds, new ToListenForMouseContainer () );
+  }
+}
+
+
+class TypeEquationComponentList extends JComponent
+{
+
+  private ArrayList < TypeEquationComponent > eqns;
+
+
+  public TypeEquationComponentList ( final TypeEquationList eqns )
+  {
+    super ();
+    this.eqns = new ArrayList < TypeEquationComponent > ();
+    this.setLayout ( new BoxLayout ( this, BoxLayout.Y_AXIS ) );
+    for ( TypeEquation eqn : eqns )
+    {
+      this.eqns.add ( new TypeEquationComponent ( eqn ) );
+      add ( this.eqns.get ( this.eqns.size () - 1 ) );
+    }
+  }
+
+
+  public TypeEquationComponent get ( int i )
+  {
+    return this.eqns.get ( i );
+  }
+}
 
 
 /**
@@ -142,12 +228,25 @@ public class CompoundEquationUnify extends JComponent
   private Point draggedBesideMousePointer;
 
 
+  private BoxLayout hBox;
+
+
+  private BoxLayout vBox;
+
+
+  private TypeEquationComponentList eqnsCompList;
+
+
   /**
    * the constructor
    */
   public CompoundEquationUnify ()
   {
     super ();
+
+    hBox = new BoxLayout ( this, BoxLayout.X_AXIS );
+    this.setLayout ( hBox );
+
     this.bonds = new ShowBonds ();
     this.renderSize = new Dimension ( 0, 0 );
     this.toListenForMouse = new ToListenForMouseContainer ();
@@ -244,58 +343,6 @@ public class CompoundEquationUnify extends JComponent
         handelMouseReleased ( event );
       }
     } );
-
-    setTransferHandler ( new CompoundEquationUnifyTransferHandler (
-        TransferHandler.MOVE )
-    {
-
-      /**
-       * TODO
-       */
-      private static final long serialVersionUID = -153715027779910398L;
-
-      @Override
-      public boolean importTypeEquationTransferableObect ( int targetIndex,
-          TypeEquationTransferableObject transferableObject )
-      {
-        if(CompoundEquationUnify.this.typeEquationList.hashCode () != transferableObject.typeEquationListHashCode)
-          return false;
-        
-          //build new list
-          DefaultTypeEquationList newTypeEquationList = new DefaultTypeEquationList();
-          TypeEquationList tmpTypeEquationList = new DefaultTypeEquationList();
-          TypeEquationList cnt = CompoundEquationUnify.this.typeEquationList;
-          TypeEquation tmp = null;
-          int i = 0;
-          while(cnt.getFirst () != null) {
-            if(i == transferableObject.sourceIndex) {
-              tmp = cnt.getFirst ();
-              cnt = cnt.getRemaining ();
-              int j = i + 1;
-              while(cnt.getFirst () != null) {
-                if(j == targetIndex) {
-                  newTypeEquationList = (DefaultTypeEquationList)newTypeEquationList.extend ( cnt.getFirst () );
-                  for(TypeEquation t : tmpTypeEquationList)
-                    newTypeEquationList = (DefaultTypeEquationList)newTypeEquationList.extend ( t );
-                  newTypeEquationList = (DefaultTypeEquationList)newTypeEquationList.extend ( tmp );
-                  i = j;
-                  break;
-                }
-                tmpTypeEquationList = tmpTypeEquationList.extend ( cnt.getFirst () );
-                cnt = cnt.getRemaining ();
-                ++j;
-              }
-            } else 
-              newTypeEquationList = (DefaultTypeEquationList)newTypeEquationList.extend ( cnt.getFirst () );
-            cnt = cnt.getRemaining ();
-            ++i;
-          }
-          
-        return true;
-      }
-
-    } );
-
   }
 
 
@@ -342,38 +389,6 @@ public class CompoundEquationUnify extends JComponent
    */
   public final void dragOver ( DropTargetDragEvent event )
   {
-    TypeEquationTransferableObject transferableObject;
-    try
-    {
-      transferableObject = ( TypeEquationTransferableObject ) event
-          .getTransferable ().getTransferData (
-              CompoundEquationUnifyTransferable.dataFlavor );
-      if ( CompoundEquationUnify.this.typeEquationList.hashCode () != transferableObject.typeEquationListHashCode )
-      {
-        event.rejectDrag ();
-        this.dropPoint = null;
-        repaint ();
-        return;
-      }
-
-      // reject drag if the mouse is not within our type equation list
-
-    }
-    catch ( UnsupportedFlavorException exc )
-    {
-      event.rejectDrag ();
-      this.dropPoint = null;
-      repaint ();
-      return;
-    }
-    catch ( IOException exc )
-    {
-      event.rejectDrag ();
-      this.dropPoint = null;
-      repaint ();
-      return;
-    }
-
     event.acceptDrag ( event.getDropAction () );
     this.dropPoint = event.getLocation ();
     repaint ();
@@ -461,6 +476,8 @@ public class CompoundEquationUnify extends JComponent
    */
   protected void handelMousePressed ( MouseEvent event )
   {
+    Point p = event.getPoint ();
+
     /*
      * if ( isDragndropeabled () ) { // remember the position. If the user
      * dragges thes point to another, // they will be switched Point
@@ -707,6 +724,9 @@ public class CompoundEquationUnify extends JComponent
           this.renderer.setAlternativeColor ( this.alternativeColor );
         }
         this.unifyProofExpression.setTypeEquationList ( this.typeEquationList );
+        this.eqnsCompList = new TypeEquationComponentList (
+            this.typeEquationList );
+        this.add ( this.eqnsCompList );
       }
     }
     repaint ();
@@ -748,25 +768,23 @@ public class CompoundEquationUnify extends JComponent
   @Override
   protected void paintComponent ( Graphics gc )
   {
-    // TODO Workaround printing: if this ist not done nothing is readabel in PDF
-
-    gc.setColor ( Color.WHITE );
-    gc.fillRect ( -1, -1, getWidth () + 5, getHeight () + 5 );
-
-    int posX = 0;
-    int posY = 0;
-
-    if ( this.defaultTypeSubstitutionList != null
-        || this.typeEquationList != null )
-      this.renderer.render ( posX, posY, this.renderSize.width, getHeight (),
-          gc, this.bonds, this.toListenForMouse );
-
-    // last render the string besinde the mousepointer
-    if ( this.dragged )
-    {
-      gc.drawString ( this.draggedString, this.draggedBesideMousePointer.x,
-          this.draggedBesideMousePointer.y );
-    }
+    // gc.setColor ( Color.WHITE );
+    // gc.fillRect ( -1, -1, getWidth () + 5, getHeight () + 5 );
+    //
+    // int posX = 0;
+    // int posY = 0;
+    //
+    // if ( this.defaultTypeSubstitutionList != null
+    // || this.typeEquationList != null )
+    // this.renderer.render ( posX, posY, this.renderSize.width, getHeight (),
+    // gc, this.bonds, this.toListenForMouse );
+    //
+    // // last render the string besinde the mousepointer
+    // if ( this.dragged )
+    // {
+    // gc.drawString ( this.draggedString, this.draggedBesideMousePointer.x,
+    // this.draggedBesideMousePointer.y );
+    // }
   }
 
 
