@@ -32,6 +32,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.bigstep.BigStepNodeListener;
 import de.unisiegen.tpml.graphics.components.CompoundExpressionBigStepClosure;
+import de.unisiegen.tpml.graphics.components.EnvironmentLabelBigStepClosure;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
 import de.unisiegen.tpml.graphics.components.MenuGuessItem;
@@ -172,7 +173,7 @@ public class BigStepClosureNodeComponent extends JComponent implements
   /**
    * Label that will be used to show the environments created.
    */
-  private JLabel envLabel;
+  private EnvironmentLabelBigStepClosure envLabel = new EnvironmentLabelBigStepClosure();
 
 
   /**
@@ -241,7 +242,6 @@ public class BigStepClosureNodeComponent extends JComponent implements
     this.ruleLabel.setVisible ( false );
 
     // create the env label
-    this.envLabel = new JLabel ();
     add ( this.envLabel );
     this.envLabel.setVisible ( false );
 
@@ -659,21 +659,15 @@ public class BigStepClosureNodeComponent extends JComponent implements
         .printedEnvironments ();
     if ( printedEnvironments.size () != 0 )
     {
-      this.envLabel.setText ( "" );
-      for ( PrettyString p : printedEnvironments )
-      {
-        if ( this.envLabel.getText ().length () > 0 )
-          this.envLabel.setText ( this.envLabel.getText () + ", " );
-        this.envLabel.setText ( this.envLabel.getText () + p );
-      }
-
+      this.envLabel.setEnvironments(printedEnvironments);
       this.envLabel.setVisible ( true );
-      final Dimension envLabelSize = this.envLabel.getPreferredSize ();
+      final Dimension envLabelSize = this.envLabel.getNeededSize();
       this.envLabel.setBounds ( posX, this.dimension.height + this.spacing,
           envLabelSize.width, envLabelSize.height );
       this.dimension.width = Math.max ( this.dimension.width,
           envLabelSize.width + posX );
       this.dimension.height += this.spacing + this.envLabel.getHeight ();
+      
     }
   }
 

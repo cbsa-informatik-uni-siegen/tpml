@@ -83,7 +83,7 @@ public class CompoundExpressionBigStepClosure extends JComponent
 
 
   /**
-   * the list of points where the mouseovereffect will be react
+   * the list of points where the mouseovereffect will react
    */
   private ToListenForMouseContainer toListenForMouse;
 
@@ -146,17 +146,17 @@ public class CompoundExpressionBigStepClosure extends JComponent
    */
   public void setUnderlineExpression ( Expression pUnderlineExpression )
   {
-    boolean needsRepaint = this.underlineExpression != pUnderlineExpression;
+    if(this.underlineExpression == pUnderlineExpression)
+      return;
+  
     this.underlineExpression = pUnderlineExpression;
     if ( this.expressionRenderer != null )
     {
       this.expressionRenderer
           .setUndelinePrettyPrintable ( this.underlineExpression );
     }
-    if ( needsRepaint )
-    {
-      repaint ();
-    }
+
+    repaint ();
   }
 
 
@@ -344,13 +344,6 @@ public class CompoundExpressionBigStepClosure extends JComponent
 
     this.expressionRenderer.render ( posX, posY, getWidth (), getHeight (), gc,
         this.bonds, this.toListenForMouse );
-    // this.expressionRenderer.render ( posX , posY , getWidth()
-    // ,AbstractRenderer.getAbsoluteHeight (), gc , bonds , toListenForMouse )
-    // ;
-
-    // TODO DEbugging
-    // gc.setColor (Color.YELLOW);
-    // gc.drawRect(0, 0, getWidth () - 1, getHeight () - 1);
   }
 
 
