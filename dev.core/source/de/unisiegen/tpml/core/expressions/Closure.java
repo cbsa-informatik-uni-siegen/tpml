@@ -85,13 +85,12 @@ public class Closure implements PrettyPrintable, LatexPrintable
   {
     final PrettyStringBuilder builder = prettyStringBuilderFactory.newBuilder (
         this, 0 );
-    builder.addText ( PRETTY_LPAREN );
+
     builder.addBuilder ( getExpression ().toPrettyStringBuilder (
-        prettyStringBuilderFactory ), 0 );
+        prettyStringBuilderFactory ), - 1 );
     builder.addText ( PRETTY_COMMA );
     builder.addBuilder ( getEnvironment ().toPrettyStringBuilder (
-        prettyStringBuilderFactory ), 0 );
-    builder.addText ( PRETTY_RPAREN );
+        prettyStringBuilderFactory ), - 1 );
     return builder;
   }
 

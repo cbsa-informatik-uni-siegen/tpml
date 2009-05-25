@@ -133,14 +133,7 @@ public final class DefaultBigStepClosureProofNode extends
       final PrettyStringBuilderFactory fac )
   {
     final PrettyStringBuilder builder = fac.newBuilder ( this, 0 );
-
-    /*
-     * pIndent builder.addBuilder ( getClosure ().toPrettyStringBuilder ( fac ),
-     * 0 ); final ClosureEnvironment env = getClosure().getEnvironment();
-     * if(env.isNotPrinted()) { builder.addText ( env.getName() + PRETTY_EQUAL
-     * ); builder.addBuilder ( env.toPrettyStringBuilder ( fac ), 0 ); }
-     */
-
+    builder.addBuilder ( getClosure ().toPrettyStringBuilder ( fac ), 0 );
     return builder;
   }
 
@@ -373,13 +366,16 @@ public final class DefaultBigStepClosureProofNode extends
                 + "{\\color{" //$NON-NLS-1$
                 + LATEX_COLOR_NONE
                 + "}{(}#3\\ \\color{" //$NON-NLS-1$
-                + LATEX_COLOR_NONE + "}{)}\\ \\color{" + LATEX_COLOR_NONE //$NON-NLS-1$
+                + LATEX_COLOR_NONE
+                + "}{)}\\ \\color{" + LATEX_COLOR_NONE //$NON-NLS-1$
                 + "}{\\Downarrow}\\ #4}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "$\\\\$" + LATEX_LINE_BREAK_NEW_COMMAND_INDENT1 //$NON-NLS-1$
                 + "\\byrule{#5}" //$NON-NLS-1$
                 // end of the node variables
-                + LATEX_LINE_BREAK_NEW_COMMAND + "\\ifthenelse{\\isempty{#6}}{}{$\\\\$ {#6}}" //$NON-NLS-1$
-                + LATEX_LINE_BREAK_NEW_COMMAND + "\\ifthenelse{\\isempty{#7}}{}{$\\\\$ {#7}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND
+                + "\\ifthenelse{\\isempty{#6}}{}{$\\\\$ {#6}}" //$NON-NLS-1$
+                + LATEX_LINE_BREAK_NEW_COMMAND
+                + "\\ifthenelse{\\isempty{#7}}{}{$\\\\$ {#7}}" + LATEX_LINE_BREAK_NEW_COMMAND //$NON-NLS-1$
                 + "$\\end{tabular}$" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND + "\\vspace{\\nodesep}" //$NON-NLS-1$
                 + LATEX_LINE_BREAK_NEW_COMMAND + "\\fi", "depth", "id", "e", //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
