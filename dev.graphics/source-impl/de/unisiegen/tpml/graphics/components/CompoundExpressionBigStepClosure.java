@@ -111,8 +111,7 @@ public class CompoundExpressionBigStepClosure extends JComponent
     {
 
       @Override
-      public void mouseExited ( @SuppressWarnings ( "unused" )
-      MouseEvent e )
+      public void mouseExited ( @SuppressWarnings ( "unused" ) MouseEvent e )
       {
         CompoundExpressionBigStepClosure.this.getToListenForMouse ().reset ();
         CompoundExpressionBigStepClosure.this.getToListenForMouse ().setMark (
@@ -146,9 +145,9 @@ public class CompoundExpressionBigStepClosure extends JComponent
    */
   public void setUnderlineExpression ( Expression pUnderlineExpression )
   {
-    if(this.underlineExpression == pUnderlineExpression)
+    if ( this.underlineExpression == pUnderlineExpression )
       return;
-  
+
     this.underlineExpression = pUnderlineExpression;
     if ( this.expressionRenderer != null )
     {
@@ -184,15 +183,13 @@ public class CompoundExpressionBigStepClosure extends JComponent
     // tell the PrettyStringRenderer where the mouse pointer is
     this.toListenForMouse.setHereIam ( event.getX (), event.getY () );
 
-    // first, we do not want to mark anything, we are waiting for mouse pointer
-    // is over one bounded id
     this.toListenForMouse.setMark ( false );
     CompoundExpressionBigStepClosure.this.repaint ();
 
     // note if to mark or not to mark
     boolean mark = false;
 
-    // walk throu the postions where to mark
+    // walk through the postions where to mark
     for ( int t = 0 ; t < this.toListenForMouse.size () ; t++ )
     {
       // get position of pointer, these are rectangles. These positions are made
@@ -203,7 +200,7 @@ public class CompoundExpressionBigStepClosure extends JComponent
       int pY = r.y;
       int pY1 = r.y + r.height;
 
-      // fnde out if pointer is on one of the chars to mark
+      // find out if pointer is on one of the chars to mark
       if ( ( event.getX () >= pX ) && ( event.getX () <= pX1 )
           && ( event.getY () >= pY ) && ( event.getY () <= pY1 ) )
       // if ( ( event.getX ( ) >= pX ) && ( event.getX ( ) <= pX1 ) )
@@ -216,7 +213,6 @@ public class CompoundExpressionBigStepClosure extends JComponent
     // if the pointer is on one of the bounded chars
     if ( mark )
     {
-      // we want to habe marked
       this.toListenForMouse.setMark ( true );
       this.repaint ();
     }
@@ -266,7 +262,7 @@ public class CompoundExpressionBigStepClosure extends JComponent
     {
       this.bonds = new ShowBonds ();
       this.bonds.load ( this.closure.getExpression () ); // FIXME: is this
-                                                          // right?
+      // right?
 
       if ( this.expressionRenderer == null )
       {
@@ -330,7 +326,7 @@ public class CompoundExpressionBigStepClosure extends JComponent
      * just to get reminded: no environment: expression storeenvironment:
      * (expression [env]) typeenvironment: [env] |> expression
      */
-    
+
     int posX = 0;
     int posY = 0;
 
