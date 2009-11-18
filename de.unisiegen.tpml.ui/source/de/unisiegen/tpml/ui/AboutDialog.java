@@ -136,7 +136,7 @@ public class AboutDialog extends javax.swing.JDialog
     gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
     gridBagConstraints.insets = new java.awt.Insets ( 12, 12, 6, 6 );
     bodyPanel.add ( websiteLabel, gridBagConstraints );
-    final String webpage = "http://theoinf.math.uni-siegen.de/tpml/";//$NON-NLS-1$
+    final String webpage = "http://vcs.informatik.uni-siegen.de/projects/tpml/";//$NON-NLS-1$
     websiteLabelTarget.setForeground ( Color.BLUE );
     websiteLabelTarget.setText ( webpage );
     websiteLabelTarget.setToolTipText ( java.util.ResourceBundle.getBundle (

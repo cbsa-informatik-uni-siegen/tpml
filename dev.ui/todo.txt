@@ -8,7 +8,7 @@
 		  1.0, 2.0 und 3.0 unterteilen)
 		- PreferenceDialog mit Netbeans neu schreiben
 		- Dynamische Sprachänderung (siehe GTITool unter
-		  http://theoinf.math.uni-siegen.de/gtitool/)
+		  http://vcs.informatik.uni-siegen.de/projects/gtitool/)
 		- Dynamische Änderung des Look and Feel
 		- Die Info-Dialoge mit Netbeans neu schreiben, da die Message
 		  im Moment nicht umgebrochen wird.
